@@ -86,9 +86,11 @@ namespace PadForge.Common.Input
             return uint.TryParse(devicePath.Substring(prefix.Length), out slot) && slot < 4;
         }
 
-        /// <summary>True when the XInput-pathed pad reports a battery (alkaline
-        /// or NiMH), meaning it is wireless. Wired pads report
-        /// BATTERY_TYPE_WIRED and cannot be powered off.</summary>
+        /// <summary>True when the XInput-pathed pad is not wired. Battery types
+        /// per Special K xinput.h:80-84 (0 disconnected, 1 wired, 2 alkaline,
+        /// 3 NiMH, 0xFF unknown). Deliberately loose: a wireless pad reporting
+        /// UNKNOWN stays targetable, and a power-off attempt on a mislabeled
+        /// wired pad is a harmless no-op.</summary>
         private static bool IsXInputWireless(string devicePath)
         {
             if (!TryParseXInputSlot(devicePath, out uint slot)) return false;
@@ -97,7 +99,7 @@ namespace PadForge.Common.Input
                 if (XInputGetBatteryInformation(slot, 0 /* BATTERY_DEVTYPE_GAMEPAD */,
                         out XINPUT_BATTERY_INFORMATION info) != 0)
                     return false;
-                return info.BatteryType == 2 /* ALKALINE */ || info.BatteryType == 3 /* NIMH */;
+                return info.BatteryType != 0 /* DISCONNECTED */ && info.BatteryType != 1 /* WIRED */;
             }
             catch (DllNotFoundException) { return false; }
             catch (EntryPointNotFoundException) { return false; }

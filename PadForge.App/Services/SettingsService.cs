@@ -2350,7 +2350,10 @@ namespace PadForge.Services
                 CursorPinY = ad.CursorPinY,
                 CursorClampMode = ad.CursorClampMode,
                 CursorClampInsetX = ad.CursorClampInsetX,
-                CursorClampInsetY = ad.CursorClampInsetY
+                CursorClampInsetY = ad.CursorClampInsetY,
+                DisconnectTarget = ad.DisconnectTarget,
+                DisconnectDeviceGuid = Guid.TryParse(ad.DisconnectDeviceGuid, out Guid dcGuid)
+                    ? dcGuid : Guid.Empty
             };
         }
 
@@ -3219,7 +3222,10 @@ namespace PadForge.Services
                 CursorPinY = a.CursorPinY,
                 CursorClampMode = a.CursorClampMode,
                 CursorClampInsetX = a.CursorClampInsetX,
-                CursorClampInsetY = a.CursorClampInsetY
+                CursorClampInsetY = a.CursorClampInsetY,
+                DisconnectTarget = a.DisconnectTarget,
+                DisconnectDeviceGuid = a.DisconnectDeviceGuid == Guid.Empty
+                    ? null : a.DisconnectDeviceGuid.ToString()
             };
         }
 
@@ -4476,6 +4482,11 @@ namespace PadForge.Services
         [XmlElement] public int CursorClampInsetX { get; set; } = 50;
         /// <summary>Per-edge Y inset for the region clamp, pixels (issue #110).</summary>
         [XmlElement] public int CursorClampInsetY { get; set; } = 50;
+
+        /// <summary>Target mode for a DisconnectController action (issue #162).</summary>
+        [XmlElement] public ViewModels.MacroDisconnectTarget DisconnectTarget { get; set; } = ViewModels.MacroDisconnectTarget.TriggeringDevice;
+        /// <summary>Victim device GUID for Specific-device mode (issue #162).</summary>
+        [XmlElement] public string DisconnectDeviceGuid { get; set; }
     }
 
     /// <summary>

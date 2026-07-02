@@ -119,6 +119,31 @@ namespace PadForge.Tests
             Assert.False(BluetoothLinkHelper.TryParseXInputSlot(path, out _));
         }
 
+        // ── DTO round-trip (the #112 persistence lane; a field missing here
+        //    silently resets the action on every save/load) ──
+
+        [Fact]
+        public void DisconnectAction_SurvivesTheMacroDataRoundTrip()
+        {
+            var deviceGuid = Guid.NewGuid();
+            var m = new PadForge.ViewModels.MacroItem { Name = "Chord" };
+            m.Actions.Add(new PadForge.ViewModels.MacroAction
+            {
+                Type = PadForge.ViewModels.MacroActionType.DisconnectController,
+                DisconnectTarget = PadForge.ViewModels.MacroDisconnectTarget.SpecificDevice,
+                DisconnectDeviceGuid = deviceGuid,
+            });
+
+            var data = PadForge.Services.SettingsService.BuildMacroDataForMacro(m, 0);
+            var clone = PadForge.Services.SettingsService.LoadMacroFromData(
+                data, PadForge.Engine.VirtualControllerType.Xbox, null);
+
+            Assert.Single(clone.Actions);
+            Assert.Equal(PadForge.ViewModels.MacroActionType.DisconnectController, clone.Actions[0].Type);
+            Assert.Equal(PadForge.ViewModels.MacroDisconnectTarget.SpecificDevice, clone.Actions[0].DisconnectTarget);
+            Assert.Equal(deviceGuid, clone.Actions[0].DisconnectDeviceGuid);
+        }
+
         [Fact]
         public void XInputCapabilitiesEx_AbiSizeIsPinned()
         {

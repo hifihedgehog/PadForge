@@ -73,7 +73,8 @@ namespace PadForge.Common.Input
 
         public static bool TryDisconnectDevice(ushort vendorId, ushort productId,
             string devicePath, string serial,
-            System.Collections.Generic.IReadOnlyList<string> bthInstanceIds = null)
+            System.Collections.Generic.IReadOnlyList<string> bthInstanceIds = null,
+            IntPtr gamepadHandle = default)
         {
             string key = devicePath ?? string.Empty;
             long now = Environment.TickCount64;
@@ -117,10 +118,25 @@ namespace PadForge.Common.Input
                 return true;
             }
 
-            if (IsSwitch2(vendorId, productId) && TrySwitch2PowerOff())
+            if (IsSwitch2(vendorId, productId))
             {
-                Trace("switch2 lane succeeded");
-                return true;
+                // Preferred: send the shutdown through SDL's own GATT session
+                // via the raw-effect passthrough. A second session cannot
+                // reach the command characteristic (SharingViolation, traced
+                // on hardware: SDL's session is non-shared and Windows
+                // requires ALL openers to be shared). Requires the fork's
+                // BLE_JoystickSendEffect passthrough; until that ships,
+                // SDL_Unsupported falls through to the GATT attempt below.
+                if (TrySwitch2EffectPassthrough(gamepadHandle))
+                {
+                    Trace("switch2 effect lane succeeded");
+                    return true;
+                }
+                if (TrySwitch2PowerOff())
+                {
+                    Trace("switch2 gatt lane succeeded");
+                    return true;
+                }
             }
 
             if (vendorId == MicrosoftVid && TryXInputPowerOff(vendorId, productId))
@@ -258,6 +274,35 @@ namespace PadForge.Common.Input
             catch (Exception ex)
             {
                 Trace($"switch2 lane exception: {ex.Message}");
+                return false;
+            }
+        }
+
+        /// <summary>Sends the shutdown as an SDL raw effect: [cmd, subcmd,
+        /// payload...], the frame the fork's BLE_JoystickSendEffect
+        /// passthrough hands to BLE_SendCommand (which builds the 0x91 BLE
+        /// header itself, SDL_ble_switch2joystick.c:793-811). Returns false
+        /// while the fork still stubs SendEffect with SDL_Unsupported.</summary>
+        private static bool TrySwitch2EffectPassthrough(IntPtr gamepadHandle)
+        {
+            if (gamepadHandle == IntPtr.Zero)
+            {
+                Trace("switch2 effect: no SDL gamepad handle captured");
+                return false;
+            }
+            try
+            {
+                var effect = new byte[14];
+                effect[0] = 0x06; // command: power
+                effect[1] = 0x02; // subcommand: shutdown
+                // 12 zero payload bytes follow
+                bool ok = SDL3.SDL.SDL_SendGamepadEffect(gamepadHandle, effect, 0, effect.Length);
+                Trace($"switch2 effect: SendGamepadEffect={ok}");
+                return ok;
+            }
+            catch (Exception ex)
+            {
+                Trace($"switch2 effect: {ex.Message}");
                 return false;
             }
         }

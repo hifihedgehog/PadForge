@@ -267,27 +267,44 @@ namespace PadForge.Common.Input
 
         private static async System.Threading.Tasks.Task<bool> TrySwitch2PowerOffAsync()
         {
-            string selector = Windows.Devices.Bluetooth.GenericAttributeProfile
-                .GattDeviceService.GetDeviceSelectorFromUuid(Switch2ServiceUuid);
+            // Discovery is by CONNECTED LE device, not by service interface:
+            // the GattDeviceService selector only surfaces services of PAIRED
+            // devices (measured: zero instances while the pad was connected),
+            // and Switch 2 controllers connect unpaired (their pairing is a
+            // vendor command exchange, not standard SMP, per the protocol
+            // research). Each connected LE device gets an uncached service
+            // probe over its already-open link; only a Switch 2 answers.
+            string selector = Windows.Devices.Bluetooth.BluetoothLEDevice
+                .GetDeviceSelectorFromConnectionStatus(
+                    Windows.Devices.Bluetooth.BluetoothConnectionStatus.Connected);
             var infos = await Windows.Devices.Enumeration.DeviceInformation.FindAllAsync(selector);
             if (infos.Count == 0)
             {
-                Trace("switch2: no service instances found");
+                Trace("switch2: no connected LE devices enumerated");
                 return false;
             }
 
             bool any = false;
             foreach (var info in infos)
             {
+                Windows.Devices.Bluetooth.BluetoothLEDevice dev = null;
                 try
                 {
-                    var svc = await Windows.Devices.Bluetooth.GenericAttributeProfile
-                        .GattDeviceService.FromIdAsync(info.Id);
-                    if (svc == null)
+                    dev = await Windows.Devices.Bluetooth.BluetoothLEDevice.FromIdAsync(info.Id);
+                    if (dev == null)
                     {
-                        Trace($"switch2 '{info.Name}': service open denied");
+                        Trace($"switch2 candidate '{info.Name}': open denied");
                         continue;
                     }
+                    var svcResult = await dev.GetGattServicesForUuidAsync(Switch2ServiceUuid,
+                        Windows.Devices.Bluetooth.BluetoothCacheMode.Uncached);
+                    if (svcResult.Status != Windows.Devices.Bluetooth.GenericAttributeProfile
+                            .GattCommunicationStatus.Success
+                        || svcResult.Services.Count == 0)
+                    {
+                        continue; // some other LE peripheral, not a Switch 2
+                    }
+                    var svc = svcResult.Services[0];
                     try
                     {
                         var chars = await svc.GetCharacteristicsForUuidAsync(Switch2CommandUuid);
@@ -315,9 +332,15 @@ namespace PadForge.Common.Input
                 }
                 catch (Exception ex)
                 {
-                    Trace($"switch2 '{info.Name}': {ex.Message}");
+                    Trace($"switch2 candidate '{info.Name}': {ex.Message}");
+                }
+                finally
+                {
+                    dev?.Dispose();
                 }
             }
+            if (!any)
+                Trace($"switch2: probed {infos.Count} connected LE devices, none accepted the shutdown");
             return any;
         }
 

@@ -382,7 +382,7 @@
   <data name="MacroDisconnect_Caveat" xml:space="preserve"><value>Bluetooth only. The controller sleeps once the link drops.</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>Idle Disconnect</value></data>
   <data name="Devices_Power" xml:space="preserve"><value>Power</value></data>
-  <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>minutes (0 = off)</value></data>
+  <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>minutes (0 = never)</value></data>
   <data name="Devices_IdleDisconnectTooltip" xml:space="preserve"><value>Disconnects this Bluetooth controller after this many minutes without input, so it sleeps and saves battery. Never fires over USB.</value></data>
   <data name="DevObj_ConsumerPower" xml:space="preserve"><value>Power</value></data>
   <data name="DevObj_ConsumerMenu" xml:space="preserve"><value>Menu</value></data>

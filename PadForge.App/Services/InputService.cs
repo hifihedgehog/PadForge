@@ -6793,6 +6793,11 @@ namespace PadForge.Services
             row.ForceRawJoystickMode = ud.ForceRawJoystickMode;
             row.IsHidHideAvailable = _mainVm.Settings.IsHidHideInstalled;
 
+            // Idle disconnect countdown (#162): stored in seconds, edited in
+            // minutes, only meaningful for Bluetooth-pathed devices.
+            row.IdleDisconnectMinutes = ud.IdleDisconnectSeconds / 60;
+            row.ShowIdleDisconnect = PadForge.Common.Input.SonyEffectWriter.IsBluetoothPath(ud.DevicePath);
+
             // Set internal device type key (DeviceType display is computed from this).
             row.DeviceTypeKey = ud.CapType switch
             {

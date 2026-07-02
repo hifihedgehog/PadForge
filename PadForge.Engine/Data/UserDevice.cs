@@ -228,6 +228,13 @@ namespace PadForge.Engine.Data
         [XmlElement]
         public bool ForceRawJoystickMode { get; set; }
 
+        /// <summary>Idle disconnect countdown in seconds (issue #162). When the
+        /// device is Bluetooth-connected and its input has been idle this long,
+        /// the host radio drops the link so the controller sleeps. 0 disables.
+        /// Never fires while charging or on USB, matching DS4Windows.</summary>
+        [XmlElement]
+        public int IdleDisconnectSeconds { get; set; }
+
         /// <summary>
         /// Cached HID device instance IDs resolved via SetupAPI for HidHide blacklisting.
         /// Persisted so devices can be pre-emptively blacklisted at startup even if powered off.
@@ -260,6 +267,17 @@ namespace PadForge.Engine.Data
         /// </summary>
         [XmlIgnore]
         public CustomInputState InputState { get; set; }
+
+        /// <summary>Last tick (Environment.TickCount64) this device's input was
+        /// non-idle, for the #162 idle disconnect countdown. Written only by the
+        /// polling thread (Step 2). 0 = not yet tracked this connection.</summary>
+        [XmlIgnore]
+        public long LastActiveTick { get; set; }
+
+        /// <summary>Last tick the #162 idle countdown was checked, so the check
+        /// runs about once a second instead of at poll rate. Polling thread only.</summary>
+        [XmlIgnore]
+        public long LastIdleCheckTick { get; set; }
 
         /// <summary>
         /// Previous input state (from the prior poll cycle), used for change detection.

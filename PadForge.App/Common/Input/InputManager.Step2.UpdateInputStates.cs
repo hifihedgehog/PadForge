@@ -1,6 +1,7 @@
 using System;
 using PadForge.Common.Telemetry;
 using PadForge.Engine;
+using PadForge.Engine.Common;
 using PadForge.Engine.Data;
 
 namespace PadForge.Common.Input
@@ -116,6 +117,12 @@ namespace PadForge.Common.Input
 
                     // Atomic reference swap — safe for cross-thread reading.
                     ud.InputState = newState;
+
+                    // Idle disconnect countdown (#162). Tracks last activity at
+                    // poll rate, checks the countdown ~1 Hz, and hands the
+                    // radio I/O to the threadpool. DS4Windows gates mirrored:
+                    // BT only, never while charging (DS4Device.cs:1437-1491).
+                    UpdateIdleDisconnect(ud, newState);
 
                     // Touchpad gesture engine — runs once per device per
                     // tick, across every touchpad surface this device
@@ -277,6 +284,51 @@ namespace PadForge.Common.Input
                     return kvp.Key;
             }
             return IntPtr.Zero;
+        }
+
+        /// <summary>Idle disconnect countdown for one device (#162), the
+        /// DS4Windows shape (DS4Device.cs:1437-1491): refresh the activity
+        /// stamp whenever the input is non-idle, and once the stamp ages past
+        /// the per-device timeout, drop the Bluetooth link on a worker so the
+        /// controller sleeps. Gamepad-typed devices use the absolute idle
+        /// test; everything else uses change detection against the previous
+        /// poll. Never fires on USB paths or while charging.</summary>
+        private static void UpdateIdleDisconnect(UserDevice ud, CustomInputState state)
+        {
+            long now = Environment.TickCount64;
+
+            if (ud.IdleDisconnectSeconds <= 0)
+            {
+                ud.LastActiveTick = now;
+                return;
+            }
+
+            bool idle = ud.CapType == InputDeviceType.Gamepad
+                ? IdleInputDetector.IsGamepadIdle(state)
+                : IdleInputDetector.IsUnchanged(state, ud.OldInputState);
+
+            if (!idle || ud.LastActiveTick == 0)
+            {
+                ud.LastActiveTick = now;
+                return;
+            }
+
+            // The countdown itself only needs ~1 Hz resolution.
+            if (now - ud.LastIdleCheckTick < 1000) return;
+            ud.LastIdleCheckTick = now;
+
+            if (now - ud.LastActiveTick < ud.IdleDisconnectSeconds * 1000L) return;
+            if (state.BatteryCharging) return;
+            if (!PadForge.Common.Input.SonyEffectWriter.IsBluetoothPath(ud.DevicePath)) return;
+            if (string.IsNullOrEmpty(ud.SerialNumber)) return;
+
+            // Re-arm so a failed or ignored disconnect retries after a full
+            // countdown instead of hammering the radio every second.
+            ud.LastActiveTick = now;
+
+            string serial = ud.SerialNumber;
+            System.Threading.Tasks.Task.Run(() =>
+                PadForge.Common.Input.BluetoothLinkHelper.TryDisconnect(serial));
         }
 
         // ─────────────────────────────────────────────

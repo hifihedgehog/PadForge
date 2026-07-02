@@ -1102,7 +1102,103 @@ namespace PadForge.Common.Input
                     AdvanceAction(macro);
                     break;
                 }
+
+                case MacroActionType.DisconnectController:
+                    ExecuteDisconnectControllerAction(macro, action);
+                    AdvanceAction(macro);
+                    break;
             }
+        }
+
+        /// <summary>Resolves a Disconnect Controller action's victims (#162)
+        /// and hands the radio I/O to the threadpool. Resolution stays on the
+        /// polling thread (dictionary walks only); the IOCTL never runs here
+        /// because the polling thread must not block on I/O. Victims are
+        /// filtered to online, Bluetooth-pathed, not-charging devices with a
+        /// parseable serial, the DS4Windows gates
+        /// (DS4Windows Mapping.cs DisconnectBT special action: synced +
+        /// !isCharging + ConnectionType.BT).</summary>
+        private void ExecuteDisconnectControllerAction(MacroItem macro, MacroAction action)
+        {
+            var serials = new System.Collections.Generic.List<string>();
+
+            switch (action.DisconnectTarget)
+            {
+                case MacroDisconnectTarget.SpecificDevice:
+                    AddDisconnectCandidate(serials,
+                        SettingsManager.FindDeviceByInstanceGuid(action.DisconnectDeviceGuid));
+                    break;
+
+                case MacroDisconnectTarget.SlotDevices:
+                {
+                    var guids = new System.Collections.Generic.List<Guid>();
+                    var settings = SettingsManager.UserSettings;
+                    if (settings != null)
+                    {
+                        lock (settings.SyncRoot)
+                        {
+                            foreach (var us in settings.Items)
+                                if (us != null && us.MapTo == macro.PadIndex)
+                                    guids.Add(us.InstanceGuid);
+                        }
+                    }
+                    foreach (var g in guids)
+                        AddDisconnectCandidate(serials, SettingsManager.FindDeviceByInstanceGuid(g));
+                    break;
+                }
+
+                case MacroDisconnectTarget.AllDevices:
+                {
+                    var devices = SettingsManager.UserDevices;
+                    if (devices != null)
+                    {
+                        UserDevice[] snapshot;
+                        lock (devices.SyncRoot)
+                        {
+                            snapshot = new UserDevice[devices.Items.Count];
+                            devices.Items.CopyTo(snapshot, 0);
+                        }
+                        foreach (var ud in snapshot)
+                            AddDisconnectCandidate(serials, ud);
+                    }
+                    break;
+                }
+
+                case MacroDisconnectTarget.TriggeringDevice:
+                default:
+                {
+                    var seen = new System.Collections.Generic.HashSet<Guid>();
+                    foreach (var entry in macro.GetTriggerInputEntries())
+                        if (entry.DeviceGuid != Guid.Empty) seen.Add(entry.DeviceGuid);
+                    if (seen.Count == 0 && macro.TriggerDeviceGuid != Guid.Empty)
+                        seen.Add(macro.TriggerDeviceGuid); // legacy single-device trigger
+                    foreach (var g in seen)
+                        AddDisconnectCandidate(serials, SettingsManager.FindDeviceByInstanceGuid(g));
+                    break;
+                }
+            }
+
+            if (serials.Count == 0)
+                return; // nothing eligible (charging, USB, no trigger device, no serial)
+
+            string[] targets = serials.ToArray();
+            System.Threading.Tasks.Task.Run(() =>
+            {
+                foreach (var serial in targets)
+                    PadForge.Common.Input.BluetoothLinkHelper.TryDisconnect(serial);
+            });
+        }
+
+        /// <summary>Applies the #162 eligibility gates and collects the
+        /// device's serial (its Bluetooth MAC) for the disconnect worker.</summary>
+        private static void AddDisconnectCandidate(
+            System.Collections.Generic.List<string> serials, UserDevice ud)
+        {
+            if (ud == null || !ud.IsOnline) return;
+            if (!PadForge.Common.Input.SonyEffectWriter.IsBluetoothPath(ud.DevicePath)) return;
+            if (ud.InputState != null && ud.InputState.BatteryCharging) return;
+            if (string.IsNullOrEmpty(ud.SerialNumber)) return;
+            if (!serials.Contains(ud.SerialNumber)) serials.Add(ud.SerialNumber);
         }
 
         /// <summary>Enumerates every per-device PlayStationSlotConfig
@@ -1805,6 +1901,11 @@ namespace PadForge.Common.Input
                     AdvanceAction(macro);
                     break;
                 }
+
+                case MacroActionType.DisconnectController:
+                    ExecuteDisconnectControllerAction(macro, action);
+                    AdvanceAction(macro);
+                    break;
 
                 case MacroActionType.PlaySound:
                 {

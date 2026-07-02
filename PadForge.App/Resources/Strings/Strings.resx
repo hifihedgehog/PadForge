@@ -370,6 +370,19 @@
   <data name="DeviceType_Nfc" xml:space="preserve"><value>NFC Reader</value></data>
 
   <data name="DeviceType_ConsumerControl" xml:space="preserve"><value>Consumer Control</value></data>
+  <data name="MacroAction_Type_DisconnectController" xml:space="preserve"><value>Disconnect Controller</value></data>
+  <data name="MacroAction_DisconnectController_Tooltip" xml:space="preserve"><value>Drops the controller's Bluetooth link so it goes to sleep. Bluetooth connections only. Devices that are charging are skipped.</value></data>
+  <data name="MacroAction_DisconnectController_Format" xml:space="preserve"><value>Disconnect Controller: {0}</value></data>
+  <data name="MacroDisconnect_Target_Label" xml:space="preserve"><value>Target</value></data>
+  <data name="MacroDisconnect_TriggeringDevice" xml:space="preserve"><value>Triggering Device</value></data>
+  <data name="MacroDisconnect_SpecificDevice" xml:space="preserve"><value>Specific Device</value></data>
+  <data name="MacroDisconnect_SlotDevices" xml:space="preserve"><value>All Devices on This Slot</value></data>
+  <data name="MacroDisconnect_AllDevices" xml:space="preserve"><value>All Bluetooth Devices</value></data>
+  <data name="MacroDisconnect_Device_Label" xml:space="preserve"><value>Device</value></data>
+  <data name="MacroDisconnect_Caveat" xml:space="preserve"><value>Bluetooth only. The controller sleeps once the link drops. Devices that are charging are skipped.</value></data>
+  <data name="Devices_IdleDisconnect" xml:space="preserve"><value>Idle Disconnect</value></data>
+  <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>minutes (0 = off)</value></data>
+  <data name="Devices_IdleDisconnectTooltip" xml:space="preserve"><value>Disconnects this Bluetooth controller after this many minutes without input, so it sleeps and saves battery. Never fires while charging or over USB.</value></data>
   <data name="DevObj_ConsumerPower" xml:space="preserve"><value>Power</value></data>
   <data name="DevObj_ConsumerMenu" xml:space="preserve"><value>Menu</value></data>
   <data name="DevObj_ConsumerOk" xml:space="preserve"><value>OK</value></data>

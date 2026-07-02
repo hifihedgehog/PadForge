@@ -40,6 +40,14 @@ namespace PadForge.Engine.RemoteLink
             Battery = 1 << 6,
             Touchpad = 1 << 7,
             Midi = 1 << 8,
+            // Post-3.5.0 state families (issues #146/#151/#154). Appended
+            // AFTER every older block in the frame, which keeps mixed
+            // versions compatible without a Version bump: an old decoder
+            // reads its known blocks in order, never reaches these, and
+            // its final `o <= payload.Length` check tolerates the tail.
+            Ir = 1 << 9,
+            JoyConIr = 1 << 10,
+            JoyCon2Mouse = 1 << 11,
         }
 
         /// <summary>
@@ -147,7 +155,9 @@ namespace PadForge.Engine.RemoteLink
                 for (int i = 0; i < 3; i++) { BinaryPrimitives.WriteSingleLittleEndian(destination.Slice(o, 4), state.Accel[i]); o += 4; }
             }
 
-            if (state.BatteryPercent >= 0)
+            // Charging alone is enough to send the block: a pad that reports
+            // "charging, percent unknown" must not lose the flag on the wire.
+            if (state.BatteryPercent >= 0 || state.BatteryCharging)
             {
                 present |= Block.Battery;
                 destination[o++] = (byte)(sbyte)Math.Clamp(state.BatteryPercent, -1, 100);
@@ -193,6 +203,33 @@ namespace PadForge.Engine.RemoteLink
                 o += WriteU16(destination, o, midi.PitchBend);
             }
 
+            // New blocks stay strictly after every pre-#146 block (see the
+            // Block enum note on mixed-version compatibility).
+
+            // Wii IR pointer (#146): sent only while a dot is detected; an
+            // omitted block decodes to the neutral "no IR this frame".
+            if (state.Ir.Detected)
+            {
+                present |= Block.Ir;
+                BinaryPrimitives.WriteSingleLittleEndian(destination.Slice(o, 4), state.Ir.X); o += 4;
+                BinaryPrimitives.WriteSingleLittleEndian(destination.Slice(o, 4), state.Ir.Y); o += 4;
+            }
+
+            // Joy-Con NIR intensity (#151): 0 means camera off / absent.
+            if (state.JoyConIrIntensity != 0f)
+            {
+                present |= Block.JoyConIr;
+                BinaryPrimitives.WriteSingleLittleEndian(destination.Slice(o, 4), state.JoyConIrIntensity); o += 4;
+            }
+
+            // Joy-Con 2 mouse deltas (#154): per-poll counts, 0 when idle.
+            if (state.JoyCon2MouseDX != 0f || state.JoyCon2MouseDY != 0f)
+            {
+                present |= Block.JoyCon2Mouse;
+                BinaryPrimitives.WriteSingleLittleEndian(destination.Slice(o, 4), state.JoyCon2MouseDX); o += 4;
+                BinaryPrimitives.WriteSingleLittleEndian(destination.Slice(o, 4), state.JoyCon2MouseDY); o += 4;
+            }
+
             BinaryPrimitives.WriteUInt16LittleEndian(destination.Slice(presenceAt, 2), (ushort)present);
             return o;
         }
@@ -222,6 +259,7 @@ namespace PadForge.Engine.RemoteLink
                 foreach (var pad in state.Touchpads) size += 2 + (pad?.MaxFingers ?? 0) * 9;
             }
             if (state?.Midi != null) size += 48 + 1 + MidiInputState.CcCount * 2 + 2;
+            size += 8 + 4 + 8; // Ir (2 floats) + JoyConIr (1 float) + JoyCon2Mouse (2 floats)
             return size;
         }
 
@@ -349,6 +387,30 @@ namespace PadForge.Engine.RemoteLink
                     midi.PitchBend = ReadU16(payload, ref o);
                 }
 
+                if ((present & Block.Ir) != 0)
+                {
+                    target.Ir = new WiiIrState
+                    {
+                        X = BinaryPrimitives.ReadSingleLittleEndian(payload.Slice(o, 4)),
+                        Y = BinaryPrimitives.ReadSingleLittleEndian(payload.Slice(o + 4, 4)),
+                        Detected = true,
+                    };
+                    o += 8;
+                }
+
+                if ((present & Block.JoyConIr) != 0)
+                {
+                    target.JoyConIrIntensity = BinaryPrimitives.ReadSingleLittleEndian(payload.Slice(o, 4));
+                    o += 4;
+                }
+
+                if ((present & Block.JoyCon2Mouse) != 0)
+                {
+                    target.JoyCon2MouseDX = BinaryPrimitives.ReadSingleLittleEndian(payload.Slice(o, 4));
+                    target.JoyCon2MouseDY = BinaryPrimitives.ReadSingleLittleEndian(payload.Slice(o + 4, 4));
+                    o += 8;
+                }
+
                 return o <= payload.Length;
             }
             catch
@@ -373,6 +435,19 @@ namespace PadForge.Engine.RemoteLink
             Array.Clear(s.Accel);
             s.BatteryPercent = -1;
             s.BatteryCharging = false;
+            s.Ir = default;
+            s.JoyConIrIntensity = 0f;
+            s.JoyCon2MouseDX = 0f;
+            s.JoyCon2MouseDY = 0f;
+            if (s.Midi != null)
+            {
+                // The decode contract promises "reset-to-neutral rather than
+                // half-applied"; without this the previous frame's MIDI state
+                // survived a malformed frame or a link drop.
+                Array.Clear(s.Midi.Notes); Array.Clear(s.Midi.Cc);
+                Array.Clear(s.Midi.CcUp); Array.Clear(s.Midi.CcDown);
+                s.Midi.PitchBend = MidiInputState.PitchBendCenter;
+            }
             if (s.Touchpads != null)
                 foreach (var pad in s.Touchpads)
                     if (pad != null)

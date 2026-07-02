@@ -36,6 +36,12 @@ namespace PadForge.Engine.RemoteLink
             SonyEffect = 1,
             Vibration = 2,
             Wheel = 3,
+            // HD haptic tone (#147): the consumer's HapticToneReducer output,
+            // one (dominant frequency Hz, amplitude 0..1) pair per rumble
+            // tick, slot volume already applied. The owner re-encodes it with
+            // its own per-family writer (Joy-Con HD Rumble / Steam 0x8f /
+            // Triton 0x83 / Deck), exactly the Wheel division of labor.
+            HapticTone = 4,
         }
 
         // ── Sony effect body ────────────────────────────────────────────────
@@ -111,6 +117,17 @@ namespace PadForge.Engine.RemoteLink
             return w.ToArray();
         }
 
+        // ── HD haptic tone (#147) ───────────────────────────────────────────
+
+        public static byte[] EncodeHapticTone(float toneHz, float amplitude)
+        {
+            var w = new Writer(9);
+            w.U8((byte)Kind.HapticTone);
+            w.U32(BitConverter.SingleToUInt32Bits(toneHz));
+            w.U32(BitConverter.SingleToUInt32Bits(amplitude));
+            return w.ToArray();
+        }
+
         // ── Decode ──────────────────────────────────────────────────────────
 
         public readonly struct WheelFrame
@@ -136,9 +153,13 @@ namespace PadForge.Engine.RemoteLink
             public readonly byte[] SonyBody;   // SonyEffect
             public readonly Vibration Vibration; // Vibration
             public readonly WheelFrame Wheel;  // Wheel
-            public OutputEffect(Kind kind, byte[] sonyBody, Vibration vibration, WheelFrame wheel)
+            public readonly float HapticToneHz;  // HapticTone
+            public readonly float HapticToneAmp; // HapticTone
+            public OutputEffect(Kind kind, byte[] sonyBody, Vibration vibration, WheelFrame wheel,
+                float hapticToneHz = 0f, float hapticToneAmp = 0f)
             {
                 Kind = kind; SonyBody = sonyBody; Vibration = vibration; Wheel = wheel;
+                HapticToneHz = hapticToneHz; HapticToneAmp = hapticToneAmp;
             }
         }
 
@@ -218,6 +239,17 @@ namespace PadForge.Engine.RemoteLink
                             (flags & 1) != 0, (flags & 2) != 0, (flags & 4) != 0,
                             force, peak, pc, nc, off, ac, period, db, ps, ns, cg, eff, range, led);
                         effect = new OutputEffect(kind, null, null, wf);
+                        return true;
+                    }
+
+                    case Kind.HapticTone:
+                    {
+                        var r = new Reader(payload, 1);
+                        float hz = BitConverter.UInt32BitsToSingle(r.U32());
+                        float amp = BitConverter.UInt32BitsToSingle(r.U32());
+                        if (!float.IsFinite(hz) || !float.IsFinite(amp)) return false;
+                        effect = new OutputEffect(kind, null, null, default,
+                            hapticToneHz: hz, hapticToneAmp: Math.Clamp(amp, 0f, 1f));
                         return true;
                     }
 

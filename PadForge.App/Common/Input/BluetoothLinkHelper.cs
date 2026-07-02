@@ -213,9 +213,14 @@ namespace PadForge.Common.Input
         /// <summary>Device-aware overload: Switch 2 controllers connect through
         /// the SDL fork's BLE GATT driver, which populates neither DevicePath
         /// nor serial, so the path predicate alone cannot see them. Use this
-        /// form at every gate site.</summary>
+        /// form at every gate site. Remote Link devices are excluded first:
+        /// a peer:// pad relays its real VID/PID, so a linked Switch 2 would
+        /// otherwise pass the gate on a machine that has no radio link to it
+        /// and can only no-op.</summary>
         public static bool IsDisconnectTarget(string devicePath, ushort vendorId, ushort productId)
         {
+            if (devicePath != null && devicePath.StartsWith("peer://", StringComparison.Ordinal))
+                return false;
             return IsSwitch2(vendorId, productId) || IsDisconnectTarget(devicePath);
         }
 

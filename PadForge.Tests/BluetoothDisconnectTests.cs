@@ -307,5 +307,42 @@ namespace PadForge.Tests
             b.Axis[7] = a.Axis[7] + IdleInputDetector.DeltaSlop + 1;
             Assert.False(IdleInputDetector.IsUnchanged(b, a));
         }
+
+        // ── Idle truth table: post-3.5.0 pointer/mouse families (#146/#154) ──
+
+        [Fact]
+        public void GamepadIdle_WiiIrPointerDefeatsIdle()
+        {
+            var s = NeutralGamepadState();
+            s.Ir = new WiiIrState { X = 0.1f, Y = 0f, Detected = true };
+            Assert.False(IdleInputDetector.IsGamepadIdle(s));
+        }
+
+        [Fact]
+        public void GamepadIdle_JoyCon2MouseMotionDefeatsIdle()
+        {
+            var s = NeutralGamepadState();
+            s.JoyCon2MouseDY = 3f;
+            Assert.False(IdleInputDetector.IsGamepadIdle(s));
+        }
+
+        [Fact]
+        public void GamepadIdle_NirIntensityAloneStaysIdle()
+        {
+            // The NIR proximity scalar is ambient (never settles to a rest
+            // value), excluded like the motion sensors.
+            var s = NeutralGamepadState();
+            s.JoyConIrIntensity = 0.6f;
+            Assert.True(IdleInputDetector.IsGamepadIdle(s));
+        }
+
+        [Fact]
+        public void Unchanged_WiiIrPointerDefeatsIdle()
+        {
+            var a = NeutralGamepadState();
+            var b = NeutralGamepadState();
+            b.Ir = new WiiIrState { X = 0f, Y = 0f, Detected = true };
+            Assert.False(IdleInputDetector.IsUnchanged(b, a));
+        }
     }
 }

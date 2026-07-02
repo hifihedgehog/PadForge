@@ -2129,7 +2129,28 @@ namespace PadForge.Services
                 padVm.SteeringLockATResistanceEnabled = ps.SteeringLockATResistanceEnabled == "1";
                 padVm.SteeringLockPulseMs = TryParseDouble(ps.SteeringLockPulseMs, 80);
                 padVm.SteeringLockLightbarColor = string.IsNullOrWhiteSpace(ps.SteeringLockLightbarColor) ? "#FF0000" : ps.SteeringLockLightbarColor;
+                padVm.SteeringLockLightbarColorSource =
+                    Enum.TryParse<ViewModels.MacroLightbarColorSource>(ps.SteeringLockLightbarColorSource, out var slcs)
+                        ? slcs : ViewModels.MacroLightbarColorSource.Fixed;
+                padVm.SteeringLockLightbarPaletteCsv = ps.SteeringLockLightbarPaletteCsv ?? "";
+                padVm.SteeringLockLightbarHoldMs = TryParseDouble(ps.SteeringLockLightbarHoldMs, 80);
                 padVm.SteeringLockLightbarFadeMs = TryParseDouble(ps.SteeringLockLightbarFadeMs, 250);
+
+                // Trigger rumble routing (#102), mirroring the device-switch
+                // load in InputService.LoadPadSettingToViewModel so the first
+                // device per slot gets the same field set at startup.
+                padVm.LeftTriggerRouteSource = string.IsNullOrEmpty(ps.LeftTriggerRouteSource) ? "None" : ps.LeftTriggerRouteSource;
+                padVm.RightTriggerRouteSource = string.IsNullOrEmpty(ps.RightTriggerRouteSource) ? "None" : ps.RightTriggerRouteSource;
+                padVm.LeftTriggerRouteMode = string.IsNullOrEmpty(ps.LeftTriggerRouteMode) ? "Duplicate" : ps.LeftTriggerRouteMode;
+                padVm.RightTriggerRouteMode = string.IsNullOrEmpty(ps.RightTriggerRouteMode) ? "Duplicate" : ps.RightTriggerRouteMode;
+                padVm.LeftTriggerRouteScale = TryParseInt(ps.LeftTriggerRouteScale, 100);
+                padVm.RightTriggerRouteScale = TryParseInt(ps.RightTriggerRouteScale, 100);
+                padVm.LeftTriggerRouteActivator = ps.LeftTriggerRouteActivator ?? "";
+                padVm.RightTriggerRouteActivator = ps.RightTriggerRouteActivator ?? "";
+                padVm.LeftTriggerRouteActivatorDeviceGuid = ps.LeftTriggerRouteActivatorDeviceGuid ?? "";
+                padVm.RightTriggerRouteActivatorDeviceGuid = ps.RightTriggerRouteActivatorDeviceGuid ?? "";
+                padVm.LeftTriggerRouteActivatorMode = string.IsNullOrEmpty(ps.LeftTriggerRouteActivatorMode) ? "Hold" : ps.LeftTriggerRouteActivatorMode;
+                padVm.RightTriggerRouteActivatorMode = string.IsNullOrEmpty(ps.RightTriggerRouteActivatorMode) ? "Hold" : ps.RightTriggerRouteActivatorMode;
 
                 // Load deadzone settings (independent X/Y).
                 padVm.LeftDeadZoneShape = (int)InputManager.ParseDeadZoneShape(ps.LeftThumbDeadZoneShape);
@@ -2276,6 +2297,7 @@ namespace PadForge.Services
                 RepeatCount = md.RepeatCount,
                 RepeatDelayMs = md.RepeatDelayMs,
                 TriggerAxisTargetList = md.TriggerAxisTargets,
+                TriggerAxisDirectionList = md.TriggerAxisDirections,
                 TriggerAxisThreshold = md.TriggerAxisThreshold > 0 ? md.TriggerAxisThreshold : 50,
                 TriggerPovs = md.TriggerPovs ?? Array.Empty<string>(),
                 TriggerInputs = md.TriggerInputs,
@@ -3163,6 +3185,7 @@ namespace PadForge.Services
                 RepeatDelayMs = macro.RepeatDelayMs,
                 TriggerCustomButtons = macro.TriggerCustomButtons,
                 TriggerAxisTargets = macro.TriggerAxisTargetList,
+                TriggerAxisDirections = macro.TriggerAxisDirectionList,
                 TriggerAxisThreshold = macro.TriggerAxisThreshold,
                 TriggerPovs = macro.TriggerPovs?.Length > 0 ? macro.TriggerPovs : null,
                 TriggerInputs = string.IsNullOrEmpty(macro.TriggerInputs) ? null : macro.TriggerInputs,
@@ -3339,6 +3362,7 @@ namespace PadForge.Services
                     ps.GyroRealWorldCalibration = padVm.GyroRealWorldCalibration.ToString(ic);
                     ps.GyroAimEngageButton = padVm.GyroAimEngageButton ?? "";
                     ps.GyroAimEngageDeviceGuid = padVm.GyroAimEngageDeviceGuid ?? "";
+                    ps.GyroAimEngageMode = string.IsNullOrEmpty(padVm.GyroAimEngageMode) ? "Hold" : padVm.GyroAimEngageMode;
                     ps.GyroInvertPitch = padVm.GyroInvertPitch ? "1" : "0";
                     ps.GyroInvertYawRoll = padVm.GyroInvertYawRoll ? "1" : "0";
                     ps.GyroApplyTuningToPassthrough = padVm.GyroApplyTuningToPassthrough ? "1" : "0";
@@ -3369,7 +3393,26 @@ namespace PadForge.Services
                     ps.SteeringLockATResistanceEnabled = padVm.SteeringLockATResistanceEnabled ? "1" : "0";
                     ps.SteeringLockPulseMs = ((int)padVm.SteeringLockPulseMs).ToString(ic);
                     ps.SteeringLockLightbarColor = padVm.SteeringLockLightbarColor ?? "#FF0000";
+                    ps.SteeringLockLightbarColorSource = padVm.SteeringLockLightbarColorSource.ToString();
+                    ps.SteeringLockLightbarPaletteCsv = padVm.SteeringLockLightbarPaletteCsv ?? "";
+                    ps.SteeringLockLightbarHoldMs = ((int)padVm.SteeringLockLightbarHoldMs).ToString(ic);
                     ps.SteeringLockLightbarFadeMs = ((int)padVm.SteeringLockLightbarFadeMs).ToString(ic);
+
+                    // Trigger rumble routing (#102), mirroring
+                    // InputService.SaveViewModelToPadSetting so the autosave
+                    // writer covers the same fields as the 30 Hz sync.
+                    ps.LeftTriggerRouteSource = string.IsNullOrEmpty(padVm.LeftTriggerRouteSource) ? "None" : padVm.LeftTriggerRouteSource;
+                    ps.RightTriggerRouteSource = string.IsNullOrEmpty(padVm.RightTriggerRouteSource) ? "None" : padVm.RightTriggerRouteSource;
+                    ps.LeftTriggerRouteMode = string.IsNullOrEmpty(padVm.LeftTriggerRouteMode) ? "Duplicate" : padVm.LeftTriggerRouteMode;
+                    ps.RightTriggerRouteMode = string.IsNullOrEmpty(padVm.RightTriggerRouteMode) ? "Duplicate" : padVm.RightTriggerRouteMode;
+                    ps.LeftTriggerRouteScale = padVm.LeftTriggerRouteScale.ToString();
+                    ps.RightTriggerRouteScale = padVm.RightTriggerRouteScale.ToString();
+                    ps.LeftTriggerRouteActivator = padVm.LeftTriggerRouteActivator ?? "";
+                    ps.RightTriggerRouteActivator = padVm.RightTriggerRouteActivator ?? "";
+                    ps.LeftTriggerRouteActivatorDeviceGuid = padVm.LeftTriggerRouteActivatorDeviceGuid ?? "";
+                    ps.RightTriggerRouteActivatorDeviceGuid = padVm.RightTriggerRouteActivatorDeviceGuid ?? "";
+                    ps.LeftTriggerRouteActivatorMode = string.IsNullOrEmpty(padVm.LeftTriggerRouteActivatorMode) ? "Hold" : padVm.LeftTriggerRouteActivatorMode;
+                    ps.RightTriggerRouteActivatorMode = string.IsNullOrEmpty(padVm.RightTriggerRouteActivatorMode) ? "Hold" : padVm.RightTriggerRouteActivatorMode;
 
                     // Write deadzone settings (independent X/Y).
                     ps.LeftThumbDeadZoneShape = padVm.LeftDeadZoneShape.ToString();
@@ -4308,6 +4351,12 @@ namespace PadForge.Services
         /// <summary>Comma-separated axis targets (e.g. "LeftStickX,LeftTrigger").</summary>
         [XmlElement]
         public string TriggerAxisTargets { get; set; }
+
+        /// <summary>Comma-separated per-axis direction filters (Any/Positive/
+        /// Negative), parallel to <see cref="TriggerAxisTargets"/> (#154).
+        /// Null means Any for every axis, which is also the pre-#154 shape.</summary>
+        [XmlElement]
+        public string TriggerAxisDirections { get; set; }
 
         /// <summary>Axis trigger threshold percentage (1-100).</summary>
         [XmlElement]

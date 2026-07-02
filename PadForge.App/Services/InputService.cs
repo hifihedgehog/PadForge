@@ -2864,6 +2864,25 @@ namespace PadForge.Services
             ps.LeftTriggerRouteActivatorMode = string.IsNullOrEmpty(padVm.LeftTriggerRouteActivatorMode) ? "Hold" : padVm.LeftTriggerRouteActivatorMode;
             ps.RightTriggerRouteActivatorMode = string.IsNullOrEmpty(padVm.RightTriggerRouteActivatorMode) ? "Hold" : padVm.RightTriggerRouteActivatorMode;
 
+            // Motion Lean steering tunables (extended-mapping KVs), mirroring
+            // SettingsService.UpdatePadSettingsFromViewModels. Absent here,
+            // a device-dropdown switch clobbered them with the previous
+            // device's values (audit lens 1m, F2).
+            ps.SetExtendedMapping("MotionSteerInner", padVm.MotionSteerInnerDz.ToString(ic));
+            ps.SetExtendedMapping("MotionSteerOuter", padVm.MotionSteerOuterDz.ToString(ic));
+            ps.SetExtendedMapping("MotionSteerOrient", padVm.MotionSteerOrient);
+
+            // Sensitivity curves. The load mirror at LoadPadSettingToViewModel
+            // reads all six; the save side must cover the SAME fields or a
+            // curve edit is lost when the device dropdown switches inside the
+            // autosave debounce window (audit lens 1m, F3).
+            ps.LeftThumbSensitivityCurveX = padVm.LeftSensitivityCurveX;
+            ps.LeftThumbSensitivityCurveY = padVm.LeftSensitivityCurveY;
+            ps.RightThumbSensitivityCurveX = padVm.RightSensitivityCurveX;
+            ps.RightThumbSensitivityCurveY = padVm.RightSensitivityCurveY;
+            ps.LeftTriggerSensitivityCurve = padVm.LeftTriggerSensitivityCurve;
+            ps.RightTriggerSensitivityCurve = padVm.RightTriggerSensitivityCurve;
+
             ps.GyroInvertPitch = padVm.GyroInvertPitch ? "1" : "0";
             ps.GyroInvertYawRoll = padVm.GyroInvertYawRoll ? "1" : "0";
             ps.GyroApplyTuningToPassthrough = padVm.GyroApplyTuningToPassthrough ? "1" : "0";
@@ -3086,6 +3105,14 @@ namespace PadForge.Services
             padVm.RightSensitivityCurveY = ps.RightThumbSensitivityCurveY ?? "0,0;1,1";
             padVm.LeftTriggerSensitivityCurve = ps.LeftTriggerSensitivityCurve ?? "0,0;1,1";
             padVm.RightTriggerSensitivityCurve = ps.RightTriggerSensitivityCurve ?? "0,0;1,1";
+
+            // Motion Lean steering tunables, mirroring the startup load in
+            // SettingsService.LoadPadSettings. Absent here, switching the
+            // assigned-device dropdown kept the previous device's values in
+            // the VM (audit lens 1m, F2).
+            padVm.MotionSteerInnerDz = TryParseDouble(ps.GetExtendedMapping("MotionSteerInner"), 15);
+            padVm.MotionSteerOuterDz = TryParseDouble(ps.GetExtendedMapping("MotionSteerOuter"), 135);
+            padVm.SetMotionSteerOrient(ps.GetExtendedMapping("MotionSteerOrient"));
 
             // Max range.
             padVm.LeftMaxRangeX = TryParseDouble(ps.LeftThumbMaxRangeX, 100);
@@ -5780,6 +5807,13 @@ namespace PadForge.Services
 
                     case OutputEffectCodec.Kind.Wheel:
                         ApplyRemoteWheel(source, in effect.Wheel);
+                        break;
+
+                    case OutputEffectCodec.Kind.HapticTone:
+                        // #147 over the link: the consumer reduced its macro mix
+                        // to a (freq, amp) pair; re-encode with the owner's own
+                        // per-family tone writer (Joy-Con / Steam / Triton / Deck).
+                        HapticToneService.ApplyRemoteTone(ud, effect.HapticToneHz, effect.HapticToneAmp);
                         break;
                 }
             }

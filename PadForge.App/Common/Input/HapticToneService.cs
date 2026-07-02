@@ -146,6 +146,55 @@ namespace PadForge.Common.Input
             return found;
         }
 
+        /// <summary>A paired peer shipped one reduced haptic-tone frame for a local
+        /// device it consumes over Remote Link (#138 x #147). Sets the direct-drive
+        /// override on the device's sink; when the device has no locally-assigned
+        /// sink (the owner may not map it to any slot), a RemoteDriven sink is
+        /// created on demand and reaped by Reconcile once frames stop. Runs on the
+        /// UDP receive thread; the field writes follow the TestHz idiom (value
+        /// fields first, the Until gate last).</summary>
+        public static void ApplyRemoteTone(Engine.Data.UserDevice ud, float toneHz, float amplitude)
+        {
+            if (ud == null || _suppressed) return;
+            var fam = FamilyOf(ud);
+            if (fam == Family.None) return;
+
+            long until = Environment.TickCount64 + 250;
+            Sink toCreate = null;
+            lock (_lock)
+            {
+                bool found = false;
+                foreach (var s in _sinks)
+                    if (s.DeviceGuid == ud.InstanceGuid)
+                    {
+                        s.RemoteHz = toneHz;
+                        s.RemoteAmp = Math.Clamp(amplitude, 0f, 1f);
+                        s.RemoteUntilMs = until;
+                        found = true;
+                    }
+                if (!found && amplitude > 0f)
+                {
+                    toCreate = new Sink
+                    {
+                        DeviceGuid = ud.InstanceGuid,
+                        Slot = -1,
+                        Family = fam,
+                        HidPath = ud.DevicePath,
+                        GamepadHandle = ud.Device?.GamepadHandle ?? IntPtr.Zero,
+                        RemoteDriven = true,
+                        RemoteHz = toneHz,
+                        RemoteAmp = Math.Clamp(amplitude, 0f, 1f),
+                        RemoteUntilMs = until,
+                        MacroMixer = new MixingSampleProvider(WaveFormat.CreateIeeeFloatWaveFormat(MixRate, 2)) { ReadFully = true },
+                    };
+                    _sinks.Add(toCreate);
+                }
+            }
+            // Open the handle outside the lock, same discipline as Reconcile.
+            if (toCreate != null && !BuildSink(toCreate))
+                lock (_lock) _sinks.Remove(toCreate);
+        }
+
         // Mixer rate matches SoundMacroService so decoded PCM mixes in cleanly.
         private const int MixRate = 48000;
 
@@ -241,6 +290,24 @@ namespace PadForge.Common.Input
             // it (no held-pitch bleed into the next macro). No beep is injected either.
             public float TestHz;
             public long TestUntilMs;
+
+            // Remote Link lanes (#138 x #147).
+            // Consumer side: the device lives on another machine (peer:// path).
+            // The sink runs the mixer + reducer as usual but SHIPS the per-tick
+            // (freq, amp) pair over the link instead of writing hardware.
+            public bool Remote;
+            // Owner side: a paired peer is driving this local device's tone.
+            // Filled by ApplyRemoteTone from the UDP receive thread; the stream
+            // loop plays it via the same direct-drive idiom as the test tone
+            // (same benign torn-read tolerance: Until is written last). The
+            // consumer already applied ITS slot volume, so the owner must not
+            // scale again. RemoteDriven marks a sink created on demand for a
+            // device with no local slot assignment; Reconcile keeps it alive
+            // while frames stay fresh instead of tearing it down.
+            public bool RemoteDriven;
+            public float RemoteHz;
+            public float RemoteAmp;
+            public long RemoteUntilMs;
 
             // System-audio passthrough mirror (same option DualSense/Wii expose).
             public bool MirrorOn;
@@ -382,17 +449,41 @@ namespace PadForge.Common.Input
 
                 var toBuild = new List<Sink>();
                 var toTeardown = new List<Sink>();
+                long staleNow = Environment.TickCount64;
+
+                // Resolve RemoteDriven owners OUTSIDE _lock: the lookup takes
+                // UserDevices.SyncRoot, and the rest of this file's discipline
+                // is snapshot-then-resolve to keep lock orders one-way.
+                List<Guid> remoteGuids;
+                lock (_lock) remoteGuids = _sinks.Where(s => s.RemoteDriven).Select(s => s.DeviceGuid).ToList();
+                var remoteOnline = new HashSet<Guid>();
+                foreach (var g in remoteGuids)
+                {
+                    var owner = SettingsManager.FindDeviceByInstanceGuid(g);
+                    if (owner != null && owner.IsOnline) remoteOnline.Add(g);
+                }
+
                 lock (_lock)
                 {
                     if (_suppressed) return;
                     for (int i = _sinks.Count - 1; i >= 0; i--)
                     {
                         var s = _sinks[i];
-                        if (!desired.Exists(d => d.Guid == s.DeviceGuid && d.Slot == s.Slot))
+                        if (s.RemoteDriven)
                         {
-                            toTeardown.Add(s);
-                            _sinks.RemoveAt(i);
+                            // Owner-side link-driven sink: not slot-derived, so
+                            // the desired list never contains it. Alive while
+                            // frames stay fresh (10 s) and the device is online.
+                            bool stale = !remoteOnline.Contains(s.DeviceGuid)
+                                || (staleNow - s.RemoteUntilMs) > 10_000;
+                            if (!stale) continue;
                         }
+                        else if (desired.Exists(d => d.Guid == s.DeviceGuid && d.Slot == s.Slot))
+                        {
+                            continue;
+                        }
+                        toTeardown.Add(s);
+                        _sinks.RemoveAt(i);
                     }
                     foreach (var d in desired)
                     {
@@ -404,6 +495,9 @@ namespace PadForge.Common.Input
                             Family = d.Fam,
                             HidPath = d.Path,
                             GamepadHandle = d.Gamepad,
+                            // Consumer lane: a linked pad reduces locally and
+                            // ships the tone pair; no hardware handle exists.
+                            Remote = d.Path != null && d.Path.StartsWith("peer://", StringComparison.Ordinal),
                             MacroMixer = new MixingSampleProvider(WaveFormat.CreateIeeeFloatWaveFormat(MixRate, 2)) { ReadFully = true },
                         };
                         _sinks.Add(sink);
@@ -522,7 +616,12 @@ namespace PadForge.Common.Input
                 // 2015 Steam path (Family.Steam, classic 0x8f via SteamSendBlob)
                 // still has an SDL lane.
                 bool steamViaSdl = s.Family == Family.Steam && s.GamepadHandle != IntPtr.Zero;
-                if (!steamViaSdl)
+                if (s.Remote)
+                {
+                    // Consumer lane: no hardware here. The peer's machine owns
+                    // the handle; this sink only reduces and ships.
+                }
+                else if (!steamViaSdl)
                 {
                     h = CreateFileW(s.HidPath, GENERIC_WRITE | GENERIC_READ, SHARE_RW,
                         IntPtr.Zero, OPEN_EXISTING, FILE_FLAG_OVERLAPPED, IntPtr.Zero);
@@ -812,6 +911,7 @@ namespace PadForge.Common.Input
                     long nowMs = Environment.TickCount64;
                     float toneHz, amp;
                     bool testActive = s.TestUntilMs > nowMs;
+                    bool remoteActive = !testActive && s.RemoteUntilMs > nowMs;
                     if (testActive)
                     {
                         // Direct fixed test tone: a KNOWN frequency driven straight to
@@ -820,6 +920,13 @@ namespace PadForge.Common.Input
                         // caches it (no bleed). The mono mix is drained but unused; no
                         // beep is injected for haptic devices (see the Test button).
                         toneHz = s.TestHz; amp = 1.0f;
+                    }
+                    else if (remoteActive)
+                    {
+                        // Owner lane (#138 x #147): a linked consumer reduced its
+                        // macro mix and shipped the pair; drive it straight to the
+                        // encoder, same direct idiom as the test tone.
+                        toneHz = s.RemoteHz; amp = s.RemoteAmp;
                     }
                     else
                     {
@@ -837,16 +944,27 @@ namespace PadForge.Common.Input
                     // the firmware volume byte per report). Apply the same slot
                     // volume here at the sink: it reaches the Triton/Joy-Con gain
                     // and gates the pitch-only 0x8F square. Covers macro sounds,
-                    // the system-audio mirror, and the Test button alike.
-                    amp *= Math.Clamp(SoundMacroService.GetSlotVolume(s.Slot) / 100f, 0f, 1f);
+                    // the system-audio mirror, and the Test button alike. Remote
+                    // frames are exempt: the consumer applied ITS slot volume
+                    // before shipping, and the owner is a pure transcoder.
+                    if (!remoteActive)
+                        amp *= Math.Clamp(SoundMacroService.GetSlotVolume(s.Slot) / 100f, 0f, 1f);
 
                     bool audible = amp > 0.02f;
                     if (audible) s.LastContentMs = nowMs;
                     bool streaming = testActive || (nowMs - s.LastContentMs) < HangoverMs;
 
+                    if (s.Remote)
+                    {
+                        // Consumer lane: ship the reduced pair to the owner while
+                        // anything plays; the zero frame that ends the stream is
+                        // sent once (the router dedups silent steady state).
+                        if (streaming || amp > 0f)
+                            RemoteLinkOutputRouter.ShipHapticTone(s.HidPath, toneHz, amp);
+                    }
                     // Run when we have either a raw write handle or an SDL gamepad
                     // handle (the Steam SDL_SendGamepadEffect path needs no raw handle).
-                    if (s.Handle != IntPtr.Zero || s.GamepadHandle != IntPtr.Zero)
+                    else if (s.Handle != IntPtr.Zero || s.GamepadHandle != IntPtr.Zero)
                     {
                         switch (s.Family)
                         {

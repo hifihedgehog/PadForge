@@ -100,19 +100,29 @@ namespace PadForge.Tests
                 var src = new MappingSource { Descriptor = "IR Pointer X", DeviceGuid = "dev-b" };
                 var s1 = new CustomInputState(); s1.Ir.X = 1.0f; s1.Ir.Detected = true;
 
+                // Each simulated poll advances the frame gate, mirroring the
+                // polling loop. The EMA steps once per POLL, not per read:
+                // reading the same slot twice in a poll re-serves the value.
+                SourceCoercion.BeginPollFrame();
                 // First sample seeds the EMA (no prev), both slots read 1.0.
                 Assert.Equal(1.0f, SourceCoercion.EvaluateForBipolarAxisTarget(s1, src, 0), precision: 5);
                 Assert.Equal(1.0f, SourceCoercion.EvaluateForBipolarAxisTarget(s1, src, 1), precision: 5);
 
                 // Aim jumps to 0: smoothed slot lags halfway, raw slot follows.
                 var s2 = new CustomInputState(); s2.Ir.X = 0.0f; s2.Ir.Detected = true;
+                SourceCoercion.BeginPollFrame();
+                Assert.Equal(0.5f, SourceCoercion.EvaluateForBipolarAxisTarget(s2, src, 0), precision: 5);
+                // A second row reading the same slot in the SAME poll gets the
+                // identical smoothed value (the row-collision fix).
                 Assert.Equal(0.5f, SourceCoercion.EvaluateForBipolarAxisTarget(s2, src, 0), precision: 5);
                 Assert.Equal(0.0f, SourceCoercion.EvaluateForBipolarAxisTarget(s2, src, 1), precision: 5);
 
                 // Sight loss resets slot 0's EMA, so a re-acquire snaps.
                 var lost = new CustomInputState(); lost.Ir.Detected = false;
+                SourceCoercion.BeginPollFrame();
                 Assert.Equal(0f, SourceCoercion.EvaluateForBipolarAxisTarget(lost, src, 0), precision: 5);
                 var s3 = new CustomInputState(); s3.Ir.X = 1.0f; s3.Ir.Detected = true;
+                SourceCoercion.BeginPollFrame();
                 Assert.Equal(1.0f, SourceCoercion.EvaluateForBipolarAxisTarget(s3, src, 0), precision: 5);
             }
             finally

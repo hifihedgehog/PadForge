@@ -234,11 +234,39 @@ namespace PadForge.Services
                 // state.Buttons[11], so legacy "Button 11" stops resolving.
                 // Translate it on load so DualSense / DS4 users don't have to
                 // re-map.
+                // Gated on the paired device actually having a touchpad:
+                // "Button 11" is ALSO a legitimate descriptor for a generic
+                // device's twelfth button deliberately mapped to the
+                // touchpad-click target (arcade sticks, button boxes), and
+                // the unconditional rewrite silently retargeted it to a
+                // Buttons[16] slot such a device never populates. Only the
+                // legacy Sony auto-map ever wrote "Button 11" here, and
+                // Sony pads are exactly the devices that report a touchpad.
                 if (data.PadSettings != null)
                 {
                     foreach (var ps in data.PadSettings)
                     {
-                        if (ps?.TouchpadClick == "Button 11")
+                        if (ps?.TouchpadClick != "Button 11") continue;
+                        bool pairedTouchpadDevice = false;
+                        if (data.Settings != null && data.Devices != null)
+                        {
+                            foreach (var us in data.Settings)
+                            {
+                                if (us == null || us.PadSettingChecksum == null
+                                    || us.PadSettingChecksum != ps.PadSettingChecksum) continue;
+                                foreach (var ud in data.Devices)
+                                {
+                                    if (ud != null && ud.InstanceGuid == us.InstanceGuid
+                                        && ud.CapTouchpadCount > 0)
+                                    {
+                                        pairedTouchpadDevice = true;
+                                        break;
+                                    }
+                                }
+                                if (pairedTouchpadDevice) break;
+                            }
+                        }
+                        if (pairedTouchpadDevice)
                             ps.TouchpadClick = "Touchpad 0 Click";
                     }
                 }
@@ -2258,7 +2286,7 @@ namespace PadForge.Services
         /// <summary>
         /// Populates pad ViewModels with macros from serialized data.
         /// </summary>
-        private void LoadMacros(MacroData[] macros)
+        internal void LoadMacros(MacroData[] macros)
         {
             // Macro sounds are keyed to the MacroItem objects being replaced;
             // a looping sound would have no owner left to stop it.
@@ -2589,6 +2617,10 @@ namespace PadForge.Services
             profile.ExtendedConfigs = BuildExtendedConfigSnapshot();
             profile.PlayStationConfigs = BuildPlayStationConfigSnapshot();
             profile.MidiConfigs = BuildMidiConfigSnapshot();
+            // Macros ride profiles: edits made while this profile is active
+            // persist into it, so switching away and back keeps them, and a
+            // .pfprofile export carries them (with their sound packages).
+            profile.Macros = BuildMacroData();
             profile.XboxSlotOrder          = SettingsManager.XboxSlotOrder.ToArray();
             profile.PlayStationSlotOrder   = SettingsManager.PlayStationSlotOrder.ToArray();
             profile.ExtendedSlotOrder      = SettingsManager.ExtendedSlotOrder.ToArray();
@@ -3151,8 +3183,12 @@ namespace PadForge.Services
 
         /// <summary>
         /// Collects macro data from all pad ViewModels for serialization.
+        /// Internal: the profile snapshot lanes (SnapshotCurrentProfile in
+        /// InputService, UpdateActiveProfileSnapshot here) reuse it so
+        /// profiles carry macros through the same converter as the main
+        /// settings file.
         /// </summary>
-        private MacroData[] BuildMacroData()
+        internal MacroData[] BuildMacroData()
         {
             var list = new System.Collections.Generic.List<MacroData>();
 

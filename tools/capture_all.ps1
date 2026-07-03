@@ -328,6 +328,43 @@ function Tab {
     return $false
 }
 
+# Select a device in the PadPage's mapped-device dropdown by name, so the
+# device-gated tabs (Impulse Triggers, Wheel, etc.) follow it. A slot can carry
+# several devices; the tabs reflect whichever is picked here. Walks every
+# ComboBox in the PadPage (device dropdown + Preset + Profile) and only selects
+# on the one whose items include the device name, so it never disturbs the
+# preset/profile combos.
+function Select-MappedDevice {
+    param([string]$NamePart)
+    $padPage = Find-UIA -Aid "PadPageView"
+    if (-not $padPage) { Write-Host "  !! Select-MappedDevice: no PadPageView" -ForegroundColor Yellow; return $false }
+    $cbCond = New-Object System.Windows.Automation.PropertyCondition(
+        [System.Windows.Automation.AutomationElement]::ControlTypeProperty,
+        [System.Windows.Automation.ControlType]::ComboBox)
+    $liCond = New-Object System.Windows.Automation.PropertyCondition(
+        [System.Windows.Automation.AutomationElement]::ControlTypeProperty,
+        [System.Windows.Automation.ControlType]::ListItem)
+    foreach ($combo in $padPage.FindAll($TD, $cbCond)) {
+        $expand = $null
+        try { $expand = $combo.GetCurrentPattern([System.Windows.Automation.ExpandCollapsePattern]::Pattern); $expand.Expand(); Start-Sleep -Milliseconds 500 } catch { continue }
+        $match = $null
+        foreach ($it in $combo.FindAll($TD, $liCond)) {
+            if ($it.Current.Name -like "*$NamePart*") { $match = $it; break }
+        }
+        if ($match) {
+            try { $match.GetCurrentPattern([System.Windows.Automation.SelectionItemPattern]::Pattern).Select() }
+            catch { Click-El $match -Label "device '$NamePart'" | Out-Null }
+            Start-Sleep -Milliseconds 1200
+            try { $expand.Collapse() } catch {}
+            Write-Host "  Selected mapped device '$NamePart'" -ForegroundColor Green
+            return $true
+        }
+        try { $expand.Collapse(); Start-Sleep -Milliseconds 200 } catch {}
+    }
+    Write-Host "  !! mapped device '$NamePart' not found in dropdown" -ForegroundColor Yellow
+    return $false
+}
+
 function ScrollContent {
     param([int]$Clicks = -15)
     $sr = New-Object Win32+RECT
@@ -451,6 +488,42 @@ try {
     }
 } catch {
     Write-Host "  !! Failed to preserve cached devices: $_" -ForegroundColor Yellow
+}
+
+# --- Inject synthetic dummy devices for the Wheel + MIDI-input captures ---
+# The Wheel tab needs a force-feedback wheel and the MIDI-input Devices-page
+# preview needs a MIDI controller; neither is among the cached placeholders.
+# Gating is offline-safe: the Wheel tab is IsLogitechWheel(VendorId, ProdId)
+# (G29 = 0x046D / 0xC24F, CapType Driving=22 also lights Force Feedback), and
+# the MIDI note/CC preview is CapType == Midi(27). Clone an existing <Device>
+# so the XmlSerializer field order matches exactly, then override the identity
+# fields and empty the DeviceObjects (the captures need the tab/preview, not
+# the mapping picker).
+try {
+    $devicesNode = $ns.SelectSingleNode("Devices")
+    $tmplDev = $devicesNode.SelectSingleNode("Device")
+    if ($tmplDev) {
+        function New-SyntheticDevice($guid, $name, $vid, $prodId, $path, $capType, $axes, $buttons, $povs) {
+            $d = $tmplDev.CloneNode($true)
+            $set = { param($tag, $val) $n = $d.SelectSingleNode($tag); if ($n) { $n.InnerText = "$val" } }
+            & $set "InstanceGuid" $guid; & $set "InstanceName" $name
+            & $set "ProductGuid" $guid;  & $set "ProductName" $name
+            & $set "VendorId" $vid;      & $set "ProdId" $prodId
+            & $set "DevicePath" $path
+            & $set "CapAxeCount" $axes;  & $set "CapButtonCount" $buttons
+            & $set "RawButtonCount" $buttons; & $set "CapPovCount" $povs
+            & $set "CapType" $capType
+            & $set "HasGyro" "false"; & $set "HasAccel" "false"; & $set "HasTouchpad" "false"
+            & $set "HasRumbleTriggers" "false"; & $set "IsEnabled" "true"; & $set "IsHidden" "false"
+            $doNode = $d.SelectSingleNode("DeviceObjects"); if ($doNode) { $doNode.RemoveAll() }
+            return $d
+        }
+        $devicesNode.AppendChild((New-SyntheticDevice "aaaa1111-2222-3333-4444-555566667777" "Logitech G29 Driving Force Racing Wheel" 1133 49743 "HID\VID_046D&PID_C24F\dummy" 22 4 24 1)) | Out-Null
+        $devicesNode.AppendChild((New-SyntheticDevice "bbbb1111-2222-3333-4444-555566667777" "MIDI Keyboard" 4661 22 "HID\VID_1235&PID_0016\dummy" 27 4 24 1)) | Out-Null
+        Write-Host "  Injected synthetic G29 wheel + MIDI Keyboard devices" -ForegroundColor Green
+    }
+} catch {
+    Write-Host "  !! Failed to inject synthetic devices: $_" -ForegroundColor Yellow
 }
 
 # --- Clear all existing slots so we start fresh with exactly 5 ---
@@ -868,6 +941,13 @@ function Assign-DeviceToSlot {
 
 Assign-DeviceToSlot -DeviceNamePart "DualSense" -SlotNumberLabel "1" | Out-Null
 Assign-DeviceToSlot -DeviceNamePart "DualSense" -SlotNumberLabel "2" | Out-Null
+# Also put the Xbox Series X and the synthetic G29 wheel on the Xbox slot
+# (SlotNumber 1), beside the DualSense. DualSense stays the default selection
+# (alphabetically first), so the main Xbox-slot captures are unchanged; the
+# Impulse-Triggers and Wheel captures at the end of that section switch the
+# mapped-device dropdown to the Xbox pad / the wheel to surface their tabs.
+Assign-DeviceToSlot -DeviceNamePart "Xbox Series X" -SlotNumberLabel "1" | Out-Null
+Assign-DeviceToSlot -DeviceNamePart "Logitech G29" -SlotNumberLabel "1" | Out-Null
 # Assign the Wii Remote to the Extended slot so its Pointer / Gyro tabs are
 # reachable for the 3.6.0 Pointer-tab capture (issue #146). SlotNumber follows
 # DevicesViewModel.RefreshSlotButtons, which walks slots in TYPE-GROUP order
@@ -1066,6 +1146,31 @@ if ($slots.Count -ge 1) {
     Write-Host "[$(Next)/$total] Force Feedback"
     Tab "Force Feedback"; Cap "pad-forcefeedback"
 
+    # 13a. Trigger Routing: the Force Feedback tab scrolled down to the Audio
+    # Rumble + Trigger Routing cards.
+    Write-Host "[$(Next)/$total] Trigger Routing"
+    ScrollContent -Clicks -12
+    Cap "pad-trigger-routing"
+    ScrollContent -Clicks 12
+
+    # 13b. Impulse Triggers: switch the mapped device to the Xbox Series X pad
+    # (HasRumbleTriggers) so its Impulse Triggers tab appears on this slot.
+    Write-Host "[$(Next)/$total] Impulse Triggers"
+    if (Select-MappedDevice "Xbox Series X") {
+        if (Tab "Impulse Triggers") { Start-Sleep -Milliseconds 700; Cap "pad-impulse-triggers" }
+        else { Write-Host "  !! Impulse Triggers tab not found" -ForegroundColor Yellow }
+    }
+
+    # 13c. Wheel: switch to the synthetic G29 so its Wheel tab (rotation range,
+    # auto-center, RPM LEDs) appears.
+    Write-Host "[$(Next)/$total] Wheel"
+    if (Select-MappedDevice "Logitech G29") {
+        if (Tab "Wheel") { Start-Sleep -Milliseconds 700; Cap "pad-wheel" }
+        else { Write-Host "  !! Wheel tab not found" -ForegroundColor Yellow }
+    }
+    # Return the selection to the DualSense so later navigation is predictable.
+    Select-MappedDevice "DualSense" | Out-Null
+
 } else {
     Write-Host "  !! No controller slots found" -ForegroundColor Red
 }
@@ -1116,6 +1221,11 @@ if ($slotsHost) {
             for ($ti = 0; $ti -lt $tabs.Count; $ti++) {
                 Write-Host "    [$ti] Name='$($tabs[$ti].Current.Name)'"
             }
+
+            # PlayStation slot Controller tab (DualSense 3D model + PS5 preset row).
+            Write-Host "[$(Next)/$total] PlayStation config bar / Controller view"
+            Start-Sleep -Milliseconds 500
+            Cap "pad-playstation-configbar"
 
             Write-Host "[$(Next)/$total] Adaptive Triggers"
             $atTab = $tabs | Where-Object { $_.Current.Name -eq "Adaptive Triggers" } | Select-Object -First 1
@@ -1410,6 +1520,38 @@ if (Select-DeviceByName36 "Consumer Control") { Cap "devices-consumer" }
 Write-Host "[3b] Power / idle disconnect + battery"
 Nav "Devices"; Start-Sleep -Milliseconds 600
 if (Select-DeviceByName36 "DualSense") { Cap "devices-power" }
+
+Write-Host "[3b] MIDI input device"
+Nav "Devices"; Start-Sleep -Milliseconds 600
+if (Select-DeviceByName36 "MIDI Keyboard") { Cap "midi-input" }
+
+Write-Host "[3b] Remote Link (Dashboard section)"
+Nav "Dashboard"; Start-Sleep -Milliseconds 800
+ScrollContent -Clicks -16
+Cap "remote-link"
+ScrollContent -Clicks 16
+
+Write-Host "[3b] Wii pairing dialog"
+Nav "Devices"; Start-Sleep -Milliseconds 600
+$pairBtn = $null
+foreach ($b in $script:uiaWin.FindAll($TD, $btn36)) {
+    if ($b.Current.Name -eq "Pair") { $pairBtn = $b; break }
+}
+if ($pairBtn) {
+    Click-El $pairBtn -Label "Pair" -Delay 2200 | Out-Null
+    Cap "wii-pair"
+    $wrP = New-Object Win32+RECT
+    [Win32]::GetWindowRect($script:hwnd, [ref]$wrP) | Out-Null
+    $pClose = $null
+    foreach ($b in $script:uiaWin.FindAll($TD, $btn36)) {
+        $nm = $b.Current.Name
+        if (($nm -eq "Done" -or $nm -eq "Cancel" -or $nm -eq "Close") -and $b.Current.BoundingRectangle.Y -gt ($wrP.Top + 150)) { $pClose = $b; break }
+    }
+    if ($pClose) { Click-El $pClose -Label "Close Pair dialog" -Delay 800 | Out-Null }
+    else { [System.Windows.Forms.SendKeys]::SendWait("{ESC}"); Start-Sleep -Milliseconds 700 }
+} else {
+    Write-Host "  !! Pair button not found" -ForegroundColor Yellow
+}
 
 Write-Host "[3b] NFC reader device (last -- opens a modal dialog)"
 Nav "Devices"; Start-Sleep -Milliseconds 600

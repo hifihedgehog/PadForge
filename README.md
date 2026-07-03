@@ -68,7 +68,7 @@ Each slot can carry extra mapping tables that turn on while a button, chord, or 
 
 ### Aim with the controller, not the stick.
 
-Reference frames (Local, Player, World). Dual-threshold smoothing. Real-world calibration. A cross-device Aim Engage button. Tuning saves per pad per slot, so the same pad on two slots can feel two different ways. Gyro Pitch / Yaw / Roll bind as first-class sources in the mapping table.
+Reference frames (Local, Player, World). Dual-threshold smoothing. Real-world calibration. A cross-device Aim Engage button, plus a stick gate that wakes the gyro from any stick and any direction, read before the stick's own deadzone so a nudge the game ignores still arms it. Tuning saves per pad per slot, so the same pad on two slots can feel two different ways. Gyro Pitch / Yaw / Roll bind as first-class sources in the mapping table.
 
 ![Gyro tab](screenshots/gyro.jpg)
 
@@ -93,7 +93,7 @@ Seven adaptive trigger modes with a live preview that draws the resistance curve
 
 ### Sound from the speaker in your hands.
 
-The DualSense and DualShock 4 have a speaker built into the pad, and PadForge can drive it. Mirror a Windows audio output to the pad, or send a slot's macro sounds straight to it. The DualSense plays over USB or Bluetooth. The DualShock 4 plays over Bluetooth. Each speaker-capable pad gets its own per-slot Audio tab, with a source picker and a master volume.
+The DualSense and DualShock 4 have a speaker built into the pad, and PadForge can drive it. Mirror a Windows audio output to the pad, or send a slot's macro sounds straight to it. The DualSense plays over USB or Bluetooth. The DualShock 4 plays over Bluetooth. Each speaker-capable pad gets its own per-slot Audio tab, with a source picker and a master volume. Controllers with one haptic actuator instead of a speaker (Joy-Con, Switch Pro, the Steam Controller, the Steam Deck, and the Steam Controller 2026) play the same macro sounds as a vibrating tone, so beeps and short cues come through the grip. A Wii Remote plays them through its own speaker.
 
 ![Audio tab](screenshots/audio.jpg)
 
@@ -119,7 +119,7 @@ Two sim racers on two wheels at once. A flight stick plus throttle plus rudder p
 
 ### Pair a Wii Remote over Bluetooth, in-app.
 
-A Wii controller's Bluetooth PIN is six raw bytes, not a string, and it changes with which sync button you press. The Windows pairing prompt can't supply that, so PadForge runs the pairing itself. Open the Devices page, click **Pair**, and press the red SYNC button under the battery cover. The controller bonds, so it reconnects on any button press from then on. (Hold 1 and 2 instead for a temporary pairing that lasts the session.) The Wii Remote, Remote plus Nunchuk, Classic Controller, and Wii U Pro Controller all map as normal pads through SDL. Accelerometer and Wii Motion Plus gyro run through the gyro pipeline, so gyro-to-mouse, gyro-to-stick, and motion mapping work. Swap a Nunchuk on or off mid-session and PadForge re-identifies it without a restart. Needs a Bluetooth radio on the PC.
+A Wii controller's Bluetooth PIN is six raw bytes, not a string, and it changes with which sync button you press. The Windows pairing prompt can't supply that, so PadForge runs the pairing itself. Open the Devices page, click **Pair**, and press the red SYNC button under the battery cover. The controller bonds, so it reconnects on any button press from then on. (Hold 1 and 2 instead for a temporary pairing that lasts the session.) The Wii Remote, Remote plus Nunchuk, Classic Controller, and Wii U Pro Controller all map as normal pads through SDL. Accelerometer and Wii Motion Plus gyro run through the gyro pipeline, so gyro-to-mouse, gyro-to-stick, and motion mapping work. Swap a Nunchuk on or off mid-session and PadForge re-identifies it without a restart. Needs a Bluetooth radio on the PC. A new Pointer tab turns the Wii Remote's IR camera into an on-screen pointer you can map to a stick or the mouse, and a Wii Balance Board reports total weight and left-right / front-back lean as mapping sources.
 
 ![Pair a Wii controller](screenshots/wii-pair.jpg)
 
@@ -146,6 +146,30 @@ Map sticks to Control Change messages. Map buttons to Note On / Note Off. Set ve
 PadForge reads MIDI input devices as mapping sources too. Notes, Control Change knobs, pitch bend, and encoder dials from a MIDI keyboard or pad controller bind in the mapping table like any button or axis, so a piano key can press A and a mod wheel can pull a trigger. It rides the same Windows MIDI Services stack the virtual output uses. No bridge software.
 
 ![MIDI input](screenshots/midi-input.jpg)
+
+### Tap a tag. Fire a macro.
+
+Plug in an NFC reader (any PC/SC contactless reader, like an ACR122U) and a tag tap runs a macro. Register a tag from the Devices page: hold it on the reader, give it a name, and it is saved for good. Each tag becomes its own trigger, next to an Any NFC Tag trigger that any tag fires. Map an amiibo, a sticker, or a card to a button combo, a profile switch, or a whole action sequence.
+
+![NFC reader and registered tags on the Devices page](screenshots/devices.jpg)
+
+### The Joy-Con 2 is a mouse. So use it like one.
+
+A Nintendo Switch 2 Joy-Con has an optical sensor on its face. Set it on a desk and slide it. Two new sources, Mouse Motion X and Mouse Motion Y, drive a stick for mouse-look, a button, or the scroll wheel, each with its own Sensitivity from 0.1 to 5.0. The right Joy-Con's IR camera also reports a brightness value you can map, so covering the sensor works like a button.
+
+![Mouse Motion source in the mapping grid](screenshots/mappings.jpg)
+
+### Your keyboard's media keys, mapped.
+
+The media row on a keyboard, a media remote, a headset's transport buttons: PadForge reads them as their own device with named button chips. Map Play/Pause, Mute, Volume, or Next and Previous Track to a virtual button or a macro trigger, same as any other input.
+
+![Consumer Control device with named media chips](screenshots/devices.jpg)
+
+### See the charge. Sleep it when idle.
+
+Every wireless pad that reports a battery shows its charge on the Devices page, with a charging glyph while it tops up. Set an Idle Disconnect timer and a Bluetooth controller drops its link after a few quiet minutes, so it sleeps instead of draining on the coffee table. A Disconnect Controller macro turns one off on command, from a chord or a button.
+
+![Battery indicator and the Power section on the Devices page](screenshots/devices.jpg)
 
 ---
 

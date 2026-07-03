@@ -212,7 +212,7 @@ Every wireless pad that reports a battery shows its charge on the Devices page, 
 | Max simultaneous virtual controllers | 16 | 4 (hard-coded PAD1-4 in UI) | 4 (UI matches XInput slot indices) | 4 (Slot UI cap) | 4 (Output Slots UI cap) | 1 per physical pad |
 | 1000 Hz polling | ✅ | ⚠️ unverified | ⚠️ unverified | ✅ user-selectable 500 / 1000 Hz | ✅ on USB DS4 | ⚠️ unverified |
 | 3D + 2D controller visualization | ✅ | ⚠️ 2D Xbox 360 only | ❌ | ⚠️ 2D only | ⚠️ basic | ⚠️ configurator preview |
-| Multi-point sensitivity curve editor | ✅ draggable points | ⚠️ single slider | ⚠️ deadzone only | ✅ custom 4-point | ⚠️ preset curves | ✅ response curves |
+| Multi-point sensitivity curve editor | ✅ unlimited points | ⚠️ single slider | ⚠️ deadzone only | ✅ custom 4-point | ⚠️ preset curves | ✅ response curves |
 | 2026 Steam Controller support | ✅ via SDL3 fork | ❌ | ❌ | ⚠️ unverified | ❌ | ✅ |
 | Wii Remote / Nunchuk / Classic / Wii U Pro as a source | ✅ all four forms, in-app pairing | ❌ | ❌ | ✅ in-app pairing (v9.4+) | ❌ | ❌ |
 
@@ -253,7 +253,7 @@ Record a binding by pressing a button. Pick from a dropdown of every available i
 
 ### Stick deadzones
 ![Sticks](screenshots/sticks.jpg)
-Six deadzone shapes (Scaled Radial, Radial, Axial, Hybrid, Sloped Scaled Axial, Sloped Axial). Per-axis deadzone, anti-deadzone, linear response, center calibration, and a custom sensitivity-curve editor with draggable points.
+Six deadzone shapes (Scaled Radial, Radial, Axial, Hybrid, Sloped Scaled Axial, Sloped Axial). Per-axis deadzone, anti-deadzone, linear response, center calibration, and a custom sensitivity-curve editor with unlimited draggable points.
 
 ### Trigger deadzones
 ![Triggers](screenshots/triggers.jpg)

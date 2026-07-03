@@ -1348,7 +1348,42 @@ if ($slotsHost) {
                 Write-Host "    [$ti] Name='$($tabs[$ti].Current.Name)'"
             }
 
-            # PlayStation slot Controller tab (DualSense 3D model + PS5 preset row).
+            # The PlayStation controller-page screenshot must ALWAYS show a
+            # DualSense, the convention since the page's introduction, not the
+            # slot's default DualShock 4 preset. Switch the preset combo
+            # (HMaestroProfileCombo) to the DualSense profile so the 3D model and
+            # the preset row read DualSense. It also keeps the Adaptive Triggers /
+            # Lighting / Gyro / Touchpad shots that follow on a DualSense.
+            $psPreset = Find-UIA -Parent $padPage -Aid "HMaestroProfileCombo"
+            if ($psPreset) {
+                try {
+                    $expPS = $psPreset.GetCurrentPattern([System.Windows.Automation.ExpandCollapsePattern]::Pattern)
+                    $expPS.Expand(); Start-Sleep -Milliseconds 600
+                    $liCPS = New-Object System.Windows.Automation.PropertyCondition(
+                        [System.Windows.Automation.AutomationElement]::ControlTypeProperty,
+                        [System.Windows.Automation.ControlType]::ListItem)
+                    $dsItem = $null
+                    foreach ($it in $psPreset.FindAll($TD, $liCPS)) {
+                        $nm = $it.Current.Name
+                        if ($nm -like "*DualSense*" -and $nm -notlike "*Edge*") { $dsItem = $it; break }
+                    }
+                    if ($dsItem) {
+                        try { $dsItem.GetCurrentPattern([System.Windows.Automation.SelectionItemPattern]::Pattern).Select() }
+                        catch { Click-El $dsItem -Label "DualSense preset" | Out-Null }
+                        Write-Host "  PS preset -> $($dsItem.Current.Name)" -ForegroundColor Green
+                        # Collapse the dropdown so it does not cover the controller model.
+                        try { $expPS.Collapse() } catch {}
+                        Start-Sleep -Milliseconds 1800
+                    } else {
+                        Write-Host "  !! DualSense preset not found in HMaestroProfileCombo" -ForegroundColor Yellow
+                        try { $expPS.Collapse() } catch {}
+                    }
+                } catch { Write-Host "  !! PS preset switch failed: $_" -ForegroundColor Yellow }
+            } else {
+                Write-Host "  !! HMaestroProfileCombo not found on PS slot" -ForegroundColor Yellow
+            }
+
+            # PlayStation slot Controller tab (DualSense 3D model + preset row).
             Write-Host "[$(Next)/$total] PlayStation config bar / Controller view"
             Start-Sleep -Milliseconds 500
             Cap "pad-playstation-configbar"

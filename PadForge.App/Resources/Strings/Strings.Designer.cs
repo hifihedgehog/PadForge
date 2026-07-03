@@ -487,6 +487,7 @@ public class Strings : INotifyPropertyChanged
     public string DevObj_ConsumerEject => Get("DevObj_ConsumerEject");
     public string DevObj_ConsumerPlayPause => Get("DevObj_ConsumerPlayPause");
     public string DevObj_ConsumerVoiceCommand => Get("DevObj_ConsumerVoiceCommand");
+    public string DevObj_ConsumerDynamic_Format => Get("DevObj_ConsumerDynamic_Format");
     public string DevObj_ConsumerMute => Get("DevObj_ConsumerMute");
     public string DevObj_ConsumerVolumeUp => Get("DevObj_ConsumerVolumeUp");
     public string DevObj_ConsumerVolumeDown => Get("DevObj_ConsumerVolumeDown");

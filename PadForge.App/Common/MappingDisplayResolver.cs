@@ -251,6 +251,11 @@ namespace PadForge.Common
         internal static string LocalizeObjectName(string name)
         {
             var s = Strings.Instance;
+            // Dynamic consumer usages outside the fixed ConsumerUsageTable
+            // arrive as "Consumer 0xNNNN" (issue #168). Localize the leading
+            // word so the fallback chip/picker label isn't half-English.
+            if (name != null && name.StartsWith("Consumer 0x", System.StringComparison.Ordinal))
+                return string.Format(s.DevObj_ConsumerDynamic_Format, name.Substring("Consumer ".Length));
             var localized = name switch
             {
                 "Any NFC Tag" => s.Mapping_NfcAnyTag,

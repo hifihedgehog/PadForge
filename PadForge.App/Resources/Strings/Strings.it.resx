@@ -2167,4 +2167,5 @@
   <data name="DevObj_ConsumerBrowserStop" xml:space="preserve"><value>Browser interrompi</value></data>
   <data name="DevObj_ConsumerBrowserRefresh" xml:space="preserve"><value>Aggiorna</value></data>
   <data name="DevObj_ConsumerBrowserBookmarks" xml:space="preserve"><value>Segnalibri</value></data>
+  <data name="DevObj_ConsumerDynamic_Format" xml:space="preserve"><value>Multimediale {0}</value></data>
 </root>

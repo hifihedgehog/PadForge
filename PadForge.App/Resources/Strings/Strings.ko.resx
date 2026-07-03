@@ -2145,4 +2145,5 @@
   <data name="DevObj_ConsumerBrowserStop" xml:space="preserve"><value>브라우저 정지</value></data>
   <data name="DevObj_ConsumerBrowserRefresh" xml:space="preserve"><value>새로 고침</value></data>
   <data name="DevObj_ConsumerBrowserBookmarks" xml:space="preserve"><value>북마크</value></data>
+  <data name="DevObj_ConsumerDynamic_Format" xml:space="preserve"><value>소비자 {0}</value></data>
 </root>

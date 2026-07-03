@@ -2145,4 +2145,5 @@
   <data name="DevObj_ConsumerBrowserStop" xml:space="preserve"><value>浏览器停止</value></data>
   <data name="DevObj_ConsumerBrowserRefresh" xml:space="preserve"><value>刷新</value></data>
   <data name="DevObj_ConsumerBrowserBookmarks" xml:space="preserve"><value>书签</value></data>
+  <data name="DevObj_ConsumerDynamic_Format" xml:space="preserve"><value>消费者 {0}</value></data>
 </root>

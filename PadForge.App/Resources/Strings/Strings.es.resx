@@ -2145,4 +2145,5 @@
   <data name="DevObj_ConsumerBrowserStop" xml:space="preserve"><value>Detener navegador</value></data>
   <data name="DevObj_ConsumerBrowserRefresh" xml:space="preserve"><value>Actualizar</value></data>
   <data name="DevObj_ConsumerBrowserBookmarks" xml:space="preserve"><value>Marcadores</value></data>
+  <data name="DevObj_ConsumerDynamic_Format" xml:space="preserve"><value>Multimedia {0}</value></data>
 </root>

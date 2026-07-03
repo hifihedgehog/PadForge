@@ -2159,4 +2159,5 @@
   <data name="Nfc_TagCaptured" xml:space="preserve"><value>Tag captured. Enter a name and click Register. Tap another tag to replace it.</value></data>
   <data name="Nfc_RegisteredFormat" xml:space="preserve"><value>Registered "{0}". Tap another tag to add more.</value></data>
   <data name="Nfc_ManageButton" xml:space="preserve"><value>Register / Manage NFC Tags</value></data>
+  <data name="DevObj_ConsumerDynamic_Format" xml:space="preserve"><value>Consumer {0}</value></data>
 </root>

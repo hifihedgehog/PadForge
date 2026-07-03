@@ -8483,6 +8483,9 @@ namespace PadForge.Services
                     .Select(i => _mainVm.Pads[i].ProfileId).ToArray(),
                 ExtendedConfigs = SnapshotExtendedConfigs(),
                 MidiConfigs = SnapshotMidiConfigs(),
+                // Macros ride profiles (and .pfprofile exports, where the
+                // import side's sound-package bundling consumes them).
+                Macros = _settingsService?.BuildMacroData(),
                 XboxSlotOrder          = SettingsManager.XboxSlotOrder.ToArray(),
                 PlayStationSlotOrder   = SettingsManager.PlayStationSlotOrder.ToArray(),
                 ExtendedSlotOrder      = SettingsManager.ExtendedSlotOrder.ToArray(),
@@ -9108,6 +9111,17 @@ namespace PadForge.Services
                     }
                 }
             }
+
+            // ── Apply macros ──
+            // Profiles carry their macro set, so switching profiles switches
+            // macros (and a shared .pfprofile brings its macros along). Null
+            // means the profile was saved before macros rode profiles: leave
+            // the live macros untouched so legacy profiles keep the old
+            // "macros are global" behavior instead of wiping them. Applied
+            // after the Extended configs above so each macro rebuilds with
+            // the correct per-pad button style and count.
+            if (profile.Macros != null)
+                _settingsService?.LoadMacros(profile.Macros);
 
             // ── Apply DSU motion server settings ──
             _mainVm.Dashboard.EnableDsuMotionServer = profile.EnableDsuMotionServer;

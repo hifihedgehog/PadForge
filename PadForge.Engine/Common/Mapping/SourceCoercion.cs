@@ -314,9 +314,12 @@ namespace PadForge.Engine.Common.Mapping
         // wrapper) so each virtual controller's Pointer-tab setting applies
         // independently. Entries are removed on sight loss so a re-acquire
         // snaps instead of sliding in from stale, and the population is
-        // bounded by (devices x slots x 2 axes).
+        // bounded by (devices x slots x 2 axes). Seq gates the EMA to one
+        // step per poll: a second row reading the same pointer axis (e.g.
+        // an axis target plus a button-threshold target) re-serves the
+        // frame's smoothed value instead of advancing the filter again.
         private static readonly System.Collections.Concurrent.ConcurrentDictionary<
-            (string Dev, int Slot, char Axis), float> _irEmaPrev = new();
+            (string Dev, int Slot, char Axis), (float Value, ulong Seq)> _irEmaPrev = new();
 
         /// <summary>Full-scale weight (kg) that maps Total Weight to 1.0. A normal
         /// adult stays well under this, so the normalized source keeps useful
@@ -338,12 +341,30 @@ namespace PadForge.Engine.Common.Mapping
             return provider(deviceGuid, slotIndex);
         }
 
+        // ── Poll-frame gate for the smoothing / delta caches ──
+        // Every cache in this class that carries state ACROSS polls
+        // (smoothing rings, EMAs, previous-position stores) must advance
+        // exactly once per poll, no matter how many mapping rows read the
+        // same source. The polling loop calls BeginPollFrame() once per
+        // tick; each cache compares its stored sequence and re-serves the
+        // frame's value on repeat reads. Without this, every extra row
+        // advanced the shared state again: two gyro rows halved the
+        // smoothing window the Gyro tab promised (the passthrough path's
+        // "pt" key suffix guarded exactly this collision against the
+        // mapping path, but mapping rows collided with each other), and a
+        // second relative-touchpad row consumed the first one's delta.
+        // Polling thread only, like the caches it gates.
+        private static ulong _pollFrameSeq = 1; // starts at 1 so "seq 0" means never-seen
+        public static void BeginPollFrame() => _pollFrameSeq++;
+
         // dual-threshold gyro smoothing buffer. Keyed by
         // (deviceGuid, slotIndex). Single-threaded (polling thread only).
         private static readonly Dictionary<(string, int), (float x, float y)[]> _gyroSampleBuffers = new();
         private static readonly Dictionary<(string, int), int> _gyroSampleHeads = new();
+        private static readonly Dictionary<(string, int), ulong> _gyroSampleFrames = new();
 
-        private static (float, float) ApplyDualThresholdSmoothing(
+        // Internal for the poll-frame-gate test pins (PadForge.Tests).
+        internal static (float, float) ApplyDualThresholdSmoothing(
             string deviceGuid, int slotIndex, float yaw, float pitch, GyroTuning tuning)
         {
             float bottom = tuning.TighteningRadPerSec;
@@ -367,8 +388,21 @@ namespace PadForge.Engine.Common.Mapping
                 _gyroSampleBuffers[key] = buf;
                 _gyroSampleHeads[key] = 0;
             }
-            int head = (_gyroSampleHeads[key] + 1) % N;
-            _gyroSampleHeads[key] = head;
+            // Advance the ring once per poll, not once per mapping row: the
+            // buffer is sized as window-seconds x polls, so a second row
+            // pushing the same device sample again halved the wall-clock
+            // span the window covered. Repeat reads in the same poll refresh
+            // the head slot in place (their smooth weighting may differ,
+            // e.g. a roll-source row) without advancing.
+            bool firstThisPoll = !_gyroSampleFrames.TryGetValue(key, out ulong seenSeq)
+                || seenSeq != _pollFrameSeq;
+            int head = _gyroSampleHeads[key];
+            if (firstThisPoll)
+            {
+                _gyroSampleFrames[key] = _pollFrameSeq;
+                head = (head + 1) % N;
+                _gyroSampleHeads[key] = head;
+            }
             buf[head] = (yaw * smooth, pitch * smooth);
 
             float xSum = 0, ySum = 0;
@@ -424,25 +458,40 @@ namespace PadForge.Engine.Common.Mapping
             return (worldYaw, pitchOut);
         }
 
-        // Per-device EMA smoothing state for gyro rates. Single-threaded
-        // (polling thread is the only reader/writer for binding-layer
-        // gyro reads); a stale read post-recalibration self-heals in
-        // 1/(1-α) frames so no explicit clear is required.
-        private static readonly Dictionary<string, float[]> _gyroSmoothingState = new();
+        // Per-(device, slot) EMA smoothing state for gyro rates.
+        // Single-threaded (polling thread is the only reader/writer for
+        // binding-layer gyro reads); a stale read post-recalibration
+        // self-heals in 1/(1-α) frames so no explicit clear is required.
+        // Keyed by device AND slot because SmoothingAlpha is a per-(device,
+        // slot) PadSetting: one device mapped to two slots with different
+        // alphas must not share (and double-advance) one EMA state.
+        private sealed class GyroEmaState
+        {
+            public readonly float[] Values = new float[3];
+            public readonly ulong[] Seq = new ulong[3];
+        }
+        private static readonly Dictionary<string, GyroEmaState> _gyroSmoothingState = new();
 
-        private static float ApplyGyroSmoothing(string deviceGuid, int axis, float rawRate, float alpha)
+        // Internal for the poll-frame-gate test pins (PadForge.Tests).
+        internal static float ApplyGyroSmoothing(string deviceGuid, int slotIndex, int axis, float rawRate, float alpha)
         {
             if (alpha <= 0f) return rawRate;
             if (alpha > 0.99f) alpha = 0.99f; // pinning at 1 freezes the output
-            string key = deviceGuid ?? "";
-            if (!_gyroSmoothingState.TryGetValue(key, out var smoothed))
+            string key = (deviceGuid ?? "") + "|" + slotIndex;
+            if (!_gyroSmoothingState.TryGetValue(key, out var st))
             {
-                smoothed = new float[3];
-                _gyroSmoothingState[key] = smoothed;
+                st = new GyroEmaState();
+                _gyroSmoothingState[key] = st;
             }
-            if (axis < 0 || axis >= smoothed.Length) return rawRate;
-            smoothed[axis] = smoothed[axis] * alpha + rawRate * (1f - alpha);
-            return smoothed[axis];
+            if (axis < 0 || axis >= st.Values.Length) return rawRate;
+            // One EMA step per poll per axis: a second mapping row reading
+            // the same axis in the same poll gets the already-smoothed value
+            // instead of advancing the filter again (which effectively
+            // squared alpha and weakened smoothing per extra row).
+            if (st.Seq[axis] == _pollFrameSeq) return st.Values[axis];
+            st.Seq[axis] = _pollFrameSeq;
+            st.Values[axis] = st.Values[axis] * alpha + rawRate * (1f - alpha);
+            return st.Values[axis];
         }
 
         private static float ApplyOutputCurve(float normalized, string curveName)
@@ -809,9 +858,22 @@ namespace PadForge.Engine.Common.Mapping
                 if (sm > 0f)
                 {
                     var key = (dev, slotIndex, axis);
-                    if (_irEmaPrev.TryGetValue(key, out float prev))
-                        baseVal = prev + (baseVal - prev) * (1f - sm);
-                    _irEmaPrev[key] = baseVal;
+                    if (_irEmaPrev.TryGetValue(key, out var prev))
+                    {
+                        if (prev.Seq == _pollFrameSeq)
+                        {
+                            baseVal = prev.Value; // second row, same poll
+                        }
+                        else
+                        {
+                            baseVal = prev.Value + (baseVal - prev.Value) * (1f - sm);
+                            _irEmaPrev[key] = (baseVal, _pollFrameSeq);
+                        }
+                    }
+                    else
+                    {
+                        _irEmaPrev[key] = (baseVal, _pollFrameSeq); // seed unsmoothed
+                    }
                 }
             }
 
@@ -1054,11 +1116,11 @@ namespace PadForge.Engine.Common.Mapping
             }
             else if (tuning.SmoothingAlpha > 0f)
             {
-                // v3.3 legacy EMA path — kept for back-compat when the
+                // v3.3 legacy EMA path, kept for back-compat when the
                 // user has a non-zero SmoothingAlpha and both v3.4
                 // thresholds at zero.
-                yaw   = ApplyGyroSmoothing(deviceGuid, 1, yaw,   tuning.SmoothingAlpha);
-                pitch = ApplyGyroSmoothing(deviceGuid, 0, pitch, tuning.SmoothingAlpha);
+                yaw   = ApplyGyroSmoothing(deviceGuid, slotIndex, 1, yaw,   tuning.SmoothingAlpha);
+                pitch = ApplyGyroSmoothing(deviceGuid, slotIndex, 0, pitch, tuning.SmoothingAlpha);
             }
 
             // In non-Local space, Gyro Roll source has no independent
@@ -1210,10 +1272,14 @@ namespace PadForge.Engine.Common.Mapping
             }
             else if (tuning.SmoothingAlpha > 0f)
             {
-                pYaw   = ApplyGyroSmoothing(smKey, 1, pYaw,   tuning.SmoothingAlpha);
-                pPitch = ApplyGyroSmoothing(smKey, 0, pPitch, tuning.SmoothingAlpha);
+                // slotIndex in the key: the passthrough tuning is per-(device,
+                // slot) like the mapping path's, and the bare "pt" key shared
+                // (and double-advanced) one EMA across two slots running
+                // passthrough on the same device.
+                pYaw   = ApplyGyroSmoothing(smKey, slotIndex, 1, pYaw,   tuning.SmoothingAlpha);
+                pPitch = ApplyGyroSmoothing(smKey, slotIndex, 0, pPitch, tuning.SmoothingAlpha);
                 if (local)
-                    pRoll = ApplyGyroSmoothing(smKey, 2, pRoll, tuning.SmoothingAlpha);
+                    pRoll = ApplyGyroSmoothing(smKey, slotIndex, 2, pRoll, tuning.SmoothingAlpha);
             }
 
             float rwc = tuning.RealWorldCalibration > 0f ? tuning.RealWorldCalibration : 1f;
@@ -1906,6 +1972,12 @@ namespace PadForge.Engine.Common.Mapping
         {
             public float PrevValue;
             public bool Seeded;
+            // Poll-frame gate: the delta is (current - previous) with
+            // previous updated on compute, so the first reader consumed the
+            // movement and a second row on the same (slot, finger, axis)
+            // read a permanent ~0. Compute once per poll, re-serve within it.
+            public ulong FrameSeq;
+            public float FrameDelta;
         }
 
         private static readonly ConcurrentDictionary<string, TouchpadAxisDelta> _touchpadDeltas = new();
@@ -1998,15 +2070,31 @@ namespace PadForge.Engine.Common.Mapping
                 return true;
             }
 
-            // X / Y → delta from previous frame. Seed on first contact.
+            // X / Y → delta from previous poll. Seed on first contact.
             var prev = _touchpadDeltas.GetOrAdd(key, _ => new TouchpadAxisDelta { PrevValue = raw, Seeded = false });
             if (!prev.Seeded)
             {
-                _touchpadDeltas[key] = new TouchpadAxisDelta { PrevValue = raw, Seeded = true };
+                _touchpadDeltas[key] = new TouchpadAxisDelta { PrevValue = raw, Seeded = true, FrameSeq = _pollFrameSeq };
                 return true; // bipolar 0 on the seed frame
             }
-            float delta = raw - prev.PrevValue;
-            _touchpadDeltas[key] = new TouchpadAxisDelta { PrevValue = raw, Seeded = true };
+            float delta;
+            if (prev.FrameSeq == _pollFrameSeq)
+            {
+                // Second row on this (slot, finger, axis) in the same poll:
+                // re-serve the delta instead of consuming it to ~0.
+                delta = prev.FrameDelta;
+            }
+            else
+            {
+                delta = raw - prev.PrevValue;
+                _touchpadDeltas[key] = new TouchpadAxisDelta
+                {
+                    PrevValue = raw,
+                    Seeded = true,
+                    FrameSeq = _pollFrameSeq,
+                    FrameDelta = delta,
+                };
+            }
 
             // Y sign: return the RAW delta in SDL convention (raw_y=0 at top,
             // so finger-DOWN → positive delta). DO NOT flip Y here. The KbmMouseY

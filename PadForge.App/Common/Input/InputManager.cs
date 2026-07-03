@@ -969,6 +969,13 @@ namespace PadForge.Common.Input
                     {
                         SDL_UpdateJoysticks();
 
+                        // Advance the evaluator's poll-frame gate exactly once
+                        // per cycle: SourceCoercion's smoothing/delta caches
+                        // step once per poll no matter how many mapping rows
+                        // read the same source (the Gyro tab's smoothing is
+                        // per-device-per-slot, not per-row).
+                        Engine.Common.Mapping.SourceCoercion.BeginPollFrame();
+
                         if (firstCycle || _enumerationTimer.ElapsedMilliseconds >= EnumerationIntervalMs)
                         {
                             firstCycle = false;

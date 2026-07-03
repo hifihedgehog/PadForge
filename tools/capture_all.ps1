@@ -1466,22 +1466,39 @@ try {
         # Launch Edge with an isolated temp profile — never touches the default profile.
         Start-Process $edgePath "--user-data-dir=`"$edgeTempProfile`" --no-first-run --disable-sync --disable-session-crashed-bubble --disable-features=msEdgeSyncService,msEdgeAccountSSO --no-default-browser-check --app=$Url"
         Start-Sleep -Milliseconds $WaitMs
-        # Find Edge window via process handles (check all msedge processes)
+        # Find the Edge window that belongs to OUR temp-profile launch ONLY.
+        # CRITICAL: never screenshot an arbitrary msedge window. The user's real
+        # browser is also an msedge process, and grabbing the first one with a
+        # window handle once captured a private claude.ai session and leaked it
+        # to the public repo. Restrict to processes whose command line carries
+        # our temp-profile dir, then sanity-check the window title so we only
+        # ever shoot the PadForge web-controller --app window. If nothing
+        # matches, SKIP the capture (keep the existing clean screenshot) rather
+        # than risk shooting the wrong window.
         $ehwnd = [IntPtr]::Zero
-        $edgeProcs = Get-Process msedge -EA SilentlyContinue
-        foreach ($ep in $edgeProcs) {
-            $h = $ep.MainWindowHandle
-            if ($h -ne [IntPtr]::Zero) {
-                $ehwnd = $h
-                Write-Host "  Edge window found: PID=$($ep.Id) HWND=$h"
-                break
+        $tempPids = @(Get-CimInstance Win32_Process -Filter "Name='msedge.exe'" -EA SilentlyContinue |
+            Where-Object { $_.CommandLine -like "*PadForge_EdgeCapture*" } |
+            Select-Object -ExpandProperty ProcessId)
+        foreach ($procId in $tempPids) {
+            $ep = Get-Process -Id $procId -EA SilentlyContinue
+            if (-not $ep -or $ep.MainWindowHandle -eq [IntPtr]::Zero) { continue }
+            $title = $ep.MainWindowTitle
+            # Allowlist: our --app windows are titled by the PadForge web page
+            # (the landing page or a "<Layout> Web Controller" heading). Anything
+            # else -- a real browsing session -- is refused.
+            if ($title -notmatch 'PadForge|Web Controller') {
+                Write-Host "  !! Refusing Edge window with unexpected title '$title' (not the web controller)" -ForegroundColor Red
+                continue
             }
+            $ehwnd = $ep.MainWindowHandle
+            Write-Host "  Edge (temp-profile) window: PID=$procId HWND=$ehwnd title='$title'"
+            break
         }
         if ($ehwnd -eq [IntPtr]::Zero) {
-            Write-Host "  !! No Edge window found via process handles" -ForegroundColor Yellow
-            Get-Process msedge -EA SilentlyContinue | Where-Object {
-                try { $_.CommandLine -like "*PadForge_EdgeCapture*" } catch { $false }
-            } | Stop-Process -Force -EA SilentlyContinue
+            Write-Host "  !! No PadForge temp-profile Edge window found -- skipping $Name (kept existing screenshot)" -ForegroundColor Yellow
+            Get-CimInstance Win32_Process -Filter "Name='msedge.exe'" -EA SilentlyContinue |
+                Where-Object { $_.CommandLine -like "*PadForge_EdgeCapture*" } |
+                ForEach-Object { Stop-Process -Id $_.ProcessId -Force -EA SilentlyContinue }
             Start-Sleep -Milliseconds 500
             return
         }

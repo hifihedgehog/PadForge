@@ -1114,10 +1114,10 @@ namespace PadForge.Common.Input
         /// and hands the radio I/O to the threadpool. Resolution stays on the
         /// polling thread (dictionary walks only); the IOCTL never runs here
         /// because the polling thread must not block on I/O. Victims are
-        /// filtered to online, Bluetooth-pathed, not-charging devices with a
-        /// parseable serial, the DS4Windows gates
-        /// (DS4Windows Mapping.cs DisconnectBT special action: synced +
-        /// !isCharging + ConnectionType.BT).</summary>
+        /// filtered to online, Bluetooth-pathed devices with a parseable
+        /// serial. Unlike the DS4Windows DisconnectBT gate (synced +
+        /// !isCharging + ConnectionType.BT), there is NO charging gate here
+        /// (see the AddDisconnectCandidate note below for why).</summary>
         private void ExecuteDisconnectControllerAction(MacroItem macro, MacroAction action)
         {
             var targets = new System.Collections.Generic.List<DisconnectTarget>();

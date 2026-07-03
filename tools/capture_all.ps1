@@ -426,6 +426,33 @@ if (-not (Test-Path $PadForgeXml)) {
 [xml]$xml = Get-Content $PadForgeXml
 $ns = $xml.PadForgeSettings
 
+# --- Preserve cached device list (incl. offline placeholder devices) from backup ---
+# The clean-start regen above only enumerates currently-connected hardware, so the
+# offline placeholder devices (DualSense, Wii Remote, NFC reader, Switch 2 Pro, ...)
+# that live in the user's real config are gone. Those placeholders are how the
+# device-gated tabs (Pointer, Adaptive Triggers, Lighting, Audio) and the NFC / Power
+# Devices-page sections get surfaced for capture without real hardware. Capability
+# gating is [XmlIgnore]-computed from VendorId + ProductName, so the cached <Device>
+# element is enough to light up every gate even though the device never connects.
+# Import the backup's <Devices> node wholesale (it holds both online and offline
+# entries; runtime recomputes online state from what's actually plugged in).
+try {
+    [xml]$xmlBakDoc = Get-Content $xmlBak
+    $bakDevices = $xmlBakDoc.PadForgeSettings.SelectSingleNode("Devices")
+    if ($bakDevices) {
+        $imported = $xml.ImportNode($bakDevices, $true)
+        $freshDevices = $ns.SelectSingleNode("Devices")
+        if ($freshDevices) { $ns.ReplaceChild($imported, $freshDevices) | Out-Null }
+        else { $ns.AppendChild($imported) | Out-Null }
+        $devCount = $imported.SelectNodes("Device").Count
+        Write-Host "  Preserved $devCount cached devices from backup (incl. offline placeholders)" -ForegroundColor Green
+    } else {
+        Write-Host "  !! Backup had no <Devices> node -- device-gated captures may be skipped" -ForegroundColor Yellow
+    }
+} catch {
+    Write-Host "  !! Failed to preserve cached devices: $_" -ForegroundColor Yellow
+}
+
 # --- Clear all existing slots so we start fresh with exactly 5 ---
 $slotCreatedNode = $ns.SelectSingleNode("SlotCreated")
 if ($slotCreatedNode) {
@@ -737,59 +764,120 @@ function Assign-DeviceToSlot {
     $liCond = New-Object System.Windows.Automation.PropertyCondition(
         [System.Windows.Automation.AutomationElement]::ControlTypeProperty,
         [System.Windows.Automation.ControlType]::ListItem)
-    $items = $searchIn.FindAll($TD, $liCond)
-    Write-Host "  Search: $($items.Count) ListItem(s) in window"
+    # Search the initially-realized rows first, then scroll DOWN on a miss to
+    # reach lower rows in the virtualized card list. No scroll-to-top: that
+    # de-realizes the top rows and broke nearby finds (e.g. DualSense).
+    $wrA = New-Object Win32+RECT
+    [Win32]::GetWindowRect($script:hwnd, [ref]$wrA) | Out-Null
+    $lx = [int]($wrA.Left + 400); $my = [int](($wrA.Top + $wrA.Bottom) / 2)
     $target = $null
-    foreach ($it in $items) {
-        if ($it.Current.Name -like "*$DeviceNamePart*") { $target = $it; break }
+    for ($stry = 0; $stry -lt 16 -and (-not $target); $stry++) {
+        $items = $searchIn.FindAll($TD, $liCond)
+        foreach ($it in $items) {
+            if ($it.Current.Name -like "*$DeviceNamePart*") { $target = $it; break }
+        }
+        if (-not $target) { [Win32]::ForceFG($script:hwnd); [Win32]::ScrollAt($lx, $my, -3); Start-Sleep -Milliseconds 350 }
     }
     if (-not $target) {
-        Write-Host "  !! Device matching '$DeviceNamePart' not found in $($items.Count) items. Dump:" -ForegroundColor Yellow
-        for ($i = 0; $i -lt [Math]::Min($items.Count, 30); $i++) {
-            Write-Host "    [$i] '$($items[$i].Current.Name)' Class='$($items[$i].Current.ClassName)'"
-        }
+        Write-Host "  !! Device matching '$DeviceNamePart' not found after scroll" -ForegroundColor Yellow
         return $false
     }
+    Write-Host "  Found device card '$DeviceNamePart'"
     Click-El $target -Label "Device card '$DeviceNamePart'" -Delay 1000 | Out-Null
 
-    # Slot toggle buttons live below the device's detail panel; each
-    # ToggleButton's accessible name is the slot number text. Find by name.
+    # Slot-assignment controls live in the device's detail panel (right column):
+    # one ToggleButton per active slot (DevicesPage.xaml, ItemsControl bound to
+    # ActiveSlotItems). The button gets NO UIA Name from WPF; its child TextBlocks
+    # are a connection glyph (E7FC) + the SlotNumber. Identify each toggle by the
+    # digits in its child Text (the SlotNumber). CRUCIAL: the left nav also has one
+    # power ToggleButton per slot, and an unscoped window search grabbed those 5
+    # sidebar toggles instead of these, silently toggling slot power. Discriminate
+    # by POSITION: the detail panel is the right portion of the window; the sidebar
+    # is the far left. Keep only toggles whose center-X is right of mid-window.
     $btnCond = New-Object System.Windows.Automation.PropertyCondition(
         [System.Windows.Automation.AutomationElement]::ControlTypeProperty,
         [System.Windows.Automation.ControlType]::Button)
+    $txtCond = New-Object System.Windows.Automation.PropertyCondition(
+        [System.Windows.Automation.AutomationElement]::ControlTypeProperty,
+        [System.Windows.Automation.ControlType]::Text)
+    $wrB = New-Object Win32+RECT
+    [Win32]::GetWindowRect($script:hwnd, [ref]$wrB) | Out-Null
+    $midX = ($wrB.Left + $wrB.Right) / 2
     $allButtons = $searchIn.FindAll($TD, $btnCond)
+    $toggles = @()
     foreach ($b in $allButtons) {
-        if ($b.Current.Name -eq $SlotNumberLabel) {
-            try {
-                $tp = $b.GetCurrentPattern([System.Windows.Automation.TogglePattern]::Pattern)
-                if ($tp.Current.ToggleState -ne [System.Windows.Automation.ToggleState]::On) {
-                    $tp.Toggle()
-                    Start-Sleep -Milliseconds 800
-                    Write-Host "  Toggled slot $SlotNumberLabel ON for $DeviceNamePart" -ForegroundColor Green
-                } else {
-                    Write-Host "  Slot $SlotNumberLabel already assigned to $DeviceNamePart"
-                }
-                return $true
-            } catch {
-                # Fallback: invoke pattern (regular click)
-                try {
-                    $ip = $b.GetCurrentPattern([System.Windows.Automation.InvokePattern]::Pattern)
-                    $ip.Invoke()
-                    Start-Sleep -Milliseconds 800
-                    Write-Host "  Clicked slot $SlotNumberLabel for $DeviceNamePart" -ForegroundColor Green
-                    return $true
-                } catch {
-                    Write-Host "  !! Slot $SlotNumberLabel button has no Toggle/Invoke pattern" -ForegroundColor Yellow
-                }
+        try {
+            $null = $b.GetCurrentPattern([System.Windows.Automation.TogglePattern]::Pattern)
+            $r = $b.Current.BoundingRectangle
+            $cx = $r.X + $r.Width / 2
+            if ($cx -gt $midX) { $toggles += $b }   # detail panel only, exclude sidebar
+        } catch {}
+    }
+    # Key each detail-panel toggle by its child SlotNumber (digits).
+    $slotOf = @{}
+    foreach ($t in $toggles) {
+        $digits = ""
+        try {
+            foreach ($tx in $t.FindAll($TD, $txtCond)) {
+                $d = ($tx.Current.Name -replace '[^\d]', '')
+                if ($d -ne "") { $digits = $d; break }
             }
+        } catch {}
+        $slotOf[$t] = $digits
+    }
+    Write-Host "    Detail-panel assignment toggles: $($toggles.Count)"
+    foreach ($t in $toggles) { Write-Host "      toggle slotNumber='$($slotOf[$t])'" }
+    $btn = $null
+    foreach ($t in $toggles) {
+        if ($slotOf[$t] -eq $SlotNumberLabel) { $btn = $t; break }
+    }
+    if (-not $btn) {
+        # Fallback: positional. ActiveSlotItems is in slot order, so the Nth
+        # detail-panel toggle (0-based) is SlotNumber N+1.
+        $idx = [int]$SlotNumberLabel - 1
+        if ($idx -ge 0 -and $idx -lt $toggles.Count) {
+            $btn = $toggles[$idx]
+            Write-Host "    (slot-number match missed -- using positional toggle #$idx)" -ForegroundColor DarkGray
         }
     }
-    Write-Host "  !! Slot $SlotNumberLabel button not found for $DeviceNamePart" -ForegroundColor Yellow
+    if ($btn) {
+        # Skip if already assigned (reading ToggleState is fine; it's the
+        # Toggle() ACTION that's unreliable here).
+        $already = $false
+        try { $already = ($btn.GetCurrentPattern([System.Windows.Automation.TogglePattern]::Pattern).Current.ToggleState -eq [System.Windows.Automation.ToggleState]::On) } catch {}
+        if ($already) {
+            Write-Host "  Slot $SlotNumberLabel already assigned to $DeviceNamePart"
+            return $true
+        }
+        # Bring the toggle into view first (the assign row can sit below the
+        # fold on a tall detail panel), then use a real coordinate CLICK, not
+        # TogglePattern.Toggle(). The toggle's IsChecked is OneWay-bound to
+        # IsAssigned and the actual assignment is done by ToggleSlotCommand,
+        # which fires on Click. UIA Toggle() only flips IsChecked (immediately
+        # overwritten by the OneWay binding) and never runs the command, so the
+        # assignment silently no-ops -- which is exactly why every slot read
+        # "No device mapped" on the dashboard.
+        try { $btn.GetCurrentPattern([System.Windows.Automation.ScrollItemPattern]::Pattern).ScrollIntoView(); Start-Sleep -Milliseconds 300 } catch {}
+        Click-El $btn -Label "Slot $SlotNumberLabel toggle ($DeviceNamePart)" -Delay 900 | Out-Null
+        Write-Host "  Assigned $DeviceNamePart to slot $SlotNumberLabel" -ForegroundColor Green
+        return $true
+    }
+    Write-Host "  !! Slot $SlotNumberLabel toggle not found for $DeviceNamePart (had $($toggles.Count) toggles)" -ForegroundColor Yellow
     return $false
 }
 
 Assign-DeviceToSlot -DeviceNamePart "DualSense" -SlotNumberLabel "1" | Out-Null
 Assign-DeviceToSlot -DeviceNamePart "DualSense" -SlotNumberLabel "2" | Out-Null
+# Assign the Wii Remote to the Extended slot so its Pointer / Gyro tabs are
+# reachable for the 3.6.0 Pointer-tab capture (issue #146). SlotNumber follows
+# DevicesViewModel.RefreshSlotButtons, which walks slots in TYPE-GROUP order
+# (Xbox -> PlayStation -> Extended -> KBM -> MIDI) to match the dashboard cards,
+# NOT creation/PadIndex order. So SlotNumber 1=Xbox, 2=PlayStation, 3=Extended,
+# 4=KBM, 5=MIDI. The Extended slot is SlotNumber 3 (KBM at 4 hides the capability
+# tabs, which is why assigning the Wii to 4 left the Pointer tab unreachable).
+# The Wii Remote's IR-camera capability is identity-derived (VID 0x057E + name),
+# so the tab is offered whether the placeholder device is online or not.
+Assign-DeviceToSlot -DeviceNamePart "Wii Remote" -SlotNumberLabel "3" | Out-Null
 
 # Give the Devices page time to write the assignment back to the VMs and
 # for the PadPage's hasForceFeedback / hasAdaptiveTriggers / hasLightbar
@@ -838,12 +926,20 @@ if ($deviceItems -and $deviceItems.Count -gt 0) {
 Cap "devices"
 
 # ---- 4-12. Xbox slot (slot 0 -- macros/mappings/sticks/triggers/ff here) ----
+# Use Dashboard slot cards (SlotsItemsControl) rather than the sidebar
+# (Find-AllSlots / MenuItemsHost). Sidebar NavigationViewItems virtualize out
+# of the UIA tree, which left this whole block finding 0 slots and skipping
+# every Xbox-slot tab. Dashboard cards stay materialized; after the type-group
+# reorder the Xbox slot is card index 0 (same convention the PlayStation /
+# Extended blocks below rely on).
 Write-Host ""
 Write-Host "--- Xbox Slot ---" -ForegroundColor Yellow
-$slots = @(Find-AllSlots)
-Write-Host "  Found $($slots.Count) slot(s)"
+Nav "Dashboard"; Start-Sleep -Milliseconds 1000
+$slotsHost = Find-UIA -Aid "SlotsItemsControl"
+$slots = if ($slotsHost) { @($slotsHost.FindAll($TC, [System.Windows.Automation.Condition]::TrueCondition)) } else { @() }
+Write-Host "  Found $($slots.Count) slot card(s)"
 if ($slots.Count -ge 1) {
-    Select-El $slots[0] -Label "Xbox Slot" -Delay 1000
+    Click-El $slots[0] -Label "Xbox Slot card" -Delay 2000 | Out-Null
 
     # 4. Controller 3D view
     Write-Host "[$(Next)/$total] Controller - 3D view"
@@ -1040,6 +1136,27 @@ if ($slotsHost) {
             } else {
                 Write-Host "  !! Lighting tab not in UIA tree" -ForegroundColor Yellow
             }
+
+            # The DualSense on this slot also surfaces Gyro (#120 engage gate),
+            # Audio (#147 haptic tones expanded the tab), and Touchpad. Capture
+            # each by name; re-enumerate every time since selection can change
+            # the realized tab set. These follow SelectedMappedDevice, so they
+            # are present whenever the DualSense is the slot's selected device.
+            foreach ($gt in @(
+                @{ Name = "Gyro";     File = "pad-gyro" },
+                @{ Name = "Audio";    File = "pad-audio" },
+                @{ Name = "Touchpad"; File = "pad-touchpad" }
+            )) {
+                Write-Host "[$(Next)/$total] $($gt.Name)"
+                $tabs = $padPage.FindAll($TC, $rbCond)
+                $theTab = $tabs | Where-Object { $_.Current.Name -eq $gt.Name } | Select-Object -First 1
+                if ($theTab) {
+                    Click-El $theTab -Label "$($gt.Name) Tab" -Delay 1000 | Out-Null
+                    Cap $gt.File
+                } else {
+                    Write-Host "  !! $($gt.Name) tab not in UIA tree" -ForegroundColor Yellow
+                }
+            }
         } else {
             Write-Host "  !! PadPageView not found after PS slot click" -ForegroundColor Yellow
             $n += 2
@@ -1190,6 +1307,137 @@ Nav "About"; Cap "about"
 # ---- 22. Add Controller popup (already captured in Step 2b) ----
 Write-Host "[$(Next)/$total] Add Controller popup -- already captured in Step 2b"
 
+
+# ==============================================================================
+# STEP 3b: New 3.6.0 sections (Pointer tab, NFC, Consumer Control, Power/battery)
+# ==============================================================================
+Write-Host ""
+Write-Host "=== STEP 3b: 3.6.0 new sections ===" -ForegroundColor Cyan
+
+Start-Sleep -Milliseconds 500
+Start-Sleep -Milliseconds 600
+
+$li36 = New-Object System.Windows.Automation.PropertyCondition(
+    [System.Windows.Automation.AutomationElement]::ControlTypeProperty,
+    [System.Windows.Automation.ControlType]::ListItem)
+$btn36 = New-Object System.Windows.Automation.PropertyCondition(
+    [System.Windows.Automation.AutomationElement]::ControlTypeProperty,
+    [System.Windows.Automation.ControlType]::Button)
+
+# Robust device selection on the Devices page: the card list is vertically
+# virtualized, so a target lower than the ~12 realized rows must be scrolled
+# into view first. Scroll the card list (left half of the window) to the top,
+# then step down, searching the realized rows after each step. ScrollAt sign
+# follows ScrollContent: positive = up, negative = down.
+function Select-DeviceByName36 {
+    param([string]$NamePart)
+    $wr = New-Object Win32+RECT
+    [Win32]::GetWindowRect($script:hwnd, [ref]$wr) | Out-Null
+    $listX = [int]($wr.Left + 400)
+    $midY  = [int](($wr.Top + $wr.Bottom) / 2)
+    # Scroll the card list to the top first so a top-of-list target (e.g. the
+    # "All Consumer Controls (Merged)" row) is realized even if a prior capture
+    # left the list scrolled down. Then step down searching each realized page.
+    [Win32]::ForceFG($script:hwnd)
+    for ($u = 0; $u -lt 8; $u++) { [Win32]::ScrollAt($listX, $midY, 3); Start-Sleep -Milliseconds 60 }
+    Start-Sleep -Milliseconds 300
+    for ($try = 0; $try -lt 16; $try++) {
+        $items = $script:uiaWin.FindAll($TD, $li36)
+        foreach ($it in $items) {
+            if ($it.Current.Name -like "*$NamePart*") {
+                Click-El $it -Label "Device '$NamePart'" -Delay 900 | Out-Null
+                return $true
+            }
+        }
+        [Win32]::ForceFG($script:hwnd); [Win32]::ScrollAt($listX, $midY, -3); Start-Sleep -Milliseconds 350
+    }
+    Write-Host "  !! device '$NamePart' not found after scroll" -ForegroundColor Yellow
+    return $false
+}
+
+# --- Pointer tab (Wii Remote on the Extended slot) ---
+# Use the SlotsItemsControl cards (proven to work late in the run for the
+# KBM/MIDI captures) rather than Find-AllSlots, which returns nothing here.
+# Click each slot card and try the Pointer tab; it appears only on the slot
+# whose selected device is the Wii Remote (Extended slot).
+Write-Host "[3b] Pointer tab"
+$ptrDone = $false
+$rbCondP = New-Object System.Windows.Automation.PropertyCondition(
+    [System.Windows.Automation.AutomationElement]::ControlTypeProperty,
+    [System.Windows.Automation.ControlType]::RadioButton)
+# Count the cards once.
+Nav "Dashboard"; Start-Sleep -Milliseconds 1200
+$slotsHostP = Find-UIA -Aid "SlotsItemsControl"
+$cardCountP = if ($slotsHostP) { @($slotsHostP.FindAll($TC, [System.Windows.Automation.Condition]::TrueCondition)).Count } else { 0 }
+Write-Host "  Pointer: $cardCountP slot card(s)"
+for ($ci = 0; $ci -lt $cardCountP -and -not $ptrDone; $ci++) {
+    # Re-navigate to the Dashboard and re-find the cards EACH iteration. After
+    # a card click we're on the PadPage, so a stale card reference clicks a
+    # PadPage coordinate, not a Dashboard card -- which left every probe stuck
+    # on the first slot. Every working slot section re-nav's Dashboard first.
+    Nav "Dashboard"; Start-Sleep -Milliseconds 900
+    $sh = Find-UIA -Aid "SlotsItemsControl"
+    $cds = if ($sh) { @($sh.FindAll($TC, [System.Windows.Automation.Condition]::TrueCondition)) } else { @() }
+    if ($ci -ge $cds.Count) { continue }
+    Click-El $cds[$ci] -Label "slot card $ci (Pointer probe)" -Delay 1500 | Out-Null
+    # Land on the Controller tab first so the PadPage realizes, then poll for
+    # the Pointer tab to flip visible (Wii's HasIrCamera gate propagates a
+    # few seconds after slot bind, like the PS-slot AT/Lighting gating).
+    $padPageP = Find-UIA -Aid "PadPageView"
+    if (-not $padPageP) { continue }
+    $tabsP = $padPageP.FindAll($TC, $rbCondP)
+    if ($tabsP.Count -gt 0) { Click-El $tabsP[0] -Label "Controller Tab (Pointer probe)" -Delay 800 | Out-Null }
+    $ptrVisible = $false
+    for ($w = 0; $w -lt 6 -and -not $ptrVisible; $w++) {
+        Start-Sleep -Milliseconds 800
+        $tabsP = $padPageP.FindAll($TC, $rbCondP)
+        if ($tabsP | Where-Object { $_.Current.Name -eq "Pointer" }) { $ptrVisible = $true }
+    }
+    Write-Host ("    card $ci tabs: " + (($tabsP | ForEach-Object { $_.Current.Name }) -join ', '))
+    if ($ptrVisible -and (Tab "Pointer")) { Start-Sleep -Milliseconds 800; Cap "pad-pointer"; $ptrDone = $true }
+}
+if (-not $ptrDone) { Write-Host "  !! Pointer tab not reachable" -ForegroundColor Yellow }
+
+# --- Devices page: the new 3.6.0 device types ---
+Nav "Devices"; Start-Sleep -Milliseconds 900
+
+# Capture the non-modal device panes (Consumer, Power) FIRST, then NFC last.
+# The NFC "Register / Manage NFC Tags" dialog is modal; running it before the
+# others left its dialog covering the screen and stole their captures.
+Write-Host "[3b] Consumer Control device"
+if (Select-DeviceByName36 "Consumer Control") { Cap "devices-consumer" }
+
+Write-Host "[3b] Power / idle disconnect + battery"
+Nav "Devices"; Start-Sleep -Milliseconds 600
+if (Select-DeviceByName36 "DualSense") { Cap "devices-power" }
+
+Write-Host "[3b] NFC reader device (last -- opens a modal dialog)"
+Nav "Devices"; Start-Sleep -Milliseconds 600
+if (Select-DeviceByName36 "NFC") {
+    Cap "devices-nfc"
+    $nfcBtn = $null
+    foreach ($b in $script:uiaWin.FindAll($TD, $btn36)) {
+        if ($b.Current.Name -match "NFC Tag") { $nfcBtn = $b; break }
+    }
+    if ($nfcBtn) {
+        Click-El $nfcBtn -Label "Register/Manage NFC Tags" -Delay 1300 | Out-Null
+        Cap "nfc-register"
+        # Close the modal via its Close button (SendKeys ESC did not reach it).
+        # The window title bar ALSO has a "Close" button (the X), so exclude the
+        # top strip by position -- the dialog's Close sits low in the window.
+        $wrC = New-Object Win32+RECT
+        [Win32]::GetWindowRect($script:hwnd, [ref]$wrC) | Out-Null
+        $closeBtn = $null
+        foreach ($b in $script:uiaWin.FindAll($TD, $btn36)) {
+            if ($b.Current.Name -eq "Close") {
+                $r = $b.Current.BoundingRectangle
+                if ($r.Y -gt ($wrC.Top + 150)) { $closeBtn = $b; break }  # not the title-bar X
+            }
+        }
+        if ($closeBtn) { Click-El $closeBtn -Label "Close NFC dialog" -Delay 800 | Out-Null }
+        else { [System.Windows.Forms.SendKeys]::SendWait("{ESC}"); Start-Sleep -Milliseconds 700 }
+    }
+}
 # ---- 23-24. Web controller ----
 Write-Host "[$(Next)/$total] Web controller screenshots"
 # Remove TOPMOST from PadForge and minimize it so it doesn't cover Edge
@@ -1281,6 +1529,7 @@ try {
     Write-Host "  !! Web screenshots failed: $($_.Exception.Message)" -ForegroundColor Yellow
     $n++
 }
+
 
 # ==============================================================================
 # STEP 4: Cleanup

@@ -2145,4 +2145,5 @@
   <data name="DevObj_ConsumerBrowserStop" xml:space="preserve"><value>Parar Navegador</value></data>
   <data name="DevObj_ConsumerBrowserRefresh" xml:space="preserve"><value>Atualizar</value></data>
   <data name="DevObj_ConsumerBrowserBookmarks" xml:space="preserve"><value>Favoritos</value></data>
+  <data name="DevObj_ConsumerDynamic_Format" xml:space="preserve"><value>Consumo {0}</value></data>
 </root>

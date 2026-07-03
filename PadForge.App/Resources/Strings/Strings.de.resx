@@ -2094,7 +2094,7 @@
   <data name="Nfc_RegisteredFormat" xml:space="preserve"><value>„{0}“ registriert. Halten Sie ein weiteres Tag an, um mehr hinzuzufügen.</value></data>
   <data name="Nfc_ManageButton" xml:space="preserve"><value>NFC-Tags registrieren/verwalten</value></data>
   <data name="DeviceType_Nfc" xml:space="preserve"><value>NFC-Leser</value></data>
-  <data name="DeviceType_ConsumerControl" xml:space="preserve"><value>Consumer Control</value></data>
+  <data name="DeviceType_ConsumerControl" xml:space="preserve"><value>Multimediasteuerung</value></data>
   <data name="MacroAction_Type_DisconnectController" xml:space="preserve"><value>Controller trennen</value></data>
   <data name="MacroAction_DisconnectController_Tooltip" xml:space="preserve"><value>Trennt die Bluetooth-Verbindung des Controllers, sodass er in den Ruhezustand wechselt. Nur Bluetooth-Verbindungen.</value></data>
   <data name="MacroAction_DisconnectController_Format" xml:space="preserve"><value>Controller trennen: {0}</value></data>
@@ -2145,4 +2145,5 @@
   <data name="DevObj_ConsumerBrowserStop" xml:space="preserve"><value>Browser stopp</value></data>
   <data name="DevObj_ConsumerBrowserRefresh" xml:space="preserve"><value>Aktualisieren</value></data>
   <data name="DevObj_ConsumerBrowserBookmarks" xml:space="preserve"><value>Lesezeichen</value></data>
+  <data name="DevObj_ConsumerDynamic_Format" xml:space="preserve"><value>Multimedia {0}</value></data>
 </root>

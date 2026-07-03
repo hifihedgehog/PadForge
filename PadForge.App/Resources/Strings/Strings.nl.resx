@@ -2114,7 +2114,7 @@
   <data name="Nfc_RegisteredFormat" xml:space="preserve"><value>'{0}' geregistreerd. Houd een andere tag bij om er meer toe te voegen.</value></data>
   <data name="Nfc_ManageButton" xml:space="preserve"><value>NFC-tags registreren/beheren</value></data>
   <data name="DeviceType_Nfc" xml:space="preserve"><value>NFC-lezer</value></data>
-  <data name="DeviceType_ConsumerControl" xml:space="preserve"><value>Consumer Control</value></data>
+  <data name="DeviceType_ConsumerControl" xml:space="preserve"><value>Multimediabediening</value></data>
   <data name="MacroAction_Type_DisconnectController" xml:space="preserve"><value>Controller loskoppelen</value></data>
   <data name="MacroAction_DisconnectController_Tooltip" xml:space="preserve"><value>Verbreekt de Bluetooth-verbinding van de controller zodat deze in slaapstand gaat. Alleen Bluetooth-verbindingen.</value></data>
   <data name="MacroAction_DisconnectController_Format" xml:space="preserve"><value>Controller loskoppelen: {0}</value></data>
@@ -2165,4 +2165,5 @@
   <data name="DevObj_ConsumerBrowserStop" xml:space="preserve"><value>Browser stoppen</value></data>
   <data name="DevObj_ConsumerBrowserRefresh" xml:space="preserve"><value>Vernieuwen</value></data>
   <data name="DevObj_ConsumerBrowserBookmarks" xml:space="preserve"><value>Bladwijzers</value></data>
+  <data name="DevObj_ConsumerDynamic_Format" xml:space="preserve"><value>Multimedia {0}</value></data>
 </root>

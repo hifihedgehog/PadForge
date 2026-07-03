@@ -2145,4 +2145,5 @@
   <data name="DevObj_ConsumerBrowserStop" xml:space="preserve"><value>ブラウザー停止</value></data>
   <data name="DevObj_ConsumerBrowserRefresh" xml:space="preserve"><value>更新</value></data>
   <data name="DevObj_ConsumerBrowserBookmarks" xml:space="preserve"><value>ブックマーク</value></data>
+  <data name="DevObj_ConsumerDynamic_Format" xml:space="preserve"><value>コンシューマー {0}</value></data>
 </root>

@@ -365,6 +365,43 @@ function Select-MappedDevice {
     return $false
 }
 
+# Capture a mapping row's Source ComboBox dropdown for the currently-mapped
+# device, with the gated Wii source (Balance / IR Brightness / Mouse Motion)
+# scrolled into view. The DataGrid cell ComboBoxes expose NO UIA peers (WPF-UI
+# virtualized grid), so this is driven by COORDINATE + KEYBOARD: click the first
+# row's Source-cell chevron to open the dropdown, then type-ahead to the gated
+# source (WPF ComboBox jumps selection to the first item whose text starts with
+# the typed prefix, scrolling it into the visible popup). Assumes the target
+# device is ALONE on the slot (single-source grid) and already navigated to.
+function Capture-SourcePicker {
+    param([string]$DeviceNamePart, [string]$TypeAhead, [string]$ShotName)
+    Select-MappedDevice $DeviceNamePart | Out-Null
+    Start-Sleep -Milliseconds 800
+    if (-not (Tab "Mappings")) { Write-Host "  !! picker: Mappings tab not found" -ForegroundColor Yellow; return }
+    Start-Sleep -Milliseconds 1200
+    $wrP = New-Object Win32+RECT
+    [Win32]::GetWindowRect($script:hwnd, [ref]$wrP) | Out-Null
+    $pw = $wrP.Right - $wrP.Left; $ph = $wrP.Bottom - $wrP.Top
+    [Win32]::ForceFG($script:hwnd)
+    # The slot's mapping was auto-created for the earlier multi-device crowd, so it
+    # still lists stale sub-sources for devices no longer present. "Clear All"
+    # (~0.163 W, 0.174 H) empties it, then "Map All" (~0.33 W) regenerates clean
+    # single-source rows for the now-solo device. SendKeys Enter accepts any
+    # confirm dialog Clear All may raise (harmless on the grid if none appears).
+    [Win32]::ClickAt([int]($wrP.Left + 0.163 * $pw), [int]($wrP.Top + 0.174 * $ph)); Start-Sleep -Milliseconds 600
+    [System.Windows.Forms.SendKeys]::SendWait("{ENTER}"); Start-Sleep -Milliseconds 600
+    [Win32]::ClickAt([int]($wrP.Left + 0.33 * $pw), [int]($wrP.Top + 0.174 * $ph)); Start-Sleep -Milliseconds 1200
+    # First mapping row's Source-cell chevron: Source column right edge ~0.33 W,
+    # first data row ~0.245 H (read off the maximized-window Mappings screenshot).
+    $cx = [int]($wrP.Left + 0.33 * $pw)
+    $cy = [int]($wrP.Top  + 0.245 * $ph)
+    [Win32]::ClickAt($cx, $cy); Start-Sleep -Milliseconds 800   # open the Source dropdown
+    [System.Windows.Forms.SendKeys]::SendWait($TypeAhead); Start-Sleep -Milliseconds 800  # type-ahead to the gated source
+    Write-Host "  picker: opened Source combo for '$DeviceNamePart', typed '$TypeAhead'" -ForegroundColor Green
+    Cap $ShotName
+    [System.Windows.Forms.SendKeys]::SendWait("{ESC}"); Start-Sleep -Milliseconds 400  # close dropdown
+}
+
 function ScrollContent {
     param([int]$Clicks = -15)
     $sr = New-Object Win32+RECT
@@ -520,7 +557,36 @@ try {
         }
         $devicesNode.AppendChild((New-SyntheticDevice "aaaa1111-2222-3333-4444-555566667777" "Logitech G29 Driving Force Racing Wheel" 1133 49743 "HID\VID_046D&PID_C24F\dummy" 22 4 24 1)) | Out-Null
         $devicesNode.AppendChild((New-SyntheticDevice "bbbb1111-2222-3333-4444-555566667777" "MIDI Keyboard" 4661 22 "HID\VID_1235&PID_0016\dummy" 27 4 24 1)) | Out-Null
-        Write-Host "  Injected synthetic G29 wheel + MIDI Keyboard devices" -ForegroundColor Green
+        # Wii-family devices for the mapping-source-picker captures (issues #146/#151/#154).
+        # The picker offers "Balance Total Weight/Lean X/Lean Y" (IsBalanceBoard),
+        # "IR Brightness" (HasJoyConIr), and "Mouse Motion X/Y" (HasJoyCon2Mouse) when the
+        # SELECTED device's identity gate fires. All three gates are [XmlIgnore]-computed
+        # from VendorId (0x057E = 1406) + ProductName (UserDevice.cs); the exact names below
+        # trip them offline. These KEEP their DeviceObjects (cloned from a gamepad template):
+        # auto-map builds the mapping-grid rows from a device's DeviceObjects, so an
+        # emptied-objects device gives an EMPTY grid with no Source combo to open.
+        $gpTemplate = $null
+        foreach ($d in $devicesNode.SelectNodes("Device")) {
+            $pn = $d.SelectSingleNode("ProductName"); $ct = $d.SelectSingleNode("CapType")
+            if ($pn -and $pn.InnerText -like "*DualSense*") { $gpTemplate = $d; break }
+            if (-not $gpTemplate -and $ct -and $ct.InnerText -eq "21") { $gpTemplate = $d }
+        }
+        function New-WiiDevice($guid, $name, $vid, $prodId, $path) {
+            $src = if ($gpTemplate) { $gpTemplate } else { $tmplDev }
+            $d = $src.CloneNode($true)
+            $set = { param($tag, $val) $n = $d.SelectSingleNode($tag); if ($n) { $n.InnerText = "$val" } }
+            & $set "InstanceGuid" $guid; & $set "InstanceName" $name
+            & $set "ProductGuid" $guid;  & $set "ProductName" $name
+            & $set "VendorId" $vid;      & $set "ProdId" $prodId
+            & $set "DevicePath" $path;   & $set "CapType" 21
+            & $set "HasGyro" "false"; & $set "HasAccel" "false"; & $set "HasTouchpad" "false"
+            & $set "HasRumbleTriggers" "false"; & $set "IsEnabled" "true"; & $set "IsHidden" "false"
+            return $d
+        }
+        $devicesNode.AppendChild((New-WiiDevice "cccc1111-2222-3333-4444-555566667777" "Nintendo Wii Balance Board" 1406 774 "HID\VID_057E&PID_0306\dummy")) | Out-Null
+        $devicesNode.AppendChild((New-WiiDevice "dddd1111-2222-3333-4444-555566667777" "Nintendo Switch Joy-Con (R)" 1406 8199 "HID\VID_057E&PID_2007\dummy")) | Out-Null
+        $devicesNode.AppendChild((New-WiiDevice "eeee1111-2222-3333-4444-555566667777" "Nintendo Switch 2 Joy-Con (L)" 1406 8198 "HID\VID_057E&PID_2066\dummy")) | Out-Null
+        Write-Host "  Injected synthetic G29 wheel + MIDI Keyboard + 3 Wii-family devices" -ForegroundColor Green
     }
 } catch {
     Write-Host "  !! Failed to inject synthetic devices: $_" -ForegroundColor Yellow
@@ -602,11 +668,29 @@ if ($macrosNode.ChildNodes.Count -eq 0) {
   </Actions>
 </Macro>
 '@
+    # Macro 3: "Sleep Controller". Chord trigger, single DisconnectController action.
+    # Surfaces the #162 Disconnect editor (Target dropdown) for the Macros screenshot.
+    $m3Xml = @'
+<Macro PadIndex="0">
+  <Name>Sleep Controller</Name>
+  <IsEnabled>true</IsEnabled>
+  <TriggerButtons>48</TriggerButtons>
+  <TriggerSource>OutputController</TriggerSource>
+  <TriggerMode>OnPress</TriggerMode>
+  <ConsumeTriggerButtons>true</ConsumeTriggerButtons>
+  <RepeatMode>Once</RepeatMode>
+  <Actions>
+    <Action><Type>DisconnectController</Type><DisconnectTarget>TriggeringDevice</DisconnectTarget></Action>
+  </Actions>
+</Macro>
+'@
     $frag1 = $xml.CreateDocumentFragment(); $frag1.InnerXml = $m1Xml.Trim()
     $macrosNode.AppendChild($frag1) | Out-Null
     $frag2 = $xml.CreateDocumentFragment(); $frag2.InnerXml = $m2Xml.Trim()
     $macrosNode.AppendChild($frag2) | Out-Null
-    Write-Host "  Injected 2 test macros"
+    $frag3 = $xml.CreateDocumentFragment(); $frag3.InnerXml = $m3Xml.Trim()
+    $macrosNode.AppendChild($frag3) | Out-Null
+    Write-Host "  Injected 3 test macros"
 }
 
 # --- Ensure PadForge starts with window visible (not minimized to tray) ---
@@ -832,7 +916,7 @@ Write-Host "--- Assign DualSense to Xbox + PlayStation slots ---" -ForegroundCol
 Nav "Devices"; Start-Sleep -Milliseconds 1500
 
 function Assign-DeviceToSlot {
-    param([string]$DeviceNamePart, [string]$SlotNumberLabel)
+    param([string]$DeviceNamePart, [string]$SlotNumberLabel, [switch]$Unassign)
     $searchIn = $script:uiaWin
     $liCond = New-Object System.Windows.Automation.PropertyCondition(
         [System.Windows.Automation.AutomationElement]::ControlTypeProperty,
@@ -914,11 +998,16 @@ function Assign-DeviceToSlot {
         }
     }
     if ($btn) {
-        # Skip if already assigned (reading ToggleState is fine; it's the
-        # Toggle() ACTION that's unreliable here).
-        $already = $false
-        try { $already = ($btn.GetCurrentPattern([System.Windows.Automation.TogglePattern]::Pattern).Current.ToggleState -eq [System.Windows.Automation.ToggleState]::On) } catch {}
-        if ($already) {
+        # Reading ToggleState is fine; it's the Toggle() ACTION that's unreliable.
+        # Assign: skip if already ON. Unassign: skip if already OFF. Otherwise the
+        # single Click below flips it (assign turns on, unassign turns off).
+        $isOn = $false
+        try { $isOn = ($btn.GetCurrentPattern([System.Windows.Automation.TogglePattern]::Pattern).Current.ToggleState -eq [System.Windows.Automation.ToggleState]::On) } catch {}
+        if ($Unassign -and -not $isOn) {
+            Write-Host "  Slot $SlotNumberLabel already unassigned from $DeviceNamePart"
+            return $true
+        }
+        if (-not $Unassign -and $isOn) {
             Write-Host "  Slot $SlotNumberLabel already assigned to $DeviceNamePart"
             return $true
         }
@@ -931,8 +1020,9 @@ function Assign-DeviceToSlot {
         # assignment silently no-ops -- which is exactly why every slot read
         # "No device mapped" on the dashboard.
         try { $btn.GetCurrentPattern([System.Windows.Automation.ScrollItemPattern]::Pattern).ScrollIntoView(); Start-Sleep -Milliseconds 300 } catch {}
+        $verb = if ($Unassign) { "Unassigned" } else { "Assigned" }
         Click-El $btn -Label "Slot $SlotNumberLabel toggle ($DeviceNamePart)" -Delay 900 | Out-Null
-        Write-Host "  Assigned $DeviceNamePart to slot $SlotNumberLabel" -ForegroundColor Green
+        Write-Host "  $verb $DeviceNamePart $(if ($Unassign) { 'from' } else { 'to' }) slot $SlotNumberLabel" -ForegroundColor Green
         return $true
     }
     Write-Host "  !! Slot $SlotNumberLabel toggle not found for $DeviceNamePart (had $($toggles.Count) toggles)" -ForegroundColor Yellow
@@ -958,6 +1048,11 @@ Assign-DeviceToSlot -DeviceNamePart "Logitech G29" -SlotNumberLabel "1" | Out-Nu
 # The Wii Remote's IR-camera capability is identity-derived (VID 0x057E + name),
 # so the tab is offered whether the placeholder device is online or not.
 Assign-DeviceToSlot -DeviceNamePart "Wii Remote" -SlotNumberLabel "3" | Out-Null
+# The 3 Wii source-picker devices are NOT assigned here. They must NOT ride the
+# Xbox slot during STEP 3, or auto-map would combine every slot device into
+# multi-source rows and busy the pad-mappings shot. The source-picker block in
+# STEP 3b swaps them onto slot 1 ALONE (after the Xbox captures are done) so each
+# gets a clean single-source grid.
 
 # Give the Devices page time to write the assignment back to the VMs and
 # for the PadPage's hasForceFeedback / hasAdaptiveTriggers / hasLightbar
@@ -1056,27 +1151,16 @@ if ($slots.Count -ge 1) {
         $liCond = New-Object System.Windows.Automation.PropertyCondition(
             [System.Windows.Automation.AutomationElement]::ControlTypeProperty,
             [System.Windows.Automation.ControlType]::ListItem)
-        $lists = Find-AllUIA -CT ([System.Windows.Automation.ControlType]::List)
-        foreach ($list in $lists) {
-            $items = $list.FindAll($TC, $liCond)
-            if ($items.Count -gt 0) {
-                $clicked = Click-El $items[0] -Label "Macro: $($items[0].Current.Name)"
-                if ($clicked) {
-                    $macroClicked = $true
-                    Start-Sleep -Milliseconds 400
-                    # Try to click first action in the second list
-                    $lists2 = Find-AllUIA -CT ([System.Windows.Automation.ControlType]::List)
-                    foreach ($l2 in $lists2) {
-                        if ([System.Windows.Automation.Automation]::Compare($l2, $list)) { continue }
-                        $acts = $l2.FindAll($TC, $liCond)
-                        if ($acts.Count -gt 0) {
-                            Click-El $acts[0] -Label "Action: $($acts[0].Current.Name)" -Delay 300
-                        }
-                        break
-                    }
-                }
-                break
-            }
+        # The macro ListBox uses DisplayMemberPath, so items expose their text as
+        # Text peers, not named ListItems -- FindAll(ListItem) returns nothing (any
+        # scope), which is why this always fell to the coordinate fallback and left
+        # nothing selected. Select "Quick Combo" by exact Name from the root, which
+        # reaches the Text peer and highlights the macro (its action list renders).
+        $qc = Find-UIA -Name "Quick Combo"
+        if ($qc) {
+            Click-El $qc -Label "Macro: Quick Combo" -Delay 500 | Out-Null
+            $macroClicked = $true
+            Start-Sleep -Milliseconds 400
         }
         if (-not $macroClicked) {
             # Fallback: click roughly where the first macro item would be
@@ -1170,6 +1254,48 @@ if ($slots.Count -ge 1) {
     }
     # Return the selection to the DualSense so later navigation is predictable.
     Select-MappedDevice "DualSense" | Out-Null
+
+    # Disconnect Controller action editor (#162), LAST in the Xbox block: selecting
+    # a macro leaves the Macros tab in a state where the next tab-switch fails, so
+    # it must not precede another Xbox-tab capture (the next block re-navs via
+    # Dashboard, resetting the PadPage). The macro ListBox and action list expose
+    # no UIA peers (WPF-UI virtualized), so both are clicked by coordinate: the
+    # "Sleep Controller" row (3rd in the list, ~0.343 H), then its "Disconnect
+    # Controller: Triggering Device" action (~0.59 H) so the editor Border (gated
+    # on SelectedAction) renders with the Target dropdown. Fractions are read off
+    # the maximized-window screenshot and are resolution-independent.
+    Write-Host "  Macro: Disconnect Controller (Target dropdown)"
+    Tab "Macros"; Start-Sleep -Milliseconds 900
+    $wrMc = New-Object Win32+RECT
+    [Win32]::GetWindowRect($script:hwnd, [ref]$wrMc) | Out-Null
+    $mw = $wrMc.Right - $wrMc.Left; $mh = $wrMc.Bottom - $wrMc.Top
+    [Win32]::ForceFG($script:hwnd)
+    [Win32]::ClickAt([int]($wrMc.Left + 0.18 * $mw), [int]($wrMc.Top + 0.343 * $mh)); Start-Sleep -Milliseconds 800  # Sleep Controller row
+    [Win32]::ClickAt([int]($wrMc.Left + 0.33 * $mw), [int]($wrMc.Top + 0.594 * $mh)); Start-Sleep -Milliseconds 800  # its Disconnect action row
+    # Best effort: expand the Target combo (a StackPanel ComboBox in the editor,
+    # not an opaque grid cell) so all four target modes show. Capture either way.
+    $cbCondM = New-Object System.Windows.Automation.PropertyCondition(
+        [System.Windows.Automation.AutomationElement]::ControlTypeProperty,
+        [System.Windows.Automation.ControlType]::ComboBox)
+    $liCondM = New-Object System.Windows.Automation.PropertyCondition(
+        [System.Windows.Automation.AutomationElement]::ControlTypeProperty,
+        [System.Windows.Automation.ControlType]::ListItem)
+    $padPageM = Find-UIA -Aid "PadPageView"
+    $searchM = if ($padPageM) { $padPageM } else { $script:uiaWin }
+    $targetCombo = $null
+    foreach ($cb in $searchM.FindAll($TD, $cbCondM)) {
+        $expM = $null
+        try { $expM = $cb.GetCurrentPattern([System.Windows.Automation.ExpandCollapsePattern]::Pattern) } catch { continue }
+        try { $expM.Expand(); Start-Sleep -Milliseconds 350 } catch { continue }
+        $hasTrig = $false
+        foreach ($ci in $cb.FindAll($TD, $liCondM)) { if ($ci.Current.Name -like "*Triggering Device*") { $hasTrig = $true; break } }
+        if ($hasTrig) { $targetCombo = $cb; break }
+        try { $expM.Collapse(); Start-Sleep -Milliseconds 150 } catch {}
+    }
+    if ($targetCombo) { Write-Host "  Expanded Disconnect Target dropdown" -ForegroundColor Green }
+    else { Write-Host "  Target combo not UIA-visible; capturing editor with Target field as-is" -ForegroundColor Yellow }
+    Cap "macro-disconnect"
+    if ($targetCombo) { try { $targetCombo.GetCurrentPattern([System.Windows.Automation.ExpandCollapsePattern]::Pattern).Collapse() } catch {} }
 
 } else {
     Write-Host "  !! No controller slots found" -ForegroundColor Red
@@ -1495,6 +1621,10 @@ for ($ci = 0; $ci -lt $cardCountP -and -not $ptrDone; $ci++) {
     # few seconds after slot bind, like the PS-slot AT/Lighting gating).
     $padPageP = Find-UIA -Aid "PadPageView"
     if (-not $padPageP) { continue }
+    # The Extended slot now carries several Wii-family devices; the Pointer tab
+    # gates on HasIrCamera, which only the Wii Remote has. Explicitly select it so
+    # a non-Remote default selection can't hide the tab (no-op on other slots).
+    Select-MappedDevice "Wii Remote" | Out-Null
     $tabsP = $padPageP.FindAll($TC, $rbCondP)
     if ($tabsP.Count -gt 0) { Click-El $tabsP[0] -Label "Controller Tab (Pointer probe)" -Delay 800 | Out-Null }
     $ptrVisible = $false
@@ -1507,6 +1637,40 @@ for ($ci = 0; $ci -lt $cardCountP -and -not $ptrDone; $ci++) {
     if ($ptrVisible -and (Tab "Pointer")) { Start-Sleep -Milliseconds 800; Cap "pad-pointer"; $ptrDone = $true }
 }
 if (-not $ptrDone) { Write-Host "  !! Pointer tab not reachable" -ForegroundColor Yellow }
+
+# --- Mapping source picker: Wii-family gated sources (#146/#151/#154) ---
+# Each Wii device is swapped onto the XBOX slot (SlotNumber 1) ALONE so its
+# mapping grid is single-source. The Xbox slot's normal captures are already done
+# by now, so clearing it is safe; the config is restored from backup at the end.
+# The grid Source combos expose no UIA peers, so Capture-SourcePicker opens the
+# first row's combo by coordinate and type-aheads to the gated source.
+Write-Host "[3b] Mapping source picker (Wii-family sources)"
+Nav "Devices"; Start-Sleep -Milliseconds 800
+# Clear slot 1 (its DualSense stays on the PlayStation slot).
+Assign-DeviceToSlot -DeviceNamePart "DualSense"     -SlotNumberLabel "1" -Unassign | Out-Null
+Assign-DeviceToSlot -DeviceNamePart "Xbox Series X" -SlotNumberLabel "1" -Unassign | Out-Null
+Assign-DeviceToSlot -DeviceNamePart "Logitech G29"  -SlotNumberLabel "1" -Unassign | Out-Null
+$wiiPick = @(
+    @{ Dev = "Balance Board";    Type = "Balance";      Shot = "wii-balance-sources" },
+    @{ Dev = "Joy-Con (R)";      Type = "IR Bright";    Shot = "joycon-ir-source" },
+    @{ Dev = "Switch 2 Joy-Con"; Type = "Mouse Motion"; Shot = "joycon2-mouse-sources" }
+)
+foreach ($wp in $wiiPick) {
+    Nav "Devices"; Start-Sleep -Milliseconds 600
+    Assign-DeviceToSlot -DeviceNamePart $wp.Dev -SlotNumberLabel "1" | Out-Null
+    Start-Sleep -Milliseconds 800
+    Nav "Dashboard"; Start-Sleep -Milliseconds 900
+    $shS = Find-UIA -Aid "SlotsItemsControl"
+    $cdS = if ($shS) { @($shS.FindAll($TC, [System.Windows.Automation.Condition]::TrueCondition)) } else { @() }
+    if ($cdS.Count -ge 1) {
+        Click-El $cdS[0] -Label "Xbox card (picker $($wp.Dev))" -Delay 1500 | Out-Null
+        Capture-SourcePicker -DeviceNamePart $wp.Dev -TypeAhead $wp.Type -ShotName $wp.Shot
+    } else {
+        Write-Host "  !! Xbox slot card not found for $($wp.Dev)" -ForegroundColor Yellow
+    }
+    Nav "Devices"; Start-Sleep -Milliseconds 600
+    Assign-DeviceToSlot -DeviceNamePart $wp.Dev -SlotNumberLabel "1" -Unassign | Out-Null
+}
 
 # --- Devices page: the new 3.6.0 device types ---
 Nav "Devices"; Start-Sleep -Milliseconds 900

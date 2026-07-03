@@ -231,7 +231,9 @@ namespace PadForge.Engine.Data
         /// <summary>Idle disconnect countdown in seconds (issue #162). When the
         /// device is Bluetooth-connected and its input has been idle this long,
         /// the host radio drops the link so the controller sleeps. 0 disables.
-        /// Never fires while charging or on USB, matching DS4Windows.</summary>
+        /// Over USB there is no radio link to drop. Unlike DS4Windows there is
+        /// no charging gate: an idle pad on a charger still disconnects, since
+        /// dropping Bluetooth does not interrupt charging.</summary>
         [XmlElement]
         public int IdleDisconnectSeconds { get; set; }
 

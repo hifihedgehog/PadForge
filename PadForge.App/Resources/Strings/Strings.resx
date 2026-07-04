@@ -115,7 +115,7 @@
   <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>Cleaning up virtual controllers left from a previous session.</value></data>
   <data name="Main_ReleasingControllers" xml:space="preserve"><value>Releasing virtual controllers</value></data>
   <data name="Main_PleaseWait" xml:space="preserve"><value>Please wait...</value></data>
-  <data name="Main_DevicesSuffix" xml:space="preserve"><value> device(s)</value></data>
+  <data name="Main_DevicesSuffix" xml:space="preserve"><value> devices</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>Add Controller</value></data>
   <data name="Main_DeleteVC" xml:space="preserve"><value>Delete virtual controller</value></data>
   <data name="Main_FullScreen" xml:space="preserve"><value>Full Screen</value></data>

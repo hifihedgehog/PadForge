@@ -867,6 +867,12 @@
                                                                 </Style>
                                                             </TextBlock.Style>
                                                         </TextBlock>
+                                                        <!-- Generic gamepad glyph (#175 iter 71, artifact .dev-line):
+                                                             rides inside each roster item so it repeats per device. -->
+                                                        <TextBlock Text="&#xE7FC;"
+                                                                   FontFamily="Segoe MDL2 Assets" FontSize="11"
+                                                                   Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                                                                   VerticalAlignment="Center" Margin="0,0,5,0"/>
                                                         <TextBlock Text="{Binding Name}" FontSize="12"
                                                                    Foreground="{DynamicResource ColdBrush}"/>
                                                         <TextBlock Text="{Binding BatteryGlyph}"
@@ -913,7 +919,11 @@
                                             </Style>
                                         </TextBlock.Style>
                                     </TextBlock>
-                                    <StackPanel Orientation="Horizontal" Margin="8,0,0,0">
+                                    <!-- Middle-dot separator (#175 iter 71, artifact):
+                                         "Forging · 2 mapped, 1 connected". -->
+                                    <TextBlock Text="·" FontSize="11" Margin="5,0"
+                                               Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
+                                    <StackPanel Orientation="Horizontal">
                                         <TextBlock FontSize="11" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text="{Binding MappedDeviceCount, Mode=OneWay}"/>
                                         <TextBlock FontSize="11" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text="{Binding Dashboard_Mapped, Source={x:Static strings:Strings.Instance}}"/>
                                         <TextBlock FontSize="11" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text="{Binding ConnectedDeviceCount, Mode=OneWay}"/>

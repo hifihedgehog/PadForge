@@ -329,8 +329,8 @@
                 <!-- Preset ghost chip (#175, per the approved header mock):
                      slot-scope, inline in tier 1. Visibility still driven by
                      code-behind through the same names. -->
-                <Border x:Name="HMaestroProfileBar" CornerRadius="14" Padding="10,2" Margin="8,4"
-                        Background="{DynamicResource ControlFillColorDefaultBrush}"
+                <Border x:Name="HMaestroProfileBar" Margin="10,4,4,4"
+                        Background="Transparent"
                         VerticalAlignment="Center"
                         Visibility="Collapsed">
                     <StackPanel Orientation="Horizontal">

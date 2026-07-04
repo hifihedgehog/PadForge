@@ -72,7 +72,7 @@
 
         <!-- Diagnostic log path (non-localized, it's a file path) -->
         <TextBlock Grid.Row="5" x:Name="LogPathText" TextWrapping="Wrap" Margin="0,0,0,8"
-                   FontSize="11" Opacity="0.6"
+                   FontSize="11"
                    Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
 
         <StackPanel Grid.Row="6" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,4,0,0">

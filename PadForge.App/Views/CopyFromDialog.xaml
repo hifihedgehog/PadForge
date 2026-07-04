@@ -38,11 +38,10 @@
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="{Binding Name}" FontWeight="SemiBold"/>
                             <TextBlock Text="{Binding LayoutLabel}" FontSize="12"
-                                       Margin="8,0,0,0" Opacity="0.7"
+                                       Margin="8,0,0,0" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                        VerticalAlignment="Center"/>
                         </StackPanel>
-                        <TextBlock Text="{Binding SlotLabel}" FontSize="12"
-                                   Opacity="0.6"/>
+                        <TextBlock Text="{Binding SlotLabel}" FontSize="12" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
                     </StackPanel>
                 </DataTemplate>
             </ListBox.ItemTemplate>

@@ -47,7 +47,7 @@
                 <DataTemplate>
                     <StackPanel Margin="4,3">
                         <TextBlock Text="{Binding Name}" FontWeight="SemiBold"/>
-                        <TextBlock Text="{Binding Id}" FontSize="12" Opacity="0.6"/>
+                        <TextBlock Text="{Binding Id}" FontSize="12" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
                     </StackPanel>
                 </DataTemplate>
             </ListBox.ItemTemplate>
@@ -82,7 +82,7 @@
                 <DataTemplate>
                     <StackPanel Margin="4,3">
                         <TextBlock Text="{Binding DisplayName}" FontWeight="SemiBold"/>
-                        <TextBlock Text="{Binding DetailLine}" FontSize="12" Opacity="0.7"/>
+                        <TextBlock Text="{Binding DetailLine}" FontSize="12" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
                     </StackPanel>
                 </DataTemplate>
             </ListBox.ItemTemplate>

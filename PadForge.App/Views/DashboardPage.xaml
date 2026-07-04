@@ -617,7 +617,7 @@
                                         <ui:TextBox Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                                     PlaceholderText="{Binding RemoteLink_PeerNamePlaceholder, Source={x:Static strings:Strings.Instance}}" MaxLength="40"
                                                     HorizontalAlignment="Left" MinWidth="240"/>
-                                        <TextBlock FontSize="11" Opacity="0.6" Margin="2,3,0,0" TextTrimming="CharacterEllipsis">
+                                        <TextBlock FontSize="11" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="2,3,0,0" TextTrimming="CharacterEllipsis">
                                             <Run Text="{Binding HostName, Mode=OneWay}" FontWeight="SemiBold"/>
                                             <Run Text="{Binding FingerprintDisplay, Mode=OneWay, StringFormat='  ·  {0}'}" FontFamily="Consolas"/>
                                         </TextBlock>
@@ -650,7 +650,7 @@
                                         </Grid.ColumnDefinitions>
                                         <StackPanel Grid.Column="0" VerticalAlignment="Center">
                                             <TextBlock Text="{Binding DisplayName}" FontWeight="SemiBold"/>
-                                            <TextBlock Text="{Binding HostPort}" FontSize="11" FontFamily="Consolas" Opacity="0.6"/>
+                                            <TextBlock Text="{Binding HostPort}" FontSize="11" FontFamily="Consolas" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
                                         </StackPanel>
                                         <ui:Button Grid.Column="1" VerticalAlignment="Center"
                                                    Content="{Binding ButtonLabel}" IsEnabled="{Binding CanPair}"
@@ -744,7 +744,7 @@
                                    VerticalAlignment="Center" Margin="0,0,6,0"/>
                         <TextBlock Text="HidHide" FontWeight="SemiBold"/>
                     </StackPanel>
-                    <TextBlock Grid.Column="1" Text="{Binding HidHideStatusText}" Opacity="0.7"/>
+                    <TextBlock Grid.Column="1" Text="{Binding HidHideStatusText}" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
 
                     <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,8,0,0">
                         <TextBlock Text="&#xE8D6;" FontFamily="Segoe MDL2 Assets" FontSize="14"
@@ -752,7 +752,7 @@
                         <TextBlock Text="MIDI Services" FontWeight="SemiBold"/>
                     </StackPanel>
                     <TextBlock Grid.Row="1" Grid.Column="1"
-                               Text="{Binding MidiServicesStatusText}" Opacity="0.7"
+                               Text="{Binding MidiServicesStatusText}" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                Margin="0,8,0,0"/>
 
                 </Grid>

@@ -200,9 +200,12 @@
                                                 <DataTrigger.EnterActions>
                                                     <BeginStoryboard>
                                                         <Storyboard>
-                                                            <DoubleAnimation Storyboard.TargetProperty="Opacity" To="1.0" Duration="0:0:0.3">
+                                                            <!-- Artifact breathe: 3.2s ease-in-out shadow pulse. -->
+                                                            <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                                                                             From="0.55" To="1.0" Duration="0:0:1.6"
+                                                                             AutoReverse="True" RepeatBehavior="Forever">
                                                                 <DoubleAnimation.EasingFunction>
-                                                                    <CubicEase EasingMode="EaseOut"/>
+                                                                    <SineEase EasingMode="EaseInOut"/>
                                                                 </DoubleAnimation.EasingFunction>
                                                             </DoubleAnimation>
                                                         </Storyboard>
@@ -240,10 +243,10 @@
                                     <Setter Property="BorderBrush" Value="#FF253049"/>
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding IsEnabled}" Value="True">
-                                            <Setter Property="BorderBrush" Value="#59FF8A50"/>
+                                            <Setter Property="BorderBrush" Value="#2EFF6B2C"/>
                                         </DataTrigger>
                                         <DataTrigger Binding="{Binding IsVirtualControllerConnected}" Value="True">
-                                            <Setter Property="BorderBrush" Value="#80FF6B2C"/>
+                                            <Setter Property="BorderBrush" Value="#8CFF6B2C"/>
                                         </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
@@ -488,18 +491,34 @@
 
                                 <!-- Row 2: Device name (compact). Cold: the
                                      physical device feeding this slot (#175). -->
-                                <Border Grid.Row="2" ClipToBounds="True" Margin="0,8,0,0">
-                                    <StackPanel Orientation="Horizontal">
+                                <Grid Grid.Row="2" Margin="0,8,0,0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Border Grid.Column="0" ClipToBounds="True">
                                         <TextBlock Text="{Binding DeviceName}"
                                                    FontSize="12"
                                                    Foreground="{DynamicResource ColdBrush}"
                                                    common:MarqueeBehavior.IsEnabled="True"/>
-                                        <TextBlock Text="{Binding BatteryText}"
-                                                   FontSize="11"
-                                                   Foreground="{DynamicResource ColdBrush}"
-                                                   VerticalAlignment="Center" Margin="6,0,0,0"/>
-                                    </StackPanel>
-                                </Border>
+                                    </Border>
+                                    <TextBlock Grid.Column="1"
+                                               Text="{Binding BatteryText, StringFormat={}&#9646; {0}}"
+                                               FontFamily="{StaticResource TelemetryFontFamily}"
+                                               FontSize="11" Opacity="0.85"
+                                               Foreground="{DynamicResource ColdBrush}"
+                                               VerticalAlignment="Center" Margin="6,0,0,0">
+                                        <TextBlock.Style>
+                                            <Style TargetType="TextBlock">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding BatteryText}" Value="">
+                                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+                                    </TextBlock>
+                                </Grid>
 
                                 <!-- Row 3: Status -->
                                 <StackPanel Grid.Row="3" Orientation="Horizontal"
@@ -510,7 +529,7 @@
                                                 <Setter Property="Foreground" Value="{DynamicResource TextFillColorTertiaryBrush}"/>
                                                 <Style.Triggers>
                                                     <DataTrigger Binding="{Binding IsEnabled}" Value="True">
-                                                        <Setter Property="Foreground" Value="{DynamicResource EmberHotBrush}"/>
+                                                        <Setter Property="Foreground" Value="#FFE8B434"/>
                                                     </DataTrigger>
                                                     <DataTrigger Binding="{Binding IsVirtualControllerConnected}" Value="True">
                                                         <Setter Property="Foreground" Value="{DynamicResource EmberBrush}"/>

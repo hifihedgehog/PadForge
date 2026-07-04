@@ -2428,6 +2428,38 @@ namespace PadForge
                 Tag = navItem.PadIndex
             };
             card.SetResourceReference(System.Windows.Controls.Border.BackgroundProperty, "CardBackgroundFillColorDefaultBrush");
+
+            // Heat ring (#175 artifact): live slots carry an ember rim and a
+            // breathing glow so the rail doubles as an engine monitor.
+            if (lit)
+            {
+                card.BorderBrush = new System.Windows.Media.SolidColorBrush(
+                    System.Windows.Media.Color.FromArgb(0x80, 0xFF, 0x6B, 0x2C));
+                var ring = new System.Windows.Media.Effects.DropShadowEffect
+                {
+                    Color = System.Windows.Media.Color.FromRgb(0xFF, 0x6B, 0x2C),
+                    BlurRadius = 16,
+                    ShadowDepth = 0,
+                    Opacity = 0.14,
+                };
+                card.Effect = ring;
+                var breathe = new System.Windows.Media.Animation.DoubleAnimation
+                {
+                    From = 0.14,
+                    To = 0.30,
+                    Duration = System.TimeSpan.FromSeconds(1.6),
+                    AutoReverse = true,
+                    RepeatBehavior = System.Windows.Media.Animation.RepeatBehavior.Forever,
+                    EasingFunction = new System.Windows.Media.Animation.SineEase
+                    { EasingMode = System.Windows.Media.Animation.EasingMode.EaseInOut },
+                };
+                ring.BeginAnimation(System.Windows.Media.Effects.DropShadowEffect.OpacityProperty, breathe);
+            }
+            else if (cooling)
+            {
+                card.BorderBrush = new System.Windows.Media.SolidColorBrush(
+                    System.Windows.Media.Color.FromArgb(0x2E, 0xFF, 0x6B, 0x2C));
+            }
             card.SetResourceReference(System.Windows.Controls.Border.BorderBrushProperty, "ControlStrokeColorDefaultBrush");
             if (!navItem.IsEnabled)
                 card.Opacity = 0.6;

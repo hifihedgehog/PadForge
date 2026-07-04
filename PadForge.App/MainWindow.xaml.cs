@@ -3226,8 +3226,11 @@ namespace PadForge
             var border = new System.Windows.Controls.Border
             {
                 CornerRadius = new CornerRadius(6),
-                Padding = new Thickness(6)
+                Padding = new Thickness(6),
+                // 1px stroke (#175): flyouts carry the same edge as cards.
+                BorderThickness = new Thickness(1)
             };
+            border.SetResourceReference(System.Windows.Controls.Border.BorderBrushProperty, "ControlStrokeColorDefaultBrush");
             container.Children.Add(border);
 
             // Dismiss on any click outside the popup content.

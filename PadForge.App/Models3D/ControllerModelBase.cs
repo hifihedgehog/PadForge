@@ -202,14 +202,19 @@ namespace PadForge.Models3D
         /// </summary>
         protected virtual void DrawAccentHighlights()
         {
+            // Must stay a SOLID brush: GradientHighlight lerps its Color.
+            // AccentButtonBackground became an ember gradient in #175, so the
+            // highlight now derives from the pinned accent Color instead.
             Brush accentBrush;
             try
             {
-                accentBrush = (Brush)Application.Current.Resources["AccentButtonBackground"];
+                accentBrush = Application.Current.Resources["SystemAccentColorPrimary"] is Color c
+                    ? new SolidColorBrush(c)
+                    : new SolidColorBrush(Color.FromRgb(0xFF, 0x6B, 0x2C));
             }
             catch
             {
-                accentBrush = new SolidColorBrush(Color.FromRgb(0x21, 0x96, 0xF3));
+                accentBrush = new SolidColorBrush(Color.FromRgb(0xFF, 0x6B, 0x2C));
             }
 
             var highlightMaterial = new DiffuseMaterial(accentBrush);

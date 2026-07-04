@@ -725,21 +725,22 @@
                         <RowDefinition Height="Auto"/>   <!-- Map All -->
                     </Grid.RowDefinitions>
 
+                    <!-- Ember stage floor (#175): one continuous surface
+                         under the model, the motor instruments, and Map All,
+                         so the glow never seams at a row boundary. -->
+                    <Border Grid.Row="0" Grid.RowSpan="3" IsHitTestVisible="False">
+                        <Border.Background>
+                            <RadialGradientBrush GradientOrigin="0.5,0.82" Center="0.5,0.82" RadiusX="0.55" RadiusY="0.45">
+                                <GradientStop Color="#20FF6B2C" Offset="0"/>
+                                <GradientStop Color="#00FF6B2C" Offset="1"/>
+                            </RadialGradientBrush>
+                        </Border.Background>
+                    </Border>
+
                     <!-- ══════════════════════════════════════
                          CONTROLLER MODEL (2D / 3D)
                          ══════════════════════════════════════ -->
                     <Grid Grid.Row="0" AutomationProperties.AutomationId="ControllerModelHost">
-                        <!-- Ember stage floor (#175): a warm glow under the
-                             output preview. This surface shows what the game
-                             receives, so it sits in ember light. -->
-                        <Border IsHitTestVisible="False">
-                            <Border.Background>
-                                <RadialGradientBrush GradientOrigin="0.5,0.96" Center="0.5,0.96" RadiusX="0.55" RadiusY="0.4">
-                                    <GradientStop Color="#20FF6B2C" Offset="0"/>
-                                    <GradientStop Color="#00FF6B2C" Offset="1"/>
-                                </RadialGradientBrush>
-                            </Border.Background>
-                        </Border>
                         <views:ControllerModelView x:Name="ControllerModel3D" />
                         <views:ControllerModel2DView x:Name="ControllerModel2D" Visibility="Collapsed" />
                         <views:ControllerSchematicView x:Name="ControllerSchematic" Visibility="Collapsed" />
@@ -778,7 +779,7 @@
                                        FontFamily="{StaticResource TelemetryFontFamily}" FontSize="10"
                                        Foreground="{DynamicResource TextFillColorTertiaryBrush}"
                                        HorizontalAlignment="Center" Margin="0,0,0,2"/>
-                            <ProgressBar Style="{StaticResource InstrumentBarOut}" Value="{Binding LeftMotorDisplay, Mode=OneWay}" Minimum="0" Maximum="1" IsHitTestVisible="False"/>
+                            <ProgressBar Style="{StaticResource InstrumentBarOut}" Height="14" Value="{Binding LeftMotorDisplay, Mode=OneWay}" Minimum="0" Maximum="1" IsHitTestVisible="False"/>
                         </StackPanel>
 
                         <StackPanel Grid.Column="1" Cursor="Hand" Margin="12,0,0,0"
@@ -790,7 +791,7 @@
                                        FontFamily="{StaticResource TelemetryFontFamily}" FontSize="10"
                                        Foreground="{DynamicResource TextFillColorTertiaryBrush}"
                                        HorizontalAlignment="Center" Margin="0,0,0,2"/>
-                            <ProgressBar Style="{StaticResource InstrumentBarOut}" Value="{Binding RightMotorDisplay, Mode=OneWay}" Minimum="0" Maximum="1" IsHitTestVisible="False"/>
+                            <ProgressBar Style="{StaticResource InstrumentBarOut}" Height="14" Value="{Binding RightMotorDisplay, Mode=OneWay}" Minimum="0" Maximum="1" IsHitTestVisible="False"/>
                         </StackPanel>
                     </Grid>
 
@@ -798,10 +799,15 @@
                          MAP ALL — Controller tab controls
                          ══════════════════════════════════════ -->
                     <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,4,0,4">
-                        <Button Content="{Binding MapAllButtonText}"
-                                Padding="18,7" FontSize="13.5"
-                                ToolTip="{Binding MapAllButtonTooltip}"
-                                Click="MapAllToggle_Click"/>
+                        <ui:Button Content="{Binding MapAllButtonText}"
+                                   Padding="18,7" FontSize="13"
+                                   CornerRadius="16"
+                                   Background="Transparent"
+                                   MouseOverBackground="{DynamicResource SteelRaisedBrush}"
+                                   BorderBrush="{DynamicResource SteelLineSoftBrush}"
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                   ToolTip="{Binding MapAllButtonTooltip}"
+                                   Click="MapAllToggle_Click"/>
                         <TextBlock Text="{Binding MapAllPromptText}" FontSize="14" FontWeight="SemiBold"
                                    VerticalAlignment="Center" Margin="8,0,0,0"
                                    Foreground="{DynamicResource EmberHotBrush}"

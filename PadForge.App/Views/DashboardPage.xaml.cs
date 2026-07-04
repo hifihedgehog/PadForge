@@ -210,7 +210,10 @@ namespace PadForge.Views
 
             // Capture bitmap before hiding the card.
             var snapshot = CaptureCardVisual(card);
-            card.Opacity = 0;
+            // Hide the whole template root: hiding only the card leaves the
+            // glow-host sibling painting a silhouette in the old spot.
+            if (card.Parent is FrameworkElement dragTemplateRoot) dragTemplateRoot.Opacity = 0;
+            else card.Opacity = 0;
 
             Mouse.Capture(SlotsItemsControl, CaptureMode.SubTree);
 
@@ -397,6 +400,7 @@ namespace PadForge.Views
             _isDragging = false;
 
             if (_dragSourceCard != null)
+                if (_dragSourceCard.Parent is FrameworkElement dropTemplateRoot) dropTemplateRoot.Opacity = 1;
                 _dragSourceCard.Opacity = 1;
 
             ClearSwapHighlight();

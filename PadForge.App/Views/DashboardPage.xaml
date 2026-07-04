@@ -226,11 +226,28 @@
                             </Border>
                         <Border Background="{DynamicResource CrucibleCardBrush}"
                                 CornerRadius="8" Padding="10"
-                                BorderThickness="2" BorderBrush="Transparent"
+                                BorderThickness="2"
                                 Width="252"
                                 Cursor="Hand"
                                 Tag="{Binding PadIndex}"
                                 Loaded="SlotCard_Loaded">
+                            <!-- Heat states (#175 pitch): cold = steel line,
+                                 awaiting devices = faint warm rim, forging =
+                                 ember rim. The glow host behind matches with
+                                 its 0 / 0.5 / 1.0 opacity ladder. -->
+                            <Border.Style>
+                                <Style TargetType="Border">
+                                    <Setter Property="BorderBrush" Value="#FF253049"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsEnabled}" Value="True">
+                                            <Setter Property="BorderBrush" Value="#59FF8A50"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding IsVirtualControllerConnected}" Value="True">
+                                            <Setter Property="BorderBrush" Value="#80FF6B2C"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Border.Style>
                             <Grid>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="Auto"/>
@@ -450,7 +467,8 @@
                                             </Button.Style>
                                             <TextBlock Text="&#xE8D6;" FontFamily="Segoe MDL2 Assets" FontSize="13" Margin="2,0"/>
                                         </Button>
-                                        <TextBlock Text="{Binding TypeInstanceLabel}"
+                                        <TextBlock Text="{Binding TypeInstanceLabel, StringFormat={}#{0}}"
+                                                   FontFamily="{StaticResource TelemetryFontFamily}"
                                                    FontSize="10" FontWeight="SemiBold"
                                                    Foreground="{DynamicResource TextFillColorTertiaryBrush}"
                                                    VerticalAlignment="Center" Margin="5,0,4,0"/>
@@ -486,8 +504,21 @@
                                 <!-- Row 3: Status -->
                                 <StackPanel Grid.Row="3" Orientation="Horizontal"
                                             Margin="0,2,0,0">
-                                    <TextBlock Text="{Binding StatusText}"
-                                               FontSize="11" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
+                                    <TextBlock Text="{Binding StatusText}" FontSize="11" FontWeight="SemiBold">
+                                        <TextBlock.Style>
+                                            <Style TargetType="TextBlock">
+                                                <Setter Property="Foreground" Value="{DynamicResource TextFillColorTertiaryBrush}"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsEnabled}" Value="True">
+                                                        <Setter Property="Foreground" Value="{DynamicResource EmberHotBrush}"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding IsVirtualControllerConnected}" Value="True">
+                                                        <Setter Property="Foreground" Value="{DynamicResource EmberBrush}"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+                                    </TextBlock>
                                     <StackPanel Orientation="Horizontal" Margin="8,0,0,0">
                                         <TextBlock FontSize="11" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text="{Binding MappedDeviceCount, Mode=OneWay}"/>
                                         <TextBlock FontSize="11" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text="{Binding Dashboard_Mapped, Source={x:Static strings:Strings.Instance}}"/>

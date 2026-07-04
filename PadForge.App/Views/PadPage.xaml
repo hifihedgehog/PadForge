@@ -3396,6 +3396,14 @@
                                                  the cell holds only the mapping and never crowds the picker
                                                  (#111). The grouped view headers each device; SelectedItem
                                                  tags the row with the picked DeviceGuid + DeviceLabel. -->
+                                            <Border CornerRadius="8" BorderThickness="1" Padding="1"
+                                                    Visibility="{Binding IsPrimaryDirect, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                <Border.BorderBrush>
+                                                    <SolidColorBrush Color="#4D58B6E4"/>
+                                                </Border.BorderBrush>
+                                                <Border.Background>
+                                                    <SolidColorBrush Color="#0D58B6E4"/>
+                                                </Border.Background>
                                             <ComboBox ItemsSource="{Binding AvailableInputsView}"
                                                       SelectedItem="{Binding SelectedInput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                       Visibility="{Binding IsPrimaryDirect, Converter={StaticResource BoolToVisibilityConverter}}"
@@ -3421,6 +3429,7 @@
                                                     </GroupStyle>
                                                 </ComboBox.GroupStyle>
                                             </ComboBox>
+                                            </Border>
                                             <!-- Phase 2C — primary source's device origin badge.
                                                  Visible when the row is bound to a per-VC
                                                  MappingSet primary and resolved to a

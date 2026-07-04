@@ -282,6 +282,8 @@ public class Strings : INotifyPropertyChanged
     public string TypeAbbrev_Extended => Get("TypeAbbrev_Extended");
     public string TypeAbbrev_KeyboardMouse => Get("TypeAbbrev_KeyboardMouse");
     public string TypeAbbrev_Midi => Get("TypeAbbrev_Midi");
+    public string Engine_Forging => Get("Engine_Forging");
+    public string Macro_EmptyHint => Get("Macro_EmptyHint");
     public string Dashboard_Services => Get("Dashboard_Services");
     public string Dashboard_MotionServer => Get("Dashboard_MotionServer");
     public string Dashboard_DsuDescription => Get("Dashboard_DsuDescription");

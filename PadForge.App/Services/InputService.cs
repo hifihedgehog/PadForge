@@ -1739,7 +1739,7 @@ namespace PadForge.Services
             dash.EngineStateKey = engineKey;
             dash.EngineStatus = engineKey switch
             {
-                "Running" => Strings.Instance.Common_Running,
+                "Running" => Strings.Instance.Engine_Forging,
                 "Idle" => Strings.Instance.Common_Idle,
                 _ => Strings.Instance.Common_Stopped,
             };
@@ -6304,7 +6304,7 @@ namespace PadForge.Services
             // Engine status — re-derive localized text from the invariant key.
             dash.EngineStatus = dash.EngineStateKey switch
             {
-                "Running" => Strings.Instance.Common_Running,
+                "Running" => Strings.Instance.Engine_Forging,
                 "Idle" => Strings.Instance.Common_Idle,
                 _ => Strings.Instance.Common_Stopped,
             };

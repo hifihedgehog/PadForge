@@ -2601,9 +2601,21 @@
                                         BorderThickness="2,0,0,0"
                                         CornerRadius="0,8,8,0"
                                         Background="#0858B6E4">
-                                    <Border.BorderBrush>
-                                        <SolidColorBrush Color="#3D58B6E4"/>
-                                    </Border.BorderBrush>
+                                    <Border.Style>
+                                        <!-- Rail tints to the active layer's authored
+                                             color (#175); cold when the layer has none.
+                                             Converter's gray fallback never shows: the
+                                             empty-string trigger wins first. -->
+                                        <Style TargetType="Border">
+                                            <Setter Property="BorderBrush"
+                                                    Value="{Binding DataContext.ActiveLayerColor, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource HexToBrushConverter}}"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding DataContext.ActiveLayerColor, RelativeSource={RelativeSource AncestorType=UserControl}}" Value="">
+                                                    <Setter Property="BorderBrush" Value="#3D58B6E4"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Border.Style>
                                     <StackPanel Orientation="Vertical">
                                         <!-- Primary mode + kind tuning (#111). The Mode dropdown lives here
                                              in the detail strip so the Source cell holds only the mapping and

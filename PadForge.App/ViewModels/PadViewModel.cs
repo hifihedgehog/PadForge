@@ -879,6 +879,7 @@ namespace PadForge.ViewModels
                     foreach (var t in LayerTabs)
                         t.IsActive = string.Equals(t.LayerMask, v, StringComparison.Ordinal);
                     OnPropertyChanged(nameof(IsActiveLayerInheriting));
+                    OnPropertyChanged(nameof(ActiveLayerColor));
                     LayerActivated?.Invoke(this, EventArgs.Empty);
                 }
             }
@@ -888,6 +889,22 @@ namespace PadForge.ViewModels
         /// reload per-row source data so the DataGrid reflects the picked
         /// layer's rows instead of the previous layer's.</summary>
         public event EventHandler LayerActivated;
+
+        /// <summary>Authored color hint of the layer currently being
+        /// authored ("#AARRGGBB" or empty when unset). The Mappings
+        /// subpanel rail tints to it so expanded details read as belonging
+        /// to the picked layer (#175). Recomputed on
+        /// <see cref="ActiveLayerMask"/> change and
+        /// <see cref="RebuildLayerTabs"/>.</summary>
+        public string ActiveLayerColor
+        {
+            get
+            {
+                foreach (var t in LayerTabs)
+                    if (t.IsActive) return t.Color ?? "";
+                return "";
+            }
+        }
 
         /// <summary>Tab strip backing collection. Always starts with the Base
         /// tab; each shift layer authored on this slot adds an entry.
@@ -986,6 +1003,7 @@ namespace PadForge.ViewModels
             }
             OnPropertyChanged(nameof(HasShiftLayers));
             OnPropertyChanged(nameof(IsActiveLayerInheriting));
+            OnPropertyChanged(nameof(ActiveLayerColor));
         }
 
         /// <summary>

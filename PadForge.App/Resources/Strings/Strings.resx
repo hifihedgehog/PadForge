@@ -222,6 +222,23 @@
   <data name="Dashboard_VirtualControllers" xml:space="preserve"><value>Virtual Controllers</value></data>
   <data name="Dashboard_Mapped" xml:space="preserve"><value> mapped, </value></data>
   <data name="Dashboard_Connected" xml:space="preserve"><value> connected</value></data>
+  <data name="FirstRun_Title" xml:space="preserve"><value>Light the Forge</value></data>
+  <data name="FirstRun_Body" xml:space="preserve"><value>Connect a controller, pick an output type, and PadForge forges your inputs into it. A short tour shows you where everything lives.</value></data>
+  <data name="FirstRun_Begin" xml:space="preserve"><value>Begin Tour</value></data>
+  <data name="FirstRun_Skip" xml:space="preserve"><value>Skip</value></data>
+  <data name="FirstRun_Next" xml:space="preserve"><value>Next</value></data>
+  <data name="FirstRun_Done" xml:space="preserve"><value>Done</value></data>
+  <data name="Tour_Slots_Title" xml:space="preserve"><value>Slots</value></data>
+  <data name="Tour_Slots_Body" xml:space="preserve"><value>Each virtual controller lives here. The flame shows which slots are forging right now.</value></data>
+  <data name="Tour_Engine_Title" xml:space="preserve"><value>Input Engine</value></data>
+  <data name="Tour_Engine_Body" xml:space="preserve"><value>The forge itself. Toggle the flame to start or stop all input polling.</value></data>
+  <data name="Tour_Cards_Title" xml:space="preserve"><value>Virtual Controllers</value></data>
+  <data name="Tour_Cards_Body" xml:space="preserve"><value>Pick an output type, feed the slot devices, and click a card to shape its mappings.</value></data>
+  <data name="Tour_Services_Title" xml:space="preserve"><value>Services</value></data>
+  <data name="Tour_Services_Body" xml:space="preserve"><value>Motion data, the phone web controller, and Remote Link stream from down here.</value></data>
+  <data name="Tour_Status_Title" xml:space="preserve"><value>Instrument Line</value></data>
+  <data name="Tour_Status_Body" xml:space="preserve"><value>Device count, polling rate, and the engine flame, always in view.</value></data>
+  <data name="Settings_ShowTour" xml:space="preserve"><value>Show Welcome Tour</value></data>
   <data name="Dashboard_Services" xml:space="preserve"><value>Services</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Motion Server</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>DSU/CemuHook Motion Provider protocol server for gyro and accelerometer data.</value></data>

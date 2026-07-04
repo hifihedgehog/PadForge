@@ -155,7 +155,7 @@
         <!-- ═══════════════════════════════════════════
              Status Bar
              ═══════════════════════════════════════════ -->
-        <Border Grid.Row="2"
+        <Border x:Name="StatusBarBorder" Grid.Row="2"
                 Background="{DynamicResource SolidBackgroundFillColorBaseBrush}"
                 Padding="12,4">
             <Grid>
@@ -246,6 +246,80 @@
                                TextAlignment="Center"/>
                 </StackPanel>
             </Border>
+        </Grid>
+
+        <!-- ═══════════════════════════════════════════
+             First-run welcome + spotlight tour (#175).
+             Shown when the first-run marker file is absent; re-runnable
+             from Settings. The dim layer swallows clicks; the highlight
+             border and tip card are positioned in code-behind.
+             ═══════════════════════════════════════════ -->
+        <Grid x:Name="FirstRunOverlay"
+              Grid.RowSpan="3"
+              Visibility="Collapsed"
+              Panel.ZIndex="900">
+            <Border Background="#D9070A0E"/>
+
+            <Border x:Name="WelcomePanel"
+                    Background="{DynamicResource SteelCardBrush}"
+                    BorderBrush="{DynamicResource SteelLineBrush}" BorderThickness="1"
+                    CornerRadius="12" Padding="40,32"
+                    HorizontalAlignment="Center" VerticalAlignment="Center"
+                    MaxWidth="470">
+                <StackPanel HorizontalAlignment="Center">
+                    <Path Data="{StaticResource FlameOuterGeometry}"
+                          Width="46" Height="46" Stretch="Uniform"
+                          Fill="{DynamicResource EmberBrush}" HorizontalAlignment="Center">
+                        <Path.Effect>
+                            <DropShadowEffect Color="#FF6B2C" BlurRadius="26" ShadowDepth="0" Opacity="0.6"/>
+                        </Path.Effect>
+                    </Path>
+                    <TextBlock Text="{Binding FirstRun_Title, Source={x:Static strings:Strings.Instance}}"
+                               FontSize="24" FontWeight="SemiBold" Foreground="#E9EDF4"
+                               HorizontalAlignment="Center" Margin="0,16,0,6"/>
+                    <TextBlock Text="{Binding FirstRun_Body, Source={x:Static strings:Strings.Instance}}"
+                               Foreground="#94A3BD" TextWrapping="Wrap" TextAlignment="Center"
+                               MaxWidth="360"/>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,22,0,0">
+                        <ui:Button Appearance="Primary"
+                                   Content="{Binding FirstRun_Begin, Source={x:Static strings:Strings.Instance}}"
+                                   Click="FirstRunBegin_Click"/>
+                        <Button Content="{Binding FirstRun_Skip, Source={x:Static strings:Strings.Instance}}"
+                                Margin="8,0,0,0" Click="FirstRunSkip_Click"/>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+
+            <Canvas x:Name="TourCanvas" Visibility="Collapsed">
+                <Border x:Name="TourHighlight"
+                        BorderBrush="{DynamicResource EmberBrush}" BorderThickness="2"
+                        CornerRadius="8" IsHitTestVisible="False">
+                    <Border.Effect>
+                        <DropShadowEffect Color="#FF6B2C" BlurRadius="18" ShadowDepth="0" Opacity="0.5"/>
+                    </Border.Effect>
+                </Border>
+                <Border x:Name="TourTip"
+                        Background="{DynamicResource SteelRaisedBrush}"
+                        BorderBrush="{DynamicResource SteelLineBrush}" BorderThickness="1"
+                        CornerRadius="10" Padding="16" Width="320">
+                    <StackPanel>
+                        <TextBlock x:Name="TourStepLabel"
+                                   FontFamily="{StaticResource TelemetryFontFamily}" FontSize="11"
+                                   Foreground="{DynamicResource EmberHotBrush}"/>
+                        <TextBlock x:Name="TourTitle" FontWeight="SemiBold" FontSize="15"
+                                   Foreground="#E9EDF4" Margin="0,4,0,2"/>
+                        <TextBlock x:Name="TourBody" TextWrapping="Wrap" FontSize="13"
+                                   Foreground="#94A3BD"/>
+                        <StackPanel Orientation="Horizontal" Margin="0,14,0,0">
+                            <ui:Button x:Name="TourNextBtn" Appearance="Primary"
+                                       Content="{Binding FirstRun_Next, Source={x:Static strings:Strings.Instance}}"
+                                       Click="TourNext_Click"/>
+                            <Button Content="{Binding FirstRun_Skip, Source={x:Static strings:Strings.Instance}}"
+                                    Margin="8,0,0,0" Click="FirstRunSkip_Click"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+            </Canvas>
         </Grid>
 
         <!-- ═══════════════════════════════════════════

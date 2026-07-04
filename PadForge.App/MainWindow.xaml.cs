@@ -147,6 +147,9 @@ namespace PadForge
             // in Light.
             UpdateSteelLayer();
 
+            // First-run welcome (#175): shown once, marker-gated.
+            Loaded += MaybeShowFirstRun;
+
             // wpfui's TitleBarButton fires its Command twice on a finger tap
             // because two paths converge: a Win32 hwnd hook catches WM_NCLBUTTONUP
             // (NC area, via WM_NCHITTEST returning HTMAXBUTTON / HTMINBUTTON /
@@ -4447,6 +4450,126 @@ namespace PadForge
             bool dark = Wpf.Ui.Appearance.ApplicationThemeManager.GetAppTheme()
                         == Wpf.Ui.Appearance.ApplicationTheme.Dark;
             SteelLayer.Visibility = dark ? Visibility.Visible : Visibility.Collapsed;
+        }
+
+        // ─────────────────────────────────────────────
+        //  First-run welcome + spotlight tour (#175)
+        // ─────────────────────────────────────────────
+
+        private static string FirstRunMarkerPath =>
+            System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "PadForge.firstrun");
+
+        private int _tourStep = -1;
+
+        private (FrameworkElement Target, string Title, string Body)[] BuildTourStops() => new[]
+        {
+            ((FrameworkElement)DashboardPageView.EngineCard, Strings.Instance.Tour_Engine_Title, Strings.Instance.Tour_Engine_Body),
+            (DashboardPageView.SlotsItemsControl, Strings.Instance.Tour_Cards_Title, Strings.Instance.Tour_Cards_Body),
+            (NavView, Strings.Instance.Tour_Slots_Title, Strings.Instance.Tour_Slots_Body),
+            (DashboardPageView.ServicesHeader, Strings.Instance.Tour_Services_Title, Strings.Instance.Tour_Services_Body),
+            (StatusBarBorder, Strings.Instance.Tour_Status_Title, Strings.Instance.Tour_Status_Body),
+        };
+
+        private void MaybeShowFirstRun(object sender, RoutedEventArgs e)
+        {
+            Loaded -= MaybeShowFirstRun;
+            if (!System.IO.File.Exists(FirstRunMarkerPath))
+                FirstRunOverlay.Visibility = Visibility.Visible;
+        }
+
+        /// <summary>Re-runs the welcome tour (Settings button).</summary>
+        public void StartFirstRunTour()
+        {
+            foreach (var mi in NavView.MenuItems)
+            {
+                if (mi is NavigationViewItem nvi && nvi.Tag?.ToString() == "Dashboard")
+                {
+                    nvi.IsActive = true;
+                    break;
+                }
+            }
+            WelcomePanel.Visibility = Visibility.Visible;
+            TourCanvas.Visibility = Visibility.Collapsed;
+            FirstRunOverlay.Visibility = Visibility.Visible;
+        }
+
+        private void FirstRunBegin_Click(object sender, RoutedEventArgs e)
+        {
+            WelcomePanel.Visibility = Visibility.Collapsed;
+            TourCanvas.Visibility = Visibility.Visible;
+            ShowTourStep(0);
+        }
+
+        private void FirstRunSkip_Click(object sender, RoutedEventArgs e) => CompleteFirstRun();
+
+        private void TourNext_Click(object sender, RoutedEventArgs e) => ShowTourStep(_tourStep + 1);
+
+        private void ShowTourStep(int index)
+        {
+            var stops = BuildTourStops();
+            if (index >= stops.Length)
+            {
+                CompleteFirstRun();
+                return;
+            }
+            _tourStep = index;
+            var (target, title, body) = stops[index];
+            TourStepLabel.Text = $"{index + 1} / {stops.Length}";
+            TourTitle.Text = title;
+            TourBody.Text = body;
+            TourNextBtn.Content = index == stops.Length - 1
+                ? Strings.Instance.FirstRun_Done
+                : Strings.Instance.FirstRun_Next;
+            target.BringIntoView();
+            // Position after the BringIntoView scroll has been laid out.
+            Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Loaded,
+                new Action(() => PositionTourStep(target)));
+        }
+
+        private void PositionTourStep(FrameworkElement target)
+        {
+            try
+            {
+                double w = target.ActualWidth, h = target.ActualHeight;
+                if (ReferenceEquals(target, NavView))
+                {
+                    // Highlight only the pane strip, not the whole view.
+                    w = NavView.IsPaneOpen ? NavView.OpenPaneLength : NavView.CompactPaneLength;
+                    h = NavView.ActualHeight;
+                }
+                var origin = target.TransformToVisual(FirstRunOverlay).Transform(new Point(0, 0));
+                System.Windows.Controls.Canvas.SetLeft(TourHighlight, origin.X - 4);
+                System.Windows.Controls.Canvas.SetTop(TourHighlight, origin.Y - 4);
+                TourHighlight.Width = w + 8;
+                TourHighlight.Height = h + 8;
+
+                double ow = FirstRunOverlay.ActualWidth, oh = FirstRunOverlay.ActualHeight;
+                double tipX = origin.X + w + 14;
+                double tipY = origin.Y;
+                if (tipX + 332 > ow)
+                {
+                    tipX = Math.Max(12, Math.Min(origin.X, ow - 332));
+                    tipY = origin.Y + h + 12;
+                }
+                if (tipY + 200 > oh) tipY = Math.Max(12, oh - 212);
+                if (tipY < 12) tipY = 12;
+                System.Windows.Controls.Canvas.SetLeft(TourTip, tipX);
+                System.Windows.Controls.Canvas.SetTop(TourTip, tipY);
+            }
+            catch
+            {
+                // Target not laid out yet; keep the previous position.
+            }
+        }
+
+        private void CompleteFirstRun()
+        {
+            FirstRunOverlay.Visibility = Visibility.Collapsed;
+            WelcomePanel.Visibility = Visibility.Visible;
+            TourCanvas.Visibility = Visibility.Collapsed;
+            _tourStep = -1;
+            try { System.IO.File.WriteAllText(FirstRunMarkerPath, DateTime.Now.ToString("o")); }
+            catch { /* marker is best effort; worst case the welcome shows again */ }
         }
 
         // ─────────────────────────────────────────────

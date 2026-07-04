@@ -47,6 +47,8 @@
                         <ComboBoxItem Content="{Binding Settings_ThemeLight, Source={x:Static strings:Strings.Instance}}"/>
                         <ComboBoxItem Content="{Binding Settings_ThemeDark, Source={x:Static strings:Strings.Instance}}"/>
                     </ComboBox>
+                    <Button Content="{Binding Settings_ShowTour, Source={x:Static strings:Strings.Instance}}"
+                            Click="ShowTour_Click" Margin="0,12,0,0" HorizontalAlignment="Left"/>
                 </StackPanel>
             </Border>
 

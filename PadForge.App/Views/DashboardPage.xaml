@@ -815,9 +815,6 @@
                                 </Style>
                             </Path.Style>
                         </Path>
-                        <Ellipse Width="8" Height="8"
-                                 Fill="{Binding EnableDsuMotionServer, Converter={StaticResource BoolToColorConverter}, ConverterParameter=gray}"
-                                 VerticalAlignment="Center" Margin="0,0,8,0"/>
                         <TextBlock Text="{Binding DsuServerStatus}" FontSize="12"
                                    FontFamily="{StaticResource TelemetryFontFamily}"
                                    Foreground="{DynamicResource ColdBrush}"/>
@@ -873,9 +870,6 @@
                                 </Style>
                             </Path.Style>
                         </Path>
-                        <Ellipse Width="8" Height="8"
-                                 Fill="{Binding EnableWebController, Converter={StaticResource BoolToColorConverter}, ConverterParameter=gray}"
-                                 VerticalAlignment="Center" Margin="0,0,8,0"/>
                         <TextBlock Text="{Binding WebControllerStatus}" FontSize="12"
                                    FontFamily="{StaticResource TelemetryFontFamily}"
                                    Foreground="{DynamicResource ColdBrush}"/>
@@ -936,9 +930,6 @@
                                 </Style>
                             </Path.Style>
                         </Path>
-                        <Ellipse Width="8" Height="8"
-                                 Fill="{Binding EnableRemoteLink, Converter={StaticResource BoolToColorConverter}, ConverterParameter=gray}"
-                                 VerticalAlignment="Center" Margin="0,0,8,0"/>
                         <TextBlock Text="{Binding RemoteLinkStatus}" FontSize="12"
                                    FontFamily="{StaticResource TelemetryFontFamily}"
                                    Foreground="{DynamicResource ColdBrush}"/>
@@ -972,19 +963,18 @@
                                         <ColumnDefinition Width="*"/>
                                         <ColumnDefinition Width="Auto"/>
                                     </Grid.ColumnDefinitions>
-                                    <Ellipse Grid.Column="0" Width="9" Height="9" VerticalAlignment="Center"
-                                             Margin="2,0,10,0" ToolTip="{Binding OnlineText}">
-                                        <Ellipse.Style>
-                                            <Style TargetType="Ellipse">
-                                                <Setter Property="Fill" Value="#806B6B6B"/>
+                                    <Path Grid.Column="0" Margin="2,0,10,0" ToolTip="{Binding OnlineText}">
+                                        <Path.Style>
+                                            <Style TargetType="Path" BasedOn="{StaticResource LivenessFlameBase}">
                                                 <Style.Triggers>
                                                     <DataTrigger Binding="{Binding IsOnline}" Value="True">
-                                                        <Setter Property="Fill" Value="#FF4CAF50"/>
+                                                        <Setter Property="Fill" Value="{DynamicResource EmberBrush}"/>
+                                                        <Setter Property="Stroke" Value="{x:Null}"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
                                             </Style>
-                                        </Ellipse.Style>
-                                    </Ellipse>
+                                        </Path.Style>
+                                    </Path>
                                     <StackPanel Grid.Column="1" VerticalAlignment="Center">
                                         <ui:TextBox Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                                     PlaceholderText="{Binding RemoteLink_PeerNamePlaceholder, Source={x:Static strings:Strings.Instance}}" MaxLength="40"

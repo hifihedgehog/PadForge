@@ -130,9 +130,18 @@
 
                         <StackPanel>
                             <StackPanel Orientation="Horizontal">
-                                <Ellipse Width="8" Height="8"
-                                         Fill="{Binding IsHidHideInstalled, Converter={StaticResource BoolToColorConverter}}"
-                                         VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                <Path Margin="0,0,8,0">
+                                    <Path.Style>
+                                        <Style TargetType="Path" BasedOn="{StaticResource LivenessFlameBase}">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsHidHideInstalled}" Value="True">
+                                                    <Setter Property="Fill" Value="{DynamicResource EmberBrush}"/>
+                                                    <Setter Property="Stroke" Value="{x:Null}"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Path.Style>
+                                </Path>
                                 <TextBlock Text="{Binding HidHideStatusText}" FontWeight="SemiBold"/>
                             </StackPanel>
                             <TextBlock Text="{Binding HidHideVersion}" FontSize="12" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,4,0,0"/>
@@ -205,9 +214,8 @@
                                TextWrapping="Wrap"/>
                     <StackPanel>
                         <StackPanel Orientation="Horizontal">
-                            <Ellipse Width="8" Height="8"
-                                     Fill="#4CAF50"
-                                     VerticalAlignment="Center" Margin="0,0,8,0"/>
+                            <Path Style="{StaticResource LivenessFlameBase}" Margin="0,0,8,0"
+                                  Fill="{DynamicResource EmberBrush}" Stroke="{x:Null}"/>
                             <TextBlock Text="{Binding Common_Installed, Source={x:Static strings:Strings.Instance}}"
                                        FontWeight="SemiBold"/>
                         </StackPanel>
@@ -234,9 +242,18 @@
 
                         <StackPanel>
                             <StackPanel Orientation="Horizontal">
-                                <Ellipse Width="8" Height="8"
-                                         Fill="{Binding IsMidiServicesInstalled, Converter={StaticResource BoolToColorConverter}}"
-                                         VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                <Path Margin="0,0,8,0">
+                                    <Path.Style>
+                                        <Style TargetType="Path" BasedOn="{StaticResource LivenessFlameBase}">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsMidiServicesInstalled}" Value="True">
+                                                    <Setter Property="Fill" Value="{DynamicResource EmberBrush}"/>
+                                                    <Setter Property="Stroke" Value="{x:Null}"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Path.Style>
+                                </Path>
                                 <TextBlock Text="{Binding MidiServicesStatusText}" FontWeight="SemiBold"/>
                             </StackPanel>
                             <TextBlock Text="{Binding MidiServicesVersion}" FontSize="12" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,4,0,0"/>

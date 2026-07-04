@@ -582,8 +582,11 @@ namespace PadForge.Views
         private static DiffuseMaterial GradientHighlight(Material defaultMaterial, Material highlightMaterial, float factor)
         {
             factor = Math.Clamp(factor, 0f, 1f);
-            var startColor = ((SolidColorBrush)((DiffuseMaterial)defaultMaterial).Brush).Color;
-            var endColor = ((SolidColorBrush)((DiffuseMaterial)highlightMaterial).Brush).Color;
+            // Cast-proof (#175 regression fix): a themed material may carry a
+            // gradient brush; lerp from its first stop instead of crashing
+            // the render loop with an invalid cast.
+            var startColor = BrushColor((defaultMaterial as DiffuseMaterial)?.Brush);
+            var endColor = BrushColor((highlightMaterial as DiffuseMaterial)?.Brush);
 
             byte a = (byte)(startColor.A * (1 - factor) + endColor.A * factor);
             byte r = (byte)(startColor.R * (1 - factor) + endColor.R * factor);
@@ -592,6 +595,13 @@ namespace PadForge.Views
 
             return new DiffuseMaterial(new SolidColorBrush(Color.FromArgb(a, r, g, b)));
         }
+
+        private static Color BrushColor(Brush brush) => brush switch
+        {
+            SolidColorBrush s => s.Color,
+            GradientBrush g when g.GradientStops.Count > 0 => g.GradientStops[0].Color,
+            _ => Color.FromRgb(0xFF, 0x6B, 0x2C),
+        };
 
         // ─────────────────────────────────────────────
         //  Click-to-record hit testing

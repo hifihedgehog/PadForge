@@ -52,7 +52,7 @@
                          not a mono insert. Cascadia at 12px inside Segoe
                          lines read as pasted terminal text on real pixels.
                          Cold color carries the telemetry identity. -->
-                    <FontFamily x:Key="TelemetryFontFamily">Segoe UI Variable Text, Segoe UI</FontFamily>
+                    <FontFamily x:Key="TelemetryFontFamily">Cascadia Mono, Consolas, Segoe UI</FontFamily>
                 </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
 

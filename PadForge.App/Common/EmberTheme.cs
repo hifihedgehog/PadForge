@@ -36,6 +36,27 @@ namespace PadForge.Common
             SetBrush("ColdDeepBrush", dark ? ColdDeepDark : ColdDeepLight);
             SetBrush("EmberHotBrush", dark ? EmberHotDark : EmberHotLight);
 
+            // Steel ground (#175 pitch): on dark, the WPF-UI translucent-gray
+            // surface tokens swap to the steel palette so every page sits on
+            // #0B0E14 with #111623 cards and #253049 strokes. On light the
+            // overrides are removed so lookup falls back to the stock theme.
+            if (dark)
+            {
+                SetBrush("ApplicationBackgroundBrush", Color.FromRgb(0x0B, 0x0E, 0x14));
+                SetBrush("NavigationViewContentBackground", Color.FromRgb(0x0B, 0x0E, 0x14));
+                SetBrush("NavigationViewContentGridBorderBrush", Color.FromRgb(0x25, 0x30, 0x49));
+                SetBrush("CardBackgroundFillColorDefaultBrush", Color.FromRgb(0x11, 0x16, 0x23));
+                SetBrush("CardBackgroundFillColorSecondaryBrush", Color.FromRgb(0x1B, 0x23, 0x33));
+                SetBrush("CardStrokeColorDefaultBrush", Color.FromRgb(0x25, 0x30, 0x49));
+                SetBrush("ControlFillColorDefaultBrush", Color.FromRgb(0x1B, 0x23, 0x33));
+                SetBrush("ControlStrokeColorDefaultBrush", Color.FromRgb(0x25, 0x30, 0x49));
+            }
+            else
+            {
+                foreach (var key in SteelKeys)
+                    Application.Current.Resources.Remove(key);
+            }
+
             // Crucible card ground (#175 pitch): on the dark ground the slot
             // cards carry a subtle vertical steel gradient instead of the
             // flat card fill. On light ground they fall back to the theme's
@@ -54,6 +75,18 @@ namespace PadForge.Common
                 Application.Current.Resources["CrucibleCardBrush"] = cardFill;
             }
         }
+
+        private static readonly string[] SteelKeys =
+        {
+            "ApplicationBackgroundBrush",
+            "NavigationViewContentBackground",
+            "NavigationViewContentGridBorderBrush",
+            "CardBackgroundFillColorDefaultBrush",
+            "CardBackgroundFillColorSecondaryBrush",
+            "CardStrokeColorDefaultBrush",
+            "ControlFillColorDefaultBrush",
+            "ControlStrokeColorDefaultBrush",
+        };
 
         private static void SetBrush(string key, Color color)
         {

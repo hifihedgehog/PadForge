@@ -81,6 +81,11 @@ namespace PadForge.Common
         {
             if (d is not Canvas canvas || !(bool)e.NewValue) return;
 
+            // Reduced motion (#175): when the OS animation preference is off,
+            // never start the 60Hz trail sampler. Trail dots stay off; the
+            // live position dots are bound in XAML and keep working.
+            if (!SystemParameters.ClientAreaAnimation) return;
+
             var state = new TrailState
             {
                 Raw = MakeSignal(canvas, Color.FromRgb(0x58, 0xB6, 0xE4)),

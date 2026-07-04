@@ -353,12 +353,17 @@
                         Style="{StaticResource ChipGhost}"
                         Visibility="Collapsed">
                     <StackPanel Orientation="Horizontal">
+                        <!-- Label inherits ChipGhost's TextElement.Foreground /
+                             FontSize like the other chip consumers. The ComboBox
+                             is a templated Control, so the Border-targeted style
+                             can't carry it: it keeps the equivalent brush keys
+                             inline (tertiary text, transparent fill/stroke so
+                             the chip surface shows through). -->
                         <TextBlock Text="{Binding Pad_Preset, Source={x:Static strings:Strings.Instance}}"
-                                   VerticalAlignment="Center" Margin="0,0,6,0"
-                                   Foreground="{DynamicResource TextFillColorTertiaryBrush}" FontSize="12"/>
+                                   VerticalAlignment="Center" Margin="0,0,6,0"/>
                         <ComboBox x:Name="HMaestroProfileCombo" Width="300" VerticalAlignment="Center"
                                   Foreground="{DynamicResource TextFillColorTertiaryBrush}"
-                                  Background="Transparent" BorderBrush="Transparent" FontSize="12"
+                                  Background="Transparent" BorderBrush="Transparent" FontSize="12.5"
                                   AutomationProperties.AutomationId="HMaestroProfileCombo"
                                   ItemsSource="{Binding AvailableProfiles}"
                                   DisplayMemberPath="Name"

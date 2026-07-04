@@ -2325,7 +2325,7 @@ namespace PadForge
                 FontWeight = FontWeights.SemiBold,
                 VerticalAlignment = VerticalAlignment.Center,
                 Margin = new Thickness(4, 0, 0, 0),
-                Width = 14,
+                Width = 20,
                 TextAlignment = TextAlignment.Center
             };
             slotNumber.SetResourceReference(System.Windows.Controls.TextBlock.ForegroundProperty, "TextFillColorTertiaryBrush");
@@ -2339,7 +2339,8 @@ namespace PadForge
             var segRow = new System.Windows.Controls.StackPanel
             {
                 Orientation = System.Windows.Controls.Orientation.Horizontal,
-                Margin = new Thickness(6, 0, 0, 0)
+                Margin = new Thickness(6, 0, 0, 0),
+                HorizontalAlignment = HorizontalAlignment.Right
             };
 
             System.Windows.Controls.Button MakeTypeButton(UIElement content, bool active, System.Windows.RoutedEventHandler click, string tip, bool enabled)
@@ -2422,6 +2423,7 @@ namespace PadForge
                 CornerRadius = new CornerRadius(6),
                 Padding = new Thickness(6, 4, 6, 4),
                 BorderThickness = new Thickness(1),
+                MinWidth = 196,
                 Child = row,
                 Tag = navItem.PadIndex
             };

@@ -2425,8 +2425,10 @@
                                  to append a new source. -->
                             <DataTemplate>
                                 <Border Padding="20,4,8,8"
-                                        BorderBrush="{DynamicResource ControlElevationBorderBrush}"
-                                        BorderThickness="0,1,0,0">
+                                        BorderThickness="2,0,0,0">
+                                    <Border.BorderBrush>
+                                        <SolidColorBrush Color="#3D58B6E4"/>
+                                    </Border.BorderBrush>
                                     <StackPanel Orientation="Vertical">
                                         <!-- Primary mode + kind tuning (#111). The Mode dropdown lives here
                                              in the detail strip so the Source cell holds only the mapping and
@@ -3378,6 +3380,9 @@
                                         <!-- + Add source -->
                                         <Button Content="{Binding Pad_Mapping_AddSource, Source={x:Static strings:Strings.Instance}}"
                                                 Padding="6,2"
+                                                Background="Transparent" BorderThickness="0"
+                                                Foreground="{DynamicResource ColdBrush}" FontWeight="SemiBold"
+                                                Cursor="Hand"
                                                 HorizontalAlignment="Left" Margin="0,4,0,0"
                                                 Command="{Binding AddExtraSourceCommand}"
                                                 ToolTip="{Binding Pad_Mapping_AddSource_Tooltip, Source={x:Static strings:Strings.Instance}}"/>

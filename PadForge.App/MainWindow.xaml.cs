@@ -2161,52 +2161,35 @@ namespace PadForge
         // Power button icon: E7E8 = PowerButton glyph in Segoe MDL2 Assets.
         private const string PowerGlyph = "\uE7E8";
 
-        // Ember flame geometry (#175): outer teardrop + inner hot core.
-        // Lit = ember fill, cooling = gold fill, cold = tertiary outline.
-        private const string FlameOuterPath =
-            "M12,1.6 C15.2,5.4 17.4,9 17.4,13.1 A5.4,5.4 0 0 1 6.6,13.1 C6.6,9 8.8,5.4 12,1.6 Z";
-        private const string FlameInnerPath =
-            "M12,8.4 C13.7,10.3 14.7,12.1 14.7,13.9 A2.7,2.7 0 0 1 9.3,13.9 C9.3,12.1 10.3,10.3 12,8.4 Z";
-
         /// <summary>
         /// Builds the flame glyph for a slot's heat state (#175).
-        /// lit: ember fill with hot core. cooling: gold fill. cold: outline only.
+        /// lit: ember fill. cooling: gold fill. cold: outline only.
+        /// Geometry comes from the shared FlameOuterGeometry resource
+        /// (MDI "fire", with its own inner-tongue cutout).
         /// </summary>
         private static System.Windows.Controls.Grid BuildFlameGlyph(double size, bool lit, bool cooling)
         {
             var grid = new System.Windows.Controls.Grid { Width = size, Height = size };
-            var outer = new System.Windows.Shapes.Path
+            var flame = new System.Windows.Shapes.Path
             {
-                Data = System.Windows.Media.Geometry.Parse(FlameOuterPath),
+                Data = (System.Windows.Media.Geometry)Application.Current.Resources["FlameOuterGeometry"],
                 Stretch = System.Windows.Media.Stretch.Uniform
             };
             if (lit)
             {
-                outer.Fill = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(0xFF, 0x6B, 0x2C));
-                var inner = new System.Windows.Shapes.Path
-                {
-                    Data = System.Windows.Media.Geometry.Parse(FlameInnerPath),
-                    Stretch = System.Windows.Media.Stretch.Uniform,
-                    Fill = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(0xFF, 0xA2, 0x4D)),
-                    // Inner core is a sub-region of the same 24x24 space; keep
-                    // both paths aligned by stretching within the same grid.
-                    Margin = new Thickness(size * 0.28, size * 0.42, size * 0.28, size * 0.06)
-                };
-                grid.Children.Add(outer);
-                grid.Children.Add(inner);
+                flame.Fill = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(0xFF, 0x6B, 0x2C));
             }
             else if (cooling)
             {
-                outer.Fill = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(0xFF, 0xC1, 0x07));
-                grid.Children.Add(outer);
+                flame.Fill = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(0xFF, 0xC1, 0x07));
             }
             else
             {
-                outer.Fill = System.Windows.Media.Brushes.Transparent;
-                outer.StrokeThickness = 1.2;
-                outer.SetResourceReference(System.Windows.Shapes.Shape.StrokeProperty, "TextFillColorTertiaryBrush");
-                grid.Children.Add(outer);
+                flame.Fill = System.Windows.Media.Brushes.Transparent;
+                flame.StrokeThickness = 1.1;
+                flame.SetResourceReference(System.Windows.Shapes.Shape.StrokeProperty, "TextFillColorTertiaryBrush");
             }
+            grid.Children.Add(flame);
             return grid;
         }
 
@@ -2369,43 +2352,20 @@ namespace PadForge
                 TextTrimming = TextTrimming.CharacterEllipsis
             });
 
-            // Wrap in a rounded card border.
+            // Flat host (#175 iteration 2): a boxed card inside a rail of
+            // flat text items read as a foreign object on real pixels.
+            // The Border stays only as the drag/drop + click surface; heat
+            // lives in the flame color alone.
             var card = new System.Windows.Controls.Border
             {
-                CornerRadius = new CornerRadius(6),
                 Padding = new Thickness(4, 2, 4, 2),
-                BorderThickness = new Thickness(2),
-                BorderBrush = System.Windows.Media.Brushes.Transparent,
+                Background = System.Windows.Media.Brushes.Transparent,
+                BorderThickness = new Thickness(0),
                 Child = row,
                 Tag = navItem.PadIndex
             };
-            card.SetResourceReference(System.Windows.Controls.Border.BackgroundProperty, "CardBackgroundFillColorDefaultBrush");
-
-            // Heat ring (#175): forging slots carry an ember border and a
-            // static glow. Cooling slots keep a faint ember trace. Cold
-            // slots dim. Static effects only: no Forever storyboards per
-            // card, the Z8350-class perf floor rules those out here.
-            if (lit)
-            {
-                card.BorderBrush = new System.Windows.Media.SolidColorBrush(
-                    System.Windows.Media.Color.FromArgb(0x8C, 0xFF, 0x6B, 0x2C));
-                card.Effect = new System.Windows.Media.Effects.DropShadowEffect
-                {
-                    Color = System.Windows.Media.Color.FromRgb(0xFF, 0x6B, 0x2C),
-                    BlurRadius = 12,
-                    ShadowDepth = 0,
-                    Opacity = 0.35
-                };
-            }
-            else if (cooling)
-            {
-                card.BorderBrush = new System.Windows.Media.SolidColorBrush(
-                    System.Windows.Media.Color.FromArgb(0x2E, 0xFF, 0x6B, 0x2C));
-            }
-            else if (!navItem.IsEnabled)
-            {
-                card.Opacity = 0.65;
-            }
+            if (!navItem.IsEnabled)
+                card.Opacity = 0.6;
 
             // Drag reordering — mouse-down recorded here, threshold + movement tracked at NavView level.
             card.PreviewMouseLeftButtonDown += OnCardDragStart;
@@ -4480,6 +4440,9 @@ namespace PadForge
         /// <summary>Re-runs the welcome tour (Settings button).</summary>
         public void StartFirstRunTour()
         {
+            // Actually navigate. IsActive alone only restyles the nav item,
+            // which left the tour highlighting over the Settings page.
+            NavigateToTag("Dashboard");
             foreach (var mi in NavView.MenuItems)
             {
                 if (mi is NavigationViewItem nvi && nvi.Tag?.ToString() == "Dashboard")
@@ -4495,6 +4458,10 @@ namespace PadForge
 
         private void FirstRunBegin_Click(object sender, RoutedEventArgs e)
         {
+            // The tour's first four stops live on the Dashboard. Make sure
+            // it is the visible page even if the user navigated away
+            // before clicking Begin.
+            NavigateToTag("Dashboard");
             WelcomePanel.Visibility = Visibility.Collapsed;
             TourCanvas.Visibility = Visibility.Visible;
             ShowTourStep(0);

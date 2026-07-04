@@ -239,6 +239,8 @@
   <data name="Tour_Status_Title" xml:space="preserve"><value>Instrument Line</value></data>
   <data name="Tour_Status_Body" xml:space="preserve"><value>Device count, polling rate, and the engine flame, always in view.</value></data>
   <data name="Settings_ShowTour" xml:space="preserve"><value>Show Welcome Tour</value></data>
+  <data name="Dashboard_Slot" xml:space="preserve"><value>Slot</value></data>
+  <data name="Pad_ScopeDevice" xml:space="preserve"><value>Device</value></data>
   <data name="Dashboard_Services" xml:space="preserve"><value>Services</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Motion Server</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>DSU/CemuHook Motion Provider protocol server for gyro and accelerometer data.</value></data>

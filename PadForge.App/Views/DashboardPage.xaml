@@ -150,7 +150,7 @@
                         <Border Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
                                 CornerRadius="8" Padding="10" Margin="4"
                                 BorderThickness="2" BorderBrush="Transparent"
-                                Width="229"
+                                Width="252"
                                 Cursor="Hand"
                                 Tag="{Binding PadIndex}"
                                 Loaded="SlotCard_Loaded">
@@ -175,9 +175,10 @@
                                     <RowDefinition Height="Auto"/>
                                     <RowDefinition Height="Auto"/>
                                     <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
                                 </Grid.RowDefinitions>
 
-                                <!-- Row 0: [Power] [Gamepad] #N | [Xbox][PS] #N [X] -->
+                                <!-- Row 0: [Flame] Slot N ... [X] -->
                                 <StackPanel Orientation="Horizontal" Margin="0,0,20,0">
                                     <!-- Power button -->
                                     <Button Click="PowerToggle_Click" Tag="{Binding PadIndex}">
@@ -272,22 +273,22 @@
                                         </Path>
                                     </Button>
 
-                                    <!-- Gamepad icon + global slot # -->
-                                    <TextBlock Text="&#xE7FC;" FontFamily="Segoe MDL2 Assets" FontSize="13"
-                                               VerticalAlignment="Center" Margin="4.5,0,0,0"/>
+                                    <!-- Slot title -->
+                                    <TextBlock Text="{Binding Dashboard_Slot, Source={x:Static strings:Strings.Instance}}"
+                                               FontWeight="SemiBold" FontSize="14"
+                                               VerticalAlignment="Center" Margin="7,0,0,0"/>
                                     <TextBlock Text="{Binding SlotNumber}" VerticalAlignment="Center"
-                                               FontWeight="SemiBold" FontSize="12"
-                                               Margin="3,0,0,0" Width="16"
-                                               TextAlignment="Center"/>
+                                               FontWeight="SemiBold" FontSize="14"
+                                               Margin="4,0,0,0"/>
+                                </StackPanel>
 
-                                    <!-- Separator -->
-                                    <TextBlock Text="|" FontSize="12" Opacity="0.3"
-                                               VerticalAlignment="Center" Margin="6,-3,6,0"/>
-
-                                    <!-- Game controller type buttons (all types shown for all cards).
-                                         Segment container (#175): the active type reads as a filled
-                                         ember pill inside a raised track. -->
+                                <!-- Row 1: type segment + per-type instance (#175 iteration 2:
+                                     its own row, so the title row breathes and the segment
+                                     reads as a control, not clutter). -->
+                                <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,8,0,0">
                                     <Border Background="{DynamicResource ControlFillColorDefaultBrush}"
+                                            BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}"
+                                            BorderThickness="1"
                                             CornerRadius="6" Padding="1" VerticalAlignment="Center">
                                     <StackPanel Orientation="Horizontal">
 
@@ -411,9 +412,9 @@
                                     <TextBlock Text="&#xE711;" FontFamily="Segoe MDL2 Assets" FontSize="9"/>
                                 </Button>
 
-                                <!-- Row 1: Device name (compact). Cold: the
+                                <!-- Row 2: Device name (compact). Cold: the
                                      physical device feeding this slot (#175). -->
-                                <Border Grid.Row="1" ClipToBounds="True" Margin="0,4,0,0">
+                                <Border Grid.Row="2" ClipToBounds="True" Margin="0,8,0,0">
                                     <StackPanel Orientation="Horizontal">
                                         <TextBlock Text="{Binding DeviceName}"
                                                    FontSize="12"
@@ -422,8 +423,8 @@
                                     </StackPanel>
                                 </Border>
 
-                                <!-- Row 2: Status -->
-                                <StackPanel Grid.Row="2" Orientation="Horizontal"
+                                <!-- Row 3: Status -->
+                                <StackPanel Grid.Row="3" Orientation="Horizontal"
                                             Margin="0,2,0,0">
                                     <TextBlock Text="{Binding StatusText}"
                                                FontSize="11" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>

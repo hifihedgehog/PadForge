@@ -275,6 +275,8 @@ public class Strings : INotifyPropertyChanged
     public string Tour_Status_Title => Get("Tour_Status_Title");
     public string Tour_Status_Body => Get("Tour_Status_Body");
     public string Settings_ShowTour => Get("Settings_ShowTour");
+    public string Dashboard_Slot => Get("Dashboard_Slot");
+    public string Pad_ScopeDevice => Get("Pad_ScopeDevice");
     public string Dashboard_Services => Get("Dashboard_Services");
     public string Dashboard_MotionServer => Get("Dashboard_MotionServer");
     public string Dashboard_DsuDescription => Get("Dashboard_DsuDescription");

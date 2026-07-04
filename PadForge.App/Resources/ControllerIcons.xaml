@@ -116,6 +116,10 @@
         <Setter Property="CornerRadius" Value="8"/>
         <Setter Property="Padding" Value="16"/>
         <Setter Property="Margin" Value="0,0,0,12"/>
+        <!-- 1px stroke (#175): without an edge, cards float as blobs on
+             the steel ground. Theme-aware stroke works in Light too. -->
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource ControlStrokeColorDefaultBrush}"/>
     </Style>
 
     <Style x:Key="CardTitle" TargetType="TextBlock">

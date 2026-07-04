@@ -1812,7 +1812,24 @@ namespace PadForge.Services
                 var padVm = _mainVm.Pads[padIndex];
 
                 slot.IsActive = padVm.IsDeviceOnline;
-                slot.DeviceName = padVm.MappedDeviceName;
+                // Ember card device line (#175): one entry per mapped device,
+                // each with its own battery glyph, pipe-separated so the
+                // marquee reads as a roster rather than a sum.
+                if (padVm.MappedDevices.Count > 0)
+                {
+                    var lineParts = new System.Collections.Generic.List<string>(padVm.MappedDevices.Count);
+                    foreach (var d in padVm.MappedDevices)
+                    {
+                        lineParts.Add(string.IsNullOrEmpty(d.BatteryText)
+                            ? d.Name
+                            : d.Name + " " + d.BatteryText);
+                    }
+                    slot.DeviceName = string.Join("  |  ", lineParts);
+                }
+                else
+                {
+                    slot.DeviceName = padVm.MappedDeviceName;
+                }
 
                 var slotSettings = SettingsManager.UserSettings?.FindByPadIndex(padIndex);
                 int mappedCount = slotSettings?.Count ?? 0;
@@ -2046,23 +2063,9 @@ namespace PadForge.Services
                 }
             }
 
-            // Crucible cards (#175): surface the first reporting battery.
-            foreach (var slot in _mainVm.Dashboard.SlotSummaries)
-            {
-                string batt = string.Empty;
-                if (slot.PadIndex >= 0 && slot.PadIndex < _mainVm.Pads.Count)
-                {
-                    foreach (var dev in _mainVm.Pads[slot.PadIndex].MappedDevices)
-                    {
-                        if (!string.IsNullOrEmpty(dev.BatteryText))
-                        {
-                            batt = dev.BatteryText;
-                            break;
-                        }
-                    }
-                }
-                slot.BatteryText = batt;
-            }
+            // Card device lines are composed in RefreshDashboardSlots (#175),
+            // which owns slot.DeviceName; per-device BatteryText above is the
+            // only battery state this tick maintains.
         }
 
         /// <summary>

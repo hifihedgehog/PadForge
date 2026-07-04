@@ -45,13 +45,13 @@
             <StackPanel Orientation="Horizontal" Margin="0,0,0,20">
                 <TextBlock Text="&#xF404;" FontFamily="Segoe MDL2 Assets" FontSize="20"
                            VerticalAlignment="Center" Margin="0,0,10,0"/>
-                <TextBlock Text="{Binding Dashboard_Title, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource TitleTextBlockStyle}"/>
+                <TextBlock Text="{Binding Dashboard_Title, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource TitleTextBlockStyle}" FontFamily="{StaticResource DisplayFontFamily}"/>
             </StackPanel>
 
             <!-- ═══ Input Engine ═══ -->
             <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
                 <TextBlock Text="&#xE9F5;" Style="{StaticResource SectionGlyph}"/>
-                <TextBlock Text="{Binding Dashboard_InputEngine, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource SectionTitle}"/>
+                <TextBlock Text="{Binding Dashboard_InputEngine, Source={x:Static strings:Strings.Instance}, Converter={StaticResource UpperConverter}}" Style="{StaticResource SectionTitle}"/>
             </StackPanel>
 
             <Border x:Name="EngineCard" Padding="20" Margin="0,0,0,16">
@@ -147,7 +147,7 @@
             <!-- ═══ Virtual controller slot cards ═══ -->
             <StackPanel Orientation="Horizontal" Margin="0,8,0,12">
                 <TextBlock Text="&#xE7FC;" Style="{StaticResource SectionGlyph}"/>
-                <TextBlock Text="{Binding Dashboard_VirtualControllers, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource SectionTitle}"/>
+                <TextBlock Text="{Binding Dashboard_VirtualControllers, Source={x:Static strings:Strings.Instance}, Converter={StaticResource UpperConverter}}" Style="{StaticResource SectionTitle}"/>
             </StackPanel>
 
             <ItemsControl x:Name="SlotsItemsControl" ItemsSource="{Binding SlotSummaries}">
@@ -491,34 +491,14 @@
 
                                 <!-- Row 2: Device name (compact). Cold: the
                                      physical device feeding this slot (#175). -->
-                                <Grid Grid.Row="2" Margin="0,8,0,0">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="Auto"/>
-                                    </Grid.ColumnDefinitions>
-                                    <Border Grid.Column="0" ClipToBounds="True">
+                                <Border Grid.Row="2" ClipToBounds="True" Margin="0,8,0,0">
+                                    <StackPanel Orientation="Horizontal">
                                         <TextBlock Text="{Binding DeviceName}"
                                                    FontSize="12"
                                                    Foreground="{DynamicResource ColdBrush}"
                                                    common:MarqueeBehavior.IsEnabled="True"/>
-                                    </Border>
-                                    <TextBlock Grid.Column="1"
-                                               Text="{Binding BatteryText, StringFormat={}&#9646; {0}}"
-                                               FontFamily="{StaticResource TelemetryFontFamily}"
-                                               FontSize="11" Opacity="0.85"
-                                               Foreground="{DynamicResource ColdBrush}"
-                                               VerticalAlignment="Center" Margin="6,0,0,0">
-                                        <TextBlock.Style>
-                                            <Style TargetType="TextBlock">
-                                                <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding BatteryText}" Value="">
-                                                        <Setter Property="Visibility" Value="Collapsed"/>
-                                                    </DataTrigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </TextBlock.Style>
-                                    </TextBlock>
-                                </Grid>
+                                    </StackPanel>
+                                </Border>
 
                                 <!-- Row 3: Status -->
                                 <StackPanel Grid.Row="3" Orientation="Horizontal"
@@ -581,7 +561,7 @@
             <!-- ═══ Motion Server ═══ -->
             <StackPanel Orientation="Horizontal" Margin="0,20,0,12">
                 <TextBlock Text="&#xE7AD;" Style="{StaticResource SectionGlyph}"/>
-                <TextBlock Text="{Binding Dashboard_MotionServer, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource SectionTitle}"/>
+                <TextBlock Text="{Binding Dashboard_MotionServer, Source={x:Static strings:Strings.Instance}, Converter={StaticResource UpperConverter}}" Style="{StaticResource SectionTitle}"/>
             </StackPanel>
 
             <Border Style="{StaticResource CardBorder}" Margin="0,0,0,0">
@@ -616,7 +596,7 @@
             <!-- ═══ Web Controller ═══ -->
             <StackPanel Orientation="Horizontal" Margin="0,20,0,12">
                 <TextBlock Text="&#xE774;" Style="{StaticResource SectionGlyph}"/>
-                <TextBlock Text="{Binding Dashboard_WebController, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource SectionTitle}"/>
+                <TextBlock Text="{Binding Dashboard_WebController, Source={x:Static strings:Strings.Instance}, Converter={StaticResource UpperConverter}}" Style="{StaticResource SectionTitle}"/>
             </StackPanel>
 
             <Border Style="{StaticResource CardBorder}" Margin="0,0,0,0">
@@ -652,7 +632,7 @@
             <!-- Remote Link (issue #138) -->
             <StackPanel Orientation="Horizontal" Margin="0,20,0,12">
                 <TextBlock Text="&#xE969;" Style="{StaticResource SectionGlyph}"/>
-                <TextBlock Text="{Binding Dashboard_RemoteLink, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource SectionTitle}"/>
+                <TextBlock Text="{Binding Dashboard_RemoteLink, Source={x:Static strings:Strings.Instance}, Converter={StaticResource UpperConverter}}" Style="{StaticResource SectionTitle}"/>
             </StackPanel>
 
             <Border Style="{StaticResource CardBorder}" Margin="0,0,0,0">
@@ -792,7 +772,7 @@
             <!-- ═══ Touchpad Overlay ═══ -->
             <StackPanel Orientation="Horizontal" Margin="0,20,0,12">
                 <TextBlock Text="&#xEDA4;" Style="{StaticResource SectionGlyph}"/>
-                <TextBlock Text="{Binding Dashboard_TouchpadOverlay, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource SectionTitle}"/>
+                <TextBlock Text="{Binding Dashboard_TouchpadOverlay, Source={x:Static strings:Strings.Instance}, Converter={StaticResource UpperConverter}}" Style="{StaticResource SectionTitle}"/>
             </StackPanel>
 
             <Border Style="{StaticResource CardBorder}" Margin="0,0,0,0">
@@ -835,7 +815,7 @@
             <!-- ═══ Driver status ═══ -->
             <StackPanel Orientation="Horizontal" Margin="0,20,0,12">
                 <TextBlock Text="&#xED5D;" Style="{StaticResource SectionGlyph}"/>
-                <TextBlock Text="{Binding Dashboard_Drivers, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource SectionTitle}"/>
+                <TextBlock Text="{Binding Dashboard_Drivers, Source={x:Static strings:Strings.Instance}, Converter={StaticResource UpperConverter}}" Style="{StaticResource SectionTitle}"/>
             </StackPanel>
 
             <Border Style="{StaticResource CardBorder}" Padding="20" Margin="0,0,0,8">

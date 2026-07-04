@@ -4150,8 +4150,14 @@
                                                             <Canvas.Top>100</Canvas.Top>
                                                         </Ellipse>
                                                         <!-- Stick position dot -->
-                                                        <Ellipse Width="11" Height="11" Fill="#FF58B6E4"
-                                                                 Stroke="#FF2E6A8F" StrokeThickness="1"
+                                                        <!-- Two-stage (#175): raw hardware in cold under the
+                                                             forged output in ember. -->
+                                                        <Ellipse Width="9" Height="9" Fill="#FF58B6E4"
+                                                                 Stroke="#FF2E6A8F" StrokeThickness="1" Opacity="0.85"
+                                                                 Canvas.Left="{Binding RawPosX, Converter={StaticResource NormToCanvasConverter}, ConverterParameter='200,9'}"
+                                                                 Canvas.Top="{Binding RawPosY, Converter={StaticResource NormToCanvasConverter}, ConverterParameter='200,9'}"/>
+                                                        <Ellipse Width="11" Height="11" Fill="{DynamicResource EmberHotBrush}"
+                                                                 Stroke="{DynamicResource EmberDeepBrush}" StrokeThickness="1"
                                                                  Canvas.Left="{Binding LiveX, Converter={StaticResource NormToCanvasConverter}, ConverterParameter='200,11'}"
                                                                  Canvas.Top="{Binding LiveY, Converter={StaticResource NormToCanvasConverter}, ConverterParameter='200,11'}"/>
                                                     </Canvas>
@@ -4584,11 +4590,17 @@
                                             <!-- Live value bar -->
                                             <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
                                                 <TextBlock Text="{Binding Pad_Live, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
-                                                <!-- Cold (#175): this is the wire, pre-forge. -->
-                                                <ProgressBar Value="{Binding LiveValue, Mode=OneWay}"
-                                                             Minimum="0" Maximum="1"
-                                                             Foreground="{DynamicResource ColdBrush}"
-                                                             Width="200" Height="16" VerticalAlignment="Center"/>
+                                                <!-- Two-stage (#175): cold raw over ember forged output. -->
+                                                <StackPanel VerticalAlignment="Center">
+                                                    <ProgressBar Value="{Binding RawNorm, Mode=OneWay}"
+                                                                 Minimum="0" Maximum="1"
+                                                                 Foreground="{DynamicResource ColdBrush}"
+                                                                 Width="200" Height="7" Margin="0,0,0,2"/>
+                                                    <ProgressBar Value="{Binding LiveValue, Mode=OneWay}"
+                                                                 Minimum="0" Maximum="1"
+                                                                 Foreground="{DynamicResource EmberBrush}"
+                                                                 Width="200" Height="7"/>
+                                                </StackPanel>
                                                 <TextBlock Text="{Binding RawDisplay, Mode=OneWay}"
                                                            Margin="8,0,0,0" VerticalAlignment="Center"
                                                            Foreground="{DynamicResource ColdBrush}"/>

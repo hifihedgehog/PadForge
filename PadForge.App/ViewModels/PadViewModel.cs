@@ -4046,6 +4046,8 @@ namespace PadForge.ViewModels
                 StickConfigs[0].LiveY = lvy;
                 StickConfigs[0].RawX = (short)Math.Clamp((lox - 0.5) * 2.0 * 32767, short.MinValue, short.MaxValue);
                 StickConfigs[0].RawY = (short)Math.Clamp((0.5 - loy) * 2.0 * 32767, short.MinValue, short.MaxValue);
+                StickConfigs[0].RawPosX = DeviceThumbLX + LeftCenterOffsetX / 200.0;
+                StickConfigs[0].RawPosY = DeviceThumbLY - LeftCenterOffsetY / 200.0;
                 StickConfigs[0].HardwareRawX = gp.ThumbLX;
                 StickConfigs[0].HardwareRawY = gp.ThumbLY;
                 UpdateStickCurveDots(StickConfigs[0], DeviceThumbLX, DeviceThumbLY);
@@ -4065,6 +4067,8 @@ namespace PadForge.ViewModels
                 StickConfigs[1].LiveY = rvy;
                 StickConfigs[1].RawX = (short)Math.Clamp((rox - 0.5) * 2.0 * 32767, short.MinValue, short.MaxValue);
                 StickConfigs[1].RawY = (short)Math.Clamp((0.5 - roy) * 2.0 * 32767, short.MinValue, short.MaxValue);
+                StickConfigs[1].RawPosX = DeviceThumbRX + RightCenterOffsetX / 200.0;
+                StickConfigs[1].RawPosY = DeviceThumbRY - RightCenterOffsetY / 200.0;
                 StickConfigs[1].HardwareRawX = gp.ThumbRX;
                 StickConfigs[1].HardwareRawY = gp.ThumbRY;
                 UpdateStickCurveDots(StickConfigs[1], DeviceThumbRX, DeviceThumbRY);
@@ -4073,6 +4077,7 @@ namespace PadForge.ViewModels
             {
                 var processed = ProcessTriggerForPreview(DeviceLeftTrigger, TriggerConfigs[0]);
                 TriggerConfigs[0].LiveValue = processed;
+                TriggerConfigs[0].RawNorm = DeviceLeftTrigger;
                 TriggerConfigs[0].RawValue = (ushort)Math.Clamp((int)(processed * 65535), 0, 65535);
                 UpdateTriggerCurveDot(TriggerConfigs[0], DeviceLeftTrigger);
             }
@@ -4080,6 +4085,7 @@ namespace PadForge.ViewModels
             {
                 var processed = ProcessTriggerForPreview(DeviceRightTrigger, TriggerConfigs[1]);
                 TriggerConfigs[1].LiveValue = processed;
+                TriggerConfigs[1].RawNorm = DeviceRightTrigger;
                 TriggerConfigs[1].RawValue = (ushort)Math.Clamp((int)(processed * 65535), 0, 65535);
                 UpdateTriggerCurveDot(TriggerConfigs[1], DeviceRightTrigger);
             }
@@ -4428,6 +4434,7 @@ namespace PadForge.ViewModels
                     double rawNorm = (raw.Axes[trig.AxisIndex] - (double)short.MinValue) / 65535.0;
                     var processed = ProcessTriggerForPreview(rawNorm, trig);
                     trig.LiveValue = processed;
+                    trig.RawNorm = rawNorm;
                     trig.RawValue = (ushort)Math.Clamp((int)(processed * 65535), 0, 65535);
                     UpdateTriggerCurveDot(trig, rawNorm);
                 }

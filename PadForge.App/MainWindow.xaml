@@ -121,7 +121,10 @@
             <ui:NavigationView.Resources>
                 <Style TargetType="ui:NavigationViewItem">
                     <Setter Property="Height" Value="48"/>
-                    <Setter Property="FontSize" Value="15"/>
+                    <Setter Property="FontSize" Value="14"/>
+                    <!-- Rail rests in the steel-blue secondary; selection
+                         brings the accent forward (#175). -->
+                    <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}"/>
                 </Style>
             </ui:NavigationView.Resources>
 

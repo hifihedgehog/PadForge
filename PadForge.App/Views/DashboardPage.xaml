@@ -105,7 +105,16 @@
                                         <DataTrigger Binding="{Binding EngineStateKey}" Value="Stopping">
                                             <Setter Property="Fill" Value="{DynamicResource WaitBrush}"/>
                                             <Setter Property="Stroke" Value="{x:Null}"/>
-                                            <DataTrigger.EnterActions>
+                                        </DataTrigger>
+                                        <!-- Reduced motion (#175 item 98): the flash loop only
+                                             runs when Windows animations are on. Off, the flame
+                                             holds steady gold from the setters above. -->
+                                        <MultiDataTrigger>
+                                            <MultiDataTrigger.Conditions>
+                                                <Condition Binding="{Binding EngineStateKey}" Value="Stopping"/>
+                                                <Condition Binding="{Binding Source={x:Static SystemParameters.ClientAreaAnimation}}" Value="True"/>
+                                            </MultiDataTrigger.Conditions>
+                                            <MultiDataTrigger.EnterActions>
                                                 <BeginStoryboard x:Name="FlashGoldStoryboard">
                                                     <Storyboard>
                                                         <DoubleAnimation
@@ -116,11 +125,11 @@
                                                             RepeatBehavior="Forever"/>
                                                     </Storyboard>
                                                 </BeginStoryboard>
-                                            </DataTrigger.EnterActions>
-                                            <DataTrigger.ExitActions>
+                                            </MultiDataTrigger.EnterActions>
+                                            <MultiDataTrigger.ExitActions>
                                                 <StopStoryboard BeginStoryboardName="FlashGoldStoryboard"/>
-                                            </DataTrigger.ExitActions>
-                                        </DataTrigger>
+                                            </MultiDataTrigger.ExitActions>
+                                        </MultiDataTrigger>
                                     </Style.Triggers>
                                 </Style>
                             </Path.Style>
@@ -214,8 +223,12 @@
                                                     </BeginStoryboard>
                                                 </MultiDataTrigger.ExitActions>
                                             </MultiDataTrigger>
-                                            <DataTrigger Binding="{Binding IsVirtualControllerConnected}" Value="True">
-                                                <DataTrigger.EnterActions>
+                                            <MultiDataTrigger>
+                                                <MultiDataTrigger.Conditions>
+                                                    <Condition Binding="{Binding IsVirtualControllerConnected}" Value="True"/>
+                                                    <Condition Binding="{Binding Source={x:Static SystemParameters.ClientAreaAnimation}}" Value="True"/>
+                                                </MultiDataTrigger.Conditions>
+                                                <MultiDataTrigger.EnterActions>
                                                     <BeginStoryboard>
                                                         <Storyboard>
                                                             <!-- Artifact breathe: 3.2s ease-in-out shadow pulse. -->
@@ -228,8 +241,8 @@
                                                             </DoubleAnimation>
                                                         </Storyboard>
                                                     </BeginStoryboard>
-                                                </DataTrigger.EnterActions>
-                                                <DataTrigger.ExitActions>
+                                                </MultiDataTrigger.EnterActions>
+                                                <MultiDataTrigger.ExitActions>
                                                     <BeginStoryboard>
                                                         <Storyboard>
                                                             <DoubleAnimation Storyboard.TargetProperty="Opacity" To="0.5" Duration="0:0:1.2">
@@ -239,8 +252,33 @@
                                                             </DoubleAnimation>
                                                         </Storyboard>
                                                     </BeginStoryboard>
-                                                </DataTrigger.ExitActions>
-                                            </DataTrigger>
+                                                </MultiDataTrigger.ExitActions>
+                                            </MultiDataTrigger>
+                                            <!-- Reduced motion (#175 item 98): breathe swaps for a
+                                                 static glow. 0.74 host opacity x the 0.55 shadow
+                                                 lands the spec's rgba(255,107,44,0.22) equivalent.
+                                                 Zero-length animations, because the host's local
+                                                 Opacity="0" outranks trigger setters. -->
+                                            <MultiDataTrigger>
+                                                <MultiDataTrigger.Conditions>
+                                                    <Condition Binding="{Binding IsVirtualControllerConnected}" Value="True"/>
+                                                    <Condition Binding="{Binding Source={x:Static SystemParameters.ClientAreaAnimation}}" Value="False"/>
+                                                </MultiDataTrigger.Conditions>
+                                                <MultiDataTrigger.EnterActions>
+                                                    <BeginStoryboard>
+                                                        <Storyboard>
+                                                            <DoubleAnimation Storyboard.TargetProperty="Opacity" To="0.74" Duration="0:0:0"/>
+                                                        </Storyboard>
+                                                    </BeginStoryboard>
+                                                </MultiDataTrigger.EnterActions>
+                                                <MultiDataTrigger.ExitActions>
+                                                    <BeginStoryboard>
+                                                        <Storyboard>
+                                                            <DoubleAnimation Storyboard.TargetProperty="Opacity" To="0.5" Duration="0:0:0"/>
+                                                        </Storyboard>
+                                                    </BeginStoryboard>
+                                                </MultiDataTrigger.ExitActions>
+                                            </MultiDataTrigger>
                                         </Style.Triggers>
                                     </Style>
                                 </Border.Style>
@@ -367,7 +405,15 @@
                                                         <DataTrigger Binding="{Binding IsInitializing}" Value="True">
                                                             <Setter Property="Fill" Value="{DynamicResource EmberBrush}"/>
                                                             <Setter Property="Stroke" Value="{x:Null}"/>
-                                                            <DataTrigger.EnterActions>
+                                                        </DataTrigger>
+                                                        <!-- Reduced motion (#175 item 98): no flash loop,
+                                                             the flame holds steady ember instead. -->
+                                                        <MultiDataTrigger>
+                                                            <MultiDataTrigger.Conditions>
+                                                                <Condition Binding="{Binding IsInitializing}" Value="True"/>
+                                                                <Condition Binding="{Binding Source={x:Static SystemParameters.ClientAreaAnimation}}" Value="True"/>
+                                                            </MultiDataTrigger.Conditions>
+                                                            <MultiDataTrigger.EnterActions>
                                                                 <BeginStoryboard x:Name="FlashEmberStoryboard">
                                                                     <Storyboard>
                                                                         <DoubleAnimation
@@ -378,11 +424,11 @@
                                                                             RepeatBehavior="Forever"/>
                                                                     </Storyboard>
                                                                 </BeginStoryboard>
-                                                            </DataTrigger.EnterActions>
-                                                            <DataTrigger.ExitActions>
+                                                            </MultiDataTrigger.EnterActions>
+                                                            <MultiDataTrigger.ExitActions>
                                                                 <StopStoryboard BeginStoryboardName="FlashEmberStoryboard"/>
-                                                            </DataTrigger.ExitActions>
-                                                        </DataTrigger>
+                                                            </MultiDataTrigger.ExitActions>
+                                                        </MultiDataTrigger>
                                                     </Style.Triggers>
                                                 </Style>
                                             </Path.Style>
@@ -584,10 +630,12 @@
                                         </LinearGradientBrush>
                                     </Border.OpacityMask>
                                     <StackPanel Orientation="Horizontal">
-                                        <!-- Empty state only: roster below owns the mapped case. -->
+                                        <!-- Empty state only: roster below owns the mapped case.
+                                             Tertiary, not cold (#175 item 74): cold is reserved
+                                             for real hardware facts, and "no device" is not one. -->
                                         <TextBlock Text="{Binding DeviceName}"
                                                    FontSize="12"
-                                                   Foreground="{DynamicResource ColdBrush}">
+                                                   Foreground="{DynamicResource TextFillColorTertiaryBrush}">
                                             <TextBlock.Style>
                                                 <Style TargetType="TextBlock">
                                                     <Setter Property="Visibility" Value="Collapsed"/>
@@ -748,6 +796,25 @@
                         </ui:Button>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                        <!-- Serving = flame (#175 item 76); the green dot stays
+                             strictly health. -->
+                        <Path Data="{StaticResource FlameOuterGeometry}"
+                              Width="11" Height="11" Stretch="Uniform"
+                              VerticalAlignment="Center" Margin="0,0,6,0">
+                            <Path.Style>
+                                <Style TargetType="Path">
+                                    <Setter Property="Fill" Value="Transparent"/>
+                                    <Setter Property="Stroke" Value="{DynamicResource TextFillColorTertiaryBrush}"/>
+                                    <Setter Property="StrokeThickness" Value="1.1"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding EnableDsuMotionServer}" Value="True">
+                                            <Setter Property="Fill" Value="{DynamicResource EmberBrush}"/>
+                                            <Setter Property="Stroke" Value="{x:Null}"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Path.Style>
+                        </Path>
                         <Ellipse Width="8" Height="8"
                                  Fill="{Binding EnableDsuMotionServer, Converter={StaticResource BoolToColorConverter}, ConverterParameter=gray}"
                                  VerticalAlignment="Center" Margin="0,0,8,0"/>
@@ -788,6 +855,24 @@
                         </ui:Button>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                        <!-- Serving = flame (#175 item 76). -->
+                        <Path Data="{StaticResource FlameOuterGeometry}"
+                              Width="11" Height="11" Stretch="Uniform"
+                              VerticalAlignment="Center" Margin="0,0,6,0">
+                            <Path.Style>
+                                <Style TargetType="Path">
+                                    <Setter Property="Fill" Value="Transparent"/>
+                                    <Setter Property="Stroke" Value="{DynamicResource TextFillColorTertiaryBrush}"/>
+                                    <Setter Property="StrokeThickness" Value="1.1"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding EnableWebController}" Value="True">
+                                            <Setter Property="Fill" Value="{DynamicResource EmberBrush}"/>
+                                            <Setter Property="Stroke" Value="{x:Null}"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Path.Style>
+                        </Path>
                         <Ellipse Width="8" Height="8"
                                  Fill="{Binding EnableWebController, Converter={StaticResource BoolToColorConverter}, ConverterParameter=gray}"
                                  VerticalAlignment="Center" Margin="0,0,8,0"/>
@@ -833,6 +918,24 @@
                         </ui:Button>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,2">
+                        <!-- Serving = flame (#175 item 76). -->
+                        <Path Data="{StaticResource FlameOuterGeometry}"
+                              Width="11" Height="11" Stretch="Uniform"
+                              VerticalAlignment="Center" Margin="0,0,6,0">
+                            <Path.Style>
+                                <Style TargetType="Path">
+                                    <Setter Property="Fill" Value="Transparent"/>
+                                    <Setter Property="Stroke" Value="{DynamicResource TextFillColorTertiaryBrush}"/>
+                                    <Setter Property="StrokeThickness" Value="1.1"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding EnableRemoteLink}" Value="True">
+                                            <Setter Property="Fill" Value="{DynamicResource EmberBrush}"/>
+                                            <Setter Property="Stroke" Value="{x:Null}"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Path.Style>
+                        </Path>
                         <Ellipse Width="8" Height="8"
                                  Fill="{Binding EnableRemoteLink, Converter={StaticResource BoolToColorConverter}, ConverterParameter=gray}"
                                  VerticalAlignment="Center" Margin="0,0,8,0"/>
@@ -983,6 +1086,24 @@
                                 Content="{Binding Dashboard_TouchpadOverlayResetPosition, Source={x:Static strings:Strings.Instance}}"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                        <!-- Serving = flame (#175 item 76). -->
+                        <Path Data="{StaticResource FlameOuterGeometry}"
+                              Width="11" Height="11" Stretch="Uniform"
+                              VerticalAlignment="Center" Margin="0,0,6,0">
+                            <Path.Style>
+                                <Style TargetType="Path">
+                                    <Setter Property="Fill" Value="Transparent"/>
+                                    <Setter Property="Stroke" Value="{DynamicResource TextFillColorTertiaryBrush}"/>
+                                    <Setter Property="StrokeThickness" Value="1.1"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding EnableTouchpadOverlay}" Value="True">
+                                            <Setter Property="Fill" Value="{DynamicResource EmberBrush}"/>
+                                            <Setter Property="Stroke" Value="{x:Null}"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Path.Style>
+                        </Path>
                         <Ellipse Width="8" Height="8"
                                  Fill="{Binding EnableTouchpadOverlay, Converter={StaticResource BoolToColorConverter}, ConverterParameter=gray}"
                                  VerticalAlignment="Center" Margin="0,0,8,0"/>

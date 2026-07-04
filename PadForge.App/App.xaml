@@ -79,6 +79,14 @@
                                 </ControlTemplate>
                             </Setter.Value>
                         </Setter>
+                        <!-- Disabled consistency (#175 final sweep): branded
+                             glyph content keeps its own colors, so dim the
+                             control as a whole. -->
+                        <Style.Triggers>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Opacity" Value="0.45"/>
+                            </Trigger>
+                        </Style.Triggers>
                     </Style>
                     <!-- Active variant: the forge gradient must not be
                          swapped away on hover. -->
@@ -94,6 +102,11 @@
                                 </ControlTemplate>
                             </Setter.Value>
                         </Setter>
+                        <Style.Triggers>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Opacity" Value="0.45"/>
+                            </Trigger>
+                        </Style.Triggers>
                     </Style>
                     <!-- Wait gold: the only sanctioned gold. Cooling flames,
                          awaiting-devices states, anything holding heat. -->
@@ -192,6 +205,13 @@
                                 <ScaleTransform ScaleX="0.94" ScaleY="0.94"/>
                             </Setter.Value>
                         </Setter>
+                    </Trigger>
+                    <!-- Disabled consistency (#175 final sweep): icon content
+                         carries explicit domain colors that the template's
+                         disabled foreground cannot reach, so dim the whole
+                         control. Opacity, never Effect. -->
+                    <Trigger Property="IsEnabled" Value="False">
+                        <Setter Property="Opacity" Value="0.45"/>
                     </Trigger>
                 </Style.Triggers>
             </Style>
@@ -358,6 +378,14 @@
                         </ControlTemplate>
                     </Setter.Value>
                 </Setter>
+                <!-- Disabled consistency (#175 final sweep): the retemplated
+                     slider has no brush-key disabled path, so dim the whole
+                     control like the icon buttons. -->
+                <Style.Triggers>
+                    <Trigger Property="IsEnabled" Value="False">
+                        <Setter Property="Opacity" Value="0.4"/>
+                    </Trigger>
+                </Style.Triggers>
             </Style>
 
             <!--
@@ -438,6 +466,108 @@
                         <Setter Property="Height" Value="Auto"/>
                         <Setter Property="Template" Value="{StaticResource AlwaysVisibleDynamicVerticalScrollBar}"/>
                     </Trigger>
+                </Style.Triggers>
+            </Style>
+
+            <!--
+                Keyboard focus (#175 final sweep): Wpf.Ui's stock focus rect
+                is a 1px neutral stroke (Resources/DefaultFocusVisualStyle.xaml,
+                KeyboardFocusBorderColorBrush). Replace it with an ember ring
+                on the same mechanism: every Wpf.Ui control binds
+                DefaultControlFocusVisualStyle via DynamicResource, and the
+                system FocusVisualStyleKey alias catches plain controls, so
+                overriding both keys here retargets keyboard focus app-wide.
+                EmberHotBrush is a theme pair (EmberTheme.ApplyAccent deepens
+                it on light), so the ring holds contrast on both grounds.
+                Focus visuals draw only on keyboard/tab focus, never on click.
+            -->
+            <Style x:Key="EmberFocusVisual">
+                <Setter Property="Control.Template">
+                    <Setter.Value>
+                        <ControlTemplate>
+                            <Rectangle
+                                Margin="-2"
+                                RadiusX="6"
+                                RadiusY="6"
+                                SnapsToDevicePixels="True"
+                                Stroke="{DynamicResource EmberHotBrush}"
+                                StrokeThickness="1.5"/>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            <Style x:Key="DefaultControlFocusVisualStyle" BasedOn="{StaticResource EmberFocusVisual}"/>
+            <Style x:Key="{x:Static SystemParameters.FocusVisualStyleKey}" BasedOn="{StaticResource EmberFocusVisual}"/>
+
+            <!--
+                ToolTip typography (#175 final sweep): body face at the stock
+                12px. The stock style justifies text, which rivers on short
+                hint strings, so tooltips set left alignment. Surface colors
+                stay on the ToolTipBackground/Foreground keys EmberTheme
+                already pins to the flyout ground on dark.
+            -->
+            <Style TargetType="ToolTip" BasedOn="{StaticResource DefaultToolTipStyle}">
+                <Setter Property="FontFamily" Value="{StaticResource BodyFontFamily}"/>
+                <Setter Property="TextBlock.TextAlignment" Value="Left"/>
+            </Style>
+
+            <!--
+                Text selection (#175 final sweep): the selection highlight is
+                an ember tint instead of the stock system blue. SelectionBrush
+                composites under the text at SelectionOpacity, so raw ember
+                works on both grounds. Covers plain TextBox and uictrl:TextBox
+                (each has its own default style key); keyed styles based
+                directly on DefaultTextBoxStyle (PadPage DzValueEdit family)
+                bypass this and keep stock selection.
+            -->
+            <Style TargetType="TextBox" BasedOn="{StaticResource DefaultTextBoxStyle}">
+                <Setter Property="SelectionBrush" Value="{DynamicResource EmberBrush}"/>
+                <Setter Property="SelectionOpacity" Value="0.35"/>
+            </Style>
+            <Style TargetType="uictrl:TextBox" BasedOn="{StaticResource DefaultUiTextBoxStyle}">
+                <Setter Property="SelectionBrush" Value="{DynamicResource EmberBrush}"/>
+                <Setter Property="SelectionOpacity" Value="0.35"/>
+            </Style>
+
+            <!--
+                EntranceFade (#175 final sweep): reusable 150ms ease-in for
+                page-level content. Opacity 0 -> 1 with a 6px upward settle on
+                Loaded, cubic ease-out, then holds. Opacity and a
+                RenderTransform double only: no Effect animation, no layout
+                churn. The style owns the TranslateTransform so the storyboard
+                path always resolves (WPF clones the frozen setter transform
+                for animation). Apply to a page or card root:
+                Style="{StaticResource EntranceFade}". Replays whenever the
+                element reloads (tab switches), which is the intent.
+            -->
+            <Style x:Key="EntranceFade" TargetType="FrameworkElement">
+                <Setter Property="Opacity" Value="0"/>
+                <Setter Property="RenderTransform">
+                    <Setter.Value>
+                        <TranslateTransform Y="6"/>
+                    </Setter.Value>
+                </Setter>
+                <Style.Triggers>
+                    <EventTrigger RoutedEvent="FrameworkElement.Loaded">
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation
+                                    Storyboard.TargetProperty="Opacity"
+                                    To="1" Duration="0:0:0.15">
+                                    <DoubleAnimation.EasingFunction>
+                                        <CubicEase EasingMode="EaseOut"/>
+                                    </DoubleAnimation.EasingFunction>
+                                </DoubleAnimation>
+                                <DoubleAnimation
+                                    Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.Y)"
+                                    To="0" Duration="0:0:0.15">
+                                    <DoubleAnimation.EasingFunction>
+                                        <CubicEase EasingMode="EaseOut"/>
+                                    </DoubleAnimation.EasingFunction>
+                                </DoubleAnimation>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </EventTrigger>
                 </Style.Triggers>
             </Style>
 

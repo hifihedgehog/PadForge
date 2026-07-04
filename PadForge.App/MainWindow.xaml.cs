@@ -2285,8 +2285,10 @@ namespace PadForge
 
             var flameGlyph = BuildFlameGlyph(13, lit, cooling);
 
-            // Apply flashing opacity animation when igniting.
-            if (isInitializing)
+            // Apply flashing opacity animation when igniting. Reduced motion
+            // (#175 item 98, SystemParameters.ClientAreaAnimation): no flash
+            // loop, the flame holds steady ember.
+            if (isInitializing && SystemParameters.ClientAreaAnimation)
             {
                 var flashAnimation = new System.Windows.Media.Animation.DoubleAnimation
                 {
@@ -2445,22 +2447,32 @@ namespace PadForge
                     Opacity = 0.25,
                 };
                 card.Effect = ring;
-                var breathe = new System.Windows.Media.Animation.DoubleAnimation
+                // Reduced motion (#175 item 98): breathe swaps for a static
+                // glow pinned near the spec's rgba(...,0.22) point of the
+                // 0.25-0.60 breathe range.
+                if (SystemParameters.ClientAreaAnimation)
                 {
-                    From = 0.25,
-                    To = 0.60,
-                    Duration = System.TimeSpan.FromSeconds(1.6),
-                    AutoReverse = true,
-                    RepeatBehavior = System.Windows.Media.Animation.RepeatBehavior.Forever,
-                    EasingFunction = new System.Windows.Media.Animation.SineEase
-                    { EasingMode = System.Windows.Media.Animation.EasingMode.EaseInOut },
-                    // Phase-lock to a global 3.2s clock: card rebuilds restart
-                    // the animation, and without this the glow visibly jumps
-                    // to cycle start each time.
-                    BeginTime = System.TimeSpan.FromMilliseconds(
-                        -(System.DateTime.UtcNow.TimeOfDay.TotalMilliseconds % 3200.0)),
-                };
-                ring.BeginAnimation(System.Windows.Media.Effects.DropShadowEffect.OpacityProperty, breathe);
+                    var breathe = new System.Windows.Media.Animation.DoubleAnimation
+                    {
+                        From = 0.25,
+                        To = 0.60,
+                        Duration = System.TimeSpan.FromSeconds(1.6),
+                        AutoReverse = true,
+                        RepeatBehavior = System.Windows.Media.Animation.RepeatBehavior.Forever,
+                        EasingFunction = new System.Windows.Media.Animation.SineEase
+                        { EasingMode = System.Windows.Media.Animation.EasingMode.EaseInOut },
+                        // Phase-lock to a global 3.2s clock: card rebuilds restart
+                        // the animation, and without this the glow visibly jumps
+                        // to cycle start each time.
+                        BeginTime = System.TimeSpan.FromMilliseconds(
+                            -(System.DateTime.UtcNow.TimeOfDay.TotalMilliseconds % 3200.0)),
+                    };
+                    ring.BeginAnimation(System.Windows.Media.Effects.DropShadowEffect.OpacityProperty, breathe);
+                }
+                else
+                {
+                    ring.Opacity = 0.40;
+                }
             }
             else if (cooling)
             {

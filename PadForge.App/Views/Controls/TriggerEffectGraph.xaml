@@ -3,7 +3,10 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              SnapsToDevicePixels="True"
              UseLayoutRounding="True">
+    <!-- EntranceFade (#175 final sweep): 150ms settle when the Adaptive
+         Triggers card loads. Opacity + translate only, no Effect. -->
     <Border CornerRadius="8" Padding="10"
+            Style="{StaticResource EntranceFade}"
             Background="{DynamicResource ControlFillColorDefaultBrush}"
             BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}"
             BorderThickness="1">

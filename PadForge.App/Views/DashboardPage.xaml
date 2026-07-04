@@ -224,7 +224,7 @@
                                     </Style>
                                 </Border.Style>
                             </Border>
-                        <Border Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
+                        <Border Background="{DynamicResource CrucibleCardBrush}"
                                 CornerRadius="8" Padding="10"
                                 BorderThickness="2" BorderBrush="Transparent"
                                 Width="252"

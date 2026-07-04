@@ -33,6 +33,12 @@
                     <SolidColorBrush x:Key="SteelCardBrush" Color="#111623"/>
                     <SolidColorBrush x:Key="SteelRaisedBrush" Color="#1B2333"/>
                     <SolidColorBrush x:Key="SteelLineBrush" Color="#253049"/>
+                    <!-- Crucible card ground: dark default; EmberTheme swaps
+                         it per theme (light falls back to the card fill). -->
+                    <LinearGradientBrush x:Key="CrucibleCardBrush" StartPoint="0,0" EndPoint="0,1">
+                        <GradientStop Color="#111623" Offset="0"/>
+                        <GradientStop Color="#0B0E14" Offset="1"/>
+                    </LinearGradientBrush>
                     <SolidColorBrush x:Key="SteelLineSoftBrush" Color="#1C2536"/>
 
                     <!-- Flame glyph geometry (24x24 space). Material Design

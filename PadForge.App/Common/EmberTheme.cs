@@ -35,6 +35,24 @@ namespace PadForge.Common
             SetBrush("ColdBrush", dark ? ColdDark : ColdLight);
             SetBrush("ColdDeepBrush", dark ? ColdDeepDark : ColdDeepLight);
             SetBrush("EmberHotBrush", dark ? EmberHotDark : EmberHotLight);
+
+            // Crucible card ground (#175 pitch): on the dark ground the slot
+            // cards carry a subtle vertical steel gradient instead of the
+            // flat card fill. On light ground they fall back to the theme's
+            // own card fill so the gradient never fights a white page.
+            if (dark)
+            {
+                var grad = new LinearGradientBrush(
+                    Color.FromRgb(0x11, 0x16, 0x23),
+                    Color.FromRgb(0x0B, 0x0E, 0x14),
+                    new Point(0, 0), new Point(0, 1));
+                grad.Freeze();
+                Application.Current.Resources["CrucibleCardBrush"] = grad;
+            }
+            else if (Application.Current.Resources["CardBackgroundFillColorDefaultBrush"] is Brush cardFill)
+            {
+                Application.Current.Resources["CrucibleCardBrush"] = cardFill;
+            }
         }
 
         private static void SetBrush(string key, Color color)

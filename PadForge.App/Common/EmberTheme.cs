@@ -53,6 +53,10 @@ namespace PadForge.Common
                 Application.Current.Resources.Remove("SystemAccentColorSecondaryBrush");
                 Application.Current.Resources.Remove("SystemAccentColorTertiaryBrush");
             }
+            // Seg-control track (#175): recessed steel on dark; on light a
+            // pale recessed tray so the branded glyphs stay visible.
+            SetBrush("SegTrackBrush", dark ? Color.FromRgb(0x0B, 0x0E, 0x14) : Color.FromRgb(0xEC, 0xED, 0xF1));
+            SetBrush("SegTrackStrokeBrush", dark ? Color.FromRgb(0x1C, 0x25, 0x36) : Color.FromRgb(0xD6, 0xD8, 0xDE));
             SetBrush("ColdBrush", dark ? ColdDark : ColdLight);
             SetBrush("ColdDeepBrush", dark ? ColdDeepDark : ColdDeepLight);
             SetBrush("EmberHotBrush", dark ? EmberHotDark : EmberHotLight);

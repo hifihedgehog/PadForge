@@ -403,8 +403,8 @@
                                      reads as a control, not clutter). -->
                                 <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,8,0,0">
                                     <!-- Recessed seg track (#175): sits below the card, not on it. -->
-                                    <Border Background="{DynamicResource SteelGroundBrush}"
-                                            BorderBrush="{DynamicResource SteelLineSoftBrush}"
+                                    <Border Background="{DynamicResource SegTrackBrush}"
+                                            BorderBrush="{DynamicResource SegTrackStrokeBrush}"
                                             BorderThickness="1"
                                             CornerRadius="6" Padding="1" VerticalAlignment="Center">
                                     <StackPanel Orientation="Horizontal">

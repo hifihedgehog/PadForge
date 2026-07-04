@@ -4022,9 +4022,15 @@
                                             </StackPanel>
                                         </StackPanel>
 
-                                        <!-- Live preview (right) -->
-                                        <StackPanel Grid.Column="1" VerticalAlignment="Top" MinWidth="216">
-                                            <Border BorderBrush="#FF3F3F46" BorderThickness="2" CornerRadius="2"
+                                        <!-- Live preview (right): inset instrument panel (#175
+                                             iteration 21, matching the trigger instrument). -->
+                                        <Border Grid.Column="1" VerticalAlignment="Top"
+                                                Background="{DynamicResource ControlFillColorDefaultBrush}"
+                                                BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}"
+                                                BorderThickness="1" CornerRadius="8" Padding="12">
+                                        <StackPanel MinWidth="216">
+                                            <Border BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}"
+                                                    BorderThickness="1" CornerRadius="8"
                                                     Padding="4" Width="212" Height="212"
                                                     ClipToBounds="True">
                                                 <Grid Width="200" Height="200">
@@ -4149,11 +4155,16 @@
                                                     </Canvas>
                                                 </Grid>
                                             </Border>
-                                            <TextBlock Margin="0,4,0,0" HorizontalAlignment="Center"
-                                                       Text="{Binding RawDisplay, Mode=OneWay}"
-                                                       TextWrapping="Wrap" TextAlignment="Center"
-                                                       FontSize="10"
-                                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,8,0,0">
+                                                <TextBlock Text="{Binding Instr_Out, Source={x:Static strings:Strings.Instance}}"
+                                                           FontSize="10" FontWeight="SemiBold"
+                                                           Foreground="{DynamicResource EmberHotBrush}"
+                                                           VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                                <TextBlock Text="{Binding RawDisplay, Mode=OneWay}"
+                                                           FontSize="11"
+                                                           Foreground="{DynamicResource EmberHotBrush}"
+                                                           VerticalAlignment="Center"/>
+                                            </StackPanel>
 
                                             <!-- Per-axis sensitivity curve editors -->
                                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10,0,0">
@@ -4185,6 +4196,7 @@
                                                 </StackPanel>
                                             </StackPanel>
                                         </StackPanel>
+                                        </Border>
                                     </Grid>
 
                                     <!-- ═══ Steering (winding / 2D angle-to-axis / motion lean) #94 — divider-separated section like the rest of the card ═══ -->

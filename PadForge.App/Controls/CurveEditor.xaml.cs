@@ -90,6 +90,25 @@ namespace PadForge.Controls
             return brush;
         }
 
+        // Hover glow (#175): handles flip ember-hot under the cursor (the
+        // same hue they hold while dragged), so the bloom is ember. Small
+        // glyph, so BlurRadius 8. Shared + frozen, set directly on the
+        // element, never animated.
+        private static readonly System.Windows.Media.Effects.DropShadowEffect HandleHoverGlow = CreateFrozenHandleGlow();
+
+        private static System.Windows.Media.Effects.DropShadowEffect CreateFrozenHandleGlow()
+        {
+            var fx = new System.Windows.Media.Effects.DropShadowEffect
+            {
+                Color = Color.FromRgb(0xFF, 0x6B, 0x2C),
+                BlurRadius = 8,
+                ShadowDepth = 0,
+                Opacity = 0.45
+            };
+            fx.Freeze();
+            return fx;
+        }
+
         private const double PointRadius = 5;
         private const double HitRadius = 8;
 
@@ -345,6 +364,13 @@ namespace PadForge.Controls
                     ToolTip = $"({cx:F2}, {cy:F2})"
                 };
 
+                // Grabbed handle keeps its ember bloom across the per-move
+                // rebuilds (mouse capture suppresses MouseEnter here).
+                if (isDragged)
+                    ellipse.Effect = HandleHoverGlow;
+                ellipse.MouseEnter += Handle_MouseEnter;
+                ellipse.MouseLeave += Handle_MouseLeave;
+
                 Canvas.SetLeft(ellipse, px - PointRadius);
                 Canvas.SetTop(ellipse, py - PointRadius);
                 ChartCanvas.Children.Add(ellipse);
@@ -361,6 +387,28 @@ namespace PadForge.Controls
         }
 
         // ── Mouse interaction ──
+
+        // Hover glow (#175): a hovered handle previews the grab state,
+        // ember-hot fill plus the ember bloom. Restored to steel on leave
+        // unless it is the handle being dragged.
+        private void Handle_MouseEnter(object sender, MouseEventArgs e)
+        {
+            if (_isDragging) return;
+            if (sender is not Ellipse ellipse) return;
+            ellipse.Fill = EmberHotBrush;
+            ellipse.Stroke = EmberHotBrush;
+            ellipse.Effect = HandleHoverGlow;
+        }
+
+        private void Handle_MouseLeave(object sender, MouseEventArgs e)
+        {
+            if (sender is not Ellipse ellipse) return;
+            int i = _pointEllipses.IndexOf(ellipse);
+            if (_isDragging && i == _dragIndex) return;
+            ellipse.Fill = _handleBrush;
+            ellipse.Stroke = _curveStrokeBrush;
+            ellipse.Effect = null;
+        }
 
         private int HitTestPoint(Point mousePos)
         {

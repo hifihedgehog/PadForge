@@ -9,13 +9,24 @@
              xmlns:viewControls="clr-namespace:PadForge.Views.Controls"
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
              xmlns:strings="clr-namespace:PadForge.Resources.Strings"
-             mc:Ignorable="d"
+             xmlns:po="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options"
+             mc:Ignorable="d po"
              d:DataContext="{d:DesignInstance vm:PadViewModel}"
              d:DesignHeight="700" d:DesignWidth="900"
              xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
              xmlns:common="clr-namespace:PadForge.Common">
 
     <UserControl.Resources>
+        <!-- #175 hover-glow: hue-matched glows for anything whose color
+             changes on hover. Ember hover gets an ember glow, cold hover a
+             cold glow, steel/brightness-only hover the faint neutral ember
+             (the app's signature hue). Static Effect setters only. Never
+             animate Effect or Effect.Opacity from style triggers (startup
+             crash). Frozen so one instance is shared safely. -->
+        <DropShadowEffect x:Key="EmberHoverGlow" po:Freeze="True" Color="#FF6B2C" ShadowDepth="0" BlurRadius="12" Opacity="0.45"/>
+        <DropShadowEffect x:Key="ColdHoverGlow" po:Freeze="True" Color="#58B6E4" ShadowDepth="0" BlurRadius="10" Opacity="0.40"/>
+        <DropShadowEffect x:Key="NeutralHoverGlow" po:Freeze="True" Color="#FF6B2C" ShadowDepth="0" BlurRadius="10" Opacity="0.30"/>
+
         <!-- Style for deadzone slider groups -->
         <Style x:Key="DzLabel" TargetType="TextBlock">
             <Setter Property="Width" Value="270"/>
@@ -46,6 +57,13 @@
             <Setter Property="TextAlignment" Value="Right"/>
             <Setter Property="Margin" Value="6,0,0,0"/>
             <Setter Property="Padding" Value="2,1"/>
+            <!-- #175 hover-glow: hover lightens the recessed well one step
+                 (TextControlBackgroundPointerOver), a neutral change. -->
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Effect" Value="{StaticResource NeutralHoverGlow}"/>
+                </Trigger>
+            </Style.Triggers>
         </Style>
         <Style x:Key="DzDigitEdit" TargetType="TextBox" BasedOn="{StaticResource DefaultTextBoxStyle}">
             <Setter Property="Width" Value="56"/>
@@ -55,6 +73,11 @@
             <Setter Property="Margin" Value="6,0,0,0"/>
             <Setter Property="Padding" Value="2,1"/>
             <Setter Property="ToolTip" Value="Raw axis value"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Effect" Value="{StaticResource NeutralHoverGlow}"/>
+                </Trigger>
+            </Style.Triggers>
         </Style>
         <Style x:Key="DzPercent" TargetType="TextBlock">
             <Setter Property="VerticalAlignment" Value="Center"/>
@@ -80,6 +103,8 @@
                     </DataTemplate>
                 </Setter.Value>
             </Setter>
+            <!-- #175 hover-glow: the cold glow trigger is inherited from
+                 EmberIconButton (App.xaml), matching the cold hover ring. -->
         </Style>
         <!-- Reset All is a reset-domain text button: same ghost stroke /
              cold-ring chrome as EmberIconButton, but natural width so the
@@ -90,6 +115,7 @@
             <Setter Property="FontSize" Value="11"/>
             <Setter Property="HorizontalAlignment" Value="Left"/>
             <Setter Property="Margin" Value="0,0,0,8"/>
+            <!-- #175 hover-glow: cold glow inherited from EmberIconButton. -->
         </Style>
 
         <!-- Compact row styles for RGB sliders that need to fit under
@@ -117,6 +143,11 @@
             <Setter Property="TextAlignment" Value="Right"/>
             <Setter Property="Margin" Value="6,0,0,0"/>
             <Setter Property="Padding" Value="2,1"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Effect" Value="{StaticResource NeutralHoverGlow}"/>
+                </Trigger>
+            </Style.Triggers>
         </Style>
         <!-- Tight variant kept as an alias: EmberIconButton's fixed 28x28
              already gives the compact RGB rows their footprint. -->
@@ -133,7 +164,8 @@
                     <ControlTemplate TargetType="RadioButton">
                         <!-- Artifact .tier1 .tab.sel: ember-tint fill, warm
                              600-weight text, inset 2px bottom underline.
-                             No outline, no glow. -->
+                             No outline. Hover carries the ember hover glow
+                             (#175 hover-glow). -->
                         <Border x:Name="Bd" Background="Transparent" CornerRadius="7">
                             <Grid>
                                 <ContentPresenter Margin="12,5,12,7" VerticalAlignment="Center"
@@ -152,6 +184,7 @@
                             </Trigger>
                             <Trigger Property="IsMouseOver" Value="True">
                                 <Setter TargetName="Bd" Property="Background" Value="#14FF6B2C"/>
+                                <Setter TargetName="Bd" Property="Effect" Value="{StaticResource EmberHoverGlow}"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -189,11 +222,59 @@
                             </Trigger>
                             <Trigger Property="IsMouseOver" Value="True">
                                 <Setter TargetName="Bd" Property="Background" Value="#1458B6E4"/>
+                                <Setter TargetName="Bd" Property="Effect" Value="{StaticResource ColdHoverGlow}"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
+        </Style>
+
+        <!-- ═══════════════ #175 hover-glow styles ═══════════════
+             Where a whole class shares one hover treatment, the glow rides
+             a BasedOn style (implicit for stock chrome) so WPF-UI theme
+             brushes survive. Stock-chrome hover fills raised steel via the
+             EmberTheme PointerOver keys, a brightness-only change, so those
+             classes get the faint neutral ember. The plain Button, ComboBox,
+             TextBox, and CheckBox classes plus the EmberIconButton family
+             already carry their glow triggers in the App.xaml styles, so no
+             page-level shadows for those here. -->
+
+        <!-- Map All pill (Controller tab): hover swaps transparent fill to
+             raised steel. -->
+        <Style x:Key="MapAllPillButton" TargetType="ui:Button" BasedOn="{StaticResource DefaultUiButtonStyle}">
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Effect" Value="{StaticResource NeutralHoverGlow}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- Shift-layer tab chips: stock RadioButton chrome. -->
+        <Style x:Key="ShiftLayerTabChip" TargetType="RadioButton" BasedOn="{StaticResource {x:Type RadioButton}}">
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Effect" Value="{StaticResource NeutralHoverGlow}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- Stock-chrome item containers, page-wide (no app-level glow for
+             these two): Macros list, macro Actions list, sound packages
+             list, and every mapping-picker dropdown item. -->
+        <Style TargetType="ComboBoxItem" BasedOn="{StaticResource {x:Type ComboBoxItem}}">
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Effect" Value="{StaticResource NeutralHoverGlow}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style TargetType="ListBoxItem" BasedOn="{StaticResource {x:Type ListBoxItem}}">
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Effect" Value="{StaticResource NeutralHoverGlow}"/>
+                </Trigger>
+            </Style.Triggers>
         </Style>
     </UserControl.Resources>
 
@@ -831,6 +912,7 @@
                          ══════════════════════════════════════ -->
                     <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,4,0,4">
                         <ui:Button Content="{Binding MapAllButtonText}"
+                                   Style="{StaticResource MapAllPillButton}"
                                    Padding="18,7" FontSize="13"
                                    CornerRadius="16"
                                    Background="Transparent"
@@ -1002,6 +1084,14 @@
                                             <Setter Property="FontSize" Value="11"/>
                                             <EventSetter Event="PreviewMouseLeftButtonDown" Handler="FormulaChip_PreviewMouseLeftButtonDown"/>
                                             <EventSetter Event="PreviewMouseMove" Handler="FormulaChip_PreviewMouseMove"/>
+                                            <!-- #175 hover-glow: based on DefaultButtonStyle
+                                                 directly (not the page implicit), so the
+                                                 neutral glow trigger rides here. -->
+                                            <Style.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter Property="Effect" Value="{StaticResource NeutralHoverGlow}"/>
+                                                </Trigger>
+                                            </Style.Triggers>
                                         </Style>
                                     </WrapPanel.Resources>
                                     <!-- Variable chips: a..z. Visibility tracks VariableCount so
@@ -1082,6 +1172,13 @@
                                             <Setter Property="Padding" Value="8,3"/>
                                             <Setter Property="Margin" Value="0,0,4,3"/>
                                             <Setter Property="FontSize" Value="11"/>
+                                            <!-- #175 hover-glow: DefaultButtonStyle bypasses
+                                                 the implicit Button glow, so it rides here. -->
+                                            <Style.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter Property="Effect" Value="{StaticResource NeutralHoverGlow}"/>
+                                                </Trigger>
+                                            </Style.Triggers>
                                         </Style>
                                     </WrapPanel.Resources>
                                     <Button Content="{Binding Macro_Expression_Recipe_Single, Source={x:Static strings:Strings.Instance}}" Tag="a"
@@ -2349,6 +2446,7 @@
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <RadioButton GroupName="ShiftLayerTabs"
+                                             Style="{StaticResource ShiftLayerTabChip}"
                                              IsChecked="{Binding IsActive, Mode=TwoWay}"
                                              Margin="0,0,4,4"
                                              Padding="10,4"
@@ -2381,6 +2479,19 @@
                                          work against Base rows. -->
                                     <RadioButton.ContextMenu>
                                         <ContextMenu>
+                                            <ContextMenu.Resources>
+                                                <!-- #175 hover-glow: item hover is the stock
+                                                     subtle-fill steel highlight. StaticResource
+                                                     resolves lexically, so the page-level glow
+                                                     effect is reachable from the popup. -->
+                                                <Style TargetType="MenuItem" BasedOn="{StaticResource {x:Type MenuItem}}">
+                                                    <Style.Triggers>
+                                                        <Trigger Property="IsMouseOver" Value="True">
+                                                            <Setter Property="Effect" Value="{StaticResource NeutralHoverGlow}"/>
+                                                        </Trigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </ContextMenu.Resources>
                                             <MenuItem Header="{Binding Pad_Shift_Configure, Source={x:Static strings:Strings.Instance}}"
                                                       Click="ShiftLayer_Configure_Click"
                                                       Tag="{Binding PlacementTarget.Tag, RelativeSource={RelativeSource AncestorType=ContextMenu}}"/>
@@ -2453,6 +2564,13 @@
                                         </DataTemplate>
                                     </Setter.Value>
                                 </Setter>
+                                <!-- #175 hover-glow: stock header hover is a
+                                     neutral fill change. -->
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Effect" Value="{StaticResource NeutralHoverGlow}"/>
+                                    </Trigger>
+                                </Style.Triggers>
                             </Style>
                         </DataGrid.ColumnHeaderStyle>
                         <DataGrid.CellStyle>

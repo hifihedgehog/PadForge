@@ -95,6 +95,10 @@
                                                 <Trigger Property="IsMouseOver" Value="True">
                                                     <Setter TargetName="LayoutRoot" Property="Background"
                                                             Value="{Binding ButtonsBackground, ElementName=AppTitleBar}"/>
+                                                    <!-- Hover glow (#175): subtle-fill lift is
+                                                         neutral, so faint ember. -->
+                                                    <Setter TargetName="LayoutRoot" Property="Effect"
+                                                            Value="{StaticResource NeutralHoverGlow}"/>
                                                 </Trigger>
                                             </ControlTemplate.Triggers>
                                         </ControlTemplate>
@@ -127,6 +131,14 @@
                     <!-- Rail rests in the steel-blue secondary; selection
                          brings the accent forward (#175). -->
                     <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}"/>
+                    <Style.Triggers>
+                        <!-- Hover glow (#175): stock subtle-fill highlight is
+                             neutral, so faint ember. Code-built rail items
+                             inherit this implicit style. -->
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Effect" Value="{StaticResource NeutralHoverGlow}"/>
+                        </Trigger>
+                    </Style.Triggers>
                 </Style>
             </ui:NavigationView.Resources>
 
@@ -322,6 +334,7 @@
                                MaxWidth="360"/>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,22,0,0">
                         <ui:Button Appearance="Primary"
+                                   Style="{StaticResource EmberPrimaryButton}"
                                    Content="{Binding FirstRun_Begin, Source={x:Static strings:Strings.Instance}}"
                                    Click="FirstRunBegin_Click"/>
                         <Button Content="{Binding FirstRun_Skip, Source={x:Static strings:Strings.Instance}}"
@@ -352,6 +365,7 @@
                                    Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
                         <StackPanel Orientation="Horizontal" Margin="0,14,0,0">
                             <ui:Button x:Name="TourNextBtn" Appearance="Primary"
+                                       Style="{StaticResource EmberPrimaryButton}"
                                        Content="{Binding FirstRun_Next, Source={x:Static strings:Strings.Instance}}"
                                        Click="TourNext_Click"/>
                             <Button Content="{Binding FirstRun_Skip, Source={x:Static strings:Strings.Instance}}"

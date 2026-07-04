@@ -15,22 +15,10 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
             </ResourceDictionary.MergedDictionaries>
-            <!-- Picker styles cloned from PadPage so this dialog's color
-                 section matches the Lighting tab's RGB row chrome. -->
-            <Style x:Key="ResetButton" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
-                <Setter Property="Content" Value="&#xE72C;"/>
-                <Setter Property="Padding" Value="4,2"/>
-                <Setter Property="VerticalAlignment" Value="Center"/>
-                <Setter Property="ToolTip" Value="Reset"/>
-                <Setter Property="Margin" Value="6,0,0,0"/>
-                <Setter Property="ContentTemplate">
-                    <Setter.Value>
-                        <DataTemplate>
-                            <TextBlock Text="{Binding}" FontFamily="Segoe MDL2 Assets" FontSize="10"/>
-                        </DataTemplate>
-                    </Setter.Value>
-                </Setter>
-            </Style>
+            <!-- Slider/label/edit styles cloned from PadPage so this dialog's
+                 color section matches the Lighting tab's RGB row chrome.
+                 Reset/record/clear buttons use the shared EmberIconButton
+                 system from App.xaml (#175 control spec §3). -->
             <Style x:Key="DzLabelTight" TargetType="TextBlock">
                 <Setter Property="Width" Value="14"/>
                 <Setter Property="VerticalAlignment" Value="Center"/>
@@ -52,11 +40,6 @@
                 <Setter Property="TextAlignment" Value="Right"/>
                 <Setter Property="Margin" Value="6,0,0,0"/>
                 <Setter Property="Padding" Value="2,1"/>
-            </Style>
-            <Style x:Key="ResetButtonTight" TargetType="Button" BasedOn="{StaticResource ResetButton}">
-                <Setter Property="Padding" Value="2,1"/>
-                <Setter Property="MinWidth" Value="20"/>
-                <Setter Property="Margin" Value="3,0,0,0"/>
             </Style>
         </ResourceDictionary>
     </ui:FluentWindow.Resources>
@@ -246,22 +229,26 @@
                             </GroupStyle>
                         </ComboBox.GroupStyle>
                     </ComboBox>
-                    <Button Grid.Column="1" x:Name="InputRecordButton"
-                            Margin="6,0,0,0" Width="40"
-                            Click="InputRecord_Click">
-                        <TextBlock x:Name="InputRecordIcon" Text="&#xE7C8;" FontFamily="Segoe MDL2 Assets"/>
-                        <Button.ToolTip>
+                    <ui:Button Grid.Column="1" x:Name="InputRecordButton"
+                               Style="{StaticResource EmberIconButtonHot}"
+                               VerticalAlignment="Center"
+                               Click="InputRecord_Click">
+                        <TextBlock x:Name="InputRecordIcon" Text="&#xE7C8;" FontFamily="Segoe MDL2 Assets"
+                                   Foreground="{DynamicResource EmberBrush}"/>
+                        <ui:Button.ToolTip>
                             <TextBlock Text="{Binding Common_Record, Source={x:Static strings:Strings.Instance}}"/>
-                        </Button.ToolTip>
-                    </Button>
-                    <Button Grid.Column="2" x:Name="InputClearButton"
-                            Margin="6,0,0,0" Width="40"
-                            Click="InputClear_Click">
-                        <TextBlock Text="&#xE75C;" FontFamily="Segoe MDL2 Assets"/>
-                        <Button.ToolTip>
+                        </ui:Button.ToolTip>
+                    </ui:Button>
+                    <ui:Button Grid.Column="2" x:Name="InputClearButton"
+                               Style="{StaticResource EmberIconButtonHot}"
+                               VerticalAlignment="Center"
+                               Click="InputClear_Click">
+                        <TextBlock Text="&#xE75C;" FontFamily="Segoe MDL2 Assets"
+                                   Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
+                        <ui:Button.ToolTip>
                             <TextBlock Text="{Binding Common_Clear, Source={x:Static strings:Strings.Instance}}"/>
-                        </Button.ToolTip>
-                    </Button>
+                        </ui:Button.ToolTip>
+                    </ui:Button>
                 </Grid>
                 <TextBlock FontSize="10"
                            Foreground="{DynamicResource TextFillColorSecondaryBrush}"
@@ -311,22 +298,26 @@
                             </GroupStyle>
                         </ComboBox.GroupStyle>
                     </ComboBox>
-                    <Button Grid.Column="1" x:Name="ChordSecondRecordButton"
-                            Margin="6,0,0,0" Width="40"
-                            Click="ChordSecondRecord_Click">
-                        <TextBlock x:Name="ChordSecondRecordIcon" Text="&#xE7C8;" FontFamily="Segoe MDL2 Assets"/>
-                        <Button.ToolTip>
+                    <ui:Button Grid.Column="1" x:Name="ChordSecondRecordButton"
+                               Style="{StaticResource EmberIconButtonHot}"
+                               VerticalAlignment="Center"
+                               Click="ChordSecondRecord_Click">
+                        <TextBlock x:Name="ChordSecondRecordIcon" Text="&#xE7C8;" FontFamily="Segoe MDL2 Assets"
+                                   Foreground="{DynamicResource EmberBrush}"/>
+                        <ui:Button.ToolTip>
                             <TextBlock Text="{Binding Common_Record, Source={x:Static strings:Strings.Instance}}"/>
-                        </Button.ToolTip>
-                    </Button>
-                    <Button Grid.Column="2" x:Name="ChordSecondClearButton"
-                            Margin="6,0,0,0" Width="40"
-                            Click="ChordSecondClear_Click">
-                        <TextBlock Text="&#xE75C;" FontFamily="Segoe MDL2 Assets"/>
-                        <Button.ToolTip>
+                        </ui:Button.ToolTip>
+                    </ui:Button>
+                    <ui:Button Grid.Column="2" x:Name="ChordSecondClearButton"
+                               Style="{StaticResource EmberIconButtonHot}"
+                               VerticalAlignment="Center"
+                               Click="ChordSecondClear_Click">
+                        <TextBlock Text="&#xE75C;" FontFamily="Segoe MDL2 Assets"
+                                   Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
+                        <ui:Button.ToolTip>
                             <TextBlock Text="{Binding Common_Clear, Source={x:Static strings:Strings.Instance}}"/>
-                        </Button.ToolTip>
-                    </Button>
+                        </ui:Button.ToolTip>
+                    </ui:Button>
                 </Grid>
                 <TextBlock FontSize="10"
                            Foreground="{DynamicResource TextFillColorSecondaryBrush}"
@@ -468,10 +459,13 @@
                 <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,8">
                     <TextBlock Text="{Binding Pad_Shift_Color, Source={x:Static strings:Strings.Instance}}"
                                VerticalAlignment="Center"/>
-                    <Button x:Name="ClearColorButton"
-                            Style="{StaticResource ResetButton}"
-                            Click="ClearColor_Click"
-                            ToolTip="{Binding Pad_ResetLayerColor, Source={x:Static strings:Strings.Instance}}"/>
+                    <ui:Button x:Name="ClearColorButton"
+                               Style="{StaticResource EmberIconButton}"
+                               VerticalAlignment="Center"
+                               Click="ClearColor_Click"
+                               ToolTip="{Binding Pad_ResetLayerColor, Source={x:Static strings:Strings.Instance}}">
+                        <TextBlock Text="&#xE72C;" FontFamily="Segoe MDL2 Assets" FontSize="12"/>
+                    </ui:Button>
                 </StackPanel>
                 <views:ColorPickerControl Grid.Row="1" x:Name="ColorPicker"
                                           HorizontalAlignment="Left"
@@ -509,22 +503,31 @@
                     <TextBlock Text="R" Style="{StaticResource DzLabelTight}" Foreground="#FFD32F2F"/>
                     <Slider Value="{Binding ElementName=ColorPicker, Path=Red, Mode=TwoWay}" Style="{StaticResource DzRgbSlider}"/>
                     <TextBox Text="{Binding ElementName=ColorPicker, Path=Red, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEditTight}"/>
-                    <Button Click="ResetRed_Click" Style="{StaticResource ResetButtonTight}"
-                            ToolTip="{Binding Pad_ResetLightbarRed, Source={x:Static strings:Strings.Instance}}"/>
+                    <ui:Button Click="ResetRed_Click" Style="{StaticResource EmberIconButton}"
+                               VerticalAlignment="Center"
+                               ToolTip="{Binding Pad_ResetLightbarRed, Source={x:Static strings:Strings.Instance}}">
+                        <TextBlock Text="&#xE72C;" FontFamily="Segoe MDL2 Assets" FontSize="12"/>
+                    </ui:Button>
                 </StackPanel>
                 <StackPanel Grid.Row="4" Orientation="Horizontal" Margin="0,0,0,4">
                     <TextBlock Text="G" Style="{StaticResource DzLabelTight}" Foreground="#FF388E3C"/>
                     <Slider Value="{Binding ElementName=ColorPicker, Path=Green, Mode=TwoWay}" Style="{StaticResource DzRgbSlider}"/>
                     <TextBox Text="{Binding ElementName=ColorPicker, Path=Green, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEditTight}"/>
-                    <Button Click="ResetGreen_Click" Style="{StaticResource ResetButtonTight}"
-                            ToolTip="{Binding Pad_ResetLightbarGreen, Source={x:Static strings:Strings.Instance}}"/>
+                    <ui:Button Click="ResetGreen_Click" Style="{StaticResource EmberIconButton}"
+                               VerticalAlignment="Center"
+                               ToolTip="{Binding Pad_ResetLightbarGreen, Source={x:Static strings:Strings.Instance}}">
+                        <TextBlock Text="&#xE72C;" FontFamily="Segoe MDL2 Assets" FontSize="12"/>
+                    </ui:Button>
                 </StackPanel>
                 <StackPanel Grid.Row="5" Orientation="Horizontal">
                     <TextBlock Text="B" Style="{StaticResource DzLabelTight}" Foreground="#FF1976D2"/>
                     <Slider Value="{Binding ElementName=ColorPicker, Path=Blue, Mode=TwoWay}" Style="{StaticResource DzRgbSlider}"/>
                     <TextBox Text="{Binding ElementName=ColorPicker, Path=Blue, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEditTight}"/>
-                    <Button Click="ResetBlue_Click" Style="{StaticResource ResetButtonTight}"
-                            ToolTip="{Binding Pad_ResetLightbarBlue, Source={x:Static strings:Strings.Instance}}"/>
+                    <ui:Button Click="ResetBlue_Click" Style="{StaticResource EmberIconButton}"
+                               VerticalAlignment="Center"
+                               ToolTip="{Binding Pad_ResetLightbarBlue, Source={x:Static strings:Strings.Instance}}">
+                        <TextBlock Text="&#xE72C;" FontFamily="Segoe MDL2 Assets" FontSize="12"/>
+                    </ui:Button>
                 </StackPanel>
             </Grid>
 

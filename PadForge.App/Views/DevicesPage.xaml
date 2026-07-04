@@ -34,6 +34,19 @@
             <Setter Property="FontSize" Value="11"/>
             <Setter Property="Foreground" Value="{DynamicResource ColdDeepBrush}"/>
         </Style>
+        <!-- Ember (#175) iter 53 type diet: Product/Type read as prose,
+             so they render body sans instead of joining the mono wall. -->
+        <Style x:Key="IdentityBodyText" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}"/>
+        </Style>
+        <!-- GUID / instance-path lines: still mono, but demoted to
+             fine print so they stop shouting. -->
+        <Style x:Key="IdentityHashText" TargetType="TextBlock">
+            <Setter Property="FontFamily" Value="{StaticResource TelemetryFontFamily}"/>
+            <Setter Property="FontSize" Value="10"/>
+            <Setter Property="Foreground" Value="{DynamicResource TextFillColorTertiaryBrush}"/>
+        </Style>
         <!-- Ember (#175): Raw Input State cluster. Dark recessed cells,
              cold lit outline when pressed (outline lit, not solid). -->
         <Style x:Key="RawCellBorder" TargetType="Border">
@@ -274,6 +287,7 @@
                     Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
                     CornerRadius="8" Padding="14,12">
                 <ScrollViewer VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Disabled"
+                              Padding="0,0,14,0"
                               Visibility="{Binding HasSelectedDevice, Converter={StaticResource BoolToVisibilityConverter}}">
                     <StackPanel>
 
@@ -283,19 +297,19 @@
                                    TextWrapping="Wrap" Margin="0,0,0,6"/>
 
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,1">
-                            <TextBlock Style="{StaticResource IdentityText}" Text="{Binding Devices_Product, Source={x:Static strings:Strings.Instance}}"/>
-                            <TextBlock Style="{StaticResource IdentityText}" Text="{Binding SelectedDevice.ProductName, Mode=OneWay}"/>
+                            <TextBlock Style="{StaticResource IdentityBodyText}" Text="{Binding Devices_Product, Source={x:Static strings:Strings.Instance}}"/>
+                            <TextBlock Style="{StaticResource IdentityBodyText}" Text="{Binding SelectedDevice.ProductName, Mode=OneWay}"/>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,1">
-                            <TextBlock Style="{StaticResource IdentityText}" Text="{Binding Devices_Type, Source={x:Static strings:Strings.Instance}}"/>
-                            <TextBlock Style="{StaticResource IdentityText}" Text="{Binding SelectedDevice.DeviceType, Mode=OneWay}"/>
+                            <TextBlock Style="{StaticResource IdentityBodyText}" Text="{Binding Devices_Type, Source={x:Static strings:Strings.Instance}}"/>
+                            <TextBlock Style="{StaticResource IdentityBodyText}" Text="{Binding SelectedDevice.DeviceType, Mode=OneWay}"/>
                         </StackPanel>
                         <TextBlock Style="{StaticResource IdentityText}" Margin="0,0,0,8"
                                    Text="{Binding SelectedDevice.CapabilitiesSummary, Mode=OneWay}"/>
 
                         <Border ClipToBounds="True" Margin="0,0,0,1" Padding="0,1">
                             <StackPanel Orientation="Horizontal">
-                                <TextBlock Style="{StaticResource IdentityText}"
+                                <TextBlock Style="{StaticResource IdentityHashText}"
                                            common:MarqueeBehavior.IsEnabled="True">
                                     <TextBlock.Text>
                                         <MultiBinding StringFormat="{}{0}{1}">
@@ -309,7 +323,7 @@
                         <Border ClipToBounds="True" Margin="0,0,0,1" Padding="0,1"
                                 Visibility="{Binding SelectedDevice.SdlGuid, Converter={StaticResource StringToVisibility}}">
                             <StackPanel Orientation="Horizontal">
-                                <TextBlock Style="{StaticResource IdentityText}"
+                                <TextBlock Style="{StaticResource IdentityHashText}"
                                            common:MarqueeBehavior.IsEnabled="True">
                                     <TextBlock.Text>
                                         <MultiBinding StringFormat="{}{0}{1}">
@@ -323,7 +337,7 @@
                         <Border ClipToBounds="True" Margin="0,0,0,1" Padding="0,1"
                                 Visibility="{Binding SelectedDevice.HidHideInstancePath, Converter={StaticResource StringToVisibility}}">
                             <StackPanel Orientation="Horizontal">
-                                <TextBlock Style="{StaticResource IdentityText}"
+                                <TextBlock Style="{StaticResource IdentityHashText}"
                                            common:MarqueeBehavior.IsEnabled="True">
                                     <TextBlock.Text>
                                         <MultiBinding StringFormat="{}{0}{1}">

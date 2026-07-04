@@ -29,6 +29,26 @@ namespace PadForge.Views.Controls
     /// </summary>
     public partial class TriggerEffectGraph : UserControl
     {
+        // Ember gradient for effect fills (#175 iteration 53): the flat
+        // accent slab read washed. Horizontal deep-ember -> ember -> hot,
+        // 0.85 opacity, frozen (never animated, safe to share).
+        private static readonly LinearGradientBrush EmberFillBrush = CreateEmberFillBrush();
+
+        private static LinearGradientBrush CreateEmberFillBrush()
+        {
+            var brush = new LinearGradientBrush
+            {
+                StartPoint = new Point(0, 0.5),
+                EndPoint = new Point(1, 0.5),
+                Opacity = 0.85
+            };
+            brush.GradientStops.Add(new GradientStop(Color.FromRgb(0xC4, 0x3D, 0x0C), 0.0));
+            brush.GradientStops.Add(new GradientStop(Color.FromRgb(0xFF, 0x6B, 0x2C), 0.5));
+            brush.GradientStops.Add(new GradientStop(Color.FromRgb(0xFF, 0xA2, 0x4D), 1.0));
+            brush.Freeze();
+            return brush;
+        }
+
         public static readonly DependencyProperty ModeProperty =
             DependencyProperty.Register(nameof(Mode), typeof(AdaptiveTriggerMode), typeof(TriggerEffectGraph),
                 new PropertyMetadata(AdaptiveTriggerMode.Off, OnAnyChanged));
@@ -194,7 +214,7 @@ namespace PadForge.Views.Controls
                 Height = strH,
                 RadiusX = 2, RadiusY = 2
             };
-            rect.SetResourceReference(Shape.FillProperty, "AccentFillColorDefaultBrush");
+            rect.Fill = EmberFillBrush;
             Canvas.SetLeft(rect, x0);
             Canvas.SetTop(rect, plotH - strH);
             GraphCanvas.Children.Add(rect);
@@ -251,7 +271,7 @@ namespace PadForge.Views.Controls
                     new Point(w, plotH)
                 }
             };
-            poly.SetResourceReference(Shape.FillProperty, "AccentFillColorDefaultBrush");
+            poly.Fill = EmberFillBrush;
             GraphCanvas.Children.Add(poly);
         }
 
@@ -308,7 +328,7 @@ namespace PadForge.Views.Controls
             };
             if (dashed)
                 poly.StrokeDashArray = new DoubleCollection { 3, 2 };
-            poly.SetResourceReference(Shape.StrokeProperty, "AccentFillColorDefaultBrush");
+            poly.SetResourceReference(Shape.StrokeProperty, "AccentFillColorSecondaryBrush");
             GraphCanvas.Children.Add(poly);
         }
 

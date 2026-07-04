@@ -2388,6 +2388,7 @@
                     <DataGrid Grid.Row="2"
                               x:Name="MappingDataGrid"
                               HorizontalAlignment="Left"
+                              MinRowHeight="40"
                               ItemsSource="{Binding Mappings}"
                               AutoGenerateColumns="False"
                               CanUserAddRows="False"
@@ -2500,8 +2501,13 @@
                                  single-source), and a + Add source link
                                  to append a new source. -->
                             <DataTemplate>
+                                <!-- Subpanel look (#175 artifact .subpanel): 2px cold left
+                                     rail, faint cold wash, rounded on the free right side
+                                     only (radius 0,8,8,0). rgba(88,182,228,0.03) = #0858B6E4. -->
                                 <Border Padding="20,4,8,8"
-                                        BorderThickness="2,0,0,0">
+                                        BorderThickness="2,0,0,0"
+                                        CornerRadius="0,8,8,0"
+                                        Background="#0858B6E4">
                                     <Border.BorderBrush>
                                         <SolidColorBrush Color="#3D58B6E4"/>
                                     </Border.BorderBrush>
@@ -3456,12 +3462,18 @@
                                                                       VerticalAlignment="Center" Margin="0,0,8,0"
                                                                       ToolTip="{Binding Pad_Mapping_Ramp_Autocenter_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                                         </StackPanel>
-                                                        <Button Content="✕" Padding="6,2" Margin="2"
-                                                                VerticalAlignment="Center"
-                                                                Command="{Binding DataContext.RemoveExtraSourceCommand,
-                                                                          RelativeSource={RelativeSource AncestorType={x:Type DataGridRow}}}"
-                                                                CommandParameter="{Binding}"
-                                                                ToolTip="{Binding Pad_Mapping_RemoveSource_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                                        <!-- Ember (#175): remove-source is an output-writing
+                                                             action, same micro-button family as record/erase.
+                                                             Was a stock Button with default gray chrome. -->
+                                                        <ui:Button VerticalAlignment="Center"
+                                                                   Style="{StaticResource EmberIconButtonHot}"
+                                                                   Command="{Binding DataContext.RemoveExtraSourceCommand,
+                                                                             RelativeSource={RelativeSource AncestorType={x:Type DataGridRow}}}"
+                                                                   CommandParameter="{Binding}"
+                                                                   ToolTip="{Binding Pad_Mapping_RemoveSource_Tooltip, Source={x:Static strings:Strings.Instance}}">
+                                                            <TextBlock Text="✕" FontSize="11"
+                                                                       Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
+                                                        </ui:Button>
                                                     </StackPanel>
                                                 </DataTemplate>
                                             </ItemsControl.ItemTemplate>
@@ -3488,8 +3500,8 @@
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <Border Background="{DynamicResource EmberTintBrush}"
-                                                BorderThickness="1" CornerRadius="6"
-                                                Padding="8,3" Margin="2"
+                                                BorderThickness="1" CornerRadius="8"
+                                                Padding="10,6" Margin="2"
                                                 VerticalAlignment="Center"
                                                 HorizontalAlignment="Left">
                                             <Border.BorderBrush>
@@ -3517,6 +3529,7 @@
                                                       Visibility="{Binding IsPrimaryDirect, Converter={StaticResource BoolToVisibilityConverter}}"
                                                       DisplayMemberPath="DisplayName"
                                                       Margin="0" Padding="4,2"
+                                                      MinHeight="28"
                                                       HorizontalAlignment="Stretch"
                                                       Foreground="{DynamicResource ColdBrush}"
                                                       BorderBrush="#4D58B6E4" Background="#0D58B6E4"
@@ -3602,7 +3615,7 @@
                                                     <StackPanel Orientation="Vertical">
                                                         <ComboBox ItemsSource="{Binding DataContext.AvailableInputsView, RelativeSource={RelativeSource AncestorType={x:Type DataGridRow}}}"
                                                                   SelectedItem="{Binding ParamUpInputChoice, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                                  DisplayMemberPath="DisplayName" MinWidth="150" Padding="4,2" VerticalAlignment="Center"
+                                                                  DisplayMemberPath="DisplayName" MinWidth="150" MinHeight="28" Padding="4,2" VerticalAlignment="Center"
                                                                   ToolTip="{Binding Pad_Mapping_Up_PickerTooltip, Source={x:Static strings:Strings.Instance}}"
                                                                   PreviewKeyDown="MappingComboBox_PreviewKeyDown">
                                                             <ComboBox.GroupStyle>
@@ -3642,7 +3655,7 @@
                                                     <StackPanel Orientation="Vertical">
                                                         <ComboBox ItemsSource="{Binding DataContext.AvailableInputsView, RelativeSource={RelativeSource AncestorType={x:Type DataGridRow}}}"
                                                                   SelectedItem="{Binding ParamDownInputChoice, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                                  DisplayMemberPath="DisplayName" MinWidth="150" Padding="4,2" VerticalAlignment="Center"
+                                                                  DisplayMemberPath="DisplayName" MinWidth="150" MinHeight="28" Padding="4,2" VerticalAlignment="Center"
                                                                   ToolTip="{Binding Pad_Mapping_Down_PickerTooltip, Source={x:Static strings:Strings.Instance}}"
                                                                   PreviewKeyDown="MappingComboBox_PreviewKeyDown">
                                                             <ComboBox.GroupStyle>
@@ -3682,7 +3695,7 @@
                                                     <StackPanel Orientation="Vertical">
                                                         <ComboBox ItemsSource="{Binding DataContext.AvailableInputsView, RelativeSource={RelativeSource AncestorType={x:Type DataGridRow}}}"
                                                                   SelectedItem="{Binding ParamModifierInputChoice, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                                  DisplayMemberPath="DisplayName" MinWidth="150" Padding="4,2" VerticalAlignment="Center"
+                                                                  DisplayMemberPath="DisplayName" MinWidth="150" MinHeight="28" Padding="4,2" VerticalAlignment="Center"
                                                                   ToolTip="{Binding Pad_Mapping_Modifier_PickerTooltip, Source={x:Static strings:Strings.Instance}}"
                                                                   PreviewKeyDown="MappingComboBox_PreviewKeyDown">
                                                             <ComboBox.GroupStyle>

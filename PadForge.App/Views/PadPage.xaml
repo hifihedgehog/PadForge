@@ -147,14 +147,33 @@
             </Setter>
         </Style>
 
-        <!-- Right-arrow separator between tab groups -->
-        <Style x:Key="TabStripSeparator" TargetType="TextBlock">
-            <Setter Property="Text" Value="&#xE76C;"/>
-            <Setter Property="FontFamily" Value="Segoe MDL2 Assets"/>
-            <Setter Property="FontSize" Value="10"/>
-            <Setter Property="Foreground" Value="{DynamicResource TextFillColorTertiaryBrush}"/>
-            <Setter Property="VerticalAlignment" Value="Center"/>
-            <Setter Property="Margin" Value="4,0"/>
+        <!-- Cold variant for the device tier (#175): same tab shape, cold
+             underline. Slot-tier tabs keep the ember (accent) underline. -->
+        <Style x:Key="TabStripButtonCold" TargetType="RadioButton">
+            <Setter Property="GroupName" Value="PadTab"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="RadioButton">
+                        <Border x:Name="Bd" Padding="10,6" Background="Transparent"
+                                BorderThickness="0,0,0,2" BorderBrush="Transparent">
+                            <ContentPresenter VerticalAlignment="Center"
+                                              TextBlock.Foreground="{TemplateBinding Foreground}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="Bd" Property="BorderBrush"
+                                        Value="{DynamicResource ColdBrush}"/>
+                                <Setter TargetName="Bd" Property="Background" Value="{DynamicResource ColdTintBrush}"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="#08FFFFFF"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
         </Style>
     </UserControl.Resources>
 
@@ -169,15 +188,27 @@
         </Grid.RowDefinitions>
 
         <!-- ═══════════════════════════════════════════
-             ROW 0: Unified Tab Strip
-             Combines navigation + device selector in one horizontal strip.
+             ROW 0: Two-tier tab strip (#175).
+             Tier 1, ember: the virtual controller being shaped. Slot badge
+             (doubles as the Preview tab), Mappings, Macros.
+             Tier 2, cold: the physical device feeding it. Device picker
+             plus its capability tabs. Color carries the scope; the old
+             chevron separators are gone.
              ═══════════════════════════════════════════ -->
-        <Border Grid.Row="0" Padding="4,0" Margin="0,0,0,2"
-                BorderBrush="{DynamicResource TextFillColorTertiaryBrush}"
-                BorderThickness="0,0,0,1">
+        <StackPanel Grid.Row="0" Margin="0,0,0,2">
+            <Border Padding="4,0" BorderThickness="0,0,0,1">
+                <Border.BorderBrush>
+                    <SolidColorBrush Color="#29FF6B2C"/>
+                </Border.BorderBrush>
+                <Border.Background>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                        <GradientStop Color="#12FF6B2C" Offset="0"/>
+                        <GradientStop Color="#00FF6B2C" Offset="0.55"/>
+                    </LinearGradientBrush>
+                </Border.Background>
             <WrapPanel Orientation="Horizontal" VerticalAlignment="Center">
 
-                <!-- [Gamepad #  TypeIcon TypeName] — Controller tab -->
+                <!-- [Gamepad #  TypeIcon TypeName]. Controller / Preview tab. -->
                 <RadioButton x:Name="TabController" Tag="0" Style="{StaticResource TabStripButton}" Click="TabBtn_Click"
                              IsChecked="True"
                              AutomationProperties.AutomationId="TabController">
@@ -264,10 +295,23 @@
                     <TextBlock Text="{Binding Pad_Macros, Source={x:Static strings:Strings.Instance}}" FontSize="15"/>
                 </RadioButton>
 
-                <!-- | separator -->
-                <TextBlock Style="{StaticResource TabStripSeparator}"/>
+            </WrapPanel>
+            </Border>
 
-                <!-- [Device ▼] — inline ComboBox -->
+            <!-- Tier 2: the physical device and its capability tabs. -->
+            <Border Padding="4,0" BorderThickness="0,0,0,1">
+                <Border.BorderBrush>
+                    <SolidColorBrush Color="#2458B6E4"/>
+                </Border.BorderBrush>
+                <Border.Background>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                        <GradientStop Color="#0C58B6E4" Offset="0"/>
+                        <GradientStop Color="#0058B6E4" Offset="0.55"/>
+                    </LinearGradientBrush>
+                </Border.Background>
+            <WrapPanel Orientation="Horizontal" VerticalAlignment="Center">
+
+                <!-- [Device] inline ComboBox: cold side. -->
                 <ComboBox ItemsSource="{Binding MappedDevices}"
                           SelectedItem="{Binding SelectedMappedDevice, Mode=TwoWay}"
                           MinWidth="200" Margin="4,2" VerticalAlignment="Center">
@@ -296,22 +340,19 @@
                     </ComboBox.ItemTemplate>
                 </ComboBox>
 
-                <!-- | separator -->
-                <TextBlock Style="{StaticResource TabStripSeparator}"/>
-
-                <!-- Config tabs (device-scoped — Sticks / Triggers /
+                <!-- Config tabs (device-scoped: Sticks / Triggers /
                      Force Feedback shape physical-input characteristics
-                     for the selected device, so they sit AFTER the
-                     Device dropdown). The Mappings tab was here in v3.1.x
-                     and earlier; Issue #61 moves it left of the dropdown
-                     because the mapping table is now per-VC, not per-device. -->
-                <RadioButton x:Name="TabSticks" Tag="3" Style="{StaticResource TabStripButton}" Click="TabBtn_Click">
+                     for the selected device, so they sit in the device
+                     tier). The Mappings tab was here in v3.1.x and
+                     earlier; Issue #61 moved it to the slot tier because
+                     the mapping table is per-VC, not per-device. -->
+                <RadioButton x:Name="TabSticks" Tag="3" Style="{StaticResource TabStripButtonCold}" Click="TabBtn_Click">
                     <TextBlock Text="{Binding Pad_Sticks, Source={x:Static strings:Strings.Instance}}" FontSize="13"/>
                 </RadioButton>
-                <RadioButton x:Name="TabTriggers" Tag="4" Style="{StaticResource TabStripButton}" Click="TabBtn_Click">
+                <RadioButton x:Name="TabTriggers" Tag="4" Style="{StaticResource TabStripButtonCold}" Click="TabBtn_Click">
                     <TextBlock Text="{Binding Pad_Triggers, Source={x:Static strings:Strings.Instance}}" FontSize="13"/>
                 </RadioButton>
-                <RadioButton x:Name="TabForceFeedback" Tag="5" Style="{StaticResource TabStripButton}" Click="TabBtn_Click">
+                <RadioButton x:Name="TabForceFeedback" Tag="5" Style="{StaticResource TabStripButtonCold}" Click="TabBtn_Click">
                     <TextBlock Text="{Binding Pad_ForceFeedback, Source={x:Static strings:Strings.Instance}}" FontSize="13"/>
                 </RadioButton>
 
@@ -320,7 +361,7 @@
                      selected device matches a wheel VID/PID gate. Holds the wheel-only
                      settings (rotation range, auto-center, RPM shift LEDs) that used to
                      sit on the Force Feedback tab. -->
-                <RadioButton x:Name="TabWheel" Tag="11" Style="{StaticResource TabStripButton}" Click="TabBtn_Click"
+                <RadioButton x:Name="TabWheel" Tag="11" Style="{StaticResource TabStripButtonCold}" Click="TabBtn_Click"
                              Visibility="Collapsed">
                     <TextBlock Text="{Binding Pad_Wheel, Source={x:Static strings:Strings.Instance}}" FontSize="13"/>
                 </RadioButton>
@@ -330,7 +371,7 @@
                      which checks the assigned device's HasRumbleTriggers
                      (SDL_PROP_JOYSTICK_CAP_TRIGGER_RUMBLE_BOOLEAN). Hidden
                      on Xbox 360, PlayStation, generic, MIDI, KbM. -->
-                <RadioButton x:Name="TabImpulseTriggers" Tag="9" Style="{StaticResource TabStripButton}" Click="TabBtn_Click"
+                <RadioButton x:Name="TabImpulseTriggers" Tag="9" Style="{StaticResource TabStripButtonCold}" Click="TabBtn_Click"
                              Visibility="Collapsed">
                     <TextBlock Text="{Binding Pad_ImpulseTriggers, Source={x:Static strings:Strings.Instance}}" FontSize="13"/>
                 </RadioButton>
@@ -340,14 +381,14 @@
                      which reads OutputType + ProfileId.  PadPage's runtime
                      visibility gate hides this RadioButton on Xbox / Extended
                      / MIDI / KbM slots and on DS4 PlayStation slots.  -->
-                <RadioButton x:Name="TabAdaptiveTriggers" Tag="6" Style="{StaticResource TabStripButton}" Click="TabBtn_Click"
+                <RadioButton x:Name="TabAdaptiveTriggers" Tag="6" Style="{StaticResource TabStripButtonCold}" Click="TabBtn_Click"
                              Visibility="Collapsed">
                     <TextBlock Text="{Binding Pad_AdaptiveTriggers, Source={x:Static strings:Strings.Instance}}" FontSize="13"/>
                 </RadioButton>
 
                 <!-- Lighting tab — DS4 / DualSense / DualSense Edge.  Hidden
                      on slots whose profile lacks a lightbar.  -->
-                <RadioButton x:Name="TabLighting" Tag="7" Style="{StaticResource TabStripButton}" Click="TabBtn_Click"
+                <RadioButton x:Name="TabLighting" Tag="7" Style="{StaticResource TabStripButtonCold}" Click="TabBtn_Click"
                              Visibility="Collapsed">
                     <TextBlock Text="{Binding Pad_Lighting, Source={x:Static strings:Strings.Instance}}" FontSize="13"/>
                 </RadioButton>
@@ -355,7 +396,7 @@
                 <!-- Gyro tab — per-(device, slot) gyro tuning. Visible when
                      the selected mapped device has a gyroscope sensor
                      (driven from SyncTabVisibility via UserDevice.HasGyro). -->
-                <RadioButton x:Name="TabGyro" Tag="8" Style="{StaticResource TabStripButton}" Click="TabBtn_Click"
+                <RadioButton x:Name="TabGyro" Tag="8" Style="{StaticResource TabStripButtonCold}" Click="TabBtn_Click"
                              Visibility="Collapsed">
                     <TextBlock Text="{Binding Pad_Gyro, Source={x:Static strings:Strings.Instance}}" FontSize="13"/>
                 </RadioButton>
@@ -363,7 +404,7 @@
                 <!-- Touchpad tab — per-(device, pad) gesture detection
                      settings. Visible when the selected mapped device
                      has at least one touchpad (UserDevice.HasTouchpad). -->
-                <RadioButton x:Name="TabTouchpad" Tag="10" Style="{StaticResource TabStripButton}" Click="TabBtn_Click"
+                <RadioButton x:Name="TabTouchpad" Tag="10" Style="{StaticResource TabStripButtonCold}" Click="TabBtn_Click"
                              Visibility="Collapsed">
                     <TextBlock Text="{Binding Pad_Touchpad, Source={x:Static strings:Strings.Instance}}" FontSize="13"/>
                 </RadioButton>
@@ -372,29 +413,33 @@
                      macro sounds, master volume. Visible only when the selected
                      mapped device has a speaker: the DualSense family or the
                      DualShock 4 (Sony VID 0x054C). Hidden for everything else. -->
-                <RadioButton x:Name="TabAudio" Tag="12" Style="{StaticResource TabStripButton}" Click="TabBtn_Click"
+                <RadioButton x:Name="TabAudio" Tag="12" Style="{StaticResource TabStripButtonCold}" Click="TabBtn_Click"
                              Visibility="Collapsed">
                     <TextBlock Text="{Binding Pad_Audio, Source={x:Static strings:Strings.Instance}}" FontSize="13"/>
                 </RadioButton>
                 <!-- Pointer tab: Wii Remote IR camera tuning (#146). Visible only
                      when the selected mapped device is an IR-capable Wii Remote. -->
-                <RadioButton x:Name="TabPointer" Tag="13" Style="{StaticResource TabStripButton}" Click="TabBtn_Click"
+                <RadioButton x:Name="TabPointer" Tag="13" Style="{StaticResource TabStripButtonCold}" Click="TabBtn_Click"
                              Visibility="Collapsed">
                     <TextBlock Text="{Binding Pad_Pointer, Source={x:Static strings:Strings.Instance}}" FontSize="13"/>
                 </RadioButton>
             </WrapPanel>
-        </Border>
+            </Border>
+        </StackPanel>
 
         <!-- ══════════════════════════════════════
              ROW 1: HIDMAESTRO PROFILE PICKER BAR
              (visible for Xbox / PlayStation / Extended slots)
              ══════════════════════════════════════ -->
+        <!-- Ember tint (#175): the preset shapes the virtual controller, so
+             the bar reads slot-scope and sits left with the slot tier. -->
         <Border x:Name="HMaestroProfileBar" Grid.Row="1" Margin="4,4,4,0"
                 Padding="10,6" CornerRadius="4"
-                Background="{DynamicResource SolidBackgroundFillColorBaseBrush}"
-                BorderBrush="{DynamicResource TextFillColorDisabledBrush}" BorderThickness="1"
+                Background="{DynamicResource EmberTintBrush}"
+                BorderThickness="0"
+                HorizontalAlignment="Left"
                 Visibility="Collapsed">
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+            <StackPanel Orientation="Horizontal">
                 <TextBlock Text="{Binding Pad_Preset, Source={x:Static strings:Strings.Instance}}"
                            VerticalAlignment="Center" Margin="0,0,6,0"
                            Foreground="{DynamicResource TextFillColorSecondaryBrush}" FontSize="13"/>

@@ -2045,6 +2045,24 @@ namespace PadForge.Services
                     dev.BatteryText = pct >= 0 ? $"{pct}%" : string.Empty;
                 }
             }
+
+            // Crucible cards (#175): surface the first reporting battery.
+            foreach (var slot in _mainVm.Dashboard.SlotSummaries)
+            {
+                string batt = string.Empty;
+                if (slot.PadIndex >= 0 && slot.PadIndex < _mainVm.Pads.Count)
+                {
+                    foreach (var dev in _mainVm.Pads[slot.PadIndex].MappedDevices)
+                    {
+                        if (!string.IsNullOrEmpty(dev.BatteryText))
+                        {
+                            batt = dev.BatteryText;
+                            break;
+                        }
+                    }
+                }
+                slot.BatteryText = batt;
+            }
         }
 
         /// <summary>

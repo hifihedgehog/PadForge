@@ -476,6 +476,7 @@
   <data name="Devices_ConsumeMapped" xml:space="preserve"><value>Consume mapped inputs (hooks)</value></data>
   <data name="Devices_ConsumeTooltip" xml:space="preserve"><value>Suppresses only the specific keys/buttons that are mapped, letting unmapped inputs pass through</value></data>
   <data name="Devices_RawInputState" xml:space="preserve"><value>Raw Input State</value></data>
+  <data name="Devices_EmptyHint" xml:space="preserve"><value>Select a device to inspect its raw input.</value></data>
   <data name="Devices_Sensors" xml:space="preserve"><value>Sensors</value></data>
   <data name="Devices_Axes" xml:space="preserve"><value>Axes</value></data>
   <data name="Devices_Buttons" xml:space="preserve"><value>Buttons</value></data>

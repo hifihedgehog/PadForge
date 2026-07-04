@@ -574,6 +574,7 @@ public class Strings : INotifyPropertyChanged
     public string Devices_ConsumeMapped => Get("Devices_ConsumeMapped");
     public string Devices_ConsumeTooltip => Get("Devices_ConsumeTooltip");
     public string Devices_RawInputState => Get("Devices_RawInputState");
+    public string Devices_EmptyHint => Get("Devices_EmptyHint");
     public string Devices_Axes => Get("Devices_Axes");
     public string Devices_Buttons => Get("Devices_Buttons");
     public string Devices_Keyboard => Get("Devices_Keyboard");

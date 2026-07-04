@@ -7,16 +7,17 @@
              xmlns:strings="clr-namespace:PadForge.Resources.Strings">
 
     <UserControl.Resources>
-        <!-- Ember (#175): list-row meta segments render cold mono. Online
-             devices read cold #58B6E4 at 0.8. Offline stay cold-deep. -->
+        <!-- Ember (#175): list-row meta segments render cold mono. Liveness
+             reads as emphasis on both grounds: online rows carry the themed
+             cold at full strength, offline rows dim the same cold to 0.55. -->
         <Style x:Key="DeviceMetaText" TargetType="TextBlock">
             <Setter Property="FontFamily" Value="{StaticResource TelemetryFontFamily}"/>
             <Setter Property="FontSize" Value="10.5"/>
-            <Setter Property="Foreground" Value="{DynamicResource ColdDeepBrush}"/>
+            <Setter Property="Foreground" Value="{DynamicResource ColdBrush}"/>
+            <Setter Property="Opacity" Value="0.55"/>
             <Style.Triggers>
                 <DataTrigger Binding="{Binding IsOnline}" Value="True">
-                    <Setter Property="Foreground" Value="{DynamicResource ColdBrush}"/>
-                    <Setter Property="Opacity" Value="0.8"/>
+                    <Setter Property="Opacity" Value="1.0"/>
                 </DataTrigger>
             </Style.Triggers>
         </Style>
@@ -103,13 +104,13 @@
                        VerticalAlignment="Center"
                        Command="{Binding RefreshCommand}"
                        ToolTip="{Binding Common_Refresh, Source={x:Static strings:Strings.Instance}}">
-                <TextBlock Text="&#xE72C;" FontFamily="Segoe MDL2 Assets" FontSize="12" Foreground="#94A3BD"/>
+                <TextBlock Text="&#xE72C;" FontFamily="Segoe MDL2 Assets" FontSize="12" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
             </ui:Button>
             <ui:Button Style="{StaticResource EmberIconButton}" Margin="8,0,0,0"
                        VerticalAlignment="Center"
                        Command="{Binding PairCommand}"
                        ToolTip="{Binding Devices_Pair, Source={x:Static strings:Strings.Instance}}">
-                <TextBlock Text="&#xE702;" FontFamily="Segoe MDL2 Assets" FontSize="12" Foreground="#94A3BD"/>
+                <TextBlock Text="&#xE702;" FontFamily="Segoe MDL2 Assets" FontSize="12" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
             </ui:Button>
             <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="16,0">
                 <TextBlock Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text="{Binding OnlineCount, Mode=OneWay}"/>
@@ -164,7 +165,7 @@
                                             <Style TargetType="TextBlock">
                                                 <Style.Triggers>
                                                     <DataTrigger Binding="{Binding IsOnline}" Value="False">
-                                                        <Setter Property="Foreground" Value="#94A3BD"/>
+                                                        <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
                                             </Style>
@@ -222,7 +223,7 @@
                                            ToolTip="{Binding Devices_RemoveTooltip, Source={x:Static strings:Strings.Instance}}"
                                            VerticalAlignment="Top"
                                            Click="RemoveDevice_Click">
-                                    <TextBlock Text="&#xE711;" FontFamily="Segoe MDL2 Assets" FontSize="12" Foreground="#94A3BD"/>
+                                    <TextBlock Text="&#xE711;" FontFamily="Segoe MDL2 Assets" FontSize="12" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
                                 </ui:Button>
 
                                 <!-- Row 1: Type | VID:PID | Capabilities -->
@@ -286,6 +287,29 @@
             <Border Grid.Column="1"
                     Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
                     CornerRadius="8" Padding="14,12">
+                <Grid>
+
+                <!-- Empty state (#175): steel schematic watermark + one cold
+                     sentence, matching the Macros empty-state grammar. -->
+                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <StackPanel.Style>
+                        <Style TargetType="StackPanel">
+                            <Setter Property="Visibility" Value="Visible"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding HasSelectedDevice}" Value="True">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </StackPanel.Style>
+                    <TextBlock Text="&#xE772;" FontFamily="Segoe MDL2 Assets" FontSize="34"
+                               Foreground="{DynamicResource SteelLineBrush}"
+                               HorizontalAlignment="Center"/>
+                    <TextBlock Text="{Binding Devices_EmptyHint, Source={x:Static strings:Strings.Instance}}"
+                               Foreground="{DynamicResource ColdBrush}"
+                               Margin="0,12,0,0" TextWrapping="Wrap" TextAlignment="Center" MaxWidth="260"/>
+                </StackPanel>
+
                 <ScrollViewer VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Disabled"
                               Padding="0,0,14,0"
                               Visibility="{Binding HasSelectedDevice, Converter={StaticResource BoolToVisibilityConverter}}">
@@ -305,6 +329,7 @@
                             <TextBlock Style="{StaticResource IdentityBodyText}" Text="{Binding SelectedDevice.DeviceType, Mode=OneWay}"/>
                         </StackPanel>
                         <TextBlock Style="{StaticResource IdentityText}" Margin="0,0,0,8"
+                                   TextWrapping="Wrap"
                                    Text="{Binding SelectedDevice.CapabilitiesSummary, Mode=OneWay}"/>
 
                         <Border ClipToBounds="True" Margin="0,0,0,1" Padding="0,1">
@@ -440,12 +465,14 @@
                             <TextBlock Text="{Binding Devices_InputMode, Source={x:Static strings:Strings.Instance}, Converter={StaticResource UpperConverter}}"
                                        Style="{StaticResource SectionEyebrow}" Margin="0,0,0,6"/>
 
-                            <CheckBox Content="{Binding Devices_ForceRaw, Source={x:Static strings:Strings.Instance}}"
-                                      Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                            <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                       IsChecked="{Binding SelectedDevice.ForceRawJoystickMode, Mode=TwoWay}"
                                       Click="HidingToggle_Click"
                                       ToolTip="{Binding Devices_ForceRawTooltip, Source={x:Static strings:Strings.Instance}}"
-                                      Margin="0,0,0,4"/>
+                                      Margin="0,0,0,4">
+                                <TextBlock Text="{Binding Devices_ForceRaw, Source={x:Static strings:Strings.Instance}}"
+                                           TextWrapping="Wrap"/>
+                            </CheckBox>
 
                             <Separator Margin="0,2,0,8"/>
                         </StackPanel>
@@ -587,11 +614,13 @@
                                         <TextBlock Text="{Binding Name}" FontSize="10" Foreground="{DynamicResource TextFillColorTertiaryBrush}"
                                                    FontFamily="{StaticResource TelemetryFontFamily}"
                                                    VerticalAlignment="Center"/>
-                                        <!-- Cold (#175): raw hardware truth. -->
+                                        <!-- Cold (#175): raw hardware truth on the shared
+                                             instrument tray (recessed SteelGround + hairline). -->
                                         <ProgressBar Grid.Column="1" Minimum="0" Maximum="1"
                                                      Value="{Binding NormalizedValue, Mode=OneWay}"
+                                                     Style="{StaticResource InstrumentBarRaw}"
                                                      Foreground="{DynamicResource ColdBrush}"
-                                                     Height="8" Margin="4,0"/>
+                                                     Margin="4,0"/>
                                         <TextBlock Grid.Column="2" FontSize="9" Foreground="{DynamicResource ColdBrush}"
                                                    FontFamily="{StaticResource TelemetryFontFamily}" VerticalAlignment="Center"
                                                    HorizontalAlignment="Right"
@@ -1020,6 +1049,8 @@
 
                     </StackPanel>
                 </ScrollViewer>
+
+                </Grid>
             </Border>
         </Grid>
     </Grid>

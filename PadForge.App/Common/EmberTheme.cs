@@ -23,6 +23,9 @@ namespace PadForge.Common
         private static readonly Color ColdLight = Color.FromRgb(0x1E, 0x6E, 0x9F);
         private static readonly Color ColdDeepLight = Color.FromRgb(0x17, 0x54, 0x7A);
         private static readonly Color EmberHotLight = Color.FromRgb(0xC2, 0x4A, 0x12);
+        // Light accent ramp mid-stop (round-3 A2): sits between raw ember
+        // and the deepened hot, for the Secondary accent brush on white.
+        private static readonly Color EmberMidLight = Color.FromRgb(0xE6, 0x60, 0x28);
 
         public static void ApplyAccent()
         {
@@ -34,14 +37,21 @@ namespace PadForge.Common
             // the App.xaml defaults and retargets live.
             bool dark = theme == ApplicationTheme.Dark;
 
+            // CardBorder theme scope (round-3 A1): the card stroke storyboard
+            // needs a locally-owned SolidColorBrush, so the CardBorder style
+            // reads the ground off this bindable probe instead of a brush key.
+            EmberThemeProbe.Instance.IsDark = dark;
+
             // Accent re-pin (#175 item 21): Wpf.Ui's Apply derives the
             // Secondary/Tertiary accent shades from the base color, which
             // turns ember into a washed #EF9770 salmon on checked CheckBox /
             // ToggleSwitch fills. On dark, pin both the Color and Brush keys
             // to the sanctioned ember ramp. Apply rewrites the Color keys on
             // every call, so light needs no color cleanup. The Brush keys are
-            // ours alone (Accent.xaml never updates them), so on light they
-            // are removed and lookup falls back to the stock theme.
+            // ours alone (Accent.xaml never updates them), so light pins its
+            // own deepened ember ramp (round-3 A2): removing them let lookup
+            // fall back to the stock brushes carrying the default Windows
+            // blue (the Devices selection pipe sampled #003E92 on light).
             if (dark)
             {
                 Application.Current.Resources["SystemAccentColorSecondary"] = Accent;
@@ -62,8 +72,8 @@ namespace PadForge.Common
             }
             else
             {
-                Application.Current.Resources.Remove("SystemAccentColorSecondaryBrush");
-                Application.Current.Resources.Remove("SystemAccentColorTertiaryBrush");
+                SetBrush("SystemAccentColorSecondaryBrush", EmberMidLight);
+                SetBrush("SystemAccentColorTertiaryBrush", EmberHotLight);
             }
             // Seg-control track (#175): recessed steel on dark; on light a
             // pale recessed tray so the branded glyphs stay visible.
@@ -89,6 +99,14 @@ namespace PadForge.Common
             SetBrush("ColdBrush", dark ? ColdDark : ColdLight);
             SetBrush("ColdDeepBrush", dark ? ColdDeepDark : ColdDeepLight);
             SetBrush("EmberHotBrush", dark ? EmberHotDark : EmberHotLight);
+            // Text-safe pairs (round-3 A4). EmberTextBrush: raw ember reads
+            // ~2.6:1 on white, so light deepens to the hot ramp. ColdMuted:
+            // the dark side bakes the 62% dim into the color's alpha so the
+            // light side can carry deepened cold at high alpha and hold 4:1.
+            SetBrush("EmberTextBrush", dark ? Accent : EmberHotLight);
+            SetBrush("ColdMutedBrush", dark
+                ? Color.FromArgb(0x9E, ColdDark.R, ColdDark.G, ColdDark.B)
+                : Color.FromArgb(0xCC, ColdLight.R, ColdLight.G, ColdLight.B));
 
             // Steel ground (#175 pitch): on dark, the WPF-UI translucent-gray
             // surface tokens swap to the steel palette so every page sits on
@@ -344,5 +362,32 @@ namespace PadForge.Common
             brush.Freeze();
             Application.Current.Resources[key] = brush;
         }
+    }
+
+    // Bindable ground flag for styles that cannot consume brush keys
+    // (round-3 A1): a storyboard-animated stroke must own a local
+    // SolidColorBrush, so DynamicResource cannot theme it. CardBorder's
+    // triggers bind IsDark instead, and ApplyAccent flips it on every
+    // theme apply, before any window loads and live on theme change.
+    public sealed class EmberThemeProbe : System.ComponentModel.INotifyPropertyChanged
+    {
+        public static EmberThemeProbe Instance { get; } = new EmberThemeProbe();
+
+        private bool _isDark = true;
+
+        public bool IsDark
+        {
+            get => _isDark;
+            set
+            {
+                if (_isDark == value)
+                    return;
+                _isDark = value;
+                PropertyChanged?.Invoke(this,
+                    new System.ComponentModel.PropertyChangedEventArgs(nameof(IsDark)));
+            }
+        }
+
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
     }
 }

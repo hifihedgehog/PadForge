@@ -315,7 +315,7 @@
                                         <ui:Button Style="{StaticResource EmberIconButtonHot}"
                                                    Command="{Binding ClearCommand}" Margin="0,0,4,0">
                                             <TextBlock Text="&#xE75C;" FontFamily="Segoe MDL2 Assets"
-                                                       FontSize="12" Foreground="#94A3BD"/>
+                                                       FontSize="12" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
                                             <ui:Button.ToolTip>
                                                 <TextBlock Text="{Binding Common_Clear, Source={x:Static strings:Strings.Instance}}"/>
                                             </ui:Button.ToolTip>
@@ -323,7 +323,7 @@
                                         <ui:Button Style="{StaticResource EmberIconButtonHot}"
                                                    Command="{Binding DeleteCommand}" Margin="0">
                                             <TextBlock Text="&#xE74D;" FontFamily="Segoe MDL2 Assets"
-                                                       FontSize="12" Foreground="#94A3BD"/>
+                                                       FontSize="12" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
                                             <ui:Button.ToolTip>
                                                 <TextBlock Text="{Binding Common_Delete, Source={x:Static strings:Strings.Instance}}"/>
                                             </ui:Button.ToolTip>

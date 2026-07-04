@@ -1,6 +1,7 @@
 <ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:conv="clr-namespace:PadForge.Converters">
+    xmlns:conv="clr-namespace:PadForge.Converters"
+    xmlns:common="clr-namespace:PadForge.Common">
 
 
     <conv:UppercaseConverter x:Key="UpperConverter"/>
@@ -176,12 +177,17 @@
              the steel ground. Iteration 53 adds a hover elevation: the
              stroke heats to steel-lift over 300ms and cools back over
              1200ms. ColorAnimation needs a local SolidColorBrush the
-             style owns, so the brush is a fixed steel color rather than
-             the theme's ControlStrokeColorDefaultBrush. Known tradeoff:
-             light-theme cards get a slightly dark border (there is no
-             clean dark-only scoping for a shared-dictionary style).
-             The animations omit From so a mid-fade re-enter eases from
-             the current color instead of snapping. -->
+             style owns, so DynamicResource cannot theme the stroke.
+             Round-3 A1 theme-scopes it instead through EmberThemeProbe
+             (flipped by EmberTheme.ApplyAccent): a DataTrigger swaps the
+             rest brush per ground, and per-ground hover MultiDataTriggers
+             carry the heat/cool storyboards. Light rest matches the
+             SteelLineBrush light value; dark values are unchanged. The
+             theme trigger's zero-length animations stomp any color a
+             completed hover storyboard still holds on the animation
+             layer, so a live theme flip never leaves a stale stroke.
+             The hover animations omit From so a mid-fade re-enter eases
+             from the current color instead of snapping. -->
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="BorderBrush">
             <Setter.Value>
@@ -189,8 +195,40 @@
             </Setter.Value>
         </Setter>
         <Style.Triggers>
-            <Trigger Property="IsMouseOver" Value="True">
-                <Trigger.EnterActions>
+            <DataTrigger Binding="{Binding IsDark, Source={x:Static common:EmberThemeProbe.Instance}}"
+                         Value="False">
+                <DataTrigger.EnterActions>
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <ColorAnimation
+                                Storyboard.TargetProperty="(Border.BorderBrush).(SolidColorBrush.Color)"
+                                To="#C9CDD6"
+                                Duration="0:0:0"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </DataTrigger.EnterActions>
+                <DataTrigger.ExitActions>
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <ColorAnimation
+                                Storyboard.TargetProperty="(Border.BorderBrush).(SolidColorBrush.Color)"
+                                To="#253049"
+                                Duration="0:0:0"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </DataTrigger.ExitActions>
+                <Setter Property="BorderBrush">
+                    <Setter.Value>
+                        <SolidColorBrush Color="#C9CDD6"/>
+                    </Setter.Value>
+                </Setter>
+            </DataTrigger>
+            <MultiDataTrigger>
+                <MultiDataTrigger.Conditions>
+                    <Condition Binding="{Binding IsDark, Source={x:Static common:EmberThemeProbe.Instance}}" Value="True"/>
+                    <Condition Binding="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}" Value="True"/>
+                </MultiDataTrigger.Conditions>
+                <MultiDataTrigger.EnterActions>
                     <BeginStoryboard>
                         <Storyboard>
                             <ColorAnimation
@@ -203,8 +241,8 @@
                             </ColorAnimation>
                         </Storyboard>
                     </BeginStoryboard>
-                </Trigger.EnterActions>
-                <Trigger.ExitActions>
+                </MultiDataTrigger.EnterActions>
+                <MultiDataTrigger.ExitActions>
                     <BeginStoryboard>
                         <Storyboard>
                             <ColorAnimation
@@ -217,8 +255,42 @@
                             </ColorAnimation>
                         </Storyboard>
                     </BeginStoryboard>
-                </Trigger.ExitActions>
-            </Trigger>
+                </MultiDataTrigger.ExitActions>
+            </MultiDataTrigger>
+            <MultiDataTrigger>
+                <MultiDataTrigger.Conditions>
+                    <Condition Binding="{Binding IsDark, Source={x:Static common:EmberThemeProbe.Instance}}" Value="False"/>
+                    <Condition Binding="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}" Value="True"/>
+                </MultiDataTrigger.Conditions>
+                <MultiDataTrigger.EnterActions>
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <ColorAnimation
+                                Storyboard.TargetProperty="(Border.BorderBrush).(SolidColorBrush.Color)"
+                                To="#AEB6C4"
+                                Duration="0:0:0.3">
+                                <ColorAnimation.EasingFunction>
+                                    <QuadraticEase EasingMode="EaseOut"/>
+                                </ColorAnimation.EasingFunction>
+                            </ColorAnimation>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </MultiDataTrigger.EnterActions>
+                <MultiDataTrigger.ExitActions>
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <ColorAnimation
+                                Storyboard.TargetProperty="(Border.BorderBrush).(SolidColorBrush.Color)"
+                                To="#C9CDD6"
+                                Duration="0:0:1.2">
+                                <ColorAnimation.EasingFunction>
+                                    <QuadraticEase EasingMode="EaseIn"/>
+                                </ColorAnimation.EasingFunction>
+                            </ColorAnimation>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </MultiDataTrigger.ExitActions>
+            </MultiDataTrigger>
         </Style.Triggers>
     </Style>
 

@@ -2,7 +2,7 @@ using System;
 using System.Globalization;
 using System.Windows.Data;
 
-namespace PadForge.Converter
+namespace PadForge.Converters
 {
     /// <summary>Uppercases header strings for the Ember eyebrow treatment
     /// (#175). Cascadia Code has no OpenType small-caps feature, so

@@ -490,6 +490,22 @@ namespace PadForge.ViewModels
             private Guid _instanceGuid;
             private bool _isOnline;
 
+            private string _batteryGlyph = string.Empty;
+
+            /// <summary>Segoe MDL2 battery glyph for the crucible card roster
+            /// (#175). Same bucketing as DeviceRowViewModel.BatteryGlyph.</summary>
+            public string BatteryGlyph
+            {
+                get => _batteryGlyph;
+                set
+                {
+                    if (SetProperty(ref _batteryGlyph, value ?? string.Empty))
+                        OnPropertyChanged(nameof(HasBattery));
+                }
+            }
+
+            public bool HasBattery => !string.IsNullOrEmpty(_batteryGlyph);
+
             public string Name
             {
                 get => _name;

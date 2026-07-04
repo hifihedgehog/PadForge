@@ -64,8 +64,10 @@
                                     </TextBlock>
                                     <StackPanel Orientation="Horizontal" Margin="0,3,0,0">
                                         <!-- Xbox count badge -->
-                                        <Border CornerRadius="4" Padding="5,2" Margin="0,0,4,0"
-                                                Background="{DynamicResource SubtleFillColorSecondaryBrush}">
+                                        <Border CornerRadius="8" Padding="7,2" Margin="0,0,4,0"
+                                                BorderThickness="1"
+                                                BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}"
+                                                Background="{DynamicResource ControlFillColorDefaultBrush}">
                                             <Border.Style>
                                                 <Style TargetType="Border">
                                                     <Style.Triggers>
@@ -85,8 +87,10 @@
                                             </StackPanel>
                                         </Border>
                                         <!-- PlayStation count badge -->
-                                        <Border CornerRadius="4" Padding="5,2" Margin="0,0,4,0"
-                                                Background="{DynamicResource SubtleFillColorSecondaryBrush}">
+                                        <Border CornerRadius="8" Padding="7,2" Margin="0,0,4,0"
+                                                BorderThickness="1"
+                                                BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}"
+                                                Background="{DynamicResource ControlFillColorDefaultBrush}">
                                             <Border.Style>
                                                 <Style TargetType="Border">
                                                     <Style.Triggers>
@@ -106,8 +110,10 @@
                                             </StackPanel>
                                         </Border>
                                         <!-- Extended count badge -->
-                                        <Border CornerRadius="4" Padding="5,2" Margin="0,0,4,0"
-                                                Background="{DynamicResource SubtleFillColorSecondaryBrush}">
+                                        <Border CornerRadius="8" Padding="7,2" Margin="0,0,4,0"
+                                                BorderThickness="1"
+                                                BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}"
+                                                Background="{DynamicResource ControlFillColorDefaultBrush}">
                                             <Border.Style>
                                                 <Style TargetType="Border">
                                                     <Style.Triggers>
@@ -127,8 +133,10 @@
                                             </StackPanel>
                                         </Border>
                                         <!-- MIDI count badge -->
-                                        <Border CornerRadius="4" Padding="5,2" Margin="0,0,4,0"
-                                                Background="{DynamicResource SubtleFillColorSecondaryBrush}">
+                                        <Border CornerRadius="8" Padding="7,2" Margin="0,0,4,0"
+                                                BorderThickness="1"
+                                                BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}"
+                                                Background="{DynamicResource ControlFillColorDefaultBrush}">
                                             <Border.Style>
                                                 <Style TargetType="Border">
                                                     <Style.Triggers>
@@ -146,8 +154,10 @@
                                             </StackPanel>
                                         </Border>
                                         <!-- KB+M count badge -->
-                                        <Border CornerRadius="4" Padding="5,2" Margin="0,0,4,0"
-                                                Background="{DynamicResource SubtleFillColorSecondaryBrush}">
+                                        <Border CornerRadius="8" Padding="7,2" Margin="0,0,4,0"
+                                                BorderThickness="1"
+                                                BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}"
+                                                Background="{DynamicResource ControlFillColorDefaultBrush}">
                                             <Border.Style>
                                                 <Style TargetType="Border">
                                                     <Style.Triggers>

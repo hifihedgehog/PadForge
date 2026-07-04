@@ -161,6 +161,7 @@
             <conv:HexToBrushConverter x:Key="HexToBrushConverter" />
             <conv:NormToCanvasConverter x:Key="NormToCanvasConverter" />
             <conv:SignedNormToCanvasConverter x:Key="SignedNormToCanvasConverter" />
+            <conv:NormPairToSignedTextConverter x:Key="NormPairToSignedText" />
             <conv:PercentToSizeConverter x:Key="PercentToSizeConverter" />
             <conv:CrossGeometryConverter x:Key="CrossGeometryConverter" />
             <conv:SlopedWedgeGeometryConverter x:Key="SlopedWedgeGeometryConverter" />

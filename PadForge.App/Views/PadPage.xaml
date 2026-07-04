@@ -2407,6 +2407,29 @@
                                 <Setter Property="Foreground"
                                         Value="{DynamicResource TextFillColorPrimaryBrush}"/>
                                 <Style.Triggers>
+                                    <!-- Rowfire (#175 artifact): while input flows the row
+                                         warms with an ember tint, the grid-scale stand-in
+                                         for the cold-to-ember underline sweep. -->
+                                    <DataTrigger Binding="{Binding IsInputActive}" Value="True">
+                                        <DataTrigger.EnterActions>
+                                            <BeginStoryboard>
+                                                <Storyboard>
+                                                    <ColorAnimation
+                                                        Storyboard.TargetProperty="(DataGridRow.Background).(SolidColorBrush.Color)"
+                                                        To="#24FF6B2C" Duration="0:0:0.3"/>
+                                                </Storyboard>
+                                            </BeginStoryboard>
+                                        </DataTrigger.EnterActions>
+                                        <DataTrigger.ExitActions>
+                                            <BeginStoryboard>
+                                                <Storyboard>
+                                                    <ColorAnimation
+                                                        Storyboard.TargetProperty="(DataGridRow.Background).(SolidColorBrush.Color)"
+                                                        To="#00FF6B2C" Duration="0:0:1.2"/>
+                                                </Storyboard>
+                                            </BeginStoryboard>
+                                        </DataTrigger.ExitActions>
+                                    </DataTrigger>
                                     <DataTrigger Binding="{Binding IsRecording}" Value="True">
                                         <DataTrigger.EnterActions>
                                             <BeginStoryboard x:Name="RecordFlash">
@@ -4052,7 +4075,7 @@
                                                 <Grid Width="200" Height="200">
                                                     <!-- Radar ground (#175 artifact): near-black plot
                                                          with steel rings at 33/66/100%. -->
-                                                    <Ellipse Width="200" Height="200" Fill="#FF0B0E14"/>
+                                                    <Ellipse Width="200" Height="200" Fill="Transparent" Stroke="#FF253049" StrokeThickness="1"/>
                                                     <Ellipse Width="66" Height="66" Stroke="#FF1E2739" StrokeThickness="1" Fill="Transparent"
                                                              HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                                     <Ellipse Width="132" Height="132" Stroke="#FF1E2739" StrokeThickness="1" Fill="Transparent"
@@ -4136,7 +4159,7 @@
                                                         </Path>
 
                                                         <!-- Hybrid: circle (red) — fully dead center from radial stage -->
-                                                        <Ellipse Fill="#18FF5722" Stroke="#60FF5722" StrokeThickness="1"
+                                                        <Ellipse Fill="Transparent" Stroke="#B3C43D0C" StrokeThickness="1" StrokeDashArray="3 4"
                                                                  Visibility="{Binding IsHybridShape, Converter={StaticResource BoolToVisibilityConverter}}">
                                                             <Ellipse.Width>
                                                                 <Binding Path="DeadZoneX" Converter="{StaticResource PercentToSizeConverter}" ConverterParameter="200"/>
@@ -4181,15 +4204,35 @@
                                                     </Canvas>
                                                 </Grid>
                                             </Border>
-                                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,8,0,0">
+                                            <!-- Artifact readout pair (#175): RAW cold, OUT ember,
+                                                 signed mono values. -->
+                                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10,0,0">
+                                                <TextBlock Text="{Binding Instr_Raw, Source={x:Static strings:Strings.Instance}}"
+                                                           FontFamily="{StaticResource TelemetryFontFamily}"
+                                                           FontSize="11" Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                                                           VerticalAlignment="Center" Margin="0,0,7,0"/>
+                                                <TextBlock FontFamily="{StaticResource TelemetryFontFamily}" FontSize="11.5"
+                                                           Foreground="{DynamicResource ColdBrush}" VerticalAlignment="Center">
+                                                    <TextBlock.Text>
+                                                        <MultiBinding Converter="{StaticResource NormPairToSignedText}" Mode="OneWay">
+                                                            <Binding Path="RawPosX"/>
+                                                            <Binding Path="RawPosY"/>
+                                                        </MultiBinding>
+                                                    </TextBlock.Text>
+                                                </TextBlock>
                                                 <TextBlock Text="{Binding Instr_Out, Source={x:Static strings:Strings.Instance}}"
-                                                           FontSize="10" FontWeight="SemiBold"
-                                                           Foreground="{DynamicResource EmberHotBrush}"
-                                                           VerticalAlignment="Center" Margin="0,0,8,0"/>
-                                                <TextBlock Text="{Binding RawDisplay, Mode=OneWay}"
-                                                           FontSize="11"
-                                                           Foreground="{DynamicResource EmberHotBrush}"
-                                                           VerticalAlignment="Center"/>
+                                                           FontFamily="{StaticResource TelemetryFontFamily}"
+                                                           FontSize="11" Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                                                           VerticalAlignment="Center" Margin="22,0,7,0"/>
+                                                <TextBlock FontFamily="{StaticResource TelemetryFontFamily}" FontSize="11.5"
+                                                           Foreground="{DynamicResource EmberHotBrush}" VerticalAlignment="Center">
+                                                    <TextBlock.Text>
+                                                        <MultiBinding Converter="{StaticResource NormPairToSignedText}" Mode="OneWay">
+                                                            <Binding Path="LiveX"/>
+                                                            <Binding Path="LiveY"/>
+                                                        </MultiBinding>
+                                                    </TextBlock.Text>
+                                                </TextBlock>
                                             </StackPanel>
 
                                             <!-- Per-axis sensitivity curve editors -->

@@ -2294,7 +2294,7 @@
                                                 <Storyboard>
                                                     <ColorAnimation
                                                         Storyboard.TargetProperty="(DataGridRow.Background).(SolidColorBrush.Color)"
-                                                        From="#002196F3" To="#602196F3"
+                                                        From="#00FF6B2C" To="#60FF6B2C"
                                                         Duration="0:0:0.4" AutoReverse="True"
                                                         RepeatBehavior="Forever"/>
                                                 </Storyboard>
@@ -3277,9 +3277,27 @@
                             </DataTemplate>
                         </DataGrid.RowDetailsTemplate>
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="{Binding Pad_HeaderOutput, Source={x:Static strings:Strings.Instance}}"
-                                                Binding="{Binding TargetLabel}"
-                                                Width="Auto"/>
+                            <!-- Output chip (#175): the virtual side of the row
+                                 reads ember. Source cells stay cold. -->
+                            <DataGridTemplateColumn Header="{Binding Pad_HeaderOutput, Source={x:Static strings:Strings.Instance}}"
+                                                    Width="Auto">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Border Background="{DynamicResource EmberTintBrush}"
+                                                BorderThickness="1" CornerRadius="6"
+                                                Padding="8,3" Margin="2"
+                                                VerticalAlignment="Center"
+                                                HorizontalAlignment="Left">
+                                            <Border.BorderBrush>
+                                                <SolidColorBrush Color="#66FF6B2C"/>
+                                            </Border.BorderBrush>
+                                            <TextBlock Text="{Binding TargetLabel}"
+                                                       FontWeight="SemiBold" FontSize="12.5"
+                                                       Foreground="{DynamicResource EmberHotBrush}"/>
+                                        </Border>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
                             <DataGridTemplateColumn Header="{Binding Pad_HeaderSource, Source={x:Static strings:Strings.Instance}}"
                                                 Width="Auto">
                                 <DataGridTemplateColumn.CellTemplate>
@@ -3296,6 +3314,7 @@
                                                       DisplayMemberPath="DisplayName"
                                                       Margin="0" Padding="4,2"
                                                       HorizontalAlignment="Stretch"
+                                                      Foreground="{DynamicResource ColdBrush}"
                                                       PreviewKeyDown="MappingComboBox_PreviewKeyDown">
                                                 <ComboBox.GroupStyle>
                                                     <GroupStyle>
@@ -3495,9 +3514,19 @@
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
+                            <!-- Value: raw telemetry, cold mono (#175). -->
                             <DataGridTextColumn Header="{Binding Pad_HeaderValue, Source={x:Static strings:Strings.Instance}}"
                                                 Binding="{Binding CurrentValueText, Mode=OneWay}"
-                                                Width="Auto"/>
+                                                Width="Auto">
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="FontFamily" Value="{StaticResource TelemetryFontFamily}"/>
+                                        <Setter Property="FontSize" Value="12"/>
+                                        <Setter Property="Foreground" Value="{DynamicResource ColdBrush}"/>
+                                        <Setter Property="VerticalAlignment" Value="Center"/>
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                            </DataGridTextColumn>
                             <!-- Record button -->
                             <DataGridTemplateColumn Header="" Width="Auto">
                                 <DataGridTemplateColumn.CellTemplate>
@@ -3505,7 +3534,9 @@
                                         <Button Command="{Binding ToggleRecordCommand}"
                                                 IsEnabled="{Binding IsRecordable}"
                                                 Width="40" HorizontalAlignment="Center" Margin="2">
-                                            <TextBlock Text="{Binding RecordButtonIcon}" FontFamily="Segoe MDL2 Assets"/>
+                                            <!-- Ember (#175): record is about to write a binding. -->
+                                            <TextBlock Text="{Binding RecordButtonIcon}" FontFamily="Segoe MDL2 Assets"
+                                                       Foreground="{DynamicResource EmberBrush}"/>
                                             <Button.ToolTip>
                                                 <TextBlock Text="{Binding RecordButtonText}"/>
                                             </Button.ToolTip>

@@ -158,38 +158,79 @@
                 </ItemsControl.ItemsPanel>
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
+                        <Grid Margin="4">
+                            <!-- Heat that rises fast and cools slow (#175 motion
+                                 spec, overlay pattern): the glow host behind the
+                                 card carries the effect, its plain Opacity
+                                 animates. 300ms ease-out up, 1200ms ease-in down.
+                                 One-shot storyboards, no Forever loops. -->
+                            <Border CornerRadius="8" IsHitTestVisible="False" Opacity="0"
+                                    Background="{DynamicResource CardBackgroundFillColorDefaultBrush}">
+                                <Border.Effect>
+                                    <DropShadowEffect Color="#FF6B2C" BlurRadius="22" ShadowDepth="0" Opacity="0.42"/>
+                                </Border.Effect>
+                                <Border.Style>
+                                    <Style TargetType="Border">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsEnabled}" Value="True">
+                                                <DataTrigger.EnterActions>
+                                                    <BeginStoryboard>
+                                                        <Storyboard>
+                                                            <DoubleAnimation Storyboard.TargetProperty="Opacity" To="0.5" Duration="0:0:0.3">
+                                                                <DoubleAnimation.EasingFunction>
+                                                                    <CubicEase EasingMode="EaseOut"/>
+                                                                </DoubleAnimation.EasingFunction>
+                                                            </DoubleAnimation>
+                                                        </Storyboard>
+                                                    </BeginStoryboard>
+                                                </DataTrigger.EnterActions>
+                                                <DataTrigger.ExitActions>
+                                                    <BeginStoryboard>
+                                                        <Storyboard>
+                                                            <DoubleAnimation Storyboard.TargetProperty="Opacity" To="0" Duration="0:0:1.2">
+                                                                <DoubleAnimation.EasingFunction>
+                                                                    <CubicEase EasingMode="EaseIn"/>
+                                                                </DoubleAnimation.EasingFunction>
+                                                            </DoubleAnimation>
+                                                        </Storyboard>
+                                                    </BeginStoryboard>
+                                                </DataTrigger.ExitActions>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding IsVirtualControllerConnected}" Value="True">
+                                                <DataTrigger.EnterActions>
+                                                    <BeginStoryboard>
+                                                        <Storyboard>
+                                                            <DoubleAnimation Storyboard.TargetProperty="Opacity" To="1.0" Duration="0:0:0.3">
+                                                                <DoubleAnimation.EasingFunction>
+                                                                    <CubicEase EasingMode="EaseOut"/>
+                                                                </DoubleAnimation.EasingFunction>
+                                                            </DoubleAnimation>
+                                                        </Storyboard>
+                                                    </BeginStoryboard>
+                                                </DataTrigger.EnterActions>
+                                                <DataTrigger.ExitActions>
+                                                    <BeginStoryboard>
+                                                        <Storyboard>
+                                                            <DoubleAnimation Storyboard.TargetProperty="Opacity" To="0.5" Duration="0:0:1.2">
+                                                                <DoubleAnimation.EasingFunction>
+                                                                    <CubicEase EasingMode="EaseIn"/>
+                                                                </DoubleAnimation.EasingFunction>
+                                                            </DoubleAnimation>
+                                                        </Storyboard>
+                                                    </BeginStoryboard>
+                                                </DataTrigger.ExitActions>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Border.Style>
+                            </Border>
                         <Border Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
-                                CornerRadius="8" Padding="10" Margin="4"
+                                CornerRadius="8" Padding="10"
                                 BorderThickness="2" BorderBrush="Transparent"
                                 Width="252"
                                 Cursor="Hand"
                                 Tag="{Binding PadIndex}"
                                 Loaded="SlotCard_Loaded">
-                            <!-- Heat glow (#175): a live VC makes the crucible
-                                 glow. Static effect only, no Forever storyboard
-                                 per card on the Z8350-class perf floor. -->
-                            <Border.Style>
-                                <Style TargetType="Border">
-                                    <Style.Triggers>
-                                        <!-- Lit slot: soft heat as soon as it is enabled,
-                                             stronger once the VC is live (#175 pitch glow). -->
-                                        <DataTrigger Binding="{Binding IsEnabled}" Value="True">
-                                            <Setter Property="Effect">
-                                                <Setter.Value>
-                                                    <DropShadowEffect Color="#FF6B2C" BlurRadius="16" ShadowDepth="0" Opacity="0.20"/>
-                                                </Setter.Value>
-                                            </Setter>
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding IsVirtualControllerConnected}" Value="True">
-                                            <Setter Property="Effect">
-                                                <Setter.Value>
-                                                    <DropShadowEffect Color="#FF6B2C" BlurRadius="22" ShadowDepth="0" Opacity="0.40"/>
-                                                </Setter.Value>
-                                            </Setter>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Border.Style>
                             <Grid>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="Auto"/>
@@ -456,6 +497,7 @@
                                 </StackPanel>
                             </Grid>
                         </Border>
+                        </Grid>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>

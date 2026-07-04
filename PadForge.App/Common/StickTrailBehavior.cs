@@ -81,6 +81,20 @@ namespace PadForge.Common
             if (canvas.DataContext is not StickConfigItem stick) return;
 
             // Ring buffer of normalized positions (0..1 plot space).
+            // Distance-gated (artifact look): a new dot is laid down only
+            // after the stick travels a fixed arc length, so the trail reads
+            // as an evenly spaced dotted line at any hand speed instead of
+            // clumping when slow and gapping when fast.
+            int prev = (s.Head - 1 + TrailLength) % TrailLength;
+            double dx = stick.RawPosX - s.Xs[prev];
+            double dy = stick.RawPosY - s.Ys[prev];
+            double fdx = stick.LiveX - s.Fxs[prev];
+            double fdy = stick.LiveY - s.Fys[prev];
+            const double spacing = 0.018;
+            if (s.Count > 0 &&
+                dx * dx + dy * dy < spacing * spacing &&
+                fdx * fdx + fdy * fdy < spacing * spacing)
+                return;
             s.Xs[s.Head] = stick.RawPosX;
             s.Ys[s.Head] = stick.RawPosY;
             s.Fxs[s.Head] = stick.LiveX;

@@ -142,6 +142,11 @@ namespace PadForge
         {
             InitializeComponent();
 
+            // Steel ground tracks the theme from first paint (#175). The
+            // XAML default is Visible, which is wrong when the app starts
+            // in Light.
+            UpdateSteelLayer();
+
             // wpfui's TitleBarButton fires its Command twice on a finger tap
             // because two paths converge: a Win32 hwnd hook catches WM_NCLBUTTONUP
             // (NC area, via WM_NCHITTEST returning HTMAXBUTTON / HTMINBUTTON /
@@ -4572,6 +4577,20 @@ namespace PadForge
                 Wpf.Ui.Appearance.ApplicationThemeManager.Apply(Wpf.Ui.Appearance.ApplicationTheme.Dark);
             else
                 Wpf.Ui.Appearance.ApplicationThemeManager.ApplySystemTheme();
+
+            // Theme applies re-derive the accent from the system color, so
+            // pin Ember again, then re-evaluate the steel ground (#175).
+            PadForge.Common.EmberTheme.ApplyAccent();
+            UpdateSteelLayer();
+        }
+
+        // Ember steel ground is a dark-theme surface. In Light the Mica
+        // backdrop stands alone (#175).
+        private void UpdateSteelLayer()
+        {
+            bool dark = Wpf.Ui.Appearance.ApplicationThemeManager.GetAppTheme()
+                        == Wpf.Ui.Appearance.ApplicationTheme.Dark;
+            SteelLayer.Visibility = dark ? Visibility.Visible : Visibility.Collapsed;
         }
 
         // ─────────────────────────────────────────────

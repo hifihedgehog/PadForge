@@ -4027,8 +4027,8 @@
                                                             <Canvas.Top>100</Canvas.Top>
                                                         </Ellipse>
                                                         <!-- Stick position dot -->
-                                                        <Ellipse Width="11" Height="11" Fill="#FF2196F3"
-                                                                 Stroke="#FF1976D2" StrokeThickness="1"
+                                                        <Ellipse Width="11" Height="11" Fill="#FF58B6E4"
+                                                                 Stroke="#FF2E6A8F" StrokeThickness="1"
                                                                  Canvas.Left="{Binding LiveX, Converter={StaticResource NormToCanvasConverter}, ConverterParameter='200,11'}"
                                                                  Canvas.Top="{Binding LiveY, Converter={StaticResource NormToCanvasConverter}, ConverterParameter='200,11'}"/>
                                                     </Canvas>
@@ -4261,7 +4261,7 @@
                                         <Button Command="{Binding ResetSteeringLockColorGCommand}" Style="{StaticResource ResetButtonTight}" ToolTip="{Binding Pad_ResetLightbarGreen, Source={x:Static strings:Strings.Instance}}"/>
                                     </StackPanel>
                                     <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
-                                        <TextBlock Text="B" Style="{StaticResource DzLabelTight}" Foreground="#FF1976D2"/>
+                                        <TextBlock Text="B" Style="{StaticResource DzLabelTight}" Foreground="#FF2E6A8F"/>
                                         <Slider Value="{Binding SteeringLockColorB, Mode=TwoWay}" Style="{StaticResource DzRgbSlider}"/>
                                         <TextBox Text="{Binding SteeringLockColorB, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEditTight}"/>
                                         <Button Command="{Binding ResetSteeringLockColorBCommand}" Style="{StaticResource ResetButtonTight}" ToolTip="{Binding Pad_ResetLightbarBlue, Source={x:Static strings:Strings.Instance}}"/>
@@ -4328,7 +4328,7 @@
                                                         <TextBox Text="{Binding G, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEditTight}"/>
                                                     </StackPanel>
                                                     <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
-                                                        <TextBlock Text="B" Style="{StaticResource DzLabelTight}" Foreground="#FF1976D2"/>
+                                                        <TextBlock Text="B" Style="{StaticResource DzLabelTight}" Foreground="#FF2E6A8F"/>
                                                         <Slider Value="{Binding B, Mode=TwoWay}" Style="{StaticResource DzRgbSlider}"/>
                                                         <TextBox Text="{Binding B, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEditTight}"/>
                                                     </StackPanel>
@@ -4461,12 +4461,15 @@
                                             <!-- Live value bar -->
                                             <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
                                                 <TextBlock Text="{Binding Pad_Live, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                                <!-- Cold (#175): this is the wire, pre-forge. -->
                                                 <ProgressBar Value="{Binding LiveValue, Mode=OneWay}"
                                                              Minimum="0" Maximum="1"
+                                                             Foreground="{DynamicResource ColdBrush}"
                                                              Width="200" Height="16" VerticalAlignment="Center"/>
                                                 <TextBlock Text="{Binding RawDisplay, Mode=OneWay}"
                                                            Margin="8,0,0,0" VerticalAlignment="Center"
-                                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                                                           FontFamily="{StaticResource TelemetryFontFamily}" FontSize="12"
+                                                           Foreground="{DynamicResource ColdBrush}"/>
                                             </StackPanel>
                                         </StackPanel>
 
@@ -5325,7 +5328,7 @@
                                                             <TextBox Text="{Binding G, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEditTight}"/>
                                                         </StackPanel>
                                                         <StackPanel Orientation="Horizontal">
-                                                            <TextBlock Text="B" Style="{StaticResource DzLabelTight}" Foreground="#FF1976D2"/>
+                                                            <TextBlock Text="B" Style="{StaticResource DzLabelTight}" Foreground="#FF2E6A8F"/>
                                                             <Slider Value="{Binding B, Mode=TwoWay}" Style="{StaticResource DzRgbSlider}"/>
                                                             <TextBox Text="{Binding B, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEditTight}"/>
                                                         </StackPanel>
@@ -5459,7 +5462,7 @@
                                             <Button Command="{Binding PlayStationConfig.ResetLightbarGreenCommand}" Style="{StaticResource ResetButtonTight}" ToolTip="{Binding Pad_ResetLightbarGreen, Source={x:Static strings:Strings.Instance}}"/>
                                         </StackPanel>
                                         <StackPanel Orientation="Horizontal">
-                                            <TextBlock Text="B" Style="{StaticResource DzLabelTight}" Foreground="#FF1976D2"/>
+                                            <TextBlock Text="B" Style="{StaticResource DzLabelTight}" Foreground="#FF2E6A8F"/>
                                             <Slider Value="{Binding PlayStationConfig.LightbarBlue, Mode=TwoWay}" Style="{StaticResource DzRgbSlider}"/>
                                             <TextBox Text="{Binding PlayStationConfig.LightbarBlue, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEditTight}"/>
                                             <Button Command="{Binding PlayStationConfig.ResetLightbarBlueCommand}" Style="{StaticResource ResetButtonTight}" ToolTip="{Binding Pad_ResetLightbarBlue, Source={x:Static strings:Strings.Instance}}"/>
@@ -5524,7 +5527,7 @@
                                                     <Button Command="{Binding PlayStationConfig.ResetLightbarBatteryLowGCommand}" Style="{StaticResource ResetButtonTight}" ToolTip="{Binding Pad_ResetLightbarGreen, Source={x:Static strings:Strings.Instance}}"/>
                                                 </StackPanel>
                                                 <StackPanel Orientation="Horizontal">
-                                                    <TextBlock Text="B" Style="{StaticResource DzLabelTight}" Foreground="#FF1976D2"/>
+                                                    <TextBlock Text="B" Style="{StaticResource DzLabelTight}" Foreground="#FF2E6A8F"/>
                                                     <Slider Value="{Binding PlayStationConfig.LightbarBatteryLowB, Mode=TwoWay}" Style="{StaticResource DzRgbSlider}"/>
                                                     <TextBox Text="{Binding PlayStationConfig.LightbarBatteryLowB, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEditTight}"/>
                                                     <Button Command="{Binding PlayStationConfig.ResetLightbarBatteryLowBCommand}" Style="{StaticResource ResetButtonTight}" ToolTip="{Binding Pad_ResetLightbarBlue, Source={x:Static strings:Strings.Instance}}"/>
@@ -5572,7 +5575,7 @@
                                                     <Button Command="{Binding PlayStationConfig.ResetLightbarBatteryHighGCommand}" Style="{StaticResource ResetButtonTight}" ToolTip="{Binding Pad_ResetLightbarGreen, Source={x:Static strings:Strings.Instance}}"/>
                                                 </StackPanel>
                                                 <StackPanel Orientation="Horizontal">
-                                                    <TextBlock Text="B" Style="{StaticResource DzLabelTight}" Foreground="#FF1976D2"/>
+                                                    <TextBlock Text="B" Style="{StaticResource DzLabelTight}" Foreground="#FF2E6A8F"/>
                                                     <Slider Value="{Binding PlayStationConfig.LightbarBatteryHighB, Mode=TwoWay}" Style="{StaticResource DzRgbSlider}"/>
                                                     <TextBox Text="{Binding PlayStationConfig.LightbarBatteryHighB, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEditTight}"/>
                                                     <Button Command="{Binding PlayStationConfig.ResetLightbarBatteryHighBCommand}" Style="{StaticResource ResetButtonTight}" ToolTip="{Binding Pad_ResetLightbarBlue, Source={x:Static strings:Strings.Instance}}"/>
@@ -5643,7 +5646,7 @@
                                                     <Button Command="{Binding PlayStationConfig.ResetAudioLowGCommand}" Style="{StaticResource ResetButtonTight}" ToolTip="{Binding Pad_ResetAudioLowG, Source={x:Static strings:Strings.Instance}}"/>
                                                 </StackPanel>
                                                 <StackPanel Orientation="Horizontal">
-                                                    <TextBlock Text="B" Style="{StaticResource DzLabelTight}" Foreground="#FF1976D2"/>
+                                                    <TextBlock Text="B" Style="{StaticResource DzLabelTight}" Foreground="#FF2E6A8F"/>
                                                     <Slider Value="{Binding PlayStationConfig.AudioLowB, Mode=TwoWay}" Style="{StaticResource DzRgbSlider}"/>
                                                     <TextBox Text="{Binding PlayStationConfig.AudioLowB, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEditTight}"/>
                                                     <Button Command="{Binding PlayStationConfig.ResetAudioLowBCommand}" Style="{StaticResource ResetButtonTight}" ToolTip="{Binding Pad_ResetAudioLowB, Source={x:Static strings:Strings.Instance}}"/>
@@ -5697,7 +5700,7 @@
                                                     <Button Command="{Binding PlayStationConfig.ResetAudioMidGCommand}" Style="{StaticResource ResetButtonTight}" ToolTip="{Binding Pad_ResetAudioMidG, Source={x:Static strings:Strings.Instance}}"/>
                                                 </StackPanel>
                                                 <StackPanel Orientation="Horizontal">
-                                                    <TextBlock Text="B" Style="{StaticResource DzLabelTight}" Foreground="#FF1976D2"/>
+                                                    <TextBlock Text="B" Style="{StaticResource DzLabelTight}" Foreground="#FF2E6A8F"/>
                                                     <Slider Value="{Binding PlayStationConfig.AudioMidB, Mode=TwoWay}" Style="{StaticResource DzRgbSlider}"/>
                                                     <TextBox Text="{Binding PlayStationConfig.AudioMidB, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEditTight}"/>
                                                     <Button Command="{Binding PlayStationConfig.ResetAudioMidBCommand}" Style="{StaticResource ResetButtonTight}" ToolTip="{Binding Pad_ResetAudioMidB, Source={x:Static strings:Strings.Instance}}"/>
@@ -5751,7 +5754,7 @@
                                                     <Button Command="{Binding PlayStationConfig.ResetAudioHighGCommand}" Style="{StaticResource ResetButtonTight}" ToolTip="{Binding Pad_ResetAudioHighG, Source={x:Static strings:Strings.Instance}}"/>
                                                 </StackPanel>
                                                 <StackPanel Orientation="Horizontal">
-                                                    <TextBlock Text="B" Style="{StaticResource DzLabelTight}" Foreground="#FF1976D2"/>
+                                                    <TextBlock Text="B" Style="{StaticResource DzLabelTight}" Foreground="#FF2E6A8F"/>
                                                     <Slider Value="{Binding PlayStationConfig.AudioHighB, Mode=TwoWay}" Style="{StaticResource DzRgbSlider}"/>
                                                     <TextBox Text="{Binding PlayStationConfig.AudioHighB, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEditTight}"/>
                                                     <Button Command="{Binding PlayStationConfig.ResetAudioHighBCommand}" Style="{StaticResource ResetButtonTight}" ToolTip="{Binding Pad_ResetAudioHighB, Source={x:Static strings:Strings.Instance}}"/>
@@ -5878,7 +5881,7 @@
                                                             <TextBox Text="{Binding G, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEditTight}"/>
                                                         </StackPanel>
                                                         <StackPanel Orientation="Horizontal">
-                                                            <TextBlock Text="B" Style="{StaticResource DzLabelTight}" Foreground="#FF1976D2"/>
+                                                            <TextBlock Text="B" Style="{StaticResource DzLabelTight}" Foreground="#FF2E6A8F"/>
                                                             <Slider Value="{Binding B, Mode=TwoWay}" Style="{StaticResource DzRgbSlider}"/>
                                                             <TextBox Text="{Binding B, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEditTight}"/>
                                                         </StackPanel>
@@ -5935,7 +5938,7 @@
                                             <Button Command="{Binding PlayStationConfig.ResetInputReactiveGCommand}" Style="{StaticResource ResetButtonTight}" ToolTip="{Binding Pad_ResetLightbarGreen, Source={x:Static strings:Strings.Instance}}"/>
                                         </StackPanel>
                                         <StackPanel Orientation="Horizontal">
-                                            <TextBlock Text="B" Style="{StaticResource DzLabelTight}" Foreground="#FF1976D2"/>
+                                            <TextBlock Text="B" Style="{StaticResource DzLabelTight}" Foreground="#FF2E6A8F"/>
                                             <Slider Value="{Binding PlayStationConfig.InputReactiveB, Mode=TwoWay}" Style="{StaticResource DzRgbSlider}"/>
                                             <TextBox Text="{Binding PlayStationConfig.InputReactiveB, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEditTight}"/>
                                             <Button Command="{Binding PlayStationConfig.ResetInputReactiveBCommand}" Style="{StaticResource ResetButtonTight}" ToolTip="{Binding Pad_ResetLightbarBlue, Source={x:Static strings:Strings.Instance}}"/>
@@ -6166,25 +6169,32 @@
                                      single-letter abbreviations. Per-axis Width is
                                      wide enough to hold the longest realistic value
                                      without text truncation. -->
+                                <!-- Cold telemetry mono (#175): raw sensor truth. -->
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
                                     <TextBlock Text="{Binding Settings_GyroLiveRate_Label, Source={x:Static strings:Strings.Instance}}"
-                                               FontSize="14" Width="160" Opacity="0.85" Margin="0,0,8,0" VerticalAlignment="Center"/>
+                                               FontSize="14" Width="160" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,0,8,0" VerticalAlignment="Center"/>
                                     <TextBlock Text="{Binding GyroLiveRatePitch, StringFormat={}Pitch {0:+0.0;-0.0;0.0}°/s}"
-                                               FontSize="14" Width="140" VerticalAlignment="Center"/>
+                                               FontFamily="{StaticResource TelemetryFontFamily}" Foreground="{DynamicResource ColdBrush}"
+                                               FontSize="13" Width="140" VerticalAlignment="Center"/>
                                     <TextBlock Text="{Binding GyroLiveRateYaw,   StringFormat={}Yaw {0:+0.0;-0.0;0.0}°/s}"
-                                               FontSize="14" Width="130" VerticalAlignment="Center"/>
+                                               FontFamily="{StaticResource TelemetryFontFamily}" Foreground="{DynamicResource ColdBrush}"
+                                               FontSize="13" Width="130" VerticalAlignment="Center"/>
                                     <TextBlock Text="{Binding GyroLiveRateRoll,  StringFormat={}Roll {0:+0.0;-0.0;0.0}°/s}"
-                                               FontSize="14" Width="135" VerticalAlignment="Center"/>
+                                               FontFamily="{StaticResource TelemetryFontFamily}" Foreground="{DynamicResource ColdBrush}"
+                                               FontSize="13" Width="135" VerticalAlignment="Center"/>
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock Text="{Binding Settings_GyroLiveAccel_Label, Source={x:Static strings:Strings.Instance}}"
-                                               FontSize="14" Width="160" Opacity="0.85" Margin="0,0,8,0" VerticalAlignment="Center"/>
+                                               FontSize="14" Width="160" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,0,8,0" VerticalAlignment="Center"/>
                                     <TextBlock Text="{Binding AccelLiveX, StringFormat={}X {0:+0.00;-0.00;0.00}g}"
-                                               FontSize="14" Width="140" VerticalAlignment="Center"/>
+                                               FontFamily="{StaticResource TelemetryFontFamily}" Foreground="{DynamicResource ColdBrush}"
+                                               FontSize="13" Width="140" VerticalAlignment="Center"/>
                                     <TextBlock Text="{Binding AccelLiveY, StringFormat={}Y {0:+0.00;-0.00;0.00}g}"
-                                               FontSize="14" Width="130" VerticalAlignment="Center"/>
+                                               FontFamily="{StaticResource TelemetryFontFamily}" Foreground="{DynamicResource ColdBrush}"
+                                               FontSize="13" Width="130" VerticalAlignment="Center"/>
                                     <TextBlock Text="{Binding AccelLiveZ, StringFormat={}Z {0:+0.00;-0.00;0.00}g}"
-                                               FontSize="14" Width="135" VerticalAlignment="Center"/>
+                                               FontFamily="{StaticResource TelemetryFontFamily}" Foreground="{DynamicResource ColdBrush}"
+                                               FontSize="13" Width="135" VerticalAlignment="Center"/>
                                 </StackPanel>
                             </StackPanel>
                         </Border>

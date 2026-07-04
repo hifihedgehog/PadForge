@@ -14,8 +14,6 @@
     <ui:FluentWindow.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ui:ThemesDictionary Theme="Dark" />
-                <ui:ControlsDictionary />
             </ResourceDictionary.MergedDictionaries>
             <!-- Picker styles cloned from PadPage so this dialog's color
                  section matches the Lighting tab's RGB row chrome. -->

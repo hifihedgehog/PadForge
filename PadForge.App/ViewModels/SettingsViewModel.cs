@@ -20,6 +20,10 @@ namespace PadForge.ViewModels
         public SettingsViewModel()
         {
             Title = Strings.Instance.Settings_Title;
+
+            // Keep the per-item IsActive flame flag (#175) current when the
+            // profile list is rebuilt or items are added/removed.
+            ProfileItems.CollectionChanged += (_, _) => UpdateActiveProfileFlags();
         }
 
         // ─────────────────────────────────────────────
@@ -732,6 +736,28 @@ namespace PadForge.ViewModels
             set
             {
                 SetProperty(ref _activeProfileInfo, value ?? Strings.Instance.Common_Default);
+
+                // Every active-profile change flows through this setter (after
+                // SettingsManager.ActiveProfileId is updated), so recompute the
+                // per-item flame flags here. Runs unconditionally: a rename can
+                // re-set the same display text while the active id differs.
+                UpdateActiveProfileFlags();
+            }
+        }
+
+        /// <summary>
+        /// Recomputes each profile row's IsActive flag against
+        /// SettingsManager.ActiveProfileId. Empty/null id means the built-in
+        /// Default profile is active.
+        /// </summary>
+        private void UpdateActiveProfileFlags()
+        {
+            string activeId = SettingsManager.ActiveProfileId;
+            foreach (var item in ProfileItems)
+            {
+                item.IsActive = string.IsNullOrEmpty(activeId)
+                    ? item.IsDefault
+                    : item.Id == activeId;
             }
         }
 
@@ -837,6 +863,16 @@ namespace PadForge.ViewModels
         {
             get => _id;
             set => SetProperty(ref _id, value);
+        }
+
+        private bool _isActive;
+
+        /// <summary>Whether this profile is the currently active one.
+        /// Drives the lit flame in the Profiles list (#175).</summary>
+        public bool IsActive
+        {
+            get => _isActive;
+            set => SetProperty(ref _isActive, value);
         }
 
         private string _name;

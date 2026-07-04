@@ -34,12 +34,23 @@
                     <SolidColorBrush x:Key="SteelRaisedBrush" Color="#1B2333"/>
                     <SolidColorBrush x:Key="SteelLineBrush" Color="#253049"/>
                     <!-- Crucible card ground: dark default; EmberTheme swaps
-                         it per theme (light falls back to the card fill). -->
+                         it per theme (light falls back to the card fill).
+                         End stop stays on the card fill, not the page ground,
+                         so the card reads a step above the steel (spec 417). -->
                     <LinearGradientBrush x:Key="CrucibleCardBrush" StartPoint="0,0" EndPoint="0,1">
                         <GradientStop Color="#111623" Offset="0"/>
-                        <GradientStop Color="#0B0E14" Offset="1"/>
+                        <GradientStop Color="#111623" Offset="1"/>
                     </LinearGradientBrush>
                     <SolidColorBrush x:Key="SteelLineSoftBrush" Color="#1C2536"/>
+                    <!-- Wait gold: the only sanctioned gold. Cooling flames,
+                         awaiting-devices states, anything holding heat. -->
+                    <SolidColorBrush x:Key="WaitBrush" Color="#E8B434"/>
+                    <!-- Active seg-control tile fill: 140deg ember gradient
+                         (spec 432). Shared by every seg control. -->
+                    <LinearGradientBrush x:Key="EmberSegGradient" StartPoint="0,0" EndPoint="0.64,0.77">
+                        <GradientStop Color="#FF6B2C" Offset="0"/>
+                        <GradientStop Color="#C43D0C" Offset="1"/>
+                    </LinearGradientBrush>
 
                     <!-- Flame glyph geometry (24x24 space). Material Design
                          Icons "fire" (Apache-2.0): licked outer silhouette
@@ -71,6 +82,79 @@
             <Style TargetType="ComboBox" BasedOn="{StaticResource DefaultComboBoxStyle}">
                 <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Visible"/>
                 <Setter Property="MaxDropDownHeight" Value="200"/>
+            </Style>
+
+            <!--
+                Instrument bars (#175): the shared RAW/OUT telemetry bar used by
+                the Triggers readout, FFB Motor Activity, and Impulse Triggers.
+                WPF UI's ProgressBar template hardcodes CornerRadius 1.5/2, so
+                these templates copy its determinate template (Wpf.Ui 4.3.0
+                Controls/ProgressBar/ProgressBar.xaml) with radius 4/3. Raw fills
+                flat cold-deep. Out fills the ember gradient with a static glow
+                on the indicator (never animate Effect.Opacity from triggers).
+            -->
+            <ControlTemplate x:Key="InstrumentBarRawTemplate" TargetType="{x:Type ProgressBar}">
+                <Grid SnapsToDevicePixels="True">
+                    <Border
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="4"/>
+                    <Rectangle Name="PART_Track" Margin="1"/>
+                    <Border
+                        Name="PART_Indicator"
+                        Margin="1"
+                        HorizontalAlignment="Left"
+                        Background="{TemplateBinding Foreground}"
+                        CornerRadius="3"/>
+                </Grid>
+            </ControlTemplate>
+
+            <ControlTemplate x:Key="InstrumentBarOutTemplate" TargetType="{x:Type ProgressBar}">
+                <Grid SnapsToDevicePixels="True">
+                    <Border
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="4"/>
+                    <Rectangle Name="PART_Track" Margin="1"/>
+                    <Border
+                        Name="PART_Indicator"
+                        Margin="1"
+                        HorizontalAlignment="Left"
+                        Background="{TemplateBinding Foreground}"
+                        CornerRadius="3">
+                        <Border.Effect>
+                            <DropShadowEffect Color="#FF6E2D" BlurRadius="8" ShadowDepth="0" Opacity="0.4"/>
+                        </Border.Effect>
+                    </Border>
+                </Grid>
+            </ControlTemplate>
+
+            <Style x:Key="InstrumentBarRaw" TargetType="ProgressBar" BasedOn="{StaticResource {x:Type ProgressBar}}">
+                <Setter Property="Height" Value="8"/>
+                <Setter Property="BorderThickness" Value="1"/>
+                <Setter Property="Background" Value="{DynamicResource SteelGroundBrush}"/>
+                <Setter Property="BorderBrush" Value="{DynamicResource SteelLineSoftBrush}"/>
+                <Setter Property="Foreground" Value="{DynamicResource ColdDeepBrush}"/>
+                <Setter Property="Template" Value="{StaticResource InstrumentBarRawTemplate}"/>
+            </Style>
+
+            <Style x:Key="InstrumentBarOut" TargetType="ProgressBar" BasedOn="{StaticResource {x:Type ProgressBar}}">
+                <Setter Property="Height" Value="8"/>
+                <Setter Property="BorderThickness" Value="1"/>
+                <Setter Property="Background" Value="{DynamicResource SteelGroundBrush}"/>
+                <Setter Property="BorderBrush" Value="{DynamicResource SteelLineSoftBrush}"/>
+                <Setter Property="Foreground">
+                    <Setter.Value>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                            <GradientStop Color="#C43D0C" Offset="0"/>
+                            <GradientStop Color="#FF6B2C" Offset="0.5"/>
+                            <GradientStop Color="#FFA24D" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="Template" Value="{StaticResource InstrumentBarOutTemplate}"/>
             </Style>
 
             <!--

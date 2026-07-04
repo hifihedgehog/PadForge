@@ -810,10 +810,10 @@ namespace PadForge.Common.Input
         {
             while (_running)
             {
-                FlushPendingMouseMove();
+                FlushPendingMouseInput();
                 Thread.Sleep(2);
             }
-            FlushPendingMouseMove(); // drain any final delta on shutdown
+            FlushPendingMouseInput(); // drain any final delta on shutdown
         }
 
         /// <summary>

@@ -2268,6 +2268,7 @@ namespace PadForge.Common.Input
         // they just add into these fields and one flush injects the batched delta.
         private static int _pendingMouseDx;
         private static int _pendingMouseDy;
+        private static int _pendingScroll;
         private static readonly INPUT[] _mouseInjectBuf = new INPUT[1];
 
         /// <summary>Poll thread: accumulate the desired mouse delta. Lock-free and
@@ -2281,23 +2282,36 @@ namespace PadForge.Common.Input
             Interlocked.Add(ref _pendingMouseDy, dy);
         }
 
-        /// <summary>Injector thread only: drain the accumulated delta and inject it
-        /// as a single mouse move, off the poll thread. Every MouseMove action's
-        /// contribution since the last flush is batched into one SendInput, so the
-        /// expensive syscall runs here on its own cadence instead of N times per
-        /// poll on the rate-holding thread. Reuses one INPUT[] (no per-flush alloc).
+        /// <summary>Injector thread only: drain the accumulated mouse move + scroll
+        /// deltas and inject them off the poll thread. Every MouseMove / MouseScroll
+        /// action's contribution since the last flush is batched, so the expensive
+        /// SendInput syscall runs here on its own cadence instead of N times per poll
+        /// on the rate-holding thread. Reuses one INPUT[] (no per-flush alloc).
         /// Single-threaded (the injector loop), so the shared buffer is safe.</summary>
-        internal static void FlushPendingMouseMove()
+        internal static void FlushPendingMouseInput()
         {
             int dx = Interlocked.Exchange(ref _pendingMouseDx, 0);
             int dy = Interlocked.Exchange(ref _pendingMouseDy, 0);
-            if (dx == 0 && dy == 0) return;
-            _mouseInjectBuf[0] = new INPUT
+            if (dx != 0 || dy != 0)
             {
-                type = INPUT_MOUSE,
-                u = new InputUnion { mi = new MOUSEINPUT { dx = dx, dy = dy, dwFlags = MOUSEEVENTF_MOVE } }
-            };
-            SendInput(1, _mouseInjectBuf, Marshal.SizeOf<INPUT>());
+                _mouseInjectBuf[0] = new INPUT
+                {
+                    type = INPUT_MOUSE,
+                    u = new InputUnion { mi = new MOUSEINPUT { dx = dx, dy = dy, dwFlags = MOUSEEVENTF_MOVE } }
+                };
+                SendInput(1, _mouseInjectBuf, Marshal.SizeOf<INPUT>());
+            }
+
+            int scroll = Interlocked.Exchange(ref _pendingScroll, 0);
+            if (scroll != 0)
+            {
+                _mouseInjectBuf[0] = new INPUT
+                {
+                    type = INPUT_MOUSE,
+                    u = new InputUnion { mi = new MOUSEINPUT { mouseData = (uint)scroll, dwFlags = MOUSEEVENTF_WHEEL } }
+                };
+                SendInput(1, _mouseInjectBuf, Marshal.SizeOf<INPUT>());
+            }
         }
 
         private static void SendMouseButtonInput(MacroMouseButton button, bool down)
@@ -2322,15 +2336,15 @@ namespace PadForge.Common.Input
             SendInput(1, new[] { input }, Marshal.SizeOf<INPUT>());
         }
 
+        /// <summary>Poll thread: accumulate the desired scroll amount. Like
+        /// SendMouseMoveInput, this stays syscall-free on the poll thread; the
+        /// injector thread flushes it with one SendInput so a MouseScroll macro
+        /// (a continuous per-poll action) can't drop the poll rate while scrolling.</summary>
         private static void SendMouseScrollInput(int amount)
         {
             if (_currentMacroSlotRestricted) return; // gamepad-only peer: no scroll
-            var input = new INPUT
-            {
-                type = INPUT_MOUSE,
-                u = new InputUnion { mi = new MOUSEINPUT { mouseData = (uint)amount, dwFlags = MOUSEEVENTF_WHEEL } }
-            };
-            SendInput(1, new[] { input }, Marshal.SizeOf<INPUT>());
+            if (amount == 0) return;
+            Interlocked.Add(ref _pendingScroll, amount);
         }
 
         /// <summary>

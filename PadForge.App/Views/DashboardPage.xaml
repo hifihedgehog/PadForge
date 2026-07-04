@@ -55,39 +55,16 @@
             </StackPanel>
 
             <Border x:Name="EngineCard" Padding="20" Margin="0,0,0,16">
-                <Border.Effect>
-                    <DropShadowEffect Color="#FF6B2C" BlurRadius="20" ShadowDepth="0" Opacity="0"/>
-                </Border.Effect>
                 <Border.Style>
                     <Style TargetType="Border" BasedOn="{StaticResource CardBorder}">
                         <Style.Triggers>
-                            <!-- The forge glows while it burns, heats fast,
-                                 cools slow (#175 motion spec). -->
+                            <!-- The forge glows while it burns (#175). -->
                             <DataTrigger Binding="{Binding EngineStateKey}" Value="Running">
-                                <DataTrigger.EnterActions>
-                                    <BeginStoryboard>
-                                        <Storyboard>
-                                            <DoubleAnimation Storyboard.TargetProperty="Effect.Opacity"
-                                                             To="0.16" Duration="0:0:0.3">
-                                                <DoubleAnimation.EasingFunction>
-                                                    <CubicEase EasingMode="EaseOut"/>
-                                                </DoubleAnimation.EasingFunction>
-                                            </DoubleAnimation>
-                                        </Storyboard>
-                                    </BeginStoryboard>
-                                </DataTrigger.EnterActions>
-                                <DataTrigger.ExitActions>
-                                    <BeginStoryboard>
-                                        <Storyboard>
-                                            <DoubleAnimation Storyboard.TargetProperty="Effect.Opacity"
-                                                             To="0" Duration="0:0:1.2">
-                                                <DoubleAnimation.EasingFunction>
-                                                    <CubicEase EasingMode="EaseIn"/>
-                                                </DoubleAnimation.EasingFunction>
-                                            </DoubleAnimation>
-                                        </Storyboard>
-                                    </BeginStoryboard>
-                                </DataTrigger.ExitActions>
+                                <Setter Property="Effect">
+                                    <Setter.Value>
+                                        <DropShadowEffect Color="#FF6B2C" BlurRadius="20" ShadowDepth="0" Opacity="0.16"/>
+                                    </Setter.Value>
+                                </Setter>
                             </DataTrigger>
                         </Style.Triggers>
                     </Style>
@@ -191,66 +168,24 @@
                             <!-- Heat glow (#175): a live VC makes the crucible
                                  glow. Static effect only, no Forever storyboard
                                  per card on the Z8350-class perf floor. -->
-                            <!-- Heat rises fast and cools slow (#175 motion spec):
-                                 300ms ease-out up, 1200ms ease-in down, on a permanent
-                                 zero-opacity effect so opacity can animate. -->
-                            <Border.Effect>
-                                <DropShadowEffect Color="#FF6B2C" BlurRadius="20" ShadowDepth="0" Opacity="0"/>
-                            </Border.Effect>
                             <Border.Style>
                                 <Style TargetType="Border">
                                     <Style.Triggers>
+                                        <!-- Lit slot: soft heat as soon as it is enabled,
+                                             stronger once the VC is live (#175 pitch glow). -->
                                         <DataTrigger Binding="{Binding IsEnabled}" Value="True">
-                                            <DataTrigger.EnterActions>
-                                                <BeginStoryboard>
-                                                    <Storyboard>
-                                                        <DoubleAnimation Storyboard.TargetProperty="Effect.Opacity"
-                                                                         To="0.20" Duration="0:0:0.3">
-                                                            <DoubleAnimation.EasingFunction>
-                                                                <CubicEase EasingMode="EaseOut"/>
-                                                            </DoubleAnimation.EasingFunction>
-                                                        </DoubleAnimation>
-                                                    </Storyboard>
-                                                </BeginStoryboard>
-                                            </DataTrigger.EnterActions>
-                                            <DataTrigger.ExitActions>
-                                                <BeginStoryboard>
-                                                    <Storyboard>
-                                                        <DoubleAnimation Storyboard.TargetProperty="Effect.Opacity"
-                                                                         To="0" Duration="0:0:1.2">
-                                                            <DoubleAnimation.EasingFunction>
-                                                                <CubicEase EasingMode="EaseIn"/>
-                                                            </DoubleAnimation.EasingFunction>
-                                                        </DoubleAnimation>
-                                                    </Storyboard>
-                                                </BeginStoryboard>
-                                            </DataTrigger.ExitActions>
+                                            <Setter Property="Effect">
+                                                <Setter.Value>
+                                                    <DropShadowEffect Color="#FF6B2C" BlurRadius="16" ShadowDepth="0" Opacity="0.20"/>
+                                                </Setter.Value>
+                                            </Setter>
                                         </DataTrigger>
                                         <DataTrigger Binding="{Binding IsVirtualControllerConnected}" Value="True">
-                                            <DataTrigger.EnterActions>
-                                                <BeginStoryboard>
-                                                    <Storyboard>
-                                                        <DoubleAnimation Storyboard.TargetProperty="Effect.Opacity"
-                                                                         To="0.40" Duration="0:0:0.3">
-                                                            <DoubleAnimation.EasingFunction>
-                                                                <CubicEase EasingMode="EaseOut"/>
-                                                            </DoubleAnimation.EasingFunction>
-                                                        </DoubleAnimation>
-                                                    </Storyboard>
-                                                </BeginStoryboard>
-                                            </DataTrigger.EnterActions>
-                                            <DataTrigger.ExitActions>
-                                                <BeginStoryboard>
-                                                    <Storyboard>
-                                                        <DoubleAnimation Storyboard.TargetProperty="Effect.Opacity"
-                                                                         To="0.20" Duration="0:0:1.2">
-                                                            <DoubleAnimation.EasingFunction>
-                                                                <CubicEase EasingMode="EaseIn"/>
-                                                            </DoubleAnimation.EasingFunction>
-                                                        </DoubleAnimation>
-                                                    </Storyboard>
-                                                </BeginStoryboard>
-                                            </DataTrigger.ExitActions>
+                                            <Setter Property="Effect">
+                                                <Setter.Value>
+                                                    <DropShadowEffect Color="#FF6B2C" BlurRadius="22" ShadowDepth="0" Opacity="0.40"/>
+                                                </Setter.Value>
+                                            </Setter>
                                         </DataTrigger>
                                     </Style.Triggers>
                                 </Style>

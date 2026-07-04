@@ -4943,7 +4943,8 @@
                             <TextBlock Text="{Binding Settings_AudioRumble_Level, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
                             <ProgressBar Value="{Binding AudioRumbleLevelMeter, Mode=OneWay}"
                                          Minimum="0" Maximum="1"
-                                         Width="200" Height="16" VerticalAlignment="Center"/>
+                                         Width="320" Height="10" VerticalAlignment="Center"
+                                         Foreground="{DynamicResource EmberHotBrush}"/>
                         </StackPanel>
                             </StackPanel>
                         </Border>
@@ -6894,22 +6895,53 @@
                                             Padding="12,6"/>
                                 </StackPanel>
 
-                                <!-- Live trigger motor display -->
-                                <TextBlock Text="{Binding Pad_ImpulseTriggers_MotorActivity, Source={x:Static strings:Strings.Instance}}"
-                                           FontWeight="SemiBold" Margin="0,8,0,8"
-                                           Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
-                                <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
-                                    <TextBlock Text="{Binding Pad_ImpulseTriggers_LeftTrigger, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
-                                    <ProgressBar Value="{Binding DeviceLeftTriggerMotorDisplay, Mode=OneWay}"
-                                                 Minimum="0" Maximum="1"
-                                                 Width="200" Height="16" VerticalAlignment="Center"/>
-                                </StackPanel>
-                                <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
-                                    <TextBlock Text="{Binding Pad_ImpulseTriggers_RightTrigger, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
-                                    <ProgressBar Value="{Binding DeviceRightTriggerMotorDisplay, Mode=OneWay}"
-                                                 Minimum="0" Maximum="1"
-                                                 Width="200" Height="16" VerticalAlignment="Center"/>
-                                </StackPanel>
+                                <!-- Live trigger motor display: inset instrument panel
+                                     (#175 iteration 31, sibling of the FFB Motor Activity
+                                     instrument). Motor drive is output-side, so ember. -->
+                                <Border Background="{DynamicResource ControlFillColorDefaultBrush}"
+                                        BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}"
+                                        BorderThickness="1" CornerRadius="8" Padding="12" Margin="0,8,0,0">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                        </Grid.RowDefinitions>
+                                        <TextBlock Grid.Row="0" Grid.ColumnSpan="3" Margin="0,0,0,10"
+                                                   Text="{Binding Pad_ImpulseTriggers_MotorActivity, Source={x:Static strings:Strings.Instance}}"
+                                                   FontWeight="SemiBold"
+                                                   Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
+                                        <TextBlock Grid.Row="1" Grid.Column="0" VerticalAlignment="Center"
+                                                   Text="{Binding Pad_ImpulseTriggers_LeftTrigger, Source={x:Static strings:Strings.Instance}}"
+                                                   Style="{StaticResource DzLabel}"/>
+                                        <ProgressBar Grid.Row="1" Grid.Column="1" Margin="0,0,12,10"
+                                                     Value="{Binding DeviceLeftTriggerMotorDisplay, Mode=OneWay}"
+                                                     Minimum="0" Maximum="1" Height="10" VerticalAlignment="Center"
+                                                     Foreground="{DynamicResource EmberHotBrush}"/>
+                                        <TextBlock Grid.Row="1" Grid.Column="2" Margin="0,0,0,10"
+                                                   Text="{Binding DeviceLeftTriggerMotorDisplay, Mode=OneWay, StringFormat=P0}"
+                                                   FontFamily="{StaticResource TelemetryFontFamily}" FontSize="12"
+                                                   MinWidth="40" TextAlignment="Right" VerticalAlignment="Center"
+                                                   Foreground="{DynamicResource EmberHotBrush}"/>
+                                        <TextBlock Grid.Row="2" Grid.Column="0" VerticalAlignment="Center"
+                                                   Text="{Binding Pad_ImpulseTriggers_RightTrigger, Source={x:Static strings:Strings.Instance}}"
+                                                   Style="{StaticResource DzLabel}"/>
+                                        <ProgressBar Grid.Row="2" Grid.Column="1" Margin="0,0,12,0"
+                                                     Value="{Binding DeviceRightTriggerMotorDisplay, Mode=OneWay}"
+                                                     Minimum="0" Maximum="1" Height="10" VerticalAlignment="Center"
+                                                     Foreground="{DynamicResource EmberHotBrush}"/>
+                                        <TextBlock Grid.Row="2" Grid.Column="2"
+                                                   Text="{Binding DeviceRightTriggerMotorDisplay, Mode=OneWay, StringFormat=P0}"
+                                                   FontFamily="{StaticResource TelemetryFontFamily}" FontSize="12"
+                                                   MinWidth="40" TextAlignment="Right" VerticalAlignment="Center"
+                                                   Foreground="{DynamicResource EmberHotBrush}"/>
+                                    </Grid>
+                                </Border>
                             </StackPanel>
                         </Border>
 
@@ -7023,7 +7055,8 @@
                                     <TextBlock Text="{Binding Pad_AudioTriggerRumble_Level, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
                                     <ProgressBar Value="{Binding AudioRumbleTriggersLevelMeter, Mode=OneWay}"
                                                  Minimum="0" Maximum="1"
-                                                 Width="200" Height="16" VerticalAlignment="Center"/>
+                                                 Width="320" Height="10" VerticalAlignment="Center"
+                                                 Foreground="{DynamicResource EmberHotBrush}"/>
                                 </StackPanel>
                             </StackPanel>
                         </Border>

@@ -388,14 +388,12 @@
                                             </Button.Style>
                                             <TextBlock Text="&#xE8D6;" FontFamily="Segoe MDL2 Assets" FontSize="13" Margin="2,0"/>
                                         </Button>
+                                        <TextBlock Text="{Binding TypeInstanceLabel}"
+                                                   FontSize="10" FontWeight="SemiBold"
+                                                   Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                                                   VerticalAlignment="Center" Margin="5,0,4,0"/>
                                     </StackPanel>
                                     </Border>
-
-                                    <!-- Per-type instance # -->
-                                    <TextBlock Text="{Binding TypeInstanceLabel}"
-                                               FontWeight="SemiBold" FontSize="12"
-                                               VerticalAlignment="Center" Margin="3,0,0,0"
-                                               Width="12" TextAlignment="Center"/>
 
                                 </StackPanel>
 

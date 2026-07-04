@@ -2352,6 +2352,80 @@ namespace PadForge
                 TextTrimming = TextTrimming.CharacterEllipsis
             });
 
+            // Type switcher returns to the rail (user direction, iteration 15):
+            // the dashboard segment in mini form. Active type is ember-filled;
+            // the card rebuilds on OutputType change via RefreshNavControllerItems.
+            bool hasMidi = DriverInstaller.IsMidiServicesInstalled();
+            var segRow = new System.Windows.Controls.StackPanel
+            {
+                Orientation = System.Windows.Controls.Orientation.Horizontal,
+                Margin = new Thickness(23, 4, 0, 0)
+            };
+
+            System.Windows.Controls.Button MakeTypeButton(UIElement content, bool active, System.Windows.RoutedEventHandler click, string tip, bool enabled)
+            {
+                var b = new System.Windows.Controls.Button
+                {
+                    Content = content,
+                    Padding = new Thickness(5, 2, 5, 2),
+                    MinWidth = 0,
+                    MinHeight = 0,
+                    BorderThickness = new Thickness(0),
+                    Margin = new Thickness(0, 0, 2, 0),
+                    ToolTip = tip,
+                    Tag = navItem.PadIndex,
+                    IsEnabled = enabled,
+                    Cursor = System.Windows.Input.Cursors.Hand
+                };
+                if (active)
+                    b.SetResourceReference(System.Windows.Controls.Button.BackgroundProperty, "EmberBrush");
+                else
+                    b.Background = System.Windows.Media.Brushes.Transparent;
+                b.Click += click;
+                return b;
+            }
+
+            UIElement TypeLogo(string data, bool active)
+            {
+                var path = new System.Windows.Shapes.Path
+                {
+                    Data = System.Windows.Media.Geometry.Parse(data),
+                    Width = 11,
+                    Height = 11,
+                    Stretch = System.Windows.Media.Stretch.Uniform
+                };
+                if (active)
+                    path.Fill = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(0xFF, 0xF3, 0xE8));
+                else
+                    path.SetResourceReference(System.Windows.Shapes.Shape.FillProperty, "TextFillColorTertiaryBrush");
+                return path;
+            }
+
+            UIElement TypeGlyph(string glyph, bool active)
+            {
+                var tb = new System.Windows.Controls.TextBlock
+                {
+                    Text = glyph,
+                    FontFamily = new System.Windows.Media.FontFamily("Segoe MDL2 Assets"),
+                    FontSize = 11
+                };
+                if (active)
+                    tb.Foreground = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(0xFF, 0xF3, 0xE8));
+                else
+                    tb.SetResourceReference(System.Windows.Controls.TextBlock.ForegroundProperty, "TextFillColorTertiaryBrush");
+                return tb;
+            }
+
+            segRow.Children.Add(MakeTypeButton(TypeLogo(XboxSvgPath, isXbox), isXbox, OnSidebarTypeXbox, Strings.Instance.ControllerType_Xbox, true));
+            segRow.Children.Add(MakeTypeButton(TypeLogo(DS4SvgPath, isPlayStation), isPlayStation, OnSidebarTypePlayStation, Strings.Instance.ControllerType_PlayStation, true));
+            segRow.Children.Add(MakeTypeButton(TypeLogo(ExtendedSvgPath, isExtended), isExtended, OnSidebarTypeExtended, Strings.Instance.ControllerType_Extended, true));
+            segRow.Children.Add(MakeTypeButton(TypeGlyph("\uE961", isKbm), isKbm, OnSidebarTypeKeyboardMouse, Strings.Instance.ControllerType_KeyboardMouse, true));
+            segRow.Children.Add(MakeTypeButton(TypeGlyph("\uE8D6", isMidi), isMidi, OnSidebarTypeMidi, hasMidi ? Strings.Instance.ControllerType_MIDI : Strings.Instance.Main_MIDI_RequiresMidiServices, hasMidi || isMidi));
+
+            var cardStack = new System.Windows.Controls.StackPanel();
+            cardStack.Children.Add(row);
+            cardStack.Children.Add(segRow);
+
             // Flat host (#175 iteration 2): a boxed card inside a rail of
             // flat text items read as a foreign object on real pixels.
             // The Border stays only as the drag/drop + click surface; heat
@@ -2361,7 +2435,7 @@ namespace PadForge
                 CornerRadius = new CornerRadius(6),
                 Padding = new Thickness(6, 4, 6, 4),
                 BorderThickness = new Thickness(1),
-                Child = row,
+                Child = cardStack,
                 Tag = navItem.PadIndex
             };
             card.SetResourceReference(System.Windows.Controls.Border.BackgroundProperty, "CardBackgroundFillColorDefaultBrush");
@@ -2554,6 +2628,91 @@ namespace PadForge
                 _deviceService.SetSlotEnabled(padIndex, newState);
                 // Refresh nav items so IsEnabled updates and content rebuilds.
                 _viewModel.RefreshNavControllerItems();
+            }
+        }
+
+        /// <summary>Handles sidebar Xbox type button click.</summary>
+        private void OnSidebarTypeXbox(object sender, RoutedEventArgs e)
+        {
+            e.Handled = true;
+            if (sender is System.Windows.Controls.Button btn && btn.Tag is int padIndex)
+            {
+                SettingsManager.ReAutoMapSlot(padIndex, VirtualControllerType.Xbox);
+                _viewModel.Pads[padIndex].OutputType = VirtualControllerType.Xbox;
+                _inputService.MoveSlotToGroupTail(padIndex);
+                SettingsService.RefreshMappingSetsFromLegacy();
+                // Stale-guard the Mappings view: the rebuild above re-auto-mapped
+                // the slot, but the OutputType setter's RebuildMappings reloaded the
+                // ViewModel from the pre-change MappingSet. Same guard as the device-
+                // assignment path (see PadViewModel.MappingsViewLoaded); cleared on
+                // the next RefreshMappingsCore.
+                _viewModel.Pads[padIndex].MappingsViewLoaded = false;
+                _settingsService.MarkDirty();
+            }
+        }
+
+        /// <summary>Handles sidebar PlayStation type button click.</summary>
+        private void OnSidebarTypePlayStation(object sender, RoutedEventArgs e)
+        {
+            e.Handled = true;
+            if (sender is System.Windows.Controls.Button btn && btn.Tag is int padIndex)
+            {
+                SettingsManager.ReAutoMapSlot(padIndex, VirtualControllerType.PlayStation);
+                _viewModel.Pads[padIndex].OutputType = VirtualControllerType.PlayStation;
+                _inputService.MoveSlotToGroupTail(padIndex);
+                SettingsService.RefreshMappingSetsFromLegacy();
+                // Stale-guard the Mappings view (see OnSidebarTypeXbox).
+                _viewModel.Pads[padIndex].MappingsViewLoaded = false;
+                _settingsService.MarkDirty();
+            }
+        }
+
+        /// <summary>Handles sidebar Extended (custom DI) type button click.</summary>
+        private void OnSidebarTypeExtended(object sender, RoutedEventArgs e)
+        {
+            e.Handled = true;
+            if (sender is System.Windows.Controls.Button btn && btn.Tag is int padIndex)
+            {
+                SettingsManager.ReAutoMapSlot(padIndex, VirtualControllerType.Extended);
+                _viewModel.Pads[padIndex].OutputType = VirtualControllerType.Extended;
+                _inputService.MoveSlotToGroupTail(padIndex);
+                SettingsService.RefreshMappingSetsFromLegacy();
+                // Stale-guard the Mappings view (see OnSidebarTypeXbox).
+                _viewModel.Pads[padIndex].MappingsViewLoaded = false;
+                _settingsService.MarkDirty();
+            }
+        }
+
+        /// <summary>Handles sidebar Keyboard+Mouse type button click.</summary>
+        private void OnSidebarTypeKeyboardMouse(object sender, RoutedEventArgs e)
+        {
+            e.Handled = true;
+            if (sender is System.Windows.Controls.Button btn && btn.Tag is int padIndex)
+            {
+                SettingsManager.ReAutoMapSlot(padIndex, VirtualControllerType.KeyboardMouse);
+                _viewModel.Pads[padIndex].OutputType = VirtualControllerType.KeyboardMouse;
+                _inputService.MoveSlotToGroupTail(padIndex);
+                SettingsService.RefreshMappingSetsFromLegacy();
+                // Stale-guard the Mappings view (see OnSidebarTypeXbox).
+                _viewModel.Pads[padIndex].MappingsViewLoaded = false;
+                _settingsService.MarkDirty();
+            }
+        }
+
+        /// <summary>Handles sidebar MIDI type button click.</summary>
+        private void OnSidebarTypeMidi(object sender, RoutedEventArgs e)
+        {
+            e.Handled = true;
+            if (!DriverInstaller.IsMidiServicesInstalled()) return;
+            if (sender is System.Windows.Controls.Button btn && btn.Tag is int padIndex)
+            {
+                SettingsManager.ReAutoMapSlot(padIndex, VirtualControllerType.Midi);
+                _viewModel.Pads[padIndex].OutputType = VirtualControllerType.Midi;
+                _inputService.MoveSlotToGroupTail(padIndex);
+                SettingsService.RefreshMappingSetsFromLegacy();
+                // Stale-guard the Mappings view (see OnSidebarTypeXbox).
+                _viewModel.Pads[padIndex].MappingsViewLoaded = false;
+                _settingsService.MarkDirty();
             }
         }
 

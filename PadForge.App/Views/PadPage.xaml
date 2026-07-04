@@ -390,11 +390,9 @@
                            Foreground="{DynamicResource ColdBrush}" Margin="8,0,4,0" VerticalAlignment="Center"/>
 
                 <!-- [Device] inline ComboBox: cold side. -->
-                <Border CornerRadius="14" BorderThickness="1" Padding="1" Margin="4,2" VerticalAlignment="Center">
-                    <Border.BorderBrush><SolidColorBrush Color="#4D58B6E4"/></Border.BorderBrush>
-                    <Border.Background><SolidColorBrush Color="#0D58B6E4"/></Border.Background>
                 <ComboBox ItemsSource="{Binding MappedDevices}"
                           SelectedItem="{Binding SelectedMappedDevice, Mode=TwoWay}"
+                          BorderBrush="#4D58B6E4" Background="#0D58B6E4"
                           MinWidth="200" Margin="4,2" VerticalAlignment="Center">
                     <ComboBox.ItemTemplate>
                         <DataTemplate>
@@ -420,7 +418,6 @@
                         </DataTemplate>
                     </ComboBox.ItemTemplate>
                 </ComboBox>
-                </Border>
 
                 <!-- Config tabs (device-scoped: Sticks / Triggers /
                      Force Feedback shape physical-input characteristics
@@ -2870,15 +2867,13 @@
                                                              below, not from a single source descriptor. -->
                                                         <StackPanel Orientation="Vertical" Margin="0,0,4,0"
                                                                     Visibility="{Binding IsKindDescriptorless, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}">
-                                                            <Border CornerRadius="8" BorderThickness="1" Padding="1">
-                                                                <Border.BorderBrush><SolidColorBrush Color="#4D58B6E4"/></Border.BorderBrush>
-                                                                <Border.Background><SolidColorBrush Color="#0D58B6E4"/></Border.Background>
                                                             <ComboBox ItemsSource="{Binding DataContext.AvailableInputsView,
                                                                         RelativeSource={RelativeSource AncestorType={x:Type DataGridRow}}}"
                                                                       SelectedItem="{Binding SelectedInput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                                       DisplayMemberPath="DisplayName"
                                                                       MinWidth="240" Padding="4,2"
                                                                       ToolTip="{Binding Pad_Mapping_ExtraSourcePickerTooltip, Source={x:Static strings:Strings.Instance}}"
+                                                                      BorderBrush="#4D58B6E4" Background="#0D58B6E4"
                                                                       PreviewKeyDown="MappingComboBox_PreviewKeyDown">
                                                                 <ComboBox.GroupStyle>
                                                                     <GroupStyle>
@@ -2897,7 +2892,6 @@
                                                                     </GroupStyle>
                                                                 </ComboBox.GroupStyle>
                                                             </ComboBox>
-                                                            </Border>
                                                             <!-- Subtitle: assigned-device name when set,
                                                                  italic "Unassigned" when no descriptor. -->
                                                             <TextBlock FontSize="10"
@@ -3423,14 +3417,6 @@
                                                  the cell holds only the mapping and never crowds the picker
                                                  (#111). The grouped view headers each device; SelectedItem
                                                  tags the row with the picked DeviceGuid + DeviceLabel. -->
-                                            <Border CornerRadius="8" BorderThickness="1" Padding="1"
-                                                    Visibility="{Binding IsPrimaryDirect, Converter={StaticResource BoolToVisibilityConverter}}">
-                                                <Border.BorderBrush>
-                                                    <SolidColorBrush Color="#4D58B6E4"/>
-                                                </Border.BorderBrush>
-                                                <Border.Background>
-                                                    <SolidColorBrush Color="#0D58B6E4"/>
-                                                </Border.Background>
                                             <ComboBox ItemsSource="{Binding AvailableInputsView}"
                                                       SelectedItem="{Binding SelectedInput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                       Visibility="{Binding IsPrimaryDirect, Converter={StaticResource BoolToVisibilityConverter}}"
@@ -3438,6 +3424,7 @@
                                                       Margin="0" Padding="4,2"
                                                       HorizontalAlignment="Stretch"
                                                       Foreground="{DynamicResource ColdBrush}"
+                                                      BorderBrush="#4D58B6E4" Background="#0D58B6E4"
                                                       PreviewKeyDown="MappingComboBox_PreviewKeyDown">
                                                 <ComboBox.GroupStyle>
                                                     <GroupStyle>
@@ -3456,7 +3443,6 @@
                                                     </GroupStyle>
                                                 </ComboBox.GroupStyle>
                                             </ComboBox>
-                                            </Border>
                                             <!-- Phase 2C — primary source's device origin badge.
                                                  Visible when the row is bound to a per-VC
                                                  MappingSet primary and resolved to a

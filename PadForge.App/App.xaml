@@ -34,6 +34,15 @@
                     <SolidColorBrush x:Key="SteelRaisedBrush" Color="#1B2333"/>
                     <SolidColorBrush x:Key="SteelLineBrush" Color="#253049"/>
                     <SolidColorBrush x:Key="SteelLineSoftBrush" Color="#1C2536"/>
+
+                    <!-- Flame glyph geometry (24x24 space): outer teardrop and
+                         inner hot core. Fill ember when lit, gold when cooling,
+                         stroke-only when cold. -->
+                    <Geometry x:Key="FlameOuterGeometry">M12,1.6 C15.2,5.4 17.4,9 17.4,13.1 A5.4,5.4 0 0 1 6.6,13.1 C6.6,9 8.8,5.4 12,1.6 Z</Geometry>
+                    <Geometry x:Key="FlameInnerGeometry">M12,8.4 C13.7,10.3 14.7,12.1 14.7,13.9 A2.7,2.7 0 0 1 9.3,13.9 C9.3,12.1 10.3,10.3 12,8.4 Z</Geometry>
+
+                    <!-- Telemetry text: tabular numbers for live readouts. -->
+                    <FontFamily x:Key="TelemetryFontFamily">Cascadia Mono, Consolas</FontFamily>
                 </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
 

@@ -364,7 +364,8 @@
                 </RadioButton>
 
                 <!-- [Macros] -->
-                <RadioButton Tag="1" Style="{StaticResource TabStripButton}" Click="TabBtn_Click">
+                <RadioButton Tag="1" Style="{StaticResource TabStripButton}" Click="TabBtn_Click"
+                             AutomationProperties.AutomationId="MacrosTab">
                     <TextBlock Text="{Binding Pad_Macros, Source={x:Static strings:Strings.Instance}}" FontSize="15"/>
                 </RadioButton>
                 </StackPanel>
@@ -832,9 +833,9 @@
                     <!-- Macro list -->
                     <DockPanel Grid.Column="0">
                         <WrapPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="0,0,0,8">
-                            <Button Content="{Binding Common_Add, Source={x:Static strings:Strings.Instance}}" Command="{Binding AddMacroCommand}"
+                            <Button AutomationProperties.AutomationId="MacroAddButton" Content="{Binding Common_Add, Source={x:Static strings:Strings.Instance}}" Command="{Binding AddMacroCommand}"
                                     Padding="8,4" Margin="0,0,4,4"/>
-                            <Button Content="{Binding Common_Remove, Source={x:Static strings:Strings.Instance}}" Command="{Binding RemoveMacroCommand}"
+                            <Button AutomationProperties.AutomationId="MacroRemoveButton" Content="{Binding Common_Remove, Source={x:Static strings:Strings.Instance}}" Command="{Binding RemoveMacroCommand}"
                                     Padding="8,4" Margin="0,0,4,4"/>
                             <Button Content="{Binding Common_Duplicate, Source={x:Static strings:Strings.Instance}}" Command="{Binding DuplicateMacroCommand}"
                                     Padding="8,4" Margin="0,0,4,4"/>
@@ -898,9 +899,12 @@
                                       Margin="0,0,0,12"/>
 
                             <!-- Trigger mode -->
-                            <TextBlock Text="{Binding Macro_Trigger, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold"
-                                       Margin="0,0,0,4"
-                                       Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                <Border Width="3" CornerRadius="1.5" Margin="0,2,7,2"
+                                        Background="{DynamicResource ColdBrush}"/>
+                                <TextBlock Text="{Binding Macro_Trigger, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold"
+                                           Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
+                            </StackPanel>
                             <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
                                 <TextBlock Text="{Binding Macro_Fire, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
                                            Margin="0,0,8,0"/>
@@ -1206,9 +1210,12 @@
 
                             <!-- Trigger combination (visible only when one of OnPress / OnRelease / WhileHeld) -->
                             <StackPanel Visibility="{Binding ShowsTriggerComboEditor, Converter={StaticResource BoolToVisibilityConverter}}">
-                                <TextBlock Text="{Binding Macro_Trigger, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold"
-                                           Margin="0,0,0,4"
-                                           Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                    <Border Width="3" CornerRadius="1.5" Margin="0,2,7,2"
+                                            Background="{DynamicResource ColdBrush}"/>
+                                    <TextBlock Text="{Binding Macro_Trigger, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold"
+                                               Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
+                                </StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
                                     <TextBlock Text="{Binding Macro_Source, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
                                                Margin="0,0,8,0"/>
@@ -1334,9 +1341,12 @@
                             <Separator Margin="0,4,0,12"/>
 
                             <!-- Action sequence -->
-                            <TextBlock Text="{Binding Macro_ActionSequence, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold"
-                                       Margin="0,0,0,4"
-                                       Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                <Border Width="3" CornerRadius="1.5" Margin="0,2,7,2"
+                                        Background="{DynamicResource EmberHotBrush}"/>
+                                <TextBlock Text="{Binding Macro_ActionSequence, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold"
+                                           Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
+                            </StackPanel>
                             <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
                                 <Button Content="{Binding Macro_AddAction, Source={x:Static strings:Strings.Instance}}" Command="{Binding AddActionCommand}"
                                         Padding="8,4" Margin="0,0,4,0"/>

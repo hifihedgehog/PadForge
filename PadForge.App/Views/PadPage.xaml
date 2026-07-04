@@ -5482,8 +5482,8 @@
                                         </ItemsControl.ItemsPanel>
                                         <ItemsControl.ItemTemplate>
                                             <DataTemplate DataType="{x:Type vm:LightbarPaletteEntry}">
-                                                <Border BorderThickness="1" CornerRadius="4" Padding="8" Margin="0,0,8,8"
-                                                        BorderBrush="{DynamicResource TextFillColorDisabledBrush}">
+                                                <Border Background="{DynamicResource ControlFillColorDefaultBrush}" BorderThickness="1" CornerRadius="8" Padding="10" Margin="0,0,8,8"
+                                                        BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}">
                                                     <StackPanel>
                                                         <Button Command="{Binding DataContext.PlayStationConfig.RemovePaletteColorCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
                                                                 CommandParameter="{Binding}"
@@ -5502,7 +5502,7 @@
                                                                 <ColumnDefinition Width="*"/>
                                                             </Grid.ColumnDefinitions>
                                                             <Border Grid.Column="0" Width="36" Height="28" CornerRadius="4"
-                                                                    BorderBrush="{DynamicResource TextFillColorDisabledBrush}" BorderThickness="1">
+                                                                    BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}" BorderThickness="1">
                                                                 <Border.Background>
                                                                     <MultiBinding Converter="{StaticResource RgbToBrushConverter}">
                                                                         <Binding Path="R"/>
@@ -5612,11 +5612,24 @@
                                      The Input Reactive Fixed overlay has its own color
                                      picker below so users can pick a separate flash
                                      color independent of the base. -->
-                                <Border BorderThickness="1" CornerRadius="4" Padding="10" Margin="0,0,0,8"
+                                <Border Background="{DynamicResource ControlFillColorDefaultBrush}" BorderThickness="1" CornerRadius="8" Padding="12" Margin="0,0,0,8"
                                         HorizontalAlignment="Left"
-                                        BorderBrush="{DynamicResource TextFillColorDisabledBrush}"
+                                        BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}"
                                         Visibility="{Binding PlayStationConfig.LightbarMode, Converter={StaticResource EnumEqualityVisibilityConverter}, ConverterParameter=Static|Breathing|AudioPulse|Strobe}">
                                     <StackPanel>
+                                        <!-- Lightbar replica: the strip previews the base
+                                             color at the shape it ships on the pad. -->
+                                        <Border Width="320" Height="12" CornerRadius="6" Margin="0,2,0,12"
+                                                HorizontalAlignment="Left"
+                                                BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}" BorderThickness="1">
+                                            <Border.Background>
+                                                <MultiBinding Converter="{StaticResource RgbToBrushConverter}">
+                                                    <Binding Path="PlayStationConfig.LightbarRed" />
+                                                    <Binding Path="PlayStationConfig.LightbarGreen" />
+                                                    <Binding Path="PlayStationConfig.LightbarBlue" />
+                                                </MultiBinding>
+                                            </Border.Background>
+                                        </Border>
                                         <views:ColorPickerControl Margin="0,0,0,12"
                                             HorizontalAlignment="Left"
                                             Red="{Binding PlayStationConfig.LightbarRed, Mode=TwoWay}"
@@ -5630,7 +5643,7 @@
                                             </Grid.ColumnDefinitions>
                                             <Border Grid.Column="0" Width="48" Height="36" CornerRadius="4"
                                                     HorizontalAlignment="Left"
-                                                    BorderBrush="{DynamicResource TextFillColorDisabledBrush}" BorderThickness="1">
+                                                    BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}" BorderThickness="1">
                                                 <Border.Background>
                                                     <MultiBinding Converter="{StaticResource RgbToBrushConverter}">
                                                         <Binding Path="PlayStationConfig.LightbarRed" />
@@ -5687,8 +5700,8 @@
                                         </Grid.ColumnDefinitions>
 
                                         <!-- LOW (empty) color -->
-                                        <Border Grid.Column="0" BorderThickness="1" CornerRadius="4" Padding="10"
-                                                BorderBrush="{DynamicResource TextFillColorDisabledBrush}">
+                                        <Border Grid.Column="0" Background="{DynamicResource ControlFillColorDefaultBrush}" BorderThickness="1" CornerRadius="8" Padding="12"
+                                                BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}">
                                             <StackPanel>
                                                 <TextBlock Text="{Binding Pad_Lighting_BatteryLowColor, Source={x:Static strings:Strings.Instance}}"
                                                            FontWeight="SemiBold" Margin="0,0,0,8"/>
@@ -5703,7 +5716,7 @@
                                                         <ColumnDefinition Width="*"/>
                                                     </Grid.ColumnDefinitions>
                                                     <Border Grid.Column="0" Width="36" Height="28" CornerRadius="4"
-                                                            BorderBrush="{DynamicResource TextFillColorDisabledBrush}" BorderThickness="1">
+                                                            BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}" BorderThickness="1">
                                                         <Border.Background>
                                                             <MultiBinding Converter="{StaticResource RgbToBrushConverter}">
                                                                 <Binding Path="PlayStationConfig.LightbarBatteryLowR" />
@@ -5735,8 +5748,8 @@
                                         </Border>
 
                                         <!-- HIGH (full) color -->
-                                        <Border Grid.Column="2" BorderThickness="1" CornerRadius="4" Padding="10"
-                                                BorderBrush="{DynamicResource TextFillColorDisabledBrush}">
+                                        <Border Grid.Column="2" Background="{DynamicResource ControlFillColorDefaultBrush}" BorderThickness="1" CornerRadius="8" Padding="12"
+                                                BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}">
                                             <StackPanel>
                                                 <TextBlock Text="{Binding Pad_Lighting_BatteryHighColor, Source={x:Static strings:Strings.Instance}}"
                                                            FontWeight="SemiBold" Margin="0,0,0,8"/>
@@ -5751,7 +5764,7 @@
                                                         <ColumnDefinition Width="*"/>
                                                     </Grid.ColumnDefinitions>
                                                     <Border Grid.Column="0" Width="36" Height="28" CornerRadius="4"
-                                                            BorderBrush="{DynamicResource TextFillColorDisabledBrush}" BorderThickness="1">
+                                                            BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}" BorderThickness="1">
                                                         <Border.Background>
                                                             <MultiBinding Converter="{StaticResource RgbToBrushConverter}">
                                                                 <Binding Path="PlayStationConfig.LightbarBatteryHighR" />
@@ -5800,8 +5813,8 @@
                                         </Grid.ColumnDefinitions>
 
                                         <!-- LOW (quiet) color -->
-                                        <Border Grid.Column="0" BorderThickness="1" CornerRadius="4" Padding="10"
-                                                BorderBrush="{DynamicResource TextFillColorDisabledBrush}">
+                                        <Border Grid.Column="0" Background="{DynamicResource ControlFillColorDefaultBrush}" BorderThickness="1" CornerRadius="8" Padding="12"
+                                                BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}">
                                             <StackPanel>
                                                 <TextBlock Text="{Binding Pad_Lighting_AudioLightbar_LowColor, Source={x:Static strings:Strings.Instance}}"
                                                            FontWeight="SemiBold" Margin="0,0,0,8"/>
@@ -5816,7 +5829,7 @@
                                                         <ColumnDefinition Width="*"/>
                                                     </Grid.ColumnDefinitions>
                                                     <Border Grid.Column="0" Width="36" Height="28" CornerRadius="4"
-                                                            BorderBrush="{DynamicResource TextFillColorDisabledBrush}" BorderThickness="1">
+                                                            BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}" BorderThickness="1">
                                                         <Border.Background>
                                                             <MultiBinding Converter="{StaticResource RgbToBrushConverter}">
                                                                 <Binding Path="PlayStationConfig.AudioLowR" />
@@ -5854,8 +5867,8 @@
                                         </Border>
 
                                         <!-- MID (medium) color -->
-                                        <Border Grid.Column="2" BorderThickness="1" CornerRadius="4" Padding="10"
-                                                BorderBrush="{DynamicResource TextFillColorDisabledBrush}">
+                                        <Border Grid.Column="2" Background="{DynamicResource ControlFillColorDefaultBrush}" BorderThickness="1" CornerRadius="8" Padding="12"
+                                                BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}">
                                             <StackPanel>
                                                 <TextBlock Text="{Binding Pad_Lighting_AudioLightbar_MidColor, Source={x:Static strings:Strings.Instance}}"
                                                            FontWeight="SemiBold" Margin="0,0,0,8"/>
@@ -5870,7 +5883,7 @@
                                                         <ColumnDefinition Width="*"/>
                                                     </Grid.ColumnDefinitions>
                                                     <Border Grid.Column="0" Width="36" Height="28" CornerRadius="4"
-                                                            BorderBrush="{DynamicResource TextFillColorDisabledBrush}" BorderThickness="1">
+                                                            BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}" BorderThickness="1">
                                                         <Border.Background>
                                                             <MultiBinding Converter="{StaticResource RgbToBrushConverter}">
                                                                 <Binding Path="PlayStationConfig.AudioMidR" />
@@ -5908,8 +5921,8 @@
                                         </Border>
 
                                         <!-- HIGH (loud) color -->
-                                        <Border Grid.Column="4" BorderThickness="1" CornerRadius="4" Padding="10"
-                                                BorderBrush="{DynamicResource TextFillColorDisabledBrush}">
+                                        <Border Grid.Column="4" Background="{DynamicResource ControlFillColorDefaultBrush}" BorderThickness="1" CornerRadius="8" Padding="12"
+                                                BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}">
                                             <StackPanel>
                                                 <TextBlock Text="{Binding Pad_Lighting_AudioLightbar_HighColor, Source={x:Static strings:Strings.Instance}}"
                                                            FontWeight="SemiBold" Margin="0,0,0,8"/>
@@ -5924,7 +5937,7 @@
                                                         <ColumnDefinition Width="*"/>
                                                     </Grid.ColumnDefinitions>
                                                     <Border Grid.Column="0" Width="36" Height="28" CornerRadius="4"
-                                                            BorderBrush="{DynamicResource TextFillColorDisabledBrush}" BorderThickness="1">
+                                                            BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}" BorderThickness="1">
                                                         <Border.Background>
                                                             <MultiBinding Converter="{StaticResource RgbToBrushConverter}">
                                                                 <Binding Path="PlayStationConfig.AudioHighR" />
@@ -6035,8 +6048,8 @@
                                         </ItemsControl.ItemsPanel>
                                         <ItemsControl.ItemTemplate>
                                             <DataTemplate DataType="{x:Type vm:LightbarPaletteEntry}">
-                                                <Border BorderThickness="1" CornerRadius="4" Padding="8" Margin="0,0,8,8"
-                                                        BorderBrush="{DynamicResource TextFillColorDisabledBrush}">
+                                                <Border Background="{DynamicResource ControlFillColorDefaultBrush}" BorderThickness="1" CornerRadius="8" Padding="10" Margin="0,0,8,8"
+                                                        BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}">
                                                     <StackPanel>
                                                         <Button Command="{Binding DataContext.PlayStationConfig.RemoveInputReactivePaletteColorCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
                                                                 CommandParameter="{Binding}"
@@ -6055,7 +6068,7 @@
                                                                 <ColumnDefinition Width="*"/>
                                                             </Grid.ColumnDefinitions>
                                                             <Border Grid.Column="0" Width="36" Height="28" CornerRadius="4"
-                                                                    BorderBrush="{DynamicResource TextFillColorDisabledBrush}" BorderThickness="1">
+                                                                    BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}" BorderThickness="1">
                                                                 <Border.Background>
                                                                     <MultiBinding Converter="{StaticResource RgbToBrushConverter}">
                                                                         <Binding Path="R"/>
@@ -6112,9 +6125,9 @@
                                      Independent of LightbarRed/Green/Blue (which drives
                                      the base mode color), so users can layer a base
                                      color with a different flash color. -->
-                                <Border BorderThickness="1" CornerRadius="4" Padding="10" Margin="0,0,0,8"
+                                <Border Background="{DynamicResource ControlFillColorDefaultBrush}" BorderThickness="1" CornerRadius="8" Padding="12" Margin="0,0,0,8"
                                         HorizontalAlignment="Left"
-                                        BorderBrush="{DynamicResource TextFillColorDisabledBrush}"
+                                        BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}"
                                         Visibility="{Binding PlayStationConfig.IsInputReactiveFixed, Converter={StaticResource BoolToVisibilityConverter}}">
                                     <StackPanel>
                                         <TextBlock Text="{Binding Pad_Lighting_InputReactive_FixedColor, Source={x:Static strings:Strings.Instance}}"

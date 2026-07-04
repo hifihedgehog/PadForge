@@ -42,6 +42,8 @@
                         <GradientStop Color="#111623" Offset="1"/>
                     </LinearGradientBrush>
                     <SolidColorBrush x:Key="SteelLineSoftBrush" Color="#1C2536"/>
+                    <SolidColorBrush x:Key="SegTrackBrush" Color="#0B0E14"/>
+                    <SolidColorBrush x:Key="SegTrackStrokeBrush" Color="#1C2536"/>
                     <!-- Wait gold: the only sanctioned gold. Cooling flames,
                          awaiting-devices states, anything holding heat. -->
                     <SolidColorBrush x:Key="WaitBrush" Color="#E8B434"/>

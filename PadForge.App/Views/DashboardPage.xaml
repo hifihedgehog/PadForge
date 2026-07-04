@@ -179,7 +179,7 @@
                             <Border CornerRadius="8" IsHitTestVisible="False" Opacity="0"
                                     Background="{DynamicResource CardBackgroundFillColorDefaultBrush}">
                                 <Border.Effect>
-                                    <DropShadowEffect Color="#FF6B2C" BlurRadius="22" ShadowDepth="0" Opacity="0.42"/>
+                                    <DropShadowEffect Color="#FF6B2C" BlurRadius="30" ShadowDepth="0" Opacity="0.55"/>
                                 </Border.Effect>
                                 <Border.Style>
                                     <Style TargetType="Border">

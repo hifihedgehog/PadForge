@@ -2440,15 +2440,15 @@ namespace PadForge
                 var ring = new System.Windows.Media.Effects.DropShadowEffect
                 {
                     Color = System.Windows.Media.Color.FromRgb(0xFF, 0x6B, 0x2C),
-                    BlurRadius = 16,
+                    BlurRadius = 20,
                     ShadowDepth = 0,
-                    Opacity = 0.14,
+                    Opacity = 0.25,
                 };
                 card.Effect = ring;
                 var breathe = new System.Windows.Media.Animation.DoubleAnimation
                 {
-                    From = 0.14,
-                    To = 0.30,
+                    From = 0.25,
+                    To = 0.60,
                     Duration = System.TimeSpan.FromSeconds(1.6),
                     AutoReverse = true,
                     RepeatBehavior = System.Windows.Media.Animation.RepeatBehavior.Forever,

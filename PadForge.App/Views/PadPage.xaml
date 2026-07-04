@@ -11,7 +11,8 @@
              xmlns:strings="clr-namespace:PadForge.Resources.Strings"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance vm:PadViewModel}"
-             d:DesignHeight="700" d:DesignWidth="900">
+             d:DesignHeight="700" d:DesignWidth="900"
+             xmlns:common="clr-namespace:PadForge.Common">
 
     <UserControl.Resources>
         <!-- Style for deadzone slider groups -->
@@ -3827,7 +3828,7 @@
                             <viewControls:LabeledShapeIcon Shape="Stick" Width="24" Height="24"
                                                             VerticalAlignment="Center" Margin="0,0,10,0"/>
                             <TextBlock Text="{Binding Pad_Sticks_Header, Source={x:Static strings:Strings.Instance}}"
-                                       Style="{StaticResource TitleTextBlockStyle}"/>
+                                       Style="{StaticResource TitleTextBlockStyle}" FontFamily="{StaticResource DisplayFontFamily}"/>
                         </StackPanel>
                         <TextBlock Text="{Binding Pad_Sticks_Subtitle, Source={x:Static strings:Strings.Instance}}"
                                    Foreground="{DynamicResource TextFillColorSecondaryBrush}"
@@ -4049,15 +4050,15 @@
                                                     Padding="4" Width="212" Height="212"
                                                     ClipToBounds="True">
                                                 <Grid Width="200" Height="200">
-                                                    <Ellipse Width="200" Height="200"
-                                                             Fill="{DynamicResource ControlFillColorDefaultBrush}"/>
-                                                    <!-- Grid lines (Grid layer, behind Canvas) -->
-                                                    <Line X1="50" Y1="0" X2="50" Y2="200" Stroke="#40FFFFFF" StrokeDashArray="2 4" StrokeThickness="0.5"/>
-                                                    <Line X1="150" Y1="0" X2="150" Y2="200" Stroke="#40FFFFFF" StrokeDashArray="2 4" StrokeThickness="0.5"/>
-                                                    <Line X1="0" Y1="50" X2="200" Y2="50" Stroke="#40FFFFFF" StrokeDashArray="2 4" StrokeThickness="0.5"/>
-                                                    <Line X1="0" Y1="150" X2="200" Y2="150" Stroke="#40FFFFFF" StrokeDashArray="2 4" StrokeThickness="0.5"/>
-                                                    <Line X1="100" Y1="0" X2="100" Y2="200" Stroke="#60FFFFFF" StrokeThickness="0.75"/>
-                                                    <Line X1="0" Y1="100" X2="200" Y2="100" Stroke="#60FFFFFF" StrokeThickness="0.75"/>
+                                                    <!-- Radar ground (#175 artifact): near-black plot
+                                                         with steel rings at 33/66/100%. -->
+                                                    <Ellipse Width="200" Height="200" Fill="#FF0B0E14"/>
+                                                    <Ellipse Width="66" Height="66" Stroke="#FF1E2739" StrokeThickness="1" Fill="Transparent"
+                                                             HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                    <Ellipse Width="132" Height="132" Stroke="#FF1E2739" StrokeThickness="1" Fill="Transparent"
+                                                             HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                    <Line X1="100" Y1="6" X2="100" Y2="194" Stroke="#FF1E2739" StrokeThickness="1"/>
+                                                    <Line X1="6" Y1="100" X2="194" Y2="100" Stroke="#FF1E2739" StrokeThickness="1"/>
                                                     <Canvas>
                                                         <Ellipse Width="196" Height="196" Canvas.Left="2" Canvas.Top="2"
                                                                  Stroke="{DynamicResource ControlStrokeColorDefaultBrush}"
@@ -4158,15 +4159,25 @@
                                                         </Ellipse>
                                                         <!-- Stick position dot -->
                                                         <!-- Two-stage (#175): raw hardware in cold under the
-                                                             forged output in ember. -->
+                                                             forged output in ember. Trail behavior draws the
+                                                             artifact comet (46 fading dots per signal). -->
+                                                        <Canvas common:StickTrailBehavior.IsEnabled="True" Width="200" Height="200"/>
                                                         <Ellipse Width="9" Height="9" Fill="#FF58B6E4"
-                                                                 Stroke="#FF2E6A8F" StrokeThickness="1" Opacity="0.85"
+                                                                 Stroke="#FF2E6A8F" StrokeThickness="1" Opacity="0.9"
                                                                  Canvas.Left="{Binding RawPosX, Converter={StaticResource NormToCanvasConverter}, ConverterParameter='200,9'}"
-                                                                 Canvas.Top="{Binding RawPosY, Converter={StaticResource NormToCanvasConverter}, ConverterParameter='200,9'}"/>
+                                                                 Canvas.Top="{Binding RawPosY, Converter={StaticResource NormToCanvasConverter}, ConverterParameter='200,9'}">
+                                                            <Ellipse.Effect>
+                                                                <DropShadowEffect Color="#58B6E4" BlurRadius="9" ShadowDepth="0" Opacity="0.9"/>
+                                                            </Ellipse.Effect>
+                                                        </Ellipse>
                                                         <Ellipse Width="11" Height="11" Fill="{DynamicResource EmberHotBrush}"
                                                                  Stroke="{DynamicResource EmberDeepBrush}" StrokeThickness="1"
                                                                  Canvas.Left="{Binding LiveX, Converter={StaticResource NormToCanvasConverter}, ConverterParameter='200,11'}"
-                                                                 Canvas.Top="{Binding LiveY, Converter={StaticResource NormToCanvasConverter}, ConverterParameter='200,11'}"/>
+                                                                 Canvas.Top="{Binding LiveY, Converter={StaticResource NormToCanvasConverter}, ConverterParameter='200,11'}">
+                                                            <Ellipse.Effect>
+                                                                <DropShadowEffect Color="#FF8228" BlurRadius="9" ShadowDepth="0" Opacity="0.95"/>
+                                                            </Ellipse.Effect>
+                                                        </Ellipse>
                                                     </Canvas>
                                                 </Grid>
                                             </Border>
@@ -4517,7 +4528,7 @@
                             <viewControls:LabeledShapeIcon Shape="TriggerLeft" Width="24" Height="24"
                                                             VerticalAlignment="Center" Margin="0,0,10,0"/>
                             <TextBlock Text="{Binding Pad_Triggers_Header, Source={x:Static strings:Strings.Instance}}"
-                                       Style="{StaticResource TitleTextBlockStyle}"/>
+                                       Style="{StaticResource TitleTextBlockStyle}" FontFamily="{StaticResource DisplayFontFamily}"/>
                         </StackPanel>
                         <TextBlock Text="{Binding Pad_Triggers_Subtitle, Source={x:Static strings:Strings.Instance}}"
                                    Foreground="{DynamicResource TextFillColorSecondaryBrush}"
@@ -4678,7 +4689,7 @@
                             <TextBlock Text="&#xE877;" FontFamily="Segoe MDL2 Assets" FontSize="20"
                                        VerticalAlignment="Center" Margin="0,0,10,0"/>
                             <TextBlock Text="{Binding Pad_ForceFeedback_Header, Source={x:Static strings:Strings.Instance}}"
-                                       Style="{StaticResource TitleTextBlockStyle}"/>
+                                       Style="{StaticResource TitleTextBlockStyle}" FontFamily="{StaticResource DisplayFontFamily}"/>
                         </StackPanel>
                         <TextBlock Text="{Binding Pad_ForceFeedback_Subtitle, Source={x:Static strings:Strings.Instance}}"
                                    Foreground="{DynamicResource TextFillColorSecondaryBrush}"
@@ -5173,7 +5184,7 @@
                                 </Grid>
                             </Viewbox>
                             <TextBlock Text="{Binding Pad_AdaptiveTriggers_Header, Source={x:Static strings:Strings.Instance}}"
-                                       Style="{StaticResource TitleTextBlockStyle}"/>
+                                       Style="{StaticResource TitleTextBlockStyle}" FontFamily="{StaticResource DisplayFontFamily}"/>
                         </StackPanel>
                         <TextBlock Text="{Binding Pad_AdaptiveTriggers_Subtitle, Source={x:Static strings:Strings.Instance}}"
                                    Foreground="{DynamicResource TextFillColorSecondaryBrush}"
@@ -5370,7 +5381,7 @@
                             <TextBlock Text="&#xE781;" FontFamily="Segoe MDL2 Assets" FontSize="20"
                                        VerticalAlignment="Center" Margin="0,0,10,0"/>
                             <TextBlock Text="{Binding Pad_Lighting_Header, Source={x:Static strings:Strings.Instance}}"
-                                       Style="{StaticResource TitleTextBlockStyle}"/>
+                                       Style="{StaticResource TitleTextBlockStyle}" FontFamily="{StaticResource DisplayFontFamily}"/>
                         </StackPanel>
                         <TextBlock Text="{Binding Pad_Lighting_Subtitle, Source={x:Static strings:Strings.Instance}}"
                                    Foreground="{DynamicResource TextFillColorSecondaryBrush}"
@@ -6273,7 +6284,7 @@
                             <TextBlock Text="&#xE7AD;" FontFamily="Segoe MDL2 Assets" FontSize="20"
                                        VerticalAlignment="Center" Margin="0,0,10,0"/>
                             <TextBlock Text="{Binding Pad_Gyro_Header, Source={x:Static strings:Strings.Instance}}"
-                                       Style="{StaticResource TitleTextBlockStyle}"/>
+                                       Style="{StaticResource TitleTextBlockStyle}" FontFamily="{StaticResource DisplayFontFamily}"/>
                         </StackPanel>
                         <TextBlock Text="{Binding Pad_Gyro_Subtitle, Source={x:Static strings:Strings.Instance}}"
                                    Foreground="{DynamicResource TextFillColorSecondaryBrush}"
@@ -6829,7 +6840,7 @@
                                 </Grid>
                             </Viewbox>
                             <TextBlock Text="{Binding Pad_ImpulseTriggers_Header, Source={x:Static strings:Strings.Instance}}"
-                                       Style="{StaticResource TitleTextBlockStyle}"/>
+                                       Style="{StaticResource TitleTextBlockStyle}" FontFamily="{StaticResource DisplayFontFamily}"/>
                         </StackPanel>
                         <TextBlock Text="{Binding Pad_ImpulseTriggers_Subtitle, Source={x:Static strings:Strings.Instance}}"
                                    Foreground="{DynamicResource TextFillColorSecondaryBrush}"
@@ -7088,7 +7099,7 @@
                             <TextBlock Text="&#xEFA5;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="20"
                                        VerticalAlignment="Center" Margin="0,0,10,0"/>
                             <TextBlock Text="{Binding Pad_Touchpad_Header, Source={x:Static strings:Strings.Instance}}"
-                                       Style="{StaticResource TitleTextBlockStyle}"/>
+                                       Style="{StaticResource TitleTextBlockStyle}" FontFamily="{StaticResource DisplayFontFamily}"/>
                         </StackPanel>
                         <TextBlock Text="{Binding Pad_Touchpad_Subtitle, Source={x:Static strings:Strings.Instance}}"
                                    Foreground="{DynamicResource TextFillColorSecondaryBrush}"
@@ -7513,7 +7524,7 @@
                                 </Canvas>
                             </Viewbox>
                             <TextBlock Text="{Binding Pad_Wheel, Source={x:Static strings:Strings.Instance}}"
-                                       Style="{StaticResource TitleTextBlockStyle}"/>
+                                       Style="{StaticResource TitleTextBlockStyle}" FontFamily="{StaticResource DisplayFontFamily}"/>
                         </StackPanel>
                         <TextBlock Text="{Binding Pad_Wheel_Subtitle, Source={x:Static strings:Strings.Instance}}"
                                    Foreground="{DynamicResource TextFillColorSecondaryBrush}"
@@ -7582,7 +7593,7 @@
                             <TextBlock Text="&#xE767;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="20"
                                        VerticalAlignment="Center" Margin="0,0,10,0"/>
                             <TextBlock Text="{Binding Pad_Audio_Header, Source={x:Static strings:Strings.Instance}}"
-                                       Style="{StaticResource TitleTextBlockStyle}"/>
+                                       Style="{StaticResource TitleTextBlockStyle}" FontFamily="{StaticResource DisplayFontFamily}"/>
                         </StackPanel>
                         <TextBlock Text="{Binding Pad_Audio_Subtitle, Source={x:Static strings:Strings.Instance}}"
                                    Foreground="{DynamicResource TextFillColorSecondaryBrush}"
@@ -7741,7 +7752,7 @@
                             <TextBlock Text="&#xE8B0;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="20"
                                        VerticalAlignment="Center" Margin="0,0,10,0"/>
                             <TextBlock Text="{Binding Pad_Pointer_Header, Source={x:Static strings:Strings.Instance}}"
-                                       Style="{StaticResource TitleTextBlockStyle}"/>
+                                       Style="{StaticResource TitleTextBlockStyle}" FontFamily="{StaticResource DisplayFontFamily}"/>
                         </StackPanel>
                         <TextBlock Text="{Binding Pad_Pointer_Subtitle, Source={x:Static strings:Strings.Instance}}"
                                    Foreground="{DynamicResource TextFillColorSecondaryBrush}"

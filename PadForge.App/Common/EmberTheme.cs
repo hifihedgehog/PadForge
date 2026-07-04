@@ -43,6 +43,7 @@ namespace PadForge.Common
             if (dark)
             {
                 SetBrush("ApplicationBackgroundBrush", Color.FromRgb(0x0B, 0x0E, 0x14));
+                SetBrush("SolidBackgroundFillColorBaseBrush", Color.FromRgb(0x0B, 0x0E, 0x14));
                 SetBrush("NavigationViewContentBackground", Color.FromRgb(0x0B, 0x0E, 0x14));
                 SetBrush("NavigationViewContentGridBorderBrush", Color.FromRgb(0x25, 0x30, 0x49));
                 SetBrush("CardBackgroundFillColorDefaultBrush", Color.FromRgb(0x11, 0x16, 0x23));
@@ -50,6 +51,13 @@ namespace PadForge.Common
                 SetBrush("CardStrokeColorDefaultBrush", Color.FromRgb(0x25, 0x30, 0x49));
                 SetBrush("ControlFillColorDefaultBrush", Color.FromRgb(0x1B, 0x23, 0x33));
                 SetBrush("ControlStrokeColorDefaultBrush", Color.FromRgb(0x25, 0x30, 0x49));
+                // Artifact text ramp: primary #E9EDF4, secondary #94A3BD,
+                // tertiary #5D6B85. This is what separates the pitch's body
+                // from stock WPF-UI neutral gray.
+                SetBrush("TextFillColorPrimaryBrush", Color.FromRgb(0xE9, 0xED, 0xF4));
+                SetBrush("TextFillColorSecondaryBrush", Color.FromRgb(0x94, 0xA3, 0xBD));
+                SetBrush("TextFillColorTertiaryBrush", Color.FromRgb(0x5D, 0x6B, 0x85));
+                SetBrush("TextFillColorDisabledBrush", Color.FromRgb(0x3D, 0x4A, 0x63));
             }
             else
             {
@@ -79,6 +87,7 @@ namespace PadForge.Common
         private static readonly string[] SteelKeys =
         {
             "ApplicationBackgroundBrush",
+            "SolidBackgroundFillColorBaseBrush",
             "NavigationViewContentBackground",
             "NavigationViewContentGridBorderBrush",
             "CardBackgroundFillColorDefaultBrush",
@@ -86,6 +95,10 @@ namespace PadForge.Common
             "CardStrokeColorDefaultBrush",
             "ControlFillColorDefaultBrush",
             "ControlStrokeColorDefaultBrush",
+            "TextFillColorPrimaryBrush",
+            "TextFillColorSecondaryBrush",
+            "TextFillColorTertiaryBrush",
+            "TextFillColorDisabledBrush",
         };
 
         private static void SetBrush(string key, Color color)

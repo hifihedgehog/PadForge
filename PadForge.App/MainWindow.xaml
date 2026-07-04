@@ -158,6 +158,8 @@
              ═══════════════════════════════════════════ -->
         <Border x:Name="StatusBarBorder" Grid.Row="2"
                 Background="{DynamicResource SolidBackgroundFillColorBaseBrush}"
+                BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}"
+                BorderThickness="0,1,0,0"
                 Padding="12,4">
             <Grid>
                 <Grid.ColumnDefinitions>
@@ -178,14 +180,17 @@
                 <StackPanel Grid.Column="1" Orientation="Horizontal"
                             VerticalAlignment="Center" Margin="16,0">
                     <TextBlock Text="{Binding ConnectedDeviceCount, Mode=OneWay}"
+                               FontFamily="{StaticResource TelemetryFontFamily}" FontSize="12"
                                Foreground="{DynamicResource ColdBrush}"/>
                     <TextBlock Text="{Binding Main_DevicesSuffix, Source={x:Static strings:Strings.Instance}}"
-                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                               FontFamily="{StaticResource TelemetryFontFamily}" FontSize="12"
+                               Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
                 </StackPanel>
 
                 <TextBlock Grid.Column="2"
                            VerticalAlignment="Center"
                            Margin="16,0"
+                           FontFamily="{StaticResource TelemetryFontFamily}" FontSize="12"
                            Foreground="{DynamicResource ColdBrush}"
                            Text="{Binding PollingFrequency, StringFormat='{}{0:F0} Hz', Mode=OneWay}"/>
 
@@ -218,7 +223,18 @@
                         </Path.Style>
                     </Path>
                     <TextBlock Text="{Binding EngineStatusText}"
-                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                               FontFamily="{StaticResource TelemetryFontFamily}" FontSize="12" FontWeight="SemiBold">
+                        <TextBlock.Style>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Dashboard.EngineStateKey}" Value="Running">
+                                        <Setter Property="Foreground" Value="{DynamicResource EmberHotBrush}"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
                 </StackPanel>
             </Grid>
         </Border>

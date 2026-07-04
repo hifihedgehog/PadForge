@@ -2452,6 +2452,11 @@ namespace PadForge
                     RepeatBehavior = System.Windows.Media.Animation.RepeatBehavior.Forever,
                     EasingFunction = new System.Windows.Media.Animation.SineEase
                     { EasingMode = System.Windows.Media.Animation.EasingMode.EaseInOut },
+                    // Phase-lock to a global 3.2s clock: card rebuilds restart
+                    // the animation, and without this the glow visibly jumps
+                    // to cycle start each time.
+                    BeginTime = System.TimeSpan.FromMilliseconds(
+                        -(System.DateTime.UtcNow.TimeOfDay.TotalMilliseconds % 3200.0)),
                 };
                 ring.BeginAnimation(System.Windows.Media.Effects.DropShadowEffect.OpacityProperty, breathe);
             }

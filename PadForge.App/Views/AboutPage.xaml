@@ -37,9 +37,8 @@
 
             <!-- Technologies -->
             <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
-                <TextBlock Text="&#xE74C;" FontFamily="Segoe MDL2 Assets" FontSize="16"
-                           VerticalAlignment="Center" Margin="0,0,8,0"/>
-                <TextBlock Text="{Binding About_BuiltWith, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource SubtitleTextBlockStyle}"/>
+                <TextBlock Text="&#xE74C;" Style="{StaticResource SectionGlyph}"/>
+                <TextBlock Text="{Binding About_BuiltWith, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource SectionTitle}"/>
             </StackPanel>
             <Border Style="{StaticResource CardBorder}" Padding="20" Margin="0,0,0,20">
                 <Grid>
@@ -156,9 +155,8 @@
 
             <!-- License -->
             <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
-                <TextBlock Text="&#xE8D7;" FontFamily="Segoe MDL2 Assets" FontSize="16"
-                           VerticalAlignment="Center" Margin="0,0,8,0"/>
-                <TextBlock Text="{Binding About_License, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource SubtitleTextBlockStyle}"/>
+                <TextBlock Text="&#xE8D7;" Style="{StaticResource SectionGlyph}"/>
+                <TextBlock Text="{Binding About_License, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource SectionTitle}"/>
             </StackPanel>
             <Border Style="{StaticResource CardBorder}" Padding="20" Margin="0,0,0,20">
                 <TextBlock TextWrapping="Wrap" Foreground="{DynamicResource TextFillColorSecondaryBrush}" FontSize="12" LineHeight="18"
@@ -167,9 +165,8 @@
 
             <!-- Testimony -->
             <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
-                <TextBlock Text="&#xE734;" FontFamily="Segoe MDL2 Assets" FontSize="16"
-                           VerticalAlignment="Center" Margin="0,0,8,0"/>
-                <TextBlock Text="{Binding About_Testimony, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource SubtitleTextBlockStyle}"/>
+                <TextBlock Text="&#xE734;" Style="{StaticResource SectionGlyph}"/>
+                <TextBlock Text="{Binding About_Testimony, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource SectionTitle}"/>
             </StackPanel>
             <Border Style="{StaticResource CardBorder}" Padding="20" Margin="0,0,0,20">
                 <StackPanel>

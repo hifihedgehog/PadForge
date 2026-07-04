@@ -2158,6 +2158,55 @@ namespace PadForge
         // Power button icon: E7E8 = PowerButton glyph in Segoe MDL2 Assets.
         private const string PowerGlyph = "\uE7E8";
 
+        // Ember flame geometry (#175): outer teardrop + inner hot core.
+        // Lit = ember fill, cooling = gold fill, cold = tertiary outline.
+        private const string FlameOuterPath =
+            "M12,1.6 C15.2,5.4 17.4,9 17.4,13.1 A5.4,5.4 0 0 1 6.6,13.1 C6.6,9 8.8,5.4 12,1.6 Z";
+        private const string FlameInnerPath =
+            "M12,8.4 C13.7,10.3 14.7,12.1 14.7,13.9 A2.7,2.7 0 0 1 9.3,13.9 C9.3,12.1 10.3,10.3 12,8.4 Z";
+
+        /// <summary>
+        /// Builds the flame glyph for a slot's heat state (#175).
+        /// lit: ember fill with hot core. cooling: gold fill. cold: outline only.
+        /// </summary>
+        private static System.Windows.Controls.Grid BuildFlameGlyph(double size, bool lit, bool cooling)
+        {
+            var grid = new System.Windows.Controls.Grid { Width = size, Height = size };
+            var outer = new System.Windows.Shapes.Path
+            {
+                Data = System.Windows.Media.Geometry.Parse(FlameOuterPath),
+                Stretch = System.Windows.Media.Stretch.Uniform
+            };
+            if (lit)
+            {
+                outer.Fill = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(0xFF, 0x6B, 0x2C));
+                var inner = new System.Windows.Shapes.Path
+                {
+                    Data = System.Windows.Media.Geometry.Parse(FlameInnerPath),
+                    Stretch = System.Windows.Media.Stretch.Uniform,
+                    Fill = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(0xFF, 0xA2, 0x4D)),
+                    // Inner core is a sub-region of the same 24x24 space; keep
+                    // both paths aligned by stretching within the same grid.
+                    Margin = new Thickness(size * 0.28, size * 0.42, size * 0.28, size * 0.06)
+                };
+                grid.Children.Add(outer);
+                grid.Children.Add(inner);
+            }
+            else if (cooling)
+            {
+                outer.Fill = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(0xFF, 0xC1, 0x07));
+                grid.Children.Add(outer);
+            }
+            else
+            {
+                outer.Fill = System.Windows.Media.Brushes.Transparent;
+                outer.StrokeThickness = 1.2;
+                outer.SetResourceReference(System.Windows.Shapes.Shape.StrokeProperty, "TextFillColorTertiaryBrush");
+                grid.Children.Add(outer);
+            }
+            return grid;
+        }
+
         /// <summary>
         /// Updates the Content and Icon of a controller NavigationViewItem.
         /// Compact card with rounded border: [Power] [Gamepad] #N | [Xbox][PS] #N [X]
@@ -2194,58 +2243,63 @@ namespace PadForge
                 Tag = navItem.PadIndex,
                 VerticalAlignment = VerticalAlignment.Center,
                 Margin = new Thickness(6, 0, 0, 0),
-                Opacity = 0.5
+                // Hover-revealed (#175): the rail reads as state, actions
+                // appear on intent.
+                Opacity = 0
             };
             deleteBtn.Click += OnSidebarDeleteSlot;
             System.Windows.Controls.DockPanel.SetDock(deleteBtn, System.Windows.Controls.Dock.Right);
             row.Children.Add(deleteBtn);
+            row.MouseEnter += (s, e) => deleteBtn.Opacity = 0.6;
+            row.MouseLeave += (s, e) => deleteBtn.Opacity = 0;
 
-            // Power button (green = enabled + active, yellow = enabled + warning, red = disabled,
-            // flashing green = initializing).
-            var outputType = _viewModel.Pads[navItem.PadIndex].OutputType;
-            System.Windows.Media.SolidColorBrush powerColor;
+            // Flame power toggle (#175): heat encodes liveness.
+            // Ember = forging (enabled, engine running, VC live).
+            // Gold = cooling (enabled but engine stopped / awaiting devices).
+            // Outline = cold (disabled). Flashing ember = igniting.
             string powerTooltip;
             bool isInitializing = navItem.IsInitializing;
+            bool lit;
+            bool cooling;
             if (!navItem.IsEnabled)
             {
-                powerColor = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(0xF4, 0x43, 0x36)); // red
                 powerTooltip = Strings.Instance.Common_Disabled;
                 isInitializing = false;
+                lit = false;
+                cooling = false;
             }
             else if (isInitializing)
             {
-                powerColor = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(0x4C, 0xAF, 0x50)); // green
                 powerTooltip = Strings.Instance.Main_Initializing;
+                lit = true;
+                cooling = false;
             }
             else if (!_viewModel.IsEngineRunning)
             {
-                powerColor = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(0xFF, 0xC1, 0x07)); // yellow/amber
                 powerTooltip = Strings.Instance.Main_EngineStopped;
+                lit = false;
+                cooling = true;
             }
             else if (!navItem.IsVirtualControllerConnected)
             {
-                // Yellow reflects "no live VC" (slot has never created a VC, or
+                // Gold reflects "no live VC" (slot has never created a VC, or
                 // its VC was torn down by the HM-inactivity timeout). During
                 // the grace period the VC is still alive even with devices
-                // offline, so the indicator stays green until teardown.
-                powerColor = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(0xFF, 0xC1, 0x07)); // yellow/amber
+                // offline, so the flame stays ember until teardown.
                 powerTooltip = Strings.Instance.Main_AwaitingDevices;
+                lit = false;
+                cooling = true;
             }
             else
             {
-                powerColor = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(0x4C, 0xAF, 0x50)); // green
                 powerTooltip = Strings.Instance.Main_Active;
+                lit = true;
+                cooling = false;
             }
 
-            var powerTextBlock = new System.Windows.Controls.TextBlock
-            {
-                Text = PowerGlyph,
-                FontFamily = new System.Windows.Media.FontFamily("Segoe MDL2 Assets"),
-                FontSize = 12,
-                Foreground = powerColor
-            };
+            var flameGlyph = BuildFlameGlyph(13, lit, cooling);
 
-            // Apply flashing opacity animation when initializing.
+            // Apply flashing opacity animation when igniting.
             if (isInitializing)
             {
                 var flashAnimation = new System.Windows.Media.Animation.DoubleAnimation
@@ -2256,12 +2310,12 @@ namespace PadForge
                     AutoReverse = true,
                     RepeatBehavior = System.Windows.Media.Animation.RepeatBehavior.Forever
                 };
-                powerTextBlock.BeginAnimation(System.Windows.UIElement.OpacityProperty, flashAnimation);
+                flameGlyph.BeginAnimation(System.Windows.UIElement.OpacityProperty, flashAnimation);
             }
 
             var powerBtn = new System.Windows.Controls.Button
             {
-                Content = powerTextBlock,
+                Content = flameGlyph,
                 Background = System.Windows.Media.Brushes.Transparent,
                 BorderThickness = new Thickness(0),
                 Padding = new Thickness(3),
@@ -2275,180 +2329,41 @@ namespace PadForge
             powerBtn.Click += OnSidebarPowerToggle;
             row.Children.Add(powerBtn);
 
-            // Gamepad icon + global slot number.
-            row.Children.Add(new System.Windows.Controls.TextBlock
-            {
-                Text = "\uE7FC",
-                FontFamily = new System.Windows.Media.FontFamily("Segoe MDL2 Assets"),
-                FontSize = 13,
-                VerticalAlignment = VerticalAlignment.Center,
-                Margin = new Thickness(4, 0, 0, 0)
-            });
-            row.Children.Add(new System.Windows.Controls.TextBlock
+            // Global slot number. The pill reads "what this slot IS" (#175):
+            // flame, number, type + instance. Type switching lives on the
+            // dashboard cards and the Pad page where there is room for it.
+            var slotNumber = new System.Windows.Controls.TextBlock
             {
                 Text = $"{navItem.SlotNumber}",
                 FontSize = 12,
                 FontWeight = FontWeights.SemiBold,
                 VerticalAlignment = VerticalAlignment.Center,
-                Margin = new Thickness(3, 0, 0, 0),
-                Width = 16,
+                Margin = new Thickness(4, 0, 0, 0),
+                Width = 14,
                 TextAlignment = TextAlignment.Center
-            });
+            };
+            slotNumber.SetResourceReference(System.Windows.Controls.TextBlock.ForegroundProperty, "TextFillColorTertiaryBrush");
+            row.Children.Add(slotNumber);
 
-            // Separator.
+            // Type + per-type instance, as text (#175). The old five-icon
+            // type switcher is gone from the rail: eleven glyphs per row to
+            // say "Slot 3 is a PlayStation pad". The switcher already lives
+            // on the dashboard cards, where there is room to do it properly.
+            string typeName =
+                isXbox ? Strings.Instance.ControllerType_Xbox
+                : isPlayStation ? Strings.Instance.ControllerType_PlayStation
+                : isExtended ? Strings.Instance.ControllerType_Extended
+                : isKbm ? Strings.Instance.ControllerType_KeyboardMouse
+                : isMidi ? Strings.Instance.ControllerType_MIDI
+                : string.Empty;
             row.Children.Add(new System.Windows.Controls.TextBlock
             {
-                Text = "|",
-                FontSize = 12,
-                Opacity = 0.3,
-                VerticalAlignment = VerticalAlignment.Center,
-                Margin = new Thickness(6, -3, 6, 0)
-            });
-
-            // Type-switch buttons: Xbox / PlayStation / Extended / KBM / MIDI — shown for all cards.
-            // HIDMaestro is always available (embedded in HIDMaestro.Core.dll), so the
-            // Xbox / PlayStation / Extended categories are always enabled. MIDI still
-            // depends on Windows MIDI Services.
-            bool hasMidi = DriverInstaller.IsMidiServicesInstalled();
-
-            // Xbox type button — use SetResourceReference for theme-aware Fill.
-            var xboxPath = new System.Windows.Shapes.Path
-            {
-                Data = System.Windows.Media.Geometry.Parse(XboxSvgPath),
-                Width = 13,
-                Height = 13,
-                Stretch = System.Windows.Media.Stretch.Uniform
-            };
-            xboxPath.SetResourceReference(System.Windows.Shapes.Shape.FillProperty, "TextFillColorPrimaryBrush");
-            var xboxBtn = new System.Windows.Controls.Button
-            {
-                Content = xboxPath,
-                ToolTip = Strings.Instance.ControllerType_Xbox,
-                Background = System.Windows.Media.Brushes.Transparent,
-                BorderThickness = new Thickness(0),
-                Padding = new Thickness(3),
-                MinWidth = 0,
-                MinHeight = 0,
-                Opacity = isXbox ? 1.0 : 0.3,
-                Cursor = System.Windows.Input.Cursors.Hand,
-                Tag = navItem.PadIndex,
-                VerticalAlignment = VerticalAlignment.Center
-            };
-            xboxBtn.Click += OnSidebarTypeXbox;
-            row.Children.Add(xboxBtn);
-
-            // PlayStation type button — use SetResourceReference for theme-aware Fill.
-            var playstationPath = new System.Windows.Shapes.Path
-            {
-                Data = System.Windows.Media.Geometry.Parse(DS4SvgPath),
-                Width = 13,
-                Height = 13,
-                Stretch = System.Windows.Media.Stretch.Uniform
-            };
-            playstationPath.SetResourceReference(System.Windows.Shapes.Shape.FillProperty, "TextFillColorPrimaryBrush");
-            var playstationBtn = new System.Windows.Controls.Button
-            {
-                Content = playstationPath,
-                ToolTip = Strings.Instance.ControllerType_PlayStation,
-                Background = System.Windows.Media.Brushes.Transparent,
-                BorderThickness = new Thickness(0),
-                Padding = new Thickness(3),
-                MinWidth = 0,
-                MinHeight = 0,
-                Opacity = isPlayStation ? 1.0 : 0.3,
-                Cursor = System.Windows.Input.Cursors.Hand,
-                Margin = new Thickness(1, 0, 0, 0),
-                Tag = navItem.PadIndex,
-                VerticalAlignment = VerticalAlignment.Center
-            };
-            playstationBtn.Click += OnSidebarTypePlayStation;
-            row.Children.Add(playstationBtn);
-
-            // Extended type button — use SetResourceReference for theme-aware Fill.
-            var extendedPath = new System.Windows.Shapes.Path
-            {
-                Data = System.Windows.Media.Geometry.Parse(ExtendedSvgPath),
-                Width = 13,
-                Height = 13,
-                Stretch = System.Windows.Media.Stretch.Uniform
-            };
-            extendedPath.SetResourceReference(System.Windows.Shapes.Shape.FillProperty, "TextFillColorPrimaryBrush");
-            var extendedBtn = new System.Windows.Controls.Button
-            {
-                Content = extendedPath,
-                ToolTip = Strings.Instance.ControllerType_Extended,
-                Background = System.Windows.Media.Brushes.Transparent,
-                BorderThickness = new Thickness(0),
-                Padding = new Thickness(3),
-                MinWidth = 0,
-                MinHeight = 0,
-                Opacity = isExtended ? 1.0 : 0.3,
-                Cursor = System.Windows.Input.Cursors.Hand,
-                Margin = new Thickness(1, 0, 0, 0),
-                Tag = navItem.PadIndex,
-                VerticalAlignment = VerticalAlignment.Center
-            };
-            extendedBtn.Click += OnSidebarTypeExtended;
-            row.Children.Add(extendedBtn);
-
-            // Keyboard+Mouse type button — MDL2 glyph E961 (always available).
-            var kbmBtn = new System.Windows.Controls.Button
-            {
-                Content = new System.Windows.Controls.TextBlock
-                {
-                    Text = "\uE961",
-                    FontFamily = new System.Windows.Media.FontFamily("Segoe MDL2 Assets"),
-                    FontSize = 13
-                },
-                ToolTip = Strings.Instance.ControllerType_KeyboardMouse,
-                Background = System.Windows.Media.Brushes.Transparent,
-                BorderThickness = new Thickness(0),
-                Padding = new Thickness(3),
-                MinWidth = 0,
-                MinHeight = 0,
-                Opacity = isKbm ? 1.0 : 0.3,
-                Cursor = System.Windows.Input.Cursors.Hand,
-                Margin = new Thickness(1, 0, 0, 0),
-                Tag = navItem.PadIndex,
-                VerticalAlignment = VerticalAlignment.Center
-            };
-            kbmBtn.Click += OnSidebarTypeKeyboardMouse;
-            row.Children.Add(kbmBtn);
-
-            // MIDI type button — MDL2 glyph (music note).
-            var midiBtn = new System.Windows.Controls.Button
-            {
-                Content = new System.Windows.Controls.TextBlock
-                {
-                    Text = "\uE8D6",
-                    FontFamily = new System.Windows.Media.FontFamily("Segoe MDL2 Assets"),
-                    FontSize = 13
-                },
-                ToolTip = hasMidi ? Strings.Instance.ControllerType_MIDI : Strings.Instance.Main_MIDI_RequiresMidiServices,
-                Background = System.Windows.Media.Brushes.Transparent,
-                BorderThickness = new Thickness(0),
-                Padding = new Thickness(3),
-                MinWidth = 0,
-                MinHeight = 0,
-                Opacity = isMidi ? 1.0 : 0.3,
-                Cursor = hasMidi ? System.Windows.Input.Cursors.Hand : System.Windows.Input.Cursors.No,
-                Margin = new Thickness(1, 0, 0, 0),
-                Tag = navItem.PadIndex,
-                VerticalAlignment = VerticalAlignment.Center
-            };
-            midiBtn.Click += OnSidebarTypeMidi;
-            row.Children.Add(midiBtn);
-
-            // Per-type instance label.
-            row.Children.Add(new System.Windows.Controls.TextBlock
-            {
-                Text = navItem.InstanceLabel,
-                FontSize = 12,
+                Text = $"{typeName} #{navItem.InstanceLabel}",
+                FontSize = 12.5,
                 FontWeight = FontWeights.SemiBold,
                 VerticalAlignment = VerticalAlignment.Center,
-                Margin = new Thickness(3, 0, 0, 0),
-                Width = 12,
-                TextAlignment = TextAlignment.Center
+                Margin = new Thickness(6, 0, 0, 0),
+                TextTrimming = TextTrimming.CharacterEllipsis
             });
 
             // Wrap in a rounded card border.
@@ -2462,6 +2377,32 @@ namespace PadForge
                 Tag = navItem.PadIndex
             };
             card.SetResourceReference(System.Windows.Controls.Border.BackgroundProperty, "CardBackgroundFillColorDefaultBrush");
+
+            // Heat ring (#175): forging slots carry an ember border and a
+            // static glow. Cooling slots keep a faint ember trace. Cold
+            // slots dim. Static effects only: no Forever storyboards per
+            // card, the Z8350-class perf floor rules those out here.
+            if (lit)
+            {
+                card.BorderBrush = new System.Windows.Media.SolidColorBrush(
+                    System.Windows.Media.Color.FromArgb(0x8C, 0xFF, 0x6B, 0x2C));
+                card.Effect = new System.Windows.Media.Effects.DropShadowEffect
+                {
+                    Color = System.Windows.Media.Color.FromRgb(0xFF, 0x6B, 0x2C),
+                    BlurRadius = 12,
+                    ShadowDepth = 0,
+                    Opacity = 0.35
+                };
+            }
+            else if (cooling)
+            {
+                card.BorderBrush = new System.Windows.Media.SolidColorBrush(
+                    System.Windows.Media.Color.FromArgb(0x2E, 0xFF, 0x6B, 0x2C));
+            }
+            else if (!navItem.IsEnabled)
+            {
+                card.Opacity = 0.65;
+            }
 
             // Drag reordering — mouse-down recorded here, threshold + movement tracked at NavView level.
             card.PreviewMouseLeftButtonDown += OnCardDragStart;
@@ -2648,91 +2589,6 @@ namespace PadForge
                 _deviceService.SetSlotEnabled(padIndex, newState);
                 // Refresh nav items so IsEnabled updates and content rebuilds.
                 _viewModel.RefreshNavControllerItems();
-            }
-        }
-
-        /// <summary>Handles sidebar Xbox type button click.</summary>
-        private void OnSidebarTypeXbox(object sender, RoutedEventArgs e)
-        {
-            e.Handled = true;
-            if (sender is System.Windows.Controls.Button btn && btn.Tag is int padIndex)
-            {
-                SettingsManager.ReAutoMapSlot(padIndex, VirtualControllerType.Xbox);
-                _viewModel.Pads[padIndex].OutputType = VirtualControllerType.Xbox;
-                _inputService.MoveSlotToGroupTail(padIndex);
-                SettingsService.RefreshMappingSetsFromLegacy();
-                // Stale-guard the Mappings view: the rebuild above re-auto-mapped
-                // the slot, but the OutputType setter's RebuildMappings reloaded the
-                // ViewModel from the pre-change MappingSet. Same guard as the device-
-                // assignment path (see PadViewModel.MappingsViewLoaded); cleared on
-                // the next RefreshMappingsCore.
-                _viewModel.Pads[padIndex].MappingsViewLoaded = false;
-                _settingsService.MarkDirty();
-            }
-        }
-
-        /// <summary>Handles sidebar PlayStation type button click.</summary>
-        private void OnSidebarTypePlayStation(object sender, RoutedEventArgs e)
-        {
-            e.Handled = true;
-            if (sender is System.Windows.Controls.Button btn && btn.Tag is int padIndex)
-            {
-                SettingsManager.ReAutoMapSlot(padIndex, VirtualControllerType.PlayStation);
-                _viewModel.Pads[padIndex].OutputType = VirtualControllerType.PlayStation;
-                _inputService.MoveSlotToGroupTail(padIndex);
-                SettingsService.RefreshMappingSetsFromLegacy();
-                // Stale-guard the Mappings view — see OnSidebarTypeXbox / PadViewModel.MappingsViewLoaded.
-                _viewModel.Pads[padIndex].MappingsViewLoaded = false;
-                _settingsService.MarkDirty();
-            }
-        }
-
-        /// <summary>Handles sidebar Extended (custom DI) type button click.</summary>
-        private void OnSidebarTypeExtended(object sender, RoutedEventArgs e)
-        {
-            e.Handled = true;
-            if (sender is System.Windows.Controls.Button btn && btn.Tag is int padIndex)
-            {
-                SettingsManager.ReAutoMapSlot(padIndex, VirtualControllerType.Extended);
-                _viewModel.Pads[padIndex].OutputType = VirtualControllerType.Extended;
-                _inputService.MoveSlotToGroupTail(padIndex);
-                SettingsService.RefreshMappingSetsFromLegacy();
-                // Stale-guard the Mappings view — see OnSidebarTypeXbox / PadViewModel.MappingsViewLoaded.
-                _viewModel.Pads[padIndex].MappingsViewLoaded = false;
-                _settingsService.MarkDirty();
-            }
-        }
-
-        /// <summary>Handles sidebar Keyboard+Mouse type button click.</summary>
-        private void OnSidebarTypeKeyboardMouse(object sender, RoutedEventArgs e)
-        {
-            e.Handled = true;
-            if (sender is System.Windows.Controls.Button btn && btn.Tag is int padIndex)
-            {
-                SettingsManager.ReAutoMapSlot(padIndex, VirtualControllerType.KeyboardMouse);
-                _viewModel.Pads[padIndex].OutputType = VirtualControllerType.KeyboardMouse;
-                _inputService.MoveSlotToGroupTail(padIndex);
-                SettingsService.RefreshMappingSetsFromLegacy();
-                // Stale-guard the Mappings view — see OnSidebarTypeXbox / PadViewModel.MappingsViewLoaded.
-                _viewModel.Pads[padIndex].MappingsViewLoaded = false;
-                _settingsService.MarkDirty();
-            }
-        }
-
-        /// <summary>Handles sidebar MIDI type button click.</summary>
-        private void OnSidebarTypeMidi(object sender, RoutedEventArgs e)
-        {
-            e.Handled = true;
-            if (!DriverInstaller.IsMidiServicesInstalled()) return;
-            if (sender is System.Windows.Controls.Button btn && btn.Tag is int padIndex)
-            {
-                SettingsManager.ReAutoMapSlot(padIndex, VirtualControllerType.Midi);
-                _viewModel.Pads[padIndex].OutputType = VirtualControllerType.Midi;
-                _inputService.MoveSlotToGroupTail(padIndex);
-                SettingsService.RefreshMappingSetsFromLegacy();
-                // Stale-guard the Mappings view — see OnSidebarTypeXbox / PadViewModel.MappingsViewLoaded.
-                _viewModel.Pads[padIndex].MappingsViewLoaded = false;
-                _settingsService.MarkDirty();
             }
         }
 

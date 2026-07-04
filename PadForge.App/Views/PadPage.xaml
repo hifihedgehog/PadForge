@@ -131,25 +131,24 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="RadioButton">
-                        <!-- Pill tab (#175 iteration 4, per the approved mock):
-                             selected = ember-outlined pill with warm text and a
-                             faint glow, idle = quiet text. -->
-                        <Border x:Name="Bd" Padding="13,5" Background="Transparent"
-                                CornerRadius="14" BorderThickness="1.5" BorderBrush="Transparent">
-                            <ContentPresenter VerticalAlignment="Center"
-                                              TextBlock.Foreground="{TemplateBinding Foreground}"/>
+                        <!-- Artifact .tier1 .tab.sel: ember-tint fill, warm
+                             600-weight text, inset 2px bottom underline.
+                             No outline, no glow. -->
+                        <Border x:Name="Bd" Background="Transparent" CornerRadius="7">
+                            <Grid>
+                                <ContentPresenter Margin="12,5,12,7" VerticalAlignment="Center"
+                                                  TextBlock.Foreground="{TemplateBinding Foreground}"/>
+                                <Rectangle x:Name="Underline" Height="2" RadiusX="1" RadiusY="1"
+                                           VerticalAlignment="Bottom" Margin="6,0,6,1"
+                                           Fill="{DynamicResource EmberBrush}" Opacity="0"/>
+                            </Grid>
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsChecked" Value="True">
-                                <Setter TargetName="Bd" Property="BorderBrush"
-                                        Value="{DynamicResource EmberBrush}"/>
                                 <Setter TargetName="Bd" Property="Background" Value="#1AFF6B2C"/>
                                 <Setter Property="Foreground" Value="{DynamicResource EmberHotBrush}"/>
-                                <Setter TargetName="Bd" Property="Effect">
-                                    <Setter.Value>
-                                        <DropShadowEffect Color="#FF6B2C" BlurRadius="10" ShadowDepth="0" Opacity="0.35"/>
-                                    </Setter.Value>
-                                </Setter>
+                                <Setter Property="TextBlock.FontWeight" Value="SemiBold"/>
+                                <Setter TargetName="Underline" Property="Opacity" Value="1"/>
                             </Trigger>
                             <Trigger Property="IsMouseOver" Value="True">
                                 <Setter TargetName="Bd" Property="Background" Value="#14FF6B2C"/>
@@ -170,22 +169,23 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="RadioButton">
-                        <Border x:Name="Bd" Padding="13,5" Background="Transparent"
-                                CornerRadius="14" BorderThickness="1.5" BorderBrush="Transparent">
-                            <ContentPresenter VerticalAlignment="Center"
-                                              TextBlock.Foreground="{TemplateBinding Foreground}"/>
+                        <!-- Artifact .tier2 .tab.sel: cold tint + inset cold
+                             underline. -->
+                        <Border x:Name="Bd" Background="Transparent" CornerRadius="7">
+                            <Grid>
+                                <ContentPresenter Margin="12,5,12,7" VerticalAlignment="Center"
+                                                  TextBlock.Foreground="{TemplateBinding Foreground}"/>
+                                <Rectangle x:Name="Underline" Height="2" RadiusX="1" RadiusY="1"
+                                           VerticalAlignment="Bottom" Margin="6,0,6,1"
+                                           Fill="{DynamicResource ColdBrush}" Opacity="0"/>
+                            </Grid>
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsChecked" Value="True">
-                                <Setter TargetName="Bd" Property="BorderBrush"
-                                        Value="{DynamicResource ColdBrush}"/>
                                 <Setter TargetName="Bd" Property="Background" Value="{DynamicResource ColdTintBrush}"/>
                                 <Setter Property="Foreground" Value="{DynamicResource ColdBrush}"/>
-                                <Setter TargetName="Bd" Property="Effect">
-                                    <Setter.Value>
-                                        <DropShadowEffect Color="#58B6E4" BlurRadius="10" ShadowDepth="0" Opacity="0.3"/>
-                                    </Setter.Value>
-                                </Setter>
+                                <Setter Property="TextBlock.FontWeight" Value="SemiBold"/>
+                                <Setter TargetName="Underline" Property="Opacity" Value="1"/>
                             </Trigger>
                             <Trigger Property="IsMouseOver" Value="True">
                                 <Setter TargetName="Bd" Property="Background" Value="#1458B6E4"/>
@@ -2428,28 +2428,47 @@
                                         <SolidColorBrush Color="Transparent"/>
                                     </Setter.Value>
                                 </Setter>
+                                <Setter Property="BorderThickness" Value="0,0,0,1.5"/>
+                                <Setter Property="BorderBrush">
+                                    <Setter.Value>
+                                        <!-- Artifact rowfire gradient at rest (opacity 0);
+                                             the storyboard clones per row when animating. -->
+                                        <LinearGradientBrush StartPoint="1,0" EndPoint="0,0" Opacity="0">
+                                            <GradientStop Color="#8058B6E4" Offset="0"/>
+                                            <GradientStop Color="#99FF6B2C" Offset="1"/>
+                                        </LinearGradientBrush>
+                                    </Setter.Value>
+                                </Setter>
                                 <Setter Property="Foreground"
                                         Value="{DynamicResource TextFillColorPrimaryBrush}"/>
                                 <Style.Triggers>
-                                    <!-- Rowfire (#175 artifact): while input flows the row
-                                         warms with an ember tint, the grid-scale stand-in
-                                         for the cold-to-ember underline sweep. -->
+                                    <!-- Rowfire (#175 artifact .mrow::after): the
+                                         cold-to-ember underline sweeps in while input
+                                         flows, 300ms up / 1200ms down. -->
                                     <DataTrigger Binding="{Binding IsInputActive}" Value="True">
                                         <DataTrigger.EnterActions>
                                             <BeginStoryboard>
                                                 <Storyboard>
-                                                    <ColorAnimation
-                                                        Storyboard.TargetProperty="(DataGridRow.Background).(SolidColorBrush.Color)"
-                                                        To="#24FF6B2C" Duration="0:0:0.3"/>
+                                                    <DoubleAnimation
+                                                        Storyboard.TargetProperty="(DataGridRow.BorderBrush).(Brush.Opacity)"
+                                                        To="1" Duration="0:0:0.3">
+                                                        <DoubleAnimation.EasingFunction>
+                                                            <CubicEase EasingMode="EaseOut"/>
+                                                        </DoubleAnimation.EasingFunction>
+                                                    </DoubleAnimation>
                                                 </Storyboard>
                                             </BeginStoryboard>
                                         </DataTrigger.EnterActions>
                                         <DataTrigger.ExitActions>
                                             <BeginStoryboard>
                                                 <Storyboard>
-                                                    <ColorAnimation
-                                                        Storyboard.TargetProperty="(DataGridRow.Background).(SolidColorBrush.Color)"
-                                                        To="#00FF6B2C" Duration="0:0:1.2"/>
+                                                    <DoubleAnimation
+                                                        Storyboard.TargetProperty="(DataGridRow.BorderBrush).(Brush.Opacity)"
+                                                        To="0" Duration="0:0:1.2">
+                                                        <DoubleAnimation.EasingFunction>
+                                                            <CubicEase EasingMode="EaseIn"/>
+                                                        </DoubleAnimation.EasingFunction>
+                                                    </DoubleAnimation>
                                                 </Storyboard>
                                             </BeginStoryboard>
                                         </DataTrigger.ExitActions>

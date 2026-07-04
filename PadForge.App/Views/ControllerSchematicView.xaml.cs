@@ -234,7 +234,8 @@ namespace PadForge.Views
                 StrokeThickness = 1.5,
                 Cursor = Cursors.Hand
             };
-            outer.SetResourceReference(Shape.StrokeProperty, DimKey);
+            // Ember ring (#175): the rig is an output surface.
+            outer.Stroke = new SolidColorBrush(Color.FromArgb(0x59, 0xFF, 0x6B, 0x2C));
             outer.SetResourceReference(Shape.FillProperty, BgKey);
             Canvas.SetLeft(outer, x);
             Canvas.SetTop(outer, y);
@@ -433,7 +434,8 @@ namespace PadForge.Views
                 Height = PovSize,
                 StrokeThickness = 1.5
             };
-            outer.SetResourceReference(Shape.StrokeProperty, DimKey);
+            // Ember ring (#175): the rig is an output surface.
+            outer.Stroke = new SolidColorBrush(Color.FromArgb(0x59, 0xFF, 0x6B, 0x2C));
             outer.SetResourceReference(Shape.FillProperty, BgKey);
             Canvas.SetLeft(outer, x);
             Canvas.SetTop(outer, y);
@@ -539,7 +541,8 @@ namespace PadForge.Views
                 StrokeThickness = 1.5,
                 Cursor = Cursors.Hand
             };
-            circle.SetResourceReference(Shape.StrokeProperty, DimKey);
+            // Ember ring (#175): output surface.
+            circle.Stroke = new SolidColorBrush(Color.FromArgb(0x59, 0xFF, 0x6B, 0x2C));
             circle.SetResourceReference(Shape.FillProperty, BgKey);
             Canvas.SetLeft(circle, x);
             Canvas.SetTop(circle, y);

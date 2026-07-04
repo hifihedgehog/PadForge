@@ -985,15 +985,19 @@
 
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="&#xED1A;" FontFamily="Segoe MDL2 Assets" FontSize="14"
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                    VerticalAlignment="Center" Margin="0,0,6,0"/>
-                        <TextBlock Text="HidHide" FontWeight="SemiBold"/>
+                        <TextBlock Text="HidHide" FontWeight="SemiBold"
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
                     </StackPanel>
                     <TextBlock Grid.Column="1" Text="{Binding HidHideStatusText}" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
 
                     <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,8,0,0">
                         <TextBlock Text="&#xE8D6;" FontFamily="Segoe MDL2 Assets" FontSize="14"
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                    VerticalAlignment="Center" Margin="0,0,6,0"/>
-                        <TextBlock Text="MIDI Services" FontWeight="SemiBold"/>
+                        <TextBlock Text="MIDI Services" FontWeight="SemiBold"
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
                     </StackPanel>
                     <TextBlock Grid.Row="1" Grid.Column="1"
                                Text="{Binding MidiServicesStatusText}" Foreground="{DynamicResource TextFillColorSecondaryBrush}"

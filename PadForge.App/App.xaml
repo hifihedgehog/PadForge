@@ -87,6 +87,10 @@
             <Style TargetType="ComboBox" BasedOn="{StaticResource DefaultComboBoxStyle}">
                 <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Visible"/>
                 <Setter Property="MaxDropDownHeight" Value="200"/>
+                <!-- #175 iteration 53: tighter closed-state metrics so combos
+                     sit on the same rhythm as the 32px control grid. -->
+                <Setter Property="MinHeight" Value="30"/>
+                <Setter Property="Padding" Value="8,4"/>
             </Style>
 
             <!--
@@ -122,6 +126,26 @@
                 <Setter Property="PressedBackground" Value="#161D2B"/>
                 <Setter Property="HorizontalAlignment" Value="Center"/>
                 <Setter Property="Margin" Value="4,0,0,0"/>
+                <!-- #175 iteration 53 motion: hover ring stays on the
+                     MouseOverBorderBrush property route (instant, template-
+                     owned). Press feedback is a plain RenderTransform swap.
+                     No storyboard, no Effect animation. Inherits into
+                     EmberIconButtonHot via BasedOn. -->
+                <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
+                <Setter Property="RenderTransform">
+                    <Setter.Value>
+                        <ScaleTransform ScaleX="1" ScaleY="1"/>
+                    </Setter.Value>
+                </Setter>
+                <Style.Triggers>
+                    <Trigger Property="IsPressed" Value="True">
+                        <Setter Property="RenderTransform">
+                            <Setter.Value>
+                                <ScaleTransform ScaleX="0.94" ScaleY="0.94"/>
+                            </Setter.Value>
+                        </Setter>
+                    </Trigger>
+                </Style.Triggers>
             </Style>
             <Style x:Key="EmberIconButtonHot" TargetType="uictrl:Button" BasedOn="{StaticResource EmberIconButton}">
                 <Setter Property="MouseOverBorderBrush" Value="{DynamicResource EmberBrush}"/>

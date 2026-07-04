@@ -277,6 +277,11 @@ public class Strings : INotifyPropertyChanged
     public string Settings_ShowTour => Get("Settings_ShowTour");
     public string Dashboard_Slot => Get("Dashboard_Slot");
     public string Pad_ScopeDevice => Get("Pad_ScopeDevice");
+    public string TypeAbbrev_Xbox => Get("TypeAbbrev_Xbox");
+    public string TypeAbbrev_PlayStation => Get("TypeAbbrev_PlayStation");
+    public string TypeAbbrev_Extended => Get("TypeAbbrev_Extended");
+    public string TypeAbbrev_KeyboardMouse => Get("TypeAbbrev_KeyboardMouse");
+    public string TypeAbbrev_Midi => Get("TypeAbbrev_Midi");
     public string Dashboard_Services => Get("Dashboard_Services");
     public string Dashboard_MotionServer => Get("Dashboard_MotionServer");
     public string Dashboard_DsuDescription => Get("Dashboard_DsuDescription");

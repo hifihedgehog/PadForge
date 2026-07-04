@@ -241,6 +241,11 @@
   <data name="Settings_ShowTour" xml:space="preserve"><value>Show Welcome Tour</value></data>
   <data name="Dashboard_Slot" xml:space="preserve"><value>Slot</value></data>
   <data name="Pad_ScopeDevice" xml:space="preserve"><value>Device</value></data>
+  <data name="TypeAbbrev_Xbox" xml:space="preserve"><value>XB</value></data>
+  <data name="TypeAbbrev_PlayStation" xml:space="preserve"><value>PS</value></data>
+  <data name="TypeAbbrev_Extended" xml:space="preserve"><value>EXT</value></data>
+  <data name="TypeAbbrev_KeyboardMouse" xml:space="preserve"><value>KBM</value></data>
+  <data name="TypeAbbrev_Midi" xml:space="preserve"><value>MIDI</value></data>
   <data name="Dashboard_Services" xml:space="preserve"><value>Services</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Motion Server</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>DSU/CemuHook Motion Provider protocol server for gyro and accelerometer data.</value></data>

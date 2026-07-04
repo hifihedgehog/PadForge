@@ -40,7 +40,7 @@
                     </StackPanel>
                     <TextBlock Text="{Binding Settings_AppearanceDesc, Source={x:Static strings:Strings.Instance}}"
                                Style="{StaticResource CardDescription}" Margin="0,0,0,12"/>
-                    <TextBlock Text="{Binding Settings_Theme, Source={x:Static strings:Strings.Instance}}" FontSize="13" Margin="0,0,0,6"/>
+                    <TextBlock Text="{Binding Settings_Theme, Source={x:Static strings:Strings.Instance}}" FontSize="13" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,0,0,6"/>
                     <ComboBox SelectedIndex="{Binding SelectedThemeIndex}" Width="200"
                               HorizontalAlignment="Left">
                         <ComboBoxItem Content="{Binding Settings_ThemeSystem, Source={x:Static strings:Strings.Instance}}"/>
@@ -63,11 +63,14 @@
                     <TextBlock Text="{Binding Settings_InputEngineDesc, Source={x:Static strings:Strings.Instance}}"
                                Style="{StaticResource CardDescription}" Margin="0,0,0,12"/>
                     <CheckBox Content="{Binding Settings_AutoStart, Source={x:Static strings:Strings.Instance}}"
+                              Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                               IsChecked="{Binding AutoStartEngine}" Margin="0,0,0,8"/>
                     <CheckBox Content="{Binding Settings_BackgroundPolling, Source={x:Static strings:Strings.Instance}}"
+                              Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                               IsChecked="{Binding EnablePollingOnFocusLoss}" Margin="0,0,0,8"/>
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                         <TextBlock Text="{Binding Settings_PollingInterval, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                    Margin="0,0,8,0"/>
                         <ui:NumberBox Value="{Binding PollingRateMs, Mode=TwoWay}"
                                       Minimum="1" Maximum="16"
@@ -76,6 +79,7 @@
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                         <TextBlock Text="{Binding Settings_HmInactivityTimeout, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                    Margin="0,0,8,0"/>
                         <ui:NumberBox Value="{Binding HmInactivityDestroyTimeoutSeconds, Mode=TwoWay}"
                                       Minimum="0" Maximum="3600"
@@ -97,10 +101,13 @@
                     <TextBlock Text="{Binding Settings_WindowDesc, Source={x:Static strings:Strings.Instance}}"
                                Style="{StaticResource CardDescription}" Margin="0,0,0,12"/>
                     <CheckBox Content="{Binding Settings_MinimizeToTray, Source={x:Static strings:Strings.Instance}}"
+                              Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                               IsChecked="{Binding MinimizeToTray}" Margin="0,0,0,8"/>
                     <CheckBox Content="{Binding Settings_StartMinimized, Source={x:Static strings:Strings.Instance}}"
+                              Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                               IsChecked="{Binding StartMinimized}" Margin="0,0,0,8"/>
                     <CheckBox Content="{Binding Settings_StartAtLogin, Source={x:Static strings:Strings.Instance}}"
+                              Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                               IsChecked="{Binding StartAtLogin}"/>
                 </StackPanel>
             </Border>
@@ -144,12 +151,14 @@
                     </Grid>
 
                     <CheckBox Content="{Binding Settings_HideDevices, Source={x:Static strings:Strings.Instance}}"
+                              Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                               IsChecked="{Binding EnableInputHiding}"
                               ToolTip="{Binding Settings_HideDevicesTooltip, Source={x:Static strings:Strings.Instance}}"
                               Visibility="{Binding IsHidHideInstalled, Converter={StaticResource BoolToVisibilityConverter}}"
                               Margin="0,12,0,0"/>
 
                     <CheckBox Content="{Binding Settings_KeepCloaksBetweenLaunches, Source={x:Static strings:Strings.Instance}}"
+                              Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                               IsChecked="{Binding KeepHidHideCloaksBetweenLaunches}"
                               ToolTip="{Binding Settings_KeepCloaksBetweenLaunchesTooltip, Source={x:Static strings:Strings.Instance}}"
                               Visibility="{Binding IsHidHideInstalled, Converter={StaticResource BoolToVisibilityConverter}}"
@@ -159,6 +168,7 @@
                     <StackPanel Visibility="{Binding IsHidHideInstalled, Converter={StaticResource BoolToVisibilityConverter}}"
                                 Margin="0,16,0,0">
                         <TextBlock Text="{Binding Settings_WhitelistedApps, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" FontSize="13"
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                    Margin="0,0,0,4"/>
                         <TextBlock Text="{Binding Settings_WhitelistDesc, Source={x:Static strings:Strings.Instance}}"
                                    Style="{StaticResource CardDescription}"/>

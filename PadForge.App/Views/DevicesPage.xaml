@@ -417,6 +417,7 @@
                                        Style="{StaticResource SectionEyebrow}" Margin="0,0,0,6"/>
 
                             <CheckBox Content="{Binding Devices_ForceRaw, Source={x:Static strings:Strings.Instance}}"
+                                      Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                       IsChecked="{Binding SelectedDevice.ForceRawJoystickMode, Mode=TwoWay}"
                                       Click="HidingToggle_Click"
                                       ToolTip="{Binding Devices_ForceRawTooltip, Source={x:Static strings:Strings.Instance}}"
@@ -431,6 +432,7 @@
                                    Visibility="{Binding SelectedDevice.ShowInputHidingSection, Converter={StaticResource BoolToVisibilityConverter}}"/>
 
                         <CheckBox Content="{Binding Devices_HideFromGames, Source={x:Static strings:Strings.Instance}}"
+                                  Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                   IsChecked="{Binding SelectedDevice.HidHideEnabled, Mode=TwoWay}"
                                   IsEnabled="{Binding SelectedDevice.IsHidHideAvailable}"
                                   Visibility="{Binding SelectedDevice.IsInternalVirtual, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}"
@@ -453,6 +455,7 @@
                         </CheckBox>
 
                         <CheckBox Content="{Binding Devices_ConsumeMapped, Source={x:Static strings:Strings.Instance}}"
+                                  Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                   IsChecked="{Binding SelectedDevice.ConsumeInputEnabled, Mode=TwoWay}"
                                   Click="HidingToggle_Click"
                                   ToolTip="{Binding Devices_ConsumeTooltip, Source={x:Static strings:Strings.Instance}}"
@@ -479,12 +482,13 @@
                             <StackPanel Orientation="Horizontal" Margin="0,0,0,4"
                                         ToolTip="{Binding Devices_IdleDisconnectTooltip, Source={x:Static strings:Strings.Instance}}">
                                 <TextBlock Text="{Binding Devices_IdleDisconnect, Source={x:Static strings:Strings.Instance}}"
-                                           VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                           VerticalAlignment="Center" Margin="0,0,8,0"
+                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
                                 <TextBox Text="{Binding SelectedDevice.IdleDisconnectMinutes, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                          Width="60" VerticalAlignment="Center"
                                          LostFocus="IdleDisconnect_LostFocus"/>
                                 <TextBlock Text="{Binding Devices_IdleDisconnectMinutes, Source={x:Static strings:Strings.Instance}}"
-                                           VerticalAlignment="Center" Margin="8,0,0,0" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                                           VerticalAlignment="Center" Margin="8,0,0,0" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
                             </StackPanel>
 
                             <Separator Margin="0,2,0,8"/>

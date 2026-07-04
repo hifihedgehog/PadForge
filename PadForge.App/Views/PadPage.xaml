@@ -19,7 +19,7 @@
         <Style x:Key="DzLabel" TargetType="TextBlock">
             <Setter Property="Width" Value="270"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
-            <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}"/>
+            <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}"/>
         </Style>
         <Style x:Key="DzSlider" TargetType="Slider" BasedOn="{StaticResource {x:Type Slider}}">
             <Setter Property="Minimum" Value="0"/>
@@ -58,7 +58,7 @@
         <Style x:Key="DzPercent" TargetType="TextBlock">
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="Margin" Value="2,0,0,0"/>
-            <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}"/>
+            <Setter Property="Foreground" Value="{DynamicResource TextFillColorTertiaryBrush}"/>
         </Style>
         <!--
             FontFamily / FontSize live on the child TextBlock so the symbol-
@@ -96,6 +96,7 @@
             <Setter Property="Width" Value="14"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}"/>
         </Style>
         <Style x:Key="DzRgbSlider" TargetType="Slider" BasedOn="{StaticResource {x:Type Slider}}">
             <Setter Property="Minimum" Value="0"/>
@@ -556,7 +557,7 @@
                 <!-- Row 2: Master Customize toggle. Controls IsEnabled of rows 3+4 below.
                      When off, the VC uses the catalog profile as-is with no overrides. -->
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,8,0,0">
-                    <CheckBox x:Name="ExtendedCustomizeChk"
+                    <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}" x:Name="ExtendedCustomizeChk"
                               VerticalAlignment="Center"
                               Content="{Binding Pad_ExtendedCustomize, Source={x:Static strings:Strings.Instance}}"
                               Checked="ExtendedCustomize_Toggled" Unchecked="ExtendedCustomize_Toggled"
@@ -577,7 +578,7 @@
                     <TextBox x:Name="ExtendedProductStringBox" Width="280" VerticalAlignment="Center"
                              LostFocus="ExtendedOverride_Changed" KeyDown="ExtendedOverride_KeyDown"/>
 
-                    <CheckBox x:Name="ExtendedOemOverrideChk" Margin="6,0,0,0"
+                    <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}" x:Name="ExtendedOemOverrideChk" Margin="6,0,0,0"
                               VerticalAlignment="Center"
                               Content="{Binding Pad_ExtendedOemOverride, Source={x:Static strings:Strings.Instance}}"
                               Checked="ExtendedOemOverride_Toggled" Unchecked="ExtendedOemOverride_Toggled"
@@ -633,7 +634,7 @@
                              TextAlignment="Center" Text="11"
                              LostFocus="ExtendedCustomValue_Changed" KeyDown="ExtendedCustomValue_KeyDown"/>
 
-                    <CheckBox x:Name="ExtendedForceFeedbackChk" Margin="14,0,0,0"
+                    <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}" x:Name="ExtendedForceFeedbackChk" Margin="14,0,0,0"
                               VerticalAlignment="Center"
                               Content="{Binding Pad_ExtendedForceFeedback, Source={x:Static strings:Strings.Instance}}"
                               IsChecked="{Binding ExtendedConfig.ForceFeedbackEnabled, Mode=TwoWay}"/>
@@ -907,7 +908,7 @@
                                      Margin="0,0,0,12"/>
 
                             <!-- Enabled -->
-                            <CheckBox Content="{Binding Common_Enabled, Source={x:Static strings:Strings.Instance}}" IsChecked="{Binding IsEnabled, Mode=TwoWay}"
+                            <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}" Content="{Binding Common_Enabled, Source={x:Static strings:Strings.Instance}}" IsChecked="{Binding IsEnabled, Mode=TwoWay}"
                                       Margin="0,0,0,12"/>
 
                             <!-- Trigger mode -->
@@ -918,7 +919,7 @@
                                            Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
                             </StackPanel>
                             <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
-                                <TextBlock Text="{Binding Macro_Fire, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
+                                <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Macro_Fire, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
                                            Margin="0,0,8,0"/>
                                 <ComboBox SelectedValue="{Binding TriggerMode, Mode=TwoWay}"
                                           SelectedValuePath="Tag" MinWidth="120">
@@ -1229,7 +1230,7 @@
                                                Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
-                                    <TextBlock Text="{Binding Macro_Source, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
+                                    <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Macro_Source, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
                                                Margin="0,0,8,0"/>
                                     <ComboBox SelectedValue="{Binding TriggerSource, Mode=TwoWay}"
                                               SelectedValuePath="Tag" MinWidth="160">
@@ -1275,20 +1276,20 @@
                                      duplicate controls would just be redundant + confusing. -->
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,4"
                                             Visibility="{Binding HasLegacyAxisTrigger, Converter={StaticResource BoolToVisibilityConverter}}">
-                                    <TextBlock Text="{Binding Macro_Threshold, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
+                                    <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Macro_Threshold, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
                                                Margin="0,0,8,0"/>
                                     <Slider Value="{Binding TriggerAxisThreshold, Mode=TwoWay}"
                                             Minimum="1" Maximum="100" Width="150"
                                             VerticalAlignment="Center"/>
                                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="6,0,0,0">
                                         <TextBlock Text="{Binding TriggerAxisThreshold, Mode=OneWay}"/>
-                                        <TextBlock Text="%"/>
+                                        <TextBlock Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text="%"/>
                                     </StackPanel>
                                 </StackPanel>
 
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,4"
                                             Visibility="{Binding HasLegacyAxisTrigger, Converter={StaticResource BoolToVisibilityConverter}}">
-                                    <TextBlock Text="{Binding Macro_AxisDirection, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
+                                    <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Macro_AxisDirection, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
                                                Margin="0,0,8,0"/>
                                     <ComboBox SelectedIndex="{Binding TriggerAxisDirectionIndex, Mode=TwoWay}" MinWidth="120">
                                         <ComboBoxItem Content="{Binding Macro_AxisDirection_Any, Source={x:Static strings:Strings.Instance}}"/>
@@ -1315,13 +1316,13 @@
                                                 <TextBlock Text="{Binding AxisLabel}"
                                                            FontSize="11"
                                                            VerticalAlignment="Center" Margin="0,0,6,0"/>
-                                                <CheckBox Content="{Binding Pad_Invert, Source={x:Static strings:Strings.Instance}}"
+                                                <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}" Content="{Binding Pad_Invert, Source={x:Static strings:Strings.Instance}}"
                                                           IsChecked="{Binding Invert, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                           VerticalAlignment="Center" Margin="0,0,6,0"/>
-                                                <CheckBox Content="{Binding Pad_Half, Source={x:Static strings:Strings.Instance}}"
+                                                <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}" Content="{Binding Pad_Half, Source={x:Static strings:Strings.Instance}}"
                                                           IsChecked="{Binding HalfAxis, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                           VerticalAlignment="Center" Margin="0,0,6,0"/>
-                                                <CheckBox Content="{Binding Pad_Either, Source={x:Static strings:Strings.Instance}}"
+                                                <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}" Content="{Binding Pad_Either, Source={x:Static strings:Strings.Instance}}"
                                                           ToolTip="{Binding Pad_Either_Tooltip, Source={x:Static strings:Strings.Instance}}"
                                                           IsChecked="{Binding Bidirectional, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                           IsEnabled="{Binding HalfAxis}"
@@ -1338,7 +1339,7 @@
                                     </ItemsControl.ItemTemplate>
                                 </ItemsControl>
 
-                                <CheckBox Content="{Binding Macro_ConsumeTrigger, Source={x:Static strings:Strings.Instance}}"
+                                <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}" Content="{Binding Macro_ConsumeTrigger, Source={x:Static strings:Strings.Instance}}"
                                           IsChecked="{Binding ConsumeTriggerButtons, Mode=TwoWay}"
                                           Margin="0,0,0,4"/>
                             </StackPanel>
@@ -1385,7 +1386,7 @@
 
                                     <!-- Action type -->
                                     <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
-                                        <TextBlock Text="{Binding Macro_ActionType, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
+                                        <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Macro_ActionType, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
                                                    Width="80" Margin="0,0,8,0"/>
                                         <ComboBox SelectedValue="{Binding Type, Mode=TwoWay}"
                                                   SelectedValuePath="Tag" MinWidth="150">
@@ -1454,7 +1455,7 @@
                                     <StackPanel Margin="0,0,0,6"
                                                 Visibility="{Binding IsDisconnectControllerType, Converter={StaticResource BoolToVisibilityConverter}}">
                                         <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
-                                            <TextBlock Text="{Binding MacroDisconnect_Target_Label, Source={x:Static strings:Strings.Instance}}"
+                                            <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding MacroDisconnect_Target_Label, Source={x:Static strings:Strings.Instance}}"
                                                        Width="60" VerticalAlignment="Center"/>
                                             <ComboBox SelectedValue="{Binding DisconnectTarget, Mode=TwoWay}"
                                                       SelectedValuePath="Tag"
@@ -1468,7 +1469,7 @@
                                         </StackPanel>
                                         <StackPanel Orientation="Horizontal" Margin="0,0,0,4"
                                                     Visibility="{Binding IsDisconnectSpecificDevice, Converter={StaticResource BoolToVisibilityConverter}}">
-                                            <TextBlock Text="{Binding MacroDisconnect_Device_Label, Source={x:Static strings:Strings.Instance}}"
+                                            <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding MacroDisconnect_Device_Label, Source={x:Static strings:Strings.Instance}}"
                                                        Width="60" VerticalAlignment="Center"/>
                                             <ComboBox ItemsSource="{Binding DisconnectDeviceOptions}"
                                                       SelectedValue="{Binding DisconnectDeviceGuid, Mode=TwoWay}"
@@ -1483,7 +1484,7 @@
                                     <!-- SetGyroEngaged Mode picker — Toggle / On / Off -->
                                     <StackPanel Orientation="Horizontal" Margin="0,0,0,6"
                                                 Visibility="{Binding IsSetGyroEngagedType, Converter={StaticResource BoolToVisibilityConverter}}">
-                                        <TextBlock Text="{Binding Macro_SetGyroEngaged_Mode_Label, Source={x:Static strings:Strings.Instance}}"
+                                        <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Macro_SetGyroEngaged_Mode_Label, Source={x:Static strings:Strings.Instance}}"
                                                    Width="60" VerticalAlignment="Center"/>
                                         <ComboBox SelectedValue="{Binding SetGyroEngagedMode, Mode=TwoWay}"
                                                   SelectedValuePath="Tag"
@@ -1499,7 +1500,7 @@
                                     <!-- Cursor Recenter Mode picker (#108). X / Y / X+Y -->
                                     <StackPanel Orientation="Horizontal" Margin="0,0,0,6"
                                                 Visibility="{Binding IsMouseRecenterType, Converter={StaticResource BoolToVisibilityConverter}}">
-                                        <TextBlock Text="{Binding Macro_CursorRecenterMode_Label, Source={x:Static strings:Strings.Instance}}"
+                                        <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Macro_CursorRecenterMode_Label, Source={x:Static strings:Strings.Instance}}"
                                                    Width="60" VerticalAlignment="Center"/>
                                         <ComboBox SelectedValue="{Binding CursorRecenterMode, Mode=TwoWay}"
                                                   SelectedValuePath="Tag"
@@ -1515,7 +1516,7 @@
                                     <StackPanel Margin="0,0,0,6"
                                                 Visibility="{Binding IsMouseFixPositionType, Converter={StaticResource BoolToVisibilityConverter}}">
                                         <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
-                                            <TextBlock Text="{Binding Macro_CursorPinMode_Label, Source={x:Static strings:Strings.Instance}}"
+                                            <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Macro_CursorPinMode_Label, Source={x:Static strings:Strings.Instance}}"
                                                        Width="60" VerticalAlignment="Center"/>
                                             <ComboBox SelectedValue="{Binding CursorPinMode, Mode=TwoWay}"
                                                       SelectedValuePath="Tag"
@@ -1527,13 +1528,13 @@
                                             </ComboBox>
                                         </StackPanel>
                                         <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
-                                            <TextBlock Text="{Binding Macro_CursorPinX_Label, Source={x:Static strings:Strings.Instance}}"
+                                            <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Macro_CursorPinX_Label, Source={x:Static strings:Strings.Instance}}"
                                                        Width="60" VerticalAlignment="Center"/>
                                             <TextBox Text="{Binding CursorPinX, Mode=TwoWay, StringFormat=F0, UpdateSourceTrigger=LostFocus}"
                                                      Width="80" VerticalAlignment="Center"/>
                                         </StackPanel>
                                         <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
-                                            <TextBlock Text="{Binding Macro_CursorPinY_Label, Source={x:Static strings:Strings.Instance}}"
+                                            <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Macro_CursorPinY_Label, Source={x:Static strings:Strings.Instance}}"
                                                        Width="60" VerticalAlignment="Center"/>
                                             <TextBox Text="{Binding CursorPinY, Mode=TwoWay, StringFormat=F0, UpdateSourceTrigger=LostFocus}"
                                                      Width="80" VerticalAlignment="Center"/>
@@ -1547,7 +1548,7 @@
                                     <StackPanel Margin="0,0,0,6"
                                                 Visibility="{Binding IsMouseLimitRegionType, Converter={StaticResource BoolToVisibilityConverter}}">
                                         <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
-                                            <TextBlock Text="{Binding Macro_CursorClampMode_Label, Source={x:Static strings:Strings.Instance}}"
+                                            <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Macro_CursorClampMode_Label, Source={x:Static strings:Strings.Instance}}"
                                                        Width="60" VerticalAlignment="Center"/>
                                             <ComboBox SelectedValue="{Binding CursorClampMode, Mode=TwoWay}"
                                                       SelectedValuePath="Tag"
@@ -1559,14 +1560,14 @@
                                             </ComboBox>
                                         </StackPanel>
                                         <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
-                                            <TextBlock Text="{Binding Macro_CursorClampInsetX_Label, Source={x:Static strings:Strings.Instance}}"
+                                            <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Macro_CursorClampInsetX_Label, Source={x:Static strings:Strings.Instance}}"
                                                        Width="60" VerticalAlignment="Center"/>
                                             <TextBox Text="{Binding CursorClampInsetX, Mode=TwoWay, StringFormat=F0, UpdateSourceTrigger=LostFocus}"
                                                      Width="80" VerticalAlignment="Center"/>
                                             <Button Command="{Binding ResetCursorClampInsetXCommand}" Style="{StaticResource ResetButton}" Margin="8,0,0,0"/>
                                         </StackPanel>
                                         <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
-                                            <TextBlock Text="{Binding Macro_CursorClampInsetY_Label, Source={x:Static strings:Strings.Instance}}"
+                                            <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Macro_CursorClampInsetY_Label, Source={x:Static strings:Strings.Instance}}"
                                                        Width="60" VerticalAlignment="Center"/>
                                             <TextBox Text="{Binding CursorClampInsetY, Mode=TwoWay, StringFormat=F0, UpdateSourceTrigger=LostFocus}"
                                                      Width="80" VerticalAlignment="Center"/>
@@ -1589,7 +1590,7 @@
                                             </ItemsControl.ItemsPanel>
                                             <ItemsControl.ItemTemplate>
                                                 <DataTemplate>
-                                                    <CheckBox Content="{Binding Label}"
+                                                    <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}" Content="{Binding Label}"
                                                               IsChecked="{Binding IsChecked, Mode=TwoWay}"
                                                               MinWidth="70" Margin="0,0,8,4"/>
                                                 </DataTemplate>
@@ -1622,10 +1623,10 @@
                                     <!-- Duration — for ButtonPress / KeyPress / Delay / LightbarColor -->
                                     <StackPanel Orientation="Horizontal" Margin="0,0,0,6"
                                                 Visibility="{Binding IsDurationType, Converter={StaticResource BoolToVisibilityConverter}}">
-                                        <TextBlock Text="{Binding Macro_Duration, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
+                                        <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Macro_Duration, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
                                                    Width="80" Margin="0,0,8,0"/>
                                         <TextBox Text="{Binding DurationMs, Mode=TwoWay}" Width="80"/>
-                                        <TextBlock Text="{Binding Common_Ms, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="4,0,0,0"/>
+                                        <TextBlock Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text="{Binding Common_Ms, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="4,0,0,0"/>
                                     </StackPanel>
 
                                     <!-- Lightbar Color card (Reactive | Sticky) -->
@@ -1635,7 +1636,7 @@
                                             <TextBlock Text="{Binding MacroAction_Type_LightbarColor, Source={x:Static strings:Strings.Instance}}"
                                                        FontWeight="SemiBold" Margin="0,0,0,6"/>
                                             <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
-                                                <TextBlock Text="{Binding Macro_LightbarHold_Label, Source={x:Static strings:Strings.Instance}}"
+                                                <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Macro_LightbarHold_Label, Source={x:Static strings:Strings.Instance}}"
                                                            VerticalAlignment="Center" Width="80" Margin="0,0,8,0"/>
                                                 <ComboBox SelectedValue="{Binding LightbarHoldMode, Mode=TwoWay}"
                                                           SelectedValuePath="Tag" MinWidth="140">
@@ -1646,7 +1647,7 @@
                                             <!-- Color source — Reactive only. Sticky always uses Fixed. -->
                                             <StackPanel Orientation="Horizontal" Margin="0,0,0,6"
                                                         Visibility="{Binding IsLightbarReactiveHold, Converter={StaticResource BoolToVisibilityConverter}}">
-                                                <TextBlock Text="{Binding Macro_LightbarColorSource_Label, Source={x:Static strings:Strings.Instance}}"
+                                                <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Macro_LightbarColorSource_Label, Source={x:Static strings:Strings.Instance}}"
                                                            VerticalAlignment="Center" Width="80" Margin="0,0,8,0"/>
                                                 <ComboBox SelectedValue="{Binding LightbarColorSource, Mode=TwoWay}"
                                                           SelectedValuePath="Tag" MinWidth="160">
@@ -1716,24 +1717,24 @@
                                             <!-- Hold slider — Reactive only. Held at full intensity for this many ms before the fade begins. -->
                                             <StackPanel Orientation="Horizontal" Margin="0,0,0,4"
                                                         Visibility="{Binding IsLightbarReactiveHold, Converter={StaticResource BoolToVisibilityConverter}}">
-                                                <TextBlock Text="{Binding Macro_LightbarHold_Label, Source={x:Static strings:Strings.Instance}}"
+                                                <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Macro_LightbarHold_Label, Source={x:Static strings:Strings.Instance}}"
                                                            VerticalAlignment="Center" Width="80" Margin="0,0,8,0"/>
                                                 <Slider Value="{Binding LightbarHoldMs, Mode=TwoWay}"
                                                         Minimum="0" Maximum="5000" Width="220"
                                                         VerticalAlignment="Center"/>
                                                 <TextBox Text="{Binding LightbarHoldMs, Mode=TwoWay}" Width="80" Margin="8,0,0,0"/>
-                                                <TextBlock Text="{Binding Common_Ms, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="4,0,0,0"/>
+                                                <TextBlock Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text="{Binding Common_Ms, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="4,0,0,0"/>
                                             </StackPanel>
                                             <!-- Fade slider — Reactive only. Linear fade from full to off after the hold. -->
                                             <StackPanel Orientation="Horizontal"
                                                         Visibility="{Binding IsLightbarReactiveHold, Converter={StaticResource BoolToVisibilityConverter}}">
-                                                <TextBlock Text="{Binding Macro_LightbarFade_Label, Source={x:Static strings:Strings.Instance}}"
+                                                <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Macro_LightbarFade_Label, Source={x:Static strings:Strings.Instance}}"
                                                            VerticalAlignment="Center" Width="80" Margin="0,0,8,0"/>
                                                 <Slider Value="{Binding LightbarFadeMs, Mode=TwoWay}"
                                                         Minimum="0" Maximum="5000" Width="220"
                                                         VerticalAlignment="Center"/>
                                                 <TextBox Text="{Binding LightbarFadeMs, Mode=TwoWay}" Width="80" Margin="8,0,0,0"/>
-                                                <TextBlock Text="{Binding Common_Ms, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="4,0,0,0"/>
+                                                <TextBlock Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text="{Binding Common_Ms, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="4,0,0,0"/>
                                             </StackPanel>
                                         </StackPanel>
                                     </Border>
@@ -1757,7 +1758,7 @@
                                             <TextBlock Text="{Binding MacroAction_Type_LightbarModeSet, Source={x:Static strings:Strings.Instance}}"
                                                        FontWeight="SemiBold" Margin="0,0,0,6"/>
                                             <StackPanel Orientation="Horizontal">
-                                                <TextBlock Text="{Binding Macro_LightbarTargetMode_Label, Source={x:Static strings:Strings.Instance}}"
+                                                <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Macro_LightbarTargetMode_Label, Source={x:Static strings:Strings.Instance}}"
                                                            VerticalAlignment="Center" Width="80" Margin="0,0,8,0"/>
                                                 <ComboBox SelectedValue="{Binding LightbarTargetMode, Mode=TwoWay}"
                                                           SelectedValuePath="Tag" MinWidth="280">
@@ -1797,7 +1798,7 @@
                                                 </ItemsControl.ItemsPanel>
                                                 <ItemsControl.ItemTemplate>
                                                     <DataTemplate>
-                                                        <CheckBox Content="{Binding Label}"
+                                                        <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}" Content="{Binding Label}"
                                                                   IsChecked="{Binding IsChecked, Mode=TwoWay}"
                                                                   MinWidth="160" Margin="0,0,8,4"/>
                                                     </DataTemplate>
@@ -1815,7 +1816,7 @@
                                             <TextBlock Text="{Binding RumbleEditorTitle}"
                                                        FontWeight="SemiBold" Margin="0,0,0,6"/>
                                             <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
-                                                <TextBlock Text="{Binding Macro_RumbleHold_Label, Source={x:Static strings:Strings.Instance}}"
+                                                <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Macro_RumbleHold_Label, Source={x:Static strings:Strings.Instance}}"
                                                            VerticalAlignment="Center" Width="100" Margin="0,0,8,0"/>
                                                 <ComboBox SelectedValue="{Binding RumbleHoldMode, Mode=TwoWay}"
                                                           SelectedValuePath="Tag" MinWidth="140">
@@ -1825,45 +1826,45 @@
                                             </StackPanel>
                                             <!-- Left motor strength -->
                                             <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
-                                                <TextBlock Text="{Binding Macro_RumbleStrengthLeft_Label, Source={x:Static strings:Strings.Instance}}"
+                                                <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Macro_RumbleStrengthLeft_Label, Source={x:Static strings:Strings.Instance}}"
                                                            VerticalAlignment="Center" Width="100" Margin="0,0,8,0"/>
                                                 <Slider Value="{Binding RumbleStrengthLeft, Mode=TwoWay}"
                                                         Minimum="0" Maximum="100" Width="220"
                                                         VerticalAlignment="Center"/>
                                                 <TextBox Text="{Binding RumbleStrengthLeft, Mode=TwoWay}" Width="60" Margin="8,0,0,0"/>
-                                                <TextBlock Text="%" VerticalAlignment="Center" Margin="2,0,0,0"/>
+                                                <TextBlock Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text="%" VerticalAlignment="Center" Margin="2,0,0,0"/>
                                             </StackPanel>
                                             <!-- Right motor strength -->
                                             <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
-                                                <TextBlock Text="{Binding Macro_RumbleStrengthRight_Label, Source={x:Static strings:Strings.Instance}}"
+                                                <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Macro_RumbleStrengthRight_Label, Source={x:Static strings:Strings.Instance}}"
                                                            VerticalAlignment="Center" Width="100" Margin="0,0,8,0"/>
                                                 <Slider Value="{Binding RumbleStrengthRight, Mode=TwoWay}"
                                                         Minimum="0" Maximum="100" Width="220"
                                                         VerticalAlignment="Center"/>
                                                 <TextBox Text="{Binding RumbleStrengthRight, Mode=TwoWay}" Width="60" Margin="8,0,0,0"/>
-                                                <TextBlock Text="%" VerticalAlignment="Center" Margin="2,0,0,0"/>
+                                                <TextBlock Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text="%" VerticalAlignment="Center" Margin="2,0,0,0"/>
                                             </StackPanel>
                                             <!-- Hold ms — Reactive only -->
                                             <StackPanel Orientation="Horizontal" Margin="0,0,0,4"
                                                         Visibility="{Binding IsRumbleReactiveHold, Converter={StaticResource BoolToVisibilityConverter}}">
-                                                <TextBlock Text="{Binding Macro_RumbleHoldMs_Label, Source={x:Static strings:Strings.Instance}}"
+                                                <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Macro_RumbleHoldMs_Label, Source={x:Static strings:Strings.Instance}}"
                                                            VerticalAlignment="Center" Width="100" Margin="0,0,8,0"/>
                                                 <Slider Value="{Binding RumbleHoldMs, Mode=TwoWay}"
                                                         Minimum="0" Maximum="5000" Width="220"
                                                         VerticalAlignment="Center"/>
                                                 <TextBox Text="{Binding RumbleHoldMs, Mode=TwoWay}" Width="80" Margin="8,0,0,0"/>
-                                                <TextBlock Text="{Binding Common_Ms, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="4,0,0,0"/>
+                                                <TextBlock Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text="{Binding Common_Ms, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="4,0,0,0"/>
                                             </StackPanel>
                                             <!-- Fade ms — Reactive only -->
                                             <StackPanel Orientation="Horizontal"
                                                         Visibility="{Binding IsRumbleReactiveHold, Converter={StaticResource BoolToVisibilityConverter}}">
-                                                <TextBlock Text="{Binding Macro_RumbleFadeMs_Label, Source={x:Static strings:Strings.Instance}}"
+                                                <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Macro_RumbleFadeMs_Label, Source={x:Static strings:Strings.Instance}}"
                                                            VerticalAlignment="Center" Width="100" Margin="0,0,8,0"/>
                                                 <Slider Value="{Binding RumbleFadeMs, Mode=TwoWay}"
                                                         Minimum="0" Maximum="5000" Width="220"
                                                         VerticalAlignment="Center"/>
                                                 <TextBox Text="{Binding RumbleFadeMs, Mode=TwoWay}" Width="80" Margin="8,0,0,0"/>
-                                                <TextBlock Text="{Binding Common_Ms, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="4,0,0,0"/>
+                                                <TextBlock Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text="{Binding Common_Ms, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="4,0,0,0"/>
                                             </StackPanel>
                                         </StackPanel>
                                     </Border>
@@ -1889,7 +1890,7 @@
                                             <TextBlock Text="{Binding MacroAction_Type_PlaySound, Source={x:Static strings:Strings.Instance}}"
                                                        FontWeight="SemiBold" Margin="0,0,0,6"/>
                                             <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
-                                                <TextBlock Text="{Binding Macro_Sound_File_Label, Source={x:Static strings:Strings.Instance}}"
+                                                <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Macro_Sound_File_Label, Source={x:Static strings:Strings.Instance}}"
                                                            VerticalAlignment="Center" Width="80" Margin="0,0,8,0"/>
                                                 <TextBox Text="{Binding SoundFilePath, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                                          Width="260" VerticalAlignment="Center"
@@ -1900,15 +1901,15 @@
                                                         Click="PreviewSoundFile_Click" Padding="8,2" Margin="6,0,0,0" VerticalAlignment="Center"/>
                                             </StackPanel>
                                             <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
-                                                <TextBlock Text="{Binding Macro_Sound_Volume_Label, Source={x:Static strings:Strings.Instance}}"
+                                                <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Macro_Sound_Volume_Label, Source={x:Static strings:Strings.Instance}}"
                                                            VerticalAlignment="Center" Width="80" Margin="0,0,8,0"/>
                                                 <Slider Value="{Binding SoundVolume, Mode=TwoWay}" Minimum="0" Maximum="100"
                                                         Width="180" VerticalAlignment="Center"/>
                                                 <TextBox Text="{Binding SoundVolume, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                                          Style="{StaticResource DzValueEdit}"/>
-                                                <TextBlock Text="%" VerticalAlignment="Center" Margin="2,0,0,0"/>
+                                                <TextBlock Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text="%" VerticalAlignment="Center" Margin="2,0,0,0"/>
                                             </StackPanel>
-                                            <CheckBox IsChecked="{Binding SoundLoop, Mode=TwoWay}"
+                                            <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}" IsChecked="{Binding SoundLoop, Mode=TwoWay}"
                                                       Content="{Binding Macro_Sound_Loop, Source={x:Static strings:Strings.Instance}}"
                                                       ToolTip="{Binding Macro_Sound_Loop_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                         </StackPanel>
@@ -1929,7 +1930,7 @@
                                     <!-- Axis target + value — for AxisSet -->
                                     <StackPanel Orientation="Horizontal" Margin="0,0,0,6"
                                                 Visibility="{Binding IsAxisType, Converter={StaticResource BoolToVisibilityConverter}}">
-                                        <TextBlock Text="{Binding Macro_Axis, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
+                                        <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Macro_Axis, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
                                                    Width="80" Margin="0,0,8,0"/>
                                         <ComboBox SelectedValue="{Binding AxisTarget, Mode=TwoWay}"
                                                   SelectedValuePath="Tag" MinWidth="120">
@@ -1941,7 +1942,7 @@
                                             <ComboBoxItem Content="{Binding Macro_LeftTrigger, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroAxisTarget.LeftTrigger}"/>
                                             <ComboBoxItem Content="{Binding Macro_RightTrigger, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroAxisTarget.RightTrigger}"/>
                                         </ComboBox>
-                                        <TextBlock Text="{Binding Macro_AxisValue, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
+                                        <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Macro_AxisValue, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
                                                    Margin="12,0,8,0"/>
                                         <TextBox Text="{Binding AxisValue, Mode=TwoWay}" Width="80"/>
                                     </StackPanel>
@@ -1951,7 +1952,7 @@
                                                 Visibility="{Binding IsSystemVolumeType, Converter={StaticResource BoolToVisibilityConverter}}">
                                         <!-- Axis source selector -->
                                         <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
-                                            <TextBlock Text="{Binding Macro_AxisFrom, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
+                                            <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Macro_AxisFrom, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
                                                        Width="80" Margin="0,0,8,0"/>
                                             <ComboBox SelectedValue="{Binding AxisSource, Mode=TwoWay}"
                                                       SelectedValuePath="Tag" MinWidth="150">
@@ -1962,7 +1963,7 @@
                                         <!-- Output controller axis (existing) -->
                                         <StackPanel Orientation="Horizontal" Margin="0,0,0,4"
                                                     Visibility="{Binding IsOutputAxisSource, Converter={StaticResource BoolToVisibilityConverter}}">
-                                            <TextBlock Text="{Binding Macro_SourceAxis, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
+                                            <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Macro_SourceAxis, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
                                                        Width="80" Margin="0,0,8,0"/>
                                             <ComboBox SelectedValue="{Binding AxisTarget, Mode=TwoWay}"
                                                       SelectedValuePath="Tag" MinWidth="150">
@@ -1977,7 +1978,7 @@
                                         <!-- Input device axis -->
                                         <StackPanel Visibility="{Binding IsDeviceAxisSource, Converter={StaticResource BoolToVisibilityConverter}}">
                                             <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
-                                                <TextBlock Text="{Binding Macro_Device, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
+                                                <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Macro_Device, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
                                                            Width="80" Margin="0,0,8,0"/>
                                                 <ComboBox x:Name="SysVolDevicePicker"
                                                           MinWidth="200"
@@ -1987,7 +1988,7 @@
                                                           DropDownOpened="DeviceAxisPicker_DropDownOpened"/>
                                             </StackPanel>
                                             <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
-                                                <TextBlock Text="{Binding Macro_Axis, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
+                                                <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Macro_Axis, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
                                                            Width="80" Margin="0,0,8,0"/>
                                                 <ComboBox MinWidth="180"
                                                           DisplayMemberPath="DisplayName"
@@ -1997,19 +1998,19 @@
                                             </StackPanel>
                                         </StackPanel>
                                         <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
-                                            <TextBlock Text="{Binding Macro_VolumeLimit, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
+                                            <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Macro_VolumeLimit, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
                                                        Width="80" Margin="0,0,8,0"/>
                                             <Slider Value="{Binding VolumeLimit, Mode=TwoWay}"
                                                     Minimum="1" Maximum="100" Width="150"
                                                     VerticalAlignment="Center"/>
                                             <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="6,0,0,0">
                                                 <TextBlock Text="{Binding VolumeLimit, Mode=OneWay}"/>
-                                                <TextBlock Text="%"/>
+                                                <TextBlock Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text="%"/>
                                             </StackPanel>
                                         </StackPanel>
-                                        <CheckBox Content="{Binding Macro_InvertAxis, Source={x:Static strings:Strings.Instance}}"
+                                        <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}" Content="{Binding Macro_InvertAxis, Source={x:Static strings:Strings.Instance}}"
                                                  IsChecked="{Binding InvertAxis, Mode=TwoWay}" Margin="0,0,0,4"/>
-                                        <CheckBox Content="{Binding Macro_ShowVolumeOsd, Source={x:Static strings:Strings.Instance}}"
+                                        <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}" Content="{Binding Macro_ShowVolumeOsd, Source={x:Static strings:Strings.Instance}}"
                                                  IsChecked="{Binding ShowVolumeOsd, Mode=TwoWay}" Margin="0,0,0,4"/>
                                         <TextBlock Text="{Binding Macro_SysVolumeHint, Source={x:Static strings:Strings.Instance}}"
                                                    FontSize="11" TextWrapping="Wrap"
@@ -2020,7 +2021,7 @@
                                     <StackPanel Margin="0,0,0,6"
                                                 Visibility="{Binding IsAppVolumeType, Converter={StaticResource BoolToVisibilityConverter}}">
                                         <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
-                                            <TextBlock Text="{Binding Macro_Process, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
+                                            <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Macro_Process, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
                                                        Width="80" Margin="0,0,8,0"/>
                                             <ComboBox IsEditable="True"
                                                       Text="{Binding ProcessName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -2032,7 +2033,7 @@
                                         </StackPanel>
                                         <!-- Axis source selector -->
                                         <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
-                                            <TextBlock Text="{Binding Macro_AxisFrom, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
+                                            <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Macro_AxisFrom, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
                                                        Width="80" Margin="0,0,8,0"/>
                                             <ComboBox SelectedValue="{Binding AxisSource, Mode=TwoWay}"
                                                       SelectedValuePath="Tag" MinWidth="150">
@@ -2043,7 +2044,7 @@
                                         <!-- Output controller axis -->
                                         <StackPanel Orientation="Horizontal" Margin="0,0,0,4"
                                                     Visibility="{Binding IsOutputAxisSource, Converter={StaticResource BoolToVisibilityConverter}}">
-                                            <TextBlock Text="{Binding Macro_SourceAxis, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
+                                            <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Macro_SourceAxis, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
                                                        Width="80" Margin="0,0,8,0"/>
                                             <ComboBox SelectedValue="{Binding AxisTarget, Mode=TwoWay}"
                                                       SelectedValuePath="Tag" MinWidth="150">
@@ -2058,7 +2059,7 @@
                                         <!-- Input device axis -->
                                         <StackPanel Visibility="{Binding IsDeviceAxisSource, Converter={StaticResource BoolToVisibilityConverter}}">
                                             <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
-                                                <TextBlock Text="{Binding Macro_Device, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
+                                                <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Macro_Device, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
                                                            Width="80" Margin="0,0,8,0"/>
                                                 <ComboBox x:Name="AppVolDevicePicker"
                                                           MinWidth="200"
@@ -2068,7 +2069,7 @@
                                                           DropDownOpened="DeviceAxisPicker_DropDownOpened"/>
                                             </StackPanel>
                                             <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
-                                                <TextBlock Text="{Binding Macro_Axis, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
+                                                <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Macro_Axis, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
                                                            Width="80" Margin="0,0,8,0"/>
                                                 <ComboBox MinWidth="180"
                                                           DisplayMemberPath="DisplayName"
@@ -2078,17 +2079,17 @@
                                             </StackPanel>
                                         </StackPanel>
                                         <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
-                                            <TextBlock Text="{Binding Macro_VolumeLimit, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
+                                            <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Macro_VolumeLimit, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
                                                        Width="80" Margin="0,0,8,0"/>
                                             <Slider Value="{Binding VolumeLimit, Mode=TwoWay}"
                                                     Minimum="1" Maximum="100" Width="150"
                                                     VerticalAlignment="Center"/>
                                             <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="6,0,0,0">
                                                 <TextBlock Text="{Binding VolumeLimit, Mode=OneWay}"/>
-                                                <TextBlock Text="%"/>
+                                                <TextBlock Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text="%"/>
                                             </StackPanel>
                                         </StackPanel>
-                                        <CheckBox Content="{Binding Macro_InvertAxis, Source={x:Static strings:Strings.Instance}}"
+                                        <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}" Content="{Binding Macro_InvertAxis, Source={x:Static strings:Strings.Instance}}"
                                                  IsChecked="{Binding InvertAxis, Mode=TwoWay}" Margin="0,0,0,4"/>
                                         <TextBlock Text="{Binding Macro_AppVolumeHint, Source={x:Static strings:Strings.Instance}}"
                                                    FontSize="11" TextWrapping="Wrap"
@@ -2100,7 +2101,7 @@
                                                 Visibility="{Binding IsMouseMoveType, Converter={StaticResource BoolToVisibilityConverter}}">
                                         <!-- Axis source selector -->
                                         <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
-                                            <TextBlock Text="{Binding Macro_AxisFrom, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
+                                            <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Macro_AxisFrom, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
                                                        Width="80" Margin="0,0,8,0"/>
                                             <ComboBox SelectedValue="{Binding AxisSource, Mode=TwoWay}"
                                                       SelectedValuePath="Tag" MinWidth="150">
@@ -2111,7 +2112,7 @@
                                         <!-- Output controller axis -->
                                         <StackPanel Orientation="Horizontal" Margin="0,0,0,4"
                                                     Visibility="{Binding IsOutputAxisSource, Converter={StaticResource BoolToVisibilityConverter}}">
-                                            <TextBlock Text="{Binding Macro_SourceAxis, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
+                                            <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Macro_SourceAxis, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
                                                        Width="80" Margin="0,0,8,0"/>
                                             <ComboBox SelectedValue="{Binding AxisTarget, Mode=TwoWay}"
                                                       SelectedValuePath="Tag" MinWidth="150">
@@ -2126,7 +2127,7 @@
                                         <!-- Input device axis -->
                                         <StackPanel Visibility="{Binding IsDeviceAxisSource, Converter={StaticResource BoolToVisibilityConverter}}">
                                             <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
-                                                <TextBlock Text="{Binding Macro_Device, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
+                                                <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Macro_Device, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
                                                            Width="80" Margin="0,0,8,0"/>
                                                 <ComboBox x:Name="MouseDevicePicker"
                                                           MinWidth="200"
@@ -2136,7 +2137,7 @@
                                                           DropDownOpened="DeviceAxisPicker_DropDownOpened"/>
                                             </StackPanel>
                                             <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
-                                                <TextBlock Text="{Binding Macro_Axis, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
+                                                <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Macro_Axis, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
                                                            Width="80" Margin="0,0,8,0"/>
                                                 <ComboBox MinWidth="180"
                                                           DisplayMemberPath="DisplayName"
@@ -2146,7 +2147,7 @@
                                             </StackPanel>
                                         </StackPanel>
                                         <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
-                                            <TextBlock Text="{Binding Macro_Sensitivity, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
+                                            <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Macro_Sensitivity, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
                                                        Width="80" Margin="0,0,8,0"/>
                                             <Slider Value="{Binding MouseSensitivity, Mode=TwoWay}"
                                                     Minimum="1" Maximum="100" Width="180"
@@ -2155,7 +2156,7 @@
                                             <TextBox Text="{Binding MouseSensitivity, Mode=TwoWay, StringFormat=F0, UpdateSourceTrigger=LostFocus}"
                                                      Width="50" Margin="8,0,0,0" VerticalAlignment="Center"/>
                                         </StackPanel>
-                                        <CheckBox Content="{Binding Macro_InvertAxis, Source={x:Static strings:Strings.Instance}}"
+                                        <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}" Content="{Binding Macro_InvertAxis, Source={x:Static strings:Strings.Instance}}"
                                                  IsChecked="{Binding InvertAxis, Mode=TwoWay}" Margin="0,0,0,4"/>
                                         <TextBlock Text="{Binding Macro_MouseMoveHint, Source={x:Static strings:Strings.Instance}}"
                                                    FontSize="11" TextWrapping="Wrap"
@@ -2166,7 +2167,7 @@
                                     <StackPanel Margin="0,0,0,6"
                                                 Visibility="{Binding IsMouseButtonType, Converter={StaticResource BoolToVisibilityConverter}}">
                                         <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
-                                            <TextBlock Text="{Binding Macro_Buttons, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
+                                            <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Macro_Buttons, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
                                                        Width="80" Margin="0,0,8,0"/>
                                             <ComboBox SelectedValue="{Binding MouseButton, Mode=TwoWay}"
                                                       SelectedValuePath="Tag" MinWidth="120">
@@ -2185,7 +2186,7 @@
                             <TextBlock Text="{Binding Macro_Repeat, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,0,0,4"
                                        Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
                             <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
-                                <TextBlock Text="{Binding Macro_RepeatMode, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
+                                <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Macro_RepeatMode, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
                                            Margin="0,0,8,0"/>
                                 <ComboBox SelectedValue="{Binding RepeatMode, Mode=TwoWay}"
                                           SelectedValuePath="Tag" MinWidth="120">
@@ -2195,15 +2196,15 @@
                                 </ComboBox>
                             </StackPanel>
                             <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
-                                <TextBlock Text="{Binding Macro_Count, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
+                                <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Macro_Count, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
                                            Margin="0,0,8,0" Width="90"/>
                                 <TextBox Text="{Binding RepeatCount, Mode=TwoWay}"
                                          Width="60"/>
-                                <TextBlock Text="{Binding Macro_DelayMs, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
+                                <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Macro_DelayMs, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
                                            Margin="12,0,8,0"/>
                                 <TextBox Text="{Binding RepeatDelayMs, Mode=TwoWay}"
                                          Width="60"/>
-                                <TextBlock Text="{Binding Common_Ms, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="4,0,0,0"/>
+                                <TextBlock Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text="{Binding Common_Ms, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="4,0,0,0"/>
                             </StackPanel>
                         </StackPanel>
                     </ScrollViewer>
@@ -2272,7 +2273,7 @@
                                                   Direction="270" Opacity="0.30" Color="Black"/>
                             </Border.Effect>
                             <StackPanel Orientation="Vertical" MinWidth="240">
-                                <TextBlock Text="{Binding Pad_Shift_LayerName, Source={x:Static strings:Strings.Instance}}"
+                                <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Pad_Shift_LayerName, Source={x:Static strings:Strings.Instance}}"
                                            Margin="0,0,0,4"/>
                                 <TextBox x:Name="RenameLayerBox"
                                          Margin="0,0,0,8"
@@ -2518,33 +2519,33 @@
                                             </StackPanel>
                                             <StackPanel Orientation="Horizontal" VerticalAlignment="Center"
                                                         Visibility="{Binding IsRampedKind, Converter={StaticResource BoolToVisibilityConverter}}">
-                                                <TextBlock Text="{Binding Pad_Mapping_Ramp_Attack, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="0,0,4,0"/>
+                                                <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Pad_Mapping_Ramp_Attack, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="0,0,4,0"/>
                                                 <Slider Value="{Binding ParamAttackTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Minimum="0" Maximum="2" SmallChange="0.05" LargeChange="0.25" Width="80" VerticalAlignment="Center"
                                                         ToolTip="{Binding Pad_Mapping_Ramp_Attack_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                                 <TextBox Text="{Binding ParamAttackTime, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat={}{0:0.00}}" Width="44" Margin="4,0,8,0" Padding="2,1" VerticalContentAlignment="Center"/>
-                                                <TextBlock Text="{Binding Pad_Mapping_Ramp_Release, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="0,0,4,0"/>
+                                                <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Pad_Mapping_Ramp_Release, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="0,0,4,0"/>
                                                 <Slider Value="{Binding ParamReleaseTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Minimum="0" Maximum="2" SmallChange="0.05" LargeChange="0.25" Width="80" VerticalAlignment="Center"
                                                         ToolTip="{Binding Pad_Mapping_Ramp_Release_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                                 <TextBox Text="{Binding ParamReleaseTime, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat={}{0:0.00}}" Width="44" Margin="4,0,8,0" Padding="2,1" VerticalContentAlignment="Center"/>
-                                                <TextBlock Text="{Binding Pad_Mapping_Ramp_Reverse, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="0,0,4,0"/>
+                                                <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Pad_Mapping_Ramp_Reverse, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="0,0,4,0"/>
                                                 <Slider Value="{Binding ParamReverseMultiplier, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Minimum="1" Maximum="10" SmallChange="1" LargeChange="1" Width="70" VerticalAlignment="Center"
                                                         ToolTip="{Binding Pad_Mapping_Ramp_Reverse_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                                 <TextBox Text="{Binding ParamReverseMultiplier, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat={}{0:0.0}}" Width="40" Margin="4,0,8,0" Padding="2,1" VerticalContentAlignment="Center"/>
-                                                <CheckBox Content="{Binding Pad_Mapping_Ramp_Autocenter, Source={x:Static strings:Strings.Instance}}" IsChecked="{Binding ParamAutocenter, Mode=TwoWay}" VerticalAlignment="Center" Margin="0,0,8,0"
+                                                <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}" Content="{Binding Pad_Mapping_Ramp_Autocenter, Source={x:Static strings:Strings.Instance}}" IsChecked="{Binding ParamAutocenter, Mode=TwoWay}" VerticalAlignment="Center" Margin="0,0,8,0"
                                                           ToolTip="{Binding Pad_Mapping_Ramp_Autocenter_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                             </StackPanel>
                                             <StackPanel Orientation="Horizontal" VerticalAlignment="Center"
                                                         Visibility="{Binding IsIncrementalKind, Converter={StaticResource BoolToVisibilityConverter}}">
-                                                <TextBlock Text="{Binding Pad_Mapping_Rate, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="0,0,4,0"/>
+                                                <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Pad_Mapping_Rate, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="0,0,4,0"/>
                                                 <Slider Value="{Binding ParamRate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Minimum="0.05" Maximum="5" SmallChange="0.05" LargeChange="0.5" Width="80" VerticalAlignment="Center"
                                                         ToolTip="{Binding Pad_Mapping_Rate_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                                 <TextBox Text="{Binding ParamRate, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat={}{0:0.00}}" Width="44" Margin="4,0,8,0" Padding="2,1" VerticalContentAlignment="Center"/>
-                                                <CheckBox Content="{Binding Pad_Mapping_Sticky, Source={x:Static strings:Strings.Instance}}" IsChecked="{Binding ParamSticky, Mode=TwoWay}" VerticalAlignment="Center" Margin="0,0,8,0"
+                                                <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}" Content="{Binding Pad_Mapping_Sticky, Source={x:Static strings:Strings.Instance}}" IsChecked="{Binding ParamSticky, Mode=TwoWay}" VerticalAlignment="Center" Margin="0,0,8,0"
                                                           ToolTip="{Binding Pad_Mapping_Sticky_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
-                                                <TextBlock Text="{Binding Pad_Mapping_Min, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="0,0,2,0"/>
+                                                <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Pad_Mapping_Min, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="0,0,2,0"/>
                                                 <TextBox Text="{Binding ParamMin, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat={}{0:0.00}}" Width="44" Margin="0,0,6,0" Padding="2,1" VerticalContentAlignment="Center"
                                                          ToolTip="{Binding Pad_Mapping_Min_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
-                                                <TextBlock Text="{Binding Pad_Mapping_Max, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="0,0,2,0"/>
+                                                <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Pad_Mapping_Max, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="0,0,2,0"/>
                                                 <TextBox Text="{Binding ParamMax, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat={}{0:0.00}}" Width="44" Margin="0,0,4,0" Padding="2,1" VerticalContentAlignment="Center"
                                                          ToolTip="{Binding Pad_Mapping_Max_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                             </StackPanel>
@@ -3093,7 +3094,7 @@
                                                              to match the primary-source row's order. -->
                                                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="4,0"
                                                                     Visibility="{Binding IsGyroSource, Converter={StaticResource BoolToVisibilityConverter}}">
-                                                            <TextBlock Text="{Binding Mapping_GyroSensitivity, Source={x:Static strings:Strings.Instance}}"
+                                                            <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Mapping_GyroSensitivity, Source={x:Static strings:Strings.Instance}}"
                                                                        VerticalAlignment="Center" Margin="0,0,4,0"/>
                                                             <Slider Value="{Binding GyroSensitivity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                                     Minimum="0.1" Maximum="10" SmallChange="0.1" LargeChange="1"
@@ -3102,14 +3103,14 @@
                                                             <TextBox Text="{Binding GyroSensitivity, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat={}{0:0.00}}"
                                                                      Width="50" Margin="4,0,4,0" Padding="2,1"
                                                                      VerticalContentAlignment="Center"/>
-                                                            <TextBlock Text="×" VerticalAlignment="Center" Margin="0,0,2,0"/>
+                                                            <TextBlock Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text="×" VerticalAlignment="Center" Margin="0,0,2,0"/>
                                                             <Button Command="{Binding ResetGyroSensitivityCommand}" Style="{StaticResource ResetButton}"/>
                                                         </StackPanel>
                                                         <!-- Per-source mouse cursor sensitivity (#107). Only
                                                              renders for "Mouse Position X/Y" descriptors. -->
                                                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="4,0"
                                                                     Visibility="{Binding IsMouseCursorSource, Converter={StaticResource BoolToVisibilityConverter}}">
-                                                            <TextBlock Text="{Binding Mapping_MouseCursorSensitivity, Source={x:Static strings:Strings.Instance}}"
+                                                            <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Mapping_MouseCursorSensitivity, Source={x:Static strings:Strings.Instance}}"
                                                                        VerticalAlignment="Center" Margin="0,0,4,0"/>
                                                             <Slider Value="{Binding MouseCursorSensitivity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                                     Minimum="0.1" Maximum="5" SmallChange="0.1" LargeChange="0.5"
@@ -3118,13 +3119,13 @@
                                                             <TextBox Text="{Binding MouseCursorSensitivity, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat={}{0:0.00}}"
                                                                      Width="50" Margin="4,0,4,0" Padding="2,1"
                                                                      VerticalContentAlignment="Center"/>
-                                                            <TextBlock Text="×" VerticalAlignment="Center" Margin="0,0,2,0"/>
+                                                            <TextBlock Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text="×" VerticalAlignment="Center" Margin="0,0,2,0"/>
                                                             <Button Command="{Binding ResetMouseCursorSensitivityCommand}" Style="{StaticResource ResetButton}"/>
                                                         </StackPanel>
                                                         <!-- Per-source IR pointer sensitivity (#146). Renders for "IR Pointer X/Y". -->
                                                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="4,0"
                                                                     Visibility="{Binding IsIrPointerSource, Converter={StaticResource BoolToVisibilityConverter}}">
-                                                            <TextBlock Text="{Binding Mapping_IrPointerSensitivity, Source={x:Static strings:Strings.Instance}}"
+                                                            <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Mapping_IrPointerSensitivity, Source={x:Static strings:Strings.Instance}}"
                                                                        VerticalAlignment="Center" Margin="0,0,4,0"/>
                                                             <Slider Value="{Binding IrPointerSensitivity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                                     Minimum="0.1" Maximum="5" SmallChange="0.1" LargeChange="0.5"
@@ -3133,13 +3134,13 @@
                                                             <TextBox Text="{Binding IrPointerSensitivity, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat={}{0:0.00}}"
                                                                      Width="50" Margin="4,0,4,0" Padding="2,1"
                                                                      VerticalContentAlignment="Center"/>
-                                                            <TextBlock Text="×" VerticalAlignment="Center" Margin="0,0,2,0"/>
+                                                            <TextBlock Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text="×" VerticalAlignment="Center" Margin="0,0,2,0"/>
                                                             <Button Command="{Binding ResetIrPointerSensitivityCommand}" Style="{StaticResource ResetButton}"/>
                                                         </StackPanel>
                                                         <!-- Per-source mouse-motion sensitivity (#154). Renders for "Mouse Motion X/Y". -->
                                                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="4,0"
                                                                     Visibility="{Binding IsMouseMotionSource, Converter={StaticResource BoolToVisibilityConverter}}">
-                                                            <TextBlock Text="{Binding Mapping_IrPointerSensitivity, Source={x:Static strings:Strings.Instance}}"
+                                                            <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Mapping_IrPointerSensitivity, Source={x:Static strings:Strings.Instance}}"
                                                                        VerticalAlignment="Center" Margin="0,0,4,0"/>
                                                             <Slider Value="{Binding IrPointerSensitivity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                                     Minimum="0.1" Maximum="5" SmallChange="0.1" LargeChange="0.5"
@@ -3148,7 +3149,7 @@
                                                             <TextBox Text="{Binding IrPointerSensitivity, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat={}{0:0.00}}"
                                                                      Width="50" Margin="4,0,4,0" Padding="2,1"
                                                                      VerticalContentAlignment="Center"/>
-                                                            <TextBlock Text="×" VerticalAlignment="Center" Margin="0,0,2,0"/>
+                                                            <TextBlock Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text="×" VerticalAlignment="Center" Margin="0,0,2,0"/>
                                                             <Button Command="{Binding ResetIrPointerSensitivityCommand}" Style="{StaticResource ResetButton}"/>
                                                         </StackPanel>
                                                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="4,0" Width="230"
@@ -3280,7 +3281,7 @@
                                                                     <TextBlock Text="{Binding RecordTextParamDown}"/>
                                                                 </Button.ToolTip>
                                                             </Button>
-                                                            <TextBlock Text="{Binding Pad_Mapping_Rate, Source={x:Static strings:Strings.Instance}}"
+                                                            <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Pad_Mapping_Rate, Source={x:Static strings:Strings.Instance}}"
                                                                        VerticalAlignment="Center" Margin="0,0,4,0"/>
                                                             <Slider Value="{Binding ParamRate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                                     Minimum="0.05" Maximum="5" SmallChange="0.05" LargeChange="0.5"
@@ -3289,17 +3290,17 @@
                                                             <TextBox Text="{Binding ParamRate, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat={}{0:0.00}}"
                                                                      Width="44" Margin="4,0,8,0" Padding="2,1"
                                                                      VerticalContentAlignment="Center"/>
-                                                            <CheckBox Content="{Binding Pad_Mapping_Sticky, Source={x:Static strings:Strings.Instance}}"
+                                                            <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}" Content="{Binding Pad_Mapping_Sticky, Source={x:Static strings:Strings.Instance}}"
                                                                       IsChecked="{Binding ParamSticky, Mode=TwoWay}"
                                                                       VerticalAlignment="Center" Margin="0,0,8,0"
                                                                       ToolTip="{Binding Pad_Mapping_Sticky_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
-                                                            <TextBlock Text="{Binding Pad_Mapping_Min, Source={x:Static strings:Strings.Instance}}"
+                                                            <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Pad_Mapping_Min, Source={x:Static strings:Strings.Instance}}"
                                                                        VerticalAlignment="Center" Margin="0,0,2,0"/>
                                                             <TextBox Text="{Binding ParamMin, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat={}{0:0.00}}"
                                                                      Width="44" Margin="0,0,6,0" Padding="2,1"
                                                                      VerticalContentAlignment="Center"
                                                                      ToolTip="{Binding Pad_Mapping_Min_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
-                                                            <TextBlock Text="{Binding Pad_Mapping_Max, Source={x:Static strings:Strings.Instance}}"
+                                                            <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Pad_Mapping_Max, Source={x:Static strings:Strings.Instance}}"
                                                                        VerticalAlignment="Center" Margin="0,0,2,0"/>
                                                             <TextBox Text="{Binding ParamMax, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat={}{0:0.00}}"
                                                                      Width="44" Margin="0,0,4,0" Padding="2,1"
@@ -3410,7 +3411,7 @@
                                                                     <TextBlock Text="{Binding RecordTextParamDown}"/>
                                                                 </Button.ToolTip>
                                                             </Button>
-                                                            <TextBlock Text="{Binding Pad_Mapping_Ramp_Attack, Source={x:Static strings:Strings.Instance}}"
+                                                            <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Pad_Mapping_Ramp_Attack, Source={x:Static strings:Strings.Instance}}"
                                                                        VerticalAlignment="Center" Margin="0,0,4,0"/>
                                                             <Slider Value="{Binding ParamAttackTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                                     Minimum="0" Maximum="2" SmallChange="0.05" LargeChange="0.25"
@@ -3419,7 +3420,7 @@
                                                             <TextBox Text="{Binding ParamAttackTime, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat={}{0:0.00}}"
                                                                      Width="44" Margin="4,0,8,0" Padding="2,1"
                                                                      VerticalContentAlignment="Center"/>
-                                                            <TextBlock Text="{Binding Pad_Mapping_Ramp_Release, Source={x:Static strings:Strings.Instance}}"
+                                                            <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Pad_Mapping_Ramp_Release, Source={x:Static strings:Strings.Instance}}"
                                                                        VerticalAlignment="Center" Margin="0,0,4,0"/>
                                                             <Slider Value="{Binding ParamReleaseTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                                     Minimum="0" Maximum="2" SmallChange="0.05" LargeChange="0.25"
@@ -3428,7 +3429,7 @@
                                                             <TextBox Text="{Binding ParamReleaseTime, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat={}{0:0.00}}"
                                                                      Width="44" Margin="4,0,8,0" Padding="2,1"
                                                                      VerticalContentAlignment="Center"/>
-                                                            <TextBlock Text="{Binding Pad_Mapping_Ramp_Reverse, Source={x:Static strings:Strings.Instance}}"
+                                                            <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Pad_Mapping_Ramp_Reverse, Source={x:Static strings:Strings.Instance}}"
                                                                        VerticalAlignment="Center" Margin="0,0,4,0"/>
                                                             <Slider Value="{Binding ParamReverseMultiplier, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                                     Minimum="1" Maximum="10" SmallChange="1" LargeChange="1"
@@ -3437,7 +3438,7 @@
                                                             <TextBox Text="{Binding ParamReverseMultiplier, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat={}{0:0.0}}"
                                                                      Width="40" Margin="4,0,8,0" Padding="2,1"
                                                                      VerticalContentAlignment="Center"/>
-                                                            <CheckBox Content="{Binding Pad_Mapping_Ramp_Autocenter, Source={x:Static strings:Strings.Instance}}"
+                                                            <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}" Content="{Binding Pad_Mapping_Ramp_Autocenter, Source={x:Static strings:Strings.Instance}}"
                                                                       IsChecked="{Binding ParamAutocenter, Mode=TwoWay}"
                                                                       VerticalAlignment="Center" Margin="0,0,8,0"
                                                                       ToolTip="{Binding Pad_Mapping_Ramp_Autocenter_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
@@ -3798,7 +3799,7 @@
                                                  don't see a knob that does nothing. -->
                                             <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="6,0,0,0"
                                                         Visibility="{Binding IsGyroSource, Converter={StaticResource BoolToVisibilityConverter}}">
-                                                <TextBlock Text="{Binding Mapping_GyroSensitivity, Source={x:Static strings:Strings.Instance}}"
+                                                <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Mapping_GyroSensitivity, Source={x:Static strings:Strings.Instance}}"
                                                            VerticalAlignment="Center" Margin="0,0,4,0"/>
                                                 <Slider Value="{Binding GyroSensitivity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                         Minimum="0.1" Maximum="10" SmallChange="0.1" LargeChange="1"
@@ -3807,14 +3808,14 @@
                                                 <TextBox Text="{Binding GyroSensitivity, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat={}{0:0.00}}"
                                                          Width="50" Margin="4,0,4,0" Padding="2,1"
                                                          VerticalContentAlignment="Center"/>
-                                                <TextBlock Text="×" VerticalAlignment="Center" Margin="0,0,2,0"/>
+                                                <TextBlock Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text="×" VerticalAlignment="Center" Margin="0,0,2,0"/>
                                                 <Button Command="{Binding ResetGyroSensitivityCommand}" Style="{StaticResource ResetButton}"/>
                                             </StackPanel>
                                             <!-- Per-source mouse cursor sensitivity for the primary
                                                  source (#107). Renders only for "Mouse Position X/Y". -->
                                             <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="6,0,0,0"
                                                         Visibility="{Binding IsMouseCursorSource, Converter={StaticResource BoolToVisibilityConverter}}">
-                                                <TextBlock Text="{Binding Mapping_MouseCursorSensitivity, Source={x:Static strings:Strings.Instance}}"
+                                                <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Mapping_MouseCursorSensitivity, Source={x:Static strings:Strings.Instance}}"
                                                            VerticalAlignment="Center" Margin="0,0,4,0"/>
                                                 <Slider Value="{Binding MouseCursorSensitivity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                         Minimum="0.1" Maximum="5" SmallChange="0.1" LargeChange="0.5"
@@ -3823,13 +3824,13 @@
                                                 <TextBox Text="{Binding MouseCursorSensitivity, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat={}{0:0.00}}"
                                                          Width="50" Margin="4,0,4,0" Padding="2,1"
                                                          VerticalContentAlignment="Center"/>
-                                                <TextBlock Text="×" VerticalAlignment="Center" Margin="0,0,2,0"/>
+                                                <TextBlock Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text="×" VerticalAlignment="Center" Margin="0,0,2,0"/>
                                                 <Button Command="{Binding ResetMouseCursorSensitivityCommand}" Style="{StaticResource ResetButton}"/>
                                             </StackPanel>
                                             <!-- Per-source IR pointer sensitivity (#146). Renders only for "IR Pointer X/Y". -->
                                             <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="6,0,0,0"
                                                         Visibility="{Binding IsIrPointerSource, Converter={StaticResource BoolToVisibilityConverter}}">
-                                                <TextBlock Text="{Binding Mapping_IrPointerSensitivity, Source={x:Static strings:Strings.Instance}}"
+                                                <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Mapping_IrPointerSensitivity, Source={x:Static strings:Strings.Instance}}"
                                                            VerticalAlignment="Center" Margin="0,0,4,0"/>
                                                 <Slider Value="{Binding IrPointerSensitivity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                         Minimum="0.1" Maximum="5" SmallChange="0.1" LargeChange="0.5"
@@ -3838,13 +3839,13 @@
                                                 <TextBox Text="{Binding IrPointerSensitivity, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat={}{0:0.00}}"
                                                          Width="50" Margin="4,0,4,0" Padding="2,1"
                                                          VerticalContentAlignment="Center"/>
-                                                <TextBlock Text="×" VerticalAlignment="Center" Margin="0,0,2,0"/>
+                                                <TextBlock Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text="×" VerticalAlignment="Center" Margin="0,0,2,0"/>
                                                 <Button Command="{Binding ResetIrPointerSensitivityCommand}" Style="{StaticResource ResetButton}"/>
                                             </StackPanel>
                                             <!-- Per-source mouse-motion sensitivity (#154). Renders only for "Mouse Motion X/Y". -->
                                             <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="6,0,0,0"
                                                         Visibility="{Binding IsMouseMotionSource, Converter={StaticResource BoolToVisibilityConverter}}">
-                                                <TextBlock Text="{Binding Mapping_IrPointerSensitivity, Source={x:Static strings:Strings.Instance}}"
+                                                <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Mapping_IrPointerSensitivity, Source={x:Static strings:Strings.Instance}}"
                                                            VerticalAlignment="Center" Margin="0,0,4,0"/>
                                                 <Slider Value="{Binding IrPointerSensitivity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                         Minimum="0.1" Maximum="5" SmallChange="0.1" LargeChange="0.5"
@@ -3853,7 +3854,7 @@
                                                 <TextBox Text="{Binding IrPointerSensitivity, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat={}{0:0.00}}"
                                                          Width="50" Margin="4,0,4,0" Padding="2,1"
                                                          VerticalContentAlignment="Center"/>
-                                                <TextBlock Text="×" VerticalAlignment="Center" Margin="0,0,2,0"/>
+                                                <TextBlock Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text="×" VerticalAlignment="Center" Margin="0,0,2,0"/>
                                                 <Button Command="{Binding ResetIrPointerSensitivityCommand}" Style="{StaticResource ResetButton}"/>
                                             </StackPanel>
                                         </StackPanel>
@@ -4444,22 +4445,22 @@
                                  in the card has a reset like the sliders below. Visibility is
                                  gated per row by SyncTabVisibility to the device's capability. -->
                             <StackPanel x:Name="LockRumbleRow" Orientation="Horizontal" Margin="0,0,0,4">
-                                <CheckBox IsChecked="{Binding SteeringLockRumbleEnabled, Mode=TwoWay}" VerticalAlignment="Center"
+                                <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}" IsChecked="{Binding SteeringLockRumbleEnabled, Mode=TwoWay}" VerticalAlignment="Center"
                                           Content="{Binding Pad_Steering_Lock_Rumble, Source={x:Static strings:Strings.Instance}}"/>
                                 <Button Command="{Binding ResetSteeringLockRumbleCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_Steering_Reset_Rumble, Source={x:Static strings:Strings.Instance}}"/>
                             </StackPanel>
                             <StackPanel x:Name="LockTriggerVibRow" Orientation="Horizontal" Margin="0,0,0,4">
-                                <CheckBox IsChecked="{Binding SteeringLockTriggerVibEnabled, Mode=TwoWay}" VerticalAlignment="Center"
+                                <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}" IsChecked="{Binding SteeringLockTriggerVibEnabled, Mode=TwoWay}" VerticalAlignment="Center"
                                           Content="{Binding Pad_Steering_Lock_TriggerVib, Source={x:Static strings:Strings.Instance}}"/>
                                 <Button Command="{Binding ResetSteeringLockTriggerVibCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_Steering_Reset_TriggerVib, Source={x:Static strings:Strings.Instance}}"/>
                             </StackPanel>
                             <StackPanel x:Name="LockLightbarRow" Orientation="Horizontal" Margin="0,0,0,4">
-                                <CheckBox IsChecked="{Binding SteeringLockLightbarEnabled, Mode=TwoWay}" VerticalAlignment="Center"
+                                <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}" IsChecked="{Binding SteeringLockLightbarEnabled, Mode=TwoWay}" VerticalAlignment="Center"
                                           Content="{Binding Pad_Steering_Lock_Lightbar, Source={x:Static strings:Strings.Instance}}"/>
                                 <Button Command="{Binding ResetSteeringLockLightbarCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_Steering_Reset_Lightbar, Source={x:Static strings:Strings.Instance}}"/>
                             </StackPanel>
                             <StackPanel x:Name="LockResistanceRow" Orientation="Horizontal" Margin="0,0,0,8">
-                                <CheckBox IsChecked="{Binding SteeringLockATResistanceEnabled, Mode=TwoWay}" VerticalAlignment="Center"
+                                <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}" IsChecked="{Binding SteeringLockATResistanceEnabled, Mode=TwoWay}" VerticalAlignment="Center"
                                           Content="{Binding Pad_Steering_Lock_ATResistance, Source={x:Static strings:Strings.Instance}}"/>
                                 <Button Command="{Binding ResetSteeringLockResistanceCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_Steering_Reset_ATResistance, Source={x:Static strings:Strings.Instance}}"/>
                             </StackPanel>
@@ -4492,7 +4493,7 @@
                                  colour picker): HSV box, swatch, hex field, RGB sliders + per-channel resets.
                                  Shown only for the Fixed source. -->
                             <StackPanel Visibility="{Binding IsSteeringLockLightbarFixedColorVisible, Converter={StaticResource BoolToVisibilityConverter}}">
-                            <TextBlock Text="{Binding Pad_Steering_Lock_LightbarColor, Source={x:Static strings:Strings.Instance}}" Margin="0,0,0,4"/>
+                            <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Pad_Steering_Lock_LightbarColor, Source={x:Static strings:Strings.Instance}}" Margin="0,0,0,4"/>
                             <Border BorderThickness="1" CornerRadius="4" Padding="10" Margin="0,0,0,8"
                                     HorizontalAlignment="Left"
                                     BorderBrush="{DynamicResource TextFillColorDisabledBrush}">
@@ -4517,7 +4518,7 @@
                                                 </MultiBinding>
                                             </Border.Background>
                                         </Border>
-                                        <TextBlock Grid.Column="1" Text="{Binding Pad_Lighting_Hex, Source={x:Static strings:Strings.Instance}}"
+                                        <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Grid.Column="1" Text="{Binding Pad_Lighting_Hex, Source={x:Static strings:Strings.Instance}}"
                                                    VerticalAlignment="Center" Margin="8,0,0,0"/>
                                         <TextBox Grid.Column="2" Width="100" HorizontalAlignment="Left" VerticalAlignment="Center"
                                                  FontFamily="Consolas" Padding="6,4"
@@ -4586,7 +4587,7 @@
                                                                 </MultiBinding>
                                                             </Border.Background>
                                                         </Border>
-                                                        <TextBlock Grid.Column="1" Text="{Binding Pad_Lighting_Hex, Source={x:Static strings:Strings.Instance}}"
+                                                        <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Grid.Column="1" Text="{Binding Pad_Lighting_Hex, Source={x:Static strings:Strings.Instance}}"
                                                                    VerticalAlignment="Center" Margin="8,0,0,0"/>
                                                         <TextBox Grid.Column="2" Width="100" HorizontalAlignment="Left" VerticalAlignment="Center"
                                                                  FontFamily="Consolas" Padding="6,4"
@@ -4876,7 +4877,7 @@
                         </StackPanel>
 
                         <!-- Swap motors -->
-                        <CheckBox Content="{Binding Pad_SwapMotors, Source={x:Static strings:Strings.Instance}}"
+                        <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}" Content="{Binding Pad_SwapMotors, Source={x:Static strings:Strings.Instance}}"
                                   IsChecked="{Binding SwapMotors, Mode=TwoWay}"
                                   Margin="0,0,0,12"/>
 
@@ -4952,7 +4953,7 @@
                                 <TextBlock Text="{Binding Pad_ConstantForce_Description, Source={x:Static strings:Strings.Instance}}"
                                            Style="{StaticResource CardDescription}" Margin="0,0,0,12"/>
 
-                                <CheckBox Content="{Binding Pad_ConstantForce_Toggle, Source={x:Static strings:Strings.Instance}}"
+                                <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}" Content="{Binding Pad_ConstantForce_Toggle, Source={x:Static strings:Strings.Instance}}"
                                           IsChecked="{Binding ConstantForceEnabled, Mode=TwoWay}"
                                           Margin="0,0,0,12"/>
 
@@ -5045,7 +5046,7 @@
                         <TextBlock Text="{Binding Settings_AudioRumbleDesc, Source={x:Static strings:Strings.Instance}}"
                                    Style="{StaticResource CardDescription}" Margin="0,0,0,12"/>
 
-                        <CheckBox Content="{Binding Settings_AudioRumble_Enable, Source={x:Static strings:Strings.Instance}}"
+                        <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}" Content="{Binding Settings_AudioRumble_Enable, Source={x:Static strings:Strings.Instance}}"
                                   IsChecked="{Binding AudioRumbleEnabled, Mode=TwoWay}"
                                   Margin="0,0,0,12"/>
 
@@ -5612,7 +5613,7 @@
                                 </StackPanel>
 
                                 <!-- Smooth toggle (ColorCycle): blend or hop between palette colors -->
-                                <CheckBox IsChecked="{Binding PlayStationConfig.LightbarColorCycleSmooth, Mode=TwoWay}"
+                                <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}" IsChecked="{Binding PlayStationConfig.LightbarColorCycleSmooth, Mode=TwoWay}"
                                           Content="{Binding Pad_Lighting_ColorCycleSmooth, Source={x:Static strings:Strings.Instance}}"
                                           Margin="0,0,0,8"
                                           Visibility="{Binding PlayStationConfig.LightbarMode, Converter={StaticResource EnumEqualityVisibilityConverter}, ConverterParameter=ColorCycle}"/>
@@ -5808,7 +5809,7 @@
                                                     </MultiBinding>
                                                 </Border.Background>
                                             </Border>
-                                            <TextBlock Grid.Column="1" Text="{Binding Pad_Lighting_Hex, Source={x:Static strings:Strings.Instance}}"
+                                            <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Grid.Column="1" Text="{Binding Pad_Lighting_Hex, Source={x:Static strings:Strings.Instance}}"
                                                        VerticalAlignment="Center" Margin="8,0,0,0"/>
                                             <TextBox x:Name="LightbarHexBox" Grid.Column="2" Width="100"
                                                      HorizontalAlignment="Left" VerticalAlignment="Center"
@@ -6443,7 +6444,7 @@
                                             ToolTip="{Binding Pad_Gyro_ResetPassthrough_All_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal">
-                                    <CheckBox Content="{Binding Pad_Gyro_ApplyToPassthrough, Source={x:Static strings:Strings.Instance}}"
+                                    <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}" Content="{Binding Pad_Gyro_ApplyToPassthrough, Source={x:Static strings:Strings.Instance}}"
                                               IsChecked="{Binding GyroApplyTuningToPassthrough, Mode=TwoWay}"
                                               VerticalAlignment="Center" Margin="0,0,4,0"
                                               ToolTip="{Binding Pad_Gyro_ApplyToPassthrough_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
@@ -6592,7 +6593,7 @@
                                             ToolTip="{Binding Pad_Gyro_ResetSensitivity_All_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                                    <TextBlock Text="{Binding Settings_GyroSensitivityUnits, Source={x:Static strings:Strings.Instance}}"
+                                    <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Settings_GyroSensitivityUnits, Source={x:Static strings:Strings.Instance}}"
                                                Width="270" VerticalAlignment="Center"
                                                ToolTip="{Binding Settings_GyroSensitivityUnits_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                     <ComboBox ItemsSource="{Binding GyroSensitivityUnitsOptions}"
@@ -6608,7 +6609,7 @@
                                      is Player Space; we keep Local as the conservative default
                                      so existing configs feel identical. -->
                                 <StackPanel Orientation="Horizontal" Margin="0,4,0,0">
-                                    <TextBlock Text="{Binding Settings_GyroSpace, Source={x:Static strings:Strings.Instance}}"
+                                    <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Settings_GyroSpace, Source={x:Static strings:Strings.Instance}}"
                                                Width="270" VerticalAlignment="Center"
                                                ToolTip="{Binding Settings_GyroSpace_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                     <ComboBox ItemsSource="{Binding GyroSpaceOptions}"
@@ -6621,7 +6622,7 @@
                                 </StackPanel>
 
                                 <StackPanel Orientation="Horizontal" Margin="0,6,0,0">
-                                    <TextBlock Text="{Binding Settings_GyroSensitivityH, Source={x:Static strings:Strings.Instance}}"
+                                    <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Settings_GyroSensitivityH, Source={x:Static strings:Strings.Instance}}"
                                                Width="270" VerticalAlignment="Center"
                                                ToolTip="{Binding Settings_GyroSensitivityH_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                     <Slider Value="{Binding GyroSensitivityH, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -6638,7 +6639,7 @@
                                 </StackPanel>
 
                                 <StackPanel Orientation="Horizontal" Margin="0,6,0,0">
-                                    <TextBlock Text="{Binding Settings_GyroSensitivityV, Source={x:Static strings:Strings.Instance}}"
+                                    <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Settings_GyroSensitivityV, Source={x:Static strings:Strings.Instance}}"
                                                Width="270" VerticalAlignment="Center"
                                                ToolTip="{Binding Settings_GyroSensitivityV_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                     <Slider Value="{Binding GyroSensitivityV, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -6658,13 +6659,13 @@
                                      Invert flags on the mapping table — Steam-style top-level
                                      convenience. -->
                                 <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
-                                    <CheckBox Content="{Binding Settings_GyroInvertPitch, Source={x:Static strings:Strings.Instance}}"
+                                    <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}" Content="{Binding Settings_GyroInvertPitch, Source={x:Static strings:Strings.Instance}}"
                                               IsChecked="{Binding GyroInvertPitch, Mode=TwoWay}"
                                               VerticalAlignment="Center" Margin="0,0,4,0"
                                               ToolTip="{Binding Settings_GyroInvertPitch_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                     <Button Command="{Binding ResetGyroInvertPitchCommand}" Style="{StaticResource ResetButton}" Margin="0,0,12,0"
                                             ToolTip="{Binding Pad_ResetGyroInvertPitch, Source={x:Static strings:Strings.Instance}}"/>
-                                    <CheckBox Content="{Binding Settings_GyroInvertYawRoll, Source={x:Static strings:Strings.Instance}}"
+                                    <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}" Content="{Binding Settings_GyroInvertYawRoll, Source={x:Static strings:Strings.Instance}}"
                                               IsChecked="{Binding GyroInvertYawRoll, Mode=TwoWay}"
                                               VerticalAlignment="Center" Margin="0,0,4,0"
                                               ToolTip="{Binding Settings_GyroInvertYawRoll_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
@@ -6674,7 +6675,7 @@
 
                                 <!-- Real-world calibration. 0 = disabled. -->
                                 <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
-                                    <TextBlock Text="{Binding Settings_GyroRealWorldCalibration, Source={x:Static strings:Strings.Instance}}"
+                                    <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Settings_GyroRealWorldCalibration, Source={x:Static strings:Strings.Instance}}"
                                                Width="270" VerticalAlignment="Center"
                                                ToolTip="{Binding Settings_GyroRealWorldCalibration_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                     <Slider Value="{Binding GyroRealWorldCalibration, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -6704,7 +6705,7 @@
                                 </StackPanel>
 
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
-                                    <TextBlock Text="{Binding Settings_GyroDeadZone, Source={x:Static strings:Strings.Instance}}"
+                                    <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Settings_GyroDeadZone, Source={x:Static strings:Strings.Instance}}"
                                                Width="270" VerticalAlignment="Center"
                                                ToolTip="{Binding Settings_GyroDeadZone_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                     <Slider Value="{Binding GyroDeadZoneDegPerSec, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -6723,7 +6724,7 @@
                                      Smoothing threshold = pass-through above this rate (fast turns).
                                      Between thresholds = linear ramp. -->
                                 <StackPanel Orientation="Horizontal" Margin="0,6,0,0">
-                                    <TextBlock Text="{Binding Settings_GyroTightening, Source={x:Static strings:Strings.Instance}}"
+                                    <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Settings_GyroTightening, Source={x:Static strings:Strings.Instance}}"
                                                Width="270" VerticalAlignment="Center"
                                                ToolTip="{Binding Settings_GyroTightening_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                     <Slider Value="{Binding GyroTighteningThresholdDegPerSec, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -6738,7 +6739,7 @@
                                 </StackPanel>
 
                                 <StackPanel Orientation="Horizontal" Margin="0,6,0,0">
-                                    <TextBlock Text="{Binding Settings_GyroSmoothingThreshold, Source={x:Static strings:Strings.Instance}}"
+                                    <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Settings_GyroSmoothingThreshold, Source={x:Static strings:Strings.Instance}}"
                                                Width="270" VerticalAlignment="Center"
                                                ToolTip="{Binding Settings_GyroSmoothingThreshold_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                     <Slider Value="{Binding GyroSmoothingThresholdDegPerSec, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -6753,7 +6754,7 @@
                                 </StackPanel>
 
                                 <StackPanel Orientation="Horizontal" Margin="0,6,0,0">
-                                    <TextBlock Text="{Binding Settings_GyroSmoothingWindow, Source={x:Static strings:Strings.Instance}}"
+                                    <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Settings_GyroSmoothingWindow, Source={x:Static strings:Strings.Instance}}"
                                                Width="270" VerticalAlignment="Center"
                                                ToolTip="{Binding Settings_GyroSmoothingWindow_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                     <Slider Value="{Binding GyroSmoothingWindowMs, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -6768,7 +6769,7 @@
                                 </StackPanel>
 
                                 <StackPanel Orientation="Horizontal" Margin="0,6,0,0">
-                                    <TextBlock Text="{Binding Settings_GyroAcceleration, Source={x:Static strings:Strings.Instance}}"
+                                    <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Settings_GyroAcceleration, Source={x:Static strings:Strings.Instance}}"
                                                Width="270" VerticalAlignment="Center"
                                                ToolTip="{Binding Settings_GyroAcceleration_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                     <Slider Value="{Binding GyroAcceleration, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -6782,7 +6783,7 @@
                                 </StackPanel>
 
                                 <StackPanel Orientation="Horizontal" Margin="0,6,0,0">
-                                    <TextBlock Text="{Binding Settings_GyroOutputCurve, Source={x:Static strings:Strings.Instance}}"
+                                    <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Settings_GyroOutputCurve, Source={x:Static strings:Strings.Instance}}"
                                                Width="270" VerticalAlignment="Center"
                                                ToolTip="{Binding Settings_GyroOutputCurve_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                     <ComboBox ItemsSource="{Binding GyroOutputCurveOptions}"
@@ -6811,7 +6812,7 @@
                                 <TextBlock Text="{Binding Pad_Gyro_Engage_Subtitle, Source={x:Static strings:Strings.Instance}}"
                                            Style="{StaticResource CardDescription}"/>
                                 <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="{Binding Settings_GyroEasyAimThreshold, Source={x:Static strings:Strings.Instance}}"
+                                    <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Settings_GyroEasyAimThreshold, Source={x:Static strings:Strings.Instance}}"
                                                Width="270" VerticalAlignment="Center"
                                                ToolTip="{Binding Settings_GyroEasyAimThreshold_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                     <Slider Value="{Binding GyroEasyAimStickThreshold, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -6830,7 +6831,7 @@
                                      Right (default) preserves existing profiles.
                                      Either gates on the larger of the two sticks. -->
                                 <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
-                                    <TextBlock Text="{Binding Settings_GyroEngageStickSide, Source={x:Static strings:Strings.Instance}}"
+                                    <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Settings_GyroEngageStickSide, Source={x:Static strings:Strings.Instance}}"
                                                Width="270" VerticalAlignment="Center"
                                                ToolTip="{Binding Settings_GyroEngageStickSide_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                     <ComboBox SelectedValue="{Binding GyroEngageStickSide, Mode=TwoWay}"
@@ -6850,7 +6851,7 @@
                                      threshold gates on. Full (default,
                                      radial) preserves existing profiles. -->
                                 <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
-                                    <TextBlock Text="{Binding Settings_GyroEngageStickDirection, Source={x:Static strings:Strings.Instance}}"
+                                    <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Settings_GyroEngageStickDirection, Source={x:Static strings:Strings.Instance}}"
                                                Width="270" VerticalAlignment="Center"
                                                ToolTip="{Binding Settings_GyroEngageStickDirection_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                     <ComboBox SelectedValue="{Binding GyroEngageStickDirection, Mode=TwoWay}"
@@ -6876,7 +6877,7 @@
                                      Subtitle under the picker shows the owning device, matching
                                      the mapping row pattern at PadPage.xaml:2785-2800. -->
                                 <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
-                                    <TextBlock Text="{Binding Settings_GyroAimEngageButton, Source={x:Static strings:Strings.Instance}}"
+                                    <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Settings_GyroAimEngageButton, Source={x:Static strings:Strings.Instance}}"
                                                Width="270" VerticalAlignment="Top" Margin="0,4,0,0"
                                                ToolTip="{Binding Settings_GyroAimEngageButton_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                     <StackPanel Orientation="Vertical">
@@ -6934,7 +6935,7 @@
                                      the two parameters of the same feature
                                      read as a pair. -->
                                 <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
-                                    <TextBlock Text="{Binding Settings_GyroAimEngageMode, Source={x:Static strings:Strings.Instance}}"
+                                    <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Settings_GyroAimEngageMode, Source={x:Static strings:Strings.Instance}}"
                                                Width="270" VerticalAlignment="Center"
                                                ToolTip="{Binding Settings_GyroAimEngageMode_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                     <ComboBox SelectedValue="{Binding GyroAimEngageMode, Mode=TwoWay}"
@@ -7036,7 +7037,7 @@
                                 </StackPanel>
 
                                 <!-- Swap trigger motors -->
-                                <CheckBox Content="{Binding Pad_ImpulseTriggers_SwapTriggers, Source={x:Static strings:Strings.Instance}}"
+                                <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}" Content="{Binding Pad_ImpulseTriggers_SwapTriggers, Source={x:Static strings:Strings.Instance}}"
                                           IsChecked="{Binding ImpulseSwapTriggers, Mode=TwoWay}"
                                           Margin="0,0,0,12"/>
 
@@ -7115,7 +7116,7 @@
                                 <TextBlock Text="{Binding Pad_ConstantTriggerForce_Description, Source={x:Static strings:Strings.Instance}}"
                                            Style="{StaticResource CardDescription}" Margin="0,0,0,12"/>
 
-                                <CheckBox Content="{Binding Pad_ConstantTriggerForce_Toggle, Source={x:Static strings:Strings.Instance}}"
+                                <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}" Content="{Binding Pad_ConstantTriggerForce_Toggle, Source={x:Static strings:Strings.Instance}}"
                                           IsChecked="{Binding ConstantTriggerForceEnabled, Mode=TwoWay}"
                                           Margin="0,0,0,12"/>
 
@@ -7158,7 +7159,7 @@
                                 <TextBlock Text="{Binding Pad_AudioTriggerRumble_Description, Source={x:Static strings:Strings.Instance}}"
                                            Style="{StaticResource CardDescription}" Margin="0,0,0,12"/>
 
-                                <CheckBox Content="{Binding Pad_AudioTriggerRumble_Toggle, Source={x:Static strings:Strings.Instance}}"
+                                <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}" Content="{Binding Pad_AudioTriggerRumble_Toggle, Source={x:Static strings:Strings.Instance}}"
                                           IsChecked="{Binding AudioRumbleTriggersEnabled, Mode=TwoWay}"
                                           Margin="0,0,0,12"/>
 
@@ -7242,7 +7243,7 @@
                         <!-- Per-pad pivot — visible only on multi-pad devices -->
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,12"
                                     Visibility="{Binding HasMultipleTouchpads, Converter={StaticResource BoolToVisibilityConverter}}">
-                            <TextBlock Text="{Binding Pad_Touchpad_TouchpadIndex_Label, Source={x:Static strings:Strings.Instance}}"
+                            <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Pad_Touchpad_TouchpadIndex_Label, Source={x:Static strings:Strings.Instance}}"
                                        VerticalAlignment="Center" Margin="0,0,8,0"/>
                             <ComboBox ItemsSource="{Binding TouchpadIndexOptions}"
                                       SelectedItem="{Binding SelectedTouchpadIndex, Mode=TwoWay}"
@@ -7286,14 +7287,14 @@
                                            Style="{StaticResource CardDescription}"/>
 
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
-                                    <CheckBox Content="{Binding Pad_Touchpad_StickEnabled, Source={x:Static strings:Strings.Instance}}"
+                                    <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}" Content="{Binding Pad_Touchpad_StickEnabled, Source={x:Static strings:Strings.Instance}}"
                                               ToolTip="{Binding Pad_Touchpad_StickEnabled_Tooltip, Source={x:Static strings:Strings.Instance}}"
                                               IsChecked="{Binding TouchpadEnableJoystickOutput, Mode=TwoWay}" VerticalAlignment="Center"/>
                                     <Button Command="{Binding ResetTouchpadEnableJoystickOutputCommand}" Style="{StaticResource ResetButton}"
                                             ToolTip="{Binding Pad_ResetTouchpadStickEnabled, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="20,0,0,6">
-                                    <TextBlock Text="{Binding Pad_Touchpad_StickMaxRadius, Source={x:Static strings:Strings.Instance}}"
+                                    <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Pad_Touchpad_StickMaxRadius, Source={x:Static strings:Strings.Instance}}"
                                                VerticalAlignment="Center" Width="270"/>
                                     <TextBox Text="{Binding TouchpadJoystickMaxRadius, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat=F2}"
                                              Width="80" VerticalAlignment="Center"/>
@@ -7301,7 +7302,7 @@
                                             ToolTip="{Binding Pad_ResetTouchpadStickMaxRadius, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="20,0,0,8">
-                                    <TextBlock Text="{Binding Pad_Touchpad_StickInnerDeadzone, Source={x:Static strings:Strings.Instance}}"
+                                    <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Pad_Touchpad_StickInnerDeadzone, Source={x:Static strings:Strings.Instance}}"
                                                VerticalAlignment="Center" Width="270"/>
                                     <TextBox Text="{Binding TouchpadJoystickInnerDeadzone, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat=F2}"
                                              Width="80" VerticalAlignment="Center"/>
@@ -7310,7 +7311,7 @@
                                 </StackPanel>
 
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
-                                    <TextBlock Text="{Binding Pad_Touchpad_StickDPadMode_Label, Source={x:Static strings:Strings.Instance}}"
+                                    <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Pad_Touchpad_StickDPadMode_Label, Source={x:Static strings:Strings.Instance}}"
                                                VerticalAlignment="Center" Width="270"/>
                                     <ComboBox SelectedValue="{Binding TouchpadJoystickDPadMode, Mode=TwoWay}"
                                               SelectedValuePath="Tag"
@@ -7325,7 +7326,7 @@
                                             ToolTip="{Binding Pad_ResetTouchpadStickDPadMode, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="20,0,0,6">
-                                    <TextBlock Text="{Binding Pad_Touchpad_StickDPadActivationThreshold, Source={x:Static strings:Strings.Instance}}"
+                                    <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Pad_Touchpad_StickDPadActivationThreshold, Source={x:Static strings:Strings.Instance}}"
                                                VerticalAlignment="Center" Width="270"/>
                                     <TextBox Text="{Binding TouchpadJoystickDPadActivationThreshold, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat=F2}"
                                              Width="80" VerticalAlignment="Center"/>
@@ -7351,7 +7352,7 @@
                                            Style="{StaticResource CardDescription}"/>
 
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
-                                    <TextBlock Text="{Binding Pad_Touchpad_MouseSensitivityX, Source={x:Static strings:Strings.Instance}}"
+                                    <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Pad_Touchpad_MouseSensitivityX, Source={x:Static strings:Strings.Instance}}"
                                                VerticalAlignment="Center" Width="270"/>
                                     <TextBox Text="{Binding TouchpadMouseSensitivityX, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat=F2}"
                                              Width="80" VerticalAlignment="Center"
@@ -7360,7 +7361,7 @@
                                             ToolTip="{Binding Pad_ResetTouchpadMouseSensitivityX, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
-                                    <TextBlock Text="{Binding Pad_Touchpad_MouseSensitivityY, Source={x:Static strings:Strings.Instance}}"
+                                    <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Pad_Touchpad_MouseSensitivityY, Source={x:Static strings:Strings.Instance}}"
                                                VerticalAlignment="Center" Width="270"/>
                                     <TextBox Text="{Binding TouchpadMouseSensitivityY, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat=F2}"
                                              Width="80" VerticalAlignment="Center"
@@ -7369,7 +7370,7 @@
                                             ToolTip="{Binding Pad_ResetTouchpadMouseSensitivityY, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
-                                    <CheckBox Content="{Binding Pad_Touchpad_MouseInvertX, Source={x:Static strings:Strings.Instance}}"
+                                    <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}" Content="{Binding Pad_Touchpad_MouseInvertX, Source={x:Static strings:Strings.Instance}}"
                                               IsChecked="{Binding TouchpadMouseInvertX, Mode=TwoWay}"
                                               ToolTip="{Binding Pad_Touchpad_MouseInvertX_Tooltip, Source={x:Static strings:Strings.Instance}}"
                                               VerticalAlignment="Center"/>
@@ -7377,7 +7378,7 @@
                                             ToolTip="{Binding Pad_ResetTouchpadMouseInvertX, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
-                                    <CheckBox Content="{Binding Pad_Touchpad_MouseInvertY, Source={x:Static strings:Strings.Instance}}"
+                                    <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}" Content="{Binding Pad_Touchpad_MouseInvertY, Source={x:Static strings:Strings.Instance}}"
                                               IsChecked="{Binding TouchpadMouseInvertY, Mode=TwoWay}"
                                               ToolTip="{Binding Pad_Touchpad_MouseInvertY_Tooltip, Source={x:Static strings:Strings.Instance}}"
                                               VerticalAlignment="Center"/>
@@ -7400,7 +7401,7 @@
                                             ToolTip="{Binding Pad_ResetTouchpadDetection, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                                    <CheckBox Content="{Binding Pad_Touchpad_GesturesEnabled, Source={x:Static strings:Strings.Instance}}"
+                                    <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}" Content="{Binding Pad_Touchpad_GesturesEnabled, Source={x:Static strings:Strings.Instance}}"
                                               IsChecked="{Binding TouchpadGesturesEnabled, Mode=TwoWay}"
                                               ToolTip="{Binding Pad_Touchpad_GesturesEnabled_Tooltip, Source={x:Static strings:Strings.Instance}}"
                                               VerticalAlignment="Center"/>
@@ -7408,7 +7409,7 @@
                                             ToolTip="{Binding Pad_ResetTouchpadGesturesEnabled, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                                    <TextBlock Text="{Binding Pad_Touchpad_Mode_Label, Source={x:Static strings:Strings.Instance}}"
+                                    <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Pad_Touchpad_Mode_Label, Source={x:Static strings:Strings.Instance}}"
                                                VerticalAlignment="Center" Width="270"/>
                                     <ComboBox SelectedValue="{Binding TouchpadGestureMode, Mode=TwoWay}"
                                               SelectedValuePath="Tag"
@@ -7423,7 +7424,7 @@
                                             ToolTip="{Binding Pad_ResetTouchpadGestureMode, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                                    <TextBlock Text="{Binding Pad_Touchpad_CooldownMs_Label, Source={x:Static strings:Strings.Instance}}"
+                                    <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Pad_Touchpad_CooldownMs_Label, Source={x:Static strings:Strings.Instance}}"
                                                VerticalAlignment="Center" Width="270"/>
                                     <TextBox Text="{Binding TouchpadCooldownMs, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                              Width="80" VerticalAlignment="Center"
@@ -7449,19 +7450,19 @@
                                 </StackPanel>
 
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
-                                    <CheckBox Content="{Binding Pad_Touchpad_FourWaySwipes, Source={x:Static strings:Strings.Instance}}"
+                                    <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}" Content="{Binding Pad_Touchpad_FourWaySwipes, Source={x:Static strings:Strings.Instance}}"
                                               IsChecked="{Binding TouchpadEnableFourWaySwipes, Mode=TwoWay}" VerticalAlignment="Center"/>
                                     <Button Command="{Binding ResetTouchpadEnableFourWaySwipesCommand}" Style="{StaticResource ResetButton}"
                                             ToolTip="{Binding Pad_ResetTouchpadFourWaySwipes, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
-                                    <CheckBox Content="{Binding Pad_Touchpad_EightWaySwipes, Source={x:Static strings:Strings.Instance}}"
+                                    <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}" Content="{Binding Pad_Touchpad_EightWaySwipes, Source={x:Static strings:Strings.Instance}}"
                                               IsChecked="{Binding TouchpadEnableEightWaySwipes, Mode=TwoWay}" VerticalAlignment="Center"/>
                                     <Button Command="{Binding ResetTouchpadEnableEightWaySwipesCommand}" Style="{StaticResource ResetButton}"
                                             ToolTip="{Binding Pad_ResetTouchpadEightWaySwipes, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="20,0,0,6">
-                                    <TextBlock Text="{Binding Pad_Touchpad_SwipeDistanceThreshold, Source={x:Static strings:Strings.Instance}}"
+                                    <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Pad_Touchpad_SwipeDistanceThreshold, Source={x:Static strings:Strings.Instance}}"
                                                VerticalAlignment="Center" Width="270"/>
                                     <TextBox Text="{Binding TouchpadSwipeDistanceThreshold, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat=F2}"
                                              Width="80" VerticalAlignment="Center"/>
@@ -7469,7 +7470,7 @@
                                             ToolTip="{Binding Pad_ResetTouchpadSwipeDistance, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="20,0,0,8">
-                                    <TextBlock Text="{Binding Pad_Touchpad_SwipeTimeWindow, Source={x:Static strings:Strings.Instance}}"
+                                    <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Pad_Touchpad_SwipeTimeWindow, Source={x:Static strings:Strings.Instance}}"
                                                VerticalAlignment="Center" Width="270"/>
                                     <TextBox Text="{Binding TouchpadSwipeTimeWindowMs, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                              Width="80" VerticalAlignment="Center"/>
@@ -7479,14 +7480,14 @@
                                 </StackPanel>
 
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
-                                    <CheckBox Content="{Binding Pad_Touchpad_RadialZones, Source={x:Static strings:Strings.Instance}}"
+                                    <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}" Content="{Binding Pad_Touchpad_RadialZones, Source={x:Static strings:Strings.Instance}}"
                                               ToolTip="{Binding Pad_Touchpad_RadialZones_Tooltip, Source={x:Static strings:Strings.Instance}}"
                                               IsChecked="{Binding TouchpadEnableRadialZones, Mode=TwoWay}" VerticalAlignment="Center"/>
                                     <Button Command="{Binding ResetTouchpadEnableRadialZonesCommand}" Style="{StaticResource ResetButton}"
                                             ToolTip="{Binding Pad_ResetTouchpadRadialZones, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="20,0,0,6">
-                                    <TextBlock Text="{Binding Pad_Touchpad_RadialZoneCount, Source={x:Static strings:Strings.Instance}}"
+                                    <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Pad_Touchpad_RadialZoneCount, Source={x:Static strings:Strings.Instance}}"
                                                VerticalAlignment="Center" Width="270"/>
                                     <ComboBox ItemsSource="{Binding TouchpadRadialZoneCountOptions}"
                                               SelectedItem="{Binding TouchpadRadialZoneCount, Mode=TwoWay}"
@@ -7496,7 +7497,7 @@
                                             ToolTip="{Binding Pad_ResetTouchpadRadialZoneCount, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="20,0,0,8">
-                                    <TextBlock Text="{Binding Pad_Touchpad_RadialCenterDeadzone, Source={x:Static strings:Strings.Instance}}"
+                                    <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Pad_Touchpad_RadialCenterDeadzone, Source={x:Static strings:Strings.Instance}}"
                                                VerticalAlignment="Center" Width="270"/>
                                     <TextBox Text="{Binding TouchpadRadialCenterDeadzone, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat=F2}"
                                              Width="80" VerticalAlignment="Center"/>
@@ -7505,13 +7506,13 @@
                                 </StackPanel>
 
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
-                                    <CheckBox Content="{Binding Pad_Touchpad_Taps, Source={x:Static strings:Strings.Instance}}"
+                                    <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}" Content="{Binding Pad_Touchpad_Taps, Source={x:Static strings:Strings.Instance}}"
                                               IsChecked="{Binding TouchpadEnableTaps, Mode=TwoWay}" VerticalAlignment="Center"/>
                                     <Button Command="{Binding ResetTouchpadEnableTapsCommand}" Style="{StaticResource ResetButton}"
                                             ToolTip="{Binding Pad_ResetTouchpadTaps, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="20,0,0,6">
-                                    <TextBlock Text="{Binding Pad_Touchpad_TapTimeWindow, Source={x:Static strings:Strings.Instance}}"
+                                    <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Pad_Touchpad_TapTimeWindow, Source={x:Static strings:Strings.Instance}}"
                                                VerticalAlignment="Center" Width="270"/>
                                     <TextBox Text="{Binding TouchpadTapTimeWindowMs, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                              Width="80" VerticalAlignment="Center"/>
@@ -7520,7 +7521,7 @@
                                             ToolTip="{Binding Pad_ResetTouchpadTapTimeWindow, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="20,0,0,8">
-                                    <TextBlock Text="{Binding Pad_Touchpad_MultiTapGap, Source={x:Static strings:Strings.Instance}}"
+                                    <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Pad_Touchpad_MultiTapGap, Source={x:Static strings:Strings.Instance}}"
                                                VerticalAlignment="Center" Width="270"/>
                                     <TextBox Text="{Binding TouchpadMultiTapGapMs, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                              Width="80" VerticalAlignment="Center"/>
@@ -7530,13 +7531,13 @@
                                 </StackPanel>
 
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
-                                    <CheckBox Content="{Binding Pad_Touchpad_LongPress, Source={x:Static strings:Strings.Instance}}"
+                                    <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}" Content="{Binding Pad_Touchpad_LongPress, Source={x:Static strings:Strings.Instance}}"
                                               IsChecked="{Binding TouchpadEnableLongPress, Mode=TwoWay}" VerticalAlignment="Center"/>
                                     <Button Command="{Binding ResetTouchpadEnableLongPressCommand}" Style="{StaticResource ResetButton}"
                                             ToolTip="{Binding Pad_ResetTouchpadLongPress, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="20,0,0,8">
-                                    <TextBlock Text="{Binding Pad_Touchpad_LongPressTimeWindow, Source={x:Static strings:Strings.Instance}}"
+                                    <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Pad_Touchpad_LongPressTimeWindow, Source={x:Static strings:Strings.Instance}}"
                                                VerticalAlignment="Center" Width="270"/>
                                     <TextBox Text="{Binding TouchpadLongPressTimeWindowMs, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                              Width="80" VerticalAlignment="Center"/>
@@ -7546,49 +7547,49 @@
                                 </StackPanel>
 
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
-                                    <CheckBox Content="{Binding Pad_Touchpad_TwoFingerSwipes, Source={x:Static strings:Strings.Instance}}"
+                                    <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}" Content="{Binding Pad_Touchpad_TwoFingerSwipes, Source={x:Static strings:Strings.Instance}}"
                                               IsChecked="{Binding TouchpadEnableTwoFingerSwipes, Mode=TwoWay}" VerticalAlignment="Center"/>
                                     <Button Command="{Binding ResetTouchpadEnableTwoFingerSwipesCommand}" Style="{StaticResource ResetButton}"
                                             ToolTip="{Binding Pad_ResetTouchpadTwoFingerSwipes, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
-                                    <CheckBox Content="{Binding Pad_Touchpad_PinchSpread, Source={x:Static strings:Strings.Instance}}"
+                                    <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}" Content="{Binding Pad_Touchpad_PinchSpread, Source={x:Static strings:Strings.Instance}}"
                                               IsChecked="{Binding TouchpadEnablePinchSpread, Mode=TwoWay}" VerticalAlignment="Center"/>
                                     <Button Command="{Binding ResetTouchpadEnablePinchSpreadCommand}" Style="{StaticResource ResetButton}"
                                             ToolTip="{Binding Pad_ResetTouchpadPinchSpread, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
-                                    <CheckBox Content="{Binding Pad_Touchpad_Rotate, Source={x:Static strings:Strings.Instance}}"
+                                    <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}" Content="{Binding Pad_Touchpad_Rotate, Source={x:Static strings:Strings.Instance}}"
                                               IsChecked="{Binding TouchpadEnableRotate, Mode=TwoWay}" VerticalAlignment="Center"/>
                                     <Button Command="{Binding ResetTouchpadEnableRotateCommand}" Style="{StaticResource ResetButton}"
                                             ToolTip="{Binding Pad_ResetTouchpadRotate, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
-                                    <CheckBox Content="{Binding Pad_Touchpad_ThreeFinger, Source={x:Static strings:Strings.Instance}}"
+                                    <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}" Content="{Binding Pad_Touchpad_ThreeFinger, Source={x:Static strings:Strings.Instance}}"
                                               IsChecked="{Binding TouchpadEnableThreeFingerGestures, Mode=TwoWay}" VerticalAlignment="Center"/>
                                     <Button Command="{Binding ResetTouchpadEnableThreeFingerGesturesCommand}" Style="{StaticResource ResetButton}"
                                             ToolTip="{Binding Pad_ResetTouchpadThreeFinger, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
-                                    <CheckBox Content="{Binding Pad_Touchpad_FourFinger, Source={x:Static strings:Strings.Instance}}"
+                                    <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}" Content="{Binding Pad_Touchpad_FourFinger, Source={x:Static strings:Strings.Instance}}"
                                               IsChecked="{Binding TouchpadEnableFourFingerGestures, Mode=TwoWay}" VerticalAlignment="Center"/>
                                     <Button Command="{Binding ResetTouchpadEnableFourFingerGesturesCommand}" Style="{StaticResource ResetButton}"
                                             ToolTip="{Binding Pad_ResetTouchpadFourFinger, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
-                                    <CheckBox Content="{Binding Pad_Touchpad_FiveFinger, Source={x:Static strings:Strings.Instance}}"
+                                    <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}" Content="{Binding Pad_Touchpad_FiveFinger, Source={x:Static strings:Strings.Instance}}"
                                               IsChecked="{Binding TouchpadEnableFiveFingerGestures, Mode=TwoWay}" VerticalAlignment="Center"/>
                                     <Button Command="{Binding ResetTouchpadEnableFiveFingerGesturesCommand}" Style="{StaticResource ResetButton}"
                                             ToolTip="{Binding Pad_ResetTouchpadFiveFinger, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
-                                    <CheckBox Content="{Binding Pad_Touchpad_ShapeGestures, Source={x:Static strings:Strings.Instance}}"
+                                    <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}" Content="{Binding Pad_Touchpad_ShapeGestures, Source={x:Static strings:Strings.Instance}}"
                                               IsChecked="{Binding TouchpadEnableShapeGestures, Mode=TwoWay}" VerticalAlignment="Center"/>
                                     <Button Command="{Binding ResetTouchpadEnableShapeGesturesCommand}" Style="{StaticResource ResetButton}"
                                             ToolTip="{Binding Pad_ResetTouchpadShapeGestures, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="20,0,0,0">
-                                    <TextBlock Text="{Binding Pad_Touchpad_MatchThreshold, Source={x:Static strings:Strings.Instance}}"
+                                    <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Pad_Touchpad_MatchThreshold, Source={x:Static strings:Strings.Instance}}"
                                                VerticalAlignment="Center" Width="270"/>
                                     <TextBox Text="{Binding TouchpadGestureMatchThreshold, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat=F2}"
                                              Width="80" VerticalAlignment="Center"/>
@@ -7708,7 +7709,7 @@
                                      Native HID command (vendor wheels only); hidden for generic
                                      SDL wheels, which have no addressable rev strip. -->
                                 <StackPanel x:Name="WheelRpmRow" Orientation="Horizontal" Margin="0,4,0,0">
-                                    <CheckBox IsChecked="{Binding WheelRpmLeds, Mode=TwoWay}"
+                                    <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}" IsChecked="{Binding WheelRpmLeds, Mode=TwoWay}"
                                               Content="{Binding Pad_Wheel_RpmLeds, Source={x:Static strings:Strings.Instance}}"
                                               VerticalAlignment="Center"/>
                                     <Button Command="{Binding ResetWheelRpmLedsCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetRpmLeds, Source={x:Static strings:Strings.Instance}}" Margin="8,0,0,0"/>
@@ -7750,7 +7751,7 @@
                                 <!-- Per assigned device, by convention: this toggle (and the
                                      speaker routing of macro sounds) follows the device selected
                                      in the assigned-devices dropdown. No output picker. -->
-                                <CheckBox IsChecked="{Binding PlayStationConfig.AudioPassthroughEnabled, Mode=TwoWay}"
+                                <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}" IsChecked="{Binding PlayStationConfig.AudioPassthroughEnabled, Mode=TwoWay}"
                                           Content="{Binding Pad_Audio_Mirror, Source={x:Static strings:Strings.Instance}}"
                                           ToolTip="{Binding Pad_Audio_Mirror_Tooltip, Source={x:Static strings:Strings.Instance}}"
                                           Margin="0,0,0,8"
@@ -7760,7 +7761,7 @@
                                      sounds to a separate playback device target the pad. -->
                                 <StackPanel Orientation="Horizontal" Margin="20,0,0,8"
                                             Visibility="{Binding SelectedDeviceHasSpeaker, Converter={StaticResource BoolToVisibilityConverter}}">
-                                    <TextBlock Text="{Binding Pad_Audio_MirrorSource_Label, Source={x:Static strings:Strings.Instance}}"
+                                    <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Pad_Audio_MirrorSource_Label, Source={x:Static strings:Strings.Instance}}"
                                                VerticalAlignment="Center" Margin="0,0,8,0"/>
                                     <!-- SelectedValuePath/DisplayMemberPath MUST precede the
                                          ItemsSource/SelectedValue bindings: XAML applies
@@ -7897,7 +7898,7 @@
                                 <TextBlock Text="{Binding Pad_Pointer_TuningTitle, Source={x:Static strings:Strings.Instance}}"
                                            Style="{StaticResource CardTitle}" Margin="0,0,0,8"/>
 
-                                <TextBlock Text="{Binding Pad_Pointer_SensorBar, Source={x:Static strings:Strings.Instance}}"
+                                <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Pad_Pointer_SensorBar, Source={x:Static strings:Strings.Instance}}"
                                            Margin="0,0,0,4"/>
                                 <ComboBox Width="240" HorizontalAlignment="Left"
                                           SelectedIndex="{Binding IrSensorBarPos, Mode=TwoWay}">
@@ -7906,21 +7907,21 @@
                                     <ComboBoxItem Content="{Binding Pad_Pointer_SensorBar_Below, Source={x:Static strings:Strings.Instance}}"/>
                                 </ComboBox>
 
-                                <TextBlock Text="{Binding Pad_Pointer_Compensation, Source={x:Static strings:Strings.Instance}}"
+                                <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Pad_Pointer_Compensation, Source={x:Static strings:Strings.Instance}}"
                                            Margin="0,12,0,4"/>
                                 <StackPanel Orientation="Horizontal">
                                     <Slider Value="{Binding IrSensorBarCompPercent, Mode=TwoWay}"
                                             Minimum="0" Maximum="50" Width="240" VerticalAlignment="Center"/>
-                                    <TextBlock Text="{Binding IrSensorBarCompPercent, StringFormat={}{0}%}"
+                                    <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding IrSensorBarCompPercent, StringFormat={}{0}%}"
                                                VerticalAlignment="Center" Margin="8,0,0,0" MinWidth="36"/>
                                 </StackPanel>
 
-                                <TextBlock Text="{Binding Pad_Pointer_Smoothing, Source={x:Static strings:Strings.Instance}}"
+                                <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Pad_Pointer_Smoothing, Source={x:Static strings:Strings.Instance}}"
                                            Margin="0,12,0,4"/>
                                 <StackPanel Orientation="Horizontal">
                                     <Slider Value="{Binding IrSmoothingPercent, Mode=TwoWay}"
                                             Minimum="0" Maximum="100" Width="240" VerticalAlignment="Center"/>
-                                    <TextBlock Text="{Binding IrSmoothingPercent, StringFormat={}{0}%}"
+                                    <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding IrSmoothingPercent, StringFormat={}{0}%}"
                                                VerticalAlignment="Center" Margin="8,0,0,0" MinWidth="36"/>
                                 </StackPanel>
                             </StackPanel>

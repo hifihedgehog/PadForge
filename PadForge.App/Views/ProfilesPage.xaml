@@ -24,11 +24,13 @@
                     <TextBlock Text="{Binding Profiles_Description, Source={x:Static strings:Strings.Instance}}"
                                Style="{StaticResource CardDescription}" Margin="0,0,0,12"/>
                     <CheckBox Content="{Binding Profiles_AutoSwitch, Source={x:Static strings:Strings.Instance}}"
+                              Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                               IsChecked="{Binding EnableAutoProfileSwitching}" Margin="0,0,0,8"/>
 
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                         <TextBlock Text="{Binding Profiles_ActiveProfile, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
-                                   Margin="0,0,8,0"/>
+                                   Margin="0,0,8,0"
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
                         <!-- The active profile burns (#175): lit flame marks
                              which profile currently drives the forge. -->
                         <Path Data="{StaticResource FlameOuterGeometry}"

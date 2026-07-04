@@ -29,6 +29,13 @@
                     <SolidColorBrush x:Key="ColdBrush" Color="#58B6E4"/>
                     <SolidColorBrush x:Key="ColdDeepBrush" Color="#2E6A8F"/>
                     <SolidColorBrush x:Key="ColdTintBrush" Color="#1A58B6E4"/>
+                    <!-- Text-safe pairs (round-3 A4): dark defaults here,
+                         EmberTheme.ApplyAccent swaps both per ground.
+                         EmberTextBrush = raw-ember text that deepens on
+                         white; ColdMutedBrush = secondary cold with the
+                         62% dim baked in so consumers stay at Opacity 1. -->
+                    <SolidColorBrush x:Key="EmberTextBrush" Color="#FF6B2C"/>
+                    <SolidColorBrush x:Key="ColdMutedBrush" Color="#9E58B6E4"/>
                     <SolidColorBrush x:Key="SteelGroundBrush" Color="#0B0E14"/>
                     <SolidColorBrush x:Key="SteelCardBrush" Color="#111623"/>
                     <SolidColorBrush x:Key="SteelRaisedBrush" Color="#1B2333"/>
@@ -276,6 +283,81 @@
                     </Setter.Value>
                 </Setter>
                 <Setter Property="Template" Value="{StaticResource InstrumentBarOutTemplate}"/>
+            </Style>
+
+            <!--
+                Ember value slider (round-3 A3): Wpf.Ui 4.3.0's Slider
+                template has no decrease-side value-fill element (confirmed
+                iteration 47-48), so resource keys cannot add one. This style
+                retemplates the horizontal single-thumb slider with a Track
+                whose decrease side fills the EmberSegGradient, on the same
+                recessed SteelGround tray + SteelLineSoft hairline the
+                instrument bars use (both theme-paired). Thumb colors ride
+                the SliderThumbBackground* keys: EmberTheme pins them ember
+                on dark, and on light they fall back to the stock accent,
+                which the ApplicationAccentColorManager already pins ember.
+                Horizontal orientation only; every consumer (FFB + Adaptive
+                Triggers cards) is horizontal.
+            -->
+            <Style x:Key="EmberSlider" TargetType="Slider">
+                <Setter Property="MinHeight" Value="24"/>
+                <Setter Property="IsMoveToPointEnabled" Value="True"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="Slider">
+                            <Grid MinHeight="{TemplateBinding MinHeight}" Background="Transparent">
+                                <Border Height="6"
+                                        VerticalAlignment="Center"
+                                        CornerRadius="3"
+                                        Background="{DynamicResource SteelGroundBrush}"
+                                        BorderBrush="{DynamicResource SteelLineSoftBrush}"
+                                        BorderThickness="1"/>
+                                <Track x:Name="PART_Track">
+                                    <Track.DecreaseRepeatButton>
+                                        <RepeatButton Command="Slider.DecreaseLarge" IsTabStop="False" Focusable="False">
+                                            <RepeatButton.Template>
+                                                <ControlTemplate TargetType="RepeatButton">
+                                                    <Grid Background="Transparent">
+                                                        <Border Height="4"
+                                                                Margin="1,0,0,0"
+                                                                VerticalAlignment="Center"
+                                                                CornerRadius="2"
+                                                                Background="{StaticResource EmberSegGradient}"/>
+                                                    </Grid>
+                                                </ControlTemplate>
+                                            </RepeatButton.Template>
+                                        </RepeatButton>
+                                    </Track.DecreaseRepeatButton>
+                                    <Track.IncreaseRepeatButton>
+                                        <RepeatButton Command="Slider.IncreaseLarge" IsTabStop="False" Focusable="False">
+                                            <RepeatButton.Template>
+                                                <ControlTemplate TargetType="RepeatButton">
+                                                    <Grid Background="Transparent"/>
+                                                </ControlTemplate>
+                                            </RepeatButton.Template>
+                                        </RepeatButton>
+                                    </Track.IncreaseRepeatButton>
+                                    <Track.Thumb>
+                                        <Thumb Width="14" Height="14" Focusable="False">
+                                            <Thumb.Template>
+                                                <ControlTemplate TargetType="Thumb">
+                                                    <Ellipse x:Name="ThumbDot"
+                                                             Fill="{DynamicResource SliderThumbBackground}"/>
+                                                    <ControlTemplate.Triggers>
+                                                        <Trigger Property="IsMouseOver" Value="True">
+                                                            <Setter TargetName="ThumbDot" Property="Fill"
+                                                                    Value="{DynamicResource SliderThumbBackgroundPointerOver}"/>
+                                                        </Trigger>
+                                                    </ControlTemplate.Triggers>
+                                                </ControlTemplate>
+                                            </Thumb.Template>
+                                        </Thumb>
+                                    </Track.Thumb>
+                                </Track>
+                            </Grid>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
             </Style>
 
             <!--

@@ -234,11 +234,11 @@
                     <TextBlock Text="{Binding Dashboard_Slot, Source={x:Static strings:Strings.Instance}, Converter={StaticResource UpperConverter}}"
                                FontFamily="{StaticResource TelemetryFontFamily}"
                                FontSize="10" FontWeight="SemiBold"
-                               Foreground="{DynamicResource EmberBrush}" VerticalAlignment="Center"/>
+                               Foreground="{DynamicResource EmberTextBrush}" VerticalAlignment="Center"/>
                     <TextBlock Text="{Binding SlotNumber}"
                                FontFamily="{StaticResource TelemetryFontFamily}"
                                FontSize="10" FontWeight="SemiBold"
-                               Foreground="{DynamicResource EmberBrush}" Margin="3,0,0,0" VerticalAlignment="Center"/>
+                               Foreground="{DynamicResource EmberTextBrush}" Margin="3,0,0,0" VerticalAlignment="Center"/>
                 </StackPanel>
 
                 <!-- [Gamepad #  TypeIcon TypeName]. Controller / Preview tab. -->
@@ -771,8 +771,12 @@
                                     MouseLeftButtonDown="LeftMotor_Click"
                                     ToolTip="{Binding Pad_TestLeftMotor, Source={x:Static strings:Strings.Instance}}"
                                     Background="Transparent">
-                            <TextBlock Text="{Binding Pad_LeftMotor, Source={x:Static strings:Strings.Instance}}" FontSize="14"
-                                       Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+                            <!-- Mono eyebrow caption (#175 round 3, item B9):
+                                 uppercase is display-only via UpperConverter,
+                                 resource strings stay Title Case. -->
+                            <TextBlock Text="{Binding Pad_LeftMotor, Source={x:Static strings:Strings.Instance}, Converter={StaticResource UpperConverter}}"
+                                       FontFamily="{StaticResource TelemetryFontFamily}" FontSize="10"
+                                       Foreground="{DynamicResource TextFillColorTertiaryBrush}"
                                        HorizontalAlignment="Center" Margin="0,0,0,2"/>
                             <Border Height="10" Background="{DynamicResource SteelGroundBrush}" CornerRadius="4"
                                     BorderBrush="{DynamicResource SteelLineSoftBrush}" BorderThickness="1">
@@ -797,8 +801,9 @@
                                     MouseLeftButtonDown="RightMotor_Click"
                                     ToolTip="{Binding Pad_TestRightMotor, Source={x:Static strings:Strings.Instance}}"
                                     Background="Transparent">
-                            <TextBlock Text="{Binding Pad_RightMotor, Source={x:Static strings:Strings.Instance}}" FontSize="14"
-                                       Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+                            <TextBlock Text="{Binding Pad_RightMotor, Source={x:Static strings:Strings.Instance}, Converter={StaticResource UpperConverter}}"
+                                       FontFamily="{StaticResource TelemetryFontFamily}" FontSize="10"
+                                       Foreground="{DynamicResource TextFillColorTertiaryBrush}"
                                        HorizontalAlignment="Center" Margin="0,0,0,2"/>
                             <Border Height="10" Background="{DynamicResource SteelGroundBrush}" CornerRadius="4"
                                     BorderBrush="{DynamicResource SteelLineSoftBrush}" BorderThickness="1">
@@ -2413,9 +2418,9 @@
                                 <Setter Property="FontFamily" Value="{StaticResource TelemetryFontFamily}"/>
                                 <Setter Property="FontSize" Value="10"/>
                                 <Setter Property="FontWeight" Value="Normal"/>
-                                <Setter Property="Foreground" Value="#5D6B85"/>
+                                <Setter Property="Foreground" Value="{DynamicResource TextFillColorTertiaryBrush}"/>
                                 <Setter Property="Background" Value="Transparent"/>
-                                <Setter Property="BorderBrush" Value="#1C2536"/>
+                                <Setter Property="BorderBrush" Value="{DynamicResource SteelLineSoftBrush}"/>
                                 <Setter Property="BorderThickness" Value="0,0,0,1"/>
                                 <Setter Property="ContentTemplate">
                                     <Setter.Value>
@@ -2981,8 +2986,7 @@
                                                             <!-- Subtitle: assigned-device name when set,
                                                                  italic "Unassigned" when no descriptor. -->
                                                             <TextBlock FontSize="10"
-                                                                       Foreground="{DynamicResource ColdBrush}"
-                                                                       Opacity="0.62"
+                                                                       Foreground="{DynamicResource ColdMutedBrush}"
                                                                        Margin="4,1,0,0"
                                                                        TextTrimming="CharacterEllipsis">
                                                                 <TextBlock.Style>
@@ -3561,8 +3565,7 @@
                                                  Style sets Text via a Setter rather than a local
                                                  value so the DataTrigger's override actually wins. -->
                                             <TextBlock FontSize="10"
-                                                       Foreground="{DynamicResource ColdBrush}"
-                                                       Opacity="0.62"
+                                                       Foreground="{DynamicResource ColdMutedBrush}"
                                                        Margin="4,1,0,0"
                                                        TextTrimming="CharacterEllipsis"
                                                        Visibility="{Binding IsPrimaryDirect, Converter={StaticResource BoolToVisibilityConverter}}">
@@ -4266,9 +4269,14 @@
                                                             </Path.Data>
                                                         </Path>
 
-                                                        <!-- Hybrid: circle (red) — fully dead center from radial stage -->
-                                                        <Ellipse Fill="Transparent" Stroke="#B3C43D0C" StrokeThickness="1" StrokeDashArray="3 4"
-                                                                 Visibility="{Binding IsHybridShape, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                        <!-- Deadzone ring (#175 round 3, item B7): dashed
+                                                             ember-deep circle at the configured DZ radius,
+                                                             spec mock stroke rgba(196,61,12,0.55) dash 3/4.
+                                                             Always on, every shape. It marks the DZ radius
+                                                             the card subtitle prints. For Hybrid it doubles
+                                                             as the fully-dead radial-stage circle it was
+                                                             before. -->
+                                                        <Ellipse Fill="Transparent" Stroke="#8CC43D0C" StrokeThickness="1" StrokeDashArray="3 4">
                                                             <Ellipse.Width>
                                                                 <Binding Path="DeadZoneX" Converter="{StaticResource PercentToSizeConverter}" ConverterParameter="200"/>
                                                             </Ellipse.Width>
@@ -4811,7 +4819,7 @@
                                                                  Minimum="0" Maximum="1"
                                                                  Style="{StaticResource InstrumentBarOut}"/>
                                                     <TextBlock Grid.Row="1" Grid.Column="2"
-                                                               Text="{Binding LiveValue, Mode=OneWay, StringFormat={}{0:P0}}"
+                                                               Text="{Binding OutDisplay, Mode=OneWay}"
                                                                FontFamily="{StaticResource TelemetryFontFamily}"
                                                                FontSize="12" Width="96" TextAlignment="Right"
                                                                Foreground="{DynamicResource EmberHotBrush}"
@@ -5586,9 +5594,12 @@
                                          based on a single color (Static/Breathing/Strobe),
                                          multi-color time-based (Rainbow/ColorCycle), battery
                                          indicator, then the audio-reactive cluster. -->
+                                    <!-- Combo width standard (#175 round 3, item B8): one
+                                         width per card column. This card's combos are all
+                                         320; the popup sizes to its own option text. -->
                                     <ComboBox SelectedValue="{Binding PlayStationConfig.LightbarMode, Mode=TwoWay}"
                                               SelectedValuePath="Tag"
-                                              Width="540" VerticalAlignment="Center">
+                                              Width="320" VerticalAlignment="Center">
                                         <ComboBoxItem Content="{Binding Pad_Lighting_Mode_Off, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:LightbarMode.Off}"/>
                                         <ComboBoxItem Content="{Binding Pad_Lighting_Mode_Static, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:LightbarMode.Static}"/>
                                         <ComboBoxItem Content="{Binding Pad_Lighting_Mode_Breathing, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:LightbarMode.Breathing}"/>
@@ -6378,8 +6389,11 @@
                                      mode (Off / Solid / Pulse) — no register. -->
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
                                     <TextBlock Text="{Binding Pad_Lighting_LedBrightness, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                    <!-- Combo width standard (#175 round 3, item B8): the
+                                         three enum combos share 220, the device picker
+                                         below keeps 320. Two widths per card, max. -->
                                     <ComboBox SelectedIndex="{Binding PlayStationConfig.PlayerLedBrightness, Mode=TwoWay, Converter={StaticResource EnumIndexConverter}}"
-                                              Width="140" VerticalAlignment="Center">
+                                              Width="220" VerticalAlignment="Center">
                                         <ComboBoxItem Content="{Binding Pad_Lighting_PlayerLed_Brightness_High, Source={x:Static strings:Strings.Instance}}"/>
                                         <ComboBoxItem Content="{Binding Pad_Lighting_PlayerLed_Brightness_Medium, Source={x:Static strings:Strings.Instance}}"/>
                                         <ComboBoxItem Content="{Binding Pad_Lighting_PlayerLed_Brightness_Low, Source={x:Static strings:Strings.Instance}}"/>
@@ -6391,7 +6405,7 @@
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
                                     <TextBlock Text="{Binding Pad_Lighting_PlayerPattern, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
                                     <ComboBox SelectedIndex="{Binding PlayStationConfig.PlayerLedMode, Mode=TwoWay, Converter={StaticResource EnumIndexConverter}}"
-                                              Width="140" VerticalAlignment="Center">
+                                              Width="220" VerticalAlignment="Center">
                                         <ComboBoxItem Content="{Binding Pad_Lighting_PlayerLed_Off, Source={x:Static strings:Strings.Instance}}"/>
                                         <ComboBoxItem Content="{Binding Pad_Lighting_PlayerLed_P1, Source={x:Static strings:Strings.Instance}}"/>
                                         <ComboBoxItem Content="{Binding Pad_Lighting_PlayerLed_P2, Source={x:Static strings:Strings.Instance}}"/>
@@ -6586,12 +6600,15 @@
                                                FontSize="14" Width="160" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,0,8,0" VerticalAlignment="Center"/>
                                     <TextBlock Text="{Binding GyroLiveRatePitch, StringFormat={}Pitch {0:+0.0;-0.0;0.0}°/s}"
                                                Foreground="{DynamicResource ColdBrush}"
+                                               FontFamily="{StaticResource TelemetryFontFamily}"
                                                FontSize="14" Width="140" VerticalAlignment="Center"/>
                                     <TextBlock Text="{Binding GyroLiveRateYaw,   StringFormat={}Yaw {0:+0.0;-0.0;0.0}°/s}"
                                                Foreground="{DynamicResource ColdBrush}"
+                                               FontFamily="{StaticResource TelemetryFontFamily}"
                                                FontSize="14" Width="130" VerticalAlignment="Center"/>
                                     <TextBlock Text="{Binding GyroLiveRateRoll,  StringFormat={}Roll {0:+0.0;-0.0;0.0}°/s}"
                                                Foreground="{DynamicResource ColdBrush}"
+                                               FontFamily="{StaticResource TelemetryFontFamily}"
                                                FontSize="14" Width="135" VerticalAlignment="Center"/>
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal">
@@ -6599,12 +6616,15 @@
                                                FontSize="14" Width="160" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,0,8,0" VerticalAlignment="Center"/>
                                     <TextBlock Text="{Binding AccelLiveX, StringFormat={}X {0:+0.00;-0.00;0.00}g}"
                                                Foreground="{DynamicResource ColdBrush}"
+                                               FontFamily="{StaticResource TelemetryFontFamily}"
                                                FontSize="14" Width="140" VerticalAlignment="Center"/>
                                     <TextBlock Text="{Binding AccelLiveY, StringFormat={}Y {0:+0.00;-0.00;0.00}g}"
                                                Foreground="{DynamicResource ColdBrush}"
+                                               FontFamily="{StaticResource TelemetryFontFamily}"
                                                FontSize="14" Width="130" VerticalAlignment="Center"/>
                                     <TextBlock Text="{Binding AccelLiveZ, StringFormat={}Z {0:+0.00;-0.00;0.00}g}"
                                                Foreground="{DynamicResource ColdBrush}"
+                                               FontFamily="{StaticResource TelemetryFontFamily}"
                                                FontSize="14" Width="135" VerticalAlignment="Center"/>
                                 </StackPanel>
                                 </StackPanel>

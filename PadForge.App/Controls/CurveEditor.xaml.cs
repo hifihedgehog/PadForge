@@ -73,10 +73,15 @@ namespace PadForge.Controls
         private readonly Ellipse _liveDot = new();
         private Brush _gridBrush;
 
-        // Ember palette (steel curve/handles, ember-hot live dot + dragged handle)
-        private static readonly SolidColorBrush CurveStrokeBrush = CreateFrozen(0x94, 0xA3, 0xBD);
-        private static readonly SolidColorBrush HandleBrush = CreateFrozen(0x5D, 0x6B, 0x85);
+        // Ember palette (steel curve/handles, ember-hot live dot + dragged handle).
+        // Curve/handle brushes resolve from the themed text ramp in InitVisuals so
+        // light mode gets its own values; these frozen statics are fallbacks only.
+        private static readonly SolidColorBrush CurveStrokeFallbackBrush = CreateFrozen(0x94, 0xA3, 0xBD);
+        private static readonly SolidColorBrush HandleFallbackBrush = CreateFrozen(0x5D, 0x6B, 0x85);
         private static readonly SolidColorBrush EmberHotBrush = CreateFrozen(0xFF, 0xA2, 0x4D);
+
+        private Brush _curveStrokeBrush = CurveStrokeFallbackBrush;
+        private Brush _handleBrush = HandleFallbackBrush;
 
         private static SolidColorBrush CreateFrozen(byte r, byte g, byte b)
         {
@@ -109,6 +114,13 @@ namespace PadForge.Controls
                 ?? new SolidColorBrush(Color.FromRgb(0x5C, 0x5C, 0x5C));
             _gridBrush = gridBrush;
 
+            _curveStrokeBrush = TryFindResource("TextFillColorSecondaryBrush") as Brush
+                ?? Application.Current.TryFindResource("TextFillColorSecondaryBrush") as Brush
+                ?? CurveStrokeFallbackBrush;
+            _handleBrush = TryFindResource("TextFillColorTertiaryBrush") as Brush
+                ?? Application.Current.TryFindResource("TextFillColorTertiaryBrush") as Brush
+                ?? HandleFallbackBrush;
+
             // Grid lines at 25%/75%
             SetupLine(_gridV25, gridBrush, 0.5, true); canvas.Children.Add(_gridV25);
             SetupLine(_gridV75, gridBrush, 0.5, true); canvas.Children.Add(_gridV75);
@@ -126,7 +138,7 @@ namespace PadForge.Controls
             canvas.Children.Add(_refDiag);
 
             // Curve line
-            _curveLine.Stroke = CurveStrokeBrush;
+            _curveLine.Stroke = _curveStrokeBrush;
             _curveLine.StrokeThickness = 1.5;
             _curveLine.Fill = Brushes.Transparent;
             canvas.Children.Add(_curveLine);
@@ -144,6 +156,8 @@ namespace PadForge.Controls
                 Opacity = 0.9
             };
             canvas.Children.Add(_liveDot);
+            // Keep the live dot above the handle ellipses DrawControlPoints appends later.
+            Panel.SetZIndex(_liveDot, 10);
 
             ParseAndDraw();
         }
@@ -324,8 +338,8 @@ namespace PadForge.Controls
                 {
                     Width = PointRadius * 2,
                     Height = PointRadius * 2,
-                    Fill = isDragged ? EmberHotBrush : HandleBrush,
-                    Stroke = isDragged ? EmberHotBrush : CurveStrokeBrush,
+                    Fill = isDragged ? EmberHotBrush : _handleBrush,
+                    Stroke = isDragged ? EmberHotBrush : _curveStrokeBrush,
                     StrokeThickness = 1.5,
                     Cursor = Cursors.Hand,
                     ToolTip = $"({cx:F2}, {cy:F2})"

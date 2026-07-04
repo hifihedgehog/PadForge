@@ -98,7 +98,7 @@ namespace PadForge.ViewModels
         public double LiveValue
         {
             get => _liveValue;
-            set => SetProperty(ref _liveValue, value);
+            set { if (SetProperty(ref _liveValue, value)) OnPropertyChanged(nameof(OutDisplay)); }
         }
 
         private ushort _rawValue;
@@ -110,6 +110,10 @@ namespace PadForge.ViewModels
 
         /// <summary>Formatted display: "32768 (50.0%)"</summary>
         public string RawDisplay => $"{_rawValue} ({_rawValue / 655.35:F1}%)";
+
+        /// <summary>OUT readout (#175): forged trigger value in the same
+        /// axis-unit format as RawDisplay, derived from LiveValue (0..1).</summary>
+        public string OutDisplay => $"{(int)System.Math.Round(_liveValue * 65535.0)} ({_liveValue * 100.0:F1}%)";
 
         /// <summary>Raw axis index in ExtendedRawState.Axes (custom Extended only, -1 for gamepad).</summary>
         public int AxisIndex { get; }

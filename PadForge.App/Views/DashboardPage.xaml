@@ -258,7 +258,7 @@
                                  its 0 / 0.5 / 1.0 opacity ladder. -->
                             <Border.Style>
                                 <Style TargetType="Border">
-                                    <Setter Property="BorderBrush" Value="#FF253049"/>
+                                    <Setter Property="BorderBrush" Value="{DynamicResource SteelLineBrush}"/>
                                     <Style.Triggers>
                                         <!-- Pure cold: nothing mapped, card recedes. -->
                                         <DataTrigger Binding="{Binding HasMappedDevices}" Value="False">
@@ -566,12 +566,23 @@
                                            ToolTip="{Binding Main_DeleteVC, Source={x:Static strings:Strings.Instance}}"
                                            HorizontalAlignment="Right" VerticalAlignment="Center"
                                            Click="DeleteSlot_Click" Tag="{Binding PadIndex}">
-                                    <TextBlock Text="&#xE711;" FontFamily="Segoe MDL2 Assets" FontSize="12" Foreground="#94A3BD"/>
+                                    <TextBlock Text="&#xE711;" FontFamily="Segoe MDL2 Assets" FontSize="12" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
                                 </ui:Button>
 
                                 <!-- Row 2: Device name (compact). Cold: the
                                      physical device feeding this slot (#175). -->
                                 <Border Grid.Row="2" ClipToBounds="True" Margin="0,8,0,0">
+                                    <!-- Edge fade (#175 round 3): the marquee slides
+                                         under ~12px transparency ramps instead of a
+                                         hard guillotine at the card edge. -->
+                                    <Border.OpacityMask>
+                                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                                            <GradientStop Color="#00000000" Offset="0"/>
+                                            <GradientStop Color="#FF000000" Offset="0.05"/>
+                                            <GradientStop Color="#FF000000" Offset="0.95"/>
+                                            <GradientStop Color="#00000000" Offset="1"/>
+                                        </LinearGradientBrush>
+                                    </Border.OpacityMask>
                                     <StackPanel Orientation="Horizontal">
                                         <!-- Empty state only: roster below owns the mapped case. -->
                                         <TextBlock Text="{Binding DeviceName}"
@@ -657,7 +668,7 @@
                                                         <Setter Property="Foreground" Value="{DynamicResource TextFillColorTertiaryBrush}"/>
                                                     </MultiDataTrigger>
                                                     <DataTrigger Binding="{Binding IsVirtualControllerConnected}" Value="True">
-                                                        <Setter Property="Foreground" Value="{DynamicResource EmberBrush}"/>
+                                                        <Setter Property="Foreground" Value="{DynamicResource EmberHotBrush}"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
                                             </Style>
@@ -696,10 +707,18 @@
 
             <!-- ═══ Services group (#175): everything below serves other
                  software. Status stays above the fold. ═══ -->
-            <TextBlock x:Name="ServicesHeader"
-                       Text="{Binding Dashboard_Services, Source={x:Static strings:Strings.Instance}, Converter={StaticResource UpperConverter}}"
-                       Style="{StaticResource SectionTitle}"
-                       Margin="0,28,0,0"/>
+            <!-- Group header (#175 round 3): outranks the section titles
+                 below it by one step (ember tick + larger mono). -->
+            <StackPanel Orientation="Horizontal" Margin="0,28,0,0">
+                <Rectangle Width="3" Height="12" RadiusX="1.5" RadiusY="1.5"
+                           Fill="{DynamicResource EmberHotBrush}"
+                           VerticalAlignment="Center" Margin="0,0,8,0"/>
+                <TextBlock x:Name="ServicesHeader"
+                           Text="{Binding Dashboard_Services, Source={x:Static strings:Strings.Instance}, Converter={StaticResource UpperConverter}}"
+                           Style="{StaticResource SectionTitle}"
+                           FontSize="13"
+                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+            </StackPanel>
             <Border Height="1" Background="{DynamicResource DividerStrokeColorDefaultBrush}" Margin="0,6,0,0"/>
 
             <!-- ═══ Motion Server ═══ -->
@@ -725,14 +744,16 @@
                         <ui:Button Style="{StaticResource EmberIconButton}"
                                    Command="{Binding ResetDsuPortCommand}" VerticalAlignment="Center"
                                    ToolTip="{Binding Common_Reset, Source={x:Static strings:Strings.Instance}}">
-                            <TextBlock Text="&#xE72C;" FontFamily="Segoe MDL2 Assets" FontSize="12" Foreground="#94A3BD"/>
+                            <TextBlock Text="&#xE72C;" FontFamily="Segoe MDL2 Assets" FontSize="12" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
                         </ui:Button>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
                         <Ellipse Width="8" Height="8"
-                                 Fill="{Binding EnableDsuMotionServer, Converter={StaticResource BoolToColorConverter}}"
+                                 Fill="{Binding EnableDsuMotionServer, Converter={StaticResource BoolToColorConverter}, ConverterParameter=gray}"
                                  VerticalAlignment="Center" Margin="0,0,8,0"/>
-                        <TextBlock Text="{Binding DsuServerStatus}" FontSize="12"/>
+                        <TextBlock Text="{Binding DsuServerStatus}" FontSize="12"
+                                   FontFamily="{StaticResource TelemetryFontFamily}"
+                                   Foreground="{DynamicResource ColdBrush}"/>
                     </StackPanel>
                     <TextBlock Text="{Binding Dashboard_DsuFooter, Source={x:Static strings:Strings.Instance}}"
                                FontSize="12" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,4,0,0"/>
@@ -763,14 +784,16 @@
                         <ui:Button Style="{StaticResource EmberIconButton}"
                                    Command="{Binding ResetWebPortCommand}" VerticalAlignment="Center"
                                    ToolTip="{Binding Common_Reset, Source={x:Static strings:Strings.Instance}}">
-                            <TextBlock Text="&#xE72C;" FontFamily="Segoe MDL2 Assets" FontSize="12" Foreground="#94A3BD"/>
+                            <TextBlock Text="&#xE72C;" FontFamily="Segoe MDL2 Assets" FontSize="12" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
                         </ui:Button>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
                         <Ellipse Width="8" Height="8"
-                                 Fill="{Binding EnableWebController, Converter={StaticResource BoolToColorConverter}}"
+                                 Fill="{Binding EnableWebController, Converter={StaticResource BoolToColorConverter}, ConverterParameter=gray}"
                                  VerticalAlignment="Center" Margin="0,0,8,0"/>
-                        <TextBlock Text="{Binding WebControllerStatus}" FontSize="12"/>
+                        <TextBlock Text="{Binding WebControllerStatus}" FontSize="12"
+                                   FontFamily="{StaticResource TelemetryFontFamily}"
+                                   Foreground="{DynamicResource ColdBrush}"/>
                     </StackPanel>
                     <TextBlock Text="{Binding Dashboard_WebFooter, Source={x:Static strings:Strings.Instance}}"
                                FontSize="12" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,4,0,0"/>
@@ -806,14 +829,16 @@
                         <ui:Button Style="{StaticResource EmberIconButton}"
                                    Command="{Binding ResetRemoteLinkPortCommand}" VerticalAlignment="Center"
                                    ToolTip="{Binding Common_Reset, Source={x:Static strings:Strings.Instance}}">
-                            <TextBlock Text="&#xE72C;" FontFamily="Segoe MDL2 Assets" FontSize="12" Foreground="#94A3BD"/>
+                            <TextBlock Text="&#xE72C;" FontFamily="Segoe MDL2 Assets" FontSize="12" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
                         </ui:Button>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,2">
                         <Ellipse Width="8" Height="8"
-                                 Fill="{Binding EnableRemoteLink, Converter={StaticResource BoolToColorConverter}}"
+                                 Fill="{Binding EnableRemoteLink, Converter={StaticResource BoolToColorConverter}, ConverterParameter=gray}"
                                  VerticalAlignment="Center" Margin="0,0,8,0"/>
-                        <TextBlock Text="{Binding RemoteLinkStatus}" FontSize="12"/>
+                        <TextBlock Text="{Binding RemoteLinkStatus}" FontSize="12"
+                                   FontFamily="{StaticResource TelemetryFontFamily}"
+                                   Foreground="{DynamicResource ColdBrush}"/>
                     </StackPanel>
 
                     <Border Height="1" Background="{DynamicResource DividerStrokeColorDefaultBrush}" Margin="0,14,0,14"/>
@@ -950,7 +975,7 @@
                         <ui:Button Style="{StaticResource EmberIconButton}"
                                    Command="{Binding ResetOpacityCommand}" VerticalAlignment="Center"
                                    ToolTip="{Binding Common_Reset, Source={x:Static strings:Strings.Instance}}">
-                            <TextBlock Text="&#xE72C;" FontFamily="Segoe MDL2 Assets" FontSize="12" Foreground="#94A3BD"/>
+                            <TextBlock Text="&#xE72C;" FontFamily="Segoe MDL2 Assets" FontSize="12" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
                         </ui:Button>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
@@ -959,7 +984,7 @@
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
                         <Ellipse Width="8" Height="8"
-                                 Fill="{Binding EnableTouchpadOverlay, Converter={StaticResource BoolToColorConverter}}"
+                                 Fill="{Binding EnableTouchpadOverlay, Converter={StaticResource BoolToColorConverter}, ConverterParameter=gray}"
                                  VerticalAlignment="Center" Margin="0,0,8,0"/>
                         <TextBlock Text="{Binding TouchpadOverlayStatus}" FontSize="12"/>
                     </StackPanel>

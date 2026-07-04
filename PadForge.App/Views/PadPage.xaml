@@ -2428,51 +2428,75 @@
                                         <SolidColorBrush Color="Transparent"/>
                                     </Setter.Value>
                                 </Setter>
-                                <Setter Property="BorderThickness" Value="0,0,0,1.5"/>
-                                <Setter Property="BorderBrush">
-                                    <Setter.Value>
-                                        <!-- Artifact rowfire gradient at rest (opacity 0);
-                                             the storyboard clones per row when animating. -->
-                                        <LinearGradientBrush StartPoint="1,0" EndPoint="0,0" Opacity="0">
-                                            <GradientStop Color="#8058B6E4" Offset="0"/>
-                                            <GradientStop Color="#99FF6B2C" Offset="1"/>
-                                        </LinearGradientBrush>
-                                    </Setter.Value>
-                                </Setter>
                                 <Setter Property="Foreground"
                                         Value="{DynamicResource TextFillColorPrimaryBrush}"/>
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <!-- Rowfire (#175 artifact .mrow::after): the
+                                             underline lives at the CELLS' bottom edge,
+                                             above the details presenter, exactly where
+                                             the pitch draws it. -->
+                                        <ControlTemplate TargetType="DataGridRow">
+                                            <Border x:Name="DGR_Border"
+                                                    Background="{TemplateBinding Background}"
+                                                    SnapsToDevicePixels="True">
+                                                <SelectiveScrollingGrid>
+                                                    <SelectiveScrollingGrid.RowDefinitions>
+                                                        <RowDefinition Height="*"/>
+                                                        <RowDefinition Height="Auto"/>
+                                                    </SelectiveScrollingGrid.RowDefinitions>
+                                                    <DataGridCellsPresenter
+                                                        ItemsPanel="{TemplateBinding ItemsPanel}"
+                                                        SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                                                    <Rectangle x:Name="Rowfire" Height="1.5"
+                                                               VerticalAlignment="Bottom"
+                                                               Margin="8,0,8,0" Opacity="0"
+                                                               IsHitTestVisible="False">
+                                                        <Rectangle.Fill>
+                                                            <LinearGradientBrush StartPoint="1,0" EndPoint="0,0">
+                                                                <GradientStop Color="#8058B6E4" Offset="0"/>
+                                                                <GradientStop Color="#99FF6B2C" Offset="1"/>
+                                                            </LinearGradientBrush>
+                                                        </Rectangle.Fill>
+                                                    </Rectangle>
+                                                    <DataGridDetailsPresenter Grid.Row="1"
+                                                        Visibility="{TemplateBinding DetailsVisibility}"/>
+                                                </SelectiveScrollingGrid>
+                                            </Border>
+                                            <ControlTemplate.Triggers>
+                                                <DataTrigger Binding="{Binding IsInputActive}" Value="True">
+                                                    <DataTrigger.EnterActions>
+                                                        <BeginStoryboard>
+                                                            <Storyboard>
+                                                                <DoubleAnimation Storyboard.TargetName="Rowfire"
+                                                                                 Storyboard.TargetProperty="Opacity"
+                                                                                 To="1" Duration="0:0:0.3">
+                                                                    <DoubleAnimation.EasingFunction>
+                                                                        <CubicEase EasingMode="EaseOut"/>
+                                                                    </DoubleAnimation.EasingFunction>
+                                                                </DoubleAnimation>
+                                                            </Storyboard>
+                                                        </BeginStoryboard>
+                                                    </DataTrigger.EnterActions>
+                                                    <DataTrigger.ExitActions>
+                                                        <BeginStoryboard>
+                                                            <Storyboard>
+                                                                <DoubleAnimation Storyboard.TargetName="Rowfire"
+                                                                                 Storyboard.TargetProperty="Opacity"
+                                                                                 To="0" Duration="0:0:1.2">
+                                                                    <DoubleAnimation.EasingFunction>
+                                                                        <CubicEase EasingMode="EaseIn"/>
+                                                                    </DoubleAnimation.EasingFunction>
+                                                                </DoubleAnimation>
+                                                            </Storyboard>
+                                                        </BeginStoryboard>
+                                                    </DataTrigger.ExitActions>
+                                                </DataTrigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
                                 <Style.Triggers>
-                                    <!-- Rowfire (#175 artifact .mrow::after): the
-                                         cold-to-ember underline sweeps in while input
-                                         flows, 300ms up / 1200ms down. -->
-                                    <DataTrigger Binding="{Binding IsInputActive}" Value="True">
-                                        <DataTrigger.EnterActions>
-                                            <BeginStoryboard>
-                                                <Storyboard>
-                                                    <DoubleAnimation
-                                                        Storyboard.TargetProperty="(DataGridRow.BorderBrush).(Brush.Opacity)"
-                                                        To="1" Duration="0:0:0.3">
-                                                        <DoubleAnimation.EasingFunction>
-                                                            <CubicEase EasingMode="EaseOut"/>
-                                                        </DoubleAnimation.EasingFunction>
-                                                    </DoubleAnimation>
-                                                </Storyboard>
-                                            </BeginStoryboard>
-                                        </DataTrigger.EnterActions>
-                                        <DataTrigger.ExitActions>
-                                            <BeginStoryboard>
-                                                <Storyboard>
-                                                    <DoubleAnimation
-                                                        Storyboard.TargetProperty="(DataGridRow.BorderBrush).(Brush.Opacity)"
-                                                        To="0" Duration="0:0:1.2">
-                                                        <DoubleAnimation.EasingFunction>
-                                                            <CubicEase EasingMode="EaseIn"/>
-                                                        </DoubleAnimation.EasingFunction>
-                                                    </DoubleAnimation>
-                                                </Storyboard>
-                                            </BeginStoryboard>
-                                        </DataTrigger.ExitActions>
-                                    </DataTrigger>
                                     <DataTrigger Binding="{Binding IsRecording}" Value="True">
                                         <DataTrigger.EnterActions>
                                             <BeginStoryboard x:Name="RecordFlash">

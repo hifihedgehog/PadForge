@@ -2358,12 +2358,14 @@ namespace PadForge
             // lives in the flame color alone.
             var card = new System.Windows.Controls.Border
             {
-                Padding = new Thickness(4, 2, 4, 2),
-                Background = System.Windows.Media.Brushes.Transparent,
-                BorderThickness = new Thickness(0),
+                CornerRadius = new CornerRadius(6),
+                Padding = new Thickness(6, 4, 6, 4),
+                BorderThickness = new Thickness(1),
                 Child = row,
                 Tag = navItem.PadIndex
             };
+            card.SetResourceReference(System.Windows.Controls.Border.BackgroundProperty, "CardBackgroundFillColorDefaultBrush");
+            card.SetResourceReference(System.Windows.Controls.Border.BorderBrushProperty, "ControlStrokeColorDefaultBrush");
             if (!navItem.IsEnabled)
                 card.Opacity = 0.6;
 

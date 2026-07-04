@@ -4731,21 +4731,53 @@
                                 Padding="12,6" HorizontalAlignment="Left"
                                 Margin="0,0,0,12"/>
 
-                        <!-- Live motor display -->
-                        <TextBlock Text="{Binding Pad_MotorActivity, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,8,0,8"
-                                   Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
-                        <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
-                            <TextBlock Text="{Binding Pad_LeftMotorLabel, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
-                            <ProgressBar Value="{Binding DeviceLeftMotorDisplay, Mode=OneWay}"
-                                         Minimum="0" Maximum="1"
-                                         Width="200" Height="16" VerticalAlignment="Center"/>
-                        </StackPanel>
-                        <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
-                            <TextBlock Text="{Binding Pad_RightMotorLabel, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
-                            <ProgressBar Value="{Binding DeviceRightMotorDisplay, Mode=OneWay}"
-                                         Minimum="0" Maximum="1"
-                                         Width="200" Height="16" VerticalAlignment="Center"/>
-                        </StackPanel>
+                        <!-- Live motor display: inset instrument panel (#175
+                             iteration 27, matching the trigger instrument).
+                             Motor drive is output-side, so the bars burn ember. -->
+                        <Border Background="{DynamicResource ControlFillColorDefaultBrush}"
+                                BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}"
+                                BorderThickness="1" CornerRadius="8" Padding="12" Margin="0,8,0,0">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                <TextBlock Grid.Row="0" Grid.ColumnSpan="3" Margin="0,0,0,10"
+                                           Text="{Binding Pad_MotorActivity, Source={x:Static strings:Strings.Instance}}"
+                                           FontWeight="SemiBold"
+                                           Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
+                                <TextBlock Grid.Row="1" Grid.Column="0" VerticalAlignment="Center"
+                                           Text="{Binding Pad_LeftMotorLabel, Source={x:Static strings:Strings.Instance}}"
+                                           Style="{StaticResource DzLabel}"/>
+                                <ProgressBar Grid.Row="1" Grid.Column="1" Margin="0,0,12,10"
+                                             Value="{Binding DeviceLeftMotorDisplay, Mode=OneWay}"
+                                             Minimum="0" Maximum="1" Height="10" VerticalAlignment="Center"
+                                             Foreground="{DynamicResource EmberHotBrush}"/>
+                                <TextBlock Grid.Row="1" Grid.Column="2" Margin="0,0,0,10"
+                                           Text="{Binding DeviceLeftMotorDisplay, Mode=OneWay, StringFormat=P0}"
+                                           FontFamily="{StaticResource TelemetryFontFamily}" FontSize="12"
+                                           MinWidth="40" TextAlignment="Right" VerticalAlignment="Center"
+                                           Foreground="{DynamicResource EmberHotBrush}"/>
+                                <TextBlock Grid.Row="2" Grid.Column="0" VerticalAlignment="Center"
+                                           Text="{Binding Pad_RightMotorLabel, Source={x:Static strings:Strings.Instance}}"
+                                           Style="{StaticResource DzLabel}"/>
+                                <ProgressBar Grid.Row="2" Grid.Column="1" Margin="0,0,12,0"
+                                             Value="{Binding DeviceRightMotorDisplay, Mode=OneWay}"
+                                             Minimum="0" Maximum="1" Height="10" VerticalAlignment="Center"
+                                             Foreground="{DynamicResource EmberHotBrush}"/>
+                                <TextBlock Grid.Row="2" Grid.Column="2"
+                                           Text="{Binding DeviceRightMotorDisplay, Mode=OneWay, StringFormat=P0}"
+                                           FontFamily="{StaticResource TelemetryFontFamily}" FontSize="12"
+                                           MinWidth="40" TextAlignment="Right" VerticalAlignment="Center"
+                                           Foreground="{DynamicResource EmberHotBrush}"/>
+                            </Grid>
+                        </Border>
 
                             </StackPanel>
                         </Border>
@@ -4777,7 +4809,9 @@
 
                                     <!-- Interactive grid -->
                                     <Border x:Name="ConstantForcePadBorder" Grid.Column="0"
-                                            BorderBrush="#FF3F3F46" BorderThickness="2" CornerRadius="2"
+                                            Background="{DynamicResource ControlFillColorDefaultBrush}"
+                                            BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}"
+                                            BorderThickness="1" CornerRadius="8"
                                             Padding="4" Width="212" Height="212"
                                             Cursor="Cross"
                                             ClipToBounds="True"
@@ -4787,12 +4821,12 @@
                                         <Grid Width="200" Height="200">
                                             <Ellipse Width="200" Height="200"
                                                      Fill="{DynamicResource ControlFillColorDefaultBrush}"/>
-                                            <Line X1="50" Y1="0" X2="50" Y2="200" Stroke="#40FFFFFF" StrokeDashArray="2 4" StrokeThickness="0.5"/>
-                                            <Line X1="150" Y1="0" X2="150" Y2="200" Stroke="#40FFFFFF" StrokeDashArray="2 4" StrokeThickness="0.5"/>
-                                            <Line X1="0" Y1="50" X2="200" Y2="50" Stroke="#40FFFFFF" StrokeDashArray="2 4" StrokeThickness="0.5"/>
-                                            <Line X1="0" Y1="150" X2="200" Y2="150" Stroke="#40FFFFFF" StrokeDashArray="2 4" StrokeThickness="0.5"/>
-                                            <Line X1="100" Y1="0" X2="100" Y2="200" Stroke="#60FFFFFF" StrokeThickness="0.75"/>
-                                            <Line X1="0" Y1="100" X2="200" Y2="100" Stroke="#60FFFFFF" StrokeThickness="0.75"/>
+                                            <Line X1="50" Y1="0" X2="50" Y2="200" Stroke="{DynamicResource ControlStrokeColorDefaultBrush}" StrokeDashArray="2 4" StrokeThickness="0.5"/>
+                                            <Line X1="150" Y1="0" X2="150" Y2="200" Stroke="{DynamicResource ControlStrokeColorDefaultBrush}" StrokeDashArray="2 4" StrokeThickness="0.5"/>
+                                            <Line X1="0" Y1="50" X2="200" Y2="50" Stroke="{DynamicResource ControlStrokeColorDefaultBrush}" StrokeDashArray="2 4" StrokeThickness="0.5"/>
+                                            <Line X1="0" Y1="150" X2="200" Y2="150" Stroke="{DynamicResource ControlStrokeColorDefaultBrush}" StrokeDashArray="2 4" StrokeThickness="0.5"/>
+                                            <Line X1="100" Y1="0" X2="100" Y2="200" Stroke="{DynamicResource TextFillColorTertiaryBrush}" StrokeThickness="0.75"/>
+                                            <Line X1="0" Y1="100" X2="200" Y2="100" Stroke="{DynamicResource TextFillColorTertiaryBrush}" StrokeThickness="0.75"/>
                                             <Canvas>
                                                 <Ellipse Width="196" Height="196" Canvas.Left="2" Canvas.Top="2"
                                                          Stroke="{DynamicResource ControlStrokeColorDefaultBrush}"

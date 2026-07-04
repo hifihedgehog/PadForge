@@ -2361,8 +2361,9 @@ namespace PadForge
             var slotNumber = new System.Windows.Controls.TextBlock
             {
                 Text = $"{navItem.SlotNumber}",
+                FontFamily = (System.Windows.Media.FontFamily)FindResource("TelemetryFontFamily"),
                 FontSize = 12,
-                FontWeight = FontWeights.SemiBold,
+                FontWeight = FontWeights.Normal,
                 VerticalAlignment = VerticalAlignment.Center,
                 Margin = new Thickness(4, 0, 0, 0),
                 Width = 20,

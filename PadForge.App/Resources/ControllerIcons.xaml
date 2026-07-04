@@ -181,7 +181,9 @@
 
     <Style x:Key="SectionTitle" TargetType="TextBlock">
         <Setter Property="FontFamily" Value="{StaticResource TelemetryFontFamily}"/>
-        <Setter Property="FontSize" Value="12"/>
+        <!-- Artifact eyebrow size (#175 type pass): 10px mono, matching the
+             LEFT/RIGHT MOTOR captions and every other eyebrow surface. -->
+        <Setter Property="FontSize" Value="10"/>
         <Setter Property="FontWeight" Value="SemiBold"/>
         <Setter Property="Foreground" Value="{DynamicResource TextFillColorTertiaryBrush}"/>
         <Setter Property="VerticalAlignment" Value="Center"/>

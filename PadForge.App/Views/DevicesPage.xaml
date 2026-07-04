@@ -156,11 +156,14 @@
                        ToolTip="{Binding Devices_Pair, Source={x:Static strings:Strings.Instance}}">
                 <TextBlock Text="&#xE702;" FontFamily="Segoe MDL2 Assets" FontSize="12" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
             </ui:Button>
+            <!-- Telemetry counter (#175 typography): counts mono cold,
+                 labels mono tertiary, same treatment as the status bar
+                 and the Dashboard device counter. -->
             <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="16,0">
-                <TextBlock Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text="{Binding OnlineCount, Mode=OneWay}"/>
-                <TextBlock Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text="{Binding Devices_OnlineTotal, Source={x:Static strings:Strings.Instance}}"/>
-                <TextBlock Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text="{Binding TotalCount, Mode=OneWay}"/>
-                <TextBlock Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text="{Binding Devices_Total, Source={x:Static strings:Strings.Instance}}"/>
+                <TextBlock Foreground="{DynamicResource ColdBrush}" FontFamily="{StaticResource TelemetryFontFamily}" FontSize="12" Text="{Binding OnlineCount, Mode=OneWay}"/>
+                <TextBlock Foreground="{DynamicResource TextFillColorTertiaryBrush}" FontFamily="{StaticResource TelemetryFontFamily}" FontSize="12" Text="{Binding Devices_OnlineTotal, Source={x:Static strings:Strings.Instance}}"/>
+                <TextBlock Foreground="{DynamicResource ColdBrush}" FontFamily="{StaticResource TelemetryFontFamily}" FontSize="12" Text="{Binding TotalCount, Mode=OneWay}"/>
+                <TextBlock Foreground="{DynamicResource TextFillColorTertiaryBrush}" FontFamily="{StaticResource TelemetryFontFamily}" FontSize="12" Text="{Binding Devices_Total, Source={x:Static strings:Strings.Instance}}"/>
             </StackPanel>
         </StackPanel>
 

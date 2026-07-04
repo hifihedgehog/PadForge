@@ -445,8 +445,10 @@
                                         </Grid.ColumnDefinitions>
                                         <TextBlock Text="{Binding Name}" FontSize="10" Opacity="0.55"
                                                    VerticalAlignment="Center"/>
+                                        <!-- Cold (#175): raw hardware truth. -->
                                         <ProgressBar Grid.Column="1" Minimum="0" Maximum="1"
                                                      Value="{Binding NormalizedValue, Mode=OneWay}"
+                                                     Foreground="{DynamicResource ColdBrush}"
                                                      Height="8" Margin="4,0"/>
                                         <TextBlock Grid.Column="2" FontSize="9" Opacity="0.45"
                                                    FontFamily="Consolas" VerticalAlignment="Center"
@@ -521,7 +523,7 @@
                                                 <Setter Property="Background" Value="#28888888"/>
                                                 <Style.Triggers>
                                                     <DataTrigger Binding="{Binding IsPressed}" Value="True">
-                                                        <Setter Property="Background" Value="{DynamicResource SystemAccentColorSecondaryBrush}"/>
+                                                        <Setter Property="Background" Value="{DynamicResource ColdBrush}"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
                                             </Style>
@@ -549,7 +551,7 @@
                                                     <Setter Property="Background" Value="#18888888"/>
                                                     <Style.Triggers>
                                                         <DataTrigger Binding="{Binding IsActive}" Value="True">
-                                                            <Setter Property="Background" Value="{DynamicResource SystemAccentColorSecondaryBrush}"/>
+                                                            <Setter Property="Background" Value="{DynamicResource ColdBrush}"/>
                                                         </DataTrigger>
                                                     </Style.Triggers>
                                                 </Style>
@@ -593,7 +595,7 @@
                                                     <Setter Property="Background" Value="#18888888"/>
                                                     <Style.Triggers>
                                                         <DataTrigger Binding="{Binding IsPressed}" Value="True">
-                                                            <Setter Property="Background" Value="{DynamicResource SystemAccentColorSecondaryBrush}"/>
+                                                            <Setter Property="Background" Value="{DynamicResource ColdBrush}"/>
                                                         </DataTrigger>
                                                     </Style.Triggers>
                                                 </Style>
@@ -653,7 +655,7 @@
                                                     <Setter Property="Background" Value="#28888888"/>
                                                     <Style.Triggers>
                                                         <DataTrigger Binding="{Binding IsPressed}" Value="True">
-                                                            <Setter Property="Background" Value="{DynamicResource SystemAccentColorSecondaryBrush}"/>
+                                                            <Setter Property="Background" Value="{DynamicResource ColdBrush}"/>
                                                         </DataTrigger>
                                                     </Style.Triggers>
                                                 </Style>
@@ -756,7 +758,7 @@
                                                      Fill="#50888888"/>
                                             <!-- Direction indicator line -->
                                             <Line X1="18" Y1="18" X2="18" Y2="5"
-                                                  Stroke="{DynamicResource SystemAccentColorSecondaryBrush}"
+                                                  Stroke="{DynamicResource ColdBrush}"
                                                   StrokeThickness="2.5" StrokeEndLineCap="Round">
                                                 <Line.Style>
                                                     <Style TargetType="Line">

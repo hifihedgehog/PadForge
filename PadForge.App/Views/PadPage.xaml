@@ -655,6 +655,17 @@
                          CONTROLLER MODEL (2D / 3D)
                          ══════════════════════════════════════ -->
                     <Grid Grid.Row="0" AutomationProperties.AutomationId="ControllerModelHost">
+                        <!-- Ember stage floor (#175): a warm glow under the
+                             output preview. This surface shows what the game
+                             receives, so it sits in ember light. -->
+                        <Border IsHitTestVisible="False">
+                            <Border.Background>
+                                <RadialGradientBrush GradientOrigin="0.5,0.96" Center="0.5,0.96" RadiusX="0.55" RadiusY="0.4">
+                                    <GradientStop Color="#20FF6B2C" Offset="0"/>
+                                    <GradientStop Color="#00FF6B2C" Offset="1"/>
+                                </RadialGradientBrush>
+                            </Border.Background>
+                        </Border>
                         <views:ControllerModelView x:Name="ControllerModel3D" />
                         <views:ControllerModel2DView x:Name="ControllerModel2D" Visibility="Collapsed" />
                         <views:ControllerSchematicView x:Name="ControllerSchematic" Visibility="Collapsed" />
@@ -691,11 +702,19 @@
                                        HorizontalAlignment="Center" Margin="0,0,0,2"/>
                             <Border Height="24" Background="{DynamicResource CardBackgroundFillColorDefaultBrush}" CornerRadius="3"
                                     BorderBrush="{DynamicResource TextFillColorDisabledBrush}" BorderThickness="1">
-                                <Rectangle Fill="#FF2196F3" RadiusX="2" RadiusY="2"
+                                <Rectangle RadiusX="2" RadiusY="2"
                                            HorizontalAlignment="Left"
                                            Width="{Binding LeftMotorDisplay,
                                                Converter={StaticResource NormToTriggerHeightConverter},
-                                               ConverterParameter=240}"/>
+                                               ConverterParameter=240}">
+                                    <Rectangle.Fill>
+                                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                                            <GradientStop Color="#C43D0C" Offset="0"/>
+                                            <GradientStop Color="#FF6B2C" Offset="0.7"/>
+                                            <GradientStop Color="#FFA24D" Offset="1"/>
+                                        </LinearGradientBrush>
+                                    </Rectangle.Fill>
+                                </Rectangle>
                             </Border>
                         </StackPanel>
 
@@ -709,11 +728,19 @@
                                        HorizontalAlignment="Center" Margin="0,0,0,2"/>
                             <Border Height="24" Background="{DynamicResource CardBackgroundFillColorDefaultBrush}" CornerRadius="3"
                                     BorderBrush="{DynamicResource TextFillColorDisabledBrush}" BorderThickness="1">
-                                <Rectangle Fill="#FF2196F3" RadiusX="2" RadiusY="2"
+                                <Rectangle RadiusX="2" RadiusY="2"
                                            HorizontalAlignment="Left"
                                            Width="{Binding RightMotorDisplay,
                                                Converter={StaticResource NormToTriggerHeightConverter},
-                                               ConverterParameter=240}"/>
+                                               ConverterParameter=240}">
+                                    <Rectangle.Fill>
+                                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                                            <GradientStop Color="#C43D0C" Offset="0"/>
+                                            <GradientStop Color="#FF6B2C" Offset="0.7"/>
+                                            <GradientStop Color="#FFA24D" Offset="1"/>
+                                        </LinearGradientBrush>
+                                    </Rectangle.Fill>
+                                </Rectangle>
                             </Border>
                         </StackPanel>
                     </Grid>
@@ -728,7 +755,7 @@
                                 Click="MapAllToggle_Click"/>
                         <TextBlock Text="{Binding MapAllPromptText}" FontSize="14" FontWeight="SemiBold"
                                    VerticalAlignment="Center" Margin="8,0,0,0"
-                                   Foreground="#FF2196F3"
+                                   Foreground="{DynamicResource EmberHotBrush}"
                                    Visibility="{Binding MapAllPromptText, Converter={StaticResource NullToCollapsedConverter}}"/>
                     </StackPanel>
                 </Grid>

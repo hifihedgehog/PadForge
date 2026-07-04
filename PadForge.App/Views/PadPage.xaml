@@ -223,7 +223,7 @@
                         <GradientStop Color="#00FF6B2C" Offset="0.6"/>
                     </LinearGradientBrush>
                 </Border.Background>
-            <WrapPanel Orientation="Horizontal" VerticalAlignment="Center">
+            <DockPanel LastChildFill="False" VerticalAlignment="Center">
 
                 <!-- Scope label (#175 iteration 2): without it the two tiers
                      read as arbitrary strips. -->
@@ -296,12 +296,38 @@
                                 </Style>
                             </TextBlock.Style>
                         </TextBlock>
-                        <TextBlock Text="{Binding TypeInstanceLabel}" FontSize="15" FontWeight="SemiBold"
+                        <TextBlock FontSize="14" FontWeight="SemiBold" VerticalAlignment="Center" Margin="0,0,4,0">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Text" Value=""/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding OutputType}" Value="Xbox">
+                                            <Setter Property="Text" Value="{Binding ControllerType_Xbox, Source={x:Static strings:Strings.Instance}}"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding OutputType}" Value="PlayStation">
+                                            <Setter Property="Text" Value="{Binding ControllerType_PlayStation, Source={x:Static strings:Strings.Instance}}"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding OutputType}" Value="Extended">
+                                            <Setter Property="Text" Value="{Binding ControllerType_Extended, Source={x:Static strings:Strings.Instance}}"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding OutputType}" Value="KeyboardMouse">
+                                            <Setter Property="Text" Value="{Binding ControllerType_KeyboardMouse, Source={x:Static strings:Strings.Instance}}"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding OutputType}" Value="Midi">
+                                            <Setter Property="Text" Value="{Binding ControllerType_MIDI, Source={x:Static strings:Strings.Instance}}"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                        <TextBlock Text="{Binding TypeInstanceLabel}" FontSize="13"
+                                   Foreground="{DynamicResource TextFillColorTertiaryBrush}"
                                    VerticalAlignment="Center"/>
                     </StackPanel>
                 </RadioButton>
 
-<!-- [Mappings] — per-VC scope (Issue #61 multi-source).
+<StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
+                <!-- [Mappings] — per-VC scope (Issue #61 multi-source).
                      Sits before the Device dropdown (the table sources
                      from any device assigned to this VC, not just the
                      selected one) AND before Macros (it's the primary
@@ -321,8 +347,9 @@
                 <RadioButton Tag="1" Style="{StaticResource TabStripButton}" Click="TabBtn_Click">
                     <TextBlock Text="{Binding Pad_Macros, Source={x:Static strings:Strings.Instance}}" FontSize="15"/>
                 </RadioButton>
+                </StackPanel>
 
-            </WrapPanel>
+            </DockPanel>
             </Border>
 
             <!-- Tier 2: the physical device and its capability tabs. -->

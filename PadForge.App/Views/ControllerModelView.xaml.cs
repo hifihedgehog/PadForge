@@ -552,6 +552,9 @@ namespace PadForge.Views
             ref float prevAngle)
         {
             if (triggerModel == null) return;
+            // The hovered trigger is owned by the hover highlight (#175
+            // hover-hold fix, trigger sibling of the button-loop skip).
+            if (triggerModel == _hoverGroup) return;
 
             float value = (float)triggerNorm;
 

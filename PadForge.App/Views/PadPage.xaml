@@ -350,7 +350,7 @@
                                    Foreground="{DynamicResource TextFillColorTertiaryBrush}" FontSize="12"/>
                         <ComboBox x:Name="HMaestroProfileCombo" Width="300" VerticalAlignment="Center"
                                   Foreground="{DynamicResource TextFillColorTertiaryBrush}"
-                                  Background="#1B2333" BorderBrush="#1C2536" FontSize="12"
+                                  Background="{DynamicResource SteelRaisedBrush}" BorderBrush="{DynamicResource SteelLineSoftBrush}" FontSize="12"
                                   AutomationProperties.AutomationId="HMaestroProfileCombo"
                                   ItemsSource="{Binding AvailableProfiles}"
                                   DisplayMemberPath="Name"
@@ -774,8 +774,8 @@
                             <TextBlock Text="{Binding Pad_LeftMotor, Source={x:Static strings:Strings.Instance}}" FontSize="14"
                                        Foreground="{DynamicResource TextFillColorPrimaryBrush}"
                                        HorizontalAlignment="Center" Margin="0,0,0,2"/>
-                            <Border Height="24" Background="{DynamicResource CardBackgroundFillColorDefaultBrush}" CornerRadius="3"
-                                    BorderBrush="{DynamicResource TextFillColorDisabledBrush}" BorderThickness="1">
+                            <Border Height="10" Background="{DynamicResource SteelGroundBrush}" CornerRadius="4"
+                                    BorderBrush="{DynamicResource SteelLineSoftBrush}" BorderThickness="1">
                                 <Rectangle RadiusX="2" RadiusY="2"
                                            HorizontalAlignment="Left"
                                            Width="{Binding LeftMotorDisplay,
@@ -800,8 +800,8 @@
                             <TextBlock Text="{Binding Pad_RightMotor, Source={x:Static strings:Strings.Instance}}" FontSize="14"
                                        Foreground="{DynamicResource TextFillColorPrimaryBrush}"
                                        HorizontalAlignment="Center" Margin="0,0,0,2"/>
-                            <Border Height="24" Background="{DynamicResource CardBackgroundFillColorDefaultBrush}" CornerRadius="3"
-                                    BorderBrush="{DynamicResource TextFillColorDisabledBrush}" BorderThickness="1">
+                            <Border Height="10" Background="{DynamicResource SteelGroundBrush}" CornerRadius="4"
+                                    BorderBrush="{DynamicResource SteelLineSoftBrush}" BorderThickness="1">
                                 <Rectangle RadiusX="2" RadiusY="2"
                                            HorizontalAlignment="Left"
                                            Width="{Binding RightMotorDisplay,

@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+﻿﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
     <xsd:element name="root" msdata:IsDataSet="true">
@@ -222,6 +222,7 @@
   <data name="Dashboard_VirtualControllers" xml:space="preserve"><value>Virtual Controllers</value></data>
   <data name="Dashboard_Mapped" xml:space="preserve"><value> mapped, </value></data>
   <data name="Dashboard_Connected" xml:space="preserve"><value> connected</value></data>
+  <data name="Dashboard_Services" xml:space="preserve"><value>Services</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Motion Server</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>DSU/CemuHook Motion Provider protocol server for gyro and accelerometer data.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>Enable DSU motion server (CemuHook Motion Provider protocol)</value></data>

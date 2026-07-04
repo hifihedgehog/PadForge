@@ -119,25 +119,35 @@
                     <CheckBox Content="{Binding Settings_BackgroundPolling, Source={x:Static strings:Strings.Instance}}"
                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                               IsChecked="{Binding EnablePollingOnFocusLoss}" Margin="0,0,0,8"/>
-                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                    <!-- Shared label column (#175 typography): both rows sit
+                         in one Grid so the NumberBoxes align to one left
+                         edge regardless of label length. -->
+                    <Grid Margin="0,0,0,8">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
                         <TextBlock Text="{Binding Settings_PollingInterval, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
                                    Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                   Margin="0,0,8,0"/>
-                        <ui:NumberBox Value="{Binding PollingRateMs, Mode=TwoWay}"
+                                   Margin="0,0,8,8"/>
+                        <ui:NumberBox Grid.Column="1" Value="{Binding PollingRateMs, Mode=TwoWay}"
                                       Minimum="1" Maximum="16"
-                                      SpinButtonPlacementMode="Inline" Width="200"/>
-                        <TextBlock Text="{Binding Common_Ms, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="6,0,0,0" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                        <TextBlock Text="{Binding Settings_HmInactivityTimeout, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
+                                      SpinButtonPlacementMode="Inline" Width="200" Margin="0,0,0,8"/>
+                        <TextBlock Grid.Column="2" Text="{Binding Common_Ms, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="6,0,0,8" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
+                        <TextBlock Grid.Row="1" Text="{Binding Settings_HmInactivityTimeout, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
                                    Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                    Margin="0,0,8,0"/>
-                        <ui:NumberBox Value="{Binding HmInactivityDestroyTimeoutSeconds, Mode=TwoWay}"
+                        <ui:NumberBox Grid.Row="1" Grid.Column="1" Value="{Binding HmInactivityDestroyTimeoutSeconds, Mode=TwoWay}"
                                       Minimum="0" Maximum="3600"
                                       SpinButtonPlacementMode="Inline" Width="200"
                                       ToolTip="{Binding Settings_HmInactivityTimeoutTooltip, Source={x:Static strings:Strings.Instance}}"/>
-                        <TextBlock Text="{Binding Settings_SecondsZeroNever, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="6,0,0,0" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
-                    </StackPanel>
+                        <TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding Settings_SecondsZeroNever, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="6,0,0,0" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
+                    </Grid>
                 </StackPanel>
             </Border>
 

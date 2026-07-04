@@ -132,7 +132,7 @@
             <StackPanel Orientation="Horizontal" Margin="0,0,0,20">
                 <TextBlock Text="&#xF404;" FontFamily="Segoe MDL2 Assets" FontSize="16" Foreground="{DynamicResource EmberBrush}"
                            VerticalAlignment="Center" Margin="0,0,10,0"/>
-                <TextBlock Text="{Binding Dashboard_Title, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource TitleTextBlockStyle}" FontFamily="{StaticResource DisplayFontFamily}" FontWeight="650" FontSize="26"/>
+                <TextBlock Text="{Binding Dashboard_Title, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource TitleTextBlockStyle}" FontFamily="{StaticResource DisplayFontFamily}" FontWeight="650" FontSize="26" Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
             </StackPanel>
 
             <!-- ═══ Input Engine ═══ -->
@@ -599,9 +599,11 @@
                                     <!-- Slot title -->
                                     <TextBlock Text="{Binding Dashboard_Slot, Source={x:Static strings:Strings.Instance}}"
                                                FontWeight="SemiBold" FontSize="14"
+                                               Foreground="{DynamicResource TextFillColorPrimaryBrush}"
                                                VerticalAlignment="Center" Margin="7,0,0,0"/>
                                     <TextBlock Text="{Binding SlotNumber}" VerticalAlignment="Center"
                                                FontWeight="SemiBold" FontSize="14"
+                                               Foreground="{DynamicResource TextFillColorPrimaryBrush}"
                                                Margin="4,0,0,0"/>
                                 </StackPanel>
 

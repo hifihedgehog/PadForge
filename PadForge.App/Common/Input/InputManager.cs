@@ -75,6 +75,10 @@ namespace PadForge.Common.Input
         // ─────────────────────────────────────────────
 
         private Thread _pollingThread;
+        // Injects accumulated macro mouse-move delta with a single SendInput per
+        // tick, off the poll thread. See FlushPendingMouseMove: SendInput on the
+        // 1000 Hz poll thread let a mouse-move macro drop the poll rate to ~200 Hz.
+        private Thread _mouseInjectorThread;
         private volatile bool _running;
         private volatile bool _idle;
         private bool _sdlInitialized;
@@ -783,6 +787,33 @@ namespace PadForge.Common.Input
                 Priority = ThreadPriority.AboveNormal
             };
             _pollingThread.Start();
+
+            _mouseInjectorThread = new Thread(MouseInjectorLoop)
+            {
+                Name = "PadForge.MouseInjector",
+                IsBackground = true,
+                Priority = ThreadPriority.AboveNormal
+            };
+            _mouseInjectorThread.Start();
+        }
+
+        /// <summary>
+        /// Flushes macro mouse-move deltas that the poll thread accumulated, one
+        /// SendInput per tick, so the SendInput syscall never runs on the 1000 Hz
+        /// poll thread. Injected mouse movement is processed synchronously (it
+        /// traverses every process's low-level mouse hook chain), which is why a
+        /// per-poll SendInput could collapse the poll rate to ~200 Hz. ~500 Hz cap
+        /// via a 2 ms sleep (timeBeginPeriod(1) from the poll loop keeps the sleep
+        /// near 2 ms); accumulated delta is never lost, only batched.
+        /// </summary>
+        private void MouseInjectorLoop()
+        {
+            while (_running)
+            {
+                FlushPendingMouseMove();
+                Thread.Sleep(2);
+            }
+            FlushPendingMouseMove(); // drain any final delta on shutdown
         }
 
         /// <summary>
@@ -802,6 +833,12 @@ namespace PadForge.Common.Input
             {
                 _pollingThread.Join(timeout: TimeSpan.FromSeconds(3));
                 _pollingThread = null;
+            }
+
+            if (_mouseInjectorThread != null && _mouseInjectorThread.IsAlive)
+            {
+                _mouseInjectorThread.Join(timeout: TimeSpan.FromSeconds(1));
+                _mouseInjectorThread = null;
             }
 
             RawInputListener.Stop();

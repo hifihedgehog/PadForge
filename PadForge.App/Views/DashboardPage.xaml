@@ -54,7 +54,21 @@
                 <TextBlock Text="{Binding Dashboard_InputEngine, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource SectionTitle}"/>
             </StackPanel>
 
-            <Border x:Name="EngineCard" Style="{StaticResource CardBorder}" Padding="20" Margin="0,0,0,16">
+            <Border x:Name="EngineCard" Padding="20" Margin="0,0,0,16">
+                <Border.Style>
+                    <Style TargetType="Border" BasedOn="{StaticResource CardBorder}">
+                        <Style.Triggers>
+                            <!-- The forge glows while it burns (#175). -->
+                            <DataTrigger Binding="{Binding EngineStateKey}" Value="Running">
+                                <Setter Property="Effect">
+                                    <Setter.Value>
+                                        <DropShadowEffect Color="#FF6B2C" BlurRadius="20" ShadowDepth="0" Opacity="0.16"/>
+                                    </Setter.Value>
+                                </Setter>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Border.Style>
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
@@ -157,10 +171,19 @@
                             <Border.Style>
                                 <Style TargetType="Border">
                                     <Style.Triggers>
+                                        <!-- Lit slot: soft heat as soon as it is enabled,
+                                             stronger once the VC is live (#175 pitch glow). -->
+                                        <DataTrigger Binding="{Binding IsEnabled}" Value="True">
+                                            <Setter Property="Effect">
+                                                <Setter.Value>
+                                                    <DropShadowEffect Color="#FF6B2C" BlurRadius="16" ShadowDepth="0" Opacity="0.20"/>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </DataTrigger>
                                         <DataTrigger Binding="{Binding IsVirtualControllerConnected}" Value="True">
                                             <Setter Property="Effect">
                                                 <Setter.Value>
-                                                    <DropShadowEffect Color="#FF6B2C" BlurRadius="14" ShadowDepth="0" Opacity="0.32"/>
+                                                    <DropShadowEffect Color="#FF6B2C" BlurRadius="22" ShadowDepth="0" Opacity="0.40"/>
                                                 </Setter.Value>
                                             </Setter>
                                         </DataTrigger>

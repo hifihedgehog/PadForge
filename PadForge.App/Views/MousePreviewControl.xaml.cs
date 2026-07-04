@@ -35,7 +35,8 @@ namespace PadForge.Views
         private static Brush MouseButtonBrush => IsDarkTheme ? _btnD : _btnL;
         private static Brush MmbBrush => IsDarkTheme ? _mmbD : _mmbL;
         private static Brush ScrollWheelBrush => IsDarkTheme ? _swD : _swL;
-        private static readonly Brush AccentBrush = F(0x00,0x78,0xD4);
+        // Ember (#175): output preview surface.
+        private static readonly Brush AccentBrush = F(0xFF,0x6B,0x2C);
         private static Brush DotBrush => IsDarkTheme ? _dotD : _dotL;
 
         private const double MC = 80;

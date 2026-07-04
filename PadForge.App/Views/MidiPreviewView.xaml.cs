@@ -47,7 +47,8 @@ namespace PadForge.Views
 
         private static SolidColorBrush F(byte r, byte g, byte b) { var br = new SolidColorBrush(Color.FromRgb(r, g, b)); br.Freeze(); return br; }
 
-        private static readonly Brush AccentBrush = F(0x00,0x78,0xD4);
+        // Ember (#175): output preview surface, pressed states light ember.
+        private static readonly Brush AccentBrush = F(0xFF,0x6B,0x2C);
         private static readonly Brush _dimD = F(0x60,0x60,0x60), _dimL = F(0xA0,0xA0,0xA0);
         private static readonly Brush _bgD = F(0x2D,0x2D,0x2D), _bgL = F(0xE0,0xE0,0xE0);
         private static readonly Brush _lblD = F(0xBB,0xBB,0xBB), _lblL = F(0x50,0x50,0x50);
@@ -59,11 +60,11 @@ namespace PadForge.Views
         private static Brush BgBrush => IsDarkTheme ? _bgD : _bgL;
         private static Brush LabelBrush => IsDarkTheme ? _lblD : _lblL;
         private static Brush WhiteKeyBrush => IsDarkTheme ? _wkD : _wkL;
-        private static readonly Brush WhiteKeyPressedBrush = F(0x40,0xA0,0xE0);
+        private static readonly Brush WhiteKeyPressedBrush = F(0xFF,0xA2,0x4D);
         private static Brush BlackKeyBrush => IsDarkTheme ? _bkD : _bkL;
-        private static readonly Brush BlackKeyPressedBrush = F(0x00,0x60,0xB0);
+        private static readonly Brush BlackKeyPressedBrush = F(0xC4,0x3D,0x0C);
         private static Brush KeyBorderBrush => IsDarkTheme ? _kbD : _kbL;
-        private static readonly Brush HoverBrush = F(0x40,0xA0,0xE0);
+        private static readonly Brush HoverBrush = F(0xFF,0xA2,0x4D);
         private static readonly Brush FlashBrush = F(0xFF,0xA5,0x00);
         // Relative-encoder pulse flash (input mode): the whole CC bar lights
         // green on an up detent, orange on a down detent (issue #128).

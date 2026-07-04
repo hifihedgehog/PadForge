@@ -56,11 +56,13 @@ namespace PadForge.Views
         private static Brush MouseButtonBrush => IsDarkTheme ? _btnD : _btnL;
         private static Brush MmbBrush => IsDarkTheme ? _mmbD : _mmbL;
         private static Brush ScrollWheelBrush => IsDarkTheme ? _swD : _swL;
-        private static readonly Brush AccentBrush = F(0x00,0x78,0xD4);
+        // Ember (#175): this preview shows what the virtual keyboard and
+        // mouse emit, so pressed states light ember, not the old blue.
+        private static readonly Brush AccentBrush = F(0xFF,0x6B,0x2C);
         private static Brush DotBrush => IsDarkTheme ? _dotD : _dotL;
         private static Brush KeyNormalBrush => IsDarkTheme ? _knD : _knL;
-        private static readonly Brush KeyPressedBrush = F(0x00,0x78,0xD4);
-        private static readonly Brush HoverBrush = F(0x40,0xA0,0xE0);
+        private static readonly Brush KeyPressedBrush = F(0xFF,0x6B,0x2C);
+        private static readonly Brush HoverBrush = F(0xFF,0xA2,0x4D);
         private static readonly Brush FlashBrush = F(0xFF,0xA5,0x00);
 
         // Layout constants

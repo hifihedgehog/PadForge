@@ -33,10 +33,11 @@ namespace PadForge.Views
         private const string LabelKey = "TextFillColorSecondaryBrush";
         private const string AccentKey = "AccentFillColorDefaultBrush";
 
-        // Semantic colors — intentionally fixed (recording flash + hover
-        // affordance), not driven by theme.
+        // Semantic colors, intentionally fixed (recording flash + hover
+        // affordance), not driven by theme. Hover warmed to the ember
+        // family (#175): the rig is an output surface.
         private static readonly Brush FlashBrush = new SolidColorBrush(Color.FromRgb(0xFF, 0xA5, 0x00));
-        private static readonly Brush HoverBrush = new SolidColorBrush(Color.FromRgb(0x40, 0xA0, 0xE0));
+        private static readonly Brush HoverBrush = new SolidColorBrush(Color.FromRgb(0xFF, 0xA2, 0x4D));
 
         // Flash state
         private DispatcherTimer _flashTimer;

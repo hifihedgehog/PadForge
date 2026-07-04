@@ -490,6 +490,16 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _deviceName, value);
         }
 
+        private string _batteryText = string.Empty;
+
+        /// <summary>Battery of the first mapped device reporting one,
+        /// e.g. "78%". Empty otherwise. Cold side (#175, issue #167 lane).</summary>
+        public string BatteryText
+        {
+            get => _batteryText;
+            set => SetProperty(ref _batteryText, value ?? string.Empty);
+        }
+
         private bool _isActive;
 
         /// <summary>Whether this slot has at least one online mapped device.</summary>

@@ -416,6 +416,10 @@
                                                    FontSize="12"
                                                    Foreground="{DynamicResource ColdBrush}"
                                                    common:MarqueeBehavior.IsEnabled="True"/>
+                                        <TextBlock Text="{Binding BatteryText}"
+                                                   FontSize="11"
+                                                   Foreground="{DynamicResource ColdBrush}"
+                                                   VerticalAlignment="Center" Margin="6,0,0,0"/>
                                     </StackPanel>
                                 </Border>
 

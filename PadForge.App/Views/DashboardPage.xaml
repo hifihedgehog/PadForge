@@ -296,12 +296,12 @@
                                         <Button Click="XboxType_Click" Tag="{Binding PadIndex}">
                                             <Button.Style>
                                                 <Style TargetType="Button" BasedOn="{StaticResource TypeSwitchButton}">
-                                                    <Setter Property="Opacity" Value="0.3"/>
+                                                    <Setter Property="Opacity" Value="0.45"/>
                                                     <Setter Property="ToolTip" Value="{Binding ControllerType_Xbox, Source={x:Static strings:Strings.Instance}}"/>
                                                     <Style.Triggers>
                                                         <DataTrigger Binding="{Binding OutputType}" Value="Xbox">
                                                             <Setter Property="Opacity" Value="1.0"/>
-                                                            <Setter Property="Background" Value="{DynamicResource EmberTintBrush}"/>
+                                                            <Setter Property="Background" Value="#33FF6B2C"/>
                                                         </DataTrigger>
                                                     </Style.Triggers>
                                                 </Style>
@@ -316,12 +316,12 @@
                                                 Click="DS4Type_Click" Tag="{Binding PadIndex}">
                                             <Button.Style>
                                                 <Style TargetType="Button" BasedOn="{StaticResource TypeSwitchButton}">
-                                                    <Setter Property="Opacity" Value="0.3"/>
+                                                    <Setter Property="Opacity" Value="0.45"/>
                                                     <Setter Property="ToolTip" Value="{Binding ControllerType_PlayStation, Source={x:Static strings:Strings.Instance}}"/>
                                                     <Style.Triggers>
                                                         <DataTrigger Binding="{Binding OutputType}" Value="PlayStation">
                                                             <Setter Property="Opacity" Value="1.0"/>
-                                                            <Setter Property="Background" Value="{DynamicResource EmberTintBrush}"/>
+                                                            <Setter Property="Background" Value="#33FF6B2C"/>
                                                         </DataTrigger>
                                                     </Style.Triggers>
                                                 </Style>
@@ -336,12 +336,12 @@
                                                 Click="ExtendedType_Click" Tag="{Binding PadIndex}">
                                             <Button.Style>
                                                 <Style TargetType="Button" BasedOn="{StaticResource TypeSwitchButton}">
-                                                    <Setter Property="Opacity" Value="0.3"/>
+                                                    <Setter Property="Opacity" Value="0.45"/>
                                                     <Setter Property="ToolTip" Value="{Binding ControllerType_Extended, Source={x:Static strings:Strings.Instance}}"/>
                                                     <Style.Triggers>
                                                         <DataTrigger Binding="{Binding OutputType}" Value="Extended">
                                                             <Setter Property="Opacity" Value="1.0"/>
-                                                            <Setter Property="Background" Value="{DynamicResource EmberTintBrush}"/>
+                                                            <Setter Property="Background" Value="#33FF6B2C"/>
                                                         </DataTrigger>
                                                     </Style.Triggers>
                                                 </Style>
@@ -356,12 +356,12 @@
                                                 Click="KeyboardMouseType_Click" Tag="{Binding PadIndex}">
                                             <Button.Style>
                                                 <Style TargetType="Button" BasedOn="{StaticResource TypeSwitchButton}">
-                                                    <Setter Property="Opacity" Value="0.3"/>
+                                                    <Setter Property="Opacity" Value="0.45"/>
                                                     <Setter Property="ToolTip" Value="{Binding ControllerType_KeyboardMouse, Source={x:Static strings:Strings.Instance}}"/>
                                                     <Style.Triggers>
                                                         <DataTrigger Binding="{Binding OutputType}" Value="KeyboardMouse">
                                                             <Setter Property="Opacity" Value="1.0"/>
-                                                            <Setter Property="Background" Value="{DynamicResource EmberTintBrush}"/>
+                                                            <Setter Property="Background" Value="#33FF6B2C"/>
                                                         </DataTrigger>
                                                     </Style.Triggers>
                                                 </Style>
@@ -375,12 +375,12 @@
                                                 Click="MidiType_Click" Tag="{Binding PadIndex}">
                                             <Button.Style>
                                                 <Style TargetType="Button" BasedOn="{StaticResource TypeSwitchButton}">
-                                                    <Setter Property="Opacity" Value="0.3"/>
+                                                    <Setter Property="Opacity" Value="0.45"/>
                                                     <Setter Property="ToolTip" Value="{Binding ControllerType_MIDI, Source={x:Static strings:Strings.Instance}}"/>
                                                     <Style.Triggers>
                                                         <DataTrigger Binding="{Binding OutputType}" Value="Midi">
                                                             <Setter Property="Opacity" Value="1.0"/>
-                                                            <Setter Property="Background" Value="{DynamicResource EmberTintBrush}"/>
+                                                            <Setter Property="Background" Value="#33FF6B2C"/>
                                                         </DataTrigger>
                                                         <DataTrigger Binding="{Binding DataContext.IsMidiServicesInstalled, RelativeSource={RelativeSource AncestorType=ItemsControl}}" Value="False">
                                                             <Setter Property="Cursor" Value="No"/>

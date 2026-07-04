@@ -241,15 +241,14 @@
                                Foreground="{DynamicResource EmberTextBrush}" Margin="3,0,0,0" VerticalAlignment="Center"/>
                 </StackPanel>
 
-                <!-- [Gamepad #  TypeIcon TypeName]. Controller / Preview tab. -->
-                <RadioButton x:Name="TabController" Tag="0" Style="{StaticResource TabStripButton}" Click="TabBtn_Click"
-                             IsChecked="True"
-                             AutomationProperties.AutomationId="TabController">
-                    <!-- Identity chip (#175 close-out item 14): always ember,
-                         independent of tab-check state. -->
-                    <Border Background="#1AFF6B2C" BorderBrush="#66FF6B2C" BorderThickness="1"
-                            CornerRadius="8" Padding="8,2"
-                            TextBlock.Foreground="{DynamicResource EmberHotBrush}">
+                <!-- Identity chip (#175 final close-out): standalone and
+                     non-interactive. It states what the slot IS; the tabs
+                     to its right are the navigation. Always ember,
+                     independent of which tab is checked. -->
+                <Border Background="{DynamicResource EmberTintBrush}" BorderBrush="#66FF6B2C" BorderThickness="1"
+                        CornerRadius="8" Padding="8,2" Margin="4,4,2,4"
+                        VerticalAlignment="Center"
+                        TextBlock.Foreground="{DynamicResource EmberHotBrush}">
                     <StackPanel Orientation="Horizontal">
                         <!-- Gamepad glyph + slot number removed (#175
                              iteration 3): the tier's Slot N scope label
@@ -334,15 +333,24 @@
                                    Foreground="{DynamicResource TextFillColorTertiaryBrush}"
                                    VerticalAlignment="Center"/>
                     </StackPanel>
-                    </Border>
+                </Border>
+
+                <!-- [Preview] tab: plain text, same underline treatment as
+                     Mappings / Macros. Tag/Click/IsChecked/AutomationId
+                     unchanged so SelectedConfigTab numbering and the
+                     code-behind sync keep working. -->
+                <RadioButton x:Name="TabController" Tag="0" Style="{StaticResource TabStripButton}" Click="TabBtn_Click"
+                             IsChecked="True"
+                             AutomationProperties.AutomationId="TabController">
+                    <TextBlock Text="{Binding Pad_Tab_Preview, Source={x:Static strings:Strings.Instance}}" FontSize="15"/>
                 </RadioButton>
 
                 <!-- Preset ghost chip (#175, per the approved header mock):
-                     slot-scope, inline in tier 1. Visibility still driven by
+                     slot-scope, inline in tier 1, carried by the ChipGhost
+                     grammar (item 10). Visibility still driven by
                      code-behind through the same names. -->
                 <Border x:Name="HMaestroProfileBar" Margin="10,4,4,4"
-                        Background="Transparent"
-                        VerticalAlignment="Center"
+                        Style="{StaticResource ChipGhost}"
                         Visibility="Collapsed">
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="{Binding Pad_Preset, Source={x:Static strings:Strings.Instance}}"
@@ -350,7 +358,7 @@
                                    Foreground="{DynamicResource TextFillColorTertiaryBrush}" FontSize="12"/>
                         <ComboBox x:Name="HMaestroProfileCombo" Width="300" VerticalAlignment="Center"
                                   Foreground="{DynamicResource TextFillColorTertiaryBrush}"
-                                  Background="{DynamicResource SteelRaisedBrush}" BorderBrush="{DynamicResource SteelLineSoftBrush}" FontSize="12"
+                                  Background="Transparent" BorderBrush="Transparent" FontSize="12"
                                   AutomationProperties.AutomationId="HMaestroProfileCombo"
                                   ItemsSource="{Binding AvailableProfiles}"
                                   DisplayMemberPath="Name"
@@ -397,7 +405,16 @@
                         <GradientStop Color="#0058B6E4" Offset="0.6"/>
                     </LinearGradientBrush>
                 </Border.Background>
-            <WrapPanel Orientation="Horizontal" VerticalAlignment="Center">
+            <!-- Item 16 (#175 final close-out): scope label + picker sit
+                 left, the capability tabset is pushed right to mirror the
+                 slot tier. The tabs keep a WrapPanel so narrow windows
+                 wrap to a second line instead of clipping. -->
+            <Grid VerticalAlignment="Center">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
 
                 <TextBlock Text="{Binding Pad_ScopeDevice, Source={x:Static strings:Strings.Instance}, Converter={StaticResource UpperConverter}}"
                            FontFamily="{StaticResource TelemetryFontFamily}"
@@ -433,6 +450,10 @@
                         </DataTemplate>
                     </ComboBox.ItemTemplate>
                 </ComboBox>
+                </StackPanel>
+
+                <WrapPanel Grid.Column="1" Orientation="Horizontal"
+                           HorizontalAlignment="Right" VerticalAlignment="Center">
 
                 <!-- Config tabs (device-scoped: Sticks / Triggers /
                      Force Feedback shape physical-input characteristics
@@ -517,7 +538,8 @@
                              Visibility="Collapsed">
                     <TextBlock Text="{Binding Pad_Pointer, Source={x:Static strings:Strings.Instance}}" FontSize="13"/>
                 </RadioButton>
-            </WrapPanel>
+                </WrapPanel>
+            </Grid>
             </Border>
         </StackPanel>
 
@@ -1224,7 +1246,11 @@
                                     </ComboBox>
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
-                                    <Grid MinWidth="150" Margin="0,0,8,0">
+                                    <!-- Trigger binding as a cold src chip (#175 item 80):
+                                         the trigger reads input, so it inherits the mapping
+                                         grid's cold chip grammar. -->
+                                    <Border Style="{StaticResource ChipCold}" Margin="0,0,8,0">
+                                        <Grid MinWidth="132">
                                         <TextBlock Text="{Binding TriggerDisplayText}"
                                                    VerticalAlignment="Center"
                                                    Visibility="{Binding IsRecordingTrigger, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}"/>
@@ -1232,7 +1258,8 @@
                                                    VerticalAlignment="Center"
                                                    FontWeight="SemiBold"
                                                    Visibility="{Binding IsRecordingTrigger, Converter={StaticResource BoolToVisibilityConverter}}"/>
-                                    </Grid>
+                                        </Grid>
+                                    </Border>
                                     <!-- Record/Stop button -->
                                     <ui:Button Command="{Binding RecordTriggerCommand}" Style="{StaticResource EmberIconButtonHot}">
                                         <TextBlock Text="{Binding RecordTriggerIcon}" FontFamily="Segoe MDL2 Assets"
@@ -1355,10 +1382,22 @@
                                 <Button Content="{Binding Common_Duplicate, Source={x:Static strings:Strings.Instance}}" Command="{Binding DuplicateActionCommand}"
                                         Padding="8,4"/>
                             </StackPanel>
+                            <!-- Action steps as ember dst chips (#175 item 80):
+                                 each step writes output, so the rows inherit the
+                                 mapping grid's ember chip grammar. Selection and
+                                 interaction stay on the ListBox container. -->
                             <ListBox ItemsSource="{Binding Actions}"
                                      SelectedItem="{Binding SelectedAction, Mode=TwoWay}"
-                                     DisplayMemberPath="DisplayText"
-                                     MinHeight="100" MaxHeight="200" Margin="0,0,0,4"/>
+                                     MinHeight="100" MaxHeight="200" Margin="0,0,0,4">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border Style="{StaticResource ChipEmber}"
+                                                HorizontalAlignment="Left" Margin="0,1">
+                                            <TextBlock Text="{Binding DisplayText}"/>
+                                        </Border>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
 
                             <!-- Action editor (shows when an action is selected) -->
                             <Border BorderBrush="{DynamicResource TextFillColorTertiaryBrush}"
@@ -2464,8 +2503,15 @@
                                                 </SelectiveScrollingGrid>
                                             </Border>
                                             <ControlTemplate.Triggers>
-                                                <DataTrigger Binding="{Binding IsInputActive}" Value="True">
-                                                    <DataTrigger.EnterActions>
+                                                <!-- Reduced motion (#175 item 98): rowfire only
+                                                     animates when the OS animation preference
+                                                     (ClientAreaAnimation) is on. -->
+                                                <MultiDataTrigger>
+                                                    <MultiDataTrigger.Conditions>
+                                                        <Condition Binding="{Binding IsInputActive}" Value="True"/>
+                                                        <Condition Binding="{Binding Source={x:Static SystemParameters.ClientAreaAnimation}}" Value="True"/>
+                                                    </MultiDataTrigger.Conditions>
+                                                    <MultiDataTrigger.EnterActions>
                                                         <BeginStoryboard>
                                                             <Storyboard>
                                                                 <DoubleAnimation Storyboard.TargetName="Rowfire"
@@ -2477,8 +2523,8 @@
                                                                 </DoubleAnimation>
                                                             </Storyboard>
                                                         </BeginStoryboard>
-                                                    </DataTrigger.EnterActions>
-                                                    <DataTrigger.ExitActions>
+                                                    </MultiDataTrigger.EnterActions>
+                                                    <MultiDataTrigger.ExitActions>
                                                         <BeginStoryboard>
                                                             <Storyboard>
                                                                 <DoubleAnimation Storyboard.TargetName="Rowfire"
@@ -2490,15 +2536,22 @@
                                                                 </DoubleAnimation>
                                                             </Storyboard>
                                                         </BeginStoryboard>
-                                                    </DataTrigger.ExitActions>
-                                                </DataTrigger>
+                                                    </MultiDataTrigger.ExitActions>
+                                                </MultiDataTrigger>
                                             </ControlTemplate.Triggers>
                                         </ControlTemplate>
                                     </Setter.Value>
                                 </Setter>
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding IsRecording}" Value="True">
-                                        <DataTrigger.EnterActions>
+                                    <!-- Reduced motion (#175 item 98): the looping arm-flash
+                                         only runs when ClientAreaAnimation is on; otherwise
+                                         the armed row holds a static ember tint. -->
+                                    <MultiDataTrigger>
+                                        <MultiDataTrigger.Conditions>
+                                            <Condition Binding="{Binding IsRecording}" Value="True"/>
+                                            <Condition Binding="{Binding Source={x:Static SystemParameters.ClientAreaAnimation}}" Value="True"/>
+                                        </MultiDataTrigger.Conditions>
+                                        <MultiDataTrigger.EnterActions>
                                             <BeginStoryboard x:Name="RecordFlash">
                                                 <Storyboard>
                                                     <ColorAnimation
@@ -2508,11 +2561,18 @@
                                                         RepeatBehavior="Forever"/>
                                                 </Storyboard>
                                             </BeginStoryboard>
-                                        </DataTrigger.EnterActions>
-                                        <DataTrigger.ExitActions>
+                                        </MultiDataTrigger.EnterActions>
+                                        <MultiDataTrigger.ExitActions>
                                             <StopStoryboard BeginStoryboardName="RecordFlash"/>
-                                        </DataTrigger.ExitActions>
-                                    </DataTrigger>
+                                        </MultiDataTrigger.ExitActions>
+                                    </MultiDataTrigger>
+                                    <MultiDataTrigger>
+                                        <MultiDataTrigger.Conditions>
+                                            <Condition Binding="{Binding IsRecording}" Value="True"/>
+                                            <Condition Binding="{Binding Source={x:Static SystemParameters.ClientAreaAnimation}}" Value="False"/>
+                                        </MultiDataTrigger.Conditions>
+                                        <Setter Property="Background" Value="#30FF6B2C"/>
+                                    </MultiDataTrigger>
                                 </Style.Triggers>
                             </Style>
                         </DataGrid.RowStyle>
@@ -2925,9 +2985,22 @@
                                         <ItemsControl ItemsSource="{Binding ExtraSources}">
                                             <ItemsControl.ItemTemplate>
                                                 <DataTemplate>
-                                                    <StackPanel Orientation="Horizontal" Margin="0,2,0,2">
+                                                    <!-- Extra source as a cold chip (#175 final
+                                                         close-out): the sub-source row reads in
+                                                         the src-chip language. Cold border and
+                                                         wash, radius 8, kind glyph up front,
+                                                         compact controls inside, remove ✕ at the
+                                                         end. Controls stay inline (no per-source
+                                                         focus state exists to collapse against). -->
+                                                    <Border Background="#0D58B6E4" BorderThickness="1"
+                                                            CornerRadius="8" Padding="7,3"
+                                                            Margin="0,2,0,2" HorizontalAlignment="Left">
+                                                        <Border.BorderBrush>
+                                                            <SolidColorBrush Color="#3D58B6E4"/>
+                                                        </Border.BorderBrush>
+                                                    <StackPanel Orientation="Horizontal">
                                                         <TextBlock Text="↳" FontSize="14"
-                                                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                                                   Foreground="{DynamicResource ColdBrush}"
                                                                    Margin="0,0,6,0" VerticalAlignment="Center"/>
                                                         <!-- Kind selector. Schema/engine value ("Direct" / "Incremental" /
                                                              "InvertOnHold") round-trips via SelectedValue; the dropdown
@@ -3498,6 +3571,7 @@
                                                                        Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
                                                         </ui:Button>
                                                     </StackPanel>
+                                                    </Border>
                                                 </DataTemplate>
                                             </ItemsControl.ItemTemplate>
                                         </ItemsControl>
@@ -3530,10 +3604,53 @@
                                             <Border.BorderBrush>
                                                 <SolidColorBrush Color="#66FF6B2C"/>
                                             </Border.BorderBrush>
-                                            <TextBlock Text="{Binding TargetLabel}"
-                                                       FontWeight="SemiBold" FontSize="12.5"
-                                                       Foreground="{DynamicResource EmberHotBrush}"/>
+                                            <Grid>
+                                                <!-- Chip flash (#175 item 33): the dst chip
+                                                     glows when input flows through the row,
+                                                     same 300ms/1200ms envelope as rowfire.
+                                                     Gated on ClientAreaAnimation (item 98). -->
+                                                <Border x:Name="ChipFlash" Background="#40FFA24D"
+                                                        CornerRadius="7" Margin="-10,-6"
+                                                        Opacity="0" IsHitTestVisible="False"/>
+                                                <TextBlock Text="{Binding TargetLabel}"
+                                                           FontWeight="SemiBold" FontSize="12.5"
+                                                           Foreground="{DynamicResource EmberHotBrush}"/>
+                                            </Grid>
                                         </Border>
+                                        <DataTemplate.Triggers>
+                                            <MultiDataTrigger>
+                                                <MultiDataTrigger.Conditions>
+                                                    <Condition Binding="{Binding IsInputActive}" Value="True"/>
+                                                    <Condition Binding="{Binding Source={x:Static SystemParameters.ClientAreaAnimation}}" Value="True"/>
+                                                </MultiDataTrigger.Conditions>
+                                                <MultiDataTrigger.EnterActions>
+                                                    <BeginStoryboard>
+                                                        <Storyboard>
+                                                            <DoubleAnimation Storyboard.TargetName="ChipFlash"
+                                                                             Storyboard.TargetProperty="Opacity"
+                                                                             To="1" Duration="0:0:0.3">
+                                                                <DoubleAnimation.EasingFunction>
+                                                                    <CubicEase EasingMode="EaseOut"/>
+                                                                </DoubleAnimation.EasingFunction>
+                                                            </DoubleAnimation>
+                                                        </Storyboard>
+                                                    </BeginStoryboard>
+                                                </MultiDataTrigger.EnterActions>
+                                                <MultiDataTrigger.ExitActions>
+                                                    <BeginStoryboard>
+                                                        <Storyboard>
+                                                            <DoubleAnimation Storyboard.TargetName="ChipFlash"
+                                                                             Storyboard.TargetProperty="Opacity"
+                                                                             To="0" Duration="0:0:1.2">
+                                                                <DoubleAnimation.EasingFunction>
+                                                                    <CubicEase EasingMode="EaseIn"/>
+                                                                </DoubleAnimation.EasingFunction>
+                                                            </DoubleAnimation>
+                                                        </Storyboard>
+                                                    </BeginStoryboard>
+                                                </MultiDataTrigger.ExitActions>
+                                            </MultiDataTrigger>
+                                        </DataTemplate.Triggers>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
@@ -4944,12 +5061,18 @@
 
                         <!-- Live motor display: inset instrument panel (#175
                              iteration 27, matching the trigger instrument).
-                             Motor drive is output-side, so the bars burn ember. -->
+                             Two-stage per item 52: RAW is what the game
+                             commands on the virtual pad (LeftMotorDisplay,
+                             cold), OUT is what the dispatcher delivers to
+                             the selected device after swap/strength
+                             (DeviceLeftMotorDisplay, ember). The gap between
+                             the bars is the user's settings, live. -->
                         <Border Background="{DynamicResource ControlFillColorDefaultBrush}"
                                 BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}"
                                 BorderThickness="1" CornerRadius="8" Padding="12" Margin="0,8,0,0">
                             <Grid>
                                 <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
                                     <ColumnDefinition Width="Auto"/>
                                     <ColumnDefinition Width="*"/>
                                     <ColumnDefinition Width="Auto"/>
@@ -4958,31 +5081,69 @@
                                     <RowDefinition Height="Auto"/>
                                     <RowDefinition Height="Auto"/>
                                     <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
                                 </Grid.RowDefinitions>
-                                <TextBlock Grid.Row="0" Grid.ColumnSpan="3" Margin="0,0,0,10"
+                                <TextBlock Grid.Row="0" Grid.ColumnSpan="4" Margin="0,0,0,10"
                                            Text="{Binding Pad_MotorActivity, Source={x:Static strings:Strings.Instance}}"
                                            FontWeight="SemiBold"
                                            Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
-                                <TextBlock Grid.Row="1" Grid.Column="0" VerticalAlignment="Center"
+                                <!-- Left motor: RAW over OUT -->
+                                <TextBlock Grid.Row="1" Grid.RowSpan="2" Grid.Column="0" VerticalAlignment="Center"
                                            Text="{Binding Pad_LeftMotorLabel, Source={x:Static strings:Strings.Instance}}"
                                            Style="{StaticResource DzLabel}"/>
-                                <ProgressBar Grid.Row="1" Grid.Column="1" Margin="0,0,12,10"
+                                <TextBlock Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" Margin="0,0,10,6"
+                                           Text="{Binding Instr_Raw, Source={x:Static strings:Strings.Instance}}"
+                                           FontFamily="{StaticResource TelemetryFontFamily}" FontSize="11" Width="32"
+                                           Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
+                                <ProgressBar Grid.Row="1" Grid.Column="2" Margin="0,0,12,6"
+                                             Value="{Binding LeftMotorDisplay, Mode=OneWay}"
+                                             Minimum="0" Maximum="1" VerticalAlignment="Center"
+                                             Style="{StaticResource InstrumentBarRaw}"/>
+                                <TextBlock Grid.Row="1" Grid.Column="3" Margin="0,0,0,6"
+                                           Text="{Binding LeftMotorDisplay, Mode=OneWay, StringFormat=P0}"
+                                           FontFamily="{StaticResource TelemetryFontFamily}" FontSize="12"
+                                           MinWidth="40" TextAlignment="Right" VerticalAlignment="Center"
+                                           Foreground="{DynamicResource ColdBrush}"/>
+                                <TextBlock Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" Margin="0,0,10,10"
+                                           Text="{Binding Instr_Out, Source={x:Static strings:Strings.Instance}}"
+                                           FontFamily="{StaticResource TelemetryFontFamily}" FontSize="11" Width="32"
+                                           Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
+                                <ProgressBar Grid.Row="2" Grid.Column="2" Margin="0,0,12,10"
                                              Value="{Binding DeviceLeftMotorDisplay, Mode=OneWay}"
                                              Minimum="0" Maximum="1" VerticalAlignment="Center"
                                              Style="{StaticResource InstrumentBarOut}"/>
-                                <TextBlock Grid.Row="1" Grid.Column="2" Margin="0,0,0,10"
+                                <TextBlock Grid.Row="2" Grid.Column="3" Margin="0,0,0,10"
                                            Text="{Binding DeviceLeftMotorDisplay, Mode=OneWay, StringFormat=P0}"
                                            FontFamily="{StaticResource TelemetryFontFamily}" FontSize="12"
                                            MinWidth="40" TextAlignment="Right" VerticalAlignment="Center"
                                            Foreground="{DynamicResource EmberHotBrush}"/>
-                                <TextBlock Grid.Row="2" Grid.Column="0" VerticalAlignment="Center"
+                                <!-- Right motor: RAW over OUT -->
+                                <TextBlock Grid.Row="3" Grid.RowSpan="2" Grid.Column="0" VerticalAlignment="Center"
                                            Text="{Binding Pad_RightMotorLabel, Source={x:Static strings:Strings.Instance}}"
                                            Style="{StaticResource DzLabel}"/>
-                                <ProgressBar Grid.Row="2" Grid.Column="1" Margin="0,0,12,0"
+                                <TextBlock Grid.Row="3" Grid.Column="1" VerticalAlignment="Center" Margin="0,0,10,6"
+                                           Text="{Binding Instr_Raw, Source={x:Static strings:Strings.Instance}}"
+                                           FontFamily="{StaticResource TelemetryFontFamily}" FontSize="11" Width="32"
+                                           Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
+                                <ProgressBar Grid.Row="3" Grid.Column="2" Margin="0,0,12,6"
+                                             Value="{Binding RightMotorDisplay, Mode=OneWay}"
+                                             Minimum="0" Maximum="1" VerticalAlignment="Center"
+                                             Style="{StaticResource InstrumentBarRaw}"/>
+                                <TextBlock Grid.Row="3" Grid.Column="3" Margin="0,0,0,6"
+                                           Text="{Binding RightMotorDisplay, Mode=OneWay, StringFormat=P0}"
+                                           FontFamily="{StaticResource TelemetryFontFamily}" FontSize="12"
+                                           MinWidth="40" TextAlignment="Right" VerticalAlignment="Center"
+                                           Foreground="{DynamicResource ColdBrush}"/>
+                                <TextBlock Grid.Row="4" Grid.Column="1" VerticalAlignment="Center" Margin="0,0,10,0"
+                                           Text="{Binding Instr_Out, Source={x:Static strings:Strings.Instance}}"
+                                           FontFamily="{StaticResource TelemetryFontFamily}" FontSize="11" Width="32"
+                                           Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
+                                <ProgressBar Grid.Row="4" Grid.Column="2" Margin="0,0,12,0"
                                              Value="{Binding DeviceRightMotorDisplay, Mode=OneWay}"
                                              Minimum="0" Maximum="1" VerticalAlignment="Center"
                                              Style="{StaticResource InstrumentBarOut}"/>
-                                <TextBlock Grid.Row="2" Grid.Column="2"
+                                <TextBlock Grid.Row="4" Grid.Column="3"
                                            Text="{Binding DeviceRightMotorDisplay, Mode=OneWay, StringFormat=P0}"
                                            FontFamily="{StaticResource TelemetryFontFamily}" FontSize="12"
                                            MinWidth="40" TextAlignment="Right" VerticalAlignment="Center"

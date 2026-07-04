@@ -4573,24 +4573,50 @@
                                                 <Button Command="{Binding ResetSensitivityCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetSensitivity, Source={x:Static strings:Strings.Instance}}"/>
                                             </StackPanel>
 
-                                            <!-- Live value bar -->
-                                            <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
-                                                <TextBlock Text="{Binding Pad_Live, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
-                                                <!-- Two-stage (#175): cold raw over ember forged output. -->
-                                                <StackPanel VerticalAlignment="Center">
-                                                    <ProgressBar Value="{Binding RawNorm, Mode=OneWay}"
+                                            <!-- Two-stage live instrument (#175 iteration 20): full-width
+                                                 RAW cold and OUT ember bars in their own inset panel, per
+                                                 the artifact instruments mock. -->
+                                            <Border Background="{DynamicResource ControlFillColorDefaultBrush}"
+                                                    BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}"
+                                                    BorderThickness="1" CornerRadius="8"
+                                                    Padding="14,12" Margin="0,10,0,4">
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="Auto"/>
+                                                        <ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width="Auto"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition Height="Auto"/>
+                                                        <RowDefinition Height="Auto"/>
+                                                    </Grid.RowDefinitions>
+                                                    <TextBlock Text="{Binding Instr_Raw, Source={x:Static strings:Strings.Instance}}"
+                                                               FontSize="11" FontWeight="SemiBold" Width="36"
+                                                               Foreground="{DynamicResource ColdBrush}"
+                                                               VerticalAlignment="Center" Margin="0,0,12,8"/>
+                                                    <ProgressBar Grid.Column="1" Value="{Binding RawNorm, Mode=OneWay}"
                                                                  Minimum="0" Maximum="1"
                                                                  Foreground="{DynamicResource ColdBrush}"
-                                                                 Width="200" Height="7" Margin="0,0,0,2"/>
-                                                    <ProgressBar Value="{Binding LiveValue, Mode=OneWay}"
+                                                                 Height="10" Margin="0,0,0,8"/>
+                                                    <TextBlock Grid.Column="2" Text="{Binding RawDisplay, Mode=OneWay}"
+                                                               FontSize="12" MinWidth="96" TextAlignment="Right"
+                                                               Foreground="{DynamicResource ColdBrush}"
+                                                               VerticalAlignment="Center" Margin="12,0,0,8"/>
+                                                    <TextBlock Grid.Row="1" Text="{Binding Instr_Out, Source={x:Static strings:Strings.Instance}}"
+                                                               FontSize="11" FontWeight="SemiBold" Width="36"
+                                                               Foreground="{DynamicResource EmberHotBrush}"
+                                                               VerticalAlignment="Center" Margin="0,0,12,0"/>
+                                                    <ProgressBar Grid.Row="1" Grid.Column="1" Value="{Binding LiveValue, Mode=OneWay}"
                                                                  Minimum="0" Maximum="1"
                                                                  Foreground="{DynamicResource EmberBrush}"
-                                                                 Width="200" Height="7"/>
-                                                </StackPanel>
-                                                <TextBlock Text="{Binding RawDisplay, Mode=OneWay}"
-                                                           Margin="8,0,0,0" VerticalAlignment="Center"
-                                                           Foreground="{DynamicResource ColdBrush}"/>
-                                            </StackPanel>
+                                                                 Height="10"/>
+                                                    <TextBlock Grid.Row="1" Grid.Column="2"
+                                                               Text="{Binding LiveValue, Mode=OneWay, StringFormat={}{0:P0}}"
+                                                               FontSize="12" MinWidth="96" TextAlignment="Right"
+                                                               Foreground="{DynamicResource EmberHotBrush}"
+                                                               VerticalAlignment="Center" Margin="12,0,0,0"/>
+                                                </Grid>
+                                            </Border>
                                         </StackPanel>
 
                                         <!-- Right: sensitivity curve editor -->

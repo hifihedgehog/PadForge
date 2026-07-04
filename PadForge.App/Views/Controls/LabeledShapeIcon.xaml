@@ -14,16 +14,16 @@
         <Viewbox Stretch="Uniform">
             <Grid Width="512" Height="512">
                 <Path x:Name="StickOuterPath" Visibility="Collapsed"
-                      Fill="{DynamicResource TextFillColorPrimaryBrush}"
+                      Fill="{DynamicResource EmberBrush}"
                       Data="{StaticResource ZackslyStickOuterRingGeometry}"/>
                 <Path x:Name="StickInnerPath" Visibility="Collapsed"
-                      Fill="{DynamicResource TextFillColorPrimaryBrush}"
+                      Fill="{DynamicResource EmberBrush}"
                       Data="{StaticResource ZackslyStickInnerDiscGeometry}"/>
                 <Path x:Name="TriggerLeftPath" Visibility="Collapsed"
-                      Fill="{DynamicResource TextFillColorPrimaryBrush}"
+                      Fill="{DynamicResource EmberBrush}"
                       Data="{StaticResource ZackslyTriggerOuterBodyGeometry}"/>
                 <Path x:Name="TriggerRightPath" Visibility="Collapsed"
-                      Fill="{DynamicResource TextFillColorPrimaryBrush}"
+                      Fill="{DynamicResource EmberBrush}"
                       Data="{StaticResource ZackslyTriggerOuterBodyRightGeometry}"/>
             </Grid>
         </Viewbox>
@@ -32,8 +32,10 @@
                 <!-- Label fill is the inverse of the shape's primary text
                      color, so the glyph reads as a knockout in both
                      themes. -->
+                <!-- Steel knockout on the ember shape (#175): constant
+                     because the ember fill is constant across themes. -->
                 <Path x:Name="LabelPath"
-                      Fill="{DynamicResource TextFillColorInverseBrush}"/>
+                      Fill="#FF0B0E14"/>
             </Canvas>
         </Viewbox>
     </Grid>

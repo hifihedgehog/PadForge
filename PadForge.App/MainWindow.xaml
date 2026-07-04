@@ -14,6 +14,7 @@
         Stylus.IsPressAndHoldEnabled="False"
         Stylus.IsTapFeedbackEnabled="False"
         Stylus.IsTouchFeedbackEnabled="False"
+        Foreground="{DynamicResource TextFillColorPrimaryBrush}"
         WindowStartupLocation="Manual">
 
     <Grid>
@@ -161,7 +162,7 @@
              ═══════════════════════════════════════════ -->
         <Border x:Name="StatusBarBorder" Grid.Row="2"
                 Background="{DynamicResource SolidBackgroundFillColorBaseBrush}"
-                BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}"
+                BorderBrush="{DynamicResource SteelLineSoftBrush}"
                 BorderThickness="0,1,0,0"
                 Padding="12,4">
             <Grid>
@@ -175,7 +176,7 @@
                 <TextBlock Grid.Column="0"
                            Text="{Binding StatusText}"
                            VerticalAlignment="Center"
-                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                           Foreground="{DynamicResource TextFillColorTertiaryBrush}"
                            TextTrimming="CharacterEllipsis"/>
 
                 <!-- Instrument line (#175): live counts and rate in cold
@@ -190,12 +191,15 @@
                                Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
                 </StackPanel>
 
-                <TextBlock Grid.Column="2"
-                           VerticalAlignment="Center"
-                           Margin="16,0"
-                           FontFamily="{StaticResource TelemetryFontFamily}" FontSize="12"
-                           Foreground="{DynamicResource ColdBrush}"
-                           Text="{Binding PollingFrequency, StringFormat='{}{0:F0} Hz', Mode=OneWay}"/>
+                <StackPanel Grid.Column="2" Orientation="Horizontal"
+                            VerticalAlignment="Center" Margin="16,0">
+                    <TextBlock Text="{Binding PollingFrequency, StringFormat='{}{0:F0}', Mode=OneWay}"
+                               FontFamily="{StaticResource TelemetryFontFamily}" FontSize="12"
+                               Foreground="{DynamicResource ColdBrush}"/>
+                    <TextBlock Text=" Hz"
+                               FontFamily="{StaticResource TelemetryFontFamily}" FontSize="12"
+                               Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
+                </StackPanel>
 
                 <StackPanel Grid.Column="3" Orientation="Horizontal"
                             VerticalAlignment="Center" Margin="16,0,0,0">
@@ -214,11 +218,11 @@
                                         <Setter Property="Stroke" Value="{x:Null}"/>
                                     </DataTrigger>
                                     <DataTrigger Binding="{Binding Dashboard.EngineStateKey}" Value="Idle">
-                                        <Setter Property="Fill" Value="#FFFFC107"/>
+                                        <Setter Property="Fill" Value="{DynamicResource WaitBrush}"/>
                                         <Setter Property="Stroke" Value="{x:Null}"/>
                                     </DataTrigger>
                                     <DataTrigger Binding="{Binding Dashboard.EngineStateKey}" Value="Stopping">
-                                        <Setter Property="Fill" Value="#FFFFC107"/>
+                                        <Setter Property="Fill" Value="{DynamicResource WaitBrush}"/>
                                         <Setter Property="Stroke" Value="{x:Null}"/>
                                     </DataTrigger>
                                 </Style.Triggers>

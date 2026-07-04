@@ -2181,7 +2181,7 @@ namespace PadForge
             }
             else if (cooling)
             {
-                flame.Fill = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(0xFF, 0xC1, 0x07));
+                flame.Fill = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(0xE8, 0xB4, 0x34));
             }
             else
             {
@@ -2465,7 +2465,10 @@ namespace PadForge
                 card.BorderBrush = new System.Windows.Media.SolidColorBrush(
                     System.Windows.Media.Color.FromArgb(0x2E, 0xFF, 0x6B, 0x2C));
             }
-            card.SetResourceReference(System.Windows.Controls.Border.BorderBrushProperty, "ControlStrokeColorDefaultBrush");
+            else
+            {
+                card.SetResourceReference(System.Windows.Controls.Border.BorderBrushProperty, "ControlStrokeColorDefaultBrush");
+            }
             if (!navItem.IsEnabled)
                 card.Opacity = 0.6;
 

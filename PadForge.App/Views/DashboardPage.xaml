@@ -97,13 +97,13 @@
                                             <Setter Property="Stroke" Value="{x:Null}"/>
                                         </DataTrigger>
                                         <DataTrigger Binding="{Binding EngineStateKey}" Value="Idle">
-                                            <Setter Property="Fill" Value="#FFFFC107"/>
+                                            <Setter Property="Fill" Value="{DynamicResource WaitBrush}"/>
                                             <Setter Property="Stroke" Value="{x:Null}"/>
                                         </DataTrigger>
                                         <!-- Stopping: gold, flashing (mirrors the
                                              slot-card igniting flash style). -->
                                         <DataTrigger Binding="{Binding EngineStateKey}" Value="Stopping">
-                                            <Setter Property="Fill" Value="#FFFFC107"/>
+                                            <Setter Property="Fill" Value="{DynamicResource WaitBrush}"/>
                                             <Setter Property="Stroke" Value="{x:Null}"/>
                                             <DataTrigger.EnterActions>
                                                 <BeginStoryboard x:Name="FlashGoldStoryboard">
@@ -128,18 +128,30 @@
                     </Button>
 
                     <TextBlock Grid.Column="1" Text="{Binding EngineStatus}"
-                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                               VerticalAlignment="Center"/>
+                               VerticalAlignment="Center">
+                        <TextBlock.Style>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}"/>
+                                <Style.Triggers>
+                                    <!-- Forging reads hot (#175). -->
+                                    <DataTrigger Binding="{Binding EngineStateKey}" Value="Running">
+                                        <Setter Property="Foreground" Value="{DynamicResource EmberHotBrush}"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
 
                     <TextBlock Grid.Column="2" VerticalAlignment="Center" Margin="24,0"
                                Foreground="{DynamicResource ColdBrush}"
+                               FontFamily="{StaticResource TelemetryFontFamily}"
                                Text="{Binding PollingFrequencyText, Mode=OneWay}"/>
 
                     <StackPanel Grid.Column="3" Orientation="Horizontal" VerticalAlignment="Center">
-                        <TextBlock Foreground="{DynamicResource ColdBrush}" FontSize="12" Text="{Binding OnlineDevices, Mode=OneWay}"/>
-                        <TextBlock Foreground="{DynamicResource TextFillColorTertiaryBrush}" FontSize="12" Text="/"/>
-                        <TextBlock Foreground="{DynamicResource ColdBrush}" FontSize="12" Text="{Binding TotalDevices, Mode=OneWay}"/>
-                        <TextBlock Foreground="{DynamicResource TextFillColorTertiaryBrush}" FontSize="12" Text="{Binding Dashboard_DevicesOnline, Source={x:Static strings:Strings.Instance}}"/>
+                        <TextBlock Foreground="{DynamicResource ColdBrush}" FontFamily="{StaticResource TelemetryFontFamily}" FontSize="12" Text="{Binding OnlineDevices, Mode=OneWay}"/>
+                        <TextBlock Foreground="{DynamicResource TextFillColorTertiaryBrush}" FontFamily="{StaticResource TelemetryFontFamily}" FontSize="12" Text="/"/>
+                        <TextBlock Foreground="{DynamicResource ColdBrush}" FontFamily="{StaticResource TelemetryFontFamily}" FontSize="12" Text="{Binding TotalDevices, Mode=OneWay}"/>
+                        <TextBlock Foreground="{DynamicResource TextFillColorTertiaryBrush}" FontFamily="{StaticResource TelemetryFontFamily}" FontSize="12" Text="{Binding Dashboard_DevicesOnline, Source={x:Static strings:Strings.Instance}}"/>
                     </StackPanel>
                 </Grid>
             </Border>
@@ -172,8 +184,14 @@
                                 <Border.Style>
                                     <Style TargetType="Border">
                                         <Style.Triggers>
-                                            <DataTrigger Binding="{Binding IsEnabled}" Value="True">
-                                                <DataTrigger.EnterActions>
+                                            <!-- Heat requires fuel (#175): the enable glow
+                                                 only ignites once devices are mapped. -->
+                                            <MultiDataTrigger>
+                                                <MultiDataTrigger.Conditions>
+                                                    <Condition Binding="{Binding IsEnabled}" Value="True"/>
+                                                    <Condition Binding="{Binding HasMappedDevices}" Value="True"/>
+                                                </MultiDataTrigger.Conditions>
+                                                <MultiDataTrigger.EnterActions>
                                                     <BeginStoryboard>
                                                         <Storyboard>
                                                             <DoubleAnimation Storyboard.TargetProperty="Opacity" To="0.5" Duration="0:0:0.3">
@@ -183,8 +201,8 @@
                                                             </DoubleAnimation>
                                                         </Storyboard>
                                                     </BeginStoryboard>
-                                                </DataTrigger.EnterActions>
-                                                <DataTrigger.ExitActions>
+                                                </MultiDataTrigger.EnterActions>
+                                                <MultiDataTrigger.ExitActions>
                                                     <BeginStoryboard>
                                                         <Storyboard>
                                                             <DoubleAnimation Storyboard.TargetProperty="Opacity" To="0" Duration="0:0:1.2">
@@ -194,8 +212,8 @@
                                                             </DoubleAnimation>
                                                         </Storyboard>
                                                     </BeginStoryboard>
-                                                </DataTrigger.ExitActions>
-                                            </DataTrigger>
+                                                </MultiDataTrigger.ExitActions>
+                                            </MultiDataTrigger>
                                             <DataTrigger Binding="{Binding IsVirtualControllerConnected}" Value="True">
                                                 <DataTrigger.EnterActions>
                                                     <BeginStoryboard>
@@ -242,9 +260,18 @@
                                 <Style TargetType="Border">
                                     <Setter Property="BorderBrush" Value="#FF253049"/>
                                     <Style.Triggers>
-                                        <DataTrigger Binding="{Binding IsEnabled}" Value="True">
-                                            <Setter Property="BorderBrush" Value="#2EFF6B2C"/>
+                                        <!-- Pure cold: nothing mapped, card recedes. -->
+                                        <DataTrigger Binding="{Binding HasMappedDevices}" Value="False">
+                                            <Setter Property="Opacity" Value="0.72"/>
                                         </DataTrigger>
+                                        <!-- Warm rim only once devices are mapped (#175). -->
+                                        <MultiDataTrigger>
+                                            <MultiDataTrigger.Conditions>
+                                                <Condition Binding="{Binding IsEnabled}" Value="True"/>
+                                                <Condition Binding="{Binding HasMappedDevices}" Value="True"/>
+                                            </MultiDataTrigger.Conditions>
+                                            <Setter Property="BorderBrush" Value="#2EFF6B2C"/>
+                                        </MultiDataTrigger>
                                         <DataTrigger Binding="{Binding IsVirtualControllerConnected}" Value="True">
                                             <Setter Property="BorderBrush" Value="#8CFF6B2C"/>
                                         </DataTrigger>
@@ -301,31 +328,39 @@
                                                     <Setter Property="Stroke" Value="{DynamicResource TextFillColorTertiaryBrush}"/>
                                                     <Setter Property="StrokeThickness" Value="1.2"/>
                                                     <Style.Triggers>
-                                                        <!-- Enabled + devices connected: ember (forging) -->
-                                                        <DataTrigger Binding="{Binding IsEnabled}" Value="True">
+                                                        <!-- Enabled + devices mapped: ember (forging).
+                                                             Enabled-but-empty stays the cold outline (#175):
+                                                             heat requires fuel. -->
+                                                        <MultiDataTrigger>
+                                                            <MultiDataTrigger.Conditions>
+                                                                <Condition Binding="{Binding IsEnabled}" Value="True"/>
+                                                                <Condition Binding="{Binding HasMappedDevices}" Value="True"/>
+                                                            </MultiDataTrigger.Conditions>
                                                             <Setter Property="Fill" Value="{DynamicResource EmberBrush}"/>
                                                             <Setter Property="Stroke" Value="{x:Null}"/>
-                                                        </DataTrigger>
-                                                        <!-- Enabled but no live VC: gold (awaiting devices).
-                                                             During the HM-inactivity grace period the VC stays
-                                                             alive even with devices offline, so the flame
-                                                             stays ember until the timeout actually fires and
-                                                             tears the VC down. -->
+                                                        </MultiDataTrigger>
+                                                        <!-- Enabled + mapped but no live VC: gold (awaiting
+                                                             devices). During the HM-inactivity grace period
+                                                             the VC stays alive even with devices offline, so
+                                                             the flame stays ember until the timeout actually
+                                                             fires and tears the VC down. -->
                                                         <MultiDataTrigger>
                                                             <MultiDataTrigger.Conditions>
                                                                 <Condition Binding="{Binding IsEnabled}" Value="True"/>
+                                                                <Condition Binding="{Binding HasMappedDevices}" Value="True"/>
                                                                 <Condition Binding="{Binding IsVirtualControllerConnected}" Value="False"/>
                                                             </MultiDataTrigger.Conditions>
-                                                            <Setter Property="Fill" Value="#FFFFC107"/>
+                                                            <Setter Property="Fill" Value="{DynamicResource WaitBrush}"/>
                                                             <Setter Property="Stroke" Value="{x:Null}"/>
                                                         </MultiDataTrigger>
-                                                        <!-- Enabled but engine stopped: gold -->
+                                                        <!-- Enabled + mapped but engine stopped: gold -->
                                                         <MultiDataTrigger>
                                                             <MultiDataTrigger.Conditions>
                                                                 <Condition Binding="{Binding IsEnabled}" Value="True"/>
+                                                                <Condition Binding="{Binding HasMappedDevices}" Value="True"/>
                                                                 <Condition Binding="{Binding DataContext.EngineStateKey, RelativeSource={RelativeSource AncestorType=ItemsControl}}" Value="Stopped"/>
                                                             </MultiDataTrigger.Conditions>
-                                                            <Setter Property="Fill" Value="#FFFFC107"/>
+                                                            <Setter Property="Fill" Value="{DynamicResource WaitBrush}"/>
                                                             <Setter Property="Stroke" Value="{x:Null}"/>
                                                         </MultiDataTrigger>
                                                         <!-- Igniting: flashing ember -->
@@ -367,8 +402,9 @@
                                      its own row, so the title row breathes and the segment
                                      reads as a control, not clutter). -->
                                 <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,8,0,0">
-                                    <Border Background="{DynamicResource ControlFillColorDefaultBrush}"
-                                            BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}"
+                                    <!-- Recessed seg track (#175): sits below the card, not on it. -->
+                                    <Border Background="{DynamicResource SteelGroundBrush}"
+                                            BorderBrush="{DynamicResource SteelLineSoftBrush}"
                                             BorderThickness="1"
                                             CornerRadius="6" Padding="1" VerticalAlignment="Center">
                                     <StackPanel Orientation="Horizontal">
@@ -383,8 +419,17 @@
                                                     <Style.Triggers>
                                                         <DataTrigger Binding="{Binding OutputType}" Value="Xbox">
                                                             <Setter Property="Foreground" Value="#FFFFF3E8"/>
-                                                            <Setter Property="Background" Value="{DynamicResource EmberBrush}"/>
+                                                            <Setter Property="Background" Value="{DynamicResource EmberSegGradient}"/>
                                                         </DataTrigger>
+                                                        <!-- Cold card (0 mapped): active tile falls back to steel. -->
+                                                        <MultiDataTrigger>
+                                                            <MultiDataTrigger.Conditions>
+                                                                <Condition Binding="{Binding OutputType}" Value="Xbox"/>
+                                                                <Condition Binding="{Binding HasMappedDevices}" Value="False"/>
+                                                            </MultiDataTrigger.Conditions>
+                                                            <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}"/>
+                                                            <Setter Property="Background" Value="{DynamicResource SteelRaisedBrush}"/>
+                                                        </MultiDataTrigger>
                                                     </Style.Triggers>
                                                 </Style>
                                             </Button.Style>
@@ -402,8 +447,17 @@
                                                     <Style.Triggers>
                                                         <DataTrigger Binding="{Binding OutputType}" Value="PlayStation">
                                                             <Setter Property="Foreground" Value="#FFFFF3E8"/>
-                                                            <Setter Property="Background" Value="{DynamicResource EmberBrush}"/>
+                                                            <Setter Property="Background" Value="{DynamicResource EmberSegGradient}"/>
                                                         </DataTrigger>
+                                                        <!-- Cold card (0 mapped): active tile falls back to steel. -->
+                                                        <MultiDataTrigger>
+                                                            <MultiDataTrigger.Conditions>
+                                                                <Condition Binding="{Binding OutputType}" Value="PlayStation"/>
+                                                                <Condition Binding="{Binding HasMappedDevices}" Value="False"/>
+                                                            </MultiDataTrigger.Conditions>
+                                                            <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}"/>
+                                                            <Setter Property="Background" Value="{DynamicResource SteelRaisedBrush}"/>
+                                                        </MultiDataTrigger>
                                                     </Style.Triggers>
                                                 </Style>
                                             </Button.Style>
@@ -421,8 +475,17 @@
                                                     <Style.Triggers>
                                                         <DataTrigger Binding="{Binding OutputType}" Value="Extended">
                                                             <Setter Property="Foreground" Value="#FFFFF3E8"/>
-                                                            <Setter Property="Background" Value="{DynamicResource EmberBrush}"/>
+                                                            <Setter Property="Background" Value="{DynamicResource EmberSegGradient}"/>
                                                         </DataTrigger>
+                                                        <!-- Cold card (0 mapped): active tile falls back to steel. -->
+                                                        <MultiDataTrigger>
+                                                            <MultiDataTrigger.Conditions>
+                                                                <Condition Binding="{Binding OutputType}" Value="Extended"/>
+                                                                <Condition Binding="{Binding HasMappedDevices}" Value="False"/>
+                                                            </MultiDataTrigger.Conditions>
+                                                            <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}"/>
+                                                            <Setter Property="Background" Value="{DynamicResource SteelRaisedBrush}"/>
+                                                        </MultiDataTrigger>
                                                     </Style.Triggers>
                                                 </Style>
                                             </Button.Style>
@@ -440,8 +503,17 @@
                                                     <Style.Triggers>
                                                         <DataTrigger Binding="{Binding OutputType}" Value="KeyboardMouse">
                                                             <Setter Property="Foreground" Value="#FFFFF3E8"/>
-                                                            <Setter Property="Background" Value="{DynamicResource EmberBrush}"/>
+                                                            <Setter Property="Background" Value="{DynamicResource EmberSegGradient}"/>
                                                         </DataTrigger>
+                                                        <!-- Cold card (0 mapped): active tile falls back to steel. -->
+                                                        <MultiDataTrigger>
+                                                            <MultiDataTrigger.Conditions>
+                                                                <Condition Binding="{Binding OutputType}" Value="KeyboardMouse"/>
+                                                                <Condition Binding="{Binding HasMappedDevices}" Value="False"/>
+                                                            </MultiDataTrigger.Conditions>
+                                                            <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}"/>
+                                                            <Setter Property="Background" Value="{DynamicResource SteelRaisedBrush}"/>
+                                                        </MultiDataTrigger>
                                                     </Style.Triggers>
                                                 </Style>
                                             </Button.Style>
@@ -459,8 +531,17 @@
                                                     <Style.Triggers>
                                                         <DataTrigger Binding="{Binding OutputType}" Value="Midi">
                                                             <Setter Property="Foreground" Value="#FFFFF3E8"/>
-                                                            <Setter Property="Background" Value="{DynamicResource EmberBrush}"/>
+                                                            <Setter Property="Background" Value="{DynamicResource EmberSegGradient}"/>
                                                         </DataTrigger>
+                                                        <!-- Cold card (0 mapped): active tile falls back to steel. -->
+                                                        <MultiDataTrigger>
+                                                            <MultiDataTrigger.Conditions>
+                                                                <Condition Binding="{Binding OutputType}" Value="Midi"/>
+                                                                <Condition Binding="{Binding HasMappedDevices}" Value="False"/>
+                                                            </MultiDataTrigger.Conditions>
+                                                            <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}"/>
+                                                            <Setter Property="Background" Value="{DynamicResource SteelRaisedBrush}"/>
+                                                        </MultiDataTrigger>
                                                         <DataTrigger Binding="{Binding DataContext.IsMidiServicesInstalled, RelativeSource={RelativeSource AncestorType=ItemsControl}}" Value="False">
                                                             <Setter Property="Cursor" Value="No"/>
                                                             <Setter Property="ToolTip" Value="{Binding Main_MIDI_RequiresMidiServices, Source={x:Static strings:Strings.Instance}}"/>
@@ -565,8 +646,17 @@
                                                 <Setter Property="Foreground" Value="{DynamicResource TextFillColorTertiaryBrush}"/>
                                                 <Style.Triggers>
                                                     <DataTrigger Binding="{Binding IsEnabled}" Value="True">
-                                                        <Setter Property="Foreground" Value="#FFE8B434"/>
+                                                        <Setter Property="Foreground" Value="{DynamicResource WaitBrush}"/>
                                                     </DataTrigger>
+                                                    <!-- Gold requires mappings (#175): enabled but
+                                                         empty reads Cold in tertiary steel. -->
+                                                    <MultiDataTrigger>
+                                                        <MultiDataTrigger.Conditions>
+                                                            <Condition Binding="{Binding IsEnabled}" Value="True"/>
+                                                            <Condition Binding="{Binding MappedDeviceCount}" Value="0"/>
+                                                        </MultiDataTrigger.Conditions>
+                                                        <Setter Property="Foreground" Value="{DynamicResource TextFillColorTertiaryBrush}"/>
+                                                    </MultiDataTrigger>
                                                     <DataTrigger Binding="{Binding IsVirtualControllerConnected}" Value="True">
                                                         <Setter Property="Foreground" Value="{DynamicResource EmberBrush}"/>
                                                     </DataTrigger>
@@ -608,9 +698,8 @@
             <!-- ═══ Services group (#175): everything below serves other
                  software. Status stays above the fold. ═══ -->
             <TextBlock x:Name="ServicesHeader"
-                       Text="{Binding Dashboard_Services, Source={x:Static strings:Strings.Instance}}"
-                       FontSize="12" FontWeight="SemiBold"
-                       Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                       Text="{Binding Dashboard_Services, Source={x:Static strings:Strings.Instance}, Converter={StaticResource UpperConverter}}"
+                       Style="{StaticResource SectionTitle}"
                        Margin="0,28,0,0"/>
             <Border Height="1" Background="{DynamicResource DividerStrokeColorDefaultBrush}" Margin="0,6,0,0"/>
 

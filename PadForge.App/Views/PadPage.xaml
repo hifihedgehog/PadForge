@@ -125,7 +125,7 @@
             <Setter Property="GroupName" Value="PadTab"/>
             <Setter Property="Margin" Value="2,4"/>
             <Setter Property="Cursor" Value="Hand"/>
-            <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}"/>
+            <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="RadioButton">
@@ -164,7 +164,7 @@
             <Setter Property="GroupName" Value="PadTab"/>
             <Setter Property="Margin" Value="2,4"/>
             <Setter Property="Cursor" Value="Hand"/>
-            <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}"/>
+            <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="RadioButton">
@@ -229,18 +229,25 @@
                 <!-- Scope label (#175 iteration 2): without it the two tiers
                      read as arbitrary strips. -->
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="8,0,4,0">
-                    <TextBlock Text="{Binding Dashboard_Slot, Source={x:Static strings:Strings.Instance}}"
-                               FontSize="11" FontWeight="SemiBold"
-                               Foreground="{DynamicResource EmberHotBrush}" VerticalAlignment="Center"/>
+                    <TextBlock Text="{Binding Dashboard_Slot, Source={x:Static strings:Strings.Instance}, Converter={StaticResource UpperConverter}}"
+                               FontFamily="{StaticResource TelemetryFontFamily}"
+                               FontSize="10" FontWeight="SemiBold"
+                               Foreground="{DynamicResource EmberBrush}" VerticalAlignment="Center"/>
                     <TextBlock Text="{Binding SlotNumber}"
-                               FontSize="11" FontWeight="SemiBold"
-                               Foreground="{DynamicResource EmberHotBrush}" Margin="3,0,0,0" VerticalAlignment="Center"/>
+                               FontFamily="{StaticResource TelemetryFontFamily}"
+                               FontSize="10" FontWeight="SemiBold"
+                               Foreground="{DynamicResource EmberBrush}" Margin="3,0,0,0" VerticalAlignment="Center"/>
                 </StackPanel>
 
                 <!-- [Gamepad #  TypeIcon TypeName]. Controller / Preview tab. -->
                 <RadioButton x:Name="TabController" Tag="0" Style="{StaticResource TabStripButton}" Click="TabBtn_Click"
                              IsChecked="True"
                              AutomationProperties.AutomationId="TabController">
+                    <!-- Identity chip (#175 close-out item 14): always ember,
+                         independent of tab-check state. -->
+                    <Border Background="#1AFF6B2C" BorderBrush="#66FF6B2C" BorderThickness="1"
+                            CornerRadius="8" Padding="8,2"
+                            TextBlock.Foreground="{DynamicResource EmberHotBrush}">
                     <StackPanel Orientation="Horizontal">
                         <!-- Gamepad glyph + slot number removed (#175
                              iteration 3): the tier's Slot N scope label
@@ -325,6 +332,7 @@
                                    Foreground="{DynamicResource TextFillColorTertiaryBrush}"
                                    VerticalAlignment="Center"/>
                     </StackPanel>
+                    </Border>
                 </RadioButton>
 
                 <!-- Preset ghost chip (#175, per the approved header mock):
@@ -339,6 +347,8 @@
                                    VerticalAlignment="Center" Margin="0,0,6,0"
                                    Foreground="{DynamicResource TextFillColorTertiaryBrush}" FontSize="12"/>
                         <ComboBox x:Name="HMaestroProfileCombo" Width="300" VerticalAlignment="Center"
+                                  Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                                  Background="#1B2333" BorderBrush="#1C2536" FontSize="12"
                                   AutomationProperties.AutomationId="HMaestroProfileCombo"
                                   ItemsSource="{Binding AvailableProfiles}"
                                   DisplayMemberPath="Name"
@@ -387,8 +397,9 @@
                 </Border.Background>
             <WrapPanel Orientation="Horizontal" VerticalAlignment="Center">
 
-                <TextBlock Text="{Binding Pad_ScopeDevice, Source={x:Static strings:Strings.Instance}}"
-                           FontSize="11" FontWeight="SemiBold"
+                <TextBlock Text="{Binding Pad_ScopeDevice, Source={x:Static strings:Strings.Instance}, Converter={StaticResource UpperConverter}}"
+                           FontFamily="{StaticResource TelemetryFontFamily}"
+                           FontSize="10" FontWeight="SemiBold"
                            Foreground="{DynamicResource ColdBrush}" Margin="8,0,4,0" VerticalAlignment="Center"/>
 
                 <!-- [Device] inline ComboBox: cold side. -->
@@ -412,7 +423,7 @@
                                         </Style>
                                     </Ellipse.Style>
                                 </Ellipse>
-                                <TextBlock Text="{Binding Name}"/>
+                                <TextBlock Text="{Binding Name}" Foreground="{DynamicResource ColdBrush}"/>
                                 <!-- Battery (issue #167): quiet suffix, empty when unreported -->
                                 <TextBlock Text="{Binding BatteryText}" Foreground="{DynamicResource TextFillColorTertiaryBrush}"
                                            Margin="8,0,0,0" VerticalAlignment="Center"/>
@@ -2383,6 +2394,29 @@
                               UnloadingRow="MappingDataGrid_UnloadingRow"
                               SelectionChanged="MappingDataGrid_SelectionChanged"
                               Loaded="MappingDataGrid_Loaded">
+                        <!-- Ember close-out item 8: mono eyebrow column headers
+                             (spec 235-244). Attached directly here, NOT as an
+                             implicit page-level style (that broke once with a
+                             white bar). Uppercase is display-only via
+                             UpperConverter; resource strings stay Title Case. -->
+                        <DataGrid.ColumnHeaderStyle>
+                            <Style TargetType="DataGridColumnHeader" BasedOn="{StaticResource {x:Type DataGridColumnHeader}}">
+                                <Setter Property="FontFamily" Value="{StaticResource TelemetryFontFamily}"/>
+                                <Setter Property="FontSize" Value="10"/>
+                                <Setter Property="FontWeight" Value="Normal"/>
+                                <Setter Property="Foreground" Value="#5D6B85"/>
+                                <Setter Property="Background" Value="Transparent"/>
+                                <Setter Property="BorderBrush" Value="#1C2536"/>
+                                <Setter Property="BorderThickness" Value="0,0,0,1"/>
+                                <Setter Property="ContentTemplate">
+                                    <Setter.Value>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Converter={StaticResource UpperConverter}}"/>
+                                        </DataTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </DataGrid.ColumnHeaderStyle>
                         <DataGrid.CellStyle>
                             <Style TargetType="DataGridCell" BasedOn="{StaticResource {x:Type DataGridCell}}">
                                 <!-- HorizontalContentAlignment used to be Stretch here.
@@ -2471,9 +2505,10 @@
                                              gated by kind. DataContext is the row's PrimaryKindSource. -->
                                         <StackPanel DataContext="{Binding PrimaryKindSource}" Margin="0,0,0,6">
                                             <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
-                                                <TextBlock Text="{Binding Pad_Mapping_PrimaryMode, Source={x:Static strings:Strings.Instance}}"
+                                                <TextBlock Text="{Binding Pad_Mapping_PrimaryMode, Source={x:Static strings:Strings.Instance}, Converter={StaticResource UpperConverter}}"
                                                            VerticalAlignment="Center" Margin="0,0,8,0" FontWeight="SemiBold"
-                                                           Foreground="{DynamicResource TextFillColorTertiaryBrush}" FontSize="11"/>
+                                                           FontFamily="{StaticResource TelemetryFontFamily}"
+                                                           Foreground="{DynamicResource TextFillColorTertiaryBrush}" FontSize="10"/>
                                                 <ComboBox ItemsSource="{Binding DataContext.PrimaryKindOptions, RelativeSource={RelativeSource AncestorType={x:Type DataGridRow}}}"
                                                           SelectedValue="{Binding Kind, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                           SelectedValuePath="Value" DisplayMemberPath="Name"
@@ -2524,8 +2559,9 @@
                                              multi-source transition. -->
                                         <StackPanel Orientation="Horizontal" Margin="0,0,0,4"
                                                     Visibility="{Binding IsMultiSource, Converter={StaticResource BoolToVisibilityConverter}}">
-                                            <TextBlock Text="{Binding Pad_Combine_Label, Source={x:Static strings:Strings.Instance}}"
-                                                       FontSize="11" FontWeight="SemiBold"
+                                            <TextBlock Text="{Binding Pad_Combine_Label, Source={x:Static strings:Strings.Instance}, Converter={StaticResource UpperConverter}}"
+                                                       FontSize="10" FontWeight="SemiBold"
+                                                       FontFamily="{StaticResource TelemetryFontFamily}"
                                                        VerticalAlignment="Center"
                                                        Foreground="{DynamicResource TextFillColorTertiaryBrush}"
                                                        Margin="0,0,8,0"/>
@@ -2931,7 +2967,8 @@
                                                             <!-- Subtitle: assigned-device name when set,
                                                                  italic "Unassigned" when no descriptor. -->
                                                             <TextBlock FontSize="10"
-                                                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                                                       Foreground="{DynamicResource ColdBrush}"
+                                                                       Opacity="0.62"
                                                                        Margin="4,1,0,0"
                                                                        TextTrimming="CharacterEllipsis">
                                                                 <TextBlock.Style>
@@ -3016,7 +3053,8 @@
                                                                 Width="40" HorizontalAlignment="Center" Margin="2"
                                                                 VerticalAlignment="Center"
                                                                 Visibility="{Binding IsKindDescriptorless, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}">
-                                                            <TextBlock Text="{Binding RecordButtonIcon}" FontFamily="Segoe MDL2 Assets"/>
+                                                            <TextBlock Text="{Binding RecordButtonIcon}" FontFamily="Segoe MDL2 Assets"
+                                                                       Foreground="{DynamicResource EmberBrush}"/>
                                                             <Button.ToolTip>
                                                                 <TextBlock Text="{Binding RecordButtonText}"/>
                                                             </Button.ToolTip>
@@ -3025,7 +3063,8 @@
                                                                 Width="40" HorizontalAlignment="Center" Margin="2"
                                                                 VerticalAlignment="Center"
                                                                 Visibility="{Binding IsKindDescriptorless, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}">
-                                                            <TextBlock Text="&#xE75C;" FontFamily="Segoe MDL2 Assets"/>
+                                                            <TextBlock Text="&#xE75C;" FontFamily="Segoe MDL2 Assets"
+                                                                       Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
                                                             <Button.ToolTip>
                                                                 <TextBlock Text="{Binding Common_Clear, Source={x:Static strings:Strings.Instance}}"/>
                                                             </Button.ToolTip>
@@ -3034,15 +3073,18 @@
                                                                     Visibility="{Binding IsKindDescriptorless, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}">
                                                             <CheckBox Content="{Binding Pad_Invert, Source={x:Static strings:Strings.Instance}}"
                                                                       IsChecked="{Binding Invert, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                                      Foreground="{DynamicResource TextFillColorTertiaryBrush}" FontSize="11.5"
                                                                       Margin="0,0,6,0" VerticalAlignment="Center"/>
                                                             <CheckBox Content="{Binding Pad_Half, Source={x:Static strings:Strings.Instance}}"
                                                                       IsChecked="{Binding HalfAxis, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                                       IsEnabled="{Binding IsHalfAxisApplicable}"
+                                                                      Foreground="{DynamicResource TextFillColorTertiaryBrush}" FontSize="11.5"
                                                                       Margin="0,0,6,0" VerticalAlignment="Center"/>
                                                             <CheckBox Content="{Binding Pad_Either, Source={x:Static strings:Strings.Instance}}"
                                                                       ToolTip="{Binding Pad_Either_Tooltip, Source={x:Static strings:Strings.Instance}}"
                                                                       IsChecked="{Binding Bidirectional, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                                       IsEnabled="{Binding HalfAxis}"
+                                                                      Foreground="{DynamicResource TextFillColorTertiaryBrush}" FontSize="11.5"
                                                                       Margin="0,0,6,0" VerticalAlignment="Center"/>
                                                         </StackPanel>
                                                         <!-- Per-source gyro sensitivity. Only renders for
@@ -3492,7 +3534,8 @@
                                                  Style sets Text via a Setter rather than a local
                                                  value so the DataTrigger's override actually wins. -->
                                             <TextBlock FontSize="10"
-                                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                                       Foreground="{DynamicResource ColdBrush}"
+                                                       Opacity="0.62"
                                                        Margin="4,1,0,0"
                                                        TextTrimming="CharacterEllipsis"
                                                        Visibility="{Binding IsPrimaryDirect, Converter={StaticResource BoolToVisibilityConverter}}">
@@ -3669,7 +3712,8 @@
                                                 Width="Auto">
                                 <DataGridTextColumn.ElementStyle>
                                     <Style TargetType="TextBlock">
-                                        <Setter Property="FontSize" Value="12"/>
+                                        <Setter Property="FontFamily" Value="{StaticResource TelemetryFontFamily}"/>
+                                        <Setter Property="FontSize" Value="11.5"/>
                                         <Setter Property="Foreground" Value="{DynamicResource ColdBrush}"/>
                                         <Setter Property="VerticalAlignment" Value="Center"/>
                                     </Style>
@@ -3698,7 +3742,8 @@
                                     <DataTemplate>
                                         <Button Command="{Binding ClearCommand}"
                                                 Width="40" HorizontalAlignment="Center" Margin="2">
-                                            <TextBlock Text="&#xE75C;" FontFamily="Segoe MDL2 Assets"/>
+                                            <TextBlock Text="&#xE75C;" FontFamily="Segoe MDL2 Assets"
+                                                       Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
                                             <Button.ToolTip>
                                                 <TextBlock Text="{Binding Common_Clear, Source={x:Static strings:Strings.Instance}}"/>
                                             </Button.ToolTip>
@@ -3722,14 +3767,17 @@
                                     <DataTemplate>
                                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Left">
                                             <CheckBox Content="{Binding Pad_Invert, Source={x:Static strings:Strings.Instance}}" IsChecked="{Binding IsInverted, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                      Foreground="{DynamicResource TextFillColorTertiaryBrush}" FontSize="11.5"
                                                       Margin="0,0,6,0" VerticalAlignment="Center"/>
                                             <CheckBox Content="{Binding Pad_Half, Source={x:Static strings:Strings.Instance}}" IsChecked="{Binding IsHalfAxis, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                       IsEnabled="{Binding IsHalfAxisApplicable}"
+                                                      Foreground="{DynamicResource TextFillColorTertiaryBrush}" FontSize="11.5"
                                                       Margin="0,0,6,0" VerticalAlignment="Center"/>
                                             <CheckBox Content="{Binding Pad_Either, Source={x:Static strings:Strings.Instance}}"
                                                       ToolTip="{Binding Pad_Either_Tooltip, Source={x:Static strings:Strings.Instance}}"
                                                       IsChecked="{Binding IsBidirectional, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                       IsEnabled="{Binding IsHalfAxis}"
+                                                      Foreground="{DynamicResource TextFillColorTertiaryBrush}" FontSize="11.5"
                                                       Margin="0,0,6,0"
                                                       VerticalAlignment="Center"/>
                                             <!-- NoInherit toggle. Only meaningful when authoring
@@ -3741,6 +3789,7 @@
                                             <CheckBox Content="{Binding Pad_Shift_NoInherit, Source={x:Static strings:Strings.Instance}}"
                                                       ToolTip="{Binding Pad_Shift_NoInherit_Tooltip, Source={x:Static strings:Strings.Instance}}"
                                                       IsChecked="{Binding NoInherit, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                      Foreground="{DynamicResource TextFillColorTertiaryBrush}" FontSize="11.5"
                                                       VerticalAlignment="Center"
                                                       Visibility="{Binding DataContext.IsActiveLayerInheriting, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource BoolToVisibilityConverter}}"/>
                                             <!-- Per-source gyro sensitivity for the primary source.
@@ -3867,6 +3916,41 @@
                                                                        VerticalAlignment="Center" Margin="0,0,8,0"/>
                                         <TextBlock Text="{Binding Title}"
                                                    Style="{StaticResource CardTitle}"/>
+                                        <!-- Inline mono subtitle (#175 close-out item 18):
+                                             deadzone shape + DZ%. Display-only, reuses the
+                                             shape names already bound to the shape combo. -->
+                                        <TextBlock FontFamily="{StaticResource TelemetryFontFamily}" FontSize="10"
+                                                   Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                                                   VerticalAlignment="Center" Margin="8,0,0,0">
+                                            <TextBlock.Style>
+                                                <Style TargetType="TextBlock">
+                                                    <Setter Property="Text" Value="{Binding Pad_DZScaledRadial, Source={x:Static strings:Strings.Instance}}"/>
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding DeadZoneShapeIndex}" Value="1">
+                                                            <Setter Property="Text" Value="{Binding Pad_DZRadial, Source={x:Static strings:Strings.Instance}}"/>
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding DeadZoneShapeIndex}" Value="2">
+                                                            <Setter Property="Text" Value="{Binding Pad_DZAxial, Source={x:Static strings:Strings.Instance}}"/>
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding DeadZoneShapeIndex}" Value="3">
+                                                            <Setter Property="Text" Value="{Binding Pad_DZHybrid, Source={x:Static strings:Strings.Instance}}"/>
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding DeadZoneShapeIndex}" Value="4">
+                                                            <Setter Property="Text" Value="{Binding Pad_DZSlopedScaledAxial, Source={x:Static strings:Strings.Instance}}"/>
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding DeadZoneShapeIndex}" Value="5">
+                                                            <Setter Property="Text" Value="{Binding Pad_DZSlopedAxial, Source={x:Static strings:Strings.Instance}}"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </TextBlock.Style>
+                                        </TextBlock>
+                                        <TextBlock FontFamily="{StaticResource TelemetryFontFamily}" FontSize="10"
+                                                   Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                                                   VerticalAlignment="Center" Margin="6,0,0,0"><Run
+                                                Text="{Binding DeadZoneX, Mode=OneWay, StringFormat={}{0:0}%}"/><Run
+                                                Text=" / "/><Run
+                                                Text="{Binding DeadZoneY, Mode=OneWay, StringFormat={}{0:0}%}"/></TextBlock>
                                         <Button Command="{Binding ResetAllCommand}" Style="{StaticResource ResetAllButton}"
                                                 Content="{Binding Pad_ResetAll, Source={x:Static strings:Strings.Instance}}" Margin="12,0,0,0"
                                                 ToolTip="{Binding ResetAllToolTip}"/>
@@ -4083,12 +4167,9 @@
                                                     <Line X1="100" Y1="6" X2="100" Y2="194" Stroke="#FF1E2739" StrokeThickness="1"/>
                                                     <Line X1="6" Y1="100" X2="194" Y2="100" Stroke="#FF1E2739" StrokeThickness="1"/>
                                                     <Canvas>
-                                                        <Ellipse Width="196" Height="196" Canvas.Left="2" Canvas.Top="2"
-                                                                 Stroke="{DynamicResource ControlStrokeColorDefaultBrush}"
-                                                                 StrokeThickness="1.5" Fill="Transparent"/>
-                                                        <Ellipse Width="98" Height="98" Canvas.Left="51" Canvas.Top="51"
-                                                                 Stroke="{DynamicResource ControlStrokeColorSecondaryBrush}"
-                                                                 StrokeDashArray="4 2" StrokeThickness="0.5" Fill="Transparent"/>
+                                                        <!-- Legacy stock rings removed (#175 close-out item 25):
+                                                             the radar keeps only the #1E2739 rings + crosshair
+                                                             above and the dashed ember DZ circle below. -->
                                                         <!-- Dead zone overlay: Cross for Axial, Ellipse for Radial, Rectangle for Sloped -->
 
                                                         <!-- Axial: cross arms (yellow) — movement occurs but snapped to axis -->
@@ -4204,17 +4285,35 @@
                                                     </Canvas>
                                                 </Grid>
                                             </Border>
-                                            <!-- Readout (#175): mono ember OUT with the original
-                                                 number format. -->
-                                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10,0,0">
-                                                <TextBlock Text="{Binding Instr_Out, Source={x:Static strings:Strings.Instance}}"
+                                            <!-- Readout (#175): RAW (pre-pipeline, cold) over OUT
+                                                 (forged, ember), original number format. Fixed-width
+                                                 grid so changing values never resize the instrument. -->
+                                            <Grid HorizontalAlignment="Center" Margin="0,10,0,0" Width="300">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="38"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                </Grid.RowDefinitions>
+                                                <TextBlock Grid.Row="0" Grid.Column="0"
+                                                           Text="{Binding Instr_Raw, Source={x:Static strings:Strings.Instance}}"
                                                            FontFamily="{StaticResource TelemetryFontFamily}"
-                                                           FontSize="11" Foreground="{DynamicResource TextFillColorTertiaryBrush}"
-                                                           VerticalAlignment="Center" Margin="0,0,7,0"/>
-                                                <TextBlock Text="{Binding RawDisplay, Mode=OneWay}"
+                                                           FontSize="11" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
+                                                <TextBlock Grid.Row="0" Grid.Column="1"
+                                                           Text="{Binding InDisplay, Mode=OneWay}"
                                                            FontFamily="{StaticResource TelemetryFontFamily}" FontSize="11.5"
-                                                           Foreground="{DynamicResource EmberHotBrush}" VerticalAlignment="Center"/>
-                                            </StackPanel>
+                                                           Foreground="{DynamicResource ColdBrush}"/>
+                                                <TextBlock Grid.Row="1" Grid.Column="0" Margin="0,3,0,0"
+                                                           Text="{Binding Instr_Out, Source={x:Static strings:Strings.Instance}}"
+                                                           FontFamily="{StaticResource TelemetryFontFamily}"
+                                                           FontSize="11" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
+                                                <TextBlock Grid.Row="1" Grid.Column="1" Margin="0,3,0,0"
+                                                           Text="{Binding RawDisplay, Mode=OneWay}"
+                                                           FontFamily="{StaticResource TelemetryFontFamily}" FontSize="11.5"
+                                                           Foreground="{DynamicResource EmberHotBrush}"/>
+                                            </Grid>
 
                                             <!-- Per-axis sensitivity curve editors -->
                                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10,0,0">
@@ -4328,7 +4427,7 @@
                                      lock and you feel the cue. -->
                                 <Viewbox Width="18" Height="18" VerticalAlignment="Center" Margin="0,0,8,0">
                                     <Canvas Width="24" Height="24">
-                                        <Path Stroke="{DynamicResource TextFillColorPrimaryBrush}" StrokeThickness="1.7"
+                                        <Path Stroke="{DynamicResource EmberBrush}" StrokeThickness="1.7"
                                               StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round"
                                               Data="M5,12 A7,7 0 1 1 19,12 A7,7 0 1 1 5,12 Z M10.1,12 A1.9,1.9 0 1 1 13.9,12 A1.9,1.9 0 1 1 10.1,12 Z M10.1,12 L5,12 M13.9,12 L19,12 M12,13.9 L12,19 M3.7,9.8 A2.9,2.9 0 0 0 3.7,14.2 M2,8.5 A4.6,4.6 0 0 0 2,15.5 M20.3,9.8 A2.9,2.9 0 0 1 20.3,14.2 M22,8.5 A4.6,4.6 0 0 1 22,15.5"/>
                                     </Canvas>
@@ -4570,6 +4669,14 @@
                                             VerticalAlignment="Center" Margin="0,0,8,0"/>
                                         <TextBlock Text="{Binding Title}"
                                                    Style="{StaticResource CardTitle}"/>
+                                        <!-- Inline mono subtitle (#175 close-out item 18):
+                                             curve preset + anti-deadzone %. Display-only. -->
+                                        <TextBlock FontFamily="{StaticResource TelemetryFontFamily}" FontSize="10"
+                                                   Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                                                   VerticalAlignment="Center" Margin="8,0,0,0"><Run
+                                                Text="{Binding PresetName, Mode=OneWay}"/><Run
+                                                Text=" / "/><Run
+                                                Text="{Binding AntiDeadZone, Mode=OneWay, StringFormat={}{0:0}%}"/></TextBlock>
                                         <Button Command="{Binding ResetAllCommand}" Style="{StaticResource ResetAllButton}"
                                                 Content="{Binding Pad_ResetAll, Source={x:Static strings:Strings.Instance}}" Margin="12,0,0,0"
                                                 ToolTip="{Binding ResetAllToolTip}"/>
@@ -4653,28 +4760,31 @@
                                                         <RowDefinition Height="Auto"/>
                                                     </Grid.RowDefinitions>
                                                     <TextBlock Text="{Binding Instr_Raw, Source={x:Static strings:Strings.Instance}}"
-                                                               FontSize="11" FontWeight="SemiBold" Width="36"
-                                                               Foreground="{DynamicResource ColdBrush}"
+                                                               FontFamily="{StaticResource TelemetryFontFamily}"
+                                                               FontSize="11" Width="36"
+                                                               Foreground="{DynamicResource TextFillColorTertiaryBrush}"
                                                                VerticalAlignment="Center" Margin="0,0,12,8"/>
                                                     <ProgressBar Grid.Column="1" Value="{Binding RawNorm, Mode=OneWay}"
                                                                  Minimum="0" Maximum="1"
-                                                                 Foreground="{DynamicResource ColdBrush}"
-                                                                 Height="10" Margin="0,0,0,8"/>
+                                                                 Style="{StaticResource InstrumentBarRaw}"
+                                                                 Margin="0,0,0,8"/>
                                                     <TextBlock Grid.Column="2" Text="{Binding RawDisplay, Mode=OneWay}"
-                                                               FontSize="12" MinWidth="96" TextAlignment="Right"
+                                                               FontFamily="{StaticResource TelemetryFontFamily}"
+                                                               FontSize="12" Width="96" TextAlignment="Right"
                                                                Foreground="{DynamicResource ColdBrush}"
                                                                VerticalAlignment="Center" Margin="12,0,0,8"/>
                                                     <TextBlock Grid.Row="1" Text="{Binding Instr_Out, Source={x:Static strings:Strings.Instance}}"
-                                                               FontSize="11" FontWeight="SemiBold" Width="36"
-                                                               Foreground="{DynamicResource EmberHotBrush}"
+                                                               FontFamily="{StaticResource TelemetryFontFamily}"
+                                                               FontSize="11" Width="36"
+                                                               Foreground="{DynamicResource TextFillColorTertiaryBrush}"
                                                                VerticalAlignment="Center" Margin="0,0,12,0"/>
                                                     <ProgressBar Grid.Row="1" Grid.Column="1" Value="{Binding LiveValue, Mode=OneWay}"
                                                                  Minimum="0" Maximum="1"
-                                                                 Foreground="{DynamicResource EmberBrush}"
-                                                                 Height="10"/>
+                                                                 Style="{StaticResource InstrumentBarOut}"/>
                                                     <TextBlock Grid.Row="1" Grid.Column="2"
                                                                Text="{Binding LiveValue, Mode=OneWay, StringFormat={}{0:P0}}"
-                                                               FontSize="12" MinWidth="96" TextAlignment="Right"
+                                                               FontFamily="{StaticResource TelemetryFontFamily}"
+                                                               FontSize="12" Width="96" TextAlignment="Right"
                                                                Foreground="{DynamicResource EmberHotBrush}"
                                                                VerticalAlignment="Center" Margin="12,0,0,0"/>
                                                 </Grid>
@@ -4802,8 +4912,8 @@
                                            Style="{StaticResource DzLabel}"/>
                                 <ProgressBar Grid.Row="1" Grid.Column="1" Margin="0,0,12,10"
                                              Value="{Binding DeviceLeftMotorDisplay, Mode=OneWay}"
-                                             Minimum="0" Maximum="1" Height="10" VerticalAlignment="Center"
-                                             Foreground="{DynamicResource EmberHotBrush}"/>
+                                             Minimum="0" Maximum="1" VerticalAlignment="Center"
+                                             Style="{StaticResource InstrumentBarOut}"/>
                                 <TextBlock Grid.Row="1" Grid.Column="2" Margin="0,0,0,10"
                                            Text="{Binding DeviceLeftMotorDisplay, Mode=OneWay, StringFormat=P0}"
                                            FontFamily="{StaticResource TelemetryFontFamily}" FontSize="12"
@@ -4814,8 +4924,8 @@
                                            Style="{StaticResource DzLabel}"/>
                                 <ProgressBar Grid.Row="2" Grid.Column="1" Margin="0,0,12,0"
                                              Value="{Binding DeviceRightMotorDisplay, Mode=OneWay}"
-                                             Minimum="0" Maximum="1" Height="10" VerticalAlignment="Center"
-                                             Foreground="{DynamicResource EmberHotBrush}"/>
+                                             Minimum="0" Maximum="1" VerticalAlignment="Center"
+                                             Style="{StaticResource InstrumentBarOut}"/>
                                 <TextBlock Grid.Row="2" Grid.Column="2"
                                            Text="{Binding DeviceRightMotorDisplay, Mode=OneWay, StringFormat=P0}"
                                            FontFamily="{StaticResource TelemetryFontFamily}" FontSize="12"
@@ -5201,9 +5311,9 @@
                             <Viewbox Width="24" Height="24" Stretch="Uniform"
                                      VerticalAlignment="Center" Margin="0,0,10,0">
                                 <Grid Width="512" Height="512">
-                                    <Path Fill="{DynamicResource TextFillColorPrimaryBrush}"
+                                    <Path Fill="{DynamicResource EmberBrush}"
                                           Data="{StaticResource ZackslyTriggerOuterBodyGeometry}"/>
-                                    <Path Fill="{DynamicResource TextFillColorPrimaryBrush}"
+                                    <Path Fill="{DynamicResource EmberBrush}"
                                           Data="M445,180 L475,200 L445,220 L455,220 L485,200 L455,180 Z M445,280 L475,300 L445,320 L455,320 L485,300 L455,280 Z"/>
                                 </Grid>
                             </Viewbox>
@@ -6353,7 +6463,7 @@
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                     <Viewbox Width="18" Height="18" VerticalAlignment="Center" Margin="0,0,8,0">
                                         <Canvas Width="24" Height="24">
-                                            <Path Stroke="{DynamicResource TextFillColorPrimaryBrush}" StrokeThickness="1.7"
+                                            <Path Stroke="{DynamicResource EmberBrush}" StrokeThickness="1.7"
                                                   StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round"
                                                   Data="M5,12 A7,7 0 1 1 19,12 A7,7 0 1 1 5,12 Z M10.1,12 A1.9,1.9 0 1 1 13.9,12 A1.9,1.9 0 1 1 10.1,12 Z M10.1,12 L5,12 M13.9,12 L19,12 M12,13.9 L12,19"/>
                                         </Canvas>
@@ -6966,8 +7076,8 @@
                                                    Style="{StaticResource DzLabel}"/>
                                         <ProgressBar Grid.Row="1" Grid.Column="1" Margin="0,0,12,10"
                                                      Value="{Binding DeviceLeftTriggerMotorDisplay, Mode=OneWay}"
-                                                     Minimum="0" Maximum="1" Height="10" VerticalAlignment="Center"
-                                                     Foreground="{DynamicResource EmberHotBrush}"/>
+                                                     Minimum="0" Maximum="1" VerticalAlignment="Center"
+                                                     Style="{StaticResource InstrumentBarOut}"/>
                                         <TextBlock Grid.Row="1" Grid.Column="2" Margin="0,0,0,10"
                                                    Text="{Binding DeviceLeftTriggerMotorDisplay, Mode=OneWay, StringFormat=P0}"
                                                    FontFamily="{StaticResource TelemetryFontFamily}" FontSize="12"
@@ -6978,8 +7088,8 @@
                                                    Style="{StaticResource DzLabel}"/>
                                         <ProgressBar Grid.Row="2" Grid.Column="1" Margin="0,0,12,0"
                                                      Value="{Binding DeviceRightTriggerMotorDisplay, Mode=OneWay}"
-                                                     Minimum="0" Maximum="1" Height="10" VerticalAlignment="Center"
-                                                     Foreground="{DynamicResource EmberHotBrush}"/>
+                                                     Minimum="0" Maximum="1" VerticalAlignment="Center"
+                                                     Style="{StaticResource InstrumentBarOut}"/>
                                         <TextBlock Grid.Row="2" Grid.Column="2"
                                                    Text="{Binding DeviceRightTriggerMotorDisplay, Mode=OneWay, StringFormat=P0}"
                                                    FontFamily="{StaticResource TelemetryFontFamily}" FontSize="12"
@@ -7162,7 +7272,7 @@
                                          pattern used elsewhere on the page. -->
                                     <Viewbox Width="16" Height="16" Stretch="Uniform" VerticalAlignment="Center" Margin="0,0,8,0">
                                         <Grid Width="512" Height="512">
-                                            <Path Fill="{DynamicResource TextFillColorPrimaryBrush}"
+                                            <Path Fill="{DynamicResource EmberBrush}"
                                                   Data="{StaticResource TouchpadStickIconGeometry}"/>
                                         </Grid>
                                     </Viewbox>
@@ -7542,7 +7652,7 @@
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                             <Viewbox Width="22" Height="22" VerticalAlignment="Center" Margin="0,0,10,0">
                                 <Canvas Width="24" Height="24">
-                                    <Path Stroke="{DynamicResource TextFillColorPrimaryBrush}" StrokeThickness="1.7"
+                                    <Path Stroke="{DynamicResource EmberBrush}" StrokeThickness="1.7"
                                           StrokeStartLineCap="Round" StrokeEndLineCap="Round"
                                           Data="M2,12 A10,10 0 1 1 22,12 A10,10 0 1 1 2,12 Z M9.4,12 A2.6,2.6 0 1 1 14.6,12 A2.6,2.6 0 1 1 9.4,12 Z M9.4,12 L2.2,12 M14.6,12 L21.8,12 M12,14.6 L12,21.8"/>
                                 </Canvas>
@@ -7559,7 +7669,7 @@
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                     <Viewbox Width="18" Height="18" VerticalAlignment="Center" Margin="0,0,8,0">
                                         <Canvas Width="24" Height="24">
-                                            <Path Stroke="{DynamicResource TextFillColorPrimaryBrush}" StrokeThickness="1.8"
+                                            <Path Stroke="{DynamicResource EmberBrush}" StrokeThickness="1.8"
                                                   StrokeStartLineCap="Round" StrokeEndLineCap="Round"
                                                   Data="M2,12 A10,10 0 1 1 22,12 A10,10 0 1 1 2,12 Z M9.4,12 A2.6,2.6 0 1 1 14.6,12 A2.6,2.6 0 1 1 9.4,12 Z M9.4,12 L2.2,12 M14.6,12 L21.8,12 M12,14.6 L12,21.8"/>
                                         </Canvas>

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Input;
@@ -292,6 +293,11 @@ namespace PadForge.ViewModels
             set { if (SetProperty(ref _rawY, value)) OnPropertyChanged(nameof(RawDisplay)); }
         }
 
+        /// <summary>IN readout (#175): pre-pipeline position in the same
+        /// axis-unit format as RawDisplay, derived from RawPosX/RawPosY.</summary>
+        public string InDisplay =>
+            $"X: {(int)Math.Round(_rawPosX * 65535.0 - 32768.0)} ({_rawPosX * 100.0:F1}%)  Y: {(int)Math.Round(_rawPosY * 65535.0 - 32768.0)} ({_rawPosY * 100.0:F1}%)";
+
         /// <summary>Formatted display string: "X: -1234 (50.0%)  Y: 5678 (58.7%)"</summary>
         public string RawDisplay =>
             $"X: {_rawX} ({(_rawX + 32768.0) / 655.35:F1}%)  Y: {_rawY} ({(_rawY + 32768.0) / 655.35:F1}%)";
@@ -299,9 +305,17 @@ namespace PadForge.ViewModels
         /// <summary>Unprocessed hardware value for calibration (not affected by offset/deadzone).</summary>
         // Raw-stage dot position (0-1, pre-pipeline) for the two-stage
         // XY plot (#175). LiveX/LiveY hold the processed stage.
-        public double RawPosX { get => _rawPosX; set => SetProperty(ref _rawPosX, value); }
+        public double RawPosX
+        {
+            get => _rawPosX;
+            set { if (SetProperty(ref _rawPosX, value)) OnPropertyChanged(nameof(InDisplay)); }
+        }
         private double _rawPosX = 0.5;
-        public double RawPosY { get => _rawPosY; set => SetProperty(ref _rawPosY, value); }
+        public double RawPosY
+        {
+            get => _rawPosY;
+            set { if (SetProperty(ref _rawPosY, value)) OnPropertyChanged(nameof(InDisplay)); }
+        }
         private double _rawPosY = 0.5;
 
         public short HardwareRawX { get; set; }

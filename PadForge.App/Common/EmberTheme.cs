@@ -32,6 +32,27 @@ namespace PadForge.Common
             // bind with DynamicResource, so an app-level override wins over
             // the App.xaml defaults and retargets live.
             bool dark = theme == ApplicationTheme.Dark;
+
+            // Accent re-pin (#175 item 21): Wpf.Ui's Apply derives the
+            // Secondary/Tertiary accent shades from the base color, which
+            // turns ember into a washed #EF9770 salmon on checked CheckBox /
+            // ToggleSwitch fills. On dark, pin both the Color and Brush keys
+            // to the sanctioned ember ramp. Apply rewrites the Color keys on
+            // every call, so light needs no color cleanup. The Brush keys are
+            // ours alone (Accent.xaml never updates them), so on light they
+            // are removed and lookup falls back to the stock theme.
+            if (dark)
+            {
+                Application.Current.Resources["SystemAccentColorSecondary"] = Accent;
+                Application.Current.Resources["SystemAccentColorTertiary"] = EmberHotDark;
+                SetBrush("SystemAccentColorSecondaryBrush", Accent);
+                SetBrush("SystemAccentColorTertiaryBrush", EmberHotDark);
+            }
+            else
+            {
+                Application.Current.Resources.Remove("SystemAccentColorSecondaryBrush");
+                Application.Current.Resources.Remove("SystemAccentColorTertiaryBrush");
+            }
             SetBrush("ColdBrush", dark ? ColdDark : ColdLight);
             SetBrush("ColdDeepBrush", dark ? ColdDeepDark : ColdDeepLight);
             SetBrush("EmberHotBrush", dark ? EmberHotDark : EmberHotLight);
@@ -58,6 +79,17 @@ namespace PadForge.Common
                 SetBrush("TextFillColorSecondaryBrush", Color.FromRgb(0x94, 0xA3, 0xBD));
                 SetBrush("TextFillColorTertiaryBrush", Color.FromRgb(0x5D, 0x6B, 0x85));
                 SetBrush("TextFillColorDisabledBrush", Color.FromRgb(0x3D, 0x4A, 0x63));
+                // Slider recolor (#175 item 10): Wpf.Ui's Slider template
+                // pulls its colors from these DynamicResource keys, not from
+                // TemplateBindings, so a derived Style cannot recolor it.
+                // Rail goes raised steel, thumb dot goes ember. There is no
+                // decrease-side value-fill element in the Wpf.Ui 4.3.0
+                // template (and no SliderTrackValueFill key), so the ember
+                // value fill is intentionally not attempted here.
+                SetBrush("SliderTrackFill", Color.FromRgb(0x1B, 0x23, 0x33));
+                SetBrush("SliderTrackFillPointerOver", Color.FromRgb(0x1B, 0x23, 0x33));
+                SetBrush("SliderThumbBackground", Accent);
+                SetBrush("SliderThumbBackgroundPointerOver", EmberHotDark);
             }
             else
             {
@@ -71,9 +103,11 @@ namespace PadForge.Common
             // own card fill so the gradient never fights a white page.
             if (dark)
             {
+                // End stop stays on the card fill (#175 item 24, spec 417):
+                // fading to the page ground made the card melt into it.
                 var grad = new LinearGradientBrush(
                     Color.FromRgb(0x11, 0x16, 0x23),
-                    Color.FromRgb(0x0B, 0x0E, 0x14),
+                    Color.FromRgb(0x11, 0x16, 0x23),
                     new Point(0, 0), new Point(0, 1));
                 grad.Freeze();
                 Application.Current.Resources["CrucibleCardBrush"] = grad;
@@ -99,6 +133,10 @@ namespace PadForge.Common
             "TextFillColorSecondaryBrush",
             "TextFillColorTertiaryBrush",
             "TextFillColorDisabledBrush",
+            "SliderTrackFill",
+            "SliderTrackFillPointerOver",
+            "SliderThumbBackground",
+            "SliderThumbBackgroundPointerOver",
         };
 
         private static void SetBrush(string key, Color color)

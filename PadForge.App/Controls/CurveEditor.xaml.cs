@@ -72,7 +72,18 @@ namespace PadForge.Controls
         private readonly Line _gridV75 = new();
         private readonly Ellipse _liveDot = new();
         private Brush _gridBrush;
-        private Brush _accentBrush;
+
+        // Ember palette (steel curve/handles, ember-hot live dot + dragged handle)
+        private static readonly SolidColorBrush CurveStrokeBrush = CreateFrozen(0x94, 0xA3, 0xBD);
+        private static readonly SolidColorBrush HandleBrush = CreateFrozen(0x5D, 0x6B, 0x85);
+        private static readonly SolidColorBrush EmberHotBrush = CreateFrozen(0xFF, 0xA2, 0x4D);
+
+        private static SolidColorBrush CreateFrozen(byte r, byte g, byte b)
+        {
+            var brush = new SolidColorBrush(Color.FromRgb(r, g, b));
+            brush.Freeze();
+            return brush;
+        }
 
         private const double PointRadius = 5;
         private const double HitRadius = 8;
@@ -96,11 +107,7 @@ namespace PadForge.Controls
             var gridBrush = TryFindResource("ControlStrokeColorSecondaryBrush") as Brush
                 ?? Application.Current.TryFindResource("ControlStrokeColorSecondaryBrush") as Brush
                 ?? new SolidColorBrush(Color.FromRgb(0x5C, 0x5C, 0x5C));
-            var accentBrush = TryFindResource("SystemAccentColorSecondaryBrush") as Brush
-                ?? Application.Current.TryFindResource("SystemAccentColorSecondaryBrush") as Brush
-                ?? new SolidColorBrush(Color.FromRgb(0x00, 0x78, 0xD7));
             _gridBrush = gridBrush;
-            _accentBrush = accentBrush;
 
             // Grid lines at 25%/75%
             SetupLine(_gridV25, gridBrush, 0.5, true); canvas.Children.Add(_gridV25);
@@ -119,15 +126,23 @@ namespace PadForge.Controls
             canvas.Children.Add(_refDiag);
 
             // Curve line
-            _curveLine.Stroke = accentBrush;
+            _curveLine.Stroke = CurveStrokeBrush;
             _curveLine.StrokeThickness = 1.5;
             _curveLine.Fill = Brushes.Transparent;
             canvas.Children.Add(_curveLine);
 
-            // Live dot
+            // Live dot (ember-hot with a small ember glow; effect set directly on
+            // the element, never animated from a style trigger)
             _liveDot.Width = 7;
             _liveDot.Height = 7;
-            _liveDot.Fill = accentBrush;
+            _liveDot.Fill = EmberHotBrush;
+            _liveDot.Effect = new System.Windows.Media.Effects.DropShadowEffect
+            {
+                Color = Color.FromRgb(0xFF, 0x82, 0x28),
+                BlurRadius = 8,
+                ShadowDepth = 0,
+                Opacity = 0.9
+            };
             canvas.Children.Add(_liveDot);
 
             ParseAndDraw();
@@ -299,20 +314,18 @@ namespace PadForge.Controls
                 ChartCanvas.Children.Remove(e);
             _pointEllipses.Clear();
 
-            var accentBrush = _accentBrush ?? Brushes.DodgerBlue;
-
             for (int i = 0; i < _controlPoints.Count; i++)
             {
                 var (cx, cy) = _controlPoints[i];
                 var (px, py) = CurveToPixel(cx, cy);
 
-                bool isEndpoint = (i == 0 || i == _controlPoints.Count - 1);
+                bool isDragged = _isDragging && i == _dragIndex;
                 var ellipse = new Ellipse
                 {
                     Width = PointRadius * 2,
                     Height = PointRadius * 2,
-                    Fill = isEndpoint ? Brushes.White : accentBrush,
-                    Stroke = accentBrush,
+                    Fill = isDragged ? EmberHotBrush : HandleBrush,
+                    Stroke = isDragged ? EmberHotBrush : CurveStrokeBrush,
                     StrokeThickness = 1.5,
                     Cursor = Cursors.Hand,
                     ToolTip = $"({cx:F2}, {cy:F2})"
@@ -358,6 +371,7 @@ namespace PadForge.Controls
                 _dragIndex = hit;
                 _isDragging = true;
                 ChartCanvas.CaptureMouse();
+                DrawControlPoints(); // recolor the grabbed handle ember-hot
                 e.Handled = true;
             }
             else if (e.ClickCount == 2)

@@ -163,7 +163,6 @@
         <Setter Property="FontFamily" Value="{StaticResource TelemetryFontFamily}"/>
         <Setter Property="FontSize" Value="12"/>
         <Setter Property="FontWeight" Value="SemiBold"/>
-        <Setter Property="Typography.Capitals" Value="AllSmallCaps"/>
         <Setter Property="Foreground" Value="{DynamicResource TextFillColorTertiaryBrush}"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
     </Style>
@@ -200,7 +199,7 @@
          description rhythm without copying numbers from a neighbor. -->
     <Style x:Key="CardDescription" TargetType="TextBlock">
         <Setter Property="FontSize" Value="12"/>
-        <Setter Property="Opacity" Value="0.6"/>
+        <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}"/>
         <Setter Property="TextWrapping" Value="Wrap"/>
         <Setter Property="Margin" Value="0,0,0,8"/>
     </Style>

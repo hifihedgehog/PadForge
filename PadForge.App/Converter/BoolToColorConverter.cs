@@ -7,18 +7,19 @@ namespace PadForge.Converters
 {
     /// <summary>
     /// Converts a boolean value to a <see cref="SolidColorBrush"/>.
-    /// true → Green (#FF4CAF50), false → Red (#FFF44336).
+    /// true → ok green (#46C463), false → red (#FFF44336), or steel
+    /// text-3 gray (#5D6B85) with ConverterParameter=gray.
     /// </summary>
     public sealed class BoolToColorConverter : IValueConverter
     {
         private static readonly SolidColorBrush TrueBrush =
-            new SolidColorBrush(Color.FromRgb(0x4C, 0xAF, 0x50)); // Material Green 500
+            new SolidColorBrush(Color.FromRgb(0x46, 0xC4, 0x63)); // Ember palette ok
 
         private static readonly SolidColorBrush FalseRedBrush =
             new SolidColorBrush(Color.FromRgb(0xF4, 0x43, 0x36)); // Material Red 500
 
         private static readonly SolidColorBrush FalseGrayBrush =
-            new SolidColorBrush(Color.FromRgb(0x9E, 0x9E, 0x9E)); // Material Grey 500
+            new SolidColorBrush(Color.FromRgb(0x5D, 0x6B, 0x85)); // Ember palette text-3
 
         static BoolToColorConverter()
         {

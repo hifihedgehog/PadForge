@@ -286,6 +286,7 @@ public class Strings : INotifyPropertyChanged
     public string Macro_EmptyHint => Get("Macro_EmptyHint");
     public string Instr_Raw => Get("Instr_Raw");
     public string Instr_Out => Get("Instr_Out");
+    public string Dashboard_StatusCold => Get("Dashboard_StatusCold");
     public string Dashboard_Services => Get("Dashboard_Services");
     public string Dashboard_MotionServer => Get("Dashboard_MotionServer");
     public string Dashboard_DsuDescription => Get("Dashboard_DsuDescription");

@@ -535,7 +535,11 @@ namespace PadForge.ViewModels
         public bool IsInitializing
         {
             get => _isInitializing;
-            set => SetProperty(ref _isInitializing, value);
+            set
+            {
+                if (SetProperty(ref _isInitializing, value))
+                    OnPropertyChanged(nameof(StatusText));
+            }
         }
 
         private int _mappedDeviceCount;
@@ -544,8 +548,20 @@ namespace PadForge.ViewModels
         public int MappedDeviceCount
         {
             get => _mappedDeviceCount;
-            set => SetProperty(ref _mappedDeviceCount, value);
+            set
+            {
+                if (SetProperty(ref _mappedDeviceCount, value))
+                {
+                    OnPropertyChanged(nameof(HasMappedDevices));
+                    OnPropertyChanged(nameof(StatusText));
+                }
+            }
         }
+
+        /// <summary>True when at least one device is mapped to this slot.
+        /// Ember heat gating (#175): cards with zero mappings stay cold
+        /// (no ember rim, no glow, steel seg tile) even when enabled.</summary>
+        public bool HasMappedDevices => _mappedDeviceCount > 0;
 
         private int _connectedDeviceCount;
 
@@ -553,15 +569,33 @@ namespace PadForge.ViewModels
         public int ConnectedDeviceCount
         {
             get => _connectedDeviceCount;
-            set => SetProperty(ref _connectedDeviceCount, value);
+            set
+            {
+                if (SetProperty(ref _connectedDeviceCount, value))
+                    OnPropertyChanged(nameof(StatusText));
+            }
         }
 
         private string _statusText = Strings.Instance.Common_Idle;
 
-        /// <summary>Status text for the slot (e.g., "Active", "Idle", "No mapping", "Disabled").</summary>
+        /// <summary>Status text for the slot (e.g., "Active", "Cold",
+        /// "Awaiting Devices", "Disabled"). Ember vocabulary (#175): an
+        /// enabled slot with zero mappings reads "Cold"; mapped but with
+        /// nothing connected reads as awaiting devices. Other states pass
+        /// through whatever the engine refresh assigned.</summary>
         public string StatusText
         {
-            get => _statusText;
+            get
+            {
+                if (_isEnabled && !_isInitializing)
+                {
+                    if (_mappedDeviceCount == 0)
+                        return Strings.Instance.Dashboard_StatusCold;
+                    if (_connectedDeviceCount == 0)
+                        return Strings.Instance.Main_AwaitingDevices;
+                }
+                return _statusText;
+            }
             set => SetProperty(ref _statusText, value);
         }
 
@@ -571,7 +605,11 @@ namespace PadForge.ViewModels
         public bool IsEnabled
         {
             get => _isEnabled;
-            set => SetProperty(ref _isEnabled, value);
+            set
+            {
+                if (SetProperty(ref _isEnabled, value))
+                    OnPropertyChanged(nameof(StatusText));
+            }
         }
 
         private int _slotNumber = 1;

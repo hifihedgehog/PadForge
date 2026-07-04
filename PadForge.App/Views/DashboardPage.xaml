@@ -50,9 +50,8 @@
 
             <!-- ═══ Input Engine ═══ -->
             <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
-                <TextBlock Text="&#xE9F5;" FontFamily="Segoe MDL2 Assets" FontSize="16"
-                           VerticalAlignment="Center" Margin="0,0,8,0"/>
-                <TextBlock Text="{Binding Dashboard_InputEngine, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource SubtitleTextBlockStyle}"/>
+                <TextBlock Text="&#xE9F5;" Style="{StaticResource SectionGlyph}"/>
+                <TextBlock Text="{Binding Dashboard_InputEngine, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource SectionTitle}"/>
             </StackPanel>
 
             <Border x:Name="EngineCard" Style="{StaticResource CardBorder}" Padding="20" Margin="0,0,0,16">
@@ -133,9 +132,8 @@
 
             <!-- ═══ Virtual controller slot cards ═══ -->
             <StackPanel Orientation="Horizontal" Margin="0,8,0,12">
-                <TextBlock Text="&#xE7FC;" FontFamily="Segoe MDL2 Assets" FontSize="16"
-                           VerticalAlignment="Center" Margin="0,0,8,0"/>
-                <TextBlock Text="{Binding Dashboard_VirtualControllers, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource SubtitleTextBlockStyle}"/>
+                <TextBlock Text="&#xE7FC;" Style="{StaticResource SectionGlyph}"/>
+                <TextBlock Text="{Binding Dashboard_VirtualControllers, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource SectionTitle}"/>
             </StackPanel>
 
             <ItemsControl x:Name="SlotsItemsControl" ItemsSource="{Binding SlotSummaries}">
@@ -467,9 +465,8 @@
 
             <!-- ═══ Motion Server ═══ -->
             <StackPanel Orientation="Horizontal" Margin="0,20,0,12">
-                <TextBlock Text="&#xE7AD;" FontFamily="Segoe MDL2 Assets" FontSize="16"
-                           VerticalAlignment="Center" Margin="0,0,8,0"/>
-                <TextBlock Text="{Binding Dashboard_MotionServer, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource SubtitleTextBlockStyle}"/>
+                <TextBlock Text="&#xE7AD;" Style="{StaticResource SectionGlyph}"/>
+                <TextBlock Text="{Binding Dashboard_MotionServer, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource SectionTitle}"/>
             </StackPanel>
 
             <Border Style="{StaticResource CardBorder}" Margin="0,0,0,0">
@@ -503,9 +500,8 @@
 
             <!-- ═══ Web Controller ═══ -->
             <StackPanel Orientation="Horizontal" Margin="0,20,0,12">
-                <TextBlock Text="&#xE774;" FontFamily="Segoe MDL2 Assets" FontSize="16"
-                           VerticalAlignment="Center" Margin="0,0,8,0"/>
-                <TextBlock Text="{Binding Dashboard_WebController, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource SubtitleTextBlockStyle}"/>
+                <TextBlock Text="&#xE774;" Style="{StaticResource SectionGlyph}"/>
+                <TextBlock Text="{Binding Dashboard_WebController, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource SectionTitle}"/>
             </StackPanel>
 
             <Border Style="{StaticResource CardBorder}" Margin="0,0,0,0">
@@ -540,9 +536,8 @@
 
             <!-- Remote Link (issue #138) -->
             <StackPanel Orientation="Horizontal" Margin="0,20,0,12">
-                <TextBlock Text="&#xE969;" FontFamily="Segoe MDL2 Assets" FontSize="16"
-                           VerticalAlignment="Center" Margin="0,0,8,0"/>
-                <TextBlock Text="{Binding Dashboard_RemoteLink, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource SubtitleTextBlockStyle}"/>
+                <TextBlock Text="&#xE969;" Style="{StaticResource SectionGlyph}"/>
+                <TextBlock Text="{Binding Dashboard_RemoteLink, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource SectionTitle}"/>
             </StackPanel>
 
             <Border Style="{StaticResource CardBorder}" Margin="0,0,0,0">
@@ -681,9 +676,8 @@
 
             <!-- ═══ Touchpad Overlay ═══ -->
             <StackPanel Orientation="Horizontal" Margin="0,20,0,12">
-                <TextBlock Text="&#xEDA4;" FontFamily="Segoe MDL2 Assets" FontSize="16"
-                           VerticalAlignment="Center" Margin="0,0,8,0"/>
-                <TextBlock Text="{Binding Dashboard_TouchpadOverlay, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource SubtitleTextBlockStyle}"/>
+                <TextBlock Text="&#xEDA4;" Style="{StaticResource SectionGlyph}"/>
+                <TextBlock Text="{Binding Dashboard_TouchpadOverlay, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource SectionTitle}"/>
             </StackPanel>
 
             <Border Style="{StaticResource CardBorder}" Margin="0,0,0,0">
@@ -725,9 +719,8 @@
 
             <!-- ═══ Driver status ═══ -->
             <StackPanel Orientation="Horizontal" Margin="0,20,0,12">
-                <TextBlock Text="&#xED5D;" FontFamily="Segoe MDL2 Assets" FontSize="16"
-                           VerticalAlignment="Center" Margin="0,0,8,0"/>
-                <TextBlock Text="{Binding Dashboard_Drivers, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource SubtitleTextBlockStyle}"/>
+                <TextBlock Text="&#xED5D;" Style="{StaticResource SectionGlyph}"/>
+                <TextBlock Text="{Binding Dashboard_Drivers, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource SectionTitle}"/>
             </StackPanel>
 
             <Border Style="{StaticResource CardBorder}" Padding="20" Margin="0,0,0,8">

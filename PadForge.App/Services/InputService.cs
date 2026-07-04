@@ -2361,6 +2361,7 @@ namespace PadForge.Services
                             "P:{0,4:F0}° Y:{1,4:F0}° R:{2,4:F0}°",
                             snap.GyroPitch, snap.GyroYaw, snap.GyroRoll)
                         : string.Empty;
+                    mapping.IsInputActive = false;
                     continue;
                 }
                 if (target == MappingSetMigrator.MotionAccelTarget)
@@ -2370,6 +2371,7 @@ namespace PadForge.Services
                             "X:{0,5:+0.00;-0.00}g Y:{1,5:+0.00;-0.00}g Z:{2,5:+0.00;-0.00}g",
                             snap.AccelX, snap.AccelY, snap.AccelZ)
                         : string.Empty;
+                    mapping.IsInputActive = false;
                     continue;
                 }
 
@@ -2380,15 +2382,25 @@ namespace PadForge.Services
                 if (combined.HasValue)
                 {
                     mapping.CurrentValueText = combined.Value.ToString();
+                    // Rowfire (#175): discrete targets fire on any nonzero,
+                    // axes need a deadband so resting sticks stay dark.
+                    mapping.IsInputActive = mapping.IsTargetDiscrete
+                        ? combined.Value != 0
+                        : Math.Abs(combined.Value) > 1500;
                     continue;
                 }
 
                 if (string.IsNullOrEmpty(mapping.SourceDescriptor) || fallbackState == null)
                 {
                     mapping.CurrentValueText = string.Empty;
+                    mapping.IsInputActive = false;
                     continue;
                 }
-                mapping.CurrentValueText = ReadMappedValue(fallbackState, mapping.SourceDescriptor).ToString();
+                int fallbackValue = ReadMappedValue(fallbackState, mapping.SourceDescriptor);
+                mapping.CurrentValueText = fallbackValue.ToString();
+                mapping.IsInputActive = mapping.IsTargetDiscrete
+                    ? fallbackValue != 0
+                    : Math.Abs(fallbackValue) > 1500;
             }
         }
 

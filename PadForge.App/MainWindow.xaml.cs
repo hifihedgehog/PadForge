@@ -2193,6 +2193,12 @@ namespace PadForge
             return grid;
         }
 
+        /// <summary>Reduced motion (#175 item 98): one gate for every
+        /// code-driven Forever animation in this window. Mirrors the OS
+        /// animation preference. When false, callers hold a static effect
+        /// at mid opacity instead of starting the loop.</summary>
+        private static bool MotionEnabled => System.Windows.SystemParameters.ClientAreaAnimation;
+
         /// <summary>
         /// Updates the Content and Icon of a controller NavigationViewItem.
         /// Compact card with rounded border: [Power] [Gamepad] #N | [Xbox][PS] #N [X]
@@ -2288,7 +2294,7 @@ namespace PadForge
             // Apply flashing opacity animation when igniting. Reduced motion
             // (#175 item 98, SystemParameters.ClientAreaAnimation): no flash
             // loop, the flame holds steady ember.
-            if (isInitializing && SystemParameters.ClientAreaAnimation)
+            if (isInitializing && MotionEnabled)
             {
                 var flashAnimation = new System.Windows.Media.Animation.DoubleAnimation
                 {
@@ -2332,6 +2338,29 @@ namespace PadForge
             };
             slotNumber.SetResourceReference(System.Windows.Controls.TextBlock.ForegroundProperty, "TextFillColorTertiaryBrush");
             row.Children.Add(slotNumber);
+
+            // Rail pill status word (#175 pitch): right-aligned engine-state
+            // readout in the dashboard vocabulary (Forging / Awaiting devices /
+            // Cold). Docked right so the type segment stays put; capped width
+            // so "Awaiting devices" trims instead of squeezing the segment.
+            var statusWord = new System.Windows.Controls.TextBlock
+            {
+                Text = lit ? Strings.Instance.Engine_Forging
+                     : cooling ? Strings.Instance.Main_AwaitingDevices
+                     : Strings.Instance.Dashboard_StatusCold,
+                FontSize = 10,
+                VerticalAlignment = VerticalAlignment.Center,
+                HorizontalAlignment = HorizontalAlignment.Right,
+                Margin = new Thickness(6, 0, 0, 0),
+                TextTrimming = TextTrimming.CharacterEllipsis,
+                MaxWidth = 56
+            };
+            statusWord.SetResourceReference(System.Windows.Controls.TextBlock.FontFamilyProperty, "TelemetryFontFamily");
+            statusWord.SetResourceReference(System.Windows.Controls.TextBlock.ForegroundProperty,
+                lit ? "EmberHotBrush" : cooling ? "WaitBrush" : "TextFillColorTertiaryBrush");
+            statusWord.ToolTip = statusWord.Text;
+            System.Windows.Controls.DockPanel.SetDock(statusWord, System.Windows.Controls.Dock.Right);
+            row.Children.Add(statusWord);
 
 
             // Type switcher returns to the rail (user direction, iteration 15):
@@ -2424,8 +2453,9 @@ namespace PadForge
             // lives in the flame color alone.
             var card = new System.Windows.Controls.Border
             {
-                CornerRadius = new CornerRadius(6),
-                Padding = new Thickness(6, 4, 6, 4),
+                // Pill geometry (#175 pitch .slotpill): radius 10, 10/6 padding.
+                CornerRadius = new CornerRadius(10),
+                Padding = new Thickness(10, 6, 10, 6),
                 BorderThickness = new Thickness(1),
                 MinWidth = 196,
                 Child = row,
@@ -2450,7 +2480,7 @@ namespace PadForge
                 // Reduced motion (#175 item 98): breathe swaps for a static
                 // glow pinned near the spec's rgba(...,0.22) point of the
                 // 0.25-0.60 breathe range.
-                if (SystemParameters.ClientAreaAnimation)
+                if (MotionEnabled)
                 {
                     var breathe = new System.Windows.Media.Animation.DoubleAnimation
                     {

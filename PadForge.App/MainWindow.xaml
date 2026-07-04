@@ -341,7 +341,7 @@
                                HorizontalAlignment="Center"
                                Text="{Binding Main_ShuttingDown, Source={x:Static strings:Strings.Instance}}"/>
                     <TextBlock x:Name="ShutdownOverlayText"
-                               FontSize="13" Opacity="0.7"
+                               FontSize="13" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                Margin="0,0,0,4" HorizontalAlignment="Center"/>
                 </StackPanel>
             </Border>
@@ -370,7 +370,7 @@
                     <TextBlock FontSize="16" FontWeight="SemiBold"
                                HorizontalAlignment="Center"
                                Text="{Binding Main_StartingUp, Source={x:Static strings:Strings.Instance}}"/>
-                    <TextBlock FontSize="13" Opacity="0.7"
+                    <TextBlock FontSize="13" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                Margin="0,6,0,4" HorizontalAlignment="Center"
                                TextWrapping="Wrap" TextAlignment="Center"
                                Text="{Binding Main_CleaningPreviousSession, Source={x:Static strings:Strings.Instance}}"/>

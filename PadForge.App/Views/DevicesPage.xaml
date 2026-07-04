@@ -22,10 +22,10 @@
             <Button Content="{Binding Devices_Pair, Source={x:Static strings:Strings.Instance}}" Margin="8,0,0,0"
                     Command="{Binding PairCommand}"/>
             <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="16,0">
-                <TextBlock Opacity="0.6" Text="{Binding OnlineCount, Mode=OneWay}"/>
-                <TextBlock Opacity="0.6" Text="{Binding Devices_OnlineTotal, Source={x:Static strings:Strings.Instance}}"/>
-                <TextBlock Opacity="0.6" Text="{Binding TotalCount, Mode=OneWay}"/>
-                <TextBlock Opacity="0.6" Text="{Binding Devices_Total, Source={x:Static strings:Strings.Instance}}"/>
+                <TextBlock Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text="{Binding OnlineCount, Mode=OneWay}"/>
+                <TextBlock Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text="{Binding Devices_OnlineTotal, Source={x:Static strings:Strings.Instance}}"/>
+                <TextBlock Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text="{Binding TotalCount, Mode=OneWay}"/>
+                <TextBlock Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text="{Binding Devices_Total, Source={x:Static strings:Strings.Instance}}"/>
             </StackPanel>
         </StackPanel>
 
@@ -88,10 +88,9 @@
                                                         Background="{DynamicResource SubtleFillColorSecondaryBrush}">
                                                     <StackPanel Orientation="Horizontal">
                                                         <TextBlock Text="&#xE7FC;" FontFamily="Segoe MDL2 Assets"
-                                                                   FontSize="10" Opacity="0.6"
+                                                                   FontSize="10" Foreground="{DynamicResource TextFillColorTertiaryBrush}"
                                                                    VerticalAlignment="Center"/>
-                                                        <TextBlock Text="{Binding SlotNumber}" FontSize="10"
-                                                                   Opacity="0.7" Margin="3,0,0,0"
+                                                        <TextBlock Text="{Binding SlotNumber}" FontSize="10" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="3,0,0,0"
                                                                    VerticalAlignment="Center"/>
                                                     </StackPanel>
                                                 </Border>
@@ -102,7 +101,7 @@
                                     <Border CornerRadius="4" Padding="5,2" Margin="0,0,4,3"
                                             Background="{DynamicResource SubtleFillColorSecondaryBrush}"
                                             Visibility="{Binding IsUnassigned, Converter={StaticResource BoolToVisibilityConverter}}">
-                                        <TextBlock Text="{Binding Common_Unassigned, Source={x:Static strings:Strings.Instance}}" FontSize="10" Opacity="0.55"/>
+                                        <TextBlock Text="{Binding Common_Unassigned, Source={x:Static strings:Strings.Instance}}" FontSize="10" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
                                     </Border>
                                 </StackPanel>
 
@@ -118,22 +117,22 @@
                                 <!-- Row 1: Type | VID:PID | Capabilities -->
                                 <StackPanel Grid.Row="1" Grid.ColumnSpan="3"
                                             Orientation="Horizontal" Margin="16,3,0,0">
-                                    <TextBlock Text="{Binding DeviceType}" FontSize="11" Opacity="0.55"/>
-                                    <TextBlock Text=" &#x2022; " FontSize="11" Opacity="0.3"/>
+                                    <TextBlock Text="{Binding DeviceType}" FontSize="11" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
+                                    <TextBlock Text=" &#x2022; " FontSize="11" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
                                     <StackPanel Orientation="Horizontal">
-                                        <TextBlock FontSize="11" Opacity="0.45" Text="{Binding VendorIdHex, Mode=OneWay}"/>
-                                        <TextBlock FontSize="11" Opacity="0.45" Text=":"/>
-                                        <TextBlock FontSize="11" Opacity="0.45" Text="{Binding ProductIdHex, Mode=OneWay}"/>
+                                        <TextBlock FontSize="11" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text="{Binding VendorIdHex, Mode=OneWay}"/>
+                                        <TextBlock FontSize="11" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text=":"/>
+                                        <TextBlock FontSize="11" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text="{Binding ProductIdHex, Mode=OneWay}"/>
                                     </StackPanel>
-                                    <TextBlock Text=" &#x2022; " FontSize="11" Opacity="0.3"/>
-                                    <TextBlock Text="{Binding CapabilitiesSummary}" FontSize="11" Opacity="0.45"/>
+                                    <TextBlock Text=" &#x2022; " FontSize="11" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
+                                    <TextBlock Text="{Binding CapabilitiesSummary}" FontSize="11" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
                                     <!-- Battery (issue #167): shown only when the device reports one -->
                                     <StackPanel Orientation="Horizontal"
                                                 Visibility="{Binding HasBattery, Converter={StaticResource BoolToVisibilityConverter}}">
-                                        <TextBlock Text=" &#x2022; " FontSize="11" Opacity="0.3"/>
+                                        <TextBlock Text=" &#x2022; " FontSize="11" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
                                         <TextBlock Text="{Binding BatteryGlyph}" FontFamily="Segoe MDL2 Assets"
-                                                   FontSize="11" Opacity="0.55" VerticalAlignment="Center"/>
-                                        <TextBlock Text="{Binding BatteryText}" FontSize="11" Opacity="0.55"
+                                                   FontSize="11" Foreground="{DynamicResource TextFillColorTertiaryBrush}" VerticalAlignment="Center"/>
+                                        <TextBlock Text="{Binding BatteryText}" FontSize="11" Foreground="{DynamicResource TextFillColorTertiaryBrush}"
                                                    Margin="4,0,0,0" VerticalAlignment="Center"/>
                                     </StackPanel>
                                 </StackPanel>
@@ -186,19 +185,19 @@
                                    TextWrapping="Wrap" Margin="0,0,0,6"/>
 
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,1">
-                            <TextBlock FontSize="11" Opacity="0.7" Text="{Binding Devices_Product, Source={x:Static strings:Strings.Instance}}"/>
-                            <TextBlock FontSize="11" Opacity="0.7" Text="{Binding SelectedDevice.ProductName, Mode=OneWay}"/>
+                            <TextBlock FontSize="11" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Devices_Product, Source={x:Static strings:Strings.Instance}}"/>
+                            <TextBlock FontSize="11" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding SelectedDevice.ProductName, Mode=OneWay}"/>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,1">
-                            <TextBlock FontSize="11" Opacity="0.7" Text="{Binding Devices_Type, Source={x:Static strings:Strings.Instance}}"/>
-                            <TextBlock FontSize="11" Opacity="0.7" Text="{Binding SelectedDevice.DeviceType, Mode=OneWay}"/>
+                            <TextBlock FontSize="11" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Devices_Type, Source={x:Static strings:Strings.Instance}}"/>
+                            <TextBlock FontSize="11" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding SelectedDevice.DeviceType, Mode=OneWay}"/>
                         </StackPanel>
-                        <TextBlock FontSize="11" Opacity="0.6" Margin="0,0,0,8"
+                        <TextBlock FontSize="11" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,0,0,8"
                                    Text="{Binding SelectedDevice.CapabilitiesSummary, Mode=OneWay}"/>
 
                         <Border ClipToBounds="True" Margin="0,0,0,1" Padding="0,1">
                             <StackPanel Orientation="Horizontal">
-                                <TextBlock FontSize="11" Opacity="0.6"
+                                <TextBlock FontSize="11" Foreground="{DynamicResource TextFillColorTertiaryBrush}"
                                            common:MarqueeBehavior.IsEnabled="True">
                                     <TextBlock.Text>
                                         <MultiBinding StringFormat="{}{0}{1}">
@@ -212,7 +211,7 @@
                         <Border ClipToBounds="True" Margin="0,0,0,1" Padding="0,1"
                                 Visibility="{Binding SelectedDevice.SdlGuid, Converter={StaticResource StringToVisibility}}">
                             <StackPanel Orientation="Horizontal">
-                                <TextBlock FontSize="11" Opacity="0.6"
+                                <TextBlock FontSize="11" Foreground="{DynamicResource TextFillColorTertiaryBrush}"
                                            common:MarqueeBehavior.IsEnabled="True">
                                     <TextBlock.Text>
                                         <MultiBinding StringFormat="{}{0}{1}">
@@ -226,7 +225,7 @@
                         <Border ClipToBounds="True" Margin="0,0,0,1" Padding="0,1"
                                 Visibility="{Binding SelectedDevice.HidHideInstancePath, Converter={StaticResource StringToVisibility}}">
                             <StackPanel Orientation="Horizontal">
-                                <TextBlock FontSize="11" Opacity="0.6"
+                                <TextBlock FontSize="11" Foreground="{DynamicResource TextFillColorTertiaryBrush}"
                                            common:MarqueeBehavior.IsEnabled="True">
                                     <TextBlock.Text>
                                         <MultiBinding StringFormat="{}{0}{1}">
@@ -238,10 +237,10 @@
                             </StackPanel>
                         </Border>
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
-                            <TextBlock FontSize="11" Opacity="0.6" Text="{Binding Devices_VIDPID, Source={x:Static strings:Strings.Instance}}"/>
-                            <TextBlock FontSize="11" Opacity="0.6" Text="{Binding SelectedDevice.VendorIdHex, Mode=OneWay}"/>
-                            <TextBlock FontSize="11" Opacity="0.6" Text=":"/>
-                            <TextBlock FontSize="11" Opacity="0.6" Text="{Binding SelectedDevice.ProductIdHex, Mode=OneWay}"/>
+                            <TextBlock FontSize="11" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text="{Binding Devices_VIDPID, Source={x:Static strings:Strings.Instance}}"/>
+                            <TextBlock FontSize="11" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text="{Binding SelectedDevice.VendorIdHex, Mode=OneWay}"/>
+                            <TextBlock FontSize="11" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text=":"/>
+                            <TextBlock FontSize="11" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text="{Binding SelectedDevice.ProductIdHex, Mode=OneWay}"/>
                         </StackPanel>
 
                         <!-- Submit mapping (joysticks only, not gamepads, mice, or keyboards) -->
@@ -371,7 +370,7 @@
                                          Width="60" VerticalAlignment="Center"
                                          LostFocus="IdleDisconnect_LostFocus"/>
                                 <TextBlock Text="{Binding Devices_IdleDisconnectMinutes, Source={x:Static strings:Strings.Instance}}"
-                                           VerticalAlignment="Center" Margin="8,0,0,0" Opacity="0.7"/>
+                                           VerticalAlignment="Center" Margin="8,0,0,0" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
                             </StackPanel>
 
                             <Separator Margin="0,2,0,8"/>
@@ -382,7 +381,7 @@
                                    FontSize="13" Margin="0,0,0,8"/>
 
                         <!-- Axes label (joysticks/gamepads only) -->
-                        <TextBlock Text="{Binding Devices_Axes, Source={x:Static strings:Strings.Instance}}" FontSize="11" Opacity="0.6" Margin="0,0,0,3">
+                        <TextBlock Text="{Binding Devices_Axes, Source={x:Static strings:Strings.Instance}}" FontSize="11" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,0,0,3">
                             <TextBlock.Style>
                                 <Style TargetType="TextBlock">
                                     <Setter Property="Visibility" Value="{Binding HasRawData, Converter={StaticResource BoolToVisibilityConverter}}"/>
@@ -443,14 +442,14 @@
                                             <ColumnDefinition Width="*"/>
                                             <ColumnDefinition Width="44"/>
                                         </Grid.ColumnDefinitions>
-                                        <TextBlock Text="{Binding Name}" FontSize="10" Opacity="0.55"
+                                        <TextBlock Text="{Binding Name}" FontSize="10" Foreground="{DynamicResource TextFillColorTertiaryBrush}"
                                                    VerticalAlignment="Center"/>
                                         <!-- Cold (#175): raw hardware truth. -->
                                         <ProgressBar Grid.Column="1" Minimum="0" Maximum="1"
                                                      Value="{Binding NormalizedValue, Mode=OneWay}"
                                                      Foreground="{DynamicResource ColdBrush}"
                                                      Height="8" Margin="4,0"/>
-                                        <TextBlock Grid.Column="2" FontSize="9" Opacity="0.45"
+                                        <TextBlock Grid.Column="2" FontSize="9" Foreground="{DynamicResource TextFillColorTertiaryBrush}"
                                                    FontFamily="Consolas" VerticalAlignment="Center"
                                                    HorizontalAlignment="Right"
                                                    Text="{Binding RawValue}"/>
@@ -463,7 +462,7 @@
                              button slots (gamepads, joysticks, touchpads with a
                              click button). Keyboards / mice have their own
                              dedicated visual previews instead. -->
-                        <TextBlock Text="{Binding Devices_Buttons, Source={x:Static strings:Strings.Instance}}" FontSize="11" Opacity="0.6" Margin="0,0,0,3">
+                        <TextBlock Text="{Binding Devices_Buttons, Source={x:Static strings:Strings.Instance}}" FontSize="11" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,0,0,3">
                             <TextBlock.Style>
                                 <Style TargetType="TextBlock">
                                     <Setter Property="Visibility" Value="{Binding HasRawData, Converter={StaticResource BoolToVisibilityConverter}}"/>
@@ -529,8 +528,7 @@
                                             </Style>
                                         </Border.Style>
                                         <TextBlock Text="{Binding DisplayNumber}" FontSize="8"
-                                                   HorizontalAlignment="Center" VerticalAlignment="Center"
-                                                   Opacity="0.7"/>
+                                                   HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
                                     </Border>
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
@@ -541,7 +539,7 @@
                              "Any NFC Tag") lights up when its tag is tapped. -->
                         <StackPanel Visibility="{Binding IsNfcDevice, Converter={StaticResource BoolToVisibilityConverter}}"
                                     Margin="0,0,0,8">
-                            <TextBlock Text="{Binding Nfc_Title, Source={x:Static strings:Strings.Instance}}" FontSize="11" Opacity="0.6" Margin="0,0,0,3"/>
+                            <TextBlock Text="{Binding Nfc_Title, Source={x:Static strings:Strings.Instance}}" FontSize="11" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,0,0,3"/>
                             <ItemsControl ItemsSource="{Binding NfcTags}">
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
@@ -564,7 +562,7 @@
                                                 <TextBlock Text="{Binding Name}" FontSize="12" VerticalAlignment="Center"
                                                            TextTrimming="CharacterEllipsis"/>
                                                 <TextBlock Grid.Column="1" Text="{Binding Uid}" FontFamily="Consolas"
-                                                           FontSize="10" Opacity="0.55" VerticalAlignment="Center"
+                                                           FontSize="10" Foreground="{DynamicResource TextFillColorTertiaryBrush}" VerticalAlignment="Center"
                                                            Margin="8,0,0,0"/>
                                             </Grid>
                                         </Border>
@@ -580,7 +578,7 @@
                         <StackPanel Visibility="{Binding IsConsumerDevice, Converter={StaticResource BoolToVisibilityConverter}}"
                                     Margin="0,0,0,8">
                             <TextBlock Text="{Binding Devices_Buttons, Source={x:Static strings:Strings.Instance}}"
-                                       FontSize="11" Opacity="0.6" Margin="0,0,0,3"/>
+                                       FontSize="11" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,0,0,3"/>
                             <ItemsControl ItemsSource="{Binding ConsumerButtons}">
                                 <ItemsControl.ItemsPanel>
                                     <ItemsPanelTemplate>
@@ -609,7 +607,7 @@
                         </StackPanel>
 
                         <!-- Keyboard: visual QWERTY layout -->
-                        <TextBlock Text="{Binding Devices_Keyboard, Source={x:Static strings:Strings.Instance}}" FontSize="11" Opacity="0.6" Margin="0,0,0,3">
+                        <TextBlock Text="{Binding Devices_Keyboard, Source={x:Static strings:Strings.Instance}}" FontSize="11" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,0,0,3">
                             <TextBlock.Style>
                                 <Style TargetType="TextBlock">
                                     <Setter Property="Visibility" Value="Collapsed"/>
@@ -661,8 +659,7 @@
                                                 </Style>
                                             </Border.Style>
                                             <TextBlock Text="{Binding Label}" FontSize="8"
-                                                       HorizontalAlignment="Center" VerticalAlignment="Center"
-                                                       Opacity="0.8" TextTrimming="None"/>
+                                                       HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="{DynamicResource TextFillColorSecondaryBrush}" TextTrimming="None"/>
                                         </Border>
                                     </DataTemplate>
                                 </ItemsControl.ItemTemplate>
@@ -670,7 +667,7 @@
                         </Viewbox>
 
                         <!-- Mouse: visual mouse graphic -->
-                        <TextBlock Text="{Binding Devices_Mouse, Source={x:Static strings:Strings.Instance}}" FontSize="11" Opacity="0.6" Margin="0,0,0,3">
+                        <TextBlock Text="{Binding Devices_Mouse, Source={x:Static strings:Strings.Instance}}" FontSize="11" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,0,0,3">
                             <TextBlock.Style>
                                 <Style TargetType="TextBlock">
                                     <Setter Property="Visibility" Value="Collapsed"/>
@@ -715,18 +712,18 @@
                             </StackPanel.Style>
 
                             <TextBlock Text="{Binding Preview_NoteOutputs, Source={x:Static strings:Strings.Instance}}"
-                                       FontSize="11" Opacity="0.6" Margin="0,0,0,3"/>
+                                       FontSize="11" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,0,0,3"/>
                             <local:MidiPreviewView x:Name="MidiNotesPreview" Height="230" Margin="0,0,0,12"
                                                    HorizontalAlignment="Stretch"/>
 
                             <TextBlock Text="{Binding Preview_CCOutputs, Source={x:Static strings:Strings.Instance}}"
-                                       FontSize="11" Opacity="0.6" Margin="0,0,0,3"/>
+                                       FontSize="11" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,0,0,3"/>
                             <local:MidiPreviewView x:Name="MidiCcPreview" Height="230"
                                                    HorizontalAlignment="Stretch"/>
                         </StackPanel>
 
                         <!-- POV Hats: compass indicators -->
-                        <TextBlock Text="{Binding Devices_DPadPOV, Source={x:Static strings:Strings.Instance}}" FontSize="11" Opacity="0.6"
+                        <TextBlock Text="{Binding Devices_DPadPOV, Source={x:Static strings:Strings.Instance}}" FontSize="11" Foreground="{DynamicResource TextFillColorTertiaryBrush}"
                                    Margin="0,0,0,3">
                             <TextBlock.Style>
                                 <Style TargetType="TextBlock">
@@ -777,8 +774,8 @@
                                             </Line>
                                         </Canvas>
                                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="6,0,0,0">
-                                            <TextBlock FontSize="10" Opacity="0.5" Text="{Binding Devices_POV, Source={x:Static strings:Strings.Instance}}"/>
-                                            <TextBlock FontSize="10" Opacity="0.5" Text="{Binding Index, Mode=OneWay}"/>
+                                            <TextBlock FontSize="10" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text="{Binding Devices_POV, Source={x:Static strings:Strings.Instance}}"/>
+                                            <TextBlock FontSize="10" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text="{Binding Index, Mode=OneWay}"/>
                                         </StackPanel>
                                     </StackPanel>
                                 </DataTemplate>
@@ -786,7 +783,7 @@
                         </ItemsControl>
 
                         <!-- Gyroscope -->
-                        <TextBlock Text="{Binding Devices_Gyroscope, Source={x:Static strings:Strings.Instance}}" FontSize="11" Opacity="0.6" Margin="0,0,0,3"
+                        <TextBlock Text="{Binding Devices_Gyroscope, Source={x:Static strings:Strings.Instance}}" FontSize="11" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,0,0,3"
                                    Visibility="{Binding HasGyroData, Converter={StaticResource BoolToVisibilityConverter}}"/>
                         <Border Visibility="{Binding HasGyroData, Converter={StaticResource BoolToVisibilityConverter}}"
                                 Background="#10888888" CornerRadius="6" Padding="10,6" Margin="0,0,0,8">
@@ -797,17 +794,17 @@
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
                                 <StackPanel>
-                                    <TextBlock Text="X" FontSize="10" Opacity="0.5" HorizontalAlignment="Center"/>
+                                    <TextBlock Text="X" FontSize="10" Foreground="{DynamicResource TextFillColorTertiaryBrush}" HorizontalAlignment="Center"/>
                                     <TextBlock FontSize="11" FontFamily="Consolas" HorizontalAlignment="Center"
                                                Text="{Binding GyroX, StringFormat='{}{0:F3}'}"/>
                                 </StackPanel>
                                 <StackPanel Grid.Column="1">
-                                    <TextBlock Text="Y" FontSize="10" Opacity="0.5" HorizontalAlignment="Center"/>
+                                    <TextBlock Text="Y" FontSize="10" Foreground="{DynamicResource TextFillColorTertiaryBrush}" HorizontalAlignment="Center"/>
                                     <TextBlock FontSize="11" FontFamily="Consolas" HorizontalAlignment="Center"
                                                Text="{Binding GyroY, StringFormat='{}{0:F3}'}"/>
                                 </StackPanel>
                                 <StackPanel Grid.Column="2">
-                                    <TextBlock Text="Z" FontSize="10" Opacity="0.5" HorizontalAlignment="Center"/>
+                                    <TextBlock Text="Z" FontSize="10" Foreground="{DynamicResource TextFillColorTertiaryBrush}" HorizontalAlignment="Center"/>
                                     <TextBlock FontSize="11" FontFamily="Consolas" HorizontalAlignment="Center"
                                                Text="{Binding GyroZ, StringFormat='{}{0:F3}'}"/>
                                 </StackPanel>
@@ -815,7 +812,7 @@
                         </Border>
 
                         <!-- Accelerometer -->
-                        <TextBlock Text="{Binding Devices_Accelerometer, Source={x:Static strings:Strings.Instance}}" FontSize="11" Opacity="0.6" Margin="0,0,0,3"
+                        <TextBlock Text="{Binding Devices_Accelerometer, Source={x:Static strings:Strings.Instance}}" FontSize="11" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,0,0,3"
                                    Visibility="{Binding HasAccelData, Converter={StaticResource BoolToVisibilityConverter}}"/>
                         <Border Visibility="{Binding HasAccelData, Converter={StaticResource BoolToVisibilityConverter}}"
                                 Background="#10888888" CornerRadius="6" Padding="10,6" Margin="0,0,0,8">
@@ -826,17 +823,17 @@
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
                                 <StackPanel>
-                                    <TextBlock Text="X" FontSize="10" Opacity="0.5" HorizontalAlignment="Center"/>
+                                    <TextBlock Text="X" FontSize="10" Foreground="{DynamicResource TextFillColorTertiaryBrush}" HorizontalAlignment="Center"/>
                                     <TextBlock FontSize="11" FontFamily="Consolas" HorizontalAlignment="Center"
                                                Text="{Binding AccelX, StringFormat='{}{0:F3}'}"/>
                                 </StackPanel>
                                 <StackPanel Grid.Column="1">
-                                    <TextBlock Text="Y" FontSize="10" Opacity="0.5" HorizontalAlignment="Center"/>
+                                    <TextBlock Text="Y" FontSize="10" Foreground="{DynamicResource TextFillColorTertiaryBrush}" HorizontalAlignment="Center"/>
                                     <TextBlock FontSize="11" FontFamily="Consolas" HorizontalAlignment="Center"
                                                Text="{Binding AccelY, StringFormat='{}{0:F3}'}"/>
                                 </StackPanel>
                                 <StackPanel Grid.Column="2">
-                                    <TextBlock Text="Z" FontSize="10" Opacity="0.5" HorizontalAlignment="Center"/>
+                                    <TextBlock Text="Z" FontSize="10" Foreground="{DynamicResource TextFillColorTertiaryBrush}" HorizontalAlignment="Center"/>
                                     <TextBlock FontSize="11" FontFamily="Consolas" HorizontalAlignment="Center"
                                                Text="{Binding AccelZ, StringFormat='{}{0:F3}'}"/>
                                 </StackPanel>
@@ -845,7 +842,7 @@
 
                         <!-- Touchpad preview -->
                         <TextBlock Text="{Binding TouchpadLabel}"
-                                   FontSize="11" Opacity="0.6" Margin="0,0,0,3"
+                                   FontSize="11" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,0,0,3"
                                    Visibility="{Binding HasTouchpadData, Converter={StaticResource BoolToVisibilityConverter}}"/>
                         <Border x:Name="TouchpadPreviewBorder"
                                 Visibility="{Binding HasTouchpadData, Converter={StaticResource BoolToVisibilityConverter}}"
@@ -876,7 +873,7 @@
                         <!-- Second touchpad preview — shown only for multi-pad devices
                              (Steam Controller 2026 / Steam Deck / original Steam Controller). -->
                         <TextBlock Text="{Binding Touchpad2Label}"
-                                   FontSize="11" Opacity="0.6" Margin="0,0,0,3"
+                                   FontSize="11" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,0,0,3"
                                    Visibility="{Binding HasSecondTouchpadData, Converter={StaticResource BoolToVisibilityConverter}}"/>
                         <Border x:Name="Touchpad2PreviewBorder"
                                 Visibility="{Binding HasSecondTouchpadData, Converter={StaticResource BoolToVisibilityConverter}}"

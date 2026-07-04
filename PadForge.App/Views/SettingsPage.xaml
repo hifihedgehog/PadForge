@@ -72,8 +72,7 @@
                         <ui:NumberBox Value="{Binding PollingRateMs, Mode=TwoWay}"
                                       Minimum="1" Maximum="16"
                                       SpinButtonPlacementMode="Inline" Width="200"/>
-                        <TextBlock Text="{Binding Common_Ms, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="6,0,0,0"
-                                   Opacity="0.6"/>
+                        <TextBlock Text="{Binding Common_Ms, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="6,0,0,0" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                         <TextBlock Text="{Binding Settings_HmInactivityTimeout, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
@@ -82,8 +81,7 @@
                                       Minimum="0" Maximum="3600"
                                       SpinButtonPlacementMode="Inline" Width="200"
                                       ToolTip="{Binding Settings_HmInactivityTimeoutTooltip, Source={x:Static strings:Strings.Instance}}"/>
-                        <TextBlock Text="{Binding Settings_SecondsZeroNever, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="6,0,0,0"
-                                   Opacity="0.6"/>
+                        <TextBlock Text="{Binding Settings_SecondsZeroNever, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="6,0,0,0" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
                     </StackPanel>
                 </StackPanel>
             </Border>
@@ -130,8 +128,7 @@
                                          VerticalAlignment="Center" Margin="0,0,8,0"/>
                                 <TextBlock Text="{Binding HidHideStatusText}" FontWeight="SemiBold"/>
                             </StackPanel>
-                            <TextBlock Text="{Binding HidHideVersion}" FontSize="12"
-                                       Opacity="0.6" Margin="0,4,0,0"/>
+                            <TextBlock Text="{Binding HidHideVersion}" FontSize="12" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,4,0,0"/>
                         </StackPanel>
 
                         <StackPanel Grid.Column="1" Orientation="Horizontal"
@@ -204,8 +201,7 @@
                             <TextBlock Text="{Binding Common_Installed, Source={x:Static strings:Strings.Instance}}"
                                        FontWeight="SemiBold"/>
                         </StackPanel>
-                        <TextBlock Text="{Binding HIDMaestroVersion}" FontSize="12"
-                                   Opacity="0.6" Margin="0,4,0,0"/>
+                        <TextBlock Text="{Binding HIDMaestroVersion}" FontSize="12" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,4,0,0"/>
                     </StackPanel>
                 </StackPanel>
             </Border>
@@ -233,8 +229,7 @@
                                          VerticalAlignment="Center" Margin="0,0,8,0"/>
                                 <TextBlock Text="{Binding MidiServicesStatusText}" FontWeight="SemiBold"/>
                             </StackPanel>
-                            <TextBlock Text="{Binding MidiServicesVersion}" FontSize="12"
-                                       Opacity="0.6" Margin="0,4,0,0"/>
+                            <TextBlock Text="{Binding MidiServicesVersion}" FontSize="12" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,4,0,0"/>
                         </StackPanel>
 
                         <StackPanel Grid.Column="1" Orientation="Horizontal"
@@ -272,7 +267,7 @@
                     <TextBlock Text="{Binding Settings_SettingsFileDesc, Source={x:Static strings:Strings.Instance}}"
                                Style="{StaticResource CardDescription}"/>
                     <TextBlock Text="{Binding SettingsFilePath}" FontSize="12"
-                               FontFamily="Consolas" Opacity="0.7" TextWrapping="Wrap"
+                               FontFamily="Consolas" Foreground="{DynamicResource TextFillColorSecondaryBrush}" TextWrapping="Wrap"
                                Margin="0,0,0,12"/>
 
                     <StackPanel Orientation="Horizontal">
@@ -312,16 +307,14 @@
                             <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
 
-                        <TextBlock Text="{Binding Settings_AppVersion, Source={x:Static strings:Strings.Instance}}" FontSize="12" Opacity="0.6"/>
+                        <TextBlock Text="{Binding Settings_AppVersion, Source={x:Static strings:Strings.Instance}}" FontSize="12" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
                         <TextBlock Grid.Column="1" Text="{Binding ApplicationVersion}" FontSize="12"/>
 
-                        <TextBlock Grid.Row="1" Text="{Binding Settings_DotNetRuntime, Source={x:Static strings:Strings.Instance}}" FontSize="12"
-                                   Opacity="0.6" Margin="0,4,0,0"/>
+                        <TextBlock Grid.Row="1" Text="{Binding Settings_DotNetRuntime, Source={x:Static strings:Strings.Instance}}" FontSize="12" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,4,0,0"/>
                         <TextBlock Grid.Row="1" Grid.Column="1"
                                    Text="{Binding RuntimeVersion}" FontSize="12" Margin="0,4,0,0"/>
 
-                        <TextBlock Grid.Row="2" Text="{Binding Settings_SdlVersion, Source={x:Static strings:Strings.Instance}}" FontSize="12"
-                                   Opacity="0.6" Margin="0,4,0,0"/>
+                        <TextBlock Grid.Row="2" Text="{Binding Settings_SdlVersion, Source={x:Static strings:Strings.Instance}}" FontSize="12" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,4,0,0"/>
                         <TextBlock Grid.Row="2" Grid.Column="1"
                                    Text="{Binding SdlVersion}" FontSize="12" Margin="0,4,0,0"/>
                     </Grid>

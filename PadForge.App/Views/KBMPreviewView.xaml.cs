@@ -65,6 +65,32 @@ namespace PadForge.Views
         private static readonly Brush HoverBrush = F(0xFF,0xA2,0x4D);
         private static readonly Brush FlashBrush = F(0xFF,0xA5,0x00);
 
+        // Ember bloom (#175 glow sweep): pressed visuals carry a static
+        // DropShadowEffect, attached alongside the brush swap and detached
+        // when unlit. Frozen and shared, never animated. Small variant for
+        // glyphs 14px and under (movement dot, scroll arrows, side buttons).
+        private static readonly System.Windows.Media.Effects.DropShadowEffect EmberGlow = MakeEmberGlow(12);
+        private static readonly System.Windows.Media.Effects.DropShadowEffect EmberGlowSmall = MakeEmberGlow(8);
+
+        private static System.Windows.Media.Effects.DropShadowEffect MakeEmberGlow(double blur)
+        {
+            var fx = new System.Windows.Media.Effects.DropShadowEffect
+            {
+                Color = Color.FromRgb(0xFF, 0x6B, 0x2C),
+                BlurRadius = blur,
+                ShadowDepth = 0,
+                Opacity = 0.5
+            };
+            fx.Freeze();
+            return fx;
+        }
+
+        private static void SetGlow(UIElement element, System.Windows.Media.Effects.DropShadowEffect glow)
+        {
+            if (!ReferenceEquals(element.Effect, glow))
+                element.Effect = glow;
+        }
+
         // Layout constants
         private const double MC = 80;       // mouse center X
         private const double MoveSize = 55; // movement circle diameter
@@ -473,19 +499,40 @@ namespace PadForge.Views
                 if (_flashTarget == w.TargetName && _flashOn) continue;
                 bool pressed = w.VKeyIndex >= 0 && w.VKeyIndex <= 255 && kbm.GetKey((byte)w.VKeyIndex);
                 w.Border.Background = pressed ? KeyPressedBrush : KeyNormalBrush;
+                SetGlow(w.Border, pressed ? EmberGlow : null);
             }
 
-            // Mouse buttons
+            // Mouse buttons. Ember bloom rides the pressed brush (#175).
             if (_flashTarget != "KbmMBtn0" || !_flashOn)
-                _lmbPath.Fill = kbm.GetMouseButton(0) ? AccentBrush : MouseButtonBrush;
+            {
+                bool p = kbm.GetMouseButton(0);
+                _lmbPath.Fill = p ? AccentBrush : MouseButtonBrush;
+                SetGlow(_lmbPath, p ? EmberGlow : null);
+            }
             if (_flashTarget != "KbmMBtn1" || !_flashOn)
-                _rmbPath.Fill = kbm.GetMouseButton(1) ? AccentBrush : MouseButtonBrush;
+            {
+                bool p = kbm.GetMouseButton(1);
+                _rmbPath.Fill = p ? AccentBrush : MouseButtonBrush;
+                SetGlow(_rmbPath, p ? EmberGlow : null);
+            }
             if (_flashTarget != "KbmMBtn2" || !_flashOn)
-                _scrollWheelPill.Fill = kbm.GetMouseButton(2) ? AccentBrush : ScrollWheelBrush;
+            {
+                bool p = kbm.GetMouseButton(2);
+                _scrollWheelPill.Fill = p ? AccentBrush : ScrollWheelBrush;
+                SetGlow(_scrollWheelPill, p ? EmberGlow : null);
+            }
             if (_flashTarget != "KbmMBtn3" || !_flashOn)
-                _x1Rect.Fill = kbm.GetMouseButton(3) ? AccentBrush : MouseButtonBrush;
+            {
+                bool p = kbm.GetMouseButton(3);
+                _x1Rect.Fill = p ? AccentBrush : MouseButtonBrush;
+                SetGlow(_x1Rect, p ? EmberGlowSmall : null);
+            }
             if (_flashTarget != "KbmMBtn4" || !_flashOn)
-                _x2Rect.Fill = kbm.GetMouseButton(4) ? AccentBrush : MouseButtonBrush;
+            {
+                bool p = kbm.GetMouseButton(4);
+                _x2Rect.Fill = p ? AccentBrush : MouseButtonBrush;
+                SetGlow(_x2Rect, p ? EmberGlowSmall : null);
+            }
 
             // Movement dot — map output values directly (deadzone already applied in Step 3)
             if (_flashTarget == null || !_flashTarget.StartsWith("KbmMouse"))
@@ -501,7 +548,9 @@ namespace PadForge.Views
 
                 Canvas.SetLeft(_movementDot, dotX);
                 Canvas.SetTop(_movementDot, dotY);
-                _movementDot.Fill = (mx != 0 || my != 0) ? AccentBrush : DotBrush;
+                bool moving = mx != 0 || my != 0;
+                _movementDot.Fill = moving ? AccentBrush : DotBrush;
+                SetGlow(_movementDot, moving ? EmberGlowSmall : null);
                 if (_flashTarget == null) _moveArrow.Visibility = Visibility.Collapsed;
             }
 
@@ -510,7 +559,9 @@ namespace PadForge.Views
             {
                 short scroll = kbm.ScrollDelta;
                 _scrollUpArrow.Fill = scroll > 0 ? AccentBrush : DimBrush;
+                SetGlow(_scrollUpArrow, scroll > 0 ? EmberGlowSmall : null);
                 _scrollDownArrow.Fill = scroll < 0 ? AccentBrush : DimBrush;
+                SetGlow(_scrollDownArrow, scroll < 0 ? EmberGlowSmall : null);
             }
         }
 

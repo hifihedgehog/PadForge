@@ -214,17 +214,34 @@
                                 <Setter Property="Stroke" Value="{DynamicResource TextFillColorTertiaryBrush}"/>
                                 <Setter Property="StrokeThickness" Value="1.2"/>
                                 <Style.Triggers>
+                                    <!-- Glow sweep (#175): static Effect set from triggers only,
+                                         never animated. Running blooms ember, Idle/Stopping faint gold. -->
                                     <DataTrigger Binding="{Binding Dashboard.EngineStateKey}" Value="Running">
                                         <Setter Property="Fill" Value="{DynamicResource EmberBrush}"/>
                                         <Setter Property="Stroke" Value="{x:Null}"/>
+                                        <Setter Property="Effect">
+                                            <Setter.Value>
+                                                <DropShadowEffect Color="#FF6B2C" BlurRadius="8" ShadowDepth="0" Opacity="0.5"/>
+                                            </Setter.Value>
+                                        </Setter>
                                     </DataTrigger>
                                     <DataTrigger Binding="{Binding Dashboard.EngineStateKey}" Value="Idle">
                                         <Setter Property="Fill" Value="{DynamicResource WaitBrush}"/>
                                         <Setter Property="Stroke" Value="{x:Null}"/>
+                                        <Setter Property="Effect">
+                                            <Setter.Value>
+                                                <DropShadowEffect Color="#E8B434" BlurRadius="8" ShadowDepth="0" Opacity="0.35"/>
+                                            </Setter.Value>
+                                        </Setter>
                                     </DataTrigger>
                                     <DataTrigger Binding="{Binding Dashboard.EngineStateKey}" Value="Stopping">
                                         <Setter Property="Fill" Value="{DynamicResource WaitBrush}"/>
                                         <Setter Property="Stroke" Value="{x:Null}"/>
+                                        <Setter Property="Effect">
+                                            <Setter.Value>
+                                                <DropShadowEffect Color="#E8B434" BlurRadius="8" ShadowDepth="0" Opacity="0.35"/>
+                                            </Setter.Value>
+                                        </Setter>
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>

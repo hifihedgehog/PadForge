@@ -39,6 +39,32 @@ namespace PadForge.Views
         private static readonly Brush FlashBrush = new SolidColorBrush(Color.FromRgb(0xFF, 0xA5, 0x00));
         private static readonly Brush HoverBrush = new SolidColorBrush(Color.FromRgb(0xFF, 0xA2, 0x4D));
 
+        // Ember bloom (#175 glow sweep): lit rig elements carry a static
+        // DropShadowEffect. Frozen and shared, attached/detached where the
+        // lit state is applied, never animated. Small variant for glyphs
+        // 14px and under (the stick position dot).
+        private static readonly System.Windows.Media.Effects.DropShadowEffect EmberGlow = MakeEmberGlow(12);
+        private static readonly System.Windows.Media.Effects.DropShadowEffect EmberGlowSmall = MakeEmberGlow(8);
+
+        private static System.Windows.Media.Effects.DropShadowEffect MakeEmberGlow(double blur)
+        {
+            var fx = new System.Windows.Media.Effects.DropShadowEffect
+            {
+                Color = Color.FromRgb(0xFF, 0x6B, 0x2C),
+                BlurRadius = blur,
+                ShadowDepth = 0,
+                Opacity = 0.5
+            };
+            fx.Freeze();
+            return fx;
+        }
+
+        private static void SetGlow(UIElement element, System.Windows.Media.Effects.DropShadowEffect glow)
+        {
+            if (!ReferenceEquals(element.Effect, glow))
+                element.Effect = glow;
+        }
+
         // Flash state
         private DispatcherTimer _flashTimer;
         private string _flashTarget;
@@ -732,6 +758,10 @@ namespace PadForge.Views
                 double dotY = w.Y + ny * (StickSize - 10);
                 Canvas.SetLeft(w.Dot, dotX);
                 Canvas.SetTop(w.Dot, dotY);
+
+                // Deflected dot is lit: ember bloom (#175). Centered: none.
+                bool deflected = Math.Abs(nx - 0.5) > 0.02 || Math.Abs(ny - 0.5) > 0.02;
+                SetGlow(w.Dot, deflected ? EmberGlowSmall : null);
             }
 
             // Update triggers
@@ -743,6 +773,9 @@ namespace PadForge.Views
                 double fillH = Math.Clamp(value, 0, 1) * (TriggerHeight - 4);
                 w.Fill.Height = fillH;
                 Canvas.SetTop(w.Fill, w.Y + TriggerHeight - 2 - fillH);
+
+                // A visible fill is lit: ember bloom (#175). At rest: none.
+                SetGlow(w.Fill, fillH > 0 ? EmberGlow : null);
             }
 
             // Update POVs (skip when hovered or flash-targeted to prevent flickering)
@@ -773,6 +806,8 @@ namespace PadForge.Views
             {
                 bool pressed = raw.IsButtonPressed(w.ButtonIndex);
                 w.Circle.SetResourceReference(Shape.FillProperty, pressed ? AccentKey : BgKey);
+                // Pressed ring blooms ember (#175). Unpressed: none.
+                SetGlow(w.Circle, pressed ? EmberGlow : null);
             }
         }
 

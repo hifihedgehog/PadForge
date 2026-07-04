@@ -36,7 +36,12 @@
                         <Path Data="{StaticResource FlameOuterGeometry}"
                               Fill="{DynamicResource EmberBrush}"
                               Width="11" Height="13" Stretch="Uniform"
-                              VerticalAlignment="Center" Margin="0,0,5,0"/>
+                              VerticalAlignment="Center" Margin="0,0,5,0">
+                            <!-- Always lit, so the glow is static (#175 glow sweep). -->
+                            <Path.Effect>
+                                <DropShadowEffect Color="#FF6B2C" BlurRadius="8" ShadowDepth="0" Opacity="0.5"/>
+                            </Path.Effect>
+                        </Path>
                         <TextBlock Text="{Binding ActiveProfileInfo}" FontWeight="SemiBold"
                                    VerticalAlignment="Center"/>
                     </StackPanel>
@@ -56,7 +61,12 @@
                                               Fill="{DynamicResource EmberBrush}"
                                               Width="11" Height="13" Stretch="Uniform"
                                               VerticalAlignment="Center" Margin="0,0,5,0"
-                                              Visibility="{Binding IsActive, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                              Visibility="{Binding IsActive, Converter={StaticResource BoolToVisibilityConverter}}">
+                                            <!-- Rendered only when active, so the glow is static (#175 glow sweep). -->
+                                            <Path.Effect>
+                                                <DropShadowEffect Color="#FF6B2C" BlurRadius="8" ShadowDepth="0" Opacity="0.5"/>
+                                            </Path.Effect>
+                                        </Path>
                                         <TextBlock Text="{Binding Name}" FontWeight="SemiBold" VerticalAlignment="Center"/>
                                     </StackPanel>
                                     <TextBlock Text="{Binding Executables}" FontSize="12" Foreground="{DynamicResource TextFillColorTertiaryBrush}" TextTrimming="CharacterEllipsis">

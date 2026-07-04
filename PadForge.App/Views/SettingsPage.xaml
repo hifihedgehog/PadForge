@@ -137,6 +137,11 @@
                                                 <DataTrigger Binding="{Binding IsHidHideInstalled}" Value="True">
                                                     <Setter Property="Fill" Value="{DynamicResource EmberBrush}"/>
                                                     <Setter Property="Stroke" Value="{x:Null}"/>
+                                                    <Setter Property="Effect">
+                                                        <Setter.Value>
+                                                            <DropShadowEffect Color="#FF6B2C" BlurRadius="8" ShadowDepth="0" Opacity="0.5"/>
+                                                        </Setter.Value>
+                                                    </Setter>
                                                 </DataTrigger>
                                             </Style.Triggers>
                                         </Style>
@@ -215,7 +220,12 @@
                     <StackPanel>
                         <StackPanel Orientation="Horizontal">
                             <Path Style="{StaticResource LivenessFlameBase}" Margin="0,0,8,0"
-                                  Fill="{DynamicResource EmberBrush}" Stroke="{x:Null}"/>
+                                  Fill="{DynamicResource EmberBrush}" Stroke="{x:Null}">
+                                <!-- Always lit, so the glow is static (#175 glow sweep). -->
+                                <Path.Effect>
+                                    <DropShadowEffect Color="#FF6B2C" BlurRadius="8" ShadowDepth="0" Opacity="0.5"/>
+                                </Path.Effect>
+                            </Path>
                             <TextBlock Text="{Binding Common_Installed, Source={x:Static strings:Strings.Instance}}"
                                        FontWeight="SemiBold"/>
                         </StackPanel>
@@ -249,6 +259,11 @@
                                                 <DataTrigger Binding="{Binding IsMidiServicesInstalled}" Value="True">
                                                     <Setter Property="Fill" Value="{DynamicResource EmberBrush}"/>
                                                     <Setter Property="Stroke" Value="{x:Null}"/>
+                                                    <Setter Property="Effect">
+                                                        <Setter.Value>
+                                                            <DropShadowEffect Color="#FF6B2C" BlurRadius="8" ShadowDepth="0" Opacity="0.5"/>
+                                                        </Setter.Value>
+                                                    </Setter>
                                                 </DataTrigger>
                                             </Style.Triggers>
                                         </Style>

@@ -286,7 +286,7 @@
                         Background="{TemplateBinding Foreground}"
                         CornerRadius="3">
                         <Border.Effect>
-                            <DropShadowEffect Color="#FF6E2D" BlurRadius="8" ShadowDepth="0" Opacity="0.4"/>
+                            <DropShadowEffect Color="#FF6B2C" BlurRadius="12" ShadowDepth="0" Opacity="0.55"/>
                         </Border.Effect>
                     </Border>
                 </Grid>

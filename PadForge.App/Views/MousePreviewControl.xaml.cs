@@ -39,6 +39,32 @@ namespace PadForge.Views
         private static readonly Brush AccentBrush = F(0xFF,0x6B,0x2C);
         private static Brush DotBrush => IsDarkTheme ? _dotD : _dotL;
 
+        // Ember bloom (#175 glow sweep): pressed visuals carry a static
+        // DropShadowEffect, attached alongside the brush swap and detached
+        // when unlit. Frozen and shared, never animated. Small variant for
+        // glyphs 14px and under (movement dot, scroll arrows, side buttons).
+        private static readonly System.Windows.Media.Effects.DropShadowEffect EmberGlow = MakeEmberGlow(12);
+        private static readonly System.Windows.Media.Effects.DropShadowEffect EmberGlowSmall = MakeEmberGlow(8);
+
+        private static System.Windows.Media.Effects.DropShadowEffect MakeEmberGlow(double blur)
+        {
+            var fx = new System.Windows.Media.Effects.DropShadowEffect
+            {
+                Color = Color.FromRgb(0xFF, 0x6B, 0x2C),
+                BlurRadius = blur,
+                ShadowDepth = 0,
+                Opacity = 0.5
+            };
+            fx.Freeze();
+            return fx;
+        }
+
+        private static void SetGlow(UIElement element, System.Windows.Media.Effects.DropShadowEffect glow)
+        {
+            if (!ReferenceEquals(element.Effect, glow))
+                element.Effect = glow;
+        }
+
         private const double MC = 80;
         private const double MoveSize = 55;
         private const double BtnBottom = 58;
@@ -207,10 +233,15 @@ namespace PadForge.Views
             bool x2 = vm.RawButtons.Count > 4 && vm.RawButtons[4].IsPressed;
 
             _lmbPath.Fill = lmb ? AccentBrush : MouseButtonBrush;
+            SetGlow(_lmbPath, lmb ? EmberGlow : null);
             _rmbPath.Fill = rmb ? AccentBrush : MouseButtonBrush;
+            SetGlow(_rmbPath, rmb ? EmberGlow : null);
             _scrollWheelPill.Fill = mmb ? AccentBrush : ScrollWheelBrush;
+            SetGlow(_scrollWheelPill, mmb ? EmberGlow : null);
             _x1Rect.Fill = x1 ? AccentBrush : MouseButtonBrush;
+            SetGlow(_x1Rect, x1 ? EmberGlowSmall : null);
             _x2Rect.Fill = x2 ? AccentBrush : MouseButtonBrush;
+            SetGlow(_x2Rect, x2 ? EmberGlowSmall : null);
 
             // Movement dot
             double moveX = MC - MoveSize / 2;
@@ -222,7 +253,9 @@ namespace PadForge.Views
             double my = vm.MouseMotionY;
             Canvas.SetLeft(_movementDot, centerX + mx * maxDeflect);
             Canvas.SetTop(_movementDot, centerY - my * maxDeflect);
-            _movementDot.Fill = (Math.Abs(mx) > 0.01 || Math.Abs(my) > 0.01) ? AccentBrush : DotBrush;
+            bool moving = Math.Abs(mx) > 0.01 || Math.Abs(my) > 0.01;
+            _movementDot.Fill = moving ? AccentBrush : DotBrush;
+            SetGlow(_movementDot, moving ? EmberGlowSmall : null);
 
             // Scroll arrows — intensity varies with scroll magnitude
             double scroll = vm.MouseScrollIntensity;
@@ -232,27 +265,33 @@ namespace PadForge.Views
                 _scrollUpArrow.Fill = AccentBrush;
                 _scrollUpArrow.Opacity = 0.3 + 0.7 * absScroll;
                 _scrollUpArrow.RenderTransform = new ScaleTransform(1.0 + 0.4 * absScroll, 1.0 + 0.4 * absScroll, MC, 7);
+                SetGlow(_scrollUpArrow, EmberGlowSmall);
                 _scrollDownArrow.Fill = DimBrush;
                 _scrollDownArrow.Opacity = 1.0;
                 _scrollDownArrow.RenderTransform = null;
+                SetGlow(_scrollDownArrow, null);
             }
             else if (scroll < -0.01)
             {
                 _scrollDownArrow.Fill = AccentBrush;
                 _scrollDownArrow.Opacity = 0.3 + 0.7 * absScroll;
                 _scrollDownArrow.RenderTransform = new ScaleTransform(1.0 + 0.4 * absScroll, 1.0 + 0.4 * absScroll, MC, swBotConst - 7);
+                SetGlow(_scrollDownArrow, EmberGlowSmall);
                 _scrollUpArrow.Fill = DimBrush;
                 _scrollUpArrow.Opacity = 1.0;
                 _scrollUpArrow.RenderTransform = null;
+                SetGlow(_scrollUpArrow, null);
             }
             else
             {
                 _scrollUpArrow.Fill = DimBrush;
                 _scrollUpArrow.Opacity = 1.0;
                 _scrollUpArrow.RenderTransform = null;
+                SetGlow(_scrollUpArrow, null);
                 _scrollDownArrow.Fill = DimBrush;
                 _scrollDownArrow.Opacity = 1.0;
                 _scrollDownArrow.RenderTransform = null;
+                SetGlow(_scrollDownArrow, null);
             }
         }
 

@@ -3,7 +3,51 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
              xmlns:strings="clr-namespace:PadForge.Resources.Strings"
-             xmlns:common="clr-namespace:PadForge.Common">
+             xmlns:common="clr-namespace:PadForge.Common"
+             xmlns:po="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="po">
+
+    <UserControl.Resources>
+        <!-- Hover glow (#175): hover color changes carry a hue-matched
+             bloom. Every hover shift on this page is neutral steel, so the
+             glow is the faint ember signature. Frozen shared static effect,
+             set from triggers only, never animated. -->
+        <DropShadowEffect x:Key="NeutralHoverGlow" po:Freeze="True" Color="#FF6B2C" ShadowDepth="0" BlurRadius="10" Opacity="0.30"/>
+        <!-- Hover glow sweep (#175): stock-chrome classes bloom in the same
+             moment their hover fill shifts. BasedOn the WPF-UI defaults so
+             theme brushes survive. -->
+        <Style TargetType="Button" BasedOn="{StaticResource DefaultButtonStyle}">
+            <!-- MinHeight mirrors the App.xaml implicit Button style (32px
+                 grid), which this page-local implicit replaces. -->
+            <Setter Property="MinHeight" Value="32"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Effect" Value="{StaticResource NeutralHoverGlow}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style TargetType="CheckBox" BasedOn="{StaticResource DefaultCheckBoxStyle}">
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Effect" Value="{StaticResource NeutralHoverGlow}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style TargetType="ComboBox" BasedOn="{StaticResource DefaultComboBoxStyle}">
+            <!-- First four setters mirror the App.xaml implicit ComboBox
+                 style, which this page-local implicit replaces. -->
+            <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Visible"/>
+            <Setter Property="MaxDropDownHeight" Value="200"/>
+            <Setter Property="MinHeight" Value="30"/>
+            <Setter Property="Padding" Value="8,4"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Effect" Value="{StaticResource NeutralHoverGlow}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Resources>
 
     <ScrollViewer Padding="24,0">
         <StackPanel Margin="0,16,0,16">
@@ -51,9 +95,62 @@
                              MinHeight="60" MaxHeight="300"
                              Margin="0,0,0,8"
                              MouseDoubleClick="ProfileList_MouseDoubleClick">
+                        <!-- Hover glow (#175): stock row hover is a subtle
+                             neutral fill lighten, so the bloom is the faint
+                             ember signature. The active row's lit flame glow
+                             lives on a Path inside the ItemTemplate, a
+                             different element, so there is no Effect fight. -->
+                        <ListBox.ItemContainerStyle>
+                            <Style TargetType="ListBoxItem" BasedOn="{StaticResource DefaultListBoxItemStyle}">
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Effect" Value="{StaticResource NeutralHoverGlow}"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </ListBox.ItemContainerStyle>
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel Margin="4,2">
+                                    <!-- Hover lift (#175): element-level transform on
+                                         the row template root; the container style's
+                                         glow stays on the ListBoxItem. Only the
+                                         transform animates. -->
+                                    <StackPanel.RenderTransform>
+                                        <TranslateTransform/>
+                                    </StackPanel.RenderTransform>
+                                    <StackPanel.Style>
+                                        <Style TargetType="StackPanel">
+                                            <Style.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Trigger.EnterActions>
+                                                        <BeginStoryboard>
+                                                            <Storyboard>
+                                                                <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.Y)"
+                                                                                 To="-2" Duration="0:0:0.13">
+                                                                    <DoubleAnimation.EasingFunction>
+                                                                        <CubicEase EasingMode="EaseOut"/>
+                                                                    </DoubleAnimation.EasingFunction>
+                                                                </DoubleAnimation>
+                                                            </Storyboard>
+                                                        </BeginStoryboard>
+                                                    </Trigger.EnterActions>
+                                                    <Trigger.ExitActions>
+                                                        <BeginStoryboard>
+                                                            <Storyboard>
+                                                                <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.Y)"
+                                                                                 To="0" Duration="0:0:0.25">
+                                                                    <DoubleAnimation.EasingFunction>
+                                                                        <CubicEase EasingMode="EaseIn"/>
+                                                                    </DoubleAnimation.EasingFunction>
+                                                                </DoubleAnimation>
+                                                            </Storyboard>
+                                                        </BeginStoryboard>
+                                                    </Trigger.ExitActions>
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </StackPanel.Style>
                                     <StackPanel Orientation="Horizontal">
                                         <!-- The active profile burns (#175): lit flame on the row
                                              currently driving the forge. -->

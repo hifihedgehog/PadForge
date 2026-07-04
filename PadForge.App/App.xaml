@@ -70,6 +70,11 @@
                                         <Trigger Property="IsMouseOver" Value="True">
                                             <Setter TargetName="Bd" Property="Background"
                                                     Value="{DynamicResource SubtleFillColorSecondaryBrush}"/>
+                                            <!-- Hover glow (#175): subtle-fill lift is
+                                                 neutral, so faint ember. Static, shared,
+                                                 frozen (ControllerIcons.xaml). -->
+                                            <Setter TargetName="Bd" Property="Effect"
+                                                    Value="{StaticResource NeutralHoverGlow}"/>
                                         </Trigger>
                                         <Trigger Property="IsPressed" Value="True">
                                             <Setter TargetName="Bd" Property="Background"
@@ -165,6 +170,14 @@
                      sit on the same rhythm as the 32px control grid. -->
                 <Setter Property="MinHeight" Value="30"/>
                 <Setter Property="Padding" Value="8,4"/>
+                <Style.Triggers>
+                    <!-- Hover glow (#175): closed control lifts to raised
+                         steel (neutral), so faint ember. Static frozen
+                         Effect shared from ControllerIcons.xaml. -->
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Effect" Value="{StaticResource NeutralHoverGlow}"/>
+                    </Trigger>
+                </Style.Triggers>
             </Style>
 
             <!--
@@ -174,6 +187,15 @@
             -->
             <Style TargetType="Button" BasedOn="{StaticResource DefaultButtonStyle}">
                 <Setter Property="MinHeight" Value="32"/>
+                <Style.Triggers>
+                    <!-- Hover glow (#175): the template swaps to
+                         ButtonBackgroundPointerOver steel lift (neutral),
+                         so faint ember. Covers every plain Button,
+                         including the code-built rail/flyout buttons. -->
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Effect" Value="{StaticResource NeutralHoverGlow}"/>
+                    </Trigger>
+                </Style.Triggers>
             </Style>
 
             <!--
@@ -212,6 +234,13 @@
                     </Setter.Value>
                 </Setter>
                 <Style.Triggers>
+                    <!-- Hover glow (#175): the ring lights ColdBrush, so the
+                         glow is cold. Static frozen Effect, never animated
+                         (see motion note above). EmberIconButtonHot overrides
+                         this trigger with the ember glow via BasedOn. -->
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Effect" Value="{StaticResource ColdHoverGlow}"/>
+                    </Trigger>
                     <Trigger Property="IsPressed" Value="True">
                         <Setter Property="RenderTransform">
                             <Setter.Value>
@@ -230,6 +259,27 @@
             </Style>
             <Style x:Key="EmberIconButtonHot" TargetType="uictrl:Button" BasedOn="{StaticResource EmberIconButton}">
                 <Setter Property="MouseOverBorderBrush" Value="{DynamicResource EmberBrush}"/>
+                <Style.Triggers>
+                    <!-- Hover glow (#175): ember ring, ember glow. Derived
+                         trigger wins over the base style's cold glow. -->
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Effect" Value="{StaticResource EmberHoverGlow}"/>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+
+            <!--
+                Primary accent buttons (#175 hover glow): hover heats the
+                fill to EmberHot via AccentButtonBackgroundPointerOver, so
+                the glow is full ember. For ui:Button Appearance=Primary
+                consumers (first-run Begin, tour Next).
+            -->
+            <Style x:Key="EmberPrimaryButton" TargetType="uictrl:Button" BasedOn="{StaticResource DefaultUiButtonStyle}">
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Effect" Value="{StaticResource EmberHoverGlow}"/>
+                    </Trigger>
+                </Style.Triggers>
             </Style>
 
             <!--
@@ -243,6 +293,23 @@
                 <Setter Property="MinWidth" Value="0"/>
                 <Setter Property="MinHeight" Value="24"/>
                 <Setter Property="Padding" Value="0,2,0,2"/>
+                <Style.Triggers>
+                    <!-- Hover glow (#175): stock Fluent pointer-over fill is
+                         a neutral subtle change, so faint ember. -->
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Effect" Value="{StaticResource NeutralHoverGlow}"/>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+            <!-- Form checkboxes ride the implicit style (same neutral glow);
+                 keyed GridOptionCheckBox above is based directly on
+                 DefaultCheckBoxStyle so it carries its own copy. -->
+            <Style TargetType="CheckBox" BasedOn="{StaticResource DefaultCheckBoxStyle}">
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Effect" Value="{StaticResource NeutralHoverGlow}"/>
+                    </Trigger>
+                </Style.Triggers>
             </Style>
 
             <!--
@@ -380,6 +447,11 @@
                                                         <Trigger Property="IsMouseOver" Value="True">
                                                             <Setter TargetName="ThumbDot" Property="Fill"
                                                                     Value="{DynamicResource SliderThumbBackgroundPointerOver}"/>
+                                                            <!-- Hover glow (#175): thumb heats to
+                                                                 EmberHot, so ember glow. 14px dot
+                                                                 takes the small-glyph radius. -->
+                                                            <Setter TargetName="ThumbDot" Property="Effect"
+                                                                    Value="{StaticResource EmberHoverGlowSmall}"/>
                                                         </Trigger>
                                                     </ControlTemplate.Triggers>
                                                 </ControlTemplate>
@@ -479,6 +551,12 @@
                         <Setter Property="Height" Value="Auto"/>
                         <Setter Property="Template" Value="{StaticResource AlwaysVisibleDynamicVerticalScrollBar}"/>
                     </Trigger>
+                    <!-- Hover glow (#175): hover fades in the line buttons
+                         and widens the thumb (neutral chrome), so faint
+                         ember on the whole bar. -->
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Effect" Value="{StaticResource NeutralHoverGlow}"/>
+                    </Trigger>
                 </Style.Triggers>
             </Style>
 
@@ -536,10 +614,22 @@
             <Style TargetType="TextBox" BasedOn="{StaticResource DefaultTextBoxStyle}">
                 <Setter Property="SelectionBrush" Value="{DynamicResource EmberBrush}"/>
                 <Setter Property="SelectionOpacity" Value="0.35"/>
+                <Style.Triggers>
+                    <!-- Hover glow (#175): well deepens to the pointer-over
+                         fill (neutral), so faint ember. -->
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Effect" Value="{StaticResource NeutralHoverGlow}"/>
+                    </Trigger>
+                </Style.Triggers>
             </Style>
             <Style TargetType="uictrl:TextBox" BasedOn="{StaticResource DefaultUiTextBoxStyle}">
                 <Setter Property="SelectionBrush" Value="{DynamicResource EmberBrush}"/>
                 <Setter Property="SelectionOpacity" Value="0.35"/>
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Effect" Value="{StaticResource NeutralHoverGlow}"/>
+                    </Trigger>
+                </Style.Triggers>
             </Style>
 
             <!--

@@ -4,7 +4,10 @@
              xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
              xmlns:common="clr-namespace:PadForge.Common"
              xmlns:local="clr-namespace:PadForge.Views"
-             xmlns:strings="clr-namespace:PadForge.Resources.Strings">
+             xmlns:strings="clr-namespace:PadForge.Resources.Strings"
+             xmlns:po="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="po">
 
     <UserControl.Resources>
         <!-- Ember (#175): list-row meta segments render cold mono. Liveness
@@ -81,6 +84,44 @@
         <!-- Glow sweep (#175): shared cold bloom for pressed touch dots
              and POV needles. Static, frozen, never animated. -->
         <DropShadowEffect x:Key="ColdDotGlow" Color="#58B6E4" BlurRadius="8" ShadowDepth="0" Opacity="0.45"/>
+        <!-- Hover glow (#175): hover color changes carry a hue-matched
+             bloom. Every hover shift on this page is neutral steel, so the
+             glow is the faint ember signature. Frozen shared static effect,
+             set from triggers only, never animated. -->
+        <DropShadowEffect x:Key="NeutralHoverGlow" po:Freeze="True" Color="#FF6B2C" ShadowDepth="0" BlurRadius="10" Opacity="0.30"/>
+        <!-- Hover glow sweep (#175): stock-chrome classes bloom in the same
+             moment their hover fill shifts. BasedOn the WPF-UI defaults so
+             theme brushes survive. The two inline Button styles below
+             (Submit Mapping, Manage NFC Tags) chain into the Button
+             implicit via their BasedOn {x:Type Button}. -->
+        <Style TargetType="Button" BasedOn="{StaticResource DefaultButtonStyle}">
+            <!-- MinHeight mirrors the App.xaml implicit Button style (32px
+                 grid), which this page-local implicit replaces. -->
+            <Setter Property="MinHeight" Value="32"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Effect" Value="{StaticResource NeutralHoverGlow}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style TargetType="CheckBox" BasedOn="{StaticResource DefaultCheckBoxStyle}">
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Effect" Value="{StaticResource NeutralHoverGlow}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style TargetType="TextBox" BasedOn="{StaticResource DefaultTextBoxStyle}">
+            <!-- Selection setters mirror the App.xaml implicit TextBox
+                 style, which this page-local implicit replaces. -->
+            <Setter Property="SelectionBrush" Value="{DynamicResource EmberBrush}"/>
+            <Setter Property="SelectionOpacity" Value="0.35"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Effect" Value="{StaticResource NeutralHoverGlow}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
         <Style x:Key="RawCellLabel" TargetType="TextBlock">
             <Setter Property="FontFamily" Value="{StaticResource TelemetryFontFamily}"/>
             <Setter Property="Foreground" Value="{DynamicResource TextFillColorTertiaryBrush}"/>
@@ -278,7 +319,12 @@
                         <Setter Property="Template">
                             <Setter.Value>
                                 <ControlTemplate TargetType="ListBoxItem">
-                                    <Grid>
+                                    <Grid x:Name="RowRoot">
+                                        <!-- Hover lift (#175): element-level transform so
+                                             the trigger storyboard animates per row. -->
+                                        <Grid.RenderTransform>
+                                            <TranslateTransform/>
+                                        </Grid.RenderTransform>
                                         <!-- Selection accent bar (left edge) -->
                                         <Border x:Name="SelectionBar" Width="4"
                                                 HorizontalAlignment="Left" CornerRadius="2"
@@ -287,6 +333,41 @@
                                         <ContentPresenter Margin="6,0,0,0"/>
                                     </Grid>
                                     <ControlTemplate.Triggers>
+                                        <!-- Hover glow + lift (#175): the row card is
+                                             clickable, selectable, and draggable but had no
+                                             hover feedback. Hover before IsSelected;
+                                             selection only drives the bar, so no Effect
+                                             fight. Static effect; only the transform
+                                             animates. -->
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Effect" Value="{StaticResource NeutralHoverGlow}"/>
+                                            <Trigger.EnterActions>
+                                                <BeginStoryboard>
+                                                    <Storyboard>
+                                                        <DoubleAnimation Storyboard.TargetName="RowRoot"
+                                                                         Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.Y)"
+                                                                         To="-2" Duration="0:0:0.13">
+                                                            <DoubleAnimation.EasingFunction>
+                                                                <CubicEase EasingMode="EaseOut"/>
+                                                            </DoubleAnimation.EasingFunction>
+                                                        </DoubleAnimation>
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </Trigger.EnterActions>
+                                            <Trigger.ExitActions>
+                                                <BeginStoryboard>
+                                                    <Storyboard>
+                                                        <DoubleAnimation Storyboard.TargetName="RowRoot"
+                                                                         Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.Y)"
+                                                                         To="0" Duration="0:0:0.25">
+                                                            <DoubleAnimation.EasingFunction>
+                                                                <CubicEase EasingMode="EaseIn"/>
+                                                            </DoubleAnimation.EasingFunction>
+                                                        </DoubleAnimation>
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </Trigger.ExitActions>
+                                        </Trigger>
                                         <Trigger Property="IsSelected" Value="True">
                                             <Setter TargetName="SelectionBar" Property="Visibility" Value="Visible"/>
                                         </Trigger>
@@ -443,6 +524,12 @@
                                                      with the ember gradient and glows. -->
                                                 <Style TargetType="ToggleButton" BasedOn="{StaticResource {x:Type ToggleButton}}">
                                                     <Style.Triggers>
+                                                        <!-- Hover glow (#175): neutral hover, faint ember.
+                                                             Before IsChecked so the assigned pill's own
+                                                             ember glow wins while checked. -->
+                                                        <Trigger Property="IsMouseOver" Value="True">
+                                                            <Setter Property="Effect" Value="{StaticResource NeutralHoverGlow}"/>
+                                                        </Trigger>
                                                         <Trigger Property="IsChecked" Value="True">
                                                             <Setter Property="Foreground" Value="#FFFFF3E8"/>
                                                             <Setter Property="Background">

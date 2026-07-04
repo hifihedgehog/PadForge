@@ -2260,8 +2260,22 @@ namespace PadForge
             deleteBtn.Click += OnSidebarDeleteSlot;
             System.Windows.Controls.DockPanel.SetDock(deleteBtn, System.Windows.Controls.Dock.Right);
             row.Children.Add(deleteBtn);
-            row.MouseEnter += (s, e) => deleteBtn.Opacity = 0.6;
-            row.MouseLeave += (s, e) => deleteBtn.Opacity = 0;
+            // Hover glow (#175): the reveal is neutral (primary-text glyph,
+            // no hue swap), so the revealed X carries the faint ember glow.
+            // Shared frozen effect from ControllerIcons.xaml; ClearValue on
+            // leave so the implicit Button style's own hover trigger still
+            // applies when the pointer reaches the button directly.
+            var revealGlow = TryFindResource("NeutralHoverGlow") as System.Windows.Media.Effects.Effect;
+            row.MouseEnter += (s, e) =>
+            {
+                deleteBtn.Opacity = 0.6;
+                if (revealGlow != null) deleteBtn.Effect = revealGlow;
+            };
+            row.MouseLeave += (s, e) =>
+            {
+                deleteBtn.Opacity = 0;
+                deleteBtn.ClearValue(System.Windows.UIElement.EffectProperty);
+            };
 
             // Flame power toggle (#175): heat encodes liveness.
             // Ember = forging (enabled, engine running, VC live).
@@ -2510,7 +2524,37 @@ namespace PadForge
             if (!navItem.IsEnabled)
                 card.Opacity = 0.6;
 
-            // Drag reordering — mouse-down recorded here, threshold + movement tracked at NavView level.
+            // Hover engagement (#175): every mini card lifts 2px on hover;
+            // cards without a state effect also bloom faint ember. The lit
+            // card keeps its breathing ring untouched (one Effect slot per
+            // element), so its hover feedback is the lift alone.
+            var cardLift = new System.Windows.Media.TranslateTransform();
+            card.RenderTransform = cardLift;
+            var cardHoverGlow = TryFindResource("NeutralHoverGlow") as System.Windows.Media.Effects.Effect;
+            card.MouseEnter += (s, e) =>
+            {
+                var up = new System.Windows.Media.Animation.DoubleAnimation(-2, System.TimeSpan.FromMilliseconds(130))
+                {
+                    EasingFunction = new System.Windows.Media.Animation.CubicEase
+                    { EasingMode = System.Windows.Media.Animation.EasingMode.EaseOut }
+                };
+                cardLift.BeginAnimation(System.Windows.Media.TranslateTransform.YProperty, up);
+                if (card.Effect == null && cardHoverGlow != null)
+                    card.Effect = cardHoverGlow;
+            };
+            card.MouseLeave += (s, e) =>
+            {
+                var down = new System.Windows.Media.Animation.DoubleAnimation(0, System.TimeSpan.FromMilliseconds(250))
+                {
+                    EasingFunction = new System.Windows.Media.Animation.CubicEase
+                    { EasingMode = System.Windows.Media.Animation.EasingMode.EaseIn }
+                };
+                cardLift.BeginAnimation(System.Windows.Media.TranslateTransform.YProperty, down);
+                if (ReferenceEquals(card.Effect, cardHoverGlow))
+                    card.Effect = null;
+            };
+
+            // Drag reordering. Mouse-down recorded here, threshold + movement tracked at NavView level.
             card.PreviewMouseLeftButtonDown += OnCardDragStart;
 
             // Cross-panel: accept device drops from Devices page.

@@ -3,9 +3,19 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
              xmlns:common="clr-namespace:PadForge.Common"
-             xmlns:strings="clr-namespace:PadForge.Resources.Strings">
+             xmlns:strings="clr-namespace:PadForge.Resources.Strings"
+             xmlns:po="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="po">
 
     <UserControl.Resources>
+        <!-- Hover glow (#175): every hover color change carries a glow in
+             the hue the element turns. Ember hovers bloom ember; neutral
+             steel hovers carry the faint ember signature. Frozen shared
+             static effects, set from triggers only, never animated. -->
+        <DropShadowEffect x:Key="EmberHoverGlow" po:Freeze="True" Color="#FF6B2C" ShadowDepth="0" BlurRadius="12" Opacity="0.45"/>
+        <DropShadowEffect x:Key="NeutralHoverGlow" po:Freeze="True" Color="#FF6B2C" ShadowDepth="0" BlurRadius="10" Opacity="0.30"/>
+
         <!-- Type-switch button style: transparent bg, dark gray hover, rounded corners -->
         <Style x:Key="TypeSwitchButton" TargetType="Button">
             <Setter Property="Background" Value="Transparent"/>
@@ -35,6 +45,83 @@
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
+            <Style.Triggers>
+                <!-- Hover glow (#175): neutral steel hover, faint ember bloom.
+                     First in the list so derived state triggers (active seg
+                     tile ember glow, cold-card Effect=x:Null fallback) win
+                     while their state holds. -->
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Effect" Value="{StaticResource NeutralHoverGlow}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- Hover glow sweep (#175): stock-chrome classes bloom in the same
+             moment their hover fill shifts. BasedOn the WPF-UI defaults so
+             theme brushes survive. -->
+        <Style TargetType="Button" BasedOn="{StaticResource DefaultButtonStyle}">
+            <!-- MinHeight mirrors the App.xaml implicit Button style (32px
+                 grid), which this page-local implicit replaces. -->
+            <Setter Property="MinHeight" Value="32"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Effect" Value="{StaticResource NeutralHoverGlow}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style TargetType="ui:Button" BasedOn="{StaticResource DefaultUiButtonStyle}">
+            <Style.Triggers>
+                <!-- Neutral first; the Primary accent rides the ember ramp,
+                     so its MultiTrigger sits later and wins on hover. -->
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Effect" Value="{StaticResource NeutralHoverGlow}"/>
+                </Trigger>
+                <MultiTrigger>
+                    <MultiTrigger.Conditions>
+                        <Condition Property="IsMouseOver" Value="True"/>
+                        <Condition Property="Appearance" Value="Primary"/>
+                    </MultiTrigger.Conditions>
+                    <Setter Property="Effect" Value="{StaticResource EmberHoverGlow}"/>
+                </MultiTrigger>
+            </Style.Triggers>
+        </Style>
+        <Style TargetType="CheckBox" BasedOn="{StaticResource DefaultCheckBoxStyle}">
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Effect" Value="{StaticResource NeutralHoverGlow}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style TargetType="ComboBox" BasedOn="{StaticResource DefaultComboBoxStyle}">
+            <!-- First four setters mirror the App.xaml implicit ComboBox
+                 style, which this page-local implicit replaces. -->
+            <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Visible"/>
+            <Setter Property="MaxDropDownHeight" Value="200"/>
+            <Setter Property="MinHeight" Value="30"/>
+            <Setter Property="Padding" Value="8,4"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Effect" Value="{StaticResource NeutralHoverGlow}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style TargetType="ui:NumberBox" BasedOn="{StaticResource DefaultUiNumberBoxStyle}">
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Effect" Value="{StaticResource NeutralHoverGlow}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style TargetType="ui:TextBox" BasedOn="{StaticResource DefaultUiTextBoxStyle}">
+            <!-- Selection setters mirror the App.xaml implicit ui:TextBox
+                 style, which this page-local implicit replaces. -->
+            <Setter Property="SelectionBrush" Value="{DynamicResource EmberBrush}"/>
+            <Setter Property="SelectionOpacity" Value="0.35"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Effect" Value="{StaticResource NeutralHoverGlow}"/>
+                </Trigger>
+            </Style.Triggers>
         </Style>
     </UserControl.Resources>
 
@@ -306,6 +393,11 @@
                                 Cursor="Hand"
                                 Tag="{Binding PadIndex}"
                                 Loaded="SlotCard_Loaded">
+                            <!-- Hover lift (#175): element-level transform so the
+                                 trigger storyboard animates a per-card instance. -->
+                            <Border.RenderTransform>
+                                <TranslateTransform/>
+                            </Border.RenderTransform>
                             <!-- Heat states (#175 pitch): cold = steel line,
                                  awaiting devices = faint warm rim, forging =
                                  ember rim. The glow host behind matches with
@@ -314,6 +406,37 @@
                                 <Style TargetType="Border">
                                     <Setter Property="BorderBrush" Value="{DynamicResource SteelLineBrush}"/>
                                     <Style.Triggers>
+                                        <!-- Hover glow + lift (#175): the whole card is a
+                                             Cursor=Hand click/drag zone, so hovering blooms
+                                             ember and the card lifts 2px to invite the grab.
+                                             Static effect; only the transform animates. -->
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Effect" Value="{StaticResource EmberHoverGlow}"/>
+                                            <Trigger.EnterActions>
+                                                <BeginStoryboard>
+                                                    <Storyboard>
+                                                        <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.Y)"
+                                                                         To="-2" Duration="0:0:0.13">
+                                                            <DoubleAnimation.EasingFunction>
+                                                                <CubicEase EasingMode="EaseOut"/>
+                                                            </DoubleAnimation.EasingFunction>
+                                                        </DoubleAnimation>
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </Trigger.EnterActions>
+                                            <Trigger.ExitActions>
+                                                <BeginStoryboard>
+                                                    <Storyboard>
+                                                        <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.Y)"
+                                                                         To="0" Duration="0:0:0.25">
+                                                            <DoubleAnimation.EasingFunction>
+                                                                <CubicEase EasingMode="EaseIn"/>
+                                                            </DoubleAnimation.EasingFunction>
+                                                        </DoubleAnimation>
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </Trigger.ExitActions>
+                                        </Trigger>
                                         <!-- Pure cold: nothing mapped, card recedes. -->
                                         <DataTrigger Binding="{Binding HasMappedDevices}" Value="False">
                                             <Setter Property="Opacity" Value="0.72"/>
@@ -810,6 +933,45 @@
                     CornerRadius="8" Padding="16" Margin="4,4,4,4"
                     Cursor="Hand" MouseLeftButtonUp="AddControllerCard_Click"
                     Visibility="{Binding ShowAddController, Converter={StaticResource BoolToVisibilityConverter}}">
+                <Border.RenderTransform>
+                    <TranslateTransform/>
+                </Border.RenderTransform>
+                <Border.Style>
+                    <Style TargetType="Border">
+                        <Style.Triggers>
+                            <!-- Hover glow + lift (#175): Cursor=Hand zone that had
+                                 no hover feedback. Faint ember, static effect; only
+                                 the transform animates. -->
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Effect" Value="{StaticResource NeutralHoverGlow}"/>
+                                <Trigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.Y)"
+                                                             To="-2" Duration="0:0:0.13">
+                                                <DoubleAnimation.EasingFunction>
+                                                    <CubicEase EasingMode="EaseOut"/>
+                                                </DoubleAnimation.EasingFunction>
+                                            </DoubleAnimation>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.EnterActions>
+                                <Trigger.ExitActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.Y)"
+                                                             To="0" Duration="0:0:0.25">
+                                                <DoubleAnimation.EasingFunction>
+                                                    <CubicEase EasingMode="EaseIn"/>
+                                                </DoubleAnimation.EasingFunction>
+                                            </DoubleAnimation>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.ExitActions>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Border.Style>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center"
                             VerticalAlignment="Center">
                     <TextBlock Text="&#xE710;" FontFamily="Segoe MDL2 Assets" FontSize="20"
@@ -1147,7 +1309,21 @@
                         <Slider Value="{Binding TouchpadOverlayOpacity, Mode=TwoWay}"
                                 Minimum="0.0" Maximum="1.0"
                                 SmallChange="0.05" LargeChange="0.1"
-                                Width="160" VerticalAlignment="Center"/>
+                                Width="160" VerticalAlignment="Center">
+                            <!-- Hover glow (#175): the thumb flips ember-hot on hover
+                                 (SliderThumbBackgroundPointerOver), so the bloom is
+                                 ember. BasedOn the implicit style so the themed
+                                 template survives. -->
+                            <Slider.Style>
+                                <Style TargetType="Slider" BasedOn="{StaticResource {x:Type Slider}}">
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Effect" Value="{StaticResource EmberHoverGlow}"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Slider.Style>
+                        </Slider>
                         <ui:NumberBox Value="{Binding TouchpadOverlayOpacityPercent, Mode=TwoWay}"
                                       Minimum="0" Maximum="100"
                                       SpinButtonPlacementMode="Inline" Width="130"

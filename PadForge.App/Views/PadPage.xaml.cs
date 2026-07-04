@@ -1292,16 +1292,41 @@ namespace PadForge.Views
         //  Motor test (click) + hover highlight
         // ─────────────────────────────────────────────
 
+        /// <summary>#175 hover-glow for the motor test click zones. Hover
+        /// dims the zone (brightness-only change), so the glow is the faint
+        /// neutral ember. Shared frozen instance, assigned statically from
+        /// code. Never animate a shared Effect.</summary>
+        private static readonly System.Windows.Media.Effects.DropShadowEffect MotorHoverGlow = CreateMotorHoverGlow();
+
+        private static System.Windows.Media.Effects.DropShadowEffect CreateMotorHoverGlow()
+        {
+            var fx = new System.Windows.Media.Effects.DropShadowEffect
+            {
+                Color = Color.FromRgb(0xFF, 0x6B, 0x2C),
+                ShadowDepth = 0,
+                BlurRadius = 10,
+                Opacity = 0.30
+            };
+            fx.Freeze();
+            return fx;
+        }
+
         private void Motor_MouseEnter(object sender, MouseEventArgs e)
         {
             if (sender is FrameworkElement el)
+            {
                 el.Opacity = 0.7;
+                el.Effect = MotorHoverGlow;
+            }
         }
 
         private void Motor_MouseLeave(object sender, MouseEventArgs e)
         {
             if (sender is FrameworkElement el)
+            {
                 el.Opacity = 1.0;
+                el.Effect = null;
+            }
         }
 
         private void LeftMotor_Click(object sender, MouseButtonEventArgs e)

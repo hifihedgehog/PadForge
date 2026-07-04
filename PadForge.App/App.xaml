@@ -42,6 +42,9 @@
                         <GradientStop Color="#111623" Offset="1"/>
                     </LinearGradientBrush>
                     <SolidColorBrush x:Key="SteelLineSoftBrush" Color="#1C2536"/>
+                    <!-- Flyout ground (steel-850): dropdowns, context menus,
+                         tooltips. Every elevated transient surface. -->
+                    <SolidColorBrush x:Key="SteelFlyoutBrush" Color="#151C2C"/>
                     <SolidColorBrush x:Key="SegTrackBrush" Color="#0B0E14"/>
                     <SolidColorBrush x:Key="SegTrackStrokeBrush" Color="#1C2536"/>
                     <!-- Wait gold: the only sanctioned gold. Cooling flames,
@@ -84,6 +87,57 @@
             <Style TargetType="ComboBox" BasedOn="{StaticResource DefaultComboBoxStyle}">
                 <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Visible"/>
                 <Setter Property="MaxDropDownHeight" Value="200"/>
+            </Style>
+
+            <!--
+                Chrome unification (#175 control spec §1, route b): plain
+                Button snaps to the 32px grid. Colors come from the
+                EmberTheme key overrides, not from setters here.
+            -->
+            <Style TargetType="Button" BasedOn="{StaticResource DefaultButtonStyle}">
+                <Setter Property="MinHeight" Value="32"/>
+            </Style>
+
+            <!--
+                Icon micro-buttons (#175 control spec §3): 28x28 hit target,
+                radius 6, transparent rest fill with a 1px ghost stroke so
+                they read as targets at rest. Hover fills raised steel and
+                lights a domain ring: cold for input-side actions (reset to
+                default), ember (EmberIconButtonHot) for output-writing
+                actions (record, erase binding, row delete). Must be
+                uictrl:Button: plain Button's hover/pressed brushes are fixed
+                DynamicResource keys inside the template triggers, while
+                ui:Button exposes MouseOverBackground/MouseOverBorderBrush/
+                PressedBackground as settable properties.
+            -->
+            <Style x:Key="EmberIconButton" TargetType="uictrl:Button" BasedOn="{StaticResource DefaultUiButtonStyle}">
+                <Setter Property="Width" Value="28"/>
+                <Setter Property="Height" Value="28"/>
+                <Setter Property="Padding" Value="0"/>
+                <Setter Property="CornerRadius" Value="6"/>
+                <Setter Property="Background" Value="Transparent"/>
+                <Setter Property="BorderBrush" Value="{DynamicResource SteelLineSoftBrush}"/>
+                <Setter Property="MouseOverBackground" Value="{DynamicResource SteelRaisedBrush}"/>
+                <Setter Property="MouseOverBorderBrush" Value="{DynamicResource ColdBrush}"/>
+                <Setter Property="PressedBackground" Value="#161D2B"/>
+                <Setter Property="HorizontalAlignment" Value="Center"/>
+                <Setter Property="Margin" Value="4,0,0,0"/>
+            </Style>
+            <Style x:Key="EmberIconButtonHot" TargetType="uictrl:Button" BasedOn="{StaticResource EmberIconButton}">
+                <Setter Property="MouseOverBorderBrush" Value="{DynamicResource EmberBrush}"/>
+            </Style>
+
+            <!--
+                Grid option checkboxes (#175 control spec §6, route b): stock
+                DefaultCheckBoxStyle carries MinWidth=120 / MinHeight=32 /
+                Padding=11,5,11,6, which inflates every mapping-grid row.
+                Geometry only, theme-safe. Form-page checkboxes keep stock
+                metrics.
+            -->
+            <Style x:Key="GridOptionCheckBox" TargetType="CheckBox" BasedOn="{StaticResource DefaultCheckBoxStyle}">
+                <Setter Property="MinWidth" Value="0"/>
+                <Setter Property="MinHeight" Value="24"/>
+                <Setter Property="Padding" Value="0,2,0,2"/>
             </Style>
 
             <!--

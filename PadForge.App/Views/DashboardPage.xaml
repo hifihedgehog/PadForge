@@ -562,13 +562,12 @@
                                 </StackPanel>
 
                                 <!-- Delete button (upper-right corner) -->
-                                <Button ToolTip="{Binding Main_DeleteVC, Source={x:Static strings:Strings.Instance}}"
-                                        Background="Transparent" BorderThickness="0" Padding="2" MinWidth="0" MinHeight="0"
-                                        HorizontalAlignment="Right" VerticalAlignment="Center"
-                                        Margin="1,0,0,0" Opacity="0.5"
-                                        Click="DeleteSlot_Click" Tag="{Binding PadIndex}">
-                                    <TextBlock Text="&#xE711;" FontFamily="Segoe MDL2 Assets" FontSize="9"/>
-                                </Button>
+                                <ui:Button Style="{StaticResource EmberIconButtonHot}"
+                                           ToolTip="{Binding Main_DeleteVC, Source={x:Static strings:Strings.Instance}}"
+                                           HorizontalAlignment="Right" VerticalAlignment="Center"
+                                           Click="DeleteSlot_Click" Tag="{Binding PadIndex}">
+                                    <TextBlock Text="&#xE711;" FontFamily="Segoe MDL2 Assets" FontSize="12" Foreground="#94A3BD"/>
+                                </ui:Button>
 
                                 <!-- Row 2: Device name (compact). Cold: the
                                      physical device feeding this slot (#175). -->
@@ -723,11 +722,11 @@
                         <ui:NumberBox Value="{Binding DsuMotionServerPort, Mode=TwoWay}"
                                       Minimum="1024" Maximum="65535"
                                       SpinButtonPlacementMode="Inline" Width="200"/>
-                        <Button Command="{Binding ResetDsuPortCommand}"
-                                Padding="4,2" VerticalAlignment="Center" Margin="4,0,0,0"
-                                ToolTip="{Binding Common_Reset, Source={x:Static strings:Strings.Instance}}">
-                            <TextBlock Text="&#xE72C;" FontFamily="Segoe MDL2 Assets" FontSize="10"/>
-                        </Button>
+                        <ui:Button Style="{StaticResource EmberIconButton}"
+                                   Command="{Binding ResetDsuPortCommand}" VerticalAlignment="Center"
+                                   ToolTip="{Binding Common_Reset, Source={x:Static strings:Strings.Instance}}">
+                            <TextBlock Text="&#xE72C;" FontFamily="Segoe MDL2 Assets" FontSize="12" Foreground="#94A3BD"/>
+                        </ui:Button>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
                         <Ellipse Width="8" Height="8"
@@ -761,11 +760,11 @@
                         <ui:NumberBox Value="{Binding WebControllerPort, Mode=TwoWay}"
                                       Minimum="1024" Maximum="65535"
                                       SpinButtonPlacementMode="Inline" Width="200"/>
-                        <Button Command="{Binding ResetWebPortCommand}"
-                                Padding="4,2" VerticalAlignment="Center" Margin="4,0,0,0"
-                                ToolTip="{Binding Common_Reset, Source={x:Static strings:Strings.Instance}}">
-                            <TextBlock Text="&#xE72C;" FontFamily="Segoe MDL2 Assets" FontSize="10"/>
-                        </Button>
+                        <ui:Button Style="{StaticResource EmberIconButton}"
+                                   Command="{Binding ResetWebPortCommand}" VerticalAlignment="Center"
+                                   ToolTip="{Binding Common_Reset, Source={x:Static strings:Strings.Instance}}">
+                            <TextBlock Text="&#xE72C;" FontFamily="Segoe MDL2 Assets" FontSize="12" Foreground="#94A3BD"/>
+                        </ui:Button>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
                         <Ellipse Width="8" Height="8"
@@ -804,10 +803,11 @@
                         <ui:NumberBox Value="{Binding RemoteLinkPort, Mode=TwoWay}"
                                       Minimum="1024" Maximum="65535"
                                       SpinButtonPlacementMode="Inline" Width="200"/>
-                        <Button Command="{Binding ResetRemoteLinkPortCommand}"
-                                Padding="4,2" VerticalAlignment="Center" Margin="4,0,0,0" ToolTip="{Binding Common_Reset, Source={x:Static strings:Strings.Instance}}">
-                            <TextBlock Text="&#xE72C;" FontFamily="Segoe MDL2 Assets" FontSize="10"/>
-                        </Button>
+                        <ui:Button Style="{StaticResource EmberIconButton}"
+                                   Command="{Binding ResetRemoteLinkPortCommand}" VerticalAlignment="Center"
+                                   ToolTip="{Binding Common_Reset, Source={x:Static strings:Strings.Instance}}">
+                            <TextBlock Text="&#xE72C;" FontFamily="Segoe MDL2 Assets" FontSize="12" Foreground="#94A3BD"/>
+                        </ui:Button>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,2">
                         <Ellipse Width="8" Height="8"
@@ -947,11 +947,11 @@
                                       SpinButtonPlacementMode="Inline" Width="130"
                                       Margin="8,0,0,0"/>
                         <TextBlock Text="%" VerticalAlignment="Center" Margin="4,0,0,0" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
-                        <Button Command="{Binding ResetOpacityCommand}"
-                                Padding="4,2" VerticalAlignment="Center" Margin="4,0,0,0"
-                                ToolTip="{Binding Common_Reset, Source={x:Static strings:Strings.Instance}}">
-                            <TextBlock Text="&#xE72C;" FontFamily="Segoe MDL2 Assets" FontSize="10"/>
-                        </Button>
+                        <ui:Button Style="{StaticResource EmberIconButton}"
+                                   Command="{Binding ResetOpacityCommand}" VerticalAlignment="Center"
+                                   ToolTip="{Binding Common_Reset, Source={x:Static strings:Strings.Instance}}">
+                            <TextBlock Text="&#xE72C;" FontFamily="Segoe MDL2 Assets" FontSize="12" Foreground="#94A3BD"/>
+                        </ui:Button>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                         <Button Command="{Binding ResetTouchpadOverlayPositionCommand}"

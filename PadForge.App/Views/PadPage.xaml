@@ -778,22 +778,7 @@
                                        FontFamily="{StaticResource TelemetryFontFamily}" FontSize="10"
                                        Foreground="{DynamicResource TextFillColorTertiaryBrush}"
                                        HorizontalAlignment="Center" Margin="0,0,0,2"/>
-                            <Border Height="10" Background="{DynamicResource SteelGroundBrush}" CornerRadius="4"
-                                    BorderBrush="{DynamicResource SteelLineSoftBrush}" BorderThickness="1">
-                                <Rectangle RadiusX="2" RadiusY="2"
-                                           HorizontalAlignment="Left"
-                                           Width="{Binding LeftMotorDisplay,
-                                               Converter={StaticResource NormToTriggerHeightConverter},
-                                               ConverterParameter=240}">
-                                    <Rectangle.Fill>
-                                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
-                                            <GradientStop Color="#C43D0C" Offset="0"/>
-                                            <GradientStop Color="#FF6B2C" Offset="0.7"/>
-                                            <GradientStop Color="#FFA24D" Offset="1"/>
-                                        </LinearGradientBrush>
-                                    </Rectangle.Fill>
-                                </Rectangle>
-                            </Border>
+                            <ProgressBar Style="{StaticResource InstrumentBarOut}" Value="{Binding LeftMotorDisplay, Mode=OneWay}" Minimum="0" Maximum="1" IsHitTestVisible="False"/>
                         </StackPanel>
 
                         <StackPanel Grid.Column="1" Cursor="Hand" Margin="12,0,0,0"
@@ -805,22 +790,7 @@
                                        FontFamily="{StaticResource TelemetryFontFamily}" FontSize="10"
                                        Foreground="{DynamicResource TextFillColorTertiaryBrush}"
                                        HorizontalAlignment="Center" Margin="0,0,0,2"/>
-                            <Border Height="10" Background="{DynamicResource SteelGroundBrush}" CornerRadius="4"
-                                    BorderBrush="{DynamicResource SteelLineSoftBrush}" BorderThickness="1">
-                                <Rectangle RadiusX="2" RadiusY="2"
-                                           HorizontalAlignment="Left"
-                                           Width="{Binding RightMotorDisplay,
-                                               Converter={StaticResource NormToTriggerHeightConverter},
-                                               ConverterParameter=240}">
-                                    <Rectangle.Fill>
-                                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
-                                            <GradientStop Color="#C43D0C" Offset="0"/>
-                                            <GradientStop Color="#FF6B2C" Offset="0.7"/>
-                                            <GradientStop Color="#FFA24D" Offset="1"/>
-                                        </LinearGradientBrush>
-                                    </Rectangle.Fill>
-                                </Rectangle>
-                            </Border>
+                            <ProgressBar Style="{StaticResource InstrumentBarOut}" Value="{Binding RightMotorDisplay, Mode=OneWay}" Minimum="0" Maximum="1" IsHitTestVisible="False"/>
                         </StackPanel>
                     </Grid>
 
@@ -829,7 +799,7 @@
                          ══════════════════════════════════════ -->
                     <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,4,0,4">
                         <Button Content="{Binding MapAllButtonText}"
-                                Padding="16,8" FontSize="14"
+                                Padding="18,7" FontSize="13.5"
                                 ToolTip="{Binding MapAllButtonTooltip}"
                                 Click="MapAllToggle_Click"/>
                         <TextBlock Text="{Binding MapAllPromptText}" FontSize="14" FontWeight="SemiBold"

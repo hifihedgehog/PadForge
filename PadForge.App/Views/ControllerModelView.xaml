@@ -22,6 +22,15 @@
             <helix:SunLight />
             <helix:DirectionalHeadLight Brightness="0.35" />
 
+            <!-- Ember rim light (#175): warm directional from behind-below
+                 so the model catches a forge-glow edge. Dim RGB keeps it a
+                 rim, not a wash. -->
+            <ModelVisual3D>
+                <ModelVisual3D.Content>
+                    <DirectionalLight Color="#5A321C" Direction="0,-0.7,0.7"/>
+                </ModelVisual3D.Content>
+            </ModelVisual3D>
+
             <ModelVisual3D x:Name="ModelVisual3D" />
 
             <helix:HelixViewport3D.Camera>

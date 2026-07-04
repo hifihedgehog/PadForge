@@ -4275,32 +4275,17 @@
                                              Lives as a Span inside the title TextBlock so the
                                              mono text shares the title's baseline (#175
                                              typography), like the artifact's h3 span. -->
+                                        <!-- Shape name rides a plain converter binding: a
+                                             Style with bound Setters/DataTriggers on a Run
+                                             inside a template recursed to a stack overflow
+                                             through the error dialog (dump-confirmed
+                                             2026-07-04). Direct Run.Text bindings are safe. -->
                                         <TextBlock Style="{StaticResource CardTitle}"><Run
                                                 Text="{Binding Title, Mode=OneWay}"/><Run
                                                 Text="  "/><Span FontFamily="{StaticResource TelemetryFontFamily}" FontSize="10"
                                                 FontWeight="Normal"
-                                                Foreground="{DynamicResource TextFillColorTertiaryBrush}"><Run><Run.Style>
-                                                <Style TargetType="Run">
-                                                    <Setter Property="Text" Value="{Binding Pad_DZScaledRadial, Source={x:Static strings:Strings.Instance}}"/>
-                                                    <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding DeadZoneShapeIndex}" Value="1">
-                                                            <Setter Property="Text" Value="{Binding Pad_DZRadial, Source={x:Static strings:Strings.Instance}}"/>
-                                                        </DataTrigger>
-                                                        <DataTrigger Binding="{Binding DeadZoneShapeIndex}" Value="2">
-                                                            <Setter Property="Text" Value="{Binding Pad_DZAxial, Source={x:Static strings:Strings.Instance}}"/>
-                                                        </DataTrigger>
-                                                        <DataTrigger Binding="{Binding DeadZoneShapeIndex}" Value="3">
-                                                            <Setter Property="Text" Value="{Binding Pad_DZHybrid, Source={x:Static strings:Strings.Instance}}"/>
-                                                        </DataTrigger>
-                                                        <DataTrigger Binding="{Binding DeadZoneShapeIndex}" Value="4">
-                                                            <Setter Property="Text" Value="{Binding Pad_DZSlopedScaledAxial, Source={x:Static strings:Strings.Instance}}"/>
-                                                        </DataTrigger>
-                                                        <DataTrigger Binding="{Binding DeadZoneShapeIndex}" Value="5">
-                                                            <Setter Property="Text" Value="{Binding Pad_DZSlopedAxial, Source={x:Static strings:Strings.Instance}}"/>
-                                                        </DataTrigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </Run.Style></Run><Run
+                                                Foreground="{DynamicResource TextFillColorTertiaryBrush}"><Run
+                                                Text="{Binding DeadZoneShapeIndex, Mode=OneWay, Converter={StaticResource DzShapeNameConverter}}"/><Run
                                                 Text=" "/><Run
                                                 Text="{Binding DeadZoneX, Mode=OneWay, StringFormat={}{0:0}%}"/><Run
                                                 Text=" / "/><Run

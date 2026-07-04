@@ -684,6 +684,7 @@
 
             <!-- Global Converters -->
             <conv:BoolToColorConverter x:Key="BoolToColorConverter" />
+            <conv:DzShapeNameConverter x:Key="DzShapeNameConverter" />
             <conv:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
             <conv:ShiftLayerVisibilityConverter x:Key="ShiftLayerVisibilityConverter" />
             <conv:HexToBrushConverter x:Key="HexToBrushConverter" />

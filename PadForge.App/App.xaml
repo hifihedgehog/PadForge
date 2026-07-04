@@ -16,6 +16,24 @@
                 <!-- Custom theme overrides -->
                 <ResourceDictionary>
                     <SolidColorBrush x:Key="RangeSliderThumbFill" Color="#F0F0F0"/>
+
+                    <!-- Ember identity tokens (#175).
+                         Cold = the physical side: devices, sources, raw telemetry.
+                         Ember = the virtual side: outputs, targets, anything live.
+                         Steel = the ground the two sit on.
+                         Green/gold/red stay health-only and are not defined here. -->
+                    <SolidColorBrush x:Key="EmberBrush" Color="#FF6B2C"/>
+                    <SolidColorBrush x:Key="EmberHotBrush" Color="#FFA24D"/>
+                    <SolidColorBrush x:Key="EmberDeepBrush" Color="#C43D0C"/>
+                    <SolidColorBrush x:Key="EmberTintBrush" Color="#1AFF6B2C"/>
+                    <SolidColorBrush x:Key="ColdBrush" Color="#58B6E4"/>
+                    <SolidColorBrush x:Key="ColdDeepBrush" Color="#2E6A8F"/>
+                    <SolidColorBrush x:Key="ColdTintBrush" Color="#1A58B6E4"/>
+                    <SolidColorBrush x:Key="SteelGroundBrush" Color="#0B0E14"/>
+                    <SolidColorBrush x:Key="SteelCardBrush" Color="#111623"/>
+                    <SolidColorBrush x:Key="SteelRaisedBrush" Color="#1B2333"/>
+                    <SolidColorBrush x:Key="SteelLineBrush" Color="#253049"/>
+                    <SolidColorBrush x:Key="SteelLineSoftBrush" Color="#1C2536"/>
                 </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
 

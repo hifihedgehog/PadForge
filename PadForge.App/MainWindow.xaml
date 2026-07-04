@@ -22,7 +22,31 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <!-- App branding bar — hamburger on left, PadForge icon + name.
+        <!-- Ember steel ground (#175). Sits over the Mica backdrop and under
+             all content: near-black steel with a faint ember wash top-right
+             and a cold wash on the left. Dark theme only. UpdateSteelLayer
+             collapses it in Light. -->
+        <Grid x:Name="SteelLayer" Grid.RowSpan="3" IsHitTestVisible="False">
+            <Border Background="#F20B0E14"/>
+            <Border>
+                <Border.Background>
+                    <RadialGradientBrush GradientOrigin="0.78,0" Center="0.78,0" RadiusX="0.55" RadiusY="0.45">
+                        <GradientStop Color="#12FF6B2C" Offset="0"/>
+                        <GradientStop Color="#00FF6B2C" Offset="1"/>
+                    </RadialGradientBrush>
+                </Border.Background>
+            </Border>
+            <Border>
+                <Border.Background>
+                    <RadialGradientBrush GradientOrigin="0.06,0.25" Center="0.06,0.25" RadiusX="0.5" RadiusY="0.4">
+                        <GradientStop Color="#0C58B6E4" Offset="0"/>
+                        <GradientStop Color="#0058B6E4" Offset="1"/>
+                    </RadialGradientBrush>
+                </Border.Background>
+            </Border>
+        </Grid>
+
+        <!-- App branding bar. Hamburger on left, PadForge icon + name.
              TitleBar provides native min/max/close with Snap Layout support. -->
         <Grid x:Name="AppBrandingBar" Grid.Row="0" Height="48">
             <Grid.ColumnDefinitions>
@@ -145,19 +169,19 @@
                 <TextBlock Grid.Column="0"
                            Text="{Binding StatusText}"
                            VerticalAlignment="Center"
-                           Opacity="0.8"
+                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                            TextTrimming="CharacterEllipsis"/>
 
                 <StackPanel Grid.Column="1" Orientation="Horizontal"
                             VerticalAlignment="Center" Margin="16,0">
-                    <TextBlock Text="{Binding ConnectedDeviceCount, Mode=OneWay}" Opacity="0.7"/>
-                    <TextBlock Text="{Binding Main_DevicesSuffix, Source={x:Static strings:Strings.Instance}}" Opacity="0.7"/>
+                    <TextBlock Text="{Binding ConnectedDeviceCount, Mode=OneWay}" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                    <TextBlock Text="{Binding Main_DevicesSuffix, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
                 </StackPanel>
 
                 <TextBlock Grid.Column="2"
                            VerticalAlignment="Center"
                            Margin="16,0"
-                           Opacity="0.7"
+                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                            Text="{Binding PollingFrequency, StringFormat='{}{0:F0} Hz', Mode=OneWay}"/>
 
                 <StackPanel Grid.Column="3" Orientation="Horizontal"
@@ -166,7 +190,7 @@
                              Fill="{Binding EngineStatusBrush}"
                              Margin="0,0,6,0"/>
                     <TextBlock Text="{Binding EngineStatusText}"
-                               Opacity="0.8"/>
+                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
                 </StackPanel>
             </Grid>
         </Border>

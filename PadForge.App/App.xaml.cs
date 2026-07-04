@@ -195,8 +195,10 @@ namespace PadForge
             // state always reflects the migrated reality.
             PadForge.Common.StartupHelper.MigrateLegacyEntryIfNeeded();
 
-            // Apply system theme (follows OS light/dark setting).
+            // Apply system theme (follows OS light/dark setting), then pin
+            // the Ember accent over whatever the system accent was (#175).
             ApplicationThemeManager.ApplySystemTheme();
+            PadForge.Common.EmberTheme.ApplyAccent();
 
             // Wire up global unhandled exception handlers for diagnostics.
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;

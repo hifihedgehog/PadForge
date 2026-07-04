@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
+using System.Threading;
 using PadForge.Common;
 using PadForge.Engine;
 using PadForge.Engine.Data;
@@ -2256,16 +2257,47 @@ namespace PadForge.Common.Input
         private const uint MOUSEEVENTF_XUP = 0x0100;
         private const uint MOUSEEVENTF_WHEEL = 0x0800;
 
+        // Accumulated macro mouse-move delta. Written by the poll thread
+        // (SendMouseMoveInput, ~1000 Hz), drained by the dedicated mouse-injector
+        // thread (FlushPendingMouseMove). Keeping SendInput OFF the poll thread is
+        // what stops a mouse-move macro from collapsing the 1000 Hz input loop:
+        // injected mouse movement is processed synchronously (it traverses every
+        // process's low-level mouse hook chain plus the cursor/DWM update), so a
+        // per-poll SendInput can cost milliseconds and drag the loop to ~200 Hz.
+        // Two MouseMove actions (X + Y) used to fire two SendInputs per poll; now
+        // they just add into these fields and one flush injects the batched delta.
+        private static int _pendingMouseDx;
+        private static int _pendingMouseDy;
+        private static readonly INPUT[] _mouseInjectBuf = new INPUT[1];
+
+        /// <summary>Poll thread: accumulate the desired mouse delta. Lock-free and
+        /// syscall-free, so a mouse-move macro adds no per-poll SendInput cost. The
+        /// injector thread flushes the accumulated delta with one SendInput.</summary>
         private static void SendMouseMoveInput(int dx, int dy)
         {
             if (_currentMacroSlotRestricted) return; // gamepad-only peer: no mouse
             if (dx == 0 && dy == 0) return;
-            var input = new INPUT
+            Interlocked.Add(ref _pendingMouseDx, dx);
+            Interlocked.Add(ref _pendingMouseDy, dy);
+        }
+
+        /// <summary>Injector thread only: drain the accumulated delta and inject it
+        /// as a single mouse move, off the poll thread. Every MouseMove action's
+        /// contribution since the last flush is batched into one SendInput, so the
+        /// expensive syscall runs here on its own cadence instead of N times per
+        /// poll on the rate-holding thread. Reuses one INPUT[] (no per-flush alloc).
+        /// Single-threaded (the injector loop), so the shared buffer is safe.</summary>
+        internal static void FlushPendingMouseMove()
+        {
+            int dx = Interlocked.Exchange(ref _pendingMouseDx, 0);
+            int dy = Interlocked.Exchange(ref _pendingMouseDy, 0);
+            if (dx == 0 && dy == 0) return;
+            _mouseInjectBuf[0] = new INPUT
             {
                 type = INPUT_MOUSE,
                 u = new InputUnion { mi = new MOUSEINPUT { dx = dx, dy = dy, dwFlags = MOUSEEVENTF_MOVE } }
             };
-            SendInput(1, new[] { input }, Marshal.SizeOf<INPUT>());
+            SendInput(1, _mouseInjectBuf, Marshal.SizeOf<INPUT>());
         }
 
         private static void SendMouseButtonInput(MacroMouseButton button, bool down)

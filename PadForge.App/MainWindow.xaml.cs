@@ -2331,26 +2331,6 @@ namespace PadForge
             slotNumber.SetResourceReference(System.Windows.Controls.TextBlock.ForegroundProperty, "TextFillColorTertiaryBrush");
             row.Children.Add(slotNumber);
 
-            // Type + per-type instance, as text (#175). The old five-icon
-            // type switcher is gone from the rail: eleven glyphs per row to
-            // say "Slot 3 is a PlayStation pad". The switcher already lives
-            // on the dashboard cards, where there is room to do it properly.
-            string typeName =
-                isXbox ? Strings.Instance.ControllerType_Xbox
-                : isPlayStation ? Strings.Instance.ControllerType_PlayStation
-                : isExtended ? Strings.Instance.ControllerType_Extended
-                : isKbm ? Strings.Instance.ControllerType_KeyboardMouse
-                : isMidi ? Strings.Instance.ControllerType_MIDI
-                : string.Empty;
-            row.Children.Add(new System.Windows.Controls.TextBlock
-            {
-                Text = $"{typeName} #{navItem.InstanceLabel}",
-                FontSize = 12.5,
-                FontWeight = FontWeights.SemiBold,
-                VerticalAlignment = VerticalAlignment.Center,
-                Margin = new Thickness(6, 0, 0, 0),
-                TextTrimming = TextTrimming.CharacterEllipsis
-            });
 
             // Type switcher returns to the rail (user direction, iteration 15):
             // the dashboard segment in mini form. Active type is ember-filled;
@@ -2359,7 +2339,7 @@ namespace PadForge
             var segRow = new System.Windows.Controls.StackPanel
             {
                 Orientation = System.Windows.Controls.Orientation.Horizontal,
-                Margin = new Thickness(23, 4, 0, 0)
+                Margin = new Thickness(6, 0, 0, 0)
             };
 
             System.Windows.Controls.Button MakeTypeButton(UIElement content, bool active, System.Windows.RoutedEventHandler click, string tip, bool enabled)
@@ -2421,10 +2401,17 @@ namespace PadForge
             segRow.Children.Add(MakeTypeButton(TypeLogo(ExtendedSvgPath, isExtended), isExtended, OnSidebarTypeExtended, Strings.Instance.ControllerType_Extended, true));
             segRow.Children.Add(MakeTypeButton(TypeGlyph("\uE961", isKbm), isKbm, OnSidebarTypeKeyboardMouse, Strings.Instance.ControllerType_KeyboardMouse, true));
             segRow.Children.Add(MakeTypeButton(TypeGlyph("\uE8D6", isMidi), isMidi, OnSidebarTypeMidi, hasMidi ? Strings.Instance.ControllerType_MIDI : Strings.Instance.Main_MIDI_RequiresMidiServices, hasMidi || isMidi));
+            var instanceLabel = new System.Windows.Controls.TextBlock
+            {
+                Text = navItem.InstanceLabel,
+                FontSize = 11,
+                VerticalAlignment = VerticalAlignment.Center,
+                Margin = new Thickness(4, 0, 0, 0)
+            };
+            instanceLabel.SetResourceReference(System.Windows.Controls.TextBlock.ForegroundProperty, "TextFillColorTertiaryBrush");
+            segRow.Children.Add(instanceLabel);
 
-            var cardStack = new System.Windows.Controls.StackPanel();
-            cardStack.Children.Add(row);
-            cardStack.Children.Add(segRow);
+            row.Children.Add(segRow);
 
             // Flat host (#175 iteration 2): a boxed card inside a rail of
             // flat text items read as a foreign object on real pixels.
@@ -2435,7 +2422,7 @@ namespace PadForge
                 CornerRadius = new CornerRadius(6),
                 Padding = new Thickness(6, 4, 6, 4),
                 BorderThickness = new Thickness(1),
-                Child = cardStack,
+                Child = row,
                 Tag = navItem.PadIndex
             };
             card.SetResourceReference(System.Windows.Controls.Border.BackgroundProperty, "CardBackgroundFillColorDefaultBrush");

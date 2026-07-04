@@ -6381,7 +6381,17 @@
                                      single-letter abbreviations. Per-axis Width is
                                      wide enough to hold the longest realistic value
                                      without text truncation. -->
-                                <!-- Cold telemetry mono (#175): raw sensor truth. -->
+                                <!-- Cold telemetry (#175 iteration 30): raw sensor truth
+                                     inside an inset instrument panel, matching the trigger
+                                     and motor instruments. -->
+                                <Border Background="{DynamicResource ControlFillColorDefaultBrush}"
+                                        BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}"
+                                        BorderThickness="1" CornerRadius="8" Padding="12" Margin="0,4,0,0"
+                                        HorizontalAlignment="Left">
+                                <StackPanel>
+                                <TextBlock Text="{Binding Instr_Raw, Source={x:Static strings:Strings.Instance}}"
+                                           FontSize="10" FontWeight="SemiBold"
+                                           Foreground="{DynamicResource ColdBrush}" Margin="0,0,0,8"/>
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
                                     <TextBlock Text="{Binding Settings_GyroLiveRate_Label, Source={x:Static strings:Strings.Instance}}"
                                                FontSize="14" Width="160" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,0,8,0" VerticalAlignment="Center"/>
@@ -6408,6 +6418,8 @@
                                                Foreground="{DynamicResource ColdBrush}"
                                                FontSize="14" Width="135" VerticalAlignment="Center"/>
                                 </StackPanel>
+                                </StackPanel>
+                                </Border>
                             </StackPanel>
                         </Border>
 

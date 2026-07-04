@@ -2358,6 +2358,8 @@ namespace PadForge
                     IsEnabled = enabled,
                     Cursor = System.Windows.Input.Cursors.Hand
                 };
+                b.SetResourceReference(FrameworkElement.StyleProperty,
+                    active ? "MiniTypeButtonActiveStyle" : "MiniTypeButtonStyle");
                 if (active)
                     b.SetResourceReference(System.Windows.Controls.Button.BackgroundProperty, "EmberSegGradient");
                 else

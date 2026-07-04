@@ -71,6 +71,31 @@ namespace PadForge.Views
         private static readonly Brush CcUpPulseBrush = F(0x33,0xC0,0x55);
         private static readonly Brush CcDownPulseBrush = F(0xE0,0x88,0x2A);
 
+        // Ember bloom (#175 glow sweep): pressed keys and live CC fills carry
+        // a static DropShadowEffect, attached alongside the brush swap and
+        // detached when unlit. Frozen and shared, never animated. Encoder
+        // pulse floods keep their own colors and stay glowless.
+        private static readonly System.Windows.Media.Effects.DropShadowEffect EmberGlow = MakeEmberGlow();
+
+        private static System.Windows.Media.Effects.DropShadowEffect MakeEmberGlow()
+        {
+            var fx = new System.Windows.Media.Effects.DropShadowEffect
+            {
+                Color = Color.FromRgb(0xFF, 0x6B, 0x2C),
+                BlurRadius = 12,
+                ShadowDepth = 0,
+                Opacity = 0.5
+            };
+            fx.Freeze();
+            return fx;
+        }
+
+        private static void SetGlow(UIElement element, System.Windows.Media.Effects.DropShadowEffect glow)
+        {
+            if (!ReferenceEquals(element.Effect, glow))
+                element.Effect = glow;
+        }
+
         // Pulse latch (input mode): a detent's button pulse is only ~24 ms,
         // too brief to see, so the preview holds the flash this long.
         private const long PulseLatchMs = 180;
@@ -651,11 +676,16 @@ namespace PadForge.Views
                         w.Background.Fill = BgBrush;
                         w.Fill.Fill = AccentBrush;
                     }
+
+                    // Ember bloom on a live (non-pulsing) fill only (#175).
+                    bool emberLit = now >= _ccUpLitUntil[cc] && now >= _ccDownLitUntil[cc] && fillH > 0;
+                    SetGlow(w.Fill, emberLit ? EmberGlow : null);
                 }
                 foreach (var w in _keyWidgets)
                 {
                     bool pressed = midi?.Notes != null && w.MidiNote < midi.Notes.Length && midi.Notes[w.MidiNote];
                     w.Rect.Fill = pressed ? w.PressedBrush : w.NormalBrush;
+                    SetGlow(w.Rect, pressed ? EmberGlow : null);
                 }
                 return;
             }
@@ -674,6 +704,9 @@ namespace PadForge.Views
                 double fillH = Math.Clamp(value, 0, 1) * (CcBarHeight - 4);
                 w.Fill.Height = fillH;
                 Canvas.SetTop(w.Fill, w.Y + CcBarHeight - 2 - fillH);
+
+                // A visible fill is lit: ember bloom (#175). At rest: none.
+                SetGlow(w.Fill, fillH > 0 ? EmberGlow : null);
             }
 
             // Update piano keys (skip the flashing key during recording).
@@ -684,6 +717,7 @@ namespace PadForge.Views
 
                 bool pressed = raw.Notes != null && w.NoteIndex < raw.Notes.Length && raw.Notes[w.NoteIndex];
                 w.Rect.Fill = pressed ? w.PressedBrush : w.NormalBrush;
+                SetGlow(w.Rect, pressed ? EmberGlow : null);
             }
         }
 

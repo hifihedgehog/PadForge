@@ -2178,10 +2178,28 @@ namespace PadForge
             if (lit)
             {
                 flame.Fill = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(0xFF, 0x6B, 0x2C));
+                // Ember bloom (#175 glow sweep): static effect on the lit
+                // flame, small-glyph radius. Never animated. The card ring
+                // breathe stays the only animated effect.
+                flame.Effect = new System.Windows.Media.Effects.DropShadowEffect
+                {
+                    Color = System.Windows.Media.Color.FromRgb(0xFF, 0x6B, 0x2C),
+                    BlurRadius = 8,
+                    ShadowDepth = 0,
+                    Opacity = 0.5
+                };
             }
             else if (cooling)
             {
                 flame.Fill = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(0xE8, 0xB4, 0x34));
+                // Faint gold bloom for the cooling flame.
+                flame.Effect = new System.Windows.Media.Effects.DropShadowEffect
+                {
+                    Color = System.Windows.Media.Color.FromRgb(0xE8, 0xB4, 0x34),
+                    BlurRadius = 8,
+                    ShadowDepth = 0,
+                    Opacity = 0.35
+                };
             }
             else
             {
@@ -2338,30 +2356,6 @@ namespace PadForge
             };
             slotNumber.SetResourceReference(System.Windows.Controls.TextBlock.ForegroundProperty, "TextFillColorTertiaryBrush");
             row.Children.Add(slotNumber);
-
-            // Rail pill status word (#175 pitch): right-aligned engine-state
-            // readout in the dashboard vocabulary (Forging / Awaiting devices /
-            // Cold). Docked right so the type segment stays put; capped width
-            // so "Awaiting devices" trims instead of squeezing the segment.
-            var statusWord = new System.Windows.Controls.TextBlock
-            {
-                Text = lit ? Strings.Instance.Engine_Forging
-                     : cooling ? Strings.Instance.Main_AwaitingDevices
-                     : Strings.Instance.Dashboard_StatusCold,
-                FontSize = 10,
-                VerticalAlignment = VerticalAlignment.Center,
-                HorizontalAlignment = HorizontalAlignment.Right,
-                Margin = new Thickness(6, 0, 0, 0),
-                TextTrimming = TextTrimming.CharacterEllipsis,
-                MaxWidth = 56
-            };
-            statusWord.SetResourceReference(System.Windows.Controls.TextBlock.FontFamilyProperty, "TelemetryFontFamily");
-            statusWord.SetResourceReference(System.Windows.Controls.TextBlock.ForegroundProperty,
-                lit ? "EmberHotBrush" : cooling ? "WaitBrush" : "TextFillColorTertiaryBrush");
-            statusWord.ToolTip = statusWord.Text;
-            System.Windows.Controls.DockPanel.SetDock(statusWord, System.Windows.Controls.Dock.Right);
-            row.Children.Add(statusWord);
-
 
             // Type switcher returns to the rail (user direction, iteration 15):
             // the dashboard segment in mini form. Active type is ember-filled;

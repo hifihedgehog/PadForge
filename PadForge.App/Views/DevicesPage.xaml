@@ -59,7 +59,7 @@
                     <Setter Property="BorderBrush" Value="{DynamicResource ColdBrush}"/>
                     <Setter Property="Effect">
                         <Setter.Value>
-                            <DropShadowEffect Color="#58B6E4" BlurRadius="8" ShadowDepth="0"/>
+                            <DropShadowEffect Color="#58B6E4" BlurRadius="10" ShadowDepth="0" Opacity="0.45"/>
                         </Setter.Value>
                     </Setter>
                 </DataTrigger>
@@ -72,12 +72,15 @@
                     <Setter Property="BorderBrush" Value="{DynamicResource ColdBrush}"/>
                     <Setter Property="Effect">
                         <Setter.Value>
-                            <DropShadowEffect Color="#58B6E4" BlurRadius="8" ShadowDepth="0"/>
+                            <DropShadowEffect Color="#58B6E4" BlurRadius="10" ShadowDepth="0" Opacity="0.45"/>
                         </Setter.Value>
                     </Setter>
                 </DataTrigger>
             </Style.Triggers>
         </Style>
+        <!-- Glow sweep (#175): shared cold bloom for pressed touch dots
+             and POV needles. Static, frozen, never animated. -->
+        <DropShadowEffect x:Key="ColdDotGlow" Color="#58B6E4" BlurRadius="8" ShadowDepth="0" Opacity="0.45"/>
         <Style x:Key="RawCellLabel" TargetType="TextBlock">
             <Setter Property="FontFamily" Value="{StaticResource TelemetryFontFamily}"/>
             <Setter Property="Foreground" Value="{DynamicResource TextFillColorTertiaryBrush}"/>
@@ -162,6 +165,11 @@
                                                     <DataTrigger Binding="{Binding IsOnline}" Value="True">
                                                         <Setter Property="Fill" Value="{DynamicResource EmberBrush}"/>
                                                         <Setter Property="Stroke" Value="{x:Null}"/>
+                                                        <Setter Property="Effect">
+                                                            <Setter.Value>
+                                                                <DropShadowEffect Color="#FF6B2C" BlurRadius="8" ShadowDepth="0" Opacity="0.5"/>
+                                                            </Setter.Value>
+                                                        </Setter>
                                                     </DataTrigger>
                                                 </Style.Triggers>
                                             </Style>
@@ -914,7 +922,8 @@
                                             <!-- Direction indicator line -->
                                             <Line X1="18" Y1="18" X2="18" Y2="5"
                                                   Stroke="{DynamicResource ColdBrush}"
-                                                  StrokeThickness="2.5" StrokeEndLineCap="Round">
+                                                  StrokeThickness="2.5" StrokeEndLineCap="Round"
+                                                  Effect="{StaticResource ColdDotGlow}">
                                                 <Line.Style>
                                                     <Style TargetType="Line">
                                                         <Setter Property="Visibility" Value="Visible"/>
@@ -1019,14 +1028,19 @@
                                      stay hidden on devices that don't
                                      report that many contacts. -->
                                 <Ellipse x:Name="TouchpadDot0" Width="14" Height="14" Fill="#CCFF6600"
+                                         Effect="{StaticResource ColdDotGlow}"
                                          Visibility="{Binding TouchpadDown0, Converter={StaticResource BoolToVisibilityConverter}}"/>
                                 <Ellipse x:Name="TouchpadDot1" Width="14" Height="14" Fill="#CC0066FF"
+                                         Effect="{StaticResource ColdDotGlow}"
                                          Visibility="{Binding TouchpadDown1, Converter={StaticResource BoolToVisibilityConverter}}"/>
                                 <Ellipse x:Name="TouchpadDot2" Width="14" Height="14" Fill="#CC4CAF50"
+                                         Effect="{StaticResource ColdDotGlow}"
                                          Visibility="{Binding TouchpadDown2, Converter={StaticResource BoolToVisibilityConverter}}"/>
                                 <Ellipse x:Name="TouchpadDot3" Width="14" Height="14" Fill="#CCBA68C8"
+                                         Effect="{StaticResource ColdDotGlow}"
                                          Visibility="{Binding TouchpadDown3, Converter={StaticResource BoolToVisibilityConverter}}"/>
                                 <Ellipse x:Name="TouchpadDot4" Width="14" Height="14" Fill="#CCFFEB3B"
+                                         Effect="{StaticResource ColdDotGlow}"
                                          Visibility="{Binding TouchpadDown4, Converter={StaticResource BoolToVisibilityConverter}}"/>
                             </Canvas>
                         </Border>
@@ -1044,14 +1058,19 @@
                                 Height="100" ClipToBounds="True">
                             <Canvas>
                                 <Ellipse x:Name="Pad2Dot0" Width="14" Height="14" Fill="#CCFF6600"
+                                         Effect="{StaticResource ColdDotGlow}"
                                          Visibility="{Binding Pad2Down0, Converter={StaticResource BoolToVisibilityConverter}}"/>
                                 <Ellipse x:Name="Pad2Dot1" Width="14" Height="14" Fill="#CC0066FF"
+                                         Effect="{StaticResource ColdDotGlow}"
                                          Visibility="{Binding Pad2Down1, Converter={StaticResource BoolToVisibilityConverter}}"/>
                                 <Ellipse x:Name="Pad2Dot2" Width="14" Height="14" Fill="#CC4CAF50"
+                                         Effect="{StaticResource ColdDotGlow}"
                                          Visibility="{Binding Pad2Down2, Converter={StaticResource BoolToVisibilityConverter}}"/>
                                 <Ellipse x:Name="Pad2Dot3" Width="14" Height="14" Fill="#CCBA68C8"
+                                         Effect="{StaticResource ColdDotGlow}"
                                          Visibility="{Binding Pad2Down3, Converter={StaticResource BoolToVisibilityConverter}}"/>
                                 <Ellipse x:Name="Pad2Dot4" Width="14" Height="14" Fill="#CCFFEB3B"
+                                         Effect="{StaticResource ColdDotGlow}"
                                          Visibility="{Binding Pad2Down4, Converter={StaticResource BoolToVisibilityConverter}}"/>
                             </Canvas>
                         </Border>

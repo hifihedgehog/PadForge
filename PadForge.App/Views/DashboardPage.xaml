@@ -95,16 +95,32 @@
                                         <DataTrigger Binding="{Binding EngineStateKey}" Value="Running">
                                             <Setter Property="Fill" Value="{DynamicResource EmberBrush}"/>
                                             <Setter Property="Stroke" Value="{x:Null}"/>
+                                            <!-- Glow sweep (#175): lit blooms. Static effect only. -->
+                                            <Setter Property="Effect">
+                                                <Setter.Value>
+                                                    <DropShadowEffect Color="#FF6B2C" BlurRadius="12" ShadowDepth="0" Opacity="0.5"/>
+                                                </Setter.Value>
+                                            </Setter>
                                         </DataTrigger>
                                         <DataTrigger Binding="{Binding EngineStateKey}" Value="Idle">
                                             <Setter Property="Fill" Value="{DynamicResource WaitBrush}"/>
                                             <Setter Property="Stroke" Value="{x:Null}"/>
+                                            <Setter Property="Effect">
+                                                <Setter.Value>
+                                                    <DropShadowEffect Color="#E8B434" BlurRadius="8" ShadowDepth="0" Opacity="0.35"/>
+                                                </Setter.Value>
+                                            </Setter>
                                         </DataTrigger>
                                         <!-- Stopping: gold, flashing (mirrors the
                                              slot-card igniting flash style). -->
                                         <DataTrigger Binding="{Binding EngineStateKey}" Value="Stopping">
                                             <Setter Property="Fill" Value="{DynamicResource WaitBrush}"/>
                                             <Setter Property="Stroke" Value="{x:Null}"/>
+                                            <Setter Property="Effect">
+                                                <Setter.Value>
+                                                    <DropShadowEffect Color="#E8B434" BlurRadius="8" ShadowDepth="0" Opacity="0.35"/>
+                                                </Setter.Value>
+                                            </Setter>
                                         </DataTrigger>
                                         <!-- Reduced motion (#175 item 98): the flash loop only
                                              runs when Windows animations are on. Off, the flame
@@ -376,6 +392,12 @@
                                                             </MultiDataTrigger.Conditions>
                                                             <Setter Property="Fill" Value="{DynamicResource EmberBrush}"/>
                                                             <Setter Property="Stroke" Value="{x:Null}"/>
+                                                            <!-- Glow sweep (#175): lit blooms. Static effect only. -->
+                                                            <Setter Property="Effect">
+                                                                <Setter.Value>
+                                                                    <DropShadowEffect Color="#FF6B2C" BlurRadius="8" ShadowDepth="0" Opacity="0.5"/>
+                                                                </Setter.Value>
+                                                            </Setter>
                                                         </MultiDataTrigger>
                                                         <!-- Enabled + mapped but no live VC: gold (awaiting
                                                              devices). During the HM-inactivity grace period
@@ -390,6 +412,12 @@
                                                             </MultiDataTrigger.Conditions>
                                                             <Setter Property="Fill" Value="{DynamicResource WaitBrush}"/>
                                                             <Setter Property="Stroke" Value="{x:Null}"/>
+                                                            <!-- Cooling gold holds a faint glow (#175 glow sweep). -->
+                                                            <Setter Property="Effect">
+                                                                <Setter.Value>
+                                                                    <DropShadowEffect Color="#E8B434" BlurRadius="8" ShadowDepth="0" Opacity="0.35"/>
+                                                                </Setter.Value>
+                                                            </Setter>
                                                         </MultiDataTrigger>
                                                         <!-- Enabled + mapped but engine stopped: gold -->
                                                         <MultiDataTrigger>
@@ -400,11 +428,21 @@
                                                             </MultiDataTrigger.Conditions>
                                                             <Setter Property="Fill" Value="{DynamicResource WaitBrush}"/>
                                                             <Setter Property="Stroke" Value="{x:Null}"/>
+                                                            <Setter Property="Effect">
+                                                                <Setter.Value>
+                                                                    <DropShadowEffect Color="#E8B434" BlurRadius="8" ShadowDepth="0" Opacity="0.35"/>
+                                                                </Setter.Value>
+                                                            </Setter>
                                                         </MultiDataTrigger>
                                                         <!-- Igniting: flashing ember -->
                                                         <DataTrigger Binding="{Binding IsInitializing}" Value="True">
                                                             <Setter Property="Fill" Value="{DynamicResource EmberBrush}"/>
                                                             <Setter Property="Stroke" Value="{x:Null}"/>
+                                                            <Setter Property="Effect">
+                                                                <Setter.Value>
+                                                                    <DropShadowEffect Color="#FF6B2C" BlurRadius="8" ShadowDepth="0" Opacity="0.5"/>
+                                                                </Setter.Value>
+                                                            </Setter>
                                                         </DataTrigger>
                                                         <!-- Reduced motion (#175 item 98): no flash loop,
                                                              the flame holds steady ember instead. -->
@@ -466,6 +504,11 @@
                                                         <DataTrigger Binding="{Binding OutputType}" Value="Xbox">
                                                             <Setter Property="Foreground" Value="#FFFFF3E8"/>
                                                             <Setter Property="Background" Value="{DynamicResource EmberSegGradient}"/>
+                                                            <Setter Property="Effect">
+                                                                <Setter.Value>
+                                                                    <DropShadowEffect Color="#FF6B2C" BlurRadius="10" ShadowDepth="0" Opacity="0.4"/>
+                                                                </Setter.Value>
+                                                            </Setter>
                                                         </DataTrigger>
                                                         <!-- Cold card (0 mapped): active tile falls back to steel. -->
                                                         <MultiDataTrigger>
@@ -475,6 +518,7 @@
                                                             </MultiDataTrigger.Conditions>
                                                             <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}"/>
                                                             <Setter Property="Background" Value="{DynamicResource SteelRaisedBrush}"/>
+                                                            <Setter Property="Effect" Value="{x:Null}"/>
                                                         </MultiDataTrigger>
                                                     </Style.Triggers>
                                                 </Style>
@@ -494,6 +538,11 @@
                                                         <DataTrigger Binding="{Binding OutputType}" Value="PlayStation">
                                                             <Setter Property="Foreground" Value="#FFFFF3E8"/>
                                                             <Setter Property="Background" Value="{DynamicResource EmberSegGradient}"/>
+                                                            <Setter Property="Effect">
+                                                                <Setter.Value>
+                                                                    <DropShadowEffect Color="#FF6B2C" BlurRadius="10" ShadowDepth="0" Opacity="0.4"/>
+                                                                </Setter.Value>
+                                                            </Setter>
                                                         </DataTrigger>
                                                         <!-- Cold card (0 mapped): active tile falls back to steel. -->
                                                         <MultiDataTrigger>
@@ -503,6 +552,7 @@
                                                             </MultiDataTrigger.Conditions>
                                                             <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}"/>
                                                             <Setter Property="Background" Value="{DynamicResource SteelRaisedBrush}"/>
+                                                            <Setter Property="Effect" Value="{x:Null}"/>
                                                         </MultiDataTrigger>
                                                     </Style.Triggers>
                                                 </Style>
@@ -522,6 +572,11 @@
                                                         <DataTrigger Binding="{Binding OutputType}" Value="Extended">
                                                             <Setter Property="Foreground" Value="#FFFFF3E8"/>
                                                             <Setter Property="Background" Value="{DynamicResource EmberSegGradient}"/>
+                                                            <Setter Property="Effect">
+                                                                <Setter.Value>
+                                                                    <DropShadowEffect Color="#FF6B2C" BlurRadius="10" ShadowDepth="0" Opacity="0.4"/>
+                                                                </Setter.Value>
+                                                            </Setter>
                                                         </DataTrigger>
                                                         <!-- Cold card (0 mapped): active tile falls back to steel. -->
                                                         <MultiDataTrigger>
@@ -531,6 +586,7 @@
                                                             </MultiDataTrigger.Conditions>
                                                             <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}"/>
                                                             <Setter Property="Background" Value="{DynamicResource SteelRaisedBrush}"/>
+                                                            <Setter Property="Effect" Value="{x:Null}"/>
                                                         </MultiDataTrigger>
                                                     </Style.Triggers>
                                                 </Style>
@@ -550,6 +606,11 @@
                                                         <DataTrigger Binding="{Binding OutputType}" Value="KeyboardMouse">
                                                             <Setter Property="Foreground" Value="#FFFFF3E8"/>
                                                             <Setter Property="Background" Value="{DynamicResource EmberSegGradient}"/>
+                                                            <Setter Property="Effect">
+                                                                <Setter.Value>
+                                                                    <DropShadowEffect Color="#FF6B2C" BlurRadius="10" ShadowDepth="0" Opacity="0.4"/>
+                                                                </Setter.Value>
+                                                            </Setter>
                                                         </DataTrigger>
                                                         <!-- Cold card (0 mapped): active tile falls back to steel. -->
                                                         <MultiDataTrigger>
@@ -559,6 +620,7 @@
                                                             </MultiDataTrigger.Conditions>
                                                             <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}"/>
                                                             <Setter Property="Background" Value="{DynamicResource SteelRaisedBrush}"/>
+                                                            <Setter Property="Effect" Value="{x:Null}"/>
                                                         </MultiDataTrigger>
                                                     </Style.Triggers>
                                                 </Style>
@@ -578,6 +640,11 @@
                                                         <DataTrigger Binding="{Binding OutputType}" Value="Midi">
                                                             <Setter Property="Foreground" Value="#FFFFF3E8"/>
                                                             <Setter Property="Background" Value="{DynamicResource EmberSegGradient}"/>
+                                                            <Setter Property="Effect">
+                                                                <Setter.Value>
+                                                                    <DropShadowEffect Color="#FF6B2C" BlurRadius="10" ShadowDepth="0" Opacity="0.4"/>
+                                                                </Setter.Value>
+                                                            </Setter>
                                                         </DataTrigger>
                                                         <!-- Cold card (0 mapped): active tile falls back to steel. -->
                                                         <MultiDataTrigger>
@@ -587,6 +654,7 @@
                                                             </MultiDataTrigger.Conditions>
                                                             <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}"/>
                                                             <Setter Property="Background" Value="{DynamicResource SteelRaisedBrush}"/>
+                                                            <Setter Property="Effect" Value="{x:Null}"/>
                                                         </MultiDataTrigger>
                                                         <DataTrigger Binding="{Binding DataContext.IsMidiServicesInstalled, RelativeSource={RelativeSource AncestorType=ItemsControl}}" Value="False">
                                                             <Setter Property="Cursor" Value="No"/>
@@ -810,6 +878,11 @@
                                         <DataTrigger Binding="{Binding EnableDsuMotionServer}" Value="True">
                                             <Setter Property="Fill" Value="{DynamicResource EmberBrush}"/>
                                             <Setter Property="Stroke" Value="{x:Null}"/>
+                                            <Setter Property="Effect">
+                                                <Setter.Value>
+                                                    <DropShadowEffect Color="#FF6B2C" BlurRadius="8" ShadowDepth="0" Opacity="0.5"/>
+                                                </Setter.Value>
+                                            </Setter>
                                         </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
@@ -865,6 +938,11 @@
                                         <DataTrigger Binding="{Binding EnableWebController}" Value="True">
                                             <Setter Property="Fill" Value="{DynamicResource EmberBrush}"/>
                                             <Setter Property="Stroke" Value="{x:Null}"/>
+                                            <Setter Property="Effect">
+                                                <Setter.Value>
+                                                    <DropShadowEffect Color="#FF6B2C" BlurRadius="8" ShadowDepth="0" Opacity="0.5"/>
+                                                </Setter.Value>
+                                            </Setter>
                                         </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
@@ -925,6 +1003,11 @@
                                         <DataTrigger Binding="{Binding EnableRemoteLink}" Value="True">
                                             <Setter Property="Fill" Value="{DynamicResource EmberBrush}"/>
                                             <Setter Property="Stroke" Value="{x:Null}"/>
+                                            <Setter Property="Effect">
+                                                <Setter.Value>
+                                                    <DropShadowEffect Color="#FF6B2C" BlurRadius="8" ShadowDepth="0" Opacity="0.5"/>
+                                                </Setter.Value>
+                                            </Setter>
                                         </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
@@ -970,6 +1053,11 @@
                                                     <DataTrigger Binding="{Binding IsOnline}" Value="True">
                                                         <Setter Property="Fill" Value="{DynamicResource EmberBrush}"/>
                                                         <Setter Property="Stroke" Value="{x:Null}"/>
+                                                        <Setter Property="Effect">
+                                                            <Setter.Value>
+                                                                <DropShadowEffect Color="#FF6B2C" BlurRadius="8" ShadowDepth="0" Opacity="0.5"/>
+                                                            </Setter.Value>
+                                                        </Setter>
                                                     </DataTrigger>
                                                 </Style.Triggers>
                                             </Style>
@@ -1089,14 +1177,16 @@
                                         <DataTrigger Binding="{Binding EnableTouchpadOverlay}" Value="True">
                                             <Setter Property="Fill" Value="{DynamicResource EmberBrush}"/>
                                             <Setter Property="Stroke" Value="{x:Null}"/>
+                                            <Setter Property="Effect">
+                                                <Setter.Value>
+                                                    <DropShadowEffect Color="#FF6B2C" BlurRadius="8" ShadowDepth="0" Opacity="0.5"/>
+                                                </Setter.Value>
+                                            </Setter>
                                         </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
                             </Path.Style>
                         </Path>
-                        <Ellipse Width="8" Height="8"
-                                 Fill="{Binding EnableTouchpadOverlay, Converter={StaticResource BoolToColorConverter}, ConverterParameter=gray}"
-                                 VerticalAlignment="Center" Margin="0,0,8,0"/>
                         <TextBlock Text="{Binding TouchpadOverlayStatus}" FontSize="12"/>
                     </StackPanel>
                 </StackPanel>

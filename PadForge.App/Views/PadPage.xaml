@@ -434,19 +434,23 @@
                     <ComboBox.ItemTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal">
-                                <Ellipse Width="8" Height="8" Margin="0,0,6,0"
-                                         VerticalAlignment="Center">
-                                    <Ellipse.Style>
-                                        <Style TargetType="Ellipse">
-                                            <Setter Property="Fill" Value="#FF888888"/>
+                                <Path Margin="0,0,6,0">
+                                    <Path.Style>
+                                        <Style TargetType="Path" BasedOn="{StaticResource LivenessFlameBase}">
                                             <Style.Triggers>
                                                 <DataTrigger Binding="{Binding IsOnline}" Value="True">
-                                                    <Setter Property="Fill" Value="#FF4CAF50"/>
+                                                    <Setter Property="Fill" Value="{DynamicResource EmberBrush}"/>
+                                                    <Setter Property="Stroke" Value="{x:Null}"/>
+                                                    <Setter Property="Effect">
+                                                        <Setter.Value>
+                                                            <DropShadowEffect Color="#FF6B2C" BlurRadius="8" ShadowDepth="0" Opacity="0.5"/>
+                                                        </Setter.Value>
+                                                    </Setter>
                                                 </DataTrigger>
                                             </Style.Triggers>
                                         </Style>
-                                    </Ellipse.Style>
-                                </Ellipse>
+                                    </Path.Style>
+                                </Path>
                                 <TextBlock Text="{Binding Name}" Foreground="{DynamicResource ColdBrush}"/>
                                 <!-- Battery (issue #167): quiet suffix, empty when unreported -->
                                 <TextBlock Text="{Binding BatteryText}" Foreground="{DynamicResource TextFillColorTertiaryBrush}"
@@ -4455,7 +4459,7 @@
                                                                  Canvas.Left="{Binding LiveX, Converter={StaticResource NormToCanvasConverter}, ConverterParameter='200,11'}"
                                                                  Canvas.Top="{Binding LiveY, Converter={StaticResource NormToCanvasConverter}, ConverterParameter='200,11'}">
                                                             <Ellipse.Effect>
-                                                                <DropShadowEffect Color="#FF8228" BlurRadius="9" ShadowDepth="0" Opacity="0.95"/>
+                                                                <DropShadowEffect Color="#FF8228" BlurRadius="12" ShadowDepth="0" Opacity="0.95"/>
                                                             </Ellipse.Effect>
                                                         </Ellipse>
                                                     </Canvas>

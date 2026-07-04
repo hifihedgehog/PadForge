@@ -859,6 +859,28 @@
                                   HorizontalAlignment="Center" VerticalAlignment="Stretch"
                                   ResizeBehavior="PreviousAndNext"/>
 
+                    <!-- Empty state (#175): cold guidance instead of a bare wall. -->
+                    <Grid Grid.Column="2">
+                        <Grid.Style>
+                            <Style TargetType="Grid">
+                                <Setter Property="Visibility" Value="Visible"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding HasSelectedMacro}" Value="True">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Grid.Style>
+                        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <Path Data="{StaticResource FlameOuterGeometry}" Width="34" Height="34" Stretch="Uniform"
+                                  Fill="Transparent" StrokeThickness="1.2"
+                                  Stroke="{DynamicResource TextFillColorTertiaryBrush}" HorizontalAlignment="Center"/>
+                            <TextBlock Text="{Binding Macro_EmptyHint, Source={x:Static strings:Strings.Instance}}"
+                                       Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                                       Margin="0,12,0,0" TextWrapping="Wrap" TextAlignment="Center" MaxWidth="300"/>
+                        </StackPanel>
+                    </Grid>
+
                     <!-- Macro editor (shows when a macro is selected) -->
                     <ScrollViewer Grid.Column="2" VerticalScrollBarVisibility="Visible"
                                   HorizontalScrollBarVisibility="Auto"

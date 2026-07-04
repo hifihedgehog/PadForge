@@ -386,7 +386,7 @@ namespace PadForge.ViewModels
         /// </summary>
         public string EngineStatusText =>
             !IsEngineRunning ? Strings.Instance.Common_Stopped :
-            HasActiveSlots ? Strings.Instance.Common_Running :
+            HasActiveSlots ? Strings.Instance.Engine_Forging :
             Strings.Instance.Common_Idle;
 
         private static readonly System.Windows.Media.SolidColorBrush GreenBrush =

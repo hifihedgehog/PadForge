@@ -3441,7 +3441,8 @@ namespace PadForge
             {
                 bool dark = Wpf.Ui.Appearance.ApplicationThemeManager.GetAppTheme()
                     == Wpf.Ui.Appearance.ApplicationTheme.Dark;
-                var color = dark ? System.Windows.Media.Color.FromRgb(0x3A, 0x3A, 0x3A)
+                // Raised steel (#175): the flyout sits one step above the card fill.
+                var color = dark ? System.Windows.Media.Color.FromRgb(0x1B, 0x23, 0x33)
                                  : System.Windows.Media.Color.FromRgb(0xF3, 0xF3, 0xF3);
                 var brush = new System.Windows.Media.SolidColorBrush(color);
                 shadowBorder.Background = brush;

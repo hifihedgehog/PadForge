@@ -177,7 +177,6 @@
                 <StackPanel Grid.Column="1" Orientation="Horizontal"
                             VerticalAlignment="Center" Margin="16,0">
                     <TextBlock Text="{Binding ConnectedDeviceCount, Mode=OneWay}"
-                               FontFamily="{StaticResource TelemetryFontFamily}" FontSize="12"
                                Foreground="{DynamicResource ColdBrush}"/>
                     <TextBlock Text="{Binding Main_DevicesSuffix, Source={x:Static strings:Strings.Instance}}"
                                Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
@@ -186,7 +185,6 @@
                 <TextBlock Grid.Column="2"
                            VerticalAlignment="Center"
                            Margin="16,0"
-                           FontFamily="{StaticResource TelemetryFontFamily}" FontSize="12"
                            Foreground="{DynamicResource ColdBrush}"
                            Text="{Binding PollingFrequency, StringFormat='{}{0:F0} Hz', Mode=OneWay}"/>
 

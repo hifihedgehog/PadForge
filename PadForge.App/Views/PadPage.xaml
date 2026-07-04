@@ -122,24 +122,34 @@
         <!-- Custom tab strip button (RadioButton styled as tab header) -->
         <Style x:Key="TabStripButton" TargetType="RadioButton">
             <Setter Property="GroupName" Value="PadTab"/>
+            <Setter Property="Margin" Value="2,4"/>
             <Setter Property="Cursor" Value="Hand"/>
             <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="RadioButton">
-                        <Border x:Name="Bd" Padding="10,6" Background="Transparent"
-                                BorderThickness="0,0,0,2" BorderBrush="Transparent">
+                        <!-- Pill tab (#175 iteration 4, per the approved mock):
+                             selected = ember-outlined pill with warm text and a
+                             faint glow, idle = quiet text. -->
+                        <Border x:Name="Bd" Padding="13,5" Background="Transparent"
+                                CornerRadius="14" BorderThickness="1.5" BorderBrush="Transparent">
                             <ContentPresenter VerticalAlignment="Center"
                                               TextBlock.Foreground="{TemplateBinding Foreground}"/>
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsChecked" Value="True">
                                 <Setter TargetName="Bd" Property="BorderBrush"
-                                        Value="{DynamicResource SystemAccentColorSecondaryBrush}"/>
-                                <Setter TargetName="Bd" Property="Background" Value="#10FFFFFF"/>
+                                        Value="{DynamicResource EmberBrush}"/>
+                                <Setter TargetName="Bd" Property="Background" Value="#1AFF6B2C"/>
+                                <Setter Property="Foreground" Value="{DynamicResource EmberHotBrush}"/>
+                                <Setter TargetName="Bd" Property="Effect">
+                                    <Setter.Value>
+                                        <DropShadowEffect Color="#FF6B2C" BlurRadius="10" ShadowDepth="0" Opacity="0.35"/>
+                                    </Setter.Value>
+                                </Setter>
                             </Trigger>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="Bd" Property="Background" Value="#08FFFFFF"/>
+                                <Setter TargetName="Bd" Property="Background" Value="#12FFFFFF"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -151,13 +161,14 @@
              underline. Slot-tier tabs keep the ember (accent) underline. -->
         <Style x:Key="TabStripButtonCold" TargetType="RadioButton">
             <Setter Property="GroupName" Value="PadTab"/>
+            <Setter Property="Margin" Value="2,4"/>
             <Setter Property="Cursor" Value="Hand"/>
             <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="RadioButton">
-                        <Border x:Name="Bd" Padding="10,6" Background="Transparent"
-                                BorderThickness="0,0,0,2" BorderBrush="Transparent">
+                        <Border x:Name="Bd" Padding="13,5" Background="Transparent"
+                                CornerRadius="14" BorderThickness="1.5" BorderBrush="Transparent">
                             <ContentPresenter VerticalAlignment="Center"
                                               TextBlock.Foreground="{TemplateBinding Foreground}"/>
                         </Border>
@@ -166,9 +177,15 @@
                                 <Setter TargetName="Bd" Property="BorderBrush"
                                         Value="{DynamicResource ColdBrush}"/>
                                 <Setter TargetName="Bd" Property="Background" Value="{DynamicResource ColdTintBrush}"/>
+                                <Setter Property="Foreground" Value="{DynamicResource ColdBrush}"/>
+                                <Setter TargetName="Bd" Property="Effect">
+                                    <Setter.Value>
+                                        <DropShadowEffect Color="#58B6E4" BlurRadius="10" ShadowDepth="0" Opacity="0.3"/>
+                                    </Setter.Value>
+                                </Setter>
                             </Trigger>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="Bd" Property="Background" Value="#08FFFFFF"/>
+                                <Setter TargetName="Bd" Property="Background" Value="#12FFFFFF"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -212,10 +229,10 @@
                      read as arbitrary strips. -->
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="8,0,4,0">
                     <TextBlock Text="{Binding Dashboard_Slot, Source={x:Static strings:Strings.Instance}}"
-                               FontSize="10" FontWeight="SemiBold"
+                               FontSize="11" FontWeight="SemiBold"
                                Foreground="{DynamicResource EmberHotBrush}" VerticalAlignment="Center"/>
                     <TextBlock Text="{Binding SlotNumber}"
-                               FontSize="10" FontWeight="SemiBold"
+                               FontSize="11" FontWeight="SemiBold"
                                Foreground="{DynamicResource EmberHotBrush}" Margin="3,0,0,0" VerticalAlignment="Center"/>
                 </StackPanel>
 
@@ -322,7 +339,7 @@
             <WrapPanel Orientation="Horizontal" VerticalAlignment="Center">
 
                 <TextBlock Text="{Binding Pad_ScopeDevice, Source={x:Static strings:Strings.Instance}}"
-                           FontSize="10" FontWeight="SemiBold"
+                           FontSize="11" FontWeight="SemiBold"
                            Foreground="{DynamicResource ColdBrush}" Margin="8,0,4,0" VerticalAlignment="Center"/>
 
                 <!-- [Device] inline ComboBox: cold side. -->
@@ -3564,7 +3581,6 @@
                                                 Width="Auto">
                                 <DataGridTextColumn.ElementStyle>
                                     <Style TargetType="TextBlock">
-                                        <Setter Property="FontFamily" Value="{StaticResource TelemetryFontFamily}"/>
                                         <Setter Property="FontSize" Value="12"/>
                                         <Setter Property="Foreground" Value="{DynamicResource ColdBrush}"/>
                                         <Setter Property="VerticalAlignment" Value="Center"/>
@@ -4512,7 +4528,6 @@
                                                              Width="200" Height="16" VerticalAlignment="Center"/>
                                                 <TextBlock Text="{Binding RawDisplay, Mode=OneWay}"
                                                            Margin="8,0,0,0" VerticalAlignment="Center"
-                                                           FontFamily="{StaticResource TelemetryFontFamily}" FontSize="12"
                                                            Foreground="{DynamicResource ColdBrush}"/>
                                             </StackPanel>
                                         </StackPanel>
@@ -6218,27 +6233,27 @@
                                     <TextBlock Text="{Binding Settings_GyroLiveRate_Label, Source={x:Static strings:Strings.Instance}}"
                                                FontSize="14" Width="160" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,0,8,0" VerticalAlignment="Center"/>
                                     <TextBlock Text="{Binding GyroLiveRatePitch, StringFormat={}Pitch {0:+0.0;-0.0;0.0}°/s}"
-                                               FontFamily="{StaticResource TelemetryFontFamily}" Foreground="{DynamicResource ColdBrush}"
-                                               FontSize="13" Width="140" VerticalAlignment="Center"/>
+                                               Foreground="{DynamicResource ColdBrush}"
+                                               FontSize="14" Width="140" VerticalAlignment="Center"/>
                                     <TextBlock Text="{Binding GyroLiveRateYaw,   StringFormat={}Yaw {0:+0.0;-0.0;0.0}°/s}"
-                                               FontFamily="{StaticResource TelemetryFontFamily}" Foreground="{DynamicResource ColdBrush}"
-                                               FontSize="13" Width="130" VerticalAlignment="Center"/>
+                                               Foreground="{DynamicResource ColdBrush}"
+                                               FontSize="14" Width="130" VerticalAlignment="Center"/>
                                     <TextBlock Text="{Binding GyroLiveRateRoll,  StringFormat={}Roll {0:+0.0;-0.0;0.0}°/s}"
-                                               FontFamily="{StaticResource TelemetryFontFamily}" Foreground="{DynamicResource ColdBrush}"
-                                               FontSize="13" Width="135" VerticalAlignment="Center"/>
+                                               Foreground="{DynamicResource ColdBrush}"
+                                               FontSize="14" Width="135" VerticalAlignment="Center"/>
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock Text="{Binding Settings_GyroLiveAccel_Label, Source={x:Static strings:Strings.Instance}}"
                                                FontSize="14" Width="160" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,0,8,0" VerticalAlignment="Center"/>
                                     <TextBlock Text="{Binding AccelLiveX, StringFormat={}X {0:+0.00;-0.00;0.00}g}"
-                                               FontFamily="{StaticResource TelemetryFontFamily}" Foreground="{DynamicResource ColdBrush}"
-                                               FontSize="13" Width="140" VerticalAlignment="Center"/>
+                                               Foreground="{DynamicResource ColdBrush}"
+                                               FontSize="14" Width="140" VerticalAlignment="Center"/>
                                     <TextBlock Text="{Binding AccelLiveY, StringFormat={}Y {0:+0.00;-0.00;0.00}g}"
-                                               FontFamily="{StaticResource TelemetryFontFamily}" Foreground="{DynamicResource ColdBrush}"
-                                               FontSize="13" Width="130" VerticalAlignment="Center"/>
+                                               Foreground="{DynamicResource ColdBrush}"
+                                               FontSize="14" Width="130" VerticalAlignment="Center"/>
                                     <TextBlock Text="{Binding AccelLiveZ, StringFormat={}Z {0:+0.00;-0.00;0.00}g}"
-                                               FontFamily="{StaticResource TelemetryFontFamily}" Foreground="{DynamicResource ColdBrush}"
-                                               FontSize="13" Width="135" VerticalAlignment="Center"/>
+                                               Foreground="{DynamicResource ColdBrush}"
+                                               FontSize="14" Width="135" VerticalAlignment="Center"/>
                                 </StackPanel>
                             </StackPanel>
                         </Border>

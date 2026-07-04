@@ -446,6 +446,11 @@ namespace PadForge.Views
                         continue;
                     if (geo.Material is not DiffuseMaterial)
                         continue;
+                    // The hovered group is owned by the hover highlight while
+                    // the cursor sits on it; without this skip the per-frame
+                    // reset stomps the hover material after a single frame.
+                    if (group == _hoverGroup)
+                        continue;
 
                     if (pressed && _currentModel.HighlightMaterials.TryGetValue(group, out var hlMat))
                     {

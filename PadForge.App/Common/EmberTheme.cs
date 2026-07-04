@@ -75,6 +75,12 @@ namespace PadForge.Common
             // show dark steel chrome on white.
             SetBrush("SteelRaisedBrush", dark ? Color.FromRgb(0x1B, 0x23, 0x33) : Color.FromRgb(0xE4, 0xE7, 0xEE));
             SetBrush("SteelLineSoftBrush", dark ? Color.FromRgb(0x1C, 0x25, 0x36) : Color.FromRgb(0xD6, 0xD8, 0xDE));
+            // Text ramp (#175): both grounds get a deliberate steel-tinted
+            // hierarchy; stock light gray reads too faint.
+            SetBrush("TextFillColorPrimaryBrush", dark ? Color.FromRgb(0xE9, 0xED, 0xF4) : Color.FromRgb(0x1A, 0x24, 0x33));
+            SetBrush("TextFillColorSecondaryBrush", dark ? Color.FromRgb(0x94, 0xA3, 0xBD) : Color.FromRgb(0x44, 0x53, 0x6B));
+            SetBrush("TextFillColorTertiaryBrush", dark ? Color.FromRgb(0x5D, 0x6B, 0x85) : Color.FromRgb(0x6B, 0x7A, 0x94));
+            SetBrush("TextFillColorDisabledBrush", dark ? Color.FromRgb(0x3D, 0x4A, 0x63) : Color.FromRgb(0x9A, 0xA5, 0xB8));
             SetBrush("ColdBrush", dark ? ColdDark : ColdLight);
             SetBrush("ColdDeepBrush", dark ? ColdDeepDark : ColdDeepLight);
             SetBrush("EmberHotBrush", dark ? EmberHotDark : EmberHotLight);
@@ -97,10 +103,6 @@ namespace PadForge.Common
                 // Artifact text ramp: primary #E9EDF4, secondary #94A3BD,
                 // tertiary #5D6B85. This is what separates the pitch's body
                 // from stock WPF-UI neutral gray.
-                SetBrush("TextFillColorPrimaryBrush", Color.FromRgb(0xE9, 0xED, 0xF4));
-                SetBrush("TextFillColorSecondaryBrush", Color.FromRgb(0x94, 0xA3, 0xBD));
-                SetBrush("TextFillColorTertiaryBrush", Color.FromRgb(0x5D, 0x6B, 0x85));
-                SetBrush("TextFillColorDisabledBrush", Color.FromRgb(0x3D, 0x4A, 0x63));
                 // Slider recolor (#175 item 10): Wpf.Ui's Slider template
                 // pulls its colors from these DynamicResource keys, not from
                 // TemplateBindings, so a derived Style cannot recolor it.
@@ -249,6 +251,11 @@ namespace PadForge.Common
             SetBrush("ScrollBarButtonArrowForeground", Color.FromRgb(0x94, 0xA3, 0xBD));
 
             // §8 ToolTip: flyout ground.
+            // Dropdown stragglers (#175): some popup surfaces resolve
+            // through the acrylic/focused keys instead of the plain ones.
+            SetBrush("AcrylicBackgroundFillColorDefaultBrush", Color.FromRgb(0x15, 0x1C, 0x2C));
+            SetBrush("SystemFillColorSolidNeutralBackgroundBrush", Color.FromRgb(0x15, 0x1C, 0x2C));
+            SetBrush("ComboBoxBackgroundFocused", Color.FromRgb(0x1B, 0x23, 0x33));
             SetBrush("ToolTipBackground", Color.FromRgb(0x15, 0x1C, 0x2C));
             SetBrush("ToolTipBorderBrush", Color.FromRgb(0x25, 0x30, 0x49));
             SetBrush("ToolTipForeground", Color.FromRgb(0xE9, 0xED, 0xF4));
@@ -256,6 +263,9 @@ namespace PadForge.Common
 
         private static readonly string[] EmberChromeKeys =
         {
+            "AcrylicBackgroundFillColorDefaultBrush",
+            "SystemFillColorSolidNeutralBackgroundBrush",
+            "ComboBoxBackgroundFocused",
             // §1 Button
             "ButtonBackground",
             "ButtonBackgroundPointerOver",
@@ -317,10 +327,6 @@ namespace PadForge.Common
             "CardStrokeColorDefaultBrush",
             "ControlFillColorDefaultBrush",
             "ControlStrokeColorDefaultBrush",
-            "TextFillColorPrimaryBrush",
-            "TextFillColorSecondaryBrush",
-            "TextFillColorTertiaryBrush",
-            "TextFillColorDisabledBrush",
             "SliderTrackFill",
             "SliderTrackFillPointerOver",
             "SliderThumbBackground",

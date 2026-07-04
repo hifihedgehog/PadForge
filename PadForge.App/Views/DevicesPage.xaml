@@ -86,10 +86,18 @@
             <TextBlock Text="&#xE772;" FontFamily="Segoe MDL2 Assets" FontSize="16" Foreground="{DynamicResource EmberBrush}"
                        VerticalAlignment="Center" Margin="0,0,10,0"/>
             <TextBlock Text="{Binding Devices_Title, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource TitleTextBlockStyle}" FontFamily="{StaticResource DisplayFontFamily}" FontWeight="650" FontSize="26"/>
-            <Button Content="{Binding Common_Refresh, Source={x:Static strings:Strings.Instance}}" Margin="16,0,0,0"
-                    Command="{Binding RefreshCommand}"/>
-            <Button Content="{Binding Devices_Pair, Source={x:Static strings:Strings.Instance}}" Margin="8,0,0,0"
-                    Command="{Binding PairCommand}"/>
+            <ui:Button Style="{StaticResource EmberIconButton}" Margin="16,0,0,0"
+                       VerticalAlignment="Center"
+                       Command="{Binding RefreshCommand}"
+                       ToolTip="{Binding Common_Refresh, Source={x:Static strings:Strings.Instance}}">
+                <TextBlock Text="&#xE72C;" FontFamily="Segoe MDL2 Assets" FontSize="12" Foreground="#94A3BD"/>
+            </ui:Button>
+            <ui:Button Style="{StaticResource EmberIconButton}" Margin="8,0,0,0"
+                       VerticalAlignment="Center"
+                       Command="{Binding PairCommand}"
+                       ToolTip="{Binding Devices_Pair, Source={x:Static strings:Strings.Instance}}">
+                <TextBlock Text="&#xE702;" FontFamily="Segoe MDL2 Assets" FontSize="12" Foreground="#94A3BD"/>
+            </ui:Button>
             <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="16,0">
                 <TextBlock Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text="{Binding OnlineCount, Mode=OneWay}"/>
                 <TextBlock Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text="{Binding Devices_OnlineTotal, Source={x:Static strings:Strings.Instance}}"/>
@@ -196,13 +204,13 @@
                                 </StackPanel>
 
                                 <!-- Delete button (upper-right) -->
-                                <Button Grid.Column="2" Grid.RowSpan="2"
-                                        ToolTip="{Binding Devices_RemoveTooltip, Source={x:Static strings:Strings.Instance}}"
-                                        Background="Transparent" Padding="2" MinWidth="0" MinHeight="0"
-                                        VerticalAlignment="Top" Margin="4,0,0,0" Opacity="0.5"
-                                        Click="RemoveDevice_Click">
-                                    <TextBlock Text="&#xE711;" FontFamily="Segoe MDL2 Assets" FontSize="11"/>
-                                </Button>
+                                <ui:Button Grid.Column="2" Grid.RowSpan="2"
+                                           Style="{StaticResource EmberIconButtonHot}"
+                                           ToolTip="{Binding Devices_RemoveTooltip, Source={x:Static strings:Strings.Instance}}"
+                                           VerticalAlignment="Top"
+                                           Click="RemoveDevice_Click">
+                                    <TextBlock Text="&#xE711;" FontFamily="Segoe MDL2 Assets" FontSize="12" Foreground="#94A3BD"/>
+                                </ui:Button>
 
                                 <!-- Row 1: Type | VID:PID | Capabilities -->
                                 <StackPanel Grid.Row="1" Grid.ColumnSpan="3"
@@ -327,10 +335,12 @@
                             </StackPanel>
                         </Border>
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                            <!-- One tone for the whole identity block: the value
+                                 is not more important than its siblings. -->
                             <TextBlock Style="{StaticResource IdentityText}" Text="{Binding Devices_VIDPID, Source={x:Static strings:Strings.Instance}}"/>
-                            <TextBlock Style="{StaticResource IdentityText}" Foreground="{DynamicResource ColdBrush}" Text="{Binding SelectedDevice.VendorIdHex, Mode=OneWay}"/>
-                            <TextBlock Style="{StaticResource IdentityText}" Foreground="{DynamicResource ColdBrush}" Text=":"/>
-                            <TextBlock Style="{StaticResource IdentityText}" Foreground="{DynamicResource ColdBrush}" Text="{Binding SelectedDevice.ProductIdHex, Mode=OneWay}"/>
+                            <TextBlock Style="{StaticResource IdentityText}" Text="{Binding SelectedDevice.VendorIdHex, Mode=OneWay}"/>
+                            <TextBlock Style="{StaticResource IdentityText}" Text=":"/>
+                            <TextBlock Style="{StaticResource IdentityText}" Text="{Binding SelectedDevice.ProductIdHex, Mode=OneWay}"/>
                         </StackPanel>
 
                         <!-- Submit mapping (joysticks only, not gamepads, mice, or keyboards) -->

@@ -304,24 +304,30 @@
 
                                     <!-- Action buttons (right-justified) -->
                                     <StackPanel Grid.Column="4" Orientation="Horizontal">
-                                        <Button Click="ShortcutLearn_Click" Width="40" Margin="0,0,4,0">
-                                            <TextBlock Text="{Binding LearnButtonIcon}" FontFamily="Segoe MDL2 Assets"/>
-                                            <Button.ToolTip>
+                                        <ui:Button Style="{StaticResource EmberIconButtonHot}"
+                                                   Click="ShortcutLearn_Click" Margin="0,0,4,0">
+                                            <TextBlock Text="{Binding LearnButtonIcon}" FontFamily="Segoe MDL2 Assets"
+                                                       FontSize="12" Foreground="{DynamicResource EmberBrush}"/>
+                                            <ui:Button.ToolTip>
                                                 <TextBlock Text="{Binding LearnButtonText}"/>
-                                            </Button.ToolTip>
-                                        </Button>
-                                        <Button Command="{Binding ClearCommand}" Width="40" Margin="0,0,4,0">
-                                            <TextBlock Text="&#xE75C;" FontFamily="Segoe MDL2 Assets"/>
-                                            <Button.ToolTip>
+                                            </ui:Button.ToolTip>
+                                        </ui:Button>
+                                        <ui:Button Style="{StaticResource EmberIconButtonHot}"
+                                                   Command="{Binding ClearCommand}" Margin="0,0,4,0">
+                                            <TextBlock Text="&#xE75C;" FontFamily="Segoe MDL2 Assets"
+                                                       FontSize="12" Foreground="#94A3BD"/>
+                                            <ui:Button.ToolTip>
                                                 <TextBlock Text="{Binding Common_Clear, Source={x:Static strings:Strings.Instance}}"/>
-                                            </Button.ToolTip>
-                                        </Button>
-                                        <Button Command="{Binding DeleteCommand}" Width="40">
-                                            <TextBlock Text="&#xE74D;" FontFamily="Segoe MDL2 Assets"/>
-                                            <Button.ToolTip>
+                                            </ui:Button.ToolTip>
+                                        </ui:Button>
+                                        <ui:Button Style="{StaticResource EmberIconButtonHot}"
+                                                   Command="{Binding DeleteCommand}" Margin="0">
+                                            <TextBlock Text="&#xE74D;" FontFamily="Segoe MDL2 Assets"
+                                                       FontSize="12" Foreground="#94A3BD"/>
+                                            <ui:Button.ToolTip>
                                                 <TextBlock Text="{Binding Common_Delete, Source={x:Static strings:Strings.Instance}}"/>
-                                            </Button.ToolTip>
-                                        </Button>
+                                            </ui:Button.ToolTip>
+                                        </ui:Button>
                                     </StackPanel>
                                 </Grid>
                             </DataTemplate>

@@ -396,12 +396,20 @@ namespace PadForge.Views
 
         private void EndDrag(bool cancel)
         {
-            Mouse.Capture(null);
+            // Drop the drag flag BEFORE releasing capture: Mouse.Capture(null)
+            // can deliver a pending mouse-up synchronously, re-entering
+            // OnDragEnd, which then nulls _dragSourceCard under our feet.
+            // The old order plus a missing brace on the guard below made the
+            // resumed outer call dereference the nulled card (user-reported
+            // NullReferenceException at mouse-up, 2026-07-04).
             _isDragging = false;
+            Mouse.Capture(null);
 
             if (_dragSourceCard != null)
+            {
                 if (_dragSourceCard.Parent is FrameworkElement dropTemplateRoot) dropTemplateRoot.Opacity = 1;
                 _dragSourceCard.Opacity = 1;
+            }
 
             ClearSwapHighlight();
 

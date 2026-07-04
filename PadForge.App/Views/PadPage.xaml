@@ -326,6 +326,26 @@
                     </StackPanel>
                 </RadioButton>
 
+                <!-- Preset ghost chip (#175, per the approved header mock):
+                     slot-scope, inline in tier 1. Visibility still driven by
+                     code-behind through the same names. -->
+                <Border x:Name="HMaestroProfileBar" CornerRadius="14" Padding="10,2" Margin="8,4"
+                        Background="{DynamicResource ControlFillColorDefaultBrush}"
+                        VerticalAlignment="Center"
+                        Visibility="Collapsed">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding Pad_Preset, Source={x:Static strings:Strings.Instance}}"
+                                   VerticalAlignment="Center" Margin="0,0,6,0"
+                                   Foreground="{DynamicResource TextFillColorTertiaryBrush}" FontSize="12"/>
+                        <ComboBox x:Name="HMaestroProfileCombo" Width="300" VerticalAlignment="Center"
+                                  AutomationProperties.AutomationId="HMaestroProfileCombo"
+                                  ItemsSource="{Binding AvailableProfiles}"
+                                  DisplayMemberPath="Name"
+                                  SelectedValuePath="Id"
+                                  SelectedValue="{Binding ProfileId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                  PreviewKeyDown="ProfileCombo_PreviewKeyDown"/>
+                    </StackPanel>
+                </Border>
 <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
                 <!-- [Mappings] — per-VC scope (Issue #61 multi-source).
                      Sits before the Device dropdown (the table sources
@@ -370,6 +390,9 @@
                            Foreground="{DynamicResource ColdBrush}" Margin="8,0,4,0" VerticalAlignment="Center"/>
 
                 <!-- [Device] inline ComboBox: cold side. -->
+                <Border CornerRadius="14" BorderThickness="1" Padding="1" Margin="4,2" VerticalAlignment="Center">
+                    <Border.BorderBrush><SolidColorBrush Color="#4D58B6E4"/></Border.BorderBrush>
+                    <Border.Background><SolidColorBrush Color="#0D58B6E4"/></Border.Background>
                 <ComboBox ItemsSource="{Binding MappedDevices}"
                           SelectedItem="{Binding SelectedMappedDevice, Mode=TwoWay}"
                           MinWidth="200" Margin="4,2" VerticalAlignment="Center">
@@ -397,6 +420,7 @@
                         </DataTemplate>
                     </ComboBox.ItemTemplate>
                 </ComboBox>
+                </Border>
 
                 <!-- Config tabs (device-scoped: Sticks / Triggers /
                      Force Feedback shape physical-input characteristics
@@ -489,30 +513,7 @@
              ROW 1: HIDMAESTRO PROFILE PICKER BAR
              (visible for Xbox / PlayStation / Extended slots)
              ══════════════════════════════════════ -->
-        <!-- Ember edge (#175 iteration 2): a 3px ember rail marks the preset
-             as slot-scope. The full tint wash read as a brown smear on
-             real pixels. -->
-        <Border x:Name="HMaestroProfileBar" Grid.Row="1" Margin="4,4,4,0"
-                Padding="10,6"
-                BorderThickness="3,0,0,0"
-                HorizontalAlignment="Left"
-                Visibility="Collapsed">
-            <Border.BorderBrush>
-                <SolidColorBrush Color="#B3FF6B2C"/>
-            </Border.BorderBrush>
-            <StackPanel Orientation="Horizontal">
-                <TextBlock Text="{Binding Pad_Preset, Source={x:Static strings:Strings.Instance}}"
-                           VerticalAlignment="Center" Margin="0,0,6,0"
-                           Foreground="{DynamicResource TextFillColorSecondaryBrush}" FontSize="13"/>
-                <ComboBox x:Name="HMaestroProfileCombo" Width="420" VerticalAlignment="Center"
-                          AutomationProperties.AutomationId="HMaestroProfileCombo"
-                          ItemsSource="{Binding AvailableProfiles}"
-                          DisplayMemberPath="Name"
-                          SelectedValuePath="Id"
-                          SelectedValue="{Binding ProfileId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                          PreviewKeyDown="ProfileCombo_PreviewKeyDown"/>
-            </StackPanel>
-        </Border>
+
 
         <!-- ══════════════════════════════════════
              ROW 1: EXTENDED CONFIGURATION BAR
@@ -2416,8 +2417,8 @@
                                         <StackPanel DataContext="{Binding PrimaryKindSource}" Margin="0,0,0,6">
                                             <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
                                                 <TextBlock Text="{Binding Pad_Mapping_PrimaryMode, Source={x:Static strings:Strings.Instance}}"
-                                                           VerticalAlignment="Center" Margin="0,0,6,0"
-                                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}" FontSize="11"/>
+                                                           VerticalAlignment="Center" Margin="0,0,8,0" FontWeight="SemiBold"
+                                                           Foreground="{DynamicResource TextFillColorTertiaryBrush}" FontSize="11"/>
                                                 <ComboBox ItemsSource="{Binding DataContext.PrimaryKindOptions, RelativeSource={RelativeSource AncestorType={x:Type DataGridRow}}}"
                                                           SelectedValue="{Binding Kind, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                           SelectedValuePath="Value" DisplayMemberPath="Name"
@@ -2469,10 +2470,10 @@
                                         <StackPanel Orientation="Horizontal" Margin="0,0,0,4"
                                                     Visibility="{Binding IsMultiSource, Converter={StaticResource BoolToVisibilityConverter}}">
                                             <TextBlock Text="{Binding Pad_Combine_Label, Source={x:Static strings:Strings.Instance}}"
-                                                       FontSize="11"
+                                                       FontSize="11" FontWeight="SemiBold"
                                                        VerticalAlignment="Center"
-                                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                                       Margin="0,0,6,0"/>
+                                                       Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                                                       Margin="0,0,8,0"/>
                                             <ComboBox ItemsSource="{Binding AvailableCombineModes}"
                                                       SelectedValue="{Binding CombineMode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                       SelectedValuePath="Value"
@@ -2847,6 +2848,9 @@
                                                              below, not from a single source descriptor. -->
                                                         <StackPanel Orientation="Vertical" Margin="0,0,4,0"
                                                                     Visibility="{Binding IsKindDescriptorless, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}">
+                                                            <Border CornerRadius="8" BorderThickness="1" Padding="1">
+                                                                <Border.BorderBrush><SolidColorBrush Color="#4D58B6E4"/></Border.BorderBrush>
+                                                                <Border.Background><SolidColorBrush Color="#0D58B6E4"/></Border.Background>
                                                             <ComboBox ItemsSource="{Binding DataContext.AvailableInputsView,
                                                                         RelativeSource={RelativeSource AncestorType={x:Type DataGridRow}}}"
                                                                       SelectedItem="{Binding SelectedInput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -2871,6 +2875,7 @@
                                                                     </GroupStyle>
                                                                 </ComboBox.GroupStyle>
                                                             </ComboBox>
+                                                            </Border>
                                                             <!-- Subtitle: assigned-device name when set,
                                                                  italic "Unassigned" when no descriptor. -->
                                                             <TextBlock FontSize="10"

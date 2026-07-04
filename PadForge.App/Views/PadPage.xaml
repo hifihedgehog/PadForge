@@ -198,15 +198,26 @@
         <StackPanel Grid.Row="0" Margin="0,0,0,2">
             <Border Padding="4,0" BorderThickness="0,0,0,1">
                 <Border.BorderBrush>
-                    <SolidColorBrush Color="#29FF6B2C"/>
+                    <SolidColorBrush Color="#3DFF6B2C"/>
                 </Border.BorderBrush>
                 <Border.Background>
                     <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
-                        <GradientStop Color="#12FF6B2C" Offset="0"/>
-                        <GradientStop Color="#00FF6B2C" Offset="0.55"/>
+                        <GradientStop Color="#1FFF6B2C" Offset="0"/>
+                        <GradientStop Color="#00FF6B2C" Offset="0.6"/>
                     </LinearGradientBrush>
                 </Border.Background>
             <WrapPanel Orientation="Horizontal" VerticalAlignment="Center">
+
+                <!-- Scope label (#175 iteration 2): without it the two tiers
+                     read as arbitrary strips. -->
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="8,0,4,0">
+                    <TextBlock Text="{Binding Dashboard_Slot, Source={x:Static strings:Strings.Instance}}"
+                               FontSize="10" FontWeight="SemiBold"
+                               Foreground="{DynamicResource EmberHotBrush}" VerticalAlignment="Center"/>
+                    <TextBlock Text="{Binding SlotNumber}"
+                               FontSize="10" FontWeight="SemiBold"
+                               Foreground="{DynamicResource EmberHotBrush}" Margin="3,0,0,0" VerticalAlignment="Center"/>
+                </StackPanel>
 
                 <!-- [Gamepad #  TypeIcon TypeName]. Controller / Preview tab. -->
                 <RadioButton x:Name="TabController" Tag="0" Style="{StaticResource TabStripButton}" Click="TabBtn_Click"
@@ -301,15 +312,19 @@
             <!-- Tier 2: the physical device and its capability tabs. -->
             <Border Padding="4,0" BorderThickness="0,0,0,1">
                 <Border.BorderBrush>
-                    <SolidColorBrush Color="#2458B6E4"/>
+                    <SolidColorBrush Color="#3858B6E4"/>
                 </Border.BorderBrush>
                 <Border.Background>
                     <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
-                        <GradientStop Color="#0C58B6E4" Offset="0"/>
-                        <GradientStop Color="#0058B6E4" Offset="0.55"/>
+                        <GradientStop Color="#1758B6E4" Offset="0"/>
+                        <GradientStop Color="#0058B6E4" Offset="0.6"/>
                     </LinearGradientBrush>
                 </Border.Background>
             <WrapPanel Orientation="Horizontal" VerticalAlignment="Center">
+
+                <TextBlock Text="{Binding Pad_ScopeDevice, Source={x:Static strings:Strings.Instance}}"
+                           FontSize="10" FontWeight="SemiBold"
+                           Foreground="{DynamicResource ColdBrush}" Margin="8,0,4,0" VerticalAlignment="Center"/>
 
                 <!-- [Device] inline ComboBox: cold side. -->
                 <ComboBox ItemsSource="{Binding MappedDevices}"
@@ -431,14 +446,17 @@
              ROW 1: HIDMAESTRO PROFILE PICKER BAR
              (visible for Xbox / PlayStation / Extended slots)
              ══════════════════════════════════════ -->
-        <!-- Ember tint (#175): the preset shapes the virtual controller, so
-             the bar reads slot-scope and sits left with the slot tier. -->
+        <!-- Ember edge (#175 iteration 2): a 3px ember rail marks the preset
+             as slot-scope. The full tint wash read as a brown smear on
+             real pixels. -->
         <Border x:Name="HMaestroProfileBar" Grid.Row="1" Margin="4,4,4,0"
-                Padding="10,6" CornerRadius="4"
-                Background="{DynamicResource EmberTintBrush}"
-                BorderThickness="0"
+                Padding="10,6"
+                BorderThickness="3,0,0,0"
                 HorizontalAlignment="Left"
                 Visibility="Collapsed">
+            <Border.BorderBrush>
+                <SolidColorBrush Color="#B3FF6B2C"/>
+            </Border.BorderBrush>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Text="{Binding Pad_Preset, Source={x:Static strings:Strings.Instance}}"
                            VerticalAlignment="Center" Margin="0,0,6,0"

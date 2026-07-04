@@ -297,6 +297,13 @@ namespace PadForge.ViewModels
             $"X: {_rawX} ({(_rawX + 32768.0) / 655.35:F1}%)  Y: {_rawY} ({(_rawY + 32768.0) / 655.35:F1}%)";
 
         /// <summary>Unprocessed hardware value for calibration (not affected by offset/deadzone).</summary>
+        // Raw-stage dot position (0-1, pre-pipeline) for the two-stage
+        // XY plot (#175). LiveX/LiveY hold the processed stage.
+        public double RawPosX { get => _rawPosX; set => SetProperty(ref _rawPosX, value); }
+        private double _rawPosX = 0.5;
+        public double RawPosY { get => _rawPosY; set => SetProperty(ref _rawPosY, value); }
+        private double _rawPosY = 0.5;
+
         public short HardwareRawX { get; set; }
 
         /// <summary>Unprocessed hardware value for calibration (not affected by offset/deadzone).</summary>

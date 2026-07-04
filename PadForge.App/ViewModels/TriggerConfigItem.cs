@@ -87,6 +87,10 @@ namespace PadForge.ViewModels
         private double _liveInput;
         public double LiveInputForCurve { get => _liveInput; set => SetProperty(ref _liveInput, value); }
 
+        // Raw-stage value (0-1, pre-pipeline) for the two-stage bars (#175).
+        public double RawNorm { get => _rawNorm; set => SetProperty(ref _rawNorm, value); }
+        private double _rawNorm;
+
         public void RebuildCurvePoints() { /* CurveEditor redraws via CurveString binding */ }
 
         // Live preview value (0.0-1.0 normalized)

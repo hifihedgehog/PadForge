@@ -2359,7 +2359,7 @@ namespace PadForge
                     Cursor = System.Windows.Input.Cursors.Hand
                 };
                 if (active)
-                    b.SetResourceReference(System.Windows.Controls.Button.BackgroundProperty, "EmberBrush");
+                    b.SetResourceReference(System.Windows.Controls.Button.BackgroundProperty, "EmberSegGradient");
                 else
                     b.Background = System.Windows.Media.Brushes.Transparent;
                 b.Click += click;

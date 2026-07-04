@@ -554,9 +554,19 @@ namespace PadForge.Views
             if (DataContext is not PadViewModel vm) return;
             int selected = vm.SelectedConfigTab;
 
+            // Two-tier grammar (#175 artifact): tier 1 (slot: Preview/Macros/
+            // Mappings, tags 0-2) and tier 2 (device tabs, tags 3+) each hold
+            // their own selection. Only the tier owning the active tab is
+            // rewritten, so picking a device tab never strips the slot tier's
+            // highlight and vice versa. Navigation rides Click (not Checked),
+            // so re-clicking a still-checked tab still switches back.
+            bool slotTier = selected <= 2;
             foreach (var rb in FindVisualChildren<RadioButton>(this))
             {
-                if (rb.GroupName == "PadTab" && TryGetTagIndex(rb, out int idx))
+                if (!TryGetTagIndex(rb, out int idx)) continue;
+                if (rb.GroupName == "PadTab" && slotTier)
+                    rb.IsChecked = idx == selected;
+                else if (rb.GroupName == "PadTabDevice" && !slotTier)
                     rb.IsChecked = idx == selected;
             }
         }

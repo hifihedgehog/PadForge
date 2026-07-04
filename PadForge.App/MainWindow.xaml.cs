@@ -2445,7 +2445,11 @@ namespace PadForge
             segRow.Children.Add(MakeTypeButton(TypeGlyph("\uE8D6", isMidi), isMidi, OnSidebarTypeMidi, hasMidi ? Strings.Instance.ControllerType_MIDI : Strings.Instance.Main_MIDI_RequiresMidiServices, hasMidi || isMidi));
             var instanceLabel = new System.Windows.Controls.TextBlock
             {
-                Text = navItem.InstanceLabel,
+                // "#{n}" to match the slot card seg (#175 iter 71); guard in
+                // case InstanceLabel ever already carries the prefix.
+                Text = string.IsNullOrEmpty(navItem.InstanceLabel) || navItem.InstanceLabel.Contains('#')
+                    ? navItem.InstanceLabel
+                    : "#" + navItem.InstanceLabel,
                 FontSize = 11,
                 VerticalAlignment = VerticalAlignment.Center,
                 Margin = new Thickness(4, 0, 0, 0)

@@ -193,9 +193,13 @@
         </Style>
 
         <!-- Cold variant for the device tier (#175): same tab shape, cold
-             underline. Slot-tier tabs keep the ember (accent) underline. -->
+             underline. Slot-tier tabs keep the ember (accent) underline.
+             Own radio group per the artifact: both tiers hold a selection
+             at once (tier 1 = slot surface, tier 2 = device surface);
+             SyncTabStripSelection only rewrites the tier that owns the
+             active tab. -->
         <Style x:Key="TabStripButtonCold" TargetType="RadioButton">
-            <Setter Property="GroupName" Value="PadTab"/>
+            <Setter Property="GroupName" Value="PadTabDevice"/>
             <Setter Property="Margin" Value="2,4"/>
             <Setter Property="Cursor" Value="Hand"/>
             <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}"/>
@@ -416,16 +420,6 @@
                     </StackPanel>
                 </Border>
 
-                <!-- [Preview] tab: plain text, same underline treatment as
-                     Mappings / Macros. Tag/Click/IsChecked/AutomationId
-                     unchanged so SelectedConfigTab numbering and the
-                     code-behind sync keep working. -->
-                <RadioButton x:Name="TabController" Tag="0" Style="{StaticResource TabStripButton}" Click="TabBtn_Click"
-                             IsChecked="True"
-                             AutomationProperties.AutomationId="TabController">
-                    <TextBlock Text="{Binding Pad_Tab_Preview, Source={x:Static strings:Strings.Instance}}" FontSize="15"/>
-                </RadioButton>
-
                 <!-- Preset ghost chip (#175, per the approved header mock):
                      slot-scope, inline in tier 1, carried by the ChipGhost
                      grammar (item 10). Visibility still driven by
@@ -442,19 +436,75 @@
                              the chip surface shows through). -->
                         <TextBlock Text="{Binding Pad_Preset, Source={x:Static strings:Strings.Instance}}"
                                    VerticalAlignment="Center" Margin="0,0,6,0"/>
-                        <ComboBox x:Name="HMaestroProfileCombo" Width="300" VerticalAlignment="Center"
+                        <ComboBox x:Name="HMaestroProfileCombo" VerticalAlignment="Center"
+                                  MaxWidth="380"
                                   Foreground="{DynamicResource TextFillColorTertiaryBrush}"
-                                  Background="Transparent" BorderBrush="Transparent" FontSize="12.5"
+                                  FontSize="12.5"
                                   AutomationProperties.AutomationId="HMaestroProfileCombo"
                                   ItemsSource="{Binding AvailableProfiles}"
                                   DisplayMemberPath="Name"
                                   SelectedValuePath="Id"
                                   SelectedValue="{Binding ProfileId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                  PreviewKeyDown="ProfileCombo_PreviewKeyDown"/>
+                                  PreviewKeyDown="ProfileCombo_PreviewKeyDown">
+                            <!-- Chip presentation (#175 re-audit): the artifact's
+                                 .chip.ghost preset is compact text + chevron, not
+                                 the stock 300px steel box the pitch critiques as
+                                 a search box. Bare selection text and a chevron
+                                 on the chip surface; the popup keeps the themed
+                                 dropdown chrome. Bindings, AutomationId, and the
+                                 PreviewKeyDown handler are unchanged. -->
+                            <ComboBox.Template>
+                                <ControlTemplate TargetType="ComboBox">
+                                    <Grid>
+                                        <ToggleButton Focusable="False" ClickMode="Press"
+                                                      IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}">
+                                            <ToggleButton.Template>
+                                                <ControlTemplate TargetType="ToggleButton">
+                                                    <Border Background="Transparent"/>
+                                                </ControlTemplate>
+                                            </ToggleButton.Template>
+                                        </ToggleButton>
+                                        <StackPanel Orientation="Horizontal" IsHitTestVisible="False"
+                                                    VerticalAlignment="Center" Margin="0,2">
+                                            <ContentPresenter Content="{TemplateBinding SelectionBoxItem}"
+                                                              ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
+                                                              ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"
+                                                              VerticalAlignment="Center"/>
+                                            <TextBlock Text="&#xE70D;" FontFamily="Segoe MDL2 Assets" FontSize="9"
+                                                       Margin="6,2,0,0" VerticalAlignment="Center"
+                                                       Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
+                                        </StackPanel>
+                                        <Popup x:Name="PART_Popup" IsOpen="{TemplateBinding IsDropDownOpen}"
+                                               Placement="Bottom" AllowsTransparency="True" StaysOpen="False">
+                                            <Border Background="{DynamicResource ComboBoxDropDownBackground}"
+                                                    BorderBrush="{DynamicResource SteelLineBrush}"
+                                                    BorderThickness="1" CornerRadius="6"
+                                                    MinWidth="280" MaxHeight="420" Margin="0,4,0,0">
+                                                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                                                    <ItemsPresenter/>
+                                                </ScrollViewer>
+                                            </Border>
+                                        </Popup>
+                                    </Grid>
+                                </ControlTemplate>
+                            </ComboBox.Template>
+                        </ComboBox>
                     </StackPanel>
                 </Border>
 <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
-                <!-- [Mappings] — per-VC scope (Issue #61 multi-source).
+                <!-- [Preview] tab (#175 re-audit): the artifact's tier1 puts
+                     one right-pushed tabset holding all three slot tabs after
+                     the identity + preset chips; Preview was stranded on the
+                     left. Tag/Click/IsChecked/AutomationId unchanged so
+                     SelectedConfigTab numbering and the code-behind sync
+                     keep working. -->
+                <RadioButton x:Name="TabController" Tag="0" Style="{StaticResource TabStripButton}" Click="TabBtn_Click"
+                             IsChecked="True"
+                             AutomationProperties.AutomationId="TabController">
+                    <TextBlock Text="{Binding Pad_Tab_Preview, Source={x:Static strings:Strings.Instance}}" FontSize="15"/>
+                </RadioButton>
+
+                <!-- [Mappings]. Per-VC scope (Issue #61 multi-source).
                      Sits before the Device dropdown (the table sources
                      from any device assigned to this VC, not just the
                      selected one) AND before Macros (it's the primary
@@ -6504,7 +6554,7 @@
                                      card so the LightbarMode dropdown's mode-specific
                                      settings sit immediately under it without the
                                      InputReactive controls breaking up the visual flow. -->
-                                <StackPanel Orientation="Horizontal" Margin="0,12,0,12">
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
                                     <TextBlock Text="{Binding Pad_Lighting_InputReactive, Source={x:Static strings:Strings.Instance}}"
                                                Style="{StaticResource DzLabel}"/>
                                     <ComboBox SelectedIndex="{Binding PlayStationConfig.InputReactiveMode, Mode=TwoWay, Converter={StaticResource EnumIndexConverter}}"

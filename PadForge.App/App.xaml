@@ -47,6 +47,47 @@
                     <SolidColorBrush x:Key="SteelFlyoutBrush" Color="#151C2C"/>
                     <SolidColorBrush x:Key="SegTrackBrush" Color="#0B0E14"/>
                     <SolidColorBrush x:Key="SegTrackStrokeBrush" Color="#1C2536"/>
+                    <!-- Mini-card type buttons (code-built): quiet hover that
+                         works on both grounds. -->
+                    <Style x:Key="MiniTypeButtonStyle" TargetType="Button">
+                        <Setter Property="Background" Value="Transparent"/>
+                        <Setter Property="BorderThickness" Value="0"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="Button">
+                                    <Border x:Name="Bd" Background="{TemplateBinding Background}"
+                                            CornerRadius="5" Padding="{TemplateBinding Padding}">
+                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter TargetName="Bd" Property="Background"
+                                                    Value="{DynamicResource SubtleFillColorSecondaryBrush}"/>
+                                        </Trigger>
+                                        <Trigger Property="IsPressed" Value="True">
+                                            <Setter TargetName="Bd" Property="Background"
+                                                    Value="{DynamicResource SubtleFillColorTertiaryBrush}"/>
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                    <!-- Active variant: the forge gradient must not be
+                         swapped away on hover. -->
+                    <Style x:Key="MiniTypeButtonActiveStyle" TargetType="Button">
+                        <Setter Property="BorderThickness" Value="0"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="Button">
+                                    <Border Background="{TemplateBinding Background}"
+                                            CornerRadius="5" Padding="{TemplateBinding Padding}">
+                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
                     <!-- Wait gold: the only sanctioned gold. Cooling flames,
                          awaiting-devices states, anything holding heat. -->
                     <SolidColorBrush x:Key="WaitBrush" Color="#E8B434"/>

@@ -67,6 +67,11 @@ namespace PadForge.Common
             }
             // Seg-control track (#175): recessed steel on dark; on light a
             // pale recessed tray so the branded glyphs stay visible.
+            // Recessed tray + hairline tokens get light variants too, so
+            // the raw-input cells and instrument tracks never stay pitch
+            // black on a white page.
+            SetBrush("SteelGroundBrush", dark ? Color.FromRgb(0x0B, 0x0E, 0x14) : Color.FromRgb(0xEC, 0xED, 0xF1));
+            SetBrush("SteelLineBrush", dark ? Color.FromRgb(0x25, 0x30, 0x49) : Color.FromRgb(0xC9, 0xCD, 0xD6));
             SetBrush("SegTrackBrush", dark ? Color.FromRgb(0x0B, 0x0E, 0x14) : Color.FromRgb(0xEC, 0xED, 0xF1));
             SetBrush("SegTrackStrokeBrush", dark ? Color.FromRgb(0x1C, 0x25, 0x36) : Color.FromRgb(0xD6, 0xD8, 0xDE));
             // Steel chrome tokens go theme-swapped (#175 control spec §3):

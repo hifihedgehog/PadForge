@@ -1812,24 +1812,10 @@ namespace PadForge.Services
                 var padVm = _mainVm.Pads[padIndex];
 
                 slot.IsActive = padVm.IsDeviceOnline;
-                // Ember card device line (#175): one entry per mapped device,
-                // each with its own battery glyph, pipe-separated so the
-                // marquee reads as a roster rather than a sum.
-                if (padVm.MappedDevices.Count > 0)
-                {
-                    var lineParts = new System.Collections.Generic.List<string>(padVm.MappedDevices.Count);
-                    foreach (var d in padVm.MappedDevices)
-                    {
-                        lineParts.Add(string.IsNullOrEmpty(d.BatteryText)
-                            ? d.Name
-                            : d.Name + " " + d.BatteryText);
-                    }
-                    slot.DeviceName = string.Join("  |  ", lineParts);
-                }
-                else
-                {
-                    slot.DeviceName = padVm.MappedDeviceName;
-                }
+                slot.DeviceName = padVm.MappedDeviceName;
+                // Ember card device roster (#175): the card renders one entry
+                // per mapped device with its own dynamic battery glyph.
+                slot.MappedDevices = padVm.MappedDevices;
 
                 var slotSettings = SettingsManager.UserSettings?.FindByPadIndex(padIndex);
                 int mappedCount = slotSettings?.Count ?? 0;
@@ -2059,7 +2045,21 @@ namespace PadForge.Services
                     var ud = FindUserDevice(dev.InstanceGuid);
                     bool online = ud != null && ud.IsOnline;
                     int pct = online ? (ud.InputState?.BatteryPercent ?? -1) : -1;
+                    bool charging = online && (ud.InputState?.BatteryCharging ?? false);
                     dev.BatteryText = pct >= 0 ? $"{pct}%" : string.Empty;
+                    // Same MDL2 bucketing as DeviceRowViewModel.BatteryGlyph.
+                    if (pct < 0)
+                    {
+                        dev.BatteryGlyph = string.Empty;
+                    }
+                    else
+                    {
+                        int tenth = Math.Clamp((pct + 5) / 10, 0, 10);
+                        int code = charging
+                            ? (tenth == 10 ? 0xEA93 : tenth == 9 ? 0xE83E : 0xE85A + tenth)
+                            : (tenth == 10 ? 0xE83F : 0xE850 + tenth);
+                        dev.BatteryGlyph = char.ConvertFromUtf32(code);
+                    }
                 }
             }
 

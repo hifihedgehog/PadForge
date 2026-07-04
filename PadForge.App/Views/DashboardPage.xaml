@@ -493,10 +493,66 @@
                                      physical device feeding this slot (#175). -->
                                 <Border Grid.Row="2" ClipToBounds="True" Margin="0,8,0,0">
                                     <StackPanel Orientation="Horizontal">
+                                        <!-- Empty state only: roster below owns the mapped case. -->
                                         <TextBlock Text="{Binding DeviceName}"
                                                    FontSize="12"
-                                                   Foreground="{DynamicResource ColdBrush}"
-                                                   common:MarqueeBehavior.IsEnabled="True"/>
+                                                   Foreground="{DynamicResource ColdBrush}">
+                                            <TextBlock.Style>
+                                                <Style TargetType="TextBlock">
+                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding MappedDevices.Count}" Value="0">
+                                                            <Setter Property="Visibility" Value="Visible"/>
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding MappedDevices}" Value="{x:Null}">
+                                                            <Setter Property="Visibility" Value="Visible"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </TextBlock.Style>
+                                        </TextBlock>
+                                        <!-- Device roster (#175): name + dynamic battery glyph
+                                             per mapped device, pipe separators, marquee when
+                                             the roster outgrows the card. -->
+                                        <ItemsControl ItemsSource="{Binding MappedDevices}"
+                                                      AlternationCount="99"
+                                                      common:MarqueeBehavior.IsEnabled="True">
+                                            <ItemsControl.ItemsPanel>
+                                                <ItemsPanelTemplate>
+                                                    <StackPanel Orientation="Horizontal"/>
+                                                </ItemsPanelTemplate>
+                                            </ItemsControl.ItemsPanel>
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate>
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <TextBlock Text="  |  " FontSize="12"
+                                                                   Foreground="{DynamicResource TextFillColorTertiaryBrush}">
+                                                            <TextBlock.Style>
+                                                                <Style TargetType="TextBlock">
+                                                                    <Style.Triggers>
+                                                                        <DataTrigger Binding="{Binding (ItemsControl.AlternationIndex), RelativeSource={RelativeSource AncestorType=ContentPresenter}}" Value="0">
+                                                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                                                        </DataTrigger>
+                                                                    </Style.Triggers>
+                                                                </Style>
+                                                            </TextBlock.Style>
+                                                        </TextBlock>
+                                                        <TextBlock Text="{Binding Name}" FontSize="12"
+                                                                   Foreground="{DynamicResource ColdBrush}"/>
+                                                        <TextBlock Text="{Binding BatteryGlyph}"
+                                                                   FontFamily="Segoe MDL2 Assets" FontSize="11"
+                                                                   Foreground="{DynamicResource ColdBrush}"
+                                                                   VerticalAlignment="Center" Margin="6,0,0,0"
+                                                                   Visibility="{Binding HasBattery, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                                        <TextBlock Text="{Binding BatteryText}"
+                                                                   FontFamily="{StaticResource TelemetryFontFamily}" FontSize="10.5"
+                                                                   Foreground="{DynamicResource ColdBrush}" Opacity="0.85"
+                                                                   VerticalAlignment="Center" Margin="3,0,0,0"
+                                                                   Visibility="{Binding HasBattery, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                                    </StackPanel>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
                                     </StackPanel>
                                 </Border>
 

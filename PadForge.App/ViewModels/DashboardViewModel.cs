@@ -481,6 +481,17 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _slotLabel, value);
         }
 
+        private System.Collections.ObjectModel.ObservableCollection<PadViewModel.MappedDeviceInfo> _mappedDevices;
+
+        /// <summary>Live reference to the pad's mapped-device list, so the
+        /// crucible card can render a per-device roster with battery glyphs
+        /// (#175). Set by InputService; same-reference sets are no-ops.</summary>
+        public System.Collections.ObjectModel.ObservableCollection<PadViewModel.MappedDeviceInfo> MappedDevices
+        {
+            get => _mappedDevices;
+            set => SetProperty(ref _mappedDevices, value);
+        }
+
         private string _deviceName = Strings.Instance.Dashboard_NoDevice;
 
         /// <summary>Name of the primary device mapped to this slot.</summary>

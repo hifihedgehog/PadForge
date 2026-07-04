@@ -117,22 +117,22 @@
                                 <!-- Row 1: Type | VID:PID | Capabilities -->
                                 <StackPanel Grid.Row="1" Grid.ColumnSpan="3"
                                             Orientation="Horizontal" Margin="16,3,0,0">
-                                    <TextBlock Text="{Binding DeviceType}" FontSize="11" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
-                                    <TextBlock Text=" &#x2022; " FontSize="11" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
+                                    <TextBlock Text="{Binding DeviceType}" FontFamily="{StaticResource TelemetryFontFamily}" FontSize="10.5" Foreground="{DynamicResource ColdDeepBrush}"/>
+                                    <TextBlock Text=" &#x2022; " FontFamily="{StaticResource TelemetryFontFamily}" FontSize="10.5" Foreground="{DynamicResource ColdDeepBrush}"/>
                                     <StackPanel Orientation="Horizontal">
-                                        <TextBlock FontSize="11" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text="{Binding VendorIdHex, Mode=OneWay}"/>
-                                        <TextBlock FontSize="11" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text=":"/>
-                                        <TextBlock FontSize="11" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text="{Binding ProductIdHex, Mode=OneWay}"/>
+                                        <TextBlock FontFamily="{StaticResource TelemetryFontFamily}" FontSize="10.5" Foreground="{DynamicResource ColdDeepBrush}" Text="{Binding VendorIdHex, Mode=OneWay}"/>
+                                        <TextBlock FontFamily="{StaticResource TelemetryFontFamily}" FontSize="10.5" Foreground="{DynamicResource ColdDeepBrush}" Text=":"/>
+                                        <TextBlock FontFamily="{StaticResource TelemetryFontFamily}" FontSize="10.5" Foreground="{DynamicResource ColdDeepBrush}" Text="{Binding ProductIdHex, Mode=OneWay}"/>
                                     </StackPanel>
-                                    <TextBlock Text=" &#x2022; " FontSize="11" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
-                                    <TextBlock Text="{Binding CapabilitiesSummary}" FontSize="11" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
+                                    <TextBlock Text=" &#x2022; " FontFamily="{StaticResource TelemetryFontFamily}" FontSize="10.5" Foreground="{DynamicResource ColdDeepBrush}"/>
+                                    <TextBlock Text="{Binding CapabilitiesSummary}" FontFamily="{StaticResource TelemetryFontFamily}" FontSize="10.5" Foreground="{DynamicResource ColdDeepBrush}"/>
                                     <!-- Battery (issue #167): shown only when the device reports one -->
                                     <StackPanel Orientation="Horizontal"
                                                 Visibility="{Binding HasBattery, Converter={StaticResource BoolToVisibilityConverter}}">
-                                        <TextBlock Text=" &#x2022; " FontSize="11" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
+                                        <TextBlock Text=" &#x2022; " FontFamily="{StaticResource TelemetryFontFamily}" FontSize="10.5" Foreground="{DynamicResource ColdDeepBrush}"/>
                                         <TextBlock Text="{Binding BatteryGlyph}" FontFamily="Segoe MDL2 Assets"
-                                                   FontSize="11" Foreground="{DynamicResource TextFillColorTertiaryBrush}" VerticalAlignment="Center"/>
-                                        <TextBlock Text="{Binding BatteryText}" FontSize="11" Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                                                   FontSize="10.5" Foreground="{DynamicResource ColdDeepBrush}" VerticalAlignment="Center"/>
+                                        <TextBlock Text="{Binding BatteryText}" FontFamily="{StaticResource TelemetryFontFamily}" FontSize="10.5" Foreground="{DynamicResource ColdDeepBrush}"
                                                    Margin="4,0,0,0" VerticalAlignment="Center"/>
                                     </StackPanel>
                                 </StackPanel>
@@ -282,6 +282,30 @@
                                                       CommandParameter="{Binding PadIndex}"
                                                       Margin="0,0,3,3" Padding="5,3"
                                                       ToolTip="{Binding Devices_ToggleAssignment, Source={x:Static strings:Strings.Instance}}">
+                                            <ToggleButton.Style>
+                                                <!-- The forge moment (#175): an assigned pill fills
+                                                     with the ember gradient and glows. -->
+                                                <Style TargetType="ToggleButton" BasedOn="{StaticResource {x:Type ToggleButton}}">
+                                                    <Style.Triggers>
+                                                        <Trigger Property="IsChecked" Value="True">
+                                                            <Setter Property="Foreground" Value="#FFFFF3E8"/>
+                                                            <Setter Property="Background">
+                                                                <Setter.Value>
+                                                                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                                                        <GradientStop Color="#FF6B2C" Offset="0"/>
+                                                                        <GradientStop Color="#C43D0C" Offset="1"/>
+                                                                    </LinearGradientBrush>
+                                                                </Setter.Value>
+                                                            </Setter>
+                                                            <Setter Property="Effect">
+                                                                <Setter.Value>
+                                                                    <DropShadowEffect Color="#FF6B2C" BlurRadius="10" ShadowDepth="0" Opacity="0.35"/>
+                                                                </Setter.Value>
+                                                            </Setter>
+                                                        </Trigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </ToggleButton.Style>
                                             <StackPanel Orientation="Horizontal">
                                                 <TextBlock Text="&#xE7FC;" FontFamily="Segoe MDL2 Assets"
                                                            FontSize="10" VerticalAlignment="Center"/>

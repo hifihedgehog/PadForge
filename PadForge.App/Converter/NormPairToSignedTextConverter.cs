@@ -2,7 +2,7 @@ using System;
 using System.Globalization;
 using System.Windows.Data;
 
-namespace PadForge.Converter
+namespace PadForge.Converters
 {
     /// <summary>Formats a pair of 0..1 normalized axis values as the Ember
     /// instrument readout: signed, two decimals, space-separated

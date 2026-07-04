@@ -680,7 +680,27 @@ namespace PadForge.ViewModels
         public string CurrentValueText
         {
             get => _currentValueText;
-            set => SetProperty(ref _currentValueText, value ?? string.Empty);
+            set
+            {
+                if (SetProperty(ref _currentValueText, value ?? string.Empty))
+                {
+                    // Rowfire spark (#175): input flowing on this row. Zero
+                    // and empty read as idle; anything else lights the sweep.
+                    IsInputActive = !string.IsNullOrEmpty(_currentValueText)
+                        && _currentValueText != "0"
+                        && _currentValueText != "0.00"
+                        && _currentValueText != "-";
+                }
+            }
+        }
+
+        private bool _isInputActive;
+
+        /// <summary>True while live input flows on this row (#175 rowfire).</summary>
+        public bool IsInputActive
+        {
+            get => _isInputActive;
+            private set => SetProperty(ref _isInputActive, value);
         }
 
         // ─────────────────────────────────────────────

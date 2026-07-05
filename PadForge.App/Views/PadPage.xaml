@@ -994,11 +994,14 @@
                             <ProgressBar Template="{StaticResource MotorCapsuleTemplate}" Height="32"
                                          Value="{Binding LeftMotorDisplay, Mode=OneWay}" Minimum="0" Maximum="1"
                                          IsHitTestVisible="False"/>
-                            <!-- Mono caption (#175 round 3, item B9): uppercase
-                                 is display-only via UpperConverter, resource
-                                 strings stay Title Case. -->
-                            <TextBlock Text="{Binding Pad_LeftMotor, Source={x:Static strings:Strings.Instance}, Converter={StaticResource UpperConverter}}"
-                                       FontFamily="{StaticResource TelemetryFontFamily}" FontSize="10"
+                            <!-- Button typography, not mono tokens (user report
+                                 2026-07-05: the mono caps clashed with Map All
+                                 below): these capsules are clickable test pills
+                                 in the same family as the button, so their
+                                 labels wear the button's face, size, and Title
+                                 Case. -->
+                            <TextBlock Text="{Binding Pad_LeftMotor, Source={x:Static strings:Strings.Instance}}"
+                                       FontFamily="{StaticResource BodyFontFamily}" FontSize="13"
                                        Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                        HorizontalAlignment="Center" VerticalAlignment="Center"
                                        IsHitTestVisible="False"/>
@@ -1012,8 +1015,8 @@
                             <ProgressBar Template="{StaticResource MotorCapsuleTemplate}" Height="32"
                                          Value="{Binding RightMotorDisplay, Mode=OneWay}" Minimum="0" Maximum="1"
                                          IsHitTestVisible="False"/>
-                            <TextBlock Text="{Binding Pad_RightMotor, Source={x:Static strings:Strings.Instance}, Converter={StaticResource UpperConverter}}"
-                                       FontFamily="{StaticResource TelemetryFontFamily}" FontSize="10"
+                            <TextBlock Text="{Binding Pad_RightMotor, Source={x:Static strings:Strings.Instance}}"
+                                       FontFamily="{StaticResource BodyFontFamily}" FontSize="13"
                                        Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                        HorizontalAlignment="Center" VerticalAlignment="Center"
                                        IsHitTestVisible="False"/>
@@ -1024,9 +1027,14 @@
                          MAP ALL — Controller tab controls
                          ══════════════════════════════════════ -->
                     <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,4,0,4">
+                        <!-- Height pinned to the motor capsules' 32 so all
+                             three pills share exact end curvature (radius
+                             16 = height/2 on every one; the padding-driven
+                             height landed a couple px taller and flattened
+                             the arcs - user report 2026-07-05). -->
                         <ui:Button Content="{Binding MapAllButtonText}"
                                    Style="{StaticResource MapAllPillButton}"
-                                   Padding="18,7" FontSize="13"
+                                   Height="32" Padding="18,0" FontSize="13"
                                    CornerRadius="16"
                                    Background="Transparent"
                                    MouseOverBackground="{DynamicResource SteelRaisedBrush}"

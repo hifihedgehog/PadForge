@@ -29,6 +29,14 @@ namespace PadForge.Services
         public bool ManualOverrideActive { get; private set; }
         private string _overrideProfileId;
 
+        /// <summary>Last foreground exe path observed. Read-only UI feed
+        /// (#175 item 8), only tracked while auto-switching is enabled
+        /// (<see cref="CheckForegroundWindow"/> early-returns otherwise).</summary>
+        public string LastForegroundExePath => _lastExePath;
+
+        /// <summary>Profile id the last foreground exe matched, or null.</summary>
+        public string LastMatchedProfileId => _lastMatchedProfileId;
+
         /// <summary>
         /// Raised when the foreground process matches a different profile than the
         /// currently active one. The string argument is the profile ID to switch to,

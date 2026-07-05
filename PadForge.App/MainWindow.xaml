@@ -6,6 +6,7 @@
         xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
         xmlns:local="clr-namespace:PadForge"
         xmlns:views="clr-namespace:PadForge.Views"
+        xmlns:viewControls="clr-namespace:PadForge.Views.Controls"
         xmlns:strings="clr-namespace:PadForge.Resources.Strings"
         ExtendsContentIntoTitleBar="True"
         WindowBackdropType="Mica"
@@ -184,6 +185,7 @@
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
                 <TextBlock Grid.Column="0"
@@ -192,9 +194,16 @@
                            Foreground="{DynamicResource TextFillColorTertiaryBrush}"
                            TextTrimming="CharacterEllipsis"/>
 
+                <!-- Active-profile pill (#175 item 8): joins the instrument
+                     cluster. Click opens the switcher flyout; an applied
+                     auto-switch flares it (both wired in code-behind). -->
+                <viewControls:ProfilePill x:Name="StatusProfilePill" Grid.Column="1"
+                                          VerticalAlignment="Center" Margin="16,0,0,0"
+                                          AutomationProperties.AutomationId="ProfilePillStatusBar"/>
+
                 <!-- Instrument line (#175): live counts and rate in cold
                      telemetry mono, engine state as the flame. -->
-                <StackPanel Grid.Column="1" Orientation="Horizontal"
+                <StackPanel Grid.Column="2" Orientation="Horizontal"
                             VerticalAlignment="Center" Margin="16,0">
                     <TextBlock Text="{Binding ConnectedDeviceCount, Mode=OneWay}"
                                FontFamily="{StaticResource TelemetryFontFamily}" FontSize="12"
@@ -204,7 +213,7 @@
                                Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
                 </StackPanel>
 
-                <StackPanel Grid.Column="2" Orientation="Horizontal"
+                <StackPanel Grid.Column="3" Orientation="Horizontal"
                             VerticalAlignment="Center" Margin="16,0">
                     <TextBlock Text="{Binding PollingFrequency, StringFormat='{}{0:F0}', Mode=OneWay}"
                                FontFamily="{StaticResource TelemetryFontFamily}" FontSize="12"
@@ -214,7 +223,7 @@
                                Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
                 </StackPanel>
 
-                <StackPanel Grid.Column="3" Orientation="Horizontal"
+                <StackPanel Grid.Column="4" Orientation="Horizontal"
                             VerticalAlignment="Center" Margin="16,0,0,0">
                     <Path Data="{StaticResource FlameOuterGeometry}"
                           Width="12" Height="12" Stretch="Uniform"

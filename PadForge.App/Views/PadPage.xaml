@@ -518,6 +518,13 @@
                     </StackPanel>
                 </Border>
 <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
+                <!-- Active-profile pill (#175 item 8): flame + profile name
+                     ahead of the tabset so the pivot stays uncrowded. Click
+                     opens the switcher flyout; auto-switch flares it
+                     (MainWindow wires both through ProfilePillElement). -->
+                <viewControls:ProfilePill x:Name="SlotProfilePill"
+                                          VerticalAlignment="Center" Margin="0,0,10,0"
+                                          AutomationProperties.AutomationId="ProfilePillPadPage"/>
                 <!-- [Preview] tab (#175 re-audit): the artifact's tier1 puts
                      one right-pushed tabset holding all three slot tabs after
                      the identity + preset chips; Preview was stranded on the

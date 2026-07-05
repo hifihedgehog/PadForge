@@ -525,6 +525,11 @@ namespace PadForge.Views
                 ControllerModel2D.ControllerElementRecordRequested -= OnModelRecordRequested;
                 ControllerModel2D.ControllerElementRecordRequested += OnModelRecordRequested;
                 ControllerModel2D.Bind(vm);
+                ControllerModel2D.AnnotationChipNavigateRequested -= OnAnnotationChipNavigate;
+                ControllerModel2D.AnnotationChipNavigateRequested += OnAnnotationChipNavigate;
+                ControllerModel2D.AnnotationsToggled -= OnAnnotationsToggled;
+                ControllerModel2D.AnnotationsToggled += OnAnnotationsToggled;
+                ControllerModel2D.AnnotationsEnabled = vm.AnnotationOverlayEnabled;
             }
             else
             {

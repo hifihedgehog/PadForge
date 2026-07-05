@@ -3,12 +3,35 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+             xmlns:strings="clr-namespace:PadForge.Resources.Strings"
              mc:Ignorable="d"
              d:DesignHeight="400" d:DesignWidth="600"
              Background="Transparent">
 
-    <Viewbox Stretch="Uniform">
-        <Canvas x:Name="ModelCanvas" ClipToBounds="True" />
-    </Viewbox>
+    <Grid>
+        <Viewbox Stretch="Uniform">
+            <Canvas x:Name="ModelCanvas" ClipToBounds="True" />
+        </Viewbox>
+
+        <!-- Annotation overlay (#175): chips + leader lines anchored to the
+             layout table's control rectangles. Sits OUTSIDE the Viewbox so
+             chip text stays mono 10 DIPs and leaders stay 1px at any size.
+             No Background so empty space stays click-through to the model. -->
+        <Canvas x:Name="AnnotationCanvas" Visibility="Collapsed" ClipToBounds="True"/>
+
+        <!-- Annotation toggle: per-view chrome, same top-right position as
+             the 3D host's toggle (PadPage's 2D/3D switch owns top-left). -->
+        <ui:Button x:Name="AnnotationToggleButton"
+                   AutomationProperties.AutomationId="AnnotationToggle2D"
+                   Style="{StaticResource EmberIconButton}"
+                   HorizontalAlignment="Right" VerticalAlignment="Top"
+                   Margin="0,8,8,0"
+                   ToolTip="{Binding Pad_ToggleAnnotations, Source={x:Static strings:Strings.Instance}}"
+                   Click="AnnotationToggle_Click">
+            <TextBlock x:Name="AnnotationToggleGlyph" FontFamily="Segoe MDL2 Assets"
+                       FontSize="14" Text="&#xE946;"/>
+        </ui:Button>
+    </Grid>
 
 </UserControl>

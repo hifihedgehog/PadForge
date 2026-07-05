@@ -1,13 +1,20 @@
-// Annotation overlay for the 3D controller preview (#175 roadmap 1).
+// Annotation overlay for the 2D controller preview (#175).
 //
-// A 2D Canvas sibling of the HelixViewport3D carries one chip per mapped
-// ButtonMap-backed row (steel chip at the canvas edge, 1px cold leader
-// line to the control's projected anchor) plus two slim trigger level
-// bars (cold raw beside ember out). Off by default, session-only state.
+// Same design contract as ControllerModelView.Annotations.cs (the 3D
+// implementation): one steel chip per mapped row at the canvas edge, 1px
+// cold leader line to the control's anchor, cold flash on input activity,
+// ember output dot, chip click navigates to the Mappings row. Off by
+// default, session-only state pushed in by the hosting page.
+//
+// Differences from the 3D file are all projection-shaped: the 2D layout
+// tables give every control a fixed rectangle in ModelCanvas coordinates,
+// so anchors translate through the Viewbox transform instead of a camera,
+// there is no drag-hide, and re-layout is event-driven (size change,
+// rebuild, label refresh) rather than timer-driven. The 150 ms timer
+// remains only for flash expiry and ember-dot evaluation.
 //
 // Rules baked in: no storyboards, no Effects, all live state is plain
-// brush/property swaps. Re-projection is timer-driven (150 ms), never
-// per-frame; only bar heights update at render rate.
+// brush/property swaps.
 
 using System;
 using System.Collections.Generic;
@@ -17,38 +24,36 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Media3D;
 using System.Windows.Shapes;
 using System.Windows.Threading;
-using HelixToolkit.Wpf;
 using PadForge.ViewModels;
 
 namespace PadForge.Views
 {
-    public partial class ControllerModelView
+    public partial class ControllerModel2DView
     {
         // ─────────────────────────────────────────────
-        //  Annotation constants
+        //  Annotation constants (identical to the 3D view)
         // ─────────────────────────────────────────────
 
         private const double AnnotationChipHeight = 20;   // CH
         private const double AnnotationChipGap = 6;       // G
         private const double AnnotationEdgeMargin = 8;    // M
-        private const double AnnotationBarHeight = 36;    // trigger fill track
-        private const double AnnotationBarTrackWidth = 12; // 1px border + 1px pad + 3+2+3
 
         // ─────────────────────────────────────────────
         //  Annotation state
         // ─────────────────────────────────────────────
 
         private bool _annotationsEnabled;
-        private bool _annotationDragHidden;
         private bool _annotationRebuildQueued;
         private System.Collections.ObjectModel.ObservableCollection<MappingItem> _annotationHookedMappings;
         private DispatcherTimer _annotationTimer;
         private readonly List<AnnotationChip> _annotationChips = new();
-        private readonly List<AnnotationTriggerBars> _annotationTriggerBars = new();
         private readonly List<MappingItem> _annotationSubscribedRows = new();
+        /// <summary>Control anchor centers in ModelCanvas coordinates, keyed
+        /// by overlay TargetName. Rebuilt by BuildCanvas from the active
+        /// layout table (the same position source the model draws with).</summary>
+        private readonly Dictionary<string, Point> _annotationAnchors = new();
 
         /// <summary>Raised from the toggle button click only (user intent),
         /// never from the AnnotationsEnabled setter, so the owner-side
@@ -70,8 +75,7 @@ namespace PadForge.Views
                 _annotationsEnabled = value;
                 if (value)
                 {
-                    AnnotationCanvas.Visibility = _annotationDragHidden
-                        ? Visibility.Hidden : Visibility.Visible;
+                    AnnotationCanvas.Visibility = Visibility.Visible;
                     if (_annotationTimer == null)
                     {
                         _annotationTimer = new DispatcherTimer
@@ -119,13 +123,14 @@ namespace PadForge.Views
         }
 
         // ─────────────────────────────────────────────
-        //  Per-chip / per-bar bookkeeping
+        //  Per-chip bookkeeping
         // ─────────────────────────────────────────────
 
         private sealed class AnnotationChip
         {
             public MappingItem Row;
-            public Model3DGroup Anchor;
+            /// <summary>Anchor center in ModelCanvas coordinates.</summary>
+            public Point Anchor;
             public Border Border;
             public TextBlock Text;
             public Line Leader;
@@ -134,36 +139,61 @@ namespace PadForge.Views
             /// (reduced motion) held until the row goes inactive; anything
             /// else = transient flash expiry.</summary>
             public DateTime FlashUntil = DateTime.MinValue;
-            public Point Projected;
+            /// <summary>Anchor translated to AnnotationCanvas coordinates.</summary>
+            public Point Translated;
             public bool LeftColumn;
             public bool Visible;
         }
 
-        private sealed class AnnotationTriggerBars
+        // ─────────────────────────────────────────────
+        //  Anchor table (fed by BuildCanvas)
+        // ─────────────────────────────────────────────
+
+        /// <summary>Called by BuildCanvas with the active layout table.
+        /// TriggerBase rows are skipped (rest-state silhouettes, never a
+        /// mapping target); everything else anchors at its rect center.</summary>
+        private void SetAnnotationAnchors(PadForge.Models2D.OverlayElement[] overlays)
         {
-            public Model3DGroup Anchor;
-            public Border Track;
-            public Rectangle ColdBar;
-            public Rectangle EmberBar;
-            public bool LeftSide;
-            // Both gates must hold for the track to show: anchor projects
-            // on-canvas AND a level is nonzero. An idle empty track read as
-            // a stray box on the trigger (user report, 2026-07-04).
-            public bool ProjectionValid;
-            public bool LevelsLive;
+            _annotationAnchors.Clear();
+            foreach (var ov in overlays)
+            {
+                if (ov.ElementType == PadForge.Models2D.OverlayElementType.TriggerBase)
+                    continue;
+                _annotationAnchors[ov.TargetName] =
+                    new Point(ov.X + ov.Width / 2, ov.Y + ov.Height / 2);
+            }
+        }
+
+        /// <summary>Anchor for a mapping target: direct overlay first, then
+        /// the stick-axis names, which are not overlay TargetNames (same
+        /// fallback shape as the 3D ResolveAnnotationAnchor).</summary>
+        private Point? ResolveAnnotationAnchor(string targetSettingName)
+        {
+            if (_annotationAnchors.TryGetValue(targetSettingName, out var p))
+                return p;
+            string ring = targetSettingName switch
+            {
+                "LeftThumbAxisX" or "LeftThumbAxisY" => "LeftThumbRing",
+                "RightThumbAxisX" or "RightThumbAxisY" => "RightThumbRing",
+                _ => null,
+            };
+            if (ring != null && _annotationAnchors.TryGetValue(ring, out var rp))
+                return rp;
+            return null;
         }
 
         // ─────────────────────────────────────────────
         //  Build / teardown
         // ─────────────────────────────────────────────
 
-        /// <summary>Rebuilds every chip and bar cluster from the current
-        /// model + Mappings. Cheap no-op while disabled or unbound.</summary>
+        /// <summary>Rebuilds every chip from the current layout + Mappings.
+        /// Cheap no-op while disabled or unbound.</summary>
         private void RebuildAnnotations()
         {
             ClearAnnotationVisuals();
 
-            if (!_annotationsEnabled || _vm == null || _currentModel == null)
+            if (!_annotationsEnabled || _vm == null || _loadedModel == null
+                || _annotationAnchors.Count == 0)
                 return;
 
             if (!ReferenceEquals(_annotationHookedMappings, _vm.Mappings))
@@ -189,15 +219,10 @@ namespace PadForge.Views
 
                 if (!row.IsMapped)
                     continue;
-                _annotationChips.Add(CreateAnnotationChip(row, anchor));
+                _annotationChips.Add(CreateAnnotationChip(row, anchor.Value));
             }
 
-            if (_currentModel.LeftShoulderTrigger != null)
-                _annotationTriggerBars.Add(CreateTriggerBars(_currentModel.LeftShoulderTrigger, leftSide: true));
-            if (_currentModel.RightShoulderTrigger != null)
-                _annotationTriggerBars.Add(CreateTriggerBars(_currentModel.RightShoulderTrigger, leftSide: false));
-
-            ReprojectAnnotations();
+            LayoutAnnotations();
         }
 
         /// <summary>Stops the timer, unsubscribes everything, clears the
@@ -212,7 +237,6 @@ namespace PadForge.Views
             _annotationHookedMappings = null;
             ClearAnnotationVisuals();
             _annotationsEnabled = false;
-            _annotationDragHidden = false;
             AnnotationCanvas.Visibility = Visibility.Collapsed;
             UpdateAnnotationToggleChrome();
         }
@@ -223,7 +247,6 @@ namespace PadForge.Views
                 row.PropertyChanged -= OnAnnotationRowPropertyChanged;
             _annotationSubscribedRows.Clear();
             _annotationChips.Clear();
-            _annotationTriggerBars.Clear();
             AnnotationCanvas.Children.Clear();
         }
 
@@ -255,11 +278,15 @@ namespace PadForge.Views
             {
                 // Resolved source text arrives after the descriptor
                 // (SetResolvedSourceText); refresh in place, no rebuild.
+                // Re-layout because the chip width feeds the leader endpoint.
                 if (sender is MappingItem row)
                 {
                     var chip = FindAnnotationChip(row);
                     if (chip != null)
+                    {
                         chip.Text.Text = ChipLabel(row);
+                        LayoutAnnotations();
+                    }
                 }
             }
         }
@@ -284,29 +311,9 @@ namespace PadForge.Views
             return null;
         }
 
-        /// <summary>Anchor for a mapping target: ButtonMap first, then the
-        /// named stick/trigger groups. Stick axes and triggers are not
-        /// ButtonMap keys, which left them without chips (user report,
-        /// 2026-07-04).</summary>
-        private Model3DGroup ResolveAnnotationAnchor(string targetSettingName)
-        {
-            if (_currentModel.ButtonMap.TryGetValue(targetSettingName, out var groups)
-                && groups != null && groups.Count > 0)
-                return groups[0];
-            return targetSettingName switch
-            {
-                "LeftThumbAxisX" or "LeftThumbAxisY" => _currentModel.LeftThumb,
-                "RightThumbAxisX" or "RightThumbAxisY" => _currentModel.RightThumb,
-                "LeftTrigger" => _currentModel.LeftShoulderTrigger,
-                "RightTrigger" => _currentModel.RightShoulderTrigger,
-                _ => null,
-            };
-        }
-
-        /// <summary>Chip text: identity mappings collapse to the bare name
-        /// (auto-map 1:1 rows truncated to garbage otherwise, user report
-        /// 2026-07-04); the arrow appears only when source and output
-        /// genuinely differ.</summary>
+        /// <summary>Chip text: identical contract to the 3D view. Device
+        /// prefix, then source -> output with both ends always shown even
+        /// when the names match, so the wiring stays explicit.</summary>
         private static string ChipLabel(MappingItem row)
         {
             string target = (row.TargetLabel ?? string.Empty).Trim();
@@ -335,7 +342,7 @@ namespace PadForge.Views
         //  Element construction
         // ─────────────────────────────────────────────
 
-        private AnnotationChip CreateAnnotationChip(MappingItem row, Model3DGroup anchor)
+        private AnnotationChip CreateAnnotationChip(MappingItem row, Point anchor)
         {
             var text = new TextBlock
             {
@@ -402,55 +409,6 @@ namespace PadForge.Views
             return chip;
         }
 
-        private AnnotationTriggerBars CreateTriggerBars(Model3DGroup anchor, bool leftSide)
-        {
-            var cold = new Rectangle
-            {
-                Width = 3,
-                Height = 0,
-                HorizontalAlignment = HorizontalAlignment.Left,
-                VerticalAlignment = VerticalAlignment.Bottom,
-                IsHitTestVisible = false,
-            };
-            cold.SetResourceReference(Shape.FillProperty, "ColdBrush");
-
-            var ember = new Rectangle
-            {
-                Width = 3,
-                Height = 0,
-                HorizontalAlignment = HorizontalAlignment.Right,
-                VerticalAlignment = VerticalAlignment.Bottom,
-                IsHitTestVisible = false,
-            };
-            ember.SetResourceReference(Shape.FillProperty, "EmberBrush");
-
-            var inner = new Grid { Height = AnnotationBarHeight };
-            inner.Children.Add(cold);
-            inner.Children.Add(ember);
-
-            var track = new Border
-            {
-                Width = AnnotationBarTrackWidth,
-                BorderThickness = new Thickness(1),
-                Padding = new Thickness(1),
-                Child = inner,
-                IsHitTestVisible = false,
-                Visibility = Visibility.Collapsed,
-            };
-            track.SetResourceReference(Border.BorderBrushProperty, "SteelLineSoftBrush");
-
-            AnnotationCanvas.Children.Add(track);
-
-            return new AnnotationTriggerBars
-            {
-                Anchor = anchor,
-                Track = track,
-                ColdBar = cold,
-                EmberBar = ember,
-                LeftSide = leftSide,
-            };
-        }
-
         private void AnnotationChip_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             if (sender is Border border && border.Tag is string target)
@@ -461,47 +419,16 @@ namespace PadForge.Views
         }
 
         // ─────────────────────────────────────────────
-        //  Projection + layout
+        //  Layout
         // ─────────────────────────────────────────────
 
-        /// <summary>Projects a model group's bounds center to viewport-space
-        /// DIPs. Local anchor via MeshCentroid, local→world via the same
-        /// ModelVisual3D.Transform the hit-test path inverts in
-        /// TransformToLocal, world→2D via Viewport3DHelper. Null when the
-        /// point sits behind the camera or the projection is degenerate.</summary>
-        private Point? ProjectAnnotationAnchor(Model3DGroup group)
+        /// <summary>Translates every anchor through the Viewbox transform and
+        /// runs the column layout. Event-driven (size change, rebuild, label
+        /// refresh), never per-frame: the 2D anchors only move when the
+        /// Viewbox rescales.</summary>
+        private void LayoutAnnotations()
         {
-            if (group == null)
-                return null;
-
-            var c = MeshCentroid(group);
-            var world = new Point3D(c.X, c.Y, c.Z);
-            var transform = ModelVisual3D.Transform;
-            if (transform != null && transform != Transform3D.Identity)
-                world = transform.Transform(world);
-
-            // Behind-camera cull: Point3DtoPoint2D happily projects points
-            // behind the eye to mirrored 2D coordinates.
-            if (ModelViewPort.Camera is ProjectionCamera cam)
-            {
-                if (Vector3D.DotProduct(world - cam.Position, cam.LookDirection) <= 0)
-                    return null;
-            }
-
-            var p = Viewport3DHelper.Point3DtoPoint2D(ModelViewPort.Viewport, world);
-            if (double.IsNaN(p.X) || double.IsNaN(p.Y)
-                || double.IsInfinity(p.X) || double.IsInfinity(p.Y))
-                return null;
-            return p;
-        }
-
-        /// <summary>Runs the full projection + column layout pass and
-        /// positions the trigger bar clusters. Timer/interaction driven,
-        /// never per-frame.</summary>
-        private void ReprojectAnnotations()
-        {
-            if (!_annotationsEnabled || _annotationDragHidden
-                || _vm == null || _currentModel == null)
+            if (!_annotationsEnabled || _vm == null || _loadedModel == null)
                 return;
 
             double w = AnnotationCanvas.ActualWidth;
@@ -514,10 +441,11 @@ namespace PadForge.Views
 
             foreach (var chip in _annotationChips)
             {
-                var p = ProjectAnnotationAnchor(chip.Anchor);
-                bool visible = p.HasValue
-                    && p.Value.X >= 0 && p.Value.X <= w
-                    && p.Value.Y >= 0 && p.Value.Y <= h;
+                // ModelCanvas -> AnnotationCanvas through the live Viewbox
+                // scale + letterbox offset (both are children of the same
+                // Grid, so TranslatePoint sees the full transform chain).
+                var p = ModelCanvas.TranslatePoint(chip.Anchor, AnnotationCanvas);
+                bool visible = p.X >= 0 && p.X <= w && p.Y >= 0 && p.Y <= h;
                 chip.Visible = visible;
                 chip.Border.Visibility = visible ? Visibility.Visible : Visibility.Collapsed;
                 chip.Leader.Visibility = chip.Border.Visibility;
@@ -527,52 +455,30 @@ namespace PadForge.Views
                     continue;
                 }
 
-                chip.Projected = p.Value;
-                // Side by projected position, not model X, so the split stays
-                // correct after the user spins the model 180 degrees.
-                chip.LeftColumn = p.Value.X < w / 2;
+                chip.Translated = p;
+                chip.LeftColumn = p.X < w / 2;
                 (chip.LeftColumn ? leftColumn : rightColumn).Add(chip);
             }
 
             LayoutAnnotationColumn(leftColumn, leftSide: true, w, h);
             LayoutAnnotationColumn(rightColumn, leftSide: false, w, h);
-
-            foreach (var bars in _annotationTriggerBars)
-            {
-                var p = ProjectAnnotationAnchor(bars.Anchor);
-                bool visible = p.HasValue
-                    && p.Value.X >= 0 && p.Value.X <= w
-                    && p.Value.Y >= 0 && p.Value.Y <= h;
-                bars.ProjectionValid = visible;
-                bars.Track.Visibility = visible && bars.LevelsLive
-                    ? Visibility.Visible : Visibility.Collapsed;
-                if (!visible)
-                    continue;
-
-                // Offset 10px toward the nearer canvas edge.
-                double x = bars.LeftSide
-                    ? p.Value.X - 10 - AnnotationBarTrackWidth
-                    : p.Value.X + 10;
-                Canvas.SetLeft(bars.Track, x);
-                Canvas.SetTop(bars.Track, p.Value.Y - (AnnotationBarHeight + 4) / 2);
-            }
         }
 
         /// <summary>Two-pass slot assignment: downward greedy from the sorted
         /// anchors, then an upward overflow fix. No overlaps, minimal
-        /// displacement (axis-label staggering family).</summary>
+        /// displacement (same algorithm as the 3D view).</summary>
         private void LayoutAnnotationColumn(List<AnnotationChip> chips, bool leftSide, double w, double h)
         {
             if (chips.Count == 0)
                 return;
 
-            chips.Sort((a, b) => a.Projected.Y.CompareTo(b.Projected.Y));
+            chips.Sort((a, b) => a.Translated.Y.CompareTo(b.Translated.Y));
 
             var y = new double[chips.Count];
             double prevBottom = AnnotationEdgeMargin - AnnotationChipGap;
             for (int i = 0; i < chips.Count; i++)
             {
-                y[i] = Math.Max(chips[i].Projected.Y - AnnotationChipHeight / 2,
+                y[i] = Math.Max(chips[i].Translated.Y - AnnotationChipHeight / 2,
                                 prevBottom + AnnotationChipGap);
                 prevBottom = y[i] + AnnotationChipHeight;
             }
@@ -612,8 +518,8 @@ namespace PadForge.Views
                 }
 
                 double midY = y[i] + AnnotationChipHeight / 2;
-                chip.Leader.X1 = chip.Projected.X;
-                chip.Leader.Y1 = chip.Projected.Y;
+                chip.Leader.X1 = chip.Translated.X;
+                chip.Leader.Y1 = chip.Translated.Y;
                 chip.Leader.X2 = nearEdgeX;
                 chip.Leader.Y2 = midY;
                 Canvas.SetTop(chip.EmberDot, midY - 3);
@@ -621,21 +527,16 @@ namespace PadForge.Views
         }
 
         // ─────────────────────────────────────────────
-        //  Live state (tick + render hooks)
+        //  Live state
         // ─────────────────────────────────────────────
 
-        /// <summary>150 ms tick: re-project, evaluate ember dots, revert
-        /// expired flashes. The timer is the PRIMARY re-projection trigger.
-        /// Wheel zoom, pan and yaw/pitch write cam.Position / rotation
-        /// angles directly and bypass Helix's CameraController, so
-        /// CameraChanged may never fire.</summary>
+        /// <summary>150 ms tick: revert expired flashes and evaluate ember
+        /// dots. Layout is NOT re-run here; anchors are static between
+        /// size/rebuild events.</summary>
         private void AnnotationTick(object sender, EventArgs e)
         {
-            if (!_annotationsEnabled || _vm == null || _currentModel == null)
+            if (!_annotationsEnabled || _vm == null)
                 return;
-
-            if (!_annotationDragHidden)
-                ReprojectAnnotations();
 
             var now = DateTime.UtcNow;
             foreach (var chip in _annotationChips)
@@ -646,8 +547,8 @@ namespace PadForge.Views
                     RevertChipFlash(chip);
 
                 // Ember output dot: virtual-output state on the VM, same
-                // shape as GetButtonState (every ButtonMap key is a button).
-                bool outputOn = chip.Visible && GetButtonState(chip.Row.TargetSettingName);
+                // shape as the 3D GetButtonState switch.
+                bool outputOn = chip.Visible && GetAnnotationButtonState(chip.Row.TargetSettingName);
                 chip.EmberDot.Visibility = outputOn ? Visibility.Visible : Visibility.Collapsed;
             }
         }
@@ -679,43 +580,35 @@ namespace PadForge.Views
             chip.FlashUntil = DateTime.MinValue;
         }
 
-        /// <summary>Bar heights only; positions move on re-projection.
-        /// Called from OnRendering inside the existing dirty gate, so this
-        /// runs at VM change rate, not frame rate. Cold = raw selected
-        /// device, ember = combined slot output. When no device is selected
-        /// the raw feed stops updating; the ember bar still moves.</summary>
-        private void UpdateAnnotationLevelBars()
+        /// <summary>Virtual-output state for the ember dot. Mirrors the 3D
+        /// GetButtonState switch, plus TouchpadClick, which the 2D layouts
+        /// anchor (PlayStation slots) and the VM already exposes for the
+        /// touchpad preview. Axis and trigger targets return false, same as
+        /// the 3D view.</summary>
+        private bool GetAnnotationButtonState(string prop)
         {
-            if (!_annotationsEnabled || _annotationDragHidden || _vm == null)
-                return;
-            foreach (var bars in _annotationTriggerBars)
+            if (_vm == null) return false;
+            return prop switch
             {
-                double raw = bars.LeftSide ? _vm.DeviceLeftTrigger : _vm.DeviceRightTrigger;
-                double output = bars.LeftSide ? _vm.LeftTrigger : _vm.RightTrigger;
-                bars.ColdBar.Height = Math.Clamp(raw, 0.0, 1.0) * AnnotationBarHeight;
-                bars.EmberBar.Height = Math.Clamp(output, 0.0, 1.0) * AnnotationBarHeight;
-                bars.LevelsLive = raw > 0.02 || output > 0.02;
-                bars.Track.Visibility = bars.LevelsLive && bars.ProjectionValid
-                    ? Visibility.Visible : Visibility.Collapsed;
-            }
-        }
-
-        /// <summary>Hides the overlay while a mouse/touch drag is active and
-        /// restores it (plus one immediate re-project) when the drag ends.</summary>
-        private void SetAnnotationsDragHidden(bool hidden)
-        {
-            _annotationDragHidden = hidden;
-            if (!_annotationsEnabled)
-                return;
-            if (hidden)
-            {
-                AnnotationCanvas.Visibility = Visibility.Hidden;
-            }
-            else
-            {
-                AnnotationCanvas.Visibility = Visibility.Visible;
-                ReprojectAnnotations();
-            }
+                "ButtonA" => _vm.ButtonA,
+                "ButtonB" => _vm.ButtonB,
+                "ButtonX" => _vm.ButtonX,
+                "ButtonY" => _vm.ButtonY,
+                "LeftShoulder" => _vm.LeftShoulder,
+                "RightShoulder" => _vm.RightShoulder,
+                "ButtonBack" => _vm.ButtonBack,
+                "ButtonStart" => _vm.ButtonStart,
+                "ButtonGuide" => _vm.ButtonGuide,
+                "ButtonShare" => _vm.ButtonShare,
+                "DPadUp" => _vm.DPadUp,
+                "DPadDown" => _vm.DPadDown,
+                "DPadLeft" => _vm.DPadLeft,
+                "DPadRight" => _vm.DPadRight,
+                "LeftThumbButton" => _vm.LeftThumbButton,
+                "RightThumbButton" => _vm.RightThumbButton,
+                "TouchpadClick" => _vm.TouchpadClickPressed,
+                _ => false
+            };
         }
     }
 }

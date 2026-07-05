@@ -1286,6 +1286,19 @@ namespace PadForge.Services
                     _uiTimer = null;
                 }
 
+                // The pipeline heat chips (#175 item 10) ride the timer
+                // just torn down, so nothing would ever clear the last
+                // tick's rowfire flags. Drop every row's IsInputActive
+                // and every pad's Live flags (including the SHIFT flame)
+                // so no chip stays lit on a dead engine.
+                foreach (var padVm in _mainVm.Pads)
+                {
+                    if (padVm == null) continue;
+                    foreach (var m in padVm.Mappings)
+                        if (m != null) m.IsInputActive = false;
+                    padVm.ClearPipelineLiveness();
+                }
+
                 // Unsubscribe from ViewModel property changes (event
                 // subscriptions are thread-safe but the surrounding state
                 // touches PadVMs, so we keep this on the UI thread for
@@ -1903,7 +1916,361 @@ namespace PadForge.Services
                         break;
                 }
             }
+
+            // ── Pipeline heat ledger (#175 item 10): 1 s slow lane riding
+            //    this refresh. Config only moves on user edits, so a 30 Hz
+            //    recompute would just churn strings. ──
+            long ledgerTick = Environment.TickCount64;
+            if (ledgerTick - _lastStageLedgerRefreshTick >= 1000)
+            {
+                _lastStageLedgerRefreshTick = ledgerTick;
+                foreach (var slot in dash.SlotSummaries)
+                {
+                    if (slot.PadIndex < 0 || slot.PadIndex >= _mainVm.Pads.Count) continue;
+                    RefreshSlotStageLedger(slot, _mainVm.Pads[slot.PadIndex], devices);
+                }
+            }
         }
+
+        // ─────────────────────────────────────────────
+        //  Pipeline heat ledger (#175 item 10)
+        // ─────────────────────────────────────────────
+
+        private long _lastStageLedgerRefreshTick;
+
+        // Stage glyphs are the same characters the matching tab page
+        // headers use (Gyro E7AD, Lighting E781, Touchpad EFA5, Audio
+        // E767). Sticks / Triggers render the Zacksly shapes instead of
+        // a font glyph, matching their LabeledShapeIcon headers.
+        private const string StageGlyphGyro = "\uE7AD";
+        private const string StageGlyphLighting = "\uE781";
+        private const string StageGlyphTouchpad = "\uEFA5";
+        private const string StageGlyphAudio = "\uE767";
+
+        /// <summary>
+        /// Rebuilds one slot card's stage ledger. Stage membership mirrors
+        /// the PadPage.SyncTabVisibility capability gates (union across the
+        /// slot's assigned devices instead of the selected one, because the
+        /// card summarizes the whole slot); heat compares each stage's
+        /// stored settings against the PadSetting / config defaults. Every
+        /// value shown in a summary is read from the real setting object.
+        /// </summary>
+        private void RefreshSlotStageLedger(SlotSummary slot, PadViewModel padVm, IEnumerable<UserDevice> devices)
+        {
+            var slotSettings = SettingsManager.UserSettings?.FindByPadIndex(slot.PadIndex);
+
+            // Pair each assigned setting with its device caps + PadSetting.
+            bool capGyro = false, capLightbar = false, capTouchpad = false, capAudio = false;
+            var bindings = new List<(PadSetting Ps, UserDevice Ud)>();
+            if (slotSettings != null)
+            {
+                foreach (var us in slotSettings)
+                {
+                    if (us == null) continue;
+                    UserDevice ud = null;
+                    if (devices != null)
+                    {
+                        foreach (var d in devices)
+                        {
+                            if (d != null && d.InstanceGuid == us.InstanceGuid) { ud = d; break; }
+                        }
+                    }
+                    bindings.Add((us.GetPadSetting(), ud));
+                    if (ud == null) continue;
+
+                    capGyro |= ud.HasGyro;
+                    capTouchpad |= ud.HasTouchpad;
+                    // Same VID/PID gate SyncTabVisibility uses for the
+                    // Lighting tab: DualSense / Edge / DS4.
+                    bool sonyLightbar = ud.VendorId == 0x054C
+                        && (ud.ProdId == 0x0CE6 || ud.ProdId == 0x0DF2
+                         || ud.ProdId == 0x05C4 || ud.ProdId == 0x09CC || ud.ProdId == 0x0BA0);
+                    capLightbar |= sonyLightbar;
+                    // Audio tab gate: Sony speaker family, Wii Remote
+                    // speaker, or haptic-tone actuators (#147).
+                    capAudio |= sonyLightbar
+                        || WiiSpeakerService.DeviceHasSpeaker(ud)
+                        || HapticToneService.DeviceHasHaptics(ud);
+                }
+            }
+
+            // Sticks / Triggers follow the output-type gates SyncTabVisibility
+            // applies to their tabs (MIDI has neither; KBM keeps Sticks for
+            // Mouse X/Y but drops Triggers). Both need at least one assigned
+            // device so an empty slot's ledger stays empty.
+            bool isMidi = padVm.OutputType == VirtualControllerType.Midi;
+            bool isKbm = padVm.OutputType == VirtualControllerType.KeyboardMouse;
+            bool capSticks = !isMidi && bindings.Count > 0;
+            bool capTriggers = !isMidi && !isKbm && bindings.Count > 0;
+
+            // Compute (hot, summary) per stage, union across devices.
+            var stickParts = new List<string>();
+            var triggerParts = new List<string>();
+            var gyroParts = new List<string>();
+            foreach (var (ps, _) in bindings)
+            {
+                if (ps == null) continue;
+                if (capSticks) AppendStickStageTokens(stickParts, ps);
+                if (capTriggers) AppendTriggerStageTokens(triggerParts, ps);
+                if (capGyro) AppendGyroStageTokens(gyroParts, ps);
+            }
+
+            var lightingParts = new List<string>();
+            var audioParts = new List<string>();
+            if (capLightbar || capAudio)
+            {
+                foreach (var (_, ud) in bindings)
+                {
+                    if (ud == null) continue;
+                    if (!padVm.PerDevicePlayStationConfigs.TryGetValue(ud.InstanceGuid, out var cfg) || cfg == null)
+                        continue;
+                    // Lighting defaults: LightbarMode.Off base +
+                    // InputReactiveMode.Off overlay (PlayStationSlotConfig
+                    // field initializers). Summary = the picked mode names.
+                    if (capLightbar)
+                    {
+                        if (cfg.LightbarMode != LightbarMode.Off)
+                            AddToken(lightingParts, MacroAction.LightbarModeDisplayName(cfg.LightbarMode));
+                        if (cfg.InputReactiveMode != InputReactiveMode.Off)
+                            AddToken(lightingParts, InputReactiveModeDisplayName(cfg.InputReactiveMode));
+                        // Indicator LEDs. Defaults: PlayerLedMode Off,
+                        // PlayerLedBrightness High, MicLedMode Off
+                        // (PlayStationSlotConfig field initializers;
+                        // ResetIndicatorLedsAllCommand restores them).
+                        if (cfg.PlayerLedMode != PlayerLedMode.Off)
+                            AddToken(lightingParts, cfg.PlayerLedMode == PlayerLedMode.All
+                                ? "PLED ALL" : "PLED P" + (int)cfg.PlayerLedMode);
+                        if (cfg.PlayerLedBrightness != PlayerLedBrightness.High)
+                            AddToken(lightingParts, cfg.PlayerLedBrightness == PlayerLedBrightness.Medium
+                                ? "PLED MED" : "PLED LOW");
+                        if (cfg.MicLedMode != MicLedMode.Off)
+                            AddToken(lightingParts, cfg.MicLedMode switch
+                            {
+                                MicLedMode.Pulse => "MIC PULSE",
+                                MicLedMode.FollowDeviceMute => "MIC FOLLOW",
+                                _ => "MIC SOLID",
+                            });
+                    }
+                    // Audio default: passthrough off (PlayStationSlotConfig
+                    // initializer; ResetSoundOutputAllCommand restores it).
+                    if (capAudio && cfg.AudioPassthroughEnabled)
+                        AddToken(audioParts, "PASSTHROUGH");
+                }
+                // Macro-sound master volume default 100 (PadViewModel
+                // _soundMasterVolume initializer / reset command).
+                if (capAudio && padVm.SoundMasterVolume != 100)
+                    AddToken(audioParts, "VOL " + padVm.SoundMasterVolume.ToString(System.Globalization.CultureInfo.InvariantCulture) + "%");
+            }
+
+            var touchpadParts = new List<string>();
+            if (capTouchpad)
+            {
+                foreach (var (ps, _) in bindings)
+                {
+                    if (ps?.TouchpadSettings == null) continue;
+                    foreach (var entry in ps.TouchpadSettings)
+                    {
+                        var ts = entry?.Settings;
+                        if (ts == null) continue;
+                        // Touchpad defaults: every feature toggle off
+                        // (TouchpadGestureSettings.Default(), "touchpad
+                        // mappings are opt-in").
+                        if (ts.Enabled) AddToken(touchpadParts, "GESTURES");
+                        if (ts.EnableJoystickOutput) AddToken(touchpadParts, "JOYSTICK");
+                        if (ts.MouseSensitivityX != 1.0f || ts.MouseSensitivityY != 1.0f
+                            || ts.MouseInvertX || ts.MouseInvertY)
+                            AddToken(touchpadParts, "MOUSE");
+                    }
+                }
+            }
+
+            // Desired membership in tab order. A stage only appears when
+            // the slot HAS it (a gyro glyph on a gyro-less pad is noise).
+            var desired = new List<(string Kind, string Glyph, bool Stick, bool Trig, List<string> Parts)>();
+            if (capSticks) desired.Add(("Sticks", string.Empty, true, false, stickParts));
+            if (capTriggers) desired.Add(("Triggers", string.Empty, false, true, triggerParts));
+            if (capGyro) desired.Add(("Gyro", StageGlyphGyro, false, false, gyroParts));
+            if (capLightbar) desired.Add(("Lighting", StageGlyphLighting, false, false, lightingParts));
+            if (capTouchpad) desired.Add(("Touchpad", StageGlyphTouchpad, false, false, touchpadParts));
+            if (capAudio) desired.Add(("Audio", StageGlyphAudio, false, false, audioParts));
+
+            // Membership changed → rebuild; otherwise mutate in place so
+            // the card's ItemsControl doesn't re-template every second.
+            bool sameMembership = slot.StageLedger.Count == desired.Count;
+            if (sameMembership)
+            {
+                for (int i = 0; i < desired.Count; i++)
+                {
+                    if (!string.Equals(slot.StageLedger[i].Kind, desired[i].Kind, StringComparison.Ordinal))
+                    { sameMembership = false; break; }
+                }
+            }
+            if (!sameMembership)
+            {
+                slot.StageLedger.Clear();
+                foreach (var d in desired)
+                    slot.StageLedger.Add(new SlotStageInfo(d.Kind, d.Glyph, d.Stick, d.Trig));
+            }
+            for (int i = 0; i < desired.Count; i++)
+            {
+                var info = slot.StageLedger[i];
+                info.IsHot = desired[i].Parts.Count > 0;
+                info.Summary = string.Join(" · ", desired[i].Parts);
+            }
+        }
+
+        /// <summary>Adds a token once (union across devices dedupes).</summary>
+        private static void AddToken(List<string> parts, string token)
+        {
+            if (!parts.Contains(token)) parts.Add(token);
+        }
+
+        /// <summary>Adds "label n%" when the stored value differs from
+        /// its default. Values are PadSetting invariant strings.</summary>
+        private static void AddPctToken(List<string> parts, string label, string value, float defaultValue)
+        {
+            float v = TryParseFloatPs(value, defaultValue);
+            if (Math.Abs(v - defaultValue) < 0.0001f) return;
+            AddToken(parts, label + " " + v.ToString("0.#", System.Globalization.CultureInfo.InvariantCulture) + "%");
+        }
+
+        private static bool PsFlagSet(string value) => TryParseFloatPs(value, 0f) != 0f;
+
+        /// <summary>Stick-stage tokens for one PadSetting side pair.
+        /// Defaults compared against are the PadSetting field initializers:
+        /// deadzone / anti-deadzone / linear / center offset "0", max range
+        /// "100" (Neg variants empty = default), deadzone shape "2"
+        /// (ScaledRadial), sensitivity curves "0" (linear), inverts "0".</summary>
+        private static void AppendStickStageTokens(List<string> parts, PadSetting ps)
+        {
+            AppendStickSideTokens(parts, "L",
+                ps.LeftThumbDeadZoneX, ps.LeftThumbDeadZoneY,
+                ps.LeftThumbAntiDeadZoneX, ps.LeftThumbAntiDeadZoneY, ps.LeftThumbAntiDeadZone,
+                ps.LeftThumbLinear,
+                ps.LeftThumbSensitivityCurveX, ps.LeftThumbSensitivityCurveY,
+                ps.LeftThumbDeadZoneShape,
+                ps.LeftThumbAxisXInvert, ps.LeftThumbAxisYInvert,
+                ps.LeftThumbMaxRangeX, ps.LeftThumbMaxRangeY,
+                ps.LeftThumbMaxRangeXNeg, ps.LeftThumbMaxRangeYNeg,
+                ps.LeftThumbCenterOffsetX, ps.LeftThumbCenterOffsetY);
+            AppendStickSideTokens(parts, "R",
+                ps.RightThumbDeadZoneX, ps.RightThumbDeadZoneY,
+                ps.RightThumbAntiDeadZoneX, ps.RightThumbAntiDeadZoneY, ps.RightThumbAntiDeadZone,
+                ps.RightThumbLinear,
+                ps.RightThumbSensitivityCurveX, ps.RightThumbSensitivityCurveY,
+                ps.RightThumbDeadZoneShape,
+                ps.RightThumbAxisXInvert, ps.RightThumbAxisYInvert,
+                ps.RightThumbMaxRangeX, ps.RightThumbMaxRangeY,
+                ps.RightThumbMaxRangeXNeg, ps.RightThumbMaxRangeYNeg,
+                ps.RightThumbCenterOffsetX, ps.RightThumbCenterOffsetY);
+        }
+
+        private static void AppendStickSideTokens(List<string> parts, string side,
+            string dzX, string dzY, string adzX, string adzY, string adzLegacy,
+            string linear, string curveX, string curveY, string shape,
+            string invX, string invY, string maxX, string maxY,
+            string maxXNeg, string maxYNeg, string offX, string offY)
+        {
+            // Per-axis values carry the axis in the label (LX DZ 10% /
+            // LY DZ 20%). Side-wide values keep the bare side prefix.
+            string ax = side + "X", ay = side + "Y";
+            AddPctToken(parts, ax + " DZ", dzX, 0f);
+            AddPctToken(parts, ay + " DZ", dzY, 0f);
+            AddPctToken(parts, ax + " ADZ", adzX, 0f);
+            AddPctToken(parts, ay + " ADZ", adzY, 0f);
+            AddPctToken(parts, side + " ADZ", adzLegacy, 0f);
+            AddPctToken(parts, side + " LIN", linear, 0f);
+            if (!CurveLut.IsLinear(curveX))
+                AddToken(parts, ax + " CURVE " + CurveLut.MatchPreset(curveX));
+            if (!CurveLut.IsLinear(curveY))
+                AddToken(parts, ay + " CURVE " + CurveLut.MatchPreset(curveY));
+            // Shape default 2 = ScaledRadial (PadSetting initializer).
+            if (!string.IsNullOrEmpty(shape) && TryParseFloatPs(shape, 2f) != 2f)
+                AddToken(parts, side + " SHAPE");
+            if (PsFlagSet(invX)) AddToken(parts, ax + " INV");
+            if (PsFlagSet(invY)) AddToken(parts, ay + " INV");
+            AddPctToken(parts, ax + " RANGE", maxX, 100f);
+            AddPctToken(parts, ay + " RANGE", maxY, 100f);
+            // Neg ranges default to null (unset = mirror of positive).
+            // The "-" marks the negative direction of the axis.
+            if (!string.IsNullOrEmpty(maxXNeg)) AddPctToken(parts, ax + "- RANGE", maxXNeg, 100f);
+            if (!string.IsNullOrEmpty(maxYNeg)) AddPctToken(parts, ay + "- RANGE", maxYNeg, 100f);
+            if (PsFlagSet(offX) || PsFlagSet(offY)) AddToken(parts, side + " OFFSET");
+        }
+
+        /// <summary>Trigger-stage tokens. Defaults per the PadSetting
+        /// initializers: deadzone / anti "0", max range "100", curve "0"
+        /// (linear).</summary>
+        private static void AppendTriggerStageTokens(List<string> parts, PadSetting ps)
+        {
+            AddPctToken(parts, "LT DZ", ps.LeftTriggerDeadZone, 0f);
+            AddPctToken(parts, "RT DZ", ps.RightTriggerDeadZone, 0f);
+            AddPctToken(parts, "LT ADZ", ps.LeftTriggerAntiDeadZone, 0f);
+            AddPctToken(parts, "RT ADZ", ps.RightTriggerAntiDeadZone, 0f);
+            AddPctToken(parts, "LT RANGE", ps.LeftTriggerMaxRange, 100f);
+            AddPctToken(parts, "RT RANGE", ps.RightTriggerMaxRange, 100f);
+            if (!CurveLut.IsLinear(ps.LeftTriggerSensitivityCurve))
+                AddToken(parts, "LT CURVE " + CurveLut.MatchPreset(ps.LeftTriggerSensitivityCurve));
+            if (!CurveLut.IsLinear(ps.RightTriggerSensitivityCurve))
+                AddToken(parts, "RT CURVE " + CurveLut.MatchPreset(ps.RightTriggerSensitivityCurve));
+        }
+
+        /// <summary>Gyro-stage tokens. Defaults are the PadSetting
+        /// initializers the Gyro tab authors: sensitivity 1.0, deadzone
+        /// 3.0°/s, tightening 3.0°/s, smoothing threshold 8.0°/s over a
+        /// 50 ms window, acceleration 0, curve Linear, real-world
+        /// calibration 0 (off), Easy Aim 0, space Local, no engage
+        /// button, passthrough tuning 0 (off), inverts 0. Parse
+        /// fallbacks mirror the engine consumer (GyroTuningProvider).
+        /// The legacy v3.3 GyroSmoothingAlpha has no UI, so it never
+        /// counts as heat. Bias / calibration fields are excluded.
+        /// InputService auto-calibrates those without user intent, so
+        /// they never count as configuration heat.</summary>
+        private static void AppendGyroStageTokens(List<string> parts, PadSetting ps)
+        {
+            float sensH = TryParseFloatPs(ps.GyroSensitivityH, 1f);
+            float sensV = TryParseFloatPs(ps.GyroSensitivityV, 1f);
+            var ic = System.Globalization.CultureInfo.InvariantCulture;
+            if (Math.Abs(sensH - 1f) > 0.0001f || Math.Abs(sensV - 1f) > 0.0001f)
+                AddToken(parts, "SENS " + sensH.ToString("0.##", ic) + "×" + sensV.ToString("0.##", ic));
+            float dz = TryParseFloatPs(ps.GyroDeadZoneDegPerSec, 0f);
+            if (Math.Abs(dz - 3f) > 0.0001f)
+                AddToken(parts, "DZ " + dz.ToString("0.#", ic) + "°/s");
+            float tight = TryParseFloatPs(ps.GyroTighteningThresholdDegPerSec, 0f);
+            if (Math.Abs(tight - 3f) > 0.0001f)
+                AddToken(parts, "TIGHT " + tight.ToString("0.#", ic));
+            float smoothThr = TryParseFloatPs(ps.GyroSmoothingThresholdDegPerSec, 0f);
+            float smoothWin = TryParseFloatPs(ps.GyroSmoothingWindowMs, 50f);
+            if (Math.Abs(smoothThr - 8f) > 0.0001f || Math.Abs(smoothWin - 50f) > 0.0001f)
+                AddToken(parts, "SMOOTH " + smoothThr.ToString("0.#", ic) + "/" + smoothWin.ToString("0.#", ic));
+            if (PsFlagSet(ps.GyroAcceleration)) AddToken(parts, "ACCEL");
+            if (!string.IsNullOrEmpty(ps.GyroOutputCurve)
+                && !string.Equals(ps.GyroOutputCurve, "Linear", StringComparison.Ordinal))
+                AddToken(parts, "CURVE " + ps.GyroOutputCurve);
+            float rwc = TryParseFloatPs(ps.GyroRealWorldCalibration, 0f);
+            if (Math.Abs(rwc) > 0.0001f)
+                AddToken(parts, "RWC " + rwc.ToString("0.#", ic));
+            AddPctToken(parts, "EASYAIM", ps.GyroEasyAimStickThreshold, 0f);
+            if (!string.IsNullOrEmpty(ps.GyroSpace)
+                && !string.Equals(ps.GyroSpace, "Local", StringComparison.Ordinal))
+                AddToken(parts, "SPACE " + ps.GyroSpace);
+            if (!string.IsNullOrEmpty(ps.GyroAimEngageButton)) AddToken(parts, "ENGAGE");
+            if (PsFlagSet(ps.GyroInvertPitch)) AddToken(parts, "INV P");
+            if (PsFlagSet(ps.GyroInvertYawRoll)) AddToken(parts, "INV Y");
+            if (PsFlagSet(ps.GyroApplyTuningToPassthrough)) AddToken(parts, "PASSTHRU");
+        }
+
+        // Lightbar base-mode display names reuse MacroAction's existing
+        // localized mapping (MacroItem.cs); no second copy here.
+
+        /// <summary>Localized display name for the input-reactive overlay
+        /// mode, same strings the Lighting tab's overlay picker shows.</summary>
+        private static string InputReactiveModeDisplayName(InputReactiveMode mode) => mode switch
+        {
+            InputReactiveMode.Random => Strings.Instance.Pad_Lighting_InputReactive_Random,
+            InputReactiveMode.Cycle => Strings.Instance.Pad_Lighting_InputReactive_Cycle,
+            _ => Strings.Instance.Pad_Lighting_InputReactive_Fixed,
+        };
 
         /// <summary>
         /// Updates NavControllerItem connected device counts for sidebar power icon colors.
@@ -2435,6 +2802,19 @@ namespace PadForge.Services
                     ? fallbackValue != 0
                     : Math.Abs(fallbackValue) > 1500;
             }
+
+            // ── Pipeline heat chips (#175 item 10): recompute from this
+            //    tick's rowfire flags on the same lane. The engaged shift
+            //    layer comes from the same engine poll the shift-layer
+            //    flyout rides (GetEngagedLayerMask). ──
+            string engagedMask = "Base";
+            var mappingSets = SettingsManager.SlotMappingSets;
+            if (haveEngine && mappingSets != null && padIndex < mappingSets.Length)
+            {
+                string mask = Common.Input.InputManager.GetEngagedLayerMask(padIndex, mappingSets[padIndex]);
+                if (!string.IsNullOrEmpty(mask)) engagedMask = mask;
+            }
+            padVm.RefreshPipelineChips(engagedMask);
         }
 
         /// <summary>Reads a target's current post-combine output value

@@ -2433,6 +2433,7 @@
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
 
@@ -2629,13 +2630,203 @@
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
 
+                    <!-- Pipeline heat chips (#175 item 10): one chip per
+                         transform pipeline currently rewiring this slot's
+                         input. CURVE / GYRO / SHIFT / INV / DZ are mono
+                         locale-neutral tokens (DZ / PEAK / DIRECT
+                         precedent). A chip renders only while its pipeline
+                         carries configuration; the flame inside fills ember
+                         while an owning row's live value is active this
+                         frame (rowfire lane, no extra timer). Click scrolls
+                         the grid to the owning row; repeat clicks cycle
+                         when several rows own the pipeline. SHIFT cycles
+                         the layer tabs instead. Tooltips list the real
+                         configured rows. -->
+                    <WrapPanel Grid.Row="2" Orientation="Horizontal" Margin="0,0,0,8"
+                               Visibility="{Binding HasAnyPipelineChips, Converter={StaticResource BoolToVisibilityConverter}}">
+                        <WrapPanel.Resources>
+                            <!-- Shared chip skeleton: ChipEmber grammar plus
+                                 the clickable hover bloom. Static effect from
+                                 a trigger, never animated. -->
+                            <Style x:Key="PipelineChip" TargetType="Border" BasedOn="{StaticResource ChipEmber}">
+                                <Setter Property="Cursor" Value="Hand"/>
+                                <Setter Property="Margin" Value="0,0,6,4"/>
+                                <Setter Property="Padding" Value="8,2"/>
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Effect" Value="{StaticResource EmberHoverGlow}"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                            <Style x:Key="PipelineChipToken" TargetType="TextBlock">
+                                <Setter Property="FontFamily" Value="{StaticResource TelemetryFontFamily}"/>
+                                <Setter Property="FontSize" Value="10"/>
+                                <Setter Property="FontWeight" Value="SemiBold"/>
+                                <Setter Property="VerticalAlignment" Value="Center"/>
+                            </Style>
+                        </WrapPanel.Resources>
+
+                        <!-- CURVE: any curve-bearing output with a non-linear
+                             sensitivity curve. -->
+                        <Border Style="{StaticResource PipelineChip}" Tag="Curve"
+                                MouseLeftButtonUp="PipelineChip_Click"
+                                Visibility="{Binding PipelineCurveActive, Converter={StaticResource BoolToVisibilityConverter}}">
+                            <Border.ToolTip>
+                                <TextBlock Text="{Binding PipelineCurveSummary}"
+                                           FontFamily="{StaticResource TelemetryFontFamily}" FontSize="11"/>
+                            </Border.ToolTip>
+                            <StackPanel Orientation="Horizontal">
+                                <Path Margin="0,0,5,0">
+                                    <Path.Style>
+                                        <Style TargetType="Path" BasedOn="{StaticResource LivenessFlameBase}">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding PipelineCurveLive}" Value="True">
+                                                    <Setter Property="Fill" Value="{DynamicResource EmberBrush}"/>
+                                                    <Setter Property="Stroke" Value="{x:Null}"/>
+                                                    <Setter Property="Effect">
+                                                        <Setter.Value>
+                                                            <DropShadowEffect Color="#FF6B2C" BlurRadius="8" ShadowDepth="0" Opacity="0.5"/>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Path.Style>
+                                </Path>
+                                <TextBlock Text="CURVE" Style="{StaticResource PipelineChipToken}"/>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- GYRO: rows fed by a Gyro axis source. -->
+                        <Border Style="{StaticResource PipelineChip}" Tag="Gyro"
+                                MouseLeftButtonUp="PipelineChip_Click"
+                                Visibility="{Binding PipelineGyroActive, Converter={StaticResource BoolToVisibilityConverter}}">
+                            <Border.ToolTip>
+                                <TextBlock Text="{Binding PipelineGyroSummary}"
+                                           FontFamily="{StaticResource TelemetryFontFamily}" FontSize="11"/>
+                            </Border.ToolTip>
+                            <StackPanel Orientation="Horizontal">
+                                <Path Margin="0,0,5,0">
+                                    <Path.Style>
+                                        <Style TargetType="Path" BasedOn="{StaticResource LivenessFlameBase}">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding PipelineGyroLive}" Value="True">
+                                                    <Setter Property="Fill" Value="{DynamicResource EmberBrush}"/>
+                                                    <Setter Property="Stroke" Value="{x:Null}"/>
+                                                    <Setter Property="Effect">
+                                                        <Setter.Value>
+                                                            <DropShadowEffect Color="#FF6B2C" BlurRadius="8" ShadowDepth="0" Opacity="0.5"/>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Path.Style>
+                                </Path>
+                                <TextBlock Text="GYRO" Style="{StaticResource PipelineChipToken}"/>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- SHIFT: slot has layers beyond Base; flames while
+                             the engine holds a non-Base layer engaged. -->
+                        <Border Style="{StaticResource PipelineChip}" Tag="Shift"
+                                MouseLeftButtonUp="PipelineChip_Click"
+                                Visibility="{Binding PipelineShiftActive, Converter={StaticResource BoolToVisibilityConverter}}">
+                            <Border.ToolTip>
+                                <TextBlock Text="{Binding PipelineShiftSummary}"
+                                           FontFamily="{StaticResource TelemetryFontFamily}" FontSize="11"/>
+                            </Border.ToolTip>
+                            <StackPanel Orientation="Horizontal">
+                                <Path Margin="0,0,5,0">
+                                    <Path.Style>
+                                        <Style TargetType="Path" BasedOn="{StaticResource LivenessFlameBase}">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding PipelineShiftLive}" Value="True">
+                                                    <Setter Property="Fill" Value="{DynamicResource EmberBrush}"/>
+                                                    <Setter Property="Stroke" Value="{x:Null}"/>
+                                                    <Setter Property="Effect">
+                                                        <Setter.Value>
+                                                            <DropShadowEffect Color="#FF6B2C" BlurRadius="8" ShadowDepth="0" Opacity="0.5"/>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Path.Style>
+                                </Path>
+                                <TextBlock Text="SHIFT" Style="{StaticResource PipelineChipToken}"/>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- INV: rows with the invert transform on. -->
+                        <Border Style="{StaticResource PipelineChip}" Tag="Invert"
+                                MouseLeftButtonUp="PipelineChip_Click"
+                                Visibility="{Binding PipelineInvertActive, Converter={StaticResource BoolToVisibilityConverter}}">
+                            <Border.ToolTip>
+                                <TextBlock Text="{Binding PipelineInvertSummary}"
+                                           FontFamily="{StaticResource TelemetryFontFamily}" FontSize="11"/>
+                            </Border.ToolTip>
+                            <StackPanel Orientation="Horizontal">
+                                <Path Margin="0,0,5,0">
+                                    <Path.Style>
+                                        <Style TargetType="Path" BasedOn="{StaticResource LivenessFlameBase}">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding PipelineInvertLive}" Value="True">
+                                                    <Setter Property="Fill" Value="{DynamicResource EmberBrush}"/>
+                                                    <Setter Property="Stroke" Value="{x:Null}"/>
+                                                    <Setter Property="Effect">
+                                                        <Setter.Value>
+                                                            <DropShadowEffect Color="#FF6B2C" BlurRadius="8" ShadowDepth="0" Opacity="0.5"/>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Path.Style>
+                                </Path>
+                                <TextBlock Text="INV" Style="{StaticResource PipelineChipToken}"/>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- DZ: rows with a per-mapping deadzone off its
+                             50% default. -->
+                        <Border Style="{StaticResource PipelineChip}" Tag="DeadZone"
+                                MouseLeftButtonUp="PipelineChip_Click"
+                                Visibility="{Binding PipelineDeadZoneActive, Converter={StaticResource BoolToVisibilityConverter}}">
+                            <Border.ToolTip>
+                                <TextBlock Text="{Binding PipelineDeadZoneSummary}"
+                                           FontFamily="{StaticResource TelemetryFontFamily}" FontSize="11"/>
+                            </Border.ToolTip>
+                            <StackPanel Orientation="Horizontal">
+                                <Path Margin="0,0,5,0">
+                                    <Path.Style>
+                                        <Style TargetType="Path" BasedOn="{StaticResource LivenessFlameBase}">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding PipelineDeadZoneLive}" Value="True">
+                                                    <Setter Property="Fill" Value="{DynamicResource EmberBrush}"/>
+                                                    <Setter Property="Stroke" Value="{x:Null}"/>
+                                                    <Setter Property="Effect">
+                                                        <Setter.Value>
+                                                            <DropShadowEffect Color="#FF6B2C" BlurRadius="8" ShadowDepth="0" Opacity="0.5"/>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Path.Style>
+                                </Path>
+                                <TextBlock Text="DZ" Style="{StaticResource PipelineChipToken}"/>
+                            </StackPanel>
+                        </Border>
+                    </WrapPanel>
+
                     <!-- Mapping DataGrid. HorizontalAlignment=Left so the DataGrid
-                         doesn't stretch wider than its columns sum to — without
+                         doesn't stretch wider than its columns sum to. Without
                          this, any Auto / SizeToCells column absorbs the leftover
                          horizontal slack and bloats. With HorizontalAlignment=Left,
                          each column genuinely auto-collapses to its own content
                          and any empty space sits to the right of the grid. -->
-                    <DataGrid Grid.Row="2"
+                    <DataGrid Grid.Row="3"
                               x:Name="MappingDataGrid"
                               HorizontalAlignment="Left"
                               MinRowHeight="40"

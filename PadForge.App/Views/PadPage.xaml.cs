@@ -633,6 +633,81 @@ namespace PadForge.Views
         }
 
         // ─────────────────────────────────────────────
+        //  Pipeline heat chips (#175 item 10)
+        // ─────────────────────────────────────────────
+
+        /// <summary>Per-kind cycle cursor so repeat clicks on a chip step
+        /// through every row owning that pipeline instead of pinning the
+        /// first. Each entry remembers the row set it was walking; when
+        /// the owning set's identity changes (rows edited, remapped, or
+        /// rebuilt) the cursor restarts at the first owner instead of
+        /// landing mid-list. Session-only UI state.</summary>
+        private readonly Dictionary<string, (List<MappingItem> Rows, int Cursor)> _pipelineChipCycle = new();
+
+        /// <summary>Identity check for the cycle cursor: same rows, same
+        /// order, by reference.</summary>
+        private static bool SameChipRowSet(List<MappingItem> a, List<MappingItem> b)
+        {
+            if (a == null || b == null || a.Count != b.Count) return false;
+            for (int i = 0; i < a.Count; i++)
+                if (!ReferenceEquals(a[i], b[i])) return false;
+            return true;
+        }
+
+        /// <summary>Chip click: scroll the mapping grid to the pipeline's
+        /// owning row. Ownership uses the same PadViewModel predicates
+        /// that light the chips, so the click target always matches the
+        /// visual. SHIFT has no single owning row; it cycles the layer
+        /// tab strip the way ShiftLayerTab_Click does (authoring
+        /// selection only, nothing persisted).</summary>
+        private void PipelineChip_Click(object sender, MouseButtonEventArgs e)
+        {
+            if (DataContext is not PadViewModel vm) return;
+            if (sender is not FrameworkElement fe || fe.Tag is not string kind) return;
+
+            if (kind == "Shift")
+            {
+                if (vm.LayerTabs.Count < 2) return;
+                int cur = 0;
+                for (int i = 0; i < vm.LayerTabs.Count; i++)
+                {
+                    if (string.Equals(vm.LayerTabs[i].LayerMask, vm.ActiveLayerMask, StringComparison.Ordinal))
+                    { cur = i; break; }
+                }
+                vm.ActiveLayerMask = vm.LayerTabs[(cur + 1) % vm.LayerTabs.Count].LayerMask;
+                return;
+            }
+
+            var rows = new List<MappingItem>();
+            foreach (var m in vm.Mappings)
+            {
+                bool owns = kind switch
+                {
+                    "Curve" => vm.IsCurvePipelineRow(m),
+                    "Gyro" => PadViewModel.IsGyroPipelineRow(m),
+                    "Invert" => PadViewModel.IsInvertPipelineRow(m),
+                    "DeadZone" => PadViewModel.IsDeadZonePipelineRow(m),
+                    _ => false,
+                };
+                if (owns) rows.Add(m);
+            }
+            if (rows.Count == 0) return;
+
+            int next = _pipelineChipCycle.TryGetValue(kind, out var prev)
+                && SameChipRowSet(prev.Rows, rows)
+                ? (prev.Cursor + 1) % rows.Count : 0;
+            _pipelineChipCycle[kind] = (rows, next);
+            var row = rows[next];
+
+            // Same select + layout + scroll sequence the annotation chips
+            // use (OnAnnotationChipNavigate). The chip row lives on the
+            // Mappings tab, so no tab switch is needed first.
+            MappingDataGrid.SelectedItem = row;
+            MappingDataGrid.UpdateLayout();
+            MappingDataGrid.ScrollIntoView(row);
+        }
+
+        // ─────────────────────────────────────────────
         //  Custom tab strip
         // ─────────────────────────────────────────────
 

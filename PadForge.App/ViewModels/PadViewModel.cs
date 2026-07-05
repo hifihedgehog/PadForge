@@ -86,11 +86,16 @@ namespace PadForge.ViewModels
             RebuildTriggerConfigs();
 
             // Map All button text + tooltip are computed-on-demand off
-            // Strings.Instance.* — without an explicit notification the
+            // Strings.Instance.*. Without an explicit notification the
             // bindings keep the old language's value until the next
             // IsMapAllActive flip.
             OnPropertyChanged(nameof(MapAllButtonText));
             OnPropertyChanged(nameof(MapAllButtonTooltip));
+
+            // Pipeline chip summaries carry localized preset names, so
+            // the memo and the cached config both re-localize.
+            _matchPresetCache.Clear();
+            _pipelineChipsConfigDirty = true;
         }
 
         /// <summary>Zero-based pad slot index (0–15).</summary>
@@ -909,6 +914,10 @@ namespace PadForge.ViewModels
                 }
             }
             RefreshDirectMappingCount();
+            // Row set changed, so the pipeline chips' cached owning rows
+            // are stale. Flag the config recompute. The 1 s throttle in
+            // RefreshPipelineChips covers in-place row edits.
+            _pipelineChipsConfigDirty = true;
         }
 
         private void OnMappingItemTrivialChanged(object sender, PropertyChangedEventArgs e)
@@ -923,6 +932,292 @@ namespace PadForge.ViewModels
             foreach (var m in Mappings)
                 if (m != null && m.IsTrivialDirect) n++;
             DirectMappingCount = n;
+        }
+
+        // ─────────────────────────────────────────────
+        //  Pipeline heat chips (#175 item 10)
+        //
+        //  Five fixed chips above the Mappings grid, one per transform
+        //  pipeline kind (CURVE / GYRO / SHIFT / INV / DZ). Active =
+        //  the pipeline carries configuration; Live = an owning row's
+        //  live value is past its gate this frame (rowfire flags set by
+        //  InputService.UpdateMappingLiveValues, which also calls
+        //  RefreshPipelineChips on the same 30 Hz Pad-page lane, so no
+        //  extra timer). All UI-only session state, never persisted.
+        // ─────────────────────────────────────────────
+
+        private bool _pipelineCurveActive;
+        public bool PipelineCurveActive
+        {
+            get => _pipelineCurveActive;
+            set { if (SetProperty(ref _pipelineCurveActive, value)) OnPropertyChanged(nameof(HasAnyPipelineChips)); }
+        }
+        private bool _pipelineCurveLive;
+        public bool PipelineCurveLive { get => _pipelineCurveLive; set => SetProperty(ref _pipelineCurveLive, value); }
+        private string _pipelineCurveSummary = "";
+        public string PipelineCurveSummary { get => _pipelineCurveSummary; set => SetProperty(ref _pipelineCurveSummary, value ?? ""); }
+
+        private bool _pipelineGyroActive;
+        public bool PipelineGyroActive
+        {
+            get => _pipelineGyroActive;
+            set { if (SetProperty(ref _pipelineGyroActive, value)) OnPropertyChanged(nameof(HasAnyPipelineChips)); }
+        }
+        private bool _pipelineGyroLive;
+        public bool PipelineGyroLive { get => _pipelineGyroLive; set => SetProperty(ref _pipelineGyroLive, value); }
+        private string _pipelineGyroSummary = "";
+        public string PipelineGyroSummary { get => _pipelineGyroSummary; set => SetProperty(ref _pipelineGyroSummary, value ?? ""); }
+
+        private bool _pipelineShiftActive;
+        public bool PipelineShiftActive
+        {
+            get => _pipelineShiftActive;
+            set { if (SetProperty(ref _pipelineShiftActive, value)) OnPropertyChanged(nameof(HasAnyPipelineChips)); }
+        }
+        private bool _pipelineShiftLive;
+        public bool PipelineShiftLive { get => _pipelineShiftLive; set => SetProperty(ref _pipelineShiftLive, value); }
+        private string _pipelineShiftSummary = "";
+        public string PipelineShiftSummary { get => _pipelineShiftSummary; set => SetProperty(ref _pipelineShiftSummary, value ?? ""); }
+
+        private bool _pipelineInvertActive;
+        public bool PipelineInvertActive
+        {
+            get => _pipelineInvertActive;
+            set { if (SetProperty(ref _pipelineInvertActive, value)) OnPropertyChanged(nameof(HasAnyPipelineChips)); }
+        }
+        private bool _pipelineInvertLive;
+        public bool PipelineInvertLive { get => _pipelineInvertLive; set => SetProperty(ref _pipelineInvertLive, value); }
+        private string _pipelineInvertSummary = "";
+        public string PipelineInvertSummary { get => _pipelineInvertSummary; set => SetProperty(ref _pipelineInvertSummary, value ?? ""); }
+
+        private bool _pipelineDeadZoneActive;
+        public bool PipelineDeadZoneActive
+        {
+            get => _pipelineDeadZoneActive;
+            set { if (SetProperty(ref _pipelineDeadZoneActive, value)) OnPropertyChanged(nameof(HasAnyPipelineChips)); }
+        }
+        private bool _pipelineDeadZoneLive;
+        public bool PipelineDeadZoneLive { get => _pipelineDeadZoneLive; set => SetProperty(ref _pipelineDeadZoneLive, value); }
+        private string _pipelineDeadZoneSummary = "";
+        public string PipelineDeadZoneSummary { get => _pipelineDeadZoneSummary; set => SetProperty(ref _pipelineDeadZoneSummary, value ?? ""); }
+
+        /// <summary>Chip-row visibility gate: collapse the whole strip
+        /// when no pipeline carries configuration.</summary>
+        public bool HasAnyPipelineChips =>
+            _pipelineCurveActive || _pipelineGyroActive || _pipelineShiftActive
+            || _pipelineInvertActive || _pipelineDeadZoneActive;
+
+        /// <summary>Row owns the INV pipeline: a mapped primary with the
+        /// invert transform on. Extra-source Invert is excluded on
+        /// purpose. On a bipolar pair it encodes the negative direction,
+        /// not an inversion transform.</summary>
+        public static bool IsInvertPipelineRow(MappingItem m) =>
+            m != null && m.IsMapped && m.IsInverted;
+
+        /// <summary>Row owns the DZ pipeline: per-mapping deadzone moved
+        /// off its 50% default (MappingItem initializer +
+        /// ResetDeadZoneCommand) on a row where it applies.</summary>
+        public static bool IsDeadZonePipelineRow(MappingItem m) =>
+            m != null && m.IsDeadZoneApplicable && m.MappingDeadZone != 50;
+
+        /// <summary>Row owns the GYRO pipeline: primary or any extra
+        /// source reads a "Gyro *" axis. Motion-passthrough rows use
+        /// "Motion *" descriptors, so the auto-created Sony passthrough
+        /// never lights this chip.</summary>
+        public static bool IsGyroPipelineRow(MappingItem m)
+        {
+            if (m == null) return false;
+            if (m.IsGyroSource) return true;
+            foreach (var s in m.ExtraSources)
+            {
+                if (s != null && !string.IsNullOrEmpty(s.Descriptor)
+                    && s.Descriptor.StartsWith("Gyro ", StringComparison.Ordinal))
+                    return true;
+            }
+            return false;
+        }
+
+        /// <summary>Row owns the CURVE pipeline: its target is one of the
+        /// six curve-bearing outputs and that output's sensitivity curve
+        /// is non-linear (defaults "0" / "0,0;1,1" both parse linear via
+        /// CurveLut.IsLinear).</summary>
+        public bool IsCurvePipelineRow(MappingItem m)
+        {
+            if (m == null) return false;
+            string curve = CurveStringForTarget(m.TargetSettingName);
+            return curve != null && !Common.CurveLut.IsLinear(curve);
+        }
+
+        private string CurveStringForTarget(string target) => target switch
+        {
+            "LeftThumbAxisX" => LeftSensitivityCurveX,
+            "LeftThumbAxisY" => LeftSensitivityCurveY,
+            "RightThumbAxisX" => RightSensitivityCurveX,
+            "RightThumbAxisY" => RightSensitivityCurveY,
+            "LeftTrigger" => LeftTriggerSensitivityCurve,
+            "RightTrigger" => RightTriggerSensitivityCurve,
+            _ => null,
+        };
+
+        // Config-derived chip state (Active flags, summaries, owning
+        // rows, MatchPreset lookups) only moves on user edits, so it
+        // recomputes on a dirty flag (row add/remove) or at most once
+        // per second, the same 1 s cadence the dashboard's stage ledger
+        // rides. The 30 Hz tick path below only reads rowfire flags.
+        private bool _pipelineChipsConfigDirty = true;
+        private long _pipelineChipsConfigTick;
+        private readonly System.Collections.Generic.List<MappingItem> _pipelineCurveRows = new();
+        private readonly System.Collections.Generic.List<MappingItem> _pipelineGyroRows = new();
+        private readonly System.Collections.Generic.List<MappingItem> _pipelineInvertRows = new();
+        private readonly System.Collections.Generic.List<MappingItem> _pipelineDeadZoneRows = new();
+        private string _pipelineShiftIdleSummary = "";
+
+        // MatchPreset memo. Each miss costs seven parse/serialize
+        // passes (Normalize per preset), so the config recompute reads
+        // the cached name for a seen curve string. Preset names are
+        // localized, so OnCultureChanged clears the cache. UI thread only.
+        private static readonly System.Collections.Generic.Dictionary<string, string> _matchPresetCache = new();
+        private static string MatchPresetCached(string curve)
+        {
+            curve ??= string.Empty;
+            if (!_matchPresetCache.TryGetValue(curve, out var name))
+            {
+                name = Common.CurveLut.MatchPreset(curve);
+                _matchPresetCache[curve] = name;
+            }
+            return name;
+        }
+
+        /// <summary>Refreshes chip liveness from the current Mappings
+        /// rows. Called by InputService.UpdateMappingLiveValues right
+        /// after the rowfire pass so IsInputActive reflects this tick.
+        /// The engaged layer mask comes from the same engine poll the
+        /// shift flyout uses (InputManager.GetEngagedLayerMask).
+        /// Presence + tooltip summaries ride the throttled config
+        /// recompute, not this per-tick path.</summary>
+        public void RefreshPipelineChips(string engagedLayerMask)
+        {
+            long tick = Environment.TickCount64;
+            if (_pipelineChipsConfigDirty || tick - _pipelineChipsConfigTick >= 1000)
+            {
+                _pipelineChipsConfigDirty = false;
+                _pipelineChipsConfigTick = tick;
+                RecomputePipelineChipConfig();
+            }
+
+            // Per-tick lane: liveness booleans only, OR-ed over the
+            // cached owning rows' rowfire flags.
+            bool curveLive = false, gyroLive = false, invertLive = false, dzLive = false;
+            foreach (var m in _pipelineCurveRows) curveLive |= m.IsInputActive;
+            foreach (var m in _pipelineGyroRows) gyroLive |= m.IsInputActive;
+            foreach (var m in _pipelineInvertRows) invertLive |= m.IsInputActive;
+            foreach (var m in _pipelineDeadZoneRows) dzLive |= m.IsInputActive;
+            PipelineCurveLive = PipelineCurveActive && curveLive;
+            PipelineGyroLive = PipelineGyroActive && gyroLive;
+            PipelineInvertLive = PipelineInvertActive && invertLive;
+            PipelineDeadZoneLive = PipelineDeadZoneActive && dzLive;
+
+            // SHIFT flames while the engine holds a non-Base layer. The
+            // summary swaps between the engaged layer's name and the
+            // cached idle layer list.
+            bool shiftEngaged = PipelineShiftActive
+                && !string.IsNullOrEmpty(engagedLayerMask)
+                && !string.Equals(engagedLayerMask, "Base", StringComparison.Ordinal);
+            PipelineShiftLive = shiftEngaged;
+            if (shiftEngaged)
+            {
+                string engagedName = engagedLayerMask;
+                foreach (var t in LayerTabs)
+                {
+                    if (t != null && string.Equals(t.LayerMask, engagedLayerMask, StringComparison.Ordinal))
+                    { engagedName = t.LayerName; break; }
+                }
+                PipelineShiftSummary = engagedName;
+            }
+            else
+            {
+                PipelineShiftSummary = _pipelineShiftIdleSummary;
+            }
+        }
+
+        /// <summary>Recomputes the config-derived chip state: which
+        /// rows own each pipeline, the Active flags, and the tooltip
+        /// summaries (including the MatchPreset names). Runs on the
+        /// dirty flag / 1 s throttle inside RefreshPipelineChips, never
+        /// per tick.</summary>
+        private void RecomputePipelineChipConfig()
+        {
+            _pipelineCurveRows.Clear();
+            _pipelineGyroRows.Clear();
+            _pipelineInvertRows.Clear();
+            _pipelineDeadZoneRows.Clear();
+            var curveParts = new System.Collections.Generic.List<string>();
+            var gyroParts = new System.Collections.Generic.List<string>();
+            var invertParts = new System.Collections.Generic.List<string>();
+            var dzParts = new System.Collections.Generic.List<string>();
+
+            foreach (var m in Mappings)
+            {
+                if (m == null) continue;
+                if (IsCurvePipelineRow(m))
+                {
+                    _pipelineCurveRows.Add(m);
+                    curveParts.Add(m.TargetLabel + " " + MatchPresetCached(CurveStringForTarget(m.TargetSettingName)));
+                }
+                if (IsGyroPipelineRow(m))
+                {
+                    _pipelineGyroRows.Add(m);
+                    gyroParts.Add(m.TargetLabel);
+                }
+                if (IsInvertPipelineRow(m))
+                {
+                    _pipelineInvertRows.Add(m);
+                    invertParts.Add(m.TargetLabel);
+                }
+                if (IsDeadZonePipelineRow(m))
+                {
+                    _pipelineDeadZoneRows.Add(m);
+                    dzParts.Add(m.TargetLabel + " " + m.MappingDeadZone + "%");
+                }
+            }
+
+            PipelineCurveActive = _pipelineCurveRows.Count > 0;
+            PipelineCurveSummary = string.Join(" · ", curveParts);
+            PipelineGyroActive = _pipelineGyroRows.Count > 0;
+            PipelineGyroSummary = string.Join(" · ", gyroParts);
+            PipelineInvertActive = _pipelineInvertRows.Count > 0;
+            PipelineInvertSummary = string.Join(" · ", invertParts);
+            PipelineDeadZoneActive = _pipelineDeadZoneRows.Count > 0;
+            PipelineDeadZoneSummary = string.Join(" · ", dzParts);
+
+            // SHIFT: present when the slot has any layer beyond Base.
+            bool shiftActive = LayerTabs.Count > 1;
+            PipelineShiftActive = shiftActive;
+            if (shiftActive)
+            {
+                var names = new System.Collections.Generic.List<string>();
+                foreach (var t in LayerTabs)
+                    if (t != null && !t.IsBase) names.Add(t.LayerName);
+                _pipelineShiftIdleSummary = string.Join(" · ", names);
+            }
+            else
+            {
+                _pipelineShiftIdleSummary = "";
+            }
+        }
+
+        /// <summary>Drops every flame (Live flags) without touching the
+        /// config-derived Active / Summary state. InputService.Stop
+        /// calls this after tearing down the UI timer so no chip stays
+        /// lit on a dead engine.</summary>
+        public void ClearPipelineLiveness()
+        {
+            PipelineCurveLive = false;
+            PipelineGyroLive = false;
+            PipelineInvertLive = false;
+            PipelineDeadZoneLive = false;
+            PipelineShiftLive = false;
+            PipelineShiftSummary = _pipelineShiftIdleSummary;
         }
 
         /// <summary>

@@ -6056,6 +6056,7 @@
                                                 <Grid.RowDefinitions>
                                                     <RowDefinition Height="Auto"/>
                                                     <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto"/>
                                                 </Grid.RowDefinitions>
                                                 <TextBlock Text="{Binding Pad_AT_Weapon, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource AtModeCardName}"/>
                                                 <viewControls:TriggerEffectGraph Grid.Row="1" Height="40" Margin="0,6,0,0" IsCompact="True"
@@ -6066,6 +6067,17 @@
                                                     Frequency="{Binding PlayStationConfig.LeftFrequency}"
                                                     LiveInput="{Binding DeviceLeftTrigger}"
                                                     ShowLiveMarker="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=ListBoxItem}}"/>
+                                                <!-- GameCube preset lives ON the Weapon card
+                                                     (user report 2026-07-05: the floating
+                                                     indented row was a placement orphan).
+                                                     Visible only while Weapon is selected. -->
+                                                <Button Grid.Row="2" Margin="0,6,0,0" Padding="8,2"
+                                                        HorizontalAlignment="Left" FontSize="10"
+                                                        FontFamily="{StaticResource TelemetryFontFamily}"
+                                                        Content="{Binding Pad_AT_LoadGameCubePreset, Source={x:Static strings:Strings.Instance}}"
+                                                        Command="{Binding PlayStationConfig.ApplyLeftGameCubePresetCommand}"
+                                                        ToolTip="{Binding Pad_AT_LoadGameCubePreset_Tooltip, Source={x:Static strings:Strings.Instance}}"
+                                                        Visibility="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=ListBoxItem}, Converter={StaticResource BoolToVisibilityConverter}}"/>
                                             </Grid>
                                         </ListBoxItem>
                                         <ListBoxItem Tag="{x:Static vm:AdaptiveTriggerMode.Vibration}"
@@ -6142,18 +6154,6 @@
                                         </ListBoxItem>
                                     </ListBox>
                                     <ui:Button Command="{Binding PlayStationConfig.ResetLeftTriggerCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetLeftTrigger, Source={x:Static strings:Strings.Instance}}"/>
-                                </StackPanel>
-                                <!-- Weapon-mode quick preset row. Indented 200 DIP under
-                                     the mode-card grid above. Visible only when the
-                                     active mode is Weapon — the GameCube preset is a
-                                     specific Weapon-parameter configuration that mimics the
-                                     physical click feel of a real GameCube trigger. -->
-                                <StackPanel Orientation="Horizontal" Margin="200,0,0,8"
-                                            Visibility="{Binding PlayStationConfig.LeftTriggerMode, Converter={StaticResource EnumEqualityVisibilityConverter}, ConverterParameter=Weapon}">
-                                    <Button Content="{Binding Pad_AT_LoadGameCubePreset, Source={x:Static strings:Strings.Instance}}"
-                                            Command="{Binding PlayStationConfig.ApplyLeftGameCubePresetCommand}"
-                                            ToolTip="{Binding Pad_AT_LoadGameCubePreset_Tooltip, Source={x:Static strings:Strings.Instance}}"
-                                            Padding="10,4"/>
                                 </StackPanel>
                                 <!-- Effect-profile preview: shows the resistance / vibration
                                      pattern across the trigger throw for the selected mode. -->
@@ -6242,6 +6242,17 @@
                                                     Mode="Off"
                                                     LiveInput="{Binding DeviceRightTrigger}"
                                                     ShowLiveMarker="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=ListBoxItem}}"/>
+                                                <!-- GameCube preset lives ON the Weapon card
+                                                     (user report 2026-07-05: the floating
+                                                     indented row was a placement orphan).
+                                                     Visible only while Weapon is selected. -->
+                                                <Button Grid.Row="2" Margin="0,6,0,0" Padding="8,2"
+                                                        HorizontalAlignment="Left" FontSize="10"
+                                                        FontFamily="{StaticResource TelemetryFontFamily}"
+                                                        Content="{Binding Pad_AT_LoadGameCubePreset, Source={x:Static strings:Strings.Instance}}"
+                                                        Command="{Binding PlayStationConfig.ApplyRightGameCubePresetCommand}"
+                                                        ToolTip="{Binding Pad_AT_LoadGameCubePreset_Tooltip, Source={x:Static strings:Strings.Instance}}"
+                                                        Visibility="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=ListBoxItem}, Converter={StaticResource BoolToVisibilityConverter}}"/>
                                             </Grid>
                                         </ListBoxItem>
                                         <ListBoxItem Tag="{x:Static vm:AdaptiveTriggerMode.Feedback}"
@@ -6266,6 +6277,7 @@
                                                      ToolTip="{Binding Pad_AT_Weapon_Tooltip, Source={x:Static strings:Strings.Instance}}">
                                             <Grid>
                                                 <Grid.RowDefinitions>
+                                                    <RowDefinition Height="Auto"/>
                                                     <RowDefinition Height="Auto"/>
                                                     <RowDefinition Height="Auto"/>
                                                 </Grid.RowDefinitions>
@@ -6355,15 +6367,6 @@
                                     </ListBox>
                                     <ui:Button Command="{Binding PlayStationConfig.ResetRightTriggerCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetRightTrigger, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
-                                <!-- Weapon-mode quick preset row (right trigger). Mirrors
-                                     the left-trigger layout above. -->
-                                <StackPanel Orientation="Horizontal" Margin="200,0,0,8"
-                                            Visibility="{Binding PlayStationConfig.RightTriggerMode, Converter={StaticResource EnumEqualityVisibilityConverter}, ConverterParameter=Weapon}">
-                                    <Button Content="{Binding Pad_AT_LoadGameCubePreset, Source={x:Static strings:Strings.Instance}}"
-                                            Command="{Binding PlayStationConfig.ApplyRightGameCubePresetCommand}"
-                                            ToolTip="{Binding Pad_AT_LoadGameCubePreset_Tooltip, Source={x:Static strings:Strings.Instance}}"
-                                            Padding="10,4"/>
-                                </StackPanel>
                                 <viewControls:TriggerEffectGraph
                                     Visibility="{Binding PlayStationConfig.RightTriggerMode, Converter={StaticResource EnumEqualityVisibilityConverter}, ConverterParameter=Feedback|Weapon|Vibration|MultiplePositionFeedback|SlopeFeedback|MultiplePositionVibration}"
                                     Mode="{Binding PlayStationConfig.RightTriggerMode}"
@@ -6445,6 +6448,73 @@
                                     <ui:Button Command="{Binding PlayStationConfig.ResetLightbarAllCommand}" Style="{StaticResource ResetAllButton}"
                                             Content="{Binding Pad_ResetAll, Source={x:Static strings:Strings.Instance}}" Margin="12,0,0,0"
                                             ToolTip="{Binding Pad_ResetLightbar, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
+
+                                <!-- Lightbar preview (#175 competitor item 6): stylized
+                                     DualSense front silhouette drawn as plain paths on
+                                     steel (no imported assets). The arc previews the live
+                                     LightbarRed/Green/Blue trio, the same properties the
+                                     SV picker, sliders, hex box, and preset swatches
+                                     write, so it tracks every drag. The bloom is a static
+                                     DropShadowEffect retinted from code-behind
+                                     (SyncLightbarPreviewBloom, riding the existing
+                                     OnPlayStationConfigChanged LightbarRed/Green/Blue
+                                     case), the same value-driven treatment as
+                                     CurveEditor's live-dot glow. Never animated from
+                                     style triggers. Mode = Off means
+                                     PadForge does not author the lightbar (game owns it):
+                                     the arc drops to cold blue at low opacity under a
+                                     locale-neutral GAME WRITES WIN token (DZ / PEAK
+                                     radar-legend idiom) whose tooltip carries the
+                                     localized Pad_Lighting_Subtitle sentence. No live
+                                     game-write flag reaches this view model (ownership is
+                                     resolved per-packet inside UserEffectsDispatcher), so
+                                     Off is a mode-only presentation. Palette and audio
+                                     modes still preview the base trio because it is the
+                                     only single-color truth the config holds. -->
+                                <StackPanel Margin="0,0,0,12" HorizontalAlignment="Left">
+                                    <Canvas Width="180" Height="60">
+                                        <!-- Body: rounded shoulders, two grips, raised
+                                             underside between them. -->
+                                        <Path Data="M 32,6 L 148,6 C 160,6 168,12 171,22 L 175,38 C 178,49 171,56 162,56 C 153,56 148,49 144,42 C 140,34 134,32 126,32 L 54,32 C 46,32 40,34 36,42 C 32,49 27,56 18,56 C 9,56 2,49 5,38 L 9,22 C 12,12 20,6 32,6 Z"
+                                              Fill="#14253049" Stroke="{DynamicResource SteelLineBrush}" StrokeThickness="1"/>
+                                        <!-- Touchpad and stick hints, steel outlines only. -->
+                                        <Border Canvas.Left="70" Canvas.Top="17" Width="40" Height="13" CornerRadius="4"
+                                                BorderBrush="{DynamicResource SteelLineBrush}" BorderThickness="1"/>
+                                        <Ellipse Canvas.Left="53" Canvas.Top="20" Width="10" Height="10"
+                                                 Stroke="{DynamicResource SteelLineBrush}" StrokeThickness="1"/>
+                                        <Ellipse Canvas.Left="117" Canvas.Top="20" Width="10" Height="10"
+                                                 Stroke="{DynamicResource SteelLineBrush}" StrokeThickness="1"/>
+                                        <!-- Live arc: visible for every authored mode. The
+                                             pipe list names each LightbarMode member except
+                                             Off, legacy InputReactive values included, so a
+                                             not-yet-migrated config still previews. -->
+                                        <Path x:Name="LightbarPreviewArc" Data="M 46,14 Q 90,7 134,14" StrokeThickness="5"
+                                              StrokeStartLineCap="Round" StrokeEndLineCap="Round"
+                                              Visibility="{Binding PlayStationConfig.LightbarMode, Converter={StaticResource EnumEqualityVisibilityConverter}, ConverterParameter=Static|Breathing|Rainbow|ColorCycle|AudioPulse|AudioPulseRandom|AudioPulseRainbow|AudioThresholds|AudioGradient|AudioCrossFade|InputReactive|InputReactiveCycle|InputReactiveFixed|Battery|Strobe}">
+                                            <Path.Stroke>
+                                                <MultiBinding Converter="{StaticResource RgbToBrushConverter}">
+                                                    <Binding Path="PlayStationConfig.LightbarRed" />
+                                                    <Binding Path="PlayStationConfig.LightbarGreen" />
+                                                    <Binding Path="PlayStationConfig.LightbarBlue" />
+                                                </MultiBinding>
+                                            </Path.Stroke>
+                                            <Path.Effect>
+                                                <DropShadowEffect ShadowDepth="0" BlurRadius="14" Opacity="0.55"
+                                                                  Color="#FF0000FF"/>
+                                            </Path.Effect>
+                                        </Path>
+                                        <!-- Off arc: cold and quiet, the game owns the bar. -->
+                                        <Path Data="M 46,14 Q 90,7 134,14" StrokeThickness="5" Opacity="0.30"
+                                              Stroke="{DynamicResource ColdBrush}"
+                                              StrokeStartLineCap="Round" StrokeEndLineCap="Round"
+                                              Visibility="{Binding PlayStationConfig.LightbarMode, Converter={StaticResource EnumEqualityVisibilityConverter}, ConverterParameter=Off}"/>
+                                    </Canvas>
+                                    <TextBlock Text="GAME WRITES WIN" HorizontalAlignment="Center" Margin="0,4,0,0"
+                                               FontFamily="{StaticResource TelemetryFontFamily}" FontSize="10"
+                                               Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                                               ToolTip="{Binding Pad_Lighting_Subtitle, Source={x:Static strings:Strings.Instance}}"
+                                               Visibility="{Binding PlayStationConfig.LightbarMode, Converter={StaticResource EnumEqualityVisibilityConverter}, ConverterParameter=Off}"/>
                                 </StackPanel>
 
                                 <!-- Mode picker -->
@@ -6700,6 +6770,51 @@
                                             Red="{Binding PlayStationConfig.LightbarRed, Mode=TwoWay}"
                                             Green="{Binding PlayStationConfig.LightbarGreen, Mode=TwoWay}"
                                             Blue="{Binding PlayStationConfig.LightbarBlue, Mode=TwoWay}"/>
+                                        <!-- Preset swatches (#175 competitor item 6): eight
+                                             one-click colors writing the same LightbarRed/
+                                             Green/Blue trio the picker binds. Border +
+                                             Cursor=Hand + MouseLeftButtonDown follows the
+                                             motor-bar click idiom (LeftMotor_Click). Tag
+                                             carries RRGGBB like the FormulaPreset_Click
+                                             buttons carry their formula. First chip is the
+                                             reset-default PlayStation blue (0000FF), last
+                                             is the Ember accent. The handler re-syncs the
+                                             hex box because that box is code-behind-synced,
+                                             not value-bound. -->
+                                        <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                                            <Border Width="24" Height="20" CornerRadius="4" Margin="0,0,6,0" Cursor="Hand"
+                                                    Background="#FF0000FF" Tag="0000FF" ToolTip="#0000FF"
+                                                    BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}" BorderThickness="1"
+                                                    MouseLeftButtonDown="LightbarSwatch_Click"/>
+                                            <Border Width="24" Height="20" CornerRadius="4" Margin="0,0,6,0" Cursor="Hand"
+                                                    Background="#FFFF0000" Tag="FF0000" ToolTip="#FF0000"
+                                                    BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}" BorderThickness="1"
+                                                    MouseLeftButtonDown="LightbarSwatch_Click"/>
+                                            <Border Width="24" Height="20" CornerRadius="4" Margin="0,0,6,0" Cursor="Hand"
+                                                    Background="#FF00FF00" Tag="00FF00" ToolTip="#00FF00"
+                                                    BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}" BorderThickness="1"
+                                                    MouseLeftButtonDown="LightbarSwatch_Click"/>
+                                            <Border Width="24" Height="20" CornerRadius="4" Margin="0,0,6,0" Cursor="Hand"
+                                                    Background="#FFFF00FF" Tag="FF00FF" ToolTip="#FF00FF"
+                                                    BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}" BorderThickness="1"
+                                                    MouseLeftButtonDown="LightbarSwatch_Click"/>
+                                            <Border Width="24" Height="20" CornerRadius="4" Margin="0,0,6,0" Cursor="Hand"
+                                                    Background="#FFFFBF00" Tag="FFBF00" ToolTip="#FFBF00"
+                                                    BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}" BorderThickness="1"
+                                                    MouseLeftButtonDown="LightbarSwatch_Click"/>
+                                            <Border Width="24" Height="20" CornerRadius="4" Margin="0,0,6,0" Cursor="Hand"
+                                                    Background="#FF00FFFF" Tag="00FFFF" ToolTip="#00FFFF"
+                                                    BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}" BorderThickness="1"
+                                                    MouseLeftButtonDown="LightbarSwatch_Click"/>
+                                            <Border Width="24" Height="20" CornerRadius="4" Margin="0,0,6,0" Cursor="Hand"
+                                                    Background="#FFFFFFFF" Tag="FFFFFF" ToolTip="#FFFFFF"
+                                                    BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}" BorderThickness="1"
+                                                    MouseLeftButtonDown="LightbarSwatch_Click"/>
+                                            <Border Width="24" Height="20" CornerRadius="4" Cursor="Hand"
+                                                    Background="#FFFF6B2C" Tag="FF6B2C" ToolTip="#FF6B2C"
+                                                    BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}" BorderThickness="1"
+                                                    MouseLeftButtonDown="LightbarSwatch_Click"/>
+                                        </StackPanel>
                                         <Grid Margin="0,0,0,10">
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="64"/>
@@ -7267,17 +7382,134 @@
                                     <ui:Button Command="{Binding PlayStationConfig.ResetPlayerLedBrightnessCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetLedBrightness, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
 
-                                <!-- Player pattern -->
+                                <!-- Player pattern. Every option renders its own 5-dot
+                                     pip row (#175 competitor item 6): lit pips ember,
+                                     unlit pips steel outlines, mirroring the wire
+                                     patterns the synthesizer drives at byte 43
+                                     (Ds5EffectSynthesizer.PlayerLedBits: Off=0x00,
+                                     P1=0x04, P2=0x0A, P3=0x15, P4=0x1B, All=0x1F, bit N
+                                     lighting LED N of the 5-LED strip below the
+                                     touchpad). Pips live in each item's ContentTemplate
+                                     rather than as element Content, so the closed
+                                     combo's selection box instantiates its own copy of
+                                     the template instead of stealing the popup item's
+                                     visual. Content stays the localized string and the
+                                     SelectedIndex + EnumIndexConverter contract is
+                                     unchanged. -->
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
                                     <TextBlock Text="{Binding Pad_Lighting_PlayerPattern, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
                                     <ComboBox SelectedIndex="{Binding PlayStationConfig.PlayerLedMode, Mode=TwoWay, Converter={StaticResource EnumIndexConverter}}"
                                               Width="220" VerticalAlignment="Center">
-                                        <ComboBoxItem Content="{Binding Pad_Lighting_PlayerLed_Off, Source={x:Static strings:Strings.Instance}}"/>
-                                        <ComboBoxItem Content="{Binding Pad_Lighting_PlayerLed_P1, Source={x:Static strings:Strings.Instance}}"/>
-                                        <ComboBoxItem Content="{Binding Pad_Lighting_PlayerLed_P2, Source={x:Static strings:Strings.Instance}}"/>
-                                        <ComboBoxItem Content="{Binding Pad_Lighting_PlayerLed_P3, Source={x:Static strings:Strings.Instance}}"/>
-                                        <ComboBoxItem Content="{Binding Pad_Lighting_PlayerLed_P4, Source={x:Static strings:Strings.Instance}}"/>
-                                        <ComboBoxItem Content="{Binding Pad_Lighting_PlayerLed_All, Source={x:Static strings:Strings.Instance}}"/>
+                                        <ComboBox.Resources>
+                                            <Style x:Key="LedPipOn" TargetType="Ellipse">
+                                                <Setter Property="Width" Value="6"/>
+                                                <Setter Property="Height" Value="6"/>
+                                                <Setter Property="Margin" Value="0,0,3,0"/>
+                                                <Setter Property="VerticalAlignment" Value="Center"/>
+                                                <Setter Property="Fill" Value="{DynamicResource EmberBrush}"/>
+                                            </Style>
+                                            <Style x:Key="LedPipOff" TargetType="Ellipse" BasedOn="{StaticResource LedPipOn}">
+                                                <Setter Property="Fill" Value="Transparent"/>
+                                                <Setter Property="Stroke" Value="{DynamicResource SteelLineBrush}"/>
+                                                <Setter Property="StrokeThickness" Value="1"/>
+                                            </Style>
+                                        </ComboBox.Resources>
+                                        <ComboBoxItem Content="{Binding Pad_Lighting_PlayerLed_Off, Source={x:Static strings:Strings.Instance}}">
+                                            <ComboBoxItem.ContentTemplate>
+                                                <DataTemplate>
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,6,0">
+                                                            <Ellipse Style="{StaticResource LedPipOff}"/>
+                                                            <Ellipse Style="{StaticResource LedPipOff}"/>
+                                                            <Ellipse Style="{StaticResource LedPipOff}"/>
+                                                            <Ellipse Style="{StaticResource LedPipOff}"/>
+                                                            <Ellipse Style="{StaticResource LedPipOff}"/>
+                                                        </StackPanel>
+                                                        <TextBlock Text="{Binding}" VerticalAlignment="Center"/>
+                                                    </StackPanel>
+                                                </DataTemplate>
+                                            </ComboBoxItem.ContentTemplate>
+                                        </ComboBoxItem>
+                                        <ComboBoxItem Content="{Binding Pad_Lighting_PlayerLed_P1, Source={x:Static strings:Strings.Instance}}">
+                                            <ComboBoxItem.ContentTemplate>
+                                                <DataTemplate>
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,6,0">
+                                                            <Ellipse Style="{StaticResource LedPipOff}"/>
+                                                            <Ellipse Style="{StaticResource LedPipOff}"/>
+                                                            <Ellipse Style="{StaticResource LedPipOn}"/>
+                                                            <Ellipse Style="{StaticResource LedPipOff}"/>
+                                                            <Ellipse Style="{StaticResource LedPipOff}"/>
+                                                        </StackPanel>
+                                                        <TextBlock Text="{Binding}" VerticalAlignment="Center"/>
+                                                    </StackPanel>
+                                                </DataTemplate>
+                                            </ComboBoxItem.ContentTemplate>
+                                        </ComboBoxItem>
+                                        <ComboBoxItem Content="{Binding Pad_Lighting_PlayerLed_P2, Source={x:Static strings:Strings.Instance}}">
+                                            <ComboBoxItem.ContentTemplate>
+                                                <DataTemplate>
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,6,0">
+                                                            <Ellipse Style="{StaticResource LedPipOff}"/>
+                                                            <Ellipse Style="{StaticResource LedPipOn}"/>
+                                                            <Ellipse Style="{StaticResource LedPipOff}"/>
+                                                            <Ellipse Style="{StaticResource LedPipOn}"/>
+                                                            <Ellipse Style="{StaticResource LedPipOff}"/>
+                                                        </StackPanel>
+                                                        <TextBlock Text="{Binding}" VerticalAlignment="Center"/>
+                                                    </StackPanel>
+                                                </DataTemplate>
+                                            </ComboBoxItem.ContentTemplate>
+                                        </ComboBoxItem>
+                                        <ComboBoxItem Content="{Binding Pad_Lighting_PlayerLed_P3, Source={x:Static strings:Strings.Instance}}">
+                                            <ComboBoxItem.ContentTemplate>
+                                                <DataTemplate>
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,6,0">
+                                                            <Ellipse Style="{StaticResource LedPipOn}"/>
+                                                            <Ellipse Style="{StaticResource LedPipOff}"/>
+                                                            <Ellipse Style="{StaticResource LedPipOn}"/>
+                                                            <Ellipse Style="{StaticResource LedPipOff}"/>
+                                                            <Ellipse Style="{StaticResource LedPipOn}"/>
+                                                        </StackPanel>
+                                                        <TextBlock Text="{Binding}" VerticalAlignment="Center"/>
+                                                    </StackPanel>
+                                                </DataTemplate>
+                                            </ComboBoxItem.ContentTemplate>
+                                        </ComboBoxItem>
+                                        <ComboBoxItem Content="{Binding Pad_Lighting_PlayerLed_P4, Source={x:Static strings:Strings.Instance}}">
+                                            <ComboBoxItem.ContentTemplate>
+                                                <DataTemplate>
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,6,0">
+                                                            <Ellipse Style="{StaticResource LedPipOn}"/>
+                                                            <Ellipse Style="{StaticResource LedPipOn}"/>
+                                                            <Ellipse Style="{StaticResource LedPipOff}"/>
+                                                            <Ellipse Style="{StaticResource LedPipOn}"/>
+                                                            <Ellipse Style="{StaticResource LedPipOn}"/>
+                                                        </StackPanel>
+                                                        <TextBlock Text="{Binding}" VerticalAlignment="Center"/>
+                                                    </StackPanel>
+                                                </DataTemplate>
+                                            </ComboBoxItem.ContentTemplate>
+                                        </ComboBoxItem>
+                                        <ComboBoxItem Content="{Binding Pad_Lighting_PlayerLed_All, Source={x:Static strings:Strings.Instance}}">
+                                            <ComboBoxItem.ContentTemplate>
+                                                <DataTemplate>
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,6,0">
+                                                            <Ellipse Style="{StaticResource LedPipOn}"/>
+                                                            <Ellipse Style="{StaticResource LedPipOn}"/>
+                                                            <Ellipse Style="{StaticResource LedPipOn}"/>
+                                                            <Ellipse Style="{StaticResource LedPipOn}"/>
+                                                            <Ellipse Style="{StaticResource LedPipOn}"/>
+                                                        </StackPanel>
+                                                        <TextBlock Text="{Binding}" VerticalAlignment="Center"/>
+                                                    </StackPanel>
+                                                </DataTemplate>
+                                            </ComboBoxItem.ContentTemplate>
+                                        </ComboBoxItem>
                                     </ComboBox>
                                     <ui:Button Command="{Binding PlayStationConfig.ResetPlayerLedModeCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetPlayerPattern, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>

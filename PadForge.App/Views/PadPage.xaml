@@ -285,6 +285,51 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
+
+        <!-- Adaptive-trigger mode cards (#175 competitor item 5): the
+             Mode ComboBox becomes a radio-like card grid. Each card is
+             a steel tile. Selection reads ember (tint wash + the
+             #66FF6B2C rim the identity chip and output chips use) and
+             round-trips through SelectedValue/Tag exactly like the
+             Lighting mode picker. Static Effect setter only on hover.
+             Nothing animates. -->
+        <Style x:Key="AtModeCardContainer" TargetType="ListBoxItem">
+            <Setter Property="Margin" Value="0,0,6,6"/>
+            <Setter Property="Padding" Value="8,6"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ListBoxItem">
+                        <Border x:Name="CardBd" CornerRadius="8" BorderThickness="1"
+                                Background="{DynamicResource ControlFillColorDefaultBrush}"
+                                BorderBrush="{DynamicResource SteelLineBrush}"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="CardBd" Property="Effect" Value="{StaticResource NeutralHoverGlow}"/>
+                            </Trigger>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter TargetName="CardBd" Property="Background" Value="{DynamicResource EmberTintBrush}"/>
+                                <Setter TargetName="CardBd" Property="BorderBrush" Value="#66FF6B2C"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="AtModeCardName" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+        </Style>
+        <Style x:Key="AtModeCardDesc" TargetType="TextBlock">
+            <Setter Property="FontFamily" Value="{StaticResource TelemetryFontFamily}"/>
+            <Setter Property="FontSize" Value="10"/>
+            <Setter Property="Foreground" Value="{DynamicResource TextFillColorTertiaryBrush}"/>
+            <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
+            <Setter Property="Margin" Value="0,1,0,4"/>
+        </Style>
     </UserControl.Resources>
 
     <Grid>
@@ -5950,30 +5995,177 @@
                                             Content="{Binding Pad_ResetAll, Source={x:Static strings:Strings.Instance}}" Margin="12,0,0,0"
                                             ToolTip="{Binding Pad_ResetLeftTrigger, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
-                                <!-- Mode -->
+                                <!-- Mode cards (#175 competitor item 5): one steel card
+                                     per mode, each carrying a live force-vs-travel
+                                     sparkline that redraws as Start/End/Strength/
+                                     Frequency change. Radio-like selection binds the
+                                     same LeftTriggerMode property the old dropdown
+                                     drove, via SelectedValue/Tag (Lighting-picker
+                                     pattern). The selected card's sparkline carries a
+                                     cold marker at the live physical trigger pull. -->
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                     <TextBlock Text="{Binding Pad_TriggerMode, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
-                                    <ComboBox Width="240" VerticalAlignment="Center"
-                                              SelectedIndex="{Binding PlayStationConfig.LeftTriggerMode, Mode=TwoWay, Converter={StaticResource EnumIndexConverter}}">
-                                        <ComboBoxItem Content="{Binding Pad_AT_Off, Source={x:Static strings:Strings.Instance}}"
-                                                      ToolTip="{Binding Pad_AT_Off_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
-                                        <ComboBoxItem Content="{Binding Pad_AT_Feedback, Source={x:Static strings:Strings.Instance}}"
-                                                      ToolTip="{Binding Pad_AT_Feedback_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
-                                        <ComboBoxItem Content="{Binding Pad_AT_Weapon, Source={x:Static strings:Strings.Instance}}"
-                                                      ToolTip="{Binding Pad_AT_Weapon_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
-                                        <ComboBoxItem Content="{Binding Pad_AT_Vibration, Source={x:Static strings:Strings.Instance}}"
-                                                      ToolTip="{Binding Pad_AT_Vibration_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
-                                        <ComboBoxItem Content="{Binding Pad_AT_MultiPosFeedback, Source={x:Static strings:Strings.Instance}}"
-                                                      ToolTip="{Binding Pad_AT_MultiPosFeedback_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
-                                        <ComboBoxItem Content="{Binding Pad_AT_Slope, Source={x:Static strings:Strings.Instance}}"
-                                                      ToolTip="{Binding Pad_AT_Slope_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
-                                        <ComboBoxItem Content="{Binding Pad_AT_MultiPosVibration, Source={x:Static strings:Strings.Instance}}"
-                                                      ToolTip="{Binding Pad_AT_MultiPosVibration_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
-                                    </ComboBox>
+                                    <ListBox Width="456" Background="Transparent" BorderThickness="0"
+                                             Padding="0" VerticalAlignment="Center"
+                                             SelectedValuePath="Tag"
+                                             SelectionChanged="AtModeCards_SelectionChanged"
+                                             SelectedValue="{Binding PlayStationConfig.LeftTriggerMode, Mode=TwoWay}"
+                                             ItemContainerStyle="{StaticResource AtModeCardContainer}"
+                                             ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                             ScrollViewer.VerticalScrollBarVisibility="Disabled">
+                                        <ListBox.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <UniformGrid Columns="3"/>
+                                            </ItemsPanelTemplate>
+                                        </ListBox.ItemsPanel>
+                                        <ListBoxItem Tag="{x:Static vm:AdaptiveTriggerMode.Off}"
+                                                     ToolTip="{Binding Pad_AT_Off_Tooltip, Source={x:Static strings:Strings.Instance}}">
+                                            <Grid>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="*"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                </Grid.RowDefinitions>
+                                                <TextBlock Text="{Binding Pad_AT_Off, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource AtModeCardName}"/>
+                                                <TextBlock Grid.Row="1" Text="{Binding Pad_AT_Off_Tooltip, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource AtModeCardDesc}"/>
+                                                <viewControls:TriggerEffectGraph Grid.Row="3" Height="44" IsCompact="True"
+                                                    Mode="Off"
+                                                    LiveInput="{Binding DeviceLeftTrigger}"
+                                                    ShowLiveMarker="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=ListBoxItem}}"/>
+                                            </Grid>
+                                        </ListBoxItem>
+                                        <ListBoxItem Tag="{x:Static vm:AdaptiveTriggerMode.Feedback}"
+                                                     ToolTip="{Binding Pad_AT_Feedback_Tooltip, Source={x:Static strings:Strings.Instance}}">
+                                            <Grid>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="*"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                </Grid.RowDefinitions>
+                                                <TextBlock Text="{Binding Pad_AT_Feedback, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource AtModeCardName}"/>
+                                                <TextBlock Grid.Row="1" Text="{Binding Pad_AT_Feedback_Tooltip, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource AtModeCardDesc}"/>
+                                                <viewControls:TriggerEffectGraph Grid.Row="3" Height="44" IsCompact="True"
+                                                    Mode="Feedback"
+                                                    StartPosition="{Binding PlayStationConfig.LeftStartPosition}"
+                                                    EndPosition="{Binding PlayStationConfig.LeftEndPosition}"
+                                                    Strength="{Binding PlayStationConfig.LeftStrength}"
+                                                    Frequency="{Binding PlayStationConfig.LeftFrequency}"
+                                                    LiveInput="{Binding DeviceLeftTrigger}"
+                                                    ShowLiveMarker="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=ListBoxItem}}"/>
+                                            </Grid>
+                                        </ListBoxItem>
+                                        <ListBoxItem Tag="{x:Static vm:AdaptiveTriggerMode.Weapon}"
+                                                     ToolTip="{Binding Pad_AT_Weapon_Tooltip, Source={x:Static strings:Strings.Instance}}">
+                                            <Grid>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="*"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                </Grid.RowDefinitions>
+                                                <TextBlock Text="{Binding Pad_AT_Weapon, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource AtModeCardName}"/>
+                                                <TextBlock Grid.Row="1" Text="{Binding Pad_AT_Weapon_Tooltip, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource AtModeCardDesc}"/>
+                                                <viewControls:TriggerEffectGraph Grid.Row="3" Height="44" IsCompact="True"
+                                                    Mode="Weapon"
+                                                    StartPosition="{Binding PlayStationConfig.LeftStartPosition}"
+                                                    EndPosition="{Binding PlayStationConfig.LeftEndPosition}"
+                                                    Strength="{Binding PlayStationConfig.LeftStrength}"
+                                                    Frequency="{Binding PlayStationConfig.LeftFrequency}"
+                                                    LiveInput="{Binding DeviceLeftTrigger}"
+                                                    ShowLiveMarker="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=ListBoxItem}}"/>
+                                            </Grid>
+                                        </ListBoxItem>
+                                        <ListBoxItem Tag="{x:Static vm:AdaptiveTriggerMode.Vibration}"
+                                                     ToolTip="{Binding Pad_AT_Vibration_Tooltip, Source={x:Static strings:Strings.Instance}}">
+                                            <Grid>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="*"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                </Grid.RowDefinitions>
+                                                <TextBlock Text="{Binding Pad_AT_Vibration, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource AtModeCardName}"/>
+                                                <TextBlock Grid.Row="1" Text="{Binding Pad_AT_Vibration_Tooltip, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource AtModeCardDesc}"/>
+                                                <viewControls:TriggerEffectGraph Grid.Row="3" Height="44" IsCompact="True"
+                                                    Mode="Vibration"
+                                                    StartPosition="{Binding PlayStationConfig.LeftStartPosition}"
+                                                    EndPosition="{Binding PlayStationConfig.LeftEndPosition}"
+                                                    Strength="{Binding PlayStationConfig.LeftStrength}"
+                                                    Frequency="{Binding PlayStationConfig.LeftFrequency}"
+                                                    LiveInput="{Binding DeviceLeftTrigger}"
+                                                    ShowLiveMarker="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=ListBoxItem}}"/>
+                                            </Grid>
+                                        </ListBoxItem>
+                                        <ListBoxItem Tag="{x:Static vm:AdaptiveTriggerMode.MultiplePositionFeedback}"
+                                                     ToolTip="{Binding Pad_AT_MultiPosFeedback_Tooltip, Source={x:Static strings:Strings.Instance}}">
+                                            <Grid>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="*"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                </Grid.RowDefinitions>
+                                                <TextBlock Text="{Binding Pad_AT_MultiPosFeedback, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource AtModeCardName}"/>
+                                                <TextBlock Grid.Row="1" Text="{Binding Pad_AT_MultiPosFeedback_Tooltip, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource AtModeCardDesc}"/>
+                                                <viewControls:TriggerEffectGraph Grid.Row="3" Height="44" IsCompact="True"
+                                                    Mode="MultiplePositionFeedback"
+                                                    StartPosition="{Binding PlayStationConfig.LeftStartPosition}"
+                                                    EndPosition="{Binding PlayStationConfig.LeftEndPosition}"
+                                                    Strength="{Binding PlayStationConfig.LeftStrength}"
+                                                    Frequency="{Binding PlayStationConfig.LeftFrequency}"
+                                                    LiveInput="{Binding DeviceLeftTrigger}"
+                                                    ShowLiveMarker="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=ListBoxItem}}"/>
+                                            </Grid>
+                                        </ListBoxItem>
+                                        <ListBoxItem Tag="{x:Static vm:AdaptiveTriggerMode.SlopeFeedback}"
+                                                     ToolTip="{Binding Pad_AT_Slope_Tooltip, Source={x:Static strings:Strings.Instance}}">
+                                            <Grid>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="*"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                </Grid.RowDefinitions>
+                                                <TextBlock Text="{Binding Pad_AT_Slope, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource AtModeCardName}"/>
+                                                <TextBlock Grid.Row="1" Text="{Binding Pad_AT_Slope_Tooltip, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource AtModeCardDesc}"/>
+                                                <viewControls:TriggerEffectGraph Grid.Row="3" Height="44" IsCompact="True"
+                                                    Mode="SlopeFeedback"
+                                                    StartPosition="{Binding PlayStationConfig.LeftStartPosition}"
+                                                    EndPosition="{Binding PlayStationConfig.LeftEndPosition}"
+                                                    Strength="{Binding PlayStationConfig.LeftStrength}"
+                                                    Frequency="{Binding PlayStationConfig.LeftFrequency}"
+                                                    LiveInput="{Binding DeviceLeftTrigger}"
+                                                    ShowLiveMarker="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=ListBoxItem}}"/>
+                                            </Grid>
+                                        </ListBoxItem>
+                                        <ListBoxItem Tag="{x:Static vm:AdaptiveTriggerMode.MultiplePositionVibration}"
+                                                     ToolTip="{Binding Pad_AT_MultiPosVibration_Tooltip, Source={x:Static strings:Strings.Instance}}">
+                                            <Grid>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="*"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                </Grid.RowDefinitions>
+                                                <TextBlock Text="{Binding Pad_AT_MultiPosVibration, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource AtModeCardName}"/>
+                                                <TextBlock Grid.Row="1" Text="{Binding Pad_AT_MultiPosVibration_Tooltip, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource AtModeCardDesc}"/>
+                                                <viewControls:TriggerEffectGraph Grid.Row="3" Height="44" IsCompact="True"
+                                                    Mode="MultiplePositionVibration"
+                                                    StartPosition="{Binding PlayStationConfig.LeftStartPosition}"
+                                                    EndPosition="{Binding PlayStationConfig.LeftEndPosition}"
+                                                    Strength="{Binding PlayStationConfig.LeftStrength}"
+                                                    Frequency="{Binding PlayStationConfig.LeftFrequency}"
+                                                    LiveInput="{Binding DeviceLeftTrigger}"
+                                                    ShowLiveMarker="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=ListBoxItem}}"/>
+                                            </Grid>
+                                        </ListBoxItem>
+                                    </ListBox>
                                     <ui:Button Command="{Binding PlayStationConfig.ResetLeftTriggerCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetLeftTrigger, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
-                                <!-- Weapon-mode quick preset row. Indented 200 DIP to align
-                                     with the Mode dropdown above. Visible only when the
+                                <!-- Weapon-mode quick preset row. Indented 200 DIP under
+                                     the mode-card grid above. Visible only when the
                                      active mode is Weapon — the GameCube preset is a
                                      specific Weapon-parameter configuration that mimics the
                                      physical click feel of a real GameCube trigger. -->
@@ -6041,26 +6233,168 @@
                                             Content="{Binding Pad_ResetAll, Source={x:Static strings:Strings.Instance}}" Margin="12,0,0,0"
                                             ToolTip="{Binding Pad_ResetRightTrigger, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
-                                <!-- Mode -->
+                                <!-- Mode cards (#175 competitor item 5): mirrors the
+                                     left-trigger card grid above. Same RightTriggerMode
+                                     property and values the old dropdown bound. -->
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                     <TextBlock Text="{Binding Pad_TriggerMode, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
-                                    <ComboBox Width="240" VerticalAlignment="Center"
-                                              SelectedIndex="{Binding PlayStationConfig.RightTriggerMode, Mode=TwoWay, Converter={StaticResource EnumIndexConverter}}">
-                                        <ComboBoxItem Content="{Binding Pad_AT_Off, Source={x:Static strings:Strings.Instance}}"
-                                                      ToolTip="{Binding Pad_AT_Off_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
-                                        <ComboBoxItem Content="{Binding Pad_AT_Feedback, Source={x:Static strings:Strings.Instance}}"
-                                                      ToolTip="{Binding Pad_AT_Feedback_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
-                                        <ComboBoxItem Content="{Binding Pad_AT_Weapon, Source={x:Static strings:Strings.Instance}}"
-                                                      ToolTip="{Binding Pad_AT_Weapon_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
-                                        <ComboBoxItem Content="{Binding Pad_AT_Vibration, Source={x:Static strings:Strings.Instance}}"
-                                                      ToolTip="{Binding Pad_AT_Vibration_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
-                                        <ComboBoxItem Content="{Binding Pad_AT_MultiPosFeedback, Source={x:Static strings:Strings.Instance}}"
-                                                      ToolTip="{Binding Pad_AT_MultiPosFeedback_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
-                                        <ComboBoxItem Content="{Binding Pad_AT_Slope, Source={x:Static strings:Strings.Instance}}"
-                                                      ToolTip="{Binding Pad_AT_Slope_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
-                                        <ComboBoxItem Content="{Binding Pad_AT_MultiPosVibration, Source={x:Static strings:Strings.Instance}}"
-                                                      ToolTip="{Binding Pad_AT_MultiPosVibration_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
-                                    </ComboBox>
+                                    <ListBox Width="456" Background="Transparent" BorderThickness="0"
+                                             Padding="0" VerticalAlignment="Center"
+                                             SelectedValuePath="Tag"
+                                             SelectionChanged="AtModeCards_SelectionChanged"
+                                             SelectedValue="{Binding PlayStationConfig.RightTriggerMode, Mode=TwoWay}"
+                                             ItemContainerStyle="{StaticResource AtModeCardContainer}"
+                                             ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                             ScrollViewer.VerticalScrollBarVisibility="Disabled">
+                                        <ListBox.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <UniformGrid Columns="3"/>
+                                            </ItemsPanelTemplate>
+                                        </ListBox.ItemsPanel>
+                                        <ListBoxItem Tag="{x:Static vm:AdaptiveTriggerMode.Off}"
+                                                     ToolTip="{Binding Pad_AT_Off_Tooltip, Source={x:Static strings:Strings.Instance}}">
+                                            <Grid>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="*"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                </Grid.RowDefinitions>
+                                                <TextBlock Text="{Binding Pad_AT_Off, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource AtModeCardName}"/>
+                                                <TextBlock Grid.Row="1" Text="{Binding Pad_AT_Off_Tooltip, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource AtModeCardDesc}"/>
+                                                <viewControls:TriggerEffectGraph Grid.Row="3" Height="44" IsCompact="True"
+                                                    Mode="Off"
+                                                    LiveInput="{Binding DeviceRightTrigger}"
+                                                    ShowLiveMarker="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=ListBoxItem}}"/>
+                                            </Grid>
+                                        </ListBoxItem>
+                                        <ListBoxItem Tag="{x:Static vm:AdaptiveTriggerMode.Feedback}"
+                                                     ToolTip="{Binding Pad_AT_Feedback_Tooltip, Source={x:Static strings:Strings.Instance}}">
+                                            <Grid>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="*"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                </Grid.RowDefinitions>
+                                                <TextBlock Text="{Binding Pad_AT_Feedback, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource AtModeCardName}"/>
+                                                <TextBlock Grid.Row="1" Text="{Binding Pad_AT_Feedback_Tooltip, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource AtModeCardDesc}"/>
+                                                <viewControls:TriggerEffectGraph Grid.Row="3" Height="44" IsCompact="True"
+                                                    Mode="Feedback"
+                                                    StartPosition="{Binding PlayStationConfig.RightStartPosition}"
+                                                    EndPosition="{Binding PlayStationConfig.RightEndPosition}"
+                                                    Strength="{Binding PlayStationConfig.RightStrength}"
+                                                    Frequency="{Binding PlayStationConfig.RightFrequency}"
+                                                    LiveInput="{Binding DeviceRightTrigger}"
+                                                    ShowLiveMarker="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=ListBoxItem}}"/>
+                                            </Grid>
+                                        </ListBoxItem>
+                                        <ListBoxItem Tag="{x:Static vm:AdaptiveTriggerMode.Weapon}"
+                                                     ToolTip="{Binding Pad_AT_Weapon_Tooltip, Source={x:Static strings:Strings.Instance}}">
+                                            <Grid>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="*"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                </Grid.RowDefinitions>
+                                                <TextBlock Text="{Binding Pad_AT_Weapon, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource AtModeCardName}"/>
+                                                <TextBlock Grid.Row="1" Text="{Binding Pad_AT_Weapon_Tooltip, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource AtModeCardDesc}"/>
+                                                <viewControls:TriggerEffectGraph Grid.Row="3" Height="44" IsCompact="True"
+                                                    Mode="Weapon"
+                                                    StartPosition="{Binding PlayStationConfig.RightStartPosition}"
+                                                    EndPosition="{Binding PlayStationConfig.RightEndPosition}"
+                                                    Strength="{Binding PlayStationConfig.RightStrength}"
+                                                    Frequency="{Binding PlayStationConfig.RightFrequency}"
+                                                    LiveInput="{Binding DeviceRightTrigger}"
+                                                    ShowLiveMarker="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=ListBoxItem}}"/>
+                                            </Grid>
+                                        </ListBoxItem>
+                                        <ListBoxItem Tag="{x:Static vm:AdaptiveTriggerMode.Vibration}"
+                                                     ToolTip="{Binding Pad_AT_Vibration_Tooltip, Source={x:Static strings:Strings.Instance}}">
+                                            <Grid>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="*"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                </Grid.RowDefinitions>
+                                                <TextBlock Text="{Binding Pad_AT_Vibration, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource AtModeCardName}"/>
+                                                <TextBlock Grid.Row="1" Text="{Binding Pad_AT_Vibration_Tooltip, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource AtModeCardDesc}"/>
+                                                <viewControls:TriggerEffectGraph Grid.Row="3" Height="44" IsCompact="True"
+                                                    Mode="Vibration"
+                                                    StartPosition="{Binding PlayStationConfig.RightStartPosition}"
+                                                    EndPosition="{Binding PlayStationConfig.RightEndPosition}"
+                                                    Strength="{Binding PlayStationConfig.RightStrength}"
+                                                    Frequency="{Binding PlayStationConfig.RightFrequency}"
+                                                    LiveInput="{Binding DeviceRightTrigger}"
+                                                    ShowLiveMarker="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=ListBoxItem}}"/>
+                                            </Grid>
+                                        </ListBoxItem>
+                                        <ListBoxItem Tag="{x:Static vm:AdaptiveTriggerMode.MultiplePositionFeedback}"
+                                                     ToolTip="{Binding Pad_AT_MultiPosFeedback_Tooltip, Source={x:Static strings:Strings.Instance}}">
+                                            <Grid>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="*"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                </Grid.RowDefinitions>
+                                                <TextBlock Text="{Binding Pad_AT_MultiPosFeedback, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource AtModeCardName}"/>
+                                                <TextBlock Grid.Row="1" Text="{Binding Pad_AT_MultiPosFeedback_Tooltip, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource AtModeCardDesc}"/>
+                                                <viewControls:TriggerEffectGraph Grid.Row="3" Height="44" IsCompact="True"
+                                                    Mode="MultiplePositionFeedback"
+                                                    StartPosition="{Binding PlayStationConfig.RightStartPosition}"
+                                                    EndPosition="{Binding PlayStationConfig.RightEndPosition}"
+                                                    Strength="{Binding PlayStationConfig.RightStrength}"
+                                                    Frequency="{Binding PlayStationConfig.RightFrequency}"
+                                                    LiveInput="{Binding DeviceRightTrigger}"
+                                                    ShowLiveMarker="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=ListBoxItem}}"/>
+                                            </Grid>
+                                        </ListBoxItem>
+                                        <ListBoxItem Tag="{x:Static vm:AdaptiveTriggerMode.SlopeFeedback}"
+                                                     ToolTip="{Binding Pad_AT_Slope_Tooltip, Source={x:Static strings:Strings.Instance}}">
+                                            <Grid>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="*"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                </Grid.RowDefinitions>
+                                                <TextBlock Text="{Binding Pad_AT_Slope, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource AtModeCardName}"/>
+                                                <TextBlock Grid.Row="1" Text="{Binding Pad_AT_Slope_Tooltip, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource AtModeCardDesc}"/>
+                                                <viewControls:TriggerEffectGraph Grid.Row="3" Height="44" IsCompact="True"
+                                                    Mode="SlopeFeedback"
+                                                    StartPosition="{Binding PlayStationConfig.RightStartPosition}"
+                                                    EndPosition="{Binding PlayStationConfig.RightEndPosition}"
+                                                    Strength="{Binding PlayStationConfig.RightStrength}"
+                                                    Frequency="{Binding PlayStationConfig.RightFrequency}"
+                                                    LiveInput="{Binding DeviceRightTrigger}"
+                                                    ShowLiveMarker="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=ListBoxItem}}"/>
+                                            </Grid>
+                                        </ListBoxItem>
+                                        <ListBoxItem Tag="{x:Static vm:AdaptiveTriggerMode.MultiplePositionVibration}"
+                                                     ToolTip="{Binding Pad_AT_MultiPosVibration_Tooltip, Source={x:Static strings:Strings.Instance}}">
+                                            <Grid>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="*"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                </Grid.RowDefinitions>
+                                                <TextBlock Text="{Binding Pad_AT_MultiPosVibration, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource AtModeCardName}"/>
+                                                <TextBlock Grid.Row="1" Text="{Binding Pad_AT_MultiPosVibration_Tooltip, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource AtModeCardDesc}"/>
+                                                <viewControls:TriggerEffectGraph Grid.Row="3" Height="44" IsCompact="True"
+                                                    Mode="MultiplePositionVibration"
+                                                    StartPosition="{Binding PlayStationConfig.RightStartPosition}"
+                                                    EndPosition="{Binding PlayStationConfig.RightEndPosition}"
+                                                    Strength="{Binding PlayStationConfig.RightStrength}"
+                                                    Frequency="{Binding PlayStationConfig.RightFrequency}"
+                                                    LiveInput="{Binding DeviceRightTrigger}"
+                                                    ShowLiveMarker="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=ListBoxItem}}"/>
+                                            </Grid>
+                                        </ListBoxItem>
+                                    </ListBox>
                                     <ui:Button Command="{Binding PlayStationConfig.ResetRightTriggerCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetRightTrigger, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
                                 <!-- Weapon-mode quick preset row (right trigger). Mirrors

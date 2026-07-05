@@ -2182,6 +2182,21 @@ namespace PadForge.Views
             }
         }
 
+        /// <summary>
+        /// Radio-like guard for the adaptive-trigger mode card grids
+        /// (#175 competitor item 5). A single-select ListBox still lets
+        /// Ctrl+click deselect the current item, which would leave no
+        /// card lit while the bound mode keeps its old value (null
+        /// can't write into the enum property). Restore the cleared
+        /// selection so the cards behave like radio buttons: one mode
+        /// is always on.
+        /// </summary>
+        private void AtModeCards_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (sender is ListBox lb && lb.SelectedItem == null && e.RemovedItems.Count > 0)
+                lb.SelectedItem = e.RemovedItems[0];
+        }
+
         // ─────────────────────────────────────────────
         //  AppVolume process dropdown
         // ─────────────────────────────────────────────

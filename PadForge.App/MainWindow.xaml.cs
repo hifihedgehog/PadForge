@@ -59,6 +59,10 @@ namespace PadForge
         private DeviceService _deviceService;
         private Popup _controllerTypePopup;
         private DateTime _popupClosedAt;
+        // Profile switcher flyout (#175 item 8): own open/close-debounce
+        // pair so it never cross-suppresses the controller-type popup.
+        private Popup _profileSwitcherPopup;
+        private DateTime _profilePopupClosedAt;
 
         /// <summary>When non-null, the next recording result goes to this mapping's NegSourceDescriptor.</summary>
         private MappingItem _pendingNegMapping;
@@ -1528,6 +1532,19 @@ namespace PadForge
             DashboardPageView.AddControllerRequested += (s, e) =>
             {
                 ShowControllerTypePopup(DashboardPageView.AddControllerCardElement, PlacementMode.Bottom);
+            };
+
+            // Wire the active-profile pills (#175 item 8): click opens the
+            // switcher flyout at the clicked pill (status bar opens upward),
+            // and an applied auto-switch flares both instances.
+            StatusProfilePill.Clicked += (s, e) =>
+                ShowProfileSwitcherPopup(StatusProfilePill, PlacementMode.Top);
+            PadPageView.ProfilePillElement.Clicked += (s, e) =>
+                ShowProfileSwitcherPopup(PadPageView.ProfilePillElement, PlacementMode.Bottom);
+            _inputService.AutoProfileSwitchApplied += () =>
+            {
+                StatusProfilePill.Flare();
+                PadPageView.ProfilePillElement.Flare();
             };
 
             // Wire Dashboard delete + toggle events.
@@ -3795,6 +3812,227 @@ namespace PadForge
             border.Child = stack;
             popup.Child = container;
             popup.IsOpen = true;
+        }
+
+        /// <summary>
+        /// Shows the profile switcher flyout (#175 item 8) anchored at a
+        /// profile pill. Mirrors ShowControllerTypePopup's construction
+        /// (raised-steel surface, separate shadow element, outside-click
+        /// dismiss, live theme tracking); rows list every profile with a
+        /// lit flame on the active one, and a click runs the same path as
+        /// the Profiles page Load button.
+        /// </summary>
+        private void ShowProfileSwitcherPopup(UIElement anchor, PlacementMode placement = PlacementMode.Bottom)
+        {
+            // If the popup is already open, close it instead of opening a duplicate.
+            if (_profileSwitcherPopup != null && _profileSwitcherPopup.IsOpen)
+            {
+                _profileSwitcherPopup.IsOpen = false;
+                _profileSwitcherPopup = null;
+                return;
+            }
+
+            // Suppress reopening if the popup was just dismissed within the same click cycle.
+            if ((DateTime.UtcNow - _profilePopupClosedAt).TotalMilliseconds < 300)
+                return;
+
+            var popup = new Popup
+            {
+                StaysOpen = false,
+                Placement = placement,
+                PlacementTarget = anchor,
+                AllowsTransparency = true
+            };
+            popup.Closed += (s, e) =>
+            {
+                _profileSwitcherPopup = null;
+                _profilePopupClosedAt = DateTime.UtcNow;
+            };
+            _profileSwitcherPopup = popup;
+
+            // Separate shadow element pattern: shadow on empty border behind,
+            // content border on top without Effect (avoids corner artifacts).
+            var container = new System.Windows.Controls.Grid { Margin = new Thickness(10) };
+
+            var shadowBorder = new System.Windows.Controls.Border
+            {
+                CornerRadius = new CornerRadius(6),
+                Effect = new System.Windows.Media.Effects.DropShadowEffect
+                {
+                    BlurRadius = 8,
+                    Opacity = 0.3,
+                    ShadowDepth = 2
+                }
+            };
+            container.Children.Add(shadowBorder);
+
+            var border = new System.Windows.Controls.Border
+            {
+                CornerRadius = new CornerRadius(6),
+                Padding = new Thickness(6),
+                // 1px stroke (#175): flyouts carry the same edge as cards.
+                BorderThickness = new Thickness(1)
+            };
+            border.SetResourceReference(System.Windows.Controls.Border.BorderBrushProperty, "ControlStrokeColorDefaultBrush");
+            container.Children.Add(border);
+
+            // Dismiss on any click outside the popup content.
+            System.Windows.Input.MouseButtonEventHandler dismissHandler = (s, e) =>
+            {
+                if (!popup.IsOpen) return;
+                if (e.OriginalSource is DependencyObject source)
+                {
+                    var parent = source;
+                    while (parent != null)
+                    {
+                        if (parent == border) return;
+                        parent = System.Windows.Media.VisualTreeHelper.GetParent(parent);
+                    }
+                }
+                popup.IsOpen = false;
+            };
+            PreviewMouseDown += dismissHandler;
+            popup.Closed += (s, e) => PreviewMouseDown -= dismissHandler;
+
+            // Theme-aware popup background.
+            void ApplyPopupTheme()
+            {
+                bool dark = Wpf.Ui.Appearance.ApplicationThemeManager.GetAppTheme()
+                    == Wpf.Ui.Appearance.ApplicationTheme.Dark;
+                // Raised steel (#175): the flyout sits one step above the card fill.
+                var color = dark ? System.Windows.Media.Color.FromRgb(0x1B, 0x23, 0x33)
+                                 : System.Windows.Media.Color.FromRgb(0xF3, 0xF3, 0xF3);
+                var brush = new System.Windows.Media.SolidColorBrush(color);
+                shadowBorder.Background = brush;
+                border.Background = brush;
+            }
+            ApplyPopupTheme();
+
+            // Live-update if theme changes while popup is open.
+            void OnThemeChangedWhileOpen(Wpf.Ui.Appearance.ApplicationTheme currentTheme, System.Windows.Media.Color _)
+                => Dispatcher.BeginInvoke(ApplyPopupTheme);
+            Wpf.Ui.Appearance.ApplicationThemeManager.Changed += OnThemeChangedWhileOpen;
+            popup.Closed += (s, e) =>
+            {
+                Wpf.Ui.Appearance.ApplicationThemeManager.Changed -= OnThemeChangedWhileOpen;
+            };
+
+            var stack = new System.Windows.Controls.StackPanel();
+
+            // One row per profile (ProfileItems already includes the Default
+            // entry). Flame grammar matches the Profiles page cards: lit
+            // ember on the active row, cold outline on the rest.
+            foreach (var item in _viewModel.Settings.ProfileItems)
+            {
+                var flame = new System.Windows.Shapes.Path
+                {
+                    Data = TryFindResource("FlameOuterGeometry") as System.Windows.Media.Geometry,
+                    Width = 11,
+                    Height = 13,
+                    Stretch = System.Windows.Media.Stretch.Uniform,
+                    VerticalAlignment = VerticalAlignment.Center,
+                    Margin = new Thickness(0, 0, 6, 0)
+                };
+                if (item.IsActive)
+                {
+                    flame.SetResourceReference(System.Windows.Shapes.Shape.FillProperty, "EmberBrush");
+                    // Rendered lit only on the active row, so the glow is
+                    // static (#175 glow sweep).
+                    flame.Effect = new System.Windows.Media.Effects.DropShadowEffect
+                    {
+                        Color = System.Windows.Media.Color.FromRgb(0xFF, 0x6B, 0x2C),
+                        BlurRadius = 8,
+                        ShadowDepth = 0,
+                        Opacity = 0.5
+                    };
+                }
+                else
+                {
+                    flame.Fill = System.Windows.Media.Brushes.Transparent;
+                    flame.StrokeThickness = 1.1;
+                    flame.SetResourceReference(System.Windows.Shapes.Shape.StrokeProperty, "TextFillColorTertiaryBrush");
+                }
+
+                var name = new System.Windows.Controls.TextBlock
+                {
+                    Text = item.Name,
+                    MaxWidth = 240,
+                    TextTrimming = TextTrimming.CharacterEllipsis,
+                    ToolTip = item.Name,
+                    VerticalAlignment = VerticalAlignment.Center
+                };
+                name.SetResourceReference(System.Windows.Controls.TextBlock.ForegroundProperty,
+                    item.IsActive ? "EmberHotBrush" : "TextFillColorPrimaryBrush");
+
+                var row = new System.Windows.Controls.StackPanel { Orientation = System.Windows.Controls.Orientation.Horizontal };
+                row.Children.Add(flame);
+                row.Children.Add(name);
+
+                var rowBtn = new System.Windows.Controls.Button
+                {
+                    Content = row,
+                    Background = System.Windows.Media.Brushes.Transparent,
+                    BorderThickness = new Thickness(0),
+                    Padding = new Thickness(8, 6, 8, 6),
+                    MinWidth = 0,
+                    HorizontalAlignment = HorizontalAlignment.Stretch,
+                    HorizontalContentAlignment = HorizontalAlignment.Left,
+                    Cursor = System.Windows.Input.Cursors.Hand
+                };
+                System.Windows.Automation.AutomationProperties.SetAutomationId(rowBtn,
+                    "SwitchProfileBtn_" + (item.IsDefault ? "Default" : item.Id));
+                var captured = item;
+                rowBtn.Click += (s, e) =>
+                {
+                    popup.IsOpen = false;
+                    ActivateProfileFromSwitcher(captured);
+                };
+                stack.Children.Add(rowBtn);
+            }
+
+            // Long profile lists scroll instead of running off-screen.
+            // Visible bar per the app scrollbar canon (ComboBox dropdowns
+            // keep theirs visible too).
+            var scroller = new System.Windows.Controls.ScrollViewer
+            {
+                Content = stack,
+                MaxHeight = 320,
+                VerticalScrollBarVisibility = System.Windows.Controls.ScrollBarVisibility.Visible
+            };
+            border.Child = scroller;
+            popup.Child = container;
+            popup.IsOpen = true;
+        }
+
+        /// <summary>
+        /// Applies a profile chosen in the switcher flyout: the same path
+        /// as the Profiles page Load button (OnLoadProfile / OnRevertToDefault),
+        /// plus the manual-override note the shortcut path makes in
+        /// InputService.UiTimer_Tick so auto-switching won't immediately
+        /// fight the choice.
+        /// </summary>
+        private void ActivateProfileFromSwitcher(ViewModels.ProfileListItem item)
+        {
+            if (item == null || item.IsActive) return;
+
+            // Mirror of the shortcut manual path: record the override
+            // BEFORE the switch, with the pre-switch active id.
+            _inputService.NoteManualProfileSwitch();
+
+            if (item.IsDefault)
+            {
+                OnRevertToDefault(this, EventArgs.Empty);
+                return;
+            }
+
+            _inputService.LoadProfile(item.Id);
+            var profile = SettingsManager.Profiles.Find(p => p.Id == item.Id);
+            if (profile != null)
+            {
+                _viewModel.Settings.ActiveProfileInfo = profile.Name;
+                _viewModel.StatusText = string.Format(Strings.Instance.Status_ProfileLoaded_Format, profile.Name);
+            }
+            _settingsService.MarkDirty();
         }
 
         /// <summary>

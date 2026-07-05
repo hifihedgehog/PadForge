@@ -677,6 +677,26 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _enableAutoProfileSwitching, value);
         }
 
+        private string _foregroundExeName = "-";
+
+        /// <summary>Foreground exe filename the auto-switch monitor last saw
+        /// (#175 item 8). Runtime-only, fed at 1 Hz by InputService's UI
+        /// timer; never persisted (not in MainWindow's MarkDirty allowlist).</summary>
+        public string ForegroundExeName
+        {
+            get => _foregroundExeName;
+            set => SetProperty(ref _foregroundExeName, value);
+        }
+
+        private bool _isForegroundMatched;
+
+        /// <summary>True while the foreground exe matches a profile. Runtime-only.</summary>
+        public bool IsForegroundMatched
+        {
+            get => _isForegroundMatched;
+            set => SetProperty(ref _isForegroundMatched, value);
+        }
+
         private bool _use2DControllerView;
 
         /// <summary>Whether to show the 2D controller view instead of 3D.</summary>

@@ -71,6 +71,46 @@
                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                               IsChecked="{Binding EnableAutoProfileSwitching}" Margin="0,0,0,8"/>
 
+                    <!-- Live foreground readout (#175 item 8): what the
+                         monitor currently sees, fed at 1 s from the UI
+                         timer. Rendered only while auto-switching is on
+                         (the service does not track otherwise). Cold mono
+                         filename. Flame + ember text while it matches a
+                         profile. The FOREGROUND token is a locale-neutral
+                         mono literal, like the status bar's "Hz". -->
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8"
+                                Visibility="{Binding EnableAutoProfileSwitching, Converter={StaticResource BoolToVisibilityConverter}}">
+                        <TextBlock Text="FOREGROUND"
+                                   FontFamily="{StaticResource TelemetryFontFamily}"
+                                   FontSize="10" FontWeight="SemiBold"
+                                   Foreground="{DynamicResource ColdMutedBrush}"
+                                   VerticalAlignment="Center" Margin="0,0,8,0"/>
+                        <Path Data="{StaticResource FlameOuterGeometry}"
+                              Fill="{DynamicResource EmberBrush}"
+                              Width="11" Height="13" Stretch="Uniform"
+                              VerticalAlignment="Center" Margin="0,0,5,0"
+                              Visibility="{Binding IsForegroundMatched, Converter={StaticResource BoolToVisibilityConverter}}">
+                            <!-- Rendered only while matched, so the glow is static (#175 glow sweep). -->
+                            <Path.Effect>
+                                <DropShadowEffect Color="#FF6B2C" BlurRadius="8" ShadowDepth="0" Opacity="0.5"/>
+                            </Path.Effect>
+                        </Path>
+                        <TextBlock Text="{Binding ForegroundExeName}"
+                                   FontFamily="{StaticResource TelemetryFontFamily}" FontSize="12"
+                                   VerticalAlignment="Center">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Foreground" Value="{DynamicResource ColdBrush}"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsForegroundMatched}" Value="True">
+                                            <Setter Property="Foreground" Value="{DynamicResource EmberBrush}"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                    </StackPanel>
+
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                         <TextBlock Text="{Binding Profiles_ActiveProfile, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
                                    Margin="0,0,8,0"

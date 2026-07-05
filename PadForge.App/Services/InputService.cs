@@ -166,6 +166,23 @@ namespace PadForge.Services
         /// from the #91 profile-shortcut mode <see cref="SwitchProfileMode.ToggleVCsDisabled"/>.</summary>
         public Action ToggleVCsDisabled { get; set; }
 
+        /// <summary>Raised on the UI thread after an auto (foreground-match)
+        /// switch actually changes the active profile. Manual paths
+        /// (shortcuts, Load button, switcher flyout) never raise it. The
+        /// profile pills flare on it (#175 item 8).</summary>
+        public event Action AutoProfileSwitchApplied;
+
+        /// <summary>
+        /// Records a manual profile switch with the foreground monitor so
+        /// auto-switching won't re-trigger the profile the user just
+        /// overrode. Mirror of the shortcut path in UiTimer_Tick: call
+        /// BEFORE the switch, the override id is the pre-switch active id.
+        /// </summary>
+        public void NoteManualProfileSwitch()
+        {
+            _foregroundMonitor?.SetManualOverride(SettingsManager.ActiveProfileId);
+        }
+
         // ── Macro trigger recording state ──
         private MacroItem _recordingMacro;
         private int _recordingPadIndex;
@@ -1159,7 +1176,7 @@ namespace PadForge.Services
 
             // Create foreground monitor for auto-profile switching.
             _foregroundMonitor = new ForegroundMonitorService();
-            _foregroundMonitor.ProfileSwitchRequired += OnProfileSwitchRequired;
+            _foregroundMonitor.ProfileSwitchRequired += OnAutoProfileSwitchRequired;
 
             // Capture default profile snapshot before any profile switches.
             // If the app restarted with a named profile active, LoadProfiles
@@ -1310,7 +1327,7 @@ namespace PadForge.Services
             // controls.
             if (_foregroundMonitor != null)
             {
-                _foregroundMonitor.ProfileSwitchRequired -= OnProfileSwitchRequired;
+                _foregroundMonitor.ProfileSwitchRequired -= OnAutoProfileSwitchRequired;
                 _foregroundMonitor = null;
             }
             StopDsuServer();
@@ -1686,6 +1703,21 @@ namespace PadForge.Services
 
             // ── Auto-profile switching (check foreground window) ──
             _foregroundMonitor?.CheckForegroundWindow();
+
+            // ── Profiles-page foreground readout (#175 item 8): 1 s slow
+            //    lane riding this timer like the battery lane above. Only
+            //    fed while auto-switching is enabled, matching the page,
+            //    which hides the line then (the monitor is not tracking). ──
+            if (nowTick - _lastForegroundUiRefreshTick >= 1000)
+            {
+                _lastForegroundUiRefreshTick = nowTick;
+                if (_foregroundMonitor != null && SettingsManager.EnableAutoProfileSwitching)
+                {
+                    string exe = System.IO.Path.GetFileName(_foregroundMonitor.LastForegroundExePath);
+                    _mainVm.Settings.ForegroundExeName = string.IsNullOrEmpty(exe) ? "-" : exe;
+                    _mainVm.Settings.IsForegroundMatched = _foregroundMonitor.LastMatchedProfileId != null;
+                }
+            }
         }
 
         // ─────────────────────────────────────────────
@@ -2022,6 +2054,7 @@ namespace PadForge.Services
         }
 
         private long _lastBatteryUiRefreshTick;
+        private long _lastForegroundUiRefreshTick;
 
         /// <summary>Pushes the latest per-device battery readings into the
         /// Devices-page rows and every pad's device-roster items (#167).
@@ -9246,6 +9279,21 @@ namespace PadForge.Services
             // ApplyProfile with a shifted snapshot.
             if (!_compactingSlots)
                 CompactSlotsForGaps();
+        }
+
+        /// <summary>
+        /// ForegroundMonitorService event shim (#175 item 8): applies the
+        /// switch, then raises <see cref="AutoProfileSwitchApplied"/> only
+        /// when the active profile actually changed (the target may be
+        /// missing or already active). Manual paths call
+        /// <see cref="OnProfileSwitchRequired"/> directly and never flare.
+        /// </summary>
+        private void OnAutoProfileSwitchRequired(string profileId)
+        {
+            string before = SettingsManager.ActiveProfileId;
+            OnProfileSwitchRequired(profileId);
+            if (SettingsManager.ActiveProfileId != before)
+                AutoProfileSwitchApplied?.Invoke();
         }
 
         /// <summary>

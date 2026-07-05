@@ -71,6 +71,7 @@ namespace PadForge.Views
             SyncExtendedConfigBar();
             SyncMidiConfigBar();
             SyncLightbarHexBox();
+            SyncLightbarPreviewBloom();
             SyncAudioHexBoxes();
             // Loaded can fire again without a paired Unloaded when the
             // element re-enters the tree — unsubscribe first so handlers
@@ -133,6 +134,7 @@ namespace PadForge.Views
             SyncExtendedConfigBar();
             SyncMidiConfigBar();
             SyncLightbarHexBox();
+            SyncLightbarPreviewBloom();
             SyncAudioHexBoxes();
 
             // Re-apply the profile dropdowns' SelectedValue after ItemsSource
@@ -1737,6 +1739,7 @@ namespace PadForge.Views
                 case nameof(ViewModels.PlayStationSlotConfig.LightbarBlue):
                     if (LightbarHexBox != null && !LightbarHexBox.IsKeyboardFocusWithin)
                         SyncLightbarHexBox();
+                    SyncLightbarPreviewBloom();
                     break;
                 case nameof(ViewModels.PlayStationSlotConfig.AudioLowR):
                 case nameof(ViewModels.PlayStationSlotConfig.AudioLowG):
@@ -1850,6 +1853,27 @@ namespace PadForge.Views
             LightbarHexBox.Text = $"{vm.PlayStationConfig.LightbarRed:X2}{vm.PlayStationConfig.LightbarGreen:X2}{vm.PlayStationConfig.LightbarBlue:X2}";
         }
 
+        /// <summary>Retints the lightbar preview silhouette's bloom to
+        /// the configured base color (#175 competitor item 6). The
+        /// effect itself is static XAML; only its Color moves, the same
+        /// value-driven treatment as CurveEditor's live-dot glow. The
+        /// arc's Stroke follows the RGB trio by MultiBinding, but there
+        /// is no bound-Effect precedent in this codebase, so the bloom
+        /// takes the code-behind path through the named element's
+        /// Effect (KBMPreviewView.SetGlow shape). Called wherever
+        /// SyncLightbarHexBox is called, plus on every
+        /// LightbarRed/Green/Blue PropertyChanged (no keyboard-focus
+        /// guard needed: the bloom never fights a caret).</summary>
+        private void SyncLightbarPreviewBloom()
+        {
+            if (LightbarPreviewArc?.Effect is not System.Windows.Media.Effects.DropShadowEffect bloom) return;
+            if (DataContext is not PadViewModel vm || vm.PlayStationConfig == null) return;
+            bloom.Color = Color.FromRgb(
+                vm.PlayStationConfig.LightbarRed,
+                vm.PlayStationConfig.LightbarGreen,
+                vm.PlayStationConfig.LightbarBlue);
+        }
+
         /// <summary>Parses a HEX color string (with or without leading #)
         /// and writes the components back into PlayStationConfig. The
         /// per-channel sliders auto-update via their TwoWay bindings on
@@ -1892,6 +1916,33 @@ namespace PadForge.Views
             // both successful parse (echo back normalized form) and
             // failed parse (revert to current truth).
             LightbarHexBox.Text = $"{vm.PlayStationConfig.LightbarRed:X2}{vm.PlayStationConfig.LightbarGreen:X2}{vm.PlayStationConfig.LightbarBlue:X2}";
+        }
+
+        /// <summary>Preset swatch row on the Lighting tab (#175
+        /// competitor item 6). Tag carries RRGGBB. Write-through hits
+        /// the same LightbarRed/Green/Blue trio the sliders and picker
+        /// bind, so the preview silhouette, SV picker, and per-channel
+        /// rows all follow on their own. The hex box is code-behind
+        /// synced (not value-bound), so re-sync it explicitly, same
+        /// contract as LightbarHexBox_Apply.</summary>
+        private void LightbarSwatch_Click(object sender, MouseButtonEventArgs e)
+        {
+            if (sender is not FrameworkElement fe || fe.Tag is not string hex) return;
+            if (DataContext is not PadViewModel vm || vm.PlayStationConfig == null) return;
+
+            if (hex.Length == 6
+                && byte.TryParse(hex.Substring(0, 2), System.Globalization.NumberStyles.HexNumber,
+                    System.Globalization.CultureInfo.InvariantCulture, out byte r)
+                && byte.TryParse(hex.Substring(2, 2), System.Globalization.NumberStyles.HexNumber,
+                    System.Globalization.CultureInfo.InvariantCulture, out byte g)
+                && byte.TryParse(hex.Substring(4, 2), System.Globalization.NumberStyles.HexNumber,
+                    System.Globalization.CultureInfo.InvariantCulture, out byte b))
+            {
+                vm.PlayStationConfig.LightbarRed = r;
+                vm.PlayStationConfig.LightbarGreen = g;
+                vm.PlayStationConfig.LightbarBlue = b;
+                SyncLightbarHexBox();
+            }
         }
 
         private void ExtendedOemOverride_Toggled(object sender, RoutedEventArgs e)

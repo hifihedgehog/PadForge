@@ -23,6 +23,9 @@
                 <Setter Property="Width" Value="14"/>
                 <Setter Property="VerticalAlignment" Value="Center"/>
                 <Setter Property="FontWeight" Value="SemiBold"/>
+                <!-- Single-letter channel tokens are mono, matching the
+                     PadPage copy of this style (font sweep 2026-07-05). -->
+                <Setter Property="FontFamily" Value="{StaticResource TelemetryFontFamily}"/>
             </Style>
             <Style x:Key="DzRgbSlider" TargetType="Slider" BasedOn="{StaticResource {x:Type Slider}}">
                 <Setter Property="Minimum" Value="0"/>
@@ -494,7 +497,7 @@
                                VerticalAlignment="Center" Margin="8,0,0,0"/>
                     <TextBox x:Name="ColorHexBox" Grid.Column="2" Width="100"
                              HorizontalAlignment="Left" VerticalAlignment="Center"
-                             FontFamily="Consolas" Padding="6,4"
+                             FontFamily="{StaticResource TelemetryFontFamily}" Padding="6,4"
                              KeyDown="ColorHexBox_KeyDown"
                              LostFocus="ColorHexBox_LostFocus"
                              ToolTip="{Binding Pad_Lighting_HexTooltip, Source={x:Static strings:Strings.Instance}}"/>

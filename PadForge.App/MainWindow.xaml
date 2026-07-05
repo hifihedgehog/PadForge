@@ -302,7 +302,11 @@
                     <ui:ProgressRing IsIndeterminate="True"
                                      Width="40" Height="40"
                                      Margin="0,0,0,16"/>
+                    <!-- Headline role (#175 font sweep): the overlay's sole
+                         16px line reads as its title, so it wears Display
+                         like the shutdown/startup overlay titles. -->
                     <TextBlock x:Name="DriverOverlayText"
+                               FontFamily="{StaticResource DisplayFontFamily}"
                                FontSize="16" HorizontalAlignment="Center"
                                TextAlignment="Center"/>
                 </StackPanel>
@@ -336,6 +340,7 @@
                         </Path.Effect>
                     </Path>
                     <TextBlock Text="{Binding FirstRun_Title, Source={x:Static strings:Strings.Instance}}"
+                               FontFamily="{StaticResource DisplayFontFamily}"
                                FontSize="24" FontWeight="SemiBold" Foreground="#E9EDF4"
                                HorizontalAlignment="Center" Margin="0,16,0,6"/>
                     <TextBlock Text="{Binding FirstRun_Body, Source={x:Static strings:Strings.Instance}}"
@@ -368,7 +373,9 @@
                         <TextBlock x:Name="TourStepLabel"
                                    FontFamily="{StaticResource TelemetryFontFamily}" FontSize="11"
                                    Foreground="{DynamicResource EmberHotBrush}"/>
-                        <TextBlock x:Name="TourTitle" FontWeight="SemiBold" FontSize="15"
+                        <!-- CardTitle carries the Display face + 15/SemiBold
+                             metrics this title already used (#175 font sweep). -->
+                        <TextBlock x:Name="TourTitle" Style="{StaticResource CardTitle}"
                                    Foreground="{DynamicResource TextFillColorPrimaryBrush}" Margin="0,4,0,2"/>
                         <TextBlock x:Name="TourBody" TextWrapping="Wrap" FontSize="13"
                                    Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
@@ -402,7 +409,8 @@
                     <ui:ProgressRing IsIndeterminate="True"
                                      Width="40" Height="40"
                                      Margin="0,0,0,16"/>
-                    <TextBlock FontSize="16" FontWeight="SemiBold"
+                    <TextBlock FontFamily="{StaticResource DisplayFontFamily}"
+                               FontSize="16" FontWeight="SemiBold"
                                HorizontalAlignment="Center"
                                Text="{Binding Main_ShuttingDown, Source={x:Static strings:Strings.Instance}}"/>
                     <TextBlock x:Name="ShutdownOverlayText"
@@ -432,7 +440,8 @@
                     <ui:ProgressRing IsIndeterminate="True"
                                      Width="40" Height="40"
                                      Margin="0,0,0,16"/>
-                    <TextBlock FontSize="16" FontWeight="SemiBold"
+                    <TextBlock FontFamily="{StaticResource DisplayFontFamily}"
+                               FontSize="16" FontWeight="SemiBold"
                                HorizontalAlignment="Center"
                                Text="{Binding Main_StartingUp, Source={x:Static strings:Strings.Instance}}"/>
                     <TextBlock FontSize="13" Foreground="{DynamicResource TextFillColorSecondaryBrush}"

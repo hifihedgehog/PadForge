@@ -342,8 +342,11 @@
 
     <!-- The ONE formatting style for description text under a card title.
          Margin lives here so new cards inherit the canonical title-to-
-         description rhythm without copying numbers from a neighbor. -->
+         description rhythm without copying numbers from a neighbor.
+         Body face is explicit (#175 font sweep) so the style holds its
+         role even where an ancestor overrides the inherited family. -->
     <Style x:Key="CardDescription" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="{StaticResource BodyFontFamily}"/>
         <Setter Property="FontSize" Value="12"/>
         <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}"/>
         <Setter Property="TextWrapping" Value="Wrap"/>

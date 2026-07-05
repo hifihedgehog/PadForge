@@ -207,6 +207,20 @@
             </Style>
 
             <!--
+                Dialog typography (#175 font sweep): MainWindow sets
+                BodyFontFamily on its root, but every FluentWindow dialog is
+                a separate visual root that would otherwise fall back to
+                plain Segoe UI. FluentWindow's constructor resolves its style
+                through the typeof(FluentWindow) resource key (Wpf.Ui 4.3.0
+                FluentWindow.cs), and the stock DefaultFluentWindowStyle sets
+                no FontFamily, so this app-level implicit style hands Body to
+                every dialog and lets all dialog text inherit it.
+            -->
+            <Style TargetType="uictrl:FluentWindow" BasedOn="{StaticResource DefaultFluentWindowStyle}">
+                <Setter Property="FontFamily" Value="{StaticResource BodyFontFamily}"/>
+            </Style>
+
+            <!--
                 Icon micro-buttons (#175 control spec §3): 28x28 hit target,
                 radius 6, transparent rest fill with a 1px ghost stroke so
                 they read as targets at rest. Hover fills raised steel and

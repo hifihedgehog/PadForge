@@ -195,14 +195,26 @@
                                          reads as a breathing aura around the card, not
                                          a shading change of the card itself. -->
                                     <Grid Margin="8">
-                                        <Border CornerRadius="8" IsHitTestVisible="False" Opacity="0"
+                                        <!-- Opacity lives in the STYLE, not on the element:
+                                             the launch-time selection arrives with the
+                                             trigger already true, and EnterActions do not
+                                             fire for initially-true conditions (user report
+                                             2026-07-05: no aura until reselect). The plain
+                                             IsSelected setter guarantees presence from the
+                                             first frame; the storyboards layer the breathe
+                                             on top for every real transition. -->
+                                        <Border CornerRadius="8" IsHitTestVisible="False"
                                                 Background="{DynamicResource CardBackgroundFillColorDefaultBrush}">
                                             <Border.Effect>
                                                 <DropShadowEffect Color="#FF6B2C" BlurRadius="30" ShadowDepth="0" Opacity="0.55"/>
                                             </Border.Effect>
                                             <Border.Style>
                                                 <Style TargetType="Border">
+                                                    <Setter Property="Opacity" Value="0"/>
                                                     <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=ListBoxItem}}" Value="True">
+                                                            <Setter Property="Opacity" Value="0.74"/>
+                                                        </DataTrigger>
                                                         <MultiDataTrigger>
                                                             <MultiDataTrigger.Conditions>
                                                                 <Condition Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=ListBoxItem}}" Value="True"/>
@@ -234,30 +246,10 @@
                                                                 </BeginStoryboard>
                                                             </MultiDataTrigger.ExitActions>
                                                         </MultiDataTrigger>
-                                                        <!-- Reduced motion: breathe swaps for a static
-                                                             aura. Zero-length animations, because the
-                                                             host's local Opacity="0" outranks trigger
-                                                             setters. -->
-                                                        <MultiDataTrigger>
-                                                            <MultiDataTrigger.Conditions>
-                                                                <Condition Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=ListBoxItem}}" Value="True"/>
-                                                                <Condition Binding="{Binding Source={x:Static SystemParameters.ClientAreaAnimation}}" Value="False"/>
-                                                            </MultiDataTrigger.Conditions>
-                                                            <MultiDataTrigger.EnterActions>
-                                                                <BeginStoryboard>
-                                                                    <Storyboard>
-                                                                        <DoubleAnimation Storyboard.TargetProperty="Opacity" To="0.74" Duration="0:0:0"/>
-                                                                    </Storyboard>
-                                                                </BeginStoryboard>
-                                                            </MultiDataTrigger.EnterActions>
-                                                            <MultiDataTrigger.ExitActions>
-                                                                <BeginStoryboard>
-                                                                    <Storyboard>
-                                                                        <DoubleAnimation Storyboard.TargetProperty="Opacity" To="0" Duration="0:0:0"/>
-                                                                    </Storyboard>
-                                                                </BeginStoryboard>
-                                                            </MultiDataTrigger.ExitActions>
-                                                        </MultiDataTrigger>
+                                                        <!-- Reduced motion needs no extra trigger: the
+                                                             IsSelected setter above holds the static
+                                                             aura, and the breathe trigger never enters
+                                                             while ClientAreaAnimation is off. -->
                                                     </Style.Triggers>
                                                 </Style>
                                             </Border.Style>
@@ -394,7 +386,8 @@
                                                            TextTrimming="CharacterEllipsis"/>
                                             </DockPanel>
                                             <!-- Slot-loadout chip strip: the five branded count
-                                                 badges, unchanged from the old rows. -->
+                                                 badges, unchanged from the old rows. Count
+                                                 numerals are mono like every other readout. -->
                                             <StackPanel Orientation="Horizontal" Margin="0,6,0,0">
                                                 <!-- Xbox count badge -->
                                                 <Border CornerRadius="8" Padding="7,2" Margin="0,0,4,0"
@@ -415,7 +408,7 @@
                                                               Fill="{DynamicResource TextFillColorTertiaryBrush}"
                                                               Width="10" Height="10" Stretch="Uniform"
                                                               VerticalAlignment="Center"/>
-                                                        <TextBlock Text="{Binding XboxCount}" FontSize="10" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="3,0,0,0"
+                                                        <TextBlock Text="{Binding XboxCount}" FontFamily="{StaticResource TelemetryFontFamily}" FontSize="10" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="3,0,0,0"
                                                                    VerticalAlignment="Center"/>
                                                     </StackPanel>
                                                 </Border>
@@ -438,7 +431,7 @@
                                                               Fill="{DynamicResource TextFillColorTertiaryBrush}"
                                                               Width="10" Height="10" Stretch="Uniform"
                                                               VerticalAlignment="Center"/>
-                                                        <TextBlock Text="{Binding PlayStationCount}" FontSize="10" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="3,0,0,0"
+                                                        <TextBlock Text="{Binding PlayStationCount}" FontFamily="{StaticResource TelemetryFontFamily}" FontSize="10" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="3,0,0,0"
                                                                    VerticalAlignment="Center"/>
                                                     </StackPanel>
                                                 </Border>
@@ -461,7 +454,7 @@
                                                               Fill="{DynamicResource TextFillColorTertiaryBrush}"
                                                               Width="10" Height="10" Stretch="Uniform"
                                                               VerticalAlignment="Center"/>
-                                                        <TextBlock Text="{Binding ExtendedCount}" FontSize="10" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="3,0,0,0"
+                                                        <TextBlock Text="{Binding ExtendedCount}" FontFamily="{StaticResource TelemetryFontFamily}" FontSize="10" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="3,0,0,0"
                                                                    VerticalAlignment="Center"/>
                                                     </StackPanel>
                                                 </Border>
@@ -482,7 +475,7 @@
                                                     <StackPanel Orientation="Horizontal">
                                                         <TextBlock Text="&#xE8D6;" FontFamily="Segoe MDL2 Assets"
                                                                    FontSize="10" VerticalAlignment="Center" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
-                                                        <TextBlock Text="{Binding MidiCount}" FontSize="10" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="3,0,0,0"
+                                                        <TextBlock Text="{Binding MidiCount}" FontFamily="{StaticResource TelemetryFontFamily}" FontSize="10" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="3,0,0,0"
                                                                    VerticalAlignment="Center"/>
                                                     </StackPanel>
                                                 </Border>
@@ -503,7 +496,7 @@
                                                     <StackPanel Orientation="Horizontal">
                                                         <TextBlock Text="&#xE961;" FontFamily="Segoe MDL2 Assets"
                                                                    FontSize="10" VerticalAlignment="Center" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
-                                                        <TextBlock Text="{Binding KbmCount}" FontSize="10" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="3,0,0,0"
+                                                        <TextBlock Text="{Binding KbmCount}" FontFamily="{StaticResource TelemetryFontFamily}" FontSize="10" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="3,0,0,0"
                                                                    VerticalAlignment="Center"/>
                                                     </StackPanel>
                                                 </Border>

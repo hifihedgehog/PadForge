@@ -36,13 +36,13 @@
         <Border Grid.Row="1" CornerRadius="8" Padding="12,16" Margin="0,0,0,16"
                 Background="{DynamicResource ControlFillColorDefaultBrush}">
             <TextBlock x:Name="SasText" HorizontalAlignment="Center"
-                       FontFamily="Consolas" FontSize="40" FontWeight="SemiBold"/>
+                       FontFamily="{StaticResource TelemetryFontFamily}" FontSize="40" FontWeight="SemiBold"/>
         </Border>
 
         <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0,0,0,16">
             <TextBlock Text="{Binding RemoteLink_Identity, Source={x:Static strings:Strings.Instance}}"
                        Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,0,8,0"/>
-            <TextBlock x:Name="IdentityText" FontFamily="Consolas" FontSize="12"
+            <TextBlock x:Name="IdentityText" FontFamily="{StaticResource TelemetryFontFamily}" FontSize="12"
                        VerticalAlignment="Center"/>
         </StackPanel>
 

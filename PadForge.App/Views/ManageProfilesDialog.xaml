@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
         xmlns:strings="clr-namespace:PadForge.Resources.Strings"
+        FontFamily="{StaticResource BodyFontFamily}"
         ExtendsContentIntoTitleBar="True"
         WindowBackdropType="Mica"
         Title="{Binding ManageProfiles_Title, Source={x:Static strings:Strings.Instance}}"
@@ -35,7 +36,7 @@
                    Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
 
         <!-- SECTION 1 — Imported profiles -->
-        <TextBlock Grid.Row="1" x:Name="ImportedHeaderText" FontWeight="SemiBold"
+        <TextBlock Grid.Row="1" x:Name="ImportedHeaderText" Style="{StaticResource CardTitle}"
                    Margin="0,4,0,6"/>
 
         <ListBox Grid.Row="2" x:Name="ImportedList" MinHeight="120"
@@ -45,7 +46,8 @@
                 <DataTemplate>
                     <StackPanel Margin="4,3">
                         <TextBlock Text="{Binding Name}" FontWeight="SemiBold"/>
-                        <TextBlock Text="{Binding Id}" FontSize="12" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
+                        <TextBlock Text="{Binding Id}" FontFamily="{StaticResource TelemetryFontFamily}"
+                                   FontSize="12" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
                     </StackPanel>
                 </DataTemplate>
             </ListBox.ItemTemplate>
@@ -66,7 +68,7 @@
         <!-- SECTION 2 — Connected devices -->
         <StackPanel Grid.Row="4" Orientation="Horizontal" Margin="0,16,0,6">
             <TextBlock Text="{Binding ManageProfiles_ConnectedDevices, Source={x:Static strings:Strings.Instance}}"
-                       FontWeight="SemiBold" VerticalAlignment="Center"/>
+                       Style="{StaticResource CardTitle}"/>
             <Button x:Name="RefreshButton"
                     Content="{Binding ImportFromDevice_Refresh, Source={x:Static strings:Strings.Instance}}"
                     Margin="12,0,0,0" Padding="10,2" Click="RefreshButton_Click"/>
@@ -80,7 +82,8 @@
                 <DataTemplate>
                     <StackPanel Margin="4,3">
                         <TextBlock Text="{Binding DisplayName}" FontWeight="SemiBold"/>
-                        <TextBlock Text="{Binding DetailLine}" FontSize="12" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                        <TextBlock Text="{Binding DetailLine}" FontFamily="{StaticResource TelemetryFontFamily}"
+                                   FontSize="12" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
                     </StackPanel>
                 </DataTemplate>
             </ListBox.ItemTemplate>

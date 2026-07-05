@@ -28,7 +28,7 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <TextBlock Text="{Binding Nfc_RegisterHeader, Source={x:Static strings:Strings.Instance}}" FontSize="16" FontWeight="SemiBold" Margin="0,0,0,8"/>
+        <TextBlock Text="{Binding Nfc_RegisterHeader, Source={x:Static strings:Strings.Instance}}" FontFamily="{StaticResource DisplayFontFamily}" FontSize="16" FontWeight="SemiBold" Margin="0,0,0,8"/>
 
         <TextBlock Grid.Row="1" x:Name="StatusText"
                    Text="{Binding Nfc_TapPrompt, Source={x:Static strings:Strings.Instance}}"
@@ -37,7 +37,7 @@
 
         <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0,0,0,8">
             <TextBlock Text="{Binding Nfc_UidLabel, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="0,0,8,0"/>
-            <TextBlock x:Name="UidText" Text="{Binding Nfc_Waiting, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" FontFamily="Consolas"/>
+            <TextBlock x:Name="UidText" Text="{Binding Nfc_Waiting, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" FontFamily="{StaticResource TelemetryFontFamily}"/>
         </StackPanel>
 
         <StackPanel Grid.Row="3" Orientation="Horizontal" Margin="0,0,0,12">
@@ -62,7 +62,7 @@
                         </Grid.ColumnDefinitions>
                         <StackPanel>
                             <TextBlock Text="{Binding Name}"/>
-                            <TextBlock Text="{Binding Uid}" FontFamily="Consolas" FontSize="11"
+                            <TextBlock Text="{Binding Uid}" FontFamily="{StaticResource TelemetryFontFamily}" FontSize="11"
                                        Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
                         </StackPanel>
                         <Button Grid.Column="1" Content="{Binding Common_Remove, Source={x:Static strings:Strings.Instance}}" Click="RemoveButton_Click"

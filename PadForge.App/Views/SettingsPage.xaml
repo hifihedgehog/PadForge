@@ -210,7 +210,7 @@
                                 </Path>
                                 <TextBlock Text="{Binding HidHideStatusText}" FontWeight="SemiBold"/>
                             </StackPanel>
-                            <TextBlock Text="{Binding HidHideVersion}" FontSize="12" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,4,0,0"/>
+                            <TextBlock Text="{Binding HidHideVersion}" FontSize="12" FontFamily="{StaticResource TelemetryFontFamily}" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,4,0,0"/>
                         </StackPanel>
 
                         <StackPanel Grid.Column="1" Orientation="Horizontal"
@@ -265,7 +265,7 @@
                             </ListBox.ItemContainerStyle>
                             <ListBox.ItemTemplate>
                                 <DataTemplate>
-                                    <TextBlock Text="{Binding}" FontSize="12" FontFamily="Consolas"
+                                    <TextBlock Text="{Binding}" FontSize="12" FontFamily="{StaticResource TelemetryFontFamily}"
                                                TextTrimming="CharacterEllipsis"/>
                                 </DataTemplate>
                             </ListBox.ItemTemplate>
@@ -302,7 +302,7 @@
                             <TextBlock Text="{Binding Common_Installed, Source={x:Static strings:Strings.Instance}}"
                                        FontWeight="SemiBold"/>
                         </StackPanel>
-                        <TextBlock Text="{Binding HIDMaestroVersion}" FontSize="12" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,4,0,0"/>
+                        <TextBlock Text="{Binding HIDMaestroVersion}" FontSize="12" FontFamily="{StaticResource TelemetryFontFamily}" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,4,0,0"/>
                     </StackPanel>
                 </StackPanel>
             </Border>
@@ -344,7 +344,7 @@
                                 </Path>
                                 <TextBlock Text="{Binding MidiServicesStatusText}" FontWeight="SemiBold"/>
                             </StackPanel>
-                            <TextBlock Text="{Binding MidiServicesVersion}" FontSize="12" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,4,0,0"/>
+                            <TextBlock Text="{Binding MidiServicesVersion}" FontSize="12" FontFamily="{StaticResource TelemetryFontFamily}" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,4,0,0"/>
                         </StackPanel>
 
                         <StackPanel Grid.Column="1" Orientation="Horizontal"
@@ -382,7 +382,7 @@
                     <TextBlock Text="{Binding Settings_SettingsFileDesc, Source={x:Static strings:Strings.Instance}}"
                                Style="{StaticResource CardDescription}"/>
                     <TextBlock Text="{Binding SettingsFilePath}" FontSize="12"
-                               FontFamily="Consolas" Foreground="{DynamicResource TextFillColorSecondaryBrush}" TextWrapping="Wrap"
+                               FontFamily="{StaticResource TelemetryFontFamily}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" TextWrapping="Wrap"
                                Margin="0,0,0,12"/>
 
                     <StackPanel Orientation="Horizontal">
@@ -423,15 +423,15 @@
                         </Grid.RowDefinitions>
 
                         <TextBlock Text="{Binding Settings_AppVersion, Source={x:Static strings:Strings.Instance}}" FontSize="12" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
-                        <TextBlock Grid.Column="1" Text="{Binding ApplicationVersion}" FontSize="12"/>
+                        <TextBlock Grid.Column="1" Text="{Binding ApplicationVersion}" FontSize="12" FontFamily="{StaticResource TelemetryFontFamily}"/>
 
                         <TextBlock Grid.Row="1" Text="{Binding Settings_DotNetRuntime, Source={x:Static strings:Strings.Instance}}" FontSize="12" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,4,0,0"/>
                         <TextBlock Grid.Row="1" Grid.Column="1"
-                                   Text="{Binding RuntimeVersion}" FontSize="12" Margin="0,4,0,0"/>
+                                   Text="{Binding RuntimeVersion}" FontSize="12" FontFamily="{StaticResource TelemetryFontFamily}" Margin="0,4,0,0"/>
 
                         <TextBlock Grid.Row="2" Text="{Binding Settings_SdlVersion, Source={x:Static strings:Strings.Instance}}" FontSize="12" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,4,0,0"/>
                         <TextBlock Grid.Row="2" Grid.Column="1"
-                                   Text="{Binding SdlVersion}" FontSize="12" Margin="0,4,0,0"/>
+                                   Text="{Binding SdlVersion}" FontSize="12" FontFamily="{StaticResource TelemetryFontFamily}" Margin="0,4,0,0"/>
                     </Grid>
                 </StackPanel>
             </Border>

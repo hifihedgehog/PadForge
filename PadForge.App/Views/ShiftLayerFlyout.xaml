@@ -50,7 +50,7 @@
 
                         <TextBlock x:Name="LayerNameText"
                                    FontSize="14"
-                                   FontFamily="Segoe UI Variable Text, Segoe UI"
+                                   FontFamily="{StaticResource BodyFontFamily}"
                                    VerticalAlignment="Center"
                                    Margin="0,0,10,0"
                                    Foreground="White"/>

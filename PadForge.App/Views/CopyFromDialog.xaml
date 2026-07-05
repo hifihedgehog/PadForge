@@ -39,7 +39,7 @@
                                        Margin="8,0,0,0" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                        VerticalAlignment="Center"/>
                         </StackPanel>
-                        <TextBlock Text="{Binding SlotLabel}" FontSize="12" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
+                        <TextBlock Text="{Binding SlotLabel}" FontFamily="{StaticResource TelemetryFontFamily}" FontSize="12" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
                     </StackPanel>
                 </DataTemplate>
             </ListBox.ItemTemplate>

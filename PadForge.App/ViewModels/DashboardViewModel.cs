@@ -638,5 +638,76 @@ namespace PadForge.ViewModels
             get => _outputType;
             set => SetProperty(ref _outputType, value);
         }
+
+        /// <summary>Pipeline stage ledger (#175 item 10): one entry per
+        /// configuration stage the slot's assigned devices actually have
+        /// (sticks / triggers / gyro / lighting / touchpad / audio), in
+        /// that order. Rebuilt by InputService.RefreshSlotStageLedgers on
+        /// its 1 s slow lane; entries mutate in place when membership is
+        /// unchanged so the card doesn't re-template every refresh.</summary>
+        public ObservableCollection<SlotStageInfo> StageLedger { get; } = new();
+    }
+
+    /// <summary>
+    /// One stage entry in a slot card's pipeline heat ledger (#175 item
+    /// 10). Carries the tab's glyph (font char for gyro / lighting /
+    /// touchpad / audio; the Zacksly stick / trigger shapes for the two
+    /// shape stages), the ember/ashen heat flag, and a mono summary of
+    /// the real non-default values for the hover tooltip.
+    /// </summary>
+    public class SlotStageInfo : ObservableObject
+    {
+        public SlotStageInfo(string kind, string glyph, bool isStickShape = false, bool isTriggerShape = false)
+        {
+            Kind = kind;
+            Glyph = glyph;
+            IsStickShape = isStickShape;
+            IsTriggerShape = isTriggerShape;
+        }
+
+        /// <summary>Stable stage identity ("Sticks".."Audio"). Membership
+        /// comparisons key on this so in-place updates are possible.</summary>
+        public string Kind { get; }
+
+        /// <summary>Segoe font glyph for the font stages (same characters
+        /// as the matching tab page headers). Empty for shape stages.</summary>
+        public string Glyph { get; }
+
+        /// <summary>True for the Sticks entry. Rendered with the Zacksly
+        /// stick ring + disc geometries instead of a font glyph.</summary>
+        public bool IsStickShape { get; }
+
+        /// <summary>True for the Triggers entry. Rendered with the
+        /// Zacksly trigger body geometry instead of a font glyph.</summary>
+        public bool IsTriggerShape { get; }
+
+        private bool _isHot;
+
+        /// <summary>True when the stage carries a non-default
+        /// configuration on any of the slot's assigned devices. Ember
+        /// when hot, ashen steel when inert.</summary>
+        public bool IsHot
+        {
+            get => _isHot;
+            set => SetProperty(ref _isHot, value);
+        }
+
+        private string _summary = string.Empty;
+
+        /// <summary>Mono token summary of the configured values (e.g.
+        /// "L DZ 12% · L CURVE Smooth"). Empty when the stage is inert,
+        /// which disables the tooltip.</summary>
+        public string Summary
+        {
+            get => _summary;
+            set
+            {
+                if (SetProperty(ref _summary, value ?? string.Empty))
+                    OnPropertyChanged(nameof(HasSummary));
+            }
+        }
+
+        /// <summary>Tooltip gate: no tooltip on inert stages.</summary>
+        public bool HasSummary => !string.IsNullOrEmpty(_summary);
     }
 }

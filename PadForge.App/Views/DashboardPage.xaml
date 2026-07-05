@@ -123,6 +123,36 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
+
+        <!-- Stage ledger glyphs (#175 item 10): ember when the stage
+             carries a non-default configuration, ashen steel when inert.
+             Font stages (gyro / lighting / touchpad / audio) share the
+             text style; the Zacksly stick / trigger shapes share the
+             path style. -->
+        <Style x:Key="StageGlyphText" TargetType="TextBlock">
+            <Setter Property="FontFamily" Value="Segoe Fluent Icons, Segoe MDL2 Assets"/>
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Foreground" Value="{DynamicResource TextFillColorTertiaryBrush}"/>
+            <Setter Property="Opacity" Value="0.65"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsHot}" Value="True">
+                    <Setter Property="Foreground" Value="{DynamicResource EmberBrush}"/>
+                    <Setter Property="Opacity" Value="1"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="StageGlyphShape" TargetType="Path">
+            <Setter Property="Stretch" Value="Uniform"/>
+            <Setter Property="Fill" Value="{DynamicResource TextFillColorTertiaryBrush}"/>
+            <Setter Property="Opacity" Value="0.65"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsHot}" Value="True">
+                    <Setter Property="Fill" Value="{DynamicResource EmberBrush}"/>
+                    <Setter Property="Opacity" Value="1"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
     </UserControl.Resources>
 
     <ScrollViewer Padding="24,0">
@@ -460,6 +490,7 @@
                             </Border.Style>
                             <Grid>
                                 <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
                                     <RowDefinition Height="Auto"/>
                                     <RowDefinition Height="Auto"/>
                                     <RowDefinition Height="Auto"/>
@@ -981,6 +1012,60 @@
                                         <TextBlock FontSize="11" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text="{Binding Dashboard_Connected, Source={x:Static strings:Strings.Instance}}"/>
                                     </StackPanel>
                                 </StackPanel>
+
+                                <!-- Row 4: pipeline stage ledger (#175 item 10).
+                                     One tab glyph per configuration stage the
+                                     slot's assigned devices actually have,
+                                     mirroring the Pad page capability gates.
+                                     Ember when the stage carries a non-default
+                                     configuration, ashen steel when inert.
+                                     Hover = mono summary of the real configured
+                                     values. Inert stages carry no tooltip. -->
+                                <ItemsControl Grid.Row="4" ItemsSource="{Binding StageLedger}"
+                                              Margin="1,7,0,0">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <StackPanel Orientation="Horizontal"/>
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Grid Margin="0,0,9,0" Background="Transparent"
+                                                  ToolTipService.IsEnabled="{Binding HasSummary}"
+                                                  ToolTipService.InitialShowDelay="400"
+                                                  ToolTipService.ShowDuration="20000">
+                                                <Grid.ToolTip>
+                                                    <TextBlock Text="{Binding Summary}"
+                                                               FontFamily="{StaticResource TelemetryFontFamily}"
+                                                               FontSize="11"/>
+                                                </Grid.ToolTip>
+                                                <!-- Zacksly stick silhouette (Sticks stage). -->
+                                                <Grid Width="12" Height="12"
+                                                      Visibility="{Binding IsStickShape, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                    <Path Data="{StaticResource ZackslyStickOuterRingGeometry}" Style="{StaticResource StageGlyphShape}"/>
+                                                    <Path Data="{StaticResource ZackslyStickInnerDiscGeometry}" Style="{StaticResource StageGlyphShape}"/>
+                                                </Grid>
+                                                <!-- Zacksly trigger silhouette (Triggers stage). -->
+                                                <Grid Width="12" Height="12"
+                                                      Visibility="{Binding IsTriggerShape, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                    <Path Data="{StaticResource ZackslyTriggerOuterBodyGeometry}" Style="{StaticResource StageGlyphShape}"/>
+                                                </Grid>
+                                                <!-- Font stages (gyro / lighting / touchpad / audio). -->
+                                                <TextBlock Text="{Binding Glyph}">
+                                                    <TextBlock.Style>
+                                                        <Style TargetType="TextBlock" BasedOn="{StaticResource StageGlyphText}">
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding Glyph}" Value="">
+                                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </TextBlock.Style>
+                                                </TextBlock>
+                                            </Grid>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
                             </Grid>
                         </Border>
                         </Grid>

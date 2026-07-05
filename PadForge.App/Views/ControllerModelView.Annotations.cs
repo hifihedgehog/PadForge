@@ -146,6 +146,11 @@ namespace PadForge.Views
             public Rectangle ColdBar;
             public Rectangle EmberBar;
             public bool LeftSide;
+            // Both gates must hold for the track to show: anchor projects
+            // on-canvas AND a level is nonzero. An idle empty track read as
+            // a stray box on the trigger (user report, 2026-07-04).
+            public bool ProjectionValid;
+            public bool LevelsLive;
         }
 
         // ─────────────────────────────────────────────
@@ -173,18 +178,18 @@ namespace PadForge.Views
             {
                 if (string.IsNullOrEmpty(row.TargetSettingName))
                     continue;
-                if (!_currentModel.ButtonMap.TryGetValue(row.TargetSettingName, out var groups)
-                    || groups == null || groups.Count == 0)
+                var anchor = ResolveAnnotationAnchor(row.TargetSettingName);
+                if (anchor == null)
                     continue;
 
-                // Subscribe every ButtonMap-backed row (mapped or not) so a
-                // row gaining its first source rebuilds the chip set too.
+                // Subscribe every anchored row (mapped or not) so a row
+                // gaining its first source rebuilds the chip set too.
                 row.PropertyChanged += OnAnnotationRowPropertyChanged;
                 _annotationSubscribedRows.Add(row);
 
                 if (!row.IsMapped)
                     continue;
-                _annotationChips.Add(CreateAnnotationChip(row, groups[0]));
+                _annotationChips.Add(CreateAnnotationChip(row, anchor));
             }
 
             if (_currentModel.LeftShoulderTrigger != null)
@@ -254,7 +259,7 @@ namespace PadForge.Views
                 {
                     var chip = FindAnnotationChip(row);
                     if (chip != null)
-                        chip.Text.Text = $"{row.SourceDisplayText} -> {row.TargetLabel}";
+                        chip.Text.Text = ChipLabel(row);
                 }
             }
         }
@@ -279,6 +284,44 @@ namespace PadForge.Views
             return null;
         }
 
+        /// <summary>Anchor for a mapping target: ButtonMap first, then the
+        /// named stick/trigger groups. Stick axes and triggers are not
+        /// ButtonMap keys, which left them without chips (user report,
+        /// 2026-07-04).</summary>
+        private Model3DGroup ResolveAnnotationAnchor(string targetSettingName)
+        {
+            if (_currentModel.ButtonMap.TryGetValue(targetSettingName, out var groups)
+                && groups != null && groups.Count > 0)
+                return groups[0];
+            return targetSettingName switch
+            {
+                "LeftThumbAxisX" or "LeftThumbAxisY" => _currentModel.LeftThumb,
+                "RightThumbAxisX" or "RightThumbAxisY" => _currentModel.RightThumb,
+                "LeftTrigger" => _currentModel.LeftShoulderTrigger,
+                "RightTrigger" => _currentModel.RightShoulderTrigger,
+                _ => null,
+            };
+        }
+
+        /// <summary>Chip text: identity mappings collapse to the bare name
+        /// (auto-map 1:1 rows truncated to garbage otherwise, user report
+        /// 2026-07-04); the arrow appears only when source and output
+        /// genuinely differ.</summary>
+        private static string ChipLabel(MappingItem row)
+        {
+            string source = (row.SourceDisplayText ?? string.Empty).Trim();
+            string target = (row.TargetLabel ?? string.Empty).Trim();
+            // Device prefix (user report 2026-07-04: "not clear which
+            // device(s) are the source"): the feeding device leads the
+            // chip so multi-device slots read unambiguously.
+            string device = (row.PrimarySourceDeviceLabel ?? string.Empty).Trim();
+            // Both ends always (user direction 2026-07-04: "in and out, not
+            // just in"): the chip reads physical source -> virtual output
+            // even when the names match, so the wiring stays explicit.
+            string core = source.Length == 0 ? target : source + " -> " + target;
+            return device.Length == 0 ? core : device + ": " + core;
+        }
+
         // ─────────────────────────────────────────────
         //  Element construction
         // ─────────────────────────────────────────────
@@ -288,9 +331,8 @@ namespace PadForge.Views
             var text = new TextBlock
             {
                 FontSize = 10,
-                TextTrimming = TextTrimming.CharacterEllipsis,
                 VerticalAlignment = VerticalAlignment.Center,
-                Text = $"{row.SourceDisplayText} -> {row.TargetLabel}",
+                Text = ChipLabel(row),
             };
             if (Application.Current.Resources["TelemetryFontFamily"] is FontFamily telemetry)
                 text.FontFamily = telemetry;
@@ -299,7 +341,6 @@ namespace PadForge.Views
             var border = new Border
             {
                 Height = AnnotationChipHeight,
-                MaxWidth = 180,
                 CornerRadius = new CornerRadius(6),
                 BorderThickness = new Thickness(1),
                 Padding = new Thickness(6, 2, 6, 2),
@@ -310,6 +351,7 @@ namespace PadForge.Views
             };
             border.SetResourceReference(Border.BackgroundProperty, "SteelRaisedBrush");
             border.SetResourceReference(Border.BorderBrushProperty, "SteelLineSoftBrush");
+            border.ToolTip = ChipLabel(row);
             border.MouseLeftButtonUp += AnnotationChip_MouseLeftButtonUp;
 
             var leader = new Line
@@ -492,7 +534,9 @@ namespace PadForge.Views
                 bool visible = p.HasValue
                     && p.Value.X >= 0 && p.Value.X <= w
                     && p.Value.Y >= 0 && p.Value.Y <= h;
-                bars.Track.Visibility = visible ? Visibility.Visible : Visibility.Collapsed;
+                bars.ProjectionValid = visible;
+                bars.Track.Visibility = visible && bars.LevelsLive
+                    ? Visibility.Visible : Visibility.Collapsed;
                 if (!visible)
                     continue;
 
@@ -641,6 +685,9 @@ namespace PadForge.Views
                 double output = bars.LeftSide ? _vm.LeftTrigger : _vm.RightTrigger;
                 bars.ColdBar.Height = Math.Clamp(raw, 0.0, 1.0) * AnnotationBarHeight;
                 bars.EmberBar.Height = Math.Clamp(output, 0.0, 1.0) * AnnotationBarHeight;
+                bars.LevelsLive = raw > 0.02 || output > 0.02;
+                bars.Track.Visibility = bars.LevelsLive && bars.ProjectionValid
+                    ? Visibility.Visible : Visibility.Collapsed;
             }
         }
 

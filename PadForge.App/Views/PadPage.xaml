@@ -451,48 +451,24 @@
                                   SelectedValuePath="Id"
                                   SelectedValue="{Binding ProfileId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                   PreviewKeyDown="ProfileCombo_PreviewKeyDown">
-                            <!-- Chip presentation (#175 re-audit): the artifact's
-                                 .chip.ghost preset is compact text + chevron, not
-                                 the stock 300px steel box the pitch critiques as
-                                 a search box. Bare selection text and a chevron
-                                 on the chip surface; the popup keeps the themed
-                                 dropdown chrome. Bindings, AutomationId, and the
-                                 PreviewKeyDown handler are unchanged. -->
-                            <ComboBox.Template>
-                                <ControlTemplate TargetType="ComboBox">
-                                    <Grid>
-                                        <ToggleButton Focusable="False" ClickMode="Press"
-                                                      IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}">
-                                            <ToggleButton.Template>
-                                                <ControlTemplate TargetType="ToggleButton">
-                                                    <Border Background="Transparent"/>
-                                                </ControlTemplate>
-                                            </ToggleButton.Template>
-                                        </ToggleButton>
-                                        <StackPanel Orientation="Horizontal" IsHitTestVisible="False"
-                                                    VerticalAlignment="Center" Margin="0,2">
-                                            <ContentPresenter Content="{TemplateBinding SelectionBoxItem}"
-                                                              ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
-                                                              ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"
-                                                              VerticalAlignment="Center"/>
-                                            <TextBlock Text="&#xE70D;" FontFamily="Segoe MDL2 Assets" FontSize="9"
-                                                       Margin="6,2,0,0" VerticalAlignment="Center"
-                                                       Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
-                                        </StackPanel>
-                                        <Popup x:Name="PART_Popup" IsOpen="{TemplateBinding IsDropDownOpen}"
-                                               Placement="Bottom" AllowsTransparency="True" StaysOpen="False">
-                                            <Border Background="{DynamicResource ComboBoxDropDownBackground}"
-                                                    BorderBrush="{DynamicResource SteelLineBrush}"
-                                                    BorderThickness="1" CornerRadius="6"
-                                                    MinWidth="280" MaxHeight="420" Margin="0,4,0,0">
-                                                <ScrollViewer VerticalScrollBarVisibility="Auto">
-                                                    <ItemsPresenter/>
-                                                </ScrollViewer>
-                                            </Border>
-                                        </Popup>
-                                    </Grid>
-                                </ControlTemplate>
-                            </ComboBox.Template>
+                            <!-- Chip presentation, take 2 (user report: the
+                                 custom minimal template broke the dropdown).
+                                 The stock WPF-UI template keeps its own
+                                 toggle/popup machinery; chrome is stripped to
+                                 chip weight through properties only. -->
+                            <ComboBox.Style>
+                                <Style TargetType="ComboBox" BasedOn="{StaticResource DefaultComboBoxStyle}">
+                                    <Setter Property="Background" Value="Transparent"/>
+                                    <Setter Property="BorderBrush" Value="Transparent"/>
+                                    <Setter Property="MinHeight" Value="0"/>
+                                    <!-- Chip weight (user report: "looks a little
+                                         weird"): the stock template's default
+                                         padding inflated the chip to input-field
+                                         height. -->
+                                    <Setter Property="Padding" Value="4,0"/>
+                                    <Setter Property="VerticalContentAlignment" Value="Center"/>
+                                </Style>
+                            </ComboBox.Style>
                         </ComboBox>
                     </StackPanel>
                 </Border>

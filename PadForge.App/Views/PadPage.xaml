@@ -6452,16 +6452,23 @@
 
                                 <!-- Lightbar preview (#175 competitor item 6): stylized
                                      DualSense front silhouette drawn as plain paths on
-                                     steel (no imported assets). The arc previews the live
+                                     steel (no imported assets). The bar geometry is
+                                     family-correct (user report 2026-07-05):
+                                     DualSense/Edge shows the real bar, two light strips
+                                     wrapping the touchpad's flanks; a DualShock 4 gets
+                                     the front bar along the top edge instead, retargeted
+                                     by SyncTabVisibility off the same PID gates that
+                                     drive tab visibility. The bar previews the live
                                      LightbarRed/Green/Blue trio, the same properties the
                                      SV picker, sliders, hex box, and preset swatches
-                                     write, so it tracks every drag. The bloom is a static
-                                     DropShadowEffect retinted from code-behind
-                                     (SyncLightbarPreviewBloom, riding the existing
-                                     OnPlayStationConfigChanged LightbarRed/Green/Blue
-                                     case), the same value-driven treatment as
-                                     CurveEditor's live-dot glow. Never animated from
-                                     style triggers. Mode = Off means
+                                     write, so it tracks every drag. Presentation is
+                                     entirely code-behind (SyncLightbarPreview, riding
+                                     OnPlayStationConfigChanged): animated modes mirror
+                                     the physical bar over time via code-driven
+                                     BeginAnimation on the arc and its DropShadowEffect
+                                     (the mini-card heat-ring pattern), gated on
+                                     SystemParameters.ClientAreaAnimation. Never animated
+                                     from style triggers. Mode = Off means
                                      PadForge does not author the lightbar (game owns it):
                                      the arc drops to cold blue at low opacity under a
                                      locale-neutral GAME WRITES WIN token (DZ / PEAK
@@ -6489,7 +6496,7 @@
                                              pipe list names each LightbarMode member except
                                              Off, legacy InputReactive values included, so a
                                              not-yet-migrated config still previews. -->
-                                        <Path x:Name="LightbarPreviewArc" Data="M 46,14 Q 90,7 134,14" StrokeThickness="5"
+                                        <Path x:Name="LightbarPreviewArc" Data="M 71.5,15 C 66.8,16 65,19 65,23 C 65,27 66.8,30 71.5,31 M 108.5,15 C 113.2,16 115,19 115,23 C 115,27 113.2,30 108.5,31" StrokeThickness="3.5"
                                               StrokeStartLineCap="Round" StrokeEndLineCap="Round"
                                               Visibility="{Binding PlayStationConfig.LightbarMode, Converter={StaticResource EnumEqualityVisibilityConverter}, ConverterParameter=Static|Breathing|Rainbow|ColorCycle|AudioPulse|AudioPulseRandom|AudioPulseRainbow|AudioThresholds|AudioGradient|AudioCrossFade|InputReactive|InputReactiveCycle|InputReactiveFixed|Battery|Strobe}">
                                             <Path.Effect>
@@ -6498,7 +6505,7 @@
                                             </Path.Effect>
                                         </Path>
                                         <!-- Off arc: cold and quiet, the game owns the bar. -->
-                                        <Path Data="M 46,14 Q 90,7 134,14" StrokeThickness="5" Opacity="0.30"
+                                        <Path x:Name="LightbarPreviewArcOff" Data="M 71.5,15 C 66.8,16 65,19 65,23 C 65,27 66.8,30 71.5,31 M 108.5,15 C 113.2,16 115,19 115,23 C 115,27 113.2,30 108.5,31" StrokeThickness="3.5" Opacity="0.30"
                                               Stroke="{DynamicResource ColdBrush}"
                                               StrokeStartLineCap="Round" StrokeEndLineCap="Round"
                                               Visibility="{Binding PlayStationConfig.LightbarMode, Converter={StaticResource EnumEqualityVisibilityConverter}, ConverterParameter=Off}"/>

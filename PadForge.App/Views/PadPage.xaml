@@ -2706,6 +2706,25 @@
                                                                    Foreground="{DynamicResource TextFillColorTertiaryBrush}"
                                                                    VerticalAlignment="Center"
                                                                    TextTrimming="CharacterEllipsis"/>
+                                                        <!-- Source device (user report 2026-07-04: "Button A
+                                                             from which device?!"): the compact line carries
+                                                             the feeding device, dimmer, after the source. -->
+                                                        <TextBlock Text="{Binding PrimarySourceDeviceLabel}"
+                                                                   FontFamily="{StaticResource TelemetryFontFamily}"
+                                                                   FontSize="10"
+                                                                   Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                                                                   Opacity="0.7"
+                                                                   VerticalAlignment="Center" Margin="10,0,0,0">
+                                                            <TextBlock.Style>
+                                                                <Style TargetType="TextBlock">
+                                                                    <Style.Triggers>
+                                                                        <DataTrigger Binding="{Binding PrimarySourceDeviceLabel}" Value="">
+                                                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                                                        </DataTrigger>
+                                                                    </Style.Triggers>
+                                                                </Style>
+                                                            </TextBlock.Style>
+                                                        </TextBlock>
                                                     </StackPanel>
                                                     <Rectangle x:Name="Rowfire" Height="1.5"
                                                                VerticalAlignment="Bottom"
@@ -4501,7 +4520,7 @@
                                                  (which stay), so edits in either place round-trip
                                                  through the same curve strings. -->
                                             <TextBlock Text="{Binding Pad_XAxis, Source={x:Static strings:Strings.Instance}, Converter={StaticResource UpperConverter}}"
-                                                       HorizontalAlignment="Center"
+                                                       HorizontalAlignment="Left" Width="560" TextAlignment="Center"
                                                        FontFamily="{StaticResource TelemetryFontFamily}"
                                                        Foreground="{DynamicResource TextFillColorTertiaryBrush}"
                                                        FontSize="10" Margin="0,4,0,2"/>
@@ -4511,10 +4530,10 @@
                                                 MaxRange="{Binding MaxRangeX}"
                                                 MaxRangeNeg="{Binding MaxRangeXNeg}"
                                                 LiveInput="{Binding LiveInputX}"
-                                                IsSigned="True" IsFullWidth="True" ChartHeight="180"
+                                                IsSigned="True" IsFullWidth="True" ChartHeight="150" Width="560" HorizontalAlignment="Left"
                                                 Margin="0,0,0,8"/>
                                             <TextBlock Text="{Binding Pad_YAxis, Source={x:Static strings:Strings.Instance}, Converter={StaticResource UpperConverter}}"
-                                                       HorizontalAlignment="Center"
+                                                       HorizontalAlignment="Left" Width="560" TextAlignment="Center"
                                                        FontFamily="{StaticResource TelemetryFontFamily}"
                                                        Foreground="{DynamicResource TextFillColorTertiaryBrush}"
                                                        FontSize="10" Margin="0,0,0,2"/>
@@ -4524,7 +4543,7 @@
                                                 MaxRange="{Binding MaxRangeYNeg}"
                                                 MaxRangeNeg="{Binding MaxRangeY}"
                                                 LiveInput="{Binding LiveInputY}"
-                                                IsSigned="True" IsFullWidth="True" ChartHeight="180"/>
+                                                IsSigned="True" IsFullWidth="True" ChartHeight="150" Width="560" HorizontalAlignment="Left"/>
                                             <Separator Margin="0,8,0,8"/>
                                             <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                                 <TextBlock Text="{Binding Pad_MinRangeXLeft, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
@@ -5280,7 +5299,7 @@
                                                  controls. Caption keeps the mono-10-tertiary
                                                  instrument idiom. -->
                                             <TextBlock Text="{Binding Pad_TriggerAxis, Source={x:Static strings:Strings.Instance}, Converter={StaticResource UpperConverter}}"
-                                                       HorizontalAlignment="Center"
+                                                       HorizontalAlignment="Left" Width="560" TextAlignment="Center"
                                                        FontFamily="{StaticResource TelemetryFontFamily}"
                                                        Foreground="{DynamicResource TextFillColorTertiaryBrush}"
                                                        FontSize="10" Margin="0,4,0,2"/>
@@ -5289,7 +5308,7 @@
                                                 DeadZone="{Binding DeadZone}"
                                                 MaxRange="{Binding MaxRange}"
                                                 LiveInput="{Binding LiveInputForCurve}"
-                                                IsSigned="False" IsFullWidth="True" ChartHeight="180"/>
+                                                IsSigned="False" IsFullWidth="True" ChartHeight="150" Width="560" HorizontalAlignment="Left"/>
 
                                             <!-- Two-stage live instrument (#175 iteration 20): full-width
                                                  RAW cold and OUT ember bars in their own inset panel, per

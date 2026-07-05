@@ -2,7 +2,11 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              Focusable="True">
-    <Border BorderBrush="{DynamicResource SteelLineSoftBrush}" BorderThickness="1" CornerRadius="2"
+    <!-- Fixed square by default. In full-width mode (IsFullWidth) the
+         code-behind clears the Width binding so the border stretches to
+         the parent and pins Height to ChartHeight + padding. -->
+    <Border x:Name="RootBorder"
+            BorderBrush="{DynamicResource SteelLineSoftBrush}" BorderThickness="1" CornerRadius="2"
             Width="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=TotalSize}"
             Height="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=TotalSize}">
         <Canvas x:Name="ChartCanvas" Margin="3" ClipToBounds="True"

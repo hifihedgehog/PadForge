@@ -4493,6 +4493,38 @@
                                                           Tag="{Binding}"/>
                                                 <ui:Button Command="{Binding ResetSensitivityYCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetSensitivityY, Source={x:Static strings:Strings.Instance}}"/>
                                             </StackPanel>
+                                            <!-- Full-width forge canvases (#175 competitor item 4):
+                                                 the sensitivity curves grown to card width under the
+                                                 X/Y preset dropdowns. Dashed steel reference diagonal,
+                                                 ember drag readout, live RAW dot ride inside the
+                                                 control. Same bindings as the radar-sidebar mini-plots
+                                                 (which stay), so edits in either place round-trip
+                                                 through the same curve strings. -->
+                                            <TextBlock Text="{Binding Pad_XAxis, Source={x:Static strings:Strings.Instance}, Converter={StaticResource UpperConverter}}"
+                                                       HorizontalAlignment="Center"
+                                                       FontFamily="{StaticResource TelemetryFontFamily}"
+                                                       Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                                                       FontSize="10" Margin="0,4,0,2"/>
+                                            <controls:CurveEditor
+                                                CurveString="{Binding SensitivityCurveX, Mode=TwoWay}"
+                                                DeadZone="{Binding DeadZoneX}"
+                                                MaxRange="{Binding MaxRangeX}"
+                                                MaxRangeNeg="{Binding MaxRangeXNeg}"
+                                                LiveInput="{Binding LiveInputX}"
+                                                IsSigned="True" IsFullWidth="True" ChartHeight="180"
+                                                Margin="0,0,0,8"/>
+                                            <TextBlock Text="{Binding Pad_YAxis, Source={x:Static strings:Strings.Instance}, Converter={StaticResource UpperConverter}}"
+                                                       HorizontalAlignment="Center"
+                                                       FontFamily="{StaticResource TelemetryFontFamily}"
+                                                       Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                                                       FontSize="10" Margin="0,0,0,2"/>
+                                            <controls:CurveEditor
+                                                CurveString="{Binding SensitivityCurveY, Mode=TwoWay}"
+                                                DeadZone="{Binding DeadZoneY}"
+                                                MaxRange="{Binding MaxRangeYNeg}"
+                                                MaxRangeNeg="{Binding MaxRangeY}"
+                                                LiveInput="{Binding LiveInputY}"
+                                                IsSigned="True" IsFullWidth="True" ChartHeight="180"/>
                                             <Separator Margin="0,8,0,8"/>
                                             <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                                 <TextBlock Text="{Binding Pad_MinRangeXLeft, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
@@ -5187,14 +5219,11 @@
                                     </StackPanel>
 
                                     <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*"/>
-                                            <ColumnDefinition Width="Auto"/>
-                                        </Grid.ColumnDefinitions>
-
-                                        <!-- Left: sliders and live bar -->
-                                        <StackPanel Grid.Column="0">
-                                            <!-- Range (dual-thumb: deadzone floor — max range ceiling) -->
+                                        <!-- Sliders, full-width curve canvas, and live instrument
+                                             (#175 competitor item 4: the old right-column 120px
+                                             curve square moved down here at card width). -->
+                                        <StackPanel>
+                                            <!-- Range (dual-thumb: deadzone floor to max range ceiling) -->
                                             <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                                 <TextBlock Text="{Binding Pad_Range, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
                                                 <controls:RangeSlider
@@ -5246,6 +5275,22 @@
                                                 <ui:Button Command="{Binding ResetSensitivityCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetSensitivity, Source={x:Static strings:Strings.Instance}}"/>
                                             </StackPanel>
 
+                                            <!-- Full-width forge canvas (#175 competitor item 4):
+                                                 the trigger curve at card width under the sensitivity
+                                                 controls. Caption keeps the mono-10-tertiary
+                                                 instrument idiom. -->
+                                            <TextBlock Text="{Binding Pad_TriggerAxis, Source={x:Static strings:Strings.Instance}, Converter={StaticResource UpperConverter}}"
+                                                       HorizontalAlignment="Center"
+                                                       FontFamily="{StaticResource TelemetryFontFamily}"
+                                                       Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                                                       FontSize="10" Margin="0,4,0,2"/>
+                                            <controls:CurveEditor
+                                                CurveString="{Binding SensitivityCurve, Mode=TwoWay}"
+                                                DeadZone="{Binding DeadZone}"
+                                                MaxRange="{Binding MaxRange}"
+                                                LiveInput="{Binding LiveInputForCurve}"
+                                                IsSigned="False" IsFullWidth="True" ChartHeight="180"/>
+
                                             <!-- Two-stage live instrument (#175 iteration 20): full-width
                                                  RAW cold and OUT ember bars in their own inset panel, per
                                                  the artifact instruments mock. -->
@@ -5257,6 +5302,8 @@
                                                     <Grid.ColumnDefinitions>
                                                         <ColumnDefinition Width="Auto"/>
                                                         <ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width="Auto"/>
+                                                        <!-- Travel gauge column (#175 competitor item 4) -->
                                                         <ColumnDefinition Width="Auto"/>
                                                     </Grid.ColumnDefinitions>
                                                     <Grid.RowDefinitions>
@@ -5291,26 +5338,19 @@
                                                                FontSize="12" Width="96" TextAlignment="Right"
                                                                Foreground="{DynamicResource EmberHotBrush}"
                                                                VerticalAlignment="Center" Margin="12,0,0,0"/>
+                                                    <!-- Travel gauge (#175 competitor item 4): dotted
+                                                         steel quarter-arc from rest to full pull,
+                                                         steel tick stops at the range clamps, thin
+                                                         cold needle at raw pull, ember sweep to the
+                                                         post-curve output. Value-driven only. -->
+                                                    <controls:TriggerTravelArc Grid.Column="3" Grid.RowSpan="2"
+                                                        RawValue="{Binding RawNorm, Mode=OneWay}"
+                                                        OutValue="{Binding LiveValue, Mode=OneWay}"
+                                                        RangeMin="{Binding DeadZone, Mode=OneWay}"
+                                                        RangeMax="{Binding MaxRange, Mode=OneWay}"
+                                                        VerticalAlignment="Center" Margin="18,0,0,0"/>
                                                 </Grid>
                                             </Border>
-                                        </StackPanel>
-
-                                        <!-- Right: sensitivity curve editor -->
-                                        <StackPanel Grid.Column="1" VerticalAlignment="Top" Margin="16,-26,0,0">
-                                            <!-- Instrument caption idiom (#175 typography): mono 10
-                                                 tertiary uppercase, unified with the stick X/Y Axis
-                                                 captions (was 11 proportional secondary). -->
-                                            <TextBlock Text="{Binding Pad_TriggerAxis, Source={x:Static strings:Strings.Instance}, Converter={StaticResource UpperConverter}}" Margin="0,0,0,4"
-                                                       HorizontalAlignment="Center"
-                                                       FontFamily="{StaticResource TelemetryFontFamily}"
-                                                       Foreground="{DynamicResource TextFillColorTertiaryBrush}"
-                                                       FontSize="10"/>
-                                            <controls:CurveEditor
-                                                CurveString="{Binding SensitivityCurve, Mode=TwoWay}"
-                                                DeadZone="{Binding DeadZone}"
-                                                MaxRange="{Binding MaxRange}"
-                                                LiveInput="{Binding LiveInputForCurve}"
-                                                IsSigned="False" ChartSize="120"/>
                                         </StackPanel>
                                     </Grid>
 

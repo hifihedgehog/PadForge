@@ -518,13 +518,10 @@
                     </StackPanel>
                 </Border>
 <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
-                <!-- Active-profile pill (#175 item 8): flame + profile name
-                     ahead of the tabset so the pivot stays uncrowded. Click
-                     opens the switcher flyout; auto-switch flares it
-                     (MainWindow wires both through ProfilePillElement). -->
-                <viewControls:ProfilePill x:Name="SlotProfilePill"
-                                          VerticalAlignment="Center" Margin="0,0,10,0"
-                                          AutomationProperties.AutomationId="ProfilePillPadPage"/>
+                <!-- The active-profile pill lives in the status bar ONLY.
+                     A copy sat here (#175 item 8) until a user read it as a
+                     per-pad profile selector (2026-07-05). Profiles are
+                     global, so the pad page carries none. -->
                 <!-- [Preview] tab (#175 re-audit): the artifact's tier1 puts
                      one right-pushed tabset holding all three slot tabs after
                      the identity + preset chips; Preview was stranded on the
@@ -956,7 +953,13 @@
                     <!-- ══════════════════════════════════════
                          MOTOR ACTIVITY INDICATORS
                          ══════════════════════════════════════ -->
-                    <Grid x:Name="MotorBarsGrid" Grid.Row="1" Width="500" Margin="0,4,0,4" HorizontalAlignment="Center">
+                    <!-- Rebalanced against the Map All pill below (user
+                         report 2026-07-05: "slim against the fat button").
+                         The pair narrows 500 → 400 and the bars thicken to
+                         16 so the centered cluster carries the pill's
+                         visual weight instead of reading as a thin
+                         full-width wire. -->
+                    <Grid x:Name="MotorBarsGrid" Grid.Row="1" Width="400" Margin="0,6,0,4" HorizontalAlignment="Center">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="*"/>
@@ -974,7 +977,7 @@
                                        FontFamily="{StaticResource TelemetryFontFamily}" FontSize="10"
                                        Foreground="{DynamicResource TextFillColorTertiaryBrush}"
                                        HorizontalAlignment="Center" Margin="0,0,0,2"/>
-                            <ProgressBar Style="{StaticResource InstrumentBarOut}" Height="14" Value="{Binding LeftMotorDisplay, Mode=OneWay}" Minimum="0" Maximum="1" IsHitTestVisible="False"/>
+                            <ProgressBar Style="{StaticResource InstrumentBarOut}" Height="16" Value="{Binding LeftMotorDisplay, Mode=OneWay}" Minimum="0" Maximum="1" IsHitTestVisible="False"/>
                         </StackPanel>
 
                         <StackPanel Grid.Column="1" Cursor="Hand" Margin="12,0,0,0"
@@ -986,7 +989,7 @@
                                        FontFamily="{StaticResource TelemetryFontFamily}" FontSize="10"
                                        Foreground="{DynamicResource TextFillColorTertiaryBrush}"
                                        HorizontalAlignment="Center" Margin="0,0,0,2"/>
-                            <ProgressBar Style="{StaticResource InstrumentBarOut}" Height="14" Value="{Binding RightMotorDisplay, Mode=OneWay}" Minimum="0" Maximum="1" IsHitTestVisible="False"/>
+                            <ProgressBar Style="{StaticResource InstrumentBarOut}" Height="16" Value="{Binding RightMotorDisplay, Mode=OneWay}" Minimum="0" Maximum="1" IsHitTestVisible="False"/>
                         </StackPanel>
                     </Grid>
 
@@ -2664,6 +2667,57 @@
                                 <Setter Property="FontWeight" Value="SemiBold"/>
                                 <Setter Property="VerticalAlignment" Value="Center"/>
                             </Style>
+                            <!-- Structured tooltip line (user report 2026-07-05:
+                                 the chip tooltip ran the whole listing as one
+                                 long line). Three lanes on one template, toggled
+                                 by the row flags: a device header (only when
+                                 several controllers feed the set), the mono
+                                 "OUTPUT ← source" mapping line with a shared-
+                                 size output column, or the "+N" overflow tail.
+                                 Rows come from PadViewModel.BuildPipelineTipRows
+                                 on the 1 s config lane. -->
+                            <DataTemplate x:Key="PipelineTipRowTemplate">
+                                <Grid>
+                                    <TextBlock x:Name="TipHeader" Visibility="Collapsed"
+                                               Text="{Binding Text}"
+                                               FontFamily="{StaticResource TelemetryFontFamily}"
+                                               FontSize="10" FontWeight="SemiBold"
+                                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                               Margin="0,6,0,2"/>
+                                    <Grid x:Name="TipLine" Margin="0,1,0,1">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" SharedSizeGroup="PipelineTipOutput"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Text="{Binding Output}"
+                                                   FontFamily="{StaticResource TelemetryFontFamily}"
+                                                   FontSize="11" FontWeight="SemiBold"
+                                                   Foreground="{DynamicResource EmberHotBrush}"/>
+                                        <TextBlock Grid.Column="1" Text="←" Margin="8,0,8,0"
+                                                   FontFamily="{StaticResource TelemetryFontFamily}"
+                                                   FontSize="11"
+                                                   Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
+                                        <TextBlock Grid.Column="2" Text="{Binding Detail}"
+                                                   FontFamily="{StaticResource TelemetryFontFamily}"
+                                                   FontSize="11"
+                                                   MaxWidth="300" TextTrimming="CharacterEllipsis"
+                                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                                    </Grid>
+                                </Grid>
+                                <DataTemplate.Triggers>
+                                    <DataTrigger Binding="{Binding IsHeader}" Value="True">
+                                        <Setter TargetName="TipHeader" Property="Visibility" Value="Visible"/>
+                                        <Setter TargetName="TipLine" Property="Visibility" Value="Collapsed"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding IsTail}" Value="True">
+                                        <Setter TargetName="TipHeader" Property="Visibility" Value="Visible"/>
+                                        <Setter TargetName="TipHeader" Property="FontWeight" Value="Normal"/>
+                                        <Setter TargetName="TipHeader" Property="Foreground" Value="{DynamicResource TextFillColorTertiaryBrush}"/>
+                                        <Setter TargetName="TipLine" Property="Visibility" Value="Collapsed"/>
+                                    </DataTrigger>
+                                </DataTemplate.Triggers>
+                            </DataTemplate>
                         </WrapPanel.Resources>
 
                         <!-- CURVE: any curve-bearing output with a non-linear
@@ -2672,8 +2726,15 @@
                                 MouseLeftButtonUp="PipelineChip_Click"
                                 Visibility="{Binding PipelineCurveActive, Converter={StaticResource BoolToVisibilityConverter}}">
                             <Border.ToolTip>
-                                <TextBlock Text="{Binding PipelineCurveSummary}"
-                                           FontFamily="{StaticResource TelemetryFontFamily}" FontSize="11"/>
+                                <StackPanel>
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,3">
+                                        <Path Style="{StaticResource LivenessFlameBase}" Margin="0,0,5,0"/>
+                                        <TextBlock Text="CURVE" Style="{StaticResource PipelineChipToken}"/>
+                                    </StackPanel>
+                                    <ItemsControl ItemsSource="{Binding PipelineCurveTipRows}"
+                                                  ItemTemplate="{StaticResource PipelineTipRowTemplate}"
+                                                  Grid.IsSharedSizeScope="True"/>
+                                </StackPanel>
                             </Border.ToolTip>
                             <StackPanel Orientation="Horizontal">
                                 <Path Margin="0,0,5,0">
@@ -2702,8 +2763,15 @@
                                 MouseLeftButtonUp="PipelineChip_Click"
                                 Visibility="{Binding PipelineGyroActive, Converter={StaticResource BoolToVisibilityConverter}}">
                             <Border.ToolTip>
-                                <TextBlock Text="{Binding PipelineGyroSummary}"
-                                           FontFamily="{StaticResource TelemetryFontFamily}" FontSize="11"/>
+                                <StackPanel>
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,3">
+                                        <Path Style="{StaticResource LivenessFlameBase}" Margin="0,0,5,0"/>
+                                        <TextBlock Text="GYRO" Style="{StaticResource PipelineChipToken}"/>
+                                    </StackPanel>
+                                    <ItemsControl ItemsSource="{Binding PipelineGyroTipRows}"
+                                                  ItemTemplate="{StaticResource PipelineTipRowTemplate}"
+                                                  Grid.IsSharedSizeScope="True"/>
+                                </StackPanel>
                             </Border.ToolTip>
                             <StackPanel Orientation="Horizontal">
                                 <Path Margin="0,0,5,0">
@@ -2763,8 +2831,15 @@
                                 MouseLeftButtonUp="PipelineChip_Click"
                                 Visibility="{Binding PipelineInvertActive, Converter={StaticResource BoolToVisibilityConverter}}">
                             <Border.ToolTip>
-                                <TextBlock Text="{Binding PipelineInvertSummary}"
-                                           FontFamily="{StaticResource TelemetryFontFamily}" FontSize="11"/>
+                                <StackPanel>
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,3">
+                                        <Path Style="{StaticResource LivenessFlameBase}" Margin="0,0,5,0"/>
+                                        <TextBlock Text="INV" Style="{StaticResource PipelineChipToken}"/>
+                                    </StackPanel>
+                                    <ItemsControl ItemsSource="{Binding PipelineInvertTipRows}"
+                                                  ItemTemplate="{StaticResource PipelineTipRowTemplate}"
+                                                  Grid.IsSharedSizeScope="True"/>
+                                </StackPanel>
                             </Border.ToolTip>
                             <StackPanel Orientation="Horizontal">
                                 <Path Margin="0,0,5,0">
@@ -2794,8 +2869,15 @@
                                 MouseLeftButtonUp="PipelineChip_Click"
                                 Visibility="{Binding PipelineDeadZoneActive, Converter={StaticResource BoolToVisibilityConverter}}">
                             <Border.ToolTip>
-                                <TextBlock Text="{Binding PipelineDeadZoneSummary}"
-                                           FontFamily="{StaticResource TelemetryFontFamily}" FontSize="11"/>
+                                <StackPanel>
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,3">
+                                        <Path Style="{StaticResource LivenessFlameBase}" Margin="0,0,5,0"/>
+                                        <TextBlock Text="DZ" Style="{StaticResource PipelineChipToken}"/>
+                                    </StackPanel>
+                                    <ItemsControl ItemsSource="{Binding PipelineDeadZoneTipRows}"
+                                                  ItemTemplate="{StaticResource PipelineTipRowTemplate}"
+                                                  Grid.IsSharedSizeScope="True"/>
+                                </StackPanel>
                             </Border.ToolTip>
                             <StackPanel Orientation="Horizontal">
                                 <Path Margin="0,0,5,0">

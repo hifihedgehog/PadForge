@@ -2,7 +2,11 @@ using System;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Animation;
+using System.Windows.Media.Effects;
 using System.Windows.Threading;
 using PadForge.Common.Input;
 using PadForge.Services;
@@ -15,6 +19,10 @@ namespace PadForge.Views
         public ProfilesPage()
         {
             InitializeComponent();
+            // List rebuilds (import, delete, settings reload) discard the
+            // container wearing the selection ring; re-attach once the new
+            // containers are generated.
+            ProfileListBox.ItemContainerGenerator.StatusChanged += ProfileContainers_StatusChanged;
         }
 
         private void ProfileList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -24,6 +32,107 @@ namespace PadForge.Views
             {
                 vm.LoadProfileCommand.Execute(null);
             }
+        }
+
+        // ─────────────────────────────────────────────
+        //  Selection pulse ring (user report 2026-07-05)
+        // ─────────────────────────────────────────────
+
+        /// <summary>Template-root card Border currently wearing the ring.</summary>
+        private Border _selectionGlowCard;
+
+        /// <summary>OS "animate controls" switch (#175 item 98): with motion
+        /// off the breathe swaps for a static glow.</summary>
+        private static bool MotionEnabled => SystemParameters.ClientAreaAnimation;
+
+        private void ProfileList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            // The new selection's container may not be templated yet (initial
+            // binding lands before layout), so resolve after this layout pass.
+            Dispatcher.BeginInvoke(new Action(ApplySelectionGlow), DispatcherPriority.Loaded);
+        }
+
+        private void ProfileContainers_StatusChanged(object sender, EventArgs e)
+        {
+            if (ProfileListBox.ItemContainerGenerator.Status == GeneratorStatus.ContainersGenerated)
+                Dispatcher.BeginInvoke(new Action(ApplySelectionGlow), DispatcherPriority.Loaded);
+        }
+
+        /// <summary>
+        /// Moves the cold pulse ring to the selected card. Code-driven on
+        /// purpose: animating Effect from style triggers is the startup-crash
+        /// canon, so the DropShadowEffect is built and animated here, mirroring
+        /// the MainWindow mini-card heat ring. Cold hue keeps the grammar
+        /// (cold = selected, ember = active); on the active card the ember rim
+        /// stays dominant with this ring breathing around it. Idempotent, since
+        /// deferred dispatcher calls and generator churn land here repeatedly.
+        /// </summary>
+        private void ApplySelectionGlow()
+        {
+            Border card = null;
+            if (ProfileListBox.SelectedItem != null &&
+                ProfileListBox.ItemContainerGenerator.ContainerFromItem(ProfileListBox.SelectedItem)
+                    is ListBoxItem container)
+                card = FindCardBorder(container);
+
+            if (ReferenceEquals(card, _selectionGlowCard)) return;
+
+            // Stop the previous card's clock before detaching so no orphaned
+            // animation keeps driving a dead effect.
+            if (_selectionGlowCard != null)
+            {
+                if (_selectionGlowCard.Effect is DropShadowEffect old)
+                    old.BeginAnimation(DropShadowEffect.OpacityProperty, null);
+                _selectionGlowCard.Effect = null;
+                _selectionGlowCard = null;
+            }
+            if (card == null) return;
+
+            var ring = new DropShadowEffect
+            {
+                Color = Color.FromRgb(0x58, 0xB6, 0xE4),
+                BlurRadius = 20,
+                ShadowDepth = 0,
+                Opacity = 0.25,
+            };
+            card.Effect = ring;
+            if (MotionEnabled)
+            {
+                var breathe = new DoubleAnimation
+                {
+                    From = 0.25,
+                    To = 0.60,
+                    Duration = TimeSpan.FromSeconds(1.6),
+                    AutoReverse = true,
+                    RepeatBehavior = RepeatBehavior.Forever,
+                    EasingFunction = new SineEase { EasingMode = EasingMode.EaseInOut },
+                    // Phase-lock to the sidebar heat rings' 3.2 s clock so
+                    // reselection doesn't visibly restart the cycle.
+                    BeginTime = TimeSpan.FromMilliseconds(
+                        -(DateTime.UtcNow.TimeOfDay.TotalMilliseconds % 3200.0)),
+                };
+                ring.BeginAnimation(DropShadowEffect.OpacityProperty, breathe);
+            }
+            else
+            {
+                // Reduced motion (#175 item 98): static glow at the breathe
+                // range's midpoint.
+                ring.Opacity = 0.40;
+            }
+            _selectionGlowCard = card;
+        }
+
+        /// <summary>First Border under the retemplated (bare ContentPresenter)
+        /// container: the DataTemplate's card root.</summary>
+        private static Border FindCardBorder(DependencyObject node)
+        {
+            for (int i = 0; i < VisualTreeHelper.GetChildrenCount(node); i++)
+            {
+                var child = VisualTreeHelper.GetChild(node, i);
+                if (child is Border b) return b;
+                if (FindCardBorder(child) is Border deeper) return deeper;
+            }
+            return null;
         }
 
         // ─────────────────────────────────────────────

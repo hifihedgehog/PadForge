@@ -282,7 +282,10 @@
                 </ItemsControl.ItemsPanel>
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <Grid Margin="4">
+                        <!-- 8px item margin (#175 clip report): the card glows
+                             (hover 12px, forging host 30px) were truncated at
+                             the viewport clip when a card sat at a row edge. -->
+                        <Grid Margin="8">
                             <!-- Heat that rises fast and cools slow (#175 motion
                                  spec, overlay pattern): the glow host behind the
                                  card carries the effect, its plain Opacity

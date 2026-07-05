@@ -541,7 +541,17 @@ namespace PadForge.Views
             int h = (int)Math.Ceiling(card.ActualHeight * dpi.DpiScaleY) + 4;
             var rtb = new RenderTargetBitmap(w, h, dpi.PixelsPerInchX, dpi.PixelsPerInchY,
                 PixelFormats.Pbgra32);
-            rtb.Render(card);
+            // Render through a VisualBrush: RenderTargetBitmap.Render(card)
+            // bakes in the card's RenderTransform, and the hover lift is at
+            // -2px when a drag starts, which cut the ghost's top edge
+            // (user-reported). The brush normalizes the content bounds.
+            var dv = new DrawingVisual();
+            using (var dc = dv.RenderOpen())
+            {
+                dc.DrawRectangle(new VisualBrush(card) { Stretch = Stretch.None },
+                    null, new Rect(0, 0, card.ActualWidth, card.ActualHeight));
+            }
+            rtb.Render(dv);
             return rtb;
         }
 

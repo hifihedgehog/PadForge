@@ -3675,8 +3675,9 @@ namespace PadForge.ViewModels
 
         private bool _annotationOverlayEnabled;
 
-        /// <summary>3D-preview annotation overlay (#175 roadmap 1). Session-only by
-        /// design: not written to PadSetting, not in the MarkDirty allowlist.</summary>
+        /// <summary>Controller-preview annotation overlay, shared by the 2D and
+        /// 3D hosts (#175 roadmap 1). Session-only by design: not written to
+        /// PadSetting, not in the MarkDirty allowlist.</summary>
         public bool AnnotationOverlayEnabled
         {
             get => _annotationOverlayEnabled;

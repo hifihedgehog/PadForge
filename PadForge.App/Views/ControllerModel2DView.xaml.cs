@@ -63,6 +63,10 @@ namespace PadForge.Views
         {
             InitializeComponent();
             CompositionTarget.Rendering += OnRendering;
+            // Annotation overlay (#175): anchors move only when the Viewbox
+            // rescales, so a size change is the one geometry trigger the 2D
+            // layer needs (no camera, no timer-driven re-projection).
+            SizeChanged += (s, e) => LayoutAnnotations();
         }
 
         // ─────────────────────────────────────────────
@@ -91,6 +95,7 @@ namespace PadForge.Views
             CompositionTarget.Rendering -= OnRendering;
             if (_vm != null)
                 _vm.PropertyChanged -= OnVmPropertyChanged;
+            TeardownAnnotations();
             _vm = null;
         }
 
@@ -175,6 +180,11 @@ namespace PadForge.Views
                     break;
             }
             string folder = modelName;
+
+            // Annotation overlay (#175): the layout table is also the anchor
+            // position source, so the chips point at exactly what the model
+            // draws.
+            SetAnnotationAnchors(overlays);
 
             ModelCanvas.Width = baseW;
             ModelCanvas.Height = baseH;
@@ -307,6 +317,11 @@ namespace PadForge.Views
                 _stickHighlights[ringTarget] = highlight;
                 ModelCanvas.Children.Add(highlight);
             }
+
+            // Chips re-anchor against the new layout table. Queued (not
+            // inline) so the Viewbox has re-measured the resized canvas
+            // before anchors translate.
+            QueueAnnotationRebuild();
         }
 
         private void BuildTouchpadPreview(OverlayElement ov, string modelName)

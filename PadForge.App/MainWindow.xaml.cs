@@ -1534,18 +1534,15 @@ namespace PadForge
                 ShowControllerTypePopup(DashboardPageView.AddControllerCardElement, PlacementMode.Bottom);
             };
 
-            // Wire the active-profile pills (#175 item 8): click opens the
-            // switcher flyout at the clicked pill (status bar opens upward),
-            // and an applied auto-switch flares both instances.
+            // Wire the active-profile pill (#175 item 8): click opens the
+            // switcher flyout above the status bar, and an applied
+            // auto-switch flares it. The status bar is the pill's only
+            // home. The pad-page copy read as a per-pad profile selector
+            // (user report 2026-07-05), but profiles are global.
             StatusProfilePill.Clicked += (s, e) =>
                 ShowProfileSwitcherPopup(StatusProfilePill, PlacementMode.Top);
-            PadPageView.ProfilePillElement.Clicked += (s, e) =>
-                ShowProfileSwitcherPopup(PadPageView.ProfilePillElement, PlacementMode.Bottom);
             _inputService.AutoProfileSwitchApplied += () =>
-            {
                 StatusProfilePill.Flare();
-                PadPageView.ProfilePillElement.Flare();
-            };
 
             // Wire Dashboard delete + toggle events.
             DashboardPageView.DeleteSlotRequested += (s, slotIndex) =>

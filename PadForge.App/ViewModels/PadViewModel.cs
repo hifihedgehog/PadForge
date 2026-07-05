@@ -954,8 +954,8 @@ namespace PadForge.ViewModels
         }
         private bool _pipelineCurveLive;
         public bool PipelineCurveLive { get => _pipelineCurveLive; set => SetProperty(ref _pipelineCurveLive, value); }
-        private string _pipelineCurveSummary = "";
-        public string PipelineCurveSummary { get => _pipelineCurveSummary; set => SetProperty(ref _pipelineCurveSummary, value ?? ""); }
+        private System.Collections.Generic.IReadOnlyList<PipelineTipRow> _pipelineCurveTipRows = System.Array.Empty<PipelineTipRow>();
+        public System.Collections.Generic.IReadOnlyList<PipelineTipRow> PipelineCurveTipRows { get => _pipelineCurveTipRows; private set => SetProperty(ref _pipelineCurveTipRows, value); }
 
         private bool _pipelineGyroActive;
         public bool PipelineGyroActive
@@ -965,8 +965,8 @@ namespace PadForge.ViewModels
         }
         private bool _pipelineGyroLive;
         public bool PipelineGyroLive { get => _pipelineGyroLive; set => SetProperty(ref _pipelineGyroLive, value); }
-        private string _pipelineGyroSummary = "";
-        public string PipelineGyroSummary { get => _pipelineGyroSummary; set => SetProperty(ref _pipelineGyroSummary, value ?? ""); }
+        private System.Collections.Generic.IReadOnlyList<PipelineTipRow> _pipelineGyroTipRows = System.Array.Empty<PipelineTipRow>();
+        public System.Collections.Generic.IReadOnlyList<PipelineTipRow> PipelineGyroTipRows { get => _pipelineGyroTipRows; private set => SetProperty(ref _pipelineGyroTipRows, value); }
 
         private bool _pipelineShiftActive;
         public bool PipelineShiftActive
@@ -987,8 +987,8 @@ namespace PadForge.ViewModels
         }
         private bool _pipelineInvertLive;
         public bool PipelineInvertLive { get => _pipelineInvertLive; set => SetProperty(ref _pipelineInvertLive, value); }
-        private string _pipelineInvertSummary = "";
-        public string PipelineInvertSummary { get => _pipelineInvertSummary; set => SetProperty(ref _pipelineInvertSummary, value ?? ""); }
+        private System.Collections.Generic.IReadOnlyList<PipelineTipRow> _pipelineInvertTipRows = System.Array.Empty<PipelineTipRow>();
+        public System.Collections.Generic.IReadOnlyList<PipelineTipRow> PipelineInvertTipRows { get => _pipelineInvertTipRows; private set => SetProperty(ref _pipelineInvertTipRows, value); }
 
         private bool _pipelineDeadZoneActive;
         public bool PipelineDeadZoneActive
@@ -998,8 +998,8 @@ namespace PadForge.ViewModels
         }
         private bool _pipelineDeadZoneLive;
         public bool PipelineDeadZoneLive { get => _pipelineDeadZoneLive; set => SetProperty(ref _pipelineDeadZoneLive, value); }
-        private string _pipelineDeadZoneSummary = "";
-        public string PipelineDeadZoneSummary { get => _pipelineDeadZoneSummary; set => SetProperty(ref _pipelineDeadZoneSummary, value ?? ""); }
+        private System.Collections.Generic.IReadOnlyList<PipelineTipRow> _pipelineDeadZoneTipRows = System.Array.Empty<PipelineTipRow>();
+        public System.Collections.Generic.IReadOnlyList<PipelineTipRow> PipelineDeadZoneTipRows { get => _pipelineDeadZoneTipRows; private set => SetProperty(ref _pipelineDeadZoneTipRows, value); }
 
         /// <summary>Chip-row visibility gate: collapse the whole strip
         /// when no pipeline carries configuration.</summary>
@@ -1059,8 +1059,8 @@ namespace PadForge.ViewModels
             _ => null,
         };
 
-        // Config-derived chip state (Active flags, summaries, owning
-        // rows, MatchPreset lookups) only moves on user edits, so it
+        // Config-derived chip state (Active flags, tooltip listings,
+        // owning rows, MatchPreset lookups) only moves on user edits, so it
         // recomputes on a dirty flag (row add/remove) or at most once
         // per second, the same 1 s cadence the dashboard's stage ledger
         // rides. The 30 Hz tick path below only reads rowfire flags.
@@ -1093,7 +1093,7 @@ namespace PadForge.ViewModels
         /// after the rowfire pass so IsInputActive reflects this tick.
         /// The engaged layer mask comes from the same engine poll the
         /// shift flyout uses (InputManager.GetEngagedLayerMask).
-        /// Presence + tooltip summaries ride the throttled config
+        /// Presence + tooltip listings ride the throttled config
         /// recompute, not this per-tick path.</summary>
         public void RefreshPipelineChips(string engagedLayerMask)
         {
@@ -1142,7 +1142,7 @@ namespace PadForge.ViewModels
 
         /// <summary>Recomputes the config-derived chip state: which
         /// rows own each pipeline, the Active flags, and the tooltip
-        /// summaries (including the MatchPreset names). Runs on the
+        /// row listings (including the MatchPreset names). Runs on the
         /// dirty flag / 1 s throttle inside RefreshPipelineChips, never
         /// per tick.</summary>
         private void RecomputePipelineChipConfig()
@@ -1151,44 +1151,35 @@ namespace PadForge.ViewModels
             _pipelineGyroRows.Clear();
             _pipelineInvertRows.Clear();
             _pipelineDeadZoneRows.Clear();
-            var curveParts = new System.Collections.Generic.List<string>();
-            var gyroParts = new System.Collections.Generic.List<string>();
-            var invertParts = new System.Collections.Generic.List<string>();
-            var dzParts = new System.Collections.Generic.List<string>();
 
             foreach (var m in Mappings)
             {
                 if (m == null) continue;
-                if (IsCurvePipelineRow(m))
-                {
-                    _pipelineCurveRows.Add(m);
-                    curveParts.Add(m.TargetLabel + " " + MatchPresetCached(CurveStringForTarget(m.TargetSettingName)));
-                }
-                if (IsGyroPipelineRow(m))
-                {
-                    _pipelineGyroRows.Add(m);
-                    gyroParts.Add(m.TargetLabel);
-                }
-                if (IsInvertPipelineRow(m))
-                {
-                    _pipelineInvertRows.Add(m);
-                    invertParts.Add(m.TargetLabel);
-                }
-                if (IsDeadZonePipelineRow(m))
-                {
-                    _pipelineDeadZoneRows.Add(m);
-                    dzParts.Add(m.TargetLabel + " " + m.MappingDeadZone + "%");
-                }
+                if (IsCurvePipelineRow(m)) _pipelineCurveRows.Add(m);
+                if (IsGyroPipelineRow(m)) _pipelineGyroRows.Add(m);
+                if (IsInvertPipelineRow(m)) _pipelineInvertRows.Add(m);
+                if (IsDeadZonePipelineRow(m)) _pipelineDeadZoneRows.Add(m);
             }
 
             PipelineCurveActive = _pipelineCurveRows.Count > 0;
-            PipelineCurveSummary = string.Join(" · ", curveParts);
             PipelineGyroActive = _pipelineGyroRows.Count > 0;
-            PipelineGyroSummary = string.Join(" · ", gyroParts);
             PipelineInvertActive = _pipelineInvertRows.Count > 0;
-            PipelineInvertSummary = string.Join(" · ", invertParts);
             PipelineDeadZoneActive = _pipelineDeadZoneRows.Count > 0;
-            PipelineDeadZoneSummary = string.Join(" · ", dzParts);
+
+            // Structured tooltip listings (user report 2026-07-05: the
+            // old single-string summary ran the whole controller's rows
+            // on one long line, with no device attribution). Swap only
+            // on content change: this recompute runs every second, and
+            // replacing an equal list would re-render an open tooltip.
+            var curveTip = BuildPipelineTipRows(_pipelineCurveRows,
+                m => MatchPresetCached(CurveStringForTarget(m.TargetSettingName)));
+            if (!TipRowsEqual(_pipelineCurveTipRows, curveTip)) PipelineCurveTipRows = curveTip;
+            var gyroTip = BuildPipelineTipRows(_pipelineGyroRows, null);
+            if (!TipRowsEqual(_pipelineGyroTipRows, gyroTip)) PipelineGyroTipRows = gyroTip;
+            var invertTip = BuildPipelineTipRows(_pipelineInvertRows, null);
+            if (!TipRowsEqual(_pipelineInvertTipRows, invertTip)) PipelineInvertTipRows = invertTip;
+            var dzTip = BuildPipelineTipRows(_pipelineDeadZoneRows, m => m.MappingDeadZone + "%");
+            if (!TipRowsEqual(_pipelineDeadZoneTipRows, dzTip)) PipelineDeadZoneTipRows = dzTip;
 
             // SHIFT: present when the slot has any layer beyond Base.
             bool shiftActive = LayerTabs.Count > 1;
@@ -1204,6 +1195,131 @@ namespace PadForge.ViewModels
             {
                 _pipelineShiftIdleSummary = "";
             }
+        }
+
+        /// <summary>One line of a pipeline chip tooltip: a device
+        /// header (present only when several controllers feed the
+        /// chip's row set), an "OUTPUT ← source" mapping line, or the
+        /// "+N" overflow tail. Built on the 1 s config lane.</summary>
+        public sealed class PipelineTipRow
+        {
+            public bool IsHeader { get; init; }
+            public bool IsTail { get; init; }
+            /// <summary>Header / tail lane text: device label or "+N".</summary>
+            public string Text { get; init; } = "";
+            /// <summary>Mapping lane: the VC output label.</summary>
+            public string Output { get; init; } = "";
+            /// <summary>Mapping lane: feeding source(s), plus the
+            /// chip-specific note (curve preset name, DZ percent).</summary>
+            public string Detail { get; init; } = "";
+        }
+
+        // Tooltips cannot scroll, so the listing bounds its own height:
+        // past this many mapping lines the list ends in a "+N" tail.
+        private const int PipelineTipRowCap = 20;
+
+        /// <summary>Builds one chip's tooltip listing: one line per
+        /// owning row, bucketed under the primary feeding device's
+        /// label when more than one device feeds the set. The mapping
+        /// model carries exactly one primary device per row; extra
+        /// sources hold their own labels and ride the row's source
+        /// cell inline (TipSourceText), so the primary is the honest
+        /// grouping key.</summary>
+        private static System.Collections.Generic.IReadOnlyList<PipelineTipRow> BuildPipelineTipRows(
+            System.Collections.Generic.List<MappingItem> rows,
+            System.Func<MappingItem, string> note)
+        {
+            // Bucket by primary device label, first-seen order. Rows
+            // with no primary device (config carried by an unmapped
+            // target) lead the list without a header.
+            var bucketDevs = new System.Collections.Generic.List<string>();
+            var bucketRows = new System.Collections.Generic.List<System.Collections.Generic.List<MappingItem>>();
+            foreach (var m in rows)
+            {
+                string dev = (m.PrimarySourceDeviceLabel ?? "").Trim();
+                int idx = bucketDevs.IndexOf(dev);
+                if (idx < 0)
+                {
+                    idx = dev.Length == 0 ? 0 : bucketDevs.Count;
+                    bucketDevs.Insert(idx, dev);
+                    bucketRows.Insert(idx, new System.Collections.Generic.List<MappingItem>());
+                }
+                bucketRows[idx].Add(m);
+            }
+
+            int named = 0;
+            foreach (var d in bucketDevs) if (d.Length > 0) named++;
+            bool grouped = bucketDevs.Count > 1 && named > 0;
+
+            var tip = new System.Collections.Generic.List<PipelineTipRow>();
+            int emitted = 0, overflow = 0;
+            for (int b = 0; b < bucketDevs.Count; b++)
+            {
+                // Header only when at least one of the bucket's rows
+                // will actually render below it.
+                if (grouped && bucketDevs[b].Length > 0 && emitted < PipelineTipRowCap)
+                    tip.Add(new PipelineTipRow { IsHeader = true, Text = bucketDevs[b] });
+                foreach (var m in bucketRows[b])
+                {
+                    if (emitted >= PipelineTipRowCap) { overflow++; continue; }
+                    string src = TipSourceText(m, bucketDevs[b]);
+                    string extra = note?.Invoke(m) ?? "";
+                    tip.Add(new PipelineTipRow
+                    {
+                        Output = m.TargetLabel ?? "",
+                        Detail = extra.Length == 0 ? src
+                               : src.Length == 0 ? extra
+                               : src + " · " + extra,
+                    });
+                    emitted++;
+                }
+            }
+            if (overflow > 0)
+                tip.Add(new PipelineTipRow { IsTail = true, Text = "+" + overflow });
+            return tip;
+        }
+
+        /// <summary>Source cell for one tooltip line: the primary
+        /// source text plus every named extra source. An extra from a
+        /// different device carries its "device: control" prefix
+        /// inline, the same grammar as the preview annotation's
+        /// ChipLabel.</summary>
+        private static string TipSourceText(MappingItem m, string primaryDevice)
+        {
+            var parts = new System.Collections.Generic.List<string>();
+            string primary = (m.SourceDisplayText ?? "").Trim();
+            if (primary.Length > 0) parts.Add(primary);
+            foreach (var s in m.ExtraSources)
+            {
+                if (s == null) continue;
+                string name = (s.SelectedInput?.DisplayName ?? s.Descriptor ?? "").Trim();
+                if (name.Length == 0) continue;
+                string dev = (s.SelectedInput?.DeviceLabel ?? s.DeviceLabel ?? "").Trim();
+                parts.Add(dev.Length > 0 && !string.Equals(dev, primaryDevice, StringComparison.Ordinal)
+                    ? dev + ": " + name : name);
+            }
+            return string.Join(" + ", parts);
+        }
+
+        /// <summary>Content equality for tooltip listings, so the 1 s
+        /// recompute only publishes a genuinely changed list.</summary>
+        private static bool TipRowsEqual(
+            System.Collections.Generic.IReadOnlyList<PipelineTipRow> a,
+            System.Collections.Generic.IReadOnlyList<PipelineTipRow> b)
+        {
+            if (ReferenceEquals(a, b)) return true;
+            if (a == null || b == null || a.Count != b.Count) return false;
+            for (int i = 0; i < a.Count; i++)
+            {
+                var x = a[i];
+                var y = b[i];
+                if (x.IsHeader != y.IsHeader || x.IsTail != y.IsTail
+                    || !string.Equals(x.Text, y.Text, StringComparison.Ordinal)
+                    || !string.Equals(x.Output, y.Output, StringComparison.Ordinal)
+                    || !string.Equals(x.Detail, y.Detail, StringComparison.Ordinal))
+                    return false;
+            }
+            return true;
         }
 
         /// <summary>Drops every flame (Live flags) without touching the

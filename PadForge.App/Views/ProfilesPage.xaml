@@ -141,11 +141,13 @@
                           DragOver="ProfileList_DragOver"
                           DragLeave="ProfileList_DragLeave"
                           Drop="ProfileList_Drop">
-                        <ListBox ItemsSource="{Binding ProfileItems}"
+                        <ListBox x:Name="ProfileListBox"
+                                 ItemsSource="{Binding ProfileItems}"
                                  SelectedItem="{Binding SelectedProfile}"
                                  MinHeight="60" MaxHeight="420"
                                  AllowDrop="True"
                                  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                 SelectionChanged="ProfileList_SelectionChanged"
                                  MouseDoubleClick="ProfileList_MouseDoubleClick">
                             <!-- Cards wrap at the card width. Horizontal scroll is
                                  disabled so the WrapPanel actually wraps. -->
@@ -161,7 +163,8 @@
                                  is retemplated to a bare ContentPresenter (Devices
                                  roster precedent). It stays hit-testable and
                                  selectable; selection reads on the card itself (cold
-                                 rim in the ItemTemplate). Hover keeps the faint ember
+                                 rim in the ItemTemplate plus the code-driven pulse
+                                 ring from SelectionChanged). Hover keeps the faint ember
                                  bloom; the active card's lit flame glow lives on a
                                  Path inside the ItemTemplate, a different element,
                                  so there is no Effect fight. -->
@@ -188,8 +191,11 @@
                                          reads as a set. Hover lift (#175) is the
                                          element-level transform on the template root;
                                          the container style's glow stays on the
-                                         ListBoxItem. Only the transform animates. The
-                                         active ember edge is static setters. -->
+                                         ListBoxItem. Only the transform animates here.
+                                         The active ember edge is static setters. The
+                                         selected card's breathing cold ring is attached
+                                         to this Border from code-behind (mini-card heat
+                                         ring pattern). -->
                                     <Border Width="250" Height="116" Margin="3"
                                             CornerRadius="8" BorderThickness="1" Padding="10,8">
                                         <Border.RenderTransform>
@@ -202,15 +208,23 @@
                                                      override them (local values would win). -->
                                                 <Setter Property="BorderBrush" Value="{DynamicResource SteelLineSoftBrush}"/>
                                                 <Setter Property="Background" Value="{DynamicResource ControlFillColorDefaultBrush}"/>
+                                                <!-- Rest state sits back (user report 2026-07-05):
+                                                     unselected, inactive cards dim to 0.82 so the
+                                                     selected and active ones carry the light. -->
+                                                <Setter Property="Opacity" Value="0.82"/>
                                                 <Style.Triggers>
                                                     <!-- Cold selection rim (#175): the picked card
                                                          (SelectedProfile) reads cold, distinct from
                                                          the ember ACTIVE edge. Declared before the
                                                          IsActive trigger so ember wins when the
-                                                         selected card is also the active one. -->
+                                                         selected card is also the active one. The
+                                                         pulsating cold ring rides alongside, attached
+                                                         from code-behind. Never a style Effect
+                                                         animation. Startup crash canon. -->
                                                     <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=ListBoxItem}}" Value="True">
                                                         <Setter Property="BorderBrush" Value="#6658B6E4"/>
                                                         <Setter Property="Background" Value="{DynamicResource ColdTintBrush}"/>
+                                                        <Setter Property="Opacity" Value="1.0"/>
                                                     </DataTrigger>
                                                     <!-- Ember edge (#175): the card whose profile
                                                          currently drives the forge wears the ember
@@ -218,6 +232,7 @@
                                                     <DataTrigger Binding="{Binding IsActive}" Value="True">
                                                         <Setter Property="BorderBrush" Value="#66FF6B2C"/>
                                                         <Setter Property="Background" Value="{DynamicResource EmberTintBrush}"/>
+                                                        <Setter Property="Opacity" Value="1.0"/>
                                                     </DataTrigger>
                                                     <Trigger Property="IsMouseOver" Value="True">
                                                         <Trigger.EnterActions>

@@ -80,11 +80,6 @@ namespace PadForge.Views
         private static System.Windows.Media.Imaging.BitmapImage _lightbarDs4FrontMask;
         private static System.Windows.Media.Imaging.BitmapImage _lightbarDs4RearMask;
 
-        /// <summary>Exposes the active-profile pill (#175 item 8) so
-        /// MainWindow can wire the switcher flyout and the flare, the
-        /// same exposure pattern as DashboardPage.AddControllerCardElement.</summary>
-        public Controls.ProfilePill ProfilePillElement => SlotProfilePill;
-
         public PadPage()
         {
             InitializeComponent();

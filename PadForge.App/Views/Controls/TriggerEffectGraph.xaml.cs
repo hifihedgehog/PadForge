@@ -69,6 +69,28 @@ namespace PadForge.Views.Controls
             DependencyProperty.Register(nameof(Frequency), typeof(byte), typeof(TriggerEffectGraph),
                 new PropertyMetadata((byte)0, OnAnyChanged));
 
+        // Compact sparkline mode (#175 competitor item 5): tightened
+        // chrome and no mode-label band, for the small per-mode-card
+        // instances on the Adaptive Triggers tab. The card already
+        // names the mode, so the in-graph label is redundant there.
+        public static readonly DependencyProperty IsCompactProperty =
+            DependencyProperty.Register(nameof(IsCompact), typeof(bool), typeof(TriggerEffectGraph),
+                new PropertyMetadata(false, OnCompactChanged));
+
+        // Live physical trigger position, normalized 0..1. Negative
+        // (the default) means "no live data" and hides the marker.
+        // Marker updates reposition one cached Line, so the polling
+        // tick never rebuilds the canvas.
+        public static readonly DependencyProperty LiveInputProperty =
+            DependencyProperty.Register(nameof(LiveInput), typeof(double), typeof(TriggerEffectGraph),
+                new PropertyMetadata(-1.0, OnLiveMarkerChanged));
+
+        // Gate for the live marker so only the selected mode card
+        // shows it (bound to the card's IsSelected).
+        public static readonly DependencyProperty ShowLiveMarkerProperty =
+            DependencyProperty.Register(nameof(ShowLiveMarker), typeof(bool), typeof(TriggerEffectGraph),
+                new PropertyMetadata(false, OnLiveMarkerChanged));
+
         public AdaptiveTriggerMode Mode
         {
             get => (AdaptiveTriggerMode)GetValue(ModeProperty);
@@ -99,6 +121,24 @@ namespace PadForge.Views.Controls
             set => SetValue(FrequencyProperty, value);
         }
 
+        public bool IsCompact
+        {
+            get => (bool)GetValue(IsCompactProperty);
+            set => SetValue(IsCompactProperty, value);
+        }
+
+        public double LiveInput
+        {
+            get => (double)GetValue(LiveInputProperty);
+            set => SetValue(LiveInputProperty, value);
+        }
+
+        public bool ShowLiveMarker
+        {
+            get => (bool)GetValue(ShowLiveMarkerProperty);
+            set => SetValue(ShowLiveMarkerProperty, value);
+        }
+
         public TriggerEffectGraph()
         {
             InitializeComponent();
@@ -109,9 +149,36 @@ namespace PadForge.Views.Controls
         private static void OnAnyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
             => ((TriggerEffectGraph)d).Redraw();
 
+        private static void OnCompactChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var g = (TriggerEffectGraph)d;
+            g.ApplyCompactChrome();
+            g.Redraw();
+        }
+
+        private static void OnLiveMarkerChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+            => ((TriggerEffectGraph)d).UpdateLiveMarker();
+
+        private void ApplyCompactChrome()
+        {
+            if (IsCompact)
+            {
+                RootBorder.Padding = new Thickness(5, 4, 5, 4);
+                RootBorder.CornerRadius = new CornerRadius(6);
+                ModeLabel.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                RootBorder.Padding = new Thickness(10);
+                RootBorder.CornerRadius = new CornerRadius(8);
+                ModeLabel.Visibility = Visibility.Visible;
+            }
+        }
+
         private void Redraw()
         {
             GraphCanvas.Children.Clear();
+            _liveMarker = null;
             ModeLabel.Text = ModeDisplayName(Mode);
 
             double w = GraphCanvas.ActualWidth;
@@ -119,7 +186,9 @@ namespace PadForge.Views.Controls
             if (w <= 0 || h <= 0) return;
 
             // Reserve a few pixels at the bottom for the mode label band.
-            double labelBand = 14;
+            // Compact instances have no label, so the plot takes the
+            // full height.
+            double labelBand = IsCompact ? 0 : 14;
             double plotH = Math.Max(1, h - labelBand);
 
             // Baseline track (the trigger throw).
@@ -151,6 +220,14 @@ namespace PadForge.Views.Controls
                 GraphCanvas.Children.Add(tick);
             }
 
+            DrawEffectProfile(w, plotH);
+
+            // Live marker last so it rides above every profile shape.
+            UpdateLiveMarker();
+        }
+
+        private void DrawEffectProfile(double w, double plotH)
+        {
             if (Mode == AdaptiveTriggerMode.Off || Strength == 0)
                 return;
 
@@ -199,6 +276,44 @@ namespace PadForge.Views.Controls
                     DrawPulsingVibration(startX, endX, plotH, strH);
                     break;
             }
+        }
+
+        // Cold live-position marker (#175 competitor item 5): thin
+        // vertical line at the physical trigger's current pull. Cold
+        // because it is a physical-input fact; the ember shapes are
+        // the output side. Value-driven only, never animated.
+        private Line _liveMarker;
+
+        private void UpdateLiveMarker()
+        {
+            double w = GraphCanvas.ActualWidth;
+            double h = GraphCanvas.ActualHeight;
+            if (!ShowLiveMarker || LiveInput < 0 || w <= 0 || h <= 0)
+            {
+                if (_liveMarker != null)
+                    _liveMarker.Visibility = Visibility.Collapsed;
+                return;
+            }
+
+            double plotH = Math.Max(1, h - (IsCompact ? 0 : 14));
+            double x = Math.Clamp(LiveInput, 0.0, 1.0) * w;
+
+            if (_liveMarker == null)
+            {
+                _liveMarker = new Line
+                {
+                    StrokeThickness = 1.5,
+                    IsHitTestVisible = false
+                };
+                _liveMarker.SetResourceReference(Shape.StrokeProperty, "ColdBrush");
+                GraphCanvas.Children.Add(_liveMarker);
+            }
+
+            _liveMarker.Visibility = Visibility.Visible;
+            _liveMarker.X1 = x;
+            _liveMarker.X2 = x;
+            _liveMarker.Y1 = 1;
+            _liveMarker.Y2 = plotH;
         }
 
         // ────────────────────────────────────────────────

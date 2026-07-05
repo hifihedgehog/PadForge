@@ -53,7 +53,7 @@ namespace PadForge.ViewModels
         public double DeadZoneX
         {
             get => _deadZoneX;
-            set { if (SetProperty(ref _deadZoneX, Math.Clamp(value, 0, 100))) { OnPropertyChanged(nameof(DeadZoneXDigit)); RebuildCurvePoints(); } }
+            set { if (SetProperty(ref _deadZoneX, Math.Clamp(value, 0, 100))) { OnPropertyChanged(nameof(DeadZoneXDigit)); OnPropertyChanged(nameof(DeadZoneSteelGeometry)); RebuildCurvePoints(); } }
         }
         public int DeadZoneXDigit
         {
@@ -65,7 +65,7 @@ namespace PadForge.ViewModels
         public double DeadZoneY
         {
             get => _deadZoneY;
-            set { if (SetProperty(ref _deadZoneY, Math.Clamp(value, 0, 100))) { OnPropertyChanged(nameof(DeadZoneYDigit)); RebuildCurvePoints(); } }
+            set { if (SetProperty(ref _deadZoneY, Math.Clamp(value, 0, 100))) { OnPropertyChanged(nameof(DeadZoneYDigit)); OnPropertyChanged(nameof(DeadZoneSteelGeometry)); RebuildCurvePoints(); } }
         }
         public int DeadZoneYDigit
         {
@@ -212,6 +212,7 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(IsSlopedShape));
                     OnPropertyChanged(nameof(IsHybridShape));
                     OnPropertyChanged(nameof(HasSlopedWedges));
+                    OnPropertyChanged(nameof(DeadZoneSteelGeometry));
                 }
             }
         }
@@ -256,6 +257,65 @@ namespace PadForge.ViewModels
         public bool HasSlopedWedges => _deadZoneShape == DeadZoneShape.SlopedAxial
                                     || _deadZoneShape == DeadZoneShape.SlopedScaledAxial
                                     || _deadZoneShape == DeadZoneShape.Hybrid;
+
+        /// <summary>Steel DZ fill for the radar (#175 competitor item 3): the
+        /// dead region as one geometry the plot paints in ashen steel.
+        /// Coordinates are fixed to the 200x200 plot (center 100,100 so
+        /// 1% of deflection = 1px of radius, matching
+        /// StickTrailBehavior.PlotSize). Radial shapes fill an ellipse
+        /// (rx/ry = DZ X/Y%), axial shapes fill the cross-band (vertical
+        /// band 2*DZX% wide, horizontal band 2*DZY% tall), Hybrid fills
+        /// both. Sloped variants reuse the axial cross-band silhouette:
+        /// their true wedge region tapers to zero at center, and the band
+        /// is the honest at-a-glance stand-in. Frozen; recomputed via
+        /// change notification from DeadZoneX/DeadZoneY/DeadZoneShape.</summary>
+        public Geometry DeadZoneSteelGeometry
+        {
+            get
+            {
+                double rx = _deadZoneX;   // DZ% of the 100px plot radius == px
+                double ry = _deadZoneY;
+                Geometry g;
+                if (IsRadialShape)
+                {
+                    g = new EllipseGeometry(new Point(100, 100), rx, ry);
+                }
+                else if (HasSlopedWedges)
+                {
+                    // Sloped variants (user report 2026-07-04: the axial
+                    // cross was wrong for these): four wedges from center
+                    // to the plot edges, the exact silhouette the proven
+                    // SlopedWedgeGeometryConverter drew. X dies inside the
+                    // vertical wedge pair, Y inside the horizontal pair.
+                    var geo = new PathGeometry();
+                    AddDzWedge(geo, 100, 100, 100 - rx, 0, 100 + rx, 0);
+                    AddDzWedge(geo, 100, 100, 100 - rx, 200, 100 + rx, 200);
+                    AddDzWedge(geo, 100, 100, 200, 100 - ry, 200, 100 + ry);
+                    AddDzWedge(geo, 100, 100, 0, 100 - ry, 0, 100 + ry);
+                    g = geo;
+                }
+                else
+                {
+                    var group = new GeometryGroup { FillRule = FillRule.Nonzero };
+                    group.Children.Add(new RectangleGeometry(new Rect(100 - rx, 0, rx * 2, 200)));
+                    group.Children.Add(new RectangleGeometry(new Rect(0, 100 - ry, 200, ry * 2)));
+                    if (IsHybridShape)
+                        group.Children.Add(new EllipseGeometry(new Point(100, 100), rx, ry));
+                    g = group;
+                }
+                g.Freeze();
+                return g;
+            }
+        }
+
+        private static void AddDzWedge(PathGeometry geo,
+            double cx, double cy, double x1, double y1, double x2, double y2)
+        {
+            var fig = new PathFigure { StartPoint = new Point(cx, cy), IsClosed = true, IsFilled = true };
+            fig.Segments.Add(new LineSegment(new Point(x1, y1), true));
+            fig.Segments.Add(new LineSegment(new Point(x2, y2), true));
+            geo.Figures.Add(fig);
+        }
 
         private bool _isCalibrating;
         public bool IsCalibrating

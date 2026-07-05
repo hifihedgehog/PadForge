@@ -4488,76 +4488,21 @@
                                                     <Line X1="6" Y1="100" X2="194" Y2="100" Stroke="#FF1E2739" StrokeThickness="1"/>
                                                     <Canvas>
                                                         <!-- Legacy stock rings removed (#175 close-out item 25):
-                                                             the radar keeps only the #1E2739 rings + crosshair
-                                                             above and the dashed ember DZ circle below. -->
-                                                        <!-- Dead zone overlay: Cross for Axial, Ellipse for Radial, Rectangle for Sloped -->
-
-                                                        <!-- Axial: cross arms (yellow) — movement occurs but snapped to axis -->
-                                                        <Path Fill="#20FFC107" Stroke="#50FFC107" StrokeThickness="1"
-                                                              Visibility="{Binding IsAxialShape, Converter={StaticResource BoolToVisibilityConverter}}">
-                                                            <Path.Data>
-                                                                <MultiBinding Converter="{StaticResource CrossGeometryConverter}">
-                                                                    <Binding Path="DeadZoneX"/>
-                                                                    <Binding Path="DeadZoneY"/>
-                                                                </MultiBinding>
-                                                            </Path.Data>
-                                                        </Path>
-                                                        <!-- Axial: center rectangle (red) — fully dead, no output -->
-                                                        <Rectangle Fill="#18FF5722" Stroke="#60FF5722" StrokeThickness="1"
-                                                                   Visibility="{Binding IsAxialShape, Converter={StaticResource BoolToVisibilityConverter}}">
-                                                            <Rectangle.Width>
-                                                                <Binding Path="DeadZoneX" Converter="{StaticResource PercentToSizeConverter}" ConverterParameter="200"/>
-                                                            </Rectangle.Width>
-                                                            <Rectangle.Height>
-                                                                <Binding Path="DeadZoneY" Converter="{StaticResource PercentToSizeConverter}" ConverterParameter="200"/>
-                                                            </Rectangle.Height>
-                                                            <Rectangle.RenderTransform>
-                                                                <TranslateTransform>
-                                                                    <TranslateTransform.X>
-                                                                        <Binding Path="DeadZoneX" Converter="{StaticResource PercentToSizeConverter}" ConverterParameter="-100"/>
-                                                                    </TranslateTransform.X>
-                                                                    <TranslateTransform.Y>
-                                                                        <Binding Path="DeadZoneY" Converter="{StaticResource PercentToSizeConverter}" ConverterParameter="-100"/>
-                                                                    </TranslateTransform.Y>
-                                                                </TranslateTransform>
-                                                            </Rectangle.RenderTransform>
-                                                            <Canvas.Left>100</Canvas.Left>
-                                                            <Canvas.Top>100</Canvas.Top>
-                                                        </Rectangle>
-
-                                                        <!-- Radial: ellipse/circle -->
-                                                        <Ellipse Fill="#18FF5722" Stroke="#60FF5722" StrokeThickness="1"
-                                                                 Visibility="{Binding IsRadialShape, Converter={StaticResource BoolToVisibilityConverter}}">
-                                                            <Ellipse.Width>
-                                                                <Binding Path="DeadZoneX" Converter="{StaticResource PercentToSizeConverter}" ConverterParameter="200"/>
-                                                            </Ellipse.Width>
-                                                            <Ellipse.Height>
-                                                                <Binding Path="DeadZoneY" Converter="{StaticResource PercentToSizeConverter}" ConverterParameter="200"/>
-                                                            </Ellipse.Height>
-                                                            <Ellipse.RenderTransform>
-                                                                <TranslateTransform>
-                                                                    <TranslateTransform.X>
-                                                                        <Binding Path="DeadZoneX" Converter="{StaticResource PercentToSizeConverter}" ConverterParameter="-100"/>
-                                                                    </TranslateTransform.X>
-                                                                    <TranslateTransform.Y>
-                                                                        <Binding Path="DeadZoneY" Converter="{StaticResource PercentToSizeConverter}" ConverterParameter="-100"/>
-                                                                    </TranslateTransform.Y>
-                                                                </TranslateTransform>
-                                                            </Ellipse.RenderTransform>
-                                                            <Canvas.Left>100</Canvas.Left>
-                                                            <Canvas.Top>100</Canvas.Top>
-                                                        </Ellipse>
-
-                                                        <!-- Sloped / Hybrid: 4 triangular wedges (yellow) — axis-snapped regions -->
-                                                        <Path Fill="#20FFC107" Stroke="#50FFC107" StrokeThickness="1"
-                                                              Visibility="{Binding HasSlopedWedges, Converter={StaticResource BoolToVisibilityConverter}}">
-                                                            <Path.Data>
-                                                                <MultiBinding Converter="{StaticResource SlopedWedgeGeometryConverter}">
-                                                                    <Binding Path="DeadZoneX"/>
-                                                                    <Binding Path="DeadZoneY"/>
-                                                                </MultiBinding>
-                                                            </Path.Data>
-                                                        </Path>
+                                                             the radar keeps the #1E2739 rings + crosshair above;
+                                                             below sit the DZ steel fill, the dashed ember DZ
+                                                             circle, and the anti-DZ ember ring. -->
+                                                        <!-- Dead zone geometry (#175 competitor item 3): the dead
+                                                             region painted as one ashen steel fill so the DZ numbers
+                                                             become visible physics. Geometry comes from the VM
+                                                             (DeadZoneSteelGeometry, recomputed on DZ slider / shape
+                                                             changes): ellipse for radial shapes, cross-band for
+                                                             axial, both for Hybrid. Sloped variants reuse the axial
+                                                             cross-band silhouette. Steel=structure per the ember
+                                                             grammar; the dashed ember ring below still marks the
+                                                             radius. Replaces the legacy yellow/red overlay shapes
+                                                             (pre-ember palette). -->
+                                                        <Path Fill="#2E253049" IsHitTestVisible="False"
+                                                              Data="{Binding DeadZoneSteelGeometry, Mode=OneWay}"/>
 
                                                         <!-- Deadzone ring (#175 round 3, item B7): dashed
                                                              ember-deep circle at the configured DZ radius,
@@ -4586,11 +4531,55 @@
                                                             <Canvas.Left>100</Canvas.Left>
                                                             <Canvas.Top>100</Canvas.Top>
                                                         </Ellipse>
+                                                        <!-- Anti-deadzone ring (#175 competitor item 3): thin ember
+                                                             circle at the output-floor radius, same percent-to-plot
+                                                             mapping as the DZ ring (rx = AntiDeadZoneX%, ry =
+                                                             AntiDeadZoneY%). Collapsed while both axes sit at 0. -->
+                                                        <Ellipse Fill="Transparent" Stroke="#80FF6B2C" StrokeThickness="1"
+                                                                 IsHitTestVisible="False">
+                                                            <Ellipse.Style>
+                                                                <Style TargetType="Ellipse">
+                                                                    <Style.Triggers>
+                                                                        <MultiDataTrigger>
+                                                                            <MultiDataTrigger.Conditions>
+                                                                                <Condition Binding="{Binding AntiDeadZoneX}" Value="0"/>
+                                                                                <Condition Binding="{Binding AntiDeadZoneY}" Value="0"/>
+                                                                            </MultiDataTrigger.Conditions>
+                                                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                                                        </MultiDataTrigger>
+                                                                    </Style.Triggers>
+                                                                </Style>
+                                                            </Ellipse.Style>
+                                                            <Ellipse.Width>
+                                                                <Binding Path="AntiDeadZoneX" Converter="{StaticResource PercentToSizeConverter}" ConverterParameter="200"/>
+                                                            </Ellipse.Width>
+                                                            <Ellipse.Height>
+                                                                <Binding Path="AntiDeadZoneY" Converter="{StaticResource PercentToSizeConverter}" ConverterParameter="200"/>
+                                                            </Ellipse.Height>
+                                                            <Ellipse.RenderTransform>
+                                                                <TranslateTransform>
+                                                                    <TranslateTransform.X>
+                                                                        <Binding Path="AntiDeadZoneX" Converter="{StaticResource PercentToSizeConverter}" ConverterParameter="-100"/>
+                                                                    </TranslateTransform.X>
+                                                                    <TranslateTransform.Y>
+                                                                        <Binding Path="AntiDeadZoneY" Converter="{StaticResource PercentToSizeConverter}" ConverterParameter="-100"/>
+                                                                    </TranslateTransform.Y>
+                                                                </TranslateTransform>
+                                                            </Ellipse.RenderTransform>
+                                                            <Canvas.Left>100</Canvas.Left>
+                                                            <Canvas.Top>100</Canvas.Top>
+                                                        </Ellipse>
                                                         <!-- Stick position dot -->
                                                         <!-- Two-stage (#175): raw hardware in cold under the
                                                              forged output in ember. Trail behavior draws the
-                                                             artifact comet (46 fading dots per signal). -->
-                                                        <Canvas common:StickTrailBehavior.IsEnabled="True" Width="200" Height="200"/>
+                                                             artifact comet (46 fading dots per signal). Peak-hold
+                                                             (#175 competitor item 3) rides the same canvas: an
+                                                             ember rim tick at the max recorded OUT deflection,
+                                                             decaying over ~3s, writing its % into PeakReadout. -->
+                                                        <Canvas common:StickTrailBehavior.IsEnabled="True"
+                                                                common:StickPeakHoldBehavior.IsEnabled="True"
+                                                                common:StickPeakHoldBehavior.Readout="{Binding ElementName=PeakReadout}"
+                                                                Width="200" Height="200"/>
                                                         <Ellipse Width="9" Height="9" Fill="#FF58B6E4"
                                                                  Stroke="#FF2E6A8F" StrokeThickness="1" Opacity="0.9"
                                                                  Canvas.Left="{Binding RawPosX, Converter={StaticResource NormToCanvasConverter}, ConverterParameter='200,9'}"
@@ -4610,6 +4599,59 @@
                                                     </Canvas>
                                                 </Grid>
                                             </Border>
+                                            <!-- Radar legend + peak readout (#175 competitor item 3):
+                                                 one quiet mono row aligned to the radar edges. Chips
+                                                 follow the ChipCold / ChipEmber / steel tint grammar at
+                                                 legend scale (mono 9px). RAW/OUT reuse the instrument
+                                                 caption strings; DZ and PEAK are locale-neutral
+                                                 telemetry tokens like the axis-unit formats in
+                                                 StickConfigItem. PeakReadout's value text is written by
+                                                 StickPeakHoldBehavior. -->
+                                            <DockPanel Width="212" Margin="0,8,0,0" HorizontalAlignment="Center" LastChildFill="False">
+                                                <StackPanel Orientation="Horizontal" DockPanel.Dock="Left">
+                                                    <Border Background="#1A58B6E4" BorderBrush="#5958B6E4" BorderThickness="1"
+                                                            CornerRadius="8" Padding="6,1" Margin="0,0,4,0" VerticalAlignment="Center">
+                                                        <StackPanel Orientation="Horizontal">
+                                                            <Ellipse Width="5" Height="5" Fill="{DynamicResource ColdBrush}"
+                                                                     VerticalAlignment="Center" Margin="0,0,4,0"/>
+                                                            <TextBlock Text="{Binding Instr_Raw, Source={x:Static strings:Strings.Instance}}"
+                                                                       FontFamily="{StaticResource TelemetryFontFamily}" FontSize="9"
+                                                                       Foreground="{DynamicResource ColdBrush}" VerticalAlignment="Center"/>
+                                                        </StackPanel>
+                                                    </Border>
+                                                    <Border Background="#1AFF6B2C" BorderBrush="#66FF6B2C" BorderThickness="1"
+                                                            CornerRadius="8" Padding="6,1" Margin="0,0,4,0" VerticalAlignment="Center">
+                                                        <StackPanel Orientation="Horizontal">
+                                                            <Ellipse Width="5" Height="5" Fill="{DynamicResource EmberHotBrush}"
+                                                                     VerticalAlignment="Center" Margin="0,0,4,0"/>
+                                                            <TextBlock Text="{Binding Instr_Out, Source={x:Static strings:Strings.Instance}}"
+                                                                       FontFamily="{StaticResource TelemetryFontFamily}" FontSize="9"
+                                                                       Foreground="{DynamicResource EmberHotBrush}" VerticalAlignment="Center"/>
+                                                        </StackPanel>
+                                                    </Border>
+                                                    <Border Background="Transparent" BorderBrush="{DynamicResource SteelLineBrush}" BorderThickness="1"
+                                                            CornerRadius="8" Padding="6,1" VerticalAlignment="Center">
+                                                        <StackPanel Orientation="Horizontal">
+                                                            <!-- Swatch mirrors the plot: steel fill + ember edge. -->
+                                                            <Rectangle Width="7" Height="5" RadiusX="1" RadiusY="1"
+                                                                       Fill="#2E253049" Stroke="#8CC43D0C" StrokeThickness="1"
+                                                                       VerticalAlignment="Center" Margin="0,0,4,0"/>
+                                                            <TextBlock Text="DZ"
+                                                                       FontFamily="{StaticResource TelemetryFontFamily}" FontSize="9"
+                                                                       Foreground="{DynamicResource TextFillColorTertiaryBrush}" VerticalAlignment="Center"/>
+                                                        </StackPanel>
+                                                    </Border>
+                                                </StackPanel>
+                                                <StackPanel Orientation="Horizontal" DockPanel.Dock="Right" VerticalAlignment="Center">
+                                                    <TextBlock Text="PEAK"
+                                                               FontFamily="{StaticResource TelemetryFontFamily}" FontSize="9"
+                                                               Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                                                               VerticalAlignment="Center" Margin="0,0,4,0"/>
+                                                    <TextBlock x:Name="PeakReadout" Text="0%"
+                                                               FontFamily="{StaticResource TelemetryFontFamily}" FontSize="9"
+                                                               Foreground="{DynamicResource EmberHotBrush}" VerticalAlignment="Center"/>
+                                                </StackPanel>
+                                            </DockPanel>
                                             <!-- Readout (#175): RAW (pre-pipeline, cold) over OUT
                                                  (forged, ember), original number format. Fixed-width
                                                  grid so changing values never resize the instrument. -->

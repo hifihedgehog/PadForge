@@ -152,6 +152,7 @@
   <data name="Status_SDL3NotFoundDetail" xml:space="preserve"><value>SDL3.dll が見つかりません！ PadForge.exe と同じフォルダーに SDL3.dll を配置してください。ダウンロード先: https://github.com/libsdl-org/SDL/releases</value></data>
   <data name="Status_DriverOperationFailed_Format" xml:space="preserve"><value>ドライバー操作に失敗しました: {0}</value></data>
   <data name="Status_SettingsCopied" xml:space="preserve"><value>設定をクリップボードにコピーしました。</value></data>
+  <data name="Status_DossierCopied" xml:space="preserve"><value>デバイス情報をクリップボードにコピーしました。</value></data>
   <data name="Status_CopyFailed_Format" xml:space="preserve"><value>コピーに失敗しました: {0}</value></data>
   <data name="Status_InvalidClipboard" xml:space="preserve"><value>クリップボードに有効な PadForge 設定が含まれていません。</value></data>
   <data name="Status_SettingsPasted" xml:space="preserve"><value>クリップボードから設定を貼り付けました。</value></data>
@@ -2107,6 +2108,7 @@
   <data name="MacroDisconnect_Caveat" xml:space="preserve"><value>Bluetooth接続のみ対象です。接続が切れるとコントローラーはスリープします。</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>アイドル切断</value></data>
   <data name="Devices_Power" xml:space="preserve"><value>電源</value></data>
+  <data name="Devices_Dossier" xml:space="preserve"><value>デバイス情報</value></data>
   <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>分 (0 = しない)</value></data>
   <data name="Devices_IdleDisconnectTooltip" xml:space="preserve"><value>入力がないままこの分数が経過すると、このBluetoothコントローラーを切断してスリープさせ、バッテリーを節約します。USB接続時には作動しません。</value></data>
   <data name="DevObj_ConsumerPower" xml:space="preserve"><value>電源</value></data>

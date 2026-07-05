@@ -6886,6 +6886,9 @@ namespace PadForge.Services
         {
             row.InstanceGuid = ud.InstanceGuid;
             row.SdlGuid = ud.SdlGuid;
+            // Dossier (#175 item 7): SDL's serial (BT MAC on most wireless
+            // pads), already persisted on UserDevice. Empty when unreported.
+            row.SerialNumber = ud.SerialNumber ?? string.Empty;
             row.DeviceName = ud.DevicePath == "aggregate://keyboards" ? Strings.Instance.Devices_AllKeyboardsMerged
                            : ud.DevicePath == "aggregate://mice" ? Strings.Instance.Devices_AllMiceMerged
                            : ud.DevicePath == "aggregate://touchpads" ? Strings.Instance.Devices_AllTouchpadsMerged
@@ -6905,7 +6908,13 @@ namespace PadForge.Services
             int liveBtns = ud.Device?.SupportedButtonIndices?.Length ?? 0;
             row.ButtonCount = liveBtns > 0 ? liveBtns : ud.CapButtonCount;
             row.PovCount = ud.CapPovCount;
-            row.HasRumble = ud.HasForceFeedback;
+            // Rumble mirrors the Pad page gate (PadPage.SyncTabVisibility):
+            // impulse-trigger Xbox pads and the Sony lightbar family rumble
+            // through their raw-HID sole writers, so SDL's view of the shared
+            // handle can read no-rumble while the device very much rumbles.
+            bool sonyLightbarPad = ud.VendorId == 0x054C
+                && ud.ProdId is 0x0CE6 or 0x0DF2 or 0x05C4 or 0x09CC or 0x0BA0;
+            row.HasRumble = ud.HasForceFeedback || ud.HasRumbleTriggers || sonyLightbarPad;
             row.HasGyro = ud.HasGyro;
             row.HasAccel = ud.HasAccel;
             row.HasTouchpad = ud.HasTouchpad;

@@ -152,6 +152,7 @@
   <data name="Status_SDL3NotFoundDetail" xml:space="preserve"><value>未找到 SDL3.dll！请将 SDL3.dll 放置在 PadForge.exe 旁边。下载地址：https://github.com/libsdl-org/SDL/releases</value></data>
   <data name="Status_DriverOperationFailed_Format" xml:space="preserve"><value>驱动操作失败：{0}</value></data>
   <data name="Status_SettingsCopied" xml:space="preserve"><value>设置已复制到剪贴板。</value></data>
+  <data name="Status_DossierCopied" xml:space="preserve"><value>设备信息已复制到剪贴板。</value></data>
   <data name="Status_CopyFailed_Format" xml:space="preserve"><value>复制失败：{0}</value></data>
   <data name="Status_InvalidClipboard" xml:space="preserve"><value>剪贴板中不包含有效的 PadForge 设置。</value></data>
   <data name="Status_SettingsPasted" xml:space="preserve"><value>已从剪贴板粘贴设置。</value></data>
@@ -2107,6 +2108,7 @@
   <data name="MacroDisconnect_Caveat" xml:space="preserve"><value>仅适用于蓝牙。连接断开后控制器进入休眠。</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>空闲断开</value></data>
   <data name="Devices_Power" xml:space="preserve"><value>电源</value></data>
+  <data name="Devices_Dossier" xml:space="preserve"><value>设备档案</value></data>
   <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>分钟（0 = 从不）</value></data>
   <data name="Devices_IdleDisconnectTooltip" xml:space="preserve"><value>在无输入达到设定分钟数后断开此蓝牙控制器，使其休眠以节省电量。USB 连接时不会触发。</value></data>
   <data name="DevObj_ConsumerPower" xml:space="preserve"><value>电源</value></data>

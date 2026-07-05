@@ -152,6 +152,7 @@
   <data name="Status_SDL3NotFoundDetail" xml:space="preserve"><value>SDL3.dll을 찾을 수 없습니다! PadForge.exe 옆에 SDL3.dll을 배치하십시오. https://github.com/libsdl-org/SDL/releases 에서 다운로드하십시오.</value></data>
   <data name="Status_DriverOperationFailed_Format" xml:space="preserve"><value>드라이버 작업 실패: {0}</value></data>
   <data name="Status_SettingsCopied" xml:space="preserve"><value>설정이 클립보드에 복사되었습니다.</value></data>
+  <data name="Status_DossierCopied" xml:space="preserve"><value>장치 정보가 클립보드에 복사되었습니다.</value></data>
   <data name="Status_CopyFailed_Format" xml:space="preserve"><value>복사 실패: {0}</value></data>
   <data name="Status_InvalidClipboard" xml:space="preserve"><value>클립보드에 유효한 PadForge 설정이 없습니다.</value></data>
   <data name="Status_SettingsPasted" xml:space="preserve"><value>클립보드에서 설정을 붙여넣었습니다.</value></data>
@@ -2107,6 +2108,7 @@
   <data name="MacroDisconnect_Caveat" xml:space="preserve"><value>Bluetooth 전용입니다. 연결이 끊기면 컨트롤러가 절전 상태가 됩니다.</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>유휴 연결 해제</value></data>
   <data name="Devices_Power" xml:space="preserve"><value>전원</value></data>
+  <data name="Devices_Dossier" xml:space="preserve"><value>장치 정보</value></data>
   <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>분 (0 = 안 함)</value></data>
   <data name="Devices_IdleDisconnectTooltip" xml:space="preserve"><value>입력이 없는 상태로 설정한 분이 지나면 이 Bluetooth 컨트롤러의 연결을 끊어 절전 상태로 전환하고 배터리를 절약합니다. USB 연결 시에는 작동하지 않습니다.</value></data>
   <data name="DevObj_ConsumerPower" xml:space="preserve"><value>전원</value></data>

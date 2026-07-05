@@ -152,6 +152,7 @@
   <data name="Status_SDL3NotFoundDetail" xml:space="preserve"><value>¡SDL3.dll no encontrado! Coloque SDL3.dll junto a PadForge.exe. Descárguelo de https://github.com/libsdl-org/SDL/releases</value></data>
   <data name="Status_DriverOperationFailed_Format" xml:space="preserve"><value>Error en la operación del controlador: {0}</value></data>
   <data name="Status_SettingsCopied" xml:space="preserve"><value>Configuración copiada al portapapeles.</value></data>
+  <data name="Status_DossierCopied" xml:space="preserve"><value>Información del dispositivo copiada al portapapeles.</value></data>
   <data name="Status_CopyFailed_Format" xml:space="preserve"><value>Error al copiar: {0}</value></data>
   <data name="Status_InvalidClipboard" xml:space="preserve"><value>El portapapeles no contiene una configuración válida de PadForge.</value></data>
   <data name="Status_SettingsPasted" xml:space="preserve"><value>Configuración pegada desde el portapapeles.</value></data>
@@ -2107,6 +2108,7 @@
   <data name="MacroDisconnect_Caveat" xml:space="preserve"><value>Solo Bluetooth. El mando entra en reposo al cortarse el enlace.</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>Desconexión por inactividad</value></data>
   <data name="Devices_Power" xml:space="preserve"><value>Energía</value></data>
+  <data name="Devices_Dossier" xml:space="preserve"><value>Dossier del dispositivo</value></data>
   <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>minutos (0 = nunca)</value></data>
   <data name="Devices_IdleDisconnectTooltip" xml:space="preserve"><value>Desconecta este mando Bluetooth tras esos minutos sin entrada, para que entre en reposo y ahorre batería. Nunca se activa por USB.</value></data>
   <data name="DevObj_ConsumerPower" xml:space="preserve"><value>Encendido</value></data>

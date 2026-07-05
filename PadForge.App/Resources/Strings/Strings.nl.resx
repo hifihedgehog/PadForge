@@ -152,6 +152,7 @@
   <data name="Status_SDL3NotFoundDetail" xml:space="preserve"><value>SDL3.dll niet gevonden! Plaats SDL3.dll naast PadForge.exe. Download van https://github.com/libsdl-org/SDL/releases</value></data>
   <data name="Status_DriverOperationFailed_Format" xml:space="preserve"><value>Stuurprogrammabewerking mislukt: {0}</value></data>
   <data name="Status_SettingsCopied" xml:space="preserve"><value>Instellingen naar klembord gekopieerd.</value></data>
+  <data name="Status_DossierCopied" xml:space="preserve"><value>Apparaatinfo naar klembord gekopieerd.</value></data>
   <data name="Status_CopyFailed_Format" xml:space="preserve"><value>Kopiëren mislukt: {0}</value></data>
   <data name="Status_InvalidClipboard" xml:space="preserve"><value>Klembord bevat geen geldige PadForge-instellingen.</value></data>
   <data name="Status_SettingsPasted" xml:space="preserve"><value>Instellingen vanuit klembord geplakt.</value></data>
@@ -2127,6 +2128,7 @@
   <data name="MacroDisconnect_Caveat" xml:space="preserve"><value>Alleen Bluetooth. De controller gaat in slaapstand zodra de verbinding wegvalt.</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>Loskoppelen bij inactiviteit</value></data>
   <data name="Devices_Power" xml:space="preserve"><value>Energie</value></data>
+  <data name="Devices_Dossier" xml:space="preserve"><value>Apparaatdossier</value></data>
   <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>minuten (0 = nooit)</value></data>
   <data name="Devices_IdleDisconnectTooltip" xml:space="preserve"><value>Koppelt deze Bluetooth-controller los na dit aantal minuten zonder invoer, zodat deze in slaapstand gaat en batterij bespaart. Wordt nooit geactiveerd via USB.</value></data>
   <data name="DevObj_ConsumerPower" xml:space="preserve"><value>Aan/uit</value></data>

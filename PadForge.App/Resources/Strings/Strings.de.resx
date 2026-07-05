@@ -152,6 +152,7 @@
   <data name="Status_SDL3NotFoundDetail" xml:space="preserve"><value>SDL3.dll nicht gefunden! Legen Sie SDL3.dll neben PadForge.exe ab. Download unter https://github.com/libsdl-org/SDL/releases</value></data>
   <data name="Status_DriverOperationFailed_Format" xml:space="preserve"><value>Treibervorgang fehlgeschlagen: {0}</value></data>
   <data name="Status_SettingsCopied" xml:space="preserve"><value>Einstellungen in die Zwischenablage kopiert.</value></data>
+  <data name="Status_DossierCopied" xml:space="preserve"><value>Geräteinfo in die Zwischenablage kopiert.</value></data>
   <data name="Status_CopyFailed_Format" xml:space="preserve"><value>Kopieren fehlgeschlagen: {0}</value></data>
   <data name="Status_InvalidClipboard" xml:space="preserve"><value>Die Zwischenablage enthält keine gültigen PadForge-Einstellungen.</value></data>
   <data name="Status_SettingsPasted" xml:space="preserve"><value>Einstellungen aus der Zwischenablage eingefügt.</value></data>
@@ -2107,6 +2108,7 @@
   <data name="MacroDisconnect_Caveat" xml:space="preserve"><value>Nur Bluetooth. Der Controller wechselt in den Ruhezustand, sobald die Verbindung getrennt ist.</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>Trennung bei Inaktivität</value></data>
   <data name="Devices_Power" xml:space="preserve"><value>Energie</value></data>
+  <data name="Devices_Dossier" xml:space="preserve"><value>Gerätedossier</value></data>
   <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>Minuten (0 = nie)</value></data>
   <data name="Devices_IdleDisconnectTooltip" xml:space="preserve"><value>Trennt diesen Bluetooth-Controller nach so vielen Minuten ohne Eingabe, sodass er in den Ruhezustand wechselt und Akku spart. Löst nie über USB aus.</value></data>
   <data name="DevObj_ConsumerPower" xml:space="preserve"><value>Ein/Aus</value></data>

@@ -382,9 +382,15 @@ namespace PadForge.Views
 
         /// <summary>
         /// Copies the dossier block as plain mono text. Locale-neutral token
-        /// lines mirroring the on-screen block: fields the engine holds only,
-        /// absent facts omitted, no placeholders. Same try/catch + status-bar
-        /// confirmation shape as the settings/macro copy handlers.
+        /// lines mirroring the on-screen card, in card order: the full
+        /// identity superset now that the dossier is the single identity
+        /// block (PRODUCT, TYPE, CAPS, APP GUID, SDL GUID, PATH, VID:PID,
+        /// LINK, SERIAL, BATT). Fields the engine holds only, absent facts
+        /// omitted, no placeholders. CAPS is the on-card capabilities
+        /// summary line, which already names rumble/gyro/accel/touchpad,
+        /// so the chip row adds no extra copy line. Same try/catch +
+        /// status-bar confirmation shape as the settings/macro copy
+        /// handlers.
         /// </summary>
         private void CopyDossier_Click(object sender, RoutedEventArgs e)
         {
@@ -395,6 +401,14 @@ namespace PadForge.Views
             try
             {
                 var sb = new System.Text.StringBuilder();
+                sb.AppendLine($"PRODUCT   {dev.ProductName}");
+                sb.AppendLine($"TYPE      {dev.DeviceType}");
+                sb.AppendLine($"CAPS      {dev.CapabilitiesSummary}");
+                sb.AppendLine($"APP GUID  {dev.InstanceGuid}");
+                if (!string.IsNullOrEmpty(dev.SdlGuid))
+                    sb.AppendLine($"SDL GUID  {dev.SdlGuid}");
+                if (!string.IsNullOrEmpty(dev.HidHideInstancePath))
+                    sb.AppendLine($"PATH      {dev.HidHideInstancePath}");
                 sb.AppendLine($"VID:PID   {dev.VendorIdHex}:{dev.ProductIdHex}");
                 if (dev.IsBluetoothLink)
                     sb.AppendLine("LINK      BT");
@@ -402,14 +416,6 @@ namespace PadForge.Views
                     sb.AppendLine($"SERIAL    {dev.SerialNumber}");
                 if (dev.HasBattery)
                     sb.AppendLine($"BATT      {dev.BatteryText}" + (dev.BatteryCharging ? " CHG" : string.Empty));
-
-                var caps = new System.Collections.Generic.List<string>();
-                if (dev.HasRumble) caps.Add("RUMBLE");
-                if (dev.HasGyro) caps.Add("GYRO");
-                if (dev.HasAccel) caps.Add("ACCEL");
-                if (dev.ShowTouchpadCapability) caps.Add("TOUCHPAD");
-                if (caps.Count > 0)
-                    sb.AppendLine("CAPS      " + string.Join(" ", caps));
 
                 Clipboard.SetText(sb.ToString());
                 if (mainVm != null)

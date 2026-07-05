@@ -259,7 +259,7 @@ namespace PadForge.Views
                 {
                     var chip = FindAnnotationChip(row);
                     if (chip != null)
-                        chip.Text.Text = ChipLabel(row);
+                        chip.Text.Text = CompactChipLabel(row);
                 }
             }
         }
@@ -328,7 +328,84 @@ namespace PadForge.Views
             }
             if (parts.Count == 0)
                 return target;
-            return string.Join(" + ", parts) + " -> " + target;
+            return string.Join(" + ", parts) + " → " + target;
+        }
+
+        /// <summary>Compact chip face (user report 2026-07-04: full wiring
+        /// text made the stage unreadably busy). The chip carries the
+        /// output name plus a +N badge for additional sources; the full
+        /// ChipLabel line appears in the detail strip on hover and stays
+        /// in the tooltip.</summary>
+        private static string CompactChipLabel(MappingItem row)
+        {
+            string target = (row.TargetLabel ?? string.Empty).Trim();
+            int sources = string.IsNullOrWhiteSpace(row.SourceDisplayText) ? 0 : 1;
+            foreach (var src in row.ExtraSources)
+                if (!string.IsNullOrWhiteSpace(src.SelectedInput?.DisplayName ?? src.Descriptor))
+                    sources++;
+            return sources > 1 ? target + " +" + (sources - 1) : target;
+        }
+
+        private Border _annotationDetailStrip;
+        private TextBlock _annotationDetailText;
+
+        /// <summary>Bottom-docked mono readout: hovering a chip prints the
+        /// full wiring line here, where width is unlimited.</summary>
+        private void EnsureAnnotationDetailStrip()
+        {
+            if (_annotationDetailStrip != null)
+            {
+                if (!AnnotationCanvas.Children.Contains(_annotationDetailStrip))
+                    AnnotationCanvas.Children.Add(_annotationDetailStrip);
+                return;
+            }
+            _annotationDetailText = new TextBlock
+            {
+                FontSize = 11,
+                VerticalAlignment = VerticalAlignment.Center,
+            };
+            if (Application.Current.Resources["TelemetryFontFamily"] is FontFamily mono)
+                _annotationDetailText.FontFamily = mono;
+            _annotationDetailText.SetResourceReference(TextBlock.ForegroundProperty, "TextFillColorSecondaryBrush");
+            _annotationDetailStrip = new Border
+            {
+                CornerRadius = new CornerRadius(6),
+                BorderThickness = new Thickness(1),
+                Padding = new Thickness(10, 4, 10, 4),
+                Child = _annotationDetailText,
+                IsHitTestVisible = false,
+                Visibility = Visibility.Collapsed,
+            };
+            _annotationDetailStrip.SetResourceReference(Border.BackgroundProperty, "SteelRaisedBrush");
+            _annotationDetailStrip.SetResourceReference(Border.BorderBrushProperty, "SteelLineSoftBrush");
+            Panel.SetZIndex(_annotationDetailStrip, 60);
+            AnnotationCanvas.Children.Add(_annotationDetailStrip);
+        }
+
+        private void ShowAnnotationDetail(MappingItem row)
+        {
+            EnsureAnnotationDetailStrip();
+            _annotationDetailText.Text = ChipLabel(row);
+            _annotationDetailStrip.Visibility = Visibility.Visible;
+            PositionAnnotationDetailStrip();
+        }
+
+        private void HideAnnotationDetail()
+        {
+            if (_annotationDetailStrip != null)
+                _annotationDetailStrip.Visibility = Visibility.Collapsed;
+        }
+
+        private void PositionAnnotationDetailStrip()
+        {
+            if (_annotationDetailStrip == null)
+                return;
+            double w = AnnotationCanvas.ActualWidth;
+            double h = AnnotationCanvas.ActualHeight;
+            _annotationDetailStrip.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+            double sw = _annotationDetailStrip.DesiredSize.Width;
+            Canvas.SetLeft(_annotationDetailStrip, Math.Max(8, (w - sw) / 2));
+            Canvas.SetTop(_annotationDetailStrip, Math.Max(8, h - _annotationDetailStrip.DesiredSize.Height - 10));
         }
 
         // ─────────────────────────────────────────────
@@ -341,7 +418,7 @@ namespace PadForge.Views
             {
                 FontSize = 10,
                 VerticalAlignment = VerticalAlignment.Center,
-                Text = ChipLabel(row),
+                Text = CompactChipLabel(row),
             };
             if (Application.Current.Resources["TelemetryFontFamily"] is FontFamily telemetry)
                 text.FontFamily = telemetry;
@@ -362,6 +439,8 @@ namespace PadForge.Views
             border.SetResourceReference(Border.BorderBrushProperty, "SteelLineSoftBrush");
             border.ToolTip = ChipLabel(row);
             border.MouseLeftButtonUp += AnnotationChip_MouseLeftButtonUp;
+            border.MouseEnter += (_, _) => ShowAnnotationDetail(row);
+            border.MouseLeave += (_, _) => HideAnnotationDetail();
 
             var leader = new Line
             {

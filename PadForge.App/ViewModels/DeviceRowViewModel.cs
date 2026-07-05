@@ -98,7 +98,12 @@ namespace PadForge.ViewModels
             set
             {
                 if (SetProperty(ref _vendorId, value))
+                {
                     OnPropertyChanged(nameof(VendorIdHex));
+                    // Transport depends on VID/PID for the fork BLE Switch 2
+                    // case (empty DevicePath never fires its own notify).
+                    OnPropertyChanged(nameof(IsBluetoothLink));
+                }
             }
         }
 
@@ -111,7 +116,10 @@ namespace PadForge.ViewModels
             set
             {
                 if (SetProperty(ref _productId, value))
+                {
                     OnPropertyChanged(nameof(ProductIdHex));
+                    OnPropertyChanged(nameof(IsBluetoothLink));
+                }
             }
         }
 
@@ -550,12 +558,16 @@ namespace PadForge.ViewModels
             }
         }
 
-        /// <summary>True when the device path is a Bluetooth HID path, the
-        /// same predicate the effect writers and disconnect gates use. Drives
+        /// <summary>True when the device is known to be linked over
+        /// Bluetooth (classic {00001124}/BTHENUM, BLE {00001812}, or the SDL
+        /// fork's BLE Switch 2 driver identified by VID/PID plus empty path),
+        /// the same classifier the slot-card transport glyph uses. Drives
         /// the dossier LINK line, which renders only when Bluetooth is a
         /// positive fact: a non-BT path may be USB, a wireless dongle, or a
-        /// virtual source, so no transport is claimed for those (#175 item 7).</summary>
-        public bool IsBluetoothLink => Common.Input.SonyEffectWriter.IsBluetoothPath(_devicePath);
+        /// virtual source, so no transport is claimed for those (#175 item 7).
+        /// Xbox pads over BT (XInput#N paths) stay unclaimed, see
+        /// <see cref="Common.DeviceTransport"/>.</summary>
+        public bool IsBluetoothLink => Common.DeviceTransport.IsBluetooth(_devicePath, _vendorId, _productId);
 
         private string _hidHideInstancePath = string.Empty;
 

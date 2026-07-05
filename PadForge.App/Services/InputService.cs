@@ -7606,9 +7606,13 @@ namespace PadForge.Services
                             // Device-class glyph (#175): the roster icon
                             // matches the device type, not a blanket gamepad.
                             TypeGlyph = DeviceTypeGlyph.For(ud?.CapType ?? 0),
-                            // Transport (#175 competitor item 9): the same
-                            // path predicate the disconnect gates use.
-                            TransportGlyph = PadForge.Common.Input.SonyEffectWriter.IsBluetoothPath(ud?.DevicePath)
+                            // Transport (#175 competitor item 9): shared
+                            // classifier (classic {00001124}/BTHENUM, BLE
+                            // {00001812}, fork BLE Switch 2 by VID/PID plus
+                            // empty path). Xbox pads over BT (XInput#N)
+                            // stay unclaimed, see DeviceTransport.
+                            TransportGlyph = DeviceTransport.IsBluetooth(
+                                    ud?.DevicePath, ud?.VendorId ?? (ushort)0, ud?.ProdId ?? (ushort)0)
                                 ? "" : string.Empty
                         });
                     }

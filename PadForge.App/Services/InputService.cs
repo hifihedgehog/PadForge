@@ -7336,9 +7336,21 @@ namespace PadForge.Services
                 && ud.ProdId is 0x0CE6 or 0x0DF2 or 0x05C4 or 0x09CC or 0x0BA0;
             bool switch2Pad = ud.VendorId == 0x057E
                 && ud.ProdId is 0x2066 or 0x2067 or 0x2068 or 0x2069;
-            row.HasRumble = ud.HasForceFeedback || ud.HasRumbleTriggers || sonyLightbarPad
-                || switch2Pad
-                || PadForge.Common.Input.HapticToneService.DeviceHasHaptics(ud);
+            // Stick-class gate (same class list as the Pad page's Force
+            // Feedback tab): keyboards, mice, touchpads, MIDI, NFC, and
+            // consumer-control devices never rumble, whatever a generic HID
+            // haptic flag claims (user report 2026-07-05: a HID keyboard
+            // wore the rumble chip).
+            bool rumbleClass = ud.CapType == InputDeviceType.Gamepad
+                || ud.CapType == InputDeviceType.Joystick
+                || ud.CapType == InputDeviceType.Driving
+                || ud.CapType == InputDeviceType.Flight
+                || ud.CapType == InputDeviceType.FirstPerson
+                || ud.CapType == InputDeviceType.Supplemental;
+            row.HasRumble = rumbleClass
+                && (ud.HasForceFeedback || ud.HasRumbleTriggers || sonyLightbarPad
+                    || switch2Pad
+                    || PadForge.Common.Input.HapticToneService.DeviceHasHaptics(ud));
             row.HasGyro = ud.HasGyro;
             row.HasAccel = ud.HasAccel;
             row.HasTouchpad = ud.HasTouchpad;

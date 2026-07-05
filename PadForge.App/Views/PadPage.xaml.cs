@@ -1741,6 +1741,9 @@ namespace PadForge.Views
                         SyncLightbarHexBox();
                     SyncLightbarPreviewBloom();
                     break;
+                case nameof(ViewModels.PlayStationSlotConfig.LightbarMode):
+                    SyncLightbarPreviewBloom();
+                    break;
                 case nameof(ViewModels.PlayStationSlotConfig.AudioLowR):
                 case nameof(ViewModels.PlayStationSlotConfig.AudioLowG):
                 case nameof(ViewModels.PlayStationSlotConfig.AudioLowB):
@@ -1868,10 +1871,67 @@ namespace PadForge.Views
         {
             if (LightbarPreviewArc?.Effect is not System.Windows.Media.Effects.DropShadowEffect bloom) return;
             if (DataContext is not PadViewModel vm || vm.PlayStationConfig == null) return;
-            bloom.Color = Color.FromRgb(
-                vm.PlayStationConfig.LightbarRed,
-                vm.PlayStationConfig.LightbarGreen,
-                vm.PlayStationConfig.LightbarBlue);
+            var cfg = vm.PlayStationConfig;
+            var baseColor = Color.FromRgb(cfg.LightbarRed, cfg.LightbarGreen, cfg.LightbarBlue);
+
+            // Per-mode presentation (user report 2026-07-05): dynamic modes
+            // read dynamically. Static gradient representations, value-driven
+            // only, no animation loops (reduced-motion canon).
+            Brush stroke;
+            Color bloomColor = baseColor;
+            LightbarPreviewArc.StrokeDashArray = null;
+            switch (cfg.LightbarMode)
+            {
+                case ViewModels.LightbarMode.Rainbow:
+                case ViewModels.LightbarMode.ColorCycle:
+                case ViewModels.LightbarMode.AudioPulseRainbow:
+                    stroke = new LinearGradientBrush(new GradientStopCollection
+                    {
+                        new GradientStop(Color.FromRgb(0xFF, 0x00, 0x00), 0.00),
+                        new GradientStop(Color.FromRgb(0xFF, 0xBF, 0x00), 0.20),
+                        new GradientStop(Color.FromRgb(0x00, 0xFF, 0x00), 0.40),
+                        new GradientStop(Color.FromRgb(0x00, 0xFF, 0xFF), 0.60),
+                        new GradientStop(Color.FromRgb(0x00, 0x00, 0xFF), 0.80),
+                        new GradientStop(Color.FromRgb(0xFF, 0x00, 0xFF), 1.00),
+                    }, 0);
+                    bloomColor = Colors.White;
+                    break;
+                case ViewModels.LightbarMode.Breathing:
+                    stroke = new LinearGradientBrush(new GradientStopCollection
+                    {
+                        new GradientStop(Color.FromArgb(0x30, baseColor.R, baseColor.G, baseColor.B), 0.0),
+                        new GradientStop(baseColor, 0.5),
+                        new GradientStop(Color.FromArgb(0x30, baseColor.R, baseColor.G, baseColor.B), 1.0),
+                    }, 0);
+                    break;
+                case ViewModels.LightbarMode.AudioPulse:
+                case ViewModels.LightbarMode.AudioPulseRandom:
+                case ViewModels.LightbarMode.AudioThresholds:
+                case ViewModels.LightbarMode.AudioGradient:
+                case ViewModels.LightbarMode.AudioCrossFade:
+                    stroke = new LinearGradientBrush(
+                        Color.FromRgb(0x58, 0xB6, 0xE4), baseColor, 0);
+                    break;
+                case ViewModels.LightbarMode.Battery:
+                    stroke = new LinearGradientBrush(new GradientStopCollection
+                    {
+                        new GradientStop(Color.FromRgb(0xE5, 0x48, 0x4D), 0.0),
+                        new GradientStop(Color.FromRgb(0xE8, 0xB4, 0x34), 0.5),
+                        new GradientStop(Color.FromRgb(0x46, 0xC4, 0x63), 1.0),
+                    }, 0);
+                    bloomColor = Color.FromRgb(0x46, 0xC4, 0x63);
+                    break;
+                case ViewModels.LightbarMode.Strobe:
+                    stroke = new SolidColorBrush(baseColor);
+                    LightbarPreviewArc.StrokeDashArray = new DoubleCollection { 1.2, 1.2 };
+                    break;
+                default:
+                    stroke = new SolidColorBrush(baseColor);
+                    break;
+            }
+            if (stroke is System.Windows.Media.Brush b && b.CanFreeze) b.Freeze();
+            LightbarPreviewArc.Stroke = stroke;
+            bloom.Color = bloomColor;
         }
 
         /// <summary>Parses a HEX color string (with or without leading #)

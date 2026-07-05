@@ -47,6 +47,7 @@
                        Text="{Binding Recorder_Waiting, Source={x:Static strings:Strings.Instance}}"
                        FontSize="13" VerticalAlignment="Center"/>
             <TextBlock x:Name="SamplesText"
+                       FontFamily="{StaticResource TelemetryFontFamily}"
                        FontSize="13" VerticalAlignment="Center" Margin="20,0,0,0"
                        Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
         </StackPanel>

@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
         xmlns:strings="clr-namespace:PadForge.Resources.Strings"
+        FontFamily="{StaticResource BodyFontFamily}"
         ExtendsContentIntoTitleBar="True"
         WindowBackdropType="Mica"
         Title="{Binding ProfileDialog_SaveAs, Source={x:Static strings:Strings.Instance}}"
@@ -37,6 +38,7 @@
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <TextBlock Text="{Binding}" TextTrimming="CharacterEllipsis"
+                               FontFamily="{StaticResource TelemetryFontFamily}"
                                ToolTip="{Binding}"/>
                 </DataTemplate>
             </ListBox.ItemTemplate>

@@ -125,6 +125,9 @@
             <Setter Property="Width" Value="14"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="FontWeight" Value="SemiBold"/>
+            <!-- Channel letters wear the telemetry mono face, matching the
+                 Devices-page X/Y/Z axis tokens. -->
+            <Setter Property="FontFamily" Value="{StaticResource TelemetryFontFamily}"/>
             <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}"/>
         </Style>
         <!-- RGB rows ride the EmberSlider retemplate (user report,
@@ -322,13 +325,6 @@
             <Setter Property="FontSize" Value="12"/>
             <Setter Property="FontWeight" Value="SemiBold"/>
             <Setter Property="TextWrapping" Value="Wrap"/>
-        </Style>
-        <Style x:Key="AtModeCardDesc" TargetType="TextBlock">
-            <Setter Property="FontFamily" Value="{StaticResource TelemetryFontFamily}"/>
-            <Setter Property="FontSize" Value="10"/>
-            <Setter Property="Foreground" Value="{DynamicResource TextFillColorTertiaryBrush}"/>
-            <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
-            <Setter Property="Margin" Value="0,1,0,4"/>
         </Style>
     </UserControl.Resources>
 
@@ -1127,7 +1123,7 @@
                                            Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
                                 <TextBox x:Name="CustomFormulaBox"
                                          Text="{Binding TriggerExpression, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                         FontFamily="Consolas"
+                                         FontFamily="{StaticResource TelemetryFontFamily}"
                                          AcceptsReturn="False"
                                          AllowDrop="True"
                                          Padding="6,4"
@@ -1137,6 +1133,7 @@
                                     </TextBox.ToolTip>
                                 </TextBox>
                                 <TextBlock Text="{Binding CustomExpressionStatus}"
+                                           FontFamily="{StaticResource TelemetryFontFamily}"
                                            FontSize="11" Margin="0,0,0,6"
                                            Foreground="{DynamicResource TextFillColorSecondaryBrush}">
                                     <TextBlock.Style>
@@ -1166,7 +1163,7 @@
                                             <Setter Property="Padding" Value="6,2"/>
                                             <Setter Property="Margin" Value="0,0,3,3"/>
                                             <Setter Property="MinWidth" Value="28"/>
-                                            <Setter Property="FontFamily" Value="Consolas"/>
+                                            <Setter Property="FontFamily" Value="{StaticResource TelemetryFontFamily}"/>
                                             <Setter Property="FontSize" Value="11"/>
                                             <EventSetter Event="PreviewMouseLeftButtonDown" Handler="FormulaChip_PreviewMouseLeftButtonDown"/>
                                             <EventSetter Event="PreviewMouseMove" Handler="FormulaChip_PreviewMouseMove"/>
@@ -1343,7 +1340,7 @@
                                                     <TextBlock Text="{Binding (ItemsControl.AlternationIndex), RelativeSource={RelativeSource AncestorType=ContentPresenter}, Converter={StaticResource IndexToLetterConverter}}"
                                                                VerticalAlignment="Center"
                                                                Margin="0,0,8,0"
-                                                               FontFamily="Consolas"
+                                                               FontFamily="{StaticResource TelemetryFontFamily}"
                                                                FontWeight="SemiBold"/>
                                                     <ComboBox SelectedValue="{Binding Source, Mode=TwoWay}"
                                                               SelectedValuePath="Tag" MinWidth="140" Margin="0,0,8,0">
@@ -1821,7 +1818,7 @@
                                                 Visibility="{Binding IsKeyType, Converter={StaticResource BoolToVisibilityConverter}}">
                                         <TextBlock Text="{Binding Macro_KeyCombo, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,0,0,4"/>
                                         <TextBox Text="{Binding KeyString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                 FontFamily="Consolas" Margin="0,0,0,4"
+                                                 FontFamily="{StaticResource TelemetryFontFamily}" Margin="0,0,0,4"
                                                  ToolTip="{Binding Macro_KeyComboTooltip, Source={x:Static strings:Strings.Instance}}"/>
                                         <StackPanel Orientation="Horizontal">
                                             <ComboBox ItemsSource="{x:Static vm:MacroAction.VirtualKeyValues}"
@@ -3318,11 +3315,11 @@
                                                      Text="{Binding CombineExpression, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                      MinWidth="380" Padding="6,4"
                                                      VerticalAlignment="Center"
-                                                     FontFamily="Consolas"
+                                                     FontFamily="{StaticResource TelemetryFontFamily}"
                                                      AllowDrop="True"
                                                      ToolTip="{Binding Pad_Formula_TextBox_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                             <TextBlock Text="{Binding CombineExpressionStatus}"
-                                                       FontSize="10" FontFamily="Consolas"
+                                                       FontSize="10" FontFamily="{StaticResource TelemetryFontFamily}"
                                                        Margin="2,2,0,4"
                                                        TextWrapping="Wrap">
                                                 <TextBlock.Style>
@@ -3353,7 +3350,7 @@
                                                         <Setter Property="Padding" Value="6,2"/>
                                                         <Setter Property="Margin" Value="0,0,3,3"/>
                                                         <Setter Property="MinWidth" Value="28"/>
-                                                        <Setter Property="FontFamily" Value="Consolas"/>
+                                                        <Setter Property="FontFamily" Value="{StaticResource TelemetryFontFamily}"/>
                                                         <Setter Property="FontSize" Value="11"/>
                                                         <!-- Drag-out support: PreviewMouseLeftButtonDown
                                                              records the start point, MouseMove past the
@@ -5409,7 +5406,7 @@
                                         <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Grid.Column="1" Text="{Binding Pad_Lighting_Hex, Source={x:Static strings:Strings.Instance}}"
                                                    VerticalAlignment="Center" Margin="8,0,0,0"/>
                                         <TextBox Grid.Column="2" Width="100" HorizontalAlignment="Left" VerticalAlignment="Center"
-                                                 FontFamily="Consolas" Padding="6,4"
+                                                 FontFamily="{StaticResource TelemetryFontFamily}" Padding="6,4"
                                                  Text="{Binding SteeringLockLightbarColor, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                                  ToolTip="{Binding Pad_Lighting_HexTooltip, Source={x:Static strings:Strings.Instance}}"/>
                                     </Grid>
@@ -5480,7 +5477,7 @@
                                                         <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Grid.Column="1" Text="{Binding Pad_Lighting_Hex, Source={x:Static strings:Strings.Instance}}"
                                                                    VerticalAlignment="Center" Margin="8,0,0,0"/>
                                                         <TextBox Grid.Column="2" Width="100" HorizontalAlignment="Left" VerticalAlignment="Center"
-                                                                 FontFamily="Consolas" Padding="6,4"
+                                                                 FontFamily="{StaticResource TelemetryFontFamily}" Padding="6,4"
                                                                  Text="{Binding Hex, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                                                  ToolTip="{Binding Pad_Lighting_HexTooltip, Source={x:Static strings:Strings.Instance}}"/>
                                                     </Grid>
@@ -6921,7 +6918,7 @@
                                                                 </Border.Background>
                                                             </Border>
                                                             <TextBox Grid.Column="1" Margin="6,0,0,0" VerticalAlignment="Center"
-                                                                     FontFamily="Consolas" Padding="6,2"
+                                                                     FontFamily="{StaticResource TelemetryFontFamily}" Padding="6,2"
                                                                      Text="{Binding Hex, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                                                      ToolTip="{Binding Pad_Lighting_HexTooltip, Source={x:Static strings:Strings.Instance}}"/>
                                                         </Grid>
@@ -7209,7 +7206,7 @@
                                                        VerticalAlignment="Center" Margin="8,0,0,0"/>
                                             <TextBox x:Name="LightbarHexBox" Grid.Column="2" Width="100"
                                                      HorizontalAlignment="Left" VerticalAlignment="Center"
-                                                     FontFamily="Consolas" Padding="6,4"
+                                                     FontFamily="{StaticResource TelemetryFontFamily}" Padding="6,4"
                                                      KeyDown="LightbarHexBox_KeyDown"
                                                      LostFocus="LightbarHexBox_LostFocus"
                                                      ToolTip="{Binding Pad_Lighting_HexTooltip, Source={x:Static strings:Strings.Instance}}"/>
@@ -7393,7 +7390,7 @@
                                                     </Border>
                                                     <TextBox x:Name="AudioLowHexBox" Grid.Column="1" Tag="Low"
                                                              Margin="6,0,0,0" VerticalAlignment="Center"
-                                                             FontFamily="Consolas" Padding="6,2"
+                                                             FontFamily="{StaticResource TelemetryFontFamily}" Padding="6,2"
                                                              KeyDown="AudioHexBox_KeyDown"
                                                              LostFocus="AudioHexBox_LostFocus"
                                                              ToolTip="{Binding Pad_Lighting_HexTooltip, Source={x:Static strings:Strings.Instance}}"/>
@@ -7447,7 +7444,7 @@
                                                     </Border>
                                                     <TextBox x:Name="AudioMidHexBox" Grid.Column="1" Tag="Mid"
                                                              Margin="6,0,0,0" VerticalAlignment="Center"
-                                                             FontFamily="Consolas" Padding="6,2"
+                                                             FontFamily="{StaticResource TelemetryFontFamily}" Padding="6,2"
                                                              KeyDown="AudioHexBox_KeyDown"
                                                              LostFocus="AudioHexBox_LostFocus"
                                                              ToolTip="{Binding Pad_Lighting_HexTooltip, Source={x:Static strings:Strings.Instance}}"/>
@@ -7501,7 +7498,7 @@
                                                     </Border>
                                                     <TextBox x:Name="AudioHighHexBox" Grid.Column="1" Tag="High"
                                                              Margin="6,0,0,0" VerticalAlignment="Center"
-                                                             FontFamily="Consolas" Padding="6,2"
+                                                             FontFamily="{StaticResource TelemetryFontFamily}" Padding="6,2"
                                                              KeyDown="AudioHexBox_KeyDown"
                                                              LostFocus="AudioHexBox_LostFocus"
                                                              ToolTip="{Binding Pad_Lighting_HexTooltip, Source={x:Static strings:Strings.Instance}}"/>
@@ -7632,7 +7629,7 @@
                                                                 </Border.Background>
                                                             </Border>
                                                             <TextBox Grid.Column="1" Margin="6,0,0,0" VerticalAlignment="Center"
-                                                                     FontFamily="Consolas" Padding="6,2"
+                                                                     FontFamily="{StaticResource TelemetryFontFamily}" Padding="6,2"
                                                                      Text="{Binding Hex, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                                                      ToolTip="{Binding Pad_Lighting_HexTooltip, Source={x:Static strings:Strings.Instance}}"/>
                                                         </Grid>
@@ -8158,6 +8155,7 @@
                                     <ui:Button Command="{Binding ResetGyroSensitivityHCommand}" Style="{StaticResource ResetButton}"
                                             ToolTip="{Binding Pad_ResetGyroSensitivityH, Source={x:Static strings:Strings.Instance}}"/>
                                     <TextBlock Text="{Binding GyroSensitivityH_DegPerTurn, StringFormat={}≈ {0:0}°/turn}"
+                                               FontFamily="{StaticResource TelemetryFontFamily}"
                                                VerticalAlignment="Center" Margin="14,0,0,0" Foreground="{DynamicResource TextFillColorTertiaryBrush}" FontSize="11"/>
                                 </StackPanel>
 
@@ -8175,6 +8173,7 @@
                                     <ui:Button Command="{Binding ResetGyroSensitivityVCommand}" Style="{StaticResource ResetButton}"
                                             ToolTip="{Binding Pad_ResetGyroSensitivityV, Source={x:Static strings:Strings.Instance}}"/>
                                     <TextBlock Text="{Binding GyroSensitivityV_DegPerTurn, StringFormat={}≈ {0:0}°/turn}"
+                                               FontFamily="{StaticResource TelemetryFontFamily}"
                                                VerticalAlignment="Center" Margin="14,0,0,0" Foreground="{DynamicResource TextFillColorTertiaryBrush}" FontSize="11"/>
                                 </StackPanel>
 
@@ -9438,6 +9437,7 @@
                                     <Slider Value="{Binding IrSensorBarCompPercent, Mode=TwoWay}"
                                             Minimum="0" Maximum="50" Width="240" VerticalAlignment="Center"/>
                                     <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding IrSensorBarCompPercent, StringFormat={}{0}%}"
+                                               FontFamily="{StaticResource TelemetryFontFamily}"
                                                VerticalAlignment="Center" Margin="8,0,0,0" MinWidth="36"/>
                                 </StackPanel>
 
@@ -9447,6 +9447,7 @@
                                     <Slider Value="{Binding IrSmoothingPercent, Mode=TwoWay}"
                                             Minimum="0" Maximum="100" Width="240" VerticalAlignment="Center"/>
                                     <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding IrSmoothingPercent, StringFormat={}{0}%}"
+                                               FontFamily="{StaticResource TelemetryFontFamily}"
                                                VerticalAlignment="Center" Margin="8,0,0,0" MinWidth="36"/>
                                 </StackPanel>
                             </StackPanel>

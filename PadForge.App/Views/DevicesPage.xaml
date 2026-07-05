@@ -243,7 +243,10 @@
                                                         <TextBlock Text="&#xE7FC;" FontFamily="Segoe MDL2 Assets"
                                                                    FontSize="10" Foreground="#FFFFF3E8"
                                                                    VerticalAlignment="Center"/>
-                                                        <TextBlock Text="{Binding SlotNumber}" FontSize="10" Foreground="#FFFFF3E8" Margin="3,0,0,0"
+                                                        <!-- Slot number is a chip token: mono, like the
+                                                             PadPage tier-strip slot pill. -->
+                                                        <TextBlock Text="{Binding SlotNumber}" FontFamily="{StaticResource TelemetryFontFamily}"
+                                                                   FontSize="10" Foreground="#FFFFF3E8" Margin="3,0,0,0"
                                                                    VerticalAlignment="Center"/>
                                                     </StackPanel>
                                                 </Border>
@@ -396,9 +399,11 @@
                               Visibility="{Binding HasSelectedDevice, Converter={StaticResource BoolToVisibilityConverter}}">
                     <StackPanel>
 
-                        <!-- Device identity -->
+                        <!-- Device identity: the detail card's title, so it
+                             wears the shared CardTitle (display face) instead
+                             of a bespoke body-face heading. -->
                         <TextBlock Text="{Binding SelectedDevice.DeviceName}"
-                                   FontSize="16" FontWeight="SemiBold"
+                                   Style="{StaticResource CardTitle}"
                                    TextWrapping="Wrap" Margin="0,0,0,6"/>
 
                         <!-- ─── Device Dossier (#175 competitor item 7) ─── -->
@@ -637,8 +642,9 @@
                                             <StackPanel Orientation="Horizontal">
                                                 <TextBlock Text="&#xE7FC;" FontFamily="Segoe MDL2 Assets"
                                                            FontSize="10" VerticalAlignment="Center"/>
-                                                <TextBlock Text="{Binding SlotNumber}" FontSize="10"
-                                                           VerticalAlignment="Center" Margin="3,0,0,0"/>
+                                                <!-- Chip token: mono, mirrors the list-card badge. -->
+                                                <TextBlock Text="{Binding SlotNumber}" FontFamily="{StaticResource TelemetryFontFamily}"
+                                                           FontSize="10" VerticalAlignment="Center" Margin="3,0,0,0"/>
                                             </StackPanel>
                                         </ToggleButton>
                                     </DataTemplate>

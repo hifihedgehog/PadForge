@@ -2473,6 +2473,9 @@ namespace PadForge
                 Text = string.IsNullOrEmpty(navItem.InstanceLabel) || navItem.InstanceLabel.Contains('#')
                     ? navItem.InstanceLabel
                     : "#" + navItem.InstanceLabel,
+                // Telemetry mono (#175 font sweep): the "#N" token matches
+                // the dashboard seg's instance label face.
+                FontFamily = (System.Windows.Media.FontFamily)FindResource("TelemetryFontFamily"),
                 FontSize = 11,
                 VerticalAlignment = VerticalAlignment.Center,
                 Margin = new Thickness(4, 0, 0, 0)
@@ -2695,6 +2698,9 @@ namespace PadForge
             row1.Children.Add(new System.Windows.Controls.TextBlock
             {
                 Text = navItem.SlotNumber.ToString(),
+                // Telemetry mono (#175 font sweep): slot-number token, same
+                // face as the expanded pill's slot number.
+                FontFamily = (System.Windows.Media.FontFamily)FindResource("TelemetryFontFamily"),
                 FontSize = 10,
                 FontWeight = FontWeights.SemiBold,
                 Foreground = fgBrush,
@@ -2735,6 +2741,9 @@ namespace PadForge
             row2.Children.Add(new System.Windows.Controls.TextBlock
             {
                 Text = navItem.InstanceLabel ?? "",
+                // Telemetry mono (#175 font sweep): instance token, same
+                // face as the expanded pill's "#N" label.
+                FontFamily = (System.Windows.Media.FontFamily)FindResource("TelemetryFontFamily"),
                 FontSize = 9,
                 FontWeight = FontWeights.SemiBold,
                 Foreground = fgBrush,
@@ -3953,6 +3962,10 @@ namespace PadForge
                 var name = new System.Windows.Controls.TextBlock
                 {
                     Text = item.Name,
+                    // Body face set explicitly (#175 font sweep): a code-built
+                    // Popup sits outside the window's tree, so the window-level
+                    // BodyFontFamily never inherits into it.
+                    FontFamily = (System.Windows.Media.FontFamily)FindResource("BodyFontFamily"),
                     MaxWidth = 240,
                     TextTrimming = TextTrimming.CharacterEllipsis,
                     ToolTip = item.Name,

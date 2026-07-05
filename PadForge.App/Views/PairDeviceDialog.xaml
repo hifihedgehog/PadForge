@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
         xmlns:strings="clr-namespace:PadForge.Resources.Strings"
+        FontFamily="{StaticResource BodyFontFamily}"
         ExtendsContentIntoTitleBar="True"
         WindowBackdropType="Mica"
         Title="{Binding WiiPair_Title, Source={x:Static strings:Strings.Instance}}"
@@ -68,9 +69,9 @@
                      Background="{DynamicResource ControlFillColorDefaultBrush}"/>
         </StackPanel>
 
-        <!-- Diagnostic log path (non-localized, it's a file path) -->
+        <!-- Diagnostic log path (non-localized, it's a file path): mono readout -->
         <TextBlock Grid.Row="5" x:Name="LogPathText" TextWrapping="Wrap" Margin="0,0,0,8"
-                   FontSize="11"
+                   FontFamily="{StaticResource TelemetryFontFamily}" FontSize="11"
                    Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
 
         <StackPanel Grid.Row="6" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,4,0,0">

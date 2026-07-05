@@ -577,6 +577,7 @@ namespace PadForge.Views
             var text = new TextBlock
             {
                 Text = (index + 1).ToString(),
+                FontFamily = (FontFamily)FindResource("TelemetryFontFamily"),
                 FontSize = 9,
                 IsHitTestVisible = false,
                 TextAlignment = TextAlignment.Center
@@ -823,6 +824,10 @@ namespace PadForge.Views
                 FontSize = 11,
                 IsHitTestVisible = false
             };
+            // Mono telemetry face like the XAML canvases. Static helper, so
+            // resolve at app scope; skip gracefully if the resource is absent.
+            if (Application.Current.TryFindResource("TelemetryFontFamily") is FontFamily mono)
+                tb.FontFamily = mono;
             tb.SetResourceReference(TextBlock.ForegroundProperty, LabelKey);
             Canvas.SetLeft(tb, x);
             Canvas.SetTop(tb, y);

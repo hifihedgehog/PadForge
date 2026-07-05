@@ -172,6 +172,7 @@ namespace PadForge.Views
                 border.Child = new TextBlock
                 {
                     Text = key.Label, FontSize = 8,
+                    FontFamily = (FontFamily)FindResource("TelemetryFontFamily"),
                     HorizontalAlignment = HorizontalAlignment.Center,
                     VerticalAlignment = VerticalAlignment.Center,
                     Opacity = 0.8, IsHitTestVisible = false

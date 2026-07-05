@@ -55,7 +55,7 @@
 
                         <TextBlock x:Name="StatusText"
                                    FontSize="14"
-                                   FontFamily="Segoe UI Variable Text, Segoe UI"
+                                   FontFamily="{StaticResource BodyFontFamily}"
                                    VerticalAlignment="Center"
                                    Foreground="White"/>
                     </StackPanel>

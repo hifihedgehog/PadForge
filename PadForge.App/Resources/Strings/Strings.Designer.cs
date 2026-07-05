@@ -1778,6 +1778,8 @@ public class Strings : INotifyPropertyChanged
     public string Profiles_AutoSwitch => Get("Profiles_AutoSwitch");
     public string Profiles_ActiveProfile => Get("Profiles_ActiveProfile");
     public string Profiles_NoSlots => Get("Profiles_NoSlots");
+    public string Profiles_AutoSwitchRule_Format => Get("Profiles_AutoSwitchRule_Format");
+    public string Profiles_DropToImport => Get("Profiles_DropToImport");
     public string Profiles_New => Get("Profiles_New");
     public string Profiles_SaveAs => Get("Profiles_SaveAs");
     public string Profiles_Edit => Get("Profiles_Edit");

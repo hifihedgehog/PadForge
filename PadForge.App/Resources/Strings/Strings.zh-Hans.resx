@@ -812,6 +812,8 @@
   <data name="Profiles_AutoSwitch" xml:space="preserve"><value>根据前台应用自动切换配置文件</value></data>
   <data name="Profiles_ActiveProfile" xml:space="preserve"><value>当前配置文件：</value></data>
   <data name="Profiles_NoSlots" xml:space="preserve"><value>无插槽</value></data>
+  <data name="Profiles_AutoSwitchRule_Format" xml:space="preserve"><value>自动切换：{0}</value></data>
+  <data name="Profiles_DropToImport" xml:space="preserve"><value>拖放以导入配置文件</value></data>
   <data name="Profiles_New" xml:space="preserve"><value>新建</value></data>
   <data name="Profiles_SaveAs" xml:space="preserve"><value>另存为</value></data>
   <data name="Profiles_Edit" xml:space="preserve"><value>编辑</value></data>

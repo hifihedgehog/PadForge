@@ -320,6 +320,9 @@ namespace PadForge
             Views.DevicesPage.InputService = _inputService;
             ProfilesPageView.InputService = _inputService;
             ProfilesPageView.OnShortcutsChanged = SaveProfileShortcuts;
+            // Drop-zone import (#175): dropped .pfprofile files run the same
+            // consumer as the Import button's file dialog.
+            ProfilesPageView.ImportProfileFile = ImportProfileFromFile;
             _inputService.ToggleMainWindow = () => Dispatcher.Invoke(() =>
             {
                 var hwnd = new System.Windows.Interop.WindowInteropHelper(this).Handle;
@@ -4213,6 +4216,7 @@ namespace PadForge
                 Id = profile.Id,
                 Name = profile.Name,
                 Executables = InputService.FormatExePaths(exePaths),
+                ExecutablePaths = exePaths,
             };
             SettingsService.UpdateTopologyCounts(listItem, profile.SlotCreated, profile.SlotControllerTypes);
             _viewModel.Settings.ProfileItems.Add(listItem);
@@ -4234,6 +4238,7 @@ namespace PadForge
                 Id = snapshot.Id,
                 Name = snapshot.Name,
                 Executables = InputService.FormatExePaths(exePaths),
+                ExecutablePaths = exePaths,
             };
             SettingsService.UpdateTopologyCounts(listItem, snapshot.SlotCreated, snapshot.SlotControllerTypes);
             _viewModel.Settings.ProfileItems.Add(listItem);
@@ -4308,7 +4313,14 @@ namespace PadForge
             };
             if (dlg.ShowDialog() != true) return;
 
-            var profile = PadForge.Common.ProfileTransfer.Import(dlg.FileName, out var packages);
+            ImportProfileFromFile(dlg.FileName);
+        }
+
+        /// <summary>File-consuming half of profile import, shared by the
+        /// Import button's dialog and the Profiles page drop zone (#175).</summary>
+        private void ImportProfileFromFile(string filePath)
+        {
+            var profile = PadForge.Common.ProfileTransfer.Import(filePath, out var packages);
             if (profile == null)
             {
                 _viewModel.StatusText = Strings.Instance.Status_ProfileImportFailed;
@@ -4329,6 +4341,7 @@ namespace PadForge
                 Id = profile.Id,
                 Name = profile.Name,
                 Executables = InputService.FormatExePaths(profile.ExecutableNames ?? string.Empty),
+                ExecutablePaths = profile.ExecutableNames ?? string.Empty,
             };
             SettingsService.UpdateTopologyCounts(listItem, profile.SlotCreated, profile.SlotControllerTypes);
             _viewModel.Settings.ProfileItems.Add(listItem);
@@ -4358,6 +4371,7 @@ namespace PadForge
 
             selected.Name = newName;
             selected.Executables = InputService.FormatExePaths(newExePaths);
+            selected.ExecutablePaths = newExePaths;
             if (SettingsManager.ActiveProfileId == selected.Id)
                 _viewModel.Settings.ActiveProfileInfo = newName;
             _settingsService.MarkDirty();

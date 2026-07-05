@@ -260,7 +260,9 @@
                                              the container style's glow stays on the
                                              ListBoxItem. Only the transform animates here.
                                              The active ember edge is static setters. -->
-                                        <Border Width="250" Height="116"
+                                        <!-- 124 tall: room for the second exe line without
+                                             clipping when the auto-switch chip also shows. -->
+                                        <Border Width="250" Height="124"
                                                 CornerRadius="8" BorderThickness="1" Padding="10,8">
                                         <Border.RenderTransform>
                                             <TranslateTransform/>
@@ -368,23 +370,31 @@
                                                            VerticalAlignment="Center" TextTrimming="CharacterEllipsis"
                                                            ToolTip="{Binding Name}"/>
                                             </Grid>
-                                            <!-- Mono exe line: first executable, with the +N
-                                                 multi-exe marker in its own non-trimming cell
-                                                 so a long name cannot ellipsize it away. Full
-                                                 list rides the tooltip. Hidden when none. -->
-                                            <DockPanel Margin="0,2,0,0" ToolTip="{Binding Executables}"
-                                                       Visibility="{Binding FirstExecutableName, Converter={StaticResource StringToVisibility}}">
-                                                <TextBlock DockPanel.Dock="Right" Text="{Binding ExtraExecutablesSuffix}"
-                                                           FontFamily="{StaticResource TelemetryFontFamily}"
-                                                           FontSize="11" Margin="4,0,0,0"
-                                                           Foreground="{DynamicResource TextFillColorTertiaryBrush}"
-                                                           Visibility="{Binding ExtraExecutablesSuffix, Converter={StaticResource StringToVisibility}}"/>
+                                            <!-- Mono exe lines: up to TWO names on the face
+                                                 (maintainer request 2026-07-05), then a +N
+                                                 marker in its own non-trimming cell so a long
+                                                 name cannot ellipsize it away. Full list rides
+                                                 the tooltip. Hidden when none. -->
+                                            <StackPanel Margin="0,2,0,0" ToolTip="{Binding Executables}"
+                                                        Visibility="{Binding FirstExecutableName, Converter={StaticResource StringToVisibility}}">
                                                 <TextBlock Text="{Binding FirstExecutableName}"
                                                            FontFamily="{StaticResource TelemetryFontFamily}"
                                                            FontSize="11"
                                                            Foreground="{DynamicResource TextFillColorTertiaryBrush}"
                                                            TextTrimming="CharacterEllipsis"/>
-                                            </DockPanel>
+                                                <DockPanel Visibility="{Binding SecondExecutableName, Converter={StaticResource StringToVisibility}}">
+                                                    <TextBlock DockPanel.Dock="Right" Text="{Binding ExtraExecutablesSuffix}"
+                                                               FontFamily="{StaticResource TelemetryFontFamily}"
+                                                               FontSize="11" Margin="4,0,0,0"
+                                                               Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                                                               Visibility="{Binding ExtraExecutablesSuffix, Converter={StaticResource StringToVisibility}}"/>
+                                                    <TextBlock Text="{Binding SecondExecutableName}"
+                                                               FontFamily="{StaticResource TelemetryFontFamily}"
+                                                               FontSize="11"
+                                                               Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                                                               TextTrimming="CharacterEllipsis"/>
+                                                </DockPanel>
+                                            </StackPanel>
                                             <!-- Slot-loadout chip strip: the five branded count
                                                  badges, unchanged from the old rows. Count
                                                  numerals are mono like every other readout. -->

@@ -154,13 +154,27 @@
                                     <WrapPanel/>
                                 </ItemsPanelTemplate>
                             </ListBox.ItemsPanel>
-                            <!-- Hover glow (#175): stock item hover is a subtle
-                                 neutral fill lighten, so the bloom is the faint
-                                 ember signature. The active card's lit flame glow
-                                 lives on a Path inside the ItemTemplate, a
-                                 different element, so there is no Effect fight. -->
+                            <!-- Inert container (user report 2026-07-05): the stock
+                                 WPF-UI item template paints an accent slab and flips
+                                 Foreground on selection. Those are template triggers,
+                                 which outrank derived-style setters, so the container
+                                 is retemplated to a bare ContentPresenter (Devices
+                                 roster precedent). It stays hit-testable and
+                                 selectable; selection reads on the card itself (cold
+                                 rim in the ItemTemplate). Hover keeps the faint ember
+                                 bloom; the active card's lit flame glow lives on a
+                                 Path inside the ItemTemplate, a different element,
+                                 so there is no Effect fight. -->
                             <ListBox.ItemContainerStyle>
                                 <Style TargetType="ListBoxItem" BasedOn="{StaticResource DefaultListBoxItemStyle}">
+                                    <Setter Property="Padding" Value="0"/>
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="ListBoxItem">
+                                                <ContentPresenter/>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
                                     <Style.Triggers>
                                         <Trigger Property="IsMouseOver" Value="True">
                                             <Setter Property="Effect" Value="{StaticResource NeutralHoverGlow}"/>
@@ -189,6 +203,15 @@
                                                 <Setter Property="BorderBrush" Value="{DynamicResource SteelLineSoftBrush}"/>
                                                 <Setter Property="Background" Value="{DynamicResource ControlFillColorDefaultBrush}"/>
                                                 <Style.Triggers>
+                                                    <!-- Cold selection rim (#175): the picked card
+                                                         (SelectedProfile) reads cold, distinct from
+                                                         the ember ACTIVE edge. Declared before the
+                                                         IsActive trigger so ember wins when the
+                                                         selected card is also the active one. -->
+                                                    <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=ListBoxItem}}" Value="True">
+                                                        <Setter Property="BorderBrush" Value="#6658B6E4"/>
+                                                        <Setter Property="Background" Value="{DynamicResource ColdTintBrush}"/>
+                                                    </DataTrigger>
                                                     <!-- Ember edge (#175): the card whose profile
                                                          currently drives the forge wears the ember
                                                          rim and tint wash. Static setters only. -->
@@ -263,19 +286,30 @@
                                                         </Style>
                                                     </Image.Style>
                                                 </Image>
+                                                <!-- Foreground pinned so no container state can
+                                                     ever flow a flipped brush into the title. -->
                                                 <TextBlock Grid.Column="2" Text="{Binding Name}" FontWeight="SemiBold"
+                                                           Foreground="{DynamicResource TextFillColorPrimaryBrush}"
                                                            VerticalAlignment="Center" TextTrimming="CharacterEllipsis"
                                                            ToolTip="{Binding Name}"/>
                                             </Grid>
-                                            <!-- Mono exe line: first executable only; the full
+                                            <!-- Mono exe line: first executable, with the +N
+                                                 multi-exe marker in its own non-trimming cell
+                                                 so a long name cannot ellipsize it away. Full
                                                  list rides the tooltip. Hidden when none. -->
-                                            <TextBlock Text="{Binding FirstExecutableName}"
-                                                       FontFamily="{StaticResource TelemetryFontFamily}"
-                                                       FontSize="11" Margin="0,2,0,0"
-                                                       Foreground="{DynamicResource TextFillColorTertiaryBrush}"
-                                                       TextTrimming="CharacterEllipsis"
-                                                       ToolTip="{Binding Executables}"
-                                                       Visibility="{Binding FirstExecutableName, Converter={StaticResource StringToVisibility}}"/>
+                                            <DockPanel Margin="0,2,0,0" ToolTip="{Binding Executables}"
+                                                       Visibility="{Binding FirstExecutableName, Converter={StaticResource StringToVisibility}}">
+                                                <TextBlock DockPanel.Dock="Right" Text="{Binding ExtraExecutablesSuffix}"
+                                                           FontFamily="{StaticResource TelemetryFontFamily}"
+                                                           FontSize="11" Margin="4,0,0,0"
+                                                           Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                                                           Visibility="{Binding ExtraExecutablesSuffix, Converter={StaticResource StringToVisibility}}"/>
+                                                <TextBlock Text="{Binding FirstExecutableName}"
+                                                           FontFamily="{StaticResource TelemetryFontFamily}"
+                                                           FontSize="11"
+                                                           Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                                                           TextTrimming="CharacterEllipsis"/>
+                                            </DockPanel>
                                             <!-- Slot-loadout chip strip: the five branded count
                                                  badges, unchanged from the old rows. -->
                                             <StackPanel Orientation="Horizontal" Margin="0,6,0,0">

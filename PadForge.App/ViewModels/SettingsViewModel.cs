@@ -931,6 +931,7 @@ namespace PadForge.ViewModels
                 {
                     OnPropertyChanged(nameof(FirstExecutablePath));
                     OnPropertyChanged(nameof(FirstExecutableName));
+                    OnPropertyChanged(nameof(ExtraExecutablesSuffix));
                 }
             }
         }
@@ -948,13 +949,29 @@ namespace PadForge.ViewModels
         }
 
         /// <summary>File name of the first executable for the card's mono
-        /// exe line, or null when the profile has none.</summary>
+        /// exe line, or null when the profile has none. The tooltip carries
+        /// the full list via Executables.</summary>
         public string FirstExecutableName
         {
             get
             {
-                var first = FirstExecutablePath;
-                return first == null ? null : System.IO.Path.GetFileName(first);
+                if (string.IsNullOrEmpty(_executablePaths)) return null;
+                var parts = _executablePaths.Split('|', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+                return parts.Length > 0 ? System.IO.Path.GetFileName(parts[0]) : null;
+            }
+        }
+
+        /// <summary>Locale-neutral "+N" marker for multi-exe rules
+        /// ("game.exe" | "+2"). Its own property, rendered by a separate
+        /// non-trimming element, so a long first name that ellipsizes
+        /// cannot swallow the multi-exe cue.</summary>
+        public string ExtraExecutablesSuffix
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(_executablePaths)) return null;
+                var parts = _executablePaths.Split('|', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+                return parts.Length > 1 ? "+" + (parts.Length - 1) : null;
             }
         }
 

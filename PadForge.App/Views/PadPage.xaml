@@ -2925,15 +2925,33 @@
                                                          to one 26px mono line so a whole config reads
                                                          on one screen. Clicking it expands the row
                                                          back to the full editor via IsExpandedOverride
-                                                         (set in code-behind). The ember dot is the
+                                                         (set in code-behind). The liveness flame is the
                                                          static liveness cue; rowfire below still
                                                          animates on compact rows. -->
                                                     <StackPanel x:Name="CompactLine" Orientation="Horizontal"
                                                                 Height="26" Margin="10,0,8,0"
                                                                 Visibility="Collapsed">
-                                                        <Ellipse x:Name="CompactDot" Width="5" Height="5"
-                                                                 VerticalAlignment="Center" Margin="0,0,8,0"
-                                                                 Fill="{DynamicResource EmberHotBrush}" Opacity="0.18"/>
+                                                        <!-- Liveness flame (brand canon, supersedes
+                                                             dots): ashen outline at rest, ember fill +
+                                                             static glow while input flows through the
+                                                             row. Static setters, reduced-motion safe. -->
+                                                        <Path Margin="0,0,8,0">
+                                                            <Path.Style>
+                                                                <Style TargetType="Path" BasedOn="{StaticResource LivenessFlameBase}">
+                                                                    <Style.Triggers>
+                                                                        <DataTrigger Binding="{Binding IsInputActive}" Value="True">
+                                                                            <Setter Property="Fill" Value="{DynamicResource EmberBrush}"/>
+                                                                            <Setter Property="Stroke" Value="{x:Null}"/>
+                                                                            <Setter Property="Effect">
+                                                                                <Setter.Value>
+                                                                                    <DropShadowEffect Color="#FF6B2C" BlurRadius="8" ShadowDepth="0" Opacity="0.5"/>
+                                                                                </Setter.Value>
+                                                                            </Setter>
+                                                                        </DataTrigger>
+                                                                    </Style.Triggers>
+                                                                </Style>
+                                                            </Path.Style>
+                                                        </Path>
                                                         <TextBlock Text="{Binding TargetLabel}"
                                                                    FontWeight="SemiBold" FontSize="12"
                                                                    Foreground="{DynamicResource EmberHotBrush}"
@@ -2997,11 +3015,6 @@
                                                     <Setter TargetName="CellsHost" Property="Visibility" Value="Collapsed"/>
                                                     <Setter TargetName="CompactLine" Property="Visibility" Value="Visible"/>
                                                 </MultiDataTrigger>
-                                                <!-- Compact liveness dot: static opacity step, no
-                                                     storyboard, so it is reduced-motion safe as-is. -->
-                                                <DataTrigger Binding="{Binding IsInputActive}" Value="True">
-                                                    <Setter TargetName="CompactDot" Property="Opacity" Value="1"/>
-                                                </DataTrigger>
                                                 <!-- Reduced motion (#175 item 98): rowfire only
                                                      animates when the OS animation preference
                                                      (ClientAreaAnimation) is on. -->
@@ -6440,17 +6453,6 @@
                                                     Mode="Off"
                                                     LiveInput="{Binding DeviceRightTrigger}"
                                                     ShowLiveMarker="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=ListBoxItem}}"/>
-                                                <!-- GameCube preset lives ON the Weapon card
-                                                     (user report 2026-07-05: the floating
-                                                     indented row was a placement orphan).
-                                                     Visible only while Weapon is selected. -->
-                                                <Button Grid.Row="2" Margin="0,6,0,0" Padding="8,2"
-                                                        HorizontalAlignment="Center" FontSize="10"
-                                                        FontFamily="{StaticResource TelemetryFontFamily}"
-                                                        Content="GameCube"
-                                                        Command="{Binding PlayStationConfig.ApplyRightGameCubePresetCommand}"
-                                                        ToolTip="{Binding Pad_AT_LoadGameCubePreset_Tooltip, Source={x:Static strings:Strings.Instance}}"
-                                                        Visibility="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=ListBoxItem}, Converter={StaticResource BoolToVisibilityConverter}}"/>
                                             </Grid>
                                         </ListBoxItem>
                                         <ListBoxItem Tag="{x:Static vm:AdaptiveTriggerMode.Feedback}"
@@ -6488,6 +6490,19 @@
                                                     Frequency="{Binding PlayStationConfig.RightFrequency}"
                                                     LiveInput="{Binding DeviceRightTrigger}"
                                                     ShowLiveMarker="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=ListBoxItem}}"/>
+                                                <!-- GameCube preset lives ON the Weapon card
+                                                     (user report 2026-07-05: the floating
+                                                     indented row was a placement orphan; a
+                                                     second report caught this chip pasted
+                                                     into the Off card by mistake).
+                                                     Visible only while Weapon is selected. -->
+                                                <Button Grid.Row="2" Margin="0,6,0,0" Padding="8,2"
+                                                        HorizontalAlignment="Center" FontSize="10"
+                                                        FontFamily="{StaticResource TelemetryFontFamily}"
+                                                        Content="GameCube"
+                                                        Command="{Binding PlayStationConfig.ApplyRightGameCubePresetCommand}"
+                                                        ToolTip="{Binding Pad_AT_LoadGameCubePreset_Tooltip, Source={x:Static strings:Strings.Instance}}"
+                                                        Visibility="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=ListBoxItem}, Converter={StaticResource BoolToVisibilityConverter}}"/>
                                             </Grid>
                                         </ListBoxItem>
                                         <ListBoxItem Tag="{x:Static vm:AdaptiveTriggerMode.Vibration}"

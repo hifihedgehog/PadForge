@@ -1,0 +1,8 @@
+<UserControl x:Class="PadForge.Controls.TriggerTravelArc"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             IsHitTestVisible="False">
+    <Canvas x:Name="ArcCanvas"
+            Width="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=GaugeSize}"
+            Height="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=GaugeSize}"/>
+</UserControl>

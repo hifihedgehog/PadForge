@@ -43,6 +43,18 @@ namespace PadForge.Controls
             DependencyProperty.Register(nameof(ChartSize), typeof(double), typeof(CurveEditor),
                 new PropertyMetadata(140.0, OnDisplayParamChanged));
 
+        // Full-width forge canvas (#175 competitor item 4): the editor
+        // stretches to the parent width at a fixed ChartHeight instead of
+        // the square ChartSize. Set once in XAML before load. Runtime
+        // flips are not supported.
+        public static readonly DependencyProperty IsFullWidthProperty =
+            DependencyProperty.Register(nameof(IsFullWidth), typeof(bool), typeof(CurveEditor),
+                new PropertyMetadata(false));
+
+        public static readonly DependencyProperty ChartHeightProperty =
+            DependencyProperty.Register(nameof(ChartHeight), typeof(double), typeof(CurveEditor),
+                new PropertyMetadata(180.0, OnDisplayParamChanged));
+
         public string CurveString { get => (string)GetValue(CurveStringProperty); set => SetValue(CurveStringProperty, value); }
         public double DeadZone { get => (double)GetValue(DeadZoneProperty); set => SetValue(DeadZoneProperty, value); }
         public double MaxRange { get => (double)GetValue(MaxRangeProperty); set => SetValue(MaxRangeProperty, value); }
@@ -50,9 +62,20 @@ namespace PadForge.Controls
         public double LiveInput { get => (double)GetValue(LiveInputProperty); set => SetValue(LiveInputProperty, value); }
         public bool IsSigned { get => (bool)GetValue(IsSignedProperty); set => SetValue(IsSignedProperty, value); }
         public double ChartSize { get => (double)GetValue(ChartSizeProperty); set => SetValue(ChartSizeProperty, value); }
+        public bool IsFullWidth { get => (bool)GetValue(IsFullWidthProperty); set => SetValue(IsFullWidthProperty, value); }
+        public double ChartHeight { get => (double)GetValue(ChartHeightProperty); set => SetValue(ChartHeightProperty, value); }
 
         /// <summary>Total size including border padding.</summary>
         public double TotalSize => ChartSize + 8;
+
+        // Plot dimensions: square ChartSize by default. In full-width mode
+        // the width tracks the canvas and the height is ChartHeight. All
+        // mapping/drawing below goes through these so both modes share one
+        // geometry path (w == h == ChartSize reduces to the original math).
+        private double PlotWidth => IsFullWidth
+            ? Math.Max(ChartCanvas?.ActualWidth ?? 0.0, 1.0)
+            : ChartSize;
+        private double PlotHeight => IsFullWidth ? ChartHeight : ChartSize;
 
         // ── Internal state ──
 
@@ -71,6 +94,9 @@ namespace PadForge.Controls
         private readonly Line _gridV25 = new();
         private readonly Line _gridV75 = new();
         private readonly Ellipse _liveDot = new();
+        // Mono coordinate readout shown beside the dragged node in
+        // full-width mode only (#175 competitor item 4), e.g. "62, 48".
+        private readonly TextBlock _dragReadout = new();
         private Brush _gridBrush;
 
         // Ember palette (steel curve/handles, ember-hot live dot + dragged handle).
@@ -79,6 +105,16 @@ namespace PadForge.Controls
         private static readonly SolidColorBrush CurveStrokeFallbackBrush = CreateFrozen(0x94, 0xA3, 0xBD);
         private static readonly SolidColorBrush HandleFallbackBrush = CreateFrozen(0x5D, 0x6B, 0x85);
         private static readonly SolidColorBrush EmberHotBrush = CreateFrozen(0xFF, 0xA2, 0x4D);
+        // Steel fallbacks for full-width mode (SteelLineBrush / SteelCardBrush values).
+        private static readonly SolidColorBrush SteelLineFallbackBrush = CreateFrozen(0x25, 0x30, 0x49);
+        private static readonly SolidColorBrush ReadoutBackBrush = CreateFrozenChip();
+
+        private static SolidColorBrush CreateFrozenChip()
+        {
+            var brush = new SolidColorBrush(Color.FromArgb(0xD9, 0x11, 0x16, 0x23));
+            brush.Freeze();
+            return brush;
+        }
 
         private Brush _curveStrokeBrush = CurveStrokeFallbackBrush;
         private Brush _handleBrush = HandleFallbackBrush;
@@ -116,14 +152,28 @@ namespace PadForge.Controls
         {
             InitializeComponent();
             Loaded += (_, _) => InitVisuals();
+            // Full-width mode: the plot width follows the parent, so any
+            // resize redraws by value change (no animation loop involved).
+            ChartCanvas.SizeChanged += (_, _) => { if (IsFullWidth && IsLoaded) DrawAll(); };
         }
 
         private void InitVisuals()
         {
             var canvas = ChartCanvas;
-            double sz = ChartSize;
-            canvas.Width = sz;
-            canvas.Height = sz;
+            if (IsFullWidth)
+            {
+                // Stretch horizontally: drop the square Width binding so the
+                // border fills the parent, and pin height to the chart + padding.
+                RootBorder.ClearValue(WidthProperty);
+                RootBorder.Height = ChartHeight + 8;
+                canvas.Height = ChartHeight;
+            }
+            else
+            {
+                double sz = ChartSize;
+                canvas.Width = sz;
+                canvas.Height = sz;
+            }
 
             canvas.Children.Clear();
             _pointEllipses.Clear();
@@ -150,9 +200,15 @@ namespace PadForge.Controls
             SetupLine(_crossH, gridBrush, 0.5); canvas.Children.Add(_crossH);
             SetupLine(_crossV, gridBrush, 0.5); canvas.Children.Add(_crossV);
 
-            // Linear reference diagonal
-            _refDiag.Stroke = gridBrush;
-            _refDiag.StrokeThickness = 0.5;
+            // Linear reference diagonal. The full-width forge canvas dashes
+            // it in steel (#175 competitor item 4). Fixed squares keep the
+            // original grid tone so the radar-sidebar mini-plots are
+            // pixel-identical.
+            var steelBrush = TryFindResource("SteelLineBrush") as Brush
+                ?? Application.Current.TryFindResource("SteelLineBrush") as Brush
+                ?? (Brush)SteelLineFallbackBrush;
+            _refDiag.Stroke = IsFullWidth ? steelBrush : gridBrush;
+            _refDiag.StrokeThickness = IsFullWidth ? 1.0 : 0.5;
             _refDiag.StrokeDashArray = new DoubleCollection { 4, 2 };
             canvas.Children.Add(_refDiag);
 
@@ -178,6 +234,24 @@ namespace PadForge.Controls
             // Keep the live dot above the handle ellipses DrawControlPoints appends later.
             Panel.SetZIndex(_liveDot, 10);
 
+            // Drag coordinate readout (full-width mode only): mono chip that
+            // rides beside the grabbed node while dragging. Value-driven,
+            // no animation, hidden except during a drag.
+            if (IsFullWidth)
+            {
+                _dragReadout.FontFamily = TryFindResource("TelemetryFontFamily") as FontFamily
+                    ?? Application.Current.TryFindResource("TelemetryFontFamily") as FontFamily
+                    ?? new FontFamily("Consolas");
+                _dragReadout.FontSize = 10;
+                _dragReadout.Foreground = EmberHotBrush;
+                _dragReadout.Background = ReadoutBackBrush;
+                _dragReadout.Padding = new Thickness(4, 1, 4, 1);
+                _dragReadout.IsHitTestVisible = false;
+                _dragReadout.Visibility = Visibility.Collapsed;
+                canvas.Children.Add(_dragReadout);
+                Panel.SetZIndex(_dragReadout, 20);
+            }
+
             ParseAndDraw();
         }
 
@@ -196,37 +270,35 @@ namespace PadForge.Controls
 
         private (double px, double py) CurveToPixel(double cx, double cy)
         {
-            double sz = ChartSize;
+            double w = PlotWidth, h = PlotHeight;
             if (IsSigned)
             {
                 // Control points in 0..1 map to the positive quadrant (right half, top half)
-                double half = sz / 2.0;
-                return (half + cx * half, half - cy * half);
+                return (w / 2.0 + cx * (w / 2.0), h / 2.0 - cy * (h / 2.0));
             }
             else
             {
-                return (cx * sz, (1.0 - cy) * sz);
+                return (cx * w, (1.0 - cy) * h);
             }
         }
 
         private (double cx, double cy) PixelToCurve(double px, double py)
         {
-            double sz = ChartSize;
+            double w = PlotWidth, h = PlotHeight;
             if (IsSigned)
             {
-                double half = sz / 2.0;
-                return ((px - half) / half, (half - py) / half);
+                return ((px - w / 2.0) / (w / 2.0), (h / 2.0 - py) / (h / 2.0));
             }
             else
             {
-                return (px / sz, 1.0 - py / sz);
+                return (px / w, 1.0 - py / h);
             }
         }
 
         /// <summary>Map a signed input value (-1..+1 or 0..1) to full pipeline output pixel position.</summary>
         private (double px, double py) InputToPixel(double input)
         {
-            double sz = ChartSize;
+            double w = PlotWidth, h = PlotHeight;
             double dzN = DeadZone / 100.0;
 
             if (IsSigned)
@@ -246,8 +318,7 @@ namespace PadForge.Controls
                     var lut = CurveLut.GetOrBuild(CurveString);
                     output = sign * (lut != null ? CurveLut.Lookup(lut, rem) : rem);
                 }
-                double half = sz / 2.0;
-                return ((input + 1.0) * half, (1.0 - output) * half);
+                return ((input + 1.0) * (w / 2.0), (1.0 - output) * (h / 2.0));
             }
             else
             {
@@ -263,7 +334,7 @@ namespace PadForge.Controls
                     var lut = CurveLut.GetOrBuild(CurveString);
                     output = lut != null ? CurveLut.Lookup(lut, rem) : rem;
                 }
-                return (input * sz, (1.0 - output) * sz);
+                return (input * w, (1.0 - output) * h);
             }
         }
 
@@ -280,32 +351,26 @@ namespace PadForge.Controls
         private void DrawAll()
         {
             if (ChartCanvas == null || !IsLoaded) return;
-            double sz = ChartSize;
-            ChartCanvas.Width = sz;
-            ChartCanvas.Height = sz;
-
-            // Grid lines
-            if (IsSigned)
+            if (IsFullWidth)
             {
-                double half = sz / 2.0;
-                _crossH.X1 = 0; _crossH.Y1 = half; _crossH.X2 = sz; _crossH.Y2 = half;
-                _crossV.X1 = half; _crossV.Y1 = 0; _crossV.X2 = half; _crossV.Y2 = sz;
-                _gridV25.X1 = sz * 0.25; _gridV25.Y1 = 0; _gridV25.X2 = sz * 0.25; _gridV25.Y2 = sz;
-                _gridV75.X1 = sz * 0.75; _gridV75.Y1 = 0; _gridV75.X2 = sz * 0.75; _gridV75.Y2 = sz;
-                _gridH25.X1 = 0; _gridH25.Y1 = sz * 0.25; _gridH25.X2 = sz; _gridH25.Y2 = sz * 0.25;
-                _gridH75.X1 = 0; _gridH75.Y1 = sz * 0.75; _gridH75.X2 = sz; _gridH75.Y2 = sz * 0.75;
-                _refDiag.X1 = 0; _refDiag.Y1 = sz; _refDiag.X2 = sz; _refDiag.Y2 = 0;
+                // Width follows the parent. Only the height is pinned.
+                ChartCanvas.Height = ChartHeight;
             }
             else
             {
-                _crossH.X1 = 0; _crossH.Y1 = sz / 2; _crossH.X2 = sz; _crossH.Y2 = sz / 2;
-                _crossV.X1 = sz / 2; _crossV.Y1 = 0; _crossV.X2 = sz / 2; _crossV.Y2 = sz;
-                _gridV25.X1 = sz * 0.25; _gridV25.Y1 = 0; _gridV25.X2 = sz * 0.25; _gridV25.Y2 = sz;
-                _gridV75.X1 = sz * 0.75; _gridV75.Y1 = 0; _gridV75.X2 = sz * 0.75; _gridV75.Y2 = sz;
-                _gridH25.X1 = 0; _gridH25.Y1 = sz * 0.25; _gridH25.X2 = sz; _gridH25.Y2 = sz * 0.25;
-                _gridH75.X1 = 0; _gridH75.Y1 = sz * 0.75; _gridH75.X2 = sz; _gridH75.Y2 = sz * 0.75;
-                _refDiag.X1 = 0; _refDiag.Y1 = sz; _refDiag.X2 = sz; _refDiag.Y2 = 0;
+                ChartCanvas.Width = ChartSize;
+                ChartCanvas.Height = ChartSize;
             }
+
+            // Grid lines (same layout for signed and unsigned charts)
+            double w = PlotWidth, h = PlotHeight;
+            _crossH.X1 = 0; _crossH.Y1 = h / 2; _crossH.X2 = w; _crossH.Y2 = h / 2;
+            _crossV.X1 = w / 2; _crossV.Y1 = 0; _crossV.X2 = w / 2; _crossV.Y2 = h;
+            _gridV25.X1 = w * 0.25; _gridV25.Y1 = 0; _gridV25.X2 = w * 0.25; _gridV25.Y2 = h;
+            _gridV75.X1 = w * 0.75; _gridV75.Y1 = 0; _gridV75.X2 = w * 0.75; _gridV75.Y2 = h;
+            _gridH25.X1 = 0; _gridH25.Y1 = h * 0.25; _gridH25.X2 = w; _gridH25.Y2 = h * 0.25;
+            _gridH75.X1 = 0; _gridH75.Y1 = h * 0.75; _gridH75.X2 = w; _gridH75.Y2 = h * 0.75;
+            _refDiag.X1 = 0; _refDiag.Y1 = h; _refDiag.X2 = w; _refDiag.Y2 = 0;
 
             DrawCurveLine();
             DrawControlPoints();
@@ -314,8 +379,7 @@ namespace PadForge.Controls
 
         private void DrawCurveLine()
         {
-            double sz = ChartSize;
-            int samples = (int)sz;
+            int samples = Math.Max((int)PlotWidth, 2);
             var pts = new PointCollection(samples + 1);
 
             if (IsSigned)
@@ -386,6 +450,31 @@ namespace PadForge.Controls
             Canvas.SetTop(_liveDot, py - 3.5);
         }
 
+        // Mono coordinate readout beside the dragged node ("62, 48" in curve
+        // percent), full-width mode only. Purely value-driven: shown on grab,
+        // repositioned per move, hidden on release.
+        private void UpdateDragReadout()
+        {
+            if (!IsFullWidth || !_isDragging || _dragIndex < 0 || _dragIndex >= _controlPoints.Count)
+                return;
+
+            var (cx, cy) = _controlPoints[_dragIndex];
+            _dragReadout.Text = $"{Math.Round(cx * 100):0}, {Math.Round(cy * 100):0}";
+
+            var (px, py) = CurveToPixel(cx, cy);
+            _dragReadout.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+            double rw = _dragReadout.DesiredSize.Width;
+            double rh = _dragReadout.DesiredSize.Height;
+            Canvas.SetLeft(_dragReadout, Math.Clamp(px + 10, 0, Math.Max(0, PlotWidth - rw)));
+            Canvas.SetTop(_dragReadout, Math.Clamp(py - rh - 8, 0, Math.Max(0, PlotHeight - rh)));
+            _dragReadout.Visibility = Visibility.Visible;
+        }
+
+        private void HideDragReadout()
+        {
+            _dragReadout.Visibility = Visibility.Collapsed;
+        }
+
         // ── Mouse interaction ──
 
         // Hover glow (#175): a hovered handle previews the grab state,
@@ -434,6 +523,7 @@ namespace PadForge.Controls
                 _isDragging = true;
                 ChartCanvas.CaptureMouse();
                 DrawControlPoints(); // recolor the grabbed handle ember-hot
+                UpdateDragReadout();
                 e.Handled = true;
             }
             else if (e.ClickCount == 2)
@@ -463,6 +553,7 @@ namespace PadForge.Controls
                 _isDragging = false;
                 _dragIndex = -1;
                 ChartCanvas.ReleaseMouseCapture();
+                HideDragReadout();
                 CommitPoints();
                 e.Handled = true;
             }
@@ -497,6 +588,7 @@ namespace PadForge.Controls
             DrawCurveLine();
             DrawControlPoints();
             UpdateLiveDot();
+            UpdateDragReadout();
             e.Handled = true;
         }
 

@@ -2365,8 +2365,10 @@ namespace PadForge
                 FontSize = 12,
                 FontWeight = FontWeights.Normal,
                 VerticalAlignment = VerticalAlignment.Center,
-                Margin = new Thickness(4, 0, 0, 0),
-                Width = 20,
+                // Tight (#175 clip report): interior slack keeps the
+                // right-aligned type segment from clipping its left edge.
+                Margin = new Thickness(2, 0, 0, 0),
+                Width = 16,
                 TextAlignment = TextAlignment.Center
             };
             slotNumber.SetResourceReference(System.Windows.Controls.TextBlock.ForegroundProperty, "TextFillColorTertiaryBrush");
@@ -2379,7 +2381,7 @@ namespace PadForge
             var segRow = new System.Windows.Controls.StackPanel
             {
                 Orientation = System.Windows.Controls.Orientation.Horizontal,
-                Margin = new Thickness(6, 0, 0, 0),
+                Margin = new Thickness(2, 0, 0, 0),
                 HorizontalAlignment = HorizontalAlignment.Right
             };
 
@@ -2388,7 +2390,10 @@ namespace PadForge
                 var b = new System.Windows.Controls.Button
                 {
                     Content = content,
-                    Padding = new Thickness(5, 2, 5, 2),
+                    // 4px sides (#175 clip report): at 5px the right-aligned
+                    // segment overflowed its dock area by a hair and shaved
+                    // the Xbox button's left edge.
+                    Padding = new Thickness(4, 2, 4, 2),
                     MinWidth = 0,
                     MinHeight = 0,
                     BorderThickness = new Thickness(0),
@@ -2472,7 +2477,13 @@ namespace PadForge
                 BorderThickness = new Thickness(1),
                 MinWidth = 196,
                 Child = row,
-                Tag = navItem.PadIndex
+                Tag = navItem.PadIndex,
+                // Glow clearance (#175 clip report): the rail clips at the
+                // pill's bounds, truncating the heat ring left and right.
+                // 3px, not more: every horizontal pixel here narrows the
+                // type segment's dock area, which clips the Xbox button's
+                // left edge when the row runs out of slack.
+                Margin = new Thickness(3, 2, 3, 2)
             };
             card.SetResourceReference(System.Windows.Controls.Border.BackgroundProperty, "CardBackgroundFillColorDefaultBrush");
 
@@ -3271,7 +3282,16 @@ namespace PadForge
             var rtb = new System.Windows.Media.Imaging.RenderTargetBitmap(
                 w, h, dpi.PixelsPerInchX, dpi.PixelsPerInchY,
                 System.Windows.Media.PixelFormats.Pbgra32);
-            rtb.Render(card);
+            // VisualBrush render: RTB.Render(card) bakes in the hover-lift
+            // RenderTransform (-2px at drag start), cutting the ghost's top.
+            var dv = new System.Windows.Media.DrawingVisual();
+            using (var dc = dv.RenderOpen())
+            {
+                dc.DrawRectangle(
+                    new System.Windows.Media.VisualBrush(card) { Stretch = System.Windows.Media.Stretch.None },
+                    null, new System.Windows.Rect(0, 0, card.ActualWidth, card.ActualHeight));
+            }
+            rtb.Render(dv);
             return rtb;
         }
 

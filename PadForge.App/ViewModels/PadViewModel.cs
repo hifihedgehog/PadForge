@@ -532,6 +532,18 @@ namespace PadForge.ViewModels
 
             public bool HasTransportGlyph => !string.IsNullOrEmpty(_transportGlyph);
 
+            private string _typeGlyph = "\uE7FC";
+
+            /// <summary>Segoe MDL2 device-class glyph for the crucible card
+            /// roster (#175): keyboards read as keyboards, mice as mice.
+            /// Sourced from DeviceTypeGlyph.For. Defaults to the controller
+            /// glyph until InputService resolves the device.</summary>
+            public string TypeGlyph
+            {
+                get => _typeGlyph;
+                set => SetProperty(ref _typeGlyph, string.IsNullOrEmpty(value) ? "\uE7FC" : value);
+            }
+
             public string Name
             {
                 get => _name;

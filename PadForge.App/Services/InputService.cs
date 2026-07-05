@@ -7325,9 +7325,20 @@ namespace PadForge.Services
             // impulse-trigger Xbox pads and the Sony lightbar family rumble
             // through their raw-HID sole writers, so SDL's view of the shared
             // handle can read no-rumble while the device very much rumbles.
+            // HD-haptic families (Switch gen-1 / Steam Controller, #147)
+            // rumble through their sole writer (HapticToneService), and the
+            // Switch 2 family (0x2066-0x2069) through the fork's SendEffect
+            // passthrough (SDL#9, hardware-confirmed #162), both invisible
+            // to SDL's shared-handle rumble flag (user report 2026-07-05:
+            // Steam Controller and Switch 2 Pro dossiers showed no rumble
+            // chip despite hardware-confirmed rumble).
             bool sonyLightbarPad = ud.VendorId == 0x054C
                 && ud.ProdId is 0x0CE6 or 0x0DF2 or 0x05C4 or 0x09CC or 0x0BA0;
-            row.HasRumble = ud.HasForceFeedback || ud.HasRumbleTriggers || sonyLightbarPad;
+            bool switch2Pad = ud.VendorId == 0x057E
+                && ud.ProdId is 0x2066 or 0x2067 or 0x2068 or 0x2069;
+            row.HasRumble = ud.HasForceFeedback || ud.HasRumbleTriggers || sonyLightbarPad
+                || switch2Pad
+                || PadForge.Common.Input.HapticToneService.DeviceHasHaptics(ud);
             row.HasGyro = ud.HasGyro;
             row.HasAccel = ud.HasAccel;
             row.HasTouchpad = ud.HasTouchpad;
@@ -7580,6 +7591,9 @@ namespace PadForge.Services
                             Name = name,
                             InstanceGuid = us.InstanceGuid,
                             IsOnline = online,
+                            // Device-class glyph (#175): the roster icon
+                            // matches the device type, not a blanket gamepad.
+                            TypeGlyph = DeviceTypeGlyph.For(ud?.CapType ?? 0),
                             // Transport (#175 competitor item 9): the same
                             // path predicate the disconnect gates use.
                             TransportGlyph = PadForge.Common.Input.SonyEffectWriter.IsBluetoothPath(ud?.DevicePath)
@@ -7705,6 +7719,7 @@ namespace PadForge.Services
                     collection[i].Name = newItems[i].Name;
                     collection[i].InstanceGuid = newItems[i].InstanceGuid;
                     collection[i].IsOnline = newItems[i].IsOnline;
+                    collection[i].TypeGlyph = newItems[i].TypeGlyph;
                     collection[i].TransportGlyph = newItems[i].TransportGlyph;
                 }
                 else

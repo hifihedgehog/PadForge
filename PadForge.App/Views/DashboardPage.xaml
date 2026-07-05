@@ -894,7 +894,8 @@
                                                         <ItemsControl.ItemTemplate>
                                                             <DataTemplate>
                                                                 <StackPanel Orientation="Horizontal" Margin="0,2">
-                                                                    <TextBlock Text="&#xE7FC;"
+                                                                    <!-- Same device-class glyph as the roster line (#175). -->
+                                                                    <TextBlock Text="{Binding TypeGlyph}"
                                                                                FontFamily="Segoe MDL2 Assets" FontSize="11"
                                                                                Foreground="{DynamicResource TextFillColorTertiaryBrush}"
                                                                                VerticalAlignment="Center" Margin="0,0,6,0"/>
@@ -941,9 +942,10 @@
                                                                 </Style>
                                                             </TextBlock.Style>
                                                         </TextBlock>
-                                                        <!-- Generic gamepad glyph (#175 iter 71, artifact .dev-line):
-                                                             rides inside each roster item so it repeats per device. -->
-                                                        <TextBlock Text="&#xE7FC;"
+                                                        <!-- Device-class glyph (#175): keyboards read as keyboards,
+                                                             mice as mice (DeviceTypeGlyph vocabulary); rides inside
+                                                             each roster item so it repeats per device. -->
+                                                        <TextBlock Text="{Binding TypeGlyph}"
                                                                    FontFamily="Segoe MDL2 Assets" FontSize="11"
                                                                    Foreground="{DynamicResource TextFillColorTertiaryBrush}"
                                                                    VerticalAlignment="Center" Margin="0,0,5,0"/>

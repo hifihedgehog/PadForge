@@ -147,7 +147,6 @@
                                  MinHeight="60" MaxHeight="420"
                                  AllowDrop="True"
                                  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                                 SelectionChanged="ProfileList_SelectionChanged"
                                  MouseDoubleClick="ProfileList_MouseDoubleClick">
                             <!-- Cards wrap at the card width. Horizontal scroll is
                                  disabled so the WrapPanel actually wraps. -->
@@ -162,9 +161,10 @@
                                  which outrank derived-style setters, so the container
                                  is retemplated to a bare ContentPresenter (Devices
                                  roster precedent). It stays hit-testable and
-                                 selectable; selection reads on the card itself (cold
-                                 rim in the ItemTemplate plus the code-driven pulse
-                                 ring from SelectionChanged). Hover keeps the faint ember
+                                 selectable; selection reads as the ember glow AURA
+                                 behind the card (the slot-card glow-host pattern,
+                                 user report 2026-07-05: the aura, not the card,
+                                 pulsates). Hover keeps the faint ember
                                  bloom; the active card's lit flame glow lives on a
                                  Path inside the ItemTemplate, a different element,
                                  so there is no Effect fight. -->
@@ -187,17 +187,89 @@
                             </ListBox.ItemContainerStyle>
                             <ListBox.ItemTemplate>
                                 <DataTemplate>
-                                    <!-- Card root: steel rim, uniform size so the grid
-                                         reads as a set. Hover lift (#175) is the
-                                         element-level transform on the template root;
-                                         the container style's glow stays on the
-                                         ListBoxItem. Only the transform animates here.
-                                         The active ember edge is static setters. The
-                                         selected card's breathing cold ring is attached
-                                         to this Border from code-behind (mini-card heat
-                                         ring pattern). -->
-                                    <Border Width="250" Height="116" Margin="3"
-                                            CornerRadius="8" BorderThickness="1" Padding="10,8">
+                                    <!-- 8px item margin: aura room, same reason as the
+                                         slot cards' clip fix. The glow HOST behind the
+                                         card carries the ember effect and only its plain
+                                         Opacity animates (slot-card pattern, never an
+                                         Effect animation from triggers), so selection
+                                         reads as a breathing aura around the card, not
+                                         a shading change of the card itself. -->
+                                    <Grid Margin="8">
+                                        <Border CornerRadius="8" IsHitTestVisible="False" Opacity="0"
+                                                Background="{DynamicResource CardBackgroundFillColorDefaultBrush}">
+                                            <Border.Effect>
+                                                <DropShadowEffect Color="#FF6B2C" BlurRadius="30" ShadowDepth="0" Opacity="0.55"/>
+                                            </Border.Effect>
+                                            <Border.Style>
+                                                <Style TargetType="Border">
+                                                    <Style.Triggers>
+                                                        <MultiDataTrigger>
+                                                            <MultiDataTrigger.Conditions>
+                                                                <Condition Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=ListBoxItem}}" Value="True"/>
+                                                                <Condition Binding="{Binding Source={x:Static SystemParameters.ClientAreaAnimation}}" Value="True"/>
+                                                            </MultiDataTrigger.Conditions>
+                                                            <MultiDataTrigger.EnterActions>
+                                                                <BeginStoryboard>
+                                                                    <Storyboard>
+                                                                        <!-- Artifact breathe: 3.2s ease-in-out aura pulse. -->
+                                                                        <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                                                                                         From="0.55" To="1.0" Duration="0:0:1.6"
+                                                                                         AutoReverse="True" RepeatBehavior="Forever">
+                                                                            <DoubleAnimation.EasingFunction>
+                                                                                <SineEase EasingMode="EaseInOut"/>
+                                                                            </DoubleAnimation.EasingFunction>
+                                                                        </DoubleAnimation>
+                                                                    </Storyboard>
+                                                                </BeginStoryboard>
+                                                            </MultiDataTrigger.EnterActions>
+                                                            <MultiDataTrigger.ExitActions>
+                                                                <BeginStoryboard>
+                                                                    <Storyboard>
+                                                                        <DoubleAnimation Storyboard.TargetProperty="Opacity" To="0" Duration="0:0:1.2">
+                                                                            <DoubleAnimation.EasingFunction>
+                                                                                <CubicEase EasingMode="EaseIn"/>
+                                                                            </DoubleAnimation.EasingFunction>
+                                                                        </DoubleAnimation>
+                                                                    </Storyboard>
+                                                                </BeginStoryboard>
+                                                            </MultiDataTrigger.ExitActions>
+                                                        </MultiDataTrigger>
+                                                        <!-- Reduced motion: breathe swaps for a static
+                                                             aura. Zero-length animations, because the
+                                                             host's local Opacity="0" outranks trigger
+                                                             setters. -->
+                                                        <MultiDataTrigger>
+                                                            <MultiDataTrigger.Conditions>
+                                                                <Condition Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=ListBoxItem}}" Value="True"/>
+                                                                <Condition Binding="{Binding Source={x:Static SystemParameters.ClientAreaAnimation}}" Value="False"/>
+                                                            </MultiDataTrigger.Conditions>
+                                                            <MultiDataTrigger.EnterActions>
+                                                                <BeginStoryboard>
+                                                                    <Storyboard>
+                                                                        <DoubleAnimation Storyboard.TargetProperty="Opacity" To="0.74" Duration="0:0:0"/>
+                                                                    </Storyboard>
+                                                                </BeginStoryboard>
+                                                            </MultiDataTrigger.EnterActions>
+                                                            <MultiDataTrigger.ExitActions>
+                                                                <BeginStoryboard>
+                                                                    <Storyboard>
+                                                                        <DoubleAnimation Storyboard.TargetProperty="Opacity" To="0" Duration="0:0:0"/>
+                                                                    </Storyboard>
+                                                                </BeginStoryboard>
+                                                            </MultiDataTrigger.ExitActions>
+                                                        </MultiDataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Border.Style>
+                                        </Border>
+                                        <!-- Card root: steel rim, uniform size so the grid
+                                             reads as a set. Hover lift (#175) is the
+                                             element-level transform on the template root;
+                                             the container style's glow stays on the
+                                             ListBoxItem. Only the transform animates here.
+                                             The active ember edge is static setters. -->
+                                        <Border Width="250" Height="116"
+                                                CornerRadius="8" BorderThickness="1" Padding="10,8">
                                         <Border.RenderTransform>
                                             <TranslateTransform/>
                                         </Border.RenderTransform>
@@ -213,17 +285,13 @@
                                                      selected and active ones carry the light. -->
                                                 <Setter Property="Opacity" Value="0.82"/>
                                                 <Style.Triggers>
-                                                    <!-- Cold selection rim (#175): the picked card
-                                                         (SelectedProfile) reads cold, distinct from
-                                                         the ember ACTIVE edge. Declared before the
-                                                         IsActive trigger so ember wins when the
-                                                         selected card is also the active one. The
-                                                         pulsating cold ring rides alongside, attached
-                                                         from code-behind. Never a style Effect
-                                                         animation. Startup crash canon. -->
+                                                    <!-- Selection reads as the ember aura on the glow
+                                                         host behind this card (user report 2026-07-05),
+                                                         so the card itself only wakes to full opacity.
+                                                         Declared before the IsActive trigger so ember
+                                                         edge setters win when the selected card is
+                                                         also the active one. -->
                                                     <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=ListBoxItem}}" Value="True">
-                                                        <Setter Property="BorderBrush" Value="#6658B6E4"/>
-                                                        <Setter Property="Background" Value="{DynamicResource ColdTintBrush}"/>
                                                         <Setter Property="Opacity" Value="1.0"/>
                                                     </DataTrigger>
                                                     <!-- Ember edge (#175): the card whose profile
@@ -481,7 +549,8 @@
                                                            ToolTip="{Binding AutoSwitchRuleSummary}"/>
                                             </Border>
                                         </StackPanel>
-                                    </Border>
+                                        </Border>
+                                    </Grid>
                                 </DataTemplate>
                             </ListBox.ItemTemplate>
                         </ListBox>

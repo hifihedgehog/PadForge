@@ -5,7 +5,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 using PadForge.Engine;
@@ -408,38 +407,15 @@ namespace PadForge.Views
 
         private static Image CreateImage(string resourcePath, double x, double y, double w, double h)
         {
-            // Load from assembly manifest resource stream directly — bypasses the
-            // pack:// URI scheme entirely, which throws "Part URI cannot end with a
-            // forward slash" on .NET 10 single-file publish.
-            // WPF Resource items are stored as lowercase paths with '/' → '.' conversion
-            // under the assembly's .g.resources stream.
-            var asm = System.Reflection.Assembly.GetExecutingAssembly();
-            string resName = resourcePath.Replace('/', '.').Replace('\\', '.').ToLowerInvariant();
-
-            // WPF resources are in "<assemblyname>.g.resources" → find via ResourceManager.
-            var rm = new System.Resources.ResourceManager(
-                asm.GetName().Name + ".g", asm);
-            using var stream = rm.GetStream(resName.Replace('.', '/'));
-            if (stream == null)
+            // Bitmap loading lives in EmbeddedBitmaps (shared with the PadPage
+            // lightbar preview, #175): assembly .g.resources stream, never
+            // pack:// URIs, which crash on .NET 10 single-file publish.
+            var bitmap = EmbeddedBitmaps.Load(resourcePath);
+            if (bitmap == null)
             {
-                // Fallback: try the original path as-is (forward slashes, lowercase).
-                using var stream2 = rm.GetStream(resourcePath.ToLowerInvariant());
-                if (stream2 != null)
-                    return CreateImageFromStream(stream2, x, y, w, h);
-                // Resource not found — return empty placeholder to avoid crash.
+                // Resource not found. Return an empty placeholder to avoid a crash.
                 return new Image { Width = w, Height = h };
             }
-            return CreateImageFromStream(stream, x, y, w, h);
-        }
-
-        private static Image CreateImageFromStream(System.IO.Stream stream, double x, double y, double w, double h)
-        {
-            var bitmap = new BitmapImage();
-            bitmap.BeginInit();
-            bitmap.StreamSource = stream;
-            bitmap.CacheOption = BitmapCacheOption.OnLoad;
-            bitmap.EndInit();
-            bitmap.Freeze();
             var img = new Image
             {
                 Source = bitmap,

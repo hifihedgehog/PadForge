@@ -127,7 +127,12 @@
             <Setter Property="FontWeight" Value="SemiBold"/>
             <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}"/>
         </Style>
-        <Style x:Key="DzRgbSlider" TargetType="Slider" BasedOn="{StaticResource {x:Type Slider}}">
+        <!-- RGB rows ride the EmberSlider retemplate (user report,
+             2026-07-04): the stock rail reads invisible on the picker
+             panel ground, so the recessed steel tray + hairline makes
+             the bar present at every value, with the ember fill as the
+             level readout. Uniform across all four RGB slider sites. -->
+        <Style x:Key="DzRgbSlider" TargetType="Slider" BasedOn="{StaticResource EmberSlider}">
             <Setter Property="Minimum" Value="0"/>
             <Setter Property="Maximum" Value="255"/>
             <Setter Property="Width" Value="148"/>

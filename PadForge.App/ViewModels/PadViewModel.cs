@@ -3673,6 +3673,16 @@ namespace PadForge.ViewModels
         /// <summary>Tab-strip index of the Audio tab (issue #83).</summary>
         public const int AudioTabIndex = 12;
 
+        private bool _annotationOverlayEnabled;
+
+        /// <summary>3D-preview annotation overlay (#175 roadmap 1). Session-only by
+        /// design: not written to PadSetting, not in the MarkDirty allowlist.</summary>
+        public bool AnnotationOverlayEnabled
+        {
+            get => _annotationOverlayEnabled;
+            set => SetProperty(ref _annotationOverlayEnabled, value);
+        }
+
         // ═══════════════════════════════════════════════
         //  Commands
         // ═══════════════════════════════════════════════

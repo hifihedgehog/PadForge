@@ -1534,6 +1534,8 @@
   <data name="Profiles_AutoSwitch" xml:space="preserve"><value>Auto-switch profiles based on foreground application</value></data>
   <data name="Profiles_ActiveProfile" xml:space="preserve"><value>Active profile:</value></data>
   <data name="Profiles_NoSlots" xml:space="preserve"><value>No slots</value></data>
+  <data name="Profiles_AutoSwitchRule_Format" xml:space="preserve"><value>Auto-switch: {0}</value></data>
+  <data name="Profiles_DropToImport" xml:space="preserve"><value>Drop to Import Profile</value></data>
   <data name="Profiles_New" xml:space="preserve"><value>New</value></data>
   <data name="Profiles_SaveAs" xml:space="preserve"><value>Save As</value></data>
   <data name="Profiles_Edit" xml:space="preserve"><value>Edit</value></data>

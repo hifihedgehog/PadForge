@@ -812,6 +812,8 @@
   <data name="Profiles_AutoSwitch" xml:space="preserve"><value>포그라운드 응용 프로그램에 따라 프로필 자동 전환</value></data>
   <data name="Profiles_ActiveProfile" xml:space="preserve"><value>활성 프로필:</value></data>
   <data name="Profiles_NoSlots" xml:space="preserve"><value>슬롯 없음</value></data>
+  <data name="Profiles_AutoSwitchRule_Format" xml:space="preserve"><value>자동 전환: {0}</value></data>
+  <data name="Profiles_DropToImport" xml:space="preserve"><value>놓아서 프로필 가져오기</value></data>
   <data name="Profiles_New" xml:space="preserve"><value>새로 만들기</value></data>
   <data name="Profiles_SaveAs" xml:space="preserve"><value>다른 이름으로 저장</value></data>
   <data name="Profiles_Edit" xml:space="preserve"><value>편집</value></data>

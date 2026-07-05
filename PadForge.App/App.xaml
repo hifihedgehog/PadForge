@@ -704,6 +704,7 @@
             <conv:IndexToLetterConverter x:Key="IndexToLetterConverter" />
             <conv:IndexLessThanVisibilityConverter x:Key="IndexLessThanVisibilityConverter" />
             <conv:OneBasedIndexConverter x:Key="OneBasedIndexConverter" />
+            <conv:ExeIconConverter x:Key="ExeIconConverter" />
 
         </ResourceDictionary>
     </Application.Resources>

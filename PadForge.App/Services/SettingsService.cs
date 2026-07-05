@@ -2472,6 +2472,7 @@ namespace PadForge.Services
                         Id = p.Id,
                         Name = p.Name,
                         Executables = InputService.FormatExePaths(p.ExecutableNames),
+                        ExecutablePaths = p.ExecutableNames,
                     };
                     UpdateTopologyCounts(item, p.SlotCreated, p.SlotControllerTypes);
                     _mainVm.Settings.ProfileItems.Add(item);

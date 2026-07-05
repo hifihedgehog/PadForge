@@ -812,6 +812,8 @@
   <data name="Profiles_AutoSwitch" xml:space="preserve"><value>Profielen automatisch wisselen op basis van de voorgrondtoepassing</value></data>
   <data name="Profiles_ActiveProfile" xml:space="preserve"><value>Actief profiel:</value></data>
   <data name="Profiles_NoSlots" xml:space="preserve"><value>Geen slots</value></data>
+  <data name="Profiles_AutoSwitchRule_Format" xml:space="preserve"><value>Automatisch wisselen: {0}</value></data>
+  <data name="Profiles_DropToImport" xml:space="preserve"><value>Neerzetten om profiel te importeren</value></data>
   <data name="Profiles_New" xml:space="preserve"><value>Nieuw</value></data>
   <data name="Profiles_SaveAs" xml:space="preserve"><value>Opslaan als</value></data>
   <data name="Profiles_Edit" xml:space="preserve"><value>Bewerken</value></data>

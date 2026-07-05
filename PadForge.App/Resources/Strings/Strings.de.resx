@@ -812,6 +812,8 @@
   <data name="Profiles_AutoSwitch" xml:space="preserve"><value>Profile automatisch basierend auf der Vordergrundanwendung wechseln</value></data>
   <data name="Profiles_ActiveProfile" xml:space="preserve"><value>Aktives Profil:</value></data>
   <data name="Profiles_NoSlots" xml:space="preserve"><value>Keine Slots</value></data>
+  <data name="Profiles_AutoSwitchRule_Format" xml:space="preserve"><value>Automatischer Wechsel: {0}</value></data>
+  <data name="Profiles_DropToImport" xml:space="preserve"><value>Zum Importieren ablegen</value></data>
   <data name="Profiles_New" xml:space="preserve"><value>Neu</value></data>
   <data name="Profiles_SaveAs" xml:space="preserve"><value>Speichern als</value></data>
   <data name="Profiles_Edit" xml:space="preserve"><value>Bearbeiten</value></data>

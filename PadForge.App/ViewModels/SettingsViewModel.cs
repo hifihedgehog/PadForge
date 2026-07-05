@@ -886,8 +886,68 @@ namespace PadForge.ViewModels
         public string Executables
         {
             get => _executables;
-            set => SetProperty(ref _executables, value);
+            set
+            {
+                if (SetProperty(ref _executables, value))
+                {
+                    OnPropertyChanged(nameof(HasExecutables));
+                    OnPropertyChanged(nameof(AutoSwitchRuleSummary));
+                }
+            }
         }
+
+        private string _executablePaths;
+
+        /// <summary>Pipe-separated full executable paths as stored on the
+        /// profile (the ForegroundMonitorService match source). Executables
+        /// above is the display form (file names only). Feeds the card's
+        /// exe icon and mono exe line (#175).</summary>
+        public string ExecutablePaths
+        {
+            get => _executablePaths;
+            set
+            {
+                if (SetProperty(ref _executablePaths, value))
+                {
+                    OnPropertyChanged(nameof(FirstExecutablePath));
+                    OnPropertyChanged(nameof(FirstExecutableName));
+                }
+            }
+        }
+
+        /// <summary>Full path of the first executable, or null when none.
+        /// The card's icon converter File.Exists-gates this path.</summary>
+        public string FirstExecutablePath
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(_executablePaths)) return null;
+                var parts = _executablePaths.Split('|', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+                return parts.Length > 0 ? parts[0] : null;
+            }
+        }
+
+        /// <summary>File name of the first executable for the card's mono
+        /// exe line, or null when the profile has none.</summary>
+        public string FirstExecutableName
+        {
+            get
+            {
+                var first = FirstExecutablePath;
+                return first == null ? null : System.IO.Path.GetFileName(first);
+            }
+        }
+
+        /// <summary>Whether the profile carries any executable match rule.
+        /// Half of the auto-switch chip gate (#175). The other half is the
+        /// global EnableAutoProfileSwitching toggle, bound in XAML.</summary>
+        public bool HasExecutables => !string.IsNullOrEmpty(_executables);
+
+        /// <summary>Exe-match rule summary for the cold auto-switch chip
+        /// (#175): the display exe list under the localized prefix.</summary>
+        public string AutoSwitchRuleSummary => string.IsNullOrEmpty(_executables)
+            ? string.Empty
+            : string.Format(Strings.Instance.Profiles_AutoSwitchRule_Format, _executables);
 
         private string _topologyLabel;
         public string TopologyLabel

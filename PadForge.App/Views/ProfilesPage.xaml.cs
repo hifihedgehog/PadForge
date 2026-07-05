@@ -27,6 +27,57 @@ namespace PadForge.Views
         }
 
         // ─────────────────────────────────────────────
+        //  Drop-zone import (#175)
+        // ─────────────────────────────────────────────
+
+        /// <summary>Set by MainWindow: consumes a dropped .pfprofile through
+        /// the same code path as the Import button.</summary>
+        internal Action<string> ImportProfileFile { get; set; }
+
+        /// <summary>True when the drag carries at least one .pfprofile.</summary>
+        private static bool IsProfileFileDrag(DragEventArgs e)
+        {
+            if (!e.Data.GetDataPresent(DataFormats.FileDrop)) return false;
+            return e.Data.GetData(DataFormats.FileDrop) is string[] files &&
+                   files.Any(f => f != null && f.EndsWith(
+                       PadForge.Common.ProfileTransfer.FileExtension,
+                       StringComparison.OrdinalIgnoreCase));
+        }
+
+        private void ProfileList_DragEnter(object sender, DragEventArgs e)
+        {
+            bool valid = IsProfileFileDrag(e);
+            e.Effects = valid ? DragDropEffects.Copy : DragDropEffects.None;
+            ProfileDropOverlay.Visibility = valid ? Visibility.Visible : Visibility.Collapsed;
+            e.Handled = true;
+        }
+
+        private void ProfileList_DragOver(object sender, DragEventArgs e)
+        {
+            e.Effects = IsProfileFileDrag(e) ? DragDropEffects.Copy : DragDropEffects.None;
+            e.Handled = true;
+        }
+
+        private void ProfileList_DragLeave(object sender, DragEventArgs e)
+        {
+            ProfileDropOverlay.Visibility = Visibility.Collapsed;
+        }
+
+        private void ProfileList_Drop(object sender, DragEventArgs e)
+        {
+            ProfileDropOverlay.Visibility = Visibility.Collapsed;
+            if (e.Data.GetData(DataFormats.FileDrop) is not string[] files) return;
+            foreach (var file in files)
+            {
+                if (file != null && file.EndsWith(
+                        PadForge.Common.ProfileTransfer.FileExtension,
+                        StringComparison.OrdinalIgnoreCase))
+                    ImportProfileFile?.Invoke(file);
+            }
+            e.Handled = true;
+        }
+
+        // ─────────────────────────────────────────────
         //  Profile shortcuts
         // ─────────────────────────────────────────────
 

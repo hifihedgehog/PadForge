@@ -812,6 +812,8 @@
   <data name="Profiles_AutoSwitch" xml:space="preserve"><value>フォアグラウンドアプリケーションに基づいてプロファイルを自動切り替えする</value></data>
   <data name="Profiles_ActiveProfile" xml:space="preserve"><value>アクティブなプロファイル:</value></data>
   <data name="Profiles_NoSlots" xml:space="preserve"><value>スロットなし</value></data>
+  <data name="Profiles_AutoSwitchRule_Format" xml:space="preserve"><value>自動切り替え: {0}</value></data>
+  <data name="Profiles_DropToImport" xml:space="preserve"><value>ドロップしてプロファイルをインポート</value></data>
   <data name="Profiles_New" xml:space="preserve"><value>新規</value></data>
   <data name="Profiles_SaveAs" xml:space="preserve"><value>名前を付けて保存</value></data>
   <data name="Profiles_Edit" xml:space="preserve"><value>編集</value></data>

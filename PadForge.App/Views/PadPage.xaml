@@ -949,44 +949,75 @@
                     <!-- ══════════════════════════════════════
                          MOTOR ACTIVITY INDICATORS
                          ══════════════════════════════════════ -->
-                    <!-- Rebalanced against the Map All pill below (user
-                         report 2026-07-05: "slim against the fat button").
-                         The pair narrows 500 → 400 and the bars thicken to
-                         16 so the centered cluster carries the pill's
-                         visual weight instead of reading as a thin
-                         full-width wire. -->
+                    <!-- Symmetry with the Map All pill (user report
+                         2026-07-05, re-raised: the 16px bars still read
+                         thin against the fat button). Each meter is now a
+                         capsule TWIN of MapAllPillButton: same 32px height,
+                         same 16px corner radius, same SteelLineSoft
+                         hairline. The mono caption sits INSIDE the capsule
+                         and the ember fill slides underneath it, so at rest
+                         the pair reads as two steel pills over a third. -->
                     <Grid x:Name="MotorBarsGrid" Grid.Row="1" Width="400" Margin="0,6,0,4" HorizontalAlignment="Center">
+                        <Grid.Resources>
+                            <!-- Capsule instrument: standard PART_Indicator
+                                 template so ProgressBar owns the fill math.
+                                 Track/indicator radii mirror the Map All
+                                 pill's CornerRadius="16". -->
+                            <ControlTemplate x:Key="MotorCapsuleTemplate" TargetType="ProgressBar">
+                                <Grid>
+                                    <Border x:Name="PART_Track" CornerRadius="16"
+                                            Background="{DynamicResource SteelGroundBrush}"
+                                            BorderBrush="{DynamicResource SteelLineSoftBrush}"
+                                            BorderThickness="1"/>
+                                    <Border x:Name="PART_Indicator" CornerRadius="16"
+                                            HorizontalAlignment="Left" Margin="1">
+                                        <Border.Background>
+                                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                                                <GradientStop Color="#C43D0C" Offset="0"/>
+                                                <GradientStop Color="#FF6B2C" Offset="1"/>
+                                            </LinearGradientBrush>
+                                        </Border.Background>
+                                    </Border>
+                                </Grid>
+                            </ControlTemplate>
+                        </Grid.Resources>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
 
-                        <StackPanel Grid.Column="0" Cursor="Hand" Margin="0,0,12,0"
-                                    MouseEnter="Motor_MouseEnter" MouseLeave="Motor_MouseLeave"
-                                    MouseLeftButtonDown="LeftMotor_Click"
-                                    ToolTip="{Binding Pad_TestLeftMotor, Source={x:Static strings:Strings.Instance}}"
-                                    Background="Transparent">
-                            <!-- Mono eyebrow caption (#175 round 3, item B9):
-                                 uppercase is display-only via UpperConverter,
-                                 resource strings stay Title Case. -->
+                        <Grid Grid.Column="0" Cursor="Hand" Margin="0,0,12,0"
+                              MouseEnter="Motor_MouseEnter" MouseLeave="Motor_MouseLeave"
+                              MouseLeftButtonDown="LeftMotor_Click"
+                              ToolTip="{Binding Pad_TestLeftMotor, Source={x:Static strings:Strings.Instance}}"
+                              Background="Transparent">
+                            <ProgressBar Template="{StaticResource MotorCapsuleTemplate}" Height="32"
+                                         Value="{Binding LeftMotorDisplay, Mode=OneWay}" Minimum="0" Maximum="1"
+                                         IsHitTestVisible="False"/>
+                            <!-- Mono caption (#175 round 3, item B9): uppercase
+                                 is display-only via UpperConverter, resource
+                                 strings stay Title Case. -->
                             <TextBlock Text="{Binding Pad_LeftMotor, Source={x:Static strings:Strings.Instance}, Converter={StaticResource UpperConverter}}"
                                        FontFamily="{StaticResource TelemetryFontFamily}" FontSize="10"
-                                       Foreground="{DynamicResource TextFillColorTertiaryBrush}"
-                                       HorizontalAlignment="Center" Margin="0,0,0,2"/>
-                            <ProgressBar Style="{StaticResource InstrumentBarOut}" Height="16" Value="{Binding LeftMotorDisplay, Mode=OneWay}" Minimum="0" Maximum="1" IsHitTestVisible="False"/>
-                        </StackPanel>
+                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                       HorizontalAlignment="Center" VerticalAlignment="Center"
+                                       IsHitTestVisible="False"/>
+                        </Grid>
 
-                        <StackPanel Grid.Column="1" Cursor="Hand" Margin="12,0,0,0"
-                                    MouseEnter="Motor_MouseEnter" MouseLeave="Motor_MouseLeave"
-                                    MouseLeftButtonDown="RightMotor_Click"
-                                    ToolTip="{Binding Pad_TestRightMotor, Source={x:Static strings:Strings.Instance}}"
-                                    Background="Transparent">
+                        <Grid Grid.Column="1" Cursor="Hand" Margin="12,0,0,0"
+                              MouseEnter="Motor_MouseEnter" MouseLeave="Motor_MouseLeave"
+                              MouseLeftButtonDown="RightMotor_Click"
+                              ToolTip="{Binding Pad_TestRightMotor, Source={x:Static strings:Strings.Instance}}"
+                              Background="Transparent">
+                            <ProgressBar Template="{StaticResource MotorCapsuleTemplate}" Height="32"
+                                         Value="{Binding RightMotorDisplay, Mode=OneWay}" Minimum="0" Maximum="1"
+                                         IsHitTestVisible="False"/>
                             <TextBlock Text="{Binding Pad_RightMotor, Source={x:Static strings:Strings.Instance}, Converter={StaticResource UpperConverter}}"
                                        FontFamily="{StaticResource TelemetryFontFamily}" FontSize="10"
-                                       Foreground="{DynamicResource TextFillColorTertiaryBrush}"
-                                       HorizontalAlignment="Center" Margin="0,0,0,2"/>
-                            <ProgressBar Style="{StaticResource InstrumentBarOut}" Height="16" Value="{Binding RightMotorDisplay, Mode=OneWay}" Minimum="0" Maximum="1" IsHitTestVisible="False"/>
-                        </StackPanel>
+                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                       HorizontalAlignment="Center" VerticalAlignment="Center"
+                                       IsHitTestVisible="False"/>
+                        </Grid>
                     </Grid>
 
                     <!-- ══════════════════════════════════════

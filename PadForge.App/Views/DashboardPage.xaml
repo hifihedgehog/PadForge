@@ -851,7 +851,45 @@
                                              the roster outgrows the card. -->
                                         <ItemsControl ItemsSource="{Binding MappedDevices}"
                                                       AlternationCount="99"
-                                                      common:MarqueeBehavior.IsEnabled="True">
+                                                      common:MarqueeBehavior.IsEnabled="True"
+                                                      ToolTipService.InitialShowDelay="400"
+                                                      ToolTipService.ShowDuration="20000">
+                                            <!-- Full roster on hover (#175 competitor item 9):
+                                                 the marquee stays (user direction), the tooltip
+                                                 shows every device untruncated, one per line. -->
+                                            <ItemsControl.ToolTip>
+                                                <ToolTip>
+                                                    <ItemsControl ItemsSource="{Binding MappedDevices}">
+                                                        <ItemsControl.ItemTemplate>
+                                                            <DataTemplate>
+                                                                <StackPanel Orientation="Horizontal" Margin="0,2">
+                                                                    <TextBlock Text="&#xE7FC;"
+                                                                               FontFamily="Segoe MDL2 Assets" FontSize="11"
+                                                                               Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                                                                               VerticalAlignment="Center" Margin="0,0,6,0"/>
+                                                                    <TextBlock Text="{Binding Name}" FontSize="12"
+                                                                               Foreground="{DynamicResource ColdBrush}"/>
+                                                                    <TextBlock Text="{Binding TransportGlyph}"
+                                                                               FontFamily="Segoe MDL2 Assets" FontSize="10"
+                                                                               Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                                                                               VerticalAlignment="Center" Margin="5,0,0,0"
+                                                                               Visibility="{Binding HasTransportGlyph, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                                                    <TextBlock Text="{Binding BatteryGlyph}"
+                                                                               FontFamily="Segoe MDL2 Assets" FontSize="11"
+                                                                               Foreground="{DynamicResource ColdBrush}"
+                                                                               VerticalAlignment="Center" Margin="6,0,0,0"
+                                                                               Visibility="{Binding HasBattery, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                                                    <TextBlock Text="{Binding BatteryText}"
+                                                                               FontFamily="{StaticResource TelemetryFontFamily}" FontSize="10.5"
+                                                                               Foreground="{DynamicResource ColdBrush}" Opacity="0.85"
+                                                                               VerticalAlignment="Center" Margin="3,0,0,0"
+                                                                               Visibility="{Binding HasBattery, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                                                </StackPanel>
+                                                            </DataTemplate>
+                                                        </ItemsControl.ItemTemplate>
+                                                    </ItemsControl>
+                                                </ToolTip>
+                                            </ItemsControl.ToolTip>
                                             <ItemsControl.ItemsPanel>
                                                 <ItemsPanelTemplate>
                                                     <StackPanel Orientation="Horizontal"/>
@@ -880,6 +918,14 @@
                                                                    VerticalAlignment="Center" Margin="0,0,5,0"/>
                                                         <TextBlock Text="{Binding Name}" FontSize="12"
                                                                    Foreground="{DynamicResource ColdBrush}"/>
+                                                        <!-- Transport (#175 competitor item 9): Bluetooth
+                                                             links carry the E702 glyph, wired stays
+                                                             unmarked. -->
+                                                        <TextBlock Text="{Binding TransportGlyph}"
+                                                                   FontFamily="Segoe MDL2 Assets" FontSize="10"
+                                                                   Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                                                                   VerticalAlignment="Center" Margin="5,0,0,0"
+                                                                   Visibility="{Binding HasTransportGlyph, Converter={StaticResource BoolToVisibilityConverter}}"/>
                                                         <TextBlock Text="{Binding BatteryGlyph}"
                                                                    FontFamily="Segoe MDL2 Assets" FontSize="11"
                                                                    Foreground="{DynamicResource ColdBrush}"

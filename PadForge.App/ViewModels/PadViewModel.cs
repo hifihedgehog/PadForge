@@ -506,6 +506,23 @@ namespace PadForge.ViewModels
 
             public bool HasBattery => !string.IsNullOrEmpty(_batteryGlyph);
 
+            private string _transportGlyph = string.Empty;
+
+            /// <summary>Segoe MDL2 transport glyph for the crucible card
+            /// roster (#175 competitor item 9): Bluetooth links carry E702,
+            /// wired stays unmarked (the quiet default).</summary>
+            public string TransportGlyph
+            {
+                get => _transportGlyph;
+                set
+                {
+                    if (SetProperty(ref _transportGlyph, value ?? string.Empty))
+                        OnPropertyChanged(nameof(HasTransportGlyph));
+                }
+            }
+
+            public bool HasTransportGlyph => !string.IsNullOrEmpty(_transportGlyph);
+
             public string Name
             {
                 get => _name;

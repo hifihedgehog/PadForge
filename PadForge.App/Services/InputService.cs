@@ -7157,7 +7157,11 @@ namespace PadForge.Services
                         {
                             Name = name,
                             InstanceGuid = us.InstanceGuid,
-                            IsOnline = online
+                            IsOnline = online,
+                            // Transport (#175 competitor item 9): the same
+                            // path predicate the disconnect gates use.
+                            TransportGlyph = PadForge.Common.Input.SonyEffectWriter.IsBluetoothPath(ud?.DevicePath)
+                                ? "" : string.Empty
                         });
                     }
 
@@ -7279,6 +7283,7 @@ namespace PadForge.Services
                     collection[i].Name = newItems[i].Name;
                     collection[i].InstanceGuid = newItems[i].InstanceGuid;
                     collection[i].IsOnline = newItems[i].IsOnline;
+                    collection[i].TransportGlyph = newItems[i].TransportGlyph;
                 }
                 else
                 {

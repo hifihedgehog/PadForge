@@ -6024,12 +6024,9 @@
                                                 <Grid.RowDefinitions>
                                                     <RowDefinition Height="Auto"/>
                                                     <RowDefinition Height="Auto"/>
-                                                    <RowDefinition Height="*"/>
-                                                    <RowDefinition Height="Auto"/>
                                                 </Grid.RowDefinitions>
                                                 <TextBlock Text="{Binding Pad_AT_Off, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource AtModeCardName}"/>
-                                                <TextBlock Grid.Row="1" Text="{Binding Pad_AT_Off_Tooltip, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource AtModeCardDesc}"/>
-                                                <viewControls:TriggerEffectGraph Grid.Row="3" Height="44" IsCompact="True"
+                                                <viewControls:TriggerEffectGraph Grid.Row="1" Height="40" Margin="0,6,0,0" IsCompact="True"
                                                     Mode="Off"
                                                     LiveInput="{Binding DeviceLeftTrigger}"
                                                     ShowLiveMarker="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=ListBoxItem}}"/>
@@ -6041,12 +6038,9 @@
                                                 <Grid.RowDefinitions>
                                                     <RowDefinition Height="Auto"/>
                                                     <RowDefinition Height="Auto"/>
-                                                    <RowDefinition Height="*"/>
-                                                    <RowDefinition Height="Auto"/>
                                                 </Grid.RowDefinitions>
                                                 <TextBlock Text="{Binding Pad_AT_Feedback, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource AtModeCardName}"/>
-                                                <TextBlock Grid.Row="1" Text="{Binding Pad_AT_Feedback_Tooltip, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource AtModeCardDesc}"/>
-                                                <viewControls:TriggerEffectGraph Grid.Row="3" Height="44" IsCompact="True"
+                                                <viewControls:TriggerEffectGraph Grid.Row="1" Height="40" Margin="0,6,0,0" IsCompact="True"
                                                     Mode="Feedback"
                                                     StartPosition="{Binding PlayStationConfig.LeftStartPosition}"
                                                     EndPosition="{Binding PlayStationConfig.LeftEndPosition}"
@@ -6062,12 +6056,9 @@
                                                 <Grid.RowDefinitions>
                                                     <RowDefinition Height="Auto"/>
                                                     <RowDefinition Height="Auto"/>
-                                                    <RowDefinition Height="*"/>
-                                                    <RowDefinition Height="Auto"/>
                                                 </Grid.RowDefinitions>
                                                 <TextBlock Text="{Binding Pad_AT_Weapon, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource AtModeCardName}"/>
-                                                <TextBlock Grid.Row="1" Text="{Binding Pad_AT_Weapon_Tooltip, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource AtModeCardDesc}"/>
-                                                <viewControls:TriggerEffectGraph Grid.Row="3" Height="44" IsCompact="True"
+                                                <viewControls:TriggerEffectGraph Grid.Row="1" Height="40" Margin="0,6,0,0" IsCompact="True"
                                                     Mode="Weapon"
                                                     StartPosition="{Binding PlayStationConfig.LeftStartPosition}"
                                                     EndPosition="{Binding PlayStationConfig.LeftEndPosition}"
@@ -6083,12 +6074,9 @@
                                                 <Grid.RowDefinitions>
                                                     <RowDefinition Height="Auto"/>
                                                     <RowDefinition Height="Auto"/>
-                                                    <RowDefinition Height="*"/>
-                                                    <RowDefinition Height="Auto"/>
                                                 </Grid.RowDefinitions>
                                                 <TextBlock Text="{Binding Pad_AT_Vibration, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource AtModeCardName}"/>
-                                                <TextBlock Grid.Row="1" Text="{Binding Pad_AT_Vibration_Tooltip, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource AtModeCardDesc}"/>
-                                                <viewControls:TriggerEffectGraph Grid.Row="3" Height="44" IsCompact="True"
+                                                <viewControls:TriggerEffectGraph Grid.Row="1" Height="40" Margin="0,6,0,0" IsCompact="True"
                                                     Mode="Vibration"
                                                     StartPosition="{Binding PlayStationConfig.LeftStartPosition}"
                                                     EndPosition="{Binding PlayStationConfig.LeftEndPosition}"
@@ -6104,12 +6092,9 @@
                                                 <Grid.RowDefinitions>
                                                     <RowDefinition Height="Auto"/>
                                                     <RowDefinition Height="Auto"/>
-                                                    <RowDefinition Height="*"/>
-                                                    <RowDefinition Height="Auto"/>
                                                 </Grid.RowDefinitions>
                                                 <TextBlock Text="{Binding Pad_AT_MultiPosFeedback, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource AtModeCardName}"/>
-                                                <TextBlock Grid.Row="1" Text="{Binding Pad_AT_MultiPosFeedback_Tooltip, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource AtModeCardDesc}"/>
-                                                <viewControls:TriggerEffectGraph Grid.Row="3" Height="44" IsCompact="True"
+                                                <viewControls:TriggerEffectGraph Grid.Row="1" Height="40" Margin="0,6,0,0" IsCompact="True"
                                                     Mode="MultiplePositionFeedback"
                                                     StartPosition="{Binding PlayStationConfig.LeftStartPosition}"
                                                     EndPosition="{Binding PlayStationConfig.LeftEndPosition}"
@@ -6125,12 +6110,9 @@
                                                 <Grid.RowDefinitions>
                                                     <RowDefinition Height="Auto"/>
                                                     <RowDefinition Height="Auto"/>
-                                                    <RowDefinition Height="*"/>
-                                                    <RowDefinition Height="Auto"/>
                                                 </Grid.RowDefinitions>
                                                 <TextBlock Text="{Binding Pad_AT_Slope, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource AtModeCardName}"/>
-                                                <TextBlock Grid.Row="1" Text="{Binding Pad_AT_Slope_Tooltip, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource AtModeCardDesc}"/>
-                                                <viewControls:TriggerEffectGraph Grid.Row="3" Height="44" IsCompact="True"
+                                                <viewControls:TriggerEffectGraph Grid.Row="1" Height="40" Margin="0,6,0,0" IsCompact="True"
                                                     Mode="SlopeFeedback"
                                                     StartPosition="{Binding PlayStationConfig.LeftStartPosition}"
                                                     EndPosition="{Binding PlayStationConfig.LeftEndPosition}"
@@ -6146,12 +6128,9 @@
                                                 <Grid.RowDefinitions>
                                                     <RowDefinition Height="Auto"/>
                                                     <RowDefinition Height="Auto"/>
-                                                    <RowDefinition Height="*"/>
-                                                    <RowDefinition Height="Auto"/>
                                                 </Grid.RowDefinitions>
                                                 <TextBlock Text="{Binding Pad_AT_MultiPosVibration, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource AtModeCardName}"/>
-                                                <TextBlock Grid.Row="1" Text="{Binding Pad_AT_MultiPosVibration_Tooltip, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource AtModeCardDesc}"/>
-                                                <viewControls:TriggerEffectGraph Grid.Row="3" Height="44" IsCompact="True"
+                                                <viewControls:TriggerEffectGraph Grid.Row="1" Height="40" Margin="0,6,0,0" IsCompact="True"
                                                     Mode="MultiplePositionVibration"
                                                     StartPosition="{Binding PlayStationConfig.LeftStartPosition}"
                                                     EndPosition="{Binding PlayStationConfig.LeftEndPosition}"
@@ -6257,12 +6236,9 @@
                                                 <Grid.RowDefinitions>
                                                     <RowDefinition Height="Auto"/>
                                                     <RowDefinition Height="Auto"/>
-                                                    <RowDefinition Height="*"/>
-                                                    <RowDefinition Height="Auto"/>
                                                 </Grid.RowDefinitions>
                                                 <TextBlock Text="{Binding Pad_AT_Off, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource AtModeCardName}"/>
-                                                <TextBlock Grid.Row="1" Text="{Binding Pad_AT_Off_Tooltip, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource AtModeCardDesc}"/>
-                                                <viewControls:TriggerEffectGraph Grid.Row="3" Height="44" IsCompact="True"
+                                                <viewControls:TriggerEffectGraph Grid.Row="1" Height="40" Margin="0,6,0,0" IsCompact="True"
                                                     Mode="Off"
                                                     LiveInput="{Binding DeviceRightTrigger}"
                                                     ShowLiveMarker="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=ListBoxItem}}"/>
@@ -6274,12 +6250,9 @@
                                                 <Grid.RowDefinitions>
                                                     <RowDefinition Height="Auto"/>
                                                     <RowDefinition Height="Auto"/>
-                                                    <RowDefinition Height="*"/>
-                                                    <RowDefinition Height="Auto"/>
                                                 </Grid.RowDefinitions>
                                                 <TextBlock Text="{Binding Pad_AT_Feedback, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource AtModeCardName}"/>
-                                                <TextBlock Grid.Row="1" Text="{Binding Pad_AT_Feedback_Tooltip, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource AtModeCardDesc}"/>
-                                                <viewControls:TriggerEffectGraph Grid.Row="3" Height="44" IsCompact="True"
+                                                <viewControls:TriggerEffectGraph Grid.Row="1" Height="40" Margin="0,6,0,0" IsCompact="True"
                                                     Mode="Feedback"
                                                     StartPosition="{Binding PlayStationConfig.RightStartPosition}"
                                                     EndPosition="{Binding PlayStationConfig.RightEndPosition}"
@@ -6295,12 +6268,9 @@
                                                 <Grid.RowDefinitions>
                                                     <RowDefinition Height="Auto"/>
                                                     <RowDefinition Height="Auto"/>
-                                                    <RowDefinition Height="*"/>
-                                                    <RowDefinition Height="Auto"/>
                                                 </Grid.RowDefinitions>
                                                 <TextBlock Text="{Binding Pad_AT_Weapon, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource AtModeCardName}"/>
-                                                <TextBlock Grid.Row="1" Text="{Binding Pad_AT_Weapon_Tooltip, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource AtModeCardDesc}"/>
-                                                <viewControls:TriggerEffectGraph Grid.Row="3" Height="44" IsCompact="True"
+                                                <viewControls:TriggerEffectGraph Grid.Row="1" Height="40" Margin="0,6,0,0" IsCompact="True"
                                                     Mode="Weapon"
                                                     StartPosition="{Binding PlayStationConfig.RightStartPosition}"
                                                     EndPosition="{Binding PlayStationConfig.RightEndPosition}"
@@ -6316,12 +6286,9 @@
                                                 <Grid.RowDefinitions>
                                                     <RowDefinition Height="Auto"/>
                                                     <RowDefinition Height="Auto"/>
-                                                    <RowDefinition Height="*"/>
-                                                    <RowDefinition Height="Auto"/>
                                                 </Grid.RowDefinitions>
                                                 <TextBlock Text="{Binding Pad_AT_Vibration, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource AtModeCardName}"/>
-                                                <TextBlock Grid.Row="1" Text="{Binding Pad_AT_Vibration_Tooltip, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource AtModeCardDesc}"/>
-                                                <viewControls:TriggerEffectGraph Grid.Row="3" Height="44" IsCompact="True"
+                                                <viewControls:TriggerEffectGraph Grid.Row="1" Height="40" Margin="0,6,0,0" IsCompact="True"
                                                     Mode="Vibration"
                                                     StartPosition="{Binding PlayStationConfig.RightStartPosition}"
                                                     EndPosition="{Binding PlayStationConfig.RightEndPosition}"
@@ -6337,12 +6304,9 @@
                                                 <Grid.RowDefinitions>
                                                     <RowDefinition Height="Auto"/>
                                                     <RowDefinition Height="Auto"/>
-                                                    <RowDefinition Height="*"/>
-                                                    <RowDefinition Height="Auto"/>
                                                 </Grid.RowDefinitions>
                                                 <TextBlock Text="{Binding Pad_AT_MultiPosFeedback, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource AtModeCardName}"/>
-                                                <TextBlock Grid.Row="1" Text="{Binding Pad_AT_MultiPosFeedback_Tooltip, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource AtModeCardDesc}"/>
-                                                <viewControls:TriggerEffectGraph Grid.Row="3" Height="44" IsCompact="True"
+                                                <viewControls:TriggerEffectGraph Grid.Row="1" Height="40" Margin="0,6,0,0" IsCompact="True"
                                                     Mode="MultiplePositionFeedback"
                                                     StartPosition="{Binding PlayStationConfig.RightStartPosition}"
                                                     EndPosition="{Binding PlayStationConfig.RightEndPosition}"
@@ -6358,12 +6322,9 @@
                                                 <Grid.RowDefinitions>
                                                     <RowDefinition Height="Auto"/>
                                                     <RowDefinition Height="Auto"/>
-                                                    <RowDefinition Height="*"/>
-                                                    <RowDefinition Height="Auto"/>
                                                 </Grid.RowDefinitions>
                                                 <TextBlock Text="{Binding Pad_AT_Slope, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource AtModeCardName}"/>
-                                                <TextBlock Grid.Row="1" Text="{Binding Pad_AT_Slope_Tooltip, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource AtModeCardDesc}"/>
-                                                <viewControls:TriggerEffectGraph Grid.Row="3" Height="44" IsCompact="True"
+                                                <viewControls:TriggerEffectGraph Grid.Row="1" Height="40" Margin="0,6,0,0" IsCompact="True"
                                                     Mode="SlopeFeedback"
                                                     StartPosition="{Binding PlayStationConfig.RightStartPosition}"
                                                     EndPosition="{Binding PlayStationConfig.RightEndPosition}"
@@ -6379,12 +6340,9 @@
                                                 <Grid.RowDefinitions>
                                                     <RowDefinition Height="Auto"/>
                                                     <RowDefinition Height="Auto"/>
-                                                    <RowDefinition Height="*"/>
-                                                    <RowDefinition Height="Auto"/>
                                                 </Grid.RowDefinitions>
                                                 <TextBlock Text="{Binding Pad_AT_MultiPosVibration, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource AtModeCardName}"/>
-                                                <TextBlock Grid.Row="1" Text="{Binding Pad_AT_MultiPosVibration_Tooltip, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource AtModeCardDesc}"/>
-                                                <viewControls:TriggerEffectGraph Grid.Row="3" Height="44" IsCompact="True"
+                                                <viewControls:TriggerEffectGraph Grid.Row="1" Height="40" Margin="0,6,0,0" IsCompact="True"
                                                     Mode="MultiplePositionVibration"
                                                     StartPosition="{Binding PlayStationConfig.RightStartPosition}"
                                                     EndPosition="{Binding PlayStationConfig.RightEndPosition}"

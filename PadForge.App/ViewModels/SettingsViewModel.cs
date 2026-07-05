@@ -931,6 +931,7 @@ namespace PadForge.ViewModels
                 {
                     OnPropertyChanged(nameof(FirstExecutablePath));
                     OnPropertyChanged(nameof(FirstExecutableName));
+                    OnPropertyChanged(nameof(SecondExecutableName));
                     OnPropertyChanged(nameof(ExtraExecutablesSuffix));
                 }
             }
@@ -961,9 +962,22 @@ namespace PadForge.ViewModels
             }
         }
 
-        /// <summary>Locale-neutral "+N" marker for multi-exe rules
-        /// ("game.exe" | "+2"). Its own property, rendered by a separate
-        /// non-trimming element, so a long first name that ellipsizes
+        /// <summary>File name of the second executable, or null. The card
+        /// face shows up to two names before collapsing to the +N marker
+        /// (maintainer request 2026-07-05).</summary>
+        public string SecondExecutableName
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(_executablePaths)) return null;
+                var parts = _executablePaths.Split('|', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+                return parts.Length > 1 ? System.IO.Path.GetFileName(parts[1]) : null;
+            }
+        }
+
+        /// <summary>Locale-neutral "+N" marker for rules beyond the two
+        /// names the card face shows. Its own property, rendered by a
+        /// separate non-trimming element, so a long name that ellipsizes
         /// cannot swallow the multi-exe cue.</summary>
         public string ExtraExecutablesSuffix
         {
@@ -971,7 +985,7 @@ namespace PadForge.ViewModels
             {
                 if (string.IsNullOrEmpty(_executablePaths)) return null;
                 var parts = _executablePaths.Split('|', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
-                return parts.Length > 1 ? "+" + (parts.Length - 1) : null;
+                return parts.Length > 2 ? "+" + (parts.Length - 2) : null;
             }
         }
 

@@ -13,14 +13,25 @@ namespace PadForge.Common
     /// </summary>
     internal static class DeviceTransport
     {
+        private const ushort MicrosoftVid = 0x045E;
+
         /// <summary>
         /// True when the device is known to be linked over Bluetooth,
         /// classic BR/EDR or LE. False means "not claimed", never "wired":
         /// paths that carry no transport marker (USB HID, dongles, virtual
-        /// sources, XInput#N) simply make no claim.
+        /// sources) simply make no claim.
         /// </summary>
         internal static bool IsBluetooth(string devicePath, ushort vendorId, ushort productId)
         {
+            // Microsoft Xbox One/Series pads enumerate with different
+            // product IDs in Bluetooth mode than wired, so on VID 0x045E the
+            // PID alone is a positive Bluetooth fact, independent of path
+            // form. This is what answers for live pads (whose "XInput#N"
+            // path carries no transport marker, see below) and for
+            // cached/offline rows, whose VID/PID persist in PadForge.xml.
+            if (vendorId == MicrosoftVid && IsXboxBluetoothPid(productId))
+                return true;
+
             if (!string.IsNullOrEmpty(devicePath))
             {
                 // Classic Bluetooth HID (BR/EDR): the HID service class UUID
@@ -41,13 +52,20 @@ namespace PadForge.Common
 
                 // Xbox pads over Bluetooth surface as "XInput#N"
                 // (SDL_xinputjoystick.c:211). The path carries no HID GUID
-                // and no BTHENUM, so nothing engine-held distinguishes a BT
-                // pad from a wired or dongle one. SDL itself knows
-                // (joystick->connection_state, SDL_JOYSTICK_CONNECTION_*),
-                // but SDL3Minimal does not bind SDL_GetJoystickConnectionState
-                // and UserDevice carries no transport field. The honest
-                // answer from engine-held fields is "unknown": no glyph
-                // rather than a guess.
+                // and no BTHENUM, and an SDL binding would not help either:
+                // the XInput driver never assigns joystick->connection_state
+                // (zero occurrences in SDL_xinputjoystick.c), so
+                // SDL_GetJoystickConnectionState always answers UNKNOWN
+                // there. XINPUT_CAPS_WIRELESS cannot answer either: pads in
+                // Bluetooth mode speak XUSB 1.1, whose capability reply
+                // carries no Flags field (GamepadCapabilities0101,
+                // OpenXinput.cpp:962-990), so on that protocol the flag is
+                // set only for the 360 2.4GHz wireless receiver
+                // (OpenXinput.cpp:977-987). The Bluetooth answer for these
+                // pads is the VID/PID check above. An XInput pad reaching
+                // this line is a Microsoft pad in its non-Bluetooth identity
+                // (USB, Xbox Wireless Adapter, or the 360 receiver) or a
+                // third-party pad, and makes no claim.
                 return false;
             }
 
@@ -63,6 +81,32 @@ namespace PadForge.Common
             // SDL_hidapijoystick.c:1470-1481), and a Remote Link relay carries
             // peer://, so neither lands in this branch.
             return Input.BluetoothLinkHelper.IsSwitch2(vendorId, productId);
+        }
+
+        /// <summary>Bluetooth-mode product IDs on VID 0x045E, mirroring every
+        /// 0x045e entry the SDL fork's controller_list.h marks Bluetooth or
+        /// BLE, in full, never a hand-picked subset. Microsoft firmware uses
+        /// these PIDs exclusively over Bluetooth (wired and Xbox Wireless
+        /// Adapter links report different PIDs), so a match is a positive
+        /// Bluetooth fact. The 360-era "Wireless" entries
+        /// (controller_list.h:201-206) are the 2.4GHz proprietary receiver,
+        /// not Bluetooth, and are deliberately absent.</summary>
+        private static bool IsXboxBluetoothPid(ushort productId)
+        {
+            switch (productId)
+            {
+                case 0x02E0: // Xbox One S Controller (Bluetooth), controller_list.h:365
+                case 0x02FD: // Xbox One S Controller (Bluetooth), controller_list.h:367
+                case 0x0B0C: // Xbox Adaptive Controller (Bluetooth), controller_list.h:370
+                case 0x0B13: // Xbox Series X Controller (BLE), controller_list.h:372
+                case 0x0B20: // Xbox One S Controller (BLE), controller_list.h:373
+                case 0x0B21: // Xbox Adaptive Controller (BLE), controller_list.h:374
+                case 0x0B05: // Xbox One Elite Series 2 Controller (Bluetooth), controller_list.h:643
+                case 0x0B22: // Xbox One Elite Series 2 Controller (BLE), controller_list.h:644
+                    return true;
+                default:
+                    return false;
+            }
         }
     }
 }

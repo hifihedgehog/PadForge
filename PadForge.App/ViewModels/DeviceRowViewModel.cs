@@ -559,13 +559,14 @@ namespace PadForge.ViewModels
         }
 
         /// <summary>True when the device is known to be linked over
-        /// Bluetooth (classic {00001124}/BTHENUM, BLE {00001812}, or the SDL
-        /// fork's BLE Switch 2 driver identified by VID/PID plus empty path),
-        /// the same classifier the slot-card transport glyph uses. Drives
-        /// the dossier LINK line, which renders only when Bluetooth is a
-        /// positive fact: a non-BT path may be USB, a wireless dongle, or a
-        /// virtual source, so no transport is claimed for those (#175 item 7).
-        /// Xbox pads over BT (XInput#N paths) stay unclaimed, see
+        /// Bluetooth (classic {00001124}/BTHENUM, BLE {00001812}, the SDL
+        /// fork's BLE Switch 2 driver identified by VID/PID plus empty path,
+        /// or a Microsoft Xbox pad wearing a Bluetooth-mode PID), the same
+        /// classifier the slot-card transport glyph uses. Drives the dossier
+        /// LINK line, which renders only when Bluetooth is a positive fact:
+        /// a non-BT path may be USB, a wireless dongle, or a virtual source,
+        /// so no transport is claimed for those (#175 item 7). Xbox pads
+        /// over BT (XInput#N paths) answer by PID, see
         /// <see cref="Common.DeviceTransport"/>.</summary>
         public bool IsBluetoothLink => Common.DeviceTransport.IsBluetooth(_devicePath, _vendorId, _productId);
 

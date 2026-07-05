@@ -7610,7 +7610,8 @@ namespace PadForge.Services
                             // classifier (classic {00001124}/BTHENUM, BLE
                             // {00001812}, fork BLE Switch 2 by VID/PID plus
                             // empty path). Xbox pads over BT (XInput#N)
-                            // stay unclaimed, see DeviceTransport.
+                            // answer by Bluetooth-mode PID, see
+                            // DeviceTransport.
                             TransportGlyph = DeviceTransport.IsBluetooth(
                                     ud?.DevicePath, ud?.VendorId ?? (ushort)0, ud?.ProdId ?? (ushort)0)
                                 ? "" : string.Empty

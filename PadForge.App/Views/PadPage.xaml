@@ -6072,9 +6072,9 @@
                                                      indented row was a placement orphan).
                                                      Visible only while Weapon is selected. -->
                                                 <Button Grid.Row="2" Margin="0,6,0,0" Padding="8,2"
-                                                        HorizontalAlignment="Left" FontSize="10"
+                                                        HorizontalAlignment="Center" FontSize="10"
                                                         FontFamily="{StaticResource TelemetryFontFamily}"
-                                                        Content="{Binding Pad_AT_LoadGameCubePreset, Source={x:Static strings:Strings.Instance}}"
+                                                        Content="GameCube"
                                                         Command="{Binding PlayStationConfig.ApplyLeftGameCubePresetCommand}"
                                                         ToolTip="{Binding Pad_AT_LoadGameCubePreset_Tooltip, Source={x:Static strings:Strings.Instance}}"
                                                         Visibility="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=ListBoxItem}, Converter={StaticResource BoolToVisibilityConverter}}"/>
@@ -6247,9 +6247,9 @@
                                                      indented row was a placement orphan).
                                                      Visible only while Weapon is selected. -->
                                                 <Button Grid.Row="2" Margin="0,6,0,0" Padding="8,2"
-                                                        HorizontalAlignment="Left" FontSize="10"
+                                                        HorizontalAlignment="Center" FontSize="10"
                                                         FontFamily="{StaticResource TelemetryFontFamily}"
-                                                        Content="{Binding Pad_AT_LoadGameCubePreset, Source={x:Static strings:Strings.Instance}}"
+                                                        Content="GameCube"
                                                         Command="{Binding PlayStationConfig.ApplyRightGameCubePresetCommand}"
                                                         ToolTip="{Binding Pad_AT_LoadGameCubePreset_Tooltip, Source={x:Static strings:Strings.Instance}}"
                                                         Visibility="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=ListBoxItem}, Converter={StaticResource BoolToVisibilityConverter}}"/>
@@ -6492,13 +6492,6 @@
                                         <Path x:Name="LightbarPreviewArc" Data="M 46,14 Q 90,7 134,14" StrokeThickness="5"
                                               StrokeStartLineCap="Round" StrokeEndLineCap="Round"
                                               Visibility="{Binding PlayStationConfig.LightbarMode, Converter={StaticResource EnumEqualityVisibilityConverter}, ConverterParameter=Static|Breathing|Rainbow|ColorCycle|AudioPulse|AudioPulseRandom|AudioPulseRainbow|AudioThresholds|AudioGradient|AudioCrossFade|InputReactive|InputReactiveCycle|InputReactiveFixed|Battery|Strobe}">
-                                            <Path.Stroke>
-                                                <MultiBinding Converter="{StaticResource RgbToBrushConverter}">
-                                                    <Binding Path="PlayStationConfig.LightbarRed" />
-                                                    <Binding Path="PlayStationConfig.LightbarGreen" />
-                                                    <Binding Path="PlayStationConfig.LightbarBlue" />
-                                                </MultiBinding>
-                                            </Path.Stroke>
                                             <Path.Effect>
                                                 <DropShadowEffect ShadowDepth="0" BlurRadius="14" Opacity="0.55"
                                                                   Color="#FF0000FF"/>
@@ -6752,19 +6745,6 @@
                                         BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}"
                                         Visibility="{Binding PlayStationConfig.LightbarMode, Converter={StaticResource EnumEqualityVisibilityConverter}, ConverterParameter=Static|Breathing|AudioPulse|Strobe}">
                                     <StackPanel>
-                                        <!-- Lightbar replica: the strip previews the base
-                                             color at the shape it ships on the pad. -->
-                                        <Border Width="320" Height="12" CornerRadius="6" Margin="0,2,0,12"
-                                                HorizontalAlignment="Left"
-                                                BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}" BorderThickness="1">
-                                            <Border.Background>
-                                                <MultiBinding Converter="{StaticResource RgbToBrushConverter}">
-                                                    <Binding Path="PlayStationConfig.LightbarRed" />
-                                                    <Binding Path="PlayStationConfig.LightbarGreen" />
-                                                    <Binding Path="PlayStationConfig.LightbarBlue" />
-                                                </MultiBinding>
-                                            </Border.Background>
-                                        </Border>
                                         <views:ColorPickerControl Margin="0,0,0,12"
                                             HorizontalAlignment="Left"
                                             Red="{Binding PlayStationConfig.LightbarRed, Mode=TwoWay}"
@@ -6781,39 +6761,151 @@
                                              is the Ember accent. The handler re-syncs the
                                              hex box because that box is code-behind-synced,
                                              not value-bound. -->
-                                        <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
-                                            <Border Width="24" Height="20" CornerRadius="4" Margin="0,0,6,0" Cursor="Hand"
-                                                    Background="#FF0000FF" Tag="0000FF" ToolTip="#0000FF"
-                                                    BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}" BorderThickness="1"
-                                                    MouseLeftButtonDown="LightbarSwatch_Click"/>
-                                            <Border Width="24" Height="20" CornerRadius="4" Margin="0,0,6,0" Cursor="Hand"
-                                                    Background="#FFFF0000" Tag="FF0000" ToolTip="#FF0000"
-                                                    BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}" BorderThickness="1"
-                                                    MouseLeftButtonDown="LightbarSwatch_Click"/>
-                                            <Border Width="24" Height="20" CornerRadius="4" Margin="0,0,6,0" Cursor="Hand"
-                                                    Background="#FF00FF00" Tag="00FF00" ToolTip="#00FF00"
-                                                    BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}" BorderThickness="1"
-                                                    MouseLeftButtonDown="LightbarSwatch_Click"/>
-                                            <Border Width="24" Height="20" CornerRadius="4" Margin="0,0,6,0" Cursor="Hand"
-                                                    Background="#FFFF00FF" Tag="FF00FF" ToolTip="#FF00FF"
-                                                    BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}" BorderThickness="1"
-                                                    MouseLeftButtonDown="LightbarSwatch_Click"/>
-                                            <Border Width="24" Height="20" CornerRadius="4" Margin="0,0,6,0" Cursor="Hand"
-                                                    Background="#FFFFBF00" Tag="FFBF00" ToolTip="#FFBF00"
-                                                    BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}" BorderThickness="1"
-                                                    MouseLeftButtonDown="LightbarSwatch_Click"/>
-                                            <Border Width="24" Height="20" CornerRadius="4" Margin="0,0,6,0" Cursor="Hand"
-                                                    Background="#FF00FFFF" Tag="00FFFF" ToolTip="#00FFFF"
-                                                    BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}" BorderThickness="1"
-                                                    MouseLeftButtonDown="LightbarSwatch_Click"/>
-                                            <Border Width="24" Height="20" CornerRadius="4" Margin="0,0,6,0" Cursor="Hand"
-                                                    Background="#FFFFFFFF" Tag="FFFFFF" ToolTip="#FFFFFF"
-                                                    BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}" BorderThickness="1"
-                                                    MouseLeftButtonDown="LightbarSwatch_Click"/>
-                                            <Border Width="24" Height="20" CornerRadius="4" Cursor="Hand"
-                                                    Background="#FFFF6B2C" Tag="FF6B2C" ToolTip="#FF6B2C"
-                                                    BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}" BorderThickness="1"
-                                                    MouseLeftButtonDown="LightbarSwatch_Click"/>
+                                                                                <StackPanel Orientation="Horizontal" Margin="0,2,0,10">
+                                        <Border Width="24" Height="24" CornerRadius="6" Margin="0,0,6,0" Cursor="Hand"
+                                                Background="{DynamicResource SteelRaisedBrush}"
+                                                Tag="0000FF" ToolTip="#0000FF"
+                                                MouseLeftButtonDown="LightbarSwatch_Click">
+                                            <Border.Style>
+                                                <Style TargetType="Border">
+                                                    <Setter Property="BorderBrush" Value="{DynamicResource SteelLineSoftBrush}"/>
+                                                    <Setter Property="BorderThickness" Value="1"/>
+                                                    <Style.Triggers>
+                                                        <Trigger Property="IsMouseOver" Value="True">
+                                                            <Setter Property="BorderBrush" Value="{DynamicResource ColdBrush}"/>
+                                                            <Setter Property="Effect" Value="{StaticResource NeutralHoverGlow}"/>
+                                                        </Trigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Border.Style>
+                                            <Border CornerRadius="3" Margin="3" Background="#FF0000FF" IsHitTestVisible="False"/>
+                                        </Border>
+                                        <Border Width="24" Height="24" CornerRadius="6" Margin="0,0,6,0" Cursor="Hand"
+                                                Background="{DynamicResource SteelRaisedBrush}"
+                                                Tag="FF0000" ToolTip="#FF0000"
+                                                MouseLeftButtonDown="LightbarSwatch_Click">
+                                            <Border.Style>
+                                                <Style TargetType="Border">
+                                                    <Setter Property="BorderBrush" Value="{DynamicResource SteelLineSoftBrush}"/>
+                                                    <Setter Property="BorderThickness" Value="1"/>
+                                                    <Style.Triggers>
+                                                        <Trigger Property="IsMouseOver" Value="True">
+                                                            <Setter Property="BorderBrush" Value="{DynamicResource ColdBrush}"/>
+                                                            <Setter Property="Effect" Value="{StaticResource NeutralHoverGlow}"/>
+                                                        </Trigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Border.Style>
+                                            <Border CornerRadius="3" Margin="3" Background="#FFFF0000" IsHitTestVisible="False"/>
+                                        </Border>
+                                        <Border Width="24" Height="24" CornerRadius="6" Margin="0,0,6,0" Cursor="Hand"
+                                                Background="{DynamicResource SteelRaisedBrush}"
+                                                Tag="00FF00" ToolTip="#00FF00"
+                                                MouseLeftButtonDown="LightbarSwatch_Click">
+                                            <Border.Style>
+                                                <Style TargetType="Border">
+                                                    <Setter Property="BorderBrush" Value="{DynamicResource SteelLineSoftBrush}"/>
+                                                    <Setter Property="BorderThickness" Value="1"/>
+                                                    <Style.Triggers>
+                                                        <Trigger Property="IsMouseOver" Value="True">
+                                                            <Setter Property="BorderBrush" Value="{DynamicResource ColdBrush}"/>
+                                                            <Setter Property="Effect" Value="{StaticResource NeutralHoverGlow}"/>
+                                                        </Trigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Border.Style>
+                                            <Border CornerRadius="3" Margin="3" Background="#FF00FF00" IsHitTestVisible="False"/>
+                                        </Border>
+                                        <Border Width="24" Height="24" CornerRadius="6" Margin="0,0,6,0" Cursor="Hand"
+                                                Background="{DynamicResource SteelRaisedBrush}"
+                                                Tag="FF00FF" ToolTip="#FF00FF"
+                                                MouseLeftButtonDown="LightbarSwatch_Click">
+                                            <Border.Style>
+                                                <Style TargetType="Border">
+                                                    <Setter Property="BorderBrush" Value="{DynamicResource SteelLineSoftBrush}"/>
+                                                    <Setter Property="BorderThickness" Value="1"/>
+                                                    <Style.Triggers>
+                                                        <Trigger Property="IsMouseOver" Value="True">
+                                                            <Setter Property="BorderBrush" Value="{DynamicResource ColdBrush}"/>
+                                                            <Setter Property="Effect" Value="{StaticResource NeutralHoverGlow}"/>
+                                                        </Trigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Border.Style>
+                                            <Border CornerRadius="3" Margin="3" Background="#FFFF00FF" IsHitTestVisible="False"/>
+                                        </Border>
+                                        <Border Width="24" Height="24" CornerRadius="6" Margin="0,0,6,0" Cursor="Hand"
+                                                Background="{DynamicResource SteelRaisedBrush}"
+                                                Tag="FFBF00" ToolTip="#FFBF00"
+                                                MouseLeftButtonDown="LightbarSwatch_Click">
+                                            <Border.Style>
+                                                <Style TargetType="Border">
+                                                    <Setter Property="BorderBrush" Value="{DynamicResource SteelLineSoftBrush}"/>
+                                                    <Setter Property="BorderThickness" Value="1"/>
+                                                    <Style.Triggers>
+                                                        <Trigger Property="IsMouseOver" Value="True">
+                                                            <Setter Property="BorderBrush" Value="{DynamicResource ColdBrush}"/>
+                                                            <Setter Property="Effect" Value="{StaticResource NeutralHoverGlow}"/>
+                                                        </Trigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Border.Style>
+                                            <Border CornerRadius="3" Margin="3" Background="#FFFFBF00" IsHitTestVisible="False"/>
+                                        </Border>
+                                        <Border Width="24" Height="24" CornerRadius="6" Margin="0,0,6,0" Cursor="Hand"
+                                                Background="{DynamicResource SteelRaisedBrush}"
+                                                Tag="00FFFF" ToolTip="#00FFFF"
+                                                MouseLeftButtonDown="LightbarSwatch_Click">
+                                            <Border.Style>
+                                                <Style TargetType="Border">
+                                                    <Setter Property="BorderBrush" Value="{DynamicResource SteelLineSoftBrush}"/>
+                                                    <Setter Property="BorderThickness" Value="1"/>
+                                                    <Style.Triggers>
+                                                        <Trigger Property="IsMouseOver" Value="True">
+                                                            <Setter Property="BorderBrush" Value="{DynamicResource ColdBrush}"/>
+                                                            <Setter Property="Effect" Value="{StaticResource NeutralHoverGlow}"/>
+                                                        </Trigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Border.Style>
+                                            <Border CornerRadius="3" Margin="3" Background="#FF00FFFF" IsHitTestVisible="False"/>
+                                        </Border>
+                                        <Border Width="24" Height="24" CornerRadius="6" Margin="0,0,6,0" Cursor="Hand"
+                                                Background="{DynamicResource SteelRaisedBrush}"
+                                                Tag="FFFFFF" ToolTip="#FFFFFF"
+                                                MouseLeftButtonDown="LightbarSwatch_Click">
+                                            <Border.Style>
+                                                <Style TargetType="Border">
+                                                    <Setter Property="BorderBrush" Value="{DynamicResource SteelLineSoftBrush}"/>
+                                                    <Setter Property="BorderThickness" Value="1"/>
+                                                    <Style.Triggers>
+                                                        <Trigger Property="IsMouseOver" Value="True">
+                                                            <Setter Property="BorderBrush" Value="{DynamicResource ColdBrush}"/>
+                                                            <Setter Property="Effect" Value="{StaticResource NeutralHoverGlow}"/>
+                                                        </Trigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Border.Style>
+                                            <Border CornerRadius="3" Margin="3" Background="#FFFFFFFF" IsHitTestVisible="False"/>
+                                        </Border>
+                                        <Border Width="24" Height="24" CornerRadius="6" Margin="0,0,6,0" Cursor="Hand"
+                                                Background="{DynamicResource SteelRaisedBrush}"
+                                                Tag="FF6B2C" ToolTip="#FF6B2C"
+                                                MouseLeftButtonDown="LightbarSwatch_Click">
+                                            <Border.Style>
+                                                <Style TargetType="Border">
+                                                    <Setter Property="BorderBrush" Value="{DynamicResource SteelLineSoftBrush}"/>
+                                                    <Setter Property="BorderThickness" Value="1"/>
+                                                    <Style.Triggers>
+                                                        <Trigger Property="IsMouseOver" Value="True">
+                                                            <Setter Property="BorderBrush" Value="{DynamicResource ColdBrush}"/>
+                                                            <Setter Property="Effect" Value="{StaticResource NeutralHoverGlow}"/>
+                                                        </Trigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Border.Style>
+                                            <Border CornerRadius="3" Margin="3" Background="#FFFF6B2C" IsHitTestVisible="False"/>
+                                        </Border>
                                         </StackPanel>
                                         <Grid Margin="0,0,0,10">
                                             <Grid.ColumnDefinitions>

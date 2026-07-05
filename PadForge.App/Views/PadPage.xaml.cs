@@ -6,6 +6,7 @@ using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.ComponentModel;
 using PadForge.Common;
 using PadForge.Common.Input;
@@ -51,10 +52,11 @@ namespace PadForge.Views
         /// </summary>
         private PadForge.ViewModels.ExtendedSlotConfig _currentExtendedConfig;
 
-        /// <summary>Currently-subscribed PlayStationSlotConfig so we can
-        /// keep the HEX color textbox in sync with slider drags. Same
-        /// shape as <see cref="_currentExtendedConfig"/>.</summary>
-        private PadForge.ViewModels.PlayStationSlotConfig _currentPlayStationConfig;
+        /// <summary>Currently-subscribed MappedDeviceInfo for the selected
+        /// device, tracked so the lightbar preview's Battery mode can follow
+        /// the slow-lane BatteryText refresh (#167). Re-pointed on
+        /// DataContext change and on SelectedMappedDevice change.</summary>
+        private PadViewModel.MappedDeviceInfo _currentSelectedDeviceInfo;
 
         public PadPage()
         {
@@ -71,7 +73,7 @@ namespace PadForge.Views
             SyncExtendedConfigBar();
             SyncMidiConfigBar();
             SyncLightbarHexBox();
-            SyncLightbarPreviewBloom();
+            SyncLightbarPreview();
             SyncAudioHexBoxes();
             // Loaded can fire again without a paired Unloaded when the
             // element re-enters the tree — unsubscribe first so handlers
@@ -91,6 +93,7 @@ namespace PadForge.Views
             if (_currentPadVm != null)
             {
                 _currentPadVm.PropertyChanged -= OnPadVmPropertyChanged;
+                _currentPadVm.ActivePlayStationConfigPropertyChanged -= OnPlayStationConfigChanged;
                 if (_currentPadVm.MappedDevices != null)
                     _currentPadVm.MappedDevices.CollectionChanged -= OnMappedDevicesChanged;
                 _currentPadVm.RecordTouchpadGestureRequested -= OnRecordTouchpadGestureRequested;
@@ -101,11 +104,20 @@ namespace PadForge.Views
             if (_currentPadVm != null)
             {
                 _currentPadVm.PropertyChanged += OnPadVmPropertyChanged;
+                // The PlayStationSlotConfig anchor is per selected device
+                // (BindPlayStationConfigForDevice swaps it on
+                // SelectedMappedDevice change), so subscribe through the view
+                // model's ActivePlayStationConfigPropertyChanged forwarder
+                // rather than the inner config instance: the forwarder
+                // follows the anchor across device swaps (same pattern as
+                // InputService).
+                _currentPadVm.ActivePlayStationConfigPropertyChanged += OnPlayStationConfigChanged;
                 if (_currentPadVm.MappedDevices != null)
                     _currentPadVm.MappedDevices.CollectionChanged += OnMappedDevicesChanged;
                 _currentPadVm.RecordTouchpadGestureRequested += OnRecordTouchpadGestureRequested;
                 _currentPadVm.DeleteTouchpadGestureRequested += OnDeleteTouchpadGestureRequested;
             }
+            ResubscribeSelectedDeviceInfo();
 
             // Track the active slot's ExtendedSlotConfig so we can refresh the
             // Extended config bar when a profile switch mutates its fields
@@ -119,22 +131,12 @@ namespace PadForge.Views
             if (_currentExtendedConfig != null)
                 _currentExtendedConfig.PropertyChanged += OnExtendedConfigBarPropertyChanged;
 
-            // Mirror the same subscription pattern for PlayStationSlotConfig
-            // so the HEX textbox follows RGB slider drags (and any other
-            // external mutation).  PlayStationConfig is stable for the
-            // PadViewModel's lifetime — no external code reassigns it.
-            if (_currentPlayStationConfig != null)
-                _currentPlayStationConfig.PropertyChanged -= OnPlayStationConfigChanged;
-            _currentPlayStationConfig = _currentPadVm?.PlayStationConfig;
-            if (_currentPlayStationConfig != null)
-                _currentPlayStationConfig.PropertyChanged += OnPlayStationConfigChanged;
-
             ApplyViewMode();
             SyncTabStripSelection();
             SyncExtendedConfigBar();
             SyncMidiConfigBar();
             SyncLightbarHexBox();
-            SyncLightbarPreviewBloom();
+            SyncLightbarPreview();
             SyncAudioHexBoxes();
 
             // Re-apply the profile dropdowns' SelectedValue after ItemsSource
@@ -253,6 +255,16 @@ namespace PadForge.Views
             BindActiveModelView();
         }
 
+        // Lightbar preview bar geometry per Sony family (#175, user report
+        // 2026-07-05). The DualSense bar is two light strips wrapping the
+        // touchpad's flanks; the DualShock 4 bar runs along the body's top
+        // edge between the shoulders. Coordinates live on the 180x60
+        // silhouette canvas in PadPage.xaml (touchpad at 70,17 size 40x13).
+        private const string DualSenseLightbarGeometry =
+            "M 71.5,15 C 66.8,16 65,19 65,23 C 65,27 66.8,30 71.5,31 "
+            + "M 108.5,15 C 113.2,16 115,19 115,23 C 115,27 113.2,30 108.5,31";
+        private const string Ds4LightbarGeometry = "M 76,9.5 Q 90,7.5 104,9.5";
+
         private void SyncTabVisibility()
         {
             if (TabSticks == null || TabTriggers == null || TabForceFeedback == null) return;
@@ -284,6 +296,7 @@ namespace PadForge.Views
             //   have FFB endpoints, so the tab would be a no-op there.
             bool hasAdaptiveTriggers = false;
             bool hasLightbar = false;
+            bool lightbarIsDs4 = false;
             bool hasIndicatorLeds = false;
             bool hasForceFeedback = false;
             bool hasGyro = false;
@@ -360,6 +373,7 @@ namespace PadForge.Views
                             bool isDs4 = ud.ProdId == 0x05C4 || ud.ProdId == 0x09CC || ud.ProdId == 0x0BA0;
                             hasAdaptiveTriggers = isDualSense || isDualSenseEdge;
                             hasLightbar = isDualSense || isDualSenseEdge || isDs4;
+                            lightbarIsDs4 = isDs4;
                             // Speaker audio: DualSense family + DS4 (all have a speaker).
                             hasAudio = isDualSense || isDualSenseEdge || isDs4;
                             // Indicator LEDs (player row + mic LED + brightness)
@@ -437,6 +451,23 @@ namespace PadForge.Views
                 LockPulseSection.Visibility = (hasRumble || hasTriggerVib) ? Visibility.Visible : Visibility.Collapsed;
             if (LockLightbarSection != null)
                 LockLightbarSection.Visibility = hasLightbar ? Visibility.Visible : Visibility.Collapsed;
+
+            // Family-correct preview bar (#175): same PID split as the
+            // capability gates above. Both arcs (live + Off) carry the same
+            // geometry so the mode toggle never shifts the bar's position.
+            if (hasLightbar && LightbarPreviewArc != null)
+            {
+                var barGeo = Geometry.Parse(lightbarIsDs4 ? Ds4LightbarGeometry : DualSenseLightbarGeometry);
+                barGeo.Freeze();
+                double barThickness = lightbarIsDs4 ? 5.0 : 3.5;
+                LightbarPreviewArc.Data = barGeo;
+                LightbarPreviewArc.StrokeThickness = barThickness;
+                if (LightbarPreviewArcOff != null)
+                {
+                    LightbarPreviewArcOff.Data = barGeo;
+                    LightbarPreviewArcOff.StrokeThickness = barThickness;
+                }
+            }
 
             // Sync the per-pad pivot to the active device. PadViewModel
             // recomputes MaxTouchpadIndex / SelectedTouchpadIndex and
@@ -1490,8 +1521,24 @@ namespace PadForge.Views
             else if (e.PropertyName == nameof(PadViewModel.SelectedMappedDevice))
             {
                 // Tabs reflect the selected physical device; refresh on
-                // dropdown change.
+                // dropdown change. SetProperty raises this BEFORE the setter
+                // swaps the PlayStationConfig anchor, so the lighting
+                // re-syncs ride the PlayStationConfig case below instead;
+                // only the device-info subscription is re-pointed here (the
+                // backing field is already the new device).
                 SyncTabVisibility();
+                ResubscribeSelectedDeviceInfo();
+            }
+            else if (e.PropertyName == nameof(PadViewModel.PlayStationConfig))
+            {
+                // The Lighting tab's config anchor swapped to another
+                // per-device entry (BindPlayStationConfigForDevice on device
+                // change). Config events keep flowing through the
+                // ActivePlayStationConfigPropertyChanged forwarder; re-seed
+                // the value-synced controls against the new instance.
+                SyncLightbarHexBox();
+                SyncLightbarPreview();
+                SyncAudioHexBoxes();
             }
             else if (e.PropertyName == nameof(PadViewModel.ProfileId))
             {
@@ -1739,10 +1786,22 @@ namespace PadForge.Views
                 case nameof(ViewModels.PlayStationSlotConfig.LightbarBlue):
                     if (LightbarHexBox != null && !LightbarHexBox.IsKeyboardFocusWithin)
                         SyncLightbarHexBox();
-                    SyncLightbarPreviewBloom();
+                    SyncLightbarPreview();
                     break;
+                // Preview retune set: mode, the shared period (Breathing /
+                // Rainbow / ColorCycle / AudioPulseRainbow / Strobe cadence),
+                // Rainbow brightness, and the Battery endpoint colors. Slider
+                // drags land here so the running animation retimes live.
                 case nameof(ViewModels.PlayStationSlotConfig.LightbarMode):
-                    SyncLightbarPreviewBloom();
+                case nameof(ViewModels.PlayStationSlotConfig.LightbarPeriodMs):
+                case nameof(ViewModels.PlayStationSlotConfig.LightbarRainbowBrightness):
+                case nameof(ViewModels.PlayStationSlotConfig.LightbarBatteryLowR):
+                case nameof(ViewModels.PlayStationSlotConfig.LightbarBatteryLowG):
+                case nameof(ViewModels.PlayStationSlotConfig.LightbarBatteryLowB):
+                case nameof(ViewModels.PlayStationSlotConfig.LightbarBatteryHighR):
+                case nameof(ViewModels.PlayStationSlotConfig.LightbarBatteryHighG):
+                case nameof(ViewModels.PlayStationSlotConfig.LightbarBatteryHighB):
+                    SyncLightbarPreview();
                     break;
                 case nameof(ViewModels.PlayStationSlotConfig.AudioLowR):
                 case nameof(ViewModels.PlayStationSlotConfig.AudioLowG):
@@ -1856,80 +1915,245 @@ namespace PadForge.Views
             LightbarHexBox.Text = $"{vm.PlayStationConfig.LightbarRed:X2}{vm.PlayStationConfig.LightbarGreen:X2}{vm.PlayStationConfig.LightbarBlue:X2}";
         }
 
-        /// <summary>Retints the lightbar preview silhouette's bloom to
-        /// the configured base color (#175 competitor item 6). The
-        /// effect itself is static XAML; only its Color moves, the same
-        /// value-driven treatment as CurveEditor's live-dot glow. The
-        /// arc's Stroke follows the RGB trio by MultiBinding, but there
-        /// is no bound-Effect precedent in this codebase, so the bloom
-        /// takes the code-behind path through the named element's
-        /// Effect (KBMPreviewView.SetGlow shape). Called wherever
-        /// SyncLightbarHexBox is called, plus on every
-        /// LightbarRed/Green/Blue PropertyChanged (no keyboard-focus
-        /// guard needed: the bloom never fights a caret).</summary>
-        private void SyncLightbarPreviewBloom()
+        /// <summary>Re-points the BatteryText subscription at the
+        /// currently selected mapped device so the lightbar preview's
+        /// Battery mode tracks the slow-lane percent refresh (#167).
+        /// Called from OnDataContextChanged and on every
+        /// SelectedMappedDevice change.</summary>
+        private void ResubscribeSelectedDeviceInfo()
         {
+            if (_currentSelectedDeviceInfo != null)
+                _currentSelectedDeviceInfo.PropertyChanged -= OnSelectedDeviceInfoChanged;
+            _currentSelectedDeviceInfo = _currentPadVm?.SelectedMappedDevice;
+            if (_currentSelectedDeviceInfo != null)
+                _currentSelectedDeviceInfo.PropertyChanged += OnSelectedDeviceInfoChanged;
+        }
+
+        private void OnSelectedDeviceInfoChanged(object sender, PropertyChangedEventArgs e)
+        {
+            // Only Battery mode consumes device telemetry; the mode gate
+            // keeps a battery tick from restarting other modes' animation
+            // clocks.
+            if (e.PropertyName == nameof(PadViewModel.MappedDeviceInfo.BatteryText)
+                && _currentPadVm?.PlayStationConfig?.LightbarMode == ViewModels.LightbarMode.Battery)
+                SyncLightbarPreview();
+        }
+
+        /// <summary>Drives the lightbar preview arc so it mirrors the
+        /// physical bar's behavior over time (#175, user report
+        /// 2026-07-05) instead of representing modes spatially. Every
+        /// sync first clears the animations the previous mode started,
+        /// then rebuilds from the active config: Breathing breathes the
+        /// arc's opacity, Rainbow / ColorCycle / AudioPulseRainbow loop
+        /// a hue wheel through the stroke and bloom, Strobe blinks,
+        /// Battery holds the synthesizer's low-to-high lerp at the
+        /// selected device's live percent. Timings consume
+        /// LightbarPeriodMs exactly as Ds5EffectSynthesizer does (one
+        /// full cycle per period). All motion is code-driven
+        /// BeginAnimation on the element / the DropShadowEffect (the
+        /// MainWindow mini-card heat-ring pattern); nothing animates
+        /// from style triggers. Reduced motion
+        /// (SystemParameters.ClientAreaAnimation false) holds static
+        /// presentations: Breathing at 0.6 opacity, Rainbow at the
+        /// configured color, Strobe solid. Audio modes keep the static
+        /// cold-to-color gradient because the live audio peak lives on
+        /// UserEffectsDispatcher's polling thread and is not reachable
+        /// from the view layer.</summary>
+        private void SyncLightbarPreview()
+        {
+            // Macro lightbar actions mutate the per-device config from the
+            // polling thread (InputManager Step 4b slot fan-out), and the
+            // ActivePlayStationConfigPropertyChanged forwarder raises on the
+            // calling thread. DP access and BeginAnimation require the UI
+            // thread, so bounce over instead of throwing.
+            if (!Dispatcher.CheckAccess())
+            {
+                Dispatcher.BeginInvoke(new Action(SyncLightbarPreview));
+                return;
+            }
             if (LightbarPreviewArc?.Effect is not System.Windows.Media.Effects.DropShadowEffect bloom) return;
             if (DataContext is not PadViewModel vm || vm.PlayStationConfig == null) return;
             var cfg = vm.PlayStationConfig;
             var baseColor = Color.FromRgb(cfg.LightbarRed, cfg.LightbarGreen, cfg.LightbarBlue);
 
-            // Per-mode presentation (user report 2026-07-05): dynamic modes
-            // read dynamically. Static gradient representations, value-driven
-            // only, no animation loops (reduced-motion canon).
+            // Wipe prior animations first so every mode starts from local
+            // values: arc opacity (Breathing / Strobe), bloom color
+            // (rainbow lockstep), and the outgoing stroke's color loop.
+            // Frozen brushes can't carry clocks, so only a live brush is
+            // cleared.
+            LightbarPreviewArc.BeginAnimation(UIElement.OpacityProperty, null);
+            bloom.BeginAnimation(System.Windows.Media.Effects.DropShadowEffect.ColorProperty, null);
+            if (LightbarPreviewArc.Stroke is SolidColorBrush prevStroke && !prevStroke.IsFrozen)
+                prevStroke.BeginAnimation(SolidColorBrush.ColorProperty, null);
+            LightbarPreviewArc.Opacity = 1.0;
+
+            bool motion = SystemParameters.ClientAreaAnimation;
+            // Same floor as Ds5EffectSynthesizer.ComputeLightbarColor: one
+            // full Breathing / hue-rotation / Strobe cycle per period.
+            int periodMs = Math.Max(cfg.LightbarPeriodMs, 250);
+            // Phase-lock every loop to a wall-clock grid (the mini-card heat
+            // ring pattern in MainWindow): RGB / period slider drags re-run
+            // this sync on every tick, and without the negative BeginTime
+            // each restart would snap the loop back to cycle start, pinning
+            // Breathing at its trough and Strobe on solid for the whole
+            // drag. The engine keys its phase off its own timer, so only
+            // the rate matches the physical bar, not the absolute phase.
+            var phaseLock = TimeSpan.FromMilliseconds(
+                -(DateTime.UtcNow.TimeOfDay.TotalMilliseconds % periodMs));
+
             Brush stroke;
+            bool strokeAnimated = false;
             Color bloomColor = baseColor;
-            LightbarPreviewArc.StrokeDashArray = null;
             switch (cfg.LightbarMode)
             {
+                case ViewModels.LightbarMode.Breathing:
+                    stroke = new SolidColorBrush(baseColor);
+                    if (motion)
+                    {
+                        // Engine: triangle envelope 0 -> 1 -> 0 across one
+                        // period. AutoReverse doubles the effective length,
+                        // so one leg is half the period. Floor 0.15 keeps
+                        // the arc findable at the trough.
+                        var breathe = new DoubleAnimation(0.15, 1.0,
+                            new Duration(TimeSpan.FromMilliseconds(periodMs / 2.0)))
+                        {
+                            AutoReverse = true,
+                            RepeatBehavior = RepeatBehavior.Forever,
+                            EasingFunction = new SineEase { EasingMode = EasingMode.EaseInOut },
+                            BeginTime = phaseLock, // AutoReverse pair = periodMs
+                        };
+                        LightbarPreviewArc.BeginAnimation(UIElement.OpacityProperty, breathe);
+                    }
+                    else
+                    {
+                        LightbarPreviewArc.Opacity = 0.6;
+                    }
+                    break;
+
                 case ViewModels.LightbarMode.Rainbow:
                 case ViewModels.LightbarMode.ColorCycle:
                 case ViewModels.LightbarMode.AudioPulseRainbow:
-                    stroke = new LinearGradientBrush(new GradientStopCollection
+                    if (motion)
                     {
-                        new GradientStop(Color.FromRgb(0xFF, 0x00, 0x00), 0.00),
-                        new GradientStop(Color.FromRgb(0xFF, 0xBF, 0x00), 0.20),
-                        new GradientStop(Color.FromRgb(0x00, 0xFF, 0x00), 0.40),
-                        new GradientStop(Color.FromRgb(0x00, 0xFF, 0xFF), 0.60),
-                        new GradientStop(Color.FromRgb(0x00, 0x00, 0xFF), 0.80),
-                        new GradientStop(Color.FromRgb(0xFF, 0x00, 0xFF), 1.00),
-                    }, 0);
-                    bloomColor = Colors.White;
-                    break;
-                case ViewModels.LightbarMode.Breathing:
-                    stroke = new LinearGradientBrush(new GradientStopCollection
+                        // One full hue rotation per period, the same
+                        // R->Y->G->C->B->M wheel the synthesizer walks via
+                        // HsvToRgb(phase * 360). Rainbow additionally scales
+                        // by the brightness slider (the engine's only Rainbow
+                        // dimmer). ColorCycle previews the wheel rather than
+                        // the user palette (single-color stroke at the
+                        // matching traversal period). AudioPulseRainbow shows
+                        // the hue rotation without the audio-peak modulation
+                        // (the peak is not reachable here).
+                        double v = cfg.LightbarMode == ViewModels.LightbarMode.Rainbow
+                            ? Math.Clamp(cfg.LightbarRainbowBrightness / 100.0, 0.0, 1.0)
+                            : 1.0;
+                        Color Hue(byte r, byte g, byte b) => Color.FromRgb(
+                            (byte)Math.Round(r * v),
+                            (byte)Math.Round(g * v),
+                            (byte)Math.Round(b * v));
+                        Color[] wheel =
+                        {
+                            Hue(0xFF, 0x00, 0x00), Hue(0xFF, 0xFF, 0x00),
+                            Hue(0x00, 0xFF, 0x00), Hue(0x00, 0xFF, 0xFF),
+                            Hue(0x00, 0x00, 0xFF), Hue(0xFF, 0x00, 0xFF),
+                            Hue(0xFF, 0x00, 0x00),
+                        };
+                        var loop = new ColorAnimationUsingKeyFrames
+                        {
+                            Duration = new Duration(TimeSpan.FromMilliseconds(periodMs)),
+                            RepeatBehavior = RepeatBehavior.Forever,
+                            BeginTime = phaseLock,
+                        };
+                        for (int i = 0; i < wheel.Length; i++)
+                            loop.KeyFrames.Add(new LinearColorKeyFrame(
+                                wheel[i], KeyTime.FromPercent(i / 6.0)));
+                        // Animated brush: must NOT be frozen (a frozen brush
+                        // rejects BeginAnimation).
+                        var animated = new SolidColorBrush(wheel[0]);
+                        animated.BeginAnimation(SolidColorBrush.ColorProperty, loop);
+                        // Bloom follows in lockstep: code-driven
+                        // BeginAnimation on the effect, the approved shape
+                        // (mini-card heat ring). Both clocks are created in
+                        // the same pass so they tick together.
+                        bloom.BeginAnimation(
+                            System.Windows.Media.Effects.DropShadowEffect.ColorProperty, loop);
+                        stroke = animated;
+                        strokeAnimated = true;
+                        bloomColor = wheel[0]; // local value under the loop
+                    }
+                    else
                     {
-                        new GradientStop(Color.FromArgb(0x30, baseColor.R, baseColor.G, baseColor.B), 0.0),
-                        new GradientStop(baseColor, 0.5),
-                        new GradientStop(Color.FromArgb(0x30, baseColor.R, baseColor.G, baseColor.B), 1.0),
-                    }, 0);
+                        // Reduced motion: hold the configured color.
+                        stroke = new SolidColorBrush(baseColor);
+                    }
                     break;
+
+                case ViewModels.LightbarMode.Strobe:
+                    // Engine: square wave at LightbarPeriodMs cadence, first
+                    // half of the period on, second half off. Reduced motion
+                    // holds the on phase (solid).
+                    stroke = new SolidColorBrush(baseColor);
+                    if (motion)
+                    {
+                        var blink = new DoubleAnimationUsingKeyFrames
+                        {
+                            Duration = new Duration(TimeSpan.FromMilliseconds(periodMs)),
+                            RepeatBehavior = RepeatBehavior.Forever,
+                            BeginTime = phaseLock,
+                        };
+                        blink.KeyFrames.Add(new DiscreteDoubleKeyFrame(1.0, KeyTime.FromPercent(0.0)));
+                        blink.KeyFrames.Add(new DiscreteDoubleKeyFrame(0.0, KeyTime.FromPercent(0.5)));
+                        LightbarPreviewArc.BeginAnimation(UIElement.OpacityProperty, blink);
+                    }
+                    break;
+
+                case ViewModels.LightbarMode.Battery:
+                {
+                    // Mirror the synthesizer's Battery lerp: configured Low ->
+                    // High colors at the selected device's live percent
+                    // (BatteryText, #167 slow lane, "78%" shape). Unknown or
+                    // absent battery mirrors SlotBatteryPercentProvider's
+                    // default of 100 (full) so the arc shows the high-charge
+                    // color rather than empty red.
+                    double t = 1.0;
+                    string txt = vm.SelectedMappedDevice?.BatteryText;
+                    if (!string.IsNullOrEmpty(txt))
+                    {
+                        int cut = txt.IndexOf('%');
+                        if (cut > 0 && int.TryParse(txt.Substring(0, cut),
+                                System.Globalization.NumberStyles.Integer,
+                                System.Globalization.CultureInfo.InvariantCulture, out int pct))
+                            t = Math.Clamp(pct, 0, 100) / 100.0;
+                    }
+                    var mix = Color.FromRgb(
+                        (byte)Math.Round(cfg.LightbarBatteryLowR + (cfg.LightbarBatteryHighR - cfg.LightbarBatteryLowR) * t),
+                        (byte)Math.Round(cfg.LightbarBatteryLowG + (cfg.LightbarBatteryHighG - cfg.LightbarBatteryLowG) * t),
+                        (byte)Math.Round(cfg.LightbarBatteryLowB + (cfg.LightbarBatteryHighB - cfg.LightbarBatteryLowB) * t));
+                    stroke = new SolidColorBrush(mix);
+                    bloomColor = mix;
+                    break;
+                }
+
                 case ViewModels.LightbarMode.AudioPulse:
                 case ViewModels.LightbarMode.AudioPulseRandom:
                 case ViewModels.LightbarMode.AudioThresholds:
                 case ViewModels.LightbarMode.AudioGradient:
                 case ViewModels.LightbarMode.AudioCrossFade:
+                    // Live audio is not reachable in the view layer (the peak
+                    // lives on UserEffectsDispatcher's polling thread), so
+                    // audio modes keep the static cold-to-color gradient.
                     stroke = new LinearGradientBrush(
                         Color.FromRgb(0x58, 0xB6, 0xE4), baseColor, 0);
                     break;
-                case ViewModels.LightbarMode.Battery:
-                    stroke = new LinearGradientBrush(new GradientStopCollection
-                    {
-                        new GradientStop(Color.FromRgb(0xE5, 0x48, 0x4D), 0.0),
-                        new GradientStop(Color.FromRgb(0xE8, 0xB4, 0x34), 0.5),
-                        new GradientStop(Color.FromRgb(0x46, 0xC4, 0x63), 1.0),
-                    }, 0);
-                    bloomColor = Color.FromRgb(0x46, 0xC4, 0x63);
-                    break;
-                case ViewModels.LightbarMode.Strobe:
-                    stroke = new SolidColorBrush(baseColor);
-                    LightbarPreviewArc.StrokeDashArray = new DoubleCollection { 1.2, 1.2 };
-                    break;
+
                 default:
+                    // Static, the legacy InputReactive family, and anything
+                    // new: solid configured color, no animation.
                     stroke = new SolidColorBrush(baseColor);
                     break;
             }
-            if (stroke is System.Windows.Media.Brush b && b.CanFreeze) b.Freeze();
+
+            if (!strokeAnimated && stroke.CanFreeze) stroke.Freeze();
             LightbarPreviewArc.Stroke = stroke;
             bloom.Color = bloomColor;
         }

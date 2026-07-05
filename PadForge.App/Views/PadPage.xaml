@@ -4491,27 +4491,65 @@
                                                              the radar keeps the #1E2739 rings + crosshair above;
                                                              below sit the DZ steel fill, the dashed ember DZ
                                                              circle, and the anti-DZ ember ring. -->
-                                                        <!-- Dead zone geometry (#175 competitor item 3): the dead
-                                                             region painted as one ashen steel fill so the DZ numbers
-                                                             become visible physics. Geometry comes from the VM
-                                                             (DeadZoneSteelGeometry, recomputed on DZ slider / shape
-                                                             changes): ellipse for radial shapes, cross-band for
-                                                             axial, both for Hybrid. Sloped variants reuse the axial
-                                                             cross-band silhouette. Steel=structure per the ember
-                                                             grammar; the dashed ember ring below still marks the
-                                                             radius. Replaces the legacy yellow/red overlay shapes
-                                                             (pre-ember palette). -->
-                                                        <Path Fill="#2E253049" IsHitTestVisible="False"
-                                                              Data="{Binding DeadZoneSteelGeometry, Mode=OneWay}"/>
-
-                                                        <!-- Deadzone ring (#175 round 3, item B7): dashed
-                                                             ember-deep circle at the configured DZ radius,
-                                                             spec mock stroke rgba(196,61,12,0.55) dash 3/4.
-                                                             Always on, every shape. It marks the DZ radius
-                                                             the card subtitle prints. For Hybrid it doubles
-                                                             as the fully-dead radial-stage circle it was
-                                                             before. -->
-                                                        <Ellipse Fill="Transparent" Stroke="#8CC43D0C" StrokeThickness="1" StrokeDashArray="3 4">
+<!-- Dead zone geometry (#175, user direction 2026-07-04:
+                                                             restore the old UI's per-shape overlays - each shape
+                                                             draws its own dashed outline with shading, and the
+                                                             components overlap). Two tiers in the ember palette:
+                                                             fully dead = ashen fill + ember-deep dash; snapped to
+                                                             axis (partial) = fainter fill + fainter dash. The old
+                                                             always-on ellipse ring is gone: it painted a circle
+                                                             over non-radial shapes. Converters are the proven
+                                                             legacy pair. -->
+                                                        <!-- Axial: cross arms - snapped to axis (partial tier). -->
+                                                        <Path Fill="#18253049" Stroke="#5AC43D0C" StrokeThickness="1" StrokeDashArray="3 4"
+                                                              IsHitTestVisible="False"
+                                                              Visibility="{Binding IsAxialShape, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                            <Path.Data>
+                                                                <MultiBinding Converter="{StaticResource CrossGeometryConverter}">
+                                                                    <Binding Path="DeadZoneX"/>
+                                                                    <Binding Path="DeadZoneY"/>
+                                                                </MultiBinding>
+                                                            </Path.Data>
+                                                        </Path>
+                                                        <!-- Axial: center rectangle - fully dead. -->
+                                                        <Rectangle Fill="#2E253049" Stroke="#8CC43D0C" StrokeThickness="1" StrokeDashArray="3 4"
+                                                                   IsHitTestVisible="False"
+                                                                   Visibility="{Binding IsAxialShape, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                            <Rectangle.Width>
+                                                                <Binding Path="DeadZoneX" Converter="{StaticResource PercentToSizeConverter}" ConverterParameter="200"/>
+                                                            </Rectangle.Width>
+                                                            <Rectangle.Height>
+                                                                <Binding Path="DeadZoneY" Converter="{StaticResource PercentToSizeConverter}" ConverterParameter="200"/>
+                                                            </Rectangle.Height>
+                                                            <Rectangle.RenderTransform>
+                                                                <TranslateTransform>
+                                                                    <TranslateTransform.X>
+                                                                        <Binding Path="DeadZoneX" Converter="{StaticResource PercentToSizeConverter}" ConverterParameter="-100"/>
+                                                                    </TranslateTransform.X>
+                                                                    <TranslateTransform.Y>
+                                                                        <Binding Path="DeadZoneY" Converter="{StaticResource PercentToSizeConverter}" ConverterParameter="-100"/>
+                                                                    </TranslateTransform.Y>
+                                                                </TranslateTransform>
+                                                            </Rectangle.RenderTransform>
+                                                            <Canvas.Left>100</Canvas.Left>
+                                                            <Canvas.Top>100</Canvas.Top>
+                                                        </Rectangle>
+                                                        <!-- Radial pair + Hybrid's radial stage: ellipse - fully dead. -->
+                                                        <Ellipse Fill="#2E253049" Stroke="#8CC43D0C" StrokeThickness="1" StrokeDashArray="3 4"
+                                                                 IsHitTestVisible="False">
+                                                            <Ellipse.Style>
+                                                                <Style TargetType="Ellipse">
+                                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                                    <Style.Triggers>
+                                                                        <DataTrigger Binding="{Binding IsRadialShape}" Value="True">
+                                                                            <Setter Property="Visibility" Value="Visible"/>
+                                                                        </DataTrigger>
+                                                                        <DataTrigger Binding="{Binding IsHybridShape}" Value="True">
+                                                                            <Setter Property="Visibility" Value="Visible"/>
+                                                                        </DataTrigger>
+                                                                    </Style.Triggers>
+                                                                </Style>
+                                                            </Ellipse.Style>
                                                             <Ellipse.Width>
                                                                 <Binding Path="DeadZoneX" Converter="{StaticResource PercentToSizeConverter}" ConverterParameter="200"/>
                                                             </Ellipse.Width>
@@ -4531,6 +4569,17 @@
                                                             <Canvas.Left>100</Canvas.Left>
                                                             <Canvas.Top>100</Canvas.Top>
                                                         </Ellipse>
+                                                        <!-- Sloped pair + Hybrid: wedges - snapped to axis (partial tier). -->
+                                                        <Path Fill="#18253049" Stroke="#5AC43D0C" StrokeThickness="1" StrokeDashArray="3 4"
+                                                              IsHitTestVisible="False"
+                                                              Visibility="{Binding HasSlopedWedges, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                            <Path.Data>
+                                                                <MultiBinding Converter="{StaticResource SlopedWedgeGeometryConverter}">
+                                                                    <Binding Path="DeadZoneX"/>
+                                                                    <Binding Path="DeadZoneY"/>
+                                                                </MultiBinding>
+                                                            </Path.Data>
+                                                        </Path>
                                                         <!-- Anti-deadzone ring (#175 competitor item 3): thin ember
                                                              circle at the output-floor radius, same percent-to-plot
                                                              mapping as the DZ ring (rx = AntiDeadZoneX%, ry =

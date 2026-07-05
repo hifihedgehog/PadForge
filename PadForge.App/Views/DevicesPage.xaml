@@ -31,26 +31,6 @@
             <Setter Property="FontSize" Value="10.5"/>
             <Setter Property="Foreground" Value="{DynamicResource TextFillColorTertiaryBrush}"/>
         </Style>
-        <!-- Ember (#175): right-pane identity block. Hardware facts render
-             cold mono. -->
-        <Style x:Key="IdentityText" TargetType="TextBlock">
-            <Setter Property="FontFamily" Value="{StaticResource TelemetryFontFamily}"/>
-            <Setter Property="FontSize" Value="11"/>
-            <Setter Property="Foreground" Value="{DynamicResource ColdDeepBrush}"/>
-        </Style>
-        <!-- Ember (#175) iter 53 type diet: Product/Type read as prose,
-             so they render body sans instead of joining the mono wall. -->
-        <Style x:Key="IdentityBodyText" TargetType="TextBlock">
-            <Setter Property="FontSize" Value="12"/>
-            <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}"/>
-        </Style>
-        <!-- GUID / instance-path lines: still mono, but demoted to
-             fine print so they stop shouting. -->
-        <Style x:Key="IdentityHashText" TargetType="TextBlock">
-            <Setter Property="FontFamily" Value="{StaticResource TelemetryFontFamily}"/>
-            <Setter Property="FontSize" Value="10"/>
-            <Setter Property="Foreground" Value="{DynamicResource TextFillColorTertiaryBrush}"/>
-        </Style>
         <!-- Ember (#175): Raw Input State cluster. Dark recessed cells,
              cold lit outline when pressed (outline lit, not solid). -->
         <Style x:Key="RawCellBorder" TargetType="Border">
@@ -421,67 +401,169 @@
                                    FontSize="16" FontWeight="SemiBold"
                                    TextWrapping="Wrap" Margin="0,0,0,6"/>
 
-                        <StackPanel Orientation="Horizontal" Margin="0,0,0,1">
-                            <TextBlock Style="{StaticResource IdentityBodyText}" Text="{Binding Devices_Product, Source={x:Static strings:Strings.Instance}}"/>
-                            <TextBlock Style="{StaticResource IdentityBodyText}" Text="{Binding SelectedDevice.ProductName, Mode=OneWay}"/>
-                        </StackPanel>
-                        <StackPanel Orientation="Horizontal" Margin="0,0,0,1">
-                            <TextBlock Style="{StaticResource IdentityBodyText}" Text="{Binding Devices_Type, Source={x:Static strings:Strings.Instance}}"/>
-                            <TextBlock Style="{StaticResource IdentityBodyText}" Text="{Binding SelectedDevice.DeviceType, Mode=OneWay}"/>
-                        </StackPanel>
-                        <TextBlock Style="{StaticResource IdentityText}" Margin="0,0,0,8"
-                                   TextWrapping="Wrap"
-                                   Text="{Binding SelectedDevice.CapabilitiesSummary, Mode=OneWay}"/>
-
-                        <Border ClipToBounds="True" Margin="0,0,0,1" Padding="0,1">
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Style="{StaticResource IdentityHashText}"
-                                           common:MarqueeBehavior.IsEnabled="True">
-                                    <TextBlock.Text>
-                                        <MultiBinding StringFormat="{}{0}{1}">
-                                            <Binding Path="Devices_AppGUID" Source="{x:Static strings:Strings.Instance}"/>
-                                            <Binding Path="SelectedDevice.InstanceGuid" Mode="OneWay"/>
-                                        </MultiBinding>
-                                    </TextBlock.Text>
-                                </TextBlock>
+                        <!-- ─── Device Dossier (#175 competitor item 7) ─── -->
+                        <!-- One dossier, at the top, per user report: the old
+                             identity block up here and the dossier card down
+                             by the inspector repeated VID:PID and split the
+                             identity in two. The recessed mono card now
+                             carries every identity field the engine holds in
+                             one token grammar. Token labels stay locale-
+                             neutral literals per the VID:PID precedent (the
+                             localized Devices_Product/Type/AppGUID/SdlGUID/
+                             InstancePath/VIDPID labels are no longer
+                             referenced here). Lines whose fact is absent (no
+                             SDL GUID, no HidHide path, no BT link, no serial,
+                             no battery) collapse instead of showing
+                             placeholders. No per-device measured poll Hz
+                             exists (only the global forge rate), so the
+                             dossier carries no HZ line. -->
+                        <Grid Margin="0,0,0,6">
+                            <TextBlock Text="{Binding Devices_Dossier, Source={x:Static strings:Strings.Instance}, Converter={StaticResource UpperConverter}}"
+                                       Style="{StaticResource SectionEyebrow}" VerticalAlignment="Center"/>
+                            <ui:Button Style="{StaticResource EmberIconButton}" HorizontalAlignment="Right"
+                                       Click="CopyDossier_Click"
+                                       ToolTip="{Binding Common_Copy, Source={x:Static strings:Strings.Instance}}">
+                                <TextBlock Text="&#xE8C8;" FontFamily="Segoe MDL2 Assets" FontSize="12" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                            </ui:Button>
+                        </Grid>
+                        <Border Background="{DynamicResource SteelGroundBrush}" BorderBrush="{DynamicResource SteelLineBrush}"
+                                BorderThickness="1" CornerRadius="6" Padding="10,8" Margin="0,0,0,2">
+                            <StackPanel>
+                                <Grid Margin="0,0,0,2">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="64"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Text="PRODUCT" FontSize="10" FontFamily="{StaticResource TelemetryFontFamily}" Foreground="{DynamicResource TextFillColorTertiaryBrush}" VerticalAlignment="Top" Margin="0,1,0,0"/>
+                                    <TextBlock Grid.Column="1" FontSize="11" FontFamily="{StaticResource TelemetryFontFamily}" Foreground="{DynamicResource ColdBrush}" TextWrapping="Wrap" Text="{Binding SelectedDevice.ProductName, Mode=OneWay}"/>
+                                </Grid>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,2">
+                                    <TextBlock Text="TYPE" Width="64" FontSize="10" FontFamily="{StaticResource TelemetryFontFamily}" Foreground="{DynamicResource TextFillColorTertiaryBrush}" VerticalAlignment="Center"/>
+                                    <TextBlock FontSize="11" FontFamily="{StaticResource TelemetryFontFamily}" Foreground="{DynamicResource ColdBrush}" Text="{Binding SelectedDevice.DeviceType, Mode=OneWay}"/>
+                                </StackPanel>
+                                <!-- The capabilities summary keeps its wrapped
+                                     prose form, just re-homed onto a token row. -->
+                                <Grid Margin="0,0,0,2">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="64"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Text="CAPS" FontSize="10" FontFamily="{StaticResource TelemetryFontFamily}" Foreground="{DynamicResource TextFillColorTertiaryBrush}" VerticalAlignment="Top" Margin="0,1,0,0"/>
+                                    <TextBlock Grid.Column="1" FontSize="11" FontFamily="{StaticResource TelemetryFontFamily}" Foreground="{DynamicResource ColdBrush}" TextWrapping="Wrap" Text="{Binding SelectedDevice.CapabilitiesSummary, Mode=OneWay}"/>
+                                </Grid>
+                                <!-- GUID / path hashes: same marquee mechanics as
+                                     the old identity block (clipping border, the
+                                     text scrolls to reveal overflow), same
+                                     presence gates. -->
+                                <Grid Margin="0,0,0,2">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="64"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Text="APP GUID" FontSize="10" FontFamily="{StaticResource TelemetryFontFamily}" Foreground="{DynamicResource TextFillColorTertiaryBrush}" VerticalAlignment="Center"/>
+                                    <Border Grid.Column="1" ClipToBounds="True" Padding="0,1">
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock FontSize="11" FontFamily="{StaticResource TelemetryFontFamily}" Foreground="{DynamicResource ColdBrush}"
+                                                       common:MarqueeBehavior.IsEnabled="True"
+                                                       Text="{Binding SelectedDevice.InstanceGuid, Mode=OneWay}"/>
+                                        </StackPanel>
+                                    </Border>
+                                </Grid>
+                                <Grid Margin="0,0,0,2"
+                                      Visibility="{Binding SelectedDevice.SdlGuid, Converter={StaticResource StringToVisibility}}">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="64"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Text="SDL GUID" FontSize="10" FontFamily="{StaticResource TelemetryFontFamily}" Foreground="{DynamicResource TextFillColorTertiaryBrush}" VerticalAlignment="Center"/>
+                                    <Border Grid.Column="1" ClipToBounds="True" Padding="0,1">
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock FontSize="11" FontFamily="{StaticResource TelemetryFontFamily}" Foreground="{DynamicResource ColdBrush}"
+                                                       common:MarqueeBehavior.IsEnabled="True"
+                                                       Text="{Binding SelectedDevice.SdlGuid, Mode=OneWay}"/>
+                                        </StackPanel>
+                                    </Border>
+                                </Grid>
+                                <Grid Margin="0,0,0,2"
+                                      Visibility="{Binding SelectedDevice.HidHideInstancePath, Converter={StaticResource StringToVisibility}}">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="64"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Text="PATH" FontSize="10" FontFamily="{StaticResource TelemetryFontFamily}" Foreground="{DynamicResource TextFillColorTertiaryBrush}" VerticalAlignment="Center"/>
+                                    <Border Grid.Column="1" ClipToBounds="True" Padding="0,1">
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock FontSize="11" FontFamily="{StaticResource TelemetryFontFamily}" Foreground="{DynamicResource ColdBrush}"
+                                                       common:MarqueeBehavior.IsEnabled="True"
+                                                       Text="{Binding SelectedDevice.HidHideInstancePath, Mode=OneWay}"/>
+                                        </StackPanel>
+                                    </Border>
+                                </Grid>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,2">
+                                    <TextBlock Text="VID:PID" Width="64" FontSize="10" FontFamily="{StaticResource TelemetryFontFamily}" Foreground="{DynamicResource TextFillColorTertiaryBrush}" VerticalAlignment="Center"/>
+                                    <TextBlock FontSize="11" FontFamily="{StaticResource TelemetryFontFamily}" Foreground="{DynamicResource ColdBrush}" Text="{Binding SelectedDevice.VendorIdHex, Mode=OneWay}"/>
+                                    <TextBlock FontSize="11" FontFamily="{StaticResource TelemetryFontFamily}" Foreground="{DynamicResource ColdBrush}" Text=":"/>
+                                    <TextBlock FontSize="11" FontFamily="{StaticResource TelemetryFontFamily}" Foreground="{DynamicResource ColdBrush}" Text="{Binding SelectedDevice.ProductIdHex, Mode=OneWay}"/>
+                                </StackPanel>
+                                <!-- Transport renders only when Bluetooth is a
+                                     positive fact (same path predicate as the
+                                     disconnect gates and the item 9 slot-card
+                                     glyph). A non-BT path may be USB, a dongle,
+                                     or a virtual source, so no transport is
+                                     claimed there. -->
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,2"
+                                            Visibility="{Binding SelectedDevice.IsBluetoothLink, Converter={StaticResource BoolToVisibilityConverter}}">
+                                    <TextBlock Text="LINK" Width="64" FontSize="10" FontFamily="{StaticResource TelemetryFontFamily}" Foreground="{DynamicResource TextFillColorTertiaryBrush}" VerticalAlignment="Center"/>
+                                    <TextBlock Text="&#xE702;" FontFamily="Segoe MDL2 Assets" FontSize="10" Foreground="{DynamicResource ColdBrush}" VerticalAlignment="Center" Margin="0,0,4,0"/>
+                                    <TextBlock Text="BT" FontSize="11" FontFamily="{StaticResource TelemetryFontFamily}" Foreground="{DynamicResource ColdBrush}" VerticalAlignment="Center"/>
+                                </StackPanel>
+                                <!-- Serial as SDL reports it (BT MAC on most
+                                     wireless pads). Hidden when unreported. -->
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,2"
+                                            Visibility="{Binding SelectedDevice.SerialNumber, Converter={StaticResource StringToVisibility}}">
+                                    <TextBlock Text="SERIAL" Width="64" FontSize="10" FontFamily="{StaticResource TelemetryFontFamily}" Foreground="{DynamicResource TextFillColorTertiaryBrush}" VerticalAlignment="Center"/>
+                                    <TextBlock FontSize="11" FontFamily="{StaticResource TelemetryFontFamily}" Foreground="{DynamicResource ColdBrush}" Text="{Binding SelectedDevice.SerialNumber, Mode=OneWay}"/>
+                                </StackPanel>
+                                <!-- Battery (#167 canon): glyph + percent, only
+                                     when the device reports one. -->
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,2"
+                                            Visibility="{Binding SelectedDevice.HasBattery, Converter={StaticResource BoolToVisibilityConverter}}">
+                                    <TextBlock Text="BATT" Width="64" FontSize="10" FontFamily="{StaticResource TelemetryFontFamily}" Foreground="{DynamicResource TextFillColorTertiaryBrush}" VerticalAlignment="Center"/>
+                                    <TextBlock Text="{Binding SelectedDevice.BatteryGlyph}" FontFamily="Segoe MDL2 Assets" FontSize="11" Foreground="{DynamicResource ColdBrush}" VerticalAlignment="Center" Margin="0,0,4,0"/>
+                                    <TextBlock Text="{Binding SelectedDevice.BatteryText}" FontSize="11" FontFamily="{StaticResource TelemetryFontFamily}" Foreground="{DynamicResource ColdBrush}" VerticalAlignment="Center"/>
+                                </StackPanel>
+                                <!-- Capability row: the established capability
+                                     glyphs (FFB card E877, Gyro tab E7AD,
+                                     Touchpad tab EFA5), ember-lit, present-only.
+                                     CapabilitiesSummary never lists absent
+                                     capabilities, so no cold placeholders here
+                                     either. Accel has no established glyph in
+                                     the app and stays text-only above. -->
+                                <StackPanel Visibility="{Binding SelectedDevice.HasCapabilityIcons, Converter={StaticResource BoolToVisibilityConverter}}">
+                                    <Border Height="1" Background="{DynamicResource SteelLineSoftBrush}" Margin="0,6,0,6"/>
+                                    <WrapPanel>
+                                        <Border Background="{DynamicResource EmberTintBrush}" BorderBrush="#66FF6B2C" BorderThickness="1"
+                                                CornerRadius="4" Padding="6,3" Margin="0,0,4,0"
+                                                ToolTip="{Binding Devices_Rumble, Source={x:Static strings:Strings.Instance}}"
+                                                Visibility="{Binding SelectedDevice.HasRumble, Converter={StaticResource BoolToVisibilityConverter}}">
+                                            <TextBlock Text="&#xE877;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="12" Foreground="{DynamicResource EmberBrush}"/>
+                                        </Border>
+                                        <Border Background="{DynamicResource EmberTintBrush}" BorderBrush="#66FF6B2C" BorderThickness="1"
+                                                CornerRadius="4" Padding="6,3" Margin="0,0,4,0"
+                                                ToolTip="{Binding Devices_Gyro, Source={x:Static strings:Strings.Instance}}"
+                                                Visibility="{Binding SelectedDevice.HasGyro, Converter={StaticResource BoolToVisibilityConverter}}">
+                                            <TextBlock Text="&#xE7AD;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="12" Foreground="{DynamicResource EmberBrush}"/>
+                                        </Border>
+                                        <Border Background="{DynamicResource EmberTintBrush}" BorderBrush="#66FF6B2C" BorderThickness="1"
+                                                CornerRadius="4" Padding="6,3" Margin="0,0,4,0"
+                                                ToolTip="{Binding Btn_Touchpad, Source={x:Static strings:Strings.Instance}}"
+                                                Visibility="{Binding SelectedDevice.ShowTouchpadCapability, Converter={StaticResource BoolToVisibilityConverter}}">
+                                            <TextBlock Text="&#xEFA5;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="12" Foreground="{DynamicResource EmberBrush}"/>
+                                        </Border>
+                                    </WrapPanel>
+                                </StackPanel>
                             </StackPanel>
                         </Border>
-                        <Border ClipToBounds="True" Margin="0,0,0,1" Padding="0,1"
-                                Visibility="{Binding SelectedDevice.SdlGuid, Converter={StaticResource StringToVisibility}}">
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Style="{StaticResource IdentityHashText}"
-                                           common:MarqueeBehavior.IsEnabled="True">
-                                    <TextBlock.Text>
-                                        <MultiBinding StringFormat="{}{0}{1}">
-                                            <Binding Path="Devices_SdlGUID" Source="{x:Static strings:Strings.Instance}"/>
-                                            <Binding Path="SelectedDevice.SdlGuid" Mode="OneWay"/>
-                                        </MultiBinding>
-                                    </TextBlock.Text>
-                                </TextBlock>
-                            </StackPanel>
-                        </Border>
-                        <Border ClipToBounds="True" Margin="0,0,0,1" Padding="0,1"
-                                Visibility="{Binding SelectedDevice.HidHideInstancePath, Converter={StaticResource StringToVisibility}}">
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Style="{StaticResource IdentityHashText}"
-                                           common:MarqueeBehavior.IsEnabled="True">
-                                    <TextBlock.Text>
-                                        <MultiBinding StringFormat="{}{0}{1}">
-                                            <Binding Path="Devices_InstancePath" Source="{x:Static strings:Strings.Instance}"/>
-                                            <Binding Path="SelectedDevice.HidHideInstancePath" Mode="OneWay"/>
-                                        </MultiBinding>
-                                    </TextBlock.Text>
-                                </TextBlock>
-                            </StackPanel>
-                        </Border>
-                        <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
-                            <!-- One tone for the whole identity block: the value
-                                 is not more important than its siblings. -->
-                            <TextBlock Style="{StaticResource IdentityText}" Text="{Binding Devices_VIDPID, Source={x:Static strings:Strings.Instance}}"/>
-                            <TextBlock Style="{StaticResource IdentityText}" Text="{Binding SelectedDevice.VendorIdHex, Mode=OneWay}"/>
-                            <TextBlock Style="{StaticResource IdentityText}" Text=":"/>
-                            <TextBlock Style="{StaticResource IdentityText}" Text="{Binding SelectedDevice.ProductIdHex, Mode=OneWay}"/>
-                        </StackPanel>
 
                         <!-- Submit mapping (joysticks only, not gamepads, mice, or keyboards) -->
                         <Button Content="{Binding Devices_SubmitMapping, Source={x:Static strings:Strings.Instance}}" Margin="0,6,0,8"
@@ -651,95 +733,6 @@
 
                             <Separator Margin="0,2,0,8"/>
                         </StackPanel>
-
-                        <!-- ─── Device Dossier (#175 competitor item 7) ─── -->
-                        <!-- Mono telemetry block above the raw-input inspector.
-                             Every line is a field the engine already holds.
-                             Lines whose fact is absent (no BT path, no serial,
-                             no battery) collapse instead of showing
-                             placeholders. Token labels stay locale-neutral
-                             literals per the PEAK/DZ precedent. No per-device
-                             measured poll Hz exists (only the global forge
-                             rate), so the dossier carries no HZ line. -->
-                        <Grid Margin="0,0,0,6">
-                            <TextBlock Text="{Binding Devices_Dossier, Source={x:Static strings:Strings.Instance}, Converter={StaticResource UpperConverter}}"
-                                       Style="{StaticResource SectionEyebrow}" VerticalAlignment="Center"/>
-                            <ui:Button Style="{StaticResource EmberIconButton}" HorizontalAlignment="Right"
-                                       Click="CopyDossier_Click"
-                                       ToolTip="{Binding Common_Copy, Source={x:Static strings:Strings.Instance}}">
-                                <TextBlock Text="&#xE8C8;" FontFamily="Segoe MDL2 Assets" FontSize="12" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
-                            </ui:Button>
-                        </Grid>
-                        <Border Background="{DynamicResource SteelGroundBrush}" BorderBrush="{DynamicResource SteelLineBrush}"
-                                BorderThickness="1" CornerRadius="6" Padding="10,8" Margin="0,0,0,8">
-                            <StackPanel>
-                                <StackPanel Orientation="Horizontal" Margin="0,0,0,2">
-                                    <TextBlock Text="VID:PID" Width="64" FontSize="10" FontFamily="{StaticResource TelemetryFontFamily}" Foreground="{DynamicResource TextFillColorTertiaryBrush}" VerticalAlignment="Center"/>
-                                    <TextBlock FontSize="11" FontFamily="{StaticResource TelemetryFontFamily}" Foreground="{DynamicResource ColdBrush}" Text="{Binding SelectedDevice.VendorIdHex, Mode=OneWay}"/>
-                                    <TextBlock FontSize="11" FontFamily="{StaticResource TelemetryFontFamily}" Foreground="{DynamicResource ColdBrush}" Text=":"/>
-                                    <TextBlock FontSize="11" FontFamily="{StaticResource TelemetryFontFamily}" Foreground="{DynamicResource ColdBrush}" Text="{Binding SelectedDevice.ProductIdHex, Mode=OneWay}"/>
-                                </StackPanel>
-                                <!-- Transport renders only when Bluetooth is a
-                                     positive fact (same path predicate as the
-                                     disconnect gates and the item 9 slot-card
-                                     glyph). A non-BT path may be USB, a dongle,
-                                     or a virtual source, so no transport is
-                                     claimed there. -->
-                                <StackPanel Orientation="Horizontal" Margin="0,0,0,2"
-                                            Visibility="{Binding SelectedDevice.IsBluetoothLink, Converter={StaticResource BoolToVisibilityConverter}}">
-                                    <TextBlock Text="LINK" Width="64" FontSize="10" FontFamily="{StaticResource TelemetryFontFamily}" Foreground="{DynamicResource TextFillColorTertiaryBrush}" VerticalAlignment="Center"/>
-                                    <TextBlock Text="&#xE702;" FontFamily="Segoe MDL2 Assets" FontSize="10" Foreground="{DynamicResource ColdBrush}" VerticalAlignment="Center" Margin="0,0,4,0"/>
-                                    <TextBlock Text="BT" FontSize="11" FontFamily="{StaticResource TelemetryFontFamily}" Foreground="{DynamicResource ColdBrush}" VerticalAlignment="Center"/>
-                                </StackPanel>
-                                <!-- Serial as SDL reports it (BT MAC on most
-                                     wireless pads). Hidden when unreported. -->
-                                <StackPanel Orientation="Horizontal" Margin="0,0,0,2"
-                                            Visibility="{Binding SelectedDevice.SerialNumber, Converter={StaticResource StringToVisibility}}">
-                                    <TextBlock Text="SERIAL" Width="64" FontSize="10" FontFamily="{StaticResource TelemetryFontFamily}" Foreground="{DynamicResource TextFillColorTertiaryBrush}" VerticalAlignment="Center"/>
-                                    <TextBlock FontSize="11" FontFamily="{StaticResource TelemetryFontFamily}" Foreground="{DynamicResource ColdBrush}" Text="{Binding SelectedDevice.SerialNumber, Mode=OneWay}"/>
-                                </StackPanel>
-                                <!-- Battery (#167 canon): glyph + percent, only
-                                     when the device reports one. -->
-                                <StackPanel Orientation="Horizontal" Margin="0,0,0,2"
-                                            Visibility="{Binding SelectedDevice.HasBattery, Converter={StaticResource BoolToVisibilityConverter}}">
-                                    <TextBlock Text="BATT" Width="64" FontSize="10" FontFamily="{StaticResource TelemetryFontFamily}" Foreground="{DynamicResource TextFillColorTertiaryBrush}" VerticalAlignment="Center"/>
-                                    <TextBlock Text="{Binding SelectedDevice.BatteryGlyph}" FontFamily="Segoe MDL2 Assets" FontSize="11" Foreground="{DynamicResource ColdBrush}" VerticalAlignment="Center" Margin="0,0,4,0"/>
-                                    <TextBlock Text="{Binding SelectedDevice.BatteryText}" FontSize="11" FontFamily="{StaticResource TelemetryFontFamily}" Foreground="{DynamicResource ColdBrush}" VerticalAlignment="Center"/>
-                                </StackPanel>
-                                <!-- Capability row: the established capability
-                                     glyphs (FFB card E877, Gyro tab E7AD,
-                                     Touchpad tab EFA5), ember-lit, present-only.
-                                     CapabilitiesSummary never lists absent
-                                     capabilities, so no cold placeholders here
-                                     either. Accel has no established glyph in
-                                     the app and stays text-only above. -->
-                                <StackPanel Visibility="{Binding SelectedDevice.HasCapabilityIcons, Converter={StaticResource BoolToVisibilityConverter}}">
-                                    <Border Height="1" Background="{DynamicResource SteelLineSoftBrush}" Margin="0,6,0,6"/>
-                                    <WrapPanel>
-                                        <Border Background="{DynamicResource EmberTintBrush}" BorderBrush="#66FF6B2C" BorderThickness="1"
-                                                CornerRadius="4" Padding="6,3" Margin="0,0,4,0"
-                                                ToolTip="{Binding Devices_Rumble, Source={x:Static strings:Strings.Instance}}"
-                                                Visibility="{Binding SelectedDevice.HasRumble, Converter={StaticResource BoolToVisibilityConverter}}">
-                                            <TextBlock Text="&#xE877;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="12" Foreground="{DynamicResource EmberBrush}"/>
-                                        </Border>
-                                        <Border Background="{DynamicResource EmberTintBrush}" BorderBrush="#66FF6B2C" BorderThickness="1"
-                                                CornerRadius="4" Padding="6,3" Margin="0,0,4,0"
-                                                ToolTip="{Binding Devices_Gyro, Source={x:Static strings:Strings.Instance}}"
-                                                Visibility="{Binding SelectedDevice.HasGyro, Converter={StaticResource BoolToVisibilityConverter}}">
-                                            <TextBlock Text="&#xE7AD;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="12" Foreground="{DynamicResource EmberBrush}"/>
-                                        </Border>
-                                        <Border Background="{DynamicResource EmberTintBrush}" BorderBrush="#66FF6B2C" BorderThickness="1"
-                                                CornerRadius="4" Padding="6,3" Margin="0,0,4,0"
-                                                ToolTip="{Binding Btn_Touchpad, Source={x:Static strings:Strings.Instance}}"
-                                                Visibility="{Binding SelectedDevice.ShowTouchpadCapability, Converter={StaticResource BoolToVisibilityConverter}}">
-                                            <TextBlock Text="&#xEFA5;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="12" Foreground="{DynamicResource EmberBrush}"/>
-                                        </Border>
-                                    </WrapPanel>
-                                </StackPanel>
-                            </StackPanel>
-                        </Border>
-
-                        <Separator Margin="0,2,0,8"/>
 
                         <!-- ─── Raw Input State (Visual) ─── -->
                         <TextBlock Text="{Binding Devices_RawInputState, Source={x:Static strings:Strings.Instance}, Converter={StaticResource UpperConverter}}"

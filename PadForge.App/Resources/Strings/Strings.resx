@@ -1685,6 +1685,7 @@
 
   <!-- ═══ 3D View ═══ -->
   <data name="Pad_ResetView" xml:space="preserve"><value>Reset View</value></data>
+  <data name="Pad_ToggleAnnotations" xml:space="preserve"><value>Mapping Annotations</value></data>
 
   <!-- ═══ Gamepad Button Labels ═══ -->
   <data name="Btn_LeftShoulder" xml:space="preserve"><value>Left Shoulder</value></data>

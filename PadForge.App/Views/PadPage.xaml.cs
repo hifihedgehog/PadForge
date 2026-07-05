@@ -531,12 +531,55 @@ namespace PadForge.Views
                 ControllerModel3D.ControllerElementRecordRequested -= OnModelRecordRequested;
                 ControllerModel3D.ControllerElementRecordRequested += OnModelRecordRequested;
                 ControllerModel3D.Bind(vm);
+                ControllerModel3D.AnnotationChipNavigateRequested -= OnAnnotationChipNavigate;
+                ControllerModel3D.AnnotationChipNavigateRequested += OnAnnotationChipNavigate;
+                ControllerModel3D.AnnotationsToggled -= OnAnnotationsToggled;
+                ControllerModel3D.AnnotationsToggled += OnAnnotationsToggled;
+                ControllerModel3D.AnnotationsEnabled = vm.AnnotationOverlayEnabled;
             }
         }
 
         private void OnModelRecordRequested(object sender, string targetName)
         {
             ControllerElementRecordRequested?.Invoke(this, targetName);
+        }
+
+        /// <summary>Write the annotation-overlay toggle back to the VM so the
+        /// state survives preview swaps within the session (#175 roadmap 1).
+        /// Session-only: PadViewModel.AnnotationOverlayEnabled is never
+        /// persisted to PadSetting.</summary>
+        private void OnAnnotationsToggled(object sender, bool enabled)
+        {
+            if (DataContext is PadViewModel vm)
+                vm.AnnotationOverlayEnabled = enabled;
+        }
+
+        /// <summary>Annotation chip click: jump to the Mappings tab and
+        /// select + scroll to the owning row. The Loaded-priority dispatch is
+        /// required because the header-less TabControl template only realizes
+        /// the selected tab's content, so the DataGrid needs a layout pass
+        /// after SelectedConfigTab changes before ScrollIntoView works.</summary>
+        private void OnAnnotationChipNavigate(object sender, string targetSettingName)
+        {
+            if (DataContext is not PadViewModel vm) return;
+            MappingItem row = null;
+            foreach (var m in vm.Mappings)
+            {
+                if (string.Equals(m.TargetSettingName, targetSettingName, StringComparison.Ordinal))
+                {
+                    row = m;
+                    break;
+                }
+            }
+            if (row == null) return;
+
+            vm.SelectedConfigTab = 2; // 2 = Mappings, tag map above
+            Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Loaded, () =>
+            {
+                MappingDataGrid.SelectedItem = row;
+                MappingDataGrid.UpdateLayout();
+                MappingDataGrid.ScrollIntoView(row);
+            });
         }
 
         // ─────────────────────────────────────────────

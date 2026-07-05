@@ -135,6 +135,13 @@ namespace PadForge.Views
             // Belt-and-suspenders: cancel any WPF manipulation that tries to start
             // (HelixToolkit may re-enable IsManipulationEnabled internally).
             ModelViewPort.ManipulationStarting += (s, e) => { e.Cancel(); e.Handled = true; };
+
+            // Annotation overlay (#175 roadmap 1): belt-and-suspenders
+            // re-projection triggers. The 150 ms tick is the primary
+            // mechanism; CameraChanged may never fire for this view's
+            // direct cam.Position writes.
+            ModelViewPort.CameraChanged += (s, e) => ReprojectAnnotations();
+            ModelViewPort.SizeChanged += (s, e) => ReprojectAnnotations();
         }
 
         // ─────────────────────────────────────────────
@@ -154,6 +161,7 @@ namespace PadForge.Views
                 CompositionTarget.Rendering += OnRendering;
                 _vm.PropertyChanged += OnVmPropertyChanged;
                 EnsureModel();
+                RebuildAnnotations();
             }
         }
 
@@ -241,6 +249,7 @@ namespace PadForge.Views
                 _modelScaleTransform.ScaleZ = s;
                 BuildTouchpadFingerVisuals();
                 _dirty = true;
+                RebuildAnnotations();
             }
             catch (Exception ex)
             {
@@ -414,6 +423,7 @@ namespace PadForge.Views
                 _currentModel.TriggerMaxAngleDeg,
                 ref _triggerAngleRight);
             UpdateTouchpadPreview3D();
+            UpdateAnnotationLevelBars();
         }
 
         // ─────────────────────────────────────────────
@@ -631,6 +641,7 @@ namespace PadForge.Views
             _isLeftDragging = false;
             _leftMouseActive = false;
             Mouse.Capture(null);
+            SetAnnotationsDragHidden(false);
 
             if (wasDragging)
             {
@@ -674,6 +685,7 @@ namespace PadForge.Views
         private void Viewport_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
             _isRightDragging = true;
+            SetAnnotationsDragHidden(true);
             _rightDragLast = e.GetPosition(ModelViewPort);
             Mouse.Capture(ModelViewPort, CaptureMode.SubTree);
             e.Handled = true;
@@ -685,6 +697,7 @@ namespace PadForge.Views
             {
                 _isRightDragging = false;
                 Mouse.Capture(null);
+                SetAnnotationsDragHidden(false);
                 e.Handled = true;
             }
         }
@@ -699,7 +712,10 @@ namespace PadForge.Views
                 double ddx = pos.X - _leftDragStart.X;
                 double ddy = pos.Y - _leftDragStart.Y;
                 if (ddx * ddx + ddy * ddy > DragThreshold * DragThreshold)
+                {
                     _isLeftDragging = true;
+                    SetAnnotationsDragHidden(true);
+                }
             }
 
             if (_isLeftDragging)
@@ -766,6 +782,7 @@ namespace PadForge.Views
                     cam.Position.Y + look.Y * zoomDelta,
                     cam.Position.Z + look.Z * zoomDelta);
                 e.Handled = true;
+                ReprojectAnnotations();
             }
         }
 
@@ -781,6 +798,7 @@ namespace PadForge.Views
                 _touchDragId = e.TouchDevice.Id;
                 _rightDragLast = e.GetTouchPoint(this).Position;
                 e.TouchDevice.Capture(this);
+                SetAnnotationsDragHidden(true);
                 e.Handled = true;
             }
             else if (_touchSecondId == null && e.TouchDevice.Id != _touchDragId)
@@ -888,6 +906,7 @@ namespace PadForge.Views
                 else
                 {
                     _touchDragId = null;
+                    SetAnnotationsDragHidden(false);
                 }
                 e.TouchDevice.Capture(null);
                 e.Handled = true;
@@ -964,6 +983,7 @@ namespace PadForge.Views
                 _isRightDragging = false;
                 _isLeftDragging = false;
                 Mouse.Capture(null);
+                SetAnnotationsDragHidden(false);
             }
             ClearHover();
         }
@@ -1642,6 +1662,7 @@ namespace PadForge.Views
             _modelPitch = 0;
             _yawRotation.Angle = 0;
             _pitchRotation.Angle = 0;
+            ReprojectAnnotations();
         }
 
         // ─────────────────────────────────────────────
@@ -1655,6 +1676,7 @@ namespace PadForge.Views
             CompositionTarget.Rendering -= OnRendering;
             if (_vm != null)
                 _vm.PropertyChanged -= OnVmPropertyChanged;
+            TeardownAnnotations();
             _currentModel?.Dispose();
             _currentModel = null;
             _vm = null;

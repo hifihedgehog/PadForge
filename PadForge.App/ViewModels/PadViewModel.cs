@@ -55,6 +55,10 @@ namespace PadForge.ViewModels
             // a user import), raise PropertyChanged so the dropdown's
             // ItemsSource binding picks up the new entries.
             HMaestroProfileCatalog.CatalogReloaded += OnCatalogReloaded;
+            // #175 telemetry board: keep the "{n} DIRECT" readout in sync
+            // with row edits and rebuilds. Hooked before the first
+            // RebuildMappings so the initial rows are counted too.
+            Mappings.CollectionChanged += OnMappingsChangedForDirectCount;
             RebuildMappings();
             RebuildStickConfigs();
             RebuildTriggerConfigs();
@@ -846,6 +850,80 @@ namespace PadForge.ViewModels
 
         public ObservableCollection<MappingItem> Mappings { get; } =
             new ObservableCollection<MappingItem>();
+
+        /// <summary>Count of mapping rows currently eligible for the
+        /// compact trivial rendering (#175 telemetry board). Drives the
+        /// mono "{n} DIRECT" readout above the Mappings grid so the row
+        /// compression is legible. Zero hides the readout.</summary>
+        private int _directMappingCount;
+        public int DirectMappingCount
+        {
+            get => _directMappingCount;
+            private set => SetProperty(ref _directMappingCount, value);
+        }
+
+        // Rows currently subscribed for IsTrivialDirect changes. Tracked
+        // explicitly because ObservableCollection.Clear() raises Reset
+        // with no OldItems, which would otherwise leak the handlers.
+        private readonly System.Collections.Generic.List<MappingItem> _directCountHooked
+            = new System.Collections.Generic.List<MappingItem>();
+
+        private void OnMappingsChangedForDirectCount(object sender,
+            System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Reset)
+            {
+                foreach (var m in _directCountHooked)
+                    m.PropertyChanged -= OnMappingItemTrivialChanged;
+                _directCountHooked.Clear();
+                foreach (var m in Mappings)
+                {
+                    if (m == null) continue;
+                    m.PropertyChanged += OnMappingItemTrivialChanged;
+                    _directCountHooked.Add(m);
+                }
+            }
+            else
+            {
+                if (e.OldItems != null)
+                {
+                    foreach (var o in e.OldItems)
+                    {
+                        if (o is MappingItem m)
+                        {
+                            m.PropertyChanged -= OnMappingItemTrivialChanged;
+                            _directCountHooked.Remove(m);
+                        }
+                    }
+                }
+                if (e.NewItems != null)
+                {
+                    foreach (var n in e.NewItems)
+                    {
+                        if (n is MappingItem m)
+                        {
+                            m.PropertyChanged += OnMappingItemTrivialChanged;
+                            _directCountHooked.Add(m);
+                        }
+                    }
+                }
+            }
+            RefreshDirectMappingCount();
+        }
+
+        private void OnMappingItemTrivialChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(MappingItem.IsTrivialDirect))
+                RefreshDirectMappingCount();
+        }
+
+        private void RefreshDirectMappingCount()
+        {
+            int n = 0;
+            foreach (var m in Mappings)
+                if (m != null && m.IsTrivialDirect) n++;
+            DirectMappingCount = n;
+        }
 
         /// <summary>
         /// True when <see cref="Mappings"/> currently reflects this slot's

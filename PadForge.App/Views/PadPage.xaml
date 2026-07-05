@@ -2412,6 +2412,33 @@
                                    Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
                     </StackPanel>
 
+                    <!-- Direct-row compression readout (#175 telemetry board):
+                         mono tertiary count of rows currently rendered as
+                         compact one-liners. DIRECT is a locale-neutral
+                         telemetry token like the radar legend's DZ / PEAK.
+                         Hidden when no row is compact. -->
+                    <StackPanel Grid.Row="0" Orientation="Horizontal"
+                                HorizontalAlignment="Right" VerticalAlignment="Center"
+                                Margin="8,0,4,8">
+                        <StackPanel.Style>
+                            <Style TargetType="StackPanel">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding DirectMappingCount}" Value="0">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </StackPanel.Style>
+                        <TextBlock Text="{Binding DirectMappingCount}"
+                                   FontFamily="{StaticResource TelemetryFontFamily}" FontSize="10"
+                                   Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                                   VerticalAlignment="Center" Margin="0,0,4,0"/>
+                        <TextBlock Text="DIRECT"
+                                   FontFamily="{StaticResource TelemetryFontFamily}" FontSize="10"
+                                   Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                                   VerticalAlignment="Center"/>
+                    </StackPanel>
+
                     <!-- Nested layer-tab strip. Hidden when only Base exists
                          (basic users without any shift layers see the
                          Mappings tab exactly as before). One RadioButton per
@@ -2627,6 +2654,11 @@
                                 </Setter>
                                 <Setter Property="Foreground"
                                         Value="{DynamicResource TextFillColorPrimaryBrush}"/>
+                                <!-- Compact trivial rows have their cells collapsed,
+                                     so a click never reaches a DataGridCell and WPF's
+                                     own selection logic won't fire. The handler
+                                     expands + selects the row (#175 telemetry board). -->
+                                <EventSetter Event="PreviewMouseLeftButtonDown" Handler="MappingRow_PreviewMouseLeftButtonDown"/>
                                 <Setter Property="Template">
                                     <Setter.Value>
                                         <!-- Rowfire (#175 artifact .mrow::after): the
@@ -2642,9 +2674,39 @@
                                                         <RowDefinition Height="*"/>
                                                         <RowDefinition Height="Auto"/>
                                                     </SelectiveScrollingGrid.RowDefinitions>
-                                                    <DataGridCellsPresenter
+                                                    <DataGridCellsPresenter x:Name="CellsHost"
                                                         ItemsPanel="{TemplateBinding ItemsPanel}"
                                                         SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                                                    <!-- Compact trivial line (#175 telemetry board):
+                                                         a plain Direct row with no options collapses
+                                                         to one 26px mono line so a whole config reads
+                                                         on one screen. Clicking it expands the row
+                                                         back to the full editor via IsExpandedOverride
+                                                         (set in code-behind). The ember dot is the
+                                                         static liveness cue; rowfire below still
+                                                         animates on compact rows. -->
+                                                    <StackPanel x:Name="CompactLine" Orientation="Horizontal"
+                                                                Height="26" Margin="10,0,8,0"
+                                                                Visibility="Collapsed">
+                                                        <Ellipse x:Name="CompactDot" Width="5" Height="5"
+                                                                 VerticalAlignment="Center" Margin="0,0,8,0"
+                                                                 Fill="{DynamicResource EmberHotBrush}" Opacity="0.18"/>
+                                                        <TextBlock Text="{Binding TargetLabel}"
+                                                                   FontWeight="SemiBold" FontSize="12"
+                                                                   Foreground="{DynamicResource EmberHotBrush}"
+                                                                   VerticalAlignment="Center"/>
+                                                        <TextBlock Text="←"
+                                                                   FontFamily="{StaticResource TelemetryFontFamily}"
+                                                                   FontSize="11"
+                                                                   Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                                                                   VerticalAlignment="Center" Margin="8,0,6,0"/>
+                                                        <TextBlock Text="{Binding SourceDisplayText, Mode=OneWay}"
+                                                                   FontFamily="{StaticResource TelemetryFontFamily}"
+                                                                   FontSize="11"
+                                                                   Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                                                                   VerticalAlignment="Center"
+                                                                   TextTrimming="CharacterEllipsis"/>
+                                                    </StackPanel>
                                                     <Rectangle x:Name="Rowfire" Height="1.5"
                                                                VerticalAlignment="Bottom"
                                                                Margin="8,0,8,0" Opacity="0"
@@ -2661,6 +2723,23 @@
                                                 </SelectiveScrollingGrid>
                                             </Border>
                                             <ControlTemplate.Triggers>
+                                                <!-- Compact swap (#175 telemetry board): trivial
+                                                     Direct rows hide the cell set and show the
+                                                     one-line summary until clicked (expansion
+                                                     override) or selected. -->
+                                                <MultiDataTrigger>
+                                                    <MultiDataTrigger.Conditions>
+                                                        <Condition Binding="{Binding IsTrivialDirect}" Value="True"/>
+                                                        <Condition Binding="{Binding IsExpandedOverride}" Value="False"/>
+                                                    </MultiDataTrigger.Conditions>
+                                                    <Setter TargetName="CellsHost" Property="Visibility" Value="Collapsed"/>
+                                                    <Setter TargetName="CompactLine" Property="Visibility" Value="Visible"/>
+                                                </MultiDataTrigger>
+                                                <!-- Compact liveness dot: static opacity step, no
+                                                     storyboard, so it is reduced-motion safe as-is. -->
+                                                <DataTrigger Binding="{Binding IsInputActive}" Value="True">
+                                                    <Setter TargetName="CompactDot" Property="Opacity" Value="1"/>
+                                                </DataTrigger>
                                                 <!-- Reduced motion (#175 item 98): rowfire only
                                                      animates when the OS animation preference
                                                      (ClientAreaAnimation) is on. -->

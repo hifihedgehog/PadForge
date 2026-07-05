@@ -72,6 +72,7 @@ namespace PadForge.ViewModels
             // Source count changed → custom-expression warning state
             // may have flipped.
             OnPropertyChanged(nameof(IsCombineExpressionWarning));
+            OnPropertyChanged(nameof(IsTrivialDirect));
             RefreshVariableAliases();
             // Adding/removing a secondary can gate InvertOnHold in the primary
             // dropdown on or off (#111 audit C).
@@ -277,6 +278,7 @@ namespace PadForge.ViewModels
                 OnPropertyChanged(nameof(IsPrimaryDirect));
                 OnPropertyChanged(nameof(IsMultiSource));
                 OnPropertyChanged(nameof(PrimaryKindLabel));
+                OnPropertyChanged(nameof(IsTrivialDirect));
                 // A primary set (or loaded) as InvertOnHold with no contributing
                 // secondary is inert; revert it to Direct (#111 audit C).
                 EnforcePrimaryKindGate();
@@ -392,6 +394,7 @@ namespace PadForge.ViewModels
                     // effective source count, which can change whether
                     // a custom formula's `a` reference is in range.
                     OnPropertyChanged(nameof(IsCombineExpressionWarning));
+                    OnPropertyChanged(nameof(IsTrivialDirect));
                     RefreshVariableAliases();
                 }
             }
@@ -426,6 +429,7 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(SourceDisplayText));
                     OnPropertyChanged(nameof(IsMapped));
                     OnPropertyChanged(nameof(ShouldShowEmptyDirectionHint));
+                    OnPropertyChanged(nameof(IsTrivialDirect));
                 }
             }
         }
@@ -694,6 +698,33 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _isInputActive, value);
         }
 
+        /// <summary>True when the row is a plain one-liner (#175 telemetry
+        /// board): a single Direct primary source, no negative-direction
+        /// pair, no invert / half / bidirectional option, and no custom
+        /// combine formula. Trivial rows render as a compact mono line in
+        /// the Mappings grid so a whole config reads on one screen;
+        /// anything richer keeps the full editing row. Re-notified from
+        /// every contributing setter.</summary>
+        public bool IsTrivialDirect =>
+            !string.IsNullOrEmpty(_sourceDescriptor)
+            && string.IsNullOrEmpty(_negSourceDescriptor)
+            && IsPrimaryDirect
+            && ExtraSources.Count == 0
+            && !_isInverted && !_isHalfAxis && !_isBidirectional
+            && !(IsCustomCombine && !string.IsNullOrWhiteSpace(_combineExpression));
+
+        private bool _isExpandedOverride;
+
+        /// <summary>Per-row escape hatch from the compact trivial rendering
+        /// (#175 telemetry board). Set by the Pad page's row click handler
+        /// so a compact row opens back into the full editing row; cleared
+        /// when the row is deselected. UI-only state, never persisted.</summary>
+        public bool IsExpandedOverride
+        {
+            get => _isExpandedOverride;
+            set => SetProperty(ref _isExpandedOverride, value);
+        }
+
         // ─────────────────────────────────────────────
         //  Options
         // ─────────────────────────────────────────────
@@ -818,6 +849,7 @@ namespace PadForge.ViewModels
                 {
                     RebuildDescriptor();
                     OnPropertyChanged(nameof(ShouldShowEmptyDirectionHint));
+                    OnPropertyChanged(nameof(IsTrivialDirect));
                 }
             }
         }
@@ -831,7 +863,10 @@ namespace PadForge.ViewModels
             set
             {
                 if (SetProperty(ref _isHalfAxis, value))
+                {
                     RebuildDescriptor();
+                    OnPropertyChanged(nameof(IsTrivialDirect));
+                }
             }
         }
 
@@ -848,7 +883,11 @@ namespace PadForge.ViewModels
         public bool IsBidirectional
         {
             get => _isBidirectional;
-            set => SetProperty(ref _isBidirectional, value);
+            set
+            {
+                if (SetProperty(ref _isBidirectional, value))
+                    OnPropertyChanged(nameof(IsTrivialDirect));
+            }
         }
 
         private int _mappingDeadZone = 50;
@@ -1265,6 +1304,7 @@ namespace PadForge.ViewModels
                 {
                     OnPropertyChanged(nameof(IsCustomCombine));
                     OnPropertyChanged(nameof(ShouldShowCustomExpression));
+                    OnPropertyChanged(nameof(IsTrivialDirect));
                 }
             }
         }
@@ -1283,6 +1323,7 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(CombineExpressionStatus));
                     OnPropertyChanged(nameof(IsCombineExpressionValid));
                     OnPropertyChanged(nameof(IsCombineExpressionInvalid));
+                    OnPropertyChanged(nameof(IsTrivialDirect));
                 }
             }
         }

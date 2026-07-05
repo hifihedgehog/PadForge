@@ -2310,7 +2310,32 @@ namespace PadForge.Views
             // ApplicationIdle (the original approach) let WPF's natural
             // Auto sizing paint first, producing a brief wide-Options
             // flash before the measure pass tightened the column.
-            AutoFitFlexibleColumns(grid);
+            //
+            // #175 telemetry board: compact trivial rows collapse their
+            // cells presenter, which leaves their cells ungenerated and
+            // invisible to the width pass. Temporarily expand every
+            // compact row so each column's honest content width is
+            // measured, then restore the compact state. All inside this
+            // one dispatcher callback, so no frame renders the expanded
+            // state.
+            var expandedForMeasure = new List<MappingItem>();
+            foreach (var item in grid.Items)
+            {
+                if (item is MappingItem mi && mi.IsTrivialDirect && !mi.IsExpandedOverride)
+                {
+                    mi.IsExpandedOverride = true;
+                    expandedForMeasure.Add(mi);
+                }
+            }
+            try
+            {
+                AutoFitFlexibleColumns(grid);
+            }
+            finally
+            {
+                foreach (var mi in expandedForMeasure)
+                    mi.IsExpandedOverride = false;
+            }
         }
 
         /// <summary>For each column with <see cref="DataGridLength"/>
@@ -2499,9 +2524,33 @@ namespace PadForge.Views
                 mi.PropertyChanged -= OnMappingItem_RowDetailsPropertyChanged;
         }
 
+        /// <summary>#175 telemetry board: first click on a compact trivial
+        /// row expands it back to the full editing row. The row's cells are
+        /// collapsed while compact, so the click never reaches a
+        /// DataGridCell and WPF's own selection logic won't run. Selecting
+        /// here makes the expanded row behave exactly like a clicked full
+        /// row (details strip opens via the VisibleWhenSelected path).
+        /// Clicks on already-expanded rows fall through to normal cell
+        /// handling.</summary>
+        private void MappingRow_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (sender is not DataGridRow row || row.DataContext is not MappingItem mi) return;
+            if (!mi.IsTrivialDirect || mi.IsExpandedOverride || row.IsSelected) return;
+            mi.IsExpandedOverride = true;
+            if (MappingDataGrid != null)
+                MappingDataGrid.SelectedItem = mi;
+        }
+
         private void MappingDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (sender is not DataGrid grid) return;
+            // #175 telemetry board: a trivial row expanded by click drops
+            // back to its compact line once deselected.
+            foreach (var removed in e.RemovedItems)
+            {
+                if (removed is MappingItem rm && rm.IsExpandedOverride)
+                    rm.IsExpandedOverride = false;
+            }
             // Re-assert visibility on every row whose selection state changed
             // and on every multi-source row. WPF will have just set the
             // selected row to Visible and the deselected row to Collapsed

@@ -58,6 +58,28 @@ namespace PadForge.Views
         /// DataContext change and on SelectedMappedDevice change.</summary>
         private PadViewModel.MappedDeviceInfo _currentSelectedDeviceInfo;
 
+        // Lightbar preview scene (#175): BuildLightbarPreview composes the
+        // Gamepad-Asset-Pack 2D art into LightbarPreviewHost and stores the
+        // animation targets here; SyncLightbarPreview is their only other
+        // writer. The lit group carries the bloom effect and takes the
+        // opacity animations (Breathing / Strobe); every strip Rectangle
+        // shares one Fill brush so a single color animation drives all
+        // elements (Rainbow lockstep). The nullable family flag tracks the
+        // last-built scene so slot / tab churn never reloads bitmaps.
+        private Canvas _lightbarLitGroup;
+        private System.Windows.Shapes.Rectangle[] _lightbarRects;
+        private Brush _lightbarFill;
+        private System.Windows.Media.Effects.DropShadowEffect _lightbarBloom;
+        private bool? _lightbarBuiltFamilyIsDs4;
+
+        // Load-once bitmap cache for the preview (static: families are
+        // fixed, PadPage instances come and go with navigation).
+        private static System.Windows.Media.Imaging.BitmapImage _lightbarDs5Base;
+        private static System.Windows.Media.Imaging.BitmapImage _lightbarDs5Mask;
+        private static System.Windows.Media.Imaging.BitmapImage _lightbarDs4Base;
+        private static System.Windows.Media.Imaging.BitmapImage _lightbarDs4FrontMask;
+        private static System.Windows.Media.Imaging.BitmapImage _lightbarDs4RearMask;
+
         public PadPage()
         {
             InitializeComponent();
@@ -255,16 +277,6 @@ namespace PadForge.Views
             BindActiveModelView();
         }
 
-        // Lightbar preview bar geometry per Sony family (#175, user report
-        // 2026-07-05). The DualSense bar is two light strips wrapping the
-        // touchpad's flanks; the DualShock 4 bar runs along the body's top
-        // edge between the shoulders. Coordinates live on the 180x60
-        // silhouette canvas in PadPage.xaml (touchpad at 70,17 size 40x13).
-        private const string DualSenseLightbarGeometry =
-            "M 71.5,15 C 66.8,16 65,19 65,23 C 65,27 66.8,30 71.5,31 "
-            + "M 108.5,15 C 113.2,16 115,19 115,23 C 115,27 113.2,30 108.5,31";
-        private const string Ds4LightbarGeometry = "M 76,9.5 Q 90,7.5 104,9.5";
-
         private void SyncTabVisibility()
         {
             if (TabSticks == null || TabTriggers == null || TabForceFeedback == null) return;
@@ -452,21 +464,16 @@ namespace PadForge.Views
             if (LockLightbarSection != null)
                 LockLightbarSection.Visibility = hasLightbar ? Visibility.Visible : Visibility.Collapsed;
 
-            // Family-correct preview bar (#175): same PID split as the
-            // capability gates above. Both arcs (live + Off) carry the same
-            // geometry so the mode toggle never shifts the bar's position.
-            if (hasLightbar && LightbarPreviewArc != null)
+            // Family-correct preview (#175): same PID split as the
+            // capability gates above. Rebuild the art scene only when the
+            // Sony family actually changed (this sync re-runs on every slot
+            // / tab / device churn and must not reload bitmaps), then let
+            // the animation engine re-seed the fresh targets.
+            if (hasLightbar)
             {
-                var barGeo = Geometry.Parse(lightbarIsDs4 ? Ds4LightbarGeometry : DualSenseLightbarGeometry);
-                barGeo.Freeze();
-                double barThickness = lightbarIsDs4 ? 5.0 : 3.5;
-                LightbarPreviewArc.Data = barGeo;
-                LightbarPreviewArc.StrokeThickness = barThickness;
-                if (LightbarPreviewArcOff != null)
-                {
-                    LightbarPreviewArcOff.Data = barGeo;
-                    LightbarPreviewArcOff.StrokeThickness = barThickness;
-                }
+                if (_lightbarBuiltFamilyIsDs4 != lightbarIsDs4)
+                    BuildLightbarPreview(lightbarIsDs4);
+                SyncLightbarPreview();
             }
 
             // Sync the per-pad pivot to the active device. PadViewModel
@@ -1939,15 +1946,123 @@ namespace PadForge.Views
                 SyncLightbarPreview();
         }
 
-        /// <summary>Drives the lightbar preview arc so it mirrors the
+        /// <summary>Builds the lightbar preview scene for one Sony family
+        /// out of the project's real 2D controller art (#175): the
+        /// Gamepad-Asset-Pack base composite at native resolution inside
+        /// the LightbarPreviewHost Viewbox, plus one Rectangle per lightbar
+        /// element whose OpacityMask is the pack's own strip PNG, so the
+        /// lit shape is the art's shape (the DS4 front strip's alpha fades
+        /// at both ends exactly like the baked art). Strip rectangles use
+        /// positions measured by alpha-masked template matching against
+        /// the pack's baked composites: DualSense ring 411,189 647x293
+        /// (mask is native-size), DS4 front 510,228 446x5 and rear
+        /// 495,111 474x28 (both stretched: the baked art is larger than
+        /// the strip PNGs, drawing them at native size would undershoot
+        /// the lit area). All rectangles share one Fill brush and sit in
+        /// one subgroup carrying the bloom DropShadowEffect, so
+        /// SyncLightbarPreview drives color on the brush and intensity on
+        /// the group exactly as it drove the old hand-drawn arc. Bitmaps
+        /// load once per family into static fields (EmbeddedBitmaps,
+        /// the g.resources idiom shared with ControllerModel2DView).</summary>
+        private void BuildLightbarPreview(bool isDs4)
+        {
+            if (LightbarPreviewHost == null) return;
+
+            if (isDs4)
+            {
+                _lightbarDs4Base ??= EmbeddedBitmaps.Load(Models2D.DS4Layout.BasePath);
+                _lightbarDs4FrontMask ??= EmbeddedBitmaps.Load("2DModels/DS4/DS4_Lightbar_Front.png");
+                _lightbarDs4RearMask ??= EmbeddedBitmaps.Load("2DModels/DS4/DS4_Lightbar_Rear.png");
+            }
+            else
+            {
+                _lightbarDs5Base ??= EmbeddedBitmaps.Load(Models2D.DualSenseLayout.BasePath);
+                _lightbarDs5Mask ??= EmbeddedBitmaps.Load("2DModels/DualSense/DualSense_Lightbar.png");
+            }
+
+            double baseW = isDs4 ? Models2D.DS4Layout.BaseWidth : Models2D.DualSenseLayout.BaseWidth;
+            double baseH = isDs4 ? Models2D.DS4Layout.BaseHeight : Models2D.DualSenseLayout.BaseHeight;
+
+            var scene = new Canvas { Width = baseW, Height = baseH };
+            var baseImg = new Image
+            {
+                Source = isDs4 ? _lightbarDs4Base : _lightbarDs5Base,
+                Width = baseW,
+                Height = baseH,
+                Stretch = Stretch.Fill,
+            };
+            Canvas.SetLeft(baseImg, 0);
+            Canvas.SetTop(baseImg, 0);
+            scene.Children.Add(baseImg);
+
+            // Seed fill: the cold Off blue, frozen. SyncLightbarPreview
+            // replaces it on the first pass right after this build.
+            var seed = new SolidColorBrush(Color.FromRgb(0x58, 0xB6, 0xE4));
+            seed.Freeze();
+            _lightbarFill = seed;
+
+            // Bloom radius is in native-canvas units under the Viewbox, so
+            // it shrinks with the art (the 1467-wide canvas shows at 260).
+            // The old arc used 14 at 180 wide shown 1:1; a straight ratio
+            // match would be ~114 here, an oversized blur kernel for a
+            // strip that no longer needs the halo to carry its shape. 48
+            // (~3.5x the old value, roughly 8 on-screen pixels) keeps a
+            // visible glow at a sane kernel size.
+            _lightbarBloom = new System.Windows.Media.Effects.DropShadowEffect
+            {
+                ShadowDepth = 0,
+                BlurRadius = 48,
+                Opacity = 0.55,
+                Color = Color.FromRgb(0x58, 0xB6, 0xE4),
+            };
+            _lightbarLitGroup = new Canvas { Effect = _lightbarBloom };
+
+            _lightbarRects = isDs4
+                ? new[]
+                {
+                    MakeLitRect(_lightbarDs4FrontMask, 510, 228, 446, 5),
+                    MakeLitRect(_lightbarDs4RearMask, 495, 111, 474, 28),
+                }
+                : new[] { MakeLitRect(_lightbarDs5Mask, 411, 189, 647, 293) };
+            foreach (var rect in _lightbarRects)
+                _lightbarLitGroup.Children.Add(rect);
+            scene.Children.Add(_lightbarLitGroup);
+
+            LightbarPreviewHost.Children.Clear();
+            LightbarPreviewHost.Children.Add(scene);
+            _lightbarBuiltFamilyIsDs4 = isDs4;
+        }
+
+        private System.Windows.Shapes.Rectangle MakeLitRect(
+            System.Windows.Media.Imaging.BitmapImage mask, double x, double y, double w, double h)
+        {
+            // A missing mask bitmap leaves the brush imageless (the strip
+            // simply stays dark), the same soft degradation the 2D overlay
+            // rig uses for absent resources.
+            var maskBrush = new ImageBrush(mask) { Stretch = Stretch.Fill };
+            maskBrush.Freeze();
+            var rect = new System.Windows.Shapes.Rectangle
+            {
+                Width = w,
+                Height = h,
+                Fill = _lightbarFill,
+                OpacityMask = maskBrush,
+            };
+            Canvas.SetLeft(rect, x);
+            Canvas.SetTop(rect, y);
+            return rect;
+        }
+
+        /// <summary>Drives the lightbar preview strips so they mirror the
         /// physical bar's behavior over time (#175, user report
         /// 2026-07-05) instead of representing modes spatially. Every
         /// sync first clears the animations the previous mode started,
         /// then rebuilds from the active config: Breathing breathes the
-        /// arc's opacity, Rainbow / ColorCycle / AudioPulseRainbow loop
-        /// a hue wheel through the stroke and bloom, Strobe blinks,
-        /// Battery holds the synthesizer's low-to-high lerp at the
-        /// selected device's live percent. Timings consume
+        /// lit group's opacity, Rainbow / ColorCycle / AudioPulseRainbow
+        /// loop a hue wheel through the shared fill and bloom, Strobe
+        /// blinks, Battery holds the synthesizer's low-to-high lerp at
+        /// the selected device's live percent, Off drops the strips to
+        /// cold blue at low opacity (game writes win). Timings consume
         /// LightbarPeriodMs exactly as Ds5EffectSynthesizer does (one
         /// full cycle per period). All motion is code-driven
         /// BeginAnimation on the element / the DropShadowEffect (the
@@ -1971,21 +2086,23 @@ namespace PadForge.Views
                 Dispatcher.BeginInvoke(new Action(SyncLightbarPreview));
                 return;
             }
-            if (LightbarPreviewArc?.Effect is not System.Windows.Media.Effects.DropShadowEffect bloom) return;
+            // Not built yet: the selected device has no lightbar (tab is
+            // hidden) or SyncTabVisibility has not run for this family.
+            if (_lightbarLitGroup == null || _lightbarBloom == null || _lightbarRects == null) return;
             if (DataContext is not PadViewModel vm || vm.PlayStationConfig == null) return;
             var cfg = vm.PlayStationConfig;
             var baseColor = Color.FromRgb(cfg.LightbarRed, cfg.LightbarGreen, cfg.LightbarBlue);
 
             // Wipe prior animations first so every mode starts from local
-            // values: arc opacity (Breathing / Strobe), bloom color
-            // (rainbow lockstep), and the outgoing stroke's color loop.
+            // values: lit-group opacity (Breathing / Strobe), bloom color
+            // (rainbow lockstep), and the outgoing fill's color loop.
             // Frozen brushes can't carry clocks, so only a live brush is
             // cleared.
-            LightbarPreviewArc.BeginAnimation(UIElement.OpacityProperty, null);
-            bloom.BeginAnimation(System.Windows.Media.Effects.DropShadowEffect.ColorProperty, null);
-            if (LightbarPreviewArc.Stroke is SolidColorBrush prevStroke && !prevStroke.IsFrozen)
-                prevStroke.BeginAnimation(SolidColorBrush.ColorProperty, null);
-            LightbarPreviewArc.Opacity = 1.0;
+            _lightbarLitGroup.BeginAnimation(UIElement.OpacityProperty, null);
+            _lightbarBloom.BeginAnimation(System.Windows.Media.Effects.DropShadowEffect.ColorProperty, null);
+            if (_lightbarFill is SolidColorBrush prevFill && !prevFill.IsFrozen)
+                prevFill.BeginAnimation(SolidColorBrush.ColorProperty, null);
+            _lightbarLitGroup.Opacity = 1.0;
 
             bool motion = SystemParameters.ClientAreaAnimation;
             // Same floor as Ds5EffectSynthesizer.ComputeLightbarColor: one
@@ -2001,19 +2118,30 @@ namespace PadForge.Views
             var phaseLock = TimeSpan.FromMilliseconds(
                 -(DateTime.UtcNow.TimeOfDay.TotalMilliseconds % periodMs));
 
-            Brush stroke;
-            bool strokeAnimated = false;
+            Brush fill;
+            bool fillAnimated = false;
             Color bloomColor = baseColor;
             switch (cfg.LightbarMode)
             {
+                case ViewModels.LightbarMode.Off:
+                    // PadForge does not author the bar (game writes win):
+                    // cold blue at low opacity under the GAME WRITES WIN
+                    // token. Replaces the old separate Off arc; the bloom
+                    // dims with the group because Opacity applies to the
+                    // element's composite, effect output included.
+                    fill = new SolidColorBrush(Color.FromRgb(0x58, 0xB6, 0xE4));
+                    bloomColor = Color.FromRgb(0x58, 0xB6, 0xE4);
+                    _lightbarLitGroup.Opacity = 0.30;
+                    break;
+
                 case ViewModels.LightbarMode.Breathing:
-                    stroke = new SolidColorBrush(baseColor);
+                    fill = new SolidColorBrush(baseColor);
                     if (motion)
                     {
                         // Engine: triangle envelope 0 -> 1 -> 0 across one
                         // period. AutoReverse doubles the effective length,
                         // so one leg is half the period. Floor 0.15 keeps
-                        // the arc findable at the trough.
+                        // the strips findable at the trough.
                         var breathe = new DoubleAnimation(0.15, 1.0,
                             new Duration(TimeSpan.FromMilliseconds(periodMs / 2.0)))
                         {
@@ -2022,11 +2150,11 @@ namespace PadForge.Views
                             EasingFunction = new SineEase { EasingMode = EasingMode.EaseInOut },
                             BeginTime = phaseLock, // AutoReverse pair = periodMs
                         };
-                        LightbarPreviewArc.BeginAnimation(UIElement.OpacityProperty, breathe);
+                        _lightbarLitGroup.BeginAnimation(UIElement.OpacityProperty, breathe);
                     }
                     else
                     {
-                        LightbarPreviewArc.Opacity = 0.6;
+                        _lightbarLitGroup.Opacity = 0.6;
                     }
                     break;
 
@@ -2040,7 +2168,7 @@ namespace PadForge.Views
                         // HsvToRgb(phase * 360). Rainbow additionally scales
                         // by the brightness slider (the engine's only Rainbow
                         // dimmer). ColorCycle previews the wheel rather than
-                        // the user palette (single-color stroke at the
+                        // the user palette (single-color fill at the
                         // matching traversal period). AudioPulseRainbow shows
                         // the hue rotation without the audio-peak modulation
                         // (the peak is not reachable here).
@@ -2068,23 +2196,24 @@ namespace PadForge.Views
                             loop.KeyFrames.Add(new LinearColorKeyFrame(
                                 wheel[i], KeyTime.FromPercent(i / 6.0)));
                         // Animated brush: must NOT be frozen (a frozen brush
-                        // rejects BeginAnimation).
+                        // rejects BeginAnimation). One shared brush fills
+                        // every strip, so one clock drives them all.
                         var animated = new SolidColorBrush(wheel[0]);
                         animated.BeginAnimation(SolidColorBrush.ColorProperty, loop);
                         // Bloom follows in lockstep: code-driven
                         // BeginAnimation on the effect, the approved shape
                         // (mini-card heat ring). Both clocks are created in
                         // the same pass so they tick together.
-                        bloom.BeginAnimation(
+                        _lightbarBloom.BeginAnimation(
                             System.Windows.Media.Effects.DropShadowEffect.ColorProperty, loop);
-                        stroke = animated;
-                        strokeAnimated = true;
+                        fill = animated;
+                        fillAnimated = true;
                         bloomColor = wheel[0]; // local value under the loop
                     }
                     else
                     {
                         // Reduced motion: hold the configured color.
-                        stroke = new SolidColorBrush(baseColor);
+                        fill = new SolidColorBrush(baseColor);
                     }
                     break;
 
@@ -2092,7 +2221,7 @@ namespace PadForge.Views
                     // Engine: square wave at LightbarPeriodMs cadence, first
                     // half of the period on, second half off. Reduced motion
                     // holds the on phase (solid).
-                    stroke = new SolidColorBrush(baseColor);
+                    fill = new SolidColorBrush(baseColor);
                     if (motion)
                     {
                         var blink = new DoubleAnimationUsingKeyFrames
@@ -2103,7 +2232,7 @@ namespace PadForge.Views
                         };
                         blink.KeyFrames.Add(new DiscreteDoubleKeyFrame(1.0, KeyTime.FromPercent(0.0)));
                         blink.KeyFrames.Add(new DiscreteDoubleKeyFrame(0.0, KeyTime.FromPercent(0.5)));
-                        LightbarPreviewArc.BeginAnimation(UIElement.OpacityProperty, blink);
+                        _lightbarLitGroup.BeginAnimation(UIElement.OpacityProperty, blink);
                     }
                     break;
 
@@ -2113,7 +2242,7 @@ namespace PadForge.Views
                     // High colors at the selected device's live percent
                     // (BatteryText, #167 slow lane, "78%" shape). Unknown or
                     // absent battery mirrors SlotBatteryPercentProvider's
-                    // default of 100 (full) so the arc shows the high-charge
+                    // default of 100 (full) so the bar shows the high-charge
                     // color rather than empty red.
                     double t = 1.0;
                     string txt = vm.SelectedMappedDevice?.BatteryText;
@@ -2129,7 +2258,7 @@ namespace PadForge.Views
                         (byte)Math.Round(cfg.LightbarBatteryLowR + (cfg.LightbarBatteryHighR - cfg.LightbarBatteryLowR) * t),
                         (byte)Math.Round(cfg.LightbarBatteryLowG + (cfg.LightbarBatteryHighG - cfg.LightbarBatteryLowG) * t),
                         (byte)Math.Round(cfg.LightbarBatteryLowB + (cfg.LightbarBatteryHighB - cfg.LightbarBatteryLowB) * t));
-                    stroke = new SolidColorBrush(mix);
+                    fill = new SolidColorBrush(mix);
                     bloomColor = mix;
                     break;
                 }
@@ -2142,20 +2271,24 @@ namespace PadForge.Views
                     // Live audio is not reachable in the view layer (the peak
                     // lives on UserEffectsDispatcher's polling thread), so
                     // audio modes keep the static cold-to-color gradient.
-                    stroke = new LinearGradientBrush(
+                    fill = new LinearGradientBrush(
                         Color.FromRgb(0x58, 0xB6, 0xE4), baseColor, 0);
                     break;
 
                 default:
                     // Static, the legacy InputReactive family, and anything
                     // new: solid configured color, no animation.
-                    stroke = new SolidColorBrush(baseColor);
+                    fill = new SolidColorBrush(baseColor);
                     break;
             }
 
-            if (!strokeAnimated && stroke.CanFreeze) stroke.Freeze();
-            LightbarPreviewArc.Stroke = stroke;
-            bloom.Color = bloomColor;
+            // Single-writer discipline: this method owns Fill. Every strip
+            // shares the one brush (solid or the audio gradient alike).
+            if (!fillAnimated && fill.CanFreeze) fill.Freeze();
+            foreach (var rect in _lightbarRects)
+                rect.Fill = fill;
+            _lightbarFill = fill;
+            _lightbarBloom.Color = bloomColor;
         }
 
         /// <summary>Parses a HEX color string (with or without leading #)
@@ -2205,7 +2338,7 @@ namespace PadForge.Views
         /// <summary>Preset swatch row on the Lighting tab (#175
         /// competitor item 6). Tag carries RRGGBB. Write-through hits
         /// the same LightbarRed/Green/Blue trio the sliders and picker
-        /// bind, so the preview silhouette, SV picker, and per-channel
+        /// bind, so the lightbar preview, SV picker, and per-channel
         /// rows all follow on their own. The hex box is code-behind
         /// synced (not value-bound), so re-sync it explicitly, same
         /// contract as LightbarHexBox_Apply.</summary>

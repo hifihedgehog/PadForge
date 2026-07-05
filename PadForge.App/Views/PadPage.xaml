@@ -6450,27 +6450,33 @@
                                             ToolTip="{Binding Pad_ResetLightbar, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
 
-                                <!-- Lightbar preview (#175 competitor item 6): stylized
-                                     DualSense front silhouette drawn as plain paths on
-                                     steel (no imported assets). The bar geometry is
-                                     family-correct (user report 2026-07-05):
-                                     DualSense/Edge shows the real bar, two light strips
-                                     wrapping the touchpad's flanks; a DualShock 4 gets
-                                     the front bar along the top edge instead, retargeted
-                                     by SyncTabVisibility off the same PID gates that
-                                     drive tab visibility. The bar previews the live
+                                <!-- Lightbar preview (#175): the project's real 2D
+                                     controller art instead of a hand-drawn silhouette.
+                                     Base composite + lightbar strip PNGs are the
+                                     Gamepad-Asset-Pack 2DModels assets (MIT, already
+                                     credited in the csproj), composed at native base
+                                     resolution inside this Viewbox. Strip positions were
+                                     measured by alpha-masked template matching against
+                                     the pack's own baked composites, so the lit shape is
+                                     the art's shape: DualSense/Edge lights the ring
+                                     wrapping the touchpad's flanks; a DualShock 4 lights
+                                     the front strip plus the rear bar, chosen by
+                                     SyncTabVisibility off the same PID gates that
+                                     drive tab visibility (BuildLightbarPreview rebuilds
+                                     only on family change). The bar previews the live
                                      LightbarRed/Green/Blue trio, the same properties the
                                      SV picker, sliders, hex box, and preset swatches
                                      write, so it tracks every drag. Presentation is
                                      entirely code-behind (SyncLightbarPreview, riding
                                      OnPlayStationConfigChanged): animated modes mirror
                                      the physical bar over time via code-driven
-                                     BeginAnimation on the arc and its DropShadowEffect
-                                     (the mini-card heat-ring pattern), gated on
+                                     BeginAnimation on the lit group, its shared fill
+                                     brush, and its DropShadowEffect bloom (the mini-card
+                                     heat-ring pattern), gated on
                                      SystemParameters.ClientAreaAnimation. Never animated
                                      from style triggers. Mode = Off means
                                      PadForge does not author the lightbar (game owns it):
-                                     the arc drops to cold blue at low opacity under a
+                                     the strips drop to cold blue at low opacity under a
                                      locale-neutral GAME WRITES WIN token (DZ / PEAK
                                      radar-legend idiom) whose tooltip carries the
                                      localized Pad_Lighting_Subtitle sentence. No live
@@ -6480,36 +6486,9 @@
                                      modes still preview the base trio because it is the
                                      only single-color truth the config holds. -->
                                 <StackPanel Margin="0,0,0,12" HorizontalAlignment="Left">
-                                    <Canvas Width="180" Height="60">
-                                        <!-- Body: rounded shoulders, two grips, raised
-                                             underside between them. -->
-                                        <Path Data="M 32,6 L 148,6 C 160,6 168,12 171,22 L 175,38 C 178,49 171,56 162,56 C 153,56 148,49 144,42 C 140,34 134,32 126,32 L 54,32 C 46,32 40,34 36,42 C 32,49 27,56 18,56 C 9,56 2,49 5,38 L 9,22 C 12,12 20,6 32,6 Z"
-                                              Fill="#14253049" Stroke="{DynamicResource SteelLineBrush}" StrokeThickness="1"/>
-                                        <!-- Touchpad and stick hints, steel outlines only. -->
-                                        <Border Canvas.Left="70" Canvas.Top="17" Width="40" Height="13" CornerRadius="4"
-                                                BorderBrush="{DynamicResource SteelLineBrush}" BorderThickness="1"/>
-                                        <Ellipse Canvas.Left="53" Canvas.Top="20" Width="10" Height="10"
-                                                 Stroke="{DynamicResource SteelLineBrush}" StrokeThickness="1"/>
-                                        <Ellipse Canvas.Left="117" Canvas.Top="20" Width="10" Height="10"
-                                                 Stroke="{DynamicResource SteelLineBrush}" StrokeThickness="1"/>
-                                        <!-- Live arc: visible for every authored mode. The
-                                             pipe list names each LightbarMode member except
-                                             Off, legacy InputReactive values included, so a
-                                             not-yet-migrated config still previews. -->
-                                        <Path x:Name="LightbarPreviewArc" Data="M 71.5,15 C 66.8,16 65,19 65,23 C 65,27 66.8,30 71.5,31 M 108.5,15 C 113.2,16 115,19 115,23 C 115,27 113.2,30 108.5,31" StrokeThickness="3.5"
-                                              StrokeStartLineCap="Round" StrokeEndLineCap="Round"
-                                              Visibility="{Binding PlayStationConfig.LightbarMode, Converter={StaticResource EnumEqualityVisibilityConverter}, ConverterParameter=Static|Breathing|Rainbow|ColorCycle|AudioPulse|AudioPulseRandom|AudioPulseRainbow|AudioThresholds|AudioGradient|AudioCrossFade|InputReactive|InputReactiveCycle|InputReactiveFixed|Battery|Strobe}">
-                                            <Path.Effect>
-                                                <DropShadowEffect ShadowDepth="0" BlurRadius="14" Opacity="0.55"
-                                                                  Color="#FF0000FF"/>
-                                            </Path.Effect>
-                                        </Path>
-                                        <!-- Off arc: cold and quiet, the game owns the bar. -->
-                                        <Path x:Name="LightbarPreviewArcOff" Data="M 71.5,15 C 66.8,16 65,19 65,23 C 65,27 66.8,30 71.5,31 M 108.5,15 C 113.2,16 115,19 115,23 C 115,27 113.2,30 108.5,31" StrokeThickness="3.5" Opacity="0.30"
-                                              Stroke="{DynamicResource ColdBrush}"
-                                              StrokeStartLineCap="Round" StrokeEndLineCap="Round"
-                                              Visibility="{Binding PlayStationConfig.LightbarMode, Converter={StaticResource EnumEqualityVisibilityConverter}, ConverterParameter=Off}"/>
-                                    </Canvas>
+                                    <Viewbox Width="260" HorizontalAlignment="Left">
+                                        <Grid x:Name="LightbarPreviewHost"/>
+                                    </Viewbox>
                                     <TextBlock Text="GAME WRITES WIN" HorizontalAlignment="Center" Margin="0,4,0,0"
                                                FontFamily="{StaticResource TelemetryFontFamily}" FontSize="10"
                                                Foreground="{DynamicResource TextFillColorTertiaryBrush}"

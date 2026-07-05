@@ -152,6 +152,7 @@
   <data name="Status_SDL3NotFoundDetail" xml:space="preserve"><value>SDL3.dll não encontrado! Coloque SDL3.dll ao lado de PadForge.exe. Baixe em https://github.com/libsdl-org/SDL/releases</value></data>
   <data name="Status_DriverOperationFailed_Format" xml:space="preserve"><value>Operação do driver falhou: {0}</value></data>
   <data name="Status_SettingsCopied" xml:space="preserve"><value>Configurações copiadas para a área de transferência.</value></data>
+  <data name="Status_DossierCopied" xml:space="preserve"><value>Informações do dispositivo copiadas para a área de transferência.</value></data>
   <data name="Status_CopyFailed_Format" xml:space="preserve"><value>Falha ao copiar: {0}</value></data>
   <data name="Status_InvalidClipboard" xml:space="preserve"><value>A área de transferência não contém configurações válidas do PadForge.</value></data>
   <data name="Status_SettingsPasted" xml:space="preserve"><value>Configurações coladas da área de transferência.</value></data>
@@ -2107,6 +2108,7 @@
   <data name="MacroDisconnect_Caveat" xml:space="preserve"><value>Somente Bluetooth. O controle entra em repouso quando o link cai.</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>Desconexão por Inatividade</value></data>
   <data name="Devices_Power" xml:space="preserve"><value>Energia</value></data>
+  <data name="Devices_Dossier" xml:space="preserve"><value>Dossiê do Dispositivo</value></data>
   <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>minutos (0 = nunca)</value></data>
   <data name="Devices_IdleDisconnectTooltip" xml:space="preserve"><value>Desconecta este controle Bluetooth após esses minutos sem entrada, para que entre em repouso e economize bateria. Nunca dispara via USB.</value></data>
   <data name="DevObj_ConsumerPower" xml:space="preserve"><value>Liga/Desliga</value></data>

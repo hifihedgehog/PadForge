@@ -378,6 +378,50 @@ namespace PadForge.Views
             dlg.ShowDialog();
         }
 
+        // ── Device dossier copy (#175 competitor item 7) ──
+
+        /// <summary>
+        /// Copies the dossier block as plain mono text. Locale-neutral token
+        /// lines mirroring the on-screen block: fields the engine holds only,
+        /// absent facts omitted, no placeholders. Same try/catch + status-bar
+        /// confirmation shape as the settings/macro copy handlers.
+        /// </summary>
+        private void CopyDossier_Click(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is not ViewModels.DevicesViewModel vm || vm.SelectedDevice is not { } dev)
+                return;
+
+            var mainVm = Application.Current.MainWindow?.DataContext as ViewModels.MainViewModel;
+            try
+            {
+                var sb = new System.Text.StringBuilder();
+                sb.AppendLine($"VID:PID   {dev.VendorIdHex}:{dev.ProductIdHex}");
+                if (dev.IsBluetoothLink)
+                    sb.AppendLine("LINK      BT");
+                if (!string.IsNullOrEmpty(dev.SerialNumber))
+                    sb.AppendLine($"SERIAL    {dev.SerialNumber}");
+                if (dev.HasBattery)
+                    sb.AppendLine($"BATT      {dev.BatteryText}" + (dev.BatteryCharging ? " CHG" : string.Empty));
+
+                var caps = new System.Collections.Generic.List<string>();
+                if (dev.HasRumble) caps.Add("RUMBLE");
+                if (dev.HasGyro) caps.Add("GYRO");
+                if (dev.HasAccel) caps.Add("ACCEL");
+                if (dev.ShowTouchpadCapability) caps.Add("TOUCHPAD");
+                if (caps.Count > 0)
+                    sb.AppendLine("CAPS      " + string.Join(" ", caps));
+
+                Clipboard.SetText(sb.ToString());
+                if (mainVm != null)
+                    mainVm.StatusText = Strings.Instance.Status_DossierCopied;
+            }
+            catch (Exception ex)
+            {
+                if (mainVm != null)
+                    mainVm.StatusText = string.Format(Strings.Instance.Status_CopyFailed_Format, ex.Message);
+            }
+        }
+
         // ── Device card drag (to sidebar controller cards) ──
 
         private Point _deviceDragStart;

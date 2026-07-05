@@ -46,6 +46,18 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _sdlGuid, value);
         }
 
+        private string _serialNumber = string.Empty;
+
+        /// <summary>Device serial number as SDL reports it (the Bluetooth MAC
+        /// on most wireless pads). Empty when the device surfaces none. The
+        /// dossier SERIAL line hides itself instead of showing a placeholder
+        /// (#175 item 7).</summary>
+        public string SerialNumber
+        {
+            get => _serialNumber;
+            set => SetProperty(ref _serialNumber, value);
+        }
+
         private string _deviceName = string.Empty;
 
         /// <summary>Display name of the device.</summary>
@@ -204,6 +216,8 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(ShowInputModeSection));
                     OnPropertyChanged(nameof(ShowInputModeOrHidingSection));
                     OnPropertyChanged(nameof(IsMidiDevice));
+                    OnPropertyChanged(nameof(ShowTouchpadCapability));
+                    OnPropertyChanged(nameof(HasCapabilityIcons));
                 }
             }
         }
@@ -232,7 +246,11 @@ namespace PadForge.ViewModels
         public bool HasRumble
         {
             get => _hasRumble;
-            set => SetProperty(ref _hasRumble, value);
+            set
+            {
+                if (SetProperty(ref _hasRumble, value))
+                    OnPropertyChanged(nameof(HasCapabilityIcons));
+            }
         }
 
         private bool _hasGyro;
@@ -241,7 +259,11 @@ namespace PadForge.ViewModels
         public bool HasGyro
         {
             get => _hasGyro;
-            set => SetProperty(ref _hasGyro, value);
+            set
+            {
+                if (SetProperty(ref _hasGyro, value))
+                    OnPropertyChanged(nameof(HasCapabilityIcons));
+            }
         }
 
         private bool _hasAccel;
@@ -259,8 +281,26 @@ namespace PadForge.ViewModels
         public bool HasTouchpad
         {
             get => _hasTouchpad;
-            set => SetProperty(ref _hasTouchpad, value);
+            set
+            {
+                if (SetProperty(ref _hasTouchpad, value))
+                {
+                    OnPropertyChanged(nameof(ShowTouchpadCapability));
+                    OnPropertyChanged(nameof(HasCapabilityIcons));
+                }
+            }
         }
+
+        /// <summary>Touchpad chip gate for the dossier capability row,
+        /// mirroring CapabilitiesSummary: shown only when the touchpad is a
+        /// capability of a larger device, not the device's own type.</summary>
+        public bool ShowTouchpadCapability => _hasTouchpad && DeviceTypeKey != "Touchpad";
+
+        /// <summary>Whether the dossier capability row renders at all
+        /// (#175 item 7). Counts only capabilities with an established glyph
+        /// (rumble, gyro, touchpad). Accel has no established glyph anywhere
+        /// in the app and stays text-only in CapabilitiesSummary.</summary>
+        public bool HasCapabilityIcons => _hasRumble || _hasGyro || ShowTouchpadCapability;
 
         // ─────────────────────────────────────────────
         //  Slot assignment
@@ -505,9 +545,17 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(ShowInputHidingSection));
                     OnPropertyChanged(nameof(ShowInputModeSection));
                     OnPropertyChanged(nameof(ShowInputModeOrHidingSection));
+                    OnPropertyChanged(nameof(IsBluetoothLink));
                 }
             }
         }
+
+        /// <summary>True when the device path is a Bluetooth HID path, the
+        /// same predicate the effect writers and disconnect gates use. Drives
+        /// the dossier LINK line, which renders only when Bluetooth is a
+        /// positive fact: a non-BT path may be USB, a wireless dongle, or a
+        /// virtual source, so no transport is claimed for those (#175 item 7).</summary>
+        public bool IsBluetoothLink => Common.Input.SonyEffectWriter.IsBluetoothPath(_devicePath);
 
         private string _hidHideInstancePath = string.Empty;
 

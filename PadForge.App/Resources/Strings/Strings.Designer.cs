@@ -193,6 +193,7 @@ public class Strings : INotifyPropertyChanged
     public string Status_SDL3NotFoundDetail => Get("Status_SDL3NotFoundDetail");
     public string Status_DriverOperationFailed_Format => Get("Status_DriverOperationFailed_Format");
     public string Status_SettingsCopied => Get("Status_SettingsCopied");
+    public string Status_DossierCopied => Get("Status_DossierCopied");
     public string Status_CopyFailed_Format => Get("Status_CopyFailed_Format");
     public string Status_InvalidClipboard => Get("Status_InvalidClipboard");
     public string Status_SettingsPasted => Get("Status_SettingsPasted");
@@ -497,6 +498,7 @@ public class Strings : INotifyPropertyChanged
     public string MacroDisconnect_Caveat => Get("MacroDisconnect_Caveat");
     public string Devices_IdleDisconnect => Get("Devices_IdleDisconnect");
     public string Devices_Power => Get("Devices_Power");
+    public string Devices_Dossier => Get("Devices_Dossier");
     public string Devices_IdleDisconnectMinutes => Get("Devices_IdleDisconnectMinutes");
     public string Devices_IdleDisconnectTooltip => Get("Devices_IdleDisconnectTooltip");
     public string DevObj_ConsumerPower => Get("DevObj_ConsumerPower");

@@ -152,6 +152,7 @@
   <data name="Status_SDL3NotFoundDetail" xml:space="preserve"><value>SDL3.dll introuvable ! Placez SDL3.dll à côté de PadForge.exe. Téléchargez depuis https://github.com/libsdl-org/SDL/releases</value></data>
   <data name="Status_DriverOperationFailed_Format" xml:space="preserve"><value>Échec de l'opération du pilote : {0}</value></data>
   <data name="Status_SettingsCopied" xml:space="preserve"><value>Paramètres copiés dans le presse-papiers.</value></data>
+  <data name="Status_DossierCopied" xml:space="preserve"><value>Informations de l'appareil copiées dans le presse-papiers.</value></data>
   <data name="Status_CopyFailed_Format" xml:space="preserve"><value>Échec de la copie : {0}</value></data>
   <data name="Status_InvalidClipboard" xml:space="preserve"><value>Le presse-papiers ne contient pas de paramètres PadForge valides.</value></data>
   <data name="Status_SettingsPasted" xml:space="preserve"><value>Paramètres collés depuis le presse-papiers.</value></data>
@@ -2107,6 +2108,7 @@
   <data name="MacroDisconnect_Caveat" xml:space="preserve"><value>Bluetooth uniquement. La manette se met en veille dès que la liaison est coupée.</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>Déconnexion en cas d'inactivité</value></data>
   <data name="Devices_Power" xml:space="preserve"><value>Alimentation</value></data>
+  <data name="Devices_Dossier" xml:space="preserve"><value>Dossier de l'appareil</value></data>
   <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>minutes (0 = jamais)</value></data>
   <data name="Devices_IdleDisconnectTooltip" xml:space="preserve"><value>Déconnecte cette manette Bluetooth après ce nombre de minutes sans entrée, pour qu'elle se mette en veille et économise la batterie. Ne se déclenche jamais en USB.</value></data>
   <data name="DevObj_ConsumerPower" xml:space="preserve"><value>Alimentation</value></data>

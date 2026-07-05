@@ -155,6 +155,7 @@
   <data name="Status_SDL3NotFoundDetail" xml:space="preserve"><value>SDL3.dll not found! Place SDL3.dll next to PadForge.exe. Download from https://github.com/libsdl-org/SDL/releases</value></data>
   <data name="Status_DriverOperationFailed_Format" xml:space="preserve"><value>Driver operation failed: {0}</value></data>
   <data name="Status_SettingsCopied" xml:space="preserve"><value>Settings copied to clipboard.</value></data>
+  <data name="Status_DossierCopied" xml:space="preserve"><value>Device info copied to clipboard.</value></data>
   <data name="Status_CopyFailed_Format" xml:space="preserve"><value>Failed to copy: {0}</value></data>
   <data name="Status_InvalidClipboard" xml:space="preserve"><value>Clipboard does not contain valid PadForge settings.</value></data>
   <data name="Status_SettingsPasted" xml:space="preserve"><value>Settings pasted from clipboard.</value></data>
@@ -413,6 +414,7 @@
   <data name="MacroDisconnect_Caveat" xml:space="preserve"><value>Bluetooth only. The controller sleeps once the link drops.</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>Idle Disconnect</value></data>
   <data name="Devices_Power" xml:space="preserve"><value>Power</value></data>
+  <data name="Devices_Dossier" xml:space="preserve"><value>Device Dossier</value></data>
   <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>minutes (0 = never)</value></data>
   <data name="Devices_IdleDisconnectTooltip" xml:space="preserve"><value>Disconnects this Bluetooth controller after this many minutes without input, so it sleeps and saves battery. Never fires over USB.</value></data>
   <data name="DevObj_ConsumerPower" xml:space="preserve"><value>Power</value></data>

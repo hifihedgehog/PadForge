@@ -677,7 +677,10 @@ namespace PadForge.Services
             UserEffectsDispatcher.SlotBatteryPercentProvider = (padIndex, deviceGuid) =>
             {
                 var ud = FindUserDevice(deviceGuid);
-                int pct = (ud != null && ud.IsOnline) ? (ud.InputState?.BatteryPercent ?? -1) : -1;
+                // Same effective-battery path as the indicators (#187), so a
+                // battery-driven lightbar following a device whose SDL battery
+                // is unknown still gets the Bluetooth devnode value.
+                var (pct, _) = GetEffectiveBattery(ud);
                 if (pct < 0 || pct > 100) return (byte)100;
                 return (byte)pct;
             };
@@ -2594,33 +2597,42 @@ namespace PadForge.Services
         /// Runs on the UI timer at a 5 s cadence, matching the SDL wrapper's
         /// own battery cache interval. Offline devices read as no-battery so
         /// the indicator disappears instead of freezing.</summary>
+        /// <summary>The one battery answer for a device (#187): SDL's value
+        /// when the backend reports one (HIDAPI pads), else the device's own
+        /// Bluetooth devnode battery property (Xbox pads, whose XInput lane is
+        /// dead for Bluetooth and whose DevicePath is the synthetic
+        /// "XInput#N"). Every battery writer must route through here: the
+        /// Devices row seed once wrote raw SDL battery and blinked the page
+        /// against the 5 s tick's overlay. The devnode property carries no
+        /// charging flag; a pad on the charger enumerates wired and takes the
+        /// SDL branch.</summary>
+        private (int Pct, bool Charging) GetEffectiveBattery(UserDevice ud)
+        {
+            if (ud == null || !ud.IsOnline) return (-1, false);
+            int sdlPct = ud.InputState?.BatteryPercent ?? -1;
+            if (sdlPct >= 0) return (sdlPct, ud.InputState?.BatteryCharging ?? false);
+            int btPct = PadForge.Common.Input.BluetoothBatteryService.TryGetPercent(
+                ud.DevicePath, ud.VendorId, ud.ProdId);
+            return (btPct, false);
+        }
+
         private void UpdateBatteryIndicators()
         {
-            // Xbox pads get no battery through SDL's XInput backend: the
-            // battery IOCTL is dead for Bluetooth pads (probed on hardware,
-            // even System32's xinput1_4 answers DISCONNECTED for a Series X
-            // whose battery Windows shows), and the WinRT gaming stack's
-            // synthesized report is both rate-limited (flicker) and wrong
-            // (bucketed 10 vs the real 74). Overlay from the device's OWN
-            // Bluetooth devnode battery property instead (#187), the value
-            // Windows Settings displays, resolved by walking the pad's own
-            // PnP ancestry so a virtual controller can never be latched by
-            // mistake. Memoized per device per tick so both loops agree.
-            var btOverlay = new Dictionary<Guid, int>();
+            // Memoized per device per tick so both loops below agree; the
+            // computation itself lives in GetEffectiveBattery so EVERY battery
+            // writer (this tick, the Devices row seed, the lightbar provider)
+            // sees the same overlay. The row seed writing raw SDL battery was
+            // exactly how the Devices page blinked while the dashboard held.
+            var btOverlay = new Dictionary<Guid, (int, bool)>();
             (int Pct, bool Charging) EffectiveBattery(UserDevice ud)
             {
-                if (ud == null || !ud.IsOnline) return (-1, false);
-                int sdlPct = ud.InputState?.BatteryPercent ?? -1;
-                if (sdlPct >= 0) return (sdlPct, ud.InputState?.BatteryCharging ?? false);
-                if (!btOverlay.TryGetValue(ud.InstanceGuid, out int btPct))
+                if (ud == null) return (-1, false);
+                if (!btOverlay.TryGetValue(ud.InstanceGuid, out var val))
                 {
-                    btPct = PadForge.Common.Input.BluetoothBatteryService.TryGetPercent(
-                        ud.DevicePath, ud.VendorId, ud.ProdId);
-                    btOverlay[ud.InstanceGuid] = btPct;
+                    val = GetEffectiveBattery(ud);
+                    btOverlay[ud.InstanceGuid] = val;
                 }
-                // The devnode property carries no charging flag; a pad on the
-                // charger over USB enumerates wired and takes the SDL branch.
-                return (btPct, false);
+                return val;
             }
 
             foreach (var row in _mainVm.Devices.Devices)
@@ -7658,10 +7670,13 @@ namespace PadForge.Services
             row.IdleDisconnectMinutes = ud.IdleDisconnectSeconds / 60;
             row.ShowIdleDisconnect = PadForge.Common.Input.BluetoothLinkHelper.IsDisconnectTarget(ud.DevicePath, ud.VendorId, ud.ProdId);
 
-            // Battery indicator (#167): seed from the latest state snapshot.
-            // The UI tick refreshes it on a slow cadence afterward.
-            row.BatteryPercent = ud.IsOnline ? (ud.InputState?.BatteryPercent ?? -1) : -1;
-            row.BatteryCharging = ud.IsOnline && (ud.InputState?.BatteryCharging ?? false);
+            // Battery indicator (#167): seed through the same effective-battery
+            // path the 5 s tick uses (#187). Seeding raw SDL battery here blinked
+            // the Devices page for Xbox pads: every list refresh stamped -1 and
+            // the next tick restored the overlay value.
+            var (seedPct, seedCharging) = GetEffectiveBattery(ud);
+            row.BatteryPercent = seedPct;
+            row.BatteryCharging = seedCharging;
 
             // Set internal device type key (DeviceType display is computed from this).
             row.DeviceTypeKey = ud.CapType switch

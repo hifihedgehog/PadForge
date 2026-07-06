@@ -5298,7 +5298,7 @@ namespace PadForge.Services
         {
             _dispatcher.BeginInvoke(new Action(() =>
             {
-                _mainVm.StatusText = string.Format(Strings.Instance.Status_Error_Format, e.Message);
+                _mainVm.SetStatus(string.Format(Strings.Instance.Status_Error_Format, e.Message), persist: true);
             }));
         }
 

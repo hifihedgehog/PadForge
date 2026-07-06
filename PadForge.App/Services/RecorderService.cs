@@ -275,7 +275,7 @@ namespace PadForge.Services
             {
                 _freeformCallback = null;
                 _activePadIndex = -1;
-                _mainVm.StatusText = Strings.Instance.Status_NoDeviceToRecord;
+                _mainVm.SetStatus(Strings.Instance.Status_NoDeviceToRecord, persist: true);
                 RecordingTimedOut?.Invoke(this, EventArgs.Empty);
                 return;
             }
@@ -344,7 +344,7 @@ namespace PadForge.Services
             {
                 _activeMapping = null;
                 _activeExtraSource = null;
-                _mainVm.StatusText = Strings.Instance.Status_NoDeviceToRecord;
+                _mainVm.SetStatus(Strings.Instance.Status_NoDeviceToRecord, persist: true);
                 RecordingTimedOut?.Invoke(this, EventArgs.Empty);
                 return;
             }
@@ -369,7 +369,9 @@ namespace PadForge.Services
             _timer.Tick += PollTick;
             _timer.Start();
 
-            _mainVm.StatusText = string.Format(Strings.Instance.Status_RecordingPrompt_Format, mapping.TargetLabel);
+            // Prompt persists through the decay sweep: every session ends in
+            // a recorded / cancelled / timed-out write, so it cannot burn in.
+            _mainVm.SetStatus(string.Format(Strings.Instance.Status_RecordingPrompt_Format, mapping.TargetLabel), persist: true);
         }
 
         /// <summary>

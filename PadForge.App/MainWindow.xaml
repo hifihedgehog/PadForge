@@ -188,7 +188,9 @@
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
-                <TextBlock Grid.Column="0"
+                <!-- Named so the #175 item 7 decay sweep can fade it out
+                     before the clear (code-behind BeginAnimation). -->
+                <TextBlock x:Name="StatusMessageText" Grid.Column="0"
                            Text="{Binding StatusText}"
                            VerticalAlignment="Center"
                            Foreground="{DynamicResource TextFillColorTertiaryBrush}"

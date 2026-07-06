@@ -80,13 +80,13 @@ namespace PadForge.Services
             var selectedRow = _mainVm.Devices.SelectedDevice;
             if (selectedRow == null)
             {
-                _mainVm.StatusText = Strings.Instance.Status_NoDeviceSelected;
+                _mainVm.SetStatus(Strings.Instance.Status_NoDeviceSelected, persist: true);
                 return;
             }
 
             if (slotIndex < 0 || slotIndex >= InputManager.MaxPads)
             {
-                _mainVm.StatusText = string.Format(Strings.Instance.Status_InvalidSlotIndex_Format, slotIndex);
+                _mainVm.SetStatus(string.Format(Strings.Instance.Status_InvalidSlotIndex_Format, slotIndex), persist: true);
                 return;
             }
 
@@ -104,7 +104,7 @@ namespace PadForge.Services
             var us = SettingsManager.AssignDeviceToSlot(instanceGuid, slotIndex);
             if (us == null)
             {
-                _mainVm.StatusText = Strings.Instance.Status_FailedAssignDevice;
+                _mainVm.SetStatus(Strings.Instance.Status_FailedAssignDevice, persist: true);
                 return;
             }
 

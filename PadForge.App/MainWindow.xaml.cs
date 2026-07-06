@@ -5072,7 +5072,7 @@ namespace PadForge
             ((FrameworkElement)DashboardPageView.EngineCard, Strings.Instance.Tour_Engine_Title, Strings.Instance.Tour_Engine_Body),
             (DashboardPageView.SlotsItemsControl, Strings.Instance.Tour_Cards_Title, Strings.Instance.Tour_Cards_Body),
             (NavView, Strings.Instance.Tour_Slots_Title, Strings.Instance.Tour_Slots_Body),
-            (DashboardPageView.ServicesHeader, Strings.Instance.Tour_Services_Title, Strings.Instance.Tour_Services_Body),
+            (DashboardPageView.ServicesSection, Strings.Instance.Tour_Services_Title, Strings.Instance.Tour_Services_Body),
             (StatusBarBorder, Strings.Instance.Tour_Status_Title, Strings.Instance.Tour_Status_Body),
         };
 
@@ -5144,19 +5144,33 @@ namespace PadForge
             try
             {
                 double w = target.ActualWidth, h = target.ActualHeight;
+                var origin = target.TransformToVisual(FirstRunOverlay).Transform(new Point(0, 0));
                 if (ReferenceEquals(target, NavView))
                 {
                     // Highlight only the pane strip, not the whole view.
                     w = NavView.IsPaneOpen ? NavView.OpenPaneLength : NavView.CompactPaneLength;
                     h = NavView.ActualHeight;
                 }
-                var origin = target.TransformToVisual(FirstRunOverlay).Transform(new Point(0, 0));
-                System.Windows.Controls.Canvas.SetLeft(TourHighlight, origin.X - 4);
-                System.Windows.Controls.Canvas.SetTop(TourHighlight, origin.Y - 4);
-                TourHighlight.Width = w + 8;
-                TourHighlight.Height = h + 8;
 
                 double ow = FirstRunOverlay.ActualWidth, oh = FirstRunOverlay.ActualHeight;
+
+                // Every edge of the ring stays on-screen. Edge-flush targets
+                // (nav pane, status bar) and taller-than-viewport ones (slot
+                // grid, services group) used to push ring sides past the
+                // window, which cut them off. Page rings stop above the
+                // status bar; the status bar's own ring stops at the window
+                // edge instead.
+                double statusTop = StatusBarBorder.TransformToVisual(FirstRunOverlay).Transform(new Point(0, 0)).Y;
+                double left = Math.Max(origin.X - 4, 2);
+                double top = Math.Max(origin.Y - 4, 2);
+                double right = Math.Min(origin.X + w + 4, ow - 2);
+                double bottom = Math.Min(origin.Y + h + 4,
+                    ReferenceEquals(target, StatusBarBorder) ? oh - 2 : statusTop - 6);
+                System.Windows.Controls.Canvas.SetLeft(TourHighlight, left);
+                System.Windows.Controls.Canvas.SetTop(TourHighlight, top);
+                TourHighlight.Width = Math.Max(0, right - left);
+                TourHighlight.Height = Math.Max(0, bottom - top);
+
                 double tipX = origin.X + w + 14;
                 double tipY = origin.Y;
                 if (tipX + 332 > ow)

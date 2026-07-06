@@ -1287,9 +1287,13 @@
 
             <!-- ═══ Services group (#175): everything below serves other
                  software. Status stays above the fold. ═══ -->
+            <!-- One panel so the welcome tour can ring the whole group,
+                 header through last card, as a single target. It carries
+                 the group's top margin so the ring hugs the header. -->
+            <StackPanel x:Name="ServicesSection" Margin="0,28,0,0">
             <!-- Group header (#175 round 3): outranks the section titles
                  below it by one step (ember tick + larger mono). -->
-            <StackPanel Orientation="Horizontal" Margin="0,28,0,0">
+            <StackPanel Orientation="Horizontal">
                 <!-- Ember, not EmberHot: the amber pair read yellow against
                      the page's ember section glyphs (user report 2026-07-05). -->
                 <Rectangle Width="3" Height="12" RadiusX="1.5" RadiusY="1.5"
@@ -1726,6 +1730,7 @@
 
                 </Grid>
             </Border>
+            </StackPanel>
 
         </StackPanel>
     </ScrollViewer>

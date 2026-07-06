@@ -541,19 +541,13 @@ namespace PadForge.Views
             return grid;
         }
 
-        /// <summary>Compact chip face (user report 2026-07-04: full wiring
-        /// text made the stage unreadably busy). The chip carries the
-        /// output name plus a +N badge for additional sources; the
-        /// structured wiring readout appears in the detail strip on hover
-        /// and in the tooltip.</summary>
+        /// <summary>Compact chip face: the OUTPUT name, nothing else
+        /// (user report 2026-07-05: the +N badge read as part of the
+        /// name and confused the chip; the fan-in readouts in the
+        /// tooltip and detail strip own the source detail).</summary>
         private static string CompactChipLabel(MappingItem row)
         {
-            string target = (row.TargetLabel ?? string.Empty).Trim();
-            int sources = string.IsNullOrWhiteSpace(row.SourceDisplayText) ? 0 : 1;
-            foreach (var src in row.ExtraSources)
-                if (!string.IsNullOrWhiteSpace(src.SelectedInput?.DisplayName ?? src.Descriptor))
-                    sources++;
-            return sources > 1 ? target + " +" + (sources - 1) : target;
+            return (row.TargetLabel ?? string.Empty).Trim();
         }
 
         private Border _annotationDetailStrip;

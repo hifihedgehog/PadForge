@@ -453,8 +453,12 @@ namespace PadForge.Common.Input
         }
 
         /// <summary>Enumerates present HID device interfaces and returns the first
-        /// whose HIDD_ATTRIBUTES match vid/pid. Standard SetupDi walk.</summary>
-        private static string FindHidPath(ushort vid, ushort pid)
+        /// whose HIDD_ATTRIBUTES match vid/pid. Standard SetupDi walk. Internal so
+        /// BluetoothLinkHelper can resolve the combined pair's children too (#184):
+        /// the pair's SDL serial is empty (the combined driver's serial join reads
+        /// joystick-&gt;serial, which the Switch driver stopped setting in 2022), so
+        /// the disconnect path reads each child's own HID serial instead.</summary>
+        internal static string FindHidPath(ushort vid, ushort pid)
         {
             HidD_GetHidGuid(out Guid hidGuid);
             IntPtr set = SetupDiGetClassDevsW(ref hidGuid, IntPtr.Zero, IntPtr.Zero, DIGCF_PRESENT | DIGCF_DEVICEINTERFACE);

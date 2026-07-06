@@ -107,10 +107,64 @@ namespace PadForge.Common.Input
             if (vendorId == MicrosoftVid && TryXInputPowerOff(vendorId, productId))
                 return true;
 
+            // Combined gen-1 Joy-Con pair (#184): its SDL serial is EMPTY. The
+            // combined driver's serial join (SDL_hidapi_combined.c:89) appends
+            // joystick->serial, which the Switch driver stopped writing in 2022
+            // (upstream aa2e2f4843 moved the MAC to the device serial, set in
+            // InitDevice before any joystick opens), so the join is dead code and
+            // the generic TryDisconnect(serial) below would silently no-op.
+            // Resolve each physical child's HID interface instead (the same
+            // enumeration the pair's haptic sink uses) and read the child's own
+            // HID serial, which for a classic-BT HID device is its MAC (vendored
+            // hidapi hid.c:907-910, the exact lane the hardware-confirmed Wii
+            // disconnect rides). Both halves drop.
+            if (IsJoyConPair(vendorId, productId) && TryDisconnectJoyConPairChildren())
+                return true;
+
             if (TryDisconnect(serial))
                 return true;
             return TryCycleBthDevNodes(bthInstanceIds);
         }
+
+        /// <summary>Disconnects both physical Joy-Cons behind the combined pair by
+        /// resolving each child's HID path (Left 0x2006, Right 0x2007) and dropping
+        /// the BR/EDR link addressed by the child's own HID serial string. Returns
+        /// true when at least one half dropped. With two pairs connected this
+        /// reaches the first pair's children, the same bound as the haptic lane.</summary>
+        private static bool TryDisconnectJoyConPairChildren()
+        {
+            bool any = false;
+            foreach (ushort pid in new ushort[] { 0x2006, 0x2007 })
+            {
+                string path = HapticToneService.FindHidPath(0x057E, pid);
+                if (path == null) continue;
+                string serial = ReadHidSerial(path);
+                if (TryDisconnect(serial)) any = true; // no short-circuit: both halves
+            }
+            return any;
+        }
+
+        /// <summary>Reads a HID device's serial string via a query-only handle
+        /// (access 0, the hidapi pattern). Null on any failure.</summary>
+        private static string ReadHidSerial(string devicePath)
+        {
+            IntPtr h = CreateFileW(devicePath, 0, SHARE_RW, IntPtr.Zero, OPEN_EXISTING, 0, IntPtr.Zero);
+            if (h == INVALID_HANDLE || h == IntPtr.Zero) return null;
+            try
+            {
+                var buf = new byte[256];
+                if (!HidD_GetSerialNumberString(h, buf, buf.Length)) return null;
+                string s = System.Text.Encoding.Unicode.GetString(buf);
+                int nul = s.IndexOf('\0');
+                return nul >= 0 ? s.Substring(0, nul) : s;
+            }
+            catch { return null; }
+            finally { CloseHandle(h); }
+        }
+
+        [DllImport("hid.dll", SetLastError = true)]
+        [return: MarshalAs(UnmanagedType.U1)]
+        private static extern bool HidD_GetSerialNumberString(IntPtr h, byte[] buffer, int bufferLength);
 
         /// <summary>How long a cycled BTHLE node stays disabled. The first
         /// hardware round used 400 ms and the pad reconnected instantly on

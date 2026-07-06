@@ -419,7 +419,11 @@ namespace PadForge.Common.Input
         // "nintendo_joycons_combined", which CreateFileW cannot open. Enumerate HID
         // to find a real child Joy-Con path (Left 0x2006, then Right 0x2007).
         [DllImport("hid.dll")] private static extern void HidD_GetHidGuid(out Guid hidGuid);
-        [DllImport("hid.dll", SetLastError = true)] private static extern bool HidD_GetAttributes(IntPtr h, ref HIDD_ATTRIBUTES attr);
+        // Native return is BOOLEAN (1 byte), not BOOL. Marshal as U1 like the
+        // XboxImpulseHidWriter sibling so a stale upper EAX can't read as true.
+        [DllImport("hid.dll", SetLastError = true)]
+        [return: MarshalAs(UnmanagedType.U1)]
+        private static extern bool HidD_GetAttributes(IntPtr h, ref HIDD_ATTRIBUTES attr);
         [DllImport("setupapi.dll", CharSet = CharSet.Unicode, SetLastError = true)]
         private static extern IntPtr SetupDiGetClassDevsW(ref Guid classGuid, IntPtr enumerator, IntPtr hwndParent, uint flags);
         [DllImport("setupapi.dll", SetLastError = true)]
@@ -460,7 +464,10 @@ namespace PadForge.Common.Input
                 var did = new SP_DEVICE_INTERFACE_DATA { cbSize = (uint)Marshal.SizeOf<SP_DEVICE_INTERFACE_DATA>() };
                 for (uint i = 0; SetupDiEnumDeviceInterfaces(set, IntPtr.Zero, ref hidGuid, i, ref did); i++)
                 {
-                    SetupDiGetDeviceInterfaceDetailW(set, ref did, IntPtr.Zero, 0, out uint need, IntPtr.Zero);
+                    // Zero 'need' each iteration: a failed size call that never
+                    // writes RequiredSize must not reuse the previous device's size.
+                    uint need = 0;
+                    SetupDiGetDeviceInterfaceDetailW(set, ref did, IntPtr.Zero, 0, out need, IntPtr.Zero);
                     if (need == 0) continue;
                     IntPtr detail = Marshal.AllocHGlobal((int)need);
                     try

@@ -776,6 +776,36 @@ namespace PadForge
                     });
                 };
 
+                // Record button on the haptic-mirror engage picker (#185).
+                // Same freeform-recorder toggle as the Aim Engage picker above;
+                // the result lands on the SELECTED device's PlayStationConfig
+                // (resolved at callback time, so a device switch mid-recording
+                // writes to whichever config is then active, like every other
+                // PlayStationConfig-backed control).
+                pad.MirrorEngageRecordRequested += (s, e) =>
+                {
+                    if (s is not PadViewModel pvm) return;
+                    if (pvm.MirrorEngageRecording)
+                    {
+                        _recorderService.CancelRecording();
+                        pvm.MirrorEngageRecording = false;
+                        return;
+                    }
+                    pvm.MirrorEngageRecording = true;
+                    _recorderService.StartRecordingFreeform(pvm.PadIndex, (deviceGuid, descriptor) =>
+                    {
+                        var cfg = pvm.PlayStationConfig;
+                        if (cfg != null)
+                        {
+                            cfg.AudioMirrorEngageButton = descriptor ?? "";
+                            cfg.AudioMirrorEngageDeviceGuid = deviceGuid ?? "";
+                            pvm.OnMirrorEngageSelectedInputRefresh();
+                        }
+                        pvm.MirrorEngageRecording = false;
+                        _settingsService.MarkDirty();
+                    });
+                };
+
                 // Record buttons on the two Trigger Routing activators (#102).
                 // Same freeform-recorder toggle as the Aim Engage picker above.
                 pad.LeftTriggerRouteActivatorRecordRequested += (s, e) =>
@@ -1361,6 +1391,9 @@ namespace PadForge
                         activePad.LeftTriggerRouteActivatorRecording = false;
                     if (activePad.RightTriggerRouteActivatorRecording)
                         activePad.RightTriggerRouteActivatorRecording = false;
+                    // Haptic-mirror engage record button (#185).
+                    if (activePad.MirrorEngageRecording)
+                        activePad.MirrorEngageRecording = false;
                 }
             };
 

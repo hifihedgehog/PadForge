@@ -1871,6 +1871,9 @@
   <data name="Macro_Sound_Loop_Tooltip" xml:space="preserve"><value>Herhaal het geluid tot een "Geluiden stoppen"-actie draait, of bij vasthouden/loslaten-macro’s, tot de trigger wordt losgelaten</value></data>
   <data name="Pad_Audio_Mirror" xml:space="preserve"><value>Systeemaudio spiegelen naar de controllerspeaker</value></data>
   <data name="Pad_Audio_Engage_Label" xml:space="preserve"><value>Gespiegelde audio afspelen</value></data>
+  <data name="Pad_ResetMirrorEngageMode" xml:space="preserve"><value>Activeringsmodus resetten</value></data>
+  <data name="Pad_ResetMirrorEngageInput" xml:space="preserve"><value>Activeringsinvoer resetten</value></data>
+  <data name="Pad_ResetMirrorEngageRelease" xml:space="preserve"><value>Loslaatvertraging resetten</value></data>
   <data name="Pad_Audio_Engage_Tooltip" xml:space="preserve"><value>Wanneer de gespiegelde audio als haptische tonen speelt. Koppel het aan een ingedrukte invoer of aan de trilfunctie van de game, zodat muziek de controller niet constant laat trillen.</value></data>
   <data name="Pad_Audio_Engage_Always" xml:space="preserve"><value>Altijd</value></data>
   <data name="Pad_Audio_Engage_Input" xml:space="preserve"><value>Zolang een invoer ingedrukt is</value></data>

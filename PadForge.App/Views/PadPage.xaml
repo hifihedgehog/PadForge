@@ -9463,6 +9463,8 @@
                                             <ComboBoxItem Content="{Binding Pad_Audio_Engage_Input, Source={x:Static strings:Strings.Instance}}" Tag="Input"/>
                                             <ComboBoxItem Content="{Binding Pad_Audio_Engage_Rumble, Source={x:Static strings:Strings.Instance}}" Tag="Rumble"/>
                                         </ComboBox>
+                                        <ui:Button Command="{Binding ResetMirrorEngageModeCommand}" Style="{StaticResource ResetButton}"
+                                                ToolTip="{Binding Pad_ResetMirrorEngageMode, Source={x:Static strings:Strings.Instance}}"/>
                                     </StackPanel>
                                     <!-- Engage input picker, Input mode only. Same grouped
                                          cross-device list + device-label subtitle as the
@@ -9517,6 +9519,18 @@
                                                 </TextBlock.Style>
                                             </TextBlock>
                                         </StackPanel>
+                                        <ui:Button Command="{Binding MirrorEngageRecordCommand}"
+                                                   Style="{StaticResource EmberIconButtonHot}"
+                                                   VerticalAlignment="Top">
+                                            <TextBlock Text="{Binding MirrorEngageRecordButtonIcon}" FontFamily="Segoe MDL2 Assets"
+                                                       Foreground="{DynamicResource EmberBrush}"/>
+                                            <ui:Button.ToolTip>
+                                                <TextBlock Text="{Binding MirrorEngageRecordButtonText}"/>
+                                            </ui:Button.ToolTip>
+                                        </ui:Button>
+                                        <ui:Button Command="{Binding ResetMirrorEngageInputCommand}" Style="{StaticResource ResetButton}"
+                                                VerticalAlignment="Top"
+                                                ToolTip="{Binding Pad_ResetMirrorEngageInput, Source={x:Static strings:Strings.Instance}}"/>
                                     </StackPanel>
                                     <!-- Release delay, any gated mode. -->
                                     <StackPanel Orientation="Horizontal">
@@ -9537,6 +9551,8 @@
                                                  Width="64" VerticalAlignment="Center"
                                                  IsEnabled="{Binding PlayStationConfig.AudioPassthroughEnabled}"/>
                                         <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="ms" VerticalAlignment="Center" Margin="4,0,0,0"/>
+                                        <ui:Button Command="{Binding ResetMirrorEngageReleaseMsCommand}" Style="{StaticResource ResetButton}"
+                                                ToolTip="{Binding Pad_ResetMirrorEngageRelease, Source={x:Static strings:Strings.Instance}}"/>
                                     </StackPanel>
                                 </StackPanel>
                                 <TextBlock Text="{Binding Pad_Audio_NoSpeaker, Source={x:Static strings:Strings.Instance}}"

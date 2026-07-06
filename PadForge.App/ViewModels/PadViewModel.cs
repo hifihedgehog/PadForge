@@ -4003,6 +4003,71 @@ namespace PadForge.ViewModels
         public void OnMirrorEngageSelectedInputRefresh()
             => OnPropertyChanged(nameof(MirrorEngageSelectedInput));
 
+        // ── #185 engage row: record + per-setting resets, the same cluster
+        //    every input picker ships (gyro Aim Engage, trigger-route
+        //    activators). Record toggles a freeform recorder session handled
+        //    by MainWindow; each reset restores one setting's default. ──
+
+        private bool _mirrorEngageRecording;
+        /// <summary>Whether the engage-input recorder is listening for the
+        /// next physical input. Drives the record button's icon + tooltip
+        /// swap, mirroring <see cref="GyroAimEngageRecording"/>.</summary>
+        public bool MirrorEngageRecording
+        {
+            get => _mirrorEngageRecording;
+            set
+            {
+                if (SetProperty(ref _mirrorEngageRecording, value))
+                {
+                    OnPropertyChanged(nameof(MirrorEngageRecordButtonIcon));
+                    OnPropertyChanged(nameof(MirrorEngageRecordButtonText));
+                }
+            }
+        }
+        /// <summary>Segoe MDL2 glyph: Stop while recording, Record while
+        /// idle. Same literals as the gyro twin.</summary>
+        public string MirrorEngageRecordButtonIcon => _mirrorEngageRecording ? "" : "";
+        /// <summary>Localized tooltip for the record button.</summary>
+        public string MirrorEngageRecordButtonText => _mirrorEngageRecording
+            ? Strings.Instance.Common_Recording
+            : Strings.Instance.Common_Record;
+
+        /// <summary>Fires when the user clicks the Record button next to the
+        /// engage-input picker. MainWindow starts or cancels a freeform
+        /// recorder session, matching the Aim Engage pattern.</summary>
+        public event EventHandler MirrorEngageRecordRequested;
+        public void FireMirrorEngageRecord() => MirrorEngageRecordRequested?.Invoke(this, EventArgs.Empty);
+
+        private RelayCommand _mirrorEngageRecordCommand;
+        public RelayCommand MirrorEngageRecordCommand =>
+            _mirrorEngageRecordCommand ??= new RelayCommand(FireMirrorEngageRecord);
+
+        private RelayCommand _resetMirrorEngageModeCommand;
+        public RelayCommand ResetMirrorEngageModeCommand =>
+            _resetMirrorEngageModeCommand ??= new RelayCommand(() =>
+            {
+                if (PlayStationConfig != null) PlayStationConfig.AudioMirrorEngageMode = "Always";
+            });
+
+        private RelayCommand _resetMirrorEngageInputCommand;
+        /// <summary>The sanctioned clear path for the engage input (the
+        /// picker's null-writeback guard exists because of it).</summary>
+        public RelayCommand ResetMirrorEngageInputCommand =>
+            _resetMirrorEngageInputCommand ??= new RelayCommand(() =>
+            {
+                if (PlayStationConfig == null) return;
+                PlayStationConfig.AudioMirrorEngageButton = string.Empty;
+                PlayStationConfig.AudioMirrorEngageDeviceGuid = string.Empty;
+                OnPropertyChanged(nameof(MirrorEngageSelectedInput));
+            });
+
+        private RelayCommand _resetMirrorEngageReleaseMsCommand;
+        public RelayCommand ResetMirrorEngageReleaseMsCommand =>
+            _resetMirrorEngageReleaseMsCommand ??= new RelayCommand(() =>
+            {
+                if (PlayStationConfig != null) PlayStationConfig.AudioMirrorEngageReleaseMs = 500;
+            });
+
         private int _irSensorBarPos;
         /// <summary>Sensor-bar position for the IR pointer (issue #146): 0 =
         /// centered, 1 = above the screen, 2 = below. Per (device, slot) on

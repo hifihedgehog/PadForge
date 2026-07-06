@@ -983,17 +983,12 @@
                                 <!-- Row 2: Device name (compact). Cold: the
                                      physical device feeding this slot (#175). -->
                                 <Border Grid.Row="2" ClipToBounds="True" Margin="0,8,0,0">
-                                    <!-- Edge fade (#175 round 3): the marquee slides
-                                         under ~12px transparency ramps instead of a
-                                         hard guillotine at the card edge. -->
-                                    <Border.OpacityMask>
-                                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
-                                            <GradientStop Color="#00000000" Offset="0"/>
-                                            <GradientStop Color="#FF000000" Offset="0.05"/>
-                                            <GradientStop Color="#FF000000" Offset="0.95"/>
-                                            <GradientStop Color="#00000000" Offset="1"/>
-                                        </LinearGradientBrush>
-                                    </Border.OpacityMask>
+                                    <!-- Edge fade (#175 round 3, made conditional
+                                         2026-07-06): MarqueeBehavior now applies the
+                                         transparency ramps to this clip ancestor ONLY
+                                         while the content actually overflows and
+                                         scrolls. The static mask here dimmed the edges
+                                         of fully-legible text ("No device mapped"). -->
                                     <StackPanel Orientation="Horizontal">
                                         <!-- Empty state only: roster below owns the mapped case.
                                              Tertiary, not cold (#175 item 74): cold is reserved
@@ -1230,7 +1225,9 @@
                                                     <ItemsControl ItemsSource="{Binding SummaryLines}" MaxWidth="400">
                                                         <ItemsControl.ItemTemplate>
                                                             <DataTemplate>
-                                                                <TextBlock TextWrapping="Wrap" Margin="0,1,0,1"><Run Text="{Binding DeviceGlyph, Mode=OneWay}" FontFamily="Segoe MDL2 Assets" FontSize="10" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/><Run Text="{Binding Tokens, Mode=OneWay}" FontFamily="{StaticResource TelemetryFontFamily}" FontSize="11" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/><Run Text="{Binding DeviceSuffix, Mode=OneWay}" FontSize="10" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/></TextBlock>
+                                                                <!-- Icon, name, settings (user direction 2026-07-06):
+                                                                     the same order as the card's main device label. -->
+                                                                <TextBlock TextWrapping="Wrap" Margin="0,1,0,1"><Run Text="{Binding DeviceGlyph, Mode=OneWay}" FontFamily="Segoe MDL2 Assets" FontSize="10" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/><Run Text="{Binding DeviceName, Mode=OneWay}" FontSize="10" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/><Run Text="{Binding Tokens, Mode=OneWay}" FontFamily="{StaticResource TelemetryFontFamily}" FontSize="11" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/></TextBlock>
                                                             </DataTemplate>
                                                         </ItemsControl.ItemTemplate>
                                                     </ItemsControl>

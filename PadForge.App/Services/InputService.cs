@@ -2086,30 +2086,34 @@ namespace PadForge.Services
             // still at defaults read STOCK so every assigned device is
             // accounted for. Attribution comes from the card roster,
             // which keeps offline devices' stored names.
-            (string Glyph, string Suffix) Attr(Guid g)
+            (string Glyph, string Name) Attr(Guid g)
             {
                 var roster = slot.MappedDevices;
                 if (roster != null)
                 {
                     foreach (var mi in roster)
                         if (mi != null && mi.InstanceGuid == g)
-                            return (mi.TypeGlyph, "  ·  " + mi.Name);
+                            return (mi.TypeGlyph, mi.Name);
                 }
                 string s = g.ToString();
-                return ("", "  ·  " + (s.Length > 8 ? s.Substring(0, 8) + "…" : s));
+                return ("", s.Length > 8 ? s.Substring(0, 8) + "…" : s);
             }
 
             void AddLine(List<StageSummaryLine> lines, ref bool hot, Guid g, List<string> parts)
             {
                 hot |= parts.Count > 0;
-                var (gl, sfx) = Attr(g);
+                var (gl, name) = Attr(g);
                 lines.Add(new StageSummaryLine
                 {
                     // Trailing space rides the glyph so glyph-less lines
                     // (slot-level VOL) don't start with a stray indent.
                     DeviceGlyph = gl.Length > 0 ? gl + " " : string.Empty,
+                    // Icon, NAME, then settings (user direction 2026-07-06),
+                    // the same order as the card's main device label. The
+                    // name carries the separator so slot-level lines with
+                    // no attribution stay clean.
+                    DeviceName = name.Length > 0 ? name + "  ·  " : string.Empty,
                     Tokens = parts.Count > 0 ? string.Join(" · ", parts) : "STOCK",
-                    DeviceSuffix = sfx,
                 });
             }
 
@@ -2273,7 +2277,7 @@ namespace PadForge.Services
                     var sb = new System.Text.StringBuilder();
                     foreach (var ln in desired[i].Lines)
                         sb.Append(ln.DeviceGlyph).Append('|').Append(ln.Tokens)
-                          .Append('|').Append(ln.DeviceSuffix).Append('\n');
+                          .Append('|').Append(ln.DeviceName).Append('\n');
                     composite = sb.ToString();
                 }
                 if (!string.Equals(info.Summary, composite, StringComparison.Ordinal))

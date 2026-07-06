@@ -69,6 +69,18 @@ namespace PadForge.Common
                 Application.Current.Resources["AccentFillColorDefault"] = Accent;
                 Application.Current.Resources["AccentFillColorSecondary"] = EmberHotDark;
                 Application.Current.Resources["AccentFillColorTertiary"] = EmberDeepDark;
+
+                // Accent fill Brush keys: Apply materializes these three via
+                // ToBrush() from the derived shade (on dark that is ember at
+                // +17 brightness / -45 saturation = #FFBB9F), so the Color
+                // pins above never reach them. Every Brush-key consumer
+                // sampled that peach: the 3D stick wedges and mapping arrows,
+                // the schematic rig accents, the FFB force vector. Apply
+                // rewrites the Brush keys on every call too, so light needs
+                // no removal here either.
+                SetBrush("AccentFillColorDefaultBrush", Accent);
+                SetBrush("AccentFillColorSecondaryBrush", EmberHotDark);
+                SetBrush("AccentFillColorTertiaryBrush", EmberDeepDark);
             }
             else
             {

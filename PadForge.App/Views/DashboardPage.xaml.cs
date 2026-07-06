@@ -9,6 +9,7 @@ using System.Windows.Media.Imaging;
 using NavigationView = Wpf.Ui.Controls.NavigationView;
 using NavigationViewItem = Wpf.Ui.Controls.NavigationViewItem;
 using PadForge.Engine;
+using PadForge.Resources.Strings;
 
 namespace PadForge.Views
 {
@@ -18,6 +19,16 @@ namespace PadForge.Views
         {
             InitializeComponent();
             Loaded += (_, _) => WireDragHandlers();
+            // The Add Controller tile shares the slot WrapPanel through a
+            // CompositeCollection (#175 phase 2 item 3), and its
+            // CollectionContainer sits outside the visual tree, so a
+            // DataContext binding can't reach SlotSummaries. Hand it the
+            // collection directly whenever the VM lands.
+            DataContextChanged += (_, e) =>
+            {
+                if (e.NewValue is ViewModels.DashboardViewModel vm)
+                    SlotsCollectionContainer.Collection = vm.SlotSummaries;
+            };
         }
 
         /// <summary>Exposes the "Add Controller" card Border for popup placement.</summary>
@@ -60,7 +71,22 @@ namespace PadForge.Views
         private void DeleteSlot_Click(object sender, RoutedEventArgs e)
         {
             if (sender is Button btn && btn.Tag is int slotIndex)
-                DeleteSlotRequested?.Invoke(this, slotIndex);
+            {
+                // Destructive-verb guard (#175 phase 2 item 1a): the X asks
+                // before the slot and its device assignments go away. The
+                // mono detail line names the slot; the body carries the
+                // mapped-device count the SlotSummary already holds.
+                var summary = btn.DataContext as ViewModels.SlotSummary;
+                bool confirmed = ConfirmDialog.Show(
+                    Window.GetWindow(this),
+                    Strings.Instance.Main_DeleteVC,
+                    string.Format(Strings.Instance.Dashboard_DeleteSlotConfirm_Format,
+                        summary?.MappedDeviceCount ?? 0),
+                    Strings.Instance.Common_Delete,
+                    summary?.SlotLabel);
+                if (confirmed)
+                    DeleteSlotRequested?.Invoke(this, slotIndex);
+            }
         }
 
         private void PowerToggle_Click(object sender, RoutedEventArgs e)

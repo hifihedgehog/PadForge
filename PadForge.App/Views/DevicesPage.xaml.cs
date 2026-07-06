@@ -156,10 +156,34 @@ namespace PadForge.Views
                 var vm = DataContext as ViewModels.DevicesViewModel;
                 if (vm != null)
                 {
+                    // Destructive-verb guard (#175 phase 2 item 1b): one click
+                    // deleted the device record plus its settings. Same shared
+                    // confirm as the Dashboard slot X; the body names the
+                    // device the VM row holds and states the settings are
+                    // forgotten.
+                    bool confirmed = ConfirmDialog.Show(
+                        Window.GetWindow(this),
+                        Strings.Instance.Devices_RemoveConfirmTitle,
+                        string.Format(Strings.Instance.Devices_RemoveConfirm_Format, device.DeviceName),
+                        Strings.Instance.Common_Remove);
+                    if (!confirmed) return;
+
                     vm.SelectedDevice = device;
                     if (vm.RemoveDeviceCommand.CanExecute(null))
                         vm.RemoveDeviceCommand.Execute(null);
                 }
+            }
+        }
+
+        /// <summary>Facet chip click (#175 phase 2 item 13): filters the
+        /// device list by type family. Chips are Border tokens (PipelineChip
+        /// precedent); Tag carries the locale-neutral facet token.</summary>
+        private void FacetChip_Click(object sender, MouseButtonEventArgs e)
+        {
+            if (sender is FrameworkElement fe && fe.Tag is string facet &&
+                DataContext is ViewModels.DevicesViewModel vm)
+            {
+                vm.SetFacet(facet);
             }
         }
 

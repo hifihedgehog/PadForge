@@ -7,7 +7,7 @@
         ExtendsContentIntoTitleBar="True"
         WindowBackdropType="Mica"
         Title="{Binding Pad_Shift_DialogTitle, Source={x:Static strings:Strings.Instance}}"
-        Height="700" Width="600"
+        Height="760" Width="600"
         WindowStartupLocation="CenterOwner"
         ResizeMode="NoResize">
 
@@ -47,511 +47,549 @@
         </ResourceDictionary>
     </ui:FluentWindow.Resources>
 
-    <ScrollViewer VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Disabled">
-        <Grid Margin="16">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>  <!-- 0  layer-name label -->
-                <RowDefinition Height="Auto"/>  <!-- 1  layer-name box -->
-                <RowDefinition Height="Auto"/>  <!-- 2  kind label -->
-                <RowDefinition Height="Auto"/>  <!-- 3  kind combo -->
-                <RowDefinition Height="Auto"/>  <!-- 4  input label -->
-                <RowDefinition Height="Auto"/>  <!-- 5  input combo -->
-                <RowDefinition Height="Auto"/>  <!-- 6  chord label -->
-                <RowDefinition Height="Auto"/>  <!-- 7  chord combo -->
-                <RowDefinition Height="Auto"/>  <!-- 8  axis threshold label -->
-                <RowDefinition Height="Auto"/>  <!-- 9  axis threshold row -->
-                <RowDefinition Height="Auto"/>  <!-- 10 mode label -->
-                <RowDefinition Height="Auto"/>  <!-- 11 mode combo -->
-                <RowDefinition Height="Auto"/>  <!-- 12 inherit-unmapped checkbox -->
-                <RowDefinition Height="Auto"/>  <!-- 13 jump label -->
-                <RowDefinition Height="Auto"/>  <!-- 14 jump combo -->
-                <RowDefinition Height="Auto"/>  <!-- 15 cycle label -->
-                <RowDefinition Height="Auto"/>  <!-- 16 cycle list -->
-                <RowDefinition Height="Auto"/>  <!-- 17 delay grid -->
-                <RowDefinition Height="Auto"/>  <!-- 18 color grid -->
-                <RowDefinition Height="Auto"/>  <!-- 19 validation hint -->
-                <RowDefinition Height="Auto"/>  <!-- 20 buttons -->
-            </Grid.RowDefinitions>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
 
-            <!-- Layer name + icon picker. Icon is a square button on the
-                 left showing the currently-chosen emoji (or ⇧ if unset);
-                 click opens the emoji picker popup. -->
-            <TextBlock Grid.Row="0"
-                       Text="{Binding Pad_Shift_LayerName, Source={x:Static strings:Strings.Instance}}"
-                       Margin="0,0,0,4"/>
-            <Grid Grid.Row="1" Margin="0,0,0,12">
+        <!-- Dialog head (#175 item 11): ExtendsContentIntoTitleBar strips the
+             system title bar, so the localized Title never rendered anywhere.
+             Ember tick + display-face title makes it visible. The X stands in
+             for the caption close button WindowChrome no longer provides. -->
+        <Border Padding="14"
+                BorderBrush="{DynamicResource SteelLineSoftBrush}"
+                BorderThickness="0,0,0,1">
+            <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
-                <Button Grid.Column="0" x:Name="IconPickerButton"
-                        Width="36" Height="36"
-                        Padding="0"
-                        Margin="0,0,6,0"
-                        Click="IconPickerButton_Click"
-                        ToolTip="{Binding Pad_Shift_Icon_Tooltip, Source={x:Static strings:Strings.Instance}}">
-                    <TextBlock x:Name="IconPickerGlyph"
-                               Text="&#x21E7;"
-                               FontFamily="Segoe UI Emoji, Segoe UI Symbol, Segoe UI"
-                               FontSize="18"
-                               HorizontalAlignment="Center"
-                               VerticalAlignment="Center"/>
-                </Button>
-                <TextBox Grid.Column="1" x:Name="LayerNameBox" VerticalContentAlignment="Center"/>
-                <Popup x:Name="IconPickerPopup"
-                       PlacementTarget="{Binding ElementName=IconPickerButton}"
-                       Placement="Bottom"
-                       AllowsTransparency="True"
-                       PopupAnimation="Fade"
-                       StaysOpen="False">
-                    <Border Background="{DynamicResource SolidBackgroundFillColorBaseBrush}"
-                            BorderBrush="{DynamicResource ControlElevationBorderBrush}"
-                            BorderThickness="1"
-                            CornerRadius="8"
-                            Padding="6"
-                            Width="360">
-                        <Border.Effect>
-                            <DropShadowEffect BlurRadius="12" ShadowDepth="2"
-                                              Direction="270" Opacity="0.30" Color="Black"/>
-                        </Border.Effect>
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                            </Grid.RowDefinitions>
-                            <!-- Category bar -->
-                            <ItemsControl Grid.Row="0" x:Name="EmojiCategoryBar" Margin="0,0,0,4">
-                                <ItemsControl.ItemsPanel>
-                                    <ItemsPanelTemplate>
-                                        <StackPanel Orientation="Horizontal"/>
-                                    </ItemsPanelTemplate>
-                                </ItemsControl.ItemsPanel>
-                                <ItemsControl.ItemTemplate>
-                                    <DataTemplate>
-                                        <Button Content="{Binding Glyph}"
-                                                Tag="{Binding}"
-                                                ToolTip="{Binding Name}"
-                                                Width="32" Height="32"
-                                                Padding="0"
-                                                Margin="0,0,2,0"
-                                                FontFamily="Segoe UI Emoji, Segoe UI Symbol, Segoe UI"
-                                                FontSize="16"
-                                                Click="EmojiCategory_Click"/>
-                                    </DataTemplate>
-                                </ItemsControl.ItemTemplate>
-                            </ItemsControl>
-                            <!-- Emoji grid (scrolls when a category overflows) -->
-                            <ScrollViewer Grid.Row="1"
-                                          Height="220"
-                                          VerticalScrollBarVisibility="Visible"
-                                          HorizontalScrollBarVisibility="Disabled">
-                                <ItemsControl x:Name="EmojiGrid">
+                <Rectangle Width="3" Height="14" RadiusX="1.5" RadiusY="1.5"
+                           Fill="{DynamicResource EmberBrush}"
+                           VerticalAlignment="Center" Margin="0,0,8,0"/>
+                <TextBlock Grid.Column="1"
+                           Text="{Binding Title, RelativeSource={RelativeSource AncestorType=Window}}"
+                           FontFamily="{StaticResource DisplayFontFamily}"
+                           FontWeight="SemiBold" FontSize="15"
+                           Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+                           VerticalAlignment="Center" Margin="0,0,8,0"
+                           TextTrimming="CharacterEllipsis"/>
+                <ui:Button Grid.Column="2" Style="{StaticResource EmberIconButton}"
+                           VerticalAlignment="Center" Click="CancelButton_Click"
+                           ToolTip="{Binding Common_Close, Source={x:Static strings:Strings.Instance}}">
+                    <TextBlock Text="&#xE8BB;" FontFamily="Segoe MDL2 Assets" FontSize="10"/>
+                </ui:Button>
+            </Grid>
+        </Border>
+
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Disabled">
+            <Grid Margin="16">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>  <!-- 0  layer-name label -->
+                    <RowDefinition Height="Auto"/>  <!-- 1  layer-name box -->
+                    <RowDefinition Height="Auto"/>  <!-- 2  kind label -->
+                    <RowDefinition Height="Auto"/>  <!-- 3  kind combo -->
+                    <RowDefinition Height="Auto"/>  <!-- 4  input label -->
+                    <RowDefinition Height="Auto"/>  <!-- 5  input combo -->
+                    <RowDefinition Height="Auto"/>  <!-- 6  chord label -->
+                    <RowDefinition Height="Auto"/>  <!-- 7  chord combo -->
+                    <RowDefinition Height="Auto"/>  <!-- 8  axis threshold label -->
+                    <RowDefinition Height="Auto"/>  <!-- 9  axis threshold row -->
+                    <RowDefinition Height="Auto"/>  <!-- 10 mode label -->
+                    <RowDefinition Height="Auto"/>  <!-- 11 mode combo -->
+                    <RowDefinition Height="Auto"/>  <!-- 12 inherit-unmapped checkbox -->
+                    <RowDefinition Height="Auto"/>  <!-- 13 jump label -->
+                    <RowDefinition Height="Auto"/>  <!-- 14 jump combo -->
+                    <RowDefinition Height="Auto"/>  <!-- 15 cycle label -->
+                    <RowDefinition Height="Auto"/>  <!-- 16 cycle list -->
+                    <RowDefinition Height="Auto"/>  <!-- 17 delay grid -->
+                    <RowDefinition Height="Auto"/>  <!-- 18 color grid -->
+                    <RowDefinition Height="Auto"/>  <!-- 19 validation hint -->
+                    <RowDefinition Height="Auto"/>  <!-- 20 buttons -->
+                </Grid.RowDefinitions>
+
+                <!-- Layer name + icon picker. Icon is a square button on the
+                     left showing the currently-chosen emoji (or ⇧ if unset);
+                     click opens the emoji picker popup. -->
+                <TextBlock Grid.Row="0"
+                           Text="{Binding Pad_Shift_LayerName, Source={x:Static strings:Strings.Instance}}"
+                           Margin="0,0,0,4"/>
+                <Grid Grid.Row="1" Margin="0,0,0,12">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Button Grid.Column="0" x:Name="IconPickerButton"
+                            Width="36" Height="36"
+                            Padding="0"
+                            Margin="0,0,6,0"
+                            Click="IconPickerButton_Click"
+                            ToolTip="{Binding Pad_Shift_Icon_Tooltip, Source={x:Static strings:Strings.Instance}}">
+                        <TextBlock x:Name="IconPickerGlyph"
+                                   Text="&#x21E7;"
+                                   FontFamily="Segoe UI Emoji, Segoe UI Symbol, Segoe UI"
+                                   FontSize="18"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"/>
+                    </Button>
+                    <TextBox Grid.Column="1" x:Name="LayerNameBox" VerticalContentAlignment="Center"/>
+                    <Popup x:Name="IconPickerPopup"
+                           PlacementTarget="{Binding ElementName=IconPickerButton}"
+                           Placement="Bottom"
+                           AllowsTransparency="True"
+                           PopupAnimation="Fade"
+                           StaysOpen="False">
+                        <Border Background="{DynamicResource SolidBackgroundFillColorBaseBrush}"
+                                BorderBrush="{DynamicResource ControlElevationBorderBrush}"
+                                BorderThickness="1"
+                                CornerRadius="8"
+                                Padding="6"
+                                Width="360">
+                            <Border.Effect>
+                                <DropShadowEffect BlurRadius="12" ShadowDepth="2"
+                                                  Direction="270" Opacity="0.30" Color="Black"/>
+                            </Border.Effect>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                <!-- Category bar -->
+                                <ItemsControl Grid.Row="0" x:Name="EmojiCategoryBar" Margin="0,0,0,4">
                                     <ItemsControl.ItemsPanel>
                                         <ItemsPanelTemplate>
-                                            <WrapPanel/>
+                                            <StackPanel Orientation="Horizontal"/>
                                         </ItemsPanelTemplate>
                                     </ItemsControl.ItemsPanel>
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate>
-                                            <Button Content="{Binding}"
+                                            <Button Content="{Binding Glyph}"
                                                     Tag="{Binding}"
+                                                    ToolTip="{Binding Name}"
                                                     Width="32" Height="32"
                                                     Padding="0"
-                                                    Margin="1"
+                                                    Margin="0,0,2,0"
                                                     FontFamily="Segoe UI Emoji, Segoe UI Symbol, Segoe UI"
-                                                    FontSize="18"
-                                                    Click="Emoji_Click"/>
+                                                    FontSize="16"
+                                                    Click="EmojiCategory_Click"/>
                                         </DataTemplate>
                                     </ItemsControl.ItemTemplate>
                                 </ItemsControl>
-                            </ScrollViewer>
-                            <!-- Reset row -->
-                            <Button Grid.Row="2" x:Name="EmojiResetButton"
-                                    Content="{Binding Pad_Shift_Icon_Reset, Source={x:Static strings:Strings.Instance}}"
-                                    Margin="0,6,0,0"
-                                    HorizontalAlignment="Stretch"
-                                    Click="EmojiReset_Click"/>
-                        </Grid>
-                    </Border>
-                </Popup>
-            </Grid>
-
-            <!-- Activator kind. Items show a bold name + small description
-                 in the dropdown, mirroring the Mapping table's combine-mode
-                 picker so the user gets a one-line explanation of each
-                 option without hunting through tooltips. -->
-            <TextBlock Grid.Row="2" x:Name="KindLabel"
-                       Text="{Binding Pad_Shift_Kind, Source={x:Static strings:Strings.Instance}}"
-                       Margin="0,0,0,4"/>
-            <ComboBox Grid.Row="3" x:Name="KindCombo" Margin="0,0,0,12"
-                      ScrollViewer.VerticalScrollBarVisibility="Visible"
-                      SelectedValuePath="Value"
-                      SelectionChanged="KindCombo_SelectionChanged">
-                <ComboBox.ItemTemplate>
-                    <DataTemplate>
-                        <StackPanel Orientation="Vertical" Margin="0,2,0,2">
-                            <TextBlock Text="{Binding Name}" FontWeight="SemiBold" FontSize="12"/>
-                            <TextBlock Text="{Binding Description}"
-                                       FontSize="10"
-                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                       TextWrapping="Wrap"/>
-                        </StackPanel>
-                    </DataTemplate>
-                </ComboBox.ItemTemplate>
-            </ComboBox>
-
-            <!-- Activator input. Sub-label below the dropdown mirrors the
-                 Mappings tab Source column: shows the picked input's owning
-                 device, italic "Unassigned" when nothing is selected. -->
-            <TextBlock Grid.Row="4" x:Name="InputLabel"
-                       Text="{Binding Pad_Shift_ActivatorInput, Source={x:Static strings:Strings.Instance}}"
-                       Margin="0,0,0,4"/>
-            <StackPanel Grid.Row="5" x:Name="InputRow" Margin="0,0,0,12">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
-                    <ComboBox Grid.Column="0" x:Name="InputCombo"
-                              DisplayMemberPath="DisplayName"
-                              ScrollViewer.VerticalScrollBarVisibility="Visible">
-                        <ComboBox.GroupStyle>
-                            <GroupStyle>
-                                <GroupStyle.HeaderTemplate>
-                                    <DataTemplate>
-                                        <Border Background="{DynamicResource SubtleFillColorSecondaryBrush}"
-                                                Padding="6,3,6,3">
-                                            <TextBlock Text="{Binding Name}" FontSize="11" FontWeight="SemiBold"
-                                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                                       TextTrimming="CharacterEllipsis"/>
-                                        </Border>
-                                    </DataTemplate>
-                                </GroupStyle.HeaderTemplate>
-                            </GroupStyle>
-                        </ComboBox.GroupStyle>
-                    </ComboBox>
-                    <ui:Button Grid.Column="1" x:Name="InputRecordButton"
-                               Style="{StaticResource EmberIconButtonHot}"
-                               VerticalAlignment="Center"
-                               Click="InputRecord_Click">
-                        <TextBlock x:Name="InputRecordIcon" Text="&#xE7C8;" FontFamily="Segoe MDL2 Assets"
-                                   Foreground="{DynamicResource EmberBrush}"/>
-                        <ui:Button.ToolTip>
-                            <TextBlock Text="{Binding Common_Record, Source={x:Static strings:Strings.Instance}}"/>
-                        </ui:Button.ToolTip>
-                    </ui:Button>
-                    <ui:Button Grid.Column="2" x:Name="InputClearButton"
-                               Style="{StaticResource EmberIconButtonHot}"
-                               VerticalAlignment="Center"
-                               Click="InputClear_Click">
-                        <TextBlock Text="&#xE75C;" FontFamily="Segoe MDL2 Assets"
-                                   Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
-                        <ui:Button.ToolTip>
-                            <TextBlock Text="{Binding Common_Clear, Source={x:Static strings:Strings.Instance}}"/>
-                        </ui:Button.ToolTip>
-                    </ui:Button>
+                                <!-- Emoji grid (scrolls when a category overflows) -->
+                                <ScrollViewer Grid.Row="1"
+                                              Height="220"
+                                              VerticalScrollBarVisibility="Visible"
+                                              HorizontalScrollBarVisibility="Disabled">
+                                    <ItemsControl x:Name="EmojiGrid">
+                                        <ItemsControl.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <WrapPanel/>
+                                            </ItemsPanelTemplate>
+                                        </ItemsControl.ItemsPanel>
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <Button Content="{Binding}"
+                                                        Tag="{Binding}"
+                                                        Width="32" Height="32"
+                                                        Padding="0"
+                                                        Margin="1"
+                                                        FontFamily="Segoe UI Emoji, Segoe UI Symbol, Segoe UI"
+                                                        FontSize="18"
+                                                        Click="Emoji_Click"/>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </ScrollViewer>
+                                <!-- Reset row -->
+                                <Button Grid.Row="2" x:Name="EmojiResetButton"
+                                        Content="{Binding Pad_Shift_Icon_Reset, Source={x:Static strings:Strings.Instance}}"
+                                        Margin="0,6,0,0"
+                                        HorizontalAlignment="Stretch"
+                                        Click="EmojiReset_Click"/>
+                            </Grid>
+                        </Border>
+                    </Popup>
                 </Grid>
-                <TextBlock FontSize="10"
-                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                           Margin="4,1,0,0"
-                           TextTrimming="CharacterEllipsis">
-                    <TextBlock.Style>
-                        <Style TargetType="TextBlock">
-                            <Setter Property="Text" Value="{Binding ElementName=InputCombo, Path=SelectedItem.DeviceLabel}"/>
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding ElementName=InputCombo, Path=SelectedItem}" Value="{x:Null}">
-                                    <Setter Property="Text" Value="{Binding Common_Unassigned, Source={x:Static strings:Strings.Instance}}"/>
-                                    <Setter Property="FontStyle" Value="Italic"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </TextBlock.Style>
-                </TextBlock>
-            </StackPanel>
 
-            <!-- Second chord input (Kind=Chord). Same sub-label treatment
-                 as the primary input above. -->
-            <TextBlock Grid.Row="6" x:Name="ChordLabel"
-                       Text="{Binding Pad_Shift_ChordSecondInput, Source={x:Static strings:Strings.Instance}}"
-                       Margin="0,0,0,4"/>
-            <StackPanel Grid.Row="7" x:Name="ChordSecondRow" Margin="0,0,0,12">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
-                    <ComboBox Grid.Column="0" x:Name="ChordSecondCombo"
-                              DisplayMemberPath="DisplayName"
-                              ScrollViewer.VerticalScrollBarVisibility="Visible">
-                        <ComboBox.GroupStyle>
-                            <GroupStyle>
-                                <GroupStyle.HeaderTemplate>
-                                    <DataTemplate>
-                                        <Border Background="{DynamicResource SubtleFillColorSecondaryBrush}"
-                                                Padding="6,3,6,3">
-                                            <TextBlock Text="{Binding Name}" FontSize="11" FontWeight="SemiBold"
-                                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                                       TextTrimming="CharacterEllipsis"/>
-                                        </Border>
-                                    </DataTemplate>
-                                </GroupStyle.HeaderTemplate>
-                            </GroupStyle>
-                        </ComboBox.GroupStyle>
-                    </ComboBox>
-                    <ui:Button Grid.Column="1" x:Name="ChordSecondRecordButton"
-                               Style="{StaticResource EmberIconButtonHot}"
-                               VerticalAlignment="Center"
-                               Click="ChordSecondRecord_Click">
-                        <TextBlock x:Name="ChordSecondRecordIcon" Text="&#xE7C8;" FontFamily="Segoe MDL2 Assets"
-                                   Foreground="{DynamicResource EmberBrush}"/>
-                        <ui:Button.ToolTip>
-                            <TextBlock Text="{Binding Common_Record, Source={x:Static strings:Strings.Instance}}"/>
-                        </ui:Button.ToolTip>
-                    </ui:Button>
-                    <ui:Button Grid.Column="2" x:Name="ChordSecondClearButton"
-                               Style="{StaticResource EmberIconButtonHot}"
-                               VerticalAlignment="Center"
-                               Click="ChordSecondClear_Click">
-                        <TextBlock Text="&#xE75C;" FontFamily="Segoe MDL2 Assets"
-                                   Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
-                        <ui:Button.ToolTip>
-                            <TextBlock Text="{Binding Common_Clear, Source={x:Static strings:Strings.Instance}}"/>
-                        </ui:Button.ToolTip>
-                    </ui:Button>
-                </Grid>
-                <TextBlock FontSize="10"
-                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                           Margin="4,1,0,0"
-                           TextTrimming="CharacterEllipsis">
-                    <TextBlock.Style>
-                        <Style TargetType="TextBlock">
-                            <Setter Property="Text" Value="{Binding ElementName=ChordSecondCombo, Path=SelectedItem.DeviceLabel}"/>
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding ElementName=ChordSecondCombo, Path=SelectedItem}" Value="{x:Null}">
-                                    <Setter Property="Text" Value="{Binding Common_Unassigned, Source={x:Static strings:Strings.Instance}}"/>
-                                    <Setter Property="FontStyle" Value="Italic"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </TextBlock.Style>
-                </TextBlock>
-            </StackPanel>
-
-            <!-- Axis threshold (Kind=Axis) -->
-            <TextBlock Grid.Row="8" x:Name="AxisThresholdLabel"
-                       Text="{Binding Pad_Shift_AxisThreshold, Source={x:Static strings:Strings.Instance}}"
-                       Margin="0,0,0,4"/>
-            <StackPanel Grid.Row="9" x:Name="AxisThresholdRow" Orientation="Horizontal" Margin="0,0,0,12">
-                <Slider x:Name="AxisThresholdSlider" Width="320" Minimum="0.05" Maximum="1.0" Value="0.5"
-                        TickFrequency="0.05" IsSnapToTickEnabled="True"/>
-                <TextBox Text="{Binding ElementName=AxisThresholdSlider, Path=Value, StringFormat={}{0:F2}, UpdateSourceTrigger=LostFocus}"
-                         Width="56" Margin="8,0,0,0" VerticalAlignment="Center"
-                         HorizontalContentAlignment="Right"/>
-            </StackPanel>
-
-            <!-- Mode -->
-            <TextBlock Grid.Row="10" x:Name="ModeLabel"
-                       Text="{Binding Pad_Shift_Mode, Source={x:Static strings:Strings.Instance}}"
-                       Margin="0,0,0,4"/>
-            <ComboBox Grid.Row="11" x:Name="ModeCombo" Margin="0,0,0,12"
-                      ScrollViewer.VerticalScrollBarVisibility="Visible"
-                      SelectedValuePath="Value"
-                      SelectionChanged="ModeCombo_SelectionChanged">
-                <ComboBox.ItemTemplate>
-                    <DataTemplate>
-                        <StackPanel Orientation="Vertical" Margin="0,2,0,2">
-                            <TextBlock Text="{Binding Name}" FontWeight="SemiBold" FontSize="12"/>
-                            <TextBlock Text="{Binding Description}"
-                                       FontSize="10"
-                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                       TextWrapping="Wrap"/>
-                        </StackPanel>
-                    </DataTemplate>
-                </ComboBox.ItemTemplate>
-            </ComboBox>
-
-            <!-- Two activator-behavior checkboxes stacked together. Both
-                 are toggles on the activator itself (not on the rows). -->
-            <StackPanel Grid.Row="12" x:Name="BehaviorChecksRow" Orientation="Vertical" Margin="0,0,0,12">
-                <!-- Inherit unmapped targets from Base. Off by default —
-                     shift layer REPLACES Base entirely; targets the layer
-                     doesn't map output zero. Check to fall through to Base. -->
-                <CheckBox x:Name="InheritUnmappedBox"
-                          Content="{Binding Pad_Shift_InheritUnmapped, Source={x:Static strings:Strings.Instance}}"
-                          ToolTip="{Binding Pad_Shift_InheritUnmapped_Tooltip, Source={x:Static strings:Strings.Instance}}"
-                          Margin="0,0,0,4"/>
-                <!-- v2 PostponeMapping: when checked, the activator's own
-                     descriptor still drives any row that uses it as a
-                     source — so a single button can both change layer AND
-                     fire its own existing mapping. Off by default (the
-                     activator press is consumed by the layer change only). -->
-                <CheckBox x:Name="PostponeMappingBox"
-                          Content="{Binding Pad_Shift_PostponeMapping, Source={x:Static strings:Strings.Instance}}"
-                          ToolTip="{Binding Pad_Shift_PostponeMapping_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
-            </StackPanel>
-
-            <!-- Rows 13-14 (the old Custom jump-to-layer picker) were removed
-                 with the Latch redesign; Latch engages its own layer. -->
-
-            <!-- Cycle layers (Mode=Cycle). Checkbox list of existing
-                 layers; check the ones to include in the rotation. Order
-                 follows the source list. -->
-            <StackPanel Grid.Row="15" x:Name="CycleHeaderRow" Margin="0,0,0,4">
-                <TextBlock VerticalAlignment="Center"
-                           Text="{Binding Pad_Shift_CycleLayers, Source={x:Static strings:Strings.Instance}}"/>
-                <!-- Cycle wrap + Base inclusion (#119). Wrap loops the ends together,
-                     Include Base puts the unshifted state back in the rotation.
-                     Next/Previous are the two button pickers above (one control). -->
-                <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
-                    <CheckBox x:Name="CycleWrapBox" IsChecked="True"
-                              Content="{Binding Pad_Shift_CycleWrap, Source={x:Static strings:Strings.Instance}}"
-                              ToolTip="{Binding Pad_Shift_CycleWrap_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
-                    <CheckBox x:Name="CycleIncludeBaseBox" Margin="20,0,0,0"
-                              Content="{Binding Pad_Shift_CycleIncludeBase, Source={x:Static strings:Strings.Instance}}"
-                              ToolTip="{Binding Pad_Shift_CycleIncludeBase_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
-                </StackPanel>
-            </StackPanel>
-            <ListBox Grid.Row="16" x:Name="CycleLayersList" Margin="0,0,0,12"
-                     MinHeight="80" MaxHeight="160"
-                     ScrollViewer.VerticalScrollBarVisibility="Visible"
-                     SelectionMode="Multiple">
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <CheckBox Content="{Binding DisplayName}"
-                                  IsChecked="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=ListBoxItem}, Mode=TwoWay}"/>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
-
-            <!-- Delay slider + numeric -->
-            <Grid Grid.Row="17" x:Name="DelayRow" Margin="0,0,0,12">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
-                <TextBlock Grid.Row="0"
-                           Text="{Binding Pad_Shift_Delay, Source={x:Static strings:Strings.Instance}}"
-                           ToolTip="{Binding Pad_Shift_Delay_Tooltip, Source={x:Static strings:Strings.Instance}}"
+                <!-- Activator kind. Items show a bold name + small description
+                     in the dropdown, mirroring the Mapping table's combine-mode
+                     picker so the user gets a one-line explanation of each
+                     option without hunting through tooltips. -->
+                <TextBlock Grid.Row="2" x:Name="KindLabel"
+                           Text="{Binding Pad_Shift_Kind, Source={x:Static strings:Strings.Instance}}"
                            Margin="0,0,0,4"/>
-                <StackPanel Grid.Row="1" Orientation="Horizontal">
-                    <Slider x:Name="DelaySlider" Width="320" Minimum="0" Maximum="2000" Value="0"
-                            TickFrequency="50" IsSnapToTickEnabled="True"/>
-                    <TextBox Text="{Binding ElementName=DelaySlider, Path=Value, StringFormat={}{0:F0}, UpdateSourceTrigger=LostFocus}"
+                <ComboBox Grid.Row="3" x:Name="KindCombo" Margin="0,0,0,12"
+                          ScrollViewer.VerticalScrollBarVisibility="Visible"
+                          SelectedValuePath="Value"
+                          SelectionChanged="KindCombo_SelectionChanged">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Vertical" Margin="0,2,0,2">
+                                <TextBlock Text="{Binding Name}" FontWeight="SemiBold" FontSize="12"/>
+                                <TextBlock Text="{Binding Description}"
+                                           FontSize="10"
+                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                           TextWrapping="Wrap"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+
+                <!-- Activator input. Sub-label below the dropdown mirrors the
+                     Mappings tab Source column: shows the picked input's owning
+                     device, italic "Unassigned" when nothing is selected. -->
+                <TextBlock Grid.Row="4" x:Name="InputLabel"
+                           Text="{Binding Pad_Shift_ActivatorInput, Source={x:Static strings:Strings.Instance}}"
+                           Margin="0,0,0,4"/>
+                <StackPanel Grid.Row="5" x:Name="InputRow" Margin="0,0,0,12">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <ComboBox Grid.Column="0" x:Name="InputCombo"
+                                  DisplayMemberPath="DisplayName"
+                                  ScrollViewer.VerticalScrollBarVisibility="Visible">
+                            <ComboBox.GroupStyle>
+                                <GroupStyle>
+                                    <GroupStyle.HeaderTemplate>
+                                        <DataTemplate>
+                                            <Border Background="{DynamicResource SubtleFillColorSecondaryBrush}"
+                                                    Padding="6,3,6,3">
+                                                <TextBlock Text="{Binding Name}" FontSize="11" FontWeight="SemiBold"
+                                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                                           TextTrimming="CharacterEllipsis"/>
+                                            </Border>
+                                        </DataTemplate>
+                                    </GroupStyle.HeaderTemplate>
+                                </GroupStyle>
+                            </ComboBox.GroupStyle>
+                        </ComboBox>
+                        <ui:Button Grid.Column="1" x:Name="InputRecordButton"
+                                   Style="{StaticResource EmberIconButtonHot}"
+                                   VerticalAlignment="Center"
+                                   Click="InputRecord_Click">
+                            <TextBlock x:Name="InputRecordIcon" Text="&#xE7C8;" FontFamily="Segoe MDL2 Assets"
+                                       Foreground="{DynamicResource EmberBrush}"/>
+                            <ui:Button.ToolTip>
+                                <TextBlock Text="{Binding Common_Record, Source={x:Static strings:Strings.Instance}}"/>
+                            </ui:Button.ToolTip>
+                        </ui:Button>
+                        <ui:Button Grid.Column="2" x:Name="InputClearButton"
+                                   Style="{StaticResource EmberIconButtonHot}"
+                                   VerticalAlignment="Center"
+                                   Click="InputClear_Click">
+                            <TextBlock Text="&#xE75C;" FontFamily="Segoe MDL2 Assets"
+                                       Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
+                            <ui:Button.ToolTip>
+                                <TextBlock Text="{Binding Common_Clear, Source={x:Static strings:Strings.Instance}}"/>
+                            </ui:Button.ToolTip>
+                        </ui:Button>
+                    </Grid>
+                    <TextBlock FontSize="10"
+                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                               Margin="4,1,0,0"
+                               TextTrimming="CharacterEllipsis">
+                        <TextBlock.Style>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="Text" Value="{Binding ElementName=InputCombo, Path=SelectedItem.DeviceLabel}"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ElementName=InputCombo, Path=SelectedItem}" Value="{x:Null}">
+                                        <Setter Property="Text" Value="{Binding Common_Unassigned, Source={x:Static strings:Strings.Instance}}"/>
+                                        <Setter Property="FontStyle" Value="Italic"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
+                </StackPanel>
+
+                <!-- Second chord input (Kind=Chord). Same sub-label treatment
+                     as the primary input above. -->
+                <TextBlock Grid.Row="6" x:Name="ChordLabel"
+                           Text="{Binding Pad_Shift_ChordSecondInput, Source={x:Static strings:Strings.Instance}}"
+                           Margin="0,0,0,4"/>
+                <StackPanel Grid.Row="7" x:Name="ChordSecondRow" Margin="0,0,0,12">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <ComboBox Grid.Column="0" x:Name="ChordSecondCombo"
+                                  DisplayMemberPath="DisplayName"
+                                  ScrollViewer.VerticalScrollBarVisibility="Visible">
+                            <ComboBox.GroupStyle>
+                                <GroupStyle>
+                                    <GroupStyle.HeaderTemplate>
+                                        <DataTemplate>
+                                            <Border Background="{DynamicResource SubtleFillColorSecondaryBrush}"
+                                                    Padding="6,3,6,3">
+                                                <TextBlock Text="{Binding Name}" FontSize="11" FontWeight="SemiBold"
+                                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                                           TextTrimming="CharacterEllipsis"/>
+                                            </Border>
+                                        </DataTemplate>
+                                    </GroupStyle.HeaderTemplate>
+                                </GroupStyle>
+                            </ComboBox.GroupStyle>
+                        </ComboBox>
+                        <ui:Button Grid.Column="1" x:Name="ChordSecondRecordButton"
+                                   Style="{StaticResource EmberIconButtonHot}"
+                                   VerticalAlignment="Center"
+                                   Click="ChordSecondRecord_Click">
+                            <TextBlock x:Name="ChordSecondRecordIcon" Text="&#xE7C8;" FontFamily="Segoe MDL2 Assets"
+                                       Foreground="{DynamicResource EmberBrush}"/>
+                            <ui:Button.ToolTip>
+                                <TextBlock Text="{Binding Common_Record, Source={x:Static strings:Strings.Instance}}"/>
+                            </ui:Button.ToolTip>
+                        </ui:Button>
+                        <ui:Button Grid.Column="2" x:Name="ChordSecondClearButton"
+                                   Style="{StaticResource EmberIconButtonHot}"
+                                   VerticalAlignment="Center"
+                                   Click="ChordSecondClear_Click">
+                            <TextBlock Text="&#xE75C;" FontFamily="Segoe MDL2 Assets"
+                                       Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
+                            <ui:Button.ToolTip>
+                                <TextBlock Text="{Binding Common_Clear, Source={x:Static strings:Strings.Instance}}"/>
+                            </ui:Button.ToolTip>
+                        </ui:Button>
+                    </Grid>
+                    <TextBlock FontSize="10"
+                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                               Margin="4,1,0,0"
+                               TextTrimming="CharacterEllipsis">
+                        <TextBlock.Style>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="Text" Value="{Binding ElementName=ChordSecondCombo, Path=SelectedItem.DeviceLabel}"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ElementName=ChordSecondCombo, Path=SelectedItem}" Value="{x:Null}">
+                                        <Setter Property="Text" Value="{Binding Common_Unassigned, Source={x:Static strings:Strings.Instance}}"/>
+                                        <Setter Property="FontStyle" Value="Italic"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
+                </StackPanel>
+
+                <!-- Axis threshold (Kind=Axis) -->
+                <TextBlock Grid.Row="8" x:Name="AxisThresholdLabel"
+                           Text="{Binding Pad_Shift_AxisThreshold, Source={x:Static strings:Strings.Instance}}"
+                           Margin="0,0,0,4"/>
+                <StackPanel Grid.Row="9" x:Name="AxisThresholdRow" Orientation="Horizontal" Margin="0,0,0,12">
+                    <Slider x:Name="AxisThresholdSlider" Width="320" Minimum="0.05" Maximum="1.0" Value="0.5"
+                            TickFrequency="0.05" IsSnapToTickEnabled="True"/>
+                    <TextBox Text="{Binding ElementName=AxisThresholdSlider, Path=Value, StringFormat={}{0:F2}, UpdateSourceTrigger=LostFocus}"
                              Width="56" Margin="8,0,0,0" VerticalAlignment="Center"
                              HorizontalContentAlignment="Right"/>
-                    <TextBlock Text="ms" Margin="4,0,0,0" VerticalAlignment="Center"/>
                 </StackPanel>
-            </Grid>
 
-            <!-- Layer color: matches the Lighting tab picker — 200×200
-                 HSV plate, swatch + hex entry, RGB sliders with per-channel
-                 reset icons, plus a section-level reset that clears the
-                 color entirely (no tab tint, default flyout dot). -->
-            <Grid Grid.Row="18" Margin="0,0,0,12">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
-                <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,8">
-                    <TextBlock Text="{Binding Pad_Shift_Color, Source={x:Static strings:Strings.Instance}}"
-                               VerticalAlignment="Center"/>
-                    <ui:Button x:Name="ClearColorButton"
-                               Style="{StaticResource EmberIconButton}"
-                               VerticalAlignment="Center"
-                               Click="ClearColor_Click"
-                               ToolTip="{Binding Pad_ResetLayerColor, Source={x:Static strings:Strings.Instance}}">
-                        <TextBlock Text="&#xE72C;" FontFamily="Segoe MDL2 Assets" FontSize="12"/>
-                    </ui:Button>
+                <!-- Mode -->
+                <TextBlock Grid.Row="10" x:Name="ModeLabel"
+                           Text="{Binding Pad_Shift_Mode, Source={x:Static strings:Strings.Instance}}"
+                           Margin="0,0,0,4"/>
+                <ComboBox Grid.Row="11" x:Name="ModeCombo" Margin="0,0,0,12"
+                          ScrollViewer.VerticalScrollBarVisibility="Visible"
+                          SelectedValuePath="Value"
+                          SelectionChanged="ModeCombo_SelectionChanged">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Vertical" Margin="0,2,0,2">
+                                <TextBlock Text="{Binding Name}" FontWeight="SemiBold" FontSize="12"/>
+                                <TextBlock Text="{Binding Description}"
+                                           FontSize="10"
+                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                           TextWrapping="Wrap"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+
+                <!-- Two activator-behavior checkboxes stacked together. Both
+                     are toggles on the activator itself (not on the rows). -->
+                <StackPanel Grid.Row="12" x:Name="BehaviorChecksRow" Orientation="Vertical" Margin="0,0,0,12">
+                    <!-- Inherit unmapped targets from Base. Off by default —
+                         shift layer REPLACES Base entirely; targets the layer
+                         doesn't map output zero. Check to fall through to Base. -->
+                    <CheckBox x:Name="InheritUnmappedBox"
+                              Content="{Binding Pad_Shift_InheritUnmapped, Source={x:Static strings:Strings.Instance}}"
+                              ToolTip="{Binding Pad_Shift_InheritUnmapped_Tooltip, Source={x:Static strings:Strings.Instance}}"
+                              Margin="0,0,0,4"/>
+                    <!-- v2 PostponeMapping: when checked, the activator's own
+                         descriptor still drives any row that uses it as a
+                         source — so a single button can both change layer AND
+                         fire its own existing mapping. Off by default (the
+                         activator press is consumed by the layer change only). -->
+                    <CheckBox x:Name="PostponeMappingBox"
+                              Content="{Binding Pad_Shift_PostponeMapping, Source={x:Static strings:Strings.Instance}}"
+                              ToolTip="{Binding Pad_Shift_PostponeMapping_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                 </StackPanel>
-                <views:ColorPickerControl Grid.Row="1" x:Name="ColorPicker"
-                                          HorizontalAlignment="Left"
-                                          Margin="0,0,0,8"/>
-                <Grid Grid.Row="2" Margin="0,0,0,8">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="64"/>
-                        <ColumnDefinition Width="60"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    <Border Grid.Column="0" x:Name="ColorPreviewSwatch"
-                            Width="48" Height="36" CornerRadius="4"
-                            HorizontalAlignment="Left"
-                            BorderBrush="{DynamicResource TextFillColorDisabledBrush}"
-                            BorderThickness="1">
-                        <Border.Background>
-                            <MultiBinding Converter="{StaticResource RgbToBrushConverter}">
-                                <Binding ElementName="ColorPicker" Path="Red"/>
-                                <Binding ElementName="ColorPicker" Path="Green"/>
-                                <Binding ElementName="ColorPicker" Path="Blue"/>
-                            </MultiBinding>
-                        </Border.Background>
-                    </Border>
-                    <TextBlock Grid.Column="1"
-                               Text="{Binding Pad_Lighting_Hex, Source={x:Static strings:Strings.Instance}}"
-                               VerticalAlignment="Center" Margin="8,0,0,0"/>
-                    <TextBox x:Name="ColorHexBox" Grid.Column="2" Width="100"
-                             HorizontalAlignment="Left" VerticalAlignment="Center"
-                             FontFamily="{StaticResource TelemetryFontFamily}" Padding="6,4"
-                             KeyDown="ColorHexBox_KeyDown"
-                             LostFocus="ColorHexBox_LostFocus"
-                             ToolTip="{Binding Pad_Lighting_HexTooltip, Source={x:Static strings:Strings.Instance}}"/>
+
+                <!-- Rows 13-14 (the old Custom jump-to-layer picker) were removed
+                     with the Latch redesign; Latch engages its own layer. -->
+
+                <!-- Cycle layers (Mode=Cycle). Checkbox list of existing
+                     layers; check the ones to include in the rotation. Order
+                     follows the source list. -->
+                <StackPanel Grid.Row="15" x:Name="CycleHeaderRow" Margin="0,0,0,4">
+                    <TextBlock VerticalAlignment="Center"
+                               Text="{Binding Pad_Shift_CycleLayers, Source={x:Static strings:Strings.Instance}}"/>
+                    <!-- Cycle wrap + Base inclusion (#119). Wrap loops the ends together,
+                         Include Base puts the unshifted state back in the rotation.
+                         Next/Previous are the two button pickers above (one control). -->
+                    <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+                        <CheckBox x:Name="CycleWrapBox" IsChecked="True"
+                                  Content="{Binding Pad_Shift_CycleWrap, Source={x:Static strings:Strings.Instance}}"
+                                  ToolTip="{Binding Pad_Shift_CycleWrap_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                        <CheckBox x:Name="CycleIncludeBaseBox" Margin="20,0,0,0"
+                                  Content="{Binding Pad_Shift_CycleIncludeBase, Source={x:Static strings:Strings.Instance}}"
+                                  ToolTip="{Binding Pad_Shift_CycleIncludeBase_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                    </StackPanel>
+                </StackPanel>
+                <ListBox Grid.Row="16" x:Name="CycleLayersList" Margin="0,0,0,12"
+                         MinHeight="80" MaxHeight="160"
+                         ScrollViewer.VerticalScrollBarVisibility="Visible"
+                         SelectionMode="Multiple">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <CheckBox Content="{Binding DisplayName}"
+                                      IsChecked="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=ListBoxItem}, Mode=TwoWay}"/>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+
+                <!-- Delay slider + numeric -->
+                <Grid Grid.Row="17" x:Name="DelayRow" Margin="0,0,0,12">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Row="0"
+                               Text="{Binding Pad_Shift_Delay, Source={x:Static strings:Strings.Instance}}"
+                               ToolTip="{Binding Pad_Shift_Delay_Tooltip, Source={x:Static strings:Strings.Instance}}"
+                               Margin="0,0,0,4"/>
+                    <StackPanel Grid.Row="1" Orientation="Horizontal">
+                        <Slider x:Name="DelaySlider" Width="320" Minimum="0" Maximum="2000" Value="0"
+                                TickFrequency="50" IsSnapToTickEnabled="True"/>
+                        <TextBox Text="{Binding ElementName=DelaySlider, Path=Value, StringFormat={}{0:F0}, UpdateSourceTrigger=LostFocus}"
+                                 Width="56" Margin="8,0,0,0" VerticalAlignment="Center"
+                                 HorizontalContentAlignment="Right"/>
+                        <TextBlock Text="ms" Margin="4,0,0,0" VerticalAlignment="Center"/>
+                    </StackPanel>
                 </Grid>
-                <StackPanel Grid.Row="3" Orientation="Horizontal" Margin="0,0,0,4">
-                    <TextBlock Text="R" Style="{StaticResource DzLabelTight}" Foreground="#FFD32F2F"/>
-                    <Slider Value="{Binding ElementName=ColorPicker, Path=Red, Mode=TwoWay}" Style="{StaticResource DzRgbSlider}"/>
-                    <TextBox Text="{Binding ElementName=ColorPicker, Path=Red, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEditTight}"/>
-                    <ui:Button Click="ResetRed_Click" Style="{StaticResource EmberIconButton}"
-                               VerticalAlignment="Center"
-                               ToolTip="{Binding Pad_ResetLightbarRed, Source={x:Static strings:Strings.Instance}}">
-                        <TextBlock Text="&#xE72C;" FontFamily="Segoe MDL2 Assets" FontSize="12"/>
-                    </ui:Button>
-                </StackPanel>
-                <StackPanel Grid.Row="4" Orientation="Horizontal" Margin="0,0,0,4">
-                    <TextBlock Text="G" Style="{StaticResource DzLabelTight}" Foreground="#FF388E3C"/>
-                    <Slider Value="{Binding ElementName=ColorPicker, Path=Green, Mode=TwoWay}" Style="{StaticResource DzRgbSlider}"/>
-                    <TextBox Text="{Binding ElementName=ColorPicker, Path=Green, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEditTight}"/>
-                    <ui:Button Click="ResetGreen_Click" Style="{StaticResource EmberIconButton}"
-                               VerticalAlignment="Center"
-                               ToolTip="{Binding Pad_ResetLightbarGreen, Source={x:Static strings:Strings.Instance}}">
-                        <TextBlock Text="&#xE72C;" FontFamily="Segoe MDL2 Assets" FontSize="12"/>
-                    </ui:Button>
-                </StackPanel>
-                <StackPanel Grid.Row="5" Orientation="Horizontal">
-                    <TextBlock Text="B" Style="{StaticResource DzLabelTight}" Foreground="#FF1976D2"/>
-                    <Slider Value="{Binding ElementName=ColorPicker, Path=Blue, Mode=TwoWay}" Style="{StaticResource DzRgbSlider}"/>
-                    <TextBox Text="{Binding ElementName=ColorPicker, Path=Blue, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEditTight}"/>
-                    <ui:Button Click="ResetBlue_Click" Style="{StaticResource EmberIconButton}"
-                               VerticalAlignment="Center"
-                               ToolTip="{Binding Pad_ResetLightbarBlue, Source={x:Static strings:Strings.Instance}}">
-                        <TextBlock Text="&#xE72C;" FontFamily="Segoe MDL2 Assets" FontSize="12"/>
-                    </ui:Button>
+
+                <!-- Layer color: matches the Lighting tab picker — 200×200
+                     HSV plate, swatch + hex entry, RGB sliders with per-channel
+                     reset icons, plus a section-level reset that clears the
+                     color entirely (no tab tint, default flyout dot). -->
+                <Grid Grid.Row="18" Margin="0,0,0,12">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,8">
+                        <TextBlock Text="{Binding Pad_Shift_Color, Source={x:Static strings:Strings.Instance}}"
+                                   VerticalAlignment="Center"/>
+                        <ui:Button x:Name="ClearColorButton"
+                                   Style="{StaticResource EmberIconButton}"
+                                   VerticalAlignment="Center"
+                                   Click="ClearColor_Click"
+                                   ToolTip="{Binding Pad_ResetLayerColor, Source={x:Static strings:Strings.Instance}}">
+                            <TextBlock Text="&#xE72C;" FontFamily="Segoe MDL2 Assets" FontSize="12"/>
+                        </ui:Button>
+                    </StackPanel>
+                    <views:ColorPickerControl Grid.Row="1" x:Name="ColorPicker"
+                                              HorizontalAlignment="Left"
+                                              Margin="0,0,0,8"/>
+                    <Grid Grid.Row="2" Margin="0,0,0,8">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="64"/>
+                            <ColumnDefinition Width="60"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Border Grid.Column="0" x:Name="ColorPreviewSwatch"
+                                Width="48" Height="36" CornerRadius="4"
+                                HorizontalAlignment="Left"
+                                BorderBrush="{DynamicResource TextFillColorDisabledBrush}"
+                                BorderThickness="1">
+                            <Border.Background>
+                                <MultiBinding Converter="{StaticResource RgbToBrushConverter}">
+                                    <Binding ElementName="ColorPicker" Path="Red"/>
+                                    <Binding ElementName="ColorPicker" Path="Green"/>
+                                    <Binding ElementName="ColorPicker" Path="Blue"/>
+                                </MultiBinding>
+                            </Border.Background>
+                        </Border>
+                        <TextBlock Grid.Column="1"
+                                   Text="{Binding Pad_Lighting_Hex, Source={x:Static strings:Strings.Instance}}"
+                                   VerticalAlignment="Center" Margin="8,0,0,0"/>
+                        <TextBox x:Name="ColorHexBox" Grid.Column="2" Width="100"
+                                 HorizontalAlignment="Left" VerticalAlignment="Center"
+                                 FontFamily="{StaticResource TelemetryFontFamily}" Padding="6,4"
+                                 KeyDown="ColorHexBox_KeyDown"
+                                 LostFocus="ColorHexBox_LostFocus"
+                                 ToolTip="{Binding Pad_Lighting_HexTooltip, Source={x:Static strings:Strings.Instance}}"/>
+                    </Grid>
+                    <StackPanel Grid.Row="3" Orientation="Horizontal" Margin="0,0,0,4">
+                        <TextBlock Text="R" Style="{StaticResource DzLabelTight}" Foreground="#FFD32F2F"/>
+                        <Slider Value="{Binding ElementName=ColorPicker, Path=Red, Mode=TwoWay}" Style="{StaticResource DzRgbSlider}"/>
+                        <TextBox Text="{Binding ElementName=ColorPicker, Path=Red, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEditTight}"/>
+                        <ui:Button Click="ResetRed_Click" Style="{StaticResource EmberIconButton}"
+                                   VerticalAlignment="Center"
+                                   ToolTip="{Binding Pad_ResetLightbarRed, Source={x:Static strings:Strings.Instance}}">
+                            <TextBlock Text="&#xE72C;" FontFamily="Segoe MDL2 Assets" FontSize="12"/>
+                        </ui:Button>
+                    </StackPanel>
+                    <StackPanel Grid.Row="4" Orientation="Horizontal" Margin="0,0,0,4">
+                        <TextBlock Text="G" Style="{StaticResource DzLabelTight}" Foreground="#FF388E3C"/>
+                        <Slider Value="{Binding ElementName=ColorPicker, Path=Green, Mode=TwoWay}" Style="{StaticResource DzRgbSlider}"/>
+                        <TextBox Text="{Binding ElementName=ColorPicker, Path=Green, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEditTight}"/>
+                        <ui:Button Click="ResetGreen_Click" Style="{StaticResource EmberIconButton}"
+                                   VerticalAlignment="Center"
+                                   ToolTip="{Binding Pad_ResetLightbarGreen, Source={x:Static strings:Strings.Instance}}">
+                            <TextBlock Text="&#xE72C;" FontFamily="Segoe MDL2 Assets" FontSize="12"/>
+                        </ui:Button>
+                    </StackPanel>
+                    <StackPanel Grid.Row="5" Orientation="Horizontal">
+                        <TextBlock Text="B" Style="{StaticResource DzLabelTight}" Foreground="#FF1976D2"/>
+                        <Slider Value="{Binding ElementName=ColorPicker, Path=Blue, Mode=TwoWay}" Style="{StaticResource DzRgbSlider}"/>
+                        <TextBox Text="{Binding ElementName=ColorPicker, Path=Blue, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEditTight}"/>
+                        <ui:Button Click="ResetBlue_Click" Style="{StaticResource EmberIconButton}"
+                                   VerticalAlignment="Center"
+                                   ToolTip="{Binding Pad_ResetLightbarBlue, Source={x:Static strings:Strings.Instance}}">
+                            <TextBlock Text="&#xE72C;" FontFamily="Segoe MDL2 Assets" FontSize="12"/>
+                        </ui:Button>
+                    </StackPanel>
+                </Grid>
+
+                <!-- Validation hint, surfaced on Save with a missing / duplicate
+                     layer name or unselected input. Hidden by default. -->
+                <TextBlock Grid.Row="19" x:Name="HintText"
+                           Foreground="{DynamicResource SystemFillColorCautionBrush}"
+                           TextWrapping="Wrap" Margin="0,0,0,8"
+                           Visibility="Collapsed"/>
+
+                <!-- Buttons -->
+                <StackPanel Grid.Row="20" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,12,0,0">
+                    <Button Content="{Binding Common_Save, Source={x:Static strings:Strings.Instance}}"
+                            MinWidth="80" Margin="0,0,8,0"
+                            IsDefault="True" Click="SaveButton_Click"
+                            Foreground="{DynamicResource TextOnAccentFillColorPrimaryBrush}"
+                            Background="{DynamicResource AccentFillColorDefaultBrush}"/>
+                    <Button Content="{Binding Common_Cancel, Source={x:Static strings:Strings.Instance}}"
+                            MinWidth="80"
+                            IsCancel="True" Click="CancelButton_Click"/>
                 </StackPanel>
             </Grid>
-
-            <!-- Validation hint, surfaced on Save with a missing / duplicate
-                 layer name or unselected input. Hidden by default. -->
-            <TextBlock Grid.Row="19" x:Name="HintText"
-                       Foreground="{DynamicResource SystemFillColorCautionBrush}"
-                       TextWrapping="Wrap" Margin="0,0,0,8"
-                       Visibility="Collapsed"/>
-
-            <!-- Buttons -->
-            <StackPanel Grid.Row="20" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,12,0,0">
-                <Button Content="{Binding Common_Save, Source={x:Static strings:Strings.Instance}}"
-                        MinWidth="80" Margin="0,0,8,0"
-                        IsDefault="True" Click="SaveButton_Click"
-                        Foreground="{DynamicResource TextOnAccentFillColorPrimaryBrush}"
-                        Background="{DynamicResource AccentFillColorDefaultBrush}"/>
-                <Button Content="{Binding Common_Cancel, Source={x:Static strings:Strings.Instance}}"
-                        MinWidth="80"
-                        IsCancel="True" Click="CancelButton_Click"/>
-            </StackPanel>
-        </Grid>
-    </ScrollViewer>
+        </ScrollViewer>
+    </Grid>
 </ui:FluentWindow>

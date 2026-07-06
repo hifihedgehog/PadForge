@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
@@ -718,19 +720,21 @@ namespace PadForge.Views
             int selected = vm.SelectedConfigTab;
 
             // Two-tier grammar (#175 artifact): tier 1 (slot: Preview/Macros/
-            // Mappings, tags 0-2) and tier 2 (device tabs, tags 3+) each hold
-            // their own selection. Only the tier owning the active tab is
-            // rewritten, so picking a device tab never strips the slot tier's
-            // highlight and vice versa. Navigation rides Click (not Checked),
-            // so re-clicking a still-checked tab still switches back.
+            // Mappings, tags 0-2) and tier 2 (device tabs, tags 3+). Exactly
+            // one tab is checked across BOTH tiers (#175 item 18): a checked
+            // tier-1 pivot over an active device tab lied about what's on
+            // screen. The idle tier drops to hover affordance (both tab
+            // styles keep their IsMouseOver triggers when unchecked).
+            // Navigation rides Click (not Checked), so re-clicking a
+            // still-checked tab still switches back.
             bool slotTier = selected <= 2;
             foreach (var rb in FindVisualChildren<RadioButton>(this))
             {
                 if (!TryGetTagIndex(rb, out int idx)) continue;
-                if (rb.GroupName == "PadTab" && slotTier)
-                    rb.IsChecked = idx == selected;
-                else if (rb.GroupName == "PadTabDevice" && !slotTier)
-                    rb.IsChecked = idx == selected;
+                if (rb.GroupName == "PadTab")
+                    rb.IsChecked = slotTier && idx == selected;
+                else if (rb.GroupName == "PadTabDevice")
+                    rb.IsChecked = !slotTier && idx == selected;
             }
         }
 
@@ -1578,6 +1582,21 @@ namespace PadForge.Views
                 else if (padVm.MapAllCommand.CanExecute(null))
                     padVm.MapAllCommand.Execute(null);
             }
+        }
+
+        private void ClearAllMappings_Click(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is not PadViewModel vm) return;
+            // Destructive-verb guard (#175 phase 2 item 1d): Clear All wipes
+            // every mapping row on the tab, so it asks through the shared
+            // ConfirmDialog before ClearMappingsCommand runs.
+            bool confirmed = ConfirmDialog.Show(
+                Window.GetWindow(this),
+                Strings.Instance.Pad_ClearMappings,
+                Strings.Instance.Pad_ClearMappingsConfirm,
+                Strings.Instance.Pad_ClearAll);
+            if (confirmed)
+                vm.ClearMappingsCommand.Execute(null);
         }
 
         private void CalibrateCenter_Click(object sender, RoutedEventArgs e)
@@ -3245,5 +3264,24 @@ namespace PadForge.Views
         public int InputIndex { get; }
         public string DisplayName { get; }
         public override string ToString() => DisplayName;
+    }
+
+    /// <summary>Two-way 0..1 fraction (setting units) to 0..100 percent
+    /// (display) for the Touchpad tab's DZ-idiom rows (#175 item 15).
+    /// ConvertBack takes a double from sliders and a string from the
+    /// percent edit boxes. Unparseable text leaves the source untouched.</summary>
+    public sealed class FractionToPercentConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+            => value is double d ? d * 100.0 : Binding.DoNothing;
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value is double d) return d / 100.0;
+            return value is string s
+                   && double.TryParse(s, NumberStyles.Float, culture, out double p)
+                ? p / 100.0
+                : Binding.DoNothing;
+        }
     }
 }

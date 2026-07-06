@@ -27,6 +27,11 @@
         <DropShadowEffect x:Key="ColdHoverGlow" po:Freeze="True" Color="#58B6E4" ShadowDepth="0" BlurRadius="10" Opacity="0.40"/>
         <DropShadowEffect x:Key="NeutralHoverGlow" po:Freeze="True" Color="#FF6B2C" ShadowDepth="0" BlurRadius="10" Opacity="0.30"/>
 
+        <!-- Touchpad stick rows (#175 item 15): settings persist as 0..1
+             fractions, the DZ-row idiom displays percent. Two-way converter
+             at the edit boundary, class lives in PadPage.xaml.cs. -->
+        <views:FractionToPercentConverter x:Key="FractionToPercentConverter"/>
+
         <!-- Style for deadzone slider groups -->
         <Style x:Key="DzLabel" TargetType="TextBlock">
             <Setter Property="Width" Value="270"/>
@@ -202,10 +207,10 @@
 
         <!-- Cold variant for the device tier (#175): same tab shape, cold
              underline. Slot-tier tabs keep the ember (accent) underline.
-             Own radio group per the artifact: both tiers hold a selection
-             at once (tier 1 = slot surface, tier 2 = device surface);
-             SyncTabStripSelection only rewrites the tier that owns the
-             active tab. -->
+             Own radio group so WPF never auto-unchecks across tiers.
+             SyncTabStripSelection keeps exactly one tab checked overall
+             (#175 item 18: only the tier owning the active tab shows a
+             highlight, the idle tier drops to hover affordance). -->
         <Style x:Key="TabStripButtonCold" TargetType="RadioButton">
             <Setter Property="GroupName" Value="PadTabDevice"/>
             <Setter Property="Margin" Value="2,4"/>
@@ -2478,9 +2483,6 @@
 
                     <!-- Toolbar -->
                     <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,8">
-                        <Button Content="{Binding Pad_ClearAll, Source={x:Static strings:Strings.Instance}}" Command="{Binding ClearMappingsCommand}"
-                                Padding="8,4" Margin="0,0,8,0"
-                                ToolTip="{Binding Pad_ClearMappings, Source={x:Static strings:Strings.Instance}}"/>
                         <Button Content="{Binding Common_Copy, Source={x:Static strings:Strings.Instance}}" Command="{Binding CopySettingsCommand}"
                                 Padding="8,4" Margin="0,0,4,0"
                                 ToolTip="{Binding Pad_CopyTooltip, Source={x:Static strings:Strings.Instance}}"/>
@@ -2502,6 +2504,14 @@
                         <TextBlock Text="{Binding Pad_MappingHint, Source={x:Static strings:Strings.Instance}}"
                                    VerticalAlignment="Center" FontStyle="Italic"
                                    Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                        <!-- Clear All rides at the far end in warning chrome
+                             (#175 item 1d): it wipes every mapping row, so it
+                             no longer leads the strip, and the Click path asks
+                             through the shared ConfirmDialog first. -->
+                        <Button Content="{Binding Pad_ClearAll, Source={x:Static strings:Strings.Instance}}" Click="ClearAllMappings_Click"
+                                Style="{StaticResource EmberDestructiveButton}"
+                                Padding="8,4" Margin="8,0,0,0"
+                                ToolTip="{Binding Pad_ClearMappings, Source={x:Static strings:Strings.Instance}}"/>
                     </StackPanel>
 
                     <!-- Direct-row compression readout (#175 telemetry board):
@@ -3317,10 +3327,17 @@
                                                     <DataTemplate>
                                                         <StackPanel Orientation="Vertical" Margin="0,2,0,2">
                                                             <TextBlock Text="{Binding Name}" FontWeight="SemiBold" FontSize="12"/>
+                                                            <!-- Description renders in the dropdown only (#175
+                                                                 item 5): the selection box has no ComboBoxItem
+                                                                 ancestor, so FindAncestor yields null and the
+                                                                 closed face collapses to the one-line name.
+                                                                 Plain converter binding, not a Style trigger
+                                                                 (stack-overflow precedent, 2026-07-04). -->
                                                             <TextBlock Text="{Binding Description}"
                                                                        FontSize="10"
                                                                        Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                                                       TextWrapping="Wrap"/>
+                                                                       TextWrapping="Wrap"
+                                                                       Visibility="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ComboBoxItem}}, Converter={StaticResource NullToCollapsedConverter}, FallbackValue=Collapsed}"/>
                                                         </StackPanel>
                                                     </DataTemplate>
                                                 </ComboBox.ItemTemplate>
@@ -4677,9 +4694,11 @@
                                             <StackPanel.Style>
                                                 <Style TargetType="StackPanel">
                                                     <Style.Triggers>
+                                                        <!-- Collapse instead of dim (#175 item 5): the
+                                                             Auto column sheds the dead cluster's width
+                                                             on rows where deadzone never applies. -->
                                                         <DataTrigger Binding="{Binding IsDeadZoneApplicable}" Value="False">
-                                                            <Setter Property="IsEnabled" Value="False"/>
-                                                            <Setter Property="Opacity" Value="0.35"/>
+                                                            <Setter Property="Visibility" Value="Collapsed"/>
                                                         </DataTrigger>
                                                     </Style.Triggers>
                                                 </Style>
@@ -5673,16 +5692,19 @@
                                                  controls. Caption keeps the mono-10-tertiary
                                                  instrument idiom. -->
                                             <TextBlock Text="{Binding Pad_TriggerAxis, Source={x:Static strings:Strings.Instance}, Converter={StaticResource UpperConverter}}"
-                                                       HorizontalAlignment="Left" Width="560" TextAlignment="Center"
+                                                       HorizontalAlignment="Stretch" TextAlignment="Center"
                                                        FontFamily="{StaticResource TelemetryFontFamily}"
                                                        Foreground="{DynamicResource TextFillColorTertiaryBrush}"
                                                        FontSize="10" Margin="0,4,0,2"/>
+                                            <!-- Stretches to card width (#175 item 16): full-width
+                                                 mode already redraws on SizeChanged, so no fixed
+                                                 Width cap. -->
                                             <controls:CurveEditor
                                                 CurveString="{Binding SensitivityCurve, Mode=TwoWay}"
                                                 DeadZone="{Binding DeadZone}"
                                                 MaxRange="{Binding MaxRange}"
                                                 LiveInput="{Binding LiveInputForCurve}"
-                                                IsSigned="False" IsFullWidth="True" ChartHeight="150" Width="560" HorizontalAlignment="Left"/>
+                                                IsSigned="False" IsFullWidth="True" ChartHeight="150" HorizontalAlignment="Stretch"/>
 
                                             <!-- Two-stage live instrument (#175 iteration 20): full-width
                                                  RAW cold and OUT ember bars in their own inset panel, per
@@ -6399,14 +6421,14 @@
                                                 <!-- GameCube preset lives ON the Weapon card
                                                      (user report 2026-07-05: the floating
                                                      indented row was a placement orphan).
-                                                     Visible only while Weapon is selected. -->
+                                                     Always visible (#175 item 16) so the
+                                                     preset is discoverable before selecting. -->
                                                 <Button Grid.Row="2" Margin="0,6,0,0" Padding="8,2"
                                                         HorizontalAlignment="Center" FontSize="10"
                                                         FontFamily="{StaticResource TelemetryFontFamily}"
                                                         Content="GameCube"
                                                         Command="{Binding PlayStationConfig.ApplyLeftGameCubePresetCommand}"
-                                                        ToolTip="{Binding Pad_AT_LoadGameCubePreset_Tooltip, Source={x:Static strings:Strings.Instance}}"
-                                                        Visibility="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=ListBoxItem}, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                                        ToolTip="{Binding Pad_AT_LoadGameCubePreset_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                             </Grid>
                                         </ListBoxItem>
                                         <ListBoxItem Tag="{x:Static vm:AdaptiveTriggerMode.Vibration}"
@@ -6482,19 +6504,8 @@
                                             </Grid>
                                         </ListBoxItem>
                                     </ListBox>
-                                    <ui:Button Command="{Binding PlayStationConfig.ResetLeftTriggerCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetLeftTrigger, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
-                                <!-- Effect-profile preview: shows the resistance / vibration
-                                     pattern across the trigger throw for the selected mode. -->
-                                <viewControls:TriggerEffectGraph
-                                    Visibility="{Binding PlayStationConfig.LeftTriggerMode, Converter={StaticResource EnumEqualityVisibilityConverter}, ConverterParameter=Feedback|Weapon|Vibration|MultiplePositionFeedback|SlopeFeedback|MultiplePositionVibration}"
-                                    Mode="{Binding PlayStationConfig.LeftTriggerMode}"
-                                    StartPosition="{Binding PlayStationConfig.LeftStartPosition}"
-                                    EndPosition="{Binding PlayStationConfig.LeftEndPosition}"
-                                    Strength="{Binding PlayStationConfig.LeftStrength}"
-                                    Frequency="{Binding PlayStationConfig.LeftFrequency}"
-                                    Height="120" Margin="0,0,0,12"/>
-                                <!-- Range (start ↔ end) — dual-thumb -->
+                                <!-- Range (start ↔ end). Dual-thumb. -->
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                     <TextBlock Text="{Binding Pad_AT_Range, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
                                     <controls:RangeSlider
@@ -6613,14 +6624,14 @@
                                                      indented row was a placement orphan; a
                                                      second report caught this chip pasted
                                                      into the Off card by mistake).
-                                                     Visible only while Weapon is selected. -->
+                                                     Always visible (#175 item 16) so the
+                                                     preset is discoverable before selecting. -->
                                                 <Button Grid.Row="2" Margin="0,6,0,0" Padding="8,2"
                                                         HorizontalAlignment="Center" FontSize="10"
                                                         FontFamily="{StaticResource TelemetryFontFamily}"
                                                         Content="GameCube"
                                                         Command="{Binding PlayStationConfig.ApplyRightGameCubePresetCommand}"
-                                                        ToolTip="{Binding Pad_AT_LoadGameCubePreset_Tooltip, Source={x:Static strings:Strings.Instance}}"
-                                                        Visibility="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=ListBoxItem}, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                                        ToolTip="{Binding Pad_AT_LoadGameCubePreset_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                             </Grid>
                                         </ListBoxItem>
                                         <ListBoxItem Tag="{x:Static vm:AdaptiveTriggerMode.Vibration}"
@@ -6696,17 +6707,8 @@
                                             </Grid>
                                         </ListBoxItem>
                                     </ListBox>
-                                    <ui:Button Command="{Binding PlayStationConfig.ResetRightTriggerCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetRightTrigger, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
-                                <viewControls:TriggerEffectGraph
-                                    Visibility="{Binding PlayStationConfig.RightTriggerMode, Converter={StaticResource EnumEqualityVisibilityConverter}, ConverterParameter=Feedback|Weapon|Vibration|MultiplePositionFeedback|SlopeFeedback|MultiplePositionVibration}"
-                                    Mode="{Binding PlayStationConfig.RightTriggerMode}"
-                                    StartPosition="{Binding PlayStationConfig.RightStartPosition}"
-                                    EndPosition="{Binding PlayStationConfig.RightEndPosition}"
-                                    Strength="{Binding PlayStationConfig.RightStrength}"
-                                    Frequency="{Binding PlayStationConfig.RightFrequency}"
-                                    Height="120" Margin="0,0,0,12"/>
-                                <!-- Range (start ↔ end) — dual-thumb -->
+                                <!-- Range (start ↔ end). Dual-thumb. -->
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                     <TextBlock Text="{Binding Pad_AT_Range, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
                                     <controls:RangeSlider
@@ -8856,45 +8858,69 @@
                                     <ui:Button Command="{Binding ResetTouchpadEnableJoystickOutputCommand}" Style="{StaticResource ResetButton}"
                                             ToolTip="{Binding Pad_ResetTouchpadStickEnabled, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
-                                <StackPanel Orientation="Horizontal" Margin="20,0,0,6">
-                                    <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Pad_Touchpad_StickMaxRadius, Source={x:Static strings:Strings.Instance}}"
-                                               VerticalAlignment="Center" Width="270"/>
-                                    <TextBox Text="{Binding TouchpadJoystickMaxRadius, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat=F2}"
-                                             Width="80" VerticalAlignment="Center"/>
-                                    <ui:Button Command="{Binding ResetTouchpadJoystickMaxRadiusCommand}" Style="{StaticResource ResetButton}"
-                                            ToolTip="{Binding Pad_ResetTouchpadStickMaxRadius, Source={x:Static strings:Strings.Instance}}"/>
-                                </StackPanel>
-                                <StackPanel Orientation="Horizontal" Margin="20,0,0,8">
-                                    <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Pad_Touchpad_StickInnerDeadzone, Source={x:Static strings:Strings.Instance}}"
-                                               VerticalAlignment="Center" Width="270"/>
-                                    <TextBox Text="{Binding TouchpadJoystickInnerDeadzone, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat=F2}"
-                                             Width="80" VerticalAlignment="Center"/>
-                                    <ui:Button Command="{Binding ResetTouchpadJoystickInnerDeadzoneCommand}" Style="{StaticResource ResetButton}"
-                                            ToolTip="{Binding Pad_ResetTouchpadStickInnerDeadzone, Source={x:Static strings:Strings.Instance}}"/>
-                                </StackPanel>
+                                <!-- Dependents obey the master toggle (#175 item 4),
+                                     Constant Force idiom. Rows carry the Sticks DZ
+                                     grammar (#175 item 15): slider + percent edit,
+                                     0..1 setting units unchanged behind the
+                                     FractionToPercentConverter. -->
+                                <StackPanel IsEnabled="{Binding TouchpadEnableJoystickOutput}">
+                                    <StackPanel Orientation="Horizontal" Margin="20,0,0,6">
+                                        <TextBlock Text="{Binding Pad_Touchpad_StickMaxRadius, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                        <Slider Value="{Binding TouchpadJoystickMaxRadius, Mode=TwoWay, Converter={StaticResource FractionToPercentConverter}}"
+                                                Style="{StaticResource DzSlider}" Minimum="5" Maximum="50"/>
+                                        <TextBox Text="{Binding TouchpadJoystickMaxRadius, Mode=TwoWay, UpdateSourceTrigger=LostFocus, Converter={StaticResource FractionToPercentConverter}, StringFormat={}{0:0.#}}"
+                                                 Style="{StaticResource DzValueEdit}"/>
+                                        <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
+                                        <ui:Button Command="{Binding ResetTouchpadJoystickMaxRadiusCommand}" Style="{StaticResource ResetButton}"
+                                                ToolTip="{Binding Pad_ResetTouchpadStickMaxRadius, Source={x:Static strings:Strings.Instance}}"/>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal" Margin="20,0,0,8">
+                                        <TextBlock Text="{Binding Pad_Touchpad_StickInnerDeadzone, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                        <Slider Value="{Binding TouchpadJoystickInnerDeadzone, Mode=TwoWay, Converter={StaticResource FractionToPercentConverter}}"
+                                                Style="{StaticResource DzSlider}" Maximum="10"/>
+                                        <TextBox Text="{Binding TouchpadJoystickInnerDeadzone, Mode=TwoWay, UpdateSourceTrigger=LostFocus, Converter={StaticResource FractionToPercentConverter}, StringFormat={}{0:0.#}}"
+                                                 Style="{StaticResource DzValueEdit}"/>
+                                        <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
+                                        <ui:Button Command="{Binding ResetTouchpadJoystickInnerDeadzoneCommand}" Style="{StaticResource ResetButton}"
+                                                ToolTip="{Binding Pad_ResetTouchpadStickInnerDeadzone, Source={x:Static strings:Strings.Instance}}"/>
+                                    </StackPanel>
 
-                                <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
-                                    <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Pad_Touchpad_StickDPadMode_Label, Source={x:Static strings:Strings.Instance}}"
-                                               VerticalAlignment="Center" Width="270"/>
-                                    <ComboBox SelectedValue="{Binding TouchpadJoystickDPadMode, Mode=TwoWay}"
-                                              SelectedValuePath="Tag"
-                                              Width="120" VerticalAlignment="Center"
-                                              ToolTip="{Binding Pad_Touchpad_StickDPadMode_Tooltip, Source={x:Static strings:Strings.Instance}}"
-                                              ScrollViewer.VerticalScrollBarVisibility="Visible">
-                                        <ComboBoxItem Tag="Off" Content="{Binding Pad_Touchpad_StickDPadMode_Off, Source={x:Static strings:Strings.Instance}}"/>
-                                        <ComboBoxItem Tag="FourWay" Content="{Binding Pad_Touchpad_StickDPadMode_FourWay, Source={x:Static strings:Strings.Instance}}"/>
-                                        <ComboBoxItem Tag="EightWay" Content="{Binding Pad_Touchpad_StickDPadMode_EightWay, Source={x:Static strings:Strings.Instance}}"/>
-                                    </ComboBox>
-                                    <ui:Button Command="{Binding ResetTouchpadJoystickDPadModeCommand}" Style="{StaticResource ResetButton}"
-                                            ToolTip="{Binding Pad_ResetTouchpadStickDPadMode, Source={x:Static strings:Strings.Instance}}"/>
-                                </StackPanel>
-                                <StackPanel Orientation="Horizontal" Margin="20,0,0,6">
-                                    <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Pad_Touchpad_StickDPadActivationThreshold, Source={x:Static strings:Strings.Instance}}"
-                                               VerticalAlignment="Center" Width="270"/>
-                                    <TextBox Text="{Binding TouchpadJoystickDPadActivationThreshold, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat=F2}"
-                                             Width="80" VerticalAlignment="Center"/>
-                                    <ui:Button Command="{Binding ResetTouchpadJoystickDPadActivationThresholdCommand}" Style="{StaticResource ResetButton}"
-                                            ToolTip="{Binding Pad_ResetTouchpadStickDPadActivationThreshold, Source={x:Static strings:Strings.Instance}}"/>
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                                        <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Pad_Touchpad_StickDPadMode_Label, Source={x:Static strings:Strings.Instance}}"
+                                                   VerticalAlignment="Center" Width="270"/>
+                                        <ComboBox SelectedValue="{Binding TouchpadJoystickDPadMode, Mode=TwoWay}"
+                                                  SelectedValuePath="Tag"
+                                                  Width="120" VerticalAlignment="Center"
+                                                  ToolTip="{Binding Pad_Touchpad_StickDPadMode_Tooltip, Source={x:Static strings:Strings.Instance}}"
+                                                  ScrollViewer.VerticalScrollBarVisibility="Visible">
+                                            <ComboBoxItem Tag="Off" Content="{Binding Pad_Touchpad_StickDPadMode_Off, Source={x:Static strings:Strings.Instance}}"/>
+                                            <ComboBoxItem Tag="FourWay" Content="{Binding Pad_Touchpad_StickDPadMode_FourWay, Source={x:Static strings:Strings.Instance}}"/>
+                                            <ComboBoxItem Tag="EightWay" Content="{Binding Pad_Touchpad_StickDPadMode_EightWay, Source={x:Static strings:Strings.Instance}}"/>
+                                        </ComboBox>
+                                        <ui:Button Command="{Binding ResetTouchpadJoystickDPadModeCommand}" Style="{StaticResource ResetButton}"
+                                                ToolTip="{Binding Pad_ResetTouchpadStickDPadMode, Source={x:Static strings:Strings.Instance}}"/>
+                                    </StackPanel>
+                                    <!-- Activation additionally obeys its own master:
+                                         dead row while D-Pad Mode is Off (item 4). -->
+                                    <StackPanel Orientation="Horizontal" Margin="20,0,0,6">
+                                        <StackPanel.Style>
+                                            <Style TargetType="StackPanel">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding TouchpadJoystickDPadMode}" Value="Off">
+                                                        <Setter Property="IsEnabled" Value="False"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </StackPanel.Style>
+                                        <TextBlock Text="{Binding Pad_Touchpad_StickDPadActivationThreshold, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                        <Slider Value="{Binding TouchpadJoystickDPadActivationThreshold, Mode=TwoWay, Converter={StaticResource FractionToPercentConverter}}"
+                                                Style="{StaticResource DzSlider}" Minimum="5" Maximum="50"/>
+                                        <TextBox Text="{Binding TouchpadJoystickDPadActivationThreshold, Mode=TwoWay, UpdateSourceTrigger=LostFocus, Converter={StaticResource FractionToPercentConverter}, StringFormat={}{0:0.#}}"
+                                                 Style="{StaticResource DzValueEdit}"/>
+                                        <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
+                                        <ui:Button Command="{Binding ResetTouchpadJoystickDPadActivationThresholdCommand}" Style="{StaticResource ResetButton}"
+                                                ToolTip="{Binding Pad_ResetTouchpadStickDPadActivationThreshold, Source={x:Static strings:Strings.Instance}}"/>
+                                    </StackPanel>
                                 </StackPanel>
                             </StackPanel>
                         </Border>
@@ -8914,21 +8940,30 @@
                                 <TextBlock Text="{Binding Pad_Touchpad_Mouse_Subtitle, Source={x:Static strings:Strings.Instance}}"
                                            Style="{StaticResource CardDescription}"/>
 
+                                <!-- Sensitivity is a multiplier, not a fraction, so the
+                                     slider rows keep native units with the × suffix
+                                     (mapping-grid sensitivity idiom), #175 item 15. -->
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
-                                    <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Pad_Touchpad_MouseSensitivityX, Source={x:Static strings:Strings.Instance}}"
-                                               VerticalAlignment="Center" Width="270"/>
+                                    <TextBlock Text="{Binding Pad_Touchpad_MouseSensitivityX, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                    <Slider Value="{Binding TouchpadMouseSensitivityX, Mode=TwoWay}"
+                                            Style="{StaticResource DzSlider}" Minimum="0.05" Maximum="10" TickFrequency="0.05"
+                                            ToolTip="{Binding Pad_Touchpad_MouseSensitivityX_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                     <TextBox Text="{Binding TouchpadMouseSensitivityX, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat=F2}"
-                                             Width="80" VerticalAlignment="Center"
+                                             Style="{StaticResource DzValueEdit}"
                                              ToolTip="{Binding Pad_Touchpad_MouseSensitivityX_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <TextBlock Text="×" Style="{StaticResource DzPercent}"/>
                                     <ui:Button Command="{Binding ResetTouchpadMouseSensitivityXCommand}" Style="{StaticResource ResetButton}"
                                             ToolTip="{Binding Pad_ResetTouchpadMouseSensitivityX, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
-                                    <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Pad_Touchpad_MouseSensitivityY, Source={x:Static strings:Strings.Instance}}"
-                                               VerticalAlignment="Center" Width="270"/>
+                                    <TextBlock Text="{Binding Pad_Touchpad_MouseSensitivityY, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                    <Slider Value="{Binding TouchpadMouseSensitivityY, Mode=TwoWay}"
+                                            Style="{StaticResource DzSlider}" Minimum="0.05" Maximum="10" TickFrequency="0.05"
+                                            ToolTip="{Binding Pad_Touchpad_MouseSensitivityY_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                     <TextBox Text="{Binding TouchpadMouseSensitivityY, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat=F2}"
-                                             Width="80" VerticalAlignment="Center"
+                                             Style="{StaticResource DzValueEdit}"
                                              ToolTip="{Binding Pad_Touchpad_MouseSensitivityY_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <TextBlock Text="×" Style="{StaticResource DzPercent}"/>
                                     <ui:Button Command="{Binding ResetTouchpadMouseSensitivityYCommand}" Style="{StaticResource ResetButton}"
                                             ToolTip="{Binding Pad_ResetTouchpadMouseSensitivityY, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
@@ -8971,30 +9006,34 @@
                                     <ui:Button Command="{Binding ResetTouchpadGesturesEnabledCommand}" Style="{StaticResource ResetButton}"
                                             ToolTip="{Binding Pad_ResetTouchpadGesturesEnabled, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
-                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                                    <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Pad_Touchpad_Mode_Label, Source={x:Static strings:Strings.Instance}}"
-                                               VerticalAlignment="Center" Width="270"/>
-                                    <ComboBox SelectedValue="{Binding TouchpadGestureMode, Mode=TwoWay}"
-                                              SelectedValuePath="Tag"
-                                              Width="180" VerticalAlignment="Center"
-                                              ToolTip="{Binding Pad_Touchpad_Mode_Tooltip, Source={x:Static strings:Strings.Instance}}"
-                                              ScrollViewer.VerticalScrollBarVisibility="Visible">
-                                        <ComboBoxItem Tag="InBoxOnly" Content="{Binding Pad_Touchpad_Mode_InBoxOnly, Source={x:Static strings:Strings.Instance}}"/>
-                                        <ComboBoxItem Tag="CustomOnly" Content="{Binding Pad_Touchpad_Mode_CustomOnly, Source={x:Static strings:Strings.Instance}}"/>
-                                        <ComboBoxItem Tag="Both" Content="{Binding Pad_Touchpad_Mode_Both, Source={x:Static strings:Strings.Instance}}"/>
-                                    </ComboBox>
-                                    <ui:Button Command="{Binding ResetTouchpadGestureModeCommand}" Style="{StaticResource ResetButton}"
-                                            ToolTip="{Binding Pad_ResetTouchpadGestureMode, Source={x:Static strings:Strings.Instance}}"/>
-                                </StackPanel>
-                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                                    <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Pad_Touchpad_CooldownMs_Label, Source={x:Static strings:Strings.Instance}}"
-                                               VerticalAlignment="Center" Width="270"/>
-                                    <TextBox Text="{Binding TouchpadCooldownMs, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
-                                             Width="80" VerticalAlignment="Center"
-                                             ToolTip="{Binding Pad_Touchpad_CooldownMs_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
-                                    <TextBlock Text="{Binding Common_Ms, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzPercent}"/>
-                                    <ui:Button Command="{Binding ResetTouchpadCooldownMsCommand}" Style="{StaticResource ResetButton}"
-                                            ToolTip="{Binding Pad_ResetTouchpadCooldownMs, Source={x:Static strings:Strings.Instance}}"/>
+                                <!-- Mode + cooldown obey the enable toggle (#175 item 4),
+                                     Constant Force idiom. -->
+                                <StackPanel IsEnabled="{Binding TouchpadGesturesEnabled}">
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                        <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Pad_Touchpad_Mode_Label, Source={x:Static strings:Strings.Instance}}"
+                                                   VerticalAlignment="Center" Width="270"/>
+                                        <ComboBox SelectedValue="{Binding TouchpadGestureMode, Mode=TwoWay}"
+                                                  SelectedValuePath="Tag"
+                                                  Width="180" VerticalAlignment="Center"
+                                                  ToolTip="{Binding Pad_Touchpad_Mode_Tooltip, Source={x:Static strings:Strings.Instance}}"
+                                                  ScrollViewer.VerticalScrollBarVisibility="Visible">
+                                            <ComboBoxItem Tag="InBoxOnly" Content="{Binding Pad_Touchpad_Mode_InBoxOnly, Source={x:Static strings:Strings.Instance}}"/>
+                                            <ComboBoxItem Tag="CustomOnly" Content="{Binding Pad_Touchpad_Mode_CustomOnly, Source={x:Static strings:Strings.Instance}}"/>
+                                            <ComboBoxItem Tag="Both" Content="{Binding Pad_Touchpad_Mode_Both, Source={x:Static strings:Strings.Instance}}"/>
+                                        </ComboBox>
+                                        <ui:Button Command="{Binding ResetTouchpadGestureModeCommand}" Style="{StaticResource ResetButton}"
+                                                ToolTip="{Binding Pad_ResetTouchpadGestureMode, Source={x:Static strings:Strings.Instance}}"/>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                        <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Pad_Touchpad_CooldownMs_Label, Source={x:Static strings:Strings.Instance}}"
+                                                   VerticalAlignment="Center" Width="270"/>
+                                        <TextBox Text="{Binding TouchpadCooldownMs, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                                 Width="80" VerticalAlignment="Center"
+                                                 ToolTip="{Binding Pad_Touchpad_CooldownMs_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                        <TextBlock Text="{Binding Common_Ms, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzPercent}"/>
+                                        <ui:Button Command="{Binding ResetTouchpadCooldownMsCommand}" Style="{StaticResource ResetButton}"
+                                                ToolTip="{Binding Pad_ResetTouchpadCooldownMs, Source={x:Static strings:Strings.Instance}}"/>
+                                    </StackPanel>
                                 </StackPanel>
                             </StackPanel>
                         </Border>

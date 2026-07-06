@@ -18,69 +18,107 @@
         </ResourceDictionary>
     </ui:FluentWindow.Resources>
 
-    <Grid Margin="20,16,20,16">
+    <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <!-- Controller family picker (one entry today, room to extend) -->
-        <StackPanel Grid.Row="0" Margin="0,0,0,12">
-            <TextBlock Text="{Binding WiiPair_Family, Source={x:Static strings:Strings.Instance}}"
-                       Margin="0,0,0,4"
+        <!-- Dialog head (#175 item 11): ExtendsContentIntoTitleBar strips the
+             system title bar, so the localized Title never rendered anywhere.
+             Ember tick + display-face title makes it visible. The X stands in
+             for the caption close button WindowChrome no longer provides. -->
+        <Border Padding="14"
+                BorderBrush="{DynamicResource SteelLineSoftBrush}"
+                BorderThickness="0,0,0,1">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Rectangle Width="3" Height="14" RadiusX="1.5" RadiusY="1.5"
+                           Fill="{DynamicResource EmberBrush}"
+                           VerticalAlignment="Center" Margin="0,0,8,0"/>
+                <TextBlock Grid.Column="1"
+                           Text="{Binding Title, RelativeSource={RelativeSource AncestorType=Window}}"
+                           FontFamily="{StaticResource DisplayFontFamily}"
+                           FontWeight="SemiBold" FontSize="15"
+                           Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+                           VerticalAlignment="Center" Margin="0,0,8,0"
+                           TextTrimming="CharacterEllipsis"/>
+                <ui:Button Grid.Column="2" Style="{StaticResource EmberIconButton}"
+                           VerticalAlignment="Center" Click="Dismiss_Click"
+                           ToolTip="{Binding Common_Close, Source={x:Static strings:Strings.Instance}}">
+                    <TextBlock Text="&#xE8BB;" FontFamily="Segoe MDL2 Assets" FontSize="10"/>
+                </ui:Button>
+            </Grid>
+        </Border>
+
+        <Grid Grid.Row="1" Margin="20,16,20,16">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- Controller family picker (one entry today, room to extend) -->
+            <StackPanel Grid.Row="0" Margin="0,0,0,12">
+                <TextBlock Text="{Binding WiiPair_Family, Source={x:Static strings:Strings.Instance}}"
+                           Margin="0,0,0,4"
+                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                <ComboBox x:Name="FamilyCombo" SelectedIndex="0" HorizontalAlignment="Stretch">
+                    <ComboBoxItem Content="{Binding WiiPair_FamilyWii, Source={x:Static strings:Strings.Instance}}"/>
+                </ComboBox>
+            </StackPanel>
+
+            <TextBlock Grid.Row="1"
+                       Text="{Binding WiiPair_Instructions, Source={x:Static strings:Strings.Instance}}"
+                       TextWrapping="Wrap" Margin="0,0,0,12"
                        Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
-            <ComboBox x:Name="FamilyCombo" SelectedIndex="0" HorizontalAlignment="Stretch">
-                <ComboBoxItem Content="{Binding WiiPair_FamilyWii, Source={x:Static strings:Strings.Instance}}"/>
-            </ComboBox>
-        </StackPanel>
 
-        <TextBlock Grid.Row="1"
-                   Text="{Binding WiiPair_Instructions, Source={x:Static strings:Strings.Instance}}"
-                   TextWrapping="Wrap" Margin="0,0,0,12"
-                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+            <CheckBox Grid.Row="2" x:Name="TemporaryCheck" Margin="0,0,0,12"
+                      Content="{Binding WiiPair_Temporary, Source={x:Static strings:Strings.Instance}}"/>
 
-        <CheckBox Grid.Row="2" x:Name="TemporaryCheck" Margin="0,0,0,12"
-                  Content="{Binding WiiPair_Temporary, Source={x:Static strings:Strings.Instance}}"/>
+            <!-- Live status while an inquiry pass runs -->
+            <Grid Grid.Row="3" Margin="0,0,0,12">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <ui:ProgressRing x:Name="ScanRing" Grid.Column="0" Width="20" Height="20"
+                                 IsIndeterminate="True" Visibility="Collapsed"
+                                 Margin="0,0,10,0" VerticalAlignment="Center"/>
+                <TextBlock x:Name="StatusText" Grid.Column="1" TextWrapping="Wrap"
+                           VerticalAlignment="Center"/>
+            </Grid>
 
-        <!-- Live status while an inquiry pass runs -->
-        <Grid Grid.Row="3" Margin="0,0,0,12">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            <ui:ProgressRing x:Name="ScanRing" Grid.Column="0" Width="20" Height="20"
-                             IsIndeterminate="True" Visibility="Collapsed"
-                             Margin="0,0,10,0" VerticalAlignment="Center"/>
-            <TextBlock x:Name="StatusText" Grid.Column="1" TextWrapping="Wrap"
-                       VerticalAlignment="Center"/>
+            <!-- Found-controller list -->
+            <StackPanel Grid.Row="4" x:Name="FoundPanel" Margin="0,0,0,12" Visibility="Collapsed">
+                <TextBlock Text="{Binding WiiPair_Found, Source={x:Static strings:Strings.Instance}}"
+                           Margin="0,0,0,4"
+                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                <ListBox x:Name="FoundList" MaxHeight="120"
+                         Background="{DynamicResource ControlFillColorDefaultBrush}"/>
+            </StackPanel>
+
+            <!-- Diagnostic log path (non-localized, it's a file path): mono readout -->
+            <TextBlock Grid.Row="5" x:Name="LogPathText" TextWrapping="Wrap" Margin="0,0,0,8"
+                       FontFamily="{StaticResource TelemetryFontFamily}" FontSize="11"
+                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+
+            <StackPanel Grid.Row="6" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,4,0,0">
+                <ui:Button x:Name="PairButton" Appearance="Primary" MinWidth="96" Margin="0,0,8,0"
+                           Content="{Binding WiiPair_Pair, Source={x:Static strings:Strings.Instance}}"
+                           Click="Pair_Click"/>
+                <Button x:Name="DismissButton" MinWidth="96"
+                        Content="{Binding Common_Cancel, Source={x:Static strings:Strings.Instance}}"
+                        Click="Dismiss_Click"/>
+            </StackPanel>
         </Grid>
-
-        <!-- Found-controller list -->
-        <StackPanel Grid.Row="4" x:Name="FoundPanel" Margin="0,0,0,12" Visibility="Collapsed">
-            <TextBlock Text="{Binding WiiPair_Found, Source={x:Static strings:Strings.Instance}}"
-                       Margin="0,0,0,4"
-                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
-            <ListBox x:Name="FoundList" MaxHeight="120"
-                     Background="{DynamicResource ControlFillColorDefaultBrush}"/>
-        </StackPanel>
-
-        <!-- Diagnostic log path (non-localized, it's a file path): mono readout -->
-        <TextBlock Grid.Row="5" x:Name="LogPathText" TextWrapping="Wrap" Margin="0,0,0,8"
-                   FontFamily="{StaticResource TelemetryFontFamily}" FontSize="11"
-                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
-
-        <StackPanel Grid.Row="6" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,4,0,0">
-            <ui:Button x:Name="PairButton" Appearance="Primary" MinWidth="96" Margin="0,0,8,0"
-                       Content="{Binding WiiPair_Pair, Source={x:Static strings:Strings.Instance}}"
-                       Click="Pair_Click"/>
-            <Button x:Name="DismissButton" MinWidth="96"
-                    Content="{Binding Common_Cancel, Source={x:Static strings:Strings.Instance}}"
-                    Click="Dismiss_Click"/>
-        </StackPanel>
     </Grid>
 </ui:FluentWindow>

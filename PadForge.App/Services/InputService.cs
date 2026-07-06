@@ -5534,7 +5534,14 @@ namespace PadForge.Services
             _dsuServer = new DsuMotionServer();
             _dsuServer.StatusChanged += (_, status) =>
             {
-                _dispatcher.BeginInvoke(() => _mainVm.Dashboard.DsuServerStatus = status);
+                _dispatcher.BeginInvoke(() =>
+                {
+                    _mainVm.Dashboard.DsuServerStatus = status;
+                    // Flame truth (#175 phase 2 item 2): evaluated at dispatch
+                    // time, after a failed Start has already torn the server
+                    // down, so the flame tracks the lifecycle, not the checkbox.
+                    _mainVm.Dashboard.IsDsuServerRunning = _dsuServer != null;
+                });
             };
 
             int port = _mainVm.Dashboard.DsuMotionServerPort;
@@ -5562,6 +5569,11 @@ namespace PadForge.Services
 
             _dsuServer.Dispose();
             _dsuServer = null;
+            // Belt for the flame (#175 phase 2 item 2): Dispose raises the
+            // "Stopped" status before the field is nulled, so on a non-UI
+            // caller the dispatched status lambda could still read a live
+            // server. This queues after it and settles the truth.
+            _dispatcher.BeginInvoke(() => _mainVm.Dashboard.IsDsuServerRunning = false);
         }
 
         // ─────────────────────────────────────────────
@@ -5746,6 +5758,8 @@ namespace PadForge.Services
             {
                 _mainVm.Dashboard.WebControllerStatus = status;
                 _mainVm.Dashboard.WebControllerClientCount = _webServer?.ClientCount ?? 0;
+                // Flame truth (#175 phase 2 item 2): lifecycle, not checkbox.
+                _mainVm.Dashboard.IsWebControllerRunning = _webServer != null;
             });
         }
 
@@ -5759,6 +5773,10 @@ namespace PadForge.Services
             _webServer = null;
             _mainVm.Dashboard.WebControllerStatus = Strings.Instance.Common_Stopped;
             _mainVm.Dashboard.WebControllerClientCount = 0;
+            // Events are detached before Dispose, so no "Stopped" status
+            // flows through the handler; settle the flame here too (#175
+            // phase 2 item 2).
+            _mainVm.Dashboard.IsWebControllerRunning = false;
         }
 
         // ─────────────────────────────────────────────
@@ -5784,7 +5802,15 @@ namespace PadForge.Services
             _linkServer = new LinkServer(identity, trust, ApprovePairing);
             // Expose this PC's devices to inbound peers too (bidirectional sharing).
             _linkServer.ExposeProvider = () => BuildExposedDevices();
-            _linkServer.StatusChanged += st => _dispatcher.BeginInvoke(() => _mainVm.Dashboard.RemoteLinkStatus = FormatLinkStatus(st));
+            _linkServer.StatusChanged += st => _dispatcher.BeginInvoke(() =>
+            {
+                _mainVm.Dashboard.RemoteLinkStatus = FormatLinkStatus(st);
+                // Flame truth (#175 phase 2 item 2): a failed Start has
+                // already nulled the field by the time this dispatches, and
+                // peer-level errors (timeout, rejected) keep a listening
+                // server lit. Lifecycle, not the checkbox or the text.
+                _mainVm.Dashboard.IsRemoteLinkRunning = _linkServer != null;
+            });
             // Reverse output relay (#138): our game's output for a remote device is
             // shipped to its owner; a peer's output for OUR device drives our hardware.
             RemoteLinkOutputRouter.SendOutput = (fp, slot, payload) => _linkServer?.PushOutputEffect(fp, slot, payload);
@@ -5962,6 +5988,9 @@ namespace PadForge.Services
             _linkServer.Dispose();
             _linkServer = null;
             _mainVm.Dashboard.RemoteLinkStatus = Strings.Instance.Common_Stopped;
+            // Same belt as StopDsuServer: Dispose's "Stopped" status lambda
+            // may have captured a still-live field (#175 phase 2 item 2).
+            _dispatcher.BeginInvoke(() => _mainVm.Dashboard.IsRemoteLinkRunning = false);
         }
 
         /// <summary>Map an engine LinkServer status CODE to a localized dashboard string. The
@@ -7236,8 +7265,11 @@ namespace PadForge.Services
                     devVm.Devices.RemoveAt(i);
             }
 
-            // Sort: alphabetically by name, then by VID:PID.
-            var sorted = devVm.Devices.OrderBy(d => d.DeviceName, StringComparer.OrdinalIgnoreCase)
+            // Sort: physical hardware first, merged aggregate:// sources
+            // below it (#175 phase 2 item 17), then alphabetically by name,
+            // then by VID:PID.
+            var sorted = devVm.Devices.OrderBy(d => d.DevicePath?.StartsWith("aggregate://", StringComparison.Ordinal) == true ? 1 : 0)
+                                      .ThenBy(d => d.DeviceName, StringComparer.OrdinalIgnoreCase)
                                       .ThenBy(d => d.VendorId)
                                       .ThenBy(d => d.ProductId)
                                       .ToList();

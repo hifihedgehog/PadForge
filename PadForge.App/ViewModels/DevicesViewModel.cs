@@ -83,6 +83,84 @@ namespace PadForge.ViewModels
         }
 
         // ─────────────────────────────────────────────
+        //  Type facet filter (#175 phase 2 item 13)
+        // ─────────────────────────────────────────────
+
+        private string _selectedFacet = "ALL";
+
+        /// <summary>Active facet token: ALL / GAMEPAD / KEYBOARD / MOUSE /
+        /// OTHER. Locale-neutral literals per the DZ / PEAK precedent; the
+        /// chips' active-state DataTriggers key off the raw token.</summary>
+        public string SelectedFacet
+        {
+            get => _selectedFacet;
+            set => SetFacet(value);
+        }
+
+        private System.ComponentModel.ICollectionView _devicesView;
+
+        /// <summary>Applies a facet filter to the device list. Filters the
+        /// default collection view the ListBox already binds through, so the
+        /// XAML keeps its plain ItemsSource="{Binding Devices}".</summary>
+        public void SetFacet(string facet)
+        {
+            if (string.IsNullOrEmpty(facet) || _selectedFacet == facet)
+                return;
+            _selectedFacet = facet;
+            OnPropertyChanged(nameof(SelectedFacet));
+
+            _devicesView ??= System.Windows.Data.CollectionViewSource.GetDefaultView(Devices);
+            if (facet == "ALL")
+                _devicesView.Filter = null;
+            else
+                _devicesView.Filter = o => o is DeviceRowViewModel d && FacetOf(d) == facet;
+        }
+
+        /// <summary>Facet bucket for a row. GAMEPAD covers the stick classes
+        /// (everything InputService keys off a joystick-family CapType);
+        /// OTHER is whatever is left (touchpads, MIDI, NFC, consumer
+        /// collections, unclassified).</summary>
+        private static string FacetOf(DeviceRowViewModel d) => d.DeviceTypeKey switch
+        {
+            "Gamepad" or "Joystick" or "Wheel" or "FlightStick" or "FirstPerson" or "Supplemental" => "GAMEPAD",
+            "Keyboard" => "KEYBOARD",
+            "Mouse" => "MOUSE",
+            _ => "OTHER"
+        };
+
+        private int _facetCountGamepad;
+        /// <summary>Row count behind the GAMEPAD chip. The ALL chip binds TotalCount.</summary>
+        public int FacetCountGamepad
+        {
+            get => _facetCountGamepad;
+            set => SetProperty(ref _facetCountGamepad, value);
+        }
+
+        private int _facetCountKeyboard;
+        /// <summary>Row count behind the KEYBOARD chip.</summary>
+        public int FacetCountKeyboard
+        {
+            get => _facetCountKeyboard;
+            set => SetProperty(ref _facetCountKeyboard, value);
+        }
+
+        private int _facetCountMouse;
+        /// <summary>Row count behind the MOUSE chip.</summary>
+        public int FacetCountMouse
+        {
+            get => _facetCountMouse;
+            set => SetProperty(ref _facetCountMouse, value);
+        }
+
+        private int _facetCountOther;
+        /// <summary>Row count behind the OTHER chip.</summary>
+        public int FacetCountOther
+        {
+            get => _facetCountOther;
+            set => SetProperty(ref _facetCountOther, value);
+        }
+
+        // ─────────────────────────────────────────────
         //  Raw state display (structured, for selected device)
         // ─────────────────────────────────────────────
 
@@ -533,8 +611,9 @@ namespace PadForge.ViewModels
             // dashboard cards' visual order. Iterating raw padIndex here
             // would put a creation-order-first PlayStation before an
             // Xbox added later, even though the card layout shows Xbox
-            // at #1.
-            var activeSlots = new System.Collections.Generic.List<int>();
+            // at #1. The walk's group type rides along so the pill can
+            // wear the family's branded icon (#175 phase 2 item 12).
+            var activeSlots = new System.Collections.Generic.List<(int PadIndex, Engine.VirtualControllerType Type)>();
             foreach (var groupType in Engine.VirtualControllerGroups.InOrder)
             {
                 foreach (int padIndex in SettingsManager.SlotOrders.GetOrderFor(groupType))
@@ -543,7 +622,7 @@ namespace PadForge.ViewModels
                         && padIndex < InputManager.MaxPads
                         && SettingsManager.SlotCreated[padIndex])
                     {
-                        activeSlots.Add(padIndex);
+                        activeSlots.Add((padIndex, groupType));
                     }
                 }
             }
@@ -553,13 +632,16 @@ namespace PadForge.ViewModels
                 ? SettingsManager.GetAssignedSlots(_selectedDevice.InstanceGuid)
                 : new System.Collections.Generic.List<int>();
 
-            // Compute 1-based slot numbers.
+            // Compute 1-based slot numbers. A type change alone (same pad
+            // index, new family) also counts as a structure change so the
+            // pill's icon follows.
             bool structureChanged = activeSlots.Count != ActiveSlotItems.Count;
             if (!structureChanged)
             {
                 for (int i = 0; i < activeSlots.Count; i++)
                 {
-                    if (ActiveSlotItems[i].PadIndex != activeSlots[i])
+                    if (ActiveSlotItems[i].PadIndex != activeSlots[i].PadIndex
+                        || ActiveSlotItems[i].VcType != activeSlots[i].Type)
                     {
                         structureChanged = true;
                         break;
@@ -571,14 +653,15 @@ namespace PadForge.ViewModels
             {
                 ActiveSlotItems.Clear();
                 int num = 0;
-                foreach (int slot in activeSlots)
+                foreach (var slot in activeSlots)
                 {
                     num++;
                     ActiveSlotItems.Add(new SlotButtonItem
                     {
-                        PadIndex = slot,
+                        PadIndex = slot.PadIndex,
                         SlotNumber = num,
-                        IsAssigned = assignedSlots.Contains(slot)
+                        VcType = slot.Type,
+                        IsAssigned = assignedSlots.Contains(slot.PadIndex)
                     });
                 }
             }
@@ -626,18 +709,34 @@ namespace PadForge.ViewModels
         }
 
         /// <summary>
-        /// Updates the device counts from the Devices collection.
+        /// Updates the device counts from the Devices collection, including
+        /// the facet chip counts (#175 phase 2 item 13). Re-runs the active
+        /// facet filter so rows whose type key changed in place re-bucket.
         /// </summary>
         public void RefreshCounts()
         {
             TotalCount = Devices.Count;
-            int online = 0;
+            int online = 0, gamepad = 0, keyboard = 0, mouse = 0, other = 0;
             foreach (var d in Devices)
             {
                 if (d.IsOnline)
                     online++;
+                switch (FacetOf(d))
+                {
+                    case "GAMEPAD": gamepad++; break;
+                    case "KEYBOARD": keyboard++; break;
+                    case "MOUSE": mouse++; break;
+                    default: other++; break;
+                }
             }
             OnlineCount = online;
+            FacetCountGamepad = gamepad;
+            FacetCountKeyboard = keyboard;
+            FacetCountMouse = mouse;
+            FacetCountOther = other;
+
+            if (_selectedFacet != "ALL")
+                _devicesView?.Refresh();
         }
     }
 
@@ -670,6 +769,27 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _isAssigned, value);
         }
 
+        private Engine.VirtualControllerType _vcType;
+        /// <summary>VC family of the slot, captured from the type-group walk.
+        /// Drives the pill's branded icon (#175 phase 2 item 12).</summary>
+        public Engine.VirtualControllerType VcType
+        {
+            get => _vcType;
+            set
+            {
+                if (SetProperty(ref _vcType, value))
+                {
+                    OnPropertyChanged(nameof(TypeGeometry));
+                    OnPropertyChanged(nameof(TypeGlyph));
+                }
+            }
+        }
+
+        /// <summary>Branded path geometry for the pill, null for glyph types.</summary>
+        public System.Windows.Media.Geometry TypeGeometry => SlotTypeIconMap.GeometryFor(_vcType);
+
+        /// <summary>MDL2 glyph for the non-vector types, empty otherwise.</summary>
+        public string TypeGlyph => SlotTypeIconMap.GlyphFor(_vcType);
     }
 
     /// <summary>Visual display item for a single axis value.</summary>

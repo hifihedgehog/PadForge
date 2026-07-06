@@ -5,7 +5,8 @@
         xmlns:strings="clr-namespace:PadForge.Resources.Strings"
         ExtendsContentIntoTitleBar="True"
         WindowBackdropType="Mica"
-        Height="420" Width="460"
+        Title="{Binding PickSound_Title, Source={x:Static strings:Strings.Instance}}"
+        Height="480" Width="460"
         WindowStartupLocation="CenterOwner"
         ResizeMode="NoResize">
 
@@ -16,48 +17,87 @@
         </ResourceDictionary>
     </ui:FluentWindow.Resources>
 
-    <Grid Margin="16">
+    <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <!-- Dialog description -->
-        <TextBlock x:Name="DescriptionText"
-                   TextWrapping="Wrap" Margin="0,0,0,12"
-                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+        <!-- Dialog head (#175 item 11): ExtendsContentIntoTitleBar strips the
+             system title bar, so this dialog had no visible name at all (it
+             borrowed the caller's description as a Title that never rendered).
+             Ember tick + display-face title makes it visible. The X stands in
+             for the caption close button WindowChrome no longer provides. -->
+        <Border Padding="14"
+                BorderBrush="{DynamicResource SteelLineSoftBrush}"
+                BorderThickness="0,0,0,1">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Rectangle Width="3" Height="14" RadiusX="1.5" RadiusY="1.5"
+                           Fill="{DynamicResource EmberBrush}"
+                           VerticalAlignment="Center" Margin="0,0,8,0"/>
+                <TextBlock Grid.Column="1"
+                           Text="{Binding Title, RelativeSource={RelativeSource AncestorType=Window}}"
+                           FontFamily="{StaticResource DisplayFontFamily}"
+                           FontWeight="SemiBold" FontSize="15"
+                           Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+                           VerticalAlignment="Center" Margin="0,0,8,0"
+                           TextTrimming="CharacterEllipsis"/>
+                <ui:Button Grid.Column="2" Style="{StaticResource EmberIconButton}"
+                           VerticalAlignment="Center" Click="HeaderClose_Click"
+                           ToolTip="{Binding Common_Close, Source={x:Static strings:Strings.Instance}}">
+                    <TextBlock Text="&#xE8BB;" FontFamily="Segoe MDL2 Assets" FontSize="10"/>
+                </ui:Button>
+            </Grid>
+        </Border>
 
-        <ListBox Grid.Row="1" x:Name="SoundList"
-                 SelectionMode="Single"
-                 MouseDoubleClick="SoundList_MouseDoubleClick">
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <StackPanel Orientation="Horizontal" Margin="4,3">
-                        <TextBlock Text="&#xEC4F;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets"
-                                   FontSize="13" VerticalAlignment="Center" Margin="0,0,8,0"/>
-                        <TextBlock Text="{Binding}" FontWeight="SemiBold" VerticalAlignment="Center"/>
-                    </StackPanel>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
+        <Grid Grid.Row="1" Margin="16">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
 
-        <!-- Footer buttons: Browse-files escape on the left (shown only for the
-             package picker), OK / Cancel on the right. -->
-        <DockPanel Grid.Row="2" Margin="0,12,0,0" LastChildFill="False">
-            <Button x:Name="BrowseButton" DockPanel.Dock="Left"
-                    Content="{Binding Macro_Sound_BrowseFiles, Source={x:Static strings:Strings.Instance}}"
-                    MinWidth="120" Visibility="Collapsed" Click="BrowseButton_Click"/>
-            <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
-                <Button x:Name="OkButton"
-                        Content="{Binding Common_OK, Source={x:Static strings:Strings.Instance}}"
-                        MinWidth="90" Margin="0,0,8,0"
-                        IsDefault="True" Click="OkButton_Click"
-                        Foreground="{DynamicResource TextOnAccentFillColorPrimaryBrush}"
-                        Background="{DynamicResource AccentFillColorDefaultBrush}"/>
-                <Button Content="{Binding Common_Cancel, Source={x:Static strings:Strings.Instance}}"
-                        MinWidth="90" IsCancel="True"/>
-            </StackPanel>
-        </DockPanel>
+            <!-- Dialog description -->
+            <TextBlock x:Name="DescriptionText"
+                       TextWrapping="Wrap" Margin="0,0,0,12"
+                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+
+            <ListBox Grid.Row="1" x:Name="SoundList"
+                     SelectionMode="Single"
+                     MouseDoubleClick="SoundList_MouseDoubleClick">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal" Margin="4,3">
+                            <TextBlock Text="&#xEC4F;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets"
+                                       FontSize="13" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                            <TextBlock Text="{Binding}" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+
+            <!-- Footer buttons: Browse-files escape on the left (shown only for the
+                 package picker), OK / Cancel on the right. -->
+            <DockPanel Grid.Row="2" Margin="0,12,0,0" LastChildFill="False">
+                <Button x:Name="BrowseButton" DockPanel.Dock="Left"
+                        Content="{Binding Macro_Sound_BrowseFiles, Source={x:Static strings:Strings.Instance}}"
+                        MinWidth="120" Visibility="Collapsed" Click="BrowseButton_Click"/>
+                <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
+                    <Button x:Name="OkButton"
+                            Content="{Binding Common_OK, Source={x:Static strings:Strings.Instance}}"
+                            MinWidth="90" Margin="0,0,8,0"
+                            IsDefault="True" Click="OkButton_Click"
+                            Foreground="{DynamicResource TextOnAccentFillColorPrimaryBrush}"
+                            Background="{DynamicResource AccentFillColorDefaultBrush}"/>
+                    <Button Content="{Binding Common_Cancel, Source={x:Static strings:Strings.Instance}}"
+                            MinWidth="90" IsCancel="True"/>
+                </StackPanel>
+            </DockPanel>
+        </Grid>
     </Grid>
 </ui:FluentWindow>

@@ -213,6 +213,11 @@
   <data name="Dashboard_VirtualControllers" xml:space="preserve"><value>虚拟控制器</value></data>
   <data name="Dashboard_Mapped" xml:space="preserve"><value> 已映射，</value></data>
   <data name="Dashboard_Connected" xml:space="preserve"><value> 已连接</value></data>
+  <data name="Dashboard_EngineFlame_Running" xml:space="preserve"><value>引擎运行中。点击停止。</value></data>
+  <data name="Dashboard_EngineFlame_Idle" xml:space="preserve"><value>引擎空闲。点击停止。</value></data>
+  <data name="Dashboard_EngineFlame_Stopped" xml:space="preserve"><value>引擎已停止。点击启动。</value></data>
+  <data name="Dashboard_SlotCard_Configure" xml:space="preserve"><value>配置此控制器</value></data>
+  <data name="Dashboard_DeleteSlotConfirm_Format" xml:space="preserve"><value>将取消 {0} 个已映射设备的分配。</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>体感服务器</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>用于陀螺仪和加速度计数据的 DSU / CemuHook Motion Provider 协议服务器。</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>启用 DSU 体感服务器（CemuHook Motion Provider 协议）</value></data>
@@ -317,6 +322,9 @@
   <data name="Devices_OnlineTotal" xml:space="preserve"><value> 在线 / </value></data>
   <data name="Devices_Total" xml:space="preserve"><value> 总计</value></data>
   <data name="Devices_RemoveTooltip" xml:space="preserve"><value>移除此设备及其设置</value></data>
+  <data name="Devices_RemoveConfirmTitle" xml:space="preserve"><value>移除设备</value></data>
+  <data name="Devices_RemoveConfirm_Format" xml:space="preserve"><value>{0} 将从设备列表中移除，其保存的设置也将被清除。</value></data>
+  <data name="Devices_DragAssignHint" xml:space="preserve"><value>将设备拖到侧边栏的控制器卡片上即可分配。</value></data>
   <data name="Devices_Product" xml:space="preserve"><value>产品： </value></data>
   <data name="Devices_Type" xml:space="preserve"><value>类型： </value></data>
   <data name="Devices_AppGUID" xml:space="preserve"><value>应用 GUID： </value></data>
@@ -326,6 +334,7 @@
   <data name="Devices_SubmitMapping" xml:space="preserve"><value>提交设备映射</value></data>
   <data name="Devices_VCAssignment" xml:space="preserve"><value>虚拟控制器分配</value></data>
   <data name="Devices_ToggleAssignment" xml:space="preserve"><value>切换分配</value></data>
+  <data name="Devices_NoSlotsHint" xml:space="preserve"><value>还没有虚拟控制器插槽。请在仪表盘中创建一个以分配此设备。</value></data>
   <data name="Devices_InputMode" xml:space="preserve"><value>输入模式</value></data>
   <data name="Devices_ForceRaw" xml:space="preserve"><value>强制原始摇杆模式（绕过手柄重映射）</value></data>
   <data name="Devices_ForceRawTooltip" xml:space="preserve"><value>读取原始 HID 索引而非 SDL 的手柄映射，适用于 SDL 错误识别按钮/轴布局的情况</value></data>
@@ -818,6 +827,12 @@
   <data name="Profiles_SaveAs" xml:space="preserve"><value>另存为</value></data>
   <data name="Profiles_Edit" xml:space="preserve"><value>编辑</value></data>
   <data name="Profiles_Load" xml:space="preserve"><value>加载</value></data>
+  <data name="Profiles_AutoSwitchNoRulesHint" xml:space="preserve"><value>还没有任何配置文件设置了可执行文件</value></data>
+  <data name="Profiles_BuiltIn" xml:space="preserve"><value>内置</value></data>
+  <data name="Profiles_SelectFirstHint" xml:space="preserve"><value>请先选择一个配置文件。</value></data>
+  <data name="Profiles_DefaultLockedHint" xml:space="preserve"><value>内置的 Default 配置文件无法编辑或删除。</value></data>
+  <data name="Profiles_DeleteConfirmTitle" xml:space="preserve"><value>删除配置文件</value></data>
+  <data name="Profiles_DeleteConfirm_Format" xml:space="preserve"><value>删除“{0}”？其保存的插槽和映射快照将被销毁。</value></data>
 
   <!-- ═══ Profile Dialog ═══ -->
   <data name="ProfileDialog_SaveAs" xml:space="preserve"><value>另存为配置文件</value></data>
@@ -825,6 +840,8 @@
   <data name="ProfileDialog_ProfileName" xml:space="preserve"><value>配置文件名称：</value></data>
   <data name="ProfileDialog_DefaultName" xml:space="preserve"><value>新配置文件</value></data>
   <data name="ProfileDialog_Executables" xml:space="preserve"><value>可执行文件（与前台窗口匹配）：</value></data>
+  <data name="ProfileDialog_SaveAsDescription" xml:space="preserve"><value>将每个插槽的映射和各设备设置以一个名称保存为快照。关联的可执行文件会自动切换到该配置文件。</value></data>
+  <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>重命名配置文件并更新激活它的可执行文件。已保存的映射和设置保持不变。</value></data>
 
   <!-- ═══ CopyFrom Dialog ═══ -->
   <data name="CopyFrom_Title" xml:space="preserve"><value>从其他设备复制设置...</value></data>
@@ -1344,6 +1361,7 @@
   <data name="Pad_ResetAudioRumble" xml:space="preserve"><value>重置音频震动</value></data>
   <data name="Pad_ResetSection_Format" xml:space="preserve"><value>重置{0}</value></data>
   <data name="Pad_ClearMappings" xml:space="preserve"><value>清除映射</value></data>
+  <data name="Pad_ClearMappingsConfirm" xml:space="preserve"><value>此选项卡上的所有映射都将被清除。来源分配、额外来源和合并设置将重置为默认值。</value></data>
   <data name="Pad_Lighting_PlayerPattern" xml:space="preserve"><value>玩家图案</value></data>
   <data name="Pad_Lighting_MuteLedMode" xml:space="preserve"><value>静音 LED 模式</value></data>
   <data name="Pad_Lighting_LedBrightness" xml:space="preserve"><value>LED 亮度</value></data>
@@ -1661,14 +1679,14 @@
   <data name="Pad_Touchpad_Stick_Subtitle" xml:space="preserve"><value>将触控板变为虚拟模拟摇杆或方向键。输出以手指首次落下的位置为锚点。相对该锚点的当前位置驱动摇杆值并（可选）保持方向键方向位。</value></data>
   <data name="Pad_Touchpad_StickEnabled" xml:space="preserve"><value>启用摇杆 / 方向键输出</value></data>
   <data name="Pad_Touchpad_StickEnabled_Tooltip" xml:space="preserve"><value>在映射选择器中显示触控板的摇杆 X、摇杆 Y 和方向键描述符。与现有的触控板手指和手势源并存，而非替代。</value></data>
-  <data name="Pad_Touchpad_StickMaxRadius" xml:space="preserve"><value>最大半径 (0..1)</value></data>
-  <data name="Pad_Touchpad_StickInnerDeadzone" xml:space="preserve"><value>内部死区 (0..1)</value></data>
+  <data name="Pad_Touchpad_StickMaxRadius" xml:space="preserve"><value>最大半径</value></data>
+  <data name="Pad_Touchpad_StickInnerDeadzone" xml:space="preserve"><value>内部死区</value></data>
   <data name="Pad_Touchpad_StickDPadMode_Label" xml:space="preserve"><value>方向键模式</value></data>
   <data name="Pad_Touchpad_StickDPadMode_Tooltip" xml:space="preserve"><value>关闭跳过方向键输出。4 方向每次发出一个基本方向。8 方向对角线发出两个基本方向（与物理方向键报告 NE / NW / SE / SW 的方式相同）。</value></data>
   <data name="Pad_Touchpad_StickDPadMode_Off" xml:space="preserve"><value>关闭</value></data>
   <data name="Pad_Touchpad_StickDPadMode_FourWay" xml:space="preserve"><value>4 方向</value></data>
   <data name="Pad_Touchpad_StickDPadMode_EightWay" xml:space="preserve"><value>8 方向</value></data>
-  <data name="Pad_Touchpad_StickDPadActivationThreshold" xml:space="preserve"><value>方向键激活 (0..1)</value></data>
+  <data name="Pad_Touchpad_StickDPadActivationThreshold" xml:space="preserve"><value>方向键激活</value></data>
 
   <data name="Pad_ResetTouchpadDetection" xml:space="preserve"><value>重置手势检测</value></data>
   <data name="Pad_ResetTouchpadInBox" xml:space="preserve"><value>重置内置手势</value></data>
@@ -2051,6 +2069,7 @@
   <data name="Macro_Sound_BrowseFiles" xml:space="preserve">
     <value>浏览文件…</value>
   </data>
+  <data name="PickSound_Title" xml:space="preserve"><value>选择声音</value></data>
   <data name="About_NAudio" xml:space="preserve"><value>NAudio</value></data>
   <data name="About_NAudioDesc" xml:space="preserve"><value>用于手柄音频镜像和低音扳机震动的 WASAPI 环回捕获。作者 Mark Heath。MIT。</value></data>
   <data name="About_BouncyCastle" xml:space="preserve"><value>Bouncy Castle</value></data>

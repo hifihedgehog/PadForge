@@ -213,6 +213,11 @@
   <data name="Dashboard_VirtualControllers" xml:space="preserve"><value>Virtuele Controllers</value></data>
   <data name="Dashboard_Mapped" xml:space="preserve"><value> toegewezen, </value></data>
   <data name="Dashboard_Connected" xml:space="preserve"><value> verbonden</value></data>
+  <data name="Dashboard_EngineFlame_Running" xml:space="preserve"><value>Engine actief. Klik om te stoppen.</value></data>
+  <data name="Dashboard_EngineFlame_Idle" xml:space="preserve"><value>Engine inactief. Klik om te stoppen.</value></data>
+  <data name="Dashboard_EngineFlame_Stopped" xml:space="preserve"><value>Engine gestopt. Klik om te starten.</value></data>
+  <data name="Dashboard_SlotCard_Configure" xml:space="preserve"><value>Deze controller configureren</value></data>
+  <data name="Dashboard_DeleteSlotConfirm_Format" xml:space="preserve"><value>De toewijzing van {0} apparaat/apparaten wordt verwijderd.</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Bewegingsserver</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>DSU/CemuHook Motion Provider-protocolserver voor gyroscoop- en versnellingsmetergegevens.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>DSU-bewegingsserver inschakelen (CemuHook Motion Provider-protocol)</value></data>
@@ -317,6 +322,9 @@
   <data name="Devices_OnlineTotal" xml:space="preserve"><value> online / </value></data>
   <data name="Devices_Total" xml:space="preserve"><value> totaal</value></data>
   <data name="Devices_RemoveTooltip" xml:space="preserve"><value>Dit apparaat en de bijbehorende instellingen verwijderen</value></data>
+  <data name="Devices_RemoveConfirmTitle" xml:space="preserve"><value>Apparaat verwijderen</value></data>
+  <data name="Devices_RemoveConfirm_Format" xml:space="preserve"><value>{0} wordt uit de apparatenlijst verwijderd en de opgeslagen instellingen worden gewist.</value></data>
+  <data name="Devices_DragAssignHint" xml:space="preserve"><value>Sleep een apparaat naar een controllerkaart in de zijbalk om het toe te wijzen.</value></data>
   <data name="Devices_Product" xml:space="preserve"><value>Product: </value></data>
   <data name="Devices_Type" xml:space="preserve"><value>Type: </value></data>
   <data name="Devices_AppGUID" xml:space="preserve"><value>App-GUID: </value></data>
@@ -326,6 +334,7 @@
   <data name="Devices_SubmitMapping" xml:space="preserve"><value>Apparaattoewijzing indienen</value></data>
   <data name="Devices_VCAssignment" xml:space="preserve"><value>Virtuele controller-toewijzing</value></data>
   <data name="Devices_ToggleAssignment" xml:space="preserve"><value>Toewijzing wisselen</value></data>
+  <data name="Devices_NoSlotsHint" xml:space="preserve"><value>Nog geen virtuele controller-slots. Maak er een aan op het Dashboard om dit apparaat toe te wijzen.</value></data>
   <data name="Devices_InputMode" xml:space="preserve"><value>Invoermodus</value></data>
   <data name="Devices_ForceRaw" xml:space="preserve"><value>Raw joystick-modus forceren (gamepad-hertoewijzing omzeilen)</value></data>
   <data name="Devices_ForceRawTooltip" xml:space="preserve"><value>Ruwe HID-indices lezen in plaats van SDL's gamepad-toewijzing. Gebruik wanneer SDL de knop-/asindeling verkeerd herkent.</value></data>
@@ -818,6 +827,12 @@
   <data name="Profiles_SaveAs" xml:space="preserve"><value>Opslaan als</value></data>
   <data name="Profiles_Edit" xml:space="preserve"><value>Bewerken</value></data>
   <data name="Profiles_Load" xml:space="preserve"><value>Laden</value></data>
+  <data name="Profiles_AutoSwitchNoRulesHint" xml:space="preserve"><value>Nog geen enkel profiel heeft een uitvoerbaar bestand</value></data>
+  <data name="Profiles_BuiltIn" xml:space="preserve"><value>Ingebouwd</value></data>
+  <data name="Profiles_SelectFirstHint" xml:space="preserve"><value>Selecteer eerst een profiel.</value></data>
+  <data name="Profiles_DefaultLockedHint" xml:space="preserve"><value>Het ingebouwde Default-profiel kan niet worden bewerkt of verwijderd.</value></data>
+  <data name="Profiles_DeleteConfirmTitle" xml:space="preserve"><value>Profiel verwijderen</value></data>
+  <data name="Profiles_DeleteConfirm_Format" xml:space="preserve"><value>"{0}" verwijderen? De opgeslagen momentopname van slots en toewijzingen wordt vernietigd.</value></data>
 
   <!-- ═══ Profile Dialog ═══ -->
   <data name="ProfileDialog_SaveAs" xml:space="preserve"><value>Opslaan als profiel</value></data>
@@ -825,6 +840,8 @@
   <data name="ProfileDialog_ProfileName" xml:space="preserve"><value>Profielnaam:</value></data>
   <data name="ProfileDialog_DefaultName" xml:space="preserve"><value>Nieuw profiel</value></data>
   <data name="ProfileDialog_Executables" xml:space="preserve"><value>Uitvoerbare bestanden (vergeleken met voorgrondvenster):</value></data>
+  <data name="ProfileDialog_SaveAsDescription" xml:space="preserve"><value>Slaat een momentopname van de toewijzingen van elk slot en de instellingen per apparaat op onder één naam. Gekoppelde uitvoerbare bestanden schakelen er automatisch naar over.</value></data>
+  <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>Hernoemt het profiel en werkt de uitvoerbare bestanden bij die het activeren. Opgeslagen toewijzingen en instellingen blijven ongewijzigd.</value></data>
 
   <!-- ═══ CopyFrom Dialog ═══ -->
   <data name="CopyFrom_Title" xml:space="preserve"><value>Instellingen kopiëren van...</value></data>
@@ -1365,6 +1382,7 @@
   <data name="Pad_ResetAudioRumble" xml:space="preserve"><value>Audio-trillingen resetten</value></data>
   <data name="Pad_ResetSection_Format" xml:space="preserve"><value>{0} resetten</value></data>
   <data name="Pad_ClearMappings" xml:space="preserve"><value>Toewijzingen wissen</value></data>
+  <data name="Pad_ClearMappingsConfirm" xml:space="preserve"><value>Alle toewijzingen op dit tabblad worden gewist. Brontoewijzingen, extra bronnen en combineerinstellingen worden teruggezet naar de standaardwaarden.</value></data>
   <data name="Pad_Lighting_PlayerPattern" xml:space="preserve"><value>Spelerpatroon</value></data>
   <data name="Pad_Lighting_MuteLedMode" xml:space="preserve"><value>Mute-LED-modus</value></data>
   <data name="Pad_Lighting_LedBrightness" xml:space="preserve"><value>LED-helderheid</value></data>
@@ -1682,14 +1700,14 @@
   <data name="Pad_Touchpad_Stick_Subtitle" xml:space="preserve"><value>Maak van het touchpad een virtuele analoge stick of D-pad. De uitvoer wordt verankerd waar je vinger eerst neerkomt. De huidige positie ten opzichte van dat anker stuurt de stickwaarde en (optioneel) vergrendelde D-pad-richtingbits aan.</value></data>
   <data name="Pad_Touchpad_StickEnabled" xml:space="preserve"><value>Stick / D-pad-uitvoer inschakelen</value></data>
   <data name="Pad_Touchpad_StickEnabled_Tooltip" xml:space="preserve"><value>Toont de descriptors Touchpad Stick X, Stick Y en D-pad in de mapping-kiezer. Werkt naast de bestaande touchpad-vinger- en gebarenbronnen, niet in plaats daarvan.</value></data>
-  <data name="Pad_Touchpad_StickMaxRadius" xml:space="preserve"><value>Maximale Straal (0..1)</value></data>
-  <data name="Pad_Touchpad_StickInnerDeadzone" xml:space="preserve"><value>Binnenste Dode Zone (0..1)</value></data>
+  <data name="Pad_Touchpad_StickMaxRadius" xml:space="preserve"><value>Maximale Straal</value></data>
+  <data name="Pad_Touchpad_StickInnerDeadzone" xml:space="preserve"><value>Binnenste Dode Zone</value></data>
   <data name="Pad_Touchpad_StickDPadMode_Label" xml:space="preserve"><value>D-pad-modus</value></data>
   <data name="Pad_Touchpad_StickDPadMode_Tooltip" xml:space="preserve"><value>Uit slaat D-pad-uitvoer over. 4-Weg geeft één hoofdrichting per keer. 8-Weg geeft twee hoofdrichtingen voor diagonalen (zoals fysieke D-pads NE / NW / SE / SW melden).</value></data>
   <data name="Pad_Touchpad_StickDPadMode_Off" xml:space="preserve"><value>Uit</value></data>
   <data name="Pad_Touchpad_StickDPadMode_FourWay" xml:space="preserve"><value>4-Weg</value></data>
   <data name="Pad_Touchpad_StickDPadMode_EightWay" xml:space="preserve"><value>8-Weg</value></data>
-  <data name="Pad_Touchpad_StickDPadActivationThreshold" xml:space="preserve"><value>D-pad-activering (0..1)</value></data>
+  <data name="Pad_Touchpad_StickDPadActivationThreshold" xml:space="preserve"><value>D-pad-activering</value></data>
 
   <data name="Pad_ResetTouchpadDetection" xml:space="preserve"><value>Gebarendetectie resetten</value></data>
   <data name="Pad_ResetTouchpadInBox" xml:space="preserve"><value>Ingebouwde gebaren resetten</value></data>
@@ -2071,6 +2089,7 @@
   <data name="Macro_Sound_BrowseFiles" xml:space="preserve">
     <value>Bladeren naar bestanden…</value>
   </data>
+  <data name="PickSound_Title" xml:space="preserve"><value>Een geluid kiezen</value></data>
   <data name="About_NAudio" xml:space="preserve"><value>NAudio</value></data>
   <data name="About_NAudioDesc" xml:space="preserve"><value>WASAPI-loopbackopname voor de controller-audiospiegeling en de audio-bas-triggerrumble. Door Mark Heath. MIT.</value></data>
   <data name="About_BouncyCastle" xml:space="preserve"><value>Bouncy Castle</value></data>

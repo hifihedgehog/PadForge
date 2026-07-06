@@ -223,6 +223,11 @@
   <data name="Dashboard_VirtualControllers" xml:space="preserve"><value>Virtual Controllers</value></data>
   <data name="Dashboard_Mapped" xml:space="preserve"><value> mapped, </value></data>
   <data name="Dashboard_Connected" xml:space="preserve"><value> connected</value></data>
+  <data name="Dashboard_EngineFlame_Running" xml:space="preserve"><value>Engine running. Click to stop.</value></data>
+  <data name="Dashboard_EngineFlame_Idle" xml:space="preserve"><value>Engine idle. Click to stop.</value></data>
+  <data name="Dashboard_EngineFlame_Stopped" xml:space="preserve"><value>Engine stopped. Click to start.</value></data>
+  <data name="Dashboard_SlotCard_Configure" xml:space="preserve"><value>Configure this controller</value></data>
+  <data name="Dashboard_DeleteSlotConfirm_Format" xml:space="preserve"><value>{0} mapped device(s) will be unassigned.</value></data>
   <data name="FirstRun_Title" xml:space="preserve"><value>Light the Forge</value></data>
   <data name="FirstRun_Body" xml:space="preserve"><value>Connect a controller, pick an output type, and PadForge forges your inputs into it. A short tour shows you where everything lives.</value></data>
   <data name="FirstRun_Begin" xml:space="preserve"><value>Begin Tour</value></data>
@@ -460,6 +465,9 @@
   <data name="Devices_OnlineTotal" xml:space="preserve"><value> online / </value></data>
   <data name="Devices_Total" xml:space="preserve"><value> total</value></data>
   <data name="Devices_RemoveTooltip" xml:space="preserve"><value>Remove this device and its settings</value></data>
+  <data name="Devices_RemoveConfirmTitle" xml:space="preserve"><value>Remove Device</value></data>
+  <data name="Devices_RemoveConfirm_Format" xml:space="preserve"><value>{0} will be removed from the device list and its saved settings forgotten.</value></data>
+  <data name="Devices_DragAssignHint" xml:space="preserve"><value>Drag a device onto a sidebar controller card to assign it.</value></data>
   <data name="Devices_Product" xml:space="preserve"><value>Product: </value></data>
   <data name="Devices_Type" xml:space="preserve"><value>Type: </value></data>
   <data name="Devices_AppGUID" xml:space="preserve"><value>App GUID: </value></data>
@@ -469,6 +477,7 @@
   <data name="Devices_SubmitMapping" xml:space="preserve"><value>Submit Device Mapping</value></data>
   <data name="Devices_VCAssignment" xml:space="preserve"><value>Virtual Controller Assignment</value></data>
   <data name="Devices_ToggleAssignment" xml:space="preserve"><value>Toggle assignment</value></data>
+  <data name="Devices_NoSlotsHint" xml:space="preserve"><value>No virtual controller slots yet. Create one on the Dashboard to assign this device.</value></data>
   <data name="Devices_InputMode" xml:space="preserve"><value>Input Mode</value></data>
   <data name="Devices_ForceRaw" xml:space="preserve"><value>Force raw joystick mode (bypass gamepad remapping)</value></data>
   <data name="Devices_ForceRawTooltip" xml:space="preserve"><value>Read raw HID indices instead of SDL's gamepad mapping. Use when SDL misidentifies button/axis layout.</value></data>
@@ -635,6 +644,7 @@
   <data name="Pad_ResetAudioRumble" xml:space="preserve"><value>Reset Audio Rumble</value></data>
   <data name="Pad_ResetSection_Format" xml:space="preserve"><value>Reset {0}</value></data>
   <data name="Pad_ClearMappings" xml:space="preserve"><value>Clear Mappings</value></data>
+  <data name="Pad_ClearMappingsConfirm" xml:space="preserve"><value>Every mapping on this tab will be cleared. Source assignments, extra sources, and combine settings reset to defaults.</value></data>
   <data name="Pad_Lighting_PlayerPattern" xml:space="preserve"><value>Player Pattern</value></data>
   <data name="Pad_Lighting_MuteLedMode" xml:space="preserve"><value>Mute LED Mode</value></data>
   <data name="Pad_Lighting_LedBrightness" xml:space="preserve"><value>LED Brightness</value></data>
@@ -1245,14 +1255,14 @@
   <data name="Pad_Touchpad_Stick_Subtitle" xml:space="preserve"><value>Turn the touchpad into a virtual analog stick or D-pad. The output anchors where your finger first lands. Current position relative to that anchor drives the stick value and (optionally) latched D-pad direction bools.</value></data>
   <data name="Pad_Touchpad_StickEnabled" xml:space="preserve"><value>Enable Stick / D-Pad Output</value></data>
   <data name="Pad_Touchpad_StickEnabled_Tooltip" xml:space="preserve"><value>Surfaces Touchpad Stick X, Stick Y, and D-Pad descriptors in the mapping picker. Works alongside the existing touchpad-finger and touchpad-gesture sources, not instead of them.</value></data>
-  <data name="Pad_Touchpad_StickMaxRadius" xml:space="preserve"><value>Max Radius (0..1)</value></data>
-  <data name="Pad_Touchpad_StickInnerDeadzone" xml:space="preserve"><value>Inner Deadzone (0..1)</value></data>
+  <data name="Pad_Touchpad_StickMaxRadius" xml:space="preserve"><value>Max Radius</value></data>
+  <data name="Pad_Touchpad_StickInnerDeadzone" xml:space="preserve"><value>Inner Deadzone</value></data>
   <data name="Pad_Touchpad_StickDPadMode_Label" xml:space="preserve"><value>D-Pad Mode</value></data>
   <data name="Pad_Touchpad_StickDPadMode_Tooltip" xml:space="preserve"><value>Off skips D-pad output. 4-Way emits one cardinal at a time. 8-Way emits two cardinals for diagonals (the same way physical D-pads report NE / NW / SE / SW).</value></data>
   <data name="Pad_Touchpad_StickDPadMode_Off" xml:space="preserve"><value>Off</value></data>
   <data name="Pad_Touchpad_StickDPadMode_FourWay" xml:space="preserve"><value>4-Way</value></data>
   <data name="Pad_Touchpad_StickDPadMode_EightWay" xml:space="preserve"><value>8-Way</value></data>
-  <data name="Pad_Touchpad_StickDPadActivationThreshold" xml:space="preserve"><value>D-Pad Activation (0..1)</value></data>
+  <data name="Pad_Touchpad_StickDPadActivationThreshold" xml:space="preserve"><value>D-Pad Activation</value></data>
 
   <!-- Mouse Output card -->
   <data name="Pad_Touchpad_Mouse_Header" xml:space="preserve"><value>Mouse Output</value></data>
@@ -1540,6 +1550,12 @@
   <data name="Profiles_SaveAs" xml:space="preserve"><value>Save As</value></data>
   <data name="Profiles_Edit" xml:space="preserve"><value>Edit</value></data>
   <data name="Profiles_Load" xml:space="preserve"><value>Load</value></data>
+  <data name="Profiles_AutoSwitchNoRulesHint" xml:space="preserve"><value>No profile has an executable yet</value></data>
+  <data name="Profiles_BuiltIn" xml:space="preserve"><value>Built-in</value></data>
+  <data name="Profiles_SelectFirstHint" xml:space="preserve"><value>Select a profile first.</value></data>
+  <data name="Profiles_DefaultLockedHint" xml:space="preserve"><value>The built-in Default profile can't be edited or deleted.</value></data>
+  <data name="Profiles_DeleteConfirmTitle" xml:space="preserve"><value>Delete profile</value></data>
+  <data name="Profiles_DeleteConfirm_Format" xml:space="preserve"><value>Delete "{0}"? Its saved slot and mapping snapshot will be destroyed.</value></data>
 
   <!-- ═══ Profile Dialog ═══ -->
   <data name="ProfileDialog_SaveAs" xml:space="preserve"><value>Save As Profile</value></data>
@@ -1547,6 +1563,8 @@
   <data name="ProfileDialog_ProfileName" xml:space="preserve"><value>Profile Name:</value></data>
   <data name="ProfileDialog_DefaultName" xml:space="preserve"><value>New Profile</value></data>
   <data name="ProfileDialog_Executables" xml:space="preserve"><value>Executables (matched against foreground window):</value></data>
+  <data name="ProfileDialog_SaveAsDescription" xml:space="preserve"><value>Snapshots every slot's mappings and per-device settings under one name. Linked executables switch to it automatically.</value></data>
+  <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>Renames the profile and updates the executables that activate it. Stored mappings and settings are unchanged.</value></data>
 
   <!-- ═══ CopyFrom Dialog ═══ -->
   <data name="CopyFrom_Title" xml:space="preserve"><value>Copy Settings From...</value></data>
@@ -2166,6 +2184,7 @@
   <data name="Macro_Sound_BrowseFiles" xml:space="preserve">
     <value>Browse files…</value>
   </data>
+  <data name="PickSound_Title" xml:space="preserve"><value>Pick a Sound</value></data>
   <data name="About_NAudio" xml:space="preserve"><value>NAudio</value></data>
   <data name="About_NAudioDesc" xml:space="preserve"><value>WASAPI loopback capture for the controller-audio mirror and the audio-bass trigger rumble. By Mark Heath. MIT.</value></data>
   <data name="About_BouncyCastle" xml:space="preserve"><value>Bouncy Castle</value></data>

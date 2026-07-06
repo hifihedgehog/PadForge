@@ -213,6 +213,11 @@
   <data name="Dashboard_VirtualControllers" xml:space="preserve"><value>Controller virtuali</value></data>
   <data name="Dashboard_Mapped" xml:space="preserve"><value> assegnati, </value></data>
   <data name="Dashboard_Connected" xml:space="preserve"><value> connessi</value></data>
+  <data name="Dashboard_EngineFlame_Running" xml:space="preserve"><value>Motore in esecuzione. Clic per arrestarlo.</value></data>
+  <data name="Dashboard_EngineFlame_Idle" xml:space="preserve"><value>Motore inattivo. Clic per arrestarlo.</value></data>
+  <data name="Dashboard_EngineFlame_Stopped" xml:space="preserve"><value>Motore arrestato. Clic per avviarlo.</value></data>
+  <data name="Dashboard_SlotCard_Configure" xml:space="preserve"><value>Configura questo controller</value></data>
+  <data name="Dashboard_DeleteSlotConfirm_Format" xml:space="preserve"><value>Verrà rimossa l'assegnazione di {0} dispositivo/i.</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Server di movimento</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>Server DSU/CemuHook Motion Provider protocol per dati di giroscopio e accelerometro.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>Abilita server di movimento DSU (CemuHook Motion Provider protocol)</value></data>
@@ -317,6 +322,9 @@
   <data name="Devices_OnlineTotal" xml:space="preserve"><value> online / </value></data>
   <data name="Devices_Total" xml:space="preserve"><value> totale</value></data>
   <data name="Devices_RemoveTooltip" xml:space="preserve"><value>Rimuovi questo dispositivo e le sue impostazioni</value></data>
+  <data name="Devices_RemoveConfirmTitle" xml:space="preserve"><value>Rimuovi dispositivo</value></data>
+  <data name="Devices_RemoveConfirm_Format" xml:space="preserve"><value>{0} verrà rimosso dall'elenco dei dispositivi e le sue impostazioni salvate andranno perse.</value></data>
+  <data name="Devices_DragAssignHint" xml:space="preserve"><value>Trascina un dispositivo su una scheda controller nella barra laterale per assegnarlo.</value></data>
   <data name="Devices_Product" xml:space="preserve"><value>Prodotto: </value></data>
   <data name="Devices_Type" xml:space="preserve"><value>Tipo: </value></data>
   <data name="Devices_AppGUID" xml:space="preserve"><value>GUID app: </value></data>
@@ -326,6 +334,7 @@
   <data name="Devices_SubmitMapping" xml:space="preserve"><value>Invia mappatura dispositivo</value></data>
   <data name="Devices_VCAssignment" xml:space="preserve"><value>Assegnazione controller virtuale</value></data>
   <data name="Devices_ToggleAssignment" xml:space="preserve"><value>Cambia assegnazione</value></data>
+  <data name="Devices_NoSlotsHint" xml:space="preserve"><value>Ancora nessuno slot controller virtuale. Creane uno nel Pannello per assegnare questo dispositivo.</value></data>
   <data name="Devices_InputMode" xml:space="preserve"><value>Modalità di input</value></data>
   <data name="Devices_ForceRaw" xml:space="preserve"><value>Forza modalità joystick raw (ignora rimappatura gamepad)</value></data>
   <data name="Devices_ForceRawTooltip" xml:space="preserve"><value>Legge gli indici HID grezzi invece della mappatura gamepad di SDL. Usare quando SDL identifica erroneamente il layout di pulsanti/assi.</value></data>
@@ -818,6 +827,12 @@
   <data name="Profiles_SaveAs" xml:space="preserve"><value>Salva come</value></data>
   <data name="Profiles_Edit" xml:space="preserve"><value>Modifica</value></data>
   <data name="Profiles_Load" xml:space="preserve"><value>Carica</value></data>
+  <data name="Profiles_AutoSwitchNoRulesHint" xml:space="preserve"><value>Nessun profilo ha ancora un eseguibile</value></data>
+  <data name="Profiles_BuiltIn" xml:space="preserve"><value>Integrato</value></data>
+  <data name="Profiles_SelectFirstHint" xml:space="preserve"><value>Seleziona prima un profilo.</value></data>
+  <data name="Profiles_DefaultLockedHint" xml:space="preserve"><value>Il profilo Default integrato non può essere modificato né eliminato.</value></data>
+  <data name="Profiles_DeleteConfirmTitle" xml:space="preserve"><value>Elimina profilo</value></data>
+  <data name="Profiles_DeleteConfirm_Format" xml:space="preserve"><value>Eliminare "{0}"? Lo snapshot salvato di slot e mappature verrà eliminato definitivamente.</value></data>
 
   <!-- ═══ Profile Dialog ═══ -->
   <data name="ProfileDialog_SaveAs" xml:space="preserve"><value>Salva come profilo</value></data>
@@ -825,6 +840,8 @@
   <data name="ProfileDialog_ProfileName" xml:space="preserve"><value>Nome profilo:</value></data>
   <data name="ProfileDialog_DefaultName" xml:space="preserve"><value>Nuovo profilo</value></data>
   <data name="ProfileDialog_Executables" xml:space="preserve"><value>Eseguibili (confrontati con la finestra in primo piano):</value></data>
+  <data name="ProfileDialog_SaveAsDescription" xml:space="preserve"><value>Salva uno snapshot delle mappature di ogni slot e delle impostazioni per dispositivo sotto un unico nome. Gli eseguibili collegati vi passano automaticamente.</value></data>
+  <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>Rinomina il profilo e aggiorna gli eseguibili che lo attivano. Le mappature e le impostazioni salvate restano invariate.</value></data>
 
   <!-- ═══ CopyFrom Dialog ═══ -->
   <data name="CopyFrom_Title" xml:space="preserve"><value>Copia impostazioni da...</value></data>
@@ -1365,6 +1382,7 @@
   <data name="Pad_ResetAudioRumble" xml:space="preserve"><value>Ripristina vibrazione audio</value></data>
   <data name="Pad_ResetSection_Format" xml:space="preserve"><value>Ripristina {0}</value></data>
   <data name="Pad_ClearMappings" xml:space="preserve"><value>Cancella mappature</value></data>
+  <data name="Pad_ClearMappingsConfirm" xml:space="preserve"><value>Tutte le mappature di questa scheda verranno cancellate. Sorgenti assegnate, sorgenti extra e impostazioni di combinazione torneranno ai valori predefiniti.</value></data>
   <data name="Pad_Lighting_PlayerPattern" xml:space="preserve"><value>Pattern giocatore</value></data>
   <data name="Pad_Lighting_MuteLedMode" xml:space="preserve"><value>Modalità LED muto</value></data>
   <data name="Pad_Lighting_LedBrightness" xml:space="preserve"><value>Luminosità LED</value></data>
@@ -1684,14 +1702,14 @@
   <data name="Pad_Touchpad_Stick_Subtitle" xml:space="preserve"><value>Trasforma il touchpad in uno stick analogico virtuale o un D-pad. L'uscita si ancora dove il dito si appoggia per la prima volta. La posizione corrente relativa a quell'ancora controlla il valore dello stick e, opzionalmente, i bit di direzione del D-pad.</value></data>
   <data name="Pad_Touchpad_StickEnabled" xml:space="preserve"><value>Abilita Uscita Stick / D-Pad</value></data>
   <data name="Pad_Touchpad_StickEnabled_Tooltip" xml:space="preserve"><value>Espone i descrittori Touchpad Stick X, Stick Y e D-Pad nel selettore di mapping. Funziona insieme alle sorgenti dito e gesti del touchpad esistenti, non al loro posto.</value></data>
-  <data name="Pad_Touchpad_StickMaxRadius" xml:space="preserve"><value>Raggio Massimo (0..1)</value></data>
-  <data name="Pad_Touchpad_StickInnerDeadzone" xml:space="preserve"><value>Zona Morta Interna (0..1)</value></data>
+  <data name="Pad_Touchpad_StickMaxRadius" xml:space="preserve"><value>Raggio Massimo</value></data>
+  <data name="Pad_Touchpad_StickInnerDeadzone" xml:space="preserve"><value>Zona Morta Interna</value></data>
   <data name="Pad_Touchpad_StickDPadMode_Label" xml:space="preserve"><value>Modalità D-Pad</value></data>
   <data name="Pad_Touchpad_StickDPadMode_Tooltip" xml:space="preserve"><value>Off salta l'uscita D-pad. 4 Direzioni emette una cardinale alla volta. 8 Direzioni emette due cardinali per le diagonali (come i D-pad fisici riportano NE / NO / SE / SO).</value></data>
   <data name="Pad_Touchpad_StickDPadMode_Off" xml:space="preserve"><value>Off</value></data>
   <data name="Pad_Touchpad_StickDPadMode_FourWay" xml:space="preserve"><value>4 Direzioni</value></data>
   <data name="Pad_Touchpad_StickDPadMode_EightWay" xml:space="preserve"><value>8 Direzioni</value></data>
-  <data name="Pad_Touchpad_StickDPadActivationThreshold" xml:space="preserve"><value>Attivazione D-Pad (0..1)</value></data>
+  <data name="Pad_Touchpad_StickDPadActivationThreshold" xml:space="preserve"><value>Attivazione D-Pad</value></data>
 
   <data name="Pad_ResetTouchpadDetection" xml:space="preserve"><value>Ripristina rilevamento gesti</value></data>
   <data name="Pad_ResetTouchpadInBox" xml:space="preserve"><value>Ripristina gesti integrati</value></data>
@@ -2073,6 +2091,7 @@
   <data name="Macro_Sound_BrowseFiles" xml:space="preserve">
     <value>Sfoglia file…</value>
   </data>
+  <data name="PickSound_Title" xml:space="preserve"><value>Scegli un suono</value></data>
   <data name="About_NAudio" xml:space="preserve"><value>NAudio</value></data>
   <data name="About_NAudioDesc" xml:space="preserve"><value>Acquisizione loopback WASAPI per il mirroring audio del controller e la vibrazione dei grilletti dai bassi. Di Mark Heath. MIT.</value></data>
   <data name="About_BouncyCastle" xml:space="preserve"><value>Bouncy Castle</value></data>

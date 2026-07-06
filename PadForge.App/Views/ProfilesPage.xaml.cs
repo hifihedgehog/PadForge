@@ -157,7 +157,17 @@ namespace PadForge.Views
                 return;
 
             if (shortcut.IsRecording)
-                return; // Recording in progress — timeout will auto-stop.
+            {
+                // Stop control (#175 item 8): a click during recording ends
+                // the capture through the same path the timeout takes, so it
+                // keeps the last-held combo (or cancels when nothing was
+                // pressed yet) instead of dead-returning.
+                if (_recordingShortcut == shortcut)
+                    StopRecording();
+                else
+                    shortcut.CancelRecording(); // Stale flag, no live session.
+                return;
+            }
 
             // Cancel any in-progress recording on another shortcut.
             if (_recordingShortcut != null)

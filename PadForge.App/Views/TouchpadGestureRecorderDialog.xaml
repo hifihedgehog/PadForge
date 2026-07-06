@@ -6,117 +6,155 @@
         ExtendsContentIntoTitleBar="True"
         WindowBackdropType="Mica"
         Title="{Binding Recorder_Title, Source={x:Static strings:Strings.Instance}}"
-        Height="600" Width="640"
+        Height="660" Width="640"
         WindowStartupLocation="CenterOwner"
         ResizeMode="NoResize">
 
-    <!-- No local ThemesDictionary — the App.xaml's ThemesDictionary is
+    <!-- No local ThemesDictionary. The App.xaml's ThemesDictionary is
          theme-aware (ApplicationThemeManager.Apply mutates it on theme
          change). A local copy here would lock the dialog to whichever
          theme was hardcoded in XAML regardless of the user's actual
          light/dark choice. Inheriting from Application.Resources gives
          the dialog correct theme colors on both modes. -->
 
-    <Grid Margin="16">
+    <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <!-- Subtitle -->
-        <TextBlock Grid.Row="0"
-                   Text="{Binding Recorder_Subtitle, Source={x:Static strings:Strings.Instance}}"
-                   TextWrapping="Wrap" Margin="0,0,0,12"
-                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
-
-        <!-- Device / pad target -->
-        <TextBlock Grid.Row="1"
-                   x:Name="DeviceLabel"
-                   FontSize="13" FontWeight="SemiBold"
-                   Foreground="{DynamicResource TextFillColorPrimaryBrush}"
-                   Margin="0,0,0,6"/>
-
-        <!-- Status + samples-captured counter -->
-        <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0,0,0,8">
-            <TextBlock x:Name="StatusText"
-                       Text="{Binding Recorder_Waiting, Source={x:Static strings:Strings.Instance}}"
-                       FontSize="13" VerticalAlignment="Center"/>
-            <TextBlock x:Name="SamplesText"
-                       FontFamily="{StaticResource TelemetryFontFamily}"
-                       FontSize="13" VerticalAlignment="Center" Margin="20,0,0,0"
-                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
-        </StackPanel>
-
-        <!-- Drawing surface — mirrors live device finger paths when a
-             real touchpad target is wired; accepts mouse / touch /
-             stylus on itself when no live device is targeted. -->
-        <Border Grid.Row="3"
-                BorderBrush="{DynamicResource TextFillColorDisabledBrush}"
-                BorderThickness="1"
-                CornerRadius="4"
-                Background="{DynamicResource SolidBackgroundFillColorBaseBrush}">
-            <Canvas x:Name="DrawingCanvas"
-                    Background="Transparent"
-                    IsManipulationEnabled="True"
-                    ClipToBounds="True"
-                    TouchDown="DrawingCanvas_TouchDown"
-                    TouchMove="DrawingCanvas_TouchMove"
-                    TouchUp="DrawingCanvas_TouchUp"
-                    MouseDown="DrawingCanvas_MouseDown"
-                    MouseMove="DrawingCanvas_MouseMove"
-                    MouseUp="DrawingCanvas_MouseUp"
-                    StylusDown="DrawingCanvas_StylusDown"/>
+        <!-- Dialog head (#175 item 11): ExtendsContentIntoTitleBar strips the
+             system title bar, so the localized Title never rendered anywhere.
+             Ember tick + display-face title makes it visible. The X stands in
+             for the caption close button WindowChrome no longer provides. -->
+        <Border Padding="14"
+                BorderBrush="{DynamicResource SteelLineSoftBrush}"
+                BorderThickness="0,0,0,1">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Rectangle Width="3" Height="14" RadiusX="1.5" RadiusY="1.5"
+                           Fill="{DynamicResource EmberBrush}"
+                           VerticalAlignment="Center" Margin="0,0,8,0"/>
+                <TextBlock Grid.Column="1"
+                           Text="{Binding Title, RelativeSource={RelativeSource AncestorType=Window}}"
+                           FontFamily="{StaticResource DisplayFontFamily}"
+                           FontWeight="SemiBold" FontSize="15"
+                           Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+                           VerticalAlignment="Center" Margin="0,0,8,0"
+                           TextTrimming="CharacterEllipsis"/>
+                <ui:Button Grid.Column="2" Style="{StaticResource EmberIconButton}"
+                           VerticalAlignment="Center" Click="CancelBtn_Click"
+                           ToolTip="{Binding Common_Close, Source={x:Static strings:Strings.Instance}}">
+                    <TextBlock Text="&#xE8BB;" FontFamily="Segoe MDL2 Assets" FontSize="10"/>
+                </ui:Button>
+            </Grid>
         </Border>
 
-        <!-- Name field + validation -->
-        <StackPanel Grid.Row="4" Orientation="Horizontal" Margin="0,12,0,0">
-            <TextBlock Text="{Binding Recorder_NameLabel, Source={x:Static strings:Strings.Instance}}"
-                       VerticalAlignment="Center" Margin="0,0,8,0"/>
-            <TextBox x:Name="NameBox" Width="260" VerticalAlignment="Center"
-                     TextChanged="NameBox_TextChanged"/>
-            <TextBlock x:Name="ValidationText"
-                       Foreground="{DynamicResource SystemFillColorCriticalBrush}"
-                       FontSize="12"
-                       VerticalAlignment="Center" Margin="12,0,0,0"/>
-        </StackPanel>
+        <Grid Grid.Row="1" Margin="16">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
 
-        <!-- Sample-count picker -->
-        <StackPanel Grid.Row="5" Orientation="Horizontal" Margin="0,8,0,0">
-            <TextBlock Text="{Binding Recorder_SampleCount_Label, Source={x:Static strings:Strings.Instance}}"
-                       VerticalAlignment="Center" Margin="0,0,8,0"/>
-            <ComboBox x:Name="SampleCountBox" Width="60" SelectedIndex="1"
-                      VerticalAlignment="Center"
-                      SelectionChanged="SampleCountBox_SelectionChanged"
-                      ScrollViewer.VerticalScrollBarVisibility="Visible">
-                <ComboBoxItem Content="1"/>
-                <ComboBoxItem Content="3"/>
-                <ComboBoxItem Content="5"/>
-            </ComboBox>
-            <TextBlock Text="{Binding Recorder_SampleCount_Hint, Source={x:Static strings:Strings.Instance}}"
-                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                       FontSize="12" VerticalAlignment="Center" Margin="12,0,0,0"
-                       TextWrapping="Wrap"/>
-        </StackPanel>
+            <!-- Subtitle -->
+            <TextBlock Grid.Row="0"
+                       Text="{Binding Recorder_Subtitle, Source={x:Static strings:Strings.Instance}}"
+                       TextWrapping="Wrap" Margin="0,0,0,12"
+                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
 
-        <!-- Buttons -->
-        <StackPanel Grid.Row="6" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,16,0,0">
-            <Button x:Name="TryAgainBtn"
-                    Content="{Binding Recorder_TryAgain, Source={x:Static strings:Strings.Instance}}"
-                    MinWidth="90" Margin="0,0,8,0"
-                    Click="TryAgainBtn_Click"/>
-            <Button x:Name="SaveBtn"
-                    Content="{Binding Common_Save, Source={x:Static strings:Strings.Instance}}"
-                    MinWidth="90" Margin="0,0,8,0"
-                    IsEnabled="False"
-                    Click="SaveBtn_Click"/>
-            <Button Content="{Binding Common_Cancel, Source={x:Static strings:Strings.Instance}}"
-                    MinWidth="90"
-                    Click="CancelBtn_Click"/>
-        </StackPanel>
+            <!-- Device / pad target -->
+            <TextBlock Grid.Row="1"
+                       x:Name="DeviceLabel"
+                       FontSize="13" FontWeight="SemiBold"
+                       Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+                       Margin="0,0,0,6"/>
+
+            <!-- Status + samples-captured counter -->
+            <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0,0,0,8">
+                <TextBlock x:Name="StatusText"
+                           Text="{Binding Recorder_Waiting, Source={x:Static strings:Strings.Instance}}"
+                           FontSize="13" VerticalAlignment="Center"/>
+                <TextBlock x:Name="SamplesText"
+                           FontFamily="{StaticResource TelemetryFontFamily}"
+                           FontSize="13" VerticalAlignment="Center" Margin="20,0,0,0"
+                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+            </StackPanel>
+
+            <!-- Drawing surface: mirrors live device finger paths when a
+                 real touchpad target is wired; accepts mouse / touch /
+                 stylus on itself when no live device is targeted. -->
+            <Border Grid.Row="3"
+                    BorderBrush="{DynamicResource TextFillColorDisabledBrush}"
+                    BorderThickness="1"
+                    CornerRadius="4"
+                    Background="{DynamicResource SolidBackgroundFillColorBaseBrush}">
+                <Canvas x:Name="DrawingCanvas"
+                        Background="Transparent"
+                        IsManipulationEnabled="True"
+                        ClipToBounds="True"
+                        TouchDown="DrawingCanvas_TouchDown"
+                        TouchMove="DrawingCanvas_TouchMove"
+                        TouchUp="DrawingCanvas_TouchUp"
+                        MouseDown="DrawingCanvas_MouseDown"
+                        MouseMove="DrawingCanvas_MouseMove"
+                        MouseUp="DrawingCanvas_MouseUp"
+                        StylusDown="DrawingCanvas_StylusDown"/>
+            </Border>
+
+            <!-- Name field + validation -->
+            <StackPanel Grid.Row="4" Orientation="Horizontal" Margin="0,12,0,0">
+                <TextBlock Text="{Binding Recorder_NameLabel, Source={x:Static strings:Strings.Instance}}"
+                           VerticalAlignment="Center" Margin="0,0,8,0"/>
+                <TextBox x:Name="NameBox" Width="260" VerticalAlignment="Center"
+                         TextChanged="NameBox_TextChanged"/>
+                <TextBlock x:Name="ValidationText"
+                           Foreground="{DynamicResource SystemFillColorCriticalBrush}"
+                           FontSize="12"
+                           VerticalAlignment="Center" Margin="12,0,0,0"/>
+            </StackPanel>
+
+            <!-- Sample-count picker -->
+            <StackPanel Grid.Row="5" Orientation="Horizontal" Margin="0,8,0,0">
+                <TextBlock Text="{Binding Recorder_SampleCount_Label, Source={x:Static strings:Strings.Instance}}"
+                           VerticalAlignment="Center" Margin="0,0,8,0"/>
+                <ComboBox x:Name="SampleCountBox" Width="60" SelectedIndex="1"
+                          VerticalAlignment="Center"
+                          SelectionChanged="SampleCountBox_SelectionChanged"
+                          ScrollViewer.VerticalScrollBarVisibility="Visible">
+                    <ComboBoxItem Content="1"/>
+                    <ComboBoxItem Content="3"/>
+                    <ComboBoxItem Content="5"/>
+                </ComboBox>
+                <TextBlock Text="{Binding Recorder_SampleCount_Hint, Source={x:Static strings:Strings.Instance}}"
+                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                           FontSize="12" VerticalAlignment="Center" Margin="12,0,0,0"
+                           TextWrapping="Wrap"/>
+            </StackPanel>
+
+            <!-- Buttons -->
+            <StackPanel Grid.Row="6" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,16,0,0">
+                <Button x:Name="TryAgainBtn"
+                        Content="{Binding Recorder_TryAgain, Source={x:Static strings:Strings.Instance}}"
+                        MinWidth="90" Margin="0,0,8,0"
+                        Click="TryAgainBtn_Click"/>
+                <Button x:Name="SaveBtn"
+                        Content="{Binding Common_Save, Source={x:Static strings:Strings.Instance}}"
+                        MinWidth="90" Margin="0,0,8,0"
+                        IsEnabled="False"
+                        Click="SaveBtn_Click"/>
+                <Button Content="{Binding Common_Cancel, Source={x:Static strings:Strings.Instance}}"
+                        MinWidth="90"
+                        Click="CancelBtn_Click"/>
+            </StackPanel>
+        </Grid>
     </Grid>
 </ui:FluentWindow>

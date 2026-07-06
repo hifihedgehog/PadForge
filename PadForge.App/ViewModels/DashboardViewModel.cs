@@ -241,6 +241,18 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _dsuServerStatus, value ?? Strings.Instance.Common_Stopped);
         }
 
+        private bool _isDsuServerRunning;
+
+        /// <summary>Serving truth for the DSU card flame (#175 phase 2 item
+        /// 2): tracks the actual server lifecycle, not the enable checkbox.
+        /// Set by InputService at the same points that write
+        /// <see cref="DsuServerStatus"/>, so flame and status text agree.</summary>
+        public bool IsDsuServerRunning
+        {
+            get => _isDsuServerRunning;
+            set => SetProperty(ref _isDsuServerRunning, value);
+        }
+
         // ─────────────────────────────────────────────
         //  Web Controller Server
         // ─────────────────────────────────────────────
@@ -274,6 +286,17 @@ namespace PadForge.ViewModels
         {
             get => _webControllerStatus;
             set => SetProperty(ref _webControllerStatus, value ?? Strings.Instance.Common_Stopped);
+        }
+
+        private bool _isWebControllerRunning;
+
+        /// <summary>Serving truth for the Web Controller card flame (#175
+        /// phase 2 item 2): actual server lifecycle, not the enable checkbox.
+        /// Set by InputService alongside <see cref="WebControllerStatus"/>.</summary>
+        public bool IsWebControllerRunning
+        {
+            get => _isWebControllerRunning;
+            set => SetProperty(ref _isWebControllerRunning, value);
         }
 
         private int _webControllerClientCount;
@@ -333,6 +356,19 @@ namespace PadForge.ViewModels
         {
             get => _remoteLinkStatus;
             set => SetProperty(ref _remoteLinkStatus, value ?? Strings.Instance.Common_Stopped);
+        }
+
+        private bool _isRemoteLinkRunning;
+
+        /// <summary>Serving truth for the Remote Link card flame (#175 phase
+        /// 2 item 2): true only while the link server object is live. The
+        /// status text can carry identity-unlock errors while the server
+        /// never started, so the flame keys on this, not on the text or the
+        /// enable checkbox. Set by InputService.</summary>
+        public bool IsRemoteLinkRunning
+        {
+            get => _isRemoteLinkRunning;
+            set => SetProperty(ref _isRemoteLinkRunning, value);
         }
 
         private string _remoteLinkConnectHost = "";

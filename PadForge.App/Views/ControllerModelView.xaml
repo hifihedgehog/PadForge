@@ -47,7 +47,9 @@
              space stays click-through to the viewport. -->
         <Canvas x:Name="AnnotationCanvas" Visibility="Collapsed" ClipToBounds="True"/>
 
-        <!-- Annotation toggle + Reset View -->
+        <!-- Annotation toggle + Reset View. Tag glyph (E8EC), not the
+             info glyph: info is the About/help vocabulary, this button
+             puts labels on the model (#175 item 6). -->
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right"
                     VerticalAlignment="Top" Margin="0,8,8,0">
             <ui:Button x:Name="AnnotationToggleButton"
@@ -57,7 +59,7 @@
                        ToolTip="{Binding Pad_ToggleAnnotations, Source={x:Static strings:Strings.Instance}}"
                        Click="AnnotationToggle_Click">
                 <TextBlock x:Name="AnnotationToggleGlyph" FontFamily="Segoe MDL2 Assets"
-                           FontSize="14" Text="&#xE946;"/>
+                           FontSize="14" Text="&#xE8EC;"/>
             </ui:Button>
             <Button x:Name="ResetViewButton"
                     Content="{Binding Pad_ResetView, Source={x:Static strings:Strings.Instance}}"

@@ -7,7 +7,7 @@
         ExtendsContentIntoTitleBar="True"
         WindowBackdropType="Mica"
         Title="{Binding ManageProfiles_Title, Source={x:Static strings:Strings.Instance}}"
-        Height="600" Width="640"
+        Height="660" Width="640"
         WindowStartupLocation="CenterOwner"
         ResizeMode="NoResize">
 
@@ -18,92 +18,130 @@
         </ResourceDictionary>
     </ui:FluentWindow.Resources>
 
-    <Grid Margin="16">
+    <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <!-- Dialog description -->
-        <TextBlock Text="{Binding ManageProfiles_Description, Source={x:Static strings:Strings.Instance}}"
-                   TextWrapping="Wrap" Margin="0,0,0,12"
-                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+        <!-- Dialog head (#175 item 11): ExtendsContentIntoTitleBar strips the
+             system title bar, so the localized Title never rendered anywhere.
+             Ember tick + display-face title makes it visible. The X stands in
+             for the caption close button WindowChrome no longer provides. -->
+        <Border Padding="14"
+                BorderBrush="{DynamicResource SteelLineSoftBrush}"
+                BorderThickness="0,0,0,1">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Rectangle Width="3" Height="14" RadiusX="1.5" RadiusY="1.5"
+                           Fill="{DynamicResource EmberBrush}"
+                           VerticalAlignment="Center" Margin="0,0,8,0"/>
+                <TextBlock Grid.Column="1"
+                           Text="{Binding Title, RelativeSource={RelativeSource AncestorType=Window}}"
+                           FontFamily="{StaticResource DisplayFontFamily}"
+                           FontWeight="SemiBold" FontSize="15"
+                           Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+                           VerticalAlignment="Center" Margin="0,0,8,0"
+                           TextTrimming="CharacterEllipsis"/>
+                <ui:Button Grid.Column="2" Style="{StaticResource EmberIconButton}"
+                           VerticalAlignment="Center" Click="CloseButton_Click"
+                           ToolTip="{Binding Common_Close, Source={x:Static strings:Strings.Instance}}">
+                    <TextBlock Text="&#xE8BB;" FontFamily="Segoe MDL2 Assets" FontSize="10"/>
+                </ui:Button>
+            </Grid>
+        </Border>
 
-        <!-- SECTION 1 — Imported profiles -->
-        <TextBlock Grid.Row="1" x:Name="ImportedHeaderText" Style="{StaticResource CardTitle}"
-                   Margin="0,4,0,6"/>
+        <Grid Grid.Row="1" Margin="16">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
 
-        <ListBox Grid.Row="2" x:Name="ImportedList" MinHeight="120"
-                 SelectionMode="Single"
-                 SelectionChanged="ImportedList_SelectionChanged">
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <StackPanel Margin="4,3">
-                        <TextBlock Text="{Binding Name}" FontWeight="SemiBold"/>
-                        <TextBlock Text="{Binding Id}" FontFamily="{StaticResource TelemetryFontFamily}"
-                                   FontSize="12" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
-                    </StackPanel>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
+            <!-- Dialog description -->
+            <TextBlock Text="{Binding ManageProfiles_Description, Source={x:Static strings:Strings.Instance}}"
+                       TextWrapping="Wrap" Margin="0,0,0,12"
+                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
 
-        <StackPanel Grid.Row="3" Orientation="Horizontal" Margin="0,8,0,0">
-            <Button x:Name="ImportFromFileButton"
-                    Content="{Binding ManageProfiles_ImportFromFile, Source={x:Static strings:Strings.Instance}}"
-                    MinWidth="110" Click="ImportFromFileButton_Click"/>
-            <Button x:Name="ExportButton"
-                    Content="{Binding ManageProfiles_Export, Source={x:Static strings:Strings.Instance}}"
-                    MinWidth="90" Margin="8,0,0,0" IsEnabled="False" Click="ExportButton_Click"/>
-            <Button x:Name="DeleteButton"
-                    Content="{Binding ManageProfiles_Delete, Source={x:Static strings:Strings.Instance}}"
-                    MinWidth="90" Margin="8,0,0,0" IsEnabled="False" Click="DeleteButton_Click"/>
-        </StackPanel>
+            <!-- SECTION 1. Imported profiles -->
+            <TextBlock Grid.Row="1" x:Name="ImportedHeaderText" Style="{StaticResource CardTitle}"
+                       Margin="0,4,0,6"/>
 
-        <!-- SECTION 2 — Connected devices -->
-        <StackPanel Grid.Row="4" Orientation="Horizontal" Margin="0,16,0,6">
-            <TextBlock Text="{Binding ManageProfiles_ConnectedDevices, Source={x:Static strings:Strings.Instance}}"
-                       Style="{StaticResource CardTitle}"/>
-            <Button x:Name="RefreshButton"
-                    Content="{Binding ImportFromDevice_Refresh, Source={x:Static strings:Strings.Instance}}"
-                    Margin="12,0,0,0" Padding="10,2" Click="RefreshButton_Click"/>
-        </StackPanel>
+            <ListBox Grid.Row="2" x:Name="ImportedList" MinHeight="120"
+                     SelectionMode="Single"
+                     SelectionChanged="ImportedList_SelectionChanged">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Margin="4,3">
+                            <TextBlock Text="{Binding Name}" FontWeight="SemiBold"/>
+                            <TextBlock Text="{Binding Id}" FontFamily="{StaticResource TelemetryFontFamily}"
+                                       FontSize="12" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
 
-        <ListBox Grid.Row="5" x:Name="DeviceList" MinHeight="120"
-                 SelectionMode="Single"
-                 SelectionChanged="DeviceList_SelectionChanged"
-                 MouseDoubleClick="DeviceList_MouseDoubleClick">
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <StackPanel Margin="4,3">
-                        <TextBlock Text="{Binding DisplayName}" FontWeight="SemiBold"/>
-                        <TextBlock Text="{Binding DetailLine}" FontFamily="{StaticResource TelemetryFontFamily}"
-                                   FontSize="12" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
-                    </StackPanel>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
+            <StackPanel Grid.Row="3" Orientation="Horizontal" Margin="0,8,0,0">
+                <Button x:Name="ImportFromFileButton"
+                        Content="{Binding ManageProfiles_ImportFromFile, Source={x:Static strings:Strings.Instance}}"
+                        MinWidth="110" Click="ImportFromFileButton_Click"/>
+                <Button x:Name="ExportButton"
+                        Content="{Binding ManageProfiles_Export, Source={x:Static strings:Strings.Instance}}"
+                        MinWidth="90" Margin="8,0,0,0" IsEnabled="False" Click="ExportButton_Click"/>
+                <Button x:Name="DeleteButton"
+                        Content="{Binding ManageProfiles_Delete, Source={x:Static strings:Strings.Instance}}"
+                        MinWidth="90" Margin="8,0,0,0" IsEnabled="False" Click="DeleteButton_Click"/>
+            </StackPanel>
 
-        <TextBlock Grid.Row="6" x:Name="StatusText" Margin="0,8,0,0"
-                   FontSize="12" TextWrapping="Wrap"
-                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+            <!-- SECTION 2. Connected devices -->
+            <StackPanel Grid.Row="4" Orientation="Horizontal" Margin="0,16,0,6">
+                <TextBlock Text="{Binding ManageProfiles_ConnectedDevices, Source={x:Static strings:Strings.Instance}}"
+                           Style="{StaticResource CardTitle}"/>
+                <Button x:Name="RefreshButton"
+                        Content="{Binding ImportFromDevice_Refresh, Source={x:Static strings:Strings.Instance}}"
+                        Margin="12,0,0,0" Padding="10,2" Click="RefreshButton_Click"/>
+            </StackPanel>
 
-        <!-- Footer buttons -->
-        <StackPanel Grid.Row="7" Orientation="Horizontal"
-                    HorizontalAlignment="Right" Margin="0,12,0,0">
-            <Button x:Name="ImportButton"
-                    Content="{Binding ImportFromDevice_Import, Source={x:Static strings:Strings.Instance}}"
-                    MinWidth="90" Margin="0,0,8,0" IsEnabled="False"
-                    IsDefault="True" Click="ImportButton_Click"
-                    Foreground="{DynamicResource TextOnAccentFillColorPrimaryBrush}"
-                    Background="{DynamicResource AccentFillColorDefaultBrush}"/>
-            <Button Content="{Binding ManageProfiles_Close, Source={x:Static strings:Strings.Instance}}"
-                    MinWidth="90" IsCancel="True" Click="CloseButton_Click"/>
-        </StackPanel>
+            <ListBox Grid.Row="5" x:Name="DeviceList" MinHeight="120"
+                     SelectionMode="Single"
+                     SelectionChanged="DeviceList_SelectionChanged"
+                     MouseDoubleClick="DeviceList_MouseDoubleClick">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Margin="4,3">
+                            <TextBlock Text="{Binding DisplayName}" FontWeight="SemiBold"/>
+                            <TextBlock Text="{Binding DetailLine}" FontFamily="{StaticResource TelemetryFontFamily}"
+                                       FontSize="12" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+
+            <TextBlock Grid.Row="6" x:Name="StatusText" Margin="0,8,0,0"
+                       FontSize="12" TextWrapping="Wrap"
+                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+
+            <!-- Footer buttons -->
+            <StackPanel Grid.Row="7" Orientation="Horizontal"
+                        HorizontalAlignment="Right" Margin="0,12,0,0">
+                <Button x:Name="ImportButton"
+                        Content="{Binding ImportFromDevice_Import, Source={x:Static strings:Strings.Instance}}"
+                        MinWidth="90" Margin="0,0,8,0" IsEnabled="False"
+                        IsDefault="True" Click="ImportButton_Click"
+                        Foreground="{DynamicResource TextOnAccentFillColorPrimaryBrush}"
+                        Background="{DynamicResource AccentFillColorDefaultBrush}"/>
+                <Button Content="{Binding ManageProfiles_Close, Source={x:Static strings:Strings.Instance}}"
+                        MinWidth="90" IsCancel="True" Click="CloseButton_Click"/>
+            </StackPanel>
+        </Grid>
     </Grid>
 </ui:FluentWindow>

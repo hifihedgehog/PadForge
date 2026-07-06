@@ -6,7 +6,7 @@
         ExtendsContentIntoTitleBar="True"
         WindowBackdropType="Mica"
         Title="{Binding CopyFrom_Title, Source={x:Static strings:Strings.Instance}}"
-        Height="360" Width="420"
+        Height="420" Width="420"
         WindowStartupLocation="CenterOwner"
         ResizeMode="NoResize">
 
@@ -17,42 +17,80 @@
         </ResourceDictionary>
     </ui:FluentWindow.Resources>
 
-    <Grid Margin="16">
+    <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <TextBlock Text="{Binding CopyFrom_SelectDevice, Source={x:Static strings:Strings.Instance}}"
-                   Margin="0,0,0,12"/>
+        <!-- Dialog head (#175 item 11): ExtendsContentIntoTitleBar strips the
+             system title bar, so the localized Title never rendered anywhere.
+             Ember tick + display-face title makes it visible. The X stands in
+             for the caption close button WindowChrome no longer provides. -->
+        <Border Padding="14"
+                BorderBrush="{DynamicResource SteelLineSoftBrush}"
+                BorderThickness="0,0,0,1">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Rectangle Width="3" Height="14" RadiusX="1.5" RadiusY="1.5"
+                           Fill="{DynamicResource EmberBrush}"
+                           VerticalAlignment="Center" Margin="0,0,8,0"/>
+                <TextBlock Grid.Column="1"
+                           Text="{Binding Title, RelativeSource={RelativeSource AncestorType=Window}}"
+                           FontFamily="{StaticResource DisplayFontFamily}"
+                           FontWeight="SemiBold" FontSize="15"
+                           Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+                           VerticalAlignment="Center" Margin="0,0,8,0"
+                           TextTrimming="CharacterEllipsis"/>
+                <ui:Button Grid.Column="2" Style="{StaticResource EmberIconButton}"
+                           VerticalAlignment="Center" Click="CancelButton_Click"
+                           ToolTip="{Binding Common_Close, Source={x:Static strings:Strings.Instance}}">
+                    <TextBlock Text="&#xE8BB;" FontFamily="Segoe MDL2 Assets" FontSize="10"/>
+                </ui:Button>
+            </Grid>
+        </Border>
 
-        <ListBox Grid.Row="1" x:Name="DeviceList"
-                 SelectionMode="Single"
-                 MouseDoubleClick="DeviceList_MouseDoubleClick">
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <StackPanel Margin="4,2">
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="{Binding Name}" FontWeight="SemiBold"/>
-                            <TextBlock Text="{Binding LayoutLabel}" FontSize="12"
-                                       Margin="8,0,0,0" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                       VerticalAlignment="Center"/>
+        <Grid Grid.Row="1" Margin="16">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <TextBlock Text="{Binding CopyFrom_SelectDevice, Source={x:Static strings:Strings.Instance}}"
+                       Margin="0,0,0,12"/>
+
+            <ListBox Grid.Row="1" x:Name="DeviceList"
+                     SelectionMode="Single"
+                     MouseDoubleClick="DeviceList_MouseDoubleClick">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Margin="4,2">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding Name}" FontWeight="SemiBold"/>
+                                <TextBlock Text="{Binding LayoutLabel}" FontSize="12"
+                                           Margin="8,0,0,0" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                           VerticalAlignment="Center"/>
+                            </StackPanel>
+                            <TextBlock Text="{Binding SlotLabel}" FontFamily="{StaticResource TelemetryFontFamily}" FontSize="12" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
                         </StackPanel>
-                        <TextBlock Text="{Binding SlotLabel}" FontFamily="{StaticResource TelemetryFontFamily}" FontSize="12" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
-                    </StackPanel>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
 
-        <StackPanel Grid.Row="2" Orientation="Horizontal"
-                    HorizontalAlignment="Right" Margin="0,12,0,0">
-            <Button Content="{Binding Common_OK, Source={x:Static strings:Strings.Instance}}" MinWidth="80" Margin="0,0,8,0"
-                    IsDefault="True" Click="OkButton_Click"
-                    Foreground="{DynamicResource TextOnAccentFillColorPrimaryBrush}"
-                    Background="{DynamicResource AccentFillColorDefaultBrush}"/>
-            <Button Content="{Binding Common_Cancel, Source={x:Static strings:Strings.Instance}}" MinWidth="80"
-                    IsCancel="True" Click="CancelButton_Click"/>
-        </StackPanel>
+            <StackPanel Grid.Row="2" Orientation="Horizontal"
+                        HorizontalAlignment="Right" Margin="0,12,0,0">
+                <Button Content="{Binding Common_OK, Source={x:Static strings:Strings.Instance}}" MinWidth="80" Margin="0,0,8,0"
+                        IsDefault="True" Click="OkButton_Click"
+                        Foreground="{DynamicResource TextOnAccentFillColorPrimaryBrush}"
+                        Background="{DynamicResource AccentFillColorDefaultBrush}"/>
+                <Button Content="{Binding Common_Cancel, Source={x:Static strings:Strings.Instance}}" MinWidth="80"
+                        IsCancel="True" Click="CancelButton_Click"/>
+            </StackPanel>
+        </Grid>
     </Grid>
 </ui:FluentWindow>

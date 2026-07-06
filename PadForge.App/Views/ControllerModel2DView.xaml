@@ -21,7 +21,8 @@
         <Canvas x:Name="AnnotationCanvas" Visibility="Collapsed" ClipToBounds="True"/>
 
         <!-- Annotation toggle: per-view chrome, same top-right position as
-             the 3D host's toggle (PadPage's 2D/3D switch owns top-left). -->
+             the 3D host's toggle (PadPage's 2D/3D switch owns top-left).
+             Tag glyph (E8EC) to match the 3D twin (#175 item 6). -->
         <ui:Button x:Name="AnnotationToggleButton"
                    AutomationProperties.AutomationId="AnnotationToggle2D"
                    Style="{StaticResource EmberIconButton}"
@@ -30,7 +31,7 @@
                    ToolTip="{Binding Pad_ToggleAnnotations, Source={x:Static strings:Strings.Instance}}"
                    Click="AnnotationToggle_Click">
             <TextBlock x:Name="AnnotationToggleGlyph" FontFamily="Segoe MDL2 Assets"
-                       FontSize="14" Text="&#xE946;"/>
+                       FontSize="14" Text="&#xE8EC;"/>
         </ui:Button>
     </Grid>
 

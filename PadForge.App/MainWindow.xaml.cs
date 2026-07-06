@@ -4497,7 +4497,19 @@ namespace PadForge
         private void OnDeleteProfile(object sender, EventArgs e)
         {
             var selected = _viewModel.Settings.SelectedProfile;
-            if (selected == null) return;
+            // The command's CanExecute already blocks the built-in Default.
+            // The gate stays here too so no other invoker can destroy it.
+            if (selected == null || selected.IsDefault) return;
+
+            // Destructive-verb guard (#175 phase 2 item 1c): deleting a
+            // profile destroys its saved slot/mapping snapshot, so ask
+            // first through the shared confirm.
+            bool confirmed = Views.ConfirmDialog.Show(
+                this,
+                Strings.Instance.Profiles_DeleteConfirmTitle,
+                string.Format(Strings.Instance.Profiles_DeleteConfirm_Format, selected.Name),
+                Strings.Instance.Common_Delete);
+            if (!confirmed) return;
 
             bool wasActive = _inputService.DeleteProfile(selected.Id);
             _viewModel.Settings.ProfileItems.Remove(selected);

@@ -1838,6 +1838,14 @@
   <data name="Pad_Audio_Macros_Header" xml:space="preserve"><value>声音宏</value></data>
   <data name="Pad_Audio_MasterVolume" xml:space="preserve"><value>主音量</value></data>
   <data name="Pad_Audio_Mirror" xml:space="preserve"><value>将系统音频镜像到手柄扬声器</value></data>
+  <data name="Pad_Audio_Engage_Label" xml:space="preserve"><value>播放镜像音频</value></data>
+  <data name="Pad_Audio_Engage_Tooltip" xml:space="preserve"><value>镜像音频以触觉音调播放的时机。可将其绑定到按住的输入或游戏震动，避免音乐一直震动手柄。</value></data>
+  <data name="Pad_Audio_Engage_Always" xml:space="preserve"><value>始终</value></data>
+  <data name="Pad_Audio_Engage_Input" xml:space="preserve"><value>按住某个输入时</value></data>
+  <data name="Pad_Audio_Engage_Rumble" xml:space="preserve"><value>游戏震动时</value></data>
+  <data name="Pad_Audio_EngageInput_Label" xml:space="preserve"><value>触发输入</value></data>
+  <data name="Pad_Audio_EngageRelease_Label" xml:space="preserve"><value>释放延迟</value></data>
+  <data name="Pad_Audio_EngageRelease_Tooltip" xml:space="preserve"><value>触发源消失后镜像继续播放的时长，避免音调突然中断。</value></data>
   <data name="Pad_Audio_MirrorSource_Label" xml:space="preserve"><value>镜像来源</value></data>
   <data name="Pad_Audio_MirrorSource_Tooltip" xml:space="preserve"><value>选择镜像到手柄扬声器的播放设备。将特定声音发送到单独播放设备的游戏可以指向该设备。</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>将系统默认输出播放的内容并行复制到此手柄的内置扬声器。USB 和蓝牙均可用。</value></data>

@@ -645,6 +645,63 @@ namespace PadForge.Common.Input
             finally { Interlocked.Exchange(ref _reconcileBusy, 0); }
         }
 
+        // ── Haptic mirror engage gate (#185) ──
+        // The mirror buzzes the pad with everything the system plays, so it can
+        // gate on a held input or on game rumble instead of running always. The
+        // per-slot bit is settled once per poll by InputManager's
+        // UpdateHapticMirrorEngageStates (the third member of the engage family
+        // beside gyro and trigger-route), including the release-delay hold, so
+        // the stream thread only reads a bool. Default true = Always. Macro
+        // sounds are never gated: the gate wraps ONLY the mirror's mixer input.
+        internal static readonly bool[] MirrorEngagedBySlot =
+            CreateAllTrue(InputManager.MaxPads);
+
+        private static bool[] CreateAllTrue(int n)
+        {
+            var a = new bool[n];
+            for (int i = 0; i < n; i++) a[i] = true;
+            return a;
+        }
+
+        /// <summary>The engage-hold decision shared by the poll-thread updater
+        /// and the unit tests: engaged while the source is active, and for
+        /// <paramref name="releaseMs"/> after it drops (the release delay that
+        /// stops the tone clipping off instantly). Clamps the delay to the
+        /// UI's documented 0..10000 range.</summary>
+        internal static bool HoldEngaged(bool active, long nowTick, ref long lastActiveTick, int releaseMs)
+        {
+            if (active) lastActiveTick = nowTick;
+            int clamped = Math.Clamp(releaseMs, 0, 10000);
+            return active || (nowTick - lastActiveTick) <= clamped;
+        }
+
+        /// <summary>Wraps the mirror's sample provider: keeps draining the
+        /// loopback buffer while disengaged (so audio never backs up or bursts
+        /// stale samples on re-engage) but zeroes the output, which the reducer
+        /// reads as silence and the tone stops through the existing
+        /// stop-of-stream neutral. Always returns the inner count, so the
+        /// MixingSampleProvider never auto-removes the input. Internal (visible
+        /// to the tests via InternalsVisibleTo). Only StartMirror constructs it
+        /// in production.</summary>
+        internal sealed class GatedMirrorSampleProvider : ISampleProvider
+        {
+            private readonly ISampleProvider _inner;
+            private readonly int _slot;
+            public GatedMirrorSampleProvider(ISampleProvider inner, int slot)
+            {
+                _inner = inner;
+                _slot = slot;
+            }
+            public WaveFormat WaveFormat => _inner.WaveFormat;
+            public int Read(float[] buffer, int offset, int count)
+            {
+                int n = _inner.Read(buffer, offset, count);
+                if (_slot >= 0 && _slot < MirrorEngagedBySlot.Length && !MirrorEngagedBySlot[_slot])
+                    Array.Clear(buffer, offset, n);
+                return n;
+            }
+        }
+
         // System-audio loopback mirror, identical shape to WiiSpeakerService.
         private static void ReconcileMirrors()
         {
@@ -707,6 +764,10 @@ namespace PadForge.Common.Input
                 if (sp.WaveFormat.SampleRate != MixRate) sp = new WdlResamplingSampleProvider(sp, MixRate);
                 if (sp.WaveFormat.Channels == 1) sp = new MonoToStereoSampleProvider(sp);
                 else if (sp.WaveFormat.Channels != 2) sp = new MultiplexingSampleProvider(new[] { sp }, 2);
+
+                // #185: the engage gate wraps ONLY the mirror branch, never the
+                // mixer itself, so macro sounds keep playing while disengaged.
+                sp = new GatedMirrorSampleProvider(sp, s.Slot);
 
                 s.MacroMixer.AddMixerInput(sp);
                 s.MirrorInput = sp;

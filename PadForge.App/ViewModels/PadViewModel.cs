@@ -649,6 +649,7 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(HasSelectedDevice));
                     OnPropertyChanged(nameof(SelectedDeviceHasSpeaker));
                     OnPropertyChanged(nameof(SelectedDeviceHasNoSpeaker));
+                    OnPropertyChanged(nameof(SelectedDeviceHasHapticTones));
                     // Pointer-tab tunables (IrSensorBarPos etc.) are per
                     // (device, slot) on PadSetting; the device-switch reload
                     // repopulates them through the same PadSetting load path
@@ -662,6 +663,9 @@ namespace PadForge.ViewModels
                     // PlayStationConfig.* re-evaluate against the new
                     // reference.
                     BindPlayStationConfigForDevice(value?.InstanceGuid ?? Guid.Empty);
+                    // The engage picker projection reads the NEW device's
+                    // config, so re-resolve after the config swap (#185).
+                    OnPropertyChanged(nameof(MirrorEngageSelectedInput));
                     SelectedDeviceChanged?.Invoke(this, value);
                 }
             }
@@ -3942,6 +3946,63 @@ namespace PadForge.ViewModels
 
         public bool SelectedDeviceHasNoSpeaker => !SelectedDeviceHasSpeaker;
 
+        /// <summary>True when the SELECTED assigned device plays haptic TONES
+        /// (Joy-Con, Switch Pro, Steam family) rather than real speaker audio.
+        /// Gates the mirror engage row (#185): the engage gate exists because a
+        /// resonant actuator buzzing with music is intrusive in a way a real
+        /// speaker is not, so Sony / Wii speaker devices do not show it.</summary>
+        public bool SelectedDeviceHasHapticTones
+        {
+            get
+            {
+                var sel = SelectedMappedDevice;
+                if (sel == null || sel.InstanceGuid == Guid.Empty) return false;
+                var ud = PadForge.Common.Input.SettingsManager.FindDeviceByInstanceGuid(sel.InstanceGuid);
+                return ud != null && PadForge.Common.Input.HapticToneService.DeviceHasHaptics(ud);
+            }
+        }
+
+        /// <summary>InputChoice projection over the selected device's
+        /// AudioMirrorEngageButton + AudioMirrorEngageDeviceGuid pair (#185),
+        /// mirroring <see cref="GyroAimEngageSelectedInput"/>: the getter
+        /// resolves the matching entry in <see cref="SlotAvailableInputs"/>,
+        /// the setter writes both backing strings atomically, and a null
+        /// write-back from the ComboBox is ignored because the getter returns
+        /// null any time the list has not been rebuilt yet for the newly
+        /// selected device. Treating that transient null as a user clear
+        /// would silently wipe the saved binding on every device switch.</summary>
+        public InputChoice MirrorEngageSelectedInput
+        {
+            get
+            {
+                var cfg = PlayStationConfig;
+                if (cfg == null || string.IsNullOrEmpty(cfg.AudioMirrorEngageButton)) return null;
+                foreach (var c in SlotAvailableInputs)
+                {
+                    if (c == null) continue;
+                    if (string.Equals(c.Descriptor, cfg.AudioMirrorEngageButton, StringComparison.OrdinalIgnoreCase)
+                        && string.Equals(c.DeviceGuid ?? "", cfg.AudioMirrorEngageDeviceGuid ?? "", StringComparison.OrdinalIgnoreCase))
+                        return c;
+                }
+                return null;
+            }
+            set
+            {
+                if (value == null) return;
+                var cfg = PlayStationConfig;
+                if (cfg == null) return;
+                cfg.AudioMirrorEngageButton = value.Descriptor ?? "";
+                cfg.AudioMirrorEngageDeviceGuid = value.DeviceGuid ?? "";
+                OnPropertyChanged(nameof(MirrorEngageSelectedInput));
+            }
+        }
+
+        /// <summary>Re-resolves <see cref="MirrorEngageSelectedInput"/> after
+        /// InputService.PopulateAvailableInputs rebuilds the slot's
+        /// cross-device input list, the same hook the gyro picker needs.</summary>
+        public void OnMirrorEngageSelectedInputRefresh()
+            => OnPropertyChanged(nameof(MirrorEngageSelectedInput));
+
         private int _irSensorBarPos;
         /// <summary>Sensor-bar position for the IR pointer (issue #146): 0 =
         /// centered, 1 = above the screen, 2 = below. Per (device, slot) on
@@ -4109,7 +4170,8 @@ namespace PadForge.ViewModels
         private RelayCommand _resetSoundOutputAllCommand;
         /// <summary>Resets the Sound Output card for the selected device:
         /// mirror off, mirror source back to system default, master volume
-        /// to 100%.</summary>
+        /// to 100%, and the #185 engage gate back to Always with its
+        /// defaults.</summary>
         public RelayCommand ResetSoundOutputAllCommand =>
             _resetSoundOutputAllCommand ??= new RelayCommand(() =>
             {
@@ -4118,6 +4180,11 @@ namespace PadForge.ViewModels
                 {
                     PlayStationConfig.AudioPassthroughEnabled = false;
                     SelectedMirrorSourceId = string.Empty;
+                    PlayStationConfig.AudioMirrorEngageMode = "Always";
+                    PlayStationConfig.AudioMirrorEngageDeviceGuid = string.Empty;
+                    PlayStationConfig.AudioMirrorEngageButton = string.Empty;
+                    PlayStationConfig.AudioMirrorEngageReleaseMs = 500;
+                    OnPropertyChanged(nameof(MirrorEngageSelectedInput));
                 }
             });
 
@@ -4189,6 +4256,8 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(HasNoSoundMacros));
                     OnPropertyChanged(nameof(SelectedDeviceHasSpeaker));
                     OnPropertyChanged(nameof(SelectedDeviceHasNoSpeaker));
+                    OnPropertyChanged(nameof(SelectedDeviceHasHapticTones));
+                    OnPropertyChanged(nameof(MirrorEngageSelectedInput));
                     RefreshMirrorSources();
                 }
             }

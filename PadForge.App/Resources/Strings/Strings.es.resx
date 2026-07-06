@@ -1850,6 +1850,14 @@
   <data name="Macro_Sound_Loop" xml:space="preserve"><value>Bucle hasta detener</value></data>
   <data name="Macro_Sound_Loop_Tooltip" xml:space="preserve"><value>Repetir el sonido hasta que se ejecute una acción "Detener sonidos", o en macros de mantener/soltar, hasta soltar el disparador</value></data>
   <data name="Pad_Audio_Mirror" xml:space="preserve"><value>Duplicar el audio del sistema al altavoz del mando</value></data>
+  <data name="Pad_Audio_Engage_Label" xml:space="preserve"><value>Reproducir audio reflejado</value></data>
+  <data name="Pad_Audio_Engage_Tooltip" xml:space="preserve"><value>Cuándo se reproduce el audio reflejado como tonos hápticos. Condiciónalo a una entrada mantenida o a la vibración del juego para que la música no haga vibrar el mando todo el tiempo.</value></data>
+  <data name="Pad_Audio_Engage_Always" xml:space="preserve"><value>Siempre</value></data>
+  <data name="Pad_Audio_Engage_Input" xml:space="preserve"><value>Mientras se mantiene una entrada</value></data>
+  <data name="Pad_Audio_Engage_Rumble" xml:space="preserve"><value>Mientras el juego vibra</value></data>
+  <data name="Pad_Audio_EngageInput_Label" xml:space="preserve"><value>Entrada de activación</value></data>
+  <data name="Pad_Audio_EngageRelease_Label" xml:space="preserve"><value>Retardo de liberación</value></data>
+  <data name="Pad_Audio_EngageRelease_Tooltip" xml:space="preserve"><value>Cuánto tiempo sigue sonando el reflejo después de que cese la fuente de activación, para que el tono no se corte de golpe.</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>Copia en paralelo lo que reproduce la salida predeterminada del sistema al altavoz integrado de este mando. Funciona por USB y Bluetooth.</value></data>
   <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>El dispositivo seleccionado no tiene altavoz integrado. Los sonidos de macro de este mando se reproducen en la salida predeterminada.</value></data>
   <data name="About_QDollar" xml:space="preserve"><value>$Q Recognizer</value></data>

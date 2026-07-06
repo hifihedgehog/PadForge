@@ -1872,6 +1872,14 @@
   <data name="Macro_Sound_Loop" xml:space="preserve"><value>Loop fino allo stop</value></data>
   <data name="Macro_Sound_Loop_Tooltip" xml:space="preserve"><value>Ripete il suono finché non parte un’azione "Ferma i suoni", o per le macro tieni/rilascia, finché il trigger non viene rilasciato</value></data>
   <data name="Pad_Audio_Mirror" xml:space="preserve"><value>Duplica l’audio di sistema sull’altoparlante del controller</value></data>
+  <data name="Pad_Audio_Engage_Label" xml:space="preserve"><value>Riproduci audio duplicato</value></data>
+  <data name="Pad_Audio_Engage_Tooltip" xml:space="preserve"><value>Quando l'audio duplicato viene riprodotto come toni aptici. Vincolalo a un input premuto o alla vibrazione del gioco così la musica non fa vibrare il controller di continuo.</value></data>
+  <data name="Pad_Audio_Engage_Always" xml:space="preserve"><value>Sempre</value></data>
+  <data name="Pad_Audio_Engage_Input" xml:space="preserve"><value>Mentre un input è premuto</value></data>
+  <data name="Pad_Audio_Engage_Rumble" xml:space="preserve"><value>Mentre il gioco vibra</value></data>
+  <data name="Pad_Audio_EngageInput_Label" xml:space="preserve"><value>Input di attivazione</value></data>
+  <data name="Pad_Audio_EngageRelease_Label" xml:space="preserve"><value>Ritardo di rilascio</value></data>
+  <data name="Pad_Audio_EngageRelease_Tooltip" xml:space="preserve"><value>Per quanto tempo il mirror continua dopo la fine della sorgente di attivazione, così il tono non si interrompe di colpo.</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>Copia in parallelo ciò che riproduce l’uscita predefinita di sistema sull’altoparlante integrato di questo controller. Funziona via USB e Bluetooth.</value></data>
   <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>Il dispositivo selezionato non ha un altoparlante integrato. I suoni macro di questo pad escono sull’uscita predefinita.</value></data>
   <data name="About_QDollar" xml:space="preserve"><value>$Q Recognizer</value></data>

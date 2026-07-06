@@ -13,6 +13,10 @@ using System.Windows;
 
 [assembly: ComVisible(false)]
 
+// The audio/haptic services are internal by convention; the test project
+// exercises them (e.g. the #185 mirror engage gate) through this grant.
+[assembly: System.Runtime.CompilerServices.InternalsVisibleTo("PadForge.Tests")]
+
 [assembly: ThemeInfo(
     ResourceDictionaryLocation.None,
     ResourceDictionaryLocation.SourceAssembly

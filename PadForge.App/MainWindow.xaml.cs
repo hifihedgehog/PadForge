@@ -2320,12 +2320,13 @@ namespace PadForge
                 // width vs the 21px of the plain X it replaced (9px glyph +
                 // 3px padding each side + 6px margin), and the row only has
                 // ~193px: 223 pane + 40 item-margin reclaim - 40 icon column
-                // - 2 item border - 6 card margin - 22 card chrome. Fixed
-                // content needs 161 (19 power + 18 slot# + 124 seg row), so
-                // a 34px X overdraws by ~2px and the right-docked segment
-                // shaves the Xbox button's left edge. 22px + Padding 2 keeps
-                // the shared chrome (local values beat style setters) and
-                // lands the row at 189, back under budget.
+                // - 2 item border - 6 card margin - 22 card chrome. Budget
+                // holds at the two-digit worst case (slot "16" and "#16",
+                // both reachable at 16 slots): 19 power + 18 slot# + 120.3
+                // seg row (2 margin + 5x19 tiles + 4 label margin + 19.3 for
+                // "#16", Cascadia @11 measured) + 28 X = 185.3, ~7.7 slack.
+                // 22px + Padding 2 keeps the shared chrome (local values
+                // beat style setters); the X never shrinks below 22.
                 Width = 22,
                 Height = 22,
                 Padding = new Thickness(2),
@@ -2435,6 +2436,8 @@ namespace PadForge
                 VerticalAlignment = VerticalAlignment.Center,
                 // Tight (#175 clip report): interior slack keeps the
                 // right-aligned type segment from clipping its left edge.
+                // The 16px box holds two digits: "16" measures 14.1 in
+                // Cascadia @12, so slot 10-16 fits without widening.
                 Margin = new Thickness(2, 0, 0, 0),
                 Width = 16,
                 TextAlignment = TextAlignment.Center
@@ -2458,10 +2461,13 @@ namespace PadForge
                 var b = new System.Windows.Controls.Button
                 {
                     Content = content,
-                    // 4px sides (#175 clip report): at 5px the right-aligned
-                    // segment overflowed its dock area by a hair and shaved
-                    // the Xbox button's left edge.
-                    Padding = new Thickness(4, 2, 4, 2),
+                    // 3px sides (#175 two-digit fit): at 4px the worst case
+                    // (slot "16" plus "#16") ran the row to 195.3 vs the
+                    // ~193 budget and the right-aligned segment shaved the
+                    // Xbox button's left edge again. 3px lands the five
+                    // tiles at 19px each (11px glyph untouched, still above
+                    // the 17px legibility floor) and the row at 185.3.
+                    Padding = new Thickness(3, 2, 3, 2),
                     MinWidth = 0,
                     MinHeight = 0,
                     BorderThickness = new Thickness(0),

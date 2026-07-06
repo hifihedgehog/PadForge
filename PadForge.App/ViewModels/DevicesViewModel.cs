@@ -122,11 +122,31 @@ namespace PadForge.ViewModels
         /// collections, unclassified).</summary>
         private static string FacetOf(DeviceRowViewModel d) => d.DeviceTypeKey switch
         {
-            "Gamepad" or "Joystick" or "Wheel" or "FlightStick" or "FirstPerson" or "Supplemental" => "GAMEPAD",
+            "Gamepad" or "FirstPerson" or "Supplemental" => "GAMEPAD",
+            // Joysticks and wheels get their own facets (maintainer request
+            // 2026-07-06): flight sticks bucket with joysticks.
+            "Joystick" or "FlightStick" => "JOYSTICK",
+            "Wheel" => "WHEEL",
             "Keyboard" => "KEYBOARD",
             "Mouse" => "MOUSE",
             _ => "OTHER"
         };
+
+        private int _facetCountJoystick;
+        /// <summary>Row count behind the JOYSTICK chip (joysticks + flight sticks).</summary>
+        public int FacetCountJoystick
+        {
+            get => _facetCountJoystick;
+            set => SetProperty(ref _facetCountJoystick, value);
+        }
+
+        private int _facetCountWheel;
+        /// <summary>Row count behind the WHEEL chip.</summary>
+        public int FacetCountWheel
+        {
+            get => _facetCountWheel;
+            set => SetProperty(ref _facetCountWheel, value);
+        }
 
         private int _facetCountGamepad;
         /// <summary>Row count behind the GAMEPAD chip. The ALL chip binds TotalCount.</summary>
@@ -716,7 +736,7 @@ namespace PadForge.ViewModels
         public void RefreshCounts()
         {
             TotalCount = Devices.Count;
-            int online = 0, gamepad = 0, keyboard = 0, mouse = 0, other = 0;
+            int online = 0, gamepad = 0, joystick = 0, wheel = 0, keyboard = 0, mouse = 0, other = 0;
             foreach (var d in Devices)
             {
                 if (d.IsOnline)
@@ -724,6 +744,8 @@ namespace PadForge.ViewModels
                 switch (FacetOf(d))
                 {
                     case "GAMEPAD": gamepad++; break;
+                    case "JOYSTICK": joystick++; break;
+                    case "WHEEL": wheel++; break;
                     case "KEYBOARD": keyboard++; break;
                     case "MOUSE": mouse++; break;
                     default: other++; break;
@@ -731,6 +753,8 @@ namespace PadForge.ViewModels
             }
             OnlineCount = online;
             FacetCountGamepad = gamepad;
+            FacetCountJoystick = joystick;
+            FacetCountWheel = wheel;
             FacetCountKeyboard = keyboard;
             FacetCountMouse = mouse;
             FacetCountOther = other;

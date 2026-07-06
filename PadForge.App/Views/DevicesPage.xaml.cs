@@ -298,8 +298,10 @@ namespace PadForge.Views
                 Margin = new Thickness(0, 0, 8, 0),
                 MinWidth = 80
             };
-            proceedBtn.SetResourceReference(System.Windows.Controls.Control.ForegroundProperty, "TextOnAccentFillColorPrimaryBrush");
-            proceedBtn.SetResourceReference(System.Windows.Controls.Control.BackgroundProperty, "AccentFillColorDefaultBrush");
+            // Proceed is the flyout's primary affirmative and wears the shared
+            // ember accent (#175 dialog language). The old TextOnAccent-on-accent
+            // pair went dark text on ember (user report 2026-07-05).
+            proceedBtn.SetResourceReference(FrameworkElement.StyleProperty, "EmberAccentButton");
 
             var cancelBtn = new Button
             {

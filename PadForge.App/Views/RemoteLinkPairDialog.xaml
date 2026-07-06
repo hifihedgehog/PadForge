@@ -88,14 +88,18 @@
                         Margin="0,0,0,12"
                         Message="{Binding RemoteLink_ConsentWarning, Source={x:Static strings:Strings.Instance}}"/>
 
-            <CheckBox Grid.Row="4" x:Name="GamepadOnlyCheck" Margin="0,0,0,16"
+            <CheckBox Grid.Row="4" x:Name="GamepadOnlyCheck"
                       Content="{Binding RemoteLink_GamepadOnly, Source={x:Static strings:Strings.Instance}}"/>
 
-            <StackPanel Grid.Row="5" Orientation="Horizontal" HorizontalAlignment="Right">
-                <ui:Button x:Name="PairButton" Appearance="Primary" MinWidth="96" Margin="0,0,8,0"
+            <!-- Footer band (#175 dialog language): Pair is the consent
+                 affirmative and wears the ember accent. Reject declines
+                 without destroying anything, so it stays neutral. -->
+            <StackPanel Grid.Row="5" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,18,0,0">
+                <ui:Button x:Name="PairButton" MinWidth="90" Margin="0,0,8,0"
+                           Style="{StaticResource EmberPrimaryButton}"
                            Content="{Binding RemoteLink_Pair, Source={x:Static strings:Strings.Instance}}"
                            Click="Pair_Click"/>
-                <Button x:Name="RejectButton" MinWidth="96" IsCancel="True"
+                <Button x:Name="RejectButton" MinWidth="90" IsCancel="True"
                         Content="{Binding RemoteLink_Reject, Source={x:Static strings:Strings.Instance}}"
                         Click="Reject_Click"/>
             </StackPanel>

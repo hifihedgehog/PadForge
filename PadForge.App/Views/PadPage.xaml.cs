@@ -2836,27 +2836,18 @@ namespace PadForge.Views
         }
 
         // ─────────────────────────────────────────────
-        //  Mappings DataGrid: keep row-details expanded for
-        //  multi-source rows even when not selected.
+        //  Mappings DataGrid: one open editor at a time.
         //
-        //  WPF's RowDetailsVisibilityMode sets DataGridRow.DetailsVisibility
-        //  as a LOCAL value on each row when selection changes, and style
-        //  triggers can't override local-value dependency-property writes.
-        //  So we manage DetailsVisibility from code-behind instead: hook
-        //  LoadingRow to apply on first display, listen to each MappingItem's
-        //  IsMultiSource for live transitions, and SelectionChanged to
-        //  re-assert when WPF's internal selection logic kicks back in.
+        //  Multi-source rows used to force their details strip open
+        //  permanently via code-behind DetailsVisibility writes (#175
+        //  phase two item 10 killed that: two devices on a slot turned
+        //  four outputs into a scroll wall). Details now follow the
+        //  grid's stock VisibleWhenSelected mode, and an unselected
+        //  fan-in row collapses to the compact one-liner through the
+        //  row template's HasExtraSources / IsRowSelected trigger.
+        //  SelectionChanged mirrors selection onto each MappingItem so
+        //  that trigger can bind plain DataContext state.
         // ─────────────────────────────────────────────
-
-        private void MappingDataGrid_LoadingRow(object sender, DataGridRowEventArgs e)
-        {
-            UpdateRowDetailsVisibility(e.Row);
-            if (e.Row.DataContext is MappingItem mi)
-            {
-                mi.PropertyChanged -= OnMappingItem_RowDetailsPropertyChanged;
-                mi.PropertyChanged += OnMappingItem_RowDetailsPropertyChanged;
-            }
-        }
 
         /// <summary>
         /// WPF's <see cref="DataGrid"/> doesn't honestly auto-collapse columns
@@ -2888,17 +2879,17 @@ namespace PadForge.Views
             // Auto sizing paint first, producing a brief wide-Options
             // flash before the measure pass tightened the column.
             //
-            // #175 telemetry board: compact trivial rows collapse their
-            // cells presenter, which leaves their cells ungenerated and
-            // invisible to the width pass. Temporarily expand every
-            // compact row so each column's honest content width is
-            // measured, then restore the compact state. All inside this
-            // one dispatcher callback, so no frame renders the expanded
-            // state.
+            // #175 telemetry board: compact rows (trivial + collapsed
+            // fan-in) collapse their cells presenter, which leaves their
+            // cells ungenerated and invisible to the width pass.
+            // Temporarily expand every compact row so each column's
+            // honest content width is measured, then restore the compact
+            // state. All inside this one dispatcher callback, so no
+            // frame renders the expanded state.
             var expandedForMeasure = new List<MappingItem>();
             foreach (var item in grid.Items)
             {
-                if (item is MappingItem mi && mi.IsTrivialDirect && !mi.IsExpandedOverride)
+                if (item is MappingItem mi && (mi.IsTrivialDirect || mi.HasExtraSources) && !mi.IsExpandedOverride)
                 {
                     mi.IsExpandedOverride = true;
                     expandedForMeasure.Add(mi);
@@ -3095,64 +3086,90 @@ namespace PadForge.Views
             return null;
         }
 
-        private void MappingDataGrid_UnloadingRow(object sender, DataGridRowEventArgs e)
-        {
-            if (e.Row.DataContext is MappingItem mi)
-                mi.PropertyChanged -= OnMappingItem_RowDetailsPropertyChanged;
-        }
-
-        /// <summary>#175 telemetry board: first click on a compact trivial
-        /// row expands it back to the full editing row. The row's cells are
-        /// collapsed while compact, so the click never reaches a
-        /// DataGridCell and WPF's own selection logic won't run. Selecting
-        /// here makes the expanded row behave exactly like a clicked full
-        /// row (details strip opens via the VisibleWhenSelected path).
+        /// <summary>#175 telemetry board / phase two item 10: first click
+        /// on a compact row opens it back into the full editing row. The
+        /// row's cells are collapsed while compact, so the click never
+        /// reaches a DataGridCell and WPF's own selection logic won't run.
+        /// Selecting here makes the opened row behave exactly like a
+        /// clicked full row (details strip opens via the
+        /// VisibleWhenSelected path). Trivial rows additionally need the
+        /// expansion override; fan-in rows expand on selection alone.
+        /// Focus moves to the row so Enter/Space can toggle it afterwards.
         /// Clicks on already-expanded rows fall through to normal cell
         /// handling.</summary>
         private void MappingRow_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             if (sender is not DataGridRow row || row.DataContext is not MappingItem mi) return;
-            if (!mi.IsTrivialDirect || mi.IsExpandedOverride || row.IsSelected) return;
-            mi.IsExpandedOverride = true;
-            if (MappingDataGrid != null)
+            if (row.IsSelected || MappingDataGrid == null) return;
+            if (mi.IsTrivialDirect && !mi.IsExpandedOverride)
+            {
+                mi.IsExpandedOverride = true;
                 MappingDataGrid.SelectedItem = mi;
+                row.Focus();
+            }
+            else if (mi.HasExtraSources)
+            {
+                MappingDataGrid.SelectedItem = mi;
+                row.Focus();
+            }
+        }
+
+        /// <summary>Enter/Space on a focused row toggles it open and
+        /// closed (#175 phase two item 10). Gated on the row itself being
+        /// the original source so the same keys keep their stock meaning
+        /// inside the editor's TextBoxes / ComboBoxes / CheckBoxes.</summary>
+        private void MappingRow_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key != Key.Enter && e.Key != Key.Space) return;
+            if (e.OriginalSource is not DataGridRow) return;
+            if (sender is not DataGridRow row || row.DataContext is not MappingItem mi) return;
+            if (MappingDataGrid == null) return;
+            if (row.IsSelected)
+            {
+                MappingDataGrid.SelectedItem = null;
+            }
+            else
+            {
+                if (mi.IsTrivialDirect && !mi.IsExpandedOverride)
+                    mi.IsExpandedOverride = true;
+                MappingDataGrid.SelectedItem = mi;
+            }
+            e.Handled = true;
         }
 
         private void MappingDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (sender is not DataGrid grid) return;
             // #175 telemetry board: a trivial row expanded by click drops
-            // back to its compact line once deselected.
+            // back to its compact line once deselected. Phase two item 10:
+            // IsRowSelected mirrors selection for the fan-in compact-swap
+            // trigger, so deselecting a multi-source row collapses it.
             foreach (var removed in e.RemovedItems)
             {
-                if (removed is MappingItem rm && rm.IsExpandedOverride)
-                    rm.IsExpandedOverride = false;
+                if (removed is MappingItem rm)
+                {
+                    rm.IsRowSelected = false;
+                    if (rm.IsExpandedOverride)
+                        rm.IsExpandedOverride = false;
+                }
             }
-            // Re-assert visibility on every row whose selection state changed
-            // and on every multi-source row. WPF will have just set the
-            // selected row to Visible and the deselected row to Collapsed
-            // via its VisibleWhenSelected logic; we override the Collapsed
-            // back to Visible for multi-source rows.
-            foreach (var item in grid.Items)
+            foreach (var added in e.AddedItems)
             {
-                if (grid.ItemContainerGenerator.ContainerFromItem(item) is DataGridRow row)
-                    UpdateRowDetailsVisibility(row);
+                if (added is MappingItem am)
+                    am.IsRowSelected = true;
             }
-        }
-
-        private void OnMappingItem_RowDetailsPropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            if (e.PropertyName != nameof(MappingItem.IsMultiSource)) return;
-            if (sender is not MappingItem mi) return;
-            if (MappingDataGrid?.ItemContainerGenerator?.ContainerFromItem(mi) is DataGridRow row)
-                UpdateRowDetailsVisibility(row);
-        }
-
-        private static void UpdateRowDetailsVisibility(DataGridRow row)
-        {
-            if (row == null) return;
-            bool keepOpen = (row.DataContext is MappingItem mi && mi.IsMultiSource) || row.IsSelected;
-            row.DetailsVisibility = keepOpen ? Visibility.Visible : Visibility.Collapsed;
+            // Opening a row grows it by the details strip, which can push
+            // the editor below the fold. Same layout-then-scroll sequence
+            // as OnAnnotationChipNavigate, deferred so the strip has been
+            // measured before the viewport math runs.
+            if (e.AddedItems.Count > 0 && e.AddedItems[0] is MappingItem sel)
+            {
+                Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Loaded, () =>
+                {
+                    if (ReferenceEquals(grid.SelectedItem, sel))
+                        grid.ScrollIntoView(sel);
+                });
+            }
         }
 
         // ─────────────────────────────────────────────

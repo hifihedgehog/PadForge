@@ -260,8 +260,11 @@ namespace PadForge.Views
                 StrokeThickness = 1.5,
                 Cursor = Cursors.Hand
             };
-            // Ember ring (#175): the rig is an output surface.
-            outer.Stroke = new SolidColorBrush(Color.FromArgb(0x59, 0xFF, 0x6B, 0x2C));
+            // Idle ring is the same dim stroke MouseLeave restores (user
+            // report 2026-07-06): the build-time ember ring read as a stuck
+            // highlight until the pointer first passed over the element.
+            // Ember is hover/flash feedback only.
+            outer.SetResourceReference(Shape.StrokeProperty, DimKey);
             outer.SetResourceReference(Shape.FillProperty, BgKey);
             Canvas.SetLeft(outer, x);
             Canvas.SetTop(outer, y);
@@ -460,8 +463,9 @@ namespace PadForge.Views
                 Height = PovSize,
                 StrokeThickness = 1.5
             };
-            // Ember ring (#175): the rig is an output surface.
-            outer.Stroke = new SolidColorBrush(Color.FromArgb(0x59, 0xFF, 0x6B, 0x2C));
+            // Idle = MouseLeave state (user report 2026-07-06): dim ring,
+            // ember only on hover/flash.
+            outer.SetResourceReference(Shape.StrokeProperty, DimKey);
             outer.SetResourceReference(Shape.FillProperty, BgKey);
             Canvas.SetLeft(outer, x);
             Canvas.SetTop(outer, y);
@@ -567,8 +571,9 @@ namespace PadForge.Views
                 StrokeThickness = 1.5,
                 Cursor = Cursors.Hand
             };
-            // Ember ring (#175): output surface.
-            circle.Stroke = new SolidColorBrush(Color.FromArgb(0x59, 0xFF, 0x6B, 0x2C));
+            // Idle = MouseLeave state (user report 2026-07-06): dim ring,
+            // ember only on hover/flash.
+            circle.SetResourceReference(Shape.StrokeProperty, DimKey);
             circle.SetResourceReference(Shape.FillProperty, BgKey);
             Canvas.SetLeft(circle, x);
             Canvas.SetTop(circle, y);

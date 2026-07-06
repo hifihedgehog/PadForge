@@ -66,6 +66,7 @@ namespace PadForge.ViewModels
         private void OnExtraSourcesCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             OnPropertyChanged(nameof(IsMultiSource));
+            OnPropertyChanged(nameof(HasExtraSources));
             OnPropertyChanged(nameof(VariableCount));
             OnPropertyChanged(nameof(ShouldShowEmptyDirectionHint));
             OnPropertyChanged(nameof(ShouldShowCustomExpression));
@@ -724,6 +725,26 @@ namespace PadForge.ViewModels
             get => _isExpandedOverride;
             set => SetProperty(ref _isExpandedOverride, value);
         }
+
+        private bool _isRowSelected;
+
+        /// <summary>Mirror of the row's DataGrid selection state (#175 phase
+        /// two item 10). Written by the Pad page's SelectionChanged handler
+        /// so the row template's compact-swap trigger can condition on
+        /// selection with a plain DataContext binding. UI-only state, never
+        /// persisted.</summary>
+        public bool IsRowSelected
+        {
+            get => _isRowSelected;
+            set => SetProperty(ref _isRowSelected, value);
+        }
+
+        /// <summary>True when the row actually fans in extra sources (#175
+        /// phase two item 10). Narrower than <see cref="IsMultiSource"/>,
+        /// which is also true for a non-Direct primary with no extras.
+        /// Those rows keep their full cells (the Up/Down pickers live
+        /// there), so the collapsed one-line rendering keys off this.</summary>
+        public bool HasExtraSources => ExtraSources.Count > 0;
 
         // ─────────────────────────────────────────────
         //  Options

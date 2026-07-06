@@ -213,14 +213,22 @@
                             <TextBlock Text="{Binding HidHideVersion}" FontSize="12" FontFamily="{StaticResource TelemetryFontFamily}" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,4,0,0"/>
                         </StackPanel>
 
+                        <!-- Verb classes (#175 dialog language): Install is
+                             the card's primary affirmative (accent).
+                             Uninstall removes the driver from the system
+                             with no confirm, so it wears the shared
+                             destructive chrome. Visibility makes the two
+                             mutually exclusive. -->
                         <StackPanel Grid.Column="1" Orientation="Horizontal"
                                     VerticalAlignment="Center">
                             <Button Content="{Binding Common_Install, Source={x:Static strings:Strings.Instance}}"
                                     Command="{Binding InstallHidHideCommand}"
+                                    Style="{StaticResource EmberAccentButton}"
                                     Visibility="{Binding IsHidHideInstalled, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}"
                                     Margin="0,0,8,0"/>
                             <Button Content="{Binding Common_Uninstall, Source={x:Static strings:Strings.Instance}}"
                                     Command="{Binding UninstallHidHideCommand}"
+                                    Style="{StaticResource EmberDestructiveButton}"
                                     Visibility="{Binding IsHidHideInstalled, Converter={StaticResource BoolToVisibilityConverter}}"/>
                         </StackPanel>
                     </Grid>
@@ -247,22 +255,15 @@
                                    Margin="0,0,0,4"/>
                         <TextBlock Text="{Binding Settings_WhitelistDesc, Source={x:Static strings:Strings.Instance}}"
                                    Style="{StaticResource CardDescription}"/>
+                        <!-- Shared EmberTint container (user report 2026-07-05):
+                             carries the same ember-bloom hover the old inline
+                             style had, and replaces the stock accent
+                             selection slab. -->
                         <ListBox ItemsSource="{Binding HidHideWhitelistPaths}"
                                  SelectedItem="{Binding SelectedWhitelistPath}"
+                                 ItemContainerStyle="{StaticResource EmberSelectListItem}"
                                  MaxHeight="140" MinHeight="32"
                                  Margin="0,0,0,8">
-                            <!-- Hover glow (#175): stock row hover is a subtle
-                                 neutral fill lighten, so the bloom is the faint
-                                 ember signature. -->
-                            <ListBox.ItemContainerStyle>
-                                <Style TargetType="ListBoxItem" BasedOn="{StaticResource DefaultListBoxItemStyle}">
-                                    <Style.Triggers>
-                                        <Trigger Property="IsMouseOver" Value="True">
-                                            <Setter Property="Effect" Value="{StaticResource NeutralHoverGlow}"/>
-                                        </Trigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </ListBox.ItemContainerStyle>
                             <ListBox.ItemTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding}" FontSize="12" FontFamily="{StaticResource TelemetryFontFamily}"
@@ -347,6 +348,9 @@
                             <TextBlock Text="{Binding MidiServicesVersion}" FontSize="12" FontFamily="{StaticResource TelemetryFontFamily}" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,4,0,0"/>
                         </StackPanel>
 
+                        <!-- Verb classes (#175 dialog language): same split as
+                             the HidHide card. Install accent, Uninstall
+                             destructive (removes the service, no confirm). -->
                         <StackPanel Grid.Column="1" Orientation="Horizontal"
                                     VerticalAlignment="Center">
                             <Button Content="{Binding Common_Install, Source={x:Static strings:Strings.Instance}}"
@@ -354,7 +358,7 @@
                                     Visibility="{Binding IsMidiServicesInstalled, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}"
                                     Margin="0,0,8,0">
                                 <Button.Style>
-                                    <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+                                    <Style TargetType="Button" BasedOn="{StaticResource EmberAccentButton}">
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding IsMidiOsSupported}" Value="False">
                                                 <Setter Property="ToolTip" Value="{Binding Settings_MidiOsRequired, Source={x:Static strings:Strings.Instance}}"/>
@@ -365,6 +369,7 @@
                             </Button>
                             <Button Content="{Binding Common_Uninstall, Source={x:Static strings:Strings.Instance}}"
                                     Command="{Binding UninstallMidiServicesCommand}"
+                                    Style="{StaticResource EmberDestructiveButton}"
                                     Visibility="{Binding IsMidiServicesInstalled, Converter={StaticResource BoolToVisibilityConverter}}"/>
                         </StackPanel>
                     </Grid>
@@ -385,12 +390,19 @@
                                FontFamily="{StaticResource TelemetryFontFamily}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" TextWrapping="Wrap"
                                Margin="0,0,0,12"/>
 
+                    <!-- Verb classes (#175 dialog language): Save commits the
+                         file and is the card's primary affirmative (accent).
+                         Reset to Defaults wipes every setting with no
+                         confirm, so it wears the shared destructive chrome.
+                         Reload and Open Folder stay neutral. -->
                     <StackPanel Orientation="Horizontal">
                         <Button Content="{Binding Common_Save, Source={x:Static strings:Strings.Instance}}" Command="{Binding SaveCommand}"
+                                Style="{StaticResource EmberAccentButton}"
                                 Margin="0,0,8,0"/>
                         <Button Content="{Binding Settings_Reload, Source={x:Static strings:Strings.Instance}}" Command="{Binding ReloadCommand}"
                                 Margin="0,0,8,0"/>
                         <Button Content="{Binding Settings_ResetToDefaults, Source={x:Static strings:Strings.Instance}}" Command="{Binding ResetCommand}"
+                                Style="{StaticResource EmberDestructiveButton}"
                                 Margin="0,0,8,0"/>
                         <Button Content="{Binding Settings_OpenFolder, Source={x:Static strings:Strings.Instance}}" Command="{Binding OpenSettingsFolderCommand}"/>
                     </StackPanel>

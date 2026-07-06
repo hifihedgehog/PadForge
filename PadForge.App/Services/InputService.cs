@@ -1874,6 +1874,16 @@ namespace PadForge.Services
                     }
                 }
 
+                // Per-device connect state (#175 phase 2 item 14): refresh
+                // each roster item's IsOnline from the same snapshot the
+                // connectedCount above reads, so a card can never say
+                // "0 connected" while its roster lines render as live.
+                foreach (var dev in padVm.MappedDevices)
+                {
+                    dev.IsOnline = devices != null
+                        && devices.Any(d => d.InstanceGuid == dev.InstanceGuid && d.IsOnline);
+                }
+
                 slot.MappedDeviceCount = mappedCount;
                 slot.ConnectedDeviceCount = connectedCount;
                 slot.IsVirtualControllerConnected = _inputManager?.IsVirtualControllerConnected(padIndex) ?? false;

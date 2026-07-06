@@ -60,7 +60,9 @@
         </Style>
         <Style x:Key="FacetCount" TargetType="TextBlock" BasedOn="{StaticResource FacetToken}">
             <Setter Property="Foreground" Value="{DynamicResource ColdBrush}"/>
-            <Setter Property="Margin" Value="5,0,0,0"/>
+            <!-- Wider than the token's intra-letter hair-spacing, so the
+                 count reads as its own word (user report 2026-07-06). -->
+            <Setter Property="Margin" Value="10,0,0,0"/>
         </Style>
         <!-- Ember (#175): Raw Input State cluster. Dark recessed cells,
              cold lit outline when pressed (outline lit, not solid). -->
@@ -234,6 +236,40 @@
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="G&#8202;A&#8202;M&#8202;E&#8202;P&#8202;A&#8202;D" Style="{StaticResource FacetToken}"/>
                             <TextBlock Text="{Binding FacetCountGamepad, Mode=OneWay}" Style="{StaticResource FacetCount}"/>
+                        </StackPanel>
+                    </Border>
+                    <Border Tag="JOYSTICK" MouseLeftButtonUp="FacetChip_Click">
+                        <Border.Style>
+                            <Style TargetType="Border" BasedOn="{StaticResource FacetChipBase}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding SelectedFacet}" Value="JOYSTICK">
+                                        <Setter Property="Background" Value="{DynamicResource EmberTintBrush}"/>
+                                        <Setter Property="BorderBrush" Value="#66FF6B2C"/>
+                                        <Setter Property="TextElement.Foreground" Value="{DynamicResource EmberBrush}"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="J&#8202;O&#8202;Y&#8202;S&#8202;T&#8202;I&#8202;C&#8202;K" Style="{StaticResource FacetToken}"/>
+                            <TextBlock Text="{Binding FacetCountJoystick, Mode=OneWay}" Style="{StaticResource FacetCount}"/>
+                        </StackPanel>
+                    </Border>
+                    <Border Tag="WHEEL" MouseLeftButtonUp="FacetChip_Click">
+                        <Border.Style>
+                            <Style TargetType="Border" BasedOn="{StaticResource FacetChipBase}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding SelectedFacet}" Value="WHEEL">
+                                        <Setter Property="Background" Value="{DynamicResource EmberTintBrush}"/>
+                                        <Setter Property="BorderBrush" Value="#66FF6B2C"/>
+                                        <Setter Property="TextElement.Foreground" Value="{DynamicResource EmberBrush}"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="W&#8202;H&#8202;E&#8202;E&#8202;L" Style="{StaticResource FacetToken}"/>
+                            <TextBlock Text="{Binding FacetCountWheel, Mode=OneWay}" Style="{StaticResource FacetCount}"/>
                         </StackPanel>
                     </Border>
                     <Border Tag="KEYBOARD" MouseLeftButtonUp="FacetChip_Click">

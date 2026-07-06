@@ -27,21 +27,9 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
-        <!-- Accent verb (#175 item 19): Load is the strip's primary action
-             per the approved pitch mock, so it wears the ember rim/text
-             tint over the page default chrome (the EmberDestructiveButton
-             idiom, one rung up the ember ramp). Derived hover trigger wins
-             over the implicit's neutral glow. Static frozen Effect from a
-             trigger, never animated. -->
-        <Style x:Key="ProfileAccentButton" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
-            <Setter Property="BorderBrush" Value="{DynamicResource EmberBrush}"/>
-            <Setter Property="Foreground" Value="{DynamicResource EmberBrush}"/>
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Effect" Value="{StaticResource EmberHoverGlow}"/>
-                </Trigger>
-            </Style.Triggers>
-        </Style>
+        <!-- The accent verb style formerly defined here (ProfileAccentButton)
+             was promoted to App.xaml as EmberAccentButton (#175 dialog
+             language). Load consumes the shared style below. -->
         <Style TargetType="CheckBox" BasedOn="{StaticResource DefaultCheckBoxStyle}">
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
@@ -609,7 +597,7 @@
                                 Margin="0,0,16,0"/>
                         <Button Content="{Binding Profiles_Load, Source={x:Static strings:Strings.Instance}}"
                                 Command="{Binding LoadProfileCommand}"
-                                Style="{StaticResource ProfileAccentButton}"
+                                Style="{StaticResource EmberAccentButton}"
                                 Margin="0,0,8,0"/>
                         <Button Content="{Binding Profiles_Edit, Source={x:Static strings:Strings.Instance}}"
                                 Command="{Binding EditProfileCommand}"

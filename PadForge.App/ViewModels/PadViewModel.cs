@@ -556,6 +556,11 @@ namespace PadForge.ViewModels
                 set => SetProperty(ref _instanceGuid, value);
             }
 
+            /// <summary>Per-device connect state, the same ud.IsOnline truth
+            /// the card's "N connected" count reads (#175 phase 2 item 14).
+            /// Refreshed every dashboard tick in RefreshSlotSummaryProperties
+            /// from the same device snapshot as that count, so an offline
+            /// roster line dims instead of rendering full-brightness cold.</summary>
             public bool IsOnline
             {
                 get => _isOnline;

@@ -140,14 +140,17 @@
                            TextWrapping="Wrap"/>
             </StackPanel>
 
-            <!-- Buttons -->
-            <StackPanel Grid.Row="6" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,16,0,0">
+            <!-- Footer band (#175 dialog language): Save is the dialog's
+                 primary affirmative and wears the ember accent. Try Again
+                 just restarts the capture, so it stays neutral. -->
+            <StackPanel Grid.Row="6" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,18,0,0">
                 <Button x:Name="TryAgainBtn"
                         Content="{Binding Recorder_TryAgain, Source={x:Static strings:Strings.Instance}}"
                         MinWidth="90" Margin="0,0,8,0"
                         Click="TryAgainBtn_Click"/>
                 <Button x:Name="SaveBtn"
                         Content="{Binding Common_Save, Source={x:Static strings:Strings.Instance}}"
+                        Style="{StaticResource EmberAccentButton}"
                         MinWidth="90" Margin="0,0,8,0"
                         IsEnabled="False"
                         Click="SaveBtn_Click"/>

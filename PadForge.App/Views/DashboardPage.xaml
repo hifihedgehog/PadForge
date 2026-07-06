@@ -943,16 +943,23 @@
                                      competes with the card face at rest, and
                                      keyboard focus brings it back for tab
                                      users. Stays focusable and hit-testable
-                                     the whole time. The click routes through
-                                     the shared confirm dialog in code-behind. -->
+                                     the whole time. Same treatment as the
+                                     device list row X (maintainer report
+                                     2026-07-06): the reveal watches the whole
+                                     item container, the ItemsControl analogue
+                                     of the ListBoxItem trigger there, not the
+                                     nearest Border, which a future wrapper
+                                     could silently hijack. The click routes
+                                     through the shared confirm dialog in
+                                     code-behind. -->
                                 <ui:Button HorizontalAlignment="Right" VerticalAlignment="Center"
                                            ToolTip="{Binding Main_DeleteVC, Source={x:Static strings:Strings.Instance}}"
                                            Click="DeleteSlot_Click" Tag="{Binding PadIndex}">
                                     <ui:Button.Style>
-                                        <Style TargetType="ui:Button" BasedOn="{StaticResource EmberIconButtonHot}">
+                                        <Style TargetType="{x:Type ui:Button}" BasedOn="{StaticResource EmberIconButtonHot}">
                                             <Setter Property="Opacity" Value="0"/>
                                             <Style.Triggers>
-                                                <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=Border}}" Value="True">
+                                                <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=ContentPresenter}}" Value="True">
                                                     <Setter Property="Opacity" Value="1"/>
                                                 </DataTrigger>
                                                 <Trigger Property="IsKeyboardFocused" Value="True">
@@ -1016,13 +1023,36 @@
                                                         <ItemsControl.ItemTemplate>
                                                             <DataTemplate>
                                                                 <StackPanel Orientation="Horizontal" Margin="0,2">
+                                                                    <!-- Same offline dim as the roster line (#175
+                                                                         phase 2 item 14). -->
+                                                                    <StackPanel.Style>
+                                                                        <Style TargetType="StackPanel">
+                                                                            <Style.Triggers>
+                                                                                <DataTrigger Binding="{Binding IsOnline}" Value="False">
+                                                                                    <Setter Property="Opacity" Value="0.5"/>
+                                                                                </DataTrigger>
+                                                                            </Style.Triggers>
+                                                                        </Style>
+                                                                    </StackPanel.Style>
                                                                     <!-- Same device-class glyph as the roster line (#175). -->
                                                                     <TextBlock Text="{Binding TypeGlyph}"
                                                                                FontFamily="Segoe MDL2 Assets" FontSize="11"
                                                                                Foreground="{DynamicResource TextFillColorTertiaryBrush}"
                                                                                VerticalAlignment="Center" Margin="0,0,6,0"/>
-                                                                    <TextBlock Text="{Binding Name}" FontSize="12"
-                                                                               Foreground="{DynamicResource ColdBrush}"/>
+                                                                    <TextBlock Text="{Binding Name}" FontSize="12">
+                                                                        <TextBlock.Style>
+                                                                            <Style TargetType="TextBlock">
+                                                                                <Setter Property="Foreground" Value="{DynamicResource ColdBrush}"/>
+                                                                                <Style.Triggers>
+                                                                                    <!-- Cold is reserved for live hardware (#175):
+                                                                                         offline names fall to tertiary. -->
+                                                                                    <DataTrigger Binding="{Binding IsOnline}" Value="False">
+                                                                                        <Setter Property="Foreground" Value="{DynamicResource TextFillColorTertiaryBrush}"/>
+                                                                                    </DataTrigger>
+                                                                                </Style.Triggers>
+                                                                            </Style>
+                                                                        </TextBlock.Style>
+                                                                    </TextBlock>
                                                                     <TextBlock Text="{Binding TransportGlyph}"
                                                                                FontFamily="Segoe MDL2 Assets" FontSize="10"
                                                                                Foreground="{DynamicResource TextFillColorTertiaryBrush}"
@@ -1052,6 +1082,19 @@
                                             <ItemsControl.ItemTemplate>
                                                 <DataTemplate>
                                                     <StackPanel Orientation="Horizontal">
+                                                        <!-- Offline dim (#175 phase 2 item 14): a disconnected
+                                                             device's line drops to half opacity so it can't
+                                                             read as live while the count says otherwise.
+                                                             Opacity only; the marquee is untouched. -->
+                                                        <StackPanel.Style>
+                                                            <Style TargetType="StackPanel">
+                                                                <Style.Triggers>
+                                                                    <DataTrigger Binding="{Binding IsOnline}" Value="False">
+                                                                        <Setter Property="Opacity" Value="0.5"/>
+                                                                    </DataTrigger>
+                                                                </Style.Triggers>
+                                                            </Style>
+                                                        </StackPanel.Style>
                                                         <TextBlock Text="  |  " FontSize="12"
                                                                    Foreground="{DynamicResource TextFillColorTertiaryBrush}">
                                                             <TextBlock.Style>
@@ -1071,8 +1114,20 @@
                                                                    FontFamily="Segoe MDL2 Assets" FontSize="11"
                                                                    Foreground="{DynamicResource TextFillColorTertiaryBrush}"
                                                                    VerticalAlignment="Center" Margin="0,0,5,0"/>
-                                                        <TextBlock Text="{Binding Name}" FontSize="12"
-                                                                   Foreground="{DynamicResource ColdBrush}"/>
+                                                        <TextBlock Text="{Binding Name}" FontSize="12">
+                                                            <TextBlock.Style>
+                                                                <Style TargetType="TextBlock">
+                                                                    <Setter Property="Foreground" Value="{DynamicResource ColdBrush}"/>
+                                                                    <Style.Triggers>
+                                                                        <!-- Cold is reserved for live hardware (#175):
+                                                                             offline names fall to tertiary. -->
+                                                                        <DataTrigger Binding="{Binding IsOnline}" Value="False">
+                                                                            <Setter Property="Foreground" Value="{DynamicResource TextFillColorTertiaryBrush}"/>
+                                                                        </DataTrigger>
+                                                                    </Style.Triggers>
+                                                                </Style>
+                                                            </TextBlock.Style>
+                                                        </TextBlock>
                                                         <!-- Transport (#175 competitor item 9): Bluetooth
                                                              links carry the E702 glyph, wired stays
                                                              unmarked. -->
@@ -1483,8 +1538,11 @@
                                         </TextBlock>
                                     </StackPanel>
                                     <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
+                                        <!-- No Appearance=Primary (dark text on the accent
+                                             slab): Connect is the row's primary affirmative
+                                             and wears the shared ember accent instead. -->
                                         <ui:Button Content="{Binding Dashboard_RemoteLinkConnectButton, Source={x:Static strings:Strings.Instance}}"
-                                                   Command="{Binding ConnectCommand}" Appearance="Primary" Margin="0,0,8,0"
+                                                   Command="{Binding ConnectCommand}" Style="{StaticResource EmberPrimaryButton}" Margin="0,0,8,0"
                                                    Visibility="{Binding CanConnect, Converter={StaticResource BoolToVisibilityConverter}}"/>
                                         <Button Content="{Binding RemoteLink_Revoke, Source={x:Static strings:Strings.Instance}}"
                                                 Command="{Binding RevokeCommand}"/>

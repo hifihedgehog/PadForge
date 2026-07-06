@@ -465,8 +465,14 @@
                                 </Style>
                             </TextBlock.Style>
                         </TextBlock>
-                        <TextBlock Text="{Binding TypeInstanceLabel}" FontSize="13"
-                                   Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                        <!-- Instance count as the #N telemetry token the
+                             Dashboard slot cards wear (user report
+                             2026-07-05): pill-label size, ember-muted, not
+                             the disabled-gray body face it had. -->
+                        <TextBlock Text="{Binding TypeInstanceLabel, StringFormat={}#{0}}"
+                                   FontFamily="{StaticResource TelemetryFontFamily}"
+                                   FontSize="14" FontWeight="SemiBold"
+                                   Foreground="{DynamicResource EmberTextBrush}"
                                    VerticalAlignment="Center"/>
                     </StackPanel>
                 </Border>
@@ -1084,6 +1090,7 @@
 
                         <ListBox ItemsSource="{Binding Macros}"
                                  SelectedItem="{Binding SelectedMacro, Mode=TwoWay}"
+                                 ItemContainerStyle="{StaticResource EmberSelectListItem}"
                                  DisplayMemberPath="Name"/>
                     </DockPanel>
 
@@ -1621,6 +1628,7 @@
                                  interaction stay on the ListBox container. -->
                             <ListBox ItemsSource="{Binding Actions}"
                                      SelectedItem="{Binding SelectedAction, Mode=TwoWay}"
+                                     ItemContainerStyle="{StaticResource EmberSelectListItem}"
                                      MinHeight="100" MaxHeight="200" Margin="0,0,0,4">
                                 <ListBox.ItemTemplate>
                                     <DataTemplate>
@@ -2576,12 +2584,15 @@
                                            TextWrapping="Wrap" Margin="0,0,0,6"
                                            Visibility="Collapsed"/>
                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                                    <!-- Save is the popup's primary affirmative and wears
+                                         the ember accent (#175 dialog language). The old
+                                         inline TextOnAccent-on-accent pair went dark text
+                                         on ember (user report 2026-07-05). -->
                                     <Button Content="{Binding Common_Save, Source={x:Static strings:Strings.Instance}}"
                                             MinWidth="72" Margin="0,0,6,0"
                                             IsDefault="True"
                                             Click="RenameLayerSave_Click"
-                                            Foreground="{DynamicResource TextOnAccentFillColorPrimaryBrush}"
-                                            Background="{DynamicResource AccentFillColorDefaultBrush}"/>
+                                            Style="{StaticResource EmberAccentButton}"/>
                                     <Button Content="{Binding Common_Cancel, Source={x:Static strings:Strings.Instance}}"
                                             MinWidth="72"
                                             IsCancel="True"
@@ -2968,8 +2979,7 @@
                               GridLinesVisibility="Horizontal"
                               IsReadOnly="True"
                               VerticalScrollBarVisibility="Visible"
-                              LoadingRow="MappingDataGrid_LoadingRow"
-                              UnloadingRow="MappingDataGrid_UnloadingRow"
+                              Grid.IsSharedSizeScope="True"
                               SelectionChanged="MappingDataGrid_SelectionChanged"
                               Loaded="MappingDataGrid_Loaded">
                         <!-- Ember close-out item 8: mono eyebrow column headers
@@ -3025,11 +3035,14 @@
                                 </Setter>
                                 <Setter Property="Foreground"
                                         Value="{DynamicResource TextFillColorPrimaryBrush}"/>
-                                <!-- Compact trivial rows have their cells collapsed,
-                                     so a click never reaches a DataGridCell and WPF's
-                                     own selection logic won't fire. The handler
-                                     expands + selects the row (#175 telemetry board). -->
+                                <!-- Compact rows (trivial + collapsed fan-in) have
+                                     their cells collapsed, so a click never reaches a
+                                     DataGridCell and WPF's own selection logic won't
+                                     fire. The handler expands + selects the row (#175
+                                     telemetry board / phase two item 10). Enter/Space
+                                     on a focused row toggles it open and closed. -->
                                 <EventSetter Event="PreviewMouseLeftButtonDown" Handler="MappingRow_PreviewMouseLeftButtonDown"/>
+                                <EventSetter Event="PreviewKeyDown" Handler="MappingRow_PreviewKeyDown"/>
                                 <Setter Property="Template">
                                     <Setter.Value>
                                         <!-- Rowfire (#175 artifact .mrow::after): the
@@ -3048,73 +3061,138 @@
                                                     <DataGridCellsPresenter x:Name="CellsHost"
                                                         ItemsPanel="{TemplateBinding ItemsPanel}"
                                                         SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
-                                                    <!-- Compact trivial line (#175 telemetry board):
+                                                    <!-- Compact line (#175 telemetry board):
                                                          a plain Direct row with no options collapses
                                                          to one 26px mono line so a whole config reads
                                                          on one screen. Clicking it expands the row
                                                          back to the full editor via IsExpandedOverride
                                                          (set in code-behind). The liveness flame is the
                                                          static liveness cue; rowfire below still
-                                                         animates on compact rows. -->
-                                                    <StackPanel x:Name="CompactLine" Orientation="Horizontal"
-                                                                Height="26" Margin="10,0,8,0"
-                                                                Visibility="Collapsed">
-                                                        <!-- Liveness flame (brand canon, supersedes
-                                                             dots): ashen outline at rest, ember fill +
-                                                             static glow while input flows through the
-                                                             row. Static setters, reduced-motion safe. -->
-                                                        <Path Margin="0,0,8,0">
-                                                            <Path.Style>
-                                                                <Style TargetType="Path" BasedOn="{StaticResource LivenessFlameBase}">
-                                                                    <Style.Triggers>
-                                                                        <DataTrigger Binding="{Binding IsInputActive}" Value="True">
-                                                                            <Setter Property="Fill" Value="{DynamicResource EmberBrush}"/>
-                                                                            <Setter Property="Stroke" Value="{x:Null}"/>
-                                                                            <Setter Property="Effect">
-                                                                                <Setter.Value>
-                                                                                    <DropShadowEffect Color="#FF6B2C" BlurRadius="8" ShadowDepth="0" Opacity="0.5"/>
-                                                                                </Setter.Value>
-                                                                            </Setter>
-                                                                        </DataTrigger>
-                                                                    </Style.Triggers>
-                                                                </Style>
-                                                            </Path.Style>
-                                                        </Path>
-                                                        <TextBlock Text="{Binding TargetLabel}"
-                                                                   FontWeight="SemiBold" FontSize="12"
-                                                                   Foreground="{DynamicResource EmberHotBrush}"
-                                                                   VerticalAlignment="Center"/>
-                                                        <TextBlock Text="←"
-                                                                   FontFamily="{StaticResource TelemetryFontFamily}"
-                                                                   FontSize="11"
-                                                                   Foreground="{DynamicResource TextFillColorTertiaryBrush}"
-                                                                   VerticalAlignment="Center" Margin="8,0,6,0"/>
-                                                        <TextBlock Text="{Binding SourceDisplayText, Mode=OneWay}"
-                                                                   FontFamily="{StaticResource TelemetryFontFamily}"
-                                                                   FontSize="11"
-                                                                   Foreground="{DynamicResource TextFillColorTertiaryBrush}"
-                                                                   VerticalAlignment="Center"
-                                                                   TextTrimming="CharacterEllipsis"/>
-                                                        <!-- Source device (user report 2026-07-04: "Button A
-                                                             from which device?!"): the compact line carries
-                                                             the feeding device, dimmer, after the source. -->
-                                                        <TextBlock Text="{Binding PrimarySourceDeviceLabel}"
-                                                                   FontFamily="{StaticResource TelemetryFontFamily}"
-                                                                   FontSize="10"
-                                                                   Foreground="{DynamicResource TextFillColorTertiaryBrush}"
-                                                                   Opacity="0.7"
-                                                                   VerticalAlignment="Center" Margin="10,0,0,0">
-                                                            <TextBlock.Style>
-                                                                <Style TargetType="TextBlock">
-                                                                    <Style.Triggers>
-                                                                        <DataTrigger Binding="{Binding PrimarySourceDeviceLabel}" Value="">
-                                                                            <Setter Property="Visibility" Value="Collapsed"/>
-                                                                        </DataTrigger>
-                                                                    </Style.Triggers>
-                                                                </Style>
-                                                            </TextBlock.Style>
-                                                        </TextBlock>
-                                                    </StackPanel>
+                                                         animates on compact rows.
+                                                         Phase two item 10: unselected fan-in rows
+                                                         (HasExtraSources) collapse to this same line
+                                                         plus a "+N" tail and the combine token, and
+                                                         expand via selection instead of the override.
+                                                         The output segment is a shared-size column
+                                                         (scope = the DataGrid) so collapsed lines read
+                                                         as an aligned board, same construction as the
+                                                         pipeline-tip listing's shared output column. -->
+                                                    <Grid x:Name="CompactLine" Height="26" Margin="10,0,8,0"
+                                                          Visibility="Collapsed">
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="Auto" SharedSizeGroup="CompactRowOutput"/>
+                                                            <ColumnDefinition Width="Auto"/>
+                                                        </Grid.ColumnDefinitions>
+                                                        <StackPanel Orientation="Horizontal">
+                                                            <!-- Liveness flame (brand canon, supersedes
+                                                                 dots): ashen outline at rest, ember fill +
+                                                                 static glow while input flows through the
+                                                                 row. Static setters, reduced-motion safe. -->
+                                                            <Path Margin="0,0,8,0">
+                                                                <Path.Style>
+                                                                    <Style TargetType="Path" BasedOn="{StaticResource LivenessFlameBase}">
+                                                                        <Style.Triggers>
+                                                                            <DataTrigger Binding="{Binding IsInputActive}" Value="True">
+                                                                                <Setter Property="Fill" Value="{DynamicResource EmberBrush}"/>
+                                                                                <Setter Property="Stroke" Value="{x:Null}"/>
+                                                                                <Setter Property="Effect">
+                                                                                    <Setter.Value>
+                                                                                        <DropShadowEffect Color="#FF6B2C" BlurRadius="8" ShadowDepth="0" Opacity="0.5"/>
+                                                                                    </Setter.Value>
+                                                                                </Setter>
+                                                                            </DataTrigger>
+                                                                        </Style.Triggers>
+                                                                    </Style>
+                                                                </Path.Style>
+                                                            </Path>
+                                                            <TextBlock Text="{Binding TargetLabel}"
+                                                                       FontWeight="SemiBold" FontSize="12"
+                                                                       Foreground="{DynamicResource EmberHotBrush}"
+                                                                       VerticalAlignment="Center"/>
+                                                        </StackPanel>
+                                                        <StackPanel Grid.Column="1" Orientation="Horizontal">
+                                                            <TextBlock Text="←"
+                                                                       FontFamily="{StaticResource TelemetryFontFamily}"
+                                                                       FontSize="11"
+                                                                       Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                                                                       VerticalAlignment="Center" Margin="8,0,6,0"/>
+                                                            <TextBlock Text="{Binding SourceDisplayText, Mode=OneWay}"
+                                                                       FontFamily="{StaticResource TelemetryFontFamily}"
+                                                                       FontSize="11"
+                                                                       Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                                                                       VerticalAlignment="Center"
+                                                                       TextTrimming="CharacterEllipsis"/>
+                                                            <!-- Source device (user report 2026-07-04: "Button A
+                                                                 from which device?!"): the compact line carries
+                                                                 the feeding device, dimmer, after the source. -->
+                                                            <TextBlock Text="{Binding PrimarySourceDeviceLabel}"
+                                                                       FontFamily="{StaticResource TelemetryFontFamily}"
+                                                                       FontSize="10"
+                                                                       Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                                                                       Opacity="0.7"
+                                                                       VerticalAlignment="Center" Margin="10,0,0,0">
+                                                                <TextBlock.Style>
+                                                                    <Style TargetType="TextBlock">
+                                                                        <Style.Triggers>
+                                                                            <DataTrigger Binding="{Binding PrimarySourceDeviceLabel}" Value="">
+                                                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                                                            </DataTrigger>
+                                                                        </Style.Triggers>
+                                                                    </Style>
+                                                                </TextBlock.Style>
+                                                            </TextBlock>
+                                                            <!-- Fan-in tail: "+N" for the extra sources
+                                                                 feeding this output, same grammar as the
+                                                                 pipeline-tip overflow tail. Collapses on
+                                                                 trivial lines (no extras by definition). -->
+                                                            <TextBlock FontFamily="{StaticResource TelemetryFontFamily}"
+                                                                       FontSize="11" FontWeight="SemiBold"
+                                                                       Foreground="{DynamicResource ColdBrush}"
+                                                                       VerticalAlignment="Center" Margin="8,0,0,0"
+                                                                       Text="{Binding ExtraSources.Count, Mode=OneWay, StringFormat={}+{0}}">
+                                                                <TextBlock.Style>
+                                                                    <Style TargetType="TextBlock">
+                                                                        <Style.Triggers>
+                                                                            <DataTrigger Binding="{Binding ExtraSources.Count}" Value="0">
+                                                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                                                            </DataTrigger>
+                                                                        </Style.Triggers>
+                                                                    </Style>
+                                                                </TextBlock.Style>
+                                                            </TextBlock>
+                                                            <!-- Combine token chip: the engine's locale-
+                                                                 neutral mode value (MaxAbs / OR / XOR…),
+                                                                 display-uppercased like the column headers.
+                                                                 Cold chip family: combining is a source-
+                                                                 side affair. Hidden alongside the +N tail,
+                                                                 and when the mode is still the implicit-
+                                                                 default empty sentinel. -->
+                                                            <Border CornerRadius="3" BorderThickness="1"
+                                                                    Padding="5,1" Margin="8,0,0,0"
+                                                                    VerticalAlignment="Center"
+                                                                    Background="#0D58B6E4">
+                                                                <Border.BorderBrush>
+                                                                    <SolidColorBrush Color="#3D58B6E4"/>
+                                                                </Border.BorderBrush>
+                                                                <Border.Style>
+                                                                    <Style TargetType="Border">
+                                                                        <Style.Triggers>
+                                                                            <DataTrigger Binding="{Binding ExtraSources.Count}" Value="0">
+                                                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                                                            </DataTrigger>
+                                                                            <DataTrigger Binding="{Binding CombineMode}" Value="">
+                                                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                                                            </DataTrigger>
+                                                                        </Style.Triggers>
+                                                                    </Style>
+                                                                </Border.Style>
+                                                                <TextBlock Text="{Binding CombineMode, Converter={StaticResource UpperConverter}}"
+                                                                           FontFamily="{StaticResource TelemetryFontFamily}"
+                                                                           FontSize="9.5"
+                                                                           Foreground="{DynamicResource ColdBrush}"/>
+                                                            </Border>
+                                                        </StackPanel>
+                                                    </Grid>
                                                     <Rectangle x:Name="Rowfire" Height="1.5"
                                                                VerticalAlignment="Bottom"
                                                                Margin="8,0,8,0" Opacity="0"
@@ -3138,6 +3216,24 @@
                                                 <MultiDataTrigger>
                                                     <MultiDataTrigger.Conditions>
                                                         <Condition Binding="{Binding IsTrivialDirect}" Value="True"/>
+                                                        <Condition Binding="{Binding IsExpandedOverride}" Value="False"/>
+                                                    </MultiDataTrigger.Conditions>
+                                                    <Setter TargetName="CellsHost" Property="Visibility" Value="Collapsed"/>
+                                                    <Setter TargetName="CompactLine" Property="Visibility" Value="Visible"/>
+                                                </MultiDataTrigger>
+                                                <!-- Fan-in compact swap (#175 phase two item 10):
+                                                     an unselected multi-source row collapses to
+                                                     the one-line summary; selecting it brings back
+                                                     the full cells and opens the details editor.
+                                                     IsRowSelected mirrors DataGrid selection (set
+                                                     in SelectionChanged). The IsExpandedOverride
+                                                     condition keeps the Loaded-time column-width
+                                                     measure pass honest: it force-expands compact
+                                                     rows off-frame through that flag. -->
+                                                <MultiDataTrigger>
+                                                    <MultiDataTrigger.Conditions>
+                                                        <Condition Binding="{Binding HasExtraSources}" Value="True"/>
+                                                        <Condition Binding="{Binding IsRowSelected}" Value="False"/>
                                                         <Condition Binding="{Binding IsExpandedOverride}" Value="False"/>
                                                     </MultiDataTrigger.Conditions>
                                                     <Setter TargetName="CellsHost" Property="Visibility" Value="Collapsed"/>
@@ -9462,7 +9558,8 @@
                                 <TextBlock x:Name="SoundPackagesEmptyText"
                                            Text="{Binding Pad_Audio_Packages_Empty, Source={x:Static strings:Strings.Instance}}"
                                            Style="{StaticResource CardDescription}"/>
-                                <ListBox x:Name="SoundPackagesList" MaxHeight="170">
+                                <ListBox x:Name="SoundPackagesList" MaxHeight="170"
+                                         ItemContainerStyle="{StaticResource EmberSelectListItem}">
                                     <ListBox.ItemTemplate>
                                         <DataTemplate>
                                             <StackPanel Orientation="Horizontal" Margin="0,2">

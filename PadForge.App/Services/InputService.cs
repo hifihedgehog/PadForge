@@ -1841,6 +1841,34 @@ namespace PadForge.Services
             _mainVm.PollingFrequency = _inputManager.CurrentFrequency;
         }
 
+        // Reusable buffer for the non-allocating FindByPadIndex overload,
+        // grown to the live UserSettings count so a per-slot query never
+        // truncates. Shared by the two 30 Hz refreshes below, which both run
+        // on the UI thread in sequence, so no cross-thread contention.
+        private UserSetting[] _slotSettingsBuf = System.Array.Empty<UserSetting>();
+
+        private UserSetting[] RentSlotSettingsBuffer(SettingsCollection settings)
+        {
+            int need = settings?.Count ?? 0;
+            if (_slotSettingsBuf.Length < need)
+                _slotSettingsBuf = new UserSetting[need];
+            return _slotSettingsBuf;
+        }
+
+        /// <summary>Closure-free replacement for devices.Any(d =&gt; d.Guid == g
+        /// &amp;&amp; d.IsOnline). The LINQ form allocated a capture per call at
+        /// 30 Hz across every slot and roster line.</summary>
+        private static bool AnyOnlineMatch(UserDevice[] devices, Guid guid)
+        {
+            if (devices == null) return false;
+            for (int i = 0; i < devices.Length; i++)
+            {
+                var d = devices[i];
+                if (d != null && d.InstanceGuid == guid && d.IsOnline) return true;
+            }
+            return false;
+        }
+
         /// <summary>
         /// Updates all SlotSummary properties on the dashboard (type, label, status, device info).
         /// Safe to call with or without the engine running.
@@ -1859,6 +1887,10 @@ namespace PadForge.Services
                 }
             }
 
+            var devArr = devices as UserDevice[] ?? devices?.ToArray();
+            var settings = SettingsManager.UserSettings;
+            var buf = RentSlotSettingsBuffer(settings);
+
             foreach (var slot in dash.SlotSummaries)
             {
                 int padIndex = slot.PadIndex;
@@ -1872,16 +1904,12 @@ namespace PadForge.Services
                 // per mapped device with its own dynamic battery glyph.
                 slot.MappedDevices = padVm.MappedDevices;
 
-                var slotSettings = SettingsManager.UserSettings?.FindByPadIndex(padIndex);
-                int mappedCount = slotSettings?.Count ?? 0;
+                int mappedCount = settings?.FindByPadIndex(padIndex, buf) ?? 0;
                 int connectedCount = 0;
-                if (slotSettings != null && devices != null)
+                for (int s = 0; s < mappedCount; s++)
                 {
-                    foreach (var us in slotSettings)
-                    {
-                        if (devices.Any(d => d.InstanceGuid == us.InstanceGuid && d.IsOnline))
-                            connectedCount++;
-                    }
+                    if (AnyOnlineMatch(devArr, buf[s].InstanceGuid))
+                        connectedCount++;
                 }
 
                 // Per-device connect state (#175 phase 2 item 14): refresh
@@ -1889,10 +1917,7 @@ namespace PadForge.Services
                 // connectedCount above reads, so a card can never say
                 // "0 connected" while its roster lines render as live.
                 foreach (var dev in padVm.MappedDevices)
-                {
-                    dev.IsOnline = devices != null
-                        && devices.Any(d => d.InstanceGuid == dev.InstanceGuid && d.IsOnline);
-                }
+                    dev.IsOnline = AnyOnlineMatch(devArr, dev.InstanceGuid);
 
                 slot.MappedDeviceCount = mappedCount;
                 slot.ConnectedDeviceCount = connectedCount;
@@ -2399,20 +2424,21 @@ namespace PadForge.Services
                 }
             }
 
+            var devArr = devices as UserDevice[] ?? devices?.ToArray();
+            var settings = SettingsManager.UserSettings;
+            var buf = RentSlotSettingsBuffer(settings);
+
             foreach (var nav in _mainVm.NavControllerItems)
             {
                 int padIndex = nav.PadIndex;
                 if (padIndex < 0 || padIndex >= _mainVm.Pads.Count) continue;
 
-                var slotSettings = SettingsManager.UserSettings?.FindByPadIndex(padIndex);
+                int mappedCount = settings?.FindByPadIndex(padIndex, buf) ?? 0;
                 int connCount = 0;
-                if (slotSettings != null && devices != null)
+                for (int s = 0; s < mappedCount; s++)
                 {
-                    foreach (var us in slotSettings)
-                    {
-                        if (devices.Any(d => d.InstanceGuid == us.InstanceGuid && d.IsOnline))
-                            connCount++;
-                    }
+                    if (AnyOnlineMatch(devArr, buf[s].InstanceGuid))
+                        connCount++;
                 }
                 nav.ConnectedDeviceCount = connCount;
                 nav.IsInitializing = _inputManager?.IsVirtualControllerInitializing(padIndex) ?? false;
@@ -6298,6 +6324,7 @@ namespace PadForge.Services
                                 SerialNumber = dev.SerialNumber ?? "",
                                 NumAxes = dev.NumAxes,
                                 NumButtons = dev.NumButtons,
+                                RawButtonCount = dev.RawButtonCount,
                                 NumHats = dev.NumHats,
                                 HasRumble = dev.HasRumble,
                                 HasRumbleTriggers = dev.HasRumbleTriggers,

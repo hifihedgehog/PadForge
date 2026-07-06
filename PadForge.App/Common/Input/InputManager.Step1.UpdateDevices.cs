@@ -1399,6 +1399,12 @@ namespace PadForge.Common.Input
         public List<UserSetting> Items { get; } = new List<UserSetting>();
         public object SyncRoot { get; } = new object();
 
+        /// <summary>Live record count under the lock. Used by hot-path callers
+        /// to size a reusable buffer for the non-allocating FindByPadIndex
+        /// overload: any single slot's settings are a subset of all records,
+        /// so a buffer this size can never truncate a per-slot query.</summary>
+        public int Count { get { lock (SyncRoot) return Items.Count; } }
+
         /// <summary>
         /// Finds the UserSetting that links a device (by InstanceGuid) to a pad slot.
         /// Uses a manual loop to avoid LINQ closure allocations.

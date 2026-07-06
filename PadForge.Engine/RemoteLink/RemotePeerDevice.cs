@@ -29,6 +29,15 @@ namespace PadForge.Engine.RemoteLink
         public int NumButtons { get; set; }
         public int NumHats { get; set; }
 
+        /// <summary>Raw HID button count, which for a gamepad exceeds the 22
+        /// standardized SDL slots when the device has native buttons past the
+        /// gamepad layout (fight sticks, extra paddles, force-raw DS3). The
+        /// per-frame state codec already ships Buttons[0..N] by raw index;
+        /// carrying this lets the consumer offer those extras in its mapping
+        /// picker instead of capping at NumButtons. 0 means "same as
+        /// NumButtons" (old peers, or a device with no extras).</summary>
+        public int RawButtonCount { get; set; }
+
         public bool HasRumble { get; set; }
         public bool HasRumbleTriggers { get; set; }
         /// <summary>The device exposes DirectInput-style haptic FFB (wheels, FFB sticks).
@@ -118,13 +127,18 @@ namespace PadForge.Engine.RemoteLink
             NumAxes = info.NumAxes;
             NumButtons = info.NumButtons;
             NumHats = info.NumHats;
+            // Never below NumButtons: a 0 (old peer) or a device with no
+            // extras falls back to the standardized count.
+            _rawButtonCount = Math.Max(info.NumButtons, info.RawButtonCount);
 
             DevicePath = $"peer://{Short(info.PeerFingerprintHex)}/{info.PeerLocalDeviceId}";
             InstanceGuid = Md5Guid($"pflink-dev:{info.PeerFingerprintHex}:{info.PeerLocalDeviceId}");
             ProductGuid = Md5Guid($"pflink-prod:{info.PeerFingerprintHex}:{info.VendorId:X4}:{info.ProductId:X4}:{info.InputDeviceType}");
             SdlInstanceId = unchecked((uint)DevicePath.GetHashCode());
 
-            _supportedButtonIndices = new int[Math.Max(0, NumButtons)];
+            // The full raw button set is mappable, so support every index the
+            // extras reach, not just the standardized 22.
+            _supportedButtonIndices = new int[Math.Max(0, _rawButtonCount)];
             for (int i = 0; i < _supportedButtonIndices.Length; i++) _supportedButtonIndices[i] = i;
 
             // Start centered (codec neutral) and live, so registration doesn't blip
@@ -141,7 +155,8 @@ namespace PadForge.Engine.RemoteLink
         public string Name { get; }
         public int NumAxes { get; }
         public int NumButtons { get; }
-        public int RawButtonCount => NumButtons;
+        private readonly int _rawButtonCount;
+        public int RawButtonCount => _rawButtonCount;
         public int NumHats { get; }
         public int[] SupportedButtonIndices => _supportedButtonIndices;
         public IntPtr GamepadHandle => IntPtr.Zero;
@@ -244,7 +259,11 @@ namespace PadForge.Engine.RemoteLink
             // consumer. The first 6 keep the standard X/Y/Z/Rx/Ry/Rz GUIDs; the
             // rest get Slider GUIDs with generic names, mirroring SdlDeviceWrapper.
             int axes = Math.Max(NumAxes, 0);
-            int buttons = Math.Max(NumButtons, 0);
+            // RawButtonCount, not NumButtons: emit a pickable object for every
+            // raw button the owner ships, including the extras past the 22
+            // standardized gamepad slots. Falls back to NumButtons for old
+            // peers (RawButtonCount is maxed with it in the ctor).
+            int buttons = Math.Max(RawButtonCount, 0);
             int povs = Math.Max(NumHats, 0);
             var items = new DeviceObjectItem[axes + buttons + povs];
             int idx = 0, offset = 0;

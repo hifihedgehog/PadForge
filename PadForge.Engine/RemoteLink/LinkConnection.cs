@@ -172,6 +172,13 @@ namespace PadForge.Engine.RemoteLink
         // appended blocks.
         private const byte DeviceListExtMagic = 0xE2;
 
+        // Second extension tail, appended after the v1 metadata section. One
+        // clamped byte per device: RawButtonCount. Guarded by its own magic
+        // and its own try/catch on decode, so an old peer (which stops after
+        // the v1 tail) ignores it, and a malformed v2 tail costs only the raw
+        // button counts, never the already-decoded v1 metadata.
+        private const byte DeviceListExtV2Magic = 0xE3;
+
         // Shared by the handshake exchange AND the post-connect DeviceList sync (#138).
         // Each entry leads with the owner's STABLE slot, and caps now carry HasHaptic +
         // Online so a remote wheel's FFB pipeline runs and active/inactive propagates.
@@ -246,6 +253,13 @@ namespace PadForge.Engine.RemoteLink
                     buf.AddRange(obj.ObjectTypeGuid.ToByteArray());
                 }
             }
+
+            // v2 tail: raw HID button count per device (one byte, always fits
+            // the datagram budget). Lets the consumer offer the extra native
+            // buttons past the 22 standardized gamepad slots in its picker.
+            buf.Add(DeviceListExtV2Magic);
+            for (int i = 0; i < count; i++)
+                buf.Add((byte)Math.Clamp(devices[i].RawButtonCount, 0, 255));
             return buf.ToArray();
         }
 
@@ -284,6 +298,7 @@ namespace PadForge.Engine.RemoteLink
             // malformed tail must not cost the already-decoded v1 records, so
             // any parse failure falls back to the v1 result (the consumer then
             // synthesizes generic objects exactly as it did before).
+            bool v1ExtOk = false;
             try
             {
                 if (o < data.Length && data[o] == DeviceListExtMagic)
@@ -323,6 +338,7 @@ namespace PadForge.Engine.RemoteLink
                             info.DeviceObjects = objs;
                         }
                     }
+                    v1ExtOk = true;
                 }
             }
             catch
@@ -337,6 +353,27 @@ namespace PadForge.Engine.RemoteLink
                     info.NumTouchpads = 0;
                     info.TouchpadFingerCounts = null;
                     info.DeviceObjects = null;
+                }
+            }
+
+            // v2 tail (raw button counts). Only reachable once the v1 tail
+            // parsed cleanly, since a v1 throw leaves the cursor unreliable.
+            // Its own try/catch so a malformed v2 tail costs only the counts.
+            if (v1ExtOk)
+            {
+                try
+                {
+                    if (o < data.Length && data[o] == DeviceListExtV2Magic)
+                    {
+                        o++;
+                        for (int i = 0; i < count; i++)
+                            list[i].RawButtonCount = data[o++];
+                    }
+                }
+                catch
+                {
+                    foreach (var info in list)
+                        info.RawButtonCount = 0;
                 }
             }
             return list;

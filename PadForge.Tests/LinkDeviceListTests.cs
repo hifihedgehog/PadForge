@@ -115,10 +115,11 @@ namespace PadForge.Tests
             info.TouchpadFingerCounts = null; info.DeviceObjects = null;
             var bare = LinkConnection.EncodeDeviceList(new[] { info });
 
-            // The bare payload's extension is a fixed 6-byte tail:
-            // [magic][serial len=0 (2B)][pads=0][objCount=0 (2B)], so the v1
-            // section length falls out of it.
-            int v1Len = bare.Length - 6;
+            // The bare payload's tail is a fixed 8 bytes: the v1 ext
+            // [magic][serial len=0 (2B)][pads=0][objCount=0 (2B)] = 6, then
+            // the v2 ext [magic][rawButtonCount=0] = 2. The v1 section length
+            // falls out of it.
+            int v1Len = bare.Length - 8;
             Assert.Equal(0xE2, bare[v1Len]);
 
             var corrupt = new byte[v1Len + 3];
@@ -131,6 +132,55 @@ namespace PadForge.Tests
             Assert.Single(list);
             Assert.Equal("All Consumer Controls (Merged)", list[0].Name);
             Assert.Null(list[0].DeviceObjects);
+        }
+
+        /// <summary>A gamepad with more raw HID buttons than the 22 standardized
+        /// slots carries the raw count over the v2 tail, and the consumer offers
+        /// every raw button in its synthesized object list.</summary>
+        [Fact]
+        public void RawButtonCount_RoundTripsAndSynthesizesExtras()
+        {
+            var info = new RemotePeerDeviceInfo
+            {
+                Slot = 1,
+                PeerLocalDeviceId = "raw-stick",
+                Name = "Fight Stick",
+                NumAxes = 6,
+                NumButtons = 22,      // SDL gamepad standard slots
+                RawButtonCount = 26,  // four extra native buttons
+                NumHats = 1,
+                InputDeviceType = InputDeviceType.Gamepad,
+            };
+
+            var d = LinkConnection.DecodeDeviceList(LinkConnection.EncodeDeviceList(new[] { info }))[0];
+            Assert.Equal(26, d.RawButtonCount);
+
+            d.PeerFingerprintHex = "AB12";
+            var dev = new RemotePeerDevice(d);
+            Assert.Equal(26, dev.RawButtonCount);
+            var buttonObjs = dev.GetDeviceObjects().Where(o => o.IsButton).ToList();
+            Assert.Equal(26, buttonObjs.Count);
+            Assert.Contains(buttonObjs, o => o.InputIndex == 25);
+        }
+
+        /// <summary>A device with no extras carries RawButtonCount 0 over the
+        /// wire (same value an old peer's absent tail decodes to); the consumer
+        /// maxes it with NumButtons so nothing regresses. The genuinely-absent
+        /// tail path is covered by V1OnlyPayload_DecodesWithoutExtension.</summary>
+        [Fact]
+        public void ZeroRawButtonCount_FallsBackToNumButtons()
+        {
+            var info = new RemotePeerDeviceInfo
+            {
+                PeerLocalDeviceId = "pad", Name = "Pad",
+                NumButtons = 22, InputDeviceType = InputDeviceType.Gamepad,
+            };
+            var d = LinkConnection.DecodeDeviceList(LinkConnection.EncodeDeviceList(new[] { info }))[0];
+            Assert.Equal(0, d.RawButtonCount); // wire default when no extras
+
+            d.PeerFingerprintHex = "AB12";
+            var dev = new RemotePeerDevice(d);
+            Assert.Equal(22, dev.RawButtonCount); // maxed with NumButtons
         }
     }
 }

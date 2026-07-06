@@ -1295,7 +1295,7 @@ namespace PadForge.ViewModels
         /// source text plus every named extra source. An extra from a
         /// different device carries its "device: control" prefix
         /// inline, the same grammar as the preview annotation's
-        /// ChipLabel.</summary>
+        /// BuildAnnotationWireRows.</summary>
         private static string TipSourceText(MappingItem m, string primaryDevice)
         {
             var parts = new System.Collections.Generic.List<string>();

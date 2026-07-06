@@ -1245,13 +1245,16 @@ namespace PadForge.Common.Input
 
         // ── Haptic mirror engage (#185): third member of the engage family ──
 
-        /// <summary>Per-slot engage config for the haptic mirror, wired by
-        /// InputService from the per-device PlayStation configs (the same
-        /// source the passthrough provider reads). Returns the FIRST device
-        /// config on the slot whose engage mode is not "Always", or null when
-        /// every config is Always (the fast path). Mode: 1 = Input (held
+        /// <summary>Engage configs for the haptic mirror, wired by InputService
+        /// from the per-device PlayStation configs (the same source the
+        /// passthrough provider reads). Returns EVERY passthrough-enabled
+        /// config on the slot with its device GUID, including mode 0 (Always),
+        /// or null when none. The gate is per (slot, DEVICE): each device's
+        /// config gates only its own sink's cell, so a stale config on another
+        /// device GUID can never mute the selected device (the Steam
+        /// Controller Always-silent bug). Mode: 0 = Always, 1 = Input (held
         /// descriptor), 2 = Rumble (game vibration active).</summary>
-        public Func<int, (int Mode, string DeviceGuid, string Button, int ReleaseMs)?>
+        public Func<int, List<(Guid Device, int Mode, string EngageDeviceGuid, string Button, int ReleaseMs)>>
             HapticMirrorEngageConfigProvider { get; set; }
 
         // Config snapshot per slot, refreshed at low cadence: the ENGAGE STATE
@@ -1259,69 +1262,102 @@ namespace PadForge.Common.Input
         // / delay) changing within a quarter second of a UI edit is
         // imperceptible, and re-walking the ViewModel dictionaries through the
         // provider at 1000 Hz x 16 slots would put LINQ on the hot loop
-        // (code-audit lens 1n). 0 = Always (no gating).
-        private readonly (int Mode, string DeviceGuid, string Button, int ReleaseMs)[]
-            _mirrorEngageCfg = new (int, string, string, int)[MaxPads];
+        // (code-audit lens 1n). Each entry carries its device's EngageCell,
+        // resolved at refresh time, so the per-poll loop touches no dictionary.
+        private readonly (int Mode, string EngageDeviceGuid, string Button, int ReleaseMs, HapticToneService.EngageCell Cell)[][]
+            _mirrorEngageCfg = new (int, string, string, int, HapticToneService.EngageCell)[MaxPads][];
         private long _mirrorEngageCfgRefreshTick;
-        private readonly long[] _mirrorEngageLastActiveTick = new long[MaxPads];
+        // Cells gated by the PREVIOUS snapshot: any cell that disappears from
+        // the new snapshot (config removed, passthrough off, slot deleted) is
+        // re-asserted engaged so its sink can never stay muted by stale state.
+        private readonly HashSet<HapticToneService.EngageCell> _mirrorEngagePrevCells = new();
+        private readonly HashSet<HapticToneService.EngageCell> _mirrorEngageNewCells = new();
 
-        /// <summary>Settles each slot's haptic-mirror engaged bit once per tick
-        /// (issue #185), writing <see cref="HapticToneService.MirrorEngagedBySlot"/>.
-        /// Mirrors <see cref="UpdateGyroEngageStates"/>: Input mode holds while
-        /// the chosen descriptor is down (empty descriptor = always on, the
-        /// family convention), Rumble mode holds while any of the slot's four
-        /// vibration motors is nonzero, and either source keeps the bit up for
-        /// the configured release delay after it drops so the tone does not
-        /// clip off instantly.</summary>
+        /// <summary>Settles each gated device's haptic-mirror engage cell once
+        /// per tick (issue #185). Mirrors <see cref="UpdateGyroEngageStates"/>:
+        /// Input mode holds while the chosen descriptor is down (empty
+        /// descriptor = always on, the family convention), Rumble mode holds
+        /// while any of the slot's four vibration motors is nonzero, and either
+        /// source keeps the cell up for its release delay after it drops so the
+        /// tone does not clip off instantly. Always entries re-assert engaged
+        /// each tick.</summary>
         private void UpdateHapticMirrorEngageStates()
         {
             long now = Environment.TickCount64;
 
             // Low-cadence config refresh (see field comment).
-            var provider = HapticMirrorEngageConfigProvider;
             if (now - _mirrorEngageCfgRefreshTick >= 250)
             {
                 _mirrorEngageCfgRefreshTick = now;
+                var provider = HapticMirrorEngageConfigProvider;
+                _mirrorEngageNewCells.Clear();
                 for (int slot = 0; slot < MaxPads; slot++)
                 {
-                    (int, string, string, int) cfg = default;
+                    (int, string, string, int, HapticToneService.EngageCell)[] entries = null;
                     if (provider != null && SettingsManager.SlotCreated[slot])
                     {
-                        try { cfg = provider(slot) ?? default; }
-                        catch { cfg = default; }
+                        try
+                        {
+                            var cfgs = provider(slot);
+                            if (cfgs != null && cfgs.Count > 0)
+                            {
+                                entries = new (int, string, string, int, HapticToneService.EngageCell)[cfgs.Count];
+                                for (int i = 0; i < cfgs.Count; i++)
+                                {
+                                    var c = cfgs[i];
+                                    var cell = HapticToneService.GetOrCreateEngageCell(slot, c.Device);
+                                    entries[i] = (c.Mode, c.EngageDeviceGuid, c.Button, c.ReleaseMs, cell);
+                                    _mirrorEngageNewCells.Add(cell);
+                                }
+                            }
+                        }
+                        catch { entries = null; }
                     }
-                    _mirrorEngageCfg[slot] = cfg;
+                    _mirrorEngageCfg[slot] = entries;
                 }
+                // Re-open any cell the new snapshot no longer gates.
+                foreach (var old in _mirrorEngagePrevCells)
+                    if (!_mirrorEngageNewCells.Contains(old))
+                        old.Engaged = true;
+                _mirrorEngagePrevCells.Clear();
+                foreach (var c in _mirrorEngageNewCells) _mirrorEngagePrevCells.Add(c);
             }
 
             for (int slot = 0; slot < MaxPads; slot++)
             {
-                var cfg = _mirrorEngageCfg[slot];
-                if (cfg.Mode == 0)
+                var entries = _mirrorEngageCfg[slot];
+                if (entries == null) continue;
+                for (int i = 0; i < entries.Length; i++)
                 {
-                    HapticToneService.MirrorEngagedBySlot[slot] = true;
-                    continue;
-                }
+                    var cfg = entries[i];
+                    if (cfg.Mode == 0)
+                    {
+                        // Always: assert open every tick, covering a cell left
+                        // closed by a previous non-Always mode on this device.
+                        cfg.Cell.Engaged = true;
+                        continue;
+                    }
 
-                bool active;
-                if (cfg.Mode == 2)
-                {
-                    // Rumble: any motor the game drives, body or trigger.
-                    var v = VibrationStates[slot];
-                    active = v != null
-                        && (v.LeftMotorSpeed > 0 || v.RightMotorSpeed > 0
-                            || v.LeftTriggerMotorSpeed > 0 || v.RightTriggerMotorSpeed > 0);
-                }
-                else
-                {
-                    // Input: empty descriptor reads as always-on, matching the
-                    // gyro-engage convention.
-                    active = string.IsNullOrEmpty(cfg.Button)
-                        || (SourceCoercion.ButtonHeldProvider?.Invoke(cfg.DeviceGuid ?? "", cfg.Button, slot) ?? false);
-                }
+                    bool active;
+                    if (cfg.Mode == 2)
+                    {
+                        // Rumble: any motor the game drives, body or trigger.
+                        var v = VibrationStates[slot];
+                        active = v != null
+                            && (v.LeftMotorSpeed > 0 || v.RightMotorSpeed > 0
+                                || v.LeftTriggerMotorSpeed > 0 || v.RightTriggerMotorSpeed > 0);
+                    }
+                    else
+                    {
+                        // Input: empty descriptor reads as always-on, matching
+                        // the gyro-engage convention.
+                        active = string.IsNullOrEmpty(cfg.Button)
+                            || (SourceCoercion.ButtonHeldProvider?.Invoke(cfg.EngageDeviceGuid ?? "", cfg.Button, slot) ?? false);
+                    }
 
-                HapticToneService.MirrorEngagedBySlot[slot] = HapticToneService.HoldEngaged(
-                    active, now, ref _mirrorEngageLastActiveTick[slot], cfg.ReleaseMs);
+                    cfg.Cell.Engaged = HapticToneService.HoldEngaged(
+                        active, now, ref cfg.Cell.LastActiveTick, cfg.ReleaseMs);
+                }
             }
         }
 

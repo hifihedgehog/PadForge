@@ -29,14 +29,12 @@ namespace PadForge.Tests
             }
         }
 
-        private const int TestSlot = 7;
-
         [Fact]
         public void Engaged_PassesSamplesThrough()
         {
             var src = new CountingSource();
-            var gate = new HapticToneService.GatedMirrorSampleProvider(src, TestSlot);
-            HapticToneService.MirrorEngagedBySlot[TestSlot] = true;
+            var cell = new HapticToneService.EngageCell();
+            var gate = new HapticToneService.GatedMirrorSampleProvider(src, cell);
 
             var buf = new float[64];
             int n = gate.Read(buf, 0, buf.Length);
@@ -49,35 +47,30 @@ namespace PadForge.Tests
         public void Disengaged_ZeroesOutputButKeepsDraining()
         {
             var src = new CountingSource();
-            var gate = new HapticToneService.GatedMirrorSampleProvider(src, TestSlot);
-            HapticToneService.MirrorEngagedBySlot[TestSlot] = false;
-            try
-            {
-                var buf = new float[64];
-                int n = gate.Read(buf, 0, buf.Length);
+            var cell = new HapticToneService.EngageCell { Engaged = false };
+            var gate = new HapticToneService.GatedMirrorSampleProvider(src, cell);
 
-                // Full count returned: MixingSampleProvider never auto-removes
-                // the input, and the inner provider WAS read (drained).
-                Assert.Equal(buf.Length, n);
-                Assert.Equal(1, src.Reads);
-                Assert.All(buf, v => Assert.Equal(0f, v));
-            }
-            finally
-            {
-                HapticToneService.MirrorEngagedBySlot[TestSlot] = true;
-            }
+            var buf = new float[64];
+            int n = gate.Read(buf, 0, buf.Length);
+
+            // Full count returned: MixingSampleProvider never auto-removes
+            // the input, and the inner provider WAS read (drained).
+            Assert.Equal(buf.Length, n);
+            Assert.Equal(1, src.Reads);
+            Assert.All(buf, v => Assert.Equal(0f, v));
         }
 
         [Fact]
         public void ReengagedAfterDisengage_ResumesPassthrough()
         {
             var src = new CountingSource();
-            var gate = new HapticToneService.GatedMirrorSampleProvider(src, TestSlot);
+            var cell = new HapticToneService.EngageCell();
+            var gate = new HapticToneService.GatedMirrorSampleProvider(src, cell);
             var buf = new float[16];
 
-            HapticToneService.MirrorEngagedBySlot[TestSlot] = false;
+            cell.Engaged = false;
             gate.Read(buf, 0, buf.Length);
-            HapticToneService.MirrorEngagedBySlot[TestSlot] = true;
+            cell.Engaged = true;
             gate.Read(buf, 0, buf.Length);
 
             Assert.Equal(2, src.Reads);
@@ -85,13 +78,12 @@ namespace PadForge.Tests
         }
 
         [Fact]
-        public void RemoteSinkSlot_FailsOpen()
+        public void NullCell_FailsOpen()
         {
-            // Remote sinks carry Slot = -1 and can never acquire a mirror, so
-            // this is defense-in-depth: an out-of-range slot must pass samples
-            // through rather than throw or mute.
+            // Defense-in-depth: a gate constructed without a cell must pass
+            // samples through rather than throw or mute.
             var src = new CountingSource();
-            var gate = new HapticToneService.GatedMirrorSampleProvider(src, -1);
+            var gate = new HapticToneService.GatedMirrorSampleProvider(src, null);
 
             var buf = new float[16];
             int n = gate.Read(buf, 0, buf.Length);
@@ -101,14 +93,34 @@ namespace PadForge.Tests
         }
 
         [Fact]
-        public void DefaultState_IsEngagedForEverySlot()
+        public void CellsArePerDevice_AndDefaultEngaged()
         {
-            // A fresh slot with no engage config must play always: the
-            // InputManager fast path re-asserts true, and the initial state
-            // matches so the mirror never stutters before the first poll.
-            // Slot 7 is toggled by other tests, so assert the untouched ones.
-            Assert.True(HapticToneService.MirrorEngagedBySlot[0]);
-            Assert.True(HapticToneService.MirrorEngagedBySlot[15]);
+            // The Steam Controller Always-silent bug: one device's engage
+            // config must never gate another device's sink. Cells resolve per
+            // (slot, device), start engaged, and gate independently.
+            var devA = Guid.NewGuid();
+            var devB = Guid.NewGuid();
+            var cellA = HapticToneService.GetOrCreateEngageCell(3, devA);
+            var cellB = HapticToneService.GetOrCreateEngageCell(3, devB);
+
+            Assert.NotSame(cellA, cellB);
+            Assert.True(cellA.Engaged);
+            Assert.True(cellB.Engaged);
+            Assert.Same(cellA, HapticToneService.GetOrCreateEngageCell(3, devA));
+
+            var srcA = new CountingSource();
+            var srcB = new CountingSource();
+            var gateA = new HapticToneService.GatedMirrorSampleProvider(srcA, cellA);
+            var gateB = new HapticToneService.GatedMirrorSampleProvider(srcB, cellB);
+            cellA.Engaged = false; // gate device A only
+
+            var bufA = new float[8];
+            var bufB = new float[8];
+            gateA.Read(bufA, 0, bufA.Length);
+            gateB.Read(bufB, 0, bufB.Length);
+
+            Assert.All(bufA, v => Assert.Equal(0f, v));   // A muted
+            Assert.All(bufB, v => Assert.Equal(0.5f, v)); // B unaffected
         }
 
         // ── HoldEngaged: the release-delay decision the poll updater uses ──

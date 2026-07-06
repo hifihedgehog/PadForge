@@ -1069,14 +1069,19 @@ namespace PadForge.Services
                     .ToList();
             };
 
-            // Issue #185: haptic-mirror engage config, same per-device configs
-            // as the passthrough provider above. First device on the slot with a
-            // non-Always mode wins (the engage-family convention); null = every
-            // config is Always, InputManager's fast path. Called at low cadence
-            // (~4 Hz) from the poll thread's config refresh, never per poll.
+            // Issue #185: haptic-mirror engage configs, same per-device configs
+            // as the passthrough provider above. Returns EVERY passthrough-
+            // enabled config with its DEVICE GUID and mode (Always included):
+            // the gate is per (slot, device), so each device's config gates
+            // only its own sink. The first cut returned one "first non-Always"
+            // config per slot, which let a stale config on another device GUID
+            // mute the whole slot (the Steam Controller Always-silent bug).
+            // Called at low cadence (~4 Hz) from the poll thread's config
+            // refresh, never per poll.
             _inputManager.HapticMirrorEngageConfigProvider = slotIndex =>
             {
                 if (slotIndex < 0 || slotIndex >= _mainVm.Pads.Count) return null;
+                List<(Guid, int, string, string, int)> list = null;
                 foreach (var kv in _mainVm.Pads[slotIndex].PerDevicePlayStationConfigs)
                 {
                     var c = kv.Value;
@@ -1087,11 +1092,10 @@ namespace PadForge.Services
                         "Rumble" => 2,
                         _ => 0,
                     };
-                    if (mode == 0) continue;
-                    return (mode, c.AudioMirrorEngageDeviceGuid ?? "",
-                        c.AudioMirrorEngageButton ?? "", c.AudioMirrorEngageReleaseMs);
+                    (list ??= new()).Add((kv.Key, mode, c.AudioMirrorEngageDeviceGuid ?? "",
+                        c.AudioMirrorEngageButton ?? "", c.AudioMirrorEngageReleaseMs));
                 }
-                return null;
+                return list;
             };
 
             // A persisted mirror toggle must resume on launch — the service

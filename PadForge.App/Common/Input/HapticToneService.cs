@@ -648,20 +648,40 @@ namespace PadForge.Common.Input
         // ── Haptic mirror engage gate (#185) ──
         // The mirror buzzes the pad with everything the system plays, so it can
         // gate on a held input or on game rumble instead of running always. The
-        // per-slot bit is settled once per poll by InputManager's
-        // UpdateHapticMirrorEngageStates (the third member of the engage family
-        // beside gyro and trigger-route), including the release-delay hold, so
-        // the stream thread only reads a bool. Default true = Always. Macro
-        // sounds are never gated: the gate wraps ONLY the mirror's mixer input.
-        internal static readonly bool[] MirrorEngagedBySlot =
-            CreateAllTrue(InputManager.MaxPads);
+        // gate is PER (slot, device), matching ReconcileMirrors' own
+        // c.Device == s.DeviceGuid scoping: each sink is gated only by ITS
+        // device's config. The first cut keyed one bit per SLOT and walked the
+        // slot's configs "first non-Always wins", which let a stale
+        // passthrough-enabled config on ANOTHER device GUID (an old instance
+        // resurrected at load, or a paste fan-out) mute every sink on the slot
+        // even with the selected device on Always (the Steam Controller
+        // Always-silent report). Cells are settled once per poll by
+        // InputManager's UpdateHapticMirrorEngageStates (third member of the
+        // engage family beside gyro and trigger-route), including the per-cell
+        // release-delay hold, so the stream thread only reads one bool field.
+        // Default true = Always. Macro sounds are never gated: the gate wraps
+        // ONLY the mirror's mixer input.
 
-        private static bool[] CreateAllTrue(int n)
+        /// <summary>One device's engage state. Engaged is written by the poll
+        /// thread and read by the sink's stream thread (plain volatile bool,
+        /// same torn-read tolerance as the rest of the file). LastActiveTick
+        /// backs the release-delay hold and is per cell, so two gated devices
+        /// on one slot hold independently.</summary>
+        internal sealed class EngageCell
         {
-            var a = new bool[n];
-            for (int i = 0; i < n; i++) a[i] = true;
-            return a;
+            public volatile bool Engaged = true;
+            public long LastActiveTick;
         }
+
+        private static readonly System.Collections.Concurrent.ConcurrentDictionary<(int Slot, Guid Device), EngageCell>
+            _engageCells = new();
+
+        /// <summary>Resolves the engage cell for a (slot, device) pair,
+        /// creating it engaged. Called by StartMirror (once per mirror start)
+        /// and by InputManager's 4 Hz config refresh, never on the per-poll or
+        /// audio paths.</summary>
+        internal static EngageCell GetOrCreateEngageCell(int slot, Guid device)
+            => _engageCells.GetOrAdd((slot, device), _ => new EngageCell());
 
         /// <summary>The engage-hold decision shared by the poll-thread updater
         /// and the unit tests: engaged while the source is active, and for
@@ -680,23 +700,24 @@ namespace PadForge.Common.Input
         /// stale samples on re-engage) but zeroes the output, which the reducer
         /// reads as silence and the tone stops through the existing
         /// stop-of-stream neutral. Always returns the inner count, so the
-        /// MixingSampleProvider never auto-removes the input. Internal (visible
-        /// to the tests via InternalsVisibleTo). Only StartMirror constructs it
-        /// in production.</summary>
+        /// MixingSampleProvider never auto-removes the input. Holds its
+        /// device's EngageCell directly: zero lookups on the audio thread.
+        /// Internal (visible to the tests via InternalsVisibleTo). Only
+        /// StartMirror constructs it in production.</summary>
         internal sealed class GatedMirrorSampleProvider : ISampleProvider
         {
             private readonly ISampleProvider _inner;
-            private readonly int _slot;
-            public GatedMirrorSampleProvider(ISampleProvider inner, int slot)
+            private readonly EngageCell _cell;
+            public GatedMirrorSampleProvider(ISampleProvider inner, EngageCell cell)
             {
                 _inner = inner;
-                _slot = slot;
+                _cell = cell;
             }
             public WaveFormat WaveFormat => _inner.WaveFormat;
             public int Read(float[] buffer, int offset, int count)
             {
                 int n = _inner.Read(buffer, offset, count);
-                if (_slot >= 0 && _slot < MirrorEngagedBySlot.Length && !MirrorEngagedBySlot[_slot])
+                if (_cell != null && !_cell.Engaged)
                     Array.Clear(buffer, offset, n);
                 return n;
             }
@@ -767,7 +788,9 @@ namespace PadForge.Common.Input
 
                 // #185: the engage gate wraps ONLY the mirror branch, never the
                 // mixer itself, so macro sounds keep playing while disengaged.
-                sp = new GatedMirrorSampleProvider(sp, s.Slot);
+                // The cell is this DEVICE's, so another device's config on the
+                // same slot can never gate this sink.
+                sp = new GatedMirrorSampleProvider(sp, GetOrCreateEngageCell(s.Slot, s.DeviceGuid));
 
                 s.MacroMixer.AddMixerInput(sp);
                 s.MirrorInput = sp;

@@ -133,7 +133,6 @@ PadForge.sln
 │   │   ├── SDL3/x64/SDL3.dll          Custom SDL3 fork (HIDMaestro filter, Switch 2 Pro)
 │   │   ├── SDL3/x64/libusb-1.0.dll    libusb for WinUSB device access
 │   │   ├── OpenXInput/x64/xinput1_4.dll  Custom XInput shim (filters HIDMaestro virtuals from PadForge's own view)
-│   │   ├── OpenXInput/x64/devobj.dll  Companion DLL for the XInput shim
 │   │   ├── HIDMaestro/HIDMaestro.Core.dll  HIDMaestro managed client
 │   │   ├── HidHide_1.5.230_x64.exe    Embedded HidHide installer
 │   │   └── Xbox Series Controller - *.png  Dashboard controller images
@@ -196,9 +195,11 @@ Output: `PadForge.App/bin/Release/net10.0-windows10.0.26100.0/win-x64/publish/Pa
 2. **HIDMaestro** -- Required for all gamepad-style virtual controllers (Xbox, PlayStation,
    Extended). The app embeds the HIDMaestro installer and managed client; no separate install step.
 
-3. **OpenXInput shim** (`xinput1_4.dll`, `devobj.dll`) -- Custom XInput replacement DLLs embedded
-   in the single-file build under `Resources/OpenXInput/x64/`. Filters HIDMaestro virtual
+3. **OpenXInput shim** (`xinput1_4.dll`) -- Custom XInput replacement DLL embedded in the
+   single-file build under `Resources/OpenXInput/x64/`. Filters HIDMaestro virtual
    controllers out of PadForge's own XInput view. Loaded via `SetDllDirectory` preload.
+   Do NOT ship the fork's `devobj.dll`: it is a link-time stub, and bundling it once
+   hijacked the real System32 devobj.dll process-wide and crashed setupapi.
 
 4. **HidHide** (optional) -- For hiding physical controllers from games. Built-in installer included.
 

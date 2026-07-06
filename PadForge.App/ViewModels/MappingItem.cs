@@ -67,6 +67,7 @@ namespace PadForge.ViewModels
         {
             OnPropertyChanged(nameof(IsMultiSource));
             OnPropertyChanged(nameof(HasExtraSources));
+            OnPropertyChanged(nameof(HasAnySource));
             OnPropertyChanged(nameof(VariableCount));
             OnPropertyChanged(nameof(ShouldShowEmptyDirectionHint));
             OnPropertyChanged(nameof(ShouldShowCustomExpression));
@@ -131,6 +132,17 @@ namespace PadForge.ViewModels
                 || e.PropertyName == nameof(MappingSourceItem.SelectedInput))
             {
                 RefreshVariableAliases();
+            }
+            // Binding or clearing any of a secondary's feeds (descriptor,
+            // Up/Down keys, modifier key) or flipping its kind can change
+            // whether anything feeds the row at all.
+            if (e.PropertyName == nameof(MappingSourceItem.Descriptor)
+                || e.PropertyName == nameof(MappingSourceItem.ParamUp)
+                || e.PropertyName == nameof(MappingSourceItem.ParamDown)
+                || e.PropertyName == nameof(MappingSourceItem.ParamModifier)
+                || e.PropertyName == nameof(MappingSourceItem.Kind))
+            {
+                OnPropertyChanged(nameof(HasAnySource));
             }
         }
 
@@ -280,6 +292,7 @@ namespace PadForge.ViewModels
                 OnPropertyChanged(nameof(IsMultiSource));
                 OnPropertyChanged(nameof(PrimaryKindLabel));
                 OnPropertyChanged(nameof(IsTrivialDirect));
+                OnPropertyChanged(nameof(HasAnySource));
                 // A primary set (or loaded) as InvertOnHold with no contributing
                 // secondary is inert; revert it to Direct (#111 audit C).
                 EnforcePrimaryKindGate();
@@ -288,6 +301,16 @@ namespace PadForge.ViewModels
                 && sender is MappingSourceItem msi)
             {
                 RefreshExtraSourceInputs(msi);
+            }
+            // A stateful primary's feeds are the Up/Down/Modifier keys on
+            // the kind holder; binding or clearing one flips HasAnySource
+            // where SourceDescriptor cannot.
+            if (e.PropertyName == nameof(MappingSourceItem.Descriptor)
+                || e.PropertyName == nameof(MappingSourceItem.ParamUp)
+                || e.PropertyName == nameof(MappingSourceItem.ParamDown)
+                || e.PropertyName == nameof(MappingSourceItem.ParamModifier))
+            {
+                OnPropertyChanged(nameof(HasAnySource));
             }
         }
 
@@ -384,6 +407,7 @@ namespace PadForge.ViewModels
                     _resolvedSourceText = null; // Clear until re-resolved
                     OnPropertyChanged(nameof(SourceDisplayText));
                     OnPropertyChanged(nameof(IsMapped));
+                    OnPropertyChanged(nameof(HasAnySource));
                     OnPropertyChanged(nameof(IsDeadZoneApplicable));
                     OnPropertyChanged(nameof(IsHalfAxisApplicable));
                     OnPropertyChanged(nameof(IsGyroSource));
@@ -429,6 +453,7 @@ namespace PadForge.ViewModels
                     _resolvedNegText = null;
                     OnPropertyChanged(nameof(SourceDisplayText));
                     OnPropertyChanged(nameof(IsMapped));
+                    OnPropertyChanged(nameof(HasAnySource));
                     OnPropertyChanged(nameof(ShouldShowEmptyDirectionHint));
                     OnPropertyChanged(nameof(IsTrivialDirect));
                 }
@@ -503,6 +528,29 @@ namespace PadForge.ViewModels
         /// Whether this mapping row has a source assigned.
         /// </summary>
         public bool IsMapped => !string.IsNullOrEmpty(_sourceDescriptor) || !string.IsNullOrEmpty(_negSourceDescriptor);
+
+        /// <summary>
+        /// Whether anything feeds this row: a Direct primary descriptor, a
+        /// bound stateful primary (Ramp / Incremental / InvertOnHold, whose
+        /// feeds are the Up/Down/Modifier keys on
+        /// <see cref="PrimaryKindSource"/>, not a descriptor), or any extra
+        /// source with a bound feed. The preview annotation layer keys chip
+        /// presence on this rather than <see cref="IsMapped"/>, so
+        /// stateful-primary rows stay visible.
+        /// </summary>
+        public bool HasAnySource
+        {
+            get
+            {
+                if (IsMapped) return true;
+                if (!IsPrimaryDirect && PrimaryKindSource != null && PrimaryKindSource.HasAnyBoundFeed)
+                    return true;
+                foreach (var s in ExtraSources)
+                    if (s != null && s.HasAnyBoundFeed)
+                        return true;
+                return false;
+            }
+        }
 
         private void OnCultureChanged()
         {

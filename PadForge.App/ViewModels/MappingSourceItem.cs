@@ -70,6 +70,23 @@ namespace PadForge.ViewModels
         /// the kind-specific row below.</summary>
         public bool IsKindDescriptorless => IsIncrementalKind || IsInvertOnHoldKind || IsRampedKind;
 
+        /// <summary>Whether any input actually feeds this source, per kind.
+        /// Mirrors the engine's SourceEvaluator dispatch (the
+        /// collect-descriptors switch in InputService): Incremental and
+        /// Ramped read the Up/Down keys, InvertOnHold reads its Descriptor
+        /// plus the modifier key, every other kind reads the Descriptor.</summary>
+        public bool HasAnyBoundFeed
+        {
+            get
+            {
+                if (UsesUpDownKeys)
+                    return !string.IsNullOrEmpty(ParamUp) || !string.IsNullOrEmpty(ParamDown);
+                if (IsInvertOnHoldKind)
+                    return !string.IsNullOrEmpty(Descriptor) || !string.IsNullOrEmpty(ParamModifier);
+                return !string.IsNullOrEmpty(Descriptor);
+            }
+        }
+
         /// <summary>One entry in the user-facing Kind dropdown. <see cref="Value"/>
         /// is the schema/engine identifier ("Direct" / "Incremental" / "InvertOnHold")
         /// that round-trips through XML; <see cref="Name"/> is the space-separated

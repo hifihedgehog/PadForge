@@ -1851,6 +1851,9 @@
   <data name="Macro_Sound_Loop_Tooltip" xml:space="preserve"><value>"사운드 중지" 동작이 실행될 때까지 반복합니다. 유지/뎆 매크로에서는 트리거를 놓으면 중지됩니다</value></data>
   <data name="Pad_Audio_Mirror" xml:space="preserve"><value>시스템 오디오를 컨트롤러 스피커로 미러링</value></data>
   <data name="Pad_Audio_Engage_Label" xml:space="preserve"><value>미러 오디오 재생</value></data>
+  <data name="Pad_ResetMirrorEngageMode" xml:space="preserve"><value>활성화 모드 재설정</value></data>
+  <data name="Pad_ResetMirrorEngageInput" xml:space="preserve"><value>활성화 입력 재설정</value></data>
+  <data name="Pad_ResetMirrorEngageRelease" xml:space="preserve"><value>해제 지연 재설정</value></data>
   <data name="Pad_Audio_Engage_Tooltip" xml:space="preserve"><value>미러 오디오가 햅틱 톤으로 재생되는 시점입니다. 입력 유지나 게임 진동에 연동하면 음악 때문에 컨트롤러가 계속 진동하지 않습니다.</value></data>
   <data name="Pad_Audio_Engage_Always" xml:space="preserve"><value>항상</value></data>
   <data name="Pad_Audio_Engage_Input" xml:space="preserve"><value>입력을 누르고 있는 동안</value></data>

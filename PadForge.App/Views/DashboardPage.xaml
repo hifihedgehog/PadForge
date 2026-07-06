@@ -155,8 +155,17 @@
         </Style>
     </UserControl.Resources>
 
-    <ScrollViewer Padding="24,0">
-        <StackPanel Margin="0,16,0,16">
+    <!-- Glow bleed (#175 clip report 2026-07-06): ScrollViewer.Padding sits
+         OUTSIDE the scroll clip (Wpf.Ui ScrollViewer.xaml wraps the
+         ScrollContentPresenter in a grid whose Margin is the Padding), so
+         the slot-card glows died 8px past the card: only the item margin
+         lay inside the clip, and the 24px page gutter was dead space. The
+         gutter moves onto the scrolled StackPanel instead: content keeps
+         the identical 24px inset, but the clip edge now sits at the viewer
+         bounds, giving edge cards 24+8 = 32px of aura room per side
+         (BlurRadius 30). -->
+    <ScrollViewer>
+        <StackPanel Margin="24,16,24,16">
 
             <!-- Page header -->
             <StackPanel Orientation="Horizontal" Margin="0,0,0,20">

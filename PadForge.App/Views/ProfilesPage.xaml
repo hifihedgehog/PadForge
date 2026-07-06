@@ -134,10 +134,24 @@
                           DragOver="ProfileList_DragOver"
                           DragLeave="ProfileList_DragLeave"
                           Drop="ProfileList_Drop">
+                        <!-- Aura bleed (#175 clip report 2026-07-06): the ListBox
+                             template (Wpf.Ui ListBox.xaml) is a bare scroll viewer
+                             whose ScrollContentPresenter clips at the ListBox
+                             bounds, so the 30px selection aura died 8px past the
+                             card (only the item margin lay inside the clip). The
+                             WrapPanel carries 16px of bleed room inside the
+                             scrolled content and the -16 outer margin cancels it:
+                             cards keep their exact position, the clip edge moves
+                             16px out, and aura room becomes 16+8 = 24px per side.
+                             Min/MaxHeight grow by the 32px the panel margin adds
+                             to the extent (60→92, 420→452) so the visible content
+                             window and the slot height the siblings see (bounds
+                             minus the negative margins) are unchanged. -->
                         <ListBox x:Name="ProfileListBox"
                                  ItemsSource="{Binding ProfileItems}"
                                  SelectedItem="{Binding SelectedProfile}"
-                                 MinHeight="60" MaxHeight="420"
+                                 Margin="-16"
+                                 MinHeight="92" MaxHeight="452"
                                  AllowDrop="True"
                                  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                                  MouseDoubleClick="ProfileList_MouseDoubleClick">
@@ -145,7 +159,7 @@
                                  disabled so the WrapPanel actually wraps. -->
                             <ListBox.ItemsPanel>
                                 <ItemsPanelTemplate>
-                                    <WrapPanel/>
+                                    <WrapPanel Margin="16"/>
                                 </ItemsPanelTemplate>
                             </ListBox.ItemsPanel>
                             <!-- Inert container (user report 2026-07-05): the stock

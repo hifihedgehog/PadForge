@@ -2315,6 +2315,20 @@ namespace PadForge
                 Tag = navItem.PadIndex,
                 VerticalAlignment = VerticalAlignment.Center,
                 Margin = new Thickness(6, 0, 0, 0),
+                // Compact footprint (#175 clip report 2026-07-06): the
+                // style's 28px box plus this 6px margin costs 34px of dock
+                // width vs the 21px of the plain X it replaced (9px glyph +
+                // 3px padding each side + 6px margin), and the row only has
+                // ~193px: 223 pane + 40 item-margin reclaim - 40 icon column
+                // - 2 item border - 6 card margin - 22 card chrome. Fixed
+                // content needs 161 (19 power + 18 slot# + 124 seg row), so
+                // a 34px X overdraws by ~2px and the right-docked segment
+                // shaves the Xbox button's left edge. 22px + Padding 2 keeps
+                // the shared chrome (local values beat style setters) and
+                // lands the row at 189, back under budget.
+                Width = 22,
+                Height = 22,
+                Padding = new Thickness(2),
                 // Hover-revealed (#175): the rail reads as state, actions
                 // appear on intent. Revealed at full strength on CARD hover
                 // (user report 2026-07-06: the row-level reveal engaged

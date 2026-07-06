@@ -422,116 +422,116 @@ namespace PadForge.Views
         }
 
         /// <summary>Structured wiring readout shared by the chip tooltip
-        /// and the hover detail strip (user report 2026-07-05: the joined
-        /// single line was unreadable and named at most one device). One
-        /// mono row per source (OUTPUT ← SOURCE), grouped under a header
-        /// per contributing device (class glyph + name). Caps at
-        /// AnnotationDetailMaxRows rows with a locale-neutral "+N" tail;
-        /// long names wrap, never truncate.</summary>
+        /// and the hover detail strip (user reports 2026-07-05): a fan-in
+        /// diagram. Sources stack on the left, one row per assigned
+        /// source with its device attributed inline, and ONE arrow at the
+        /// stack's vertical midpoint points left-to-right into the
+        /// output. Cold sources, ember output, per the Ember color
+        /// grammar. Caps at AnnotationDetailMaxRows rows with a
+        /// locale-neutral "+N" tail; long names wrap, never truncate.</summary>
         private FrameworkElement BuildAnnotationDetailContent(MappingItem row, double maxContentWidth = 480)
         {
             var wires = BuildAnnotationWireRows(row);
             string target = (row.TargetLabel ?? string.Empty).Trim();
 
-            // Column grid: output | arrow | source. Auto-sized so the
-            // arrow lines up across every row and device group.
             var grid = new Grid { MaxWidth = maxContentWidth };
             grid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
             grid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
             grid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
+            grid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
 
-            int gridRow = 0;
             if (wires.Count == 0)
             {
                 // Descriptor-less rows (a stateful primary kind): bare
                 // output name, nothing to list yet.
-                AddAnnotationDetailSpan(grid,
-                    MakeAnnotationDetailText(target, "TextFillColorSecondaryBrush"), ref gridRow);
+                var bare = MakeAnnotationDetailText(target, "TextFillColorSecondaryBrush");
+                Grid.SetColumnSpan(bare, 3);
+                grid.Children.Add(bare);
                 return grid;
             }
 
-            // Distinct devices in first-appearance order; sources keep
-            // their row order within each device group.
-            var deviceKeys = new List<string>();
-            foreach (var wire in wires)
-                if (!deviceKeys.Contains(wire.DeviceKey))
-                    deviceKeys.Add(wire.DeviceKey);
+            // Width split: the output keeps a bounded right column, the
+            // arrow a fixed lane, and the source stack wraps inside the
+            // remainder (Auto columns measure infinite, so explicit caps
+            // are what make Wrap engage).
+            double outBudget = Math.Min(200, Math.Max(70, maxContentWidth * 0.35));
+            double srcBudget = Math.Max(80, maxContentWidth - outBudget - 60);
 
+            var stack = new StackPanel();
             int shown = 0;
-            foreach (var key in deviceKeys)
+            foreach (var wire in wires)
             {
                 if (shown >= AnnotationDetailMaxRows)
                     break;
-                bool headerEmitted = false;
-                foreach (var wire in wires)
+                var line = new StackPanel
                 {
-                    if (!string.Equals(wire.DeviceKey, key, StringComparison.Ordinal))
-                        continue;
-                    if (shown >= AnnotationDetailMaxRows)
-                        break;
-
-                    if (!headerEmitted)
-                    {
-                        headerEmitted = true;
-                        var header = new StackPanel
-                        {
-                            Orientation = Orientation.Horizontal,
-                            Margin = new Thickness(0, gridRow == 0 ? 0 : 5, 0, 1),
-                        };
-                        var glyph = new TextBlock
-                        {
-                            FontFamily = new FontFamily("Segoe MDL2 Assets"),
-                            FontSize = 11,
-                            Text = wire.DeviceGlyph,
-                            VerticalAlignment = VerticalAlignment.Center,
-                            Margin = new Thickness(0, 0, 5, 0),
-                        };
-                        glyph.SetResourceReference(TextBlock.ForegroundProperty, "TextFillColorTertiaryBrush");
-                        // Device name is prose, not telemetry: Body font.
-                        // Explicit MaxWidth: the horizontal StackPanel
-                        // measures with infinite width, so Wrap alone
-                        // never engages. Wrap, never truncate.
-                        var devName = new TextBlock
-                        {
-                            FontSize = 11,
-                            Text = wire.DeviceName,
-                            TextWrapping = TextWrapping.Wrap,
-                            MaxWidth = Math.Max(80, maxContentWidth - 40),
-                        };
-                        devName.SetResourceReference(TextBlock.ForegroundProperty, "TextFillColorSecondaryBrush");
-                        header.Children.Add(glyph);
-                        header.Children.Add(devName);
-                        AddAnnotationDetailSpan(grid, header, ref gridRow);
-                    }
-
-                    var outCell = MakeAnnotationDetailText(target, "TextFillColorSecondaryBrush");
-                    outCell.Margin = new Thickness(14, 0, 8, 0);
-                    var arrow = MakeAnnotationDetailText("←", "TextFillColorTertiaryBrush");
-                    arrow.Margin = new Thickness(0, 0, 8, 0);
-                    var srcCell = MakeAnnotationDetailText(wire.SourceName, "TextFillColorSecondaryBrush");
-                    // Explicit MaxWidth: Auto grid columns measure with
-                    // infinite width, so Wrap alone never engages.
-                    srcCell.TextWrapping = TextWrapping.Wrap;
-                    srcCell.MaxWidth = Math.Max(80, maxContentWidth - 160);
-
-                    grid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
-                    Grid.SetRow(outCell, gridRow); Grid.SetColumn(outCell, 0);
-                    Grid.SetRow(arrow, gridRow); Grid.SetColumn(arrow, 1);
-                    Grid.SetRow(srcCell, gridRow); Grid.SetColumn(srcCell, 2);
-                    grid.Children.Add(outCell);
-                    grid.Children.Add(arrow);
-                    grid.Children.Add(srcCell);
-                    gridRow++;
-                    shown++;
-                }
+                    Orientation = Orientation.Horizontal,
+                    Margin = new Thickness(0, shown == 0 ? 0 : 2, 0, 0),
+                };
+                var glyph = new TextBlock
+                {
+                    FontFamily = new FontFamily("Segoe MDL2 Assets"),
+                    FontSize = 10,
+                    Text = wire.DeviceGlyph,
+                    VerticalAlignment = VerticalAlignment.Center,
+                    Margin = new Thickness(0, 0, 5, 0),
+                };
+                glyph.SetResourceReference(TextBlock.ForegroundProperty, "TextFillColorTertiaryBrush");
+                // Source (cold mono) and its device (Body, tertiary) share
+                // one wrapping paragraph so a long pair folds as a unit.
+                var text = new TextBlock
+                {
+                    TextWrapping = TextWrapping.Wrap,
+                    MaxWidth = srcBudget,
+                    VerticalAlignment = VerticalAlignment.Center,
+                };
+                var srcRun = new System.Windows.Documents.Run(wire.SourceName) { FontSize = 11 };
+                if (Application.Current.Resources["TelemetryFontFamily"] is FontFamily telemetry)
+                    srcRun.FontFamily = telemetry;
+                srcRun.SetResourceReference(System.Windows.Documents.TextElement.ForegroundProperty, "ColdBrush");
+                var sep = new System.Windows.Documents.Run("  ·  ") { FontSize = 10 };
+                sep.SetResourceReference(System.Windows.Documents.TextElement.ForegroundProperty, "TextFillColorTertiaryBrush");
+                var devRun = new System.Windows.Documents.Run(wire.DeviceName) { FontSize = 10 };
+                devRun.SetResourceReference(System.Windows.Documents.TextElement.ForegroundProperty, "TextFillColorTertiaryBrush");
+                text.Inlines.Add(srcRun);
+                text.Inlines.Add(sep);
+                text.Inlines.Add(devRun);
+                line.Children.Add(glyph);
+                line.Children.Add(text);
+                stack.Children.Add(line);
+                shown++;
             }
-
             if (shown < wires.Count)
             {
                 var tail = MakeAnnotationDetailText("+" + (wires.Count - shown), "TextFillColorTertiaryBrush");
-                tail.Margin = new Thickness(14, 2, 0, 0);
-                AddAnnotationDetailSpan(grid, tail, ref gridRow);
+                tail.Margin = new Thickness(15, 2, 0, 0);
+                stack.Children.Add(tail);
             }
+
+            // ONE arrow from the source stack's vertical midpoint into
+            // the output, left to right (the maintainer's spec).
+            var arrow = new TextBlock
+            {
+                Text = "→",
+                FontSize = 13,
+                VerticalAlignment = VerticalAlignment.Center,
+                Margin = new Thickness(10, 0, 10, 0),
+            };
+            if (Application.Current.Resources["TelemetryFontFamily"] is FontFamily mono)
+                arrow.FontFamily = mono;
+            arrow.SetResourceReference(TextBlock.ForegroundProperty, "TextFillColorTertiaryBrush");
+
+            var outCell = MakeAnnotationDetailText(target, "EmberBrush");
+            outCell.TextWrapping = TextWrapping.Wrap;
+            outCell.MaxWidth = outBudget;
+            outCell.VerticalAlignment = VerticalAlignment.Center;
+
+            Grid.SetColumn(stack, 0);
+            Grid.SetColumn(arrow, 1);
+            Grid.SetColumn(outCell, 2);
+            grid.Children.Add(stack);
+            grid.Children.Add(arrow);
+            grid.Children.Add(outCell);
             return grid;
         }
 

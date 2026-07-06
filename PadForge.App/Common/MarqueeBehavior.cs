@@ -60,11 +60,48 @@ namespace PadForge.Common
                 EvaluateMarquee(fe);
         }
 
+        // Edge fade applied to the clip ancestor ONLY while the marquee
+        // scrolls (user report 2026-07-06: a static mask on the card dimmed
+        // the edges of fully-legible text like "No device mapped"). One
+        // frozen brush, reference-compared on clear so an ancestor's own
+        // mask is never clobbered.
+        private static readonly LinearGradientBrush _edgeFadeMask = CreateEdgeFadeMask();
+
+        private static LinearGradientBrush CreateEdgeFadeMask()
+        {
+            var brush = new LinearGradientBrush
+            {
+                StartPoint = new Point(0, 0),
+                EndPoint = new Point(1, 0),
+            };
+            brush.GradientStops.Add(new GradientStop(Color.FromArgb(0x00, 0, 0, 0), 0));
+            brush.GradientStops.Add(new GradientStop(Color.FromArgb(0xFF, 0, 0, 0), 0.05));
+            brush.GradientStops.Add(new GradientStop(Color.FromArgb(0xFF, 0, 0, 0), 0.95));
+            brush.GradientStops.Add(new GradientStop(Color.FromArgb(0x00, 0, 0, 0), 1));
+            brush.Freeze();
+            return brush;
+        }
+
+        private static void SetEdgeFade(FrameworkElement clipAncestor, bool on)
+        {
+            if (clipAncestor == null) return;
+            if (on)
+            {
+                if (clipAncestor.OpacityMask == null)
+                    clipAncestor.OpacityMask = _edgeFadeMask;
+            }
+            else if (ReferenceEquals(clipAncestor.OpacityMask, _edgeFadeMask))
+            {
+                clipAncestor.OpacityMask = null;
+            }
+        }
+
         private static void EvaluateMarquee(FrameworkElement fe)
         {
             // Walk up the visual tree to find the first ancestor with ClipToBounds.
             // That ancestor's width is the visible container width.
             double containerWidth = 0;
+            FrameworkElement clipAncestor = null;
             DependencyObject current = VisualTreeHelper.GetParent(fe);
             while (current != null)
             {
@@ -72,6 +109,7 @@ namespace PadForge.Common
                     current is FrameworkElement ancestor && ancestor.ActualWidth > 0)
                 {
                     containerWidth = ancestor.ActualWidth;
+                    clipAncestor = ancestor;
                     break;
                 }
                 current = VisualTreeHelper.GetParent(current);
@@ -85,8 +123,11 @@ namespace PadForge.Common
             if (contentWidth <= 0 || contentWidth <= containerWidth)
             {
                 StopMarquee(fe);
+                SetEdgeFade(clipAncestor, false);
                 return;
             }
+
+            SetEdgeFade(clipAncestor, true);
 
             double overflow = contentWidth - containerWidth;
 

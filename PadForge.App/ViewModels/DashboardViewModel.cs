@@ -757,13 +757,15 @@ namespace PadForge.ViewModels
     }
 
     /// <summary>One tooltip line of a stage's readout: device-class
-    /// glyph, mono value tokens, and a Body-face device suffix
-    /// ("  ·  Name", empty for slot-level lines like the audio master
-    /// volume).</summary>
+    /// glyph, Body-face device name, then mono value tokens. Name sits
+    /// BETWEEN glyph and tokens (user direction 2026-07-06): icon, name,
+    /// settings, the same order as the card's main device label. The name
+    /// carries its trailing "  ·  " separator and is empty for slot-level
+    /// lines like the audio master volume.</summary>
     public class StageSummaryLine
     {
         public string DeviceGlyph { get; set; } = string.Empty;
+        public string DeviceName { get; set; } = string.Empty;
         public string Tokens { get; set; } = string.Empty;
-        public string DeviceSuffix { get; set; } = string.Empty;
     }
 }

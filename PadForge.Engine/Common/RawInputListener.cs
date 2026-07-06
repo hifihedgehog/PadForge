@@ -1326,7 +1326,7 @@ namespace PadForge.Engine
         private static ushort[] _consumerUsageBuffer;
 
         /// <summary>Per-handle max simultaneous consumer usages, from
-        /// HidP_GetMaxUsageListLength. Sizes the scratch buffer so the
+        /// HidP_MaxUsageListLength. Sizes the scratch buffer so the
         /// BUFFER_TOO_SMALL path (which drops the whole report) can't fire.</summary>
         private static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, int> _consumerMaxUsages = new();
 
@@ -1357,7 +1357,7 @@ namespace PadForge.Engine
             // dropped whole.
             int maxUsages = _consumerMaxUsages.GetOrAdd(hDevice, h =>
             {
-                uint max = HidP_GetMaxUsageListLength(HidP_Input, HID_USAGE_PAGE_CONSUMER, preparsed);
+                uint max = HidP_MaxUsageListLength(HidP_Input, HID_USAGE_PAGE_CONSUMER, preparsed);
                 return System.Math.Max(64, (int)max);
             });
             if (_consumerUsageBuffer == null || _consumerUsageBuffer.Length < maxUsages)
@@ -1482,7 +1482,7 @@ namespace PadForge.Engine
             IntPtr Report, uint ReportLength);
 
         [DllImport("hid.dll")]
-        private static extern uint HidP_GetMaxUsageListLength(
+        private static extern uint HidP_MaxUsageListLength(
             int ReportType, ushort UsagePage, IntPtr PreparsedData);
     }
 }

@@ -6944,6 +6944,31 @@ namespace PadForge.Services
         //  Device hiding (HidHide + input hooks)
         // ─────────────────────────────────────────────
 
+        /// <summary>Resolves a device's live PnP instance IDs by VID/PID for the
+        /// synthetic-path fallbacks (blacklist sync and the details pane). The
+        /// combined Joy-Con pair (issue #184 sibling) is an SDL-manufactured
+        /// virtual device whose PID exists on no PnP node, so it searches the
+        /// physical children's PIDs instead; the halves are what games see.
+        /// Per SDL usb_ids.h: gen-1 pair 0x2008 has children 0x2006 (Left) and
+        /// 0x2007 (Right); pair PID 0x2068 covers a real Switch 2 pair (children
+        /// 0x2067 Left / 0x2066 Right) AND a gen-1 pair docked in the charging
+        /// grip, whose only PnP node is the grip itself (0x200E), so all three
+        /// are searched.</summary>
+        private static List<string> FindInstanceIdsForDevice(UserDevice ud)
+        {
+            var pidLookups = (ud.VendorId, ud.ProdId) switch
+            {
+                (0x057E, 0x2008) => new ushort[] { 0x2006, 0x2007 },
+                (0x057E, 0x2068) => new ushort[] { 0x2067, 0x2066, 0x200E },
+                _ => new[] { (ushort)ud.ProdId },
+            };
+            var realIds = new List<string>();
+            foreach (var pid in pidLookups)
+                realIds.AddRange(HidHideController.FindInstanceIdsByVidPid(
+                    (ushort)ud.VendorId, pid));
+            return realIds;
+        }
+
         /// <summary>
         /// Applies device hiding based on per-device toggle settings.
         /// HidHide: Adds devices with HidHideEnabled to the blacklist, whitelists PadForge, activates cloaking.
@@ -7014,22 +7039,7 @@ namespace PadForge.Services
                         // Fallback for synthetic paths (e.g., "XInput#0"): look up by VID/PID.
                         else if (ud.VendorId > 0 && ud.ProdId > 0)
                         {
-                            // The combined Joy-Con pair (issue #184 sibling) is an
-                            // SDL-manufactured virtual device: its PID (0x2008 gen-1,
-                            // 0x2068 Switch 2) exists on no PnP node, so the VID/PID
-                            // lookup below found nothing and Hide-from-games silently
-                            // no-oped on the pair. Search the physical children's PIDs
-                            // instead; the halves are what games actually see.
-                            var pidLookups = (ud.VendorId, ud.ProdId) switch
-                            {
-                                (0x057E, 0x2008) => new ushort[] { 0x2006, 0x2007 }, // gen-1 L, R
-                                (0x057E, 0x2068) => new ushort[] { 0x2066, 0x2067 }, // Joy-Con 2 L, R
-                                _ => new[] { (ushort)ud.ProdId },
-                            };
-                            var realIds = new List<string>();
-                            foreach (var pid in pidLookups)
-                                realIds.AddRange(HidHideController.FindInstanceIdsByVidPid(
-                                    (ushort)ud.VendorId, pid));
+                            var realIds = FindInstanceIdsForDevice(ud);
 
                             // Scrub any HIDMaestro-manufactured instance IDs that
                             // got cached from a previous PadForge version whose
@@ -7547,16 +7557,20 @@ namespace PadForge.Services
                 instancePath = HidHideController.DevicePathToInstanceId(ud.DevicePath);
 
             if (!string.IsNullOrEmpty(instancePath) &&
-                !instancePath.StartsWith("XInput", StringComparison.OrdinalIgnoreCase))
+                !instancePath.StartsWith("XInput", StringComparison.OrdinalIgnoreCase) &&
+                // The combined Joy-Con pair's SDL path is a synthetic token, not an
+                // instance ID (#184). Fall through to the VID/PID child lookup so
+                // the pane shows a real child instance instead of the raw token.
+                !instancePath.Equals("nintendo_joycons_combined", StringComparison.OrdinalIgnoreCase))
                 row.HidHideInstancePath = instancePath;
             else if (ud.HidHideInstanceIds.Count > 0)
                 row.HidHideInstancePath = ud.HidHideInstanceIds[0];
             else if (ud.VendorId > 0 && ud.ProdId > 0)
             {
                 // XInput devices have synthetic paths (e.g. "XInput#0") that can't be
-                // resolved directly. Look up the real HID instance path by VID/PID.
-                var realIds = HidHideController.FindInstanceIdsByVidPid(
-                    (ushort)ud.VendorId, (ushort)ud.ProdId);
+                // resolved directly. Look up the real HID instance path by VID/PID
+                // (child PIDs for the combined Joy-Con pair).
+                var realIds = FindInstanceIdsForDevice(ud);
                 row.HidHideInstancePath = realIds.Count > 0 ? realIds[0] : string.Empty;
 
                 // Persist the resolved IDs onto the UserDevice so the details

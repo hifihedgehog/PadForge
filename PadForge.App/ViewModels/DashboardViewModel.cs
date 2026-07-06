@@ -730,9 +730,11 @@ namespace PadForge.ViewModels
 
         private string _summary = string.Empty;
 
-        /// <summary>Mono token summary of the configured values (e.g.
-        /// "L DZ 12% · L CURVE Smooth"). Empty when the stage is inert,
-        /// which disables the tooltip.</summary>
+        /// <summary>Composite change key for the tooltip readout (all
+        /// lines joined). Empty when the stage is inert, which disables
+        /// the tooltip. The rendered content is <see cref="SummaryLines"/>;
+        /// this string exists so the 1 s refresh only touches the line
+        /// collection when something actually changed.</summary>
         public string Summary
         {
             get => _summary;
@@ -745,5 +747,23 @@ namespace PadForge.ViewModels
 
         /// <summary>Tooltip gate: no tooltip on inert stages.</summary>
         public bool HasSummary => !string.IsNullOrEmpty(_summary);
+
+        /// <summary>Per-device readout lines for the hover tooltip, in
+        /// binding order: every assigned device the stage covers gets a
+        /// line (devices still at defaults read STOCK), so multi-device
+        /// slots attribute each value to its device the same way the
+        /// preview annotation readout does.</summary>
+        public ObservableCollection<StageSummaryLine> SummaryLines { get; } = new();
+    }
+
+    /// <summary>One tooltip line of a stage's readout: device-class
+    /// glyph, mono value tokens, and a Body-face device suffix
+    /// ("  ·  Name", empty for slot-level lines like the audio master
+    /// volume).</summary>
+    public class StageSummaryLine
+    {
+        public string DeviceGlyph { get; set; } = string.Empty;
+        public string Tokens { get; set; } = string.Empty;
+        public string DeviceSuffix { get; set; } = string.Empty;
     }
 }

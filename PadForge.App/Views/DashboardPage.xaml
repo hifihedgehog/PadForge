@@ -1207,8 +1207,12 @@
                                      mirroring the Pad page capability gates.
                                      Ember when the stage carries a non-default
                                      configuration, ashen steel when inert.
-                                     Hover = mono summary of the real configured
-                                     values. Inert stages carry no tooltip. -->
+                                     Hover = per-device readout in the fan-in
+                                     annotation idiom: mono value tokens, Body
+                                     device suffix, one line per covered device
+                                     (STOCK for the untouched ones). Wrapped so
+                                     long readouts never clip at the screen
+                                     edge. Inert stages carry no tooltip. -->
                                 <ItemsControl Grid.Row="4" ItemsSource="{Binding StageLedger}"
                                               Margin="1,7,0,0">
                                     <ItemsControl.ItemsPanel>
@@ -1223,9 +1227,13 @@
                                                   ToolTipService.InitialShowDelay="400"
                                                   ToolTipService.ShowDuration="20000">
                                                 <Grid.ToolTip>
-                                                    <TextBlock Text="{Binding Summary}"
-                                                               FontFamily="{StaticResource TelemetryFontFamily}"
-                                                               FontSize="11"/>
+                                                    <ItemsControl ItemsSource="{Binding SummaryLines}" MaxWidth="400">
+                                                        <ItemsControl.ItemTemplate>
+                                                            <DataTemplate>
+                                                                <TextBlock TextWrapping="Wrap" Margin="0,1,0,1"><Run Text="{Binding DeviceGlyph, Mode=OneWay}" FontFamily="Segoe MDL2 Assets" FontSize="10" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/><Run Text="{Binding Tokens, Mode=OneWay}" FontFamily="{StaticResource TelemetryFontFamily}" FontSize="11" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/><Run Text="{Binding DeviceSuffix, Mode=OneWay}" FontSize="10" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/></TextBlock>
+                                                            </DataTemplate>
+                                                        </ItemsControl.ItemTemplate>
+                                                    </ItemsControl>
                                                 </Grid.ToolTip>
                                                 <!-- Zacksly stick silhouette (Sticks stage). -->
                                                 <Grid Width="12" Height="12"

@@ -2552,7 +2552,12 @@ namespace PadForge
                 CornerRadius = new CornerRadius(10),
                 Padding = new Thickness(10, 6, 10, 6),
                 BorderThickness = new Thickness(1),
-                MinWidth = 196,
+                // Fixed width, not MinWidth (user 2026-07-06): stacked cards
+                // must read congruent whatever their digit count. 212 =
+                // worst-case row 185.34 (slot 16 + "#16", iteration 107
+                // math) + 20 padding + 2 border + headroom, inside the 215
+                // outer cap the pane budget allows.
+                Width = 212,
                 Child = row,
                 Tag = navItem.PadIndex,
                 // Glow clearance (#175 clip report): the rail clips at the

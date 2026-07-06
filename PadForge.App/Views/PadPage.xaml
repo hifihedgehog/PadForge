@@ -946,19 +946,31 @@
                                  pill's CornerRadius="16". -->
                             <ControlTemplate x:Key="MotorCapsuleTemplate" TargetType="ProgressBar">
                                 <Grid>
-                                    <Border x:Name="PART_Track" CornerRadius="16"
+                                    <Border CornerRadius="16"
                                             Background="{DynamicResource SteelGroundBrush}"
                                             BorderBrush="{DynamicResource SteelLineSoftBrush}"
                                             BorderThickness="1"/>
-                                    <Border x:Name="PART_Indicator" CornerRadius="16"
-                                            HorizontalAlignment="Left" Margin="1">
-                                        <Border.Background>
-                                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
-                                                <GradientStop Color="#C43D0C" Offset="0"/>
-                                                <GradientStop Color="#FF6B2C" Offset="1"/>
-                                            </LinearGradientBrush>
-                                        </Border.Background>
-                                    </Border>
+                                    <!-- PART_Track is the INSET area, not the outer
+                                         capsule: ProgressBar sizes PART_Indicator
+                                         against PART_Track's width, so when the
+                                         track was the full-width border and the
+                                         indicator carried Margin="1", a full fill
+                                         overhung the capsule's right edge by that
+                                         margin and clipped against the rounding
+                                         (user report 2026-07-06). With the basis
+                                         inset, a full fill ends exactly inside the
+                                         hairline. Radius 15 nests inside the 16. -->
+                                    <Grid x:Name="PART_Track" Margin="1">
+                                        <Border x:Name="PART_Indicator" CornerRadius="15"
+                                                HorizontalAlignment="Left">
+                                            <Border.Background>
+                                                <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                                                    <GradientStop Color="#C43D0C" Offset="0"/>
+                                                    <GradientStop Color="#FF6B2C" Offset="1"/>
+                                                </LinearGradientBrush>
+                                            </Border.Background>
+                                        </Border>
+                                    </Grid>
                                 </Grid>
                             </ControlTemplate>
                         </Grid.Resources>

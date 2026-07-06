@@ -2596,12 +2596,34 @@ namespace PadForge.Services
         /// the indicator disappears instead of freezing.</summary>
         private void UpdateBatteryIndicators()
         {
+            // Xbox pads get no battery through SDL's XInput backend: the
+            // battery IOCTL is dead for Bluetooth pads (probed on hardware,
+            // even System32's xinput1_4 answers DISCONNECTED for a Series X
+            // whose battery Windows shows). Overlay from the WinRT gaming
+            // stack (#187): one WGI snapshot per tick, and each distinct
+            // device takes its reading once so both loops below agree.
+            PadForge.Common.Input.WgiBatteryService.Refresh();
+            var wgiOverlay = new Dictionary<Guid, (int Pct, bool Charging)>();
+            (int Pct, bool Charging) EffectiveBattery(UserDevice ud)
+            {
+                if (ud == null || !ud.IsOnline) return (-1, false);
+                int sdlPct = ud.InputState?.BatteryPercent ?? -1;
+                if (sdlPct >= 0) return (sdlPct, ud.InputState?.BatteryCharging ?? false);
+                if (ud.VendorId != 0x045E) return (-1, false);
+                if (wgiOverlay.TryGetValue(ud.InstanceGuid, out var cached)) return cached;
+                var val = PadForge.Common.Input.WgiBatteryService.TryTake(
+                    (ushort)ud.VendorId, (ushort)ud.ProdId, out int wgiPct, out bool wgiChg)
+                    ? (wgiPct, wgiChg) : (-1, false);
+                wgiOverlay[ud.InstanceGuid] = val;
+                return val;
+            }
+
             foreach (var row in _mainVm.Devices.Devices)
             {
                 var ud = FindUserDevice(row.InstanceGuid);
-                bool online = ud != null && ud.IsOnline;
-                row.BatteryPercent = online ? (ud.InputState?.BatteryPercent ?? -1) : -1;
-                row.BatteryCharging = online && (ud.InputState?.BatteryCharging ?? false);
+                var (rowPct, rowCharging) = EffectiveBattery(ud);
+                row.BatteryPercent = rowPct;
+                row.BatteryCharging = rowCharging;
             }
 
             foreach (var padVm in _mainVm.Pads)
@@ -2609,9 +2631,7 @@ namespace PadForge.Services
                 foreach (var dev in padVm.MappedDevices)
                 {
                     var ud = FindUserDevice(dev.InstanceGuid);
-                    bool online = ud != null && ud.IsOnline;
-                    int pct = online ? (ud.InputState?.BatteryPercent ?? -1) : -1;
-                    bool charging = online && (ud.InputState?.BatteryCharging ?? false);
+                    var (pct, charging) = EffectiveBattery(ud);
                     dev.BatteryText = pct >= 0 ? $"{pct}%" : string.Empty;
                     // Same MDL2 bucketing as DeviceRowViewModel.BatteryGlyph.
                     if (pct < 0)

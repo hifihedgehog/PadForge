@@ -36,6 +36,7 @@ namespace PadForge.Views
         private const double AnnotationEdgeMargin = 8;    // M
         private const double AnnotationBarHeight = 36;    // trigger fill track
         private const double AnnotationBarTrackWidth = 12; // 1px border + 1px pad + 3+2+3
+        private const int AnnotationDetailMaxRows = 12;   // wiring rows before the +N tail
 
         // ─────────────────────────────────────────────
         //  Annotation state
@@ -255,11 +256,15 @@ namespace PadForge.Views
             {
                 // Resolved source text arrives after the descriptor
                 // (SetResolvedSourceText); refresh in place, no rebuild.
+                // The tooltip rebuilds too so it never shows stale wiring.
                 if (sender is MappingItem row)
                 {
                     var chip = FindAnnotationChip(row);
                     if (chip != null)
+                    {
                         chip.Text.Text = CompactChipLabel(row);
+                        chip.Border.ToolTip = BuildAnnotationDetailContent(row);
+                    }
                 }
             }
         }
@@ -303,39 +308,238 @@ namespace PadForge.Views
             };
         }
 
-        /// <summary>Chip text: identity mappings collapse to the bare name
-        /// (auto-map 1:1 rows truncated to garbage otherwise, user report
-        /// 2026-07-04); the arrow appears only when source and output
-        /// genuinely differ.</summary>
-        private static string ChipLabel(MappingItem row)
+        /// <summary>One wiring row for the hover surfaces: a single source
+        /// feeding this chip's output, tagged with the device it lives on.
+        /// DeviceKey ("" = unbound / any device) groups rows per device.</summary>
+        private sealed class AnnotationWireRow
         {
-            string target = (row.TargetLabel ?? string.Empty).Trim();
-            // Every source, not just the primary (user report 2026-07-04:
-            // secondary mappings were invisible). Each part reads
-            // "device: control"; parts join with " + " ahead of the output.
-            var parts = new System.Collections.Generic.List<string>();
+            public string DeviceKey;
+            public string DeviceName;
+            public string DeviceGlyph;
+            public string SourceName;
+        }
+
+        /// <summary>Device name + class glyph for a source. The stored
+        /// label wins (it survives disconnects); the slot roster
+        /// (_vm.MappedDevices) fills gaps and supplies the DeviceTypeGlyph
+        /// vocabulary; the fallbacks mirror InputService.ResolveDeviceLabel
+        /// ("(Any device)" for unbound, truncated GUID for unknown).</summary>
+        private void ResolveAnnotationDevice(string deviceGuid, string storedLabel,
+            out string name, out string glyph)
+        {
+            glyph = "\uE7FC"; // controller class, the roster's own default
+            name = storedLabel ?? string.Empty;
+            if (!string.IsNullOrEmpty(deviceGuid) && _vm != null
+                && Guid.TryParse(deviceGuid, out var g))
+            {
+                foreach (var dev in _vm.MappedDevices)
+                {
+                    if (dev == null || dev.InstanceGuid != g)
+                        continue;
+                    glyph = dev.TypeGlyph;
+                    if (name.Length == 0)
+                        name = dev.Name ?? string.Empty;
+                    break;
+                }
+            }
+            if (name.Length == 0)
+            {
+                name = string.IsNullOrEmpty(deviceGuid)
+                    ? "(Any device)"
+                    : (deviceGuid.Length > 8 ? deviceGuid.Substring(0, 8) + "…" : deviceGuid);
+            }
+        }
+
+        /// <summary>Every source feeding the row, primary first, extras in
+        /// Sources order (user report 2026-07-04: secondary mappings were
+        /// invisible; user report 2026-07-05: extra sources carried no
+        /// device name (FromDomain never sets DeviceLabel), so multi-
+        /// device wiring read as a single controller). Extras take the
+        /// same Inv/Half prefix labels the primary's resolved text uses.</summary>
+        private List<AnnotationWireRow> BuildAnnotationWireRows(MappingItem row)
+        {
+            var rows = new List<AnnotationWireRow>();
+
             string primary = (row.SourceDisplayText ?? string.Empty).Trim();
-            string primaryDev = (row.PrimarySourceDeviceLabel ?? string.Empty).Trim();
-            if (primary.Length > 0)
-                parts.Add(primaryDev.Length > 0 ? primaryDev + ": " + primary : primary);
+            if (row.IsMapped && primary.Length > 0)
+            {
+                ResolveAnnotationDevice(row.PrimarySourceDeviceGuid,
+                    (row.PrimarySourceDeviceLabel ?? string.Empty).Trim(),
+                    out string dn, out string dg);
+                rows.Add(new AnnotationWireRow
+                {
+                    DeviceKey = (row.PrimarySourceDeviceGuid ?? string.Empty).ToLowerInvariant(),
+                    DeviceName = dn,
+                    DeviceGlyph = dg,
+                    SourceName = primary,
+                });
+            }
+
             foreach (var src in row.ExtraSources)
             {
                 string name = (src.SelectedInput?.DisplayName ?? src.Descriptor ?? string.Empty).Trim();
                 if (name.Length == 0)
                     continue;
-                string dev = (src.SelectedInput?.DeviceLabel ?? src.DeviceLabel ?? string.Empty).Trim();
-                parts.Add(dev.Length > 0 ? dev + ": " + name : name);
+                var s = PadForge.Resources.Strings.Strings.Instance;
+                if (src.Invert && src.HalfAxis) name = s.Mapping_InvHalf + " " + name;
+                else if (src.Invert) name = s.Mapping_Inv + " " + name;
+                else if (src.HalfAxis) name = s.Mapping_Half + " " + name;
+
+                ResolveAnnotationDevice(src.DeviceGuid,
+                    (src.SelectedInput?.DeviceLabel ?? src.DeviceLabel ?? string.Empty).Trim(),
+                    out string dn, out string dg);
+                rows.Add(new AnnotationWireRow
+                {
+                    DeviceKey = (src.DeviceGuid ?? string.Empty).ToLowerInvariant(),
+                    DeviceName = dn,
+                    DeviceGlyph = dg,
+                    SourceName = name,
+                });
             }
-            if (parts.Count == 0)
-                return target;
-            return string.Join(" + ", parts) + " → " + target;
+            return rows;
+        }
+
+        /// <summary>Appends a full-width row (device header, fallback
+        /// line, +N tail) to the readout grid.</summary>
+        private static void AddAnnotationDetailSpan(Grid grid, FrameworkElement el, ref int gridRow)
+        {
+            grid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
+            Grid.SetRow(el, gridRow);
+            Grid.SetColumnSpan(el, 3);
+            grid.Children.Add(el);
+            gridRow++;
+        }
+
+        /// <summary>11px mono TextBlock for the wiring readout
+        /// (TelemetryFontFamily per the font canon).</summary>
+        private static TextBlock MakeAnnotationDetailText(string text, string brushKey)
+        {
+            var tb = new TextBlock { FontSize = 11, Text = text };
+            if (Application.Current.Resources["TelemetryFontFamily"] is FontFamily telemetry)
+                tb.FontFamily = telemetry;
+            tb.SetResourceReference(TextBlock.ForegroundProperty, brushKey);
+            return tb;
+        }
+
+        /// <summary>Structured wiring readout shared by the chip tooltip
+        /// and the hover detail strip (user report 2026-07-05: the joined
+        /// single line was unreadable and named at most one device). One
+        /// mono row per source (OUTPUT ← SOURCE), grouped under a header
+        /// per contributing device (class glyph + name). Caps at
+        /// AnnotationDetailMaxRows rows with a locale-neutral "+N" tail;
+        /// long names wrap, never truncate.</summary>
+        private FrameworkElement BuildAnnotationDetailContent(MappingItem row, double maxContentWidth = 480)
+        {
+            var wires = BuildAnnotationWireRows(row);
+            string target = (row.TargetLabel ?? string.Empty).Trim();
+
+            // Column grid: output | arrow | source. Auto-sized so the
+            // arrow lines up across every row and device group.
+            var grid = new Grid { MaxWidth = maxContentWidth };
+            grid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
+            grid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
+            grid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
+
+            int gridRow = 0;
+            if (wires.Count == 0)
+            {
+                // Descriptor-less rows (a stateful primary kind): bare
+                // output name, nothing to list yet.
+                AddAnnotationDetailSpan(grid,
+                    MakeAnnotationDetailText(target, "TextFillColorSecondaryBrush"), ref gridRow);
+                return grid;
+            }
+
+            // Distinct devices in first-appearance order; sources keep
+            // their row order within each device group.
+            var deviceKeys = new List<string>();
+            foreach (var wire in wires)
+                if (!deviceKeys.Contains(wire.DeviceKey))
+                    deviceKeys.Add(wire.DeviceKey);
+
+            int shown = 0;
+            foreach (var key in deviceKeys)
+            {
+                if (shown >= AnnotationDetailMaxRows)
+                    break;
+                bool headerEmitted = false;
+                foreach (var wire in wires)
+                {
+                    if (!string.Equals(wire.DeviceKey, key, StringComparison.Ordinal))
+                        continue;
+                    if (shown >= AnnotationDetailMaxRows)
+                        break;
+
+                    if (!headerEmitted)
+                    {
+                        headerEmitted = true;
+                        var header = new StackPanel
+                        {
+                            Orientation = Orientation.Horizontal,
+                            Margin = new Thickness(0, gridRow == 0 ? 0 : 5, 0, 1),
+                        };
+                        var glyph = new TextBlock
+                        {
+                            FontFamily = new FontFamily("Segoe MDL2 Assets"),
+                            FontSize = 11,
+                            Text = wire.DeviceGlyph,
+                            VerticalAlignment = VerticalAlignment.Center,
+                            Margin = new Thickness(0, 0, 5, 0),
+                        };
+                        glyph.SetResourceReference(TextBlock.ForegroundProperty, "TextFillColorTertiaryBrush");
+                        // Device name is prose, not telemetry: Body font.
+                        // Explicit MaxWidth: the horizontal StackPanel
+                        // measures with infinite width, so Wrap alone
+                        // never engages. Wrap, never truncate.
+                        var devName = new TextBlock
+                        {
+                            FontSize = 11,
+                            Text = wire.DeviceName,
+                            TextWrapping = TextWrapping.Wrap,
+                            MaxWidth = Math.Max(80, maxContentWidth - 40),
+                        };
+                        devName.SetResourceReference(TextBlock.ForegroundProperty, "TextFillColorSecondaryBrush");
+                        header.Children.Add(glyph);
+                        header.Children.Add(devName);
+                        AddAnnotationDetailSpan(grid, header, ref gridRow);
+                    }
+
+                    var outCell = MakeAnnotationDetailText(target, "TextFillColorSecondaryBrush");
+                    outCell.Margin = new Thickness(14, 0, 8, 0);
+                    var arrow = MakeAnnotationDetailText("←", "TextFillColorTertiaryBrush");
+                    arrow.Margin = new Thickness(0, 0, 8, 0);
+                    var srcCell = MakeAnnotationDetailText(wire.SourceName, "TextFillColorSecondaryBrush");
+                    // Explicit MaxWidth: Auto grid columns measure with
+                    // infinite width, so Wrap alone never engages.
+                    srcCell.TextWrapping = TextWrapping.Wrap;
+                    srcCell.MaxWidth = Math.Max(80, maxContentWidth - 160);
+
+                    grid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
+                    Grid.SetRow(outCell, gridRow); Grid.SetColumn(outCell, 0);
+                    Grid.SetRow(arrow, gridRow); Grid.SetColumn(arrow, 1);
+                    Grid.SetRow(srcCell, gridRow); Grid.SetColumn(srcCell, 2);
+                    grid.Children.Add(outCell);
+                    grid.Children.Add(arrow);
+                    grid.Children.Add(srcCell);
+                    gridRow++;
+                    shown++;
+                }
+            }
+
+            if (shown < wires.Count)
+            {
+                var tail = MakeAnnotationDetailText("+" + (wires.Count - shown), "TextFillColorTertiaryBrush");
+                tail.Margin = new Thickness(14, 2, 0, 0);
+                AddAnnotationDetailSpan(grid, tail, ref gridRow);
+            }
+            return grid;
         }
 
         /// <summary>Compact chip face (user report 2026-07-04: full wiring
         /// text made the stage unreadably busy). The chip carries the
-        /// output name plus a +N badge for additional sources; the full
-        /// ChipLabel line appears in the detail strip on hover and stays
-        /// in the tooltip.</summary>
+        /// output name plus a +N badge for additional sources; the
+        /// structured wiring readout appears in the detail strip on hover
+        /// and in the tooltip.</summary>
         private static string CompactChipLabel(MappingItem row)
         {
             string target = (row.TargetLabel ?? string.Empty).Trim();
@@ -347,10 +551,10 @@ namespace PadForge.Views
         }
 
         private Border _annotationDetailStrip;
-        private TextBlock _annotationDetailText;
 
-        /// <summary>Bottom-docked mono readout: hovering a chip prints the
-        /// full wiring line here, where width is unlimited.</summary>
+        /// <summary>Bottom-docked callout: hovering a chip mounts the
+        /// structured wiring readout here, where width is unlimited. Same
+        /// steel container as the chips; content swaps per hovered chip.</summary>
         private void EnsureAnnotationDetailStrip()
         {
             if (_annotationDetailStrip != null)
@@ -359,20 +563,12 @@ namespace PadForge.Views
                     AnnotationCanvas.Children.Add(_annotationDetailStrip);
                 return;
             }
-            _annotationDetailText = new TextBlock
-            {
-                FontSize = 11,
-                VerticalAlignment = VerticalAlignment.Center,
-            };
-            if (Application.Current.Resources["TelemetryFontFamily"] is FontFamily mono)
-                _annotationDetailText.FontFamily = mono;
-            _annotationDetailText.SetResourceReference(TextBlock.ForegroundProperty, "TextFillColorSecondaryBrush");
             _annotationDetailStrip = new Border
             {
                 CornerRadius = new CornerRadius(6),
                 BorderThickness = new Thickness(1),
-                Padding = new Thickness(10, 4, 10, 4),
-                Child = _annotationDetailText,
+                // 6px vertical (was 4): the readout is multi-row now.
+                Padding = new Thickness(10, 6, 10, 6),
                 IsHitTestVisible = false,
                 Visibility = Visibility.Collapsed,
             };
@@ -385,7 +581,12 @@ namespace PadForge.Views
         private void ShowAnnotationDetail(MappingItem row)
         {
             EnsureAnnotationDetailStrip();
-            _annotationDetailText.Text = ChipLabel(row);
+            // Same width budget the positioner will clamp to, minus the
+            // strip chrome, so cells wrap inside the border instead of
+            // overflowing into the canvas clip on narrow panes.
+            double detailBudget = Math.Max(
+                104, Math.Max(120, AnnotationCanvas.ActualWidth - 2 * AnnotationEdgeMargin) - 16);
+            _annotationDetailStrip.Child = BuildAnnotationDetailContent(row, detailBudget);
             _annotationDetailStrip.Visibility = Visibility.Visible;
             PositionAnnotationDetailStrip();
         }
@@ -402,6 +603,9 @@ namespace PadForge.Views
                 return;
             double w = AnnotationCanvas.ActualWidth;
             double h = AnnotationCanvas.ActualHeight;
+            // Wrap instead of spilling off a narrow canvas; names never
+            // truncate, they wrap inside this cap.
+            _annotationDetailStrip.MaxWidth = Math.Max(120, w - 2 * AnnotationEdgeMargin);
             _annotationDetailStrip.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
             double sw = _annotationDetailStrip.DesiredSize.Width;
             Canvas.SetLeft(_annotationDetailStrip, Math.Max(8, (w - sw) / 2));
@@ -437,7 +641,7 @@ namespace PadForge.Views
             };
             border.SetResourceReference(Border.BackgroundProperty, "SteelRaisedBrush");
             border.SetResourceReference(Border.BorderBrushProperty, "SteelLineSoftBrush");
-            border.ToolTip = ChipLabel(row);
+            border.ToolTip = BuildAnnotationDetailContent(row);
             border.MouseLeftButtonUp += AnnotationChip_MouseLeftButtonUp;
             border.MouseEnter += (_, _) => ShowAnnotationDetail(row);
             border.MouseLeave += (_, _) => HideAnnotationDetail();

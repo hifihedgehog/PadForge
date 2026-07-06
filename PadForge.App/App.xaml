@@ -31,8 +31,6 @@
 
                 <!-- Custom theme overrides -->
                 <ResourceDictionary>
-                    <SolidColorBrush x:Key="RangeSliderThumbFill" Color="#F0F0F0"/>
-
                     <!-- Ember identity tokens (#175).
                          Cold = the physical side: devices, sources, raw telemetry.
                          Ember = the virtual side: outputs, targets, anything live.
@@ -65,9 +63,6 @@
                         <GradientStop Color="#111623" Offset="1"/>
                     </LinearGradientBrush>
                     <SolidColorBrush x:Key="SteelLineSoftBrush" Color="#1C2536"/>
-                    <!-- Flyout ground (steel-850): dropdowns, context menus,
-                         tooltips. Every elevated transient surface. -->
-                    <SolidColorBrush x:Key="SteelFlyoutBrush" Color="#151C2C"/>
                     <SolidColorBrush x:Key="SegTrackBrush" Color="#0B0E14"/>
                     <SolidColorBrush x:Key="SegTrackStrokeBrush" Color="#1C2536"/>
                     <!-- Mini-card type buttons (code-built): quiet hover that
@@ -390,28 +385,7 @@
                 </Setter>
             </Style>
 
-            <!--
-                Grid option checkboxes (#175 control spec §6, route b): stock
-                DefaultCheckBoxStyle carries MinWidth=120 / MinHeight=32 /
-                Padding=11,5,11,6, which inflates every mapping-grid row.
-                Geometry only, theme-safe. Form-page checkboxes keep stock
-                metrics.
-            -->
-            <Style x:Key="GridOptionCheckBox" TargetType="CheckBox" BasedOn="{StaticResource DefaultCheckBoxStyle}">
-                <Setter Property="MinWidth" Value="0"/>
-                <Setter Property="MinHeight" Value="24"/>
-                <Setter Property="Padding" Value="0,2,0,2"/>
-                <Style.Triggers>
-                    <!-- Hover glow (#175): stock Fluent pointer-over fill is
-                         a neutral subtle change, so faint ember. -->
-                    <Trigger Property="IsMouseOver" Value="True">
-                        <Setter Property="Effect" Value="{StaticResource NeutralHoverGlow}"/>
-                    </Trigger>
-                </Style.Triggers>
-            </Style>
-            <!-- Form checkboxes ride the implicit style (same neutral glow);
-                 keyed GridOptionCheckBox above is based directly on
-                 DefaultCheckBoxStyle so it carries its own copy. -->
+            <!-- Form checkboxes ride the implicit style (neutral hover glow). -->
             <Style TargetType="CheckBox" BasedOn="{StaticResource DefaultCheckBoxStyle}">
                 <Style.Triggers>
                     <Trigger Property="IsMouseOver" Value="True">
@@ -783,19 +757,15 @@
             </Style>
 
             <!-- Global Converters -->
-            <conv:BoolToColorConverter x:Key="BoolToColorConverter" />
             <conv:DzShapeNameConverter x:Key="DzShapeNameConverter" />
             <conv:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
-            <conv:ShiftLayerVisibilityConverter x:Key="ShiftLayerVisibilityConverter" />
             <conv:HexToBrushConverter x:Key="HexToBrushConverter" />
             <conv:NormToCanvasConverter x:Key="NormToCanvasConverter" />
             <conv:SignedNormToCanvasConverter x:Key="SignedNormToCanvasConverter" />
-            <conv:NormPairToSignedTextConverter x:Key="NormPairToSignedText" />
             <conv:PercentToSizeConverter x:Key="PercentToSizeConverter" />
             <conv:CrossGeometryConverter x:Key="CrossGeometryConverter" />
             <conv:SlopedWedgeGeometryConverter x:Key="SlopedWedgeGeometryConverter" />
             <conv:NullToCollapsedConverter x:Key="NullToCollapsedConverter" />
-            <conv:NormToTriggerHeightConverter x:Key="NormToTriggerHeightConverter" />
             <conv:StringToVisibilityConverter x:Key="StringToVisibility" />
             <conv:EnumIndexConverter x:Key="EnumIndexConverter" />
             <conv:EnumEqualityVisibilityConverter x:Key="EnumEqualityVisibilityConverter" />

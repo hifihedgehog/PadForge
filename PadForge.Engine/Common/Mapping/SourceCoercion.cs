@@ -590,7 +590,12 @@ namespace PadForge.Engine.Common.Mapping
         /// (2026-07-01): the legacy-to-set migration read "IR Pointer X" as
         /// Invert + "R Pointer X" and persisted the mangled descriptor, so the
         /// pointer row evaluated to 0 forever. Every prefix-strip site guards
-        /// on this before interpreting 'I'/'H'.</summary>
+        /// on this before interpreting 'I'/'H'.
+        /// SIBLING: InputManager.Step3.TryGetEngineOwnedSource is a SEPARATE,
+        /// remainder-gated grammar for the same I/H collision on the per-key
+        /// output path. A new 'I'- or 'H'-leading engine-owned family must be
+        /// reflected in BOTH (this allow-list AND IsEngineOwnedDescriptor) or
+        /// the two paths disagree.</summary>
         public static bool IsPrefixExemptDescriptor(string s) =>
             !string.IsNullOrEmpty(s)
             && (s.StartsWith("IR Pointer ", StringComparison.OrdinalIgnoreCase)

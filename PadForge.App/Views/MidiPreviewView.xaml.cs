@@ -165,6 +165,9 @@ namespace PadForge.Views
             }
             _vm = null;
             _layoutBuilt = false;
+            // A record-flash mid-teardown would leave its DispatcherTimer
+            // ticking against a dead view.
+            UpdateFlashTarget(null);
         }
 
         /// <summary>Drives the preview from a live MIDI INPUT state (full

@@ -97,7 +97,10 @@ namespace PadForge.Services
         private const long NfcPreviewHoldMs = 900;
         private InputHookManager _hookManager;
         private SettingsService _settingsService;
-        private bool _disposed;
+        // 0 = live, 1 = disposed. Interlocked for the same reason as
+        // _stopped: Dispose is reachable from a worker-thread Task.Run on
+        // app close while the UI thread can still call it.
+        private int _disposed;
         private readonly HashSet<string> _managedWhitelistDosPaths = new(StringComparer.OrdinalIgnoreCase);
         private GyroCalibratorService _gyroCalibrator;
         // Track which (device, slot) pairs have had auto-calibration
@@ -404,7 +407,7 @@ namespace PadForge.Services
             if (_inputManager != null)
                 return; // Already running.
 
-            _stopped = false;
+            System.Threading.Interlocked.Exchange(ref _stopped, 0);
 
             // Heal any gaps in pad indices left over from saves taken
             // before compaction-on-delete landed. Done before the engine
@@ -666,6 +669,11 @@ namespace PadForge.Services
             // device's live battery rather than the slot-collapsed value.
             // Clamp negative ("unknown") to 100 so unknown reads as full
             // charge, matching the SlotBatteryPercentProvider default.
+            // padIndex is unused by design: battery is a physical per-device
+            // property, so the same device on two slots reads one charge. The
+            // slot param is kept on the signature only for call-site symmetry
+            // with the other (slot, device) providers; do not add a per-slot
+            // lookup expecting it to matter.
             UserEffectsDispatcher.SlotBatteryPercentProvider = (padIndex, deviceGuid) =>
             {
                 var ud = FindUserDevice(deviceGuid);
@@ -1254,12 +1262,14 @@ namespace PadForge.Services
         /// <summary>
         /// Stops the UI timer and engine, releases resources.
         /// </summary>
-        private bool _stopped;
+        // 0 = running, 1 = stopped. Interlocked because Stop() is reachable
+        // concurrently from the engine-toggle Task.Run and Dispose(); a
+        // plain bool check-then-set raced into double teardown.
+        private int _stopped;
 
         public void Stop()
         {
-            if (_stopped) return;
-            _stopped = true;
+            if (System.Threading.Interlocked.Exchange(ref _stopped, 1) != 0) return;
 
             // Re-enable any Bluetooth LE devnodes still inside their #162
             // disconnect window. The delayed re-enable task dies with the
@@ -10312,7 +10322,7 @@ namespace PadForge.Services
 
         public void Dispose()
         {
-            if (_disposed)
+            if (System.Threading.Interlocked.Exchange(ref _disposed, 1) != 0)
                 return;
 
             // NFC teardown (cancel the monitor thread + release the PC/SC
@@ -10321,7 +10331,6 @@ namespace PadForge.Services
             // already halted. Doing it here, after Stop() disposed the manager,
             // risked a use-after-dispose (round-4 finding), so it lives there.
             try { Stop(); } catch { /* Best effort on shutdown */ }
-            _disposed = true;
             GC.SuppressFinalize(this);
         }
 

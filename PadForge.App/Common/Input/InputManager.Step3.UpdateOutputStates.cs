@@ -535,6 +535,11 @@ namespace PadForge.Common.Input
         /// delegation shape as the Touchpad branch in MapToButtonPressedSingle.
         /// Per-slot-tuned families (gyro, touchpad gestures) stay on the
         /// mapping-set path, which carries the slot context they need.
+        /// SIBLING: SourceCoercion.IsPrefixExemptDescriptor is the OTHER
+        /// grammar guarding the same I/H collision (the migrator + settings
+        /// prefix-strip sites). A new engine-owned family added here must
+        /// also join that allow-list if its name is 'I'/'H'-leading, or the
+        /// migrator will mangle a descriptor this path accepts.
         /// </summary>
         private static bool IsEngineOwnedDescriptor(string s) =>
             s.StartsWith("IR Pointer ", StringComparison.Ordinal) ||

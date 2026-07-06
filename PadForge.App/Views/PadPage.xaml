@@ -49,12 +49,6 @@
         <Style x:Key="OffsetSlider" TargetType="Slider" BasedOn="{StaticResource DzSlider}">
             <Setter Property="Minimum" Value="-100"/>
         </Style>
-        <Style x:Key="DzValue" TargetType="TextBlock">
-            <Setter Property="VerticalAlignment" Value="Center"/>
-            <Setter Property="TextAlignment" Value="Right"/>
-            <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}"/>
-            <Setter Property="Margin" Value="4,0,0,0"/>
-        </Style>
         <Style x:Key="DzValueEdit" TargetType="TextBox" BasedOn="{StaticResource DefaultTextBoxStyle}">
             <Setter Property="Width" Value="56"/>
             <Setter Property="VerticalAlignment" Value="Center"/>

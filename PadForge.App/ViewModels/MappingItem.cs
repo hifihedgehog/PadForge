@@ -80,10 +80,32 @@ namespace PadForge.ViewModels
             // dropdown on or off (#111 audit C).
             EnforcePrimaryKindGate();
 
+            // Clear() raises Reset with no OldItems, which would skip the
+            // per-item unsubscribes below. Mirrors the tracked-list idiom
+            // from PadViewModel.OnMappingsChangedForDirectCount.
+            if (e.Action == NotifyCollectionChangedAction.Reset)
+            {
+                foreach (var hooked in _extraSourcesHooked)
+                {
+                    hooked.PropertyChanged -= OnExtraSourcePropertyChanged;
+                    hooked.ParentMappingItem = null;
+                }
+                _extraSourcesHooked.Clear();
+                foreach (var msi in ExtraSources)
+                {
+                    if (msi == null) continue;
+                    msi.ParentMappingItem = this;
+                    msi.PropertyChanged += OnExtraSourcePropertyChanged;
+                    _extraSourcesHooked.Add(msi);
+                    RefreshExtraSourceInputs(msi);
+                }
+                return;
+            }
+
             if (e.NewItems != null)
             {
-                // First add transitions the row from single→multi-source
-                // — auto-pick a sensible combine mode if the user (or
+                // First add transitions the row from single→multi-source.
+                // Auto-pick a sensible combine mode if the user (or
                 // legacy XML) hasn't set one yet, so the dropdown
                 // never shows blank for a multi-source row.
                 if (ExtraSources.Count > 0)
@@ -95,6 +117,7 @@ namespace PadForge.ViewModels
                     {
                         msi.ParentMappingItem = this;
                         msi.PropertyChanged += OnExtraSourcePropertyChanged;
+                        _extraSourcesHooked.Add(msi);
                         RefreshExtraSourceInputs(msi);
                     }
                 }
@@ -107,10 +130,16 @@ namespace PadForge.ViewModels
                     {
                         msi.PropertyChanged -= OnExtraSourcePropertyChanged;
                         msi.ParentMappingItem = null;
+                        _extraSourcesHooked.Remove(msi);
                     }
                 }
             }
         }
+
+        // Subscribed extras tracked explicitly because Reset carries no
+        // OldItems (see OnExtraSourcesCollectionChanged).
+        private readonly System.Collections.Generic.List<MappingSourceItem> _extraSourcesHooked
+            = new System.Collections.Generic.List<MappingSourceItem>();
 
         private void OnExtraSourcePropertyChanged(object sender, PropertyChangedEventArgs e)
         {

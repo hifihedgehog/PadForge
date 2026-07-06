@@ -4766,8 +4766,13 @@ namespace PadForge.ViewModels
                 StickConfigs[0].LiveY = lvy;
                 StickConfigs[0].RawX = (short)Math.Clamp((lox - 0.5) * 2.0 * 32767, short.MinValue, short.MaxValue);
                 StickConfigs[0].RawY = (short)Math.Clamp((0.5 - loy) * 2.0 * 32767, short.MinValue, short.MaxValue);
-                StickConfigs[0].RawPosX = DeviceThumbLX + LeftCenterOffsetX / 200.0;
-                StickConfigs[0].RawPosY = DeviceThumbLY - LeftCenterOffsetY / 200.0;
+                // The cold input dot shows the RAW hardware position, pre-pipeline.
+                // The center offset belongs only to the ProcessStickForPreview input
+                // above (offset-before-deadzone, matching Step 3); baking it into
+                // the raw dot too erased the calibration gap the two dots exist to
+                // show, and dragged the input dot around with the offset sliders.
+                StickConfigs[0].RawPosX = DeviceThumbLX;
+                StickConfigs[0].RawPosY = DeviceThumbLY;
                 StickConfigs[0].HardwareRawX = gp.ThumbLX;
                 StickConfigs[0].HardwareRawY = gp.ThumbLY;
                 UpdateStickCurveDots(StickConfigs[0], DeviceThumbLX, DeviceThumbLY);
@@ -4787,8 +4792,9 @@ namespace PadForge.ViewModels
                 StickConfigs[1].LiveY = rvy;
                 StickConfigs[1].RawX = (short)Math.Clamp((rox - 0.5) * 2.0 * 32767, short.MinValue, short.MaxValue);
                 StickConfigs[1].RawY = (short)Math.Clamp((0.5 - roy) * 2.0 * 32767, short.MinValue, short.MaxValue);
-                StickConfigs[1].RawPosX = DeviceThumbRX + RightCenterOffsetX / 200.0;
-                StickConfigs[1].RawPosY = DeviceThumbRY - RightCenterOffsetY / 200.0;
+                // Raw dot: no offset, same as the left stick above.
+                StickConfigs[1].RawPosX = DeviceThumbRX;
+                StickConfigs[1].RawPosY = DeviceThumbRY;
                 StickConfigs[1].HardwareRawX = gp.ThumbRX;
                 StickConfigs[1].HardwareRawY = gp.ThumbRY;
                 UpdateStickCurveDots(StickConfigs[1], DeviceThumbRX, DeviceThumbRY);
@@ -5128,6 +5134,12 @@ namespace PadForge.ViewModels
 
                 double normX = hasX ? (raw.Axes[stick.AxisXIndex] - (double)short.MinValue) / 65535.0 : 0.5;
                 double normY = hasY ? (raw.Axes[stick.AxisYIndex] - (double)short.MinValue) / 65535.0 : 0.5;
+
+                // Cold input dot: raw hardware position, no offset (sibling of
+                // the gamepad path in UpdateDeviceState). This path never wrote
+                // RawPosX/Y, leaving Extended stick tabs with a frozen raw dot.
+                if (hasX) stick.RawPosX = normX;
+                if (hasY) stick.RawPosY = normY;
 
                 var (vx, ox, vy, oy) = ProcessStickForPreview(
                     normX + stick.CenterOffsetX / 200.0,

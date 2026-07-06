@@ -433,7 +433,29 @@ namespace PadForge
                 _inputService.ApplyDeviceHiding();
             };
             _viewModel.Settings.ReloadRequested += (s, e) => _settingsService.Reload();
-            _viewModel.Settings.ResetRequested += (s, e) => _settingsService.ResetToDefaults();
+            _viewModel.Settings.ResetRequested += (s, e) =>
+            {
+                // Reset to Defaults also tears down every virtual controller
+                // (user report 2026-07-06: the left rail and dashboard kept
+                // their slots after a reset, which is not "defaults"). Same
+                // per-slot sequence as the delete buttons, highest slot first
+                // so each removal's kernel-slot bubble-down cascade never
+                // re-shuffles a slot this loop is about to delete anyway.
+                if (_viewModel.SelectedPadIndex >= 0)
+                    SelectNavItemByTag("Dashboard");
+                for (int i = PadForge.Common.Input.InputManager.MaxPads - 1; i >= 0; i--)
+                {
+                    if (!SettingsManager.SlotCreated[i]) continue;
+                    bool hadActiveVc = _inputService.IsHmVcAt(i);
+                    var info = _deviceService.DeleteSlot(i);
+                    _inputService.OnSlotDeleted(i, info.Type, info.OldGroupPosition,
+                        deletedSlotHadActiveVc: hadActiveVc);
+                }
+                _settingsService.ResetToDefaults();
+                _viewModel.Devices.RefreshSlotButtons();
+                _inputService.RefreshDeviceList();
+                _viewModel.RefreshNavControllerItems();
+            };
             _viewModel.Settings.OpenSettingsFolderRequested += OnOpenSettingsFolder;
             _viewModel.Settings.ThemeChanged += OnThemeChanged;
             _viewModel.Settings.NewProfileRequested += OnNewProfile;
@@ -2565,7 +2587,15 @@ namespace PadForge
                 FontFamily = (System.Windows.Media.FontFamily)FindResource("TelemetryFontFamily"),
                 FontSize = 11,
                 VerticalAlignment = VerticalAlignment.Center,
-                Margin = new Thickness(4, 0, 0, 0)
+                Margin = new Thickness(4, 0, 0, 0),
+                // Fixed box (user report 2026-07-06): the segment is
+                // right-anchored, so an auto-width token slid the five type
+                // tiles left when the instance number gained a digit
+                // (stacked cards' icons no longer lined up). 20 holds the
+                // worst case ("#16" = 19.3, Cascadia @11, iteration 107
+                // math) and left alignment anchors the "#" column too.
+                Width = 20,
+                TextAlignment = TextAlignment.Left
             };
             instanceLabel.SetResourceReference(System.Windows.Controls.TextBlock.ForegroundProperty, "TextFillColorTertiaryBrush");
             segRow.Children.Add(instanceLabel);

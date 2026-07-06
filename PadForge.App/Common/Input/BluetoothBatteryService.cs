@@ -54,26 +54,47 @@ namespace PadForge.Common.Input
         private const int CR_SUCCESS = 0;
         private const uint DEVPROP_TYPE_BYTE = 0x00000003;
 
-        /// <summary>Returns the battery percent (0-100) for the device whose
-        /// HID interface path is <paramref name="devicePath"/>, or -1 when no
-        /// ancestor devnode carries the Bluetooth battery property (wired
-        /// pads, virtual pads, synthetic paths).</summary>
-        public static int TryGetPercent(string devicePath)
+        /// <summary>Returns the battery percent (0-100) for the device, or -1
+        /// when no devnode carries the Bluetooth battery property (wired pads,
+        /// virtual pads). Devices with a real HID interface path anchor the
+        /// walk to their own devnode. XInput-backend pads carry a SYNTHETIC
+        /// path ("XInput#0", the reason the first cut of this service returned
+        /// nothing for the very pad it was built for), so they resolve real
+        /// instance IDs by VID/PID through FindInstanceIdsByVidPid, which
+        /// matches USB, BLE-GATT, and BT-classic instance forms and already
+        /// excludes HIDMaestro devices by ancestry, so a virtual pad can never
+        /// be matched.</summary>
+        public static int TryGetPercent(string devicePath, int vendorId, int productId)
         {
-            if (string.IsNullOrEmpty(devicePath)
-                || !devicePath.StartsWith(@"\\?\", StringComparison.Ordinal))
-                return -1;
+            if (!string.IsNullOrEmpty(devicePath)
+                && devicePath.StartsWith(@"\\?\", StringComparison.Ordinal))
+            {
+                string instanceId = HidHideController.DevicePathToInstanceId(devicePath);
+                return WalkForBattery(instanceId);
+            }
 
-            string instanceId = HidHideController.DevicePathToInstanceId(devicePath);
+            // Synthetic path: resolve the physical pad's PnP instances by
+            // VID/PID (HM-filtered) and take the first chain with a battery.
+            if (vendorId <= 0 || productId <= 0) return -1;
+            foreach (var id in HidHideController.FindInstanceIdsByVidPid(
+                         (ushort)vendorId, (ushort)productId))
+            {
+                int pct = WalkForBattery(id);
+                if (pct >= 0) return pct;
+            }
+            return -1;
+        }
+
+        /// <summary>Walks UP the instance's own PnP ancestry and returns the
+        /// first Bluetooth battery percent found, or -1. The property sits on
+        /// the BTHLE / BTHENUM function node, typically 1-3 hops above the HID
+        /// devnode; 8 bounds the walk well past any real controller stack.</summary>
+        private static int WalkForBattery(string instanceId)
+        {
             if (string.IsNullOrEmpty(instanceId)) return -1;
-
             if (CM_Locate_DevNodeW(out uint devInst, instanceId, 0) != CR_SUCCESS)
                 return -1;
 
-            // Walk the device's own ancestry. The battery property sits on
-            // the BTHLE / BTHENUM function node, typically 1-3 hops above the
-            // HID interface's devnode; 8 bounds the walk well past any real
-            // controller stack.
             var buf = new byte[4];
             for (int hop = 0; hop < 8; hop++)
             {

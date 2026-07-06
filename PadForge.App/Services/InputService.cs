@@ -2614,7 +2614,8 @@ namespace PadForge.Services
                 if (sdlPct >= 0) return (sdlPct, ud.InputState?.BatteryCharging ?? false);
                 if (!btOverlay.TryGetValue(ud.InstanceGuid, out int btPct))
                 {
-                    btPct = PadForge.Common.Input.BluetoothBatteryService.TryGetPercent(ud.DevicePath);
+                    btPct = PadForge.Common.Input.BluetoothBatteryService.TryGetPercent(
+                        ud.DevicePath, ud.VendorId, ud.ProdId);
                     btOverlay[ud.InstanceGuid] = btPct;
                 }
                 // The devnode property carries no charging flag; a pad on the

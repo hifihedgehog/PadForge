@@ -1850,6 +1850,14 @@
   <data name="Macro_Sound_Loop" xml:space="preserve"><value>중지할 때까지 루프</value></data>
   <data name="Macro_Sound_Loop_Tooltip" xml:space="preserve"><value>"사운드 중지" 동작이 실행될 때까지 반복합니다. 유지/뎆 매크로에서는 트리거를 놓으면 중지됩니다</value></data>
   <data name="Pad_Audio_Mirror" xml:space="preserve"><value>시스템 오디오를 컨트롤러 스피커로 미러링</value></data>
+  <data name="Pad_Audio_Engage_Label" xml:space="preserve"><value>미러 오디오 재생</value></data>
+  <data name="Pad_Audio_Engage_Tooltip" xml:space="preserve"><value>미러 오디오가 햅틱 톤으로 재생되는 시점입니다. 입력 유지나 게임 진동에 연동하면 음악 때문에 컨트롤러가 계속 진동하지 않습니다.</value></data>
+  <data name="Pad_Audio_Engage_Always" xml:space="preserve"><value>항상</value></data>
+  <data name="Pad_Audio_Engage_Input" xml:space="preserve"><value>입력을 누르고 있는 동안</value></data>
+  <data name="Pad_Audio_Engage_Rumble" xml:space="preserve"><value>게임 진동 중</value></data>
+  <data name="Pad_Audio_EngageInput_Label" xml:space="preserve"><value>활성화 입력</value></data>
+  <data name="Pad_Audio_EngageRelease_Label" xml:space="preserve"><value>해제 지연</value></data>
+  <data name="Pad_Audio_EngageRelease_Tooltip" xml:space="preserve"><value>활성화 소스가 끊긴 뒤에도 미러 재생을 유지하는 시간입니다. 톤이 갑자기 끊기지 않습니다.</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>시스템 기본 출력에서 재생 중인 소리를 이 컨트롤러의 내장 스피커로도 동시에 출력합니다. USB와 Bluetooth 모두 지원합니다.</value></data>
   <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>선택한 장치에는 내장 스피커가 없습니다. 이 패드의 매크로 사운드는 시스템 기본 출력으로 재생됩니다.</value></data>
   <data name="About_QDollar" xml:space="preserve"><value>$Q Recognizer</value></data>

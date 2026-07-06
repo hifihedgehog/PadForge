@@ -1586,6 +1586,14 @@ public class Strings : INotifyPropertyChanged
     public string Pad_Audio_NoSoundMacros => Get("Pad_Audio_NoSoundMacros");
     public string Pad_Audio_Mirror => Get("Pad_Audio_Mirror");
     public string Pad_Audio_Mirror_Tooltip => Get("Pad_Audio_Mirror_Tooltip");
+    public string Pad_Audio_Engage_Label => Get("Pad_Audio_Engage_Label");
+    public string Pad_Audio_Engage_Tooltip => Get("Pad_Audio_Engage_Tooltip");
+    public string Pad_Audio_Engage_Always => Get("Pad_Audio_Engage_Always");
+    public string Pad_Audio_Engage_Input => Get("Pad_Audio_Engage_Input");
+    public string Pad_Audio_Engage_Rumble => Get("Pad_Audio_Engage_Rumble");
+    public string Pad_Audio_EngageInput_Label => Get("Pad_Audio_EngageInput_Label");
+    public string Pad_Audio_EngageRelease_Label => Get("Pad_Audio_EngageRelease_Label");
+    public string Pad_Audio_EngageRelease_Tooltip => Get("Pad_Audio_EngageRelease_Tooltip");
     public string Pad_Audio_NoSpeaker => Get("Pad_Audio_NoSpeaker");
     public string Pad_Audio_OpenMacro_Tooltip => Get("Pad_Audio_OpenMacro_Tooltip");
     public string Pad_Audio_SoundMacroName_Format => Get("Pad_Audio_SoundMacroName_Format");

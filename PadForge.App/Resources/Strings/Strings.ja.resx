@@ -1850,6 +1850,14 @@
   <data name="Macro_Sound_Loop" xml:space="preserve"><value>停止までループ</value></data>
   <data name="Macro_Sound_Loop_Tooltip" xml:space="preserve"><value>「サウンド停止」アクションが実行されるまで繰り返します。長押し／離すまでマクロではトリガーを離すと停止します</value></data>
   <data name="Pad_Audio_Mirror" xml:space="preserve"><value>システム音声をコントローラーのスピーカーへミラー</value></data>
+  <data name="Pad_Audio_Engage_Label" xml:space="preserve"><value>ミラー音声を再生</value></data>
+  <data name="Pad_Audio_Engage_Tooltip" xml:space="preserve"><value>ミラー音声をハプティックトーンとして再生するタイミング。入力の押下やゲームの振動に連動させると、音楽で常にコントローラーが振動しなくなります。</value></data>
+  <data name="Pad_Audio_Engage_Always" xml:space="preserve"><value>常時</value></data>
+  <data name="Pad_Audio_Engage_Input" xml:space="preserve"><value>入力を押している間</value></data>
+  <data name="Pad_Audio_Engage_Rumble" xml:space="preserve"><value>ゲームの振動中</value></data>
+  <data name="Pad_Audio_EngageInput_Label" xml:space="preserve"><value>有効化入力</value></data>
+  <data name="Pad_Audio_EngageRelease_Label" xml:space="preserve"><value>リリース遅延</value></data>
+  <data name="Pad_Audio_EngageRelease_Tooltip" xml:space="preserve"><value>有効化ソースが切れた後もミラー再生を続ける時間。トーンが急に途切れるのを防ぎます。</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>システム既定の出力で再生中の音声を、このコントローラーの内蔵スピーカーにも並行して出力します。USBとBluetoothの両方で動作します。</value></data>
   <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>選択中のデバイスには内蔵スピーカーがありません。このパッドのマクロサウンドはシステム既定の出力で再生されます。</value></data>
   <data name="About_QDollar" xml:space="preserve"><value>$Q Recognizer</value></data>

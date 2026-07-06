@@ -2038,6 +2038,14 @@
   <data name="Macro_Sound_Loop" xml:space="preserve"><value>Loop until stopped</value></data>
   <data name="Macro_Sound_Loop_Tooltip" xml:space="preserve"><value>Repeat the sound until a Stop Sounds action runs, or for While Held / Until Released macros, until the trigger is released</value></data>
   <data name="Pad_Audio_Mirror" xml:space="preserve"><value>Mirror system audio to the controller speaker</value></data>
+  <data name="Pad_Audio_Engage_Label" xml:space="preserve"><value>Play mirrored audio</value></data>
+  <data name="Pad_Audio_Engage_Tooltip" xml:space="preserve"><value>When the mirrored audio plays as haptic tones. Gate it on a held input or on game rumble so music does not buzz the controller all the time.</value></data>
+  <data name="Pad_Audio_Engage_Always" xml:space="preserve"><value>Always</value></data>
+  <data name="Pad_Audio_Engage_Input" xml:space="preserve"><value>While an input is held</value></data>
+  <data name="Pad_Audio_Engage_Rumble" xml:space="preserve"><value>While the game rumbles</value></data>
+  <data name="Pad_Audio_EngageInput_Label" xml:space="preserve"><value>Engage input</value></data>
+  <data name="Pad_Audio_EngageRelease_Label" xml:space="preserve"><value>Release delay</value></data>
+  <data name="Pad_Audio_EngageRelease_Tooltip" xml:space="preserve"><value>How long the mirror keeps playing after the engage source drops, so the tone does not clip off instantly.</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>Copies whatever the system default output plays to this controller’s built-in speaker, in parallel. Works over USB and Bluetooth.</value></data>
   <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>The selected device has no built-in speaker. Macro sounds for this pad play on the system default output.</value></data>
   <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>Reset mirror, mirror source, and master volume to defaults</value></data>

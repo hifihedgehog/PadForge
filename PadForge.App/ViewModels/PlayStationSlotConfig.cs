@@ -230,7 +230,57 @@ namespace PadForge.ViewModels
         }
 
         // ────────────────────────────────────────────────
-        //  Lightbar — macro-driven override (#63)
+        //  Haptic mirror engage gate (#185)
+        // ────────────────────────────────────────────────
+        // The haptic-tone mirror buzzes the pad with everything the system
+        // plays, so it can gate on an input or on game rumble instead of
+        // running always. Applies to haptic-tone sinks only (Joy-Con, Switch
+        // Pro, Steam family); the Sony/Wii speaker mirrors play real audio
+        // and stay ungated. Macro sounds are never gated.
+
+        private string _audioMirrorEngageMode = "Always";
+        /// <summary>When the haptic mirror plays: "Always" (default),
+        /// "Input" (only while the chosen input is held), or "Rumble"
+        /// (only while the slot's game-driven vibration is active).
+        /// Same string-mode convention as GyroAimEngageMode.</summary>
+        public string AudioMirrorEngageMode
+        {
+            get => _audioMirrorEngageMode;
+            set => SetProperty(ref _audioMirrorEngageMode, string.IsNullOrEmpty(value) ? "Always" : value);
+        }
+
+        private string _audioMirrorEngageDeviceGuid = string.Empty;
+        /// <summary>Device carrying the engage input for "Input" mode,
+        /// mirroring GyroAimEngageDeviceGuid. Empty = no device chosen.</summary>
+        public string AudioMirrorEngageDeviceGuid
+        {
+            get => _audioMirrorEngageDeviceGuid;
+            set => SetProperty(ref _audioMirrorEngageDeviceGuid, value ?? string.Empty);
+        }
+
+        private string _audioMirrorEngageButton = string.Empty;
+        /// <summary>Input descriptor held to engage the mirror in "Input"
+        /// mode, mirroring GyroAimEngageButton. Empty in Input mode reads
+        /// as always-on, matching the gyro-engage convention.</summary>
+        public string AudioMirrorEngageButton
+        {
+            get => _audioMirrorEngageButton;
+            set => SetProperty(ref _audioMirrorEngageButton, value ?? string.Empty);
+        }
+
+        private int _audioMirrorEngageReleaseMs = 500;
+        /// <summary>How long the mirror keeps playing after the engage
+        /// source drops (ms), so the tone does not clip off instantly.
+        /// The reporter's suggested half-second is the default. Clamped
+        /// 0..10000 at the consumer.</summary>
+        public int AudioMirrorEngageReleaseMs
+        {
+            get => _audioMirrorEngageReleaseMs;
+            set => SetProperty(ref _audioMirrorEngageReleaseMs, value);
+        }
+
+        // ────────────────────────────────────────────────
+        //  Lightbar: macro-driven override (#63)
         // ────────────────────────────────────────────────
         // Transient runtime state set by MacroActionType.LightbarColor
         // when a macro fires. Held until ExpiresAtUtc, then cleared
@@ -1548,6 +1598,11 @@ namespace PadForge.ViewModels
         [XmlAttribute] public bool LightbarEnabled { get; set; }
         [XmlAttribute] public bool AudioPassthroughEnabled { get; set; }
         [XmlAttribute] public string AudioMirrorSourceId { get; set; } = string.Empty;
+        // Haptic mirror engage gate (#185). Defaults match the VM: Always / 500 ms.
+        [XmlAttribute] public string AudioMirrorEngageMode { get; set; } = "Always";
+        [XmlAttribute] public string AudioMirrorEngageDeviceGuid { get; set; } = string.Empty;
+        [XmlAttribute] public string AudioMirrorEngageButton { get; set; } = string.Empty;
+        [XmlAttribute] public int AudioMirrorEngageReleaseMs { get; set; } = 500;
         [XmlAttribute] public MicLedMode MicLedMode { get; set; } = MicLedMode.Off;
         [XmlAttribute] public string MicLedFollowDeviceId { get; set; } = string.Empty;
         [XmlAttribute] public PlayerLedMode PlayerLedMode { get; set; } = PlayerLedMode.Off;

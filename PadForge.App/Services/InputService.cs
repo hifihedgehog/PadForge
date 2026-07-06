@@ -1069,6 +1069,31 @@ namespace PadForge.Services
                     .ToList();
             };
 
+            // Issue #185: haptic-mirror engage config, same per-device configs
+            // as the passthrough provider above. First device on the slot with a
+            // non-Always mode wins (the engage-family convention); null = every
+            // config is Always, InputManager's fast path. Called at low cadence
+            // (~4 Hz) from the poll thread's config refresh, never per poll.
+            _inputManager.HapticMirrorEngageConfigProvider = slotIndex =>
+            {
+                if (slotIndex < 0 || slotIndex >= _mainVm.Pads.Count) return null;
+                foreach (var kv in _mainVm.Pads[slotIndex].PerDevicePlayStationConfigs)
+                {
+                    var c = kv.Value;
+                    if (c == null || !c.AudioPassthroughEnabled) continue;
+                    int mode = c.AudioMirrorEngageMode switch
+                    {
+                        "Input" => 1,
+                        "Rumble" => 2,
+                        _ => 0,
+                    };
+                    if (mode == 0) continue;
+                    return (mode, c.AudioMirrorEngageDeviceGuid ?? "",
+                        c.AudioMirrorEngageButton ?? "", c.AudioMirrorEngageReleaseMs);
+                }
+                return null;
+            };
+
             // A persisted mirror toggle must resume on launch — the service
             // otherwise only starts when poked (toggle change, assignment
             // change, or a macro's sink lookup). One signal is enough: the
@@ -4299,6 +4324,7 @@ namespace PadForge.Services
             padVm.OnGyroAimEngageSelectedInputRefresh();
             padVm.OnLeftTriggerRouteActivatorSelectedInputRefresh();
             padVm.OnRightTriggerRouteActivatorSelectedInputRefresh();
+            padVm.OnMirrorEngageSelectedInputRefresh();
         }
 
         // ─────────────────────────────────────────────

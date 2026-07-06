@@ -9444,6 +9444,101 @@
                                               IsEnabled="{Binding PlayStationConfig.AudioPassthroughEnabled}"
                                               ToolTip="{Binding Pad_Audio_MirrorSource_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
+                                <!-- Mirror ENGAGE gate (#185), haptic-tone devices only: a
+                                     resonant actuator buzzing with music is intrusive in a
+                                     way a real speaker is not. Always / While an input is
+                                     held / While the game rumbles, with a release delay so
+                                     the tone does not clip off the instant the source drops. -->
+                                <StackPanel Margin="20,0,0,8"
+                                            Visibility="{Binding SelectedDeviceHasHapticTones, Converter={StaticResource BoolToVisibilityConverter}}">
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                        <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Pad_Audio_Engage_Label, Source={x:Static strings:Strings.Instance}}"
+                                                   VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                        <ComboBox SelectedValuePath="Tag"
+                                                  SelectedValue="{Binding PlayStationConfig.AudioMirrorEngageMode, Mode=TwoWay}"
+                                                  MinWidth="220"
+                                                  IsEnabled="{Binding PlayStationConfig.AudioPassthroughEnabled}"
+                                                  ToolTip="{Binding Pad_Audio_Engage_Tooltip, Source={x:Static strings:Strings.Instance}}">
+                                            <ComboBoxItem Content="{Binding Pad_Audio_Engage_Always, Source={x:Static strings:Strings.Instance}}" Tag="Always"/>
+                                            <ComboBoxItem Content="{Binding Pad_Audio_Engage_Input, Source={x:Static strings:Strings.Instance}}" Tag="Input"/>
+                                            <ComboBoxItem Content="{Binding Pad_Audio_Engage_Rumble, Source={x:Static strings:Strings.Instance}}" Tag="Rumble"/>
+                                        </ComboBox>
+                                    </StackPanel>
+                                    <!-- Engage input picker, Input mode only. Same grouped
+                                         cross-device list + device-label subtitle as the
+                                         gyro Aim Engage picker. -->
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                        <StackPanel.Style>
+                                            <Style TargetType="StackPanel">
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding PlayStationConfig.AudioMirrorEngageMode}" Value="Input">
+                                                        <Setter Property="Visibility" Value="Visible"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </StackPanel.Style>
+                                        <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Pad_Audio_EngageInput_Label, Source={x:Static strings:Strings.Instance}}"
+                                                   VerticalAlignment="Top" Margin="0,4,8,0"/>
+                                        <StackPanel Orientation="Vertical">
+                                            <ComboBox ItemsSource="{Binding SlotAvailableInputsView}"
+                                                      SelectedItem="{Binding MirrorEngageSelectedInput, Mode=TwoWay}"
+                                                      DisplayMemberPath="DisplayName"
+                                                      MinWidth="260" Padding="4,2"
+                                                      IsEnabled="{Binding PlayStationConfig.AudioPassthroughEnabled}">
+                                                <ComboBox.GroupStyle>
+                                                    <GroupStyle>
+                                                        <GroupStyle.HeaderTemplate>
+                                                            <DataTemplate>
+                                                                <Border Background="{DynamicResource SubtleFillColorSecondaryBrush}" Padding="6,3,6,3">
+                                                                    <TextBlock Text="{Binding Name}" FontSize="11" FontWeight="SemiBold"
+                                                                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                                                               TextTrimming="CharacterEllipsis"/>
+                                                                </Border>
+                                                            </DataTemplate>
+                                                        </GroupStyle.HeaderTemplate>
+                                                    </GroupStyle>
+                                                </ComboBox.GroupStyle>
+                                            </ComboBox>
+                                            <TextBlock FontSize="10"
+                                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                                       Margin="4,1,0,0"
+                                                       TextTrimming="CharacterEllipsis">
+                                                <TextBlock.Style>
+                                                    <Style TargetType="TextBlock">
+                                                        <Setter Property="Text" Value="{Binding MirrorEngageSelectedInput.DeviceLabel}"/>
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding MirrorEngageSelectedInput}" Value="{x:Null}">
+                                                                <Setter Property="Text" Value="{Binding Common_Unassigned, Source={x:Static strings:Strings.Instance}}"/>
+                                                                <Setter Property="FontStyle" Value="Italic"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </TextBlock.Style>
+                                            </TextBlock>
+                                        </StackPanel>
+                                    </StackPanel>
+                                    <!-- Release delay, any gated mode. -->
+                                    <StackPanel Orientation="Horizontal">
+                                        <StackPanel.Style>
+                                            <Style TargetType="StackPanel">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding PlayStationConfig.AudioMirrorEngageMode}" Value="Always">
+                                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </StackPanel.Style>
+                                        <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Pad_Audio_EngageRelease_Label, Source={x:Static strings:Strings.Instance}}"
+                                                   VerticalAlignment="Center" Margin="0,0,8,0"
+                                                   ToolTip="{Binding Pad_Audio_EngageRelease_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                        <TextBox Text="{Binding PlayStationConfig.AudioMirrorEngageReleaseMs, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                                 Width="64" VerticalAlignment="Center"
+                                                 IsEnabled="{Binding PlayStationConfig.AudioPassthroughEnabled}"/>
+                                        <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="ms" VerticalAlignment="Center" Margin="4,0,0,0"/>
+                                    </StackPanel>
+                                </StackPanel>
                                 <TextBlock Text="{Binding Pad_Audio_NoSpeaker, Source={x:Static strings:Strings.Instance}}"
                                            Style="{StaticResource CardDescription}"
                                            Visibility="{Binding SelectedDeviceHasNoSpeaker, Converter={StaticResource BoolToVisibilityConverter}}"/>

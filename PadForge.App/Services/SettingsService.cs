@@ -1567,7 +1567,11 @@ namespace PadForge.Services
                 || c.PlayerLedMode != ViewModels.PlayerLedMode.Off
                 || c.AudioPassthroughEnabled
                 || c.AudioLightbarEnabled
-                || !string.IsNullOrEmpty(c.AudioMirrorSourceId));
+                || !string.IsNullOrEmpty(c.AudioMirrorSourceId)
+                // #185: a configured engage gate keeps the config alive even
+                // while the passthrough toggle is momentarily off.
+                || (c.AudioMirrorEngageMode != null && c.AudioMirrorEngageMode != "Always")
+                || !string.IsNullOrEmpty(c.AudioMirrorEngageButton));
 
         /// <summary>VM-shape twin of <see cref="IsPlayStationConfigDataConfigured"/>,
         /// for the in-process Copy From path.</summary>
@@ -1580,7 +1584,9 @@ namespace PadForge.Services
                 || c.PlayerLedMode != ViewModels.PlayerLedMode.Off
                 || c.AudioPassthroughEnabled
                 || c.AudioLightbarEnabled
-                || !string.IsNullOrEmpty(c.AudioMirrorSourceId));
+                || !string.IsNullOrEmpty(c.AudioMirrorSourceId)
+                || c.AudioMirrorEngageMode != "Always"
+                || !string.IsNullOrEmpty(c.AudioMirrorEngageButton));
 
         public void ApplyPlayStationConfigsToSlot(int slotIndex,
             ViewModels.PlayStationSlotConfigData[] configs)
@@ -1848,6 +1854,10 @@ namespace PadForge.Services
                     cfg.LightbarEnabled = cfgData.LightbarEnabled;
                     cfg.AudioPassthroughEnabled = cfgData.AudioPassthroughEnabled;
                     cfg.AudioMirrorSourceId = cfgData.AudioMirrorSourceId ?? string.Empty;
+                    cfg.AudioMirrorEngageMode = cfgData.AudioMirrorEngageMode ?? "Always";
+                    cfg.AudioMirrorEngageDeviceGuid = cfgData.AudioMirrorEngageDeviceGuid ?? string.Empty;
+                    cfg.AudioMirrorEngageButton = cfgData.AudioMirrorEngageButton ?? string.Empty;
+                    cfg.AudioMirrorEngageReleaseMs = cfgData.AudioMirrorEngageReleaseMs;
                     // Migrate legacy MicLightOn to the new MicLedMode if
                     // the new field hasn't been set explicitly.
                     if (cfgData.MicLedMode != ViewModels.MicLedMode.Off)
@@ -3091,6 +3101,10 @@ namespace PadForge.Services
                 LightbarEnabled = cfg.LightbarEnabled,
                 AudioPassthroughEnabled = cfg.AudioPassthroughEnabled,
                 AudioMirrorSourceId = cfg.AudioMirrorSourceId ?? string.Empty,
+                AudioMirrorEngageMode = cfg.AudioMirrorEngageMode ?? "Always",
+                AudioMirrorEngageDeviceGuid = cfg.AudioMirrorEngageDeviceGuid ?? string.Empty,
+                AudioMirrorEngageButton = cfg.AudioMirrorEngageButton ?? string.Empty,
+                AudioMirrorEngageReleaseMs = cfg.AudioMirrorEngageReleaseMs,
                 MicLedMode = cfg.MicLedMode,
                 MicLedFollowDeviceId = cfg.MicLedFollowDeviceId ?? string.Empty,
                 MicLightOn = cfg.MicLightOn,

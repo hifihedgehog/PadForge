@@ -1023,6 +1023,7 @@ namespace PadForge.Common.Input
                         UpdateInputStates();
                         UpdateGyroEngageStates();
                         UpdateTriggerRouteEngageStates();
+                        UpdateHapticMirrorEngageStates();
                         UpdateMotionSnapshots();
                         BroadcastDsuMotion();
                         UpdateOutputStates();
@@ -1239,6 +1240,88 @@ namespace PadForge.Common.Input
                     GyroEngagedFromButton[slot] = string.IsNullOrEmpty(descriptor) ? true : buttonDown;
                 }
                 _prevAimEngageButtonDown[slot] = buttonDown;
+            }
+        }
+
+        // ── Haptic mirror engage (#185): third member of the engage family ──
+
+        /// <summary>Per-slot engage config for the haptic mirror, wired by
+        /// InputService from the per-device PlayStation configs (the same
+        /// source the passthrough provider reads). Returns the FIRST device
+        /// config on the slot whose engage mode is not "Always", or null when
+        /// every config is Always (the fast path). Mode: 1 = Input (held
+        /// descriptor), 2 = Rumble (game vibration active).</summary>
+        public Func<int, (int Mode, string DeviceGuid, string Button, int ReleaseMs)?>
+            HapticMirrorEngageConfigProvider { get; set; }
+
+        // Config snapshot per slot, refreshed at low cadence: the ENGAGE STATE
+        // must settle per poll for edge fidelity, but the CONFIG (mode / button
+        // / delay) changing within a quarter second of a UI edit is
+        // imperceptible, and re-walking the ViewModel dictionaries through the
+        // provider at 1000 Hz x 16 slots would put LINQ on the hot loop
+        // (code-audit lens 1n). 0 = Always (no gating).
+        private readonly (int Mode, string DeviceGuid, string Button, int ReleaseMs)[]
+            _mirrorEngageCfg = new (int, string, string, int)[MaxPads];
+        private long _mirrorEngageCfgRefreshTick;
+        private readonly long[] _mirrorEngageLastActiveTick = new long[MaxPads];
+
+        /// <summary>Settles each slot's haptic-mirror engaged bit once per tick
+        /// (issue #185), writing <see cref="HapticToneService.MirrorEngagedBySlot"/>.
+        /// Mirrors <see cref="UpdateGyroEngageStates"/>: Input mode holds while
+        /// the chosen descriptor is down (empty descriptor = always on, the
+        /// family convention), Rumble mode holds while any of the slot's four
+        /// vibration motors is nonzero, and either source keeps the bit up for
+        /// the configured release delay after it drops so the tone does not
+        /// clip off instantly.</summary>
+        private void UpdateHapticMirrorEngageStates()
+        {
+            long now = Environment.TickCount64;
+
+            // Low-cadence config refresh (see field comment).
+            var provider = HapticMirrorEngageConfigProvider;
+            if (now - _mirrorEngageCfgRefreshTick >= 250)
+            {
+                _mirrorEngageCfgRefreshTick = now;
+                for (int slot = 0; slot < MaxPads; slot++)
+                {
+                    (int, string, string, int) cfg = default;
+                    if (provider != null && SettingsManager.SlotCreated[slot])
+                    {
+                        try { cfg = provider(slot) ?? default; }
+                        catch { cfg = default; }
+                    }
+                    _mirrorEngageCfg[slot] = cfg;
+                }
+            }
+
+            for (int slot = 0; slot < MaxPads; slot++)
+            {
+                var cfg = _mirrorEngageCfg[slot];
+                if (cfg.Mode == 0)
+                {
+                    HapticToneService.MirrorEngagedBySlot[slot] = true;
+                    continue;
+                }
+
+                bool active;
+                if (cfg.Mode == 2)
+                {
+                    // Rumble: any motor the game drives, body or trigger.
+                    var v = VibrationStates[slot];
+                    active = v != null
+                        && (v.LeftMotorSpeed > 0 || v.RightMotorSpeed > 0
+                            || v.LeftTriggerMotorSpeed > 0 || v.RightTriggerMotorSpeed > 0);
+                }
+                else
+                {
+                    // Input: empty descriptor reads as always-on, matching the
+                    // gyro-engage convention.
+                    active = string.IsNullOrEmpty(cfg.Button)
+                        || (SourceCoercion.ButtonHeldProvider?.Invoke(cfg.DeviceGuid ?? "", cfg.Button, slot) ?? false);
+                }
+
+                HapticToneService.MirrorEngagedBySlot[slot] = HapticToneService.HoldEngaged(
+                    active, now, ref _mirrorEngageLastActiveTick[slot], cfg.ReleaseMs);
             }
         }
 

@@ -1870,6 +1870,14 @@
   <data name="Macro_Sound_Loop" xml:space="preserve"><value>Loopen tot stop</value></data>
   <data name="Macro_Sound_Loop_Tooltip" xml:space="preserve"><value>Herhaal het geluid tot een "Geluiden stoppen"-actie draait, of bij vasthouden/loslaten-macro’s, tot de trigger wordt losgelaten</value></data>
   <data name="Pad_Audio_Mirror" xml:space="preserve"><value>Systeemaudio spiegelen naar de controllerspeaker</value></data>
+  <data name="Pad_Audio_Engage_Label" xml:space="preserve"><value>Gespiegelde audio afspelen</value></data>
+  <data name="Pad_Audio_Engage_Tooltip" xml:space="preserve"><value>Wanneer de gespiegelde audio als haptische tonen speelt. Koppel het aan een ingedrukte invoer of aan de trilfunctie van de game, zodat muziek de controller niet constant laat trillen.</value></data>
+  <data name="Pad_Audio_Engage_Always" xml:space="preserve"><value>Altijd</value></data>
+  <data name="Pad_Audio_Engage_Input" xml:space="preserve"><value>Zolang een invoer ingedrukt is</value></data>
+  <data name="Pad_Audio_Engage_Rumble" xml:space="preserve"><value>Zolang de game trilt</value></data>
+  <data name="Pad_Audio_EngageInput_Label" xml:space="preserve"><value>Activeringsinvoer</value></data>
+  <data name="Pad_Audio_EngageRelease_Label" xml:space="preserve"><value>Loslaatvertraging</value></data>
+  <data name="Pad_Audio_EngageRelease_Tooltip" xml:space="preserve"><value>Hoe lang de spiegel blijft spelen nadat de activeringsbron wegvalt, zodat de toon niet abrupt stopt.</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>Speelt alles wat de standaarduitvoer afspeelt parallel af op de ingebouwde speaker van deze controller. Werkt via USB en Bluetooth.</value></data>
   <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>Het geselecteerde apparaat heeft geen ingebouwde speaker. Macrogeluiden van deze pad spelen op de standaarduitvoer.</value></data>
   <data name="About_QDollar" xml:space="preserve"><value>$Q Recognizer</value></data>

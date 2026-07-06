@@ -1850,6 +1850,14 @@
   <data name="Macro_Sound_Loop" xml:space="preserve"><value>Boucler jusqu’à l’arrêt</value></data>
   <data name="Macro_Sound_Loop_Tooltip" xml:space="preserve"><value>Répéter le son jusqu’à une action "Arrêter les sons", ou pour les macros maintien/relâchement, jusqu’au relâchement du déclencheur</value></data>
   <data name="Pad_Audio_Mirror" xml:space="preserve"><value>Dupliquer l’audio système sur le haut-parleur de la manette</value></data>
+  <data name="Pad_Audio_Engage_Label" xml:space="preserve"><value>Lire l'audio en miroir</value></data>
+  <data name="Pad_Audio_Engage_Tooltip" xml:space="preserve"><value>Quand l'audio en miroir est joué en tonalités haptiques. Conditionnez-le à une entrée maintenue ou à la vibration du jeu pour que la musique ne fasse pas vibrer la manette en permanence.</value></data>
+  <data name="Pad_Audio_Engage_Always" xml:space="preserve"><value>Toujours</value></data>
+  <data name="Pad_Audio_Engage_Input" xml:space="preserve"><value>Tant qu'une entrée est maintenue</value></data>
+  <data name="Pad_Audio_Engage_Rumble" xml:space="preserve"><value>Tant que le jeu vibre</value></data>
+  <data name="Pad_Audio_EngageInput_Label" xml:space="preserve"><value>Entrée d'activation</value></data>
+  <data name="Pad_Audio_EngageRelease_Label" xml:space="preserve"><value>Délai de relâchement</value></data>
+  <data name="Pad_Audio_EngageRelease_Tooltip" xml:space="preserve"><value>Durée pendant laquelle le miroir continue après la fin de la source d'activation, pour que la tonalité ne se coupe pas net.</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>Copie en parallèle ce que joue la sortie par défaut du système sur le haut-parleur intégré de cette manette. Fonctionne en USB et en Bluetooth.</value></data>
   <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>Le périphérique sélectionné n’a pas de haut-parleur intégré. Les sons de macro de cette manette jouent sur la sortie par défaut.</value></data>
   <data name="About_QDollar" xml:space="preserve"><value>$Q Recognizer</value></data>

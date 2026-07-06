@@ -1850,6 +1850,14 @@
   <data name="Macro_Sound_Loop" xml:space="preserve"><value>Loop até parar</value></data>
   <data name="Macro_Sound_Loop_Tooltip" xml:space="preserve"><value>Repete o som até uma ação "Parar sons" rodar, ou em macros de segurar/soltar, até o gatilho ser solto</value></data>
   <data name="Pad_Audio_Mirror" xml:space="preserve"><value>Espelhar o áudio do sistema no alto-falante do controle</value></data>
+  <data name="Pad_Audio_Engage_Label" xml:space="preserve"><value>Reproduzir áudio espelhado</value></data>
+  <data name="Pad_Audio_Engage_Tooltip" xml:space="preserve"><value>Quando o áudio espelhado toca como tons hápticos. Vincule a uma entrada mantida ou à vibração do jogo para que a música não fique vibrando o controle o tempo todo.</value></data>
+  <data name="Pad_Audio_Engage_Always" xml:space="preserve"><value>Sempre</value></data>
+  <data name="Pad_Audio_Engage_Input" xml:space="preserve"><value>Enquanto uma entrada é mantida</value></data>
+  <data name="Pad_Audio_Engage_Rumble" xml:space="preserve"><value>Enquanto o jogo vibra</value></data>
+  <data name="Pad_Audio_EngageInput_Label" xml:space="preserve"><value>Entrada de ativação</value></data>
+  <data name="Pad_Audio_EngageRelease_Label" xml:space="preserve"><value>Atraso de liberação</value></data>
+  <data name="Pad_Audio_EngageRelease_Tooltip" xml:space="preserve"><value>Por quanto tempo o espelho continua tocando depois que a fonte de ativação cessa, para o tom não cortar de repente.</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>Copia em paralelo o que a saída padrão do sistema reproduz para o alto-falante integrado deste controle. Funciona por USB e Bluetooth.</value></data>
   <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>O dispositivo selecionado não tem alto-falante integrado. Os sons de macro deste controle tocam na saída padrão.</value></data>
   <data name="About_QDollar" xml:space="preserve"><value>$Q Recognizer</value></data>

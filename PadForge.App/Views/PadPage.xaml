@@ -435,39 +435,15 @@
                                 </Style>
                             </TextBlock.Style>
                         </TextBlock>
-                        <TextBlock FontSize="14" FontWeight="SemiBold" VerticalAlignment="Center" Margin="0,0,4,0">
-                            <TextBlock.Style>
-                                <Style TargetType="TextBlock">
-                                    <Setter Property="Text" Value=""/>
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding OutputType}" Value="Xbox">
-                                            <Setter Property="Text" Value="{Binding ControllerType_Xbox, Source={x:Static strings:Strings.Instance}}"/>
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding OutputType}" Value="PlayStation">
-                                            <Setter Property="Text" Value="{Binding ControllerType_PlayStation, Source={x:Static strings:Strings.Instance}}"/>
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding OutputType}" Value="Extended">
-                                            <Setter Property="Text" Value="{Binding ControllerType_Extended, Source={x:Static strings:Strings.Instance}}"/>
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding OutputType}" Value="KeyboardMouse">
-                                            <Setter Property="Text" Value="{Binding ControllerType_KeyboardMouse, Source={x:Static strings:Strings.Instance}}"/>
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding OutputType}" Value="Midi">
-                                            <Setter Property="Text" Value="{Binding ControllerType_MIDI, Source={x:Static strings:Strings.Instance}}"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </TextBlock.Style>
-                        </TextBlock>
-                        <!-- Instance count as the #N telemetry token the
-                             Dashboard slot cards wear (user report
-                             2026-07-05): pill-label size, ember-muted, not
-                             the disabled-gray body face it had. -->
-                        <TextBlock Text="{Binding TypeInstanceLabel, StringFormat={}#{0}}"
-                                   FontFamily="{StaticResource TelemetryFontFamily}"
-                                   FontSize="14" FontWeight="SemiBold"
-                                   Foreground="{DynamicResource EmberTextBrush}"
-                                   VerticalAlignment="Center"/>
+                        <!-- Type name + instance token share ONE TextBlock so
+                             they render on a single baseline (user report
+                             2026-07-06: the mono #N sat low beside the body
+                             type name when each was its own TextBlock centering
+                             its own line box). The type name is one VM string;
+                             the ember mono #N is a Run on the same baseline,
+                             its leading space giving the gap the old margin
+                             carried. -->
+                        <TextBlock FontSize="14" FontWeight="SemiBold" VerticalAlignment="Center"><Run Text="{Binding OutputTypeDisplayName, Mode=OneWay}"/><Run Text="{Binding TypeInstanceLabel, Mode=OneWay, StringFormat=' #{0}'}" FontFamily="{StaticResource TelemetryFontFamily}" Foreground="{DynamicResource EmberTextBrush}"/></TextBlock>
                     </StackPanel>
                 </Border>
 

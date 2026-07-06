@@ -91,6 +91,7 @@ namespace PadForge.ViewModels
             // IsMapAllActive flip.
             OnPropertyChanged(nameof(MapAllButtonText));
             OnPropertyChanged(nameof(MapAllButtonTooltip));
+            OnPropertyChanged(nameof(OutputTypeDisplayName));
 
             // Pipeline chip summaries carry localized preset names, so
             // the memo and the cached config both re-localize.
@@ -160,6 +161,7 @@ namespace PadForge.ViewModels
                     // backend was running with the correct default profile.
                     OnPropertyChanged(nameof(AvailableProfiles));
                     OnPropertyChanged(nameof(HasHMaestroProfileBar));
+                    OnPropertyChanged(nameof(OutputTypeDisplayName));
 
                     // Category change invalidates the previous HIDMaestro
                     // profile slug. Assign the new category's default so the
@@ -288,6 +290,22 @@ namespace PadForge.ViewModels
             get => _typeInstanceLabel;
             set => SetProperty(ref _typeInstanceLabel, value);
         }
+
+        /// <summary>Localized virtual-controller type name (Xbox / PlayStation /
+        /// Extended / Keyboard+Mouse / MIDI). Consolidated from the per-type
+        /// Strings so the tier-1 header can render it as one Run beside the mono
+        /// instance token on a shared text baseline (the two used to be separate
+        /// TextBlocks, and the mono #N sat low). Re-raised on OutputType and
+        /// culture changes.</summary>
+        public string OutputTypeDisplayName => _outputType switch
+        {
+            VirtualControllerType.Xbox => Strings.Instance.ControllerType_Xbox,
+            VirtualControllerType.PlayStation => Strings.Instance.ControllerType_PlayStation,
+            VirtualControllerType.Extended => Strings.Instance.ControllerType_Extended,
+            VirtualControllerType.KeyboardMouse => Strings.Instance.ControllerType_KeyboardMouse,
+            VirtualControllerType.Midi => Strings.Instance.ControllerType_MIDI,
+            _ => string.Empty
+        };
 
         /// <summary>Int binding for ComboBox SelectedIndex (0=Xbox, 1=PlayStation).</summary>
         public int OutputTypeIndex

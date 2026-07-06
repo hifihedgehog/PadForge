@@ -188,7 +188,11 @@ namespace PadForge.Views
                 row.PropertyChanged += OnAnnotationRowPropertyChanged;
                 _annotationSubscribedRows.Add(row);
 
-                if (!row.IsMapped)
+                // HasAnySource, not IsMapped: a stateful primary (Ramp /
+                // Incremental) keeps its feeds on PrimaryKindSource's
+                // Up/Down/Modifier keys, not the row descriptor, so
+                // IsMapped-gated chips hid those rows and their fan-in.
+                if (!row.HasAnySource)
                     continue;
                 _annotationChips.Add(CreateAnnotationChip(row, anchor));
             }
@@ -248,7 +252,8 @@ namespace PadForge.Views
                 }
             }
             else if (e.PropertyName == nameof(MappingItem.SourceDescriptor)
-                  || e.PropertyName == nameof(MappingItem.IsMapped))
+                  || e.PropertyName == nameof(MappingItem.IsMapped)
+                  || e.PropertyName == nameof(MappingItem.HasAnySource))
             {
                 QueueAnnotationRebuild();
             }
@@ -374,29 +379,74 @@ namespace PadForge.Views
                     SourceName = primary,
                 });
             }
+            else if (!row.IsPrimaryDirect)
+            {
+                // Stateful primary (Ramp / Incremental / InvertOnHold): its
+                // feeds are the Up/Down/Modifier keys on PrimaryKindSource,
+                // not the row descriptor.
+                AppendAnnotationSourceWires(rows, row.PrimaryKindSource);
+            }
 
             foreach (var src in row.ExtraSources)
+                AppendAnnotationSourceWires(rows, src);
+            return rows;
+        }
+
+        /// <summary>Appends one wire row per input this source actually
+        /// reads, mirroring the engine's per-kind dispatch (the
+        /// collect-descriptors switch in InputService): Incremental and
+        /// Ramped read the Up/Down keys, InvertOnHold reads its input plus
+        /// the modifier key, everything else reads the descriptor. Inv/Half
+        /// prefixes only apply to the descriptor feed; the param feeds are
+        /// bare keys.</summary>
+        private void AppendAnnotationSourceWires(List<AnnotationWireRow> rows, MappingSourceItem src)
+        {
+            if (src == null)
+                return;
+            if (src.UsesUpDownKeys)
             {
-                string name = (src.SelectedInput?.DisplayName ?? src.Descriptor ?? string.Empty).Trim();
-                if (name.Length == 0)
-                    continue;
+                AppendAnnotationParamWire(rows, src, src.ParamUp, src.ParamUpInputChoice);
+                AppendAnnotationParamWire(rows, src, src.ParamDown, src.ParamDownInputChoice);
+                return;
+            }
+
+            string name = (src.SelectedInput?.DisplayName ?? src.Descriptor ?? string.Empty).Trim();
+            if (name.Length > 0)
+            {
                 var s = PadForge.Resources.Strings.Strings.Instance;
                 if (src.Invert && src.HalfAxis) name = s.Mapping_InvHalf + " " + name;
                 else if (src.Invert) name = s.Mapping_Inv + " " + name;
                 else if (src.HalfAxis) name = s.Mapping_Half + " " + name;
-
-                ResolveAnnotationDevice(src.DeviceGuid,
-                    (src.SelectedInput?.DeviceLabel ?? src.DeviceLabel ?? string.Empty).Trim(),
-                    out string dn, out string dg);
-                rows.Add(new AnnotationWireRow
-                {
-                    DeviceKey = (src.DeviceGuid ?? string.Empty).ToLowerInvariant(),
-                    DeviceName = dn,
-                    DeviceGlyph = dg,
-                    SourceName = name,
-                });
+                AppendAnnotationWire(rows, src.DeviceGuid,
+                    src.SelectedInput?.DeviceLabel ?? src.DeviceLabel, name);
             }
-            return rows;
+            if (src.IsInvertOnHoldKind)
+                AppendAnnotationParamWire(rows, src, src.ParamModifier, src.ParamModifierInputChoice);
+        }
+
+        private void AppendAnnotationParamWire(List<AnnotationWireRow> rows,
+            MappingSourceItem src, string descriptor, InputChoice choice)
+        {
+            string name = (choice?.DisplayName ?? descriptor ?? string.Empty).Trim();
+            if (name.Length == 0)
+                return;
+            AppendAnnotationWire(rows,
+                string.IsNullOrEmpty(choice?.DeviceGuid) ? src.DeviceGuid : choice.DeviceGuid,
+                choice?.DeviceLabel, name);
+        }
+
+        private void AppendAnnotationWire(List<AnnotationWireRow> rows,
+            string deviceGuid, string storedLabel, string sourceName)
+        {
+            ResolveAnnotationDevice(deviceGuid, (storedLabel ?? string.Empty).Trim(),
+                out string dn, out string dg);
+            rows.Add(new AnnotationWireRow
+            {
+                DeviceKey = (deviceGuid ?? string.Empty).ToLowerInvariant(),
+                DeviceName = dn,
+                DeviceGlyph = dg,
+                SourceName = sourceName,
+            });
         }
 
         /// <summary>Appends a full-width row (device header, fallback

@@ -196,11 +196,30 @@
 
                     <!-- Engine flame toggle (#175): the forge is lit or it is
                          not. Ember = running, gold = idle or stopping (flash),
-                         outline = stopped. -->
-                    <Button Padding="2" MinWidth="0" MinHeight="0"
-                            VerticalAlignment="Center" Cursor="Hand"
-                            Background="Transparent" BorderThickness="0"
+                         outline = stopped. TypeSwitchButton chrome gives it
+                         the same hover fill + NeutralHoverGlow the slot power
+                         flames wear, and the tooltip mirrors their state-aware
+                         pattern (#175 phase 2 item 3). -->
+                    <Button Padding="2" VerticalAlignment="Center"
                             Click="EngineToggle_Click" Margin="0,0,8,0">
+                        <Button.Style>
+                            <Style TargetType="Button" BasedOn="{StaticResource TypeSwitchButton}">
+                                <!-- Default = stopped, like the slot flame's
+                                     default = disabled. -->
+                                <Setter Property="ToolTip" Value="{Binding Dashboard_EngineFlame_Stopped, Source={x:Static strings:Strings.Instance}}"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding EngineStateKey}" Value="Running">
+                                        <Setter Property="ToolTip" Value="{Binding Dashboard_EngineFlame_Running, Source={x:Static strings:Strings.Instance}}"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding EngineStateKey}" Value="Idle">
+                                        <Setter Property="ToolTip" Value="{Binding Dashboard_EngineFlame_Idle, Source={x:Static strings:Strings.Instance}}"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding EngineStateKey}" Value="Stopping">
+                                        <Setter Property="ToolTip" Value="{Binding Common_Stopping, Source={x:Static strings:Strings.Instance}}"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
                         <Path Data="{StaticResource FlameOuterGeometry}"
                               Width="16" Height="16" Stretch="Uniform">
                             <Path.Style>
@@ -304,7 +323,88 @@
                 <TextBlock Text="{Binding Dashboard_VirtualControllers, Source={x:Static strings:Strings.Instance}, Converter={StaticResource UpperConverter}}" Style="{StaticResource SectionTitle}"/>
             </StackPanel>
 
-            <ItemsControl x:Name="SlotsItemsControl" ItemsSource="{Binding SlotSummaries}">
+            <ItemsControl x:Name="SlotsItemsControl">
+                <!-- Slot cards + the Add Controller tile share one wrap flow
+                     (#175 phase 2 item 3): the tile rides the same panel as
+                     the cards via a CompositeCollection. CollectionContainer
+                     sits outside the visual tree, so code-behind hands it
+                     SlotSummaries directly (DataContextChanged). The tile is
+                     a UIElement item, so the SlotSummary ItemTemplate never
+                     touches it, and the drag/reorder code skips it (no int
+                     Tag, not a SlotSummary). -->
+                <ItemsControl.ItemsSource>
+                    <CompositeCollection>
+                        <CollectionContainer x:Name="SlotsCollectionContainer"/>
+
+                        <!-- Add Controller tile: slot-card footprint, dashed
+                             steel outline (Border can't dash, the Rectangle
+                             wears the stroke), plus glyph + label centered.
+                             Same click handler and hover lift as the old
+                             full-width band it replaces. -->
+                        <Grid Margin="8"
+                              Visibility="{Binding ShowAddController, Converter={StaticResource BoolToVisibilityConverter}}">
+                            <Border x:Name="AddControllerCard"
+                                    Width="252" MinHeight="132"
+                                    Background="Transparent" CornerRadius="8"
+                                    Cursor="Hand" MouseLeftButtonUp="AddControllerCard_Click">
+                                <Border.RenderTransform>
+                                    <TranslateTransform/>
+                                </Border.RenderTransform>
+                                <Border.Style>
+                                    <Style TargetType="Border">
+                                        <Style.Triggers>
+                                            <!-- Hover glow + lift (#175): faint ember,
+                                                 static effect; only the transform
+                                                 animates. -->
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter Property="Effect" Value="{StaticResource NeutralHoverGlow}"/>
+                                                <Trigger.EnterActions>
+                                                    <BeginStoryboard>
+                                                        <Storyboard>
+                                                            <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.Y)"
+                                                                             To="-2" Duration="0:0:0.13">
+                                                                <DoubleAnimation.EasingFunction>
+                                                                    <CubicEase EasingMode="EaseOut"/>
+                                                                </DoubleAnimation.EasingFunction>
+                                                            </DoubleAnimation>
+                                                        </Storyboard>
+                                                    </BeginStoryboard>
+                                                </Trigger.EnterActions>
+                                                <Trigger.ExitActions>
+                                                    <BeginStoryboard>
+                                                        <Storyboard>
+                                                            <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.Y)"
+                                                                             To="0" Duration="0:0:0.25">
+                                                                <DoubleAnimation.EasingFunction>
+                                                                    <CubicEase EasingMode="EaseIn"/>
+                                                                </DoubleAnimation.EasingFunction>
+                                                            </DoubleAnimation>
+                                                        </Storyboard>
+                                                    </BeginStoryboard>
+                                                </Trigger.ExitActions>
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Border.Style>
+                                <Grid>
+                                    <Rectangle RadiusX="8" RadiusY="8"
+                                               Stroke="{DynamicResource SteelLineBrush}"
+                                               StrokeThickness="1.5" StrokeDashArray="4 3"
+                                               SnapsToDevicePixels="True"/>
+                                    <StackPanel Orientation="Horizontal"
+                                                HorizontalAlignment="Center" VerticalAlignment="Center">
+                                        <TextBlock Text="&#xE710;" FontFamily="Segoe MDL2 Assets" FontSize="16"
+                                                   VerticalAlignment="Center" Margin="0,0,8,0"
+                                                   Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
+                                        <TextBlock Text="{Binding Main_AddController, Source={x:Static strings:Strings.Instance}}"
+                                                   FontSize="13" VerticalAlignment="Center"
+                                                   Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
+                                    </StackPanel>
+                                </Grid>
+                            </Border>
+                        </Grid>
+                    </CompositeCollection>
+                </ItemsControl.ItemsSource>
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
                         <WrapPanel />
@@ -425,7 +525,9 @@
                                 Width="252"
                                 Cursor="Hand"
                                 Tag="{Binding PadIndex}"
-                                Loaded="SlotCard_Loaded">
+                                Loaded="SlotCard_Loaded"
+                                ToolTip="{Binding Dashboard_SlotCard_Configure, Source={x:Static strings:Strings.Instance}}"
+                                ToolTipService.InitialShowDelay="600">
                             <!-- Hover lift (#175): element-level transform so the
                                  trigger storyboard animates a per-card instance. -->
                             <Border.RenderTransform>
@@ -835,11 +937,30 @@
 
                                 </StackPanel>
 
-                                <!-- Delete button (upper-right corner) -->
-                                <ui:Button Style="{StaticResource EmberIconButtonHot}"
+                                <!-- Delete button (upper-right corner). Hover-
+                                     revealed (#175 phase 2 item 1a): opacity
+                                     rides the card hover so the X never
+                                     competes with the card face at rest, and
+                                     keyboard focus brings it back for tab
+                                     users. Stays focusable and hit-testable
+                                     the whole time. The click routes through
+                                     the shared confirm dialog in code-behind. -->
+                                <ui:Button HorizontalAlignment="Right" VerticalAlignment="Center"
                                            ToolTip="{Binding Main_DeleteVC, Source={x:Static strings:Strings.Instance}}"
-                                           HorizontalAlignment="Right" VerticalAlignment="Center"
                                            Click="DeleteSlot_Click" Tag="{Binding PadIndex}">
+                                    <ui:Button.Style>
+                                        <Style TargetType="ui:Button" BasedOn="{StaticResource EmberIconButtonHot}">
+                                            <Setter Property="Opacity" Value="0"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=Border}}" Value="True">
+                                                    <Setter Property="Opacity" Value="1"/>
+                                                </DataTrigger>
+                                                <Trigger Property="IsKeyboardFocused" Value="True">
+                                                    <Setter Property="Opacity" Value="1"/>
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </ui:Button.Style>
                                     <TextBlock Text="&#xE711;" FontFamily="Segoe MDL2 Assets" FontSize="12" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
                                 </ui:Button>
 
@@ -1069,68 +1190,36 @@
                                         </DataTemplate>
                                     </ItemsControl.ItemTemplate>
                                 </ItemsControl>
+
+                                <!-- Hover chevron (#175 phase 2 item 3): the
+                                     whole card opens the controller page, so
+                                     hovering reveals the app's forward glyph
+                                     (E72A, same as the PadPage routing arrows)
+                                     at the right edge. Opacity swap only; no
+                                     layout shift, no hit-testing. -->
+                                <TextBlock Grid.RowSpan="5" Text="&#xE72A;"
+                                           FontFamily="Segoe MDL2 Assets" FontSize="12"
+                                           IsHitTestVisible="False"
+                                           HorizontalAlignment="Right" VerticalAlignment="Center"
+                                           Margin="0,0,1,0">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="Opacity" Value="0"/>
+                                            <Setter Property="Foreground" Value="{DynamicResource EmberBrush}"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=Border}}" Value="True">
+                                                    <Setter Property="Opacity" Value="1"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
                             </Grid>
                         </Border>
                         </Grid>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
-
-            <!-- Add Controller card -->
-            <Border x:Name="AddControllerCard"
-                    Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
-                    CornerRadius="8" Padding="16" Margin="4,4,4,4"
-                    Cursor="Hand" MouseLeftButtonUp="AddControllerCard_Click"
-                    Visibility="{Binding ShowAddController, Converter={StaticResource BoolToVisibilityConverter}}">
-                <Border.RenderTransform>
-                    <TranslateTransform/>
-                </Border.RenderTransform>
-                <Border.Style>
-                    <Style TargetType="Border">
-                        <Style.Triggers>
-                            <!-- Hover glow + lift (#175): Cursor=Hand zone that had
-                                 no hover feedback. Faint ember, static effect; only
-                                 the transform animates. -->
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Effect" Value="{StaticResource NeutralHoverGlow}"/>
-                                <Trigger.EnterActions>
-                                    <BeginStoryboard>
-                                        <Storyboard>
-                                            <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.Y)"
-                                                             To="-2" Duration="0:0:0.13">
-                                                <DoubleAnimation.EasingFunction>
-                                                    <CubicEase EasingMode="EaseOut"/>
-                                                </DoubleAnimation.EasingFunction>
-                                            </DoubleAnimation>
-                                        </Storyboard>
-                                    </BeginStoryboard>
-                                </Trigger.EnterActions>
-                                <Trigger.ExitActions>
-                                    <BeginStoryboard>
-                                        <Storyboard>
-                                            <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.Y)"
-                                                             To="0" Duration="0:0:0.25">
-                                                <DoubleAnimation.EasingFunction>
-                                                    <CubicEase EasingMode="EaseIn"/>
-                                                </DoubleAnimation.EasingFunction>
-                                            </DoubleAnimation>
-                                        </Storyboard>
-                                    </BeginStoryboard>
-                                </Trigger.ExitActions>
-                            </Trigger>
-                        </Style.Triggers>
-                    </Style>
-                </Border.Style>
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center"
-                            VerticalAlignment="Center">
-                    <TextBlock Text="&#xE710;" FontFamily="Segoe MDL2 Assets" FontSize="20"
-                               VerticalAlignment="Center" Margin="0,0,8,0"
-                               Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
-                    <TextBlock Text="{Binding Main_AddController, Source={x:Static strings:Strings.Instance}}" FontSize="14"
-                               VerticalAlignment="Center"
-                               Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
-                </StackPanel>
-            </Border>
 
             <!-- ═══ Services group (#175): everything below serves other
                  software. Status stays above the fold. ═══ -->
@@ -1178,7 +1267,8 @@
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
                         <!-- Serving = flame (#175 item 76); the green dot stays
-                             strictly health. -->
+                             strictly health. Binds the server's running truth,
+                             not the enable checkbox (#175 phase 2 item 2). -->
                         <Path Data="{StaticResource FlameOuterGeometry}"
                               Width="11" Height="11" Stretch="Uniform"
                               VerticalAlignment="Center" Margin="0,0,6,0">
@@ -1188,7 +1278,7 @@
                                     <Setter Property="Stroke" Value="{DynamicResource TextFillColorTertiaryBrush}"/>
                                     <Setter Property="StrokeThickness" Value="1.1"/>
                                     <Style.Triggers>
-                                        <DataTrigger Binding="{Binding EnableDsuMotionServer}" Value="True">
+                                        <DataTrigger Binding="{Binding IsDsuServerRunning}" Value="True">
                                             <Setter Property="Fill" Value="{DynamicResource EmberBrush}"/>
                                             <Setter Property="Stroke" Value="{x:Null}"/>
                                             <Setter Property="Effect">
@@ -1238,7 +1328,8 @@
                         </ui:Button>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
-                        <!-- Serving = flame (#175 item 76). -->
+                        <!-- Serving = flame (#175 item 76). Running truth,
+                             not the enable checkbox (#175 phase 2 item 2). -->
                         <Path Data="{StaticResource FlameOuterGeometry}"
                               Width="11" Height="11" Stretch="Uniform"
                               VerticalAlignment="Center" Margin="0,0,6,0">
@@ -1248,7 +1339,7 @@
                                     <Setter Property="Stroke" Value="{DynamicResource TextFillColorTertiaryBrush}"/>
                                     <Setter Property="StrokeThickness" Value="1.1"/>
                                     <Style.Triggers>
-                                        <DataTrigger Binding="{Binding EnableWebController}" Value="True">
+                                        <DataTrigger Binding="{Binding IsWebControllerRunning}" Value="True">
                                             <Setter Property="Fill" Value="{DynamicResource EmberBrush}"/>
                                             <Setter Property="Stroke" Value="{x:Null}"/>
                                             <Setter Property="Effect">
@@ -1303,7 +1394,10 @@
                         </ui:Button>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,2">
-                        <!-- Serving = flame (#175 item 76). -->
+                        <!-- Serving = flame (#175 item 76). Running truth,
+                             not the enable checkbox: identity-unlock errors
+                             leave the server down while the box stays
+                             checked (#175 phase 2 item 2). -->
                         <Path Data="{StaticResource FlameOuterGeometry}"
                               Width="11" Height="11" Stretch="Uniform"
                               VerticalAlignment="Center" Margin="0,0,6,0">
@@ -1313,7 +1407,7 @@
                                     <Setter Property="Stroke" Value="{DynamicResource TextFillColorTertiaryBrush}"/>
                                     <Setter Property="StrokeThickness" Value="1.1"/>
                                     <Style.Triggers>
-                                        <DataTrigger Binding="{Binding EnableRemoteLink}" Value="True">
+                                        <DataTrigger Binding="{Binding IsRemoteLinkRunning}" Value="True">
                                             <Setter Property="Fill" Value="{DynamicResource EmberBrush}"/>
                                             <Setter Property="Stroke" Value="{x:Null}"/>
                                             <Setter Property="Effect">
@@ -1494,7 +1588,9 @@
                                 Content="{Binding Dashboard_TouchpadOverlayResetPosition, Source={x:Static strings:Strings.Instance}}"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
-                        <!-- Serving = flame (#175 item 76). -->
+                        <!-- Serving = flame (#175 item 76). Binds the overlay
+                             window's running truth, which already drives the
+                             status text (#175 phase 2 item 2). -->
                         <Path Data="{StaticResource FlameOuterGeometry}"
                               Width="11" Height="11" Stretch="Uniform"
                               VerticalAlignment="Center" Margin="0,0,6,0">
@@ -1504,7 +1600,7 @@
                                     <Setter Property="Stroke" Value="{DynamicResource TextFillColorTertiaryBrush}"/>
                                     <Setter Property="StrokeThickness" Value="1.1"/>
                                     <Style.Triggers>
-                                        <DataTrigger Binding="{Binding EnableTouchpadOverlay}" Value="True">
+                                        <DataTrigger Binding="{Binding IsTouchpadOverlayRunning}" Value="True">
                                             <Setter Property="Fill" Value="{DynamicResource EmberBrush}"/>
                                             <Setter Property="Stroke" Value="{x:Null}"/>
                                             <Setter Property="Effect">

@@ -35,7 +35,6 @@ namespace PadForge.Views
         public PickSoundDialog(string description, List<string> items)
         {
             InitializeComponent();
-            Title = description;
             DescriptionText.Text = description;
             SoundList.ItemsSource = items;
             if (items != null && items.Count > 0)
@@ -47,7 +46,6 @@ namespace PadForge.Views
         public PickSoundDialog(string description, IReadOnlyList<Item> items, bool allowBrowse, string preselectValue = null)
         {
             InitializeComponent();
-            Title = description;
             DescriptionText.Text = description;
             SoundList.ItemsSource = items;
             BrowseButton.Visibility = allowBrowse ? Visibility.Visible : Visibility.Collapsed;
@@ -78,5 +76,9 @@ namespace PadForge.Views
             BrowseRequested = true;
             DialogResult = true;
         }
+
+        // Head X (#175 item 11). No cancel handler existed to reuse: the
+        // footer Cancel is IsCancel-only, so mirror its close-without-result.
+        private void HeaderClose_Click(object sender, RoutedEventArgs e) => Close();
     }
 }

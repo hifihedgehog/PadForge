@@ -27,6 +27,21 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
+        <!-- Accent verb (#175 item 19): Load is the strip's primary action
+             per the approved pitch mock, so it wears the ember rim/text
+             tint over the page default chrome (the EmberDestructiveButton
+             idiom, one rung up the ember ramp). Derived hover trigger wins
+             over the implicit's neutral glow. Static frozen Effect from a
+             trigger, never animated. -->
+        <Style x:Key="ProfileAccentButton" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+            <Setter Property="BorderBrush" Value="{DynamicResource EmberBrush}"/>
+            <Setter Property="Foreground" Value="{DynamicResource EmberBrush}"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Effect" Value="{StaticResource EmberHoverGlow}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
         <Style TargetType="CheckBox" BasedOn="{StaticResource DefaultCheckBoxStyle}">
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
@@ -109,25 +124,15 @@
                                 </Style>
                             </TextBlock.Style>
                         </TextBlock>
-                    </StackPanel>
-
-                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                        <TextBlock Text="{Binding Profiles_ActiveProfile, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
-                                   Margin="0,0,8,0"
-                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
-                        <!-- The active profile burns (#175): lit flame marks
-                             which profile currently drives the forge. -->
-                        <Path Data="{StaticResource FlameOuterGeometry}"
-                              Fill="{DynamicResource EmberBrush}"
-                              Width="11" Height="13" Stretch="Uniform"
-                              VerticalAlignment="Center" Margin="0,0,5,0">
-                            <!-- Always lit, so the glow is static (#175 glow sweep). -->
-                            <Path.Effect>
-                                <DropShadowEffect Color="#FF6B2C" BlurRadius="8" ShadowDepth="0" Opacity="0.5"/>
-                            </Path.Effect>
-                        </Path>
-                        <TextBlock Text="{Binding ActiveProfileInfo}" FontWeight="SemiBold"
-                                   VerticalAlignment="Center"/>
+                        <!-- Silent no-op hint (#175 item 8): auto-switching is
+                             on but no profile carries an executable rule, so
+                             the monitor can never fire. Cold muted mono beside
+                             the readout, gone the moment any rule exists. -->
+                        <TextBlock Text="{Binding Profiles_AutoSwitchNoRulesHint, Source={x:Static strings:Strings.Instance}}"
+                                   FontFamily="{StaticResource TelemetryFontFamily}" FontSize="11"
+                                   Foreground="{DynamicResource ColdMutedBrush}"
+                                   VerticalAlignment="Center" Margin="10,0,0,0"
+                                   Visibility="{Binding NoProfileHasExecutables, Converter={StaticResource BoolToVisibilityConverter}}"/>
                     </StackPanel>
 
                     <!-- Profile card grid (#175 item 8): the text list became
@@ -334,6 +339,7 @@
                                                     <ColumnDefinition Width="Auto"/>
                                                     <ColumnDefinition Width="Auto"/>
                                                     <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="Auto"/>
                                                 </Grid.ColumnDefinitions>
                                                 <!-- The active profile burns (#175): lit flame on the
                                                      card currently driving the forge. -->
@@ -369,6 +375,21 @@
                                                            Foreground="{DynamicResource TextFillColorPrimaryBrush}"
                                                            VerticalAlignment="Center" TextTrimming="CharacterEllipsis"
                                                            ToolTip="{Binding Name}"/>
+                                                <!-- Built-in tag (#175 item 19): the Default entry
+                                                     is synthetic (no stored ProfileData row), so
+                                                     the card says so in a neutral mono chip. Gated
+                                                     on the sentinel-id IsDefault flag. Own column,
+                                                     so a long name trims before the chip does. -->
+                                                <Border Grid.Column="3" Margin="6,0,0,0"
+                                                        Visibility="{Binding IsDefault, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                    <Border.Style>
+                                                        <Style TargetType="Border" BasedOn="{StaticResource ChipGhost}">
+                                                            <Setter Property="Padding" Value="7,2"/>
+                                                        </Style>
+                                                    </Border.Style>
+                                                    <TextBlock Text="{Binding Profiles_BuiltIn, Source={x:Static strings:Strings.Instance}}"
+                                                               FontFamily="{StaticResource TelemetryFontFamily}" FontSize="10"/>
+                                                </Border>
                                             </Grid>
                                             <!-- Mono exe lines: up to TWO names on the face
                                                  (maintainer request 2026-07-05), then a +N
@@ -572,19 +593,41 @@
                         </Grid>
                     </Grid>
 
+                    <!-- Verb-grouped strip (#175 item 19): create / apply /
+                         file clusters with 16px gaps per the approved pitch
+                         mock. Load carries the accent weight, Delete the
+                         shared destructive chrome. Edit and Delete explain
+                         themselves while disabled: ToolTip is set only from
+                         the two disabling states, so an enabled button shows
+                         none. -->
                     <StackPanel Orientation="Horizontal">
                         <Button Content="{Binding Profiles_New, Source={x:Static strings:Strings.Instance}}"
                                 Command="{Binding NewProfileCommand}"
                                 Margin="0,0,8,0"/>
                         <Button Content="{Binding Profiles_SaveAs, Source={x:Static strings:Strings.Instance}}"
                                 Command="{Binding SaveAsProfileCommand}"
+                                Margin="0,0,16,0"/>
+                        <Button Content="{Binding Profiles_Load, Source={x:Static strings:Strings.Instance}}"
+                                Command="{Binding LoadProfileCommand}"
+                                Style="{StaticResource ProfileAccentButton}"
                                 Margin="0,0,8,0"/>
                         <Button Content="{Binding Profiles_Edit, Source={x:Static strings:Strings.Instance}}"
                                 Command="{Binding EditProfileCommand}"
-                                Margin="0,0,8,0"/>
-                        <Button Content="{Binding Profiles_Load, Source={x:Static strings:Strings.Instance}}"
-                                Command="{Binding LoadProfileCommand}"
-                                Margin="0,0,8,0"/>
+                                ToolTipService.ShowOnDisabled="True"
+                                Margin="0,0,16,0">
+                            <Button.Style>
+                                <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding SelectedProfile}" Value="{x:Null}">
+                                            <Setter Property="ToolTip" Value="{Binding Profiles_SelectFirstHint, Source={x:Static strings:Strings.Instance}}"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding SelectedProfile.IsDefault}" Value="True">
+                                            <Setter Property="ToolTip" Value="{Binding Profiles_DefaultLockedHint, Source={x:Static strings:Strings.Instance}}"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+                        </Button>
                         <Button Content="{Binding Profiles_Export, Source={x:Static strings:Strings.Instance}}"
                                 Command="{Binding ExportProfileCommand}"
                                 Margin="0,0,8,0"/>
@@ -592,7 +635,21 @@
                                 Command="{Binding ImportProfileCommand}"
                                 Margin="0,0,8,0"/>
                         <Button Content="{Binding Common_Delete, Source={x:Static strings:Strings.Instance}}"
-                                Command="{Binding DeleteProfileCommand}"/>
+                                Command="{Binding DeleteProfileCommand}"
+                                ToolTipService.ShowOnDisabled="True">
+                            <Button.Style>
+                                <Style TargetType="Button" BasedOn="{StaticResource EmberDestructiveButton}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding SelectedProfile}" Value="{x:Null}">
+                                            <Setter Property="ToolTip" Value="{Binding Profiles_SelectFirstHint, Source={x:Static strings:Strings.Instance}}"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding SelectedProfile.IsDefault}" Value="True">
+                                            <Setter Property="ToolTip" Value="{Binding Profiles_DefaultLockedHint, Source={x:Static strings:Strings.Instance}}"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+                        </Button>
                     </StackPanel>
                 </StackPanel>
             </Border>

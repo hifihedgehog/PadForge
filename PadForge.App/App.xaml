@@ -305,6 +305,25 @@
             </Style>
 
             <!--
+                Destructive-verb button (#175 phase 2): the confirm dialog's
+                action chrome. No warning-button style existed before this,
+                so every destructive confirm shares it. Ember-deep rim and
+                text tint (the deep end of the ember ramp) read armed
+                without shouting, and hover blooms the standard ember glow.
+                Static frozen Effect from a trigger, never animated.
+            -->
+            <Style x:Key="EmberDestructiveButton" TargetType="Button" BasedOn="{StaticResource DefaultButtonStyle}">
+                <Setter Property="MinHeight" Value="32"/>
+                <Setter Property="BorderBrush" Value="{DynamicResource EmberDeepBrush}"/>
+                <Setter Property="Foreground" Value="{DynamicResource EmberDeepBrush}"/>
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Effect" Value="{StaticResource EmberHoverGlow}"/>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+
+            <!--
                 Grid option checkboxes (#175 control spec §6, route b): stock
                 DefaultCheckBoxStyle carries MinWidth=120 / MinHeight=32 /
                 Padding=11,5,11,6, which inflates every mapping-grid row.

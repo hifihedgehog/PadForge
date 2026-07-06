@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
 using System.Threading;
@@ -23,7 +25,7 @@ namespace PadForge.ViewModels
 
             // Keep the per-item IsActive flame flag (#175) current when the
             // profile list is rebuilt or items are added/removed.
-            ProfileItems.CollectionChanged += (_, _) => UpdateActiveProfileFlags();
+            ProfileItems.CollectionChanged += (_, _) => OnProfileItemsChanged();
         }
 
         // ─────────────────────────────────────────────
@@ -780,6 +782,46 @@ namespace PadForge.ViewModels
                     : item.Id == activeId;
             }
         }
+
+        /// <summary>Rows whose PropertyChanged is currently hooked for the
+        /// auto-switch no-op hint. Tracked separately because Clear() raises
+        /// Reset without the removed items.</summary>
+        private readonly List<ProfileListItem> _hookedProfileItems = new();
+
+        /// <summary>
+        /// Collection-change fan-out for ProfileItems: refreshes the flame
+        /// flags, rehooks per-row change tracking, and recomputes the
+        /// auto-switch no-op hint (#175 item 8). Full rehook per change is
+        /// fine at profile-list scale, and it is the only Reset-safe shape.
+        /// </summary>
+        private void OnProfileItemsChanged()
+        {
+            UpdateActiveProfileFlags();
+            foreach (var item in _hookedProfileItems)
+                item.PropertyChanged -= ProfileItem_PropertyChanged;
+            _hookedProfileItems.Clear();
+            foreach (var item in ProfileItems)
+            {
+                item.PropertyChanged += ProfileItem_PropertyChanged;
+                _hookedProfileItems.Add(item);
+            }
+            OnPropertyChanged(nameof(NoProfileHasExecutables));
+        }
+
+        /// <summary>Edit mutates rows in place (Executables raises
+        /// HasExecutables), so per-row changes feed the aggregate too.</summary>
+        private void ProfileItem_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(ProfileListItem.HasExecutables))
+                OnPropertyChanged(nameof(NoProfileHasExecutables));
+        }
+
+        /// <summary>True while no profile carries an executable match rule
+        /// (#175 item 8): with auto-switching on the monitor can never fire,
+        /// so the FOREGROUND readout shows a cold hint instead of a silent
+        /// no-op. Derived; notified from OnProfileItemsChanged and
+        /// ProfileItem_PropertyChanged.</summary>
+        public bool NoProfileHasExecutables => ProfileItems.All(i => !i.HasExecutables);
 
         /// <summary>Raised when the user requests reverting to the default profile.</summary>
         public event EventHandler RevertToDefaultRequested;

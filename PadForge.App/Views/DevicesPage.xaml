@@ -31,6 +31,37 @@
             <Setter Property="FontSize" Value="10.5"/>
             <Setter Property="Foreground" Value="{DynamicResource TextFillColorTertiaryBrush}"/>
         </Style>
+        <!-- Type facet chips (#175 phase 2 item 13): mono 10.5 letterspaced
+             tokens on a rounded-14 pill, ember-tinted when active, steel
+             otherwise. Tokens are locale-neutral literals per the DZ / PEAK
+             precedent. The token TextBlock sets no Foreground so it inherits
+             the chip Border's TextElement.Foreground (ChipCold idiom); the
+             count stays cold like every telemetry counter. -->
+        <Style x:Key="FacetChipBase" TargetType="Border">
+            <Setter Property="CornerRadius" Value="14"/>
+            <Setter Property="Padding" Value="10,3"/>
+            <Setter Property="Margin" Value="0,0,6,4"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Background" Value="{DynamicResource SteelGroundBrush}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource SteelLineBrush}"/>
+            <Setter Property="TextElement.Foreground" Value="{DynamicResource TextFillColorTertiaryBrush}"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Effect" Value="{StaticResource NeutralHoverGlow}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="FacetToken" TargetType="TextBlock">
+            <Setter Property="FontFamily" Value="{StaticResource TelemetryFontFamily}"/>
+            <Setter Property="FontSize" Value="10.5"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+        <Style x:Key="FacetCount" TargetType="TextBlock" BasedOn="{StaticResource FacetToken}">
+            <Setter Property="Foreground" Value="{DynamicResource ColdBrush}"/>
+            <Setter Property="Margin" Value="5,0,0,0"/>
+        </Style>
         <!-- Ember (#175): Raw Input State cluster. Dark recessed cells,
              cold lit outline when pressed (outline lit, not solid). -->
         <Style x:Key="RawCellBorder" TargetType="Border">
@@ -157,11 +188,112 @@
             <!-- ═══════════════════════════════════════════ -->
             <!--  Left: Device card list                    -->
             <!-- ═══════════════════════════════════════════ -->
-            <ListBox ItemsSource="{Binding Devices}"
+            <Grid Margin="0,0,12,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <!-- Type facet chips (#175 phase 2 item 13): filter the list
+                     by type family. GAMEPAD covers the stick classes
+                     (gamepad, joystick, wheel, flight stick, first person,
+                     supplemental); OTHER is everything else. Tokens are
+                     hair-space letterspaced literals; counts come from the
+                     VM on the same cadence as the header counter. -->
+                <WrapPanel Margin="6,0,0,4">
+                    <Border Tag="ALL" MouseLeftButtonUp="FacetChip_Click">
+                        <Border.Style>
+                            <Style TargetType="Border" BasedOn="{StaticResource FacetChipBase}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding SelectedFacet}" Value="ALL">
+                                        <Setter Property="Background" Value="{DynamicResource EmberTintBrush}"/>
+                                        <Setter Property="BorderBrush" Value="#66FF6B2C"/>
+                                        <Setter Property="TextElement.Foreground" Value="{DynamicResource EmberBrush}"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="A&#8202;L&#8202;L" Style="{StaticResource FacetToken}"/>
+                            <TextBlock Text="{Binding TotalCount, Mode=OneWay}" Style="{StaticResource FacetCount}"/>
+                        </StackPanel>
+                    </Border>
+                    <Border Tag="GAMEPAD" MouseLeftButtonUp="FacetChip_Click">
+                        <Border.Style>
+                            <Style TargetType="Border" BasedOn="{StaticResource FacetChipBase}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding SelectedFacet}" Value="GAMEPAD">
+                                        <Setter Property="Background" Value="{DynamicResource EmberTintBrush}"/>
+                                        <Setter Property="BorderBrush" Value="#66FF6B2C"/>
+                                        <Setter Property="TextElement.Foreground" Value="{DynamicResource EmberBrush}"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="G&#8202;A&#8202;M&#8202;E&#8202;P&#8202;A&#8202;D" Style="{StaticResource FacetToken}"/>
+                            <TextBlock Text="{Binding FacetCountGamepad, Mode=OneWay}" Style="{StaticResource FacetCount}"/>
+                        </StackPanel>
+                    </Border>
+                    <Border Tag="KEYBOARD" MouseLeftButtonUp="FacetChip_Click">
+                        <Border.Style>
+                            <Style TargetType="Border" BasedOn="{StaticResource FacetChipBase}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding SelectedFacet}" Value="KEYBOARD">
+                                        <Setter Property="Background" Value="{DynamicResource EmberTintBrush}"/>
+                                        <Setter Property="BorderBrush" Value="#66FF6B2C"/>
+                                        <Setter Property="TextElement.Foreground" Value="{DynamicResource EmberBrush}"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="K&#8202;E&#8202;Y&#8202;B&#8202;O&#8202;A&#8202;R&#8202;D" Style="{StaticResource FacetToken}"/>
+                            <TextBlock Text="{Binding FacetCountKeyboard, Mode=OneWay}" Style="{StaticResource FacetCount}"/>
+                        </StackPanel>
+                    </Border>
+                    <Border Tag="MOUSE" MouseLeftButtonUp="FacetChip_Click">
+                        <Border.Style>
+                            <Style TargetType="Border" BasedOn="{StaticResource FacetChipBase}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding SelectedFacet}" Value="MOUSE">
+                                        <Setter Property="Background" Value="{DynamicResource EmberTintBrush}"/>
+                                        <Setter Property="BorderBrush" Value="#66FF6B2C"/>
+                                        <Setter Property="TextElement.Foreground" Value="{DynamicResource EmberBrush}"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="M&#8202;O&#8202;U&#8202;S&#8202;E" Style="{StaticResource FacetToken}"/>
+                            <TextBlock Text="{Binding FacetCountMouse, Mode=OneWay}" Style="{StaticResource FacetCount}"/>
+                        </StackPanel>
+                    </Border>
+                    <Border Tag="OTHER" MouseLeftButtonUp="FacetChip_Click">
+                        <Border.Style>
+                            <Style TargetType="Border" BasedOn="{StaticResource FacetChipBase}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding SelectedFacet}" Value="OTHER">
+                                        <Setter Property="Background" Value="{DynamicResource EmberTintBrush}"/>
+                                        <Setter Property="BorderBrush" Value="#66FF6B2C"/>
+                                        <Setter Property="TextElement.Foreground" Value="{DynamicResource EmberBrush}"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="O&#8202;T&#8202;H&#8202;E&#8202;R" Style="{StaticResource FacetToken}"/>
+                            <TextBlock Text="{Binding FacetCountOther, Mode=OneWay}" Style="{StaticResource FacetCount}"/>
+                        </StackPanel>
+                    </Border>
+                </WrapPanel>
+
+            <ListBox Grid.Row="1"
+                     ItemsSource="{Binding Devices}"
                      SelectedItem="{Binding SelectedDevice, Mode=TwoWay}"
                      ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                     BorderThickness="0" Background="Transparent"
-                     Margin="0,0,12,0">
+                     BorderThickness="0" Background="Transparent">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <Border Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
@@ -240,9 +372,21 @@
                                                         <DropShadowEffect Color="#FF6B2C" BlurRadius="10" ShadowDepth="0" Opacity="0.35"/>
                                                     </Border.Effect>
                                                     <StackPanel Orientation="Horizontal">
-                                                        <TextBlock Text="&#xE7FC;" FontFamily="Segoe MDL2 Assets"
-                                                                   FontSize="10" Foreground="#FFFFF3E8"
-                                                                   VerticalAlignment="Center"/>
+                                                        <!-- Branded family mark (#175 phase 2 item 12):
+                                                             the slot's VC type icon, the same
+                                                             Xbox/PS/Extended geometries the sidebar
+                                                             cards wear (Common.ControllerIcons). MIDI
+                                                             and KbM have no vector logo anywhere in the
+                                                             app and keep their MDL2 glyphs, mirroring
+                                                             the nav rail's type pill. -->
+                                                        <Grid VerticalAlignment="Center">
+                                                            <Path Data="{Binding TypeGeometry, Mode=OneWay}" Width="10" Height="10"
+                                                                  Stretch="Uniform" Fill="#FFFFF3E8"/>
+                                                            <TextBlock Text="{Binding TypeGlyph, Mode=OneWay}" FontFamily="Segoe MDL2 Assets"
+                                                                       FontSize="10" Foreground="#FFFFF3E8"
+                                                                       HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                                       Visibility="{Binding TypeGlyph, Converter={StaticResource StringToVisibility}}"/>
+                                                        </Grid>
                                                         <!-- Slot number is a chip token: mono, like the
                                                              PadPage tier-strip slot pill. -->
                                                         <TextBlock Text="{Binding SlotNumber}" FontFamily="{StaticResource TelemetryFontFamily}"
@@ -253,20 +397,34 @@
                                             </DataTemplate>
                                         </ItemsControl.ItemTemplate>
                                     </ItemsControl>
-                                    <!-- Unassigned fallback -->
-                                    <Border CornerRadius="4" Padding="5,2" Margin="0,0,4,3"
-                                            Background="{DynamicResource SubtleFillColorSecondaryBrush}"
-                                            Visibility="{Binding IsUnassigned, Converter={StaticResource BoolToVisibilityConverter}}">
-                                        <TextBlock Text="{Binding Common_Unassigned, Source={x:Static strings:Strings.Instance}}" FontSize="10" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
-                                    </Border>
+                                    <!-- No unassigned fallback pill (#175 phase 2 item 9):
+                                         absence encodes unassigned; the ember slot badge is
+                                         the only assignment signal. -->
                                 </StackPanel>
 
-                                <!-- Delete button (upper-right) -->
+                                <!-- Delete button (upper-right). Hover-revealed
+                                     (#175 phase 2 item 1b): opacity, not
+                                     visibility, so it stays in the tab order.
+                                     Keyboard focus reveals it too. The click
+                                     routes through the shared ConfirmDialog in
+                                     code-behind before anything is deleted. -->
                                 <ui:Button Grid.Column="2" Grid.RowSpan="2"
-                                           Style="{StaticResource EmberIconButtonHot}"
                                            ToolTip="{Binding Devices_RemoveTooltip, Source={x:Static strings:Strings.Instance}}"
                                            VerticalAlignment="Top"
                                            Click="RemoveDevice_Click">
+                                    <ui:Button.Style>
+                                        <Style TargetType="{x:Type ui:Button}" BasedOn="{StaticResource EmberIconButtonHot}">
+                                            <Setter Property="Opacity" Value="0"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=ListBoxItem}}" Value="True">
+                                                    <Setter Property="Opacity" Value="1"/>
+                                                </DataTrigger>
+                                                <Trigger Property="IsKeyboardFocused" Value="True">
+                                                    <Setter Property="Opacity" Value="1"/>
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </ui:Button.Style>
                                     <TextBlock Text="&#xE711;" FontFamily="Segoe MDL2 Assets" FontSize="12" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
                                 </ui:Button>
 
@@ -274,8 +432,13 @@
                                 <StackPanel Grid.Row="1" Grid.ColumnSpan="3"
                                             Orientation="Horizontal" Margin="16,3,0,0">
                                     <TextBlock Text="{Binding DeviceType, Converter={StaticResource UpperConverter}}" Style="{StaticResource DeviceMetaText}"/>
-                                    <TextBlock Text=" &#x2022; " Style="{StaticResource DeviceMetaText}"/>
-                                    <StackPanel Orientation="Horizontal">
+                                    <!-- VID:PID renders only when the device reports one
+                                         (#175 phase 2 item 17): virtual and merged sources
+                                         surface 0000:0000, which is noise, not identity.
+                                         Same absent-fact gating as the dossier lines. -->
+                                    <StackPanel Orientation="Horizontal"
+                                                Visibility="{Binding HasVidPid, Converter={StaticResource BoolToVisibilityConverter}}">
+                                        <TextBlock Text=" &#x2022; " Style="{StaticResource DeviceMetaText}"/>
                                         <TextBlock Style="{StaticResource DeviceMetaText}" Text="{Binding VendorIdHex, Mode=OneWay}"/>
                                         <TextBlock Style="{StaticResource DeviceMetaText}" Text=":"/>
                                         <TextBlock Style="{StaticResource DeviceMetaText}" Text="{Binding ProductIdHex, Mode=OneWay}"/>
@@ -364,6 +527,15 @@
                     </Style>
                 </ListBox.ItemContainerStyle>
             </ListBox>
+
+                <!-- Drag disclosure (#175 phase 2 item 17): the card drag to
+                     the sidebar controller cards is otherwise invisible. One
+                     tertiary line, always on. -->
+                <TextBlock Grid.Row="2"
+                           Text="{Binding Devices_DragAssignHint, Source={x:Static strings:Strings.Instance}}"
+                           FontSize="11" Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                           TextWrapping="Wrap" Margin="6,6,0,0"/>
+            </Grid>
 
             <!-- ═══════════════════════════════════════════ -->
             <!--  Right: Detail panel                       -->
@@ -640,8 +812,19 @@
                                                 </Style>
                                             </ToggleButton.Style>
                                             <StackPanel Orientation="Horizontal">
-                                                <TextBlock Text="&#xE7FC;" FontFamily="Segoe MDL2 Assets"
-                                                           FontSize="10" VerticalAlignment="Center"/>
+                                                <!-- Branded family mark (#175 phase 2 item 12):
+                                                     same treatment as the list-card badge. The
+                                                     Path fill tracks the pill's Foreground so
+                                                     the checked ember swap recolors it with the
+                                                     glyph and number. -->
+                                                <Grid VerticalAlignment="Center">
+                                                    <Path Data="{Binding TypeGeometry, Mode=OneWay}" Width="10" Height="10"
+                                                          Stretch="Uniform"
+                                                          Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=ToggleButton}}"/>
+                                                    <TextBlock Text="{Binding TypeGlyph, Mode=OneWay}" FontFamily="Segoe MDL2 Assets"
+                                                               FontSize="10" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                               Visibility="{Binding TypeGlyph, Converter={StaticResource StringToVisibility}}"/>
+                                                </Grid>
                                                 <!-- Chip token: mono, mirrors the list-card badge. -->
                                                 <TextBlock Text="{Binding SlotNumber}" FontFamily="{StaticResource TelemetryFontFamily}"
                                                            FontSize="10" VerticalAlignment="Center" Margin="3,0,0,0"/>
@@ -651,6 +834,26 @@
                                 </ItemsControl.ItemTemplate>
                             </ItemsControl>
                         </WrapPanel>
+
+                        <!-- Empty-section hint (#175 phase 2 item 17): with no
+                             created slots the pill row renders nothing, which
+                             read as a dead end. Points at the Dashboard;
+                             presence-gated on the slot list the VM already
+                             holds. -->
+                        <TextBlock Text="{Binding Devices_NoSlotsHint, Source={x:Static strings:Strings.Instance}}"
+                                   FontSize="11" Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                                   TextWrapping="Wrap" Margin="0,0,0,6">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding ActiveSlotItems.Count}" Value="0">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
 
                         <Separator Margin="0,2,0,8"
                                    Visibility="{Binding SelectedDevice.ShowInputModeOrHidingSection, Converter={StaticResource BoolToVisibilityConverter}}"/>

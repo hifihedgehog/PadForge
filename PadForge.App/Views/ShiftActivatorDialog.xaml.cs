@@ -58,7 +58,7 @@ namespace PadForge.Views
             Title = Strings.Instance.Pad_Shift_BaseConfigTitle;
             // Only name + icon + color show in this mode; shrink from the full
             // 700px so the buttons aren't stranded above a dead gap.
-            Height = 520;
+            Height = 580; // 520 content + the item-11 dialog head
 
             LayerNameBox.Text = baseName ?? "";
 

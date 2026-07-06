@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -100,6 +100,7 @@ namespace PadForge.ViewModels
                 if (SetProperty(ref _vendorId, value))
                 {
                     OnPropertyChanged(nameof(VendorIdHex));
+                    OnPropertyChanged(nameof(HasVidPid));
                     // Transport depends on VID/PID for the fork BLE Switch 2
                     // case (empty DevicePath never fires its own notify).
                     OnPropertyChanged(nameof(IsBluetoothLink));
@@ -118,6 +119,7 @@ namespace PadForge.ViewModels
                 if (SetProperty(ref _productId, value))
                 {
                     OnPropertyChanged(nameof(ProductIdHex));
+                    OnPropertyChanged(nameof(HasVidPid));
                     OnPropertyChanged(nameof(IsBluetoothLink));
                 }
             }
@@ -128,6 +130,12 @@ namespace PadForge.ViewModels
 
         /// <summary>Product ID as a hex string (e.g., "028E").</summary>
         public string ProductIdHex => _productId.ToString("X4");
+
+        /// <summary>Whether the device reports a USB identity at all. Virtual
+        /// and merged sources surface 0000:0000, which is noise, not identity.
+        /// The list row hides its VID:PID token when this is false (#175
+        /// phase 2 item 17), the same absent-fact gating the dossier uses.</summary>
+        public bool HasVidPid => _vendorId != 0 || _productId != 0;
 
         // ─────────────────────────────────────────────
         //  Status
@@ -327,8 +335,8 @@ namespace PadForge.ViewModels
         /// </summary>
         public ObservableCollection<SlotBadge> SlotBadges { get; } = new();
 
-        /// <summary>Whether this device has no slot assignments.</summary>
-        public bool IsUnassigned => _assignedSlots.Count == 0;
+        // The IsUnassigned flag and its gray fallback pill are gone (#175
+        // phase 2 item 9): absence of badges encodes unassigned.
 
         /// <summary>
         /// Replaces the assigned slots list, rebuilds SlotBadges, and notifies the UI.
@@ -347,20 +355,21 @@ namespace PadForge.ViewModels
             var slotToGlobal = BuildSlotNumberLookup();
             foreach (int slot in _assignedSlots)
             {
-                slotToGlobal.TryGetValue(slot, out int globalNum);
-                SlotBadges.Add(new SlotBadge { SlotIndex = slot, SlotNumber = globalNum });
+                slotToGlobal.TryGetValue(slot, out var info);
+                SlotBadges.Add(new SlotBadge { SlotIndex = slot, SlotNumber = info.Number, VcType = info.Type });
             }
             OnPropertyChanged(nameof(AssignedSlots));
-            OnPropertyChanged(nameof(IsUnassigned));
         }
 
-        /// <summary>Builds a slotIndex → 1-based global number map walking
-        /// type-group order to match the dashboard / sidebar / Pad page
-        /// numbering. Created/active slots only; uncreated slots are
-        /// excluded so the global numbers don't skip.</summary>
-        private static Dictionary<int, int> BuildSlotNumberLookup()
+        /// <summary>Builds a slotIndex → (1-based global number, VC family)
+        /// map walking type-group order to match the dashboard / sidebar /
+        /// Pad page numbering. Created/active slots only; uncreated slots are
+        /// excluded so the global numbers don't skip. The family rides along
+        /// because the walk already knows it, and the badge's branded icon
+        /// needs it (#175 phase 2 item 12).</summary>
+        private static Dictionary<int, (int Number, Engine.VirtualControllerType Type)> BuildSlotNumberLookup()
         {
-            var map = new Dictionary<int, int>();
+            var map = new Dictionary<int, (int Number, Engine.VirtualControllerType Type)>();
             int globalCount = 0;
             foreach (var groupType in Engine.VirtualControllerGroups.InOrder)
             {
@@ -371,7 +380,7 @@ namespace PadForge.ViewModels
                     if (!Common.Input.SettingsManager.SlotCreated[padIndex])
                         continue;
                     globalCount++;
-                    map[padIndex] = globalCount;
+                    map[padIndex] = (globalCount, groupType);
                 }
             }
             return map;
@@ -623,10 +632,10 @@ namespace PadForge.ViewModels
         public void NotifyDisplayChanged()
         {
             OnPropertyChanged(nameof(StatusText));
-            OnPropertyChanged(nameof(IsUnassigned));
             OnPropertyChanged(nameof(CapabilitiesSummary));
             OnPropertyChanged(nameof(VendorIdHex));
             OnPropertyChanged(nameof(ProductIdHex));
+            OnPropertyChanged(nameof(HasVidPid));
         }
 
         public override string ToString()
@@ -642,5 +651,53 @@ namespace PadForge.ViewModels
     {
         public int SlotIndex { get; set; }
         public int SlotNumber { get; set; }
+
+        /// <summary>VC family of the slot, captured from the type-group walk
+        /// that numbers the badge. Drives the branded icon (#175 item 12).</summary>
+        public Engine.VirtualControllerType VcType { get; set; }
+
+        /// <summary>Branded path geometry for the pill, null for glyph types.</summary>
+        public System.Windows.Media.Geometry TypeGeometry => SlotTypeIconMap.GeometryFor(VcType);
+
+        /// <summary>MDL2 glyph for the non-vector types, empty otherwise.</summary>
+        public string TypeGlyph => SlotTypeIconMap.GlyphFor(VcType);
+    }
+
+    /// <summary>Branded VC-type icon lookup for the slot pills (#175 phase 2
+    /// item 12). The three vector families reuse the exact geometries the
+    /// sidebar cards and Dashboard wear (Common.ControllerIcons); MIDI and
+    /// KbM have no vector logo anywhere in the app and keep their MDL2
+    /// glyphs (E8D6 piano, E961 input), mirroring
+    /// MainWindow.UpdateControllerNavItemContent's type row.</summary>
+    internal static class SlotTypeIconMap
+    {
+        private static readonly System.Windows.Media.Geometry XboxGeometry = ParseFrozen(Common.ControllerIcons.XboxSvgPath);
+        private static readonly System.Windows.Media.Geometry PlayStationGeometry = ParseFrozen(Common.ControllerIcons.DS4SvgPath);
+        private static readonly System.Windows.Media.Geometry ExtendedGeometry = ParseFrozen(Common.ControllerIcons.ExtendedSvgPath);
+
+        private static System.Windows.Media.Geometry ParseFrozen(string pathData)
+        {
+            var g = System.Windows.Media.Geometry.Parse(pathData);
+            g.Freeze();
+            return g;
+        }
+
+        /// <summary>Branded path geometry, or null for the glyph-only types.</summary>
+        public static System.Windows.Media.Geometry GeometryFor(Engine.VirtualControllerType type) => type switch
+        {
+            Engine.VirtualControllerType.PlayStation => PlayStationGeometry,
+            Engine.VirtualControllerType.Extended => ExtendedGeometry,
+            Engine.VirtualControllerType.Midi => null,
+            Engine.VirtualControllerType.KeyboardMouse => null,
+            _ => XboxGeometry
+        };
+
+        /// <summary>MDL2 glyph for the types without a vector logo; empty otherwise.</summary>
+        public static string GlyphFor(Engine.VirtualControllerType type) => type switch
+        {
+            Engine.VirtualControllerType.Midi => "\uE8D6",
+            Engine.VirtualControllerType.KeyboardMouse => "\uE961",
+            _ => string.Empty
+        };
     }
 }

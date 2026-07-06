@@ -259,6 +259,11 @@ public class Strings : INotifyPropertyChanged
     public string Dashboard_VirtualControllers => Get("Dashboard_VirtualControllers");
     public string Dashboard_Mapped => Get("Dashboard_Mapped");
     public string Dashboard_Connected => Get("Dashboard_Connected");
+    public string Dashboard_EngineFlame_Running => Get("Dashboard_EngineFlame_Running");
+    public string Dashboard_EngineFlame_Idle => Get("Dashboard_EngineFlame_Idle");
+    public string Dashboard_EngineFlame_Stopped => Get("Dashboard_EngineFlame_Stopped");
+    public string Dashboard_SlotCard_Configure => Get("Dashboard_SlotCard_Configure");
+    public string Dashboard_DeleteSlotConfirm_Format => Get("Dashboard_DeleteSlotConfirm_Format");
     public string FirstRun_Title => Get("FirstRun_Title");
     public string FirstRun_Body => Get("FirstRun_Body");
     public string FirstRun_Begin => Get("FirstRun_Begin");
@@ -457,6 +462,7 @@ public class Strings : INotifyPropertyChanged
     public string Macro_Sound_PickFromPackage_Format => Get("Macro_Sound_PickFromPackage_Format");
     public string Macro_Sound_Pick_Description => Get("Macro_Sound_Pick_Description");
     public string Macro_Sound_BrowseFiles => Get("Macro_Sound_BrowseFiles");
+    public string PickSound_Title => Get("PickSound_Title");
     public string About_DsTester => Get("About_DsTester");
     public string About_DsTesterDesc => Get("About_DsTesterDesc");
     public string About_Ds4Audio => Get("About_Ds4Audio");
@@ -558,6 +564,9 @@ public class Strings : INotifyPropertyChanged
     public string Devices_OnlineTotal => Get("Devices_OnlineTotal");
     public string Devices_Total => Get("Devices_Total");
     public string Devices_RemoveTooltip => Get("Devices_RemoveTooltip");
+    public string Devices_RemoveConfirmTitle => Get("Devices_RemoveConfirmTitle");
+    public string Devices_RemoveConfirm_Format => Get("Devices_RemoveConfirm_Format");
+    public string Devices_DragAssignHint => Get("Devices_DragAssignHint");
     public string Devices_Product => Get("Devices_Product");
     public string Devices_Type => Get("Devices_Type");
     public string Devices_AppGUID => Get("Devices_AppGUID");
@@ -567,6 +576,7 @@ public class Strings : INotifyPropertyChanged
     public string Devices_SubmitMapping => Get("Devices_SubmitMapping");
     public string Devices_VCAssignment => Get("Devices_VCAssignment");
     public string Devices_ToggleAssignment => Get("Devices_ToggleAssignment");
+    public string Devices_NoSlotsHint => Get("Devices_NoSlotsHint");
     public string Devices_InputMode => Get("Devices_InputMode");
     public string Devices_ForceRaw => Get("Devices_ForceRaw");
     public string Devices_ForceRawTooltip => Get("Devices_ForceRawTooltip");
@@ -725,6 +735,7 @@ public class Strings : INotifyPropertyChanged
     public string Pad_ResetAudioRumble => Get("Pad_ResetAudioRumble");
     public string Pad_ResetSection_Format => Get("Pad_ResetSection_Format");
     public string Pad_ClearMappings => Get("Pad_ClearMappings");
+    public string Pad_ClearMappingsConfirm => Get("Pad_ClearMappingsConfirm");
     public string Pad_Lighting_PlayerPattern => Get("Pad_Lighting_PlayerPattern");
     public string Pad_Lighting_MuteLedMode => Get("Pad_Lighting_MuteLedMode");
     public string Pad_Lighting_LedBrightness => Get("Pad_Lighting_LedBrightness");
@@ -1784,11 +1795,19 @@ public class Strings : INotifyPropertyChanged
     public string Profiles_SaveAs => Get("Profiles_SaveAs");
     public string Profiles_Edit => Get("Profiles_Edit");
     public string Profiles_Load => Get("Profiles_Load");
+    public string Profiles_AutoSwitchNoRulesHint => Get("Profiles_AutoSwitchNoRulesHint");
+    public string Profiles_BuiltIn => Get("Profiles_BuiltIn");
+    public string Profiles_SelectFirstHint => Get("Profiles_SelectFirstHint");
+    public string Profiles_DefaultLockedHint => Get("Profiles_DefaultLockedHint");
+    public string Profiles_DeleteConfirmTitle => Get("Profiles_DeleteConfirmTitle");
+    public string Profiles_DeleteConfirm_Format => Get("Profiles_DeleteConfirm_Format");
     public string ProfileDialog_SaveAs => Get("ProfileDialog_SaveAs");
     public string ProfileDialog_Edit => Get("ProfileDialog_Edit");
     public string ProfileDialog_ProfileName => Get("ProfileDialog_ProfileName");
     public string ProfileDialog_DefaultName => Get("ProfileDialog_DefaultName");
     public string ProfileDialog_Executables => Get("ProfileDialog_Executables");
+    public string ProfileDialog_SaveAsDescription => Get("ProfileDialog_SaveAsDescription");
+    public string ProfileDialog_EditDescription => Get("ProfileDialog_EditDescription");
     public string CopyFrom_Title => Get("CopyFrom_Title");
     public string CopyFrom_SelectDevice => Get("CopyFrom_SelectDevice");
     public string FileDialog_SelectWhitelist => Get("FileDialog_SelectWhitelist");

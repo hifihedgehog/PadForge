@@ -31,6 +31,7 @@ namespace PadForge.Views
             foreach (var p in exePaths)
                 ExecutablePaths.Add(p);
             Title = Strings.Instance.ProfileDialog_Edit;
+            ModeDescText.Text = Strings.Instance.ProfileDialog_EditDescription;
         }
 
         private void BrowseButton_Click(object sender, RoutedEventArgs e)

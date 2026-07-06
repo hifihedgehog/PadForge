@@ -6,7 +6,7 @@
         ExtendsContentIntoTitleBar="True"
         WindowBackdropType="Mica"
         Title="{Binding Nfc_Title, Source={x:Static strings:Strings.Instance}}"
-        Height="460" Width="520"
+        Height="520" Width="520"
         WindowStartupLocation="CenterOwner"
         ResizeMode="NoResize">
 
@@ -17,63 +17,101 @@
         </ResourceDictionary>
     </ui:FluentWindow.Resources>
 
-    <Grid Margin="16">
+    <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <TextBlock Text="{Binding Nfc_RegisterHeader, Source={x:Static strings:Strings.Instance}}" FontFamily="{StaticResource DisplayFontFamily}" FontSize="16" FontWeight="SemiBold" Margin="0,0,0,8"/>
+        <!-- Dialog head (#175 item 11): ExtendsContentIntoTitleBar strips the
+             system title bar, so the localized Title never rendered anywhere.
+             Ember tick + display-face title makes it visible. The X stands in
+             for the caption close button WindowChrome no longer provides. -->
+        <Border Padding="14"
+                BorderBrush="{DynamicResource SteelLineSoftBrush}"
+                BorderThickness="0,0,0,1">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Rectangle Width="3" Height="14" RadiusX="1.5" RadiusY="1.5"
+                           Fill="{DynamicResource EmberBrush}"
+                           VerticalAlignment="Center" Margin="0,0,8,0"/>
+                <TextBlock Grid.Column="1"
+                           Text="{Binding Title, RelativeSource={RelativeSource AncestorType=Window}}"
+                           FontFamily="{StaticResource DisplayFontFamily}"
+                           FontWeight="SemiBold" FontSize="15"
+                           Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+                           VerticalAlignment="Center" Margin="0,0,8,0"
+                           TextTrimming="CharacterEllipsis"/>
+                <ui:Button Grid.Column="2" Style="{StaticResource EmberIconButton}"
+                           VerticalAlignment="Center" Click="CloseButton_Click"
+                           ToolTip="{Binding Common_Close, Source={x:Static strings:Strings.Instance}}">
+                    <TextBlock Text="&#xE8BB;" FontFamily="Segoe MDL2 Assets" FontSize="10"/>
+                </ui:Button>
+            </Grid>
+        </Border>
 
-        <TextBlock Grid.Row="1" x:Name="StatusText"
-                   Text="{Binding Nfc_TapPrompt, Source={x:Static strings:Strings.Instance}}"
-                   TextWrapping="Wrap" Margin="0,0,0,8"
-                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+        <Grid Grid.Row="1" Margin="16">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
 
-        <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0,0,0,8">
-            <TextBlock Text="{Binding Nfc_UidLabel, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="0,0,8,0"/>
-            <TextBlock x:Name="UidText" Text="{Binding Nfc_Waiting, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" FontFamily="{StaticResource TelemetryFontFamily}"/>
-        </StackPanel>
+            <TextBlock Text="{Binding Nfc_RegisterHeader, Source={x:Static strings:Strings.Instance}}" FontFamily="{StaticResource DisplayFontFamily}" FontSize="16" FontWeight="SemiBold" Margin="0,0,0,8"/>
 
-        <StackPanel Grid.Row="3" Orientation="Horizontal" Margin="0,0,0,12">
-            <TextBlock Text="{Binding Nfc_NameLabel, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="0,0,8,0"/>
-            <TextBox x:Name="NameBox" Width="240" VerticalAlignment="Center" Margin="0,0,8,0"
-                     KeyDown="NameBox_KeyDown"/>
-            <Button x:Name="RegisterBtn" Content="{Binding Nfc_RegisterButton, Source={x:Static strings:Strings.Instance}}" Click="RegisterButton_Click"
-                    MinWidth="90" IsEnabled="False"
-                    Foreground="{DynamicResource TextOnAccentFillColorPrimaryBrush}"
-                    Background="{DynamicResource AccentFillColorDefaultBrush}"/>
-        </StackPanel>
+            <TextBlock Grid.Row="1" x:Name="StatusText"
+                       Text="{Binding Nfc_TapPrompt, Source={x:Static strings:Strings.Instance}}"
+                       TextWrapping="Wrap" Margin="0,0,0,8"
+                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
 
-        <TextBlock Grid.Row="4" Text="{Binding Nfc_RegisteredTagsHeader, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,4,0,4"/>
+            <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0,0,0,8">
+                <TextBlock Text="{Binding Nfc_UidLabel, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                <TextBlock x:Name="UidText" Text="{Binding Nfc_Waiting, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" FontFamily="{StaticResource TelemetryFontFamily}"/>
+            </StackPanel>
 
-        <ListBox Grid.Row="5" x:Name="TagListBox" Margin="0,0,0,8" MinHeight="100">
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="Auto"/>
-                        </Grid.ColumnDefinitions>
-                        <StackPanel>
-                            <TextBlock Text="{Binding Name}"/>
-                            <TextBlock Text="{Binding Uid}" FontFamily="{StaticResource TelemetryFontFamily}" FontSize="11"
-                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
-                        </StackPanel>
-                        <Button Grid.Column="1" Content="{Binding Common_Remove, Source={x:Static strings:Strings.Instance}}" Click="RemoveButton_Click"
-                                Tag="{Binding Uid}" MinWidth="72" VerticalAlignment="Center"/>
-                    </Grid>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
+            <StackPanel Grid.Row="3" Orientation="Horizontal" Margin="0,0,0,12">
+                <TextBlock Text="{Binding Nfc_NameLabel, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                <TextBox x:Name="NameBox" Width="240" VerticalAlignment="Center" Margin="0,0,8,0"
+                         KeyDown="NameBox_KeyDown"/>
+                <Button x:Name="RegisterBtn" Content="{Binding Nfc_RegisterButton, Source={x:Static strings:Strings.Instance}}" Click="RegisterButton_Click"
+                        MinWidth="90" IsEnabled="False"
+                        Foreground="{DynamicResource TextOnAccentFillColorPrimaryBrush}"
+                        Background="{DynamicResource AccentFillColorDefaultBrush}"/>
+            </StackPanel>
 
-        <StackPanel Grid.Row="6" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,4,0,0">
-            <Button Content="{Binding Common_Close, Source={x:Static strings:Strings.Instance}}" MinWidth="80" IsCancel="True" Click="CloseButton_Click"/>
-        </StackPanel>
+            <TextBlock Grid.Row="4" Text="{Binding Nfc_RegisteredTagsHeader, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,4,0,4"/>
+
+            <ListBox Grid.Row="5" x:Name="TagListBox" Margin="0,0,0,8" MinHeight="100">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <StackPanel>
+                                <TextBlock Text="{Binding Name}"/>
+                                <TextBlock Text="{Binding Uid}" FontFamily="{StaticResource TelemetryFontFamily}" FontSize="11"
+                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                            </StackPanel>
+                            <Button Grid.Column="1" Content="{Binding Common_Remove, Source={x:Static strings:Strings.Instance}}" Click="RemoveButton_Click"
+                                    Tag="{Binding Uid}" MinWidth="72" VerticalAlignment="Center"/>
+                        </Grid>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+
+            <StackPanel Grid.Row="6" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,4,0,0">
+                <Button Content="{Binding Common_Close, Source={x:Static strings:Strings.Instance}}" MinWidth="80" IsCancel="True" Click="CloseButton_Click"/>
+            </StackPanel>
+        </Grid>
     </Grid>
 </ui:FluentWindow>

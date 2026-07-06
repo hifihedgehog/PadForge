@@ -2599,23 +2599,27 @@ namespace PadForge.Services
             // Xbox pads get no battery through SDL's XInput backend: the
             // battery IOCTL is dead for Bluetooth pads (probed on hardware,
             // even System32's xinput1_4 answers DISCONNECTED for a Series X
-            // whose battery Windows shows). Overlay from the WinRT gaming
-            // stack (#187): one WGI snapshot per tick, and each distinct
-            // device takes its reading once so both loops below agree.
-            PadForge.Common.Input.WgiBatteryService.Refresh();
-            var wgiOverlay = new Dictionary<Guid, (int Pct, bool Charging)>();
+            // whose battery Windows shows), and the WinRT gaming stack's
+            // synthesized report is both rate-limited (flicker) and wrong
+            // (bucketed 10 vs the real 74). Overlay from the device's OWN
+            // Bluetooth devnode battery property instead (#187), the value
+            // Windows Settings displays, resolved by walking the pad's own
+            // PnP ancestry so a virtual controller can never be latched by
+            // mistake. Memoized per device per tick so both loops agree.
+            var btOverlay = new Dictionary<Guid, int>();
             (int Pct, bool Charging) EffectiveBattery(UserDevice ud)
             {
                 if (ud == null || !ud.IsOnline) return (-1, false);
                 int sdlPct = ud.InputState?.BatteryPercent ?? -1;
                 if (sdlPct >= 0) return (sdlPct, ud.InputState?.BatteryCharging ?? false);
-                if (ud.VendorId != 0x045E) return (-1, false);
-                if (wgiOverlay.TryGetValue(ud.InstanceGuid, out var cached)) return cached;
-                var val = PadForge.Common.Input.WgiBatteryService.TryTake(
-                    (ushort)ud.VendorId, (ushort)ud.ProdId, out int wgiPct, out bool wgiChg)
-                    ? (wgiPct, wgiChg) : (-1, false);
-                wgiOverlay[ud.InstanceGuid] = val;
-                return val;
+                if (!btOverlay.TryGetValue(ud.InstanceGuid, out int btPct))
+                {
+                    btPct = PadForge.Common.Input.BluetoothBatteryService.TryGetPercent(ud.DevicePath);
+                    btOverlay[ud.InstanceGuid] = btPct;
+                }
+                // The devnode property carries no charging flag; a pad on the
+                // charger over USB enumerates wired and takes the SDL branch.
+                return (btPct, false);
             }
 
             foreach (var row in _mainVm.Devices.Devices)

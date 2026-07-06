@@ -78,8 +78,17 @@ namespace PadForge.Views
         public MousePreviewControl()
         {
             InitializeComponent();
-            CompositionTarget.Rendering += OnRendering;
-            Loaded += (s, e) => BuildMouse();
+            // Rendering rides tree presence: a ctor-lifetime subscription
+            // kept the per-frame callback running for the whole app even
+            // while the hosting page was swapped out. The -= before +=
+            // guards repeated Loaded without an intervening Unloaded.
+            Loaded += (s, e) =>
+            {
+                CompositionTarget.Rendering -= OnRendering;
+                CompositionTarget.Rendering += OnRendering;
+                BuildMouse();
+            };
+            Unloaded += (s, e) => CompositionTarget.Rendering -= OnRendering;
         }
 
         private void BuildMouse()

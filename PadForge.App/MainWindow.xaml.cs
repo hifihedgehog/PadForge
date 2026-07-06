@@ -2220,9 +2220,6 @@ namespace PadForge
             return menuItem;
         }
 
-        // Power button icon: E7E8 = PowerButton glyph in Segoe MDL2 Assets.
-        private const string PowerGlyph = "\uE7E8";
-
         /// <summary>
         /// Builds the flame glyph for a slot's heat state (#175).
         /// lit: ember fill. cooling: gold fill. cold: outline only.

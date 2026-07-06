@@ -769,7 +769,16 @@ namespace PadForge.ViewModels
             _resetGyroSensitivityCommand ??= new RelayCommand(() => GyroSensitivity = 1.0);
 
         /// <summary>Builds a domain <see cref="Engine.Data.MappingSource"/>
-        /// from this VM's current values. Used by the Save pipeline.</summary>
+        /// from this VM's current values. Used by the Save pipeline.
+        /// N/A by design: the steering Param* set (ParamYDescriptor,
+        /// ParamStickDeadzone, ParamWind*, ParamAngle*, ParamMotion*,
+        /// ParamControllerOrientation) and NoInherit are NOT round-tripped
+        /// here. KindOptions offers only Direct/Incremental/InvertOnHold/
+        /// Ramped, so an ExtraSource can never author a steering kind; those
+        /// kinds are set on StickConfigItem via ApplySteeringKindToRow, and
+        /// NoInherit lives on MappingRow. If a steering kind ever becomes
+        /// selectable here, add its params to BOTH ToDomain and FromDomain
+        /// or they drop silently through the VM round-trip.</summary>
         public Engine.Data.MappingSource ToDomain() => new()
         {
             Kind = _kind ?? "Direct",

@@ -396,6 +396,7 @@ namespace PadForge.Engine
             _keyboardStates.Clear();
             _mouseStates.Clear();
             _consumerStates.Clear();
+            _consumerMaxUsages.Clear();
             _isConsumerHandle.Clear();
             // Free the preparsed buffers ONLY when the pump thread confirmed
             // exit. On a join timeout the thread may still be inside
@@ -1319,9 +1320,15 @@ namespace PadForge.Engine
         // ─────────────────────────────────────────────
 
         /// <summary>Scratch usage buffer for HidP_GetUsages, pump-thread only.
-        /// 64 covers any real consumer report's simultaneous-press count.</summary>
+        /// Grown to each handle's HidP-reported max usage-list length so a
+        /// report never overflows it and gets silently dropped.</summary>
         [ThreadStatic]
         private static ushort[] _consumerUsageBuffer;
+
+        /// <summary>Per-handle max simultaneous consumer usages, from
+        /// HidP_GetMaxUsageListLength. Sizes the scratch buffer so the
+        /// BUFFER_TOO_SMALL path (which drops the whole report) can't fire.</summary>
+        private static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, int> _consumerMaxUsages = new();
 
         private static void ProcessConsumerInput(IntPtr hDevice, IntPtr dataPtr)
         {
@@ -1344,7 +1351,17 @@ namespace PadForge.Engine
 
             bool[] state = _consumerStates.GetOrAdd(
                 hDevice, _ => new bool[ConsumerUsageTable.TotalSlots]);
-            _consumerUsageBuffer ??= new ushort[64];
+
+            // Size the scratch buffer to what HidP says this collection can
+            // report at once (min 64), so an oversized frame is parsed, not
+            // dropped whole.
+            int maxUsages = _consumerMaxUsages.GetOrAdd(hDevice, h =>
+            {
+                uint max = HidP_GetMaxUsageListLength(HidP_Input, HID_USAGE_PAGE_CONSUMER, preparsed);
+                return System.Math.Max(64, (int)max);
+            });
+            if (_consumerUsageBuffer == null || _consumerUsageBuffer.Length < maxUsages)
+                _consumerUsageBuffer = new ushort[maxUsages];
 
             // Process every report in the batch in order, the same loop the
             // proven PTP reader runs over RAWHID batches. Each consumer report
@@ -1358,8 +1375,19 @@ namespace PadForge.Engine
                 uint hr = HidP_GetUsages(HidP_Input, HID_USAGE_PAGE_CONSUMER, 0,
                     _consumerUsageBuffer, ref usageCount, preparsed,
                     report, (uint)sizeHid);
-                if (hr != HIDP_STATUS_SUCCESS)
+                // A report for a different report ID in the same collection is
+                // not ours; skip it without disturbing state.
+                if (hr == HIDP_STATUS_INCOMPATIBLE_REPORT_ID)
                     continue;
+                // Any other failure means we can't read this (newest) frame.
+                // Release rather than latch: a dropped momentary button self-
+                // heals on the next report, a stuck one does not. This also
+                // stops a failed LAST report from holding a stale held-set.
+                if (hr != HIDP_STATUS_SUCCESS)
+                {
+                    System.Array.Clear(state, 0, state.Length);
+                    continue;
+                }
 
                 System.Array.Clear(state, 0, state.Length);
                 for (int i = 0; i < (int)usageCount; i++)
@@ -1445,11 +1473,16 @@ namespace PadForge.Engine
 
         private const int HidP_Input = 0;
         private const uint HIDP_STATUS_SUCCESS = 0x00110000;
+        private const uint HIDP_STATUS_INCOMPATIBLE_REPORT_ID = 0xC0110100;
 
         [DllImport("hid.dll")]
         private static extern uint HidP_GetUsages(
             int ReportType, ushort UsagePage, ushort LinkCollection,
             [Out] ushort[] UsageList, ref uint UsageLength, IntPtr PreparsedData,
             IntPtr Report, uint ReportLength);
+
+        [DllImport("hid.dll")]
+        private static extern uint HidP_GetMaxUsageListLength(
+            int ReportType, ushort UsagePage, IntPtr PreparsedData);
     }
 }

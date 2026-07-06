@@ -777,22 +777,62 @@ namespace PadForge.ViewModels
             }
         }
 
+        // Subscribed entries tracked explicitly because Clear() raises
+        // Reset with no OldItems, which would otherwise skip the per-entry
+        // unsubscribes (same idiom as PadViewModel's _directCountHooked).
+        private readonly List<LightbarPaletteEntry> _paletteEntriesHooked = new();
+
         private void HookInputReactivePalette(ObservableCollection<LightbarPaletteEntry> coll)
         {
             if (coll == null) return;
             coll.CollectionChanged += OnInputReactivePaletteCollectionChanged;
-            foreach (var entry in coll) if (entry != null) entry.PropertyChanged += OnInputReactivePaletteEntryChanged;
+            foreach (var entry in coll)
+                if (entry != null)
+                {
+                    entry.PropertyChanged += OnInputReactivePaletteEntryChanged;
+                    _paletteEntriesHooked.Add(entry);
+                }
         }
         private void UnhookInputReactivePalette(ObservableCollection<LightbarPaletteEntry> coll)
         {
             if (coll == null) return;
             coll.CollectionChanged -= OnInputReactivePaletteCollectionChanged;
-            foreach (var entry in coll) if (entry != null) entry.PropertyChanged -= OnInputReactivePaletteEntryChanged;
+            foreach (var hooked in _paletteEntriesHooked)
+                hooked.PropertyChanged -= OnInputReactivePaletteEntryChanged;
+            _paletteEntriesHooked.Clear();
         }
         private void OnInputReactivePaletteCollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
-            if (e.OldItems != null) foreach (LightbarPaletteEntry old in e.OldItems) if (old != null) old.PropertyChanged -= OnInputReactivePaletteEntryChanged;
-            if (e.NewItems != null) foreach (LightbarPaletteEntry add in e.NewItems) if (add != null) add.PropertyChanged += OnInputReactivePaletteEntryChanged;
+            if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Reset)
+            {
+                foreach (var hooked in _paletteEntriesHooked)
+                    hooked.PropertyChanged -= OnInputReactivePaletteEntryChanged;
+                _paletteEntriesHooked.Clear();
+                if (sender is ObservableCollection<LightbarPaletteEntry> coll)
+                    foreach (var entry in coll)
+                        if (entry != null)
+                        {
+                            entry.PropertyChanged += OnInputReactivePaletteEntryChanged;
+                            _paletteEntriesHooked.Add(entry);
+                        }
+            }
+            else
+            {
+                if (e.OldItems != null)
+                    foreach (LightbarPaletteEntry old in e.OldItems)
+                        if (old != null)
+                        {
+                            old.PropertyChanged -= OnInputReactivePaletteEntryChanged;
+                            _paletteEntriesHooked.Remove(old);
+                        }
+                if (e.NewItems != null)
+                    foreach (LightbarPaletteEntry add in e.NewItems)
+                        if (add != null)
+                        {
+                            add.PropertyChanged += OnInputReactivePaletteEntryChanged;
+                            _paletteEntriesHooked.Add(add);
+                        }
+            }
             OnPropertyChanged(nameof(LightbarInputReactivePalette));
         }
         private void OnInputReactivePaletteEntryChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)

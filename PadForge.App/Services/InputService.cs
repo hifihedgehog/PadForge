@@ -1971,7 +1971,7 @@ namespace PadForge.Services
 
             // Pair each assigned setting with its device caps + PadSetting.
             bool capGyro = false, capLightbar = false, capTouchpad = false, capAudio = false;
-            var bindings = new List<(PadSetting Ps, UserDevice Ud)>();
+            var bindings = new List<(PadSetting Ps, UserDevice Ud, Guid Guid)>();
             if (slotSettings != null)
             {
                 foreach (var us in slotSettings)
@@ -1985,7 +1985,7 @@ namespace PadForge.Services
                             if (d != null && d.InstanceGuid == us.InstanceGuid) { ud = d; break; }
                         }
                     }
-                    bindings.Add((us.GetPadSetting(), ud));
+                    bindings.Add((us.GetPadSetting(), ud, us.InstanceGuid));
                     if (ud == null) continue;
 
                     capGyro |= ud.HasGyro;
@@ -2013,96 +2013,167 @@ namespace PadForge.Services
             bool capSticks = !isMidi && bindings.Count > 0;
             bool capTriggers = !isMidi && !isKbm && bindings.Count > 0;
 
-            // Compute (hot, summary) per stage, union across devices.
-            var stickParts = new List<string>();
-            var triggerParts = new List<string>();
-            var gyroParts = new List<string>();
-            foreach (var (ps, _) in bindings)
+            // One readout line per device per stage (user report
+            // 2026-07-06: the flat cross-device union hid which device
+            // owned which value and dropped devices entirely). Devices
+            // still at defaults read STOCK so every assigned device is
+            // accounted for. Attribution comes from the card roster,
+            // which keeps offline devices' stored names.
+            (string Glyph, string Suffix) Attr(Guid g)
             {
-                if (ps == null) continue;
-                if (capSticks) AppendStickStageTokens(stickParts, ps);
-                if (capTriggers) AppendTriggerStageTokens(triggerParts, ps);
-                if (capGyro) AppendGyroStageTokens(gyroParts, ps);
+                var roster = slot.MappedDevices;
+                if (roster != null)
+                {
+                    foreach (var mi in roster)
+                        if (mi != null && mi.InstanceGuid == g)
+                            return (mi.TypeGlyph, "  ·  " + mi.Name);
+                }
+                string s = g.ToString();
+                return ("", "  ·  " + (s.Length > 8 ? s.Substring(0, 8) + "…" : s));
             }
 
-            var lightingParts = new List<string>();
-            var audioParts = new List<string>();
-            if (capLightbar || capAudio)
+            void AddLine(List<StageSummaryLine> lines, ref bool hot, Guid g, List<string> parts)
             {
-                foreach (var (_, ud) in bindings)
+                hot |= parts.Count > 0;
+                var (gl, sfx) = Attr(g);
+                lines.Add(new StageSummaryLine
                 {
-                    if (ud == null) continue;
-                    if (!padVm.PerDevicePlayStationConfigs.TryGetValue(ud.InstanceGuid, out var cfg) || cfg == null)
-                        continue;
+                    // Trailing space rides the glyph so glyph-less lines
+                    // (slot-level VOL) don't start with a stray indent.
+                    DeviceGlyph = gl.Length > 0 ? gl + " " : string.Empty,
+                    Tokens = parts.Count > 0 ? string.Join(" · ", parts) : "STOCK",
+                    DeviceSuffix = sfx,
+                });
+            }
+
+            var stickLines = new List<StageSummaryLine>();
+            var triggerLines = new List<StageSummaryLine>();
+            var gyroLines = new List<StageSummaryLine>();
+            var lightingLines = new List<StageSummaryLine>();
+            var touchpadLines = new List<StageSummaryLine>();
+            var audioLines = new List<StageSummaryLine>();
+            bool stickHot = false, triggerHot = false, gyroHot = false,
+                 lightingHot = false, touchpadHot = false, audioHot = false;
+
+            foreach (var (ps, ud, guid) in bindings)
+            {
+                if (ps != null && capSticks)
+                {
+                    var parts = new List<string>();
+                    AppendStickStageTokens(parts, ps);
+                    AddLine(stickLines, ref stickHot, guid, parts);
+                }
+                if (ps != null && capTriggers)
+                {
+                    var parts = new List<string>();
+                    AppendTriggerStageTokens(parts, ps);
+                    AddLine(triggerLines, ref triggerHot, guid, parts);
+                }
+                // Device-capability stages only line up the devices that
+                // actually have the hardware; a STOCK gyro line on a
+                // gyro-less sibling would be noise.
+                if (ps != null && ud != null && ud.HasGyro)
+                {
+                    var parts = new List<string>();
+                    AppendGyroStageTokens(parts, ps);
+                    AddLine(gyroLines, ref gyroHot, guid, parts);
+                }
+
+                bool sonyLightbar = ud != null && ud.VendorId == 0x054C
+                    && (ud.ProdId == 0x0CE6 || ud.ProdId == 0x0DF2
+                     || ud.ProdId == 0x05C4 || ud.ProdId == 0x09CC || ud.ProdId == 0x0BA0);
+                bool devAudio = sonyLightbar
+                    || (ud != null && (WiiSpeakerService.DeviceHasSpeaker(ud)
+                                    || HapticToneService.DeviceHasHaptics(ud)));
+                PlayStationSlotConfig cfg = null;
+                if (ud != null)
+                    padVm.PerDevicePlayStationConfigs.TryGetValue(ud.InstanceGuid, out cfg);
+
+                if (sonyLightbar)
+                {
                     // Lighting defaults: LightbarMode.Off base +
                     // InputReactiveMode.Off overlay (PlayStationSlotConfig
-                    // field initializers). Summary = the picked mode names.
-                    if (capLightbar)
+                    // field initializers). Tokens = the picked mode names.
+                    var parts = new List<string>();
+                    if (cfg != null)
                     {
                         if (cfg.LightbarMode != LightbarMode.Off)
-                            AddToken(lightingParts, MacroAction.LightbarModeDisplayName(cfg.LightbarMode));
+                            AddToken(parts, MacroAction.LightbarModeDisplayName(cfg.LightbarMode));
                         if (cfg.InputReactiveMode != InputReactiveMode.Off)
-                            AddToken(lightingParts, InputReactiveModeDisplayName(cfg.InputReactiveMode));
+                            AddToken(parts, InputReactiveModeDisplayName(cfg.InputReactiveMode));
                         // Indicator LEDs. Defaults: PlayerLedMode Off,
                         // PlayerLedBrightness High, MicLedMode Off
                         // (PlayStationSlotConfig field initializers;
                         // ResetIndicatorLedsAllCommand restores them).
                         if (cfg.PlayerLedMode != PlayerLedMode.Off)
-                            AddToken(lightingParts, cfg.PlayerLedMode == PlayerLedMode.All
+                            AddToken(parts, cfg.PlayerLedMode == PlayerLedMode.All
                                 ? "PLED ALL" : "PLED P" + (int)cfg.PlayerLedMode);
                         if (cfg.PlayerLedBrightness != PlayerLedBrightness.High)
-                            AddToken(lightingParts, cfg.PlayerLedBrightness == PlayerLedBrightness.Medium
+                            AddToken(parts, cfg.PlayerLedBrightness == PlayerLedBrightness.Medium
                                 ? "PLED MED" : "PLED LOW");
                         if (cfg.MicLedMode != MicLedMode.Off)
-                            AddToken(lightingParts, cfg.MicLedMode switch
+                            AddToken(parts, cfg.MicLedMode switch
                             {
                                 MicLedMode.Pulse => "MIC PULSE",
                                 MicLedMode.FollowDeviceMute => "MIC FOLLOW",
                                 _ => "MIC SOLID",
                             });
                     }
+                    AddLine(lightingLines, ref lightingHot, guid, parts);
+                }
+                if (devAudio)
+                {
                     // Audio default: passthrough off (PlayStationSlotConfig
                     // initializer; ResetSoundOutputAllCommand restores it).
-                    if (capAudio && cfg.AudioPassthroughEnabled)
-                        AddToken(audioParts, "PASSTHROUGH");
+                    var parts = new List<string>();
+                    if (cfg != null && cfg.AudioPassthroughEnabled)
+                        AddToken(parts, "PASSTHROUGH");
+                    AddLine(audioLines, ref audioHot, guid, parts);
                 }
-                // Macro-sound master volume default 100 (PadViewModel
-                // _soundMasterVolume initializer / reset command).
-                if (capAudio && padVm.SoundMasterVolume != 100)
-                    AddToken(audioParts, "VOL " + padVm.SoundMasterVolume.ToString(System.Globalization.CultureInfo.InvariantCulture) + "%");
+                if (ud != null && ud.HasTouchpad)
+                {
+                    var parts = new List<string>();
+                    if (ps?.TouchpadSettings != null)
+                    {
+                        foreach (var entry in ps.TouchpadSettings)
+                        {
+                            var ts = entry?.Settings;
+                            if (ts == null) continue;
+                            // Touchpad defaults: every feature toggle off
+                            // (TouchpadGestureSettings.Default(), "touchpad
+                            // mappings are opt-in").
+                            if (ts.Enabled) AddToken(parts, "GESTURES");
+                            if (ts.EnableJoystickOutput) AddToken(parts, "JOYSTICK");
+                            if (ts.MouseSensitivityX != 1.0f || ts.MouseSensitivityY != 1.0f
+                                || ts.MouseInvertX || ts.MouseInvertY)
+                                AddToken(parts, "MOUSE");
+                        }
+                    }
+                    AddLine(touchpadLines, ref touchpadHot, guid, parts);
+                }
             }
 
-            var touchpadParts = new List<string>();
-            if (capTouchpad)
+            // Macro-sound master volume default 100 (PadViewModel
+            // _soundMasterVolume initializer / reset command). Slot-level,
+            // so the line carries no device attribution.
+            if (capAudio && padVm.SoundMasterVolume != 100)
             {
-                foreach (var (ps, _) in bindings)
+                audioHot = true;
+                audioLines.Add(new StageSummaryLine
                 {
-                    if (ps?.TouchpadSettings == null) continue;
-                    foreach (var entry in ps.TouchpadSettings)
-                    {
-                        var ts = entry?.Settings;
-                        if (ts == null) continue;
-                        // Touchpad defaults: every feature toggle off
-                        // (TouchpadGestureSettings.Default(), "touchpad
-                        // mappings are opt-in").
-                        if (ts.Enabled) AddToken(touchpadParts, "GESTURES");
-                        if (ts.EnableJoystickOutput) AddToken(touchpadParts, "JOYSTICK");
-                        if (ts.MouseSensitivityX != 1.0f || ts.MouseSensitivityY != 1.0f
-                            || ts.MouseInvertX || ts.MouseInvertY)
-                            AddToken(touchpadParts, "MOUSE");
-                    }
-                }
+                    Tokens = "VOL " + padVm.SoundMasterVolume.ToString(System.Globalization.CultureInfo.InvariantCulture) + "%",
+                });
             }
 
             // Desired membership in tab order. A stage only appears when
             // the slot HAS it (a gyro glyph on a gyro-less pad is noise).
-            var desired = new List<(string Kind, string Glyph, bool Stick, bool Trig, List<string> Parts)>();
-            if (capSticks) desired.Add(("Sticks", string.Empty, true, false, stickParts));
-            if (capTriggers) desired.Add(("Triggers", string.Empty, false, true, triggerParts));
-            if (capGyro) desired.Add(("Gyro", StageGlyphGyro, false, false, gyroParts));
-            if (capLightbar) desired.Add(("Lighting", StageGlyphLighting, false, false, lightingParts));
-            if (capTouchpad) desired.Add(("Touchpad", StageGlyphTouchpad, false, false, touchpadParts));
-            if (capAudio) desired.Add(("Audio", StageGlyphAudio, false, false, audioParts));
+            var desired = new List<(string Kind, string Glyph, bool Stick, bool Trig, bool Hot, List<StageSummaryLine> Lines)>();
+            if (capSticks) desired.Add(("Sticks", string.Empty, true, false, stickHot, stickLines));
+            if (capTriggers) desired.Add(("Triggers", string.Empty, false, true, triggerHot, triggerLines));
+            if (capGyro) desired.Add(("Gyro", StageGlyphGyro, false, false, gyroHot, gyroLines));
+            if (capLightbar) desired.Add(("Lighting", StageGlyphLighting, false, false, lightingHot, lightingLines));
+            if (capTouchpad) desired.Add(("Touchpad", StageGlyphTouchpad, false, false, touchpadHot, touchpadLines));
+            if (capAudio) desired.Add(("Audio", StageGlyphAudio, false, false, audioHot, audioLines));
 
             // Membership changed → rebuild; otherwise mutate in place so
             // the card's ItemsControl doesn't re-template every second.
@@ -2124,8 +2195,28 @@ namespace PadForge.Services
             for (int i = 0; i < desired.Count; i++)
             {
                 var info = slot.StageLedger[i];
-                info.IsHot = desired[i].Parts.Count > 0;
-                info.Summary = string.Join(" · ", desired[i].Parts);
+                info.IsHot = desired[i].Hot;
+                // Inert stages keep no tooltip (design: the ashen glyph
+                // is the whole statement). Hot stages list every covered
+                // device. The composite string is the change key so the
+                // line collection only churns when values changed.
+                string composite = string.Empty;
+                if (desired[i].Hot)
+                {
+                    var sb = new System.Text.StringBuilder();
+                    foreach (var ln in desired[i].Lines)
+                        sb.Append(ln.DeviceGlyph).Append('|').Append(ln.Tokens)
+                          .Append('|').Append(ln.DeviceSuffix).Append('\n');
+                    composite = sb.ToString();
+                }
+                if (!string.Equals(info.Summary, composite, StringComparison.Ordinal))
+                {
+                    info.Summary = composite;
+                    info.SummaryLines.Clear();
+                    if (desired[i].Hot)
+                        foreach (var ln in desired[i].Lines)
+                            info.SummaryLines.Add(ln);
+                }
             }
         }
 

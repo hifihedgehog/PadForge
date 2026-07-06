@@ -518,7 +518,7 @@ namespace PadForge
             // Wire MIDI Services install/uninstall commands.
             _viewModel.Settings.InstallMidiServicesRequested += async (s, e) =>
             {
-                _viewModel.StatusText = Strings.Instance.Status_DownloadingMidi;
+                _viewModel.SetStatus(Strings.Instance.Status_DownloadingMidi, persist: true);
                 DriverOverlayText.Text = Strings.Instance.Status_DownloadingInstallingMidi;
                 DriverOverlay.Visibility = Visibility.Visible;
                 try
@@ -532,7 +532,7 @@ namespace PadForge
                 }
                 catch (Exception ex)
                 {
-                    _viewModel.StatusText = string.Format(Strings.Instance.Status_MidiInstallFailed_Format, ex.Message);
+                    _viewModel.SetStatus(string.Format(Strings.Instance.Status_MidiInstallFailed_Format, ex.Message), persist: true);
                 }
                 finally
                 {
@@ -1148,8 +1148,8 @@ namespace PadForge
                             if (_recorderService.IsRecording)
                             {
                                 activePad.CurrentRecordingTarget = parent.TargetSettingName;
-                                _viewModel.StatusText = string.Format(
-                                    Strings.Instance.Status_RecordKindDown_Format, parent.TargetLabel);
+                                _viewModel.SetStatus(string.Format(
+                                    Strings.Instance.Status_RecordKindDown_Format, parent.TargetLabel), persist: true);
                                 return; // keep recording; Down phase is live
                             }
                         }
@@ -1238,7 +1238,7 @@ namespace PadForge
                         bool isXAxis = negMapping.TargetSettingName.Contains("AxisX")
                             || negMapping.TargetLabel.EndsWith(" X", StringComparison.Ordinal);
                         string dirHint = isXAxis ? Strings.Instance.Status_DirectionRight : Strings.Instance.Status_DirectionDown;
-                        _viewModel.StatusText = string.Format(Strings.Instance.Status_NowMap_Format, negMapping.TargetLabel, dirHint);
+                        _viewModel.SetStatus(string.Format(Strings.Instance.Status_NowMap_Format, negMapping.TargetLabel, dirHint), persist: true);
 
                         // Switch to Controller tab so the 3D directional arrow is visible.
                         activePad.SelectedConfigTab = 0;
@@ -1298,7 +1298,7 @@ namespace PadForge
                     bool isXAxis2 = result.Mapping.TargetSettingName.Contains("AxisX")
                         || result.Mapping.TargetLabel.EndsWith(" X", StringComparison.Ordinal);
                     string dirHint = isXAxis2 ? Strings.Instance.Status_DirectionLeft : Strings.Instance.Status_DirectionUp;
-                    _viewModel.StatusText = string.Format(Strings.Instance.Status_NowMap_Format, result.Mapping.TargetLabel, dirHint);
+                    _viewModel.SetStatus(string.Format(Strings.Instance.Status_NowMap_Format, result.Mapping.TargetLabel, dirHint), persist: true);
 
                     if (activePad.IsMapAllActive)
                     {
@@ -1589,7 +1589,7 @@ namespace PadForge
                     _viewModel.IsEngineRunning = false;
                     _viewModel.Dashboard.EngineStateKey = "Stopping";
                     _viewModel.Dashboard.EngineStatus = Strings.Instance.Common_Stopping;
-                    _viewModel.StatusText = Strings.Instance.Status_StoppingEngine;
+                    _viewModel.SetStatus(Strings.Instance.Status_StoppingEngine, persist: true);
                     _viewModel.RefreshCommands();
                     System.Threading.Tasks.Task.Run(() => _inputService.Stop())
                         .ContinueWith(_ => RebuildControllerSection(),
@@ -1701,6 +1701,18 @@ namespace PadForge
             RefreshMidiServicesStatus();
             StartDriverStatusTimer();
 
+            // Status decay (#175 item 7): every StatusText write cancels any
+            // fade in progress and restores full opacity, so fresh text never
+            // inherits a dimmed or mid-animation state.
+            _viewModel.PropertyChanged += (s, e) =>
+            {
+                if (e.PropertyName == nameof(MainViewModel.StatusText))
+                {
+                    StatusMessageText.BeginAnimation(UIElement.OpacityProperty, null);
+                    StatusMessageText.Opacity = 1.0;
+                }
+            };
+
             // Populate sidebar and dashboard with saved slots regardless of engine state,
             // so virtual controllers are visible for configuration even when the engine is off.
             _viewModel.RefreshNavControllerItems();
@@ -1751,8 +1763,41 @@ namespace PadForge
             {
                 RefreshHidHideStatus();
                 RefreshMidiServicesStatus();
+                // Status decay (#175 item 7) rides this always-on 5 s lane
+                // (started in the constructor, never stopped) instead of a
+                // timer of its own. The engine's 30 Hz UI timer would be
+                // the wrong host: it dies with the engine, and "Engine
+                // stopped." would burn in exactly like the bug being fixed.
+                SweepStatusMessage();
             };
             _driverStatusTimer.Start();
+        }
+
+        /// <summary>
+        /// Clears an info-class status bar message once it has outlived its
+        /// ~5 s decay window (#175 item 7). Persistent messages (failures,
+        /// active prompts) are left alone until the next write. With OS
+        /// animations on, a short opacity fade runs first and the clear
+        /// happens on its Completed callback, which re-checks eligibility
+        /// so a write landing mid-fade survives at full opacity.
+        /// </summary>
+        private void SweepStatusMessage()
+        {
+            if (!_viewModel.IsStatusDecayDue) return;
+            if (!MotionEnabled)
+            {
+                _viewModel.ClearDecayedStatus();
+                return;
+            }
+            var fade = new System.Windows.Media.Animation.DoubleAnimation(
+                1.0, 0.0, TimeSpan.FromMilliseconds(250));
+            fade.Completed += (s, ev) =>
+            {
+                _viewModel.ClearDecayedStatus();  // no-op if restamped mid-fade
+                StatusMessageText.BeginAnimation(UIElement.OpacityProperty, null);
+                StatusMessageText.Opacity = 1.0;
+            };
+            StatusMessageText.BeginAnimation(UIElement.OpacityProperty, fade);
         }
 
         private void OnLoaded(object sender, RoutedEventArgs e)
@@ -1786,7 +1831,7 @@ namespace PadForge
             catch (DllNotFoundException)
             {
                 _viewModel.Settings.SdlVersion = Strings.Instance.Status_SDL3NotFound;
-                _viewModel.StatusText = Strings.Instance.Status_SDL3NotFoundDetail;
+                _viewModel.SetStatus(Strings.Instance.Status_SDL3NotFoundDetail, persist: true);
             }
             catch
             {
@@ -4557,7 +4602,7 @@ namespace PadForge
             }
             catch (Exception ex)
             {
-                _viewModel.StatusText = ex.Message;
+                _viewModel.SetStatus(ex.Message, persist: true);
             }
         }
 
@@ -4584,7 +4629,7 @@ namespace PadForge
             var profile = PadForge.Common.ProfileTransfer.Import(filePath, out var packages);
             if (profile == null)
             {
-                _viewModel.StatusText = Strings.Instance.Status_ProfileImportFailed;
+                _viewModel.SetStatus(Strings.Instance.Status_ProfileImportFailed, persist: true);
                 return;
             }
 
@@ -4728,9 +4773,9 @@ namespace PadForge
                         if (_recorderService.IsRecording)
                         {
                             capturedPad.CurrentRecordingTarget = mi.TargetSettingName;
-                            _viewModel.StatusText = pk.UsesUpDownKeys
+                            _viewModel.SetStatus(pk.UsesUpDownKeys
                                 ? string.Format(Strings.Instance.Status_RecordKindUp_Format, mi.TargetLabel)
-                                : string.Format(Strings.Instance.Status_RecordingPrompt_Format, mi.TargetLabel);
+                                : string.Format(Strings.Instance.Status_RecordingPrompt_Format, mi.TargetLabel), persist: true);
                         }
                         else
                         {
@@ -5267,7 +5312,7 @@ namespace PadForge
             var ps = _inputService.GetCurrentPadSetting(padVm.PadIndex);
             if (ps == null)
             {
-                _viewModel.StatusText = Strings.Instance.Status_NoDeviceToCopyFrom;
+                _viewModel.SetStatus(Strings.Instance.Status_NoDeviceToCopyFrom, persist: true);
                 return;
             }
 
@@ -5324,7 +5369,7 @@ namespace PadForge
             }
             catch (Exception ex)
             {
-                _viewModel.StatusText = string.Format(Strings.Instance.Status_CopyFailed_Format, ex.Message);
+                _viewModel.SetStatus(string.Format(Strings.Instance.Status_CopyFailed_Format, ex.Message), persist: true);
             }
         }
 
@@ -5337,7 +5382,7 @@ namespace PadForge
                     out VirtualControllerType srcType, out bool srcIsExtended);
                 if (ps == null)
                 {
-                    _viewModel.StatusText = Strings.Instance.Status_InvalidClipboard;
+                    _viewModel.SetStatus(Strings.Instance.Status_InvalidClipboard, persist: true);
                     return;
                 }
 
@@ -5439,7 +5484,7 @@ namespace PadForge
             }
             catch (Exception ex)
             {
-                _viewModel.StatusText = string.Format(Strings.Instance.Status_PasteFailed_Format, ex.Message);
+                _viewModel.SetStatus(string.Format(Strings.Instance.Status_PasteFailed_Format, ex.Message), persist: true);
             }
         }
 
@@ -5457,7 +5502,7 @@ namespace PadForge
             }
             catch (Exception ex)
             {
-                _viewModel.StatusText = string.Format(Strings.Instance.Status_CopyFailed_Format, ex.Message);
+                _viewModel.SetStatus(string.Format(Strings.Instance.Status_CopyFailed_Format, ex.Message), persist: true);
             }
         }
 
@@ -5466,7 +5511,7 @@ namespace PadForge
             try
             {
                 var env = SettingsService.TryParseMacroClipboard(Clipboard.GetText());
-                if (env == null) { _viewModel.StatusText = Strings.Instance.Status_MacroClipboardInvalid; return; }
+                if (env == null) { _viewModel.SetStatus(Strings.Instance.Status_MacroClipboardInvalid, persist: true); return; }
                 MacroItem last = null;
                 foreach (var md in env.Macros)
                 {
@@ -5481,7 +5526,7 @@ namespace PadForge
             }
             catch (Exception ex)
             {
-                _viewModel.StatusText = string.Format(Strings.Instance.Status_PasteFailed_Format, ex.Message);
+                _viewModel.SetStatus(string.Format(Strings.Instance.Status_PasteFailed_Format, ex.Message), persist: true);
             }
         }
 
@@ -5536,7 +5581,7 @@ namespace PadForge
 
             if (entries.Count == 0)
             {
-                _viewModel.StatusText = Strings.Instance.Status_MacroNoSource;
+                _viewModel.SetStatus(Strings.Instance.Status_MacroNoSource, persist: true);
                 return;
             }
 
@@ -5691,7 +5736,7 @@ namespace PadForge
 
             if (entries.Count == 0)
             {
-                _viewModel.StatusText = Strings.Instance.Status_NoOtherDevices;
+                _viewModel.SetStatus(Strings.Instance.Status_NoOtherDevices, persist: true);
                 return;
             }
 
@@ -5813,7 +5858,7 @@ namespace PadForge
         /// </summary>
         private async Task RunDriverOperationAsync(string statusMessage, Action operation, Action refreshStatus)
         {
-            _viewModel.StatusText = statusMessage;
+            _viewModel.SetStatus(statusMessage, persist: true);
             DriverOverlayText.Text = statusMessage;
             DriverOverlay.Visibility = Visibility.Visible;
             try
@@ -5828,7 +5873,7 @@ namespace PadForge
             }
             catch (Exception ex)
             {
-                _viewModel.StatusText = string.Format(Strings.Instance.Status_DriverOperationFailed_Format, ex.Message);
+                _viewModel.SetStatus(string.Format(Strings.Instance.Status_DriverOperationFailed_Format, ex.Message), persist: true);
             }
             finally
             {

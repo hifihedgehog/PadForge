@@ -450,7 +450,7 @@ namespace PadForge.Views
             catch (Exception ex)
             {
                 if (mainVm != null)
-                    mainVm.StatusText = string.Format(Strings.Instance.Status_CopyFailed_Format, ex.Message);
+                    mainVm.SetStatus(string.Format(Strings.Instance.Status_CopyFailed_Format, ex.Message), persist: true);
             }
         }
 

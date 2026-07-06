@@ -388,7 +388,7 @@ namespace PadForge.Services
                 if (_mainVm.Settings.ProfileItems.Count == 0)
                     LoadProfiles(null, null);
 
-                _mainVm.StatusText = string.Format(Strings.Instance.Status_ErrorLoadingSettings_Format, ex.Message);
+                _mainVm.SetStatus(string.Format(Strings.Instance.Status_ErrorLoadingSettings_Format, ex.Message), persist: true);
             }
         }
 
@@ -2831,7 +2831,7 @@ namespace PadForge.Services
             }
             catch (Exception ex)
             {
-                _mainVm.StatusText = string.Format(Strings.Instance.Status_ErrorSavingSettings_Format, ex.Message);
+                _mainVm.SetStatus(string.Format(Strings.Instance.Status_ErrorSavingSettings_Format, ex.Message), persist: true);
             }
         }
 
@@ -3691,7 +3691,7 @@ namespace PadForge.Services
             }
             else
             {
-                _mainVm.StatusText = Strings.Instance.Status_NoSettingsFile;
+                _mainVm.SetStatus(Strings.Instance.Status_NoSettingsFile, persist: true);
             }
 
             IsDirty = false;

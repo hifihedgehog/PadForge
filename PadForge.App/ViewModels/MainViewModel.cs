@@ -338,13 +338,63 @@ namespace PadForge.ViewModels
 
         private string _statusText = Strings.Instance.Common_Ready;
 
+        // Status decay (#175 item 7): info-class messages ("Settings saved…",
+        // "Copied…") clear ~5 s after the last write instead of burning into
+        // the status bar forever. Persistent messages (failures, in-flight
+        // prompts like "Now map …") hold until the next write replaces them.
+        // The sweep rides MainWindow's existing 5 s driver-status timer, so
+        // no timer lives here.
+        private const long StatusDecayMs = 5000;
+        private bool _statusPersists;
+        private long _statusStampTick = Environment.TickCount64;
+
         /// <summary>
         /// Status bar text displayed at the bottom of the main window.
+        /// Plain writes are info-class and decay after ~5 s. Post failures
+        /// and active prompts through <see cref="SetStatus"/> instead.
         /// </summary>
         public string StatusText
         {
             get => _statusText;
-            set => SetProperty(ref _statusText, value);
+            set
+            {
+                // Restamp on every write. A repeated confirmation gets a
+                // fresh decay window even when the text is unchanged.
+                _statusPersists = false;
+                _statusStampTick = Environment.TickCount64;
+                SetProperty(ref _statusText, value);
+            }
+        }
+
+        /// <summary>
+        /// Writes the status bar with an explicit class. persist=true
+        /// (failures, prompts that a later write always terminates) exempts
+        /// the message from the decay sweep until the next write.
+        /// </summary>
+        public void SetStatus(string message, bool persist = false)
+        {
+            StatusText = message;       // stamps as info
+            _statusPersists = persist;  // then apply the class
+        }
+
+        /// <summary>
+        /// True when the current message is info-class, non-empty, and has
+        /// outlived <see cref="StatusDecayMs"/>, meaning the sweeper should
+        /// fade/clear it now.
+        /// </summary>
+        public bool IsStatusDecayDue =>
+            !_statusPersists &&
+            !string.IsNullOrEmpty(_statusText) &&
+            Environment.TickCount64 - _statusStampTick >= StatusDecayMs;
+
+        /// <summary>
+        /// Clears a decayed info message. Re-checks eligibility so a write
+        /// that lands mid-fade wins (fresh stamp → not due → no-op).
+        /// </summary>
+        public void ClearDecayedStatus()
+        {
+            if (!IsStatusDecayDue) return;
+            StatusText = string.Empty;
         }
 
         private bool _isEngineRunning;

@@ -414,6 +414,81 @@ namespace PadForge.Common.Input
         private const int ERROR_IO_PENDING = 997;
         private static readonly IntPtr INVALID = new IntPtr(-1);
 
+        // ── Combined Joy-Con child-path resolution (issue #184) ──
+        // The combined pair (0x057E/0x2008) has the synthetic SDL path
+        // "nintendo_joycons_combined", which CreateFileW cannot open. Enumerate HID
+        // to find a real child Joy-Con path (Left 0x2006, then Right 0x2007).
+        [DllImport("hid.dll")] private static extern void HidD_GetHidGuid(out Guid hidGuid);
+        [DllImport("hid.dll", SetLastError = true)] private static extern bool HidD_GetAttributes(IntPtr h, ref HIDD_ATTRIBUTES attr);
+        [DllImport("setupapi.dll", CharSet = CharSet.Unicode, SetLastError = true)]
+        private static extern IntPtr SetupDiGetClassDevsW(ref Guid classGuid, IntPtr enumerator, IntPtr hwndParent, uint flags);
+        [DllImport("setupapi.dll", SetLastError = true)]
+        private static extern bool SetupDiEnumDeviceInterfaces(IntPtr set, IntPtr devInfo, ref Guid interfaceClassGuid, uint memberIndex, ref SP_DEVICE_INTERFACE_DATA data);
+        [DllImport("setupapi.dll", CharSet = CharSet.Unicode, SetLastError = true)]
+        private static extern bool SetupDiGetDeviceInterfaceDetailW(IntPtr set, ref SP_DEVICE_INTERFACE_DATA data, IntPtr detail, uint detailSize, out uint requiredSize, IntPtr devInfo);
+        [DllImport("setupapi.dll", SetLastError = true)]
+        private static extern bool SetupDiDestroyDeviceInfoList(IntPtr set);
+
+        [StructLayout(LayoutKind.Sequential)]
+        private struct HIDD_ATTRIBUTES { public uint Size; public ushort VendorID, ProductID, VersionNumber; }
+        [StructLayout(LayoutKind.Sequential)]
+        private struct SP_DEVICE_INTERFACE_DATA { public uint cbSize; public Guid InterfaceClassGuid; public uint Flags; public IntPtr Reserved; }
+        private const uint DIGCF_PRESENT = 0x2, DIGCF_DEVICEINTERFACE = 0x10;
+
+        /// <summary>Resolves a real HID path for one of the combined pair's child
+        /// Joy-Cons (Left 0x2006 preferred, then Right 0x2007). Null if neither is
+        /// found, in which case BuildSink's CreateFileW fails as before.</summary>
+        private static string ResolveJoyConChildPath()
+        {
+            foreach (ushort pid in new ushort[] { 0x2006, 0x2007 })
+            {
+                string p = FindHidPath(NintendoVid, pid);
+                if (p != null) return p;
+            }
+            return null;
+        }
+
+        /// <summary>Enumerates present HID device interfaces and returns the first
+        /// whose HIDD_ATTRIBUTES match vid/pid. Standard SetupDi walk.</summary>
+        private static string FindHidPath(ushort vid, ushort pid)
+        {
+            HidD_GetHidGuid(out Guid hidGuid);
+            IntPtr set = SetupDiGetClassDevsW(ref hidGuid, IntPtr.Zero, IntPtr.Zero, DIGCF_PRESENT | DIGCF_DEVICEINTERFACE);
+            if (set == INVALID || set == IntPtr.Zero) return null;
+            try
+            {
+                var did = new SP_DEVICE_INTERFACE_DATA { cbSize = (uint)Marshal.SizeOf<SP_DEVICE_INTERFACE_DATA>() };
+                for (uint i = 0; SetupDiEnumDeviceInterfaces(set, IntPtr.Zero, ref hidGuid, i, ref did); i++)
+                {
+                    SetupDiGetDeviceInterfaceDetailW(set, ref did, IntPtr.Zero, 0, out uint need, IntPtr.Zero);
+                    if (need == 0) continue;
+                    IntPtr detail = Marshal.AllocHGlobal((int)need);
+                    try
+                    {
+                        // SP_DEVICE_INTERFACE_DETAIL_DATA_W.cbSize is 8 on x64, 6 on x86.
+                        // The WCHAR DevicePath[] starts at offset 4 (right after cbSize).
+                        Marshal.WriteInt32(detail, IntPtr.Size == 8 ? 8 : 6);
+                        if (!SetupDiGetDeviceInterfaceDetailW(set, ref did, detail, need, out _, IntPtr.Zero)) continue;
+                        string devPath = Marshal.PtrToStringUni(detail + 4);
+                        if (string.IsNullOrEmpty(devPath)) continue;
+                        IntPtr h = CreateFileW(devPath, 0, SHARE_RW, IntPtr.Zero, OPEN_EXISTING, 0, IntPtr.Zero);
+                        if (h == INVALID || h == IntPtr.Zero) continue;
+                        try
+                        {
+                            var attr = new HIDD_ATTRIBUTES { Size = (uint)Marshal.SizeOf<HIDD_ATTRIBUTES>() };
+                            if (HidD_GetAttributes(h, ref attr) && attr.VendorID == vid && attr.ProductID == pid)
+                                return devPath;
+                        }
+                        finally { CloseHandle(h); }
+                    }
+                    finally { Marshal.FreeHGlobal(detail); }
+                }
+            }
+            catch { /* enumeration failure -> null, sink falls back to failing open */ }
+            finally { SetupDiDestroyDeviceInfoList(set); }
+            return null;
+        }
+
         private static (int outLen, int featLen) QueryReportLens(IntPtr h)
         {
             if (!HidD_GetPreparsedData(h, out IntPtr pp) || pp == IntPtr.Zero) return (0, 0);
@@ -667,7 +742,21 @@ namespace PadForge.Common.Input
                 }
                 else if (!steamViaSdl)
                 {
-                    h = CreateFileW(s.HidPath, GENERIC_WRITE | GENERIC_READ, SHARE_RW,
+                    // The combined Joy-Con pair's SDL path is a synthetic placeholder
+                    // ("nintendo_joycons_combined", SDL_hidapijoystick.c:1088), not a
+                    // real \\?\HID#... path, so CreateFileW fails and the pair gets no
+                    // tone (issue #184). Both physical Joy-Cons are still present as
+                    // real HID devices (0x057E/0x2006 L, 0x2007 R); resolve one real
+                    // path so the sink opens and plays on that coil. One handle drives
+                    // one coil; full dual-coil is a documented follow-up.
+                    string path = s.HidPath;
+                    if (s.Family == Family.JoyConPair &&
+                        (string.IsNullOrEmpty(path) || !path.StartsWith(@"\\?\", StringComparison.Ordinal)))
+                    {
+                        string child = ResolveJoyConChildPath();
+                        if (child != null) path = child;
+                    }
+                    h = CreateFileW(path, GENERIC_WRITE | GENERIC_READ, SHARE_RW,
                         IntPtr.Zero, OPEN_EXISTING, FILE_FLAG_OVERLAPPED, IntPtr.Zero);
                     if (h == INVALID || h == IntPtr.Zero) return false;
 

@@ -221,8 +221,21 @@ namespace PadForge.Common.Input
         {
             if (devicePath != null && devicePath.StartsWith("peer://", StringComparison.Ordinal))
                 return false;
-            return IsSwitch2(vendorId, productId) || IsDisconnectTarget(devicePath);
+            return IsSwitch2(vendorId, productId) || IsJoyConPair(vendorId, productId)
+                || IsDisconnectTarget(devicePath);
         }
+
+        /// <summary>The combined gen-1 Joy-Con pair (issue #184 sibling): SDL merges
+        /// two Joy-Cons into one virtual device with the synthetic path
+        /// "nintendo_joycons_combined" (SDL_hidapijoystick.c:1087) and PID 0x2008
+        /// (controller_list.h:589), so the path predicate cannot see it even though
+        /// both halves hold classic-BT links a single Joy-Con would pass with. Its
+        /// serial is the two child serials comma-joined (SDL_hidapi_combined.c:89),
+        /// which <see cref="TryDisconnect"/> splits to drop both links. The Switch 2
+        /// pair (0x2068) is not here: it already passes <see cref="IsSwitch2"/> and
+        /// powers off through its own protocol lane.</summary>
+        public static bool IsJoyConPair(ushort vendorId, ushort productId)
+            => vendorId == 0x057E && productId == 0x2008;
 
         /// <summary>The Switch 2 family, mirroring SDL usb_ids.h:126-130 in
         /// full (Joy-Con 2 L/R/pair, Pro 2, NSO GameCube), never a hand-picked
@@ -535,9 +548,21 @@ namespace PadForge.Common.Input
         /// <summary>Disconnects the Bluetooth device whose HID serial is
         /// <paramref name="serial"/>. Returns true when a radio accepted
         /// the disconnect. Safe to call for any serial: unparseable input
-        /// returns false without touching the radio.</summary>
+        /// returns false without touching the radio. A comma-joined serial
+        /// (SDL's combined Joy-Con pair carries both child serials joined
+        /// with ',', SDL_hidapi_combined.c:89) drops EVERY half's link, so
+        /// disconnecting the pair powers off both physical Joy-Cons.</summary>
         public static bool TryDisconnect(string serial)
         {
+            if (serial != null && serial.IndexOf(',') >= 0)
+            {
+                bool any = false;
+                foreach (var part in serial.Split(','))
+                    if (TryDisconnect(part.Trim()))
+                        any = true; // no short-circuit: both halves must drop
+                return any;
+            }
+
             if (!TryParseAddress(serial, out long address))
                 return false;
 

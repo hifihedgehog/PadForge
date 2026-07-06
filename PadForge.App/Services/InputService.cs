@@ -7011,11 +7011,25 @@ namespace PadForge.Services
                             foreach (var id in HidHideController.ExpandToBaseContainerAndChildren(instanceId))
                                 desiredIds.Add(id);
                         }
-                        // Fallback: synthetic paths (e.g., "XInput#0") — look up by VID/PID.
+                        // Fallback for synthetic paths (e.g., "XInput#0"): look up by VID/PID.
                         else if (ud.VendorId > 0 && ud.ProdId > 0)
                         {
-                            var realIds = HidHideController.FindInstanceIdsByVidPid(
-                                (ushort)ud.VendorId, (ushort)ud.ProdId);
+                            // The combined Joy-Con pair (issue #184 sibling) is an
+                            // SDL-manufactured virtual device: its PID (0x2008 gen-1,
+                            // 0x2068 Switch 2) exists on no PnP node, so the VID/PID
+                            // lookup below found nothing and Hide-from-games silently
+                            // no-oped on the pair. Search the physical children's PIDs
+                            // instead; the halves are what games actually see.
+                            var pidLookups = (ud.VendorId, ud.ProdId) switch
+                            {
+                                (0x057E, 0x2008) => new ushort[] { 0x2006, 0x2007 }, // gen-1 L, R
+                                (0x057E, 0x2068) => new ushort[] { 0x2066, 0x2067 }, // Joy-Con 2 L, R
+                                _ => new[] { (ushort)ud.ProdId },
+                            };
+                            var realIds = new List<string>();
+                            foreach (var pid in pidLookups)
+                                realIds.AddRange(HidHideController.FindInstanceIdsByVidPid(
+                                    (ushort)ud.VendorId, pid));
 
                             // Scrub any HIDMaestro-manufactured instance IDs that
                             // got cached from a previous PadForge version whose

@@ -79,7 +79,8 @@
             <TextBlock Grid.Row="3" Text="{Binding ProfileDialog_Executables, Source={x:Static strings:Strings.Instance}}"
                        Margin="0,0,0,4"/>
             <ListBox Grid.Row="4" x:Name="ExeListBox" Margin="0,0,0,8"
-                     MinHeight="80">
+                     MinHeight="80"
+                     ItemContainerStyle="{StaticResource EmberSelectListItem}">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <TextBlock Text="{Binding}" TextTrimming="CharacterEllipsis"
@@ -89,20 +90,23 @@
                 </ListBox.ItemTemplate>
             </ListBox>
 
-            <StackPanel Grid.Row="5" Orientation="Horizontal" Margin="0,0,0,12">
+            <!-- Browse/Remove edit the staged exe list, so both stay
+                 neutral (nothing is committed until Save). -->
+            <StackPanel Grid.Row="5" Orientation="Horizontal">
                 <Button Content="{Binding Common_Browse, Source={x:Static strings:Strings.Instance}}" Click="BrowseButton_Click"
                         MinWidth="80" Margin="0,0,8,0"/>
                 <Button Content="{Binding Common_Remove, Source={x:Static strings:Strings.Instance}}" Click="RemoveButton_Click"
                         MinWidth="80"/>
             </StackPanel>
 
+            <!-- Footer band (#175 dialog language): Save is the dialog's
+                 primary affirmative and wears the ember accent. -->
             <StackPanel Grid.Row="6" Orientation="Horizontal"
-                        HorizontalAlignment="Right" Margin="0,12,0,0">
-                <Button Content="{Binding Common_Save, Source={x:Static strings:Strings.Instance}}" MinWidth="80" Margin="0,0,8,0"
+                        HorizontalAlignment="Right" Margin="0,18,0,0">
+                <Button Content="{Binding Common_Save, Source={x:Static strings:Strings.Instance}}" MinWidth="90" Margin="0,0,8,0"
                         IsDefault="True" Click="SaveButton_Click"
-                        Foreground="{DynamicResource TextOnAccentFillColorPrimaryBrush}"
-                        Background="{DynamicResource AccentFillColorDefaultBrush}"/>
-                <Button Content="{Binding Common_Cancel, Source={x:Static strings:Strings.Instance}}" MinWidth="80"
+                        Style="{StaticResource EmberAccentButton}"/>
+                <Button Content="{Binding Common_Cancel, Source={x:Static strings:Strings.Instance}}" MinWidth="90"
                         IsCancel="True" Click="CancelButton_Click"/>
             </StackPanel>
         </Grid>

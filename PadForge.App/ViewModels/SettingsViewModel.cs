@@ -770,7 +770,8 @@ namespace PadForge.ViewModels
         /// <summary>
         /// Recomputes each profile row's IsActive flag against
         /// SettingsManager.ActiveProfileId. Empty/null id means the built-in
-        /// Default profile is active.
+        /// Default profile is active. Also repairs a missing list selection
+        /// onto the active row.
         /// </summary>
         private void UpdateActiveProfileFlags()
         {
@@ -780,6 +781,23 @@ namespace PadForge.ViewModels
                 item.IsActive = string.IsNullOrEmpty(activeId)
                     ? item.IsDefault
                     : item.Id == activeId;
+            }
+
+            // Selection repair (user report 2026-07-06): the selection aura
+            // binds ListBoxItem.IsSelected, and at startup nothing was
+            // selected even though a profile was ACTIVE, so the engaged row
+            // rendered auraless until a click. Whenever no live selection
+            // exists (null, or the selected row left the list), select the
+            // active row. Every population and active-switch path funnels
+            // through this method (OnProfileItemsChanged, the
+            // ActiveProfileInfo setter), so the load, reset, and switch
+            // sites all self-heal here. A live user selection is never
+            // overridden.
+            if (_selectedProfile == null || !ProfileItems.Contains(_selectedProfile))
+            {
+                var active = ProfileItems.FirstOrDefault(i => i.IsActive);
+                if (active != null)
+                    SelectedProfile = active;
             }
         }
 

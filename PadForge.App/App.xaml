@@ -291,12 +291,40 @@
             </Style>
 
             <!--
-                Primary accent buttons (#175 hover glow): hover heats the
-                fill to EmberHot via AccentButtonBackgroundPointerOver, so
-                the glow is full ember. For ui:Button Appearance=Primary
-                consumers (first-run Begin, tour Next).
+                Accent-verb buttons (#175 dialog language): the confirm
+                dialog's footer formatting extended app-wide. Neutral is
+                the default chrome. A surface's single primary affirmative
+                verb wears the ember accent, and destroyers wear
+                EmberDestructiveButton below. The accent is that same
+                idiom one rung up the ramp: EmberBrush rim and text over
+                the default chrome, hover blooms the standard ember glow.
+                Promoted from ProfilesPage's page-local ProfileAccentButton.
+                EmberAccentButton covers plain Button. EmberPrimaryButton
+                is the identical look for uictrl:Button. Consumers must
+                not set Appearance=Primary, whose style trigger would beat
+                these setters. Both templates swap to the same neutral
+                hover rim and fill (Wpf.Ui 4.3.0 Controls/Button/
+                Button.xaml), so the two types read as one.
+
+                Dialog footer idiom (layout a style cannot carry): a
+                right-aligned horizontal StackPanel, Margin 0,18,0,0,
+                MinWidth 90 buttons with 8px gaps, Cancel/Close neutral,
+                the action tinted by verb class. See ConfirmDialog.
             -->
+            <Style x:Key="EmberAccentButton" TargetType="Button" BasedOn="{StaticResource DefaultButtonStyle}">
+                <Setter Property="MinHeight" Value="32"/>
+                <Setter Property="BorderBrush" Value="{DynamicResource EmberBrush}"/>
+                <Setter Property="Foreground" Value="{DynamicResource EmberBrush}"/>
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Effect" Value="{StaticResource EmberHoverGlow}"/>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
             <Style x:Key="EmberPrimaryButton" TargetType="uictrl:Button" BasedOn="{StaticResource DefaultUiButtonStyle}">
+                <Setter Property="MinHeight" Value="32"/>
+                <Setter Property="BorderBrush" Value="{DynamicResource EmberBrush}"/>
+                <Setter Property="Foreground" Value="{DynamicResource EmberBrush}"/>
                 <Style.Triggers>
                     <Trigger Property="IsMouseOver" Value="True">
                         <Setter Property="Effect" Value="{StaticResource EmberHoverGlow}"/>
@@ -321,6 +349,45 @@
                         <Setter Property="Effect" Value="{StaticResource EmberHoverGlow}"/>
                     </Trigger>
                 </Style.Triggers>
+            </Style>
+
+            <!--
+                Ember-select list rows (user report 2026-07-05): the stock
+                WPF-UI ListBoxItem template paints a solid accent slab on
+                selection and flips Foreground to TextOnAccent, which lands
+                dark text on the ember fill. Template triggers outrank
+                derived-style setters (ProfilesPage container precedent), so
+                the container is retemplated. Selection is the EmberTint
+                wash + #66FF6B2C rim the identity chip and the AT mode cards
+                wear, and the content keeps its own foregrounds (names stay
+                primary, mono detail lines stay secondary/tertiary). Hover
+                is the neutral subtle fill with the faint ember bloom.
+            -->
+            <Style x:Key="EmberSelectListItem" TargetType="ListBoxItem" BasedOn="{StaticResource DefaultListBoxItemStyle}">
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="ListBoxItem">
+                            <Border x:Name="RowBd" CornerRadius="4" BorderThickness="1"
+                                    Background="Transparent" BorderBrush="Transparent"
+                                    Padding="{TemplateBinding Padding}">
+                                <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                  VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="RowBd" Property="Background" Value="{DynamicResource SubtleFillColorSecondaryBrush}"/>
+                                    <Setter TargetName="RowBd" Property="Effect" Value="{StaticResource NeutralHoverGlow}"/>
+                                </Trigger>
+                                <!-- Last-writer trigger order: selected wins the fill
+                                     even while hovered, the glow stays. -->
+                                <Trigger Property="IsSelected" Value="True">
+                                    <Setter TargetName="RowBd" Property="Background" Value="{DynamicResource EmberTintBrush}"/>
+                                    <Setter TargetName="RowBd" Property="BorderBrush" Value="#66FF6B2C"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
             </Style>
 
             <!--

@@ -76,8 +76,12 @@
             <TextBlock Grid.Row="1" x:Name="ImportedHeaderText" Style="{StaticResource CardTitle}"
                        Margin="0,4,0,6"/>
 
+            <!-- Ember-select rows (user report 2026-07-05): the stock
+                 selection slab put dark text on the accent fill. Both
+                 lists here take the shared EmberTint container. -->
             <ListBox Grid.Row="2" x:Name="ImportedList" MinHeight="120"
                      SelectionMode="Single"
+                     ItemContainerStyle="{StaticResource EmberSelectListItem}"
                      SelectionChanged="ImportedList_SelectionChanged">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
@@ -90,6 +94,9 @@
                 </ListBox.ItemTemplate>
             </ListBox>
 
+            <!-- Section strip: file verbs stay neutral. Delete destroys the
+                 selected imported profile (confirms first), so it wears the
+                 shared destructive chrome (#175 dialog language). -->
             <StackPanel Grid.Row="3" Orientation="Horizontal" Margin="0,8,0,0">
                 <Button x:Name="ImportFromFileButton"
                         Content="{Binding ManageProfiles_ImportFromFile, Source={x:Static strings:Strings.Instance}}"
@@ -99,6 +106,7 @@
                         MinWidth="90" Margin="8,0,0,0" IsEnabled="False" Click="ExportButton_Click"/>
                 <Button x:Name="DeleteButton"
                         Content="{Binding ManageProfiles_Delete, Source={x:Static strings:Strings.Instance}}"
+                        Style="{StaticResource EmberDestructiveButton}"
                         MinWidth="90" Margin="8,0,0,0" IsEnabled="False" Click="DeleteButton_Click"/>
             </StackPanel>
 
@@ -113,6 +121,7 @@
 
             <ListBox Grid.Row="5" x:Name="DeviceList" MinHeight="120"
                      SelectionMode="Single"
+                     ItemContainerStyle="{StaticResource EmberSelectListItem}"
                      SelectionChanged="DeviceList_SelectionChanged"
                      MouseDoubleClick="DeviceList_MouseDoubleClick">
                 <ListBox.ItemTemplate>
@@ -130,15 +139,16 @@
                        FontSize="12" TextWrapping="Wrap"
                        Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
 
-            <!-- Footer buttons -->
+            <!-- Footer band (#175 dialog language): Import from the selected
+                 device is the dialog's primary affirmative and wears the
+                 ember accent. Close stays neutral. -->
             <StackPanel Grid.Row="7" Orientation="Horizontal"
-                        HorizontalAlignment="Right" Margin="0,12,0,0">
+                        HorizontalAlignment="Right" Margin="0,18,0,0">
                 <Button x:Name="ImportButton"
                         Content="{Binding ImportFromDevice_Import, Source={x:Static strings:Strings.Instance}}"
                         MinWidth="90" Margin="0,0,8,0" IsEnabled="False"
                         IsDefault="True" Click="ImportButton_Click"
-                        Foreground="{DynamicResource TextOnAccentFillColorPrimaryBrush}"
-                        Background="{DynamicResource AccentFillColorDefaultBrush}"/>
+                        Style="{StaticResource EmberAccentButton}"/>
                 <Button Content="{Binding ManageProfiles_Close, Source={x:Static strings:Strings.Instance}}"
                         MinWidth="90" IsCancel="True" Click="CloseButton_Click"/>
             </StackPanel>

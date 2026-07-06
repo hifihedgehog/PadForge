@@ -69,6 +69,7 @@
 
             <ListBox Grid.Row="1" x:Name="SoundList"
                      SelectionMode="Single"
+                     ItemContainerStyle="{StaticResource EmberSelectListItem}"
                      MouseDoubleClick="SoundList_MouseDoubleClick">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
@@ -81,9 +82,10 @@
                 </ListBox.ItemTemplate>
             </ListBox>
 
-            <!-- Footer buttons: Browse-files escape on the left (shown only for the
-                 package picker), OK / Cancel on the right. -->
-            <DockPanel Grid.Row="2" Margin="0,12,0,0" LastChildFill="False">
+            <!-- Footer band (#175 dialog language): Browse-files escape on
+                 the left (shown only for the package picker) stays neutral.
+                 OK confirms the pick and wears the ember accent. -->
+            <DockPanel Grid.Row="2" Margin="0,18,0,0" LastChildFill="False">
                 <Button x:Name="BrowseButton" DockPanel.Dock="Left"
                         Content="{Binding Macro_Sound_BrowseFiles, Source={x:Static strings:Strings.Instance}}"
                         MinWidth="120" Visibility="Collapsed" Click="BrowseButton_Click"/>
@@ -92,8 +94,7 @@
                             Content="{Binding Common_OK, Source={x:Static strings:Strings.Instance}}"
                             MinWidth="90" Margin="0,0,8,0"
                             IsDefault="True" Click="OkButton_Click"
-                            Foreground="{DynamicResource TextOnAccentFillColorPrimaryBrush}"
-                            Background="{DynamicResource AccentFillColorDefaultBrush}"/>
+                            Style="{StaticResource EmberAccentButton}"/>
                     <Button Content="{Binding Common_Cancel, Source={x:Static strings:Strings.Instance}}"
                             MinWidth="90" IsCancel="True"/>
                 </StackPanel>

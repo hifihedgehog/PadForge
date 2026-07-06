@@ -347,8 +347,10 @@
                                Foreground="#94A3BD" TextWrapping="Wrap" TextAlignment="Center"
                                MaxWidth="360"/>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,22,0,0">
-                        <ui:Button Appearance="Primary"
-                                   Style="{StaticResource EmberPrimaryButton}"
+                        <!-- No Appearance=Primary: EmberPrimaryButton is the
+                             app-wide accent look and its setters lose to the
+                             Appearance style trigger (#175 dialog language). -->
+                        <ui:Button Style="{StaticResource EmberPrimaryButton}"
                                    Content="{Binding FirstRun_Begin, Source={x:Static strings:Strings.Instance}}"
                                    Click="FirstRunBegin_Click"/>
                         <Button Content="{Binding FirstRun_Skip, Source={x:Static strings:Strings.Instance}}"
@@ -380,7 +382,7 @@
                         <TextBlock x:Name="TourBody" TextWrapping="Wrap" FontSize="13"
                                    Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
                         <StackPanel Orientation="Horizontal" Margin="0,14,0,0">
-                            <ui:Button x:Name="TourNextBtn" Appearance="Primary"
+                            <ui:Button x:Name="TourNextBtn"
                                        Style="{StaticResource EmberPrimaryButton}"
                                        Content="{Binding FirstRun_Next, Source={x:Static strings:Strings.Instance}}"
                                        Click="TourNext_Click"/>

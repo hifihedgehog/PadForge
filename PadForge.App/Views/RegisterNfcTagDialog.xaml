@@ -81,15 +81,17 @@
                 <TextBlock Text="{Binding Nfc_NameLabel, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="0,0,8,0"/>
                 <TextBox x:Name="NameBox" Width="240" VerticalAlignment="Center" Margin="0,0,8,0"
                          KeyDown="NameBox_KeyDown"/>
+                <!-- Register is the dialog's primary affirmative and wears
+                     the ember accent (#175 dialog language). -->
                 <Button x:Name="RegisterBtn" Content="{Binding Nfc_RegisterButton, Source={x:Static strings:Strings.Instance}}" Click="RegisterButton_Click"
                         MinWidth="90" IsEnabled="False"
-                        Foreground="{DynamicResource TextOnAccentFillColorPrimaryBrush}"
-                        Background="{DynamicResource AccentFillColorDefaultBrush}"/>
+                        Style="{StaticResource EmberAccentButton}"/>
             </StackPanel>
 
             <TextBlock Grid.Row="4" Text="{Binding Nfc_RegisteredTagsHeader, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,4,0,4"/>
 
-            <ListBox Grid.Row="5" x:Name="TagListBox" Margin="0,0,0,8" MinHeight="100">
+            <ListBox Grid.Row="5" x:Name="TagListBox" MinHeight="100"
+                     ItemContainerStyle="{StaticResource EmberSelectListItem}">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <Grid>
@@ -102,15 +104,22 @@
                                 <TextBlock Text="{Binding Uid}" FontFamily="{StaticResource TelemetryFontFamily}" FontSize="11"
                                            Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
                             </StackPanel>
+                            <!-- Remove deletes the registration immediately
+                                 (no confirm), so it wears the shared
+                                 destructive chrome. -->
                             <Button Grid.Column="1" Content="{Binding Common_Remove, Source={x:Static strings:Strings.Instance}}" Click="RemoveButton_Click"
+                                    Style="{StaticResource EmberDestructiveButton}"
                                     Tag="{Binding Uid}" MinWidth="72" VerticalAlignment="Center"/>
                         </Grid>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
 
-            <StackPanel Grid.Row="6" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,4,0,0">
-                <Button Content="{Binding Common_Close, Source={x:Static strings:Strings.Instance}}" MinWidth="80" IsCancel="True" Click="CloseButton_Click"/>
+            <!-- Footer band (#175 dialog language): no committing verb lives
+                 down here (Register sits beside the name field), so the
+                 lone Close stays neutral. -->
+            <StackPanel Grid.Row="6" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,18,0,0">
+                <Button Content="{Binding Common_Close, Source={x:Static strings:Strings.Instance}}" MinWidth="90" IsCancel="True" Click="CloseButton_Click"/>
             </StackPanel>
         </Grid>
     </Grid>

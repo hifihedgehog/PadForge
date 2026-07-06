@@ -2234,6 +2234,11 @@ namespace PadForge
         /// at mid opacity instead of starting the loop.</summary>
         private static bool MotionEnabled => System.Windows.SystemParameters.ClientAreaAnimation;
 
+        /// <summary>Carries the mini-card delete X from the row builder to
+        /// the card-level hover wiring inside one
+        /// UpdateControllerNavItemContent pass (single-threaded UI build).</summary>
+        private Wpf.Ui.Controls.Button _pendingSidebarDeleteBtn;
+
         /// <summary>
         /// Updates the Content and Icon of a controller NavigationViewItem.
         /// Compact card with rounded border: [Power] [Gamepad] #N | [Xbox][PS] #N [X]
@@ -2258,41 +2263,28 @@ namespace PadForge
                 FontSize = 9
             };
             deleteIcon.SetResourceReference(System.Windows.Controls.TextBlock.ForegroundProperty, "TextFillColorPrimaryBrush");
-            var deleteBtn = new System.Windows.Controls.Button
+            var deleteBtn = new Wpf.Ui.Controls.Button
             {
                 Content = deleteIcon,
-                Padding = new Thickness(3),
-                MinWidth = 0,
-                MinHeight = 0,
-                Background = System.Windows.Media.Brushes.Transparent,
-                BorderThickness = new Thickness(0),
                 ToolTip = Strings.Instance.Main_DeleteVC,
                 Tag = navItem.PadIndex,
                 VerticalAlignment = VerticalAlignment.Center,
                 Margin = new Thickness(6, 0, 0, 0),
                 // Hover-revealed (#175): the rail reads as state, actions
-                // appear on intent.
+                // appear on intent. Revealed at full strength on CARD hover
+                // (user report 2026-07-06: the row-level reveal engaged
+                // sporadically and the chrome did not match the Devices
+                // row X). EmberIconButtonHot is the shared X treatment.
                 Opacity = 0
             };
+            deleteBtn.SetResourceReference(FrameworkElement.StyleProperty, "EmberIconButtonHot");
             deleteBtn.Click += OnSidebarDeleteSlot;
             System.Windows.Controls.DockPanel.SetDock(deleteBtn, System.Windows.Controls.Dock.Right);
             row.Children.Add(deleteBtn);
-            // Hover glow (#175): the reveal is neutral (primary-text glyph,
-            // no hue swap), so the revealed X carries the faint ember glow.
-            // Shared frozen effect from ControllerIcons.xaml; ClearValue on
-            // leave so the implicit Button style's own hover trigger still
-            // applies when the pointer reaches the button directly.
-            var revealGlow = TryFindResource("NeutralHoverGlow") as System.Windows.Media.Effects.Effect;
-            row.MouseEnter += (s, e) =>
-            {
-                deleteBtn.Opacity = 0.6;
-                if (revealGlow != null) deleteBtn.Effect = revealGlow;
-            };
-            row.MouseLeave += (s, e) =>
-            {
-                deleteBtn.Opacity = 0;
-                deleteBtn.ClearValue(System.Windows.UIElement.EffectProperty);
-            };
+            // Reveal rides the whole CARD's hover (wired below, once the
+            // card exists) so the X cannot flicker while the pointer moves
+            // between the card's child panels.
+            _pendingSidebarDeleteBtn = deleteBtn;
 
             // Flame power toggle (#175): heat encodes liveness.
             // Ember = forging (enabled, engine running, VC live).
@@ -2589,6 +2581,15 @@ namespace PadForge
                 if (ReferenceEquals(card.Effect, cardHoverGlow))
                     card.Effect = null;
             };
+
+            // X reveal follows the card's own hover state (stable across
+            // child-panel boundaries), matching the Devices row X.
+            if (_pendingSidebarDeleteBtn is Wpf.Ui.Controls.Button cardDeleteBtn)
+            {
+                _pendingSidebarDeleteBtn = null;
+                card.MouseEnter += (s, e) => cardDeleteBtn.Opacity = 1.0;
+                card.MouseLeave += (s, e) => cardDeleteBtn.Opacity = 0;
+            }
 
             // Drag reordering. Mouse-down recorded here, threshold + movement tracked at NavView level.
             card.PreviewMouseLeftButtonDown += OnCardDragStart;

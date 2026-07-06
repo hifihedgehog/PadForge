@@ -103,19 +103,23 @@
                            Margin="0,0,0,4"
                            Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
                 <ListBox x:Name="FoundList" MaxHeight="120"
+                         ItemContainerStyle="{StaticResource EmberSelectListItem}"
                          Background="{DynamicResource ControlFillColorDefaultBrush}"/>
             </StackPanel>
 
             <!-- Diagnostic log path (non-localized, it's a file path): mono readout -->
-            <TextBlock Grid.Row="5" x:Name="LogPathText" TextWrapping="Wrap" Margin="0,0,0,8"
+            <TextBlock Grid.Row="5" x:Name="LogPathText" TextWrapping="Wrap"
                        FontFamily="{StaticResource TelemetryFontFamily}" FontSize="11"
                        Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
 
-            <StackPanel Grid.Row="6" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,4,0,0">
-                <ui:Button x:Name="PairButton" Appearance="Primary" MinWidth="96" Margin="0,0,8,0"
+            <!-- Footer band (#175 dialog language): Pair is the dialog's
+                 primary affirmative and wears the ember accent. -->
+            <StackPanel Grid.Row="6" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,18,0,0">
+                <ui:Button x:Name="PairButton" MinWidth="90" Margin="0,0,8,0"
+                           Style="{StaticResource EmberPrimaryButton}"
                            Content="{Binding WiiPair_Pair, Source={x:Static strings:Strings.Instance}}"
                            Click="Pair_Click"/>
-                <Button x:Name="DismissButton" MinWidth="96"
+                <Button x:Name="DismissButton" MinWidth="90"
                         Content="{Binding Common_Cancel, Source={x:Static strings:Strings.Instance}}"
                         Click="Dismiss_Click"/>
             </StackPanel>

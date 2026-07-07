@@ -8615,7 +8615,7 @@
                                                ToolTip="{Binding Settings_GyroEngageStickSide_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                     <ComboBox SelectedValue="{Binding GyroEngageStickSide, Mode=TwoWay}"
                                               SelectedValuePath="Tag"
-                                              Width="200" VerticalAlignment="Center"
+                                              Width="260" VerticalAlignment="Center"
                                               ToolTip="{Binding Settings_GyroEngageStickSide_Tooltip, Source={x:Static strings:Strings.Instance}}">
                                         <ComboBoxItem Content="{Binding Settings_GyroEngageStickSide_Right, Source={x:Static strings:Strings.Instance}}" Tag="Right"/>
                                         <ComboBoxItem Content="{Binding Settings_GyroEngageStickSide_Left, Source={x:Static strings:Strings.Instance}}" Tag="Left"/>
@@ -8635,7 +8635,7 @@
                                                ToolTip="{Binding Settings_GyroEngageStickDirection_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                     <ComboBox SelectedValue="{Binding GyroEngageStickDirection, Mode=TwoWay}"
                                               SelectedValuePath="Tag"
-                                              Width="200" VerticalAlignment="Center"
+                                              Width="260" VerticalAlignment="Center"
                                               ToolTip="{Binding Settings_GyroEngageStickDirection_Tooltip, Source={x:Static strings:Strings.Instance}}">
                                         <ComboBoxItem Content="{Binding Settings_GyroEngageStickDirection_Full, Source={x:Static strings:Strings.Instance}}" Tag="Full"/>
                                         <ComboBoxItem Content="{Binding Settings_GyroEngageStickDirection_X, Source={x:Static strings:Strings.Instance}}" Tag="X"/>
@@ -8721,7 +8721,7 @@
                                                ToolTip="{Binding Settings_GyroAimEngageMode_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                     <ComboBox SelectedValue="{Binding GyroAimEngageMode, Mode=TwoWay}"
                                               SelectedValuePath="Tag"
-                                              Width="200" VerticalAlignment="Center"
+                                              Width="260" VerticalAlignment="Center"
                                               ScrollViewer.VerticalScrollBarVisibility="Visible"
                                               ToolTip="{Binding Settings_GyroAimEngageMode_Tooltip, Source={x:Static strings:Strings.Instance}}">
                                         <ComboBoxItem Content="{Binding Settings_GyroAimEngageMode_Hold, Source={x:Static strings:Strings.Instance}}" Tag="Hold"/>

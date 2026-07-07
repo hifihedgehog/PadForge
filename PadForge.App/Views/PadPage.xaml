@@ -7012,12 +7012,18 @@
                                          based on a single color (Static/Breathing/Strobe),
                                          multi-color time-based (Rainbow/ColorCycle), battery
                                          indicator, then the audio-reactive cluster. -->
-                                    <!-- Combo width standard (#175 round 3, item B8): one
-                                         width per card column. This card's combos are all
-                                         320; the popup sizes to its own option text. -->
+                                    <!-- Combo width standard: this card's two combos (mode
+                                         picker + input-reactive overlay below) share 444.
+                                         Measured, not guessed (tools/combomeasure): a real
+                                         WPF-UI ComboBox with this card's implicit style
+                                         (Padding 8,4) and the Body font sizes the widest
+                                         option, the Spanish audio crossfade mode name, to
+                                         435.33px across all 10 locales. 444 leaves about
+                                         9px of slack. The popup sizes to its own option
+                                         text. Re-measure if these strings change. -->
                                     <ComboBox SelectedValue="{Binding PlayStationConfig.LightbarMode, Mode=TwoWay}"
                                               SelectedValuePath="Tag"
-                                              Width="320" VerticalAlignment="Center">
+                                              Width="444" VerticalAlignment="Center">
                                         <ComboBoxItem Content="{Binding Pad_Lighting_Mode_PlayerNumber, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:LightbarMode.PlayerNumber}"/>
                                         <ComboBoxItem Content="{Binding Pad_Lighting_Mode_Off, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:LightbarMode.Off}"/>
                                         <ComboBoxItem Content="{Binding Pad_Lighting_Mode_Static, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:LightbarMode.Static}"/>
@@ -7752,7 +7758,7 @@
                                     <TextBlock Text="{Binding Pad_Lighting_InputReactive, Source={x:Static strings:Strings.Instance}}"
                                                Style="{StaticResource DzLabel}"/>
                                     <ComboBox SelectedIndex="{Binding PlayStationConfig.InputReactiveMode, Mode=TwoWay, Converter={StaticResource EnumIndexConverter}}"
-                                              Width="320" VerticalAlignment="Center">
+                                              Width="444" VerticalAlignment="Center">
                                         <ComboBoxItem Content="{Binding Pad_Lighting_InputReactive_Off, Source={x:Static strings:Strings.Instance}}"/>
                                         <ComboBoxItem Content="{Binding Pad_Lighting_InputReactive_Random, Source={x:Static strings:Strings.Instance}}"/>
                                         <ComboBoxItem Content="{Binding Pad_Lighting_InputReactive_Cycle, Source={x:Static strings:Strings.Instance}}"/>

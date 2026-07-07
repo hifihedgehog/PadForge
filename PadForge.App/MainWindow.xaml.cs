@@ -2301,6 +2301,7 @@ namespace PadForge
                 Margin = collapsed ? new Thickness(0) : new Thickness(-40, 0, 0, 0)
             };
             SuppressBuiltInSelectionVisual(menuItem);
+            AttachCollapsedIconHover(menuItem);
             System.Windows.Automation.AutomationProperties.SetName(menuItem, navItem.Tag);
             UpdateControllerNavItemContent(menuItem, navItem);
             if (collapsed)
@@ -2842,8 +2843,45 @@ namespace PadForge
                 Icon = collapsed ? MakeAddControllerCollapsedIcon() : null,
             };
             SuppressBuiltInSelectionVisual(item);
+            AttachCollapsedIconHover(item);
             System.Windows.Automation.AutomationProperties.SetName(item, Strings.Instance.Main_AddController);
             return item;
+        }
+
+        /// <summary>Gives the COLLAPSED-rail icon of a mini-card entry the same
+        /// subtle hover feedback the expanded pill has: a 2 px lift plus a faint
+        /// ember bloom. The expanded card wires its own hover on the card Border
+        /// (BuildFlameGlyph card), but when the pane is collapsed that Border is
+        /// not shown, the bitmap/glyph Icon is, so this drives the Icon element
+        /// directly. Gated to the collapsed state so it never double-lifts the
+        /// expanded card. The Icon is rebuilt on every pane toggle, so the
+        /// handlers resolve nvi.Icon at hover time rather than capturing it.</summary>
+        private void AttachCollapsedIconHover(NavigationViewItem nvi)
+        {
+            var glow = TryFindResource("NeutralHoverGlow") as System.Windows.Media.Effects.Effect;
+            nvi.MouseEnter += (s, e) =>
+            {
+                if (NavView.IsPaneOpen) return;
+                if (nvi.Icon is not System.Windows.FrameworkElement icon) return;
+                if (icon.RenderTransform is not System.Windows.Media.TranslateTransform lift)
+                {
+                    lift = new System.Windows.Media.TranslateTransform();
+                    icon.RenderTransform = lift;
+                }
+                lift.BeginAnimation(System.Windows.Media.TranslateTransform.YProperty,
+                    new System.Windows.Media.Animation.DoubleAnimation(-2, System.TimeSpan.FromMilliseconds(130))
+                    { EasingFunction = new System.Windows.Media.Animation.CubicEase { EasingMode = System.Windows.Media.Animation.EasingMode.EaseOut } });
+                if (glow != null) icon.Effect = glow;
+            };
+            nvi.MouseLeave += (s, e) =>
+            {
+                if (nvi.Icon is not System.Windows.FrameworkElement icon) return;
+                if (icon.RenderTransform is System.Windows.Media.TranslateTransform lift)
+                    lift.BeginAnimation(System.Windows.Media.TranslateTransform.YProperty,
+                        new System.Windows.Media.Animation.DoubleAnimation(0, System.TimeSpan.FromMilliseconds(250))
+                        { EasingFunction = new System.Windows.Media.Animation.CubicEase { EasingMode = System.Windows.Media.Animation.EasingMode.EaseIn } });
+                if (ReferenceEquals(icon.Effect, glow)) icon.Effect = null;
+            };
         }
 
         /// <summary>Unasserts the WPF-UI NavigationViewItem's built-in row

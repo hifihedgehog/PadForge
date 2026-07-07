@@ -207,6 +207,11 @@ namespace PadForge.ViewModels
                                 string tagText = tags.Count > 0 ? $" ({string.Join(", ", tags)})" : "";
                                 inputs.Add($"{entry.AxisTarget.DisplayName()} > {entry.DeadZone}%{tagText}");
                             }
+                            else if (!string.IsNullOrEmpty(entry.GestureDescriptor))
+                            {
+                                inputs.Add(MappingDisplayResolver.ResolveDescriptorText(
+                                    entry.GestureDescriptor, null) ?? entry.GestureDescriptor);
+                            }
                         }
                         string deviceName = ResolveDeviceName(grp.Key);
                         if (!string.IsNullOrEmpty(deviceName))
@@ -241,6 +246,11 @@ namespace PadForge.ViewModels
                             string tagText = tags.Count > 0 ? $" ({string.Join(", ", tags)})" : "";
                             parts.Add($"{entry.AxisTarget.DisplayName()} > {entry.DeadZone}%{tagText}");
                         }
+                        else if (!string.IsNullOrEmpty(entry.GestureDescriptor))
+                        {
+                            parts.Add(MappingDisplayResolver.ResolveDescriptorText(
+                                entry.GestureDescriptor, null) ?? entry.GestureDescriptor);
+                        }
                     }
                 }
                 else
@@ -269,6 +279,23 @@ namespace PadForge.ViewModels
                         parts.Add(FormatPovTrigger(pov));
                 }
 
+                // Legacy slot-combined button parts render even when the
+                // entry list is populated: the OutputController finalize
+                // keeps dropdown-picked gesture entries alongside a
+                // recorded bitmask / custom-word trigger, and the
+                // evaluator ANDs both, so hiding either half would
+                // under-report what the macro requires. Legacy POVs stay
+                // inside the entries-empty branch because the
+                // single-device back-compat mirror duplicates entry POVs
+                // into TriggerPovs.
+                if (entries.Count > 0)
+                {
+                    if (_buttonStyle == MacroButtonStyle.Numbered && UsesCustomTrigger)
+                        parts.Add(MacroButtonNames.FormatCustomButtons(_triggerCustomButtonWords));
+                    else if (_triggerButtons != 0)
+                        parts.Add(MacroButtonNames.FormatButtons(_triggerButtons, _buttonStyle));
+                }
+
                 // Axis part(s) — always Xbox-output, no per-device split.
                 foreach (var axis in _triggerAxisTargets)
                     parts.Add($"{axis.DisplayName()} > {_triggerAxisThreshold}%");
@@ -280,7 +307,7 @@ namespace PadForge.ViewModels
                 // Append source device name at end ONLY for single-device legacy /
                 // single-device new-list cases. Multi-device already shows names
                 // inline.
-                if (!multiDevice && (UsesRawTrigger || UsesPovTrigger || UsesAxisTrigger))
+                if (!multiDevice && (UsesRawTrigger || UsesPovTrigger || UsesAxisTrigger || UsesGestureTrigger))
                 {
                     Guid deviceGuid = entries.Count > 0 ? entries[0].DeviceGuid : _triggerDeviceGuid;
                     string deviceName = ResolveDeviceName(deviceGuid);
@@ -422,7 +449,7 @@ namespace PadForge.ViewModels
             }
         }
 
-        /// <summary>True if this macro uses POV hat triggers — either via the
+        /// <summary>True if this macro uses POV hat triggers, either via the
         /// multi-device <see cref="TriggerInputs"/> spec or the legacy
         /// <see cref="TriggerPovs"/> array.</summary>
         [System.Xml.Serialization.XmlIgnore]
@@ -434,6 +461,22 @@ namespace PadForge.ViewModels
                 for (int i = 0; i < entries.Count; i++)
                     if (!string.IsNullOrEmpty(entries[i].Pov)) return true;
                 return _triggerPovs.Length > 0;
+            }
+        }
+
+        /// <summary>True if this macro uses touchpad-gesture trigger
+        /// entries (#177). Gesture entries only exist in the
+        /// multi-device <see cref="TriggerInputs"/> spec; there is no
+        /// legacy form.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool UsesGestureTrigger
+        {
+            get
+            {
+                var entries = GetTriggerInputEntries();
+                for (int i = 0; i < entries.Count; i++)
+                    if (!string.IsNullOrEmpty(entries[i].GestureDescriptor)) return true;
+                return false;
             }
         }
 
@@ -460,8 +503,17 @@ namespace PadForge.ViewModels
             public Guid DeviceGuid
             {
                 get => _deviceGuid;
-                set => SetProperty(ref _deviceGuid, value);
+                set { if (SetProperty(ref _deviceGuid, value)) _deviceGuidStr = null; }
             }
+
+            private string _deviceGuidStr;
+            /// <summary>Cached <c>DeviceGuid.ToString()</c>. The macro
+            /// evaluator runs per polling tick on the 1 kHz thread, and
+            /// the gesture provider is keyed by guid STRING; caching
+            /// keeps the gesture checker allocation-free like its button
+            /// and POV siblings.</summary>
+            [System.Xml.Serialization.XmlIgnore]
+            public string DeviceGuidString => _deviceGuidStr ??= _deviceGuid.ToString();
 
             /// <summary>Raw button index, or -1 if this entry isn't a button.</summary>
             private int _rawButton = -1;
@@ -477,6 +529,53 @@ namespace PadForge.ViewModels
             {
                 get => _pov;
                 set => SetProperty(ref _pov, value);
+            }
+
+            /// <summary>Touchpad gesture descriptor ("Touchpad 0 TouchLeft",
+            /// "Touchpad 0 SwipeUp", "Touchpad 0 Custom_MyShape"), or null
+            /// if this entry isn't a gesture. Evaluated per frame through
+            /// the same SourceCoercion.TouchpadGestureFiredProvider the
+            /// mapping grid uses, so the enable gates on the Touchpad tab
+            /// govern macros and mappings identically (#177). Picked from
+            /// the trigger dropdown, never recorded. Recording a gesture
+            /// by accident is the exact complaint the issue raises.</summary>
+            private string _gestureDescriptor;
+            public string GestureDescriptor
+            {
+                get => _gestureDescriptor;
+                set { if (SetProperty(ref _gestureDescriptor, value)) _gestureParsed = false; }
+            }
+
+            private bool _gestureParsed;
+            private int _gesturePadIdx = -1;
+            private string _gestureName;
+
+            /// <summary>Parses "Touchpad {padIdx} {gestureName}" out of
+            /// <see cref="GestureDescriptor"/> once and caches the parts,
+            /// so the per-tick trigger evaluation doesn't re-Split on the
+            /// polling thread. Returns false for a null / malformed
+            /// descriptor.</summary>
+            public bool TryGetGestureParts(out int padIdx, out string gestureName)
+            {
+                if (!_gestureParsed)
+                {
+                    _gestureParsed = true;
+                    _gesturePadIdx = -1;
+                    _gestureName = null;
+                    var d = _gestureDescriptor;
+                    if (!string.IsNullOrEmpty(d))
+                    {
+                        var parts = d.Split(new[] { ' ' }, 3, StringSplitOptions.RemoveEmptyEntries);
+                        if (parts.Length >= 3 && int.TryParse(parts[1], out int p) && p >= 0)
+                        {
+                            _gesturePadIdx = p;
+                            _gestureName = parts[2];
+                        }
+                    }
+                }
+                padIdx = _gesturePadIdx;
+                gestureName = _gestureName;
+                return _gestureName != null;
             }
 
             /// <summary>Axis target on the device's standard SDL gamepad layout
@@ -578,6 +677,13 @@ namespace PadForge.ViewModels
                         return $"in:{DeviceGuid}:ax:{AxisTarget}:{(HalfAxis ? 1 : 0)}:{(Invert ? 1 : 0)}:{DeadZone}:{(Bidirectional ? 1 : 0)}";
                     if (!string.IsNullOrEmpty(Pov)) return $"in:{DeviceGuid}:pov:{Pov}";
                     if (RawButton >= 0) return $"in:{DeviceGuid}:btn:{RawButton}";
+                    // Gesture descriptors ride as the spec tail so colons in
+                    // custom-gesture names survive (the parser re-joins the
+                    // tail). '|' would split the pipe-joined TriggerInputs
+                    // element, so it's escaped as "&P" (collision-free:
+                    // '&' is rejected by the gesture-name validator).
+                    if (!string.IsNullOrEmpty(GestureDescriptor))
+                        return $"in:{DeviceGuid}:tg:{GestureDescriptor.Replace("|", "&P")}";
                     return "";
                 }
             }
@@ -598,6 +704,17 @@ namespace PadForge.ViewModels
                     case "pov":
                         if (parts.Length < 5) return null;
                         entry.Pov = $"{parts[3]}:{parts[4]}";
+                        return entry;
+                    case "tg":
+                        // Re-join the tail: gesture descriptors (and the
+                        // custom-gesture names inside them) may contain
+                        // ':'. Unescape the pipe token Spec wrote.
+                        string desc = string.Join(":", parts, 3, parts.Length - 3)
+                            .Replace("&P", "|");
+                        if (string.IsNullOrWhiteSpace(desc)
+                            || !desc.StartsWith("Touchpad ", StringComparison.Ordinal))
+                            return null;
+                        entry.GestureDescriptor = desc;
                         return entry;
                     case "ax":
                         if (!Enum.TryParse<MacroAxisTarget>(parts[3], out var at) || at == MacroAxisTarget.None) return null;
@@ -638,6 +755,88 @@ namespace PadForge.ViewModels
             }
         }
 
+        /// <summary>Converts a picker <see cref="InputChoice"/> into a
+        /// <see cref="TriggerInputEntry"/> for the macro trigger dropdown
+        /// (#177). Returns false for descriptors the trigger engine has
+        /// no entry shape for (finger axes, sliders, continuous gesture
+        /// axes). Buttons, POV directions, gamepad-layout axes 0-5, the
+        /// touchpad click (raw button 16), and bool-valued touchpad
+        /// gestures all convert.</summary>
+        public static bool TryBuildTriggerEntry(InputChoice choice, out TriggerInputEntry entry)
+        {
+            entry = null;
+            string d = choice?.Descriptor;
+            if (string.IsNullOrEmpty(d)) return false;
+            if (!Guid.TryParse(choice.DeviceGuid, out var g) || g == Guid.Empty) return false;
+
+            if (d.StartsWith("Button ", StringComparison.Ordinal)
+                && int.TryParse(d.Substring(7), out int btn) && btn >= 0)
+            {
+                entry = new TriggerInputEntry { DeviceGuid = g, RawButton = btn };
+                return true;
+            }
+
+            if (d.StartsWith("POV ", StringComparison.Ordinal))
+            {
+                var pp = d.Split(' ');
+                if (pp.Length == 3 && int.TryParse(pp[1], out int povIdx))
+                {
+                    int cd = pp[2] switch
+                    {
+                        "Up" => 0, "Right" => 9000, "Down" => 18000, "Left" => 27000,
+                        _ => -1
+                    };
+                    if (cd >= 0)
+                    {
+                        entry = new TriggerInputEntry { DeviceGuid = g, Pov = $"{povIdx}:{cd}" };
+                        return true;
+                    }
+                }
+                return false;
+            }
+
+            if (d.StartsWith("Axis ", StringComparison.Ordinal)
+                && int.TryParse(d.Substring(5), out int ax) && ax >= 0 && ax <= 5)
+            {
+                entry = new TriggerInputEntry
+                {
+                    DeviceGuid = g,
+                    AxisTarget = ax switch
+                    {
+                        0 => MacroAxisTarget.LeftStickX,
+                        1 => MacroAxisTarget.LeftStickY,
+                        2 => MacroAxisTarget.LeftTrigger,
+                        3 => MacroAxisTarget.RightStickX,
+                        4 => MacroAxisTarget.RightStickY,
+                        _ => MacroAxisTarget.RightTrigger,
+                    },
+                };
+                return true;
+            }
+
+            if (d.StartsWith("Touchpad ", StringComparison.Ordinal))
+            {
+                var tp = d.Split(new[] { ' ' }, 3, StringSplitOptions.RemoveEmptyEntries);
+                if (tp.Length < 3 || !int.TryParse(tp[1], out _)) return false;
+                if (tp[2].Equals("Click", StringComparison.OrdinalIgnoreCase))
+                {
+                    // Canonical touchpad click rides Buttons[16]
+                    // (SDL_GAMEPAD_BUTTON_TOUCHPAD), same slot the
+                    // mapping recorder resolves it to.
+                    entry = new TriggerInputEntry { DeviceGuid = g, RawButton = 16 };
+                    return true;
+                }
+                if (tp[2].StartsWith("Finger", StringComparison.OrdinalIgnoreCase)) return false;
+                // Continuous gesture axes have no bool entry in the
+                // fired set; they stay recording/mapping-only.
+                if (tp[2] is "PinchAxis" or "RotateAxis" or "StickX" or "StickY") return false;
+                entry = new TriggerInputEntry { DeviceGuid = g, GestureDescriptor = d };
+                return true;
+            }
+
+            return false;
+        }
+
         private List<TriggerInputEntry> _triggerInputEntries;
 
         /// <summary>Pipe-separated <see cref="TriggerInputEntry.Spec"/> entries
@@ -670,6 +869,7 @@ namespace PadForge.ViewModels
                 OnPropertyChanged(nameof(TriggerInputs));
                 OnPropertyChanged(nameof(UsesRawTrigger));
                 OnPropertyChanged(nameof(UsesPovTrigger));
+                OnPropertyChanged(nameof(UsesGestureTrigger));
                 OnPropertyChanged(nameof(TriggerDisplayText));
             }
         }
@@ -733,6 +933,7 @@ namespace PadForge.ViewModels
             OnPropertyChanged(nameof(UsesRawTrigger));
             OnPropertyChanged(nameof(UsesPovTrigger));
             OnPropertyChanged(nameof(UsesAxisTrigger));
+            OnPropertyChanged(nameof(UsesGestureTrigger));
             OnPropertyChanged(nameof(TriggerDisplayText));
             OnPropertyChanged(nameof(TriggerAxisEntries));
             OnPropertyChanged(nameof(HasTriggerAxisEntries));

@@ -1175,6 +1175,8 @@ public class Strings : INotifyPropertyChanged
     public string Pad_ResetLeftMotor => Get("Pad_ResetLeftMotor");
     public string Pad_ResetRightMotor => Get("Pad_ResetRightMotor");
     public string Macro_RecordHint => Get("Macro_RecordHint");
+    public string Macro_AddTriggerFromList => Get("Macro_AddTriggerFromList");
+    public string Macro_AddTriggerFromList_Tooltip => Get("Macro_AddTriggerFromList_Tooltip");
     public string Macro_LiveRecord_Placeholder => Get("Macro_LiveRecord_Placeholder");
     public string Macro_Axis_Inverted => Get("Macro_Axis_Inverted");
     public string Macro_Axis_Half => Get("Macro_Axis_Half");
@@ -1397,6 +1399,10 @@ public class Strings : INotifyPropertyChanged
     public string Mapping_TouchpadGesture_DoubleTap => Get("Mapping_TouchpadGesture_DoubleTap");
     public string Mapping_TouchpadGesture_TripleTap => Get("Mapping_TouchpadGesture_TripleTap");
     public string Mapping_TouchpadGesture_LongPress => Get("Mapping_TouchpadGesture_LongPress");
+    public string Mapping_TouchpadGesture_TouchLeft => Get("Mapping_TouchpadGesture_TouchLeft");
+    public string Mapping_TouchpadGesture_TouchRight => Get("Mapping_TouchpadGesture_TouchRight");
+    public string Mapping_TouchpadGesture_TouchTop => Get("Mapping_TouchpadGesture_TouchTop");
+    public string Mapping_TouchpadGesture_TouchMulti => Get("Mapping_TouchpadGesture_TouchMulti");
     public string Mapping_TouchpadGesture_RadialZone_Format => Get("Mapping_TouchpadGesture_RadialZone_Format");
     public string Mapping_TouchpadGesture_PadPrefix_Format => Get("Mapping_TouchpadGesture_PadPrefix_Format");
     public string Mapping_TouchpadGesture_TwoFingerSwipeUp => Get("Mapping_TouchpadGesture_TwoFingerSwipeUp");
@@ -1455,6 +1461,8 @@ public class Strings : INotifyPropertyChanged
     public string Pad_Touchpad_SwipeTimeWindow => Get("Pad_Touchpad_SwipeTimeWindow");
     public string Pad_Touchpad_RadialZones => Get("Pad_Touchpad_RadialZones");
     public string Pad_Touchpad_RadialZones_Tooltip => Get("Pad_Touchpad_RadialZones_Tooltip");
+    public string Pad_Touchpad_TouchSpots => Get("Pad_Touchpad_TouchSpots");
+    public string Pad_Touchpad_TouchSpots_Tooltip => Get("Pad_Touchpad_TouchSpots_Tooltip");
     public string Pad_Touchpad_RadialZoneCount => Get("Pad_Touchpad_RadialZoneCount");
     public string Pad_Touchpad_RadialCenterDeadzone => Get("Pad_Touchpad_RadialCenterDeadzone");
     public string Pad_Touchpad_Taps => Get("Pad_Touchpad_Taps");
@@ -1485,6 +1493,7 @@ public class Strings : INotifyPropertyChanged
     public string Pad_ResetTouchpadSwipeDistance => Get("Pad_ResetTouchpadSwipeDistance");
     public string Pad_ResetTouchpadSwipeTimeWindow => Get("Pad_ResetTouchpadSwipeTimeWindow");
     public string Pad_ResetTouchpadRadialZones => Get("Pad_ResetTouchpadRadialZones");
+    public string Pad_ResetTouchpadTouchSpots => Get("Pad_ResetTouchpadTouchSpots");
     public string Pad_ResetTouchpadRadialZoneCount => Get("Pad_ResetTouchpadRadialZoneCount");
     public string Pad_ResetTouchpadRadialCenterDeadzone => Get("Pad_ResetTouchpadRadialCenterDeadzone");
     public string Pad_ResetTouchpadTaps => Get("Pad_ResetTouchpadTaps");

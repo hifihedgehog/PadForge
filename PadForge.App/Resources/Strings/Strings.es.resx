@@ -942,6 +942,8 @@
   <data name="Pad_ResetRightMotor" xml:space="preserve"><value>Restablecer motor derecho</value></data>
   <data name="Pad_ResetView" xml:space="preserve"><value>Restablecer vista</value></data>
   <data name="Macro_RecordHint" xml:space="preserve"><value>Presione botones o mueva un eje/gatillo para grabar. Los ejes se detectan cuando se desvían más del 50 %.</value></data>
+  <data name="Macro_AddTriggerFromList" xml:space="preserve"><value>Añadir desde lista</value></data>
+  <data name="Macro_AddTriggerFromList_Tooltip" xml:space="preserve"><value>Elige una entrada de activación de los dispositivos de la ranura en lugar de grabarla. Los gestos del panel táctil activados en la pestaña del panel táctil aparecen aquí.</value></data>
   <data name="Macro_LiveRecord_Placeholder" xml:space="preserve"><value>Presione cualquier entrada…</value></data>
   <data name="Macro_Axis_Inverted" xml:space="preserve"><value>invertido</value></data>
   <data name="Macro_Axis_Half" xml:space="preserve"><value>semieje</value></data>
@@ -1598,6 +1600,10 @@
   <data name="Mapping_TouchpadGesture_DoubleTap" xml:space="preserve"><value>Toque doble</value></data>
   <data name="Mapping_TouchpadGesture_TripleTap" xml:space="preserve"><value>Toque triple</value></data>
   <data name="Mapping_TouchpadGesture_LongPress" xml:space="preserve"><value>Pulsación larga</value></data>
+  <data name="Mapping_TouchpadGesture_TouchLeft" xml:space="preserve"><value>Toque izquierdo</value></data>
+  <data name="Mapping_TouchpadGesture_TouchRight" xml:space="preserve"><value>Toque derecho</value></data>
+  <data name="Mapping_TouchpadGesture_TouchTop" xml:space="preserve"><value>Toque superior</value></data>
+  <data name="Mapping_TouchpadGesture_TouchMulti" xml:space="preserve"><value>Multitáctil</value></data>
   <data name="Mapping_TouchpadGesture_RadialZone_Format" xml:space="preserve"><value>Zona radial {0}/{1}</value></data>
   <data name="Mapping_TouchpadGesture_PadPrefix_Format" xml:space="preserve"><value>Panel táctil {0}: {1}</value></data>
   <data name="Mapping_TouchpadGesture_SinglePadNoun_Format" xml:space="preserve"><value>Touchpad {0}</value></data>
@@ -1657,6 +1663,8 @@
   <data name="Pad_Touchpad_SwipeTimeWindow" xml:space="preserve"><value>Ventana de tiempo del deslizamiento</value></data>
   <data name="Pad_Touchpad_RadialZones" xml:space="preserve"><value>Zonas radiales (estilo rueda de armas)</value></data>
   <data name="Pad_Touchpad_RadialZones_Tooltip" xml:space="preserve"><value>Desliza hacia fuera desde el punto donde apoyaste el dedo hacia un sector. La zona 0 está anclada arriba y las zonas aumentan en sentido horario. Cada entrada del selector muestra su dirección entre paréntesis como grados desde arriba: (0°) es arriba, (90°) es derecha, (180°) es abajo, (270°) es izquierda. Solo una zona se mantiene activa a la vez. Deslizar a otra libera la anterior, así puedes recorrer las zonas en un único movimiento.</value></data>
+  <data name="Pad_Touchpad_TouchSpots" xml:space="preserve"><value>Zonas táctiles (izquierda / derecha / arriba / multitáctil)</value></data>
+  <data name="Pad_Touchpad_TouchSpots_Tooltip" xml:space="preserve"><value>Botones mantenidos según dónde se toca el panel táctil. Un dedo cae en izquierda, derecha o arriba (el cuarto superior). Dos o más dedos mantienen multitáctil. La división izquierda/derecha está a dos quintos del ancho, como en DS4Windows, y solo una zona está activa a la vez.</value></data>
   <data name="Pad_Touchpad_RadialZoneCount" xml:space="preserve"><value>Número de zonas</value></data>
   <data name="Pad_Touchpad_RadialCenterDeadzone" xml:space="preserve"><value>Zona muerta central (0..1)</value></data>
   <data name="Pad_Touchpad_Taps" xml:space="preserve"><value>Toque / Toque doble / Toque triple</value></data>
@@ -1716,6 +1724,7 @@
   <data name="Pad_ResetTouchpadSwipeDistance" xml:space="preserve"><value>Restablecer distancia de deslizamiento</value></data>
   <data name="Pad_ResetTouchpadSwipeTimeWindow" xml:space="preserve"><value>Restablecer ventana de tiempo del deslizamiento</value></data>
   <data name="Pad_ResetTouchpadRadialZones" xml:space="preserve"><value>Restablecer zonas radiales</value></data>
+  <data name="Pad_ResetTouchpadTouchSpots" xml:space="preserve"><value>Restablecer zonas táctiles</value></data>
   <data name="Pad_ResetTouchpadRadialZoneCount" xml:space="preserve"><value>Restablecer número de zonas</value></data>
   <data name="Pad_ResetTouchpadRadialCenterDeadzone" xml:space="preserve"><value>Restablecer zona muerta central</value></data>
   <data name="Pad_ResetTouchpadTaps" xml:space="preserve"><value>Restablecer toque / toque doble / toque triple</value></data>

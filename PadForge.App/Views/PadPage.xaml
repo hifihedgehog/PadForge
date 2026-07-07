@@ -1504,6 +1504,39 @@
                                            Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                            Margin="0,0,0,4"/>
 
+                                <!-- Dropdown trigger picker (#177): appends an input to the
+                                     combo without recording. The list is the slot's cross-device
+                                     choices filtered to entry-convertible descriptors, so the
+                                     touchpad gestures the user enabled on the Touchpad tab are
+                                     pickable here (recording can't capture them, and the issue
+                                     reporter explicitly did not want it to). -->
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                    <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                               Text="{Binding Macro_AddTriggerFromList, Source={x:Static strings:Strings.Instance}}"
+                                               VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                    <ComboBox ItemsSource="{Binding DataContext.SlotMacroTriggerChoicesView, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                              DisplayMemberPath="DisplayName" MinWidth="220" Padding="4,2"
+                                              SelectionChanged="MacroTriggerPick_SelectionChanged"
+                                              PreviewKeyDown="MacroTriggerPick_PreviewKeyDown"
+                                              IsTextSearchEnabled="False"
+                                              ToolTip="{Binding Macro_AddTriggerFromList_Tooltip, Source={x:Static strings:Strings.Instance}}"
+                                              ScrollViewer.VerticalScrollBarVisibility="Visible">
+                                        <ComboBox.GroupStyle>
+                                            <GroupStyle>
+                                                <GroupStyle.HeaderTemplate>
+                                                    <DataTemplate>
+                                                        <Border Background="{DynamicResource SubtleFillColorSecondaryBrush}" Padding="6,3,6,3">
+                                                            <TextBlock Text="{Binding Name}" FontSize="11" FontWeight="SemiBold"
+                                                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                                                       TextTrimming="CharacterEllipsis"/>
+                                                        </Border>
+                                                    </DataTemplate>
+                                                </GroupStyle.HeaderTemplate>
+                                            </GroupStyle>
+                                        </ComboBox.GroupStyle>
+                                    </ComboBox>
+                                </StackPanel>
+
                                 <!-- Legacy slot-combined axis Threshold + Direction. Visible
                                      only for OutputController-source triggers that landed in
                                      the slot-combined TriggerAxisTargets list — InputDevice
@@ -9176,6 +9209,13 @@
                                             ToolTip="{Binding Pad_ResetTouchpadInBox, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
 
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                                    <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}" Content="{Binding Pad_Touchpad_TouchSpots, Source={x:Static strings:Strings.Instance}}"
+                                              ToolTip="{Binding Pad_Touchpad_TouchSpots_Tooltip, Source={x:Static strings:Strings.Instance}}"
+                                              IsChecked="{Binding TouchpadEnableTouchSpots, Mode=TwoWay}" VerticalAlignment="Center"/>
+                                    <ui:Button Command="{Binding ResetTouchpadEnableTouchSpotsCommand}" Style="{StaticResource ResetButton}"
+                                            ToolTip="{Binding Pad_ResetTouchpadTouchSpots, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
                                     <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}" Content="{Binding Pad_Touchpad_FourWaySwipes, Source={x:Static strings:Strings.Instance}}"
                                               IsChecked="{Binding TouchpadEnableFourWaySwipes, Mode=TwoWay}" VerticalAlignment="Center"/>

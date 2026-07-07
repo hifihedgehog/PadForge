@@ -942,6 +942,8 @@
   <data name="Pad_ResetRightMotor" xml:space="preserve"><value>重置右马达</value></data>
   <data name="Pad_ResetView" xml:space="preserve"><value>重置视图</value></data>
   <data name="Macro_RecordHint" xml:space="preserve"><value>按下按钮或移动轴/扳机以录制。轴偏转超过 50% 时被检测到。</value></data>
+  <data name="Macro_AddTriggerFromList" xml:space="preserve"><value>从列表添加</value></data>
+  <data name="Macro_AddTriggerFromList_Tooltip" xml:space="preserve"><value>从该槽位的设备中选择触发输入，而无需录制。在触摸板选项卡中启用的手势会显示在这里。</value></data>
   <data name="Macro_LiveRecord_Placeholder" xml:space="preserve"><value>按下任意输入…</value></data>
   <data name="Macro_Axis_Inverted" xml:space="preserve"><value>已反转</value></data>
   <data name="Macro_Axis_Half" xml:space="preserve"><value>半轴</value></data>
@@ -1597,6 +1599,10 @@
   <data name="Mapping_TouchpadGesture_DoubleTap" xml:space="preserve"><value>双击</value></data>
   <data name="Mapping_TouchpadGesture_TripleTap" xml:space="preserve"><value>三连击</value></data>
   <data name="Mapping_TouchpadGesture_LongPress" xml:space="preserve"><value>长按</value></data>
+  <data name="Mapping_TouchpadGesture_TouchLeft" xml:space="preserve"><value>左侧触摸</value></data>
+  <data name="Mapping_TouchpadGesture_TouchRight" xml:space="preserve"><value>右侧触摸</value></data>
+  <data name="Mapping_TouchpadGesture_TouchTop" xml:space="preserve"><value>顶部触摸</value></data>
+  <data name="Mapping_TouchpadGesture_TouchMulti" xml:space="preserve"><value>多点触摸</value></data>
   <data name="Mapping_TouchpadGesture_RadialZone_Format" xml:space="preserve"><value>径向扇区 {0}/{1}</value></data>
   <data name="Mapping_TouchpadGesture_PadPrefix_Format" xml:space="preserve"><value>触控板 {0}：{1}</value></data>
   <data name="Mapping_TouchpadGesture_SinglePadNoun_Format" xml:space="preserve"><value>触控板 {0}</value></data>
@@ -1656,6 +1662,8 @@
   <data name="Pad_Touchpad_SwipeTimeWindow" xml:space="preserve"><value>滑动时间窗</value></data>
   <data name="Pad_Touchpad_RadialZones" xml:space="preserve"><value>径向扇区（武器轮盘风格）</value></data>
   <data name="Pad_Touchpad_RadialZones_Tooltip" xml:space="preserve"><value>从手指落下的位置向外滑入扇区。0 区锚定在上方，扇区按顺时针方向递增。选择器中每一项的括号内以相对上方的角度（度）显示方向：(0°) 表示上、(90°) 表示右、(180°) 表示下、(270°) 表示左。同一时间只保持一个扇区激活。滑入另一个扇区会释放前一个，因此可以在一次滑动中循环切换多个扇区。</value></data>
+  <data name="Pad_Touchpad_TouchSpots" xml:space="preserve"><value>触摸区域（左 / 右 / 上 / 多点触摸）</value></data>
+  <data name="Pad_Touchpad_TouchSpots_Tooltip" xml:space="preserve"><value>根据触摸板的触摸位置持续按住的按钮。单指落在左、右或上（顶部四分之一）区域。两指及以上按住多点触摸。左右分界线与 DS4Windows 相同，位于宽度的五分之二处，且同一时间只有一个区域生效。</value></data>
   <data name="Pad_Touchpad_RadialZoneCount" xml:space="preserve"><value>扇区数量</value></data>
   <data name="Pad_Touchpad_RadialCenterDeadzone" xml:space="preserve"><value>中心死区 (0..1)</value></data>
   <data name="Pad_Touchpad_Taps" xml:space="preserve"><value>轻触 / 双击 / 三连击</value></data>
@@ -1715,6 +1723,7 @@
   <data name="Pad_ResetTouchpadSwipeDistance" xml:space="preserve"><value>重置滑动距离</value></data>
   <data name="Pad_ResetTouchpadSwipeTimeWindow" xml:space="preserve"><value>重置滑动时间窗</value></data>
   <data name="Pad_ResetTouchpadRadialZones" xml:space="preserve"><value>重置径向扇区</value></data>
+  <data name="Pad_ResetTouchpadTouchSpots" xml:space="preserve"><value>重置触摸区域</value></data>
   <data name="Pad_ResetTouchpadRadialZoneCount" xml:space="preserve"><value>重置扇区数量</value></data>
   <data name="Pad_ResetTouchpadRadialCenterDeadzone" xml:space="preserve"><value>重置中心死区</value></data>
   <data name="Pad_ResetTouchpadTaps" xml:space="preserve"><value>重置轻触 / 双击 / 三连击</value></data>

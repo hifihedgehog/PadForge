@@ -53,6 +53,14 @@ namespace PadForge.Engine.Touchpad
         /// register a zone.</summary>
         [XmlAttribute] public float RadialCenterDeadzone { get; set; } = 0.30f;
 
+        /// <summary>Touch-spot zones enabled (Left / Right / Top /
+        /// Multitouch). Held-state buttons over where the pad is being
+        /// touched: 2+ fingers asserts Multitouch; a single finger in
+        /// the top quarter asserts Top, otherwise Left / Right split at
+        /// 2/5 of the width (the boundary DS4Windows uses). Exactly one
+        /// spot asserts at a time and releases on lift.</summary>
+        [XmlAttribute] public bool EnableTouchSpots { get; set; }
+
         /// <summary>Tap / DoubleTap / TripleTap gestures enabled.</summary>
         [XmlAttribute] public bool EnableTaps { get; set; }
 
@@ -225,6 +233,7 @@ namespace PadForge.Engine.Touchpad
                 EnableRadialZones = EnableRadialZones,
                 RadialZoneCount = RadialZoneCount,
                 RadialCenterDeadzone = RadialCenterDeadzone,
+                EnableTouchSpots = EnableTouchSpots,
                 EnableTaps = EnableTaps,
                 TapTimeWindowMs = TapTimeWindowMs,
                 TapMaxMotion = TapMaxMotion,

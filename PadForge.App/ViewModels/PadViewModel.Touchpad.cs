@@ -174,6 +174,13 @@ namespace PadForge.ViewModels
             }
         }
 
+        private bool _touchpadEnableTouchSpots;
+        public bool TouchpadEnableTouchSpots
+        {
+            get => _touchpadEnableTouchSpots;
+            set { if (SetProperty(ref _touchpadEnableTouchSpots, value)) PushIfNotLoading(); }
+        }
+
         private bool _touchpadEnableTaps;
         public bool TouchpadEnableTaps
         {
@@ -465,6 +472,10 @@ namespace PadForge.ViewModels
         public RelayCommand ResetTouchpadEnableRadialZonesCommand =>
             _resetTouchpadEnableRadialZonesCommand ??= new RelayCommand(() => TouchpadEnableRadialZones = false);
 
+        private RelayCommand _resetTouchpadEnableTouchSpotsCommand;
+        public RelayCommand ResetTouchpadEnableTouchSpotsCommand =>
+            _resetTouchpadEnableTouchSpotsCommand ??= new RelayCommand(() => TouchpadEnableTouchSpots = false);
+
         private RelayCommand _resetTouchpadRadialZoneCountCommand;
         public RelayCommand ResetTouchpadRadialZoneCountCommand =>
             _resetTouchpadRadialZoneCountCommand ??= new RelayCommand(() => TouchpadRadialZoneCount = 8);
@@ -542,6 +553,7 @@ namespace PadForge.ViewModels
         public RelayCommand ResetTouchpadInBoxCardCommand =>
             _resetTouchpadInBoxCardCommand ??= new RelayCommand(() =>
             {
+                TouchpadEnableTouchSpots = false;
                 TouchpadEnableFourWaySwipes = false;
                 TouchpadEnableEightWaySwipes = false;
                 TouchpadSwipeDistanceThreshold = 0.15;
@@ -665,6 +677,7 @@ namespace PadForge.ViewModels
                 TouchpadEnableRadialZones = s.EnableRadialZones;
                 TouchpadRadialZoneCount = s.RadialZoneCount;
                 TouchpadRadialCenterDeadzone = s.RadialCenterDeadzone;
+                TouchpadEnableTouchSpots = s.EnableTouchSpots;
                 TouchpadEnableTaps = s.EnableTaps;
                 TouchpadTapTimeWindowMs = s.TapTimeWindowMs;
                 TouchpadMultiTapGapMs = s.MultiTapGapMs;
@@ -750,6 +763,7 @@ namespace PadForge.ViewModels
             s.EnableRadialZones = TouchpadEnableRadialZones;
             s.RadialZoneCount = TouchpadRadialZoneCount;
             s.RadialCenterDeadzone = (float)TouchpadRadialCenterDeadzone;
+            s.EnableTouchSpots = TouchpadEnableTouchSpots;
             s.EnableTaps = TouchpadEnableTaps;
             s.TapTimeWindowMs = TouchpadTapTimeWindowMs;
             s.MultiTapGapMs = TouchpadMultiTapGapMs;

@@ -4380,6 +4380,14 @@ namespace PadForge.Services
             padVm.OnLeftTriggerRouteActivatorSelectedInputRefresh();
             padVm.OnRightTriggerRouteActivatorSelectedInputRefresh();
             padVm.OnMirrorEngageSelectedInputRefresh();
+
+            // Macro trigger dropdown (#177): only the choices that
+            // convert to a TriggerInputEntry. Same source list, so the
+            // Touchpad tab's enable gates carry over unchanged.
+            padVm.SlotMacroTriggerChoices.Clear();
+            foreach (var c in flat)
+                if (MacroItem.TryBuildTriggerEntry(c, out _))
+                    padVm.SlotMacroTriggerChoices.Add(c);
         }
 
         // ─────────────────────────────────────────────
@@ -8642,6 +8650,19 @@ namespace PadForge.Services
                 ? _recordedPovs.ToArray()
                 : Array.Empty<string>();
 
+            // Preserve gesture entries added via the trigger dropdown
+            // (#177): recording can never produce them (the recorder
+            // scans raw buttons / POVs / axes only), so every branch
+            // below that rewrites the entry list would otherwise
+            // silently wipe a picked gesture. That includes a recording
+            // stopped with nothing captured and the OutputController
+            // paths. Gestures survive every re-record; the Clear button
+            // remains the way to remove them.
+            var priorGestures = new List<MacroItem.TriggerInputEntry>();
+            foreach (var prior in _recordingMacro.GetTriggerInputEntries())
+                if (prior != null && !string.IsNullOrEmpty(prior.GestureDescriptor))
+                    priorGestures.Add(prior);
+
             // InputDevice triggers always serialize through the multi-device
             // TriggerInputEntries list. This unifies the single-device and
             // multi-device cases into one code path and handles per-device
@@ -8649,8 +8670,9 @@ namespace PadForge.Services
             if (_recordingMacro.TriggerSource == MacroTriggerSource.InputDevice
                 && _recordedInputEntries != null && _recordedInputEntries.Count > 0)
             {
-                _recordingMacro.SetTriggerInputEntries(
-                    new List<MacroItem.TriggerInputEntry>(_recordedInputEntries));
+                var merged = new List<MacroItem.TriggerInputEntry>(_recordedInputEntries);
+                merged.AddRange(priorGestures);
+                _recordingMacro.SetTriggerInputEntries(merged);
 
                 // Back-compat: when the combo is a single device with only
                 // buttons + POVs (no per-device axes), mirror into the
@@ -8697,7 +8719,7 @@ namespace PadForge.Services
                 _recordingMacro.TriggerButtons = 0;
                 _recordingMacro.TriggerDeviceGuid = Guid.Empty;
                 _recordingMacro.TriggerRawButtons = Array.Empty<int>();
-                _recordingMacro.SetTriggerInputEntries(new List<MacroItem.TriggerInputEntry>());
+                _recordingMacro.SetTriggerInputEntries(priorGestures);
             }
             else
             {
@@ -8707,7 +8729,7 @@ namespace PadForge.Services
                 _recordingMacro.TriggerDeviceGuid = Guid.Empty;
                 _recordingMacro.TriggerRawButtons = Array.Empty<int>();
                 _recordingMacro.TriggerCustomButtonWords = new uint[4];
-                _recordingMacro.SetTriggerInputEntries(new List<MacroItem.TriggerInputEntry>());
+                _recordingMacro.SetTriggerInputEntries(priorGestures);
             }
 
             _recordingMacro.RecordingLiveText = "";

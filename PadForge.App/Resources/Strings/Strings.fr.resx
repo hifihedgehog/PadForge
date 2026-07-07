@@ -942,6 +942,8 @@
   <data name="Pad_ResetRightMotor" xml:space="preserve"><value>Réinitialiser le moteur droit</value></data>
   <data name="Pad_ResetView" xml:space="preserve"><value>Réinitialiser la vue</value></data>
   <data name="Macro_RecordHint" xml:space="preserve"><value>Appuyez sur des boutons ou bougez un axe/gâchette pour enregistrer. Les axes sont détectés lorsqu'ils dépassent 50 % de déviation.</value></data>
+  <data name="Macro_AddTriggerFromList" xml:space="preserve"><value>Ajouter depuis la liste</value></data>
+  <data name="Macro_AddTriggerFromList_Tooltip" xml:space="preserve"><value>Choisissez une entrée de déclenchement parmi les périphériques de l'emplacement au lieu de l'enregistrer. Les gestes du pavé tactile activés dans l'onglet Pavé tactile apparaissent ici.</value></data>
   <data name="Macro_LiveRecord_Placeholder" xml:space="preserve"><value>Appuyez sur une entrée…</value></data>
   <data name="Macro_Axis_Inverted" xml:space="preserve"><value>inversé</value></data>
   <data name="Macro_Axis_Half" xml:space="preserve"><value>demi-axe</value></data>
@@ -1598,6 +1600,10 @@
   <data name="Mapping_TouchpadGesture_DoubleTap" xml:space="preserve"><value>Double tape</value></data>
   <data name="Mapping_TouchpadGesture_TripleTap" xml:space="preserve"><value>Triple tape</value></data>
   <data name="Mapping_TouchpadGesture_LongPress" xml:space="preserve"><value>Appui long</value></data>
+  <data name="Mapping_TouchpadGesture_TouchLeft" xml:space="preserve"><value>Toucher gauche</value></data>
+  <data name="Mapping_TouchpadGesture_TouchRight" xml:space="preserve"><value>Toucher droit</value></data>
+  <data name="Mapping_TouchpadGesture_TouchTop" xml:space="preserve"><value>Toucher haut</value></data>
+  <data name="Mapping_TouchpadGesture_TouchMulti" xml:space="preserve"><value>Multitouche</value></data>
   <data name="Mapping_TouchpadGesture_RadialZone_Format" xml:space="preserve"><value>Zone radiale {0}/{1}</value></data>
   <data name="Mapping_TouchpadGesture_PadPrefix_Format" xml:space="preserve"><value>Pavé tactile {0}: {1}</value></data>
   <data name="Mapping_TouchpadGesture_SinglePadNoun_Format" xml:space="preserve"><value>Pavé tactile {0}</value></data>
@@ -1657,6 +1663,8 @@
   <data name="Pad_Touchpad_SwipeTimeWindow" xml:space="preserve"><value>Fenêtre temporelle de balayage</value></data>
   <data name="Pad_Touchpad_RadialZones" xml:space="preserve"><value>Zones radiales (style roue d'armes)</value></data>
   <data name="Pad_Touchpad_RadialZones_Tooltip" xml:space="preserve"><value>Glisse vers l'extérieur depuis le point de pose du doigt vers un secteur. La zone 0 est ancrée en haut et les zones augmentent dans le sens horaire. Chaque entrée du sélecteur indique sa direction entre parenthèses en degrés depuis le haut : (0°) est en haut, (90°) à droite, (180°) en bas, (270°) à gauche. Une seule zone est maintenue à la fois. Glisser dans une autre relâche la précédente, ce qui permet de parcourir les zones en un seul geste.</value></data>
+  <data name="Pad_Touchpad_TouchSpots" xml:space="preserve"><value>Zones tactiles (gauche / droite / haut / multitouche)</value></data>
+  <data name="Pad_Touchpad_TouchSpots_Tooltip" xml:space="preserve"><value>Boutons maintenus selon l'endroit touché sur le pavé tactile. Un doigt tombe dans gauche, droite ou haut (le quart supérieur). Deux doigts ou plus maintiennent multitouche. La séparation gauche/droite se situe aux deux cinquièmes de la largeur, comme dans DS4Windows, et une seule zone est active à la fois.</value></data>
   <data name="Pad_Touchpad_RadialZoneCount" xml:space="preserve"><value>Nombre de zones</value></data>
   <data name="Pad_Touchpad_RadialCenterDeadzone" xml:space="preserve"><value>Zone morte centrale (0..1)</value></data>
   <data name="Pad_Touchpad_Taps" xml:space="preserve"><value>Tape / Double tape / Triple tape</value></data>
@@ -1716,6 +1724,7 @@
   <data name="Pad_ResetTouchpadSwipeDistance" xml:space="preserve"><value>Réinitialiser la distance de balayage</value></data>
   <data name="Pad_ResetTouchpadSwipeTimeWindow" xml:space="preserve"><value>Réinitialiser la fenêtre temporelle de balayage</value></data>
   <data name="Pad_ResetTouchpadRadialZones" xml:space="preserve"><value>Réinitialiser les zones radiales</value></data>
+  <data name="Pad_ResetTouchpadTouchSpots" xml:space="preserve"><value>Réinitialiser les zones tactiles</value></data>
   <data name="Pad_ResetTouchpadRadialZoneCount" xml:space="preserve"><value>Réinitialiser le nombre de zones</value></data>
   <data name="Pad_ResetTouchpadRadialCenterDeadzone" xml:space="preserve"><value>Réinitialiser la zone morte centrale</value></data>
   <data name="Pad_ResetTouchpadTaps" xml:space="preserve"><value>Réinitialiser tape / double tape / triple tape</value></data>

@@ -1056,6 +1056,62 @@ namespace PadForge.Views
             return null;
         }
 
+        /// <summary>Macro trigger dropdown (#177): arrow keys on the
+        /// CLOSED combo open the dropdown instead of stepping the
+        /// selection. WPF's closed-combo arrow behavior changes
+        /// SelectedItem per keystroke, and with a commit-on-selection
+        /// palette each stray step would append an unintended trigger
+        /// entry that ANDs into the combo and blocks the macro. With
+        /// this suppression, every SelectionChanged that carries an item
+        /// is a deliberate pick: a mouse click selects while the
+        /// dropdown is open, and Enter commits the highlighted item
+        /// right after closing it (WPF selects after the close), both
+        /// landing in <see cref="MacroTriggerPick_SelectionChanged"/>.</summary>
+        private void MacroTriggerPick_PreviewKeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            if (sender is not System.Windows.Controls.ComboBox combo) return;
+            if (combo.IsDropDownOpen) return;
+            // Home / End on a closed combo commit SelectFirst / SelectLast
+            // the same way closed arrows step the selection, so all four
+            // open the dropdown instead (typeahead is disabled in XAML
+            // via IsTextSearchEnabled for the same reason).
+            if (e.Key is System.Windows.Input.Key.Down or System.Windows.Input.Key.Up
+                or System.Windows.Input.Key.Home or System.Windows.Input.Key.End)
+            {
+                combo.IsDropDownOpen = true;
+                e.Handled = true;
+            }
+        }
+
+        /// <summary>Appends the picked input to the macro's multi-device
+        /// trigger combo, then clears the selection so the ComboBox acts
+        /// as a command palette (the reset re-enters this handler with no
+        /// selection, which the guard swallows). Unconvertible
+        /// descriptors never reach this handler (the list is pre-filtered
+        /// through MacroItem.TryBuildTriggerEntry), but the conversion is
+        /// re-run defensively. Duplicate entries are dropped. Persistence
+        /// rides SetTriggerInputEntries' existing TriggerInputs change
+        /// notification, the same autosave path the trigger recorder
+        /// uses.</summary>
+        private void MacroTriggerPick_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        {
+            if (sender is not System.Windows.Controls.ComboBox combo) return;
+            if (combo.SelectedItem is not PadForge.ViewModels.InputChoice choice) return;
+            combo.SelectedIndex = -1;
+
+            if (combo.DataContext is not PadForge.ViewModels.MacroItem macro) return;
+            if (!PadForge.ViewModels.MacroItem.TryBuildTriggerEntry(choice, out var entry)) return;
+
+            var entries = new System.Collections.Generic.List<PadForge.ViewModels.MacroItem.TriggerInputEntry>(
+                macro.GetTriggerInputEntries());
+            foreach (var ex in entries)
+                if (ex != null && ex.DeviceGuid == entry.DeviceGuid
+                    && string.Equals(ex.Spec, entry.Spec, StringComparison.Ordinal))
+                    return;
+            entries.Add(entry);
+            macro.SetTriggerInputEntries(entries);
+        }
+
         private void ShiftLayer_Configure_Click(object sender, RoutedEventArgs e)
         {
             if (_currentPadVm == null) return;
@@ -1091,13 +1147,16 @@ namespace PadForge.Views
             var first = _currentPadVm.Mappings.FirstOrDefault();
             if (first?.AvailableInputs != null)
             {
+                // Pass the FULL list, exactly like AddShiftLayer_Click.
+                // The dialog segregates buttons vs axes itself, and any
+                // family filtered here (Touchpad gestures, MIDI, gyro,
+                // mouse, IR, balance...) becomes un-Configurable: the
+                // saved activator's input can't be re-selected and Save
+                // blocks on the input-required validation.
                 foreach (var c in first.AvailableInputs)
                 {
                     if (c == null) continue;
-                    var d = c.Descriptor ?? "";
-                    if (d.StartsWith("Button ", StringComparison.OrdinalIgnoreCase)
-                        || d.StartsWith("POV ", StringComparison.OrdinalIgnoreCase))
-                        available.Add(c);
+                    available.Add(c);
                 }
             }
 

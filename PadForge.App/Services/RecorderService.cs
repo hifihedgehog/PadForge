@@ -119,6 +119,34 @@ namespace PadForge.Services
         /// <summary>When recording started (for timeout).</summary>
         private DateTime _recordingStartTime;
 
+        /// <summary>Gesture fire-set snapshot at recording start, as
+        /// "slot|deviceGuid|firedKey" composites. PollTick treats any
+        /// fired gesture NOT in this set as a rising edge and records
+        /// its descriptor, so an enabled swipe / tap / touch spot is
+        /// recordable straight from a mapping row's Record button. The
+        /// baseline means a finger already resting on a touch spot when
+        /// recording starts cannot hijack the session.</summary>
+        private readonly HashSet<string> _gestureBaseline = new();
+
+        /// <summary>Gesture candidates collected during the current touch
+        /// session, keyed by device. Completion waits for THAT device's
+        /// fingers to lift so a touch spot (which fires the instant a
+        /// finger lands) cannot steal the recording from a swipe / tap /
+        /// shape whose key only appears at the lift transition. Non-spot
+        /// keys win; the LAST spot the finger held wins among spots.
+        /// Per-device keying matters: with two touch devices in the
+        /// session, device B's zero-finger state must not release a
+        /// candidate collected from device A mid-hold (and mis-attribute
+        /// the descriptor to B's GUID).</summary>
+        private readonly Dictionary<Guid, string> _gestureNonSpotByDevice = new();
+        private readonly Dictionary<Guid, string> _gestureSpotByDevice = new();
+
+        private static bool IsTouchSpotKey(string firedKey) =>
+            firedKey.EndsWith("TouchLeft", StringComparison.Ordinal)
+            || firedKey.EndsWith("TouchRight", StringComparison.Ordinal)
+            || firedKey.EndsWith("TouchTop", StringComparison.Ordinal)
+            || firedKey.EndsWith("TouchMulti", StringComparison.Ordinal);
+
         /// <summary>When recording an Incremental or InvertOnHold source's
         /// Param button (ParamUp / ParamDown / ParamModifier), names the
         /// destination field so the recorder writes the captured descriptor
@@ -281,6 +309,7 @@ namespace PadForge.Services
             }
 
             _recordingStartTime = DateTime.UtcNow;
+            SnapshotGestureBaseline();
             _waitForRelease = false;
 
             _timer = new DispatcherTimer(DispatcherPriority.Input)
@@ -350,6 +379,7 @@ namespace PadForge.Services
             }
 
             _recordingStartTime = DateTime.UtcNow;
+            SnapshotGestureBaseline();
 
             // For follow-up recordings, wait for the previous input to be released
             // before detecting new presses. This prevents the same POV/button from
@@ -409,6 +439,113 @@ namespace PadForge.Services
         /// Called ~30 times per second while recording. Compares current state
         /// against the baseline to detect which input changed.
         /// </summary>
+        /// <summary>Snapshots every active device's currently-fired
+        /// gestures across all slots into <see cref="_gestureBaseline"/>.
+        /// Called when a recording session (re)establishes its baselines.
+        /// The gesture contexts live on the engine's InputManager, keyed
+        /// (slot, deviceGuid, padIdx); the fired keys already carry the
+        /// pad index ("Touchpad 0 TouchLeft") so slot + guid + key is a
+        /// unique composite.</summary>
+        private void SnapshotGestureBaseline()
+        {
+            _gestureBaseline.Clear();
+            _gestureNonSpotByDevice.Clear();
+            _gestureSpotByDevice.Clear();
+            var mgr = Views.PadPage.InputService?.Engine;
+            if (mgr == null) return;
+            try
+            {
+                foreach (var kv in mgr.GestureContexts)
+                {
+                    if (!_activeDevices.ContainsKey(kv.Key.Item2)) continue;
+                    foreach (var fired in kv.Value.FiredGesturesThisFrame)
+                        _gestureBaseline.Add($"{kv.Key.Item1}|{kv.Key.Item2}|{fired}");
+                }
+            }
+            catch
+            {
+                // The fired sets mutate on the polling thread. A torn
+                // enumeration here only costs baseline entries, and a
+                // missing baseline entry errs toward recording, which
+                // the next tick's detection re-validates anyway.
+            }
+        }
+
+        /// <summary>Collects rising-edge gesture fires for this device
+        /// into the candidate pair, then returns the winning descriptor
+        /// once the touch session ends (no active fingers left on any of
+        /// the device's pads), or null while the session is still live.
+        /// Scoped to the recording's slot: the recognizer gates per
+        /// (slot, device, pad), so a gesture enabled only on ANOTHER
+        /// slot must not record here (its descriptor would be dead on
+        /// this slot's rows). Waiting for lift lets a swipe / tap /
+        /// shape key (which only appears at the lift transition) beat
+        /// the touch spot that fired the instant the finger landed.
+        /// Cross-thread enumeration of the polling thread's fired sets
+        /// is guarded: a torn read skips this tick and retries 33 ms
+        /// later.</summary>
+        private string DetectNewGestureFire(Guid deviceGuid)
+        {
+            var mgr = Views.PadPage.InputService?.Engine;
+            if (mgr == null) return null;
+            bool anyActiveFingers = false;
+            try
+            {
+                foreach (var kv in mgr.GestureContexts)
+                {
+                    if (kv.Key.Item2 != deviceGuid) continue;
+                    if (_activePadIndex >= 0 && kv.Key.Item1 != _activePadIndex) continue;
+                    if (kv.Value.ActiveFingerCount > 0) anyActiveFingers = true;
+
+                    // Self-healing baseline: a baseline entry whose key is
+                    // no longer in the fired set has finished its latch
+                    // window, so a LATER fire of the same gesture is a
+                    // genuine rising edge. Without this, a one-shot key
+                    // still latched when the session started (the
+                    // automatic bipolar follow-up recording lands inside
+                    // the cooldown window) would be unrecordable for the
+                    // whole session. Scoped to THIS context's pad: the
+                    // fired keys carry their pad index ("Touchpad 1 ..."),
+                    // and pad 0's context must not clear pad 1's baseline
+                    // (pad 1's keys are never in pad 0's fired set, so an
+                    // unscoped sweep would strip the resting-finger
+                    // protection on every other pad of the device).
+                    string pfx = $"{kv.Key.Item1}|{kv.Key.Item2}|";
+                    string padToken = $"Touchpad {kv.Key.Item3} ";
+                    _gestureBaseline.RemoveWhere(c =>
+                        c.StartsWith(pfx, StringComparison.Ordinal)
+                        && c.AsSpan(pfx.Length).StartsWith(padToken)
+                        && !kv.Value.FiredGesturesThisFrame.Contains(c.Substring(pfx.Length)));
+
+                    foreach (var fired in kv.Value.FiredGesturesThisFrame)
+                    {
+                        if (_gestureBaseline.Contains($"{pfx}{fired}"))
+                            continue;
+                        if (IsTouchSpotKey(fired))
+                            _gestureSpotByDevice[deviceGuid] = fired;   // last spot held wins
+                        else if (!_gestureNonSpotByDevice.ContainsKey(deviceGuid))
+                            _gestureNonSpotByDevice[deviceGuid] = fired;
+                    }
+                }
+            }
+            catch
+            {
+                // Torn enumeration: retry next tick.
+                return null;
+            }
+
+            if (anyActiveFingers) return null;
+            _gestureNonSpotByDevice.TryGetValue(deviceGuid, out var nonSpot);
+            _gestureSpotByDevice.TryGetValue(deviceGuid, out var spot);
+            string winner = nonSpot ?? spot;
+            if (winner != null)
+            {
+                _gestureNonSpotByDevice.Remove(deviceGuid);
+                _gestureSpotByDevice.Remove(deviceGuid);
+            }
+            return winner;
+        }
+
         private void PollTick(object sender, EventArgs e)
         {
             // Allow either a MappingItem-bound session or a freeform one.
@@ -510,6 +647,22 @@ namespace PadForge.Services
                     {
                         string direction = CentidegreesToDirection(current.Povs[i]);
                         CompleteRecording(MapType.POV, i, direction, axisPositive: false, winningDevice: dg);
+                        return;
+                    }
+                }
+
+                // ── Touchpad gestures: rising edge vs the recording
+                //     baseline. Only gestures the user has ENABLED on the
+                //     Touchpad tab ever land in the fired set, so this
+                //     detects exactly the descriptors the mapping picker
+                //     offers. Checked after buttons / POVs so a deliberate
+                //     press wins the tick over an incidental touch. ──
+                if (hasTouchpad || ud.IsTouchpad)
+                {
+                    string gestureDesc = DetectNewGestureFire(dg);
+                    if (gestureDesc != null)
+                    {
+                        CompleteRecordingWithDescriptor(gestureDesc, dg);
                         return;
                     }
                 }

@@ -1173,6 +1173,10 @@
   <data name="Mapping_TouchpadGesture_DoubleTap" xml:space="preserve"><value>Double Tap</value></data>
   <data name="Mapping_TouchpadGesture_TripleTap" xml:space="preserve"><value>Triple Tap</value></data>
   <data name="Mapping_TouchpadGesture_LongPress" xml:space="preserve"><value>Long Press</value></data>
+  <data name="Mapping_TouchpadGesture_TouchLeft" xml:space="preserve"><value>Left Touch</value></data>
+  <data name="Mapping_TouchpadGesture_TouchRight" xml:space="preserve"><value>Right Touch</value></data>
+  <data name="Mapping_TouchpadGesture_TouchTop" xml:space="preserve"><value>Top Touch</value></data>
+  <data name="Mapping_TouchpadGesture_TouchMulti" xml:space="preserve"><value>Multitouch</value></data>
   <data name="Mapping_TouchpadGesture_RadialZone_Format" xml:space="preserve"><value>Radial Zone {0}/{1}</value></data>
   <data name="Mapping_TouchpadGesture_PadPrefix_Format" xml:space="preserve"><value>Touchpad {0}: {1}</value></data>
   <data name="Mapping_TouchpadGesture_SinglePadNoun_Format" xml:space="preserve"><value>Touchpad {0}</value></data>
@@ -1233,6 +1237,8 @@
   <data name="Pad_Touchpad_SwipeTimeWindow" xml:space="preserve"><value>Swipe Time Window</value></data>
   <data name="Pad_Touchpad_RadialZones" xml:space="preserve"><value>Radial Zones (Weapon-Wheel Style)</value></data>
   <data name="Pad_Touchpad_RadialZones_Tooltip" xml:space="preserve"><value>Slide outward from your finger's landing point into a wedge. Zone 0 anchors at the top and zones increase clockwise. Each zone's entry in the picker shows its direction in parentheses as degrees from the top: (0°) is up, (90°) is right, (180°) is down, (270°) is left. Only one zone is held at a time. Sliding into another releases the previous one, so you can cycle through zones in a single swipe.</value></data>
+  <data name="Pad_Touchpad_TouchSpots" xml:space="preserve"><value>Touch Spots (Left / Right / Top / Multitouch)</value></data>
+  <data name="Pad_Touchpad_TouchSpots_Tooltip" xml:space="preserve"><value>Held buttons for where the touchpad is touched. One finger lands in Left, Right, or Top (the top quarter). Two or more fingers hold Multitouch. The left/right split sits at two fifths of the width, matching DS4Windows, and exactly one spot is held at a time.</value></data>
   <data name="Pad_Touchpad_RadialZoneCount" xml:space="preserve"><value>Zone Count</value></data>
   <data name="Pad_Touchpad_RadialCenterDeadzone" xml:space="preserve"><value>Center Deadzone (0..1)</value></data>
   <data name="Pad_Touchpad_Taps" xml:space="preserve"><value>Tap / Double Tap / Triple Tap</value></data>
@@ -1308,6 +1314,7 @@
   <data name="Pad_ResetTouchpadSwipeDistance" xml:space="preserve"><value>Reset Swipe Distance</value></data>
   <data name="Pad_ResetTouchpadSwipeTimeWindow" xml:space="preserve"><value>Reset Swipe Time Window</value></data>
   <data name="Pad_ResetTouchpadRadialZones" xml:space="preserve"><value>Reset Radial Zones</value></data>
+  <data name="Pad_ResetTouchpadTouchSpots" xml:space="preserve"><value>Reset Touch Spots</value></data>
   <data name="Pad_ResetTouchpadRadialZoneCount" xml:space="preserve"><value>Reset Zone Count</value></data>
   <data name="Pad_ResetTouchpadRadialCenterDeadzone" xml:space="preserve"><value>Reset Center Deadzone</value></data>
   <data name="Pad_ResetTouchpadTaps" xml:space="preserve"><value>Reset Tap / Double Tap / Triple Tap</value></data>
@@ -1701,6 +1708,8 @@
 
   <!-- ═══ Pad — Macro Hints ═══ -->
   <data name="Macro_RecordHint" xml:space="preserve"><value>Press buttons or move an axis/trigger to record. Axes are detected when deflected past 50%.</value></data>
+  <data name="Macro_AddTriggerFromList" xml:space="preserve"><value>Add from List</value></data>
+  <data name="Macro_AddTriggerFromList_Tooltip" xml:space="preserve"><value>Pick a trigger input from the slot's devices instead of recording it. Touchpad gestures enabled on the Touchpad tab appear here.</value></data>
   <data name="Macro_LiveRecord_Placeholder" xml:space="preserve"><value>Press any input…</value></data>
   <data name="Macro_Axis_Inverted" xml:space="preserve"><value>inverted</value></data>
   <data name="Macro_Axis_Half" xml:space="preserve"><value>half axis</value></data>

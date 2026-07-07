@@ -920,6 +920,7 @@ namespace PadForge
                         nameof(PadViewModel.TouchpadEnableRadialZones) or
                         nameof(PadViewModel.TouchpadRadialZoneCount) or
                         nameof(PadViewModel.TouchpadRadialCenterDeadzone) or
+                        nameof(PadViewModel.TouchpadEnableTouchSpots) or
                         nameof(PadViewModel.TouchpadEnableTaps) or
                         nameof(PadViewModel.TouchpadTapTimeWindowMs) or
                         nameof(PadViewModel.TouchpadMultiTapGapMs) or

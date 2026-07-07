@@ -942,6 +942,8 @@
   <data name="Pad_ResetRightMotor" xml:space="preserve"><value>Rechten Motor zurücksetzen</value></data>
   <data name="Pad_ResetView" xml:space="preserve"><value>Ansicht zurücksetzen</value></data>
   <data name="Macro_RecordHint" xml:space="preserve"><value>Tasten drücken oder Achse/Trigger bewegen zum Aufnehmen. Achsen werden erkannt, wenn sie über 50 % ausgelenkt sind.</value></data>
+  <data name="Macro_AddTriggerFromList" xml:space="preserve"><value>Aus Liste hinzufügen</value></data>
+  <data name="Macro_AddTriggerFromList_Tooltip" xml:space="preserve"><value>Wählt einen Auslöser aus den Geräten des Slots, statt ihn aufzuzeichnen. Auf dem Touchpad-Tab aktivierte Gesten erscheinen hier.</value></data>
   <data name="Macro_LiveRecord_Placeholder" xml:space="preserve"><value>Eingabe drücken…</value></data>
   <data name="Macro_Axis_Inverted" xml:space="preserve"><value>invertiert</value></data>
   <data name="Macro_Axis_Half" xml:space="preserve"><value>halbe Achse</value></data>
@@ -1598,6 +1600,10 @@
   <data name="Mapping_TouchpadGesture_DoubleTap" xml:space="preserve"><value>Doppeltippen</value></data>
   <data name="Mapping_TouchpadGesture_TripleTap" xml:space="preserve"><value>Dreifachtippen</value></data>
   <data name="Mapping_TouchpadGesture_LongPress" xml:space="preserve"><value>Langes Drücken</value></data>
+  <data name="Mapping_TouchpadGesture_TouchLeft" xml:space="preserve"><value>Linke Berührung</value></data>
+  <data name="Mapping_TouchpadGesture_TouchRight" xml:space="preserve"><value>Rechte Berührung</value></data>
+  <data name="Mapping_TouchpadGesture_TouchTop" xml:space="preserve"><value>Obere Berührung</value></data>
+  <data name="Mapping_TouchpadGesture_TouchMulti" xml:space="preserve"><value>Multitouch</value></data>
   <data name="Mapping_TouchpadGesture_RadialZone_Format" xml:space="preserve"><value>Radialzone {0}/{1}</value></data>
   <data name="Mapping_TouchpadGesture_PadPrefix_Format" xml:space="preserve"><value>Touchpad {0}: {1}</value></data>
   <data name="Mapping_TouchpadGesture_SinglePadNoun_Format" xml:space="preserve"><value>Touchpad {0}</value></data>
@@ -1657,6 +1663,8 @@
   <data name="Pad_Touchpad_SwipeTimeWindow" xml:space="preserve"><value>Wisch-Zeitfenster</value></data>
   <data name="Pad_Touchpad_RadialZones" xml:space="preserve"><value>Radialzonen (Waffenrad-Stil)</value></data>
   <data name="Pad_Touchpad_RadialZones_Tooltip" xml:space="preserve"><value>Streiche vom Auflagepunkt deines Fingers nach außen in einen Sektor. Zone 0 ist oben verankert, die Zonen steigen im Uhrzeigersinn. Jeder Eintrag im Picker zeigt die Richtung in Klammern als Grad gegenüber oben: (0°) ist oben, (90°) ist rechts, (180°) ist unten, (270°) ist links. Es ist immer nur eine Zone aktiv. Das Hineinstreichen in eine andere löst die vorherige, sodass du in einer einzigen Bewegung durch die Zonen zyklen kannst.</value></data>
+  <data name="Pad_Touchpad_TouchSpots" xml:space="preserve"><value>Berührungszonen (links / rechts / oben / Multitouch)</value></data>
+  <data name="Pad_Touchpad_TouchSpots_Tooltip" xml:space="preserve"><value>Gehaltene Tasten je nach Berührungsort des Touchpads. Ein Finger fällt in Links, Rechts oder Oben (das obere Viertel). Zwei oder mehr Finger halten Multitouch. Die Links/Rechts-Grenze liegt wie in DS4Windows bei zwei Fünfteln der Breite, und es ist immer genau eine Zone aktiv.</value></data>
   <data name="Pad_Touchpad_RadialZoneCount" xml:space="preserve"><value>Anzahl Zonen</value></data>
   <data name="Pad_Touchpad_RadialCenterDeadzone" xml:space="preserve"><value>Mittelpunkt-Deadzone (0..1)</value></data>
   <data name="Pad_Touchpad_Taps" xml:space="preserve"><value>Tippen / Doppeltippen / Dreifachtippen</value></data>
@@ -1716,6 +1724,7 @@
   <data name="Pad_ResetTouchpadSwipeDistance" xml:space="preserve"><value>Wischdistanz zurücksetzen</value></data>
   <data name="Pad_ResetTouchpadSwipeTimeWindow" xml:space="preserve"><value>Wisch-Zeitfenster zurücksetzen</value></data>
   <data name="Pad_ResetTouchpadRadialZones" xml:space="preserve"><value>Radialzonen zurücksetzen</value></data>
+  <data name="Pad_ResetTouchpadTouchSpots" xml:space="preserve"><value>Berührungszonen zurücksetzen</value></data>
   <data name="Pad_ResetTouchpadRadialZoneCount" xml:space="preserve"><value>Anzahl Zonen zurücksetzen</value></data>
   <data name="Pad_ResetTouchpadRadialCenterDeadzone" xml:space="preserve"><value>Mittelpunkt-Deadzone zurücksetzen</value></data>
   <data name="Pad_ResetTouchpadTaps" xml:space="preserve"><value>Tippen / Doppeltippen / Dreifachtippen zurücksetzen</value></data>

@@ -173,6 +173,28 @@ namespace PadForge.Common
                     if (fmt == null) return null;
                     return prefix + string.Format(fmt, padIdx + 1, fingerIdx + 1);
                 }
+                // "Touchpad {pad} {GestureName}" → localized gesture label.
+                // Same naming the picker builds via AddTouchpadGestureChoices,
+                // minus the multi-pad disambiguation wrap on pad 0 (this
+                // reverse path has no device context to count pads with;
+                // pads past the first always carry the prefix).
+                if (tp.Length >= 3 && int.TryParse(tp[1], out int gPadIdx))
+                {
+                    string gestureName = string.Join(" ", tp, 2, tp.Length - 2);
+                    string label = ResolveTouchpadGestureLabel(si, gestureName);
+                    if (label == null) return null;
+                    // Stick / D-pad channel names always carry the
+                    // "Touchpad" noun so they can't be confused with the
+                    // gamepad's physical sticks, mirroring the picker's
+                    // StickWrap policy.
+                    bool stickChannel = gestureName is "StickX" or "StickY"
+                        or "DPadUp" or "DPadRight" or "DPadDown" or "DPadLeft";
+                    if (gPadIdx > 0)
+                        label = string.Format(si.Mapping_TouchpadGesture_PadPrefix_Format, gPadIdx + 1, label);
+                    else if (stickChannel)
+                        label = string.Format(si.Mapping_TouchpadGesture_SinglePadNoun_Format, label);
+                    return prefix + label;
+                }
                 return null;
             }
 
@@ -983,6 +1005,7 @@ namespace PadForge.Common
                     || string.Equals(s.Mode, "Both", System.StringComparison.OrdinalIgnoreCase)
                     || string.Equals(s.Mode, "InBoxOnly", System.StringComparison.OrdinalIgnoreCase);
                 if (!showInBox) continue;
+                bool gateSpots     = s?.EnableTouchSpots           ?? true;
                 bool gate4Way      = s?.EnableFourWaySwipes        ?? true;
                 bool gate8Way      = s?.EnableEightWaySwipes       ?? true;
                 bool gateRadial    = s?.EnableRadialZones          ?? true;
@@ -996,6 +1019,17 @@ namespace PadForge.Common
                 bool gateFour      = s?.EnableFourFingerGestures   ?? true;
                 bool gateFive      = s?.EnableFiveFingerGestures   ?? true;
                 bool gateShape     = s?.EnableShapeGestures        ?? true;
+
+                // Touch spots (#178): held-while-touched zone buttons.
+                // TouchMulti needs a pad that can report 2+ fingers.
+                if (gateSpots)
+                {
+                    AddGesture(list, p, "TouchLeft",  PadWrap(si.Mapping_TouchpadGesture_TouchLeft));
+                    AddGesture(list, p, "TouchRight", PadWrap(si.Mapping_TouchpadGesture_TouchRight));
+                    AddGesture(list, p, "TouchTop",   PadWrap(si.Mapping_TouchpadGesture_TouchTop));
+                    if (max >= 2)
+                        AddGesture(list, p, "TouchMulti", PadWrap(si.Mapping_TouchpadGesture_TouchMulti));
+                }
 
                 // Single-finger 4-way swipes
                 if (gate4Way)
@@ -1100,6 +1134,38 @@ namespace PadForge.Common
                 Descriptor = $"Touchpad {padIdx} {name}",
                 DisplayName = string.IsNullOrEmpty(display) ? name : display,
             });
+        }
+
+        /// <summary>Resolves a bare touchpad gesture name (the descriptor
+        /// with "Touchpad {pad} " stripped) to its localized label. Used
+        /// by the reverse descriptor path (mapping-row neg sources, the
+        /// macro trigger chip) so gesture descriptors stop rendering as
+        /// raw internal names. In-box names look up their
+        /// Mapping_TouchpadGesture_* key; custom gestures show their
+        /// user-given name; radial zones reuse the picker's count/index
+        /// + angle format. Returns null for names that resolve to no
+        /// known gesture so callers can fall back to raw text.</summary>
+        internal static string ResolveTouchpadGestureLabel(Strings si, string gestureName)
+        {
+            if (string.IsNullOrEmpty(gestureName)) return null;
+            if (gestureName.StartsWith("Custom_", System.StringComparison.Ordinal))
+                return gestureName.Substring("Custom_".Length);
+            if (gestureName.StartsWith("RadialZone", System.StringComparison.Ordinal))
+            {
+                var rz = gestureName.Substring("RadialZone".Length).Split('_');
+                if (rz.Length == 2 && int.TryParse(rz[0], out int zc) && int.TryParse(rz[1], out int z))
+                    return string.Format(si.Mapping_TouchpadGesture_RadialZone_Format, zc, z)
+                        + " (" + RadialZoneAngleLabel(zc, z) + ")";
+                return null;
+            }
+            // Single-token in-box names map 1:1 onto their string keys
+            // (TouchLeft, SwipeUp, Pinch, StickX, DPadUp, Circle, ...).
+            // Strings.Get returns the key itself when no resource
+            // exists, which doubles as the unknown-name signal.
+            if (gestureName.IndexOf(' ') >= 0) return null;
+            string key = "Mapping_TouchpadGesture_" + gestureName;
+            string label = Strings.Get(key);
+            return string.Equals(label, key, System.StringComparison.Ordinal) ? null : label;
         }
 
         private static string ResolveShapeName(Strings si, string shape) => shape switch

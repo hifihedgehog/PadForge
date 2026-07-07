@@ -629,6 +629,38 @@ namespace PadForge.ViewModels
             }
         }
 
+        /// <summary>Slot-level InputChoice list for the macro trigger
+        /// dropdown (#177): the subset of <see cref="SlotAvailableInputs"/>
+        /// that converts to a <c>MacroItem.TriggerInputEntry</c> (raw
+        /// buttons, POV directions, gamepad-layout axes, touchpad click,
+        /// and touchpad gestures). Populated beside SlotAvailableInputs
+        /// by <c>InputService.PopulateAvailableInputs</c>, so the same
+        /// Touchpad-tab enable gates that govern the mapping picker
+        /// govern what macros can trigger on.</summary>
+        public ObservableCollection<InputChoice> SlotMacroTriggerChoices { get; } = new();
+
+        private ICollectionView _slotMacroTriggerChoicesView;
+        /// <summary>Grouped CollectionView over
+        /// <see cref="SlotMacroTriggerChoices"/> keyed on
+        /// <c>DeviceLabel</c>, matching the other slot-level pickers.</summary>
+        public ICollectionView SlotMacroTriggerChoicesView
+        {
+            get
+            {
+                if (_slotMacroTriggerChoicesView == null)
+                {
+                    _slotMacroTriggerChoicesView = CollectionViewSource.GetDefaultView(SlotMacroTriggerChoices);
+                    if (_slotMacroTriggerChoicesView.GroupDescriptions != null
+                        && _slotMacroTriggerChoicesView.GroupDescriptions.Count == 0)
+                    {
+                        _slotMacroTriggerChoicesView.GroupDescriptions.Add(
+                            new PropertyGroupDescription(nameof(InputChoice.DeviceLabel)));
+                    }
+                }
+                return _slotMacroTriggerChoicesView;
+            }
+        }
+
         private MappedDeviceInfo _selectedMappedDevice;
 
         /// <summary>

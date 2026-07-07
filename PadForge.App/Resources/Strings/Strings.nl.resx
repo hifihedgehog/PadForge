@@ -942,6 +942,8 @@
 
   <!-- ═══ Pad — Macro Hints ═══ -->
   <data name="Macro_RecordHint" xml:space="preserve"><value>Druk op knoppen of beweeg een as/trigger om op te nemen. Assen worden gedetecteerd wanneer ze meer dan 50% worden uitgeslagen.</value></data>
+  <data name="Macro_AddTriggerFromList" xml:space="preserve"><value>Toevoegen uit lijst</value></data>
+  <data name="Macro_AddTriggerFromList_Tooltip" xml:space="preserve"><value>Kies een triggerinvoer uit de apparaten van het slot in plaats van deze op te nemen. Op het tabblad Touchpad ingeschakelde gebaren verschijnen hier.</value></data>
   <data name="Macro_LiveRecord_Placeholder" xml:space="preserve"><value>Druk op een invoer…</value></data>
   <data name="Macro_Axis_Inverted" xml:space="preserve"><value>omgekeerd</value></data>
   <data name="Macro_Axis_Half" xml:space="preserve"><value>halve as</value></data>
@@ -1618,6 +1620,10 @@
   <data name="Mapping_TouchpadGesture_DoubleTap" xml:space="preserve"><value>Dubbele tik</value></data>
   <data name="Mapping_TouchpadGesture_TripleTap" xml:space="preserve"><value>Drievoudige tik</value></data>
   <data name="Mapping_TouchpadGesture_LongPress" xml:space="preserve"><value>Lang indrukken</value></data>
+  <data name="Mapping_TouchpadGesture_TouchLeft" xml:space="preserve"><value>Linker aanraking</value></data>
+  <data name="Mapping_TouchpadGesture_TouchRight" xml:space="preserve"><value>Rechter aanraking</value></data>
+  <data name="Mapping_TouchpadGesture_TouchTop" xml:space="preserve"><value>Bovenste aanraking</value></data>
+  <data name="Mapping_TouchpadGesture_TouchMulti" xml:space="preserve"><value>Multitouch</value></data>
   <data name="Mapping_TouchpadGesture_RadialZone_Format" xml:space="preserve"><value>Radiale zone {0}/{1}</value></data>
   <data name="Mapping_TouchpadGesture_PadPrefix_Format" xml:space="preserve"><value>Touchpad {0}: {1}</value></data>
   <data name="Mapping_TouchpadGesture_SinglePadNoun_Format" xml:space="preserve"><value>Touchpad {0}</value></data>
@@ -1677,6 +1683,8 @@
   <data name="Pad_Touchpad_SwipeTimeWindow" xml:space="preserve"><value>Tijdsvenster voor veeg</value></data>
   <data name="Pad_Touchpad_RadialZones" xml:space="preserve"><value>Radiale zones (wapenwiel-stijl)</value></data>
   <data name="Pad_Touchpad_RadialZones_Tooltip" xml:space="preserve"><value>Veeg vanaf het neerzetpunt van je vinger naar buiten in een sector. Zone 0 is bovenaan verankerd en zones lopen met de klok mee op. Elke vermelding in de kiezer toont de richting tussen haakjes als graden ten opzichte van boven: (0°) is boven, (90°) is rechts, (180°) is onder, (270°) is links. Er is steeds maar één zone actief. In een andere vegen laat de vorige los, zodat je in één veegbeweging door de zones kunt bladeren.</value></data>
+  <data name="Pad_Touchpad_TouchSpots" xml:space="preserve"><value>Aanraakzones (links / rechts / boven / multitouch)</value></data>
+  <data name="Pad_Touchpad_TouchSpots_Tooltip" xml:space="preserve"><value>Vastgehouden knoppen voor waar het touchpad wordt aangeraakt. Eén vinger valt in links, rechts of boven (het bovenste kwart). Twee of meer vingers houden multitouch vast. De links/rechts-grens ligt op twee vijfde van de breedte, zoals in DS4Windows, en er is steeds precies één zone actief.</value></data>
   <data name="Pad_Touchpad_RadialZoneCount" xml:space="preserve"><value>Aantal zones</value></data>
   <data name="Pad_Touchpad_RadialCenterDeadzone" xml:space="preserve"><value>Middendeadzone (0..1)</value></data>
   <data name="Pad_Touchpad_Taps" xml:space="preserve"><value>Tik / Dubbele tik / Drievoudige tik</value></data>
@@ -1736,6 +1744,7 @@
   <data name="Pad_ResetTouchpadSwipeDistance" xml:space="preserve"><value>Veegafstand resetten</value></data>
   <data name="Pad_ResetTouchpadSwipeTimeWindow" xml:space="preserve"><value>Tijdsvenster voor veeg resetten</value></data>
   <data name="Pad_ResetTouchpadRadialZones" xml:space="preserve"><value>Radiale zones resetten</value></data>
+  <data name="Pad_ResetTouchpadTouchSpots" xml:space="preserve"><value>Aanraakzones resetten</value></data>
   <data name="Pad_ResetTouchpadRadialZoneCount" xml:space="preserve"><value>Aantal zones resetten</value></data>
   <data name="Pad_ResetTouchpadRadialCenterDeadzone" xml:space="preserve"><value>Middendeadzone resetten</value></data>
   <data name="Pad_ResetTouchpadTaps" xml:space="preserve"><value>Tik / dubbele tik / drievoudige tik resetten</value></data>

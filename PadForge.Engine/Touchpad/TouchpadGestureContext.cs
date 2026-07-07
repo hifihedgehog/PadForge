@@ -114,12 +114,27 @@ namespace PadForge.Engine.Touchpad
         /// don't re-fire; crossing to a different zone fires that one.</summary>
         public int CurrentRadialZone = -1;
 
+        // ─── Touch-spot state ─────────────────────────────────────────
+
+        /// <summary>Fired-set key of the touch spot currently held
+        /// (e.g. "Touchpad 0 TouchLeft"), or null when none. Unlike
+        /// radial zones, the spot's key is removed at finger lift so
+        /// the mapped button releases immediately instead of latching
+        /// through the cooldown window.</summary>
+        public string CurrentTouchSpot;
+
         // ─── Per-frame fire set ──────────────────────────────────────
 
-        /// <summary>Gesture names that fired on this tick. Read by
+        /// <summary>Gesture names currently asserted. Read by
         /// <see cref="PadForge.Engine.Common.Mapping.SourceCoercion"/>
-        /// to drive the gesture-source descriptor reads. Cleared at
-        /// the top of each <see cref="GestureRecognizer.Update"/> call.</summary>
+        /// to drive the gesture-source descriptor reads, by the macro
+        /// trigger evaluator, and by the mapping recorder. NOT cleared
+        /// per tick: one-shot fires latch through the cooldown window
+        /// (cleared at cooldown expiry or fresh-gesture start) so
+        /// slower consumers catch the rising edge, and held sources
+        /// (radial zones, touch spots) add and remove their keys
+        /// explicitly. Re-introducing a per-tick clear breaks all of
+        /// them; see the comment in GestureRecognizer.Update.</summary>
         public HashSet<string> FiredGesturesThisFrame = new HashSet<string>();
 
         public void Reset()
@@ -145,6 +160,7 @@ namespace PadForge.Engine.Touchpad
             FiredRotateCWThisSession = false;
             FiredRotateCCWThisSession = false;
             CurrentRadialZone = -1;
+            CurrentTouchSpot = null;
             FiredGesturesThisFrame.Clear();
         }
     }

@@ -136,8 +136,13 @@ namespace PadForge.Engine.Touchpad
 
             bool inBoxAllowed = gesturesEnabled && InBoxAllowed(settings);
 
-            // Tier 1 mid-gesture fires (radial zone entry, long-press).
-            // Gated by gesturesEnabled — joystick-only setups skip these.
+            // Tier 1 mid-gesture fires (touch spots, radial zone entry,
+            // long-press). Gated by gesturesEnabled. Joystick-only
+            // setups skip these.
+            if (inBoxAllowed && settings.EnableTouchSpots)
+                DetectTouchSpots(padIdx, ctx, pad);
+            else
+                ReleaseCurrentTouchSpot(ctx);
             if (inBoxAllowed && settings.EnableRadialZones && ctx.ActiveFingerCount == 1)
                 DetectRadialZones(padIdx, ctx, pad, settings);
             if (inBoxAllowed && settings.EnableLongPress && ctx.ActiveFingerCount == 1)
@@ -160,6 +165,11 @@ namespace PadForge.Engine.Touchpad
             // Transition into Recognizing when all fingers lifted.
             if (ctx.State == GestureState.Accumulating && ctx.ActiveFingerCount == 0)
             {
+                // Touch spots are held-while-touching buttons: release
+                // BEFORE the cooldown latch so the mapped button lets go
+                // on lift, not CooldownMs later. Radial zones latch on
+                // purpose (pie-menu fire-on-release); spots must not.
+                ReleaseCurrentTouchSpot(ctx);
                 if (gesturesEnabled)
                     RunEndOfGestureRecognition(padIdx, ctx, settings, nowMs, shapeTemplates);
                 ctx.State = GestureState.Cooldown;
@@ -282,6 +292,80 @@ namespace PadForge.Engine.Touchpad
                 ctx.FiredGesturesThisFrame.Add($"Touchpad {padIdx} RadialZone{zones}_{zone}");
                 ctx.CurrentRadialZone = zone;
             }
+        }
+
+        // Touch-spot boundaries, DS4Windows-grounded. The Left/Right
+        // split sits at 2/5 of the pad width (DS4W Mouse.cs isLeft:
+        // HwX < 1920 * 2 / 5), not at half. The Top band is the top
+        // quarter; DS4W's "Upper Touch" is a DS4 hardware quirk (a
+        // click above the sensor's coverage) with no coordinate to
+        // borrow, so the quarter mirrors DS4W's only outer-band zone
+        // math (the lower-right-corner click zone at 3/4 boundaries).
+        private const float TouchSpotLeftRightSplit = 0.4f;
+        private const float TouchSpotTopBand = 0.25f;
+
+        /// <summary>Held-state touch spots (Left / Right / Top /
+        /// Multitouch). DS4Windows candidate ladder: 2+ fingers is
+        /// Multitouch; otherwise the single finger's CURRENT position
+        /// classifies top band first, then the left/right split. At
+        /// most one spot key is asserted at a time; moving across a
+        /// boundary releases the old spot and presses the new one, and
+        /// lifting releases outright (see the lift transition in
+        /// Update). Keys ride <see cref="TouchpadGestureContext.FiredGesturesThisFrame"/>
+        /// like radial zones, so the mapping evaluator and macro
+        /// triggers read them through the existing gesture provider.</summary>
+        private static void DetectTouchSpots(int padIdx,
+            TouchpadGestureContext ctx, TouchpadInputState pad)
+        {
+            string spot = null;
+            if (ctx.ActiveFingerCount >= 2)
+            {
+                spot = "TouchMulti";
+            }
+            else if (ctx.ActiveFingerCount == 1)
+            {
+                // Current position of the first still-active path
+                // (DS4W evaluates Touches[0] on every touch event).
+                Vector2? cur = null;
+                for (int i = 0; i < ctx.FingerPaths.Count; i++)
+                {
+                    int slot = ctx.FingerSlotIndices[i];
+                    if (slot < 0 || slot >= pad.MaxFingers) continue;
+                    if (!pad.FingerDown[slot]) continue;
+                    if (pad.FingerContactId[slot] != ctx.FingerContactIds[i]) continue;
+                    var path = ctx.FingerPaths[i];
+                    if (path.Count == 0) continue;
+                    cur = path[path.Count - 1];
+                    break;
+                }
+                if (cur.HasValue)
+                {
+                    if (cur.Value.Y < TouchSpotTopBand) spot = "TouchTop";
+                    else if (cur.Value.X < TouchSpotLeftRightSplit) spot = "TouchLeft";
+                    else spot = "TouchRight";
+                }
+            }
+
+            string key = spot == null ? null : $"Touchpad {padIdx} {spot}";
+            if (string.Equals(key, ctx.CurrentTouchSpot, StringComparison.Ordinal))
+                return;
+            ReleaseCurrentTouchSpot(ctx);
+            if (key != null)
+            {
+                ctx.FiredGesturesThisFrame.Add(key);
+                ctx.CurrentTouchSpot = key;
+            }
+        }
+
+        /// <summary>Drops the currently-held touch spot's fire entry.
+        /// No-op when none is held. Called on spot transitions, on
+        /// finger lift, and when the category gate turns off mid-hold
+        /// so a stale key can never stick in the fired set.</summary>
+        private static void ReleaseCurrentTouchSpot(TouchpadGestureContext ctx)
+        {
+            if (ctx.CurrentTouchSpot == null) return;
+            ctx.FiredGesturesThisFrame.Remove(ctx.CurrentTouchSpot);
+            ctx.CurrentTouchSpot = null;
         }
 
         /// <summary>Drops the currently-held radial zone's fire entry

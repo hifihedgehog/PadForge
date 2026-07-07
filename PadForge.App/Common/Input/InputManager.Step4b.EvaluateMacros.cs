@@ -295,10 +295,11 @@ namespace PadForge.Common.Input
                 bool hasButtons = macro.UsesRawTrigger || macro.TriggerButtons != 0;
                 if (macro.TriggerMode != MacroTriggerMode.Always &&
                     macro.TriggerMode != MacroTriggerMode.CustomExpression &&
-                    !macro.UsesAxisTrigger && !macro.UsesPovTrigger && !hasButtons)
+                    !macro.UsesAxisTrigger && !macro.UsesPovTrigger && !hasButtons &&
+                    !macro.UsesGestureTrigger)
                     continue;
 
-                // Determine trigger state — buttons, POVs, AND axes must all be active together.
+                // Determine trigger state. Buttons, POVs, gestures, AND axes must all be active together.
                 bool triggerActive;
                 if (macro.TriggerMode == MacroTriggerMode.Always)
                     triggerActive = true;
@@ -308,6 +309,7 @@ namespace PadForge.Common.Input
                 {
                     bool buttonOk = true;
                     bool povOk = true;
+                    bool gestureOk = true;
                     bool axisOk = true;
 
                     if (hasButtons)
@@ -319,6 +321,8 @@ namespace PadForge.Common.Input
                     }
                     if (macro.UsesPovTrigger)
                         povOk = CheckRawPovTrigger(macro);
+                    if (macro.UsesGestureTrigger)
+                        gestureOk = CheckGestureTrigger(macro);
                     if (macro.UsesAxisTrigger)
                     {
                         float threshold = macro.TriggerAxisThreshold / 100f;
@@ -409,7 +413,7 @@ namespace PadForge.Common.Input
                         }
                     }
 
-                    triggerActive = buttonOk && povOk && axisOk;
+                    triggerActive = buttonOk && povOk && gestureOk && axisOk;
                 }
 
                 bool wasTriggerActive = macro.WasTriggerActive;
@@ -741,6 +745,47 @@ namespace PadForge.Common.Input
                 int diff = Math.Abs(legacyPovs[idx] - targetCd);
                 if (diff > 18000) diff = 36000 - diff;
                 if (diff > 2250) return false;
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// Checks whether every touchpad-gesture entry on the macro's
+        /// trigger is currently firing on its respective assigned device
+        /// (#177). Evaluates through the SAME provider hook the mapping
+        /// grid's gesture descriptors read
+        /// (SourceCoercion.TouchpadGestureFiredProvider, wired by
+        /// InputService to this InputManager's per-(slot, device, pad)
+        /// GestureContexts), so the Touchpad tab's enable gates govern
+        /// macros and mappings identically and held spots / one-shot
+        /// swipes behave exactly as they do on a mapping row.
+        /// </summary>
+        private bool CheckGestureTrigger(MacroItem macro)
+        {
+            var provider = PadForge.Engine.Common.Mapping.SourceCoercion.TouchpadGestureFiredProvider;
+            if (provider == null) return false;
+
+            var entries = macro.GetTriggerInputEntries();
+            for (int i = 0; i < entries.Count; i++)
+            {
+                var e = entries[i];
+                if (string.IsNullOrEmpty(e.GestureDescriptor)) continue;
+                // Same online/assignment gate the button and POV checkers
+                // apply. Without it a disconnect mid-touch leaves the
+                // device's gesture context frozen with the held spot key
+                // still in the fired set (Step 2 stops ticking offline
+                // devices, and release only happens inside
+                // GestureRecognizer.Update), so the macro would latch
+                // active forever on a controller that is gone.
+                var ud = FindSlotDeviceByInstanceGuid(e.DeviceGuid, macro.PadIndex);
+                if (ud == null || !ud.IsOnline) return false;
+                // Parts are parsed once and cached on the entry: this
+                // runs per macro per 1 kHz polling tick, and the button /
+                // POV siblings are allocation-free on this path.
+                if (!e.TryGetGestureParts(out int padIdx, out string gestureName))
+                    return false;
+                if (!provider(macro.PadIndex, e.DeviceGuidString, padIdx, gestureName))
+                    return false;
             }
             return true;
         }
@@ -1550,10 +1595,11 @@ namespace PadForge.Common.Input
                 bool hasButtons = macro.UsesRawTrigger || macro.UsesCustomTrigger || macro.TriggerButtons != 0;
                 if (macro.TriggerMode != MacroTriggerMode.Always &&
                     macro.TriggerMode != MacroTriggerMode.CustomExpression &&
-                    !macro.UsesAxisTrigger && !macro.UsesPovTrigger && !hasButtons)
+                    !macro.UsesAxisTrigger && !macro.UsesPovTrigger && !hasButtons &&
+                    !macro.UsesGestureTrigger)
                     continue;
 
-                // Check trigger condition — buttons, POVs, AND axes must all be active together.
+                // Check trigger condition. Buttons, POVs, gestures, AND axes must all be active together.
                 bool triggerActive;
                 if (macro.TriggerMode == MacroTriggerMode.Always)
                     triggerActive = true;
@@ -1563,6 +1609,7 @@ namespace PadForge.Common.Input
                 {
                     bool buttonOk = true;
                     bool povOk = true;
+                    bool gestureOk = true;
                     bool axisOk = true;
 
                     if (hasButtons)
@@ -1576,6 +1623,8 @@ namespace PadForge.Common.Input
                     }
                     if (macro.UsesPovTrigger)
                         povOk = CheckRawPovTrigger(macro);
+                    if (macro.UsesGestureTrigger)
+                        gestureOk = CheckGestureTrigger(macro);
                     if (macro.UsesAxisTrigger)
                     {
                         float threshold = macro.TriggerAxisThreshold / 100f;
@@ -1586,7 +1635,7 @@ namespace PadForge.Common.Input
                         }
                     }
 
-                    triggerActive = buttonOk && povOk && axisOk;
+                    triggerActive = buttonOk && povOk && gestureOk && axisOk;
                 }
 
                 bool wasTriggerActive = macro.WasTriggerActive;

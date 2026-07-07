@@ -1414,6 +1414,7 @@ namespace PadForge.Engine.Data
                     sb.Append(s.SwipeDistanceThreshold).Append(',').Append(s.SwipeTimeWindowMs).Append(',');
                     sb.Append(s.EnableFourWaySwipes).Append(',').Append(s.EnableEightWaySwipes).Append(',');
                     sb.Append(s.EnableRadialZones).Append(',').Append(s.RadialZoneCount).Append(',').Append(s.RadialCenterDeadzone).Append(',');
+                    sb.Append(s.EnableTouchSpots).Append(',');
                     sb.Append(s.EnableTaps).Append(',').Append(s.TapTimeWindowMs).Append(',').Append(s.TapMaxMotion).Append(',').Append(s.MultiTapGapMs).Append(',');
                     sb.Append(s.EnableLongPress).Append(',').Append(s.LongPressTimeWindowMs).Append(',').Append(s.LongPressMaxMotion).Append(',');
                     sb.Append(s.EnableTwoFingerSwipes).Append(',').Append(s.TwoFingerSwipeAngularTolerance).Append(',');

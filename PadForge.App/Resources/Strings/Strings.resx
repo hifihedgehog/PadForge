@@ -2064,6 +2064,7 @@
   <data name="Pad_Audio_Mirror" xml:space="preserve"><value>Mirror system audio to the controller speaker</value></data>
   <data name="Pad_Audio_Engage_Label" xml:space="preserve"><value>Play mirrored audio</value></data>
   <data name="Pad_ResetMirrorEngageMode" xml:space="preserve"><value>Reset Engage Mode</value></data>
+  <data name="Pad_ResetMirrorSource" xml:space="preserve"><value>Reset Mirror Source</value></data>
   <data name="Pad_ResetMirrorEngageInput" xml:space="preserve"><value>Reset Engage Input</value></data>
   <data name="Pad_ResetMirrorEngageRelease" xml:space="preserve"><value>Reset Release Delay</value></data>
   <data name="Pad_Audio_Engage_Tooltip" xml:space="preserve"><value>When the mirrored audio plays as haptic tones. Gate it on a held input or on game rumble so music does not buzz the controller all the time.</value></data>

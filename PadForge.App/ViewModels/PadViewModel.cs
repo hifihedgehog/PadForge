@@ -4118,6 +4118,13 @@ namespace PadForge.ViewModels
                 if (PlayStationConfig != null) PlayStationConfig.AudioMirrorEngageReleaseMs = 500;
             });
 
+        private RelayCommand _resetMirrorSourceCommand;
+        /// <summary>Clears the mirror source back to the system default
+        /// endpoint (Id ""), the same value the Sound Output "Reset All"
+        /// path writes.</summary>
+        public RelayCommand ResetMirrorSourceCommand =>
+            _resetMirrorSourceCommand ??= new RelayCommand(() => SelectedMirrorSourceId = string.Empty);
+
         private int _irSensorBarPos;
         /// <summary>Sensor-bar position for the IR pointer (issue #146): 0 =
         /// centered, 1 = above the screen, 2 = below. Per (device, slot) on

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
@@ -908,6 +908,29 @@ namespace PadForge.Engine
         //  avoiding the hardware restart gaps that occur with redundant calls.
         // ─────────────────────────────────────────────
 
+        /// <summary>Steam Deck (Valve 0x28DE:0x1205) rumble headroom.
+        /// Discussion #179 brackets a 16-bit wrap in the firmware's
+        /// 0xEB rumble-emulation gain stage: intensity 83% (54,394)
+        /// still rises, 84% (55,049) collapses to ~1%, so a downstream
+        /// multiplier in (1.1905, 1.2048] wraps the product past
+        /// 65,535. Neither our chain (fully clamped) nor SDL's Deck
+        /// driver (verbatim Uint16 pass-through into
+        /// MsgSimpleRumbleCmd, SDL_hidapi_steamdeck.c:429-447) nor the
+        /// Linux hid-steam driver (verbatim magnitudes, same
+        /// left_gain=2/right_gain=0 pair, hid-steam.c
+        /// steam_haptic_rumble) scales the value, so the wrap lives
+        /// past the wire. The ceiling is 54,394, the reporter's
+        /// hardware-PROVEN rising point (the bracket leaves
+        /// 54,395-55,049 untested, so anything higher could still
+        /// wrap at full slider). Pre-scaling keeps the whole range
+        /// monotonic: 100% maps to 54,394, which the firmware's ~1.2x
+        /// stage lands near actual full strength. Hypothesis-under-test
+        /// against closed firmware, derived from the reporter's
+        /// empirical bracket.</summary>
+        private const double DeckRumbleHeadroom = 54394.0 / 65535.0;
+
+        private bool IsSteamDeck => VendorId == 0x28DE && ProductId == 0x1205;
+
         /// <summary>
         /// Sends rumble to the device via SDL_RumbleJoystick.
         /// </summary>
@@ -919,6 +942,12 @@ namespace PadForge.Engine
         {
             if (!HasRumble || Joystick == IntPtr.Zero)
                 return false;
+
+            if (IsSteamDeck)
+            {
+                lowFreq = (ushort)(lowFreq * DeckRumbleHeadroom);
+                highFreq = (ushort)(highFreq * DeckRumbleHeadroom);
+            }
 
             return SDL_RumbleJoystick(Joystick, lowFreq, highFreq, durationMs);
         }

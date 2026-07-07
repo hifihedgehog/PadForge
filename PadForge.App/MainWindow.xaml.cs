@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -312,6 +312,9 @@ namespace PadForge
             // Create services.
             _settingsService = new SettingsService(_viewModel);
             _inputService = new InputService(_viewModel) { SettingsService = _settingsService };
+            // Crash / ProcessExit net: quiet all hardware outputs so an
+            // abnormal exit can't leave a pad rumbling (discussion #179).
+            App.PanicQuiesce = () => _inputService.PanicQuiesceOutputs();
             _recorderService = new RecorderService(_viewModel);
             // Expose the recorder to PadPage so the shift activator dialog
             // can use freeform recording for its Record buttons.

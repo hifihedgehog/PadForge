@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -389,6 +389,9 @@ namespace PadForge.Common.Input
         private static extern bool GetOverlappedResult(IntPtr h, IntPtr overlapped, out uint transferred, bool wait);
         [DllImport("kernel32.dll", SetLastError = true)]
         private static extern bool CancelIo(IntPtr h);
+
+        [DllImport("kernel32.dll", SetLastError = true)]
+        private static extern bool CancelIoEx(IntPtr h, IntPtr lpOverlapped);
         [DllImport("kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
         private static extern IntPtr CreateEventW(IntPtr attr, bool manualReset, bool initialState, string name);
         [DllImport("kernel32.dll", SetLastError = true)]
@@ -908,9 +911,22 @@ namespace PadForge.Common.Input
         {
             try { StopMirror(s); } catch { }
             s.Running = false;
-            bool exited = true;
-            try { exited = s.Thread?.Join(3000) ?? true; } catch { exited = true; }
-            if (exited && (s.Handle != IntPtr.Zero || s.GamepadHandle != IntPtr.Zero))
+            // The note-off and handle close run UNCONDITIONALLY. The old
+            // gate skipped both when the stream thread failed to join
+            // within 3 s, which left the last sustained note (0x8F
+            // repeat 0x7FFF: minutes at bass pitches) ringing on the
+            // actuator with the handle leaked (discussion #179, Steam
+            // Deck trackpads buzzing after close). Ordering: family
+            // stop first, then null s.Handle to starve the write
+            // helpers' guard-then-use (a stream thread that unwedges
+            // after the timed-out join cannot start a fresh write once
+            // the field is zero), then CancelIoEx (all threads' pending
+            // I/O on the handle, unlike CancelIo's calling-thread-only
+            // scope) and CloseHandle on the captured value. A write
+            // already in flight is kernel-serialized and at worst lands
+            // before the close; it cannot crash.
+            try { s.Thread?.Join(3000); } catch { }
+            if (s.Handle != IntPtr.Zero || s.GamepadHandle != IntPtr.Zero)
             {
                 // Quiet the actuator on the way out, per family.
                 try
@@ -927,10 +943,12 @@ namespace PadForge.Common.Input
                     }
                 }
                 catch { }
-                if (s.Handle != IntPtr.Zero)
+                var h = s.Handle;
+                s.Handle = IntPtr.Zero;
+                if (h != IntPtr.Zero)
                 {
-                    try { CancelIo(s.Handle); } catch { }
-                    try { CloseHandle(s.Handle); } catch { }
+                    try { CancelIoEx(h, IntPtr.Zero); } catch { }
+                    try { CloseHandle(h); } catch { }
                 }
             }
             s.Handle = IntPtr.Zero;
@@ -1348,7 +1366,7 @@ namespace PadForge.Common.Input
         }
 
 
-        // ── Steam Deck (Jupiter): report 0xEA SET_FEATURE ──
+        // ── Steam Deck (Jupiter): classic 0x8F feature blob, same as the 2015 pad ──
         private static void StreamSteamDeckTick(Sink s, float toneHz, float amp, bool streaming)
         {
             // The Deck's built-in controller IS the Steam Controller 0x8F path.
@@ -1385,7 +1403,7 @@ namespace PadForge.Common.Input
             }
         }
 
-        // Steam Deck 0xEA feature write: prepend the report-id byte, size to
+        // Steam Deck 0x8F feature write: prepend the report-id byte, size to
         // FeatureReportByteLength (same translation as the 2015 0x8F path).
         private static void SteamFeatureWrite(Sink s, byte[] blob)
         {

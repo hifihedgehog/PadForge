@@ -2300,6 +2300,7 @@ namespace PadForge
                 Tag = navItem.Tag,
                 Margin = collapsed ? new Thickness(0) : new Thickness(-40, 0, 0, 0)
             };
+            SuppressBuiltInSelectionVisual(menuItem);
             System.Windows.Automation.AutomationProperties.SetName(menuItem, navItem.Tag);
             UpdateControllerNavItemContent(menuItem, navItem);
             if (collapsed)
@@ -2840,8 +2841,32 @@ namespace PadForge
                 Margin = collapsed ? new Thickness(0) : new Thickness(-40, 0, 0, 0),
                 Icon = collapsed ? MakeAddControllerCollapsedIcon() : null,
             };
+            SuppressBuiltInSelectionVisual(item);
             System.Windows.Automation.AutomationProperties.SetName(item, Strings.Instance.Main_AddController);
             return item;
+        }
+
+        /// <summary>Unasserts the WPF-UI NavigationViewItem's built-in row
+        /// selection visuals (the selected/hover/pressed MainBorder highlight
+        /// and the left ActiveRectangle indicator pill) for one item, so the
+        /// controller mini cards and the Add Controller entry show only our
+        /// own selection feedback. The Compact template (PaneDisplayMode=Left)
+        /// paints those via DynamicResource brush keys, so shadowing the keys
+        /// in the item's local resource scope transparently overrides them for
+        /// this item alone. Standard entries (Dashboard, About) never get this
+        /// call and keep the default selection highlight. Keys verified against
+        /// the cloned Wpf.Ui 4.3.0 NavigationViewCompact.xaml + its theme
+        /// dictionaries. Transparent is theme-neutral, so dark and light both
+        /// resolve correctly.</summary>
+        private static void SuppressBuiltInSelectionVisual(NavigationViewItem item)
+        {
+            var clear = System.Windows.Media.Brushes.Transparent;
+            item.Resources["NavigationViewItemBackground"] = clear;
+            item.Resources["NavigationViewItemBackgroundSelected"] = clear;
+            item.Resources["NavigationViewItemBackgroundPointerOver"] = clear;
+            item.Resources["NavigationViewItemBackgroundPressed"] = clear;
+            item.Resources["NavigationViewItemBackgroundDisabled"] = clear;
+            item.Resources["NavigationViewSelectionIndicatorForeground"] = clear;
         }
 
         /// <summary>The muted "+" the collapsed rail shows for Add Controller.

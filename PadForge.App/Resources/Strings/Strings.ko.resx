@@ -600,6 +600,9 @@
   <data name="Curve_Delay" xml:space="preserve"><value>지연</value></data>
   <data name="Curve_Custom" xml:space="preserve"><value>사용자 정의</value></data>
   <data name="Pad_CalibrateCenter" xml:space="preserve"><value>중앙 보정</value></data>
+  <data name="Pad_Sticks_Section_CenterPoint" xml:space="preserve"><value>중심점</value></data>
+  <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>데드존</value></data>
+  <data name="Pad_Sticks_Section_Range" xml:space="preserve"><value>범위</value></data>
   <data name="Pad_Sampling" xml:space="preserve"><value>샘플링 중...</value></data>
   <data name="Pad_CenterOffsetX" xml:space="preserve"><value>중앙 오프셋 X</value></data>
   <data name="Pad_CenterOffsetY" xml:space="preserve"><value>중앙 오프셋 Y</value></data>

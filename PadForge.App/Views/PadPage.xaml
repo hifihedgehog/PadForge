@@ -4853,7 +4853,9 @@
 
                                         <!-- Sliders (left) -->
                                         <StackPanel Grid.Column="0" Margin="0,0,16,0">
-                                            <!-- Center Offset Calibration -->
+                                            <!-- ─── Center point ─── -->
+                                            <TextBlock Text="{Binding Pad_Sticks_Section_CenterPoint, Source={x:Static strings:Strings.Instance}}"
+                                                       Style="{StaticResource CardSubsectionTitle}"/>
                                             <Button Margin="0,0,0,8"
                                                     Click="CalibrateCenter_Click"
                                                     Padding="8,4" HorizontalAlignment="Left">
@@ -4892,6 +4894,9 @@
                                                 <ui:Button Command="{Binding ResetCenterOffsetYCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetCenterOffsetY, Source={x:Static strings:Strings.Instance}}"/>
                                             </StackPanel>
                                             <Separator Margin="0,8,0,8"/>
+                                            <!-- ─── Deadzone ─── -->
+                                            <TextBlock Text="{Binding Pad_Sticks_Section_DeadZone, Source={x:Static strings:Strings.Instance}}"
+                                                       Style="{StaticResource CardSubsectionTitle}"/>
                                             <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                                 <TextBlock Text="{Binding Pad_DeadZoneShape, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
                                                 <ComboBox AutomationProperties.AutomationId="DeadZoneShapeCombo"
@@ -4960,8 +4965,9 @@
                                                 <ui:Button Command="{Binding ResetLinearCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetLinear, Source={x:Static strings:Strings.Instance}}"/>
                                             </StackPanel>
                                             <Separator Margin="0,8,0,8"/>
+                                            <!-- ─── Sensitivity curves ─── -->
                                             <TextBlock Text="{Binding Pad_SensitivityCurves, Source={x:Static strings:Strings.Instance}}"
-                                                       Style="{StaticResource CardSectionTitle}"/>
+                                                       Style="{StaticResource CardSubsectionTitle}"/>
                                             <TextBlock Text="{Binding Pad_SensitivityCurveHint, Source={x:Static strings:Strings.Instance}}"
                                                        Style="{StaticResource CardDescription}"/>
                                             <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
@@ -5016,6 +5022,9 @@
                                                 LiveInput="{Binding LiveInputY}"
                                                 IsSigned="True" IsFullWidth="True" ChartHeight="150" Width="560" HorizontalAlignment="Left"/>
                                             <Separator Margin="0,8,0,8"/>
+                                            <!-- ─── Range ─── -->
+                                            <TextBlock Text="{Binding Pad_Sticks_Section_Range, Source={x:Static strings:Strings.Instance}}"
+                                                       Style="{StaticResource CardSubsectionTitle}"/>
                                             <!-- Boundary calibration (#174): the outer-boundary
                                                  counterpart to the manual range sliders below. One
                                                  button (coverage-driven inline sweep, same idiom as
@@ -5402,8 +5411,9 @@
                                     <!-- ═══ Steering (winding / 2D angle-to-axis / motion lean) #94 — divider-separated section like the rest of the card ═══ -->
                                     <Separator Margin="0,16,0,8"/>
                                     <StackPanel>
+                                            <!-- ─── Steering ─── -->
                                             <TextBlock Text="{Binding Pad_Steering_Header, Source={x:Static strings:Strings.Instance}}"
-                                                       Style="{StaticResource CardSectionTitle}"/>
+                                                       Style="{StaticResource CardSubsectionTitle}"/>
                                             <TextBlock Text="{Binding Pad_Steering_Subtitle, Source={x:Static strings:Strings.Instance}}"
                                                        Style="{StaticResource CardDescription}"/>
 
@@ -5779,8 +5789,9 @@
                                             </StackPanel>
 
                                             <Separator Margin="0,8,0,8"/>
+                                            <!-- ─── Sensitivity curve ─── -->
                                             <TextBlock Text="{Binding Pad_SensitivityCurve, Source={x:Static strings:Strings.Instance}}"
-                                                       Style="{StaticResource CardSectionTitle}"/>
+                                                       Style="{StaticResource CardSubsectionTitle}"/>
                                             <TextBlock Text="{Binding Pad_SensitivityCurveHintShort, Source={x:Static strings:Strings.Instance}}"
                                                        Style="{StaticResource CardDescription}"/>
                                             <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
@@ -6236,7 +6247,7 @@
 
                                 <!-- ─── Left trigger ─── -->
                                 <TextBlock Text="{Binding Pad_TriggerRouting_LeftTrigger, Source={x:Static strings:Strings.Instance}}"
-                                           FontWeight="SemiBold" Margin="0,0,0,6"/>
+                                           Style="{StaticResource CardSubsectionTitle}"/>
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
                                     <TextBlock Text="{Binding Pad_TriggerRouting_Source, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
                                     <ComboBox SelectedValue="{Binding LeftTriggerRouteSource, Mode=TwoWay}" SelectedValuePath="Tag" MinWidth="220">
@@ -6324,7 +6335,7 @@
 
                                 <!-- ─── Right trigger ─── -->
                                 <TextBlock Text="{Binding Pad_TriggerRouting_RightTrigger, Source={x:Static strings:Strings.Instance}}"
-                                           FontWeight="SemiBold" Margin="0,12,0,6"/>
+                                           Style="{StaticResource CardSubsectionTitle}" Margin="0,12,0,6"/>
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
                                     <TextBlock Text="{Binding Pad_TriggerRouting_Source, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
                                     <ComboBox SelectedValue="{Binding RightTriggerRouteSource, Mode=TwoWay}" SelectedValuePath="Tag" MinWidth="220">

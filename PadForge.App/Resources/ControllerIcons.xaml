@@ -340,6 +340,17 @@
         <Setter Property="Margin" Value="0,0,0,8"/>
     </Style>
 
+    <!-- SUBSECTION title inside a card: one visual rank below the CardTitle
+         section header (e.g. "Left Thumbstick" is CardTitle; "Center Point",
+         "Deadzone", "Sensitivity Curves", "Range", "Steering" inside its card
+         wear this). The reference look is the Force Feedback tab's Trigger
+         Routing "Left Trigger" / "Right Trigger" labels: SemiBold at the
+         inherited body size, 6px gap below. -->
+    <Style x:Key="CardSubsectionTitle" TargetType="TextBlock">
+        <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="Margin" Value="0,0,0,6"/>
+    </Style>
+
     <!-- The ONE formatting style for description text under a card title.
          Margin lives here so new cards inherit the canonical title-to-
          description rhythm without copying numbers from a neighbor.

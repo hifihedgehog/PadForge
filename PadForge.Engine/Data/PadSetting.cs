@@ -233,6 +233,17 @@ namespace PadForge.Engine.Data
         [XmlElement] public string RightThumbCenterOffsetY { get; set; } = "0";
 
         // ─────────────────────────────────────────────
+        //  Stick boundary calibration (#174)
+        // ─────────────────────────────────────────────
+
+        /// <summary>Left stick measured boundary map: space-separated radii
+        /// (per angle) scaled by 100. Empty = uncalibrated, no reshaping.</summary>
+        [XmlElement] public string LeftThumbBoundaryMap { get; set; } = "";
+
+        /// <summary>Right stick measured boundary map. Empty = uncalibrated.</summary>
+        [XmlElement] public string RightThumbBoundaryMap { get; set; } = "";
+
+        // ─────────────────────────────────────────────
         //  Force feedback settings
         // ─────────────────────────────────────────────
 
@@ -1197,6 +1208,8 @@ namespace PadForge.Engine.Data
             sb.Append(LeftThumbCenterOffsetY); sb.Append('|');
             sb.Append(RightThumbCenterOffsetX); sb.Append('|');
             sb.Append(RightThumbCenterOffsetY); sb.Append('|');
+            sb.Append(LeftThumbBoundaryMap); sb.Append('|');
+            sb.Append(RightThumbBoundaryMap); sb.Append('|');
 
             // Force feedback
             sb.Append(ForceType); sb.Append('|');
@@ -1674,6 +1687,7 @@ namespace PadForge.Engine.Data
             nameof(RightThumbMaxRangeXNeg), nameof(RightThumbMaxRangeYNeg),
             nameof(LeftThumbCenterOffsetX), nameof(LeftThumbCenterOffsetY),
             nameof(RightThumbCenterOffsetX), nameof(RightThumbCenterOffsetY),
+            nameof(LeftThumbBoundaryMap), nameof(RightThumbBoundaryMap),
             // Force feedback
             nameof(ForceType), nameof(ForceOverall), nameof(ForceSwapMotor),
             nameof(LeftMotorStrength), nameof(RightMotorStrength),

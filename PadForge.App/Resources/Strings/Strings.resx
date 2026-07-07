@@ -1632,6 +1632,12 @@
 
   <!-- ═══ Pad — Reset Tooltips ═══ -->
   <data name="Pad_ResetCenterOffsetX" xml:space="preserve"><value>Reset Center Offset X</value></data>
+  <data name="Pad_Sticks_Boundary_Calibrate" xml:space="preserve"><value>Calibrate boundary</value></data>
+  <data name="Pad_Sticks_Boundary_Recalibrate" xml:space="preserve"><value>Recalibrate boundary</value></data>
+  <data name="Pad_Sticks_Boundary_Sweeping" xml:space="preserve"><value>Sweep the rim... {0} left</value></data>
+  <data name="Pad_Sticks_Boundary_Circularity" xml:space="preserve"><value>Circularity {0:F0}%</value></data>
+  <data name="Pad_Sticks_Boundary_Tooltip" xml:space="preserve"><value>Sweep the stick around its rim to map the reachable boundary, then reshape it to a full circle.</value></data>
+  <data name="Pad_ResetStickBoundary" xml:space="preserve"><value>Reset boundary calibration</value></data>
   <data name="Pad_ResetCenterOffsetY" xml:space="preserve"><value>Reset Center Offset Y</value></data>
   <data name="Pad_ResetDeadZoneShape" xml:space="preserve"><value>Reset to Scaled Radial</value></data>
   <data name="Pad_ResetDeadZoneX" xml:space="preserve"><value>Reset Deadzone X</value></data>

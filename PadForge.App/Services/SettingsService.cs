@@ -2223,6 +2223,13 @@ namespace PadForge.Services
                 padVm.LeftCenterOffsetY = TryParseDouble(ps.LeftThumbCenterOffsetY, 0);
                 padVm.RightCenterOffsetX = TryParseDouble(ps.RightThumbCenterOffsetX, 0);
                 padVm.RightCenterOffsetY = TryParseDouble(ps.RightThumbCenterOffsetY, 0);
+                // Stick boundary calibration maps (#174). MUST load here: the
+                // 30 Hz SaveViewModelToPadSetting writes ps.*BoundaryMap =
+                // padVm.*BoundaryMap on the selected device, so without this
+                // read-back the empty startup VM clobbers a persisted map on
+                // the first sync tick (the dirty-gate persistence trap).
+                padVm.LeftThumbBoundaryMap = ps.LeftThumbBoundaryMap ?? string.Empty;
+                padVm.RightThumbBoundaryMap = ps.RightThumbBoundaryMap ?? string.Empty;
 
                 // Load trigger deadzone settings.
                 padVm.LeftTriggerDeadZone = TryParseDouble(ps.LeftTriggerDeadZone, 0);
@@ -3501,6 +3508,13 @@ namespace PadForge.Services
                     ps.LeftThumbCenterOffsetY = padVm.LeftCenterOffsetY.ToString(ic);
                     ps.RightThumbCenterOffsetX = padVm.RightCenterOffsetX.ToString(ic);
                     ps.RightThumbCenterOffsetY = padVm.RightCenterOffsetY.ToString(ic);
+                    // Boundary calibration maps (#174). This flush mirrors the
+                    // 30 Hz SaveViewModelToPadSetting, but it also runs when the
+                    // engine is stopped (SaveToFile calls it first), so without
+                    // these a boundary reset or recalibration made while stopped
+                    // would not persist (the 30 Hz writer is gated on IsRunning).
+                    ps.LeftThumbBoundaryMap = padVm.LeftThumbBoundaryMap ?? string.Empty;
+                    ps.RightThumbBoundaryMap = padVm.RightThumbBoundaryMap ?? string.Empty;
 
                     // Write trigger deadzone settings.
                     ps.LeftTriggerDeadZone = padVm.LeftTriggerDeadZone.ToString(ic);
@@ -3645,6 +3659,10 @@ namespace PadForge.Services
                 padVm.LeftCenterOffsetY = 0;
                 padVm.RightCenterOffsetX = 0;
                 padVm.RightCenterOffsetY = 0;
+                // Clear the boundary maps too (#174), or the 30 Hz writer
+                // re-stamps a stale VM map onto the freshly reset PadSetting.
+                padVm.LeftThumbBoundaryMap = string.Empty;
+                padVm.RightThumbBoundaryMap = string.Empty;
                 padVm.LeftTriggerDeadZone = 0;
                 padVm.RightTriggerDeadZone = 0;
                 padVm.LeftTriggerAntiDeadZone = 0;

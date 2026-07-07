@@ -5016,6 +5016,26 @@
                                                 LiveInput="{Binding LiveInputY}"
                                                 IsSigned="True" IsFullWidth="True" ChartHeight="150" Width="560" HorizontalAlignment="Left"/>
                                             <Separator Margin="0,8,0,8"/>
+                                            <!-- Boundary calibration (#174): the outer-boundary
+                                                 counterpart to the manual range sliders below. One
+                                                 button (coverage-driven inline sweep, same idiom as
+                                                 Calibrate center) plus a per-canon Reset. The measured
+                                                 shape draws on the radar to the right. -->
+                                            <StackPanel Orientation="Horizontal" Margin="0,0,0,8"
+                                                        Visibility="{Binding SupportsBoundaryCalibration, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                <Button Command="{Binding CalibrateBoundaryCommand}"
+                                                        Content="{Binding BoundaryButtonText}"
+                                                        Padding="8,4" HorizontalAlignment="Left"
+                                                        ToolTip="{Binding Pad_Sticks_Boundary_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                                <ui:Button Command="{Binding ResetBoundaryCommand}"
+                                                           Style="{StaticResource ResetButton}"
+                                                           Margin="6,0,0,0" VerticalAlignment="Center"
+                                                           ToolTip="{Binding Pad_ResetStickBoundary, Source={x:Static strings:Strings.Instance}}"/>
+                                                <TextBlock Text="{Binding BoundaryCircularityText}"
+                                                           Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                                                           FontFamily="{StaticResource TelemetryFontFamily}" FontSize="11"
+                                                           VerticalAlignment="Center" Margin="10,0,0,0"/>
+                                            </StackPanel>
                                             <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                                 <TextBlock Text="{Binding Pad_MinRangeXLeft, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
                                                 <Slider Value="{Binding MaxRangeXNeg, Mode=TwoWay}"
@@ -5088,6 +5108,15 @@
                                                     <Line X1="100" Y1="6" X2="100" Y2="194" Stroke="#FF1E2739" StrokeThickness="1"/>
                                                     <Line X1="6" Y1="100" X2="194" Y2="100" Stroke="#FF1E2739" StrokeThickness="1"/>
                                                     <Canvas>
+                                                        <!-- Measured boundary (#174): the reachable rim from the
+                                                             last (or in-progress) sweep, in the ember grammar,
+                                                             plotted in the same 200x200 space as the dots. The
+                                                             outer ring above is the ideal-circle reference, so the
+                                                             gap between them IS the calibration. Empty point
+                                                             collection when uncalibrated draws nothing. -->
+                                                        <Polygon Points="{Binding BoundaryPolygonPoints}"
+                                                                 Stroke="{DynamicResource EmberBrush}" StrokeThickness="1.5"
+                                                                 Fill="#14FF6B2C" IsHitTestVisible="False"/>
                                                         <!-- Legacy stock rings removed (#175 close-out item 25):
                                                              the radar keeps the #1E2739 rings + crosshair above;
                                                              below sit the DZ steel fill, the dashed ember DZ

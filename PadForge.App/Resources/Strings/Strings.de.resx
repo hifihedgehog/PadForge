@@ -910,6 +910,12 @@
   <data name="Pad_ResetConstantForceX" xml:space="preserve"><value>Konstante Kraft X zurücksetzen</value></data>
   <data name="Pad_ResetConstantForceY" xml:space="preserve"><value>Konstante Kraft Y zurücksetzen</value></data>
   <data name="Pad_ResetCenterOffsetX" xml:space="preserve"><value>Mittenversatz X zurücksetzen</value></data>
+  <data name="Pad_Sticks_Boundary_Calibrate" xml:space="preserve"><value>Begrenzung kalibrieren</value></data>
+  <data name="Pad_Sticks_Boundary_Recalibrate" xml:space="preserve"><value>Begrenzung neu kalibrieren</value></data>
+  <data name="Pad_Sticks_Boundary_Sweeping" xml:space="preserve"><value>Rand umkreisen... noch {0}</value></data>
+  <data name="Pad_Sticks_Boundary_Circularity" xml:space="preserve"><value>Rundheit {0:F0}%</value></data>
+  <data name="Pad_Sticks_Boundary_Tooltip" xml:space="preserve"><value>Umkreise den Rand mit dem Stick, um die erreichbare Begrenzung zu erfassen, und forme sie zu einem vollen Kreis.</value></data>
+  <data name="Pad_ResetStickBoundary" xml:space="preserve"><value>Begrenzungskalibrierung zurücksetzen</value></data>
   <data name="Pad_ResetCenterOffsetY" xml:space="preserve"><value>Mittenversatz Y zurücksetzen</value></data>
   <data name="Pad_ResetDeadZoneShape" xml:space="preserve"><value>Auf Skaliert Radial zurücksetzen</value></data>
   <data name="Pad_ResetDeadZoneX" xml:space="preserve"><value>Deadzone X zurücksetzen</value></data>

@@ -3397,6 +3397,15 @@ namespace PadForge.ViewModels
         private double _rightCenterOffsetY;
         public double RightCenterOffsetY { get => _rightCenterOffsetY; set => SetProperty(ref _rightCenterOffsetY, Math.Clamp(value, -100, 100)); }
 
+        // #174 boundary calibration: serialized per-angle maps, mirrored to/from
+        // the StickConfigItem (which owns capture + the radar overlay) and
+        // persisted to PadSetting.Left/RightThumbBoundaryMap. Empty = off.
+        private string _leftThumbBoundaryMap = "";
+        public string LeftThumbBoundaryMap { get => _leftThumbBoundaryMap; set => SetProperty(ref _leftThumbBoundaryMap, value ?? ""); }
+
+        private string _rightThumbBoundaryMap = "";
+        public string RightThumbBoundaryMap { get => _rightThumbBoundaryMap; set => SetProperty(ref _rightThumbBoundaryMap, value ?? ""); }
+
         // ── Triggers ──
         private double _leftTriggerDeadZone;
         public double LeftTriggerDeadZone { get => _leftTriggerDeadZone; set => SetProperty(ref _leftTriggerDeadZone, Math.Clamp(value, 0, 100)); }
@@ -3492,7 +3501,11 @@ namespace PadForge.ViewModels
                 string iconLabel = isExtended
                     ? (i + 1).ToString()
                     : i == 0 ? "L" : "R";
-                var item = new StickConfigItem(i, title, xiIdx, yiIdx, iconLabel);
+                // Boundary calibration for the two primary thumbsticks only
+                // (#174): gamepad L/R and Extended sticks 0/1, which the Step 3
+                // warp covers. Extended custom sticks 2+ are deferred.
+                var item = new StickConfigItem(i, title, xiIdx, yiIdx, iconLabel,
+                    supportsBoundaryCalibration: i <= 1);
                 SyncStickItemFromVm(item);
                 item.PropertyChanged += OnStickConfigPropertyChanged;
                 StickConfigs.Add(item);
@@ -3586,6 +3599,7 @@ namespace PadForge.ViewModels
                         item.MaxRangeYNeg = LeftMaxRangeYNeg;
                         item.CenterOffsetX = LeftCenterOffsetX;
                         item.CenterOffsetY = LeftCenterOffsetY;
+                        item.BoundaryMap = LeftThumbBoundaryMap;
                         break;
                     case 1:
                         item.DeadZoneShape = (DeadZoneShape)RightDeadZoneShape;
@@ -3602,6 +3616,7 @@ namespace PadForge.ViewModels
                         item.MaxRangeYNeg = RightMaxRangeYNeg;
                         item.CenterOffsetX = RightCenterOffsetX;
                         item.CenterOffsetY = RightCenterOffsetY;
+                        item.BoundaryMap = RightThumbBoundaryMap;
                         break;
                 }
             }
@@ -3699,7 +3714,8 @@ namespace PadForge.ViewModels
             nameof(StickConfigItem.MaxRangeX), nameof(StickConfigItem.MaxRangeY),
             nameof(StickConfigItem.MaxRangeXNeg), nameof(StickConfigItem.MaxRangeYNeg),
             nameof(StickConfigItem.CenterOffsetX), nameof(StickConfigItem.CenterOffsetY),
-            // Steering (#94) — without these, changing the steering mode / tunables
+            nameof(StickConfigItem.BoundaryMap), // #174 boundary calibration
+            // Steering (#94). Without these, changing the steering mode / tunables
             // never marks the profile dirty, so the selection is dropped on save.
             nameof(StickConfigItem.SteeringModeIndex),
             nameof(StickConfigItem.WindRangeDeg), nameof(StickConfigItem.WindPower), nameof(StickConfigItem.WindUnwindRate),
@@ -3741,6 +3757,7 @@ namespace PadForge.ViewModels
                         case nameof(StickConfigItem.MaxRangeYNeg): LeftMaxRangeYNeg = item.MaxRangeYNeg; break;
                         case nameof(StickConfigItem.CenterOffsetX): LeftCenterOffsetX = item.CenterOffsetX; break;
                         case nameof(StickConfigItem.CenterOffsetY): LeftCenterOffsetY = item.CenterOffsetY; break;
+                        case nameof(StickConfigItem.BoundaryMap): LeftThumbBoundaryMap = item.BoundaryMap; break;
                     }
                     if (isConfigProp) ConfigItemDirtyCallback?.Invoke();
                     break;
@@ -3761,6 +3778,7 @@ namespace PadForge.ViewModels
                         case nameof(StickConfigItem.MaxRangeYNeg): RightMaxRangeYNeg = item.MaxRangeYNeg; break;
                         case nameof(StickConfigItem.CenterOffsetX): RightCenterOffsetX = item.CenterOffsetX; break;
                         case nameof(StickConfigItem.CenterOffsetY): RightCenterOffsetY = item.CenterOffsetY; break;
+                        case nameof(StickConfigItem.BoundaryMap): RightThumbBoundaryMap = item.BoundaryMap; break;
                     }
                     if (isConfigProp) ConfigItemDirtyCallback?.Invoke();
                     break;
@@ -4761,7 +4779,8 @@ namespace PadForge.ViewModels
                     LeftLinear, LeftMaxRangeX, LeftMaxRangeY,
                     LeftMaxRangeXNeg, LeftMaxRangeYNeg,
                     LeftSensitivityCurveX, LeftSensitivityCurveY,
-                    (DeadZoneShape)LeftDeadZoneShape);
+                    (DeadZoneShape)LeftDeadZoneShape,
+                    Common.StickBoundary.GetOrBuild(LeftThumbBoundaryMap));
                 StickConfigs[0].LiveX = lvx;
                 StickConfigs[0].LiveY = lvy;
                 StickConfigs[0].RawX = (short)Math.Clamp((lox - 0.5) * 2.0 * 32767, short.MinValue, short.MaxValue);
@@ -4787,7 +4806,8 @@ namespace PadForge.ViewModels
                     RightLinear, RightMaxRangeX, RightMaxRangeY,
                     RightMaxRangeXNeg, RightMaxRangeYNeg,
                     RightSensitivityCurveX, RightSensitivityCurveY,
-                    (DeadZoneShape)RightDeadZoneShape);
+                    (DeadZoneShape)RightDeadZoneShape,
+                    Common.StickBoundary.GetOrBuild(RightThumbBoundaryMap));
                 StickConfigs[1].LiveX = rvx;
                 StickConfigs[1].LiveY = rvy;
                 StickConfigs[1].RawX = (short)Math.Clamp((rox - 0.5) * 2.0 * 32767, short.MinValue, short.MaxValue);
@@ -4829,11 +4849,24 @@ namespace PadForge.ViewModels
                 double linear, double maxRangeX, double maxRangeY,
                 double maxRangeXNeg, double maxRangeYNeg,
                 string curveX, string curveY,
-                DeadZoneShape shape)
+                DeadZoneShape shape,
+                double[] boundaryLut = null)
         {
             // Convert to signed [-1, 1]
             double sx = (adjNormX - 0.5) * 2.0;
             double sy = (adjNormY - 0.5) * 2.0;
+            // #174: circular reshape BEFORE the dead zone, matching Step 3's
+            // order, so the preview OUT dot shows the same warp the game gets.
+            // The preview's sy is screen-down; the boundary map is captured in
+            // the XInput up-positive frame, so flip Y around the warp to query
+            // the map in its own frame (an asymmetric gate would otherwise
+            // mirror about the X axis).
+            if (boundaryLut != null)
+            {
+                double wy = -sy;
+                Common.StickBoundary.ReshapeUnit(ref sx, ref wy, boundaryLut);
+                sy = -wy;
+            }
             double signX = Math.Sign(sx), signY = Math.Sign(sy);
             double magX = Math.Abs(sx), magY = Math.Abs(sy);
             double dzXn = deadZoneX / 100.0, dzYn = deadZoneY / 100.0;
@@ -5149,7 +5182,10 @@ namespace PadForge.ViewModels
                     stick.Linear, stick.MaxRangeX, stick.MaxRangeY,
                     stick.MaxRangeXNeg, stick.MaxRangeYNeg,
                     stick.SensitivityCurveX, stick.SensitivityCurveY,
-                    stick.DeadZoneShape);
+                    stick.DeadZoneShape,
+                    // Empty for custom sticks 2+ (never calibrated), so this is a
+                    // no-op there, matching the runtime's sticks-0/1-only warp.
+                    Common.StickBoundary.GetOrBuild(stick.BoundaryMap));
 
                 if (hasX) { stick.LiveX = vx; stick.RawX = (short)Math.Clamp((ox - 0.5) * 2.0 * 32767, short.MinValue, short.MaxValue); }
                 if (hasY) { stick.LiveY = vy; stick.RawY = (short)Math.Clamp((0.5 - oy) * 2.0 * 32767, short.MinValue, short.MaxValue); }

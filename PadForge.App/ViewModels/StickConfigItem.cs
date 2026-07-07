@@ -407,13 +407,15 @@ namespace PadForge.ViewModels
             return CurveLut.Lookup(lut, Math.Clamp(magnitude, 0, 1));
         }
 
-        public StickConfigItem(int index, string title, int axisXIndex = -1, int axisYIndex = -1, string iconLabel = "")
+        public StickConfigItem(int index, string title, int axisXIndex = -1, int axisYIndex = -1,
+            string iconLabel = "", bool supportsBoundaryCalibration = false)
         {
             Index = index;
             Title = title;
             AxisXIndex = axisXIndex;
             AxisYIndex = axisYIndex;
             IconLabel = iconLabel ?? string.Empty;
+            SupportsBoundaryCalibration = supportsBoundaryCalibration;
         }
 
         // ── Steering mode (v3.4 #94) ──
@@ -492,6 +494,8 @@ namespace PadForge.ViewModels
         {
             DeadZoneShape = DeadZoneShape.ScaledRadial;
             CenterOffsetX = 0; CenterOffsetY = 0;
+            if (IsCalibratingBoundary) StopBoundaryCalibration(commit: false);
+            BoundaryMap = ""; // #174: Reset All clears the boundary calibration too
             DeadZoneX = 0; DeadZoneY = 0;
             AntiDeadZoneX = 0; AntiDeadZoneY = 0;
             Linear = 0;
@@ -571,5 +575,164 @@ namespace PadForge.ViewModels
             };
             timer.Start();
         }
+
+        // ────────────────────────────────────────────────
+        //  Boundary calibration (#174)
+        // ────────────────────────────────────────────────
+
+        private string _boundaryMap = "";
+        /// <summary>Serialized measured boundary (StickBoundary format). Empty =
+        /// uncalibrated, no reshaping. The setter rebuilds the radar overlay and
+        /// the circularity readout.</summary>
+        public string BoundaryMap
+        {
+            get => _boundaryMap;
+            set
+            {
+                if (SetProperty(ref _boundaryMap, value ?? ""))
+                {
+                    RebuildBoundaryVisuals();
+                    OnPropertyChanged(nameof(HasBoundaryCalibration));
+                    OnPropertyChanged(nameof(BoundaryButtonText));
+                }
+            }
+        }
+
+        public bool HasBoundaryCalibration => !string.IsNullOrEmpty(_boundaryMap);
+
+        /// <summary>Boundary calibration is offered only for the two primary
+        /// physical thumbsticks the runtime warp actually covers (Step 3
+        /// reshapes sticks 0/1). Set at construction: true for the Xbox/
+        /// PlayStation two-stick grid and the Extended primary sticks 0/1,
+        /// false for the KBM mouse/scroll pseudo-sticks and Extended custom
+        /// sticks 2+ (warp deferred). NOT derived from AxisXIndex, which is -1
+        /// for gamepad output and would wrongly hide the default case.</summary>
+        public bool SupportsBoundaryCalibration { get; }
+
+        private bool _isCalibratingBoundary;
+        public bool IsCalibratingBoundary
+        {
+            get => _isCalibratingBoundary;
+            set { if (SetProperty(ref _isCalibratingBoundary, value)) OnPropertyChanged(nameof(BoundaryButtonText)); }
+        }
+
+        private int _boundarySectorsRemaining;
+        public int BoundarySectorsRemaining
+        {
+            get => _boundarySectorsRemaining;
+            set { if (SetProperty(ref _boundarySectorsRemaining, value)) OnPropertyChanged(nameof(BoundaryButtonText)); }
+        }
+
+        /// <summary>Button caption: idle prompt (Calibrate / Recalibrate), or the
+        /// live "N sectors left" countdown during a sweep.</summary>
+        public string BoundaryButtonText => _isCalibratingBoundary
+            ? string.Format(Resources.Strings.Strings.Instance.Pad_Sticks_Boundary_Sweeping, _boundarySectorsRemaining)
+            : (HasBoundaryCalibration
+                ? Resources.Strings.Strings.Instance.Pad_Sticks_Boundary_Recalibrate
+                : Resources.Strings.Strings.Instance.Pad_Sticks_Boundary_Calibrate);
+
+        private PointCollection _boundaryPolygonPoints = new();
+        /// <summary>Measured boundary as a polygon in the 200x200 radar plot,
+        /// bound by the card overlay so the calibration reads as part of the
+        /// existing instrument.</summary>
+        public PointCollection BoundaryPolygonPoints
+        {
+            get => _boundaryPolygonPoints;
+            private set => SetProperty(ref _boundaryPolygonPoints, value);
+        }
+
+        private string _boundaryCircularityText = "";
+        public string BoundaryCircularityText
+        {
+            get => _boundaryCircularityText;
+            private set => SetProperty(ref _boundaryCircularityText, value);
+        }
+
+        private void RebuildBoundaryVisuals()
+        {
+            var data = StickBoundary.Parse(_boundaryMap);
+            BoundaryPolygonPoints = StickBoundary.PlotPolygon(data);
+            BoundaryCircularityText = data == null
+                ? string.Empty
+                : string.Format(Resources.Strings.Strings.Instance.Pad_Sticks_Boundary_Circularity,
+                    StickBoundary.Circularity(data));
+        }
+
+        private DispatcherTimer _boundaryTimer;
+        private double[] _boundaryCapture;
+        private bool _boundaryHavePrev;
+        private double _boundaryPrevX, _boundaryPrevY;
+        private int _boundaryElapsedTicks;
+
+        /// <summary>Runs a coverage-driven boundary sweep on a ~60 Hz timer,
+        /// growing the map from consecutive raw-position pairs (HardwareRawX/Y,
+        /// the pre-tuning source the center calibration also uses) and updating
+        /// the live radar. Completes when every sector is covered, or a 20 s
+        /// safety cap, then backfills any gaps and commits. Clicking again while
+        /// sweeping commits early.</summary>
+        public void StartBoundaryCalibration()
+        {
+            if (IsCalibratingBoundary) { StopBoundaryCalibration(commit: true); return; }
+            IsCalibratingBoundary = true;
+            _boundaryCapture = StickBoundary.NewMap();
+            _boundaryHavePrev = false;
+            _boundaryElapsedTicks = 0;
+            BoundarySectorsRemaining = StickBoundary.SampleCount;
+
+            _boundaryTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(16) };
+            _boundaryTimer.Tick += (s, e) =>
+            {
+                try
+                {
+                    double x = HardwareRawX / 32768.0, y = HardwareRawY / 32768.0;
+                    if (_boundaryHavePrev)
+                        StickBoundary.UpdateFromSegment(_boundaryCapture, _boundaryPrevX, _boundaryPrevY, x, y);
+                    _boundaryPrevX = x; _boundaryPrevY = y; _boundaryHavePrev = true;
+
+                    BoundaryPolygonPoints = StickBoundary.PlotPolygon(_boundaryCapture);
+                    BoundarySectorsRemaining = StickBoundary.RemainingSectors(_boundaryCapture);
+
+                    _boundaryElapsedTicks++;
+                    if (BoundarySectorsRemaining == 0 || _boundaryElapsedTicks > 1250)
+                        StopBoundaryCalibration(commit: true);
+                }
+                catch { StopBoundaryCalibration(commit: false); }
+            };
+            _boundaryTimer.Start();
+        }
+
+        private void StopBoundaryCalibration(bool commit)
+        {
+            _boundaryTimer?.Stop();
+            _boundaryTimer = null;
+            IsCalibratingBoundary = false;
+            if (commit && _boundaryCapture != null)
+            {
+                int filled = StickBoundary.BackfillGaps(_boundaryCapture);
+                // Require a genuine sweep (at least half the rim reached) before
+                // committing, so a stray click can't save a spike.
+                if (filled >= StickBoundary.SampleCount / 2)
+                    BoundaryMap = StickBoundary.Serialize(_boundaryCapture);
+                else
+                    RebuildBoundaryVisuals(); // discard the partial overlay
+            }
+            else
+            {
+                RebuildBoundaryVisuals();
+            }
+            _boundaryCapture = null;
+            _boundaryHavePrev = false;
+        }
+
+        private ICommand _calibrateBoundaryCommand;
+        public ICommand CalibrateBoundaryCommand =>
+            _calibrateBoundaryCommand ??= new RelayCommand(StartBoundaryCalibration);
+
+        private ICommand _resetBoundaryCommand;
+        public ICommand ResetBoundaryCommand => _resetBoundaryCommand ??= new RelayCommand(() =>
+        {
+            if (IsCalibratingBoundary) StopBoundaryCalibration(commit: false);
+            BoundaryMap = string.Empty;
+        });
     }
 }

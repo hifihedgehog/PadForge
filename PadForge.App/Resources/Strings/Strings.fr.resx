@@ -910,6 +910,12 @@
   <data name="Pad_ResetConstantForceX" xml:space="preserve"><value>Réinitialiser la force constante X</value></data>
   <data name="Pad_ResetConstantForceY" xml:space="preserve"><value>Réinitialiser la force constante Y</value></data>
   <data name="Pad_ResetCenterOffsetX" xml:space="preserve"><value>Réinitialiser le décalage centre X</value></data>
+  <data name="Pad_Sticks_Boundary_Calibrate" xml:space="preserve"><value>Calibrer la limite</value></data>
+  <data name="Pad_Sticks_Boundary_Recalibrate" xml:space="preserve"><value>Recalibrer la limite</value></data>
+  <data name="Pad_Sticks_Boundary_Sweeping" xml:space="preserve"><value>Parcourez le bord... {0} restants</value></data>
+  <data name="Pad_Sticks_Boundary_Circularity" xml:space="preserve"><value>Circularité {0:F0}%</value></data>
+  <data name="Pad_Sticks_Boundary_Tooltip" xml:space="preserve"><value>Parcourez le bord avec le stick pour cartographier la limite atteignable, puis reformez-la en cercle complet.</value></data>
+  <data name="Pad_ResetStickBoundary" xml:space="preserve"><value>Réinitialiser le calibrage de la limite</value></data>
   <data name="Pad_ResetCenterOffsetY" xml:space="preserve"><value>Réinitialiser le décalage centre Y</value></data>
   <data name="Pad_ResetDeadZoneShape" xml:space="preserve"><value>Réinitialiser en Radiale mise à l'échelle</value></data>
   <data name="Pad_ResetDeadZoneX" xml:space="preserve"><value>Réinitialiser la zone morte X</value></data>

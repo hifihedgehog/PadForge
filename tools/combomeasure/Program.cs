@@ -79,8 +79,7 @@ internal static class Program
         "Pad_Lighting_MicLed_Off", "Pad_Lighting_MicLed_Solid",
         "Pad_Lighting_MicLed_Pulse", "Pad_Lighting_MicLed_FollowDevice",
     };
-    // The lightbar-mode combo in the Base Color section (Width 320 today)
-    // also gained the PlayerNumber item; measure it to confirm 320 holds.
+    // Base Color (lightbar) section, combo 1: the mode picker (Width 320).
     static readonly string[] LightbarKeys =
     {
         "Pad_Lighting_Mode_PlayerNumber", "Pad_Lighting_Mode_Off",
@@ -90,6 +89,12 @@ internal static class Program
         "Pad_Lighting_Mode_AudioPulse", "Pad_Lighting_Mode_AudioPulseRandom",
         "Pad_Lighting_Mode_AudioPulseRainbow", "Pad_Lighting_Mode_AudioThresholds",
         "Pad_Lighting_Mode_AudioGradient", "Pad_Lighting_Mode_AudioCrossFade",
+    };
+    // Base Color (lightbar) section, combo 2: the input-reactive overlay.
+    static readonly string[] InputReactiveKeys =
+    {
+        "Pad_Lighting_InputReactive_Off", "Pad_Lighting_InputReactive_Random",
+        "Pad_Lighting_InputReactive_Cycle", "Pad_Lighting_InputReactive_Fixed",
     };
 
     static Dictionary<string, Dictionary<string, string>> _strings; // key -> (localeTag -> text)
@@ -156,10 +161,11 @@ internal static class Program
 
         foreach (var (tag, _) in Locales)
         {
-            foreach (var k in BrightnessKeys) AddCombo("Brightness", tag, _strings[k][tag], false);
-            foreach (var k in PatternKeys)    AddCombo("Pattern",    tag, _strings[k][tag], true);
-            foreach (var k in MicKeys)        AddCombo("Mic",        tag, _strings[k][tag], false);
-            foreach (var k in LightbarKeys)   AddCombo("Lightbar",   tag, _strings[k][tag], false);
+            foreach (var k in BrightnessKeys)    AddCombo("Brightness",    tag, _strings[k][tag], false);
+            foreach (var k in PatternKeys)       AddCombo("Pattern",       tag, _strings[k][tag], true);
+            foreach (var k in MicKeys)           AddCombo("Mic",           tag, _strings[k][tag], false);
+            foreach (var k in LightbarKeys)      AddCombo("Lightbar",      tag, _strings[k][tag], false);
+            foreach (var k in InputReactiveKeys) AddCombo("InputReactive", tag, _strings[k][tag], false);
         }
 
         var win = new Window
@@ -191,7 +197,7 @@ internal static class Program
     static void Report(List<Rec> records)
     {
         var sb = new StringBuilder();
-        foreach (var combo in new[] { "Brightness", "Pattern", "Mic", "Lightbar" })
+        foreach (var combo in new[] { "Brightness", "Pattern", "Mic", "Lightbar", "InputReactive" })
         {
             var group = records.Where(r => r.Combo == combo).ToList();
             double max = group.Max(r => r.Cb.ActualWidth);
@@ -202,13 +208,20 @@ internal static class Program
             sb.AppendLine($"   MAX = {max:F2}  (locale {driver.Locale}: \"{Trunc(driver.Text)}\")");
             sb.AppendLine();
         }
-        // Indicator-LEDs shared width = max over the three enum combos.
-        var enumGroups = records.Where(r => r.Combo != "Lightbar").ToList();
-        double sharedMax = enumGroups.Max(r => r.Cb.ActualWidth);
-        var sd = enumGroups.First(r => Math.Abs(r.Cb.ActualWidth - sharedMax) < 0.01);
-        sb.AppendLine($"INDICATOR-LEDS SHARED MAX (3 enum combos) = {sharedMax:F2}");
-        sb.AppendLine($"   driven by {sd.Combo}/{sd.Locale}: \"{Trunc(sd.Text)}\"");
-        sb.AppendLine($"   ceil = {Math.Ceiling(sharedMax)}   +8 safety = {Math.Ceiling(sharedMax) + 8}");
+        void SharedMax(string title, params string[] combos)
+        {
+            var g = records.Where(r => combos.Contains(r.Combo)).ToList();
+            double m = g.Max(r => r.Cb.ActualWidth);
+            var d = g.First(r => Math.Abs(r.Cb.ActualWidth - m) < 0.01);
+            sb.AppendLine($"{title} = {m:F2}");
+            sb.AppendLine($"   driven by {d.Combo}/{d.Locale}: \"{Trunc(d.Text)}\"");
+            sb.AppendLine($"   ceil = {Math.Ceiling(m)}   +8 safety = {Math.Ceiling(m) + 8}");
+            sb.AppendLine();
+        }
+        // Indicator-LEDs card: three enum combos + the device picker.
+        SharedMax("INDICATOR-LEDS SHARED MAX", "Brightness", "Pattern", "Mic");
+        // Base Color (lightbar) card: mode combo + input-reactive overlay.
+        SharedMax("LIGHTBAR SECTION SHARED MAX", "Lightbar", "InputReactive");
 
         var outPath = IOPath.Combine(AppContext.BaseDirectory, "..", "..", "..", "measure_out.txt");
         outPath = IOPath.GetFullPath(outPath);
@@ -221,7 +234,8 @@ internal static class Program
 
     static void LoadStrings()
     {
-        var needed = BrightnessKeys.Concat(PatternKeys).Concat(MicKeys).Concat(LightbarKeys).ToHashSet();
+        var needed = BrightnessKeys.Concat(PatternKeys).Concat(MicKeys)
+            .Concat(LightbarKeys).Concat(InputReactiveKeys).ToHashSet();
         _strings = needed.ToDictionary(k => k, _ => new Dictionary<string, string>());
         foreach (var (tag, file) in Locales)
         {

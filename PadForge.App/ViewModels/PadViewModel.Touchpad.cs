@@ -74,7 +74,15 @@ namespace PadForge.ViewModels
         public bool TouchpadGesturesEnabled
         {
             get => _touchpadGesturesEnabled;
-            set { if (SetProperty(ref _touchpadGesturesEnabled, value)) PushIfNotLoading(); }
+            set
+            {
+                if (SetProperty(ref _touchpadGesturesEnabled, value))
+                {
+                    PushIfNotLoading();
+                    OnPropertyChanged(nameof(TouchpadInBoxSectionEnabled));
+                    OnPropertyChanged(nameof(TouchpadCustomSectionEnabled));
+                }
+            }
         }
 
         private string _touchpadGestureMode = "Both";
@@ -87,9 +95,30 @@ namespace PadForge.ViewModels
             set
             {
                 var s = string.IsNullOrEmpty(value) ? "Both" : value;
-                if (SetProperty(ref _touchpadGestureMode, s)) PushIfNotLoading();
+                if (SetProperty(ref _touchpadGestureMode, s))
+                {
+                    PushIfNotLoading();
+                    OnPropertyChanged(nameof(TouchpadInBoxSectionEnabled));
+                    OnPropertyChanged(nameof(TouchpadCustomSectionEnabled));
+                }
             }
         }
+
+        /// <summary>True while the In-Box Gestures card's toggles can
+        /// actually take effect: the master switch is on and Recognize
+        /// includes the in-box catalog. The card grays out and shows a
+        /// pointer to the Gesture Detection card otherwise. Users kept
+        /// checking category boxes with the master off and concluding
+        /// the gestures were missing from the mapping list (#177/#178).</summary>
+        public bool TouchpadInBoxSectionEnabled =>
+            _touchpadGesturesEnabled
+            && !string.Equals(_touchpadGestureMode, "CustomOnly", StringComparison.OrdinalIgnoreCase);
+
+        /// <summary>True while the Custom Gestures card can take effect:
+        /// master switch on and Recognize includes the custom catalog.</summary>
+        public bool TouchpadCustomSectionEnabled =>
+            _touchpadGesturesEnabled
+            && !string.Equals(_touchpadGestureMode, "InBoxOnly", StringComparison.OrdinalIgnoreCase);
 
         private int _touchpadCooldownMs = 100;
         public int TouchpadCooldownMs

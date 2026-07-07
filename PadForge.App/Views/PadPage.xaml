@@ -9198,7 +9198,7 @@
 
                         <!-- ─── In-box gestures card ─── -->
                         <Border Style="{StaticResource CardBorder}">
-                            <StackPanel>
+                            <StackPanel IsEnabled="{Binding TouchpadInBoxSectionEnabled}">
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                     <TextBlock Text="&#xF12B;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="16" Foreground="{DynamicResource EmberBrush}"
                                                VerticalAlignment="Center" Margin="0,0,8,0"/>
@@ -9208,6 +9208,14 @@
                                             Content="{Binding Pad_ResetAll, Source={x:Static strings:Strings.Instance}}" Margin="12,0,0,0"
                                             ToolTip="{Binding Pad_ResetTouchpadInBox, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
+
+                                <!-- Why-is-this-gray pointer: the whole card is gated on the
+                                     Detection card's master toggle + Recognize mode, and users
+                                     kept checking categories with the master off, then not
+                                     finding the gestures in the mapping list (#177/#178). -->
+                                <TextBlock Text="{Binding Pad_Touchpad_SectionGated_Hint, Source={x:Static strings:Strings.Instance}}"
+                                           Style="{StaticResource CardDescription}"
+                                           Visibility="{Binding TouchpadInBoxSectionEnabled, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}"/>
 
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
                                     <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}" Content="{Binding Pad_Touchpad_TouchSpots, Source={x:Static strings:Strings.Instance}}"
@@ -9368,13 +9376,17 @@
 
                         <!-- ─── Custom gestures card ─── -->
                         <Border Style="{StaticResource CardBorder}">
-                            <StackPanel>
+                            <StackPanel IsEnabled="{Binding TouchpadCustomSectionEnabled}">
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                     <TextBlock Text="&#xF4A5;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="16" Foreground="{DynamicResource EmberBrush}"
                                                VerticalAlignment="Center" Margin="0,0,8,0"/>
                                     <TextBlock Text="{Binding Pad_Touchpad_Custom_Header, Source={x:Static strings:Strings.Instance}}"
                                                Style="{StaticResource CardTitle}"/>
                                 </StackPanel>
+
+                                <TextBlock Text="{Binding Pad_Touchpad_SectionGated_Hint, Source={x:Static strings:Strings.Instance}}"
+                                           Style="{StaticResource CardDescription}"
+                                           Visibility="{Binding TouchpadCustomSectionEnabled, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}"/>
 
                                 <TextBlock Text="{Binding Pad_Touchpad_Custom_Empty, Source={x:Static strings:Strings.Instance}}"
                                            Style="{StaticResource CardDescription}"

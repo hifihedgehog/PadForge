@@ -1665,6 +1665,7 @@
   <data name="Pad_Touchpad_RadialZones_Tooltip" xml:space="preserve"><value>손가락이 닿은 지점에서 바깥쪽으로 부채꼴 영역으로 슬라이드하세요. 0번 영역은 위쪽에 고정되어 있고 영역은 시계 방향으로 증가합니다. 픽커의 각 항목은 괄호 안에 위쪽 기준 각도(도 단위)로 방향을 표시합니다: (0°)는 위, (90°)는 오른쪽, (180°)는 아래, (270°)는 왼쪽입니다. 한 번에 하나의 영역만 유지되며, 다른 영역으로 슬라이드하면 이전 영역이 해제되므로 한 번의 스와이프로 여러 영역을 순환할 수 있습니다.</value></data>
   <data name="Pad_Touchpad_TouchSpots" xml:space="preserve"><value>터치 영역 (왼쪽 / 오른쪽 / 위 / 멀티터치)</value></data>
   <data name="Pad_Touchpad_TouchSpots_Tooltip" xml:space="preserve"><value>터치패드의 터치 위치에 따라 유지되는 버튼입니다. 한 손가락은 왼쪽, 오른쪽, 위(상단 4분의 1) 중 하나에 해당합니다. 두 손가락 이상은 멀티터치를 유지합니다. 좌우 경계는 DS4Windows와 같이 너비의 5분의 2 지점이며 한 번에 하나의 영역만 활성화됩니다.</value></data>
+  <data name="Pad_Touchpad_SectionGated_Hint" xml:space="preserve"><value>활성화 전까지 비활성 상태입니다. 제스처 감지에서 “이 터치패드에서 제스처 활성화”를 켜고 인식에 이 카탈로그가 포함되도록 설정하세요. 그래야 매핑 및 매크로 목록에 표시됩니다.</value></data>
   <data name="Pad_Touchpad_RadialZoneCount" xml:space="preserve"><value>영역 수</value></data>
   <data name="Pad_Touchpad_RadialCenterDeadzone" xml:space="preserve"><value>중앙 데드존(0..1)</value></data>
   <data name="Pad_Touchpad_Taps" xml:space="preserve"><value>탭 / 더블 탭 / 트리플 탭</value></data>

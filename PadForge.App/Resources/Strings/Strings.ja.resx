@@ -1665,6 +1665,7 @@
   <data name="Pad_Touchpad_RadialZones_Tooltip" xml:space="preserve"><value>指を置いた位置から外側に向かってスワイプし、扇形のセクターに入ります。ゾーン 0 は上方向にアンカーされ、ゾーンは時計回りに増えます。ピッカーの各エントリにはカッコ内に上方向からの角度が度数で表示されます。(0°) が上、(90°) が右、(180°) が下、(270°) が左です。一度に保持されるゾーンは 1 つだけで、別のゾーンに入ると前のゾーンが解放されるため、1 回のスワイプで複数のゾーンを循環できます。</value></data>
   <data name="Pad_Touchpad_TouchSpots" xml:space="preserve"><value>タッチスポット（左 / 右 / 上 / マルチタッチ）</value></data>
   <data name="Pad_Touchpad_TouchSpots_Tooltip" xml:space="preserve"><value>タッチパッドのどこに触れているかで押し続けるボタンです。1本指は左・右・上（上部4分の1）のいずれかに入ります。2本以上の指はマルチタッチを保持します。左右の境界はDS4Windowsと同じく幅の5分の2にあり、同時に有効になるスポットは1つだけです。</value></data>
+  <data name="Pad_Touchpad_SectionGated_Hint" xml:space="preserve"><value>有効になるまで無効です。ジェスチャー検出の「このタッチパッドでジェスチャーを有効にする」をオンにし、認識対象にこのカタログを含めてください。設定後にマッピングとマクロの一覧に表示されます。</value></data>
   <data name="Pad_Touchpad_RadialZoneCount" xml:space="preserve"><value>ゾーン数</value></data>
   <data name="Pad_Touchpad_RadialCenterDeadzone" xml:space="preserve"><value>中心デッドゾーン (0..1)</value></data>
   <data name="Pad_Touchpad_Taps" xml:space="preserve"><value>タップ / ダブルタップ / トリプルタップ</value></data>

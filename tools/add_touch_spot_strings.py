@@ -92,6 +92,18 @@ KEYS = [
         "Strings.pt-BR.resx":   "Redefinir zonas de toque",
         "Strings.zh-Hans.resx": "重置触摸区域",
     }),
+    ("Pad_Touchpad_SectionGated_Hint", "Pad_Touchpad_TouchSpots_Tooltip", {
+        "Strings.resx":         "Off until enabled: turn on “Enable Gestures on This Touchpad” under Gesture Detection (and set Recognize to include this catalog). Only then do these appear in the mapping and macro lists.",
+        "Strings.de.resx":      "Inaktiv, bis aktiviert: schalte „Gesten auf diesem Touchpad aktivieren“ unter Gestenerkennung ein (und stelle Erkennen so ein, dass dieser Katalog enthalten ist). Erst dann erscheinen diese in den Mapping- und Makrolisten.",
+        "Strings.es.resx":      "Inactivo hasta activarlo: activa “Activar gestos en este touchpad” en Detección de gestos (y ajusta Reconocer para incluir este catálogo). Solo entonces aparecen en las listas de mapeo y macros.",
+        "Strings.fr.resx":      "Inactif tant que non activé : activez “Activer les gestes sur ce pavé tactile” dans Détection des gestes (et réglez Reconnaître pour inclure ce catalogue). Ce n'est qu'alors qu'ils apparaissent dans les listes de mappage et de macros.",
+        "Strings.it.resx":      "Inattivo finché non abilitato: attiva “Abilita gesti su questo touchpad” in Rilevamento gesti (e imposta Riconosci per includere questo catalogo). Solo allora compaiono negli elenchi di mapping e macro.",
+        "Strings.ja.resx":      "有効になるまで無効です。ジェスチャー検出の「このタッチパッドでジェスチャーを有効にする」をオンにし、認識対象にこのカタログを含めてください。設定後にマッピングとマクロの一覧に表示されます。",
+        "Strings.ko.resx":      "활성화 전까지 비활성 상태입니다. 제스처 감지에서 “이 터치패드에서 제스처 활성화”를 켜고 인식에 이 카탈로그가 포함되도록 설정하세요. 그래야 매핑 및 매크로 목록에 표시됩니다.",
+        "Strings.nl.resx":      "Inactief tot ingeschakeld: zet “Gebaren op dit touchpad inschakelen” aan onder Gebarendetectie (en stel Herkennen zo in dat deze catalogus meedoet). Pas dan verschijnen ze in de mapping- en macrolijsten.",
+        "Strings.pt-BR.resx":   "Inativo até ser ativado: ligue “Ativar Gestos Neste Touchpad” em Detecção de Gestos (e ajuste Reconhecer para incluir este catálogo). Só então eles aparecem nas listas de mapeamento e macros.",
+        "Strings.zh-Hans.resx": "启用前处于停用状态：请在手势检测中开启“在此触控板上启用手势”，并将识别设置为包含此目录。之后这些手势才会出现在映射和宏列表中。",
+    }),
     ("Macro_AddTriggerFromList", "Macro_RecordHint", {
         "Strings.resx":         "Add from List",
         "Strings.de.resx":      "Aus Liste hinzufügen",
@@ -127,6 +139,7 @@ DESIGNER_ANCHORS = {
     "Pad_Touchpad_TouchSpots":            "Pad_Touchpad_RadialZones_Tooltip",
     "Pad_Touchpad_TouchSpots_Tooltip":    "Pad_Touchpad_TouchSpots",
     "Pad_ResetTouchpadTouchSpots":        "Pad_ResetTouchpadRadialZones",
+    "Pad_Touchpad_SectionGated_Hint":     "Pad_Touchpad_TouchSpots_Tooltip",
     "Macro_AddTriggerFromList":           "Macro_RecordHint",
     "Macro_AddTriggerFromList_Tooltip":   "Macro_AddTriggerFromList",
 }

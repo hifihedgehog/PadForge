@@ -1239,6 +1239,7 @@
   <data name="Pad_Touchpad_RadialZones_Tooltip" xml:space="preserve"><value>Slide outward from your finger's landing point into a wedge. Zone 0 anchors at the top and zones increase clockwise. Each zone's entry in the picker shows its direction in parentheses as degrees from the top: (0°) is up, (90°) is right, (180°) is down, (270°) is left. Only one zone is held at a time. Sliding into another releases the previous one, so you can cycle through zones in a single swipe.</value></data>
   <data name="Pad_Touchpad_TouchSpots" xml:space="preserve"><value>Touch Spots (Left / Right / Top / Multitouch)</value></data>
   <data name="Pad_Touchpad_TouchSpots_Tooltip" xml:space="preserve"><value>Held buttons for where the touchpad is touched. One finger lands in Left, Right, or Top (the top quarter). Two or more fingers hold Multitouch. The left/right split sits at two fifths of the width, matching DS4Windows, and exactly one spot is held at a time.</value></data>
+  <data name="Pad_Touchpad_SectionGated_Hint" xml:space="preserve"><value>Off until enabled: turn on “Enable Gestures on This Touchpad” under Gesture Detection (and set Recognize to include this catalog). Only then do these appear in the mapping and macro lists.</value></data>
   <data name="Pad_Touchpad_RadialZoneCount" xml:space="preserve"><value>Zone Count</value></data>
   <data name="Pad_Touchpad_RadialCenterDeadzone" xml:space="preserve"><value>Center Deadzone (0..1)</value></data>
   <data name="Pad_Touchpad_Taps" xml:space="preserve"><value>Tap / Double Tap / Triple Tap</value></data>

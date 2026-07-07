@@ -1463,6 +1463,7 @@ public class Strings : INotifyPropertyChanged
     public string Pad_Touchpad_RadialZones_Tooltip => Get("Pad_Touchpad_RadialZones_Tooltip");
     public string Pad_Touchpad_TouchSpots => Get("Pad_Touchpad_TouchSpots");
     public string Pad_Touchpad_TouchSpots_Tooltip => Get("Pad_Touchpad_TouchSpots_Tooltip");
+    public string Pad_Touchpad_SectionGated_Hint => Get("Pad_Touchpad_SectionGated_Hint");
     public string Pad_Touchpad_RadialZoneCount => Get("Pad_Touchpad_RadialZoneCount");
     public string Pad_Touchpad_RadialCenterDeadzone => Get("Pad_Touchpad_RadialCenterDeadzone");
     public string Pad_Touchpad_Taps => Get("Pad_Touchpad_Taps");

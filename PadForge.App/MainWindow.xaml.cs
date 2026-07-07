@@ -611,6 +611,10 @@ namespace PadForge
                 _inputService.RefreshDeviceList();
                 _viewModel.Devices.RefreshSlotButtons();
 
+                // Player-identity idle floor (#191): slot creation and
+                // device (un)assignment both renumber and re-home pads.
+                _inputService.ReseedPlayerIdentities();
+
                 // Issue #83. Controller-audio sinks follow assignments.
                 PadForge.Common.Input.AudioPassthroughService.Reconcile();
                 PadForge.Common.Input.WiiSpeakerService.Reconcile();

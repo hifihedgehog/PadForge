@@ -1371,6 +1371,7 @@
   <data name="Pad_Lighting" xml:space="preserve"><value>Illuminazione</value></data>
   <data name="Pad_Lighting_Header" xml:space="preserve"><value>Illuminazione</value></data>
   <data name="Pad_Lighting_Subtitle" xml:space="preserve"><value>Imposta il colore base della barra luminosa e il comportamento audio sul controller fisico assegnato. Le scritture del gioco hanno sempre la precedenza. Le impostazioni utente si attivano quando nessun gioco pilota la barra.</value></data>
+  <data name="Pad_Lighting_PlayerIdle_Hint" xml:space="preserve"><value>Finché le impostazioni qui sono su Off, il pad a riposo mostra l'identità giocatore del suo controller virtuale: il colore giocatore Sony sulla lightbar (1 blu, 2 rosso, 3 verde, 4 rosa) e, su un DualSense, i LED giocatore corrispondenti. Tutti i dispositivi dello stesso controller virtuale mostrano lo stesso numero. I giochi prendono il controllo quando scrivono l'illuminazione, e ciò che imposti qui vince sempre.</value></data>
   <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>Barra luminosa</value></data>
   <data name="Pad_Lighting_BaseEnabled" xml:space="preserve"><value>Applica il colore base configurato dall'utente quando nessun gioco sta scrivendo</value></data>
   <data name="Pad_Lighting_Red" xml:space="preserve"><value>Rosso</value></data>

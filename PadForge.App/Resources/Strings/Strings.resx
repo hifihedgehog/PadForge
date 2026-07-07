@@ -620,6 +620,7 @@
   <data name="Pad_Lighting" xml:space="preserve"><value>Lighting</value></data>
   <data name="Pad_Lighting_Header" xml:space="preserve"><value>Lighting</value></data>
   <data name="Pad_Lighting_Subtitle" xml:space="preserve"><value>Set the lightbar base color and audio behavior on the assigned physical controller. Game writes always win. User settings apply when no game is driving the lightbar.</value></data>
+  <data name="Pad_Lighting_PlayerIdle_Hint" xml:space="preserve"><value>While the settings here are Off, the pad idles showing its virtual controller's player identity: the Sony player color on the lightbar (1 blue, 2 red, 3 green, 4 pink) and the matching player pips on a DualSense. Every device on the same virtual controller shows the same number. Games take over whenever they write lighting, and anything you set here always wins.</value></data>
   <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>Lightbar</value></data>
   <data name="Pad_Lighting_BaseEnabled" xml:space="preserve"><value>Apply user-configured base color when no game is writing</value></data>
   <data name="Pad_Lighting_Red" xml:space="preserve"><value>Red</value></data>

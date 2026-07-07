@@ -1371,6 +1371,7 @@
   <data name="Pad_Lighting" xml:space="preserve"><value>Verlichting</value></data>
   <data name="Pad_Lighting_Header" xml:space="preserve"><value>Verlichting</value></data>
   <data name="Pad_Lighting_Subtitle" xml:space="preserve"><value>Stelt de basiskleur van de lightbar en het audiogedrag in op de toegewezen fysieke controller. Game-schrijfacties winnen altijd. Gebruikersinstellingen gelden wanneer geen spel de lightbar aanstuurt.</value></data>
+  <data name="Pad_Lighting_PlayerIdle_Hint" xml:space="preserve"><value>Zolang de instellingen hier op Uit staan, toont de pad in rust de spelersidentiteit van zijn virtuele controller: de Sony-spelerkleur op de lightbar (1 blauw, 2 rood, 3 groen, 4 roze) en op een DualSense de bijbehorende speler-leds. Alle apparaten op dezelfde virtuele controller tonen hetzelfde nummer. Games nemen het over zodra ze verlichting schrijven, en wat je hier instelt wint altijd.</value></data>
   <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>Lightbar</value></data>
   <data name="Pad_Lighting_BaseEnabled" xml:space="preserve"><value>Pas door de gebruiker geconfigureerde basiskleur toe wanneer geen spel schrijft</value></data>
   <data name="Pad_Lighting_Red" xml:space="preserve"><value>Rood</value></data>

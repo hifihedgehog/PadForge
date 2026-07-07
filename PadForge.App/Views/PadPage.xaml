@@ -6918,6 +6918,12 @@
                         </StackPanel>
                         <TextBlock Text="{Binding Pad_Lighting_Subtitle, Source={x:Static strings:Strings.Instance}}"
                                    Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                   TextWrapping="Wrap" Margin="0,0,0,4"/>
+                        <!-- Player-identity idle floor (#191): the tab states
+                             the default so an untouched pad showing a player
+                             color reads as designed behavior, not a mystery. -->
+                        <TextBlock Text="{Binding Pad_Lighting_PlayerIdle_Hint, Source={x:Static strings:Strings.Instance}}"
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                    TextWrapping="Wrap" Margin="0,0,0,16"/>
 
                         <!-- Unified lightbar mode picker. Replaces the

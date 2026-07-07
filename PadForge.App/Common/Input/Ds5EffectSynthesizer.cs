@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using PadForge.ViewModels;
 
@@ -144,7 +144,8 @@ namespace PadForge.Common.Input
             bool assertRightTriggerEnable = true,
             bool assertLeftTriggerEnable = true,
             UserEffectsDispatcher.ExternalSubsystemOverrides overrides = default,
-            byte batteryPercent = 100)
+            byte batteryPercent = 100,
+            int playerNumber = 0)
         {
             ushort enableBits = 0;
 
@@ -203,7 +204,13 @@ namespace PadForge.Common.Input
             {
                 int ledIdx = cfg != null ? (int)cfg.PlayerLedMode : 0;
                 if (ledIdx < 0 || ledIdx >= PlayerLedBits.Length) ledIdx = 0;
-                playerIndicator = (byte)(PlayerIndicatorNoFade | PlayerLedBits[ledIdx]);
+                // Player-identity idle floor (#191): an untouched pad
+                // (PlayerLedMode Off, no external writer) shows its
+                // virtual controller number instead of an extinguished
+                // row. Configured modes and game writes keep winning.
+                playerIndicator = ledIdx == 0 && playerNumber > 0
+                    ? (byte)(PlayerIndicatorNoFade | PlayerIdentityDefaults.PipsFor(playerNumber))
+                    : (byte)(PlayerIndicatorNoFade | PlayerLedBits[ledIdx]);
             }
             byte ledBrightness = overrides.LedBrightness
                 ?? (cfg != null ? (byte)cfg.PlayerLedBrightness : (byte)0);
@@ -276,6 +283,20 @@ namespace PadForge.Common.Input
                         ledR = baseR; ledG = baseG; ledB = baseB;
                     }
                 }
+            }
+            else if (playerNumber > 0 && !overrides.LightbarEverExternal)
+            {
+                // Player-identity idle floor (#191): nothing claims the
+                // lightbar (no game grace, no macro, no configured mode,
+                // no reactive overlay) and no game has EVER written it
+                // this session, so it shows the Sony player color for
+                // this pad's virtual controller number, the way a
+                // console idles. Once any game touches the lightbar the
+                // floor stands down for the session, preserving the
+                // long-standing semantic that a game's last write
+                // persists in firmware (the enable bit stays clear).
+                enableBits |= EnableLightbar;
+                (ledR, ledG, ledB) = PlayerIdentityDefaults.ColorFor(playerNumber);
             }
 
             // Mic LED mode: 0 = off, 1 = solid, 2 = pulse. Values 0-2

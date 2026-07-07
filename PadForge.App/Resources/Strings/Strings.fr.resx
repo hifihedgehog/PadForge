@@ -1351,6 +1351,7 @@
   <data name="Pad_Lighting" xml:space="preserve"><value>Éclairage</value></data>
   <data name="Pad_Lighting_Header" xml:space="preserve"><value>Éclairage</value></data>
   <data name="Pad_Lighting_Subtitle" xml:space="preserve"><value>Définit la couleur de base de la barre lumineuse et le comportement audio sur le contrôleur physique assigné. Les écritures du jeu l'emportent toujours. Les réglages utilisateur s'appliquent quand aucun jeu ne pilote la barre.</value></data>
+  <data name="Pad_Lighting_PlayerIdle_Hint" xml:space="preserve"><value>Tant que les réglages ici sont sur Désactivé, la manette au repos affiche l'identité de joueur de sa manette virtuelle : la couleur de joueur Sony sur la barre lumineuse (1 bleu, 2 rouge, 3 vert, 4 rose) et, sur une DualSense, les LED de joueur correspondantes. Tous les périphériques d'une même manette virtuelle affichent le même numéro. Les jeux prennent la main dès qu'ils écrivent l'éclairage, et ce que vous réglez ici gagne toujours.</value></data>
   <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>Barre lumineuse</value></data>
   <data name="Pad_Lighting_BaseEnabled" xml:space="preserve"><value>Appliquer la couleur de base configurée par l'utilisateur quand aucun jeu n'écrit</value></data>
   <data name="Pad_Lighting_Red" xml:space="preserve"><value>Rouge</value></data>

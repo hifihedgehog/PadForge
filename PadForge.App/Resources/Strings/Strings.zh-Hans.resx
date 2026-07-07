@@ -1350,6 +1350,7 @@
   <data name="Pad_Lighting" xml:space="preserve"><value>灯光</value></data>
   <data name="Pad_Lighting_Header" xml:space="preserve"><value>灯光</value></data>
   <data name="Pad_Lighting_Subtitle" xml:space="preserve"><value>设置已分配的物理手柄的灯条基础颜色和音频行为。游戏写入始终优先。当无游戏驱动灯条时,用户设置生效。</value></data>
+  <data name="Pad_Lighting_PlayerIdle_Hint" xml:space="preserve"><value>当此处的设置为关闭时，手柄空闲状态会显示其虚拟控制器的玩家身份：灯条显示索尼玩家颜色（1 蓝、2 红、3 绿、4 粉），DualSense 还会点亮对应的玩家指示灯。同一虚拟控制器下的所有设备显示相同编号。游戏写入灯光时由游戏接管，而此处的设置始终优先。</value></data>
   <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>灯条</value></data>
   <data name="Pad_Lighting_BaseEnabled" xml:space="preserve"><value>当无游戏写入时应用用户配置的基础颜色</value></data>
   <data name="Pad_Lighting_Red" xml:space="preserve"><value>红</value></data>

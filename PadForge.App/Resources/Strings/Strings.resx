@@ -939,6 +939,7 @@
   <data name="Pad_Sticks_Section_CenterPoint" xml:space="preserve"><value>Center Point</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>Deadzone</value></data>
   <data name="Pad_Sticks_Section_Range" xml:space="preserve"><value>Range</value></data>
+  <data name="Pad_Sticks_Section_Range_Hint" xml:space="preserve"><value>Calibrate Boundary measures the stick's true reach at every angle and reshapes it to a full circle, correcting the diagonals the four sliders below cannot. Use the sliders only to limit range on purpose.</value></data>
   <data name="Pad_Sampling" xml:space="preserve"><value>Sampling...</value></data>
   <data name="Pad_CenterOffsetX" xml:space="preserve"><value>Center Offset X</value></data>
   <data name="Pad_CenterOffsetY" xml:space="preserve"><value>Center Offset Y</value></data>

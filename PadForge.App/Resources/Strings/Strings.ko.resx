@@ -603,6 +603,7 @@
   <data name="Pad_Sticks_Section_CenterPoint" xml:space="preserve"><value>중심점</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>데드존</value></data>
   <data name="Pad_Sticks_Section_Range" xml:space="preserve"><value>범위</value></data>
+  <data name="Pad_Sticks_Section_Range_Hint" xml:space="preserve"><value>경계 보정은 모든 각도에서 스틱의 실제 도달 범위를 측정해 완전한 원으로 재구성하며, 아래 슬라이더 4개로는 보정할 수 없는 대각선 방향까지 보정합니다. 슬라이더는 의도적으로 범위를 제한할 때만 사용하세요.</value></data>
   <data name="Pad_Sampling" xml:space="preserve"><value>샘플링 중...</value></data>
   <data name="Pad_CenterOffsetX" xml:space="preserve"><value>중앙 오프셋 X</value></data>
   <data name="Pad_CenterOffsetY" xml:space="preserve"><value>중앙 오프셋 Y</value></data>

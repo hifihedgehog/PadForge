@@ -104,6 +104,18 @@ KEYS = [
         "Strings.pt-BR.resx":   "Deadzone",
         "Strings.zh-Hans.resx": "死区",
     }),
+    ("Pad_Sticks_Section_Range_Hint", "Pad_Sticks_Section_Range", {
+        "Strings.resx":         "Calibrate Boundary measures the stick's true reach at every angle and reshapes it to a full circle, correcting the diagonals the four sliders below cannot. Use the sliders only to limit range on purpose.",
+        "Strings.de.resx":      "Begrenzung kalibrieren misst die tatsächliche Reichweite des Sticks in jedem Winkel und formt sie zu einem vollen Kreis, samt der Diagonalen, die die vier Regler unten nicht erfassen. Die Regler nur zum bewussten Begrenzen der Reichweite verwenden.",
+        "Strings.es.resx":      "Calibrar límite mide el alcance real del stick en cada ángulo y lo remodela a un círculo completo, corrigiendo las diagonales que los cuatro deslizadores de abajo no pueden. Usa los deslizadores solo para limitar el rango a propósito.",
+        "Strings.fr.resx":      "Calibrer la limite mesure la portée réelle du stick sous chaque angle et la remodèle en cercle complet, corrigeant les diagonales que les quatre curseurs ci-dessous ne peuvent pas corriger. N'utilisez les curseurs que pour limiter la plage volontairement.",
+        "Strings.it.resx":      "Calibra il bordo misura la portata reale dello stick a ogni angolo e la rimodella in un cerchio completo, correggendo le diagonali che i quattro cursori sotto non possono correggere. Usa i cursori solo per limitare il range di proposito.",
+        "Strings.ja.resx":      "境界を調整は全角度でスティックの実際の可動域を測定し、完全な円に整形します。下の4つのスライダーでは補正できない斜め方向も補正されます。スライダーは意図的に範囲を制限したい場合にのみ使用してください。",
+        "Strings.ko.resx":      "경계 보정은 모든 각도에서 스틱의 실제 도달 범위를 측정해 완전한 원으로 재구성하며, 아래 슬라이더 4개로는 보정할 수 없는 대각선 방향까지 보정합니다. 슬라이더는 의도적으로 범위를 제한할 때만 사용하세요.",
+        "Strings.nl.resx":      "Grens kalibreren meet het werkelijke bereik van de stick onder elke hoek en hervormt het tot een volledige cirkel, inclusief de diagonalen die de vier schuifregelaars hieronder niet kunnen corrigeren. Gebruik de schuifregelaars alleen om het bereik bewust te beperken.",
+        "Strings.pt-BR.resx":   "Calibrar limite mede o alcance real do analógico em todos os ângulos e o remodela em um círculo completo, corrigindo as diagonais que os quatro controles abaixo não conseguem. Use os controles apenas para limitar o alcance de propósito.",
+        "Strings.zh-Hans.resx": "校准边界会测量摇杆在每个角度的实际可达范围，并将其重塑为完整的圆形，可修正下方四个滑块无法处理的对角线方向。滑块仅用于有意限制范围。",
+    }),
     ("Pad_Sticks_Section_Range", "Pad_Sticks_Section_DeadZone", {
         "Strings.resx":         "Range",
         "Strings.de.resx":      "Bereich",

@@ -603,6 +603,7 @@
   <data name="Pad_Sticks_Section_CenterPoint" xml:space="preserve"><value>Punto centrale</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>Zona morta</value></data>
   <data name="Pad_Sticks_Section_Range" xml:space="preserve"><value>Range</value></data>
+  <data name="Pad_Sticks_Section_Range_Hint" xml:space="preserve"><value>Calibra il bordo misura la portata reale dello stick a ogni angolo e la rimodella in un cerchio completo, correggendo le diagonali che i quattro cursori sotto non possono correggere. Usa i cursori solo per limitare il range di proposito.</value></data>
   <data name="Pad_Sampling" xml:space="preserve"><value>Campionamento...</value></data>
   <data name="Pad_CenterOffsetX" xml:space="preserve"><value>Offset centro X</value></data>
   <data name="Pad_CenterOffsetY" xml:space="preserve"><value>Offset centro Y</value></data>

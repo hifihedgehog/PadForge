@@ -623,10 +623,14 @@ namespace PadForge.ViewModels
             set { if (SetProperty(ref _boundarySectorsRemaining, value)) OnPropertyChanged(nameof(BoundaryButtonText)); }
         }
 
-        /// <summary>Button caption: idle prompt (Calibrate / Recalibrate), or the
-        /// live "N sectors left" countdown during a sweep.</summary>
+        /// <summary>Button caption: idle prompt (Calibrate / Recalibrate), the
+        /// live "N sectors left" countdown during a sweep, or the second-lap
+        /// prompt once every sector is covered but the two-rotation error-
+        /// reduction pass is still running.</summary>
         public string BoundaryButtonText => _isCalibratingBoundary
-            ? string.Format(Resources.Strings.Strings.Instance.Pad_Sticks_Boundary_Sweeping, _boundarySectorsRemaining)
+            ? (_boundarySectorsRemaining > 0
+                ? string.Format(Resources.Strings.Strings.Instance.Pad_Sticks_Boundary_Sweeping, _boundarySectorsRemaining)
+                : Resources.Strings.Strings.Instance.Pad_Sticks_Boundary_SecondLap)
             : (HasBoundaryCalibration
                 ? Resources.Strings.Strings.Instance.Pad_Sticks_Boundary_Recalibrate
                 : Resources.Strings.Strings.Instance.Pad_Sticks_Boundary_Calibrate);
@@ -665,13 +669,21 @@ namespace PadForge.ViewModels
         private bool _boundaryHavePrev;
         private double _boundaryPrevX, _boundaryPrevY;
         private int _boundaryElapsedTicks;
+        // Angular travel accumulated near the rim, for the two-rotation
+        // requirement. The map is max-only, so a second full lap re-visits
+        // every sector and corrects any that lap one only grazed below the
+        // true rim (undersampling the auto-commit-on-first-coverage allowed).
+        private double _boundaryTravel;
+        private double _boundaryPrevAngle;
+        private bool _boundaryPrevAngleValid;
 
         /// <summary>Runs a coverage-driven boundary sweep on a ~60 Hz timer,
         /// growing the map from consecutive raw-position pairs (HardwareRawX/Y,
         /// the pre-tuning source the center calibration also uses) and updating
-        /// the live radar. Completes when every sector is covered, or a 20 s
-        /// safety cap, then backfills any gaps and commits. Clicking again while
-        /// sweeping commits early.</summary>
+        /// the live radar. Auto-completes only when every sector is covered AND
+        /// at least two full rotations have been swept (the second pass reduces
+        /// error: max-only samples can only rise toward the true rim), with a
+        /// 30 s safety cap. Clicking again while sweeping commits early.</summary>
         public void StartBoundaryCalibration()
         {
             if (IsCalibratingBoundary) { StopBoundaryCalibration(commit: true); return; }
@@ -679,6 +691,8 @@ namespace PadForge.ViewModels
             _boundaryCapture = StickBoundary.NewMap();
             _boundaryHavePrev = false;
             _boundaryElapsedTicks = 0;
+            _boundaryTravel = 0.0;
+            _boundaryPrevAngleValid = false;
             BoundarySectorsRemaining = StickBoundary.SampleCount;
 
             _boundaryTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(16) };
@@ -691,6 +705,28 @@ namespace PadForge.ViewModels
                         StickBoundary.UpdateFromSegment(_boundaryCapture, _boundaryPrevX, _boundaryPrevY, x, y);
                     _boundaryPrevX = x; _boundaryPrevY = y; _boundaryHavePrev = true;
 
+                    // Accumulate rim travel: only positions well away from
+                    // center count toward the rotation total, so wiggling at
+                    // center cannot fake a lap.
+                    double r = Math.Sqrt(x * x + y * y);
+                    if (r > 0.35)
+                    {
+                        double a = Math.Atan2(y, x);
+                        if (_boundaryPrevAngleValid)
+                        {
+                            double d = a - _boundaryPrevAngle;
+                            if (d > Math.PI) d -= 2 * Math.PI;
+                            if (d < -Math.PI) d += 2 * Math.PI;
+                            _boundaryTravel += Math.Abs(d);
+                        }
+                        _boundaryPrevAngle = a;
+                        _boundaryPrevAngleValid = true;
+                    }
+                    else
+                    {
+                        _boundaryPrevAngleValid = false;
+                    }
+
                     // Show the convex outline live, so the notch a fast transit
                     // paints never appears and snaps out; the user sees a clean
                     // boundary grow.
@@ -698,7 +734,9 @@ namespace PadForge.ViewModels
                     BoundarySectorsRemaining = StickBoundary.RemainingSectors(_boundaryCapture);
 
                     _boundaryElapsedTicks++;
-                    if (BoundarySectorsRemaining == 0 || _boundaryElapsedTicks > 1250)
+                    bool covered = BoundarySectorsRemaining == 0;
+                    bool twoLaps = _boundaryTravel >= 4 * Math.PI;
+                    if ((covered && twoLaps) || _boundaryElapsedTicks > 1875)
                         StopBoundaryCalibration(commit: true);
                 }
                 catch { StopBoundaryCalibration(commit: false); }

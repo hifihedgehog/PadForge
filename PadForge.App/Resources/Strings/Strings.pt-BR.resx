@@ -603,7 +603,7 @@
   <data name="Pad_Sticks_Section_CenterPoint" xml:space="preserve"><value>Ponto Central</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>Deadzone</value></data>
   <data name="Pad_Sticks_Section_Range" xml:space="preserve"><value>Alcance</value></data>
-  <data name="Pad_Sticks_Section_Range_Hint" xml:space="preserve"><value>Calibrar limite mede o alcance real do analógico em todos os ângulos e o remodela em um círculo completo, corrigindo as diagonais que os quatro controles abaixo não conseguem. Use os controles apenas para limitar o alcance de propósito.</value></data>
+  <data name="Pad_Sticks_Section_Range_Hint" xml:space="preserve"><value>Calibrar limite é a forma recomendada de corrigir um analógico. Ele varre a borda que o analógico consegue alcançar fisicamente e depois reescala proporcionalmente cada posição contra essa borda medida, de modo que todo o percurso nativo, em cada ângulo e em cada deflexão, é projetado em um círculo ideal sem nenhum corte. Os quatro controles abaixo apenas limitam os eixos cardeais. Use-os para limitar o alcance de propósito, não para corrigir.</value></data>
   <data name="Pad_Sampling" xml:space="preserve"><value>Amostrando...</value></data>
   <data name="Pad_CenterOffsetX" xml:space="preserve"><value>Deslocamento Central X</value></data>
   <data name="Pad_CenterOffsetY" xml:space="preserve"><value>Deslocamento Central Y</value></data>
@@ -917,6 +917,7 @@
   <data name="Pad_Sticks_Boundary_Calibrate" xml:space="preserve"><value>Calibrar limite</value></data>
   <data name="Pad_Sticks_Boundary_Recalibrate" xml:space="preserve"><value>Recalibrar limite</value></data>
   <data name="Pad_Sticks_Boundary_Sweeping" xml:space="preserve"><value>Percorra a borda... faltam {0}</value></data>
+  <data name="Pad_Sticks_Boundary_SecondLap" xml:space="preserve"><value>Coberto. Mais uma volta para refinar...</value></data>
   <data name="Pad_Sticks_Boundary_Circularity" xml:space="preserve"><value>Circularidade {0:F0}%</value></data>
   <data name="Pad_Sticks_Boundary_Tooltip" xml:space="preserve"><value>Percorra a borda com o direcional para mapear o limite alcançável e remodele-o em um círculo completo.</value></data>
   <data name="Pad_ResetStickBoundary" xml:space="preserve"><value>Redefinir calibração do limite</value></data>

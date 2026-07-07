@@ -603,7 +603,7 @@
   <data name="Pad_Sticks_Section_CenterPoint" xml:space="preserve"><value>Mittelpunkt</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>Deadzone</value></data>
   <data name="Pad_Sticks_Section_Range" xml:space="preserve"><value>Bereich</value></data>
-  <data name="Pad_Sticks_Section_Range_Hint" xml:space="preserve"><value>Begrenzung kalibrieren misst die tatsächliche Reichweite des Sticks in jedem Winkel und formt sie zu einem vollen Kreis, samt der Diagonalen, die die vier Regler unten nicht erfassen. Die Regler nur zum bewussten Begrenzen der Reichweite verwenden.</value></data>
+  <data name="Pad_Sticks_Section_Range_Hint" xml:space="preserve"><value>Begrenzung kalibrieren ist der empfohlene Weg, einen Stick zu begradigen. Es erfasst den physisch erreichbaren Rand und skaliert dann jede Position proportional an dieser gemessenen Grenze, sodass die gesamte native Bewegung, in jedem Winkel und bei jeder Auslenkung, ohne Beschneidung auf einen idealen Kreis abgebildet wird. Die vier Regler unten begrenzen nur die Hauptachsen. Sie dienen dem bewussten Begrenzen, nicht der Korrektur.</value></data>
   <data name="Pad_Sampling" xml:space="preserve"><value>Abtastung...</value></data>
   <data name="Pad_CenterOffsetX" xml:space="preserve"><value>Mittenversatz X</value></data>
   <data name="Pad_CenterOffsetY" xml:space="preserve"><value>Mittenversatz Y</value></data>
@@ -917,6 +917,7 @@
   <data name="Pad_Sticks_Boundary_Calibrate" xml:space="preserve"><value>Begrenzung kalibrieren</value></data>
   <data name="Pad_Sticks_Boundary_Recalibrate" xml:space="preserve"><value>Begrenzung neu kalibrieren</value></data>
   <data name="Pad_Sticks_Boundary_Sweeping" xml:space="preserve"><value>Rand umkreisen... noch {0}</value></data>
+  <data name="Pad_Sticks_Boundary_SecondLap" xml:space="preserve"><value>Abgedeckt. Noch eine Runde zur Feinabstimmung...</value></data>
   <data name="Pad_Sticks_Boundary_Circularity" xml:space="preserve"><value>Rundheit {0:F0}%</value></data>
   <data name="Pad_Sticks_Boundary_Tooltip" xml:space="preserve"><value>Umkreise den Rand mit dem Stick, um die erreichbare Begrenzung zu erfassen, und forme sie zu einem vollen Kreis.</value></data>
   <data name="Pad_ResetStickBoundary" xml:space="preserve"><value>Begrenzungskalibrierung zurücksetzen</value></data>

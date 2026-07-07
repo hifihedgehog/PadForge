@@ -939,7 +939,7 @@
   <data name="Pad_Sticks_Section_CenterPoint" xml:space="preserve"><value>Center Point</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>Deadzone</value></data>
   <data name="Pad_Sticks_Section_Range" xml:space="preserve"><value>Range</value></data>
-  <data name="Pad_Sticks_Section_Range_Hint" xml:space="preserve"><value>Calibrate Boundary measures the stick's true reach at every angle and reshapes it to a full circle, correcting the diagonals the four sliders below cannot. Use the sliders only to limit range on purpose.</value></data>
+  <data name="Pad_Sticks_Section_Range_Hint" xml:space="preserve"><value>Calibrate Boundary is the recommended way to true up a stick. It sweeps the edge the stick can physically reach, then proportionally rescales every position against that measured edge, so the full native motion, at every angle and every deflection, maps onto an ideal circle with nothing clipped. The four sliders below only cap the cardinal axes. Use them to limit range on purpose, not to correct it.</value></data>
   <data name="Pad_Sampling" xml:space="preserve"><value>Sampling...</value></data>
   <data name="Pad_CenterOffsetX" xml:space="preserve"><value>Center Offset X</value></data>
   <data name="Pad_CenterOffsetY" xml:space="preserve"><value>Center Offset Y</value></data>
@@ -1639,6 +1639,7 @@
   <data name="Pad_Sticks_Boundary_Calibrate" xml:space="preserve"><value>Calibrate boundary</value></data>
   <data name="Pad_Sticks_Boundary_Recalibrate" xml:space="preserve"><value>Recalibrate boundary</value></data>
   <data name="Pad_Sticks_Boundary_Sweeping" xml:space="preserve"><value>Sweep the rim... {0} left</value></data>
+  <data name="Pad_Sticks_Boundary_SecondLap" xml:space="preserve"><value>Covered. One more lap to refine...</value></data>
   <data name="Pad_Sticks_Boundary_Circularity" xml:space="preserve"><value>Circularity {0:F0}%</value></data>
   <data name="Pad_Sticks_Boundary_Tooltip" xml:space="preserve"><value>Sweep the stick around its rim to map the reachable boundary, then reshape it to a full circle.</value></data>
   <data name="Pad_ResetStickBoundary" xml:space="preserve"><value>Reset boundary calibration</value></data>

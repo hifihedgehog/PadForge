@@ -603,7 +603,7 @@
   <data name="Pad_Sticks_Section_CenterPoint" xml:space="preserve"><value>Middelpunt</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>Deadzone</value></data>
   <data name="Pad_Sticks_Section_Range" xml:space="preserve"><value>Bereik</value></data>
-  <data name="Pad_Sticks_Section_Range_Hint" xml:space="preserve"><value>Grens kalibreren meet het werkelijke bereik van de stick onder elke hoek en hervormt het tot een volledige cirkel, inclusief de diagonalen die de vier schuifregelaars hieronder niet kunnen corrigeren. Gebruik de schuifregelaars alleen om het bereik bewust te beperken.</value></data>
+  <data name="Pad_Sticks_Section_Range_Hint" xml:space="preserve"><value>Grens kalibreren is de aanbevolen manier om een stick te corrigeren. Het tast de fysiek bereikbare rand af en herschaalt vervolgens elke positie proportioneel ten opzichte van die gemeten rand, zodat de volledige natuurlijke beweging, onder elke hoek en bij elke uitslag, zonder afkapping op een ideale cirkel wordt afgebeeld. De vier schuifregelaars hieronder begrenzen alleen de hoofdassen. Gebruik ze om het bereik bewust te beperken, niet om te corrigeren.</value></data>
   <data name="Pad_Sampling" xml:space="preserve"><value>Meten...</value></data>
   <data name="Pad_CenterOffsetX" xml:space="preserve"><value>Middenverschuiving X</value></data>
   <data name="Pad_CenterOffsetY" xml:space="preserve"><value>Middenverschuiving Y</value></data>
@@ -916,6 +916,7 @@
   <data name="Pad_Sticks_Boundary_Calibrate" xml:space="preserve"><value>Grens kalibreren</value></data>
   <data name="Pad_Sticks_Boundary_Recalibrate" xml:space="preserve"><value>Grens opnieuw kalibreren</value></data>
   <data name="Pad_Sticks_Boundary_Sweeping" xml:space="preserve"><value>Volg de rand... nog {0}</value></data>
+  <data name="Pad_Sticks_Boundary_SecondLap" xml:space="preserve"><value>Gedekt. Nog een rondje om te verfijnen...</value></data>
   <data name="Pad_Sticks_Boundary_Circularity" xml:space="preserve"><value>Rondheid {0:F0}%</value></data>
   <data name="Pad_Sticks_Boundary_Tooltip" xml:space="preserve"><value>Volg de rand met de stick om de bereikbare grens te meten en vervorm die tot een volledige cirkel.</value></data>
   <data name="Pad_ResetStickBoundary" xml:space="preserve"><value>Grenskalibratie resetten</value></data>

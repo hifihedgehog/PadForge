@@ -603,7 +603,7 @@
   <data name="Pad_Sticks_Section_CenterPoint" xml:space="preserve"><value>Point central</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>Zone morte</value></data>
   <data name="Pad_Sticks_Section_Range" xml:space="preserve"><value>Plage</value></data>
-  <data name="Pad_Sticks_Section_Range_Hint" xml:space="preserve"><value>Calibrer la limite mesure la portée réelle du stick sous chaque angle et la remodèle en cercle complet, corrigeant les diagonales que les quatre curseurs ci-dessous ne peuvent pas corriger. N'utilisez les curseurs que pour limiter la plage volontairement.</value></data>
+  <data name="Pad_Sticks_Section_Range_Hint" xml:space="preserve"><value>Calibrer la limite est la méthode recommandée pour corriger un stick. Elle balaie le bord physiquement atteignable, puis remet à l'échelle proportionnellement chaque position par rapport à ce bord mesuré, de sorte que tout le mouvement natif, sous chaque angle et à chaque déflexion, se projette sur un cercle idéal sans aucun écrêtage. Les quatre curseurs ci-dessous ne plafonnent que les axes cardinaux. Utilisez-les pour limiter la plage volontairement, pas pour corriger.</value></data>
   <data name="Pad_Sampling" xml:space="preserve"><value>Échantillonnage...</value></data>
   <data name="Pad_CenterOffsetX" xml:space="preserve"><value>Décalage central X </value></data>
   <data name="Pad_CenterOffsetY" xml:space="preserve"><value>Décalage central Y </value></data>
@@ -917,6 +917,7 @@
   <data name="Pad_Sticks_Boundary_Calibrate" xml:space="preserve"><value>Calibrer la limite</value></data>
   <data name="Pad_Sticks_Boundary_Recalibrate" xml:space="preserve"><value>Recalibrer la limite</value></data>
   <data name="Pad_Sticks_Boundary_Sweeping" xml:space="preserve"><value>Parcourez le bord... {0} restants</value></data>
+  <data name="Pad_Sticks_Boundary_SecondLap" xml:space="preserve"><value>Couvert. Encore un tour pour affiner...</value></data>
   <data name="Pad_Sticks_Boundary_Circularity" xml:space="preserve"><value>Circularité {0:F0}%</value></data>
   <data name="Pad_Sticks_Boundary_Tooltip" xml:space="preserve"><value>Parcourez le bord avec le stick pour cartographier la limite atteignable, puis reformez-la en cercle complet.</value></data>
   <data name="Pad_ResetStickBoundary" xml:space="preserve"><value>Réinitialiser le calibrage de la limite</value></data>

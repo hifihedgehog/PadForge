@@ -104,6 +104,18 @@ KEYS = [
         "Strings.pt-BR.resx":   "Deadzone",
         "Strings.zh-Hans.resx": "死区",
     }),
+    ("Pad_Sticks_Boundary_SecondLap", "Pad_Sticks_Boundary_Sweeping", {
+        "Strings.resx":         "Covered. One more lap to refine...",
+        "Strings.de.resx":      "Abgedeckt. Noch eine Runde zur Feinabstimmung...",
+        "Strings.es.resx":      "Cubierto. Una vuelta más para afinar...",
+        "Strings.fr.resx":      "Couvert. Encore un tour pour affiner...",
+        "Strings.it.resx":      "Coperto. Un altro giro per rifinire...",
+        "Strings.ja.resx":      "カバー完了。精度向上のためもう1周...",
+        "Strings.ko.resx":      "커버 완료. 정밀도를 위해 한 바퀴 더...",
+        "Strings.nl.resx":      "Gedekt. Nog een rondje om te verfijnen...",
+        "Strings.pt-BR.resx":   "Coberto. Mais uma volta para refinar...",
+        "Strings.zh-Hans.resx": "已覆盖。再转一圈以提高精度...",
+    }),
     ("Pad_Sticks_Section_Range_Hint", "Pad_Sticks_Section_Range", {
         "Strings.resx":         "Calibrate Boundary measures the stick's true reach at every angle and reshapes it to a full circle, correcting the diagonals the four sliders below cannot. Use the sliders only to limit range on purpose.",
         "Strings.de.resx":      "Begrenzung kalibrieren misst die tatsächliche Reichweite des Sticks in jedem Winkel und formt sie zu einem vollen Kreis, samt der Diagonalen, die die vier Regler unten nicht erfassen. Die Regler nur zum bewussten Begrenzen der Reichweite verwenden.",

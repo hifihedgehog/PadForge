@@ -3448,6 +3448,11 @@ namespace PadForge.Services
             ps.RightThumbCenterOffsetX = padVm.RightCenterOffsetX.ToString(ic);
             ps.RightThumbCenterOffsetY = padVm.RightCenterOffsetY.ToString(ic);
 
+            // Boundary calibration (#174): serialized maps, culture-invariant by
+            // construction (space-separated integers), stored verbatim.
+            ps.LeftThumbBoundaryMap = padVm.LeftThumbBoundaryMap ?? "";
+            ps.RightThumbBoundaryMap = padVm.RightThumbBoundaryMap ?? "";
+
             // Max range.
             ps.LeftThumbMaxRangeX = padVm.LeftMaxRangeX.ToString(ic);
             ps.LeftThumbMaxRangeY = padVm.LeftMaxRangeY.ToString(ic);
@@ -3809,6 +3814,11 @@ namespace PadForge.Services
             padVm.LeftCenterOffsetY = TryParseDouble(ps.LeftThumbCenterOffsetY, 0);
             padVm.RightCenterOffsetX = TryParseDouble(ps.RightThumbCenterOffsetX, 0);
             padVm.RightCenterOffsetY = TryParseDouble(ps.RightThumbCenterOffsetY, 0);
+
+            // Boundary calibration (#174). SyncAllConfigItemsFromVm pushes these
+            // into the StickConfigItems (radar + button state) after load.
+            padVm.LeftThumbBoundaryMap = ps.LeftThumbBoundaryMap ?? "";
+            padVm.RightThumbBoundaryMap = ps.RightThumbBoundaryMap ?? "";
 
             // Trigger deadzones.
             padVm.LeftTriggerDeadZone = TryParseDouble(ps.LeftTriggerDeadZone, 0);

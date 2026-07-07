@@ -328,6 +328,15 @@ namespace PadForge.Common.Input
             gp.ThumbRX = ApplyCenterOffset(gp.ThumbRX, TryParseDoubleStatic(ps.RightThumbCenterOffsetX, 0));
             gp.ThumbRY = ApplyCenterOffset(gp.ThumbRY, TryParseDoubleStatic(ps.RightThumbCenterOffsetY, 0));
 
+            // ── Circular reshaping (#174): warp the measured boundary onto a
+            //    unit circle BEFORE the dead zone, so the dead-zone and curve
+            //    chain below operates on circle-true values at every angle.
+            //    Null LUT (no calibration) is a no-op. ──
+            Common.StickBoundary.Reshape(ref gp.ThumbLX, ref gp.ThumbLY,
+                Common.StickBoundary.GetOrBuild(ps.LeftThumbBoundaryMap));
+            Common.StickBoundary.Reshape(ref gp.ThumbRX, ref gp.ThumbRY,
+                Common.StickBoundary.GetOrBuild(ps.RightThumbBoundaryMap));
+
             // ── Dead zones ──
             ApplyDeadZone(ref gp.ThumbLX, ref gp.ThumbLY,
                 TryParseDoubleStatic(ps.LeftThumbDeadZoneX, 0),
@@ -1510,11 +1519,13 @@ namespace PadForge.Common.Input
 
                 double dzX, dzY, adzX, adzY, lin, cofX = 0, cofY = 0, mrX = 100, mrY = 100, mrXN = 100, mrYN = 100;
                 double[] lutX = null, lutY = null;
+                string boundaryMap = null; // #174: sticks 0/1 only; custom sticks deferred.
                 DeadZoneShape dzShape;
                 switch (g)
                 {
                     case 0:
                         dzShape = ParseDeadZoneShape(ps.LeftThumbDeadZoneShape);
+                        boundaryMap = ps.LeftThumbBoundaryMap;
                         dzX = TryParseDoubleStatic(ps.LeftThumbDeadZoneX, 0);
                         dzY = TryParseDoubleStatic(ps.LeftThumbDeadZoneY, 0);
                         adzX = TryParseDoubleStatic(ps.LeftThumbAntiDeadZoneX, 0);
@@ -1531,6 +1542,7 @@ namespace PadForge.Common.Input
                         break;
                     case 1:
                         dzShape = ParseDeadZoneShape(ps.RightThumbDeadZoneShape);
+                        boundaryMap = ps.RightThumbBoundaryMap;
                         dzX = TryParseDoubleStatic(ps.RightThumbDeadZoneX, 0);
                         dzY = TryParseDoubleStatic(ps.RightThumbDeadZoneY, 0);
                         adzX = TryParseDoubleStatic(ps.RightThumbAntiDeadZoneX, 0);
@@ -1565,6 +1577,10 @@ namespace PadForge.Common.Input
                 }
                 raw.Axes[xi] = ApplyCenterOffset(raw.Axes[xi], cofX);
                 raw.Axes[yi] = ApplyCenterOffset(raw.Axes[yi], cofY);
+                // #174: circular reshape before the dead zone, same order and
+                // no-op-when-null semantics as the main gamepad path above.
+                Common.StickBoundary.Reshape(ref raw.Axes[xi], ref raw.Axes[yi],
+                    Common.StickBoundary.GetOrBuild(boundaryMap));
                 ApplyDeadZone(ref raw.Axes[xi], ref raw.Axes[yi],
                     dzX, dzY, adzX, adzY, lin, mrX, mrY, mrXN, mrYN, lutX, lutY, dzShape);
             }

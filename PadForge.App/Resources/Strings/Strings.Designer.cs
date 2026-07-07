@@ -1145,6 +1145,12 @@ public class Strings : INotifyPropertyChanged
     public string Pad_ResetConstantForceY => Get("Pad_ResetConstantForceY");
     public string Pad_ResetCenterOffsetX => Get("Pad_ResetCenterOffsetX");
     public string Pad_ResetCenterOffsetY => Get("Pad_ResetCenterOffsetY");
+    public string Pad_Sticks_Boundary_Calibrate => Get("Pad_Sticks_Boundary_Calibrate");
+    public string Pad_Sticks_Boundary_Recalibrate => Get("Pad_Sticks_Boundary_Recalibrate");
+    public string Pad_Sticks_Boundary_Sweeping => Get("Pad_Sticks_Boundary_Sweeping");
+    public string Pad_Sticks_Boundary_Circularity => Get("Pad_Sticks_Boundary_Circularity");
+    public string Pad_Sticks_Boundary_Tooltip => Get("Pad_Sticks_Boundary_Tooltip");
+    public string Pad_ResetStickBoundary => Get("Pad_ResetStickBoundary");
     public string Pad_ResetDeadZoneShape => Get("Pad_ResetDeadZoneShape");
     public string Pad_ResetDeadZoneX => Get("Pad_ResetDeadZoneX");
     public string Pad_ResetDeadZoneY => Get("Pad_ResetDeadZoneY");

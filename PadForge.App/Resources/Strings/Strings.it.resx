@@ -909,6 +909,12 @@
 
   <!-- ═══ Pad — Reset Tooltips ═══ -->
   <data name="Pad_ResetCenterOffsetX" xml:space="preserve"><value>Ripristina offset centro X</value></data>
+  <data name="Pad_Sticks_Boundary_Calibrate" xml:space="preserve"><value>Calibra il bordo</value></data>
+  <data name="Pad_Sticks_Boundary_Recalibrate" xml:space="preserve"><value>Ricalibra il bordo</value></data>
+  <data name="Pad_Sticks_Boundary_Sweeping" xml:space="preserve"><value>Percorri il bordo... {0} rimasti</value></data>
+  <data name="Pad_Sticks_Boundary_Circularity" xml:space="preserve"><value>Circolarità {0:F0}%</value></data>
+  <data name="Pad_Sticks_Boundary_Tooltip" xml:space="preserve"><value>Percorri il bordo con lo stick per mappare il confine raggiungibile e rimodellarlo in un cerchio completo.</value></data>
+  <data name="Pad_ResetStickBoundary" xml:space="preserve"><value>Reimposta la calibrazione del bordo</value></data>
   <data name="Pad_ResetCenterOffsetY" xml:space="preserve"><value>Ripristina offset centro Y</value></data>
   <data name="Pad_ResetDeadZoneShape" xml:space="preserve"><value>Ripristina a Radiale scalata</value></data>
   <data name="Pad_ResetDeadZoneX" xml:space="preserve"><value>Ripristina zona morta X</value></data>

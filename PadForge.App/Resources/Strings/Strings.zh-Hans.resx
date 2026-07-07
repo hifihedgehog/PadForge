@@ -910,6 +910,12 @@
   <data name="Pad_ResetConstantForceX" xml:space="preserve"><value>重置恒力 X</value></data>
   <data name="Pad_ResetConstantForceY" xml:space="preserve"><value>重置恒力 Y</value></data>
   <data name="Pad_ResetCenterOffsetX" xml:space="preserve"><value>重置中心偏移 X</value></data>
+  <data name="Pad_Sticks_Boundary_Calibrate" xml:space="preserve"><value>校准边界</value></data>
+  <data name="Pad_Sticks_Boundary_Recalibrate" xml:space="preserve"><value>重新校准边界</value></data>
+  <data name="Pad_Sticks_Boundary_Sweeping" xml:space="preserve"><value>沿边缘转动… 还剩 {0}</value></data>
+  <data name="Pad_Sticks_Boundary_Circularity" xml:space="preserve"><value>圆度 {0:F0}%</value></data>
+  <data name="Pad_Sticks_Boundary_Tooltip" xml:space="preserve"><value>用摇杆沿边缘转动以测量可达边界，然后将其重塑为完整圆形。</value></data>
+  <data name="Pad_ResetStickBoundary" xml:space="preserve"><value>重置边界校准</value></data>
   <data name="Pad_ResetCenterOffsetY" xml:space="preserve"><value>重置中心偏移 Y</value></data>
   <data name="Pad_ResetDeadZoneShape" xml:space="preserve"><value>重置为缩放径向</value></data>
   <data name="Pad_ResetDeadZoneX" xml:space="preserve"><value>重置死区 X</value></data>

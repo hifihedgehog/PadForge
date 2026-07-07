@@ -208,7 +208,7 @@ namespace PadForge
                 _isCardFading = true;
                 // Clear any leftover animation state from previous cycle.
                 foreach (var mi in NavView.MenuItems)
-                    if (mi is NavigationViewItem nvi && nvi.Tag?.ToString()?.StartsWith("Pad") == true)
+                    if (mi is NavigationViewItem nvi && IsCardFadeItem(nvi))
                     { nvi.BeginAnimation(UIElement.OpacityProperty, null); nvi.Opacity = 0; }
                 UpdateAllControllerCardMode(compact: true);
 
@@ -218,7 +218,7 @@ namespace PadForge
                 {
                     delayTimer.Stop();
                     foreach (var mi in NavView.MenuItems)
-                        if (mi is NavigationViewItem nvi && nvi.Tag?.ToString()?.StartsWith("Pad") == true)
+                        if (mi is NavigationViewItem nvi && IsCardFadeItem(nvi))
                             nvi.BeginAnimation(UIElement.OpacityProperty,
                                 new System.Windows.Media.Animation.DoubleAnimation(0, 1, TimeSpan.FromMilliseconds(200)));
 
@@ -238,7 +238,7 @@ namespace PadForge
             {
                 _isCardFading = true;
                 foreach (var mi in NavView.MenuItems)
-                    if (mi is NavigationViewItem nvi && nvi.Tag?.ToString()?.StartsWith("Pad") == true)
+                    if (mi is NavigationViewItem nvi && IsCardFadeItem(nvi))
                     { nvi.BeginAnimation(UIElement.OpacityProperty, null); nvi.Opacity = 0; }
                 UpdateAllControllerCardMode(compact: false);
 
@@ -247,7 +247,7 @@ namespace PadForge
                 {
                     delayTimer.Stop();
                     foreach (var mi in NavView.MenuItems)
-                        if (mi is NavigationViewItem nvi && nvi.Tag?.ToString()?.StartsWith("Pad") == true)
+                        if (mi is NavigationViewItem nvi && IsCardFadeItem(nvi))
                             nvi.BeginAnimation(UIElement.OpacityProperty,
                                 new System.Windows.Media.Animation.DoubleAnimation(0, 1, TimeSpan.FromMilliseconds(200)));
 
@@ -2250,16 +2250,11 @@ namespace PadForge
                     _navItemHandlers.Add((navItem, handler));
                 }
 
-                // "Add Controller" button (visible if any controller type has remaining capacity).
+                // "Add Controller" entry (visible if any controller type has remaining capacity).
+                // Minified twin of the Dashboard's Add Controller card; collapses to a bare "+".
                 if (HasAnyControllerTypeCapacity())
                 {
-                    var addItem = new NavigationViewItem
-                    {
-                        Tag = "AddController",
-                        Icon = new FontIcon { FontFamily = new System.Windows.Media.FontFamily("Segoe MDL2 Assets"), Glyph = "\uE710" }, // + icon
-                        Content = Strings.Instance.Main_AddController
-                    };
-                    NavView.MenuItems.Add(addItem);
+                    NavView.MenuItems.Add(BuildAddControllerNavItem());
                 }
 
             }
@@ -2811,6 +2806,157 @@ namespace PadForge
                         break;
                     }
                 }
+            }
+
+            // The Add Controller entry rides the same crossfade: minified card
+            // when expanded, bare "+" when collapsed.
+            foreach (var mi in NavView.MenuItems)
+                if (mi is NavigationViewItem addNvi && addNvi.Tag?.ToString() == "AddController")
+                { UpdateAddControllerCardMode(addNvi, compact); break; }
+        }
+
+        /// <summary>True for nav items that participate in the pane
+        /// collapse/expand opacity crossfade: the controller mini cards
+        /// (Tag "Pad…") and the Add Controller entry.</summary>
+        private static bool IsCardFadeItem(NavigationViewItem nvi)
+        {
+            var t = nvi.Tag?.ToString();
+            return t != null && (t.StartsWith("Pad") || t == "AddController");
+        }
+
+        /// <summary>Builds the drawer "Add Controller" entry as a minified twin
+        /// of the Dashboard's Add Controller card (dashed steel outline, muted
+        /// "+" glyph + label). Expanded it wears the card; collapsed it
+        /// crossfades down to a bare "+" symbol on the same 200/200/220 ms
+        /// window as the controller mini cards. Every brush is DynamicResource,
+        /// so both themes track live (no baked bitmap like the mini cards).</summary>
+        private NavigationViewItem BuildAddControllerNavItem()
+        {
+            bool collapsed = !NavView.IsPaneOpen;
+            var item = new NavigationViewItem
+            {
+                Tag = "AddController",
+                Content = BuildAddControllerCard(),
+                Margin = collapsed ? new Thickness(0) : new Thickness(-40, 0, 0, 0),
+                Icon = collapsed ? MakeAddControllerCollapsedIcon() : null,
+            };
+            System.Windows.Automation.AutomationProperties.SetName(item, Strings.Instance.Main_AddController);
+            return item;
+        }
+
+        /// <summary>The muted "+" the collapsed rail shows for Add Controller.
+        /// Tertiary-grey to match the Dashboard card's add sign, DynamicResource
+        /// so it re-tints on a theme flip.</summary>
+        private static FontIcon MakeAddControllerCollapsedIcon()
+        {
+            var icon = new FontIcon
+            {
+                FontFamily = new System.Windows.Media.FontFamily("Segoe MDL2 Assets"),
+                Glyph = "",
+            };
+            icon.SetResourceReference(FontIcon.ForegroundProperty, "TextFillColorTertiaryBrush");
+            return icon;
+        }
+
+        /// <summary>The expanded Add Controller card: a minified copy of the
+        /// Dashboard tile (DashboardPage.xaml), sized to the mini-card pill
+        /// (212 wide, radius 10). WPF Border can't dash, so a Rectangle wears
+        /// the dashed SteelLineBrush outline; a centered "+" glyph + label sit
+        /// in TextFillColorTertiaryBrush. Hover matches the mini cards: a 2 px
+        /// lift plus a faint ember bloom.</summary>
+        private System.Windows.Controls.Border BuildAddControllerCard()
+        {
+            var glyph = new TextBlock
+            {
+                Text = "",
+                FontFamily = new System.Windows.Media.FontFamily("Segoe MDL2 Assets"),
+                FontSize = 14,
+                VerticalAlignment = VerticalAlignment.Center,
+                Margin = new Thickness(0, 0, 8, 0),
+            };
+            glyph.SetResourceReference(TextBlock.ForegroundProperty, "TextFillColorTertiaryBrush");
+
+            var label = new TextBlock
+            {
+                Text = Strings.Instance.Main_AddController,
+                FontSize = 12,
+                VerticalAlignment = VerticalAlignment.Center,
+            };
+            label.SetResourceReference(TextBlock.ForegroundProperty, "TextFillColorTertiaryBrush");
+
+            var content = new StackPanel
+            {
+                Orientation = Orientation.Horizontal,
+                HorizontalAlignment = HorizontalAlignment.Center,
+                VerticalAlignment = VerticalAlignment.Center,
+            };
+            content.Children.Add(glyph);
+            content.Children.Add(label);
+
+            var dash = new System.Windows.Shapes.Rectangle
+            {
+                RadiusX = 10,
+                RadiusY = 10,
+                StrokeThickness = 1.5,
+                StrokeDashArray = new System.Windows.Media.DoubleCollection { 4, 3 },
+                SnapsToDevicePixels = true,
+            };
+            dash.SetResourceReference(System.Windows.Shapes.Shape.StrokeProperty, "SteelLineBrush");
+
+            var grid = new Grid();
+            grid.Children.Add(dash);
+            grid.Children.Add(content);
+
+            var card = new System.Windows.Controls.Border
+            {
+                // Match the mini-card pill footprint so the entry stacks
+                // congruently in the rail: radius 10, width 212, 3/2 margin.
+                CornerRadius = new CornerRadius(10),
+                Padding = new Thickness(10, 6, 10, 6),
+                Width = 212,
+                Margin = new Thickness(3, 2, 3, 2),
+                Background = System.Windows.Media.Brushes.Transparent,
+                Cursor = System.Windows.Input.Cursors.Hand,
+                Child = grid,
+            };
+
+            // Hover: 2 px lift + faint ember bloom, the same feedback the mini
+            // cards use.
+            var lift = new System.Windows.Media.TranslateTransform();
+            card.RenderTransform = lift;
+            var hoverGlow = TryFindResource("NeutralHoverGlow") as System.Windows.Media.Effects.Effect;
+            card.MouseEnter += (s, e) =>
+            {
+                var up = new System.Windows.Media.Animation.DoubleAnimation(-2, System.TimeSpan.FromMilliseconds(130))
+                { EasingFunction = new System.Windows.Media.Animation.CubicEase { EasingMode = System.Windows.Media.Animation.EasingMode.EaseOut } };
+                lift.BeginAnimation(System.Windows.Media.TranslateTransform.YProperty, up);
+                if (card.Effect == null && hoverGlow != null) card.Effect = hoverGlow;
+            };
+            card.MouseLeave += (s, e) =>
+            {
+                var down = new System.Windows.Media.Animation.DoubleAnimation(0, System.TimeSpan.FromMilliseconds(250))
+                { EasingFunction = new System.Windows.Media.Animation.CubicEase { EasingMode = System.Windows.Media.Animation.EasingMode.EaseIn } };
+                lift.BeginAnimation(System.Windows.Media.TranslateTransform.YProperty, down);
+                if (ReferenceEquals(card.Effect, hoverGlow)) card.Effect = null;
+            };
+            return card;
+        }
+
+        /// <summary>Swaps the Add Controller entry between the expanded card
+        /// (Content) and the collapsed "+" (Icon), mirroring
+        /// UpdateAllControllerCardMode for the mini cards so both ride the same
+        /// PaneClosed/PaneOpened crossfade.</summary>
+        private void UpdateAddControllerCardMode(NavigationViewItem nvi, bool compact)
+        {
+            if (compact)
+            {
+                nvi.Icon = MakeAddControllerCollapsedIcon();
+                nvi.Margin = new Thickness(0);
+            }
+            else
+            {
+                nvi.Icon = null;
+                nvi.Margin = new Thickness(-40, 0, 0, 0);
             }
         }
 

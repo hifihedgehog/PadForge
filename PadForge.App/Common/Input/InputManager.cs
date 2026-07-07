@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -1125,6 +1125,27 @@ namespace PadForge.Common.Input
         // ─────────────────────────────────────────────
         //  Device cleanup helpers
         // ─────────────────────────────────────────────
+
+        /// <summary>Last-chance hardware quiet for abnormal exits
+        /// (crash handler, ProcessExit). The Steam Deck's 0xEB rumble
+        /// command has no duration field and no firmware timeout in any
+        /// reference, so a nonzero rumble left behind by a dying process
+        /// buzzes the trackpad LRAs until something zeroes it
+        /// (discussion #179). Best-effort by design.</summary>
+        /// <summary>True once an abnormal-exit quiesce ran. Sticky:
+        /// the polling thread keeps ticking through a crash dialog and
+        /// during ProcessExit (verified empirically on .NET 10), and one
+        /// StopAllForceFeedback sweep only clears the change-detection
+        /// caches, so the next tick would re-assert the game's still
+        /// nonzero VibrationStates within ~1 ms. ApplyForceFeedback and
+        /// the Sony effects provider gate on this flag.</summary>
+        public volatile bool OutputsQuiesced;
+
+        public void QuiesceOutputs()
+        {
+            OutputsQuiesced = true;
+            try { StopAllForceFeedback(); } catch { }
+        }
 
         private void StopAllForceFeedback()
         {

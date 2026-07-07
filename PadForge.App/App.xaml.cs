@@ -21,6 +21,11 @@ namespace PadForge
 
     public partial class App : Application
     {
+        /// <summary>Best-effort "quiet all hardware outputs" hook,
+        /// assigned by MainWindow once services exist. Invoked from the
+        /// crash handler and ProcessExit.</summary>
+        public static Action PanicQuiesce;
+
         /// <summary>The UI culture the process started with, captured
         /// before the saved language override is applied. The
         /// fresh-install language, used by Reset to Defaults.</summary>
@@ -215,6 +220,13 @@ namespace PadForge
 
             // Wire up global unhandled exception handlers for diagnostics.
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+            // Quiet hardware outputs on exit paths that bypass
+            // MainWindow.OnClosing (Environment.Exit, AppDomain unload).
+            // ProcessExit does NOT fire after an unhandled exception;
+            // the crash handler carries its own invoke for that path.
+            // Idempotent after a clean stop.
+            AppDomain.CurrentDomain.ProcessExit += (s2, e2) =>
+            { try { PanicQuiesce?.Invoke(); } catch { } };
             DispatcherUnhandledException += App_DispatcherUnhandledException;
             Dispatcher.UnhandledExceptionFilter += Dispatcher_UnhandledExceptionFilter;
 
@@ -293,6 +305,14 @@ namespace PadForge
             try { System.IO.File.AppendAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "crash.log"),
                 $"[{DateTime.Now:HH:mm:ss}] DOMAIN: {(e.ExceptionObject is Exception ex2 ? $"{ex2.GetType().Name}: {ex2.Message}\n{ex2.StackTrace}" : e.ExceptionObject?.ToString())}\n\n"); }
             catch { }
+
+            // Stop any live rumble / sustained haptic tone BEFORE the
+            // fatal dialog blocks, and BEFORE the GPU-loss early return:
+            // ProcessExit does not fire after an unhandled exception, so
+            // this is the only quiesce a fatal crash gets. The Steam
+            // Deck's rumble command has no firmware timeout, so leaving
+            // it running would buzz the trackpads indefinitely.
+            try { PanicQuiesce?.Invoke(); } catch { }
 
             // Suppress cascading render thread exceptions after GPU device loss.
             if (_gpuLost)

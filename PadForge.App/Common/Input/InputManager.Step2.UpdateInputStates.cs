@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using PadForge.Common.Telemetry;
 using PadForge.Engine;
 using PadForge.Engine.Common;
@@ -364,6 +364,13 @@ namespace PadForge.Common.Input
         private void ApplyForceFeedback(UserDevice ud)
         {
             if (ud == null || ud.ForceFeedbackState == null)
+                return;
+
+            // Abnormal-exit quiesce (crash handler / ProcessExit): the
+            // panic sweep zeroed the hardware once; without this gate
+            // the very next tick re-asserts VibrationStates and the pad
+            // buzzes through the crash dialog (discussion #179).
+            if (OutputsQuiesced)
                 return;
 
             // Xbox One+ routing: those devices skip the SDL-rumble path

@@ -522,6 +522,7 @@ namespace PadForge.Services
             UserEffectsDispatcher.SlotRumbleForDeviceProvider = (padIndex, deviceGuid) =>
             {
                 if (_inputManager == null) return ((byte)0, (byte)0);
+                if (_inputManager.OutputsQuiesced) return ((byte)0, (byte)0);
                 if (padIndex < 0 || padIndex >= InputManager.MaxPads) return ((byte)0, (byte)0);
                 var raw = _inputManager.VibrationStates[padIndex];
                 if (raw == null) return ((byte)0, (byte)0);
@@ -7080,6 +7081,17 @@ namespace PadForge.Services
         /// Hooks: Starts input hook manager for devices with ConsumeInputEnabled.
         /// Only acts if the master switch (EnableInputHiding) is on.
         /// </summary>
+        /// <summary>Best-effort quiet of every hardware output lane:
+        /// zero rumble on all devices and stop any sustained haptic
+        /// tones. Wired into the crash handler and ProcessExit so an
+        /// abnormal exit cannot leave a Steam Deck (or any pad) buzzing
+        /// on the last command it received (discussion #179).</summary>
+        public void PanicQuiesceOutputs()
+        {
+            try { _inputManager?.QuiesceOutputs(); } catch { }
+            try { PadForge.Common.Input.HapticToneService.Shutdown(); } catch { }
+        }
+
         /// <summary>Clears every HidHide blacklist entry, exactly like the
         /// engine-start stale-cloak sweep. Reset to Defaults calls this
         /// because ApplyDeviceHiding's diff only removes cloaks in the

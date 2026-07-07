@@ -52,25 +52,30 @@ namespace PadForge.Tests
             }
         }
 
+        // A superellipse (n=4) squircle: the physically-real stick shape, convex,
+        // cardinals ~1.0 and diagonals bulging farther (~1.19). This is what a
+        // rounded-square gate actually produces (the user's own map measured
+        // cardinals 1.0 / diagonals 1.11), unlike a concave pincushion which a
+        // gate cannot form.
+        private static double Superellipse(double angle)
+        {
+            double c = Math.Abs(Math.Cos(angle)), s = Math.Abs(Math.Sin(angle));
+            return 0.85 / Math.Pow(c * c * c * c + s * s * s * s, 0.25);
+        }
+
         [Fact]
         public void SquircleBoundary_EveryDirectionReachesFull()
         {
-            // A non-circular boundary that reaches farther on the cardinals
-            // (0.9) than the diagonals (0.7). The whole point of #174: a point
-            // on the diagonal rim, which raw would read as ~0.7, must warp to
-            // full 1.0, same as the cardinals.
+            // The point of #174: a point on the measured squircle rim, at any
+            // angle, must warp to full 1.0 so every direction reaches the rim.
             var data = StickBoundary.NewMap();
             for (int i = 0; i < data.Length; i++)
-            {
-                double a = i * (Math.PI * 2.0) / data.Length;
-                data[i] = 0.7 + 0.2 * Math.Abs(Math.Cos(2 * a));
-            }
+                data[i] = Superellipse(i * (Math.PI * 2.0) / data.Length);
             var lut = StickBoundary.GetOrBuild(StickBoundary.Serialize(data));
 
             double worst = 1.0;
             for (int i = 0; i < data.Length; i++)
                 worst = Math.Min(worst, WarpRimPoint(data, lut, i));
-            // Every one of the 360 sample directions reaches near-full.
             Assert.InRange(worst, 0.95, 1.001);
         }
 
@@ -244,6 +249,45 @@ namespace PadForge.Tests
             // At 1-degree samples the chord midpoint sits a hair inside the LUT's
             // straight interpolation; 1% bounds the whole rim.
             Assert.True(worst < 0.01, $"LUT edge error {worst:F5} exceeds 1%");
+        }
+
+        [Fact]
+        public void Convexify_RemovesInwardWedge_KeepsConvexShape()
+        {
+            // A near-circular boundary (~1.0) with a deep inward notch, the
+            // exact capture artifact seen on hardware: sectors dive to 0.46
+            // then snap back to 1.10. Convexify must bridge the notch to the
+            // surrounding rim and leave the rest essentially untouched.
+            var data = StickBoundary.NewMap();
+            for (int i = 0; i < data.Length; i++) data[i] = 1.0;
+            for (int k = 0; k < 8; k++) data[20 + k] = 0.9 - 0.06 * k; // 0.90..0.48 notch
+
+            var fixedMap = StickBoundary.Convexify(data);
+
+            // The notch sectors are pulled back out to near the rim.
+            for (int k = 0; k < 8; k++)
+                Assert.InRange(fixedMap[20 + k], 0.95, 1.02);
+            // The untouched rim stays ~1.0 (convex hull of a circle is the circle).
+            for (int i = 100; i < 340; i += 20)
+                Assert.InRange(fixedMap[i], 0.98, 1.02);
+        }
+
+        [Fact]
+        public void Convexify_PreservesConvexSquircle_AndIsIdempotent()
+        {
+            // A smooth convex superellipse must survive convexify within chord
+            // error (the hull re-samples 1-degree edges), and re-running is a
+            // near-no-op. This guards convexify against distorting a real gate.
+            var data = StickBoundary.NewMap();
+            for (int i = 0; i < data.Length; i++)
+                data[i] = Superellipse(i * (Math.PI * 2.0) / data.Length);
+            var once = StickBoundary.Convexify(data);
+            var twice = StickBoundary.Convexify(once);
+            for (int i = 0; i < data.Length; i++)
+            {
+                Assert.InRange(once[i] - data[i], -0.01, 0.01); // shape preserved
+                Assert.InRange(twice[i] - once[i], -0.005, 0.005); // stable
+            }
         }
 
         [Fact]

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
 
@@ -134,6 +135,91 @@ namespace PadForge.Common
             return filled;
         }
 
+        /// <summary>Replaces the boundary with its convex outline. A stick's
+        /// physically reachable region is convex (the gate is a convex opening),
+        /// so any INWARD concavity in the map is a sweep artifact: a fast
+        /// transit or a chord that cut inside the true rim, leaving a deep notch
+        /// (the "wedge"). This takes the convex hull of the reached points and
+        /// re-samples every angle to the hull, which bridges the notch with the
+        /// straight rim it belongs to. Real gate shape survives: octagon
+        /// corners, squircle bulges, and honest per-direction asymmetry are all
+        /// convex. Idempotent (a convex map is unchanged). Runs at LUT build and
+        /// capture commit, so an already-saved wedge cleans up with no recal.</summary>
+        public static double[] Convexify(double[] data)
+        {
+            if (data == null) return null;
+            int n = data.Length;
+            var idx = new List<int>(n);
+            // Only well-reached sectors define the hull, so a partial sweep's
+            // inner filler can't drag it inward.
+            for (int i = 0; i < n; i++) if (data[i] > 0.2) idx.Add(i);
+            if (idx.Count < 3) return (double[])data.Clone();
+
+            var px = new double[idx.Count];
+            var py = new double[idx.Count];
+            for (int k = 0; k < idx.Count; k++)
+            {
+                double a = idx[k] * Tau / n;
+                px[k] = Math.Cos(a) * data[idx[k]];
+                py[k] = Math.Sin(a) * data[idx[k]];
+            }
+
+            int[] hull = ConvexHull(px, py);
+            if (hull.Length < 3) return (double[])data.Clone();
+
+            var outp = (double[])data.Clone();
+            for (int i = 0; i < n; i++)
+            {
+                double a = i * Tau / n;
+                double rx = Math.Cos(a), ry = Math.Sin(a);
+                double best = -1.0;
+                for (int h = 0; h < hull.Length; h++)
+                {
+                    int h2 = (h + 1) % hull.Length;
+                    if (TryRaySegment(rx, ry, px[hull[h]], py[hull[h]], px[hull[h2]], py[hull[h2]], out double d)
+                        && d > best)
+                        best = d;
+                }
+                // best is the forward crossing of the hull edge for a ray from
+                // the interior origin; keep the original where a partial hull
+                // gives no forward crossing.
+                if (best > 0.0) outp[i] = best;
+            }
+            return outp;
+        }
+
+        /// <summary>Andrew's monotone-chain convex hull. Returns indices into the
+        /// input point arrays, counter-clockwise, no repeated first point.</summary>
+        private static int[] ConvexHull(double[] px, double[] py)
+        {
+            int m = px.Length;
+            var order = new int[m];
+            for (int i = 0; i < m; i++) order[i] = i;
+            Array.Sort(order, (a, b) =>
+                px[a] != px[b] ? px[a].CompareTo(px[b]) : py[a].CompareTo(py[b]));
+
+            var hull = new int[2 * m];
+            int k = 0;
+            // lower
+            for (int i = 0; i < m; i++)
+            {
+                while (k >= 2 && Cross(px, py, hull[k - 2], hull[k - 1], order[i]) <= 0) k--;
+                hull[k++] = order[i];
+            }
+            // upper
+            for (int i = m - 2, lower = k + 1; i >= 0; i--)
+            {
+                while (k >= lower && Cross(px, py, hull[k - 2], hull[k - 1], order[i]) <= 0) k--;
+                hull[k++] = order[i];
+            }
+            var result = new int[k - 1]; // drop the repeated start point
+            Array.Copy(hull, result, k - 1);
+            return result;
+        }
+
+        private static double Cross(double[] px, double[] py, int o, int a, int b)
+            => (px[a] - px[o]) * (py[b] - py[o]) - (py[a] - py[o]) * (px[b] - px[o]);
+
         /// <summary>Count of sectors the sweep has not yet reached (radius still
         /// below <paramref name="floor"/>), for the coverage-driven "N sectors
         /// left" readout. Zero means the rim is fully mapped.</summary>
@@ -238,6 +324,11 @@ namespace PadForge.Common
         {
             var data = Parse(boundary);
             if (data == null) return null;
+            // Convex outline: kills capture-artifact notches (the "wedge") so the
+            // warp never divides by a spuriously small radius and saturates.
+            // Applied at build so already-saved wedge maps warp cleanly with no
+            // recalibration.
+            data = Convexify(data);
             var lut = new double[LutSize];
             for (int b = 0; b < LutSize; b++)
                 lut[b] = RadiusAtAngleExact(data, b * Tau / LutSize);

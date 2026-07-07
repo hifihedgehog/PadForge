@@ -650,7 +650,9 @@ namespace PadForge.ViewModels
 
         private void RebuildBoundaryVisuals()
         {
-            var data = StickBoundary.Parse(_boundaryMap);
+            // Convex outline so the radar overlay and the circularity readout
+            // reflect the same wedge-free boundary the warp uses.
+            var data = StickBoundary.Convexify(StickBoundary.Parse(_boundaryMap));
             BoundaryPolygonPoints = StickBoundary.PlotPolygon(data);
             BoundaryCircularityText = data == null
                 ? string.Empty
@@ -689,7 +691,10 @@ namespace PadForge.ViewModels
                         StickBoundary.UpdateFromSegment(_boundaryCapture, _boundaryPrevX, _boundaryPrevY, x, y);
                     _boundaryPrevX = x; _boundaryPrevY = y; _boundaryHavePrev = true;
 
-                    BoundaryPolygonPoints = StickBoundary.PlotPolygon(_boundaryCapture);
+                    // Show the convex outline live, so the notch a fast transit
+                    // paints never appears and snaps out; the user sees a clean
+                    // boundary grow.
+                    BoundaryPolygonPoints = StickBoundary.PlotPolygon(StickBoundary.Convexify(_boundaryCapture));
                     BoundarySectorsRemaining = StickBoundary.RemainingSectors(_boundaryCapture);
 
                     _boundaryElapsedTicks++;
@@ -710,9 +715,10 @@ namespace PadForge.ViewModels
             {
                 int filled = StickBoundary.BackfillGaps(_boundaryCapture);
                 // Require a genuine sweep (at least half the rim reached) before
-                // committing, so a stray click can't save a spike.
+                // committing, so a stray click can't save a spike. Store the
+                // convex outline so the saved map is wedge-free from the start.
                 if (filled >= StickBoundary.SampleCount / 2)
-                    BoundaryMap = StickBoundary.Serialize(_boundaryCapture);
+                    BoundaryMap = StickBoundary.Serialize(StickBoundary.Convexify(_boundaryCapture));
                 else
                     RebuildBoundaryVisuals(); // discard the partial overlay
             }

@@ -1351,7 +1351,7 @@
   <data name="Pad_Lighting" xml:space="preserve"><value>조명</value></data>
   <data name="Pad_Lighting_Header" xml:space="preserve"><value>조명</value></data>
   <data name="Pad_Lighting_Subtitle" xml:space="preserve"><value>할당된 물리 컨트롤러의 라이트바 기본 색상과 오디오 동작을 설정합니다. 게임 쓰기가 항상 우선합니다. 사용자 설정은 게임이 라이트바를 구동하지 않을 때 적용됩니다.</value></data>
-  <data name="Pad_Lighting_PlayerIdle_Hint" xml:space="preserve"><value>여기 설정이 꺼짐인 동안 패드는 대기 상태에서 가상 컨트롤러의 플레이어 식별을 표시합니다. 라이트바에는 소니 플레이어 색상(1 파랑, 2 빨강, 3 초록, 4 분홍)이, DualSense에서는 해당 플레이어 LED가 켜집니다. 같은 가상 컨트롤러의 모든 장치가 같은 번호를 표시합니다. 게임이 조명을 쓰면 게임이 우선하며, 여기서 설정한 내용은 항상 우선합니다.</value></data>
+  <data name="Pad_Lighting_PlayerIdle_Hint" xml:space="preserve"><value>플레이어 번호가 선택된 동안 패드는 대기 상태에서 가상 컨트롤러의 플레이어 식별을 표시합니다. 라이트바에는 소니 플레이어 색상(1 파랑, 2 빨강, 3 초록, 4 분홍)이, DualSense에서는 해당 플레이어 LED가 켜집니다. 같은 가상 컨트롤러의 모든 장치가 같은 번호를 표시합니다. 게임이 조명을 쓰면 게임이 우선하고 여기서 설정한 내용은 항상 우선하며, 끔을 선택하면 해당 조명이 완전히 꺼집니다.</value></data>
   <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>라이트바</value></data>
   <data name="Pad_Lighting_BaseEnabled" xml:space="preserve"><value>게임이 쓰고 있지 않을 때 사용자 정의 기본 색상 적용</value></data>
   <data name="Pad_Lighting_Red" xml:space="preserve"><value>빨강</value></data>
@@ -1382,6 +1382,7 @@
   <data name="Pad_Lighting_LedBrightness" xml:space="preserve"><value>LED 밝기</value></data>
   <data name="Pad_Lighting_PlayerLed_Mode" xml:space="preserve"><value>패턴</value></data>
   <data name="Pad_Lighting_PlayerLed_Off" xml:space="preserve"><value>끔</value></data>
+  <data name="Pad_Lighting_PlayerLed_PlayerNumber" xml:space="preserve"><value>플레이어 번호 (기본값)</value></data>
   <data name="Pad_Lighting_PlayerLed_P1" xml:space="preserve"><value>플레이어 1</value></data>
   <data name="Pad_Lighting_PlayerLed_P2" xml:space="preserve"><value>플레이어 2</value></data>
   <data name="Pad_Lighting_PlayerLed_P3" xml:space="preserve"><value>플레이어 3</value></data>
@@ -1407,7 +1408,8 @@
   <data name="Pad_Lighting_AudioLightbar_LowToMid" xml:space="preserve"><value>저 → 중 전환</value></data>
   <data name="Pad_Lighting_AudioLightbar_MidToHigh" xml:space="preserve"><value>중 → 고 전환</value></data>
   <data name="Pad_Lighting_Mode" xml:space="preserve"><value>모드</value></data>
-  <data name="Pad_Lighting_Mode_Off" xml:space="preserve"><value>끔 (게임이 라이트바를 제어)</value></data>
+  <data name="Pad_Lighting_Mode_Off" xml:space="preserve"><value>끔</value></data>
+  <data name="Pad_Lighting_Mode_PlayerNumber" xml:space="preserve"><value>플레이어 번호 (기본값)</value></data>
   <data name="Pad_Lighting_Mode_Static" xml:space="preserve"><value>단색</value></data>
   <data name="Pad_Lighting_Mode_Breathing" xml:space="preserve"><value>브리딩 (단색 페이드)</value></data>
   <data name="Pad_Lighting_Mode_Rainbow" xml:space="preserve"><value>레인보우 사이클</value></data>

@@ -178,9 +178,22 @@ namespace PadForge.Common.Input
             bool macroOverrideActive = macroOverrideIntensity > 0f;
             bool inputReactiveActive = cfg != null && cfg.InputReactiveMode != InputReactiveMode.Off;
 
-            bool anyLightFeature = cfg != null && (
-                cfg.LightbarMode != LightbarMode.Off
-                || cfg.PlayerLedMode != PlayerLedMode.Off
+            // The floor is armed while no game has ever written the
+            // lightbar this session (see the stand-down comment below).
+            bool floorArmed = playerNumber > 0 && !overrides.LightbarEverExternal;
+
+            // A deliberate LIGHTBAR choice that PadForge must author: a
+            // non-default base mode (the hard Off included, which authors
+            // black), a macro override, or a reactive overlay. Pips
+            // (PlayerLedMode) are a SEPARATE subsystem, handled in full
+            // above with their own enable bit, and must not appear here.
+            // Coupling them would assert the lightbar enable bit for a
+            // pips-only change and, once the floor has stood down after a
+            // game write, ship black over the game's persisted color. The
+            // pure-floor / stand-down branch below owns the bar whenever
+            // no lightbar feature is configured, whatever the pips do.
+            bool lightbarConfigured = cfg != null && (
+                cfg.LightbarMode != LightbarMode.PlayerNumber
                 || macroOverrideActive
                 || inputReactiveActive);
 
@@ -200,17 +213,25 @@ namespace PadForge.Common.Input
             {
                 playerIndicator = overrides.PlayerIndicator.Value;
             }
+            else if (cfg == null || cfg.PlayerLedMode == PlayerLedMode.PlayerNumber)
+            {
+                // Player-identity idle floor (#191): at the PlayerNumber
+                // default (or with no config yet) the row shows the
+                // virtual controller number. Game writes keep winning
+                // via the override branch above.
+                playerIndicator = (byte)(PlayerIndicatorNoFade
+                    | (playerNumber > 0 ? PlayerIdentityDefaults.PipsFor(playerNumber) : (byte)0));
+            }
             else
             {
-                int ledIdx = cfg != null ? (int)cfg.PlayerLedMode : 0;
+                // Deliberate mode: Off extinguishes the row
+                // (PlayerLedBits[0] == 0, so the byte degenerates to the
+                // no-fade bit alone), PlayerN / All show their fixed
+                // pattern. PlayerNumber (6) never reaches this branch,
+                // so the index stays inside PlayerLedBits.
+                int ledIdx = (int)cfg.PlayerLedMode;
                 if (ledIdx < 0 || ledIdx >= PlayerLedBits.Length) ledIdx = 0;
-                // Player-identity idle floor (#191): an untouched pad
-                // (PlayerLedMode Off, no external writer) shows its
-                // virtual controller number instead of an extinguished
-                // row. Configured modes and game writes keep winning.
-                playerIndicator = ledIdx == 0 && playerNumber > 0
-                    ? (byte)(PlayerIndicatorNoFade | PlayerIdentityDefaults.PipsFor(playerNumber))
-                    : (byte)(PlayerIndicatorNoFade | PlayerLedBits[ledIdx]);
+                playerIndicator = (byte)(PlayerIndicatorNoFade | PlayerLedBits[ledIdx]);
             }
             byte ledBrightness = overrides.LedBrightness
                 ?? (cfg != null ? (byte)cfg.PlayerLedBrightness : (byte)0);
@@ -240,7 +261,7 @@ namespace PadForge.Common.Input
                 ledG = overrides.LightbarRgb[1];
                 ledB = overrides.LightbarRgb[2];
             }
-            else if (anyLightFeature)
+            else if (lightbarConfigured)
             {
                 enableBits |= EnableLightbar;
 
@@ -262,8 +283,18 @@ namespace PadForge.Common.Input
                 }
                 else
                 {
+                    // Base under the overlay: PlayerNumber = the armed
+                    // floor color (black once a game has claimed the bar
+                    // or with no player yet), Off = black (the hard-off
+                    // the stealth request asked for), anything else =
+                    // the configured animation.
                     byte baseR = 0, baseG = 0, baseB = 0;
-                    if (cfg.LightbarMode != LightbarMode.Off)
+                    if (cfg.LightbarMode == LightbarMode.PlayerNumber)
+                    {
+                        if (floorArmed)
+                            (baseR, baseG, baseB) = PlayerIdentityDefaults.ColorFor(playerNumber);
+                    }
+                    else if (cfg.LightbarMode != LightbarMode.Off)
                     {
                         (baseR, baseG, baseB) = ComputeLightbarColor(
                             cfg, audioPeak, nowMs, randomColor, pulseColor, pulseIntensity, batteryPercent);
@@ -284,7 +315,7 @@ namespace PadForge.Common.Input
                     }
                 }
             }
-            else if (playerNumber > 0 && !overrides.LightbarEverExternal)
+            else if (floorArmed)
             {
                 // Player-identity idle floor (#191): nothing claims the
                 // lightbar (no game grace, no macro, no configured mode,

@@ -1560,11 +1560,17 @@ namespace PadForge.Services
         /// treated as empty when Copy / Paste / Copy From picked a representative.</summary>
         public static bool IsPlayStationConfigDataConfigured(ViewModels.PlayStationSlotConfigData c)
             => c != null
-            && (c.LightbarMode != ViewModels.LightbarMode.Off
+            // Rev-aware default checks: a rev-0 DTO (old save / old
+            // profile store, not yet lifted by ApplyPlayStationConfigData)
+            // spells "unset" as Off; rev-1 spells it PlayerNumber and
+            // Off there is a deliberate, copy-worthy configuration.
+            && (c.LightbarMode != (c.LightingRev >= 1
+                    ? ViewModels.LightbarMode.PlayerNumber : ViewModels.LightbarMode.Off)
                 || c.LeftTriggerMode != ViewModels.AdaptiveTriggerMode.Off
                 || c.RightTriggerMode != ViewModels.AdaptiveTriggerMode.Off
                 || c.MicLedMode != ViewModels.MicLedMode.Off
-                || c.PlayerLedMode != ViewModels.PlayerLedMode.Off
+                || c.PlayerLedMode != (c.LightingRev >= 1
+                    ? ViewModels.PlayerLedMode.PlayerNumber : ViewModels.PlayerLedMode.Off)
                 || c.AudioPassthroughEnabled
                 || c.AudioLightbarEnabled
                 || !string.IsNullOrEmpty(c.AudioMirrorSourceId)
@@ -1577,11 +1583,11 @@ namespace PadForge.Services
         /// for the in-process Copy From path.</summary>
         public static bool IsPlayStationConfigConfigured(ViewModels.PlayStationSlotConfig c)
             => c != null
-            && (c.LightbarMode != ViewModels.LightbarMode.Off
+            && (c.LightbarMode != ViewModels.LightbarMode.PlayerNumber
                 || c.LeftTriggerMode != ViewModels.AdaptiveTriggerMode.Off
                 || c.RightTriggerMode != ViewModels.AdaptiveTriggerMode.Off
                 || c.MicLedMode != ViewModels.MicLedMode.Off
-                || c.PlayerLedMode != ViewModels.PlayerLedMode.Off
+                || c.PlayerLedMode != ViewModels.PlayerLedMode.PlayerNumber
                 || c.AudioPassthroughEnabled
                 || c.AudioLightbarEnabled
                 || !string.IsNullOrEmpty(c.AudioMirrorSourceId)
@@ -1835,7 +1841,9 @@ namespace PadForge.Services
         /// PlayStationSlotConfig instance. Extracted so the loader can
         /// call it once per per-device entry, or once per slot when
         /// fanning out a legacy slot-level entry to every device.</summary>
-        private static void ApplyPlayStationConfigData(ViewModels.PlayStationSlotConfig cfg, ViewModels.PlayStationSlotConfigData cfgData)
+        // Internal (not private) so the tests can drive the LightingRev
+        // migration below directly (InternalsVisibleTo PadForge.Tests).
+        internal static void ApplyPlayStationConfigData(ViewModels.PlayStationSlotConfig cfg, ViewModels.PlayStationSlotConfigData cfgData)
         {
             if (cfg == null) return;
                     cfg.LeftTriggerMode = cfgData.LeftTriggerMode;
@@ -1885,7 +1893,13 @@ namespace PadForge.Services
 
                     // Unified lightbar mode (v3.1.0+). Migrate from the
                     // legacy bools when the saved value is at the default.
-                    cfg.LightbarMode = cfgData.LightbarMode != ViewModels.LightbarMode.Off
+                    // Rev-1 saves skip the fallback entirely: Off is a
+                    // deliberate hard-off there, and the legacy bools
+                    // round-trip stale (LightbarEnabled is never cleared
+                    // when the user changes modes), so consulting them
+                    // would resurrect Static over a chosen Off.
+                    cfg.LightbarMode = cfgData.LightingRev >= 1
+                        || cfgData.LightbarMode != ViewModels.LightbarMode.Off
                         ? cfgData.LightbarMode
                         : cfgData.AudioLightbarEnabled
                             ? cfgData.AudioLightbarMode switch
@@ -1980,6 +1994,33 @@ namespace PadForge.Services
                                 cfg.LightbarMode = ViewModels.LightbarMode.Off;
                                 break;
                         }
+                    }
+
+                    // LightingRev 0 → 1 (#191 follow-up): before the
+                    // PlayerNumber default existed, Off doubled as
+                    // "unset". Every untouched slot serialized Off, so
+                    // lift those to the v4 default and upgraders get the
+                    // player-identity idle out of the box. Rev-1 saves
+                    // take Off literally: it means dark.
+                    //
+                    // Guard the lightbar lift on "no reactive overlay".
+                    // A slot with an active input-reactive overlay rested
+                    // on a dark base in every prior release (the v3.2
+                    // split parks the legacy InputReactive base at Off,
+                    // and #191 rendered that Off as black under the
+                    // flash). Lifting it to PlayerNumber would swap the
+                    // user's reactive-from-darkness effect for a
+                    // player-color glow that merely brightens on press.
+                    // Leave those dark; only genuinely-idle lightbars
+                    // (no overlay) inherit the floor. Pips carry no
+                    // overlay concept, so they always lift.
+                    if (cfgData.LightingRev < 1)
+                    {
+                        if (cfg.LightbarMode == ViewModels.LightbarMode.Off
+                            && cfg.InputReactiveMode == ViewModels.InputReactiveMode.Off)
+                            cfg.LightbarMode = ViewModels.LightbarMode.PlayerNumber;
+                        if (cfg.PlayerLedMode == ViewModels.PlayerLedMode.Off)
+                            cfg.PlayerLedMode = ViewModels.PlayerLedMode.PlayerNumber;
                     }
         }
 
@@ -3092,6 +3133,9 @@ namespace PadForge.Services
             {
                 SlotIndex = slotIndex,
                 DeviceGuid = deviceGuid,
+                // PlayerNumber-aware writer: Off below is deliberate,
+                // never the pre-#191 "unset" sentinel.
+                LightingRev = 1,
                 LeftTriggerMode = cfg.LeftTriggerMode,
                 RightTriggerMode = cfg.RightTriggerMode,
                 LeftStartPosition = cfg.LeftStartPosition,

@@ -2045,11 +2045,14 @@
                                                            VerticalAlignment="Center" Width="80" Margin="0,0,8,0"/>
                                                 <ComboBox SelectedValue="{Binding LightbarTargetMode, Mode=TwoWay}"
                                                           SelectedValuePath="Tag" MinWidth="280">
+                                                    <ComboBoxItem Content="{Binding Pad_Lighting_Mode_PlayerNumber, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:LightbarMode.PlayerNumber}"/>
                                                     <ComboBoxItem Content="{Binding Pad_Lighting_Mode_Off, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:LightbarMode.Off}"/>
                                                     <ComboBoxItem Content="{Binding Pad_Lighting_Mode_Static, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:LightbarMode.Static}"/>
                                                     <ComboBoxItem Content="{Binding Pad_Lighting_Mode_Breathing, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:LightbarMode.Breathing}"/>
+                                                    <ComboBoxItem Content="{Binding Pad_Lighting_Mode_Strobe, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:LightbarMode.Strobe}"/>
                                                     <ComboBoxItem Content="{Binding Pad_Lighting_Mode_Rainbow, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:LightbarMode.Rainbow}"/>
                                                     <ComboBoxItem Content="{Binding Pad_Lighting_Mode_ColorCycle, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:LightbarMode.ColorCycle}"/>
+                                                    <ComboBoxItem Content="{Binding Pad_Lighting_Mode_Battery, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:LightbarMode.Battery}"/>
                                                     <ComboBoxItem Content="{Binding Pad_Lighting_Mode_AudioPulse, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:LightbarMode.AudioPulse}"/>
                                                     <ComboBoxItem Content="{Binding Pad_Lighting_Mode_AudioPulseRandom, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:LightbarMode.AudioPulseRandom}"/>
                                                     <ComboBoxItem Content="{Binding Pad_Lighting_Mode_AudioPulseRainbow, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:LightbarMode.AudioPulseRainbow}"/>
@@ -6971,17 +6974,20 @@
                                      brush, and its DropShadowEffect bloom (the mini-card
                                      heat-ring pattern), gated on
                                      SystemParameters.ClientAreaAnimation. Never animated
-                                     from style triggers. Mode = Off means
-                                     PadForge does not author the lightbar (game owns it):
-                                     the strips drop to cold blue at low opacity under a
-                                     locale-neutral GAME WRITES WIN token (DZ / PEAK
-                                     radar-legend idiom) whose tooltip carries the
-                                     localized Pad_Lighting_Subtitle sentence. No live
-                                     game-write flag reaches this view model (ownership is
-                                     resolved per-packet inside UserEffectsDispatcher), so
-                                     Off is a mode-only presentation. Palette and audio
-                                     modes still preview the base trio because it is the
-                                     only single-color truth the config holds. -->
+                                     from style triggers. Mode = PlayerNumber (the #191
+                                     default) previews the Sony player color for this
+                                     slot's number under a locale-neutral GAME WRITES WIN
+                                     token (DZ / PEAK radar-legend idiom) whose tooltip
+                                     carries the localized Pad_Lighting_Subtitle sentence,
+                                     since a game's write takes over and persists there.
+                                     Mode = Off is the deliberate hard-off: the strips go
+                                     dark, no token (PadForge reasserts black after any
+                                     game write's grace). No live game-write flag reaches
+                                     this view model (ownership is resolved per-packet
+                                     inside UserEffectsDispatcher), so both are mode-only
+                                     presentations. Palette and audio modes still preview
+                                     the base trio because it is the only single-color
+                                     truth the config holds. -->
                                 <StackPanel Margin="0,0,0,12" HorizontalAlignment="Left">
                                     <Viewbox Width="260" HorizontalAlignment="Left">
                                         <Grid x:Name="LightbarPreviewHost"/>
@@ -6990,7 +6996,7 @@
                                                FontFamily="{StaticResource TelemetryFontFamily}" FontSize="10"
                                                Foreground="{DynamicResource TextFillColorTertiaryBrush}"
                                                ToolTip="{Binding Pad_Lighting_Subtitle, Source={x:Static strings:Strings.Instance}}"
-                                               Visibility="{Binding PlayStationConfig.LightbarMode, Converter={StaticResource EnumEqualityVisibilityConverter}, ConverterParameter=Off}"/>
+                                               Visibility="{Binding PlayStationConfig.LightbarMode, Converter={StaticResource EnumEqualityVisibilityConverter}, ConverterParameter=PlayerNumber}"/>
                                 </StackPanel>
 
                                 <!-- Mode picker -->
@@ -7012,6 +7018,7 @@
                                     <ComboBox SelectedValue="{Binding PlayStationConfig.LightbarMode, Mode=TwoWay}"
                                               SelectedValuePath="Tag"
                                               Width="320" VerticalAlignment="Center">
+                                        <ComboBoxItem Content="{Binding Pad_Lighting_Mode_PlayerNumber, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:LightbarMode.PlayerNumber}"/>
                                         <ComboBoxItem Content="{Binding Pad_Lighting_Mode_Off, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:LightbarMode.Off}"/>
                                         <ComboBoxItem Content="{Binding Pad_Lighting_Mode_Static, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:LightbarMode.Static}"/>
                                         <ComboBoxItem Content="{Binding Pad_Lighting_Mode_Breathing, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:LightbarMode.Breathing}"/>
@@ -7973,7 +7980,12 @@
                                      unchanged. -->
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
                                     <TextBlock Text="{Binding Pad_Lighting_PlayerPattern, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
-                                    <ComboBox SelectedIndex="{Binding PlayStationConfig.PlayerLedMode, Mode=TwoWay, Converter={StaticResource EnumIndexConverter}}"
+                                    <!-- SelectedValue + Tag binding (the LightbarMode combo's
+                                         pattern): PlayerNumber (6) leads the list while Off (0)
+                                         stays second, so item index no longer equals enum
+                                         value and EnumIndexConverter can't apply. -->
+                                    <ComboBox SelectedValue="{Binding PlayStationConfig.PlayerLedMode, Mode=TwoWay}"
+                                              SelectedValuePath="Tag"
                                               Width="220" VerticalAlignment="Center">
                                         <ComboBox.Resources>
                                             <Style x:Key="LedPipOn" TargetType="Ellipse">
@@ -7988,8 +8000,31 @@
                                                 <Setter Property="Stroke" Value="{DynamicResource SteelLineBrush}"/>
                                                 <Setter Property="StrokeThickness" Value="1"/>
                                             </Style>
+                                            <!-- Auto pip: hollow like Off but ember-stroked, reading
+                                                 as "lights up, pattern follows the player number". -->
+                                            <Style x:Key="LedPipAuto" TargetType="Ellipse" BasedOn="{StaticResource LedPipOff}">
+                                                <Setter Property="Stroke" Value="{DynamicResource EmberBrush}"/>
+                                            </Style>
                                         </ComboBox.Resources>
-                                        <ComboBoxItem Content="{Binding Pad_Lighting_PlayerLed_Off, Source={x:Static strings:Strings.Instance}}">
+                                        <ComboBoxItem Content="{Binding Pad_Lighting_PlayerLed_PlayerNumber, Source={x:Static strings:Strings.Instance}}"
+                                                      Tag="{x:Static vm:PlayerLedMode.PlayerNumber}">
+                                            <ComboBoxItem.ContentTemplate>
+                                                <DataTemplate>
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,6,0">
+                                                            <Ellipse Style="{StaticResource LedPipAuto}"/>
+                                                            <Ellipse Style="{StaticResource LedPipAuto}"/>
+                                                            <Ellipse Style="{StaticResource LedPipAuto}"/>
+                                                            <Ellipse Style="{StaticResource LedPipAuto}"/>
+                                                            <Ellipse Style="{StaticResource LedPipAuto}"/>
+                                                        </StackPanel>
+                                                        <TextBlock Text="{Binding}" VerticalAlignment="Center"/>
+                                                    </StackPanel>
+                                                </DataTemplate>
+                                            </ComboBoxItem.ContentTemplate>
+                                        </ComboBoxItem>
+                                        <ComboBoxItem Content="{Binding Pad_Lighting_PlayerLed_Off, Source={x:Static strings:Strings.Instance}}"
+                                                      Tag="{x:Static vm:PlayerLedMode.Off}">
                                             <ComboBoxItem.ContentTemplate>
                                                 <DataTemplate>
                                                     <StackPanel Orientation="Horizontal">
@@ -8005,7 +8040,8 @@
                                                 </DataTemplate>
                                             </ComboBoxItem.ContentTemplate>
                                         </ComboBoxItem>
-                                        <ComboBoxItem Content="{Binding Pad_Lighting_PlayerLed_P1, Source={x:Static strings:Strings.Instance}}">
+                                        <ComboBoxItem Content="{Binding Pad_Lighting_PlayerLed_P1, Source={x:Static strings:Strings.Instance}}"
+                                                      Tag="{x:Static vm:PlayerLedMode.Player1}">
                                             <ComboBoxItem.ContentTemplate>
                                                 <DataTemplate>
                                                     <StackPanel Orientation="Horizontal">
@@ -8021,7 +8057,8 @@
                                                 </DataTemplate>
                                             </ComboBoxItem.ContentTemplate>
                                         </ComboBoxItem>
-                                        <ComboBoxItem Content="{Binding Pad_Lighting_PlayerLed_P2, Source={x:Static strings:Strings.Instance}}">
+                                        <ComboBoxItem Content="{Binding Pad_Lighting_PlayerLed_P2, Source={x:Static strings:Strings.Instance}}"
+                                                      Tag="{x:Static vm:PlayerLedMode.Player2}">
                                             <ComboBoxItem.ContentTemplate>
                                                 <DataTemplate>
                                                     <StackPanel Orientation="Horizontal">
@@ -8037,7 +8074,8 @@
                                                 </DataTemplate>
                                             </ComboBoxItem.ContentTemplate>
                                         </ComboBoxItem>
-                                        <ComboBoxItem Content="{Binding Pad_Lighting_PlayerLed_P3, Source={x:Static strings:Strings.Instance}}">
+                                        <ComboBoxItem Content="{Binding Pad_Lighting_PlayerLed_P3, Source={x:Static strings:Strings.Instance}}"
+                                                      Tag="{x:Static vm:PlayerLedMode.Player3}">
                                             <ComboBoxItem.ContentTemplate>
                                                 <DataTemplate>
                                                     <StackPanel Orientation="Horizontal">
@@ -8053,7 +8091,8 @@
                                                 </DataTemplate>
                                             </ComboBoxItem.ContentTemplate>
                                         </ComboBoxItem>
-                                        <ComboBoxItem Content="{Binding Pad_Lighting_PlayerLed_P4, Source={x:Static strings:Strings.Instance}}">
+                                        <ComboBoxItem Content="{Binding Pad_Lighting_PlayerLed_P4, Source={x:Static strings:Strings.Instance}}"
+                                                      Tag="{x:Static vm:PlayerLedMode.Player4}">
                                             <ComboBoxItem.ContentTemplate>
                                                 <DataTemplate>
                                                     <StackPanel Orientation="Horizontal">
@@ -8069,7 +8108,8 @@
                                                 </DataTemplate>
                                             </ComboBoxItem.ContentTemplate>
                                         </ComboBoxItem>
-                                        <ComboBoxItem Content="{Binding Pad_Lighting_PlayerLed_All, Source={x:Static strings:Strings.Instance}}">
+                                        <ComboBoxItem Content="{Binding Pad_Lighting_PlayerLed_All, Source={x:Static strings:Strings.Instance}}"
+                                                      Tag="{x:Static vm:PlayerLedMode.All}">
                                             <ComboBoxItem.ContentTemplate>
                                                 <DataTemplate>
                                                     <StackPanel Orientation="Horizontal">

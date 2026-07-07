@@ -742,6 +742,7 @@ public class Strings : INotifyPropertyChanged
     public string Pad_Lighting_LedBrightness => Get("Pad_Lighting_LedBrightness");
     public string Pad_Lighting_PlayerLed_Mode => Get("Pad_Lighting_PlayerLed_Mode");
     public string Pad_Lighting_PlayerLed_Off => Get("Pad_Lighting_PlayerLed_Off");
+    public string Pad_Lighting_PlayerLed_PlayerNumber => Get("Pad_Lighting_PlayerLed_PlayerNumber");
     public string Pad_Lighting_PlayerLed_P1 => Get("Pad_Lighting_PlayerLed_P1");
     public string Pad_Lighting_PlayerLed_P2 => Get("Pad_Lighting_PlayerLed_P2");
     public string Pad_Lighting_PlayerLed_P3 => Get("Pad_Lighting_PlayerLed_P3");
@@ -768,6 +769,7 @@ public class Strings : INotifyPropertyChanged
     public string Pad_Lighting_AudioLightbar_MidToHigh => Get("Pad_Lighting_AudioLightbar_MidToHigh");
     public string Pad_Lighting_Mode => Get("Pad_Lighting_Mode");
     public string Pad_Lighting_Mode_Off => Get("Pad_Lighting_Mode_Off");
+    public string Pad_Lighting_Mode_PlayerNumber => Get("Pad_Lighting_Mode_PlayerNumber");
     public string Pad_Lighting_Mode_Static => Get("Pad_Lighting_Mode_Static");
     public string Pad_Lighting_Mode_Breathing => Get("Pad_Lighting_Mode_Breathing");
     public string Pad_Lighting_Mode_Rainbow => Get("Pad_Lighting_Mode_Rainbow");

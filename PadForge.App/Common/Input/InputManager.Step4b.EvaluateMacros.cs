@@ -2028,26 +2028,32 @@ namespace PadForge.Common.Input
 
         /// <summary>Apply a macro LightbarModeSet target to one device's
         /// config, translating the legacy InputReactive* values into
-        /// the v3.2+ overlay model: LightbarMode = Off, InputReactiveMode
-        /// = corresponding overlay variant. Non-reactive base modes set
-        /// LightbarMode directly and leave the overlay alone (so users
-        /// can layer macros — e.g. macro switches base to Rainbow while
-        /// the user's overlay continues to flash on each press).</summary>
+        /// the v3.2+ overlay model: LightbarMode parked at the
+        /// PlayerNumber default, InputReactiveMode = corresponding
+        /// overlay variant. The parking mirrors the loader's LightingRev
+        /// migration in SettingsService.ApplyPlayStationConfigData: the
+        /// v4 idle base is the player floor, and a macro that wants the
+        /// old black base can target the now-deliberate Off instead.
+        /// Non-reactive base modes (including Off = hard black and
+        /// PlayerNumber = the floor) set LightbarMode directly and
+        /// leave the overlay alone, so users can layer macros. A macro
+        /// can switch the base to Rainbow while the user's overlay
+        /// continues to flash on each press.</summary>
         private static void ApplyLightbarModeSetMigrated(PlayStationSlotConfig devCfg, LightbarMode target)
         {
             switch (target)
             {
                 case LightbarMode.InputReactive:
                     devCfg.InputReactiveMode = InputReactiveMode.Random;
-                    devCfg.LightbarMode = LightbarMode.Off;
+                    devCfg.LightbarMode = LightbarMode.PlayerNumber;
                     break;
                 case LightbarMode.InputReactiveCycle:
                     devCfg.InputReactiveMode = InputReactiveMode.Cycle;
-                    devCfg.LightbarMode = LightbarMode.Off;
+                    devCfg.LightbarMode = LightbarMode.PlayerNumber;
                     break;
                 case LightbarMode.InputReactiveFixed:
                     devCfg.InputReactiveMode = InputReactiveMode.Fixed;
-                    devCfg.LightbarMode = LightbarMode.Off;
+                    devCfg.LightbarMode = LightbarMode.PlayerNumber;
                     break;
                 default:
                     devCfg.LightbarMode = target;

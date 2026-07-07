@@ -498,10 +498,12 @@ namespace PadForge.ViewModels
             return list;
         }
 
-        private PlayerLedMode _playerLedMode;
+        private PlayerLedMode _playerLedMode = PlayerLedMode.PlayerNumber;
         /// <summary>Bottom-row player indicator LEDs (1-5 small white
-        /// LEDs below the touchpad). Off = all dark; PlayerN = the
-        /// canonical player-slot pattern; All = every LED lit.
+        /// LEDs below the touchpad). PlayerNumber (default, #191) = the
+        /// pattern for the virtual controller's number; Off = all dark
+        /// (the stealth choice); PlayerN = a fixed pattern; All = every
+        /// LED lit.
         /// Bit pattern at byte 43 per dualsense-tester:
         /// Off=0x00, P1=0x04, P2=0x0A, P3=0x15, P4=0x1B, All=0x1F.</summary>
         public PlayerLedMode PlayerLedMode
@@ -528,13 +530,16 @@ namespace PadForge.ViewModels
         //  LightbarMode if LightbarMode is at its default).
         // ────────────────────────────────────────────────
 
-        private LightbarMode _lightbarMode = LightbarMode.Off;
-        /// <summary>Active lightbar BASE effect. Off means PadForge
-        /// does not author the lightbar at all (game owns it). Animated
-        /// modes (Breathing / Rainbow / ColorCycle / Audio*) run on the
-        /// dispatcher's periodic timer. The InputReactive* values still
-        /// live in the enum for XML round-trip but are migrated on load
-        /// to <see cref="InputReactiveMode"/>; see SettingsService's
+        private LightbarMode _lightbarMode = LightbarMode.PlayerNumber;
+        /// <summary>Active lightbar BASE effect. PlayerNumber (default,
+        /// #191) idles on the Sony player color for the virtual
+        /// controller's number and lets a game's write persist for the
+        /// session. Off is a deliberate hard-off that paints black every
+        /// dispatch (the stealth choice). Animated modes (Breathing /
+        /// Rainbow / ColorCycle / Audio*) run on the dispatcher's
+        /// periodic timer. The InputReactive* values still live in the
+        /// enum for XML round-trip but are migrated on load to
+        /// <see cref="InputReactiveMode"/>; see SettingsService's
         /// ApplyPlayStationConfigData.</summary>
         public LightbarMode LightbarMode
         {
@@ -1174,7 +1179,7 @@ namespace PadForge.ViewModels
         public RelayCommand ResetLightbarAllCommand =>
             _resetLightbarAll ??= new RelayCommand(() =>
             {
-                LightbarMode = LightbarMode.Off;
+                LightbarMode = LightbarMode.PlayerNumber;
                 InputReactiveMode = InputReactiveMode.Off;
                 LightbarRed = 0;
                 LightbarGreen = 0;
@@ -1208,7 +1213,7 @@ namespace PadForge.ViewModels
             _resetIndicatorLedsAll ??= new RelayCommand(() =>
             {
                 PlayerLedBrightness = PlayerLedBrightness.High;
-                PlayerLedMode = PlayerLedMode.Off;
+                PlayerLedMode = PlayerLedMode.PlayerNumber;
                 MicLedMode = MicLedMode.Off;
             });
         private RelayCommand _resetIndicatorLedsAll;
@@ -1264,7 +1269,7 @@ namespace PadForge.ViewModels
         // reset always lands on the same value a fresh slot starts at.
 
         public RelayCommand ResetLightbarModeCommand =>
-            _resetLightbarMode ??= new RelayCommand(() => LightbarMode = LightbarMode.Off);
+            _resetLightbarMode ??= new RelayCommand(() => LightbarMode = LightbarMode.PlayerNumber);
         private RelayCommand _resetLightbarMode;
 
         public RelayCommand ResetInputReactiveModeCommand =>
@@ -1286,7 +1291,7 @@ namespace PadForge.ViewModels
         private RelayCommand _resetPlayerLedBrightness;
 
         public RelayCommand ResetPlayerLedModeCommand =>
-            _resetPlayerLedMode ??= new RelayCommand(() => PlayerLedMode = PlayerLedMode.Off);
+            _resetPlayerLedMode ??= new RelayCommand(() => PlayerLedMode = PlayerLedMode.PlayerNumber);
         private RelayCommand _resetPlayerLedMode;
 
         public RelayCommand ResetMicLedModeCommand =>
@@ -1418,12 +1423,20 @@ namespace PadForge.ViewModels
     /// independently by the synthesizer.</summary>
     public enum PlayerLedMode
     {
+        /// <summary>All pips dark. A deliberate choice since the
+        /// PlayerNumber default landed: pre-v4 saves that stored Off
+        /// meant "unset" and are lifted to PlayerNumber on load
+        /// (LightingRev 0 migration in ApplyPlayStationConfigData).</summary>
         Off = 0,
         Player1 = 1,
         Player2 = 2,
         Player3 = 3,
         Player4 = 4,
         All = 5,
+        /// <summary>Default (#191): the pips idle showing the virtual
+        /// controller's player number. Appended after All. Macro cycle
+        /// CSVs persist enum ints, so existing values never renumber.</summary>
+        PlayerNumber = 6,
     }
 
     /// <summary>Player indicator brightness at byte 42 (ledBrightness).
@@ -1524,6 +1537,15 @@ namespace PadForge.ViewModels
         // v3.3+ additions
         Battery = 14,                 // gradient between Battery Low / High colors driven by current battery level
         Strobe = 15,                  // square-wave on/off at LightbarPeriodMs cadence using LightbarRed/Green/Blue
+        /// <summary>Default (#191): the lightbar idles showing the Sony
+        /// player color for the virtual controller's number; a game
+        /// writing lighting takes over and its last write persists for
+        /// the session. Off (above) is now a deliberate hard-off that
+        /// paints black. Pre-v4 saves that stored Off meant "unset" and
+        /// are lifted to this value on load (LightingRev 0 migration).
+        /// Appended after Strobe. Macro cycle CSVs persist enum ints,
+        /// so existing values never renumber.</summary>
+        PlayerNumber = 16,
     }
 
     /// <summary>Input-reactive overlay variant. Independent of the
@@ -1660,6 +1682,17 @@ namespace PadForge.ViewModels
         /// flash over a static / animated base. Defaults to Off so
         /// older saves load with no behavior change.</summary>
         [XmlAttribute] public InputReactiveMode InputReactiveMode { get; set; } = InputReactiveMode.Off;
+
+        /// <summary>Lighting schema revision (#191 follow-up). 0 = the
+        /// save predates the PlayerNumber default, when Off doubled as
+        /// "unset": the loader lifts Off to PlayerNumber for both
+        /// LightbarMode and PlayerLedMode and still runs the v3.0
+        /// LightbarEnabled / AudioLightbarEnabled fallback. 1 = the
+        /// save wrote PlayerNumber-aware values: Off is a deliberate
+        /// hard-off and every mode is taken literally. The enum
+        /// defaults above stay at Off so attribute-absent old saves
+        /// resolve through the same rev-0 path.</summary>
+        [XmlAttribute] public int LightingRev { get; set; }
 
         /// <summary>Per-press flash color used by
         /// <see cref="InputReactiveMode.Fixed"/>. Kept separate from

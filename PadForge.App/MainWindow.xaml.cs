@@ -2725,15 +2725,52 @@ namespace PadForge
                 card.SetResourceReference(System.Windows.Controls.Border.BorderBrushProperty, "ControlStrokeColorDefaultBrush");
             }
 
-            // Persistent selection bloom: the controller whose pad page is in
-            // focus wears a strong static ember glow, reading at least as
-            // clearly as a hover. One Effect per element, so on a lit card this
-            // supersedes the breathing heat ring for the selected slot only.
-            // RefreshControllerSelectionVisuals rebuilds the two affected cards
-            // on a selection change so this recomputes.
-            if (IsControllerTagSelected(navItem.Tag)
-                && TryFindResource("EmberHoverGlow") is System.Windows.Media.Effects.Effect selectionGlow)
-                card.Effect = selectionGlow;
+            // Selection = focus. The focused controller's card gets an
+            // unmistakable marker: a bright heat-colored border (the rail can't
+            // clip a border, unlike a drop shadow) PLUS a strong pulsing bloom
+            // whose color and pace track the controller's activation, so the
+            // selected card signals both "you are here" and how live the slot
+            // is: ember and quick when live, gold and slower when idle, dim and
+            // slowest when disabled. This overrides the resting heat ring on the
+            // selected card (one Effect slot per element).
+            // RefreshControllerSelectionVisuals rebuilds just the two affected
+            // cards on a selection change.
+            if (IsControllerTagSelected(navItem.Tag))
+            {
+                var selColor = cooling
+                    ? System.Windows.Media.Color.FromRgb(0xE8, 0xB4, 0x34)   // gold, idle
+                    : System.Windows.Media.Color.FromRgb(0xFF, 0x6B, 0x2C);  // ember, live/disabled
+                card.BorderBrush = new System.Windows.Media.SolidColorBrush(selColor);
+                card.BorderThickness = new Thickness(2);
+                var selGlow = new System.Windows.Media.Effects.DropShadowEffect
+                {
+                    Color = selColor,
+                    BlurRadius = 24,
+                    ShadowDepth = 0,
+                    Opacity = 0.6,
+                };
+                card.Effect = selGlow;
+                if (MotionEnabled)
+                {
+                    double lo = lit ? 0.55 : cooling ? 0.45 : 0.35;
+                    double hi = lit ? 0.95 : cooling ? 0.80 : 0.60;
+                    double periodMs = lit ? 1100 : cooling ? 1600 : 2200;
+                    var pulse = new System.Windows.Media.Animation.DoubleAnimation(lo, hi,
+                        System.TimeSpan.FromMilliseconds(periodMs))
+                    {
+                        AutoReverse = true,
+                        RepeatBehavior = System.Windows.Media.Animation.RepeatBehavior.Forever,
+                        EasingFunction = new System.Windows.Media.Animation.SineEase
+                        { EasingMode = System.Windows.Media.Animation.EasingMode.EaseInOut },
+                        // Phase-lock to a wall-clock grid so a rebuild never
+                        // snaps the pulse back to its trough (AutoReverse doubles
+                        // the visible period).
+                        BeginTime = System.TimeSpan.FromMilliseconds(
+                            -(System.DateTime.UtcNow.TimeOfDay.TotalMilliseconds % (periodMs * 2.0))),
+                    };
+                    selGlow.BeginAnimation(System.Windows.Media.Effects.DropShadowEffect.OpacityProperty, pulse);
+                }
+            }
 
             if (!navItem.IsEnabled)
                 card.Opacity = 0.6;
@@ -2901,10 +2938,13 @@ namespace PadForge
                     lift.BeginAnimation(System.Windows.Media.TranslateTransform.YProperty,
                         new System.Windows.Media.Animation.DoubleAnimation(0, System.TimeSpan.FromMilliseconds(250))
                         { EasingFunction = new System.Windows.Media.Animation.CubicEase { EasingMode = System.Windows.Media.Animation.EasingMode.EaseIn } });
-                // Once the transient hover bloom lifts, restore the persistent
+                // Once the transient hover bloom lifts, restore the pulsing
                 // selection glow (or clear it).
                 if (ReferenceEquals(icon.Effect, hoverGlow))
-                    icon.Effect = IsControllerTagSelected(nvi.Tag?.ToString()) ? ControllerSelectionGlow() : null;
+                {
+                    if (IsControllerTagSelected(nvi.Tag?.ToString())) SyncCollapsedIconSelection(nvi);
+                    else icon.Effect = null;
+                }
             };
         }
 
@@ -2913,20 +2953,40 @@ namespace PadForge
         private bool IsControllerTagSelected(string tag)
             => tag != null && tag.StartsWith("Pad") && tag == _viewModel.SelectedNavTag;
 
-        /// <summary>The strong persistent ember bloom worn by the selected
-        /// controller's card and collapsed icon. Matches the dashboard card's
-        /// hover glow, hotter than the neutral pill hover.</summary>
-        private System.Windows.Media.Effects.Effect ControllerSelectionGlow()
-            => TryFindResource("EmberHoverGlow") as System.Windows.Media.Effects.Effect;
-
-        /// <summary>Applies or clears the persistent selection glow on a
-        /// controller item's COLLAPSED icon. The icon's Effect slot is free
-        /// (the flame bloom is baked into the bitmap), so it takes the glow
-        /// directly.</summary>
+        /// <summary>Applies or clears the pulsing selection glow on a controller
+        /// item's COLLAPSED icon. The icon's Effect slot is free (the flame
+        /// bloom is baked into the bitmap), so it takes an animated ember bloom
+        /// directly, matching the expanded pill's selection pulse.</summary>
         private void SyncCollapsedIconSelection(NavigationViewItem nvi)
         {
-            if (nvi.Icon is System.Windows.FrameworkElement icon)
-                icon.Effect = IsControllerTagSelected(nvi.Tag?.ToString()) ? ControllerSelectionGlow() : null;
+            if (nvi.Icon is not System.Windows.FrameworkElement icon) return;
+            if (!IsControllerTagSelected(nvi.Tag?.ToString()))
+            {
+                icon.Effect = null;
+                return;
+            }
+            var glow = new System.Windows.Media.Effects.DropShadowEffect
+            {
+                Color = System.Windows.Media.Color.FromRgb(0xFF, 0x6B, 0x2C),
+                BlurRadius = 16,
+                ShadowDepth = 0,
+                Opacity = 0.6,
+            };
+            icon.Effect = glow;
+            if (MotionEnabled)
+            {
+                var pulse = new System.Windows.Media.Animation.DoubleAnimation(0.5, 0.95,
+                    System.TimeSpan.FromMilliseconds(1200))
+                {
+                    AutoReverse = true,
+                    RepeatBehavior = System.Windows.Media.Animation.RepeatBehavior.Forever,
+                    EasingFunction = new System.Windows.Media.Animation.SineEase
+                    { EasingMode = System.Windows.Media.Animation.EasingMode.EaseInOut },
+                    BeginTime = System.TimeSpan.FromMilliseconds(
+                        -(System.DateTime.UtcNow.TimeOfDay.TotalMilliseconds % 2400.0)),
+                };
+                glow.BeginAnimation(System.Windows.Media.Effects.DropShadowEffect.OpacityProperty, pulse);
+            }
         }
 
         // The controller tag currently wearing the selection glow (null when a

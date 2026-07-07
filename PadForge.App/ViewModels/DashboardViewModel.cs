@@ -85,7 +85,24 @@ namespace PadForge.ViewModels
                     SlotSummaries[i].SlotLabel = label;
             }
 
+            // Re-apply the focus selection to (possibly rebuilt) summaries so a
+            // structural refresh never drops the selected card's glow.
+            foreach (var s in SlotSummaries)
+                s.IsSelected = s.PadIndex == _selectedPadIndex;
+
             ShowAddController = canAddMore;
+        }
+
+        private int _selectedPadIndex = -1;
+
+        /// <summary>Marks the slot whose pad page is in focus so its card wears
+        /// the persistent selection glow. -1 clears it. Remembered so a later
+        /// RefreshActiveSlots rebuild re-applies the flag to fresh summaries.</summary>
+        public void SetSelectedPad(int padIndex)
+        {
+            _selectedPadIndex = padIndex;
+            foreach (var s in SlotSummaries)
+                s.IsSelected = s.PadIndex == padIndex;
         }
 
         // ─────────────────────────────────────────────
@@ -554,6 +571,18 @@ namespace PadForge.ViewModels
         {
             get => _isActive;
             set => SetProperty(ref _isActive, value);
+        }
+
+        private bool _isSelected;
+
+        /// <summary>Whether this slot's pad page is the one currently in focus.
+        /// Drives the persistent selection glow on the card. Set from
+        /// DashboardViewModel.SetSelectedPad on navigation, NOT the same as
+        /// IsActive (online device).</summary>
+        public bool IsSelected
+        {
+            get => _isSelected;
+            set => SetProperty(ref _isSelected, value);
         }
 
         private bool _isVirtualControllerConnected;

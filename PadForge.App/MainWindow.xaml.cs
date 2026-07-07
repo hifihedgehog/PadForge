@@ -2243,7 +2243,10 @@ namespace PadForge
                             // bitmap, so its flame heat only tracks state
                             // if the icon re-renders here too.
                             if (!NavView.IsPaneOpen)
+                            {
                                 capturedMenuItem.Icon = RenderCompactCardIcon(capturedNavItem);
+                                SyncCollapsedIconSelection(capturedMenuItem);
+                            }
                         }
                     };
                     navItem.PropertyChanged += handler;
@@ -2305,7 +2308,10 @@ namespace PadForge
             System.Windows.Automation.AutomationProperties.SetName(menuItem, navItem.Tag);
             UpdateControllerNavItemContent(menuItem, navItem);
             if (collapsed)
+            {
                 menuItem.Icon = RenderCompactCardIcon(navItem);
+                SyncCollapsedIconSelection(menuItem);
+            }
             return menuItem;
         }
 
@@ -2718,6 +2724,17 @@ namespace PadForge
             {
                 card.SetResourceReference(System.Windows.Controls.Border.BorderBrushProperty, "ControlStrokeColorDefaultBrush");
             }
+
+            // Persistent selection bloom: the controller whose pad page is in
+            // focus wears a strong static ember glow, reading at least as
+            // clearly as a hover. One Effect per element, so on a lit card this
+            // supersedes the breathing heat ring for the selected slot only.
+            // RefreshControllerSelectionVisuals rebuilds the two affected cards
+            // on a selection change so this recomputes.
+            if (IsControllerTagSelected(navItem.Tag)
+                && TryFindResource("EmberHoverGlow") is System.Windows.Media.Effects.Effect selectionGlow)
+                card.Effect = selectionGlow;
+
             if (!navItem.IsEnabled)
                 card.Opacity = 0.6;
 
@@ -2796,6 +2813,7 @@ namespace PadForge
                             // Render compact card to bitmap and set as Icon
                             // (WPF UI only shows Icon in compact mode, not Content).
                             nvi.Icon = RenderCompactCardIcon(navItem);
+                            SyncCollapsedIconSelection(nvi);
                             // Reset margin for compact mode so the item doesn't extend outside pane.
                             nvi.Margin = new Thickness(0);
                         }
@@ -2858,7 +2876,7 @@ namespace PadForge
         /// handlers resolve nvi.Icon at hover time rather than capturing it.</summary>
         private void AttachCollapsedIconHover(NavigationViewItem nvi)
         {
-            var glow = TryFindResource("NeutralHoverGlow") as System.Windows.Media.Effects.Effect;
+            var hoverGlow = TryFindResource("NeutralHoverGlow") as System.Windows.Media.Effects.Effect;
             nvi.MouseEnter += (s, e) =>
             {
                 if (NavView.IsPaneOpen) return;
@@ -2871,7 +2889,10 @@ namespace PadForge
                 lift.BeginAnimation(System.Windows.Media.TranslateTransform.YProperty,
                     new System.Windows.Media.Animation.DoubleAnimation(-2, System.TimeSpan.FromMilliseconds(130))
                     { EasingFunction = new System.Windows.Media.Animation.CubicEase { EasingMode = System.Windows.Media.Animation.EasingMode.EaseOut } });
-                if (glow != null) icon.Effect = glow;
+                // A selected icon already wears the stronger selection glow, so
+                // only unselected icons take the faint hover bloom.
+                if (!IsControllerTagSelected(nvi.Tag?.ToString()) && hoverGlow != null)
+                    icon.Effect = hoverGlow;
             };
             nvi.MouseLeave += (s, e) =>
             {
@@ -2880,8 +2901,66 @@ namespace PadForge
                     lift.BeginAnimation(System.Windows.Media.TranslateTransform.YProperty,
                         new System.Windows.Media.Animation.DoubleAnimation(0, System.TimeSpan.FromMilliseconds(250))
                         { EasingFunction = new System.Windows.Media.Animation.CubicEase { EasingMode = System.Windows.Media.Animation.EasingMode.EaseIn } });
-                if (ReferenceEquals(icon.Effect, glow)) icon.Effect = null;
+                // Once the transient hover bloom lifts, restore the persistent
+                // selection glow (or clear it).
+                if (ReferenceEquals(icon.Effect, hoverGlow))
+                    icon.Effect = IsControllerTagSelected(nvi.Tag?.ToString()) ? ControllerSelectionGlow() : null;
             };
+        }
+
+        /// <summary>True when this tag is the focused controller page (a "PadN"
+        /// tag equal to the app-wide selection).</summary>
+        private bool IsControllerTagSelected(string tag)
+            => tag != null && tag.StartsWith("Pad") && tag == _viewModel.SelectedNavTag;
+
+        /// <summary>The strong persistent ember bloom worn by the selected
+        /// controller's card and collapsed icon. Matches the dashboard card's
+        /// hover glow, hotter than the neutral pill hover.</summary>
+        private System.Windows.Media.Effects.Effect ControllerSelectionGlow()
+            => TryFindResource("EmberHoverGlow") as System.Windows.Media.Effects.Effect;
+
+        /// <summary>Applies or clears the persistent selection glow on a
+        /// controller item's COLLAPSED icon. The icon's Effect slot is free
+        /// (the flame bloom is baked into the bitmap), so it takes the glow
+        /// directly.</summary>
+        private void SyncCollapsedIconSelection(NavigationViewItem nvi)
+        {
+            if (nvi.Icon is System.Windows.FrameworkElement icon)
+                icon.Effect = IsControllerTagSelected(nvi.Tag?.ToString()) ? ControllerSelectionGlow() : null;
+        }
+
+        // The controller tag currently wearing the selection glow (null when a
+        // non-controller page is focused), for change-gated re-glowing.
+        private string _glowSelectedControllerTag;
+
+        /// <summary>On a controller selection change, re-glows just the two
+        /// affected pills: the newly focused one gains the selection bloom, the
+        /// previously focused one reverts. The expanded card recomputes its
+        /// Effect via a Content rebuild (the heat ring and selection glow share
+        /// the one Effect slot); the collapsed icon is set directly.</summary>
+        private void RefreshControllerSelectionVisuals()
+        {
+            if (_navDashboard == null) return;
+            string sel = _viewModel.SelectedNavTag;
+            if (sel == null || !sel.StartsWith("Pad")) sel = null;
+            if (sel == _glowSelectedControllerTag) return;
+            string prev = _glowSelectedControllerTag;
+            _glowSelectedControllerTag = sel;
+
+            foreach (var mi in NavView.MenuItems)
+            {
+                if (mi is not NavigationViewItem nvi) continue;
+                var t = nvi.Tag?.ToString();
+                if (t == null || !t.StartsWith("Pad")) continue;
+                if (t != prev && t != sel) continue;
+
+                NavControllerItemViewModel navItem = null;
+                if (_viewModel.NavControllerItems != null)
+                    foreach (var n in _viewModel.NavControllerItems)
+                        if (n.Tag == t) { navItem = n; break; }
+                if (navItem != null) UpdateControllerNavItemContent(nvi, navItem);
+                SyncCollapsedIconSelection(nvi);
+            }
         }
 
         /// <summary>Unasserts the WPF-UI NavigationViewItem's built-in row
@@ -4792,6 +4871,9 @@ namespace PadForge
             // Update ViewModel navigation state.
             _viewModel.SelectedNavTag = tag;
 
+            // Re-glow the drawer's selected controller card + collapsed icon.
+            RefreshControllerSelectionVisuals();
+
             // Swap visible page.
             DashboardPageView.Visibility = tag == "Dashboard" ? Visibility.Visible : Visibility.Collapsed;
             DevicesPageView.Visibility = tag == "Devices" ? Visibility.Visible : Visibility.Collapsed;
@@ -4801,6 +4883,13 @@ namespace PadForge
 
             bool isPad = tag.StartsWith("Pad") && tag.Length >= 4 && int.TryParse(tag.Substring(3), out _);
             PadPageView.Visibility = isPad ? Visibility.Visible : Visibility.Collapsed;
+
+            // Mirror the focused controller onto the Dashboard so its card wears
+            // the same selection glow (-1 = no controller focused).
+            int selectedPadIndex = -1;
+            if (isPad && int.TryParse(tag.Substring(3), out int selPad1Based))
+                selectedPadIndex = selPad1Based - 1;
+            _viewModel.Dashboard?.SetSelectedPad(selectedPadIndex);
 
             // Update PadPage DataContext to the selected pad.
             if (isPad)
@@ -6282,21 +6371,41 @@ namespace PadForge
             }
         }
 
+        // Last MIDI-installed state the drawer cards were rendered against.
+        // null until the first status sweep records the baseline.
+        private bool? _lastMidiInstalledForNav;
+
         private void RefreshMidiServicesStatus()
         {
+            bool installed = false;
             try
             {
-                bool installed = DriverInstaller.IsMidiServicesInstalled();
+                installed = DriverInstaller.IsMidiServicesInstalled();
                 _viewModel.Settings.IsMidiServicesInstalled = installed;
                 _viewModel.Dashboard.IsMidiServicesInstalled = installed;
                 _viewModel.Settings.MidiServicesVersion = installed ? "Windows MIDI Services" : string.Empty;
             }
             catch
             {
+                installed = false;
                 _viewModel.Settings.IsMidiServicesInstalled = false;
                 _viewModel.Dashboard.IsMidiServicesInstalled = false;
             }
-            if (_navDashboard != null) RefreshControllerNavItemsInPlace();
+
+            // The drawer pills reflect MIDI availability only through the MIDI
+            // type tile's enabled state. RefreshControllerNavItemsInPlace tears
+            // down and rebuilds every pill's whole Content subtree (restarting
+            // the breathing heat ring and hover transforms), so calling it on
+            // the always-on 5 s lane produced a visible ~5 s "bounce". Rebuild
+            // only when the installed state actually flips. The first sweep
+            // just records the baseline: the cards were already built against
+            // the current state at startup, so no rebuild is needed for it.
+            if (_navDashboard != null && _lastMidiInstalledForNav != installed)
+            {
+                bool firstSweep = _lastMidiInstalledForNav == null;
+                _lastMidiInstalledForNav = installed;
+                if (!firstSweep) RefreshControllerNavItemsInPlace();
+            }
         }
 
     }

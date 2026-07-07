@@ -600,6 +600,9 @@
   <data name="Curve_Delay" xml:space="preserve"><value>Ritardo</value></data>
   <data name="Curve_Custom" xml:space="preserve"><value>Personalizzato</value></data>
   <data name="Pad_CalibrateCenter" xml:space="preserve"><value>Calibra centro</value></data>
+  <data name="Pad_Sticks_Section_CenterPoint" xml:space="preserve"><value>Punto centrale</value></data>
+  <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>Zona morta</value></data>
+  <data name="Pad_Sticks_Section_Range" xml:space="preserve"><value>Range</value></data>
   <data name="Pad_Sampling" xml:space="preserve"><value>Campionamento...</value></data>
   <data name="Pad_CenterOffsetX" xml:space="preserve"><value>Offset centro X</value></data>
   <data name="Pad_CenterOffsetY" xml:space="preserve"><value>Offset centro Y</value></data>

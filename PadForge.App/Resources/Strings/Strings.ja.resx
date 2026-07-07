@@ -600,6 +600,9 @@
   <data name="Curve_Delay" xml:space="preserve"><value>ディレイ</value></data>
   <data name="Curve_Custom" xml:space="preserve"><value>カスタム</value></data>
   <data name="Pad_CalibrateCenter" xml:space="preserve"><value>中心をキャリブレーション</value></data>
+  <data name="Pad_Sticks_Section_CenterPoint" xml:space="preserve"><value>中心点</value></data>
+  <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>デッドゾーン</value></data>
+  <data name="Pad_Sticks_Section_Range" xml:space="preserve"><value>範囲</value></data>
   <data name="Pad_Sampling" xml:space="preserve"><value>サンプリング中...</value></data>
   <data name="Pad_CenterOffsetX" xml:space="preserve"><value>中心オフセット X</value></data>
   <data name="Pad_CenterOffsetY" xml:space="preserve"><value>中心オフセット Y</value></data>

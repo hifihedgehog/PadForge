@@ -1371,7 +1371,7 @@
   <data name="Pad_Lighting" xml:space="preserve"><value>Verlichting</value></data>
   <data name="Pad_Lighting_Header" xml:space="preserve"><value>Verlichting</value></data>
   <data name="Pad_Lighting_Subtitle" xml:space="preserve"><value>Stelt de basiskleur van de lightbar en het audiogedrag in op de toegewezen fysieke controller. Game-schrijfacties winnen altijd. Gebruikersinstellingen gelden wanneer geen spel de lightbar aanstuurt.</value></data>
-  <data name="Pad_Lighting_PlayerIdle_Hint" xml:space="preserve"><value>Zolang de instellingen hier op Uit staan, toont de pad in rust de spelersidentiteit van zijn virtuele controller: de Sony-spelerkleur op de lightbar (1 blauw, 2 rood, 3 groen, 4 roze) en op een DualSense de bijbehorende speler-leds. Alle apparaten op dezelfde virtuele controller tonen hetzelfde nummer. Games nemen het over zodra ze verlichting schrijven, en wat je hier instelt wint altijd.</value></data>
+  <data name="Pad_Lighting_PlayerIdle_Hint" xml:space="preserve"><value>Zolang Spelersnummer is gekozen, toont de pad in rust de spelersidentiteit van zijn virtuele controller: de Sony-spelerkleur op de lightbar (1 blauw, 2 rood, 3 groen, 4 roze) en op een DualSense de bijbehorende speler-leds. Alle apparaten op dezelfde virtuele controller tonen hetzelfde nummer. Games nemen het over zodra ze verlichting schrijven, wat je hier instelt wint altijd, en Uit maakt dat licht volledig donker.</value></data>
   <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>Lightbar</value></data>
   <data name="Pad_Lighting_BaseEnabled" xml:space="preserve"><value>Pas door de gebruiker geconfigureerde basiskleur toe wanneer geen spel schrijft</value></data>
   <data name="Pad_Lighting_Red" xml:space="preserve"><value>Rood</value></data>
@@ -1402,6 +1402,7 @@
   <data name="Pad_Lighting_LedBrightness" xml:space="preserve"><value>LED-helderheid</value></data>
   <data name="Pad_Lighting_PlayerLed_Mode" xml:space="preserve"><value>Patroon</value></data>
   <data name="Pad_Lighting_PlayerLed_Off" xml:space="preserve"><value>Uit</value></data>
+  <data name="Pad_Lighting_PlayerLed_PlayerNumber" xml:space="preserve"><value>Spelersnummer (standaard)</value></data>
   <data name="Pad_Lighting_PlayerLed_P1" xml:space="preserve"><value>Speler 1</value></data>
   <data name="Pad_Lighting_PlayerLed_P2" xml:space="preserve"><value>Speler 2</value></data>
   <data name="Pad_Lighting_PlayerLed_P3" xml:space="preserve"><value>Speler 3</value></data>
@@ -1427,7 +1428,8 @@
   <data name="Pad_Lighting_AudioLightbar_LowToMid" xml:space="preserve"><value>Zacht → Middel bij</value></data>
   <data name="Pad_Lighting_AudioLightbar_MidToHigh" xml:space="preserve"><value>Middel → Luid bij</value></data>
   <data name="Pad_Lighting_Mode" xml:space="preserve"><value>Modus</value></data>
-  <data name="Pad_Lighting_Mode_Off" xml:space="preserve"><value>Uit (spel beheert de lightbar)</value></data>
+  <data name="Pad_Lighting_Mode_Off" xml:space="preserve"><value>Uit</value></data>
+  <data name="Pad_Lighting_Mode_PlayerNumber" xml:space="preserve"><value>Spelersnummer (standaard)</value></data>
   <data name="Pad_Lighting_Mode_Static" xml:space="preserve"><value>Statische kleur</value></data>
   <data name="Pad_Lighting_Mode_Breathing" xml:space="preserve"><value>Ademen (één kleur dimt)</value></data>
   <data name="Pad_Lighting_Mode_Rainbow" xml:space="preserve"><value>Regenboogcyclus</value></data>

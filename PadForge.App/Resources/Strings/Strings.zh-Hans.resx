@@ -1350,7 +1350,7 @@
   <data name="Pad_Lighting" xml:space="preserve"><value>灯光</value></data>
   <data name="Pad_Lighting_Header" xml:space="preserve"><value>灯光</value></data>
   <data name="Pad_Lighting_Subtitle" xml:space="preserve"><value>设置已分配的物理手柄的灯条基础颜色和音频行为。游戏写入始终优先。当无游戏驱动灯条时,用户设置生效。</value></data>
-  <data name="Pad_Lighting_PlayerIdle_Hint" xml:space="preserve"><value>当此处的设置为关闭时，手柄空闲状态会显示其虚拟控制器的玩家身份：灯条显示索尼玩家颜色（1 蓝、2 红、3 绿、4 粉），DualSense 还会点亮对应的玩家指示灯。同一虚拟控制器下的所有设备显示相同编号。游戏写入灯光时由游戏接管，而此处的设置始终优先。</value></data>
+  <data name="Pad_Lighting_PlayerIdle_Hint" xml:space="preserve"><value>选择玩家编号时，手柄空闲状态会显示其虚拟控制器的玩家身份：灯条显示索尼玩家颜色（1 蓝、2 红、3 绿、4 粉），DualSense 还会点亮对应的玩家指示灯。同一虚拟控制器下的所有设备显示相同编号。游戏写入灯光时由游戏接管，此处的设置始终优先，选择关闭则该灯完全熄灭。</value></data>
   <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>灯条</value></data>
   <data name="Pad_Lighting_BaseEnabled" xml:space="preserve"><value>当无游戏写入时应用用户配置的基础颜色</value></data>
   <data name="Pad_Lighting_Red" xml:space="preserve"><value>红</value></data>
@@ -1381,6 +1381,7 @@
   <data name="Pad_Lighting_LedBrightness" xml:space="preserve"><value>LED 亮度</value></data>
   <data name="Pad_Lighting_PlayerLed_Mode" xml:space="preserve"><value>图案</value></data>
   <data name="Pad_Lighting_PlayerLed_Off" xml:space="preserve"><value>关闭</value></data>
+  <data name="Pad_Lighting_PlayerLed_PlayerNumber" xml:space="preserve"><value>玩家编号(默认)</value></data>
   <data name="Pad_Lighting_PlayerLed_P1" xml:space="preserve"><value>玩家 1</value></data>
   <data name="Pad_Lighting_PlayerLed_P2" xml:space="preserve"><value>玩家 2</value></data>
   <data name="Pad_Lighting_PlayerLed_P3" xml:space="preserve"><value>玩家 3</value></data>
@@ -1406,7 +1407,8 @@
   <data name="Pad_Lighting_AudioLightbar_LowToMid" xml:space="preserve"><value>弱 → 中 阈值</value></data>
   <data name="Pad_Lighting_AudioLightbar_MidToHigh" xml:space="preserve"><value>中 → 强 阈值</value></data>
   <data name="Pad_Lighting_Mode" xml:space="preserve"><value>模式</value></data>
-  <data name="Pad_Lighting_Mode_Off" xml:space="preserve"><value>关闭(游戏控制灯条)</value></data>
+  <data name="Pad_Lighting_Mode_Off" xml:space="preserve"><value>关闭</value></data>
+  <data name="Pad_Lighting_Mode_PlayerNumber" xml:space="preserve"><value>玩家编号(默认)</value></data>
   <data name="Pad_Lighting_Mode_Static" xml:space="preserve"><value>静态颜色</value></data>
   <data name="Pad_Lighting_Mode_Breathing" xml:space="preserve"><value>呼吸(单色渐隐渐显)</value></data>
   <data name="Pad_Lighting_Mode_Rainbow" xml:space="preserve"><value>彩虹循环</value></data>

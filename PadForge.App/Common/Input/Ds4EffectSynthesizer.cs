@@ -161,14 +161,16 @@ namespace PadForge.Common.Input
             out byte r, out byte g, out byte b)
         {
             // Player-identity idle floor (#191): when the lighting is
-            // fully unconfigured (no macro, mode Off, no reactive
-            // overlay), the lightbar shows the Sony player color for
-            // this pad's virtual controller number instead of the black
-            // this method used to paint. Everything configured keeps
-            // its existing priority below.
+            // fully unconfigured (no macro, mode at the PlayerNumber
+            // default, no reactive overlay), the lightbar shows the
+            // Sony player color for this pad's virtual controller
+            // number instead of the black this method used to paint.
+            // Everything configured keeps its existing priority below;
+            // the deliberate Off (stealth) resolves to black through
+            // the base-mode branch.
             bool unconfigured = cfg == null
                 || (cfg.ComputeMacroOverrideIntensity() <= 0f
-                    && cfg.LightbarMode == LightbarMode.Off
+                    && cfg.LightbarMode == LightbarMode.PlayerNumber
                     && cfg.InputReactiveMode == InputReactiveMode.Off);
             if (unconfigured)
             {
@@ -197,10 +199,18 @@ namespace PadForge.Common.Input
             }
 
             // Priority 2: configured base mode (animated / static / audio).
-            // Off collapses to a black base — the overlay below can still
-            // flash a reactive color over it.
+            // Off collapses to a black base; the overlay below can still
+            // flash a reactive color over it. PlayerNumber (reached here
+            // only when the overlay is active, else the unconfigured
+            // early-return above fired) keeps the floor color as the
+            // base so the flash decays back to the player identity.
             byte baseR = 0, baseG = 0, baseB = 0;
-            if (cfg.LightbarMode != LightbarMode.Off)
+            if (cfg.LightbarMode == LightbarMode.PlayerNumber)
+            {
+                if (playerNumber > 0)
+                    (baseR, baseG, baseB) = PlayerIdentityDefaults.ColorFor(playerNumber);
+            }
+            else if (cfg.LightbarMode != LightbarMode.Off)
             {
                 (baseR, baseG, baseB) = Ds5EffectSynthesizer.ComputeLightbarColorPublic(
                     cfg, audioPeak, nowMs, randomColor, pulseColor, pulseIntensity, batteryPercent);

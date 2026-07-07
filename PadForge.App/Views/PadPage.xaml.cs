@@ -2276,15 +2276,40 @@ namespace PadForge.Views
             Color bloomColor = baseColor;
             switch (cfg.LightbarMode)
             {
+                case ViewModels.LightbarMode.PlayerNumber:
+                {
+                    // #191 default: the idle floor. Preview the Sony
+                    // player color for this slot's virtual controller
+                    // number, under the GAME WRITES WIN token (a game's
+                    // write takes over and persists for the session).
+                    // The firmware table runs dim on purpose (0x40 peak
+                    // channel), so normalize to full brightness here so
+                    // the hue reads on screen the way the physical bar's
+                    // glow does.
+                    int player = SettingsManager.SlotOrders.GetGlobalSlotNumber(vm.PadIndex);
+                    var (pr, pg, pb) = PlayerIdentityDefaults.ColorFor(player);
+                    int peak = Math.Max(pr, Math.Max(pg, pb));
+                    Color pc = peak > 0
+                        ? Color.FromRgb(
+                            (byte)(pr * 0xFF / peak),
+                            (byte)(pg * 0xFF / peak),
+                            (byte)(pb * 0xFF / peak))
+                        : Color.FromRgb(0x58, 0xB6, 0xE4);
+                    fill = new SolidColorBrush(pc);
+                    bloomColor = pc;
+                    break;
+                }
+
                 case ViewModels.LightbarMode.Off:
-                    // PadForge does not author the bar (game writes win):
-                    // cold blue at low opacity under the GAME WRITES WIN
-                    // token. Replaces the old separate Off arc; the bloom
+                    // Deliberate hard-off (stealth): PadForge authors
+                    // black every dispatch, so the strips go dark. A
+                    // whisper of steel at low opacity keeps the strip
+                    // geometry findable against the shell art; the bloom
                     // dims with the group because Opacity applies to the
                     // element's composite, effect output included.
-                    fill = new SolidColorBrush(Color.FromRgb(0x58, 0xB6, 0xE4));
-                    bloomColor = Color.FromRgb(0x58, 0xB6, 0xE4);
-                    _lightbarLitGroup.Opacity = 0.30;
+                    fill = new SolidColorBrush(Color.FromRgb(0x2A, 0x2E, 0x33));
+                    bloomColor = Color.FromRgb(0x2A, 0x2E, 0x33);
+                    _lightbarLitGroup.Opacity = 0.25;
                     break;
 
                 case ViewModels.LightbarMode.Breathing:

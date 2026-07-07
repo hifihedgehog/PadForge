@@ -1371,7 +1371,7 @@
   <data name="Pad_Lighting" xml:space="preserve"><value>Illuminazione</value></data>
   <data name="Pad_Lighting_Header" xml:space="preserve"><value>Illuminazione</value></data>
   <data name="Pad_Lighting_Subtitle" xml:space="preserve"><value>Imposta il colore base della barra luminosa e il comportamento audio sul controller fisico assegnato. Le scritture del gioco hanno sempre la precedenza. Le impostazioni utente si attivano quando nessun gioco pilota la barra.</value></data>
-  <data name="Pad_Lighting_PlayerIdle_Hint" xml:space="preserve"><value>Finché le impostazioni qui sono su Off, il pad a riposo mostra l'identità giocatore del suo controller virtuale: il colore giocatore Sony sulla lightbar (1 blu, 2 rosso, 3 verde, 4 rosa) e, su un DualSense, i LED giocatore corrispondenti. Tutti i dispositivi dello stesso controller virtuale mostrano lo stesso numero. I giochi prendono il controllo quando scrivono l'illuminazione, e ciò che imposti qui vince sempre.</value></data>
+  <data name="Pad_Lighting_PlayerIdle_Hint" xml:space="preserve"><value>Finché è selezionato Numero giocatore, il pad a riposo mostra l'identità giocatore del suo controller virtuale: il colore giocatore Sony sulla lightbar (1 blu, 2 rosso, 3 verde, 4 rosa) e, su un DualSense, i LED giocatore corrispondenti. Tutti i dispositivi dello stesso controller virtuale mostrano lo stesso numero. I giochi prendono il controllo quando scrivono l'illuminazione, ciò che imposti qui vince sempre, e le opzioni di spegnimento lasciano quella luce completamente spenta.</value></data>
   <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>Barra luminosa</value></data>
   <data name="Pad_Lighting_BaseEnabled" xml:space="preserve"><value>Applica il colore base configurato dall'utente quando nessun gioco sta scrivendo</value></data>
   <data name="Pad_Lighting_Red" xml:space="preserve"><value>Rosso</value></data>
@@ -1402,6 +1402,7 @@
   <data name="Pad_Lighting_LedBrightness" xml:space="preserve"><value>Luminosità LED</value></data>
   <data name="Pad_Lighting_PlayerLed_Mode" xml:space="preserve"><value>Pattern</value></data>
   <data name="Pad_Lighting_PlayerLed_Off" xml:space="preserve"><value>Spento</value></data>
+  <data name="Pad_Lighting_PlayerLed_PlayerNumber" xml:space="preserve"><value>Numero giocatore (predefinito)</value></data>
   <data name="Pad_Lighting_PlayerLed_P1" xml:space="preserve"><value>Giocatore 1</value></data>
   <data name="Pad_Lighting_PlayerLed_P2" xml:space="preserve"><value>Giocatore 2</value></data>
   <data name="Pad_Lighting_PlayerLed_P3" xml:space="preserve"><value>Giocatore 3</value></data>
@@ -1427,7 +1428,8 @@
   <data name="Pad_Lighting_AudioLightbar_LowToMid" xml:space="preserve"><value>Basso → Medio a</value></data>
   <data name="Pad_Lighting_AudioLightbar_MidToHigh" xml:space="preserve"><value>Medio → Alto a</value></data>
   <data name="Pad_Lighting_Mode" xml:space="preserve"><value>Modalità</value></data>
-  <data name="Pad_Lighting_Mode_Off" xml:space="preserve"><value>Disattivato (il gioco controlla la barra)</value></data>
+  <data name="Pad_Lighting_Mode_Off" xml:space="preserve"><value>Disattivato</value></data>
+  <data name="Pad_Lighting_Mode_PlayerNumber" xml:space="preserve"><value>Numero giocatore (predefinito)</value></data>
   <data name="Pad_Lighting_Mode_Static" xml:space="preserve"><value>Colore statico</value></data>
   <data name="Pad_Lighting_Mode_Breathing" xml:space="preserve"><value>Respiro (un colore in dissolvenza)</value></data>
   <data name="Pad_Lighting_Mode_Rainbow" xml:space="preserve"><value>Ciclo arcobaleno</value></data>

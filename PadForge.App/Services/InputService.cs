@@ -2163,23 +2163,29 @@ namespace PadForge.Services
 
                 if (sonyLightbar)
                 {
-                    // Lighting defaults: LightbarMode.Off base +
+                    // Lighting defaults: LightbarMode.PlayerNumber base +
                     // InputReactiveMode.Off overlay (PlayStationSlotConfig
-                    // field initializers). Tokens = the picked mode names.
+                    // field initializers). Tokens = the picked mode names,
+                    // including the deliberate Off (hard dark).
                     var parts = new List<string>();
                     if (cfg != null)
                     {
-                        if (cfg.LightbarMode != LightbarMode.Off)
+                        if (cfg.LightbarMode != LightbarMode.PlayerNumber)
                             AddToken(parts, MacroAction.LightbarModeDisplayName(cfg.LightbarMode));
                         if (cfg.InputReactiveMode != InputReactiveMode.Off)
                             AddToken(parts, InputReactiveModeDisplayName(cfg.InputReactiveMode));
-                        // Indicator LEDs. Defaults: PlayerLedMode Off,
-                        // PlayerLedBrightness High, MicLedMode Off
-                        // (PlayStationSlotConfig field initializers;
-                        // ResetIndicatorLedsAllCommand restores them).
-                        if (cfg.PlayerLedMode != PlayerLedMode.Off)
-                            AddToken(parts, cfg.PlayerLedMode == PlayerLedMode.All
-                                ? "PLED ALL" : "PLED P" + (int)cfg.PlayerLedMode);
+                        // Indicator LEDs. Defaults: PlayerLedMode
+                        // PlayerNumber, PlayerLedBrightness High,
+                        // MicLedMode Off (PlayStationSlotConfig field
+                        // initializers; ResetIndicatorLedsAllCommand
+                        // restores them).
+                        if (cfg.PlayerLedMode != PlayerLedMode.PlayerNumber)
+                            AddToken(parts, cfg.PlayerLedMode switch
+                            {
+                                PlayerLedMode.All => "PLED ALL",
+                                PlayerLedMode.Off => "PLED OFF",
+                                _ => "PLED P" + (int)cfg.PlayerLedMode,
+                            });
                         if (cfg.PlayerLedBrightness != PlayerLedBrightness.High)
                             AddToken(parts, cfg.PlayerLedBrightness == PlayerLedBrightness.Medium
                                 ? "PLED MED" : "PLED LOW");

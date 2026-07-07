@@ -3767,6 +3767,22 @@ namespace PadForge.Services
                 return;
             }
 
+            LoadPadSettingIntoViewModel(padVm, ps);
+        }
+
+        /// <summary>Applies every writer-mirrored tuning field from
+        /// <paramref name="ps"/> into <paramref name="padVm"/>. This is
+        /// the load half of the four-way VM ↔ PadSetting ↔ XML sync, so
+        /// its field set stays complete by the same invariant that keeps
+        /// normal persistence working. Feeding a fresh
+        /// <c>new PadSetting()</c> therefore yields the canonical default
+        /// for the WHOLE per-pad tuning surface, which is exactly what
+        /// <see cref="SettingsService.ResetToDefaults"/> leans on for
+        /// closure instead of maintaining a parallel hand-list of fields
+        /// (the hand-list rotted once already: gyro, steering, wheel,
+        /// trigger routing, and touchpad gestures all survived reset).</summary>
+        internal static void LoadPadSettingIntoViewModel(PadViewModel padVm, PadSetting ps)
+        {
             // Dead zones.
             padVm.LeftDeadZoneShape = (int)Common.Input.InputManager.ParseDeadZoneShape(ps.LeftThumbDeadZoneShape);
             padVm.RightDeadZoneShape = (int)Common.Input.InputManager.ParseDeadZoneShape(ps.RightThumbDeadZoneShape);
@@ -7064,6 +7080,23 @@ namespace PadForge.Services
         /// Hooks: Starts input hook manager for devices with ConsumeInputEnabled.
         /// Only acts if the master switch (EnableInputHiding) is on.
         /// </summary>
+        /// <summary>Clears every HidHide blacklist entry, exactly like the
+        /// engine-start stale-cloak sweep. Reset to Defaults calls this
+        /// because ApplyDeviceHiding's diff only removes cloaks in the
+        /// in-process managed set: cloaks persisted by "keep cloaks
+        /// between launches" in a session where the engine never started
+        /// would otherwise stay asserted with every UI record of them
+        /// wiped.</summary>
+        public void PurgeStaleHidHideCloaks()
+        {
+            try
+            {
+                if (HidHideController.IsAvailable())
+                    HidHideController.ClearAll();
+            }
+            catch { /* best effort, same as the engine-start sweep */ }
+        }
+
         public void ApplyDeviceHiding()
         {
             if (!_mainVm.Settings.EnableInputHiding)

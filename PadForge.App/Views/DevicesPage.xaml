@@ -348,9 +348,17 @@
                                     <RowDefinition Height="Auto"/>
                                 </Grid.RowDefinitions>
 
-                                <!-- Row 0: Status dot + Device name -->
-                                <StackPanel Orientation="Horizontal">
-                                    <Path Margin="0,0,8,0">
+                                <!-- Row 0: Status dot + Device name. A Grid, not a
+                                     StackPanel: horizontal StackPanels measure their
+                                     children unbounded, so the name's ellipsis never
+                                     engaged and long names clipped at the card edge
+                                     when the window narrowed. -->
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Path Margin="0,0,8,0" VerticalAlignment="Center">
                                         <Path.Style>
                                             <Style TargetType="Path" BasedOn="{StaticResource LivenessFlameBase}">
                                                 <Style.Triggers>
@@ -367,8 +375,9 @@
                                             </Style>
                                         </Path.Style>
                                     </Path>
-                                    <TextBlock Text="{Binding DeviceName}" FontWeight="SemiBold"
+                                    <TextBlock Grid.Column="1" Text="{Binding DeviceName}" FontWeight="SemiBold"
                                                FontSize="13" TextTrimming="CharacterEllipsis"
+                                               ToolTip="{Binding DeviceName}"
                                                VerticalAlignment="Center">
                                         <TextBlock.Style>
                                             <Style TargetType="TextBlock">
@@ -380,15 +389,19 @@
                                             </Style>
                                         </TextBlock.Style>
                                     </TextBlock>
-                                </StackPanel>
+                                </Grid>
 
-                                <!-- Slot badges (right, row 0–1, wraps if many) -->
+                                <!-- Slot badges (right, row 0–1, wraps if many). The
+                                     WrapPanel needs the MaxWidth to actually wrap: in
+                                     an Auto-sized column it measures unbounded, laid
+                                     every badge on one line, and starved the name
+                                     column until badges clipped at narrow widths. -->
                                 <StackPanel Grid.Column="1" Grid.RowSpan="2"
                                             VerticalAlignment="Center" Margin="8,0,0,0">
                                     <ItemsControl ItemsSource="{Binding SlotBadges}">
                                         <ItemsControl.ItemsPanel>
                                             <ItemsPanelTemplate>
-                                                <WrapPanel/>
+                                                <WrapPanel MaxWidth="118" HorizontalAlignment="Right"/>
                                             </ItemsPanelTemplate>
                                         </ItemsControl.ItemsPanel>
                                         <ItemsControl.ItemTemplate>
@@ -464,9 +477,12 @@
                                     <TextBlock Text="&#xE711;" FontFamily="Segoe MDL2 Assets" FontSize="12" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
                                 </ui:Button>
 
-                                <!-- Row 1: Type | VID:PID | Capabilities -->
-                                <StackPanel Grid.Row="1" Grid.ColumnSpan="3"
-                                            Orientation="Horizontal" Margin="16,3,0,0">
+                                <!-- Row 1: Type | VID:PID | Capabilities. A WrapPanel
+                                     scoped to the name column (no ColumnSpan): the old
+                                     single-line StackPanel spanned under the badges and
+                                     clipped its tail at narrow widths; now segments wrap
+                                     to further lines and stay clear of the badge zone. -->
+                                <WrapPanel Grid.Row="1" Margin="16,3,0,0">
                                     <TextBlock Text="{Binding DeviceType, Converter={StaticResource UpperConverter}}" Style="{StaticResource DeviceMetaText}"/>
                                     <!-- VID:PID renders only when the device reports one
                                          (#175 phase 2 item 17): virtual and merged sources
@@ -480,7 +496,8 @@
                                         <TextBlock Style="{StaticResource DeviceMetaText}" Text="{Binding ProductIdHex, Mode=OneWay}"/>
                                     </StackPanel>
                                     <TextBlock Text=" &#x2022; " Style="{StaticResource DeviceMetaText}"/>
-                                    <TextBlock Text="{Binding CapabilitiesSummary, Converter={StaticResource UpperConverter}}" Style="{StaticResource DeviceMetaText}"/>
+                                    <TextBlock Text="{Binding CapabilitiesSummary, Converter={StaticResource UpperConverter}}" Style="{StaticResource DeviceMetaText}"
+                                               TextWrapping="Wrap"/>
                                     <!-- Battery (issue #167): shown only when the device reports one -->
                                     <StackPanel Orientation="Horizontal"
                                                 Visibility="{Binding HasBattery, Converter={StaticResource BoolToVisibilityConverter}}">
@@ -490,7 +507,7 @@
                                         <TextBlock Text="{Binding BatteryText}" Style="{StaticResource DeviceMetaText}"
                                                    Margin="4,0,0,0" VerticalAlignment="Center"/>
                                     </StackPanel>
-                                </StackPanel>
+                                </WrapPanel>
                             </Grid>
                         </Border>
                     </DataTemplate>

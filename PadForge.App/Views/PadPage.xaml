@@ -7952,11 +7952,17 @@
                                      mode (Off / Solid / Pulse) — no register. -->
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
                                     <TextBlock Text="{Binding Pad_Lighting_LedBrightness, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
-                                    <!-- Combo width standard (#175 round 3, item B8): the
-                                         three enum combos share 220, the device picker
-                                         below keeps 320. Two widths per card, max. -->
+                                    <!-- Combo width standard: all four combos in this card
+                                         share 340. Measured, not guessed: a real WPF-UI
+                                         ComboBox rendered with this card's implicit style
+                                         (BasedOn DefaultComboBoxStyle, Padding 8,4) and the
+                                         Body font sizes the widest option, the Spanish
+                                         player pattern "Numero de jugador (predeterminado)"
+                                         WITH the 5-pip prefix, to 330.67px. 340 leaves
+                                         about 9px of slack. Re-measure if these strings or
+                                         the pip row change (tools/combomeasure). -->
                                     <ComboBox SelectedIndex="{Binding PlayStationConfig.PlayerLedBrightness, Mode=TwoWay, Converter={StaticResource EnumIndexConverter}}"
-                                              Width="220" VerticalAlignment="Center">
+                                              Width="340" VerticalAlignment="Center">
                                         <ComboBoxItem Content="{Binding Pad_Lighting_PlayerLed_Brightness_High, Source={x:Static strings:Strings.Instance}}"/>
                                         <ComboBoxItem Content="{Binding Pad_Lighting_PlayerLed_Brightness_Medium, Source={x:Static strings:Strings.Instance}}"/>
                                         <ComboBoxItem Content="{Binding Pad_Lighting_PlayerLed_Brightness_Low, Source={x:Static strings:Strings.Instance}}"/>
@@ -7986,7 +7992,7 @@
                                          value and EnumIndexConverter can't apply. -->
                                     <ComboBox SelectedValue="{Binding PlayStationConfig.PlayerLedMode, Mode=TwoWay}"
                                               SelectedValuePath="Tag"
-                                              Width="220" VerticalAlignment="Center">
+                                              Width="340" VerticalAlignment="Center">
                                         <ComboBox.Resources>
                                             <Style x:Key="LedPipOn" TargetType="Ellipse">
                                                 <Setter Property="Width" Value="6"/>
@@ -8133,7 +8139,7 @@
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock Text="{Binding Pad_Lighting_MuteLedMode, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
                                     <ComboBox SelectedIndex="{Binding PlayStationConfig.MicLedMode, Mode=TwoWay, Converter={StaticResource EnumIndexConverter}}"
-                                              Width="220" VerticalAlignment="Center">
+                                              Width="340" VerticalAlignment="Center">
                                         <ComboBoxItem Content="{Binding Pad_Lighting_MicLed_Off, Source={x:Static strings:Strings.Instance}}"/>
                                         <ComboBoxItem Content="{Binding Pad_Lighting_MicLed_Solid, Source={x:Static strings:Strings.Instance}}"/>
                                         <ComboBoxItem Content="{Binding Pad_Lighting_MicLed_Pulse, Source={x:Static strings:Strings.Instance}}"/>
@@ -8158,7 +8164,7 @@
                                               SelectedValuePath="Id"
                                               SelectedValue="{Binding PlayStationConfig.MicLedFollowDeviceId, Mode=TwoWay}"
                                               DropDownOpened="MicLedDevicePicker_DropDownOpened"
-                                              Width="320" VerticalAlignment="Center"/>
+                                              Width="340" VerticalAlignment="Center"/>
                                 </StackPanel>
                             </StackPanel>
                         </Border>

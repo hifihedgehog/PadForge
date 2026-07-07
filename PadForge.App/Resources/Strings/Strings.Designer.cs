@@ -1619,6 +1619,7 @@ public class Strings : INotifyPropertyChanged
     public string Pad_Audio_EngageRelease_Label => Get("Pad_Audio_EngageRelease_Label");
     public string Pad_Audio_EngageRelease_Tooltip => Get("Pad_Audio_EngageRelease_Tooltip");
     public string Pad_ResetMirrorEngageMode => Get("Pad_ResetMirrorEngageMode");
+    public string Pad_ResetMirrorSource => Get("Pad_ResetMirrorSource");
     public string Pad_ResetMirrorEngageInput => Get("Pad_ResetMirrorEngageInput");
     public string Pad_ResetMirrorEngageRelease => Get("Pad_ResetMirrorEngageRelease");
     public string Pad_Audio_NoSpeaker => Get("Pad_Audio_NoSpeaker");

@@ -2909,11 +2909,18 @@ namespace PadForge
 
             var card = new System.Windows.Controls.Border
             {
-                // Match the mini-card pill footprint so the entry stacks
-                // congruently in the rail: radius 10, width 212, 3/2 margin.
+                // Exact mini-card pill footprint so the entry stacks congruently
+                // and the dashed outline (plus its hover glow) traces the same
+                // rectangle a solid pill does: radius 10, width 212, 3/2 margin,
+                // and MinHeight 36 = the pill's rendered height (the fixed 22 px
+                // delete-button row + 12 px padding + 2 px border in
+                // UpdateControllerNavItemContent). NO Padding here: like the
+                // Dashboard card, the Rectangle must fill the full card bounds,
+                // not sit inset. Inset shrinks the box and makes the glow hug a
+                // smaller inner outline.
                 CornerRadius = new CornerRadius(10),
-                Padding = new Thickness(10, 6, 10, 6),
                 Width = 212,
+                MinHeight = 36,
                 Margin = new Thickness(3, 2, 3, 2),
                 Background = System.Windows.Media.Brushes.Transparent,
                 Cursor = System.Windows.Input.Cursors.Hand,

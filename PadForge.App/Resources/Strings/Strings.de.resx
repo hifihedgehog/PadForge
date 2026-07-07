@@ -603,6 +603,7 @@
   <data name="Pad_Sticks_Section_CenterPoint" xml:space="preserve"><value>Mittelpunkt</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>Deadzone</value></data>
   <data name="Pad_Sticks_Section_Range" xml:space="preserve"><value>Bereich</value></data>
+  <data name="Pad_Sticks_Section_Range_Hint" xml:space="preserve"><value>Begrenzung kalibrieren misst die tatsächliche Reichweite des Sticks in jedem Winkel und formt sie zu einem vollen Kreis, samt der Diagonalen, die die vier Regler unten nicht erfassen. Die Regler nur zum bewussten Begrenzen der Reichweite verwenden.</value></data>
   <data name="Pad_Sampling" xml:space="preserve"><value>Abtastung...</value></data>
   <data name="Pad_CenterOffsetX" xml:space="preserve"><value>Mittenversatz X</value></data>
   <data name="Pad_CenterOffsetY" xml:space="preserve"><value>Mittenversatz Y</value></data>

@@ -603,6 +603,7 @@
   <data name="Pad_Sticks_Section_CenterPoint" xml:space="preserve"><value>中心点</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>死区</value></data>
   <data name="Pad_Sticks_Section_Range" xml:space="preserve"><value>范围</value></data>
+  <data name="Pad_Sticks_Section_Range_Hint" xml:space="preserve"><value>校准边界会测量摇杆在每个角度的实际可达范围，并将其重塑为完整的圆形，可修正下方四个滑块无法处理的对角线方向。滑块仅用于有意限制范围。</value></data>
   <data name="Pad_Sampling" xml:space="preserve"><value>采样中...</value></data>
   <data name="Pad_CenterOffsetX" xml:space="preserve"><value>中心偏移 X</value></data>
   <data name="Pad_CenterOffsetY" xml:space="preserve"><value>中心偏移 Y</value></data>

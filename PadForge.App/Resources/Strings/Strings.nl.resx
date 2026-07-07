@@ -603,6 +603,7 @@
   <data name="Pad_Sticks_Section_CenterPoint" xml:space="preserve"><value>Middelpunt</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>Deadzone</value></data>
   <data name="Pad_Sticks_Section_Range" xml:space="preserve"><value>Bereik</value></data>
+  <data name="Pad_Sticks_Section_Range_Hint" xml:space="preserve"><value>Grens kalibreren meet het werkelijke bereik van de stick onder elke hoek en hervormt het tot een volledige cirkel, inclusief de diagonalen die de vier schuifregelaars hieronder niet kunnen corrigeren. Gebruik de schuifregelaars alleen om het bereik bewust te beperken.</value></data>
   <data name="Pad_Sampling" xml:space="preserve"><value>Meten...</value></data>
   <data name="Pad_CenterOffsetX" xml:space="preserve"><value>Middenverschuiving X</value></data>
   <data name="Pad_CenterOffsetY" xml:space="preserve"><value>Middenverschuiving Y</value></data>

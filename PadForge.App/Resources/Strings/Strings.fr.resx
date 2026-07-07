@@ -603,6 +603,7 @@
   <data name="Pad_Sticks_Section_CenterPoint" xml:space="preserve"><value>Point central</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>Zone morte</value></data>
   <data name="Pad_Sticks_Section_Range" xml:space="preserve"><value>Plage</value></data>
+  <data name="Pad_Sticks_Section_Range_Hint" xml:space="preserve"><value>Calibrer la limite mesure la portée réelle du stick sous chaque angle et la remodèle en cercle complet, corrigeant les diagonales que les quatre curseurs ci-dessous ne peuvent pas corriger. N'utilisez les curseurs que pour limiter la plage volontairement.</value></data>
   <data name="Pad_Sampling" xml:space="preserve"><value>Échantillonnage...</value></data>
   <data name="Pad_CenterOffsetX" xml:space="preserve"><value>Décalage central X </value></data>
   <data name="Pad_CenterOffsetY" xml:space="preserve"><value>Décalage central Y </value></data>

@@ -5025,6 +5025,13 @@
                                             <!-- ─── Range ─── -->
                                             <TextBlock Text="{Binding Pad_Sticks_Section_Range, Source={x:Static strings:Strings.Instance}}"
                                                        Style="{StaticResource CardSubsectionTitle}"/>
+                                            <!-- Which tool is which (user report 2026-07-06): the
+                                                 measured 360-degree calibration and the four manual
+                                                 cardinal caps sat side by side with nothing saying
+                                                 why the calibration is the correction and the
+                                                 sliders are the deliberate limiter. -->
+                                            <TextBlock Text="{Binding Pad_Sticks_Section_Range_Hint, Source={x:Static strings:Strings.Instance}}"
+                                                       Style="{StaticResource CardDescription}"/>
                                             <!-- Boundary calibration (#174): the outer-boundary
                                                  counterpart to the manual range sliders below. One
                                                  button (coverage-driven inline sweep, same idiom as

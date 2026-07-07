@@ -603,6 +603,7 @@
   <data name="Pad_Sticks_Section_CenterPoint" xml:space="preserve"><value>中心点</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>デッドゾーン</value></data>
   <data name="Pad_Sticks_Section_Range" xml:space="preserve"><value>範囲</value></data>
+  <data name="Pad_Sticks_Section_Range_Hint" xml:space="preserve"><value>境界を調整は全角度でスティックの実際の可動域を測定し、完全な円に整形します。下の4つのスライダーでは補正できない斜め方向も補正されます。スライダーは意図的に範囲を制限したい場合にのみ使用してください。</value></data>
   <data name="Pad_Sampling" xml:space="preserve"><value>サンプリング中...</value></data>
   <data name="Pad_CenterOffsetX" xml:space="preserve"><value>中心オフセット X</value></data>
   <data name="Pad_CenterOffsetY" xml:space="preserve"><value>中心オフセット Y</value></data>

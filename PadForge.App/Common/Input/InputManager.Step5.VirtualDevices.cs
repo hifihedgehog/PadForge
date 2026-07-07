@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
@@ -915,8 +915,8 @@ namespace PadForge.Common.Input
                             // RerouteVirtualControllersForReorder and re-
                             // points _virtualControllers without touching
                             // the kernel.
-                            var orderList = SettingsManager.SlotOrders.GetOrderFor(slotType);
-                            int myVisualPos = orderList.IndexOf(padIndex);
+                            var orderList = SettingsManager.SlotOrders.GetOrderSnapshotFor(slotType);
+                            int myVisualPos = System.Array.IndexOf(orderList, padIndex);
                             bool higherStillNeeds = false;
                             for (int p = 0; p < myVisualPos; p++)
                             {
@@ -1908,10 +1908,10 @@ namespace PadForge.Common.Input
 
             foreach (var subgroup in hmSubgroups)
             {
-                var orderList = SettingsManager.SlotOrders.GetOrderFor(subgroup);
+                var orderList = SettingsManager.SlotOrders.GetOrderSnapshotFor(subgroup);
 
                 int lowestNeedsCreatePos = -1;
-                for (int pos = 0; pos < orderList.Count; pos++)
+                for (int pos = 0; pos < orderList.Length; pos++)
                 {
                     int padIndex = orderList[pos];
                     if (padIndex < 0 || padIndex >= MaxPads) continue;
@@ -1926,7 +1926,7 @@ namespace PadForge.Common.Input
 
                 if (lowestNeedsCreatePos < 0) continue;
 
-                for (int pos = lowestNeedsCreatePos + 1; pos < orderList.Count; pos++)
+                for (int pos = lowestNeedsCreatePos + 1; pos < orderList.Length; pos++)
                 {
                     int padIndex = orderList[pos];
                     if (padIndex < 0 || padIndex >= MaxPads) continue;

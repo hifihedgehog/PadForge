@@ -1351,6 +1351,7 @@
   <data name="Pad_Lighting" xml:space="preserve"><value>ライティング</value></data>
   <data name="Pad_Lighting_Header" xml:space="preserve"><value>ライティング</value></data>
   <data name="Pad_Lighting_Subtitle" xml:space="preserve"><value>割り当てられた物理コントローラーのライトバーのベースカラーと、オーディオ動作を設定します。ゲームによる書き込みは常に優先されます。ユーザー設定は、ゲームがライトバーを駆動していないときに適用されます。</value></data>
+  <data name="Pad_Lighting_PlayerIdle_Hint" xml:space="preserve"><value>ここの設定がオフの間、パッドは待機時に仮想コントローラーのプレイヤー識別を表示します。ライトバーにはソニーのプレイヤーカラー（1 青、2 赤、3 緑、4 ピンク）、DualSense では対応するプレイヤーランプも点灯します。同じ仮想コントローラー上のすべてのデバイスが同じ番号を表示します。ゲームがライティングを書き込むとゲームが優先され、ここで設定した内容は常に最優先されます。</value></data>
   <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>ライトバー</value></data>
   <data name="Pad_Lighting_BaseEnabled" xml:space="preserve"><value>ゲームが書き込んでいないときにユーザー設定のベースカラーを適用</value></data>
   <data name="Pad_Lighting_Red" xml:space="preserve"><value>赤</value></data>

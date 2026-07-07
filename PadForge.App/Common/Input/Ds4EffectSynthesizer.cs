@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using PadForge.ViewModels;
 
@@ -90,7 +90,8 @@ namespace PadForge.Common.Input
             byte rumbleLeft,
             bool assertRumbleEnable = true,
             UserEffectsDispatcher.ExternalSubsystemOverrides overrides = default,
-            byte batteryPercent = 100)
+            byte batteryPercent = 100,
+            int playerNumber = 0)
         {
             // Per-subsystem mirroring: when a host has recently written
             // rumble or lightbar to our virtual, mirror their bytes
@@ -114,7 +115,7 @@ namespace PadForge.Common.Input
             else
             {
                 ResolveLightbarRgb(cfg, audioPeak, nowMs, randomColor, pulseColor, pulseIntensity, batteryPercent,
-                    out r, out g, out bRgb);
+                    playerNumber, out r, out g, out bRgb);
             }
 
             // Rumble enable bit (validFlag0 bit 0) is asserted whenever
@@ -156,10 +157,31 @@ namespace PadForge.Common.Input
             uint pulseColor,
             float pulseIntensity,
             byte batteryPercent,
+            int playerNumber,
             out byte r, out byte g, out byte b)
         {
+            // Player-identity idle floor (#191): when the lighting is
+            // fully unconfigured (no macro, mode Off, no reactive
+            // overlay), the lightbar shows the Sony player color for
+            // this pad's virtual controller number instead of the black
+            // this method used to paint. Everything configured keeps
+            // its existing priority below.
+            bool unconfigured = cfg == null
+                || (cfg.ComputeMacroOverrideIntensity() <= 0f
+                    && cfg.LightbarMode == LightbarMode.Off
+                    && cfg.InputReactiveMode == InputReactiveMode.Off);
+            if (unconfigured)
+            {
+                if (playerNumber > 0)
+                {
+                    (r, g, b) = PlayerIdentityDefaults.ColorFor(playerNumber);
+                    return;
+                }
+                r = 0; g = 0; b = 0;
+                return;
+            }
+
             r = 0; g = 0; b = 0;
-            if (cfg == null) return;
 
             // Priority 1: macro-driven override. Intensity = 1.0 for
             // Sticky holds, fades 1.0 → 0.0 over the Reactive decay

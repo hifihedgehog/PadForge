@@ -953,6 +953,28 @@ namespace PadForge.Engine
         }
 
         /// <summary>
+        /// Player-identity idle floor (#191): pushes the 0-based player
+        /// index into SDL so drivers with player LEDs light them (Switch
+        /// family subcommand 0x30, Wii's 4-LED map, Switch 2's bulk
+        /// command). ALLOWLISTED to Nintendo (VID 0x057E): SDL's PS4/PS5
+        /// drivers respond to this call by writing their own player
+        /// lightbar defaults, which would fight PadForge's sole-writer
+        /// Sony dispatcher, and every other Windows backend is a no-op
+        /// stub (the Xbox 360 ring is owned by the OS XUSB driver with
+        /// no public setter). Known limit: SDL's combined Joy-Con pair
+        /// driver has an empty SetDevicePlayerIndex, so a paired set
+        /// (synthetic PID 0x2008) is a silent no-op until the fork
+        /// carries a forward-to-children patch. Singles, Pro, Switch 2,
+        /// and Wii light correctly.
+        /// </summary>
+        public bool SetPlayerIndex(int playerIndex)
+        {
+            if (Joystick == IntPtr.Zero) return false;
+            if (VendorId != 0x057E) return false;
+            return SDL_SetJoystickPlayerIndex(Joystick, playerIndex);
+        }
+
+        /// <summary>
         /// Stops all rumble on the device.
         /// </summary>
         public bool StopRumble()

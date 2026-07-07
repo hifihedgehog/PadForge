@@ -1351,6 +1351,7 @@
   <data name="Pad_Lighting" xml:space="preserve"><value>Iluminación</value></data>
   <data name="Pad_Lighting_Header" xml:space="preserve"><value>Iluminación</value></data>
   <data name="Pad_Lighting_Subtitle" xml:space="preserve"><value>Define el color base de la barra de luz y el comportamiento de audio en el controlador físico asignado. Las escrituras del juego siempre prevalecen. Los ajustes del usuario se aplican cuando ningún juego controla la barra.</value></data>
+  <data name="Pad_Lighting_PlayerIdle_Hint" xml:space="preserve"><value>Mientras los ajustes de aquí estén en Apagado, el mando en reposo muestra la identidad de jugador de su mando virtual: el color de jugador de Sony en la barra de luz (1 azul, 2 rojo, 3 verde, 4 rosa) y, en un DualSense, los LED de jugador correspondientes. Todos los dispositivos del mismo mando virtual muestran el mismo número. Los juegos toman el control cuando escriben iluminación, y lo que configures aquí siempre gana.</value></data>
   <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>Barra de luz</value></data>
   <data name="Pad_Lighting_BaseEnabled" xml:space="preserve"><value>Aplicar el color base configurado por el usuario cuando ningún juego está escribiendo</value></data>
   <data name="Pad_Lighting_Red" xml:space="preserve"><value>Rojo</value></data>

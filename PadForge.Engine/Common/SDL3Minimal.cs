@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Runtime.InteropServices;
 
 namespace SDL3
@@ -582,6 +582,19 @@ namespace SDL3
         public static bool SDL_RumbleJoystick(IntPtr joystick,
             ushort low_frequency_rumble, ushort high_frequency_rumble, uint duration_ms) =>
             _SDL_RumbleJoystick(joystick, low_frequency_rumble, high_frequency_rumble, duration_ms);
+
+        /// <summary>
+        /// Set a joystick's player index. Hidapi drivers with player
+        /// LEDs respond by lighting them (Switch subcommand 0x30, Wii
+        /// 4-LED map, Switch 2 bulk command); Windows backend stubs
+        /// (XInput / DInput / rawinput / WGI) are no-ops.
+        /// </summary>
+        [DllImport(lib, CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_SetJoystickPlayerIndex")]
+        [return: MarshalAs(UnmanagedType.U1)]
+        private static extern bool _SDL_SetJoystickPlayerIndex(IntPtr joystick, int player_index);
+
+        public static bool SDL_SetJoystickPlayerIndex(IntPtr joystick, int player_index) =>
+            _SDL_SetJoystickPlayerIndex(joystick, player_index);
 
         /// <summary>
         /// Rumble a gamepad's impulse-trigger motors (Xbox One+ family).

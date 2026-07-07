@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.ComponentModel;
 using HIDMaestro;
 using PadForge.Common;
@@ -344,6 +344,17 @@ namespace PadForge.Common.Input
             public byte? PlayerIndicator;
             public byte? LightbarSetup;
             public byte? LedBrightness;
+
+            /// <summary>True once ANY external write has touched this
+            /// slot's lightbar this process lifetime (the backing state
+            /// is never reset, surviving VC recreates on the slot), even
+            /// outside the grace window. The DS5 player-identity idle floor (#191) stands
+            /// down permanently after that: pre-floor behavior let a
+            /// game's last lightbar write persist in firmware forever
+            /// (the enable bit stayed clear when unconfigured), and a
+            /// floor that reclaims the bar 1.5 s after a one-shot game
+            /// write would stomp exactly those games.</summary>
+            public bool LightbarEverExternal;
         }
 
         /// <summary>Called by <c>HMaestroVirtualController.OutputDecoded</c>
@@ -462,6 +473,7 @@ namespace PadForge.Common.Input
                     ov.MuteLed = st.MicLed;
                 if (now - st.LightbarTick < ExternalSubsystemGraceMs)
                     ov.LightbarRgb = new byte[] { st.LightbarR, st.LightbarG, st.LightbarB };
+                ov.LightbarEverExternal = st.LightbarTick != 0;
                 if (now - st.PlayerIndTick < ExternalSubsystemGraceMs)
                     ov.PlayerIndicator = st.PlayerInd;
                 if (now - st.LightbarSetupTick < ExternalSubsystemGraceMs)
@@ -553,6 +565,19 @@ namespace PadForge.Common.Input
         {
             if (_disposed || _config == null) return;
             DispatchSnapshot();
+        }
+
+        /// <summary>One apply pass on EVERY live dispatcher. Called after
+        /// slot topology changes (create / delete / reorder) so each
+        /// pad's player-identity idle floor (#191) picks up its new
+        /// virtual controller number without waiting for the next
+        /// config or device poke.</summary>
+        public static void ApplyOnceAll()
+        {
+            foreach (var d in _instances.Values)
+            {
+                try { d?.ApplyOnce(); } catch { }
+            }
         }
 
         public void Dispose()
@@ -1067,6 +1092,14 @@ namespace PadForge.Common.Input
         {
             if (_config == null) return;
 
+            // Player-identity idle floor (#191): the 1-based virtual
+            // controller number every UI surface shows, recomputed per
+            // dispatch so slot create / delete / reorder self-heals on
+            // the next poke (ApplyOnceAll fires one after topology
+            // changes). Passed to the synthesizers, which only use it
+            // when nothing else claims the lightbar / player LEDs.
+            int playerNumber = SettingsManager.SlotOrders.GetGlobalSlotNumber(_padIndex);
+
             // For non-tick dispatches (slider drag, OnDevicesUpdated re-
             // apply, etc.), pull the current peak so the audio path
             // doesn't snap to black between ticks. The synthesizer
@@ -1410,11 +1443,13 @@ namespace PadForge.Common.Input
                                 devCfg, devPeak, nowMs,
                                 _randomColor, devPulseColor, devPulseIntensity,
                                 rR, rL, assertRumbleEnable,
-                                assertRightTrig, assertLeftTrig, devOverrides, pctByte)
+                                assertRightTrig, assertLeftTrig, devOverrides, pctByte,
+                                playerNumber)
                             : Ds4EffectSynthesizer.BuildFields(
                                 devCfg, devPeak, nowMs,
                                 _randomColor, devPulseColor, devPulseIntensity,
-                                rR, rL, assertRumbleEnable, devOverrides, pctByte);
+                                rR, rL, assertRumbleEnable, devOverrides, pctByte,
+                                playerNumber);
 
                         // Macro-sound speaker routing (issue #83). The DualSense
                         // firmware sends its USB program audio to the headphone

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using PadForge.Engine;
@@ -114,6 +114,19 @@ namespace PadForge.Common.Input
         /// </summary>
         public static class SlotOrders
         {
+            /// <summary>Guards the five order lists for the readers
+            /// that run off the UI thread: GetGlobalSlotNumber (the Sony
+            /// effects dispatcher calls it per dispatch from its
+            /// anim-timer and the polling thread, #191) and the Step 5
+            /// polling-thread walkers, which read through
+            /// GetOrderSnapshotFor. Every mutator locks it too, so a
+            /// topology change mid-enumeration can't throw on a non-UI
+            /// thread (which would kill the process). UI-thread readers
+            /// walking GetOrderFor directly stay unsynchronized, as all
+            /// mutations also happen on the UI thread. Leaf lock:
+            /// nothing inside it acquires another lock.</summary>
+            private static readonly object OrderSync = new object();
+
             /// <summary>Returns the 1-based global slot number for
             /// <paramref name="padIndex"/>, walking type-group order
             /// (Xbox → PlayStation → Extended → KbM → MIDI) so it matches
@@ -126,18 +139,32 @@ namespace PadForge.Common.Input
             {
                 if (padIndex < 0 || padIndex >= SlotCreated.Length) return 0;
                 if (!SlotCreated[padIndex]) return 0;
-                int globalCount = 0;
-                foreach (var groupType in Engine.VirtualControllerGroups.InOrder)
+                lock (OrderSync)
                 {
-                    foreach (int idx in GetOrderFor(groupType))
+                    int globalCount = 0;
+                    foreach (var groupType in Engine.VirtualControllerGroups.InOrder)
                     {
-                        if (idx < 0 || idx >= SlotCreated.Length) continue;
-                        if (!SlotCreated[idx]) continue;
-                        globalCount++;
-                        if (idx == padIndex) return globalCount;
+                        foreach (int idx in GetOrderFor(groupType))
+                        {
+                            if (idx < 0 || idx >= SlotCreated.Length) continue;
+                            if (!SlotCreated[idx]) continue;
+                            globalCount++;
+                            if (idx == padIndex) return globalCount;
+                        }
                     }
+                    return 0;
                 }
-                return 0;
+            }
+
+            /// <summary>Copy of a group's order list, taken under the
+            /// lock. The polling thread must read through this (a live
+            /// list can be mutated mid-walk by the UI thread).</summary>
+            public static int[] GetOrderSnapshotFor(Engine.VirtualControllerType type)
+            {
+                lock (OrderSync)
+                {
+                    return GetOrderFor(type).ToArray();
+                }
             }
 
             /// <summary>Return the order list for the given VC type group.</summary>
@@ -155,15 +182,21 @@ namespace PadForge.Common.Input
             /// if it isn't already present. No-op when already present.</summary>
             public static void Add(int padIndex, Engine.VirtualControllerType type)
             {
-                var list = GetOrderFor(type);
-                if (!list.Contains(padIndex)) list.Add(padIndex);
+                lock (OrderSync)
+                {
+                    var list = GetOrderFor(type);
+                    if (!list.Contains(padIndex)) list.Add(padIndex);
+                }
             }
 
             /// <summary>Remove <paramref name="padIndex"/> from its group's
             /// list. No-op when absent.</summary>
             public static void Remove(int padIndex, Engine.VirtualControllerType type)
             {
-                GetOrderFor(type).Remove(padIndex);
+                lock (OrderSync)
+                {
+                    GetOrderFor(type).Remove(padIndex);
+                }
             }
 
             /// <summary>Move <paramref name="padIndex"/> from its current group
@@ -173,21 +206,31 @@ namespace PadForge.Common.Input
                 Engine.VirtualControllerType newType)
             {
                 if (oldType == newType) return;
-                Remove(padIndex, oldType);
-                Add(padIndex, newType);
+                // One lock over the pair: a cross-thread reader landing
+                // between Remove and Add would see the pad in NO group
+                // and briefly resolve global number 0 (Monitor is
+                // reentrant, so the nested locks are fine).
+                lock (OrderSync)
+                {
+                    Remove(padIndex, oldType);
+                    Add(padIndex, newType);
+                }
             }
 
             /// <summary>Move within a single group from
             /// <paramref name="oldPos"/> to <paramref name="newPos"/>.</summary>
             public static void MoveWithinGroup(Engine.VirtualControllerType type, int oldPos, int newPos)
             {
-                var list = GetOrderFor(type);
-                if (oldPos < 0 || oldPos >= list.Count) return;
-                if (newPos < 0 || newPos >= list.Count) return;
-                if (oldPos == newPos) return;
-                int padIndex = list[oldPos];
-                list.RemoveAt(oldPos);
-                list.Insert(newPos, padIndex);
+                lock (OrderSync)
+                {
+                    var list = GetOrderFor(type);
+                    if (oldPos < 0 || oldPos >= list.Count) return;
+                    if (newPos < 0 || newPos >= list.Count) return;
+                    if (oldPos == newPos) return;
+                    int padIndex = list[oldPos];
+                    list.RemoveAt(oldPos);
+                    list.Insert(newPos, padIndex);
+                }
             }
 
             /// <summary>Swap two pad indices' positions within their (shared)
@@ -195,11 +238,14 @@ namespace PadForge.Common.Input
             /// group's list.</summary>
             public static void SwapWithinGroup(int padA, int padB, Engine.VirtualControllerType type)
             {
-                var list = GetOrderFor(type);
-                int ia = list.IndexOf(padA);
-                int ib = list.IndexOf(padB);
-                if (ia < 0 || ib < 0) return;
-                (list[ia], list[ib]) = (list[ib], list[ia]);
+                lock (OrderSync)
+                {
+                    var list = GetOrderFor(type);
+                    int ia = list.IndexOf(padA);
+                    int ib = list.IndexOf(padB);
+                    if (ia < 0 || ib < 0) return;
+                    (list[ia], list[ib]) = (list[ib], list[ia]);
+                }
             }
 
             /// <summary>
@@ -231,6 +277,16 @@ namespace PadForge.Common.Input
             }
 
             private static void Reconcile(List<int> target, int[] persisted,
+                System.Func<int, Engine.VirtualControllerType> slotType,
+                Engine.VirtualControllerType groupType)
+            {
+                lock (OrderSync)
+                {
+                    ReconcileLocked(target, persisted, slotType, groupType);
+                }
+            }
+
+            private static void ReconcileLocked(List<int> target, int[] persisted,
                 System.Func<int, Engine.VirtualControllerType> slotType,
                 Engine.VirtualControllerType groupType)
             {

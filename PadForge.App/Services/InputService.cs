@@ -5421,6 +5421,12 @@ namespace PadForge.Services
                 // and their instance IDs get cached for future sessions.
                 ApplyDeviceHiding();
 
+                // Player-identity idle floor (#191): freshly connected or
+                // re-assigned pads pick up their controller number. Sony
+                // dispatchers skip here: the per-VC re-apply loop below
+                // already runs ApplyOnce for every PlayStation slot.
+                ReseedPlayerIdentities(applySonyDispatchers: false);
+
                 // Re-push user-configured DS5 effects to every PlayStation
                 // slot's assigned DualSense.  Catches the "DS5 disconnected
                 // and reconnected mid-session" case — without this hook the
@@ -7081,6 +7087,54 @@ namespace PadForge.Services
         /// Hooks: Starts input hook manager for devices with ConsumeInputEnabled.
         /// Only acts if the master switch (EnableInputHiding) is on.
         /// </summary>
+        /// <summary>Player-identity idle floor (#191): re-seeds every
+        /// assigned device's player number. Nintendo-family pads get the
+        /// SDL player index (wrapper-allowlisted to VID 0x057E; the SDL
+        /// call is how their player LEDs light), and every live Sony
+        /// dispatcher re-applies so its per-dispatch player number picks
+        /// up topology changes. Called on device-list updates and after
+        /// slot create / delete / reorder.</summary>
+        public void ReseedPlayerIdentities(bool applySonyDispatchers = true)
+        {
+            try
+            {
+                // Snapshot-then-resolve, the canonical shape: the lock
+                // order rule is UserDevices BEFORE UserSettings, and
+                // FindDeviceByInstanceGuid takes the devices lock
+                // internally, so it must never run while the settings
+                // lock is held. The SDL call below also does a
+                // synchronous Switch subcommand round-trip (retried BT
+                // I/O), which must not run under ANY of our locks.
+                var pairs = new List<(Guid Guid, int Slot)>();
+                var settings = SettingsManager.UserSettings;
+                if (settings != null)
+                {
+                    lock (settings.SyncRoot)
+                    {
+                        for (int i = 0; i < settings.Items.Count; i++)
+                        {
+                            var us = settings.Items[i];
+                            if (us == null || us.MapTo < 0) continue;
+                            pairs.Add((us.InstanceGuid, us.MapTo));
+                        }
+                    }
+                }
+                foreach (var (guid, slot) in pairs)
+                {
+                    var ud = SettingsManager.FindDeviceByInstanceGuid(guid);
+                    if (ud == null || !ud.IsOnline) continue;
+                    if (ud.Device is PadForge.Engine.SdlDeviceWrapper w)
+                    {
+                        int n = SettingsManager.SlotOrders.GetGlobalSlotNumber(slot);
+                        if (n > 0) w.SetPlayerIndex(n - 1);
+                    }
+                }
+            }
+            catch { }
+            if (applySonyDispatchers)
+                PadForge.Common.Input.UserEffectsDispatcher.ApplyOnceAll();
+        }
+
         /// <summary>Best-effort quiet of every hardware output lane:
         /// zero rumble on all devices and stop any sustained haptic
         /// tones. Wired into the crash handler and ProcessExit so an
@@ -10466,6 +10520,10 @@ namespace PadForge.Services
             // last-created slot).
             if (!CompactSlotsForGaps())
                 RefreshAfterSlotReorder();
+
+            // Player-identity idle floor (#191): every surviving slot's
+            // display number may have shifted.
+            ReseedPlayerIdentities();
         }
 
         private void RefreshAfterSlotReorder()
@@ -10497,6 +10555,9 @@ namespace PadForge.Services
 
             SyncDevicesList();
             RefreshActiveProfileTopologyLabel();
+
+            // Player-identity idle floor (#191): reorders renumber slots.
+            ReseedPlayerIdentities();
         }
 
         private void RefreshActiveProfileTopologyLabel()

@@ -1,4 +1,4 @@
-using System.Xml.Serialization;
+﻿using System.Xml.Serialization;
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace PadForge.ViewModels
@@ -68,6 +68,21 @@ namespace PadForge.ViewModels
         }
 
         /// <summary>Returns CC numbers array: sequential from StartCc for CcCount entries.</summary>
+        /// <summary>Resets every field to its fresh-install default IN
+        /// PLACE, preserving the instance (external PropertyChanged
+        /// subscribers survive; same invariant as ExtendedSlotConfig).
+        /// Start values are written before counts so the count clamps
+        /// evaluate against the default starts.</summary>
+        public void ResetToDefaults()
+        {
+            Channel = 1;
+            StartCc = 1;
+            CcCount = 6;
+            StartNote = 60;
+            NoteCount = 11;
+            Velocity = 127;
+        }
+
         public int[] GetCcNumbers()
         {
             var arr = new int[_ccCount];

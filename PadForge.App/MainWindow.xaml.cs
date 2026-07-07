@@ -452,6 +452,17 @@ namespace PadForge
                         deletedSlotHadActiveVc: hadActiveVc);
                 }
                 _settingsService.ResetToDefaults();
+                // Strip driver-side HidHide cloaks now. The reset wiped
+                // every per-device HidHideEnabled record and the app
+                // whitelist, but the desired-state diff only runs inside
+                // ApplyDeviceHiding, and store clears fire none of the
+                // property-changed hooks that normally trigger it. The
+                // purge covers the diff's blind spot: cloaks persisted by
+                // "keep cloaks between launches" in a session where the
+                // engine never started are not in the in-process managed
+                // set, so the diff alone would leave them asserted.
+                _inputService.PurgeStaleHidHideCloaks();
+                _inputService.ApplyDeviceHiding();
                 _viewModel.Devices.RefreshSlotButtons();
                 _inputService.RefreshDeviceList();
                 _viewModel.RefreshNavControllerItems();
@@ -2067,12 +2078,25 @@ namespace PadForge
 
             NavView.MenuItems.Clear();
 
+            // Rail icons wear the same ember their page headers do; the
+            // DynamicResource reference keeps them tracking theme swaps.
+            static FontIcon EmberNavIcon(string glyph)
+            {
+                var icon = new FontIcon
+                {
+                    FontFamily = new System.Windows.Media.FontFamily("Segoe MDL2 Assets"),
+                    Glyph = glyph,
+                };
+                icon.SetResourceReference(FontIcon.ForegroundProperty, "EmberBrush");
+                return icon;
+            }
+
             // Dashboard.
             _navDashboard = new NavigationViewItem
             {
                 Content = Strings.Instance.Dashboard_Title,
                 Tag = "Dashboard",
-                Icon = new FontIcon { FontFamily = new System.Windows.Media.FontFamily("Segoe MDL2 Assets"), Glyph = "\uF404" }
+                Icon = EmberNavIcon("\uF404")
             };
             NavView.MenuItems.Add(_navDashboard);
 
@@ -2080,7 +2104,7 @@ namespace PadForge
             _navProfiles = new NavigationViewItem
             {
                 Tag = "Profiles",
-                Icon = new FontIcon { FontFamily = new System.Windows.Media.FontFamily("Segoe MDL2 Assets"), Glyph = "\uE8F1" },
+                Icon = EmberNavIcon("\uE8F1"),
                 Content = Strings.Instance.Profiles_Title
             };
             NavView.MenuItems.Add(_navProfiles);
@@ -2090,7 +2114,7 @@ namespace PadForge
             {
                 Content = Strings.Instance.Devices_Title,
                 Tag = "Devices",
-                Icon = new FontIcon { FontFamily = new System.Windows.Media.FontFamily("Segoe MDL2 Assets"), Glyph = "\uE772" }
+                Icon = EmberNavIcon("\uE772")
             };
             NavView.MenuItems.Add(_navDevices);
 

@@ -1,4 +1,4 @@
-using System.Xml.Serialization;
+﻿using System.Xml.Serialization;
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace PadForge.ViewModels
@@ -148,6 +148,30 @@ namespace PadForge.ViewModels
         }
 
         /// <summary>Total Extended axes = ThumbstickCount * 2 + TriggerCount (max 8).</summary>
+        /// <summary>Resets every field to its fresh-install default IN
+        /// PLACE. The instance must never be replaced: MainWindow wires
+        /// its MarkDirty autosave hook to this object's PropertyChanged
+        /// once per pad at startup, and PadPage documents the same
+        /// instance-stability invariant. Settings reset therefore
+        /// mutates, exactly like ApplyExtendedConfigs does on load.
+        /// Order matters for the first three writes: the stick / trigger
+        /// setters clamp against each other, so triggers drop to 0 first
+        /// to guarantee the stick default isn't clamped away.</summary>
+        public void ResetToDefaults()
+        {
+            TriggerCount = 0;
+            ThumbstickCount = 2;
+            TriggerCount = 2;
+            PovCount = 1;
+            ButtonCount = 11;
+            Customize = false;
+            OemNameOverride = false;
+            ForceFeedbackEnabled = true;
+            ProductString = string.Empty;
+            VendorId = 0;
+            ProductId = 0;
+        }
+
         public int TotalAxes => Math.Min(ThumbstickCount * 2 + TriggerCount, MaxAxes);
 
         /// <summary>Maximum thumbstick count given current TriggerCount.</summary>

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.IO;
 using System.Linq;
 using System.Windows.Threading;
@@ -3597,6 +3597,23 @@ namespace PadForge.Services
         /// </summary>
         public void ResetToDefaults()
         {
+            // Closure by construction, not by hand-list. The old body
+            // enumerated fields one by one and rotted as features landed
+            // (user-confirmed: the HidHide toggles and whitelist, the
+            // touchpad overlay group, gyro / steering / wheel / trigger
+            // routing / touchpad-gesture tuning, and the mapping extras
+            // all survived a reset). The rebuild leans on the two load
+            // mirrors that normal persistence already keeps complete:
+            // a fresh AppSettingsData carries every app-level default,
+            // and a blank PadSetting carries every per-pad tuning
+            // default. Anything a future feature persists through the
+            // save/load chain is then reset automatically.
+
+            // 1. Stores. Devices (including per-device HidHideEnabled
+            //    records), slot bindings + their PadSettings, per-slot
+            //    mapping sets (multi-source extras, shift layers), any
+            //    pending default-profile snapshot, and imported
+            //    HIDMaestro profile JSONs.
             lock (SettingsManager.UserDevices.SyncRoot)
             {
                 SettingsManager.UserDevices.Items.Clear();
@@ -3607,90 +3624,67 @@ namespace PadForge.Services
                 SettingsManager.UserSettings.Items.Clear();
             }
 
-            // Reset ViewModels.
+            SettingsManager.SlotMappingSets =
+                new Engine.Data.MappingSet[Common.Input.InputManager.MaxPads];
+            SettingsManager.PendingDefaultSnapshot = null;
+            // Sibling contract from RemoveUserProfile: every _userProfiles
+            // mutation reloads the HM catalog, or the Extended profile
+            // dropdown keeps serving the wiped imports for the session.
+            _userProfiles.Clear();
+            Common.Input.HMaestroProfileCatalog.Reload();
+
+            // 2. Per-pad surfaces. ResetAllSettings covers what the load
+            //    mirror can't reach (macros, sensitivity-curve items,
+            //    dead-zone shapes, per-device PlayStation configs), the
+            //    blank-PadSetting load resets every writer-mirrored
+            //    tuning field to its canonical default, and the mapping
+            //    refresh rebuilds every row from the now-empty mapping
+            //    set (descriptors, extra sources, per-mapping dead zones,
+            //    combine modes all clear in one pass).
             foreach (var padVm in _mainVm.Pads)
             {
-                foreach (var mapping in padVm.Mappings)
-                    mapping.SourceDescriptor = string.Empty;
-
-                padVm.ForceOverallGain = 100;
-                padVm.LeftMotorStrength = 100;
-                padVm.RightMotorStrength = 100;
-                padVm.SwapMotors = false;
-                padVm.ImpulseOverallGain = 100;
-                padVm.ImpulseLeftStrength = 100;
-                padVm.ImpulseRightStrength = 100;
-                padVm.ImpulseSwapTriggers = false;
-                padVm.AudioRumbleEnabled = false;
-                padVm.AudioRumbleSensitivity = 4.0;
-                padVm.AudioRumbleCutoffHz = 80.0;
-                padVm.AudioRumbleLeftMotor = 100;
-                padVm.AudioRumbleRightMotor = 100;
-                padVm.AudioRumbleTriggersEnabled = false;
-                padVm.AudioRumbleTriggersSensitivity = 4.0;
-                padVm.AudioRumbleTriggersCutoffHz = 80.0;
-                padVm.AudioRumbleLeftTrigger = 100;
-                padVm.AudioRumbleRightTrigger = 100;
-                padVm.ConstantForceEnabled = false;
-                padVm.ConstantForceX = 0;
-                padVm.ConstantForceY = 0;
-                padVm.ConstantTriggerForceEnabled = false;
-                padVm.ConstantTriggerForceLeft = 0;
-                padVm.ConstantTriggerForceRight = 0;
-                padVm.LeftDeadZoneX = 0;
-                padVm.LeftDeadZoneY = 0;
-                padVm.RightDeadZoneX = 0;
-                padVm.RightDeadZoneY = 0;
-                padVm.LeftAntiDeadZoneX = 0;
-                padVm.LeftAntiDeadZoneY = 0;
-                padVm.RightAntiDeadZoneX = 0;
-                padVm.RightAntiDeadZoneY = 0;
-                padVm.LeftLinear = 0;
-                padVm.RightLinear = 0;
-                padVm.LeftMaxRangeX = 100;
-                padVm.LeftMaxRangeY = 100;
-                padVm.RightMaxRangeX = 100;
-                padVm.RightMaxRangeY = 100;
-                padVm.LeftMaxRangeXNeg = 100;
-                padVm.LeftMaxRangeYNeg = 100;
-                padVm.RightMaxRangeXNeg = 100;
-                padVm.RightMaxRangeYNeg = 100;
-                padVm.LeftCenterOffsetX = 0;
-                padVm.LeftCenterOffsetY = 0;
-                padVm.RightCenterOffsetX = 0;
-                padVm.RightCenterOffsetY = 0;
-                // Clear the boundary maps too (#174), or the 30 Hz writer
-                // re-stamps a stale VM map onto the freshly reset PadSetting.
-                padVm.LeftThumbBoundaryMap = string.Empty;
-                padVm.RightThumbBoundaryMap = string.Empty;
-                padVm.LeftTriggerDeadZone = 0;
-                padVm.RightTriggerDeadZone = 0;
-                padVm.LeftTriggerAntiDeadZone = 0;
-                padVm.RightTriggerAntiDeadZone = 0;
-                padVm.LeftTriggerMaxRange = 100;
-                padVm.RightTriggerMaxRange = 100;
-
-                padVm.SyncAllConfigItemsFromVm();
+                padVm.ResetAllSettings();
+                InputService.LoadPadSettingIntoViewModel(padVm, new Engine.Data.PadSetting());
+                padVm.SoundMasterVolume = 100;
+                // In place, never by instance replacement: MainWindow's
+                // MarkDirty autosave hook subscribes to these objects'
+                // PropertyChanged once at startup, and replacing them
+                // would silently sever Extended-config persistence for
+                // the rest of the session.
+                padVm.ExtendedConfig.ResetToDefaults();
+                padVm.MidiConfig.ResetToDefaults();
+                padVm.OutputType = Engine.VirtualControllerType.Xbox;
+                padVm.ProfileId = Common.Input.InputManager.GetDefaultProfileId(padVm.OutputType);
+                padVm.ActiveLayerMask = "Base";
+                // Sibling of ApplyProfile's sequence: without the rebuild
+                // the old shift-layer tab strip ghosts over the emptied
+                // mapping set until an engine restart.
+                padVm.RebuildLayerTabs(null);
+                InputService.RefreshMappingsToViewModel(padVm);
             }
 
+            // 3. App-level surface: Settings page (HidHide toggles +
+            //    whitelist, language, theme, engine options, 2D view),
+            //    Dashboard page (DSU / web controller / Remote Link /
+            //    touchpad overlay), Remote Link identity + trusted
+            //    peers, sound-package and NFC registries, global macro
+            //    shortcuts, window placement. A fresh AppSettingsData's
+            //    initializers ARE the fresh-install defaults, and
+            //    LoadAppSettings pushes every one of them through the
+            //    same setters startup uses (so side effects like the
+            //    start-at-login scheduled task and the live DSU / web
+            //    server toggles apply themselves).
+            _mainVm.Settings.ProfileShortcuts.Clear();
+            LoadAppSettings(new AppSettingsData());
+            // LoadAppSettings can't reset the language: a fresh
+            // AppSettingsData carries Language = "" and
+            // SetLanguageFromCode no-ops on the empty code. Fresh-install
+            // state is "no explicit selection, follow the OS display
+            // language", which takes its own path.
+            _mainVm.Settings.ResetLanguageToSystemDefault();
+
+            // 4. Profiles: back to the single built-in Default entry.
             var settingsVm = _mainVm.Settings;
-            settingsVm.AutoStartEngine = true;
-            settingsVm.MinimizeToTray = false;
-            settingsVm.StartMinimized = false;
-            settingsVm.StartAtLogin = false;
-            settingsVm.EnablePollingOnFocusLoss = true;
-            settingsVm.PollingRateMs = 1;
-            settingsVm.HmInactivityDestroyTimeoutSeconds = 60;
-            settingsVm.SelectedThemeIndex = 0;
-            settingsVm.EnableInputHiding = true;
-            settingsVm.EnableAutoProfileSwitching = false;
-            _mainVm.Dashboard.EnableDsuMotionServer = false;
-            _mainVm.Dashboard.DsuMotionServerPort = 26760;
-            _mainVm.Dashboard.EnableWebController = false;
-            _mainVm.Dashboard.WebControllerPort = 8080;
-            _mainVm.Dashboard.EnableRemoteLink = false;
-            _mainVm.Dashboard.AutoReconnect = true;
-            _mainVm.Dashboard.RemoteLinkPort = 27500;
             SettingsManager.EnableAutoProfileSwitching = false;
             SettingsManager.ActiveProfileId = null;
             SettingsManager.Profiles.Clear();
@@ -3702,7 +3696,12 @@ namespace PadForge.Services
             });
             settingsVm.ActiveProfileInfo = Strings.Instance.Profile_Default;
 
-            IsDirty = true;
+            // MarkDirty, not a bare IsDirty write: only MarkDirty arms
+            // the autosave debounce, and nothing else in this method is
+            // guaranteed to (store clears and collection Clears fire no
+            // watched property changes). Without it a reset could sit
+            // unsaved until app close and resurrect on a crash.
+            MarkDirty();
             settingsVm.HasUnsavedChanges = true;
             _mainVm.StatusText = Strings.Instance.Status_SettingsResetDefaults;
         }

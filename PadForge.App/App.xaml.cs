@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -21,6 +21,12 @@ namespace PadForge
 
     public partial class App : Application
     {
+        /// <summary>The UI culture the process started with, captured
+        /// before the saved language override is applied. The
+        /// fresh-install language, used by Reset to Defaults.</summary>
+        public static System.Globalization.CultureInfo StartupUICulture { get; private set; }
+            = Thread.CurrentThread.CurrentUICulture;
+
         private Mutex _singleInstanceMutex;
 
         /// <summary>Timestamp of the last dispatcher error shown. Used to rate-limit popups.</summary>
@@ -166,6 +172,13 @@ namespace PadForge
                 try { HIDMaestro.HMContext.RemoveAllVirtualControllers(); }
                 catch { /* best effort — continue without sweep */ }
             });
+
+            // Capture the pre-override UI culture first: this is the
+            // Windows display language a fresh install runs under, and
+            // Reset to Defaults restores it. InstalledUICulture is the
+            // wrong stand-in (OS install language, which can differ from
+            // the user's display language).
+            StartupUICulture = Thread.CurrentThread.CurrentUICulture;
 
             // Apply saved language preference before any UI is created.
             var settingsPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "PadForge.xml");

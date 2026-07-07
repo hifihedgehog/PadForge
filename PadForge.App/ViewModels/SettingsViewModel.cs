@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -110,6 +110,20 @@ namespace PadForge.ViewModels
 
         /// <summary>Gets the persisted language code (for serialization).</summary>
         internal string LanguageCode => _selectedLanguage?.Name ?? "";
+
+        /// <summary>Back to the fresh-install language state: no explicit
+        /// selection persisted (LanguageCode saves ""), UI following the
+        /// OS display language. <see cref="SetLanguageFromCode"/> cannot
+        /// express this, since it deliberately no-ops on the empty code a
+        /// fresh settings document carries. Used by Reset to Defaults.</summary>
+        internal void ResetLanguageToSystemDefault()
+        {
+            _selectedLanguage = null;
+            // The culture the process started under, before the saved
+            // override: the OS display language a fresh install shows.
+            Strings.ChangeCulture(App.StartupUICulture ?? CultureInfo.InstalledUICulture);
+            OnPropertyChanged(nameof(SelectedLanguage));
+        }
 
         /// <summary>Sets the language from a persisted code, applying the culture on startup.</summary>
         internal void SetLanguageFromCode(string code)

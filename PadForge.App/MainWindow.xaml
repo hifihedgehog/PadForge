@@ -149,12 +149,13 @@
                 <ui:NavigationViewItemSeparator/>
                 <ui:NavigationViewItem x:Name="NavSettings" Content="{Binding Settings_Title, Source={x:Static strings:Strings.Instance}}" Tag="Settings">
                     <ui:NavigationViewItem.Icon>
-                        <ui:FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE713;"/>
+                        <!-- Ember, matching the page header's icon color. -->
+                        <ui:FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE713;" Foreground="{DynamicResource EmberBrush}"/>
                     </ui:NavigationViewItem.Icon>
                 </ui:NavigationViewItem>
                 <ui:NavigationViewItem x:Name="NavAbout" Content="{Binding About_Title, Source={x:Static strings:Strings.Instance}}" Tag="About">
                     <ui:NavigationViewItem.Icon>
-                        <ui:FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE946;"/>
+                        <ui:FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE946;" Foreground="{DynamicResource EmberBrush}"/>
                     </ui:NavigationViewItem.Icon>
                 </ui:NavigationViewItem>
             </ui:NavigationView.FooterMenuItems>

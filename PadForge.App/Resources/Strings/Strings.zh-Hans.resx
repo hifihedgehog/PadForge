@@ -603,7 +603,7 @@
   <data name="Pad_Sticks_Section_CenterPoint" xml:space="preserve"><value>中心点</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>死区</value></data>
   <data name="Pad_Sticks_Section_Range" xml:space="preserve"><value>范围</value></data>
-  <data name="Pad_Sticks_Section_Range_Hint" xml:space="preserve"><value>校准边界会测量摇杆在每个角度的实际可达范围，并将其重塑为完整的圆形，可修正下方四个滑块无法处理的对角线方向。滑块仅用于有意限制范围。</value></data>
+  <data name="Pad_Sticks_Section_Range_Hint" xml:space="preserve"><value>校准边界是校正摇杆的推荐方式。它先扫描摇杆物理上可达的边缘，再将每个位置按该实测边缘成比例地重新缩放，使全部原生行程在每个角度、每个偏移量上都无裁剪地映射到理想圆形。下方四个滑块仅限制主轴方向。请仅在有意限制范围时使用滑块，而非用于校正。</value></data>
   <data name="Pad_Sampling" xml:space="preserve"><value>采样中...</value></data>
   <data name="Pad_CenterOffsetX" xml:space="preserve"><value>中心偏移 X</value></data>
   <data name="Pad_CenterOffsetY" xml:space="preserve"><value>中心偏移 Y</value></data>
@@ -917,6 +917,7 @@
   <data name="Pad_Sticks_Boundary_Calibrate" xml:space="preserve"><value>校准边界</value></data>
   <data name="Pad_Sticks_Boundary_Recalibrate" xml:space="preserve"><value>重新校准边界</value></data>
   <data name="Pad_Sticks_Boundary_Sweeping" xml:space="preserve"><value>沿边缘转动… 还剩 {0}</value></data>
+  <data name="Pad_Sticks_Boundary_SecondLap" xml:space="preserve"><value>已覆盖。再转一圈以提高精度...</value></data>
   <data name="Pad_Sticks_Boundary_Circularity" xml:space="preserve"><value>圆度 {0:F0}%</value></data>
   <data name="Pad_Sticks_Boundary_Tooltip" xml:space="preserve"><value>用摇杆沿边缘转动以测量可达边界，然后将其重塑为完整圆形。</value></data>
   <data name="Pad_ResetStickBoundary" xml:space="preserve"><value>重置边界校准</value></data>

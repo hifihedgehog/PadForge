@@ -603,7 +603,7 @@
   <data name="Pad_Sticks_Section_CenterPoint" xml:space="preserve"><value>Punto centrale</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>Zona morta</value></data>
   <data name="Pad_Sticks_Section_Range" xml:space="preserve"><value>Range</value></data>
-  <data name="Pad_Sticks_Section_Range_Hint" xml:space="preserve"><value>Calibra il bordo misura la portata reale dello stick a ogni angolo e la rimodella in un cerchio completo, correggendo le diagonali che i quattro cursori sotto non possono correggere. Usa i cursori solo per limitare il range di proposito.</value></data>
+  <data name="Pad_Sticks_Section_Range_Hint" xml:space="preserve"><value>Calibra il bordo è il modo consigliato per correggere uno stick. Rileva il bordo fisicamente raggiungibile e poi riscala proporzionalmente ogni posizione rispetto a quel bordo misurato, così l'intera corsa nativa, a ogni angolo e a ogni deflessione, viene proiettata su un cerchio ideale senza alcun taglio. I quattro cursori sotto limitano solo gli assi cardinali. Usali per limitare il range di proposito, non per correggerlo.</value></data>
   <data name="Pad_Sampling" xml:space="preserve"><value>Campionamento...</value></data>
   <data name="Pad_CenterOffsetX" xml:space="preserve"><value>Offset centro X</value></data>
   <data name="Pad_CenterOffsetY" xml:space="preserve"><value>Offset centro Y</value></data>
@@ -916,6 +916,7 @@
   <data name="Pad_Sticks_Boundary_Calibrate" xml:space="preserve"><value>Calibra il bordo</value></data>
   <data name="Pad_Sticks_Boundary_Recalibrate" xml:space="preserve"><value>Ricalibra il bordo</value></data>
   <data name="Pad_Sticks_Boundary_Sweeping" xml:space="preserve"><value>Percorri il bordo... {0} rimasti</value></data>
+  <data name="Pad_Sticks_Boundary_SecondLap" xml:space="preserve"><value>Coperto. Un altro giro per rifinire...</value></data>
   <data name="Pad_Sticks_Boundary_Circularity" xml:space="preserve"><value>Circolarità {0:F0}%</value></data>
   <data name="Pad_Sticks_Boundary_Tooltip" xml:space="preserve"><value>Percorri il bordo con lo stick per mappare il confine raggiungibile e rimodellarlo in un cerchio completo.</value></data>
   <data name="Pad_ResetStickBoundary" xml:space="preserve"><value>Reimposta la calibrazione del bordo</value></data>

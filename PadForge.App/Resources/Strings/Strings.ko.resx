@@ -603,7 +603,7 @@
   <data name="Pad_Sticks_Section_CenterPoint" xml:space="preserve"><value>중심점</value></data>
   <data name="Pad_Sticks_Section_DeadZone" xml:space="preserve"><value>데드존</value></data>
   <data name="Pad_Sticks_Section_Range" xml:space="preserve"><value>범위</value></data>
-  <data name="Pad_Sticks_Section_Range_Hint" xml:space="preserve"><value>경계 보정은 모든 각도에서 스틱의 실제 도달 범위를 측정해 완전한 원으로 재구성하며, 아래 슬라이더 4개로는 보정할 수 없는 대각선 방향까지 보정합니다. 슬라이더는 의도적으로 범위를 제한할 때만 사용하세요.</value></data>
+  <data name="Pad_Sticks_Section_Range_Hint" xml:space="preserve"><value>경계 보정은 스틱을 바로잡는 권장 방법입니다. 스틱이 물리적으로 도달할 수 있는 가장자리를 스캔한 뒤 측정된 경계에 대해 모든 위치를 비례적으로 재조정하므로, 모든 각도와 모든 기울기에서 네이티브 동작 전체가 잘림 없이 이상적인 원에 매핑됩니다. 아래 슬라이더 4개는 주축 방향만 제한합니다. 보정이 아니라 의도적인 범위 제한에만 사용하세요.</value></data>
   <data name="Pad_Sampling" xml:space="preserve"><value>샘플링 중...</value></data>
   <data name="Pad_CenterOffsetX" xml:space="preserve"><value>중앙 오프셋 X</value></data>
   <data name="Pad_CenterOffsetY" xml:space="preserve"><value>중앙 오프셋 Y</value></data>
@@ -917,6 +917,7 @@
   <data name="Pad_Sticks_Boundary_Calibrate" xml:space="preserve"><value>경계 보정</value></data>
   <data name="Pad_Sticks_Boundary_Recalibrate" xml:space="preserve"><value>경계 재보정</value></data>
   <data name="Pad_Sticks_Boundary_Sweeping" xml:space="preserve"><value>가장자리를 훑으세요... {0}개 남음</value></data>
+  <data name="Pad_Sticks_Boundary_SecondLap" xml:space="preserve"><value>커버 완료. 정밀도를 위해 한 바퀴 더...</value></data>
   <data name="Pad_Sticks_Boundary_Circularity" xml:space="preserve"><value>원형도 {0:F0}%</value></data>
   <data name="Pad_Sticks_Boundary_Tooltip" xml:space="preserve"><value>스틱으로 가장자리를 훑어 도달 가능한 경계를 측정한 뒤 완전한 원으로 변형합니다.</value></data>
   <data name="Pad_ResetStickBoundary" xml:space="preserve"><value>경계 보정 재설정</value></data>

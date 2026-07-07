@@ -2232,6 +2232,11 @@ namespace PadForge
                             or nameof(NavControllerItemViewModel.IsVirtualControllerConnected))
                         {
                             UpdateControllerNavItemContent(capturedMenuItem, capturedNavItem);
+                            // Collapsed rail: the mini card is a rendered
+                            // bitmap, so its flame heat only tracks state
+                            // if the icon re-renders here too.
+                            if (!NavView.IsPaneOpen)
+                                capturedMenuItem.Icon = RenderCompactCardIcon(capturedNavItem);
                         }
                     };
                     navItem.PropertyChanged += handler;
@@ -2298,6 +2303,20 @@ namespace PadForge
             if (collapsed)
                 menuItem.Icon = RenderCompactCardIcon(navItem);
             return menuItem;
+        }
+
+        /// <summary>Heat state for a slot's flame (#175), shared by the
+        /// expanded pill and the collapsed mini card so both read the
+        /// same liveness: ember = engine running + VC live (or igniting),
+        /// gold = enabled but engine stopped / awaiting devices, cold
+        /// outline = slot disabled.</summary>
+        private void ComputeFlameHeat(NavControllerItemViewModel navItem, out bool lit, out bool cooling)
+        {
+            if (!navItem.IsEnabled) { lit = false; cooling = false; }
+            else if (navItem.IsInitializing) { lit = true; cooling = false; }
+            else if (!_viewModel.IsEngineRunning) { lit = false; cooling = true; }
+            else if (!navItem.IsVirtualControllerConnected) { lit = false; cooling = true; }
+            else { lit = true; cooling = false; }
         }
 
         /// <summary>
@@ -2427,28 +2446,23 @@ namespace PadForge
             // Ember = forging (enabled, engine running, VC live).
             // Gold = cooling (enabled but engine stopped / awaiting devices).
             // Outline = cold (disabled). Flashing ember = igniting.
+            // Heat comes from the shared helper so the collapsed mini
+            // card's flame can never diverge from the expanded pill's.
             string powerTooltip;
             bool isInitializing = navItem.IsInitializing;
-            bool lit;
-            bool cooling;
+            ComputeFlameHeat(navItem, out bool lit, out bool cooling);
             if (!navItem.IsEnabled)
             {
                 powerTooltip = Strings.Instance.Common_Disabled;
                 isInitializing = false;
-                lit = false;
-                cooling = false;
             }
             else if (isInitializing)
             {
                 powerTooltip = Strings.Instance.Main_Initializing;
-                lit = true;
-                cooling = false;
             }
             else if (!_viewModel.IsEngineRunning)
             {
                 powerTooltip = Strings.Instance.Main_EngineStopped;
-                lit = false;
-                cooling = true;
             }
             else if (!navItem.IsVirtualControllerConnected)
             {
@@ -2457,14 +2471,10 @@ namespace PadForge
                 // the grace period the VC is still alive even with devices
                 // offline, so the flame stays ember until teardown.
                 powerTooltip = Strings.Instance.Main_AwaitingDevices;
-                lit = false;
-                cooling = true;
             }
             else
             {
                 powerTooltip = Strings.Instance.Main_Active;
-                lit = true;
-                cooling = false;
             }
 
             var flameGlyph = BuildFlameGlyph(13, lit, cooling);
@@ -2763,7 +2773,7 @@ namespace PadForge
 
         /// <summary>
         /// Swaps all controller NavigationViewItem cards between full and compact mode.
-        /// Compact mode shows a mini card: gamepad icon + slot number on top row,
+        /// Compact mode shows a mini card: flame heat glyph + slot number on top row,
         /// type icon + subgroup number on bottom row.
         /// </summary>
         private void UpdateAllControllerCardMode(bool compact)
@@ -2831,7 +2841,10 @@ namespace PadForge
 
         /// <summary>
         /// Builds a compact mini card for collapsed sidebar: two rows stacked vertically.
-        /// Row 1: Gamepad icon + slot number. Row 2: Type icon + subgroup number.
+        /// Row 1: Flame heat glyph + slot number. Row 2: Type icon + subgroup number.
+        /// The flame replaced the old MDL2 gamepad glyph (user report 2026-07-07:
+        /// it clashed with the #175 identity) and carries the same heat
+        /// semantics as the expanded pill's flame.
         /// </summary>
         private System.Windows.Controls.Border BuildCompactCard(NavControllerItemViewModel navItem)
         {
@@ -2841,16 +2854,12 @@ namespace PadForge
                 isDark ? System.Windows.Media.Colors.White : System.Windows.Media.Colors.Black);
             fgBrush.Freeze();
 
-            // Row 1: Gamepad icon + slot number
+            // Row 1: Flame heat glyph + slot number
+            ComputeFlameHeat(navItem, out bool lit, out bool cooling);
             var row1 = new System.Windows.Controls.StackPanel { Orientation = System.Windows.Controls.Orientation.Horizontal, HorizontalAlignment = HorizontalAlignment.Center };
-            row1.Children.Add(new System.Windows.Controls.TextBlock
-            {
-                Text = "\uE7FC",
-                FontFamily = mdl2,
-                FontSize = 11,
-                Foreground = fgBrush,
-                VerticalAlignment = VerticalAlignment.Center
-            });
+            var compactFlame = BuildFlameGlyph(11, lit, cooling);
+            compactFlame.VerticalAlignment = VerticalAlignment.Center;
+            row1.Children.Add(compactFlame);
             row1.Children.Add(new System.Windows.Controls.TextBlock
             {
                 Text = navItem.SlotNumber.ToString(),

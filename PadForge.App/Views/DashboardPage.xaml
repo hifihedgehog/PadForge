@@ -581,6 +581,14 @@
                                                 </BeginStoryboard>
                                             </Trigger.ExitActions>
                                         </Trigger>
+                                        <!-- Persistent selection bloom: the card whose pad
+                                             page is in focus wears the same ember hover glow
+                                             at rest, so the selected card reads as clearly as
+                                             a hover. Declared after the hover trigger so both
+                                             resolve to the same ember effect (no fight). -->
+                                        <DataTrigger Binding="{Binding IsSelected}" Value="True">
+                                            <Setter Property="Effect" Value="{StaticResource EmberHoverGlow}"/>
+                                        </DataTrigger>
                                         <!-- Pure cold: nothing mapped, card recedes. -->
                                         <DataTrigger Binding="{Binding HasMappedDevices}" Value="False">
                                             <Setter Property="Opacity" Value="0.72"/>

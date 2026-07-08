@@ -583,6 +583,28 @@ namespace PadForge.Common.Input
                 // deltas for the "Mouse Motion X/Y" sources.
                 SDL_SetHint(SDL_HINT_JOYSTICK_BLE_SWITCH2_MOUSE, "1");
 
+                // Enable SDL's Sony-sixaxis PS3 driver (discussion #194). It
+                // claims a DualShock 3 running DsHidMini's SixaxisCompatible
+                // (SXS) mode, the only DsHidMini mode that serves the DS3's
+                // motion data (GET_FEATURE report 0x00, HID.FeatureReport.c),
+                // and reads buttons, sticks, the 10 pressure axes (joystick
+                // axes 6-15, surfaced by the #193 generic-axis path), the
+                // 3-axis accelerometer, and the yaw gyro through the standard
+                // SDL sensor API that SdlDeviceWrapper already consumes.
+                // Windows-only driver, hint-gated off by default in SDL, and
+                // inert unless the user has put their DS3 in SXS mode. SDF /
+                // GPJ nodes are unaffected (wrong report shape for this
+                // driver's GET_FEATURE parse). Gyro and correct accel scaling
+                // over DsHidMini depend on the fork patch in
+                // sdl-patch-spec-ds3-sixaxis-motion.md; with a stock-driver
+                // DLL the accel reads wrong (big-endian parse of DsHidMini's
+                // little-endian serve) and no gyro is declared, so the fork
+                // patch must land before this feature is announced. Do NOT
+                // also set SDL_HINT_JOYSTICK_HIDAPI_PS3: the regular PS3
+                // driver outranks sixaxis in SDL's driver table and its init
+                // writes at the device.
+                SDL_SetHint(SDL_HINT_JOYSTICK_HIDAPI_PS3_SIXAXIS_DRIVER, "1");
+
                 // Allow screensaver/sleep even while SDL video is active.
                 SDL_SetHint(SDL_HINT_VIDEO_ALLOW_SCREENSAVER, "1");
 

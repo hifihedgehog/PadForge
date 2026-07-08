@@ -1144,7 +1144,7 @@
                             </StackPanel>
                             <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
                                 <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Macro_Fire, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
-                                           Margin="0,0,8,0"/>
+                                           Width="80" Margin="0,0,8,0"/>
                                 <ComboBox SelectedValue="{Binding TriggerMode, Mode=TwoWay}"
                                           SelectedValuePath="Tag" MinWidth="120">
                                     <ComboBoxItem Content="{Binding Macro_OnPress, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroTriggerMode.OnPress}"/>
@@ -1474,7 +1474,7 @@
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
                                     <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Macro_Source, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
-                                               Margin="0,0,8,0"/>
+                                               Width="80" Margin="0,0,8,0"/>
                                     <ComboBox SelectedValue="{Binding TriggerSource, Mode=TwoWay}"
                                               SelectedValuePath="Tag" MinWidth="160">
                                         <ComboBoxItem Content="{Binding Macro_InputDevice, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroTriggerSource.InputDevice}"/>
@@ -1774,7 +1774,7 @@
                                                 Visibility="{Binding IsDisconnectControllerType, Converter={StaticResource BoolToVisibilityConverter}}">
                                         <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
                                             <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding MacroDisconnect_Target_Label, Source={x:Static strings:Strings.Instance}}"
-                                                       Width="60" VerticalAlignment="Center"/>
+                                                       Width="80" Margin="0,0,8,0" VerticalAlignment="Center"/>
                                             <ComboBox SelectedValue="{Binding DisconnectTarget, Mode=TwoWay}"
                                                       SelectedValuePath="Tag"
                                                       Width="220" VerticalAlignment="Center"
@@ -1788,7 +1788,7 @@
                                         <StackPanel Orientation="Horizontal" Margin="0,0,0,4"
                                                     Visibility="{Binding IsDisconnectSpecificDevice, Converter={StaticResource BoolToVisibilityConverter}}">
                                             <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding MacroDisconnect_Device_Label, Source={x:Static strings:Strings.Instance}}"
-                                                       Width="60" VerticalAlignment="Center"/>
+                                                       Width="80" Margin="0,0,8,0" VerticalAlignment="Center"/>
                                             <ComboBox ItemsSource="{Binding DisconnectDeviceOptions}"
                                                       SelectedValue="{Binding DisconnectDeviceGuid, Mode=TwoWay}"
                                                       SelectedValuePath="Guid" DisplayMemberPath="Name"
@@ -1799,51 +1799,42 @@
                                                    Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
                                     </StackPanel>
 
-                                    <!-- Run Program editor. Auto label column so "Working directory"
-                                         and its longer translations stay aligned and never clip. -->
-                                    <Grid Margin="0,0,0,6"
-                                          Visibility="{Binding IsRunProgramType, Converter={StaticResource BoolToVisibilityConverter}}">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="Auto"/>
-                                            <ColumnDefinition Width="*"/>
-                                            <ColumnDefinition Width="Auto"/>
-                                        </Grid.ColumnDefinitions>
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="Auto"/>
-                                            <RowDefinition Height="Auto"/>
-                                            <RowDefinition Height="Auto"/>
-                                        </Grid.RowDefinitions>
-
-                                        <TextBlock Grid.Row="0" Grid.Column="0" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                                   Text="{Binding MacroAction_RunProgram_Path, Source={x:Static strings:Strings.Instance}}"
-                                                   VerticalAlignment="Center" Margin="0,0,8,4"/>
-                                        <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding ProgramPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                 VerticalAlignment="Center" Margin="0,0,0,4"/>
-                                        <Button Grid.Row="0" Grid.Column="2" Content="{Binding Common_Browse, Source={x:Static strings:Strings.Instance}}"
-                                                Click="RunProgramBrowseFile_Click" Margin="6,0,0,4" VerticalAlignment="Center"/>
-
-                                        <TextBlock Grid.Row="1" Grid.Column="0" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                                   Text="{Binding MacroAction_RunProgram_Args, Source={x:Static strings:Strings.Instance}}"
-                                                   VerticalAlignment="Center" Margin="0,0,8,4"/>
-                                        <TextBox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding ProgramArgs, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                 VerticalAlignment="Center" Margin="0,0,0,4"/>
-
-                                        <TextBlock Grid.Row="2" Grid.Column="0" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                                   Text="{Binding MacroAction_RunProgram_WorkingDir, Source={x:Static strings:Strings.Instance}}"
-                                                   ToolTip="{Binding MacroAction_RunProgram_WorkingDir_Tooltip, Source={x:Static strings:Strings.Instance}}"
-                                                   VerticalAlignment="Center" Margin="0,0,8,0"/>
-                                        <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding ProgramWorkingDir, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                 ToolTip="{Binding MacroAction_RunProgram_WorkingDir_Tooltip, Source={x:Static strings:Strings.Instance}}"
-                                                 VerticalAlignment="Center"/>
-                                        <Button Grid.Row="2" Grid.Column="2" Content="{Binding Common_Browse, Source={x:Static strings:Strings.Instance}}"
-                                                Click="RunProgramBrowseFolder_Click" Margin="6,0,0,0" VerticalAlignment="Center"/>
-                                    </Grid>
+                                    <!-- Run Program editor. Same 80px label column as every other
+                                         editor so the fields line up with the type dropdown. The
+                                         Working directory label wraps to a second line rather than clip. -->
+                                    <StackPanel Margin="0,0,0,6"
+                                                Visibility="{Binding IsRunProgramType, Converter={StaticResource BoolToVisibilityConverter}}">
+                                        <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                            <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding MacroAction_RunProgram_Path, Source={x:Static strings:Strings.Instance}}"
+                                                       Width="80" Margin="0,0,8,0" TextWrapping="Wrap" VerticalAlignment="Center"/>
+                                            <TextBox Text="{Binding ProgramPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                     Width="220" VerticalAlignment="Center"/>
+                                            <Button Content="{Binding Common_Browse, Source={x:Static strings:Strings.Instance}}"
+                                                    Click="RunProgramBrowseFile_Click" Margin="6,0,0,0" VerticalAlignment="Center"/>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                            <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding MacroAction_RunProgram_Args, Source={x:Static strings:Strings.Instance}}"
+                                                       Width="80" Margin="0,0,8,0" TextWrapping="Wrap" VerticalAlignment="Center"/>
+                                            <TextBox Text="{Binding ProgramArgs, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                     Width="220" VerticalAlignment="Center"/>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                            <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding MacroAction_RunProgram_WorkingDir, Source={x:Static strings:Strings.Instance}}"
+                                                       ToolTip="{Binding MacroAction_RunProgram_WorkingDir_Tooltip, Source={x:Static strings:Strings.Instance}}"
+                                                       Width="80" Margin="0,0,8,0" TextWrapping="Wrap" VerticalAlignment="Center"/>
+                                            <TextBox Text="{Binding ProgramWorkingDir, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                     ToolTip="{Binding MacroAction_RunProgram_WorkingDir_Tooltip, Source={x:Static strings:Strings.Instance}}"
+                                                     Width="220" VerticalAlignment="Center"/>
+                                            <Button Content="{Binding Common_Browse, Source={x:Static strings:Strings.Instance}}"
+                                                    Click="RunProgramBrowseFolder_Click" Margin="6,0,0,0" VerticalAlignment="Center"/>
+                                        </StackPanel>
+                                    </StackPanel>
 
                                     <!-- SetGyroEngaged Mode picker: Toggle / On / Off -->
                                     <StackPanel Orientation="Horizontal" Margin="0,0,0,6"
                                                 Visibility="{Binding IsSetGyroEngagedType, Converter={StaticResource BoolToVisibilityConverter}}">
                                         <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Macro_SetGyroEngaged_Mode_Label, Source={x:Static strings:Strings.Instance}}"
-                                                   Width="60" VerticalAlignment="Center"/>
+                                                   Width="80" Margin="0,0,8,0" VerticalAlignment="Center"/>
                                         <ComboBox SelectedValue="{Binding SetGyroEngagedMode, Mode=TwoWay}"
                                                   SelectedValuePath="Tag"
                                                   Width="160" VerticalAlignment="Center"
@@ -1859,7 +1850,7 @@
                                     <StackPanel Orientation="Horizontal" Margin="0,0,0,6"
                                                 Visibility="{Binding IsMouseRecenterType, Converter={StaticResource BoolToVisibilityConverter}}">
                                         <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Macro_CursorRecenterMode_Label, Source={x:Static strings:Strings.Instance}}"
-                                                   Width="60" VerticalAlignment="Center"/>
+                                                   Width="80" Margin="0,0,8,0" VerticalAlignment="Center"/>
                                         <ComboBox SelectedValue="{Binding CursorRecenterMode, Mode=TwoWay}"
                                                   SelectedValuePath="Tag"
                                                   Width="160" VerticalAlignment="Center"
@@ -1875,7 +1866,7 @@
                                                 Visibility="{Binding IsMouseFixPositionType, Converter={StaticResource BoolToVisibilityConverter}}">
                                         <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
                                             <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Macro_CursorPinMode_Label, Source={x:Static strings:Strings.Instance}}"
-                                                       Width="60" VerticalAlignment="Center"/>
+                                                       Width="80" Margin="0,0,8,0" VerticalAlignment="Center"/>
                                             <ComboBox SelectedValue="{Binding CursorPinMode, Mode=TwoWay}"
                                                       SelectedValuePath="Tag"
                                                       Width="160" VerticalAlignment="Center"
@@ -1887,13 +1878,13 @@
                                         </StackPanel>
                                         <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
                                             <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Macro_CursorPinX_Label, Source={x:Static strings:Strings.Instance}}"
-                                                       Width="60" VerticalAlignment="Center"/>
+                                                       Width="80" Margin="0,0,8,0" VerticalAlignment="Center"/>
                                             <TextBox Text="{Binding CursorPinX, Mode=TwoWay, StringFormat=F0, UpdateSourceTrigger=LostFocus}"
                                                      Width="80" VerticalAlignment="Center"/>
                                         </StackPanel>
                                         <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
                                             <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Macro_CursorPinY_Label, Source={x:Static strings:Strings.Instance}}"
-                                                       Width="60" VerticalAlignment="Center"/>
+                                                       Width="80" Margin="0,0,8,0" VerticalAlignment="Center"/>
                                             <TextBox Text="{Binding CursorPinY, Mode=TwoWay, StringFormat=F0, UpdateSourceTrigger=LostFocus}"
                                                      Width="80" VerticalAlignment="Center"/>
                                         </StackPanel>
@@ -1907,7 +1898,7 @@
                                                 Visibility="{Binding IsMouseLimitRegionType, Converter={StaticResource BoolToVisibilityConverter}}">
                                         <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
                                             <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Macro_CursorClampMode_Label, Source={x:Static strings:Strings.Instance}}"
-                                                       Width="60" VerticalAlignment="Center"/>
+                                                       Width="80" Margin="0,0,8,0" VerticalAlignment="Center"/>
                                             <ComboBox SelectedValue="{Binding CursorClampMode, Mode=TwoWay}"
                                                       SelectedValuePath="Tag"
                                                       Width="160" VerticalAlignment="Center"
@@ -1919,14 +1910,14 @@
                                         </StackPanel>
                                         <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
                                             <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Macro_CursorClampInsetX_Label, Source={x:Static strings:Strings.Instance}}"
-                                                       Width="60" VerticalAlignment="Center"/>
+                                                       Width="80" Margin="0,0,8,0" VerticalAlignment="Center"/>
                                             <TextBox Text="{Binding CursorClampInsetX, Mode=TwoWay, StringFormat=F0, UpdateSourceTrigger=LostFocus}"
                                                      Width="80" VerticalAlignment="Center"/>
                                             <ui:Button Command="{Binding ResetCursorClampInsetXCommand}" Style="{StaticResource ResetButton}" Margin="8,0,0,0"/>
                                         </StackPanel>
                                         <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
                                             <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Macro_CursorClampInsetY_Label, Source={x:Static strings:Strings.Instance}}"
-                                                       Width="60" VerticalAlignment="Center"/>
+                                                       Width="80" Margin="0,0,8,0" VerticalAlignment="Center"/>
                                             <TextBox Text="{Binding CursorClampInsetY, Mode=TwoWay, StringFormat=F0, UpdateSourceTrigger=LostFocus}"
                                                      Width="80" VerticalAlignment="Center"/>
                                             <ui:Button Command="{Binding ResetCursorClampInsetYCommand}" Style="{StaticResource ResetButton}" Margin="8,0,0,0"/>
@@ -2553,7 +2544,7 @@
                             </StackPanel>
                             <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
                                 <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Macro_RepeatMode, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
-                                           Margin="0,0,8,0"/>
+                                           Width="80" Margin="0,0,8,0"/>
                                 <ComboBox SelectedValue="{Binding RepeatMode, Mode=TwoWay}"
                                           SelectedValuePath="Tag" MinWidth="120">
                                     <ComboBoxItem Content="{Binding Macro_Once, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroRepeatMode.Once}"/>
@@ -2563,7 +2554,7 @@
                             </StackPanel>
                             <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
                                 <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Macro_Count, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
-                                           Margin="0,0,8,0" Width="90"/>
+                                           Margin="0,0,8,0" Width="80"/>
                                 <TextBox Text="{Binding RepeatCount, Mode=TwoWay}"
                                          Width="60"/>
                                 <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Macro_DelayMs, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"

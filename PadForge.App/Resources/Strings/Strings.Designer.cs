@@ -509,6 +509,7 @@ public class Strings : INotifyPropertyChanged
     public string MacroAction_RunProgram_Path => Get("MacroAction_RunProgram_Path");
     public string MacroAction_RunProgram_Args => Get("MacroAction_RunProgram_Args");
     public string MacroAction_RunProgram_WorkingDir => Get("MacroAction_RunProgram_WorkingDir");
+    public string MacroAction_RunProgram_WorkingDir_Tooltip => Get("MacroAction_RunProgram_WorkingDir_Tooltip");
     public string Devices_IdleDisconnect => Get("Devices_IdleDisconnect");
     public string Devices_Power => Get("Devices_Power");
     public string Devices_Dossier => Get("Devices_Dossier");

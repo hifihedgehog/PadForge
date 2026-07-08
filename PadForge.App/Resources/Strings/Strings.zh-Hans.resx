@@ -2169,7 +2169,8 @@
   <data name="MacroAction_RunProgram_NoProgram" xml:space="preserve"><value>(无程序)</value></data>
   <data name="MacroAction_RunProgram_Path" xml:space="preserve"><value>程序</value></data>
   <data name="MacroAction_RunProgram_Args" xml:space="preserve"><value>参数</value></data>
-  <data name="MacroAction_RunProgram_WorkingDir" xml:space="preserve"><value>文件夹</value></data>
+  <data name="MacroAction_RunProgram_WorkingDir" xml:space="preserve"><value>工作目录</value></data>
+  <data name="MacroAction_RunProgram_WorkingDir_Tooltip" xml:space="preserve"><value>可选。程序用作当前目录的文件夹。不是程序文件所在的文件夹。留空则使用默认值。</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>空闲断开</value></data>
   <data name="Devices_Power" xml:space="preserve"><value>电源</value></data>
   <data name="Devices_Dossier" xml:space="preserve"><value>设备档案</value></data>

@@ -2169,7 +2169,8 @@
   <data name="MacroAction_RunProgram_NoProgram" xml:space="preserve"><value>(プログラムなし)</value></data>
   <data name="MacroAction_RunProgram_Path" xml:space="preserve"><value>プログラム</value></data>
   <data name="MacroAction_RunProgram_Args" xml:space="preserve"><value>引数</value></data>
-  <data name="MacroAction_RunProgram_WorkingDir" xml:space="preserve"><value>フォルダー</value></data>
+  <data name="MacroAction_RunProgram_WorkingDir" xml:space="preserve"><value>作業ディレクトリ</value></data>
+  <data name="MacroAction_RunProgram_WorkingDir_Tooltip" xml:space="preserve"><value>任意。プログラムが現在のディレクトリとして使用するフォルダーです。プログラムファイルがある場所ではありません。空欄にすると既定値が使われます。</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>アイドル切断</value></data>
   <data name="Devices_Power" xml:space="preserve"><value>電源</value></data>
   <data name="Devices_Dossier" xml:space="preserve"><value>デバイス情報</value></data>

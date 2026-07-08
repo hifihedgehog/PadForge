@@ -1799,32 +1799,45 @@
                                                    Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
                                     </StackPanel>
 
-                                    <!-- Run Program editor. Program path + Browse, arguments, working folder + Browse -->
-                                    <StackPanel Margin="0,0,0,6"
-                                                Visibility="{Binding IsRunProgramType, Converter={StaticResource BoolToVisibilityConverter}}">
-                                        <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
-                                            <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding MacroAction_RunProgram_Path, Source={x:Static strings:Strings.Instance}}"
-                                                       Width="72" VerticalAlignment="Center"/>
-                                            <TextBox Text="{Binding ProgramPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                     Width="220" VerticalAlignment="Center"/>
-                                            <Button Content="{Binding Common_Browse, Source={x:Static strings:Strings.Instance}}"
-                                                    Click="RunProgramBrowseFile_Click" Margin="6,0,0,0" VerticalAlignment="Center"/>
-                                        </StackPanel>
-                                        <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
-                                            <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding MacroAction_RunProgram_Args, Source={x:Static strings:Strings.Instance}}"
-                                                       Width="72" VerticalAlignment="Center"/>
-                                            <TextBox Text="{Binding ProgramArgs, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                     Width="220" VerticalAlignment="Center"/>
-                                        </StackPanel>
-                                        <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
-                                            <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding MacroAction_RunProgram_WorkingDir, Source={x:Static strings:Strings.Instance}}"
-                                                       Width="72" VerticalAlignment="Center"/>
-                                            <TextBox Text="{Binding ProgramWorkingDir, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                     Width="220" VerticalAlignment="Center"/>
-                                            <Button Content="{Binding Common_Browse, Source={x:Static strings:Strings.Instance}}"
-                                                    Click="RunProgramBrowseFolder_Click" Margin="6,0,0,0" VerticalAlignment="Center"/>
-                                        </StackPanel>
-                                    </StackPanel>
+                                    <!-- Run Program editor. Auto label column so "Working directory"
+                                         and its longer translations stay aligned and never clip. -->
+                                    <Grid Margin="0,0,0,6"
+                                          Visibility="{Binding IsRunProgramType, Converter={StaticResource BoolToVisibilityConverter}}">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                        </Grid.RowDefinitions>
+
+                                        <TextBlock Grid.Row="0" Grid.Column="0" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                                   Text="{Binding MacroAction_RunProgram_Path, Source={x:Static strings:Strings.Instance}}"
+                                                   VerticalAlignment="Center" Margin="0,0,8,4"/>
+                                        <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding ProgramPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                 VerticalAlignment="Center" Margin="0,0,0,4"/>
+                                        <Button Grid.Row="0" Grid.Column="2" Content="{Binding Common_Browse, Source={x:Static strings:Strings.Instance}}"
+                                                Click="RunProgramBrowseFile_Click" Margin="6,0,0,4" VerticalAlignment="Center"/>
+
+                                        <TextBlock Grid.Row="1" Grid.Column="0" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                                   Text="{Binding MacroAction_RunProgram_Args, Source={x:Static strings:Strings.Instance}}"
+                                                   VerticalAlignment="Center" Margin="0,0,8,4"/>
+                                        <TextBox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding ProgramArgs, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                 VerticalAlignment="Center" Margin="0,0,0,4"/>
+
+                                        <TextBlock Grid.Row="2" Grid.Column="0" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                                   Text="{Binding MacroAction_RunProgram_WorkingDir, Source={x:Static strings:Strings.Instance}}"
+                                                   ToolTip="{Binding MacroAction_RunProgram_WorkingDir_Tooltip, Source={x:Static strings:Strings.Instance}}"
+                                                   VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                        <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding ProgramWorkingDir, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                 ToolTip="{Binding MacroAction_RunProgram_WorkingDir_Tooltip, Source={x:Static strings:Strings.Instance}}"
+                                                 VerticalAlignment="Center"/>
+                                        <Button Grid.Row="2" Grid.Column="2" Content="{Binding Common_Browse, Source={x:Static strings:Strings.Instance}}"
+                                                Click="RunProgramBrowseFolder_Click" Margin="6,0,0,0" VerticalAlignment="Center"/>
+                                    </Grid>
 
                                     <!-- SetGyroEngaged Mode picker: Toggle / On / Off -->
                                     <StackPanel Orientation="Horizontal" Margin="0,0,0,6"

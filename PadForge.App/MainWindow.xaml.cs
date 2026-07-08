@@ -2742,29 +2742,32 @@ namespace PadForge
                     : System.Windows.Media.Color.FromRgb(0xFF, 0x6B, 0x2C);  // ember, live/disabled
                 // The border is the primary signal and it PULSES. A border lives
                 // inside the card, so the rail can never clip it the way it clips
-                // an overflowing drop shadow: the pane is a fixed 223px column and
-                // the card is 212, so any bloom is boxed to ~5px a side (window
-                // edge left, the content page occludes past the pane right). The
-                // bloom therefore rides at the hover glow's radius, clipping no
-                // worse than a hover, and pulses in step with the border, paced by
-                // the slot's activation: ember and quick when live, gold and slower
-                // when idle, dim and slowest when disabled. This overrides the
-                // resting heat ring on the selected card (one Effect slot each).
+                // an overflowing drop shadow. The bloom's left reach is hard-capped
+                // by the window's own client edge: the pill sits 7px from it (3px
+                // card margin + 4px pane-grid margin), and nothing can push a glow
+                // past the window, so any bloom wider than 7px truncates on the
+                // left. The bloom is therefore held to a 6px radius so it fades out
+                // fully inside that 7px envelope, and its opacity is raised so the
+                // tighter halo still reads. Both border and bloom pulse in step,
+                // paced by the slot's activation: ember and quick when live, gold
+                // and slower when idle, dim and slowest when disabled. This
+                // overrides the resting heat ring on the selected card (one Effect
+                // slot each).
                 var selBorder = new System.Windows.Media.SolidColorBrush(selColor);
                 card.BorderBrush = selBorder;
                 card.BorderThickness = new Thickness(2);
                 var selGlow = new System.Windows.Media.Effects.DropShadowEffect
                 {
                     Color = selColor,
-                    BlurRadius = 12,
+                    BlurRadius = 6,
                     ShadowDepth = 0,
-                    Opacity = 0.7,
+                    Opacity = 0.85,
                 };
                 card.Effect = selGlow;
                 if (MotionEnabled)
                 {
-                    double glowLo = lit ? 0.5 : cooling ? 0.4 : 0.3;
-                    double glowHi = lit ? 0.9 : cooling ? 0.8 : 0.6;
+                    double glowLo = lit ? 0.6 : cooling ? 0.5 : 0.4;
+                    double glowHi = lit ? 1.0 : cooling ? 0.9 : 0.75;
                     double periodMs = lit ? 1100 : cooling ? 1600 : 2200;
                     // Phase-lock to a wall-clock grid so a rebuild never snaps the
                     // pulse back to its trough (AutoReverse doubles the visible period).

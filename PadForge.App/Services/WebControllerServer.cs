@@ -328,64 +328,71 @@ namespace PadForge.Services
 
                 _clients[compositeKey] = session;
 
-                // Notify that a device connected.
-                DeviceConnected?.Invoke(device);
-                StatusChanged?.Invoke(this, string.Format(Strings.Instance.Server_RunningClients_Format, _clients.Count));
-
-                // Send connection confirmation.
-                await SendJsonAsync(ws, new { type = "connected", padId, name }, cts.Token, session.SendGate);
-
-                // Receive loop.
-                var buffer = new byte[1024];
-                while (ws.State == WebSocketState.Open && _running && !cts.Token.IsCancellationRequested)
-                {
-                    WebSocketReceiveResult result;
-                    try
-                    {
-                        result = await ws.ReceiveAsync(
-                            new ArraySegment<byte>(buffer), cts.Token);
-                    }
-                    catch (OperationCanceledException)
-                    {
-                        break;
-                    }
-                    catch (WebSocketException)
-                    {
-                        break;
-                    }
-
-                    if (result.MessageType == WebSocketMessageType.Close)
-                        break;
-
-                    if (result.MessageType == WebSocketMessageType.Text)
-                        ProcessMessage(device, buffer, result.Count);
-                }
-
-                // Cleanup. Conditional: a browser that reconnected with the
-                // same client id already replaced this session in _clients
-                // (the indexer overwrite above), and an unconditional remove
-                // here would evict the NEW session and offline the device the
-                // new connection just brought up (audit F9). Only tear down
-                // when this session is still the registered one.
-                bool stillRegistered = ((System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<string, ClientSession>>)_clients)
-                    .Remove(new System.Collections.Generic.KeyValuePair<string, ClientSession>(compositeKey, session));
-                if (stillRegistered)
-                {
-                    device.SetConnected(false);
-                    DeviceDisconnected?.Invoke(device);
-                }
-                StatusChanged?.Invoke(this, _clients.Count > 0
-                    ? string.Format(Strings.Instance.Server_RunningClients_Format, _clients.Count)
-                    : string.Format(Strings.Instance.Server_RunningOn_Format, $"http://{_localIp}:{_port}"));
-
+                // Once the session is registered, everything runs under try/finally
+                // so a throw from an event handler (DeviceConnected/StatusChanged),
+                // the confirm send, or the receive path can't orphan the session in
+                // _clients: that would leak ws/cts and permanently consume one of
+                // MaxClients slots. The finally is the sole teardown path.
                 try
                 {
-                    if (ws.State == WebSocketState.Open)
-                        await ws.CloseAsync(WebSocketCloseStatus.NormalClosure, null, CancellationToken.None);
+                    // Notify that a device connected.
+                    DeviceConnected?.Invoke(device);
+                    StatusChanged?.Invoke(this, string.Format(Strings.Instance.Server_RunningClients_Format, _clients.Count));
+
+                    // Send connection confirmation.
+                    await SendJsonAsync(ws, new { type = "connected", padId, name }, cts.Token, session.SendGate);
+
+                    // Receive loop.
+                    var buffer = new byte[1024];
+                    while (ws.State == WebSocketState.Open && _running && !cts.Token.IsCancellationRequested)
+                    {
+                        WebSocketReceiveResult result;
+                        try
+                        {
+                            result = await ws.ReceiveAsync(
+                                new ArraySegment<byte>(buffer), cts.Token);
+                        }
+                        catch (OperationCanceledException)
+                        {
+                            break;
+                        }
+                        catch (WebSocketException)
+                        {
+                            break;
+                        }
+
+                        if (result.MessageType == WebSocketMessageType.Close)
+                            break;
+
+                        if (result.MessageType == WebSocketMessageType.Text)
+                            ProcessMessage(device, buffer, result.Count);
+                    }
                 }
-                catch { /* best effort */ }
                 finally
                 {
+                    // Cleanup. Conditional: a browser that reconnected with the
+                    // same client id already replaced this session in _clients
+                    // (the indexer overwrite above), and an unconditional remove
+                    // here would evict the NEW session and offline the device the
+                    // new connection just brought up (audit F9). Only tear down
+                    // when this session is still the registered one.
+                    bool stillRegistered = ((System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<string, ClientSession>>)_clients)
+                        .Remove(new System.Collections.Generic.KeyValuePair<string, ClientSession>(compositeKey, session));
+                    if (stillRegistered)
+                    {
+                        device.SetConnected(false);
+                        DeviceDisconnected?.Invoke(device);
+                    }
+                    StatusChanged?.Invoke(this, _clients.Count > 0
+                        ? string.Format(Strings.Instance.Server_RunningClients_Format, _clients.Count)
+                        : string.Format(Strings.Instance.Server_RunningOn_Format, $"http://{_localIp}:{_port}"));
+
+                    try
+                    {
+                        if (ws.State == WebSocketState.Open)
+                            await ws.CloseAsync(WebSocketCloseStatus.NormalClosure, null, CancellationToken.None);
+                    }
+                    catch { /* best effort */ }
                     cts.Dispose();
                     // Dispose the WebSocket after CloseAsync (the documented close
                     // lifecycle). A late fire-and-forget rumble send would hit a

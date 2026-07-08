@@ -993,6 +993,12 @@ namespace PadForge.Common.Input
             var settings = SettingsManager.UserSettings;
             for (int padIndex = 0; padIndex < MaxPads; padIndex++)
             {
+                // Skip uncreated slots, matching the sibling per-slot loops (Step2
+                // poke, Step4 combine, UpdateMotionSnapshots): an uncreated slot has
+                // no VC and no mapped devices, so there is nothing to resolve and no
+                // consumer reads its FinalVibrationStates. Avoids a needless
+                // FindByPadIndex lock+scan for every uncreated slot every tick.
+                if (!SettingsManager.SlotCreated[padIndex]) continue;
                 var raw = VibrationStates[padIndex];
                 var final = FinalVibrationStates[padIndex];
                 var selected = SelectedDeviceVibrationStates[padIndex];

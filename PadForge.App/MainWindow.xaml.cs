@@ -2016,6 +2016,13 @@ namespace PadForge
             _driverStatusTimer?.Stop();
             _driverStatusTimer = null;
 
+            // Stop the SDL event pump BEFORE the disposal Task.Run below reaches
+            // SDL_Quit: the 100ms pump fires SDL_PumpEvents/SDL_UpdateJoysticks on
+            // the UI thread, and left running it races SDL teardown on the worker
+            // thread (undefined SDL concurrency -> intermittent crash-on-exit).
+            _sdlPumpTimer?.Stop();
+            _sdlPumpTimer = null;
+
             // Dispose tray icon and helper window.
             if (_notifyIcon != null)
             {

@@ -1501,13 +1501,41 @@
                                                                 <ColumnDefinition Width="*"/>
                                                                 <ColumnDefinition Width="Auto"/>
                                                             </Grid.ColumnDefinitions>
-                                                            <Border Grid.Column="0" Style="{StaticResource ChipCold}"
-                                                                    HorizontalAlignment="Left" VerticalAlignment="Center">
-                                                                <TextBlock Text="{Binding Label}" TextWrapping="Wrap"/>
-                                                            </Border>
+                                                            <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                                                                <Border Style="{StaticResource ChipCold}" HorizontalAlignment="Left">
+                                                                    <TextBlock Text="{Binding Label}" TextWrapping="Wrap"/>
+                                                                </Border>
+                                                                <!-- Axis rows only: Invert / Half / Either + a labeled
+                                                                     Deadzone. Folded in from what used to be a second,
+                                                                     duplicate axis list, and the bare "%" now reads
+                                                                     "Deadzone". Wraps if the row is narrow. -->
+                                                                <WrapPanel Orientation="Horizontal" Margin="0,3,0,1"
+                                                                           Visibility="{Binding IsAxis, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                                    <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}" Content="{Binding Pad_Invert, Source={x:Static strings:Strings.Instance}}"
+                                                                              IsChecked="{Binding AxisEntry.Invert, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                                              VerticalAlignment="Center" Margin="0,0,6,2"/>
+                                                                    <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}" Content="{Binding Pad_Half, Source={x:Static strings:Strings.Instance}}"
+                                                                              IsChecked="{Binding AxisEntry.HalfAxis, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                                              VerticalAlignment="Center" Margin="0,0,6,2"/>
+                                                                    <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}" Content="{Binding Pad_Either, Source={x:Static strings:Strings.Instance}}"
+                                                                              ToolTip="{Binding Pad_Either_Tooltip, Source={x:Static strings:Strings.Instance}}"
+                                                                              IsChecked="{Binding AxisEntry.Bidirectional, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                                              IsEnabled="{Binding AxisEntry.HalfAxis}"
+                                                                              VerticalAlignment="Center" Margin="0,0,10,2"/>
+                                                                    <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Pad_Sticks_Section_DeadZone, Source={x:Static strings:Strings.Instance}}"
+                                                                               VerticalAlignment="Center" Margin="0,0,6,0"/>
+                                                                    <Slider Style="{StaticResource DzSlider}" Width="120" Minimum="1"
+                                                                            Value="{Binding AxisEntry.DeadZone, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                                            TickFrequency="1"/>
+                                                                    <TextBox Text="{Binding AxisEntry.DeadZone, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                                                             Style="{StaticResource DzValueEdit}"/>
+                                                                    <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
+                                                                    <ui:Button Command="{Binding AxisEntry.ResetDeadZoneCommand}" Style="{StaticResource ResetButton}"/>
+                                                                </WrapPanel>
+                                                            </StackPanel>
                                                             <ui:Button Grid.Column="1" Command="{Binding RemoveCommand}"
                                                                        Style="{StaticResource EmberIconButtonHot}"
-                                                                       VerticalAlignment="Center">
+                                                                       VerticalAlignment="Top">
                                                                 <TextBlock Text="&#xE711;" FontFamily="Segoe MDL2 Assets"
                                                                            Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
                                                                 <ui:Button.ToolTip>
@@ -1605,47 +1633,6 @@
                                         <ComboBoxItem Content="{Binding Macro_AxisDirection_Negative, Source={x:Static strings:Strings.Instance}}"/>
                                     </ComboBox>
                                 </StackPanel>
-
-                                <!-- Per-device axis entries editor — one row per axis entry, same
-                                     Invert / HalfAxis / DeadZone trio the merge-mapping editor uses
-                                     for its axis-to-button sources. Visible only when the recorded
-                                     combo contains at least one per-device axis entry. -->
-                                <ItemsControl ItemsSource="{Binding TriggerAxisEntries}"
-                                              Margin="0,4,0,4"
-                                              Visibility="{Binding HasTriggerAxisEntries, Converter={StaticResource BoolToVisibilityConverter}}">
-                                    <ItemsControl.ItemTemplate>
-                                        <DataTemplate>
-                                            <StackPanel Orientation="Horizontal" Margin="0,0,0,3" VerticalAlignment="Center">
-                                                <TextBlock Text="{Binding DeviceLabel}"
-                                                           FontSize="11"
-                                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                                           VerticalAlignment="Center"
-                                                           Margin="0,0,6,0"/>
-                                                <TextBlock Text="{Binding AxisLabel}"
-                                                           FontSize="11"
-                                                           VerticalAlignment="Center" Margin="0,0,6,0"/>
-                                                <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}" Content="{Binding Pad_Invert, Source={x:Static strings:Strings.Instance}}"
-                                                          IsChecked="{Binding Invert, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                          VerticalAlignment="Center" Margin="0,0,6,0"/>
-                                                <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}" Content="{Binding Pad_Half, Source={x:Static strings:Strings.Instance}}"
-                                                          IsChecked="{Binding HalfAxis, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                          VerticalAlignment="Center" Margin="0,0,6,0"/>
-                                                <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}" Content="{Binding Pad_Either, Source={x:Static strings:Strings.Instance}}"
-                                                          ToolTip="{Binding Pad_Either_Tooltip, Source={x:Static strings:Strings.Instance}}"
-                                                          IsChecked="{Binding Bidirectional, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                          IsEnabled="{Binding HalfAxis}"
-                                                          VerticalAlignment="Center" Margin="0,0,8,0"/>
-                                                <Slider Style="{StaticResource DzSlider}" Width="120" Minimum="1"
-                                                        Value="{Binding DeadZone, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                        TickFrequency="1"/>
-                                                <TextBox Text="{Binding DeadZone, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
-                                                         Style="{StaticResource DzValueEdit}"/>
-                                                <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
-                                                <ui:Button Command="{Binding ResetDeadZoneCommand}" Style="{StaticResource ResetButton}"/>
-                                            </StackPanel>
-                                        </DataTemplate>
-                                    </ItemsControl.ItemTemplate>
-                                </ItemsControl>
 
                                 <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}" Content="{Binding Macro_ConsumeTrigger, Source={x:Static strings:Strings.Instance}}"
                                           IsChecked="{Binding ConsumeTriggerButtons, Mode=TwoWay}"

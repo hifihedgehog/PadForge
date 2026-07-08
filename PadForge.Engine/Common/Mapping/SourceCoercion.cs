@@ -1123,8 +1123,15 @@ namespace PadForge.Engine.Common.Mapping
             {
                 // v3.3 legacy EMA path, kept for back-compat when the
                 // user has a non-zero SmoothingAlpha and both v3.4
-                // thresholds at zero.
-                yaw   = ApplyGyroSmoothing(deviceGuid, slotIndex, 1, yaw,   tuning.SmoothingAlpha);
+                // thresholds at zero. A Roll source gets its own EMA lane
+                // (2, matching the passthrough path below): in Local space
+                // a Gyro Roll row and a Gyro Yaw row on the same
+                // (device, slot) would otherwise both key lane 1, and the
+                // per-frame seq gate would hand the second-evaluated row
+                // the first's smoothed value. Horizontal stays on lane 1
+                // deliberately: it is the yaw-equivalent blend, designed
+                // to replace a yaw row, not coexist with one.
+                yaw   = ApplyGyroSmoothing(deviceGuid, slotIndex, isRollSource ? 2 : 1, yaw, tuning.SmoothingAlpha);
                 pitch = ApplyGyroSmoothing(deviceGuid, slotIndex, 0, pitch, tuning.SmoothingAlpha);
             }
 
@@ -1408,6 +1415,12 @@ namespace PadForge.Engine.Common.Mapping
             if (state == null || src == null) return 0f;
 
             float raw = ReadAsBipolar(state, src, slotIndex, relativeTouchpad);
+            // HalfAxis on a centered Axis source consumes Invert inside the
+            // read as the half selector (lower half instead of upper),
+            // mirroring the bool path, so the same row selects the same
+            // physical motion whether it feeds a button or an axis target.
+            // Negating on top would double-apply the flag.
+            if (InvertConsumedByHalfAxisRead(src)) return raw;
             return src.Invert ? -raw : raw;
         }
 
@@ -1425,7 +1438,24 @@ namespace PadForge.Engine.Common.Mapping
             // picks which direction pulls the trigger; 1-v on a velocity would
             // read "full pull while still", which is never wanted.
             if ((src.Descriptor ?? "").StartsWith("Mouse Motion ", StringComparison.Ordinal)) return raw;
+            // HalfAxis on a centered Axis source likewise internalizes
+            // Invert as the half selector (lower half pulls the trigger).
+            // 1-raw on top would read full-pressed at rest.
+            if (InvertConsumedByHalfAxisRead(src)) return raw;
             return src.Invert ? 1f - raw : raw;
+        }
+
+        /// <summary>True when the analog reads consume the source's Invert
+        /// flag internally as half-SELECTION (HalfAxis on a centered "Axis N"
+        /// descriptor picks upper vs lower half, mirroring
+        /// ReadButtonLikeBool), so the evaluators must not also apply their
+        /// output-side Invert transform. Same internalized-Invert shape as
+        /// the Mouse Motion family (issue #154).</summary>
+        private static bool InvertConsumedByHalfAxisRead(MappingSource src)
+        {
+            if (!src.HalfAxis) return false;
+            string s = (src.Descriptor ?? "").TrimStart();
+            return s.StartsWith("Axis ", StringComparison.OrdinalIgnoreCase);
         }
 
         /// <summary>Evaluates a source for a POV-direction target
@@ -1713,10 +1743,22 @@ namespace PadForge.Engine.Common.Mapping
                     int av = state.Axis[idx];
                     if (src.HalfAxis)
                     {
-                        // Active half ranges to [0, +1].
-                        if (av >= 32768)
-                            return Math.Min(1f, (av - 32768) / 32767f);
-                        return Math.Min(1f, (32767 - av) / 32767f);
+                        // Half selection mirrors ReadButtonLikeBool's contract
+                        // for the same flags: default = upper half only,
+                        // Invert = lower half only, Bidirectional = either
+                        // side. The active half ranges to [0, +1]; the other
+                        // half reads 0. (The old read folded BOTH halves to
+                        // positive magnitude and left Invert to the evaluator,
+                        // so the same row selected one half as a button but
+                        // fired on both directions as an analog source.)
+                        // Invert is consumed HERE as the half selector. See
+                        // InvertConsumedByHalfAxisRead in the evaluators.
+                        int delta = av - 32768;
+                        if (src.Bidirectional)
+                            return Math.Min(1f, Math.Abs(delta) / 32767f);
+                        if (src.Invert)
+                            return delta < 0 ? Math.Min(1f, -delta / 32767f) : 0f;
+                        return delta > 0 ? Math.Min(1f, delta / 32767f) : 0f;
                     }
                     return Math.Max(-1f, Math.Min(1f, (av - 32768) / 32767f));
 
@@ -1830,18 +1872,28 @@ namespace PadForge.Engine.Common.Mapping
                     int av = state.Axis[idx];
                     if (src.HalfAxis)
                     {
-                        // Half-axis trigger: clip to the upper half. Lets a
-                        // bipolar stick axis feed a trigger sensibly (rest =
-                        // 0, full deflection one way = 1).
-                        if (av >= 32768)
-                            return Math.Min(1f, (av - 32768) / 32767f);
-                        return Math.Min(1f, (32767 - av) / 32767f);
+                        // Half-axis trigger: one half of the centered axis
+                        // drives the pull (rest = 0, full deflection that way
+                        // = 1). Half selection mirrors ReadButtonLikeBool:
+                        // default = upper half, Invert = lower half,
+                        // Bidirectional = either side. (The old read folded
+                        // both halves positive, so the trigger fired on both
+                        // directions, and the evaluator's 1-raw Invert
+                        // transform on top read full-pressed at rest.)
+                        // Invert is consumed HERE as the half selector. See
+                        // InvertConsumedByHalfAxisRead in the evaluators.
+                        int delta = av - 32768;
+                        if (src.Bidirectional)
+                            return Math.Min(1f, Math.Abs(delta) / 32767f);
+                        if (src.Invert)
+                            return delta < 0 ? Math.Min(1f, -delta / 32767f) : 0f;
+                        return delta > 0 ? Math.Min(1f, delta / 32767f) : 0f;
                     }
                     // Trigger axes are unipolar 0..65535 with 0 = released
                     // (matches the legacy MapToTriggerSingle clamp). Stick
                     // axes mapped to triggers without HalfAxis sit at ~50 %
-                    // at rest — same as legacy; users who want a clean
-                    // stick→trigger map opt in via HalfAxis.
+                    // at rest, same as legacy. Users who want a clean
+                    // stick-to-trigger map opt in via HalfAxis.
                     return Math.Max(0f, Math.Min(1f, av / 65535f));
 
                 case SourceType.Slider:

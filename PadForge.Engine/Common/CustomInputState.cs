@@ -106,7 +106,7 @@ namespace PadForge.Engine
         /// a <see cref="WiiIrState.Detected"/> flag. A value type, so it is always
         /// present and costs no allocation; <c>Detected == false</c> means "no IR
         /// or no dots this frame". Populated by SdlDeviceWrapper from the raw
-        /// joystick axes 0-3, where the SDL hidapi_wii driver posts dot0/dot1 X/Y
+        /// joystick axes 6-9, where the SDL hidapi_wii driver posts dot0/dot1 X/Y
         /// for a bare Wii Remote with the camera powered.</summary>
         public WiiIrState Ir;
 

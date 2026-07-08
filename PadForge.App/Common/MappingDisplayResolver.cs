@@ -44,6 +44,8 @@ namespace PadForge.Common
                         { mapping.SetResolvedSourceText(si.Mapping_MotionGyro); return; }
                     if (sub.Equals("Accel", System.StringComparison.OrdinalIgnoreCase))
                         { mapping.SetResolvedSourceText(si.Mapping_MotionAccel); return; }
+                    if (sub.Equals("Lean",  System.StringComparison.OrdinalIgnoreCase))
+                        { mapping.SetResolvedSourceText(si.Mapping_MotionLean); return; }
                     return;
                 }
             }
@@ -422,7 +424,14 @@ namespace PadForge.Common
                 int.TryParse(name.AsSpan(7), out int numpadIdx))
                 return string.Format(s.Key_Numpad, numpadIdx);
 
-            // Parametric patterns: "Slider 0", "POV 2", "Button 5"
+            // Parametric patterns: "Axis 6", "Slider 0", "POV 2", "Button 5".
+            // "Axis N" is the generic extra-axis family (issue #193): the named
+            // standard axes ("X Axis", "Left Stick X", ...) are matched by the
+            // switch above and never reach this prefix test.
+            if (name.StartsWith("Axis ", System.StringComparison.Ordinal) &&
+                int.TryParse(name.AsSpan(5), out int axisIdx))
+                return string.Format(s.DevObj_AxisN, axisIdx);
+
             if (name.StartsWith("Slider ", System.StringComparison.Ordinal) &&
                 int.TryParse(name.AsSpan(7), out int sliderIdx))
                 return string.Format(s.DevObj_Slider, sliderIdx);

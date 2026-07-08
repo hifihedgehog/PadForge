@@ -93,7 +93,7 @@ namespace PadForge.Common.Input
                     if (ms != null && ms.Rows != null && ms.Rows.Count > 0)
                     {
                         us.OutputState = MapInputToGamepadFromMappingSet(
-                            ud.InputState, ms, us.InstanceGuid.ToString(), ps, slotIndex, out rawMapped);
+                            ud.InputState, ms, us.InstanceGuidString, ps, slotIndex, out rawMapped);
                     }
                     else
                     {
@@ -124,7 +124,7 @@ namespace PadForge.Common.Input
                     // ps + the legacy single-source PadSetting fields stay live
                     // as the fallback for configs that haven't been resaved
                     // since the multi-source UI shipped.
-                    string deviceGuidStr = us.InstanceGuid.ToString();
+                    string deviceGuidStr = us.InstanceGuidString;
 
                     // For custom Extended slots, also produce the raw Extended output state.
                     int slot = slotIndex;

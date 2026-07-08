@@ -581,6 +581,22 @@ namespace PadForge.Engine
         {
             ushort curX = (ushort)SDL_GetJoystickAxis(Joystick, 6);
             ushort curY = (ushort)SDL_GetJoystickAxis(Joystick, 7);
+            // All-zero counters = optical stream not active yet (jc2mouse's
+            // _optical_active idiom, driver.py:594-595; ReadIrPointer carries
+            // the same all-zero guard). Without this, the one-time priming
+            // poll can capture (0,0) during the sensor's warm-up window and
+            // the first real absolute counter then emits a spurious
+            // one-frame jump of up to half the counter range. Re-priming on
+            // every all-zero read keeps the baseline aligned with the first
+            // ACTIVE report (jc2mouse resets its baselines on mouse-mode
+            // entry for the same reason, driver.py:2501-2502). A live
+            // counter pair crossing exactly (0,0) mid-stream costs one
+            // dropped motion frame, not a jump.
+            if (curX == 0 && curY == 0)
+            {
+                _jc2MouseHasPrev = false;
+                return; // state fields stay 0 while the stream is inactive
+            }
             if (!_jc2MouseHasPrev)
             {
                 _jc2MousePrevX = curX;
@@ -1272,9 +1288,18 @@ namespace PadForge.Engine
                 else
                 {
                     // True overflow: axes 24+ are the only ones GetJoystickState
-                    // stores in Sliders[], so they keep the Slider family.
+                    // stores in Sliders[], so they keep the Slider family. Key
+                    // InputIndex and the name on the Sliders[] STORAGE index
+                    // (i - MaxAxis, 0..7), not the raw axis number: the
+                    // "Slider N" descriptor reads state.Sliders[N], so a
+                    // raw-axis-numbered descriptor ("Slider 24") fails the
+                    // idx < MaxSliders guard and reads dead while the live
+                    // value sits in Sliders[0..7]. The type gate (IsSlider vs
+                    // IsAxis) keeps these from colliding with the axis
+                    // objects that share low InputIndex values.
+                    item.InputIndex = i - CustomInputState.MaxAxis;
                     item.ObjectTypeGuid = ObjectGuid.Slider;
-                    item.Name = $"Slider {i - standardAxisGuids.Length}";
+                    item.Name = $"Slider {i - CustomInputState.MaxAxis}";
                 }
 
                 item.ObjectType = DeviceObjectTypeFlags.AbsoluteAxis;

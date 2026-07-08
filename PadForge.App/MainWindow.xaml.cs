@@ -1916,12 +1916,6 @@ namespace PadForge
             if (NavView.MenuItems.Count > 0)
                 if (NavView.MenuItems[0] is NavigationViewItem first) first.IsActive = true;
 
-            // Once the pane's scroll viewport is realized, drop its content clip so
-            // the controller pills' selection and hover glows are not truncated at
-            // the pane edge. Deferred to Loaded priority because the presenter does
-            // not exist until the pane template renders.
-            Dispatcher.BeginInvoke(new Action(RelaxNavPaneGlowClip),
-                System.Windows.Threading.DispatcherPriority.Loaded);
         }
 
         private async void MaybeOfferLegacyDriverCleanup()
@@ -2732,85 +2726,32 @@ namespace PadForge
                 card.SetResourceReference(System.Windows.Controls.Border.BorderBrushProperty, "ControlStrokeColorDefaultBrush");
             }
 
-            // Selection = focus. The focused controller's card gets an
-            // unmistakable marker: a bright heat-colored border (the rail can't
-            // clip a border, unlike a drop shadow) PLUS a strong pulsing bloom
-            // whose color and pace track the controller's activation, so the
-            // selected card signals both "you are here" and how live the slot
-            // is: ember and quick when live, gold and slower when idle, dim and
-            // slowest when disabled. This overrides the resting heat ring on the
-            // selected card (one Effect slot per element).
-            // RefreshControllerSelectionVisuals rebuilds just the two affected
-            // cards on a selection change.
+            // Selection = focus. The focused pill gets a bright pulsing ember/gold
+            // rounded-rect border PLUS a wide pulsing bloom, color and pace tracking
+            // the slot's activation: ember and quick when live, gold and slower when
+            // idle, dim and slowest when disabled. Both are drawn by a PillGlowAdorner
+            // in the window adorner layer, ABOVE the pane's scroll viewport, because
+            // the viewport's ScrollContentPresenter clips its content (a drop shadow
+            // on the card itself is truncated ~5px out, at the viewport edge). The
+            // adorner is the same unclipped surface the reorder drag uses, so the
+            // bloom renders in full. The card keeps its resting heat border underneath.
             if (IsControllerTagSelected(navItem.Tag))
             {
                 var selColor = cooling
                     ? System.Windows.Media.Color.FromRgb(0xE8, 0xB4, 0x34)   // gold, idle
                     : System.Windows.Media.Color.FromRgb(0xFF, 0x6B, 0x2C);  // ember, live/disabled
-                // The border is the primary signal and it PULSES, and a WIDE bloom
-                // rides with it. Both were clipping at the pane edge, but the clip
-                // is the nav scroll viewport (a ScrollContentPresenter), not any
-                // window edge, which is why a card dragged for reorder renders clear
-                // to the window's edges: the drag ghost rides the NavView adorner
-                // layer, above the scroller. RelaxNavPaneGlowClip turns that
-                // viewport clip off, so this bloom renders into the pane margin and
-                // over the content seam the same way. Color and pace track the
-                // slot's activation: ember and quick when live, gold and slower when
-                // idle, dim and slowest when disabled. Overrides the resting heat
-                // ring on the selected card (one Effect slot each).
-                var selBorder = new System.Windows.Media.SolidColorBrush(selColor);
-                card.BorderBrush = selBorder;
-                card.BorderThickness = new Thickness(2);
-                var selGlow = new System.Windows.Media.Effects.DropShadowEffect
-                {
-                    Color = selColor,
-                    BlurRadius = 20,
-                    ShadowDepth = 0,
-                    Opacity = 0.6,
-                };
-                card.Effect = selGlow;
-                if (MotionEnabled)
-                {
-                    double glowLo = lit ? 0.5 : cooling ? 0.4 : 0.3;
-                    double glowHi = lit ? 0.9 : cooling ? 0.8 : 0.6;
-                    double periodMs = lit ? 1100 : cooling ? 1600 : 2200;
-                    // Phase-lock to a wall-clock grid so a rebuild never snaps the
-                    // pulse back to its trough (AutoReverse doubles the visible period).
-                    var phase = System.TimeSpan.FromMilliseconds(
-                        -(System.DateTime.UtcNow.TimeOfDay.TotalMilliseconds % (periodMs * 2.0)));
-                    var ease = new System.Windows.Media.Animation.SineEase
-                    { EasingMode = System.Windows.Media.Animation.EasingMode.EaseInOut };
-                    var borderPulse = new System.Windows.Media.Animation.DoubleAnimation(0.55, 1.0,
-                        System.TimeSpan.FromMilliseconds(periodMs))
-                    {
-                        AutoReverse = true,
-                        RepeatBehavior = System.Windows.Media.Animation.RepeatBehavior.Forever,
-                        EasingFunction = ease,
-                        BeginTime = phase,
-                    };
-                    selBorder.BeginAnimation(System.Windows.Media.Brush.OpacityProperty, borderPulse);
-                    var glowPulse = new System.Windows.Media.Animation.DoubleAnimation(glowLo, glowHi,
-                        System.TimeSpan.FromMilliseconds(periodMs))
-                    {
-                        AutoReverse = true,
-                        RepeatBehavior = System.Windows.Media.Animation.RepeatBehavior.Forever,
-                        EasingFunction = ease,
-                        BeginTime = phase,
-                    };
-                    selGlow.BeginAnimation(System.Windows.Media.Effects.DropShadowEffect.OpacityProperty, glowPulse);
-                }
+                ShowSelectionGlowAdorner(card, selColor, lit, cooling);
             }
 
             if (!navItem.IsEnabled)
                 card.Opacity = 0.6;
 
-            // Hover engagement (#175): every mini card lifts 2px on hover;
-            // cards without a state effect also bloom faint ember. The lit
-            // card keeps its breathing ring untouched (one Effect slot per
-            // element), so its hover feedback is the lift alone.
+            // Hover engagement (#175): every mini card lifts 2px on hover and blooms
+            // faint ember. The bloom rides the adorner layer (like the selection
+            // bloom) so the pane scroll viewport does not clip it; the selected pill
+            // is skipped since it already wears the stronger selection bloom.
             var cardLift = new System.Windows.Media.TranslateTransform();
             card.RenderTransform = cardLift;
-            var cardHoverGlow = TryFindResource("NeutralHoverGlow") as System.Windows.Media.Effects.Effect;
             card.MouseEnter += (s, e) =>
             {
                 var up = new System.Windows.Media.Animation.DoubleAnimation(-2, System.TimeSpan.FromMilliseconds(130))
@@ -2819,8 +2760,8 @@ namespace PadForge
                     { EasingMode = System.Windows.Media.Animation.EasingMode.EaseOut }
                 };
                 cardLift.BeginAnimation(System.Windows.Media.TranslateTransform.YProperty, up);
-                if (card.Effect == null && cardHoverGlow != null)
-                    card.Effect = cardHoverGlow;
+                if (!IsControllerTagSelected(navItem.Tag))
+                    ShowHoverGlowAdorner(card);
             };
             card.MouseLeave += (s, e) =>
             {
@@ -2830,8 +2771,7 @@ namespace PadForge
                     { EasingMode = System.Windows.Media.Animation.EasingMode.EaseIn }
                 };
                 cardLift.BeginAnimation(System.Windows.Media.TranslateTransform.YProperty, down);
-                if (ReferenceEquals(card.Effect, cardHoverGlow))
-                    card.Effect = null;
+                RemoveHoverGlowAdorner();
             };
 
             // X reveal follows the card's own hover state (stable across
@@ -3020,37 +2960,144 @@ namespace PadForge
             }
         }
 
-        /// <summary>The controller pills live inside the nav pane's
-        /// DynamicScrollViewer, whose ScrollContentPresenter clips content to the
-        /// viewport. That viewport clip is what truncates the selection and hover
-        /// glows at the pill edges: the reorder drag escapes it only because it
-        /// renders in the NavView adorner layer, above the scroller. Turn the clip
-        /// off on the presenter and its wrapping border so the blooms render into
-        /// the pane margin and over the content seam, the same space the drag ghost
-        /// reaches. Idempotent and cheap; re-run after the pane (re)templates.</summary>
-        private void RelaxNavPaneGlowClip()
+        // The pane's controller pills live inside a DynamicScrollViewer whose
+        // ScrollContentPresenter clips its content to the viewport for scrolling.
+        // That clip is intrinsic to the presenter (it holds regardless of
+        // ClipToBounds or any explicit Clip, both of which are already false on the
+        // whole ancestor chain), so a drop shadow on a pill is always truncated ~5px
+        // out, at the viewport edge. The reorder drag renders its ghost in the
+        // window's adorner layer instead, which sits ABOVE the scroller and is not
+        // clipped (that is why a dragged card reaches the window edges). The pill
+        // glows take the same route: the selected and hovered pills get their bloom
+        // from a PillGlowAdorner in that layer rather than from the card's Effect.
+        private PillGlowAdorner _selGlowAdorner;
+        private System.Windows.Documents.AdornerLayer _selGlowLayer;
+        private PillGlowAdorner _hoverGlowAdorner;
+        private System.Windows.Documents.AdornerLayer _hoverGlowLayer;
+
+        /// <summary>Replaces the selected pill's glow adorner. The pill may not be in
+        /// the visual tree yet on a fresh rebuild, so it waits for Loaded.</summary>
+        private void ShowSelectionGlowAdorner(System.Windows.Controls.Border card,
+            System.Windows.Media.Color color, bool lit, bool cooling)
         {
-            var scp = FindVisualChild<System.Windows.Controls.ScrollContentPresenter>(NavView);
-            if (scp == null) return;
-            scp.ClipToBounds = false;
-            if (System.Windows.Media.VisualTreeHelper.GetParent(scp) is System.Windows.UIElement wrap)
-                wrap.ClipToBounds = false;
+            RemoveSelectionGlowAdorner();
+            void Attach()
+            {
+                if (_selGlowAdorner != null || card.ActualWidth <= 0) return;
+                var layer = System.Windows.Documents.AdornerLayer.GetAdornerLayer(card);
+                if (layer == null) return;
+                var adorner = new PillGlowAdorner(card, color, 10, 2, 20, 0.6);
+                layer.Add(adorner);
+                _selGlowAdorner = adorner;
+                _selGlowLayer = layer;
+                if (MotionEnabled)
+                {
+                    double lo = lit ? 0.5 : cooling ? 0.4 : 0.3;
+                    double hi = lit ? 0.9 : cooling ? 0.8 : 0.6;
+                    double periodMs = lit ? 1100 : cooling ? 1600 : 2200;
+                    var phase = System.TimeSpan.FromMilliseconds(
+                        -(System.DateTime.UtcNow.TimeOfDay.TotalMilliseconds % (periodMs * 2.0)));
+                    var ease = new System.Windows.Media.Animation.SineEase
+                    { EasingMode = System.Windows.Media.Animation.EasingMode.EaseInOut };
+                    adorner.Bloom.BeginAnimation(System.Windows.Media.Effects.DropShadowEffect.OpacityProperty,
+                        new System.Windows.Media.Animation.DoubleAnimation(lo, hi,
+                            System.TimeSpan.FromMilliseconds(periodMs))
+                        {
+                            AutoReverse = true,
+                            RepeatBehavior = System.Windows.Media.Animation.RepeatBehavior.Forever,
+                            EasingFunction = ease,
+                            BeginTime = phase,
+                        });
+                    adorner.StrokeBrush.BeginAnimation(System.Windows.Media.Brush.OpacityProperty,
+                        new System.Windows.Media.Animation.DoubleAnimation(0.55, 1.0,
+                            System.TimeSpan.FromMilliseconds(periodMs))
+                        {
+                            AutoReverse = true,
+                            RepeatBehavior = System.Windows.Media.Animation.RepeatBehavior.Forever,
+                            EasingFunction = ease,
+                            BeginTime = phase,
+                        });
+                }
+            }
+            if (card.IsLoaded && card.ActualWidth > 0)
+                Attach();
+            else
+            {
+                System.Windows.RoutedEventHandler h = null;
+                h = (s, e) => { card.Loaded -= h; Attach(); };
+                card.Loaded += h;
+            }
         }
 
-        /// <summary>Depth-first search for the first visual descendant of the given
-        /// type. Returns null if none is realized yet.</summary>
-        private static T FindVisualChild<T>(DependencyObject root) where T : DependencyObject
+        private void RemoveSelectionGlowAdorner()
         {
-            if (root == null) return null;
-            int count = System.Windows.Media.VisualTreeHelper.GetChildrenCount(root);
-            for (int i = 0; i < count; i++)
+            if (_selGlowAdorner == null) return;
+            // Remove via the stored layer, not GetAdornerLayer(adornedElement): a
+            // rebuilt pill detaches its old card, and a detached element resolves to
+            // no layer, which would strand the old adorner.
+            (_selGlowLayer ?? System.Windows.Documents.AdornerLayer.GetAdornerLayer(_selGlowAdorner.AdornedElement))
+                ?.Remove(_selGlowAdorner);
+            _selGlowAdorner = null;
+            _selGlowLayer = null;
+        }
+
+        /// <summary>The hovered pill's ember bloom, also in the adorner layer so it is
+        /// not clipped on the right. Skipped for the selected pill, which already
+        /// wears the stronger selection bloom.</summary>
+        private void ShowHoverGlowAdorner(System.Windows.Controls.Border card)
+        {
+            RemoveHoverGlowAdorner();
+            if (card.ActualWidth <= 0) return;
+            var layer = System.Windows.Documents.AdornerLayer.GetAdornerLayer(card);
+            if (layer == null) return;
+            var adorner = new PillGlowAdorner(card,
+                System.Windows.Media.Color.FromRgb(0xFF, 0x6B, 0x2C), 10, 2, 14, 0.4);
+            layer.Add(adorner);
+            _hoverGlowAdorner = adorner;
+            _hoverGlowLayer = layer;
+        }
+
+        private void RemoveHoverGlowAdorner()
+        {
+            if (_hoverGlowAdorner == null) return;
+            (_hoverGlowLayer ?? System.Windows.Documents.AdornerLayer.GetAdornerLayer(_hoverGlowAdorner.AdornedElement))
+                ?.Remove(_hoverGlowAdorner);
+            _hoverGlowAdorner = null;
+            _hoverGlowLayer = null;
+        }
+
+        /// <summary>Draws a pill's rounded-rect ember border plus a drop-shadow bloom
+        /// in the window adorner layer, above the pane's scroll viewport, so the
+        /// viewport clip cannot truncate the bloom. Renders in the adorned pill's own
+        /// coordinate space, so it tracks the pill through scroll and layout.</summary>
+        private sealed class PillGlowAdorner : System.Windows.Documents.Adorner
+        {
+            private readonly System.Windows.Media.Pen _pen;
+            private readonly double _radius;
+            public System.Windows.Media.SolidColorBrush StrokeBrush { get; }
+            public System.Windows.Media.Effects.DropShadowEffect Bloom { get; }
+
+            public PillGlowAdorner(UIElement pill, System.Windows.Media.Color color, double radius,
+                double thickness, double blur, double opacity) : base(pill)
             {
-                var child = System.Windows.Media.VisualTreeHelper.GetChild(root, i);
-                if (child is T match) return match;
-                var deeper = FindVisualChild<T>(child);
-                if (deeper != null) return deeper;
+                IsHitTestVisible = false;
+                StrokeBrush = new System.Windows.Media.SolidColorBrush(color);
+                _pen = new System.Windows.Media.Pen(StrokeBrush, thickness);
+                _radius = radius;
+                Bloom = new System.Windows.Media.Effects.DropShadowEffect
+                { Color = color, BlurRadius = blur, ShadowDepth = 0, Opacity = opacity };
+                Effect = Bloom;
             }
-            return null;
+
+            protected override void OnRender(System.Windows.Media.DrawingContext dc)
+            {
+                if (AdornedElement is not FrameworkElement fe || fe.ActualWidth <= 0 || fe.ActualHeight <= 0)
+                    return;
+                double t = _pen.Thickness / 2;
+                dc.DrawRoundedRectangle(null, _pen,
+                    new Rect(t, t, fe.ActualWidth - _pen.Thickness, fe.ActualHeight - _pen.Thickness),
+                    _radius, _radius);
+            }
         }
 
         // The controller tag currently wearing the selection glow (null when a
@@ -3070,6 +3117,10 @@ namespace PadForge
             if (sel == _glowSelectedControllerTag) return;
             string prev = _glowSelectedControllerTag;
             _glowSelectedControllerTag = sel;
+
+            // Leaving all pads: no pill's rebuild will run to swap the adorner, so
+            // drop it here. Pad->pad hands off inside ShowSelectionGlowAdorner.
+            if (sel == null) RemoveSelectionGlowAdorner();
 
             foreach (var mi in NavView.MenuItems)
             {
@@ -4780,10 +4831,6 @@ namespace PadForge
         private void PaneToggleBtn_Click(object sender, RoutedEventArgs e)
         {
             NavView.IsPaneOpen = !NavView.IsPaneOpen;
-            // Expanding/collapsing re-templates the pane and rebuilds its scroll
-            // presenter, so re-drop the content clip once the new template renders.
-            Dispatcher.BeginInvoke(new Action(RelaxNavPaneGlowClip),
-                System.Windows.Threading.DispatcherPriority.Loaded);
         }
 
         private void BrandingBar_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
@@ -5001,10 +5048,6 @@ namespace PadForge
 
             // Re-glow the drawer's selected controller card + collapsed icon.
             RefreshControllerSelectionVisuals();
-
-            // Belt-and-suspenders: make sure the pane's scroll clip is off before a
-            // glow is shown, in case the presenter was not yet realized at load.
-            RelaxNavPaneGlowClip();
 
             // Swap visible page.
             DashboardPageView.Visibility = tag == "Dashboard" ? Visibility.Visible : Visibility.Collapsed;

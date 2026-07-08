@@ -1112,9 +1112,13 @@
                         </StackPanel>
                     </Grid>
 
-                    <!-- Macro editor (shows when a macro is selected) -->
+                    <!-- Macro editor (shows when a macro is selected). Horizontal
+                         scroll DISABLED: Auto handed infinite width to the whole
+                         column, so nothing (action chips, wrapping text) could ever
+                         wrap and the h-scrollbar engaged on any wide row. Disabled
+                         constrains the content to the viewport so it wraps instead. -->
                     <ScrollViewer Grid.Column="2" VerticalScrollBarVisibility="Visible"
-                                  HorizontalScrollBarVisibility="Auto"
+                                  HorizontalScrollBarVisibility="Disabled"
                                   Padding="8"
                                   DataContext="{Binding SelectedMacro}"
                                   Visibility="{Binding DataContext.HasSelectedMacro,

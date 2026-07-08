@@ -1915,7 +1915,6 @@ namespace PadForge
             // Select the first nav item.
             if (NavView.MenuItems.Count > 0)
                 if (NavView.MenuItems[0] is NavigationViewItem first) first.IsActive = true;
-
         }
 
         private async void MaybeOfferLegacyDriverCleanup()
@@ -2978,7 +2977,6 @@ namespace PadForge
         private System.Windows.Documents.AdornerLayer _selGlowLayer;
         private PillGlowAdorner _hoverGlowAdorner;
         private System.Windows.Documents.AdornerLayer _hoverGlowLayer;
-        private bool _glowLayerDiagLogged;
 
         /// <summary>Replaces the selected pill's glow adorner. The pill may not be in
         /// the visual tree yet on a fresh rebuild, so it waits for Loaded. The adorner
@@ -2993,9 +2991,7 @@ namespace PadForge
                 if (_selGlowAdorner != null || card.ActualWidth <= 0) return;
                 var layer = System.Windows.Documents.AdornerLayer.GetAdornerLayer(NavView);
                 if (layer == null) return;
-                LogGlowLayerDiag(card, layer);
-                LogGlowOverlayDiag(card);
-                var adorner = new PillGlowAdorner(NavView, card, color, 10, 2, 18, 0.28);
+                var adorner = new PillGlowAdorner(NavView, card, color, 10, 2, 20, 0.6);
                 layer.Add(adorner);
                 _selGlowAdorner = adorner;
                 _selGlowLayer = layer;
@@ -3028,103 +3024,6 @@ namespace PadForge
             }
         }
 
-        // 30-second confirmation test (CLAUDE.md rule 1): before trusting the "adorn
-        // the NavView, not the pill" fix, record whether the pill's own adorner layer
-        // is a different object from the NavView's. If it is, a per-pill adorner sat
-        // inside the scroll viewport and was clipped, which is the mechanism. Written
-        // once, the first time a selection glow is shown.
-        private void LogGlowLayerDiag(System.Windows.Controls.Border card, System.Windows.Documents.AdornerLayer navLayer)
-        {
-            if (_glowLayerDiagLogged) return;
-            _glowLayerDiagLogged = true;
-            try
-            {
-                var cardLayer = System.Windows.Documents.AdornerLayer.GetAdornerLayer(card);
-                System.IO.File.WriteAllText(@"C:\PadForge\glow_layer_diag.txt",
-                    $"cardLayer == navLayer: {ReferenceEquals(cardLayer, navLayer)}\r\n" +
-                    $"cardLayer null: {cardLayer == null}, navLayer null: {navLayer == null}\r\n");
-            }
-            catch { }
-        }
-
-        private bool _glowOverlayDiagLogged;
-        /// <summary>30-second test for the "semi-transparent thing over the glow" report:
-        /// walk the whole window tree and list every element whose bounds cover a point
-        /// just outside the pill (where the glow is dimmed), flagging any that are
-        /// translucent (element Opacity &lt; 1, an OpacityMask, or a non-opaque
-        /// Background). Whatever sits over the glow shows up here by name.</summary>
-        private void LogGlowOverlayDiag(System.Windows.Controls.Border card)
-        {
-            if (_glowOverlayDiagLogged) return;
-            _glowOverlayDiagLogged = true;
-            try
-            {
-                var sb = new System.Text.StringBuilder();
-                foreach (var (label, local) in new[]
-                {
-                    ("RIGHT of pill", new System.Windows.Point(card.ActualWidth + 10, card.ActualHeight / 2)),
-                    ("LEFT of pill", new System.Windows.Point(-10, card.ActualHeight / 2)),
-                })
-                {
-                    var p = card.TransformToVisual(this).Transform(local);
-                    sb.AppendLine($"=== {label} @ window ({p.X:F1},{p.Y:F1}) ===");
-                    ScanCoveringElements(this, p, sb, 0);
-                    sb.AppendLine();
-                }
-                System.IO.File.WriteAllText(@"C:\PadForge\glow_overlay_diag.txt", sb.ToString());
-            }
-            catch (Exception ex)
-            {
-                try { System.IO.File.WriteAllText(@"C:\PadForge\glow_overlay_diag.txt", ex.ToString()); } catch { }
-            }
-        }
-
-        private void ScanCoveringElements(DependencyObject node, System.Windows.Point pWin,
-            System.Text.StringBuilder sb, int depth)
-        {
-            if (depth > 45) return;
-            if (node is FrameworkElement fe && fe.IsVisible && fe.ActualWidth > 0 && fe.ActualHeight > 0)
-            {
-                try
-                {
-                    var gt = fe.TransformToVisual(this);
-                    var tl = gt.Transform(new System.Windows.Point(0, 0));
-                    var br = gt.Transform(new System.Windows.Point(fe.ActualWidth, fe.ActualHeight));
-                    if (pWin.X >= System.Math.Min(tl.X, br.X) && pWin.X <= System.Math.Max(tl.X, br.X) &&
-                        pWin.Y >= System.Math.Min(tl.Y, br.Y) && pWin.Y <= System.Math.Max(tl.Y, br.Y))
-                    {
-                        var bg = (fe as System.Windows.Controls.Border)?.Background
-                            ?? (fe as System.Windows.Controls.Panel)?.Background
-                            ?? (fe as System.Windows.Controls.Control)?.Background;
-                        bool semi = fe.Opacity < 0.999 || fe.OpacityMask != null || DescribeBrushSemi(bg);
-                        sb.AppendLine($"{new string(' ', depth)}{fe.GetType().Name} " +
-                            $"Op={fe.Opacity:F2} Bg={DescribeBrush(bg)} OpMask={(fe.OpacityMask != null)}" +
-                            $"{(semi ? "   <-- TRANSLUCENT" : "")}");
-                    }
-                }
-                catch { }
-            }
-            int n = System.Windows.Media.VisualTreeHelper.GetChildrenCount(node);
-            for (int i = 0; i < n; i++)
-                ScanCoveringElements(System.Windows.Media.VisualTreeHelper.GetChild(node, i), pWin, sb, depth + 1);
-        }
-
-        private static bool DescribeBrushSemi(System.Windows.Media.Brush b)
-        {
-            if (b == null) return false;
-            if (b.Opacity < 0.999) return true;
-            if (b is System.Windows.Media.SolidColorBrush s) return s.Color.A > 0 && s.Color.A < 255;
-            return b is System.Windows.Media.GradientBrush;
-        }
-
-        private static string DescribeBrush(System.Windows.Media.Brush b)
-        {
-            if (b == null) return "none";
-            if (b is System.Windows.Media.SolidColorBrush s)
-                return $"#{s.Color.A:X2}{s.Color.R:X2}{s.Color.G:X2}{s.Color.B:X2}";
-            return $"{b.GetType().Name}(op{b.Opacity:F2})";
-        }
-
         private void RemoveSelectionGlowAdorner()
         {
             if (_selGlowAdorner == null) return;
@@ -3145,7 +3044,7 @@ namespace PadForge
             var layer = System.Windows.Documents.AdornerLayer.GetAdornerLayer(NavView);
             if (layer == null) return;
             var adorner = new PillGlowAdorner(NavView, card,
-                System.Windows.Media.Color.FromRgb(0xFF, 0x6B, 0x2C), 10, 2, 12, 0.16);
+                System.Windows.Media.Color.FromRgb(0xFF, 0x6B, 0x2C), 10, 2, 14, 0.4);
             layer.Add(adorner);
             _hoverGlowAdorner = adorner;
             _hoverGlowLayer = layer;
@@ -3161,34 +3060,35 @@ namespace PadForge
             _hoverGlowLayer = null;
         }
 
-        /// <summary>Draws a pill's rounded-rect ember border plus an outer glow in the
-        /// window adorner layer. Two deliberate choices, both learned the hard way:
-        /// it adorns the NavView, NOT the pill (WPF clips an adorner whose adorned
-        /// element is inside a ScrollViewer to that viewport, which is why the reorder
-        /// drag also adorns the NavView); and the glow is painted as concentric
-        /// rounded-rect strokes, NOT a DropShadowEffect (an Effect on an adorner clips
-        /// its own blurred output to the drawn geometry bounds, and the drag likewise
-        /// uses no effect). The pill's rect is transformed into NavView coordinates on
-        /// every render, so the glow tracks the pill through scroll and the hover lift.</summary>
+        /// <summary>Draws a pill's rounded-rect ember border plus a soft DropShadow bloom
+        /// in the window adorner layer. It adorns the NavView, NOT the pill: WPF clips an
+        /// adorner whose adorned element is inside a ScrollViewer to that viewport (the
+        /// clip being escaped), which is why the reorder drag also adorns the NavView. A
+        /// DropShadowEffect sizes its blurred output to the drawn-content bounds, so the
+        /// bloom would truncate ~5px out at the tight border rect; a near-invisible
+        /// padding rect widens those bounds to the full blur. The pill's rect is
+        /// transformed into NavView coordinates each render, so the glow tracks the pill
+        /// through scroll and the hover lift.</summary>
         private sealed class PillGlowAdorner : System.Windows.Documents.Adorner
         {
             private readonly FrameworkElement _target;
             private readonly Visual _root;
             private readonly System.Windows.Media.Color _color;
-            private readonly double _radius, _borderThickness, _spread, _peakAlpha;
+            private readonly double _radius, _borderThickness, _pad;
             private EventHandler _onLayout;
 
             public PillGlowAdorner(UIElement root, FrameworkElement target, System.Windows.Media.Color color,
-                double radius, double borderThickness, double spread, double peakAlpha) : base(root)
+                double radius, double borderThickness, double blur, double opacity) : base(root)
             {
                 _root = root;
                 _target = target;
                 _color = color;
                 _radius = radius;
                 _borderThickness = borderThickness;
-                _spread = spread;
-                _peakAlpha = peakAlpha;
+                _pad = blur + 6;
                 IsHitTestVisible = false;
+                Effect = new System.Windows.Media.Effects.DropShadowEffect
+                { Color = color, BlurRadius = blur, ShadowDepth = 0, Opacity = opacity };
                 _onLayout = (s, e) => InvalidateVisual();
                 _target.LayoutUpdated += _onLayout;
             }
@@ -3209,25 +3109,14 @@ namespace PadForge
                 catch { return; }
                 double w = _target.ActualWidth, h = _target.ActualHeight;
 
-                // Outer glow: concentric rounded-rect outlines inflated outward from the
-                // pill, fainter with distance (quadratic falloff), faking a soft bloom.
-                const int layers = 10;
-                double step = _spread / layers;
-                for (int i = layers; i >= 1; i--)
-                {
-                    double inflate = i * step;
-                    double f = 1.0 - (double)(i - 1) / layers;          // ~1 at the edge, small far out
-                    byte a = (byte)System.Math.Round(_peakAlpha * f * f * 255.0);
-                    if (a == 0) continue;
-                    var pen = new System.Windows.Media.Pen(
-                        new System.Windows.Media.SolidColorBrush(
-                            System.Windows.Media.Color.FromArgb(a, _color.R, _color.G, _color.B)), step + 1.0);
-                    dc.DrawRoundedRectangle(null, pen,
-                        new Rect(tl.X - inflate, tl.Y - inflate, w + 2 * inflate, h + 2 * inflate),
-                        _radius + inflate, _radius + inflate);
-                }
+                // Near-invisible padding rect (alpha 1): widens the adorner's drawn-content
+                // bounds so the DropShadowEffect's blur is not clipped to the border rect.
+                // It casts a negligible shadow of its own.
+                dc.DrawRectangle(new System.Windows.Media.SolidColorBrush(
+                    System.Windows.Media.Color.FromArgb(1, _color.R, _color.G, _color.B)), null,
+                    new Rect(tl.X - _pad, tl.Y - _pad, w + 2 * _pad, h + 2 * _pad));
 
-                // Solid pulsing border on the pill edge.
+                // The ember border: outlines the pill and is the source the effect blooms.
                 double t = _borderThickness / 2;
                 dc.DrawRoundedRectangle(null,
                     new System.Windows.Media.Pen(new System.Windows.Media.SolidColorBrush(_color), _borderThickness),

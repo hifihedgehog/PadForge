@@ -1915,6 +1915,13 @@ namespace PadForge
             // Select the first nav item.
             if (NavView.MenuItems.Count > 0)
                 if (NavView.MenuItems[0] is NavigationViewItem first) first.IsActive = true;
+
+            // Once the pane's scroll viewport is realized, drop its content clip so
+            // the controller pills' selection and hover glows are not truncated at
+            // the pane edge. Deferred to Loaded priority because the presenter does
+            // not exist until the pane template renders.
+            Dispatcher.BeginInvoke(new Action(RelaxNavPaneGlowClip),
+                System.Windows.Threading.DispatcherPriority.Loaded);
         }
 
         private async void MaybeOfferLegacyDriverCleanup()
@@ -2740,34 +2747,32 @@ namespace PadForge
                 var selColor = cooling
                     ? System.Windows.Media.Color.FromRgb(0xE8, 0xB4, 0x34)   // gold, idle
                     : System.Windows.Media.Color.FromRgb(0xFF, 0x6B, 0x2C);  // ember, live/disabled
-                // The border is the primary signal and it PULSES. A border lives
-                // inside the card, so the rail can never clip it the way it clips
-                // an overflowing drop shadow. The bloom's left reach is hard-capped
-                // by the window's own client edge: the pill sits 7px from it (3px
-                // card margin + 4px pane-grid margin), and nothing can push a glow
-                // past the window, so any bloom wider than 7px truncates on the
-                // left. The bloom is therefore held to a 6px radius so it fades out
-                // fully inside that 7px envelope, and its opacity is raised so the
-                // tighter halo still reads. Both border and bloom pulse in step,
-                // paced by the slot's activation: ember and quick when live, gold
-                // and slower when idle, dim and slowest when disabled. This
-                // overrides the resting heat ring on the selected card (one Effect
-                // slot each).
+                // The border is the primary signal and it PULSES, and a WIDE bloom
+                // rides with it. Both were clipping at the pane edge, but the clip
+                // is the nav scroll viewport (a ScrollContentPresenter), not any
+                // window edge, which is why a card dragged for reorder renders clear
+                // to the window's edges: the drag ghost rides the NavView adorner
+                // layer, above the scroller. RelaxNavPaneGlowClip turns that
+                // viewport clip off, so this bloom renders into the pane margin and
+                // over the content seam the same way. Color and pace track the
+                // slot's activation: ember and quick when live, gold and slower when
+                // idle, dim and slowest when disabled. Overrides the resting heat
+                // ring on the selected card (one Effect slot each).
                 var selBorder = new System.Windows.Media.SolidColorBrush(selColor);
                 card.BorderBrush = selBorder;
                 card.BorderThickness = new Thickness(2);
                 var selGlow = new System.Windows.Media.Effects.DropShadowEffect
                 {
                     Color = selColor,
-                    BlurRadius = 6,
+                    BlurRadius = 20,
                     ShadowDepth = 0,
-                    Opacity = 0.85,
+                    Opacity = 0.6,
                 };
                 card.Effect = selGlow;
                 if (MotionEnabled)
                 {
-                    double glowLo = lit ? 0.6 : cooling ? 0.5 : 0.4;
-                    double glowHi = lit ? 1.0 : cooling ? 0.9 : 0.75;
+                    double glowLo = lit ? 0.5 : cooling ? 0.4 : 0.3;
+                    double glowHi = lit ? 0.9 : cooling ? 0.8 : 0.6;
                     double periodMs = lit ? 1100 : cooling ? 1600 : 2200;
                     // Phase-lock to a wall-clock grid so a rebuild never snaps the
                     // pulse back to its trough (AutoReverse doubles the visible period).
@@ -3013,6 +3018,39 @@ namespace PadForge
                 };
                 glow.BeginAnimation(System.Windows.Media.Effects.DropShadowEffect.OpacityProperty, pulse);
             }
+        }
+
+        /// <summary>The controller pills live inside the nav pane's
+        /// DynamicScrollViewer, whose ScrollContentPresenter clips content to the
+        /// viewport. That viewport clip is what truncates the selection and hover
+        /// glows at the pill edges: the reorder drag escapes it only because it
+        /// renders in the NavView adorner layer, above the scroller. Turn the clip
+        /// off on the presenter and its wrapping border so the blooms render into
+        /// the pane margin and over the content seam, the same space the drag ghost
+        /// reaches. Idempotent and cheap; re-run after the pane (re)templates.</summary>
+        private void RelaxNavPaneGlowClip()
+        {
+            var scp = FindVisualChild<System.Windows.Controls.ScrollContentPresenter>(NavView);
+            if (scp == null) return;
+            scp.ClipToBounds = false;
+            if (System.Windows.Media.VisualTreeHelper.GetParent(scp) is System.Windows.UIElement wrap)
+                wrap.ClipToBounds = false;
+        }
+
+        /// <summary>Depth-first search for the first visual descendant of the given
+        /// type. Returns null if none is realized yet.</summary>
+        private static T FindVisualChild<T>(DependencyObject root) where T : DependencyObject
+        {
+            if (root == null) return null;
+            int count = System.Windows.Media.VisualTreeHelper.GetChildrenCount(root);
+            for (int i = 0; i < count; i++)
+            {
+                var child = System.Windows.Media.VisualTreeHelper.GetChild(root, i);
+                if (child is T match) return match;
+                var deeper = FindVisualChild<T>(child);
+                if (deeper != null) return deeper;
+            }
+            return null;
         }
 
         // The controller tag currently wearing the selection glow (null when a
@@ -4742,6 +4780,10 @@ namespace PadForge
         private void PaneToggleBtn_Click(object sender, RoutedEventArgs e)
         {
             NavView.IsPaneOpen = !NavView.IsPaneOpen;
+            // Expanding/collapsing re-templates the pane and rebuilds its scroll
+            // presenter, so re-drop the content clip once the new template renders.
+            Dispatcher.BeginInvoke(new Action(RelaxNavPaneGlowClip),
+                System.Windows.Threading.DispatcherPriority.Loaded);
         }
 
         private void BrandingBar_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
@@ -4959,6 +5001,10 @@ namespace PadForge
 
             // Re-glow the drawer's selected controller card + collapsed icon.
             RefreshControllerSelectionVisuals();
+
+            // Belt-and-suspenders: make sure the pane's scroll clip is off before a
+            // glow is shown, in case the presenter was not yet realized at load.
+            RelaxNavPaneGlowClip();
 
             // Swap visible page.
             DashboardPageView.Visibility = tag == "Dashboard" ? Visibility.Visible : Visibility.Collapsed;

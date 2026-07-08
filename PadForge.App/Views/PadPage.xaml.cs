@@ -910,6 +910,50 @@ namespace PadForge.Views
             return dlg.ShowDialog() == true ? dlg.SelectedSound : null;
         }
 
+        /// <summary>Pick the program/file the Run Program action launches. The
+        /// button's DataContext is the MacroAction. Any file is allowed; the user
+        /// owns the choice of what to run.</summary>
+        private void RunProgramBrowseFile_Click(object sender, RoutedEventArgs e)
+        {
+            if ((sender as FrameworkElement)?.DataContext is not PadForge.ViewModels.MacroAction action)
+                return;
+            var dlg = new Microsoft.Win32.OpenFileDialog
+            {
+                Title = PadForge.Resources.Strings.Strings.Instance.MacroAction_RunProgram_Path,
+                Filter = "Programs (*.exe;*.bat;*.cmd;*.com)|*.exe;*.bat;*.cmd;*.com|All files|*.*",
+                CheckFileExists = true,
+            };
+            try
+            {
+                if (!string.IsNullOrEmpty(action.ProgramPath))
+                    dlg.InitialDirectory = System.IO.Path.GetDirectoryName(action.ProgramPath);
+            }
+            catch { }
+            if (dlg.ShowDialog() != true) return;
+            action.ProgramPath = dlg.FileName;
+        }
+
+        /// <summary>Pick the working folder the Run Program action starts in.</summary>
+        private void RunProgramBrowseFolder_Click(object sender, RoutedEventArgs e)
+        {
+            if ((sender as FrameworkElement)?.DataContext is not PadForge.ViewModels.MacroAction action)
+                return;
+            var dlg = new Microsoft.Win32.OpenFolderDialog
+            {
+                Title = PadForge.Resources.Strings.Strings.Instance.MacroAction_RunProgram_WorkingDir,
+            };
+            try
+            {
+                if (!string.IsNullOrEmpty(action.ProgramWorkingDir))
+                    dlg.InitialDirectory = action.ProgramWorkingDir;
+                else if (!string.IsNullOrEmpty(action.ProgramPath))
+                    dlg.InitialDirectory = System.IO.Path.GetDirectoryName(action.ProgramPath);
+            }
+            catch { }
+            if (dlg.ShowDialog() != true) return;
+            action.ProgramWorkingDir = dlg.FolderName;
+        }
+
         // ─────────────────────────────────────────────
         //  Sound Packages card
         // ─────────────────────────────────────────────

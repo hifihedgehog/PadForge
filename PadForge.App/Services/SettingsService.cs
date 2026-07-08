@@ -2466,7 +2466,10 @@ namespace PadForge.Services
                 CursorClampInsetY = ad.CursorClampInsetY,
                 DisconnectTarget = ad.DisconnectTarget,
                 DisconnectDeviceGuid = Guid.TryParse(ad.DisconnectDeviceGuid, out Guid dcGuid)
-                    ? dcGuid : Guid.Empty
+                    ? dcGuid : Guid.Empty,
+                ProgramPath = ad.ProgramPath ?? "",
+                ProgramArgs = ad.ProgramArgs ?? "",
+                ProgramWorkingDir = ad.ProgramWorkingDir ?? ""
             };
         }
 
@@ -3355,7 +3358,10 @@ namespace PadForge.Services
                 CursorClampInsetY = a.CursorClampInsetY,
                 DisconnectTarget = a.DisconnectTarget,
                 DisconnectDeviceGuid = a.DisconnectDeviceGuid == Guid.Empty
-                    ? null : a.DisconnectDeviceGuid.ToString()
+                    ? null : a.DisconnectDeviceGuid.ToString(),
+                ProgramPath = string.IsNullOrEmpty(a.ProgramPath) ? null : a.ProgramPath,
+                ProgramArgs = string.IsNullOrEmpty(a.ProgramArgs) ? null : a.ProgramArgs,
+                ProgramWorkingDir = string.IsNullOrEmpty(a.ProgramWorkingDir) ? null : a.ProgramWorkingDir
             };
         }
 
@@ -4671,6 +4677,13 @@ namespace PadForge.Services
         [XmlElement] public ViewModels.MacroDisconnectTarget DisconnectTarget { get; set; } = ViewModels.MacroDisconnectTarget.TriggeringDevice;
         /// <summary>Victim device GUID for Specific-device mode (issue #162).</summary>
         [XmlElement] public string DisconnectDeviceGuid { get; set; }
+
+        /// <summary>Program/file path for a RunProgram action (user request).</summary>
+        [XmlElement] public string ProgramPath { get; set; }
+        /// <summary>Command-line arguments for a RunProgram action.</summary>
+        [XmlElement] public string ProgramArgs { get; set; }
+        /// <summary>Working folder for a RunProgram action.</summary>
+        [XmlElement] public string ProgramWorkingDir { get; set; }
     }
 
     /// <summary>

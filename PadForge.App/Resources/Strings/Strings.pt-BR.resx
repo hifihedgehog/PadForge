@@ -2163,6 +2163,13 @@
   <data name="MacroDisconnect_AllDevices" xml:space="preserve"><value>Todos os Dispositivos Bluetooth</value></data>
   <data name="MacroDisconnect_Device_Label" xml:space="preserve"><value>Dispositivo</value></data>
   <data name="MacroDisconnect_Caveat" xml:space="preserve"><value>Somente Bluetooth. O controle entra em repouso quando o link cai.</value></data>
+  <data name="MacroAction_Type_RunProgram" xml:space="preserve"><value>Executar Programa</value></data>
+  <data name="MacroAction_RunProgram_Tooltip" xml:space="preserve"><value>Inicia um programa ou arquivo com argumentos opcionais. Você escolhe o que é executado.</value></data>
+  <data name="MacroAction_RunProgram_Format" xml:space="preserve"><value>Executar {0}</value></data>
+  <data name="MacroAction_RunProgram_NoProgram" xml:space="preserve"><value>(nenhum programa)</value></data>
+  <data name="MacroAction_RunProgram_Path" xml:space="preserve"><value>Programa</value></data>
+  <data name="MacroAction_RunProgram_Args" xml:space="preserve"><value>Argumentos</value></data>
+  <data name="MacroAction_RunProgram_WorkingDir" xml:space="preserve"><value>Pasta</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>Desconexão por Inatividade</value></data>
   <data name="Devices_Power" xml:space="preserve"><value>Energia</value></data>
   <data name="Devices_Dossier" xml:space="preserve"><value>Dossiê do Dispositivo</value></data>

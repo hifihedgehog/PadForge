@@ -2740,35 +2740,56 @@ namespace PadForge
                 var selColor = cooling
                     ? System.Windows.Media.Color.FromRgb(0xE8, 0xB4, 0x34)   // gold, idle
                     : System.Windows.Media.Color.FromRgb(0xFF, 0x6B, 0x2C);  // ember, live/disabled
-                card.BorderBrush = new System.Windows.Media.SolidColorBrush(selColor);
+                // The border is the primary signal and it PULSES. A border lives
+                // inside the card, so the rail can never clip it the way it clips
+                // an overflowing drop shadow: the pane is a fixed 223px column and
+                // the card is 212, so any bloom is boxed to ~5px a side (window
+                // edge left, the content page occludes past the pane right). The
+                // bloom therefore rides at the hover glow's radius, clipping no
+                // worse than a hover, and pulses in step with the border, paced by
+                // the slot's activation: ember and quick when live, gold and slower
+                // when idle, dim and slowest when disabled. This overrides the
+                // resting heat ring on the selected card (one Effect slot each).
+                var selBorder = new System.Windows.Media.SolidColorBrush(selColor);
+                card.BorderBrush = selBorder;
                 card.BorderThickness = new Thickness(2);
                 var selGlow = new System.Windows.Media.Effects.DropShadowEffect
                 {
                     Color = selColor,
-                    BlurRadius = 24,
+                    BlurRadius = 12,
                     ShadowDepth = 0,
-                    Opacity = 0.6,
+                    Opacity = 0.7,
                 };
                 card.Effect = selGlow;
                 if (MotionEnabled)
                 {
-                    double lo = lit ? 0.55 : cooling ? 0.45 : 0.35;
-                    double hi = lit ? 0.95 : cooling ? 0.80 : 0.60;
+                    double glowLo = lit ? 0.5 : cooling ? 0.4 : 0.3;
+                    double glowHi = lit ? 0.9 : cooling ? 0.8 : 0.6;
                     double periodMs = lit ? 1100 : cooling ? 1600 : 2200;
-                    var pulse = new System.Windows.Media.Animation.DoubleAnimation(lo, hi,
+                    // Phase-lock to a wall-clock grid so a rebuild never snaps the
+                    // pulse back to its trough (AutoReverse doubles the visible period).
+                    var phase = System.TimeSpan.FromMilliseconds(
+                        -(System.DateTime.UtcNow.TimeOfDay.TotalMilliseconds % (periodMs * 2.0)));
+                    var ease = new System.Windows.Media.Animation.SineEase
+                    { EasingMode = System.Windows.Media.Animation.EasingMode.EaseInOut };
+                    var borderPulse = new System.Windows.Media.Animation.DoubleAnimation(0.55, 1.0,
                         System.TimeSpan.FromMilliseconds(periodMs))
                     {
                         AutoReverse = true,
                         RepeatBehavior = System.Windows.Media.Animation.RepeatBehavior.Forever,
-                        EasingFunction = new System.Windows.Media.Animation.SineEase
-                        { EasingMode = System.Windows.Media.Animation.EasingMode.EaseInOut },
-                        // Phase-lock to a wall-clock grid so a rebuild never
-                        // snaps the pulse back to its trough (AutoReverse doubles
-                        // the visible period).
-                        BeginTime = System.TimeSpan.FromMilliseconds(
-                            -(System.DateTime.UtcNow.TimeOfDay.TotalMilliseconds % (periodMs * 2.0))),
+                        EasingFunction = ease,
+                        BeginTime = phase,
                     };
-                    selGlow.BeginAnimation(System.Windows.Media.Effects.DropShadowEffect.OpacityProperty, pulse);
+                    selBorder.BeginAnimation(System.Windows.Media.Brush.OpacityProperty, borderPulse);
+                    var glowPulse = new System.Windows.Media.Animation.DoubleAnimation(glowLo, glowHi,
+                        System.TimeSpan.FromMilliseconds(periodMs))
+                    {
+                        AutoReverse = true,
+                        RepeatBehavior = System.Windows.Media.Animation.RepeatBehavior.Forever,
+                        EasingFunction = ease,
+                        BeginTime = phase,
+                    };
+                    selGlow.BeginAnimation(System.Windows.Media.Effects.DropShadowEffect.OpacityProperty, glowPulse);
                 }
             }
 
@@ -2968,7 +2989,9 @@ namespace PadForge
             var glow = new System.Windows.Media.Effects.DropShadowEffect
             {
                 Color = System.Windows.Media.Color.FromRgb(0xFF, 0x6B, 0x2C),
-                BlurRadius = 16,
+                // Kept at the expanded pill's bloom radius; the 48px collapsed rail
+                // gives the icon ~12px a side, so a 12px bloom fits without clipping.
+                BlurRadius = 12,
                 ShadowDepth = 0,
                 Opacity = 0.6,
             };

@@ -2189,7 +2189,8 @@
   <data name="MacroAction_RunProgram_NoProgram" xml:space="preserve"><value>(geen programma)</value></data>
   <data name="MacroAction_RunProgram_Path" xml:space="preserve"><value>Programma</value></data>
   <data name="MacroAction_RunProgram_Args" xml:space="preserve"><value>Argumenten</value></data>
-  <data name="MacroAction_RunProgram_WorkingDir" xml:space="preserve"><value>Map</value></data>
+  <data name="MacroAction_RunProgram_WorkingDir" xml:space="preserve"><value>Werkmap</value></data>
+  <data name="MacroAction_RunProgram_WorkingDir_Tooltip" xml:space="preserve"><value>Optioneel. De map die het programma als huidige map gebruikt. Niet de map waarin het programmabestand staat. Laat leeg voor de standaardwaarde.</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>Loskoppelen bij inactiviteit</value></data>
   <data name="Devices_Power" xml:space="preserve"><value>Energie</value></data>
   <data name="Devices_Dossier" xml:space="preserve"><value>Apparaatdossier</value></data>

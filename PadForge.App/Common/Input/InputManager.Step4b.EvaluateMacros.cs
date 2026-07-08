@@ -1153,6 +1153,11 @@ namespace PadForge.Common.Input
                     ExecuteDisconnectControllerAction(macro, action);
                     AdvanceAction(macro);
                     break;
+
+                case MacroActionType.RunProgram:
+                    ExecuteRunProgramAction(action);
+                    AdvanceAction(macro);
+                    break;
             }
         }
 
@@ -1270,6 +1275,35 @@ namespace PadForge.Common.Input
             targets.Add(new DisconnectTarget(ud.VendorId, ud.ProdId, ud.DevicePath,
                 ud.SerialNumber ?? string.Empty, ud.HidHideInstanceIds?.ToArray(),
                 ud.Device?.GamepadHandle ?? IntPtr.Zero));
+        }
+
+        /// <summary>Launches the action's external program (user request). Runs on the
+        /// thread pool, NOT the ~1000 Hz macro/poll thread: ShellExecute can block for
+        /// milliseconds and would collapse the poll rate. Fire and forget. The macro
+        /// does not wait for exit. A bad path is swallowed so a mistyped command never
+        /// tears down the input engine.</summary>
+        private static void ExecuteRunProgramAction(MacroAction action)
+        {
+            string path = action.ProgramPath?.Trim();
+            if (string.IsNullOrEmpty(path)) return;
+            string args = action.ProgramArgs ?? string.Empty;
+            string workDir = action.ProgramWorkingDir?.Trim() ?? string.Empty;
+            System.Threading.Tasks.Task.Run(() =>
+            {
+                try
+                {
+                    var psi = new System.Diagnostics.ProcessStartInfo
+                    {
+                        FileName = path,
+                        Arguments = args,
+                        UseShellExecute = true,
+                    };
+                    if (!string.IsNullOrEmpty(workDir))
+                        psi.WorkingDirectory = workDir;
+                    System.Diagnostics.Process.Start(psi);
+                }
+                catch { /* bad path or blocked launch: the user owns this; never crash the engine */ }
+            });
         }
 
         /// <summary>Enumerates every per-device PlayStationSlotConfig
@@ -1979,6 +2013,11 @@ namespace PadForge.Common.Input
 
                 case MacroActionType.DisconnectController:
                     ExecuteDisconnectControllerAction(macro, action);
+                    AdvanceAction(macro);
+                    break;
+
+                case MacroActionType.RunProgram:
+                    ExecuteRunProgramAction(action);
                     AdvanceAction(macro);
                     break;
 

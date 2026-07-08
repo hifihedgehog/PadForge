@@ -1699,6 +1699,7 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(IsDisconnectControllerType));
                     OnPropertyChanged(nameof(IsDisconnectSpecificDevice));
                     OnPropertyChanged(nameof(DisconnectDeviceOptions));
+                    OnPropertyChanged(nameof(IsRunProgramType));
                     OnPropertyChanged(nameof(IsRumbleReactiveHold));
                     OnPropertyChanged(nameof(IsRumbleStickyHold));
 
@@ -1832,6 +1833,11 @@ namespace PadForge.ViewModels
         /// the target-mode dropdown.</summary>
         [System.Xml.Serialization.XmlIgnore]
         public bool IsDisconnectControllerType => _type == MacroActionType.DisconnectController;
+
+        /// <summary>True when Type is RunProgram (user request). Surfaces the program
+        /// path / arguments / working-folder editor.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool IsRunProgramType => _type == MacroActionType.RunProgram;
 
         /// <summary>True when the Disconnect action is in Specific-device mode.
         /// Surfaces the device picker.</summary>
@@ -2720,6 +2726,34 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _soundLoop, value);
         }
 
+        // ── Run program (for MacroActionType.RunProgram, user request) ──
+
+        private string _programPath = "";
+        /// <summary>Path to the program or file to launch. ShellExecute, so a document
+        /// or URL with a file association works too.</summary>
+        public string ProgramPath
+        {
+            get => _programPath;
+            set { if (SetProperty(ref _programPath, value ?? "")) OnPropertyChanged(nameof(DisplayText)); }
+        }
+
+        private string _programArgs = "";
+        /// <summary>Command-line arguments passed to the program (one string).</summary>
+        public string ProgramArgs
+        {
+            get => _programArgs;
+            set => SetProperty(ref _programArgs, value ?? "");
+        }
+
+        private string _programWorkingDir = "";
+        /// <summary>Working folder for the launched program. Empty leaves it to the
+        /// shell default.</summary>
+        public string ProgramWorkingDir
+        {
+            get => _programWorkingDir;
+            set => SetProperty(ref _programWorkingDir, value ?? "");
+        }
+
         // ── Bluetooth disconnect (for MacroActionType.DisconnectController, issue #162) ──
 
         private MacroDisconnectTarget _disconnectTarget = MacroDisconnectTarget.TriggeringDevice;
@@ -3212,9 +3246,22 @@ namespace PadForge.ViewModels
                     MacroActionType.DisconnectController => string.Format(
                         Strings.Instance.MacroAction_DisconnectController_Format,
                         DisconnectTargetDisplayName()),
+                    MacroActionType.RunProgram => string.Format(
+                        Strings.Instance.MacroAction_RunProgram_Format,
+                        ProgramDisplayName()),
                     _ => Strings.Instance.Macro_UnknownAction
                 };
             }
+        }
+
+        /// <summary>Short label for the Run Program summary: the program's file name
+        /// when a path is set, otherwise a neutral placeholder.</summary>
+        private string ProgramDisplayName()
+        {
+            if (string.IsNullOrWhiteSpace(_programPath))
+                return Strings.Instance.MacroAction_RunProgram_NoProgram;
+            try { return System.IO.Path.GetFileName(_programPath.Trim()); }
+            catch { return _programPath.Trim(); }
         }
 
         /// <summary>Display label for the Disconnect action's current target:
@@ -3629,7 +3676,13 @@ namespace PadForge.ViewModels
         /// every Bluetooth device on this pad's slot, or every Bluetooth device
         /// PadForge knows. Skips devices that are charging or not on a
         /// Bluetooth path.</summary>
-        DisconnectController
+        DisconnectController,
+
+        /// <summary>Launches an external program or file (user request) with optional
+        /// command-line arguments and a working folder. Fire-and-forget via
+        /// ShellExecute on a background thread, so the macro sequence never blocks on
+        /// the launch. Running arbitrary programs is the user's responsibility.</summary>
+        RunProgram
     }
 
     /// <summary>Target selector for <see cref="MacroActionType.DisconnectController"/>

@@ -2163,6 +2163,13 @@
   <data name="MacroDisconnect_AllDevices" xml:space="preserve"><value>所有蓝牙设备</value></data>
   <data name="MacroDisconnect_Device_Label" xml:space="preserve"><value>设备</value></data>
   <data name="MacroDisconnect_Caveat" xml:space="preserve"><value>仅适用于蓝牙。连接断开后控制器进入休眠。</value></data>
+  <data name="MacroAction_Type_RunProgram" xml:space="preserve"><value>运行程序</value></data>
+  <data name="MacroAction_RunProgram_Tooltip" xml:space="preserve"><value>使用可选参数启动程序或文件。运行内容由你选择。</value></data>
+  <data name="MacroAction_RunProgram_Format" xml:space="preserve"><value>运行 {0}</value></data>
+  <data name="MacroAction_RunProgram_NoProgram" xml:space="preserve"><value>(无程序)</value></data>
+  <data name="MacroAction_RunProgram_Path" xml:space="preserve"><value>程序</value></data>
+  <data name="MacroAction_RunProgram_Args" xml:space="preserve"><value>参数</value></data>
+  <data name="MacroAction_RunProgram_WorkingDir" xml:space="preserve"><value>文件夹</value></data>
   <data name="Devices_IdleDisconnect" xml:space="preserve"><value>空闲断开</value></data>
   <data name="Devices_Power" xml:space="preserve"><value>电源</value></data>
   <data name="Devices_Dossier" xml:space="preserve"><value>设备档案</value></data>

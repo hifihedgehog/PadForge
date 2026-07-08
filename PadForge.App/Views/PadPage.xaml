@@ -1763,6 +1763,9 @@
                                             <ComboBoxItem Content="{Binding MacroAction_Type_DisconnectController, Source={x:Static strings:Strings.Instance}}"
                                                           Tag="{x:Static vm:MacroActionType.DisconnectController}"
                                                           ToolTip="{Binding MacroAction_DisconnectController_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                            <ComboBoxItem Content="{Binding MacroAction_Type_RunProgram, Source={x:Static strings:Strings.Instance}}"
+                                                          Tag="{x:Static vm:MacroActionType.RunProgram}"
+                                                          ToolTip="{Binding MacroAction_RunProgram_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                         </ComboBox>
                                     </StackPanel>
 
@@ -1796,7 +1799,34 @@
                                                    Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
                                     </StackPanel>
 
-                                    <!-- SetGyroEngaged Mode picker — Toggle / On / Off -->
+                                    <!-- Run Program editor. Program path + Browse, arguments, working folder + Browse -->
+                                    <StackPanel Margin="0,0,0,6"
+                                                Visibility="{Binding IsRunProgramType, Converter={StaticResource BoolToVisibilityConverter}}">
+                                        <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                            <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding MacroAction_RunProgram_Path, Source={x:Static strings:Strings.Instance}}"
+                                                       Width="72" VerticalAlignment="Center"/>
+                                            <TextBox Text="{Binding ProgramPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                     Width="220" VerticalAlignment="Center"/>
+                                            <Button Content="{Binding Common_Browse, Source={x:Static strings:Strings.Instance}}"
+                                                    Click="RunProgramBrowseFile_Click" Margin="6,0,0,0" VerticalAlignment="Center"/>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                            <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding MacroAction_RunProgram_Args, Source={x:Static strings:Strings.Instance}}"
+                                                       Width="72" VerticalAlignment="Center"/>
+                                            <TextBox Text="{Binding ProgramArgs, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                     Width="220" VerticalAlignment="Center"/>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                            <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding MacroAction_RunProgram_WorkingDir, Source={x:Static strings:Strings.Instance}}"
+                                                       Width="72" VerticalAlignment="Center"/>
+                                            <TextBox Text="{Binding ProgramWorkingDir, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                     Width="220" VerticalAlignment="Center"/>
+                                            <Button Content="{Binding Common_Browse, Source={x:Static strings:Strings.Instance}}"
+                                                    Click="RunProgramBrowseFolder_Click" Margin="6,0,0,0" VerticalAlignment="Center"/>
+                                        </StackPanel>
+                                    </StackPanel>
+
+                                    <!-- SetGyroEngaged Mode picker: Toggle / On / Off -->
                                     <StackPanel Orientation="Horizontal" Margin="0,0,0,6"
                                                 Visibility="{Binding IsSetGyroEngagedType, Converter={StaticResource BoolToVisibilityConverter}}">
                                         <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Macro_SetGyroEngaged_Mode_Label, Source={x:Static strings:Strings.Instance}}"

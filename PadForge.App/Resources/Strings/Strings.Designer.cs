@@ -502,6 +502,13 @@ public class Strings : INotifyPropertyChanged
     public string MacroDisconnect_AllDevices => Get("MacroDisconnect_AllDevices");
     public string MacroDisconnect_Device_Label => Get("MacroDisconnect_Device_Label");
     public string MacroDisconnect_Caveat => Get("MacroDisconnect_Caveat");
+    public string MacroAction_Type_RunProgram => Get("MacroAction_Type_RunProgram");
+    public string MacroAction_RunProgram_Tooltip => Get("MacroAction_RunProgram_Tooltip");
+    public string MacroAction_RunProgram_Format => Get("MacroAction_RunProgram_Format");
+    public string MacroAction_RunProgram_NoProgram => Get("MacroAction_RunProgram_NoProgram");
+    public string MacroAction_RunProgram_Path => Get("MacroAction_RunProgram_Path");
+    public string MacroAction_RunProgram_Args => Get("MacroAction_RunProgram_Args");
+    public string MacroAction_RunProgram_WorkingDir => Get("MacroAction_RunProgram_WorkingDir");
     public string Devices_IdleDisconnect => Get("Devices_IdleDisconnect");
     public string Devices_Power => Get("Devices_Power");
     public string Devices_Dossier => Get("Devices_Dossier");

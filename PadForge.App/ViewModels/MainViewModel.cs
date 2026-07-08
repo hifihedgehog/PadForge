@@ -69,6 +69,17 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _connectedDeviceCount, value);
         }
 
+        private int _mappedDeviceCount;
+        /// <summary>Number of physical devices assigned to this slot in config
+        /// (regardless of whether they are currently connected). Lets the mini card
+        /// tell "assigned but awaiting" (idle) from "nothing assigned" (cold), the
+        /// same split the Dashboard card makes.</summary>
+        public int MappedDeviceCount
+        {
+            get => _mappedDeviceCount;
+            set => SetProperty(ref _mappedDeviceCount, value);
+        }
+
         private bool _isInitializing;
         /// <summary>Whether the virtual controller for this slot is currently initializing.</summary>
         public bool IsInitializing

@@ -963,7 +963,8 @@ namespace PadForge.ViewModels
                     var captured = entry;
                     yield return new MacroTriggerInputItem(
                         FormatTriggerEntryLabel(captured),
-                        new RelayCommand(() => RemoveTriggerEntry(captured)));
+                        new RelayCommand(() => RemoveTriggerEntry(captured)),
+                        captured.AxisTarget != MacroAxisTarget.None ? captured : null);
                 }
 
                 // Legacy slot-combined buttons (OutputController source). One row
@@ -1041,12 +1042,10 @@ namespace PadForge.ViewModels
             }
             else if (entry.AxisTarget != MacroAxisTarget.None)
             {
-                var tags = new List<string>();
-                if (entry.HalfAxis) tags.Add(Strings.Instance.Macro_Axis_Half);
-                if (entry.HalfAxis && entry.Bidirectional) tags.Add(Strings.Instance.Pad_Either.ToLowerInvariant());
-                if (entry.Invert && !(entry.HalfAxis && entry.Bidirectional)) tags.Add(Strings.Instance.Macro_Axis_Inverted);
-                string tagText = tags.Count > 0 ? $" ({string.Join(", ", tags)})" : "";
-                input = $"{entry.AxisTarget.DisplayName()} > {entry.DeadZone}%{tagText}";
+                // Just the axis name. The deadzone / invert / half read off the
+                // inline controls on this same row, so repeating them here would
+                // only clutter the label.
+                input = entry.AxisTarget.DisplayName();
             }
             else if (!string.IsNullOrEmpty(entry.GestureDescriptor))
             {
@@ -1805,17 +1804,30 @@ namespace PadForge.ViewModels
 
     /// <summary>One removable input in a macro's trigger, rendered as a row in
     /// the trigger input list. <see cref="Label"/> is the display text;
-    /// <see cref="RemoveCommand"/> drops just this one input from the trigger.</summary>
+    /// <see cref="RemoveCommand"/> drops just this one input from the trigger.
+    /// <see cref="AxisEntry"/> is set only for a per-device axis input, so its
+    /// row can show the Invert / Half / Either / Deadzone controls inline
+    /// instead of in a second, duplicated list.</summary>
     public sealed class MacroTriggerInputItem
     {
-        public MacroTriggerInputItem(string label, System.Windows.Input.ICommand removeCommand)
+        public MacroTriggerInputItem(string label, System.Windows.Input.ICommand removeCommand,
+            MacroItem.TriggerInputEntry axisEntry = null)
         {
             Label = label;
             RemoveCommand = removeCommand;
+            AxisEntry = axisEntry;
         }
 
         public string Label { get; }
         public System.Windows.Input.ICommand RemoveCommand { get; }
+
+        /// <summary>The underlying axis entry when this row is a per-device axis
+        /// input, else null. Drives the inline axis controls.</summary>
+        public MacroItem.TriggerInputEntry AxisEntry { get; }
+
+        /// <summary>True when this row carries an axis input and should show the
+        /// Invert / Half / Either / Deadzone controls.</summary>
+        public bool IsAxis => AxisEntry != null;
     }
 
     /// <summary>

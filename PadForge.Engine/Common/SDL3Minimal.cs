@@ -50,6 +50,7 @@ namespace SDL3
         public const string SDL_HINT_JOYSTICK_BLE_SWITCH2 = "SDL_JOYSTICK_BLE_SWITCH2";
         public const string SDL_HINT_JOYSTICK_HIDAPI_JOYCON_IR_SENSOR = "SDL_JOYSTICK_HIDAPI_JOYCON_IR_SENSOR";
         public const string SDL_HINT_JOYSTICK_BLE_SWITCH2_MOUSE = "SDL_JOYSTICK_BLE_SWITCH2_MOUSE";
+        public const string SDL_HINT_JOYSTICK_HIDAPI_PS3_SIXAXIS_DRIVER = "SDL_JOYSTICK_HIDAPI_PS3_SIXAXIS_DRIVER";
         public const string SDL_HINT_VIDEO_ALLOW_SCREENSAVER = "SDL_VIDEO_ALLOW_SCREENSAVER";
 
         // ─────────────────────────────────────────────

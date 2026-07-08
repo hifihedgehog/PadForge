@@ -2994,6 +2994,7 @@ namespace PadForge
                 var layer = System.Windows.Documents.AdornerLayer.GetAdornerLayer(NavView);
                 if (layer == null) return;
                 LogGlowLayerDiag(card, layer);
+                LogGlowOverlayDiag(card);
                 var adorner = new PillGlowAdorner(NavView, card, color, 10, 2, 18, 0.28);
                 layer.Add(adorner);
                 _selGlowAdorner = adorner;
@@ -3044,6 +3045,84 @@ namespace PadForge
                     $"cardLayer null: {cardLayer == null}, navLayer null: {navLayer == null}\r\n");
             }
             catch { }
+        }
+
+        private bool _glowOverlayDiagLogged;
+        /// <summary>30-second test for the "semi-transparent thing over the glow" report:
+        /// walk the whole window tree and list every element whose bounds cover a point
+        /// just outside the pill (where the glow is dimmed), flagging any that are
+        /// translucent (element Opacity &lt; 1, an OpacityMask, or a non-opaque
+        /// Background). Whatever sits over the glow shows up here by name.</summary>
+        private void LogGlowOverlayDiag(System.Windows.Controls.Border card)
+        {
+            if (_glowOverlayDiagLogged) return;
+            _glowOverlayDiagLogged = true;
+            try
+            {
+                var sb = new System.Text.StringBuilder();
+                foreach (var (label, local) in new[]
+                {
+                    ("RIGHT of pill", new System.Windows.Point(card.ActualWidth + 10, card.ActualHeight / 2)),
+                    ("LEFT of pill", new System.Windows.Point(-10, card.ActualHeight / 2)),
+                })
+                {
+                    var p = card.TransformToVisual(this).Transform(local);
+                    sb.AppendLine($"=== {label} @ window ({p.X:F1},{p.Y:F1}) ===");
+                    ScanCoveringElements(this, p, sb, 0);
+                    sb.AppendLine();
+                }
+                System.IO.File.WriteAllText(@"C:\PadForge\glow_overlay_diag.txt", sb.ToString());
+            }
+            catch (Exception ex)
+            {
+                try { System.IO.File.WriteAllText(@"C:\PadForge\glow_overlay_diag.txt", ex.ToString()); } catch { }
+            }
+        }
+
+        private void ScanCoveringElements(DependencyObject node, System.Windows.Point pWin,
+            System.Text.StringBuilder sb, int depth)
+        {
+            if (depth > 45) return;
+            if (node is FrameworkElement fe && fe.IsVisible && fe.ActualWidth > 0 && fe.ActualHeight > 0)
+            {
+                try
+                {
+                    var gt = fe.TransformToVisual(this);
+                    var tl = gt.Transform(new System.Windows.Point(0, 0));
+                    var br = gt.Transform(new System.Windows.Point(fe.ActualWidth, fe.ActualHeight));
+                    if (pWin.X >= System.Math.Min(tl.X, br.X) && pWin.X <= System.Math.Max(tl.X, br.X) &&
+                        pWin.Y >= System.Math.Min(tl.Y, br.Y) && pWin.Y <= System.Math.Max(tl.Y, br.Y))
+                    {
+                        var bg = (fe as System.Windows.Controls.Border)?.Background
+                            ?? (fe as System.Windows.Controls.Panel)?.Background
+                            ?? (fe as System.Windows.Controls.Control)?.Background;
+                        bool semi = fe.Opacity < 0.999 || fe.OpacityMask != null || DescribeBrushSemi(bg);
+                        sb.AppendLine($"{new string(' ', depth)}{fe.GetType().Name} " +
+                            $"Op={fe.Opacity:F2} Bg={DescribeBrush(bg)} OpMask={(fe.OpacityMask != null)}" +
+                            $"{(semi ? "   <-- TRANSLUCENT" : "")}");
+                    }
+                }
+                catch { }
+            }
+            int n = System.Windows.Media.VisualTreeHelper.GetChildrenCount(node);
+            for (int i = 0; i < n; i++)
+                ScanCoveringElements(System.Windows.Media.VisualTreeHelper.GetChild(node, i), pWin, sb, depth + 1);
+        }
+
+        private static bool DescribeBrushSemi(System.Windows.Media.Brush b)
+        {
+            if (b == null) return false;
+            if (b.Opacity < 0.999) return true;
+            if (b is System.Windows.Media.SolidColorBrush s) return s.Color.A > 0 && s.Color.A < 255;
+            return b is System.Windows.Media.GradientBrush;
+        }
+
+        private static string DescribeBrush(System.Windows.Media.Brush b)
+        {
+            if (b == null) return "none";
+            if (b is System.Windows.Media.SolidColorBrush s)
+                return $"#{s.Color.A:X2}{s.Color.R:X2}{s.Color.G:X2}{s.Color.B:X2}";
+            return $"{b.GetType().Name}(op{b.Opacity:F2})";
         }
 
         private void RemoveSelectionGlowAdorner()

@@ -903,8 +903,19 @@ namespace PadForge.Engine
             var state = new CustomInputState();
 
             // --- Axes ---
+            // Raw joystick mode reads every axis the device actually exposes, not
+            // PadForge's presentation count. For a gamepad-opened device NumAxes is
+            // clamped to the standardized 6, so a device carrying extra analog axes
+            // (a DsHidMini GPJ DS3 node reports 8: axes 4-7 are the face-button
+            // pressures) would drop everything past axis 5 in raw mode. Drive the
+            // read off RawAxisCount (SDL's true SDL_GetNumJoystickAxes) whenever the
+            // device has surfaced extra generic axes. Sensor devices (Wii / Joy-Con)
+            // stay on NumAxes so their non-settling camera axes are not pulled into
+            // Axis[] (their dedicated readers own those), and raw-opened joysticks
+            // already have NumAxes == RawAxisCount so this is a no-op for them.
             // First MaxAxis axes go into Axis[], overflow goes into Sliders[].
-            int axisCount = Math.Min(NumAxes, CustomInputState.MaxAxis + CustomInputState.MaxSliders);
+            int effectiveAxes = HasExtraGenericAxes ? RawAxisCount : NumAxes;
+            int axisCount = Math.Min(effectiveAxes, CustomInputState.MaxAxis + CustomInputState.MaxSliders);
             for (int i = 0; i < axisCount; i++)
             {
                 short raw = SDL_GetJoystickAxis(Joystick, i);

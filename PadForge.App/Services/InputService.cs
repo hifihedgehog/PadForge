@@ -2484,6 +2484,7 @@ namespace PadForge.Services
                         connCount++;
                 }
                 nav.ConnectedDeviceCount = connCount;
+                nav.MappedDeviceCount = mappedCount;
                 nav.IsInitializing = _inputManager?.IsVirtualControllerInitializing(padIndex) ?? false;
                 nav.IsVirtualControllerConnected = _inputManager?.IsVirtualControllerConnected(padIndex) ?? false;
             }

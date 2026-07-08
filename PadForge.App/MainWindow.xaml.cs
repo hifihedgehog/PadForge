@@ -2324,6 +2324,10 @@ namespace PadForge
         {
             if (!navItem.IsEnabled) { lit = false; cooling = false; }
             else if (navItem.IsInitializing) { lit = true; cooling = false; }
+            // Nothing mapped reads COLD (outline flame, steel rim), matching the
+            // Dashboard card's HasMappedDevices==false state. Without this, an empty
+            // slot and a slot awaiting its assigned devices both looked gold/cooling.
+            else if (navItem.MappedDeviceCount == 0) { lit = false; cooling = false; }
             else if (!_viewModel.IsEngineRunning) { lit = false; cooling = true; }
             else if (!navItem.IsVirtualControllerConnected) { lit = false; cooling = true; }
             else { lit = true; cooling = false; }
@@ -2719,6 +2723,16 @@ namespace PadForge
             {
                 card.BorderBrush = new System.Windows.Media.SolidColorBrush(
                     System.Windows.Media.Color.FromArgb(0x2E, 0xFF, 0x6B, 0x2C));
+                // Awaiting devices (mapped but not live): a static faint ember bloom,
+                // matching the Dashboard awaiting card. No breathe. The breathe is the
+                // live state's tell.
+                card.Effect = new System.Windows.Media.Effects.DropShadowEffect
+                {
+                    Color = System.Windows.Media.Color.FromRgb(0xFF, 0x6B, 0x2C),
+                    BlurRadius = 14,
+                    ShadowDepth = 0,
+                    Opacity = 0.16,
+                };
             }
             else
             {
@@ -2748,6 +2762,8 @@ namespace PadForge
 
             if (!navItem.IsEnabled)
                 card.Opacity = 0.6;
+            else if (!lit && !cooling)
+                card.Opacity = 0.72;   // cold: nothing mapped, the card recedes (Dashboard parity)
 
             // Hover engagement (#175): every mini card lifts 2px on hover and blooms
             // faint ember. The bloom rides the adorner layer (like the selection

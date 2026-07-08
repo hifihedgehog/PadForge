@@ -444,8 +444,17 @@ namespace PadForge.Engine.Data
             int gatedButtons = wrapper.SupportedButtonIndices?.Length ?? 0;
             if (gatedButtons <= 0) gatedButtons = wrapper.NumButtons;
 
+            // Extra generic axes (issue #193): a gamepad-opened device with raw
+            // joystick axes beyond the standard six (e.g. a DualShock 3 in SDF mode,
+            // 16 axes) exposes them as "Axis N" sources, so CapAxeCount reflects the
+            // full count for the live axis preview and the offline picker. NumAxes
+            // stays the gamepad 6 for the standard-axis read/reorder; the extras are
+            // read joystick-direct in GetGamepadState.
+            int effectiveAxisCount = wrapper.HasExtraGenericAxes
+                ? System.Math.Min(wrapper.RawAxisCount, CustomInputState.MaxAxis)
+                : wrapper.NumAxes;
             LoadCapabilities(
-                wrapper.NumAxes,
+                effectiveAxisCount,
                 gatedButtons,
                 wrapper.NumHats,
                 wrapper.GetInputDeviceType());

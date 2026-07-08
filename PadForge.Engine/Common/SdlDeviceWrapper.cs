@@ -118,6 +118,23 @@ namespace PadForge.Engine
         /// on joystick axes 6/7 (SDL#8, raw axis count 8).</summary>
         public bool HasJoyCon2Mouse { get; private set; }
 
+        /// <summary>Total raw joystick axis count (before the gamepad layout pins
+        /// <see cref="NumAxes"/> to 6). SDL's convention is that device-specific
+        /// analog data beyond the six standard gamepad axes rides raw joystick axes
+        /// 6+ (e.g. upstream's PS3 driver posts the DualShock 3 pressure buttons on
+        /// axes 6-15). Captured at open, mirroring <see cref="RawButtonCount"/>.</summary>
+        public int RawAxisCount { get; private set; }
+
+        /// <summary>True when a gamepad-opened device carries raw joystick axes
+        /// beyond the standard six that should be surfaced as generic "Axis N"
+        /// mapping sources for the user to bind (issue #193). Excludes devices whose
+        /// extra axes are already surfaced as dedicated sensor sources (Wii IR
+        /// pointer, Joy-Con NIR / mouse): a raw IR-dot coordinate or wrapping mouse
+        /// counter is not a usable, settling axis, and those readers already keep it
+        /// out of the generic Axis[] array. So this is "expose the extra analog axes,
+        /// except the ones already claimed as processed sensor sources".</summary>
+        public bool HasExtraGenericAxes { get; private set; }
+
         /// <summary>Whether the device has an accelerometer sensor.</summary>
         public bool HasAccel { get; private set; }
 
@@ -235,8 +252,10 @@ namespace PadForge.Engine
             SerialNumber = SDL_GetJoystickSerial(Joystick) ?? string.Empty;
             SdlGuid = GetJoystickGUIDString(Joystick);
 
-            // Always capture the raw joystick button count before any gamepad override.
+            // Always capture the raw joystick button/axis counts before any gamepad
+            // override pins NumAxes/NumButtons to the standardized layout.
             RawButtonCount = SDL_GetNumJoystickButtons(Joystick);
+            RawAxisCount = SDL_GetNumJoystickAxes(Joystick);
 
             // When opened as a Gamepad, report the standardized layout counts
             // so that GetDeviceObjects() and the UI reflect the remapped layout
@@ -361,6 +380,20 @@ namespace PadForge.Engine
             HasJoyCon2Mouse = VendorId == 0x057E
                 && (ProductId == 0x2066 || ProductId == 0x2067)
                 && Joystick != IntPtr.Zero && SDL_GetNumJoystickAxes(Joystick) >= 8;
+
+            // Generic extra joystick axes (issue #193). A gamepad-opened device may
+            // report raw joystick axes beyond the standard six that carry ordinary
+            // analog inputs. Upstream SDL's own PS3 driver does exactly this: it
+            // posts the DualShock 3's 10 button-pressure values on axes 6-15. A DS3
+            // in DsHidMini SDF mode reaches us the same way. Surface those as generic
+            // "Axis N" sources for the user to map. Exclude the sensor-camera devices
+            // detected above: their extra axes are IR-dot / mouse-counter / brightness
+            // data with their own dedicated sources, not usable raw axes, and a
+            // never-settling sensor value in the generic Axis[] array would poison
+            // the input-activity detectors (recorder / sticky-shift / idle).
+            HasExtraGenericAxes = GameController != IntPtr.Zero
+                && RawAxisCount > 6
+                && !HasIrCamera && !HasJoyConIr && !HasJoyCon2Mouse;
 
             // Always try the haptic API for force feedback devices (joysticks,
             // wheels, etc.). Some report HasRumble=true via SDL properties but
@@ -666,6 +699,22 @@ namespace PadForge.Engine
             short rt = SDL_GetGamepadAxis(GameController, SDL_GAMEPAD_AXIS_RIGHT_TRIGGER);
             state.Axis[2] = (int)(lt * 65535L / 32767);     // LT
             state.Axis[5] = (int)(rt * 65535L / 32767);     // RT
+
+            // --- Extra raw axes ---
+            // Append raw joystick axes beyond the six standardized gamepad axes,
+            // the same passthrough shape as the extra raw buttons below (issue
+            // #193). SDL posts device-specific analog data on axes 6+ (e.g. the
+            // DualShock 3's pressure buttons), which the gamepad mapping does not
+            // surface. Gated to HasExtraGenericAxes so the sensor-camera devices
+            // (Wii IR / Joy-Con), whose axes 6+ are dedicated non-settling sensor
+            // data read into their own fields, are left out of the generic array.
+            // Signed SDL range → unsigned 0..65535, same convention as the sticks.
+            if (HasExtraGenericAxes)
+            {
+                int extraCount = Math.Min(RawAxisCount, CustomInputState.MaxAxis);
+                for (int i = 6; i < extraCount; i++)
+                    state.Axis[i] = (ushort)(SDL_GetJoystickAxis(Joystick, i) - short.MinValue);
+            }
 
             // --- Buttons ---
             // Reorder from SDL gamepad button enum to the auto-mapping layout:
@@ -1145,7 +1194,13 @@ namespace PadForge.Engine
         public DeviceObjectItem[] GetDeviceObjects()
         {
             int btnCount = Math.Max(NumButtons, RawButtonCount);
-            int totalObjects = NumAxes + NumHats + btnCount;
+            // Extra generic axes (issue #193): raw joystick axes beyond the six
+            // standardized gamepad axes, surfaced only for HasExtraGenericAxes
+            // devices. Reserve their slots so the emit loop below can't overrun.
+            int extraAxisCount = HasExtraGenericAxes
+                ? Math.Max(0, Math.Min(RawAxisCount, CustomInputState.MaxAxis) - NumAxes)
+                : 0;
+            int totalObjects = NumAxes + extraAxisCount + NumHats + btnCount;
             var items = new DeviceObjectItem[totalObjects];
             int index = 0;
 
@@ -1196,6 +1251,28 @@ namespace PadForge.Engine
                 item.ObjectType = DeviceObjectTypeFlags.AbsoluteAxis;
                 item.Offset = i * 4; // Simulated offset for identification.
                 items[index++] = item;
+            }
+
+            // --- Extra generic axes (issue #193) ---
+            // Raw joystick axes beyond the standardized six, emitted as the Axis
+            // family (a non-Slider axis GUID: IsAxis stays true, IsSlider false) so
+            // they round-trip through state.Axis[] via the "Axis N" descriptor
+            // instead of the dead Slider path. A separate loop keeps the standard
+            // axis loop and the hat/button Offset bases above unchanged; runs only
+            // for HasExtraGenericAxes devices, where NumAxes is the gamepad 6.
+            if (HasExtraGenericAxes)
+            {
+                int end = Math.Min(RawAxisCount, CustomInputState.MaxAxis);
+                for (int i = NumAxes; i < end; i++)
+                {
+                    var item = new DeviceObjectItem();
+                    item.InputIndex = i;
+                    item.ObjectTypeGuid = ObjectGuid.ZAxis; // any non-Slider axis GUID; only IsSlider is derived from it
+                    item.Name = $"Axis {i}";
+                    item.ObjectType = DeviceObjectTypeFlags.AbsoluteAxis;
+                    item.Offset = i * 4;
+                    items[index++] = item;
+                }
             }
 
             // --- Hats ---

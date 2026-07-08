@@ -105,7 +105,11 @@ namespace PadForge.ViewModels
             set
             {
                 if (SetProperty(ref _triggerButtons, value))
+                {
                     OnPropertyChanged(nameof(TriggerDisplayText));
+                    OnPropertyChanged(nameof(TriggerInputItems));
+                    OnPropertyChanged(nameof(HasTriggerInputItems));
+                }
             }
         }
 
@@ -122,6 +126,8 @@ namespace PadForge.ViewModels
             {
                 _triggerCustomButtonWords = value ?? new uint[4];
                 OnPropertyChanged(nameof(TriggerDisplayText));
+                OnPropertyChanged(nameof(TriggerInputItems));
+                OnPropertyChanged(nameof(HasTriggerInputItems));
             }
         }
 
@@ -937,6 +943,170 @@ namespace PadForge.ViewModels
             OnPropertyChanged(nameof(TriggerDisplayText));
             OnPropertyChanged(nameof(TriggerAxisEntries));
             OnPropertyChanged(nameof(HasTriggerAxisEntries));
+            OnPropertyChanged(nameof(TriggerInputItems));
+            OnPropertyChanged(nameof(HasTriggerInputItems));
+        }
+
+        /// <summary>Every individual input that makes up the trigger, one
+        /// removable row: the modern per-device entries plus any legacy
+        /// slot-combined bitmask buttons and axis targets, mirroring what
+        /// <see cref="TriggerDisplayText"/> renders. UI-only (the evaluator
+        /// reads the underlying fields directly and never touches this), and
+        /// regenerated on each bind like <see cref="TriggerAxisEntries"/>.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public IEnumerable<MacroTriggerInputItem> TriggerInputItems
+        {
+            get
+            {
+                foreach (var entry in GetTriggerInputEntries())
+                {
+                    var captured = entry;
+                    yield return new MacroTriggerInputItem(
+                        FormatTriggerEntryLabel(captured),
+                        new RelayCommand(() => RemoveTriggerEntry(captured)));
+                }
+
+                // Legacy slot-combined buttons (OutputController source). One row
+                // per set bit so each is removable on its own. Custom (Extended)
+                // words and the Xbox/DS4 bitmask are mutually exclusive by style,
+                // matching the TriggerDisplayText branch.
+                if (_buttonStyle == MacroButtonStyle.Numbered && UsesCustomTrigger)
+                {
+                    for (int i = 0; i < 128; i++)
+                    {
+                        int word = i / 32, bit = i % 32;
+                        if (word < _triggerCustomButtonWords.Length
+                            && (_triggerCustomButtonWords[word] & (uint)(1 << bit)) != 0)
+                        {
+                            int idx = i;
+                            yield return new MacroTriggerInputItem(
+                                string.Format(Strings.Instance.Macro_Btn_Format, idx + 1),
+                                new RelayCommand(() => RemoveLegacyCustomButton(idx)));
+                        }
+                    }
+                }
+                else if (_triggerButtons != 0)
+                {
+                    foreach (var def in MacroButtonNames.GetButtonDefs(_buttonStyle))
+                    {
+                        if ((_triggerButtons & def.Flag) != 0)
+                        {
+                            ushort flag = def.Flag;
+                            yield return new MacroTriggerInputItem(
+                                def.Label,
+                                new RelayCommand(() => RemoveLegacyTriggerButton(flag)));
+                        }
+                    }
+                }
+
+                // Legacy slot-combined axis targets (all share one threshold).
+                for (int i = 0; i < _triggerAxisTargets.Length; i++)
+                {
+                    int idx = i;
+                    yield return new MacroTriggerInputItem(
+                        $"{_triggerAxisTargets[idx].DisplayName()} > {_triggerAxisThreshold}%",
+                        new RelayCommand(() => RemoveLegacyAxisTarget(idx)));
+                }
+            }
+        }
+
+        /// <summary>True when the trigger has at least one input to list. Cheap
+        /// (no item/command allocation) so the empty-state placeholder can bind
+        /// to it without walking <see cref="TriggerInputItems"/>.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool HasTriggerInputItems =>
+            GetTriggerInputEntries().Count > 0
+            || _triggerButtons != 0
+            || (_triggerCustomButtonWords != null && _triggerCustomButtonWords.Any(w => w != 0))
+            || _triggerAxisTargets.Length > 0;
+
+        /// <summary>Display label for one trigger input entry: the input's own
+        /// name (button / POV / axis / gesture) prefixed with the device name
+        /// when it resolves. Mirrors the per-entry formatting in
+        /// <see cref="TriggerDisplayText"/>.</summary>
+        private string FormatTriggerEntryLabel(TriggerInputEntry entry)
+        {
+            var objects = ResolveDeviceObjects(entry.DeviceGuid);
+            string input;
+            if (entry.RawButton >= 0)
+            {
+                var obj = objects?.FirstOrDefault(o => o.IsButton && o.InputIndex == entry.RawButton);
+                input = obj != null && !string.IsNullOrEmpty(obj.Name)
+                    ? obj.Name
+                    : string.Format(Strings.Instance.Macro_Button_Format, entry.RawButton);
+            }
+            else if (!string.IsNullOrEmpty(entry.Pov))
+            {
+                input = FormatPovTrigger(entry.Pov);
+            }
+            else if (entry.AxisTarget != MacroAxisTarget.None)
+            {
+                var tags = new List<string>();
+                if (entry.HalfAxis) tags.Add(Strings.Instance.Macro_Axis_Half);
+                if (entry.HalfAxis && entry.Bidirectional) tags.Add(Strings.Instance.Pad_Either.ToLowerInvariant());
+                if (entry.Invert && !(entry.HalfAxis && entry.Bidirectional)) tags.Add(Strings.Instance.Macro_Axis_Inverted);
+                string tagText = tags.Count > 0 ? $" ({string.Join(", ", tags)})" : "";
+                input = $"{entry.AxisTarget.DisplayName()} > {entry.DeadZone}%{tagText}";
+            }
+            else if (!string.IsNullOrEmpty(entry.GestureDescriptor))
+            {
+                input = MappingDisplayResolver.ResolveDescriptorText(entry.GestureDescriptor, null) ?? entry.GestureDescriptor;
+            }
+            else
+            {
+                input = "";
+            }
+            string deviceName = ResolveDeviceName(entry.DeviceGuid);
+            return !string.IsNullOrEmpty(deviceName) ? $"{deviceName}: {input}" : input;
+        }
+
+        /// <summary>Stops an active trigger recording so a removal isn't
+        /// immediately rewritten by the recorder on the next polling tick
+        /// (the same guard <see cref="ClearTriggerCommand"/> uses).</summary>
+        private void StopRecordingBeforeTriggerEdit()
+        {
+            if (IsRecordingTrigger)
+            {
+                IsRecordingTrigger = false;
+                RecordTriggerRequested?.Invoke(this, EventArgs.Empty);
+            }
+        }
+
+        /// <summary>Removes a single per-device entry from the trigger combo,
+        /// symmetric to the add-from-list append path.</summary>
+        private void RemoveTriggerEntry(TriggerInputEntry entry)
+        {
+            StopRecordingBeforeTriggerEdit();
+            var list = new List<TriggerInputEntry>(GetTriggerInputEntries());
+            list.Remove(entry);
+            SetTriggerInputEntries(list);   // raises TriggerDisplayText / TriggerInputItems / ...
+        }
+
+        private void RemoveLegacyTriggerButton(ushort flag)
+        {
+            StopRecordingBeforeTriggerEdit();
+            TriggerButtons = (ushort)(_triggerButtons & ~flag);
+        }
+
+        private void RemoveLegacyCustomButton(int index)
+        {
+            StopRecordingBeforeTriggerEdit();
+            var words = (uint[])_triggerCustomButtonWords.Clone();
+            int word = index / 32, bit = index % 32;
+            if (word < words.Length) words[word] &= ~(uint)(1 << bit);
+            TriggerCustomButtonWords = words;
+        }
+
+        private void RemoveLegacyAxisTarget(int index)
+        {
+            if (index < 0 || index >= _triggerAxisTargets.Length) return;
+            StopRecordingBeforeTriggerEdit();
+            var targets = _triggerAxisTargets.ToList();
+            targets.RemoveAt(index);
+            var dirs = _triggerAxisDirections.ToList();
+            if (index < dirs.Count) dirs.RemoveAt(index);
+            TriggerAxisTargets = targets.ToArray();
+            TriggerAxisDirections = dirs.ToArray();
         }
 
         private void EnsureTriggerInputEntries()
@@ -1136,6 +1306,8 @@ namespace PadForge.ViewModels
                 OnPropertyChanged(nameof(UsesAxisTrigger));
                 OnPropertyChanged(nameof(HasLegacyAxisTrigger));
                 OnPropertyChanged(nameof(TriggerDisplayText));
+                OnPropertyChanged(nameof(TriggerInputItems));
+                OnPropertyChanged(nameof(HasTriggerInputItems));
             }
         }
 
@@ -1629,6 +1801,21 @@ namespace PadForge.ViewModels
         public event EventHandler RecordTriggerRequested;
 
         public override string ToString() => $"{_name} ({TriggerDisplayText})";
+    }
+
+    /// <summary>One removable input in a macro's trigger, rendered as a row in
+    /// the trigger input list. <see cref="Label"/> is the display text;
+    /// <see cref="RemoveCommand"/> drops just this one input from the trigger.</summary>
+    public sealed class MacroTriggerInputItem
+    {
+        public MacroTriggerInputItem(string label, System.Windows.Input.ICommand removeCommand)
+        {
+            Label = label;
+            RemoveCommand = removeCommand;
+        }
+
+        public string Label { get; }
+        public System.Windows.Input.ICommand RemoveCommand { get; }
     }
 
     /// <summary>

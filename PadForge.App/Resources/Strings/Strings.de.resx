@@ -944,6 +944,7 @@
   <data name="Macro_RecordHint" xml:space="preserve"><value>Tasten drücken oder Achse/Trigger bewegen zum Aufnehmen. Achsen werden erkannt, wenn sie über 50 % ausgelenkt sind.</value></data>
   <data name="Macro_AddTriggerFromList" xml:space="preserve"><value>Aus Liste hinzufügen</value></data>
   <data name="Macro_AddTriggerFromList_Tooltip" xml:space="preserve"><value>Wählt einen Auslöser aus den Geräten des Slots, statt ihn aufzuzeichnen. Auf dem Touchpad-Tab aktivierte Gesten erscheinen hier.</value></data>
+  <data name="Macro_RemoveTriggerInput" xml:space="preserve"><value>Eingabe entfernen</value></data>
   <data name="Macro_LiveRecord_Placeholder" xml:space="preserve"><value>Eingabe drücken…</value></data>
   <data name="Macro_Axis_Inverted" xml:space="preserve"><value>invertiert</value></data>
   <data name="Macro_Axis_Half" xml:space="preserve"><value>halbe Achse</value></data>

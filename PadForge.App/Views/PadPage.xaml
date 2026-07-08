@@ -3307,6 +3307,18 @@
                                     </Setter.Value>
                                 </Setter>
                                 <Style.Triggers>
+                                    <!-- Selected row: a subtle ember wash. The stock selection
+                                         fill reads near-white in dark mode and is retina-searing
+                                         against the steel ground. Kept below the recording tint
+                                         (#30) so an armed row still reads hotter; the recording
+                                         triggers sit after this one so they win when both hold. -->
+                                    <Trigger Property="IsSelected" Value="True">
+                                        <Setter Property="Background">
+                                            <Setter.Value>
+                                                <SolidColorBrush Color="#24FF6B2C"/>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Trigger>
                                     <!-- Reduced motion (#175 item 98): the looping arm-flash
                                          only runs when ClientAreaAnimation is on; otherwise
                                          the armed row holds a static ember tint. -->

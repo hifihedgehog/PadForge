@@ -3052,6 +3052,18 @@
                                      that need horizontal fill (the Source ComboBox)
                                      set Stretch on their own template root. -->
                                 <Setter Property="HorizontalContentAlignment" Value="Left"/>
+                                <Style.Triggers>
+                                    <!-- The base DataGridCell paints #FFF0F0F0 (the classic
+                                         Windows control grey) on IsSelected, which is the
+                                         searing white on a selected row in dark mode. Keep
+                                         selected cells transparent so the row's subtle ember
+                                         wash shows through uniformly, and hold the text light. -->
+                                    <Trigger Property="IsSelected" Value="True">
+                                        <Setter Property="Background" Value="Transparent"/>
+                                        <Setter Property="BorderBrush" Value="Transparent"/>
+                                        <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}"/>
+                                    </Trigger>
+                                </Style.Triggers>
                             </Style>
                         </DataGrid.CellStyle>
                         <DataGrid.RowStyle>

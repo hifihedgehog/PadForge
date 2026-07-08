@@ -1475,7 +1475,62 @@
                                         <ComboBoxItem Content="{Binding Macro_OutputController, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroTriggerSource.OutputController}"/>
                                     </ComboBox>
                                 </StackPanel>
-                                <!-- Live preview of what's being recorded, above the list. -->
+                                <!-- Dropdown trigger picker (#177): appends an input to the
+                                     combo without recording. The list is the slot's cross-device
+                                     choices filtered to entry-convertible descriptors, so the
+                                     touchpad gestures the user enabled on the Touchpad tab are
+                                     pickable here (recording can't capture them, and the issue
+                                     reporter explicitly did not want it to). Kept aligned under
+                                     the Source dropdown. -->
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                    <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                               Text="{Binding Macro_AddTriggerFromList, Source={x:Static strings:Strings.Instance}}"
+                                               Width="80" Margin="0,0,8,0" TextWrapping="Wrap" VerticalAlignment="Center"/>
+                                    <ComboBox ItemsSource="{Binding DataContext.SlotMacroTriggerChoicesView, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                              DisplayMemberPath="DisplayName" MinWidth="220" Padding="4,2"
+                                              SelectionChanged="MacroTriggerPick_SelectionChanged"
+                                              PreviewKeyDown="MacroTriggerPick_PreviewKeyDown"
+                                              IsTextSearchEnabled="False"
+                                              ToolTip="{Binding Macro_AddTriggerFromList_Tooltip, Source={x:Static strings:Strings.Instance}}"
+                                              ScrollViewer.VerticalScrollBarVisibility="Visible">
+                                        <ComboBox.GroupStyle>
+                                            <GroupStyle>
+                                                <GroupStyle.HeaderTemplate>
+                                                    <DataTemplate>
+                                                        <Border Background="{DynamicResource SubtleFillColorSecondaryBrush}" Padding="6,3,6,3">
+                                                            <TextBlock Text="{Binding Name}" FontSize="11" FontWeight="SemiBold"
+                                                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                                                       TextTrimming="CharacterEllipsis"/>
+                                                        </Border>
+                                                    </DataTemplate>
+                                                </GroupStyle.HeaderTemplate>
+                                            </GroupStyle>
+                                        </ComboBox.GroupStyle>
+                                    </ComboBox>
+                                </StackPanel>
+                                <!-- Record + Clear all, above the list like the action sequence's
+                                     Add / Remove / Duplicate sit above its list. -->
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                    <ui:Button Command="{Binding RecordTriggerCommand}" Style="{StaticResource EmberIconButtonHot}">
+                                        <TextBlock Text="{Binding RecordTriggerIcon}" FontFamily="Segoe MDL2 Assets"
+                                                   Foreground="{DynamicResource EmberBrush}"/>
+                                        <ui:Button.ToolTip>
+                                            <TextBlock Text="{Binding RecordTriggerButtonText}"/>
+                                        </ui:Button.ToolTip>
+                                    </ui:Button>
+                                    <ui:Button Command="{Binding ClearTriggerCommand}" Style="{StaticResource EmberIconButtonHot}">
+                                        <TextBlock Text="&#xE75C;" FontFamily="Segoe MDL2 Assets"
+                                                   Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
+                                        <ui:Button.ToolTip>
+                                            <TextBlock Text="{Binding Common_Clear, Source={x:Static strings:Strings.Instance}}"/>
+                                        </ui:Button.ToolTip>
+                                    </ui:Button>
+                                </StackPanel>
+                                <TextBlock Text="{Binding Macro_RecordHint, Source={x:Static strings:Strings.Instance}}"
+                                           FontSize="11" TextWrapping="Wrap"
+                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                           Margin="0,0,0,4"/>
+                                <!-- Live preview of what's being recorded, just above the list. -->
                                 <TextBlock Text="{Binding RecordingLiveText}" FontWeight="SemiBold" Margin="0,0,0,4"
                                            Visibility="{Binding IsRecordingTrigger, Converter={StaticResource BoolToVisibilityConverter}}"/>
                                 <!-- Trigger inputs as a scrollable list, one removable row per
@@ -1549,61 +1604,6 @@
                                         </ScrollViewer>
                                     </Grid>
                                 </Border>
-                                <!-- Record + Clear all -->
-                                <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
-                                    <ui:Button Command="{Binding RecordTriggerCommand}" Style="{StaticResource EmberIconButtonHot}">
-                                        <TextBlock Text="{Binding RecordTriggerIcon}" FontFamily="Segoe MDL2 Assets"
-                                                   Foreground="{DynamicResource EmberBrush}"/>
-                                        <ui:Button.ToolTip>
-                                            <TextBlock Text="{Binding RecordTriggerButtonText}"/>
-                                        </ui:Button.ToolTip>
-                                    </ui:Button>
-                                    <ui:Button Command="{Binding ClearTriggerCommand}" Style="{StaticResource EmberIconButtonHot}">
-                                        <TextBlock Text="&#xE75C;" FontFamily="Segoe MDL2 Assets"
-                                                   Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
-                                        <ui:Button.ToolTip>
-                                            <TextBlock Text="{Binding Common_Clear, Source={x:Static strings:Strings.Instance}}"/>
-                                        </ui:Button.ToolTip>
-                                    </ui:Button>
-                                </StackPanel>
-                                <TextBlock Text="{Binding Macro_RecordHint, Source={x:Static strings:Strings.Instance}}"
-                                           FontSize="11" TextWrapping="Wrap"
-                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                           Margin="0,0,0,4"/>
-
-                                <!-- Dropdown trigger picker (#177): appends an input to the
-                                     combo without recording. The list is the slot's cross-device
-                                     choices filtered to entry-convertible descriptors, so the
-                                     touchpad gestures the user enabled on the Touchpad tab are
-                                     pickable here (recording can't capture them, and the issue
-                                     reporter explicitly did not want it to). -->
-                                <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
-                                    <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                               Text="{Binding Macro_AddTriggerFromList, Source={x:Static strings:Strings.Instance}}"
-                                               Width="80" Margin="0,0,8,0" TextWrapping="Wrap" VerticalAlignment="Center"/>
-                                    <ComboBox ItemsSource="{Binding DataContext.SlotMacroTriggerChoicesView, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                                              DisplayMemberPath="DisplayName" MinWidth="220" Padding="4,2"
-                                              SelectionChanged="MacroTriggerPick_SelectionChanged"
-                                              PreviewKeyDown="MacroTriggerPick_PreviewKeyDown"
-                                              IsTextSearchEnabled="False"
-                                              ToolTip="{Binding Macro_AddTriggerFromList_Tooltip, Source={x:Static strings:Strings.Instance}}"
-                                              ScrollViewer.VerticalScrollBarVisibility="Visible">
-                                        <ComboBox.GroupStyle>
-                                            <GroupStyle>
-                                                <GroupStyle.HeaderTemplate>
-                                                    <DataTemplate>
-                                                        <Border Background="{DynamicResource SubtleFillColorSecondaryBrush}" Padding="6,3,6,3">
-                                                            <TextBlock Text="{Binding Name}" FontSize="11" FontWeight="SemiBold"
-                                                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                                                       TextTrimming="CharacterEllipsis"/>
-                                                        </Border>
-                                                    </DataTemplate>
-                                                </GroupStyle.HeaderTemplate>
-                                            </GroupStyle>
-                                        </ComboBox.GroupStyle>
-                                    </ComboBox>
-                                </StackPanel>
-
                                 <!-- Legacy slot-combined axis Threshold + Direction. Visible
                                      only for OutputController-source triggers that landed in
                                      the slot-combined TriggerAxisTargets list — InputDevice

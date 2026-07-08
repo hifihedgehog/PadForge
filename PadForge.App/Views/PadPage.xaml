@@ -1662,6 +1662,8 @@
                                          ItemContainerStyle="{StaticResource EmberSelectListItem}"
                                          Background="Transparent" BorderThickness="0"
                                          MinHeight="100" MaxHeight="200"
+                                         HorizontalContentAlignment="Stretch"
+                                         ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                                          AllowDrop="True"
                                          PreviewMouseLeftButtonDown="ActionsList_PreviewMouseLeftButtonDown"
                                          PreviewMouseMove="ActionsList_PreviewMouseMove"
@@ -1669,9 +1671,13 @@
                                          Drop="ActionsList_Drop">
                                     <ListBox.ItemTemplate>
                                         <DataTemplate>
+                                            <!-- Wrap long summaries (e.g. a multi-button Button Press)
+                                                 instead of running off the edge. The list disables
+                                                 horizontal scroll so the chip is width-constrained and
+                                                 the text wraps to a second line. -->
                                             <Border Style="{StaticResource ChipEmber}"
                                                     HorizontalAlignment="Left" Margin="0,1">
-                                                <TextBlock Text="{Binding DisplayText}"/>
+                                                <TextBlock Text="{Binding DisplayText}" TextWrapping="Wrap"/>
                                             </Border>
                                         </DataTemplate>
                                     </ListBox.ItemTemplate>

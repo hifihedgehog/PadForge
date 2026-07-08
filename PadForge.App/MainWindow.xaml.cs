@@ -2991,7 +2991,7 @@ namespace PadForge
                 if (_selGlowAdorner != null || card.ActualWidth <= 0) return;
                 var layer = System.Windows.Documents.AdornerLayer.GetAdornerLayer(NavView);
                 if (layer == null) return;
-                var adorner = new PillGlowAdorner(NavView, card, color, 10, 2, 20, 0.6);
+                var adorner = new PillGlowAdorner(NavView, card, color, 10, 2, 20, 0.6, () => NavView.IsPaneOpen);
                 layer.Add(adorner);
                 _selGlowAdorner = adorner;
                 _selGlowLayer = layer;
@@ -3044,7 +3044,7 @@ namespace PadForge
             var layer = System.Windows.Documents.AdornerLayer.GetAdornerLayer(NavView);
             if (layer == null) return;
             var adorner = new PillGlowAdorner(NavView, card,
-                System.Windows.Media.Color.FromRgb(0xFF, 0x6B, 0x2C), 10, 2, 14, 0.4);
+                System.Windows.Media.Color.FromRgb(0xFF, 0x6B, 0x2C), 10, 2, 14, 0.4, () => NavView.IsPaneOpen);
             layer.Add(adorner);
             _hoverGlowAdorner = adorner;
             _hoverGlowLayer = layer;
@@ -3075,10 +3075,11 @@ namespace PadForge
             private readonly Visual _root;
             private readonly System.Windows.Media.Color _color;
             private readonly double _radius, _borderThickness, _pad;
+            private readonly Func<bool> _shouldRender;
             private EventHandler _onLayout;
 
             public PillGlowAdorner(UIElement root, FrameworkElement target, System.Windows.Media.Color color,
-                double radius, double borderThickness, double blur, double opacity) : base(root)
+                double radius, double borderThickness, double blur, double opacity, Func<bool> shouldRender) : base(root)
             {
                 _root = root;
                 _target = target;
@@ -3086,6 +3087,7 @@ namespace PadForge
                 _radius = radius;
                 _borderThickness = borderThickness;
                 _pad = blur + 6;
+                _shouldRender = shouldRender;
                 IsHitTestVisible = false;
                 Effect = new System.Windows.Media.Effects.DropShadowEffect
                 { Color = color, BlurRadius = blur, ShadowDepth = 0, Opacity = opacity };
@@ -3104,6 +3106,11 @@ namespace PadForge
             {
                 if (_target == null || !_target.IsVisible || _target.ActualWidth <= 0 || _target.ActualHeight <= 0)
                     return;
+                // Only while the pill is actually shown (pane open). When the pane
+                // collapses the pill is hidden but the adorner survives; without this
+                // it would draw the pill's border at a stale position out in midair.
+                if (_shouldRender != null && !_shouldRender()) return;
+                if (System.Windows.PresentationSource.FromVisual(_target) == null) return;
                 System.Windows.Point tl;
                 try { tl = _target.TransformToVisual(_root).Transform(new System.Windows.Point(0, 0)); }
                 catch { return; }
@@ -4856,6 +4863,37 @@ namespace PadForge
         private void PaneToggleBtn_Click(object sender, RoutedEventArgs e)
         {
             NavView.IsPaneOpen = !NavView.IsPaneOpen;
+            if (!NavView.IsPaneOpen)
+            {
+                // Collapsed: the pill is hidden, so drop its glow adorner (the rail
+                // shows selection via the icon glow). Prevents a stale midair border.
+                RemoveSelectionGlowAdorner();
+                RemoveHoverGlowAdorner();
+            }
+            else
+            {
+                // Expanded: rebuild the selected pill so its glow adorner re-attaches.
+                Dispatcher.BeginInvoke(new Action(ReshowSelectionGlow),
+                    System.Windows.Threading.DispatcherPriority.Loaded);
+            }
+        }
+
+        /// <summary>Re-attaches the selection glow adorner to the currently selected
+        /// pill (used after the pane expands, since the pill is rebuilt fresh).</summary>
+        private void ReshowSelectionGlow()
+        {
+            string sel = _viewModel.SelectedNavTag;
+            if (sel == null || !sel.StartsWith("Pad")) return;
+            foreach (var mi in NavView.MenuItems)
+            {
+                if (mi is not NavigationViewItem nvi || nvi.Tag?.ToString() != sel) continue;
+                NavControllerItemViewModel navItem = null;
+                if (_viewModel.NavControllerItems != null)
+                    foreach (var n in _viewModel.NavControllerItems)
+                        if (n.Tag == sel) { navItem = n; break; }
+                if (navItem != null) UpdateControllerNavItemContent(nvi, navItem);
+                break;
+            }
         }
 
         private void BrandingBar_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)

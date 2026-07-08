@@ -246,6 +246,13 @@ namespace PadForge.Common.Input
             {
                 var s = _state.Clone();
                 s.Midi.Cc[cc] = (byte)v;
+                // MIDI channel-mode messages: All Sound Off (CC 120) and All Notes
+                // Off (CC 123) silence every sounding note. Clear the note lanes so
+                // mapped note-buttons release. A controller that ends a phrase with
+                // one of these instead of per-note NoteOff would otherwise leave
+                // every mapped note latched on.
+                if (cc == 120 || cc == 123)
+                    System.Array.Clear(s.Midi.Notes, 0, s.Midi.Notes.Length);
                 _state = s;
 
                 // Relative-encoder reading: a value near 0x40 is a signed

@@ -1548,7 +1548,9 @@
                                         <ScrollViewer MaxHeight="140" VerticalScrollBarVisibility="Auto"
                                                       HorizontalScrollBarVisibility="Disabled"
                                                       Visibility="{Binding HasTriggerInputItems, Converter={StaticResource BoolToVisibilityConverter}}">
-                                            <ItemsControl ItemsSource="{Binding TriggerInputItems}">
+                                            <!-- Right inset clears the 14px always-on overlay scrollbar so it
+                                                 doesn't sit on top of the row X buttons. -->
+                                            <ItemsControl ItemsSource="{Binding TriggerInputItems}" Margin="0,0,16,0">
                                                 <ItemsControl.ItemTemplate>
                                                     <DataTemplate>
                                                         <Grid Margin="0,1">

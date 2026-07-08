@@ -1253,8 +1253,26 @@ namespace PadForge.Engine
                     item.ObjectTypeGuid = standardAxisGuids[i];
                     item.Name = isGamepad ? GetGamepadAxisName(i) : GetStandardAxisName(i);
                 }
+                else if (i < CustomInputState.MaxAxis)
+                {
+                    // Raw-opened joystick axes 6..23 land in Axis[] (GetJoystickState
+                    // stores axis i in Axis[i] for i<24), so surface them as the Axis
+                    // family ("Axis N"). The old Slider label routed them to the
+                    // "Slider N" descriptor, which reads Sliders[] (written in exactly
+                    // one place, SdlDeviceWrapper.cs ~:922, only from raw axes 24+), so
+                    // every axis past the standard six was DEAD on any device with
+                    // fewer than 25 axes: flight sticks, wheels, HOTAS throttles. This
+                    // is the raw-open counterpart to the gamepad extra-axis emit
+                    // (issue #193). A non-Slider axis GUID keeps IsAxis true /
+                    // IsSlider false. Only reached for isGamepad==false (a gamepad's
+                    // NumAxes is 6, so its 6+ axes come from the #193 extra loop).
+                    item.ObjectTypeGuid = ObjectGuid.ZAxis;
+                    item.Name = $"Axis {i}";
+                }
                 else
                 {
+                    // True overflow: axes 24+ are the only ones GetJoystickState
+                    // stores in Sliders[], so they keep the Slider family.
                     item.ObjectTypeGuid = ObjectGuid.Slider;
                     item.Name = $"Slider {i - standardAxisGuids.Length}";
                 }

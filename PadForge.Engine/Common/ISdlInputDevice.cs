@@ -14,6 +14,19 @@ namespace PadForge.Engine
         int NumAxes { get; }
         int NumButtons { get; }
         int RawButtonCount { get; }
+
+        /// <summary>Total raw joystick axis count before the gamepad layout caps
+        /// <see cref="NumAxes"/> to 6. Defaults to <see cref="NumAxes"/> for
+        /// devices (keyboard, mouse, MIDI, remote peer, …) that have no separate
+        /// raw-axis notion; only SdlDeviceWrapper overrides it (issue #193).</summary>
+        int RawAxisCount => NumAxes;
+
+        /// <summary>True when the device carries raw joystick axes beyond the
+        /// standard six that should surface as generic "Axis N" mapping sources
+        /// (issue #193). Only SdlDeviceWrapper sets it; everything else has
+        /// none.</summary>
+        bool HasExtraGenericAxes => false;
+
         int NumHats { get; }
 
         /// <summary>

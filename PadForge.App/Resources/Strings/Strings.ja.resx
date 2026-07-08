@@ -944,6 +944,7 @@
   <data name="Macro_RecordHint" xml:space="preserve"><value>ボタンを押すか軸/トリガーを動かして記録します。軸は 50% 以上の偏向で検出されます。</value></data>
   <data name="Macro_AddTriggerFromList" xml:space="preserve"><value>リストから追加</value></data>
   <data name="Macro_AddTriggerFromList_Tooltip" xml:space="preserve"><value>記録する代わりに、スロットのデバイスからトリガー入力を選択します。タッチパッドタブで有効にしたジェスチャーがここに表示されます。</value></data>
+  <data name="Macro_RemoveTriggerInput" xml:space="preserve"><value>入力を削除</value></data>
   <data name="Macro_LiveRecord_Placeholder" xml:space="preserve"><value>入力を押してください…</value></data>
   <data name="Macro_Axis_Inverted" xml:space="preserve"><value>反転</value></data>
   <data name="Macro_Axis_Half" xml:space="preserve"><value>ハーフ軸</value></data>

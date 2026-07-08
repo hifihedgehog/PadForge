@@ -1722,6 +1722,7 @@
   <data name="Macro_RecordHint" xml:space="preserve"><value>Press buttons or move an axis/trigger to record. Axes are detected when deflected past 50%.</value></data>
   <data name="Macro_AddTriggerFromList" xml:space="preserve"><value>Add from List</value></data>
   <data name="Macro_AddTriggerFromList_Tooltip" xml:space="preserve"><value>Pick a trigger input from the slot's devices instead of recording it. Touchpad gestures enabled on the Touchpad tab appear here.</value></data>
+  <data name="Macro_RemoveTriggerInput" xml:space="preserve"><value>Remove input</value></data>
   <data name="Macro_LiveRecord_Placeholder" xml:space="preserve"><value>Press any input…</value></data>
   <data name="Macro_Axis_Inverted" xml:space="preserve"><value>inverted</value></data>
   <data name="Macro_Axis_Half" xml:space="preserve"><value>half axis</value></data>

@@ -1188,6 +1188,7 @@ public class Strings : INotifyPropertyChanged
     public string Macro_RecordHint => Get("Macro_RecordHint");
     public string Macro_AddTriggerFromList => Get("Macro_AddTriggerFromList");
     public string Macro_AddTriggerFromList_Tooltip => Get("Macro_AddTriggerFromList_Tooltip");
+    public string Macro_RemoveTriggerInput => Get("Macro_RemoveTriggerInput");
     public string Macro_LiveRecord_Placeholder => Get("Macro_LiveRecord_Placeholder");
     public string Macro_Axis_Inverted => Get("Macro_Axis_Inverted");
     public string Macro_Axis_Half => Get("Macro_Axis_Half");

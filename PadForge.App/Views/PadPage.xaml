@@ -963,6 +963,16 @@
                                     <Grid x:Name="PART_Track" Margin="1">
                                         <Border x:Name="PART_Indicator" CornerRadius="15"
                                                 HorizontalAlignment="Left">
+                                            <!-- Ember bloom around the force fill (not the
+                                                 capsule): the shadow is cast by the
+                                                 indicator geometry, so at 0% the fill has
+                                                 no width and no glow, and as force comes
+                                                 through the bar lights up and its leading
+                                                 edge glows, mirroring the card ember. -->
+                                            <Border.Effect>
+                                                <DropShadowEffect Color="#FF6B2C" BlurRadius="9"
+                                                                  ShadowDepth="0" Opacity="0.6"/>
+                                            </Border.Effect>
                                             <Border.Background>
                                                 <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
                                                     <GradientStop Color="#C43D0C" Offset="0"/>

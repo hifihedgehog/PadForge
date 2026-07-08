@@ -2974,9 +2974,12 @@ namespace PadForge
         private System.Windows.Documents.AdornerLayer _selGlowLayer;
         private PillGlowAdorner _hoverGlowAdorner;
         private System.Windows.Documents.AdornerLayer _hoverGlowLayer;
+        private bool _glowLayerDiagLogged;
 
         /// <summary>Replaces the selected pill's glow adorner. The pill may not be in
-        /// the visual tree yet on a fresh rebuild, so it waits for Loaded.</summary>
+        /// the visual tree yet on a fresh rebuild, so it waits for Loaded. The adorner
+        /// is added to the NavView's adorner layer (the outer, unclipped one the drag
+        /// uses), and the whole adorner (border + bloom) breathes via its Opacity.</summary>
         private void ShowSelectionGlowAdorner(System.Windows.Controls.Border card,
             System.Windows.Media.Color color, bool lit, bool cooling)
         {
@@ -2984,37 +2987,28 @@ namespace PadForge
             void Attach()
             {
                 if (_selGlowAdorner != null || card.ActualWidth <= 0) return;
-                var layer = System.Windows.Documents.AdornerLayer.GetAdornerLayer(card);
+                var layer = System.Windows.Documents.AdornerLayer.GetAdornerLayer(NavView);
                 if (layer == null) return;
-                var adorner = new PillGlowAdorner(card, color, 10, 2, 20, 0.6);
+                LogGlowLayerDiag(card, layer);
+                var adorner = new PillGlowAdorner(NavView, card, color, 10, 2, 20, 0.6);
                 layer.Add(adorner);
                 _selGlowAdorner = adorner;
                 _selGlowLayer = layer;
                 if (MotionEnabled)
                 {
-                    double lo = lit ? 0.5 : cooling ? 0.4 : 0.3;
-                    double hi = lit ? 0.9 : cooling ? 0.8 : 0.6;
+                    double lo = lit ? 0.55 : cooling ? 0.45 : 0.35;
                     double periodMs = lit ? 1100 : cooling ? 1600 : 2200;
                     var phase = System.TimeSpan.FromMilliseconds(
                         -(System.DateTime.UtcNow.TimeOfDay.TotalMilliseconds % (periodMs * 2.0)));
-                    var ease = new System.Windows.Media.Animation.SineEase
-                    { EasingMode = System.Windows.Media.Animation.EasingMode.EaseInOut };
-                    adorner.Bloom.BeginAnimation(System.Windows.Media.Effects.DropShadowEffect.OpacityProperty,
-                        new System.Windows.Media.Animation.DoubleAnimation(lo, hi,
+                    // Opacity is a composite-time pulse (no per-frame reblur of the effect).
+                    adorner.BeginAnimation(System.Windows.UIElement.OpacityProperty,
+                        new System.Windows.Media.Animation.DoubleAnimation(lo, 1.0,
                             System.TimeSpan.FromMilliseconds(periodMs))
                         {
                             AutoReverse = true,
                             RepeatBehavior = System.Windows.Media.Animation.RepeatBehavior.Forever,
-                            EasingFunction = ease,
-                            BeginTime = phase,
-                        });
-                    adorner.StrokeBrush.BeginAnimation(System.Windows.Media.Brush.OpacityProperty,
-                        new System.Windows.Media.Animation.DoubleAnimation(0.55, 1.0,
-                            System.TimeSpan.FromMilliseconds(periodMs))
-                        {
-                            AutoReverse = true,
-                            RepeatBehavior = System.Windows.Media.Animation.RepeatBehavior.Forever,
-                            EasingFunction = ease,
+                            EasingFunction = new System.Windows.Media.Animation.SineEase
+                            { EasingMode = System.Windows.Media.Animation.EasingMode.EaseInOut },
                             BeginTime = phase,
                         });
                 }
@@ -3029,28 +3023,45 @@ namespace PadForge
             }
         }
 
+        // 30-second confirmation test (CLAUDE.md rule 1): before trusting the "adorn
+        // the NavView, not the pill" fix, record whether the pill's own adorner layer
+        // is a different object from the NavView's. If it is, a per-pill adorner sat
+        // inside the scroll viewport and was clipped, which is the mechanism. Written
+        // once, the first time a selection glow is shown.
+        private void LogGlowLayerDiag(System.Windows.Controls.Border card, System.Windows.Documents.AdornerLayer navLayer)
+        {
+            if (_glowLayerDiagLogged) return;
+            _glowLayerDiagLogged = true;
+            try
+            {
+                var cardLayer = System.Windows.Documents.AdornerLayer.GetAdornerLayer(card);
+                System.IO.File.WriteAllText(@"C:\PadForge\glow_layer_diag.txt",
+                    $"cardLayer == navLayer: {ReferenceEquals(cardLayer, navLayer)}\r\n" +
+                    $"cardLayer null: {cardLayer == null}, navLayer null: {navLayer == null}\r\n");
+            }
+            catch { }
+        }
+
         private void RemoveSelectionGlowAdorner()
         {
             if (_selGlowAdorner == null) return;
-            // Remove via the stored layer, not GetAdornerLayer(adornedElement): a
-            // rebuilt pill detaches its old card, and a detached element resolves to
-            // no layer, which would strand the old adorner.
+            _selGlowAdorner.Detach();
             (_selGlowLayer ?? System.Windows.Documents.AdornerLayer.GetAdornerLayer(_selGlowAdorner.AdornedElement))
                 ?.Remove(_selGlowAdorner);
             _selGlowAdorner = null;
             _selGlowLayer = null;
         }
 
-        /// <summary>The hovered pill's ember bloom, also in the adorner layer so it is
-        /// not clipped on the right. Skipped for the selected pill, which already
-        /// wears the stronger selection bloom.</summary>
+        /// <summary>The hovered pill's ember bloom, also in the NavView adorner layer
+        /// (above the scroll viewport) so it is not clipped. Skipped for the selected
+        /// pill, which already wears the stronger selection bloom.</summary>
         private void ShowHoverGlowAdorner(System.Windows.Controls.Border card)
         {
             RemoveHoverGlowAdorner();
             if (card.ActualWidth <= 0) return;
-            var layer = System.Windows.Documents.AdornerLayer.GetAdornerLayer(card);
+            var layer = System.Windows.Documents.AdornerLayer.GetAdornerLayer(NavView);
             if (layer == null) return;
-            var adorner = new PillGlowAdorner(card,
+            var adorner = new PillGlowAdorner(NavView, card,
                 System.Windows.Media.Color.FromRgb(0xFF, 0x6B, 0x2C), 10, 2, 14, 0.4);
             layer.Add(adorner);
             _hoverGlowAdorner = adorner;
@@ -3060,6 +3071,7 @@ namespace PadForge
         private void RemoveHoverGlowAdorner()
         {
             if (_hoverGlowAdorner == null) return;
+            _hoverGlowAdorner.Detach();
             (_hoverGlowLayer ?? System.Windows.Documents.AdornerLayer.GetAdornerLayer(_hoverGlowAdorner.AdornedElement))
                 ?.Remove(_hoverGlowAdorner);
             _hoverGlowAdorner = null;
@@ -3067,35 +3079,51 @@ namespace PadForge
         }
 
         /// <summary>Draws a pill's rounded-rect ember border plus a drop-shadow bloom
-        /// in the window adorner layer, above the pane's scroll viewport, so the
-        /// viewport clip cannot truncate the bloom. Renders in the adorned pill's own
-        /// coordinate space, so it tracks the pill through scroll and layout.</summary>
+        /// in the window adorner layer. It adorns the NavView, NOT the pill: WPF clips
+        /// an adorner whose adorned element is inside a ScrollViewer to that viewport
+        /// (the very clip being escaped), which is why the reorder drag also adorns the
+        /// NavView. The pill's rect is transformed into NavView coordinates on every
+        /// render, so the glow tracks the pill through scroll and the hover lift.</summary>
         private sealed class PillGlowAdorner : System.Windows.Documents.Adorner
         {
+            private readonly FrameworkElement _target;
+            private readonly Visual _root;
             private readonly System.Windows.Media.Pen _pen;
             private readonly double _radius;
-            public System.Windows.Media.SolidColorBrush StrokeBrush { get; }
-            public System.Windows.Media.Effects.DropShadowEffect Bloom { get; }
+            private EventHandler _onLayout;
 
-            public PillGlowAdorner(UIElement pill, System.Windows.Media.Color color, double radius,
-                double thickness, double blur, double opacity) : base(pill)
+            public PillGlowAdorner(UIElement root, FrameworkElement target, System.Windows.Media.Color color,
+                double radius, double thickness, double blur, double opacity) : base(root)
             {
-                IsHitTestVisible = false;
-                StrokeBrush = new System.Windows.Media.SolidColorBrush(color);
-                _pen = new System.Windows.Media.Pen(StrokeBrush, thickness);
+                _root = root;
+                _target = target;
                 _radius = radius;
-                Bloom = new System.Windows.Media.Effects.DropShadowEffect
+                IsHitTestVisible = false;
+                _pen = new System.Windows.Media.Pen(new System.Windows.Media.SolidColorBrush(color), thickness);
+                Effect = new System.Windows.Media.Effects.DropShadowEffect
                 { Color = color, BlurRadius = blur, ShadowDepth = 0, Opacity = opacity };
-                Effect = Bloom;
+                // Reposition the drawn rect whenever the pill moves (scroll, hover lift).
+                _onLayout = (s, e) => InvalidateVisual();
+                _target.LayoutUpdated += _onLayout;
+            }
+
+            public void Detach()
+            {
+                if (_onLayout == null) return;
+                _target.LayoutUpdated -= _onLayout;
+                _onLayout = null;
             }
 
             protected override void OnRender(System.Windows.Media.DrawingContext dc)
             {
-                if (AdornedElement is not FrameworkElement fe || fe.ActualWidth <= 0 || fe.ActualHeight <= 0)
+                if (_target == null || !_target.IsVisible || _target.ActualWidth <= 0 || _target.ActualHeight <= 0)
                     return;
+                System.Windows.Point tl;
+                try { tl = _target.TransformToVisual(_root).Transform(new System.Windows.Point(0, 0)); }
+                catch { return; }
                 double t = _pen.Thickness / 2;
                 dc.DrawRoundedRectangle(null, _pen,
-                    new Rect(t, t, fe.ActualWidth - _pen.Thickness, fe.ActualHeight - _pen.Thickness),
+                    new Rect(tl.X + t, tl.Y + t, _target.ActualWidth - _pen.Thickness, _target.ActualHeight - _pen.Thickness),
                     _radius, _radius);
             }
         }

@@ -2740,6 +2740,10 @@ namespace PadForge
                 var selColor = cooling
                     ? System.Windows.Media.Color.FromRgb(0xE8, 0xB4, 0x34)   // gold, idle
                     : System.Windows.Media.Color.FromRgb(0xFF, 0x6B, 0x2C);  // ember, live/disabled
+                // Drop the card's own Effect: a lit pill carries the breathing heat
+                // ring here, which the scroll viewport clips and would read as a
+                // clipped selection glow. The unclipped adorner is the sole bloom now.
+                card.Effect = null;
                 ShowSelectionGlowAdorner(card, selColor, lit, cooling);
             }
 
@@ -2990,7 +2994,7 @@ namespace PadForge
                 var layer = System.Windows.Documents.AdornerLayer.GetAdornerLayer(NavView);
                 if (layer == null) return;
                 LogGlowLayerDiag(card, layer);
-                var adorner = new PillGlowAdorner(NavView, card, color, 10, 2, 20, 0.6);
+                var adorner = new PillGlowAdorner(NavView, card, color, 10, 2, 18, 0.28);
                 layer.Add(adorner);
                 _selGlowAdorner = adorner;
                 _selGlowLayer = layer;
@@ -3062,7 +3066,7 @@ namespace PadForge
             var layer = System.Windows.Documents.AdornerLayer.GetAdornerLayer(NavView);
             if (layer == null) return;
             var adorner = new PillGlowAdorner(NavView, card,
-                System.Windows.Media.Color.FromRgb(0xFF, 0x6B, 0x2C), 10, 2, 14, 0.4);
+                System.Windows.Media.Color.FromRgb(0xFF, 0x6B, 0x2C), 10, 2, 12, 0.16);
             layer.Add(adorner);
             _hoverGlowAdorner = adorner;
             _hoverGlowLayer = layer;
@@ -3078,31 +3082,34 @@ namespace PadForge
             _hoverGlowLayer = null;
         }
 
-        /// <summary>Draws a pill's rounded-rect ember border plus a drop-shadow bloom
-        /// in the window adorner layer. It adorns the NavView, NOT the pill: WPF clips
-        /// an adorner whose adorned element is inside a ScrollViewer to that viewport
-        /// (the very clip being escaped), which is why the reorder drag also adorns the
-        /// NavView. The pill's rect is transformed into NavView coordinates on every
-        /// render, so the glow tracks the pill through scroll and the hover lift.</summary>
+        /// <summary>Draws a pill's rounded-rect ember border plus an outer glow in the
+        /// window adorner layer. Two deliberate choices, both learned the hard way:
+        /// it adorns the NavView, NOT the pill (WPF clips an adorner whose adorned
+        /// element is inside a ScrollViewer to that viewport, which is why the reorder
+        /// drag also adorns the NavView); and the glow is painted as concentric
+        /// rounded-rect strokes, NOT a DropShadowEffect (an Effect on an adorner clips
+        /// its own blurred output to the drawn geometry bounds, and the drag likewise
+        /// uses no effect). The pill's rect is transformed into NavView coordinates on
+        /// every render, so the glow tracks the pill through scroll and the hover lift.</summary>
         private sealed class PillGlowAdorner : System.Windows.Documents.Adorner
         {
             private readonly FrameworkElement _target;
             private readonly Visual _root;
-            private readonly System.Windows.Media.Pen _pen;
-            private readonly double _radius;
+            private readonly System.Windows.Media.Color _color;
+            private readonly double _radius, _borderThickness, _spread, _peakAlpha;
             private EventHandler _onLayout;
 
             public PillGlowAdorner(UIElement root, FrameworkElement target, System.Windows.Media.Color color,
-                double radius, double thickness, double blur, double opacity) : base(root)
+                double radius, double borderThickness, double spread, double peakAlpha) : base(root)
             {
                 _root = root;
                 _target = target;
+                _color = color;
                 _radius = radius;
+                _borderThickness = borderThickness;
+                _spread = spread;
+                _peakAlpha = peakAlpha;
                 IsHitTestVisible = false;
-                _pen = new System.Windows.Media.Pen(new System.Windows.Media.SolidColorBrush(color), thickness);
-                Effect = new System.Windows.Media.Effects.DropShadowEffect
-                { Color = color, BlurRadius = blur, ShadowDepth = 0, Opacity = opacity };
-                // Reposition the drawn rect whenever the pill moves (scroll, hover lift).
                 _onLayout = (s, e) => InvalidateVisual();
                 _target.LayoutUpdated += _onLayout;
             }
@@ -3121,9 +3128,31 @@ namespace PadForge
                 System.Windows.Point tl;
                 try { tl = _target.TransformToVisual(_root).Transform(new System.Windows.Point(0, 0)); }
                 catch { return; }
-                double t = _pen.Thickness / 2;
-                dc.DrawRoundedRectangle(null, _pen,
-                    new Rect(tl.X + t, tl.Y + t, _target.ActualWidth - _pen.Thickness, _target.ActualHeight - _pen.Thickness),
+                double w = _target.ActualWidth, h = _target.ActualHeight;
+
+                // Outer glow: concentric rounded-rect outlines inflated outward from the
+                // pill, fainter with distance (quadratic falloff), faking a soft bloom.
+                const int layers = 10;
+                double step = _spread / layers;
+                for (int i = layers; i >= 1; i--)
+                {
+                    double inflate = i * step;
+                    double f = 1.0 - (double)(i - 1) / layers;          // ~1 at the edge, small far out
+                    byte a = (byte)System.Math.Round(_peakAlpha * f * f * 255.0);
+                    if (a == 0) continue;
+                    var pen = new System.Windows.Media.Pen(
+                        new System.Windows.Media.SolidColorBrush(
+                            System.Windows.Media.Color.FromArgb(a, _color.R, _color.G, _color.B)), step + 1.0);
+                    dc.DrawRoundedRectangle(null, pen,
+                        new Rect(tl.X - inflate, tl.Y - inflate, w + 2 * inflate, h + 2 * inflate),
+                        _radius + inflate, _radius + inflate);
+                }
+
+                // Solid pulsing border on the pill edge.
+                double t = _borderThickness / 2;
+                dc.DrawRoundedRectangle(null,
+                    new System.Windows.Media.Pen(new System.Windows.Media.SolidColorBrush(_color), _borderThickness),
+                    new Rect(tl.X + t, tl.Y + t, w - _borderThickness, h - _borderThickness),
                     _radius, _radius);
             }
         }

@@ -1134,7 +1134,7 @@
                             <!-- Trigger mode -->
                             <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
                                 <Border Width="3" CornerRadius="1.5" Margin="0,2,7,2"
-                                        Background="{DynamicResource ColdBrush}"/>
+                                        Background="{DynamicResource EmberBrush}"/>
                                 <TextBlock Text="{Binding Macro_Trigger, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold"
                                            Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
                             </StackPanel>
@@ -1464,7 +1464,7 @@
                             <StackPanel Visibility="{Binding ShowsTriggerComboEditor, Converter={StaticResource BoolToVisibilityConverter}}">
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
                                     <Border Width="3" CornerRadius="1.5" Margin="0,2,7,2"
-                                            Background="{DynamicResource ColdBrush}"/>
+                                            Background="{DynamicResource EmberBrush}"/>
                                     <TextBlock Text="{Binding Macro_Trigger, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold"
                                                Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
                                 </StackPanel>
@@ -1635,7 +1635,7 @@
                             <!-- Action sequence -->
                             <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
                                 <Border Width="3" CornerRadius="1.5" Margin="0,2,7,2"
-                                        Background="{DynamicResource EmberHotBrush}"/>
+                                        Background="{DynamicResource EmberBrush}"/>
                                 <TextBlock Text="{Binding Macro_ActionSequence, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold"
                                            Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
                             </StackPanel>
@@ -1651,19 +1651,32 @@
                                  each step writes output, so the rows inherit the
                                  mapping grid's ember chip grammar. Selection and
                                  interaction stay on the ListBox container. -->
-                            <ListBox ItemsSource="{Binding Actions}"
-                                     SelectedItem="{Binding SelectedAction, Mode=TwoWay}"
-                                     ItemContainerStyle="{StaticResource EmberSelectListItem}"
-                                     MinHeight="100" MaxHeight="200" Margin="0,0,0,4">
-                                <ListBox.ItemTemplate>
-                                    <DataTemplate>
-                                        <Border Style="{StaticResource ChipEmber}"
-                                                HorizontalAlignment="Left" Margin="0,1">
-                                            <TextBlock Text="{Binding DisplayText}"/>
-                                        </Border>
-                                    </DataTemplate>
-                                </ListBox.ItemTemplate>
-                            </ListBox>
+                            <!-- Bounding box so the sequence reads as one list (user
+                                 report): a steel-lined well. Drag a chip to reorder;
+                                 the drop commits Actions.Move (handlers in code-behind). -->
+                            <Border BorderBrush="{DynamicResource SteelLineBrush}" BorderThickness="1"
+                                    CornerRadius="6" Background="{DynamicResource SteelRaisedBrush}"
+                                    Padding="4" Margin="0,0,0,4">
+                                <ListBox x:Name="ActionsList" ItemsSource="{Binding Actions}"
+                                         SelectedItem="{Binding SelectedAction, Mode=TwoWay}"
+                                         ItemContainerStyle="{StaticResource EmberSelectListItem}"
+                                         Background="Transparent" BorderThickness="0"
+                                         MinHeight="100" MaxHeight="200"
+                                         AllowDrop="True"
+                                         PreviewMouseLeftButtonDown="ActionsList_PreviewMouseLeftButtonDown"
+                                         PreviewMouseMove="ActionsList_PreviewMouseMove"
+                                         DragOver="ActionsList_DragOver"
+                                         Drop="ActionsList_Drop">
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <Border Style="{StaticResource ChipEmber}"
+                                                    HorizontalAlignment="Left" Margin="0,1">
+                                                <TextBlock Text="{Binding DisplayText}"/>
+                                            </Border>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                </ListBox>
+                            </Border>
 
                             <!-- Action editor (shows when an action is selected) -->
                             <Border BorderBrush="{DynamicResource TextFillColorTertiaryBrush}"
@@ -2479,8 +2492,12 @@
                             </Border>
 
                             <!-- Repeat settings -->
-                            <TextBlock Text="{Binding Macro_Repeat, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,0,0,4"
-                                       Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                <Border Width="3" CornerRadius="1.5" Margin="0,2,7,2"
+                                        Background="{DynamicResource EmberBrush}"/>
+                                <TextBlock Text="{Binding Macro_Repeat, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold"
+                                           Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
+                            </StackPanel>
                             <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
                                 <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Macro_RepeatMode, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
                                            Margin="0,0,8,0"/>

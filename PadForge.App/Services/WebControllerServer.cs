@@ -79,7 +79,15 @@ namespace PadForge.Services
                         _imageCache = LoadImageCache();
                 }
 
-                EnsureFirewallRule(port);
+                // Fire-and-forget: the rule only affects external inbound
+                // reachability, not the local _listener.Start() bind below, and
+                // Start() runs on the UI thread (the web-controller toggle),
+                // where RunNetsh's two possible netsh spawns block up to 5s
+                // each. EnsureFirewallRule is static, touches no instance
+                // state, and is already best-effort (swallows its own
+                // failures), so a thread-pool hop changes nothing but the
+                // blocked thread.
+                System.Threading.Tasks.Task.Run(() => EnsureFirewallRule(port));
 
                 _listener = new HttpListener();
                 _listener.Prefixes.Add($"http://+:{port}/");

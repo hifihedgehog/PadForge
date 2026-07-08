@@ -24,7 +24,23 @@ namespace PadForge.Engine.Data
         /// Must match <see cref="UserDevice.InstanceGuid"/>.
         /// </summary>
         [XmlElement]
-        public Guid InstanceGuid { get; set; }
+        public Guid InstanceGuid
+        {
+            get => _instanceGuid;
+            set { _instanceGuid = value; _instanceGuidString = null; }
+        }
+        private Guid _instanceGuid;
+        private string _instanceGuidString;
+
+        /// <summary>
+        /// Cached <see cref="Guid.ToString()"/> form of <see cref="InstanceGuid"/>.
+        /// The ~1000Hz mapping loop (Step 3) passes the guid as a string to the
+        /// per-target descriptor reads, and stringifying it per device per tick
+        /// is pure GC pressure on the rate-holding thread. Invalidated when
+        /// <see cref="InstanceGuid"/> is assigned.
+        /// </summary>
+        [XmlIgnore]
+        public string InstanceGuidString => _instanceGuidString ??= _instanceGuid.ToString();
 
         /// <summary>
         /// Human-readable instance name at the time this setting was created.

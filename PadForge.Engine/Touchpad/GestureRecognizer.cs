@@ -47,6 +47,14 @@ namespace PadForge.Engine.Touchpad
         // immediately flipping into 2-finger mode.
         private const int TwoFingerSessionEntryDelayMs = 30;
 
+        // Per-finger path ceiling. One point is appended per poll
+        // (~1000Hz) while a contact is down, so ~8s of history triggers
+        // the first compaction in UpdateActivePaths (anchor kept exact,
+        // older half thinned, newest half intact). Caps a long hold
+        // (touchpad-as-joystick, touch spots) at ~64KB per finger
+        // instead of unbounded growth.
+        private const int MaxPathPoints = 8192;
+
         /// <summary>Per-tick update. Walks <paramref name="ctx"/> from its
         /// current state, mutates it according to <paramref name="pad"/>'s
         /// finger snapshot, and fires gestures into
@@ -227,7 +235,31 @@ namespace PadForge.Engine.Touchpad
 
                 if (down && pathIdx >= 0)
                 {
-                    ctx.FingerPaths[pathIdx].Add(new Vector2(pad.FingerX[s], pad.FingerY[s]));
+                    var path = ctx.FingerPaths[pathIdx];
+                    path.Add(new Vector2(pad.FingerX[s], pad.FingerY[s]));
+
+                    // Bound the path: this appends every poll (~1000Hz) for as
+                    // long as the contact lives, and a long hold (touchpad-as-
+                    // joystick, touch spots) otherwise grows the list without
+                    // limit. Compact by keeping the anchor (index 0) exact,
+                    // thinning the older half by stride 2, and keeping the
+                    // newest half intact. Every consumer survives that: the
+                    // anchor/current readers use path[0] and path[Count-1],
+                    // the wind-down tail reader scans the newest quarter
+                    // (inside the intact half), and the end-of-gesture shape
+                    // matchers resample the path to a fixed point count
+                    // anyway, so a sparser old half doesn't move the match.
+                    if (path.Count >= MaxPathPoints)
+                    {
+                        int half = path.Count / 2;
+                        var compact = new List<Vector2>(path.Count * 3 / 4 + 2);
+                        compact.Add(path[0]);
+                        for (int p = 1; p < half; p += 2)
+                            compact.Add(path[p]);
+                        for (int p = half; p < path.Count; p++)
+                            compact.Add(path[p]);
+                        ctx.FingerPaths[pathIdx] = compact;
+                    }
                     active++;
                 }
                 // No special handling for lifts — the path stays in the
@@ -898,8 +930,10 @@ namespace PadForge.Engine.Touchpad
         /// <summary>Anchor-relative analog stick output. Returns
         /// (0, 0) when the finger isn't down, output is disabled, or
         /// the magnitude falls inside <c>JoystickInnerDeadzone</c>.
-        /// Y is flipped from touchpad space so finger-up produces
-        /// positive Y (matches physical stick convention).</summary>
+        /// Y is NOT flipped: touchpad +Y (finger-down) maps to positive
+        /// stick Y, matching the SDL_GAMEPAD_AXIS_LEFTY / RIGHTY
+        /// convention (see the inline note below; a flipped version was
+        /// a reverted regression).</summary>
         public static (float x, float y) ComputeJoystickAxis(
             TouchpadGestureContext ctx, TouchpadGestureSettings settings)
         {

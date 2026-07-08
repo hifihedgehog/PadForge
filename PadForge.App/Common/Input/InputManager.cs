@@ -1878,7 +1878,7 @@ namespace PadForge.Common.Input
                     if (s.Gyro != null && s.Gyro.Length >= 3)
                     {
                         SourceCoercion.GetPassthroughGyro(
-                            s, gyroSrc.Ud.InstanceGuid.ToString(), padIndex,
+                            s, gyroSrc.Ud.InstanceGuidString, padIndex,
                             out float tunedPitch, out float tunedYaw, out float tunedRoll);
                         gx = tunedPitch * RadToDeg;
                         gy = tunedYaw * RadToDeg;

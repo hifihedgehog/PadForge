@@ -33,7 +33,24 @@ namespace PadForge.Engine.Data
 
         /// <summary>Unique GUID identifying this device instance (deterministic from device path).</summary>
         [XmlElement]
-        public Guid InstanceGuid { get; set; }
+        public Guid InstanceGuid
+        {
+            get => _instanceGuid;
+            set { _instanceGuid = value; _instanceGuidString = null; }
+        }
+        private Guid _instanceGuid;
+        private string _instanceGuidString;
+
+        /// <summary>
+        /// Cached <see cref="Guid.ToString()"/> form of <see cref="InstanceGuid"/>.
+        /// Mirrors <see cref="UserSetting.InstanceGuidString"/>: the ~1000Hz poll
+        /// loop (motion snapshots, per-target descriptor reads) passes the guid
+        /// as a string, and stringifying per tick is pure GC pressure on the
+        /// rate-holding thread. Invalidated when <see cref="InstanceGuid"/> is
+        /// assigned.
+        /// </summary>
+        [XmlIgnore]
+        public string InstanceGuidString => _instanceGuidString ??= _instanceGuid.ToString();
 
         /// <summary>Human-readable instance name (e.g., "Xbox Controller").</summary>
         [XmlElement]

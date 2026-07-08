@@ -3313,6 +3313,58 @@ namespace PadForge.Views
             }
         }
 
+        // Action-sequence reorder: drag a step chip within the list to move it,
+        // dropping onto another step. Mirrors the chip-palette drag idiom above;
+        // the commit is a single Actions.Move so selection and bindings survive.
+        private Point _actionDragStart;
+        private MacroAction _actionDragItem;
+
+        private void ActionsList_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            _actionDragStart = e.GetPosition(null);
+            _actionDragItem = ActionFromVisual(e.OriginalSource as DependencyObject);
+        }
+
+        private void ActionsList_PreviewMouseMove(object sender, MouseEventArgs e)
+        {
+            if (_actionDragItem == null || e.LeftButton != MouseButtonState.Pressed) return;
+            var p = e.GetPosition(null);
+            if (Math.Abs(p.X - _actionDragStart.X) > SystemParameters.MinimumHorizontalDragDistance
+                || Math.Abs(p.Y - _actionDragStart.Y) > SystemParameters.MinimumVerticalDragDistance)
+            {
+                var item = _actionDragItem;
+                _actionDragItem = null; // reset before the modal DoDragDrop
+                DragDrop.DoDragDrop((DependencyObject)sender, item, DragDropEffects.Move);
+            }
+        }
+
+        private void ActionsList_DragOver(object sender, DragEventArgs e)
+        {
+            e.Effects = e.Data.GetDataPresent(typeof(MacroAction)) ? DragDropEffects.Move : DragDropEffects.None;
+            e.Handled = true;
+        }
+
+        private void ActionsList_Drop(object sender, DragEventArgs e)
+        {
+            if (sender is not ListBox lb) return;
+            if (e.Data.GetData(typeof(MacroAction)) is not MacroAction dragged) return;
+            if (lb.ItemsSource is not System.Collections.ObjectModel.ObservableCollection<MacroAction> actions) return;
+            int oldIndex = actions.IndexOf(dragged);
+            if (oldIndex < 0) return;
+            var target = ActionFromVisual(lb.InputHitTest(e.GetPosition(lb)) as DependencyObject);
+            int newIndex = target != null ? actions.IndexOf(target) : actions.Count - 1;
+            if (newIndex < 0 || newIndex == oldIndex) return;
+            actions.Move(oldIndex, newIndex);
+            lb.SelectedItem = dragged;
+        }
+
+        private static MacroAction ActionFromVisual(DependencyObject d)
+        {
+            while (d != null && d is not ListBoxItem)
+                d = System.Windows.Media.VisualTreeHelper.GetParent(d);
+            return (d as ListBoxItem)?.DataContext as MacroAction;
+        }
+
         private void FormulaPreset_Click(object sender, RoutedEventArgs e)
         {
             if (sender is not Button btn || btn.Tag is not string formula) return;

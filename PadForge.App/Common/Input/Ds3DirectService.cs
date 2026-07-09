@@ -81,6 +81,57 @@ namespace PadForge.Common.Input
 
         public bool IsConnected => _sdlJoystick != IntPtr.Zero;
 
+        /// <summary>SDL instance id of the attached virtual joystick (0 when absent).</summary>
+        public uint InstanceId => _instanceId;
+
+        // ─── battery (raw[30] -> BT buf[31], DS_BATTERY_STATUS in DsCommon.h:61-70) ─
+        //
+        // SDL's PS3 driver has no battery path and the virtual-joystick API has no
+        // power setter, so battery reaches the #167 lane through
+        // SdlDeviceWrapper.ExternalPowerInfoProvider, keyed by SDL instance id.
+        // Discharge levels 0x01..0x05 map to quintiles (level * 20%). 0xEE/0xEF are
+        // USB charge states that cannot appear on a Bluetooth link; handled defensively.
+
+        private static readonly System.Collections.Concurrent.ConcurrentDictionary<uint, (int Percent, bool Charging)>
+            PowerByInstance = new();
+
+        /// <summary>Battery for a given SDL instance id, or null if it isn't a DS3
+        /// this service is driving. Wired into SdlDeviceWrapper.ExternalPowerInfoProvider.</summary>
+        public static (int Percent, bool Charging)? GetPowerInfo(uint instanceId)
+            => PowerByInstance.TryGetValue(instanceId, out var p) ? p : null;
+
+        private byte _lastBattery = 0xFF;
+
+        private void UpdateBattery(byte status)
+        {
+            if (status == _lastBattery || _instanceId == 0) return;
+            _lastBattery = status;
+            (int Percent, bool Charging) p = status switch
+            {
+                0xEF => (100, true),                        // charged (USB-only state)
+                0xEE => (-1, true),                         // charging (USB-only state)
+                _ => (Math.Min((int)status, 5) * 20, false) // 0x01..0x05 discharge quintiles
+            };
+            PowerByInstance[_instanceId] = p;
+        }
+
+        /// <summary>Player LED idle floor (#191): the virtual controller's 1-based
+        /// display number lights LED 1-4, wrapping past 4 exactly like SDL's PS3
+        /// driver (SDL_hidapi_ps3.c:244, 0x01 &lt;&lt; (1 + index % 4)). 0 = unmapped,
+        /// keeps LED 1.</summary>
+        public void SetPlayerNumber(int oneBasedNumber)
+        {
+            int zeroBased = oneBasedNumber <= 0 ? 0 : (oneBasedNumber - 1) % 4;
+            byte mask = (byte)(0x01 << (1 + zeroBased));
+            bool changed;
+            lock (_outLock)
+            {
+                changed = _ledMask != mask;
+                if (changed) { _ledMask = mask; _outDirty = true; }
+            }
+            if (changed) _writeSignal.Set();
+        }
+
         /// <summary>Begin watching for a Bluetooth DS3 and stream it as a virtual joystick.
         /// Call after SDL has been initialised (SDL_INIT_JOYSTICK).</summary>
         public void Start()
@@ -214,6 +265,7 @@ namespace PadForge.Common.Input
                     {
                         _everGotInput = true;
                         PushState(buf, rd);
+                        if (rd > 31) UpdateBattery(buf[31]);   // raw[30] BatteryStatus
                     }
                     // Non-input traffic on the interrupt channel: ignore, read again.
                 }
@@ -300,6 +352,7 @@ namespace PadForge.Common.Input
             try { if (_writeThread != null && _writeThread != Thread.CurrentThread) _writeThread.Join(1000); } catch { }
             _writeThread = null;
 
+            if (_instanceId != 0) { PowerByInstance.TryRemove(_instanceId, out _); _lastBattery = 0xFF; }
             if (_sdlJoystick != IntPtr.Zero) { SDL.SDL_CloseJoystick(_sdlJoystick); _sdlJoystick = IntPtr.Zero; }
             if (_instanceId != 0) { SDL.SDL_DetachVirtualJoystick(_instanceId); _instanceId = 0; }
 
@@ -445,10 +498,8 @@ namespace PadForge.Common.Input
 
         private void OnSetPlayerIndex(IntPtr userdata, int playerIndex)
         {
-            // DS3 player LED bitmask: LED1..LED4 = bits 1..4 (bit 0 unused).
-            byte mask = playerIndex switch { 0 => 0x02, 1 => 0x04, 2 => 0x08, 3 => 0x10, _ => 0x02 };
-            lock (_outLock) { _ledMask = mask; _outDirty = true; }
-            _writeSignal.Set();
+            // Same convention as SDL's PS3 driver: 0x01 << (1 + index % 4).
+            SetPlayerNumber(playerIndex < 0 ? 0 : playerIndex + 1);
         }
 
         private bool OnSetSensors(IntPtr userdata, bool enabled) => true; // sensors are always in the report

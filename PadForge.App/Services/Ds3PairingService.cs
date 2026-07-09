@@ -17,16 +17,19 @@ namespace PadForge.Services
     ///      send them; WinUSB sends the raw control transfers the firmware answers).
     ///   2. Sixpair: the PC's Bluetooth radio address is written into the pad
     ///      (SET_REPORT FEATURE 0xF5) so it pages THIS radio on PS-press.
-    ///   3. A persistent identity record is written into the radio's device list so
-    ///      BthPS3 recognises the pad by name on connect (survives reboot, unlike the
-    ///      radio's volatile remote-name cache).
+    ///   3. A Name record is written into the radio's device list (BthPS3 identifies the
+    ///      pad by name), AND a synthetic link key is written under Keys\&lt;radiomac&gt;
+    ///      so bthport treats the pad as a remembered device and serves that Name to
+    ///      BthPS3 on every connect. The clone reports a BLANK name over the air, so
+    ///      without the remembered anchor bthport's live name request overwrites the
+    ///      seeded Name and the minimal record is pruned on radio re-enumeration.
     ///   4. The radio is cycled so BthPS3/BthPS3PSM pick the record up.
     ///
     /// Then the user unplugs the pad and presses PS; <see cref="Common.Input.Ds3DirectService"/>
     /// opens the resulting BthPS3 raw PDO and streams it through SDL. All steps run from
     /// the always-elevated app: Administrators have FullControl of the BTHPORT device
-    /// list and the DS3 does zero authentication, so no SYSTEM context or link key is
-    /// needed.
+    /// list; the Keys subtree is SYSTEM-ACL'd, so the link-key write goes through
+    /// REG_OPTION_BACKUP_RESTORE after enabling the token's backup/restore privileges.
     /// </summary>
     public sealed class Ds3PairingService
     {
@@ -163,6 +166,17 @@ namespace PadForge.Services
             if (!InjectIdentity(r.Ds3Mac)) { _log("Registering the pad failed."); r.Error = "identity-inject-failed"; return r; }
             _log("Pad registered with the Bluetooth stack.");
 
+            // 5b. Anchor that record as a REMEMBERED device with a synthetic link key.
+            // Without it bthport treats the minimal Name record as disposable inquiry
+            // cache: on radio re-enumeration / at connect the clone's blank over-air name
+            // overwrites the seeded Name and BthPS3 drops the connection. The link key
+            // flips the pad into bthport's remembered set so the stored Name is served to
+            // BthPS3 on every connect. Hardware-confirmed 2026-07-09.
+            if (!Ds3DriverInstaller.WriteLinkKeyAnchor(radio, r.Ds3Mac, _log))
+                _log("Warning: pairing not anchored; it may not survive a radio cycle.");
+            else
+                _log("Pairing anchored.");
+
             // 6. Cycle the radio so the drivers pick up the new record.
             CycleRadio();
             _log("Bluetooth radio cycled. Unplug the DS3 and press the PS button.");
@@ -188,6 +202,11 @@ namespace PadForge.Services
                     }
                 }
                 catch (Exception ex) { _log("Removing the device record failed: " + ex.Message); }
+
+                // Drop the remembered-device link-key anchor too, else the pad stays
+                // half-paired (bthport still lists it) and a later re-pair is confused.
+                byte[] radio = ReadRadioMac();
+                if (radio != null) Ds3DriverInstaller.DeleteLinkKeyAnchor(radio, ds3Mac, _log);
             }
             RemoveBthPs3Node();
             CycleRadio();

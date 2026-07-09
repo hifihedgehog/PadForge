@@ -119,6 +119,18 @@
     <PackageReference Include="NAudio.Wasapi" Version="2.2.1" />
     <!-- Opus encoder (pure C#) for the DualSense Bluetooth speaker stream -->
     <PackageReference Include="Concentus" Version="2.2.2" />
+    <!-- Driver-store install, class filters, and USB CyclePort for the BthPS3
+         DualShock 3 Bluetooth stack (nefarius, same lib BthPS3's own installer uses) -->
+    <PackageReference Include="Nefarius.Utilities.DeviceManagement" Version="5.2.0" />
+  </ItemGroup>
+
+  <!-- Microsoft-signed BthPS3 + BthPS3PSM drivers (nefarius release) and the DS3
+       WinUSB INF, embedded so the single-file app can drop them to a temp dir and
+       install them at pairing time. No MSI, no external installer. -->
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\BthPS3\**\*.*">
+      <LogicalName>BthPS3.%(RecursiveDir)%(Filename)%(Extension)</LogicalName>
+    </EmbeddedResource>
   </ItemGroup>
 
   <ItemGroup>

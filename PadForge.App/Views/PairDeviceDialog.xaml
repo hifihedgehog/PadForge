@@ -71,12 +71,14 @@
                 <TextBlock Text="{Binding WiiPair_Family, Source={x:Static strings:Strings.Instance}}"
                            Margin="0,0,0,4"
                            Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
-                <ComboBox x:Name="FamilyCombo" SelectedIndex="0" HorizontalAlignment="Stretch">
+                <ComboBox x:Name="FamilyCombo" SelectedIndex="0" HorizontalAlignment="Stretch"
+                          SelectionChanged="Family_SelectionChanged">
                     <ComboBoxItem Content="{Binding WiiPair_FamilyWii, Source={x:Static strings:Strings.Instance}}"/>
+                    <ComboBoxItem Content="{Binding WiiPair_FamilyDs3, Source={x:Static strings:Strings.Instance}}"/>
                 </ComboBox>
             </StackPanel>
 
-            <TextBlock Grid.Row="1"
+            <TextBlock Grid.Row="1" x:Name="InstructionsText"
                        Text="{Binding WiiPair_Instructions, Source={x:Static strings:Strings.Instance}}"
                        TextWrapping="Wrap" Margin="0,0,0,12"
                        Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>

@@ -1,0 +1,41 @@
+; ds3_winusb.inf
+; Bind the inbox WinUSB function driver (winusb.sys) to a DualShock 3 (VID_054C&PID_0268)
+; so a userland process can send the raw USB control transfers the HID stack blocks
+; (0xF4 enable, 0xF2/0xF5 sixpair) and read the interrupt IN endpoint directly.
+; This is the DsHidMini/ScpToolkit approach minus the third-party kernel driver:
+; only inbox winusb.sys is used; all device logic lives in userland.
+;
+; Reversible:  pnputil /delete-driver oemNN.inf /uninstall   (then re-scan -> HidUsb rebinds)
+
+[Version]
+Signature   = "$Windows NT$"
+Class       = USBDevice
+ClassGUID   = {88BAE032-5A81-49F0-BC3D-A4FF138216D6}
+Provider    = %ProviderName%
+CatalogFile = ds3_winusb.cat
+DriverVer   = 07/08/2026,1.0.0.0
+PnpLockdown = 1
+
+[Manufacturer]
+%ProviderName% = Standard,NTamd64
+
+[Standard.NTamd64]
+%DeviceName% = USB_Install, USB\VID_054C&PID_0268
+
+[USB_Install]
+Include = winusb.inf
+Needs   = WINUSB.NT
+
+[USB_Install.Services]
+Include = winusb.inf
+Needs   = WINUSB.NT.Services
+
+[USB_Install.HW]
+AddReg = Dev_AddReg
+
+[Dev_AddReg]
+HKR,,DeviceInterfaceGUIDs,0x10000,"{B35924D6-3E16-4A9E-9782-5524A4B79BAC}"
+
+[Strings]
+ProviderName = "PadForge"
+DeviceName   = "DualShock 3 (WinUSB)"

@@ -149,6 +149,61 @@ namespace PadForge.Services
             catch (Exception ex) { log("Node removal: " + ex.Message); }
         }
 
+        // ── BR/EDR link-key anchor (remembered-device persistence) ────────────────
+
+        // Fixed non-zero 16-byte key. bthport only needs a link-key VALUE to exist for
+        // the device MAC to flag it remembered+authenticated (BDIF_PAIRED); the DS3 does
+        // no SSP so the value is never validated over the air. That remembered state is
+        // what makes bthport serve the injected Name to BthPS3's IOCTL_BTH_GET_DEVICE_INFO
+        // on every connect instead of overwriting it with the clone's blank over-air name,
+        // and what keeps the Devices record from being pruned on radio re-enumeration.
+        // Hardware-confirmed 2026-07-09 (rem/auth flags flipped, identified as SIXAXIS, no
+        // encryption block). Constant is ScpToolkit's BdLink (GlobalConfiguration.cs).
+        private static readonly byte[] Ds3LinkKey =
+            { 0x56, 0xE8, 0x81, 0x38, 0x08, 0x06, 0x51, 0x41, 0xC0, 0x7F, 0x12, 0xAA, 0xD9, 0x66, 0x3C, 0xCE };
+
+        private const string BthPortKeysKey =
+            @"SYSTEM\CurrentControlSet\Services\BTHPORT\Parameters\Keys\";
+
+        /// <summary>Writes the link-key value that anchors the DS3's Name record in
+        /// bthport's remembered-device set. Value name = device MAC (12 lowercase hex),
+        /// under Keys\&lt;radiomac&gt;. The Keys subtree is SYSTEM-ACL'd, so it is opened
+        /// with REG_OPTION_BACKUP_RESTORE after enabling the (held-but-disabled) backup
+        /// and restore privileges of the elevated token.</summary>
+        public static bool WriteLinkKeyAnchor(byte[] radioMacBigEndian, string deviceMacHex, Action<string> log)
+        {
+            IntPtr hk = OpenKeysBackupRestore(radioMacBigEndian, log);
+            if (hk == IntPtr.Zero) return false;
+            try
+            {
+                int rc = RegSetValueEx(hk, deviceMacHex, 0, REG_BINARY, Ds3LinkKey, Ds3LinkKey.Length);
+                if (rc != 0) { log($"Writing the pairing key failed (rc={rc})."); return false; }
+                return true;
+            }
+            finally { RegCloseKey(hk); }
+        }
+
+        /// <summary>Removes the link-key anchor for a clean unpair.</summary>
+        public static void DeleteLinkKeyAnchor(byte[] radioMacBigEndian, string deviceMacHex, Action<string> log)
+        {
+            IntPtr hk = OpenKeysBackupRestore(radioMacBigEndian, log);
+            if (hk == IntPtr.Zero) return;
+            try { RegDeleteValue(hk, deviceMacHex); }
+            finally { RegCloseKey(hk); }
+        }
+
+        private static IntPtr OpenKeysBackupRestore(byte[] radioMacBigEndian, Action<string> log)
+        {
+            EnablePrivilege("SeBackupPrivilege");
+            EnablePrivilege("SeRestorePrivilege");
+            var sb = new System.Text.StringBuilder(radioMacBigEndian.Length * 2);
+            foreach (byte b in radioMacBigEndian) sb.Append(b.ToString("x2"));
+            int rc = RegCreateKeyEx(HKLM, BthPortKeysKey + sb, 0, null, REG_OPTION_BACKUP_RESTORE,
+                KEY_READ | KEY_WRITE, IntPtr.Zero, out IntPtr hk, out _);
+            if (rc != 0) { log($"Opening the pairing-key store failed (rc={rc})."); return IntPtr.Zero; }
+            return hk;
+        }
+
         // ── install helpers ──────────────────────────────────────────────────────
 
         private static void InstallInf(string infPath, Action<string> log)
@@ -250,6 +305,13 @@ namespace PadForge.Services
         private const uint GENERIC_READ = 0x80000000, GENERIC_WRITE = 0x40000000, FILE_SHARE_RW = 3, OPEN_EXISTING = 3;
         private const uint FILE_FLAG_NO_BUFFERING = 0x20000000, FILE_FLAG_WRITE_THROUGH = 0x80000000;
         private const uint TOKEN_ADJUST_PRIVILEGES = 0x20, TOKEN_QUERY = 0x8, SE_PRIVILEGE_ENABLED = 0x2;
+        private static readonly UIntPtr HKLM = unchecked((UIntPtr)0x80000002u);
+        private const int REG_OPTION_BACKUP_RESTORE = 0x04, REG_BINARY = 3, KEY_READ = 0x20019, KEY_WRITE = 0x20006;
+
+        [DllImport("advapi32.dll", SetLastError = true, CharSet = CharSet.Unicode)] private static extern int RegCreateKeyEx(UIntPtr hKey, string subKey, int reserved, string cls, int options, int sam, IntPtr sa, out IntPtr res, out int disp);
+        [DllImport("advapi32.dll", SetLastError = true, CharSet = CharSet.Unicode)] private static extern int RegSetValueEx(IntPtr hKey, string name, int reserved, int type, byte[] data, int cb);
+        [DllImport("advapi32.dll", SetLastError = true, CharSet = CharSet.Unicode)] private static extern int RegDeleteValue(IntPtr hKey, string name);
+        [DllImport("advapi32.dll", SetLastError = true)] private static extern int RegCloseKey(IntPtr hKey);
 
         [StructLayout(LayoutKind.Sequential)] private struct BLUETOOTH_FIND_RADIO_PARAMS { public uint dwSize; }
 

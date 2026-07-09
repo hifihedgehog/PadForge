@@ -1076,5 +1076,102 @@ namespace SDL3
             int v = SDL_GetVersion();
             return (v / 1000000, (v / 1000) % 1000, v % 1000);
         }
+
+        // ─────────────────────────────────────────────
+        //  Virtual joystick (SDL_JOYSTICK_VIRTUAL, enabled in the bundled build).
+        //  Used to surface a natively-read pad (e.g. a Bluetooth DualShock 3 behind
+        //  BthPS3) to SDL so the normal pipeline consumes it like any other device.
+        // ─────────────────────────────────────────────
+
+        /// <summary>Describes one virtual-joystick sensor (gyro/accel). 8 bytes.</summary>
+        [StructLayout(LayoutKind.Sequential)]
+        public struct SDL_VirtualJoystickSensorDesc
+        {
+            public int type;    // SDL_SensorType
+            public float rate;
+        }
+
+        /// <summary>Describes one virtual-joystick touchpad. 8 bytes.</summary>
+        [StructLayout(LayoutKind.Sequential)]
+        public struct SDL_VirtualJoystickTouchpadDesc
+        {
+            public ushort nfingers;
+            public ushort padding0;
+            public ushort padding1;
+            public ushort padding2;
+        }
+
+        // Callback delegate types (Cdecl). Keep the managed delegates alive for the
+        // lifetime of the attached joystick or the marshaled pointers dangle.
+        // SDL uses C `bool` (1 byte); marshal returns/params as I1, not the default 4-byte BOOL.
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)] public delegate void VJUpdate(IntPtr userdata);
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)] public delegate void VJSetPlayerIndex(IntPtr userdata, int playerIndex);
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)] [return: MarshalAs(UnmanagedType.I1)] public delegate bool VJRumble(IntPtr userdata, ushort lowFreq, ushort highFreq);
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)] [return: MarshalAs(UnmanagedType.I1)] public delegate bool VJRumbleTriggers(IntPtr userdata, ushort left, ushort right);
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)] [return: MarshalAs(UnmanagedType.I1)] public delegate bool VJSetLED(IntPtr userdata, byte r, byte g, byte b);
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)] [return: MarshalAs(UnmanagedType.I1)] public delegate bool VJSendEffect(IntPtr userdata, IntPtr data, int size);
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)] [return: MarshalAs(UnmanagedType.I1)] public delegate bool VJSetSensorsEnabled(IntPtr userdata, [MarshalAs(UnmanagedType.I1)] bool enabled);
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)] public delegate void VJCleanup(IntPtr userdata);
+
+        /// <summary>
+        /// Mirror of SDL_VirtualJoystickDesc. Natural alignment yields the required
+        /// 136 bytes on x64 (4 bytes implicit padding before <c>name</c>). Set
+        /// <c>version</c> to Marshal.SizeOf of this struct; callbacks are function
+        /// pointers (IntPtr.Zero = unused).
+        /// </summary>
+        [StructLayout(LayoutKind.Sequential)]
+        public struct SDL_VirtualJoystickDesc
+        {
+            public uint version;
+            public ushort type;
+            public ushort padding;
+            public ushort vendor_id;
+            public ushort product_id;
+            public ushort naxes;
+            public ushort nbuttons;
+            public ushort nballs;
+            public ushort nhats;
+            public ushort ntouchpads;
+            public ushort nsensors;
+            public ushort padding2_0;
+            public ushort padding2_1;
+            public uint button_mask;
+            public uint axis_mask;
+            public IntPtr name;        // const char* (UTF-8)
+            public IntPtr touchpads;   // const SDL_VirtualJoystickTouchpadDesc*
+            public IntPtr sensors;     // const SDL_VirtualJoystickSensorDesc*
+            public IntPtr userdata;
+            public IntPtr Update;
+            public IntPtr SetPlayerIndex;
+            public IntPtr Rumble;
+            public IntPtr RumbleTriggers;
+            public IntPtr SetLED;
+            public IntPtr SendEffect;
+            public IntPtr SetSensorsEnabled;
+            public IntPtr Cleanup;
+        }
+
+        [DllImport(lib, CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_AttachVirtualJoystick")]
+        public static extern uint SDL_AttachVirtualJoystick(ref SDL_VirtualJoystickDesc desc);
+
+        [DllImport(lib, CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_DetachVirtualJoystick")]
+        [return: MarshalAs(UnmanagedType.I1)]
+        public static extern bool SDL_DetachVirtualJoystick(uint instance_id);
+
+        [DllImport(lib, CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_SetJoystickVirtualAxis")]
+        [return: MarshalAs(UnmanagedType.I1)]
+        public static extern bool SDL_SetJoystickVirtualAxis(IntPtr joystick, int axis, short value);
+
+        [DllImport(lib, CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_SetJoystickVirtualButton")]
+        [return: MarshalAs(UnmanagedType.I1)]
+        public static extern bool SDL_SetJoystickVirtualButton(IntPtr joystick, int button, [MarshalAs(UnmanagedType.I1)] bool down);
+
+        [DllImport(lib, CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_SetJoystickVirtualHat")]
+        [return: MarshalAs(UnmanagedType.I1)]
+        public static extern bool SDL_SetJoystickVirtualHat(IntPtr joystick, int hat, byte value);
+
+        [DllImport(lib, CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_SendJoystickVirtualSensorData")]
+        [return: MarshalAs(UnmanagedType.I1)]
+        public static extern bool SDL_SendJoystickVirtualSensorData(IntPtr joystick, int type, ulong sensor_timestamp, float[] data, int num_values);
     }
 }

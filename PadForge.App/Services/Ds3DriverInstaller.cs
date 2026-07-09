@@ -164,6 +164,93 @@ namespace PadForge.Services
 
         private const string BthPortKeysKey =
             @"SYSTEM\CurrentControlSet\Services\BTHPORT\Parameters\Keys\";
+        private const string BthPortDevicesKey =
+            @"SYSTEM\CurrentControlSet\Services\BTHPORT\Parameters\Devices\";
+        private const string DS3_REMOTE_NAME = "PLAYSTATION(R)3 Controller";
+
+        /// <summary>
+        /// Writes the full remembered-device record for the DS3 so BthPS3 identifies it
+        /// on every connect. Three parts, all hardware-confirmed load-bearing 2026-07-09:
+        ///   1. Name/VID/PID into Devices\&lt;mac&gt;.
+        ///   2. The Devices record's OWNER set to SYSTEM. bthport prunes device records
+        ///      it doesn't own on radio re-enumeration, so an admin-owned record is
+        ///      dropped and the pad stops identifying; a SYSTEM-owned record is kept.
+        ///   3. A synthetic link key under Keys\&lt;radiomac&gt; flags the pad
+        ///      remembered+authenticated so the stored Name is served instead of the
+        ///      clone's blank over-air name.
+        /// All native, from the elevated (admin, not SYSTEM) app: SYSTEM-ACL'd keys are
+        /// written through REG_OPTION_BACKUP_RESTORE and the owner is set with
+        /// SeTakeOwnership/SeRestore, both held by the elevated token.
+        /// </summary>
+        public static bool WriteRememberedDeviceRecord(byte[] radioMacBigEndian, string deviceMacHex, Action<string> log)
+        {
+            if (!WriteDeviceNameRecord(deviceMacHex, log)) return false;
+            if (!SetDeviceRecordOwnerToSystem(deviceMacHex, log)) return false;
+            return WriteLinkKeyAnchor(radioMacBigEndian, deviceMacHex, log);
+        }
+
+        // Name/VID/PID via REG_OPTION_BACKUP_RESTORE, so a pre-existing SYSTEM-owned
+        // record from an earlier pairing can still be overwritten by the elevated app.
+        private static bool WriteDeviceNameRecord(string deviceMacHex, Action<string> log)
+        {
+            EnablePrivilege("SeBackupPrivilege");
+            EnablePrivilege("SeRestorePrivilege");
+            int rc = RegCreateKeyEx(HKLM, BthPortDevicesKey + deviceMacHex, 0, null,
+                REG_OPTION_BACKUP_RESTORE, KEY_READ | KEY_WRITE, IntPtr.Zero, out IntPtr hk, out _);
+            if (rc != 0) { log($"Opening the device record failed (rc={rc})."); return false; }
+            try
+            {
+                byte[] ascii = System.Text.Encoding.ASCII.GetBytes(DS3_REMOTE_NAME);
+                byte[] name = new byte[ascii.Length + 1];
+                Array.Copy(ascii, name, ascii.Length);
+                RegSetValueEx(hk, "Name", 0, REG_BINARY, name, name.Length);
+                RegSetValueEx(hk, "VID", 0, REG_DWORD, BitConverter.GetBytes(0x054C), 4);
+                RegSetValueEx(hk, "PID", 0, REG_DWORD, BitConverter.GetBytes(0x0268), 4);
+                return true;
+            }
+            finally { RegCloseKey(hk); }
+        }
+
+        // Owner -> SYSTEM (S-1-5-18). Requires SeRestore to assign an owner other than
+        // the caller; SeTakeOwnership to touch the record's security at all.
+        private static bool SetDeviceRecordOwnerToSystem(string deviceMacHex, Action<string> log)
+        {
+            EnablePrivilege("SeTakeOwnershipPrivilege");
+            EnablePrivilege("SeRestorePrivilege");
+            if (!ConvertStringSidToSid("S-1-5-18", out IntPtr pSid)) { log("SID convert failed."); return false; }
+            try
+            {
+                int rc = SetNamedSecurityInfo(@"MACHINE\" + BthPortDevicesKey + deviceMacHex,
+                    SE_REGISTRY_KEY, OWNER_SECURITY_INFORMATION, pSid, IntPtr.Zero, IntPtr.Zero, IntPtr.Zero);
+                if (rc != 0) { log($"Setting the record owner failed (rc={rc})."); return false; }
+                return true;
+            }
+            finally { LocalFree(pSid); }
+        }
+
+        /// <summary>Deletes the DS3's remembered-device record + link key for a clean
+        /// unpair. The Devices subkey is SYSTEM-owned, so ownership is taken back to
+        /// Administrators first (SeTakeOwnership/SeRestore) before the delete.</summary>
+        public static void DeleteRememberedDeviceRecord(byte[] radioMacBigEndian, string deviceMacHex, Action<string> log)
+        {
+            try
+            {
+                EnablePrivilege("SeTakeOwnershipPrivilege");
+                EnablePrivilege("SeRestorePrivilege");
+                if (ConvertStringSidToSid("S-1-5-32-544", out IntPtr admins)) // BUILTIN\Administrators
+                {
+                    try
+                    {
+                        SetNamedSecurityInfo(@"MACHINE\" + BthPortDevicesKey + deviceMacHex,
+                            SE_REGISTRY_KEY, OWNER_SECURITY_INFORMATION, admins, IntPtr.Zero, IntPtr.Zero, IntPtr.Zero);
+                    }
+                    finally { LocalFree(admins); }
+                }
+                RegDeleteKey(HKLM, BthPortDevicesKey + deviceMacHex);
+            }
+            catch (Exception ex) { log("Removing the device record failed: " + ex.Message); }
+            DeleteLinkKeyAnchor(radioMacBigEndian, deviceMacHex, log);
+        }
 
         /// <summary>Writes the link-key value that anchors the DS3's Name record in
         /// bthport's remembered-device set. Value name = device MAC (12 lowercase hex),
@@ -306,12 +393,17 @@ namespace PadForge.Services
         private const uint FILE_FLAG_NO_BUFFERING = 0x20000000, FILE_FLAG_WRITE_THROUGH = 0x80000000;
         private const uint TOKEN_ADJUST_PRIVILEGES = 0x20, TOKEN_QUERY = 0x8, SE_PRIVILEGE_ENABLED = 0x2;
         private static readonly UIntPtr HKLM = unchecked((UIntPtr)0x80000002u);
-        private const int REG_OPTION_BACKUP_RESTORE = 0x04, REG_BINARY = 3, KEY_READ = 0x20019, KEY_WRITE = 0x20006;
+        private const int REG_OPTION_BACKUP_RESTORE = 0x04, REG_BINARY = 3, REG_DWORD = 4, KEY_READ = 0x20019, KEY_WRITE = 0x20006;
+        private const int SE_REGISTRY_KEY = 4, OWNER_SECURITY_INFORMATION = 0x1;
 
         [DllImport("advapi32.dll", SetLastError = true, CharSet = CharSet.Unicode)] private static extern int RegCreateKeyEx(UIntPtr hKey, string subKey, int reserved, string cls, int options, int sam, IntPtr sa, out IntPtr res, out int disp);
         [DllImport("advapi32.dll", SetLastError = true, CharSet = CharSet.Unicode)] private static extern int RegSetValueEx(IntPtr hKey, string name, int reserved, int type, byte[] data, int cb);
         [DllImport("advapi32.dll", SetLastError = true, CharSet = CharSet.Unicode)] private static extern int RegDeleteValue(IntPtr hKey, string name);
+        [DllImport("advapi32.dll", SetLastError = true, CharSet = CharSet.Unicode)] private static extern int RegDeleteKey(UIntPtr hKey, string subKey);
         [DllImport("advapi32.dll", SetLastError = true)] private static extern int RegCloseKey(IntPtr hKey);
+        [DllImport("advapi32.dll", SetLastError = true, CharSet = CharSet.Unicode)] private static extern int SetNamedSecurityInfo(string name, int objType, int secInfo, IntPtr owner, IntPtr group, IntPtr dacl, IntPtr sacl);
+        [DllImport("advapi32.dll", SetLastError = true, CharSet = CharSet.Unicode)] private static extern bool ConvertStringSidToSid(string s, out IntPtr sid);
+        [DllImport("kernel32.dll")] private static extern IntPtr LocalFree(IntPtr p);
 
         [StructLayout(LayoutKind.Sequential)] private struct BLUETOOTH_FIND_RADIO_PARAMS { public uint dwSize; }
 

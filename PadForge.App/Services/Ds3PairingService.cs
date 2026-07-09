@@ -40,7 +40,27 @@ namespace PadForge.Services
             @"SYSTEM\CurrentControlSet\Services\BTHPORT\Parameters\Devices";
 
         private readonly Action<string> _log;
-        public Ds3PairingService(Action<string> log = null) => _log = log ?? (_ => { });
+        public Ds3PairingService(Action<string> log = null)
+            => _log = msg => { LogLine(msg); log?.Invoke(msg); };
+
+        /// <summary>Path of the human-readable pairing log, surfaced in the dialog
+        /// so a failed pair can be diagnosed from real data (same convention as
+        /// <see cref="WiiPairingService.LogPath"/>).</summary>
+        public static string LogPath =>
+            System.IO.Path.Combine(System.IO.Path.GetTempPath(), "PadForge-Ds3Pair.log");
+
+        private static readonly object _logLock = new();
+
+        private static void LogLine(string message)
+        {
+            try
+            {
+                lock (_logLock)
+                    System.IO.File.AppendAllText(LogPath,
+                        $"{DateTime.Now:HH:mm:ss.fff} {message}{Environment.NewLine}");
+            }
+            catch { /* logging must never break pairing */ }
+        }
 
         public sealed class PairResult
         {
@@ -89,17 +109,19 @@ namespace PadForge.Services
             string path = FindWinUsbDs3();
             if (path == null) { _log("DS3 not found on USB."); r.Error = "no-ds3-usb"; return r; }
 
-            IntPtr dev = CreateFile(path, GENERIC_READ | GENERIC_WRITE, FILE_SHARE_RW, IntPtr.Zero, OPEN_EXISTING, 0, IntPtr.Zero);
-            if (dev == INVALID_HANDLE) { _log("Opening the DS3 failed."); r.Error = "no-ds3-usb"; return r; }
+            // WinUsb_Initialize requires the device handle opened FILE_FLAG_OVERLAPPED
+            // (WinUSB contract; proven prototype ds3winusb Program.cs:153).
+            IntPtr dev = CreateFile(path, GENERIC_READ | GENERIC_WRITE, FILE_SHARE_RW, IntPtr.Zero, OPEN_EXISTING, FILE_FLAG_OVERLAPPED, IntPtr.Zero);
+            if (dev == INVALID_HANDLE) { _log($"Opening the DS3 failed (err={Marshal.GetLastWin32Error()})."); r.Error = "no-ds3-usb"; return r; }
             try
             {
                 if (!WinUsb_Initialize(dev, out IntPtr ifh))
-                { _log("WinUsb_Initialize failed."); r.Error = "no-ds3-usb"; return r; }
+                { _log($"WinUsb_Initialize failed (err={Marshal.GetLastWin32Error()})."); r.Error = "no-ds3-usb"; return r; }
                 try
                 {
                     // 3. Read the pad's own MAC (0xF2 bytes 4-9) - the registry key name.
                     byte[] f2 = new byte[17];
-                    if (!GetFeature(ifh, 0xF2, f2)) { _log("Reading the DS3 MAC failed."); r.Error = "sixpair-failed"; return r; }
+                    if (!GetFeature(ifh, 0xF2, f2)) { _log($"Reading the DS3 MAC failed (err={Marshal.GetLastWin32Error()})."); r.Error = "sixpair-failed"; return r; }
                     byte[] ds3mac = new byte[6];
                     Array.Copy(f2, 4, ds3mac, 0, 6);
                     r.Ds3Mac = Hex(ds3mac, null).ToLowerInvariant();
@@ -109,7 +131,7 @@ namespace PadForge.Services
                     byte[] set = new byte[8];
                     set[0] = 0x01; set[1] = 0x00;
                     Array.Copy(radio, 0, set, 2, 6);
-                    if (!SetFeature(ifh, 0xF5, set)) { _log("Sixpair write failed."); r.Error = "sixpair-failed"; return r; }
+                    if (!SetFeature(ifh, 0xF5, set)) { _log($"Sixpair write failed (err={Marshal.GetLastWin32Error()})."); r.Error = "sixpair-failed"; return r; }
                     _log("Sixpair written.");
                 }
                 finally { WinUsb_Free(ifh); }
@@ -274,7 +296,7 @@ namespace PadForge.Services
         // ── P/Invoke ────────────────────────────────────────────────────────────
 
         private static readonly IntPtr INVALID_HANDLE = new IntPtr(-1);
-        private const uint GENERIC_READ = 0x80000000, GENERIC_WRITE = 0x40000000, FILE_SHARE_RW = 3, OPEN_EXISTING = 3;
+        private const uint GENERIC_READ = 0x80000000, GENERIC_WRITE = 0x40000000, FILE_SHARE_RW = 3, OPEN_EXISTING = 3, FILE_FLAG_OVERLAPPED = 0x40000000;
         private const int DIGCF_PRESENT = 0x2, DIGCF_DEVICEINTERFACE = 0x10;
 
         [StructLayout(LayoutKind.Sequential)] private struct BLUETOOTH_FIND_RADIO_PARAMS { public uint dwSize; }

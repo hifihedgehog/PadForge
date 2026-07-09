@@ -867,12 +867,32 @@ namespace PadForge.Engine
                 _cachedBatteryPercent = percent;
                 _cachedBatteryCharging = powerState == SDL_POWERSTATE_CHARGING
                                       || powerState == SDL_POWERSTATE_CHARGED;
+
+                // SDL has no battery channel for virtual joysticks (no power setter in
+                // the virtual API), so devices bridged from a native transport publish
+                // through this provider instead, keyed by SDL instance id. Only
+                // consulted when SDL itself reports unknown.
+                if (_cachedBatteryPercent < 0)
+                {
+                    var ext = ExternalPowerInfoProvider?.Invoke(SdlInstanceId);
+                    if (ext.HasValue)
+                    {
+                        _cachedBatteryPercent = ext.Value.Percent;
+                        _cachedBatteryCharging = ext.Value.Charging;
+                    }
+                }
             }
             state.BatteryPercent = _cachedBatteryPercent;
             state.BatteryCharging = _cachedBatteryCharging;
 
             return state;
         }
+
+        /// <summary>Battery source for devices whose power state SDL cannot see
+        /// (virtual joysticks bridged from a native transport, e.g. the Bluetooth
+        /// DualShock 3). Keyed by SDL instance id; return null when the id isn't
+        /// yours. Wired by the app layer.</summary>
+        public static Func<uint, (int Percent, bool Charging)?> ExternalPowerInfoProvider { get; set; }
 
         private long _lastBatteryReadTick;
         private int _cachedBatteryPercent = -1;

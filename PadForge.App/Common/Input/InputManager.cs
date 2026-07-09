@@ -637,6 +637,11 @@ namespace PadForge.Common.Input
                 {
                     _ds3Direct = new Ds3DirectService(msg => System.Diagnostics.Debug.WriteLine("[DS3] " + msg));
                     _ds3Direct.Start();
+
+                    // Battery for the bridged DS3 (#167 lane): SDL has no power
+                    // channel for virtual joysticks, so the wrapper falls back to
+                    // this provider when SDL reports unknown.
+                    Engine.SdlDeviceWrapper.ExternalPowerInfoProvider = Ds3DirectService.GetPowerInfo;
                 }
                 catch (Exception ex) { System.Diagnostics.Debug.WriteLine("[DS3] service start failed: " + ex.Message); }
 
@@ -672,6 +677,57 @@ namespace PadForge.Common.Input
 
         /// <summary>Bluetooth DualShock 3 -> SDL virtual joystick bridge (BthPS3 raw PDO).</summary>
         private Ds3DirectService _ds3Direct;
+
+        private long _ds3PlayerNumberTick;
+
+        /// <summary>
+        /// Player LED idle floor for the bridged DS3 (#191 parity): the lowest
+        /// virtual-controller slot the pad feeds picks its lit LED, wrapping past
+        /// 4 like SDL's PS3 driver. Unmapped keeps LED 1. Rate-limited to twice a
+        /// second; SetPlayerNumber itself is change-detected, so steady state costs
+        /// two short lock walks and no device I/O.
+        /// </summary>
+        private void UpdateDs3PlayerNumber()
+        {
+            var svc = _ds3Direct;
+            if (svc == null || !svc.IsConnected) return;
+
+            long now = Environment.TickCount64;
+            if (now - _ds3PlayerNumberTick < 500) return;
+            _ds3PlayerNumberTick = now;
+
+            var devices = SettingsManager.UserDevices;
+            var settings = SettingsManager.UserSettings;
+            if (devices == null || settings == null) return;
+
+            uint id = svc.InstanceId;
+            Guid guid = Guid.Empty;
+            lock (devices.SyncRoot)
+            {
+                foreach (var ud in devices.Items)
+                {
+                    if (ud?.Device is Engine.SdlDeviceWrapper w && w.SdlInstanceId == id)
+                    {
+                        guid = ud.InstanceGuid;
+                        break;
+                    }
+                }
+            }
+            if (guid == Guid.Empty) { svc.SetPlayerNumber(0); return; }
+
+            int minPad = int.MaxValue;
+            lock (settings.SyncRoot)
+            {
+                foreach (var us in settings.Items)
+                {
+                    if (us == null || us.InstanceGuid != guid) continue;
+                    if (us.MapTo >= 0 && us.MapTo < minPad) minPad = us.MapTo;
+                }
+            }
+            svc.SetPlayerNumber(minPad == int.MaxValue
+                ? 0
+                : SettingsManager.SlotOrders.GetGlobalSlotNumber(minPad));
+        }
 
         /// <summary>
         /// Number of gamepad mappings successfully applied from the embedded
@@ -1070,6 +1126,7 @@ namespace PadForge.Common.Input
                         EvaluateMacros();
                         UpdateVirtualDevices();
                         RetrieveOutputStates();
+                        UpdateDs3PlayerNumber();
 
                         // Frequency measurement.
                         _frequencyCounter++;

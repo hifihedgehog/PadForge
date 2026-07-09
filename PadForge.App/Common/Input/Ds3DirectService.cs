@@ -263,7 +263,11 @@ namespace PadForge.Common.Input
                     type = (ushort)SDL.SDL_JoystickType.SDL_JOYSTICK_TYPE_GAMEPAD,
                     vendor_id = DS3_VID,
                     product_id = DS3_PID,
-                    naxes = 6,
+                    // 6 gamepad axes + the 10 button-pressure axes on 6-15, mirroring
+                    // upstream SDL's PS3 driver (SDL_hidapi_ps3.c:486-516) so the #193
+                    // HasExtraGenericAxes seam surfaces them as "Axis 6".."Axis 15"
+                    // identically on both transports.
+                    naxes = 16,
                     nbuttons = 15,
                     nhats = 0,
                     nsensors = (ushort)sensors.Length,
@@ -358,8 +362,23 @@ namespace PadForge.Common.Input
                 SDL.SDL_SetJoystickVirtualAxis(j, 1, AxisFromByte(b[8]));      // LY
                 SDL.SDL_SetJoystickVirtualAxis(j, 2, AxisFromByte(b[9]));      // RX
                 SDL.SDL_SetJoystickVirtualAxis(j, 3, AxisFromByte(b[10]));     // RY
-                SDL.SDL_SetJoystickVirtualAxis(j, 4, TriggerFromByte(b[19]));  // L2 pressure (raw[18])
-                SDL.SDL_SetJoystickVirtualAxis(j, 5, TriggerFromByte(b[20]));  // R2 pressure (raw[19])
+                SDL.SDL_SetJoystickVirtualAxis(j, 4, PressureAxis(b[19]));     // L2 pressure (raw[18])
+                SDL.SDL_SetJoystickVirtualAxis(j, 5, PressureAxis(b[20]));     // R2 pressure (raw[19])
+
+                // Button-pressure axes 6-15, same order and scale as upstream SDL's
+                // PS3 driver (SDL_hidapi_ps3.c button_axis_offsets, axis_index from 6;
+                // raw offset -> BT buf offset is +1). Order: South East West North,
+                // LShoulder RShoulder, DpadUp DpadDown DpadLeft DpadRight.
+                SDL.SDL_SetJoystickVirtualAxis(j, 6, PressureAxis(b[25]));   // Cross    (raw[24])
+                SDL.SDL_SetJoystickVirtualAxis(j, 7, PressureAxis(b[24]));   // Circle   (raw[23])
+                SDL.SDL_SetJoystickVirtualAxis(j, 8, PressureAxis(b[26]));   // Square   (raw[25])
+                SDL.SDL_SetJoystickVirtualAxis(j, 9, PressureAxis(b[23]));   // Triangle (raw[22])
+                SDL.SDL_SetJoystickVirtualAxis(j, 10, PressureAxis(b[21]));  // L1       (raw[20])
+                SDL.SDL_SetJoystickVirtualAxis(j, 11, PressureAxis(b[22]));  // R1       (raw[21])
+                SDL.SDL_SetJoystickVirtualAxis(j, 12, PressureAxis(b[15]));  // D-pad Up    (raw[14])
+                SDL.SDL_SetJoystickVirtualAxis(j, 13, PressureAxis(b[17]));  // D-pad Down  (raw[16])
+                SDL.SDL_SetJoystickVirtualAxis(j, 14, PressureAxis(b[18]));  // D-pad Left  (raw[17])
+                SDL.SDL_SetJoystickVirtualAxis(j, 15, PressureAxis(b[16]));  // D-pad Right (raw[15])
 
                 // Motion. Raw words are BIG-endian (DsHidMini byteswaps them before its
                 // SXS serve; we read the raw report, so swap here). Frame mapping and
@@ -401,7 +420,11 @@ namespace PadForge.Common.Input
         private readonly float[] _gyroData = new float[3];
 
         private static short AxisFromByte(byte v) => (short)Math.Clamp((v - 128) * 257, -32768, 32767);
-        private static short TriggerFromByte(byte v) => (short)Math.Clamp(v * 129, 0, 32767);
+
+        /// <summary>0..255 pressure to the full SDL axis range, exactly as SDL's PS3
+        /// driver scales it (v*257 - 32768; released = -32768). The virtual backend
+        /// rests trigger axes at SDL_JOYSTICK_AXIS_MIN, confirming the convention.</summary>
+        private static short PressureAxis(byte v) => (short)(v * 257 - 32768);
 
         // ─── SDL callbacks: store + signal ONLY (they run under SDL's joystick lock
         //     on the polling thread; device I/O here would stall the whole pipeline) ─

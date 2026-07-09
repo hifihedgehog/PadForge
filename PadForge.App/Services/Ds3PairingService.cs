@@ -36,12 +36,6 @@ namespace PadForge.Services
         public const ushort DS3_VID = 0x054C;
         public const ushort DS3_PID = 0x0268;
 
-        // The DS3's own remote name, matched by BthPS3's default SIXAXISSupportedNames.
-        private const string DS3_REMOTE_NAME = "PLAYSTATION(R)3 Controller";
-
-        private const string DevicesRoot =
-            @"SYSTEM\CurrentControlSet\Services\BTHPORT\Parameters\Devices";
-
         private readonly Action<string> _log;
         public Ds3PairingService(Action<string> log = null)
             => _log = msg => { LogLine(msg); log?.Invoke(msg); };
@@ -162,20 +156,15 @@ namespace PadForge.Services
             }
             finally { CloseHandle(dev); }
 
-            // 5. Persist the pad's identity into the radio's device list (BthPS3 reads it).
-            if (!InjectIdentity(r.Ds3Mac)) { _log("Registering the pad failed."); r.Error = "identity-inject-failed"; return r; }
+            // 5. Write the full REMEMBERED-device record: Name into Devices\<mac>, owner
+            // set to SYSTEM (else bthport prunes the record on radio re-enumeration), and
+            // a synthetic link key under Keys\<radio> so the pad is flagged
+            // remembered+authenticated and its stored Name is served to BthPS3 on every
+            // connect instead of the clone's blank over-air name. Hardware-confirmed
+            // 2026-07-09 (rem=16, identified as SIXAXIS, survives cycles, no security block).
+            if (!Ds3DriverInstaller.WriteRememberedDeviceRecord(radio, r.Ds3Mac, _log))
+            { _log("Registering the pad failed."); r.Error = "identity-inject-failed"; return r; }
             _log("Pad registered with the Bluetooth stack.");
-
-            // 5b. Anchor that record as a REMEMBERED device with a synthetic link key.
-            // Without it bthport treats the minimal Name record as disposable inquiry
-            // cache: on radio re-enumeration / at connect the clone's blank over-air name
-            // overwrites the seeded Name and BthPS3 drops the connection. The link key
-            // flips the pad into bthport's remembered set so the stored Name is served to
-            // BthPS3 on every connect. Hardware-confirmed 2026-07-09.
-            if (!Ds3DriverInstaller.WriteLinkKeyAnchor(radio, r.Ds3Mac, _log))
-                _log("Warning: pairing not anchored; it may not survive a radio cycle.");
-            else
-                _log("Pairing anchored.");
 
             // 6. Cycle the radio so the drivers pick up the new record.
             CycleRadio();
@@ -192,53 +181,15 @@ namespace PadForge.Services
         {
             if (!string.IsNullOrEmpty(ds3Mac))
             {
-                try
-                {
-                    using var root = Registry.LocalMachine.OpenSubKey(DevicesRoot, writable: true);
-                    if (root?.OpenSubKey(ds3Mac) != null)
-                    {
-                        root.DeleteSubKeyTree(ds3Mac, throwOnMissingSubKey: false);
-                        _log($"Removed device record {ds3Mac}.");
-                    }
-                }
-                catch (Exception ex) { _log("Removing the device record failed: " + ex.Message); }
-
-                // Drop the remembered-device link-key anchor too, else the pad stays
-                // half-paired (bthport still lists it) and a later re-pair is confused.
+                // The Devices record is SYSTEM-owned, so this takes ownership back before
+                // deleting, and drops the Keys link-key anchor too (else the pad stays
+                // half-remembered and a later re-pair is confused).
                 byte[] radio = ReadRadioMac();
-                if (radio != null) Ds3DriverInstaller.DeleteLinkKeyAnchor(radio, ds3Mac, _log);
+                if (radio != null) Ds3DriverInstaller.DeleteRememberedDeviceRecord(radio, ds3Mac, _log);
             }
             RemoveBthPs3Node();
             CycleRadio();
             _log("Pairing cleared.");
-        }
-
-        // ── persistent identity record (admin-writable; DS3 does zero auth) ──────
-
-        /// <summary>
-        /// Writes the minimal device record BthPS3 needs to identify the pad by name:
-        /// Name (ASCII + NUL), VID, PID. Deliberately minimal - cloning a full paired
-        /// record (with a CachedServices HID SDP blob) makes Windows enumerate the pad
-        /// under inbox hidbth and fight BthPS3 for it. Administrators have FullControl
-        /// of this key, so no SYSTEM context is needed.
-        /// </summary>
-        private bool InjectIdentity(string ds3Mac)
-        {
-            try
-            {
-                using var root = Registry.LocalMachine.OpenSubKey(DevicesRoot, writable: true);
-                if (root == null) { _log("BTHPORT device list not found."); return false; }
-                using var key = root.CreateSubKey(ds3Mac, writable: true);
-                if (key == null) return false;
-
-                byte[] name = new byte[DS3_REMOTE_NAME.Length + 1];
-                System.Text.Encoding.ASCII.GetBytes(DS3_REMOTE_NAME, 0, DS3_REMOTE_NAME.Length, name, 0);
-                key.SetValue("Name", name, RegistryValueKind.Binary);
-                key.SetValue("VID", (int)DS3_VID, RegistryValueKind.DWord);
-                key.SetValue("PID", (int)DS3_PID, RegistryValueKind.DWord);
-                return true;
-            }
-            catch (Exception ex) { _log("Identity inject failed: " + ex.Message); return false; }
         }
 
         // ── local Bluetooth radio address (human/big-endian order per DsHidMini) ─

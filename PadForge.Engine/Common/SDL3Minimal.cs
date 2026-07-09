@@ -1173,5 +1173,18 @@ namespace SDL3
         [DllImport(lib, CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_SendJoystickVirtualSensorData")]
         [return: MarshalAs(UnmanagedType.I1)]
         public static extern bool SDL_SendJoystickVirtualSensorData(IntPtr joystick, int type, ulong sensor_timestamp, float[] data, int num_values);
+
+        /// <summary>Global joystick lock. Recursive, so batching multiple Set*Virtual
+        /// calls under one acquisition publishes an atomic frame (the per-call locks
+        /// nest for free) and costs one contention instead of N.</summary>
+        [DllImport(lib, CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_LockJoysticks")]
+        public static extern void SDL_LockJoysticks();
+
+        [DllImport(lib, CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_UnlockJoysticks")]
+        public static extern void SDL_UnlockJoysticks();
+
+        /// <summary>Nanoseconds since SDL init; the timestamp domain SDL sensor events use.</summary>
+        [DllImport(lib, CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GetTicksNS")]
+        public static extern ulong SDL_GetTicksNS();
     }
 }

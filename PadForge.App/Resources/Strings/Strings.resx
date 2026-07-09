@@ -2247,6 +2247,13 @@
   <data name="WiiPair_SuccessFormat" xml:space="preserve"><value>Paired {0}. It will show up in your device list.</value></data>
   <data name="WiiPair_NoBluetooth" xml:space="preserve"><value>No Bluetooth radio found. Connect a Bluetooth adapter and try again.</value></data>
   <data name="WiiPair_Done" xml:space="preserve"><value>Done</value></data>
+  <data name="WiiPair_FamilyDs3" xml:space="preserve"><value>Sony DualShock 3</value></data>
+  <data name="Ds3Pair_Instructions" xml:space="preserve"><value>Connect the DualShock 3 with a USB cable, then click Pair. PadForge writes this PC into the controller and registers it. When it finishes, unplug the controller and press the PS button to connect over Bluetooth.</value></data>
+  <data name="Ds3Pair_Working" xml:space="preserve"><value>Setting up the controller. Keep it connected by USB.</value></data>
+  <data name="Ds3Pair_Success" xml:space="preserve"><value>Ready. Unplug the controller and press the PS button. It will appear in your device list.</value></data>
+  <data name="Ds3Pair_NoUsb" xml:space="preserve"><value>No DualShock 3 found on USB. Connect it with a USB cable and try again.</value></data>
+  <data name="Ds3Pair_InstallFailed" xml:space="preserve"><value>The Bluetooth driver for PlayStation controllers could not be installed.</value></data>
+  <data name="Ds3Pair_Failed" xml:space="preserve"><value>Pairing did not complete. See the log for details.</value></data>
   <data name="Common_Close" xml:space="preserve"><value>Close</value></data>
   <data name="Nfc_Title" xml:space="preserve"><value>NFC Tags</value></data>
   <data name="Nfc_RegisterHeader" xml:space="preserve"><value>Register a Tag</value></data>

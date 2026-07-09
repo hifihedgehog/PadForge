@@ -128,11 +128,32 @@ namespace PadForge.Services
                     _log($"DS3 address: {Hex(ds3mac, ':')}");
 
                     // 4. Sixpair: write the radio MAC into the pad (SET_REPORT FEATURE 0xF5).
+                    //    Both proven references read 0xF5 before writing it (ds3winusb
+                    //    Program.cs:182, DsHidMini reads HostAddress in device init), so
+                    //    do the same read-before-write, then read back to confirm the
+                    //    firmware actually committed the master (a returned-true control
+                    //    transfer is not proof the pad stored it).
+                    byte[] before = new byte[8];
+                    if (GetFeature(ifh, 0xF5, before))
+                        _log($"Master before sixpair: {Hex(before[2..8], ':')}");
+
                     byte[] set = new byte[8];
                     set[0] = 0x01; set[1] = 0x00;
                     Array.Copy(radio, 0, set, 2, 6);
                     if (!SetFeature(ifh, 0xF5, set)) { _log($"Sixpair write failed (err={Marshal.GetLastWin32Error()})."); r.Error = "sixpair-failed"; return r; }
-                    _log("Sixpair written.");
+
+                    byte[] after = new byte[8];
+                    if (GetFeature(ifh, 0xF5, after))
+                    {
+                        byte[] got = after[2..8];
+                        _log($"Master after sixpair: {Hex(got, ':')}");
+                        if (!got.AsSpan().SequenceEqual(radio))
+                        {
+                            _log($"WARNING: pad did not store the radio address (wanted {Hex(radio, ':')}).");
+                            r.Error = "sixpair-not-committed"; return r;
+                        }
+                    }
+                    _log("Sixpair written and confirmed.");
                 }
                 finally { WinUsb_Free(ifh); }
             }

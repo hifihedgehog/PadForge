@@ -629,6 +629,17 @@ namespace PadForge.Common.Input
                 SetThreadExecutionState(ES_CONTINUOUS);
 
                 _sdlInitialized = true;
+
+                // Surface a Bluetooth DualShock 3 (behind BthPS3, no DsHidMini) to SDL
+                // as a virtual joystick so the normal pipeline consumes it. Cheap when
+                // absent (a periodic device-interface poll); attaches only on connect.
+                try
+                {
+                    _ds3Direct = new Ds3DirectService(msg => System.Diagnostics.Debug.WriteLine("[DS3] " + msg));
+                    _ds3Direct.Start();
+                }
+                catch (Exception ex) { System.Diagnostics.Debug.WriteLine("[DS3] service start failed: " + ex.Message); }
+
                 return true;
             }
             catch (DllNotFoundException ex)
@@ -652,9 +663,15 @@ namespace PadForge.Common.Input
             if (!_sdlInitialized)
                 return;
 
+            try { _ds3Direct?.Stop(); } catch { }
+            _ds3Direct = null;
+
             SDL_Quit();
             _sdlInitialized = false;
         }
+
+        /// <summary>Bluetooth DualShock 3 -> SDL virtual joystick bridge (BthPS3 raw PDO).</summary>
+        private Ds3DirectService _ds3Direct;
 
         /// <summary>
         /// Number of gamepad mappings successfully applied from the embedded

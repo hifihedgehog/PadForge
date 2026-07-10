@@ -123,6 +123,20 @@ namespace PadForge.Services
 
                 Log($"=== pass start (temporary={temporary}) host={FormatAddr(radioInfo.address)} radio='{radioInfo.szName}' ===");
 
+                // Force BthPS3 PSM patching off for the whole pass (issue #199).
+                // A Wii Remote's incoming HID connection must not enter BthPS3's
+                // identify/deny/destroy path, which is where the upstream
+                // use-after-free lives (a stray Wii connect through that path
+                // bugchecked the box on 2026-07-10). With patching off the Wii's
+                // standard HID PSMs pass through to the inbox Bluetooth stack,
+                // which is where a Wii Remote belongs anyway. Restored to policy
+                // in the outer finally, on every exit path.
+                if (Ds3DriverInstaller.IsBthPs3Installed())
+                {
+                    Log("PSM patching forced off for the Wii pass (issue #199).");
+                    Ds3DriverInstaller.SetPsmPatching(false, Log);
+                }
+
                 var search = new BLUETOOTH_DEVICE_SEARCH_PARAMS
                 {
                     dwSize = (uint)Marshal.SizeOf<BLUETOOTH_DEVICE_SEARCH_PARAMS>(),
@@ -229,6 +243,11 @@ namespace PadForge.Services
             {
                 if (hRadio != IntPtr.Zero) CloseHandle(hRadio);
                 if (hRadioFind != IntPtr.Zero) BluetoothFindRadioClose(hRadioFind);
+                // Restore PSM patching to its policy state (issue #199): armed
+                // only if a DS3 is actually paired, off otherwise. Runs on every
+                // exit path, including the no-radio / exception early returns
+                // that never forced it off (a harmless no-op there).
+                Ds3PairingService.ReconcilePsmPatchForCrashSafety("wii-pass-end");
             }
 
             return result;

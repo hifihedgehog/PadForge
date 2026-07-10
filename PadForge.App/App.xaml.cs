@@ -178,6 +178,19 @@ namespace PadForge
                 catch { /* best effort — continue without sweep */ }
             });
 
+            // Reconcile BthPS3 PSM patching to the crash-safe state once per
+            // launch (issue #199): armed only if a DS3 is actually paired, off
+            // otherwise, so a machine with BthPS3 installed but no DS3 in use
+            // keeps the profile driver dormant and out of the upstream
+            // use-after-free path. Also (re)asserts AutoEnableFilter=0 via the
+            // reconcile's SetPsmPatching ownership. No-op when BthPS3 isn't
+            // installed; runs on a background thread so it never blocks startup.
+            System.Threading.Tasks.Task.Run(() =>
+            {
+                try { PadForge.Services.Ds3PairingService.ReconcilePsmPatchForCrashSafety("startup"); }
+                catch { /* best effort. mitigation must never block launch */ }
+            });
+
             // Capture the pre-override UI culture first: this is the
             // Windows display language a fresh install runs under, and
             // Reset to Defaults restores it. InstalledUICulture is the

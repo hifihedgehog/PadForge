@@ -1811,16 +1811,16 @@ namespace PadForge.Engine.Data
         [System.Text.Json.Serialization.JsonIgnore]
         public System.Collections.Generic.List<MappingRow> SlotMultiSourceRows { get; set; }
 
-        /// <summary>Opaque JSON payload carrying the PlayStation slot
-        /// configs (Lighting / Adaptive Triggers / Mic LED / Player LED
-        /// / audio-reactive / palette) — one entry per (slot, device)
-        /// plus the slot anchor. Set by the App-side Copy path; consumed
-        /// by the App-side Paste path. PadSetting just round-trips the
-        /// string verbatim so the Engine stays free of App-ViewModel
-        /// references.</summary>
+        /// <summary>Opaque JSON payload carrying the per-(slot, device)
+        /// configs (lighting / adaptive triggers / Mic LED / Player LED
+        /// / audio-reactive / palette / tone filter). One entry per
+        /// (slot, device) plus the slot anchor. Set by the App-side Copy
+        /// path, consumed by the App-side Paste path. PadSetting just
+        /// round-trips the string verbatim so the Engine stays free of
+        /// App-ViewModel references.</summary>
         [System.Xml.Serialization.XmlIgnore]
         [System.Text.Json.Serialization.JsonIgnore]
-        public string SlotPlayStationConfigsJson { get; set; }
+        public string SlotDeviceConfigsJson { get; set; }
 
         /// <summary>Opaque JSON payload for the Extended custom layout
         /// snapshot (thumbstick / trigger / POV / button counts, OEM /
@@ -1942,14 +1942,14 @@ namespace PadForge.Engine.Data
                 dict["__MouseGestureSettings"] = JsonSerializer.Serialize(MouseGestureSettings);
             }
 
-            // Opaque per-slot config snapshots (Lighting / Adaptive Triggers
-            // / Mic LED / Player LED / audio-reactive / palette for
-            // PlayStation, custom layout for Extended, CC + note layout
-            // for MIDI). The caller serialises the App-side DTOs into
+            // Opaque per-slot config snapshots (the per-(slot, device)
+            // lighting / trigger / audio bag, custom layout for Extended,
+            // CC + note layout for MIDI). The caller serialises the
+            // App-side DTOs into
             // these strings; PadSetting just round-trips them. Keeps the
             // Engine assembly free of dependencies on App ViewModels.
-            if (!string.IsNullOrEmpty(SlotPlayStationConfigsJson))
-                dict["__SlotPlayStationConfigs"] = SlotPlayStationConfigsJson;
+            if (!string.IsNullOrEmpty(SlotDeviceConfigsJson))
+                dict["__SlotDeviceConfigs"] = SlotDeviceConfigsJson;
             if (!string.IsNullOrEmpty(SlotExtendedConfigJson))
                 dict["__SlotExtendedConfig"] = SlotExtendedConfigJson;
             if (!string.IsNullOrEmpty(SlotMidiConfigJson))
@@ -2069,8 +2069,11 @@ namespace PadForge.Engine.Data
                             }
                             catch { /* malformed payload. leave MouseGestureSettings null */ }
                         }
-                        else if (kvp.Key == "__SlotPlayStationConfigs")
-                            ps.SlotPlayStationConfigsJson = kvp.Value;
+                        else if (kvp.Key == "__SlotDeviceConfigs"
+                            // Pre-v4.x spelling: payloads copied or exported
+                            // by older builds still carry the old key.
+                            || kvp.Key == "__SlotPlayStationConfigs")
+                            ps.SlotDeviceConfigsJson = kvp.Value;
                         else if (kvp.Key == "__SlotExtendedConfig")
                             ps.SlotExtendedConfigJson = kvp.Value;
                         else if (kvp.Key == "__SlotMidiConfig")

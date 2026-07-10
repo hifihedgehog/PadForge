@@ -6072,7 +6072,7 @@ namespace PadForge
                 var jsonOpts = new System.Text.Json.JsonSerializerOptions { WriteIndented = false };
                 var psConfigs = _settingsService.BuildDeviceConfigSnapshotForSlot(padVm.PadIndex);
                 if (psConfigs != null && psConfigs.Length > 0)
-                    ps.SlotPlayStationConfigsJson = System.Text.Json.JsonSerializer.Serialize(psConfigs, jsonOpts);
+                    ps.SlotDeviceConfigsJson = System.Text.Json.JsonSerializer.Serialize(psConfigs, jsonOpts);
                 var extCfg = _settingsService.BuildExtendedConfigSnapshotForSlot(padVm.PadIndex);
                 if (extCfg != null)
                     ps.SlotExtendedConfigJson = System.Text.Json.JsonSerializer.Serialize(extCfg, jsonOpts);
@@ -6153,14 +6153,14 @@ namespace PadForge
 
                 // Unpack the per-slot config tabs that travelled through the
                 // clipboard JSON as opaque strings on PadSetting. Same semantics
-                // as the in-process Copy From: PlayStation features copy
+                // as the in-process Copy From: device features copy
                 // unconditionally (physical-device passthrough), Extended /
                 // MIDI gated on matching slot type by their Apply methods.
-                if (!string.IsNullOrEmpty(ps.SlotPlayStationConfigsJson))
+                if (!string.IsNullOrEmpty(ps.SlotDeviceConfigsJson))
                 {
                     try
                     {
-                        var psConfigs = System.Text.Json.JsonSerializer.Deserialize<ViewModels.DeviceSlotConfigData[]>(ps.SlotPlayStationConfigsJson);
+                        var psConfigs = System.Text.Json.JsonSerializer.Deserialize<ViewModels.DeviceSlotConfigData[]>(ps.SlotDeviceConfigsJson);
                         _settingsService.ApplyDeviceSlotConfigsToSlot(padVm.PadIndex, psConfigs);
                     }
                     catch { /* malformed payload — Lighting tab paste skipped */ }

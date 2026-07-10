@@ -12,7 +12,7 @@ namespace PadForge.Engine.Data
     /// Lives in Engine.Data so PadSetting.ToJson / FromJson can produce
     /// + consume it without depending on App-side ViewModels. The nested
     /// PadSettingJson string is a PadSetting.ToJson() output with the
-    /// outer-only slot-level fields (SlotPlayStationConfigsJson,
+    /// outer-only slot-level fields (SlotDeviceConfigsJson,
     /// SlotExtendedConfigJson, SlotMidiConfigJson, SlotMultiSourceRows,
     /// DeviceScopedMultiSourceRows, and SlotPerDeviceSettingsJson itself)
     /// cleared so the nesting doesn't recurse.

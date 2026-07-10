@@ -82,6 +82,9 @@ namespace PadForge.Common
                 using (var s = pe.Open())
                     profile = (ProfileData)Serializer.Deserialize(s);
                 if (profile == null) return null;
+                // Profiles exported before the v4.x schema rename carry the
+                // per-(slot, device) configs under the legacy element name.
+                profile.MigrateLegacySchema();
                 profile.Id = Guid.NewGuid().ToString("N");
 
                 string appDir = AppDomain.CurrentDomain.BaseDirectory;

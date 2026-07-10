@@ -1093,7 +1093,7 @@ namespace PadForge.Services
             // opening the Touchpad tab).
             // Issue #83 — per-slot per-device passthrough flags for the
             // controller-audio service, sourced from the same per-device
-            // PlayStation configs the lighting dispatcher uses.
+            // configs the lighting dispatcher uses.
             PadForge.Common.Input.AudioPassthroughService.PassthroughConfigProvider = slotIndex =>
             {
                 if (slotIndex < 0 || slotIndex >= _mainVm.Pads.Count)
@@ -4641,7 +4641,7 @@ namespace PadForge.Services
         /// a source slot. One entry per UserSetting whose MapTo equals
         /// <paramref name="sourcePadIndex"/>. The nested PadSettingJson
         /// strings are produced via <see cref="PadSetting.ToJson"/> with
-        /// the slot-level fields (SlotPlayStationConfigsJson,
+        /// the slot-level fields (SlotDeviceConfigsJson,
         /// SlotExtendedConfigJson, SlotMidiConfigJson,
         /// SlotPerDeviceSettingsJson, SlotMultiSourceRows,
         /// DeviceScopedMultiSourceRows) cleared so the nesting doesn't
@@ -4670,7 +4670,7 @@ namespace PadForge.Services
                 // Clone so we can clear slot-level fields without mutating
                 // the live PadSetting attached to the live UserSetting.
                 var clone = sourcePs.CloneDeep();
-                clone.SlotPlayStationConfigsJson = null;
+                clone.SlotDeviceConfigsJson = null;
                 clone.SlotExtendedConfigJson = null;
                 clone.SlotMidiConfigJson = null;
                 clone.SlotPerDeviceSettingsJson = null;

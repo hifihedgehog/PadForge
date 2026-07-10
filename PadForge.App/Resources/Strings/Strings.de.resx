@@ -2302,5 +2302,5 @@
   <data name="Mapping_MouseGestureUp" xml:space="preserve"><value>Hoch</value></data>
   <data name="Mapping_MouseGestureDown" xml:space="preserve"><value>Runter</value></data>
   <data name="Mapping_MouseGestureClick" xml:space="preserve"><value>Klick</value></data>
-  <data name="Mapping_MouseGesture_Format" xml:space="preserve"><value>Mausgeste ({0}): {1}</value></data>
+  <data name="Mapping_MouseGesture_Format" xml:space="preserve"><value>Mausgeste: {0} + {1}</value></data>
 </root>

@@ -2322,5 +2322,5 @@
   <data name="Mapping_MouseGestureUp" xml:space="preserve"><value>Omhoog</value></data>
   <data name="Mapping_MouseGestureDown" xml:space="preserve"><value>Omlaag</value></data>
   <data name="Mapping_MouseGestureClick" xml:space="preserve"><value>Klik</value></data>
-  <data name="Mapping_MouseGesture_Format" xml:space="preserve"><value>Muisgebaar ({0}): {1}</value></data>
+  <data name="Mapping_MouseGesture_Format" xml:space="preserve"><value>Muisgebaar: {0} + {1}</value></data>
 </root>

@@ -779,6 +779,28 @@ namespace PadForge.Common.Input
                 // active forever on a controller that is gone.
                 var ud = FindSlotDeviceByInstanceGuid(e.DeviceGuid, macro.PadIndex);
                 if (ud == null || !ud.IsOnline) return false;
+                // Mouse gestures (issue #200) share the entry shape but a
+                // different provider and no pad index. Same online gate
+                // above (a frozen offline context must not latch).
+                if (e.GestureDescriptor.StartsWith("Mouse Gesture ", StringComparison.Ordinal))
+                {
+                    var mouseProvider = PadForge.Engine.Common.Mapping.SourceCoercion.MouseGestureFiredProvider;
+                    if (mouseProvider == null) return false;
+                    // Closed five-name family mapped to interned constants:
+                    // this runs per macro per 1 kHz tick, and a Substring
+                    // here would allocate on every one of them.
+                    string desc = e.GestureDescriptor;
+                    string mgName =
+                        desc.EndsWith(" Left", StringComparison.Ordinal) ? PadForge.Engine.Mouse.MouseGestureRecognizer.GestureLeft :
+                        desc.EndsWith(" Right", StringComparison.Ordinal) ? PadForge.Engine.Mouse.MouseGestureRecognizer.GestureRight :
+                        desc.EndsWith(" Up", StringComparison.Ordinal) ? PadForge.Engine.Mouse.MouseGestureRecognizer.GestureUp :
+                        desc.EndsWith(" Down", StringComparison.Ordinal) ? PadForge.Engine.Mouse.MouseGestureRecognizer.GestureDown :
+                        desc.EndsWith(" Click", StringComparison.Ordinal) ? PadForge.Engine.Mouse.MouseGestureRecognizer.GestureClick : null;
+                    if (mgName == null) return false;
+                    if (!mouseProvider(macro.PadIndex, e.DeviceGuidString, mgName))
+                        return false;
+                    continue;
+                }
                 // Parts are parsed once and cached on the entry: this
                 // runs per macro per 1 kHz polling tick, and the button /
                 // POV siblings are allocation-free on this path.

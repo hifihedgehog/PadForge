@@ -980,7 +980,13 @@ namespace PadForge.Services
                 if (type == MapType.Axis || type == MapType.Slider)
                 {
                     extraSource.Invert = shouldInvert;
-                    extraSource.HalfAxis = false;
+                    // Same negative-half rule as the primary path (issue
+                    // #200): an inverted mouse relative axis on a button-like
+                    // target selects the negative half instead of the bare
+                    // Invert form that reads pressed at rest.
+                    extraSource.HalfAxis = shouldInvert
+                        && _isMouseByDevice.TryGetValue(winningDevice, out bool isMouseDevX) && isMouseDevX
+                        && IsButtonLikeRecordingTarget(mapping.TargetSettingName);
                 }
                 else
                 {
@@ -1010,7 +1016,18 @@ namespace PadForge.Services
                 // with the winning device GUID — this is the authoritative
                 // device assignment for the row (NOT the dropdown selection).
                 if (type == MapType.Axis || type == MapType.Slider)
-                    descriptor = (shouldInvert ? "I" : "") + descriptor;
+                {
+                    // Mouse relative axes rest at center, and the bare Invert
+                    // grammar reads a centered axis as pressed for sub-50%
+                    // thresholds. A negative-direction mouse recording on a
+                    // button-like target therefore selects the negative HALF
+                    // (IH prefix), which is off at rest and fires on leftward
+                    // or upward motion only (issue #200 companion fix).
+                    bool mouseHalf = shouldInvert
+                        && _isMouseByDevice.TryGetValue(winningDevice, out bool isMouseDev) && isMouseDev
+                        && IsButtonLikeRecordingTarget(mapping.TargetSettingName);
+                    descriptor = (shouldInvert ? (mouseHalf ? "IH" : "I") : "") + descriptor;
+                }
                 if (!string.IsNullOrEmpty(winningGuidStr))
                 {
                     mapping.PrimarySourceDeviceGuid = winningGuidStr;
@@ -1188,6 +1205,26 @@ namespace PadForge.Services
         /// </summary>
         /// <param name="mapping">The target mapping item being recorded.</param>
         /// <param name="axisPositive">True if the raw axis value increased (positive delta).</param>
+        /// <summary>True when the recording target coerces the source as a
+        /// button-style threshold (the fall-through set of
+        /// <see cref="ShouldAutoInvert"/>): everything that is not a stick
+        /// axis, trigger, Extended axis, or KBM mouse/scroll channel. Those
+        /// targets read centered axes with the bare Invert grammar, which is
+        /// on-at-rest for sub-50% thresholds on a mouse's relative axes, so
+        /// negative-direction mouse recordings must carry the Half flag
+        /// (issue #200 companion fix).</summary>
+        private static bool IsButtonLikeRecordingTarget(string target)
+        {
+            if (string.IsNullOrEmpty(target)) return false;
+            if (target is "LeftThumbAxisX" or "RightThumbAxisX"
+                       or "LeftThumbAxisY" or "RightThumbAxisY") return false;
+            if (target == "LeftTrigger" || target == "RightTrigger") return false;
+            if (target.StartsWith("ExtendedAxis", StringComparison.Ordinal)) return false;
+            if (target.StartsWith("KbmMouse", StringComparison.Ordinal)
+                || target.StartsWith("KbmScroll", StringComparison.Ordinal)) return false;
+            return true;
+        }
+
         private static bool ShouldAutoInvert(MappingItem mapping, bool axisPositive, bool negRecording)
         {
             string target = mapping.TargetSettingName;

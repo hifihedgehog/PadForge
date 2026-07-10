@@ -1006,6 +1006,18 @@ namespace PadForge.Services
                     $"Touchpad {padIdx} {gestureName}");
             };
 
+            // Mouse-gesture fired reads (issue #200): the recognizer stores
+            // bare gesture names ("Left".."Click") in its per-(slot, device)
+            // context's fired set.
+            PadForge.Engine.Common.Mapping.SourceCoercion.MouseGestureFiredProvider =
+                (slotIndex, deviceGuid, gestureName) =>
+            {
+                if (_inputManager == null) return false;
+                if (string.IsNullOrEmpty(deviceGuid) || !Guid.TryParse(deviceGuid, out var g)) return false;
+                if (!_inputManager.MouseGestureContexts.TryGetValue((slotIndex, g), out var ctx)) return false;
+                return ctx.FiredGesturesThisFrame.Contains(gestureName);
+            };
+
             // — touchpad-gesture continuous-axis reader for PinchAxis,
             // RotateAxis, and the joystick stick axes. Same per-(slot,
             // device, pad) context lookup; returns 0 when no source is
@@ -1169,6 +1181,40 @@ namespace PadForge.Services
                     return entry.Settings ?? PadForge.Engine.Touchpad.TouchpadGestureSettings.Default();
                 }
                 return PadForge.Engine.Touchpad.TouchpadGestureSettings.Default();
+            };
+
+            // Per-(slot, device) mouse-gesture settings (issue #200), twin
+            // of the touchpad provider above minus the pad index. Same
+            // UserSettings walk under SyncRoot, Default() on every miss.
+            _inputManager.MouseGestureSettingsProvider = (slotIndex, deviceGuid) =>
+            {
+                var settings = SettingsManager.UserSettings;
+                if (settings == null) return PadForge.Engine.Mouse.MouseGestureSettings.Default();
+                PadSetting ps = null;
+                lock (settings.SyncRoot)
+                {
+                    for (int i = 0; i < settings.Items.Count; i++)
+                    {
+                        var us = settings.Items[i];
+                        if (us == null) continue;
+                        if (us.MapTo != slotIndex) continue;
+                        if (us.InstanceGuid != deviceGuid) continue;
+                        ps = us.GetPadSetting();
+                        break;
+                    }
+                }
+                if (ps?.MouseGestureSettings == null)
+                    return PadForge.Engine.Mouse.MouseGestureSettings.Default();
+                string guidStr = deviceGuid.ToString();
+                for (int i = 0; i < ps.MouseGestureSettings.Length; i++)
+                {
+                    var entry = ps.MouseGestureSettings[i];
+                    if (entry == null) continue;
+                    if (!string.Equals(entry.DeviceGuid, guidStr, StringComparison.OrdinalIgnoreCase))
+                        continue;
+                    return entry.Settings ?? PadForge.Engine.Mouse.MouseGestureSettings.Default();
+                }
+                return PadForge.Engine.Mouse.MouseGestureSettings.Default();
             };
 
             // Per-(slot, device) lightbar configs — drives the
@@ -1454,6 +1500,7 @@ namespace PadForge.Services
                 PadForge.Engine.Common.Mapping.SourceCoercion.PollHzProvider = null;
                 PadForge.Engine.Common.Mapping.SourceCoercion.AimEngageStateProvider = null;
                 PadForge.Engine.Common.Mapping.SourceCoercion.TouchpadGestureFiredProvider = null;
+                PadForge.Engine.Common.Mapping.SourceCoercion.MouseGestureFiredProvider = null;
                 PadForge.Engine.Common.Mapping.SourceCoercion.TouchpadGestureAxisProvider = null;
                 PadForge.Engine.Common.Mapping.SourceCoercion.TouchpadMouseSettingsProvider = null;
                 // #107: stop sampling the cursor and unhook MouseCursorProvider.
@@ -3986,6 +4033,11 @@ namespace PadForge.Services
             // the VM-side loader, which reads the active device and
             // selected touchpad index off itself.
             padVm.LoadTouchpadGestureSettingsForActiveDevice();
+
+            // Mouse-gestures tab (issue #200): same per-(slot, device)
+            // typed sub-tree contract as the touchpad settings above, same
+            // VM-side loader so Reset to Defaults resets it by construction.
+            padVm.LoadMouseGestureSettingsForActiveDevice();
 
             // Sync dynamic stick/trigger config items.
             padVm.SyncAllConfigItemsFromVm();

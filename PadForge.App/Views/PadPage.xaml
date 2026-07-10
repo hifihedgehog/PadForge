@@ -685,6 +685,12 @@
                              Visibility="Collapsed">
                     <TextBlock Text="{Binding Pad_Pointer, Source={x:Static strings:Strings.Instance}}" FontSize="13"/>
                 </RadioButton>
+                <!-- Mouse tab: per-device mouse-gesture settings (#200).
+                     Visible only when the selected mapped device is a mouse. -->
+                <RadioButton x:Name="TabMouse" Tag="14" Style="{StaticResource TabStripButtonCold}" Click="TabBtn_Click"
+                             Visibility="Collapsed">
+                    <TextBlock Text="{Binding Pad_Mouse, Source={x:Static strings:Strings.Instance}}" FontSize="13"/>
+                </RadioButton>
                 </WrapPanel>
             </Grid>
             </Border>
@@ -10030,6 +10036,71 @@
                                     <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding IrSmoothingPercent, StringFormat={}{0}%}"
                                                FontFamily="{StaticResource TelemetryFontFamily}"
                                                VerticalAlignment="Center" Margin="8,0,0,0" MinWidth="36"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </ScrollViewer>
+            </TabItem>
+
+            <!-- === TAB 14: Mouse (mouse gestures, issue #200) === -->
+            <TabItem>
+                <ScrollViewer VerticalScrollBarVisibility="Visible" Padding="0,0,8,0">
+                    <StackPanel>
+                        <!-- Mouse Gestures card: hold the gesture button, flick,
+                             one action fires at release. Five actions per button
+                             counting the plain click (Logi Options+ semantics). -->
+                        <Border Style="{StaticResource CardBorder}">
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                    <TextBlock Text="&#xE962;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="16" Foreground="{DynamicResource EmberBrush}"
+                                               VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                    <TextBlock Text="{Binding Pad_MouseGestures_Header, Source={x:Static strings:Strings.Instance}}"
+                                               Style="{StaticResource CardTitle}"/>
+                                    <ui:Button Command="{Binding ResetMouseGesturesCardCommand}" Style="{StaticResource ResetAllButton}"
+                                            Content="{Binding Pad_ResetAll, Source={x:Static strings:Strings.Instance}}" Margin="12,0,0,0"
+                                            ToolTip="{Binding Pad_ResetMouseGestures, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
+                                <TextBlock Text="{Binding Pad_MouseGestures_Desc, Source={x:Static strings:Strings.Instance}}"
+                                           Style="{StaticResource CardDescription}" Margin="0,0,0,8"/>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                    <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}" Content="{Binding Pad_MouseGestures_Enabled, Source={x:Static strings:Strings.Instance}}"
+                                              IsChecked="{Binding MouseGesturesEnabled, Mode=TwoWay}"
+                                              ToolTip="{Binding Pad_MouseGestures_Enabled_Tooltip, Source={x:Static strings:Strings.Instance}}"
+                                              VerticalAlignment="Center"/>
+                                    <ui:Button Command="{Binding ResetMouseGesturesEnabledCommand}" Style="{StaticResource ResetButton}"
+                                            ToolTip="{Binding Pad_ResetMouseGesturesEnabled, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
+                                <StackPanel IsEnabled="{Binding MouseGesturesEnabled}">
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                        <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Pad_MouseGestures_Button, Source={x:Static strings:Strings.Instance}}"
+                                                   Width="270" VerticalAlignment="Center"
+                                                   ToolTip="{Binding Pad_MouseGestures_Button_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                        <ComboBox Width="180" VerticalAlignment="Center"
+                                                  ItemsSource="{Binding MouseGestureButtonChoices}"
+                                                  SelectedIndex="{Binding MouseGestureButton, Mode=TwoWay}"
+                                                  PreviewKeyDown="MappingComboBox_PreviewKeyDown"/>
+                                        <ui:Button Command="{Binding ResetMouseGestureButtonCommand}" Style="{StaticResource ResetButton}"
+                                                ToolTip="{Binding Pad_ResetMouseGestureButton, Source={x:Static strings:Strings.Instance}}"/>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                        <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Pad_MouseGestures_FlickThreshold, Source={x:Static strings:Strings.Instance}}"
+                                                   Width="270" VerticalAlignment="Center"
+                                                   ToolTip="{Binding Pad_MouseGestures_FlickThreshold_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                        <TextBox Width="80" VerticalAlignment="Center" TextAlignment="Center"
+                                                 Text="{Binding MouseGestureFlickThreshold, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
+                                        <ui:Button Command="{Binding ResetMouseGestureFlickThresholdCommand}" Style="{StaticResource ResetButton}"
+                                                ToolTip="{Binding Pad_ResetMouseGestureFlickThreshold, Source={x:Static strings:Strings.Instance}}"/>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Pad_MouseGestures_Cooldown, Source={x:Static strings:Strings.Instance}}"
+                                                   Width="270" VerticalAlignment="Center"/>
+                                        <TextBox Width="80" VerticalAlignment="Center" TextAlignment="Center"
+                                                 Text="{Binding MouseGestureCooldownMs, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
+                                        <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="ms" VerticalAlignment="Center" Margin="6,0,0,0"/>
+                                        <ui:Button Command="{Binding ResetMouseGestureCooldownCommand}" Style="{StaticResource ResetButton}"
+                                                ToolTip="{Binding Pad_ResetMouseGestureCooldown, Source={x:Static strings:Strings.Instance}}"/>
+                                    </StackPanel>
                                 </StackPanel>
                             </StackPanel>
                         </Border>

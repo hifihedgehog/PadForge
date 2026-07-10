@@ -2282,4 +2282,24 @@
   <data name="Mapping_NunchukAccel" xml:space="preserve"><value>Accéléromètre du Nunchuk</value></data>
   <data name="Mapping_LeftJoyConAccel" xml:space="preserve"><value>Accéléromètre du Joy-Con gauche</value></data>
   <data name="Mapping_AuxMotionAccel" xml:space="preserve"><value>Accéléromètre de mouvement auxiliaire</value></data>
+  <data name="Pad_Mouse" xml:space="preserve"><value>Souris</value></data>
+  <data name="Pad_MouseGestures_Header" xml:space="preserve"><value>Gestes de la souris</value></data>
+  <data name="Pad_MouseGestures_Desc" xml:space="preserve"><value>Maintenez le bouton de geste, déplacez la souris, et une seule action se déclenche au relâchement : gauche, droite, haut, bas, ou un simple clic sous le seuil de mouvement. Les cinq gestes se mappent dans l'onglet Mappages ou servent de déclencheurs de macros.</value></data>
+  <data name="Pad_MouseGestures_Enabled" xml:space="preserve"><value>Activer les gestes de la souris</value></data>
+  <data name="Pad_MouseGestures_Enabled_Tooltip" xml:space="preserve"><value>Arme la reconnaissance de gestes pour cette souris sur cet emplacement. Le bouton de geste conserve son clic normal pendant le geste, choisissez donc un bouton latéral non mappé.</value></data>
+  <data name="Pad_MouseGestures_Button" xml:space="preserve"><value>Bouton de geste</value></data>
+  <data name="Pad_MouseGestures_Button_Tooltip" xml:space="preserve"><value>Le bouton de la souris qui arme la reconnaissance tant qu'il est maintenu.</value></data>
+  <data name="Pad_MouseGestures_FlickThreshold" xml:space="preserve"><value>Distance du geste (pas)</value></data>
+  <data name="Pad_MouseGestures_FlickThreshold_Tooltip" xml:space="preserve"><value>Mouvement net à atteindre avant le relâchement pour compter comme direction. En dessous, le relâchement déclenche le geste de clic.</value></data>
+  <data name="Pad_MouseGestures_Cooldown" xml:space="preserve"><value>Délai de repos</value></data>
+  <data name="Pad_ResetMouseGestures" xml:space="preserve"><value>Réinitialiser tous les réglages des gestes de la souris</value></data>
+  <data name="Pad_ResetMouseGesturesEnabled" xml:space="preserve"><value>Réinitialiser sur désactivé</value></data>
+  <data name="Pad_ResetMouseGestureButton" xml:space="preserve"><value>Réinitialiser sur X1</value></data>
+  <data name="Pad_ResetMouseGestureFlickThreshold" xml:space="preserve"><value>Réinitialiser sur 150 pas</value></data>
+  <data name="Pad_ResetMouseGestureCooldown" xml:space="preserve"><value>Réinitialiser sur 100 ms</value></data>
+  <data name="Mapping_MouseGestureLeft" xml:space="preserve"><value>Geste souris : gauche</value></data>
+  <data name="Mapping_MouseGestureRight" xml:space="preserve"><value>Geste souris : droite</value></data>
+  <data name="Mapping_MouseGestureUp" xml:space="preserve"><value>Geste souris : haut</value></data>
+  <data name="Mapping_MouseGestureDown" xml:space="preserve"><value>Geste souris : bas</value></data>
+  <data name="Mapping_MouseGestureClick" xml:space="preserve"><value>Geste souris : clic</value></data>
 </root>

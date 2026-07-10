@@ -242,6 +242,22 @@ namespace PadForge.Common
                 return null;
             }
 
+            // Mouse-gesture pulses (issue #200) -> localized labels.
+            if (s.StartsWith("Mouse Gesture ", System.StringComparison.Ordinal))
+            {
+                var si = Strings.Instance;
+                string g = s.Substring("Mouse Gesture ".Length).Trim();
+                string label =
+                      g.Equals("Left",  System.StringComparison.OrdinalIgnoreCase) ? si.Mapping_MouseGestureLeft
+                    : g.Equals("Right", System.StringComparison.OrdinalIgnoreCase) ? si.Mapping_MouseGestureRight
+                    : g.Equals("Up",    System.StringComparison.OrdinalIgnoreCase) ? si.Mapping_MouseGestureUp
+                    : g.Equals("Down",  System.StringComparison.OrdinalIgnoreCase) ? si.Mapping_MouseGestureDown
+                    : g.Equals("Click", System.StringComparison.OrdinalIgnoreCase) ? si.Mapping_MouseGestureClick
+                    : null;
+                if (label == null) return null;
+                return prefix + label;
+            }
+
             string[] parts = s.Split(' ', System.StringSplitOptions.RemoveEmptyEntries);
             if (parts.Length < 2 || !int.TryParse(parts[1], out int index))
                 return null;
@@ -946,6 +962,19 @@ namespace PadForge.Common
             // categories don't show up in the dropdown.
             if (ud.HasTouchpad || ud.IsTouchpad)
                 AddTouchpadGestureChoices(list, ud, si, touchpadSettingsForPad);
+
+            // Mouse gestures (issue #200): five one-shot pulses from the
+            // hold-button-and-flick recognizer. Listed for every mouse; the
+            // per-(slot, device) Enabled toggle on the Mouse tab governs
+            // firing, not visibility, so a disabled setup is discoverable.
+            if (ud.IsMouse)
+            {
+                list.Add(new InputChoice { Descriptor = "Mouse Gesture Left", DisplayName = si.Mapping_MouseGestureLeft });
+                list.Add(new InputChoice { Descriptor = "Mouse Gesture Right", DisplayName = si.Mapping_MouseGestureRight });
+                list.Add(new InputChoice { Descriptor = "Mouse Gesture Up", DisplayName = si.Mapping_MouseGestureUp });
+                list.Add(new InputChoice { Descriptor = "Mouse Gesture Down", DisplayName = si.Mapping_MouseGestureDown });
+                list.Add(new InputChoice { Descriptor = "Mouse Gesture Click", DisplayName = si.Mapping_MouseGestureClick });
+            }
 
             return list.ToArray();
         }

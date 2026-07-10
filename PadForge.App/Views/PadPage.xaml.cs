@@ -314,6 +314,7 @@ namespace PadForge.Views
             bool hasIndicatorLeds = false;
             bool hasForceFeedback = false;
             bool hasGyro = false;
+            bool hasMouse = false;
             bool hasIrPointer = false; // #146 Wii Remote IR camera -> Pointer tab
             bool hasImpulseTriggers = false;
             bool hasRumble = false;
@@ -346,6 +347,7 @@ namespace PadForge.Views
                             || ud.CapType == InputDeviceType.FirstPerson;
 
                         hasGyro = ud.HasGyro;
+                        hasMouse = ud.IsMouse;
                         hasIrPointer = ud.HasIrCamera;
                         hasImpulseTriggers = ud.HasRumbleTriggers;
                         hasTouchpad = ud.HasTouchpad;
@@ -431,6 +433,8 @@ namespace PadForge.Views
                 TabAudio.Visibility = hasAudio ? Visibility.Visible : Visibility.Collapsed;
             if (TabPointer != null)
                 TabPointer.Visibility = hasIrPointer ? Visibility.Visible : Visibility.Collapsed;
+            if (TabMouse != null)
+                TabMouse.Visibility = hasMouse ? Visibility.Visible : Visibility.Collapsed;
             if (TabWheel != null)
                 TabWheel.Visibility = (hasWheel || hasGenericWheel) ? Visibility.Visible : Visibility.Collapsed;
             // Rotation range + RPM LEDs are vendor-HID-only; hide them for a generic
@@ -486,6 +490,11 @@ namespace PadForge.Views
                 vmTouch.RecomputeTouchpadCountForActiveDevice(numTouchpads);
                 vmTouch.LoadTouchpadGestureSettingsForActiveDevice();
             }
+
+            // Mouse tab (#200): reload the per-(slot, device) gesture
+            // settings whenever the active device changes.
+            if (DataContext is PadViewModel vmMouse && hasMouse)
+                vmMouse.LoadMouseGestureSettingsForActiveDevice();
             else if (DataContext is PadViewModel vmNoTouch)
             {
                 vmNoTouch.RecomputeTouchpadCountForActiveDevice(0);
@@ -524,6 +533,8 @@ namespace PadForge.Views
                 else if (vm.SelectedConfigTab == 12 && !hasAudio) // 12 = Audio
                     vm.SelectedConfigTab = 0;
                 else if (vm.SelectedConfigTab == 13 && !hasIrPointer) // 13 = Pointer
+                    vm.SelectedConfigTab = 0;
+                else if (vm.SelectedConfigTab == 14 && !hasMouse) // 14 = Mouse (#200)
                     vm.SelectedConfigTab = 0;
             }
         }

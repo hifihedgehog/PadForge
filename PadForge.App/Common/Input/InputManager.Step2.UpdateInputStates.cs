@@ -131,6 +131,11 @@ namespace PadForge.Common.Input
                     // profile's PadSetting; defaults apply when unwired.
                     UpdateGestureContexts(ud, newState);
 
+                    // Mouse-gesture recognizer (issue #200), the sibling
+                    // lane for mouse-class devices, which the touchpad walk
+                    // above never enters.
+                    UpdateMouseGestureContexts(ud, newState);
+
                     // Apply force feedback (rumble) if applicable.
                     ApplyForceFeedback(ud);
                 }

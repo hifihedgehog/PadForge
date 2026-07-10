@@ -743,6 +743,13 @@ namespace PadForge.Engine.Data
         [XmlArrayItem("Settings")]
         public PadForge.Engine.Touchpad.TouchpadSettingsEntry[] TouchpadSettings { get; set; }
 
+        /// <summary>Per-device mouse-gesture settings (issue #200), twin of
+        /// <see cref="TouchpadSettings"/> minus the pad index. Null or empty
+        /// means every mouse uses <c>MouseGestureSettings.Default()</c>.</summary>
+        [XmlArray("MouseGestureSettings")]
+        [XmlArrayItem("Settings")]
+        public PadForge.Engine.Mouse.MouseGestureSettingsEntry[] MouseGestureSettings { get; set; }
+
         // ─────────────────────────────────────────────
         //  Extended custom mappings (dictionary-based)
         //  Used for custom Extended configurations with arbitrary axis/button/POV counts.
@@ -1430,6 +1437,28 @@ namespace PadForge.Engine.Data
                 }
             }
 
+            // Per-device mouse-gesture settings (issue #200). Same dedup-by-
+            // checksum trap as the touchpad block above: without these fields
+            // in the checksum, two devices with otherwise-identical mappings
+            // collide on SaveToFile's dedup and the second device's Mouse-tab
+            // toggles get dropped silently on relaunch. Sorted by DeviceGuid
+            // so the hash is content-defined, not order-defined.
+            if (MouseGestureSettings != null && MouseGestureSettings.Length > 0)
+            {
+                sb.Append("MGS:");
+                var sortedMgs = new List<PadForge.Engine.Mouse.MouseGestureSettingsEntry>(MouseGestureSettings);
+                sortedMgs.Sort((a, b) => StringComparer.OrdinalIgnoreCase.Compare(a?.DeviceGuid ?? "", b?.DeviceGuid ?? ""));
+                foreach (var entry in sortedMgs)
+                {
+                    if (entry?.Settings == null) continue;
+                    var s = entry.Settings;
+                    sb.Append(entry.DeviceGuid ?? ""); sb.Append(':');
+                    sb.Append(s.Enabled).Append(',').Append(s.GestureButton).Append(',');
+                    sb.Append(s.FlickThresholdCounts).Append(',').Append(s.CooldownMs);
+                    sb.Append('|');
+                }
+            }
+
             byte[] hash = MD5.HashData(Encoding.UTF8.GetBytes(sb.ToString()));
             return BitConverter.ToString(hash, 0, 4).Replace("-", "").ToUpperInvariant();
         }
@@ -1905,6 +1934,14 @@ namespace PadForge.Engine.Data
                 dict["__TouchpadSettings"] = JsonSerializer.Serialize(TouchpadSettings);
             }
 
+            // Per-device mouse-gesture settings (issue #200): same sentinel-
+            // key round-trip as the touchpad twin, so Copy / Paste of a
+            // slot's settings carries the Mouse-tab state.
+            if (MouseGestureSettings != null && MouseGestureSettings.Length > 0)
+            {
+                dict["__MouseGestureSettings"] = JsonSerializer.Serialize(MouseGestureSettings);
+            }
+
             // Opaque per-slot config snapshots (Lighting / Adaptive Triggers
             // / Mic LED / Player LED / audio-reactive / palette for
             // PlayStation, custom layout for Extended, CC + note layout
@@ -2022,6 +2059,15 @@ namespace PadForge.Engine.Data
                                     PadForge.Engine.Touchpad.TouchpadSettingsEntry[]>(kvp.Value);
                             }
                             catch { /* malformed payload — leave TouchpadSettings null */ }
+                        }
+                        else if (kvp.Key == "__MouseGestureSettings")
+                        {
+                            try
+                            {
+                                ps.MouseGestureSettings = JsonSerializer.Deserialize<
+                                    PadForge.Engine.Mouse.MouseGestureSettingsEntry[]>(kvp.Value);
+                            }
+                            catch { /* malformed payload. leave MouseGestureSettings null */ }
                         }
                         else if (kvp.Key == "__SlotPlayStationConfigs")
                             ps.SlotPlayStationConfigsJson = kvp.Value;
@@ -2281,6 +2327,30 @@ namespace PadForge.Engine.Data
             // SnapshotCurrentProfile drops the entries entirely and any
             // named-profile save loses every per-pad gesture setting.
             TouchpadSettings = DeepCopyTouchpadSettings(source.TouchpadSettings);
+
+            // Mouse-gesture settings (issue #200): same typed-array deep copy
+            // as the touchpad twin, for the same reason (reflection-driven
+            // CopyablePropertyNames cannot carry typed arrays, and without
+            // this clone named-profile saves drop the entries).
+            MouseGestureSettings = DeepCopyMouseGestureSettings(source.MouseGestureSettings);
+        }
+
+        private static PadForge.Engine.Mouse.MouseGestureSettingsEntry[] DeepCopyMouseGestureSettings(
+            PadForge.Engine.Mouse.MouseGestureSettingsEntry[] src)
+        {
+            if (src == null || src.Length == 0) return null;
+            var arr = new PadForge.Engine.Mouse.MouseGestureSettingsEntry[src.Length];
+            for (int i = 0; i < src.Length; i++)
+            {
+                var s = src[i];
+                if (s == null) continue;
+                arr[i] = new PadForge.Engine.Mouse.MouseGestureSettingsEntry
+                {
+                    DeviceGuid = s.DeviceGuid,
+                    Settings = s.Settings?.Clone(),
+                };
+            }
+            return arr;
         }
 
         private static PadForge.Engine.Touchpad.TouchpadSettingsEntry[] DeepCopyTouchpadSettings(

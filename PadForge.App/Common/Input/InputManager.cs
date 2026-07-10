@@ -182,6 +182,26 @@ namespace PadForge.Common.Input
         /// requested slot + device + pad.</summary>
         public System.Func<int, System.Guid, int, Engine.Touchpad.TouchpadGestureSettings> TouchpadGestureSettingsProvider { get; set; }
 
+        /// <summary>Per-(slot, device) mouse-gesture recognizer contexts
+        /// (issue #200), twin of <see cref="GestureContexts"/> minus the pad
+        /// index (a mouse has one motion surface). Same lifecycle: lazy
+        /// creation on the polling thread, cleared wholesale on profile
+        /// switch via <see cref="ResetGestureContexts"/>. Offline devices
+        /// leave frozen contexts; consumers that must not latch (the macro
+        /// trigger path) apply the same online guard the touchpad lane
+        /// uses.</summary>
+        public readonly System.Collections.Concurrent.ConcurrentDictionary<(int Slot, System.Guid DeviceId), Engine.Mouse.MouseGestureContext> MouseGestureContexts
+            = new System.Collections.Concurrent.ConcurrentDictionary<(int, System.Guid), Engine.Mouse.MouseGestureContext>();
+
+        /// <summary>Per-(slot, device) mouse-gesture settings provider
+        /// (issue #200). Wired by the App layer against the slot's
+        /// <c>PadSetting.MouseGestureSettings</c> via a UserSettings walk
+        /// filtered by both <c>MapTo == slot</c> and
+        /// <c>InstanceGuid == device</c>. Returns
+        /// <see cref="Engine.Mouse.MouseGestureSettings.Default"/> when
+        /// unwired or when no per-device settings exist.</summary>
+        public System.Func<int, System.Guid, Engine.Mouse.MouseGestureSettings> MouseGestureSettingsProvider { get; set; }
+
         // ─── Recording-mode hook (gesture recorder dialog) ───
         //
         // The recorder dialog sets RecordingTargetDeviceGuid +
@@ -1868,7 +1888,73 @@ namespace PadForge.Common.Input
         /// <summary>Drops every gesture context. Called on profile
         /// switch and on engine stop so a stale partial gesture doesn't
         /// carry across.</summary>
-        public void ResetGestureContexts() => GestureContexts.Clear();
+        public void ResetGestureContexts()
+        {
+            GestureContexts.Clear();
+            MouseGestureContexts.Clear();
+        }
+
+        /// <summary>Mouse-gesture recognizer walk (issue #200), sibling of
+        /// <see cref="UpdateGestureContexts"/> for mouse-class devices, which
+        /// never enter the touchpad walk (their state carries no Touchpads).
+        /// Reads the already-published centered delta axes rather than
+        /// consuming RawInput deltas again: the wrapper's consume-and-zero
+        /// read owns that source, and a second consumer would starve it.
+        /// Polling thread only.</summary>
+        private void UpdateMouseGestureContexts(Engine.Data.UserDevice ud, CustomInputState newState)
+        {
+            if (ud == null || newState == null) return;
+            if (!ud.IsMouse) return;
+
+            // Snapshot the slots this device is currently assigned to
+            // (same walk as the touchpad lane).
+            int[] assignedSlots;
+            var userSettings = SettingsManager.UserSettings;
+            if (userSettings == null) return;
+            lock (userSettings.SyncRoot)
+            {
+                int count = 0;
+                System.Span<int> buf = stackalloc int[MaxPads];
+                for (int i = 0; i < userSettings.Items.Count && count < MaxPads; i++)
+                {
+                    var us = userSettings.Items[i];
+                    if (us == null || us.MapTo < 0) continue;
+                    if (us.InstanceGuid != ud.InstanceGuid) continue;
+                    bool dup = false;
+                    for (int j = 0; j < count; j++) { if (buf[j] == us.MapTo) { dup = true; break; } }
+                    if (dup) continue;
+                    buf[count++] = us.MapTo;
+                }
+                if (count == 0) return;
+                assignedSlots = new int[count];
+                for (int i = 0; i < count; i++) assignedSlots[i] = buf[i];
+            }
+
+            // Recover raw counts from the published centered axes
+            // (SdlMouseWrapper: Axis = clamp(32767 + delta * 2048)).
+            double dxCounts = (newState.Axis[0] - 32767) / 2048.0;
+            double dyCounts = (newState.Axis[1] - 32767) / 2048.0;
+
+            long nowMs = System.Environment.TickCount64;
+            foreach (int slot in assignedSlots)
+            {
+                var key = (slot, ud.InstanceGuid);
+                if (!MouseGestureContexts.TryGetValue(key, out var ctx))
+                {
+                    ctx = new Engine.Mouse.MouseGestureContext();
+                    MouseGestureContexts[key] = ctx;
+                }
+
+                var settings = MouseGestureSettingsProvider?.Invoke(slot, ud.InstanceGuid)
+                    ?? Engine.Mouse.MouseGestureSettings.Default();
+
+                int btn = settings.GestureButton;
+                bool buttonDown = btn >= 0 && btn < newState.Buttons.Length && newState.Buttons[btn];
+
+                Engine.Mouse.MouseGestureRecognizer.Update(
+                    ctx, settings, buttonDown, dxCounts, dyCounts, nowMs);
+            }
+        }
 
         // ─────────────────────────────────────────────
         //  Motion snapshots (for DSU server)

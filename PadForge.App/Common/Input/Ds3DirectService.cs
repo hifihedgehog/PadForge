@@ -69,10 +69,26 @@ namespace PadForge.Common.Input
         private SDL.VJSetPlayerIndex _setPlayerCb;
         private SDL.VJSetSensorsEnabled _setSensorsCb;
 
-        // Device handles. _readPdo is owned by the read loop; _writePdo by the writer
+        // Which transport the current session is streaming over. The DS3 works over
+        // Bluetooth (BthPS3 raw PDO, IOCTL I/O) OR USB (inbox WinUSB, control-transfer +
+        // interrupt-pipe I/O). The report is the SAME raw DS3 layout on both; USB just
+        // lacks Bluetooth's leading 0xA1 HID-transport byte, so the USB reader prepends
+        // one and the shared PushState parser handles both verbatim.
+        private enum Ds3Transport { None, Bluetooth, Usb }
+        private volatile Ds3Transport _transport = Ds3Transport.None;
+
+        // Bluetooth handles. _readPdo is owned by the read loop; _writePdo by the writer
         // thread. Guarded by _outLock (writer state shares it).
         private IntPtr _readPdo = IntPtr.Zero;
         private IntPtr _writePdo = IntPtr.Zero;
+
+        // USB (WinUSB) handles: _usbDev is the CreateFile handle, _usbIfh the WinUSB
+        // interface handle used for control transfers and pipe reads, _usbInPipe the
+        // interrupt-IN endpoint id. Same lock discipline as the BT handles.
+        private IntPtr _usbDev = IntPtr.Zero;
+        private IntPtr _usbIfh = IntPtr.Zero;
+        private byte _usbInPipe;
+        private long _lastUsbBindAttempt;
 
         // Per-connection writer generation: Teardown flips it false so the writer
         // exits on THIS pad's disconnect even though the service keeps _running.
@@ -121,7 +137,11 @@ namespace PadForge.Common.Input
 
         private void CancelCurrentRead()
         {
-            lock (_outLock) { if (_readPdo != IntPtr.Zero && _readPdo != INVALID_HANDLE) CancelIoEx(_readPdo, IntPtr.Zero); }
+            lock (_outLock)
+            {
+                if (_readPdo != IntPtr.Zero && _readPdo != INVALID_HANDLE) CancelIoEx(_readPdo, IntPtr.Zero);
+                if (_usbDev != IntPtr.Zero && _usbDev != INVALID_HANDLE) CancelIoEx(_usbDev, IntPtr.Zero);
+            }
         }
 
         public Ds3DirectService(Action<string> log = null) => _log = log ?? (_ => { });
@@ -194,8 +214,8 @@ namespace PadForge.Common.Input
             if (changed) _writeSignal.Set();
         }
 
-        /// <summary>Begin watching for a Bluetooth DS3 and stream it as a virtual joystick.
-        /// Call after SDL has been initialised (SDL_INIT_JOYSTICK).</summary>
+        /// <summary>Begin watching for a DS3 (USB or Bluetooth) and stream it as a virtual
+        /// joystick. Call after SDL has been initialised (SDL_INIT_JOYSTICK).</summary>
         public void Start()
         {
             if (_running) return;
@@ -210,7 +230,11 @@ namespace PadForge.Common.Input
             _running = false;
             if (_current == this) _current = null;
             _writeSignal.Set();
-            lock (_outLock) { if (_readPdo != IntPtr.Zero) CancelIoEx(_readPdo, IntPtr.Zero); }
+            lock (_outLock)
+            {
+                if (_readPdo != IntPtr.Zero) CancelIoEx(_readPdo, IntPtr.Zero);
+                if (_usbDev != IntPtr.Zero && _usbDev != INVALID_HANDLE) CancelIoEx(_usbDev, IntPtr.Zero);
+            }
             try { _readThread?.Join(1500); } catch { }
             Teardown();
         }
@@ -222,34 +246,98 @@ namespace PadForge.Common.Input
                 // Unpair in progress: drop any live pad and don't re-grab it.
                 if (_suppressReconnect) { Teardown(); Thread.Sleep(250); continue; }
 
-                string path = FindPdoPath();
-                if (path == null) { Thread.Sleep(500); continue; }
+                // USB takes priority: a present WinUSB interface means the pad is
+                // physically wired (it can't be on both transports at once), whereas the
+                // BthPS3 PDO node lingers present even after the pad leaves Bluetooth, so
+                // trying BT first could grab a dead node and never reach a live USB pad.
+                if (!OpenUsb() && !OpenBluetooth()) { Thread.Sleep(500); continue; }
 
-                IntPtr rh = CreateFile(path, GENERIC_READ | GENERIC_WRITE, FILE_SHARE_RW, IntPtr.Zero, OPEN_EXISTING, 0, IntPtr.Zero);
-                if (rh == INVALID_HANDLE) { Thread.Sleep(500); continue; }
-                IntPtr wh = CreateFile(path, GENERIC_READ | GENERIC_WRITE, FILE_SHARE_RW, IntPtr.Zero, OPEN_EXISTING, 0, IntPtr.Zero);
-                if (wh == INVALID_HANDLE) { CloseHandle(rh); Thread.Sleep(500); continue; }
-
-                lock (_outLock) { _readPdo = rh; _writePdo = wh; _everGotInput = false; _outDirty = true; }
+                lock (_outLock) { _everGotInput = false; _outDirty = true; }
 
                 // Re-check the unpair gate now that the handles are published: a
                 // SuppressAndRelease that fired between the loop-top check and the
                 // opens above would otherwise attach a ghost joystick mid-unpair.
                 if (_suppressReconnect) { Teardown(); Thread.Sleep(250); continue; }
 
-                _log("DS3(BT): raw PDO opened, kicking + attaching virtual joystick...");
+                string tag = _transport == Ds3Transport.Usb ? "USB" : "BT";
+                _log($"DS3({tag}): device opened, kicking + attaching virtual joystick...");
                 if (!AttachVirtual()) { Teardown(); Thread.Sleep(1000); continue; }
 
                 _writerRun = true;
                 _writeThread = new Thread(WriterLoop) { IsBackground = true, Name = "Ds3DirectWrite" };
                 _writeThread.Start();
 
-                _log("DS3(BT): virtual joystick attached; streaming.");
-                ReadLoop(rh);   // blocks until the pad disconnects or Stop()
+                _log($"DS3({tag}): virtual joystick attached; streaming.");
+                if (_transport == Ds3Transport.Usb) UsbReadLoop();
+                else ReadLoop(_readPdo);   // blocks until the pad disconnects or Stop()
 
                 Teardown();
-                _log("DS3(BT): disconnected; watching for reconnect.");
+                _log($"DS3({tag}): disconnected; watching for reconnect.");
             }
+        }
+
+        /// <summary>Open the Bluetooth BthPS3 raw PDO if a wireless DS3 is connected.</summary>
+        private bool OpenBluetooth()
+        {
+            string path = FindPdoPath();
+            if (path == null) return false;
+
+            IntPtr rh = CreateFile(path, GENERIC_READ | GENERIC_WRITE, FILE_SHARE_RW, IntPtr.Zero, OPEN_EXISTING, 0, IntPtr.Zero);
+            if (rh == INVALID_HANDLE) return false;
+            IntPtr wh = CreateFile(path, GENERIC_READ | GENERIC_WRITE, FILE_SHARE_RW, IntPtr.Zero, OPEN_EXISTING, 0, IntPtr.Zero);
+            if (wh == INVALID_HANDLE) { CloseHandle(rh); return false; }
+
+            lock (_outLock) { _readPdo = rh; _writePdo = wh; }
+            _transport = Ds3Transport.Bluetooth;
+            return true;
+        }
+
+        /// <summary>Open the WinUSB-bound DS3 if one is on USB. Binds WinUSB first if a
+        /// raw USB DS3 is present but unbound (throttled), so a plug-in works without the
+        /// user having gone through the pairing ceremony.</summary>
+        private bool OpenUsb()
+        {
+            string path = FindWinUsbDs3();
+            if (path == null)
+            {
+                // Not WinUSB-bound. If a raw USB DS3 is plugged in, bind it once, then
+                // retry. Throttled so a repeated bind failure doesn't spin pnputil.
+                long now = Environment.TickCount64;
+                if (now - _lastUsbBindAttempt >= 15000 && PadForge.Services.Ds3DriverInstaller.IsRawUsbDs3Present())
+                {
+                    _lastUsbBindAttempt = now;
+                    _log("DS3(USB): raw DS3 on USB, binding WinUSB...");
+                    try { PadForge.Services.Ds3DriverInstaller.EnsureWinUsbBound(_log, default); } catch { }
+                    path = FindWinUsbDs3();
+                }
+                if (path == null) return false;
+            }
+
+            IntPtr dev = CreateFile(path, GENERIC_READ | GENERIC_WRITE, FILE_SHARE_RW, IntPtr.Zero, OPEN_EXISTING, FILE_FLAG_OVERLAPPED, IntPtr.Zero);
+            if (dev == INVALID_HANDLE) return false;
+            if (!WinUsb_Initialize(dev, out IntPtr ifh)) { CloseHandle(dev); return false; }
+
+            // Find the interrupt-IN endpoint (the input-report pipe).
+            byte inPipe = 0;
+            if (WinUsb_QueryInterfaceSettings(ifh, 0, out var idesc))
+            {
+                for (byte i = 0; i < idesc.bNumEndpoints; i++)
+                {
+                    if (WinUsb_QueryPipe(ifh, 0, i, out var pipe)
+                        && (pipe.PipeId & 0x80) != 0 && pipe.PipeType == 3 /*interrupt*/)
+                    { inPipe = pipe.PipeId; break; }
+                }
+            }
+            if (inPipe == 0) { WinUsb_Free(ifh); CloseHandle(dev); return false; }
+
+            // A short read timeout so UsbReadLoop wakes to re-check _running/_writerRun
+            // (WinUsb_ReadPipe otherwise blocks until a report arrives).
+            uint timeout = 100;
+            WinUsb_SetPipePolicy(ifh, inPipe, PIPE_TRANSFER_TIMEOUT, 4, ref timeout);
+
+            lock (_outLock) { _usbDev = dev; _usbIfh = ifh; _usbInPipe = inPipe; }
+            _transport = Ds3Transport.Usb;
+            return true;
         }
 
         // ─── writer thread: kick, re-kick, rate-limited output flush ────────────
@@ -306,12 +394,26 @@ namespace PadForge.Common.Input
         private void Kick()
         {
             WriteOutputReport();
-            byte[] en = { 0x53, 0xF4, 0x42, 0x03, 0x00, 0x00 };
             lock (_ioLock)
             {
-                IntPtr h; lock (_outLock) h = _writePdo;
-                if (h != IntPtr.Zero && h != INVALID_HANDLE)
-                    DeviceIoControl(h, IOCTL_HID_CONTROL_WRITE, en, en.Length, null, 0, out _, IntPtr.Zero);
+                if (_transport == Ds3Transport.Usb)
+                {
+                    // USB enable: SET_REPORT(FEATURE, 0xF4) {42,0C,00,00} flips the DS3
+                    // operational and starts the interrupt-IN stream (ScpToolkit
+                    // UsbDs3.cs Start(); proven prototype ds3winusb). Note 0x0C (USB),
+                    // not the 0x03 the BT enable uses.
+                    IntPtr ifh; lock (_outLock) ifh = _usbIfh;
+                    if (ifh != IntPtr.Zero)
+                        UsbSetReport(ifh, 0x03, 0xF4, new byte[] { 0x42, 0x0C, 0x00, 0x00 });
+                }
+                else
+                {
+                    // BT enable: 0x53 (SET_REPORT|OUTPUT class prefix) F4 42 03 00 00.
+                    byte[] en = { 0x53, 0xF4, 0x42, 0x03, 0x00, 0x00 };
+                    IntPtr h; lock (_outLock) h = _writePdo;
+                    if (h != IntPtr.Zero && h != INVALID_HANDLE)
+                        DeviceIoControl(h, IOCTL_HID_CONTROL_WRITE, en, en.Length, null, 0, out _, IntPtr.Zero);
+                }
             }
         }
 
@@ -331,7 +433,8 @@ namespace PadForge.Common.Input
                 0x00,0x00,0x00,0x00,0x00, 0x00,0x00,0x00,0x00,0x00, 0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00 };
             lock (_ioLock)
             {
-                IntPtr h;
+                IntPtr h, ifh;
+                Ds3Transport tr = _transport;
                 lock (_outLock)
                 {
                     o[4] = _rumbleSmall > 0 ? (byte)0x01 : (byte)0x00; // small motor on/off
@@ -339,10 +442,35 @@ namespace PadForge.Common.Input
                     o[11] = _ledMask;                                  // player LED bitmask
                     _outDirty = false;
                     h = _writePdo;
+                    ifh = _usbIfh;
                 }
-                if (h != IntPtr.Zero && h != INVALID_HANDLE)
+                if (tr == Ds3Transport.Usb)
+                {
+                    // USB output: SET_REPORT(OUTPUT, 0x01) with just the 48-byte payload
+                    // (o[2..], dropping the BT 0x52/0x01 framing). Same rumble/LED bytes.
+                    if (ifh != IntPtr.Zero)
+                        UsbSetReport(ifh, 0x02, 0x01, o.AsSpan(2).ToArray());
+                }
+                else if (h != IntPtr.Zero && h != INVALID_HANDLE)
+                {
                     DeviceIoControl(h, IOCTL_HID_CONTROL_WRITE, o, o.Length, null, 0, out _, IntPtr.Zero);
+                }
             }
+        }
+
+        /// <summary>WinUSB HID SET_REPORT class control transfer (reportType 0x02 OUTPUT
+        /// / 0x03 FEATURE). Caller holds _ioLock.</summary>
+        private static bool UsbSetReport(IntPtr ifh, byte reportType, byte reportId, byte[] data)
+        {
+            var s = new WINUSB_SETUP_PACKET
+            {
+                RequestType = 0x21,                                 // Host->Device | Class | Interface
+                Request = 0x09,                                     // HID SET_REPORT
+                Value = (ushort)((reportType << 8) | reportId),
+                Index = 0,
+                Length = (ushort)data.Length,
+            };
+            return WinUsb_ControlTransfer(ifh, s, data, (uint)data.Length, out _, IntPtr.Zero);
         }
 
         // ─── read loop: exact-size buffer, one pended read, no hot-path churn ───
@@ -386,6 +514,57 @@ namespace PadForge.Common.Input
             }
         }
 
+        /// <summary>USB read loop: WinUsb_ReadPipe on the interrupt-IN endpoint. The 49-byte
+        /// USB report is the raw DS3 report; prepend the 0xA1 byte Bluetooth carries so the
+        /// shared PushState parser (BT offsets) handles it verbatim.</summary>
+        private void UsbReadLoop()
+        {
+            byte[] buf = new byte[DS3_BT_INPUT_REPORT_SIZE];   // normalized (0xA1 + raw)
+            byte[] raw = new byte[64];
+            buf[0] = 0xA1;
+            long lastProbe = 0;
+            while (_running && _transport == Ds3Transport.Usb)
+            {
+                IntPtr ifh; lock (_outLock) ifh = _usbIfh;
+                if (ifh == IntPtr.Zero) break;
+
+                if (WinUsb_ReadPipe(ifh, _usbInPipe, raw, (uint)raw.Length, out uint got, IntPtr.Zero))
+                {
+                    // Standard DS3 report id 0x01. Shift raw[0..] to buf[1..] (buf[0]=0xA1),
+                    // giving the same layout the BT parser expects: report id at buf[1],
+                    // buttons at buf[3], sticks buf[7..10], pressures/motion at BT offsets.
+                    if (got >= 10 && raw[0] == 0x01)
+                    {
+                        int n = (int)Math.Min(got, (uint)(buf.Length - 1));
+                        Array.Copy(raw, 0, buf, 1, n);
+                        int rd = n + 1;
+                        if (rd >= DS3_BT_INPUT_REPORT_SIZE && buf[2] != 0xFF)
+                        {
+                            _everGotInput = true;
+                            PushState(buf, rd);
+                            UpdateBattery(buf[31]);
+                        }
+                    }
+                }
+                else
+                {
+                    int err = Marshal.GetLastWin32Error();
+                    if (err == ERROR_SEM_TIMEOUT) continue;   // pipe timeout, no report yet
+                    if (err == ERROR_DEVICE_NOT_CONNECTED || err == ERROR_FILE_NOT_FOUND ||
+                        err == ERROR_INVALID_HANDLE || err == ERROR_OPERATION_ABORTED ||
+                        err == ERROR_GEN_FAILURE || err == ERROR_NO_SUCH_DEVICE)
+                        break;
+                    Thread.Sleep(2);
+                    long now = Environment.TickCount64;
+                    if (now - lastProbe >= 1000)
+                    {
+                        lastProbe = now;
+                        if (FindWinUsbDs3() == null) break;
+                    }
+                }
+            }
+        }
+
         // ─── SDL virtual joystick ───────────────────────────────────────────────
 
         private bool AttachVirtual()
@@ -393,7 +572,8 @@ namespace PadForge.Common.Input
             // Standard gamepad shape so SDL treats it as a gamepad and PadForge auto-maps.
             _rumbleCb = OnRumble; _setLedCb = OnSetLed; _setPlayerCb = OnSetPlayerIndex; _setSensorsCb = OnSetSensors;
 
-            var namePtr = Marshal.StringToHGlobalAnsi("DualShock 3 (Bluetooth)");
+            var namePtr = Marshal.StringToHGlobalAnsi(
+                _transport == Ds3Transport.Usb ? "DualShock 3 (USB)" : "DualShock 3 (Bluetooth)");
             // Two sensors: accel + gyro at the DS3's ~100 Hz report rate. SDL deep-copies
             // this array during attach (SDL_virtualjoystick.c attach inner), so the
             // unmanaged copy only needs to live for the duration of the call.
@@ -454,8 +634,12 @@ namespace PadForge.Common.Input
             {
                 _writerRun = false;
                 _writeSignal.Set();
-                // Unblock a writer stuck inside a write IOCTL so the join can succeed.
-                lock (_outLock) { if (_writePdo != IntPtr.Zero && _writePdo != INVALID_HANDLE) CancelIoEx(_writePdo, IntPtr.Zero); }
+                // Unblock a writer/reader stuck inside I/O so the joins can succeed.
+                lock (_outLock)
+                {
+                    if (_writePdo != IntPtr.Zero && _writePdo != INVALID_HANDLE) CancelIoEx(_writePdo, IntPtr.Zero);
+                    if (_usbDev != IntPtr.Zero && _usbDev != INVALID_HANDLE) CancelIoEx(_usbDev, IntPtr.Zero);
+                }
                 try { if (_writeThread != null && _writeThread != Thread.CurrentThread) _writeThread.Join(1000); } catch { }
                 _writeThread = null;
 
@@ -463,8 +647,8 @@ namespace PadForge.Common.Input
                 if (_sdlJoystick != IntPtr.Zero) { SDL.SDL_CloseJoystick(_sdlJoystick); _sdlJoystick = IntPtr.Zero; }
                 if (_instanceId != 0) { SDL.SDL_DetachVirtualJoystick(_instanceId); _instanceId = 0; }
 
-                // _ioLock: no write IOCTL can be in flight while the handle closes,
-                // so a late writer can never hit a closed/recycled handle value.
+                // _ioLock: no write can be in flight while the handles close, so a late
+                // writer can never hit a closed/recycled handle value.
                 lock (_ioLock)
                 lock (_outLock)
                 {
@@ -472,7 +656,12 @@ namespace PadForge.Common.Input
                     if (_writePdo != IntPtr.Zero && _writePdo != INVALID_HANDLE) CloseHandle(_writePdo);
                     _readPdo = IntPtr.Zero;
                     _writePdo = IntPtr.Zero;
+                    if (_usbIfh != IntPtr.Zero) { WinUsb_Free(_usbIfh); _usbIfh = IntPtr.Zero; }
+                    if (_usbDev != IntPtr.Zero && _usbDev != INVALID_HANDLE) CloseHandle(_usbDev);
+                    _usbDev = IntPtr.Zero;
+                    _usbInPipe = 0;
                 }
+                _transport = Ds3Transport.None;
             }
         }
 
@@ -652,11 +841,72 @@ namespace PadForge.Common.Input
             return null;
         }
 
+        // WinUSB interface GUID from the shipped ds3_winusb.inf (the USB DS3 binding).
+        private static readonly Guid DS3_WINUSB_IF = new Guid("B35924D6-3E16-4A9E-9782-5524A4B79BAC");
+
+        private string FindWinUsbDs3() => FindInterfacePath(DS3_WINUSB_IF, requireVid054c: false);
+
+        // Generalized SetupDi interface-path lookup (the BthPS3 PDO variant filters on
+        // the 054c substring; the WinUSB interface GUID is DS3-specific already).
+        private string FindInterfacePath(Guid ifGuid, bool requireVid054c)
+        {
+            IntPtr set = SetupDiGetClassDevs(ref ifGuid, IntPtr.Zero, IntPtr.Zero, DIGCF_PRESENT | DIGCF_DEVICEINTERFACE);
+            if (set == INVALID_HANDLE) return null;
+            var did = new SP_DEVICE_INTERFACE_DATA { cbSize = Marshal.SizeOf<SP_DEVICE_INTERFACE_DATA>() };
+            try
+            {
+                for (int i = 0; SetupDiEnumDeviceInterfaces(set, IntPtr.Zero, ref ifGuid, i, ref did); i++)
+                {
+                    int req = 0;
+                    SetupDiGetDeviceInterfaceDetail(set, ref did, IntPtr.Zero, 0, ref req, IntPtr.Zero);
+                    IntPtr det = Marshal.AllocHGlobal(req);
+                    try
+                    {
+                        Marshal.WriteInt32(det, IntPtr.Size == 8 ? 8 : 6);
+                        if (SetupDiGetDeviceInterfaceDetail(set, ref did, det, req, ref req, IntPtr.Zero))
+                        {
+                            string p = Marshal.PtrToStringUni(det + 4);
+                            if (p != null && (!requireVid054c || p.IndexOf("054c", StringComparison.OrdinalIgnoreCase) >= 0))
+                                return p;
+                        }
+                    }
+                    finally { Marshal.FreeHGlobal(det); }
+                }
+            }
+            finally { SetupDiDestroyDeviceInfoList(set); }
+            return null;
+        }
+
         private const int DIGCF_PRESENT = 0x2, DIGCF_DEVICEINTERFACE = 0x10;
         private const uint GENERIC_READ = 0x80000000, GENERIC_WRITE = 0x40000000, FILE_SHARE_RW = 0x3, OPEN_EXISTING = 3;
+        private const uint FILE_FLAG_OVERLAPPED = 0x40000000;
         private const int ERROR_FILE_NOT_FOUND = 2, ERROR_INVALID_HANDLE = 6,
+                          ERROR_GEN_FAILURE = 31, ERROR_SEM_TIMEOUT = 121,
+                          ERROR_NO_SUCH_DEVICE = 433,
                           ERROR_OPERATION_ABORTED = 995, ERROR_DEVICE_NOT_CONNECTED = 1167;
         private static readonly IntPtr INVALID_HANDLE = new IntPtr(-1);
+
+        // ── WinUSB interop (USB DS3, inbox winusb.sys) ──────────────────────────
+        [StructLayout(LayoutKind.Sequential, Pack = 1)]
+        private struct WINUSB_SETUP_PACKET { public byte RequestType; public byte Request; public ushort Value; public ushort Index; public ushort Length; }
+        [StructLayout(LayoutKind.Sequential)]
+        private struct USB_INTERFACE_DESCRIPTOR { public byte bLength, bDescriptorType, bInterfaceNumber, bAlternateSetting, bNumEndpoints, bInterfaceClass, bInterfaceSubClass, bInterfaceProtocol, iInterface; }
+        [StructLayout(LayoutKind.Sequential)]
+        private struct WINUSB_PIPE_INFORMATION { public int PipeType; public byte PipeId; public ushort MaximumPacketSize; public byte Interval; }
+        private const uint PIPE_TRANSFER_TIMEOUT = 0x03;
+
+        [DllImport("winusb.dll", SetLastError = true)] private static extern bool WinUsb_Initialize(IntPtr dev, out IntPtr ifh);
+        [DllImport("winusb.dll", SetLastError = true)] private static extern bool WinUsb_Free(IntPtr ifh);
+        [DllImport("winusb.dll", SetLastError = true)]
+        private static extern bool WinUsb_ControlTransfer(IntPtr ifh, WINUSB_SETUP_PACKET setup, byte[] buf, uint len, out uint transferred, IntPtr overlapped);
+        [DllImport("winusb.dll", SetLastError = true)]
+        private static extern bool WinUsb_ReadPipe(IntPtr ifh, byte pipeId, byte[] buf, uint len, out uint transferred, IntPtr overlapped);
+        [DllImport("winusb.dll", SetLastError = true)]
+        private static extern bool WinUsb_QueryInterfaceSettings(IntPtr ifh, byte alt, out USB_INTERFACE_DESCRIPTOR desc);
+        [DllImport("winusb.dll", SetLastError = true)]
+        private static extern bool WinUsb_QueryPipe(IntPtr ifh, byte alt, byte pipeIndex, out WINUSB_PIPE_INFORMATION pipe);
+        [DllImport("winusb.dll", SetLastError = true)]
+        private static extern bool WinUsb_SetPipePolicy(IntPtr ifh, byte pipeId, uint policyType, uint valueLen, ref uint value);
 
         [StructLayout(LayoutKind.Sequential)]
         private struct SP_DEVICE_INTERFACE_DATA { public int cbSize; public Guid InterfaceClassGuid; public int Flags; public IntPtr Reserved; }

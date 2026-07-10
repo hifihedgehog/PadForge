@@ -118,6 +118,18 @@ namespace PadForge.Services
         // cycle either.
         private static readonly object _cycleLock = new object();
 
+        // GUID_DEVCLASS_USB: the setup class every USB function device enumerates under.
+        private static readonly Guid UsbDeviceClass = new Guid("36FC9E60-C465-11CF-8056-444553540000");
+
+        /// <summary>True if a raw USB DualShock 3 (VID_054C&amp;PID_0268) is present on USB,
+        /// whatever driver (or none) is bound. Lets the reader auto-bind WinUSB when a pad
+        /// is plugged in wired, without the user having run the pairing ceremony.</summary>
+        public static bool IsRawUsbDs3Present()
+        {
+            try { return Devcon.FindInDeviceClassByHardwareId(UsbDeviceClass, @"USB\VID_054C&PID_0268"); }
+            catch { return false; }
+        }
+
         /// <summary>Reboot-free radio re-enumeration (IOCTL_USB_HUB_CYCLE_PORT).</summary>
         public static void CycleBluetoothRadio(Action<string> log)
         {

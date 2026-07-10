@@ -95,6 +95,20 @@ namespace PadForge.Services
                 return r;
             }
 
+            // Release the runtime reader for the whole ceremony: it may be streaming the
+            // pad over USB (WinUSB) or BT, and pairing needs exclusive WinUSB access for
+            // the 0xF2/0xF5 magic reports. AllowReconnect in the finally re-arms it.
+            PadForge.Common.Input.Ds3DirectService.SuppressAndRelease();
+            System.Threading.Thread.Sleep(300);   // let the reader release the WinUSB handle
+            try
+            {
+                return RunPairingCore(r, ct);
+            }
+            finally { PadForge.Common.Input.Ds3DirectService.AllowReconnect(); }
+        }
+
+        private PairResult RunPairingCore(PairResult r, CancellationToken ct)
+        {
             // 1. Read this PC's Bluetooth radio address (the pairing target).
             byte[] radio = ReadRadioMac();
             if (radio == null) { _log("No Bluetooth radio found."); r.Error = "no-radio"; return r; }

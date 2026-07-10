@@ -1453,7 +1453,7 @@ namespace PadForge.Engine.Data
                     if (entry?.Settings == null) continue;
                     var s = entry.Settings;
                     sb.Append(entry.DeviceGuid ?? ""); sb.Append(':');
-                    sb.Append(s.Enabled).Append(',').Append(s.GestureButton).Append(',');
+                    sb.Append(s.Enabled).Append(',').Append(s.GestureButtons).Append(',');
                     sb.Append(s.FlickThresholdCounts).Append(',').Append(s.CooldownMs);
                     sb.Append('|');
                 }

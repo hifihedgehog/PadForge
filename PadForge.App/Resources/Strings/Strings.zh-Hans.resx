@@ -2288,18 +2288,19 @@
   <data name="Pad_MouseGestures_Enabled" xml:space="preserve"><value>启用鼠标手势</value></data>
   <data name="Pad_MouseGestures_Enabled_Tooltip" xml:space="preserve"><value>为该插槽上的这只鼠标启用手势识别。做手势时手势键仍保留原本的点击功能，建议选择一个未另行映射的侧键。</value></data>
   <data name="Pad_MouseGestures_Button" xml:space="preserve"><value>手势键</value></data>
-  <data name="Pad_MouseGestures_Button_Tooltip" xml:space="preserve"><value>按住期间启用识别的鼠标按键。</value></data>
+  <data name="Pad_MouseGestures_Button_Tooltip" xml:space="preserve"><value>按住期间启用识别的鼠标按键。每个选中的按键都拥有自己的五种手势，因此不同按键可以触发不同的动作。</value></data>
   <data name="Pad_MouseGestures_FlickThreshold" xml:space="preserve"><value>滑动距离（计数）</value></data>
   <data name="Pad_MouseGestures_FlickThreshold_Tooltip" xml:space="preserve"><value>松开前需达到的净移动量，达到才算方向手势。低于该值时松开将触发点击手势。</value></data>
   <data name="Pad_MouseGestures_Cooldown" xml:space="preserve"><value>冷却时间</value></data>
   <data name="Pad_ResetMouseGestures" xml:space="preserve"><value>重置所有鼠标手势设置</value></data>
   <data name="Pad_ResetMouseGesturesEnabled" xml:space="preserve"><value>重置为禁用</value></data>
-  <data name="Pad_ResetMouseGestureButton" xml:space="preserve"><value>重置为 X1</value></data>
+  <data name="Pad_ResetMouseGestureButton" xml:space="preserve"><value>重置为仅 X1</value></data>
   <data name="Pad_ResetMouseGestureFlickThreshold" xml:space="preserve"><value>重置为 150 计数</value></data>
   <data name="Pad_ResetMouseGestureCooldown" xml:space="preserve"><value>重置为 100 ms</value></data>
-  <data name="Mapping_MouseGestureLeft" xml:space="preserve"><value>鼠标手势：左</value></data>
-  <data name="Mapping_MouseGestureRight" xml:space="preserve"><value>鼠标手势：右</value></data>
-  <data name="Mapping_MouseGestureUp" xml:space="preserve"><value>鼠标手势：上</value></data>
-  <data name="Mapping_MouseGestureDown" xml:space="preserve"><value>鼠标手势：下</value></data>
-  <data name="Mapping_MouseGestureClick" xml:space="preserve"><value>鼠标手势：点击</value></data>
+  <data name="Mapping_MouseGestureLeft" xml:space="preserve"><value>左</value></data>
+  <data name="Mapping_MouseGestureRight" xml:space="preserve"><value>右</value></data>
+  <data name="Mapping_MouseGestureUp" xml:space="preserve"><value>上</value></data>
+  <data name="Mapping_MouseGestureDown" xml:space="preserve"><value>下</value></data>
+  <data name="Mapping_MouseGestureClick" xml:space="preserve"><value>点击</value></data>
+  <data name="Mapping_MouseGesture_Format" xml:space="preserve"><value>鼠标手势（{0}）：{1}</value></data>
 </root>

@@ -4384,7 +4384,14 @@ namespace PadForge.Services
                     tpSettingsForPad = padIdx => _inputManager.TouchpadGestureSettingsProvider(slot, g, padIdx);
                 }
 
-                var raw = MappingDisplayResolver.BuildInputChoices(udi, tpSettingsForPad)
+                System.Func<PadForge.Engine.Mouse.MouseGestureSettings> mouseGestures = null;
+                if (_inputManager?.MouseGestureSettingsProvider != null)
+                {
+                    int mgSlot = padVm.PadIndex;
+                    mouseGestures = () => _inputManager.MouseGestureSettingsProvider(mgSlot, g);
+                }
+
+                var raw = MappingDisplayResolver.BuildInputChoices(udi, tpSettingsForPad, mouseGestures)
                           ?? System.Array.Empty<PadForge.ViewModels.InputChoice>();
                 foreach (var c in raw)
                 {

@@ -30,13 +30,56 @@ namespace PadForge.ViewModels
             set { if (SetProperty(ref _mouseGesturesEnabled, value)) PushMouseGesturesIfNotLoading(); }
         }
 
-        private int _mouseGestureButton = 3; // X1
-        /// <summary>Raw mouse button index arming the recognizer:
-        /// 0 Left, 1 Middle, 2 Right, 3 X1, 4 X2 (SdlMouseWrapper order).</summary>
-        public int MouseGestureButton
+        private int _mouseGestureButtons = 1 << 3; // X1 only
+        /// <summary>Bitmask of the mouse buttons arming the recognizer:
+        /// bit 0 Left, bit 1 Middle, bit 2 Right, bit 3 X1, bit 4 X2
+        /// (SdlMouseWrapper order). One, some, or all buttons can be gesture
+        /// buttons. The five bool wrappers below bind the checkboxes.</summary>
+        public int MouseGestureButtons
         {
-            get => _mouseGestureButton;
-            set { if (SetProperty(ref _mouseGestureButton, Math.Clamp(value, 0, 4))) PushMouseGesturesIfNotLoading(); }
+            get => _mouseGestureButtons;
+            set
+            {
+                if (SetProperty(ref _mouseGestureButtons, value & 0x1F))
+                {
+                    OnPropertyChanged(nameof(MouseGestureButtonLeft));
+                    OnPropertyChanged(nameof(MouseGestureButtonMiddle));
+                    OnPropertyChanged(nameof(MouseGestureButtonRight));
+                    OnPropertyChanged(nameof(MouseGestureButtonX1));
+                    OnPropertyChanged(nameof(MouseGestureButtonX2));
+                    PushMouseGesturesIfNotLoading();
+                }
+            }
+        }
+
+        private void SetGestureButtonBit(int bit, bool on)
+            => MouseGestureButtons = on ? (MouseGestureButtons | (1 << bit))
+                                        : (MouseGestureButtons & ~(1 << bit));
+
+        public bool MouseGestureButtonLeft
+        {
+            get => (_mouseGestureButtons & (1 << 0)) != 0;
+            set => SetGestureButtonBit(0, value);
+        }
+        public bool MouseGestureButtonMiddle
+        {
+            get => (_mouseGestureButtons & (1 << 1)) != 0;
+            set => SetGestureButtonBit(1, value);
+        }
+        public bool MouseGestureButtonRight
+        {
+            get => (_mouseGestureButtons & (1 << 2)) != 0;
+            set => SetGestureButtonBit(2, value);
+        }
+        public bool MouseGestureButtonX1
+        {
+            get => (_mouseGestureButtons & (1 << 3)) != 0;
+            set => SetGestureButtonBit(3, value);
+        }
+        public bool MouseGestureButtonX2
+        {
+            get => (_mouseGestureButtons & (1 << 4)) != 0;
+            set => SetGestureButtonBit(4, value);
         }
 
         private int _mouseGestureFlickThreshold = 150;
@@ -53,19 +96,13 @@ namespace PadForge.ViewModels
             set { if (SetProperty(ref _mouseGestureCooldownMs, Math.Clamp(value, 0, 5000))) PushMouseGesturesIfNotLoading(); }
         }
 
-        /// <summary>ComboBox items for the gesture-button picker: the five
-        /// mouse buttons in raw index order, named as the mapping picker
-        /// names them (SdlMouseWrapper's device-object names).</summary>
-        public IReadOnlyList<string> MouseGestureButtonChoices { get; } =
-            new[] { "Left Click", "Middle Click", "Right Click", "X1", "X2" };
-
         private RelayCommand _resetMouseGesturesEnabledCommand;
         public RelayCommand ResetMouseGesturesEnabledCommand =>
             _resetMouseGesturesEnabledCommand ??= new RelayCommand(() => MouseGesturesEnabled = false);
 
         private RelayCommand _resetMouseGestureButtonCommand;
         public RelayCommand ResetMouseGestureButtonCommand =>
-            _resetMouseGestureButtonCommand ??= new RelayCommand(() => MouseGestureButton = 3);
+            _resetMouseGestureButtonCommand ??= new RelayCommand(() => MouseGestureButtons = 1 << 3);
 
         private RelayCommand _resetMouseGestureFlickThresholdCommand;
         public RelayCommand ResetMouseGestureFlickThresholdCommand =>
@@ -80,7 +117,7 @@ namespace PadForge.ViewModels
             _resetMouseGesturesCardCommand ??= new RelayCommand(() =>
             {
                 MouseGesturesEnabled = false;
-                MouseGestureButton = 3;
+                MouseGestureButtons = 1 << 3;
                 MouseGestureFlickThreshold = 150;
                 MouseGestureCooldownMs = 100;
             });
@@ -97,7 +134,7 @@ namespace PadForge.ViewModels
             try
             {
                 MouseGesturesEnabled = s.Enabled;
-                MouseGestureButton = s.GestureButton;
+                MouseGestureButtons = s.GestureButtons;
                 MouseGestureFlickThreshold = s.FlickThresholdCounts;
                 MouseGestureCooldownMs = s.CooldownMs;
             }
@@ -133,7 +170,7 @@ namespace PadForge.ViewModels
             entry.Settings = new MouseGestureSettings
             {
                 Enabled = MouseGesturesEnabled,
-                GestureButton = MouseGestureButton,
+                GestureButtons = MouseGestureButtons,
                 FlickThresholdCounts = MouseGestureFlickThreshold,
                 CooldownMs = MouseGestureCooldownMs,
             };

@@ -2288,18 +2288,19 @@
   <data name="Pad_MouseGestures_Enabled" xml:space="preserve"><value>マウスジェスチャーを有効化</value></data>
   <data name="Pad_MouseGestures_Enabled_Tooltip" xml:space="preserve"><value>このスロットのこのマウスでジェスチャー認識を有効にします。ジェスチャー中もボタン本来のクリックは維持されるため、未割り当てのサイドボタンを選ぶのがおすすめです。</value></data>
   <data name="Pad_MouseGestures_Button" xml:space="preserve"><value>ジェスチャーボタン</value></data>
-  <data name="Pad_MouseGestures_Button_Tooltip" xml:space="preserve"><value>押している間、認識を有効にするマウスボタンです。</value></data>
+  <data name="Pad_MouseGestures_Button_Tooltip" xml:space="preserve"><value>押している間、認識を有効にするマウスボタンです。選択した各ボタンがそれぞれ5つのジェスチャーを持つため、ボタンごとに異なるアクションを割り当てられます。</value></data>
   <data name="Pad_MouseGestures_FlickThreshold" xml:space="preserve"><value>フリック距離（カウント）</value></data>
   <data name="Pad_MouseGestures_FlickThreshold_Tooltip" xml:space="preserve"><value>方向として判定されるために離すまでに必要な移動量です。未満の場合はクリックジェスチャーが発動します。</value></data>
   <data name="Pad_MouseGestures_Cooldown" xml:space="preserve"><value>クールダウン</value></data>
   <data name="Pad_ResetMouseGestures" xml:space="preserve"><value>マウスジェスチャー設定をすべてリセット</value></data>
   <data name="Pad_ResetMouseGesturesEnabled" xml:space="preserve"><value>無効にリセット</value></data>
-  <data name="Pad_ResetMouseGestureButton" xml:space="preserve"><value>X1 にリセット</value></data>
+  <data name="Pad_ResetMouseGestureButton" xml:space="preserve"><value>X1 のみにリセット</value></data>
   <data name="Pad_ResetMouseGestureFlickThreshold" xml:space="preserve"><value>150 カウントにリセット</value></data>
   <data name="Pad_ResetMouseGestureCooldown" xml:space="preserve"><value>100 ms にリセット</value></data>
-  <data name="Mapping_MouseGestureLeft" xml:space="preserve"><value>マウスジェスチャー: 左</value></data>
-  <data name="Mapping_MouseGestureRight" xml:space="preserve"><value>マウスジェスチャー: 右</value></data>
-  <data name="Mapping_MouseGestureUp" xml:space="preserve"><value>マウスジェスチャー: 上</value></data>
-  <data name="Mapping_MouseGestureDown" xml:space="preserve"><value>マウスジェスチャー: 下</value></data>
-  <data name="Mapping_MouseGestureClick" xml:space="preserve"><value>マウスジェスチャー: クリック</value></data>
+  <data name="Mapping_MouseGestureLeft" xml:space="preserve"><value>左</value></data>
+  <data name="Mapping_MouseGestureRight" xml:space="preserve"><value>右</value></data>
+  <data name="Mapping_MouseGestureUp" xml:space="preserve"><value>上</value></data>
+  <data name="Mapping_MouseGestureDown" xml:space="preserve"><value>下</value></data>
+  <data name="Mapping_MouseGestureClick" xml:space="preserve"><value>クリック</value></data>
+  <data name="Mapping_MouseGesture_Format" xml:space="preserve"><value>マウスジェスチャー（{0}）: {1}</value></data>
 </root>

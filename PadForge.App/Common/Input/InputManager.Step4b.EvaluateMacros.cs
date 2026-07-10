@@ -786,18 +786,24 @@ namespace PadForge.Common.Input
                 {
                     var mouseProvider = PadForge.Engine.Common.Mapping.SourceCoercion.MouseGestureFiredProvider;
                     if (mouseProvider == null) return false;
-                    // Closed five-name family mapped to interned constants:
-                    // this runs per macro per 1 kHz tick, and a Substring
-                    // here would allocate on every one of them.
+                    // "Mouse Gesture {buttonIndex} {Name}". The fired key is
+                    // looked up from the recognizer's precomposed table so
+                    // this 1 kHz path never composes strings.
                     string desc = e.GestureDescriptor;
-                    string mgName =
-                        desc.EndsWith(" Left", StringComparison.Ordinal) ? PadForge.Engine.Mouse.MouseGestureRecognizer.GestureLeft :
-                        desc.EndsWith(" Right", StringComparison.Ordinal) ? PadForge.Engine.Mouse.MouseGestureRecognizer.GestureRight :
-                        desc.EndsWith(" Up", StringComparison.Ordinal) ? PadForge.Engine.Mouse.MouseGestureRecognizer.GestureUp :
-                        desc.EndsWith(" Down", StringComparison.Ordinal) ? PadForge.Engine.Mouse.MouseGestureRecognizer.GestureDown :
-                        desc.EndsWith(" Click", StringComparison.Ordinal) ? PadForge.Engine.Mouse.MouseGestureRecognizer.GestureClick : null;
-                    if (mgName == null) return false;
-                    if (!mouseProvider(macro.PadIndex, e.DeviceGuidString, mgName))
+                    const int prefixLen = 14; // "Mouse Gesture ".Length
+                    if (desc.Length < prefixLen + 3) return false;
+                    int btn = desc[prefixLen] - '0';
+                    if (btn < 0 || btn >= PadForge.Engine.Mouse.MouseGestureContext.ButtonCount
+                        || desc[prefixLen + 1] != ' ') return false;
+                    int gIdx =
+                        desc.EndsWith(" Left", StringComparison.Ordinal) ? 0 :
+                        desc.EndsWith(" Right", StringComparison.Ordinal) ? 1 :
+                        desc.EndsWith(" Up", StringComparison.Ordinal) ? 2 :
+                        desc.EndsWith(" Down", StringComparison.Ordinal) ? 3 :
+                        desc.EndsWith(" Click", StringComparison.Ordinal) ? 4 : -1;
+                    if (gIdx < 0) return false;
+                    string mgKey = PadForge.Engine.Mouse.MouseGestureRecognizer.Keys[btn][gIdx];
+                    if (!mouseProvider(macro.PadIndex, e.DeviceGuidString, mgKey))
                         return false;
                     continue;
                 }

@@ -2287,19 +2287,20 @@
   <data name="Pad_MouseGestures_Desc" xml:space="preserve"><value>Mantén el botón de gestos, mueve el ratón y al soltar se dispara exactamente una acción: izquierda, derecha, arriba, abajo o un clic simple por debajo del umbral de movimiento. Los cinco gestos se asignan en la pestaña Asignaciones o sirven como disparadores de macros.</value></data>
   <data name="Pad_MouseGestures_Enabled" xml:space="preserve"><value>Activar gestos del ratón</value></data>
   <data name="Pad_MouseGestures_Enabled_Tooltip" xml:space="preserve"><value>Activa el reconocedor de gestos para este ratón en esta ranura. El botón de gestos conserva su clic normal al gesticular, así que elige un botón lateral que no uses.</value></data>
-  <data name="Pad_MouseGestures_Button" xml:space="preserve"><value>Botón de gestos</value></data>
-  <data name="Pad_MouseGestures_Button_Tooltip" xml:space="preserve"><value>El botón del ratón que activa el reconocedor mientras se mantiene pulsado.</value></data>
+  <data name="Pad_MouseGestures_Button" xml:space="preserve"><value>Botones de gestos</value></data>
+  <data name="Pad_MouseGestures_Button_Tooltip" xml:space="preserve"><value>Los botones del ratón que activan el reconocedor mientras se mantienen pulsados. Cada botón seleccionado tiene sus propios cinco gestos, así que botones distintos pueden disparar acciones distintas.</value></data>
   <data name="Pad_MouseGestures_FlickThreshold" xml:space="preserve"><value>Distancia del gesto (cuentas)</value></data>
   <data name="Pad_MouseGestures_FlickThreshold_Tooltip" xml:space="preserve"><value>Movimiento neto que debe alcanzarse antes de soltar para contar como dirección. Por debajo, al soltar se dispara el gesto de clic.</value></data>
   <data name="Pad_MouseGestures_Cooldown" xml:space="preserve"><value>Enfriamiento</value></data>
   <data name="Pad_ResetMouseGestures" xml:space="preserve"><value>Restablecer todos los ajustes de gestos del ratón</value></data>
   <data name="Pad_ResetMouseGesturesEnabled" xml:space="preserve"><value>Restablecer a desactivado</value></data>
-  <data name="Pad_ResetMouseGestureButton" xml:space="preserve"><value>Restablecer a X1</value></data>
+  <data name="Pad_ResetMouseGestureButton" xml:space="preserve"><value>Restablecer a solo X1</value></data>
   <data name="Pad_ResetMouseGestureFlickThreshold" xml:space="preserve"><value>Restablecer a 150 cuentas</value></data>
   <data name="Pad_ResetMouseGestureCooldown" xml:space="preserve"><value>Restablecer a 100 ms</value></data>
-  <data name="Mapping_MouseGestureLeft" xml:space="preserve"><value>Gesto del ratón: izquierda</value></data>
-  <data name="Mapping_MouseGestureRight" xml:space="preserve"><value>Gesto del ratón: derecha</value></data>
-  <data name="Mapping_MouseGestureUp" xml:space="preserve"><value>Gesto del ratón: arriba</value></data>
-  <data name="Mapping_MouseGestureDown" xml:space="preserve"><value>Gesto del ratón: abajo</value></data>
-  <data name="Mapping_MouseGestureClick" xml:space="preserve"><value>Gesto del ratón: clic</value></data>
+  <data name="Mapping_MouseGestureLeft" xml:space="preserve"><value>Izquierda</value></data>
+  <data name="Mapping_MouseGestureRight" xml:space="preserve"><value>Derecha</value></data>
+  <data name="Mapping_MouseGestureUp" xml:space="preserve"><value>Arriba</value></data>
+  <data name="Mapping_MouseGestureDown" xml:space="preserve"><value>Abajo</value></data>
+  <data name="Mapping_MouseGestureClick" xml:space="preserve"><value>Clic</value></data>
+  <data name="Mapping_MouseGesture_Format" xml:space="preserve"><value>Gesto del ratón ({0}): {1}</value></data>
 </root>

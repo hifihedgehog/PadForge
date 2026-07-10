@@ -2288,18 +2288,19 @@
   <data name="Pad_MouseGestures_Enabled" xml:space="preserve"><value>마우스 제스처 사용</value></data>
   <data name="Pad_MouseGestures_Enabled_Tooltip" xml:space="preserve"><value>이 슬롯의 이 마우스에 대해 제스처 인식을 활성화합니다. 제스처 중에도 버튼의 일반 클릭은 유지되므로 다른 용도로 매핑하지 않은 사이드 버튼을 선택하세요.</value></data>
   <data name="Pad_MouseGestures_Button" xml:space="preserve"><value>제스처 버튼</value></data>
-  <data name="Pad_MouseGestures_Button_Tooltip" xml:space="preserve"><value>누르고 있는 동안 인식을 활성화하는 마우스 버튼입니다.</value></data>
+  <data name="Pad_MouseGestures_Button_Tooltip" xml:space="preserve"><value>누르고 있는 동안 인식을 활성화하는 마우스 버튼입니다. 선택된 각 버튼은 저마다 다섯 가지 제스처를 가지므로 버튼마다 다른 동작을 지정할 수 있습니다.</value></data>
   <data name="Pad_MouseGestures_FlickThreshold" xml:space="preserve"><value>플릭 거리(카운트)</value></data>
   <data name="Pad_MouseGestures_FlickThreshold_Tooltip" xml:space="preserve"><value>방향으로 인식되려면 놓기 전까지 도달해야 하는 순 이동량입니다. 미만이면 놓을 때 클릭 제스처가 실행됩니다.</value></data>
   <data name="Pad_MouseGestures_Cooldown" xml:space="preserve"><value>쿨다운</value></data>
   <data name="Pad_ResetMouseGestures" xml:space="preserve"><value>모든 마우스 제스처 설정 재설정</value></data>
   <data name="Pad_ResetMouseGesturesEnabled" xml:space="preserve"><value>비활성화로 재설정</value></data>
-  <data name="Pad_ResetMouseGestureButton" xml:space="preserve"><value>X1로 재설정</value></data>
+  <data name="Pad_ResetMouseGestureButton" xml:space="preserve"><value>X1만으로 재설정</value></data>
   <data name="Pad_ResetMouseGestureFlickThreshold" xml:space="preserve"><value>150 카운트로 재설정</value></data>
   <data name="Pad_ResetMouseGestureCooldown" xml:space="preserve"><value>100 ms로 재설정</value></data>
-  <data name="Mapping_MouseGestureLeft" xml:space="preserve"><value>마우스 제스처: 왼쪽</value></data>
-  <data name="Mapping_MouseGestureRight" xml:space="preserve"><value>마우스 제스처: 오른쪽</value></data>
-  <data name="Mapping_MouseGestureUp" xml:space="preserve"><value>마우스 제스처: 위</value></data>
-  <data name="Mapping_MouseGestureDown" xml:space="preserve"><value>마우스 제스처: 아래</value></data>
-  <data name="Mapping_MouseGestureClick" xml:space="preserve"><value>마우스 제스처: 클릭</value></data>
+  <data name="Mapping_MouseGestureLeft" xml:space="preserve"><value>왼쪽</value></data>
+  <data name="Mapping_MouseGestureRight" xml:space="preserve"><value>오른쪽</value></data>
+  <data name="Mapping_MouseGestureUp" xml:space="preserve"><value>위</value></data>
+  <data name="Mapping_MouseGestureDown" xml:space="preserve"><value>아래</value></data>
+  <data name="Mapping_MouseGestureClick" xml:space="preserve"><value>클릭</value></data>
+  <data name="Mapping_MouseGesture_Format" xml:space="preserve"><value>마우스 제스처({0}): {1}</value></data>
 </root>

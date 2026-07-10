@@ -243,19 +243,24 @@ namespace PadForge.Common
             }
 
             // Mouse-gesture pulses (issue #200) -> localized labels.
+            // Grammar: "Mouse Gesture {buttonIndex} {Gesture}".
             if (s.StartsWith("Mouse Gesture ", System.StringComparison.Ordinal))
             {
                 var si = Strings.Instance;
-                string g = s.Substring("Mouse Gesture ".Length).Trim();
-                string label =
+                var mg = s.Split(new[] { ' ' }, 4, System.StringSplitOptions.RemoveEmptyEntries);
+                if (mg.Length < 4 || !int.TryParse(mg[2], out int mgBtn)
+                    || mgBtn < 0 || mgBtn >= 5) return null;
+                string g = mg[3].Trim();
+                string word =
                       g.Equals("Left",  System.StringComparison.OrdinalIgnoreCase) ? si.Mapping_MouseGestureLeft
                     : g.Equals("Right", System.StringComparison.OrdinalIgnoreCase) ? si.Mapping_MouseGestureRight
                     : g.Equals("Up",    System.StringComparison.OrdinalIgnoreCase) ? si.Mapping_MouseGestureUp
                     : g.Equals("Down",  System.StringComparison.OrdinalIgnoreCase) ? si.Mapping_MouseGestureDown
                     : g.Equals("Click", System.StringComparison.OrdinalIgnoreCase) ? si.Mapping_MouseGestureClick
                     : null;
-                if (label == null) return null;
-                return prefix + label;
+                if (word == null) return null;
+                string[] mgNames = { "Left Click", "Middle Click", "Right Click", "X1", "X2" };
+                return prefix + string.Format(si.Mapping_MouseGesture_Format, mgNames[mgBtn], word);
             }
 
             string[] parts = s.Split(' ', System.StringSplitOptions.RemoveEmptyEntries);
@@ -640,7 +645,8 @@ namespace PadForge.Common
         }
 
         internal static InputChoice[] BuildInputChoices(UserDevice ud,
-            System.Func<int, PadForge.Engine.Touchpad.TouchpadGestureSettings> touchpadSettingsForPad = null)
+            System.Func<int, PadForge.Engine.Touchpad.TouchpadGestureSettings> touchpadSettingsForPad = null,
+            System.Func<PadForge.Engine.Mouse.MouseGestureSettings> mouseGestureSettings = null)
         {
             var list = new System.Collections.Generic.List<InputChoice>();
 
@@ -963,17 +969,35 @@ namespace PadForge.Common
             if (ud.HasTouchpad || ud.IsTouchpad)
                 AddTouchpadGestureChoices(list, ud, si, touchpadSettingsForPad);
 
-            // Mouse gestures (issue #200): five one-shot pulses from the
-            // hold-button-and-flick recognizer. Listed for every mouse; the
-            // per-(slot, device) Enabled toggle on the Mouse tab governs
-            // firing, not visibility, so a disabled setup is discoverable.
+            // Mouse gestures (issue #200): each SELECTED gesture button
+            // carries its own five one-shot pulses, so different buttons can
+            // drive different mapping combos. Buttons come from the slot's
+            // Mouse-tab selection (default X1 when the engine is stopped);
+            // the Enabled toggle governs firing, not visibility, so a
+            // disabled setup stays discoverable.
             if (ud.IsMouse)
             {
-                list.Add(new InputChoice { Descriptor = "Mouse Gesture Left", DisplayName = si.Mapping_MouseGestureLeft });
-                list.Add(new InputChoice { Descriptor = "Mouse Gesture Right", DisplayName = si.Mapping_MouseGestureRight });
-                list.Add(new InputChoice { Descriptor = "Mouse Gesture Up", DisplayName = si.Mapping_MouseGestureUp });
-                list.Add(new InputChoice { Descriptor = "Mouse Gesture Down", DisplayName = si.Mapping_MouseGestureDown });
-                list.Add(new InputChoice { Descriptor = "Mouse Gesture Click", DisplayName = si.Mapping_MouseGestureClick });
+                var mgs = mouseGestureSettings?.Invoke()
+                    ?? PadForge.Engine.Mouse.MouseGestureSettings.Default();
+                string[] mgButtonNames = { "Left Click", "Middle Click", "Right Click", "X1", "X2" };
+                string[] mgWords =
+                {
+                    si.Mapping_MouseGestureLeft, si.Mapping_MouseGestureRight,
+                    si.Mapping_MouseGestureUp, si.Mapping_MouseGestureDown,
+                    si.Mapping_MouseGestureClick,
+                };
+                for (int b = 0; b < mgButtonNames.Length; b++)
+                {
+                    if ((mgs.GestureButtons & (1 << b)) == 0) continue;
+                    for (int g = 0; g < mgWords.Length; g++)
+                    {
+                        list.Add(new InputChoice
+                        {
+                            Descriptor = "Mouse Gesture " + PadForge.Engine.Mouse.MouseGestureRecognizer.Keys[b][g],
+                            DisplayName = string.Format(si.Mapping_MouseGesture_Format, mgButtonNames[b], mgWords[g]),
+                        });
+                    }
+                }
             }
 
             return list.ToArray();

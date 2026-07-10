@@ -215,7 +215,15 @@ namespace PadForge.Common.Input
                         if (err != ERROR_IO_PENDING) return false;
                         if (WaitForSingleObject(ev, 1000) != WAIT_OBJECT_0)
                         {
+                            // Timed out. CancelIo only REQUESTS abort; the write can
+                            // still be in flight, and `ol` is a stack local while `buf`
+                            // is a pinned-only-for-the-call managed array. Block until
+                            // the cancelled I/O actually completes before unwinding, or
+                            // the kernel writes completion status into freed stack
+                            // memory / reads a moved buffer (the sibling drain in
+                            // HapticToneService.OverlappedWrite exists for this reason).
                             CancelIo(handle);
+                            GetOverlappedResult(handle, ref ol, out _, true);
                             return false;
                         }
                     }

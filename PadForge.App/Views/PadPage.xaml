@@ -1870,7 +1870,11 @@
                                             <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding MacroAction_TextBlock_Delay, Source={x:Static strings:Strings.Instance}}"
                                                        ToolTip="{Binding MacroAction_TextBlock_Delay_Tooltip, Source={x:Static strings:Strings.Instance}}"
                                                        Width="80" Margin="0,0,8,0" TextWrapping="Wrap" VerticalAlignment="Center"/>
-                                            <TextBox Text="{Binding TextPerCharDelayMs, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                            <!-- Commits on LostFocus like every sibling int box in this
+                                                 editor. PropertyChanged would push each intermediate
+                                                 keystroke (typing 500 commits 5, then 50, then 500)
+                                                 live into a running macro's pacing. -->
+                                            <TextBox Text="{Binding TextPerCharDelayMs, Mode=TwoWay}"
                                                      ToolTip="{Binding MacroAction_TextBlock_Delay_Tooltip, Source={x:Static strings:Strings.Instance}}"
                                                      Width="60" TextAlignment="Center" VerticalAlignment="Center"/>
                                         </StackPanel>

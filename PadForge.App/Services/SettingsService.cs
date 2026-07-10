@@ -4696,9 +4696,12 @@ namespace PadForge.Services
         /// <summary>Working folder for a RunProgram action.</summary>
         [XmlElement] public string ProgramWorkingDir { get; set; }
 
-        /// <summary>Plain text a TextBlock action types out (issue #201).
-        /// XmlSerializer escapes arbitrary user text natively, so no packing
-        /// or delimiter rules apply here.</summary>
+        /// <summary>Plain text a TextBlock action types out (issue #201). No
+        /// packing or delimiter rules apply: this is a discrete XML element.
+        /// The MacroAction.TextContent setter normalizes line endings to LF and
+        /// strips C0 control characters before the value ever reaches this DTO,
+        /// because XmlSerializer throws on C0 characters and the XML parser
+        /// normalizes CR to LF on load (verified both ways).</summary>
         [XmlElement] public string TextContent { get; set; }
         /// <summary>Milliseconds between typed characters for a TextBlock
         /// action. 0 = the whole text in one batched call.</summary>

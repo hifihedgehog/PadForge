@@ -2294,5 +2294,5 @@
   <data name="MacroAction_TextBlock_NoText" xml:space="preserve"><value>(geen tekst)</value></data>
   <data name="MacroAction_TextBlock_Text" xml:space="preserve"><value>Tekst</value></data>
   <data name="MacroAction_TextBlock_Delay" xml:space="preserve"><value>Tekenvertraging (ms)</value></data>
-  <data name="MacroAction_TextBlock_Delay_Tooltip" xml:space="preserve"><value>Milliseconden tussen getypte tekens. 0 typt de hele tekst in één keer.</value></data>
+  <data name="MacroAction_TextBlock_Delay_Tooltip" xml:space="preserve"><value>Milliseconden tussen getypte tekens, maximaal 1000. 0 typt de hele tekst in één keer.</value></data>
 </root>

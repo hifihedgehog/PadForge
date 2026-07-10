@@ -155,5 +155,25 @@ namespace PadForge.Tests
             Assert.Equal(0, MacroAction.ComputeTextEmitTarget("", 10, 100));
             Assert.Equal(0, MacroAction.ComputeTextEmitTarget(null, 0, 0));
         }
+
+        [Fact]
+        public void TextBlock_TextContent_NormalizesLineEndings_And_StripsControlChars()
+        {
+            // CRLF and lone CR normalize to LF (the XML parser would do it on load
+            // anyway, so storing them would leave the XML and clipboard legs byte-
+            // divergent), and C0 controls other than tab/LF are stripped because
+            // XmlSerializer throws on them, which would break the WHOLE settings
+            // save. Tab and LF pass through untouched.
+            var a = new MacroAction
+            {
+                Type = MacroActionType.TextBlock,
+                TextContent = "a\r\nb\rc\x1B[0m\td\0e",
+            };
+            Assert.Equal("a\nb\nc[0m\tde", a.TextContent);
+
+            // Clean text passes through without reallocation-level changes.
+            a.TextContent = "plain text\nwith\ttab";
+            Assert.Equal("plain text\nwith\ttab", a.TextContent);
+        }
     }
 }

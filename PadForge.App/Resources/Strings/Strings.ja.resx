@@ -2274,5 +2274,5 @@
   <data name="MacroAction_TextBlock_NoText" xml:space="preserve"><value>（テキストなし）</value></data>
   <data name="MacroAction_TextBlock_Text" xml:space="preserve"><value>テキスト</value></data>
   <data name="MacroAction_TextBlock_Delay" xml:space="preserve"><value>文字間隔 (ms)</value></data>
-  <data name="MacroAction_TextBlock_Delay_Tooltip" xml:space="preserve"><value>入力する文字ごとの間隔（ミリ秒）。0 はテキスト全体を一度に入力します。</value></data>
+  <data name="MacroAction_TextBlock_Delay_Tooltip" xml:space="preserve"><value>入力する文字ごとの間隔（ミリ秒、最大 1000）。0 はテキスト全体を一度に入力します。</value></data>
 </root>

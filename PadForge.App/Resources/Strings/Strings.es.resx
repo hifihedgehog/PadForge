@@ -2274,5 +2274,5 @@
   <data name="MacroAction_TextBlock_NoText" xml:space="preserve"><value>(sin texto)</value></data>
   <data name="MacroAction_TextBlock_Text" xml:space="preserve"><value>Texto</value></data>
   <data name="MacroAction_TextBlock_Delay" xml:space="preserve"><value>Retardo por carácter (ms)</value></data>
-  <data name="MacroAction_TextBlock_Delay_Tooltip" xml:space="preserve"><value>Milisegundos entre caracteres escritos. 0 escribe todo el texto de una vez.</value></data>
+  <data name="MacroAction_TextBlock_Delay_Tooltip" xml:space="preserve"><value>Milisegundos entre caracteres escritos, hasta 1000. 0 escribe todo el texto de una vez.</value></data>
 </root>

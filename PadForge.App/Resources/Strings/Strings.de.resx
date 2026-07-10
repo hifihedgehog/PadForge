@@ -2274,5 +2274,5 @@
   <data name="MacroAction_TextBlock_NoText" xml:space="preserve"><value>(kein Text)</value></data>
   <data name="MacroAction_TextBlock_Text" xml:space="preserve"><value>Text</value></data>
   <data name="MacroAction_TextBlock_Delay" xml:space="preserve"><value>Zeichenverzögerung (ms)</value></data>
-  <data name="MacroAction_TextBlock_Delay_Tooltip" xml:space="preserve"><value>Millisekunden zwischen getippten Zeichen. 0 tippt den gesamten Text auf einmal.</value></data>
+  <data name="MacroAction_TextBlock_Delay_Tooltip" xml:space="preserve"><value>Millisekunden zwischen getippten Zeichen, höchstens 1000. 0 tippt den gesamten Text auf einmal.</value></data>
 </root>

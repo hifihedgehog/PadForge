@@ -2291,7 +2291,7 @@
   <data name="Pad_ExtendedClone_Confirm_Format" xml:space="preserve"><value>Clonare {0} su questo slot come passthrough 1:1? Il layout diventa {1} assi, {2} pulsanti e {3} POV e le righe di questo dispositivo sullo slot vengono sostituite con i suoi input.</value></data>
   <data name="Pad_ExtendedClone_Overflow_Format" xml:space="preserve"><value>Questo dispositivo ha più input di quanti ne possa gestire un controller Extended. Mappati {0} di {1} assi, {2} di {3} pulsanti e {4} di {5} POV. I restanti sono rimasti non mappati.</value></data>
   <data name="MacroAction_Type_TextBlock" xml:space="preserve"><value>Blocco di testo</value></data>
-  <data name="MacroAction_TextBlock_Tooltip" xml:space="preserve"><value>Digita il testo come pressioni di tasti quando la macro viene eseguita. Funziona con qualsiasi carattere, inclusi accenti, CJK ed emoji. Gli a capo premono Invio e le tabulazioni premono Tab. Per le combinazioni di tasti resta «Pressione tasto».</value></data>
+  <data name="MacroAction_TextBlock_Tooltip" xml:space="preserve"><value>Digita il testo come pressioni di tasti quando la macro viene eseguita. Funziona con qualsiasi carattere, inclusi accenti, CJK ed emoji. Gli a capo premono Invio. Le tabulazioni incollate premono Tab (il tasto Tab qui passa al campo successivo). Per le combinazioni di tasti resta «Pressione tasto».</value></data>
   <data name="MacroAction_TextBlock_Format" xml:space="preserve"><value>Digita "{0}"</value></data>
   <data name="MacroAction_TextBlock_NoText" xml:space="preserve"><value>(nessun testo)</value></data>
   <data name="MacroAction_TextBlock_Text" xml:space="preserve"><value>Testo</value></data>

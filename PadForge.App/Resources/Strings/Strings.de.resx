@@ -2269,7 +2269,7 @@
   <data name="Pad_ExtendedClone_Confirm_Format" xml:space="preserve"><value>{0} als 1:1-Durchleitung auf diesen Slot klonen? Das Layout wird zu {1} Achsen, {2} Tasten und {3} POVs, und die Zeilen dieses Geräts im Slot werden durch seine eigenen Eingaben ersetzt.</value></data>
   <data name="Pad_ExtendedClone_Overflow_Format" xml:space="preserve"><value>Dieses Gerät hat mehr Eingaben, als ein Extended-Controller aufnehmen kann. {0} von {1} Achsen, {2} von {3} Tasten und {4} von {5} POVs wurden zugeordnet. Der Rest blieb unzugeordnet.</value></data>
   <data name="MacroAction_Type_TextBlock" xml:space="preserve"><value>Textblock</value></data>
-  <data name="MacroAction_TextBlock_Tooltip" xml:space="preserve"><value>Tippt den Text als Tastenanschläge, wenn das Makro läuft. Alle Zeichen funktionieren, einschließlich Akzente, CJK und Emoji. Zeilenumbrüche drücken die Eingabetaste, Tabulatoren die Tab-Taste. Für Tastenkombinationen dient weiterhin „Taste drücken“.</value></data>
+  <data name="MacroAction_TextBlock_Tooltip" xml:space="preserve"><value>Tippt den Text als Tastenanschläge, wenn das Makro läuft. Alle Zeichen funktionieren, einschließlich Akzente, CJK und Emoji. Zeilenumbrüche drücken die Eingabetaste. Eingefügte Tabulatorzeichen drücken die Tab-Taste (die Tab-Taste selbst wechselt hier zum nächsten Feld). Für Tastenkombinationen dient weiterhin „Taste drücken“.</value></data>
   <data name="MacroAction_TextBlock_Format" xml:space="preserve"><value>„{0}“ tippen</value></data>
   <data name="MacroAction_TextBlock_NoText" xml:space="preserve"><value>(kein Text)</value></data>
   <data name="MacroAction_TextBlock_Text" xml:space="preserve"><value>Text</value></data>

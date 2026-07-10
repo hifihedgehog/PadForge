@@ -2269,7 +2269,7 @@
   <data name="Pad_ExtendedClone_Confirm_Format" xml:space="preserve"><value>以 1:1 直通方式将 {0} 克隆到该插槽？布局将变为 {1} 个轴、{2} 个按钮和 {3} 个 POV，并且该设备在该插槽上的行将替换为其自身的输入。</value></data>
   <data name="Pad_ExtendedClone_Overflow_Format" xml:space="preserve"><value>该设备的输入数量超过了 Extended 控制器所能承载的上限。已映射 {1} 个轴中的 {0} 个、{3} 个按钮中的 {2} 个、{5} 个 POV 中的 {4} 个。其余部分未映射。</value></data>
   <data name="MacroAction_Type_TextBlock" xml:space="preserve"><value>文本块</value></data>
-  <data name="MacroAction_TextBlock_Tooltip" xml:space="preserve"><value>宏运行时将文本作为按键输入逐字打出。支持任何字符，包括重音字母、中日韩文字和表情符号。换行按 Enter，制表符按 Tab。按键组合请继续使用"按下按键"。</value></data>
+  <data name="MacroAction_TextBlock_Tooltip" xml:space="preserve"><value>宏运行时将文本作为按键输入逐字打出。支持任何字符，包括重音字母、中日韩文字和表情符号。换行按 Enter。粘贴的制表符按 Tab（在此输入框按 Tab 键会切换到下一个字段）。按键组合请继续使用"按下按键"。</value></data>
   <data name="MacroAction_TextBlock_Format" xml:space="preserve"><value>输入"{0}"</value></data>
   <data name="MacroAction_TextBlock_NoText" xml:space="preserve"><value>（无文本）</value></data>
   <data name="MacroAction_TextBlock_Text" xml:space="preserve"><value>文本</value></data>

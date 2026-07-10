@@ -2269,7 +2269,7 @@
   <data name="Pad_ExtendedClone_Confirm_Format" xml:space="preserve"><value>¿Clonar {0} en esta ranura como paso directo 1:1? La distribución pasa a tener {1} ejes, {2} botones y {3} POVs, y las filas de este dispositivo en la ranura se reemplazan por sus propias entradas.</value></data>
   <data name="Pad_ExtendedClone_Overflow_Format" xml:space="preserve"><value>Este dispositivo tiene más entradas de las que un mando Extended puede admitir. Se asignaron {0} de {1} ejes, {2} de {3} botones y {4} de {5} POVs. El resto quedó sin asignar.</value></data>
   <data name="MacroAction_Type_TextBlock" xml:space="preserve"><value>Bloque de texto</value></data>
-  <data name="MacroAction_TextBlock_Tooltip" xml:space="preserve"><value>Escribe el texto como pulsaciones de teclas cuando se ejecuta la macro. Funciona con cualquier carácter, incluidos acentos, CJK y emojis. Los saltos de línea pulsan Intro y las tabulaciones pulsan Tab. Para combinaciones de teclas usa «Presionar tecla».</value></data>
+  <data name="MacroAction_TextBlock_Tooltip" xml:space="preserve"><value>Escribe el texto como pulsaciones de teclas cuando se ejecuta la macro. Funciona con cualquier carácter, incluidos acentos, CJK y emojis. Los saltos de línea pulsan Intro. Las tabulaciones pegadas pulsan Tab (la tecla Tab aquí pasa al campo siguiente). Para combinaciones de teclas usa «Presionar tecla».</value></data>
   <data name="MacroAction_TextBlock_Format" xml:space="preserve"><value>Escribir «{0}»</value></data>
   <data name="MacroAction_TextBlock_NoText" xml:space="preserve"><value>(sin texto)</value></data>
   <data name="MacroAction_TextBlock_Text" xml:space="preserve"><value>Texto</value></data>

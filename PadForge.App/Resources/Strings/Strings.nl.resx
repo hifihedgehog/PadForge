@@ -2289,7 +2289,7 @@
   <data name="Pad_ExtendedClone_Confirm_Format" xml:space="preserve"><value>{0} op dit slot klonen als een 1:1-passthrough? De indeling wordt {1} assen, {2} knoppen en {3} POVs, en de rijen van dit apparaat op het slot worden vervangen door zijn eigen invoer.</value></data>
   <data name="Pad_ExtendedClone_Overflow_Format" xml:space="preserve"><value>Dit apparaat heeft meer invoer dan een Extended-controller kan bevatten. {0} van {1} assen, {2} van {3} knoppen en {4} van {5} POVs toegewezen. De rest bleef ongemapt.</value></data>
   <data name="MacroAction_Type_TextBlock" xml:space="preserve"><value>Tekstblok</value></data>
-  <data name="MacroAction_TextBlock_Tooltip" xml:space="preserve"><value>Typt de tekst als toetsaanslagen wanneer de macro draait. Alle tekens werken, inclusief accenten, CJK en emoji. Regeleinden drukken op Enter en tabs drukken op Tab. Gebruik "Toets indrukken" voor toetscombinaties.</value></data>
+  <data name="MacroAction_TextBlock_Tooltip" xml:space="preserve"><value>Typt de tekst als toetsaanslagen wanneer de macro draait. Alle tekens werken, inclusief accenten, CJK en emoji. Regeleinden drukken op Enter. Geplakte tabtekens drukken op Tab (de Tab-toets zelf gaat hier naar het volgende veld). Gebruik "Toets indrukken" voor toetscombinaties.</value></data>
   <data name="MacroAction_TextBlock_Format" xml:space="preserve"><value>"{0}" typen</value></data>
   <data name="MacroAction_TextBlock_NoText" xml:space="preserve"><value>(geen tekst)</value></data>
   <data name="MacroAction_TextBlock_Text" xml:space="preserve"><value>Tekst</value></data>

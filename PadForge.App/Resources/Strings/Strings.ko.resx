@@ -2269,7 +2269,7 @@
   <data name="Pad_ExtendedClone_Confirm_Format" xml:space="preserve"><value>{0}을(를) 1:1 패스스루로 이 슬롯에 복제할까요? 레이아웃이 축 {1}개, 버튼 {2}개, POV {3}개가 되며, 슬롯에서 이 장치의 행이 해당 장치의 입력으로 대체됩니다.</value></data>
   <data name="Pad_ExtendedClone_Overflow_Format" xml:space="preserve"><value>이 장치의 입력이 Extended 컨트롤러가 수용할 수 있는 수보다 많습니다. 축 {1}개 중 {0}개, 버튼 {3}개 중 {2}개, POV {5}개 중 {4}개를 매핑했습니다. 나머지는 매핑되지 않았습니다.</value></data>
   <data name="MacroAction_Type_TextBlock" xml:space="preserve"><value>텍스트 블록</value></data>
-  <data name="MacroAction_TextBlock_Tooltip" xml:space="preserve"><value>매크로가 실행될 때 텍스트를 키 입력으로 타이핑합니다. 악센트, CJK, 이모지를 포함한 모든 문자를 지원합니다. 줄바꿈은 Enter를, 탭은 Tab을 누릅니다. 키 조합에는 계속 "키 누르기"를 사용하세요.</value></data>
+  <data name="MacroAction_TextBlock_Tooltip" xml:space="preserve"><value>매크로가 실행될 때 텍스트를 키 입력으로 타이핑합니다. 악센트, CJK, 이모지를 포함한 모든 문자를 지원합니다. 줄바꿈은 Enter를 누릅니다. 붙여넣은 탭 문자는 Tab을 누릅니다(이 입력란에서 Tab 키는 다음 필드로 이동합니다). 키 조합에는 계속 "키 누르기"를 사용하세요.</value></data>
   <data name="MacroAction_TextBlock_Format" xml:space="preserve"><value>"{0}" 입력</value></data>
   <data name="MacroAction_TextBlock_NoText" xml:space="preserve"><value>(텍스트 없음)</value></data>
   <data name="MacroAction_TextBlock_Text" xml:space="preserve"><value>텍스트</value></data>

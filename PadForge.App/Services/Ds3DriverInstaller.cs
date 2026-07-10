@@ -127,27 +127,12 @@ namespace PadForge.Services
             catch (Exception ex) { log("Radio cycle failed: " + ex.Message); }
         }
 
-        // GUID_DEVINTERFACE_BTHPS3 {968E1849} - the raw PDO's IOCTL interface, present
-        // only while a DS3 is connected. Used to find the node for removal.
-        private static readonly Guid BthPs3Interface = new Guid("968E1849-73B1-4876-B80A-ED6DD171489B");
-
-        /// <summary>Removes the BthPS3 DS3 child node if present (for a clean unpair /
-        /// dry run). Best-effort: the node is transient (only up while connected), so a
-        /// radio cycle re-enumerates it anyway.</summary>
-        public static void RemoveDs3Node(Action<string> log)
-        {
-            try
-            {
-                for (int guard = 0; guard < 8; guard++)
-                {
-                    if (!Devcon.FindByInterfaceGuid(BthPs3Interface, out PnPDevice dev)) break;
-                    string id = dev.InstanceId;
-                    dev.Remove();
-                    log("Removed device node " + id);
-                }
-            }
-            catch (Exception ex) { log("Node removal: " + ex.Message); }
-        }
+        // NOTE: there is deliberately no "remove the BthPS3 PDO node" helper. Forcibly
+        // removing the raw PDO with PnP (dev.Remove()) frees BthPS3's per-connection
+        // context out from under BTHport, and the next HCI disconnect faults on it
+        // (BSOD 0xD1, BthPS3.sys, 2026-07-09). The PDO is transient: it self-destroys
+        // when the pad disconnects, which the radio cycle triggers through BthPS3's own
+        // in-order path against a valid context.
 
         // ── BR/EDR link-key anchor (remembered-device persistence) ────────────────
 

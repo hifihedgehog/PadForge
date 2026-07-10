@@ -105,7 +105,19 @@ namespace PadForge.Common.Input
             try
             {
                 var dev = GetEnumerator().GetDevice(deviceId);
-                lock (_gate) _devices[deviceId] = dev;
+                lock (_gate)
+                {
+                    // The GetMuteState (30 Hz) and Poll (4 Hz) threads can both miss
+                    // the cache and resolve the same id concurrently. Keep whichever
+                    // landed first and dispose our loser, so the extra MMDevice (a COM
+                    // reference) doesn't leak until process exit.
+                    if (_devices.TryGetValue(deviceId, out var raced))
+                    {
+                        dev?.Dispose();
+                        return raced;
+                    }
+                    _devices[deviceId] = dev;
+                }
                 return dev;
             }
             catch

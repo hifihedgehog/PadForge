@@ -11,7 +11,7 @@ namespace PadForge.Engine.RemoteLink
     /// plugged into (owner) re-encodes it for the real hardware and writes it. The
     /// owner synthesizes nothing — it is a pure transport transcoder.
     ///
-    /// <para>Three kinds cover every controller-output channel:</para>
+    /// <para>Four kinds cover the effect-output channels:</para>
     /// <list type="bullet">
     /// <item>SonyEffect — the transport-normalized DualSense effect report body
     ///   (47 B DS5 / 31 B DS4): rumble + adaptive triggers + lightbar + mic/player
@@ -28,6 +28,13 @@ namespace PadForge.Engine.RemoteLink
     /// </list>
     /// Audio (the speaker sample stream) is carried out of band on its own
     /// <see cref="LinkMessageType.Audio"/> datagrams, not here.
+    ///
+    /// <para>NOT carried: the player-index / player-LED number channel (#191).
+    /// It rides the SonyEffect body for Sony pads, but the non-Sony path
+    /// (SdlDeviceWrapper.SetPlayerIndex for Nintendo, Ds3DirectService.SetPlayerNumber
+    /// for the BT DS3) is machine-local, so a remote-shared Joy-Con / Switch Pro / DS3
+    /// keeps the owner's player LED instead of the consumer slot's idle floor. Adding a
+    /// PlayerIndex kind here is the fix, tracked as a Remote Link follow-up.</para>
     /// </summary>
     public static class OutputEffectCodec
     {

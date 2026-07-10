@@ -165,13 +165,38 @@ namespace PadForge.Common.Input
                 return;
             }
 
+            // Uncached loop: the decode runs async, so a trigger release that calls
+            // StopLoopsForMacro DURING the decode window finds nothing to stop (the
+            // loop isn't registered yet) and the loop would then start after the stop
+            // and play forever. Register the request as pending so StopLoopsForMacro
+            // can cancel it, and only start if it's still pending when decode finishes.
+            if (loop && macroKey != null)
+                lock (_lock) _pendingLoops.Add((slot, macroKey, filePath));
+
             Task.Run(() =>
             {
                 var decoded = DecodeAndCache(filePath);
-                if (decoded != null)
+                bool stillWanted = true;
+                if (loop && macroKey != null)
+                {
+                    lock (_lock)
+                    {
+                        int idx = _pendingLoops.FindIndex(p =>
+                            p.slot == slot && ReferenceEquals(p.macroKey, macroKey)
+                            && string.Equals(p.filePath, filePath, StringComparison.OrdinalIgnoreCase));
+                        if (idx >= 0) _pendingLoops.RemoveAt(idx);
+                        else stillWanted = false;   // a release cancelled it mid-decode
+                    }
+                }
+                if (decoded != null && stillWanted)
                     StartSound(slot, macroKey, decoded, filePath, volumePct, loop);
             });
         }
+
+        // Uncached looping playbacks whose decode is in flight. StopLoopsForMacro
+        // removes matching entries so the pending start aborts instead of orphaning
+        // a forever-loop. Guarded by _lock.
+        private static readonly List<(int slot, object macroKey, string filePath)> _pendingLoops = new();
 
         /// <summary>Short generated beep (880 Hz, 200 ms) for the Audio tab's
         /// Test button. Plays a short beep through ONLY the assigned device
@@ -202,6 +227,10 @@ namespace PadForge.Common.Input
             if ((uint)slot >= MaxPads || macroKey == null) return;
             lock (_lock)
             {
+                // Cancel any in-flight uncached decode for this macro's loops, so a
+                // decode that finishes after this release can't start an orphan loop.
+                _pendingLoops.RemoveAll(p => p.slot == slot && ReferenceEquals(p.macroKey, macroKey));
+
                 var list = _active[slot];
                 for (int i = list.Count - 1; i >= 0; i--)
                 {
@@ -220,6 +249,7 @@ namespace PadForge.Common.Input
             if ((uint)slot >= MaxPads) return;
             lock (_lock)
             {
+                _pendingLoops.RemoveAll(p => p.slot == slot);   // cancel in-flight decodes too
                 foreach (var a in _active[slot])
                     RemovePlacements_NoLock(a);
                 _active[slot].Clear();
@@ -231,6 +261,7 @@ namespace PadForge.Common.Input
         {
             lock (_lock)
             {
+                _pendingLoops.Clear();   // cancel every in-flight decode
                 for (int s = 0; s < MaxPads; s++)
                 {
                     foreach (var a in _active[s]) RemovePlacements_NoLock(a);

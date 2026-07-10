@@ -50,6 +50,7 @@ namespace PadForge.Common.Input
 
         private readonly string _readerName;
         private Action<string, string> _handler;
+        private NfcReaderService _subscribedSvc;
 
         public NfcReaderDevice(string readerName)
         {
@@ -145,6 +146,7 @@ namespace PadForge.Common.Input
             if (svc == null) return false;
             _handler = OnTagDetected;
             svc.TagDetected += _handler;
+            _subscribedSvc = svc;   // unsubscribe from THIS instance, not whatever is Active later
             _attached = true;
             return true;
         }
@@ -152,11 +154,14 @@ namespace PadForge.Common.Input
         public void Dispose()
         {
             _attached = false;
-            var svc = NfcReaderService.Active;
-            if (svc != null && _handler != null)
+            // The monitor service can die and be replaced (Active swaps) between Open
+            // and Dispose. Unsubscribing from the current Active would leak our handler
+            // on the instance we actually subscribed to; unsubscribe from that one.
+            if (_subscribedSvc != null && _handler != null)
             {
-                try { svc.TagDetected -= _handler; } catch { }
+                try { _subscribedSvc.TagDetected -= _handler; } catch { }
             }
+            _subscribedSvc = null;
             _handler = null;
         }
 

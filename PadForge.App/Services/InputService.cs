@@ -837,20 +837,24 @@ namespace PadForge.Services
             // reader. The synthetic MappingSource carries just the
             // device + descriptor; tuning fields don't matter here
             // because we read at the boolean level.
+            // Reused across polls (mutate-in-place). EvaluateForButtonTarget/ReadAsBool
+            // are pure reads that never retain the source reference, and this provider
+            // is invoked only from the poll thread's three engage settles (gyro / trigger
+            // route / haptic mirror, run sequentially), non-reentrant. Allocating a
+            // MappingSource per activator per poll at ~1 kHz was pure GC churn. Kind is
+            // fixed; only Guid/Descriptor change per call. Default DeadZone(50) matches
+            // the threshold arg, Invert(false) matches the old literal.
+            var buttonHeldSynth = new PadForge.Engine.Data.MappingSource { Kind = "Direct" };
             PadForge.Engine.Common.Mapping.SourceCoercion.ButtonHeldProvider = (deviceGuid, descriptor, slotIndex) =>
             {
                 if (string.IsNullOrEmpty(descriptor)) return true; // unconfigured = pass-through
                 if (string.IsNullOrEmpty(deviceGuid) || !Guid.TryParse(deviceGuid, out var g)) return false;
                 var ud = FindUserDevice(g);
                 if (ud == null || ud.InputState == null) return false;
-                var synth = new PadForge.Engine.Data.MappingSource
-                {
-                    Kind = "Direct",
-                    DeviceGuid = deviceGuid,
-                    Descriptor = descriptor,
-                };
+                buttonHeldSynth.DeviceGuid = deviceGuid;
+                buttonHeldSynth.Descriptor = descriptor;
                 return PadForge.Engine.Common.Mapping.SourceCoercion.EvaluateForButtonTarget(
-                    ud.InputState, synth, 50, slotIndex);
+                    ud.InputState, buttonHeldSynth, 50, slotIndex);
             };
 
             // — sample rate for the dual-threshold smoothing buffer.
@@ -6562,7 +6566,10 @@ namespace PadForge.Services
             // Sole-writer guard (#138): this frame means a remote game is driving the
             // shared device. Refresh the output lease so the owner's LOCAL output pipeline
             // yields. The apply below is the sole hardware writer (no two-writer stutter).
-            RemoteLinkOutputRouter.ClaimOutput(ud?.DevicePath ?? source.DevicePath);
+            // PlayerIndex is exempt: it's an LED-number update, not an effect claim, so it
+            // must not blank a locally-mapped device's rumble/lightbar for OutputLeaseMs.
+            if (effect.Kind != OutputEffectCodec.Kind.PlayerIndex)
+                RemoteLinkOutputRouter.ClaimOutput(ud?.DevicePath ?? source.DevicePath);
             try
             {
                 var handle = source.GamepadHandle;
@@ -6602,6 +6609,25 @@ namespace PadForge.Services
                         // per-family tone writer (Joy-Con / Steam / Triton / Deck).
                         HapticToneService.ApplyRemoteTone(ud, effect.HapticToneHz, effect.HapticToneAmp);
                         break;
+
+                    case OutputEffectCodec.Kind.PlayerIndex:
+                    {
+                        // #191 over the link: light the owner's real pad from the
+                        // consumer slot's number. Nintendo -> SDL player index (the
+                        // wrapper allowlists 057E); BT DS3 -> the direct service, reached
+                        // by SDL instance id (same match as UpdateDs3PlayerNumber).
+                        int n = effect.PlayerIndex;
+                        if (source.VendorId == 0x057E)
+                        {
+                            if (source is PadForge.Engine.SdlDeviceWrapper w2 && n > 0)
+                                w2.SetPlayerIndex(n - 1);
+                        }
+                        else if (source.VendorId == 0x054C && source.ProductId == 0x0268)
+                        {
+                            PadForge.Common.Input.Ds3DirectService.TrySetPlayerNumber(source.SdlInstanceId, n);
+                        }
+                        break;
+                    }
                 }
             }
             catch { /* a malformed frame must never take down the receive thread */ }
@@ -7140,6 +7166,20 @@ namespace PadForge.Services
                     {
                         int n = SettingsManager.SlotOrders.GetGlobalSlotNumber(slot);
                         if (n > 0) w.SetPlayerIndex(n - 1);
+                    }
+                    else if (ud.Device is PadForge.Engine.RemoteLink.RemotePeerDevice rpd)
+                    {
+                        // A shared non-Sony pad's player LED is machine-local on the
+                        // owner, so relay the CONSUMER slot's global number over the link
+                        // (#191). DualSense/DS4 peers carry the player LED in the
+                        // SonyEffect body already, so they are excluded here.
+                        bool nintendo = rpd.VendorId == 0x057E;
+                        bool ds3 = rpd.VendorId == 0x054C && rpd.ProductId == 0x0268;
+                        if (nintendo || ds3)
+                        {
+                            int n = SettingsManager.SlotOrders.GetGlobalSlotNumber(slot);
+                            PadForge.Common.Input.RemoteLinkOutputRouter.ShipPlayerIndex(rpd.DevicePath, n);
+                        }
                     }
                 }
             }

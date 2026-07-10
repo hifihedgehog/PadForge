@@ -141,18 +141,59 @@ namespace PadForge.Common.Input
         /// Non-finite pitches skip the fold: +Inf would halve forever
         /// (same guard as FoldJoyConFrequency, HapticToneEncoder.cs).</summary>
         internal static (float ToneHz, float Amp) ApplyToneFilter(
-            int mode, int limitHz, float toneHz, float amp, ref float lastPassHz)
+            int mode, int limitHz, float toneHz, float amp,
+            ref float lastPassHz, ref bool aboveLatch)
         {
-            if (mode != ToneFilterOff && !float.IsNaN(toneHz) && !float.IsInfinity(toneHz))
+            // Silence resets the boundary latch so unrelated content that
+            // starts later is judged fresh. Cut's own zeroed output never
+            // reaches here (amp is the INPUT loudness). The filter itself
+            // still runs on amp-0 ticks: the reducer can hold a pitch at
+            // zero loudness, and the pitch-only 0x8F square would re-arm at
+            // an unfolded above-limit pitch during the hangover window if a
+            // silent tick bypassed the fold.
+            if (amp <= 0f) aboveLatch = false;
+            if (mode == ToneFilterOff)
+            {
+                aboveLatch = false;
+            }
+            else if (!float.IsNaN(toneHz) && !float.IsInfinity(toneHz))
             {
                 int limit = Math.Clamp(limitHz, 100, 1300);
-                if (toneHz > limit)
+
+                // Boundary hysteresis (Schmitt trigger). The reducer measures
+                // pitch on the integer-lag grid ReduceRate / lag, so a tone
+                // near the limit is reported as one of two adjacent grid
+                // pitches, and per-tick noise flips which one wins. A hard
+                // ">" alone turns that flip into an octave flap at up to the
+                // tick rate (observed on SC 2026 hardware 2026-07-10: a sine
+                // sweep flapped exactly at 842-843 Hz with an 800 Hz limit,
+                // matching the predicted lag-9.5 boundary 8000 / 9.5 =
+                // 842.1). Engage stays crisp (measured > limit). Once
+                // engaged, the tie's LOWER grid member (the largest grid
+                // pitch at or below the limit) stays engaged too, so the
+                // pair folds together (one grid step of warble) instead of
+                // alternating folded / unfolded (an octave). Disengage
+                // requires the measurement to fall a full grid step below
+                // the limit. A fixed percentage would be wrong here: the
+                // grid step is ~9% of the limit at 800 Hz but ~15% at 1300
+                // and ~1% at 100, so the release point is computed from the
+                // actual grid.
+                float gridFloor = ReduceRate / MathF.Ceiling((float)ReduceRate / limit);
+                bool above = toneHz > limit;
+                bool tied = !above && aboveLatch && toneHz >= gridFloor - 0.5f;
+                aboveLatch = above || tied;
+
+                if (above || tied)
                 {
                     if (mode == ToneFilterFold)
                     {
                         // FoldJoyConFrequency's shape with a user ceiling:
                         // octave-halve into the pass band, pitch class kept.
-                        while (toneHz > limit) toneHz *= 0.5f;
+                        // The latched tie member is already at or below the
+                        // limit, so it folds exactly once to track its
+                        // partner one octave down.
+                        if (tied) toneHz *= 0.5f;
+                        else while (toneHz > limit) toneHz *= 0.5f;
                     }
                     else
                     {
@@ -384,6 +425,10 @@ namespace PadForge.Common.Input
             public int ToneLimitHz = 800;
             public float ToneLastPassHz;
             public long ToneCfgRefreshMs;
+            // Boundary-hysteresis latch (see ApplyToneFilter): true while the
+            // measured pitch is being treated as above the limit, including
+            // the tie's lower grid member. Stream-thread only.
+            public bool ToneAboveLatch;
 
             // Remote Link lanes (#138 x #147).
             // Consumer side: the device lives on another machine (peer:// path).
@@ -1273,7 +1318,7 @@ namespace PadForge.Common.Input
                     // principle as the slot volume below.
                     if (!remoteActive)
                         (toneHz, amp) = ApplyToneFilter(s.ToneFilterMode, s.ToneLimitHz,
-                            toneHz, amp, ref s.ToneLastPassHz);
+                            toneHz, amp, ref s.ToneLastPassHz, ref s.ToneAboveLatch);
 
                     // On-controller sinks own their loudness (SoundMacroService
                     // deliberately skips master-volume scaling for OnController

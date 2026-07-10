@@ -1887,13 +1887,22 @@
   <data name="Pad_Audio_EngageInput_Label" xml:space="preserve"><value>有効化入力</value></data>
   <data name="Pad_Audio_EngageRelease_Label" xml:space="preserve"><value>リリース遅延</value></data>
   <data name="Pad_Audio_EngageRelease_Tooltip" xml:space="preserve"><value>有効化ソースが切れた後もミラー再生を続ける時間。トーンが急に途切れるのを防ぎます。</value></data>
+  <data name="Pad_Audio_ToneFilter_Label" xml:space="preserve"><value>高音</value></data>
+  <data name="Pad_Audio_ToneFilter_Tooltip" xml:space="preserve"><value>上限を超える音の扱いを設定します。甲高いビープ音をカットするか、1オクターブずつ折り下げて低い音程で鳴らせます。フォールドがおすすめです。ミラー音声、マクロサウンド、テストトーンに適用されます。</value></data>
+  <data name="Pad_Audio_ToneFilter_Off" xml:space="preserve"><value>オフ</value></data>
+  <data name="Pad_Audio_ToneFilter_Cut" xml:space="preserve"><value>カットする</value></data>
+  <data name="Pad_Audio_ToneFilter_Fold" xml:space="preserve"><value>1オクターブずつ折り下げる</value></data>
+  <data name="Pad_Audio_ToneLimit_Label" xml:space="preserve"><value>トーン上限</value></data>
+  <data name="Pad_Audio_ToneLimit_Tooltip" xml:space="preserve"><value>この周波数を超える音はカットまたはフォールドされます。既定の 800 Hz ならエンジン音や衝撃の振動は残り、甲高いビープ音だけを捕捉します。</value></data>
+  <data name="Pad_ResetToneFilterMode" xml:space="preserve"><value>高音をリセット</value></data>
+  <data name="Pad_ResetToneLimit" xml:space="preserve"><value>トーン上限をリセット</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>システム既定の出力で再生中の音声を、このコントローラーの内蔵スピーカーにも並行して出力します。USBとBluetoothの両方で動作します。</value></data>
   <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>選択中のデバイスには内蔵スピーカーがありません。このパッドのマクロサウンドはシステム既定の出力で再生されます。</value></data>
   <data name="About_QDollar" xml:space="preserve"><value>$Q Recognizer</value></data>
   <data name="About_QDollarDesc" xml:space="preserve"><value>タッチパッドの形状テンプレートマッチャー（円 / 四角 / 三角 / Z / チェックマーク、およびカスタム記録ジェスチャー）。Magrofuoco、Vatavu、Anthony、WobbrockによるJavaScriptリファレンスのC#再実装。BSD 3-Clause。</value></data>
   <data name="About_GestureSign" xml:space="preserve"><value>GestureSign</value></data>
   <data name="About_GestureSignDesc" xml:space="preserve"><value>一本指の形状でポイントクラウドマッチャーと並行して動作する角度マージン方式のスコアリング。GestureSignのPointPatternAnalyzerより。BSD 3-Clause。</value></data>
-  <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>ミラー、ミラーソース、マスター音量を既定値に戻す</value></data>
+  <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>このデバイスのサウンド出力設定をすべてリセット</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_DsTesterDesc" xml:space="preserve"><value>Xuezhou Dai（daidr）によるブラウザー版DualSenseテストスイート。SonyフィーチャーレポートのCRCフレーミングと、PadForgeが仮想パッドから物理パッドへ転送するファームウェアテストコマンドのリファレンス。MIT。</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>

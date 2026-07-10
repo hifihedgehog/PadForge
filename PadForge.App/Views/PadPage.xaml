@@ -9886,6 +9886,54 @@
                                                 ToolTip="{Binding Pad_ResetMirrorEngageRelease, Source={x:Static strings:Strings.Instance}}"/>
                                     </StackPanel>
                                 </StackPanel>
+                                <!-- High-tone filter (#202), haptic-tone devices only: the
+                                     sink reduces everything it plays (mirror, macro sounds,
+                                     Test) to one pitch per tick, so beeps above the limit
+                                     can be cut, or folded down an octave at a time keeping
+                                     their pitch class. Independent of the mirror toggle:
+                                     macro sounds are filtered too, so no IsEnabled gate. -->
+                                <StackPanel Margin="0,0,0,8"
+                                            Visibility="{Binding SelectedDeviceHasHapticTones, Converter={StaticResource BoolToVisibilityConverter}}">
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                        <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Pad_Audio_ToneFilter_Label, Source={x:Static strings:Strings.Instance}}"
+                                                   VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                        <ComboBox SelectedValuePath="Tag"
+                                                  SelectedValue="{Binding DeviceConfig.AudioToneFilterMode, Mode=TwoWay}"
+                                                  MinWidth="220"
+                                                  ToolTip="{Binding Pad_Audio_ToneFilter_Tooltip, Source={x:Static strings:Strings.Instance}}">
+                                            <ComboBoxItem Content="{Binding Pad_Audio_ToneFilter_Off, Source={x:Static strings:Strings.Instance}}" Tag="Off"/>
+                                            <ComboBoxItem Content="{Binding Pad_Audio_ToneFilter_Cut, Source={x:Static strings:Strings.Instance}}" Tag="Cut"/>
+                                            <ComboBoxItem Content="{Binding Pad_Audio_ToneFilter_Fold, Source={x:Static strings:Strings.Instance}}" Tag="Fold"/>
+                                        </ComboBox>
+                                        <ui:Button Command="{Binding ResetToneFilterModeCommand}" Style="{StaticResource ResetButton}"
+                                                ToolTip="{Binding Pad_ResetToneFilterMode, Source={x:Static strings:Strings.Instance}}"/>
+                                    </StackPanel>
+                                    <!-- Limit, hidden while Off. Wider range than the bass
+                                         cutoff's 20-200 by design: midtones stay in the
+                                         default pass band, 800 keeps engine and shot
+                                         rumble, folds or cuts only beeps above. -->
+                                    <StackPanel Orientation="Horizontal">
+                                        <StackPanel.Style>
+                                            <Style TargetType="StackPanel">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding DeviceConfig.AudioToneFilterMode}" Value="Off">
+                                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </StackPanel.Style>
+                                        <TextBlock Text="{Binding Pad_Audio_ToneLimit_Label, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"
+                                                   ToolTip="{Binding Pad_Audio_ToneLimit_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                        <Slider Value="{Binding DeviceConfig.AudioToneLimitHz, Mode=TwoWay}" Minimum="100" Maximum="1300"
+                                                Style="{StaticResource DzSlider}"/>
+                                        <TextBox Text="{Binding DeviceConfig.AudioToneLimitHz, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                                 Style="{StaticResource DzValueEdit}"/>
+                                        <TextBlock Text="Hz" Style="{StaticResource DzPercent}"/>
+                                        <ui:Button Command="{Binding ResetToneLimitHzCommand}" Style="{StaticResource ResetButton}"
+                                                ToolTip="{Binding Pad_ResetToneLimit, Source={x:Static strings:Strings.Instance}}"/>
+                                    </StackPanel>
+                                </StackPanel>
                                 <TextBlock Text="{Binding Pad_Audio_NoSpeaker, Source={x:Static strings:Strings.Instance}}"
                                            Style="{StaticResource CardDescription}"
                                            Visibility="{Binding SelectedDeviceHasNoSpeaker, Converter={StaticResource BoolToVisibilityConverter}}"/>

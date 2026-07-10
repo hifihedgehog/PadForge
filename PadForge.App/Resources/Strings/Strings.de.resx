@@ -1887,13 +1887,22 @@
   <data name="Pad_Audio_EngageInput_Label" xml:space="preserve"><value>Aktivierungseingabe</value></data>
   <data name="Pad_Audio_EngageRelease_Label" xml:space="preserve"><value>Nachlaufzeit</value></data>
   <data name="Pad_Audio_EngageRelease_Tooltip" xml:space="preserve"><value>Wie lange der Spiegel nach dem Ende der Aktivierungsquelle weiterspielt, damit der Ton nicht abrupt abbricht.</value></data>
+  <data name="Pad_Audio_ToneFilter_Label" xml:space="preserve"><value>Hohe Töne</value></data>
+  <data name="Pad_Audio_ToneFilter_Tooltip" xml:space="preserve"><value>Was mit Tönen oberhalb der Grenze geschieht. Hohe Pieptöne können abgeschnitten oder oktavweise nach unten gefaltet werden, sodass ihr Charakter in tieferer Lage erhalten bleibt. Falten wird empfohlen. Gilt für gespiegeltes Audio, Makro-Sounds und den Testton.</value></data>
+  <data name="Pad_Audio_ToneFilter_Off" xml:space="preserve"><value>Aus</value></data>
+  <data name="Pad_Audio_ToneFilter_Cut" xml:space="preserve"><value>Abschneiden</value></data>
+  <data name="Pad_Audio_ToneFilter_Fold" xml:space="preserve"><value>Oktavweise nach unten falten</value></data>
+  <data name="Pad_Audio_ToneLimit_Label" xml:space="preserve"><value>Tongrenze</value></data>
+  <data name="Pad_Audio_ToneLimit_Tooltip" xml:space="preserve"><value>Töne oberhalb dieser Frequenz werden abgeschnitten oder gefaltet. Die Vorgabe von 800 Hz erhält Motor- und Aufprallvibration und fängt hohe Pieptöne ab.</value></data>
+  <data name="Pad_ResetToneFilterMode" xml:space="preserve"><value>Hohe Töne zurücksetzen</value></data>
+  <data name="Pad_ResetToneLimit" xml:space="preserve"><value>Tongrenze zurücksetzen</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>Gibt alles, was das Standard-Ausgabegerät spielt, parallel über den eingebauten Lautsprecher dieses Controllers aus. Funktioniert über USB und Bluetooth.</value></data>
   <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>Das ausgewählte Gerät hat keinen eingebauten Lautsprecher. Makro-Sounds dieses Pads laufen über die Standard-Ausgabe.</value></data>
   <data name="About_QDollar" xml:space="preserve"><value>$Q Recognizer</value></data>
   <data name="About_QDollarDesc" xml:space="preserve"><value>Formvorlagen-Matcher für das Touchpad (Kreis / Quadrat / Dreieck / Z / Häkchen und eigene aufgezeichnete Gesten). C#-Neuableitung der JavaScript-Referenz von Magrofuoco, Vatavu, Anthony und Wobbrock. BSD 3-Clause.</value></data>
   <data name="About_GestureSign" xml:space="preserve"><value>GestureSign</value></data>
   <data name="About_GestureSignDesc" xml:space="preserve"><value>Winkelmargen-Bewertung, die bei Einfinger-Formen neben dem Punktwolken-Matcher läuft. Übernommen aus GestureSigns PointPatternAnalyzer. BSD 3-Clause.</value></data>
-  <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>Spiegelung, Spiegelquelle und Gesamtlautstärke auf Standard zurücksetzen</value></data>
+  <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>Alle Soundausgabe-Einstellungen dieses Geräts auf Standard zurücksetzen</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_DsTesterDesc" xml:space="preserve"><value>Browser-Testsuite für den DualSense von Xuezhou Dai (daidr): Referenz für das Sony-Feature-Report-CRC-Framing und die Firmware-Testbefehle, die PadForge vom virtuellen zum physischen Pad weiterleitet. MIT.</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>

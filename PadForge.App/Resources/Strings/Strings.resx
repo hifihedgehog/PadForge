@@ -2105,9 +2105,18 @@
   <data name="Pad_Audio_EngageInput_Label" xml:space="preserve"><value>Engage input</value></data>
   <data name="Pad_Audio_EngageRelease_Label" xml:space="preserve"><value>Release delay</value></data>
   <data name="Pad_Audio_EngageRelease_Tooltip" xml:space="preserve"><value>How long the mirror keeps playing after the engage source drops, so the tone does not clip off instantly.</value></data>
+  <data name="Pad_Audio_ToneFilter_Label" xml:space="preserve"><value>High tones</value></data>
+  <data name="Pad_Audio_ToneFilter_Tooltip" xml:space="preserve"><value>What happens to tones above the limit. High-pitched beeps can be cut off, or folded down an octave at a time so they keep their character at a lower pitch. Folding is recommended. Applies to mirrored audio, macro sounds, and the test tone.</value></data>
+  <data name="Pad_Audio_ToneFilter_Off" xml:space="preserve"><value>Off</value></data>
+  <data name="Pad_Audio_ToneFilter_Cut" xml:space="preserve"><value>Cut them off</value></data>
+  <data name="Pad_Audio_ToneFilter_Fold" xml:space="preserve"><value>Fold them down an octave</value></data>
+  <data name="Pad_Audio_ToneLimit_Label" xml:space="preserve"><value>Tone limit</value></data>
+  <data name="Pad_Audio_ToneLimit_Tooltip" xml:space="preserve"><value>Tones above this frequency are cut or folded. The default 800 Hz keeps engine and impact rumble while catching high-pitched beeps.</value></data>
+  <data name="Pad_ResetToneFilterMode" xml:space="preserve"><value>Reset High Tones</value></data>
+  <data name="Pad_ResetToneLimit" xml:space="preserve"><value>Reset Tone Limit</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>Copies whatever the system default output plays to this controller’s built-in speaker, in parallel. Works over USB and Bluetooth.</value></data>
   <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>The selected device has no built-in speaker. Macro sounds for this pad play on the system default output.</value></data>
-  <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>Reset mirror, mirror source, and master volume to defaults</value></data>
+  <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>Reset every Sound Output setting for this device to defaults</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_DsTesterDesc" xml:space="preserve"><value>Browser DualSense test suite by Xuezhou Dai (daidr): reference for the Sony feature-report CRC framing and firmware test commands PadForge forwards from virtual to physical pads. MIT.</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>

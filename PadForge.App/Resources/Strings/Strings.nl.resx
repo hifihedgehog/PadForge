@@ -1907,13 +1907,22 @@
   <data name="Pad_Audio_EngageInput_Label" xml:space="preserve"><value>Activeringsinvoer</value></data>
   <data name="Pad_Audio_EngageRelease_Label" xml:space="preserve"><value>Loslaatvertraging</value></data>
   <data name="Pad_Audio_EngageRelease_Tooltip" xml:space="preserve"><value>Hoe lang de spiegel blijft spelen nadat de activeringsbron wegvalt, zodat de toon niet abrupt stopt.</value></data>
+  <data name="Pad_Audio_ToneFilter_Label" xml:space="preserve"><value>Hoge tonen</value></data>
+  <data name="Pad_Audio_ToneFilter_Tooltip" xml:space="preserve"><value>Wat er gebeurt met tonen boven de limiet. Hoge pieptonen kunnen worden weggeknipt of per octaaf omlaag gevouwen, zodat hun karakter op een lagere toonhoogte behouden blijft. Vouwen wordt aanbevolen. Geldt voor gespiegelde audio, macrogeluiden en de testtoon.</value></data>
+  <data name="Pad_Audio_ToneFilter_Off" xml:space="preserve"><value>Uit</value></data>
+  <data name="Pad_Audio_ToneFilter_Cut" xml:space="preserve"><value>Wegknippen</value></data>
+  <data name="Pad_Audio_ToneFilter_Fold" xml:space="preserve"><value>Per octaaf omlaag vouwen</value></data>
+  <data name="Pad_Audio_ToneLimit_Label" xml:space="preserve"><value>Toonlimiet</value></data>
+  <data name="Pad_Audio_ToneLimit_Tooltip" xml:space="preserve"><value>Tonen boven deze frequentie worden weggeknipt of gevouwen. De standaard 800 Hz behoudt motor- en impacttrillingen en vangt hoge pieptonen af.</value></data>
+  <data name="Pad_ResetToneFilterMode" xml:space="preserve"><value>Hoge tonen resetten</value></data>
+  <data name="Pad_ResetToneLimit" xml:space="preserve"><value>Toonlimiet resetten</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>Speelt alles wat de standaarduitvoer afspeelt parallel af op de ingebouwde speaker van deze controller. Werkt via USB en Bluetooth.</value></data>
   <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>Het geselecteerde apparaat heeft geen ingebouwde speaker. Macrogeluiden van deze pad spelen op de standaarduitvoer.</value></data>
   <data name="About_QDollar" xml:space="preserve"><value>$Q Recognizer</value></data>
   <data name="About_QDollarDesc" xml:space="preserve"><value>Vormsjabloon-matcher voor het touchpad (cirkel / vierkant / driehoek / Z / vinkje en zelf opgenomen gebaren). C#-herafleiding van de JavaScript-referentie van Magrofuoco, Vatavu, Anthony en Wobbrock. BSD 3-Clause.</value></data>
   <data name="About_GestureSign" xml:space="preserve"><value>GestureSign</value></data>
   <data name="About_GestureSignDesc" xml:space="preserve"><value>Hoekmarge-score die naast de puntenwolk-matcher draait op vormen met één vinger. Overgenomen uit GestureSigns PointPatternAnalyzer. BSD 3-Clause.</value></data>
-  <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>Spiegeling, spiegelbron en hoofdvolume terugzetten naar standaardwaarden</value></data>
+  <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>Alle geluidsuitvoerinstellingen van dit apparaat resetten</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_DsTesterDesc" xml:space="preserve"><value>Browser-testsuite voor de DualSense door Xuezhou Dai (daidr): referentie voor de Sony feature-report-CRC-framing en de firmware-testopdrachten die PadForge van de virtuele naar de fysieke pad doorstuurt. MIT.</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>

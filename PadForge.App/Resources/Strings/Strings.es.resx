@@ -1887,13 +1887,22 @@
   <data name="Pad_Audio_EngageInput_Label" xml:space="preserve"><value>Entrada de activación</value></data>
   <data name="Pad_Audio_EngageRelease_Label" xml:space="preserve"><value>Retardo de liberación</value></data>
   <data name="Pad_Audio_EngageRelease_Tooltip" xml:space="preserve"><value>Cuánto tiempo sigue sonando el reflejo después de que cese la fuente de activación, para que el tono no se corte de golpe.</value></data>
+  <data name="Pad_Audio_ToneFilter_Label" xml:space="preserve"><value>Tonos agudos</value></data>
+  <data name="Pad_Audio_ToneFilter_Tooltip" xml:space="preserve"><value>Qué ocurre con los tonos por encima del límite. Los pitidos agudos pueden cortarse o plegarse una octava hacia abajo cada vez, conservando su carácter en un tono más grave. Se recomienda plegar. Se aplica al audio duplicado, los sonidos de macro y el tono de prueba.</value></data>
+  <data name="Pad_Audio_ToneFilter_Off" xml:space="preserve"><value>Desactivado</value></data>
+  <data name="Pad_Audio_ToneFilter_Cut" xml:space="preserve"><value>Cortarlos</value></data>
+  <data name="Pad_Audio_ToneFilter_Fold" xml:space="preserve"><value>Plegarlos una octava hacia abajo</value></data>
+  <data name="Pad_Audio_ToneLimit_Label" xml:space="preserve"><value>Límite de tono</value></data>
+  <data name="Pad_Audio_ToneLimit_Tooltip" xml:space="preserve"><value>Los tonos por encima de esta frecuencia se cortan o se pliegan. El valor predeterminado de 800 Hz conserva la vibración de motor e impactos y captura los pitidos agudos.</value></data>
+  <data name="Pad_ResetToneFilterMode" xml:space="preserve"><value>Restablecer tonos agudos</value></data>
+  <data name="Pad_ResetToneLimit" xml:space="preserve"><value>Restablecer límite de tono</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>Copia en paralelo lo que reproduce la salida predeterminada del sistema al altavoz integrado de este mando. Funciona por USB y Bluetooth.</value></data>
   <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>El dispositivo seleccionado no tiene altavoz integrado. Los sonidos de macro de este mando se reproducen en la salida predeterminada.</value></data>
   <data name="About_QDollar" xml:space="preserve"><value>$Q Recognizer</value></data>
   <data name="About_QDollarDesc" xml:space="preserve"><value>Comparador de plantillas de formas para el touchpad (círculo / cuadrado / triángulo / Z / marca de verificación y gestos grabados personalizados). Rederivación en C# de la referencia JavaScript de Magrofuoco, Vatavu, Anthony y Wobbrock. BSD 3-Clause.</value></data>
   <data name="About_GestureSign" xml:space="preserve"><value>GestureSign</value></data>
   <data name="About_GestureSignDesc" xml:space="preserve"><value>Puntuación por margen angular que funciona junto al comparador de nube de puntos en formas de un dedo. Adaptado del PointPatternAnalyzer de GestureSign. BSD 3-Clause.</value></data>
-  <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>Restablecer el espejo, la fuente del espejo y el volumen maestro a sus valores predeterminados</value></data>
+  <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>Restablecer todos los ajustes de salida de sonido de este dispositivo</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_DsTesterDesc" xml:space="preserve"><value>Suite de pruebas de DualSense en el navegador por Xuezhou Dai (daidr): referencia para el framing CRC de los informes de característica de Sony y los comandos de prueba del firmware que PadForge reenvía del mando virtual al físico. MIT.</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>

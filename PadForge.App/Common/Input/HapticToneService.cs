@@ -119,6 +119,52 @@ namespace PadForge.Common.Input
         /// tab, mirrors the Sony/Wii speaker checks).</summary>
         public static bool DeviceHasHaptics(Engine.Data.UserDevice ud) => FamilyOf(ud) != Family.None;
 
+        // ── High-tone filter (#202) ─────────────────────
+        // Resolved per (slot, device) by InputService from the same
+        // per-device configs as the mirror toggle. Each sink re-reads its
+        // (mode, limit) pair at ~4 Hz on its own stream thread, the same
+        // low-cadence idiom as the engage-config refresh. Torn reads of
+        // the two ints are benign, like the rest of the file.
+        internal const int ToneFilterOff = 0;
+        internal const int ToneFilterCut = 1;
+        internal const int ToneFilterFold = 2;
+        public static Func<int, Guid, (int Mode, int LimitHz)> ToneFilterProvider { get; set; }
+
+        /// <summary>The #202 high-tone transform, shared by the stream loop
+        /// and the unit tests (the HoldEngaged idiom). Applies Cut or Fold
+        /// to one reduced (pitch, amplitude) pair. <paramref name="lastPassHz"/>
+        /// carries the last pitch that left the filter with real amplitude:
+        /// Cut re-emits it because the pitch-only 0x8F square (SC 2015 +
+        /// Deck) never reads amp, and while other audio keeps the stream
+        /// alive a cut tick carrying the beep pitch would re-arm the
+        /// full-strength square at the very frequency the user cut.
+        /// Non-finite pitches skip the fold: +Inf would halve forever
+        /// (same guard as FoldJoyConFrequency, HapticToneEncoder.cs).</summary>
+        internal static (float ToneHz, float Amp) ApplyToneFilter(
+            int mode, int limitHz, float toneHz, float amp, ref float lastPassHz)
+        {
+            if (mode != ToneFilterOff && !float.IsNaN(toneHz) && !float.IsInfinity(toneHz))
+            {
+                int limit = Math.Clamp(limitHz, 100, 1300);
+                if (toneHz > limit)
+                {
+                    if (mode == ToneFilterFold)
+                    {
+                        // FoldJoyConFrequency's shape with a user ceiling:
+                        // octave-halve into the pass band, pitch class kept.
+                        while (toneHz > limit) toneHz *= 0.5f;
+                    }
+                    else
+                    {
+                        amp = 0f;
+                        toneHz = lastPassHz;
+                    }
+                }
+            }
+            if (amp > 0f && toneHz > 0f) lastPassHz = toneHz;
+            return (toneHz, amp);
+        }
+
         /// <summary>Plays a fixed, known test tone (880 Hz, off the LRA resonance) on
         /// the device's haptics for <paramref name="durationMs"/>, driven straight to
         /// the encoder. It bypasses the mixer / resampler / pitch reducer entirely, so
@@ -329,6 +375,15 @@ namespace PadForge.Common.Input
             // it (no held-pitch bleed into the next macro). No beep is injected either.
             public float TestHz;
             public long TestUntilMs;
+
+            // High-tone filter (#202): per-sink snapshot of the (mode, limit)
+            // pair, refreshed at low cadence by the stream loop, plus the
+            // last passed pitch backing Cut's re-arm guard (see
+            // ApplyToneFilter).
+            public int ToneFilterMode;
+            public int ToneLimitHz = 800;
+            public float ToneLastPassHz;
+            public long ToneCfgRefreshMs;
 
             // Remote Link lanes (#138 x #147).
             // Consumer side: the device lives on another machine (peer:// path).
@@ -1167,6 +1222,20 @@ namespace PadForge.Common.Input
                     // That was ~14% of a core per assigned haptic pad doing nothing.
                     // Scan the peak first; only reduce when there is real signal.
                     long nowMs = Environment.TickCount64;
+
+                    // Low-cadence (mode, limit) refresh for the #202 filter.
+                    if (nowMs - s.ToneCfgRefreshMs >= 250)
+                    {
+                        s.ToneCfgRefreshMs = nowMs;
+                        try
+                        {
+                            var tf = ToneFilterProvider;
+                            (s.ToneFilterMode, s.ToneLimitHz) = tf != null
+                                ? tf(s.Slot, s.DeviceGuid) : (ToneFilterOff, 800);
+                        }
+                        catch { s.ToneFilterMode = ToneFilterOff; }
+                    }
+
                     float toneHz, amp;
                     bool testActive = s.TestUntilMs > nowMs;
                     bool remoteActive = !testActive && s.RemoteUntilMs > nowMs;
@@ -1195,6 +1264,16 @@ namespace PadForge.Common.Input
                         if (peak <= 0.002f) { toneHz = 0f; amp = 0f; }
                         else { (toneHz, amp) = s.Reducer.Push(monoF, SamplesPerTick); }
                     }
+
+                    // #202 high-tone filter, upstream of the family switch so
+                    // every encoder sees the same filtered pair. Runs on the
+                    // test tone too (the Test button must not lie about the
+                    // setting). Owner-side remote frames are exempt: the
+                    // consumer applied ITS filter before shipping, same
+                    // principle as the slot volume below.
+                    if (!remoteActive)
+                        (toneHz, amp) = ApplyToneFilter(s.ToneFilterMode, s.ToneLimitHz,
+                            toneHz, amp, ref s.ToneLastPassHz);
 
                     // On-controller sinks own their loudness (SoundMacroService
                     // deliberately skips master-volume scaling for OnController

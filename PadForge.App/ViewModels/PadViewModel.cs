@@ -4118,6 +4118,20 @@ namespace PadForge.ViewModels
                 if (DeviceConfig != null) DeviceConfig.AudioMirrorEngageReleaseMs = 500;
             });
 
+        private RelayCommand _resetToneFilterModeCommand;
+        public RelayCommand ResetToneFilterModeCommand =>
+            _resetToneFilterModeCommand ??= new RelayCommand(() =>
+            {
+                if (DeviceConfig != null) DeviceConfig.AudioToneFilterMode = "Off";
+            });
+
+        private RelayCommand _resetToneLimitHzCommand;
+        public RelayCommand ResetToneLimitHzCommand =>
+            _resetToneLimitHzCommand ??= new RelayCommand(() =>
+            {
+                if (DeviceConfig != null) DeviceConfig.AudioToneLimitHz = 800;
+            });
+
         private RelayCommand _resetMirrorSourceCommand;
         /// <summary>Clears the mirror source back to the system default
         /// endpoint (Id ""), the same value the Sound Output "Reset All"
@@ -4292,8 +4306,8 @@ namespace PadForge.ViewModels
         private RelayCommand _resetSoundOutputAllCommand;
         /// <summary>Resets the Sound Output card for the selected device:
         /// mirror off, mirror source back to system default, master volume
-        /// to 100%, and the #185 engage gate back to Always with its
-        /// defaults.</summary>
+        /// to 100%, the #185 engage gate back to Always with its defaults,
+        /// and the #202 tone filter back to Off / 800 Hz.</summary>
         public RelayCommand ResetSoundOutputAllCommand =>
             _resetSoundOutputAllCommand ??= new RelayCommand(() =>
             {
@@ -4306,6 +4320,8 @@ namespace PadForge.ViewModels
                     DeviceConfig.AudioMirrorEngageDeviceGuid = string.Empty;
                     DeviceConfig.AudioMirrorEngageButton = string.Empty;
                     DeviceConfig.AudioMirrorEngageReleaseMs = 500;
+                    DeviceConfig.AudioToneFilterMode = "Off";
+                    DeviceConfig.AudioToneLimitHz = 800;
                     OnPropertyChanged(nameof(MirrorEngageSelectedInput));
                 }
             });

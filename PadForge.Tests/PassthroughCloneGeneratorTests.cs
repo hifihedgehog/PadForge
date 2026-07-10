@@ -53,9 +53,10 @@ namespace PadForge.Tests
             Name = idx == 0 ? "POV" : $"POV {idx}",
         };
 
-        private static UserDevice Device(IEnumerable<DeviceObjectItem> objects) => new()
+        private static UserDevice Device(IEnumerable<DeviceObjectItem> objects, int capType = 0) => new()
         {
             DeviceObjects = objects.ToArray(),
+            CapType = capType,
         };
 
         // Small helper so tests read as target → descriptor.
@@ -248,6 +249,103 @@ namespace PadForge.Tests
             var r = PassthroughCloneGenerator.Generate(null);
             Assert.NotNull(r);
             Assert.Empty(r.Rows);
+        }
+
+        // ── Gamepad trigger classification (positions 2 and 5) ──
+        // SDL gamepads fix Left/Right Trigger at axis positions 2 and 5
+        // (SdlDeviceWrapper.GetGamepadAxisName: LX LY LT RX RY RT). Those route
+        // to Extended trigger slots; the interleaved layout puts trigger slots
+        // at flat indices 2 and 5, so a standard pad clones index-identically.
+
+        [Fact]
+        public void Gamepad_Triggers_Land_On_Trigger_Slots()
+        {
+            var objs = new List<DeviceObjectItem>();
+            for (int i = 0; i < 6; i++) objs.Add(Axis(i));
+            for (int i = 0; i < 11; i++) objs.Add(Button(i));
+
+            var r = PassthroughCloneGenerator.Generate(Device(objs, InputDeviceType.Gamepad));
+            var rows = Lookup(r);
+
+            Assert.Equal(2, r.Sticks);
+            Assert.Equal(2, r.Triggers);
+            Assert.Equal(6, r.LayoutAxes);
+            Assert.Equal(6, r.AxesMapped);
+            for (int i = 0; i < 6; i++)
+                Assert.Equal($"Axis {i}", rows[$"ExtendedAxis{i}"]);
+        }
+
+        [Fact]
+        public void Gamepad_With_Extra_Axes_Keeps_Identity()
+        {
+            // #193 extra generic axes ride at positions 6+ and stay sticks.
+            var objs = new List<DeviceObjectItem>();
+            for (int i = 0; i < 8; i++) objs.Add(Axis(i));
+
+            var r = PassthroughCloneGenerator.Generate(Device(objs, InputDeviceType.Gamepad));
+            var rows = Lookup(r);
+
+            Assert.Equal(3, r.Sticks);
+            Assert.Equal(2, r.Triggers);
+            Assert.Equal(8, r.LayoutAxes);
+            for (int i = 0; i < 8; i++)
+                Assert.Equal($"Axis {i}", rows[$"ExtendedAxis{i}"]);
+            Assert.False(r.HasOverflow);
+        }
+
+        [Fact]
+        public void Stickless_Gamepad_Compacts_Triggers()
+        {
+            // A pad whose only axes are the two triggers (GetDeviceObjects
+            // skips stick positions the hardware lacks): two trigger slots,
+            // no sticks, compacted to the front of the layout.
+            var r = PassthroughCloneGenerator.Generate(
+                Device(new[] { Axis(2), Axis(5) }, InputDeviceType.Gamepad));
+            var rows = Lookup(r);
+
+            Assert.Equal(0, r.Sticks);
+            Assert.Equal(2, r.Triggers);
+            Assert.Equal(2, r.LayoutAxes);
+            Assert.Equal("Axis 2", rows["ExtendedAxis0"]);
+            Assert.Equal("Axis 5", rows["ExtendedAxis1"]);
+        }
+
+        [Fact]
+        public void Offline_Gamepad_Fallback_Classifies_Triggers()
+        {
+            var ud = new UserDevice
+            {
+                DeviceObjects = null,
+                CapType = InputDeviceType.Gamepad,
+                CapAxeCount = 6,
+                CapButtonCount = 11,
+            };
+
+            var r = PassthroughCloneGenerator.Generate(ud);
+            var rows = Lookup(r);
+
+            Assert.Equal(2, r.Sticks);
+            Assert.Equal(2, r.Triggers);
+            for (int i = 0; i < 6; i++)
+                Assert.Equal($"Axis {i}", rows[$"ExtendedAxis{i}"]);
+        }
+
+        [Fact]
+        public void Raw_Joystick_Never_Gets_Triggers()
+        {
+            // No trigger signal exists for joystick-class devices; axes 2 and 5
+            // are ordinary axes there (a rudder, a throttle), so everything
+            // stays a full-range stick axis.
+            var objs = new List<DeviceObjectItem>();
+            for (int i = 0; i < 6; i++) objs.Add(Axis(i));
+
+            var r = PassthroughCloneGenerator.Generate(Device(objs, InputDeviceType.Joystick));
+            var rows = Lookup(r);
+
+            Assert.Equal(3, r.Sticks);
+            Assert.Equal(0, r.Triggers);
+            for (int i = 0; i < 6; i++)
+                Assert.Equal($"Axis {i}", rows[$"ExtendedAxis{i}"]);
         }
 
         // ── Non-contiguous enumerated indices compact positionally but keep

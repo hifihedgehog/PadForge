@@ -1404,7 +1404,7 @@ namespace PadForge.Common.Input
         // ── Haptic mirror engage (#185): third member of the engage family ──
 
         /// <summary>Engage configs for the haptic mirror, wired by InputService
-        /// from the per-device PlayStation configs (the same source the
+        /// from the per-device configs (the same source the
         /// passthrough provider reads). Returns EVERY passthrough-enabled
         /// config on the slot with its device GUID, including mode 0 (Always),
         /// or null when none. The gate is per (slot, DEVICE): each device's

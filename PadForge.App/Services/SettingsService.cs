@@ -223,6 +223,12 @@ namespace PadForge.Services
                 if (data == null)
                     return;
 
+                // Schema migration: files saved before the v4.x rename spell
+                // the per-(slot, device) config arrays PlayStationConfigs /
+                // ProfilePlayStationConfigs. Move them to the new names
+                // before anything consumes the data.
+                data.MigrateLegacySchema();
+
                 // Pre-deserialization migrations applied to every PadSetting
                 // before they're handed out to UserSettings or the VM.
                 //
@@ -1419,8 +1425,8 @@ namespace PadForge.Services
         /// <summary>Copy From companion: clones the per-slot config tabs
         /// (Lighting, custom Extended layout, MIDI CC/note layout) from
         /// <paramref name="srcSlot"/> to <paramref name="dstSlot"/>.
-        /// PlayStation device features (lightbar / adaptive triggers /
-        /// mic LED / player LED / audio-reactive) are physical-device
+        /// Device features (lightbar / adaptive triggers / mic LED /
+        /// player LED / audio-reactive / tone filter) are physical-device
         /// passthrough and copy unconditionally — a DualSense mapped to
         /// an Xbox slot still has its lightbar driven by DeviceConfig.
         /// Extended custom layouts and MIDI CC/note ranges are slot-shape
@@ -1538,7 +1544,7 @@ namespace PadForge.Services
         //  the caller can JSON-serialise.
         // ─────────────────────────────────────────────
 
-        /// <summary>Snapshots every PlayStation config on a single slot
+        /// <summary>Snapshots every device config on a single slot
         /// (anchor + per-device entries). Returns an empty array when
         /// the slot has nothing configured. Caller is responsible for
         /// JSON-serialising the result into the clipboard payload.</summary>
@@ -1563,16 +1569,16 @@ namespace PadForge.Services
             return list.ToArray();
         }
 
-        /// <summary>Paste companion. Applies a clipboard's PlayStation
-        /// config snapshot to the destination slot: the anchor entry
+        /// <summary>Paste companion. Applies a clipboard's device-config
+        /// snapshot to the destination slot: the anchor entry
         /// (DeviceGuid = Empty) writes to <c>padVm.DeviceConfig</c>;
         /// per-device entries fan out across every entry already in the
         /// destination's <c>PerDeviceSlotConfigs</c> dict so
         /// device-switching on the destination doesn't bring back the
         /// old lightbar. Like the in-process Copy From, this runs
-        /// unconditionally regardless of slot output type — PlayStation
-        /// device features are physical-device passthrough.</summary>
-        /// <summary>True when a PlayStation config DTO carries any non-default
+        /// unconditionally regardless of slot output type. Device
+        /// features are physical-device passthrough.</summary>
+        /// <summary>True when a device-config DTO carries any non-default
         /// device setting: lighting, adaptive triggers, Mic LED, Player LED, OR audio
         /// (passthrough / audio-lightbar / mirror source). The audio arm matters because
         /// the old "is this configured" checks ignored it, so an audio-only setup was
@@ -1790,9 +1796,10 @@ namespace PadForge.Services
             }
         }
 
-        /// <summary>Applies per-slot PlayStation configurations (Adaptive
-        /// Triggers + Lighting). Only restores configs for slots that
-        /// are currently created as PlayStation.</summary>
+        /// <summary>Applies per-(slot, device) configurations (adaptive
+        /// triggers, lighting, audio, tone filter). Only restores configs
+        /// for slots that are currently created; the body never gates on
+        /// slot output type.</summary>
         private void ApplyDeviceSlotConfigs(ViewModels.DeviceSlotConfigData[] configs)
         {
             if (configs == null) return;
@@ -2630,7 +2637,7 @@ namespace PadForge.Services
                     active.KeyboardMouseSlotOrder,
                     active.MidiSlotOrder);
 
-                // Now that SlotCreated and OutputType are restored, apply Extended/MIDI/PlayStation
+                // Now that SlotCreated and OutputType are restored, apply Extended/MIDI/device
                 // configs from the profile's own snapshot.
                 ApplyExtendedConfigs(active.ExtendedConfigs);
                 ApplyDeviceSlotConfigs(active.DeviceSlotConfigs);
@@ -2974,7 +2981,7 @@ namespace PadForge.Services
                 });
             }
 
-            // Collect per-(slot, device) PlayStation configurations.
+            // Collect the per-(slot, device) configurations.
             // Lighting tab is per-device — different physical devices
             // mapped to the same slot can have different mode / colors
             // / palette. We write:
@@ -3125,7 +3132,7 @@ namespace PadForge.Services
         }
 
         /// <summary>
-        /// Snapshots PlayStation configs for every slot for profile
+        /// Snapshots device configs for every slot for profile
         /// storage. One DTO per slot's anchor (DeviceGuid empty) plus
         /// one per (slot, device) entry — mirrors the load path's
         /// per-device handling.
@@ -3716,7 +3723,7 @@ namespace PadForge.Services
 
             // 2. Per-pad surfaces. ResetAllSettings covers what the load
             //    mirror can't reach (macros, sensitivity-curve items,
-            //    dead-zone shapes, per-device PlayStation configs), the
+            //    dead-zone shapes, per-device configs), the
             //    blank-PadSetting load resets every writer-mirrored
             //    tuning field to its canonical default, and the mapping
             //    refresh rebuilds every row from the now-empty mapping
@@ -4144,6 +4151,20 @@ namespace PadForge.Services
         [XmlArray("Profiles")]
         [XmlArrayItem("Profile")]
         public ProfileData[] Profiles { get; set; }
+
+        /// <summary>Migrates pre-v4.x element spellings forward after
+        /// deserialization: the per-(slot, device) config arrays were
+        /// written as PlayStationConfigs / ProfilePlayStationConfigs before
+        /// the bag was genericized. New saves emit only the new names; the
+        /// legacy properties exist for reading old files and are cleared
+        /// here so nothing re-serializes them.</summary>
+        public void MigrateLegacySchema()
+        {
+            AppSettings?.MigrateLegacySchema();
+            if (Profiles != null)
+                foreach (var p in Profiles)
+                    p?.MigrateLegacySchema();
+        }
     }
 
     /// <summary>
@@ -4418,14 +4439,45 @@ namespace PadForge.Services
         public ViewModels.ExtendedSlotConfigData[] ExtendedConfigs { get; set; }
 
         /// <summary>
-        /// Per-slot PlayStation configuration (Adaptive Triggers + Lighting).
-        /// Null on settings files older than v3.1.0 — slots fall back to
+        /// Per-(slot, device) configuration (adaptive triggers, lighting,
+        /// audio, tone filter) for ANY hardware on any slot type. Null on
+        /// settings files older than v3.1.0, where slots fall back to
         /// out-of-the-box defaults (all triggers Off, lightbar disabled,
-        /// audio neutral) so the schema add is a clean no-op for legacy files.
+        /// audio neutral) so the schema add is a clean no-op for legacy
+        /// files. Written as DeviceSlotConfigs since the v4.x schema
+        /// rename; older files spelled it PlayStationConfigs (see
+        /// <see cref="LegacyDeviceSlotConfigs"/>).
         /// </summary>
-        [XmlArray("PlayStationConfigs")]
+        [XmlArray("DeviceSlotConfigs")]
         [XmlArrayItem("Config")]
         public ViewModels.DeviceSlotConfigData[] DeviceSlotConfigs { get; set; }
+
+        /// <summary>Read-only compatibility spelling. Files saved before the
+        /// v4.x schema rename carry the bag as PlayStationConfigs, a name
+        /// that predates the config growing Xbox / Nintendo / generic
+        /// device features. <see cref="MigrateLegacySchema"/> moves it into
+        /// <see cref="DeviceSlotConfigs"/> on load, and ShouldSerialize
+        /// keeps it out of every save, so one load-save cycle modernizes
+        /// the file.</summary>
+        [XmlArray("PlayStationConfigs")]
+        [XmlArrayItem("Config")]
+        public ViewModels.DeviceSlotConfigData[] LegacyDeviceSlotConfigs { get; set; }
+        public bool ShouldSerializeLegacyDeviceSlotConfigs() => false;
+
+        /// <summary>Adopts the legacy spelling when the new one is absent
+        /// (new wins if a hand-edited file somehow carries both), then
+        /// clears the legacy slot so nothing downstream sees two copies.
+        /// Also migrates <see cref="DefaultProfileSnapshot"/>: it is a full
+        /// ProfileData, so an old file's snapshot can carry the legacy
+        /// profile-level spelling too.</summary>
+        public void MigrateLegacySchema()
+        {
+            if ((DeviceSlotConfigs == null || DeviceSlotConfigs.Length == 0)
+                && LegacyDeviceSlotConfigs != null && LegacyDeviceSlotConfigs.Length > 0)
+                DeviceSlotConfigs = LegacyDeviceSlotConfigs;
+            LegacyDeviceSlotConfigs = null;
+            DefaultProfileSnapshot?.MigrateLegacySchema();
+        }
 
         /// <summary>
         /// User-imported HIDMaestro profile JSONs, captured via
@@ -4832,12 +4884,37 @@ namespace PadForge.Services
         [XmlArrayItem("ExtendedConfig")]
         public ViewModels.ExtendedSlotConfigData[] ExtendedConfigs { get; set; }
 
-        /// <summary>Per-slot PlayStation configurations (Adaptive Triggers
-        /// + Lighting) saved with this profile. Null on profiles predating
-        /// v3.1.0; defaults applied on load.</summary>
+        /// <summary>Per-(slot, device) configurations (adaptive triggers,
+        /// lighting, audio, tone filter) saved with this profile. Null on
+        /// profiles predating v3.1.0, where defaults apply on load. Written as
+        /// ProfileDeviceSlotConfigs since the v4.x schema rename; older
+        /// files and exported profile.xml archives spelled it
+        /// ProfilePlayStationConfigs (see
+        /// <see cref="LegacyDeviceSlotConfigs"/>).</summary>
+        [XmlArray("ProfileDeviceSlotConfigs")]
+        [XmlArrayItem("Config")]
+        public ViewModels.DeviceSlotConfigData[] DeviceSlotConfigs { get; set; }
+
+        /// <summary>Read-only compatibility spelling for files and profile
+        /// exports saved before the v4.x schema rename. Same contract as
+        /// AppSettingsData.LegacyDeviceSlotConfigs: migrated forward on
+        /// load, never serialized.</summary>
         [XmlArray("ProfilePlayStationConfigs")]
         [XmlArrayItem("PlayStationConfig")]
-        public ViewModels.DeviceSlotConfigData[] DeviceSlotConfigs { get; set; }
+        public ViewModels.DeviceSlotConfigData[] LegacyDeviceSlotConfigs { get; set; }
+        public bool ShouldSerializeLegacyDeviceSlotConfigs() => false;
+
+        /// <summary>Adopts the legacy spelling when the new one is absent,
+        /// then clears it. Called by SettingsFileData.MigrateLegacySchema
+        /// on settings load and by ProfileTransfer.Import for standalone
+        /// profile archives.</summary>
+        public void MigrateLegacySchema()
+        {
+            if ((DeviceSlotConfigs == null || DeviceSlotConfigs.Length == 0)
+                && LegacyDeviceSlotConfigs != null && LegacyDeviceSlotConfigs.Length > 0)
+                DeviceSlotConfigs = LegacyDeviceSlotConfigs;
+            LegacyDeviceSlotConfigs = null;
+        }
 
         /// <summary>
         /// Per-group ordered list of pad indices in user-facing visual order

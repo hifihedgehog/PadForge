@@ -2306,11 +2306,11 @@
   <data name="Pad_MouseGestures_FlickThreshold" xml:space="preserve"><value>Flick Distance (counts)</value></data>
   <data name="Pad_MouseGestures_FlickThreshold_Tooltip" xml:space="preserve"><value>Net movement the flick must reach by release to count as a direction. Below it, the release fires the Click gesture.</value></data>
   <data name="Pad_MouseGestures_Cooldown" xml:space="preserve"><value>Cooldown</value></data>
-  <data name="Pad_ResetMouseGestures" xml:space="preserve"><value>Reset all mouse gesture settings</value></data>
-  <data name="Pad_ResetMouseGesturesEnabled" xml:space="preserve"><value>Reset to disabled</value></data>
-  <data name="Pad_ResetMouseGestureButton" xml:space="preserve"><value>Reset to X1 only</value></data>
-  <data name="Pad_ResetMouseGestureFlickThreshold" xml:space="preserve"><value>Reset to 150 counts</value></data>
-  <data name="Pad_ResetMouseGestureCooldown" xml:space="preserve"><value>Reset to 100 ms</value></data>
+  <data name="Pad_ResetMouseGestures" xml:space="preserve"><value>Reset Mouse Gestures</value></data>
+  <data name="Pad_ResetMouseGesturesEnabled" xml:space="preserve"><value>Reset Enable Mouse Gestures</value></data>
+  <data name="Pad_ResetMouseGestureButton" xml:space="preserve"><value>Reset Gesture Buttons</value></data>
+  <data name="Pad_ResetMouseGestureFlickThreshold" xml:space="preserve"><value>Reset Flick Distance</value></data>
+  <data name="Pad_ResetMouseGestureCooldown" xml:space="preserve"><value>Reset Cooldown</value></data>
   <data name="Mapping_MouseGestureLeft" xml:space="preserve"><value>Left</value></data>
   <data name="Mapping_MouseGestureRight" xml:space="preserve"><value>Right</value></data>
   <data name="Mapping_MouseGestureUp" xml:space="preserve"><value>Up</value></data>

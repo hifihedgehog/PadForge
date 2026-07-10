@@ -2292,11 +2292,11 @@
   <data name="Pad_MouseGestures_FlickThreshold" xml:space="preserve"><value>Distancia del gesto (cuentas)</value></data>
   <data name="Pad_MouseGestures_FlickThreshold_Tooltip" xml:space="preserve"><value>Movimiento neto que debe alcanzarse antes de soltar para contar como dirección. Por debajo, al soltar se dispara el gesto de clic.</value></data>
   <data name="Pad_MouseGestures_Cooldown" xml:space="preserve"><value>Enfriamiento</value></data>
-  <data name="Pad_ResetMouseGestures" xml:space="preserve"><value>Restablecer todos los ajustes de gestos del ratón</value></data>
-  <data name="Pad_ResetMouseGesturesEnabled" xml:space="preserve"><value>Restablecer a desactivado</value></data>
-  <data name="Pad_ResetMouseGestureButton" xml:space="preserve"><value>Restablecer a solo X1</value></data>
-  <data name="Pad_ResetMouseGestureFlickThreshold" xml:space="preserve"><value>Restablecer a 150 cuentas</value></data>
-  <data name="Pad_ResetMouseGestureCooldown" xml:space="preserve"><value>Restablecer a 100 ms</value></data>
+  <data name="Pad_ResetMouseGestures" xml:space="preserve"><value>Restablecer gestos del ratón</value></data>
+  <data name="Pad_ResetMouseGesturesEnabled" xml:space="preserve"><value>Restablecer activar gestos del ratón</value></data>
+  <data name="Pad_ResetMouseGestureButton" xml:space="preserve"><value>Restablecer botones de gestos</value></data>
+  <data name="Pad_ResetMouseGestureFlickThreshold" xml:space="preserve"><value>Restablecer distancia del gesto</value></data>
+  <data name="Pad_ResetMouseGestureCooldown" xml:space="preserve"><value>Restablecer tiempo de espera</value></data>
   <data name="Mapping_MouseGestureLeft" xml:space="preserve"><value>Izquierda</value></data>
   <data name="Mapping_MouseGestureRight" xml:space="preserve"><value>Derecha</value></data>
   <data name="Mapping_MouseGestureUp" xml:space="preserve"><value>Arriba</value></data>

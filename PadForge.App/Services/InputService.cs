@@ -1186,36 +1186,7 @@ namespace PadForge.Services
             // Per-(slot, device) mouse-gesture settings (issue #200), twin
             // of the touchpad provider above minus the pad index. Same
             // UserSettings walk under SyncRoot, Default() on every miss.
-            _inputManager.MouseGestureSettingsProvider = (slotIndex, deviceGuid) =>
-            {
-                var settings = SettingsManager.UserSettings;
-                if (settings == null) return PadForge.Engine.Mouse.MouseGestureSettings.Default();
-                PadSetting ps = null;
-                lock (settings.SyncRoot)
-                {
-                    for (int i = 0; i < settings.Items.Count; i++)
-                    {
-                        var us = settings.Items[i];
-                        if (us == null) continue;
-                        if (us.MapTo != slotIndex) continue;
-                        if (us.InstanceGuid != deviceGuid) continue;
-                        ps = us.GetPadSetting();
-                        break;
-                    }
-                }
-                if (ps?.MouseGestureSettings == null)
-                    return PadForge.Engine.Mouse.MouseGestureSettings.Default();
-                string guidStr = deviceGuid.ToString();
-                for (int i = 0; i < ps.MouseGestureSettings.Length; i++)
-                {
-                    var entry = ps.MouseGestureSettings[i];
-                    if (entry == null) continue;
-                    if (!string.Equals(entry.DeviceGuid, guidStr, StringComparison.OrdinalIgnoreCase))
-                        continue;
-                    return entry.Settings ?? PadForge.Engine.Mouse.MouseGestureSettings.Default();
-                }
-                return PadForge.Engine.Mouse.MouseGestureSettings.Default();
-            };
+            _inputManager.MouseGestureSettingsProvider = ResolveMouseGestureSettingsForSlot;
 
             // Per-(slot, device) lightbar configs — drives the
             // dispatcher's per-device synthesis loop and per-device
@@ -4333,6 +4304,43 @@ namespace PadForge.Services
         /// selected source's InputChoice gets dropped from the rebuilt
         /// list, so SyncSelectedInputFromDescriptor clears
         /// SelectedInput when no device-matched choice remains.</summary>
+        /// <summary>Resolves the per-(slot, device) mouse-gesture settings
+        /// straight from the active profile's PadSetting (issue #200), without
+        /// depending on the engine being started. Used by both the runtime
+        /// provider and the mapping-picker build so the two agree. Returns
+        /// Default() when nothing is stored for the pair.</summary>
+        private static PadForge.Engine.Mouse.MouseGestureSettings ResolveMouseGestureSettingsForSlot(
+            int slotIndex, System.Guid deviceGuid)
+        {
+            var settings = SettingsManager.UserSettings;
+            if (settings == null) return PadForge.Engine.Mouse.MouseGestureSettings.Default();
+            PadSetting ps = null;
+            lock (settings.SyncRoot)
+            {
+                for (int i = 0; i < settings.Items.Count; i++)
+                {
+                    var us = settings.Items[i];
+                    if (us == null) continue;
+                    if (us.MapTo != slotIndex) continue;
+                    if (us.InstanceGuid != deviceGuid) continue;
+                    ps = us.GetPadSetting();
+                    break;
+                }
+            }
+            if (ps?.MouseGestureSettings == null)
+                return PadForge.Engine.Mouse.MouseGestureSettings.Default();
+            string guidStr = deviceGuid.ToString();
+            for (int i = 0; i < ps.MouseGestureSettings.Length; i++)
+            {
+                var entry = ps.MouseGestureSettings[i];
+                if (entry == null) continue;
+                if (!string.Equals(entry.DeviceGuid, guidStr, StringComparison.OrdinalIgnoreCase))
+                    continue;
+                return entry.Settings ?? PadForge.Engine.Mouse.MouseGestureSettings.Default();
+            }
+            return PadForge.Engine.Mouse.MouseGestureSettings.Default();
+        }
+
         public void RefreshAvailableInputsForSlot(PadViewModel padVm)
         {
             if (padVm == null) return;
@@ -4384,12 +4392,14 @@ namespace PadForge.Services
                     tpSettingsForPad = padIdx => _inputManager.TouchpadGestureSettingsProvider(slot, g, padIdx);
                 }
 
-                System.Func<PadForge.Engine.Mouse.MouseGestureSettings> mouseGestures = null;
-                if (_inputManager?.MouseGestureSettingsProvider != null)
-                {
-                    int mgSlot = padVm.PadIndex;
-                    mouseGestures = () => _inputManager.MouseGestureSettingsProvider(mgSlot, g);
-                }
+                // Engine-independent: resolve straight from PadSetting so the
+                // picker reflects the checked gesture buttons whether or not
+                // the engine is running (the provider is null when stopped,
+                // which otherwise falls back to the X1-only default).
+                int mgSlot = padVm.PadIndex;
+                System.Guid mgDevice = g;
+                System.Func<PadForge.Engine.Mouse.MouseGestureSettings> mouseGestures =
+                    () => ResolveMouseGestureSettingsForSlot(mgSlot, mgDevice);
 
                 var raw = MappingDisplayResolver.BuildInputChoices(udi, tpSettingsForPad, mouseGestures)
                           ?? System.Array.Empty<PadForge.ViewModels.InputChoice>();

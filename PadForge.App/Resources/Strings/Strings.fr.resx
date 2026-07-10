@@ -2292,11 +2292,11 @@
   <data name="Pad_MouseGestures_FlickThreshold" xml:space="preserve"><value>Distance du geste (pas)</value></data>
   <data name="Pad_MouseGestures_FlickThreshold_Tooltip" xml:space="preserve"><value>Mouvement net à atteindre avant le relâchement pour compter comme direction. En dessous, le relâchement déclenche le geste de clic.</value></data>
   <data name="Pad_MouseGestures_Cooldown" xml:space="preserve"><value>Délai de repos</value></data>
-  <data name="Pad_ResetMouseGestures" xml:space="preserve"><value>Réinitialiser tous les réglages des gestes de la souris</value></data>
-  <data name="Pad_ResetMouseGesturesEnabled" xml:space="preserve"><value>Réinitialiser sur désactivé</value></data>
-  <data name="Pad_ResetMouseGestureButton" xml:space="preserve"><value>Réinitialiser sur X1 uniquement</value></data>
-  <data name="Pad_ResetMouseGestureFlickThreshold" xml:space="preserve"><value>Réinitialiser sur 150 pas</value></data>
-  <data name="Pad_ResetMouseGestureCooldown" xml:space="preserve"><value>Réinitialiser sur 100 ms</value></data>
+  <data name="Pad_ResetMouseGestures" xml:space="preserve"><value>Réinitialiser les gestes de la souris</value></data>
+  <data name="Pad_ResetMouseGesturesEnabled" xml:space="preserve"><value>Réinitialiser l'activation des gestes de la souris</value></data>
+  <data name="Pad_ResetMouseGestureButton" xml:space="preserve"><value>Réinitialiser les boutons de geste</value></data>
+  <data name="Pad_ResetMouseGestureFlickThreshold" xml:space="preserve"><value>Réinitialiser la distance du geste</value></data>
+  <data name="Pad_ResetMouseGestureCooldown" xml:space="preserve"><value>Réinitialiser le délai de repos</value></data>
   <data name="Mapping_MouseGestureLeft" xml:space="preserve"><value>Gauche</value></data>
   <data name="Mapping_MouseGestureRight" xml:space="preserve"><value>Droite</value></data>
   <data name="Mapping_MouseGestureUp" xml:space="preserve"><value>Haut</value></data>

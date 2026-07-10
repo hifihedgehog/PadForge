@@ -2314,11 +2314,11 @@
   <data name="Pad_MouseGestures_FlickThreshold" xml:space="preserve"><value>Distanza del gesto (conteggi)</value></data>
   <data name="Pad_MouseGestures_FlickThreshold_Tooltip" xml:space="preserve"><value>Movimento netto da raggiungere prima del rilascio per contare come direzione. Al di sotto, il rilascio attiva il gesto di clic.</value></data>
   <data name="Pad_MouseGestures_Cooldown" xml:space="preserve"><value>Tempo di recupero</value></data>
-  <data name="Pad_ResetMouseGestures" xml:space="preserve"><value>Ripristina tutte le impostazioni dei gesti del mouse</value></data>
-  <data name="Pad_ResetMouseGesturesEnabled" xml:space="preserve"><value>Ripristina su disabilitato</value></data>
-  <data name="Pad_ResetMouseGestureButton" xml:space="preserve"><value>Ripristina su solo X1</value></data>
-  <data name="Pad_ResetMouseGestureFlickThreshold" xml:space="preserve"><value>Ripristina su 150 conteggi</value></data>
-  <data name="Pad_ResetMouseGestureCooldown" xml:space="preserve"><value>Ripristina su 100 ms</value></data>
+  <data name="Pad_ResetMouseGestures" xml:space="preserve"><value>Ripristina gesti del mouse</value></data>
+  <data name="Pad_ResetMouseGesturesEnabled" xml:space="preserve"><value>Ripristina abilita gesti del mouse</value></data>
+  <data name="Pad_ResetMouseGestureButton" xml:space="preserve"><value>Ripristina pulsanti gesti</value></data>
+  <data name="Pad_ResetMouseGestureFlickThreshold" xml:space="preserve"><value>Ripristina distanza del gesto</value></data>
+  <data name="Pad_ResetMouseGestureCooldown" xml:space="preserve"><value>Ripristina cooldown</value></data>
   <data name="Mapping_MouseGestureLeft" xml:space="preserve"><value>Sinistra</value></data>
   <data name="Mapping_MouseGestureRight" xml:space="preserve"><value>Destra</value></data>
   <data name="Mapping_MouseGestureUp" xml:space="preserve"><value>Su</value></data>

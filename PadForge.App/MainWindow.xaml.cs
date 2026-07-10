@@ -994,7 +994,15 @@ namespace PadForge
                     {
                         _settingsService.MarkDirty();
                         if (s is PadViewModel pvmMouse)
+                        {
+                            // Sync first (PropertyChanged fires before the
+                            // setter's tail-call Sync), then rebuild the
+                            // Mappings-tab picker so newly-checked gesture
+                            // buttons' entries appear (and unchecked ones
+                            // disappear) immediately.
                             pvmMouse.SyncMouseGestureSettingsToActiveDevice();
+                            _inputService?.RefreshAvailableInputsForSlot(pvmMouse);
+                        }
                         return;
                     }
 

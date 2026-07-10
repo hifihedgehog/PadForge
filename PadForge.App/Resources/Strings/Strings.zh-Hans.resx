@@ -2292,11 +2292,11 @@
   <data name="Pad_MouseGestures_FlickThreshold" xml:space="preserve"><value>滑动距离（计数）</value></data>
   <data name="Pad_MouseGestures_FlickThreshold_Tooltip" xml:space="preserve"><value>松开前需达到的净移动量，达到才算方向手势。低于该值时松开将触发点击手势。</value></data>
   <data name="Pad_MouseGestures_Cooldown" xml:space="preserve"><value>冷却时间</value></data>
-  <data name="Pad_ResetMouseGestures" xml:space="preserve"><value>重置所有鼠标手势设置</value></data>
-  <data name="Pad_ResetMouseGesturesEnabled" xml:space="preserve"><value>重置为禁用</value></data>
-  <data name="Pad_ResetMouseGestureButton" xml:space="preserve"><value>重置为仅 X1</value></data>
-  <data name="Pad_ResetMouseGestureFlickThreshold" xml:space="preserve"><value>重置为 150 计数</value></data>
-  <data name="Pad_ResetMouseGestureCooldown" xml:space="preserve"><value>重置为 100 ms</value></data>
+  <data name="Pad_ResetMouseGestures" xml:space="preserve"><value>重置鼠标手势</value></data>
+  <data name="Pad_ResetMouseGesturesEnabled" xml:space="preserve"><value>重置启用鼠标手势</value></data>
+  <data name="Pad_ResetMouseGestureButton" xml:space="preserve"><value>重置手势键</value></data>
+  <data name="Pad_ResetMouseGestureFlickThreshold" xml:space="preserve"><value>重置滑动距离</value></data>
+  <data name="Pad_ResetMouseGestureCooldown" xml:space="preserve"><value>重置冷却时间</value></data>
   <data name="Mapping_MouseGestureLeft" xml:space="preserve"><value>左</value></data>
   <data name="Mapping_MouseGestureRight" xml:space="preserve"><value>右</value></data>
   <data name="Mapping_MouseGestureUp" xml:space="preserve"><value>上</value></data>

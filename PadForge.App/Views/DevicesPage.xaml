@@ -729,6 +729,25 @@
                                         </StackPanel>
                                     </Border>
                                 </Grid>
+                                <!-- Connection path for a bridged device whose SDL path is
+                                     empty but that connects over a real interface (the DS3
+                                     over BthPS3 / WinUSB). Shows only when the HidHide PATH
+                                     row above is absent, so the two never both render. -->
+                                <Grid Margin="0,0,0,2"
+                                      Visibility="{Binding SelectedDevice.DossierConnectionPath, Converter={StaticResource StringToVisibility}}">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="64"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Text="PATH" FontSize="10" FontFamily="{StaticResource TelemetryFontFamily}" Foreground="{DynamicResource TextFillColorTertiaryBrush}" VerticalAlignment="Center"/>
+                                    <Border Grid.Column="1" ClipToBounds="True" Padding="0,1">
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock FontSize="11" FontFamily="{StaticResource TelemetryFontFamily}" Foreground="{DynamicResource ColdBrush}"
+                                                       common:MarqueeBehavior.IsEnabled="True"
+                                                       Text="{Binding SelectedDevice.DossierConnectionPath, Mode=OneWay}"/>
+                                        </StackPanel>
+                                    </Border>
+                                </Grid>
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,2">
                                     <TextBlock Text="VID:PID" Width="64" FontSize="10" FontFamily="{StaticResource TelemetryFontFamily}" Foreground="{DynamicResource TextFillColorTertiaryBrush}" VerticalAlignment="Center"/>
                                     <TextBlock FontSize="11" FontFamily="{StaticResource TelemetryFontFamily}" Foreground="{DynamicResource ColdBrush}" Text="{Binding SelectedDevice.VendorIdHex, Mode=OneWay}"/>

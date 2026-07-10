@@ -563,9 +563,20 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(ShowInputModeSection));
                     OnPropertyChanged(nameof(ShowInputModeOrHidingSection));
                     OnPropertyChanged(nameof(IsBluetoothLink));
+                    OnPropertyChanged(nameof(DossierConnectionPath));
                 }
             }
         }
+
+        /// <summary>The connection path the dossier shows when there is no HidHide
+        /// instance path to display (the existing PATH row). Covers bridged devices like
+        /// the DS3, whose real transport path (BthPS3 PDO / WinUSB interface) is surfaced
+        /// through <see cref="Common.SdlDeviceWrapper.ExternalDevicePathProvider"/> even
+        /// though SDL reports no path. Empty for internal/virtual sources and when a
+        /// HidHide path already occupies the PATH row.</summary>
+        public string DossierConnectionPath =>
+            (!string.IsNullOrEmpty(_devicePath) && string.IsNullOrEmpty(_hidHideInstancePath) && !IsInternalVirtual)
+                ? _devicePath : string.Empty;
 
         /// <summary>True when the device is known to be linked over
         /// Bluetooth (classic {00001124}/BTHENUM, BLE {00001812}, the SDL
@@ -585,7 +596,11 @@ namespace PadForge.ViewModels
         public string HidHideInstancePath
         {
             get => _hidHideInstancePath;
-            set => SetProperty(ref _hidHideInstancePath, value);
+            set
+            {
+                if (SetProperty(ref _hidHideInstancePath, value))
+                    OnPropertyChanged(nameof(DossierConnectionPath));
+            }
         }
 
         // ─────────────────────────────────────────────

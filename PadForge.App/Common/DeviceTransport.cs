@@ -43,6 +43,13 @@ namespace PadForge.Common
                 if (devicePath.StartsWith(@"\\?\BTHENUM", StringComparison.OrdinalIgnoreCase))
                     return true;
 
+                // The DS3 bridge's Bluetooth transport is the BthPS3 raw PDO, whose path
+                // enumerates under BTHPS3BUS (not a standard BT HID class). It is a
+                // Bluetooth link by construction. Its USB counterpart is a \\?\usb#... path
+                // that carries no BT marker, so it correctly makes no claim (wired).
+                if (devicePath.IndexOf("BTHPS3", StringComparison.OrdinalIgnoreCase) >= 0)
+                    return true;
+
                 // Bluetooth LE HID (HID over GATT): the HOGP service UUID
                 // 0x1812 takes the same slot (measured live: Steam Controller
                 // 2026 lizard collections

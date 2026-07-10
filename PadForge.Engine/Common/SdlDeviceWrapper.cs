@@ -405,6 +405,17 @@ namespace PadForge.Engine
             ProductGuid = BuildProductGuid(VendorId, ProductId);
             InstanceGuid = BuildInstanceGuid(DevicePath, VendorId, ProductId, instanceId, SerialNumber, SdlGuid);
 
+            // Some bridged devices (the DS3 over BthPS3 / WinUSB) expose no SDL path
+            // because they are virtual joysticks, but they DO connect over a real
+            // interface. Surface that path for display + transport classification AFTER
+            // the identity is fixed above, so the differing per-transport paths never
+            // reach BuildInstanceGuid (the identity stays on the stable SDL GUID).
+            if (string.IsNullOrEmpty(DevicePath))
+            {
+                var extPath = ExternalDevicePathProvider?.Invoke(SdlInstanceId);
+                if (!string.IsNullOrEmpty(extPath)) DevicePath = extPath;
+            }
+
             return true;
         }
 
@@ -893,6 +904,13 @@ namespace PadForge.Engine
         /// DualShock 3). Keyed by SDL instance id; return null when the id isn't
         /// yours. Wired by the app layer.</summary>
         public static Func<uint, (int Percent, bool Charging)?> ExternalPowerInfoProvider { get; set; }
+
+        /// <summary>Real interface path for a device whose SDL path is empty because it is
+        /// a virtual joystick bridged from a native transport (the DS3 over BthPS3 / WinUSB).
+        /// Keyed by SDL instance id; return null when the id isn't yours. Consulted only
+        /// after the identity GUID is fixed, so it never affects device identity. Wired by
+        /// the app layer.</summary>
+        public static Func<uint, string> ExternalDevicePathProvider { get; set; }
 
         private long _lastBatteryReadTick;
         private int _cachedBatteryPercent = -1;

@@ -659,6 +659,10 @@ namespace PadForge.Common.Input
                     // channel for virtual joysticks, so the wrapper falls back to
                     // this provider when SDL reports unknown.
                     Engine.SdlDeviceWrapper.ExternalPowerInfoProvider = Ds3DirectService.GetPowerInfo;
+
+                    // Real transport path for the bridged DS3 (Dossier path + BT/USB
+                    // classification): the virtual joystick has no SDL path of its own.
+                    Engine.SdlDeviceWrapper.ExternalDevicePathProvider = Ds3DirectService.GetDevicePath;
                 }
                 catch (Exception ex) { System.Diagnostics.Debug.WriteLine("[DS3] service start failed: " + ex.Message); }
 

@@ -735,6 +735,14 @@
   <data name="Pad_ExtendedButtons" xml:space="preserve"><value>Buttons</value></data>
   <data name="Pad_ExtendedImportFromDevice" xml:space="preserve"><value>Imported profiles…</value></data>
   <data name="Pad_ExtendedImportFromDeviceTooltip" xml:space="preserve"><value>Manage user-imported HIDMaestro profiles: capture a new one from a connected device, export an existing one to JSON, or delete one you no longer need.</value></data>
+  <data name="Pad_ExtendedCloneDevice" xml:space="preserve"><value>Clone Device 1:1</value></data>
+  <data name="Pad_ExtendedCloneDeviceTooltip" xml:space="preserve"><value>Map every axis, button, and hat on the selected device straight through to the same-numbered virtual output. Sizes the layout to the device and replaces this device's rows on the slot with a 1:1 passthrough.</value></data>
+  <data name="Pad_ExtendedClone_Title" xml:space="preserve"><value>Clone Device 1:1</value></data>
+  <data name="Pad_ExtendedClone_Apply" xml:space="preserve"><value>Clone</value></data>
+  <data name="Pad_ExtendedClone_NoDevice" xml:space="preserve"><value>Select a connected device on this slot to clone.</value></data>
+  <data name="Pad_ExtendedClone_NoInputs" xml:space="preserve"><value>The selected device exposes no axes, buttons, or hats to clone.</value></data>
+  <data name="Pad_ExtendedClone_Confirm_Format" xml:space="preserve"><value>Clone {0} onto this slot as a 1:1 passthrough? The layout becomes {1} axes, {2} buttons, and {3} POVs, and this device's rows on the slot are replaced with its own inputs.</value></data>
+  <data name="Pad_ExtendedClone_Overflow_Format" xml:space="preserve"><value>This device has more inputs than an Extended controller can carry. Mapped {0} of {1} axes, {2} of {3} buttons, and {4} of {5} POVs. The rest were left unmapped.</value></data>
   <data name="ImportFromDevice_Title" xml:space="preserve"><value>Import from Device</value></data>
   <data name="ImportFromDevice_Description" xml:space="preserve"><value>Pick a connected HID device. PadForge captures its descriptor, identity, and layout and saves it as a new Extended profile named "(User Generated)". The profile lives inside PadForge.xml so it travels with your settings.</value></data>
   <data name="ManageProfiles_Title" xml:space="preserve"><value>Imported Profiles</value></data>

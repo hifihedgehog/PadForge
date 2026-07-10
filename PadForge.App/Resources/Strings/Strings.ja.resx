@@ -2260,4 +2260,12 @@
   <data name="TypeAbbrev_PlayStation" xml:space="preserve"><value>PS</value></data>
   <data name="TypeAbbrev_Xbox" xml:space="preserve"><value>XB</value></data>
   <data name="WiiPair_FamilyDs3" xml:space="preserve"><value>Sony DualShock 3</value></data>
+  <data name="Pad_ExtendedCloneDevice" xml:space="preserve"><value>デバイスを1:1で複製</value></data>
+  <data name="Pad_ExtendedCloneDeviceTooltip" xml:space="preserve"><value>選択したデバイスのすべての軸、ボタン、ハットを、同じ番号の仮想出力へそのままマッピングします。レイアウトをデバイスに合わせて調整し、スロット上のこのデバイスの行を1:1パススルーで置き換えます。</value></data>
+  <data name="Pad_ExtendedClone_Title" xml:space="preserve"><value>デバイスを1:1で複製</value></data>
+  <data name="Pad_ExtendedClone_Apply" xml:space="preserve"><value>複製</value></data>
+  <data name="Pad_ExtendedClone_NoDevice" xml:space="preserve"><value>複製するには、このスロットに接続されているデバイスを選択してください。</value></data>
+  <data name="Pad_ExtendedClone_NoInputs" xml:space="preserve"><value>選択したデバイスには、複製できる軸、ボタン、ハットがありません。</value></data>
+  <data name="Pad_ExtendedClone_Confirm_Format" xml:space="preserve"><value>{0} を1:1パススルーとしてこのスロットに複製しますか？レイアウトは {1} 軸、{2} ボタン、{3} POV になり、スロット上のこのデバイスの行はデバイス自身の入力で置き換えられます。</value></data>
+  <data name="Pad_ExtendedClone_Overflow_Format" xml:space="preserve"><value>このデバイスの入力数は、Extended コントローラーが扱える数を超えています。{1} 軸中 {0} 軸、{3} ボタン中 {2} ボタン、{5} POV 中 {4} POV をマッピングしました。残りは未マッピングのままです。</value></data>
 </root>

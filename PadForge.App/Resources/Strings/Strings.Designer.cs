@@ -836,6 +836,14 @@ public class Strings : INotifyPropertyChanged
     public string Pad_ExtendedButtons => Get("Pad_ExtendedButtons");
     public string Pad_ExtendedImportFromDevice => Get("Pad_ExtendedImportFromDevice");
     public string Pad_ExtendedImportFromDeviceTooltip => Get("Pad_ExtendedImportFromDeviceTooltip");
+    public string Pad_ExtendedCloneDevice => Get("Pad_ExtendedCloneDevice");
+    public string Pad_ExtendedCloneDeviceTooltip => Get("Pad_ExtendedCloneDeviceTooltip");
+    public string Pad_ExtendedClone_Title => Get("Pad_ExtendedClone_Title");
+    public string Pad_ExtendedClone_Apply => Get("Pad_ExtendedClone_Apply");
+    public string Pad_ExtendedClone_NoDevice => Get("Pad_ExtendedClone_NoDevice");
+    public string Pad_ExtendedClone_NoInputs => Get("Pad_ExtendedClone_NoInputs");
+    public string Pad_ExtendedClone_Confirm_Format => Get("Pad_ExtendedClone_Confirm_Format");
+    public string Pad_ExtendedClone_Overflow_Format => Get("Pad_ExtendedClone_Overflow_Format");
     public string ImportFromDevice_Title => Get("ImportFromDevice_Title");
     public string ImportFromDevice_Description => Get("ImportFromDevice_Description");
     public string ImportFromDevice_ConnectedDevice => Get("ImportFromDevice_ConnectedDevice");

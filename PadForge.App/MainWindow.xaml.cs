@@ -986,7 +986,7 @@ namespace PadForge
                     // then MarkDirty queues the autosave.
                     bool isMouseGestureField = e.PropertyName is
                         nameof(PadViewModel.MouseGesturesEnabled) or
-                        nameof(PadViewModel.MouseGestureButton) or
+                        nameof(PadViewModel.MouseGestureButtons) or
                         nameof(PadViewModel.MouseGestureFlickThreshold) or
                         nameof(PadViewModel.MouseGestureCooldownMs);
 

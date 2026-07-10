@@ -10076,10 +10076,16 @@
                                         <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Pad_MouseGestures_Button, Source={x:Static strings:Strings.Instance}}"
                                                    Width="270" VerticalAlignment="Center"
                                                    ToolTip="{Binding Pad_MouseGestures_Button_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
-                                        <ComboBox Width="180" VerticalAlignment="Center"
-                                                  ItemsSource="{Binding MouseGestureButtonChoices}"
-                                                  SelectedIndex="{Binding MouseGestureButton, Mode=TwoWay}"
-                                                  PreviewKeyDown="MappingComboBox_PreviewKeyDown"/>
+                                        <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}" Content="Left Click" VerticalAlignment="Center"
+                                                  IsChecked="{Binding MouseGestureButtonLeft, Mode=TwoWay}"/>
+                                        <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}" Content="Middle Click" VerticalAlignment="Center" Margin="10,0,0,0"
+                                                  IsChecked="{Binding MouseGestureButtonMiddle, Mode=TwoWay}"/>
+                                        <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}" Content="Right Click" VerticalAlignment="Center" Margin="10,0,0,0"
+                                                  IsChecked="{Binding MouseGestureButtonRight, Mode=TwoWay}"/>
+                                        <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}" Content="X1" VerticalAlignment="Center" Margin="10,0,0,0"
+                                                  IsChecked="{Binding MouseGestureButtonX1, Mode=TwoWay}"/>
+                                        <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}" Content="X2" VerticalAlignment="Center" Margin="10,0,0,0"
+                                                  IsChecked="{Binding MouseGestureButtonX2, Mode=TwoWay}"/>
                                         <ui:Button Command="{Binding ResetMouseGestureButtonCommand}" Style="{StaticResource ResetButton}"
                                                 ToolTip="{Binding Pad_ResetMouseGestureButton, Source={x:Static strings:Strings.Instance}}"/>
                                     </StackPanel>

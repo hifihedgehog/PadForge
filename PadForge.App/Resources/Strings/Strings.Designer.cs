@@ -1633,6 +1633,7 @@ public class Strings : INotifyPropertyChanged
     public string Mapping_MouseGestureUp => Get("Mapping_MouseGestureUp");
     public string Mapping_MouseGestureDown => Get("Mapping_MouseGestureDown");
     public string Mapping_MouseGestureClick => Get("Mapping_MouseGestureClick");
+    public string Mapping_MouseGesture_Format => Get("Mapping_MouseGesture_Format");
     public string Devices_AccelAux => Get("Devices_AccelAux");
     public string Pad_Audio => Get("Pad_Audio");
     public string Pad_Pointer => Get("Pad_Pointer");

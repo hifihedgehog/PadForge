@@ -2301,19 +2301,20 @@
   <data name="Pad_MouseGestures_Desc" xml:space="preserve"><value>Hold the gesture button, flick, and one action fires when you release: left, right, up, down, or a plain click below the flick distance. Map the five gestures on the Mappings tab or use them as macro triggers.</value></data>
   <data name="Pad_MouseGestures_Enabled" xml:space="preserve"><value>Enable Mouse Gestures</value></data>
   <data name="Pad_MouseGestures_Enabled_Tooltip" xml:space="preserve"><value>Arms the gesture recognizer for this mouse on this slot. The gesture button keeps its normal click while gesturing, so pick a side button you do not otherwise map.</value></data>
-  <data name="Pad_MouseGestures_Button" xml:space="preserve"><value>Gesture Button</value></data>
-  <data name="Pad_MouseGestures_Button_Tooltip" xml:space="preserve"><value>The mouse button that arms the recognizer while held.</value></data>
+  <data name="Pad_MouseGestures_Button" xml:space="preserve"><value>Gesture Buttons</value></data>
+  <data name="Pad_MouseGestures_Button_Tooltip" xml:space="preserve"><value>The mouse buttons that arm the recognizer while held. Each selected button carries its own five gestures, so different buttons can drive different actions.</value></data>
   <data name="Pad_MouseGestures_FlickThreshold" xml:space="preserve"><value>Flick Distance (counts)</value></data>
   <data name="Pad_MouseGestures_FlickThreshold_Tooltip" xml:space="preserve"><value>Net movement the flick must reach by release to count as a direction. Below it, the release fires the Click gesture.</value></data>
   <data name="Pad_MouseGestures_Cooldown" xml:space="preserve"><value>Cooldown</value></data>
   <data name="Pad_ResetMouseGestures" xml:space="preserve"><value>Reset all mouse gesture settings</value></data>
   <data name="Pad_ResetMouseGesturesEnabled" xml:space="preserve"><value>Reset to disabled</value></data>
-  <data name="Pad_ResetMouseGestureButton" xml:space="preserve"><value>Reset to X1</value></data>
+  <data name="Pad_ResetMouseGestureButton" xml:space="preserve"><value>Reset to X1 only</value></data>
   <data name="Pad_ResetMouseGestureFlickThreshold" xml:space="preserve"><value>Reset to 150 counts</value></data>
   <data name="Pad_ResetMouseGestureCooldown" xml:space="preserve"><value>Reset to 100 ms</value></data>
-  <data name="Mapping_MouseGestureLeft" xml:space="preserve"><value>Mouse Gesture: Left</value></data>
-  <data name="Mapping_MouseGestureRight" xml:space="preserve"><value>Mouse Gesture: Right</value></data>
-  <data name="Mapping_MouseGestureUp" xml:space="preserve"><value>Mouse Gesture: Up</value></data>
-  <data name="Mapping_MouseGestureDown" xml:space="preserve"><value>Mouse Gesture: Down</value></data>
-  <data name="Mapping_MouseGestureClick" xml:space="preserve"><value>Mouse Gesture: Click</value></data>
+  <data name="Mapping_MouseGestureLeft" xml:space="preserve"><value>Left</value></data>
+  <data name="Mapping_MouseGestureRight" xml:space="preserve"><value>Right</value></data>
+  <data name="Mapping_MouseGestureUp" xml:space="preserve"><value>Up</value></data>
+  <data name="Mapping_MouseGestureDown" xml:space="preserve"><value>Down</value></data>
+  <data name="Mapping_MouseGestureClick" xml:space="preserve"><value>Click</value></data>
+  <data name="Mapping_MouseGesture_Format" xml:space="preserve"><value>Mouse Gesture ({0}): {1}</value></data>
 </root>

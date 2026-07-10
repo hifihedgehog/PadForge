@@ -2287,19 +2287,20 @@
   <data name="Pad_MouseGestures_Desc" xml:space="preserve"><value>Gestentaste halten, Maus bewegen, und beim Loslassen wird genau eine Aktion ausgelöst: links, rechts, hoch, runter oder ein einfacher Klick unterhalb der Bewegungsschwelle. Die fünf Gesten lassen sich auf dem Zuordnungen-Tab zuweisen oder als Makro-Auslöser verwenden.</value></data>
   <data name="Pad_MouseGestures_Enabled" xml:space="preserve"><value>Mausgesten aktivieren</value></data>
   <data name="Pad_MouseGestures_Enabled_Tooltip" xml:space="preserve"><value>Aktiviert die Gestenerkennung für diese Maus in diesem Slot. Die Gestentaste behält beim Gestikulieren ihren normalen Klick, daher am besten eine sonst nicht belegte Seitentaste wählen.</value></data>
-  <data name="Pad_MouseGestures_Button" xml:space="preserve"><value>Gestentaste</value></data>
-  <data name="Pad_MouseGestures_Button_Tooltip" xml:space="preserve"><value>Die Maustaste, die die Erkennung aktiviert, solange sie gehalten wird.</value></data>
+  <data name="Pad_MouseGestures_Button" xml:space="preserve"><value>Gestentasten</value></data>
+  <data name="Pad_MouseGestures_Button_Tooltip" xml:space="preserve"><value>Die Maustasten, die die Erkennung aktivieren, solange sie gehalten werden. Jede ausgewählte Taste trägt ihre eigenen fünf Gesten, sodass verschiedene Tasten verschiedene Aktionen auslösen können.</value></data>
   <data name="Pad_MouseGestures_FlickThreshold" xml:space="preserve"><value>Bewegungsschwelle (Zählschritte)</value></data>
   <data name="Pad_MouseGestures_FlickThreshold_Tooltip" xml:space="preserve"><value>Nettobewegung, die bis zum Loslassen erreicht sein muss, damit eine Richtung zählt. Darunter löst das Loslassen die Klick-Geste aus.</value></data>
   <data name="Pad_MouseGestures_Cooldown" xml:space="preserve"><value>Abklingzeit</value></data>
   <data name="Pad_ResetMouseGestures" xml:space="preserve"><value>Alle Mausgesten-Einstellungen zurücksetzen</value></data>
   <data name="Pad_ResetMouseGesturesEnabled" xml:space="preserve"><value>Auf deaktiviert zurücksetzen</value></data>
-  <data name="Pad_ResetMouseGestureButton" xml:space="preserve"><value>Auf X1 zurücksetzen</value></data>
+  <data name="Pad_ResetMouseGestureButton" xml:space="preserve"><value>Auf nur X1 zurücksetzen</value></data>
   <data name="Pad_ResetMouseGestureFlickThreshold" xml:space="preserve"><value>Auf 150 Zählschritte zurücksetzen</value></data>
   <data name="Pad_ResetMouseGestureCooldown" xml:space="preserve"><value>Auf 100 ms zurücksetzen</value></data>
-  <data name="Mapping_MouseGestureLeft" xml:space="preserve"><value>Mausgeste: Links</value></data>
-  <data name="Mapping_MouseGestureRight" xml:space="preserve"><value>Mausgeste: Rechts</value></data>
-  <data name="Mapping_MouseGestureUp" xml:space="preserve"><value>Mausgeste: Hoch</value></data>
-  <data name="Mapping_MouseGestureDown" xml:space="preserve"><value>Mausgeste: Runter</value></data>
-  <data name="Mapping_MouseGestureClick" xml:space="preserve"><value>Mausgeste: Klick</value></data>
+  <data name="Mapping_MouseGestureLeft" xml:space="preserve"><value>Links</value></data>
+  <data name="Mapping_MouseGestureRight" xml:space="preserve"><value>Rechts</value></data>
+  <data name="Mapping_MouseGestureUp" xml:space="preserve"><value>Hoch</value></data>
+  <data name="Mapping_MouseGestureDown" xml:space="preserve"><value>Runter</value></data>
+  <data name="Mapping_MouseGestureClick" xml:space="preserve"><value>Klick</value></data>
+  <data name="Mapping_MouseGesture_Format" xml:space="preserve"><value>Mausgeste ({0}): {1}</value></data>
 </root>

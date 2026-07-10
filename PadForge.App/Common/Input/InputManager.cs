@@ -1948,11 +1948,17 @@ namespace PadForge.Common.Input
                 var settings = MouseGestureSettingsProvider?.Invoke(slot, ud.InstanceGuid)
                     ?? Engine.Mouse.MouseGestureSettings.Default();
 
-                int btn = settings.GestureButton;
-                bool buttonDown = btn >= 0 && btn < newState.Buttons.Length && newState.Buttons[btn];
+                // Each selected gesture button runs its own session; hand
+                // the recognizer the raw pressed mask and let it fan out.
+                int pressedMask = 0;
+                for (int b = 0; b < Engine.Mouse.MouseGestureContext.ButtonCount
+                    && b < newState.Buttons.Length; b++)
+                {
+                    if (newState.Buttons[b]) pressedMask |= 1 << b;
+                }
 
                 Engine.Mouse.MouseGestureRecognizer.Update(
-                    ctx, settings, buttonDown, dxCounts, dyCounts, nowMs);
+                    ctx, settings, pressedMask, dxCounts, dyCounts, nowMs);
             }
         }
 

@@ -436,6 +436,23 @@ namespace PadForge.Common.Input
         private readonly bool[] _routeRedirectLeft = new bool[MaxPads];
         private readonly bool[] _routeRedirectRight = new bool[MaxPads];
 
+        // Low-cadence config snapshot for the trigger-route settle (#102), mirroring
+        // _mirrorEngageCfg / UpdateHapticMirrorEngageStates (#185). Walking settings.Items
+        // under SyncRoot for every created slot every tick put a lock + O(Items) scan on
+        // the ~1 kHz loop; the route CONFIG changes only on user edit, so snapshot it at
+        // 250 ms and keep only the live per-tick work (the activator's ButtonHeldProvider
+        // read + edge/Toggle settle) hot. null slot = no active route.
+        private sealed class TriggerRouteCfg
+        {
+            public byte SrcLeft, SrcRight;
+            public double ScaleLeft, ScaleRight;
+            public bool RedirectLeft, RedirectRight;
+            public string ActLeft, ActLeftGuid, ActLeftMode;
+            public string ActRight, ActRightGuid, ActRightMode;
+        }
+        private readonly TriggerRouteCfg[] _triggerRouteCfg = new TriggerRouteCfg[MaxPads];
+        private long _triggerRouteCfgRefreshTick;
+
         /// <summary>Monotonic frame counter feeding the Sony Report 0x01
         /// timestamp / packet-sequence fields. Game-side parsers (e.g. SDL3's
         /// PS5 driver) reject duplicate packet-sequence values, so this MUST
@@ -1490,28 +1507,56 @@ namespace PadForge.Common.Input
             var settings = SettingsManager.UserSettings;
             if (settings == null) return;
 
-            for (int slot = 0; slot < MaxPads; slot++)
+            long now = Environment.TickCount64;
+            // Low-cadence config refresh (see _triggerRouteCfg). Mirrors
+            // UpdateHapticMirrorEngageStates' 250 ms snapshot: the SyncRoot lock +
+            // Items scan + GetPadSetting run at 4 Hz, not the ~1 kHz poll rate.
+            if (now - _triggerRouteCfgRefreshTick >= 250)
             {
-                PadSetting ps = null;
-                if (SettingsManager.SlotCreated[slot])
+                _triggerRouteCfgRefreshTick = now;
+                for (int slot = 0; slot < MaxPads; slot++)
                 {
-                    lock (settings.SyncRoot)
+                    TriggerRouteCfg cfg = null;
+                    if (SettingsManager.SlotCreated[slot])
                     {
-                        for (int i = 0; i < settings.Items.Count; i++)
+                        lock (settings.SyncRoot)
                         {
-                            var us = settings.Items[i];
-                            if (us == null || us.MapTo != slot) continue;
-                            var p = us.GetPadSetting();
-                            if (p == null) continue;
-                            if (!RouteSideActive(p.LeftTriggerRouteSource, p.LeftTriggerRouteMode)
-                                && !RouteSideActive(p.RightTriggerRouteSource, p.RightTriggerRouteMode)) continue;
-                            ps = p;
-                            break;
+                            for (int i = 0; i < settings.Items.Count; i++)
+                            {
+                                var us = settings.Items[i];
+                                if (us == null || us.MapTo != slot) continue;
+                                var p = us.GetPadSetting();
+                                if (p == null) continue;
+                                bool lActive = RouteSideActive(p.LeftTriggerRouteSource, p.LeftTriggerRouteMode);
+                                bool rActive = RouteSideActive(p.RightTriggerRouteSource, p.RightTriggerRouteMode);
+                                if (!lActive && !rActive) continue;
+                                cfg = new TriggerRouteCfg
+                                {
+                                    SrcLeft = lActive ? ParseRouteSource(p.LeftTriggerRouteSource) : (byte)0,
+                                    SrcRight = rActive ? ParseRouteSource(p.RightTriggerRouteSource) : (byte)0,
+                                    ScaleLeft = ParseRouteScale(p.LeftTriggerRouteScale),
+                                    ScaleRight = ParseRouteScale(p.RightTriggerRouteScale),
+                                    RedirectLeft = p.LeftTriggerRouteMode == "Redirect",
+                                    RedirectRight = p.RightTriggerRouteMode == "Redirect",
+                                    ActLeft = p.LeftTriggerRouteActivator,
+                                    ActLeftGuid = p.LeftTriggerRouteActivatorDeviceGuid,
+                                    ActLeftMode = p.LeftTriggerRouteActivatorMode,
+                                    ActRight = p.RightTriggerRouteActivator,
+                                    ActRightGuid = p.RightTriggerRouteActivatorDeviceGuid,
+                                    ActRightMode = p.RightTriggerRouteActivatorMode,
+                                };
+                                break;
+                            }
                         }
                     }
+                    _triggerRouteCfg[slot] = cfg;
                 }
+            }
 
-                if (ps == null)
+            for (int slot = 0; slot < MaxPads; slot++)
+            {
+                var cfg = _triggerRouteCfg[slot];
+                if (cfg == null)
                 {
                     TriggerRouteEngagedLeft[slot] = false;
                     TriggerRouteEngagedRight[slot] = false;
@@ -1522,33 +1567,29 @@ namespace PadForge.Common.Input
                     continue;
                 }
 
-                byte srcLByte = RouteSideActive(ps.LeftTriggerRouteSource, ps.LeftTriggerRouteMode)
-                    ? ParseRouteSource(ps.LeftTriggerRouteSource) : (byte)0;
-                byte srcRByte = RouteSideActive(ps.RightTriggerRouteSource, ps.RightTriggerRouteMode)
-                    ? ParseRouteSource(ps.RightTriggerRouteSource) : (byte)0;
-                _routeSourceLeft[slot] = srcLByte;
-                _routeSourceRight[slot] = srcRByte;
-                _routeScaleLeft[slot] = ParseRouteScale(ps.LeftTriggerRouteScale);
-                _routeScaleRight[slot] = ParseRouteScale(ps.RightTriggerRouteScale);
-                _routeRedirectLeft[slot] = ps.LeftTriggerRouteMode == "Redirect";
-                _routeRedirectRight[slot] = ps.RightTriggerRouteMode == "Redirect";
+                // Publish resolved config every tick (trivial array writes) so the
+                // downstream routing pass stays unchanged.
+                _routeSourceLeft[slot] = cfg.SrcLeft;
+                _routeSourceRight[slot] = cfg.SrcRight;
+                _routeScaleLeft[slot] = cfg.ScaleLeft;
+                _routeScaleRight[slot] = cfg.ScaleRight;
+                _routeRedirectLeft[slot] = cfg.RedirectLeft;
+                _routeRedirectRight[slot] = cfg.RedirectRight;
 
-                bool srcL = srcLByte != 0;
-                bool srcR = srcRByte != 0;
+                bool srcL = cfg.SrcLeft != 0;
+                bool srcR = cfg.SrcRight != 0;
 
                 // Settle unconditionally (the activator edge state must advance even
                 // when the source is None) then AND with the source-active flag.
                 bool leftSettled = SettleRouteActivator(
-                    slot, ps.LeftTriggerRouteActivator, ps.LeftTriggerRouteActivatorDeviceGuid,
-                    ps.LeftTriggerRouteActivatorMode, _prevTriggerRouteLeftDown,
-                    TriggerRouteEngagedLeft[slot], out bool leftDown);
+                    slot, cfg.ActLeft, cfg.ActLeftGuid, cfg.ActLeftMode,
+                    _prevTriggerRouteLeftDown, TriggerRouteEngagedLeft[slot], out bool leftDown);
                 TriggerRouteEngagedLeft[slot] = srcL && leftSettled;
                 _prevTriggerRouteLeftDown[slot] = leftDown;
 
                 bool rightSettled = SettleRouteActivator(
-                    slot, ps.RightTriggerRouteActivator, ps.RightTriggerRouteActivatorDeviceGuid,
-                    ps.RightTriggerRouteActivatorMode, _prevTriggerRouteRightDown,
-                    TriggerRouteEngagedRight[slot], out bool rightDown);
+                    slot, cfg.ActRight, cfg.ActRightGuid, cfg.ActRightMode,
+                    _prevTriggerRouteRightDown, TriggerRouteEngagedRight[slot], out bool rightDown);
                 TriggerRouteEngagedRight[slot] = srcR && rightSettled;
                 _prevTriggerRouteRightDown[slot] = rightDown;
             }
@@ -1710,6 +1751,11 @@ namespace PadForge.Common.Input
                 _routeSourceLeft[i] = 0;
                 _routeSourceRight[i] = 0;
             }
+            // Force an immediate re-snapshot on the next poll: the config cache is
+            // 250 ms-cadenced, so without this the reset (dropping sticky Toggle state
+            // on a profile switch) would be re-applied from the STALE old-profile
+            // snapshot for up to 250 ms.
+            _triggerRouteCfgRefreshTick = 0;
         }
 
         // ─────────────────────────────────────────────

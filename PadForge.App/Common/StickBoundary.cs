@@ -309,6 +309,20 @@ namespace PadForge.Common
         private const int LutSize = 512; // power of two >= SampleCount, so index math can mask
         private static readonly ConcurrentDictionary<string, double[]> _cache = new();
 
+        // Reference-equality memo in front of _cache. The boundary string is a ~1.4 KB
+        // PadSetting field (360 samples), reference-stable across polls (GetPadSetting
+        // returns a cached PadSetting; the property is reassigned only on recalibration).
+        // _cache.GetOrAdd hashes the whole ~1.4 KB string every call, per stick, per
+        // device, per tick at ~1 kHz. The memo compares by reference (O(1)) and only
+        // falls through to the hash when the stored string identity actually changed.
+        // [ThreadStatic]: GetOrBuild runs on the poll thread AND the UI preview thread,
+        // so each keeps its own lock-free memo. A small ring covers the realistic live
+        // calibrated-map set (a few slots x 2 sticks); overflow just re-hashes.
+        private const int MemoSlots = 16;
+        [ThreadStatic] private static string[] _memoKeys;
+        [ThreadStatic] private static double[][] _memoVals;
+        [ThreadStatic] private static int _memoNext;
+
         /// <summary>Returns the cached radius LUT (<see cref="LutSize"/> buckets)
         /// for a boundary string, or null when the feature is off (empty string).
         /// Built once per distinct string via the polygon-edge interpolation, then
@@ -317,7 +331,21 @@ namespace PadForge.Common
         public static double[] GetOrBuild(string boundary)
         {
             if (string.IsNullOrWhiteSpace(boundary)) return null;
-            return _cache.GetOrAdd(boundary, BuildLut);
+
+            var keys = _memoKeys;
+            if (keys == null) { keys = _memoKeys = new string[MemoSlots]; _memoVals = new double[MemoSlots][]; }
+            for (int i = 0; i < MemoSlots; i++)
+                if (ReferenceEquals(keys[i], boundary)) return _memoVals[i];
+
+            // Immutable strings: a given reference always maps to the same LUT, so the
+            // memo can never go stale. A content-equal-but-different reference (reloaded
+            // profile) misses the memo and hits _cache, which dedups by content.
+            var lut = _cache.GetOrAdd(boundary, BuildLut);
+            int slot = _memoNext;
+            keys[slot] = boundary;
+            _memoVals[slot] = lut;
+            _memoNext = (slot + 1) % MemoSlots;
+            return lut;
         }
 
         private static double[] BuildLut(string boundary)

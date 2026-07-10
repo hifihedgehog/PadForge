@@ -953,6 +953,11 @@ namespace PadForge.Common.Input
                     break;
                 }
 
+                case MacroActionType.TextBlock:
+                    if (ExecuteTextBlockAction(action, actionElapsed))
+                        AdvanceAction(macro);
+                    break;
+
                 case MacroActionType.Delay:
                     if (actionElapsed >= action.DurationMs)
                         AdvanceAction(macro);
@@ -1570,7 +1575,14 @@ namespace PadForge.Common.Input
         private static void ResetMouseAccumulators(MacroItem macro)
         {
             foreach (var action in macro.Actions)
+            {
                 action.MouseAccumulator = 0f;
+                // TextBlock emission cursor rides the same lifecycle: a run
+                // interrupted mid-string (trigger released on an Until-Release
+                // macro) must start over from the first character, never
+                // resume from where it stopped.
+                action.TextEmitCursor = 0;
+            }
         }
 
         /// <summary>
@@ -1913,6 +1925,11 @@ namespace PadForge.Common.Input
                     AdvanceAction(macro);
                     break;
                 }
+
+                case MacroActionType.TextBlock:
+                    if (ExecuteTextBlockAction(action, actionElapsed))
+                        AdvanceAction(macro);
+                    break;
 
                 case MacroActionType.Delay:
                     if (actionElapsed >= action.DurationMs)
@@ -2500,11 +2517,107 @@ namespace PadForge.Common.Input
             SendInput(1, new[] { input }, Marshal.SizeOf<INPUT>());
         }
 
+        // ─────────────────────────────────────────────
+        //  Text Block emission (issue #201)
+        // ─────────────────────────────────────────────
+
+        /// <summary>Runs a TextBlock action's frame-paced Unicode typing. Returns
+        /// true when the whole text has been emitted and the sequence can advance.
+        /// Delay 0 emits the entire string as ONE batched SendInput call on the
+        /// first tick; a per-character delay emits at most a few characters per
+        /// tick. Never a blocking loop: macro execution runs on the ~1 kHz poll
+        /// thread, and per-poll SendInput churn is exactly what dragged the loop
+        /// to ~200 Hz before the mouse injector existed (see the injector's block
+        /// comment in this file).</summary>
+        private static bool ExecuteTextBlockAction(MacroAction action, double actionElapsed)
+        {
+            string text = action.TextContent;
+            if (string.IsNullOrEmpty(text)) return true;
+
+            int target = MacroAction.ComputeTextEmitTarget(text, action.TextPerCharDelayMs, actionElapsed);
+            if (target > action.TextEmitCursor)
+            {
+                SendTextInput(text, action.TextEmitCursor, target);
+                action.TextEmitCursor = target;
+            }
+            if (action.TextEmitCursor >= text.Length)
+            {
+                action.TextEmitCursor = 0; // re-arm for repeats and the next trigger
+                return true;
+            }
+            return false;
+        }
+
+        /// <summary>Emits <paramref name="text"/>[from..to) as one batched SendInput
+        /// call. Characters ride KEYEVENTF_UNICODE (wVk 0, wScan = UTF-16 code unit,
+        /// the AutoHotkey SendText mechanism), which is layout-independent and needs
+        /// no shift-state juggling. Surrogate halves emit as consecutive down/up
+        /// pairs in the same batch and the target app's message loop reassembles
+        /// them. Newlines press Enter (CRLF folds to one), tabs press Tab, so
+        /// multiline blocks and forms work.</summary>
+        private static void SendTextInput(string text, int from, int to)
+        {
+            if (_currentMacroSlotRestricted) return; // gamepad-only peer: no keystrokes
+
+            var inputs = new List<INPUT>((to - from) * 2);
+            for (int i = from; i < to; i++)
+            {
+                char c = text[i];
+                if (c == '\r')
+                {
+                    // CRLF folds to one Enter: skip the '\r' and let the '\n'
+                    // emit it (the pair can straddle an emission boundary, so
+                    // the lookahead checks the full text, not the slice). A
+                    // bare '\r' still gets its own Enter.
+                    if (i + 1 < text.Length && text[i + 1] == '\n') continue;
+                    AppendVkPair(inputs, VK_RETURN);
+                }
+                else if (c == '\n') AppendVkPair(inputs, VK_RETURN);
+                else if (c == '\t') AppendVkPair(inputs, VK_TAB);
+                else AppendUnicodePair(inputs, c);
+            }
+
+            if (inputs.Count > 0)
+                SendInput((uint)inputs.Count, inputs.ToArray(), Marshal.SizeOf<INPUT>());
+        }
+
+        private static void AppendUnicodePair(List<INPUT> inputs, char codeUnit)
+        {
+            inputs.Add(new INPUT
+            {
+                type = INPUT_KEYBOARD,
+                u = new InputUnion { ki = new KEYBDINPUT { wVk = 0, wScan = codeUnit, dwFlags = KEYEVENTF_UNICODE } }
+            });
+            inputs.Add(new INPUT
+            {
+                type = INPUT_KEYBOARD,
+                u = new InputUnion { ki = new KEYBDINPUT { wVk = 0, wScan = codeUnit, dwFlags = KEYEVENTF_UNICODE | KEYEVENTF_KEYUP } }
+            });
+        }
+
+        private static void AppendVkPair(List<INPUT> inputs, ushort vk)
+        {
+            ushort scan = (ushort)MapVirtualKey(vk, MAPVK_VK_TO_VSC);
+            inputs.Add(new INPUT
+            {
+                type = INPUT_KEYBOARD,
+                u = new InputUnion { ki = new KEYBDINPUT { wVk = vk, wScan = scan, dwFlags = 0 } }
+            });
+            inputs.Add(new INPUT
+            {
+                type = INPUT_KEYBOARD,
+                u = new InputUnion { ki = new KEYBDINPUT { wVk = vk, wScan = scan, dwFlags = KEYEVENTF_KEYUP } }
+            });
+        }
+
         // ── P/Invoke declarations ──
 
         private const uint INPUT_KEYBOARD = 1;
         private const uint KEYEVENTF_KEYUP = 0x0002;
+        private const uint KEYEVENTF_UNICODE = 0x0004;
         private const uint MAPVK_VK_TO_VSC = 0;
+        private const ushort VK_TAB = 0x09;
+        private const ushort VK_RETURN = 0x0D;
 
         [DllImport("user32.dll", SetLastError = true)]
         private static extern uint SendInput(uint nInputs, INPUT[] pInputs, int cbSize);

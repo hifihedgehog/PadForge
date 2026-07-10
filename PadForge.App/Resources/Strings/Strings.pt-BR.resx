@@ -2268,4 +2268,11 @@
   <data name="Pad_ExtendedClone_NoInputs" xml:space="preserve"><value>O dispositivo selecionado não expõe eixos, botões ou chapéus para clonar.</value></data>
   <data name="Pad_ExtendedClone_Confirm_Format" xml:space="preserve"><value>Clonar {0} neste slot como uma passagem direta 1:1? O layout passa a ter {1} eixos, {2} botões e {3} POVs, e as linhas deste dispositivo no slot são substituídas pelas suas próprias entradas.</value></data>
   <data name="Pad_ExtendedClone_Overflow_Format" xml:space="preserve"><value>Este dispositivo tem mais entradas do que um controle Extended consegue comportar. Foram mapeados {0} de {1} eixos, {2} de {3} botões e {4} de {5} POVs. O restante ficou sem mapeamento.</value></data>
+  <data name="MacroAction_Type_TextBlock" xml:space="preserve"><value>Bloco de Texto</value></data>
+  <data name="MacroAction_TextBlock_Tooltip" xml:space="preserve"><value>Digita o texto como teclas quando a macro é executada. Funciona com qualquer caractere, incluindo acentos, CJK e emojis. Quebras de linha pressionam Enter e tabulações pressionam Tab. Para combinações de teclas, use "Pressionar Tecla".</value></data>
+  <data name="MacroAction_TextBlock_Format" xml:space="preserve"><value>Digitar "{0}"</value></data>
+  <data name="MacroAction_TextBlock_NoText" xml:space="preserve"><value>(sem texto)</value></data>
+  <data name="MacroAction_TextBlock_Text" xml:space="preserve"><value>Texto</value></data>
+  <data name="MacroAction_TextBlock_Delay" xml:space="preserve"><value>Atraso por caractere (ms)</value></data>
+  <data name="MacroAction_TextBlock_Delay_Tooltip" xml:space="preserve"><value>Milissegundos entre os caracteres digitados. 0 digita todo o texto de uma vez.</value></data>
 </root>

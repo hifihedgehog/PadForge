@@ -516,6 +516,13 @@ public class Strings : INotifyPropertyChanged
     public string MacroAction_RunProgram_Args => Get("MacroAction_RunProgram_Args");
     public string MacroAction_RunProgram_WorkingDir => Get("MacroAction_RunProgram_WorkingDir");
     public string MacroAction_RunProgram_WorkingDir_Tooltip => Get("MacroAction_RunProgram_WorkingDir_Tooltip");
+    public string MacroAction_Type_TextBlock => Get("MacroAction_Type_TextBlock");
+    public string MacroAction_TextBlock_Tooltip => Get("MacroAction_TextBlock_Tooltip");
+    public string MacroAction_TextBlock_Format => Get("MacroAction_TextBlock_Format");
+    public string MacroAction_TextBlock_NoText => Get("MacroAction_TextBlock_NoText");
+    public string MacroAction_TextBlock_Text => Get("MacroAction_TextBlock_Text");
+    public string MacroAction_TextBlock_Delay => Get("MacroAction_TextBlock_Delay");
+    public string MacroAction_TextBlock_Delay_Tooltip => Get("MacroAction_TextBlock_Delay_Tooltip");
     public string Devices_IdleDisconnect => Get("Devices_IdleDisconnect");
     public string Devices_Power => Get("Devices_Power");
     public string Devices_Dossier => Get("Devices_Dossier");

@@ -1899,6 +1899,7 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(IsDisconnectSpecificDevice));
                     OnPropertyChanged(nameof(DisconnectDeviceOptions));
                     OnPropertyChanged(nameof(IsRunProgramType));
+                    OnPropertyChanged(nameof(IsTextBlockType));
                     OnPropertyChanged(nameof(IsRumbleReactiveHold));
                     OnPropertyChanged(nameof(IsRumbleStickyHold));
 
@@ -2037,6 +2038,11 @@ namespace PadForge.ViewModels
         /// path / arguments / working-folder editor.</summary>
         [System.Xml.Serialization.XmlIgnore]
         public bool IsRunProgramType => _type == MacroActionType.RunProgram;
+
+        /// <summary>True when Type is TextBlock (#201). Gates the multiline
+        /// text editor panel.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool IsTextBlockType => _type == MacroActionType.TextBlock;
 
         /// <summary>True when the Disconnect action is in Specific-device mode.
         /// Surfaces the device picker.</summary>
@@ -2953,6 +2959,53 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _programWorkingDir, value ?? "");
         }
 
+        // ── Text Block (for MacroActionType.TextBlock, issue #201) ──
+
+        private string _textContent = "";
+        /// <summary>The plain text a TextBlock action types out. Any text is valid;
+        /// there is no token grammar (Key Press owns combos). Newlines press Enter,
+        /// tabs press Tab.</summary>
+        public string TextContent
+        {
+            get => _textContent;
+            set { if (SetProperty(ref _textContent, value ?? "")) OnPropertyChanged(nameof(DisplayText)); }
+        }
+
+        private int _textPerCharDelayMs;
+        /// <summary>Milliseconds between typed characters. 0 (default) emits the
+        /// whole text as one batched SendInput call.</summary>
+        public int TextPerCharDelayMs
+        {
+            get => _textPerCharDelayMs;
+            set => SetProperty(ref _textPerCharDelayMs, Math.Clamp(value, 0, 1000));
+        }
+
+        /// <summary>Runtime emission cursor for TextBlock pacing: how many UTF-16
+        /// code units of <see cref="TextContent"/> the current run has typed. The
+        /// executor re-arms it to 0 when the action completes, and macro start
+        /// resets it alongside the mouse accumulators, so an interrupted run can't
+        /// resume mid-string.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        internal int TextEmitCursor;
+
+        /// <summary>Pure pacing math for TextBlock emission: how many UTF-16 code
+        /// units of <paramref name="text"/> should have been typed once
+        /// <paramref name="elapsedMs"/> has passed. Delay 0 (or less) is the whole
+        /// string at once; otherwise code unit k emits when elapsed reaches
+        /// k * delay, so the first character goes out on the action's first tick.
+        /// Never splits a surrogate pair: a boundary landing between the halves
+        /// pulls the low half forward into the same emission.</summary>
+        internal static int ComputeTextEmitTarget(string text, int perCharDelayMs, double elapsedMs)
+        {
+            if (string.IsNullOrEmpty(text)) return 0;
+            int target = perCharDelayMs <= 0
+                ? text.Length
+                : Math.Min(text.Length, (int)(elapsedMs / perCharDelayMs) + 1);
+            if (target > 0 && target < text.Length && char.IsHighSurrogate(text[target - 1]))
+                target++;
+            return target;
+        }
+
         // ── Bluetooth disconnect (for MacroActionType.DisconnectController, issue #162) ──
 
         private MacroDisconnectTarget _disconnectTarget = MacroDisconnectTarget.TriggeringDevice;
@@ -3448,6 +3501,9 @@ namespace PadForge.ViewModels
                     MacroActionType.RunProgram => string.Format(
                         Strings.Instance.MacroAction_RunProgram_Format,
                         ProgramDisplayName()),
+                    MacroActionType.TextBlock => string.Format(
+                        Strings.Instance.MacroAction_TextBlock_Format,
+                        TextBlockDisplayName()),
                     _ => Strings.Instance.Macro_UnknownAction
                 };
             }
@@ -3461,6 +3517,28 @@ namespace PadForge.ViewModels
                 return Strings.Instance.MacroAction_RunProgram_NoProgram;
             try { return System.IO.Path.GetFileName(_programPath.Trim()); }
             catch { return _programPath.Trim(); }
+        }
+
+        /// <summary>Short label for the Text Block summary: the text's first line,
+        /// capped at 24 characters with an ellipsis, or a neutral placeholder when
+        /// the action holds no text yet.</summary>
+        private string TextBlockDisplayName()
+        {
+            if (string.IsNullOrWhiteSpace(_textContent))
+                return Strings.Instance.MacroAction_TextBlock_NoText;
+            string s = _textContent;
+            bool truncated = false;
+            int nl = s.IndexOfAny(new[] { '\r', '\n' });
+            if (nl >= 0) { s = s.Substring(0, nl); truncated = true; }
+            if (s.Length > 24)
+            {
+                // Never cut a surrogate pair in half mid-label.
+                int cut = char.IsHighSurrogate(s[23]) ? 23 : 24;
+                s = s.Substring(0, cut);
+                truncated = true;
+            }
+            s = s.TrimEnd();
+            return truncated ? s + "…" : s;
         }
 
         /// <summary>Display label for the Disconnect action's current target:
@@ -3881,7 +3959,16 @@ namespace PadForge.ViewModels
         /// command-line arguments and a working folder. Fire-and-forget via
         /// ShellExecute on a background thread, so the macro sequence never blocks on
         /// the launch. Running arbitrary programs is the user's responsibility.</summary>
-        RunProgram
+        RunProgram,
+
+        /// <summary>Types out plain text (issue #201, the LGS "Text Block"). Delivered
+        /// as Unicode keyboard injection (SendInput with KEYEVENTF_UNICODE, the
+        /// AutoHotkey SendText mechanism), so it is layout-independent and types any
+        /// text including accents, CJK, and emoji. Newlines press Enter and tabs press
+        /// Tab. <see cref="MacroAction.TextPerCharDelayMs"/> paces the emission; 0
+        /// types the whole text in one batched call. Key Press remains the tool for
+        /// key combos.</summary>
+        TextBlock
     }
 
     /// <summary>Target selector for <see cref="MacroActionType.DisconnectController"/>

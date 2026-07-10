@@ -2352,7 +2352,8 @@
                                                           DisplayMemberPath="ResolvedName"
                                                           SelectedValuePath="InstanceGuid"
                                                           SelectedValue="{Binding SourceDeviceGuid, Mode=TwoWay}"
-                                                          DropDownOpened="DeviceAxisPicker_DropDownOpened"/>
+                                                          DropDownOpened="DeviceAxisPicker_DropDownOpened"
+                                                          Loaded="DeviceAxisPicker_DropDownOpened"/>
                                             </StackPanel>
                                             <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
                                                 <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Macro_Axis, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
@@ -2361,7 +2362,8 @@
                                                           DisplayMemberPath="DisplayName"
                                                           SelectedValuePath="InputIndex"
                                                           SelectedValue="{Binding SourceDeviceAxisIndex, Mode=TwoWay}"
-                                                          DropDownOpened="DeviceAxisIndexPicker_DropDownOpened"/>
+                                                          DropDownOpened="DeviceAxisIndexPicker_DropDownOpened"
+                                                          Loaded="DeviceAxisIndexPicker_DropDownOpened"/>
                                             </StackPanel>
                                         </StackPanel>
                                         <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
@@ -2433,7 +2435,8 @@
                                                           DisplayMemberPath="ResolvedName"
                                                           SelectedValuePath="InstanceGuid"
                                                           SelectedValue="{Binding SourceDeviceGuid, Mode=TwoWay}"
-                                                          DropDownOpened="DeviceAxisPicker_DropDownOpened"/>
+                                                          DropDownOpened="DeviceAxisPicker_DropDownOpened"
+                                                          Loaded="DeviceAxisPicker_DropDownOpened"/>
                                             </StackPanel>
                                             <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
                                                 <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Macro_Axis, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
@@ -2442,7 +2445,8 @@
                                                           DisplayMemberPath="DisplayName"
                                                           SelectedValuePath="InputIndex"
                                                           SelectedValue="{Binding SourceDeviceAxisIndex, Mode=TwoWay}"
-                                                          DropDownOpened="DeviceAxisIndexPicker_DropDownOpened"/>
+                                                          DropDownOpened="DeviceAxisIndexPicker_DropDownOpened"
+                                                          Loaded="DeviceAxisIndexPicker_DropDownOpened"/>
                                             </StackPanel>
                                         </StackPanel>
                                         <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
@@ -2501,7 +2505,8 @@
                                                           DisplayMemberPath="ResolvedName"
                                                           SelectedValuePath="InstanceGuid"
                                                           SelectedValue="{Binding SourceDeviceGuid, Mode=TwoWay}"
-                                                          DropDownOpened="DeviceAxisPicker_DropDownOpened"/>
+                                                          DropDownOpened="DeviceAxisPicker_DropDownOpened"
+                                                          Loaded="DeviceAxisPicker_DropDownOpened"/>
                                             </StackPanel>
                                             <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
                                                 <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Macro_Axis, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
@@ -2510,7 +2515,8 @@
                                                           DisplayMemberPath="DisplayName"
                                                           SelectedValuePath="InputIndex"
                                                           SelectedValue="{Binding SourceDeviceAxisIndex, Mode=TwoWay}"
-                                                          DropDownOpened="DeviceAxisIndexPicker_DropDownOpened"/>
+                                                          DropDownOpened="DeviceAxisIndexPicker_DropDownOpened"
+                                                          Loaded="DeviceAxisIndexPicker_DropDownOpened"/>
                                             </StackPanel>
                                         </StackPanel>
                                         <StackPanel Orientation="Horizontal" Margin="0,0,0,4">

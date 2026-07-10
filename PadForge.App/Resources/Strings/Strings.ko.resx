@@ -2292,11 +2292,11 @@
   <data name="Pad_MouseGestures_FlickThreshold" xml:space="preserve"><value>플릭 거리(카운트)</value></data>
   <data name="Pad_MouseGestures_FlickThreshold_Tooltip" xml:space="preserve"><value>방향으로 인식되려면 놓기 전까지 도달해야 하는 순 이동량입니다. 미만이면 놓을 때 클릭 제스처가 실행됩니다.</value></data>
   <data name="Pad_MouseGestures_Cooldown" xml:space="preserve"><value>쿨다운</value></data>
-  <data name="Pad_ResetMouseGestures" xml:space="preserve"><value>모든 마우스 제스처 설정 재설정</value></data>
-  <data name="Pad_ResetMouseGesturesEnabled" xml:space="preserve"><value>비활성화로 재설정</value></data>
-  <data name="Pad_ResetMouseGestureButton" xml:space="preserve"><value>X1만으로 재설정</value></data>
-  <data name="Pad_ResetMouseGestureFlickThreshold" xml:space="preserve"><value>150 카운트로 재설정</value></data>
-  <data name="Pad_ResetMouseGestureCooldown" xml:space="preserve"><value>100 ms로 재설정</value></data>
+  <data name="Pad_ResetMouseGestures" xml:space="preserve"><value>마우스 제스처 재설정</value></data>
+  <data name="Pad_ResetMouseGesturesEnabled" xml:space="preserve"><value>마우스 제스처 사용 재설정</value></data>
+  <data name="Pad_ResetMouseGestureButton" xml:space="preserve"><value>제스처 버튼 재설정</value></data>
+  <data name="Pad_ResetMouseGestureFlickThreshold" xml:space="preserve"><value>플릭 거리 재설정</value></data>
+  <data name="Pad_ResetMouseGestureCooldown" xml:space="preserve"><value>쿨다운 재설정</value></data>
   <data name="Mapping_MouseGestureLeft" xml:space="preserve"><value>왼쪽</value></data>
   <data name="Mapping_MouseGestureRight" xml:space="preserve"><value>오른쪽</value></data>
   <data name="Mapping_MouseGestureUp" xml:space="preserve"><value>위</value></data>

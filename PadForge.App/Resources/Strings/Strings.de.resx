@@ -2292,11 +2292,11 @@
   <data name="Pad_MouseGestures_FlickThreshold" xml:space="preserve"><value>Bewegungsschwelle (Zählschritte)</value></data>
   <data name="Pad_MouseGestures_FlickThreshold_Tooltip" xml:space="preserve"><value>Nettobewegung, die bis zum Loslassen erreicht sein muss, damit eine Richtung zählt. Darunter löst das Loslassen die Klick-Geste aus.</value></data>
   <data name="Pad_MouseGestures_Cooldown" xml:space="preserve"><value>Abklingzeit</value></data>
-  <data name="Pad_ResetMouseGestures" xml:space="preserve"><value>Alle Mausgesten-Einstellungen zurücksetzen</value></data>
-  <data name="Pad_ResetMouseGesturesEnabled" xml:space="preserve"><value>Auf deaktiviert zurücksetzen</value></data>
-  <data name="Pad_ResetMouseGestureButton" xml:space="preserve"><value>Auf nur X1 zurücksetzen</value></data>
-  <data name="Pad_ResetMouseGestureFlickThreshold" xml:space="preserve"><value>Auf 150 Zählschritte zurücksetzen</value></data>
-  <data name="Pad_ResetMouseGestureCooldown" xml:space="preserve"><value>Auf 100 ms zurücksetzen</value></data>
+  <data name="Pad_ResetMouseGestures" xml:space="preserve"><value>Mausgesten zurücksetzen</value></data>
+  <data name="Pad_ResetMouseGesturesEnabled" xml:space="preserve"><value>Mausgesten aktivieren zurücksetzen</value></data>
+  <data name="Pad_ResetMouseGestureButton" xml:space="preserve"><value>Gestentasten zurücksetzen</value></data>
+  <data name="Pad_ResetMouseGestureFlickThreshold" xml:space="preserve"><value>Bewegungsdistanz zurücksetzen</value></data>
+  <data name="Pad_ResetMouseGestureCooldown" xml:space="preserve"><value>Abklingzeit zurücksetzen</value></data>
   <data name="Mapping_MouseGestureLeft" xml:space="preserve"><value>Links</value></data>
   <data name="Mapping_MouseGestureRight" xml:space="preserve"><value>Rechts</value></data>
   <data name="Mapping_MouseGestureUp" xml:space="preserve"><value>Hoch</value></data>

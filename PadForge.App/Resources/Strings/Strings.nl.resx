@@ -2312,11 +2312,11 @@
   <data name="Pad_MouseGestures_FlickThreshold" xml:space="preserve"><value>Beweegafstand (tellen)</value></data>
   <data name="Pad_MouseGestures_FlickThreshold_Tooltip" xml:space="preserve"><value>Nettobeweging die vóór het loslaten bereikt moet zijn om als richting te tellen. Daaronder vuurt het loslaten het klikgebaar.</value></data>
   <data name="Pad_MouseGestures_Cooldown" xml:space="preserve"><value>Afkoeltijd</value></data>
-  <data name="Pad_ResetMouseGestures" xml:space="preserve"><value>Alle muisgebaarinstellingen resetten</value></data>
-  <data name="Pad_ResetMouseGesturesEnabled" xml:space="preserve"><value>Resetten naar uitgeschakeld</value></data>
-  <data name="Pad_ResetMouseGestureButton" xml:space="preserve"><value>Resetten naar alleen X1</value></data>
-  <data name="Pad_ResetMouseGestureFlickThreshold" xml:space="preserve"><value>Resetten naar 150 tellen</value></data>
-  <data name="Pad_ResetMouseGestureCooldown" xml:space="preserve"><value>Resetten naar 100 ms</value></data>
+  <data name="Pad_ResetMouseGestures" xml:space="preserve"><value>Muisgebaren resetten</value></data>
+  <data name="Pad_ResetMouseGesturesEnabled" xml:space="preserve"><value>Muisgebaren inschakelen resetten</value></data>
+  <data name="Pad_ResetMouseGestureButton" xml:space="preserve"><value>Gebaarknoppen resetten</value></data>
+  <data name="Pad_ResetMouseGestureFlickThreshold" xml:space="preserve"><value>Beweegafstand resetten</value></data>
+  <data name="Pad_ResetMouseGestureCooldown" xml:space="preserve"><value>Afkoeltijd resetten</value></data>
   <data name="Mapping_MouseGestureLeft" xml:space="preserve"><value>Links</value></data>
   <data name="Mapping_MouseGestureRight" xml:space="preserve"><value>Rechts</value></data>
   <data name="Mapping_MouseGestureUp" xml:space="preserve"><value>Omhoog</value></data>

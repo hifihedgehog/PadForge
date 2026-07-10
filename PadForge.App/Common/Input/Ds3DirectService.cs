@@ -90,6 +90,13 @@ namespace PadForge.Common.Input
         private byte _usbInPipe;
         private long _lastUsbBindAttempt;
 
+        // The real device-interface path of the current transport (BthPS3 PDO over BT,
+        // WinUSB interface over USB). The SDL virtual joystick has no path of its own, so
+        // this is surfaced for the Device Dossier (path display + BT/USB classification)
+        // via SdlDeviceWrapper.ExternalDevicePathProvider. NOT used for device identity
+        // (the two transports' paths differ; identity stays on the stable SDL GUID).
+        private volatile string _transportPath;
+
         // Per-connection writer generation: Teardown flips it false so the writer
         // exits on THIS pad's disconnect even though the service keeps _running.
         // Without it, every disconnect leaked a live writer thread (the loop's only
@@ -166,6 +173,18 @@ namespace PadForge.Common.Input
         /// this service is driving. Wired into SdlDeviceWrapper.ExternalPowerInfoProvider.</summary>
         public static (int Percent, bool Charging)? GetPowerInfo(uint instanceId)
             => PowerByInstance.TryGetValue(instanceId, out var p) ? p : null;
+
+        /// <summary>The real transport interface path for a given SDL instance id (the
+        /// BthPS3 PDO path over Bluetooth, the WinUSB interface path over USB), or null
+        /// if it isn't the DS3 this service is driving. Wired into
+        /// SdlDeviceWrapper.ExternalDevicePathProvider so the Dossier can show a path and
+        /// classify the transport for a device whose SDL path is empty.</summary>
+        public static string GetDevicePath(uint sdlInstanceId)
+        {
+            var svc = _current;
+            return (svc != null && svc.IsConnected && svc.InstanceId == sdlInstanceId)
+                ? svc._transportPath : null;
+        }
 
         /// <summary>Set the player LED for a relayed player-index frame (#191 over Remote
         /// Link), but only when this instance id is the DS3 this service is driving.
@@ -288,6 +307,7 @@ namespace PadForge.Common.Input
             if (wh == INVALID_HANDLE) { CloseHandle(rh); return false; }
 
             lock (_outLock) { _readPdo = rh; _writePdo = wh; }
+            _transportPath = path;
             _transport = Ds3Transport.Bluetooth;
             return true;
         }
@@ -336,6 +356,7 @@ namespace PadForge.Common.Input
             WinUsb_SetPipePolicy(ifh, inPipe, PIPE_TRANSFER_TIMEOUT, 4, ref timeout);
 
             lock (_outLock) { _usbDev = dev; _usbIfh = ifh; _usbInPipe = inPipe; }
+            _transportPath = path;
             _transport = Ds3Transport.Usb;
             return true;
         }
@@ -665,6 +686,7 @@ namespace PadForge.Common.Input
                     _usbDev = IntPtr.Zero;
                     _usbInPipe = 0;
                 }
+                _transportPath = null;
                 _transport = Ds3Transport.None;
             }
         }

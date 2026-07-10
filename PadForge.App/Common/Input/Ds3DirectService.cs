@@ -77,6 +77,30 @@ namespace PadForge.Common.Input
         private bool _outDirty;
         private volatile bool _everGotInput;
 
+        // ── unpair coordination ──────────────────────────────────────────────────
+        // While true, the monitor loop tears down any live pad and does not re-grab
+        // it. The App-layer unpair flow sets this (and cancels the current read)
+        // before deleting a DS3's Bluetooth records + cycling the radio, so a still-
+        // connected pad can't re-attach a ghost virtual joystick mid-unpair.
+        private static volatile bool _suppressReconnect;
+        private static Ds3DirectService _current;
+
+        /// <summary>Detach any live DS3 now and block reconnect until
+        /// <see cref="AllowReconnect"/>. Call before removing the pad's BT records.</summary>
+        public static void SuppressAndRelease()
+        {
+            _suppressReconnect = true;
+            _current?.CancelCurrentRead();
+        }
+
+        /// <summary>Re-allow the monitor loop to grab a DS3 again.</summary>
+        public static void AllowReconnect() => _suppressReconnect = false;
+
+        private void CancelCurrentRead()
+        {
+            lock (_outLock) { if (_readPdo != IntPtr.Zero && _readPdo != INVALID_HANDLE) CancelIoEx(_readPdo, IntPtr.Zero); }
+        }
+
         public Ds3DirectService(Action<string> log = null) => _log = log ?? (_ => { });
 
         public bool IsConnected => _sdlJoystick != IntPtr.Zero;
@@ -138,6 +162,7 @@ namespace PadForge.Common.Input
         {
             if (_running) return;
             _running = true;
+            _current = this;
             _readThread = new Thread(MonitorLoop) { IsBackground = true, Name = "Ds3DirectRead" };
             _readThread.Start();
         }
@@ -145,6 +170,7 @@ namespace PadForge.Common.Input
         public void Stop()
         {
             _running = false;
+            if (_current == this) _current = null;
             _writeSignal.Set();
             lock (_outLock) { if (_readPdo != IntPtr.Zero) CancelIoEx(_readPdo, IntPtr.Zero); }
             try { _readThread?.Join(1500); } catch { }
@@ -155,6 +181,9 @@ namespace PadForge.Common.Input
         {
             while (_running)
             {
+                // Unpair in progress: drop any live pad and don't re-grab it.
+                if (_suppressReconnect) { Teardown(); Thread.Sleep(250); continue; }
+
                 string path = FindPdoPath();
                 if (path == null) { Thread.Sleep(500); continue; }
 

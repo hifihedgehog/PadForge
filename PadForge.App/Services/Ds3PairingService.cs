@@ -226,14 +226,23 @@ namespace PadForge.Services
             }
             catch (Exception ex) { _log("Enumerating DS3 records failed: " + ex.Message); }
 
-            if (macs.Count == 0) return 0;
-            if (radio != null)
-                foreach (string mac in macs)
-                    Ds3DriverInstaller.DeleteRememberedDeviceRecord(radio, mac, _log);
-            RemoveBthPs3Node();
-            CycleRadio();
-            _log($"Unpaired {macs.Count} DualShock 3 controller(s).");
-            return macs.Count;
+            // Detach the live pad and stop the reader re-grabbing it, so deleting the
+            // records + cycling the radio doesn't flash a ghost joystick back into the
+            // list mid-unpair. AllowReconnect ALWAYS runs (even on the no-records early
+            // return), else the caller's earlier SuppressAndRelease strands the pad.
+            PadForge.Common.Input.Ds3DirectService.SuppressAndRelease();
+            try
+            {
+                if (macs.Count == 0) return 0;
+                if (radio != null)
+                    foreach (string mac in macs)
+                        Ds3DriverInstaller.DeleteRememberedDeviceRecord(radio, mac, _log);
+                RemoveBthPs3Node();
+                CycleRadio();
+                _log($"Unpaired {macs.Count} DualShock 3 controller(s).");
+                return macs.Count;
+            }
+            finally { PadForge.Common.Input.Ds3DirectService.AllowReconnect(); }
         }
 
         // ── local Bluetooth radio address (human/big-endian order per DsHidMini) ─

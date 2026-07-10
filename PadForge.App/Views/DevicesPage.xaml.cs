@@ -168,6 +168,14 @@ namespace PadForge.Views
                         Strings.Instance.Common_Remove);
                     if (!confirmed) return;
 
+                    bool isDs3 =
+                        device.VendorId == PadForge.Services.Ds3PairingService.DS3_VID &&
+                        device.ProductId == PadForge.Services.Ds3PairingService.DS3_PID;
+
+                    // Detach a live DS3 before pulling its row, so the still-connected
+                    // pad can't blip back into the list while its pairing is cleared.
+                    if (isDs3) PadForge.Common.Input.Ds3DirectService.SuppressAndRelease();
+
                     vm.SelectedDevice = device;
                     if (vm.RemoveDeviceCommand.CanExecute(null))
                         vm.RemoveDeviceCommand.Execute(null);
@@ -176,8 +184,7 @@ namespace PadForge.Views
                     // removed (BthPS3 remembered-device record + link key), so it would
                     // silently reconnect. "Forget" should mean forgotten: clear its
                     // pairing too. Background thread - the clear cycles the radio.
-                    if (device.VendorId == PadForge.Services.Ds3PairingService.DS3_VID &&
-                        device.ProductId == PadForge.Services.Ds3PairingService.DS3_PID)
+                    if (isDs3)
                     {
                         System.Threading.Tasks.Task.Run(
                             () => new PadForge.Services.Ds3PairingService().UnpairAllDs3());

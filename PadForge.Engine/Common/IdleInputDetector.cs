@@ -72,11 +72,45 @@ namespace PadForge.Engine.Common
             for (int i = 0; i < current.Sliders.Length && i < previous.Sliders.Length; i++)
                 if (System.Math.Abs(current.Sliders[i] - previous.Sliders[i]) > DeltaSlop) return false;
 
+            if (MidiChanged(current.Midi, previous.Midi)) return false;
+
             if (AnyFingerDown(current)) return false;
 
             if (PointerOrMouseActive(current)) return false;
 
             return true;
+        }
+
+        /// <summary>MIDI (#128) is a real input family on this generic path: a
+        /// Bluetooth MIDI controller played only through notes / CC (no buttons,
+        /// axes, or touch) would otherwise read "unchanged" every poll and get
+        /// disconnected mid-performance by the #162 countdown. A held note reads
+        /// idle by the same documented limit as a held axis; active play does not.</summary>
+        private static bool MidiChanged(MidiInputState current, MidiInputState previous)
+        {
+            if (current == null || previous == null) return false;
+
+            if (current.Notes != null && previous.Notes != null)
+                for (int i = 0; i < current.Notes.Length && i < previous.Notes.Length; i++)
+                    if (current.Notes[i] != previous.Notes[i]) return true;
+
+            if (current.Cc != null && previous.Cc != null)
+                for (int i = 0; i < current.Cc.Length && i < previous.Cc.Length; i++)
+                    if (current.Cc[i] != previous.Cc[i]) return true;
+
+            if (System.Math.Abs(current.PitchBend - previous.PitchBend) > DeltaSlop) return true;
+
+            // CcUp / CcDown are this-poll edge flags: any set means activity now.
+            if (AnyTrue(current.CcUp) || AnyTrue(current.CcDown)) return true;
+
+            return false;
+        }
+
+        private static bool AnyTrue(bool[] a)
+        {
+            if (a == null) return false;
+            for (int i = 0; i < a.Length; i++) if (a[i]) return true;
+            return false;
         }
 
         /// <summary>The post-3.5.0 pointer/mouse families count as activity:

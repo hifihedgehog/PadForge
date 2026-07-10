@@ -1247,7 +1247,14 @@ namespace PadForge.Services
                         ? ipm : PadForge.Engine.RemoteLink.IdentityProtectionMode.Secure;
                 RemoteLink.Trust.ReplaceAll(appSettings.RemoteLinkPeers);
             }
-            catch { }
+            catch (Exception ex)
+            {
+                // A partial failure here (e.g. ReplaceAll throwing on a malformed peer)
+                // leaves the trust store half-restored, and the next Save() would persist
+                // that loss back to PadForge.xml, silently dropping paired peers and their
+                // gamepad-only restriction. Surface it instead of swallowing blind.
+                System.Diagnostics.Debug.WriteLine("[RemoteLink] identity/trust restore failed: " + ex);
+            }
             vm.RefreshTrustedPeers(RemoteLink.Trust?.Peers);
             vm.AutoStartEngine = appSettings.AutoStartEngine;
             vm.MinimizeToTray = appSettings.MinimizeToTray;

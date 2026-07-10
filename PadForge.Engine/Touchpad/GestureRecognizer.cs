@@ -378,12 +378,21 @@ namespace PadForge.Engine.Touchpad
                 }
             }
 
-            string key = spot == null ? null : $"Touchpad {padIdx} {spot}";
-            if (string.Equals(key, ctx.CurrentTouchSpot, StringComparison.Ordinal))
-                return;
+            // Runs on the ~1000 Hz poll thread. The stored key is
+            // "Touchpad {padIdx} {spot}" (padIdx fixed per context), so a held touch's
+            // no-change case is decided by comparing the interned spot literal against
+            // the stored key's tail, allocating no per-poll string. The full key is
+            // built only on an actual spot transition. (Spot names are mutually
+            // non-suffixing, so EndsWith uniquely identifies the current spot.)
+            bool unchanged = spot == null
+                ? ctx.CurrentTouchSpot == null
+                : ctx.CurrentTouchSpot != null && ctx.CurrentTouchSpot.EndsWith(spot, StringComparison.Ordinal);
+            if (unchanged) return;
+
             ReleaseCurrentTouchSpot(ctx);
-            if (key != null)
+            if (spot != null)
             {
+                string key = $"Touchpad {padIdx} {spot}";
                 ctx.FiredGesturesThisFrame.Add(key);
                 ctx.CurrentTouchSpot = key;
             }

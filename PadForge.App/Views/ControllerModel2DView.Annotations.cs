@@ -455,16 +455,6 @@ namespace PadForge.Views
             });
         }
 
-        /// <summary>Appends a full-width row (device header, fallback
-        /// line, +N tail) to the readout grid.</summary>
-        private static void AddAnnotationDetailSpan(Grid grid, FrameworkElement el, ref int gridRow)
-        {
-            grid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
-            Grid.SetRow(el, gridRow);
-            Grid.SetColumnSpan(el, 3);
-            grid.Children.Add(el);
-            gridRow++;
-        }
 
         /// <summary>11px mono TextBlock for the wiring readout
         /// (TelemetryFontFamily per the font canon).</summary>

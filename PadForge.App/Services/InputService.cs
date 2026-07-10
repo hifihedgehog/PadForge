@@ -112,6 +112,8 @@ namespace PadForge.Services
         // projection. Low-pass-filtered against state.Accel[] each
         // Update tick. Cleared in Stop().
         private readonly Dictionary<Guid, (float gx, float gy, float gz)> _gravityState = new();
+        // Aux (Nunchuk / left Joy-Con) gravity twin (#199), same lock.
+        private readonly Dictionary<Guid, (float gx, float gy, float gz)> _gravityStateAux = new();
         private readonly object _gravityStateLock = new();
 
         /// <summary>
@@ -832,6 +834,18 @@ namespace PadForge.Services
                 }
             };
 
+            // Aux gravity twin (#199): same filter over AccelAux (the Nunchuk /
+            // left Joy-Con), read by the "Motion Lean L" family.
+            PadForge.Engine.Common.Mapping.SourceCoercion.GravityProviderAux = deviceGuid =>
+            {
+                if (string.IsNullOrEmpty(deviceGuid)) return (0f, 0f, -1f);
+                if (!Guid.TryParse(deviceGuid, out var g)) return (0f, 0f, -1f);
+                lock (_gravityStateLock)
+                {
+                    return _gravityStateAux.TryGetValue(g, out var v) ? v : (0f, 0f, -1f);
+                }
+            };
+
             // Aim Engage button gate — reads the named device's
             // current button state via SourceCoercion's existing bool
             // reader. The synthetic MappingSource carries just the
@@ -1445,7 +1459,7 @@ namespace PadForge.Services
                 // #107: stop sampling the cursor and unhook MouseCursorProvider.
                 _cursorControlService?.Dispose();
                 _cursorControlService = null;
-                lock (_gravityStateLock) _gravityState.Clear();
+                lock (_gravityStateLock) { _gravityState.Clear(); _gravityStateAux.Clear(); }
             }
 
             // Final UI-thread VM updates: marshal back to the dispatcher
@@ -2544,6 +2558,7 @@ namespace PadForge.Services
                     consumerButtons: BuildConsumerPreviewItems(ud));
                 devVm.HasGyroData = ud.HasGyro;
                 devVm.HasAccelData = ud.HasAccel;
+                devVm.HasAccelAuxData = ud.HasAccelAux;
                 devVm.HasTouchpadData = ud.HasTouchpad || isTouchpad;
             }
 
@@ -2722,6 +2737,7 @@ namespace PadForge.Services
                     consumerButtons: BuildConsumerPreviewItems(ud));
                 devVm.HasGyroData = ud.HasGyro;
                 devVm.HasAccelData = ud.HasAccel;
+                devVm.HasAccelAuxData = ud.HasAccelAux;
                 devVm.HasTouchpadData = ud.HasTouchpad || isTouchpad2;
             }
 
@@ -2851,6 +2867,12 @@ namespace PadForge.Services
                 devVm.AccelX = state.Accel[0];
                 devVm.AccelY = state.Accel[1];
                 devVm.AccelZ = state.Accel[2];
+            }
+            if (ud.HasAccelAux)
+            {
+                devVm.AccelAuxX = state.AccelAux[0];
+                devVm.AccelAuxY = state.AccelAux[1];
+                devVm.AccelAuxZ = state.AccelAux[2];
             }
 
             // Update touchpad finger positions. Click state is shown in
@@ -6523,7 +6545,7 @@ namespace PadForge.Services
                 {
                     var s = e.source?.GetCurrentState();
                     if (s == null) continue;
-                    var caps = new CustomInputStateCodec.Caps(e.source.HasGyro, e.source.HasAccel);
+                    var caps = new CustomInputStateCodec.Caps(e.source.HasGyro, e.source.HasAccel, e.source.HasAccelAux);
                     server.PushLocalFrame(e.slot, s, caps, ts);
                 }
             }
@@ -7936,20 +7958,43 @@ namespace PadForge.Services
             {
                 foreach (var d in devs)
                 {
-                    if (d == null || !d.HasAccel || !d.IsOnline) continue;
+                    if (d == null || !d.IsOnline) continue;
                     var st = d.InputState;
-                    if (st == null || st.Accel == null || st.Accel.Length < 3) continue;
-                    if (!_gravityState.TryGetValue(d.InstanceGuid, out var prev))
+                    if (st == null) continue;
+
+                    if (d.HasAccel && st.Accel != null && st.Accel.Length >= 3)
                     {
-                        // Seed with the first observed accel sample so the
-                        // filter converges fast on (re)connect.
-                        _gravityState[d.InstanceGuid] = (st.Accel[0], st.Accel[1], st.Accel[2]);
-                        continue;
+                        if (!_gravityState.TryGetValue(d.InstanceGuid, out var prev))
+                        {
+                            // Seed with the first observed accel sample so the
+                            // filter converges fast on (re)connect.
+                            _gravityState[d.InstanceGuid] = (st.Accel[0], st.Accel[1], st.Accel[2]);
+                        }
+                        else
+                        {
+                            _gravityState[d.InstanceGuid] = (
+                                prev.gx * (1f - a) + st.Accel[0] * a,
+                                prev.gy * (1f - a) + st.Accel[1] * a,
+                                prev.gz * (1f - a) + st.Accel[2] * a);
+                        }
                     }
-                    _gravityState[d.InstanceGuid] = (
-                        prev.gx * (1f - a) + st.Accel[0] * a,
-                        prev.gy * (1f - a) + st.Accel[1] * a,
-                        prev.gz * (1f - a) + st.Accel[2] * a);
+
+                    // Aux (Nunchuk / left Joy-Con) twin (#199): same filter,
+                    // separate dict, independent sensor stream.
+                    if (d.HasAccelAux && st.AccelAux != null && st.AccelAux.Length >= 3)
+                    {
+                        if (!_gravityStateAux.TryGetValue(d.InstanceGuid, out var prevAux))
+                        {
+                            _gravityStateAux[d.InstanceGuid] = (st.AccelAux[0], st.AccelAux[1], st.AccelAux[2]);
+                        }
+                        else
+                        {
+                            _gravityStateAux[d.InstanceGuid] = (
+                                prevAux.gx * (1f - a) + st.AccelAux[0] * a,
+                                prevAux.gy * (1f - a) + st.AccelAux[1] * a,
+                                prevAux.gz * (1f - a) + st.AccelAux[2] * a);
+                        }
+                    }
                 }
             }
         }

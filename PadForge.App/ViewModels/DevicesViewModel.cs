@@ -392,6 +392,16 @@ namespace PadForge.ViewModels
         public double AccelY { get => _accelY; set => SetProperty(ref _accelY, value); }
         public double AccelZ { get => _accelZ; set => SetProperty(ref _accelZ, value); }
 
+        // Aux (left-side) accelerometer preview (#199): Nunchuk / left Joy-Con.
+
+        private bool _hasAccelAuxData;
+        public bool HasAccelAuxData { get => _hasAccelAuxData; set => SetProperty(ref _hasAccelAuxData, value); }
+
+        private double _accelAuxX, _accelAuxY, _accelAuxZ;
+        public double AccelAuxX { get => _accelAuxX; set => SetProperty(ref _accelAuxX, value); }
+        public double AccelAuxY { get => _accelAuxY; set => SetProperty(ref _accelAuxY, value); }
+        public double AccelAuxZ { get => _accelAuxZ; set => SetProperty(ref _accelAuxZ, value); }
+
         // v3.3 — gyro UI moved to the Pad page Gyro tab. Calibration
         // label, live rate readouts, sensitivity / deadzone / smoothing
         // / acceleration / curve / units sliders all live on PadViewModel
@@ -496,6 +506,7 @@ namespace PadForge.ViewModels
             HasRawData = false;
             HasGyroData = false;
             HasAccelData = false;
+            HasAccelAuxData = false;
             HasTouchpadData = false;
             HasSecondTouchpadData = false;
             LastRawStateDeviceGuid = Guid.Empty;

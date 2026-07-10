@@ -96,6 +96,31 @@ namespace PadForge.Tests
         }
 
         [Fact]
+        public void AccelAux_RoundTripsWhenCapabilityPresent()
+        {
+            // #199: the Nunchuk / left Joy-Con accelerometer block.
+            var s = new CustomInputState();
+            s.AccelAux[0] = 1.25f; s.AccelAux[1] = -9.5f; s.AccelAux[2] = 0.75f;
+
+            var bytes = CustomInputStateCodec.Encode(s, new CustomInputStateCodec.Caps(false, false, accelAux: true));
+            var rt = CustomInputStateCodec.Decode(bytes);
+
+            Assert.Equal(s.AccelAux, rt.AccelAux);
+        }
+
+        [Fact]
+        public void AccelAux_OmittedWhenCapabilityAbsent()
+        {
+            var s = new CustomInputState();
+            s.AccelAux[0] = 9.81f;
+
+            var bytes = CustomInputStateCodec.Encode(s, NoSensors);
+            var rt = CustomInputStateCodec.Decode(bytes);
+
+            Assert.Equal(0f, rt.AccelAux[0]);
+        }
+
+        [Fact]
         public void Battery_RoundTripsAndOmitsWhenUnknown()
         {
             var known = new CustomInputState { BatteryPercent = 73, BatteryCharging = true };
@@ -349,6 +374,7 @@ namespace PadForge.Tests
             var known = new[]
             {
                 "Axis", "Sliders", "Povs", "Buttons", "Gyro", "Accel",
+                "AccelAux",
                 "Touchpads", "Midi", "Ir", "JoyConIrIntensity",
                 "JoyCon2MouseDX", "JoyCon2MouseDY",
                 "BatteryPercent", "BatteryCharging",

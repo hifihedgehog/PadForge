@@ -77,6 +77,8 @@ namespace PadForge.Engine.Common.Mapping
             string kind = src.Kind ?? "Direct";
             if (kind == "Direct" && SourceCoercion.IsMotionLeanDescriptor(src.Descriptor))
                 kind = "MotionLeanX";
+            else if (kind == "Direct" && SourceCoercion.IsMotionLeanAuxDescriptor(src.Descriptor))
+                kind = "MotionLeanAuxX";
 
             switch (kind)
             {
@@ -129,6 +131,14 @@ namespace PadForge.Engine.Common.Mapping
                 {
                     if (runtime == null) return 0f;
                     double v = runtime.TickMotionLean(slotIndex, target, sourceIndex, src, state, src.DeviceGuid);
+                    return src.Invert ? -(float)v : (float)v;
+                }
+                case "MotionLeanAuxX":
+                {
+                    // "Motion Lean L" (#199): the same tilt math over the
+                    // auxiliary (Nunchuk / left Joy-Con) gravity twin.
+                    if (runtime == null) return 0f;
+                    double v = runtime.TickMotionLean(slotIndex, target, sourceIndex, src, state, src.DeviceGuid, aux: true);
                     return src.Invert ? -(float)v : (float)v;
                 }
                 default:

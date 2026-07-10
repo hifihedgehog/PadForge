@@ -48,6 +48,8 @@ namespace PadForge.Engine.RemoteLink
             Ir = 1 << 9,
             JoyConIr = 1 << 10,
             JoyCon2Mouse = 1 << 11,
+            // Aux (left-side) accelerometer, issue #199: Nunchuk / left Joy-Con.
+            AccelAux = 1 << 12,
         }
 
         /// <summary>
@@ -59,9 +61,12 @@ namespace PadForge.Engine.RemoteLink
         /// </summary>
         public readonly struct Caps
         {
-            public Caps(bool gyro, bool accel) { Gyro = gyro; Accel = accel; }
+            public Caps(bool gyro, bool accel, bool accelAux = false)
+            { Gyro = gyro; Accel = accel; AccelAux = accelAux; }
             public bool Gyro { get; }
             public bool Accel { get; }
+            /// <summary>Aux (left-side) accelerometer: Nunchuk / left Joy-Con (#199).</summary>
+            public bool AccelAux { get; }
         }
 
         /// <summary>Neutral (idle) value for axis index <paramref name="i"/>:
@@ -230,6 +235,14 @@ namespace PadForge.Engine.RemoteLink
                 BinaryPrimitives.WriteSingleLittleEndian(destination.Slice(o, 4), state.JoyCon2MouseDY); o += 4;
             }
 
+            // Aux (left-side) accelerometer (#199): Nunchuk / left Joy-Con.
+            // Capability-gated like Gyro/Accel (a zeroed array is not "absent").
+            if (caps.AccelAux)
+            {
+                present |= Block.AccelAux;
+                for (int i = 0; i < 3; i++) { BinaryPrimitives.WriteSingleLittleEndian(destination.Slice(o, 4), state.AccelAux[i]); o += 4; }
+            }
+
             BinaryPrimitives.WriteUInt16LittleEndian(destination.Slice(presenceAt, 2), (ushort)present);
             return o;
         }
@@ -252,6 +265,7 @@ namespace PadForge.Engine.RemoteLink
             size += 1 + (CustomInputState.MaxButtons / 8);
             if (caps.Gyro) size += 12;
             if (caps.Accel) size += 12;
+            if (caps.AccelAux) size += 12;
             size += 2; // battery
             if (state?.Touchpads != null)
             {
@@ -411,6 +425,9 @@ namespace PadForge.Engine.RemoteLink
                     o += 8;
                 }
 
+                if ((present & Block.AccelAux) != 0)
+                    for (int i = 0; i < 3; i++) { target.AccelAux[i] = BinaryPrimitives.ReadSingleLittleEndian(payload.Slice(o, 4)); o += 4; }
+
                 return o <= payload.Length;
             }
             catch
@@ -433,6 +450,7 @@ namespace PadForge.Engine.RemoteLink
             Array.Clear(s.Buttons);
             Array.Clear(s.Gyro);
             Array.Clear(s.Accel);
+            Array.Clear(s.AccelAux);
             s.BatteryPercent = -1;
             s.BatteryCharging = false;
             s.Ir = default;

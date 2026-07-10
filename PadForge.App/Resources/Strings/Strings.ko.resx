@@ -2275,4 +2275,8 @@
   <data name="MacroAction_TextBlock_Text" xml:space="preserve"><value>텍스트</value></data>
   <data name="MacroAction_TextBlock_Delay" xml:space="preserve"><value>문자 간격 (ms)</value></data>
   <data name="MacroAction_TextBlock_Delay_Tooltip" xml:space="preserve"><value>입력되는 문자 사이의 밀리초입니다(최대 1000). 0이면 전체 텍스트를 한 번에 입력합니다.</value></data>
+  <data name="Mapping_NunchukLean" xml:space="preserve"><value>눈차크 기울임</value></data>
+  <data name="Mapping_LeftJoyConLean" xml:space="preserve"><value>왼쪽 Joy-Con 기울임</value></data>
+  <data name="Mapping_AuxMotionLean" xml:space="preserve"><value>보조 모션 기울임</value></data>
+  <data name="Devices_AccelAux" xml:space="preserve"><value>보조 가속도계</value></data>
 </root>

@@ -248,6 +248,15 @@ namespace PadForge.Engine.Common.Mapping
         /// face-up) for unknown devices.</summary>
         public static Func<string, (float gx, float gy, float gz)> GravityProvider { get; set; }
 
+        /// <summary>Twin of <see cref="GravityProvider"/> for the auxiliary
+        /// (left-side) accelerometer (issue #199): the Nunchuk's own sensor on
+        /// a Nunchuk-attached Wii Remote, or the left half of a combined
+        /// Joy-Con pair. Smoothed over <c>CustomInputState.AccelAux</c>. Only
+        /// the "Motion Lean L" family reads it; the gyro Player/World space
+        /// projections stay on the primary gravity (the primary gyro lives on
+        /// the same body as the primary accel).</summary>
+        public static Func<string, (float gx, float gy, float gz)> GravityProviderAux { get; set; }
+
         /// <summary>— reads whether the given (deviceGuid,
         /// descriptor) is currently pressed on the named slot. Used
         /// by the gyro "Aim Engage button" gate. App wires this
@@ -1014,6 +1023,22 @@ namespace PadForge.Engine.Common.Mapping
         public static bool IsMotionLeanDescriptor(string descriptor)
             => !string.IsNullOrEmpty(descriptor)
             && string.Equals(descriptor.Trim(), MotionLeanDescriptor, StringComparison.OrdinalIgnoreCase);
+
+        /// <summary>The auxiliary-accelerometer twin of
+        /// <see cref="MotionLeanDescriptor"/> (issue #199): tilt derived from
+        /// the Nunchuk / left Joy-Con gravity instead of the primary body's.
+        /// Exact-match descriptor like the primary; the display label is
+        /// contextual per device ("Nunchuk Lean" on Wii remotes) but this one
+        /// internal string is what persists. Starts with "Motion " so it
+        /// inherits the same benign IsMotionDescriptor classification the
+        /// primary already has, and the leading 'M' keeps it clear of the
+        /// I/H prefix grammar.</summary>
+        public const string MotionLeanAuxDescriptor = "Motion Lean L";
+
+        /// <summary>True when the descriptor is <see cref="MotionLeanAuxDescriptor"/>.</summary>
+        public static bool IsMotionLeanAuxDescriptor(string descriptor)
+            => !string.IsNullOrEmpty(descriptor)
+            && string.Equals(descriptor.Trim(), MotionLeanAuxDescriptor, StringComparison.OrdinalIgnoreCase);
 
         /// <summary>Public form of <see cref="ReadCalibratedGyroRate"/>:
         /// returns the bias-subtracted gyro rate (rad/s) for the source's

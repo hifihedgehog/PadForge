@@ -205,6 +205,9 @@ namespace PadForge.Engine.RemoteLink
                 if (d.HasTouchpad) caps |= 16;
                 if (d.HasHaptic) caps |= 32;
                 if (d.Online) caps |= 64;
+                // Bit 128 (issue #199) EXHAUSTS this byte: the next capability
+                // needs a wire-format extension, not another bit.
+                if (d.HasAccelAux) caps |= 128;
                 buf.Add(caps);
                 WriteU16(buf, (ushort)d.InputDeviceType);
             }
@@ -290,6 +293,7 @@ namespace PadForge.Engine.RemoteLink
                 info.HasTouchpad = (caps & 16) != 0;
                 info.HasHaptic = (caps & 32) != 0;
                 info.Online = (caps & 64) != 0;
+                info.HasAccelAux = (caps & 128) != 0;
                 info.InputDeviceType = ReadU16(data, ref o);
                 list.Add(info);
             }

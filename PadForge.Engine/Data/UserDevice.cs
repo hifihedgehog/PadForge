@@ -124,6 +124,13 @@ namespace PadForge.Engine.Data
         [XmlElement]
         public bool HasAccel { get; set; }
 
+        /// <summary>Whether the device exposes an auxiliary (left-side)
+        /// accelerometer (issue #199): the Nunchuk's own sensor, or the left
+        /// half of a combined Joy-Con pair. Mirrors
+        /// <see cref="Common.ISdlInputDevice.HasAccelAux"/>.</summary>
+        [XmlElement]
+        public bool HasAccelAux { get; set; }
+
         /// <summary>Whether the device is an IR-camera-capable Wii Remote (issue
         /// #146). Identity-derived from VID + name, so it is correct whether the
         /// remote is online or offline: a Wii Remote has the camera built in, with
@@ -482,6 +489,7 @@ namespace PadForge.Engine.Data
             // Sensor capabilities.
             HasGyro = wrapper.HasGyro;
             HasAccel = wrapper.HasAccel;
+            HasAccelAux = wrapper.HasAccelAux;
             HasTouchpad = wrapper.HasTouchpad;
             CapTouchpadCount = wrapper.NumTouchpads;
             CapTouchpadFingerCounts = wrapper.TouchpadFingerCounts;

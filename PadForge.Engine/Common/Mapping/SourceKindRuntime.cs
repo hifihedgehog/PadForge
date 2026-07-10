@@ -321,11 +321,14 @@ namespace PadForge.Engine.Common.Mapping
         /// tilt angle maps to the X channel. Routed-channel stick deflection is
         /// ignored. Returns 0 when no gravity is available.</summary>
         public double TickMotionLean(int slotIndex, string target, int sourceIndex,
-            MappingSource src, CustomInputState state, string deviceGuid)
+            MappingSource src, CustomInputState state, string deviceGuid, bool aux = false)
         {
             if (src == null) return 0;
             var key = (slotIndex, target ?? "", sourceIndex);
-            var grav = SourceCoercion.GravityProvider?.Invoke(deviceGuid ?? "") ?? (0f, 0f, -1f);
+            // aux (#199): read the Nunchuk / left Joy-Con gravity twin instead
+            // of the body's. Same math, independent sensor.
+            var provider = aux ? SourceCoercion.GravityProviderAux : SourceCoercion.GravityProvider;
+            var grav = provider?.Invoke(deviceGuid ?? "") ?? (0f, 0f, -1f);
             // The provider returns the raw accelerometer = the reaction force, which reads
             // +1g UP at rest. The JSM-derived lean math below expects the gravity-DOWN vector
             // (JoyShockMapper negates accel into gravity, so its grav.y is -1g at rest and its
@@ -344,7 +347,13 @@ namespace PadForge.Engine.Common.Mapping
             // steering channel. The unit-length fallback sentinel (no accel yet) carries a
             // gLen near 1; real gravity is ~9.8 m/s², so gate capture above that to avoid
             // latching a neutral from "no data". Re-captured on profile switch via Clear().
-            string gid = deviceGuid ?? "";
+            // The aux channel gets its OWN neutral key. Remote body and Nunchuk
+            // share one device GUID but hold two independent orientations;
+            // keying both captures on the bare gid would let whichever sensor
+            // crosses the capture gate first latch its grip as the shared
+            // neutral, and the other would realign against the wrong
+            // orientation. Same dict so Clear() covers both on profile switch.
+            string gid = aux ? (deviceGuid ?? "") + "|L" : (deviceGuid ?? "");
             if (gLen > 4.0 && !_motionNeutral.ContainsKey(gid))
                 _motionNeutral[gid] = (gx / gLen, gy / gLen, gz / gLen);
             if (_motionNeutral.TryGetValue(gid, out var n))

@@ -192,6 +192,50 @@ namespace PadForge.Services
             _log("Pairing cleared.");
         }
 
+        /// <summary>
+        /// Clears the Bluetooth pairing for every DS3 record PadForge wrote, so a pad
+        /// "forgotten" from the device list won't silently reconnect. Used from the
+        /// device-list Remove action, where only the pad's VID/PID is known (the SDL
+        /// virtual joystick carries no serial/MAC). Enumerates BTHPORT's device list for
+        /// records with the DS3 VID/PID and drops each one's record + link-key anchor,
+        /// then removes the node and cycles the radio once. A machine with two DS3s
+        /// clears both; that is acceptable for a "forget" action and is logged.
+        /// </summary>
+        public int UnpairAllDs3()
+        {
+            byte[] radio = ReadRadioMac();
+            var macs = new System.Collections.Generic.List<string>();
+            try
+            {
+                using var root = Registry.LocalMachine.OpenSubKey(
+                    @"SYSTEM\CurrentControlSet\Services\BTHPORT\Parameters\Devices");
+                if (root != null)
+                {
+                    foreach (string mac in root.GetSubKeyNames())
+                    {
+                        try
+                        {
+                            using var sub = root.OpenSubKey(mac);
+                            if (sub?.GetValue("VID") is int vid && sub.GetValue("PID") is int pid
+                                && vid == DS3_VID && pid == DS3_PID)
+                                macs.Add(mac);
+                        }
+                        catch { /* skip records we can't read */ }
+                    }
+                }
+            }
+            catch (Exception ex) { _log("Enumerating DS3 records failed: " + ex.Message); }
+
+            if (macs.Count == 0) return 0;
+            if (radio != null)
+                foreach (string mac in macs)
+                    Ds3DriverInstaller.DeleteRememberedDeviceRecord(radio, mac, _log);
+            RemoveBthPs3Node();
+            CycleRadio();
+            _log($"Unpaired {macs.Count} DualShock 3 controller(s).");
+            return macs.Count;
+        }
+
         // ── local Bluetooth radio address (human/big-endian order per DsHidMini) ─
 
         /// <summary>The local radio's MAC in the byte order the DS3 expects (human /

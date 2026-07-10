@@ -6338,13 +6338,19 @@ namespace PadForge.Services
             else
             {
                 (bool approved, bool gamepadOnly) captured = (false, false);
-                using var done = new System.Threading.ManualResetEventSlim(false);
+                var done = new System.Threading.ManualResetEventSlim(false);
                 _dispatcher.BeginInvoke(() =>
                 {
                     try { captured = ShowPairDialog(pending); }
-                    finally { done.Set(); }
+                    // Guard: on a wait timeout below we deliberately leak `done`
+                    // rather than dispose it, so this late Set (when the user finally
+                    // dismisses the orphaned dialog) is a harmless no-op instead of an
+                    // ObjectDisposedException on the UI thread.
+                    finally { try { done.Set(); } catch (ObjectDisposedException) { } }
                 });
-                if (!done.Wait(TimeSpan.FromMinutes(2))) return false;
+                if (!done.Wait(TimeSpan.FromMinutes(2)))
+                    return false;   // do NOT dispose: the queued delegate still holds it
+                done.Dispose();     // delegate has signalled and completed; safe now
                 r = captured;
             }
             // Persistence happens in DeviceConnected, after the grant lands in the trust store.

@@ -812,9 +812,28 @@ namespace PadForge.Common.Input
         private byte _lastDispatchedRumbleL;
         private bool _lastTickOverrideActive;
 
-        private void OnAnimTick(object _)
+        private int _animTickBusy;
+
+        private void OnAnimTick(object state)
         {
-            if (_disposed || _config == null) return;
+            // System.Threading.Timer callbacks overlap when a tick runs past the
+            // period. Serialize them: a tick still in progress skips the next
+            // (drops one lightbar frame, benign) so _rng / _lastButtons / pulse
+            // state can't be mutated by two callbacks at once. The try/catch keeps
+            // a fault (e.g. _config nulled by a concurrent Dispose) from a timer
+            // thread from terminating the whole process.
+            if (System.Threading.Interlocked.Exchange(ref _animTickBusy, 1) == 1) return;
+            try { OnAnimTickCore(state); }
+            catch { /* dropped frame; a timer-thread exception must never crash the app */ }
+            finally { System.Threading.Interlocked.Exchange(ref _animTickBusy, 0); }
+        }
+
+        private void OnAnimTickCore(object _)
+        {
+            // Snapshot once: Dispose can null _config on the UI thread mid-callback,
+            // and every deref below would NRE on the raw field.
+            var cfg = _config;
+            if (_disposed || cfg == null) return;
 
             // Aggregate state across every per-device config on the
             // slot. The timer only stops when NO device wants it.
@@ -824,7 +843,7 @@ namespace PadForge.Common.Input
             bool anyAudioMode = false;
             bool anyAudioPulseRandom = false;
             bool anyInputReactiveOverlay = false;
-            float maxSensitivity = (float)_config.AudioLightbarSensitivity;
+            float maxSensitivity = (float)cfg.AudioLightbarSensitivity;
             if (perDeviceCfgs != null && perDeviceCfgs.Count > 0)
             {
                 maxSensitivity = 0f;
@@ -851,13 +870,13 @@ namespace PadForge.Common.Input
             else
             {
                 // No per-device dictionary wired yet — fall back to anchor.
-                var mode = _config.LightbarMode;
+                var mode = cfg.LightbarMode;
                 anyAnimated = IsAnimated(mode);
                 anyAudioMode = IsAudioMode(mode);
                 anyAudioPulseRandom = mode == LightbarMode.AudioPulseRandom;
-                bool overrideActive = _config.HasActiveMacroLightbarOverride;
-                anyReactiveRunning = overrideActive && _config.MacroOverrideHoldMode == MacroLightbarHoldMode.Reactive;
-                anyInputReactiveOverlay = _config.InputReactiveMode != InputReactiveMode.Off;
+                bool overrideActive = cfg.HasActiveMacroLightbarOverride;
+                anyReactiveRunning = overrideActive && cfg.MacroOverrideHoldMode == MacroLightbarHoldMode.Reactive;
+                anyInputReactiveOverlay = cfg.InputReactiveMode != InputReactiveMode.Off;
             }
 
             // If no device wants an animated mode, no Reactive override,
@@ -1090,7 +1109,10 @@ namespace PadForge.Common.Input
 
         private void DispatchSnapshot(float audioPeak = -1f)
         {
-            if (_config == null) return;
+            // Snapshot once (Dispose can null the field on the UI thread while a
+            // timer-thread dispatch is mid-flight).
+            var cfg = _config;
+            if (cfg == null) return;
 
             // Player-identity idle floor (#191): the 1-based virtual
             // controller number every UI surface shows, recomputed per
@@ -1112,7 +1134,7 @@ namespace PadForge.Common.Input
             float peakForSynthDefault = audioPeak >= 0f
                 ? audioPeak
                 : Math.Clamp(
-                    rawAudioPeak * (float)_config.AudioLightbarSensitivity,
+                    rawAudioPeak * (float)cfg.AudioLightbarSensitivity,
                     0f, 1f);
             long nowMs = Environment.TickCount64;
 
@@ -1245,7 +1267,7 @@ namespace PadForge.Common.Input
                     if (perDeviceCfgs != null
                         && perDeviceCfgs.TryGetValue(ud.InstanceGuid, out var resolved))
                         devCfg = resolved;
-                    devCfg ??= _config;
+                    devCfg ??= cfg;
                     if (devCfg == null) continue;
 
                     // Impulse-trigger → DualSense Adaptive Trigger Vibration

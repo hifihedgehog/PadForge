@@ -171,6 +171,17 @@ namespace PadForge.Views
                     vm.SelectedDevice = device;
                     if (vm.RemoveDeviceCommand.CanExecute(null))
                         vm.RemoveDeviceCommand.Execute(null);
+
+                    // A DualShock 3 lives on in the Bluetooth stack after its row is
+                    // removed (BthPS3 remembered-device record + link key), so it would
+                    // silently reconnect. "Forget" should mean forgotten: clear its
+                    // pairing too. Background thread - the clear cycles the radio.
+                    if (device.VendorId == PadForge.Services.Ds3PairingService.DS3_VID &&
+                        device.ProductId == PadForge.Services.Ds3PairingService.DS3_PID)
+                    {
+                        System.Threading.Tasks.Task.Run(
+                            () => new PadForge.Services.Ds3PairingService().UnpairAllDs3());
+                    }
                 }
             }
         }

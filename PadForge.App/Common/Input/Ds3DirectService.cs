@@ -320,13 +320,15 @@ namespace PadForge.Common.Input
             string path = FindWinUsbDs3();
             if (path == null)
             {
-                // Not WinUSB-bound. If a raw USB DS3 is plugged in, bind it once, then
-                // retry. Throttled so a repeated bind failure doesn't spin pnputil.
+                // Not WinUSB-bound. Bind it only if a USB DS3 is plugged in AND still on
+                // the inbox driver (no working function driver). If DsHidMini or anything
+                // else owns it, defer: don't fight over the device. Throttled so a repeated
+                // bind failure doesn't spin pnputil.
                 long now = Environment.TickCount64;
-                if (now - _lastUsbBindAttempt >= 15000 && PadForge.Services.Ds3DriverInstaller.IsRawUsbDs3Present())
+                if (now - _lastUsbBindAttempt >= 15000 && PadForge.Services.Ds3DriverInstaller.IsUsbDs3NeedingWinUsb())
                 {
                     _lastUsbBindAttempt = now;
-                    _log("DS3(USB): raw DS3 on USB, binding WinUSB...");
+                    _log("DS3(USB): unclaimed DS3 on USB, binding WinUSB...");
                     try { PadForge.Services.Ds3DriverInstaller.EnsureWinUsbBound(_log, default); } catch { }
                     path = FindWinUsbDs3();
                 }

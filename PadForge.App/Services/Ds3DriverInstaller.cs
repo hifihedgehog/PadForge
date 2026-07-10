@@ -121,12 +121,35 @@ namespace PadForge.Services
         // GUID_DEVCLASS_USB: the setup class every USB function device enumerates under.
         private static readonly Guid UsbDeviceClass = new Guid("36FC9E60-C465-11CF-8056-444553540000");
 
-        /// <summary>True if a raw USB DualShock 3 (VID_054C&amp;PID_0268) is present on USB,
-        /// whatever driver (or none) is bound. Lets the reader auto-bind WinUSB when a pad
-        /// is plugged in wired, without the user having run the pairing ceremony.</summary>
-        public static bool IsRawUsbDs3Present()
+        /// <summary>True only when a USB DualShock 3 (VID_054C&amp;PID_0268) is present AND
+        /// still on the inbox HID driver (or no driver), meaning it has no working function
+        /// driver and needs our WinUSB bind. Returns FALSE when it is already on WinUSB
+        /// (ours) or on a third-party function driver such as DsHidMini, so the automatic,
+        /// background bind DEFERS to an existing setup instead of ripping the device away
+        /// from it (no driver fight). A user who wants PadForge to take over an installed
+        /// DsHidMini can still do it explicitly through the pairing dialog, which
+        /// force-binds via <see cref="EnsureWinUsbBound"/>.</summary>
+        public static bool IsUsbDs3NeedingWinUsb()
         {
-            try { return Devcon.FindInDeviceClassByHardwareId(UsbDeviceClass, @"USB\VID_054C&PID_0268"); }
+            try
+            {
+                if (!Devcon.FindInDeviceClassByHardwareId(UsbDeviceClass, @"USB\VID_054C&PID_0268", out var ids))
+                    return false;
+                foreach (var id in ids)
+                {
+                    try
+                    {
+                        var dev = PnPDevice.GetDeviceByInstanceId(id, DeviceLocationFlags.Normal);
+                        string svc = dev.GetProperty<string>(DevicePropertyKey.Device_Service) ?? string.Empty;
+                        // Inbox HID driver or none = ours to bind. Anything else (WinUSB
+                        // already, DsHidMini, ScpToolkit, ...) owns it, so leave it alone.
+                        if (svc.Length == 0 || svc.Equals("HidUsb", StringComparison.OrdinalIgnoreCase))
+                            return true;
+                    }
+                    catch { }
+                }
+                return false;
+            }
             catch { return false; }
         }
 

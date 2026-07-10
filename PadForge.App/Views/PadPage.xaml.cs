@@ -2777,8 +2777,13 @@ namespace PadForge.Views
             if (DataContext is not PadViewModel vm) return;
             if (vm.OutputType != Engine.VirtualControllerType.Extended) return;
 
+            // Any assigned device qualifies, online or not: the clone reads the
+            // stored input inventory (persisted DeviceObjects, or capability
+            // counts as fallback), never live input, so an unplugged device
+            // clones with full fidelity. Unlike Map All, nothing here waits for
+            // the user to press anything.
             var sel = vm.SelectedMappedDevice;
-            if (sel == null || !sel.IsOnline)
+            if (sel == null || sel.InstanceGuid == Guid.Empty)
             {
                 await new Wpf.Ui.Controls.MessageBox
                 {

@@ -2286,7 +2286,7 @@
   <data name="Pad_ExtendedCloneDeviceTooltip" xml:space="preserve"><value>Mappa ogni asse, pulsante e pad direzionale del dispositivo selezionato direttamente sull'uscita virtuale con lo stesso numero. Adatta il layout al dispositivo e sostituisce le righe di questo dispositivo sullo slot con un passthrough 1:1.</value></data>
   <data name="Pad_ExtendedClone_Title" xml:space="preserve"><value>Clona dispositivo 1:1</value></data>
   <data name="Pad_ExtendedClone_Apply" xml:space="preserve"><value>Clona</value></data>
-  <data name="Pad_ExtendedClone_NoDevice" xml:space="preserve"><value>Seleziona un dispositivo connesso su questo slot da clonare.</value></data>
+  <data name="Pad_ExtendedClone_NoDevice" xml:space="preserve"><value>Seleziona un dispositivo su questo slot da clonare.</value></data>
   <data name="Pad_ExtendedClone_NoInputs" xml:space="preserve"><value>Il dispositivo selezionato non espone assi, pulsanti o pad direzionali da clonare.</value></data>
   <data name="Pad_ExtendedClone_Confirm_Format" xml:space="preserve"><value>Clonare {0} su questo slot come passthrough 1:1? Il layout diventa {1} assi, {2} pulsanti e {3} POV e le righe di questo dispositivo sullo slot vengono sostituite con i suoi input.</value></data>
   <data name="Pad_ExtendedClone_Overflow_Format" xml:space="preserve"><value>Questo dispositivo ha più input di quanti ne possa gestire un controller Extended. Mappati {0} di {1} assi, {2} di {3} pulsanti e {4} di {5} POV. I restanti sono rimasti non mappati.</value></data>

@@ -71,6 +71,11 @@ namespace PadForge.Engine.Common.Mapping
                              // CustomInputState.JoyCon2MouseDX/DY. Scaled to
                              // match a real mouse's motion axes (SdlMouseWrapper
                              // MotionScale) so both feel identical in the grid.
+            MouseGesture,    // "Mouse Gesture Left/Right/Up/Down/Click" (issue
+                             // #200). One-shot pulses from the hold-button-and-
+                             // flick recognizer, read through
+                             // MouseGestureFiredProvider like the touchpad
+                             // gesture family.
         }
 
         /// <summary>Sensitivity constant for gyro bipolar coercion.
@@ -567,6 +572,8 @@ namespace PadForge.Engine.Common.Mapping
                 return SourceType.MouseCursor;
             if (s.StartsWith("Mouse Motion ", StringComparison.Ordinal))
                 return SourceType.JoyCon2Mouse;
+            if (s.StartsWith("Mouse Gesture ", StringComparison.Ordinal))
+                return SourceType.MouseGesture;
             if (s.StartsWith("IR Pointer ", StringComparison.Ordinal))
                 return SourceType.IrPointer;
             if (s.Equals("IR Brightness", StringComparison.Ordinal))
@@ -672,6 +679,20 @@ namespace PadForge.Engine.Common.Mapping
                 && !parts[2].Equals("Finger", StringComparison.Ordinal);
         }
 
+        /// <summary>True for the mouse-gesture family
+        /// <c>"Mouse Gesture Left/Right/Up/Down/Click"</c> (issue #200).</summary>
+        public static bool IsMouseGestureDescriptor(string descriptor)
+            => !string.IsNullOrEmpty(descriptor)
+            && descriptor.StartsWith("Mouse Gesture ", StringComparison.Ordinal);
+
+        /// <summary>Extracts the gesture name from a mouse-gesture
+        /// descriptor ("Mouse Gesture Left" becomes "Left"). Empty when the
+        /// descriptor is not of the family.</summary>
+        public static string ParseMouseGestureName(string descriptor)
+            => IsMouseGestureDescriptor(descriptor)
+                ? descriptor.Substring("Mouse Gesture ".Length).Trim()
+                : "";
+
         /// <summary>Parses a touchpad-gesture descriptor into its pad
         /// index + gesture name. Returns true on success;
         /// <paramref name="padIdx"/> is the integer N from
@@ -706,6 +727,14 @@ namespace PadForge.Engine.Common.Mapping
         /// slot's mapping rows. Returns false when unwired (engine not
         /// running, no touchpad device).</summary>
         public static Func<int, string, int, string, bool> TouchpadGestureFiredProvider { get; set; }
+
+        /// <summary>Returns true if the named mouse gesture ("Left" /
+        /// "Right" / "Up" / "Down" / "Click") fired on the given
+        /// <c>(slotIndex, deviceGuid)</c> within the current cooldown
+        /// pulse (issue #200). Slot-keyed like the touchpad twin so each
+        /// slot's Mouse-tab settings govern only that slot's rows.
+        /// Returns false when unwired.</summary>
+        public static Func<int, string, string, bool> MouseGestureFiredProvider { get; set; }
 
         /// <summary>Returns the current value of a continuous gesture
         /// axis (<c>PinchAxis</c> / <c>RotateAxis</c>, plus the per-slot
@@ -1506,6 +1535,14 @@ namespace PadForge.Engine.Common.Mapping
             // (PinchAxis / RotateAxis) read as "fired" when their
             // magnitude exceeds the source's deadzone (engine-side
             // threshold semantics; one-shot variants ignore deadzone).
+            // Mouse-gesture pulses (issue #200): pure one-shot bools from
+            // the recognizer fired set, no axis variants.
+            if (IsMouseGestureDescriptor(s))
+            {
+                return MouseGestureFiredProvider?.Invoke(
+                    slotIndex, src.DeviceGuid ?? "", ParseMouseGestureName(s)) ?? false;
+            }
+
             if (IsTouchpadGestureDescriptor(s))
             {
                 if (!TryParseTouchpadGesture(s, out int gPad, out string gName)) return false;
@@ -1675,6 +1712,16 @@ namespace PadForge.Engine.Common.Mapping
             // RotateAxis) read their bipolar value from the gesture
             // engine's axis provider; one-shot gestures map to ±1
             // when fired (1 on the firing tick, 0 otherwise).
+            // Mouse-gesture pulse as an axis contribution (issue #200):
+            // 1 while the fired pulse is asserted, 0 otherwise, same as a
+            // one-shot touchpad gesture.
+            if (IsMouseGestureDescriptor(s))
+            {
+                bool mgFired = MouseGestureFiredProvider?.Invoke(
+                    slotIndex, src.DeviceGuid ?? "", ParseMouseGestureName(s)) ?? false;
+                return mgFired ? 1f : 0f;
+            }
+
             if (IsTouchpadGestureDescriptor(s))
             {
                 if (!TryParseTouchpadGesture(s, out int gPad, out string gName)) return 0f;
@@ -1810,6 +1857,14 @@ namespace PadForge.Engine.Common.Mapping
             // target driven by PinchAxis fires harder as the pinch
             // gets more extreme in either direction); one-shot fires
             // return 0/1.
+            // Mouse-gesture pulse, unipolar (issue #200): 0/1.
+            if (IsMouseGestureDescriptor(s))
+            {
+                bool mgFired = MouseGestureFiredProvider?.Invoke(
+                    slotIndex, src.DeviceGuid ?? "", ParseMouseGestureName(s)) ?? false;
+                return mgFired ? 1f : 0f;
+            }
+
             if (IsTouchpadGestureDescriptor(s))
             {
                 if (!TryParseTouchpadGesture(s, out int gPad, out string gName)) return 0f;

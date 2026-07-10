@@ -980,6 +980,24 @@ namespace PadForge
                         return;
                     }
 
+                    // Mouse-gesture fields (#200): same contract as the
+                    // touchpad branch above. PropertyChanged fires before the
+                    // setter's tail-call Sync, so Sync runs explicitly here,
+                    // then MarkDirty queues the autosave.
+                    bool isMouseGestureField = e.PropertyName is
+                        nameof(PadViewModel.MouseGesturesEnabled) or
+                        nameof(PadViewModel.MouseGestureButton) or
+                        nameof(PadViewModel.MouseGestureFlickThreshold) or
+                        nameof(PadViewModel.MouseGestureCooldownMs);
+
+                    if (isMouseGestureField)
+                    {
+                        _settingsService.MarkDirty();
+                        if (s is PadViewModel pvmMouse)
+                            pvmMouse.SyncMouseGestureSettingsToActiveDevice();
+                        return;
+                    }
+
                     // Scalar tuning fields — deadzones, sticks, triggers,
                     // FFB, audio rumble, constant force, gyro. Just mark
                     // dirty; the next autosave's UpdatePadSettingsFromViewModels

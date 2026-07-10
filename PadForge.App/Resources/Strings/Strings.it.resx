@@ -2304,4 +2304,24 @@
   <data name="Mapping_NunchukAccel" xml:space="preserve"><value>Accelerometro del Nunchuk</value></data>
   <data name="Mapping_LeftJoyConAccel" xml:space="preserve"><value>Accelerometro del Joy-Con sinistro</value></data>
   <data name="Mapping_AuxMotionAccel" xml:space="preserve"><value>Accelerometro di movimento ausiliario</value></data>
+  <data name="Pad_Mouse" xml:space="preserve"><value>Mouse</value></data>
+  <data name="Pad_MouseGestures_Header" xml:space="preserve"><value>Gesti del mouse</value></data>
+  <data name="Pad_MouseGestures_Desc" xml:space="preserve"><value>Tieni premuto il pulsante gesti, muovi il mouse e al rilascio scatta esattamente un'azione: sinistra, destra, su, giù o un semplice clic sotto la soglia di movimento. I cinque gesti si assegnano nella scheda Mappature o fungono da trigger per le macro.</value></data>
+  <data name="Pad_MouseGestures_Enabled" xml:space="preserve"><value>Abilita gesti del mouse</value></data>
+  <data name="Pad_MouseGestures_Enabled_Tooltip" xml:space="preserve"><value>Attiva il riconoscimento dei gesti per questo mouse su questo slot. Il pulsante gesti mantiene il clic normale durante il gesto, quindi scegli un pulsante laterale non mappato.</value></data>
+  <data name="Pad_MouseGestures_Button" xml:space="preserve"><value>Pulsante gesti</value></data>
+  <data name="Pad_MouseGestures_Button_Tooltip" xml:space="preserve"><value>Il pulsante del mouse che attiva il riconoscimento finché resta premuto.</value></data>
+  <data name="Pad_MouseGestures_FlickThreshold" xml:space="preserve"><value>Distanza del gesto (conteggi)</value></data>
+  <data name="Pad_MouseGestures_FlickThreshold_Tooltip" xml:space="preserve"><value>Movimento netto da raggiungere prima del rilascio per contare come direzione. Al di sotto, il rilascio attiva il gesto di clic.</value></data>
+  <data name="Pad_MouseGestures_Cooldown" xml:space="preserve"><value>Tempo di recupero</value></data>
+  <data name="Pad_ResetMouseGestures" xml:space="preserve"><value>Ripristina tutte le impostazioni dei gesti del mouse</value></data>
+  <data name="Pad_ResetMouseGesturesEnabled" xml:space="preserve"><value>Ripristina su disabilitato</value></data>
+  <data name="Pad_ResetMouseGestureButton" xml:space="preserve"><value>Ripristina su X1</value></data>
+  <data name="Pad_ResetMouseGestureFlickThreshold" xml:space="preserve"><value>Ripristina su 150 conteggi</value></data>
+  <data name="Pad_ResetMouseGestureCooldown" xml:space="preserve"><value>Ripristina su 100 ms</value></data>
+  <data name="Mapping_MouseGestureLeft" xml:space="preserve"><value>Gesto mouse: sinistra</value></data>
+  <data name="Mapping_MouseGestureRight" xml:space="preserve"><value>Gesto mouse: destra</value></data>
+  <data name="Mapping_MouseGestureUp" xml:space="preserve"><value>Gesto mouse: su</value></data>
+  <data name="Mapping_MouseGestureDown" xml:space="preserve"><value>Gesto mouse: giù</value></data>
+  <data name="Mapping_MouseGestureClick" xml:space="preserve"><value>Gesto mouse: clic</value></data>
 </root>

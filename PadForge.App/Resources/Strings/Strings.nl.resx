@@ -2302,4 +2302,24 @@
   <data name="Mapping_NunchukAccel" xml:space="preserve"><value>Nunchuk-versnellingsmeter</value></data>
   <data name="Mapping_LeftJoyConAccel" xml:space="preserve"><value>Versnellingsmeter linker Joy-Con</value></data>
   <data name="Mapping_AuxMotionAccel" xml:space="preserve"><value>Extra bewegingsversnellingsmeter</value></data>
+  <data name="Pad_Mouse" xml:space="preserve"><value>Muis</value></data>
+  <data name="Pad_MouseGestures_Header" xml:space="preserve"><value>Muisgebaren</value></data>
+  <data name="Pad_MouseGestures_Desc" xml:space="preserve"><value>Houd de gebaarknop vast, beweeg de muis, en bij het loslaten vuurt precies één actie: links, rechts, omhoog, omlaag, of een gewone klik onder de bewegingsdrempel. De vijf gebaren wijs je toe op het tabblad Toewijzingen of gebruik je als macrotriggers.</value></data>
+  <data name="Pad_MouseGestures_Enabled" xml:space="preserve"><value>Muisgebaren inschakelen</value></data>
+  <data name="Pad_MouseGestures_Enabled_Tooltip" xml:space="preserve"><value>Activeert de gebaarherkenning voor deze muis op dit slot. De gebaarknop behoudt zijn normale klik tijdens het gebaren, kies dus een zijknop die je verder niet toewijst.</value></data>
+  <data name="Pad_MouseGestures_Button" xml:space="preserve"><value>Gebaarknop</value></data>
+  <data name="Pad_MouseGestures_Button_Tooltip" xml:space="preserve"><value>De muisknop die de herkenning activeert zolang die ingedrukt blijft.</value></data>
+  <data name="Pad_MouseGestures_FlickThreshold" xml:space="preserve"><value>Beweegafstand (tellen)</value></data>
+  <data name="Pad_MouseGestures_FlickThreshold_Tooltip" xml:space="preserve"><value>Nettobeweging die vóór het loslaten bereikt moet zijn om als richting te tellen. Daaronder vuurt het loslaten het klikgebaar.</value></data>
+  <data name="Pad_MouseGestures_Cooldown" xml:space="preserve"><value>Afkoeltijd</value></data>
+  <data name="Pad_ResetMouseGestures" xml:space="preserve"><value>Alle muisgebaarinstellingen resetten</value></data>
+  <data name="Pad_ResetMouseGesturesEnabled" xml:space="preserve"><value>Resetten naar uitgeschakeld</value></data>
+  <data name="Pad_ResetMouseGestureButton" xml:space="preserve"><value>Resetten naar X1</value></data>
+  <data name="Pad_ResetMouseGestureFlickThreshold" xml:space="preserve"><value>Resetten naar 150 tellen</value></data>
+  <data name="Pad_ResetMouseGestureCooldown" xml:space="preserve"><value>Resetten naar 100 ms</value></data>
+  <data name="Mapping_MouseGestureLeft" xml:space="preserve"><value>Muisgebaar: links</value></data>
+  <data name="Mapping_MouseGestureRight" xml:space="preserve"><value>Muisgebaar: rechts</value></data>
+  <data name="Mapping_MouseGestureUp" xml:space="preserve"><value>Muisgebaar: omhoog</value></data>
+  <data name="Mapping_MouseGestureDown" xml:space="preserve"><value>Muisgebaar: omlaag</value></data>
+  <data name="Mapping_MouseGestureClick" xml:space="preserve"><value>Muisgebaar: klik</value></data>
 </root>

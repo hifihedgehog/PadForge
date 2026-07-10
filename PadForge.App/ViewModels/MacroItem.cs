@@ -840,6 +840,16 @@ namespace PadForge.ViewModels
                 return true;
             }
 
+            // Mouse gestures (issue #200): every family member is a one-shot
+            // bool in the recognizer's fired set, so the whole family rides
+            // GestureDescriptor. Evaluated by CheckGestureTrigger's mouse
+            // branch through SourceCoercion.MouseGestureFiredProvider.
+            if (d.StartsWith("Mouse Gesture ", StringComparison.Ordinal))
+            {
+                entry = new TriggerInputEntry { DeviceGuid = g, GestureDescriptor = d };
+                return true;
+            }
+
             return false;
         }
 

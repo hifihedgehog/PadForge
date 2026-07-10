@@ -280,6 +280,40 @@ namespace PadForge.ViewModels
         }
 
         // ────────────────────────────────────────────────
+        //  High-tone filter (#202)
+        // ────────────────────────────────────────────────
+        // The haptic-tone sinks (Steam family, Joy-Con) reduce everything
+        // they play — mirror audio, macro sounds, the Test button — to one
+        // (pitch, amplitude) pair per tick. These two fields filter that
+        // pair upstream of every family encoder, so both Steam Controller
+        // generations, the Deck, and the Joy-Cons behave identically. The
+        // Sony / Wii speaker mirrors play real audio, not tones, and are
+        // unaffected.
+
+        private string _audioToneFilterMode = "Off";
+        /// <summary>What happens to detected pitches above
+        /// <see cref="AudioToneLimitHz"/>: "Off" (default, everything
+        /// plays), "Cut" (silenced), or "Fold" (octave-halved into the
+        /// pass band, keeping the pitch class). Same string-mode
+        /// convention as <see cref="AudioMirrorEngageMode"/>.</summary>
+        public string AudioToneFilterMode
+        {
+            get => _audioToneFilterMode;
+            set => SetProperty(ref _audioToneFilterMode, string.IsNullOrEmpty(value) ? "Off" : value);
+        }
+
+        private int _audioToneLimitHz = 800;
+        /// <summary>Ceiling for Cut / Fold in Hz. The tone reducer detects
+        /// 40-1300 Hz; the UI offers 100-1300 and the consumer clamps.
+        /// 800 by default so engine and impact rumble keep their pitch
+        /// while beeps above it are folded or cut.</summary>
+        public int AudioToneLimitHz
+        {
+            get => _audioToneLimitHz;
+            set => SetProperty(ref _audioToneLimitHz, value);
+        }
+
+        // ────────────────────────────────────────────────
         //  Lightbar: macro-driven override (#63)
         // ────────────────────────────────────────────────
         // Transient runtime state set by MacroActionType.LightbarColor
@@ -1625,6 +1659,9 @@ namespace PadForge.ViewModels
         [XmlAttribute] public string AudioMirrorEngageDeviceGuid { get; set; } = string.Empty;
         [XmlAttribute] public string AudioMirrorEngageButton { get; set; } = string.Empty;
         [XmlAttribute] public int AudioMirrorEngageReleaseMs { get; set; } = 500;
+        // High-tone filter (#202). Defaults match the VM: Off / 800 Hz.
+        [XmlAttribute] public string AudioToneFilterMode { get; set; } = "Off";
+        [XmlAttribute] public int AudioToneLimitHz { get; set; } = 800;
         [XmlAttribute] public MicLedMode MicLedMode { get; set; } = MicLedMode.Off;
         [XmlAttribute] public string MicLedFollowDeviceId { get; set; } = string.Empty;
         [XmlAttribute] public PlayerLedMode PlayerLedMode { get; set; } = PlayerLedMode.Off;

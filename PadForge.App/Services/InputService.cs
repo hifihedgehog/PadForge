@@ -1132,6 +1132,29 @@ namespace PadForge.Services
                 return list;
             };
 
+            // Issue #202: per-(slot, device) high-tone filter for the
+            // haptic-tone sinks, same per-device configs. Mode ints match
+            // HapticToneService: 0 = Off, 1 = Cut, 2 = Fold. Each sink's
+            // stream thread re-reads its pair at ~4 Hz, so this stays
+            // allocation-light: one TryGetValue on the concurrent
+            // per-device dictionary, no LINQ.
+            PadForge.Common.Input.HapticToneService.ToneFilterProvider = (slotIndex, deviceGuid) =>
+            {
+                if (slotIndex >= 0 && slotIndex < _mainVm.Pads.Count
+                    && _mainVm.Pads[slotIndex].PerDeviceSlotConfigs.TryGetValue(deviceGuid, out var c)
+                    && c != null)
+                {
+                    int mode = c.AudioToneFilterMode switch
+                    {
+                        "Cut" => 1,
+                        "Fold" => 2,
+                        _ => 0,
+                    };
+                    return (mode, c.AudioToneLimitHz);
+                }
+                return (0, 800);
+            };
+
             // A persisted mirror toggle must resume on launch — the service
             // otherwise only starts when poked (toggle change, assignment
             // change, or a macro's sink lookup). One signal is enough: the

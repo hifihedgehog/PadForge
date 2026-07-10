@@ -1596,7 +1596,10 @@ namespace PadForge.Services
                 // #185: a configured engage gate keeps the config alive even
                 // while the passthrough toggle is momentarily off.
                 || (c.AudioMirrorEngageMode != null && c.AudioMirrorEngageMode != "Always")
-                || !string.IsNullOrEmpty(c.AudioMirrorEngageButton));
+                || !string.IsNullOrEmpty(c.AudioMirrorEngageButton)
+                // #202: same keep-alive rule. A chosen tone filter is a
+                // deliberate, copy-worthy configuration.
+                || (c.AudioToneFilterMode != null && c.AudioToneFilterMode != "Off"));
 
         /// <summary>VM-shape twin of <see cref="IsDeviceSlotConfigDataConfigured"/>,
         /// for the in-process Copy From path.</summary>
@@ -1611,7 +1614,8 @@ namespace PadForge.Services
                 || c.AudioLightbarEnabled
                 || !string.IsNullOrEmpty(c.AudioMirrorSourceId)
                 || c.AudioMirrorEngageMode != "Always"
-                || !string.IsNullOrEmpty(c.AudioMirrorEngageButton));
+                || !string.IsNullOrEmpty(c.AudioMirrorEngageButton)
+                || c.AudioToneFilterMode != "Off");
 
         public void ApplyDeviceSlotConfigsToSlot(int slotIndex,
             ViewModels.DeviceSlotConfigData[] configs)
@@ -1885,6 +1889,8 @@ namespace PadForge.Services
                     cfg.AudioMirrorEngageDeviceGuid = cfgData.AudioMirrorEngageDeviceGuid ?? string.Empty;
                     cfg.AudioMirrorEngageButton = cfgData.AudioMirrorEngageButton ?? string.Empty;
                     cfg.AudioMirrorEngageReleaseMs = cfgData.AudioMirrorEngageReleaseMs;
+                    cfg.AudioToneFilterMode = cfgData.AudioToneFilterMode ?? "Off";
+                    cfg.AudioToneLimitHz = cfgData.AudioToneLimitHz;
                     // Migrate legacy MicLightOn to the new MicLedMode if
                     // the new field hasn't been set explicitly.
                     if (cfgData.MicLedMode != ViewModels.MicLedMode.Off)
@@ -3180,6 +3186,8 @@ namespace PadForge.Services
                 AudioMirrorEngageDeviceGuid = cfg.AudioMirrorEngageDeviceGuid ?? string.Empty,
                 AudioMirrorEngageButton = cfg.AudioMirrorEngageButton ?? string.Empty,
                 AudioMirrorEngageReleaseMs = cfg.AudioMirrorEngageReleaseMs,
+                AudioToneFilterMode = cfg.AudioToneFilterMode ?? "Off",
+                AudioToneLimitHz = cfg.AudioToneLimitHz,
                 MicLedMode = cfg.MicLedMode,
                 MicLedFollowDeviceId = cfg.MicLedFollowDeviceId ?? string.Empty,
                 MicLightOn = cfg.MicLightOn,

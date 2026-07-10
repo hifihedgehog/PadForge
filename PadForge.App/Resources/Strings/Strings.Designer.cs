@@ -1683,6 +1683,15 @@ public class Strings : INotifyPropertyChanged
     public string Pad_Audio_EngageInput_Label => Get("Pad_Audio_EngageInput_Label");
     public string Pad_Audio_EngageRelease_Label => Get("Pad_Audio_EngageRelease_Label");
     public string Pad_Audio_EngageRelease_Tooltip => Get("Pad_Audio_EngageRelease_Tooltip");
+    public string Pad_Audio_ToneFilter_Label => Get("Pad_Audio_ToneFilter_Label");
+    public string Pad_Audio_ToneFilter_Tooltip => Get("Pad_Audio_ToneFilter_Tooltip");
+    public string Pad_Audio_ToneFilter_Off => Get("Pad_Audio_ToneFilter_Off");
+    public string Pad_Audio_ToneFilter_Cut => Get("Pad_Audio_ToneFilter_Cut");
+    public string Pad_Audio_ToneFilter_Fold => Get("Pad_Audio_ToneFilter_Fold");
+    public string Pad_Audio_ToneLimit_Label => Get("Pad_Audio_ToneLimit_Label");
+    public string Pad_Audio_ToneLimit_Tooltip => Get("Pad_Audio_ToneLimit_Tooltip");
+    public string Pad_ResetToneFilterMode => Get("Pad_ResetToneFilterMode");
+    public string Pad_ResetToneLimit => Get("Pad_ResetToneLimit");
     public string Pad_ResetMirrorEngageMode => Get("Pad_ResetMirrorEngageMode");
     public string Pad_ResetMirrorSource => Get("Pad_ResetMirrorSource");
     public string Pad_ResetMirrorEngageInput => Get("Pad_ResetMirrorEngageInput");

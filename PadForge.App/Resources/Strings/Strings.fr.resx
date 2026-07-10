@@ -1887,13 +1887,22 @@
   <data name="Pad_Audio_EngageInput_Label" xml:space="preserve"><value>Entrée d'activation</value></data>
   <data name="Pad_Audio_EngageRelease_Label" xml:space="preserve"><value>Délai de relâchement</value></data>
   <data name="Pad_Audio_EngageRelease_Tooltip" xml:space="preserve"><value>Durée pendant laquelle le miroir continue après la fin de la source d'activation, pour que la tonalité ne se coupe pas net.</value></data>
+  <data name="Pad_Audio_ToneFilter_Label" xml:space="preserve"><value>Sons aigus</value></data>
+  <data name="Pad_Audio_ToneFilter_Tooltip" xml:space="preserve"><value>Ce qui arrive aux sons au-dessus de la limite. Les bips aigus peuvent être coupés, ou repliés d'une octave à la fois pour garder leur caractère dans un registre plus grave. Le repli est recommandé. S'applique à l'audio dupliqué, aux sons de macro et au son de test.</value></data>
+  <data name="Pad_Audio_ToneFilter_Off" xml:space="preserve"><value>Désactivé</value></data>
+  <data name="Pad_Audio_ToneFilter_Cut" xml:space="preserve"><value>Les couper</value></data>
+  <data name="Pad_Audio_ToneFilter_Fold" xml:space="preserve"><value>Les replier d'une octave</value></data>
+  <data name="Pad_Audio_ToneLimit_Label" xml:space="preserve"><value>Limite de tonalité</value></data>
+  <data name="Pad_Audio_ToneLimit_Tooltip" xml:space="preserve"><value>Les sons au-dessus de cette fréquence sont coupés ou repliés. La valeur par défaut de 800 Hz préserve les vibrations moteur et d'impact tout en capturant les bips aigus.</value></data>
+  <data name="Pad_ResetToneFilterMode" xml:space="preserve"><value>Réinitialiser les sons aigus</value></data>
+  <data name="Pad_ResetToneLimit" xml:space="preserve"><value>Réinitialiser la limite de tonalité</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>Copie en parallèle ce que joue la sortie par défaut du système sur le haut-parleur intégré de cette manette. Fonctionne en USB et en Bluetooth.</value></data>
   <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>Le périphérique sélectionné n’a pas de haut-parleur intégré. Les sons de macro de cette manette jouent sur la sortie par défaut.</value></data>
   <data name="About_QDollar" xml:space="preserve"><value>$Q Recognizer</value></data>
   <data name="About_QDollarDesc" xml:space="preserve"><value>Comparateur de gabarits de formes pour le pavé tactile (cercle / carré / triangle / Z / coche et gestes enregistrés personnalisés). Redérivation en C# de la référence JavaScript de Magrofuoco, Vatavu, Anthony et Wobbrock. BSD 3-Clause.</value></data>
   <data name="About_GestureSign" xml:space="preserve"><value>GestureSign</value></data>
   <data name="About_GestureSignDesc" xml:space="preserve"><value>Notation par marge angulaire qui fonctionne aux côtés du comparateur de nuage de points sur les formes à un doigt. Adapté du PointPatternAnalyzer de GestureSign. BSD 3-Clause.</value></data>
-  <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>Réinitialiser le miroir, la source du miroir et le volume principal aux valeurs par défaut</value></data>
+  <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>Réinitialiser tous les réglages de sortie audio de cet appareil</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_DsTesterDesc" xml:space="preserve"><value>Suite de tests DualSense dans le navigateur par Xuezhou Dai (daidr) : référence pour le framing CRC des rapports feature de Sony et les commandes de test du firmware que PadForge relaie de la manette virtuelle à la physique. MIT.</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>

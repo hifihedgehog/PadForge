@@ -1887,13 +1887,22 @@
   <data name="Pad_Audio_EngageInput_Label" xml:space="preserve"><value>활성화 입력</value></data>
   <data name="Pad_Audio_EngageRelease_Label" xml:space="preserve"><value>해제 지연</value></data>
   <data name="Pad_Audio_EngageRelease_Tooltip" xml:space="preserve"><value>활성화 소스가 끊긴 뒤에도 미러 재생을 유지하는 시간입니다. 톤이 갑자기 끊기지 않습니다.</value></data>
+  <data name="Pad_Audio_ToneFilter_Label" xml:space="preserve"><value>고음</value></data>
+  <data name="Pad_Audio_ToneFilter_Tooltip" xml:space="preserve"><value>한도를 넘는 음을 어떻게 처리할지 설정합니다. 날카로운 비프음을 잘라내거나 한 옥타브씩 아래로 접어 낮은 음높이로 유지할 수 있습니다. 접기를 권장합니다. 미러 오디오, 매크로 사운드, 테스트 톤에 적용됩니다.</value></data>
+  <data name="Pad_Audio_ToneFilter_Off" xml:space="preserve"><value>끄기</value></data>
+  <data name="Pad_Audio_ToneFilter_Cut" xml:space="preserve"><value>잘라내기</value></data>
+  <data name="Pad_Audio_ToneFilter_Fold" xml:space="preserve"><value>한 옥타브씩 아래로 접기</value></data>
+  <data name="Pad_Audio_ToneLimit_Label" xml:space="preserve"><value>톤 한도</value></data>
+  <data name="Pad_Audio_ToneLimit_Tooltip" xml:space="preserve"><value>이 주파수를 넘는 음은 잘리거나 접힙니다. 기본값 800 Hz는 엔진과 타격 진동을 유지하면서 날카로운 비프음만 잡아냅니다.</value></data>
+  <data name="Pad_ResetToneFilterMode" xml:space="preserve"><value>고음 재설정</value></data>
+  <data name="Pad_ResetToneLimit" xml:space="preserve"><value>톤 한도 재설정</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>시스템 기본 출력에서 재생 중인 소리를 이 컨트롤러의 내장 스피커로도 동시에 출력합니다. USB와 Bluetooth 모두 지원합니다.</value></data>
   <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>선택한 장치에는 내장 스피커가 없습니다. 이 패드의 매크로 사운드는 시스템 기본 출력으로 재생됩니다.</value></data>
   <data name="About_QDollar" xml:space="preserve"><value>$Q Recognizer</value></data>
   <data name="About_QDollarDesc" xml:space="preserve"><value>터치패드 도형 템플릿 매처(원 / 사각형 / 삼각형 / Z / 체크 표시 및 직접 기록한 제스처). Magrofuoco, Vatavu, Anthony, Wobbrock의 JavaScript 레퍼런스를 C#으로 재구현. BSD 3-Clause.</value></data>
   <data name="About_GestureSign" xml:space="preserve"><value>GestureSign</value></data>
   <data name="About_GestureSignDesc" xml:space="preserve"><value>한 손가락 도형에서 포인트 클라우드 매처와 함께 동작하는 각도 마진 점수 방식. GestureSign의 PointPatternAnalyzer에서 가져옴. BSD 3-Clause.</value></data>
-  <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>미러, 미러 소스, 마스터 볼륨을 기본값으로 재설정</value></data>
+  <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>이 장치의 사운드 출력 설정을 모두 재설정</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_DsTesterDesc" xml:space="preserve"><value>Xuezhou Dai(daidr)의 브라우저 DualSense 테스트 도구. Sony 기능 보고서 CRC 프레이밍과 PadForge가 가상 패드에서 실제 패드로 전달하는 펌웨어 테스트 명령의 참조. MIT.</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>

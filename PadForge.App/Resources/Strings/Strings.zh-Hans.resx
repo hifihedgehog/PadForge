@@ -1875,6 +1875,15 @@
   <data name="Pad_Audio_EngageInput_Label" xml:space="preserve"><value>触发输入</value></data>
   <data name="Pad_Audio_EngageRelease_Label" xml:space="preserve"><value>释放延迟</value></data>
   <data name="Pad_Audio_EngageRelease_Tooltip" xml:space="preserve"><value>触发源消失后镜像继续播放的时长，避免音调突然中断。</value></data>
+  <data name="Pad_Audio_ToneFilter_Label" xml:space="preserve"><value>高音</value></data>
+  <data name="Pad_Audio_ToneFilter_Tooltip" xml:space="preserve"><value>设置超过上限的音调如何处理。刺耳的蜂鸣音可以直接切除，或按八度逐级下折，在较低音高上保留其特征。推荐使用下折。适用于镜像音频、宏音效和测试音。</value></data>
+  <data name="Pad_Audio_ToneFilter_Off" xml:space="preserve"><value>关闭</value></data>
+  <data name="Pad_Audio_ToneFilter_Cut" xml:space="preserve"><value>切除</value></data>
+  <data name="Pad_Audio_ToneFilter_Fold" xml:space="preserve"><value>按八度下折</value></data>
+  <data name="Pad_Audio_ToneLimit_Label" xml:space="preserve"><value>音调上限</value></data>
+  <data name="Pad_Audio_ToneLimit_Tooltip" xml:space="preserve"><value>超过此频率的音调将被切除或下折。默认 800 Hz 可保留引擎与冲击震动，只捕捉刺耳的蜂鸣音。</value></data>
+  <data name="Pad_ResetToneFilterMode" xml:space="preserve"><value>重置高音</value></data>
+  <data name="Pad_ResetToneLimit" xml:space="preserve"><value>重置音调上限</value></data>
   <data name="Pad_Audio_MirrorSource_Label" xml:space="preserve"><value>镜像来源</value></data>
   <data name="Pad_Audio_MirrorSource_Tooltip" xml:space="preserve"><value>选择镜像到手柄扬声器的播放设备。将特定声音发送到单独播放设备的游戏可以指向该设备。</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>将系统默认输出播放的内容并行复制到此手柄的内置扬声器。USB 和蓝牙均可用。</value></data>
@@ -1893,7 +1902,7 @@
   <data name="Pad_Audio_SystemDefault" xml:space="preserve"><value>系统默认</value></data>
   <data name="Pad_Audio_Test" xml:space="preserve"><value>测试</value></data>
   <data name="Pad_Audio_Test_Tooltip" xml:space="preserve"><value>在所选输出设备上播放短促提示音</value></data>
-  <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>将镜像、镜像来源和主音量重置为默认值</value></data>
+  <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>重置此设备的所有声音输出设置</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_DsTesterDesc" xml:space="preserve"><value>Xuezhou Dai（daidr）开发的浏览器版 DualSense 测试套件。Sony 功能报告 CRC 帧格式以及 PadForge 从虚拟手柄转发到实体手柄的固件测试命令的参考。MIT。</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>

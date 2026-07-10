@@ -1887,13 +1887,22 @@
   <data name="Pad_Audio_EngageInput_Label" xml:space="preserve"><value>Entrada de ativação</value></data>
   <data name="Pad_Audio_EngageRelease_Label" xml:space="preserve"><value>Atraso de liberação</value></data>
   <data name="Pad_Audio_EngageRelease_Tooltip" xml:space="preserve"><value>Por quanto tempo o espelho continua tocando depois que a fonte de ativação cessa, para o tom não cortar de repente.</value></data>
+  <data name="Pad_Audio_ToneFilter_Label" xml:space="preserve"><value>Tons agudos</value></data>
+  <data name="Pad_Audio_ToneFilter_Tooltip" xml:space="preserve"><value>O que acontece com os tons acima do limite. Bipes agudos podem ser cortados ou dobrados uma oitava para baixo por vez, mantendo o caráter em um tom mais grave. Dobrar é o recomendado. Vale para o áudio espelhado, sons de macro e o tom de teste.</value></data>
+  <data name="Pad_Audio_ToneFilter_Off" xml:space="preserve"><value>Desativado</value></data>
+  <data name="Pad_Audio_ToneFilter_Cut" xml:space="preserve"><value>Cortá-los</value></data>
+  <data name="Pad_Audio_ToneFilter_Fold" xml:space="preserve"><value>Dobrá-los uma oitava para baixo</value></data>
+  <data name="Pad_Audio_ToneLimit_Label" xml:space="preserve"><value>Limite de tom</value></data>
+  <data name="Pad_Audio_ToneLimit_Tooltip" xml:space="preserve"><value>Tons acima desta frequência são cortados ou dobrados. O padrão de 800 Hz preserva a vibração de motor e impactos e captura os bipes agudos.</value></data>
+  <data name="Pad_ResetToneFilterMode" xml:space="preserve"><value>Restaurar Tons Agudos</value></data>
+  <data name="Pad_ResetToneLimit" xml:space="preserve"><value>Restaurar Limite de Tom</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>Copia em paralelo o que a saída padrão do sistema reproduz para o alto-falante integrado deste controle. Funciona por USB e Bluetooth.</value></data>
   <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>O dispositivo selecionado não tem alto-falante integrado. Os sons de macro deste controle tocam na saída padrão.</value></data>
   <data name="About_QDollar" xml:space="preserve"><value>$Q Recognizer</value></data>
   <data name="About_QDollarDesc" xml:space="preserve"><value>Comparador de modelos de formas para o touchpad (círculo / quadrado / triângulo / Z / marca de seleção e gestos gravados personalizados). Rederivação em C# da referência JavaScript de Magrofuoco, Vatavu, Anthony e Wobbrock. BSD 3-Clause.</value></data>
   <data name="About_GestureSign" xml:space="preserve"><value>GestureSign</value></data>
   <data name="About_GestureSignDesc" xml:space="preserve"><value>Pontuação por margem angular que roda ao lado do comparador de nuvem de pontos em formas de um dedo. Adaptado do PointPatternAnalyzer do GestureSign. BSD 3-Clause.</value></data>
-  <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>Redefinir espelho, fonte do espelho e volume mestre para os padrões</value></data>
+  <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>Restaurar todas as configurações de saída de som deste dispositivo</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_DsTesterDesc" xml:space="preserve"><value>Suíte de testes do DualSense no navegador por Xuezhou Dai (daidr): referência para o framing CRC dos feature reports da Sony e os comandos de teste do firmware que o PadForge encaminha do controle virtual ao físico. MIT.</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>

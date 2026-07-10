@@ -2962,13 +2962,55 @@ namespace PadForge.ViewModels
         // ── Text Block (for MacroActionType.TextBlock, issue #201) ──
 
         private string _textContent = "";
-        /// <summary>The plain text a TextBlock action types out. Any text is valid;
-        /// there is no token grammar (Key Press owns combos). Newlines press Enter,
-        /// tabs press Tab.</summary>
+        /// <summary>The plain text a TextBlock action types out. There is no token
+        /// grammar (Key Press owns combos). Newlines press Enter, tabs press Tab.
+        /// The setter normalizes line endings to LF and strips the control
+        /// characters the settings XML cannot carry, so the stored value
+        /// round-trips byte-identically on every persistence leg.</summary>
         public string TextContent
         {
             get => _textContent;
-            set { if (SetProperty(ref _textContent, value ?? "")) OnPropertyChanged(nameof(DisplayText)); }
+            set { if (SetProperty(ref _textContent, SanitizeTextContent(value))) OnPropertyChanged(nameof(DisplayText)); }
+        }
+
+        /// <summary>Normalizes a Text Block's content for storage: CRLF and lone CR
+        /// become LF, and C0 control characters other than tab and LF are stripped.
+        /// Two forcing facts, both verified against XmlSerializer: a C0 character
+        /// (e.g. ESC pasted from ANSI-colored terminal text) makes the WHOLE
+        /// settings save throw on every autosave until removed, and a CR survives
+        /// the save but the XML parser normalizes it to LF on load, so persisting
+        /// CR would leave the XML and clipboard-JSON legs byte-divergent. The
+        /// emitter treats \n, \r, and \r\n as one Enter each, so normalizing here
+        /// changes no typed output and keeps per-character pacing one-slot-per-Enter.</summary>
+        internal static string SanitizeTextContent(string value)
+        {
+            if (string.IsNullOrEmpty(value)) return value ?? "";
+            bool dirty = false;
+            foreach (char c in value)
+            {
+                if (c < ' ' && c != '\t' && c != '\n') { dirty = true; break; }
+            }
+            if (!dirty) return value;
+
+            var sb = new System.Text.StringBuilder(value.Length);
+            for (int i = 0; i < value.Length; i++)
+            {
+                char c = value[i];
+                if (c == '\r')
+                {
+                    if (i + 1 < value.Length && value[i + 1] == '\n') continue; // CRLF folds to the LF
+                    sb.Append('\n'); // lone CR (classic Mac text) keeps its line break
+                }
+                else if (c < ' ' && c != '\t' && c != '\n')
+                {
+                    // C0 control character the XML infoset forbids: drop it.
+                }
+                else
+                {
+                    sb.Append(c);
+                }
+            }
+            return sb.ToString();
         }
 
         private int _textPerCharDelayMs;
@@ -3796,6 +3838,10 @@ namespace PadForge.ViewModels
         UntilRelease
     }
 
+    // APPEND-ONLY: the macro clipboard leg (SettingsService.SerializeMacrosToClipboard)
+    // writes this enum NUMERICALLY via System.Text.Json defaults, so inserting a member
+    // re-meanings every previously copied clipboard payload. The settings XML writes
+    // names and is insertion-safe; the clipboard is not. New members go at the end.
     public enum MacroActionType
     {
         /// <summary>Press controller button(s) for a duration.</summary>

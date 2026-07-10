@@ -2577,8 +2577,16 @@ namespace PadForge.Common.Input
                 else AppendUnicodePair(inputs, c);
             }
 
-            if (inputs.Count > 0)
-                SendInput((uint)inputs.Count, inputs.ToArray(), Marshal.SizeOf<INPUT>());
+            // Chunk oversized batches. AutoHotkey (the reference for this
+            // mechanism) caps its SendInput arrays because giant batches drop
+            // tail keystrokes; 4096 events (2048 characters) per call stays far
+            // under that scale while normal texts still go out in one call.
+            const int maxInputsPerSend = 4096;
+            for (int off = 0; off < inputs.Count; off += maxInputsPerSend)
+            {
+                int n = Math.Min(maxInputsPerSend, inputs.Count - off);
+                SendInput((uint)n, inputs.GetRange(off, n).ToArray(), Marshal.SizeOf<INPUT>());
+            }
         }
 
         private static void AppendUnicodePair(List<INPUT> inputs, char codeUnit)

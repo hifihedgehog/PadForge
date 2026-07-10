@@ -417,14 +417,14 @@ namespace PadForge.Services
             // Per-guid capability lookup. Devices not currently known
             // (offline / never enumerated) report no caps and get no row;
             // they'll be backfilled on the next load after they appear.
-            (bool HasGyro, bool HasAccel) Caps(Guid guid)
+            (bool HasGyro, bool HasAccel, bool HasAccelAux) Caps(Guid guid)
             {
                 foreach (var ud in devSnapshot)
                 {
                     if (ud != null && ud.InstanceGuid == guid)
-                        return (ud.HasGyro, ud.HasAccel);
+                        return (ud.HasGyro, ud.HasAccel, ud.HasAccelAux);
                 }
-                return (false, false);
+                return (false, false, false);
             }
 
             for (int slot = 0; slot < sets.Length && slot < _mainVm.Pads.Count; slot++)
@@ -459,6 +459,13 @@ namespace PadForge.Services
                     var caps = Caps(us.InstanceGuid);
                     string newGyro  = (isSony && caps.HasGyro)  ? MappingSetMigrator.MotionGyroSourceDescriptor  : "";
                     string newAccel = (isSony && caps.HasAccel) ? MappingSetMigrator.MotionAccelSourceDescriptor : "";
+                    // A user-picked aux source ("Motion Accel L", the Nunchuk /
+                    // left Joy-Con, #199 follow-up) survives the recompute: the
+                    // mirror only snaps between default-present and absent, and
+                    // the authoritative MappingSet row already carries the pick.
+                    if (isSony && caps.HasAccelAux
+                        && MappingSetMigrator.IsMotionAccelAuxDescriptor(ps.MotionAccel))
+                        newAccel = MappingSetMigrator.MotionAccelAuxSourceDescriptor;
                     if (ps.MotionGyro != newGyro || ps.MotionAccel != newAccel)
                     {
                         ps.MotionGyro = newGyro;

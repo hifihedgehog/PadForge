@@ -1610,6 +1610,9 @@ public class Strings : INotifyPropertyChanged
     public string Mapping_NunchukLean => Get("Mapping_NunchukLean");
     public string Mapping_LeftJoyConLean => Get("Mapping_LeftJoyConLean");
     public string Mapping_AuxMotionLean => Get("Mapping_AuxMotionLean");
+    public string Mapping_NunchukAccel => Get("Mapping_NunchukAccel");
+    public string Mapping_LeftJoyConAccel => Get("Mapping_LeftJoyConAccel");
+    public string Mapping_AuxMotionAccel => Get("Mapping_AuxMotionAccel");
     public string Devices_AccelAux => Get("Devices_AccelAux");
     public string Pad_Audio => Get("Pad_Audio");
     public string Pad_Pointer => Get("Pad_Pointer");

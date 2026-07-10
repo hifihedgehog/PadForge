@@ -1991,11 +1991,18 @@ namespace PadForge.Common.Input
                 if (accelSrc.Ud != null)
                 {
                     var s = accelSrc.Ud.InputState;
-                    if (s.Accel != null && s.Accel.Length >= 3)
+                    // "Motion Accel L" sources the slot's single IMU stream
+                    // from the aux (Nunchuk / left Joy-Con) accelerometer
+                    // instead of the body's (#199 follow-up). Same scaling
+                    // and invert semantics either way.
+                    var accel = (accelSrc.Src != null
+                        && MappingSetMigrator.IsMotionAccelAuxDescriptor(accelSrc.Src.Descriptor))
+                        ? s.AccelAux : s.Accel;
+                    if (accel != null && accel.Length >= 3)
                     {
-                        ax = s.Accel[0] * MsToG;
-                        ay = s.Accel[1] * MsToG;
-                        az = s.Accel[2] * MsToG;
+                        ax = accel[0] * MsToG;
+                        ay = accel[1] * MsToG;
+                        az = accel[2] * MsToG;
                         if (accelSrc.Src != null && accelSrc.Src.Invert)
                         {
                             ax = -ax; ay = -ay; az = -az;
@@ -2075,7 +2082,12 @@ namespace PadForge.Common.Input
                     var ud = FindOnlineDeviceByInstanceGuid(guid);
                     if (ud == null || !ud.IsOnline || ud.Device == null) continue;
                     if (ud.InputState == null) continue;
-                    if (requireGyro ? !ud.Device.HasGyro : !ud.Device.HasAccel) continue;
+                    // "Motion Accel L" needs the aux (Nunchuk / left Joy-Con)
+                    // sensor, not the body accelerometer (#199 follow-up).
+                    bool wantsAux = !requireGyro
+                        && MappingSetMigrator.IsMotionAccelAuxDescriptor(src.Descriptor);
+                    if (requireGyro ? !ud.Device.HasGyro
+                        : (wantsAux ? !ud.Device.HasAccelAux : !ud.Device.HasAccel)) continue;
                     return (ud, src);
                 }
             }

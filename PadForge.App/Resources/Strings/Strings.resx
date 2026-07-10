@@ -1387,6 +1387,9 @@
   <data name="Mapping_NunchukLean" xml:space="preserve"><value>Nunchuk Lean</value></data>
   <data name="Mapping_LeftJoyConLean" xml:space="preserve"><value>Left Joy-Con Lean</value></data>
   <data name="Mapping_AuxMotionLean" xml:space="preserve"><value>Aux Motion Lean</value></data>
+  <data name="Mapping_NunchukAccel" xml:space="preserve"><value>Nunchuk Accelerometer</value></data>
+  <data name="Mapping_LeftJoyConAccel" xml:space="preserve"><value>Left Joy-Con Accelerometer</value></data>
+  <data name="Mapping_AuxMotionAccel" xml:space="preserve"><value>Aux Motion Accelerometer</value></data>
   <data name="Devices_AccelAux" xml:space="preserve"><value>Aux Accelerometer</value></data>
   <data name="Mapping_GyroPitch" xml:space="preserve"><value>Gyro Pitch</value></data>
   <data name="Mapping_GyroYaw" xml:space="preserve"><value>Gyro Yaw</value></data>

@@ -2279,4 +2279,7 @@
   <data name="Mapping_LeftJoyConLean" xml:space="preserve"><value>왼쪽 Joy-Con 기울임</value></data>
   <data name="Mapping_AuxMotionLean" xml:space="preserve"><value>보조 모션 기울임</value></data>
   <data name="Devices_AccelAux" xml:space="preserve"><value>보조 가속도계</value></data>
+  <data name="Mapping_NunchukAccel" xml:space="preserve"><value>눈차크 가속도계</value></data>
+  <data name="Mapping_LeftJoyConAccel" xml:space="preserve"><value>왼쪽 Joy-Con 가속도계</value></data>
+  <data name="Mapping_AuxMotionAccel" xml:space="preserve"><value>보조 모션 가속도계</value></data>
 </root>

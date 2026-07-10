@@ -2279,4 +2279,7 @@
   <data name="Mapping_LeftJoyConLean" xml:space="preserve"><value>Inclinaison du Joy-Con gauche</value></data>
   <data name="Mapping_AuxMotionLean" xml:space="preserve"><value>Inclinaison de mouvement auxiliaire</value></data>
   <data name="Devices_AccelAux" xml:space="preserve"><value>Accéléromètre auxiliaire</value></data>
+  <data name="Mapping_NunchukAccel" xml:space="preserve"><value>Accéléromètre du Nunchuk</value></data>
+  <data name="Mapping_LeftJoyConAccel" xml:space="preserve"><value>Accéléromètre du Joy-Con gauche</value></data>
+  <data name="Mapping_AuxMotionAccel" xml:space="preserve"><value>Accéléromètre de mouvement auxiliaire</value></data>
 </root>

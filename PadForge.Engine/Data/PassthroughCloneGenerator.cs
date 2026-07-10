@@ -12,8 +12,9 @@ namespace PadForge.Engine.Data
     /// <para>The descriptor strings match what the mapping picker stores for the
     /// same inputs (<c>MappingDisplayResolver.BuildInputChoices</c>): axes as
     /// <c>"Axis N"</c>, sliders as <c>"Slider N"</c>, buttons as <c>"Button N"</c>,
-    /// hats as <c>"POV N Up/Down/Left/Right"</c>. Enumeration order mirrors that
-    /// method exactly (axes, then sliders, then buttons, then hats), so the
+    /// hats as <c>"POV N Up/Down/Left/Right"</c>. Input classes enumerate in the
+    /// picker's order (axes, then sliders, then buttons, then hats) and each
+    /// hat fans out to the picker's four direction descriptors, so the
     /// generated rows are the same rows a user would author by hand, one at a
     /// time.</para>
     ///
@@ -66,6 +67,11 @@ namespace PadForge.Engine.Data
             public int Triggers { get; set; }
             public int Povs { get; set; }
             public int Buttons { get; set; }
+
+            /// <summary>Axis slots the applied layout actually exposes. Each
+            /// stick carries two axes, so an odd-axis device gets one more
+            /// layout slot than it fills (the tail slot stays unmapped).</summary>
+            public int LayoutAxes => Sticks * 2 + Triggers;
 
             // Identity rows (target ← descriptor).
             public List<CloneRow> Rows { get; } = new List<CloneRow>();
@@ -169,9 +175,14 @@ namespace PadForge.Engine.Data
                 return;
             }
 
-            // Fallback: no enumerated objects (offline device). Cap counts drive a
-            // dense enumeration. Slider vs axis can't be told apart here, so every
-            // axis is an "Axis N".
+            // Fallback: no enumerated objects (an offline device, or a device
+            // class that never populates DeviceObjects). Cap counts drive a dense
+            // enumeration. Slider vs axis can't be told apart here, so every axis
+            // is an "Axis N". Known divergence from the picker: sparse-button
+            // devices (TouchpadOverlayDevice, touchpad-only web clients) surface
+            // only their live SupportedButtonIndices in the picker but enumerate
+            // densely here; those are touchpad feeder devices with no Extended
+            // passthrough use, so the dense fallback stands.
             for (int i = 0; i < ud.CapAxeCount; i++)
                 axisDescriptors.Add($"Axis {i}");
             int btnCount = Math.Max(ud.CapButtonCount, ud.RawButtonCount);

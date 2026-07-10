@@ -49,6 +49,11 @@ namespace PadForge.Common.Input
         // Minimum interval between Bluetooth output packets (DsHidMini's proven default).
         private const int OUTPUT_MIN_INTERVAL_MS = 150;
 
+        // Resend the output report at least this often while streaming so the DS3 keeps
+        // rumble alive (ScpToolkit resends the whole report every 500 ms, BthDs3.cs:158).
+        // 500 ms is under the ~1 s motor cutout and well above the 150 ms floor.
+        private const int RUMBLE_KEEPALIVE_MS = 500;
+
         private readonly Action<string> _log;
         private Thread _readThread;
         private Thread _writeThread;
@@ -141,6 +146,17 @@ namespace PadForge.Common.Input
         /// this service is driving. Wired into SdlDeviceWrapper.ExternalPowerInfoProvider.</summary>
         public static (int Percent, bool Charging)? GetPowerInfo(uint instanceId)
             => PowerByInstance.TryGetValue(instanceId, out var p) ? p : null;
+
+        /// <summary>Set the player LED for a relayed player-index frame (#191 over Remote
+        /// Link), but only when this instance id is the DS3 this service is driving.
+        /// SetPlayerNumber is change-detected, so a repeated value is a no-op.</summary>
+        public static bool TrySetPlayerNumber(uint sdlInstanceId, int oneBasedNumber)
+        {
+            var svc = _current;
+            if (svc == null || !svc.IsConnected || svc.InstanceId != sdlInstanceId) return false;
+            svc.SetPlayerNumber(oneBasedNumber);
+            return true;
+        }
 
         private byte _lastBattery = 0xFF;
 
@@ -265,7 +281,20 @@ namespace PadForge.Common.Input
                 }
 
                 bool doWrite;
-                lock (_outLock) { doWrite = _outDirty && now - lastWrite >= OUTPUT_MIN_INTERVAL_MS; }
+                lock (_outLock)
+                {
+                    // Keepalive: resend the current state every RUMBLE_KEEPALIVE_MS while
+                    // streaming, even with nothing changed, so held rumble is refreshed
+                    // before the DS3 stops its motors (~1 s after the last output report).
+                    // PadForge change-detects rumble at the SDL layer, so a sustained
+                    // rumble fires OnRumble once and _outDirty then clears; without this
+                    // the motor dies at ~1 s. Mirrors ScpToolkit's 500 ms full-report
+                    // resend (BthDs3.cs:158-164). Unconditional-while-streaming also
+                    // self-heals a dropped OFF (the next resend re-sends rumble=0). The
+                    // 150 ms floor still gates every write, so no BT flooding.
+                    bool keepaliveDue = _everGotInput && now - lastWrite >= RUMBLE_KEEPALIVE_MS;
+                    doWrite = (_outDirty || keepaliveDue) && now - lastWrite >= OUTPUT_MIN_INTERVAL_MS;
+                }
                 if (doWrite)
                 {
                     WriteOutputReport();
@@ -290,12 +319,14 @@ namespace PadForge.Common.Input
         // [0]=0x52 (SET_REPORT|OUTPUT), [1]=0x01 report id, then the raw 48-byte output
         // payload, so raw offset N lands at [N+2]: smallDur raw[1]->[3], smallOn
         // raw[2]->[4], largeDur raw[3]->[5], largeForce raw[4]->[6], LED raw[9]->[11].
-        // (Proven on hardware: the USB path drives raw[2]/raw[4]/raw[9]; the BT LED
-        // at [11] lit during the prototype stream.)
+        // Rumble durations are 0xFE, not the 0xFF of the raw template: DsHidMini
+        // overrides both to 0xFE at BT startup (DsBth.Timers.c:50-51) and USB Host
+        // Shield's setRumbleOn uses 0xFE, the value that holds the motor until the
+        // next OFF. 0xFF with no periodic resend is what let the motor time out.
         private void WriteOutputReport()
         {
             byte[] o = {
-                0x52,0x01, 0x00,0xFF,0x00,0xFF,0x00, 0x00,0x00,0x00,0x00,0x00,
+                0x52,0x01, 0x00,0xFE,0x00,0xFE,0x00, 0x00,0x00,0x00,0x00,0x00,
                 0xFF,0x27,0x10,0x00,0x32, 0xFF,0x27,0x10,0x00,0x32, 0xFF,0x27,0x10,0x00,0x32, 0xFF,0x27,0x10,0x00,0x32,
                 0x00,0x00,0x00,0x00,0x00, 0x00,0x00,0x00,0x00,0x00, 0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00 };
             lock (_ioLock)

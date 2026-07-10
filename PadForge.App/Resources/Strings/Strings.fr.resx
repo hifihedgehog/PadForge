@@ -2264,7 +2264,7 @@
   <data name="Pad_ExtendedCloneDeviceTooltip" xml:space="preserve"><value>Mappe chaque axe, bouton et croix directionnelle de l'appareil sélectionné directement vers la sortie virtuelle du même numéro. Ajuste la disposition à l'appareil et remplace les lignes de cet appareil sur l'emplacement par une transmission directe 1:1.</value></data>
   <data name="Pad_ExtendedClone_Title" xml:space="preserve"><value>Cloner l'appareil 1:1</value></data>
   <data name="Pad_ExtendedClone_Apply" xml:space="preserve"><value>Cloner</value></data>
-  <data name="Pad_ExtendedClone_NoDevice" xml:space="preserve"><value>Sélectionnez un appareil connecté sur cet emplacement à cloner.</value></data>
+  <data name="Pad_ExtendedClone_NoDevice" xml:space="preserve"><value>Sélectionnez un appareil sur cet emplacement à cloner.</value></data>
   <data name="Pad_ExtendedClone_NoInputs" xml:space="preserve"><value>L'appareil sélectionné n'expose aucun axe, bouton ou croix directionnelle à cloner.</value></data>
   <data name="Pad_ExtendedClone_Confirm_Format" xml:space="preserve"><value>Cloner {0} sur cet emplacement en tant que transmission directe 1:1 ? La disposition devient {1} axes, {2} boutons et {3} POV, et les lignes de cet appareil sur l'emplacement sont remplacées par ses propres entrées.</value></data>
   <data name="Pad_ExtendedClone_Overflow_Format" xml:space="preserve"><value>Cet appareil possède plus d'entrées qu'un contrôleur Extended ne peut en gérer. {0} axes sur {1}, {2} boutons sur {3} et {4} POV sur {5} ont été mappés. Le reste est resté non mappé.</value></data>

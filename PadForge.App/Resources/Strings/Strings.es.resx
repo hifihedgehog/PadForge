@@ -2264,7 +2264,7 @@
   <data name="Pad_ExtendedCloneDeviceTooltip" xml:space="preserve"><value>Asigna directamente cada eje, botón y cruceta del dispositivo seleccionado a la salida virtual con el mismo número. Ajusta la distribución al tamaño del dispositivo y reemplaza las filas de este dispositivo en la ranura por un paso directo 1:1.</value></data>
   <data name="Pad_ExtendedClone_Title" xml:space="preserve"><value>Clonar dispositivo 1:1</value></data>
   <data name="Pad_ExtendedClone_Apply" xml:space="preserve"><value>Clonar</value></data>
-  <data name="Pad_ExtendedClone_NoDevice" xml:space="preserve"><value>Selecciona un dispositivo conectado en esta ranura para clonar.</value></data>
+  <data name="Pad_ExtendedClone_NoDevice" xml:space="preserve"><value>Selecciona un dispositivo en esta ranura para clonar.</value></data>
   <data name="Pad_ExtendedClone_NoInputs" xml:space="preserve"><value>El dispositivo seleccionado no expone ejes, botones ni crucetas que clonar.</value></data>
   <data name="Pad_ExtendedClone_Confirm_Format" xml:space="preserve"><value>¿Clonar {0} en esta ranura como paso directo 1:1? La distribución pasa a tener {1} ejes, {2} botones y {3} POVs, y las filas de este dispositivo en la ranura se reemplazan por sus propias entradas.</value></data>
   <data name="Pad_ExtendedClone_Overflow_Format" xml:space="preserve"><value>Este dispositivo tiene más entradas de las que un mando Extended puede admitir. Se asignaron {0} de {1} ejes, {2} de {3} botones y {4} de {5} POVs. El resto quedó sin asignar.</value></data>

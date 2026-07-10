@@ -2284,7 +2284,7 @@
   <data name="Pad_ExtendedCloneDeviceTooltip" xml:space="preserve"><value>Wijs elke as, knop en hoedschakelaar op het geselecteerde apparaat rechtstreeks toe aan de virtuele uitvoer met hetzelfde nummer. Past de indeling aan het apparaat aan en vervangt de rijen van dit apparaat op het slot door een 1:1-passthrough.</value></data>
   <data name="Pad_ExtendedClone_Title" xml:space="preserve"><value>Apparaat 1:1 klonen</value></data>
   <data name="Pad_ExtendedClone_Apply" xml:space="preserve"><value>Klonen</value></data>
-  <data name="Pad_ExtendedClone_NoDevice" xml:space="preserve"><value>Selecteer een verbonden apparaat op dit slot om te klonen.</value></data>
+  <data name="Pad_ExtendedClone_NoDevice" xml:space="preserve"><value>Selecteer een apparaat op dit slot om te klonen.</value></data>
   <data name="Pad_ExtendedClone_NoInputs" xml:space="preserve"><value>Het geselecteerde apparaat heeft geen assen, knoppen of hoedschakelaars om te klonen.</value></data>
   <data name="Pad_ExtendedClone_Confirm_Format" xml:space="preserve"><value>{0} op dit slot klonen als een 1:1-passthrough? De indeling wordt {1} assen, {2} knoppen en {3} POVs, en de rijen van dit apparaat op het slot worden vervangen door zijn eigen invoer.</value></data>
   <data name="Pad_ExtendedClone_Overflow_Format" xml:space="preserve"><value>Dit apparaat heeft meer invoer dan een Extended-controller kan bevatten. {0} van {1} assen, {2} van {3} knoppen en {4} van {5} POVs toegewezen. De rest bleef ongemapt.</value></data>

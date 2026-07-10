@@ -138,6 +138,12 @@ namespace PadForge.Engine
         /// <summary>Whether the device has an accelerometer sensor.</summary>
         public bool HasAccel { get; private set; }
 
+        /// <summary>Whether the device exposes the auxiliary (left-side)
+        /// accelerometer, SDL_SENSOR_ACCEL_L (issue #199): the Nunchuk on a
+        /// Nunchuk-attached Wii Remote, the left half of a combined Joy-Con
+        /// pair.</summary>
+        public bool HasAccelAux { get; private set; }
+
         /// <summary>Whether the device has a touchpad (DS4/DualSense/Steam Deck).</summary>
         public bool HasTouchpad { get; private set; }
 
@@ -317,6 +323,15 @@ namespace PadForge.Engine
                 HasAccel = SDL_GamepadHasSensor(GameController, SDL_SENSOR_ACCEL);
                 if (HasGyro) SDL_SetGamepadSensorEnabled(GameController, SDL_SENSOR_GYRO, true);
                 if (HasAccel) SDL_SetGamepadSensorEnabled(GameController, SDL_SENSOR_ACCEL, true);
+
+                // Auxiliary (left-side) accelerometer (issue #199): the Wii
+                // Nunchuk on a Nunchuk-attached remote, or the left half of a
+                // combined Joy-Con pair. Upstream SDL has delivered it as
+                // SDL_SENSOR_ACCEL_L since 2022 (SDL_hidapi_wii.c registers it
+                // alongside the remote-body accel; SDL_hidapi_switch.c on the
+                // pair's left child); PadForge simply never read it.
+                HasAccelAux = SDL_GamepadHasSensor(GameController, SDL_SENSOR_ACCEL_L);
+                if (HasAccelAux) SDL_SetGamepadSensorEnabled(GameController, SDL_SENSOR_ACCEL_L, true);
 
                 int numPads = SDL_GetNumGamepadTouchpads(GameController);
                 HasTouchpad = numPads > 0;
@@ -814,6 +829,8 @@ namespace PadForge.Engine
                 SDL_GetGamepadSensorData(GameController, SDL_SENSOR_GYRO, state.Gyro, 3);
             if (HasAccel)
                 SDL_GetGamepadSensorData(GameController, SDL_SENSOR_ACCEL, state.Accel, 3);
+            if (HasAccelAux)
+                SDL_GetGamepadSensorData(GameController, SDL_SENSOR_ACCEL_L, state.AccelAux, 3);
 
             // --- Touchpad (DS4/DualSense/Steam Deck/Steam Controller/Triton) ---
             if (HasTouchpad && _padFingerCounts != null)

@@ -60,6 +60,12 @@ namespace PadForge.Engine
         bool HasHaptic { get; }
         bool HasGyro { get; }
         bool HasAccel { get; }
+        /// <summary>Whether the device exposes an auxiliary (left-side)
+        /// accelerometer (issue #199): the Wii Nunchuk's own sensor on a
+        /// Nunchuk-attached remote, or the left half of a combined Joy-Con
+        /// pair. SDL_SENSOR_ACCEL_L. Default false; only the SDL wrapper
+        /// (live query) and the Remote Link peer mirror override.</summary>
+        bool HasAccelAux => false;
         bool HasTouchpad { get; }
         /// <summary>Number of distinct touchpad surfaces the device exposes
         /// (Steam Controller 2026 / Steam Deck = 2; DualSense / DS4 = 1).

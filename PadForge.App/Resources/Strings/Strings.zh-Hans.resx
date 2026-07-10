@@ -2275,4 +2275,8 @@
   <data name="MacroAction_TextBlock_Text" xml:space="preserve"><value>文本</value></data>
   <data name="MacroAction_TextBlock_Delay" xml:space="preserve"><value>字符间隔 (ms)</value></data>
   <data name="MacroAction_TextBlock_Delay_Tooltip" xml:space="preserve"><value>每个字符之间的毫秒数（最大 1000）。0 表示一次性输入全部文本。</value></data>
+  <data name="Mapping_NunchukLean" xml:space="preserve"><value>双节棍控制器倾斜</value></data>
+  <data name="Mapping_LeftJoyConLean" xml:space="preserve"><value>左 Joy-Con 倾斜</value></data>
+  <data name="Mapping_AuxMotionLean" xml:space="preserve"><value>辅助体感倾斜</value></data>
+  <data name="Devices_AccelAux" xml:space="preserve"><value>辅助加速度计</value></data>
 </root>

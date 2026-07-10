@@ -2275,4 +2275,8 @@
   <data name="MacroAction_TextBlock_Text" xml:space="preserve"><value>Texte</value></data>
   <data name="MacroAction_TextBlock_Delay" xml:space="preserve"><value>Délai par caractère (ms)</value></data>
   <data name="MacroAction_TextBlock_Delay_Tooltip" xml:space="preserve"><value>Millisecondes entre les caractères tapés, jusqu'à 1000. 0 tape tout le texte d'un coup.</value></data>
+  <data name="Mapping_NunchukLean" xml:space="preserve"><value>Inclinaison du Nunchuk</value></data>
+  <data name="Mapping_LeftJoyConLean" xml:space="preserve"><value>Inclinaison du Joy-Con gauche</value></data>
+  <data name="Mapping_AuxMotionLean" xml:space="preserve"><value>Inclinaison de mouvement auxiliaire</value></data>
+  <data name="Devices_AccelAux" xml:space="preserve"><value>Accéléromètre auxiliaire</value></data>
 </root>

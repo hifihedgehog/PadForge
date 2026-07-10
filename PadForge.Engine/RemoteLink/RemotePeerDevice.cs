@@ -46,6 +46,7 @@ namespace PadForge.Engine.RemoteLink
         public bool HasHaptic { get; set; }
         public bool HasGyro { get; set; }
         public bool HasAccel { get; set; }
+        public bool HasAccelAux { get; set; }
         public bool HasTouchpad { get; set; }
         public int NumTouchpads { get; set; }
         public int[] TouchpadFingerCounts { get; set; }
@@ -169,6 +170,7 @@ namespace PadForge.Engine.RemoteLink
         public bool HasHaptic => Info.HasHaptic;
         public bool HasGyro => Info.HasGyro;
         public bool HasAccel => Info.HasAccel;
+        public bool HasAccelAux => Info.HasAccelAux;
         public bool HasTouchpad => Info.HasTouchpad;
         public int NumTouchpads => Info.HasTouchpad ? Math.Max(1, Info.NumTouchpads) : 0;
         public int[] TouchpadFingerCounts => Info.TouchpadFingerCounts ?? Array.Empty<int>();

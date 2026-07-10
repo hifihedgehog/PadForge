@@ -2275,4 +2275,8 @@
   <data name="MacroAction_TextBlock_Text" xml:space="preserve"><value>Text</value></data>
   <data name="MacroAction_TextBlock_Delay" xml:space="preserve"><value>Zeichenverzögerung (ms)</value></data>
   <data name="MacroAction_TextBlock_Delay_Tooltip" xml:space="preserve"><value>Millisekunden zwischen getippten Zeichen, höchstens 1000. 0 tippt den gesamten Text auf einmal.</value></data>
+  <data name="Mapping_NunchukLean" xml:space="preserve"><value>Nunchuk-Neigung</value></data>
+  <data name="Mapping_LeftJoyConLean" xml:space="preserve"><value>Neigung linker Joy-Con</value></data>
+  <data name="Mapping_AuxMotionLean" xml:space="preserve"><value>Zusätzliche Bewegungsneigung</value></data>
+  <data name="Devices_AccelAux" xml:space="preserve"><value>Zusätzlicher Beschleunigungssensor</value></data>
 </root>

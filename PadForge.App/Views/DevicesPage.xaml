@@ -1462,6 +1462,37 @@
                             </Grid>
                         </Border>
 
+                        <!-- Aux accelerometer (#199): the Nunchuk's own sensor /
+                             the left Joy-Con of a combined pair. -->
+                        <TextBlock Text="{Binding Devices_AccelAux, Source={x:Static strings:Strings.Instance}}" FontFamily="{StaticResource TelemetryFontFamily}" FontSize="11" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,0,0,3"
+                                   Visibility="{Binding HasAccelAuxData, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                        <Border Visibility="{Binding HasAccelAuxData, Converter={StaticResource BoolToVisibilityConverter}}"
+                                Background="{DynamicResource SteelGroundBrush}" BorderBrush="{DynamicResource SteelLineBrush}"
+                                BorderThickness="1" CornerRadius="6" Padding="10,6" Margin="0,0,0,8">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel>
+                                    <TextBlock Text="X" FontSize="10" FontFamily="{StaticResource TelemetryFontFamily}" Foreground="{DynamicResource TextFillColorTertiaryBrush}" HorizontalAlignment="Center"/>
+                                    <TextBlock FontSize="11" FontFamily="{StaticResource TelemetryFontFamily}" Foreground="{DynamicResource ColdBrush}" HorizontalAlignment="Center"
+                                               Text="{Binding AccelAuxX, StringFormat='{}{0:F3}'}"/>
+                                </StackPanel>
+                                <StackPanel Grid.Column="1">
+                                    <TextBlock Text="Y" FontSize="10" FontFamily="{StaticResource TelemetryFontFamily}" Foreground="{DynamicResource TextFillColorTertiaryBrush}" HorizontalAlignment="Center"/>
+                                    <TextBlock FontSize="11" FontFamily="{StaticResource TelemetryFontFamily}" Foreground="{DynamicResource ColdBrush}" HorizontalAlignment="Center"
+                                               Text="{Binding AccelAuxY, StringFormat='{}{0:F3}'}"/>
+                                </StackPanel>
+                                <StackPanel Grid.Column="2">
+                                    <TextBlock Text="Z" FontSize="10" FontFamily="{StaticResource TelemetryFontFamily}" Foreground="{DynamicResource TextFillColorTertiaryBrush}" HorizontalAlignment="Center"/>
+                                    <TextBlock FontSize="11" FontFamily="{StaticResource TelemetryFontFamily}" Foreground="{DynamicResource ColdBrush}" HorizontalAlignment="Center"
+                                               Text="{Binding AccelAuxZ, StringFormat='{}{0:F3}'}"/>
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+
                         <!-- Touchpad preview -->
                         <TextBlock Text="{Binding TouchpadLabel}"
                                    FontFamily="{StaticResource TelemetryFontFamily}" FontSize="11" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,0,0,3"

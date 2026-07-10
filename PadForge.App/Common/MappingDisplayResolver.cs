@@ -23,6 +23,16 @@ namespace PadForge.Common
             if (mapping == null || string.IsNullOrEmpty(mapping.SourceDescriptor))
                 return;
 
+            // "Motion Lean L" (#199) resolves contextually by device (Nunchuk /
+            // left Joy-Con), in BOTH naming modes, so it sits above the
+            // raw-numbered early return: Wii remotes are raw-numbered class and
+            // they are exactly where this label matters.
+            if (PadForge.Engine.Common.Mapping.SourceCoercion.IsMotionLeanAuxDescriptor(mapping.SourceDescriptor))
+            {
+                mapping.SetResolvedSourceText(ResolveMotionLeanAuxName(ud));
+                return;
+            }
+
             if (ud != null && UseRawNumberedNaming(ud))
             {
                 string resolved = ResolveRawNumberedText(mapping.SourceDescriptor);
@@ -220,6 +230,9 @@ namespace PadForge.Common
                 if (sub.Equals("Gyro",  System.StringComparison.OrdinalIgnoreCase)) return prefix + si.Mapping_MotionGyro;
                 if (sub.Equals("Accel", System.StringComparison.OrdinalIgnoreCase)) return prefix + si.Mapping_MotionAccel;
                 if (sub.Equals("Lean",  System.StringComparison.OrdinalIgnoreCase)) return prefix + si.Mapping_MotionLean;
+                // Aux lean (#199): this reverse path has no device context, so
+                // the neutral label stands in for the contextual one.
+                if (sub.Equals("Lean L", System.StringComparison.OrdinalIgnoreCase)) return prefix + si.Mapping_AuxMotionLean;
                 return null;
             }
 
@@ -454,6 +467,22 @@ namespace PadForge.Common
             "IH" => Strings.Instance.Mapping_InvHalf,
             _ => ""
         };
+
+        /// <summary>Contextual display label for the "Motion Lean L" aux-accel
+        /// descriptor (#199). The sensor is the Nunchuk on Wii remotes
+        /// (RVL-CNT-01 0x0306 / -TR 0x0330) and the left Joy-Con on combined
+        /// Nintendo pairs; anything else (or no device context) gets the
+        /// neutral label.</summary>
+        internal static string ResolveMotionLeanAuxName(PadForge.Engine.Data.UserDevice ud)
+        {
+            var si = Strings.Instance;
+            if (ud != null && ud.VendorId == 0x057E)
+            {
+                if (ud.ProdId == 0x0306 || ud.ProdId == 0x0330) return si.Mapping_NunchukLean;
+                return si.Mapping_LeftJoyConLean;
+            }
+            return si.Mapping_AuxMotionLean;
+        }
 
         internal static string ResolvePovDirection(string dir) => dir switch
         {
@@ -873,6 +902,13 @@ namespace PadForge.Common
             // tab's Motion Steering card, per assigned device.
             if (ud.HasAccel)
                 list.Add(new InputChoice { Descriptor = "Motion Lean", DisplayName = si.Mapping_MotionLean });
+
+            // Aux (left-side) accelerometer lean (#199): the Nunchuk's own
+            // sensor on a Nunchuk-attached Wii Remote, the left half of a
+            // combined Joy-Con pair. One internal descriptor, contextual
+            // display label per device.
+            if (ud.HasAccelAux)
+                list.Add(new InputChoice { Descriptor = PadForge.Engine.Common.Mapping.SourceCoercion.MotionLeanAuxDescriptor, DisplayName = ResolveMotionLeanAuxName(ud) });
 
             // Touchpad gesture descriptors come LAST in the per-device
             // section so they appear after raw hardware (touchpad axes,

@@ -952,7 +952,12 @@ namespace PadForge.Services
             if (row?.Sources == null || padVm == null) return;
             foreach (var src in row.Sources)
             {
-                if (src == null || !Engine.Common.Mapping.SourceCoercion.IsMotionLeanDescriptor(src.Descriptor))
+                // Both lean families ride the same Motion Steering card
+                // parameters: the primary "Motion Lean" and the aux
+                // "Motion Lean L" (#199, Nunchuk / left Joy-Con).
+                if (src == null
+                    || (!Engine.Common.Mapping.SourceCoercion.IsMotionLeanDescriptor(src.Descriptor)
+                        && !Engine.Common.Mapping.SourceCoercion.IsMotionLeanAuxDescriptor(src.Descriptor)))
                     continue;
 
                 Guid sel = padVm.SelectedMappedDevice?.InstanceGuid ?? Guid.Empty;

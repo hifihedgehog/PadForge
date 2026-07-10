@@ -2295,4 +2295,8 @@
   <data name="MacroAction_TextBlock_Text" xml:space="preserve"><value>Tekst</value></data>
   <data name="MacroAction_TextBlock_Delay" xml:space="preserve"><value>Tekenvertraging (ms)</value></data>
   <data name="MacroAction_TextBlock_Delay_Tooltip" xml:space="preserve"><value>Milliseconden tussen getypte tekens, maximaal 1000. 0 typt de hele tekst in één keer.</value></data>
+  <data name="Mapping_NunchukLean" xml:space="preserve"><value>Nunchuk-helling</value></data>
+  <data name="Mapping_LeftJoyConLean" xml:space="preserve"><value>Helling linker Joy-Con</value></data>
+  <data name="Mapping_AuxMotionLean" xml:space="preserve"><value>Extra bewegingshelling</value></data>
+  <data name="Devices_AccelAux" xml:space="preserve"><value>Extra versnellingsmeter</value></data>
 </root>

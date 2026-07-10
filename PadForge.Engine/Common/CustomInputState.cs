@@ -80,6 +80,16 @@ namespace PadForge.Engine
         public float[] Accel;
 
         /// <summary>
+        /// Auxiliary (left-side) accelerometer data: [X, Y, Z] in meters per
+        /// second squared, SDL native frame (issue #199). SDL delivers this as
+        /// SDL_SENSOR_ACCEL_L: the Wii Nunchuk's own accelerometer on a
+        /// Nunchuk-attached remote, or the LEFT Joy-Con's accelerometer on a
+        /// combined Joy-Con pair (whose primary Accel is the right half).
+        /// Zeroed for devices without the sensor.
+        /// </summary>
+        public float[] AccelAux;
+
+        /// <summary>
         /// Per-touchpad finger state. One <see cref="TouchpadInputState"/>
         /// per physical touchpad surface the device exposes (1 for DS4 /
         /// DualSense / Shield / PTP, 2 for Steam Controller 2026 / Steam
@@ -148,6 +158,7 @@ namespace PadForge.Engine
             Buttons = new bool[MaxButtons];
             Gyro = new float[3];
             Accel = new float[3];
+            AccelAux = new float[3];
             // Touchpads starts null. Device wrappers allocate the per-pad
             // TouchpadState[] at device-open time with the right pad count
             // and per-pad finger slot count for the actual hardware. Null
@@ -172,6 +183,7 @@ namespace PadForge.Engine
             Array.Copy(Buttons, clone.Buttons, MaxButtons);
             Array.Copy(Gyro, clone.Gyro, 3);
             Array.Copy(Accel, clone.Accel, 3);
+            Array.Copy(AccelAux, clone.AccelAux, 3);
             if (Touchpads != null)
             {
                 clone.Touchpads = new TouchpadInputState[Touchpads.Length];

@@ -2904,7 +2904,19 @@ namespace PadForge.Views
         private void MicLedDevicePicker_DropDownOpened(object sender, EventArgs e)
         {
             if (_currentPadVm?.PlayStationConfig is { } cfg)
+            {
+                // RefreshMicLedDevices replaces the ItemsSource, which triggers a WPF
+                // Selector Reset: MicLedDeviceItem has reference equality, so the
+                // previously-selected item isn't found in the new list and the Selector
+                // pushes SelectedValue=null back through the TwoWay binding, ERASING the
+                // saved MicLedFollowDeviceId (the DS5 mic LED then stops following the
+                // endpoint). Capture and restore it across the refresh so a user who
+                // just opens the picker to look doesn't lose their saved device.
+                var keep = cfg.MicLedFollowDeviceId;
                 cfg.RefreshMicLedDevices();
+                if (!string.IsNullOrEmpty(keep) && cfg.MicLedFollowDeviceId != keep)
+                    cfg.MicLedFollowDeviceId = keep;
+            }
         }
 
         /// <summary>

@@ -2279,4 +2279,7 @@
   <data name="Mapping_LeftJoyConLean" xml:space="preserve"><value>左 Joy-Con 倾斜</value></data>
   <data name="Mapping_AuxMotionLean" xml:space="preserve"><value>辅助体感倾斜</value></data>
   <data name="Devices_AccelAux" xml:space="preserve"><value>辅助加速度计</value></data>
+  <data name="Mapping_NunchukAccel" xml:space="preserve"><value>双节棍控制器加速度计</value></data>
+  <data name="Mapping_LeftJoyConAccel" xml:space="preserve"><value>左 Joy-Con 加速度计</value></data>
+  <data name="Mapping_AuxMotionAccel" xml:space="preserve"><value>辅助体感加速度计</value></data>
 </root>

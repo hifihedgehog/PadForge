@@ -2279,4 +2279,7 @@
   <data name="Mapping_LeftJoyConLean" xml:space="preserve"><value>左Joy-Conリーン</value></data>
   <data name="Mapping_AuxMotionLean" xml:space="preserve"><value>補助モーションリーン</value></data>
   <data name="Devices_AccelAux" xml:space="preserve"><value>補助加速度センサー</value></data>
+  <data name="Mapping_NunchukAccel" xml:space="preserve"><value>ヌンチャク加速度センサー</value></data>
+  <data name="Mapping_LeftJoyConAccel" xml:space="preserve"><value>左Joy-Con加速度センサー</value></data>
+  <data name="Mapping_AuxMotionAccel" xml:space="preserve"><value>補助モーション加速度センサー</value></data>
 </root>

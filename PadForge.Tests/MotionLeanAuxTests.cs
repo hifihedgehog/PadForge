@@ -120,6 +120,23 @@ namespace PadForge.Tests
         }
 
         [Fact]
+        public void MotionAccelAux_Predicates_AreExactAndDisjoint()
+        {
+            // "Motion Accel L" (#199 follow-up): the MotionAccel passthrough
+            // row sourced from the aux accelerometer.
+            Assert.True(MappingSetMigrator.IsMotionAccelAuxDescriptor("Motion Accel L"));
+            Assert.True(MappingSetMigrator.IsMotionAccelAuxDescriptor(" motion accel l "));
+            Assert.False(MappingSetMigrator.IsMotionAccelAuxDescriptor("Motion Accel"));
+            Assert.False(MappingSetMigrator.IsMotionAccelAuxDescriptor("Motion Lean L"));
+            // Inherited-benign classification, like the lean family.
+            Assert.True(SourceCoercion.IsMotionDescriptor("Motion Accel L"));
+            // The sub-channel parser must NOT read "Accel L" as the primary
+            // accel channel: exact-match only ("Accel" -> 1, "Accel L" -> -1).
+            Assert.Equal(1, SourceCoercion.ParseMotionSubChannel("Motion Accel"));
+            Assert.Equal(-1, SourceCoercion.ParseMotionSubChannel("Motion Accel L"));
+        }
+
+        [Fact]
         public void CustomInputState_Clone_CarriesAccelAux()
         {
             var s = new CustomInputState();

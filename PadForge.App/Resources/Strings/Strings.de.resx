@@ -2279,4 +2279,7 @@
   <data name="Mapping_LeftJoyConLean" xml:space="preserve"><value>Neigung linker Joy-Con</value></data>
   <data name="Mapping_AuxMotionLean" xml:space="preserve"><value>Zusätzliche Bewegungsneigung</value></data>
   <data name="Devices_AccelAux" xml:space="preserve"><value>Zusätzlicher Beschleunigungssensor</value></data>
+  <data name="Mapping_NunchukAccel" xml:space="preserve"><value>Nunchuk-Beschleunigungssensor</value></data>
+  <data name="Mapping_LeftJoyConAccel" xml:space="preserve"><value>Beschleunigungssensor linker Joy-Con</value></data>
+  <data name="Mapping_AuxMotionAccel" xml:space="preserve"><value>Zusätzlicher Bewegungs-Beschleunigungssensor</value></data>
 </root>

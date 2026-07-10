@@ -32,6 +32,11 @@ namespace PadForge.Common
                 mapping.SetResolvedSourceText(ResolveMotionLeanAuxName(ud));
                 return;
             }
+            if (PadForge.Engine.Data.MappingSetMigrator.IsMotionAccelAuxDescriptor(mapping.SourceDescriptor))
+            {
+                mapping.SetResolvedSourceText(ResolveMotionAccelAuxName(ud));
+                return;
+            }
 
             if (ud != null && UseRawNumberedNaming(ud))
             {
@@ -233,6 +238,7 @@ namespace PadForge.Common
                 // Aux lean (#199): this reverse path has no device context, so
                 // the neutral label stands in for the contextual one.
                 if (sub.Equals("Lean L", System.StringComparison.OrdinalIgnoreCase)) return prefix + si.Mapping_AuxMotionLean;
+                if (sub.Equals("Accel L", System.StringComparison.OrdinalIgnoreCase)) return prefix + si.Mapping_AuxMotionAccel;
                 return null;
             }
 
@@ -482,6 +488,20 @@ namespace PadForge.Common
                 return si.Mapping_LeftJoyConLean;
             }
             return si.Mapping_AuxMotionLean;
+        }
+
+        /// <summary>Contextual display label for the "Motion Accel L"
+        /// aux-accelerometer passthrough descriptor (#199 follow-up). Same
+        /// device resolution as <see cref="ResolveMotionLeanAuxName"/>.</summary>
+        internal static string ResolveMotionAccelAuxName(PadForge.Engine.Data.UserDevice ud)
+        {
+            var si = Strings.Instance;
+            if (ud != null && ud.VendorId == 0x057E)
+            {
+                if (ud.ProdId == 0x0306 || ud.ProdId == 0x0330) return si.Mapping_NunchukAccel;
+                return si.Mapping_LeftJoyConAccel;
+            }
+            return si.Mapping_AuxMotionAccel;
         }
 
         internal static string ResolvePovDirection(string dir) => dir switch
@@ -847,6 +867,11 @@ namespace PadForge.Common
                 list.Add(new InputChoice { Descriptor = "Motion Gyro",  DisplayName = si.Mapping_MotionGyro });
             if (ud.HasAccel)
                 list.Add(new InputChoice { Descriptor = "Motion Accel", DisplayName = si.Mapping_MotionAccel });
+            // Aux accelerometer passthrough (#199 follow-up): sources the
+            // slot's IMU stream from the Nunchuk / left Joy-Con instead of
+            // the body. One internal descriptor, contextual display label.
+            if (ud.HasAccelAux)
+                list.Add(new InputChoice { Descriptor = PadForge.Engine.Data.MappingSetMigrator.MotionAccelAuxSourceDescriptor, DisplayName = ResolveMotionAccelAuxName(ud) });
 
             // Absolute cursor-position sources (#107). The cursor is system-wide,
             // read from SourceCoercion.MouseCursorProvider regardless of device, but

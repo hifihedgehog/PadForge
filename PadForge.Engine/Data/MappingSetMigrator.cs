@@ -64,6 +64,24 @@ namespace PadForge.Engine.Data
         public const string MotionGyroSourceDescriptor  = "Motion Gyro";
         public const string MotionAccelSourceDescriptor = "Motion Accel";
 
+        /// <summary>Aux (left-side) accelerometer variant for the MotionAccel
+        /// row (issue #199 follow-up): sources the slot's single IMU stream
+        /// from the Nunchuk's own sensor (or a combined pair's left Joy-Con)
+        /// instead of the body accelerometer. The reading side is
+        /// InputManager.UpdateMotionSnapshots, which pulls
+        /// CustomInputState.AccelAux when the row's source carries this
+        /// descriptor. Exact-match family like "Motion Lean L": the leading
+        /// 'M' clears the I/H prefix grammar, IsMotionDescriptor stays true
+        /// (benign), and ParseMotionSubChannel returns -1 ("Accel L" is not
+        /// "Accel").</summary>
+        public const string MotionAccelAuxSourceDescriptor = "Motion Accel L";
+
+        /// <summary>True when the descriptor is
+        /// <see cref="MotionAccelAuxSourceDescriptor"/>.</summary>
+        public static bool IsMotionAccelAuxDescriptor(string descriptor)
+            => !string.IsNullOrEmpty(descriptor)
+            && string.Equals(descriptor.Trim(), MotionAccelAuxSourceDescriptor, StringComparison.OrdinalIgnoreCase);
+
         // Touchpad output targets. Stored as plain string properties on
         // PadSetting (TouchpadX1, TouchpadY1, …, TouchpadClick), reached via
         // the same reflection path as ButtonTargets / AxisTargets. Emitted

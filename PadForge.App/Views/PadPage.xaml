@@ -10072,23 +10072,34 @@
                                             ToolTip="{Binding Pad_ResetMouseGesturesEnabled, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
                                 <StackPanel IsEnabled="{Binding MouseGesturesEnabled}">
-                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                    <!-- Grid + WrapPanel so the five checkboxes flow to
+                                         extra lines instead of clipping in narrow windows
+                                         (a horizontal StackPanel never wraps). -->
+                                    <Grid Margin="0,0,0,8">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="270"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
                                         <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Pad_MouseGestures_Button, Source={x:Static strings:Strings.Instance}}"
-                                                   Width="270" VerticalAlignment="Center"
+                                                   VerticalAlignment="Center"
                                                    ToolTip="{Binding Pad_MouseGestures_Button_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
-                                        <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}" Content="Left Click" VerticalAlignment="Center"
-                                                  IsChecked="{Binding MouseGestureButtonLeft, Mode=TwoWay}"/>
-                                        <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}" Content="Middle Click" VerticalAlignment="Center" Margin="10,0,0,0"
-                                                  IsChecked="{Binding MouseGestureButtonMiddle, Mode=TwoWay}"/>
-                                        <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}" Content="Right Click" VerticalAlignment="Center" Margin="10,0,0,0"
-                                                  IsChecked="{Binding MouseGestureButtonRight, Mode=TwoWay}"/>
-                                        <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}" Content="X1" VerticalAlignment="Center" Margin="10,0,0,0"
-                                                  IsChecked="{Binding MouseGestureButtonX1, Mode=TwoWay}"/>
-                                        <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}" Content="X2" VerticalAlignment="Center" Margin="10,0,0,0"
-                                                  IsChecked="{Binding MouseGestureButtonX2, Mode=TwoWay}"/>
-                                        <ui:Button Command="{Binding ResetMouseGestureButtonCommand}" Style="{StaticResource ResetButton}"
+                                        <WrapPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                                            <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}" Content="Left Click" VerticalAlignment="Center" Margin="0,2,10,2"
+                                                      IsChecked="{Binding MouseGestureButtonLeft, Mode=TwoWay}"/>
+                                            <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}" Content="Middle Click" VerticalAlignment="Center" Margin="0,2,10,2"
+                                                      IsChecked="{Binding MouseGestureButtonMiddle, Mode=TwoWay}"/>
+                                            <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}" Content="Right Click" VerticalAlignment="Center" Margin="0,2,10,2"
+                                                      IsChecked="{Binding MouseGestureButtonRight, Mode=TwoWay}"/>
+                                            <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}" Content="X1" VerticalAlignment="Center" Margin="0,2,10,2"
+                                                      IsChecked="{Binding MouseGestureButtonX1, Mode=TwoWay}"/>
+                                            <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}" Content="X2" VerticalAlignment="Center" Margin="0,2,10,2"
+                                                      IsChecked="{Binding MouseGestureButtonX2, Mode=TwoWay}"/>
+                                        </WrapPanel>
+                                        <ui:Button Grid.Column="2" Command="{Binding ResetMouseGestureButtonCommand}" Style="{StaticResource ResetButton}"
+                                                VerticalAlignment="Center"
                                                 ToolTip="{Binding Pad_ResetMouseGestureButton, Source={x:Static strings:Strings.Instance}}"/>
-                                    </StackPanel>
+                                    </Grid>
                                     <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                         <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Pad_MouseGestures_FlickThreshold, Source={x:Static strings:Strings.Instance}}"
                                                    Width="270" VerticalAlignment="Center"

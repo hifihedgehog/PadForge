@@ -2234,4 +2234,50 @@
   <data name="DevObj_ConsumerBrowserRefresh" xml:space="preserve"><value>Vernieuwen</value></data>
   <data name="DevObj_ConsumerBrowserBookmarks" xml:space="preserve"><value>Bladwijzers</value></data>
   <data name="DevObj_ConsumerDynamic_Format" xml:space="preserve"><value>Multimedia {0}</value></data>
+  <data name="About_BthPS3" xml:space="preserve"><value>BthPS3</value></data>
+  <data name="About_BthPS3Desc" xml:space="preserve"><value>Meegeleverde Bluetooth-profiel- en PSM-filterstuurprogramma's van nefarius waarmee een DualShock 3 via de gedeelde radio kan verbinden. Wordt tijdens het koppelen in de app geïnstalleerd. BSD 3-Clause.</value></data>
+  <data name="About_DsHidMini" xml:space="preserve"><value>DsHidMini</value></data>
+  <data name="About_DsHidMiniDesc" xml:space="preserve"><value>DualShock 3-protocolreferentie van Benjamin Höglinger-Stelzer: sixpair-featurereports, Bluetooth-outputreporttemplate, inschakelvolgorde, batterijmapping. De implementatie van PadForge is originele C#. BSD 3-Clause.</value></data>
+  <data name="About_NefariusDevMgmt" xml:space="preserve"><value>Nefarius.Utilities.DeviceManagement</value></data>
+  <data name="About_NefariusDevMgmtDesc" xml:space="preserve"><value>Installatie in de driver-store, registratie van het Bluetooth-klassefilter en het in- en uitschakelen van de USB-poort voor de BthPS3-installatie in de app, door nefarius. MIT.</value></data>
+  <data name="Dashboard_Services" xml:space="preserve"><value>Services</value></data>
+  <data name="Dashboard_Slot" xml:space="preserve"><value>Slot</value></data>
+  <data name="Dashboard_StatusCold" xml:space="preserve"><value>Koud</value></data>
+  <data name="Devices_EmptyHint" xml:space="preserve"><value>Selecteer een apparaat om de ruwe invoer te bekijken.</value></data>
+  <data name="Ds3Pair_Failed" xml:space="preserve"><value>Koppelen is niet voltooid. Zie het logboek voor details.</value></data>
+  <data name="Ds3Pair_InstallFailed" xml:space="preserve"><value>Het Bluetooth-stuurprogramma voor PlayStation-controllers kon niet worden geïnstalleerd.</value></data>
+  <data name="Ds3Pair_Instructions" xml:space="preserve"><value>Sluit de DualShock 3 aan met een USB-kabel en klik op Koppelen. PadForge schrijft deze PC naar de controller en registreert hem. Koppel na afloop de controller los en druk op de PS-knop om via Bluetooth te verbinden.</value></data>
+  <data name="Ds3Pair_NoUsb" xml:space="preserve"><value>Geen DualShock 3 gevonden via USB. Sluit hem aan met een USB-kabel en probeer het opnieuw.</value></data>
+  <data name="Ds3Pair_Success" xml:space="preserve"><value>Klaar. Koppel de controller los en druk op de PS-knop. Hij verschijnt dan in je apparatenlijst.</value></data>
+  <data name="Ds3Pair_Working" xml:space="preserve"><value>De controller wordt ingesteld. Houd hem via USB aangesloten.</value></data>
+  <data name="Engine_Forging" xml:space="preserve"><value>Smeden</value></data>
+  <data name="FirstRun_Begin" xml:space="preserve"><value>Rondleiding starten</value></data>
+  <data name="FirstRun_Body" xml:space="preserve"><value>Sluit een controller aan, kies een uitvoertype en PadForge smeedt je invoer daarin om. Een korte rondleiding laat zien waar alles staat.</value></data>
+  <data name="FirstRun_Done" xml:space="preserve"><value>Klaar</value></data>
+  <data name="FirstRun_Next" xml:space="preserve"><value>Volgende</value></data>
+  <data name="FirstRun_Skip" xml:space="preserve"><value>Overslaan</value></data>
+  <data name="FirstRun_Title" xml:space="preserve"><value>Ontsteek de smidse</value></data>
+  <data name="Instr_Out" xml:space="preserve"><value>OUT</value></data>
+  <data name="Instr_Raw" xml:space="preserve"><value>RAW</value></data>
+  <data name="Macro_EmptyHint" xml:space="preserve"><value>Selecteer links een macro of druk op Toevoegen om er een te maken.</value></data>
+  <data name="Pad_ScopeDevice" xml:space="preserve"><value>Apparaat</value></data>
+  <data name="Pad_Tab_Preview" xml:space="preserve"><value>Voorbeeld</value></data>
+  <data name="Pad_ToggleAnnotations" xml:space="preserve"><value>Toewijzingsannotaties</value></data>
+  <data name="Settings_ShowTour" xml:space="preserve"><value>Welkomstrondleiding tonen</value></data>
+  <data name="Tour_Cards_Body" xml:space="preserve"><value>Kies een uitvoertype, voorzie de slots van apparaten en klik op een kaart om de toewijzingen ervan vorm te geven.</value></data>
+  <data name="Tour_Cards_Title" xml:space="preserve"><value>Virtuele controllers</value></data>
+  <data name="Tour_Engine_Body" xml:space="preserve"><value>De smidse zelf. Schakel de vlam in of uit om alle invoerpolling te starten of te stoppen.</value></data>
+  <data name="Tour_Engine_Title" xml:space="preserve"><value>Invoer-engine</value></data>
+  <data name="Tour_Services_Body" xml:space="preserve"><value>Bewegingsdata, de webcontroller voor je telefoon en Remote Link streamen hiervandaan.</value></data>
+  <data name="Tour_Services_Title" xml:space="preserve"><value>Services</value></data>
+  <data name="Tour_Slots_Body" xml:space="preserve"><value>Elke virtuele controller staat hier. De vlam laat zien welke slots op dit moment smeden.</value></data>
+  <data name="Tour_Slots_Title" xml:space="preserve"><value>Slots</value></data>
+  <data name="Tour_Status_Body" xml:space="preserve"><value>Aantal apparaten, pollingsnelheid en de engine-vlam, altijd in beeld.</value></data>
+  <data name="Tour_Status_Title" xml:space="preserve"><value>Instrumentenbalk</value></data>
+  <data name="TypeAbbrev_Extended" xml:space="preserve"><value>EXT</value></data>
+  <data name="TypeAbbrev_KeyboardMouse" xml:space="preserve"><value>KBM</value></data>
+  <data name="TypeAbbrev_Midi" xml:space="preserve"><value>MIDI</value></data>
+  <data name="TypeAbbrev_PlayStation" xml:space="preserve"><value>PS</value></data>
+  <data name="TypeAbbrev_Xbox" xml:space="preserve"><value>XB</value></data>
+  <data name="WiiPair_FamilyDs3" xml:space="preserve"><value>Sony DualShock 3</value></data>
 </root>

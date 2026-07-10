@@ -2214,4 +2214,50 @@
   <data name="DevObj_ConsumerBrowserRefresh" xml:space="preserve"><value>刷新</value></data>
   <data name="DevObj_ConsumerBrowserBookmarks" xml:space="preserve"><value>书签</value></data>
   <data name="DevObj_ConsumerDynamic_Format" xml:space="preserve"><value>消费者 {0}</value></data>
+  <data name="About_BthPS3" xml:space="preserve"><value>BthPS3</value></data>
+  <data name="About_BthPS3Desc" xml:space="preserve"><value>由 nefarius 提供的蓝牙配置文件和 PSM 过滤驱动，让 DualShock 3 通过共享无线电连接。配对时在应用内安装。BSD 3-Clause。</value></data>
+  <data name="About_DsHidMini" xml:space="preserve"><value>DsHidMini</value></data>
+  <data name="About_DsHidMiniDesc" xml:space="preserve"><value>Benjamin Höglinger-Stelzer 编写的 DualShock 3 协议参考：sixpair 特性报告、蓝牙输出报告模板、启用顺序、电量映射。PadForge 的实现为原创 C# 代码。BSD 3-Clause。</value></data>
+  <data name="About_NefariusDevMgmt" xml:space="preserve"><value>Nefarius.Utilities.DeviceManagement</value></data>
+  <data name="About_NefariusDevMgmtDesc" xml:space="preserve"><value>由 nefarius 提供，用于应用内 BthPS3 设置的驱动库安装、蓝牙类过滤器注册和 USB 端口重连。MIT。</value></data>
+  <data name="Dashboard_Services" xml:space="preserve"><value>服务</value></data>
+  <data name="Dashboard_Slot" xml:space="preserve"><value>槽位</value></data>
+  <data name="Dashboard_StatusCold" xml:space="preserve"><value>冷却</value></data>
+  <data name="Devices_EmptyHint" xml:space="preserve"><value>选择一个设备以查看其原始输入。</value></data>
+  <data name="Ds3Pair_Failed" xml:space="preserve"><value>配对未完成。详情请查看日志。</value></data>
+  <data name="Ds3Pair_InstallFailed" xml:space="preserve"><value>无法安装 PlayStation 控制器的蓝牙驱动。</value></data>
+  <data name="Ds3Pair_Instructions" xml:space="preserve"><value>用 USB 线连接 DualShock 3，然后点击“配对”。PadForge 会将本 PC 写入控制器并进行注册。完成后，拔下控制器并按下 PS 键即可通过蓝牙连接。</value></data>
+  <data name="Ds3Pair_NoUsb" xml:space="preserve"><value>未在 USB 上找到 DualShock 3。请用 USB 线连接后重试。</value></data>
+  <data name="Ds3Pair_Success" xml:space="preserve"><value>就绪。拔下控制器并按下 PS 键，它会出现在你的设备列表中。</value></data>
+  <data name="Ds3Pair_Working" xml:space="preserve"><value>正在设置控制器。请保持 USB 连接。</value></data>
+  <data name="Engine_Forging" xml:space="preserve"><value>锻造中</value></data>
+  <data name="FirstRun_Begin" xml:space="preserve"><value>开始导览</value></data>
+  <data name="FirstRun_Body" xml:space="preserve"><value>连接控制器，选择输出类型，PadForge 便会将你的输入锻造成它。简短的导览会带你了解各处功能所在。</value></data>
+  <data name="FirstRun_Done" xml:space="preserve"><value>完成</value></data>
+  <data name="FirstRun_Next" xml:space="preserve"><value>下一步</value></data>
+  <data name="FirstRun_Skip" xml:space="preserve"><value>跳过</value></data>
+  <data name="FirstRun_Title" xml:space="preserve"><value>点燃熔炉</value></data>
+  <data name="Instr_Out" xml:space="preserve"><value>输出</value></data>
+  <data name="Instr_Raw" xml:space="preserve"><value>原始</value></data>
+  <data name="Macro_EmptyHint" xml:space="preserve"><value>在左侧选择一个宏，或点击“添加”新建一个。</value></data>
+  <data name="Pad_ScopeDevice" xml:space="preserve"><value>设备</value></data>
+  <data name="Pad_Tab_Preview" xml:space="preserve"><value>预览</value></data>
+  <data name="Pad_ToggleAnnotations" xml:space="preserve"><value>映射标注</value></data>
+  <data name="Settings_ShowTour" xml:space="preserve"><value>显示欢迎导览</value></data>
+  <data name="Tour_Cards_Body" xml:space="preserve"><value>选择输出类型，为槽位分配设备，点击卡片即可调整其映射。</value></data>
+  <data name="Tour_Cards_Title" xml:space="preserve"><value>虚拟控制器</value></data>
+  <data name="Tour_Engine_Body" xml:space="preserve"><value>熔炉本身。切换火焰以启动或停止所有输入轮询。</value></data>
+  <data name="Tour_Engine_Title" xml:space="preserve"><value>输入引擎</value></data>
+  <data name="Tour_Services_Body" xml:space="preserve"><value>运动数据、手机网页控制器和 Remote Link 都从这里传输。</value></data>
+  <data name="Tour_Services_Title" xml:space="preserve"><value>服务</value></data>
+  <data name="Tour_Slots_Body" xml:space="preserve"><value>每个虚拟控制器都在这里。火焰显示当前正在锻造的槽位。</value></data>
+  <data name="Tour_Slots_Title" xml:space="preserve"><value>槽位</value></data>
+  <data name="Tour_Status_Body" xml:space="preserve"><value>设备数量、轮询速率和引擎火焰，始终可见。</value></data>
+  <data name="Tour_Status_Title" xml:space="preserve"><value>仪表栏</value></data>
+  <data name="TypeAbbrev_Extended" xml:space="preserve"><value>EXT</value></data>
+  <data name="TypeAbbrev_KeyboardMouse" xml:space="preserve"><value>KBM</value></data>
+  <data name="TypeAbbrev_Midi" xml:space="preserve"><value>MIDI</value></data>
+  <data name="TypeAbbrev_PlayStation" xml:space="preserve"><value>PS</value></data>
+  <data name="TypeAbbrev_Xbox" xml:space="preserve"><value>XB</value></data>
+  <data name="WiiPair_FamilyDs3" xml:space="preserve"><value>Sony DualShock 3</value></data>
 </root>

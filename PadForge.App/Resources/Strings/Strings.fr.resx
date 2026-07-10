@@ -2214,4 +2214,50 @@
   <data name="DevObj_ConsumerBrowserRefresh" xml:space="preserve"><value>Actualiser</value></data>
   <data name="DevObj_ConsumerBrowserBookmarks" xml:space="preserve"><value>Favoris</value></data>
   <data name="DevObj_ConsumerDynamic_Format" xml:space="preserve"><value>Multimédia {0}</value></data>
+  <data name="About_BthPS3" xml:space="preserve"><value>BthPS3</value></data>
+  <data name="About_BthPS3Desc" xml:space="preserve"><value>Pilotes de profil Bluetooth et de filtre PSM fournis par nefarius, permettant à une DualShock 3 de se connecter via la radio partagée. Installés dans l'application au moment de l'appairage. BSD 3-Clause.</value></data>
+  <data name="About_DsHidMini" xml:space="preserve"><value>DsHidMini</value></data>
+  <data name="About_DsHidMiniDesc" xml:space="preserve"><value>Référence du protocole DualShock 3 par Benjamin Höglinger-Stelzer : rapports de fonctionnalité sixpair, modèle de rapport de sortie Bluetooth, ordre d'activation, correspondance de la batterie. L'implémentation de PadForge est en C# original. BSD 3-Clause.</value></data>
+  <data name="About_NefariusDevMgmt" xml:space="preserve"><value>Nefarius.Utilities.DeviceManagement</value></data>
+  <data name="About_NefariusDevMgmtDesc" xml:space="preserve"><value>Installation dans le magasin de pilotes, enregistrement du filtre de classe Bluetooth et cycle du port USB pour la configuration BthPS3 intégrée, par nefarius. MIT.</value></data>
+  <data name="Dashboard_Services" xml:space="preserve"><value>Services</value></data>
+  <data name="Dashboard_Slot" xml:space="preserve"><value>Emplacement</value></data>
+  <data name="Dashboard_StatusCold" xml:space="preserve"><value>Froid</value></data>
+  <data name="Devices_EmptyHint" xml:space="preserve"><value>Sélectionnez un appareil pour inspecter son entrée brute.</value></data>
+  <data name="Ds3Pair_Failed" xml:space="preserve"><value>L'appairage ne s'est pas terminé. Consultez le journal pour plus de détails.</value></data>
+  <data name="Ds3Pair_InstallFailed" xml:space="preserve"><value>Le pilote Bluetooth pour les manettes PlayStation n'a pas pu être installé.</value></data>
+  <data name="Ds3Pair_Instructions" xml:space="preserve"><value>Connectez la DualShock 3 avec un câble USB, puis cliquez sur Appairer. PadForge inscrit ce PC dans la manette et l'enregistre. Une fois terminé, débranchez la manette et appuyez sur le bouton PS pour vous connecter via Bluetooth.</value></data>
+  <data name="Ds3Pair_NoUsb" xml:space="preserve"><value>Aucune DualShock 3 détectée en USB. Connectez-la avec un câble USB et réessayez.</value></data>
+  <data name="Ds3Pair_Success" xml:space="preserve"><value>Prêt. Débranchez la manette et appuyez sur le bouton PS. Elle apparaîtra dans votre liste d'appareils.</value></data>
+  <data name="Ds3Pair_Working" xml:space="preserve"><value>Configuration de la manette en cours. Gardez-la connectée en USB.</value></data>
+  <data name="Engine_Forging" xml:space="preserve"><value>En forge</value></data>
+  <data name="FirstRun_Begin" xml:space="preserve"><value>Commencer la visite</value></data>
+  <data name="FirstRun_Body" xml:space="preserve"><value>Connectez une manette, choisissez un type de sortie, et PadForge y forge vos entrées. Une courte visite vous montre où tout se trouve.</value></data>
+  <data name="FirstRun_Done" xml:space="preserve"><value>Terminé</value></data>
+  <data name="FirstRun_Next" xml:space="preserve"><value>Suivant</value></data>
+  <data name="FirstRun_Skip" xml:space="preserve"><value>Passer</value></data>
+  <data name="FirstRun_Title" xml:space="preserve"><value>Allumer la forge</value></data>
+  <data name="Instr_Out" xml:space="preserve"><value>OUT</value></data>
+  <data name="Instr_Raw" xml:space="preserve"><value>RAW</value></data>
+  <data name="Macro_EmptyHint" xml:space="preserve"><value>Sélectionnez une macro à gauche, ou appuyez sur Ajouter pour en créer une.</value></data>
+  <data name="Pad_ScopeDevice" xml:space="preserve"><value>Appareil</value></data>
+  <data name="Pad_Tab_Preview" xml:space="preserve"><value>Aperçu</value></data>
+  <data name="Pad_ToggleAnnotations" xml:space="preserve"><value>Annotations de mappage</value></data>
+  <data name="Settings_ShowTour" xml:space="preserve"><value>Afficher la visite de bienvenue</value></data>
+  <data name="Tour_Cards_Body" xml:space="preserve"><value>Choisissez un type de sortie, alimentez les emplacements en appareils, et cliquez sur une carte pour façonner ses mappages.</value></data>
+  <data name="Tour_Cards_Title" xml:space="preserve"><value>Manettes virtuelles</value></data>
+  <data name="Tour_Engine_Body" xml:space="preserve"><value>La forge elle-même. Basculez la flamme pour démarrer ou arrêter l'interrogation de toutes les entrées.</value></data>
+  <data name="Tour_Engine_Title" xml:space="preserve"><value>Moteur d'entrée</value></data>
+  <data name="Tour_Services_Body" xml:space="preserve"><value>Les données de mouvement, la manette web sur téléphone et Remote Link sont diffusés depuis ici.</value></data>
+  <data name="Tour_Services_Title" xml:space="preserve"><value>Services</value></data>
+  <data name="Tour_Slots_Body" xml:space="preserve"><value>Chaque manette virtuelle réside ici. La flamme indique quels emplacements sont en forge en ce moment.</value></data>
+  <data name="Tour_Slots_Title" xml:space="preserve"><value>Emplacements</value></data>
+  <data name="Tour_Status_Body" xml:space="preserve"><value>Le nombre d'appareils, la fréquence d'interrogation et la flamme du moteur, toujours visibles.</value></data>
+  <data name="Tour_Status_Title" xml:space="preserve"><value>Barre d'instruments</value></data>
+  <data name="TypeAbbrev_Extended" xml:space="preserve"><value>EXT</value></data>
+  <data name="TypeAbbrev_KeyboardMouse" xml:space="preserve"><value>CS</value></data>
+  <data name="TypeAbbrev_Midi" xml:space="preserve"><value>MIDI</value></data>
+  <data name="TypeAbbrev_PlayStation" xml:space="preserve"><value>PS</value></data>
+  <data name="TypeAbbrev_Xbox" xml:space="preserve"><value>XB</value></data>
+  <data name="WiiPair_FamilyDs3" xml:space="preserve"><value>Sony DualShock 3</value></data>
 </root>

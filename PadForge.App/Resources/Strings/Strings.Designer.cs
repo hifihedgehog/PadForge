@@ -471,6 +471,12 @@ public class Strings : INotifyPropertyChanged
     public string About_NAudioDesc => Get("About_NAudioDesc");
     public string About_BouncyCastle => Get("About_BouncyCastle");
     public string About_BouncyCastleDesc => Get("About_BouncyCastleDesc");
+    public string About_BthPS3 => Get("About_BthPS3");
+    public string About_BthPS3Desc => Get("About_BthPS3Desc");
+    public string About_DsHidMini => Get("About_DsHidMini");
+    public string About_DsHidMiniDesc => Get("About_DsHidMiniDesc");
+    public string About_NefariusDevMgmt => Get("About_NefariusDevMgmt");
+    public string About_NefariusDevMgmtDesc => Get("About_NefariusDevMgmtDesc");
     public string About_License => Get("About_License");
     public string About_LicenseText => Get("About_LicenseText");
     public string DeviceType_Gamepad => Get("DeviceType_Gamepad");

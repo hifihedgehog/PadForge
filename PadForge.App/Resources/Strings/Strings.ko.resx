@@ -2214,4 +2214,50 @@
   <data name="DevObj_ConsumerBrowserRefresh" xml:space="preserve"><value>새로 고침</value></data>
   <data name="DevObj_ConsumerBrowserBookmarks" xml:space="preserve"><value>북마크</value></data>
   <data name="DevObj_ConsumerDynamic_Format" xml:space="preserve"><value>소비자 {0}</value></data>
+  <data name="About_BthPS3" xml:space="preserve"><value>BthPS3</value></data>
+  <data name="About_BthPS3Desc" xml:space="preserve"><value>DualShock 3가 공유 무선 장치를 통해 연결되도록 해주는 nefarius의 번들 Bluetooth 프로파일 및 PSM 필터 드라이버입니다. 페어링 시 앱 내에서 설치됩니다. BSD 3-Clause.</value></data>
+  <data name="About_DsHidMini" xml:space="preserve"><value>DsHidMini</value></data>
+  <data name="About_DsHidMiniDesc" xml:space="preserve"><value>Benjamin Höglinger-Stelzer의 DualShock 3 프로토콜 참조 자료: sixpair 기능 리포트, Bluetooth 출력 리포트 템플릿, 활성화 순서, 배터리 맵. PadForge의 구현은 독자적인 C#입니다. BSD 3-Clause.</value></data>
+  <data name="About_NefariusDevMgmt" xml:space="preserve"><value>Nefarius.Utilities.DeviceManagement</value></data>
+  <data name="About_NefariusDevMgmtDesc" xml:space="preserve"><value>앱 내 BthPS3 설정을 위한 드라이버 저장소 설치, Bluetooth 클래스 필터 등록, USB 포트 순환. nefarius 제작. MIT.</value></data>
+  <data name="Dashboard_Services" xml:space="preserve"><value>서비스</value></data>
+  <data name="Dashboard_Slot" xml:space="preserve"><value>슬롯</value></data>
+  <data name="Dashboard_StatusCold" xml:space="preserve"><value>꺼짐</value></data>
+  <data name="Devices_EmptyHint" xml:space="preserve"><value>장치를 선택하면 원시 입력을 확인할 수 있습니다.</value></data>
+  <data name="Ds3Pair_Failed" xml:space="preserve"><value>페어링이 완료되지 않았습니다. 자세한 내용은 로그를 확인하세요.</value></data>
+  <data name="Ds3Pair_InstallFailed" xml:space="preserve"><value>PlayStation 컨트롤러용 Bluetooth 드라이버를 설치할 수 없습니다.</value></data>
+  <data name="Ds3Pair_Instructions" xml:space="preserve"><value>DualShock 3를 USB 케이블로 연결한 다음 페어링을 클릭하세요. PadForge가 이 PC 정보를 컨트롤러에 기록하고 등록합니다. 완료되면 컨트롤러를 분리하고 PS 버튼을 눌러 Bluetooth로 연결하세요.</value></data>
+  <data name="Ds3Pair_NoUsb" xml:space="preserve"><value>USB에서 DualShock 3를 찾을 수 없습니다. USB 케이블로 연결한 후 다시 시도하세요.</value></data>
+  <data name="Ds3Pair_Success" xml:space="preserve"><value>준비되었습니다. 컨트롤러를 분리하고 PS 버튼을 누르세요. 장치 목록에 나타납니다.</value></data>
+  <data name="Ds3Pair_Working" xml:space="preserve"><value>컨트롤러를 설정하는 중입니다. USB 연결을 유지하세요.</value></data>
+  <data name="Engine_Forging" xml:space="preserve"><value>벼리는 중</value></data>
+  <data name="FirstRun_Begin" xml:space="preserve"><value>둘러보기 시작</value></data>
+  <data name="FirstRun_Body" xml:space="preserve"><value>컨트롤러를 연결하고 출력 유형을 선택하면 PadForge가 입력을 그 형태로 벼려냅니다. 짧은 둘러보기로 모든 기능이 어디에 있는지 안내합니다.</value></data>
+  <data name="FirstRun_Done" xml:space="preserve"><value>완료</value></data>
+  <data name="FirstRun_Next" xml:space="preserve"><value>다음</value></data>
+  <data name="FirstRun_Skip" xml:space="preserve"><value>건너뛰기</value></data>
+  <data name="FirstRun_Title" xml:space="preserve"><value>화로에 불 지피기</value></data>
+  <data name="Instr_Out" xml:space="preserve"><value>OUT</value></data>
+  <data name="Instr_Raw" xml:space="preserve"><value>RAW</value></data>
+  <data name="Macro_EmptyHint" xml:space="preserve"><value>왼쪽에서 매크로를 선택하거나 추가를 눌러 새로 만드세요.</value></data>
+  <data name="Pad_ScopeDevice" xml:space="preserve"><value>장치</value></data>
+  <data name="Pad_Tab_Preview" xml:space="preserve"><value>미리 보기</value></data>
+  <data name="Pad_ToggleAnnotations" xml:space="preserve"><value>매핑 주석</value></data>
+  <data name="Settings_ShowTour" xml:space="preserve"><value>환영 둘러보기 표시</value></data>
+  <data name="Tour_Cards_Body" xml:space="preserve"><value>출력 유형을 선택하고 슬롯에 장치를 채운 다음, 카드를 클릭해 매핑을 구성하세요.</value></data>
+  <data name="Tour_Cards_Title" xml:space="preserve"><value>가상 컨트롤러</value></data>
+  <data name="Tour_Engine_Body" xml:space="preserve"><value>화로 그 자체입니다. 불꽃을 켜거나 꺼서 모든 입력 폴링을 시작하거나 멈추세요.</value></data>
+  <data name="Tour_Engine_Title" xml:space="preserve"><value>입력 엔진</value></data>
+  <data name="Tour_Services_Body" xml:space="preserve"><value>모션 데이터, 휴대폰 웹 컨트롤러, Remote Link가 모두 여기 아래에서 전송됩니다.</value></data>
+  <data name="Tour_Services_Title" xml:space="preserve"><value>서비스</value></data>
+  <data name="Tour_Slots_Body" xml:space="preserve"><value>각 가상 컨트롤러가 여기에 자리합니다. 불꽃은 지금 어떤 슬롯이 벼리고 있는지 보여줍니다.</value></data>
+  <data name="Tour_Slots_Title" xml:space="preserve"><value>슬롯</value></data>
+  <data name="Tour_Status_Body" xml:space="preserve"><value>장치 수, 폴링 속도, 엔진 불꽃이 항상 표시됩니다.</value></data>
+  <data name="Tour_Status_Title" xml:space="preserve"><value>계기 표시줄</value></data>
+  <data name="TypeAbbrev_Extended" xml:space="preserve"><value>EXT</value></data>
+  <data name="TypeAbbrev_KeyboardMouse" xml:space="preserve"><value>KBM</value></data>
+  <data name="TypeAbbrev_Midi" xml:space="preserve"><value>MIDI</value></data>
+  <data name="TypeAbbrev_PlayStation" xml:space="preserve"><value>PS</value></data>
+  <data name="TypeAbbrev_Xbox" xml:space="preserve"><value>XB</value></data>
+  <data name="WiiPair_FamilyDs3" xml:space="preserve"><value>Sony DualShock 3</value></data>
 </root>

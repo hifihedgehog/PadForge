@@ -2214,4 +2214,50 @@
   <data name="DevObj_ConsumerBrowserRefresh" xml:space="preserve"><value>Atualizar</value></data>
   <data name="DevObj_ConsumerBrowserBookmarks" xml:space="preserve"><value>Favoritos</value></data>
   <data name="DevObj_ConsumerDynamic_Format" xml:space="preserve"><value>Consumo {0}</value></data>
+  <data name="About_BthPS3" xml:space="preserve"><value>BthPS3</value></data>
+  <data name="About_BthPS3Desc" xml:space="preserve"><value>Drivers de perfil Bluetooth e de filtro PSM incluídos, por nefarius, que permitem a um DualShock 3 conectar pelo rádio compartilhado. Instalados no app no momento do pareamento. BSD 3-Clause.</value></data>
+  <data name="About_DsHidMini" xml:space="preserve"><value>DsHidMini</value></data>
+  <data name="About_DsHidMiniDesc" xml:space="preserve"><value>Referência do protocolo do DualShock 3 por Benjamin Höglinger-Stelzer: feature reports do sixpair, modelo de output-report Bluetooth, ordem de ativação, mapa de bateria. A implementação do PadForge é em C# original. BSD 3-Clause.</value></data>
+  <data name="About_NefariusDevMgmt" xml:space="preserve"><value>Nefarius.Utilities.DeviceManagement</value></data>
+  <data name="About_NefariusDevMgmtDesc" xml:space="preserve"><value>Instalação no driver-store, registro de filtro de classe Bluetooth e ciclagem de porta USB para a configuração do BthPS3 no app, por nefarius. MIT.</value></data>
+  <data name="Dashboard_Services" xml:space="preserve"><value>Serviços</value></data>
+  <data name="Dashboard_Slot" xml:space="preserve"><value>Slot</value></data>
+  <data name="Dashboard_StatusCold" xml:space="preserve"><value>Frio</value></data>
+  <data name="Devices_EmptyHint" xml:space="preserve"><value>Selecione um dispositivo para inspecionar sua entrada bruta.</value></data>
+  <data name="Ds3Pair_Failed" xml:space="preserve"><value>O pareamento não foi concluído. Consulte o log para detalhes.</value></data>
+  <data name="Ds3Pair_InstallFailed" xml:space="preserve"><value>Não foi possível instalar o driver Bluetooth para controles PlayStation.</value></data>
+  <data name="Ds3Pair_Instructions" xml:space="preserve"><value>Conecte o DualShock 3 com um cabo USB e clique em Parear. O PadForge grava este PC no controle e o registra. Ao terminar, desconecte o controle e pressione o botão PS para conectar via Bluetooth.</value></data>
+  <data name="Ds3Pair_NoUsb" xml:space="preserve"><value>Nenhum DualShock 3 encontrado via USB. Conecte-o com um cabo USB e tente novamente.</value></data>
+  <data name="Ds3Pair_Success" xml:space="preserve"><value>Pronto. Desconecte o controle e pressione o botão PS. Ele aparecerá na sua lista de dispositivos.</value></data>
+  <data name="Ds3Pair_Working" xml:space="preserve"><value>Configurando o controle. Mantenha-o conectado via USB.</value></data>
+  <data name="Engine_Forging" xml:space="preserve"><value>Forjando</value></data>
+  <data name="FirstRun_Begin" xml:space="preserve"><value>Iniciar tour</value></data>
+  <data name="FirstRun_Body" xml:space="preserve"><value>Conecte um controle, escolha um tipo de saída e o PadForge forja suas entradas nele. Um tour rápido mostra onde tudo fica.</value></data>
+  <data name="FirstRun_Done" xml:space="preserve"><value>Concluir</value></data>
+  <data name="FirstRun_Next" xml:space="preserve"><value>Próximo</value></data>
+  <data name="FirstRun_Skip" xml:space="preserve"><value>Pular</value></data>
+  <data name="FirstRun_Title" xml:space="preserve"><value>Acenda a Forja</value></data>
+  <data name="Instr_Out" xml:space="preserve"><value>SAÍDA</value></data>
+  <data name="Instr_Raw" xml:space="preserve"><value>RAW</value></data>
+  <data name="Macro_EmptyHint" xml:space="preserve"><value>Selecione uma macro à esquerda ou clique em Adicionar para criar uma.</value></data>
+  <data name="Pad_ScopeDevice" xml:space="preserve"><value>Dispositivo</value></data>
+  <data name="Pad_Tab_Preview" xml:space="preserve"><value>Prévia</value></data>
+  <data name="Pad_ToggleAnnotations" xml:space="preserve"><value>Anotações de mapeamento</value></data>
+  <data name="Settings_ShowTour" xml:space="preserve"><value>Mostrar tour de boas-vindas</value></data>
+  <data name="Tour_Cards_Body" xml:space="preserve"><value>Escolha um tipo de saída, alimente o slot com dispositivos e clique em um card para moldar seus mapeamentos.</value></data>
+  <data name="Tour_Cards_Title" xml:space="preserve"><value>Controles virtuais</value></data>
+  <data name="Tour_Engine_Body" xml:space="preserve"><value>A forja em si. Alterne a chama para iniciar ou parar toda a leitura de entradas.</value></data>
+  <data name="Tour_Engine_Title" xml:space="preserve"><value>Motor de entrada</value></data>
+  <data name="Tour_Services_Body" xml:space="preserve"><value>Os dados de movimento, o controle web pelo celular e o Remote Link transmitem daqui.</value></data>
+  <data name="Tour_Services_Title" xml:space="preserve"><value>Serviços</value></data>
+  <data name="Tour_Slots_Body" xml:space="preserve"><value>Cada controle virtual fica aqui. A chama mostra quais slots estão forjando agora.</value></data>
+  <data name="Tour_Slots_Title" xml:space="preserve"><value>Slots</value></data>
+  <data name="Tour_Status_Body" xml:space="preserve"><value>Contagem de dispositivos, taxa de polling e a chama do motor, sempre à vista.</value></data>
+  <data name="Tour_Status_Title" xml:space="preserve"><value>Linha de instrumentos</value></data>
+  <data name="TypeAbbrev_Extended" xml:space="preserve"><value>EXT</value></data>
+  <data name="TypeAbbrev_KeyboardMouse" xml:space="preserve"><value>KBM</value></data>
+  <data name="TypeAbbrev_Midi" xml:space="preserve"><value>MIDI</value></data>
+  <data name="TypeAbbrev_PlayStation" xml:space="preserve"><value>PS</value></data>
+  <data name="TypeAbbrev_Xbox" xml:space="preserve"><value>XB</value></data>
+  <data name="WiiPair_FamilyDs3" xml:space="preserve"><value>Sony DualShock 3</value></data>
 </root>

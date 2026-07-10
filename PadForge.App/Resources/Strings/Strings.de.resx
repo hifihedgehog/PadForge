@@ -2214,4 +2214,50 @@
   <data name="DevObj_ConsumerBrowserRefresh" xml:space="preserve"><value>Aktualisieren</value></data>
   <data name="DevObj_ConsumerBrowserBookmarks" xml:space="preserve"><value>Lesezeichen</value></data>
   <data name="DevObj_ConsumerDynamic_Format" xml:space="preserve"><value>Multimedia {0}</value></data>
+  <data name="About_BthPS3" xml:space="preserve"><value>BthPS3</value></data>
+  <data name="About_BthPS3Desc" xml:space="preserve"><value>Mitgelieferte Bluetooth-Profil- und PSM-Filtertreiber von nefarius, mit denen sich ein DualShock 3 über das gemeinsame Funkmodul verbindet. Wird beim Koppeln direkt in der App installiert. BSD 3-Clause.</value></data>
+  <data name="About_DsHidMini" xml:space="preserve"><value>DsHidMini</value></data>
+  <data name="About_DsHidMiniDesc" xml:space="preserve"><value>DualShock-3-Protokollreferenz von Benjamin Höglinger-Stelzer: sixpair-Feature-Reports, Bluetooth-Output-Report-Vorlage, Enable-Reihenfolge, Batterie-Zuordnung. Die Implementierung von PadForge ist eigenständiger C#-Code. BSD 3-Clause.</value></data>
+  <data name="About_NefariusDevMgmt" xml:space="preserve"><value>Nefarius.Utilities.DeviceManagement</value></data>
+  <data name="About_NefariusDevMgmtDesc" xml:space="preserve"><value>Treiberspeicher-Installation, Registrierung des Bluetooth-Klassenfilters und USB-Port-Neustart für die BthPS3-Einrichtung in der App, von nefarius. MIT.</value></data>
+  <data name="Dashboard_Services" xml:space="preserve"><value>Dienste</value></data>
+  <data name="Dashboard_Slot" xml:space="preserve"><value>Slot</value></data>
+  <data name="Dashboard_StatusCold" xml:space="preserve"><value>Kalt</value></data>
+  <data name="Devices_EmptyHint" xml:space="preserve"><value>Wählen Sie ein Gerät aus, um seine Roheingabe zu prüfen.</value></data>
+  <data name="Ds3Pair_Failed" xml:space="preserve"><value>Kopplung nicht abgeschlossen. Details finden Sie im Protokoll.</value></data>
+  <data name="Ds3Pair_InstallFailed" xml:space="preserve"><value>Der Bluetooth-Treiber für PlayStation-Controller konnte nicht installiert werden.</value></data>
+  <data name="Ds3Pair_Instructions" xml:space="preserve"><value>Verbinden Sie den DualShock 3 mit einem USB-Kabel und klicken Sie dann auf Koppeln. PadForge schreibt diesen PC in den Controller und registriert ihn. Trennen Sie danach den Controller und drücken Sie die PS-Taste, um sich über Bluetooth zu verbinden.</value></data>
+  <data name="Ds3Pair_NoUsb" xml:space="preserve"><value>Kein DualShock 3 über USB gefunden. Verbinden Sie ihn mit einem USB-Kabel und versuchen Sie es erneut.</value></data>
+  <data name="Ds3Pair_Success" xml:space="preserve"><value>Bereit. Trennen Sie den Controller und drücken Sie die PS-Taste. Er erscheint dann in Ihrer Geräteliste.</value></data>
+  <data name="Ds3Pair_Working" xml:space="preserve"><value>Controller wird eingerichtet. Lassen Sie ihn über USB verbunden.</value></data>
+  <data name="Engine_Forging" xml:space="preserve"><value>Schmieden</value></data>
+  <data name="FirstRun_Begin" xml:space="preserve"><value>Tour starten</value></data>
+  <data name="FirstRun_Body" xml:space="preserve"><value>Verbinden Sie einen Controller, wählen Sie einen Ausgabetyp, und PadForge schmiedet Ihre Eingaben hinein. Eine kurze Tour zeigt Ihnen, wo alles zu finden ist.</value></data>
+  <data name="FirstRun_Done" xml:space="preserve"><value>Fertig</value></data>
+  <data name="FirstRun_Next" xml:space="preserve"><value>Weiter</value></data>
+  <data name="FirstRun_Skip" xml:space="preserve"><value>Überspringen</value></data>
+  <data name="FirstRun_Title" xml:space="preserve"><value>Die Schmiede anheizen</value></data>
+  <data name="Instr_Out" xml:space="preserve"><value>OUT</value></data>
+  <data name="Instr_Raw" xml:space="preserve"><value>RAW</value></data>
+  <data name="Macro_EmptyHint" xml:space="preserve"><value>Wählen Sie links ein Makro aus oder klicken Sie auf Hinzufügen, um eines zu erstellen.</value></data>
+  <data name="Pad_ScopeDevice" xml:space="preserve"><value>Gerät</value></data>
+  <data name="Pad_Tab_Preview" xml:space="preserve"><value>Vorschau</value></data>
+  <data name="Pad_ToggleAnnotations" xml:space="preserve"><value>Zuordnungs-Anmerkungen</value></data>
+  <data name="Settings_ShowTour" xml:space="preserve"><value>Willkommenstour anzeigen</value></data>
+  <data name="Tour_Cards_Body" xml:space="preserve"><value>Wählen Sie einen Ausgabetyp, weisen Sie dem Slot Geräte zu und klicken Sie auf eine Karte, um ihre Zuordnungen zu gestalten.</value></data>
+  <data name="Tour_Cards_Title" xml:space="preserve"><value>Virtuelle Controller</value></data>
+  <data name="Tour_Engine_Body" xml:space="preserve"><value>Die Schmiede selbst. Schalten Sie die Flamme um, um die gesamte Eingabeabfrage zu starten oder zu stoppen.</value></data>
+  <data name="Tour_Engine_Title" xml:space="preserve"><value>Eingabe-Engine</value></data>
+  <data name="Tour_Services_Body" xml:space="preserve"><value>Bewegungsdaten, der Web-Controller fürs Smartphone und Remote Link werden von hier unten gestreamt.</value></data>
+  <data name="Tour_Services_Title" xml:space="preserve"><value>Dienste</value></data>
+  <data name="Tour_Slots_Body" xml:space="preserve"><value>Jeder virtuelle Controller befindet sich hier. Die Flamme zeigt, welche Slots gerade schmieden.</value></data>
+  <data name="Tour_Slots_Title" xml:space="preserve"><value>Slots</value></data>
+  <data name="Tour_Status_Body" xml:space="preserve"><value>Geräteanzahl, Abfragerate und die Engine-Flamme, immer im Blick.</value></data>
+  <data name="Tour_Status_Title" xml:space="preserve"><value>Instrumentenleiste</value></data>
+  <data name="TypeAbbrev_Extended" xml:space="preserve"><value>EXT</value></data>
+  <data name="TypeAbbrev_KeyboardMouse" xml:space="preserve"><value>KBM</value></data>
+  <data name="TypeAbbrev_Midi" xml:space="preserve"><value>MIDI</value></data>
+  <data name="TypeAbbrev_PlayStation" xml:space="preserve"><value>PS</value></data>
+  <data name="TypeAbbrev_Xbox" xml:space="preserve"><value>XB</value></data>
+  <data name="WiiPair_FamilyDs3" xml:space="preserve"><value>Sony DualShock 3</value></data>
 </root>

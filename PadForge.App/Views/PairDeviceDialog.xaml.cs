@@ -70,10 +70,13 @@ namespace PadForge.Views
             var svc = new Ds3PairingService(msg =>
                 Dispatcher.BeginInvoke(new Action(() => SetStatus(msg, secondary: true))));
 
+            _cts = new CancellationTokenSource();
+            var token = _cts.Token;
+
             Ds3PairingService.PairResult result = null;
             try
             {
-                result = await Task.Run(() => svc.RunPairing());
+                result = await Task.Run(() => svc.RunPairing(token));
             }
             catch (Exception ex)
             {

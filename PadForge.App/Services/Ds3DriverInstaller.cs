@@ -32,8 +32,8 @@ namespace PadForge.Services
         private static readonly Guid BluetoothClass = new Guid("e0cbf06c-cd8b-4647-bb8a-263b43f0f974");
         // Radio device-interface GUID (robust radio locate, HostRadio.cs:134).
         private static readonly Guid RadioInterface = new Guid("92383b0e-f90e-4ac9-8d44-8c2d0d0ebda2");
-        // BTHPS3_SERVICE_GUID + name (BthPS3.h:59-60,81) - advertising this spawns the profile PDO.
-        private static readonly Guid BthPs3ServiceGuid = new Guid("1cb831ea-79cd-4508-b0fc-85f7c85ae8e0");
+        // BTHPS3_SERVICE_GUID name (BthPS3.h:81) - advertising this service (via the
+        // by-ref BthPs3ServiceGuidLocal below) spawns the profile PDO.
         private const string BthPs3ServiceName = "BthPS3Service";
 
         private const string BthPs3ParamsKey =
@@ -111,17 +111,27 @@ namespace PadForge.Services
             catch (Exception ex) { log("WinUSB bind failed: " + ex.Message); return false; }
         }
 
+        // Two radio cycles overlapping is a path into the BthPS3 freed-context BSOD
+        // (0xD1, 2026-07-09). Ds3PairingService._radioGate serializes the pair/unpair
+        // SEQUENCES; this lock serializes the cycle PRIMITIVE itself, so a caller
+        // outside the gate (e.g. the one-time driver install) can't overlap a gated
+        // cycle either.
+        private static readonly object _cycleLock = new object();
+
         /// <summary>Reboot-free radio re-enumeration (IOCTL_USB_HUB_CYCLE_PORT).</summary>
         public static void CycleBluetoothRadio(Action<string> log)
         {
             try
             {
-                if (!Devcon.FindByInterfaceGuid(RadioInterface, out PnPDevice radio))
+                lock (_cycleLock)
                 {
-                    log("No USB Bluetooth radio to cycle.");
-                    return;
+                    if (!Devcon.FindByInterfaceGuid(RadioInterface, out PnPDevice radio))
+                    {
+                        log("No USB Bluetooth radio to cycle.");
+                        return;
+                    }
+                    radio.ToUsbPnPDevice().CyclePort();
                 }
-                radio.ToUsbPnPDevice().CyclePort();
                 log("Bluetooth radio re-enumerated.");
             }
             catch (Exception ex) { log("Radio cycle failed: " + ex.Message); }

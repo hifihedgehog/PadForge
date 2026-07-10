@@ -176,18 +176,27 @@ namespace PadForge.Views
                     // pad can't blip back into the list while its pairing is cleared.
                     if (isDs3) PadForge.Common.Input.Ds3DirectService.SuppressAndRelease();
 
-                    vm.SelectedDevice = device;
-                    if (vm.RemoveDeviceCommand.CanExecute(null))
-                        vm.RemoveDeviceCommand.Execute(null);
-
-                    // A DualShock 3 lives on in the Bluetooth stack after its row is
-                    // removed (BthPS3 remembered-device record + link key), so it would
-                    // silently reconnect. "Forget" should mean forgotten: clear its
-                    // pairing too. Background thread - the clear cycles the radio.
-                    if (isDs3)
+                    try
                     {
-                        System.Threading.Tasks.Task.Run(
-                            () => new PadForge.Services.Ds3PairingService().UnpairAllDs3());
+                        vm.SelectedDevice = device;
+                        if (vm.RemoveDeviceCommand.CanExecute(null))
+                            vm.RemoveDeviceCommand.Execute(null);
+                    }
+                    finally
+                    {
+                        // A DualShock 3 lives on in the Bluetooth stack after its row is
+                        // removed (BthPS3 remembered-device record + link key), so it
+                        // would silently reconnect. "Forget" should mean forgotten:
+                        // clear its pairing too. Background thread - the clear cycles
+                        // the radio. Runs even if the row removal threw, because
+                        // UnpairAllDs3's finally is the ONLY thing that releases the
+                        // suppress gate set above; skipping it would strand every DS3
+                        // unable to reconnect for the process lifetime.
+                        if (isDs3)
+                        {
+                            System.Threading.Tasks.Task.Run(
+                                () => new PadForge.Services.Ds3PairingService().UnpairAllDs3());
+                        }
                     }
                 }
             }

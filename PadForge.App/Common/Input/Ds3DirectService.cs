@@ -69,6 +69,24 @@ namespace PadForge.Common.Input
         private IntPtr _readPdo = IntPtr.Zero;
         private IntPtr _writePdo = IntPtr.Zero;
 
+        // Per-connection writer generation: Teardown flips it false so the writer
+        // exits on THIS pad's disconnect even though the service keeps _running.
+        // Without it, every disconnect leaked a live writer thread (the loop's only
+        // exit was _running) and reconnect stacked another one on top.
+        private volatile bool _writerRun;
+
+        // Held across every DeviceIoControl on the write handle AND across that
+        // handle's close in Teardown, so a write can never land on a closed (and
+        // possibly recycled) handle value. The SDL callbacks never take this lock;
+        // they only store state under _outLock, so the hot path stays I/O-free.
+        // Lock order where both are held: _ioLock outer, _outLock inner.
+        private readonly object _ioLock = new object();
+
+        // Serializes Teardown between Stop() and MonitorLoop (both call it) and
+        // makes it idempotent, so the SDL close/detach pair can never run twice
+        // for the same handles.
+        private readonly object _teardownLock = new object();
+
         // Writer state: SDL callbacks store here and signal; the writer flushes.
         private readonly object _outLock = new object();
         private readonly AutoResetEvent _writeSignal = new AutoResetEvent(false);
@@ -83,7 +101,7 @@ namespace PadForge.Common.Input
         // before deleting a DS3's Bluetooth records + cycling the radio, so a still-
         // connected pad can't re-attach a ghost virtual joystick mid-unpair.
         private static volatile bool _suppressReconnect;
-        private static Ds3DirectService _current;
+        private static volatile Ds3DirectService _current;
 
         /// <summary>Detach any live DS3 now and block reconnect until
         /// <see cref="AllowReconnect"/>. Call before removing the pad's BT records.</summary>
@@ -128,6 +146,10 @@ namespace PadForge.Common.Input
 
         private void UpdateBattery(byte status)
         {
+            // 0x00 = DsBatteryStatusNone (DsCommon.h:62): the pad has no reading yet
+            // (transient right after connect). Publishing it would show a hard "0%";
+            // leave the entry absent/unchanged so the indicator stays hidden instead.
+            if (status == 0x00) return;
             if (status == _lastBattery || _instanceId == 0) return;
             _lastBattery = status;
             (int Percent, bool Charging) p = status switch
@@ -194,9 +216,15 @@ namespace PadForge.Common.Input
 
                 lock (_outLock) { _readPdo = rh; _writePdo = wh; _everGotInput = false; _outDirty = true; }
 
+                // Re-check the unpair gate now that the handles are published: a
+                // SuppressAndRelease that fired between the loop-top check and the
+                // opens above would otherwise attach a ghost joystick mid-unpair.
+                if (_suppressReconnect) { Teardown(); Thread.Sleep(250); continue; }
+
                 _log("DS3(BT): raw PDO opened, kicking + attaching virtual joystick...");
                 if (!AttachVirtual()) { Teardown(); Thread.Sleep(1000); continue; }
 
+                _writerRun = true;
                 _writeThread = new Thread(WriterLoop) { IsBackground = true, Name = "Ds3DirectWrite" };
                 _writeThread.Start();
 
@@ -221,10 +249,10 @@ namespace PadForge.Common.Input
             // ordering); the bare enable alone does not start it.
             Kick(); kicks = 1; lastKick = attachedAt; lastWrite = attachedAt;
 
-            while (_running)
+            while (_running && _writerRun)
             {
                 _writeSignal.WaitOne(50);
-                if (!_running) break;
+                if (!_running || !_writerRun) break;
 
                 long now = Environment.TickCount64;
 
@@ -250,9 +278,12 @@ namespace PadForge.Common.Input
         {
             WriteOutputReport();
             byte[] en = { 0x53, 0xF4, 0x42, 0x03, 0x00, 0x00 };
-            IntPtr h; lock (_outLock) h = _writePdo;
-            if (h != IntPtr.Zero && h != INVALID_HANDLE)
-                DeviceIoControl(h, IOCTL_HID_CONTROL_WRITE, en, en.Length, null, 0, out _, IntPtr.Zero);
+            lock (_ioLock)
+            {
+                IntPtr h; lock (_outLock) h = _writePdo;
+                if (h != IntPtr.Zero && h != INVALID_HANDLE)
+                    DeviceIoControl(h, IOCTL_HID_CONTROL_WRITE, en, en.Length, null, 0, out _, IntPtr.Zero);
+            }
         }
 
         // 50-byte DS3 Bluetooth output report (DsHidMini G_Ds3BthHidOutputReport):
@@ -267,17 +298,20 @@ namespace PadForge.Common.Input
                 0x52,0x01, 0x00,0xFF,0x00,0xFF,0x00, 0x00,0x00,0x00,0x00,0x00,
                 0xFF,0x27,0x10,0x00,0x32, 0xFF,0x27,0x10,0x00,0x32, 0xFF,0x27,0x10,0x00,0x32, 0xFF,0x27,0x10,0x00,0x32,
                 0x00,0x00,0x00,0x00,0x00, 0x00,0x00,0x00,0x00,0x00, 0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00 };
-            IntPtr h;
-            lock (_outLock)
+            lock (_ioLock)
             {
-                o[4] = _rumbleSmall > 0 ? (byte)0x01 : (byte)0x00; // small motor on/off
-                o[6] = _rumbleLarge;                               // large motor strength
-                o[11] = _ledMask;                                  // player LED bitmask
-                _outDirty = false;
-                h = _writePdo;
+                IntPtr h;
+                lock (_outLock)
+                {
+                    o[4] = _rumbleSmall > 0 ? (byte)0x01 : (byte)0x00; // small motor on/off
+                    o[6] = _rumbleLarge;                               // large motor strength
+                    o[11] = _ledMask;                                  // player LED bitmask
+                    _outDirty = false;
+                    h = _writePdo;
+                }
+                if (h != IntPtr.Zero && h != INVALID_HANDLE)
+                    DeviceIoControl(h, IOCTL_HID_CONTROL_WRITE, o, o.Length, null, 0, out _, IntPtr.Zero);
             }
-            if (h != IntPtr.Zero && h != INVALID_HANDLE)
-                DeviceIoControl(h, IOCTL_HID_CONTROL_WRITE, o, o.Length, null, 0, out _, IntPtr.Zero);
         }
 
         // ─── read loop: exact-size buffer, one pended read, no hot-path churn ───
@@ -290,11 +324,16 @@ namespace PadForge.Common.Input
             {
                 if (DeviceIoControl(h, IOCTL_HID_INTERRUPT_READ, null, 0, buf, buf.Length, out int rd, IntPtr.Zero))
                 {
-                    if (rd >= 11 && buf[0] == 0xA1 && buf[1] == 0x01)
+                    // Full 50-byte frames only (BthPS3 completes reads at exactly the
+                    // report size; a shorter completion would leave stale bytes from
+                    // the previous frame in the reused buffer past rd). raw[1]=0xFF is
+                    // the DS3's invalid/wake frame; both references drop it
+                    // (SDL_hidapi_ps3.c:566 data[1]==0xFF, ScpToolkit BthDs3.cs:42).
+                    if (rd >= DS3_BT_INPUT_REPORT_SIZE && buf[0] == 0xA1 && buf[1] == 0x01 && buf[2] != 0xFF)
                     {
                         _everGotInput = true;
                         PushState(buf, rd);
-                        if (rd > 31) UpdateBattery(buf[31]);   // raw[30] BatteryStatus
+                        UpdateBattery(buf[31]);   // raw[30] BatteryStatus
                     }
                     // Non-input traffic on the interrupt channel: ignore, read again.
                 }
@@ -377,20 +416,32 @@ namespace PadForge.Common.Input
 
         private void Teardown()
         {
-            _writeSignal.Set();
-            try { if (_writeThread != null && _writeThread != Thread.CurrentThread) _writeThread.Join(1000); } catch { }
-            _writeThread = null;
-
-            if (_instanceId != 0) { PowerByInstance.TryRemove(_instanceId, out _); _lastBattery = 0xFF; }
-            if (_sdlJoystick != IntPtr.Zero) { SDL.SDL_CloseJoystick(_sdlJoystick); _sdlJoystick = IntPtr.Zero; }
-            if (_instanceId != 0) { SDL.SDL_DetachVirtualJoystick(_instanceId); _instanceId = 0; }
-
-            lock (_outLock)
+            // Serialized + idempotent: Stop() and MonitorLoop can both arrive here
+            // (e.g. a wedged read thread outliving Stop's join), and the SDL
+            // close/detach pair must never run twice for the same handles.
+            lock (_teardownLock)
             {
-                if (_readPdo != IntPtr.Zero && _readPdo != INVALID_HANDLE) CloseHandle(_readPdo);
-                if (_writePdo != IntPtr.Zero && _writePdo != INVALID_HANDLE) CloseHandle(_writePdo);
-                _readPdo = IntPtr.Zero;
-                _writePdo = IntPtr.Zero;
+                _writerRun = false;
+                _writeSignal.Set();
+                // Unblock a writer stuck inside a write IOCTL so the join can succeed.
+                lock (_outLock) { if (_writePdo != IntPtr.Zero && _writePdo != INVALID_HANDLE) CancelIoEx(_writePdo, IntPtr.Zero); }
+                try { if (_writeThread != null && _writeThread != Thread.CurrentThread) _writeThread.Join(1000); } catch { }
+                _writeThread = null;
+
+                if (_instanceId != 0) { PowerByInstance.TryRemove(_instanceId, out _); _lastBattery = 0xFF; }
+                if (_sdlJoystick != IntPtr.Zero) { SDL.SDL_CloseJoystick(_sdlJoystick); _sdlJoystick = IntPtr.Zero; }
+                if (_instanceId != 0) { SDL.SDL_DetachVirtualJoystick(_instanceId); _instanceId = 0; }
+
+                // _ioLock: no write IOCTL can be in flight while the handle closes,
+                // so a late writer can never hit a closed/recycled handle value.
+                lock (_ioLock)
+                lock (_outLock)
+                {
+                    if (_readPdo != IntPtr.Zero && _readPdo != INVALID_HANDLE) CloseHandle(_readPdo);
+                    if (_writePdo != IntPtr.Zero && _writePdo != INVALID_HANDLE) CloseHandle(_writePdo);
+                    _readPdo = IntPtr.Zero;
+                    _writePdo = IntPtr.Zero;
+                }
             }
         }
 
@@ -501,7 +552,12 @@ namespace PadForge.Common.Input
         private readonly float[] _accelData = new float[3];
         private readonly float[] _gyroData = new float[3];
 
-        private static short AxisFromByte(byte v) => (short)Math.Clamp((v - 128) * 257, -32768, 32767);
+        /// <summary>0..255 stick byte to the full SDL axis range with 0x80 = exactly 0.
+        /// SDL's own PS3 driver uses v*257-32768 (center = +128); keeping a true zero
+        /// center matters for downstream deadzones, so scale each half to its full
+        /// extent instead: 128..255 -> 0..32767, 0..128 -> -32768..0.</summary>
+        private static short AxisFromByte(byte v) =>
+            v >= 128 ? (short)((v - 128) * 32767 / 127) : (short)((v - 128) * 32768 / 128);
 
         /// <summary>0..255 pressure to the full SDL axis range, exactly as SDL's PS3
         /// driver scales it (v*257 - 32768; released = -32768). The virtual backend

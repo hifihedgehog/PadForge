@@ -65,6 +65,58 @@ namespace PadForge.Services
             catch { /* logging must never break pairing */ }
         }
 
+        /// <summary>True when at least one DualShock 3 is currently paired (a
+        /// BTHPORT device record with the DS3 VID/PID that PadForge wrote at
+        /// pair time). Read-only registry scan, no radio contact, safe to call
+        /// from any thread. Mirrors <see cref="UnpairAllDs3"/>'s enumeration.
+        /// The crash-safety policy uses this to decide whether BthPS3 PSM
+        /// patching should be armed.</summary>
+        public static bool AnyDs3Paired()
+        {
+            try
+            {
+                using var root = Registry.LocalMachine.OpenSubKey(
+                    @"SYSTEM\CurrentControlSet\Services\BTHPORT\Parameters\Devices");
+                if (root == null) return false;
+                foreach (string mac in root.GetSubKeyNames())
+                {
+                    try
+                    {
+                        using var sub = root.OpenSubKey(mac);
+                        if (sub?.GetValue("VID") is int vid && sub.GetValue("PID") is int pid
+                            && vid == DS3_VID && pid == DS3_PID)
+                            return true;
+                    }
+                    catch { /* skip records we can't read */ }
+                }
+            }
+            catch { /* absent hive / access error => treat as none paired */ }
+            return false;
+        }
+
+        /// <summary>Drives BthPS3 PSM patching to the crash-safe state (issue
+        /// #199): armed only while a DS3 is actually paired, off otherwise.
+        /// With patching off BthPS3 sees no incoming Bluetooth connections, so
+        /// its use-after-free-on-disconnect path (upstream nefarius/BthPS3 #48,
+        /// unfixed at the bundled v2.10.470.0) is unreachable, which is what
+        /// turned a stray Wii Remote connect into a 0x50 bugcheck on
+        /// 2026-07-10. No-op when BthPS3 isn't installed. Idempotent; the IOCTL
+        /// toggle contacts no radio and needs no <see cref="_radioGate"/>.</summary>
+        public static void ReconcilePsmPatchForCrashSafety(string reason)
+        {
+            try
+            {
+                if (!Ds3DriverInstaller.IsBthPs3Installed()) return;
+                // Take sole ownership first (AutoEnableFilter=0) so the state we
+                // set below can't be undone by BthPS3's own auto-arm.
+                Ds3DriverInstaller.EnsurePadForgeOwnsPsmPatch();
+                bool wantPatching = AnyDs3Paired();
+                LogLine($"PSM patch reconcile ({reason}): DS3 paired={wantPatching}.");
+                Ds3DriverInstaller.SetPsmPatching(wantPatching, LogLine);
+            }
+            catch (Exception ex) { LogLine("PSM patch reconcile failed: " + ex.Message); }
+        }
+
         public sealed class PairResult
         {
             /// <summary>The pad's own BT MAC (from 0xF2), lowercase hex no separators.</summary>
@@ -104,7 +156,15 @@ namespace PadForge.Services
             {
                 return RunPairingCore(r, ct);
             }
-            finally { PadForge.Common.Input.Ds3DirectService.AllowReconnect(); }
+            finally
+            {
+                PadForge.Common.Input.Ds3DirectService.AllowReconnect();
+                // Reconcile PSM patching to the post-ceremony reality (issue
+                // #199). Install armed patching for the ceremony; on success a
+                // DS3 is now paired so it stays armed, and on any failure exit
+                // with no DS3 paired it disarms so BthPS3 doesn't sit exposed.
+                ReconcilePsmPatchForCrashSafety("ds3-pair-end");
+            }
         }
 
         private PairResult RunPairingCore(PairResult r, CancellationToken ct)
@@ -231,6 +291,9 @@ namespace PadForge.Services
                 // same path a real power-off takes, and the transient PDO self-destroys.
                 CycleRadio();
                 _log("Pairing cleared.");
+                // A DS3 was just forgotten. If none remain, disarm PSM patching
+                // so BthPS3 goes dormant (issue #199 crash mitigation).
+                ReconcilePsmPatchForCrashSafety("ds3-unpair");
             }
         }
 
@@ -288,6 +351,9 @@ namespace PadForge.Services
                 // normal path against a VALID context.
                 CycleRadio();
                 _log($"Unpaired {macs.Count} DualShock 3 controller(s).");
+                // With these records gone, reconcile PSM patching: disarm it if
+                // no DS3 remains paired (issue #199 crash mitigation).
+                ReconcilePsmPatchForCrashSafety("ds3-unpair-all");
                 return macs.Count;
             }
             finally { PadForge.Common.Input.Ds3DirectService.AllowReconnect(); }

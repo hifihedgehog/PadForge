@@ -39,8 +39,14 @@ namespace PadForge.Services
         private const string BthPs3ParamsKey =
             @"SYSTEM\CurrentControlSet\Services\BthPS3\Parameters";
 
-        // IOCTL_BTHPS3PSM_ENABLE_PSM_PATCHING (BthPS3.h:400) + control device path.
+        // PSM filter control IOCTLs (BthPS3.h:400-405). Both take a 4-byte
+        // { ULONG DeviceIndex } input; DeviceIndex is the plain index into the
+        // filter's per-radio collection. A bad index completes with
+        // STATUS_NO_SUCH_DEVICE (Sideband.c:317), surfaced as
+        // ERROR_NO_SUCH_DEVICE, which ends the multi-radio sweep.
         private const uint IOCTL_BTHPS3PSM_ENABLE_PSM_PATCHING = 0x2AAC04;
+        private const uint IOCTL_BTHPS3PSM_DISABLE_PSM_PATCHING = 0x2AAC08;
+        private const int ERROR_NO_SUCH_DEVICE = 433;
         private const string PsmControlPath = @"\\.\BthPS3PSMControl";
 
         // ── public entry points used by Ds3PairingService ────────────────────────
@@ -343,17 +349,99 @@ namespace PadForge.Services
             using var key = Registry.LocalMachine.CreateSubKey(BthPs3ParamsKey, writable: true);
             key?.SetValue("RawPDO", 1, RegistryValueKind.DWord);       // enumerate with no function driver
             key?.SetValue("ExclusivePDO", 0, RegistryValueKind.DWord); // allow our shared open
+            // AutoEnableFilter=0 hands PadForge sole ownership of PSM patching
+            // (issue #199 crash mitigation). BthPS3's default (1) auto-arms
+            // patching at radio power-up AND re-arms it ~10 s after it denies a
+            // foreign device (BthPS3 L2CAP.Connect.c:242, the exact re-arm seen
+            // in the 2026-07-10 crash log at 12:29:04). With it off, the filter
+            // only patches when PadForge's SetPsmPatching enables it, so BthPS3
+            // receives zero incoming connections whenever no DS3 is in play and
+            // its use-after-free-on-disconnect path (upstream #48, unfixed at
+            // v2.10.470.0) is unreachable. AutoDisableFilter stays default (1):
+            // deny-then-off is a fail-safe we keep.
+            key?.SetValue("AutoEnableFilter", 0, RegistryValueKind.DWord);
         }
 
-        private static void EnsurePsmPatch(Action<string> log)
+        private static void EnsurePsmPatch(Action<string> log) => SetPsmPatching(true, log);
+
+        /// <summary>True when the BthPS3 profile driver service is installed
+        /// (the stack that carries the DS3 over Bluetooth). Cheap registry-free
+        /// SCM query; the crash-safety reconcile no-ops when this is false.</summary>
+        public static bool IsBthPs3Installed() => IsServiceInstalled("BthPS3");
+
+        /// <summary>Asserts AutoEnableFilter=0 on the BthPS3 Parameters key so
+        /// BthPS3 stops auto-arming PSM patching on its own (issue #199): it
+        /// otherwise arms patching at radio power-up and re-arms it ~10 s after
+        /// denying a foreign device (BthPS3 L2CAP.Connect.c:242, the exact
+        /// re-arm in the 2026-07-10 crash log). With it off, PadForge's
+        /// SetPsmPatching is the sole enabler, so a disable actually sticks.
+        /// Takes effect on the next BthPS3 load (the running driver cached the
+        /// value at init); SetPsmPatching drives the immediate state. Idempotent,
+        /// only writes when the value isn't already 0, never creates the key.</summary>
+        public static void EnsurePadForgeOwnsPsmPatch()
+        {
+            try
+            {
+                using var key = Registry.LocalMachine.OpenSubKey(BthPs3ParamsKey, writable: true);
+                if (key != null && !(key.GetValue("AutoEnableFilter") is int v && v == 0))
+                    key.SetValue("AutoEnableFilter", 0, RegistryValueKind.DWord);
+            }
+            catch { /* best effort; SetPsmPatching still governs the live state */ }
+        }
+
+        /// <summary>Enables or disables BthPS3 PSM patching on EVERY attached
+        /// radio (issue #199 crash mitigation). Patching rewrites incoming HID
+        /// L2CAP PSMs (0x11/0x13) to BthPS3's DS3 PSMs so the connection routes
+        /// to BthPS3 (BthPS3PSM Filter.c:157-205). Disabled, the PSMs pass
+        /// through untouched to the inbox Bluetooth HID stack, so BthPS3's
+        /// profile driver sees no incoming connection and its racy
+        /// connect/identify/disconnect/destroy path cannot run. The filter
+        /// persists the state per radio devnode and restores it on attach, and
+        /// with AutoEnableFilter=0 (EnsureConsumerParams) BthPS3 never flips it
+        /// back, so a disable sticks across radio cycles and reboots until
+        /// PadForge re-enables it.
+        ///
+        /// <para>Idempotent and safe when the filter is absent (logs and
+        /// returns). Enumerates radios by DeviceIndex 0..N via GET until
+        /// ERROR_NO_SUCH_DEVICE rather than assuming a single radio at index
+        /// 0.</para></summary>
+        public static void SetPsmPatching(bool enable, Action<string> log)
         {
             IntPtr h = CreateFile(PsmControlPath, GENERIC_READ | GENERIC_WRITE, FILE_SHARE_RW,
                 IntPtr.Zero, OPEN_EXISTING, FILE_FLAG_NO_BUFFERING | FILE_FLAG_WRITE_THROUGH, IntPtr.Zero);
-            if (h == INVALID_HANDLE) { log("PSM control device not present (filter may still auto-arm)."); return; }
+            if (h == INVALID_HANDLE)
+            {
+                log?.Invoke($"PSM control device not present; cannot {(enable ? "enable" : "disable")} patching.");
+                return;
+            }
             try
             {
-                byte[] deviceIndex = new byte[4]; // { ULONG DeviceIndex = 0 }
-                DeviceIoControl(h, IOCTL_BTHPS3PSM_ENABLE_PSM_PATCHING, deviceIndex, deviceIndex.Length, null, 0, out _, IntPtr.Zero);
+                uint toggleCode = enable
+                    ? IOCTL_BTHPS3PSM_ENABLE_PSM_PATCHING
+                    : IOCTL_BTHPS3PSM_DISABLE_PSM_PATCHING;
+
+                int count = 0;
+                // Drive the sweep off the toggle IOCTL itself: the filter
+                // completes it with STATUS_NO_SUCH_DEVICE for an index past the
+                // last radio (Sideband.c:317, WdfCollectionGetItem == NULL).
+                // Index 0 is always attempted, exactly as the proven single-
+                // radio path did, so nothing regresses on a one-radio host. The
+                // 32 cap is a spin guard; no host has that many radios. The
+                // NO_SUCH_DEVICE early-out is only an optimization: attempting a
+                // bad index is a harmless no-op, so correctness never depends on
+                // the exact Win32 error mapping.
+                for (int index = 0; index < 32; index++)
+                {
+                    byte[] payload = new byte[4]; // { ULONG DeviceIndex }
+                    BitConverter.GetBytes(index).CopyTo(payload, 0);
+                    if (DeviceIoControl(h, toggleCode, payload, payload.Length, null, 0, out _, IntPtr.Zero))
+                    {
+                        count++;
+                        continue;
+                    }
+                    if (Marshal.GetLastWin32Error() == ERROR_NO_SUCH_DEVICE) break;
+                }
+                log?.Invoke($"PSM patching {(enable ? "enabled" : "disabled")} on {count} radio(s).");
             }
             finally { CloseHandle(h); }
         }

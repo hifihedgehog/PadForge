@@ -1785,6 +1785,9 @@
                                             <ComboBoxItem Content="{Binding MacroAction_Type_RunProgram, Source={x:Static strings:Strings.Instance}}"
                                                           Tag="{x:Static vm:MacroActionType.RunProgram}"
                                                           ToolTip="{Binding MacroAction_RunProgram_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                            <ComboBoxItem Content="{Binding MacroAction_Type_TextBlock, Source={x:Static strings:Strings.Instance}}"
+                                                          Tag="{x:Static vm:MacroActionType.TextBlock}"
+                                                          ToolTip="{Binding MacroAction_TextBlock_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                         </ComboBox>
                                     </StackPanel>
 
@@ -1846,6 +1849,30 @@
                                                      Width="220" VerticalAlignment="Center"/>
                                             <Button Content="{Binding Common_Browse, Source={x:Static strings:Strings.Instance}}"
                                                     Click="RunProgramBrowseFolder_Click" Margin="6,0,0,0" VerticalAlignment="Center"/>
+                                        </StackPanel>
+                                    </StackPanel>
+
+                                    <!-- Text Block editor (#201). Multiline text typed out via
+                                         Unicode injection; newlines press Enter, tabs press Tab.
+                                         Same 80px label column as the other editors. -->
+                                    <StackPanel Margin="0,0,0,6"
+                                                Visibility="{Binding IsTextBlockType, Converter={StaticResource BoolToVisibilityConverter}}">
+                                        <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                            <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding MacroAction_TextBlock_Text, Source={x:Static strings:Strings.Instance}}"
+                                                       Width="80" Margin="0,0,8,0" TextWrapping="Wrap" VerticalAlignment="Top"/>
+                                            <TextBox Text="{Binding TextContent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                     ToolTip="{Binding MacroAction_TextBlock_Tooltip, Source={x:Static strings:Strings.Instance}}"
+                                                     Width="220" Height="64" AcceptsReturn="True"
+                                                     TextWrapping="Wrap" VerticalScrollBarVisibility="Auto"
+                                                     VerticalContentAlignment="Top"/>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                            <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding MacroAction_TextBlock_Delay, Source={x:Static strings:Strings.Instance}}"
+                                                       ToolTip="{Binding MacroAction_TextBlock_Delay_Tooltip, Source={x:Static strings:Strings.Instance}}"
+                                                       Width="80" Margin="0,0,8,0" TextWrapping="Wrap" VerticalAlignment="Center"/>
+                                            <TextBox Text="{Binding TextPerCharDelayMs, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                     ToolTip="{Binding MacroAction_TextBlock_Delay_Tooltip, Source={x:Static strings:Strings.Instance}}"
+                                                     Width="60" TextAlignment="Center" VerticalAlignment="Center"/>
                                         </StackPanel>
                                     </StackPanel>
 

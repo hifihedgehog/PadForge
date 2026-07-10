@@ -2476,7 +2476,9 @@ namespace PadForge.Services
                     ? dcGuid : Guid.Empty,
                 ProgramPath = ad.ProgramPath ?? "",
                 ProgramArgs = ad.ProgramArgs ?? "",
-                ProgramWorkingDir = ad.ProgramWorkingDir ?? ""
+                ProgramWorkingDir = ad.ProgramWorkingDir ?? "",
+                TextContent = ad.TextContent ?? "",
+                TextPerCharDelayMs = ad.TextPerCharDelayMs
             };
         }
 
@@ -3368,7 +3370,9 @@ namespace PadForge.Services
                     ? null : a.DisconnectDeviceGuid.ToString(),
                 ProgramPath = string.IsNullOrEmpty(a.ProgramPath) ? null : a.ProgramPath,
                 ProgramArgs = string.IsNullOrEmpty(a.ProgramArgs) ? null : a.ProgramArgs,
-                ProgramWorkingDir = string.IsNullOrEmpty(a.ProgramWorkingDir) ? null : a.ProgramWorkingDir
+                ProgramWorkingDir = string.IsNullOrEmpty(a.ProgramWorkingDir) ? null : a.ProgramWorkingDir,
+                TextContent = string.IsNullOrEmpty(a.TextContent) ? null : a.TextContent,
+                TextPerCharDelayMs = a.TextPerCharDelayMs
             };
         }
 
@@ -4691,6 +4695,14 @@ namespace PadForge.Services
         [XmlElement] public string ProgramArgs { get; set; }
         /// <summary>Working folder for a RunProgram action.</summary>
         [XmlElement] public string ProgramWorkingDir { get; set; }
+
+        /// <summary>Plain text a TextBlock action types out (issue #201).
+        /// XmlSerializer escapes arbitrary user text natively, so no packing
+        /// or delimiter rules apply here.</summary>
+        [XmlElement] public string TextContent { get; set; }
+        /// <summary>Milliseconds between typed characters for a TextBlock
+        /// action. 0 = the whole text in one batched call.</summary>
+        [XmlElement] public int TextPerCharDelayMs { get; set; }
     }
 
     /// <summary>

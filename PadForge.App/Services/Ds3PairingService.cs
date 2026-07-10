@@ -109,6 +109,11 @@ namespace PadForge.Services
                 return r;
             }
 
+            // The dialog cancels its token when the user closes it mid-ceremony. Bail
+            // before touching the pad or the radio so nothing runs headless after the
+            // window is gone (the radio cycle in particular drops every BT device).
+            if (ct.IsCancellationRequested) { r.Error = "cancelled"; return r; }
+
             string path = FindWinUsbDs3();
             if (path == null) { _log("DS3 not found on USB."); r.Error = "no-ds3-usb"; return r; }
 
@@ -168,6 +173,8 @@ namespace PadForge.Services
             // remembered+authenticated and its stored Name is served to BthPS3 on every
             // connect instead of the clone's blank over-air name. Hardware-confirmed
             // 2026-07-09 (rem=16, identified as SIXAXIS, survives cycles, no security block).
+            if (ct.IsCancellationRequested) { r.Error = "cancelled"; return r; }
+
             // Steps 5-6 touch the radio: serialize against any concurrent unpair so
             // two cycles can't overlap. The pad is on USB here (no live BthPS3 link),
             // so the cycle disconnects nothing.

@@ -2269,7 +2269,7 @@
   <data name="Pad_ExtendedClone_Confirm_Format" xml:space="preserve"><value>{0} を1:1パススルーとしてこのスロットに複製しますか？レイアウトは {1} 軸、{2} ボタン、{3} POV になり、スロット上のこのデバイスの行はデバイス自身の入力で置き換えられます。</value></data>
   <data name="Pad_ExtendedClone_Overflow_Format" xml:space="preserve"><value>このデバイスの入力数は、Extended コントローラーが扱える数を超えています。{1} 軸中 {0} 軸、{3} ボタン中 {2} ボタン、{5} POV 中 {4} POV をマッピングしました。残りは未マッピングのままです。</value></data>
   <data name="MacroAction_Type_TextBlock" xml:space="preserve"><value>テキストブロック</value></data>
-  <data name="MacroAction_TextBlock_Tooltip" xml:space="preserve"><value>マクロ実行時にテキストをキー入力として打ち込みます。アクセント記号、CJK、絵文字を含むあらゆる文字が使えます。改行は Enter、タブは Tab を押します。キーの組み合わせには引き続き「キー押下」を使ってください。</value></data>
+  <data name="MacroAction_TextBlock_Tooltip" xml:space="preserve"><value>マクロ実行時にテキストをキー入力として打ち込みます。アクセント記号、CJK、絵文字を含むあらゆる文字が使えます。改行は Enter を押します。貼り付けたタブ文字は Tab を押します（この欄で Tab キーを押すと次の欄へ移動します）。キーの組み合わせには引き続き「キー押下」を使ってください。</value></data>
   <data name="MacroAction_TextBlock_Format" xml:space="preserve"><value>「{0}」を入力</value></data>
   <data name="MacroAction_TextBlock_NoText" xml:space="preserve"><value>（テキストなし）</value></data>
   <data name="MacroAction_TextBlock_Text" xml:space="preserve"><value>テキスト</value></data>

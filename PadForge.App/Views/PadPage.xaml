@@ -1853,7 +1853,10 @@
                                     </StackPanel>
 
                                     <!-- Text Block editor (#201). Multiline text typed out via
-                                         Unicode injection; newlines press Enter, tabs press Tab.
+                                         Unicode injection; newlines press Enter, tab CHARACTERS
+                                         press Tab. AcceptsTab stays off on purpose: the Tab key
+                                         keeps moving focus between fields, so a tab character
+                                         only enters the text via paste (the tooltip says so).
                                          Same 80px label column as the other editors. -->
                                     <StackPanel Margin="0,0,0,6"
                                                 Visibility="{Binding IsTextBlockType, Converter={StaticResource BoolToVisibilityConverter}}">

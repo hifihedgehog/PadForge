@@ -426,7 +426,7 @@
   <data name="MacroAction_RunProgram_WorkingDir" xml:space="preserve"><value>Working directory</value></data>
   <data name="MacroAction_RunProgram_WorkingDir_Tooltip" xml:space="preserve"><value>Optional. The folder the program uses as its current directory. Not the folder the program file is in. Leave blank for the default.</value></data>
   <data name="MacroAction_Type_TextBlock" xml:space="preserve"><value>Text Block</value></data>
-  <data name="MacroAction_TextBlock_Tooltip" xml:space="preserve"><value>Types the text as keystrokes when the macro runs. Any characters work, including accents, CJK, and emoji. Newlines press Enter and tabs press Tab. Use Key Press for key combos.</value></data>
+  <data name="MacroAction_TextBlock_Tooltip" xml:space="preserve"><value>Types the text as keystrokes when the macro runs. Any characters work, including accents, CJK, and emoji. Newlines press Enter. Pasted tab characters press Tab (typing Tab here moves to the next field). Use Key Press for key combos.</value></data>
   <data name="MacroAction_TextBlock_Format" xml:space="preserve"><value>Type "{0}"</value></data>
   <data name="MacroAction_TextBlock_NoText" xml:space="preserve"><value>(no text)</value></data>
   <data name="MacroAction_TextBlock_Text" xml:space="preserve"><value>Text</value></data>

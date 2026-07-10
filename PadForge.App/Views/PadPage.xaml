@@ -722,6 +722,11 @@
                             Margin="12,0,0,0" VerticalAlignment="Center"
                             Click="ExtendedImportBtn_Click"
                             ToolTip="{Binding Pad_ExtendedImportFromDeviceTooltip, Source={x:Static strings:Strings.Instance}}"/>
+                    <Button x:Name="ExtendedCloneBtn"
+                            Content="{Binding Pad_ExtendedCloneDevice, Source={x:Static strings:Strings.Instance}}"
+                            Margin="8,0,0,0" VerticalAlignment="Center"
+                            Click="ExtendedCloneBtn_Click"
+                            ToolTip="{Binding Pad_ExtendedCloneDeviceTooltip, Source={x:Static strings:Strings.Instance}}"/>
                 </StackPanel>
 
                 <!-- Row 2: Master Customize toggle. Controls IsEnabled of rows 3+4 below.

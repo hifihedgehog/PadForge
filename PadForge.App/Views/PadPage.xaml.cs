@@ -2764,6 +2764,125 @@ namespace PadForge.Views
             }
         }
 
+        /// <summary>
+        /// "Clone Device 1:1" sizes the Extended layout to the selected device
+        /// and writes identity mappings (physical input i → same-indexed Extended
+        /// output) so the slot passes the device straight through to a DirectInput
+        /// consumer (issue #196). Reshapes and rewrites this device's rows on the
+        /// slot; the confirmation states the counts and any inputs left unmapped
+        /// past the Extended caps.
+        /// </summary>
+        private async void ExtendedCloneBtn_Click(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is not PadViewModel vm) return;
+            if (vm.OutputType != Engine.VirtualControllerType.Extended) return;
+
+            var sel = vm.SelectedMappedDevice;
+            if (sel == null || !sel.IsOnline)
+            {
+                await new Wpf.Ui.Controls.MessageBox
+                {
+                    Title = Strings.Instance.Pad_ExtendedClone_Title,
+                    Content = Strings.Instance.Pad_ExtendedClone_NoDevice,
+                    CloseButtonText = Strings.Instance.Common_Close,
+                }.ShowDialogAsync();
+                return;
+            }
+
+            Engine.Data.UserDevice ud;
+            lock (SettingsManager.UserDevices.SyncRoot)
+            {
+                ud = SettingsManager.UserDevices.Items.Find(d => d.InstanceGuid == sel.InstanceGuid);
+            }
+
+            var clone = Engine.Data.PassthroughCloneGenerator.Generate(ud);
+            if (clone.Rows.Count == 0)
+            {
+                await new Wpf.Ui.Controls.MessageBox
+                {
+                    Title = Strings.Instance.Pad_ExtendedClone_Title,
+                    Content = Strings.Instance.Pad_ExtendedClone_NoInputs,
+                    CloseButtonText = Strings.Instance.Common_Close,
+                }.ShowDialogAsync();
+                return;
+            }
+
+            string deviceName = !string.IsNullOrWhiteSpace(sel.Name)
+                ? sel.Name
+                : (!string.IsNullOrWhiteSpace(ud.DisplayName) ? ud.DisplayName : ud.ProductName);
+
+            string content = string.Format(Strings.Instance.Pad_ExtendedClone_Confirm_Format,
+                deviceName, clone.AxesMapped, clone.Buttons, clone.Povs);
+            if (clone.HasOverflow)
+                content += "\n\n" + string.Format(Strings.Instance.Pad_ExtendedClone_Overflow_Format,
+                    clone.AxesMapped, clone.AxesAvailable,
+                    clone.ButtonsMapped, clone.ButtonsAvailable,
+                    clone.PovsMapped, clone.PovsAvailable);
+
+            var confirm = new Wpf.Ui.Controls.MessageBox
+            {
+                Title = Strings.Instance.Pad_ExtendedClone_Title,
+                Content = content,
+                PrimaryButtonText = Strings.Instance.Pad_ExtendedClone_Apply,
+                CloseButtonText = Strings.Instance.Common_Cancel,
+            };
+            if (await confirm.ShowDialogAsync() != Wpf.Ui.Controls.MessageBoxResult.Primary)
+                return;
+
+            ApplyPassthroughClone(vm, sel.InstanceGuid, deviceName, clone);
+        }
+
+        /// <summary>
+        /// Applies a generated <see cref="Engine.Data.PassthroughCloneGenerator.CloneResult"/>
+        /// to the slot: sets the Extended layout (sticks-only, all axes bipolar),
+        /// writes each identity row onto the freshly-rebuilt mapping grid owned by
+        /// the cloned device, then persists exactly the way a recorded mapping does
+        /// (in-memory MappingSet made authoritative immediately, plus a dirty mark
+        /// for the debounced full save).
+        /// </summary>
+        private void ApplyPassthroughClone(PadViewModel vm, Guid deviceGuid, string deviceLabel,
+            Engine.Data.PassthroughCloneGenerator.CloneResult clone)
+        {
+            var cfg = vm.ExtendedConfig;
+            if (cfg == null) return;
+
+            // Shape. Customize on so the layout override actually applies; drop
+            // triggers to 0 FIRST so the stick setter isn't clamped by a leftover
+            // trigger count (same ordering the config's own ResetToDefaults uses).
+            // Each count change fires OnExtendedConfigPropertyChanged → RebuildMappings,
+            // so vm.Mappings ends holding fresh empty rows for the cloned shape.
+            cfg.Customize = true;
+            cfg.TriggerCount = 0;
+            cfg.ThumbstickCount = clone.Sticks;
+            cfg.PovCount = clone.Povs;
+            cfg.ButtonCount = clone.Buttons;
+
+            var byTarget = new Dictionary<string, string>(StringComparer.Ordinal);
+            foreach (var row in clone.Rows)
+                byTarget[row.Target] = row.Descriptor;
+
+            string guidStr = deviceGuid.ToString().ToLowerInvariant();
+            foreach (var mi in vm.Mappings)
+            {
+                if (mi == null || string.IsNullOrEmpty(mi.TargetSettingName)) continue;
+                if (!byTarget.TryGetValue(mi.TargetSettingName, out string desc)) continue;
+                mi.PrimarySourceDeviceGuid = guidStr;
+                mi.PrimarySourceDeviceLabel = deviceLabel;
+                mi.LoadDescriptor(desc);
+            }
+
+            // Persist. Mark the view loaded so the debounced SaveViewModelToPadSetting
+            // pushes these rows into the per-device PadSetting, commit the in-memory
+            // per-VC MappingSet now so the engine sees the clone immediately, then
+            // refresh the pickers so the grid shows friendly source labels and mark
+            // dirty for the file write. Mirrors MainWindow's RecordingCompleted path.
+            vm.MappingsViewLoaded = true;
+            var mw = Application.Current.MainWindow as MainWindow;
+            mw?.SettingsService?.PushUiExtraSourcesIntoSlotMappingSets();
+            InputService?.RefreshAvailableInputsForSlot(vm);
+            mw?.SettingsService?.MarkDirty();
+        }
+
         // ─────────────────────────────────────────────
         //  MIDI configuration bar
         // ─────────────────────────────────────────────

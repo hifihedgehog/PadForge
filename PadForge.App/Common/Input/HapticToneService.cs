@@ -799,6 +799,18 @@ namespace PadForge.Common.Input
                 s.MirrorInput = sp;
                 s.MirrorOn = true;
                 s.MirrorSourceId = endpointId ?? "";
+
+                // Post-start commit re-check, same shape as BuildSink's (line ~884).
+                // ReconcileMirrors' stillLive check ran under _lock, but this body
+                // (WASAPI COM I/O) runs after that lock released, so a Shutdown /
+                // StopAll can set _suppressed, clear _sinks, and run TeardownSink ->
+                // StopMirror in between, while MirrorCapture was still null so
+                // StopMirror found nothing. Re-read liveness now that the capture is
+                // published; if the sink was torn down during the start, stop it here.
+                // StopMirror runs OUTSIDE _lock and is idempotent.
+                bool live;
+                lock (_lock) live = !_suppressed && _sinks.Contains(s);
+                if (!live) StopMirror(s);
             }
             catch { try { StopMirror(s); } catch { } }
         }

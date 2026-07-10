@@ -115,12 +115,22 @@ namespace PadForge.Tests
             Assert.Equal(0x1FF, w.LedMask);
         }
 
+        [Fact]
+        public void PlayerIndexRoundTrips()
+        {
+            byte[] wire = OutputEffectCodec.EncodePlayerIndex(3);
+            Assert.True(OutputEffectCodec.TryDecode(wire, out var e));
+            Assert.Equal(OutputEffectCodec.Kind.PlayerIndex, e.Kind);
+            Assert.Equal(3, e.PlayerIndex);
+        }
+
         [Theory]
         [InlineData(new byte[0])]               // empty
         [InlineData(new byte[] { 99 })]         // unknown kind
         [InlineData(new byte[] { 1 })]          // SonyEffect with no body
         [InlineData(new byte[] { 2, 0, 0 })]    // Vibration truncated
         [InlineData(new byte[] { 3, 0, 0 })]    // Wheel truncated
+        [InlineData(new byte[] { 5 })]          // PlayerIndex with no number
         public void MalformedFramesFailClosed(byte[] wire)
         {
             Assert.False(OutputEffectCodec.TryDecode(wire, out var e));

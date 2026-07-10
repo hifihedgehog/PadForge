@@ -97,12 +97,14 @@ namespace PadForge.Common.Input
             _lastVib.TryRemove(devicePath, out _);
             _lastWheel.TryRemove(devicePath, out _);
             _lastTone.TryRemove(devicePath, out _);
+            _lastPlayerIndex.TryRemove(devicePath, out _);
         }
 
         public static void Clear()
         {
             _byPath.Clear();
             _lastSony.Clear(); _lastVib.Clear(); _lastWheel.Clear(); _lastTone.Clear();
+            _lastPlayerIndex.Clear();
             // Drop output leases too, or a stale lease would keep the owner's local
             // output suppressed for up to OutputLeaseMs after Remote Link stops.
             _outputLease.Clear();
@@ -175,6 +177,21 @@ namespace PadForge.Common.Input
             _lastTone[devicePath] = (toneHz, amplitude);
             byte[] blob = OutputEffectCodec.EncodeHapticTone(toneHz, amplitude);
             Dispatch(t, blob);
+            return true;
+        }
+
+        // ── Ship: player index (#191, non-Sony shared pad LED number) ───────
+
+        private static readonly ConcurrentDictionary<string, int> _lastPlayerIndex = new(StringComparer.Ordinal);
+
+        public static bool ShipPlayerIndex(string devicePath, int oneBasedSlotNumber)
+        {
+            if (!_byPath.TryGetValue(devicePath, out var t)) return false;
+            // Dedup: the LED number changes only on a topology change, so ship once.
+            if (_lastPlayerIndex.TryGetValue(devicePath, out var prev) && prev == oneBasedSlotNumber)
+                return true;
+            _lastPlayerIndex[devicePath] = oneBasedSlotNumber;
+            Dispatch(t, OutputEffectCodec.EncodePlayerIndex(oneBasedSlotNumber));
             return true;
         }
 

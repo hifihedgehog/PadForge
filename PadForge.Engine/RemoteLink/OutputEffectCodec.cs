@@ -29,12 +29,10 @@ namespace PadForge.Engine.RemoteLink
     /// Audio (the speaker sample stream) is carried out of band on its own
     /// <see cref="LinkMessageType.Audio"/> datagrams, not here.
     ///
-    /// <para>NOT carried: the player-index / player-LED number channel (#191).
-    /// It rides the SonyEffect body for Sony pads, but the non-Sony path
-    /// (SdlDeviceWrapper.SetPlayerIndex for Nintendo, Ds3DirectService.SetPlayerNumber
-    /// for the BT DS3) is machine-local, so a remote-shared Joy-Con / Switch Pro / DS3
-    /// keeps the owner's player LED instead of the consumer slot's idle floor. Adding a
-    /// PlayerIndex kind here is the fix, tracked as a Remote Link follow-up.</para>
+    /// <para>PlayerIndex (#191) carries the consumer slot's 1-based player number for
+    /// NON-Sony shared pads (Nintendo, BT DS3), whose player LED is otherwise machine-
+    /// local. DualSense/DS4 already carry the player LED inside the SonyEffect body, so
+    /// they never send this kind.</para>
     /// </summary>
     public static class OutputEffectCodec
     {
@@ -49,6 +47,10 @@ namespace PadForge.Engine.RemoteLink
             // its own per-family writer (Joy-Con HD Rumble / Steam 0x8f /
             // Triton 0x83 / Deck), exactly the Wheel division of labor.
             HapticTone = 4,
+            // Player-index / player-LED number (#191) for non-Sony shared pads:
+            // the consumer slot's 1-based global number (0 = unmapped). The owner
+            // routes it to SetPlayerIndex (Nintendo) / SetPlayerNumber (BT DS3).
+            PlayerIndex = 5,
         }
 
         // ── Sony effect body ────────────────────────────────────────────────
@@ -135,6 +137,16 @@ namespace PadForge.Engine.RemoteLink
             return w.ToArray();
         }
 
+        // ── Player index (#191) ─────────────────────────────────────────────
+
+        /// <summary>The consumer slot's 1-based global player number (0 = unmapped).
+        /// One byte suffices (16 VC slots max; the owner wraps %4 for the LED).</summary>
+        public static byte[] EncodePlayerIndex(int oneBasedSlotNumber)
+        {
+            int n = oneBasedSlotNumber < 0 ? 0 : (oneBasedSlotNumber > 255 ? 255 : oneBasedSlotNumber);
+            return new byte[] { (byte)Kind.PlayerIndex, (byte)n };
+        }
+
         // ── Decode ──────────────────────────────────────────────────────────
 
         public readonly struct WheelFrame
@@ -162,11 +174,12 @@ namespace PadForge.Engine.RemoteLink
             public readonly WheelFrame Wheel;  // Wheel
             public readonly float HapticToneHz;  // HapticTone
             public readonly float HapticToneAmp; // HapticTone
+            public readonly int PlayerIndex;     // PlayerIndex (1-based, 0 = unmapped)
             public OutputEffect(Kind kind, byte[] sonyBody, Vibration vibration, WheelFrame wheel,
-                float hapticToneHz = 0f, float hapticToneAmp = 0f)
+                float hapticToneHz = 0f, float hapticToneAmp = 0f, int playerIndex = 0)
             {
                 Kind = kind; SonyBody = sonyBody; Vibration = vibration; Wheel = wheel;
-                HapticToneHz = hapticToneHz; HapticToneAmp = hapticToneAmp;
+                HapticToneHz = hapticToneHz; HapticToneAmp = hapticToneAmp; PlayerIndex = playerIndex;
             }
         }
 
@@ -257,6 +270,13 @@ namespace PadForge.Engine.RemoteLink
                         if (!float.IsFinite(hz) || !float.IsFinite(amp)) return false;
                         effect = new OutputEffect(kind, null, null, default,
                             hapticToneHz: hz, hapticToneAmp: Math.Clamp(amp, 0f, 1f));
+                        return true;
+                    }
+
+                    case Kind.PlayerIndex:
+                    {
+                        if (payload.Length < 2) return false;
+                        effect = new OutputEffect(kind, null, null, default, playerIndex: payload[1]);
                         return true;
                     }
 

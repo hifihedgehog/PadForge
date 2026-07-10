@@ -356,8 +356,10 @@ namespace PadForge.Common.Input
             public IntPtr GamepadHandle = IntPtr.Zero;
             public MixingSampleProvider MacroMixer;
             // Anti-aliased mono downmix of MacroMixer to ReduceRate, so the stream
-            // thread reads ReduceRate mono directly (same pattern as the Wii
-            // speaker's WdlResamplingSampleProvider mono source).
+            // thread reads ReduceRate mono directly. Windowed-sinc
+            // (SincResamplingSampleProvider) so the passband stays flat to the
+            // tone domain's edge; NAudio's stock wrapper's IIR filter rolled
+            // off from ~2 kHz at this ratio.
             public ISampleProvider MonoSource;
             public HapticToneReducer Reducer;
             public Thread Thread;
@@ -992,7 +994,11 @@ namespace PadForge.Common.Input
                 }
 
                 var mono = new StereoToMonoSampleProvider(s.MacroMixer) { LeftVolume = 0.5f, RightVolume = 0.5f };
-                var resampled = new WdlResamplingSampleProvider(mono, ReduceRate);
+                // Sinc mode, not NAudio's stock wrapper: the stock IIR
+                // anti-alias filter sits at 2772 Hz for this ratio and was
+                // rolling high tones off (-9 dB at 3.2 kHz) before the #202
+                // fold could bring them down. See SincResamplingSampleProvider.
+                var resampled = new SincResamplingSampleProvider(mono, ReduceRate);
                 lock (_lock)
                 {
                     if (_suppressed || !_sinks.Contains(s))

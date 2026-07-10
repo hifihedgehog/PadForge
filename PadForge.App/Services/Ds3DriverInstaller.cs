@@ -122,13 +122,21 @@ namespace PadForge.Services
         private static readonly Guid UsbDeviceClass = new Guid("36FC9E60-C465-11CF-8056-444553540000");
 
         /// <summary>True only when a USB DualShock 3 (VID_054C&amp;PID_0268) is present AND
-        /// still on the inbox HID driver (or no driver), meaning it has no working function
-        /// driver and needs our WinUSB bind. Returns FALSE when it is already on WinUSB
-        /// (ours) or on a third-party function driver such as DsHidMini, so the automatic,
-        /// background bind DEFERS to an existing setup instead of ripping the device away
-        /// from it (no driver fight). A user who wants PadForge to take over an installed
-        /// DsHidMini can still do it explicitly through the pairing dialog, which
-        /// force-binds via <see cref="EnsureWinUsbBound"/>.</summary>
+        /// still on the inbox HID driver (or no driver), meaning nothing is driving it and
+        /// it needs our WinUSB bind. This is the ALLOWLIST that keeps the background bind
+        /// safe: it fires only for the one state where binding is both needed and harmless.
+        ///
+        /// <para>Whether an existing WinUSB binding is OURS is not decided here. The caller
+        /// (<see cref="Common.Input.Ds3DirectService"/>) first calls FindWinUsbDs3, which
+        /// matches our own INF's interface GUID {B35924D6-...}; if that hits, the pad is
+        /// opened directly with no rebind. Ownership is a PERSISTED devnode binding
+        /// (DEVPKEY_Device_Service), so it survives our process dying or never running.
+        /// An abrupt close therefore leaves the pad on WinUSB and the next run just reopens
+        /// it. This method is reached only when our interface is ABSENT, and it returns
+        /// false for every non-inbox state, so anything else driving the pad (DsHidMini,
+        /// whose UMDF2 service reads WUDFRd; ScpToolkit; a stray WinUSB binding with a
+        /// different GUID) is left strictly alone. The explicit pairing dialog is the only
+        /// path that force-rebinds (via <see cref="EnsureWinUsbBound"/>).</para></summary>
         public static bool IsUsbDs3NeedingWinUsb()
         {
             try
@@ -141,8 +149,8 @@ namespace PadForge.Services
                     {
                         var dev = PnPDevice.GetDeviceByInstanceId(id, DeviceLocationFlags.Normal);
                         string svc = dev.GetProperty<string>(DevicePropertyKey.Device_Service) ?? string.Empty;
-                        // Inbox HID driver or none = ours to bind. Anything else (WinUSB
-                        // already, DsHidMini, ScpToolkit, ...) owns it, so leave it alone.
+                        // Allowlist: bind ONLY on the inbox HID driver or no driver. Every
+                        // other service (WINUSB, WUDFRd/DsHidMini, ...) is left alone.
                         if (svc.Length == 0 || svc.Equals("HidUsb", StringComparison.OrdinalIgnoreCase))
                             return true;
                     }

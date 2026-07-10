@@ -44,7 +44,7 @@ namespace PadForge.Tests
             Assert.Equal(pips, PlayerIdentityDefaults.PipsFor(player));
         }
 
-        private static PlayStationSlotConfig UntouchedConfig() => new PlayStationSlotConfig();
+        private static DeviceSlotConfig UntouchedConfig() => new DeviceSlotConfig();
 
         [Fact]
         public void Ds5_UntouchedConfig_FloorShowsPlayerColorAndPips()
@@ -269,17 +269,17 @@ namespace PadForge.Tests
             Assert.Equal(new byte[] { 0, 0, 0 }, (byte[])fields["lightbar"]);
         }
 
-        // ── LightingRev migration (SettingsService.ApplyPlayStationConfigData) ──
+        // ── LightingRev migration (SettingsService.ApplyDeviceSlotConfigData) ──
         // Rev-0 saves (every release before the PlayerNumber default)
         // spelled "unset" as Off; rev-1 saves mean what they say.
 
         [Fact]
         public void Rev0_OffMeansUnset_LiftsToPlayerNumber()
         {
-            var cfg = new PlayStationSlotConfig();
+            var cfg = new DeviceSlotConfig();
             cfg.LightbarMode = LightbarMode.Static;   // prove the loader overwrites
             cfg.PlayerLedMode = PlayerLedMode.All;
-            SettingsService.ApplyPlayStationConfigData(cfg, new PlayStationSlotConfigData());
+            SettingsService.ApplyDeviceSlotConfigData(cfg, new DeviceSlotConfigData());
             Assert.Equal(LightbarMode.PlayerNumber, cfg.LightbarMode);
             Assert.Equal(PlayerLedMode.PlayerNumber, cfg.PlayerLedMode);
         }
@@ -287,14 +287,14 @@ namespace PadForge.Tests
         [Fact]
         public void Rev1_OffIsDeliberate_StaysOff()
         {
-            var cfg = new PlayStationSlotConfig();
-            var d = new PlayStationSlotConfigData
+            var cfg = new DeviceSlotConfig();
+            var d = new DeviceSlotConfigData
             {
                 LightingRev = 1,
                 LightbarMode = LightbarMode.Off,
                 PlayerLedMode = PlayerLedMode.Off,
             };
-            SettingsService.ApplyPlayStationConfigData(cfg, d);
+            SettingsService.ApplyDeviceSlotConfigData(cfg, d);
             Assert.Equal(LightbarMode.Off, cfg.LightbarMode);
             Assert.Equal(PlayerLedMode.Off, cfg.PlayerLedMode);
         }
@@ -305,23 +305,23 @@ namespace PadForge.Tests
             // LightbarEnabled round-trips forever and is never cleared
             // when the user changes modes: a rev-1 deliberate Off must
             // not fall back to the v3.0 trio.
-            var cfg = new PlayStationSlotConfig();
-            var d = new PlayStationSlotConfigData
+            var cfg = new DeviceSlotConfig();
+            var d = new DeviceSlotConfigData
             {
                 LightingRev = 1,
                 LightbarMode = LightbarMode.Off,
                 LightbarEnabled = true,
             };
-            SettingsService.ApplyPlayStationConfigData(cfg, d);
+            SettingsService.ApplyDeviceSlotConfigData(cfg, d);
             Assert.Equal(LightbarMode.Off, cfg.LightbarMode);
         }
 
         [Fact]
         public void Rev0_LegacyLightbarEnabled_StillMigratesToStatic()
         {
-            var cfg = new PlayStationSlotConfig();
-            var d = new PlayStationSlotConfigData { LightbarEnabled = true }; // v3.0 save shape
-            SettingsService.ApplyPlayStationConfigData(cfg, d);
+            var cfg = new DeviceSlotConfig();
+            var d = new DeviceSlotConfigData { LightbarEnabled = true }; // v3.0 save shape
+            SettingsService.ApplyDeviceSlotConfigData(cfg, d);
             Assert.Equal(LightbarMode.Static, cfg.LightbarMode);
         }
 
@@ -334,9 +334,9 @@ namespace PadForge.Tests
             // base at Off (dark) rather than brightening it to the
             // player floor, so the reactive-from-darkness effect the
             // user configured survives the upgrade.
-            var cfg = new PlayStationSlotConfig();
-            var d = new PlayStationSlotConfigData { LightbarMode = LightbarMode.InputReactive };
-            SettingsService.ApplyPlayStationConfigData(cfg, d);
+            var cfg = new DeviceSlotConfig();
+            var d = new DeviceSlotConfigData { LightbarMode = LightbarMode.InputReactive };
+            SettingsService.ApplyDeviceSlotConfigData(cfg, d);
             Assert.Equal(InputReactiveMode.Random, cfg.InputReactiveMode);
             Assert.Equal(LightbarMode.Off, cfg.LightbarMode);
         }
@@ -347,13 +347,13 @@ namespace PadForge.Tests
             // The guard on the lift is "no overlay", not "never": a
             // genuinely idle rev-0 slot (Off base, no reactive overlay)
             // still inherits the floor.
-            var cfg = new PlayStationSlotConfig();
-            var d = new PlayStationSlotConfigData
+            var cfg = new DeviceSlotConfig();
+            var d = new DeviceSlotConfigData
             {
                 LightbarMode = LightbarMode.Off,
                 InputReactiveMode = InputReactiveMode.Off,
             };
-            SettingsService.ApplyPlayStationConfigData(cfg, d);
+            SettingsService.ApplyDeviceSlotConfigData(cfg, d);
             Assert.Equal(LightbarMode.PlayerNumber, cfg.LightbarMode);
         }
     }

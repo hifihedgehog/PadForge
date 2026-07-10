@@ -11,7 +11,7 @@ namespace PadForge.Views
     /// Photoshop-style HSV color picker — Saturation × Value square plus
     /// a vertical Hue strip. Drives three byte dependency properties
     /// (R, G, B) for two-way binding against
-    /// <see cref="ViewModels.PlayStationSlotConfig"/>'s lightbar fields.
+    /// <see cref="ViewModels.DeviceSlotConfig"/>'s lightbar fields.
     ///
     /// <para>Cursor positions follow incoming RGB binding changes (so
     /// HEX entry / slider drags update the picker visually) and outgoing

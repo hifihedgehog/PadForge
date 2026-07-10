@@ -141,7 +141,7 @@ namespace PadForge.Common.Input
             DateTime now = DateTime.UtcNow;
             DateTime holdEnd = now.AddMilliseconds(holdMs);
             DateTime expires = holdEnd.AddMilliseconds(fadeMs);
-            foreach (var psCfg in EnumerateSlotPlayStationConfigs(slotIndex))
+            foreach (var psCfg in EnumerateSlotDeviceConfigs(slotIndex))
             {
                 if (psCfg == null) continue;
                 psCfg.MacroOverrideR = r;

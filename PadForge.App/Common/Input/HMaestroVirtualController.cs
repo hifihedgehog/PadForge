@@ -238,7 +238,7 @@ namespace PadForge.Common.Input
         }
 
         /// <summary>Attaches a per-slot
-        /// <see cref="PlayStationSlotConfig"/> so user-configured trigger
+        /// <see cref="DeviceSlotConfig"/> so user-configured trigger
         /// / lightbar / audio effects synthesize and forward to the
         /// assigned physical DualSense via SDL_SendGamepadEffect.
         /// Called by Step 5 right after RegisterFeedbackCallback for
@@ -250,7 +250,7 @@ namespace PadForge.Common.Input
         /// other mismatch where they still want to drive the assigned
         /// physical DS5's lightbar / triggers / audio. Idempotent —
         /// re-attach replaces the existing dispatcher's binding.</summary>
-        public void AttachPlayStationConfig(PadForge.ViewModels.PlayStationSlotConfig config)
+        public void AttachDeviceConfig(PadForge.ViewModels.DeviceSlotConfig config)
         {
             if (config == null) return;
 

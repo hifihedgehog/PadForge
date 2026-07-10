@@ -818,10 +818,10 @@ namespace PadForge
 
                 // Record button on the haptic-mirror engage picker (#185).
                 // Same freeform-recorder toggle as the Aim Engage picker above;
-                // the result lands on the SELECTED device's PlayStationConfig
+                // the result lands on the SELECTED device's DeviceConfig
                 // (resolved at callback time, so a device switch mid-recording
                 // writes to whichever config is then active, like every other
-                // PlayStationConfig-backed control).
+                // DeviceConfig-backed control).
                 pad.MirrorEngageRecordRequested += (s, e) =>
                 {
                     if (s is not PadViewModel pvm) return;
@@ -834,7 +834,7 @@ namespace PadForge
                     pvm.MirrorEngageRecording = true;
                     _recorderService.StartRecordingFreeform(pvm.PadIndex, (deviceGuid, descriptor) =>
                     {
-                        var cfg = pvm.PlayStationConfig;
+                        var cfg = pvm.DeviceConfig;
                         if (cfg != null)
                         {
                             cfg.AudioMirrorEngageButton = descriptor ?? "";
@@ -1105,20 +1105,20 @@ namespace PadForge
                 // ExtendedConfig property changes (preset, counts) trigger autosave.
                 pad.ExtendedConfig.PropertyChanged += (s, e) => _settingsService.MarkDirty();
 
-                // PlayStationConfig changes (Lighting tab, Adaptive Triggers tab)
+                // DeviceConfig changes (Lighting tab, Adaptive Triggers tab)
                 // — autosave + sync audio capture when audio-to-lightbar
                 // toggles. Audio-to-lightbar reuses the same WASAPI capture
                 // as audio-rumble, so the capture lifecycle gates on either
                 // feature being on for any created slot.
-                // Forwarded event follows the per-device PlayStationConfig
+                // Forwarded event follows the per-device DeviceConfig
                 // anchor across SelectedMappedDevice swaps. Subscribing
-                // to pad.ActivePlayStationConfigPropertyChanged instead
-                // of pad.PlayStationConfig.PropertyChanged means edits
+                // to pad.ActiveDeviceConfigPropertyChanged instead
+                // of pad.DeviceConfig.PropertyChanged means edits
                 // on whichever device the user has selected route here.
-                pad.ActivePlayStationConfigPropertyChanged += (s, e) =>
+                pad.ActiveDeviceConfigPropertyChanged += (s, e) =>
                 {
                     _settingsService.MarkDirty();
-                    if (e.PropertyName == nameof(ViewModels.PlayStationSlotConfig.AudioLightbarEnabled))
+                    if (e.PropertyName == nameof(ViewModels.DeviceSlotConfig.AudioLightbarEnabled))
                         _inputService.SyncAudioBassDetector();
                 };
             }
@@ -6070,7 +6070,7 @@ namespace PadForge
                 // carries them as opaque DTO-serialised strings on PadSetting and
                 // OnPasteSettings unpacks + applies via SettingsService.
                 var jsonOpts = new System.Text.Json.JsonSerializerOptions { WriteIndented = false };
-                var psConfigs = _settingsService.BuildPlayStationConfigSnapshotForSlot(padVm.PadIndex);
+                var psConfigs = _settingsService.BuildDeviceConfigSnapshotForSlot(padVm.PadIndex);
                 if (psConfigs != null && psConfigs.Length > 0)
                     ps.SlotPlayStationConfigsJson = System.Text.Json.JsonSerializer.Serialize(psConfigs, jsonOpts);
                 var extCfg = _settingsService.BuildExtendedConfigSnapshotForSlot(padVm.PadIndex);
@@ -6160,8 +6160,8 @@ namespace PadForge
                 {
                     try
                     {
-                        var psConfigs = System.Text.Json.JsonSerializer.Deserialize<ViewModels.PlayStationSlotConfigData[]>(ps.SlotPlayStationConfigsJson);
-                        _settingsService.ApplyPlayStationConfigsToSlot(padVm.PadIndex, psConfigs);
+                        var psConfigs = System.Text.Json.JsonSerializer.Deserialize<ViewModels.DeviceSlotConfigData[]>(ps.SlotPlayStationConfigsJson);
+                        _settingsService.ApplyDeviceSlotConfigsToSlot(padVm.PadIndex, psConfigs);
                     }
                     catch { /* malformed payload — Lighting tab paste skipped */ }
                 }

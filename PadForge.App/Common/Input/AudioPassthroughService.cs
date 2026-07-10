@@ -16,7 +16,7 @@ namespace PadForge.Common.Input
     /// per speaker-capable Sony pad (DualSense / Edge / DualShock 4) assigned
     /// to a slot, and feeds each sink from two sources: the slot's macro
     /// sounds (always) and a WASAPI loopback mirror of the system default
-    /// output (per-device toggle, <c>PlayStationSlotConfig.AudioPassthroughEnabled</c>).
+    /// output (per-device toggle, <c>DeviceSlotConfig.AudioPassthroughEnabled</c>).
     ///
     /// <para><b>Reference implementation:</b> DualSenseY-v2's
     /// <c>audioPassthrough.cpp</c> (cloned at
@@ -63,7 +63,7 @@ namespace PadForge.Common.Input
         // ─────────────────────────────────────────────
 
         /// <summary>Per-slot per-device passthrough config, wired by
-        /// InputService against the live PlayStationSlotConfig dictionaries:
+        /// InputService against the live DeviceSlotConfig dictionaries:
         /// returns (deviceGuid, passthroughEnabled, mirrorSourceEndpointId)
         /// for a slot. An empty source means the system default device.</summary>
         public static Func<int, IEnumerable<(Guid Device, bool PassthroughOn, string MirrorSource)>> PassthroughConfigProvider { get; set; }

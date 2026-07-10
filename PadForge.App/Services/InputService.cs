@@ -444,12 +444,12 @@ namespace PadForge.Services
                 _inputManager.SlotProfileIds[i] = _mainVm.Pads[i].ProfileId;
                 SyncExtendedConfigToSlot(i, _mainVm.Pads[i]);
                 _inputManager._midiConfigs[i] = _mainVm.Pads[i].MidiConfig;
-                _inputManager._playStationConfigs[i] = _mainVm.Pads[i].PlayStationConfig;
-                _inputManager._perDevicePlayStationConfigs[i] = _mainVm.Pads[i].PerDevicePlayStationConfigs;
+                _inputManager._deviceSlotConfigs[i] = _mainVm.Pads[i].DeviceConfig;
+                _inputManager._perDeviceSlotConfigs[i] = _mainVm.Pads[i].PerDeviceSlotConfigs;
                 // Subscribe to PadVm's forwarder so the handler follows
                 // the per-device anchor across SelectedMappedDevice
                 // swaps, not just the initial config instance.
-                _mainVm.Pads[i].ActivePlayStationConfigPropertyChanged += OnPlayStationConfigChanged;
+                _mainVm.Pads[i].ActiveDeviceConfigPropertyChanged += OnDeviceConfigChanged;
             }
 
             // NFC tag registry (issue #150): when a tag is registered/removed,
@@ -1098,7 +1098,7 @@ namespace PadForge.Services
             {
                 if (slotIndex < 0 || slotIndex >= _mainVm.Pads.Count)
                     return System.Linq.Enumerable.Empty<(Guid, bool, string)>();
-                return _mainVm.Pads[slotIndex].PerDevicePlayStationConfigs
+                return _mainVm.Pads[slotIndex].PerDeviceSlotConfigs
                     .Select(kv => (kv.Key, kv.Value.AudioPassthroughEnabled, kv.Value.AudioMirrorSourceId))
                     .ToList();
             };
@@ -1116,7 +1116,7 @@ namespace PadForge.Services
             {
                 if (slotIndex < 0 || slotIndex >= _mainVm.Pads.Count) return null;
                 List<(Guid, int, string, string, int)> list = null;
-                foreach (var kv in _mainVm.Pads[slotIndex].PerDevicePlayStationConfigs)
+                foreach (var kv in _mainVm.Pads[slotIndex].PerDeviceSlotConfigs)
                 {
                     var c = kv.Value;
                     if (c == null || !c.AudioPassthroughEnabled) continue;
@@ -1138,7 +1138,7 @@ namespace PadForge.Services
             // worker self-heals device timing on its 5 s cadence. Skipped
             // when no device has the toggle on, so the audio threads stay
             // off for users who never use controller audio.
-            if (_mainVm.Pads.Any(p => p.PerDevicePlayStationConfigs.Any(kv => kv.Value.AudioPassthroughEnabled)))
+            if (_mainVm.Pads.Any(p => p.PerDeviceSlotConfigs.Any(kv => kv.Value.AudioPassthroughEnabled)))
             {
                 PadForge.Common.Input.AudioPassthroughService.Reconcile();
                 PadForge.Common.Input.WiiSpeakerService.Reconcile(); // pick up the Wii mirror too
@@ -1197,7 +1197,7 @@ namespace PadForge.Services
             {
                 if (_inputManager == null) return null;
                 if (padIndex < 0 || padIndex >= InputManager.MaxPads) return null;
-                return _inputManager._perDevicePlayStationConfigs[padIndex];
+                return _inputManager._perDeviceSlotConfigs[padIndex];
             };
 
             // Subscribe to settings/dashboard property changes for runtime propagation.
@@ -1447,7 +1447,7 @@ namespace PadForge.Services
                 _inputManager.HmVcInactivityDestroyed -= OnHmVcInactivityDestroyed;
                 _inputManager.HmVcWentNonActive -= OnHmVcWentNonActive;
                 foreach (var pad in _mainVm.Pads)
-                    pad.ActivePlayStationConfigPropertyChanged -= OnPlayStationConfigChanged;
+                    pad.ActiveDeviceConfigPropertyChanged -= OnDeviceConfigChanged;
                 _inputManager.Stop();
                 _inputManager.Dispose();
                 _inputManager = null;
@@ -2193,14 +2193,14 @@ namespace PadForge.Services
                 bool devAudio = sonyLightbar
                     || (ud != null && (WiiSpeakerService.DeviceHasSpeaker(ud)
                                     || HapticToneService.DeviceHasHaptics(ud)));
-                PlayStationSlotConfig cfg = null;
+                DeviceSlotConfig cfg = null;
                 if (ud != null)
-                    padVm.PerDevicePlayStationConfigs.TryGetValue(ud.InstanceGuid, out cfg);
+                    padVm.PerDeviceSlotConfigs.TryGetValue(ud.InstanceGuid, out cfg);
 
                 if (sonyLightbar)
                 {
                     // Lighting defaults: LightbarMode.PlayerNumber base +
-                    // InputReactiveMode.Off overlay (PlayStationSlotConfig
+                    // InputReactiveMode.Off overlay (DeviceSlotConfig
                     // field initializers). Tokens = the picked mode names,
                     // including the deliberate Off (hard dark).
                     var parts = new List<string>();
@@ -2212,7 +2212,7 @@ namespace PadForge.Services
                             AddToken(parts, InputReactiveModeDisplayName(cfg.InputReactiveMode));
                         // Indicator LEDs. Defaults: PlayerLedMode
                         // PlayerNumber, PlayerLedBrightness High,
-                        // MicLedMode Off (PlayStationSlotConfig field
+                        // MicLedMode Off (DeviceSlotConfig field
                         // initializers; ResetIndicatorLedsAllCommand
                         // restores them).
                         if (cfg.PlayerLedMode != PlayerLedMode.PlayerNumber)
@@ -2237,7 +2237,7 @@ namespace PadForge.Services
                 }
                 if (devAudio)
                 {
-                    // Audio default: passthrough off (PlayStationSlotConfig
+                    // Audio default: passthrough off (DeviceSlotConfig
                     // initializer; ResetSoundOutputAllCommand restores it).
                     var parts = new List<string>();
                     if (cfg != null && cfg.AudioPassthroughEnabled)
@@ -3338,14 +3338,14 @@ namespace PadForge.Services
                     _inputManager.SlotProfileIds[i] = padVm.ProfileId;
                     SyncExtendedConfigToSlot(i, padVm);
                     _inputManager._midiConfigs[i] = padVm.MidiConfig;
-                    _inputManager._playStationConfigs[i] = padVm.PlayStationConfig;
+                    _inputManager._deviceSlotConfigs[i] = padVm.DeviceConfig;
                     // Per-(slot, device) lighting configs — source of
                     // truth for the dispatcher's per-device synthesis and
                     // macro lightbar fan-out. Mirroring is a reference
                     // copy (shared dictionary instance), so config edits
                     // on the UI thread are visible to the polling thread
                     // without an extra sync step.
-                    _inputManager._perDevicePlayStationConfigs[i] = padVm.PerDevicePlayStationConfigs;
+                    _inputManager._perDeviceSlotConfigs[i] = padVm.PerDeviceSlotConfigs;
                 }
 
                 if (SettingsManager.SlotCreated[i] && (padVm.AudioRumbleEnabled || padVm.AudioRumbleTriggersEnabled))
@@ -5347,9 +5347,9 @@ namespace PadForge.Services
                 _previousSelectedDevice[padVm.PadIndex] = newGuid;
             }
 
-            // The slot's PlayStationConfig anchor (PadVm.PlayStationConfig)
+            // The slot's DeviceConfig anchor (PadVm.DeviceConfig)
             // just swapped to the new device's per-device entry inside
-            // BindPlayStationConfigForDevice. Re-attach the slot's HM
+            // BindDeviceConfigForDevice. Re-attach the slot's HM
             // dispatcher so it follows the new anchor (and re-subscribes
             // its inner OnConfigChanged to the right instance).
             if (_inputManager != null && padVm.PadIndex >= 0 && padVm.PadIndex < InputManager.MaxPads)
@@ -5358,9 +5358,9 @@ namespace PadForge.Services
                 if (vcs != null && padVm.PadIndex < vcs.Length
                     && vcs[padVm.PadIndex] is HMaestroVirtualController hmVc)
                 {
-                    var anchor = padVm.PlayStationConfig;
+                    var anchor = padVm.DeviceConfig;
                     if (anchor != null)
-                        hmVc.AttachPlayStationConfig(anchor);
+                        hmVc.AttachDeviceConfig(anchor);
                 }
             }
 
@@ -5536,10 +5536,10 @@ namespace PadForge.Services
                 // reconnected pad would sit at firmware default until the
                 // user touched a slider.
                 //
-                // Always re-attach the slot's PlayStationSlotConfig before
+                // Always re-attach the slot's DeviceSlotConfig before
                 // re-applying. If the inactivity timeout tore down and
                 // recreated the VC while the physical pad was unplugged,
-                // the new VC's dispatcher needs a fresh bind. AttachPlayStationConfig
+                // the new VC's dispatcher needs a fresh bind. AttachDeviceConfig
                 // is idempotent (Rebind on existing dispatcher, construct
                 // on null) and ApplyOnce runs internally so a single call
                 // covers both the "still alive, push update" and "fresh
@@ -5553,9 +5553,9 @@ namespace PadForge.Services
                         {
                             if (vcs[i] is HMaestroVirtualController hmVc)
                             {
-                                var psCfg = _inputManager._playStationConfigs[i];
+                                var psCfg = _inputManager._deviceSlotConfigs[i];
                                 if (psCfg != null)
-                                    hmVc.AttachPlayStationConfig(psCfg);
+                                    hmVc.AttachDeviceConfig(psCfg);
                                 hmVc.ReApplyUserEffects();
                             }
                         }
@@ -5613,9 +5613,9 @@ namespace PadForge.Services
                     {
                         if (vcs[i] is HMaestroVirtualController hmVc)
                         {
-                            var psCfg = _inputManager._playStationConfigs[i];
+                            var psCfg = _inputManager._deviceSlotConfigs[i];
                             if (psCfg != null)
-                                hmVc.AttachPlayStationConfig(psCfg);
+                                hmVc.AttachDeviceConfig(psCfg);
                             hmVc.ReApplyUserEffects();
                         }
                     }
@@ -5985,15 +5985,15 @@ namespace PadForge.Services
                 // Audio-driven lightbar modes still gate on the slot's
                 // SelectedMappedDevice PSConfig (per-device by design;
                 // editing that lives on the Lighting tab which is also
-                // per-device-bound). Walk PadViewModel.PerDevicePlayStationConfigs
+                // per-device-bound). Walk PadViewModel.PerDeviceSlotConfigs
                 // so a non-selected device's audio-mode lightbar still
                 // keeps the detector alive.
                 for (int i = 0; i < _mainVm.Pads.Count && !anyEnabled; i++)
                 {
                     if (!SettingsManager.SlotCreated[i]) continue;
                     var pad = _mainVm.Pads[i];
-                    if (pad.PerDevicePlayStationConfigs == null) continue;
-                    foreach (var kvp in pad.PerDevicePlayStationConfigs)
+                    if (pad.PerDeviceSlotConfigs == null) continue;
+                    foreach (var kvp in pad.PerDeviceSlotConfigs)
                     {
                         if (kvp.Value != null && IsAudioLightbarMode(kvp.Value.LightbarMode))
                         {
@@ -6022,9 +6022,9 @@ namespace PadForge.Services
         // detector starts the moment a user picks an audio mode and stops
         // when the last slot leaves audio. Without this hook, the gate
         // only re-evaluates on AudioRumble toggle changes.
-        private void OnPlayStationConfigChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        private void OnDeviceConfigChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == nameof(ViewModels.PlayStationSlotConfig.LightbarMode))
+            if (e.PropertyName == nameof(ViewModels.DeviceSlotConfig.LightbarMode))
                 SyncAudioBassDetector();
         }
 
@@ -8188,7 +8188,7 @@ namespace PadForge.Services
                     // devices set. Newly-mapped devices get a fresh
                     // default lighting config (the user customizes each
                     // device's Lighting tab independently from there).
-                    padVm.EnsurePlayStationConfigsForMappedDevices();
+                    padVm.EnsureDeviceSlotConfigsForMappedDevices();
 
                     // Auto-select first device if nothing is selected.
                     if (padVm.SelectedMappedDevice == null && padVm.MappedDevices.Count > 0)

@@ -5,7 +5,7 @@ using PadForge.ViewModels;
 namespace PadForge.Common.Input
 {
     /// <summary>
-    /// Resolves <see cref="PlayStationSlotConfig"/> into a parsed-field
+    /// Resolves <see cref="DeviceSlotConfig"/> into a parsed-field
     /// dictionary for DualSense effect output. The dictionary is fed to
     /// <c>HMOutputEncoder.Encode(profile, fields)</c>, which packs the bytes
     /// per the active profile's <c>extendedOutputReport</c> spec — USB
@@ -132,7 +132,7 @@ namespace PadForge.Common.Input
         /// input-reactive pulse, 0..1. Read by
         /// <see cref="LightbarMode.InputReactive"/>.</param>
         public static Dictionary<string, object> BuildFields(
-            PlayStationSlotConfig cfg,
+            DeviceSlotConfig cfg,
             float audioPeak = 0f,
             long nowMs = 0,
             uint randomColor = 0,
@@ -450,7 +450,7 @@ namespace PadForge.Common.Input
         /// only fields (player LEDs, mic LED, AT) but the lightbar-mode
         /// resolution itself is device-agnostic.</summary>
         public static (byte r, byte g, byte b) ComputeLightbarColorPublic(
-            PlayStationSlotConfig cfg,
+            DeviceSlotConfig cfg,
             float audioPeak,
             long nowMs,
             uint randomColor,
@@ -465,20 +465,20 @@ namespace PadForge.Common.Input
         /// Fixed) all read dispatcher-rolled state for randomColor /
         /// pulseColor + the slot's static base RGB for Fixed.</summary>
         public static (byte r, byte g, byte b) ResolveReactiveOverlayColorPublic(
-            PlayStationSlotConfig cfg,
+            DeviceSlotConfig cfg,
             uint randomColor,
             uint pulseColor)
             => ResolveReactiveOverlayColor(cfg, randomColor, pulseColor);
 
         /// <summary>Picks the overlay color based on
-        /// <see cref="PlayStationSlotConfig.InputReactiveMode"/>:
+        /// <see cref="DeviceSlotConfig.InputReactiveMode"/>:
         /// Random uses the dispatcher's per-press random hue,
         /// Cycle uses the per-press palette pick, and Fixed
         /// uses the slot's configured base RGB. Caller is
         /// responsible for blending this with the base mode color
         /// via <see cref="LerpColor"/> at the current pulse intensity.</summary>
         private static (byte r, byte g, byte b) ResolveReactiveOverlayColor(
-            PlayStationSlotConfig cfg,
+            DeviceSlotConfig cfg,
             uint randomColor,
             uint pulseColor)
         {
@@ -503,7 +503,7 @@ namespace PadForge.Common.Input
         /// RGB triple for the lightbar field. Stateless; the dispatcher
         /// owns all state.</summary>
         private static (byte r, byte g, byte b) ComputeLightbarColor(
-            PlayStationSlotConfig cfg,
+            DeviceSlotConfig cfg,
             float audioPeak,
             long nowMs,
             uint randomColor,
@@ -677,7 +677,7 @@ namespace PadForge.Common.Input
                 (byte)Math.Round((bp + m) * 255));
         }
 
-        private static (byte r, byte g, byte b) ComputeAudioBands(PlayStationSlotConfig cfg, float p)
+        private static (byte r, byte g, byte b) ComputeAudioBands(DeviceSlotConfig cfg, float p)
         {
             float lowMid  = (float)(cfg.AudioLowToMidPercent / 100.0);
             float midHigh = (float)(cfg.AudioMidToHighPercent / 100.0);

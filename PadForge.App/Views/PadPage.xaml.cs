@@ -117,7 +117,7 @@ namespace PadForge.Views
             if (_currentPadVm != null)
             {
                 _currentPadVm.PropertyChanged -= OnPadVmPropertyChanged;
-                _currentPadVm.ActivePlayStationConfigPropertyChanged -= OnPlayStationConfigChanged;
+                _currentPadVm.ActiveDeviceConfigPropertyChanged -= OnDeviceConfigChanged;
                 if (_currentPadVm.MappedDevices != null)
                     _currentPadVm.MappedDevices.CollectionChanged -= OnMappedDevicesChanged;
                 _currentPadVm.RecordTouchpadGestureRequested -= OnRecordTouchpadGestureRequested;
@@ -128,14 +128,14 @@ namespace PadForge.Views
             if (_currentPadVm != null)
             {
                 _currentPadVm.PropertyChanged += OnPadVmPropertyChanged;
-                // The PlayStationSlotConfig anchor is per selected device
-                // (BindPlayStationConfigForDevice swaps it on
+                // The DeviceSlotConfig anchor is per selected device
+                // (BindDeviceConfigForDevice swaps it on
                 // SelectedMappedDevice change), so subscribe through the view
-                // model's ActivePlayStationConfigPropertyChanged forwarder
+                // model's ActiveDeviceConfigPropertyChanged forwarder
                 // rather than the inner config instance: the forwarder
                 // follows the anchor across device swaps (same pattern as
                 // InputService).
-                _currentPadVm.ActivePlayStationConfigPropertyChanged += OnPlayStationConfigChanged;
+                _currentPadVm.ActiveDeviceConfigPropertyChanged += OnDeviceConfigChanged;
                 if (_currentPadVm.MappedDevices != null)
                     _currentPadVm.MappedDevices.CollectionChanged += OnMappedDevicesChanged;
                 _currentPadVm.RecordTouchpadGestureRequested += OnRecordTouchpadGestureRequested;
@@ -1737,19 +1737,19 @@ namespace PadForge.Views
             {
                 // Tabs reflect the selected physical device; refresh on
                 // dropdown change. SetProperty raises this BEFORE the setter
-                // swaps the PlayStationConfig anchor, so the lighting
-                // re-syncs ride the PlayStationConfig case below instead;
+                // swaps the DeviceConfig anchor, so the lighting
+                // re-syncs ride the DeviceConfig case below instead;
                 // only the device-info subscription is re-pointed here (the
                 // backing field is already the new device).
                 SyncTabVisibility();
                 ResubscribeSelectedDeviceInfo();
             }
-            else if (e.PropertyName == nameof(PadViewModel.PlayStationConfig))
+            else if (e.PropertyName == nameof(PadViewModel.DeviceConfig))
             {
                 // The Lighting tab's config anchor swapped to another
-                // per-device entry (BindPlayStationConfigForDevice on device
+                // per-device entry (BindDeviceConfigForDevice on device
                 // change). Config events keep flowing through the
-                // ActivePlayStationConfigPropertyChanged forwarder; re-seed
+                // ActiveDeviceConfigPropertyChanged forwarder; re-seed
                 // the value-synced controls against the new instance.
                 SyncLightbarHexBox();
                 SyncLightbarPreview();
@@ -1988,7 +1988,7 @@ namespace PadForge.Views
             InputService?.DeleteCustomTouchpadGesture(item.Source.Name);
         }
 
-        private void OnPlayStationConfigChanged(object sender, PropertyChangedEventArgs e)
+        private void OnDeviceConfigChanged(object sender, PropertyChangedEventArgs e)
         {
             // Keep the HEX textboxes live-synced with the RGB sliders.
             // Skip the refresh while the user is mid-edit in the textbox
@@ -1996,9 +1996,9 @@ namespace PadForge.Views
             // moment, and overwriting Text would fight the caret position.
             switch (e.PropertyName)
             {
-                case nameof(ViewModels.PlayStationSlotConfig.LightbarRed):
-                case nameof(ViewModels.PlayStationSlotConfig.LightbarGreen):
-                case nameof(ViewModels.PlayStationSlotConfig.LightbarBlue):
+                case nameof(ViewModels.DeviceSlotConfig.LightbarRed):
+                case nameof(ViewModels.DeviceSlotConfig.LightbarGreen):
+                case nameof(ViewModels.DeviceSlotConfig.LightbarBlue):
                     if (LightbarHexBox != null && !LightbarHexBox.IsKeyboardFocusWithin)
                         SyncLightbarHexBox();
                     SyncLightbarPreview();
@@ -2007,38 +2007,38 @@ namespace PadForge.Views
                 // Rainbow / ColorCycle / AudioPulseRainbow / Strobe cadence),
                 // Rainbow brightness, and the Battery endpoint colors. Slider
                 // drags land here so the running animation retimes live.
-                case nameof(ViewModels.PlayStationSlotConfig.LightbarMode):
-                case nameof(ViewModels.PlayStationSlotConfig.LightbarPeriodMs):
-                case nameof(ViewModels.PlayStationSlotConfig.LightbarRainbowBrightness):
-                case nameof(ViewModels.PlayStationSlotConfig.LightbarBatteryLowR):
-                case nameof(ViewModels.PlayStationSlotConfig.LightbarBatteryLowG):
-                case nameof(ViewModels.PlayStationSlotConfig.LightbarBatteryLowB):
-                case nameof(ViewModels.PlayStationSlotConfig.LightbarBatteryHighR):
-                case nameof(ViewModels.PlayStationSlotConfig.LightbarBatteryHighG):
-                case nameof(ViewModels.PlayStationSlotConfig.LightbarBatteryHighB):
+                case nameof(ViewModels.DeviceSlotConfig.LightbarMode):
+                case nameof(ViewModels.DeviceSlotConfig.LightbarPeriodMs):
+                case nameof(ViewModels.DeviceSlotConfig.LightbarRainbowBrightness):
+                case nameof(ViewModels.DeviceSlotConfig.LightbarBatteryLowR):
+                case nameof(ViewModels.DeviceSlotConfig.LightbarBatteryLowG):
+                case nameof(ViewModels.DeviceSlotConfig.LightbarBatteryLowB):
+                case nameof(ViewModels.DeviceSlotConfig.LightbarBatteryHighR):
+                case nameof(ViewModels.DeviceSlotConfig.LightbarBatteryHighG):
+                case nameof(ViewModels.DeviceSlotConfig.LightbarBatteryHighB):
                     SyncLightbarPreview();
                     break;
-                case nameof(ViewModels.PlayStationSlotConfig.AudioLowR):
-                case nameof(ViewModels.PlayStationSlotConfig.AudioLowG):
-                case nameof(ViewModels.PlayStationSlotConfig.AudioLowB):
+                case nameof(ViewModels.DeviceSlotConfig.AudioLowR):
+                case nameof(ViewModels.DeviceSlotConfig.AudioLowG):
+                case nameof(ViewModels.DeviceSlotConfig.AudioLowB):
                     if (AudioLowHexBox != null && !AudioLowHexBox.IsKeyboardFocusWithin)
                         SyncOneAudioHex(AudioLowHexBox, "Low");
                     break;
-                case nameof(ViewModels.PlayStationSlotConfig.AudioMidR):
-                case nameof(ViewModels.PlayStationSlotConfig.AudioMidG):
-                case nameof(ViewModels.PlayStationSlotConfig.AudioMidB):
+                case nameof(ViewModels.DeviceSlotConfig.AudioMidR):
+                case nameof(ViewModels.DeviceSlotConfig.AudioMidG):
+                case nameof(ViewModels.DeviceSlotConfig.AudioMidB):
                     if (AudioMidHexBox != null && !AudioMidHexBox.IsKeyboardFocusWithin)
                         SyncOneAudioHex(AudioMidHexBox, "Mid");
                     break;
-                case nameof(ViewModels.PlayStationSlotConfig.AudioHighR):
-                case nameof(ViewModels.PlayStationSlotConfig.AudioHighG):
-                case nameof(ViewModels.PlayStationSlotConfig.AudioHighB):
+                case nameof(ViewModels.DeviceSlotConfig.AudioHighR):
+                case nameof(ViewModels.DeviceSlotConfig.AudioHighG):
+                case nameof(ViewModels.DeviceSlotConfig.AudioHighB):
                     if (AudioHighHexBox != null && !AudioHighHexBox.IsKeyboardFocusWithin)
                         SyncOneAudioHex(AudioHighHexBox, "High");
                     break;
                 // Palette items (LightbarPaletteEntry) carry their own
                 // PropertyChanged via the ObservableCollection wiring in
-                // PlayStationSlotConfig; their TextBoxes bind directly
+                // DeviceSlotConfig; their TextBoxes bind directly
                 // to entry.Hex with UpdateSourceTrigger=LostFocus, so no
                 // explicit sync case is needed here.
             }
@@ -2059,13 +2059,13 @@ namespace PadForge.Views
         private void SyncOneAudioHex(System.Windows.Controls.TextBox box, string tag)
         {
             if (box == null) return;
-            if (DataContext is not PadViewModel vm || vm.PlayStationConfig == null) return;
-            var (r, g, b) = ReadAudioRgb(vm.PlayStationConfig, tag);
+            if (DataContext is not PadViewModel vm || vm.DeviceConfig == null) return;
+            var (r, g, b) = ReadAudioRgb(vm.DeviceConfig, tag);
             box.Text = $"{r:X2}{g:X2}{b:X2}";
         }
 
         private static (byte r, byte g, byte b) ReadAudioRgb(
-            ViewModels.PlayStationSlotConfig cfg, string tag) => tag switch
+            ViewModels.DeviceSlotConfig cfg, string tag) => tag switch
         {
             "Low"  => (cfg.AudioLowR,  cfg.AudioLowG,  cfg.AudioLowB),
             "Mid"  => (cfg.AudioMidR,  cfg.AudioMidG,  cfg.AudioMidB),
@@ -2074,7 +2074,7 @@ namespace PadForge.Views
         };
 
         private static void WriteAudioRgb(
-            ViewModels.PlayStationSlotConfig cfg, string tag, byte r, byte g, byte b)
+            ViewModels.DeviceSlotConfig cfg, string tag, byte r, byte g, byte b)
         {
             switch (tag)
             {
@@ -2098,7 +2098,7 @@ namespace PadForge.Views
 
         private void AudioHexBox_Apply(System.Windows.Controls.TextBox box)
         {
-            if (DataContext is not PadViewModel vm || vm.PlayStationConfig == null) return;
+            if (DataContext is not PadViewModel vm || vm.DeviceConfig == null) return;
             string tag = box.Tag as string;
             if (string.IsNullOrEmpty(tag)) return;
 
@@ -2113,21 +2113,21 @@ namespace PadForge.Views
                 && byte.TryParse(text.Substring(4, 2), System.Globalization.NumberStyles.HexNumber,
                     System.Globalization.CultureInfo.InvariantCulture, out byte b))
             {
-                WriteAudioRgb(vm.PlayStationConfig, tag, r, g, b);
+                WriteAudioRgb(vm.DeviceConfig, tag, r, g, b);
             }
 
             SyncOneAudioHex(box, tag);
         }
 
         /// <summary>Populates the HEX textbox from the current
-        /// PlayStationConfig RGB. Called from DataContextChanged so
+        /// DeviceConfig RGB. Called from DataContextChanged so
         /// switching slots loads the right value, and from
         /// PadPage_Loaded for the initial paint.</summary>
         private void SyncLightbarHexBox()
         {
             if (LightbarHexBox == null) return;
-            if (DataContext is not PadViewModel vm || vm.PlayStationConfig == null) return;
-            LightbarHexBox.Text = $"{vm.PlayStationConfig.LightbarRed:X2}{vm.PlayStationConfig.LightbarGreen:X2}{vm.PlayStationConfig.LightbarBlue:X2}";
+            if (DataContext is not PadViewModel vm || vm.DeviceConfig == null) return;
+            LightbarHexBox.Text = $"{vm.DeviceConfig.LightbarRed:X2}{vm.DeviceConfig.LightbarGreen:X2}{vm.DeviceConfig.LightbarBlue:X2}";
         }
 
         /// <summary>Re-points the BatteryText subscription at the
@@ -2150,7 +2150,7 @@ namespace PadForge.Views
             // keeps a battery tick from restarting other modes' animation
             // clocks.
             if (e.PropertyName == nameof(PadViewModel.MappedDeviceInfo.BatteryText)
-                && _currentPadVm?.PlayStationConfig?.LightbarMode == ViewModels.LightbarMode.Battery)
+                && _currentPadVm?.DeviceConfig?.LightbarMode == ViewModels.LightbarMode.Battery)
                 SyncLightbarPreview();
         }
 
@@ -2286,7 +2286,7 @@ namespace PadForge.Views
         {
             // Macro lightbar actions mutate the per-device config from the
             // polling thread (InputManager Step 4b slot fan-out), and the
-            // ActivePlayStationConfigPropertyChanged forwarder raises on the
+            // ActiveDeviceConfigPropertyChanged forwarder raises on the
             // calling thread. DP access and BeginAnimation require the UI
             // thread, so bounce over instead of throwing.
             if (!Dispatcher.CheckAccess())
@@ -2297,8 +2297,8 @@ namespace PadForge.Views
             // Not built yet: the selected device has no lightbar (tab is
             // hidden) or SyncTabVisibility has not run for this family.
             if (_lightbarLitGroup == null || _lightbarBloom == null || _lightbarRects == null) return;
-            if (DataContext is not PadViewModel vm || vm.PlayStationConfig == null) return;
-            var cfg = vm.PlayStationConfig;
+            if (DataContext is not PadViewModel vm || vm.DeviceConfig == null) return;
+            var cfg = vm.DeviceConfig;
             var baseColor = Color.FromRgb(cfg.LightbarRed, cfg.LightbarGreen, cfg.LightbarBlue);
 
             // Wipe prior animations first so every mode starts from local
@@ -2525,7 +2525,7 @@ namespace PadForge.Views
         }
 
         /// <summary>Parses a HEX color string (with or without leading #)
-        /// and writes the components back into PlayStationConfig. The
+        /// and writes the components back into DeviceConfig. The
         /// per-channel sliders auto-update via their TwoWay bindings on
         /// the same observable properties, so no extra UI poke is needed.
         /// Invalid input is silently ignored — the textbox is restored
@@ -2544,7 +2544,7 @@ namespace PadForge.Views
         private void LightbarHexBox_Apply()
         {
             if (LightbarHexBox == null) return;
-            if (DataContext is not PadViewModel vm || vm.PlayStationConfig == null) return;
+            if (DataContext is not PadViewModel vm || vm.DeviceConfig == null) return;
 
             string text = (LightbarHexBox.Text ?? string.Empty).Trim();
             if (text.StartsWith("#")) text = text.Substring(1);
@@ -2557,15 +2557,15 @@ namespace PadForge.Views
                 && byte.TryParse(text.Substring(4, 2), System.Globalization.NumberStyles.HexNumber,
                     System.Globalization.CultureInfo.InvariantCulture, out byte b))
             {
-                vm.PlayStationConfig.LightbarRed = r;
-                vm.PlayStationConfig.LightbarGreen = g;
-                vm.PlayStationConfig.LightbarBlue = b;
+                vm.DeviceConfig.LightbarRed = r;
+                vm.DeviceConfig.LightbarGreen = g;
+                vm.DeviceConfig.LightbarBlue = b;
             }
 
             // Always reformat the textbox to canonical RRGGBB. Catches
             // both successful parse (echo back normalized form) and
             // failed parse (revert to current truth).
-            LightbarHexBox.Text = $"{vm.PlayStationConfig.LightbarRed:X2}{vm.PlayStationConfig.LightbarGreen:X2}{vm.PlayStationConfig.LightbarBlue:X2}";
+            LightbarHexBox.Text = $"{vm.DeviceConfig.LightbarRed:X2}{vm.DeviceConfig.LightbarGreen:X2}{vm.DeviceConfig.LightbarBlue:X2}";
         }
 
         /// <summary>Preset swatch row on the Lighting tab (#175
@@ -2578,7 +2578,7 @@ namespace PadForge.Views
         private void LightbarSwatch_Click(object sender, MouseButtonEventArgs e)
         {
             if (sender is not FrameworkElement fe || fe.Tag is not string hex) return;
-            if (DataContext is not PadViewModel vm || vm.PlayStationConfig == null) return;
+            if (DataContext is not PadViewModel vm || vm.DeviceConfig == null) return;
 
             if (hex.Length == 6
                 && byte.TryParse(hex.Substring(0, 2), System.Globalization.NumberStyles.HexNumber,
@@ -2588,9 +2588,9 @@ namespace PadForge.Views
                 && byte.TryParse(hex.Substring(4, 2), System.Globalization.NumberStyles.HexNumber,
                     System.Globalization.CultureInfo.InvariantCulture, out byte b))
             {
-                vm.PlayStationConfig.LightbarRed = r;
-                vm.PlayStationConfig.LightbarGreen = g;
-                vm.PlayStationConfig.LightbarBlue = b;
+                vm.DeviceConfig.LightbarRed = r;
+                vm.DeviceConfig.LightbarGreen = g;
+                vm.DeviceConfig.LightbarBlue = b;
                 SyncLightbarHexBox();
             }
         }
@@ -3163,7 +3163,7 @@ namespace PadForge.Views
         /// </summary>
         private void MicLedDevicePicker_DropDownOpened(object sender, EventArgs e)
         {
-            if (_currentPadVm?.PlayStationConfig is { } cfg)
+            if (_currentPadVm?.DeviceConfig is { } cfg)
             {
                 // RefreshMicLedDevices replaces the ItemsSource, which triggers a WPF
                 // Selector Reset: MicLedDeviceItem has reference equality, so the

@@ -12,7 +12,7 @@ namespace PadForge.Common.Input
     /// <summary>
     /// Per-virtual-DS5-VC dispatcher for Feature B (user-configured
     /// adaptive trigger / lightbar / audio effects). Subscribes to the
-    /// slot's <see cref="PlayStationSlotConfig"/> PropertyChanged and
+    /// slot's <see cref="DeviceSlotConfig"/> PropertyChanged and
     /// re-synthesizes + sends the DS5 effect message to every assigned
     /// physical DualSense whenever the user touches a setting on the
     /// Adaptive Triggers or Lighting tab.
@@ -188,7 +188,7 @@ namespace PadForge.Common.Input
         private const float AudioOnsetExit  = 0.15f;
 
         private readonly int _padIndex;
-        private PlayStationSlotConfig _config;
+        private DeviceSlotConfig _config;
         private System.Threading.Timer _animTimer;
         private bool _animTickActive;
         // Guards the _animTimer / _animTickActive read-modify-write.
@@ -488,12 +488,12 @@ namespace PadForge.Common.Input
             => _deviceStates.GetOrAdd(deviceGuid, _ => new DeviceState());
 
         /// <summary>Static provider returning every per-device
-        /// <see cref="PlayStationSlotConfig"/> on a slot. The dispatcher's
+        /// <see cref="DeviceSlotConfig"/> on a slot. The dispatcher's
         /// device loop reads this to synthesize per-device output (each
         /// device renders its own LightbarMode + colors / palette).
         /// Wired by InputService to
-        /// <c>InputManager._perDevicePlayStationConfigs[slot]</c>.</summary>
-        public static Func<int, IReadOnlyDictionary<Guid, PlayStationSlotConfig>> SlotPerDeviceConfigsProvider { get; set; }
+        /// <c>InputManager._perDeviceSlotConfigs[slot]</c>.</summary>
+        public static Func<int, IReadOnlyDictionary<Guid, DeviceSlotConfig>> SlotPerDeviceConfigsProvider { get; set; }
 
         // Per-slot instance registry. Step 2's polling thread broadcasts
         // a per-tick rumble-status poke through OnPollingTick(padIndex, ...)
@@ -504,7 +504,7 @@ namespace PadForge.Common.Input
         // with no rumble writer at all.
         private static readonly System.Collections.Concurrent.ConcurrentDictionary<int, UserEffectsDispatcher> _instances = new();
 
-        public UserEffectsDispatcher(int padIndex, PlayStationSlotConfig config)
+        public UserEffectsDispatcher(int padIndex, DeviceSlotConfig config)
         {
             _padIndex = padIndex;
             _config = config;
@@ -542,10 +542,10 @@ namespace PadForge.Common.Input
             }
         }
 
-        /// <summary>Re-binds to a new <see cref="PlayStationSlotConfig"/>
+        /// <summary>Re-binds to a new <see cref="DeviceSlotConfig"/>
         /// instance. Used when the parent <see cref="PadViewModel"/>
         /// reassigns its config via the setter (e.g. profile load).</summary>
-        public void Rebind(PlayStationSlotConfig config)
+        public void Rebind(DeviceSlotConfig config)
         {
             if (_disposed) return;
             if (_config != null)
@@ -603,13 +603,13 @@ namespace PadForge.Common.Input
             // re-evaluating, enabling the input-reactive overlay on a
             // slot whose base mode is static / off would never start
             // the timer, so button-press edges would never be detected.
-            if (e.PropertyName == nameof(PlayStationSlotConfig.LightbarMode)
-                || e.PropertyName == nameof(PlayStationSlotConfig.LightbarPeriodMs)
-                || e.PropertyName == nameof(PlayStationSlotConfig.InputReactiveMode)
-                || e.PropertyName == nameof(PlayStationSlotConfig.MacroOverrideExpiresAtUtc))
+            if (e.PropertyName == nameof(DeviceSlotConfig.LightbarMode)
+                || e.PropertyName == nameof(DeviceSlotConfig.LightbarPeriodMs)
+                || e.PropertyName == nameof(DeviceSlotConfig.InputReactiveMode)
+                || e.PropertyName == nameof(DeviceSlotConfig.MacroOverrideExpiresAtUtc))
                 UpdateAnimTimer();
-            if (e.PropertyName == nameof(PlayStationSlotConfig.AudioPassthroughEnabled)
-                || e.PropertyName == nameof(PlayStationSlotConfig.AudioMirrorSourceId))
+            if (e.PropertyName == nameof(DeviceSlotConfig.AudioPassthroughEnabled)
+                || e.PropertyName == nameof(DeviceSlotConfig.AudioMirrorSourceId))
             {
                 AudioPassthroughService.Reconcile(); // start/stop/repoint the mirror now
                 WiiSpeakerService.Reconcile();        // same for a Wii Remote speaker mirror
@@ -973,7 +973,7 @@ namespace PadForge.Common.Input
         /// <summary>True when any device's config on the slot is in the
         /// given <see cref="LightbarMode"/>. Used by tick-suppression
         /// special-cases (e.g. AudioPulseRainbow's per-tick rotation).</summary>
-        private static bool AnyDeviceMode(IReadOnlyDictionary<Guid, PlayStationSlotConfig> cfgs, LightbarMode mode)
+        private static bool AnyDeviceMode(IReadOnlyDictionary<Guid, DeviceSlotConfig> cfgs, LightbarMode mode)
         {
             if (cfgs == null) return false;
             foreach (var kvp in cfgs)
@@ -1075,7 +1075,7 @@ namespace PadForge.Common.Input
             _pulseStartMs = Environment.TickCount64;
         }
 
-        private float ComputePulseIntensity(long nowMs, PlayStationSlotConfig cfg)
+        private float ComputePulseIntensity(long nowMs, DeviceSlotConfig cfg)
         {
             if (_pulseStartMs == 0 || cfg == null) return 0f;
             long elapsed = nowMs - _pulseStartMs;
@@ -1263,7 +1263,7 @@ namespace PadForge.Common.Input
                     // Resolve this device's per-device lighting config.
                     // Falls back to the slot's anchor config if missing
                     // (transient case before the dictionary is wired).
-                    PlayStationSlotConfig devCfg = null;
+                    DeviceSlotConfig devCfg = null;
                     if (perDeviceCfgs != null
                         && perDeviceCfgs.TryGetValue(ud.InstanceGuid, out var resolved))
                         devCfg = resolved;

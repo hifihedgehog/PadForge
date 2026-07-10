@@ -5,7 +5,7 @@ using PadForge.ViewModels;
 namespace PadForge.Common.Input
 {
     /// <summary>
-    /// Resolves <see cref="PlayStationSlotConfig"/> into a parsed-field
+    /// Resolves <see cref="DeviceSlotConfig"/> into a parsed-field
     /// dictionary for DualShock 4 effect output. The dictionary is fed to
     /// <c>HMOutputEncoder.Encode(profile, fields)</c>, which packs the bytes
     /// per the active profile's <c>extendedOutputReport</c> spec — USB
@@ -35,7 +35,7 @@ namespace PadForge.Common.Input
     /// <list type="number">
     /// <item>Game-driven Feature A passthrough (separate dispatcher,
     /// not handled here).</item>
-    /// <item>Macro-driven override (<see cref="PlayStationSlotConfig.HasActiveMacroLightbarOverride"/>).</item>
+    /// <item>Macro-driven override (<see cref="DeviceSlotConfig.HasActiveMacroLightbarOverride"/>).</item>
     /// <item>Configured <see cref="LightbarMode"/> (animated audio /
     /// breathing / palette / etc.) — same <see cref="ComputeLightbarColor"/>
     /// helper as DS5.</item>
@@ -80,7 +80,7 @@ namespace PadForge.Common.Input
         /// carries both transports' fields and the encoder picks what it
         /// needs.</summary>
         public static Dictionary<string, object> BuildFields(
-            PlayStationSlotConfig cfg,
+            DeviceSlotConfig cfg,
             float audioPeak,
             long nowMs,
             uint randomColor,
@@ -150,7 +150,7 @@ namespace PadForge.Common.Input
         // ────────────────────────────────────────────────
 
         private static void ResolveLightbarRgb(
-            PlayStationSlotConfig cfg,
+            DeviceSlotConfig cfg,
             float audioPeak,
             long nowMs,
             uint randomColor,

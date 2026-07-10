@@ -385,7 +385,7 @@ namespace PadForge.ViewModels
         // slot move together while each renders its own personality
         // (palette, colors) for the new mode.
         //
-        // <c>_playStationConfig</c> below is a reference to the
+        // <c>_deviceConfig</c> below is a reference to the
         // SelectedMappedDevice's entry in this dictionary, swapped on
         // device change so the Lighting tab's bindings re-resolve.
         // ConcurrentDictionary so the polling thread (which iterates this
@@ -393,99 +393,99 @@ namespace PadForge.ViewModels
         // with UI-thread mutations from device-map changes / settings
         // load. Iteration on ConcurrentDictionary returns a moment-in-time
         // snapshot rather than throwing InvalidOperationException.
-        private readonly System.Collections.Concurrent.ConcurrentDictionary<Guid, PlayStationSlotConfig> _perDevicePlayStationConfigs = new();
-        private PlayStationSlotConfig _playStationConfig = new();
-        private static readonly PlayStationSlotConfig _emptyPlayStationConfigSentinel = new();
+        private readonly System.Collections.Concurrent.ConcurrentDictionary<Guid, DeviceSlotConfig> _perDeviceSlotConfigs = new();
+        private DeviceSlotConfig _deviceConfig = new();
+        private static readonly DeviceSlotConfig _emptyDeviceConfigSentinel = new();
 
         /// <summary>Per-(slot, device) lighting tab configs keyed by
         /// physical device InstanceGuid. Always populated for every
         /// mapped device; the empty Guid key holds a fallback used
         /// before any device is mapped.</summary>
-        public IReadOnlyDictionary<Guid, PlayStationSlotConfig> PerDevicePlayStationConfigs
-            => _perDevicePlayStationConfigs;
+        public IReadOnlyDictionary<Guid, DeviceSlotConfig> PerDeviceSlotConfigs
+            => _perDeviceSlotConfigs;
 
         /// <summary>The lighting tab's currently-bound config —
         /// references the SelectedMappedDevice's entry in
-        /// <see cref="PerDevicePlayStationConfigs"/>. The setter accepts
+        /// <see cref="PerDeviceSlotConfigs"/>. The setter accepts
         /// any config (used by load paths to seed the dictionary
         /// before SelectedMappedDevice is set). On swap, the forwarder
         /// re-attaches its PropertyChanged subscription so listeners
-        /// of <see cref="ActivePlayStationConfigPropertyChanged"/>
+        /// of <see cref="ActiveDeviceConfigPropertyChanged"/>
         /// keep receiving events from whichever per-device config is
         /// currently bound.</summary>
-        public PlayStationSlotConfig PlayStationConfig
+        public DeviceSlotConfig DeviceConfig
         {
-            get => _playStationConfig;
+            get => _deviceConfig;
             set
             {
-                var old = _playStationConfig;
-                if (SetProperty(ref _playStationConfig, value ?? new()))
+                var old = _deviceConfig;
+                if (SetProperty(ref _deviceConfig, value ?? new()))
                 {
-                    if (old != null) old.PropertyChanged -= OnActivePlayStationConfigPropertyChanged;
-                    if (_playStationConfig != null) _playStationConfig.PropertyChanged += OnActivePlayStationConfigPropertyChanged;
+                    if (old != null) old.PropertyChanged -= OnActiveDeviceConfigPropertyChanged;
+                    if (_deviceConfig != null) _deviceConfig.PropertyChanged += OnActiveDeviceConfigPropertyChanged;
                 }
             }
         }
 
         /// <summary>Forwards PropertyChanged from the currently-bound
-        /// <see cref="PlayStationConfig"/> regardless of which
+        /// <see cref="DeviceConfig"/> regardless of which
         /// per-device entry the anchor points at. Subscribers attach to
         /// this rather than to the inner config so the subscription
         /// follows the anchor across SelectedMappedDevice swaps.</summary>
-        public event System.ComponentModel.PropertyChangedEventHandler ActivePlayStationConfigPropertyChanged;
+        public event System.ComponentModel.PropertyChangedEventHandler ActiveDeviceConfigPropertyChanged;
 
-        private void OnActivePlayStationConfigPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
-            => ActivePlayStationConfigPropertyChanged?.Invoke(sender, e);
+        private void OnActiveDeviceConfigPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+            => ActiveDeviceConfigPropertyChanged?.Invoke(sender, e);
 
         /// <summary>Returns the per-device lighting config for the given
         /// device, creating a fresh default entry if none exists yet.
         /// Used by macro fan-out and the polling-thread synthesizer to
         /// resolve a specific (slot, device) config.</summary>
-        public PlayStationSlotConfig GetOrCreatePlayStationConfig(Guid deviceGuid)
+        public DeviceSlotConfig GetOrCreateDeviceConfig(Guid deviceGuid)
         {
             if (deviceGuid == Guid.Empty)
-                return _playStationConfig;
-            return _perDevicePlayStationConfigs.GetOrAdd(deviceGuid, _ => new PlayStationSlotConfig());
+                return _deviceConfig;
+            return _perDeviceSlotConfigs.GetOrAdd(deviceGuid, _ => new DeviceSlotConfig());
         }
 
         /// <summary>Snapshot of every per-device config on the slot. Used
         /// by macro fan-out so a slot-level lightbar action writes to
         /// each device's config in turn.</summary>
-        public IEnumerable<PlayStationSlotConfig> EnumeratePlayStationConfigs()
-            => _perDevicePlayStationConfigs.Values;
+        public IEnumerable<DeviceSlotConfig> EnumerateDeviceSlotConfigs()
+            => _perDeviceSlotConfigs.Values;
 
         /// <summary>Ensures the per-device dictionary has an entry for
         /// every currently-mapped device. Newly-mapped devices get a
         /// fresh default config — the user customizes each device's
         /// Lighting tab independently. Called by the input service
         /// after MappedDevices changes.</summary>
-        public void EnsurePlayStationConfigsForMappedDevices()
+        public void EnsureDeviceSlotConfigsForMappedDevices()
         {
             foreach (var dev in MappedDevices)
             {
                 if (dev.InstanceGuid == Guid.Empty) continue;
-                _perDevicePlayStationConfigs.GetOrAdd(dev.InstanceGuid, _ => new PlayStationSlotConfig());
+                _perDeviceSlotConfigs.GetOrAdd(dev.InstanceGuid, _ => new DeviceSlotConfig());
             }
         }
 
         /// <summary>Switches the Lighting tab's bound config to the
         /// device with the given InstanceGuid, creating an entry if
         /// missing. Called by SelectedMappedDevice change.</summary>
-        private void BindPlayStationConfigForDevice(Guid deviceGuid)
+        private void BindDeviceConfigForDevice(Guid deviceGuid)
         {
-            PlayStationSlotConfig target;
+            DeviceSlotConfig target;
             if (deviceGuid == Guid.Empty)
             {
                 // No device selected — bind a sentinel so the UI doesn't
                 // mutate any device's config inadvertently.
-                target = _emptyPlayStationConfigSentinel;
+                target = _emptyDeviceConfigSentinel;
             }
             else
             {
-                target = GetOrCreatePlayStationConfig(deviceGuid);
+                target = GetOrCreateDeviceConfig(deviceGuid);
             }
-            if (!ReferenceEquals(_playStationConfig, target))
-                PlayStationConfig = target;
+            if (!ReferenceEquals(_deviceConfig, target))
+                DeviceConfig = target;
         }
 
         // ═══════════════════════════════════════════════
@@ -692,9 +692,9 @@ namespace PadForge.ViewModels
                     else OnPropertyChanged(nameof(SelectedMirrorSourceId));
                     // Swap the Lighting tab's bound config to the new
                     // device's per-device entry. UI bindings that resolve
-                    // PlayStationConfig.* re-evaluate against the new
+                    // DeviceConfig.* re-evaluate against the new
                     // reference.
-                    BindPlayStationConfigForDevice(value?.InstanceGuid ?? Guid.Empty);
+                    BindDeviceConfigForDevice(value?.InstanceGuid ?? Guid.Empty);
                     // The engage picker projection reads the NEW device's
                     // config, so re-resolve after the config swap (#185).
                     OnPropertyChanged(nameof(MirrorEngageSelectedInput));
@@ -735,7 +735,7 @@ namespace PadForge.ViewModels
         /// </summary>
         public void NotifySelectedMappedDeviceIdentityChanged()
         {
-            BindPlayStationConfigForDevice(_selectedMappedDevice?.InstanceGuid ?? Guid.Empty);
+            BindDeviceConfigForDevice(_selectedMappedDevice?.InstanceGuid ?? Guid.Empty);
             OnPropertyChanged(nameof(HasSelectedDevice));
             OnPropertyChanged(nameof(SelectedMappedDevice));
             SelectedDeviceChanged?.Invoke(this, _selectedMappedDevice);
@@ -3309,10 +3309,10 @@ namespace PadForge.ViewModels
             // reach them. Without this clear, deleting a slot and later
             // remapping the same physical device to a new slot would
             // resurrect that device's prior lightbar mode / colors /
-            // palette via GetOrAdd in EnsurePlayStationConfigsForMappedDevices,
+            // palette via GetOrAdd in EnsureDeviceSlotConfigsForMappedDevices,
             // and the saved XML would still carry the stale entries.
-            _perDevicePlayStationConfigs.Clear();
-            PlayStationConfig = new PlayStationSlotConfig();
+            _perDeviceSlotConfigs.Clear();
+            DeviceConfig = new DeviceSlotConfig();
         }
 
         /// <summary>Resets all deadzone, anti-deadzone, linear, and trigger settings to defaults.</summary>
@@ -4025,7 +4025,7 @@ namespace PadForge.ViewModels
         {
             get
             {
-                var cfg = PlayStationConfig;
+                var cfg = DeviceConfig;
                 if (cfg == null || string.IsNullOrEmpty(cfg.AudioMirrorEngageButton)) return null;
                 foreach (var c in SlotAvailableInputs)
                 {
@@ -4039,7 +4039,7 @@ namespace PadForge.ViewModels
             set
             {
                 if (value == null) return;
-                var cfg = PlayStationConfig;
+                var cfg = DeviceConfig;
                 if (cfg == null) return;
                 cfg.AudioMirrorEngageButton = value.Descriptor ?? "";
                 cfg.AudioMirrorEngageDeviceGuid = value.DeviceGuid ?? "";
@@ -4096,7 +4096,7 @@ namespace PadForge.ViewModels
         public RelayCommand ResetMirrorEngageModeCommand =>
             _resetMirrorEngageModeCommand ??= new RelayCommand(() =>
             {
-                if (PlayStationConfig != null) PlayStationConfig.AudioMirrorEngageMode = "Always";
+                if (DeviceConfig != null) DeviceConfig.AudioMirrorEngageMode = "Always";
             });
 
         private RelayCommand _resetMirrorEngageInputCommand;
@@ -4105,9 +4105,9 @@ namespace PadForge.ViewModels
         public RelayCommand ResetMirrorEngageInputCommand =>
             _resetMirrorEngageInputCommand ??= new RelayCommand(() =>
             {
-                if (PlayStationConfig == null) return;
-                PlayStationConfig.AudioMirrorEngageButton = string.Empty;
-                PlayStationConfig.AudioMirrorEngageDeviceGuid = string.Empty;
+                if (DeviceConfig == null) return;
+                DeviceConfig.AudioMirrorEngageButton = string.Empty;
+                DeviceConfig.AudioMirrorEngageDeviceGuid = string.Empty;
                 OnPropertyChanged(nameof(MirrorEngageSelectedInput));
             });
 
@@ -4115,7 +4115,7 @@ namespace PadForge.ViewModels
         public RelayCommand ResetMirrorEngageReleaseMsCommand =>
             _resetMirrorEngageReleaseMsCommand ??= new RelayCommand(() =>
             {
-                if (PlayStationConfig != null) PlayStationConfig.AudioMirrorEngageReleaseMs = 500;
+                if (DeviceConfig != null) DeviceConfig.AudioMirrorEngageReleaseMs = 500;
             });
 
         private RelayCommand _resetMirrorSourceCommand;
@@ -4178,7 +4178,7 @@ namespace PadForge.ViewModels
             _refreshingMirrorSources = true;
             try
             {
-                string current = PlayStationConfig?.AudioMirrorSourceId ?? string.Empty;
+                string current = DeviceConfig?.AudioMirrorSourceId ?? string.Empty;
                 var desired = new System.Collections.Generic.List<MirrorSourceOption>
                 {
                     new MirrorSourceOption { Id = string.Empty, Name = Strings.Instance.Pad_Audio_SystemDefault },
@@ -4222,17 +4222,17 @@ namespace PadForge.ViewModels
         }
 
         /// <summary>ComboBox-facing proxy over
-        /// PlayStationConfig.AudioMirrorSourceId that ignores the transient
+        /// DeviceConfig.AudioMirrorSourceId that ignores the transient
         /// null write-back during ItemsSource rebuilds.</summary>
         public string SelectedMirrorSourceId
         {
-            get => PlayStationConfig?.AudioMirrorSourceId ?? string.Empty;
+            get => DeviceConfig?.AudioMirrorSourceId ?? string.Empty;
             set
             {
                 if (_refreshingMirrorSources || value == null) return;
-                if (PlayStationConfig == null) return;
-                if (PlayStationConfig.AudioMirrorSourceId == value) return;
-                PlayStationConfig.AudioMirrorSourceId = value;
+                if (DeviceConfig == null) return;
+                if (DeviceConfig.AudioMirrorSourceId == value) return;
+                DeviceConfig.AudioMirrorSourceId = value;
                 OnPropertyChanged(nameof(SelectedMirrorSourceId));
             }
         }
@@ -4298,14 +4298,14 @@ namespace PadForge.ViewModels
             _resetSoundOutputAllCommand ??= new RelayCommand(() =>
             {
                 SoundMasterVolume = 100;
-                if (PlayStationConfig != null)
+                if (DeviceConfig != null)
                 {
-                    PlayStationConfig.AudioPassthroughEnabled = false;
+                    DeviceConfig.AudioPassthroughEnabled = false;
                     SelectedMirrorSourceId = string.Empty;
-                    PlayStationConfig.AudioMirrorEngageMode = "Always";
-                    PlayStationConfig.AudioMirrorEngageDeviceGuid = string.Empty;
-                    PlayStationConfig.AudioMirrorEngageButton = string.Empty;
-                    PlayStationConfig.AudioMirrorEngageReleaseMs = 500;
+                    DeviceConfig.AudioMirrorEngageMode = "Always";
+                    DeviceConfig.AudioMirrorEngageDeviceGuid = string.Empty;
+                    DeviceConfig.AudioMirrorEngageButton = string.Empty;
+                    DeviceConfig.AudioMirrorEngageReleaseMs = 500;
                     OnPropertyChanged(nameof(MirrorEngageSelectedInput));
                 }
             });

@@ -1376,7 +1376,7 @@ namespace PadForge.Services
                 appSettings.MidiSlotOrder);
 
             ApplyExtendedConfigs(appSettings.ExtendedConfigs);
-            ApplyPlayStationConfigs(appSettings.PlayStationConfigs);
+            ApplyDeviceSlotConfigs(appSettings.DeviceSlotConfigs);
             ApplyMidiConfigs(appSettings.MidiConfigs);
 
             // Load DSU motion server settings (now on Dashboard VM).
@@ -1422,7 +1422,7 @@ namespace PadForge.Services
         /// PlayStation device features (lightbar / adaptive triggers /
         /// mic LED / player LED / audio-reactive) are physical-device
         /// passthrough and copy unconditionally — a DualSense mapped to
-        /// an Xbox slot still has its lightbar driven by PlayStationConfig.
+        /// an Xbox slot still has its lightbar driven by DeviceConfig.
         /// Extended custom layouts and MIDI CC/note ranges are slot-shape
         /// data, so they only copy when both source and destination share
         /// that output type. Mappings and per-device tuning live on
@@ -1445,31 +1445,31 @@ namespace PadForge.Services
             // than flattening to one. A destination device the source slot did not
             // have falls back to a representative source config (a configured anchor,
             // else the first configured per-device entry).
-            dst.EnsurePlayStationConfigsForMappedDevices();
-            var srcByGuid = src.PerDevicePlayStationConfigs;
-            var srcAnchor = src.PlayStationConfig;
-            var fallbackCfg = IsPlayStationConfigConfigured(srcAnchor) ? srcAnchor : null;
+            dst.EnsureDeviceSlotConfigsForMappedDevices();
+            var srcByGuid = src.PerDeviceSlotConfigs;
+            var srcAnchor = src.DeviceConfig;
+            var fallbackCfg = IsDeviceConfigConfigured(srcAnchor) ? srcAnchor : null;
             if (fallbackCfg == null && srcByGuid != null)
                 foreach (var kvp in srcByGuid)
-                    if (IsPlayStationConfigConfigured(kvp.Value)) { fallbackCfg = kvp.Value; break; }
+                    if (IsDeviceConfigConfigured(kvp.Value)) { fallbackCfg = kvp.Value; break; }
             fallbackCfg ??= srcAnchor;
 
             if (fallbackCfg != null || (srcByGuid != null && srcByGuid.Count > 0))
             {
-                if (dst.PerDevicePlayStationConfigs != null)
+                if (dst.PerDeviceSlotConfigs != null)
                 {
-                    foreach (var kvp in dst.PerDevicePlayStationConfigs)
+                    foreach (var kvp in dst.PerDeviceSlotConfigs)
                     {
                         var dstCfg = kvp.Value;
                         if (dstCfg == null) continue;
                         var srcCfg = (srcByGuid != null && srcByGuid.TryGetValue(kvp.Key, out var m) && m != null)
                             ? m : fallbackCfg;
                         if (srcCfg != null)
-                            ApplyPlayStationConfigData(dstCfg, BuildPlayStationConfigData(srcCfg, dstSlot, Guid.Empty));
+                            ApplyDeviceSlotConfigData(dstCfg, BuildDeviceSlotConfigData(srcCfg, dstSlot, Guid.Empty));
                     }
                 }
                 // Anchor write only when a real device is selected on the
-                // destination (otherwise dst.PlayStationConfig is the shared
+                // destination (otherwise dst.DeviceConfig is the shared
                 // sentinel that would leak into every no-device view).
                 if (dst.SelectedMappedDevice != null
                     && dst.SelectedMappedDevice.InstanceGuid != Guid.Empty)
@@ -1478,7 +1478,7 @@ namespace PadForge.Services
                     var srcCfg = (srcByGuid != null && srcByGuid.TryGetValue(selGuid, out var m2) && m2 != null)
                         ? m2 : (srcAnchor ?? fallbackCfg);
                     if (srcCfg != null)
-                        ApplyPlayStationConfigData(dst.PlayStationConfig, BuildPlayStationConfigData(srcCfg, dstSlot, Guid.Empty));
+                        ApplyDeviceSlotConfigData(dst.DeviceConfig, BuildDeviceSlotConfigData(srcCfg, dstSlot, Guid.Empty));
                 }
             }
 
@@ -1542,22 +1542,22 @@ namespace PadForge.Services
         /// (anchor + per-device entries). Returns an empty array when
         /// the slot has nothing configured. Caller is responsible for
         /// JSON-serialising the result into the clipboard payload.</summary>
-        public ViewModels.PlayStationSlotConfigData[] BuildPlayStationConfigSnapshotForSlot(int slotIndex)
+        public ViewModels.DeviceSlotConfigData[] BuildDeviceConfigSnapshotForSlot(int slotIndex)
         {
             if (slotIndex < 0 || slotIndex >= _mainVm.Pads.Count)
-                return Array.Empty<ViewModels.PlayStationSlotConfigData>();
+                return Array.Empty<ViewModels.DeviceSlotConfigData>();
             var padVm = _mainVm.Pads[slotIndex];
-            if (padVm == null) return Array.Empty<ViewModels.PlayStationSlotConfigData>();
+            if (padVm == null) return Array.Empty<ViewModels.DeviceSlotConfigData>();
 
-            var list = new System.Collections.Generic.List<ViewModels.PlayStationSlotConfigData>();
-            if (padVm.PlayStationConfig != null)
-                list.Add(BuildPlayStationConfigData(padVm.PlayStationConfig, slotIndex, Guid.Empty));
-            if (padVm.PerDevicePlayStationConfigs != null)
+            var list = new System.Collections.Generic.List<ViewModels.DeviceSlotConfigData>();
+            if (padVm.DeviceConfig != null)
+                list.Add(BuildDeviceSlotConfigData(padVm.DeviceConfig, slotIndex, Guid.Empty));
+            if (padVm.PerDeviceSlotConfigs != null)
             {
-                foreach (var kvp in padVm.PerDevicePlayStationConfigs)
+                foreach (var kvp in padVm.PerDeviceSlotConfigs)
                 {
                     if (kvp.Key == Guid.Empty || kvp.Value == null) continue;
-                    list.Add(BuildPlayStationConfigData(kvp.Value, slotIndex, kvp.Key));
+                    list.Add(BuildDeviceSlotConfigData(kvp.Value, slotIndex, kvp.Key));
                 }
             }
             return list.ToArray();
@@ -1565,9 +1565,9 @@ namespace PadForge.Services
 
         /// <summary>Paste companion. Applies a clipboard's PlayStation
         /// config snapshot to the destination slot: the anchor entry
-        /// (DeviceGuid = Empty) writes to <c>padVm.PlayStationConfig</c>;
+        /// (DeviceGuid = Empty) writes to <c>padVm.DeviceConfig</c>;
         /// per-device entries fan out across every entry already in the
-        /// destination's <c>PerDevicePlayStationConfigs</c> dict so
+        /// destination's <c>PerDeviceSlotConfigs</c> dict so
         /// device-switching on the destination doesn't bring back the
         /// old lightbar. Like the in-process Copy From, this runs
         /// unconditionally regardless of slot output type — PlayStation
@@ -1577,10 +1577,10 @@ namespace PadForge.Services
         /// (passthrough / audio-lightbar / mirror source). The audio arm matters because
         /// the old "is this configured" checks ignored it, so an audio-only setup was
         /// treated as empty when Copy / Paste / Copy From picked a representative.</summary>
-        public static bool IsPlayStationConfigDataConfigured(ViewModels.PlayStationSlotConfigData c)
+        public static bool IsDeviceSlotConfigDataConfigured(ViewModels.DeviceSlotConfigData c)
             => c != null
             // Rev-aware default checks: a rev-0 DTO (old save / old
-            // profile store, not yet lifted by ApplyPlayStationConfigData)
+            // profile store, not yet lifted by ApplyDeviceSlotConfigData)
             // spells "unset" as Off; rev-1 spells it PlayerNumber and
             // Off there is a deliberate, copy-worthy configuration.
             && (c.LightbarMode != (c.LightingRev >= 1
@@ -1598,9 +1598,9 @@ namespace PadForge.Services
                 || (c.AudioMirrorEngageMode != null && c.AudioMirrorEngageMode != "Always")
                 || !string.IsNullOrEmpty(c.AudioMirrorEngageButton));
 
-        /// <summary>VM-shape twin of <see cref="IsPlayStationConfigDataConfigured"/>,
+        /// <summary>VM-shape twin of <see cref="IsDeviceSlotConfigDataConfigured"/>,
         /// for the in-process Copy From path.</summary>
-        public static bool IsPlayStationConfigConfigured(ViewModels.PlayStationSlotConfig c)
+        public static bool IsDeviceConfigConfigured(ViewModels.DeviceSlotConfig c)
             => c != null
             && (c.LightbarMode != ViewModels.LightbarMode.PlayerNumber
                 || c.LeftTriggerMode != ViewModels.AdaptiveTriggerMode.Off
@@ -1613,8 +1613,8 @@ namespace PadForge.Services
                 || c.AudioMirrorEngageMode != "Always"
                 || !string.IsNullOrEmpty(c.AudioMirrorEngageButton));
 
-        public void ApplyPlayStationConfigsToSlot(int slotIndex,
-            ViewModels.PlayStationSlotConfigData[] configs)
+        public void ApplyDeviceSlotConfigsToSlot(int slotIndex,
+            ViewModels.DeviceSlotConfigData[] configs)
         {
             if (configs == null || configs.Length == 0) return;
             if (slotIndex < 0 || slotIndex >= _mainVm.Pads.Count) return;
@@ -1625,8 +1625,8 @@ namespace PadForge.Services
             // The copy carries one entry per source device, so the apply lands
             // each device's settings on the matching destination device instead
             // of flattening the whole slot to one representative config.
-            var byGuid = new System.Collections.Generic.Dictionary<Guid, ViewModels.PlayStationSlotConfigData>();
-            ViewModels.PlayStationSlotConfigData anchor = null;
+            var byGuid = new System.Collections.Generic.Dictionary<Guid, ViewModels.DeviceSlotConfigData>();
+            ViewModels.DeviceSlotConfigData anchor = null;
             foreach (var c in configs)
             {
                 if (c == null) continue;
@@ -1637,23 +1637,23 @@ namespace PadForge.Services
             // Representative config for destination devices the source slot did
             // not have: a configured anchor, else the first configured per-device
             // entry, else the anchor so a new device still gets something.
-            var fallback = IsPlayStationConfigDataConfigured(anchor) ? anchor : null;
+            var fallback = IsDeviceSlotConfigDataConfigured(anchor) ? anchor : null;
             if (fallback == null)
                 foreach (var c in configs)
-                    if (IsPlayStationConfigDataConfigured(c)) { fallback = c; break; }
+                    if (IsDeviceSlotConfigDataConfigured(c)) { fallback = c; break; }
             fallback ??= anchor;
             if (fallback == null)
                 foreach (var v in byGuid.Values) { fallback = v; break; }
             if (fallback == null) return;
 
-            padVm.EnsurePlayStationConfigsForMappedDevices();
-            if (padVm.PerDevicePlayStationConfigs != null)
+            padVm.EnsureDeviceSlotConfigsForMappedDevices();
+            if (padVm.PerDeviceSlotConfigs != null)
             {
-                foreach (var kvp in padVm.PerDevicePlayStationConfigs)
+                foreach (var kvp in padVm.PerDeviceSlotConfigs)
                 {
                     if (kvp.Value == null) continue;
                     var srcData = byGuid.TryGetValue(kvp.Key, out var m) ? m : fallback;
-                    ApplyPlayStationConfigData(kvp.Value, srcData);
+                    ApplyDeviceSlotConfigData(kvp.Value, srcData);
                 }
             }
             if (padVm.SelectedMappedDevice != null
@@ -1661,7 +1661,7 @@ namespace PadForge.Services
             {
                 var srcData = byGuid.TryGetValue(padVm.SelectedMappedDevice.InstanceGuid, out var m2)
                     ? m2 : (anchor ?? fallback);
-                ApplyPlayStationConfigData(padVm.PlayStationConfig, srcData);
+                ApplyDeviceSlotConfigData(padVm.DeviceConfig, srcData);
             }
         }
 
@@ -1789,7 +1789,7 @@ namespace PadForge.Services
         /// <summary>Applies per-slot PlayStation configurations (Adaptive
         /// Triggers + Lighting). Only restores configs for slots that
         /// are currently created as PlayStation.</summary>
-        private void ApplyPlayStationConfigs(ViewModels.PlayStationSlotConfigData[] configs)
+        private void ApplyDeviceSlotConfigs(ViewModels.DeviceSlotConfigData[] configs)
         {
             if (configs == null) return;
 
@@ -1826,14 +1826,14 @@ namespace PadForge.Services
                 var padVm = _mainVm.Pads[idx];
 
                 // Per-device entry — apply to that device's per-device
-                // PlayStationSlotConfig only. The Lighting tab is
+                // DeviceSlotConfig only. The Lighting tab is
                 // per-device, so two pads on one slot legitimately
                 // carry different lightbar / overlay state.
                 if (cfgData.DeviceGuid != Guid.Empty)
                 {
-                    var devCfg = padVm.GetOrCreatePlayStationConfig(cfgData.DeviceGuid);
+                    var devCfg = padVm.GetOrCreateDeviceConfig(cfgData.DeviceGuid);
                     if (devCfg != null)
-                        ApplyPlayStationConfigData(devCfg, cfgData);
+                        ApplyDeviceSlotConfigData(devCfg, cfgData);
                     continue;
                 }
 
@@ -1843,26 +1843,26 @@ namespace PadForge.Services
                 // ONLY when this slot has zero per-device entries (a
                 // pre-v3.1 save where lighting was slot-wide); v3.1+
                 // saves are authoritative per-device.
-                if (padVm.PlayStationConfig != null)
-                    ApplyPlayStationConfigData(padVm.PlayStationConfig, cfgData);
+                if (padVm.DeviceConfig != null)
+                    ApplyDeviceSlotConfigData(padVm.DeviceConfig, cfgData);
                 if (!slotsWithPerDeviceEntries.Contains(idx))
                 {
-                    foreach (var devCfg in padVm.PerDevicePlayStationConfigs.Values)
+                    foreach (var devCfg in padVm.PerDeviceSlotConfigs.Values)
                     {
-                        if (devCfg != null && !ReferenceEquals(devCfg, padVm.PlayStationConfig))
-                            ApplyPlayStationConfigData(devCfg, cfgData);
+                        if (devCfg != null && !ReferenceEquals(devCfg, padVm.DeviceConfig))
+                            ApplyDeviceSlotConfigData(devCfg, cfgData);
                     }
                 }
             }
         }
 
         /// <summary>Writes the saved DTO fields into a single
-        /// PlayStationSlotConfig instance. Extracted so the loader can
+        /// DeviceSlotConfig instance. Extracted so the loader can
         /// call it once per per-device entry, or once per slot when
         /// fanning out a legacy slot-level entry to every device.</summary>
         // Internal (not private) so the tests can drive the LightingRev
         // migration below directly (InternalsVisibleTo PadForge.Tests).
-        internal static void ApplyPlayStationConfigData(ViewModels.PlayStationSlotConfig cfg, ViewModels.PlayStationSlotConfigData cfgData)
+        internal static void ApplyDeviceSlotConfigData(ViewModels.DeviceSlotConfig cfg, ViewModels.DeviceSlotConfigData cfgData)
         {
             if (cfg == null) return;
                     cfg.LeftTriggerMode = cfgData.LeftTriggerMode;
@@ -2627,7 +2627,7 @@ namespace PadForge.Services
                 // Now that SlotCreated and OutputType are restored, apply Extended/MIDI/PlayStation
                 // configs from the profile's own snapshot.
                 ApplyExtendedConfigs(active.ExtendedConfigs);
-                ApplyPlayStationConfigs(active.PlayStationConfigs);
+                ApplyDeviceSlotConfigs(active.DeviceSlotConfigs);
                 ApplyMidiConfigs(active.MidiConfigs);
 
                 // Apply DSU/Web/overlay settings from the active profile.
@@ -2698,7 +2698,7 @@ namespace PadForge.Services
             profile.SlotProfileIds = Enumerable.Range(0, _mainVm.Pads.Count)
                 .Select(i => _mainVm.Pads[i].ProfileId).ToArray();
             profile.ExtendedConfigs = BuildExtendedConfigSnapshot();
-            profile.PlayStationConfigs = BuildPlayStationConfigSnapshot();
+            profile.DeviceSlotConfigs = BuildDeviceConfigSnapshot();
             profile.MidiConfigs = BuildMidiConfigSnapshot();
             // Macros ride profiles: edits made while this profile is active
             // persist into it, so switching away and back keeps them, and a
@@ -2973,7 +2973,7 @@ namespace PadForge.Services
             // mapped to the same slot can have different mode / colors
             // / palette. We write:
             //   1. ONE slot-level entry (DeviceGuid = Empty) holding
-            //      the slot's anchor PlayStationConfig — this is a
+            //      the slot's anchor DeviceConfig — this is a
             //      pre-v3.1 compat row so older PadForge installs
             //      reading the new XML still get a usable default.
             //   2. ONE per-device entry per dict entry, INCLUDING the
@@ -2984,21 +2984,21 @@ namespace PadForge.Services
             // instance in memory but the saved per-device entry is
             // what gets reapplied to dict[active device's GUID] on
             // reload. Without it, the active device's settings live
-            // ONLY in the slot-level entry, and ApplyPlayStationConfigs's
+            // ONLY in the slot-level entry, and ApplyDeviceSlotConfigs's
             // fan-out skip (which prevents the slot-level entry from
             // bleeding into other devices' dict entries) leaves the
             // active device's dict entry at defaults. Result: user's
             // Lighting tab edits don't survive an app restart.
-            var playStationConfigs = new System.Collections.Generic.List<ViewModels.PlayStationSlotConfigData>();
+            var deviceSlotConfigs = new System.Collections.Generic.List<ViewModels.DeviceSlotConfigData>();
             for (int i = 0; i < _mainVm.Pads.Count; i++)
             {
                 var padVm = _mainVm.Pads[i];
-                if (padVm.PlayStationConfig != null)
-                    playStationConfigs.Add(BuildPlayStationConfigData(padVm.PlayStationConfig, i, Guid.Empty));
-                foreach (var kvp in padVm.PerDevicePlayStationConfigs)
+                if (padVm.DeviceConfig != null)
+                    deviceSlotConfigs.Add(BuildDeviceSlotConfigData(padVm.DeviceConfig, i, Guid.Empty));
+                foreach (var kvp in padVm.PerDeviceSlotConfigs)
                 {
                     if (kvp.Key == Guid.Empty || kvp.Value == null) continue;
-                    playStationConfigs.Add(BuildPlayStationConfigData(kvp.Value, i, kvp.Key));
+                    deviceSlotConfigs.Add(BuildDeviceSlotConfigData(kvp.Value, i, kvp.Key));
                 }
             }
 
@@ -3076,7 +3076,7 @@ namespace PadForge.Services
                     ? vm.HidHideWhitelistPaths.ToArray()
                     : null,
                 ExtendedConfigs = isDefault ? extendedConfigs.ToArray() : defaultSnap.ExtendedConfigs,
-                PlayStationConfigs = isDefault ? playStationConfigs.ToArray() : defaultSnap.PlayStationConfigs,
+                DeviceSlotConfigs = isDefault ? deviceSlotConfigs.ToArray() : defaultSnap.DeviceSlotConfigs,
                 UserProfiles = _userProfiles.Count > 0 ? _userProfiles.ToArray() : null,
                 MidiConfigs = isDefault ? BuildMidiConfigs() : defaultSnap.MidiConfigs,
                 XboxSlotOrder          = isDefault ? SettingsManager.XboxSlotOrder.ToArray()          : defaultSnap.XboxSlotOrder,
@@ -3124,36 +3124,36 @@ namespace PadForge.Services
         /// one per (slot, device) entry — mirrors the load path's
         /// per-device handling.
         /// </summary>
-        private ViewModels.PlayStationSlotConfigData[] BuildPlayStationConfigSnapshot()
+        private ViewModels.DeviceSlotConfigData[] BuildDeviceConfigSnapshot()
         {
-            var list = new System.Collections.Generic.List<ViewModels.PlayStationSlotConfigData>();
+            var list = new System.Collections.Generic.List<ViewModels.DeviceSlotConfigData>();
             for (int i = 0; i < _mainVm.Pads.Count; i++)
             {
                 var padVm = _mainVm.Pads[i];
-                if (padVm.PlayStationConfig != null)
-                    list.Add(BuildPlayStationConfigData(padVm.PlayStationConfig, i, Guid.Empty));
+                if (padVm.DeviceConfig != null)
+                    list.Add(BuildDeviceSlotConfigData(padVm.DeviceConfig, i, Guid.Empty));
                 // Always emit every per-device entry. See the comment
                 // in BuildAppSettingsForActiveProfile's main collector
                 // for why we don't dedup against the anchor — the
                 // active device's per-device entry is what reloads
                 // back into its dict slot on next launch.
-                foreach (var kvp in padVm.PerDevicePlayStationConfigs)
+                foreach (var kvp in padVm.PerDeviceSlotConfigs)
                 {
                     if (kvp.Key == Guid.Empty || kvp.Value == null) continue;
-                    list.Add(BuildPlayStationConfigData(kvp.Value, i, kvp.Key));
+                    list.Add(BuildDeviceSlotConfigData(kvp.Value, i, kvp.Key));
                 }
             }
             return list.Count > 0 ? list.ToArray() : null;
         }
 
-        /// <summary>Encodes a single <see cref="ViewModels.PlayStationSlotConfig"/>
-        /// into a <see cref="ViewModels.PlayStationSlotConfigData"/> tagged with
+        /// <summary>Encodes a single <see cref="ViewModels.DeviceSlotConfig"/>
+        /// into a <see cref="ViewModels.DeviceSlotConfigData"/> tagged with
         /// the (slot index, device GUID) pair. Empty <paramref name="deviceGuid"/>
         /// produces a legacy slot-level entry.</summary>
-        private static ViewModels.PlayStationSlotConfigData BuildPlayStationConfigData(
-            ViewModels.PlayStationSlotConfig cfg, int slotIndex, Guid deviceGuid)
+        private static ViewModels.DeviceSlotConfigData BuildDeviceSlotConfigData(
+            ViewModels.DeviceSlotConfig cfg, int slotIndex, Guid deviceGuid)
         {
-            return new ViewModels.PlayStationSlotConfigData
+            return new ViewModels.DeviceSlotConfigData
             {
                 SlotIndex = slotIndex,
                 DeviceGuid = deviceGuid,
@@ -4417,7 +4417,7 @@ namespace PadForge.Services
         /// </summary>
         [XmlArray("PlayStationConfigs")]
         [XmlArrayItem("Config")]
-        public ViewModels.PlayStationSlotConfigData[] PlayStationConfigs { get; set; }
+        public ViewModels.DeviceSlotConfigData[] DeviceSlotConfigs { get; set; }
 
         /// <summary>
         /// User-imported HIDMaestro profile JSONs, captured via
@@ -4829,7 +4829,7 @@ namespace PadForge.Services
         /// v3.1.0; defaults applied on load.</summary>
         [XmlArray("ProfilePlayStationConfigs")]
         [XmlArrayItem("PlayStationConfig")]
-        public ViewModels.PlayStationSlotConfigData[] PlayStationConfigs { get; set; }
+        public ViewModels.DeviceSlotConfigData[] DeviceSlotConfigs { get; set; }
 
         /// <summary>
         /// Per-group ordered list of pad indices in user-facing visual order

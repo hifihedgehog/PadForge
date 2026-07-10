@@ -397,26 +397,26 @@ namespace PadForge.Common.Input
         /// Triggers + Lighting). Mirrors the slot's currently-selected
         /// device's per-device config — the Lighting tab is per-device,
         /// so this entry shifts as the user switches SelectedMappedDevice.
-        /// Used by HMaestroVirtualController.AttachPlayStationConfig as
+        /// Used by HMaestroVirtualController.AttachDeviceConfig as
         /// the dispatcher's "anchor" for animation-timer state and event
         /// subscriptions; per-device synthesis happens inside the
-        /// dispatcher via <see cref="_perDevicePlayStationConfigs"/>.
+        /// dispatcher via <see cref="_perDeviceSlotConfigs"/>.
         /// Null entries skip Feature B effect synthesis on that slot.</summary>
-        internal PlayStationSlotConfig[] _playStationConfigs = new PlayStationSlotConfig[MaxPads];
+        internal DeviceSlotConfig[] _deviceSlotConfigs = new DeviceSlotConfig[MaxPads];
 
         /// <summary>Per-(slot, device) lighting configs. Lookup keyed by
         /// physical device InstanceGuid. Source of truth for the
         /// dispatcher's per-device synthesis loop and for macro
         /// lightbar fan-out (every assigned device gets the same
         /// override / mode write). Mirrored from
-        /// <c>PadViewModel.PerDevicePlayStationConfigs</c> by
+        /// <c>PadViewModel.PerDeviceSlotConfigs</c> by
         /// <c>InputService.SyncViewModelToPadSettings</c>.</summary>
-        internal IReadOnlyDictionary<Guid, PlayStationSlotConfig>[] _perDevicePlayStationConfigs
-            = new IReadOnlyDictionary<Guid, PlayStationSlotConfig>[MaxPads];
+        internal IReadOnlyDictionary<Guid, DeviceSlotConfig>[] _perDeviceSlotConfigs
+            = new IReadOnlyDictionary<Guid, DeviceSlotConfig>[MaxPads];
 
         // Parallel non-HM dispatcher ownership. HM-backed slots get their
         // UserEffectsDispatcher created inside HMaestroVirtualController.
-        // AttachPlayStationConfig and disposed in HM's Disconnect — that
+        // AttachDeviceConfig and disposed in HM's Disconnect — that
         // lifecycle is untouched. For KBM / MIDI slots there's no HM VC,
         // so without a parallel owner here Sony pads mapped to those slots
         // would have NO writer at all (Step 2 ApplyForceFeedback skips Sony
@@ -1416,9 +1416,9 @@ namespace PadForge.Common.Input
                 // / live-edit hooks alongside MidiConfig / ExtendedConfig.
                 if (vc is HMaestroVirtualController hmVc)
                 {
-                    var psCfg = _playStationConfigs[padIndex];
+                    var psCfg = _deviceSlotConfigs[padIndex];
                     if (psCfg != null)
-                        hmVc.AttachPlayStationConfig(psCfg);
+                        hmVc.AttachDeviceConfig(psCfg);
                 }
                 else
                 {
@@ -1432,7 +1432,7 @@ namespace PadForge.Common.Input
                     // dispatcher's runtime resolve gates on physical Sony
                     // VID/PID, so attaching for every non-HM slot is cheap
                     // when no Sony pad is mapped.
-                    var psCfg = _playStationConfigs[padIndex];
+                    var psCfg = _deviceSlotConfigs[padIndex];
                     if (psCfg != null)
                     {
                         var d = new UserEffectsDispatcher(padIndex, psCfg);

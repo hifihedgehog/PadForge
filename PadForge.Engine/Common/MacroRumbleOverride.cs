@@ -5,7 +5,7 @@ namespace PadForge.Engine
     /// <summary>
     /// Per-slot ephemeral rumble override driven by the
     /// <c>MacroActionType.Rumble</c> action. Mirrors the lightbar
-    /// macro override on <c>PlayStationSlotConfig</c>: Reactive holds
+    /// macro override on <c>DeviceSlotConfig</c>: Reactive holds
     /// run at full strength across the hold window then fade linearly
     /// to zero across the fade window; Sticky holds at full strength
     /// until <see cref="Clear"/> runs (driven by

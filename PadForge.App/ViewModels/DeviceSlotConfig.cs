@@ -21,9 +21,9 @@ namespace PadForge.ViewModels
     /// is handled separately by the <c>DualSensePassthroughDispatcher</c>
     /// and doesn't read from this config.</para>
     /// </summary>
-    public class PlayStationSlotConfig : ObservableObject
+    public class DeviceSlotConfig : ObservableObject
     {
-        public PlayStationSlotConfig()
+        public DeviceSlotConfig()
         {
             HookPalette(_lightbarPalette);
             HookInputReactivePalette(_lightbarInputReactivePalette);
@@ -526,7 +526,7 @@ namespace PadForge.ViewModels
         //  Lightbar — unified mode picker. Replaces the old separate
         //  LightbarEnabled and AudioLightbarEnabled toggles. The legacy
         //  bools still exist below for XML round-trip and migration on
-        //  load (SettingsService.ApplyPlayStationConfigs maps them into
+        //  load (SettingsService.ApplyDeviceSlotConfigs maps them into
         //  LightbarMode if LightbarMode is at its default).
         // ────────────────────────────────────────────────
 
@@ -540,7 +540,7 @@ namespace PadForge.ViewModels
         /// periodic timer. The InputReactive* values still live in the
         /// enum for XML round-trip but are migrated on load to
         /// <see cref="InputReactiveMode"/>; see SettingsService's
-        /// ApplyPlayStationConfigData.</summary>
+        /// ApplyDeviceSlotConfigData.</summary>
         public LightbarMode LightbarMode
         {
             get => _lightbarMode;
@@ -1426,7 +1426,7 @@ namespace PadForge.ViewModels
         /// <summary>All pips dark. A deliberate choice since the
         /// PlayerNumber default landed: pre-v4 saves that stored Off
         /// meant "unset" and are lifted to PlayerNumber on load
-        /// (LightingRev 0 migration in ApplyPlayStationConfigData).</summary>
+        /// (LightingRev 0 migration in ApplyDeviceSlotConfigData).</summary>
         Off = 0,
         Player1 = 1,
         Player2 = 2,
@@ -1452,7 +1452,7 @@ namespace PadForge.ViewModels
     /// ColorCycle (walked over time) and InputReactive (cycled on each
     /// button press when randomize is off). ObservableObject so the
     /// dispatcher repaints whenever the user drags a slider on any entry
-    /// — bubble PropertyChanged is wired in PlayStationSlotConfig's
+    /// — bubble PropertyChanged is wired in DeviceSlotConfig's
     /// constructor.</summary>
     public class LightbarPaletteEntry : ObservableObject
     {
@@ -1503,7 +1503,7 @@ namespace PadForge.ViewModels
 
     /// <summary>Unified lightbar effect picker. Replaces the legacy
     /// LightbarEnabled + AudioLightbarEnabled + AudioLightbarMode trio.
-    /// Migration runs in SettingsService.ApplyPlayStationConfigs when
+    /// Migration runs in SettingsService.ApplyDeviceSlotConfigs when
     /// the saved value is the default Off — old XML maps to Static,
     /// AudioPulse, AudioThresholds, AudioGradient, or AudioCrossFade
     /// based on which legacy bool was on.
@@ -1529,7 +1529,7 @@ namespace PadForge.ViewModels
         // exposed in the Lighting tab dropdown anymore — the dispatcher
         // migrates them on load and on macro apply into
         // InputReactiveMode (overlay) + LightbarMode = Off (base).
-        // See SettingsService.ApplyPlayStationConfigData and
+        // See SettingsService.ApplyDeviceSlotConfigData and
         // ApplyLightbarModeSetMigrated in the macro engine.
         InputReactive = 11,           // (legacy) random hue per press
         InputReactiveCycle = 12,      // (legacy) step through the configured palette per press
@@ -1562,7 +1562,7 @@ namespace PadForge.ViewModels
         /// on each button press.</summary>
         Cycle = 2,
         /// <summary>Flash the configured base RGB
-        /// (<see cref="PlayStationSlotConfig.LightbarRed"/> et al.)
+        /// (<see cref="DeviceSlotConfig.LightbarRed"/> et al.)
         /// on each button press.</summary>
         Fixed = 3,
     }
@@ -1591,11 +1591,11 @@ namespace PadForge.ViewModels
         CrossFade = 3,
     }
 
-    /// <summary>Serializable mirror of <see cref="PlayStationSlotConfig"/>.
+    /// <summary>Serializable mirror of <see cref="DeviceSlotConfig"/>.
     /// XML round-trip via SettingsService. Fields use XmlAttribute to
     /// keep the serialized form compact and aligned with the adjacent
     /// per-slot config records.</summary>
-    public class PlayStationSlotConfigData
+    public class DeviceSlotConfigData
     {
         [XmlAttribute] public int SlotIndex { get; set; }
         /// <summary>Per-device entry: InstanceGuid of the physical
@@ -1651,7 +1651,7 @@ namespace PadForge.ViewModels
         [XmlAttribute] public double AudioCrossFadePercent { get; set; } = 5.0;
 
         // Unified lightbar mode (v3.1.0+). When this is at the default
-        // Off, SettingsService.ApplyPlayStationConfigs falls back to the
+        // Off, SettingsService.ApplyDeviceSlotConfigs falls back to the
         // legacy LightbarEnabled / AudioLightbarEnabled / AudioLightbarMode
         // trio above to migrate old saves.
         [XmlAttribute] public LightbarMode LightbarMode { get; set; } = LightbarMode.Off;

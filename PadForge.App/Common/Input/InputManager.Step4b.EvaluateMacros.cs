@@ -1097,7 +1097,7 @@ namespace PadForge.Common.Input
                     {
                         // Slot-level fan-out: every per-device config on
                         // the slot clears its override.
-                        foreach (var devCfg in EnumerateSlotPlayStationConfigs(slotIndex))
+                        foreach (var devCfg in EnumerateSlotDeviceConfigs(slotIndex))
                             devCfg.ClearMacroOverride();
                     }
                     AdvanceAction(macro);
@@ -1113,7 +1113,7 @@ namespace PadForge.Common.Input
                         // to the action's target. Each device renders
                         // that mode using its OWN per-device config
                         // (its own RGB / palette / decay).
-                        foreach (var devCfg in EnumerateSlotPlayStationConfigs(slotIndex))
+                        foreach (var devCfg in EnumerateSlotDeviceConfigs(slotIndex))
                             ApplyLightbarModeSetMigrated(devCfg, action.LightbarTargetMode);
                     }
                     AdvanceAction(macro);
@@ -1339,7 +1339,7 @@ namespace PadForge.Common.Input
             });
         }
 
-        /// <summary>Enumerates every per-device PlayStationSlotConfig
+        /// <summary>Enumerates every per-device DeviceSlotConfig
         /// on the slot. Macro lightbar actions are slot-level: macro is
         /// to the left of the device dropdown, so a macro's color /
         /// mode / clear push uniformly to every assigned device. The
@@ -1348,10 +1348,10 @@ namespace PadForge.Common.Input
         /// own LightbarMode / palette / colors. Falls back to the
         /// anchor slot config when the per-device dictionary hasn't
         /// been wired yet (early startup).</summary>
-        private System.Collections.Generic.IEnumerable<PlayStationSlotConfig> EnumerateSlotPlayStationConfigs(int slotIndex)
+        private System.Collections.Generic.IEnumerable<DeviceSlotConfig> EnumerateSlotDeviceConfigs(int slotIndex)
         {
             if (slotIndex < 0 || slotIndex >= MaxPads) yield break;
-            var perDev = _perDevicePlayStationConfigs[slotIndex];
+            var perDev = _perDeviceSlotConfigs[slotIndex];
             if (perDev != null && perDev.Count > 0)
             {
                 foreach (var kvp in perDev)
@@ -1360,7 +1360,7 @@ namespace PadForge.Common.Input
                 }
                 yield break;
             }
-            var anchor = _playStationConfigs[slotIndex];
+            var anchor = _deviceSlotConfigs[slotIndex];
             if (anchor != null) yield return anchor;
         }
 
@@ -1419,7 +1419,7 @@ namespace PadForge.Common.Input
             // physical Sony device still receive the override write —
             // harmless, the dispatcher's device loop only writes to
             // online Sony devices.
-            foreach (var psCfg in EnumerateSlotPlayStationConfigs(slotIndex))
+            foreach (var psCfg in EnumerateSlotDeviceConfigs(slotIndex))
             {
                 psCfg.MacroOverrideR = r;
                 psCfg.MacroOverrideG = g;
@@ -1453,7 +1453,7 @@ namespace PadForge.Common.Input
                 var palette = ParseMacroPaletteCsv(paletteCsv);
                 if (palette.Length == 0 && slotPaletteFallback)
                 {
-                    foreach (var devCfg in EnumerateSlotPlayStationConfigs(slotIndex))
+                    foreach (var devCfg in EnumerateSlotDeviceConfigs(slotIndex))
                     {
                         palette = devCfg.SnapshotLightbarPalette();
                         if (palette.Length > 0) break;
@@ -1568,7 +1568,7 @@ namespace PadForge.Common.Input
 
             int idx = ((action.LightbarCycleIndex % modes.Length) + modes.Length) % modes.Length;
             LightbarMode target = modes[idx];
-            foreach (var psCfg in EnumerateSlotPlayStationConfigs(slotIndex))
+            foreach (var psCfg in EnumerateSlotDeviceConfigs(slotIndex))
                 psCfg.LightbarMode = target;
             action.LightbarCycleIndex = idx + 1;
         }
@@ -1996,7 +1996,7 @@ namespace PadForge.Common.Input
                     if (slotIndex >= 0 && slotIndex < MaxPads)
                     {
                         // Slot-level fan-out: clear override on every device.
-                        foreach (var devCfg in EnumerateSlotPlayStationConfigs(slotIndex))
+                        foreach (var devCfg in EnumerateSlotDeviceConfigs(slotIndex))
                             devCfg.ClearMacroOverride();
                     }
                     AdvanceAction(macro);
@@ -2096,7 +2096,7 @@ namespace PadForge.Common.Input
                         // Slot-level fan-out: switch every device's mode.
                         // Each device renders the new mode using its OWN
                         // per-device colors / palette.
-                        foreach (var devCfg in EnumerateSlotPlayStationConfigs(slotIndex))
+                        foreach (var devCfg in EnumerateSlotDeviceConfigs(slotIndex))
                             ApplyLightbarModeSetMigrated(devCfg, action.LightbarTargetMode);
                     }
                     AdvanceAction(macro);
@@ -2115,7 +2115,7 @@ namespace PadForge.Common.Input
         /// the v3.2+ overlay model: LightbarMode parked at the
         /// PlayerNumber default, InputReactiveMode = corresponding
         /// overlay variant. The parking mirrors the loader's LightingRev
-        /// migration in SettingsService.ApplyPlayStationConfigData: the
+        /// migration in SettingsService.ApplyDeviceSlotConfigData: the
         /// v4 idle base is the player floor, and a macro that wants the
         /// old black base can target the now-deliberate Off instead.
         /// Non-reactive base modes (including Off = hard black and
@@ -2123,7 +2123,7 @@ namespace PadForge.Common.Input
         /// leave the overlay alone, so users can layer macros. A macro
         /// can switch the base to Rainbow while the user's overlay
         /// continues to flash on each press.</summary>
-        private static void ApplyLightbarModeSetMigrated(PlayStationSlotConfig devCfg, LightbarMode target)
+        private static void ApplyLightbarModeSetMigrated(DeviceSlotConfig devCfg, LightbarMode target)
         {
             switch (target)
             {

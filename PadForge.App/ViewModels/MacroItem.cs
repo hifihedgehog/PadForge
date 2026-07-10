@@ -72,7 +72,7 @@ namespace PadForge.ViewModels
         /// <summary>Pad index (0-based) of the slot that owns this macro.
         /// Set when the macro is added to a slot's collection or loaded
         /// from XML. Used by <see cref="MacroActionType.LightbarColor"/>
-        /// to resolve the target <c>PlayStationSlotConfig</c> at fire
+        /// to resolve the target <c>DeviceSlotConfig</c> at fire
         /// time. Not serialized — the parent <c>MacroData.PadIndex</c> is
         /// the persisted source of truth and gets reapplied on load.</summary>
         [System.Xml.Serialization.XmlIgnore]

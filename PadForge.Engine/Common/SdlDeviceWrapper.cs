@@ -1201,6 +1201,16 @@ namespace PadForge.Engine
                 // gets distinct identity.
                 identifier = $"{devicePath}:{vid:X4}:{pid:X4}";
             }
+            else if (!string.IsNullOrEmpty(sdlGuid) && !sdlGuid.All(c => c == '0'))
+            {
+                // No device path and no serial (an SDL virtual joystick like the DS3
+                // bridge). SDL's joystick GUID is stable across reconnects (derived from
+                // bus/vendor/product/name), whereas the instance id is session-specific
+                // and shifts on every reattach, re-minting the identity and silently
+                // dropping the slot mapping (the input stops passing through even though
+                // the device previews live). Use the stable GUID.
+                identifier = $"sdlguid:{sdlGuid}";
+            }
             else
             {
                 // Last resort: session-specific SDL instance ID.

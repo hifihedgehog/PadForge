@@ -48,6 +48,12 @@ namespace PadForge.Services
 
         private static readonly object _logLock = new();
 
+        // Serializes every operation that touches the Bluetooth radio (pair, unpair).
+        // Two radio cycles overlapping, or a cycle racing another teardown, is a path
+        // into the same freed-context crash the forced PDO removal caused
+        // (BthPS3.sys BSOD 0xD1, 2026-07-09). One radio op at a time, always.
+        private static readonly object _radioGate = new();
+
         private static void LogLine(string message)
         {
             try
@@ -162,12 +168,18 @@ namespace PadForge.Services
             // remembered+authenticated and its stored Name is served to BthPS3 on every
             // connect instead of the clone's blank over-air name. Hardware-confirmed
             // 2026-07-09 (rem=16, identified as SIXAXIS, survives cycles, no security block).
-            if (!Ds3DriverInstaller.WriteRememberedDeviceRecord(radio, r.Ds3Mac, _log))
-            { _log("Registering the pad failed."); r.Error = "identity-inject-failed"; return r; }
-            _log("Pad registered with the Bluetooth stack.");
+            // Steps 5-6 touch the radio: serialize against any concurrent unpair so
+            // two cycles can't overlap. The pad is on USB here (no live BthPS3 link),
+            // so the cycle disconnects nothing.
+            lock (_radioGate)
+            {
+                if (!Ds3DriverInstaller.WriteRememberedDeviceRecord(radio, r.Ds3Mac, _log))
+                { _log("Registering the pad failed."); r.Error = "identity-inject-failed"; return r; }
+                _log("Pad registered with the Bluetooth stack.");
 
-            // 6. Cycle the radio so the drivers pick up the new record.
-            CycleRadio();
+                // 6. Cycle the radio so the drivers pick up the new record.
+                CycleRadio();
+            }
             _log("Bluetooth radio cycled. Unplug the DS3 and press the PS button.");
 
             r.Success = true;
@@ -175,21 +187,30 @@ namespace PadForge.Services
             return r;
         }
 
-        /// <summary>Removes the pad's pairing + device node so a clean dry run (or a
-        /// user "forget this controller") starts from a first-time state.</summary>
+        /// <summary>Clears the pad's pairing (record + link-key anchor) and cycles the
+        /// radio so a clean dry run (or a user "forget this controller") starts from a
+        /// first-time state. Does not force-remove the PDO node (see the BSOD note).</summary>
         public void Unpair(string ds3Mac)
         {
-            if (!string.IsNullOrEmpty(ds3Mac))
+            lock (_radioGate)
             {
-                // The Devices record is SYSTEM-owned, so this takes ownership back before
-                // deleting, and drops the Keys link-key anchor too (else the pad stays
-                // half-remembered and a later re-pair is confused).
-                byte[] radio = ReadRadioMac();
-                if (radio != null) Ds3DriverInstaller.DeleteRememberedDeviceRecord(radio, ds3Mac, _log);
+                if (!string.IsNullOrEmpty(ds3Mac))
+                {
+                    // The Devices record is SYSTEM-owned, so this takes ownership back before
+                    // deleting, and drops the Keys link-key anchor too (else the pad stays
+                    // half-remembered and a later re-pair is confused).
+                    byte[] radio = ReadRadioMac();
+                    if (radio != null) Ds3DriverInstaller.DeleteRememberedDeviceRecord(radio, ds3Mac, _log);
+                }
+                // Do NOT force-remove the BthPS3 PDO node. dev.Remove() frees the driver's
+                // per-connection context out of band; the radio cycle then drops the link
+                // and BthPS3's remote-disconnect callback dereferences the freed context
+                // -> BSOD 0xD1 (2026-07-09, confirmed in the crash dump). The cycle alone
+                // drives BthPS3's normal in-order disconnect against a VALID context, the
+                // same path a real power-off takes, and the transient PDO self-destroys.
+                CycleRadio();
+                _log("Pairing cleared.");
             }
-            RemoveBthPs3Node();
-            CycleRadio();
-            _log("Pairing cleared.");
         }
 
         /// <summary>
@@ -198,11 +219,14 @@ namespace PadForge.Services
         /// device-list Remove action, where only the pad's VID/PID is known (the SDL
         /// virtual joystick carries no serial/MAC). Enumerates BTHPORT's device list for
         /// records with the DS3 VID/PID and drops each one's record + link-key anchor,
-        /// then removes the node and cycles the radio once. A machine with two DS3s
-        /// clears both; that is acceptable for a "forget" action and is logged.
+        /// then cycles the radio once (which drives BthPS3's own in-order disconnect of a
+        /// still-connected pad). A machine with two DS3s clears both; that is acceptable
+        /// for a "forget" action and is logged.
         /// </summary>
         public int UnpairAllDs3()
         {
+          lock (_radioGate)
+          {
             byte[] radio = ReadRadioMac();
             var macs = new System.Collections.Generic.List<string>();
             try
@@ -237,12 +261,16 @@ namespace PadForge.Services
                 if (radio != null)
                     foreach (string mac in macs)
                         Ds3DriverInstaller.DeleteRememberedDeviceRecord(radio, mac, _log);
-                RemoveBthPs3Node();
+                // No forced PDO node removal: dev.Remove() frees BthPS3's per-connection
+                // context, and the cycle's HCI disconnect then faults on it (BSOD 0xD1,
+                // 2026-07-09). The cycle alone disconnects the live pad through BthPS3's
+                // normal path against a VALID context.
                 CycleRadio();
                 _log($"Unpaired {macs.Count} DualShock 3 controller(s).");
                 return macs.Count;
             }
             finally { PadForge.Common.Input.Ds3DirectService.AllowReconnect(); }
+          }
         }
 
         // ── local Bluetooth radio address (human/big-endian order per DsHidMini) ─
@@ -297,7 +325,6 @@ namespace PadForge.Services
         private bool EnsureBthPs3Installed() => Ds3DriverInstaller.EnsureInstalled(_log);
         private bool EnsureWinUsbBound(CancellationToken ct) => Ds3DriverInstaller.EnsureWinUsbBound(_log, ct);
         private void CycleRadio() => Ds3DriverInstaller.CycleBluetoothRadio(_log);
-        private void RemoveBthPs3Node() => Ds3DriverInstaller.RemoveDs3Node(_log);
 
         // ── helpers ─────────────────────────────────────────────────────────────
 

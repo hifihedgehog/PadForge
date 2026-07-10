@@ -597,6 +597,17 @@ namespace SDL3
         public static bool SDL_SetJoystickPlayerIndex(IntPtr joystick, int player_index) =>
             _SDL_SetJoystickPlayerIndex(joystick, player_index);
 
+        // True iff the joystick is an SDL virtual joystick (its driver is the virtual
+        // backend). Used to tell the two DS3 transports apart: they share VID/PID
+        // 054C/0268, but the BT bridge is a virtual joystick (owned by Ds3DirectService)
+        // while the USB SXS pad is a real hidapi device (owned by SDL's sixaxis driver).
+        [DllImport(lib, CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_IsJoystickVirtual")]
+        [return: MarshalAs(UnmanagedType.U1)]
+        private static extern bool _SDL_IsJoystickVirtual(uint instance_id);
+
+        public static bool SDL_IsJoystickVirtual(uint instance_id) =>
+            _SDL_IsJoystickVirtual(instance_id);
+
         /// <summary>
         /// Rumble a gamepad's impulse-trigger motors (Xbox One+ family).
         /// </summary>

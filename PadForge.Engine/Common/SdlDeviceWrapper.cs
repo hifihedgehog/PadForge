@@ -1062,12 +1062,24 @@ namespace PadForge.Engine
         /// (synthetic PID 0x2008) is a silent no-op until the fork
         /// carries a forward-to-children patch. Singles, Pro, Switch 2,
         /// and Wii light correctly.
+        ///
+        /// The DualShock 3 (Sony 0x054C:0x0268) is also allowed, but ONLY on the USB
+        /// SXS path: SDL's sixaxis driver lights LED 1-4 from the player index
+        /// (SDL_hidapi_ps3.c HIDAPI_DriverPS3_UpdateLEDsSonySixaxis, effects[8 - idx]=1).
+        /// The Bluetooth DS3 shares the same VID/PID but is an SDL *virtual* joystick
+        /// whose LED is owned by Ds3DirectService.SetPlayerNumber, so it is excluded
+        /// here to keep exactly one writer per transport. Not opened to other Sony PIDs:
+        /// SDL's PS4/PS5 drivers would fight the sole-writer Sony dispatcher.
         /// </summary>
         public bool SetPlayerIndex(int playerIndex)
         {
             if (Joystick == IntPtr.Zero) return false;
-            if (VendorId != 0x057E) return false;
-            return SDL_SetJoystickPlayerIndex(Joystick, playerIndex);
+            if (VendorId == 0x057E)
+                return SDL_SetJoystickPlayerIndex(Joystick, playerIndex);
+            if (VendorId == 0x054C && ProductId == 0x0268 &&
+                !SDL_IsJoystickVirtual(SdlInstanceId))
+                return SDL_SetJoystickPlayerIndex(Joystick, playerIndex);
+            return false;
         }
 
         /// <summary>

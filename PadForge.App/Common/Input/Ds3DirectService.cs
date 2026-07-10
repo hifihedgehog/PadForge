@@ -572,8 +572,12 @@ namespace PadForge.Common.Input
             // Standard gamepad shape so SDL treats it as a gamepad and PadForge auto-maps.
             _rumbleCb = OnRumble; _setLedCb = OnSetLed; _setPlayerCb = OnSetPlayerIndex; _setSensorsCb = OnSetSensors;
 
-            var namePtr = Marshal.StringToHGlobalAnsi(
-                _transport == Ds3Transport.Usb ? "DualShock 3 (USB)" : "DualShock 3 (Bluetooth)");
+            // Transport-independent name: SDL folds the name into the joystick GUID, and
+            // PadForge derives the device identity from that GUID (the virtual joystick
+            // has no path/serial). A per-transport name would give USB and Bluetooth
+            // different identities, so a slot mapping made on one wouldn't survive a
+            // switch to the other. One name = one identity for the physical pad.
+            var namePtr = Marshal.StringToHGlobalAnsi("DualShock 3");
             // Two sensors: accel + gyro at the DS3's ~100 Hz report rate. SDL deep-copies
             // this array during attach (SDL_virtualjoystick.c attach inner), so the
             // unmanaged copy only needs to live for the duration of the call.

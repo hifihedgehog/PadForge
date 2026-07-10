@@ -2812,7 +2812,7 @@ namespace PadForge.Views
                 : (!string.IsNullOrWhiteSpace(ud.DisplayName) ? ud.DisplayName : ud.ProductName);
 
             string content = string.Format(Strings.Instance.Pad_ExtendedClone_Confirm_Format,
-                deviceName, clone.AxesMapped, clone.Buttons, clone.Povs);
+                deviceName, clone.LayoutAxes, clone.Buttons, clone.Povs);
             if (clone.HasOverflow)
                 content += "\n\n" + string.Format(Strings.Instance.Pad_ExtendedClone_Overflow_Format,
                     clone.AxesMapped, clone.AxesAvailable,
@@ -2834,11 +2834,14 @@ namespace PadForge.Views
 
         /// <summary>
         /// Applies a generated <see cref="Engine.Data.PassthroughCloneGenerator.CloneResult"/>
-        /// to the slot: sets the Extended layout (sticks-only, all axes bipolar),
-        /// writes each identity row onto the freshly-rebuilt mapping grid owned by
-        /// the cloned device, then persists exactly the way a recorded mapping does
-        /// (in-memory MappingSet made authoritative immediately, plus a dirty mark
-        /// for the debounced full save).
+        /// to the slot: sets the Extended layout (sticks-only, all axes bipolar)
+        /// and replaces the cloned device's contribution on every Base-layer row
+        /// with a clean identity mapping. Other devices' contributions survive:
+        /// their extra sources stay, and one of their primaries displaced by an
+        /// identity row is demoted to an extra source on the same row, so
+        /// multi-device combining stays additive. Persists the way a recorded
+        /// mapping does (in-memory MappingSet made authoritative immediately,
+        /// plus a dirty mark for the debounced full save).
         /// </summary>
         private void ApplyPassthroughClone(PadViewModel vm, Guid deviceGuid, string deviceLabel,
             Engine.Data.PassthroughCloneGenerator.CloneResult clone)
@@ -2846,40 +2849,162 @@ namespace PadForge.Views
             var cfg = vm.ExtendedConfig;
             if (cfg == null) return;
 
+            // A passthrough must drive unshifted play, so the identity rows are
+            // Base-layer rows. PushUiExtraSourcesIntoSlotMappingSets saves into
+            // whichever layer is being authored, and RefreshMappingsCore hydrates
+            // the grid from that same layer, so snap the authoring layer to Base
+            // first (the setter re-hydrates the grid synchronously via
+            // LayerActivated when it actually changes).
+            vm.ActiveLayerMask = "Base";
+
             // Shape. Customize on so the layout override actually applies; drop
             // triggers to 0 FIRST so the stick setter isn't clamped by a leftover
             // trigger count (same ordering the config's own ResetToDefaults uses).
-            // Each count change fires OnExtendedConfigPropertyChanged → RebuildMappings,
-            // so vm.Mappings ends holding fresh empty rows for the cloned shape.
             cfg.Customize = true;
             cfg.TriggerCount = 0;
             cfg.ThumbstickCount = clone.Sticks;
+            cfg.TriggerCount = clone.Triggers;
             cfg.PovCount = clone.Povs;
             cfg.ButtonCount = clone.Buttons;
+
+            // Reflect the applied shape back into the config bar the same way
+            // ApplyExtendedCustomValues does. Without this the count boxes keep
+            // pre-clone text, and the first LostFocus on any of them would write
+            // the stale numbers back and silently revert the clone's layout.
+            // _syncingExtendedConfig keeps the Customize checkbox's Toggled
+            // handler from re-firing on the programmatic IsChecked write.
+            _syncingExtendedConfig = true;
+            try
+            {
+                ExtendedCustomizeChk.IsChecked = true;
+                ExtendedStickCountBox.Text = cfg.ThumbstickCount.ToString();
+                ExtendedTriggerCountBox.Text = cfg.TriggerCount.ToString();
+                ExtendedPovCountBox.Text = cfg.PovCount.ToString();
+                ExtendedButtonCountBox.Text = cfg.ButtonCount.ToString();
+            }
+            finally { _syncingExtendedConfig = false; }
 
             var byTarget = new Dictionary<string, string>(StringComparer.Ordinal);
             foreach (var row in clone.Rows)
                 byTarget[row.Target] = row.Descriptor;
 
+            // NOTE: the count setters above fired RebuildMappings, and
+            // InputService.OnMappingsRebuilt synchronously re-hydrated the fresh
+            // MappingItems from the slot's PRE-CLONE MappingSet (primary, extra
+            // sources, combine mode, per-row deadzone, everything). The rows are
+            // NOT empty here, and when the shape didn't change no rebuild fired
+            // at all. Each row therefore gets an explicit reset below before the
+            // identity mapping lands on it.
             string guidStr = deviceGuid.ToString().ToLowerInvariant();
             foreach (var mi in vm.Mappings)
             {
                 if (mi == null || string.IsNullOrEmpty(mi.TargetSettingName)) continue;
-                if (!byTarget.TryGetValue(mi.TargetSettingName, out string desc)) continue;
+                bool covered = byTarget.TryGetValue(mi.TargetSettingName, out string desc);
+
+                // The cloned device's old extra-source contributions are
+                // superseded by the identity mapping everywhere in the layout.
+                // Other devices' extras stay.
+                for (int i = mi.ExtraSources.Count - 1; i >= 0; i--)
+                {
+                    var ex = mi.ExtraSources[i];
+                    if (ex != null && string.Equals(ex.DeviceGuid ?? "", guidStr, StringComparison.OrdinalIgnoreCase))
+                        mi.ExtraSources.RemoveAt(i);
+                }
+
+                bool primaryIsCloneDevice = string.Equals(
+                    mi.PrimarySourceDeviceGuid ?? "", guidStr, StringComparison.OrdinalIgnoreCase);
+
+                if (!covered)
+                {
+                    // A layout slot the device doesn't fill (the tail axis of an
+                    // odd-axis device): clear the cloned device's stale primary
+                    // so the slot stays a faithful mirror. A row another device
+                    // owns here is left alone.
+                    if (primaryIsCloneDevice && !string.IsNullOrEmpty(mi.SourceDescriptor))
+                        mi.ClearCommand.Execute(null);
+                    continue;
+                }
+
+                // Covered target. Capture a primary another device owned here so
+                // it can ride on as an extra source after the identity row takes
+                // the primary slot (additive multi-device semantics). Same
+                // construction as PromoteNegDescriptorToExtraSource, without the
+                // Neg-pair invert flip: a demoted primary keeps its own flags.
+                string oldDesc = mi.SourceDescriptor;
+                string oldGuid = mi.PrimarySourceDeviceGuid ?? "";
+                string oldLabel = mi.PrimarySourceDeviceLabel ?? "";
+                int oldDeadZone = mi.MappingDeadZone;
+                bool demote = !primaryIsCloneDevice && !string.IsNullOrEmpty(oldDesc)
+                    && !string.IsNullOrEmpty(oldGuid);
+
+                // Full primary reset: descriptor, Neg pair, Invert/Half/
+                // Bidirectional, per-row deadzone, device stamp, and a
+                // non-Direct primary kind (whose persist path would otherwise
+                // ignore the cloned descriptor entirely).
+                mi.ClearCommand.Execute(null);
+                mi.GyroSensitivity = 1.0;
+                mi.MouseCursorSensitivity = 1.0;
+                mi.IrPointerSensitivity = 1.0;
+
+                if (demote)
+                {
+                    bool inv = false, half = false;
+                    string clean = oldDesc;
+                    if (clean.StartsWith("IH", StringComparison.OrdinalIgnoreCase))
+                    { inv = true; half = true; clean = clean.Substring(2); }
+                    else if (clean.StartsWith("I", StringComparison.OrdinalIgnoreCase) && clean.Length > 1 && !char.IsDigit(clean[1])
+                             && !PadForge.Engine.Common.Mapping.SourceCoercion.IsPrefixExemptDescriptor(clean))
+                    { inv = true; clean = clean.Substring(1); }
+                    else if (clean.StartsWith("H", StringComparison.OrdinalIgnoreCase) && clean.Length > 1 && !char.IsDigit(clean[1]))
+                    { half = true; clean = clean.Substring(1); }
+
+                    bool duplicate = false;
+                    foreach (var existing in mi.ExtraSources)
+                    {
+                        if (existing == null) continue;
+                        if (string.Equals(existing.Descriptor ?? "", clean, StringComparison.OrdinalIgnoreCase)
+                            && string.Equals(existing.DeviceGuid ?? "", oldGuid, StringComparison.OrdinalIgnoreCase))
+                        { duplicate = true; break; }
+                    }
+                    if (!duplicate)
+                    {
+                        mi.ExtraSources.Add(new MappingSourceItem
+                        {
+                            Kind = "Direct",
+                            DeviceGuid = oldGuid,
+                            DeviceLabel = oldLabel,
+                            Descriptor = clean,
+                            Invert = inv,
+                            HalfAxis = half,
+                            DeadZone = oldDeadZone,
+                        });
+                    }
+                }
+
+                // With no extras left the row is a plain identity mapping; a
+                // stale combine mode or custom expression from the previous
+                // occupant would misdescribe it.
+                if (mi.ExtraSources.Count == 0)
+                {
+                    mi.CombineMode = "";
+                    mi.CombineExpression = "";
+                }
+
                 mi.PrimarySourceDeviceGuid = guidStr;
                 mi.PrimarySourceDeviceLabel = deviceLabel;
                 mi.LoadDescriptor(desc);
             }
 
-            // Persist. Mark the view loaded so the debounced SaveViewModelToPadSetting
-            // pushes these rows into the per-device PadSetting, commit the in-memory
-            // per-VC MappingSet now so the engine sees the clone immediately, then
-            // refresh the pickers so the grid shows friendly source labels and mark
-            // dirty for the file write. Mirrors MainWindow's RecordingCompleted path.
-            vm.MappingsViewLoaded = true;
+            // Persist. Commit the grid into the in-memory per-VC MappingSet so
+            // the engine sees the clone immediately, then re-hydrate the grid
+            // from that now-authoritative MappingSet: RefreshMappingsCore
+            // resolves each row's friendly display text and sets
+            // MappingsViewLoaded, so the debounced SaveViewModelToPadSetting
+            // pushes the rows into the per-device PadSetting. MarkDirty queues
+            // the file write. Mirrors MainWindow's RecordingCompleted path.
             var mw = Application.Current.MainWindow as MainWindow;
             mw?.SettingsService?.PushUiExtraSourcesIntoSlotMappingSets();
-            InputService?.RefreshAvailableInputsForSlot(vm);
+            PadForge.Services.InputService.RefreshMappingsToViewModel(vm);
             mw?.SettingsService?.MarkDirty();
         }
 

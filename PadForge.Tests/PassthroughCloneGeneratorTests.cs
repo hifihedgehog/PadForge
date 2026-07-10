@@ -65,7 +65,6 @@ namespace PadForge.Tests
             public CloneResultRowLookup(PassthroughCloneGenerator.CloneResult r)
                 => _map = r.Rows.ToDictionary(x => x.Target, x => x.Descriptor);
             public string this[string target] => _map.TryGetValue(target, out var d) ? d : null;
-            public int Count => _map.Count;
             public bool Has(string target) => _map.ContainsKey(target);
         }
 
@@ -135,6 +134,7 @@ namespace PadForge.Tests
             Assert.Equal(2, r.Sticks);       // ceil(3/2) = 2 → 4 axis slots, 3 filled
             Assert.Equal(0, r.Triggers);
             Assert.Equal(3, r.AxesMapped);
+            Assert.Equal(4, r.LayoutAxes);   // what the confirm dialog reports
             var rows = Lookup(r);
             Assert.Equal("Axis 0", rows["ExtendedAxis0"]);
             Assert.Equal("Axis 1", rows["ExtendedAxis1"]);
@@ -250,21 +250,46 @@ namespace PadForge.Tests
             Assert.Empty(r.Rows);
         }
 
-        // ── Non-contiguous physical axis indices keep their descriptor index ──
-        // The reporter's rudder exposes live axes at 0, 3, 4 among 8 enumerated.
-        // Identity means ExtendedAxis3 ← "Axis 3", not a compacted "Axis 1".
+        // ── Non-contiguous enumerated indices compact positionally but keep
+        // their original index in the DESCRIPTOR ──
+        // SDL gamepads can skip phantom positions (GetDeviceObjects gates on
+        // SDL_GamepadHasAxis/Button), so enumeration may yield indices 0, 3, 4.
+        // The k-th enumerated input lands on ExtendedAxis{k} (layout slots
+        // can't have holes) while the descriptor keeps the device's own index,
+        // so the mapping still reads the right physical input. Raw joysticks
+        // (the #196 population) enumerate densely, where this is plain identity.
 
         [Fact]
-        public void Enumerated_Axis_Index_Drives_Descriptor()
+        public void Sparse_Axis_Indices_Compact_But_Keep_Descriptor()
         {
-            var objs = new List<DeviceObjectItem>();
-            for (int i = 0; i < 8; i++) objs.Add(Axis(i));   // 0..7 all enumerated
-
-            var r = PassthroughCloneGenerator.Generate(Device(objs));
+            var r = PassthroughCloneGenerator.Generate(
+                Device(new[] { Axis(0), Axis(3), Axis(4) }));
             var rows = Lookup(r);
 
-            Assert.Equal("Axis 3", rows["ExtendedAxis3"]);
-            Assert.Equal("Axis 4", rows["ExtendedAxis4"]);
+            Assert.Equal(3, r.AxesMapped);
+            Assert.Equal(2, r.Sticks);
+            Assert.Equal(4, r.LayoutAxes);
+            Assert.Equal("Axis 0", rows["ExtendedAxis0"]);
+            Assert.Equal("Axis 3", rows["ExtendedAxis1"]);
+            Assert.Equal("Axis 4", rows["ExtendedAxis2"]);
+            Assert.False(rows.Has("ExtendedAxis3"));
+        }
+
+        // ── Interleaved DeviceObjects: axes still precede sliders ──
+        // Enumeration is two-pass (all non-slider axes, then all sliders),
+        // matching the picker's class ordering even when the device's object
+        // array physically interleaves them.
+
+        [Fact]
+        public void Interleaved_Slider_Still_Appends_After_Axes()
+        {
+            var r = PassthroughCloneGenerator.Generate(
+                Device(new DeviceObjectItem[] { Axis(0), Slider(0), Axis(1) }));
+            var rows = Lookup(r);
+
+            Assert.Equal("Axis 0", rows["ExtendedAxis0"]);
+            Assert.Equal("Axis 1", rows["ExtendedAxis1"]);
+            Assert.Equal("Slider 0", rows["ExtendedAxis2"]);
         }
     }
 }

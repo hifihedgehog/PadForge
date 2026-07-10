@@ -2234,6 +2234,12 @@
   <data name="About_NAudioDesc" xml:space="preserve"><value>WASAPI loopback capture for the controller-audio mirror and the audio-bass trigger rumble. By Mark Heath. MIT.</value></data>
   <data name="About_BouncyCastle" xml:space="preserve"><value>Bouncy Castle</value></data>
   <data name="About_BouncyCastleDesc" xml:space="preserve"><value>Cryptography for Remote Link pairing and transport (X25519, Ed25519, ChaCha20-Poly1305). Bouncy Castle Licence, an MIT-style license.</value></data>
+  <data name="About_BthPS3" xml:space="preserve"><value>BthPS3</value></data>
+  <data name="About_BthPS3Desc" xml:space="preserve"><value>Bundled Bluetooth profile and PSM filter drivers by nefarius that let a DualShock 3 connect over the shared radio. Installed in-app at pairing time. BSD 3-Clause.</value></data>
+  <data name="About_DsHidMini" xml:space="preserve"><value>DsHidMini</value></data>
+  <data name="About_DsHidMiniDesc" xml:space="preserve"><value>DualShock 3 protocol reference by Benjamin Höglinger-Stelzer: sixpair feature reports, Bluetooth output-report template, enable ordering, battery map. PadForge's implementation is original C#. BSD 3-Clause.</value></data>
+  <data name="About_NefariusDevMgmt" xml:space="preserve"><value>Nefarius.Utilities.DeviceManagement</value></data>
+  <data name="About_NefariusDevMgmtDesc" xml:space="preserve"><value>Driver-store install, Bluetooth class filter registration, and USB port cycling for the in-app BthPS3 setup, by nefarius. MIT.</value></data>
   <data name="Devices_Pair" xml:space="preserve"><value>Pair</value></data>
   <data name="WiiPair_Title" xml:space="preserve"><value>Pair a Controller</value></data>
   <data name="WiiPair_Family" xml:space="preserve"><value>Controller Family</value></data>

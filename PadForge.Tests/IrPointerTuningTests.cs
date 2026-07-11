@@ -78,8 +78,10 @@ namespace PadForge.Tests
                 float slot0 = SourceCoercion.EvaluateForBipolarAxisTarget(state, src, slotIndex: 0);
                 float slot1 = SourceCoercion.EvaluateForBipolarAxisTarget(state, src, slotIndex: 1);
 
-                Assert.Equal(0.5f, slot0, precision: 5); // 0.2 + 0.3 offset
-                Assert.Equal(0.2f, slot1, precision: 5); // untouched
+                // Aim 0.2 stretches to 0.4 (lineage Y margin x2.0), and the
+                // bar offset applies post-stretch, in its screen meaning.
+                Assert.Equal(0.7f, slot0, precision: 5); // 0.2*2 + 0.3 offset
+                Assert.Equal(0.4f, slot1, precision: 5); // stretch only
             }
             finally
             {
@@ -109,12 +111,14 @@ namespace PadForge.Tests
                 Assert.Equal(1.0f, SourceCoercion.EvaluateForBipolarAxisTarget(s1, src, 1), precision: 5);
 
                 // Aim jumps to 0: smoothed slot lags halfway, raw slot follows.
+                // The EMA runs on stretched values (aim 1.0 seeded as 1.8, the
+                // lineage X margin), so the halfway lag is 0.9 post-clamp.
                 var s2 = new CustomInputState(); s2.Ir.X = 0.0f; s2.Ir.Detected = true;
                 SourceCoercion.BeginPollFrame();
-                Assert.Equal(0.5f, SourceCoercion.EvaluateForBipolarAxisTarget(s2, src, 0), precision: 5);
+                Assert.Equal(0.9f, SourceCoercion.EvaluateForBipolarAxisTarget(s2, src, 0), precision: 5);
                 // A second row reading the same slot in the SAME poll gets the
                 // identical smoothed value (the row-collision fix).
-                Assert.Equal(0.5f, SourceCoercion.EvaluateForBipolarAxisTarget(s2, src, 0), precision: 5);
+                Assert.Equal(0.9f, SourceCoercion.EvaluateForBipolarAxisTarget(s2, src, 0), precision: 5);
                 Assert.Equal(0.0f, SourceCoercion.EvaluateForBipolarAxisTarget(s2, src, 1), precision: 5);
 
                 // Sight loss resets slot 0's EMA, so a re-acquire snaps.

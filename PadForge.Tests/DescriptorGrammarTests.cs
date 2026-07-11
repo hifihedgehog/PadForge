@@ -86,16 +86,46 @@ namespace PadForge.Tests
         [Fact]
         public void IrPointerX_EvaluatesFromWiiIrState()
         {
+            // Raw aim is scaled by the lineage margin stretch (all three
+            // Touchmote variants default pointer_marginsLeftRight = 0.4 and
+            // pointer_marginsTopBottom = 0.5, a centered stretch of
+            // 1 + 2*margin): x1.8 on X, x2.0 on Y, then clamped.
             var state = new CustomInputState();
-            state.Ir.X = 0.63f;
+            state.Ir.X = 0.3f;
             state.Ir.Y = -0.4f;
             state.Ir.Detected = true;
 
             var src = new MappingSource { Descriptor = "IR Pointer X" };
-            Assert.Equal(0.63f, SourceCoercion.EvaluateForBipolarAxisTarget(state, src), precision: 5);
+            Assert.Equal(0.3f * SourceCoercion.IrMarginStretchX,
+                SourceCoercion.EvaluateForBipolarAxisTarget(state, src), precision: 5);
 
             var srcY = new MappingSource { Descriptor = "IR Pointer Y" };
-            Assert.Equal(-0.4f, SourceCoercion.EvaluateForBipolarAxisTarget(state, srcY), precision: 5);
+            Assert.Equal(-0.4f * SourceCoercion.IrMarginStretchY,
+                SourceCoercion.EvaluateForBipolarAxisTarget(state, srcY), precision: 5);
+        }
+
+        [Fact]
+        public void IrPointer_MarginStretch_MatchesTheLineageDefaults()
+        {
+            // 1 + 2*0.4 on X, 1 + 2*0.5 on Y (Touchmote/Suegrini/Ryochan7
+            // WiiTUIO/Properties/Settings.cs defaults, Trihy agrees). The
+            // pair-trackable aim cannot reach +/-1 (both LEDs must stay in
+            // the camera view), so without this stretch the cursor walls
+            // off inside the screen in EVERY pointer mode: the border
+            // transform is identity inside its region, so 4:3 stopped at
+            // the same wall (owner bench, 2026-07-11: a border in
+            // "boundaryless" vanilla Mouse, with the stop rectangle INSIDE
+            // the 4:3 pillar geometry).
+            Assert.Equal(1.8f, SourceCoercion.IrMarginStretchX, 3);
+            Assert.Equal(2.0f, SourceCoercion.IrMarginStretchY, 3);
+
+            // Reachability: aim ~0.556 hits the screen edge on X, well
+            // inside the pair-trackable range.
+            var state = new CustomInputState();
+            state.Ir.X = 0.56f;
+            state.Ir.Detected = true;
+            var src = new MappingSource { Descriptor = "IR Pointer X" };
+            Assert.Equal(1f, SourceCoercion.EvaluateForBipolarAxisTarget(state, src), precision: 2);
         }
 
         [Fact]

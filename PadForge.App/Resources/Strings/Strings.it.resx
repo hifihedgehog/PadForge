@@ -2354,4 +2354,10 @@
   <data name="MacroAction_PointerModeSet_Format" xml:space="preserve"><value>Imposta modalità puntatore: {0}</value></data>
   <data name="MacroAction_PointerModeSet_Tooltip" xml:space="preserve"><value>Imposta la modalità puntatore Wii su quella selezionata sotto per ogni telecomando IR dello slot.</value></data>
   <data name="Macro_PointerSetMode_Hint" xml:space="preserve"><value>Scegli la modalità puntatore applicata da questa azione.</value></data>
+  <data name="Pad_ResetPointerModeCard" xml:space="preserve"><value>Ripristina modalità puntatore</value></data>
+  <data name="Pad_ResetPointerTuning" xml:space="preserve"><value>Ripristina regolazione del puntatore</value></data>
+  <data name="Pad_ResetSensorBarPos" xml:space="preserve"><value>Ripristina posizione della barra sensori</value></data>
+  <data name="Pad_ResetSensorBarComp" xml:space="preserve"><value>Ripristina scostamento verticale</value></data>
+  <data name="Pad_ResetIrSmoothing" xml:space="preserve"><value>Ripristina smussatura</value></data>
+  <data name="Pad_ResetAudioMirror" xml:space="preserve"><value>Ripristina duplicazione audio</value></data>
 </root>

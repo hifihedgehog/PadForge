@@ -2332,4 +2332,10 @@
   <data name="MacroAction_PointerModeSet_Format" xml:space="preserve"><value>Zeigermodus festlegen: {0}</value></data>
   <data name="MacroAction_PointerModeSet_Tooltip" xml:space="preserve"><value>Legt den Wii-Zeigermodus für jede IR-fähige Remote im Slot auf den unten gewählten Modus fest.</value></data>
   <data name="Macro_PointerSetMode_Hint" xml:space="preserve"><value>Wähle den Zeigermodus, den diese Aktion anwendet.</value></data>
+  <data name="Pad_ResetPointerModeCard" xml:space="preserve"><value>Zeigermodus zurücksetzen</value></data>
+  <data name="Pad_ResetPointerTuning" xml:space="preserve"><value>Zeiger-Abstimmung zurücksetzen</value></data>
+  <data name="Pad_ResetSensorBarPos" xml:space="preserve"><value>Position der Sensorleiste zurücksetzen</value></data>
+  <data name="Pad_ResetSensorBarComp" xml:space="preserve"><value>Vertikalen Versatz zurücksetzen</value></data>
+  <data name="Pad_ResetIrSmoothing" xml:space="preserve"><value>Glättung zurücksetzen</value></data>
+  <data name="Pad_ResetAudioMirror" xml:space="preserve"><value>Audio-Spiegelung zurücksetzen</value></data>
 </root>

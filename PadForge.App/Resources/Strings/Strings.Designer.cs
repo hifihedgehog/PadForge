@@ -1666,6 +1666,12 @@ public class Strings : INotifyPropertyChanged
     public string MacroAction_PointerModeSet_Format => Get("MacroAction_PointerModeSet_Format");
     public string MacroAction_PointerModeSet_Tooltip => Get("MacroAction_PointerModeSet_Tooltip");
     public string Macro_PointerSetMode_Hint => Get("Macro_PointerSetMode_Hint");
+    public string Pad_ResetPointerModeCard => Get("Pad_ResetPointerModeCard");
+    public string Pad_ResetPointerTuning => Get("Pad_ResetPointerTuning");
+    public string Pad_ResetSensorBarPos => Get("Pad_ResetSensorBarPos");
+    public string Pad_ResetSensorBarComp => Get("Pad_ResetSensorBarComp");
+    public string Pad_ResetIrSmoothing => Get("Pad_ResetIrSmoothing");
+    public string Pad_ResetAudioMirror => Get("Pad_ResetAudioMirror");
     public string Pad_Audio_Header => Get("Pad_Audio_Header");
     public string Pad_Audio_Subtitle => Get("Pad_Audio_Subtitle");
     public string Pad_Audio_Output_Header => Get("Pad_Audio_Output_Header");

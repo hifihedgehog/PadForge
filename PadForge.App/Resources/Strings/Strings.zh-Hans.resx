@@ -2332,4 +2332,10 @@
   <data name="MacroAction_PointerModeSet_Format" xml:space="preserve"><value>设置指针模式：{0}</value></data>
   <data name="MacroAction_PointerModeSet_Tooltip" xml:space="preserve"><value>将槽位中所有支持IR的遥控器的Wii指针模式设置为下方所选模式。</value></data>
   <data name="Macro_PointerSetMode_Hint" xml:space="preserve"><value>选择此动作应用的指针模式。</value></data>
+  <data name="Pad_ResetPointerModeCard" xml:space="preserve"><value>重置指针模式</value></data>
+  <data name="Pad_ResetPointerTuning" xml:space="preserve"><value>重置指针调节</value></data>
+  <data name="Pad_ResetSensorBarPos" xml:space="preserve"><value>重置感应条位置</value></data>
+  <data name="Pad_ResetSensorBarComp" xml:space="preserve"><value>重置垂直偏移</value></data>
+  <data name="Pad_ResetIrSmoothing" xml:space="preserve"><value>重置平滑</value></data>
+  <data name="Pad_ResetAudioMirror" xml:space="preserve"><value>重置音频镜像</value></data>
 </root>

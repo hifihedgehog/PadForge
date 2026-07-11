@@ -9802,11 +9802,15 @@
                                 <!-- Per assigned device, by convention: this toggle (and the
                                      speaker routing of macro sounds) follows the device selected
                                      in the assigned-devices dropdown. No output picker. -->
-                                <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}" IsChecked="{Binding DeviceConfig.AudioPassthroughEnabled, Mode=TwoWay}"
-                                          Content="{Binding Pad_Audio_Mirror, Source={x:Static strings:Strings.Instance}}"
-                                          ToolTip="{Binding Pad_Audio_Mirror_Tooltip, Source={x:Static strings:Strings.Instance}}"
-                                          Margin="0,0,0,8"
-                                          Visibility="{Binding SelectedDeviceHasSpeaker, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8"
+                                            Visibility="{Binding SelectedDeviceHasSpeaker, Converter={StaticResource BoolToVisibilityConverter}}">
+                                    <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}" IsChecked="{Binding DeviceConfig.AudioPassthroughEnabled, Mode=TwoWay}"
+                                              Content="{Binding Pad_Audio_Mirror, Source={x:Static strings:Strings.Instance}}"
+                                              ToolTip="{Binding Pad_Audio_Mirror_Tooltip, Source={x:Static strings:Strings.Instance}}"
+                                              VerticalAlignment="Center"/>
+                                    <ui:Button Command="{Binding ResetAudioMirrorCommand}" Style="{StaticResource ResetButton}"
+                                            ToolTip="{Binding Pad_ResetAudioMirror, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
                                 <!-- Mirror SOURCE: which playback device feeds the mirror.
                                      "" = system default. Lets games that send specific
                                      sounds to a separate playback device target the pad. -->
@@ -10111,8 +10115,15 @@
                              Pointer X/Y" mapping sources keep reading raw aim. -->
                         <Border Style="{StaticResource CardBorder}">
                             <StackPanel>
-                                <TextBlock Text="{Binding Pad_Pointer_ModeTitle, Source={x:Static strings:Strings.Instance}}"
-                                           Style="{StaticResource CardTitle}" Margin="0,0,0,8"/>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                    <TextBlock Text="&#xE962;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="16" Foreground="{DynamicResource EmberBrush}"
+                                               VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                    <TextBlock Text="{Binding Pad_Pointer_ModeTitle, Source={x:Static strings:Strings.Instance}}"
+                                               Style="{StaticResource CardTitle}"/>
+                                    <ui:Button Command="{Binding ResetPointerModeCardCommand}" Style="{StaticResource ResetAllButton}"
+                                            Content="{Binding Pad_ResetAll, Source={x:Static strings:Strings.Instance}}" Margin="12,0,0,0"
+                                            ToolTip="{Binding Pad_ResetPointerModeCard, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
 
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
                                     <ComboBox Width="240" SelectedValuePath="Tag"
@@ -10159,17 +10170,28 @@
 
                         <Border Style="{StaticResource CardBorder}">
                             <StackPanel>
-                                <TextBlock Text="{Binding Pad_Pointer_TuningTitle, Source={x:Static strings:Strings.Instance}}"
-                                           Style="{StaticResource CardTitle}" Margin="0,0,0,8"/>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                    <TextBlock Text="&#xE9E9;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="16" Foreground="{DynamicResource EmberBrush}"
+                                               VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                    <TextBlock Text="{Binding Pad_Pointer_TuningTitle, Source={x:Static strings:Strings.Instance}}"
+                                               Style="{StaticResource CardTitle}"/>
+                                    <ui:Button Command="{Binding ResetPointerTuningCardCommand}" Style="{StaticResource ResetAllButton}"
+                                            Content="{Binding Pad_ResetAll, Source={x:Static strings:Strings.Instance}}" Margin="12,0,0,0"
+                                            ToolTip="{Binding Pad_ResetPointerTuning, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
 
                                 <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Pad_Pointer_SensorBar, Source={x:Static strings:Strings.Instance}}"
                                            Margin="0,0,0,4"/>
-                                <ComboBox Width="240" HorizontalAlignment="Left"
-                                          SelectedIndex="{Binding IrSensorBarPos, Mode=TwoWay}">
-                                    <ComboBoxItem Content="{Binding Pad_Pointer_SensorBar_Centered, Source={x:Static strings:Strings.Instance}}"/>
-                                    <ComboBoxItem Content="{Binding Pad_Pointer_SensorBar_Above, Source={x:Static strings:Strings.Instance}}"/>
-                                    <ComboBoxItem Content="{Binding Pad_Pointer_SensorBar_Below, Source={x:Static strings:Strings.Instance}}"/>
-                                </ComboBox>
+                                <StackPanel Orientation="Horizontal">
+                                    <ComboBox Width="240" HorizontalAlignment="Left"
+                                              SelectedIndex="{Binding IrSensorBarPos, Mode=TwoWay}">
+                                        <ComboBoxItem Content="{Binding Pad_Pointer_SensorBar_Centered, Source={x:Static strings:Strings.Instance}}"/>
+                                        <ComboBoxItem Content="{Binding Pad_Pointer_SensorBar_Above, Source={x:Static strings:Strings.Instance}}"/>
+                                        <ComboBoxItem Content="{Binding Pad_Pointer_SensorBar_Below, Source={x:Static strings:Strings.Instance}}"/>
+                                    </ComboBox>
+                                    <ui:Button Command="{Binding ResetIrSensorBarPosCommand}" Style="{StaticResource ResetButton}"
+                                            ToolTip="{Binding Pad_ResetSensorBarPos, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
 
                                 <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Pad_Pointer_Compensation, Source={x:Static strings:Strings.Instance}}"
                                            Margin="0,12,0,4"/>
@@ -10179,6 +10201,8 @@
                                     <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding IrSensorBarCompPercent, StringFormat={}{0}%}"
                                                FontFamily="{StaticResource TelemetryFontFamily}"
                                                VerticalAlignment="Center" Margin="8,0,0,0" MinWidth="36"/>
+                                    <ui:Button Command="{Binding ResetIrSensorBarCompCommand}" Style="{StaticResource ResetButton}"
+                                            ToolTip="{Binding Pad_ResetSensorBarComp, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
 
                                 <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Pad_Pointer_Smoothing, Source={x:Static strings:Strings.Instance}}"
@@ -10189,6 +10213,8 @@
                                     <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding IrSmoothingPercent, StringFormat={}{0}%}"
                                                FontFamily="{StaticResource TelemetryFontFamily}"
                                                VerticalAlignment="Center" Margin="8,0,0,0" MinWidth="36"/>
+                                    <ui:Button Command="{Binding ResetIrSmoothingCommand}" Style="{StaticResource ResetButton}"
+                                            ToolTip="{Binding Pad_ResetIrSmoothing, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
                             </StackPanel>
                         </Border>

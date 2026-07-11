@@ -4198,6 +4198,49 @@ namespace PadForge.ViewModels
         public RelayCommand ResetPointerFpsSpeedCommand =>
             _resetPointerFpsSpeedCommand ??= new RelayCommand(() => PointerFpsSpeed = 35);
 
+        private RelayCommand _resetPointerModeCardCommand;
+        /// <summary>Card-level Reset All for the Pointer Mode card:
+        /// mode + FPS speed together.</summary>
+        public RelayCommand ResetPointerModeCardCommand =>
+            _resetPointerModeCardCommand ??= new RelayCommand(() =>
+            {
+                PointerMode = "Mouse";
+                PointerFpsSpeed = 35;
+            });
+
+        private RelayCommand _resetIrSensorBarPosCommand;
+        public RelayCommand ResetIrSensorBarPosCommand =>
+            _resetIrSensorBarPosCommand ??= new RelayCommand(() => IrSensorBarPos = 0);
+
+        private RelayCommand _resetIrSensorBarCompCommand;
+        public RelayCommand ResetIrSensorBarCompCommand =>
+            _resetIrSensorBarCompCommand ??= new RelayCommand(() => IrSensorBarCompPercent = 0);
+
+        private RelayCommand _resetIrSmoothingCommand;
+        public RelayCommand ResetIrSmoothingCommand =>
+            _resetIrSmoothingCommand ??= new RelayCommand(() => IrSmoothingPercent = 0);
+
+        private RelayCommand _resetPointerTuningCardCommand;
+        /// <summary>Card-level Reset All for the Pointer Tuning card: the
+        /// #146 tunables all default to zero (IrTunables_DefaultToZero).</summary>
+        public RelayCommand ResetPointerTuningCardCommand =>
+            _resetPointerTuningCardCommand ??= new RelayCommand(() =>
+            {
+                IrSensorBarPos = 0;
+                IrSensorBarCompPercent = 0;
+                IrSmoothingPercent = 0;
+            });
+
+        private RelayCommand _resetAudioMirrorCommand;
+        /// <summary>Per-row reset for the system-audio mirror toggle. The
+        /// Audio card's Reset All already covers it; this is the row
+        /// affordance every setting row carries.</summary>
+        public RelayCommand ResetAudioMirrorCommand =>
+            _resetAudioMirrorCommand ??= new RelayCommand(() =>
+            {
+                if (DeviceConfig != null) DeviceConfig.AudioPassthroughEnabled = false;
+            });
+
         /// <summary>A render endpoint the mirror can capture; Id "" = the
         /// system default device.</summary>
         public sealed class MirrorSourceOption

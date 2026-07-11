@@ -2332,4 +2332,10 @@
   <data name="MacroAction_PointerModeSet_Format" xml:space="preserve"><value>Définir le mode du pointeur : {0}</value></data>
   <data name="MacroAction_PointerModeSet_Tooltip" xml:space="preserve"><value>Définit le mode du pointeur Wii sur celui sélectionné ci-dessous pour chaque télécommande IR du slot.</value></data>
   <data name="Macro_PointerSetMode_Hint" xml:space="preserve"><value>Choisissez le mode de pointeur que cette action applique.</value></data>
+  <data name="Pad_ResetPointerModeCard" xml:space="preserve"><value>Réinitialiser le mode du pointeur</value></data>
+  <data name="Pad_ResetPointerTuning" xml:space="preserve"><value>Réinitialiser le réglage du pointeur</value></data>
+  <data name="Pad_ResetSensorBarPos" xml:space="preserve"><value>Réinitialiser la position de la barre de capteurs</value></data>
+  <data name="Pad_ResetSensorBarComp" xml:space="preserve"><value>Réinitialiser le décalage vertical</value></data>
+  <data name="Pad_ResetIrSmoothing" xml:space="preserve"><value>Réinitialiser le lissage</value></data>
+  <data name="Pad_ResetAudioMirror" xml:space="preserve"><value>Réinitialiser la duplication audio</value></data>
 </root>

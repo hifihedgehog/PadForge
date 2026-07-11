@@ -387,8 +387,20 @@ namespace PadForge.Common.Input
                     // on the poll thread, the same thread as MarkDeviceOffline's
                     // dispose. Dispose is idempotent, so the handled case above
                     // is safe to skip by reference.
+                    //
+                    // EXCEPT when the same physical device is live under a
+                    // rebound wrapper: HIDAPI drivers keep ONE context per
+                    // device, and closing a stale instance runs the driver's
+                    // CloseJoystick against it (the fork's Wii CloseJoystick
+                    // nulls ctx->joystick), clobbering the live instance's
+                    // registration. Disposing here after a Wii re-identify
+                    // put the driver into a 10 s re-identify churn (observed
+                    // 2026-07-11, diag.log). For the rebind case the stale
+                    // handle is deliberately left to the finalizer, the
+                    // long-standing behavior before the 2026-07-11 audit.
                     if (_openedSdlInstanceIds.TryGetValue(sdlId, out var orphan)
-                        && orphan != null && !ReferenceEquals(orphan, offlineUd?.Device))
+                        && orphan != null && !ReferenceEquals(orphan, offlineUd?.Device)
+                        && !DeviceLiveUnderNewWrapper(orphan))
                     {
                         try { orphan.Dispose(); } catch { }
                     }
@@ -593,6 +605,28 @@ namespace PadForge.Common.Input
         /// <summary>
         /// Marks a device as offline, disposes its SDL handle, and clears runtime state.
         /// </summary>
+        /// <summary>True when the physical device behind <paramref name="orphan"/>
+        /// is still online through a DIFFERENT wrapper (the driver re-identify
+        /// rebind: same InstanceGuid, new SDL instance id). Disposing the stale
+        /// wrapper in that state closes SDL handles whose driver context is
+        /// SHARED with the live instance.</summary>
+        private static bool DeviceLiveUnderNewWrapper(SdlDeviceWrapper orphan)
+        {
+            var devs = SettingsManager.UserDevices?.Items;
+            if (devs == null) return false;
+            lock (SettingsManager.UserDevices.SyncRoot)
+            {
+                for (int i = 0; i < devs.Count; i++)
+                {
+                    var d = devs[i];
+                    if (d == null || !d.IsOnline || d.Device == null) continue;
+                    if (ReferenceEquals(d.Device, orphan)) continue;
+                    if (d.InstanceGuid == orphan.InstanceGuid) return true;
+                }
+            }
+            return false;
+        }
+
         private void MarkDeviceOffline(UserDevice ud)
         {
             if (ud == null) return;

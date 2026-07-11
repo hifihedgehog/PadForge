@@ -476,8 +476,17 @@ namespace PadForge.ViewModels
                 // Mouse visual handles button display, but RawButtons still
                 // needs entries so InputService can update IsPressed for the
                 // mouse preview's left/middle/right/X1/X2 lookups by index.
+                // DisplayNumber is the REAL state index, not the grid
+                // ordinal. With ordinal numbering a sparse device lied about
+                // its identifiers: the Wii Remote's raw D-pad duplicates
+                // (buttons 22-25, positions 11-14 in the sparse list) showed
+                // as "11-14" here while the mapping picker, the recorder, and
+                // every stored descriptor call them Button 22-25. The owner
+                // burned a bench round on that mismatch (disc #198 follow-up,
+                // 2026-07-10). Preview numbering must match the mappable
+                // names, gaps and all.
                 for (int i = 0; i < buttonCount; i++)
-                    RawButtons.Add(new ButtonDisplayItem { Index = buttonIndices[i], DisplayNumber = i });
+                    RawButtons.Add(new ButtonDisplayItem { Index = buttonIndices[i], DisplayNumber = buttonIndices[i] });
             }
 
             RawPovs.Clear();
@@ -861,8 +870,11 @@ namespace PadForge.ViewModels
         public int Index { get; set; }
 
         /// <summary>
-        /// 0-based display number — position in the visible Buttons grid.
-        /// Always consecutive so the user sees 0..N-1 without gaps.
+        /// Displayed button number. Equals <see cref="Index"/> (the real
+        /// state slot) so the preview agrees with the mapping picker and
+        /// stored "Button N" descriptors. Sparse devices therefore show
+        /// gaps, which is correct: the numbers are identifiers, not
+        /// positions.
         /// </summary>
         public int DisplayNumber { get; set; }
 

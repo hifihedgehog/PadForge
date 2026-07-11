@@ -1114,12 +1114,14 @@ namespace PadForge.Common.Input
             var cfg = _config;
             if (cfg == null) return;
 
-            // Player-identity idle floor (#191): the 1-based virtual
-            // controller number every UI surface shows, recomputed per
-            // dispatch so slot create / delete / reorder self-heals on
-            // the next poke (ApplyOnceAll fires one after topology
-            // changes). Passed to the synthesizers, which only use it
-            // when nothing else claims the lightbar / player LEDs.
+            // Player-identity idle floor (#191): recomputed per dispatch
+            // so slot create / delete / reorder self-heals on the next
+            // poke (ApplyOnceAll fires one after topology changes).
+            // Passed to the synthesizers, which only use it when nothing
+            // else claims the lightbar / player LEDs. This slot's own
+            // number is only the FALLBACK: each device resolves its
+            // identity winner in the loop below, so two dispatchers
+            // sharing one pad write the same number instead of fighting.
             int playerNumber = SettingsManager.SlotOrders.GetGlobalSlotNumber(_padIndex);
 
             // For non-tick dispatches (slider drag, OnDevicesUpdated re-
@@ -1202,6 +1204,16 @@ namespace PadForge.Common.Input
                     if (!guids.Contains(ud.InstanceGuid)) continue;
                     if (!ud.IsOnline) continue;
                     if (!isPs) continue;
+
+                    // Identity precedence: a pad shared across virtual
+                    // controllers takes the winning (smallest displayed)
+                    // number, so this dispatcher and the other slot's
+                    // dispatcher write identical identity bytes instead
+                    // of blinking the LEDs between two players. Settings
+                    // lock inside the devices lock is the documented
+                    // devices-before-settings order.
+                    int devPlayerNumber = SettingsManager.SlotOrders.GetIdentityPlayerNumber(ud.InstanceGuid);
+                    if (devPlayerNumber <= 0) devPlayerNumber = playerNumber;
 
                     // Per-device shadow of the external-mirror override struct.
                     // Each device may receive its own dispatcher-injected
@@ -1466,12 +1478,12 @@ namespace PadForge.Common.Input
                                 _randomColor, devPulseColor, devPulseIntensity,
                                 rR, rL, assertRumbleEnable,
                                 assertRightTrig, assertLeftTrig, devOverrides, pctByte,
-                                playerNumber)
+                                devPlayerNumber)
                             : Ds4EffectSynthesizer.BuildFields(
                                 devCfg, devPeak, nowMs,
                                 _randomColor, devPulseColor, devPulseIntensity,
                                 rR, rL, assertRumbleEnable, devOverrides, pctByte,
-                                playerNumber);
+                                devPlayerNumber);
 
                         // Macro-sound speaker routing (issue #83). The DualSense
                         // firmware sends its USB program audio to the headphone

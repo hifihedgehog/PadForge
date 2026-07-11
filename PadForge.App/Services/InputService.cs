@@ -7647,7 +7647,13 @@ namespace PadForge.Services
                 // lock is held. The SDL call below also does a
                 // synchronous Switch subcommand round-trip (retried BT
                 // I/O), which must not run under ANY of our locks.
-                var pairs = new List<(Guid Guid, int Slot)>();
+                // One write per DEVICE, not per (device, slot) pair. A
+                // device feeding several virtual controllers used to get
+                // every slot's number written back to back in Items order,
+                // flashing the losing slot's player LED on every reseed.
+                // The identity winner is the smallest displayed number
+                // (SlotOrders.GetIdentityPlayerNumber).
+                var guids = new List<Guid>();
                 var settings = SettingsManager.UserSettings;
                 if (settings != null)
                 {
@@ -7657,32 +7663,39 @@ namespace PadForge.Services
                         {
                             var us = settings.Items[i];
                             if (us == null || us.MapTo < 0) continue;
-                            pairs.Add((us.InstanceGuid, us.MapTo));
+                            if (us.InstanceGuid == Guid.Empty) continue;
+                            if (!guids.Contains(us.InstanceGuid))
+                                guids.Add(us.InstanceGuid);
                         }
                     }
                 }
-                foreach (var (guid, slot) in pairs)
+                foreach (var guid in guids)
                 {
                     var ud = SettingsManager.FindDeviceByInstanceGuid(guid);
                     if (ud == null || !ud.IsOnline) continue;
+                    int n = SettingsManager.SlotOrders.GetIdentityPlayerNumber(guid);
+                    if (n <= 0) continue;
                     if (ud.Device is PadForge.Engine.SdlDeviceWrapper w)
                     {
-                        int n = SettingsManager.SlotOrders.GetGlobalSlotNumber(slot);
-                        if (n > 0) w.SetPlayerIndex(n - 1);
+                        // Xbox 360 rings are deliberately NOT repainted here:
+                        // the XUSB setter exists (OpenXInput SendLEDState,
+                        // OpenXinput.cpp:2427), but every xinput1_4 instance
+                        // recovers a pad's port FROM the ring LED on
+                        // enumeration (OpenXinput.cpp:1217-1233), so writing
+                        // a player number that differs from the port re-seats
+                        // the pad on the wrong XInput slot in other processes.
+                        w.SetPlayerIndex(n - 1);
                     }
                     else if (ud.Device is PadForge.Engine.RemoteLink.RemotePeerDevice rpd)
                     {
                         // A shared non-Sony pad's player LED is machine-local on the
-                        // owner, so relay the CONSUMER slot's global number over the link
-                        // (#191). DualSense/DS4 peers carry the player LED in the
-                        // SonyEffect body already, so they are excluded here.
+                        // owner, so relay the consumer's winning global number over
+                        // the link (#191). DualSense/DS4 peers carry the player LED
+                        // in the SonyEffect body already, so they are excluded here.
                         bool nintendo = rpd.VendorId == 0x057E;
                         bool ds3 = rpd.VendorId == 0x054C && rpd.ProductId == 0x0268;
                         if (nintendo || ds3)
-                        {
-                            int n = SettingsManager.SlotOrders.GetGlobalSlotNumber(slot);
                             PadForge.Common.Input.RemoteLinkOutputRouter.ShipPlayerIndex(rpd.DevicePath, n);
-                        }
                     }
                 }
             }

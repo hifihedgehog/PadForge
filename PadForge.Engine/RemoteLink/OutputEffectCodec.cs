@@ -29,8 +29,9 @@ namespace PadForge.Engine.RemoteLink
     ///   (dominant frequency Hz, amplitude 0..1) pair per rumble tick, slot volume
     ///   already applied. Owner re-encodes with its own per-family writer (Joy-Con
     ///   HD Rumble / Steam 0x8f / Triton 0x83 / Deck), the Wheel division of labor.</item>
-    /// <item>PlayerIndex (#191) carries the consumer slot's 1-based player number for
-    ///   NON-Sony shared pads (Nintendo, BT DS3), whose player LED is otherwise
+    /// <item>PlayerIndex (#191) carries the consumer's winning 1-based player number
+    ///   (smallest displayed number across the slots the pad feeds) for NON-Sony
+    ///   shared pads (Nintendo, BT DS3), whose player LED is otherwise
     ///   machine-local. DualSense/DS4 already carry the player LED inside the
     ///   SonyEffect body, so they never send this kind.</item>
     /// </list>
@@ -51,8 +52,10 @@ namespace PadForge.Engine.RemoteLink
             // Triton 0x83 / Deck), exactly the Wheel division of labor.
             HapticTone = 4,
             // Player-index / player-LED number (#191) for non-Sony shared pads:
-            // the consumer slot's 1-based global number (0 = unmapped). The owner
-            // routes it to SetPlayerIndex (Nintendo) / SetPlayerNumber (BT DS3).
+            // the consumer's winning 1-based global number (0 = unmapped; when
+            // the pad feeds several consumer slots, the smallest displayed
+            // number). The owner routes it to SetPlayerIndex (Nintendo) /
+            // SetPlayerNumber (BT DS3).
             PlayerIndex = 5,
         }
 

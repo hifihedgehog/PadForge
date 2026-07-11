@@ -2334,14 +2334,20 @@ namespace PadForge.Views
                 case ViewModels.LightbarMode.PlayerNumber:
                 {
                     // #191 default: the idle floor. Preview the Sony
-                    // player color for this slot's virtual controller
-                    // number, under the GAME WRITES WIN token (a game's
-                    // write takes over and persists for the session).
-                    // The firmware table runs dim on purpose (0x40 peak
-                    // channel), so normalize to full brightness here so
-                    // the hue reads on screen the way the physical bar's
-                    // glow does.
-                    int player = SettingsManager.SlotOrders.GetGlobalSlotNumber(vm.PadIndex);
+                    // player color the hardware will actually show, under
+                    // the GAME WRITES WIN token (a game's write takes over
+                    // and persists for the session). For a device feeding
+                    // several virtual controllers that is the identity
+                    // winner's color (smallest displayed number), not this
+                    // slot's own; fall back to the slot number when no
+                    // device is selected. The firmware table runs dim on
+                    // purpose (0x40 peak channel), so normalize to full
+                    // brightness here so the hue reads on screen the way
+                    // the physical bar's glow does.
+                    Guid selGuid = vm.SelectedMappedDevice?.InstanceGuid ?? Guid.Empty;
+                    int player = SettingsManager.SlotOrders.GetIdentityPlayerNumber(selGuid);
+                    if (player <= 0)
+                        player = SettingsManager.SlotOrders.GetGlobalSlotNumber(vm.PadIndex);
                     var (pr, pg, pb) = PlayerIdentityDefaults.ColorFor(player);
                     int peak = Math.Max(pr, Math.Max(pg, pb));
                     Color pc = peak > 0

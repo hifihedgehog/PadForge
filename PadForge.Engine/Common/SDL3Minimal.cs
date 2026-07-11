@@ -96,6 +96,24 @@ namespace SDL3
         [DllImport(lib, CallingConvention = CallingConvention.Cdecl)]
         public static extern void SDL_Quit();
 
+        // ─────────────────────────────────────────────
+        //  Logging (diagnostics capture)
+        // ─────────────────────────────────────────────
+
+        /// <summary>SDL_log.h:485: void (*)(void *userdata, int category,
+        /// SDL_LogPriority priority, const char *message). Priority enum at
+        /// SDL_log.h:130-140 (DEBUG = 3).</summary>
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        public delegate void SDL_LogOutputFunction(IntPtr userdata, int category, int priority, IntPtr message);
+
+        [DllImport(lib, CallingConvention = CallingConvention.Cdecl)]
+        public static extern void SDL_SetLogPriorities(int priority);
+
+        [DllImport(lib, CallingConvention = CallingConvention.Cdecl)]
+        public static extern void SDL_SetLogOutputFunction(SDL_LogOutputFunction callback, IntPtr userdata);
+
+        public const int SDL_LOG_PRIORITY_DEBUG = 3;
+
         /// <summary>
         /// Re-enables the screensaver and system sleep.  SDL disables both by
         /// default when SDL_INIT_VIDEO is used.

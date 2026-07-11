@@ -124,6 +124,7 @@ namespace PadForge.Common.Input
                     }
 
                     Debug.WriteLine($"[Step1] Accepted device: SDL#{instanceId} VID={wrapper.VendorId:X4} PID={wrapper.ProductId:X4} path={wrapper.DevicePath} name={wrapper.Name}");
+                    Engine.SdlDiagLog.WriteLine($"DEV + SDL#{instanceId} {wrapper.VendorId:X4}:{wrapper.ProductId:X4} {wrapper.Name}");
 
                     UserDevice ud = FindOrCreateUserDevice(wrapper.InstanceGuid, wrapper.ProductGuid);
 
@@ -580,6 +581,8 @@ namespace PadForge.Common.Input
         private void MarkDeviceOffline(UserDevice ud)
         {
             if (ud == null) return;
+
+            Engine.SdlDiagLog.WriteLine($"DEV - {ud.InstanceName}");
 
             // Stop rumble before closing.
             if (ud.ForceFeedbackState != null && ud.Device != null)

@@ -913,6 +913,10 @@ namespace PadForge.Common
             {
                 list.Add(new InputChoice { Descriptor = "IR Pointer X", DisplayName = si.Mapping_IrPointerX });
                 list.Add(new InputChoice { Descriptor = "IR Pointer Y", DisplayName = si.Mapping_IrPointerY });
+                // #203: debounced "camera cannot see the sensor bar", the
+                // lightgun-reload input. Button-class, so the shift-layer
+                // activator dialog offers it automatically.
+                list.Add(new InputChoice { Descriptor = "IR Offscreen", DisplayName = si.Mapping_IrOffscreen });
             }
 
             // Wii Balance Board derived sources (#146). The four corner load cells

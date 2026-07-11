@@ -323,6 +323,58 @@ namespace PadForge.Engine.Common.Mapping
         /// Returns (0, 0) when unset, i.e. no offset and no smoothing.</summary>
         public static Func<string, int, (float barOffset, float smoothing)> IrTuningProvider { get; set; }
 
+        /// <summary>Per-(device, slot) Wii pointer mode (issue #203), same
+        /// lookup shape as <see cref="IrTuningProvider"/>. Mode ints: 0 =
+        /// Mouse (absolute, default), 1 = FpsMouse (velocity), 2 = Mouse43,
+        /// 3 = Mouse169 (aspect border modes). fpsSpeed is the FPS Mouse
+        /// speed knob (pixels per 10 ms at full deflection, lineage default
+        /// 35). Returns (0, 35) when unset. Consumed by Step 3's KBM
+        /// pointer path, never by the mapping sources, which read the raw
+        /// pointer regardless of mode.</summary>
+        public static Func<string, int, (int mode, float fpsSpeed)> IrPointerModeProvider { get; set; }
+
+        // ── "IR Offscreen" (issue #203) ─────────────────
+        // Debounced NOT-Ir.Detected, per device, so pointing away from the
+        // sensor bar can drive a mapping or a shift-layer activator (the
+        // lightgun-reload mechanic). The on-delay keeps single dropped
+        // frames and the wrapper's no-report-yet guard from flickering a
+        // whole button layer; coming back on-screen clears instantly. The
+        // lineage's only temporal handling is fpsmouse's 1000/125 ms hold,
+        // so the 150 ms here is a detection-layer debounce by design, not a
+        // lineage constant. Keyed by device GUID: offscreen is physical,
+        // one answer per remote no matter how many slots consume it.
+        internal const int IrOffscreenDebounceMs = 150;
+        private static readonly System.Collections.Concurrent.ConcurrentDictionary<string, long>
+            _irLastDetectedMs = new();
+
+        /// <summary>The debounce decision, shared with the unit tests (the
+        /// HoldEngaged idiom): detected refreshes the timestamp and reads
+        /// on-screen; lost reads offscreen only after
+        /// <paramref name="debounceMs"/> of sustained loss. A device that
+        /// has never seen the bar (lastDetectedMs 0) reads offscreen
+        /// immediately, matching the lineage's OutOfReach-starts-true.</summary>
+        internal static bool ComputeIrOffscreen(bool detected, ref long lastDetectedMs,
+            long nowMs, int debounceMs)
+        {
+            if (detected)
+            {
+                lastDetectedMs = nowMs;
+                return false;
+            }
+            if (lastDetectedMs == 0) return true;
+            return (nowMs - lastDetectedMs) >= debounceMs;
+        }
+
+        private static bool ReadIrOffscreen(CustomInputState state, MappingSource src)
+        {
+            string dev = src?.DeviceGuid ?? "";
+            long last = _irLastDetectedMs.TryGetValue(dev, out var v) ? v : 0;
+            bool off = ComputeIrOffscreen(state.Ir.Detected, ref last,
+                Environment.TickCount64, IrOffscreenDebounceMs);
+            _irLastDetectedMs[dev] = last;
+            return off;
+        }
+
         // Per-(device, slot, axis) EMA state for the IR pointer smoothing. The
         // smoothing must live at the slot-scoped read (not the per-device
         // wrapper) so each virtual controller's Pointer-tab setting applies
@@ -615,7 +667,8 @@ namespace PadForge.Engine.Common.Mapping
         public static bool IsPrefixExemptDescriptor(string s) =>
             !string.IsNullOrEmpty(s)
             && (s.StartsWith("IR Pointer ", StringComparison.OrdinalIgnoreCase)
-                || s.StartsWith("IR Brightness", StringComparison.OrdinalIgnoreCase));
+                || s.StartsWith("IR Brightness", StringComparison.OrdinalIgnoreCase)
+                || s.StartsWith("IR Offscreen", StringComparison.OrdinalIgnoreCase));
 
         public static bool IsMidiDescriptor(string descriptor)
             => !string.IsNullOrEmpty(descriptor)
@@ -1607,6 +1660,9 @@ namespace PadForge.Engine.Common.Mapping
                 return Math.Abs(v) > Math.Max(cdz, 1) / 100f;
             }
 
+            if (s.Equals("IR Offscreen", StringComparison.Ordinal))
+                return ReadIrOffscreen(state, src);
+
             if (s.StartsWith("IR Pointer ", StringComparison.Ordinal))
             {
                 float v = ReadTunedIrPointer(state, src, slotIndex);
@@ -1790,6 +1846,9 @@ namespace PadForge.Engine.Common.Mapping
             if (s.StartsWith("Mouse Position ", StringComparison.Ordinal))
                 return ReadTunedMouseCursor(src);
 
+            if (s.Equals("IR Offscreen", StringComparison.Ordinal))
+                return ReadIrOffscreen(state, src) ? 1f : 0f;
+
             if (s.StartsWith("IR Pointer ", StringComparison.Ordinal))
                 return ReadTunedIrPointer(state, src, slotIndex);
 
@@ -1917,6 +1976,9 @@ namespace PadForge.Engine.Common.Mapping
 
             if (s.StartsWith("Mouse Position ", StringComparison.Ordinal))
                 return Math.Abs(ReadTunedMouseCursor(src));
+
+            if (s.Equals("IR Offscreen", StringComparison.Ordinal))
+                return ReadIrOffscreen(state, src) ? 1f : 0f;
 
             if (s.StartsWith("IR Pointer ", StringComparison.Ordinal))
                 return Math.Abs(ReadTunedIrPointer(state, src, slotIndex));

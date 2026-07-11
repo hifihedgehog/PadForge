@@ -1842,6 +1842,22 @@
   <data name="Pad_Pointer_SensorBar_Below" xml:space="preserve"><value>Abaixo da tela</value></data>
   <data name="Pad_Pointer_Compensation" xml:space="preserve"><value>Deslocamento vertical</value></data>
   <data name="Pad_Pointer_Smoothing" xml:space="preserve"><value>Suavização</value></data>
+  <data name="Pad_Pointer_ModeTitle" xml:space="preserve"><value>Modo do Ponteiro</value></data>
+  <data name="Pad_Pointer_Mode_Tooltip" xml:space="preserve"><value>Como a mira controla o cursor. Mouse aponta de forma absoluta. Mouse FPS transforma o desvio do centro da tela em velocidade suave do cursor. Os modos de borda confinam o cursor a uma região 4:3 ou 16:9 e o fixam na borda ao mirar fora.</value></data>
+  <data name="Pad_Pointer_Mode_Mouse" xml:space="preserve"><value>Mouse</value></data>
+  <data name="Pad_Pointer_Mode_FpsMouse" xml:space="preserve"><value>Mouse FPS</value></data>
+  <data name="Pad_Pointer_Mode_43" xml:space="preserve"><value>Borda 4:3</value></data>
+  <data name="Pad_Pointer_Mode_169" xml:space="preserve"><value>Borda 16:9</value></data>
+  <data name="Pad_Pointer_FpsSpeed" xml:space="preserve"><value>Velocidade FPS</value></data>
+  <data name="Pad_Pointer_FpsSpeed_Tooltip" xml:space="preserve"><value>Velocidade do cursor na deflexão máxima. 35 é o padrão da linhagem Touchmote.</value></data>
+  <data name="Pad_Pointer_ModeNote" xml:space="preserve"><value>Os modos moldam apenas o cursor. IR Ponteiro X/Y mapeado em analógicos ou botões continua lendo a mira bruta.</value></data>
+  <data name="Pad_ResetPointerMode" xml:space="preserve"><value>Restaurar Modo do Ponteiro</value></data>
+  <data name="Pad_ResetPointerFpsSpeed" xml:space="preserve"><value>Restaurar Velocidade FPS</value></data>
+  <data name="Mapping_IrOffscreen" xml:space="preserve"><value>IR Fora da Tela</value></data>
+  <data name="MacroAction_Type_PointerModeCycle" xml:space="preserve"><value>Alternar Modos do Ponteiro</value></data>
+  <data name="MacroAction_PointerModeCycle_Format" xml:space="preserve"><value>Alternar entre {0} modos do ponteiro</value></data>
+  <data name="MacroAction_PointerModeCycle_Tooltip" xml:space="preserve"><value>Avança o modo do ponteiro Wii pelos modos marcados abaixo para cada remote com IR do slot. Cada disparo passa ao próximo modo marcado. A posição é por ação e reinicia ao reabrir.</value></data>
+  <data name="Macro_PointerCycleModes_Hint" xml:space="preserve"><value>Escolha quais modos do ponteiro a macro deve alternar. Cada disparo avança ao próximo modo marcado.</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>Áudio</value></data>
   <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Os sons de macro e o áudio espelhado tocam pelo alto-falante integrado do controle selecionado, por USB ou Bluetooth. Escolha o dispositivo na lista acima. Tudo aqui o acompanha.</value></data>
   <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>Saída de Som</value></data>

@@ -1858,6 +1858,22 @@
   <data name="Pad_Pointer_SensorBar_Below" xml:space="preserve"><value>屏幕下方</value></data>
   <data name="Pad_Pointer_Compensation" xml:space="preserve"><value>垂直偏移</value></data>
   <data name="Pad_Pointer_Smoothing" xml:space="preserve"><value>平滑</value></data>
+  <data name="Pad_Pointer_ModeTitle" xml:space="preserve"><value>指针模式</value></data>
+  <data name="Pad_Pointer_Mode_Tooltip" xml:space="preserve"><value>设置瞄准如何驱动光标。鼠标为绝对指向。FPS鼠标把相对屏幕中心的偏移转为平滑的光标速度。边框模式把光标限制在4:3或16:9区域内，瞄出区域时沿瞄准方向钉在边框上。</value></data>
+  <data name="Pad_Pointer_Mode_Mouse" xml:space="preserve"><value>鼠标</value></data>
+  <data name="Pad_Pointer_Mode_FpsMouse" xml:space="preserve"><value>FPS鼠标</value></data>
+  <data name="Pad_Pointer_Mode_43" xml:space="preserve"><value>4:3边框</value></data>
+  <data name="Pad_Pointer_Mode_169" xml:space="preserve"><value>16:9边框</value></data>
+  <data name="Pad_Pointer_FpsSpeed" xml:space="preserve"><value>FPS速度</value></data>
+  <data name="Pad_Pointer_FpsSpeed_Tooltip" xml:space="preserve"><value>满偏时的光标速度。35为Touchmote系默认值。</value></data>
+  <data name="Pad_Pointer_ModeNote" xml:space="preserve"><value>模式只影响光标。映射到摇杆或按键的IR指针X/Y仍读取原始瞄准。</value></data>
+  <data name="Pad_ResetPointerMode" xml:space="preserve"><value>重置指针模式</value></data>
+  <data name="Pad_ResetPointerFpsSpeed" xml:space="preserve"><value>重置FPS速度</value></data>
+  <data name="Mapping_IrOffscreen" xml:space="preserve"><value>IR屏幕外</value></data>
+  <data name="MacroAction_Type_PointerModeCycle" xml:space="preserve"><value>循环指针模式</value></data>
+  <data name="MacroAction_PointerModeCycle_Format" xml:space="preserve"><value>循环{0}个指针模式</value></data>
+  <data name="MacroAction_PointerModeCycle_Tooltip" xml:space="preserve"><value>在下方勾选的模式之间循环该插槽所有IR遥控器的Wii指针模式。每次触发前进到下一个勾选的模式。位置按动作独立，重启后重置。</value></data>
+  <data name="Macro_PointerCycleModes_Hint" xml:space="preserve"><value>选择宏要循环的指针模式。每次触发前进到下一个勾选的模式。</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>音频</value></data>
   <data name="Pad_Audio_Macros_Desc" xml:space="preserve"><value>声音由宏播放：一个触发（按键按下、松开、按住或公式）加一个“播放声音”动作。可在此处或“宏”选项卡中创建，延迟、重复和开关均可用。</value></data>
   <data name="Pad_Audio_Macros_Header" xml:space="preserve"><value>声音宏</value></data>

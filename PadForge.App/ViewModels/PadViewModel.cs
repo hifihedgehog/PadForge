@@ -4170,6 +4170,34 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _irSmoothingPercent, Math.Clamp(value, 0, 100));
         }
 
+        private string _pointerMode = "Mouse";
+        /// <summary>Wii pointer mode (issue #203): "Mouse", "FpsMouse",
+        /// "Mouse43", "Mouse169". Per (device, slot) on
+        /// <see cref="PadSetting.PointerMode"/>. Shapes the cursor drive
+        /// only; "IR Pointer X/Y" mapping sources stay raw.</summary>
+        public string PointerMode
+        {
+            get => _pointerMode;
+            set => SetProperty(ref _pointerMode, string.IsNullOrEmpty(value) ? "Mouse" : value);
+        }
+
+        private int _pointerFpsSpeed = 35;
+        /// <summary>FPS Mouse speed (issue #203), the lineage's fpsmouse
+        /// speed knob. 35 default, clamped 5..100.</summary>
+        public int PointerFpsSpeed
+        {
+            get => _pointerFpsSpeed;
+            set => SetProperty(ref _pointerFpsSpeed, Math.Clamp(value, 5, 100));
+        }
+
+        private RelayCommand _resetPointerModeCommand;
+        public RelayCommand ResetPointerModeCommand =>
+            _resetPointerModeCommand ??= new RelayCommand(() => PointerMode = "Mouse");
+
+        private RelayCommand _resetPointerFpsSpeedCommand;
+        public RelayCommand ResetPointerFpsSpeedCommand =>
+            _resetPointerFpsSpeedCommand ??= new RelayCommand(() => PointerFpsSpeed = 35);
+
         /// <summary>A render endpoint the mirror can capture; Id "" = the
         /// system default device.</summary>
         public sealed class MirrorSourceOption

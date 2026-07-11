@@ -1862,6 +1862,22 @@
   <data name="Pad_Pointer_SensorBar_Below" xml:space="preserve"><value>Onder het scherm</value></data>
   <data name="Pad_Pointer_Compensation" xml:space="preserve"><value>Verticale verschuiving</value></data>
   <data name="Pad_Pointer_Smoothing" xml:space="preserve"><value>Vloeiend maken</value></data>
+  <data name="Pad_Pointer_ModeTitle" xml:space="preserve"><value>Aanwijzermodus</value></data>
+  <data name="Pad_Pointer_Mode_Tooltip" xml:space="preserve"><value>Hoe het richten de cursor aanstuurt. Muis wijst absoluut. FPS-muis zet de afwijking vanaf het schermmidden om in vloeiende cursorsnelheid. De randmodi beperken de cursor tot een 4:3- of 16:9-gebied en pinnen hem aan de rand bij richten erbuiten.</value></data>
+  <data name="Pad_Pointer_Mode_Mouse" xml:space="preserve"><value>Muis</value></data>
+  <data name="Pad_Pointer_Mode_FpsMouse" xml:space="preserve"><value>FPS-muis</value></data>
+  <data name="Pad_Pointer_Mode_43" xml:space="preserve"><value>4:3-rand</value></data>
+  <data name="Pad_Pointer_Mode_169" xml:space="preserve"><value>16:9-rand</value></data>
+  <data name="Pad_Pointer_FpsSpeed" xml:space="preserve"><value>FPS-snelheid</value></data>
+  <data name="Pad_Pointer_FpsSpeed_Tooltip" xml:space="preserve"><value>Cursorsnelheid bij volle uitslag. 35 is de Touchmote-standaard.</value></data>
+  <data name="Pad_Pointer_ModeNote" xml:space="preserve"><value>Modi vormen alleen de cursor. IR-aanwijzer X/Y op sticks of knoppen blijft het ruwe richten lezen.</value></data>
+  <data name="Pad_ResetPointerMode" xml:space="preserve"><value>Aanwijzermodus resetten</value></data>
+  <data name="Pad_ResetPointerFpsSpeed" xml:space="preserve"><value>FPS-snelheid resetten</value></data>
+  <data name="Mapping_IrOffscreen" xml:space="preserve"><value>IR buiten beeld</value></data>
+  <data name="MacroAction_Type_PointerModeCycle" xml:space="preserve"><value>Aanwijzermodi doorlopen</value></data>
+  <data name="MacroAction_PointerModeCycle_Format" xml:space="preserve"><value>{0} aanwijzermodi doorlopen</value></data>
+  <data name="MacroAction_PointerModeCycle_Tooltip" xml:space="preserve"><value>Schakelt de Wii-aanwijzermodus door de hieronder aangevinkte modi voor elke IR-remote op het slot. Elke activering springt naar de volgende aangevinkte modus. De positie is per actie en reset bij herstart.</value></data>
+  <data name="Macro_PointerCycleModes_Hint" xml:space="preserve"><value>Kies welke aanwijzermodi de macro moet doorlopen. Elke activering springt naar de volgende aangevinkte modus.</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>Audio</value></data>
   <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Macrogeluiden en gespiegelde systeemaudio spelen via de ingebouwde speaker van de geselecteerde controller, via USB of Bluetooth. Kies het apparaat in de lijst hierboven. Alles hier volgt het.</value></data>
   <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>Geluidsuitvoer</value></data>

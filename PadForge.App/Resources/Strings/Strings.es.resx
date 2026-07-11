@@ -2332,4 +2332,10 @@
   <data name="MacroAction_PointerModeSet_Format" xml:space="preserve"><value>Establecer modo de puntero: {0}</value></data>
   <data name="MacroAction_PointerModeSet_Tooltip" xml:space="preserve"><value>Establece el modo de puntero Wii al seleccionado abajo para cada mando con IR de la ranura.</value></data>
   <data name="Macro_PointerSetMode_Hint" xml:space="preserve"><value>Elige el modo de puntero que aplica esta acción.</value></data>
+  <data name="Pad_ResetPointerModeCard" xml:space="preserve"><value>Restablecer modo de puntero</value></data>
+  <data name="Pad_ResetPointerTuning" xml:space="preserve"><value>Restablecer ajuste del puntero</value></data>
+  <data name="Pad_ResetSensorBarPos" xml:space="preserve"><value>Restablecer posición de la barra de sensores</value></data>
+  <data name="Pad_ResetSensorBarComp" xml:space="preserve"><value>Restablecer desplazamiento vertical</value></data>
+  <data name="Pad_ResetIrSmoothing" xml:space="preserve"><value>Restablecer suavizado</value></data>
+  <data name="Pad_ResetAudioMirror" xml:space="preserve"><value>Restablecer duplicación de audio</value></data>
 </root>

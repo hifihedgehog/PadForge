@@ -2352,4 +2352,10 @@
   <data name="MacroAction_PointerModeSet_Format" xml:space="preserve"><value>Aanwijzermodus instellen: {0}</value></data>
   <data name="MacroAction_PointerModeSet_Tooltip" xml:space="preserve"><value>Stelt de Wii-aanwijzermodus in op de hieronder gekozen modus voor elke IR-remote in het slot.</value></data>
   <data name="Macro_PointerSetMode_Hint" xml:space="preserve"><value>Kies de aanwijzermodus die deze actie toepast.</value></data>
+  <data name="Pad_ResetPointerModeCard" xml:space="preserve"><value>Aanwijzermodus resetten</value></data>
+  <data name="Pad_ResetPointerTuning" xml:space="preserve"><value>Aanwijzerafstemming resetten</value></data>
+  <data name="Pad_ResetSensorBarPos" xml:space="preserve"><value>Positie sensorbalk resetten</value></data>
+  <data name="Pad_ResetSensorBarComp" xml:space="preserve"><value>Verticale verschuiving resetten</value></data>
+  <data name="Pad_ResetIrSmoothing" xml:space="preserve"><value>Vloeiend maken resetten</value></data>
+  <data name="Pad_ResetAudioMirror" xml:space="preserve"><value>Audiospiegeling resetten</value></data>
 </root>

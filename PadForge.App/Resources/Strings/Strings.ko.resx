@@ -2332,4 +2332,10 @@
   <data name="MacroAction_PointerModeSet_Format" xml:space="preserve"><value>포인터 모드 설정: {0}</value></data>
   <data name="MacroAction_PointerModeSet_Tooltip" xml:space="preserve"><value>슬롯의 모든 IR 지원 리모컨의 Wii 포인터 모드를 아래에서 선택한 모드로 설정합니다.</value></data>
   <data name="Macro_PointerSetMode_Hint" xml:space="preserve"><value>이 동작이 적용할 포인터 모드를 선택하세요.</value></data>
+  <data name="Pad_ResetPointerModeCard" xml:space="preserve"><value>포인터 모드 재설정</value></data>
+  <data name="Pad_ResetPointerTuning" xml:space="preserve"><value>포인터 조정 재설정</value></data>
+  <data name="Pad_ResetSensorBarPos" xml:space="preserve"><value>센서 바 위치 재설정</value></data>
+  <data name="Pad_ResetSensorBarComp" xml:space="preserve"><value>수직 오프셋 재설정</value></data>
+  <data name="Pad_ResetIrSmoothing" xml:space="preserve"><value>부드럽게 재설정</value></data>
+  <data name="Pad_ResetAudioMirror" xml:space="preserve"><value>오디오 미러링 재설정</value></data>
 </root>

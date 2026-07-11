@@ -2346,4 +2346,10 @@
   <data name="MacroAction_PointerModeSet_Format" xml:space="preserve"><value>Set pointer mode: {0}</value></data>
   <data name="MacroAction_PointerModeSet_Tooltip" xml:space="preserve"><value>Sets the Wii pointer mode to the one selected below for every IR-capable remote on the slot.</value></data>
   <data name="Macro_PointerSetMode_Hint" xml:space="preserve"><value>Pick the pointer mode this action applies.</value></data>
+  <data name="Pad_ResetPointerModeCard" xml:space="preserve"><value>Reset Pointer Mode</value></data>
+  <data name="Pad_ResetPointerTuning" xml:space="preserve"><value>Reset Pointer Tuning</value></data>
+  <data name="Pad_ResetSensorBarPos" xml:space="preserve"><value>Reset Sensor Bar Position</value></data>
+  <data name="Pad_ResetSensorBarComp" xml:space="preserve"><value>Reset Vertical Offset</value></data>
+  <data name="Pad_ResetIrSmoothing" xml:space="preserve"><value>Reset Smoothing</value></data>
+  <data name="Pad_ResetAudioMirror" xml:space="preserve"><value>Reset Audio Mirror</value></data>
 </root>

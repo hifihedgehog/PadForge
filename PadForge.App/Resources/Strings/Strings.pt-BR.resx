@@ -2332,4 +2332,10 @@
   <data name="MacroAction_PointerModeSet_Format" xml:space="preserve"><value>Definir modo do ponteiro: {0}</value></data>
   <data name="MacroAction_PointerModeSet_Tooltip" xml:space="preserve"><value>Define o modo do ponteiro Wii para o selecionado abaixo em cada controle com IR do slot.</value></data>
   <data name="Macro_PointerSetMode_Hint" xml:space="preserve"><value>Escolha o modo de ponteiro que esta ação aplica.</value></data>
+  <data name="Pad_ResetPointerModeCard" xml:space="preserve"><value>Restaurar Modo do Ponteiro</value></data>
+  <data name="Pad_ResetPointerTuning" xml:space="preserve"><value>Restaurar Ajuste do Apontador</value></data>
+  <data name="Pad_ResetSensorBarPos" xml:space="preserve"><value>Restaurar Posição da Barra de Sensores</value></data>
+  <data name="Pad_ResetSensorBarComp" xml:space="preserve"><value>Restaurar Deslocamento Vertical</value></data>
+  <data name="Pad_ResetIrSmoothing" xml:space="preserve"><value>Restaurar Suavização</value></data>
+  <data name="Pad_ResetAudioMirror" xml:space="preserve"><value>Restaurar Espelhamento de Áudio</value></data>
 </root>

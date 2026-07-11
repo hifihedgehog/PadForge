@@ -657,11 +657,46 @@ namespace PadForge.Engine
         // one with an extension (Basic IR, 0x37). Both feed the same axes 6-9.
         private void ReadIrPointer(CustomInputState state)
         {
-            short d0x = SDL_GetJoystickAxis(Joystick, 6);
-            short d0y = SDL_GetJoystickAxis(Joystick, 7);
-            short d1x = SDL_GetJoystickAxis(Joystick, 8);
-            short d1y = SDL_GetJoystickAxis(Joystick, 9);
+            var (x, y, detected) = ComputeIrAim(
+                SDL_GetJoystickAxis(Joystick, 6),
+                SDL_GetJoystickAxis(Joystick, 7),
+                SDL_GetJoystickAxis(Joystick, 8),
+                SDL_GetJoystickAxis(Joystick, 9));
 
+            if (!detected)
+            {
+                state.Ir.Detected = false;
+                return;
+            }
+
+            // Pointer-tab tuning (sensor-bar offset, smoothing) is applied at
+            // the SLOT-scoped read (SourceCoercion.ReadTunedIrPointer), not
+            // here: this wrapper is per-device and one remote can feed several
+            // virtual controllers, each with its own Pointer-tab settings
+            // (issue #146 follow-up). state.Ir carries the raw screen-aligned
+            // aim only.
+            state.Ir.X = x;
+            state.Ir.Y = y;
+            state.Ir.Detected = true;
+        }
+
+        /// <summary>Screen-aligned aim from the two raw IR dot slots. The aim
+        /// exists ONLY when BOTH sensor-bar dots are visible: every proven
+        /// pointer reference computes the aim as the midpoint of a dot PAIR
+        /// and treats fewer than two dots as out of reach (Touchmote
+        /// ScreenPositionCalculator.cs:89-160, foundMidpoint requires a
+        /// Found i/j pair, !foundMidpoint returns OutOfReach; same scan in
+        /// Ryochan7-lightgun :207-315 and Suegrini-4IR :183-291, and
+        /// WiimoteLib-Trihy itself zeroes IRState.Midpoint unless sensors
+        /// 0 AND 1 are both Found, Wiimote.cs:663-672). A
+        /// single-dot fallback is NOT allowed: when one LED leaves the
+        /// camera view the midpoint would snap to the surviving dot, half a
+        /// dot-separation away, and a steady sweep would re-walk that span
+        /// of the screen (the #203 bench "double walk"). Shared with the
+        /// unit tests.</summary>
+        internal static (float X, float Y, bool Detected) ComputeIrAim(
+            short d0x, short d0y, short d1x, short d1y)
+        {
             // Before the first IR report arrives, SDL axes read their default 0,
             // which is indistinguishable from "dot at pixel (0,0)" per axis. All
             // four at exactly 0 means both dots on the same pixel, which is
@@ -669,19 +704,13 @@ namespace PadForge.Engine
             // "no report yet" rather than yanking the pointer to a corner on
             // connect (seen on first hardware contact, 2026-07-01 log).
             if (d0x == 0 && d0y == 0 && d1x == 0 && d1y == 0)
-            {
-                state.Ir.Detected = false;
-                return;
-            }
+                return (0f, 0f, false);
 
-            bool f0 = d0x >= 0 && d0y >= 0;
-            bool f1 = d1x >= 0 && d1y >= 0;
+            if (d0x < 0 || d0y < 0 || d1x < 0 || d1y < 0)
+                return (0f, 0f, false); // fewer than two dots: out of reach
 
-            float sx, sy;
-            if (f0 && f1) { sx = (d0x + d1x) * 0.5f; sy = (d0y + d1y) * 0.5f; }
-            else if (f0) { sx = d0x; sy = d0y; }
-            else if (f1) { sx = d1x; sy = d1y; }
-            else { state.Ir.Detected = false; return; } // no dot this frame; consumers gate on Detected
+            float sx = (d0x + d1x) * 0.5f;
+            float sy = (d0y + d1y) * 0.5f;
 
             // Camera frame is 1024x768. Normalize the dot midpoint to the [-1..+1]
             // stick range. X is mirrored, Y is NOT. Confirmed against the proven
@@ -695,16 +724,7 @@ namespace PadForge.Engine
             float ny = sy / 767.5f;
             float x = (0.5f - nx) * 2f;   // mirrored
             float y = (ny - 0.5f) * 2f;   // not flipped
-
-            // Pointer-tab tuning (sensor-bar offset, smoothing) is applied at
-            // the SLOT-scoped read (SourceCoercion.ReadTunedIrPointer), not
-            // here: this wrapper is per-device and one remote can feed several
-            // virtual controllers, each with its own Pointer-tab settings
-            // (issue #146 follow-up). state.Ir carries the raw screen-aligned
-            // aim only.
-            state.Ir.X = Math.Clamp(x, -1f, 1f);
-            state.Ir.Y = Math.Clamp(y, -1f, 1f);
-            state.Ir.Detected = true;
+            return (Math.Clamp(x, -1f, 1f), Math.Clamp(y, -1f, 1f), true);
         }
 
         /// <summary>

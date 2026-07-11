@@ -185,5 +185,50 @@ namespace PadForge.Tests
             a.PointerCycleModesCsv = "Mouse,FpsMouse";
             Assert.Equal(0, a.PointerCycleIndex);
         }
+
+        // ── IR aim: pair-only midpoint (the #203 bench "double walk" fix) ──
+
+        [Fact]
+        public void IrAim_Midpoint_Of_Both_Dots_Mirrored_X_Direct_Y()
+        {
+            // Dots at (200,300) and (400,400): midpoint (300,350).
+            var (x, y, det) = PadForge.Engine.SdlDeviceWrapper.ComputeIrAim(200, 300, 400, 400);
+            Assert.True(det);
+            Assert.Equal((0.5f - 300f / 1023.5f) * 2f, x, 4);
+            Assert.Equal((350f / 767.5f - 0.5f) * 2f, y, 4);
+        }
+
+        [Fact]
+        public void IrAim_Centered_Pair_Reads_Near_Zero()
+        {
+            var (x, y, det) = PadForge.Engine.SdlDeviceWrapper.ComputeIrAim(412, 384, 612, 384);
+            Assert.True(det);
+            Assert.Equal(0f, x, 2);
+            Assert.Equal(0f, y, 2);
+        }
+
+        [Theory]
+        [InlineData((short)300, (short)350, (short)-1, (short)-1)] // dot1 lost
+        [InlineData((short)-1, (short)-1, (short)300, (short)350)] // dot0 lost
+        [InlineData((short)300, (short)-1, (short)400, (short)400)] // dot0 half-lost
+        [InlineData((short)-1, (short)-1, (short)-1, (short)-1)]   // no dots
+        public void IrAim_Requires_Both_Dots(short d0x, short d0y, short d1x, short d1y)
+        {
+            // Every proven reference aims only from a dot PAIR and calls
+            // fewer dots OutOfReach (Touchmote ScreenPositionCalculator.cs
+            // :89-160, Ryochan7 :207-315, Suegrini :183-291). The old
+            // single-dot fallback snapped the aim from the midpoint to the
+            // surviving raw dot, half a separation away, making a steady
+            // sweep re-walk part of the screen (owner bench, 2026-07-11).
+            var (_, _, det) = PadForge.Engine.SdlDeviceWrapper.ComputeIrAim(d0x, d0y, d1x, d1y);
+            Assert.False(det);
+        }
+
+        [Fact]
+        public void IrAim_All_Zero_Means_No_Report_Yet()
+        {
+            var (_, _, det) = PadForge.Engine.SdlDeviceWrapper.ComputeIrAim(0, 0, 0, 0);
+            Assert.False(det);
+        }
     }
 }

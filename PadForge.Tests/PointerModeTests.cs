@@ -230,5 +230,91 @@ namespace PadForge.Tests
             var (_, _, det) = PadForge.Engine.SdlDeviceWrapper.ComputeIrAim(0, 0, 0, 0);
             Assert.False(det);
         }
+
+        // ── Border modes: sight loss freezes, never projects to the border ──
+
+        [Fact]
+        public void Border_Sight_Loss_After_Tracked_Frame_Drives_Nothing()
+        {
+            // The Touchmote lastPos idiom (ScreenPositionCalculator.cs:153-160)
+            // that plain Mouse mode already ships: when tracking ends, the
+            // cursor freezes at its last driven position. The first cut
+            // projected the remembered aim out to the region border instead
+            // (Ryochan7 lightbar MouseHandler idiom), which snapped the cursor
+            // border-ward whenever tracking ended INSIDE the region and
+            // oscillated on boundary dot flicker (owner bench, 2026-07-11).
+            //
+            // The seeded off-center tracked frame is what makes this test
+            // DISCRIMINATE: the projection code remembered that frame's aim
+            // and re-drove the cursor to the border on the lost frame
+            // (asserting MouseAbsValid true), while the freeze drives
+            // nothing. An unseeded variant passes under BOTH designs (the
+            // old code's never-aimed else-return also drove nothing), which
+            // adversarial review proved empirically by running the seeded
+            // shape against the reverted code (2026-07-11).
+            var prev = SourceCoercion.IrPointerModeProvider;
+            try
+            {
+                SourceCoercion.IrPointerModeProvider = (dev, slot) => (2, 35f);
+
+                // Precondition: without a screen the border branch is inert
+                // under both designs and the assertion below is vacuous.
+                Assert.True(PadForge.Services.CursorControlService.TryGetPrimarySize(out int w, out int h));
+                Assert.True(w > 0 && h > 0);
+
+                // Seed one off-center tracked frame.
+                var raw = new PadForge.Engine.KbmRawState
+                {
+                    MouseAbsValid = true,
+                    MouseAbsX = 0.4f,
+                    MouseAbsY = 0.2f,
+                };
+                InputManager.ApplyPointerMode(ref raw, "test-dev", 0, true, true, true);
+                Assert.True(raw.MouseAbsValid);
+
+                // Sight lost on the next frame: nothing may drive.
+                raw = new PadForge.Engine.KbmRawState
+                {
+                    MouseAbsValid = false,
+                    MouseDeltaX = 12,
+                    MouseDeltaY = -7,
+                };
+                InputManager.ApplyPointerMode(ref raw, "test-dev", 0, true, true, true);
+                Assert.False(raw.MouseAbsValid); // no drive: cursor holds
+                Assert.Equal(12, raw.MouseDeltaX); // other lanes untouched
+                Assert.Equal(-7, raw.MouseDeltaY);
+            }
+            finally
+            {
+                SourceCoercion.IrPointerModeProvider = prev;
+            }
+        }
+
+        [Fact]
+        public void Border_Center_Aim_Stays_Centered_While_Tracked()
+        {
+            // The region map is centered, so a dead-center aim must come out
+            // dead-center on any screen aspect. Environment-independent
+            // anchor for the tracked path.
+            var prev = SourceCoercion.IrPointerModeProvider;
+            try
+            {
+                SourceCoercion.IrPointerModeProvider = (dev, slot) => (2, 35f);
+                var raw = new PadForge.Engine.KbmRawState
+                {
+                    MouseAbsValid = true,
+                    MouseAbsX = 0f,
+                    MouseAbsY = 0f,
+                };
+                InputManager.ApplyPointerMode(ref raw, "test-dev", 0, true, true, true);
+                Assert.True(raw.MouseAbsValid);
+                Assert.Equal(0f, raw.MouseAbsX, 3);
+                Assert.Equal(0f, raw.MouseAbsY, 3);
+            }
+            finally
+            {
+                SourceCoercion.IrPointerModeProvider = prev;
+            }
+        }
     }
 }

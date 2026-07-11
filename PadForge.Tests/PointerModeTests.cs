@@ -165,17 +165,55 @@ namespace PadForge.Tests
         }
 
         [Fact]
-        public void PointerModeCycle_Sits_At_The_Enum_Tail()
+        public void PointerMode_Actions_Sit_At_The_Enum_Tail()
         {
             // The macro clipboard serializes MacroActionType numerically, so
             // the enum is APPEND-ONLY: a mid-enum insertion silently retypes
             // every previously copied macro. Caught by adversarial review
-            // (2026-07-11) after the first cut inserted it beside
-            // LightbarModeCycle.
+            // (2026-07-11) after the first cut inserted PointerModeCycle
+            // beside LightbarModeCycle. PointerModeSet appended later the
+            // same day; the cycle member's value must never move again.
             var values = (MacroActionType[])System.Enum.GetValues(typeof(MacroActionType));
             int max = 0;
             foreach (var v in values) max = System.Math.Max(max, (int)v);
-            Assert.Equal(max, (int)MacroActionType.PointerModeCycle);
+            Assert.Equal(max, (int)MacroActionType.PointerModeSet);
+            Assert.Equal(max - 1, (int)MacroActionType.PointerModeCycle);
+        }
+
+        [Theory]
+        [InlineData("FpsMouse", "FpsMouse")]
+        [InlineData("mouse169", "Mouse169")] // case-insensitive
+        [InlineData("Bogus", "Mouse")]       // unknown normalizes to Mouse
+        [InlineData("", "Mouse")]
+        public void SetMode_Normalizes_To_Known_Names(string stored, string expected)
+        {
+            // PointerModeSet writes into PadSetting.PointerMode, so a
+            // hand-edited XML value must never inject garbage.
+            var a = new MacroAction { PointerSetMode = stored };
+            Assert.Equal(expected, a.NormalizedPointerSetMode());
+        }
+
+        [Fact]
+        public void SetMode_Rides_The_Macro_Dto_RoundTrip()
+        {
+            // The MacroAction VM never serializes directly: settings XML,
+            // the macro clipboard, AND the action Duplicate command all
+            // funnel through the ActionData DTO. A field missing from the
+            // DTO silently resets on every reload (the dirty-gate
+            // persistence trap; adversarial review caught exactly that in
+            // the first cut of this action, 2026-07-11).
+            var m = new PadForge.ViewModels.MacroItem { Name = "SetMode" };
+            m.Actions.Add(new MacroAction
+            {
+                Type = MacroActionType.PointerModeSet,
+                PointerSetMode = "FpsMouse",
+            });
+            var data = PadForge.Services.SettingsService.BuildMacroDataForMacro(m, 0);
+            var clone = PadForge.Services.SettingsService.LoadMacroFromData(
+                data, PadForge.Engine.VirtualControllerType.Xbox, null);
+
+            Assert.Equal(MacroActionType.PointerModeSet, clone.Actions[0].Type);
+            Assert.Equal("FpsMouse", clone.Actions[0].PointerSetMode);
         }
 
         [Fact]

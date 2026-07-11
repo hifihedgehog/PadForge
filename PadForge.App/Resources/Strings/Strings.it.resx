@@ -2350,4 +2350,8 @@
   <data name="Mapping_MouseGestureDown" xml:space="preserve"><value>Giù</value></data>
   <data name="Mapping_MouseGestureClick" xml:space="preserve"><value>Clic</value></data>
   <data name="Mapping_MouseGesture_Format" xml:space="preserve"><value>Gesto mouse: {0} + {1}</value></data>
+  <data name="MacroAction_Type_PointerModeSet" xml:space="preserve"><value>Imposta modalità puntatore</value></data>
+  <data name="MacroAction_PointerModeSet_Format" xml:space="preserve"><value>Imposta modalità puntatore: {0}</value></data>
+  <data name="MacroAction_PointerModeSet_Tooltip" xml:space="preserve"><value>Imposta la modalità puntatore Wii su quella selezionata sotto per ogni telecomando IR dello slot.</value></data>
+  <data name="Macro_PointerSetMode_Hint" xml:space="preserve"><value>Scegli la modalità puntatore applicata da questa azione.</value></data>
 </root>

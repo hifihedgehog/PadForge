@@ -2342,4 +2342,8 @@
   <data name="Mapping_MouseGestureDown" xml:space="preserve"><value>Down</value></data>
   <data name="Mapping_MouseGestureClick" xml:space="preserve"><value>Click</value></data>
   <data name="Mapping_MouseGesture_Format" xml:space="preserve"><value>Mouse Gesture: {0} + {1}</value></data>
+  <data name="MacroAction_Type_PointerModeSet" xml:space="preserve"><value>Set Pointer Mode</value></data>
+  <data name="MacroAction_PointerModeSet_Format" xml:space="preserve"><value>Set pointer mode: {0}</value></data>
+  <data name="MacroAction_PointerModeSet_Tooltip" xml:space="preserve"><value>Sets the Wii pointer mode to the one selected below for every IR-capable remote on the slot.</value></data>
+  <data name="Macro_PointerSetMode_Hint" xml:space="preserve"><value>Pick the pointer mode this action applies.</value></data>
 </root>

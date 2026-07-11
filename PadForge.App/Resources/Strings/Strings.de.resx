@@ -2328,4 +2328,8 @@
   <data name="Mapping_MouseGestureDown" xml:space="preserve"><value>Runter</value></data>
   <data name="Mapping_MouseGestureClick" xml:space="preserve"><value>Klick</value></data>
   <data name="Mapping_MouseGesture_Format" xml:space="preserve"><value>Mausgeste: {0} + {1}</value></data>
+  <data name="MacroAction_Type_PointerModeSet" xml:space="preserve"><value>Zeigermodus festlegen</value></data>
+  <data name="MacroAction_PointerModeSet_Format" xml:space="preserve"><value>Zeigermodus festlegen: {0}</value></data>
+  <data name="MacroAction_PointerModeSet_Tooltip" xml:space="preserve"><value>Legt den Wii-Zeigermodus für jede IR-fähige Remote im Slot auf den unten gewählten Modus fest.</value></data>
+  <data name="Macro_PointerSetMode_Hint" xml:space="preserve"><value>Wähle den Zeigermodus, den diese Aktion anwendet.</value></data>
 </root>

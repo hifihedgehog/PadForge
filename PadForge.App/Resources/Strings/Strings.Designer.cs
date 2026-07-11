@@ -1662,6 +1662,10 @@ public class Strings : INotifyPropertyChanged
     public string MacroAction_PointerModeCycle_Format => Get("MacroAction_PointerModeCycle_Format");
     public string MacroAction_PointerModeCycle_Tooltip => Get("MacroAction_PointerModeCycle_Tooltip");
     public string Macro_PointerCycleModes_Hint => Get("Macro_PointerCycleModes_Hint");
+    public string MacroAction_Type_PointerModeSet => Get("MacroAction_Type_PointerModeSet");
+    public string MacroAction_PointerModeSet_Format => Get("MacroAction_PointerModeSet_Format");
+    public string MacroAction_PointerModeSet_Tooltip => Get("MacroAction_PointerModeSet_Tooltip");
+    public string Macro_PointerSetMode_Hint => Get("Macro_PointerSetMode_Hint");
     public string Pad_Audio_Header => Get("Pad_Audio_Header");
     public string Pad_Audio_Subtitle => Get("Pad_Audio_Subtitle");
     public string Pad_Audio_Output_Header => Get("Pad_Audio_Output_Header");

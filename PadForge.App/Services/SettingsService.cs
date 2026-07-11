@@ -2483,6 +2483,7 @@ namespace PadForge.Services
                 LightbarTargetMode = ad.LightbarTargetMode,
                 LightbarCycleModesCsv = ad.LightbarCycleModesCsv,
                 PointerCycleModesCsv = ad.PointerCycleModesCsv,
+                PointerSetMode = ad.PointerSetMode ?? "Mouse",
                 SoundFilePath = ad.SoundFilePath ?? string.Empty,
                 SoundVolume = ad.SoundVolume > 0 ? ad.SoundVolume : 100,
                 SoundLoop = ad.SoundLoop,
@@ -3380,6 +3381,7 @@ namespace PadForge.Services
                 LightbarTargetMode = a.LightbarTargetMode,
                 LightbarCycleModesCsv = a.LightbarCycleModesCsv,
                 PointerCycleModesCsv = a.PointerCycleModesCsv,
+                PointerSetMode = a.PointerSetMode,
                 SoundFilePath = string.IsNullOrEmpty(a.SoundFilePath) ? null : a.SoundFilePath,
                 SoundVolume = a.SoundVolume,
                 SoundLoop = a.SoundLoop,
@@ -4719,6 +4721,8 @@ namespace PadForge.Services
         /// <summary>CSV of LightbarMode int values for LightbarModeCycle.</summary>
         [XmlElement] public string LightbarCycleModesCsv { get; set; } = "1,2,3,4,11,12,13";
         [XmlElement] public string PointerCycleModesCsv { get; set; } = "Mouse,FpsMouse,Mouse43,Mouse169";
+        /// <summary>Target mode name for PointerModeSet (issue #203 follow-up).</summary>
+        [XmlElement] public string PointerSetMode { get; set; } = "Mouse";
 
         /// <summary>Sound file path for PlaySound (issue #83). Null when unset.</summary>
         [XmlElement]

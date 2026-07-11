@@ -2328,4 +2328,8 @@
   <data name="Mapping_MouseGestureDown" xml:space="preserve"><value>Bas</value></data>
   <data name="Mapping_MouseGestureClick" xml:space="preserve"><value>Clic</value></data>
   <data name="Mapping_MouseGesture_Format" xml:space="preserve"><value>Geste souris : {0} + {1}</value></data>
+  <data name="MacroAction_Type_PointerModeSet" xml:space="preserve"><value>Définir le mode du pointeur</value></data>
+  <data name="MacroAction_PointerModeSet_Format" xml:space="preserve"><value>Définir le mode du pointeur : {0}</value></data>
+  <data name="MacroAction_PointerModeSet_Tooltip" xml:space="preserve"><value>Définit le mode du pointeur Wii sur celui sélectionné ci-dessous pour chaque télécommande IR du slot.</value></data>
+  <data name="Macro_PointerSetMode_Hint" xml:space="preserve"><value>Choisissez le mode de pointeur que cette action applique.</value></data>
 </root>

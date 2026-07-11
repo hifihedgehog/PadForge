@@ -1885,6 +1885,7 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(IsLightbarModeSetType));
                     OnPropertyChanged(nameof(IsLightbarModeCycleType));
                     OnPropertyChanged(nameof(IsPointerModeCycleType));
+                    OnPropertyChanged(nameof(IsPointerModeSetType));
                     OnPropertyChanged(nameof(IsAnyLightbarType));
                     OnPropertyChanged(nameof(IsLightbarReactiveHold));
                     OnPropertyChanged(nameof(IsLightbarStickyHold));
@@ -2098,6 +2099,10 @@ namespace PadForge.ViewModels
         /// <summary>True when Type is PointerModeCycle (issue #203).</summary>
         [System.Xml.Serialization.XmlIgnore]
         public bool IsPointerModeCycleType => _type == MacroActionType.PointerModeCycle;
+
+        /// <summary>True when Type is PointerModeSet (issue #203 follow-up).</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool IsPointerModeSetType => _type == MacroActionType.PointerModeSet;
 
         /// <summary>True when Type is any of the lightbar-related action
         /// types — drives the macro editor's grouping into a single
@@ -3436,6 +3441,33 @@ namespace PadForge.ViewModels
             set => _pointerCycleIndex = value;
         }
 
+        // Target mode for PointerModeSet (issue #203 follow-up), the
+        // pointer sibling of LightbarTargetMode. A mode NAME like the
+        // cycle CSV, so the settings XML stays readable.
+        private string _pointerSetMode = "Mouse";
+        /// <summary>The <c>PadSetting.PointerMode</c> name PointerModeSet
+        /// applies. Unknown names normalize to Mouse at execution.</summary>
+        public string PointerSetMode
+        {
+            get => _pointerSetMode;
+            set
+            {
+                if (SetProperty(ref _pointerSetMode, value ?? "Mouse"))
+                    OnPropertyChanged(nameof(DisplayText));
+            }
+        }
+
+        /// <summary>Resolves <see cref="PointerSetMode"/> to a recognized
+        /// mode name, defaulting to Mouse for anything unknown, so a hand-
+        /// edited XML value can never write garbage into PadSetting.</summary>
+        internal string NormalizedPointerSetMode()
+        {
+            foreach (var known in PointerModeNames)
+                if (string.Equals(_pointerSetMode, known, StringComparison.OrdinalIgnoreCase))
+                    return known;
+            return "Mouse";
+        }
+
         private static readonly string[] PointerModeNames =
             { "Mouse", "FpsMouse", "Mouse43", "Mouse169" };
 
@@ -3621,6 +3653,9 @@ namespace PadForge.ViewModels
                     MacroActionType.PointerModeCycle => string.Format(
                         Strings.Instance.MacroAction_PointerModeCycle_Format,
                         CountSelectedPointerCycleModes()),
+                    MacroActionType.PointerModeSet => string.Format(
+                        Strings.Instance.MacroAction_PointerModeSet_Format,
+                        PointerModeDisplayName(NormalizedPointerSetMode())),
                     MacroActionType.Rumble => FormatRumbleSummary(),
                     MacroActionType.RumbleStop => Strings.Instance.MacroAction_RumbleStop,
                     MacroActionType.RumbleTrigger => FormatRumbleTriggerSummary(),
@@ -4128,7 +4163,13 @@ namespace PadForge.ViewModels
         /// the slot. Each fire advances to the next checked mode. Cycle
         /// position is per-action and volatile, resetting on app
         /// restart. At the tail per the APPEND-ONLY rule above.</summary>
-        PointerModeCycle
+        PointerModeCycle,
+
+        /// <summary>Sets the Wii pointer mode (issue #203 follow-up) to one
+        /// fixed mode for every IR-capable device on the slot, the direct
+        /// sibling of <see cref="LightbarModeSet"/> beside its cycle. At
+        /// the tail per the APPEND-ONLY rule above.</summary>
+        PointerModeSet
     }
 
     /// <summary>Target selector for <see cref="MacroActionType.DisconnectController"/>

@@ -740,11 +740,13 @@ namespace PadForge.Common.Input
         private long _ds3PlayerNumberTick;
 
         /// <summary>
-        /// Player LED idle floor for the bridged DS3 (#191 parity): the lowest
-        /// virtual-controller slot the pad feeds picks its lit LED, wrapping past
-        /// 4 like SDL's PS3 driver. Unmapped keeps LED 1. Rate-limited to twice a
-        /// second; SetPlayerNumber itself is change-detected, so steady state costs
-        /// two short lock walks and no device I/O.
+        /// Player LED idle floor for the bridged DS3 (#191 parity): of the
+        /// virtual controllers the pad feeds, the smallest displayed player
+        /// number picks its lit LED (SlotOrders.GetIdentityPlayerNumber),
+        /// wrapping past 4 like SDL's PS3 driver. Unmapped keeps LED 1.
+        /// Rate-limited to twice a second; SetPlayerNumber itself is
+        /// change-detected, so steady state costs two short lock walks and
+        /// no device I/O.
         /// </summary>
         private void UpdateDs3PlayerNumber()
         {
@@ -774,18 +776,10 @@ namespace PadForge.Common.Input
             }
             if (guid == Guid.Empty) { svc.SetPlayerNumber(0); return; }
 
-            int minPad = int.MaxValue;
-            lock (settings.SyncRoot)
-            {
-                foreach (var us in settings.Items)
-                {
-                    if (us == null || us.InstanceGuid != guid) continue;
-                    if (us.MapTo >= 0 && us.MapTo < minPad) minPad = us.MapTo;
-                }
-            }
-            svc.SetPlayerNumber(minPad == int.MaxValue
-                ? 0
-                : SettingsManager.SlotOrders.GetGlobalSlotNumber(minPad));
+            // Identity precedence: the shared fold over every slot the
+            // pad feeds (smallest displayed number wins), same winner
+            // every other identity writer computes.
+            svc.SetPlayerNumber(SettingsManager.SlotOrders.GetIdentityPlayerNumber(guid));
         }
 
         /// <summary>

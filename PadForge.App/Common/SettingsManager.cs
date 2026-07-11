@@ -156,6 +156,40 @@ namespace PadForge.Common.Input
                 }
             }
 
+            /// <summary>Player-identity precedence for a device feeding
+            /// more than one virtual controller: the controller with the
+            /// smallest global (displayed) player number owns the device's
+            /// player-identity outputs (Wii/Switch player LEDs, DualSense
+            /// pips, Sony player lightbar color, DS3 LED).
+            /// Without a single winner, each slot's identity writer pushes
+            /// its own number to the shared device and the LEDs flicker
+            /// between players. Returns the winning 1-based display number,
+            /// or 0 when the device isn't assigned to any visible slot.
+            /// Mirrors the DualShock 3 idle floor's lowest-slot fold
+            /// (InputManager.UpdateDs3PlayerNumber), generalized to compare
+            /// DISPLAY numbers so group ordering (Xbox before KbM, user
+            /// reorders) decides precedence, matching what the user sees.
+            /// Takes UserSettings.SyncRoot then the leaf OrderSync; callers
+            /// holding UserDevices.SyncRoot stay inside the documented
+            /// devices-before-settings lock order.</summary>
+            public static int GetIdentityPlayerNumber(Guid deviceGuid)
+            {
+                var settings = UserSettings;
+                if (settings == null || deviceGuid == Guid.Empty) return 0;
+                int best = 0;
+                lock (settings.SyncRoot)
+                {
+                    foreach (var us in settings.Items)
+                    {
+                        if (us == null || us.InstanceGuid != deviceGuid || us.MapTo < 0)
+                            continue;
+                        int n = GetGlobalSlotNumber(us.MapTo);
+                        if (n > 0 && (best == 0 || n < best)) best = n;
+                    }
+                }
+                return best;
+            }
+
             /// <summary>Copy of a group's order list, taken under the
             /// lock. The polling thread must read through this (a live
             /// list can be mutated mid-walk by the UI thread).</summary>

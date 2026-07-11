@@ -2061,7 +2061,7 @@
   <data name="Pad_Pointer_Compensation" xml:space="preserve"><value>Vertical Offset</value></data>
   <data name="Pad_Pointer_Smoothing" xml:space="preserve"><value>Smoothing</value></data>
   <data name="Pad_Pointer_ModeTitle" xml:space="preserve"><value>Pointer Mode</value></data>
-  <data name="Pad_Pointer_Mode_Tooltip" xml:space="preserve"><value>How the aim drives the OS cursor. Mouse points absolutely. FPS Mouse turns the offset from screen center into smooth cursor velocity. The border modes confine the cursor to a 4:3 or 16:9 region and pin it to the border when you aim outside or away.</value></data>
+  <data name="Pad_Pointer_Mode_Tooltip" xml:space="preserve"><value>How the aim drives the OS cursor. Mouse points absolutely. FPS Mouse turns the offset from screen center into smooth cursor velocity. The border modes confine the cursor to a 4:3 or 16:9 region and pin it to the border while you aim outside it.</value></data>
   <data name="Pad_Pointer_Mode_Mouse" xml:space="preserve"><value>Mouse</value></data>
   <data name="Pad_Pointer_Mode_FpsMouse" xml:space="preserve"><value>FPS Mouse</value></data>
   <data name="Pad_Pointer_Mode_43" xml:space="preserve"><value>4:3 Border</value></data>

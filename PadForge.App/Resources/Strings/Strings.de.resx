@@ -1843,7 +1843,7 @@
   <data name="Pad_Pointer_Compensation" xml:space="preserve"><value>Vertikaler Versatz</value></data>
   <data name="Pad_Pointer_Smoothing" xml:space="preserve"><value>Glättung</value></data>
   <data name="Pad_Pointer_ModeTitle" xml:space="preserve"><value>Zeigermodus</value></data>
-  <data name="Pad_Pointer_Mode_Tooltip" xml:space="preserve"><value>Wie das Zielen den Mauszeiger steuert. Maus zeigt absolut. FPS-Maus macht aus dem Versatz zur Bildschirmmitte eine gleichmäßige Zeigergeschwindigkeit. Die Rahmenmodi beschränken den Zeiger auf einen 4:3- oder 16:9-Bereich und heften ihn an den Rand, wenn daneben oder weg gezielt wird.</value></data>
+  <data name="Pad_Pointer_Mode_Tooltip" xml:space="preserve"><value>Wie das Zielen den Mauszeiger steuert. Maus zeigt absolut. FPS-Maus macht aus dem Versatz zur Bildschirmmitte eine gleichmäßige Zeigergeschwindigkeit. Die Rahmenmodi beschränken den Zeiger auf einen 4:3- oder 16:9-Bereich und heften ihn an den Rand, solange daneben gezielt wird.</value></data>
   <data name="Pad_Pointer_Mode_Mouse" xml:space="preserve"><value>Maus</value></data>
   <data name="Pad_Pointer_Mode_FpsMouse" xml:space="preserve"><value>FPS-Maus</value></data>
   <data name="Pad_Pointer_Mode_43" xml:space="preserve"><value>4:3-Rahmen</value></data>

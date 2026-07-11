@@ -645,6 +645,15 @@ namespace PadForge.Common.Input
                 // Allow screensaver/sleep even while SDL video is active.
                 SDL_SetHint(SDL_HINT_VIDEO_ALLOW_SCREENSAVER, "1");
 
+                // Ground-truth diagnostics for the recurring device-freeze
+                // investigation (#210 follow-up): capture the SDL drivers'
+                // own debug narration (the Wii M+ state machine logs its
+                // decisions there) plus the poll-loop stall watchdog, into
+                // diag.log beside the exe. Installed before SDL_Init so
+                // init-time messages land too.
+                Engine.SdlDiagLog.Install(System.IO.Path.Combine(
+                    AppDomain.CurrentDomain.BaseDirectory, "diag.log"));
+
                 // SDL3: SDL_Init returns bool (true = success), and
                 // SDL_INIT_GAMECONTROLLER is renamed to SDL_INIT_GAMEPAD.
                 // SDL_INIT_VIDEO is required for keyboard/mouse enumeration.
@@ -857,8 +866,18 @@ namespace PadForge.Common.Input
             // controller only produces joysticks on the init thread (a re-scan on
             // the polling thread yields zero). This is what makes a hot-plugged
             // controller (e.g. a DualSense) appear in-process without a restart.
+            // Stall watchdog (#210 follow-up): this UI-thread call enters the
+            // same hidapi UpdateDevice paths as the poll loop, so a driver
+            // stall here freezes the UI and must be attributable too.
+            long tsPump = Stopwatch.GetTimestamp();
             SDL_PumpEvents();
+            long tsUpd = Stopwatch.GetTimestamp();
             SDL_UpdateJoysticks();
+            long tsEnd = Stopwatch.GetTimestamp();
+            long pumpMs = (tsUpd - tsPump) * 1000 / Stopwatch.Frequency;
+            long updMs = (tsEnd - tsUpd) * 1000 / Stopwatch.Frequency;
+            if (pumpMs >= 25 || updMs >= 25)
+                Engine.SdlDiagLog.WriteLine($"STALL uipump pump={pumpMs}ms upd={updMs}ms");
         }
 
         /// <summary>
@@ -1096,7 +1115,11 @@ namespace PadForge.Common.Input
                     {
                         try
                         {
+                            long tsIdleSdl = Stopwatch.GetTimestamp();
                             SDL_UpdateJoysticks();
+                            long idleSdlMs = (Stopwatch.GetTimestamp() - tsIdleSdl) * 1000 / Stopwatch.Frequency;
+                            if (idleSdlMs >= 25)
+                                Engine.SdlDiagLog.WriteLine($"STALL idle sdl={idleSdlMs}ms");
 
                             // Keep device enumeration at a reduced rate so the
                             // Devices page still discovers newly connected controllers.
@@ -1140,7 +1163,13 @@ namespace PadForge.Common.Input
 
                     try
                     {
+                        // Stall watchdog (#210 follow-up): attribute any poll
+                        // hiccup to the segment that ate it. SDL_UpdateJoysticks
+                        // is where driver-side sync I/O would stall; the
+                        // enumeration sweep is where device opens would.
+                        long tsSdl = Stopwatch.GetTimestamp();
                         SDL_UpdateJoysticks();
+                        long sdlMs = (Stopwatch.GetTimestamp() - tsSdl) * 1000 / Stopwatch.Frequency;
 
                         // Advance the evaluator's poll-frame gate exactly once
                         // per cycle: SourceCoercion's smoothing/delta caches
@@ -1149,11 +1178,14 @@ namespace PadForge.Common.Input
                         // per-device-per-slot, not per-row).
                         Engine.Common.Mapping.SourceCoercion.BeginPollFrame();
 
+                        long enumMs = 0;
                         if (firstCycle || _enumerationTimer.ElapsedMilliseconds >= EnumerationIntervalMs)
                         {
                             firstCycle = false;
                             _enumerationTimer.Restart();
+                            long tsEnum = Stopwatch.GetTimestamp();
                             UpdateDevices();
+                            enumMs = (Stopwatch.GetTimestamp() - tsEnum) * 1000 / Stopwatch.Frequency;
                         }
 
                         UpdateInputStates();
@@ -1168,6 +1200,12 @@ namespace PadForge.Common.Input
                         UpdateVirtualDevices();
                         RetrieveOutputStates();
                         UpdateDs3PlayerNumber();
+
+                        // Stall watchdog report: only outliers write anything.
+                        long cycleMs = cycleTimer.ElapsedMilliseconds;
+                        if (sdlMs >= 25 || enumMs >= 25 || cycleMs >= 50)
+                            Engine.SdlDiagLog.WriteLine(
+                                $"STALL poll sdl={sdlMs}ms enum={enumMs}ms cycle={cycleMs}ms");
 
                         // Frequency measurement.
                         _frequencyCounter++;

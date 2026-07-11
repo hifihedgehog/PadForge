@@ -4564,6 +4564,9 @@ namespace PadForge.ViewModels
                 m.ExtraSources.Clear();
                 m.CombineMode = string.Empty;
                 m.CombineExpression = string.Empty;
+                m.TrimDeadzone = 25;
+                m.TrimRate = 100;
+                m.TrimResetOnRelease = true;
                 m.SyncSelectedInputFromDescriptor();
             }
         }

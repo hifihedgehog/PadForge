@@ -71,6 +71,7 @@ namespace PadForge.ViewModels
             OnPropertyChanged(nameof(VariableCount));
             OnPropertyChanged(nameof(ShouldShowEmptyDirectionHint));
             OnPropertyChanged(nameof(ShouldShowCustomExpression));
+            OnPropertyChanged(nameof(ShouldShowTrimSettings));
             // Source count changed → custom-expression warning state
             // may have flipped.
             OnPropertyChanged(nameof(IsCombineExpressionWarning));
@@ -1402,6 +1403,8 @@ namespace PadForge.ViewModels
                 {
                     OnPropertyChanged(nameof(IsCustomCombine));
                     OnPropertyChanged(nameof(ShouldShowCustomExpression));
+                    OnPropertyChanged(nameof(IsStickTrimCombine));
+                    OnPropertyChanged(nameof(ShouldShowTrimSettings));
                     OnPropertyChanged(nameof(IsTrivialDirect));
                 }
             }
@@ -1441,6 +1444,52 @@ namespace PadForge.ViewModels
         /// source (e.g. the user removed the last extra source).</summary>
         public bool ShouldShowCustomExpression => IsMultiSource && IsCustomCombine;
 
+        public bool IsStickTrimCombine => string.Equals(_combineMode, "StickTrim", StringComparison.Ordinal);
+
+        /// <summary>True when this row targets a trigger-class output,
+        /// the only class the engine's StickTrim combine intercepts
+        /// (gamepad triggers + Extended axes, where trigger-configured
+        /// slots honor it). Gates both the dropdown entry and the trim
+        /// strip so the mode is never offered where it would silently
+        /// degrade to the OR/MaxAbs default (a "trim stick" on a button
+        /// row would just OR into the press).</summary>
+        public bool IsTriggerTarget =>
+            string.Equals(TargetSettingName, "LeftTrigger", StringComparison.Ordinal)
+         || string.Equals(TargetSettingName, "RightTrigger", StringComparison.Ordinal)
+         || (TargetSettingName?.StartsWith("ExtendedAxis", StringComparison.Ordinal) ?? false);
+
+        /// <summary>Gates the Stick Trim settings strip (#155), same
+        /// pattern as <see cref="ShouldShowCustomExpression"/> plus the
+        /// trigger-target gate.</summary>
+        public bool ShouldShowTrimSettings => IsMultiSource && IsStickTrimCombine && IsTriggerTarget;
+
+        private int _trimDeadzone = 25;
+        /// <summary>Stick-trim (#155): trim-axis deflection below this
+        /// percentage is ignored (steering wobble guard).</summary>
+        public int TrimDeadzone
+        {
+            get => _trimDeadzone;
+            set => SetProperty(ref _trimDeadzone, System.Math.Clamp(value, 0, 95));
+        }
+
+        private int _trimRate = 100;
+        /// <summary>Stick-trim (#155): full-deflection adjust speed in
+        /// percent of the trigger range per second.</summary>
+        public int TrimRate
+        {
+            get => _trimRate;
+            set => SetProperty(ref _trimRate, System.Math.Clamp(value, 1, 1000));
+        }
+
+        private bool _trimResetOnRelease = true;
+        /// <summary>Stick-trim (#155): releasing the gate snaps the
+        /// stored level back to 100% when true; false keeps it.</summary>
+        public bool TrimResetOnRelease
+        {
+            get => _trimResetOnRelease;
+            set => SetProperty(ref _trimResetOnRelease, value);
+        }
+
         /// <summary>Friendly entry for the Combine dropdown. Pairs the
         /// engine's mode name (Value, e.g. "MaxAbs") with a layman
         /// label and one-line description so non-STEM users aren't
@@ -1459,10 +1508,33 @@ namespace PadForge.ViewModels
         // burned visible CPU because virtualization + per-row binding
         // re-evaluation kept refetching this list.
         private static CombineModeOption[] _availableCombineModesCache;
+        private static CombineModeOption[] _availableCombineModesNoTrimCache;
         private static int _availableCombineModesCacheCulture;
 
+        /// <summary>Trigger-target rows see the full list; every other
+        /// row gets the list without StickTrim (#155), the engine only
+        /// intercepts that mode at the trigger sites.</summary>
         public System.Collections.Generic.IReadOnlyList<CombineModeOption> AvailableCombineModes
-            => GetAvailableCombineModes();
+            => IsTriggerTarget
+                ? GetAvailableCombineModes()
+                : GetAvailableCombineModesWithoutTrim();
+
+        // Keyed by reference identity of the full array it was derived
+        // from: a culture change swaps the full cache first (inside
+        // GetAvailableCombineModes), so a culture-stamp check here would
+        // pass while still holding the old culture's strings.
+        private static CombineModeOption[] _noTrimDerivedFrom;
+
+        private static CombineModeOption[] GetAvailableCombineModesWithoutTrim()
+        {
+            var full = GetAvailableCombineModes();
+            if (ReferenceEquals(_noTrimDerivedFrom, full) && _availableCombineModesNoTrimCache != null)
+                return _availableCombineModesNoTrimCache;
+            var filtered = System.Array.FindAll(full, o => o.Value != "StickTrim");
+            _availableCombineModesNoTrimCache = filtered;
+            _noTrimDerivedFrom = full;
+            return filtered;
+        }
 
         private static CombineModeOption[] GetAvailableCombineModes()
         {
@@ -1481,6 +1553,7 @@ namespace PadForge.ViewModels
                 new CombineModeOption { Value = "AND",     Name = s.Pad_Combine_AND_Name,     Description = s.Pad_Combine_AND_Description },
                 new CombineModeOption { Value = "XOR",     Name = s.Pad_Combine_XOR_Name,     Description = s.Pad_Combine_XOR_Description },
                 new CombineModeOption { Value = "Custom",  Name = s.Pad_Combine_Custom_Name,  Description = s.Pad_Combine_Custom_Description },
+                new CombineModeOption { Value = "StickTrim", Name = s.Pad_Combine_StickTrim_Name, Description = s.Pad_Combine_StickTrim_Description },
             };
             _availableCombineModesCache = arr;
             _availableCombineModesCacheCulture = currentCulture;

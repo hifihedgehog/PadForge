@@ -993,6 +993,14 @@ public class Strings : INotifyPropertyChanged
     public string Pad_Combine_XOR_Description => Get("Pad_Combine_XOR_Description");
     public string Pad_Combine_Custom_Name => Get("Pad_Combine_Custom_Name");
     public string Pad_Combine_Custom_Description => Get("Pad_Combine_Custom_Description");
+    public string Pad_Combine_StickTrim_Name => Get("Pad_Combine_StickTrim_Name");
+    public string Pad_Combine_StickTrim_Description => Get("Pad_Combine_StickTrim_Description");
+    public string Pad_Mapping_TrimDeadzone => Get("Pad_Mapping_TrimDeadzone");
+    public string Pad_Mapping_TrimDeadzone_Tooltip => Get("Pad_Mapping_TrimDeadzone_Tooltip");
+    public string Pad_Mapping_TrimRate => Get("Pad_Mapping_TrimRate");
+    public string Pad_Mapping_TrimRate_Tooltip => Get("Pad_Mapping_TrimRate_Tooltip");
+    public string Pad_Mapping_TrimReset => Get("Pad_Mapping_TrimReset");
+    public string Pad_Mapping_TrimReset_Tooltip => Get("Pad_Mapping_TrimReset_Tooltip");
     public string Pad_Formula_TextBox_Tooltip => Get("Pad_Formula_TextBox_Tooltip");
     public string Pad_Formula_Insert => Get("Pad_Formula_Insert");
     public string Pad_Formula_StarterRecipes => Get("Pad_Formula_StarterRecipes");

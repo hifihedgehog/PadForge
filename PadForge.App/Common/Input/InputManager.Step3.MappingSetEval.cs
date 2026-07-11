@@ -27,6 +27,138 @@ namespace PadForge.Common.Input
         {
             for (int i = 0; i < _slotSourceKindRuntime.Length; i++)
                 _slotSourceKindRuntime[i]?.Clear();
+            _stickTrimStates.Clear();
+        }
+
+        // ─────────────────────────────────────────────
+        //  Stick-trim combine state (#155)
+        //
+        //  One stored level per (slot, target, layer): the same keying
+        //  family as SourceKindRuntime's (slot, target, srcIdx)
+        //  accumulators, with the layer added because a Base row and a
+        //  Shift row on the same target are distinct rows with distinct
+        //  levels. Rows are DTOs (the compiled-expression cache keeps
+        //  state off them deliberately), so the level lives here.
+        //  Cleared with the other accumulators above.
+        // ─────────────────────────────────────────────
+        private sealed class StickTrimState
+        {
+            public float Level = 1f;
+            public bool WasHeld;
+            // Frame idempotence: the Extended/KBM/MIDI evaluators run
+            // once per assigned DEVICE per frame (per-UserSetting pass),
+            // so without this gate a two-device slot would advance the
+            // level twice per tick and double-process the release edge.
+            // The gamepad path is already once-per-frame via multiDone;
+            // this covers every path uniformly.
+            public long LastSeq = -1;
+            public float LastOutput;
+        }
+
+        // Incremented once per polling frame in
+        // BeginFrameMultiSourceTracking, read by EvaluateStickTrim.
+        private static long _stickTrimFrameSeq;
+
+        private static readonly System.Collections.Concurrent.ConcurrentDictionary<
+            (int Slot, string Target, string Layer), StickTrimState> _stickTrimStates = new();
+
+        /// <summary>Stick-trim combine (#155): the row's LAST contributing
+        /// source is the trim stick, every earlier contributing source
+        /// gates. While the gate is held, the trim axis's signed
+        /// deflection past <see cref="MappingRow.TrimDeadzone"/> slides a
+        /// stored level (stick up raises, down lowers, at
+        /// <see cref="MappingRow.TrimRate"/> percent per second at full
+        /// deflection), and the row outputs gate × level. Released, the
+        /// row outputs 0 and <see cref="MappingRow.TrimResetOnRelease"/>
+        /// decides whether the level snaps back to 100%.
+        ///
+        /// <para>The trim source is side-evaluated as a bipolar axis
+        /// (the SourceKindRuntimeReadAxisLikeFloat pattern) because a
+        /// trigger contribution folds the sign away (rest reads 0.5).
+        /// SDL's stick convention reaches this read unflipped (the Y
+        /// negation seams live on the stick-target writes only), so a
+        /// raw stick-up is NEGATIVE and negative-raises here. A user
+        /// who wants the opposite feel inverts the trim source.</para></summary>
+        private static float EvaluateStickTrim(MappingRow row, int slotIndex, double dt)
+        {
+            var srcs = SnapshotSources(row, out int srcsCount);
+
+            // Last contributing source = trim; the rest gate.
+            int trimIdx = -1;
+            for (int i = srcsCount - 1; i >= 0; i--)
+            {
+                var s = srcs[i];
+                if (s == null || IsRowModifierSource(s)) continue;
+                trimIdx = i;
+                break;
+            }
+
+            var slotRuntime = (slotIndex >= 0 && slotIndex < _slotSourceKindRuntime.Length)
+                ? _slotSourceKindRuntime[slotIndex] : null;
+
+            float gate = 0f;
+            for (int i = 0; i < srcsCount; i++)
+            {
+                if (i == trimIdx) continue;
+                var src = srcs[i];
+                if (src == null || IsRowModifierSource(src)) continue;
+                if (IsSourceSuppressedPostpone(slotIndex, src.DeviceGuid, src.Descriptor)) continue;
+                var devState = LookupDeviceState(src.DeviceGuid);
+                if (devState == null) continue;
+                float v = SourceEvaluator.EvaluateForTriggerTarget(
+                    devState, src, slotIndex, row.Target, i, slotRuntime, dt);
+                if (v > gate) gate = v;
+            }
+
+            var key = (slotIndex, row.Target ?? "", row.LayerMask ?? "Base");
+            var st = _stickTrimStates.GetOrAdd(key, _ => new StickTrimState());
+
+            // Second per-device pass in the same frame: replay the
+            // frame's output instead of advancing the level again.
+            long seq = _stickTrimFrameSeq;
+            if (st.LastSeq == seq) return st.LastOutput;
+
+            bool held = gate > 0.05f;
+            if (held && trimIdx >= 0)
+            {
+                var trimSrc = srcs[trimIdx];
+                var trimState = LookupDeviceState(trimSrc.DeviceGuid);
+                if (trimState != null
+                    && !IsSourceSuppressedPostpone(slotIndex, trimSrc.DeviceGuid, trimSrc.Descriptor))
+                {
+                    float v = SourceEvaluator.EvaluateForBipolarAxisTarget(
+                        trimState, trimSrc, slotIndex, row.Target, trimIdx, slotRuntime, dt);
+                    st.Level = AdvanceStickTrimLevel(
+                        st.Level, v, row.TrimDeadzone, row.TrimRate, dt);
+                }
+            }
+            else if (!held && st.WasHeld && row.TrimResetOnRelease)
+            {
+                st.Level = 1f;
+            }
+            st.WasHeld = held;
+
+            float output = held ? gate * st.Level : 0f;
+            st.LastSeq = seq;
+            st.LastOutput = output;
+            return output;
+        }
+
+        /// <summary>Pure stick-trim level step (#155). Deflection at or
+        /// below the deadzone leaves the level alone; past it, speed
+        /// rescales from zero at the deadzone edge to the full
+        /// <paramref name="ratePct"/> (percent of range per second) at
+        /// full deflection. Negative trim (a raw SDL stick pushed up)
+        /// raises the level. Clamped to [0, 1].</summary>
+        internal static float AdvanceStickTrimLevel(
+            float level, float trimValue, int deadzonePct, int ratePct, double dt)
+        {
+            float dz = System.Math.Clamp(deadzonePct, 0, 95) / 100f;
+            float mag = System.Math.Abs(trimValue);
+            if (mag <= dz) return level;
+            float eff = (mag - dz) / (1f - dz) * System.Math.Sign(trimValue);
+            float rate = System.Math.Max(1, ratePct) / 100f;
+            return System.Math.Clamp(level + (-eff) * rate * (float)dt, 0f, 1f);
         }
 
         /// <summary>The per-slot source-kind runtime, for the steering lock-feedback
@@ -79,6 +211,7 @@ namespace PadForge.Common.Input
         {
             for (int i = 0; i < _multiSourceEvaluatedTargetsBySlot.Length; i++)
                 _multiSourceEvaluatedTargetsBySlot[i].Clear();
+            _stickTrimFrameSeq++;
             StampFrameDelta();
         }
 
@@ -1153,11 +1286,22 @@ namespace PadForge.Common.Input
                 {
                     if (isMultiSource)
                     {
-                        var positional = BuildCustomContribsForTrigger(row, slotIndex, dt);
-                        if (positional.Count == 0) continue;
-                        float combined = isCustom
-                            ? ClampUnipolar(EvaluateCustomFloat(row, positional))
-                            : ClampUnipolar(CombineHelper.CombineAxis(row.CombineMode, positional));
+                        float combined;
+                        if (row.CombineMode == "StickTrim")
+                        {
+                            // Stateful combine (#155): walks row.Sources
+                            // itself (the trim axis needs its signed value,
+                            // which positional trigger contribs fold away).
+                            combined = ClampUnipolar(EvaluateStickTrim(row, slotIndex, dt));
+                        }
+                        else
+                        {
+                            var positional = BuildCustomContribsForTrigger(row, slotIndex, dt);
+                            if (positional.Count == 0) continue;
+                            combined = isCustom
+                                ? ClampUnipolar(EvaluateCustomFloat(row, positional))
+                                : ClampUnipolar(CombineHelper.CombineAxis(row.CombineMode, positional));
+                        }
                         if (IsInvertOnHoldActive(row, state, thisDeviceGuid, slotIndex)) combined = 1f - combined;
                         WriteTriggerTarget(row.Target, combined, ref gp);
                         multiDone?.Add(row.Target);
@@ -1317,6 +1461,20 @@ namespace PadForge.Common.Input
                     var row = rows[r];
                     if (row == null || row.Sources == null) continue;
                     if (!string.Equals(row.Target, target, System.StringComparison.Ordinal)) continue;
+
+                    if (string.Equals(row.CombineMode, "StickTrim", System.StringComparison.Ordinal))
+                    {
+                        // Stateful mode (#155): mirror the live output the
+                        // polling thread computed this frame instead of
+                        // re-deriving. A re-derive here would fold the trim
+                        // stick's sign away and preview ~50% pull at rest.
+                        // Read-only on the state entry, so still safe off
+                        // the polling thread.
+                        return _stickTrimStates.TryGetValue(
+                            (slotIndex, row.Target ?? "", row.LayerMask ?? "Base"), out var trimSt)
+                            ? (ushort)System.Math.Clamp((int)(trimSt.LastOutput * 65535f), 0, 65535)
+                            : (ushort)0;
+                    }
 
                     List<float> contribs = null;
                     for (int i = 0; i < row.Sources.Count; i++)
@@ -1912,11 +2070,20 @@ namespace PadForge.Common.Input
 
             if (isMultiSource)
             {
-                var positional = BuildCustomContribsForTrigger(row, slotIndex, dt);
-                if (positional.Count == 0) return false;
-                combined = isCustom
-                    ? ClampUnipolar(EvaluateCustomFloat(row, positional))
-                    : ClampUnipolar(CombineHelper.CombineAxis(row.CombineMode, positional));
+                if (row.CombineMode == "StickTrim")
+                {
+                    // Stateful combine (#155), same intercept as the
+                    // gamepad trigger site.
+                    combined = ClampUnipolar(EvaluateStickTrim(row, slotIndex, dt));
+                }
+                else
+                {
+                    var positional = BuildCustomContribsForTrigger(row, slotIndex, dt);
+                    if (positional.Count == 0) return false;
+                    combined = isCustom
+                        ? ClampUnipolar(EvaluateCustomFloat(row, positional))
+                        : ClampUnipolar(CombineHelper.CombineAxis(row.CombineMode, positional));
+                }
             }
             else
             {

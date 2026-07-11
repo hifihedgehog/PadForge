@@ -674,6 +674,9 @@ namespace PadForge.Services
 
                     row.CombineMode = mapping.CombineMode ?? "";
                     row.CombineExpression = mapping.CombineExpression ?? "";
+                    row.TrimDeadzone = mapping.TrimDeadzone;
+                    row.TrimRate = mapping.TrimRate;
+                    row.TrimResetOnRelease = mapping.TrimResetOnRelease;
 
                     // NoInherit is meaningful only on non-Base rows. Force
                     // false on Base regardless of the MappingItem state so

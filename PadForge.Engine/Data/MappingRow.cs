@@ -71,6 +71,23 @@ namespace PadForge.Engine.Data
         /// </summary>
         [XmlAttribute] public bool NoInherit { get; set; } = false;
 
+        /// <summary>Stick-trim combine (#155): deflection below this
+        /// percentage of the trim axis's range is ignored, so steering
+        /// wobble on the same stick never nudges the held level. Only
+        /// meaningful when <see cref="CombineMode"/> == <c>"StickTrim"</c>.</summary>
+        [XmlAttribute] public int TrimDeadzone { get; set; } = 25;
+
+        /// <summary>Stick-trim combine (#155): full-deflection adjustment
+        /// speed, in percent of the trigger range per second. 100 sweeps
+        /// the whole range in one second.</summary>
+        [XmlAttribute] public int TrimRate { get; set; } = 100;
+
+        /// <summary>Stick-trim combine (#155): when true (default),
+        /// releasing the gate resets the stored level to 100%, so the
+        /// next press starts full. When false, the level persists across
+        /// releases until trimmed again.</summary>
+        [XmlAttribute] public bool TrimResetOnRelease { get; set; } = true;
+
         /// <summary>Sources combined to produce this row's output.</summary>
         [XmlElement("Source")]
         public List<MappingSource> Sources { get; set; } = new();

@@ -920,6 +920,23 @@ namespace PadForge.Engine.Common.Mapping
         /// the callers read as "centered", so a brief loss of sight relaxes the
         /// stick rather than snapping it. Invert is applied by the public Evaluate*
         /// wrappers, matching the cursor and gyro paths.</summary>
+        /// <summary>The lineage's default aim-range normalization. All four
+        /// Touchmote variants on disk ship pointer_marginsLeftRight = 0.4 and
+        /// pointer_marginsTopBottom = 0.5 as DEFAULTS (each repo's
+        /// WiiTUIO/Properties/Settings.cs), mapping camera position 0..1
+        /// onto [-margin .. 1+margin] (ScreenPositionCalculator.cs:71-77,
+        /// applied at :194-195), which in centered aim units is exactly a
+        /// stretch of 1 + 2*margin. Both sensor-bar LEDs must stay inside
+        /// the camera view for a pair midpoint, so tracked aim physically
+        /// cannot reach +/-1; without this stretch the cursor walls off
+        /// inside the screen in EVERY pointer mode (the border transform is
+        /// identity inside its region, so the border modes hit the same
+        /// wall; owner bench, 2026-07-11). The old single-dot fallback
+        /// masked this by accident: the raw surviving dot extended the
+        /// apparent range past the pair bound.</summary>
+        internal const float IrMarginStretchX = 1.8f;
+        internal const float IrMarginStretchY = 2.0f;
+
         private static float ReadTunedIrPointer(CustomInputState state, MappingSource src, int slotIndex)
         {
             if (src == null || state == null) return 0f;
@@ -939,7 +956,12 @@ namespace PadForge.Engine.Common.Mapping
                 return 0f;
             }
 
-            float baseVal = axis == 'X' ? state.Ir.X : state.Ir.Y;
+            // Lineage margin stretch first, then the bar offset in its
+            // post-stretch (screen-space) meaning, matching Touchmote's
+            // pixel-space offsetY applied after the margin scale
+            // (ScreenPositionCalculator.cs:194-195).
+            float baseVal = (axis == 'X' ? state.Ir.X : state.Ir.Y)
+                * (axis == 'X' ? IrMarginStretchX : IrMarginStretchY);
 
             // Per-(device, slot) Pointer-tab tuning: sensor-bar vertical offset
             // (Y only, Touchmote offsetY) then EMA smoothing, applied HERE at

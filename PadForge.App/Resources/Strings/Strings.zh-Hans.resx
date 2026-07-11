@@ -2328,4 +2328,8 @@
   <data name="Mapping_MouseGestureDown" xml:space="preserve"><value>下</value></data>
   <data name="Mapping_MouseGestureClick" xml:space="preserve"><value>点击</value></data>
   <data name="Mapping_MouseGesture_Format" xml:space="preserve"><value>鼠标手势：{0} + {1}</value></data>
+  <data name="MacroAction_Type_PointerModeSet" xml:space="preserve"><value>设置指针模式</value></data>
+  <data name="MacroAction_PointerModeSet_Format" xml:space="preserve"><value>设置指针模式：{0}</value></data>
+  <data name="MacroAction_PointerModeSet_Tooltip" xml:space="preserve"><value>将槽位中所有支持IR的遥控器的Wii指针模式设置为下方所选模式。</value></data>
+  <data name="Macro_PointerSetMode_Hint" xml:space="preserve"><value>选择此动作应用的指针模式。</value></data>
 </root>

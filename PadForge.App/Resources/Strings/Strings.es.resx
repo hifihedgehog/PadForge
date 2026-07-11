@@ -2328,4 +2328,8 @@
   <data name="Mapping_MouseGestureDown" xml:space="preserve"><value>Abajo</value></data>
   <data name="Mapping_MouseGestureClick" xml:space="preserve"><value>Clic</value></data>
   <data name="Mapping_MouseGesture_Format" xml:space="preserve"><value>Gesto del ratón: {0} + {1}</value></data>
+  <data name="MacroAction_Type_PointerModeSet" xml:space="preserve"><value>Establecer modo de puntero</value></data>
+  <data name="MacroAction_PointerModeSet_Format" xml:space="preserve"><value>Establecer modo de puntero: {0}</value></data>
+  <data name="MacroAction_PointerModeSet_Tooltip" xml:space="preserve"><value>Establece el modo de puntero Wii al seleccionado abajo para cada mando con IR de la ranura.</value></data>
+  <data name="Macro_PointerSetMode_Hint" xml:space="preserve"><value>Elige el modo de puntero que aplica esta acción.</value></data>
 </root>

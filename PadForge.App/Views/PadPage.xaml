@@ -1758,6 +1758,9 @@
                                             <ComboBoxItem Content="{Binding MacroAction_Type_PointerModeCycle, Source={x:Static strings:Strings.Instance}}"
                                                           Tag="{x:Static vm:MacroActionType.PointerModeCycle}"
                                                           ToolTip="{Binding MacroAction_PointerModeCycle_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                            <ComboBoxItem Content="{Binding MacroAction_Type_PointerModeSet, Source={x:Static strings:Strings.Instance}}"
+                                                          Tag="{x:Static vm:MacroActionType.PointerModeSet}"
+                                                          ToolTip="{Binding MacroAction_PointerModeSet_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                             <ComboBoxItem Content="{Binding MacroAction_Type_Rumble, Source={x:Static strings:Strings.Instance}}"
                                                           Tag="{x:Static vm:MacroActionType.Rumble}"
                                                           ToolTip="{Binding MacroAction_Rumble_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
@@ -2246,6 +2249,27 @@
                                                     </DataTemplate>
                                                 </ItemsControl.ItemTemplate>
                                             </ItemsControl>
+                                        </StackPanel>
+                                    </Border>
+
+                                    <!-- Pointer Mode Set card (issue #203 follow-up): one fixed
+                                         mode, the pointer sibling of the lightbar mode-set card.
+                                         Combo mirrors the Pointer tab's mode picker. -->
+                                    <Border Style="{StaticResource CardBorder}" Margin="0,0,0,6"
+                                            Visibility="{Binding IsPointerModeSetType, Converter={StaticResource BoolToVisibilityConverter}}">
+                                        <StackPanel>
+                                            <TextBlock Text="{Binding MacroAction_Type_PointerModeSet, Source={x:Static strings:Strings.Instance}}"
+                                                       FontWeight="SemiBold" Margin="0,0,0,4"/>
+                                            <TextBlock Text="{Binding Macro_PointerSetMode_Hint, Source={x:Static strings:Strings.Instance}}"
+                                                       FontSize="11" TextWrapping="Wrap" Margin="0,0,0,6"
+                                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                                            <ComboBox Width="240" HorizontalAlignment="Left" SelectedValuePath="Tag"
+                                                      SelectedValue="{Binding PointerSetMode, Mode=TwoWay}">
+                                                <ComboBoxItem Content="{Binding Pad_Pointer_Mode_Mouse, Source={x:Static strings:Strings.Instance}}" Tag="Mouse"/>
+                                                <ComboBoxItem Content="{Binding Pad_Pointer_Mode_FpsMouse, Source={x:Static strings:Strings.Instance}}" Tag="FpsMouse"/>
+                                                <ComboBoxItem Content="{Binding Pad_Pointer_Mode_43, Source={x:Static strings:Strings.Instance}}" Tag="Mouse43"/>
+                                                <ComboBoxItem Content="{Binding Pad_Pointer_Mode_169, Source={x:Static strings:Strings.Instance}}" Tag="Mouse169"/>
+                                            </ComboBox>
                                         </StackPanel>
                                     </Border>
 

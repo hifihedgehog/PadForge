@@ -2348,4 +2348,8 @@
   <data name="Mapping_MouseGestureDown" xml:space="preserve"><value>Omlaag</value></data>
   <data name="Mapping_MouseGestureClick" xml:space="preserve"><value>Klik</value></data>
   <data name="Mapping_MouseGesture_Format" xml:space="preserve"><value>Muisgebaar: {0} + {1}</value></data>
+  <data name="MacroAction_Type_PointerModeSet" xml:space="preserve"><value>Aanwijzermodus instellen</value></data>
+  <data name="MacroAction_PointerModeSet_Format" xml:space="preserve"><value>Aanwijzermodus instellen: {0}</value></data>
+  <data name="MacroAction_PointerModeSet_Tooltip" xml:space="preserve"><value>Stelt de Wii-aanwijzermodus in op de hieronder gekozen modus voor elke IR-remote in het slot.</value></data>
+  <data name="Macro_PointerSetMode_Hint" xml:space="preserve"><value>Kies de aanwijzermodus die deze actie toepast.</value></data>
 </root>

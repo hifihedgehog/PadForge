@@ -1134,6 +1134,13 @@ namespace PadForge.Common.Input
                     break;
                 }
 
+                case MacroActionType.PointerModeSet:
+                {
+                    ApplyPointerModeSetAction(macro, action);
+                    AdvanceAction(macro);
+                    break;
+                }
+
                 case MacroActionType.SetGyroEngaged:
                 {
                     int slotIndex = macro.PadIndex;
@@ -1587,6 +1594,18 @@ namespace PadForge.Common.Input
             int idx = ((action.PointerCycleIndex % modes.Length) + modes.Length) % modes.Length;
             action.PointerCycleIndex = idx + 1;
             PointerModeCycleApply?.Invoke(slotIndex, modes[idx]);
+        }
+
+        /// <summary>Writes one fixed pointer mode through the same
+        /// dispatcher-side apply as the cycle action (issue #203
+        /// follow-up): the delegate is mode-agnostic, so the set action
+        /// is pure target selection.</summary>
+        private void ApplyPointerModeSetAction(MacroItem macro, MacroAction action)
+        {
+            int slotIndex = macro.PadIndex;
+            if (slotIndex < 0 || slotIndex >= MaxPads) return;
+
+            PointerModeCycleApply?.Invoke(slotIndex, action.NormalizedPointerSetMode());
         }
 
         /// <summary>Advances the action's cycle position and writes the
@@ -2147,6 +2166,11 @@ namespace PadForge.Common.Input
 
                 case MacroActionType.PointerModeCycle:
                     ApplyPointerModeCycleAction(macro, action);
+                    AdvanceAction(macro);
+                    break;
+
+                case MacroActionType.PointerModeSet:
+                    ApplyPointerModeSetAction(macro, action);
                     AdvanceAction(macro);
                     break;
             }

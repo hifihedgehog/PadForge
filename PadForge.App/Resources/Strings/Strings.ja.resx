@@ -2328,4 +2328,8 @@
   <data name="Mapping_MouseGestureDown" xml:space="preserve"><value>下</value></data>
   <data name="Mapping_MouseGestureClick" xml:space="preserve"><value>クリック</value></data>
   <data name="Mapping_MouseGesture_Format" xml:space="preserve"><value>マウスジェスチャー: {0} + {1}</value></data>
+  <data name="MacroAction_Type_PointerModeSet" xml:space="preserve"><value>ポインターモードを設定</value></data>
+  <data name="MacroAction_PointerModeSet_Format" xml:space="preserve"><value>ポインターモードを設定: {0}</value></data>
+  <data name="MacroAction_PointerModeSet_Tooltip" xml:space="preserve"><value>スロット内のIR対応リモコンすべてのWiiポインターモードを、下で選択したモードに設定します。</value></data>
+  <data name="Macro_PointerSetMode_Hint" xml:space="preserve"><value>このアクションが適用するポインターモードを選択します。</value></data>
 </root>

@@ -1884,6 +1884,7 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(IsLightbarColorClearType));
                     OnPropertyChanged(nameof(IsLightbarModeSetType));
                     OnPropertyChanged(nameof(IsLightbarModeCycleType));
+                    OnPropertyChanged(nameof(IsPointerModeCycleType));
                     OnPropertyChanged(nameof(IsAnyLightbarType));
                     OnPropertyChanged(nameof(IsLightbarReactiveHold));
                     OnPropertyChanged(nameof(IsLightbarStickyHold));
@@ -2093,6 +2094,10 @@ namespace PadForge.ViewModels
         /// <summary>True when Type is LightbarModeCycle.</summary>
         [System.Xml.Serialization.XmlIgnore]
         public bool IsLightbarModeCycleType => _type == MacroActionType.LightbarModeCycle;
+
+        /// <summary>True when Type is PointerModeCycle (issue #203).</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool IsPointerModeCycleType => _type == MacroActionType.PointerModeCycle;
 
         /// <summary>True when Type is any of the lightbar-related action
         /// types — drives the macro editor's grouping into a single
@@ -3401,6 +3406,95 @@ namespace PadForge.ViewModels
             set => _lightbarCycleIndex = value;
         }
 
+        // CSV of PointerMode names for PointerModeCycle (issue #203).
+        // Default cycles all four modes. Names, not ints: the mode is a
+        // string family on PadSetting, and names keep the CSV readable.
+        private string _pointerCycleModesCsv = "Mouse,FpsMouse,Mouse43,Mouse169";
+        /// <summary>CSV of <c>PadSetting.PointerMode</c> names to cycle
+        /// through. Each fire advances to the next listed mode. Editor
+        /// surfaces this as a four-item checkbox row.</summary>
+        public string PointerCycleModesCsv
+        {
+            get => _pointerCycleModesCsv;
+            set
+            {
+                if (SetProperty(ref _pointerCycleModesCsv, value ?? string.Empty))
+                {
+                    _pointerCycleIndex = 0;
+                    OnPropertyChanged(nameof(DisplayText));
+                }
+            }
+        }
+
+        private int _pointerCycleIndex;
+        /// <summary>Per-action volatile cycle position for PointerModeCycle.
+        /// Resets on action edit and on app restart.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public int PointerCycleIndex
+        {
+            get => _pointerCycleIndex;
+            set => _pointerCycleIndex = value;
+        }
+
+        private static readonly string[] PointerModeNames =
+            { "Mouse", "FpsMouse", "Mouse43", "Mouse169" };
+
+        /// <summary>Parses <see cref="PointerCycleModesCsv"/> into the
+        /// recognized mode names, preserving CSV order.</summary>
+        public string[] ParsedPointerCycleModes()
+        {
+            var list = new List<string>(4);
+            foreach (var part in (_pointerCycleModesCsv ?? "").Split(','))
+            {
+                var p = part.Trim();
+                if (p.Length == 0) continue;
+                foreach (var known in PointerModeNames)
+                    if (string.Equals(p, known, StringComparison.OrdinalIgnoreCase))
+                    {
+                        if (!list.Contains(known)) list.Add(known);
+                        break;
+                    }
+            }
+            return list.ToArray();
+        }
+
+        internal int CountSelectedPointerCycleModes() => ParsedPointerCycleModes().Length;
+
+        internal void WritePointerCycleCsv(IEnumerable<string> selected)
+        {
+            // Keep the canonical mode order regardless of click order.
+            var set = new HashSet<string>(selected, StringComparer.OrdinalIgnoreCase);
+            PointerCycleModesCsv = string.Join(",", PointerModeNames.Where(set.Contains));
+        }
+
+        /// <summary>Localized display name for a PointerMode value, shared
+        /// by the Pointer tab combo and the cycle checkboxes.</summary>
+        internal static string PointerModeDisplayName(string mode) => mode switch
+        {
+            "FpsMouse" => Strings.Instance.Pad_Pointer_Mode_FpsMouse,
+            "Mouse43" => Strings.Instance.Pad_Pointer_Mode_43,
+            "Mouse169" => Strings.Instance.Pad_Pointer_Mode_169,
+            _ => Strings.Instance.Pad_Pointer_Mode_Mouse,
+        };
+
+        private IReadOnlyList<PointerModeCycleOption> _pointerCycleModeOptions;
+        /// <summary>Checkbox-bindable projection of the four pointer modes
+        /// for the PointerModeCycle editor, mirroring
+        /// <see cref="CycleModeOptions"/>: the CSV is canonical, labels
+        /// resolve live for culture changes.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public IReadOnlyList<PointerModeCycleOption> PointerCycleModeOptions
+        {
+            get
+            {
+                _pointerCycleModeOptions ??= PointerModeNames
+                    .Select(m => new PointerModeCycleOption(this, m))
+                    .ToList()
+                    .AsReadOnly();
+                return _pointerCycleModeOptions;
+            }
+        }
+
         // ── Volume limit ──
 
         private int _volumeLimit = 100;
@@ -3524,6 +3618,9 @@ namespace PadForge.ViewModels
                     MacroActionType.LightbarModeCycle => string.Format(
                         Strings.Instance.MacroAction_LightbarModeCycle_Format,
                         CountSelectedCycleModes()),
+                    MacroActionType.PointerModeCycle => string.Format(
+                        Strings.Instance.MacroAction_PointerModeCycle_Format,
+                        CountSelectedPointerCycleModes()),
                     MacroActionType.Rumble => FormatRumbleSummary(),
                     MacroActionType.RumbleStop => Strings.Instance.MacroAction_RumbleStop,
                     MacroActionType.RumbleTrigger => FormatRumbleTriggerSummary(),
@@ -4024,7 +4121,14 @@ namespace PadForge.ViewModels
         /// Tab. <see cref="MacroAction.TextPerCharDelayMs"/> paces the emission; 0
         /// types the whole text in one batched call. Key Press remains the tool for
         /// key combos.</summary>
-        TextBlock
+        TextBlock,
+
+        /// <summary>Cycles the Wii pointer mode (issue #203) through a
+        /// user-selected subset of modes for every IR-capable device on
+        /// the slot. Each fire advances to the next checked mode. Cycle
+        /// position is per-action and volatile, resetting on app
+        /// restart. At the tail per the APPEND-ONLY rule above.</summary>
+        PointerModeCycle
     }
 
     /// <summary>Target selector for <see cref="MacroActionType.DisconnectController"/>
@@ -4768,6 +4872,45 @@ namespace PadForge.ViewModels
     /// <see cref="LightbarMode"/> value in the LightbarModeCycle editor's
     /// grid. Reads / writes the parent action's
     /// <c>LightbarCycleModesCsv</c>.</summary>
+    /// <summary>One checkbox in the PointerModeCycle editor (issue #203),
+    /// mirroring <see cref="LightbarModeCycleOption"/>: IsChecked reads and
+    /// rewrites the parent action's CSV, and Label resolves live so a
+    /// culture change reflows without a rebuild.</summary>
+    public class PointerModeCycleOption : ObservableObject
+    {
+        private readonly MacroAction _parent;
+        public string ModeName { get; }
+
+        public string Label => MacroAction.PointerModeDisplayName(ModeName);
+
+        public PointerModeCycleOption(MacroAction parent, string modeName)
+        {
+            _parent = parent;
+            ModeName = modeName;
+            Strings.CultureChanged += OnCultureChanged;
+        }
+
+        private void OnCultureChanged()
+            => OnPropertyChanged(nameof(Label));
+
+        public bool IsChecked
+        {
+            get => _parent.ParsedPointerCycleModes()
+                .Contains(ModeName, StringComparer.OrdinalIgnoreCase);
+            set
+            {
+                var current = _parent.ParsedPointerCycleModes().ToList();
+                bool has = current.Contains(ModeName, StringComparer.OrdinalIgnoreCase);
+                if (value && !has) current.Add(ModeName);
+                else if (!value && has) current.RemoveAll(
+                    m => string.Equals(m, ModeName, StringComparison.OrdinalIgnoreCase));
+                else return;
+                _parent.WritePointerCycleCsv(current);
+                OnPropertyChanged(nameof(IsChecked));
+            }
+        }
+    }
+
     public class LightbarModeCycleOption : ObservableObject
     {
         private readonly MacroAction _parent;

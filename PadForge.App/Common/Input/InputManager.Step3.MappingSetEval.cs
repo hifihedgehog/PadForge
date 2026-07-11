@@ -810,26 +810,28 @@ namespace PadForge.Common.Input
                     // set and points to a different device. Falls back to
                     // the activator's own state when no second-device GUID is
                     // recorded (same-device chord — legacy / common case).
-                    bool a = SourceKindRuntimeReadButtonLikeBool(state, act.Descriptor);
+                    bool a = SourceKindRuntimeReadButtonLikeBool(state, act.Descriptor, act.DeviceGuid);
                     CustomInputState secondState = state;
+                    string secondGuid = act.DeviceGuid;
                     if (!string.IsNullOrEmpty(act.ChordSecondDeviceGuid)
                         && !string.Equals(act.ChordSecondDeviceGuid, act.DeviceGuid,
                             System.StringComparison.OrdinalIgnoreCase))
                     {
                         secondState = LookupDeviceState(act.ChordSecondDeviceGuid) ?? state;
+                        secondGuid = act.ChordSecondDeviceGuid;
                     }
-                    bool b = SourceKindRuntimeReadButtonLikeBool(secondState, act.ChordSecondDescriptor);
+                    bool b = SourceKindRuntimeReadButtonLikeBool(secondState, act.ChordSecondDescriptor, secondGuid);
                     return a && b;
                 }
                 case "Axis":
                 {
                     // v2: axis past threshold. ReadAxisLike returns [-1..+1].
-                    float axisVal = SourceKindRuntimeReadAxisLikeFloat(state, act.Descriptor);
+                    float axisVal = SourceKindRuntimeReadAxisLikeFloat(state, act.Descriptor, act.DeviceGuid);
                     return System.Math.Abs(axisVal) >= act.AxisThreshold;
                 }
                 case "Button":
                 default:
-                    return SourceKindRuntimeReadButtonLikeBool(state, act.Descriptor);
+                    return SourceKindRuntimeReadButtonLikeBool(state, act.Descriptor, act.DeviceGuid);
             }
         }
 
@@ -861,19 +863,24 @@ namespace PadForge.Common.Input
         /// <summary>Axis read used by the Axis activator kind. Mirrors
         /// <see cref="SourceKindRuntimeReadButtonLikeBool"/> but returns the
         /// signed [-1..+1] bipolar axis value without thresholding.</summary>
-        private static float SourceKindRuntimeReadAxisLikeFloat(CustomInputState state, string descriptor)
+        private static float SourceKindRuntimeReadAxisLikeFloat(CustomInputState state, string descriptor,
+            string deviceGuid = null)
             => SourceEvaluator.EvaluateForBipolarAxisTarget(
                 state,
-                new MappingSource { Kind = "Direct", Descriptor = descriptor ?? "" },
+                // DeviceGuid rides along so per-device engine families
+                // ("IR Offscreen"'s debounce store, the IR EMA keys) never
+                // collapse onto a shared empty-string key (#203 review).
+                new MappingSource { Kind = "Direct", Descriptor = descriptor ?? "", DeviceGuid = deviceGuid ?? "" },
                 0, "", 0, null, 0);
 
         // Reuses the Engine's button-like reader without going through the
         // managed-cast SourceCoercion wrapper (we already know the activator
         // is button-class).
-        private static bool SourceKindRuntimeReadButtonLikeBool(CustomInputState state, string descriptor)
+        private static bool SourceKindRuntimeReadButtonLikeBool(CustomInputState state, string descriptor,
+            string deviceGuid = null)
             => SourceEvaluator.EvaluateForButtonTarget(
                 state,
-                new MappingSource { Kind = "Direct", Descriptor = descriptor ?? "" },
+                new MappingSource { Kind = "Direct", Descriptor = descriptor ?? "", DeviceGuid = deviceGuid ?? "" },
                 50, 0, "", 0, null, 0);
 
         // ─────────────────────────────────────────────

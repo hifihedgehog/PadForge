@@ -942,6 +942,98 @@ namespace PadForge.Services
                 return (off, TryParseFloatPs(irPs.IrSmoothing, 0f));
             };
 
+            // Wii pointer mode (#203 Pointer tab), per (device, slot): same
+            // lookup shape as IrTuningProvider above. Mode ints match the
+            // SourceCoercion doc: 0 Mouse, 1 FpsMouse, 2 Mouse43, 3 Mouse169.
+            PadForge.Engine.Common.Mapping.SourceCoercion.IrPointerModeProvider = (deviceGuid, slotIndex) =>
+            {
+                if (string.IsNullOrEmpty(deviceGuid) || !Guid.TryParse(deviceGuid, out var pg)) return (0, 35f);
+                if (slotIndex < 0 || slotIndex >= InputManager.MaxPads) return (0, 35f);
+                var pmSettings = SettingsManager.UserSettings;
+                if (pmSettings == null) return (0, 35f);
+                PadSetting pmPs = null;
+                lock (pmSettings.SyncRoot)
+                {
+                    for (int i = 0; i < pmSettings.Items.Count; i++)
+                    {
+                        var us = pmSettings.Items[i];
+                        if (us == null) continue;
+                        if (us.InstanceGuid != pg) continue;
+                        if (us.MapTo != slotIndex) continue;
+                        pmPs = us.GetPadSetting();
+                        break;
+                    }
+                }
+                if (pmPs == null) return (0, 35f);
+                int mode = pmPs.PointerMode switch
+                {
+                    "FpsMouse" => 1,
+                    "Mouse43" => 2,
+                    "Mouse169" => 3,
+                    _ => 0,
+                };
+                return (mode, TryParseFloatPs(pmPs.PointerFpsSpeed, 35f));
+            };
+
+            // PointerModeCycle applier (#203): ALL PointerMode writes happen
+            // here on the dispatcher, never on the poll thread, because the
+            // 30 Hz UI tick copies the VM's PointerMode over PadSetting and
+            // a poll-thread write could be reverted by a tick already
+            // mid-execution. Lock order: UserDevices before UserSettings.
+            InputManager.PointerModeCycleApply = (slotIdx, targetMode) =>
+            {
+                try
+                {
+                    System.Windows.Application.Current?.Dispatcher?.BeginInvoke(new Action(() =>
+                    {
+                        if (slotIdx < 0 || slotIdx >= _mainVm.Pads.Count) return;
+                        if (string.IsNullOrEmpty(targetMode)) return;
+
+                        var pmDevices = SettingsManager.UserDevices;
+                        var pmSettings2 = SettingsManager.UserSettings;
+                        if (pmDevices == null || pmSettings2 == null) return;
+
+                        var irGuids = new System.Collections.Generic.HashSet<Guid>();
+                        lock (pmDevices.SyncRoot)
+                        {
+                            for (int i = 0; i < pmDevices.Items.Count; i++)
+                            {
+                                var ud = pmDevices.Items[i];
+                                if (ud != null && ud.HasIrCamera) irGuids.Add(ud.InstanceGuid);
+                            }
+                        }
+                        if (irGuids.Count == 0) return;
+
+                        bool wrote = false;
+                        lock (pmSettings2.SyncRoot)
+                        {
+                            for (int i = 0; i < pmSettings2.Items.Count; i++)
+                            {
+                                var us = pmSettings2.Items[i];
+                                if (us == null || us.MapTo != slotIdx) continue;
+                                if (!irGuids.Contains(us.InstanceGuid)) continue;
+                                var ps = us.GetPadSetting();
+                                if (ps == null) continue;
+                                ps.PointerMode = targetMode;
+                                wrote = true;
+                            }
+                        }
+                        if (!wrote) return;
+
+                        // Targeted VM update (never a full reload: the user
+                        // may be mid-edit elsewhere on the tab), only when
+                        // the slot's selected device is one of the IR
+                        // devices just written.
+                        var padVm = _mainVm.Pads[slotIdx];
+                        if (_previousSelectedDevice.TryGetValue(slotIdx, out var selGuid)
+                            && irGuids.Contains(selGuid))
+                            padVm.PointerMode = targetMode;
+                        _settingsService?.MarkDirty();
+                    }));
+                }
+                catch { /* engine shutting down mid-fire */ }
+            };
+
             // Cursor-position source (#107): a 200 Hz sampler publishes the
             // normalized desktop cursor position into MouseCursorProvider for
             // "Mouse Position X/Y" mapping sources. Disposed on engine stop.
@@ -1491,6 +1583,8 @@ namespace PadForge.Services
                 PadForge.Engine.Common.Mapping.SourceCoercion.BalanceCalibrationProvider = null;
                 PadForge.Engine.Common.Mapping.SourceCoercion.BalanceTareKgProvider = null;
                 PadForge.Engine.Common.Mapping.SourceCoercion.IrTuningProvider = null;
+                PadForge.Engine.Common.Mapping.SourceCoercion.IrPointerModeProvider = null;
+                InputManager.PointerModeCycleApply = null;
                 PadForge.Engine.Common.Mapping.SourceCoercion.PollHzProvider = null;
                 PadForge.Engine.Common.Mapping.SourceCoercion.AimEngageStateProvider = null;
                 PadForge.Engine.Common.Mapping.SourceCoercion.TouchpadGestureFiredProvider = null;
@@ -3597,6 +3691,8 @@ namespace PadForge.Services
             ps.IrSensorBarPos = padVm.IrSensorBarPos.ToString(System.Globalization.CultureInfo.InvariantCulture);
             ps.IrSensorBarComp = (padVm.IrSensorBarCompPercent / 100.0).ToString(System.Globalization.CultureInfo.InvariantCulture);
             ps.IrSmoothing = (padVm.IrSmoothingPercent / 100.0).ToString(System.Globalization.CultureInfo.InvariantCulture);
+            ps.PointerMode = string.IsNullOrEmpty(padVm.PointerMode) ? "Mouse" : padVm.PointerMode;
+            ps.PointerFpsSpeed = padVm.PointerFpsSpeed.ToString(ic);
             // JoyShockMapper-canon extensions.
             ps.GyroSpace = padVm.GyroSpace ?? "Local";
             ps.GyroPlayerSpaceYawRelaxFactor = padVm.GyroPlayerSpaceYawRelaxFactor.ToString("F2", ic);
@@ -3971,6 +4067,8 @@ namespace PadForge.Services
             padVm.IrSensorBarPos = (int)TryParseFloatPs(ps.IrSensorBarPos, 0f);
             padVm.IrSensorBarCompPercent = (int)Math.Round(TryParseFloatPs(ps.IrSensorBarComp, 0f) * 100f);
             padVm.IrSmoothingPercent = (int)Math.Round(TryParseFloatPs(ps.IrSmoothing, 0f) * 100f);
+            padVm.PointerMode = string.IsNullOrEmpty(ps.PointerMode) ? "Mouse" : ps.PointerMode;
+            padVm.PointerFpsSpeed = (int)TryParseFloatPs(ps.PointerFpsSpeed, 35f);
             // JoyShockMapper-canon extensions.
             padVm.GyroSpace = string.IsNullOrEmpty(ps.GyroSpace) ? "Local" : ps.GyroSpace;
             padVm.GyroPlayerSpaceYawRelaxFactor = TryParseDouble(ps.GyroPlayerSpaceYawRelaxFactor, 1.41);

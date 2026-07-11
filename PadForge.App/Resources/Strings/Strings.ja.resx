@@ -1842,6 +1842,22 @@
   <data name="Pad_Pointer_SensorBar_Below" xml:space="preserve"><value>画面の下</value></data>
   <data name="Pad_Pointer_Compensation" xml:space="preserve"><value>垂直オフセット</value></data>
   <data name="Pad_Pointer_Smoothing" xml:space="preserve"><value>スムージング</value></data>
+  <data name="Pad_Pointer_ModeTitle" xml:space="preserve"><value>ポインターモード</value></data>
+  <data name="Pad_Pointer_Mode_Tooltip" xml:space="preserve"><value>エイムがカーソルをどう動かすかを設定します。マウスは絶対位置で指します。FPSマウスは画面中央からのずれを滑らかなカーソル速度に変えます。ボーダーモードはカーソルを4:3または16:9の領域に制限し、外れた方向の境界に固定します。</value></data>
+  <data name="Pad_Pointer_Mode_Mouse" xml:space="preserve"><value>マウス</value></data>
+  <data name="Pad_Pointer_Mode_FpsMouse" xml:space="preserve"><value>FPSマウス</value></data>
+  <data name="Pad_Pointer_Mode_43" xml:space="preserve"><value>4:3ボーダー</value></data>
+  <data name="Pad_Pointer_Mode_169" xml:space="preserve"><value>16:9ボーダー</value></data>
+  <data name="Pad_Pointer_FpsSpeed" xml:space="preserve"><value>FPS速度</value></data>
+  <data name="Pad_Pointer_FpsSpeed_Tooltip" xml:space="preserve"><value>最大傾き時のカーソル速度。35はTouchmote系の既定値です。</value></data>
+  <data name="Pad_Pointer_ModeNote" xml:space="preserve"><value>モードが変えるのはカーソルだけです。スティックやボタンに割り当てたIRポインターX/Yは生のエイムを読み続けます。</value></data>
+  <data name="Pad_ResetPointerMode" xml:space="preserve"><value>ポインターモードをリセット</value></data>
+  <data name="Pad_ResetPointerFpsSpeed" xml:space="preserve"><value>FPS速度をリセット</value></data>
+  <data name="Mapping_IrOffscreen" xml:space="preserve"><value>IR画面外</value></data>
+  <data name="MacroAction_Type_PointerModeCycle" xml:space="preserve"><value>ポインターモード切り替え</value></data>
+  <data name="MacroAction_PointerModeCycle_Format" xml:space="preserve"><value>{0}個のポインターモードを順に切り替え</value></data>
+  <data name="MacroAction_PointerModeCycle_Tooltip" xml:space="preserve"><value>スロット上のIR対応リモコンすべてで、下で選んだモードの間をWiiポインターモードが順に進みます。発火ごとに次のチェック済みモードへ移ります。位置はアクションごとで、再起動でリセットされます。</value></data>
+  <data name="Macro_PointerCycleModes_Hint" xml:space="preserve"><value>マクロで切り替えるポインターモードを選択します。発火ごとに次のチェック済みモードへ進みます。</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>オーディオ</value></data>
   <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>マクロサウンドとミラーされたシステム音声は、選択中のコントローラーの内蔵スピーカーからUSBまたはBluetooth経由で再生されます。上のドロップダウンでデバイスを選択してください。</value></data>
   <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>サウンド出力</value></data>

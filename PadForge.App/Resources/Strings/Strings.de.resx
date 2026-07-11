@@ -1842,6 +1842,22 @@
   <data name="Pad_Pointer_SensorBar_Below" xml:space="preserve"><value>Unter dem Bildschirm</value></data>
   <data name="Pad_Pointer_Compensation" xml:space="preserve"><value>Vertikaler Versatz</value></data>
   <data name="Pad_Pointer_Smoothing" xml:space="preserve"><value>Glättung</value></data>
+  <data name="Pad_Pointer_ModeTitle" xml:space="preserve"><value>Zeigermodus</value></data>
+  <data name="Pad_Pointer_Mode_Tooltip" xml:space="preserve"><value>Wie das Zielen den Mauszeiger steuert. Maus zeigt absolut. FPS-Maus macht aus dem Versatz zur Bildschirmmitte eine gleichmäßige Zeigergeschwindigkeit. Die Rahmenmodi beschränken den Zeiger auf einen 4:3- oder 16:9-Bereich und heften ihn an den Rand, wenn daneben oder weg gezielt wird.</value></data>
+  <data name="Pad_Pointer_Mode_Mouse" xml:space="preserve"><value>Maus</value></data>
+  <data name="Pad_Pointer_Mode_FpsMouse" xml:space="preserve"><value>FPS-Maus</value></data>
+  <data name="Pad_Pointer_Mode_43" xml:space="preserve"><value>4:3-Rahmen</value></data>
+  <data name="Pad_Pointer_Mode_169" xml:space="preserve"><value>16:9-Rahmen</value></data>
+  <data name="Pad_Pointer_FpsSpeed" xml:space="preserve"><value>FPS-Geschwindigkeit</value></data>
+  <data name="Pad_Pointer_FpsSpeed_Tooltip" xml:space="preserve"><value>Zeigergeschwindigkeit bei vollem Ausschlag. 35 entspricht dem Touchmote-Standard.</value></data>
+  <data name="Pad_Pointer_ModeNote" xml:space="preserve"><value>Die Modi formen nur den Zeiger. Auf Sticks oder Tasten gelegtes IR-Zeiger X/Y liest weiterhin das rohe Zielen.</value></data>
+  <data name="Pad_ResetPointerMode" xml:space="preserve"><value>Zeigermodus zurücksetzen</value></data>
+  <data name="Pad_ResetPointerFpsSpeed" xml:space="preserve"><value>FPS-Geschwindigkeit zurücksetzen</value></data>
+  <data name="Mapping_IrOffscreen" xml:space="preserve"><value>IR außerhalb</value></data>
+  <data name="MacroAction_Type_PointerModeCycle" xml:space="preserve"><value>Zeigermodi durchschalten</value></data>
+  <data name="MacroAction_PointerModeCycle_Format" xml:space="preserve"><value>Durch {0} Zeigermodi schalten</value></data>
+  <data name="MacroAction_PointerModeCycle_Tooltip" xml:space="preserve"><value>Schaltet den Wii-Zeigermodus für jede IR-fähige Remote des Slots durch die unten gewählten Modi. Jede Auslösung springt zum nächsten angehakten Modus. Die Position ist pro Aktion und wird beim Neustart zurückgesetzt.</value></data>
+  <data name="Macro_PointerCycleModes_Hint" xml:space="preserve"><value>Wählen, welche Zeigermodi das Makro durchschalten soll. Jede Auslösung springt zum nächsten angehakten Modus.</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>Audio</value></data>
   <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Makro-Sounds und gespiegeltes Systemaudio laufen über den eingebauten Lautsprecher des ausgewählten Controllers, per USB oder Bluetooth. Wähle das Gerät im Dropdown darüber. Alle Einstellungen hier folgen ihm.</value></data>
   <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>Soundausgabe</value></data>

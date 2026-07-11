@@ -552,6 +552,19 @@ namespace PadForge.Engine.Data
         /// smoothing).</summary>
         [XmlElement] public string IrSmoothing { get; set; } = "0";
 
+        /// <summary>Wii IR pointer mode (issue #203): "Mouse" (default,
+        /// absolute aim), "FpsMouse" (aim offset from center drives cursor
+        /// velocity, the Touchmote-lineage fpsmouse), "Mouse43" / "Mouse169"
+        /// (cursor confined to an aspect region with border pin). Per
+        /// (device, slot). Modes shape the CURSOR drive only; "IR Pointer
+        /// X/Y" mapping sources read raw regardless.</summary>
+        [XmlElement] public string PointerMode { get; set; } = "Mouse";
+
+        /// <summary>FPS Mouse speed knob (issue #203), pixels per 10 ms at
+        /// full deflection. 35 is the Touchmote-lineage fpsmouse_speed
+        /// default.</summary>
+        [XmlElement] public string PointerFpsSpeed { get; set; } = "35";
+
         /// <summary>At-rest bias for Pitch axis (rad/s), subtracted from
         /// the raw SDL3 gyro reading at the source-coercion read point.
         /// Per-(device, slot) — re-running calibration on slot A doesn't
@@ -1279,6 +1292,8 @@ namespace PadForge.Engine.Data
             sb.Append(IrSensorBarPos); sb.Append('|');
             sb.Append(IrSensorBarComp); sb.Append('|');
             sb.Append(IrSmoothing); sb.Append('|');
+            sb.Append(PointerMode); sb.Append('|');
+            sb.Append(PointerFpsSpeed); sb.Append('|');
             sb.Append(GyroBiasPitch); sb.Append('|');
             sb.Append(GyroBiasYaw); sb.Append('|');
             sb.Append(GyroBiasRoll); sb.Append('|');
@@ -1762,6 +1777,7 @@ namespace PadForge.Engine.Data
             nameof(GyroSensitivityUnits), nameof(GyroEasyAimStickThreshold),
             nameof(GyroEngageStickSide), nameof(GyroEngageStickDirection),
             nameof(IrSensorBarPos), nameof(IrSensorBarComp), nameof(IrSmoothing),
+            nameof(PointerMode), nameof(PointerFpsSpeed),
             nameof(GyroBiasPitch), nameof(GyroBiasYaw), nameof(GyroBiasRoll),
             nameof(GyroCalibratedAtUtc),
             nameof(GyroSpace), nameof(GyroPlayerSpaceYawRelaxFactor),

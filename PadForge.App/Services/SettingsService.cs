@@ -2197,6 +2197,8 @@ namespace PadForge.Services
                 padVm.IrSensorBarPos = TryParseInt(ps.IrSensorBarPos, 0);
                 padVm.IrSensorBarCompPercent = (int)Math.Round(TryParseDouble(ps.IrSensorBarComp, 0) * 100.0);
                 padVm.IrSmoothingPercent = (int)Math.Round(TryParseDouble(ps.IrSmoothing, 0) * 100.0);
+                padVm.PointerMode = string.IsNullOrEmpty(ps.PointerMode) ? "Mouse" : ps.PointerMode;
+                padVm.PointerFpsSpeed = TryParseInt(ps.PointerFpsSpeed, 35);
 
                 // Load JoyShockMapper-canongyro extensions.
                 padVm.GyroSpace = string.IsNullOrEmpty(ps.GyroSpace) ? "Local" : ps.GyroSpace;
@@ -2480,6 +2482,7 @@ namespace PadForge.Services
                 LightbarPaletteCsv = ad.LightbarPaletteCsv ?? string.Empty,
                 LightbarTargetMode = ad.LightbarTargetMode,
                 LightbarCycleModesCsv = ad.LightbarCycleModesCsv,
+                PointerCycleModesCsv = ad.PointerCycleModesCsv,
                 SoundFilePath = ad.SoundFilePath ?? string.Empty,
                 SoundVolume = ad.SoundVolume > 0 ? ad.SoundVolume : 100,
                 SoundLoop = ad.SoundLoop,
@@ -3376,6 +3379,7 @@ namespace PadForge.Services
                 LightbarPaletteCsv = a.LightbarPaletteCsv,
                 LightbarTargetMode = a.LightbarTargetMode,
                 LightbarCycleModesCsv = a.LightbarCycleModesCsv,
+                PointerCycleModesCsv = a.PointerCycleModesCsv,
                 SoundFilePath = string.IsNullOrEmpty(a.SoundFilePath) ? null : a.SoundFilePath,
                 SoundVolume = a.SoundVolume,
                 SoundLoop = a.SoundLoop,
@@ -3502,6 +3506,8 @@ namespace PadForge.Services
                     ps.IrSensorBarPos = padVm.IrSensorBarPos.ToString(ic);
                     ps.IrSensorBarComp = (padVm.IrSensorBarCompPercent / 100.0).ToString(ic);
                     ps.IrSmoothing = (padVm.IrSmoothingPercent / 100.0).ToString(ic);
+                    ps.PointerMode = string.IsNullOrEmpty(padVm.PointerMode) ? "Mouse" : padVm.PointerMode;
+                    ps.PointerFpsSpeed = padVm.PointerFpsSpeed.ToString(ic);
 
                     // Write JoyShockMapper-canongyro extensions.
                     ps.GyroSpace = padVm.GyroSpace ?? "Local";
@@ -4712,6 +4718,7 @@ namespace PadForge.Services
         [XmlElement] public ViewModels.LightbarMode LightbarTargetMode { get; set; } = ViewModels.LightbarMode.Static;
         /// <summary>CSV of LightbarMode int values for LightbarModeCycle.</summary>
         [XmlElement] public string LightbarCycleModesCsv { get; set; } = "1,2,3,4,11,12,13";
+        [XmlElement] public string PointerCycleModesCsv { get; set; } = "Mouse,FpsMouse,Mouse43,Mouse169";
 
         /// <summary>Sound file path for PlaySound (issue #83). Null when unset.</summary>
         [XmlElement]

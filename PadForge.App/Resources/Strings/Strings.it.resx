@@ -1864,6 +1864,22 @@
   <data name="Pad_Pointer_SensorBar_Below" xml:space="preserve"><value>Sotto lo schermo</value></data>
   <data name="Pad_Pointer_Compensation" xml:space="preserve"><value>Scostamento verticale</value></data>
   <data name="Pad_Pointer_Smoothing" xml:space="preserve"><value>Smussatura</value></data>
+  <data name="Pad_Pointer_ModeTitle" xml:space="preserve"><value>Modalità puntatore</value></data>
+  <data name="Pad_Pointer_Mode_Tooltip" xml:space="preserve"><value>Come la mira guida il cursore. Mouse punta in modo assoluto. Mouse FPS trasforma lo scostamento dal centro in velocità fluida del cursore. Le modalità bordo confinano il cursore in una regione 4:3 o 16:9 e lo fissano al bordo quando si mira fuori.</value></data>
+  <data name="Pad_Pointer_Mode_Mouse" xml:space="preserve"><value>Mouse</value></data>
+  <data name="Pad_Pointer_Mode_FpsMouse" xml:space="preserve"><value>Mouse FPS</value></data>
+  <data name="Pad_Pointer_Mode_43" xml:space="preserve"><value>Bordo 4:3</value></data>
+  <data name="Pad_Pointer_Mode_169" xml:space="preserve"><value>Bordo 16:9</value></data>
+  <data name="Pad_Pointer_FpsSpeed" xml:space="preserve"><value>Velocità FPS</value></data>
+  <data name="Pad_Pointer_FpsSpeed_Tooltip" xml:space="preserve"><value>Velocità del cursore a deflessione piena. 35 è il valore della linea Touchmote.</value></data>
+  <data name="Pad_Pointer_ModeNote" xml:space="preserve"><value>Le modalità modellano solo il cursore. IR Puntatore X/Y assegnato a stick o pulsanti continua a leggere la mira grezza.</value></data>
+  <data name="Pad_ResetPointerMode" xml:space="preserve"><value>Ripristina modalità puntatore</value></data>
+  <data name="Pad_ResetPointerFpsSpeed" xml:space="preserve"><value>Ripristina velocità FPS</value></data>
+  <data name="Mapping_IrOffscreen" xml:space="preserve"><value>IR fuori schermo</value></data>
+  <data name="MacroAction_Type_PointerModeCycle" xml:space="preserve"><value>Cicla modalità puntatore</value></data>
+  <data name="MacroAction_PointerModeCycle_Format" xml:space="preserve"><value>Cicla tra {0} modalità puntatore</value></data>
+  <data name="MacroAction_PointerModeCycle_Tooltip" xml:space="preserve"><value>Avanza la modalità puntatore Wii tra le modalità selezionate sotto per ogni telecomando IR dello slot. Ogni attivazione passa alla modalità successiva selezionata. La posizione è per azione e si azzera al riavvio.</value></data>
+  <data name="Macro_PointerCycleModes_Hint" xml:space="preserve"><value>Scegli quali modalità puntatore il macro deve ciclare. Ogni attivazione passa alla successiva selezionata.</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>Audio</value></data>
   <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>I suoni delle macro e l’audio duplicato escono dall’altoparlante integrato del controller selezionato, via USB o Bluetooth. Scegli il dispositivo nel menu sopra: tutto qui lo segue.</value></data>
   <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>Uscita audio</value></data>

@@ -503,6 +503,204 @@ namespace PadForge.Common.Input
             return MapToButtonPressedSingle(state, descriptor, deadZonePercent, globalThresholdPercent, bidirectional);
         }
 
+        // ── Wii pointer modes (issue #203) ──────────────
+        // Per-(device, slot) border-mode aim memory: the last in-region
+        // aim direction in region space, so sight loss pins the cursor to
+        // the region border along where the user was last aiming instead
+        // of freezing mid-region (Ryochan7 lightgun border-pin idiom,
+        // MouseHandler.cs:1060-1130). Keyed like the IR EMA store.
+        private static readonly System.Collections.Concurrent.ConcurrentDictionary<
+            (string Dev, int Slot), (float Rx, float Ry)> _irBorderLastAim = new();
+
+        // FPS Mouse constants, grounded in the Touchmote lineage
+        // (Suegrini-4IR MouseHandler.cs): circular deadzone 0.021 of the
+        // margin half-range = 0.042 in the [-1..+1] aim range, and the
+        // three-segment response curve 0.65x / x-0.14 / 1.56x-0.56 with
+        // breakpoints 0.4 and 0.75 (continuous, reaches 1 at 1). The
+        // delta-accel and region-easing stacks are deliberate v2 tuning.
+        private const float FpsAimDeadzone = 0.042f;
+
+        // Per-(device, slot) last-update timestamps for FPS Mouse, so the
+        // synthesized velocity is pixels-per-second rather than
+        // pixels-per-poll (the poll loop targets 1 kHz but the velocity
+        // must not scale with its actual rate). Stopwatch-based for
+        // sub-millisecond resolution.
+        private static readonly System.Collections.Concurrent.ConcurrentDictionary<
+            (string Dev, int Slot), long> _fpsLastTick = new();
+
+        /// <summary>The lineage's three-segment fpsmouse response curve on a
+        /// deadzone-normalized magnitude in [0..1]. Shared with the unit
+        /// tests.</summary>
+        internal static float FpsResponseCurve(float n)
+        {
+            if (n <= 0f) return 0f;
+            if (n <= 0.4f) return 0.65f * n;
+            if (n <= 0.75f) return n - 0.14f;
+            return Math.Min(1f, 1.56f * n - 0.56f);
+        }
+
+        /// <summary>Aspect-region half-extents for a border mode on a screen
+        /// (Ryochan7 ScreenPositionCalculator.cs:760-797): pillarbox when the
+        /// screen is wider than the target (dead band on X), letterbox when
+        /// narrower (dead band on Y), full extent on the matching axis.
+        /// Returned in normalized [0..1] screen space. Shared with the unit
+        /// tests.</summary>
+        internal static (float HalfW, float HalfH) ComputeAspectRegion(
+            float screenW, float screenH, float targetAspect)
+        {
+            float sourceAspect = screenW / screenH;
+            if (sourceAspect > targetAspect)
+            {
+                float dead = (1f - targetAspect / sourceAspect) * 0.5f;
+                return (0.5f - dead, 0.5f);
+            }
+            else
+            {
+                float dead = (1f - sourceAspect / targetAspect) * 0.5f;
+                return (0.5f, 0.5f - dead);
+            }
+        }
+
+        /// <summary>Border-mode transform on one region-space aim point
+        /// (region space: [-1..+1] per axis spans the region). Inside the
+        /// region the point passes through; outside it pins to the border
+        /// along the ray from the region center through the aim point
+        /// (max-norm scale, equivalent to the lineage's atan2 edge
+        /// intersection). Shared with the unit tests.</summary>
+        internal static (float Rx, float Ry, bool Inside) TransformBorderAim(float rx, float ry)
+        {
+            float m = Math.Max(Math.Abs(rx), Math.Abs(ry));
+            if (m <= 1f) return (rx, ry, true);
+            float s = 1f / m;
+            return (rx * s, ry * s, false);
+        }
+
+        /// <summary>Applies the per-(device, slot) Wii pointer mode (issue
+        /// #203) to the KBM pointer lanes after Step 3 evaluated them.
+        /// Mouse (0) is a no-op. FpsMouse (1) converts the absolute aim
+        /// into relative velocity on the existing delta lane. Mouse43 /
+        /// Mouse169 (2/3) confine the absolute cursor to an aspect region
+        /// of the primary screen, pinning to the region border along the
+        /// aim direction when aim leaves the region or the camera loses
+        /// the sensor bar.</summary>
+        private static void ApplyPointerMode(ref KbmRawState raw,
+            string thisDeviceGuid, int slotIndex, bool irPointerDrivesMouse,
+            bool irDroveMouseX, bool irDroveMouseY)
+        {
+            var key = (thisDeviceGuid ?? "", slotIndex);
+            if (!irPointerDrivesMouse)
+            {
+                _irBorderLastAim.TryRemove(key, out _);
+                return;
+            }
+
+            var pm = PadForge.Engine.Common.Mapping.SourceCoercion.IrPointerModeProvider?
+                .Invoke(thisDeviceGuid ?? "", slotIndex);
+            int mode = pm?.mode ?? 0;
+            if (mode == 0)
+            {
+                _irBorderLastAim.TryRemove(key, out _);
+                return;
+            }
+
+            if (mode == 1)
+            {
+                // FPS Mouse: aim offset from center becomes velocity on the
+                // relative lane. The evaluated aim already carries the
+                // Pointer-tab smoothing and per-source sensitivity (the
+                // slot-scoped tuned read), and the KBM VC's sub-pixel
+                // accumulator provides the lineage's remainder carry. Speed
+                // is normalized so the lineage default (35 px per 10 ms
+                // report) lands at the same pixels-per-second here: the VC
+                // moves MouseSensitivity(15) px per poll at full deflection,
+                // polls run ~1 kHz, so full-scale delta * (speed / 150)
+                // yields speed * 100 px/s.
+                _irBorderLastAim.TryRemove(key, out _);
+                float ax = raw.MouseAbsValid && irDroveMouseX ? raw.MouseAbsX : 0f;
+                float ay = raw.MouseAbsValid && irDroveMouseY ? raw.MouseAbsY : 0f;
+                raw.MouseAbsX = 0f; raw.MouseAbsY = 0f; raw.MouseAbsValid = false;
+
+                float mag = MathF.Sqrt(ax * ax + ay * ay);
+                if (mag <= FpsAimDeadzone)
+                {
+                    // Only silence the axes IR owns: a mixed mapping (IR on
+                    // one mouse axis, a stick on the other) keeps its
+                    // stick-driven delta.
+                    if (irDroveMouseX) raw.MouseDeltaX = 0;
+                    if (irDroveMouseY) raw.MouseDeltaY = 0;
+                    return;
+                }
+                float norm = Math.Min(1f, (mag - FpsAimDeadzone) / (1f - FpsAimDeadzone));
+                float outMag = FpsResponseCurve(norm);
+                float speed = Math.Clamp(pm?.fpsSpeed ?? 35f, 1f, 200f);
+                // Time-based velocity: the speed knob is the lineage's
+                // pixels per 10 ms report, i.e. speed * 100 px/s at full
+                // deflection. The VC applies MouseSensitivity (15 px at
+                // full scale) per submit, so per-update full-scale counts
+                // = 32767 * (speed * 100 / 15) * dtSeconds. At the poll
+                // loop's nominal 1 kHz this reduces to the lineage-matched
+                // speed / 150 per tick, but measuring dt keeps the cursor
+                // speed correct if the poll cadence ever varies.
+                long nowTicks = System.Diagnostics.Stopwatch.GetTimestamp();
+                long prevTicks = _fpsLastTick.TryGetValue(key, out var pt) ? pt : 0;
+                _fpsLastTick[key] = nowTicks;
+                float dtSec = prevTicks > 0
+                    ? Math.Clamp((float)(nowTicks - prevTicks) / System.Diagnostics.Stopwatch.Frequency, 0f, 0.05f)
+                    : 0.001f;
+                float scale = outMag * 32767f * (speed * 100f / 15f) * dtSec / mag;
+                if (irDroveMouseX)
+                    raw.MouseDeltaX = (short)Math.Clamp((int)(ax * scale), short.MinValue, short.MaxValue);
+                // The VC negates MouseDeltaY into screen-Y (positive = up
+                // convention on the lane); aim Y is screen-aligned
+                // (positive = down), so negate here for aim-down = cursor-down.
+                if (irDroveMouseY)
+                    raw.MouseDeltaY = (short)Math.Clamp(-(int)(ay * scale), short.MinValue, short.MaxValue);
+                return;
+            }
+
+            // Border modes: confine the absolute cursor to the aspect region.
+            float targetAspect = mode == 2 ? 4f / 3f : 16f / 9f;
+            if (!PadForge.Services.CursorControlService.TryGetPrimarySize(out int scrW, out int scrH)
+                || scrW <= 0 || scrH <= 0)
+                return;
+            var (halfW, halfH) = ComputeAspectRegion(scrW, scrH, targetAspect);
+            if (halfW <= 0f || halfH <= 0f) return;
+
+            float rx, ry;
+            if (raw.MouseAbsValid)
+            {
+                // Screen-normalized aim [0..1] -> region space [-1..+1].
+                float u = raw.MouseAbsX * 0.5f + 0.5f;
+                float v = raw.MouseAbsY * 0.5f + 0.5f;
+                rx = (u - 0.5f) / halfW;
+                ry = (v - 0.5f) / halfH;
+                _irBorderLastAim[key] = (rx, ry);
+            }
+            else if (_irBorderLastAim.TryGetValue(key, out var last))
+            {
+                // Sight lost: pin along the last aim direction. Ryochan7
+                // resets its smoothing filters here; our EMA already reset
+                // through the tuned read's Detected gate.
+                rx = last.Rx; ry = last.Ry;
+                if (MathF.Sqrt(rx * rx + ry * ry) < 0.001f)
+                    return; // aim was dead-center: freeze rather than guess an edge
+                float m0 = Math.Max(Math.Abs(rx), Math.Abs(ry));
+                float s0 = m0 > 0f ? 1f / m0 : 0f;
+                rx *= s0; ry *= s0; // push out to the border along the aim ray
+            }
+            else
+            {
+                return; // never aimed in this mode yet: keep the freeze behavior
+            }
+
+            var (px, py, _) = TransformBorderAim(rx, ry);
+            float outU = 0.5f + px * halfW;
+            float outV = 0.5f + py * halfH;
+            raw.MouseAbsX = outU * 2f - 1f;
+            raw.MouseAbsY = outV * 2f - 1f;
+            raw.MouseAbsValid = true;
+        }
+
         /// <summary>Finds the "IR Pointer" source feeding a KBM mouse target, so
         /// the Wii pointer can be routed as an ABSOLUTE cursor position
         /// (Touchmote-style) instead of a velocity delta (issue #146). Checks
@@ -552,6 +750,7 @@ namespace PadForge.Common.Input
         /// </summary>
         private static bool IsEngineOwnedDescriptor(string s) =>
             s.StartsWith("IR Pointer ", StringComparison.Ordinal) ||
+            s.Equals("IR Offscreen", StringComparison.Ordinal) ||
             s.Equals("IR Brightness", StringComparison.Ordinal) ||
             s.StartsWith("Balance ", StringComparison.Ordinal) ||
             s.StartsWith("Mouse Position ", StringComparison.Ordinal) ||
@@ -1802,6 +2001,9 @@ namespace PadForge.Common.Input
                 }
             }
 
+            bool irPointerDrivesMouse = false;
+            bool irDroveMouseX = false, irDroveMouseY = false;
+
             // Map mouse X axis (bidirectional)
             {
                 string posDesc = ps.GetKbmMapping("KbmMouseX");
@@ -1817,6 +2019,8 @@ namespace PadForge.Common.Input
                     raw.MouseAbsX = PadForge.Engine.Common.Mapping.SourceCoercion
                         .EvaluateForBipolarAxisTarget(state, irSrcX, slotIndex);
                     if (state.Ir.Detected) raw.MouseAbsValid = true;
+                    irPointerDrivesMouse = true;
+                    irDroveMouseX = true;
                 }
                 else if (TryEvaluateMappingSetBipolarAxis(state, mappingSet, thisDeviceGuid,
                         slotIndex, "KbmMouseX", out short msxValue))
@@ -1840,6 +2044,8 @@ namespace PadForge.Common.Input
                     raw.MouseAbsY = PadForge.Engine.Common.Mapping.SourceCoercion
                         .EvaluateForBipolarAxisTarget(state, irSrcY, slotIndex);
                     if (state.Ir.Detected) raw.MouseAbsValid = true;
+                    irPointerDrivesMouse = true;
+                    irDroveMouseY = true;
                 }
                 else if (TryEvaluateMappingSetBipolarAxis(state, mappingSet, thisDeviceGuid,
                         slotIndex, "KbmMouseY", out short msyValue))
@@ -1886,6 +2092,15 @@ namespace PadForge.Common.Input
                 Common.CurveLut.GetOrBuild(ps.LeftThumbSensitivityCurveX),
                 Common.CurveLut.GetOrBuild(ps.LeftThumbSensitivityCurveY),
                 ParseDeadZoneShape(ps.LeftThumbDeadZoneShape));
+
+            // ── Wii pointer modes (issue #203) ──
+            // Placed AFTER the relative lane's deadzone so FPS Mouse's
+            // synthesized velocity is not re-deadzoned by the Left Thumb
+            // settings (its own circular deadzone already ran). Only runs
+            // when the IR pointer actually feeds the KBM mouse target;
+            // "IR Pointer X/Y" mapped to sticks stays raw by design.
+            ApplyPointerMode(ref raw, thisDeviceGuid, slotIndex,
+                irPointerDrivesMouse, irDroveMouseX, irDroveMouseY);
 
             // Map scroll axis (bidirectional)
             {

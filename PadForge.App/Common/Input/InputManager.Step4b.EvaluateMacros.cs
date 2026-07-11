@@ -1127,6 +1127,13 @@ namespace PadForge.Common.Input
                     break;
                 }
 
+                case MacroActionType.PointerModeCycle:
+                {
+                    ApplyPointerModeCycleAction(macro, action);
+                    AdvanceAction(macro);
+                    break;
+                }
+
                 case MacroActionType.SetGyroEngaged:
                 {
                     int slotIndex = macro.PadIndex;
@@ -1550,6 +1557,36 @@ namespace PadForge.Common.Input
                 }
             }
             return list.ToArray();
+        }
+
+        /// <summary>PointerModeCycle applier hook (issue #203). InputService
+        /// points this at a dispatcher hop that writes the target mode into
+        /// every IR device's PadSetting on the slot, updates the Pointer-tab
+        /// VM, and marks settings dirty. The write happens ON THE DISPATCHER
+        /// deliberately: the 30 Hz UI tick copies the VM's PointerMode over
+        /// PadSetting (SaveViewModelToPadSetting), so a poll-thread write
+        /// here could be reverted by a tick already mid-execution. Keeping
+        /// both writers on the dispatcher serializes them. The lightbar
+        /// sibling has no such seam because it mutates reference-shared
+        /// DeviceSlotConfig objects.</summary>
+        internal static Action<int, string> PointerModeCycleApply;
+
+        /// <summary>Advances the action's pointer-mode cycle (issue #203)
+        /// and hands the target mode to
+        /// <see cref="PointerModeCycleApply"/> for the dispatcher-side
+        /// write. Advancing the volatile index here keeps the cycle
+        /// deterministic even when fires outpace the dispatcher.</summary>
+        private void ApplyPointerModeCycleAction(MacroItem macro, MacroAction action)
+        {
+            int slotIndex = macro.PadIndex;
+            if (slotIndex < 0 || slotIndex >= MaxPads) return;
+
+            var modes = action.ParsedPointerCycleModes();
+            if (modes.Length == 0) return;
+
+            int idx = ((action.PointerCycleIndex % modes.Length) + modes.Length) % modes.Length;
+            action.PointerCycleIndex = idx + 1;
+            PointerModeCycleApply?.Invoke(slotIndex, modes[idx]);
         }
 
         /// <summary>Advances the action's cycle position and writes the
@@ -2105,6 +2142,11 @@ namespace PadForge.Common.Input
 
                 case MacroActionType.LightbarModeCycle:
                     ApplyLightbarModeCycleAction(macro, action);
+                    AdvanceAction(macro);
+                    break;
+
+                case MacroActionType.PointerModeCycle:
+                    ApplyPointerModeCycleAction(macro, action);
                     AdvanceAction(macro);
                     break;
             }

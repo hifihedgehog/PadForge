@@ -1842,6 +1842,22 @@
   <data name="Pad_Pointer_SensorBar_Below" xml:space="preserve"><value>En dessous de l'écran</value></data>
   <data name="Pad_Pointer_Compensation" xml:space="preserve"><value>Décalage vertical</value></data>
   <data name="Pad_Pointer_Smoothing" xml:space="preserve"><value>Lissage</value></data>
+  <data name="Pad_Pointer_ModeTitle" xml:space="preserve"><value>Mode du pointeur</value></data>
+  <data name="Pad_Pointer_Mode_Tooltip" xml:space="preserve"><value>Comment la visée pilote le curseur. Souris pointe en absolu. Souris FPS transforme l'écart au centre en vitesse fluide du curseur. Les modes bordure confinent le curseur à une zone 4:3 ou 16:9 et l'épinglent au bord quand on vise en dehors.</value></data>
+  <data name="Pad_Pointer_Mode_Mouse" xml:space="preserve"><value>Souris</value></data>
+  <data name="Pad_Pointer_Mode_FpsMouse" xml:space="preserve"><value>Souris FPS</value></data>
+  <data name="Pad_Pointer_Mode_43" xml:space="preserve"><value>Bordure 4:3</value></data>
+  <data name="Pad_Pointer_Mode_169" xml:space="preserve"><value>Bordure 16:9</value></data>
+  <data name="Pad_Pointer_FpsSpeed" xml:space="preserve"><value>Vitesse FPS</value></data>
+  <data name="Pad_Pointer_FpsSpeed_Tooltip" xml:space="preserve"><value>Vitesse du curseur à pleine déviation. 35 correspond au réglage du lignage Touchmote.</value></data>
+  <data name="Pad_Pointer_ModeNote" xml:space="preserve"><value>Les modes ne façonnent que le curseur. IR Pointeur X/Y assigné à un stick ou un bouton continue de lire la visée brute.</value></data>
+  <data name="Pad_ResetPointerMode" xml:space="preserve"><value>Réinitialiser le mode du pointeur</value></data>
+  <data name="Pad_ResetPointerFpsSpeed" xml:space="preserve"><value>Réinitialiser la vitesse FPS</value></data>
+  <data name="Mapping_IrOffscreen" xml:space="preserve"><value>IR hors écran</value></data>
+  <data name="MacroAction_Type_PointerModeCycle" xml:space="preserve"><value>Faire défiler les modes du pointeur</value></data>
+  <data name="MacroAction_PointerModeCycle_Format" xml:space="preserve"><value>Faire défiler {0} modes de pointeur</value></data>
+  <data name="MacroAction_PointerModeCycle_Tooltip" xml:space="preserve"><value>Fait avancer le mode du pointeur Wii parmi les modes cochés ci-dessous pour chaque télécommande IR du slot. Chaque déclenchement passe au mode coché suivant. La position est propre à l'action et se réinitialise au redémarrage.</value></data>
+  <data name="Macro_PointerCycleModes_Hint" xml:space="preserve"><value>Choisissez les modes de pointeur que la macro doit faire défiler. Chaque déclenchement passe au mode coché suivant.</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>Audio</value></data>
   <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Les sons de macro et l’audio dupliqué jouent par le haut-parleur intégré de la manette sélectionnée, en USB ou Bluetooth. Choisissez le périphérique dans la liste au-dessus. Tout ici le suit.</value></data>
   <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>Sortie audio</value></data>

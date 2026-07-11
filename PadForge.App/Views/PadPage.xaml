@@ -1755,6 +1755,9 @@
                                             <ComboBoxItem Content="{Binding MacroAction_Type_LightbarModeCycle, Source={x:Static strings:Strings.Instance}}"
                                                           Tag="{x:Static vm:MacroActionType.LightbarModeCycle}"
                                                           ToolTip="{Binding MacroAction_LightbarModeCycle_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                            <ComboBoxItem Content="{Binding MacroAction_Type_PointerModeCycle, Source={x:Static strings:Strings.Instance}}"
+                                                          Tag="{x:Static vm:MacroActionType.PointerModeCycle}"
+                                                          ToolTip="{Binding MacroAction_PointerModeCycle_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                             <ComboBoxItem Content="{Binding MacroAction_Type_Rumble, Source={x:Static strings:Strings.Instance}}"
                                                           Tag="{x:Static vm:MacroActionType.Rumble}"
                                                           ToolTip="{Binding MacroAction_Rumble_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
@@ -2203,6 +2206,33 @@
                                                        FontSize="11" TextWrapping="Wrap" Margin="0,0,0,6"
                                                        Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
                                             <ItemsControl ItemsSource="{Binding CycleModeOptions}">
+                                                <ItemsControl.ItemsPanel>
+                                                    <ItemsPanelTemplate>
+                                                        <WrapPanel Orientation="Horizontal"/>
+                                                    </ItemsPanelTemplate>
+                                                </ItemsControl.ItemsPanel>
+                                                <ItemsControl.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}" Content="{Binding Label}"
+                                                                  IsChecked="{Binding IsChecked, Mode=TwoWay}"
+                                                                  MinWidth="160" Margin="0,0,8,4"/>
+                                                    </DataTemplate>
+                                                </ItemsControl.ItemTemplate>
+                                            </ItemsControl>
+                                        </StackPanel>
+                                    </Border>
+
+                                    <!-- Pointer Mode Cycle card (issue #203), same shape as the
+                                         lightbar cycle card above. -->
+                                    <Border Style="{StaticResource CardBorder}" Margin="0,0,0,6"
+                                            Visibility="{Binding IsPointerModeCycleType, Converter={StaticResource BoolToVisibilityConverter}}">
+                                        <StackPanel>
+                                            <TextBlock Text="{Binding MacroAction_Type_PointerModeCycle, Source={x:Static strings:Strings.Instance}}"
+                                                       FontWeight="SemiBold" Margin="0,0,0,4"/>
+                                            <TextBlock Text="{Binding Macro_PointerCycleModes_Hint, Source={x:Static strings:Strings.Instance}}"
+                                                       FontSize="11" TextWrapping="Wrap" Margin="0,0,0,6"
+                                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                                            <ItemsControl ItemsSource="{Binding PointerCycleModeOptions}">
                                                 <ItemsControl.ItemsPanel>
                                                     <ItemsPanelTemplate>
                                                         <WrapPanel Orientation="Horizontal"/>
@@ -10051,6 +10081,57 @@
                         <TextBlock Text="{Binding Pad_Pointer_Subtitle, Source={x:Static strings:Strings.Instance}}"
                                    Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                    TextWrapping="Wrap" Margin="0,0,0,16"/>
+
+                        <!-- Pointer Mode card (issue #203): how the aim drives the
+                             OS cursor. Modes shape the cursor drive only; "IR
+                             Pointer X/Y" mapping sources keep reading raw aim. -->
+                        <Border Style="{StaticResource CardBorder}">
+                            <StackPanel>
+                                <TextBlock Text="{Binding Pad_Pointer_ModeTitle, Source={x:Static strings:Strings.Instance}}"
+                                           Style="{StaticResource CardTitle}" Margin="0,0,0,8"/>
+
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                    <ComboBox Width="240" SelectedValuePath="Tag"
+                                              SelectedValue="{Binding PointerMode, Mode=TwoWay}"
+                                              ToolTip="{Binding Pad_Pointer_Mode_Tooltip, Source={x:Static strings:Strings.Instance}}">
+                                        <ComboBoxItem Content="{Binding Pad_Pointer_Mode_Mouse, Source={x:Static strings:Strings.Instance}}" Tag="Mouse"/>
+                                        <ComboBoxItem Content="{Binding Pad_Pointer_Mode_FpsMouse, Source={x:Static strings:Strings.Instance}}" Tag="FpsMouse"/>
+                                        <ComboBoxItem Content="{Binding Pad_Pointer_Mode_43, Source={x:Static strings:Strings.Instance}}" Tag="Mouse43"/>
+                                        <ComboBoxItem Content="{Binding Pad_Pointer_Mode_169, Source={x:Static strings:Strings.Instance}}" Tag="Mouse169"/>
+                                    </ComboBox>
+                                    <ui:Button Command="{Binding ResetPointerModeCommand}" Style="{StaticResource ResetButton}"
+                                            ToolTip="{Binding Pad_ResetPointerMode, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
+
+                                <!-- FPS speed knob, FpsMouse only. -->
+                                <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+                                    <StackPanel.Style>
+                                        <Style TargetType="StackPanel">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding PointerMode}" Value="FpsMouse">
+                                                    <Setter Property="Visibility" Value="Visible"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </StackPanel.Style>
+                                    <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Pad_Pointer_FpsSpeed, Source={x:Static strings:Strings.Instance}}"
+                                               VerticalAlignment="Center" Margin="0,0,8,0"
+                                               ToolTip="{Binding Pad_Pointer_FpsSpeed_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <Slider Value="{Binding PointerFpsSpeed, Mode=TwoWay}"
+                                            Minimum="5" Maximum="100" Width="200" VerticalAlignment="Center"/>
+                                    <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding PointerFpsSpeed}"
+                                               FontFamily="{StaticResource TelemetryFontFamily}"
+                                               VerticalAlignment="Center" Margin="8,0,0,0" MinWidth="30"/>
+                                    <ui:Button Command="{Binding ResetPointerFpsSpeedCommand}" Style="{StaticResource ResetButton}"
+                                            ToolTip="{Binding Pad_ResetPointerFpsSpeed, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
+
+                                <TextBlock Text="{Binding Pad_Pointer_ModeNote, Source={x:Static strings:Strings.Instance}}"
+                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                           FontSize="11" TextWrapping="Wrap" Margin="0,8,0,0"/>
+                            </StackPanel>
+                        </Border>
 
                         <Border Style="{StaticResource CardBorder}">
                             <StackPanel>

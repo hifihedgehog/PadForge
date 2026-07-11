@@ -2060,6 +2060,22 @@
   <data name="Pad_Pointer_SensorBar_Below" xml:space="preserve"><value>Below the Screen</value></data>
   <data name="Pad_Pointer_Compensation" xml:space="preserve"><value>Vertical Offset</value></data>
   <data name="Pad_Pointer_Smoothing" xml:space="preserve"><value>Smoothing</value></data>
+  <data name="Pad_Pointer_ModeTitle" xml:space="preserve"><value>Pointer Mode</value></data>
+  <data name="Pad_Pointer_Mode_Tooltip" xml:space="preserve"><value>How the aim drives the OS cursor. Mouse points absolutely. FPS Mouse turns the offset from screen center into smooth cursor velocity. The border modes confine the cursor to a 4:3 or 16:9 region and pin it to the border when you aim outside or away.</value></data>
+  <data name="Pad_Pointer_Mode_Mouse" xml:space="preserve"><value>Mouse</value></data>
+  <data name="Pad_Pointer_Mode_FpsMouse" xml:space="preserve"><value>FPS Mouse</value></data>
+  <data name="Pad_Pointer_Mode_43" xml:space="preserve"><value>4:3 Border</value></data>
+  <data name="Pad_Pointer_Mode_169" xml:space="preserve"><value>16:9 Border</value></data>
+  <data name="Pad_Pointer_FpsSpeed" xml:space="preserve"><value>FPS Speed</value></data>
+  <data name="Pad_Pointer_FpsSpeed_Tooltip" xml:space="preserve"><value>Cursor speed at full deflection. 35 matches the Touchmote-lineage default.</value></data>
+  <data name="Pad_Pointer_ModeNote" xml:space="preserve"><value>Modes shape the cursor only. IR Pointer X/Y mapped to sticks or buttons keeps reading the raw aim.</value></data>
+  <data name="Pad_ResetPointerMode" xml:space="preserve"><value>Reset Pointer Mode</value></data>
+  <data name="Pad_ResetPointerFpsSpeed" xml:space="preserve"><value>Reset FPS Speed</value></data>
+  <data name="Mapping_IrOffscreen" xml:space="preserve"><value>IR Offscreen</value></data>
+  <data name="MacroAction_Type_PointerModeCycle" xml:space="preserve"><value>Cycle Pointer Modes</value></data>
+  <data name="MacroAction_PointerModeCycle_Format" xml:space="preserve"><value>Cycle through {0} pointer modes</value></data>
+  <data name="MacroAction_PointerModeCycle_Tooltip" xml:space="preserve"><value>Advances the Wii pointer mode through the modes selected below for every IR-capable remote on the slot. Each fire moves to the next checked mode. The cycle position is per-action and resets on app restart.</value></data>
+  <data name="Macro_PointerCycleModes_Hint" xml:space="preserve"><value>Pick which pointer modes the macro should cycle through. Each fire advances to the next checked mode.</value></data>
   <data name="Pad_Audio_Header" xml:space="preserve"><value>Audio</value></data>
   <data name="Pad_Audio_Subtitle" xml:space="preserve"><value>Macro sounds and mirrored system audio play through the selected controller’s built-in speaker, over USB or Bluetooth. Pick the device in the dropdown above. Every setting here follows it.</value></data>
   <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>Sound Output</value></data>

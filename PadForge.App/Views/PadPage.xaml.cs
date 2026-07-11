@@ -3105,12 +3105,21 @@ namespace PadForge.Views
             return CurveLut.FindSerializedByDisplayName(displayName);
         }
 
+        // The SelectedItem side is OneWay-bound to a name computed by
+        // CurveLut.MatchPreset over the NORMALIZED stored curve, so a
+        // binding-driven re-selection can arrive while the stored value is a
+        // non-canonical spelling of the same preset (legacy single-number
+        // values, CurveEditor's F3 output). Writing the canonical spelling
+        // back in that case dirties the config without any user action, so
+        // each handler skips the write when the stored curve already
+        // normalizes to the picked preset.
         private void StickPresetX_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (sender is ComboBox cb && cb.SelectedItem is string name && cb.Tag is StickConfigItem item)
             {
                 var serialized = FindPresetSerialized(name);
-                if (serialized != null) item.SensitivityCurveX = serialized;
+                if (serialized != null && CurveLut.Normalize(item.SensitivityCurveX) != CurveLut.Normalize(serialized))
+                    item.SensitivityCurveX = serialized;
             }
         }
 
@@ -3119,7 +3128,8 @@ namespace PadForge.Views
             if (sender is ComboBox cb && cb.SelectedItem is string name && cb.Tag is StickConfigItem item)
             {
                 var serialized = FindPresetSerialized(name);
-                if (serialized != null) item.SensitivityCurveY = serialized;
+                if (serialized != null && CurveLut.Normalize(item.SensitivityCurveY) != CurveLut.Normalize(serialized))
+                    item.SensitivityCurveY = serialized;
             }
         }
 
@@ -3128,7 +3138,8 @@ namespace PadForge.Views
             if (sender is ComboBox cb && cb.SelectedItem is string name && cb.Tag is TriggerConfigItem item)
             {
                 var serialized = FindPresetSerialized(name);
-                if (serialized != null) item.SensitivityCurve = serialized;
+                if (serialized != null && CurveLut.Normalize(item.SensitivityCurve) != CurveLut.Normalize(serialized))
+                    item.SensitivityCurve = serialized;
             }
         }
 
@@ -3154,7 +3165,17 @@ namespace PadForge.Views
         private void AppVolumeProcessDropDown_Opened(object sender, EventArgs e)
         {
             if (sender is ComboBox cb && cb.DataContext is MacroAction action)
+            {
+                // The refresh Clear()s AudioProcessNames, which drops the
+                // Selector's current item and pushes an empty Text through the
+                // TwoWay ProcessName binding before the re-Add. Capture and
+                // restore so opening the picker to look doesn't blank the
+                // saved process (same trap as MicLedDevicePicker below).
+                var keep = action.ProcessName;
                 action.RefreshAudioProcessesCommand.Execute(null);
+                if (!string.IsNullOrEmpty(keep) && action.ProcessName != keep)
+                    action.ProcessName = keep;
+            }
         }
 
         /// <summary>

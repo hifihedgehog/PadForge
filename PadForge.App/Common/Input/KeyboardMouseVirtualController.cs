@@ -97,6 +97,13 @@ namespace PadForge.Common.Input
             _prevMouseButtons = raw.MouseButtons;
 
             // --- Mouse movement (deadzone already applied in Step 3) ---
+            // Routed through the injector accumulator, never a SendInput on
+            // this (the poll) thread: injected mouse movement traverses
+            // every process's low-level mouse hook chain synchronously, and
+            // a stick at full deflection crosses the accumulator nearly
+            // every tick. The macro mouse path measured this exact
+            // per-poll-SendInput mechanism collapsing the loop to ~200 Hz
+            // and grew the injector thread; this lane rides the same one.
             if (raw.MouseDeltaX != 0 || raw.MouseDeltaY != 0)
             {
                 _mxAccumulator += raw.MouseDeltaX / 32767.0f * MouseSensitivity;
@@ -106,7 +113,7 @@ namespace PadForge.Common.Input
                 _mxAccumulator -= dx;
                 _myAccumulator -= dy;
                 if (dx != 0 || dy != 0)
-                    SendMouseMove(dx, dy);
+                    InputManager.AccumulateMouseMoveInput(dx, dy);
             }
 
             // --- Absolute pointer (Wii IR pointing, issue #146) ---
@@ -120,6 +127,17 @@ namespace PadForge.Common.Input
             {
                 int px = (int)MathF.Round((raw.MouseAbsX * 0.5f + 0.5f) * (absW - 1));
                 int py = (int)MathF.Round((raw.MouseAbsY * 0.5f + 0.5f) * (absH - 1));
+                // Mixed mapping (IR on one mouse axis, a stick on the other):
+                // only one coordinate is absolute-driven. The un-driven one
+                // keeps the cursor's current position instead of recentering
+                // to the 0f field default every poll, which pinned the
+                // stick-driven axis. Producers that predate the per-axis
+                // flags leave both false and take the both-axes path.
+                if (raw.MouseAbsXValid != raw.MouseAbsYValid && GetCursorPos(out POINT cur))
+                {
+                    if (!raw.MouseAbsXValid) px = cur.X;
+                    if (!raw.MouseAbsYValid) py = cur.Y;
+                }
                 SetCursorPos(Math.Clamp(px, 0, absW - 1), Math.Clamp(py, 0, absH - 1));
             }
 
@@ -130,7 +148,7 @@ namespace PadForge.Common.Input
                 int scroll = (int)_scrollAccumulator;
                 _scrollAccumulator -= scroll;
                 if (scroll != 0)
-                    SendMouseWheel(scroll * 120); // 120 = WHEEL_DELTA
+                    InputManager.AccumulateMouseScrollInput(scroll * 120); // 120 = WHEEL_DELTA
             }
 
             // --- Horizontal mouse scroll (issue #154, the office-mouse tilt
@@ -142,7 +160,7 @@ namespace PadForge.Common.Input
                 int scrollH = (int)_scrollAccumulatorH;
                 _scrollAccumulatorH -= scrollH;
                 if (scrollH != 0)
-                    SendMouseWheelH(scrollH * 120); // 120 = WHEEL_DELTA
+                    InputManager.AccumulateMouseScrollHInput(scrollH * 120); // 120 = WHEEL_DELTA
             }
         }
 
@@ -226,7 +244,6 @@ namespace PadForge.Common.Input
         private const int INPUT_MOUSE = 0;
         private const int INPUT_KEYBOARD = 1;
 
-        private const uint MOUSEEVENTF_MOVE = 0x0001;
         private const uint MOUSEEVENTF_LEFTDOWN = 0x0002;
         private const uint MOUSEEVENTF_LEFTUP = 0x0004;
         private const uint MOUSEEVENTF_RIGHTDOWN = 0x0008;
@@ -235,8 +252,6 @@ namespace PadForge.Common.Input
         private const uint MOUSEEVENTF_MIDDLEUP = 0x0040;
         private const uint MOUSEEVENTF_XDOWN = 0x0080;
         private const uint MOUSEEVENTF_XUP = 0x0100;
-        private const uint MOUSEEVENTF_WHEEL = 0x0800;
-        private const uint MOUSEEVENTF_HWHEEL = 0x01000;
 
         private const uint XBUTTON1 = 0x0001;
         private const uint XBUTTON2 = 0x0002;
@@ -286,6 +301,19 @@ namespace PadForge.Common.Input
         [DllImport("user32.dll")]
         private static extern bool SetCursorPos(int x, int y);
 
+        [StructLayout(LayoutKind.Sequential)]
+        private struct POINT
+        {
+            public int X;
+            public int Y;
+        }
+
+        // Current cursor position, read when a mixed mapping drives only
+        // one absolute axis so the other coordinate passes through
+        // unchanged (the delta-driven axis keeps its integrated position).
+        [DllImport("user32.dll")]
+        private static extern bool GetCursorPos(out POINT lpPoint);
+
         [DllImport("user32.dll")]
         private static extern uint MapVirtualKeyW(uint uCode, uint uMapType);
 
@@ -301,24 +329,6 @@ namespace PadForge.Common.Input
                         wVk = vk,
                         wScan = (ushort)MapVirtualKeyW(vk, 0),
                         dwFlags = down ? 0u : KEYEVENTF_KEYUP
-                    }
-                }
-            };
-            SendInput(1, new[] { input }, Marshal.SizeOf<INPUT>());
-        }
-
-        private static void SendMouseMove(int dx, int dy)
-        {
-            var input = new INPUT
-            {
-                type = INPUT_MOUSE,
-                u = new InputUnion
-                {
-                    mi = new MOUSEINPUT
-                    {
-                        dx = dx,
-                        dy = dy,
-                        dwFlags = MOUSEEVENTF_MOVE
                     }
                 }
             };
@@ -355,38 +365,5 @@ namespace PadForge.Common.Input
             SendInput(1, new[] { input }, Marshal.SizeOf<INPUT>());
         }
 
-        private static void SendMouseWheel(int delta)
-        {
-            var input = new INPUT
-            {
-                type = INPUT_MOUSE,
-                u = new InputUnion
-                {
-                    mi = new MOUSEINPUT
-                    {
-                        dwFlags = MOUSEEVENTF_WHEEL,
-                        mouseData = (uint)delta
-                    }
-                }
-            };
-            SendInput(1, new[] { input }, Marshal.SizeOf<INPUT>());
-        }
-
-        private static void SendMouseWheelH(int delta)
-        {
-            var input = new INPUT
-            {
-                type = INPUT_MOUSE,
-                u = new InputUnion
-                {
-                    mi = new MOUSEINPUT
-                    {
-                        dwFlags = MOUSEEVENTF_HWHEEL,
-                        mouseData = (uint)delta
-                    }
-                }
-            };
-            SendInput(1, new[] { input }, Marshal.SizeOf<INPUT>());
-        }
     }
 }

@@ -59,10 +59,15 @@ namespace PadForge.Common.Input
             public IntPtr hEvent;
         }
 
+        // IntPtr buffer, not byte[]: the marshaler's automatic pin on a byte[]
+        // parameter ends when WriteFile returns ERROR_IO_PENDING, leaving the
+        // kernel reading a movable managed array for the whole pending window.
+        // The caller pins for the full I/O lifetime (the house pattern in
+        // HapticToneService.OverlappedWrite and both BtWritePools).
         [DllImport("kernel32.dll", SetLastError = true)]
         private static extern bool WriteFile(
             IntPtr hFile,
-            byte[] lpBuffer,
+            IntPtr lpBuffer,
             uint nNumberOfBytesToWrite,
             IntPtr lpNumberOfBytesWritten,
             ref OVERLAPPED lpOverlapped);
@@ -205,10 +210,14 @@ namespace PadForge.Common.Input
                 IntPtr ev = CreateEventW(IntPtr.Zero, true, false, null);
                 if (ev == IntPtr.Zero) return false;
 
+                // Pin held until every path below has passed its unbounded
+                // GetOverlappedResult (or established no I/O is pending), so
+                // the kernel never reads a moved buffer mid-write.
+                var pin = GCHandle.Alloc(buf, GCHandleType.Pinned);
                 try
                 {
                     var ol = new OVERLAPPED { hEvent = ev };
-                    bool ok = WriteFile(handle, buf, (uint)buf.Length, IntPtr.Zero, ref ol);
+                    bool ok = WriteFile(handle, pin.AddrOfPinnedObject(), (uint)buf.Length, IntPtr.Zero, ref ol);
                     if (!ok)
                     {
                         int err = Marshal.GetLastWin32Error();
@@ -217,10 +226,10 @@ namespace PadForge.Common.Input
                         {
                             // Timed out. CancelIo only REQUESTS abort; the write can
                             // still be in flight, and `ol` is a stack local while `buf`
-                            // is a pinned-only-for-the-call managed array. Block until
+                            // is pinned only until the finally below. Block until
                             // the cancelled I/O actually completes before unwinding, or
                             // the kernel writes completion status into freed stack
-                            // memory / reads a moved buffer (the sibling drain in
+                            // memory / reads an unpinned buffer (the sibling drain in
                             // HapticToneService.OverlappedWrite exists for this reason).
                             CancelIo(handle);
                             GetOverlappedResult(handle, ref ol, out _, true);
@@ -231,6 +240,7 @@ namespace PadForge.Common.Input
                 }
                 finally
                 {
+                    pin.Free();
                     CloseHandle(ev);
                 }
             }

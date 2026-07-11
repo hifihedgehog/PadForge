@@ -10264,11 +10264,11 @@
                                                    VerticalAlignment="Center"
                                                    ToolTip="{Binding Pad_MouseGestures_Button_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                         <WrapPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
-                                            <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}" Content="Left Click" VerticalAlignment="Center" Margin="0,2,10,2"
+                                            <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}" Content="{Binding Mouse_LeftClick, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="0,2,10,2"
                                                       IsChecked="{Binding MouseGestureButtonLeft, Mode=TwoWay}"/>
-                                            <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}" Content="Middle Click" VerticalAlignment="Center" Margin="0,2,10,2"
+                                            <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}" Content="{Binding Mouse_MiddleClick, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="0,2,10,2"
                                                       IsChecked="{Binding MouseGestureButtonMiddle, Mode=TwoWay}"/>
-                                            <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}" Content="Right Click" VerticalAlignment="Center" Margin="0,2,10,2"
+                                            <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}" Content="{Binding Mouse_RightClick, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="0,2,10,2"
                                                       IsChecked="{Binding MouseGestureButtonRight, Mode=TwoWay}"/>
                                             <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}" Content="X1" VerticalAlignment="Center" Margin="0,2,10,2"
                                                       IsChecked="{Binding MouseGestureButtonX1, Mode=TwoWay}"/>

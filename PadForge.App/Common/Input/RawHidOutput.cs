@@ -43,23 +43,33 @@ namespace PadForge.Common.Input
             {
                 IntPtr ev = CreateEventW(IntPtr.Zero, true, false, null);
                 if (ev == IntPtr.Zero) return false;
+                // Pin held until every path below has passed its unbounded
+                // GetOverlappedResult (or established no I/O is pending), so
+                // the kernel never reads a moved buffer mid-write
+                // (SonyEffectWriter.WriteRaw pattern).
+                var pin = GCHandle.Alloc(outBuf, GCHandleType.Pinned);
                 try
                 {
                     var ol = new OVERLAPPED { hEvent = ev };
-                    bool ok = WriteFile(handle, outBuf, (uint)outBuf.Length, IntPtr.Zero, ref ol);
+                    bool ok = WriteFile(handle, pin.AddrOfPinnedObject(), (uint)outBuf.Length, IntPtr.Zero, ref ol);
                     if (!ok)
                     {
                         int err = Marshal.GetLastWin32Error();
                         if (err != ERROR_IO_PENDING) return false;
                         if (WaitForSingleObject(ev, 1000) != WAIT_OBJECT_0)
                         {
+                            // CancelIo only REQUESTS abort; `ol` is a stack local
+                            // and `outBuf` unpins in the finally, so block until
+                            // the cancelled I/O actually completes before
+                            // unwinding (SonyEffectWriter drain).
                             CancelIo(handle);
+                            GetOverlappedResult(handle, ref ol, out _, true);
                             return false;
                         }
                     }
                     return GetOverlappedResult(handle, ref ol, out _, true);
                 }
-                finally { CloseHandle(ev); }
+                finally { pin.Free(); CloseHandle(ev); }
             }
             finally { CloseHandle(handle); }
         }
@@ -219,8 +229,12 @@ namespace PadForge.Common.Input
             uint dwFlagsAndAttributes, IntPtr hTemplateFile);
 
         [DllImport("kernel32.dll", SetLastError = true)]
+        // IntPtr buffer, not byte[]: the marshaler's automatic pin ends when
+        // WriteFile returns ERROR_IO_PENDING, leaving the kernel reading a
+        // movable managed array for the pending window (SonyEffectWriter has
+        // the same declaration for the same reason).
         private static extern bool WriteFile(
-            IntPtr hFile, byte[] lpBuffer, uint nNumberOfBytesToWrite,
+            IntPtr hFile, IntPtr lpBuffer, uint nNumberOfBytesToWrite,
             IntPtr lpNumberOfBytesWritten, ref OVERLAPPED lpOverlapped);
 
         [DllImport("kernel32.dll", SetLastError = true)]

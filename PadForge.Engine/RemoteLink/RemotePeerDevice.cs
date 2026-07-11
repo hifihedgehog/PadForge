@@ -270,14 +270,40 @@ namespace PadForge.Engine.RemoteLink
             var items = new DeviceObjectItem[axes + buttons + povs];
             int idx = 0, offset = 0;
             for (int i = 0; i < axes; i++)
-                items[idx++] = new DeviceObjectItem
+            {
+                var item = new DeviceObjectItem
                 {
                     InputIndex = i,
-                    ObjectTypeGuid = i < StandardAxisGuids.Length ? StandardAxisGuids[i] : ObjectGuid.Slider,
-                    Name = i < StandardAxisNames.Length ? StandardAxisNames[i] : $"Slider {i - StandardAxisGuids.Length}",
                     ObjectType = DeviceObjectTypeFlags.AbsoluteAxis,
                     Offset = (offset++) * 4
                 };
+                if (i < StandardAxisGuids.Length)
+                {
+                    item.ObjectTypeGuid = StandardAxisGuids[i];
+                    item.Name = StandardAxisNames[i];
+                }
+                else if (i < CustomInputState.MaxAxis)
+                {
+                    // Axes 6..23 land in Axis[] (the frame codec's Axis block covers
+                    // 0..23), so surface them as the Axis family: a Slider GUID routed
+                    // them to "Slider N" descriptors, which read Sliders[] and were
+                    // DEAD for these axes. A non-Slider axis GUID keeps IsAxis true /
+                    // IsSlider false. Mirrors SdlDeviceWrapper's raw-open emit.
+                    item.ObjectTypeGuid = ObjectGuid.ZAxis;
+                    item.Name = $"Axis {i}";
+                }
+                else
+                {
+                    // True overflow: only axes 24+ live in Sliders[]. Key InputIndex
+                    // and the name on the Sliders[] STORAGE index (i - MaxAxis), not
+                    // the raw axis number. "Slider 24" fails the idx < MaxSliders
+                    // guard and reads dead while the value sits in Sliders[0..7].
+                    item.InputIndex = i - CustomInputState.MaxAxis;
+                    item.ObjectTypeGuid = ObjectGuid.Slider;
+                    item.Name = $"Slider {i - CustomInputState.MaxAxis}";
+                }
+                items[idx++] = item;
+            }
             for (int i = 0; i < buttons; i++)
                 items[idx++] = new DeviceObjectItem
                 {

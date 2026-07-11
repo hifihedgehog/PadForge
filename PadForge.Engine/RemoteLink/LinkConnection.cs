@@ -386,8 +386,11 @@ namespace PadForge.Engine.RemoteLink
         private static void WriteString(List<byte> buf, string s)
         {
             byte[] b = Encoding.UTF8.GetBytes(s ?? "");
-            WriteU16(buf, (ushort)Math.Min(b.Length, ushort.MaxValue));
-            buf.AddRange(b);
+            // The payload must match the u16 prefix exactly: writing the full
+            // array past a clamped prefix desyncs every field after this string.
+            int len = Math.Min(b.Length, ushort.MaxValue);
+            WriteU16(buf, (ushort)len);
+            buf.AddRange(new ArraySegment<byte>(b, 0, len));
         }
 
         private static string ReadString(byte[] data, ref int o)

@@ -173,7 +173,6 @@ namespace PadForge.Engine.RemoteLink
 
         // ── Shared finish ───────────────────────────────────────────────────
 
-        private byte[] _transcriptHash;
         private byte[] _sessionKey;
         private string _sas;
 
@@ -185,7 +184,6 @@ namespace PadForge.Engine.RemoteLink
 
         private void Finish(byte[] transcriptHash)
         {
-            _transcriptHash = transcriptHash;
             byte[] shared = PeerCrypto.X25519Agree(_ephemeral.PrivateKey, _peerEphemeralPub);
             _sessionKey = PeerCrypto.DeriveKey(shared, salt: transcriptHash, ConcatInfo(SessionInfo, transcriptHash));
             PeerCrypto.Zeroize(shared);

@@ -4976,22 +4976,33 @@ namespace PadForge.ViewModels
                 double maxRangeXNeg, double maxRangeYNeg,
                 string curveX, string curveY,
                 DeadZoneShape shape,
-                double[] boundaryLut = null)
+                double[] boundaryLut = null,
+                bool boundaryMapInInputFrame = false)
         {
             // Convert to signed [-1, 1]
             double sx = (adjNormX - 0.5) * 2.0;
             double sy = (adjNormY - 0.5) * 2.0;
             // #174: circular reshape BEFORE the dead zone, matching Step 3's
             // order, so the preview OUT dot shows the same warp the game gets.
-            // The preview's sy is screen-down; the boundary map is captured in
-            // the XInput up-positive frame, so flip Y around the warp to query
-            // the map in its own frame (an asymmetric gate would otherwise
-            // mirror about the X axis).
+            // The gamepad preview's sy is screen-down; the boundary map is
+            // captured in the XInput up-positive frame, so flip Y around the
+            // warp to query the map in its own frame (an asymmetric gate would
+            // otherwise mirror about the X axis). The Extended path captures
+            // and previews in the same raw.Axes frame, so its caller sets
+            // boundaryMapInInputFrame to skip the flip (which would render an
+            // asymmetric gate vertically mirrored there).
             if (boundaryLut != null)
             {
-                double wy = -sy;
-                Common.StickBoundary.ReshapeUnit(ref sx, ref wy, boundaryLut);
-                sy = -wy;
+                if (boundaryMapInInputFrame)
+                {
+                    Common.StickBoundary.ReshapeUnit(ref sx, ref sy, boundaryLut);
+                }
+                else
+                {
+                    double wy = -sy;
+                    Common.StickBoundary.ReshapeUnit(ref sx, ref wy, boundaryLut);
+                    sy = -wy;
+                }
             }
             double signX = Math.Sign(sx), signY = Math.Sign(sy);
             double magX = Math.Abs(sx), magY = Math.Abs(sy);
@@ -5282,17 +5293,25 @@ namespace PadForge.ViewModels
         /// </summary>
         public void UpdateFromExtendedDeviceState(ExtendedRawState raw)
         {
-            // Sync stick config items from raw axes
+            // Sync stick config items from raw axes. Calibration capture and
+            // the cold dot must read the PRE-tuning frame: raw.Axes has been
+            // through center offset / reshape / deadzone / curve by the time
+            // it reaches here, so sampling it made boundary calibration
+            // capture its own output (progressively shrinking maps on
+            // re-calibration). HardwareAxes is the producer's pre-tuning
+            // snapshot; Axes stays the fallback for producers that don't
+            // populate it.
+            var hwAxes = raw.HardwareAxes ?? raw.Axes;
             foreach (var stick in StickConfigs)
             {
-                bool hasX = stick.AxisXIndex >= 0 && raw.Axes != null && stick.AxisXIndex < raw.Axes.Length;
-                bool hasY = stick.AxisYIndex >= 0 && raw.Axes != null && stick.AxisYIndex < raw.Axes.Length;
+                bool hasX = stick.AxisXIndex >= 0 && hwAxes != null && stick.AxisXIndex < hwAxes.Length;
+                bool hasY = stick.AxisYIndex >= 0 && hwAxes != null && stick.AxisYIndex < hwAxes.Length;
 
-                if (hasX) stick.HardwareRawX = raw.Axes[stick.AxisXIndex];
-                if (hasY) stick.HardwareRawY = raw.Axes[stick.AxisYIndex];
+                if (hasX) stick.HardwareRawX = hwAxes[stick.AxisXIndex];
+                if (hasY) stick.HardwareRawY = hwAxes[stick.AxisYIndex];
 
-                double normX = hasX ? (raw.Axes[stick.AxisXIndex] - (double)short.MinValue) / 65535.0 : 0.5;
-                double normY = hasY ? (raw.Axes[stick.AxisYIndex] - (double)short.MinValue) / 65535.0 : 0.5;
+                double normX = hasX ? (hwAxes[stick.AxisXIndex] - (double)short.MinValue) / 65535.0 : 0.5;
+                double normY = hasY ? (hwAxes[stick.AxisYIndex] - (double)short.MinValue) / 65535.0 : 0.5;
 
                 // Cold input dot: raw hardware position, no offset (sibling of
                 // the gamepad path in UpdateDeviceState). This path never wrote
@@ -5311,7 +5330,10 @@ namespace PadForge.ViewModels
                     stick.DeadZoneShape,
                     // Empty for custom sticks 2+ (never calibrated), so this is a
                     // no-op there, matching the runtime's sticks-0/1-only warp.
-                    Common.StickBoundary.GetOrBuild(stick.BoundaryMap));
+                    Common.StickBoundary.GetOrBuild(stick.BoundaryMap),
+                    // Extended capture (HardwareRawX/Y) and this preview input
+                    // share the raw.Axes frame; no screen-down flip applies.
+                    boundaryMapInInputFrame: true);
 
                 if (hasX) { stick.LiveX = vx; stick.RawX = (short)Math.Clamp((ox - 0.5) * 2.0 * 32767, short.MinValue, short.MaxValue); }
                 if (hasY) { stick.LiveY = vy; stick.RawY = (short)Math.Clamp((0.5 - oy) * 2.0 * 32767, short.MinValue, short.MaxValue); }

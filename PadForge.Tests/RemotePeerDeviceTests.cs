@@ -154,6 +154,40 @@ namespace PadForge.Tests
         }
 
         [Fact]
+        public void GetDeviceObjects_ExtraAxesReadAxisStorageNotSliders()
+        {
+            // Axes 6..23 land in Axis[] (the frame codec's Axis block covers
+            // 0..23), so they must synthesize as the Axis family: a Slider GUID
+            // would produce "Slider N" descriptors that read Sliders[] and go
+            // dead. Only axes 24+ live in Sliders[], keyed on the STORAGE index.
+            var info = GamepadInfo();
+            info.NumAxes = CustomInputState.MaxAxis + 2; // 24 in Axis[] + 2 overflow
+            var dev = new RemotePeerDevice(info);
+            var objs = dev.GetDeviceObjects();
+
+            var axis6 = objs[6];
+            Assert.True(axis6.IsAxis);
+            Assert.False(axis6.IsSlider);
+            Assert.Equal("Axis 6", axis6.Name);
+            Assert.Equal(6, axis6.InputIndex);
+
+            var axis23 = objs[CustomInputState.MaxAxis - 1];
+            Assert.False(axis23.IsSlider);
+            Assert.Equal($"Axis {CustomInputState.MaxAxis - 1}", axis23.Name);
+            Assert.Equal(CustomInputState.MaxAxis - 1, axis23.InputIndex);
+
+            var slider0 = objs[CustomInputState.MaxAxis];
+            Assert.True(slider0.IsSlider);
+            Assert.Equal("Slider 0", slider0.Name);
+            Assert.Equal(0, slider0.InputIndex); // Sliders[] storage index, not raw axis 24
+
+            var slider1 = objs[CustomInputState.MaxAxis + 1];
+            Assert.True(slider1.IsSlider);
+            Assert.Equal("Slider 1", slider1.Name);
+            Assert.Equal(1, slider1.InputIndex);
+        }
+
+        [Fact]
         public void Disposed_GetCurrentStateReturnsNull()
         {
             var dev = new RemotePeerDevice(GamepadInfo());

@@ -274,7 +274,13 @@ namespace PadForge.Common.Input
                 _disposed = true;
                 for (int i = 0; i < Slots; i++)
                 {
-                    try { if (_ev[i] != IntPtr.Zero) WaitForSingleObject(_ev[i], 100); } catch { }
+                    // A slot whose drain times out is still referenced by the
+                    // kernel: leak that slot's trio (bounded, teardown-only)
+                    // rather than free memory the cancelled completion will
+                    // write into (HapticToneService.OverlappedWrite pattern).
+                    bool drained = true;
+                    try { if (_ev[i] != IntPtr.Zero) drained = WaitForSingleObject(_ev[i], 100) == 0; } catch { drained = false; }
+                    if (!drained) continue;
                     try { if (_pin[i].IsAllocated) _pin[i].Free(); } catch { }
                     try { if (_ev[i] != IntPtr.Zero) CloseHandle(_ev[i]); } catch { }
                     try { if (_ol[i] != IntPtr.Zero) Marshal.FreeHGlobal(_ol[i]); } catch { }
@@ -725,6 +731,7 @@ namespace PadForge.Common.Input
             buf[0] = 0x14; buf[1] = 0x04;
             GCHandle pin = default;
             IntPtr ev = IntPtr.Zero, ol = IntPtr.Zero;
+            bool leak = false;
             try
             {
                 pin = GCHandle.Alloc(buf, GCHandleType.Pinned);
@@ -736,15 +743,29 @@ namespace PadForge.Common.Input
                     return true; // completed synchronously
                 err = Marshal.GetLastWin32Error();
                 if (err != ERROR_IO_PENDING) return false; // rejected (87) or other error
-                if (WaitForSingleObject(ev, 500) != 0) { try { CancelIo(h); } catch { } return false; }
+                if (WaitForSingleObject(ev, 500) != 0)
+                {
+                    // Drain the cancelled probe before the finally frees the
+                    // pinned buffer + OVERLAPPED; a drain that also times out
+                    // means the kernel still references them, so leak the trio
+                    // (bounded, probe-only) instead of freeing memory the
+                    // cancelled completion will write into (the
+                    // HapticToneService.OverlappedWrite pattern).
+                    try { CancelIo(h); } catch { }
+                    try { leak = WaitForSingleObject(ev, 200) != 0; } catch { leak = true; }
+                    return false;
+                }
                 return GetOverlappedResult(h, ol, out _, false);
             }
             catch { return false; }
             finally
             {
-                try { if (pin.IsAllocated) pin.Free(); } catch { }
-                try { if (ev != IntPtr.Zero) CloseHandle(ev); } catch { }
-                try { if (ol != IntPtr.Zero) Marshal.FreeHGlobal(ol); } catch { }
+                if (!leak)
+                {
+                    try { if (pin.IsAllocated) pin.Free(); } catch { }
+                    try { if (ev != IntPtr.Zero) CloseHandle(ev); } catch { }
+                    try { if (ol != IntPtr.Zero) Marshal.FreeHGlobal(ol); } catch { }
+                }
             }
         }
 

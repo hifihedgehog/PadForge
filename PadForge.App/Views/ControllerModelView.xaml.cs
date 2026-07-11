@@ -63,7 +63,6 @@ namespace PadForge.Views
 
         // Hover highlight state
         private Model3DGroup _hoverGroup;            // Currently highlighted group (button/trigger)
-        private Model3DGroup _hoverStickRing;         // Currently highlighted stick ring (for quadrant)
         private string _hoverQuadrant;                // Current quadrant axis string (e.g., "LeftThumbAxisXNeg")
         private ModelVisual3D _hoverQuadrantVisual;    // Quadrant wedge overlay for hover
 
@@ -947,10 +946,6 @@ namespace PadForge.Views
                     ClearHover();
                     _hoverQuadrant = quadrant;
 
-                    // Determine which stick ring this belongs to
-                    bool isLeft = quadrant.StartsWith("Left", StringComparison.Ordinal);
-                    _hoverStickRing = isLeft ? _currentModel.LeftThumbRing : _currentModel.RightThumbRing;
-
                     // Show a hover quadrant wedge
                     ShowHoverQuadrant(quadrant);
                     ModelViewPort.Cursor = Cursors.Hand;
@@ -1088,7 +1083,6 @@ namespace PadForge.Views
             if (_hoverQuadrant != null)
             {
                 RemoveHoverQuadrant();
-                _hoverStickRing = null;
                 _hoverQuadrant = null;
             }
             ModelViewPort.Cursor = Cursors.Arrow;

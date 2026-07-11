@@ -21,11 +21,12 @@ namespace PadForge.Engine.Mouse
         /// <summary>Which mouse buttons arm the recognizer while held, as a
         /// bitmask over the raw button indices: bit 0 Left, bit 1 Middle,
         /// bit 2 Right, bit 3 X1, bit 4 X2 (SdlMouseWrapper order). One, some,
-        /// or all buttons can be gesture buttons; ANY selected button being
-        /// held arms the recognizer, and the gesture classifies when the last
-        /// selected button releases. Defaults to X1 only: gestures want an
-        /// otherwise-unmapped side button, since v1 does not suppress the
-        /// button's own click while gesturing.</summary>
+        /// or all buttons can be gesture buttons. Each selected button runs
+        /// its own independent session: it accumulates displacement while
+        /// that button is held, classifies at that button's release, and
+        /// carries its own cooldown; simultaneous sessions coexist. Defaults
+        /// to X1 only: gestures want an otherwise-unmapped side button, since
+        /// v1 does not suppress the button's own click while gesturing.</summary>
         [XmlAttribute] public int GestureButtons { get; set; } = 1 << 3;
 
         /// <summary>Net displacement (raw mouse counts, dominant axis) the

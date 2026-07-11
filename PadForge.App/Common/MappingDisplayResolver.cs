@@ -259,7 +259,8 @@ namespace PadForge.Common
                     : g.Equals("Click", System.StringComparison.OrdinalIgnoreCase) ? si.Mapping_MouseGestureClick
                     : null;
                 if (word == null) return null;
-                string[] mgNames = { "Left Click", "Middle Click", "Right Click", "X1", "X2" };
+                // X1/X2 are proper button names with no locale variants.
+                string[] mgNames = { si.Mouse_LeftClick, si.Mouse_MiddleClick, si.Mouse_RightClick, "X1", "X2" };
                 return prefix + string.Format(si.Mapping_MouseGesture_Format, mgNames[mgBtn], word);
             }
 
@@ -983,7 +984,8 @@ namespace PadForge.Common
             {
                 var mgs = mouseGestureSettings?.Invoke()
                     ?? PadForge.Engine.Mouse.MouseGestureSettings.Default();
-                string[] mgButtonNames = { "Left Click", "Middle Click", "Right Click", "X1", "X2" };
+                // X1/X2 are proper button names with no locale variants.
+                string[] mgButtonNames = { si.Mouse_LeftClick, si.Mouse_MiddleClick, si.Mouse_RightClick, "X1", "X2" };
                 string[] mgWords =
                 {
                     si.Mapping_MouseGestureLeft, si.Mapping_MouseGestureRight,

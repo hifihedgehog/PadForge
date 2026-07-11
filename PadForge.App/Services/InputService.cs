@@ -80,8 +80,101 @@ namespace PadForge.Services
         private bool _remoteLinkConnectWired;
         private System.Threading.Timer _remoteLinkStreamTimer;
         private System.Threading.Timer _remoteLinkSyncTimer;
-        private readonly List<(RemotePeerDeviceInfo info, ISdlInputDevice source, byte slot)> _remoteLinkExposed = new();
+        private readonly List<(RemotePeerDeviceInfo info, ISdlInputDevice source, UserDevice ud, RemoteDeltaAccumulator acc, byte slot)> _remoteLinkExposed = new();
         private readonly object _remoteLinkExposedLock = new();
+        // Lock-free snapshot of _remoteLinkExposed for the two hot readers
+        // (the poll thread's per-tick delta accumulation and the 125 Hz
+        // stream tick). Rebuilt under the exposed lock; readers only swap
+        // the array reference.
+        private volatile (RemotePeerDeviceInfo info, ISdlInputDevice source, UserDevice ud, RemoteDeltaAccumulator acc, byte slot)[] _remoteLinkExposedSnapshot =
+            System.Array.Empty<(RemotePeerDeviceInfo, ISdlInputDevice, UserDevice, RemoteDeltaAccumulator, byte)>();
+        // Per shared device, keyed by InstanceGuid so pending deltas survive
+        // the 2 s device-list rebuild. Under the exposed lock.
+        private readonly Dictionary<Guid, RemoteDeltaAccumulator> _remoteDeltaAccs = new();
+
+        /// <summary>Per-poll delta bridge between the polling thread and the
+        /// 125 Hz Remote Link stream tick (issue #138). The poll thread is the
+        /// SOLE GetCurrentState caller (a second caller starved the wrappers'
+        /// destructive mouse-delta / Joy-Con 2 baseline reads, splitting the
+        /// motion between local mapping and the peer); the stream tick ships
+        /// the published poll snapshot instead. Snapshot sampling at 125 Hz
+        /// would drop the per-poll delta fields between ticks, so the poll
+        /// thread sums them here and the tick drains the sum into the outgoing
+        /// frame. The wire fields stay PER-POLL deltas (the consumer re-reads
+        /// each frame once per consumer poll until the next lands), so the
+        /// drain writes the average per accumulated poll, which reconstructs
+        /// the same net motion the pre-fix residue split delivered remotely
+        /// while the local mapping now sees the full stream.</summary>
+        private sealed class RemoteDeltaAccumulator
+        {
+            private readonly object _sync = new();
+            private CustomInputState _lastSeen;
+            private long _dx, _dy, _scroll;
+            private double _jc2dx, _jc2dy;
+            private int _polls;
+
+            /// <summary>Poll thread: fold one fresh snapshot in. The reference
+            /// guard makes re-observing the same snapshot (idle mode, offline
+            /// device) a no-op so a delta is never double-counted.</summary>
+            public void Accumulate(CustomInputState s, bool isMouse)
+            {
+                if (s == null) return;
+                lock (_sync)
+                {
+                    if (ReferenceEquals(_lastSeen, s)) return;
+                    _lastSeen = s;
+                    _polls++;
+                    if (isMouse)
+                    {
+                        _dx += s.MouseRawDX;
+                        _dy += s.MouseRawDY;
+                        // SdlMouseWrapper: Axis[2] = 32767 + scroll * 128,
+                        // integer-exact below the clamp, so this recovers the
+                        // per-poll scroll count.
+                        _scroll += (s.Axis[2] - 32767) / 128;
+                    }
+                    _jc2dx += s.JoyCon2MouseDX;
+                    _jc2dy += s.JoyCon2MouseDY;
+                }
+            }
+
+            /// <summary>Stream tick: overwrite the cloned outgoing frame's
+            /// per-poll delta fields with the per-poll average since the last
+            /// drain, then reset. Zero polls since the last drain means the
+            /// deltas were already shipped, so the fields go neutral rather
+            /// than repeating stale motion.</summary>
+            public void DrainInto(CustomInputState s, bool isMouse)
+            {
+                lock (_sync)
+                {
+                    int n = _polls;
+                    if (n <= 0)
+                    {
+                        if (isMouse)
+                        {
+                            s.MouseRawDX = 0; s.MouseRawDY = 0;
+                            s.Axis[0] = 32767; s.Axis[1] = 32767; s.Axis[2] = 32767;
+                        }
+                        s.JoyCon2MouseDX = 0f; s.JoyCon2MouseDY = 0f;
+                        return;
+                    }
+                    if (isMouse)
+                    {
+                        double adx = (double)_dx / n, ady = (double)_dy / n, asc = (double)_scroll / n;
+                        s.MouseRawDX = (int)Math.Round(adx);
+                        s.MouseRawDY = (int)Math.Round(ady);
+                        s.Axis[0] = Math.Clamp(32767 + (int)(adx * 2048), 0, 65535);
+                        s.Axis[1] = Math.Clamp(32767 + (int)(ady * 2048), 0, 65535);
+                        s.Axis[2] = Math.Clamp(32767 + (int)(asc * 128), 0, 65535);
+                    }
+                    s.JoyCon2MouseDX = (float)(_jc2dx / n);
+                    s.JoyCon2MouseDY = (float)(_jc2dy / n);
+                    _dx = 0; _dy = 0; _scroll = 0;
+                    _jc2dx = 0; _jc2dy = 0;
+                    _polls = 0;
+                }
+            }
+        }
         // Stable link slot per shared device id (#138 live device sync) — a device keeps
         // its slot while shared, so a device hot-plugged after connect routes by a slot
         // that never shifts. Freed when the device stops being shared. Under the lock above.
@@ -695,11 +788,11 @@ namespace PadForge.Services
             // can subtract bias inline. Returns zeros for unknown /
             // uncalibrated (device, slot) pairs or when slotIndex is
             // negative (raw - 0 = raw).
-            PadForge.Engine.Common.Mapping.SourceCoercion.GyroBiasProvider = (deviceGuid, slotIndex) =>
+            // 250 ms snapshot (see ProviderSnapshot): the resolver's SyncRoot
+            // walk runs at 4 Hz per (device, slot), not per poll.
+            var gyroBiasSnapshot = new ProviderSnapshot<(Guid, int), (float, float, float)>(key =>
             {
-                if (string.IsNullOrEmpty(deviceGuid)) return (0f, 0f, 0f);
-                if (slotIndex < 0 || slotIndex >= InputManager.MaxPads) return (0f, 0f, 0f);
-                if (!Guid.TryParse(deviceGuid, out var g)) return (0f, 0f, 0f);
+                var (g, slotIndex) = key;
                 var settings = SettingsManager.UserSettings;
                 if (settings == null) return (0f, 0f, 0f);
                 PadSetting ps = null;
@@ -721,6 +814,13 @@ namespace PadForge.Services
                     TryParseFloatPs(ps.GyroBiasYaw,   0f),
                     TryParseFloatPs(ps.GyroBiasRoll,  0f)
                 );
+            });
+            PadForge.Engine.Common.Mapping.SourceCoercion.GyroBiasProvider = (deviceGuid, slotIndex) =>
+            {
+                if (string.IsNullOrEmpty(deviceGuid)) return (0f, 0f, 0f);
+                if (slotIndex < 0 || slotIndex >= InputManager.MaxPads) return (0f, 0f, 0f);
+                if (!Guid.TryParse(deviceGuid, out var g)) return (0f, 0f, 0f);
+                return gyroBiasSnapshot.Get((g, slotIndex));
             };
 
             // Per-(device, slot) gyro tuning bundle (H/V sens,
@@ -736,11 +836,10 @@ namespace PadForge.Services
                 SensH = 1f, SensV = 1f, OutputCurve = "Linear",
                 ApplyToPassthrough = false,
             };
-            PadForge.Engine.Common.Mapping.SourceCoercion.GyroTuningProvider = (deviceGuid, slotIndex) =>
+            // 250 ms snapshot, same mechanism as the gyro-bias provider.
+            var gyroTuningSnapshot = new ProviderSnapshot<(Guid, int), PadForge.Engine.Common.Mapping.SourceCoercion.GyroTuning>(key =>
             {
-                if (string.IsNullOrEmpty(deviceGuid)) return defaultTuning;
-                if (slotIndex < 0 || slotIndex >= InputManager.MaxPads) return defaultTuning;
-                if (!Guid.TryParse(deviceGuid, out var g)) return defaultTuning;
+                var (g, slotIndex) = key;
                 var settings = SettingsManager.UserSettings;
                 if (settings == null) return defaultTuning;
                 PadSetting ps = null;
@@ -782,6 +881,13 @@ namespace PadForge.Services
                     InvertYawRoll = TryParseBoolPs(ps.GyroInvertYawRoll, false),
                     ApplyToPassthrough = TryParseBoolPs(ps.GyroApplyTuningToPassthrough, false),
                 };
+            });
+            PadForge.Engine.Common.Mapping.SourceCoercion.GyroTuningProvider = (deviceGuid, slotIndex) =>
+            {
+                if (string.IsNullOrEmpty(deviceGuid)) return defaultTuning;
+                if (slotIndex < 0 || slotIndex >= InputManager.MaxPads) return defaultTuning;
+                if (!Guid.TryParse(deviceGuid, out var g)) return defaultTuning;
+                return gyroTuningSnapshot.Get((g, slotIndex));
             };
 
             // Stick-position provider for Easy Aim gating. The gyro reader
@@ -916,10 +1022,12 @@ namespace PadForge.Services
             // like Touchmote's offsetY) and the smoothing factor come from the
             // pair's PadSetting, same lookup shape as GyroTuningProvider, so
             // each virtual controller sharing one remote keeps its own feel.
-            PadForge.Engine.Common.Mapping.SourceCoercion.IrTuningProvider = (deviceGuid, slotIndex) =>
+            // 250 ms snapshot: invoked per IR mapping-row evaluation per poll
+            // (2+ kHz with X and Y rows mapped), so the SyncRoot walk + three
+            // string parses must not run per call.
+            var irTuningSnapshot = new ProviderSnapshot<(Guid, int), (float, float)>(key =>
             {
-                if (string.IsNullOrEmpty(deviceGuid) || !Guid.TryParse(deviceGuid, out var g)) return (0f, 0f);
-                if (slotIndex < 0 || slotIndex >= InputManager.MaxPads) return (0f, 0f);
+                var (g, slotIndex) = key;
                 var irSettings = SettingsManager.UserSettings;
                 if (irSettings == null) return (0f, 0f);
                 PadSetting irPs = null;
@@ -940,15 +1048,23 @@ namespace PadForge.Services
                 float comp = TryParseFloatPs(irPs.IrSensorBarComp, 0f);
                 float off = pos == 1 ? -comp : pos == 2 ? comp : 0f;
                 return (off, TryParseFloatPs(irPs.IrSmoothing, 0f));
+            });
+            PadForge.Engine.Common.Mapping.SourceCoercion.IrTuningProvider = (deviceGuid, slotIndex) =>
+            {
+                if (string.IsNullOrEmpty(deviceGuid) || !Guid.TryParse(deviceGuid, out var g)) return (0f, 0f);
+                if (slotIndex < 0 || slotIndex >= InputManager.MaxPads) return (0f, 0f);
+                return irTuningSnapshot.Get((g, slotIndex));
             };
 
             // Wii pointer mode (#203 Pointer tab), per (device, slot): same
             // lookup shape as IrTuningProvider above. Mode ints match the
             // SourceCoercion doc: 0 Mouse, 1 FpsMouse, 2 Mouse43, 3 Mouse169.
-            PadForge.Engine.Common.Mapping.SourceCoercion.IrPointerModeProvider = (deviceGuid, slotIndex) =>
+            // 250 ms snapshot, same mechanism as IrTuningProvider. A
+            // PointerModeCycle write lands within a quarter second, which the
+            // house standard treats as imperceptible for a config change.
+            var irPointerModeSnapshot = new ProviderSnapshot<(Guid, int), (int, float)>(key =>
             {
-                if (string.IsNullOrEmpty(deviceGuid) || !Guid.TryParse(deviceGuid, out var pg)) return (0, 35f);
-                if (slotIndex < 0 || slotIndex >= InputManager.MaxPads) return (0, 35f);
+                var (pg, slotIndex) = key;
                 var pmSettings = SettingsManager.UserSettings;
                 if (pmSettings == null) return (0, 35f);
                 PadSetting pmPs = null;
@@ -973,6 +1089,12 @@ namespace PadForge.Services
                     _ => 0,
                 };
                 return (mode, TryParseFloatPs(pmPs.PointerFpsSpeed, 35f));
+            });
+            PadForge.Engine.Common.Mapping.SourceCoercion.IrPointerModeProvider = (deviceGuid, slotIndex) =>
+            {
+                if (string.IsNullOrEmpty(deviceGuid) || !Guid.TryParse(deviceGuid, out var pg)) return (0, 35f);
+                if (slotIndex < 0 || slotIndex >= InputManager.MaxPads) return (0, 35f);
+                return irPointerModeSnapshot.Get((pg, slotIndex));
             };
 
             // PointerModeCycle applier (#203): ALL PointerMode writes happen
@@ -1266,8 +1388,12 @@ namespace PadForge.Services
             // Switch HD Rumble + Steam Controller haptic-tone sinks (#147).
             PadForge.Common.Input.HapticToneService.EnsureStarted();
 
-            _inputManager.TouchpadGestureSettingsProvider = (slotIndex, deviceGuid, padIdx) =>
+            // 250 ms snapshot: invoked per (slot, device, pad) per poll from
+            // the Step 2 gesture walk, so the SyncRoot walk and the per-call
+            // Guid.ToString() must not run per poll.
+            var touchpadGestureSnapshot = new ProviderSnapshot<(int, Guid, int), PadForge.Engine.Touchpad.TouchpadGestureSettings>(key =>
             {
+                var (slotIndex, deviceGuid, padIdx) = key;
                 var settings = SettingsManager.UserSettings;
                 if (settings == null) return PadForge.Engine.Touchpad.TouchpadGestureSettings.Default();
                 PadSetting ps = null;
@@ -1296,12 +1422,25 @@ namespace PadForge.Services
                     return entry.Settings ?? PadForge.Engine.Touchpad.TouchpadGestureSettings.Default();
                 }
                 return PadForge.Engine.Touchpad.TouchpadGestureSettings.Default();
-            };
+            });
+            _inputManager.TouchpadGestureSettingsProvider = (slotIndex, deviceGuid, padIdx) =>
+                touchpadGestureSnapshot.Get((slotIndex, deviceGuid, padIdx));
 
             // Per-(slot, device) mouse-gesture settings (issue #200), twin
             // of the touchpad provider above minus the pad index. Same
-            // UserSettings walk under SyncRoot, Default() on every miss.
-            _inputManager.MouseGestureSettingsProvider = ResolveMouseGestureSettingsForSlot;
+            // UserSettings walk under SyncRoot, Default() on every miss,
+            // through the same 250 ms snapshot.
+            var mouseGestureSnapshot = new ProviderSnapshot<(int, Guid), PadForge.Engine.Mouse.MouseGestureSettings>(key =>
+                ResolveMouseGestureSettingsForSlot(key.Item1, key.Item2));
+            _inputManager.MouseGestureSettingsProvider = (slotIndex, deviceGuid) =>
+                mouseGestureSnapshot.Get((slotIndex, deviceGuid));
+
+            // Remote Link delta bridge (#138): the poll thread folds each
+            // exposed device's per-poll deltas after Step 2; the 125 Hz stream
+            // tick ships the snapshot + drained deltas instead of calling the
+            // wrappers' destructive GetCurrentState from its timer thread.
+            // Cheap no-op while nothing is exposed. Dies with the instance.
+            _inputManager.RemoteLinkPollTick = RemoteLinkPollAccumulate;
 
             // Per-(slot, device) lightbar configs — drives the
             // dispatcher's per-device synthesis loop and per-device
@@ -1579,6 +1718,7 @@ namespace PadForge.Services
                 PadForge.Engine.Common.Mapping.SourceCoercion.GyroTuningProvider = null;
                 PadForge.Engine.Common.Mapping.SourceCoercion.SlotStickDeflectionProvider = null;
                 PadForge.Engine.Common.Mapping.SourceCoercion.GravityProvider = null;
+                PadForge.Engine.Common.Mapping.SourceCoercion.GravityProviderAux = null;
                 PadForge.Engine.Common.Mapping.SourceCoercion.ButtonHeldProvider = null;
                 PadForge.Engine.Common.Mapping.SourceCoercion.BalanceCalibrationProvider = null;
                 PadForge.Engine.Common.Mapping.SourceCoercion.BalanceTareKgProvider = null;
@@ -3779,6 +3919,41 @@ namespace PadForge.Services
                     ps.SetExtendedMapping($"Stick{g}SteerAngleInner", stick.AngleInnerDz.ToString(ic));
                     ps.SetExtendedMapping($"Stick{g}SteerAngleOuter", stick.AngleOuterDz.ToString(ic));
                 }
+
+                // Extended custom stick/trigger tuning for indices 2+, mirroring
+                // SettingsService.UpdatePadSettingsFromViewModels field-for-field.
+                // Same syncMappings guard as the steering block above and for the
+                // same reason: a RebuildStickConfigs momentarily resets the config
+                // items to defaults, and a 30 Hz save would persist those defaults
+                // over the device's saved tuning.
+                foreach (var stick in padVm.StickConfigs)
+                {
+                    if (stick.Index < 2) continue;
+                    int g = stick.Index;
+                    ps.SetExtendedMapping($"ExtendedStick{g}DzShape", ((int)stick.DeadZoneShape).ToString());
+                    ps.SetExtendedMapping($"ExtendedStick{g}DzX", stick.DeadZoneX.ToString(ic));
+                    ps.SetExtendedMapping($"ExtendedStick{g}DzY", stick.DeadZoneY.ToString(ic));
+                    ps.SetExtendedMapping($"ExtendedStick{g}AdzX", stick.AntiDeadZoneX.ToString(ic));
+                    ps.SetExtendedMapping($"ExtendedStick{g}AdzY", stick.AntiDeadZoneY.ToString(ic));
+                    ps.SetExtendedMapping($"ExtendedStick{g}Linear", stick.Linear.ToString(ic));
+                    ps.SetExtendedMapping($"ExtendedStick{g}CurveX", stick.SensitivityCurveX);
+                    ps.SetExtendedMapping($"ExtendedStick{g}CurveY", stick.SensitivityCurveY);
+                    ps.SetExtendedMapping($"ExtendedStick{g}CofX", stick.CenterOffsetX.ToString(ic));
+                    ps.SetExtendedMapping($"ExtendedStick{g}CofY", stick.CenterOffsetY.ToString(ic));
+                    ps.SetExtendedMapping($"ExtendedStick{g}MrX", stick.MaxRangeX.ToString(ic));
+                    ps.SetExtendedMapping($"ExtendedStick{g}MrY", stick.MaxRangeY.ToString(ic));
+                    ps.SetExtendedMapping($"ExtendedStick{g}MrXN", stick.MaxRangeXNeg.ToString(ic));
+                    ps.SetExtendedMapping($"ExtendedStick{g}MrYN", stick.MaxRangeYNeg.ToString(ic));
+                }
+                foreach (var trig in padVm.TriggerConfigs)
+                {
+                    if (trig.Index < 2) continue;
+                    int g = trig.Index;
+                    ps.SetExtendedMapping($"ExtendedTrigger{g}Dz", trig.DeadZone.ToString(ic));
+                    ps.SetExtendedMapping($"ExtendedTrigger{g}Adz", trig.AntiDeadZone.ToString(ic));
+                    ps.SetExtendedMapping($"ExtendedTrigger{g}Mr", trig.MaxRange.ToString(ic));
+                    ps.SetExtendedMapping($"ExtendedTrigger{g}Curve", trig.SensitivityCurve);
+                }
             }
 
             // Mapping descriptors: clear + rewrite only when explicitly requested.
@@ -4134,6 +4309,47 @@ namespace PadForge.Services
             // Sync dynamic stick/trigger config items.
             padVm.SyncAllConfigItemsFromVm();
 
+            // Extended custom stick/trigger tuning for indices 2+ lives in the
+            // extended-mapping dictionary, per device. Mirrors the startup load
+            // in SettingsService.LoadPadSettings field-for-field. Absent here,
+            // a device-dropdown switch kept the previous device's indices-2+
+            // tuning in the VM and the next save wrote it into the new
+            // device's PadSetting (same clobber family as the Motion Lean /
+            // curve mirrors above, audit lens 1m).
+            foreach (var stick in padVm.StickConfigs)
+            {
+                if (stick.Index < 2) continue;
+                int g = stick.Index;
+                stick.DeadZoneShape = Common.Input.InputManager.ParseDeadZoneShape(ps.GetExtendedMapping($"ExtendedStick{g}DzShape"));
+                stick.DeadZoneX = TryParseDouble(ps.GetExtendedMapping($"ExtendedStick{g}DzX"), 0);
+                stick.DeadZoneY = TryParseDouble(ps.GetExtendedMapping($"ExtendedStick{g}DzY"), 0);
+                stick.AntiDeadZoneX = TryParseDouble(ps.GetExtendedMapping($"ExtendedStick{g}AdzX"), 0);
+                stick.AntiDeadZoneY = TryParseDouble(ps.GetExtendedMapping($"ExtendedStick{g}AdzY"), 0);
+                stick.Linear = TryParseDouble(ps.GetExtendedMapping($"ExtendedStick{g}Linear"), 0);
+                // GetExtendedMapping returns "" (never null) for a missing
+                // key, so a bare ?? default never fires (audit G4).
+                string curveX = ps.GetExtendedMapping($"ExtendedStick{g}CurveX");
+                string curveY = ps.GetExtendedMapping($"ExtendedStick{g}CurveY");
+                stick.SensitivityCurveX = string.IsNullOrEmpty(curveX) ? "0,0;1,1" : curveX;
+                stick.SensitivityCurveY = string.IsNullOrEmpty(curveY) ? "0,0;1,1" : curveY;
+                stick.CenterOffsetX = TryParseDouble(ps.GetExtendedMapping($"ExtendedStick{g}CofX"), 0);
+                stick.CenterOffsetY = TryParseDouble(ps.GetExtendedMapping($"ExtendedStick{g}CofY"), 0);
+                stick.MaxRangeX = TryParseDouble(ps.GetExtendedMapping($"ExtendedStick{g}MrX"), 100);
+                stick.MaxRangeY = TryParseDouble(ps.GetExtendedMapping($"ExtendedStick{g}MrY"), 100);
+                stick.MaxRangeXNeg = TryParseDouble(ps.GetExtendedMapping($"ExtendedStick{g}MrXN"), stick.MaxRangeX);
+                stick.MaxRangeYNeg = TryParseDouble(ps.GetExtendedMapping($"ExtendedStick{g}MrYN"), stick.MaxRangeY);
+            }
+            foreach (var trig in padVm.TriggerConfigs)
+            {
+                if (trig.Index < 2) continue;
+                int g = trig.Index;
+                trig.DeadZone = TryParseDouble(ps.GetExtendedMapping($"ExtendedTrigger{g}Dz"), 0);
+                trig.AntiDeadZone = TryParseDouble(ps.GetExtendedMapping($"ExtendedTrigger{g}Adz"), 0);
+                trig.MaxRange = TryParseDouble(ps.GetExtendedMapping($"ExtendedTrigger{g}Mr"), 100);
+                string trigCurve = ps.GetExtendedMapping($"ExtendedTrigger{g}Curve");
+                trig.SensitivityCurve = string.IsNullOrEmpty(trigCurve) ? "0,0;1,1" : trigCurve;
+            }
+
             // Steering is per assigned device (#94): load THIS device's steering into the
             // sticks (guarded, no dirty). Routes startup selection, device switch, preset/
             // paste, and profile switch through one place so the card always shows the
@@ -4417,14 +4633,36 @@ namespace PadForge.Services
         /// numbered names for raw/non-gamepad devices). Also wires the dropdown selection
         /// event for display text resolution.
         /// </summary>
-        /// <summary>Public entry point for the assignment-change path:
-        /// rebuilds <see cref="MappingItem.AvailableInputs"/> from the
-        /// slot's current device list without requiring a specific
-        /// "primary" device. Resolves stale dropdown selections that
-        /// would otherwise survive an unassign — the previously
-        /// selected source's InputChoice gets dropped from the rebuilt
-        /// list, so SyncSelectedInputFromDescriptor clears
-        /// SelectedInput when no device-matched choice remains.</summary>
+        /// <summary>One 250 ms config-snapshot mechanism for the per-(device,
+        /// slot) setting providers (IR tuning / pointer mode, gyro bias /
+        /// tuning, touchpad + mouse gesture settings). Each resolver still
+        /// takes UserSettings.SyncRoot and walks Items, but at most once per
+        /// key per 250 ms instead of per poll: the UI thread holds the same
+        /// SyncRoot for whole multi-slot save loops, so kHz-rate provider
+        /// calls on the poll thread would stall the rate-holding thread
+        /// exactly while the user aims. Mirrors InputManager's
+        /// _triggerRouteCfg / _mirrorEngageCfg 250 ms snapshots; a user edit
+        /// propagating within a quarter second is imperceptible by that same
+        /// house standard. ConcurrentDictionary keeps the occasional
+        /// UI-thread caller (picker builds) safe; growth is bounded by
+        /// (device, slot) pairs. Instances are created per engine start in
+        /// the wiring block and dropped with the providers on stop.</summary>
+        private sealed class ProviderSnapshot<TKey, TValue>
+        {
+            private readonly System.Collections.Concurrent.ConcurrentDictionary<TKey, (long Tick, TValue Value)> _map = new();
+            private readonly Func<TKey, TValue> _resolve;
+            public ProviderSnapshot(Func<TKey, TValue> resolve) { _resolve = resolve; }
+            public TValue Get(TKey key)
+            {
+                long now = Environment.TickCount64;
+                if (_map.TryGetValue(key, out var e) && now - e.Tick < 250)
+                    return e.Value;
+                var v = _resolve(key);
+                _map[key] = (now, v);
+                return v;
+            }
+        }
+
         /// <summary>Resolves the per-(slot, device) mouse-gesture settings
         /// straight from the active profile's PadSetting (issue #200), without
         /// depending on the engine being started. Used by both the runtime
@@ -4462,6 +4700,14 @@ namespace PadForge.Services
             return PadForge.Engine.Mouse.MouseGestureSettings.Default();
         }
 
+        /// <summary>Public entry point for the assignment-change path:
+        /// rebuilds <see cref="MappingItem.AvailableInputs"/> from the
+        /// slot's current device list without requiring a specific
+        /// "primary" device. Resolves stale dropdown selections that
+        /// would otherwise survive an unassign. The previously
+        /// selected source's InputChoice gets dropped from the rebuilt
+        /// list, so SyncSelectedInputFromDescriptor clears
+        /// SelectedInput when no device-matched choice remains.</summary>
         public void RefreshAvailableInputsForSlot(PadViewModel padVm)
         {
             if (padVm == null) return;
@@ -6440,7 +6686,12 @@ namespace PadForge.Services
             _remoteLinkStreamTimer = null;
             _remoteLinkSyncTimer?.Dispose();
             _remoteLinkSyncTimer = null;
-            lock (_remoteLinkExposedLock) _remoteLinkExposed.Clear();
+            lock (_remoteLinkExposedLock)
+            {
+                _remoteLinkExposed.Clear();
+                _remoteLinkExposedSnapshot = System.Array.Empty<(RemotePeerDeviceInfo, ISdlInputDevice, UserDevice, RemoteDeltaAccumulator, byte)>();
+                _remoteDeltaAccs.Clear();
+            }
             RemoteLinkOutputRouter.SendOutput = null;
             RemoteLinkOutputRouter.SendAudio = null;
             RemoteLinkOutputRouter.Clear();
@@ -6612,7 +6863,7 @@ namespace PadForge.Services
         private IReadOnlyList<RemotePeerDeviceInfo> BuildExposedDevices()
         {
             var list = new List<RemotePeerDeviceInfo>();
-            var sources = new List<(RemotePeerDeviceInfo info, ISdlInputDevice source, byte slot)>();
+            var sources = new List<(RemotePeerDeviceInfo info, ISdlInputDevice source, UserDevice ud, RemoteDeltaAccumulator acc, byte slot)>();
 
             // Hold the exposed lock around stable-slot allocation + the snapshot update so
             // concurrent calls (handshake / periodic push) agree on slots. Lock order is
@@ -6684,7 +6935,15 @@ namespace PadForge.Services
                                 DeviceObjects = objects,
                             };
                             list.Add(info);
-                            sources.Add((info, dev, slot));
+                            // Reuse the device's delta accumulator across
+                            // rebuilds so pending per-poll deltas survive the
+                            // 2 s device-list refresh.
+                            if (!_remoteDeltaAccs.TryGetValue(ud.InstanceGuid, out var acc))
+                            {
+                                acc = new RemoteDeltaAccumulator();
+                                _remoteDeltaAccs[ud.InstanceGuid] = acc;
+                            }
+                            sources.Add((info, dev, ud, acc, slot));
                         }
                     }
                 }
@@ -6694,14 +6953,18 @@ namespace PadForge.Services
                 {
                     _exposedSlots.Remove(goneId);
                     // Also drop the owner-side wheel one-shot cache so range / autocenter / RPM
-                    // LEDs re-apply from scratch on replug — the wheel power-cycles to factory
+                    // LEDs re-apply from scratch on replug. The wheel power-cycles to factory
                     // defaults while gone, and the cached tuple would suppress the re-send (#138 F38).
                     if (Guid.TryParseExact(goneId, "N", out var goneGuid))
+                    {
                         _remoteWheelOneShot.TryRemove(goneGuid, out _);
+                        _remoteDeltaAccs.Remove(goneGuid);
+                    }
                 }
 
                 _remoteLinkExposed.Clear();
                 _remoteLinkExposed.AddRange(sources);
+                _remoteLinkExposedSnapshot = sources.ToArray();
             }
             return list;
         }
@@ -6717,6 +6980,25 @@ namespace PadForge.Services
 
         private int _streamTickGuard;
 
+        /// <summary>Poll-thread half of the Remote Link delta bridge, invoked
+        /// once per polling tick via <see cref="InputManager.RemoteLinkPollTick"/>
+        /// right after Step 2 publishes fresh snapshots. Folds each exposed
+        /// device's per-poll delta fields into its accumulator; the stream
+        /// tick below drains them. Lock-free walk over the exposed snapshot
+        /// array (the accumulator serializes internally).</summary>
+        private void RemoteLinkPollAccumulate()
+        {
+            var exposed = _remoteLinkExposedSnapshot;
+            for (int i = 0; i < exposed.Length; i++)
+            {
+                var e = exposed[i];
+                var s = e.ud?.InputState;
+                if (s == null) continue;
+                try { e.acc.Accumulate(s, e.source is PadForge.Engine.SdlMouseWrapper); }
+                catch { /* teardown race: never disturb the poll loop */ }
+            }
+        }
+
         private void RemoteLinkStreamTick(object state)
         {
             // Non-reentrant: a tick slower than the 8 ms period must not overlap the
@@ -6726,15 +7008,24 @@ namespace PadForge.Services
             {
                 var server = _linkServer;
                 if (server == null) return;
-                (RemotePeerDeviceInfo info, ISdlInputDevice source, byte slot)[] exposed;
-                lock (_remoteLinkExposedLock) exposed = _remoteLinkExposed.ToArray();
+                var exposed = _remoteLinkExposedSnapshot;
                 if (exposed.Length == 0) return;
 
                 ulong ts = (ulong)(System.Diagnostics.Stopwatch.GetTimestamp() * (1_000_000.0 / System.Diagnostics.Stopwatch.Frequency));
                 foreach (var e in exposed)
                 {
-                    var s = e.source?.GetCurrentState();
-                    if (s == null) continue;
+                    // Ship the poll thread's published snapshot, NEVER
+                    // source.GetCurrentState(): the mouse wrapper's
+                    // consume-and-zero delta read and the Joy-Con 2 baseline
+                    // advance are destructive, so a second caller here split
+                    // the motion between local mapping and the peer. Clone
+                    // before touching the delta fields: the published
+                    // instance is read by the UI and Step 3 and must not be
+                    // mutated (Step 2's swap contract).
+                    var snap = e.ud?.InputState;
+                    if (snap == null || !e.ud.IsOnline) continue;
+                    var s = snap.Clone();
+                    e.acc.DrainInto(s, e.source is PadForge.Engine.SdlMouseWrapper);
                     var caps = new CustomInputStateCodec.Caps(e.source.HasGyro, e.source.HasAccel, e.source.HasAccelAux);
                     server.PushLocalFrame(e.slot, s, caps, ts);
                 }

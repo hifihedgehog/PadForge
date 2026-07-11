@@ -1113,7 +1113,8 @@ namespace PadForge.Common.Input
                         if (IsSourceSuppressedPostpone(slotIndex, src.DeviceGuid, src.Descriptor)) continue;
                         boolContribs.Add(SourceEvaluator.EvaluateForButtonTarget(
                             state, src, globalAxisToButtonThreshold,
-                            slotIndex, row.Target, i, runtime, dt));
+                            slotIndex, row.Target, i, runtime, dt,
+                            evaluatedDeviceGuid: thisDeviceGuid));
                     }
                     if (boolContribs.Count == 0) continue;
                     WriteBoolTarget(row.Target,
@@ -1140,7 +1141,8 @@ namespace PadForge.Common.Input
                         if (!SourceMatchesDevice(src, thisDeviceGuid)) continue;
                         if (IsSourceSuppressedPostpone(slotIndex, src.DeviceGuid, src.Descriptor)) continue;
                         axisContribs.Add(SourceEvaluator.EvaluateForBipolarAxisTarget(
-                            state, src, slotIndex, row.Target, i, runtime, dt));
+                            state, src, slotIndex, row.Target, i, runtime, dt,
+                            evaluatedDeviceGuid: thisDeviceGuid));
                     }
                     if (axisContribs.Count == 0) continue;
                     float combinedSingle = ClampBipolar(CombineHelper.CombineAxis(row.CombineMode, axisContribs));
@@ -1168,7 +1170,8 @@ namespace PadForge.Common.Input
                         if (!SourceMatchesDevice(src, thisDeviceGuid)) continue;
                         if (IsSourceSuppressedPostpone(slotIndex, src.DeviceGuid, src.Descriptor)) continue;
                         axisContribs.Add(SourceEvaluator.EvaluateForTriggerTarget(
-                            state, src, slotIndex, row.Target, i, runtime, dt));
+                            state, src, slotIndex, row.Target, i, runtime, dt,
+                            evaluatedDeviceGuid: thisDeviceGuid));
                     }
                     if (axisContribs.Count == 0) continue;
                     float combinedTrig = ClampUnipolar(CombineHelper.CombineAxis(row.CombineMode, axisContribs));
@@ -1322,7 +1325,8 @@ namespace PadForge.Common.Input
                         if (IsRowModifierSource(src)) continue;
                         if (!SourceMatchesDevice(src, deviceGuid)) continue;
                         (contribs ??= new List<float>(row.Sources.Count)).Add(
-                            SourceEvaluator.EvaluateForTriggerTarget(state, src, slotIndex, target, i, null, 0));
+                            SourceEvaluator.EvaluateForTriggerTarget(state, src, slotIndex, target, i, null, 0,
+                                evaluatedDeviceGuid: deviceGuid));
                     }
                     if (contribs == null || contribs.Count == 0) continue; // no source for this device on this row
 
@@ -1435,8 +1439,17 @@ namespace PadForge.Common.Input
             var buf = _sourcesSnapshotBuf;
             if (buf == null || buf.Length < n)
                 _sourcesSnapshotBuf = buf = new MappingSource[System.Math.Max(n, 8)];
-            for (int i = 0; i < n && i < src.Count; i++) buf[i] = src[i];
-            count = n;
+            // Count what was actually copied: a UI-thread shrink mid-copy
+            // must yield a truncated one-tick snapshot, never stale pooled
+            // references past the stop point (the buffer is not cleared
+            // between calls) or an indexer throw on the poll thread.
+            int copied = 0;
+            try
+            {
+                for (int i = 0; i < n && i < src.Count; i++) { buf[i] = src[i]; copied = i + 1; }
+            }
+            catch (System.ArgumentOutOfRangeException) { }
+            count = copied;
             return buf;
         }
 
@@ -1453,8 +1466,16 @@ namespace PadForge.Common.Input
             var buf = _rowsSnapshotBuf;
             if (buf == null || buf.Length < n)
                 _rowsSnapshotBuf = buf = new MappingRow[System.Math.Max(n, 16)];
-            for (int i = 0; i < n && i < rows.Count; i++) buf[i] = rows[i];
-            count = n;
+            // Same copied-count containment as SnapshotSources: a shrink
+            // mid-copy truncates this tick's snapshot instead of exposing
+            // stale pooled rows or throwing on the poll thread.
+            int copied = 0;
+            try
+            {
+                for (int i = 0; i < n && i < rows.Count; i++) { buf[i] = rows[i]; copied = i + 1; }
+            }
+            catch (System.ArgumentOutOfRangeException) { }
+            count = copied;
             return buf;
         }
 
@@ -1674,7 +1695,8 @@ namespace PadForge.Common.Input
                 : (LookupDeviceState(src.DeviceGuid) ?? state);
             value = SourceEvaluator.EvaluateForButtonTarget(
                 devState, src, globalAxisToButtonThreshold,
-                slotIndex, targetName, 0, slotRuntime, dt);
+                slotIndex, targetName, 0, slotRuntime, dt,
+                evaluatedDeviceGuid: thisDeviceGuid);
             return true;
         }
 
@@ -1719,7 +1741,8 @@ namespace PadForge.Common.Input
                     ? state
                     : (LookupDeviceState(src.DeviceGuid) ?? state);
                 combined = ClampBipolar(SourceEvaluator.EvaluateForBipolarAxisTarget(
-                    devState, src, slotIndex, targetName, 0, slotRuntime, dt));
+                    devState, src, slotIndex, targetName, 0, slotRuntime, dt,
+                    evaluatedDeviceGuid: thisDeviceGuid));
             }
 
             if (IsInvertOnHoldActive(row, state, thisDeviceGuid, slotIndex)) combined = -combined;
@@ -1795,17 +1818,8 @@ namespace PadForge.Common.Input
                 if (isTouchpadSrc)
                 {
                     // Parse pad + finger index from "Touchpad N Finger M X|Y".
-                    int padIdx = 0;
-                    int fingerIdx = defaultFingerIdx;
-                    var parts = src.Descriptor.Split(new[] { ' ' }, System.StringSplitOptions.RemoveEmptyEntries);
-                    if (parts.Length >= 2 && int.TryParse(parts[1], out int parsedPad))
-                        padIdx = parsedPad;
-                    if (parts.Length == 5
-                        && string.Equals(parts[2], "Finger", System.StringComparison.Ordinal)
-                        && int.TryParse(parts[3], out int parsedFinger))
-                    {
-                        fingerIdx = parsedFinger;
-                    }
+                    var (padIdx, parsedFingerIdx) = ParseTouchpadPadFinger(src.Descriptor);
+                    int fingerIdx = parsedFingerIdx >= 0 ? parsedFingerIdx : defaultFingerIdx;
                     var pad = devState?.Touchpads != null
                         && padIdx >= 0 && padIdx < devState.Touchpads.Length
                         ? devState.Touchpads[padIdx] : null;
@@ -1823,7 +1837,8 @@ namespace PadForge.Common.Input
                 }
 
                 float v = SourceEvaluator.EvaluateForBipolarAxisTarget(
-                    devState ?? state, src, slotIndex, targetName, i, slotRuntime, dt);
+                    devState ?? state, src, slotIndex, targetName, i, slotRuntime, dt,
+                    evaluatedDeviceGuid: thisDeviceGuid);
 
                 values.Add(v);
                 flags.Add(isActive ? 1f : 0f);
@@ -1911,7 +1926,8 @@ namespace PadForge.Common.Input
                     ? state
                     : (LookupDeviceState(src.DeviceGuid) ?? state);
                 combined = ClampUnipolar(SourceEvaluator.EvaluateForTriggerTarget(
-                    devState, src, slotIndex, targetName, 0, slotRuntime, dt));
+                    devState, src, slotIndex, targetName, 0, slotRuntime, dt,
+                    evaluatedDeviceGuid: thisDeviceGuid));
             }
 
             if (IsInvertOnHoldActive(row, state, thisDeviceGuid, slotIndex)) combined = 1f - combined;
@@ -1923,6 +1939,38 @@ namespace PadForge.Common.Input
             if (ushortVal > 65535) ushortVal = 65535;
             value = (short)(ushortVal + short.MinValue);
             return true;
+        }
+
+        /// <summary>Memoized pad/finger parse for "Touchpad N Finger M X|Y"
+        /// descriptors. Descriptors are immutable config vocabulary and this
+        /// parse ran per touchpad source per row per poll, allocating a
+        /// Split array each time (audit 1n). Finger is -1 when the
+        /// descriptor carries no explicit Finger clause, so the caller can
+        /// substitute its own default. Capped like the Step 3 descriptor
+        /// cache so pathological configs stay bounded.</summary>
+        private static readonly System.Collections.Concurrent.ConcurrentDictionary<
+            string, (int Pad, int Finger)> _touchpadPadFingerCache = new();
+
+        private static (int Pad, int Finger) ParseTouchpadPadFinger(string descriptor)
+        {
+            if (_touchpadPadFingerCache.TryGetValue(descriptor, out var cached))
+                return cached;
+
+            int padIdx = 0;
+            int fingerIdx = -1;
+            var parts = descriptor.Split(new[] { ' ' }, System.StringSplitOptions.RemoveEmptyEntries);
+            if (parts.Length >= 2 && int.TryParse(parts[1], out int parsedPad))
+                padIdx = parsedPad;
+            if (parts.Length == 5
+                && string.Equals(parts[2], "Finger", System.StringComparison.Ordinal)
+                && int.TryParse(parts[3], out int parsedFinger))
+            {
+                fingerIdx = parsedFinger;
+            }
+            var result = (padIdx, fingerIdx);
+            if (_touchpadPadFingerCache.Count < 4096)
+                _touchpadPadFingerCache[descriptor] = result;
+            return result;
         }
 
         private static MappingExpression.Compiled GetOrCompileExpression(MappingRow row)

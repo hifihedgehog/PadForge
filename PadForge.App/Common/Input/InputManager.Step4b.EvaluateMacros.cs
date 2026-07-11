@@ -2461,9 +2461,11 @@ namespace PadForge.Common.Input
         private const uint MOUSEEVENTF_XDOWN = 0x0080;
         private const uint MOUSEEVENTF_XUP = 0x0100;
         private const uint MOUSEEVENTF_WHEEL = 0x0800;
+        private const uint MOUSEEVENTF_HWHEEL = 0x1000;
 
-        // Accumulated macro mouse-move delta. Written by the poll thread
-        // (SendMouseMoveInput, ~1000 Hz), drained by the dedicated mouse-injector
+        // Accumulated mouse-move delta (macro actions + the KBM virtual
+        // controller's continuous lanes). Written by the poll thread
+        // (~1000 Hz), drained by the dedicated mouse-injector
         // thread (FlushPendingMouseMove). Keeping SendInput OFF the poll thread is
         // what stops a mouse-move macro from collapsing the 1000 Hz input loop:
         // injected mouse movement is processed synchronously (it traverses every
@@ -2474,6 +2476,7 @@ namespace PadForge.Common.Input
         private static int _pendingMouseDx;
         private static int _pendingMouseDy;
         private static int _pendingScroll;
+        private static int _pendingScrollH;
         private static readonly INPUT[] _mouseInjectBuf = new INPUT[1];
 
         /// <summary>Poll thread: accumulate the desired mouse delta. Lock-free and
@@ -2482,6 +2485,16 @@ namespace PadForge.Common.Input
         private static void SendMouseMoveInput(int dx, int dy)
         {
             if (_currentMacroSlotRestricted) return; // gamepad-only peer: no mouse
+            AccumulateMouseMoveInput(dx, dy);
+        }
+
+        /// <summary>Restriction-agnostic accumulate for the mouse-move lane.
+        /// The KBM virtual controller feeds its continuous stick-to-mouse
+        /// delta through here. Step 5 already zeroes a restricted slot's
+        /// whole KbmRawState, so the macro-context flag above must not
+        /// apply here (it holds whatever the LAST macro slot set).</summary>
+        internal static void AccumulateMouseMoveInput(int dx, int dy)
+        {
             if (dx == 0 && dy == 0) return;
             Interlocked.Add(ref _pendingMouseDx, dx);
             Interlocked.Add(ref _pendingMouseDy, dy);
@@ -2517,6 +2530,17 @@ namespace PadForge.Common.Input
                 };
                 SendInput(1, _mouseInjectBuf, Marshal.SizeOf<INPUT>());
             }
+
+            int scrollH = Interlocked.Exchange(ref _pendingScrollH, 0);
+            if (scrollH != 0)
+            {
+                _mouseInjectBuf[0] = new INPUT
+                {
+                    type = INPUT_MOUSE,
+                    u = new InputUnion { mi = new MOUSEINPUT { mouseData = (uint)scrollH, dwFlags = MOUSEEVENTF_HWHEEL } }
+                };
+                SendInput(1, _mouseInjectBuf, Marshal.SizeOf<INPUT>());
+            }
         }
 
         private static void SendMouseButtonInput(MacroMouseButton button, bool down)
@@ -2548,8 +2572,27 @@ namespace PadForge.Common.Input
         private static void SendMouseScrollInput(int amount)
         {
             if (_currentMacroSlotRestricted) return; // gamepad-only peer: no scroll
+            AccumulateMouseScrollInput(amount);
+        }
+
+        /// <summary>Restriction-agnostic accumulate for the vertical scroll
+        /// lane, in WHEEL_DELTA units. Same contract as
+        /// <see cref="AccumulateMouseMoveInput"/>: the KBM virtual
+        /// controller's continuous scroll rides this, restriction handled
+        /// upstream at the Step 5 submit.</summary>
+        internal static void AccumulateMouseScrollInput(int amount)
+        {
             if (amount == 0) return;
             Interlocked.Add(ref _pendingScroll, amount);
+        }
+
+        /// <summary>Horizontal-scroll twin of
+        /// <see cref="AccumulateMouseScrollInput"/> (issue #154 tilt wheel).
+        /// Flushed as MOUSEEVENTF_HWHEEL, positive = scroll right.</summary>
+        internal static void AccumulateMouseScrollHInput(int amount)
+        {
+            if (amount == 0) return;
+            Interlocked.Add(ref _pendingScrollH, amount);
         }
 
         /// <summary>

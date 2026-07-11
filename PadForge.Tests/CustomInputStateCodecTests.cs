@@ -291,6 +291,82 @@ namespace PadForge.Tests
         }
 
         [Fact]
+        public void MouseRaw_RoundTripsAndOmitsWhenIdle()
+        {
+            // #200: unclamped Raw Input counts ride their own tail block.
+            var s = new CustomInputState();
+            s.MouseRawDX = -300;
+            s.MouseRawDY = 70000; // deliberately past int16 to pin the int32 width
+            var rt = CustomInputStateCodec.Decode(CustomInputStateCodec.Encode(s, NoSensors));
+            Assert.Equal(-300, rt.MouseRawDX);
+            Assert.Equal(70000, rt.MouseRawDY);
+
+            // Idle mouse sends no block and decodes back to zero.
+            var idle = CustomInputStateCodec.Decode(CustomInputStateCodec.Encode(Centered(), NoSensors));
+            Assert.Equal(0, idle.MouseRawDX);
+            Assert.Equal(0, idle.MouseRawDY);
+        }
+
+        [Fact]
+        public void MouseRaw_CloneCarriesTheCounts()
+        {
+            var s = new CustomInputState { MouseRawDX = 17, MouseRawDY = -4 };
+            var c = s.Clone();
+            Assert.Equal(17, c.MouseRawDX);
+            Assert.Equal(-4, c.MouseRawDY);
+        }
+
+        [Fact]
+        public void MouseRaw_OldFrameClearsStaleTargetState()
+        {
+            // Absolute-frame contract extends to the MouseRaw block.
+            var target = new CustomInputState { MouseRawDX = 55, MouseRawDY = -9 };
+            Assert.True(CustomInputStateCodec.DecodeInto(
+                CustomInputStateCodec.Encode(Centered(), NoSensors), target));
+            Assert.Equal(0, target.MouseRawDX);
+            Assert.Equal(0, target.MouseRawDY);
+        }
+
+        [Fact]
+        public void NonFiniteSensorFloat_FailsClosedToNeutral()
+        {
+            // Consumer-side EMA smoothing (gyro, IR) latches NaN permanently
+            // once poisoned, so the decoder rejects non-finite floats and
+            // resets rather than half-applying (mirrors OutputEffectCodec's
+            // HapticTone finiteness gate).
+            var s = new CustomInputState();
+            s.Gyro[1] = float.NaN;
+            var bytes = CustomInputStateCodec.Encode(s, WithMotion);
+            var target = new CustomInputState();
+            target.Buttons[4] = true; // pre-existing state to confirm the reset
+            Assert.False(CustomInputStateCodec.DecodeInto(bytes, target));
+            Assert.Equal(0f, target.Gyro[1]);
+            Assert.False(target.Buttons[4]);
+
+            var ir = new CustomInputState();
+            ir.Ir = new WiiIrState { X = float.PositiveInfinity, Y = 0f, Detected = true };
+            Assert.False(CustomInputStateCodec.DecodeInto(
+                CustomInputStateCodec.Encode(ir, NoSensors), target));
+            Assert.False(target.Ir.Detected);
+        }
+
+        [Fact]
+        public void Battery_DecodeClampsOutOfContractPercent()
+        {
+            // A version-skewed peer could ship 101..127 / -128..-2; decode
+            // clamps to the encoder's [-1, 100] contract.
+            var s = new CustomInputState { BatteryPercent = 50 };
+            var bytes = CustomInputStateCodec.Encode(s, NoSensors);
+            bytes[^2] = unchecked((byte)(sbyte)120); // battery block is percent + charging at the tail
+            var rt = CustomInputStateCodec.Decode(bytes);
+            Assert.Equal(100, rt.BatteryPercent);
+
+            bytes[^2] = unchecked((byte)(sbyte)-77);
+            rt = CustomInputStateCodec.Decode(bytes);
+            Assert.Equal(-1, rt.BatteryPercent);
+        }
+
+        [Fact]
         public void NewFamilies_NeutralStateStillEncodesToThreeBytes()
         {
             // The compactness contract survives the new blocks: an idle pad
@@ -377,6 +453,7 @@ namespace PadForge.Tests
                 "AccelAux",
                 "Touchpads", "Midi", "Ir", "JoyConIrIntensity",
                 "JoyCon2MouseDX", "JoyCon2MouseDY",
+                "MouseRawDX", "MouseRawDY",
                 "BatteryPercent", "BatteryCharging",
             };
             var actual = typeof(CustomInputState)

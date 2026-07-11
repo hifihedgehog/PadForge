@@ -97,7 +97,6 @@ namespace PadForge.Controls
         // Mono coordinate readout shown beside the dragged node in
         // full-width mode only (#175 competitor item 4), e.g. "62, 48".
         private readonly TextBlock _dragReadout = new();
-        private Brush _gridBrush;
 
         // Ember palette (steel curve/handles, ember-hot live dot + dragged handle).
         // Curve/handle brushes resolve from the themed text ramp in InitVisuals so
@@ -181,7 +180,6 @@ namespace PadForge.Controls
             var gridBrush = TryFindResource("ControlStrokeColorSecondaryBrush") as Brush
                 ?? Application.Current.TryFindResource("ControlStrokeColorSecondaryBrush") as Brush
                 ?? new SolidColorBrush(Color.FromRgb(0x5C, 0x5C, 0x5C));
-            _gridBrush = gridBrush;
 
             _curveStrokeBrush = TryFindResource("TextFillColorSecondaryBrush") as Brush
                 ?? Application.Current.TryFindResource("TextFillColorSecondaryBrush") as Brush

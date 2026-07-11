@@ -161,6 +161,9 @@ namespace PadForge.Engine.RemoteLink
             try { _tcp?.Stop(); } catch { }
             try { _udp?.Close(); } catch { }
             _cts?.Dispose();
+            // Null like the failed-Start path: ConnectAsync reads _cts?.Token, and
+            // a disposed-but-non-null CTS throws ObjectDisposedException there.
+            _cts = null;
             StatusChanged?.Invoke(new LinkStatus(LinkStatusKind.Stopped));
         }
 

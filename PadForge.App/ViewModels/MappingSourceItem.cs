@@ -365,10 +365,14 @@ namespace PadForge.ViewModels
                         || d.EndsWith(" Pressure", System.StringComparison.Ordinal);
                 }
 
-                // Strip leading I / H prefix flags before checking the type token.
+                // Strip leading I / H prefix flags before checking the type
+                // token. Both cases, matching IsDeadZoneApplicable below and
+                // the engine's OrdinalIgnoreCase prefix parse
+                // (TryGetEngineOwnedSource), so a hand-edited lowercase
+                // prefix that evaluates fine doesn't hide the checkbox.
                 int start = 0;
-                if (start < d.Length && d[start] == 'I') start++;
-                if (start < d.Length && d[start] == 'H') start++;
+                if (start < d.Length && (d[start] == 'I' || d[start] == 'i')) start++;
+                if (start < d.Length && (d[start] == 'H' || d[start] == 'h')) start++;
                 var body = d.AsSpan(start);
                 return body.StartsWith("Axis") || body.StartsWith("Slider");
             }
@@ -412,7 +416,25 @@ namespace PadForge.ViewModels
                 if (desc.StartsWith("Mouse Motion ", System.StringComparison.Ordinal)
                     || desc.StartsWith("IR Pointer ", System.StringComparison.Ordinal)
                     || desc.StartsWith("IR Brightness", System.StringComparison.Ordinal)
-                    || desc.StartsWith("Balance ", System.StringComparison.Ordinal))
+                    || desc.StartsWith("Balance ", System.StringComparison.Ordinal)
+                    || desc.StartsWith("Gyro ", System.StringComparison.Ordinal)
+                    || desc.StartsWith("Mouse Position ", System.StringComparison.Ordinal))
+                    return _parentTargetIsDiscrete;
+
+                // MIDI CC as a button thresholds on the per-source DeadZone
+                // ("Midi CC N", absolute value only; the " Up"/" Down"
+                // encoder pulses are edge-fired and read no threshold).
+                if (desc.StartsWith("Midi CC ", System.StringComparison.Ordinal)
+                    && !desc.EndsWith(" Up", System.StringComparison.Ordinal)
+                    && !desc.EndsWith(" Down", System.StringComparison.Ordinal))
+                    return _parentTargetIsDiscrete;
+
+                // Touchpad-gesture CONTINUOUS axes (PinchAxis / RotateAxis /
+                // StickX / StickY) threshold on the per-source DeadZone when
+                // driving a button target; one-shot gesture fires ignore it.
+                if (PadForge.Engine.Common.Mapping.SourceCoercion.IsTouchpadGestureDescriptor(desc)
+                    && PadForge.Engine.Common.Mapping.SourceCoercion.TryParseTouchpadGesture(desc, out _, out string gestureName)
+                    && PadForge.Engine.Common.Mapping.SourceCoercion.IsTouchpadGestureAxis(gestureName))
                     return _parentTargetIsDiscrete;
 
                 int start = 0;

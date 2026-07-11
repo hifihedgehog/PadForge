@@ -24,7 +24,8 @@ namespace PadForge.Engine.Common.Mapping
             CustomInputState state, MappingSource src,
             int globalThresholdPercent,
             int slotIndex, string target, int sourceIndex,
-            SourceKindRuntime runtime, double frameDeltaSeconds)
+            SourceKindRuntime runtime, double frameDeltaSeconds,
+            string evaluatedDeviceGuid = null)
         {
             if (src == null) return false;
 
@@ -47,17 +48,18 @@ namespace PadForge.Engine.Common.Mapping
                 {
                     bool modifier = ReadButtonLikeBool(state, src.ParamModifier);
                     var inner = CloneAsDirect(src, invertOverride: src.Invert ^ modifier);
-                    return SourceCoercion.EvaluateForButtonTarget(state, inner, globalThresholdPercent, slotIndex);
+                    return SourceCoercion.EvaluateForButtonTarget(state, inner, globalThresholdPercent, slotIndex, evaluatedDeviceGuid);
                 }
                 default: // Direct
-                    return SourceCoercion.EvaluateForButtonTarget(state, src, globalThresholdPercent, slotIndex);
+                    return SourceCoercion.EvaluateForButtonTarget(state, src, globalThresholdPercent, slotIndex, evaluatedDeviceGuid);
             }
         }
 
         public static float EvaluateForBipolarAxisTarget(
             CustomInputState state, MappingSource src,
             int slotIndex, string target, int sourceIndex,
-            SourceKindRuntime runtime, double frameDeltaSeconds)
+            SourceKindRuntime runtime, double frameDeltaSeconds,
+            string evaluatedDeviceGuid = null)
         {
             if (src == null) return 0f;
 
@@ -104,7 +106,7 @@ namespace PadForge.Engine.Common.Mapping
                 {
                     bool modifier = ReadButtonLikeBool(state, src.ParamModifier);
                     var inner = CloneAsDirect(src, invertOverride: src.Invert ^ modifier);
-                    return SourceCoercion.EvaluateForBipolarAxisTarget(state, inner, slotIndex, relativeTouchpad);
+                    return SourceCoercion.EvaluateForBipolarAxisTarget(state, inner, slotIndex, relativeTouchpad, evaluatedDeviceGuid);
                 }
                 // Steering kinds (v3.4 #94): read a whole 2D stick (X = Descriptor,
                 // Y = ParamYDescriptor) or gravity, and project to one virtual-stick
@@ -130,7 +132,8 @@ namespace PadForge.Engine.Common.Mapping
                 case "MotionLeanX":
                 {
                     if (runtime == null) return 0f;
-                    double v = runtime.TickMotionLean(slotIndex, target, sourceIndex, src, state, src.DeviceGuid);
+                    double v = runtime.TickMotionLean(slotIndex, target, sourceIndex, src, state,
+                        SourceCoercion.EffectiveDeviceGuid(src, evaluatedDeviceGuid));
                     return src.Invert ? -(float)v : (float)v;
                 }
                 case "MotionLeanAuxX":
@@ -138,7 +141,8 @@ namespace PadForge.Engine.Common.Mapping
                     // "Motion Lean L" (#199): the same tilt math over the
                     // auxiliary (Nunchuk / left Joy-Con) gravity twin.
                     if (runtime == null) return 0f;
-                    double v = runtime.TickMotionLean(slotIndex, target, sourceIndex, src, state, src.DeviceGuid, aux: true);
+                    double v = runtime.TickMotionLean(slotIndex, target, sourceIndex, src, state,
+                        SourceCoercion.EffectiveDeviceGuid(src, evaluatedDeviceGuid), aux: true);
                     return src.Invert ? -(float)v : (float)v;
                 }
                 default:
@@ -154,7 +158,7 @@ namespace PadForge.Engine.Common.Mapping
                     // "hold the controller tilted to keep turning" — the
                     // opposite of how gyro is supposed to feel (JSM
                     // MOUSE_JOYSTICK, Steam Input gyro→stick, Splatoon).
-                    float v = SourceCoercion.EvaluateForBipolarAxisTarget(state, src, slotIndex, relativeTouchpad);
+                    float v = SourceCoercion.EvaluateForBipolarAxisTarget(state, src, slotIndex, relativeTouchpad, evaluatedDeviceGuid);
                     // Per-axis-frame sign correction — see ShouldFlipForAxisFrame.
                     // This is a SHARED seam (sticks, extended axes, KBM mouse,
                     // and the touchpad-output passthrough all reach it), so the
@@ -219,7 +223,8 @@ namespace PadForge.Engine.Common.Mapping
         public static float EvaluateForTriggerTarget(
             CustomInputState state, MappingSource src,
             int slotIndex, string target, int sourceIndex,
-            SourceKindRuntime runtime, double frameDeltaSeconds)
+            SourceKindRuntime runtime, double frameDeltaSeconds,
+            string evaluatedDeviceGuid = null)
         {
             if (src == null) return 0f;
 
@@ -250,10 +255,10 @@ namespace PadForge.Engine.Common.Mapping
                 {
                     bool modifier = ReadButtonLikeBool(state, src.ParamModifier);
                     var inner = CloneAsDirect(src, invertOverride: src.Invert ^ modifier);
-                    return SourceCoercion.EvaluateForTriggerTarget(state, inner, slotIndex);
+                    return SourceCoercion.EvaluateForTriggerTarget(state, inner, slotIndex, evaluatedDeviceGuid);
                 }
                 default:
-                    return SourceCoercion.EvaluateForTriggerTarget(state, src, slotIndex);
+                    return SourceCoercion.EvaluateForTriggerTarget(state, src, slotIndex, evaluatedDeviceGuid);
             }
         }
 

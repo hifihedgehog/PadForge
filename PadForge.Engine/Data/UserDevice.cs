@@ -517,6 +517,15 @@ namespace PadForge.Engine.Data
                 ForceFeedbackState = new ForceFeedbackState();
 
             // Store the device wrapper for state reading in the polling loop.
+            // A replug can reach here while the previous connection's wrapper
+            // is still attached (exact-InstanceGuid rebind inside the Step 1
+            // disconnect debounce, or the Step 2 read-failure + ProductGuid
+            // fallback). Overwriting without disposing would leave the old
+            // SDL handles to the GC finalizer thread, racing the poll loop.
+            if (Device != null && !ReferenceEquals(Device, wrapper))
+            {
+                try { Device.Dispose(); } catch { }
+            }
             Device = wrapper;
         }
 

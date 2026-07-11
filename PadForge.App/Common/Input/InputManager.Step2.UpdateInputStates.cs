@@ -322,7 +322,7 @@ namespace PadForge.Common.Input
             }
 
             bool idle = ud.CapType == InputDeviceType.Gamepad
-                ? IdleInputDetector.IsGamepadIdle(state)
+                ? IdleInputDetector.IsGamepadIdle(state, ud.OldInputState)
                 : IdleInputDetector.IsUnchanged(state, ud.OldInputState);
 
             if (!idle || ud.LastActiveTick == 0)

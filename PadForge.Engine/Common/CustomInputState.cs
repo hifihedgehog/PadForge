@@ -138,6 +138,18 @@ namespace PadForge.Engine
         public float JoyCon2MouseDX;
         public float JoyCon2MouseDY;
 
+        /// <summary>Raw Input mouse motion in unclamped sensor counts
+        /// accumulated since the previous poll (issue #200). The published
+        /// <see cref="Axis"/>[0/1] carry the same deltas centered and clamped
+        /// to the 16-bit stick range (SdlMouseWrapper MotionScale 2048, so
+        /// ±16 counts per poll max); the mouse-gesture recognizer needs the
+        /// unclamped counts or a fast flick saturates both axes to a 1:1
+        /// ratio and misclassifies. Set from the SAME single RawInput
+        /// consume that feeds the axes (plan-165: never a second delta
+        /// consumer). 0 when idle or for non-mouse devices.</summary>
+        public int MouseRawDX;
+        public int MouseRawDY;
+
         /// <summary>Battery percentage from SDL3 (0..100, or -1 if unknown).
         /// Refreshed periodically by SdlDeviceWrapper, not every frame.</summary>
         public int BatteryPercent;
@@ -195,6 +207,8 @@ namespace PadForge.Engine
             clone.JoyConIrIntensity = JoyConIrIntensity;
             clone.JoyCon2MouseDX = JoyCon2MouseDX;
             clone.JoyCon2MouseDY = JoyCon2MouseDY;
+            clone.MouseRawDX = MouseRawDX;
+            clone.MouseRawDY = MouseRawDY;
             clone.BatteryPercent = BatteryPercent;
             clone.BatteryCharging = BatteryCharging;
             return clone;

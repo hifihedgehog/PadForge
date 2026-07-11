@@ -1538,10 +1538,12 @@ namespace PadForge.Engine.Data
             (_kbmMappingDict != null && _kbmMappingDict.Count > 0);
 
         /// <summary>
-        /// Clears all mapping descriptors (standard, Extended, and MIDI) while preserving
-        /// deadzone, force feedback, and other non-mapping configuration.
-        /// Call before writing a new set of mappings to prevent stale leftovers
-        /// from a previous mapping layout (e.g., switching Xbox preset → custom Extended).
+        /// Clears all mapping descriptors (standard, Extended, MIDI, and KBM) plus the
+        /// per-mapping deadzone/bidirectional companions keyed by those target names,
+        /// while preserving stick deadzone, force feedback, and other non-mapping
+        /// configuration. Call before writing a new set of mappings to prevent stale
+        /// leftovers from a previous mapping layout (e.g., switching Xbox preset →
+        /// custom Extended).
         /// </summary>
         public void ClearMappingDescriptors()
         {
@@ -1584,6 +1586,16 @@ namespace PadForge.Engine.Data
             _midiMappingDict = null;
             KbmMappingEntries = null;
             _kbmMappingDict = null;
+
+            // Per-mapping deadzone/bidirectional companions are keyed by the target
+            // names cleared above: entries for a previous layout would otherwise
+            // survive the switch and re-apply through MappingSetMigrator.BuildSource
+            // and the legacy runtime grid. The sole caller rewrites both for every
+            // current mapping right after this clear, so live values are safe.
+            MappingDeadZoneEntries = null;
+            _mappingDeadZoneDict = null;
+            MappingBidirectionalEntries = null;
+            _mappingBidirectionalDict = null;
         }
 
         /// <summary>True for Extended-dict keys that are per-device TUNING (steering mode +
@@ -2181,11 +2193,24 @@ namespace PadForge.Engine.Data
             foreach (string name in CopyablePropertyNames)
             {
                 if (MappingPropertyNames.Contains(name))
-                    continue; // Skip mapping properties — they need translation.
+                    continue; // Skip mapping properties. They need translation.
                 var prop = type.GetProperty(name);
                 if (prop != null && prop.CanWrite)
                     prop.SetValue(this, prop.GetValue(source) ?? "");
             }
+
+            // Touchpad/mouse-gesture settings are layout-independent per-(device, pad)
+            // tuning, but the reflection loop above cannot carry typed arrays (it would
+            // coerce null to "" and throw on SetValue), so they need the same dedicated
+            // deep copies CopyFrom uses. Without them a cross-layout paste silently
+            // drops both families while a same-layout paste keeps them.
+            TouchpadSettings = DeepCopyTouchpadSettings(source.TouchpadSettings);
+            MouseGestureSettings = DeepCopyMouseGestureSettings(source.MouseGestureSettings);
+
+            // MappingDeadZoneEntries/MappingBidirectionalEntries are deliberately NOT
+            // carried: their keys are layout-specific target names that do not line up
+            // across layouts, the same same-layout-only rule the multi-source mapping
+            // rows follow at the ApplyPadSettingToCurrentDeviceTranslated call site.
 
             // Step 2: Collect all source mappings as (position → descriptor value).
             var translated = new Dictionary<MappingSlot, string>();

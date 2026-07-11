@@ -273,6 +273,45 @@ namespace PadForge.Tests
             Assert.False(IdleInputDetector.IsGamepadIdle(s));
         }
 
+        // ── Idle truth table: #193 extra axes / sliders (delta test vs previous) ──
+
+        [Fact]
+        public void GamepadIdle_ExtraAxisMovePastSlopDefeatsIdle()
+        {
+            var prev = NeutralGamepadState();
+            var s = NeutralGamepadState();
+            s.Axis[7] = prev.Axis[7] + IdleInputDetector.DeltaSlop + 1;
+            Assert.False(IdleInputDetector.IsGamepadIdle(s, prev));
+        }
+
+        [Fact]
+        public void GamepadIdle_ExtraAxisJitterInsideSlopStaysIdle()
+        {
+            var prev = NeutralGamepadState();
+            var s = NeutralGamepadState();
+            s.Axis[7] = prev.Axis[7] + IdleInputDetector.DeltaSlop - 1;
+            Assert.True(IdleInputDetector.IsGamepadIdle(s, prev));
+        }
+
+        [Fact]
+        public void GamepadIdle_SliderMovePastSlopDefeatsIdle()
+        {
+            var prev = NeutralGamepadState();
+            var s = NeutralGamepadState();
+            s.Sliders[0] = prev.Sliders[0] + IdleInputDetector.DeltaSlop + 1;
+            Assert.False(IdleInputDetector.IsGamepadIdle(s, prev));
+        }
+
+        [Fact]
+        public void GamepadIdle_NoPrevious_ExtraAxisHasNoDeltaTest()
+        {
+            // Without a previous state the extra axes can't be delta-tested
+            // (unknown rest positions), so a deflected extra axis reads idle.
+            var s = NeutralGamepadState();
+            s.Axis[7] = 60000;
+            Assert.True(IdleInputDetector.IsGamepadIdle(s));
+        }
+
         // ── Idle truth table (generic change detection) ──
 
         [Fact]
@@ -324,6 +363,20 @@ namespace PadForge.Tests
             var s = NeutralGamepadState();
             s.JoyCon2MouseDY = 3f;
             Assert.False(IdleInputDetector.IsGamepadIdle(s));
+        }
+
+        [Fact]
+        public void GamepadIdle_MouseRawCountsDefeatIdle()
+        {
+            // #200: the unclamped Raw Input counts join the pointer/mouse
+            // activity family (exactly 0 when the physical mouse is still).
+            var s = NeutralGamepadState();
+            s.MouseRawDX = 2;
+            Assert.False(IdleInputDetector.IsGamepadIdle(s));
+
+            var u = NeutralGamepadState();
+            u.MouseRawDY = -1;
+            Assert.False(IdleInputDetector.IsUnchanged(u, NeutralGamepadState()));
         }
 
         [Fact]

@@ -108,6 +108,36 @@ namespace PadForge.Tests
         }
 
         [Fact]
+        public void BipolarHalfAxis_MatchesTheAxisContract()
+        {
+            // #154 grammar on a STICK target: HalfAxis selects ONE direction
+            // (active half in [0, +1], other half reads 0), Invert picks
+            // which, Bidirectional folds to magnitude. The same persisted
+            // flags must select the same physical motion whether the row
+            // feeds a button, a trigger, or a stick target.
+            var right = Src("X"); right.HalfAxis = true;
+            Assert.Equal(0.5f, SourceCoercion.EvaluateForBipolarAxisTarget(State(dx: 8f), right), precision: 5);
+            Assert.Equal(0f, SourceCoercion.EvaluateForBipolarAxisTarget(State(dx: -8f), right), precision: 5);
+
+            var left = Src("X", invert: true); left.HalfAxis = true;
+            Assert.Equal(0.5f, SourceCoercion.EvaluateForBipolarAxisTarget(State(dx: -8f), left), precision: 5);
+            Assert.Equal(0f, SourceCoercion.EvaluateForBipolarAxisTarget(State(dx: 8f), left), precision: 5);
+
+            var either = Src("X", invert: true); either.HalfAxis = true; either.Bidirectional = true;
+            Assert.Equal(0.5f, SourceCoercion.EvaluateForBipolarAxisTarget(State(dx: 8f), either), precision: 5);
+            Assert.Equal(0.5f, SourceCoercion.EvaluateForBipolarAxisTarget(State(dx: -8f), either), precision: 5);
+        }
+
+        [Fact]
+        public void BipolarFullAxis_InvertStillFlipsSignedVelocity()
+        {
+            // Non-HalfAxis rows keep the pre-#154-fix behavior: full signed
+            // velocity with Invert as a plain sign flip.
+            Assert.Equal(-0.5f, SourceCoercion.EvaluateForBipolarAxisTarget(
+                State(dx: 8f), Src("X", invert: true)), precision: 5);
+        }
+
+        [Fact]
         public void PerRowDeadZone_OverridesGlobalThreshold()
         {
             // 50% deflection: above a 25% global threshold but below a 60%

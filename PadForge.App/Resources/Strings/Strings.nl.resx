@@ -110,8 +110,6 @@
   <data name="Main_ShuttingDown" xml:space="preserve"><value>PadForge wordt afgesloten...</value></data>
   <data name="Main_StartingUp" xml:space="preserve"><value>PadForge wordt gestart…</value></data>
   <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>Virtuele controllers van een vorige sessie worden opgeruimd.</value></data>
-  <data name="Main_ReleasingControllers" xml:space="preserve"><value>Virtuele controllers worden vrijgegeven</value></data>
-  <data name="Main_PleaseWait" xml:space="preserve"><value>Even geduld...</value></data>
   <data name="Main_DevicesSuffix" xml:space="preserve"><value> apparaat/apparaten</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>Controller toevoegen</value></data>
   <data name="Main_DeleteVC" xml:space="preserve"><value>Virtuele controller verwijderen</value></data>
@@ -166,9 +164,7 @@
   <data name="Status_ProfileUpdated_Format" xml:space="preserve"><value>Profiel "{0}" bijgewerkt.</value></data>
   <data name="Status_ProfileLoaded_Format" xml:space="preserve"><value>Profiel geladen: {0}</value></data>
   <data name="Status_ProfileRevertedDefault" xml:space="preserve"><value>Profiel teruggezet naar Standaard</value></data>
-  <data name="Status_VirtualController_Format" xml:space="preserve"><value>Virtuele controller {0}: {1}</value></data>
   <data name="Status_DeviceAssigned_Format" xml:space="preserve"><value>"{0}" toegewezen aan virtuele controller {1}.</value></data>
-  <data name="Status_Unmapped_Format" xml:space="preserve"><value>Niet toegewezen: {0}</value></data>
   <data name="Status_ErrorLoadingSettings_Format" xml:space="preserve"><value>Fout bij laden van instellingen: {0}</value></data>
   <data name="Status_SettingsSaved_Format" xml:space="preserve"><value>Instellingen opgeslagen in {0}.</value></data>
   <data name="Status_ErrorSavingSettings_Format" xml:space="preserve"><value>Fout bij opslaan van instellingen: {0}</value></data>
@@ -326,11 +322,6 @@
   <data name="Devices_RemoveConfirm_Format" xml:space="preserve"><value>{0} wordt uit de apparatenlijst verwijderd en de opgeslagen instellingen worden gewist.</value></data>
   <data name="Devices_DragAssignHint" xml:space="preserve"><value>Sleep een apparaat naar een controllerkaart in de zijbalk om het toe te wijzen.</value></data>
   <data name="Devices_Product" xml:space="preserve"><value>Product: </value></data>
-  <data name="Devices_Type" xml:space="preserve"><value>Type: </value></data>
-  <data name="Devices_AppGUID" xml:space="preserve"><value>App-GUID: </value></data>
-  <data name="Devices_SdlGUID" xml:space="preserve"><value>SDL-GUID: </value></data>
-  <data name="Devices_InstancePath" xml:space="preserve"><value>Instantiepad: </value></data>
-  <data name="Devices_VIDPID" xml:space="preserve"><value>VID:PID: </value></data>
   <data name="Devices_SubmitMapping" xml:space="preserve"><value>Apparaattoewijzing indienen</value></data>
   <data name="Devices_VCAssignment" xml:space="preserve"><value>Virtuele controller-toewijzing</value></data>
   <data name="Devices_ToggleAssignment" xml:space="preserve"><value>Toewijzing wisselen</value></data>
@@ -358,7 +349,6 @@
   <data name="Devices_Rumble" xml:space="preserve"><value>Trillen</value></data>
   <data name="Devices_Gyro" xml:space="preserve"><value>Gyro</value></data>
   <data name="Devices_Accel" xml:space="preserve"><value>Versn.</value></data>
-  <data name="Devices_HideWarning_Format" xml:space="preserve"><value>U staat op het punt om {0}. Dit heeft invloed op {1}{2}.</value></data>
   <data name="Devices_HideAction" xml:space="preserve"><value>dit apparaat te verbergen voor alle toepassingen</value></data>
   <data name="Devices_ConsumeAction" xml:space="preserve"><value>toegewezen invoer van dit apparaat te blokkeren</value></data>
   <data name="Devices_WarnScope_Format" xml:space="preserve"><value> voor alle aangesloten {0}en</value></data>
@@ -378,7 +368,6 @@
   <data name="Pad_Triggers" xml:space="preserve"><value>Triggers</value></data>
   <data name="Pad_ForceFeedback" xml:space="preserve"><value>Force Feedback</value></data>
   <data name="Pad_Preset" xml:space="preserve"><value>Voorinstelling</value></data>
-  <data name="Pad_Custom" xml:space="preserve"><value>Aangepast</value></data>
   <data name="Pad_ExtendedSticks" xml:space="preserve"><value>Sticks</value></data>
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>Triggers</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POVs</value></data>
@@ -402,9 +391,6 @@
   <data name="ManageProfiles_ImportFromFileTitle" xml:space="preserve"><value>Profiel-JSON importeren</value></data>
   <data name="ManageProfiles_StatusImportFileSucceeded_Format" xml:space="preserve"><value>Geïmporteerd uit {0}.</value></data>
   <data name="ManageProfiles_StatusImportFileFailed_Format" xml:space="preserve"><value>Lezen mislukt: {0}</value></data>
-  <data name="ImportFromDevice_Title" xml:space="preserve"><value>Importeren vanaf apparaat</value></data>
-  <data name="ImportFromDevice_Description" xml:space="preserve"><value>Kies een aangesloten HID-apparaat. PadForge legt de descriptor, identiteit en layout vast en slaat ze op als nieuw Extended-profiel met achtervoegsel "(User Generated)". Het profiel wordt opgeslagen in PadForge.xml en reist mee met uw instellingen.</value></data>
-  <data name="ImportFromDevice_ConnectedDevice" xml:space="preserve"><value>Aangesloten apparaten:</value></data>
   <data name="ImportFromDevice_Refresh" xml:space="preserve"><value>Vernieuwen</value></data>
   <data name="ImportFromDevice_Import" xml:space="preserve"><value>Importeren</value></data>
   <data name="ImportFromDevice_UnnamedDevice" xml:space="preserve"><value>(naamloos HID-apparaat)</value></data>
@@ -445,7 +431,6 @@
   <data name="Pad_RightMotor" xml:space="preserve"><value>Rechtermotor</value></data>
   <data name="Pad_MapAll" xml:space="preserve"><value>Alles toewijzen</value></data>
   <data name="Pad_MapPrompt_Format" xml:space="preserve"><value>Toewijzen: {0}</value></data>
-  <data name="Pad_MapAllTooltip" xml:space="preserve"><value>Alle toewijzingen achtereenvolgens opnemen. Druk op een knop/as bij elke prompt.</value></data>
   <data name="Pad_MapAllOneByOne" xml:space="preserve"><value>Alle toewijzingen een voor een opnemen</value></data>
   <data name="Pad_MappingHint" xml:space="preserve"><value>Klik op een toewijzingsrij en druk op een knop/as op uw controller om deze toe te wijzen.</value></data>
   <data name="Pad_CopyTooltip" xml:space="preserve"><value>Alle toewijzingen en instellingen naar klembord kopiëren</value></data>
@@ -719,15 +704,12 @@
   <data name="MacroAction_AppVol_Format" xml:space="preserve"><value>App-volume ← {0}</value></data>
   <data name="MacroAction_AppVolLimit_Format" xml:space="preserve"><value>App-volume ← {0} (max {1}%)</value></data>
   <data name="MacroAction_MouseMove_Format" xml:space="preserve"><value>Muisbeweging ← {0} (snelheid {1:F0})</value></data>
-  <data name="MacroAction_MouseMoveLimit_Format" xml:space="preserve"><value>Muis verplaatsen met {0} (max {1}px)</value></data>
   <data name="MacroAction_Scroll_Format" xml:space="preserve"><value>Muis scrollen ← {0} (snelheid {1:F0})</value></data>
-  <data name="MacroAction_ScrollLimit_Format" xml:space="preserve"><value>Scrollen met {0} (max {1} eenheden)</value></data>
   <data name="MacroAction_MousePress_Format" xml:space="preserve"><value>Muisknop {0} indrukken</value></data>
   <data name="MacroAction_MouseRelease_Format" xml:space="preserve"><value>Muisknop {0} loslaten</value></data>
   <data name="MacroAction_ToggleTouchpadOverlay" xml:space="preserve"><value>Touchpad-overlay in-/uitschakelen</value></data>
   <data name="MacroAction_Type_LightbarColor" xml:space="preserve"><value>Lightbar-kleur instellen</value></data>
   <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>Overschrijft de lightbar van het toegewezen PlayStation-slot met een gekozen RGB-kleur. Reactief vervaagt van volle intensiteit naar zwart binnen het ingestelde uitstervenvenster en geeft daarna terug aan de instellingen op het tabblad Verlichting. Plakkerig houdt de kleur vast totdat een "Lightbar-overschrijving wissen"-actie hem vrijgeeft. Schrijfacties vanuit het spel blijven voorrang houden.</value></data>
-  <data name="MacroAction_LightbarColor_Format" xml:space="preserve"><value>Lightbar {1} ms op {0} zetten</value></data>
   <data name="MacroAction_LightbarColor_Reactive_Format" xml:space="preserve"><value>Lightbar {0} laten flitsen (uitsterven {1} ms)</value></data>
   <data name="MacroAction_LightbarColor_Sticky_Format" xml:space="preserve"><value>Lightbar {0} vasthouden tot wissen</value></data>
   <data name="MacroAction_Type_LightbarColorClear" xml:space="preserve"><value>Lightbar-overschrijving wissen</value></data>
@@ -888,7 +870,6 @@
   <data name="Pad_SensitivityCurve" xml:space="preserve"><value>Gevoeligheidscurve</value></data>
   <data name="Pad_SensitivityCurveHintShort" xml:space="preserve"><value>Dubbelklik om toe te voegen. Rechtsklik om te verwijderen. Sleep om aan te passen.</value></data>
   <data name="Pad_Preset_Label" xml:space="preserve"><value>Voorinstelling</value></data>
-  <data name="Pad_Live" xml:space="preserve"><value>Live</value></data>
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>Trigger-as</value></data>
 
   <!-- ═══ Pad — Force Feedback ═══ -->
@@ -1178,7 +1159,6 @@
   <data name="Mapping_GyroHorizontal" xml:space="preserve"><value>Gyro Horizontaal (Yaw + Roll)</value></data>
   <data name="Settings_GyroCalibrate_Button" xml:space="preserve"><value>Gyro kalibreren</value></data>
   <data name="Settings_GyroCalibrate_Tooltip" xml:space="preserve"><value>Leg de controller op een vlak oppervlak en klik op Gyro kalibreren om de waarde in rust ongeveer 1,5 seconde te bemonsteren. Wordt afgetrokken van ruwe metingen zodat gyro-toewijzingen de muis / stick niet laten driften wanneer de controller stilstaat.</value></data>
-  <data name="Devices_Sensors" xml:space="preserve"><value>Sensoren</value></data>
   <data name="Settings_GyroLastCalibrated_Format" xml:space="preserve"><value>Laatst gekalibreerd: {0:yyyy-MM-dd HH:mm}</value></data>
   <data name="Settings_GyroNeverCalibrated" xml:space="preserve"><value>Nooit gekalibreerd</value></data>
   <data name="Settings_GyroCalibrating" xml:space="preserve"><value>Kalibreren… houd stil</value></data>
@@ -1192,8 +1172,6 @@
   <data name="Settings_GyroSensitivityV_Tooltip" xml:space="preserve"><value>Schaalt de verticale (Pitch) gyro-bijdrage. Apart van horizontaal zodat X- en Y-as onafhankelijk afstembaar zijn.</value></data>
   <data name="Settings_GyroDeadZone" xml:space="preserve"><value>Dode zone</value></data>
   <data name="Settings_GyroDeadZone_Tooltip" xml:space="preserve"><value>Minimale rotatiesnelheid (graden per seconde) waaronder de gyro-uitvoer als nul wordt behandeld. Filtert handtremor zonder discontinue sprong.</value></data>
-  <data name="Settings_GyroSmoothing" xml:space="preserve"><value>Afvlakking</value></data>
-  <data name="Settings_GyroSmoothing_Tooltip" xml:space="preserve"><value>Enkelpolige EMA-filter op de gyro-snelheid. 0 = uit (rauw signaal, laagste latentie). Hogere waarden verminderen jitter ten koste van vertraging. 0,5 is een redelijk startpunt als de cursor trilt.</value></data>
   <data name="Settings_GyroAcceleration" xml:space="preserve"><value>Versnelling</value></data>
   <data name="Settings_GyroAcceleration_Tooltip" xml:space="preserve"><value>Snelheidsafhankelijke versterking. 0 = uit (lineaire schaling). Hogere waarden laten trage bewegingen ongewijzigd en versterken snelle. Handig voor precieze richting in combinatie met snelle bochten.</value></data>
   <data name="Settings_GyroOutputCurve" xml:space="preserve"><value>Uitvoercurve</value></data>
@@ -1208,8 +1186,6 @@
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>Kalibratie</value></data>
   <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>Gevoeligheid</value></data>
   <data name="Pad_Gyro_Response_Header" xml:space="preserve"><value>Responsvorm</value></data>
-  <data name="Pad_Gyro_EasyAim_Header" xml:space="preserve"><value>Easy Aim</value></data>
-  <data name="Pad_Gyro_EasyAim_Subtitle" xml:space="preserve"><value>Activeer de gyro alleen wanneer de rechterstick wordt uitgeslagen. 0% schakelt uit (gyro altijd aan).</value></data>
   <data name="Settings_GyroSpace" xml:space="preserve"><value>Ruimte</value></data>
   <data name="Settings_GyroSpace_Tooltip" xml:space="preserve"><value>Local = ruwe controller-assen. Player = yaw geprojecteerd op de echte verticale as (zwaartekracht), pitch blijft lokaal. Door Jibb Smart aanbevolen standaard voor natuurlijk gevoel bij elke kanteling. World = yaw én pitch geprojecteerd op wereldassen.</value></data>
   <data name="Settings_GyroInvertPitch" xml:space="preserve"><value>Pitch (Y) omkeren</value></data>
@@ -1256,7 +1232,6 @@
   <data name="Pad_Gyro_Curve_ExtraWide" xml:space="preserve"><value>Extra breed</value></data>
   <data name="Pad_Gyro_Units_Multiplier" xml:space="preserve"><value>Vermenigvuldiger</value></data>
   <data name="Pad_Gyro_Units_DegPerScreenTurn" xml:space="preserve"><value>Graden per schermrotatie</value></data>
-  <data name="Pad_Gyro_AimEngage_Record" xml:space="preserve"><value>De volgende fysieke invoer opnemen als activatieknop</value></data>
   <data name="Pad_Gyro_ResetCalibration_All_Tooltip" xml:space="preserve"><value>Kalibratie resetten</value></data>
   <data name="Pad_Gyro_ResetSensitivity_All_Tooltip" xml:space="preserve"><value>Gevoeligheid resetten</value></data>
   <data name="Pad_Gyro_ResetResponse_All_Tooltip" xml:space="preserve"><value>Responsvorm resetten</value></data>
@@ -1300,7 +1275,6 @@
   <data name="Mapping_MotionGyro" xml:space="preserve"><value>Beweging Gyro</value></data>
   <data name="Mapping_MotionAccel" xml:space="preserve"><value>Beweging Versnellingsmeter</value></data>
   <data name="Mapping_MotionLean" xml:space="preserve"><value>Bewegingshelling</value></data>
-  <data name="MappingCategory_Touchpad" xml:space="preserve"><value>Touchpad</value></data>
   <data name="Key_NumpadMultiply" xml:space="preserve"><value>Numeriek toetsenbord *</value></data>
   <data name="Key_NumpadAdd" xml:space="preserve"><value>Numeriek toetsenbord +</value></data>
   <data name="Key_NumpadSubtract" xml:space="preserve"><value>Numeriek toetsenbord -</value></data>
@@ -1357,8 +1331,6 @@
   <data name="Pad_AT_MultiPosFeedback" xml:space="preserve"><value>Multi-positie feedback</value></data>
   <data name="Pad_AT_Slope" xml:space="preserve"><value>Hellende feedback</value></data>
   <data name="Pad_AT_MultiPosVibration" xml:space="preserve"><value>Multi-positie vibratie</value></data>
-  <data name="Pad_AT_StartPosition" xml:space="preserve"><value>Startpositie</value></data>
-  <data name="Pad_AT_EndPosition" xml:space="preserve"><value>Eindpositie</value></data>
   <data name="Pad_AT_Range" xml:space="preserve"><value>Bereik</value></data>
   <data name="Pad_AT_Strength" xml:space="preserve"><value>Sterkte</value></data>
   <data name="Pad_AT_Frequency" xml:space="preserve"><value>Frequentie (Hz)</value></data>
@@ -1374,21 +1346,14 @@
   <data name="Pad_Lighting_Subtitle" xml:space="preserve"><value>Stelt de basiskleur van de lightbar en het audiogedrag in op de toegewezen fysieke controller. Game-schrijfacties winnen altijd. Gebruikersinstellingen gelden wanneer geen spel de lightbar aanstuurt.</value></data>
   <data name="Pad_Lighting_PlayerIdle_Hint" xml:space="preserve"><value>Zolang Spelersnummer is gekozen, toont de pad in rust de spelersidentiteit van zijn virtuele controller: de Sony-spelerkleur op de lightbar (1 blauw, 2 rood, 3 groen, 4 roze) en op een DualSense de bijbehorende speler-leds. Alle apparaten op dezelfde virtuele controller tonen hetzelfde nummer. Games nemen het over zodra ze verlichting schrijven, wat je hier instelt wint altijd, en Uit maakt dat licht volledig donker.</value></data>
   <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>Lightbar</value></data>
-  <data name="Pad_Lighting_BaseEnabled" xml:space="preserve"><value>Pas door de gebruiker geconfigureerde basiskleur toe wanneer geen spel schrijft</value></data>
-  <data name="Pad_Lighting_Red" xml:space="preserve"><value>Rood</value></data>
-  <data name="Pad_Lighting_Green" xml:space="preserve"><value>Groen</value></data>
-  <data name="Pad_Lighting_Blue" xml:space="preserve"><value>Blauw</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>Voer een zescijferige hex-kleur in (RRGGBB of #RRGGBB) en druk op Enter of klik elders om toe te passen.</value></data>
   <data name="Pad_Lighting_RemoveColor" xml:space="preserve"><value>Deze kleur uit het palet verwijderen</value></data>
-  <data name="Pad_Lighting_MicLedMode" xml:space="preserve"><value>Microfoon-LED</value></data>
   <data name="Pad_Lighting_MicLed_Off" xml:space="preserve"><value>Uit</value></data>
   <data name="Pad_Lighting_MicLed_Solid" xml:space="preserve"><value>Aan</value></data>
   <data name="Pad_Lighting_MicLed_Pulse" xml:space="preserve"><value>Pulserend</value></data>
   <data name="Pad_Lighting_MicLed_FollowDevice" xml:space="preserve"><value>Audioapparaat volgen</value></data>
   <data name="Pad_Lighting_MicLed_FollowDevice_Picker" xml:space="preserve"><value>Audioapparaat</value></data>
-  <data name="Pad_Lighting_PlayerLeds" xml:space="preserve"><value>Speler-LED's</value></data>
-  <data name="Pad_Lighting_PlayerLeds_Subtitle" xml:space="preserve"><value>Vijf kleine witte LED's onder het touchpad. Kies welk spelerslotpatroon en welke helderheid je wilt.</value></data>
   <data name="Pad_Lighting_IndicatorLeds" xml:space="preserve"><value>Indicator-LED's</value></data>
   <data name="Pad_Lighting_IndicatorLeds_Subtitle" xml:space="preserve"><value>Rij met spelernummer (5 LED's onder het touchpad) en de mute-LED boven de microfoon. De helderheidsregeling werkt fysiek alleen op de spelerrij. De firmware ondersteunt mute-LED-toestanden (Uit / Aan / Pulserend) maar geen apart helderheidsregister voor mute.</value></data>
   <data name="Pad_ResetLightbar" xml:space="preserve"><value>Lightbar resetten</value></data>
@@ -1401,7 +1366,6 @@
   <data name="Pad_Lighting_PlayerPattern" xml:space="preserve"><value>Spelerpatroon</value></data>
   <data name="Pad_Lighting_MuteLedMode" xml:space="preserve"><value>Mute-LED-modus</value></data>
   <data name="Pad_Lighting_LedBrightness" xml:space="preserve"><value>LED-helderheid</value></data>
-  <data name="Pad_Lighting_PlayerLed_Mode" xml:space="preserve"><value>Patroon</value></data>
   <data name="Pad_Lighting_PlayerLed_Off" xml:space="preserve"><value>Uit</value></data>
   <data name="Pad_Lighting_PlayerLed_PlayerNumber" xml:space="preserve"><value>Spelersnummer (standaard)</value></data>
   <data name="Pad_Lighting_PlayerLed_P1" xml:space="preserve"><value>Speler 1</value></data>
@@ -1409,19 +1373,10 @@
   <data name="Pad_Lighting_PlayerLed_P3" xml:space="preserve"><value>Speler 3</value></data>
   <data name="Pad_Lighting_PlayerLed_P4" xml:space="preserve"><value>Speler 4</value></data>
   <data name="Pad_Lighting_PlayerLed_All" xml:space="preserve"><value>Alle</value></data>
-  <data name="Pad_Lighting_PlayerLed_Brightness" xml:space="preserve"><value>Helderheid</value></data>
   <data name="Pad_Lighting_PlayerLed_Brightness_High" xml:space="preserve"><value>Hoog</value></data>
   <data name="Pad_Lighting_PlayerLed_Brightness_Medium" xml:space="preserve"><value>Gemiddeld</value></data>
   <data name="Pad_Lighting_PlayerLed_Brightness_Low" xml:space="preserve"><value>Laag</value></data>
-  <data name="Pad_Lighting_AudioLightbar" xml:space="preserve"><value>Audio-gestuurde lightbar</value></data>
-  <data name="Pad_Lighting_AudioLightbar_Subtitle" xml:space="preserve"><value>Moduleert de basiskleur hierboven met de systeemaudio-piek. Pulseert mee met wat er via het standaardafspeelapparaat speelt. Gebruikt dezelfde WASAPI-capture als audio-rumble, maar leest de volledige golfvorm (geen bass-cutoff-filter) en volgt dus alles wat je hoort.</value></data>
-  <data name="Pad_Lighting_AudioLightbar_Enable" xml:space="preserve"><value>Basiskleur laten pulseren met systeemaudio</value></data>
   <data name="Pad_Lighting_AudioLightbar_Sensitivity" xml:space="preserve"><value>Gevoeligheid</value></data>
-  <data name="Pad_Lighting_AudioLightbar_Mode" xml:space="preserve"><value>Modus</value></data>
-  <data name="Pad_Lighting_AudioLightbar_Mode_Pulse" xml:space="preserve"><value>Basiskleur laten pulseren</value></data>
-  <data name="Pad_Lighting_AudioLightbar_Mode_Thresholds" xml:space="preserve"><value>Drie kleuren — harde overgangen</value></data>
-  <data name="Pad_Lighting_AudioLightbar_Mode_Gradient" xml:space="preserve"><value>Drie kleuren — vloeiend verloop</value></data>
-  <data name="Pad_Lighting_AudioLightbar_Mode_CrossFade" xml:space="preserve"><value>Drie kleuren — crossfade bij grenzen</value></data>
   <data name="Pad_Lighting_AudioLightbar_CrossFadeWidth" xml:space="preserve"><value>Crossfade-breedte</value></data>
   <data name="Pad_Lighting_AudioLightbar_LowColor" xml:space="preserve"><value>Zachte kleur</value></data>
   <data name="Pad_Lighting_AudioLightbar_MidColor" xml:space="preserve"><value>Middenkleur</value></data>
@@ -1451,10 +1406,6 @@
   <data name="Pad_Lighting_RainbowBrightness" xml:space="preserve"><value>Helderheid</value></data>
   <data name="Pad_Lighting_Period" xml:space="preserve"><value>Periode</value></data>
   <data name="Pad_Lighting_PaletteHeader" xml:space="preserve"><value>Palet</value></data>
-  <data name="Pad_Lighting_PaletteColor1" xml:space="preserve"><value>Kleur 1</value></data>
-  <data name="Pad_Lighting_PaletteColor2" xml:space="preserve"><value>Kleur 2</value></data>
-  <data name="Pad_Lighting_PaletteColor3" xml:space="preserve"><value>Kleur 3</value></data>
-  <data name="Pad_Lighting_PaletteColor4" xml:space="preserve"><value>Kleur 4</value></data>
   <data name="Pad_Lighting_ColorCycleSmooth" xml:space="preserve"><value>Vloeiend overgaan tussen palelekleuren</value></data>
   <data name="Pad_Lighting_AddColor" xml:space="preserve"><value>Kleur toevoegen</value></data>
   <data name="Pad_Lighting_ResetPalette" xml:space="preserve"><value>Palet herstellen</value></data>
@@ -1488,7 +1439,7 @@
   <data name="Pad_ResetAudioMidB" xml:space="preserve"><value>Middenband blauw herstellen</value></data>
   <data name="Pad_ResetAudioHighR" xml:space="preserve"><value>Luide band rood herstellen</value></data>
   <data name="Pad_ResetAudioHighG" xml:space="preserve"><value>Luide band groen herstellen</value></data>
-  <data name="Pad_ResetAudioHighB" xml:space="preserve"><value>Luide band blauw herstellen</value></data>  <data name="Pad_Lighting_InputReactive" xml:space="preserve"><value>Invoerreactief</value></data>  <data name="Pad_Lighting_InputReactive_Off" xml:space="preserve"><value>Uit</value></data>  <data name="Pad_Lighting_InputReactive_Random" xml:space="preserve"><value>Willekeurige kleur per druk</value></data>  <data name="Pad_Lighting_InputReactive_Cycle" xml:space="preserve"><value>Door palet bladeren</value></data>  <data name="Pad_Lighting_InputReactive_Fixed" xml:space="preserve"><value>Eén kleur per druk</value></data>  <data name="Pad_ResetInputReactive" xml:space="preserve"><value>Invoerreactief herstellen</value></data>  <data name="Pad_Lighting_InputReactive_FixedColor" xml:space="preserve"><value>Knipperkleur per druk</value></data>  <data name="Settings_KeepCloaksBetweenLaunchesTooltip" xml:space="preserve"><value>HidHide-cloaks behouden tussen PadForge-sessies. Handig wanneer een andere app (bijv. Steam) controllers scant terwijl PadForge gesloten is en je wilt dat de fysieke apparaten verborgen blijven. Standaard uit. De hoofdschakelaar hierboven middenin een sessie uitzetten maakt de apparaten direct weer zichtbaar.</value></data>  <data name="Settings_KeepCloaksBetweenLaunches" xml:space="preserve"><value>Apparaten verborgen houden tussen sessies</value></data>  <data name="Pad_AT_LoadGameCubePreset" xml:space="preserve"><value>GameCube-preset laden</value></data>  <data name="Pad_AT_LoadGameCubePreset_Tooltip" xml:space="preserve"><value>Stelt Bereik en Kracht in op waarden die het fysieke klikgevoel van een echte GameCube-trigger nabootsen (begin ~56 %, einde ~63 %, max. kracht). Pas de schuifregelaars daarna aan als je een ander gevoel wilt.</value></data>
+  <data name="Pad_ResetAudioHighB" xml:space="preserve"><value>Luide band blauw herstellen</value></data>  <data name="Pad_Lighting_InputReactive" xml:space="preserve"><value>Invoerreactief</value></data>  <data name="Pad_Lighting_InputReactive_Off" xml:space="preserve"><value>Uit</value></data>  <data name="Pad_Lighting_InputReactive_Random" xml:space="preserve"><value>Willekeurige kleur per druk</value></data>  <data name="Pad_Lighting_InputReactive_Cycle" xml:space="preserve"><value>Door palet bladeren</value></data>  <data name="Pad_Lighting_InputReactive_Fixed" xml:space="preserve"><value>Eén kleur per druk</value></data>  <data name="Pad_ResetInputReactive" xml:space="preserve"><value>Invoerreactief herstellen</value></data>  <data name="Pad_Lighting_InputReactive_FixedColor" xml:space="preserve"><value>Knipperkleur per druk</value></data>  <data name="Settings_KeepCloaksBetweenLaunchesTooltip" xml:space="preserve"><value>HidHide-cloaks behouden tussen PadForge-sessies. Handig wanneer een andere app (bijv. Steam) controllers scant terwijl PadForge gesloten is en je wilt dat de fysieke apparaten verborgen blijven. Standaard uit. De hoofdschakelaar hierboven middenin een sessie uitzetten maakt de apparaten direct weer zichtbaar.</value></data>  <data name="Settings_KeepCloaksBetweenLaunches" xml:space="preserve"><value>Apparaten verborgen houden tussen sessies</value></data>  <data name="Pad_AT_LoadGameCubePreset_Tooltip" xml:space="preserve"><value>Stelt Bereik en Kracht in op waarden die het fysieke klikgevoel van een echte GameCube-trigger nabootsen (begin ~56 %, einde ~63 %, max. kracht). Pas de schuifregelaars daarna aan als je een ander gevoel wilt.</value></data>
 
 
 
@@ -1528,12 +1479,10 @@
   <data name="Pad_Shift_Delete" xml:space="preserve"><value>Laag verwijderen</value></data>
   <data name="Pad_Shift_DeleteConfirmTitle" xml:space="preserve"><value>Shift-laag verwijderen</value></data>
   <data name="Pad_Shift_DeleteConfirm_Format" xml:space="preserve"><value>De laag "{0}" en al haar toewijzingsregels verwijderen? Dit kan niet ongedaan worden gemaakt.</value></data>
-  <data name="Pad_Shift_RenameTitle" xml:space="preserve"><value>Laag hernoemen</value></data>
   <data name="Pad_Shift_NoInherit" xml:space="preserve"><value>Niet overerven</value></data>
   <data name="Pad_Shift_NoInherit_Tooltip" xml:space="preserve"><value>Indien aangevinkt blijft het doel van deze laag UIT in plaats van terug te vallen op de Basisregel.</value></data>
   <data name="Pad_Shift_Delay" xml:space="preserve"><value>Vertraging</value></data>
   <data name="Pad_Shift_Delay_Tooltip" xml:space="preserve"><value>Milliseconden dat de activator actief moet blijven voordat de laagwijziging plaatsvindt.</value></data>
-  <data name="Pad_Shift_JumpToLayer" xml:space="preserve"><value>Spring naar laag</value></data>
   <data name="Pad_Shift_ChordSecondInput" xml:space="preserve"><value>Tweede akkoord-invoer</value></data>
   <data name="Pad_Shift_AxisThreshold" xml:space="preserve"><value>As-drempel</value></data>
   <data name="Pad_Shift_CycleLayers" xml:space="preserve"><value>Door lagen cyclen</value></data>
@@ -1801,7 +1750,6 @@
   <data name="Pad_Steering_Mode_Winding" xml:space="preserve"><value>Draaien</value></data>
   <data name="Pad_Steering_Mode_AngleX" xml:space="preserve"><value>Hoek naar as (X)</value></data>
   <data name="Pad_Steering_Mode_AngleY" xml:space="preserve"><value>Hoek naar as (Y)</value></data>
-  <data name="Pad_Steering_Mode_MotionLean" xml:space="preserve"><value>Kantelbeweging</value></data>
   <data name="Pad_Steering_WindRange" xml:space="preserve"><value>Draaibereik</value></data>
   <data name="Pad_Steering_WindPower" xml:space="preserve"><value>Draaikracht</value></data>
   <data name="Pad_Steering_WindUnwindRate" xml:space="preserve"><value>Terugdraaisnelheid</value></data>
@@ -1834,9 +1782,7 @@
   <data name="Pad_Steering_Lock_ATResistance" xml:space="preserve"><value>Triggerweerstand nabij stuuraanslag</value></data>
   <data name="Pad_Steering_Lock_PulseMs" xml:space="preserve"><value>Pulslengte</value></data>
   <data name="Pad_Steering_Lock_LightbarColor" xml:space="preserve"><value>Lightbar-kleur</value></data>
-  <data name="Pad_Steering_Lock_LightbarFadeMs" xml:space="preserve"><value>Lightbar-vervaging</value></data>
   <data name="Pad_Steering_Reset_PulseMs" xml:space="preserve"><value>Pulslengte resetten</value></data>
-  <data name="Pad_Steering_Reset_LightbarColor" xml:space="preserve"><value>Lightbar-kleur resetten</value></data>
   <data name="Pad_Steering_Reset_LightbarFadeMs" xml:space="preserve"><value>Lightbar-uitdoving resetten</value></data>
   <data name="Pad_Wheel" xml:space="preserve"><value>Stuur</value></data>
   <data name="Pad_ResetWheel" xml:space="preserve"><value>Stuur resetten</value></data>
@@ -1983,9 +1929,6 @@
   <data name="RemoteLink_PasswordTitle" xml:space="preserve">
     <value>Remote Link-wachtwoord</value>
   </data>
-  <data name="Devices_ButtonNumberTooltip" xml:space="preserve">
-    <value>Knop {0}</value>
-  </data>
   <data name="Dashboard_TouchpadOverlayWindowTitle" xml:space="preserve">
     <value>PadForge-touchpad</value>
   </data>
@@ -2076,12 +2019,6 @@
   <data name="Dashboard_RemoteLinkFooter" xml:space="preserve">
     <value>Na een eenmalige koppeling maakt een vertrouwde pc automatisch opnieuw verbinding. Een gekoppelde pc kan de gamepad-uitvoer van deze pc aansturen, en tenzij je dit beperkt, ook het toetsenbord, de muis en de macro&apos;s.</value>
   </data>
-  <data name="Dashboard_RemoteLinkNearby" xml:space="preserve">
-    <value>Pc&apos;s in de buurt</value>
-  </data>
-  <data name="Dashboard_RemoteLinkNoPeers" xml:space="preserve">
-    <value>Pc&apos;s met Remote Link ingeschakeld op hetzelfde netwerk verschijnen hier automatisch.</value>
-  </data>
   <data name="Dashboard_RemoteLinkPairButton" xml:space="preserve">
     <value>Koppelen</value>
   </data>
@@ -2099,9 +2036,6 @@
   </data>
   <data name="RemoteLink_Identity" xml:space="preserve">
     <value>Identiteit</value>
-  </data>
-  <data name="RemoteLink_NoPairedPeers" xml:space="preserve">
-    <value>Nog geen gekoppelde pc&apos;s.</value>
   </data>
   <data name="RemoteLink_Pair" xml:space="preserve">
     <value>Koppelen</value>
@@ -2299,11 +2233,6 @@
   <data name="Tour_Slots_Title" xml:space="preserve"><value>Slots</value></data>
   <data name="Tour_Status_Body" xml:space="preserve"><value>Aantal apparaten, pollingsnelheid en de engine-vlam, altijd in beeld.</value></data>
   <data name="Tour_Status_Title" xml:space="preserve"><value>Instrumentenbalk</value></data>
-  <data name="TypeAbbrev_Extended" xml:space="preserve"><value>EXT</value></data>
-  <data name="TypeAbbrev_KeyboardMouse" xml:space="preserve"><value>KBM</value></data>
-  <data name="TypeAbbrev_Midi" xml:space="preserve"><value>MIDI</value></data>
-  <data name="TypeAbbrev_PlayStation" xml:space="preserve"><value>PS</value></data>
-  <data name="TypeAbbrev_Xbox" xml:space="preserve"><value>XB</value></data>
   <data name="WiiPair_FamilyDs3" xml:space="preserve"><value>Sony DualShock 3</value></data>
   <data name="Pad_ExtendedCloneDevice" xml:space="preserve"><value>Apparaat 1:1 klonen</value></data>
   <data name="Pad_ExtendedCloneDeviceTooltip" xml:space="preserve"><value>Wijs elke as, knop en hoedschakelaar op het geselecteerde apparaat rechtstreeks toe aan de virtuele uitvoer met hetzelfde nummer. Past de indeling aan het apparaat aan en vervangt de rijen van dit apparaat op het slot door een 1:1-passthrough.</value></data>

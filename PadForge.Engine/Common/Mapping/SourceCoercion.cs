@@ -76,6 +76,9 @@ namespace PadForge.Engine.Common.Mapping
                              // flick recognizer, read through
                              // MouseGestureFiredProvider like the touchpad
                              // gesture family.
+            IrOffscreen,     // "IR Offscreen" (issue #203). Debounced
+                             // NOT-Ir.Detected per device (the lightgun-reload
+                             // mechanic); bool-natured, keyed by device GUID.
         }
 
         /// <summary>Sensitivity constant for gyro bipolar coercion.
@@ -365,9 +368,9 @@ namespace PadForge.Engine.Common.Mapping
             return (nowMs - lastDetectedMs) >= debounceMs;
         }
 
-        private static bool ReadIrOffscreen(CustomInputState state, MappingSource src)
+        private static bool ReadIrOffscreen(CustomInputState state, MappingSource src, string deviceGuid)
         {
-            string dev = src?.DeviceGuid ?? "";
+            string dev = deviceGuid ?? "";
             long last = _irLastDetectedMs.TryGetValue(dev, out var v) ? v : 0;
             bool off = ComputeIrOffscreen(state.Ir.Detected, ref last,
                 Environment.TickCount64, IrOffscreenDebounceMs);
@@ -628,6 +631,8 @@ namespace PadForge.Engine.Common.Mapping
                 return SourceType.MouseGesture;
             if (s.StartsWith("IR Pointer ", StringComparison.Ordinal))
                 return SourceType.IrPointer;
+            if (s.Equals("IR Offscreen", StringComparison.Ordinal))
+                return SourceType.IrOffscreen;
             if (s.Equals("IR Brightness", StringComparison.Ordinal))
                 return SourceType.JoyConIr;
             if (s.StartsWith("Balance ", StringComparison.Ordinal))
@@ -937,7 +942,7 @@ namespace PadForge.Engine.Common.Mapping
         internal const float IrMarginStretchX = 1.8f;
         internal const float IrMarginStretchY = 2.0f;
 
-        private static float ReadTunedIrPointer(CustomInputState state, MappingSource src, int slotIndex)
+        private static float ReadTunedIrPointer(CustomInputState state, MappingSource src, int slotIndex, string deviceGuid)
         {
             if (src == null || state == null) return 0f;
 
@@ -947,7 +952,7 @@ namespace PadForge.Engine.Common.Mapping
             else if (s.EndsWith(" Y", StringComparison.Ordinal)) axis = 'Y';
             else return 0f;
 
-            string dev = src.DeviceGuid ?? "";
+            string dev = deviceGuid ?? "";
             if (!state.Ir.Detected)
             {
                 // Sight lost: relax to center and drop the smoothing state so a
@@ -1173,13 +1178,13 @@ namespace PadForge.Engine.Common.Mapping
         /// Returns 0 for non-gyro descriptors / unknown axes / null
         /// state.Gyro. Used by all three reader branches (bool / bipolar
         /// / unipolar) so device-level tuning applies uniformly.</summary>
-        private static float ReadTunedGyroRate(CustomInputState state, MappingSource src, int slotIndex, out int gyroAxis, out GyroTuning tuning)
+        private static float ReadTunedGyroRate(CustomInputState state, MappingSource src, int slotIndex, string srcDeviceGuid, out int gyroAxis, out GyroTuning tuning)
         {
             gyroAxis = -1;
             tuning = default;
             if (state == null || src == null) return 0f;
 
-            tuning = GetGyroTuning(src.DeviceGuid, slotIndex);
+            tuning = GetGyroTuning(srcDeviceGuid, slotIndex);
 
             int descAxis = ParseGyroAxisIndex(src.Descriptor);
             bool isHorizontal = IsHorizontalBlendDescriptor(src.Descriptor);
@@ -1209,7 +1214,7 @@ namespace PadForge.Engine.Common.Mapping
             }
 
             // ─── Bias-subtracted gyro components ─────────────────
-            string deviceGuid = src.DeviceGuid;
+            string deviceGuid = srcDeviceGuid;
             float gPitch = ReadCalibratedGyroRate(state, 0, deviceGuid, slotIndex);
             float gYaw   = ReadCalibratedGyroRate(state, 1, deviceGuid, slotIndex);
             float gRoll  = ReadCalibratedGyroRate(state, 2, deviceGuid, slotIndex);
@@ -1498,11 +1503,13 @@ namespace PadForge.Engine.Common.Mapping
         /// threshold (per-source DeadZone overrides the global threshold
         /// when set).</summary>
         public static bool EvaluateForButtonTarget(
-            CustomInputState state, MappingSource src, int globalThresholdPercent, int slotIndex = -1)
+            CustomInputState state, MappingSource src, int globalThresholdPercent, int slotIndex = -1,
+            string evaluatedDeviceGuid = null)
         {
             if (state == null || src == null) return false;
 
-            bool raw = ReadAsBool(state, src, globalThresholdPercent, slotIndex);
+            bool raw = ReadAsBool(state, src, globalThresholdPercent, slotIndex,
+                EffectiveDeviceGuid(src, evaluatedDeviceGuid));
 
             // Axis sources internalize Invert inside ReadAsBool — for
             // half-axis it picks which half to test, for full-axis it
@@ -1539,11 +1546,12 @@ namespace PadForge.Engine.Common.Mapping
         /// path opts in.</para></summary>
         public static float EvaluateForBipolarAxisTarget(
             CustomInputState state, MappingSource src, int slotIndex = -1,
-            bool relativeTouchpad = false)
+            bool relativeTouchpad = false, string evaluatedDeviceGuid = null)
         {
             if (state == null || src == null) return 0f;
 
-            float raw = ReadAsBipolar(state, src, slotIndex, relativeTouchpad);
+            float raw = ReadAsBipolar(state, src, slotIndex, relativeTouchpad,
+                EffectiveDeviceGuid(src, evaluatedDeviceGuid));
             // HalfAxis on a centered Axis source consumes Invert inside the
             // read as the half selector (lower half instead of upper),
             // mirroring the bool path, so the same row selects the same
@@ -1558,11 +1566,13 @@ namespace PadForge.Engine.Common.Mapping
         /// absolute value; buttons map to 0/1; HalfAxis still respects
         /// the active half.</summary>
         public static float EvaluateForTriggerTarget(
-            CustomInputState state, MappingSource src, int slotIndex = -1)
+            CustomInputState state, MappingSource src, int slotIndex = -1,
+            string evaluatedDeviceGuid = null)
         {
             if (state == null || src == null) return 0f;
 
-            float raw = ReadAsUnipolar(state, src, slotIndex);
+            float raw = ReadAsUnipolar(state, src, slotIndex,
+                EffectiveDeviceGuid(src, evaluatedDeviceGuid));
             // Mouse Motion internalizes Invert (issue #154): with HalfAxis it
             // picks which direction pulls the trigger; 1-v on a velocity would
             // read "full pull while still", which is never wanted.
@@ -1584,23 +1594,40 @@ namespace PadForge.Engine.Common.Mapping
         {
             if (!src.HalfAxis) return false;
             string s = (src.Descriptor ?? "").TrimStart();
-            return s.StartsWith("Axis ", StringComparison.OrdinalIgnoreCase);
+            // Mouse Motion's bipolar read consumes Invert the same way when
+            // HalfAxis is set (the read selects the direction); the trigger
+            // evaluator already exempts the family unconditionally.
+            return s.StartsWith("Axis ", StringComparison.OrdinalIgnoreCase)
+                || s.StartsWith("Mouse Motion ", StringComparison.Ordinal);
         }
 
         /// <summary>Evaluates a source for a POV-direction target
         /// (DPadUp/Down/Left/Right). Same shape as button-target with
         /// PovDirection sources matching the descriptor's direction.</summary>
         public static bool EvaluateForPovDirectionTarget(
-            CustomInputState state, MappingSource src, int globalThresholdPercent, int slotIndex = -1)
+            CustomInputState state, MappingSource src, int globalThresholdPercent, int slotIndex = -1,
+            string evaluatedDeviceGuid = null)
         {
             // POV-direction targets are bool; reuse the button path (which
             // already special-cases POV-direction sources via the parser).
-            return EvaluateForButtonTarget(state, src, globalThresholdPercent, slotIndex);
+            return EvaluateForButtonTarget(state, src, globalThresholdPercent, slotIndex, evaluatedDeviceGuid);
         }
+
+        /// <summary>Device attribution for the per-(device, slot) readers.
+        /// An empty <see cref="MappingSource.DeviceGuid"/> is a legal
+        /// "any device" source (legacy hydration leaves it empty and the
+        /// row eval matches every device), so keying tuning / debounce /
+        /// EMA state off the bare src.DeviceGuid dropped per-device tuning
+        /// and merged cache state across devices. Callers that know which
+        /// device's state they are evaluating pass it as
+        /// <c>evaluatedDeviceGuid</c>; non-empty source guids win so
+        /// device-pinned rows behave exactly as before.</summary>
+        internal static string EffectiveDeviceGuid(MappingSource src, string evaluatedDeviceGuid)
+            => string.IsNullOrEmpty(src?.DeviceGuid) ? evaluatedDeviceGuid : src.DeviceGuid;
 
         // ─── Internal readers ──────────────────────────────────────────
 
-        private static bool ReadAsBool(CustomInputState state, MappingSource src, int globalThresholdPercent, int slotIndex)
+        private static bool ReadAsBool(CustomInputState state, MappingSource src, int globalThresholdPercent, int slotIndex, string deviceGuid)
         {
             string s = (src.Descriptor ?? "").Trim();
             if (string.IsNullOrEmpty(s)) return false;
@@ -1659,7 +1686,7 @@ namespace PadForge.Engine.Common.Mapping
 
             if (s.StartsWith("Gyro ", StringComparison.Ordinal))
             {
-                float tunedRate = ReadTunedGyroRate(state, src, slotIndex, out int gyroAxis, out _);
+                float tunedRate = ReadTunedGyroRate(state, src, slotIndex, deviceGuid, out int gyroAxis, out _);
                 if (gyroAxis < 0) return false;
                 // Per-source DeadZone (when set) overrides the default
                 // 30°/s button threshold so users can dial in sensitivity.
@@ -1683,11 +1710,11 @@ namespace PadForge.Engine.Common.Mapping
             }
 
             if (s.Equals("IR Offscreen", StringComparison.Ordinal))
-                return ReadIrOffscreen(state, src);
+                return ReadIrOffscreen(state, src, deviceGuid);
 
             if (s.StartsWith("IR Pointer ", StringComparison.Ordinal))
             {
-                float v = ReadTunedIrPointer(state, src, slotIndex);
+                float v = ReadTunedIrPointer(state, src, slotIndex, deviceGuid);
                 int cdz = src.DeadZone > 0 ? src.DeadZone : globalThresholdPercent;
                 return Math.Abs(v) > Math.Max(cdz, 1) / 100f;
             }
@@ -1781,7 +1808,7 @@ namespace PadForge.Engine.Common.Mapping
             }
         }
 
-        private static float ReadAsBipolar(CustomInputState state, MappingSource src, int slotIndex, bool relativeTouchpad)
+        private static float ReadAsBipolar(CustomInputState state, MappingSource src, int slotIndex, bool relativeTouchpad, string deviceGuid)
         {
             string s = (src.Descriptor ?? "").Trim();
             if (string.IsNullOrEmpty(s)) return 0f;
@@ -1854,7 +1881,7 @@ namespace PadForge.Engine.Common.Mapping
 
             if (s.StartsWith("Gyro ", StringComparison.Ordinal))
             {
-                float tunedRate = ReadTunedGyroRate(state, src, slotIndex, out int gyroAxis, out var tuning);
+                float tunedRate = ReadTunedGyroRate(state, src, slotIndex, deviceGuid, out int gyroAxis, out var tuning);
                 if (gyroAxis < 0) return 0f;
                 float v = tunedRate * GyroScale;
                 // Phase 2 response shaping in normalized space.
@@ -1869,10 +1896,10 @@ namespace PadForge.Engine.Common.Mapping
                 return ReadTunedMouseCursor(src);
 
             if (s.Equals("IR Offscreen", StringComparison.Ordinal))
-                return ReadIrOffscreen(state, src) ? 1f : 0f;
+                return ReadIrOffscreen(state, src, deviceGuid) ? 1f : 0f;
 
             if (s.StartsWith("IR Pointer ", StringComparison.Ordinal))
-                return ReadTunedIrPointer(state, src, slotIndex);
+                return ReadTunedIrPointer(state, src, slotIndex, deviceGuid);
 
             if (s.StartsWith("Balance ", StringComparison.Ordinal))
                 return ReadTunedBalanceBoard(state, src);
@@ -1881,7 +1908,24 @@ namespace PadForge.Engine.Common.Mapping
                 return state.JoyConIrIntensity;
 
             if (s.StartsWith("Mouse Motion ", StringComparison.Ordinal))
-                return ReadJoyCon2MouseMotion(state, src);
+            {
+                float mv = ReadJoyCon2MouseMotion(state, src);
+                if (src.HalfAxis)
+                {
+                    // Mirror the generic Axis bipolar+HalfAxis contract
+                    // (#154 grammar): the selected direction ranges [0, +1],
+                    // the other direction reads 0, Invert picks the half,
+                    // Bidirectional folds both to magnitude. Without this the
+                    // same persisted flags meant "up only" on a trigger
+                    // target but "both directions, flipped" on a stick.
+                    if (src.Bidirectional)
+                        return Math.Min(1f, Math.Abs(mv));
+                    if (src.Invert)
+                        return mv < 0 ? Math.Min(1f, -mv) : 0f;
+                    return mv > 0 ? Math.Min(1f, mv) : 0f;
+                }
+                return mv;
+            }
 
             if (!TryParseTypeIndex(s, out var t, out int idx, out string povDir))
                 return 0f;
@@ -1928,7 +1972,7 @@ namespace PadForge.Engine.Common.Mapping
             }
         }
 
-        private static float ReadAsUnipolar(CustomInputState state, MappingSource src, int slotIndex)
+        private static float ReadAsUnipolar(CustomInputState state, MappingSource src, int slotIndex, string deviceGuid)
         {
             string s = (src.Descriptor ?? "").Trim();
             if (string.IsNullOrEmpty(s)) return 0f;
@@ -1986,7 +2030,7 @@ namespace PadForge.Engine.Common.Mapping
 
             if (s.StartsWith("Gyro ", StringComparison.Ordinal))
             {
-                float tunedRate = ReadTunedGyroRate(state, src, slotIndex, out int gyroAxis, out var tuning);
+                float tunedRate = ReadTunedGyroRate(state, src, slotIndex, deviceGuid, out int gyroAxis, out var tuning);
                 if (gyroAxis < 0) return 0f;
                 float v = Math.Abs(tunedRate) * GyroScale;
                 // Phase 2 response shaping in normalized space (unsigned trigger).
@@ -2000,10 +2044,10 @@ namespace PadForge.Engine.Common.Mapping
                 return Math.Abs(ReadTunedMouseCursor(src));
 
             if (s.Equals("IR Offscreen", StringComparison.Ordinal))
-                return ReadIrOffscreen(state, src) ? 1f : 0f;
+                return ReadIrOffscreen(state, src, deviceGuid) ? 1f : 0f;
 
             if (s.StartsWith("IR Pointer ", StringComparison.Ordinal))
-                return Math.Abs(ReadTunedIrPointer(state, src, slotIndex));
+                return Math.Abs(ReadTunedIrPointer(state, src, slotIndex, deviceGuid));
 
             if (s.StartsWith("Balance ", StringComparison.Ordinal))
                 return Math.Abs(ReadTunedBalanceBoard(state, src));

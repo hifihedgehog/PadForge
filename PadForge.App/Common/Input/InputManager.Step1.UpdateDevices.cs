@@ -25,11 +25,15 @@ namespace PadForge.Common.Input
         // ─────────────────────────────────────────────
 
         /// <summary>
-        /// Set of SDL instance IDs that we have already opened (joysticks).
-        /// Used to detect new vs. already-known devices.
+        /// SDL instance IDs that we have already opened (joysticks), each with
+        /// the wrapper opened for it. Used to detect new vs. already-known
+        /// devices; the wrapper reference lets the disconnect sweep dispose an
+        /// orphan whose UserDevice no longer points at it (UI Remove, or a
+        /// replug rebind that swapped ud.Device to a fresh wrapper) instead of
+        /// leaving its SDL handles to the GC finalizer racing the poll loop.
         /// SDL3: instance IDs are uint (0 = invalid).
         /// </summary>
-        private readonly HashSet<uint> _openedSdlInstanceIds = new HashSet<uint>();
+        private readonly Dictionary<uint, SdlDeviceWrapper> _openedSdlInstanceIds = new Dictionary<uint, SdlDeviceWrapper>();
 
         /// <summary>
         /// First-observed tick (UTC) per SDL instance ID for which the
@@ -109,7 +113,7 @@ namespace PadForge.Common.Input
                     // Skip devices we already have open (by SDL instance ID).
                     // This is more reliable than GUID matching because serial-based
                     // GUIDs aren't available until after the device is opened.
-                    if (_openedSdlInstanceIds.Contains(instanceId))
+                    if (_openedSdlInstanceIds.ContainsKey(instanceId))
                         continue;
 
                     // Open the device by instance ID. The SDL3 fork already
@@ -132,8 +136,8 @@ namespace PadForge.Common.Input
                     ud.LoadFromSdlDevice(wrapper);
                     ud.IsOnline = true;
 
-                    // Track the SDL instance ID.
-                    _openedSdlInstanceIds.Add(wrapper.SdlInstanceId);
+                    // Track the SDL instance ID with its wrapper.
+                    _openedSdlInstanceIds[wrapper.SdlInstanceId] = wrapper;
 
                     changed = true;
                 }
@@ -353,7 +357,7 @@ namespace PadForge.Common.Input
             var disconnectedIds = new List<uint>();
             var nowUtc = DateTime.UtcNow;
 
-            foreach (uint sdlId in _openedSdlInstanceIds)
+            foreach (uint sdlId in _openedSdlInstanceIds.Keys)
             {
                 UserDevice ud = FindOnlineDeviceBySdlInstanceId(sdlId);
                 if (ud == null)
@@ -368,14 +372,25 @@ namespace PadForge.Common.Input
                     //    shipped: the handle leaked, the wheel-replug writer
                     //    resets never ran, and the per-slot output
                     //    neutralization never happened. Finish the disconnect
-                    //    here — detachment is permanent for a handle, so no
+                    //    here. Detachment is permanent for a handle, so no
                     //    debounce applies.
-                    //  - The UserDevice itself is gone — nothing to clean.
+                    //  - The UserDevice itself is gone. Nothing to clean.
                     var offlineUd = FindDeviceBySdlInstanceIdAnyState(sdlId);
                     if (offlineUd != null && offlineUd.Device != null)
                     {
                         MarkDeviceOffline(offlineUd);
                         changed = true;
+                    }
+                    // Orphaned wrapper: no UserDevice references it anymore
+                    // (UI Remove dropped the record, or a replug rebind
+                    // swapped ud.Device to a fresh wrapper). Dispose it here
+                    // on the poll thread, the same thread as MarkDeviceOffline's
+                    // dispose. Dispose is idempotent, so the handled case above
+                    // is safe to skip by reference.
+                    if (_openedSdlInstanceIds.TryGetValue(sdlId, out var orphan)
+                        && orphan != null && !ReferenceEquals(orphan, offlineUd?.Device))
+                    {
+                        try { orphan.Dispose(); } catch { }
                     }
                     disconnectedIds.Add(sdlId);
                     _sdlDisconnectCandidateSince.Remove(sdlId);

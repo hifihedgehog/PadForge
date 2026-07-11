@@ -327,8 +327,10 @@ namespace PadForge.Services
             if (mapping == null)
                 return;
 
-            // Cancel any existing recording.
-            if (_activeMapping != null)
+            // Cancel any existing recording (MappingItem-based or freeform,
+            // matching the freeform starter above: a live freeform session
+            // would otherwise leak its started timer and stuck callback).
+            if (_activeMapping != null || _freeformCallback != null)
                 CancelRecording();
 
             _activeMapping = mapping;

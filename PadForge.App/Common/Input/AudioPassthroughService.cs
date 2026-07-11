@@ -257,9 +257,18 @@ namespace PadForge.Common.Input
                     _disposed = true;
                     for (int i = 0; i < Slots; i++)
                     {
+                        // Free a slot only when its drain wait signaled: the kernel
+                        // keeps referencing the pinned buffer and native OVERLAPPED
+                        // until the cancelled completion fires, so a slot whose
+                        // write is still in flight after 100 ms is deliberately
+                        // leaked (bounded, pathological-path-only) instead of
+                        // handing the BT stack freed memory to complete into.
+                        bool drained = true;
+                        if (_ev[i] != IntPtr.Zero)
+                            drained = NativeMethods.WaitForSingleObject(_ev[i], 100) == 0;
+                        if (!drained) { _ev[i] = IntPtr.Zero; _ol[i] = IntPtr.Zero; _pin[i] = default; continue; }
                         if (_ev[i] != IntPtr.Zero)
                         {
-                            NativeMethods.WaitForSingleObject(_ev[i], 100);
                             NativeMethods.CloseHandle(_ev[i]);
                             _ev[i] = IntPtr.Zero;
                         }
@@ -740,7 +749,11 @@ namespace PadForge.Common.Input
 
             public void WriteS16(byte[] pcm)
             {
-                int samples = pcm.Length / 2;
+                // Whole interleaved-stereo frames only (4 B = L+R s16): an odd
+                // sample count would advance _write by an odd amount and swap
+                // L/R permanently for everything after it (ReadFloat consumes
+                // pairs), so a short tail byte or lone sample is dropped.
+                int samples = (pcm.Length / 4) * 2;
                 lock (_g)
                 {
                     for (int i = 0; i < samples; i++)
@@ -802,6 +815,10 @@ namespace PadForge.Common.Input
                 caps = _captures.Values.ToList();
                 _captures.Clear();
             }
+            // Remote-audio bookkeeping dies with the engine (restartable path):
+            // a peer stream after the next start re-adds both entries.
+            _remoteRings.Clear();
+            _remoteAudioDemand.Clear();
             _workSignal.Set();
             foreach (var s in drop) DisposeTransport(s);
             foreach (var c in caps) StopCaptureEntry(c);
@@ -875,7 +892,19 @@ namespace PadForge.Common.Input
             long nowDemand = Environment.TickCount64;
             foreach (var kv in _remoteAudioDemand)
             {
-                if (nowDemand - kv.Value > 2000) continue;
+                if (nowDemand - kv.Value > 2000)
+                {
+                    // Prune, don't just skip: neither dictionary had any removal
+                    // path, so BT re-pair guid churn grew orphans for the process
+                    // lifetime. The conditional pair-remove keys on the exact
+                    // observed timestamp so a demand FeedRemoteAudio just refreshed
+                    // survives; a resumed stream re-adds via GetOrAdd. A Sink still
+                    // holding the ring keeps it alive until its own teardown.
+                    if (((System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<Guid, long>>)_remoteAudioDemand)
+                            .Remove(kv))
+                        _remoteRings.TryRemove(kv.Key, out _);
+                    continue;
+                }
                 var ud = SettingsManager.FindDeviceByInstanceGuid(kv.Key);
                 if (ud == null || !ud.IsOnline || string.IsNullOrEmpty(ud.DevicePath)) continue;
                 if ((ud.DevicePath ?? "").StartsWith("peer://", StringComparison.Ordinal)) continue;
@@ -1663,21 +1692,38 @@ namespace PadForge.Common.Input
             var pin = System.Runtime.InteropServices.GCHandle.Alloc(report, System.Runtime.InteropServices.GCHandleType.Pinned);
             IntPtr ev = NativeMethods.CreateEventW(IntPtr.Zero, true, false, null);
             IntPtr ol = System.Runtime.InteropServices.Marshal.AllocHGlobal(32);
+            bool leak = false;
             try
             {
                 for (int i = 0; i < 32; i += 8) System.Runtime.InteropServices.Marshal.WriteInt64(ol, i, 0);
                 System.Runtime.InteropServices.Marshal.WriteIntPtr(ol, 24, ev); // OVERLAPPED.hEvent (x64)
                 bool ok = NativeMethods.WriteFileRaw(h, pin.AddrOfPinnedObject(), (uint)report.Length, IntPtr.Zero, ol);
                 if (!ok && System.Runtime.InteropServices.Marshal.GetLastWin32Error() == 997 /* ERROR_IO_PENDING */)
+                {
                     ok = NativeMethods.WaitForSingleObject(ev, 1000) == 0;
-                if (!ok) NativeMethods.CancelIo(h);
+                    if (!ok)
+                    {
+                        // CancelIo only requests cancellation: the kernel keeps
+                        // referencing the pinned buffer and native OVERLAPPED until
+                        // the cancelled completion fires, so drain on the event and,
+                        // when even that times out, leak the trio (bounded,
+                        // pathological-path-only) instead of freeing memory the
+                        // completion will write into. Same discipline as
+                        // BtWritePool.Dispose.
+                        NativeMethods.CancelIo(h);
+                        leak = NativeMethods.WaitForSingleObject(ev, 200) != 0;
+                    }
+                }
                 return ok;
             }
             finally
             {
-                System.Runtime.InteropServices.Marshal.FreeHGlobal(ol);
-                NativeMethods.CloseHandle(ev);
-                pin.Free();
+                if (!leak)
+                {
+                    System.Runtime.InteropServices.Marshal.FreeHGlobal(ol);
+                    NativeMethods.CloseHandle(ev);
+                    pin.Free();
+                }
             }
         }
 

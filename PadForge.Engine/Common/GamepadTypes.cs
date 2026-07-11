@@ -106,6 +106,14 @@ namespace PadForge.Engine
         /// <summary>Up to 4 POV hat switches. -1 = centered, 0-35900 = direction in hundredths of degrees.</summary>
         public int[] Povs;
 
+        /// <summary>Pre-tuning snapshot of <see cref="Axes"/>, taken before
+        /// center offset / boundary reshape / deadzone / curve so the
+        /// calibration capture and the preview's cold dot read the frame the
+        /// samples were recorded in. Runtime-only and intentionally absent
+        /// from every wire/persistence mirror: null when the producer did
+        /// not populate it, in which case consumers fall back to Axes.</summary>
+        public short[] HardwareAxes;
+
         /// <summary>Creates a zeroed ExtendedRawState with the specified capacities.</summary>
         public static ExtendedRawState Create(int nAxes, int nButtons, int nPovs)
         {
@@ -199,6 +207,14 @@ namespace PadForge.Engine
         public float MouseAbsY;
         public bool MouseAbsValid;
 
+        /// <summary>Per-axis validity for the absolute pointer. A mixed
+        /// mapping (IR on one mouse axis, a stick on the other) drives only
+        /// one absolute coordinate; the consumer must not recenter the
+        /// un-driven axis from its 0f default. <see cref="MouseAbsValid"/>
+        /// stays the any-axis OR for the mode/freeze checks.</summary>
+        public bool MouseAbsXValid;
+        public bool MouseAbsYValid;
+
         public bool GetKey(byte vk)
         {
             int word = vk / 64;
@@ -244,6 +260,7 @@ namespace PadForge.Engine
             PreDzMouseDeltaX = PreDzMouseDeltaY = PreDzScrollDelta = 0;
             MouseAbsX = MouseAbsY = 0f;
             MouseAbsValid = false;
+            MouseAbsXValid = MouseAbsYValid = false;
         }
 
         /// <summary>
@@ -268,9 +285,13 @@ namespace PadForge.Engine
                 ScrollDeltaH = Math.Abs(a.ScrollDeltaH) >= Math.Abs(b.ScrollDeltaH) ? a.ScrollDeltaH : b.ScrollDeltaH,
                 PreDzScrollDeltaH = Math.Abs(a.PreDzScrollDeltaH) >= Math.Abs(b.PreDzScrollDeltaH) ? a.PreDzScrollDeltaH : b.PreDzScrollDeltaH,
                 // Absolute pointer: whichever side is tracking wins (only one
-                // IR-pointing device feeds a slot in practice).
-                MouseAbsX = a.MouseAbsValid ? a.MouseAbsX : b.MouseAbsX,
-                MouseAbsY = a.MouseAbsValid ? a.MouseAbsY : b.MouseAbsY,
+                // IR-pointing device feeds a slot in practice). Per axis, so
+                // a mixed mapping's un-driven coordinate never masks the
+                // other device's tracked one.
+                MouseAbsX = a.MouseAbsXValid ? a.MouseAbsX : b.MouseAbsX,
+                MouseAbsY = a.MouseAbsYValid ? a.MouseAbsY : b.MouseAbsY,
+                MouseAbsXValid = a.MouseAbsXValid || b.MouseAbsXValid,
+                MouseAbsYValid = a.MouseAbsYValid || b.MouseAbsYValid,
                 MouseAbsValid = a.MouseAbsValid || b.MouseAbsValid
             };
         }

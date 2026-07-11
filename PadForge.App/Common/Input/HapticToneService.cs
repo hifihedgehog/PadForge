@@ -1086,6 +1086,7 @@ namespace PadForge.Common.Input
             Array.Copy(neutral, 0, buf, 2, 4);
             Array.Copy(neutral, 0, buf, 6, 4);
             GCHandle pin = default; IntPtr ev = IntPtr.Zero, ol = IntPtr.Zero;
+            bool leak = false;
             try
             {
                 pin = GCHandle.Alloc(buf, GCHandleType.Pinned);
@@ -1100,8 +1101,12 @@ namespace PadForge.Common.Input
                     // Drain the cancelled write before the finally frees the
                     // pinned buffer + OVERLAPPED (use-after-free otherwise; see
                     // OverlappedWrite and WiiSpeakerService BtWritePool.Dispose).
+                    // A drain that itself times out means the kernel still
+                    // references them: the finally must leak the trio (bounded,
+                    // stalled-stack-only) instead of freeing memory the cancelled
+                    // completion will write into.
                     try { CancelIo(h); } catch { }
-                    try { WaitForSingleObject(ev, 200); } catch { }
+                    try { leak = WaitForSingleObject(ev, 200) != 0; } catch { leak = true; }
                     return false;
                 }
                 return GetOverlappedResult(h, ol, out _, false);
@@ -1109,9 +1114,12 @@ namespace PadForge.Common.Input
             catch { return false; }
             finally
             {
-                try { if (pin.IsAllocated) pin.Free(); } catch { }
-                try { if (ev != IntPtr.Zero) CloseHandle(ev); } catch { }
-                try { if (ol != IntPtr.Zero) Marshal.FreeHGlobal(ol); } catch { }
+                if (!leak)
+                {
+                    try { if (pin.IsAllocated) pin.Free(); } catch { }
+                    try { if (ev != IntPtr.Zero) CloseHandle(ev); } catch { }
+                    try { if (ol != IntPtr.Zero) Marshal.FreeHGlobal(ol); } catch { }
+                }
             }
         }
 
@@ -1174,6 +1182,7 @@ namespace PadForge.Common.Input
         private static bool OverlappedWrite(IntPtr h, byte[] buf)
         {
             GCHandle pin = default; IntPtr ev = IntPtr.Zero, ol = IntPtr.Zero;
+            bool leak = false;
             try
             {
                 pin = GCHandle.Alloc(buf, GCHandleType.Pinned);
@@ -1191,8 +1200,12 @@ namespace PadForge.Common.Input
                     // completion fires, so the finally must NOT free them yet.
                     // Drain on the event first, exactly as WiiSpeakerService
                     // BtWritePool.Dispose (which cites the Sony BtWritePool).
+                    // If even the drain times out (the stalled stack this 1000 ms
+                    // timeout exists for), the finally leaks the trio (bounded,
+                    // pathological-path-only) rather than freeing memory the
+                    // cancelled completion will write into.
                     try { CancelIo(h); } catch { }
-                    try { WaitForSingleObject(ev, 200); } catch { }
+                    try { leak = WaitForSingleObject(ev, 200) != 0; } catch { leak = true; }
                     return false;
                 }
                 return GetOverlappedResult(h, ol, out _, false);
@@ -1200,9 +1213,12 @@ namespace PadForge.Common.Input
             catch { return false; }
             finally
             {
-                try { if (pin.IsAllocated) pin.Free(); } catch { }
-                try { if (ev != IntPtr.Zero) CloseHandle(ev); } catch { }
-                try { if (ol != IntPtr.Zero) Marshal.FreeHGlobal(ol); } catch { }
+                if (!leak)
+                {
+                    try { if (pin.IsAllocated) pin.Free(); } catch { }
+                    try { if (ev != IntPtr.Zero) CloseHandle(ev); } catch { }
+                    try { if (ol != IntPtr.Zero) Marshal.FreeHGlobal(ol); } catch { }
+                }
             }
         }
 

@@ -202,6 +202,15 @@ namespace PadForge.Common.Input
         /// unwired or when no per-device settings exist.</summary>
         public System.Func<int, System.Guid, Engine.Mouse.MouseGestureSettings> MouseGestureSettingsProvider { get; set; }
 
+        /// <summary>Remote Link per-poll accumulation hook (issue #138), wired
+        /// by InputService. Invoked once per polling tick right after Step 2
+        /// publishes fresh InputState snapshots, so the stream tick can ship
+        /// snapshot frames with per-poll delta fields (mouse counts, Joy-Con 2
+        /// mouse) summed on the poll thread instead of calling the wrappers'
+        /// destructive GetCurrentState from a second thread. Null when Remote
+        /// Link is off or the engine is wired without it.</summary>
+        public System.Action RemoteLinkPollTick { get; set; }
+
         // ─── Recording-mode hook (gesture recorder dialog) ───
         //
         // The recorder dialog sets RecordingTargetDeviceGuid +
@@ -1132,6 +1141,10 @@ namespace PadForge.Common.Input
                             // Read input states even in idle mode so the Devices
                             // page preview works for unassigned devices.
                             UpdateInputStates();
+                            // Remote Link accumulation runs in idle mode too:
+                            // shared devices keep streaming while no slot is
+                            // active on this end.
+                            RemoteLinkPollTick?.Invoke();
 
                             // Evaluate global macros (profile shortcuts) even in idle
                             // so the user can switch away from an empty profile.
@@ -1189,6 +1202,13 @@ namespace PadForge.Common.Input
                         }
 
                         UpdateInputStates();
+                        // Remote Link (#138): fold this tick's fresh snapshots
+                        // into the per-exposed-device delta accumulators. The
+                        // poll thread is the SOLE GetCurrentState caller; the
+                        // 125 Hz stream tick ships snapshots + drained deltas,
+                        // never reads the wrappers (destructive mouse / JC2
+                        // baseline reads split motion between two callers).
+                        RemoteLinkPollTick?.Invoke();
                         UpdateGyroEngageStates();
                         UpdateTriggerRouteEngageStates();
                         UpdateHapticMirrorEngageStates();
@@ -1824,6 +1844,59 @@ namespace PadForge.Common.Input
         //  Touchpad gesture per-tick driver
         // ─────────────────────────────────────────────
 
+        /// <summary>250 ms snapshot of device → assigned slots for the two
+        /// gesture walks below, refreshed on the poll thread. Per-poll
+        /// UserSettings.SyncRoot walks per touchpad/mouse device shared the
+        /// UI thread's whole-save lock holds and allocated a fresh int[] per
+        /// poll (code-audit lens 1n); assignment changes only on user edit,
+        /// so the same 250 ms cadence as _triggerRouteCfg / _mirrorEngageCfg
+        /// applies. Poll thread only, no lock on the read path.</summary>
+        private readonly Dictionary<Guid, int[]> _assignedSlotsSnapshot = new();
+        private long _assignedSlotsRefreshTick;
+
+        private int[] GetAssignedSlotsSnapshot(Guid deviceGuid)
+        {
+            long now = System.Environment.TickCount64;
+            if (now - _assignedSlotsRefreshTick >= 250)
+            {
+                _assignedSlotsRefreshTick = now;
+                _assignedSlotsSnapshot.Clear();
+                var userSettings = SettingsManager.UserSettings;
+                if (userSettings != null)
+                {
+                    // Build per-device slot lists under one lock hold per
+                    // refresh. The 4 Hz allocation cost replaces a per-poll
+                    // stackalloc + int[] per device.
+                    lock (userSettings.SyncRoot)
+                    {
+                        for (int i = 0; i < userSettings.Items.Count; i++)
+                        {
+                            var us = userSettings.Items[i];
+                            if (us == null || us.MapTo < 0) continue;
+                            _assignedSlotsSnapshot.TryGetValue(us.InstanceGuid, out var slots);
+                            if (slots == null)
+                            {
+                                _assignedSlotsSnapshot[us.InstanceGuid] = new[] { us.MapTo };
+                                continue;
+                            }
+                            // Dedup. A device should only appear once per
+                            // slot, but defensively skip duplicates so the
+                            // recognizer doesn't tick twice for the same key.
+                            bool dup = false;
+                            for (int j = 0; j < slots.Length; j++) { if (slots[j] == us.MapTo) { dup = true; break; } }
+                            if (dup) continue;
+                            var grown = new int[slots.Length + 1];
+                            System.Array.Copy(slots, grown, slots.Length);
+                            grown[slots.Length] = us.MapTo;
+                            _assignedSlotsSnapshot[us.InstanceGuid] = grown;
+                        }
+                    }
+                }
+            }
+            return _assignedSlotsSnapshot.TryGetValue(deviceGuid, out var found)
+                ? found : System.Array.Empty<int>();
+        }
+
         /// <summary>Drives the gesture recognizer for every touchpad
         /// surface this device exposes, once per slot the device is
         /// assigned to. One context per <c>(slot, device, pad)</c>
@@ -1847,33 +1920,12 @@ namespace PadForge.Common.Input
             if (ud == null || newState == null) return;
             if (newState.Touchpads == null || newState.Touchpads.Length == 0) return;
 
-            // Snapshot the slots this device is currently assigned to.
-            // No assigned slots → no contexts to tick (gestures don't
-            // need to run for an unmapped device).
-            int[] assignedSlots;
-            var userSettings = SettingsManager.UserSettings;
-            if (userSettings == null) return;
-            lock (userSettings.SyncRoot)
-            {
-                int count = 0;
-                System.Span<int> buf = stackalloc int[MaxPads];
-                for (int i = 0; i < userSettings.Items.Count && count < MaxPads; i++)
-                {
-                    var us = userSettings.Items[i];
-                    if (us == null || us.MapTo < 0) continue;
-                    if (us.InstanceGuid != ud.InstanceGuid) continue;
-                    // Dedup — a device should only appear once per slot,
-                    // but defensively skip duplicates so the recognizer
-                    // doesn't tick twice for the same (slot, device, pad).
-                    bool dup = false;
-                    for (int j = 0; j < count; j++) { if (buf[j] == us.MapTo) { dup = true; break; } }
-                    if (dup) continue;
-                    buf[count++] = us.MapTo;
-                }
-                if (count == 0) return;
-                assignedSlots = new int[count];
-                for (int i = 0; i < count; i++) assignedSlots[i] = buf[i];
-            }
+            // Slots this device is currently assigned to, from the shared
+            // 250 ms snapshot (lock-free, allocation-free per poll). No
+            // assigned slots → no contexts to tick (gestures don't need to
+            // run for an unmapped device).
+            int[] assignedSlots = GetAssignedSlotsSnapshot(ud.InstanceGuid);
+            if (assignedSlots.Length == 0) return;
 
             long nowMs = System.Environment.TickCount64;
             for (int p = 0; p < newState.Touchpads.Length; p++)
@@ -1935,7 +1987,7 @@ namespace PadForge.Common.Input
         /// <summary>Mouse-gesture recognizer walk (issue #200), sibling of
         /// <see cref="UpdateGestureContexts"/> for mouse-class devices, which
         /// never enter the touchpad walk (their state carries no Touchpads).
-        /// Reads the already-published centered delta axes rather than
+        /// Reads the already-published MouseRawDX/DY counts rather than
         /// consuming RawInput deltas again: the wrapper's consume-and-zero
         /// read owns that source, and a second consumer would starve it.
         /// Polling thread only.</summary>
@@ -1944,34 +1996,18 @@ namespace PadForge.Common.Input
             if (ud == null || newState == null) return;
             if (!ud.IsMouse) return;
 
-            // Snapshot the slots this device is currently assigned to
-            // (same walk as the touchpad lane).
-            int[] assignedSlots;
-            var userSettings = SettingsManager.UserSettings;
-            if (userSettings == null) return;
-            lock (userSettings.SyncRoot)
-            {
-                int count = 0;
-                System.Span<int> buf = stackalloc int[MaxPads];
-                for (int i = 0; i < userSettings.Items.Count && count < MaxPads; i++)
-                {
-                    var us = userSettings.Items[i];
-                    if (us == null || us.MapTo < 0) continue;
-                    if (us.InstanceGuid != ud.InstanceGuid) continue;
-                    bool dup = false;
-                    for (int j = 0; j < count; j++) { if (buf[j] == us.MapTo) { dup = true; break; } }
-                    if (dup) continue;
-                    buf[count++] = us.MapTo;
-                }
-                if (count == 0) return;
-                assignedSlots = new int[count];
-                for (int i = 0; i < count; i++) assignedSlots[i] = buf[i];
-            }
+            // Slots this device is currently assigned to, from the same
+            // 250 ms snapshot the touchpad lane reads.
+            int[] assignedSlots = GetAssignedSlotsSnapshot(ud.InstanceGuid);
+            if (assignedSlots.Length == 0) return;
 
-            // Recover raw counts from the published centered axes
-            // (SdlMouseWrapper: Axis = clamp(32767 + delta * 2048)).
-            double dxCounts = (newState.Axis[0] - 32767) / 2048.0;
-            double dyCounts = (newState.Axis[1] - 32767) / 2048.0;
+            // Raw unclamped counts, published by the wrapper from the same
+            // single RawInput consume that feeds the axes (#200). Recovery
+            // from the clamped Axis[0/1] capped at ±16 counts per poll, so a
+            // fast flick saturated both axes to a 1:1 ratio and the ax>=ay
+            // tie-break classified a mostly-vertical flick as horizontal.
+            double dxCounts = newState.MouseRawDX;
+            double dyCounts = newState.MouseRawDY;
 
             long nowMs = System.Environment.TickCount64;
             foreach (int slot in assignedSlots)

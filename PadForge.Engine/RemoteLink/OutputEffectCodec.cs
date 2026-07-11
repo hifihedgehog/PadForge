@@ -11,28 +11,31 @@ namespace PadForge.Engine.RemoteLink
     /// plugged into (owner) re-encodes it for the real hardware and writes it. The
     /// owner synthesizes nothing — it is a pure transport transcoder.
     ///
-    /// <para>Four kinds cover the effect-output channels:</para>
+    /// <para>Five kinds cover the effect-output channels:</para>
     /// <list type="bullet">
-    /// <item>SonyEffect — the transport-normalized DualSense effect report body
+    /// <item>SonyEffect carries the transport-normalized DualSense effect report body
     ///   (47 B DS5 / 31 B DS4): rumble + adaptive triggers + lightbar + mic/player
     ///   LED + audio-control. Owner replays via SDL_SendGamepadEffect (re-frames
     ///   USB 0x02 / BT 0x31 + CRC).</item>
-    /// <item>Vibration — the full <see cref="Common.Vibration"/> (motors + impulse
+    /// <item>Vibration carries the full <see cref="Common.Vibration"/> (motors + impulse
     ///   triggers + directional + condition FFB) for every non-Sony, non-vendor-wheel
     ///   device. Owner replays via ForceFeedbackState.SetDeviceForces on the real
     ///   SDL handle (rumble / trigger rumble / DirectInput haptic, per its caps).</item>
-    /// <item>Wheel — semantic steering FFB (force/condition/periodic/range/autocenter/
+    /// <item>Wheel carries semantic steering FFB (force/condition/periodic/range/autocenter/
     ///   RPM LEDs) for Logitech / Fanatec / Thrustmaster wheels. Owner re-encodes with
     ///   its own per-vendor raw-HID writer (vendor PID quantization + report sizing +
     ///   stateful upload/play caches stay on the machine that owns the wheel).</item>
+    /// <item>HapticTone (#147) carries the consumer's HapticToneReducer output, one
+    ///   (dominant frequency Hz, amplitude 0..1) pair per rumble tick, slot volume
+    ///   already applied. Owner re-encodes with its own per-family writer (Joy-Con
+    ///   HD Rumble / Steam 0x8f / Triton 0x83 / Deck), the Wheel division of labor.</item>
+    /// <item>PlayerIndex (#191) carries the consumer slot's 1-based player number for
+    ///   NON-Sony shared pads (Nintendo, BT DS3), whose player LED is otherwise
+    ///   machine-local. DualSense/DS4 already carry the player LED inside the
+    ///   SonyEffect body, so they never send this kind.</item>
     /// </list>
     /// Audio (the speaker sample stream) is carried out of band on its own
     /// <see cref="LinkMessageType.Audio"/> datagrams, not here.
-    ///
-    /// <para>PlayerIndex (#191) carries the consumer slot's 1-based player number for
-    /// NON-Sony shared pads (Nintendo, BT DS3), whose player LED is otherwise machine-
-    /// local. DualSense/DS4 already carry the player LED inside the SonyEffect body, so
-    /// they never send this kind.</para>
     /// </summary>
     public static class OutputEffectCodec
     {

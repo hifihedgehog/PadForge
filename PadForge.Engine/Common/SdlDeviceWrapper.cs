@@ -600,6 +600,10 @@ namespace PadForge.Engine
         // true motion for any delta under half the counter range. The first
         // read only primes the previous value (joycon2mouse's None guard), so
         // connect never emits a spurious jump from counter 0.
+        // Poll-thread only: the poll loop is the sole GetCurrentState caller
+        // (Remote Link ships the poll snapshot instead of reading the wrapper,
+        // so a second caller can no longer split the motion or tear this
+        // baseline pair), which is why these fields need no synchronization.
         private int _jc2MousePrevX, _jc2MousePrevY;
         private bool _jc2MouseHasPrev;
 

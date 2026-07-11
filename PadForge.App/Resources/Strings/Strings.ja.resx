@@ -110,8 +110,6 @@
   <data name="Main_ShuttingDown" xml:space="preserve"><value>PadForge を終了しています...</value></data>
   <data name="Main_StartingUp" xml:space="preserve"><value>PadForge を起動しています…</value></data>
   <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>前回のセッションから残った仮想コントローラーをクリーンアップしています。</value></data>
-  <data name="Main_ReleasingControllers" xml:space="preserve"><value>仮想コントローラーを解放しています</value></data>
-  <data name="Main_PleaseWait" xml:space="preserve"><value>お待ちください...</value></data>
   <data name="Main_DevicesSuffix" xml:space="preserve"><value> 台のデバイス</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>コントローラーを追加</value></data>
   <data name="Main_DeleteVC" xml:space="preserve"><value>仮想コントローラーを削除</value></data>
@@ -166,9 +164,7 @@
   <data name="Status_ProfileUpdated_Format" xml:space="preserve"><value>プロファイル「{0}」を更新しました。</value></data>
   <data name="Status_ProfileLoaded_Format" xml:space="preserve"><value>プロファイルを読み込みました: {0}</value></data>
   <data name="Status_ProfileRevertedDefault" xml:space="preserve"><value>プロファイルをデフォルトに戻しました</value></data>
-  <data name="Status_VirtualController_Format" xml:space="preserve"><value>仮想コントローラー {0}: {1}</value></data>
   <data name="Status_DeviceAssigned_Format" xml:space="preserve"><value>「{0}」を仮想コントローラー {1} に割り当てました。</value></data>
-  <data name="Status_Unmapped_Format" xml:space="preserve"><value>未マッピング: {0}</value></data>
   <data name="Status_ErrorLoadingSettings_Format" xml:space="preserve"><value>設定の読み込みエラー: {0}</value></data>
   <data name="Status_SettingsSaved_Format" xml:space="preserve"><value>設定を {0} に保存しました。</value></data>
   <data name="Status_ErrorSavingSettings_Format" xml:space="preserve"><value>設定の保存エラー: {0}</value></data>
@@ -326,11 +322,6 @@
   <data name="Devices_RemoveConfirm_Format" xml:space="preserve"><value>{0} はデバイス一覧から削除され、保存された設定も破棄されます。</value></data>
   <data name="Devices_DragAssignHint" xml:space="preserve"><value>デバイスをサイドバーのコントローラーカードにドラッグすると割り当てられます。</value></data>
   <data name="Devices_Product" xml:space="preserve"><value>製品: </value></data>
-  <data name="Devices_Type" xml:space="preserve"><value>種類: </value></data>
-  <data name="Devices_AppGUID" xml:space="preserve"><value>アプリ GUID: </value></data>
-  <data name="Devices_SdlGUID" xml:space="preserve"><value>SDL GUID: </value></data>
-  <data name="Devices_InstancePath" xml:space="preserve"><value>インスタンスパス: </value></data>
-  <data name="Devices_VIDPID" xml:space="preserve"><value>VID:PID: </value></data>
   <data name="Devices_SubmitMapping" xml:space="preserve"><value>デバイスマッピングを送信</value></data>
   <data name="Devices_VCAssignment" xml:space="preserve"><value>仮想コントローラー割り当て</value></data>
   <data name="Devices_ToggleAssignment" xml:space="preserve"><value>割り当てを切り替え</value></data>
@@ -358,7 +349,6 @@
   <data name="Devices_Rumble" xml:space="preserve"><value>振動</value></data>
   <data name="Devices_Gyro" xml:space="preserve"><value>ジャイロ</value></data>
   <data name="Devices_Accel" xml:space="preserve"><value>加速度</value></data>
-  <data name="Devices_HideWarning_Format" xml:space="preserve"><value>{0}しようとしています。これは {1}{2} に影響します。</value></data>
   <data name="Devices_HideAction" xml:space="preserve"><value>このデバイスをすべてのアプリケーションから非表示に</value></data>
   <data name="Devices_ConsumeAction" xml:space="preserve"><value>このデバイスからのマッピング済み入力をブロック</value></data>
   <data name="Devices_WarnScope_Format" xml:space="preserve"><value> (接続中のすべての{0}に対して)</value></data>
@@ -378,7 +368,6 @@
   <data name="Pad_Triggers" xml:space="preserve"><value>トリガー</value></data>
   <data name="Pad_ForceFeedback" xml:space="preserve"><value>フォースフィードバック</value></data>
   <data name="Pad_Preset" xml:space="preserve"><value>プリセット</value></data>
-  <data name="Pad_Custom" xml:space="preserve"><value>カスタム</value></data>
   <data name="Pad_ExtendedSticks" xml:space="preserve"><value>スティック</value></data>
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>トリガー</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POV</value></data>
@@ -402,9 +391,6 @@
   <data name="ManageProfiles_ImportFromFileTitle" xml:space="preserve"><value>プロファイル JSON をインポート</value></data>
   <data name="ManageProfiles_StatusImportFileSucceeded_Format" xml:space="preserve"><value>{0} からインポートしました。</value></data>
   <data name="ManageProfiles_StatusImportFileFailed_Format" xml:space="preserve"><value>読み込みに失敗しました: {0}</value></data>
-  <data name="ImportFromDevice_Title" xml:space="preserve"><value>デバイスからインポート</value></data>
-  <data name="ImportFromDevice_Description" xml:space="preserve"><value>接続されている HID デバイスを選択してください。PadForge はディスクリプタ、識別情報、レイアウトを取得し、「(User Generated)」という名前の新しい Extended プロファイルとして保存します。プロファイルは PadForge.xml 内に保存されるため、設定と一緒に持ち運べます。</value></data>
-  <data name="ImportFromDevice_ConnectedDevice" xml:space="preserve"><value>接続されたデバイス:</value></data>
   <data name="ImportFromDevice_Refresh" xml:space="preserve"><value>更新</value></data>
   <data name="ImportFromDevice_Import" xml:space="preserve"><value>インポート</value></data>
   <data name="ImportFromDevice_UnnamedDevice" xml:space="preserve"><value>(名前なしの HID デバイス)</value></data>
@@ -445,7 +431,6 @@
   <data name="Pad_RightMotor" xml:space="preserve"><value>右モーター</value></data>
   <data name="Pad_MapAll" xml:space="preserve"><value>すべてマッピング</value></data>
   <data name="Pad_MapPrompt_Format" xml:space="preserve"><value>マッピング: {0}</value></data>
-  <data name="Pad_MapAllTooltip" xml:space="preserve"><value>すべてのマッピングを順番に記録します。各プロンプトでボタン/軸を押してください。</value></data>
   <data name="Pad_MapAllOneByOne" xml:space="preserve"><value>すべてのマッピングを一つずつ順番に記録します</value></data>
   <data name="Pad_MappingHint" xml:space="preserve"><value>マッピング行をクリックし、コントローラーのボタン/軸を押して割り当てます。</value></data>
   <data name="Pad_CopyTooltip" xml:space="preserve"><value>すべてのマッピングと設定をクリップボードにコピーします</value></data>
@@ -719,15 +704,12 @@
   <data name="MacroAction_AppVol_Format" xml:space="preserve"><value>アプリ音量 ← {0}</value></data>
   <data name="MacroAction_AppVolLimit_Format" xml:space="preserve"><value>アプリ音量 ← {0} (最大 {1}%)</value></data>
   <data name="MacroAction_MouseMove_Format" xml:space="preserve"><value>マウス移動 ← {0} (速度 {1:F0})</value></data>
-  <data name="MacroAction_MouseMoveLimit_Format" xml:space="preserve"><value>マウスを {0} 移動 (最大 {1}px)</value></data>
   <data name="MacroAction_Scroll_Format" xml:space="preserve"><value>マウススクロール ← {0} (速度 {1:F0})</value></data>
-  <data name="MacroAction_ScrollLimit_Format" xml:space="preserve"><value>{0} スクロール (最大 {1} 単位)</value></data>
   <data name="MacroAction_MousePress_Format" xml:space="preserve"><value>マウス押下 {0}</value></data>
   <data name="MacroAction_MouseRelease_Format" xml:space="preserve"><value>マウス解放 {0}</value></data>
   <data name="MacroAction_ToggleTouchpadOverlay" xml:space="preserve"><value>タッチパッドオーバーレイの切り替え</value></data>
   <data name="MacroAction_Type_LightbarColor" xml:space="preserve"><value>ライトバーの色を設定</value></data>
   <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>割り当てられたPlayStationスロットのライトバーを、選択したRGBカラーで上書きします。リアクティブは、設定された減衰時間で最大輝度から黒へフェードしてから、ライティングタブの設定に戻ります。スティッキーは「ライトバー上書き解除」アクションが実行されるまで色を保持します。ゲーム側の書き込みは引き続き優先されます。</value></data>
-  <data name="MacroAction_LightbarColor_Format" xml:space="preserve"><value>ライトバーを{0}に{1}ms設定</value></data>
   <data name="MacroAction_LightbarColor_Reactive_Format" xml:space="preserve"><value>ライトバーを{0}でフラッシュ（減衰{1}ms）</value></data>
   <data name="MacroAction_LightbarColor_Sticky_Format" xml:space="preserve"><value>ライトバーを{0}で保持（解除まで）</value></data>
   <data name="MacroAction_Type_LightbarColorClear" xml:space="preserve"><value>ライトバー上書き解除</value></data>
@@ -895,7 +877,6 @@
   <data name="Pad_SensitivityCurve" xml:space="preserve"><value>感度カーブ</value></data>
   <data name="Pad_SensitivityCurveHintShort" xml:space="preserve"><value>ダブルクリックで点を追加。右クリックで削除。ドラッグで調整。</value></data>
   <data name="Pad_Preset_Label" xml:space="preserve"><value>プリセット</value></data>
-  <data name="Pad_Live" xml:space="preserve"><value>ライブ</value></data>
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>トリガー軸</value></data>
   <data name="Pad_ForceFeedbackRumble" xml:space="preserve"><value>フォースフィードバック / 振動</value></data>
   <data name="Pad_OverallGain" xml:space="preserve"><value>全体ゲイン</value></data>
@@ -1158,7 +1139,6 @@
   <data name="Mapping_GyroHorizontal" xml:space="preserve"><value>ジャイロ水平 (Yaw + Roll)</value></data>
   <data name="Settings_GyroCalibrate_Button" xml:space="preserve"><value>ジャイロを較正</value></data>
   <data name="Settings_GyroCalibrate_Tooltip" xml:space="preserve"><value>コントローラーを平らな面に置いて「ジャイロを較正」をクリックすると、約 1.5 秒間静止時の値をサンプリングします。生の読み取り値から差し引かれるため、コントローラーが静止しているときにジャイロ マッピングがマウス / スティックを漂流させません。</value></data>
-  <data name="Devices_Sensors" xml:space="preserve"><value>センサー</value></data>
   <data name="Settings_GyroLastCalibrated_Format" xml:space="preserve"><value>最後の較正: {0:yyyy-MM-dd HH:mm}</value></data>
   <data name="Settings_GyroNeverCalibrated" xml:space="preserve"><value>未較正</value></data>
   <data name="Settings_GyroCalibrating" xml:space="preserve"><value>較正中… 動かさないでください</value></data>
@@ -1172,8 +1152,6 @@
   <data name="Settings_GyroSensitivityV_Tooltip" xml:space="preserve"><value>ジャイロの垂直 (Pitch) 出力をスケールします。水平とは別なので X 軸と Y 軸を独立して調整できます。</value></data>
   <data name="Settings_GyroDeadZone" xml:space="preserve"><value>デッドゾーン</value></data>
   <data name="Settings_GyroDeadZone_Tooltip" xml:space="preserve"><value>ジャイロ出力がゼロとして扱われる最小回転速度 (度/秒)。手の震えを除去しますが、しきい値を超えるレートはしきい値を引いたうえで連続的に通過します。</value></data>
-  <data name="Settings_GyroSmoothing" xml:space="preserve"><value>スムージング</value></data>
-  <data name="Settings_GyroSmoothing_Tooltip" xml:space="preserve"><value>ジャイロレートに対する単極 EMA フィルタ。0 = オフ (生信号、最小遅延)。高い値ほどジッタを抑えますが遅延が増えます。カーソルがブレるなら 0.5 から始めるのが妥当です。</value></data>
   <data name="Settings_GyroAcceleration" xml:space="preserve"><value>加速</value></data>
   <data name="Settings_GyroAcceleration_Tooltip" xml:space="preserve"><value>速度依存ゲイン。0 = オフ (リニアスケール)。高い値は遅い動きをそのまま通し、速い動きを増幅します。精密エイムと素早い旋回の両立に有効。</value></data>
   <data name="Settings_GyroOutputCurve" xml:space="preserve"><value>出力カーブ</value></data>
@@ -1188,8 +1166,6 @@
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>校正</value></data>
   <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>感度</value></data>
   <data name="Pad_Gyro_Response_Header" xml:space="preserve"><value>応答整形</value></data>
-  <data name="Pad_Gyro_EasyAim_Header" xml:space="preserve"><value>Easy Aim</value></data>
-  <data name="Pad_Gyro_EasyAim_Subtitle" xml:space="preserve"><value>右スティックを倒している間だけジャイロを有効にします。0% で無効 (ジャイロ常時オン)。</value></data>
   <data name="Settings_GyroSpace" xml:space="preserve"><value>座標系</value></data>
   <data name="Settings_GyroSpace_Tooltip" xml:space="preserve"><value>Local = コントローラー素のローカル軸。Player = ヨーを現実の鉛直 (重力) 軸に投影、ピッチはローカルのまま。Jibb Smart 推奨の既定。傾けてもナチュラル。World = ヨーもピッチもワールド軸に投影。</value></data>
   <data name="Settings_GyroInvertPitch" xml:space="preserve"><value>ピッチ (Y) 反転</value></data>
@@ -1236,7 +1212,6 @@
   <data name="Pad_Gyro_Curve_ExtraWide" xml:space="preserve"><value>エクストラワイド</value></data>
   <data name="Pad_Gyro_Units_Multiplier" xml:space="preserve"><value>倍率</value></data>
   <data name="Pad_Gyro_Units_DegPerScreenTurn" xml:space="preserve"><value>画面 1 回転あたりの角度</value></data>
-  <data name="Pad_Gyro_AimEngage_Record" xml:space="preserve"><value>次に押された物理入力をアクティベートボタンとして記録</value></data>
   <data name="Pad_Gyro_ResetCalibration_All_Tooltip" xml:space="preserve"><value>校正をリセット</value></data>
   <data name="Pad_Gyro_ResetSensitivity_All_Tooltip" xml:space="preserve"><value>感度をリセット</value></data>
   <data name="Pad_Gyro_ResetResponse_All_Tooltip" xml:space="preserve"><value>応答整形をリセット</value></data>
@@ -1280,7 +1255,6 @@
   <data name="Mapping_MotionGyro" xml:space="preserve"><value>モーション ジャイロ</value></data>
   <data name="Mapping_MotionAccel" xml:space="preserve"><value>モーション 加速度センサー</value></data>
   <data name="Mapping_MotionLean" xml:space="preserve"><value>モーションリーン</value></data>
-  <data name="MappingCategory_Touchpad" xml:space="preserve"><value>タッチパッド</value></data>
   <data name="Key_NumpadMultiply" xml:space="preserve"><value>テンキー *</value></data>
   <data name="Key_NumpadAdd" xml:space="preserve"><value>テンキー +</value></data>
   <data name="Key_NumpadSubtract" xml:space="preserve"><value>テンキー -</value></data>
@@ -1337,8 +1311,6 @@
   <data name="Pad_AT_MultiPosFeedback" xml:space="preserve"><value>マルチポジション・フィードバック</value></data>
   <data name="Pad_AT_Slope" xml:space="preserve"><value>スロープ・フィードバック</value></data>
   <data name="Pad_AT_MultiPosVibration" xml:space="preserve"><value>マルチポジション・バイブレーション</value></data>
-  <data name="Pad_AT_StartPosition" xml:space="preserve"><value>開始位置</value></data>
-  <data name="Pad_AT_EndPosition" xml:space="preserve"><value>終了位置</value></data>
   <data name="Pad_AT_Range" xml:space="preserve"><value>範囲</value></data>
   <data name="Pad_AT_Strength" xml:space="preserve"><value>強度</value></data>
   <data name="Pad_AT_Frequency" xml:space="preserve"><value>周波数 (Hz)</value></data>
@@ -1354,21 +1326,14 @@
   <data name="Pad_Lighting_Subtitle" xml:space="preserve"><value>割り当てられた物理コントローラーのライトバーのベースカラーと、オーディオ動作を設定します。ゲームによる書き込みは常に優先されます。ユーザー設定は、ゲームがライトバーを駆動していないときに適用されます。</value></data>
   <data name="Pad_Lighting_PlayerIdle_Hint" xml:space="preserve"><value>プレイヤー番号が選択されている間、パッドは待機時に仮想コントローラーのプレイヤー識別を表示します。ライトバーにはソニーのプレイヤーカラー（1 青、2 赤、3 緑、4 ピンク）、DualSense では対応するプレイヤーランプも点灯します。同じ仮想コントローラー上のすべてのデバイスが同じ番号を表示します。ゲームがライティングを書き込むとゲームが優先され、ここで設定した内容は常に最優先されます。オフを選ぶとそのライトは完全に消灯します。</value></data>
   <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>ライトバー</value></data>
-  <data name="Pad_Lighting_BaseEnabled" xml:space="preserve"><value>ゲームが書き込んでいないときにユーザー設定のベースカラーを適用</value></data>
-  <data name="Pad_Lighting_Red" xml:space="preserve"><value>赤</value></data>
-  <data name="Pad_Lighting_Green" xml:space="preserve"><value>緑</value></data>
-  <data name="Pad_Lighting_Blue" xml:space="preserve"><value>青</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>6 桁の 16 進カラー (RRGGBB または #RRGGBB) を入力し、Enter キーを押すかフォーカスを外すと適用されます。</value></data>
   <data name="Pad_Lighting_RemoveColor" xml:space="preserve"><value>このカラーをパレットから削除</value></data>
-  <data name="Pad_Lighting_MicLedMode" xml:space="preserve"><value>マイクLED</value></data>
   <data name="Pad_Lighting_MicLed_Off" xml:space="preserve"><value>オフ</value></data>
   <data name="Pad_Lighting_MicLed_Solid" xml:space="preserve"><value>点灯</value></data>
   <data name="Pad_Lighting_MicLed_Pulse" xml:space="preserve"><value>パルス</value></data>
   <data name="Pad_Lighting_MicLed_FollowDevice" xml:space="preserve"><value>オーディオデバイスに追従</value></data>
   <data name="Pad_Lighting_MicLed_FollowDevice_Picker" xml:space="preserve"><value>オーディオデバイス</value></data>
-  <data name="Pad_Lighting_PlayerLeds" xml:space="preserve"><value>プレイヤーLED</value></data>
-  <data name="Pad_Lighting_PlayerLeds_Subtitle" xml:space="preserve"><value>タッチパッドの下にある 5 つの小さな白い LED。表示するプレイヤースロットのパターンと明るさを選びます。</value></data>
   <data name="Pad_Lighting_IndicatorLeds" xml:space="preserve"><value>インジケーターLED</value></data>
   <data name="Pad_Lighting_IndicatorLeds_Subtitle" xml:space="preserve"><value>プレイヤー番号の列 (タッチパッド下の 5 つの LED) とマイク上のミュート LED。明るさのコントロールは物理的にプレイヤー列にのみ影響します。ファームウェアはミュート LED の状態 (オフ / 点灯 / パルス) を公開していますが、ミュート用の独立した明るさレジスタはありません。</value></data>
   <data name="Pad_ResetLightbar" xml:space="preserve"><value>ライトバーをリセット</value></data>
@@ -1381,7 +1346,6 @@
   <data name="Pad_Lighting_PlayerPattern" xml:space="preserve"><value>プレイヤーパターン</value></data>
   <data name="Pad_Lighting_MuteLedMode" xml:space="preserve"><value>ミュートLEDモード</value></data>
   <data name="Pad_Lighting_LedBrightness" xml:space="preserve"><value>LEDの明るさ</value></data>
-  <data name="Pad_Lighting_PlayerLed_Mode" xml:space="preserve"><value>パターン</value></data>
   <data name="Pad_Lighting_PlayerLed_Off" xml:space="preserve"><value>オフ</value></data>
   <data name="Pad_Lighting_PlayerLed_PlayerNumber" xml:space="preserve"><value>プレイヤー番号 (既定)</value></data>
   <data name="Pad_Lighting_PlayerLed_P1" xml:space="preserve"><value>プレイヤー 1</value></data>
@@ -1389,19 +1353,10 @@
   <data name="Pad_Lighting_PlayerLed_P3" xml:space="preserve"><value>プレイヤー 3</value></data>
   <data name="Pad_Lighting_PlayerLed_P4" xml:space="preserve"><value>プレイヤー 4</value></data>
   <data name="Pad_Lighting_PlayerLed_All" xml:space="preserve"><value>すべて</value></data>
-  <data name="Pad_Lighting_PlayerLed_Brightness" xml:space="preserve"><value>明るさ</value></data>
   <data name="Pad_Lighting_PlayerLed_Brightness_High" xml:space="preserve"><value>高</value></data>
   <data name="Pad_Lighting_PlayerLed_Brightness_Medium" xml:space="preserve"><value>中</value></data>
   <data name="Pad_Lighting_PlayerLed_Brightness_Low" xml:space="preserve"><value>低</value></data>
-  <data name="Pad_Lighting_AudioLightbar" xml:space="preserve"><value>オーディオ駆動ライトバー</value></data>
-  <data name="Pad_Lighting_AudioLightbar_Subtitle" xml:space="preserve"><value>上記のベースカラーをシステムオーディオのピークで変調します。デフォルト出力デバイスから再生されている内容に合わせてパルスします。オーディオラブルと同じ WASAPI キャプチャを利用しますが、波形全体を読み取り (低音カットフィルタなし)、聞こえる音すべてに反応します。</value></data>
-  <data name="Pad_Lighting_AudioLightbar_Enable" xml:space="preserve"><value>ベースカラーをシステムオーディオでパルスさせる</value></data>
   <data name="Pad_Lighting_AudioLightbar_Sensitivity" xml:space="preserve"><value>感度</value></data>
-  <data name="Pad_Lighting_AudioLightbar_Mode" xml:space="preserve"><value>モード</value></data>
-  <data name="Pad_Lighting_AudioLightbar_Mode_Pulse" xml:space="preserve"><value>ベースカラーをパルス</value></data>
-  <data name="Pad_Lighting_AudioLightbar_Mode_Thresholds" xml:space="preserve"><value>3 色 — ハードな切り替え</value></data>
-  <data name="Pad_Lighting_AudioLightbar_Mode_Gradient" xml:space="preserve"><value>3 色 — 滑らかなグラデーション</value></data>
-  <data name="Pad_Lighting_AudioLightbar_Mode_CrossFade" xml:space="preserve"><value>3 色 — 境界でクロスフェード</value></data>
   <data name="Pad_Lighting_AudioLightbar_CrossFadeWidth" xml:space="preserve"><value>クロスフェード幅</value></data>
   <data name="Pad_Lighting_AudioLightbar_LowColor" xml:space="preserve"><value>小音量カラー</value></data>
   <data name="Pad_Lighting_AudioLightbar_MidColor" xml:space="preserve"><value>中音量カラー</value></data>
@@ -1431,10 +1386,6 @@
   <data name="Pad_Lighting_RainbowBrightness" xml:space="preserve"><value>明るさ</value></data>
   <data name="Pad_Lighting_Period" xml:space="preserve"><value>周期</value></data>
   <data name="Pad_Lighting_PaletteHeader" xml:space="preserve"><value>パレット</value></data>
-  <data name="Pad_Lighting_PaletteColor1" xml:space="preserve"><value>カラー 1</value></data>
-  <data name="Pad_Lighting_PaletteColor2" xml:space="preserve"><value>カラー 2</value></data>
-  <data name="Pad_Lighting_PaletteColor3" xml:space="preserve"><value>カラー 3</value></data>
-  <data name="Pad_Lighting_PaletteColor4" xml:space="preserve"><value>カラー 4</value></data>
   <data name="Pad_Lighting_ColorCycleSmooth" xml:space="preserve"><value>パレットの色をスムーズにブレンド</value></data>
   <data name="Pad_Lighting_AddColor" xml:space="preserve"><value>カラーを追加</value></data>
   <data name="Pad_Lighting_ResetPalette" xml:space="preserve"><value>パレットをリセット</value></data>
@@ -1468,7 +1419,7 @@
   <data name="Pad_ResetAudioMidB" xml:space="preserve"><value>中バンドの青をリセット</value></data>
   <data name="Pad_ResetAudioHighR" xml:space="preserve"><value>大バンドの赤をリセット</value></data>
   <data name="Pad_ResetAudioHighG" xml:space="preserve"><value>大バンドの緑をリセット</value></data>
-  <data name="Pad_ResetAudioHighB" xml:space="preserve"><value>大バンドの青をリセット</value></data>  <data name="Pad_Lighting_InputReactive" xml:space="preserve"><value>インプットリアクティブ</value></data>  <data name="Pad_Lighting_InputReactive_Off" xml:space="preserve"><value>オフ</value></data>  <data name="Pad_Lighting_InputReactive_Random" xml:space="preserve"><value>押すたびにランダムカラー</value></data>  <data name="Pad_Lighting_InputReactive_Cycle" xml:space="preserve"><value>パレットを巡回</value></data>  <data name="Pad_Lighting_InputReactive_Fixed" xml:space="preserve"><value>押下ごとに単色</value></data>  <data name="Pad_ResetInputReactive" xml:space="preserve"><value>インプットリアクティブをリセット</value></data>  <data name="Pad_Lighting_InputReactive_FixedColor" xml:space="preserve"><value>押下時のフラッシュカラー</value></data>  <data name="Settings_KeepCloaksBetweenLaunchesTooltip" xml:space="preserve"><value>PadForge のセッションをまたいで HidHide のクローキングを維持します。PadForge が閉じている間に他のアプリ (Steam など) がコントローラーを検索しても、物理デバイスを引き続き非表示として認識させたい場合に便利です。既定はオフ。セッション中に上のメインスイッチをオフにすると、デバイスは即座に再表示されます。</value></data>  <data name="Settings_KeepCloaksBetweenLaunches" xml:space="preserve"><value>起動間でデバイスを隠したままにする</value></data>  <data name="Pad_AT_LoadGameCubePreset" xml:space="preserve"><value>ゲームキューブのプリセットを読み込む</value></data>  <data name="Pad_AT_LoadGameCubePreset_Tooltip" xml:space="preserve"><value>範囲と強度を、本物のゲームキューブのトリガーの押し心地に合う値に設定します（開始 約56%、終了 約63%、最大強度）。好みの感触に調整したい場合は、その後スライダーを動かしてください。</value></data>
+  <data name="Pad_ResetAudioHighB" xml:space="preserve"><value>大バンドの青をリセット</value></data>  <data name="Pad_Lighting_InputReactive" xml:space="preserve"><value>インプットリアクティブ</value></data>  <data name="Pad_Lighting_InputReactive_Off" xml:space="preserve"><value>オフ</value></data>  <data name="Pad_Lighting_InputReactive_Random" xml:space="preserve"><value>押すたびにランダムカラー</value></data>  <data name="Pad_Lighting_InputReactive_Cycle" xml:space="preserve"><value>パレットを巡回</value></data>  <data name="Pad_Lighting_InputReactive_Fixed" xml:space="preserve"><value>押下ごとに単色</value></data>  <data name="Pad_ResetInputReactive" xml:space="preserve"><value>インプットリアクティブをリセット</value></data>  <data name="Pad_Lighting_InputReactive_FixedColor" xml:space="preserve"><value>押下時のフラッシュカラー</value></data>  <data name="Settings_KeepCloaksBetweenLaunchesTooltip" xml:space="preserve"><value>PadForge のセッションをまたいで HidHide のクローキングを維持します。PadForge が閉じている間に他のアプリ (Steam など) がコントローラーを検索しても、物理デバイスを引き続き非表示として認識させたい場合に便利です。既定はオフ。セッション中に上のメインスイッチをオフにすると、デバイスは即座に再表示されます。</value></data>  <data name="Settings_KeepCloaksBetweenLaunches" xml:space="preserve"><value>起動間でデバイスを隠したままにする</value></data>  <data name="Pad_AT_LoadGameCubePreset_Tooltip" xml:space="preserve"><value>範囲と強度を、本物のゲームキューブのトリガーの押し心地に合う値に設定します（開始 約56%、終了 約63%、最大強度）。好みの感触に調整したい場合は、その後スライダーを動かしてください。</value></data>
 
 
 
@@ -1508,12 +1459,10 @@
   <data name="Pad_Shift_Delete" xml:space="preserve"><value>レイヤーを削除</value></data>
   <data name="Pad_Shift_DeleteConfirmTitle" xml:space="preserve"><value>Shift レイヤーの削除</value></data>
   <data name="Pad_Shift_DeleteConfirm_Format" xml:space="preserve"><value>レイヤー「{0}」とそのマッピング行をすべて削除しますか?この操作は元に戻せません。</value></data>
-  <data name="Pad_Shift_RenameTitle" xml:space="preserve"><value>レイヤー名の変更</value></data>
   <data name="Pad_Shift_NoInherit" xml:space="preserve"><value>継承しない</value></data>
   <data name="Pad_Shift_NoInherit_Tooltip" xml:space="preserve"><value>オンにすると、このレイヤーのターゲットはベース行にフォールスルーせず、オフのままになります。</value></data>
   <data name="Pad_Shift_Delay" xml:space="preserve"><value>遅延</value></data>
   <data name="Pad_Shift_Delay_Tooltip" xml:space="preserve"><value>レイヤーの変更が発火する前に、アクティベーターがアクティブな状態を維持する必要があるミリ秒。</value></data>
-  <data name="Pad_Shift_JumpToLayer" xml:space="preserve"><value>レイヤーへジャンプ</value></data>
   <data name="Pad_Shift_ChordSecondInput" xml:space="preserve"><value>コードの2番目の入力</value></data>
   <data name="Pad_Shift_AxisThreshold" xml:space="preserve"><value>軸のしきい値</value></data>
   <data name="Pad_Shift_CycleLayers" xml:space="preserve"><value>レイヤーをサイクル</value></data>
@@ -1781,7 +1730,6 @@
   <data name="Pad_Steering_Mode_Winding" xml:space="preserve"><value>巻き取り</value></data>
   <data name="Pad_Steering_Mode_AngleX" xml:space="preserve"><value>角度→軸 (X)</value></data>
   <data name="Pad_Steering_Mode_AngleY" xml:space="preserve"><value>角度→軸 (Y)</value></data>
-  <data name="Pad_Steering_Mode_MotionLean" xml:space="preserve"><value>モーションリーン</value></data>
   <data name="Pad_Steering_WindRange" xml:space="preserve"><value>巻き取り範囲</value></data>
   <data name="Pad_Steering_WindPower" xml:space="preserve"><value>巻き取り強度</value></data>
   <data name="Pad_Steering_WindUnwindRate" xml:space="preserve"><value>巻き戻しレート</value></data>
@@ -1814,9 +1762,7 @@
   <data name="Pad_Steering_Lock_ATResistance" xml:space="preserve"><value>ロック付近でトリガー抵抗</value></data>
   <data name="Pad_Steering_Lock_PulseMs" xml:space="preserve"><value>パルス長</value></data>
   <data name="Pad_Steering_Lock_LightbarColor" xml:space="preserve"><value>ライトバーの色</value></data>
-  <data name="Pad_Steering_Lock_LightbarFadeMs" xml:space="preserve"><value>ライトバーフェード</value></data>
   <data name="Pad_Steering_Reset_PulseMs" xml:space="preserve"><value>パルス長をリセット</value></data>
-  <data name="Pad_Steering_Reset_LightbarColor" xml:space="preserve"><value>ライトバーの色をリセット</value></data>
   <data name="Pad_Steering_Reset_LightbarFadeMs" xml:space="preserve"><value>ライトバーの減衰をリセット</value></data>
   <data name="Pad_Wheel" xml:space="preserve"><value>ステアリング</value></data>
   <data name="Pad_ResetWheel" xml:space="preserve"><value>ステアリングをリセット</value></data>
@@ -1963,9 +1909,6 @@
   <data name="RemoteLink_PasswordTitle" xml:space="preserve">
     <value>Remote Link のパスワード</value>
   </data>
-  <data name="Devices_ButtonNumberTooltip" xml:space="preserve">
-    <value>ボタン {0}</value>
-  </data>
   <data name="Dashboard_TouchpadOverlayWindowTitle" xml:space="preserve">
     <value>PadForge タッチパッド</value>
   </data>
@@ -2056,12 +1999,6 @@
   <data name="Dashboard_RemoteLinkFooter" xml:space="preserve">
     <value>一度ペアリングすれば、信頼済みの PC は自動的に再接続します。ペアリング済みの PC はこの PC のゲームパッド出力を操作でき、制限しない限りキーボード・マウス・マクロも操作できます。</value>
   </data>
-  <data name="Dashboard_RemoteLinkNearby" xml:space="preserve">
-    <value>近くの PC</value>
-  </data>
-  <data name="Dashboard_RemoteLinkNoPeers" xml:space="preserve">
-    <value>同じネットワーク上で Remote Link を有効にしている PC が、ここに自動的に表示されます。</value>
-  </data>
   <data name="Dashboard_RemoteLinkPairButton" xml:space="preserve">
     <value>ペアリング</value>
   </data>
@@ -2079,9 +2016,6 @@
   </data>
   <data name="RemoteLink_Identity" xml:space="preserve">
     <value>アイデンティティ</value>
-  </data>
-  <data name="RemoteLink_NoPairedPeers" xml:space="preserve">
-    <value>ペアリング済みの PC はまだありません。</value>
   </data>
   <data name="RemoteLink_Pair" xml:space="preserve">
     <value>ペアリング</value>
@@ -2279,11 +2213,6 @@
   <data name="Tour_Slots_Title" xml:space="preserve"><value>スロット</value></data>
   <data name="Tour_Status_Body" xml:space="preserve"><value>デバイス数、ポーリングレート、エンジンの炎を常に表示します。</value></data>
   <data name="Tour_Status_Title" xml:space="preserve"><value>計器ライン</value></data>
-  <data name="TypeAbbrev_Extended" xml:space="preserve"><value>EXT</value></data>
-  <data name="TypeAbbrev_KeyboardMouse" xml:space="preserve"><value>KBM</value></data>
-  <data name="TypeAbbrev_Midi" xml:space="preserve"><value>MIDI</value></data>
-  <data name="TypeAbbrev_PlayStation" xml:space="preserve"><value>PS</value></data>
-  <data name="TypeAbbrev_Xbox" xml:space="preserve"><value>XB</value></data>
   <data name="WiiPair_FamilyDs3" xml:space="preserve"><value>Sony DualShock 3</value></data>
   <data name="Pad_ExtendedCloneDevice" xml:space="preserve"><value>デバイスを1:1で複製</value></data>
   <data name="Pad_ExtendedCloneDeviceTooltip" xml:space="preserve"><value>選択したデバイスのすべての軸、ボタン、ハットを、同じ番号の仮想出力へそのままマッピングします。レイアウトをデバイスに合わせて調整し、スロット上のこのデバイスの行を1:1パススルーで置き換えます。</value></data>

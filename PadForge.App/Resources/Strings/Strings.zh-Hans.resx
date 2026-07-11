@@ -110,8 +110,6 @@
   <data name="Main_ShuttingDown" xml:space="preserve"><value>正在关闭 PadForge...</value></data>
   <data name="Main_StartingUp" xml:space="preserve"><value>正在启动 PadForge…</value></data>
   <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>正在清理上一次会话遗留的虚拟控制器。</value></data>
-  <data name="Main_ReleasingControllers" xml:space="preserve"><value>正在释放虚拟控制器</value></data>
-  <data name="Main_PleaseWait" xml:space="preserve"><value>请稍候...</value></data>
   <data name="Main_DevicesSuffix" xml:space="preserve"><value> 台设备</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>添加控制器</value></data>
   <data name="Main_DeleteVC" xml:space="preserve"><value>删除虚拟控制器</value></data>
@@ -166,9 +164,7 @@
   <data name="Status_ProfileUpdated_Format" xml:space="preserve"><value>配置文件 "{0}" 已更新。</value></data>
   <data name="Status_ProfileLoaded_Format" xml:space="preserve"><value>已加载配置文件：{0}</value></data>
   <data name="Status_ProfileRevertedDefault" xml:space="preserve"><value>配置文件已恢复为默认</value></data>
-  <data name="Status_VirtualController_Format" xml:space="preserve"><value>虚拟控制器 {0}：{1}</value></data>
   <data name="Status_DeviceAssigned_Format" xml:space="preserve"><value>已将"{0}"分配到虚拟控制器 {1}。</value></data>
-  <data name="Status_Unmapped_Format" xml:space="preserve"><value>未映射：{0}</value></data>
   <data name="Status_ErrorLoadingSettings_Format" xml:space="preserve"><value>加载设置时出错：{0}</value></data>
   <data name="Status_SettingsSaved_Format" xml:space="preserve"><value>设置已保存到 {0}。</value></data>
   <data name="Status_ErrorSavingSettings_Format" xml:space="preserve"><value>保存设置时出错：{0}</value></data>
@@ -326,11 +322,6 @@
   <data name="Devices_RemoveConfirm_Format" xml:space="preserve"><value>{0} 将从设备列表中移除，其保存的设置也将被清除。</value></data>
   <data name="Devices_DragAssignHint" xml:space="preserve"><value>将设备拖到侧边栏的控制器卡片上即可分配。</value></data>
   <data name="Devices_Product" xml:space="preserve"><value>产品： </value></data>
-  <data name="Devices_Type" xml:space="preserve"><value>类型： </value></data>
-  <data name="Devices_AppGUID" xml:space="preserve"><value>应用 GUID： </value></data>
-  <data name="Devices_SdlGUID" xml:space="preserve"><value>SDL GUID： </value></data>
-  <data name="Devices_InstancePath" xml:space="preserve"><value>实例路径： </value></data>
-  <data name="Devices_VIDPID" xml:space="preserve"><value>VID:PID： </value></data>
   <data name="Devices_SubmitMapping" xml:space="preserve"><value>提交设备映射</value></data>
   <data name="Devices_VCAssignment" xml:space="preserve"><value>虚拟控制器分配</value></data>
   <data name="Devices_ToggleAssignment" xml:space="preserve"><value>切换分配</value></data>
@@ -358,7 +349,6 @@
   <data name="Devices_Rumble" xml:space="preserve"><value>振动</value></data>
   <data name="Devices_Gyro" xml:space="preserve"><value>陀螺仪</value></data>
   <data name="Devices_Accel" xml:space="preserve"><value>加速度计</value></data>
-  <data name="Devices_HideWarning_Format" xml:space="preserve"><value>您即将{0}。这将影响 {1}{2}。</value></data>
   <data name="Devices_HideAction" xml:space="preserve"><value>对所有应用程序隐藏此设备</value></data>
   <data name="Devices_ConsumeAction" xml:space="preserve"><value>屏蔽此设备已映射的输入</value></data>
   <data name="Devices_WarnScope_Format" xml:space="preserve"><value> 对所有已连接的{0}</value></data>
@@ -378,7 +368,6 @@
   <data name="Pad_Triggers" xml:space="preserve"><value>扳机</value></data>
   <data name="Pad_ForceFeedback" xml:space="preserve"><value>力反馈</value></data>
   <data name="Pad_Preset" xml:space="preserve"><value>预设</value></data>
-  <data name="Pad_Custom" xml:space="preserve"><value>自定义</value></data>
   <data name="Pad_ExtendedSticks" xml:space="preserve"><value>摇杆</value></data>
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>扳机</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POV</value></data>
@@ -402,9 +391,6 @@
   <data name="ManageProfiles_ImportFromFileTitle" xml:space="preserve"><value>导入配置文件 JSON</value></data>
   <data name="ManageProfiles_StatusImportFileSucceeded_Format" xml:space="preserve"><value>已从 {0} 导入。</value></data>
   <data name="ManageProfiles_StatusImportFileFailed_Format" xml:space="preserve"><value>读取失败：{0}</value></data>
-  <data name="ImportFromDevice_Title" xml:space="preserve"><value>从设备导入</value></data>
-  <data name="ImportFromDevice_Description" xml:space="preserve"><value>选择一个已连接的 HID 设备。PadForge 将捕获其描述符、标识和布局，并将其保存为名为"(User Generated)"的新"扩展"配置文件。该配置文件直接存储在 PadForge.xml 中，会随您的设置一起迁移。</value></data>
-  <data name="ImportFromDevice_ConnectedDevice" xml:space="preserve"><value>已连接设备：</value></data>
   <data name="ImportFromDevice_Refresh" xml:space="preserve"><value>刷新</value></data>
   <data name="ImportFromDevice_Import" xml:space="preserve"><value>导入</value></data>
   <data name="ImportFromDevice_UnnamedDevice" xml:space="preserve"><value>（未命名 HID 设备）</value></data>
@@ -445,7 +431,6 @@
   <data name="Pad_RightMotor" xml:space="preserve"><value>右马达</value></data>
   <data name="Pad_MapAll" xml:space="preserve"><value>全部映射</value></data>
   <data name="Pad_MapPrompt_Format" xml:space="preserve"><value>映射: {0}</value></data>
-  <data name="Pad_MapAllTooltip" xml:space="preserve"><value>逐一录制所有映射，按照提示依次按下按钮/轴</value></data>
   <data name="Pad_MapAllOneByOne" xml:space="preserve"><value>逐一录制所有映射</value></data>
   <data name="Pad_MappingHint" xml:space="preserve"><value>点击映射行，然后按下控制器上的按钮/轴来分配。</value></data>
   <data name="Pad_CopyTooltip" xml:space="preserve"><value>将所有映射和设置复制到剪贴板</value></data>
@@ -719,15 +704,12 @@
   <data name="MacroAction_AppVol_Format" xml:space="preserve"><value>应用音量 ← {0}</value></data>
   <data name="MacroAction_AppVolLimit_Format" xml:space="preserve"><value>应用音量 ← {0}（最大 {1}%）</value></data>
   <data name="MacroAction_MouseMove_Format" xml:space="preserve"><value>鼠标移动 ← {0}（速度 {1:F0}）</value></data>
-  <data name="MacroAction_MouseMoveLimit_Format" xml:space="preserve"><value>移动鼠标 {0}（最大 {1}px）</value></data>
   <data name="MacroAction_Scroll_Format" xml:space="preserve"><value>鼠标滚动 ← {0}（速度 {1:F0}）</value></data>
-  <data name="MacroAction_ScrollLimit_Format" xml:space="preserve"><value>滚动 {0}（最大 {1} 单位）</value></data>
   <data name="MacroAction_MousePress_Format" xml:space="preserve"><value>按下鼠标 {0}</value></data>
   <data name="MacroAction_MouseRelease_Format" xml:space="preserve"><value>释放鼠标 {0}</value></data>
   <data name="MacroAction_ToggleTouchpadOverlay" xml:space="preserve"><value>切换触控板叠加层</value></data>
   <data name="MacroAction_Type_LightbarColor" xml:space="preserve"><value>设置灯条颜色</value></data>
   <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>使用所选RGB颜色覆盖已分配PlayStation插槽的灯条。"反应式"在配置的衰减窗口内从满亮度淡出到黑色，随后恢复到"灯光"选项卡的设置。"持续"将颜色一直保持，直到执行"清除灯条覆盖"动作。游戏发出的写入仍优先于此覆盖。</value></data>
-  <data name="MacroAction_LightbarColor_Format" xml:space="preserve"><value>将灯条设置为{0}，持续{1}毫秒</value></data>
   <data name="MacroAction_LightbarColor_Reactive_Format" xml:space="preserve"><value>闪烁灯条 {0}（衰减 {1}ms）</value></data>
   <data name="MacroAction_LightbarColor_Sticky_Format" xml:space="preserve"><value>保持灯条 {0} 直到清除</value></data>
   <data name="MacroAction_Type_LightbarColorClear" xml:space="preserve"><value>清除灯条覆盖</value></data>
@@ -895,7 +877,6 @@
   <data name="Pad_SensitivityCurve" xml:space="preserve"><value>灵敏度曲线</value></data>
   <data name="Pad_SensitivityCurveHintShort" xml:space="preserve"><value>双击添加点。右键单击删除。拖动调整。</value></data>
   <data name="Pad_Preset_Label" xml:space="preserve"><value>预设</value></data>
-  <data name="Pad_Live" xml:space="preserve"><value>实时</value></data>
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>扳机轴</value></data>
   <data name="Pad_ForceFeedbackRumble" xml:space="preserve"><value>力反馈 / 振动</value></data>
   <data name="Pad_OverallGain" xml:space="preserve"><value>总增益</value></data>
@@ -1158,7 +1139,6 @@
   <data name="Mapping_GyroHorizontal" xml:space="preserve"><value>陀螺仪 水平 (Yaw + Roll)</value></data>
   <data name="Settings_GyroCalibrate_Button" xml:space="preserve"><value>校准陀螺仪</value></data>
   <data name="Settings_GyroCalibrate_Tooltip" xml:space="preserve"><value>将控制器放在平坦表面上,点击"校准陀螺仪"以采样约 1.5 秒的静止读数。从原始读数中减去,以便陀螺仪映射在控制器静止时不会使鼠标 / 摇杆漂移。</value></data>
-  <data name="Devices_Sensors" xml:space="preserve"><value>传感器</value></data>
   <data name="Settings_GyroLastCalibrated_Format" xml:space="preserve"><value>上次校准:{0:yyyy-MM-dd HH:mm}</value></data>
   <data name="Settings_GyroNeverCalibrated" xml:space="preserve"><value>从未校准</value></data>
   <data name="Settings_GyroCalibrating" xml:space="preserve"><value>正在校准… 请保持静止</value></data>
@@ -1172,8 +1152,6 @@
   <data name="Settings_GyroSensitivityV_Tooltip" xml:space="preserve"><value>缩放陀螺仪的垂直 (Pitch) 输出。与水平分离，可独立调整 X 与 Y 轴。</value></data>
   <data name="Settings_GyroDeadZone" xml:space="preserve"><value>死区</value></data>
   <data name="Settings_GyroDeadZone_Tooltip" xml:space="preserve"><value>陀螺仪输出被视为零的最小旋转速率（度/秒）。过滤手部抖动，超出阈值的速率会扣除阈值后连续通过。</value></data>
-  <data name="Settings_GyroSmoothing" xml:space="preserve"><value>平滑</value></data>
-  <data name="Settings_GyroSmoothing_Tooltip" xml:space="preserve"><value>对陀螺仪速率的单极 EMA 滤波。0 = 关闭（原始信号，最低延迟）。值越高抖动越小，但增加延迟。若光标抖动，0.5 是合理起点。</value></data>
   <data name="Settings_GyroAcceleration" xml:space="preserve"><value>加速</value></data>
   <data name="Settings_GyroAcceleration_Tooltip" xml:space="preserve"><value>与速度相关的增益。0 = 关闭（线性缩放）。较高的值让慢速移动保持原样，加快快速移动。适合在精确瞄准和快速转向之间切换。</value></data>
   <data name="Settings_GyroOutputCurve" xml:space="preserve"><value>输出曲线</value></data>
@@ -1188,8 +1166,6 @@
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>校准</value></data>
   <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>灵敏度</value></data>
   <data name="Pad_Gyro_Response_Header" xml:space="preserve"><value>响应整形</value></data>
-  <data name="Pad_Gyro_EasyAim_Header" xml:space="preserve"><value>Easy Aim</value></data>
-  <data name="Pad_Gyro_EasyAim_Subtitle" xml:space="preserve"><value>仅在推动右摇杆时启用陀螺仪。0% 关闭（陀螺仪始终开启）。</value></data>
   <data name="Settings_GyroSpace" xml:space="preserve"><value>坐标系</value></data>
   <data name="Settings_GyroSpace_Tooltip" xml:space="preserve"><value>Local = 手柄原始本地轴。Player = 把偏航投影到真实垂直轴（重力），俯仰保持本地。Jibb Smart 推荐的默认值，在任意倾斜角度都自然。World = 偏航与俯仰均投影到世界坐标轴。</value></data>
   <data name="Settings_GyroInvertPitch" xml:space="preserve"><value>反转俯仰（Y）</value></data>
@@ -1236,7 +1212,6 @@
   <data name="Pad_Gyro_Curve_ExtraWide" xml:space="preserve"><value>极宽</value></data>
   <data name="Pad_Gyro_Units_Multiplier" xml:space="preserve"><value>倍率</value></data>
   <data name="Pad_Gyro_Units_DegPerScreenTurn" xml:space="preserve"><value>每屏旋转角度</value></data>
-  <data name="Pad_Gyro_AimEngage_Record" xml:space="preserve"><value>将下一次按下的物理输入记录为激活键</value></data>
   <data name="Pad_Gyro_ResetCalibration_All_Tooltip" xml:space="preserve"><value>重置校准</value></data>
   <data name="Pad_Gyro_ResetSensitivity_All_Tooltip" xml:space="preserve"><value>重置灵敏度</value></data>
   <data name="Pad_Gyro_ResetResponse_All_Tooltip" xml:space="preserve"><value>重置响应整形</value></data>
@@ -1279,7 +1254,6 @@
   <data name="Mapping_TouchpadFingerTouch_Format" xml:space="preserve"><value>触控板 {0} 手指 {1} 触摸</value></data>
   <data name="Mapping_MotionGyro" xml:space="preserve"><value>运动 陀螺仪</value></data>
   <data name="Mapping_MotionAccel" xml:space="preserve"><value>运动 加速度计</value></data>
-  <data name="MappingCategory_Touchpad" xml:space="preserve"><value>触控板</value></data>
   <data name="Key_NumpadMultiply" xml:space="preserve"><value>数字键盘 *</value></data>
   <data name="Key_NumpadAdd" xml:space="preserve"><value>数字键盘 +</value></data>
   <data name="Key_NumpadSubtract" xml:space="preserve"><value>数字键盘 -</value></data>
@@ -1336,8 +1310,6 @@
   <data name="Pad_AT_MultiPosFeedback" xml:space="preserve"><value>多位置阻力反馈</value></data>
   <data name="Pad_AT_Slope" xml:space="preserve"><value>渐变阻力反馈</value></data>
   <data name="Pad_AT_MultiPosVibration" xml:space="preserve"><value>多位置振动</value></data>
-  <data name="Pad_AT_StartPosition" xml:space="preserve"><value>起始位置</value></data>
-  <data name="Pad_AT_EndPosition" xml:space="preserve"><value>结束位置</value></data>
   <data name="Pad_AT_Range" xml:space="preserve"><value>范围</value></data>
   <data name="Pad_AT_Strength" xml:space="preserve"><value>强度</value></data>
   <data name="Pad_AT_Frequency" xml:space="preserve"><value>频率 (Hz)</value></data>
@@ -1353,21 +1325,14 @@
   <data name="Pad_Lighting_Subtitle" xml:space="preserve"><value>设置已分配的物理手柄的灯条基础颜色和音频行为。游戏写入始终优先。当无游戏驱动灯条时,用户设置生效。</value></data>
   <data name="Pad_Lighting_PlayerIdle_Hint" xml:space="preserve"><value>选择玩家编号时，手柄空闲状态会显示其虚拟控制器的玩家身份：灯条显示索尼玩家颜色（1 蓝、2 红、3 绿、4 粉），DualSense 还会点亮对应的玩家指示灯。同一虚拟控制器下的所有设备显示相同编号。游戏写入灯光时由游戏接管，此处的设置始终优先，选择关闭则该灯完全熄灭。</value></data>
   <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>灯条</value></data>
-  <data name="Pad_Lighting_BaseEnabled" xml:space="preserve"><value>当无游戏写入时应用用户配置的基础颜色</value></data>
-  <data name="Pad_Lighting_Red" xml:space="preserve"><value>红</value></data>
-  <data name="Pad_Lighting_Green" xml:space="preserve"><value>绿</value></data>
-  <data name="Pad_Lighting_Blue" xml:space="preserve"><value>蓝</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>输入六位十六进制颜色 (RRGGBB 或 #RRGGBB),按 Enter 或移开焦点应用。</value></data>
   <data name="Pad_Lighting_RemoveColor" xml:space="preserve"><value>从调色板中移除此颜色</value></data>
-  <data name="Pad_Lighting_MicLedMode" xml:space="preserve"><value>麦克风 LED</value></data>
   <data name="Pad_Lighting_MicLed_Off" xml:space="preserve"><value>关闭</value></data>
   <data name="Pad_Lighting_MicLed_Solid" xml:space="preserve"><value>常亮</value></data>
   <data name="Pad_Lighting_MicLed_Pulse" xml:space="preserve"><value>脉冲</value></data>
   <data name="Pad_Lighting_MicLed_FollowDevice" xml:space="preserve"><value>跟随音频设备</value></data>
   <data name="Pad_Lighting_MicLed_FollowDevice_Picker" xml:space="preserve"><value>音频设备</value></data>
-  <data name="Pad_Lighting_PlayerLeds" xml:space="preserve"><value>玩家 LED</value></data>
-  <data name="Pad_Lighting_PlayerLeds_Subtitle" xml:space="preserve"><value>触摸板下方的五个小白色 LED。选择要显示的玩家位次图案及亮度。</value></data>
   <data name="Pad_Lighting_IndicatorLeds" xml:space="preserve"><value>指示 LED</value></data>
   <data name="Pad_Lighting_IndicatorLeds_Subtitle" xml:space="preserve"><value>玩家编号一排(触摸板下的 5 个 LED)和麦克风上方的静音 LED。亮度控制实际上只影响玩家排。固件提供静音 LED 状态(关闭 / 常亮 / 脉冲),但没有独立的静音亮度寄存器。</value></data>
   <data name="Pad_ResetLightbar" xml:space="preserve"><value>重置灯条</value></data>
@@ -1380,7 +1345,6 @@
   <data name="Pad_Lighting_PlayerPattern" xml:space="preserve"><value>玩家图案</value></data>
   <data name="Pad_Lighting_MuteLedMode" xml:space="preserve"><value>静音 LED 模式</value></data>
   <data name="Pad_Lighting_LedBrightness" xml:space="preserve"><value>LED 亮度</value></data>
-  <data name="Pad_Lighting_PlayerLed_Mode" xml:space="preserve"><value>图案</value></data>
   <data name="Pad_Lighting_PlayerLed_Off" xml:space="preserve"><value>关闭</value></data>
   <data name="Pad_Lighting_PlayerLed_PlayerNumber" xml:space="preserve"><value>玩家编号(默认)</value></data>
   <data name="Pad_Lighting_PlayerLed_P1" xml:space="preserve"><value>玩家 1</value></data>
@@ -1388,19 +1352,10 @@
   <data name="Pad_Lighting_PlayerLed_P3" xml:space="preserve"><value>玩家 3</value></data>
   <data name="Pad_Lighting_PlayerLed_P4" xml:space="preserve"><value>玩家 4</value></data>
   <data name="Pad_Lighting_PlayerLed_All" xml:space="preserve"><value>全部</value></data>
-  <data name="Pad_Lighting_PlayerLed_Brightness" xml:space="preserve"><value>亮度</value></data>
   <data name="Pad_Lighting_PlayerLed_Brightness_High" xml:space="preserve"><value>高</value></data>
   <data name="Pad_Lighting_PlayerLed_Brightness_Medium" xml:space="preserve"><value>中</value></data>
   <data name="Pad_Lighting_PlayerLed_Brightness_Low" xml:space="preserve"><value>低</value></data>
-  <data name="Pad_Lighting_AudioLightbar" xml:space="preserve"><value>音频驱动灯条</value></data>
-  <data name="Pad_Lighting_AudioLightbar_Subtitle" xml:space="preserve"><value>根据系统音频峰值调制上面的基础颜色。随默认输出设备正在播放的内容脉冲。复用与音频震动相同的 WASAPI 采集,但读取完整波形(无低音截止滤波),因此跟随你听到的一切。</value></data>
-  <data name="Pad_Lighting_AudioLightbar_Enable" xml:space="preserve"><value>让基础颜色随系统音频脉冲</value></data>
   <data name="Pad_Lighting_AudioLightbar_Sensitivity" xml:space="preserve"><value>灵敏度</value></data>
-  <data name="Pad_Lighting_AudioLightbar_Mode" xml:space="preserve"><value>模式</value></data>
-  <data name="Pad_Lighting_AudioLightbar_Mode_Pulse" xml:space="preserve"><value>脉冲基础颜色</value></data>
-  <data name="Pad_Lighting_AudioLightbar_Mode_Thresholds" xml:space="preserve"><value>三色 — 硬切换</value></data>
-  <data name="Pad_Lighting_AudioLightbar_Mode_Gradient" xml:space="preserve"><value>三色 — 平滑渐变</value></data>
-  <data name="Pad_Lighting_AudioLightbar_Mode_CrossFade" xml:space="preserve"><value>三色 — 边界交叉淡化</value></data>
   <data name="Pad_Lighting_AudioLightbar_CrossFadeWidth" xml:space="preserve"><value>交叉淡化宽度</value></data>
   <data name="Pad_Lighting_AudioLightbar_LowColor" xml:space="preserve"><value>弱声颜色</value></data>
   <data name="Pad_Lighting_AudioLightbar_MidColor" xml:space="preserve"><value>中声颜色</value></data>
@@ -1430,10 +1385,6 @@
   <data name="Pad_Lighting_RainbowBrightness" xml:space="preserve"><value>亮度</value></data>
   <data name="Pad_Lighting_Period" xml:space="preserve"><value>周期</value></data>
   <data name="Pad_Lighting_PaletteHeader" xml:space="preserve"><value>调色板</value></data>
-  <data name="Pad_Lighting_PaletteColor1" xml:space="preserve"><value>颜色 1</value></data>
-  <data name="Pad_Lighting_PaletteColor2" xml:space="preserve"><value>颜色 2</value></data>
-  <data name="Pad_Lighting_PaletteColor3" xml:space="preserve"><value>颜色 3</value></data>
-  <data name="Pad_Lighting_PaletteColor4" xml:space="preserve"><value>颜色 4</value></data>
   <data name="Pad_Lighting_ColorCycleSmooth" xml:space="preserve"><value>在调色板颜色之间平滑过渡</value></data>
   <data name="Pad_Lighting_AddColor" xml:space="preserve"><value>添加颜色</value></data>
   <data name="Pad_Lighting_ResetPalette" xml:space="preserve"><value>重置调色板</value></data>
@@ -1467,7 +1418,7 @@
   <data name="Pad_ResetAudioMidB" xml:space="preserve"><value>重置中声频带蓝</value></data>
   <data name="Pad_ResetAudioHighR" xml:space="preserve"><value>重置强声频带红</value></data>
   <data name="Pad_ResetAudioHighG" xml:space="preserve"><value>重置强声频带绿</value></data>
-  <data name="Pad_ResetAudioHighB" xml:space="preserve"><value>重置强声频带蓝</value></data>  <data name="Pad_Lighting_InputReactive" xml:space="preserve"><value>输入响应</value></data>  <data name="Pad_Lighting_InputReactive_Off" xml:space="preserve"><value>关闭</value></data>  <data name="Pad_Lighting_InputReactive_Random" xml:space="preserve"><value>每次按下随机颜色</value></data>  <data name="Pad_Lighting_InputReactive_Cycle" xml:space="preserve"><value>循环调色板</value></data>  <data name="Pad_Lighting_InputReactive_Fixed" xml:space="preserve"><value>每次按下单一颜色</value></data>  <data name="Pad_ResetInputReactive" xml:space="preserve"><value>重置输入响应</value></data>  <data name="Pad_Lighting_InputReactive_FixedColor" xml:space="preserve"><value>按下时闪烁颜色</value></data>  <data name="Settings_KeepCloaksBetweenLaunchesTooltip" xml:space="preserve"><value>在 PadForge 会话之间保持 HidHide 的隐藏。当 PadForge 关闭时，另一个应用（例如 Steam）扫描手柄并希望它仍然把物理设备视为隐藏，这很有用。默认关闭。会话中关闭上方的总开关会立即取消隐藏设备。</value></data>  <data name="Settings_KeepCloaksBetweenLaunches" xml:space="preserve"><value>在两次启动之间保持设备隐藏</value></data>  <data name="Pad_AT_LoadGameCubePreset" xml:space="preserve"><value>加载 GameCube 预设</value></data>  <data name="Pad_AT_LoadGameCubePreset_Tooltip" xml:space="preserve"><value>将范围与强度设为模拟真实 GameCube 扳机物理点击手感的值（起点约 56%、终点约 63%、最大力度）。如需其他手感，可随后再微调滑块。</value></data>
+  <data name="Pad_ResetAudioHighB" xml:space="preserve"><value>重置强声频带蓝</value></data>  <data name="Pad_Lighting_InputReactive" xml:space="preserve"><value>输入响应</value></data>  <data name="Pad_Lighting_InputReactive_Off" xml:space="preserve"><value>关闭</value></data>  <data name="Pad_Lighting_InputReactive_Random" xml:space="preserve"><value>每次按下随机颜色</value></data>  <data name="Pad_Lighting_InputReactive_Cycle" xml:space="preserve"><value>循环调色板</value></data>  <data name="Pad_Lighting_InputReactive_Fixed" xml:space="preserve"><value>每次按下单一颜色</value></data>  <data name="Pad_ResetInputReactive" xml:space="preserve"><value>重置输入响应</value></data>  <data name="Pad_Lighting_InputReactive_FixedColor" xml:space="preserve"><value>按下时闪烁颜色</value></data>  <data name="Settings_KeepCloaksBetweenLaunchesTooltip" xml:space="preserve"><value>在 PadForge 会话之间保持 HidHide 的隐藏。当 PadForge 关闭时，另一个应用（例如 Steam）扫描手柄并希望它仍然把物理设备视为隐藏，这很有用。默认关闭。会话中关闭上方的总开关会立即取消隐藏设备。</value></data>  <data name="Settings_KeepCloaksBetweenLaunches" xml:space="preserve"><value>在两次启动之间保持设备隐藏</value></data>  <data name="Pad_AT_LoadGameCubePreset_Tooltip" xml:space="preserve"><value>将范围与强度设为模拟真实 GameCube 扳机物理点击手感的值（起点约 56%、终点约 63%、最大力度）。如需其他手感，可随后再微调滑块。</value></data>
 
 
 
@@ -1507,12 +1458,10 @@
   <data name="Pad_Shift_Delete" xml:space="preserve"><value>删除层</value></data>
   <data name="Pad_Shift_DeleteConfirmTitle" xml:space="preserve"><value>删除 Shift 层</value></data>
   <data name="Pad_Shift_DeleteConfirm_Format" xml:space="preserve"><value>删除"{0}"层及其所有映射行?此操作无法撤消。</value></data>
-  <data name="Pad_Shift_RenameTitle" xml:space="preserve"><value>重命名层</value></data>
   <data name="Pad_Shift_NoInherit" xml:space="preserve"><value>不继承</value></data>
   <data name="Pad_Shift_NoInherit_Tooltip" xml:space="preserve"><value>选中时,此层的目标保持关闭,而不是回退到基础行。</value></data>
   <data name="Pad_Shift_Delay" xml:space="preserve"><value>延迟</value></data>
   <data name="Pad_Shift_Delay_Tooltip" xml:space="preserve"><value>触发层切换之前激活器必须保持激活的毫秒数。</value></data>
-  <data name="Pad_Shift_JumpToLayer" xml:space="preserve"><value>跳转到层</value></data>
   <data name="Pad_Shift_ChordSecondInput" xml:space="preserve"><value>和弦的第二个输入</value></data>
   <data name="Pad_Shift_AxisThreshold" xml:space="preserve"><value>轴阈值</value></data>
   <data name="Pad_Shift_CycleLayers" xml:space="preserve"><value>循环层</value></data>
@@ -1780,7 +1729,6 @@
   <data name="Pad_Steering_Mode_Winding" xml:space="preserve"><value>卷绕</value></data>
   <data name="Pad_Steering_Mode_AngleX" xml:space="preserve"><value>角度映射到轴 (X)</value></data>
   <data name="Pad_Steering_Mode_AngleY" xml:space="preserve"><value>角度映射到轴 (Y)</value></data>
-  <data name="Pad_Steering_Mode_MotionLean" xml:space="preserve"><value>体感倾斜</value></data>
   <data name="Pad_Steering_WindRange" xml:space="preserve"><value>卷绕范围</value></data>
   <data name="Pad_Steering_WindPower" xml:space="preserve"><value>卷绕强度</value></data>
   <data name="Pad_Steering_WindUnwindRate" xml:space="preserve"><value>回绕速率</value></data>
@@ -1813,9 +1761,7 @@
   <data name="Pad_Steering_Lock_ATResistance" xml:space="preserve"><value>接近极限时扳机阻力</value></data>
   <data name="Pad_Steering_Lock_PulseMs" xml:space="preserve"><value>脉冲时长</value></data>
   <data name="Pad_Steering_Lock_LightbarColor" xml:space="preserve"><value>灯条颜色</value></data>
-  <data name="Pad_Steering_Lock_LightbarFadeMs" xml:space="preserve"><value>灯条淡出</value></data>
   <data name="Pad_Steering_Reset_PulseMs" xml:space="preserve"><value>重置脉冲时长</value></data>
-  <data name="Pad_Steering_Reset_LightbarColor" xml:space="preserve"><value>重置灯条颜色</value></data>
   <data name="Pad_Steering_Reset_LightbarFadeMs" xml:space="preserve"><value>重置灯条衰减</value></data>
   <data name="Pad_Wheel" xml:space="preserve"><value>方向盘</value></data>
   <data name="Pad_ResetWheel" xml:space="preserve"><value>重置方向盘</value></data>
@@ -1963,9 +1909,6 @@
   <data name="RemoteLink_PasswordTitle" xml:space="preserve">
     <value>Remote Link 密码</value>
   </data>
-  <data name="Devices_ButtonNumberTooltip" xml:space="preserve">
-    <value>按钮 {0}</value>
-  </data>
   <data name="Dashboard_TouchpadOverlayWindowTitle" xml:space="preserve">
     <value>PadForge 触控板</value>
   </data>
@@ -2056,12 +1999,6 @@
   <data name="Dashboard_RemoteLinkFooter" xml:space="preserve">
     <value>完成一次配对后，受信任的电脑会自动重新连接。已配对的电脑可以控制此电脑的游戏手柄输出，除非加以限制，否则也能控制其键盘、鼠标和宏。</value>
   </data>
-  <data name="Dashboard_RemoteLinkNearby" xml:space="preserve">
-    <value>附近的电脑</value>
-  </data>
-  <data name="Dashboard_RemoteLinkNoPeers" xml:space="preserve">
-    <value>同一网络中已开启 Remote Link 的电脑会自动显示在此处。</value>
-  </data>
   <data name="Dashboard_RemoteLinkPairButton" xml:space="preserve">
     <value>配对</value>
   </data>
@@ -2079,9 +2016,6 @@
   </data>
   <data name="RemoteLink_Identity" xml:space="preserve">
     <value>身份</value>
-  </data>
-  <data name="RemoteLink_NoPairedPeers" xml:space="preserve">
-    <value>尚未配对任何电脑。</value>
   </data>
   <data name="RemoteLink_Pair" xml:space="preserve">
     <value>配对</value>
@@ -2279,11 +2213,6 @@
   <data name="Tour_Slots_Title" xml:space="preserve"><value>槽位</value></data>
   <data name="Tour_Status_Body" xml:space="preserve"><value>设备数量、轮询速率和引擎火焰，始终可见。</value></data>
   <data name="Tour_Status_Title" xml:space="preserve"><value>仪表栏</value></data>
-  <data name="TypeAbbrev_Extended" xml:space="preserve"><value>EXT</value></data>
-  <data name="TypeAbbrev_KeyboardMouse" xml:space="preserve"><value>KBM</value></data>
-  <data name="TypeAbbrev_Midi" xml:space="preserve"><value>MIDI</value></data>
-  <data name="TypeAbbrev_PlayStation" xml:space="preserve"><value>PS</value></data>
-  <data name="TypeAbbrev_Xbox" xml:space="preserve"><value>XB</value></data>
   <data name="WiiPair_FamilyDs3" xml:space="preserve"><value>Sony DualShock 3</value></data>
   <data name="Pad_ExtendedCloneDevice" xml:space="preserve"><value>1:1 克隆设备</value></data>
   <data name="Pad_ExtendedCloneDeviceTooltip" xml:space="preserve"><value>将所选设备上的每个轴、按钮和方向帽直接映射到编号相同的虚拟输出。根据设备调整布局大小，并以 1:1 直通替换该设备在该插槽上的行。</value></data>

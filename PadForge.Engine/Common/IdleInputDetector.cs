@@ -26,8 +26,12 @@ namespace PadForge.Engine.Common
 
         /// <summary>Absolute idle test for gamepad-typed devices, whose axis
         /// layout is the auto-map convention: sticks on axes 0/1/3/4
-        /// (centered 32767), triggers on axes 2/5 (rest 0).</summary>
-        public static bool IsGamepadIdle(CustomInputState s)
+        /// (centered 32767), triggers on axes 2/5 (rest 0). Extra axes past 5
+        /// (#193, e.g. DS3 pressure) and sliders have unknown rest positions,
+        /// so when <paramref name="previous"/> is supplied they get the same
+        /// change-detection test as the generic path, with the same documented
+        /// limit: an extra axis held rock-steady off-rest reads idle.</summary>
+        public static bool IsGamepadIdle(CustomInputState s, CustomInputState previous = null)
         {
             if (s == null) return true;
 
@@ -43,6 +47,15 @@ namespace PadForge.Engine.Common
 
             if (s.Axis[2] > TriggerSlop || s.Axis[5] > TriggerSlop)
                 return false;
+
+            if (previous != null)
+            {
+                for (int i = 6; i < s.Axis.Length && i < previous.Axis.Length; i++)
+                    if (System.Math.Abs(s.Axis[i] - previous.Axis[i]) > DeltaSlop) return false;
+
+                for (int i = 0; i < s.Sliders.Length && i < previous.Sliders.Length; i++)
+                    if (System.Math.Abs(s.Sliders[i] - previous.Sliders[i]) > DeltaSlop) return false;
+            }
 
             if (AnyFingerDown(s)) return false;
 
@@ -118,10 +131,13 @@ namespace PadForge.Engine.Common
         /// as a mouse (#154) must not read as idle and get disconnected
         /// mid-use by the #162 countdown. IR is gated on Detected (dots in
         /// view), the mouse deltas are exactly 0 when the sensor is still.
+        /// MouseRawDX/DY (#200) join the same family: raw counts are exactly
+        /// 0 when the physical mouse is still.
         /// JoyConIrIntensity stays excluded like the motion sensors: it is a
         /// passive ambient-light scalar that never settles to a rest value.</summary>
         private static bool PointerOrMouseActive(CustomInputState s) =>
-            s.Ir.Detected || s.JoyCon2MouseDX != 0f || s.JoyCon2MouseDY != 0f;
+            s.Ir.Detected || s.JoyCon2MouseDX != 0f || s.JoyCon2MouseDY != 0f
+            || s.MouseRawDX != 0 || s.MouseRawDY != 0;
 
         // DS4Windows treats LX <= 127-slop or LX >= 128+slop as active
         // (strictly outside the band is centered), scaled to 16-bit.

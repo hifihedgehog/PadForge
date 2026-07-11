@@ -128,6 +128,11 @@ namespace PadForge.Engine
             RawInputListener.ConsumeMouseDelta(_rawInputHandle, out int dx, out int dy);
             state.Axis[0] = Math.Clamp(AxisCenter + (int)(dx * MotionScale), 0, 65535);
             state.Axis[1] = Math.Clamp(AxisCenter + (int)(dy * MotionScale), 0, 65535);
+            // Unclamped counts for the mouse-gesture recognizer (#200), from
+            // this same single consume: the clamped axes cap at ±16 counts per
+            // poll, flattening fast flicks to a 1:1 ratio.
+            state.MouseRawDX = dx;
+            state.MouseRawDY = dy;
 
             int scroll = RawInputListener.ConsumeMouseScroll(_rawInputHandle);
             state.Axis[2] = Math.Clamp(AxisCenter + (int)(scroll * ScrollScale), 0, 65535);

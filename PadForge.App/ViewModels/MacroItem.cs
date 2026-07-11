@@ -3382,9 +3382,10 @@ namespace PadForge.ViewModels
             _resetCursorClampInsetYCommand ??= new RelayCommand(() => CursorClampInsetY = 50);
 
         // CSV of LightbarMode int values for ModeCycle. Default skips
-        // Off and the audio modes — most users want a quick visual
-        // toggle, not silent output.
-        private string _lightbarCycleModesCsv = "1,2,3,4,11,12";
+        // Off and the audio modes. Most users want a quick visual
+        // toggle, not silent output. Must match the DTO default in the
+        // profile converter so hydration and fresh creation agree.
+        private string _lightbarCycleModesCsv = "1,2,3,4,11,12,13";
         /// <summary>CSV of <c>LightbarMode</c> int values to cycle
         /// through. Each fire advances to the next listed mode. Editor
         /// surfaces this as a 13-item checkbox grid.</summary>

@@ -16,6 +16,14 @@ namespace PadForge.Common.Input
         private WasapiCapture _capture;
         private MMDeviceEnumerator _enumerator;
 
+        // Serializes every _capture lifecycle transition. Three parties race
+        // on the field otherwise: Stop() (UI), OnRecordingStopped's 500 ms
+        // delayed restart worker, and OnDefaultDeviceChanged's 200 ms worker
+        // (a device switch typically fires both ~300 ms apart). An
+        // interleaved Stop/Start pair can orphan a live, subscribed capture
+        // that keeps feeding the energy fields until process exit.
+        private readonly object _restartGate = new();
+
         // 8th-order cascaded single-pole IIR low-pass filter (48dB/octave).
         // Each stage adds 6dB/octave rolloff for a near-brick-wall response.
         private const int FilterOrder = 8;
@@ -126,38 +134,44 @@ namespace PadForge.Common.Input
         {
             if (_running) return true;
 
-            try
+            lock (_restartGate)
             {
-                _enumerator = new MMDeviceEnumerator();
-                _enumerator.RegisterEndpointNotificationCallback(this);
+                try
+                {
+                    _enumerator = new MMDeviceEnumerator();
+                    _enumerator.RegisterEndpointNotificationCallback(this);
 
-                if (!StartCapture())
+                    if (!StartCapture())
+                        return false;
+
+                    _running = true;
+                    return true;
+                }
+                catch
+                {
+                    Stop();
                     return false;
-
-                _running = true;
-                return true;
-            }
-            catch
-            {
-                Stop();
-                return false;
+                }
             }
         }
 
         public void Stop()
         {
-            _running = false;
-            StopCapture();
-
-            if (_enumerator != null)
+            lock (_restartGate)
             {
-                try { _enumerator.UnregisterEndpointNotificationCallback(this); } catch { }
-                _enumerator = null;
-            }
+                _running = false;
+                StopCapture();
 
-            _bassEnergy = 0f;
-            _triggerBassEnergy = 0f;
-            _fullSpectrumPeak = 0f;
+                if (_enumerator != null)
+                {
+                    try { _enumerator.UnregisterEndpointNotificationCallback(this); } catch { }
+                    _enumerator = null;
+                }
+
+                _bassEnergy = 0f;
+                _triggerBassEnergy = 0f;
+                _fullSpectrumPeak = 0f;
+            }
         }
 
         /// <summary>
@@ -204,10 +218,13 @@ namespace PadForge.Common.Input
                 _capture.RecordingStopped += OnRecordingStopped;
 
                 // Start on a thread pool thread to avoid SynchronizationContext capture
-                // which would force callbacks onto the UI thread.
+                // which would force callbacks onto the UI thread. The lambda starts
+                // the instance it was queued for, never the field: a restart between
+                // queue and run must not start the replacement capture twice.
+                var cap = _capture;
                 ThreadPool.QueueUserWorkItem(_ =>
                 {
-                    try { _capture?.StartRecording(); } catch { }
+                    try { cap.StartRecording(); } catch { }
                 });
 
                 return true;
@@ -357,10 +374,13 @@ namespace PadForge.Common.Input
                 ThreadPool.QueueUserWorkItem(_ =>
                 {
                     Thread.Sleep(500);
-                    if (_running)
+                    lock (_restartGate)
                     {
-                        StopCapture();
-                        StartCapture();
+                        if (_running)
+                        {
+                            StopCapture();
+                            StartCapture();
+                        }
                     }
                 });
             }
@@ -380,14 +400,17 @@ namespace PadForge.Common.Input
             ThreadPool.QueueUserWorkItem(_ =>
             {
                 Thread.Sleep(200); // Brief delay for device to settle.
-                if (_running)
+                lock (_restartGate)
                 {
-                    StopCapture();
-                    Array.Clear(_filterStates);
-                    Array.Clear(_triggerFilterStates);
-                    _bassEnergy = 0f;
-                    _triggerBassEnergy = 0f;
-                    StartCapture();
+                    if (_running)
+                    {
+                        StopCapture();
+                        Array.Clear(_filterStates);
+                        Array.Clear(_triggerFilterStates);
+                        _bassEnergy = 0f;
+                        _triggerBassEnergy = 0f;
+                        StartCapture();
+                    }
                 }
             });
         }

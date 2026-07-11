@@ -50,6 +50,9 @@ namespace PadForge.Engine.RemoteLink
             JoyCon2Mouse = 1 << 11,
             // Aux (left-side) accelerometer, issue #199: Nunchuk / left Joy-Con.
             AccelAux = 1 << 12,
+            // Unclamped Raw Input mouse counts, issue #200. Appended after
+            // AccelAux under the same mixed-version tail rule.
+            MouseRaw = 1 << 13,
         }
 
         /// <summary>
@@ -243,6 +246,14 @@ namespace PadForge.Engine.RemoteLink
                 for (int i = 0; i < 3; i++) { BinaryPrimitives.WriteSingleLittleEndian(destination.Slice(o, 4), state.AccelAux[i]); o += 4; }
             }
 
+            // Unclamped mouse counts (#200): per-poll deltas, 0 when idle.
+            if (state.MouseRawDX != 0 || state.MouseRawDY != 0)
+            {
+                present |= Block.MouseRaw;
+                BinaryPrimitives.WriteInt32LittleEndian(destination.Slice(o, 4), state.MouseRawDX); o += 4;
+                BinaryPrimitives.WriteInt32LittleEndian(destination.Slice(o, 4), state.MouseRawDY); o += 4;
+            }
+
             BinaryPrimitives.WriteUInt16LittleEndian(destination.Slice(presenceAt, 2), (ushort)present);
             return o;
         }
@@ -273,7 +284,7 @@ namespace PadForge.Engine.RemoteLink
                 foreach (var pad in state.Touchpads) size += 2 + (pad?.MaxFingers ?? 0) * 9;
             }
             if (state?.Midi != null) size += 48 + 1 + MidiInputState.CcCount * 2 + 2;
-            size += 8 + 4 + 8; // Ir (2 floats) + JoyConIr (1 float) + JoyCon2Mouse (2 floats)
+            size += 8 + 4 + 8 + 8; // Ir (2 floats) + JoyConIr (1 float) + JoyCon2Mouse (2 floats) + MouseRaw (2 int32)
             return size;
         }
 
@@ -347,15 +358,32 @@ namespace PadForge.Engine.RemoteLink
                         target.Buttons[i] = (bytes[i >> 3] & (1 << (i & 7))) != 0;
                 }
 
+                // Every float block rejects non-finite values (NaN/Inf), failing
+                // closed like the rest of the decode: consumer-side EMA smoothing
+                // (gyro, IR) latches NaN permanently once poisoned, and the encoder
+                // ships owner sensor floats unsanitized. Mirrors the HapticTone
+                // finiteness gate in OutputEffectCodec.
                 if ((present & Block.Gyro) != 0)
-                    for (int i = 0; i < 3; i++) { target.Gyro[i] = BinaryPrimitives.ReadSingleLittleEndian(payload.Slice(o, 4)); o += 4; }
+                    for (int i = 0; i < 3; i++)
+                    {
+                        float v = BinaryPrimitives.ReadSingleLittleEndian(payload.Slice(o, 4)); o += 4;
+                        if (!float.IsFinite(v)) { ResetToNeutral(target); return false; }
+                        target.Gyro[i] = v;
+                    }
 
                 if ((present & Block.Accel) != 0)
-                    for (int i = 0; i < 3; i++) { target.Accel[i] = BinaryPrimitives.ReadSingleLittleEndian(payload.Slice(o, 4)); o += 4; }
+                    for (int i = 0; i < 3; i++)
+                    {
+                        float v = BinaryPrimitives.ReadSingleLittleEndian(payload.Slice(o, 4)); o += 4;
+                        if (!float.IsFinite(v)) { ResetToNeutral(target); return false; }
+                        target.Accel[i] = v;
+                    }
 
                 if ((present & Block.Battery) != 0)
                 {
-                    target.BatteryPercent = (sbyte)payload[o++];
+                    // Decode clamps like the encoder does (line ~168): a version-skewed
+                    // peer must not push out-of-contract percentages to UI/DSU consumers.
+                    target.BatteryPercent = Math.Clamp((int)(sbyte)payload[o++], -1, 100);
                     target.BatteryCharging = payload[o++] != 0;
                 }
 
@@ -403,30 +431,45 @@ namespace PadForge.Engine.RemoteLink
 
                 if ((present & Block.Ir) != 0)
                 {
-                    target.Ir = new WiiIrState
-                    {
-                        X = BinaryPrimitives.ReadSingleLittleEndian(payload.Slice(o, 4)),
-                        Y = BinaryPrimitives.ReadSingleLittleEndian(payload.Slice(o + 4, 4)),
-                        Detected = true,
-                    };
+                    float ix = BinaryPrimitives.ReadSingleLittleEndian(payload.Slice(o, 4));
+                    float iy = BinaryPrimitives.ReadSingleLittleEndian(payload.Slice(o + 4, 4));
+                    if (!float.IsFinite(ix) || !float.IsFinite(iy)) { ResetToNeutral(target); return false; }
+                    target.Ir = new WiiIrState { X = ix, Y = iy, Detected = true };
                     o += 8;
                 }
 
                 if ((present & Block.JoyConIr) != 0)
                 {
-                    target.JoyConIrIntensity = BinaryPrimitives.ReadSingleLittleEndian(payload.Slice(o, 4));
+                    float v = BinaryPrimitives.ReadSingleLittleEndian(payload.Slice(o, 4));
+                    if (!float.IsFinite(v)) { ResetToNeutral(target); return false; }
+                    target.JoyConIrIntensity = v;
                     o += 4;
                 }
 
                 if ((present & Block.JoyCon2Mouse) != 0)
                 {
-                    target.JoyCon2MouseDX = BinaryPrimitives.ReadSingleLittleEndian(payload.Slice(o, 4));
-                    target.JoyCon2MouseDY = BinaryPrimitives.ReadSingleLittleEndian(payload.Slice(o + 4, 4));
+                    float dx = BinaryPrimitives.ReadSingleLittleEndian(payload.Slice(o, 4));
+                    float dy = BinaryPrimitives.ReadSingleLittleEndian(payload.Slice(o + 4, 4));
+                    if (!float.IsFinite(dx) || !float.IsFinite(dy)) { ResetToNeutral(target); return false; }
+                    target.JoyCon2MouseDX = dx;
+                    target.JoyCon2MouseDY = dy;
                     o += 8;
                 }
 
                 if ((present & Block.AccelAux) != 0)
-                    for (int i = 0; i < 3; i++) { target.AccelAux[i] = BinaryPrimitives.ReadSingleLittleEndian(payload.Slice(o, 4)); o += 4; }
+                    for (int i = 0; i < 3; i++)
+                    {
+                        float v = BinaryPrimitives.ReadSingleLittleEndian(payload.Slice(o, 4)); o += 4;
+                        if (!float.IsFinite(v)) { ResetToNeutral(target); return false; }
+                        target.AccelAux[i] = v;
+                    }
+
+                if ((present & Block.MouseRaw) != 0)
+                {
+                    // int32 counts, no finiteness gate to mirror (integers).
+                    target.MouseRawDX = BinaryPrimitives.ReadInt32LittleEndian(payload.Slice(o, 4)); o += 4;
+                    target.MouseRawDY = BinaryPrimitives.ReadInt32LittleEndian(payload.Slice(o, 4)); o += 4;
+                }
 
                 return o <= payload.Length;
             }
@@ -457,6 +500,8 @@ namespace PadForge.Engine.RemoteLink
             s.JoyConIrIntensity = 0f;
             s.JoyCon2MouseDX = 0f;
             s.JoyCon2MouseDY = 0f;
+            s.MouseRawDX = 0;
+            s.MouseRawDY = 0;
             if (s.Midi != null)
             {
                 // The decode contract promises "reset-to-neutral rather than

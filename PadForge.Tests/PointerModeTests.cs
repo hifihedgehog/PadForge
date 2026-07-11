@@ -1,4 +1,5 @@
 using PadForge.Common.Input;
+using PadForge.Engine;
 using PadForge.Engine.Common.Mapping;
 using PadForge.Engine.Data;
 using PadForge.ViewModels;
@@ -111,6 +112,54 @@ namespace PadForge.Tests
         }
 
         [Fact]
+        public void Offscreen_Classifies_As_Its_Own_SourceType()
+        {
+            // The classifier must not drift from the three evaluator
+            // branches that each carry an "IR Offscreen" read.
+            Assert.Equal(SourceCoercion.SourceType.IrOffscreen,
+                SourceCoercion.ClassifyDescriptor("IR Offscreen"));
+        }
+
+        [Fact]
+        public void Offscreen_Debounce_Keys_On_The_Evaluated_Device()
+        {
+            // An "any device" row (empty src.DeviceGuid) must not collapse
+            // onto one shared "" debounce entry: evaluatedDeviceGuid carries
+            // the device whose state is being read, so device A being
+            // on-screen cannot mask device B's offscreen answer.
+            var src = new MappingSource { Descriptor = "IR Offscreen" };
+            var seen = new CustomInputState(); seen.Ir.Detected = true;
+            var lost = new CustomInputState(); lost.Ir.Detected = false;
+
+            // Device A sees the bar: refreshes A's own timestamp.
+            Assert.False(SourceCoercion.EvaluateForButtonTarget(
+                seen, src, 50, 0, evaluatedDeviceGuid: "offscr-dev-a"));
+            // Device B has never seen it: offscreen immediately, unmasked by A.
+            Assert.True(SourceCoercion.EvaluateForButtonTarget(
+                lost, src, 50, 0, evaluatedDeviceGuid: "offscr-dev-b"));
+            // Device A stays on-screen inside its debounce window.
+            Assert.False(SourceCoercion.EvaluateForButtonTarget(
+                lost, src, 50, 0, evaluatedDeviceGuid: "offscr-dev-a"));
+        }
+
+        [Fact]
+        public void KbmCombine_Keeps_PerAxis_Absolute_Validity()
+        {
+            // Mixed mappings across devices: A drives an absolute X, B an
+            // absolute Y. Combine must carry each driven coordinate and both
+            // per-axis flags; the un-driven 0f default may not mask the
+            // other device's tracked coordinate.
+            var a = new PadForge.Engine.KbmRawState { MouseAbsX = 0.6f, MouseAbsXValid = true, MouseAbsValid = true };
+            var b = new PadForge.Engine.KbmRawState { MouseAbsY = -0.4f, MouseAbsYValid = true, MouseAbsValid = true };
+            var c = PadForge.Engine.KbmRawState.Combine(a, b);
+            Assert.True(c.MouseAbsValid);
+            Assert.True(c.MouseAbsXValid);
+            Assert.True(c.MouseAbsYValid);
+            Assert.Equal(0.6f, c.MouseAbsX, 3);
+            Assert.Equal(-0.4f, c.MouseAbsY, 3);
+        }
+
+        [Fact]
         public void Offscreen_Descriptor_Joins_Both_Grammars()
         {
             // The I-prefix trap: "IR Offscreen" must be exempt from the
@@ -176,8 +225,8 @@ namespace PadForge.Tests
             var values = (MacroActionType[])System.Enum.GetValues(typeof(MacroActionType));
             int max = 0;
             foreach (var v in values) max = System.Math.Max(max, (int)v);
-            Assert.Equal(max, (int)MacroActionType.PointerModeSet);
-            Assert.Equal(max - 1, (int)MacroActionType.PointerModeCycle);
+            Assert.Equal((int)MacroActionType.PointerModeSet, max);
+            Assert.Equal((int)MacroActionType.PointerModeCycle, max - 1);
         }
 
         [Theory]

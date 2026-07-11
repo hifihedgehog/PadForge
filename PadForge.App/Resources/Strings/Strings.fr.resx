@@ -110,8 +110,6 @@
   <data name="Main_ShuttingDown" xml:space="preserve"><value>Fermeture de PadForge...</value></data>
   <data name="Main_StartingUp" xml:space="preserve"><value>Démarrage de PadForge…</value></data>
   <data name="Main_CleaningPreviousSession" xml:space="preserve"><value>Nettoyage des contrôleurs virtuels laissés par une session précédente.</value></data>
-  <data name="Main_ReleasingControllers" xml:space="preserve"><value>Libération des contrôleurs virtuels</value></data>
-  <data name="Main_PleaseWait" xml:space="preserve"><value>Veuillez patienter...</value></data>
   <data name="Main_DevicesSuffix" xml:space="preserve"><value> appareil(s)</value></data>
   <data name="Main_AddController" xml:space="preserve"><value>Ajouter un contrôleur</value></data>
   <data name="Main_DeleteVC" xml:space="preserve"><value>Supprimer le contrôleur virtuel</value></data>
@@ -166,9 +164,7 @@
   <data name="Status_ProfileUpdated_Format" xml:space="preserve"><value>Profil « {0} » mis à jour.</value></data>
   <data name="Status_ProfileLoaded_Format" xml:space="preserve"><value>Profil chargé : {0}</value></data>
   <data name="Status_ProfileRevertedDefault" xml:space="preserve"><value>Profil rétabli par défaut</value></data>
-  <data name="Status_VirtualController_Format" xml:space="preserve"><value>Contrôleur virtuel {0} : {1}</value></data>
   <data name="Status_DeviceAssigned_Format" xml:space="preserve"><value>« {0} » assigné au contrôleur virtuel {1}.</value></data>
-  <data name="Status_Unmapped_Format" xml:space="preserve"><value>Non assigné : {0}</value></data>
   <data name="Status_ErrorLoadingSettings_Format" xml:space="preserve"><value>Erreur de chargement des paramètres : {0}</value></data>
   <data name="Status_SettingsSaved_Format" xml:space="preserve"><value>Paramètres enregistrés dans {0}.</value></data>
   <data name="Status_ErrorSavingSettings_Format" xml:space="preserve"><value>Erreur d'enregistrement des paramètres : {0}</value></data>
@@ -326,11 +322,6 @@
   <data name="Devices_RemoveConfirm_Format" xml:space="preserve"><value>{0} sera retiré de la liste des appareils et ses paramètres enregistrés seront oubliés.</value></data>
   <data name="Devices_DragAssignHint" xml:space="preserve"><value>Faites glisser un appareil sur une carte de contrôleur de la barre latérale pour l'assigner.</value></data>
   <data name="Devices_Product" xml:space="preserve"><value>Produit : </value></data>
-  <data name="Devices_Type" xml:space="preserve"><value>Type : </value></data>
-  <data name="Devices_AppGUID" xml:space="preserve"><value>GUID app : </value></data>
-  <data name="Devices_SdlGUID" xml:space="preserve"><value>GUID SDL : </value></data>
-  <data name="Devices_InstancePath" xml:space="preserve"><value>Chemin d'instance : </value></data>
-  <data name="Devices_VIDPID" xml:space="preserve"><value>VID:PID : </value></data>
   <data name="Devices_SubmitMapping" xml:space="preserve"><value>Soumettre le mapping de l'appareil</value></data>
   <data name="Devices_VCAssignment" xml:space="preserve"><value>Affectation au contrôleur virtuel</value></data>
   <data name="Devices_ToggleAssignment" xml:space="preserve"><value>Basculer l'affectation</value></data>
@@ -358,7 +349,6 @@
   <data name="Devices_Rumble" xml:space="preserve"><value>Vibration</value></data>
   <data name="Devices_Gyro" xml:space="preserve"><value>Gyro</value></data>
   <data name="Devices_Accel" xml:space="preserve"><value>Accél</value></data>
-  <data name="Devices_HideWarning_Format" xml:space="preserve"><value>Vous êtes sur le point de {0}. Cela affectera {1}{2}.</value></data>
   <data name="Devices_HideAction" xml:space="preserve"><value>masquer cet appareil de toutes les applications</value></data>
   <data name="Devices_ConsumeAction" xml:space="preserve"><value>bloquer les entrées assignées de cet appareil</value></data>
   <data name="Devices_WarnScope_Format" xml:space="preserve"><value> pour tous les appareils {0} connectés</value></data>
@@ -378,7 +368,6 @@
   <data name="Pad_Triggers" xml:space="preserve"><value>Gâchettes</value></data>
   <data name="Pad_ForceFeedback" xml:space="preserve"><value>Retour de force</value></data>
   <data name="Pad_Preset" xml:space="preserve"><value>Prédéfini</value></data>
-  <data name="Pad_Custom" xml:space="preserve"><value>Personnalisé</value></data>
   <data name="Pad_ExtendedSticks" xml:space="preserve"><value>Sticks</value></data>
   <data name="Pad_ExtendedTriggers" xml:space="preserve"><value>Gâchettes</value></data>
   <data name="Pad_ExtendedPOVs" xml:space="preserve"><value>POV</value></data>
@@ -402,9 +391,6 @@
   <data name="ManageProfiles_ImportFromFileTitle" xml:space="preserve"><value>Importer le JSON du profil</value></data>
   <data name="ManageProfiles_StatusImportFileSucceeded_Format" xml:space="preserve"><value>Importé depuis {0}.</value></data>
   <data name="ManageProfiles_StatusImportFileFailed_Format" xml:space="preserve"><value>Échec de la lecture : {0}</value></data>
-  <data name="ImportFromDevice_Title" xml:space="preserve"><value>Importer depuis un périphérique</value></data>
-  <data name="ImportFromDevice_Description" xml:space="preserve"><value>Choisissez un périphérique HID connecté. PadForge capture son descripteur, son identité et sa disposition, puis les enregistre comme nouveau profil Extended portant le suffixe « (User Generated) ». Le profil est stocké dans PadForge.xml et voyage avec vos paramètres.</value></data>
-  <data name="ImportFromDevice_ConnectedDevice" xml:space="preserve"><value>Périphériques connectés :</value></data>
   <data name="ImportFromDevice_Refresh" xml:space="preserve"><value>Actualiser</value></data>
   <data name="ImportFromDevice_Import" xml:space="preserve"><value>Importer</value></data>
   <data name="ImportFromDevice_UnnamedDevice" xml:space="preserve"><value>(périphérique HID sans nom)</value></data>
@@ -445,7 +431,6 @@
   <data name="Pad_RightMotor" xml:space="preserve"><value>Moteur droit</value></data>
   <data name="Pad_MapAll" xml:space="preserve"><value>Tout assigner</value></data>
   <data name="Pad_MapPrompt_Format" xml:space="preserve"><value>Assigner : {0}</value></data>
-  <data name="Pad_MapAllTooltip" xml:space="preserve"><value>Enregistrer séquentiellement tous les mappings. Appuyez sur un bouton/axe pour chaque invite.</value></data>
   <data name="Pad_MapAllOneByOne" xml:space="preserve"><value>Enregistrer séquentiellement tous les mappings un par un</value></data>
   <data name="Pad_MappingHint" xml:space="preserve"><value>Cliquez sur une ligne de mapping et appuyez sur un bouton/axe de votre contrôleur pour l'assigner.</value></data>
   <data name="Pad_CopyTooltip" xml:space="preserve"><value>Copier tous les mappings et paramètres dans le presse-papiers</value></data>
@@ -719,15 +704,12 @@
   <data name="MacroAction_AppVol_Format" xml:space="preserve"><value>Volume application ← {0}</value></data>
   <data name="MacroAction_AppVolLimit_Format" xml:space="preserve"><value>Volume application ← {0} (max {1}%)</value></data>
   <data name="MacroAction_MouseMove_Format" xml:space="preserve"><value>Déplacement souris ← {0} (vitesse {1:F0})</value></data>
-  <data name="MacroAction_MouseMoveLimit_Format" xml:space="preserve"><value>Déplacer la souris de {0} (max {1}px)</value></data>
   <data name="MacroAction_Scroll_Format" xml:space="preserve"><value>Défilement souris ← {0} (vitesse {1:F0})</value></data>
-  <data name="MacroAction_ScrollLimit_Format" xml:space="preserve"><value>Défiler de {0} (max {1} unités)</value></data>
   <data name="MacroAction_MousePress_Format" xml:space="preserve"><value>Appui souris {0}</value></data>
   <data name="MacroAction_MouseRelease_Format" xml:space="preserve"><value>Relâchement souris {0}</value></data>
   <data name="MacroAction_ToggleTouchpadOverlay" xml:space="preserve"><value>Basculer la superposition du pavé tactile</value></data>
   <data name="MacroAction_Type_LightbarColor" xml:space="preserve"><value>Définir la couleur de la barre lumineuse</value></data>
   <data name="MacroAction_LightbarColor_Tooltip" xml:space="preserve"><value>Remplace la barre lumineuse du slot PlayStation assigné par une couleur RVB choisie. Réactif s'estompe de l'intensité maximale au noir sur la fenêtre d'atténuation configurée, puis rend la main aux réglages de l'onglet Éclairage. Persistant maintient la couleur jusqu'à ce qu'une action « Effacer la substitution de la barre lumineuse » la libère. Les écritures pilotées par le jeu restent prioritaires.</value></data>
-  <data name="MacroAction_LightbarColor_Format" xml:space="preserve"><value>Régler la barre lumineuse sur {0} pendant {1} ms</value></data>
   <data name="MacroAction_LightbarColor_Reactive_Format" xml:space="preserve"><value>Faire flasher la barre lumineuse {0} (atténuation {1} ms)</value></data>
   <data name="MacroAction_LightbarColor_Sticky_Format" xml:space="preserve"><value>Maintenir la barre lumineuse {0} jusqu'à effacement</value></data>
   <data name="MacroAction_Type_LightbarColorClear" xml:space="preserve"><value>Effacer la substitution de la barre lumineuse</value></data>
@@ -895,7 +877,6 @@
   <data name="Pad_SensitivityCurve" xml:space="preserve"><value>Courbe de sensibilité</value></data>
   <data name="Pad_SensitivityCurveHintShort" xml:space="preserve"><value>Double-clic pour ajouter un point. Clic droit pour supprimer. Glisser pour ajuster.</value></data>
   <data name="Pad_Preset_Label" xml:space="preserve"><value>Préréglage </value></data>
-  <data name="Pad_Live" xml:space="preserve"><value>En direct </value></data>
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>Axe de gâchette</value></data>
   <data name="Pad_ForceFeedbackRumble" xml:space="preserve"><value>Retour de force / Vibration</value></data>
   <data name="Pad_OverallGain" xml:space="preserve"><value>Gain global </value></data>
@@ -1158,7 +1139,6 @@
   <data name="Mapping_GyroHorizontal" xml:space="preserve"><value>Gyro Horizontal (Yaw + Roll)</value></data>
   <data name="Settings_GyroCalibrate_Button" xml:space="preserve"><value>Calibrer le gyro</value></data>
   <data name="Settings_GyroCalibrate_Tooltip" xml:space="preserve"><value>Pose la manette sur une surface plane et clique sur Calibrer le gyro pour échantillonner la lecture au repos pendant ~1,5 seconde. Soustrait des lectures brutes afin que les mappings gyro ne fassent pas dériver la souris / le stick quand la manette est immobile.</value></data>
-  <data name="Devices_Sensors" xml:space="preserve"><value>Capteurs</value></data>
   <data name="Settings_GyroLastCalibrated_Format" xml:space="preserve"><value>Dernier étalonnage : {0:yyyy-MM-dd HH:mm}</value></data>
   <data name="Settings_GyroNeverCalibrated" xml:space="preserve"><value>Jamais étalonné</value></data>
   <data name="Settings_GyroCalibrating" xml:space="preserve"><value>Étalonnage… ne bouge pas</value></data>
@@ -1172,8 +1152,6 @@
   <data name="Settings_GyroSensitivityV_Tooltip" xml:space="preserve"><value>Met à l'échelle la contribution verticale (Pitch) du gyroscope. Séparée de l'horizontale pour ajuster les axes X et Y indépendamment.</value></data>
   <data name="Settings_GyroDeadZone" xml:space="preserve"><value>Zone morte</value></data>
   <data name="Settings_GyroDeadZone_Tooltip" xml:space="preserve"><value>Taux de rotation minimal (degrés par seconde) en dessous duquel la sortie du gyroscope est traitée comme zéro. Rejette les tremblements de main sans saut discontinu.</value></data>
-  <data name="Settings_GyroSmoothing" xml:space="preserve"><value>Lissage</value></data>
-  <data name="Settings_GyroSmoothing_Tooltip" xml:space="preserve"><value>Filtre EMA à un pôle sur le taux gyroscopique. 0 = désactivé (signal brut, latence minimale). Des valeurs plus élevées réduisent le jitter au prix de plus de retard. 0,5 est un bon point de départ si le curseur tremble.</value></data>
   <data name="Settings_GyroAcceleration" xml:space="preserve"><value>Accélération</value></data>
   <data name="Settings_GyroAcceleration_Tooltip" xml:space="preserve"><value>Gain dépendant de la vitesse. 0 = désactivé (mise à l'échelle linéaire). Des valeurs plus élevées laissent les mouvements lents inchangés et amplifient les mouvements rapides. Utile pour combiner visée précise et virages rapides.</value></data>
   <data name="Settings_GyroOutputCurve" xml:space="preserve"><value>Courbe de sortie</value></data>
@@ -1188,8 +1166,6 @@
   <data name="Pad_Gyro_Calibration_Header" xml:space="preserve"><value>Étalonnage</value></data>
   <data name="Pad_Gyro_Sensitivity_Header" xml:space="preserve"><value>Sensibilité</value></data>
   <data name="Pad_Gyro_Response_Header" xml:space="preserve"><value>Forme de réponse</value></data>
-  <data name="Pad_Gyro_EasyAim_Header" xml:space="preserve"><value>Easy Aim</value></data>
-  <data name="Pad_Gyro_EasyAim_Subtitle" xml:space="preserve"><value>Active le gyroscope uniquement quand le stick droit est dévié. 0% désactive (gyroscope toujours actif).</value></data>
   <data name="Settings_GyroSpace" xml:space="preserve"><value>Espace</value></data>
   <data name="Settings_GyroSpace_Tooltip" xml:space="preserve"><value>Local = axes bruts du contrôleur. Player = le lacet est projeté sur la verticale réelle (gravité), le tangage reste local. Défaut recommandé par Jibb Smart pour un ressenti naturel quelle que soit l'inclinaison. World = lacet et tangage projetés sur les axes du monde.</value></data>
   <data name="Settings_GyroInvertPitch" xml:space="preserve"><value>Inverser le tangage (Y)</value></data>
@@ -1236,7 +1212,6 @@
   <data name="Pad_Gyro_Curve_ExtraWide" xml:space="preserve"><value>Très large</value></data>
   <data name="Pad_Gyro_Units_Multiplier" xml:space="preserve"><value>Multiplicateur</value></data>
   <data name="Pad_Gyro_Units_DegPerScreenTurn" xml:space="preserve"><value>Degrés par tour d'écran</value></data>
-  <data name="Pad_Gyro_AimEngage_Record" xml:space="preserve"><value>Enregistrer la prochaine entrée physique comme bouton d'activation</value></data>
   <data name="Pad_Gyro_ResetCalibration_All_Tooltip" xml:space="preserve"><value>Réinitialiser l'étalonnage</value></data>
   <data name="Pad_Gyro_ResetSensitivity_All_Tooltip" xml:space="preserve"><value>Réinitialiser la sensibilité</value></data>
   <data name="Pad_Gyro_ResetResponse_All_Tooltip" xml:space="preserve"><value>Réinitialiser la forme de réponse</value></data>
@@ -1280,7 +1255,6 @@
   <data name="Mapping_MotionGyro" xml:space="preserve"><value>Mouvement gyroscope</value></data>
   <data name="Mapping_MotionAccel" xml:space="preserve"><value>Mouvement accéléromètre</value></data>
   <data name="Mapping_MotionLean" xml:space="preserve"><value>Inclinaison de mouvement</value></data>
-  <data name="MappingCategory_Touchpad" xml:space="preserve"><value>Pavé tactile</value></data>
   <data name="Key_NumpadMultiply" xml:space="preserve"><value>Pavé numérique *</value></data>
   <data name="Key_NumpadAdd" xml:space="preserve"><value>Pavé numérique +</value></data>
   <data name="Key_NumpadSubtract" xml:space="preserve"><value>Pavé numérique -</value></data>
@@ -1337,8 +1311,6 @@
   <data name="Pad_AT_MultiPosFeedback" xml:space="preserve"><value>Résistance multiposition</value></data>
   <data name="Pad_AT_Slope" xml:space="preserve"><value>Résistance progressive</value></data>
   <data name="Pad_AT_MultiPosVibration" xml:space="preserve"><value>Vibration multiposition</value></data>
-  <data name="Pad_AT_StartPosition" xml:space="preserve"><value>Position de départ</value></data>
-  <data name="Pad_AT_EndPosition" xml:space="preserve"><value>Position de fin</value></data>
   <data name="Pad_AT_Range" xml:space="preserve"><value>Plage</value></data>
   <data name="Pad_AT_Strength" xml:space="preserve"><value>Intensité</value></data>
   <data name="Pad_AT_Frequency" xml:space="preserve"><value>Fréquence (Hz)</value></data>
@@ -1354,21 +1326,14 @@
   <data name="Pad_Lighting_Subtitle" xml:space="preserve"><value>Définit la couleur de base de la barre lumineuse et le comportement audio sur le contrôleur physique assigné. Les écritures du jeu l'emportent toujours. Les réglages utilisateur s'appliquent quand aucun jeu ne pilote la barre.</value></data>
   <data name="Pad_Lighting_PlayerIdle_Hint" xml:space="preserve"><value>Tant que Numéro de joueur est sélectionné, la manette au repos affiche l'identité de joueur de sa manette virtuelle : la couleur de joueur Sony sur la barre lumineuse (1 bleu, 2 rouge, 3 vert, 4 rose) et, sur une DualSense, les LED de joueur correspondantes. Tous les périphériques d'une même manette virtuelle affichent le même numéro. Les jeux prennent la main dès qu'ils écrivent l'éclairage, ce que vous réglez ici gagne toujours, et les options d'extinction éteignent complètement la lumière.</value></data>
   <data name="Pad_Lighting_BaseColor" xml:space="preserve"><value>Barre lumineuse</value></data>
-  <data name="Pad_Lighting_BaseEnabled" xml:space="preserve"><value>Appliquer la couleur de base configurée par l'utilisateur quand aucun jeu n'écrit</value></data>
-  <data name="Pad_Lighting_Red" xml:space="preserve"><value>Rouge</value></data>
-  <data name="Pad_Lighting_Green" xml:space="preserve"><value>Vert</value></data>
-  <data name="Pad_Lighting_Blue" xml:space="preserve"><value>Bleu</value></data>
   <data name="Pad_Lighting_Hex" xml:space="preserve"><value>HEX</value></data>
   <data name="Pad_Lighting_HexTooltip" xml:space="preserve"><value>Entrez une couleur hexadécimale à six chiffres (RRGGBB ou #RRGGBB) et appuyez sur Entrée ou cliquez ailleurs pour l'appliquer.</value></data>
   <data name="Pad_Lighting_RemoveColor" xml:space="preserve"><value>Retirer cette couleur de la palette</value></data>
-  <data name="Pad_Lighting_MicLedMode" xml:space="preserve"><value>LED micro</value></data>
   <data name="Pad_Lighting_MicLed_Off" xml:space="preserve"><value>Éteint</value></data>
   <data name="Pad_Lighting_MicLed_Solid" xml:space="preserve"><value>Fixe</value></data>
   <data name="Pad_Lighting_MicLed_Pulse" xml:space="preserve"><value>Pulsé</value></data>
   <data name="Pad_Lighting_MicLed_FollowDevice" xml:space="preserve"><value>Suivre le périphérique audio</value></data>
   <data name="Pad_Lighting_MicLed_FollowDevice_Picker" xml:space="preserve"><value>Périphérique audio</value></data>
-  <data name="Pad_Lighting_PlayerLeds" xml:space="preserve"><value>LED de joueur</value></data>
-  <data name="Pad_Lighting_PlayerLeds_Subtitle" xml:space="preserve"><value>Cinq petites LED blanches sous le pavé tactile. Choisissez le motif de joueur à afficher et son intensité.</value></data>
   <data name="Pad_Lighting_IndicatorLeds" xml:space="preserve"><value>LED indicatrices</value></data>
   <data name="Pad_Lighting_IndicatorLeds_Subtitle" xml:space="preserve"><value>Rangée du numéro de joueur (5 LED sous le pavé tactile) et la LED de mute au-dessus du micro. Le contrôle de luminosité n'agit physiquement que sur la rangée joueur. Le firmware expose les états de la LED de mute (Éteint / Fixe / Pulsé) mais pas de registre de luminosité distinct.</value></data>
   <data name="Pad_ResetLightbar" xml:space="preserve"><value>Réinitialiser la barre lumineuse</value></data>
@@ -1381,7 +1346,6 @@
   <data name="Pad_Lighting_PlayerPattern" xml:space="preserve"><value>Motif joueur </value></data>
   <data name="Pad_Lighting_MuteLedMode" xml:space="preserve"><value>Mode LED de mute </value></data>
   <data name="Pad_Lighting_LedBrightness" xml:space="preserve"><value>Luminosité de la LED </value></data>
-  <data name="Pad_Lighting_PlayerLed_Mode" xml:space="preserve"><value>Motif</value></data>
   <data name="Pad_Lighting_PlayerLed_Off" xml:space="preserve"><value>Éteint</value></data>
   <data name="Pad_Lighting_PlayerLed_PlayerNumber" xml:space="preserve"><value>Numéro de joueur (par défaut)</value></data>
   <data name="Pad_Lighting_PlayerLed_P1" xml:space="preserve"><value>Joueur 1</value></data>
@@ -1389,19 +1353,10 @@
   <data name="Pad_Lighting_PlayerLed_P3" xml:space="preserve"><value>Joueur 3</value></data>
   <data name="Pad_Lighting_PlayerLed_P4" xml:space="preserve"><value>Joueur 4</value></data>
   <data name="Pad_Lighting_PlayerLed_All" xml:space="preserve"><value>Tous</value></data>
-  <data name="Pad_Lighting_PlayerLed_Brightness" xml:space="preserve"><value>Luminosité</value></data>
   <data name="Pad_Lighting_PlayerLed_Brightness_High" xml:space="preserve"><value>Élevé</value></data>
   <data name="Pad_Lighting_PlayerLed_Brightness_Medium" xml:space="preserve"><value>Moyen</value></data>
   <data name="Pad_Lighting_PlayerLed_Brightness_Low" xml:space="preserve"><value>Faible</value></data>
-  <data name="Pad_Lighting_AudioLightbar" xml:space="preserve"><value>Barre lumineuse pilotée par l'audio</value></data>
-  <data name="Pad_Lighting_AudioLightbar_Subtitle" xml:space="preserve"><value>Module la couleur de base ci-dessus avec le pic audio système. Pulse avec ce qui passe par le périphérique de sortie par défaut. Utilise la même capture WASAPI que Vibration audio, mais lit la forme d'onde complète (sans filtre coupe-bas) et suit donc tout ce que vous entendez.</value></data>
-  <data name="Pad_Lighting_AudioLightbar_Enable" xml:space="preserve"><value>Faire pulser la couleur de base avec le son système</value></data>
   <data name="Pad_Lighting_AudioLightbar_Sensitivity" xml:space="preserve"><value>Sensibilité </value></data>
-  <data name="Pad_Lighting_AudioLightbar_Mode" xml:space="preserve"><value>Mode</value></data>
-  <data name="Pad_Lighting_AudioLightbar_Mode_Pulse" xml:space="preserve"><value>Faire pulser la couleur de base</value></data>
-  <data name="Pad_Lighting_AudioLightbar_Mode_Thresholds" xml:space="preserve"><value>Trois couleurs — transitions nettes</value></data>
-  <data name="Pad_Lighting_AudioLightbar_Mode_Gradient" xml:space="preserve"><value>Trois couleurs — dégradé doux</value></data>
-  <data name="Pad_Lighting_AudioLightbar_Mode_CrossFade" xml:space="preserve"><value>Trois couleurs — fondu enchaîné aux limites</value></data>
   <data name="Pad_Lighting_AudioLightbar_CrossFadeWidth" xml:space="preserve"><value>Largeur du fondu </value></data>
   <data name="Pad_Lighting_AudioLightbar_LowColor" xml:space="preserve"><value>Couleur faible</value></data>
   <data name="Pad_Lighting_AudioLightbar_MidColor" xml:space="preserve"><value>Couleur moyenne</value></data>
@@ -1431,10 +1386,6 @@
   <data name="Pad_Lighting_RainbowBrightness" xml:space="preserve"><value>Luminosité</value></data>
   <data name="Pad_Lighting_Period" xml:space="preserve"><value>Période</value></data>
   <data name="Pad_Lighting_PaletteHeader" xml:space="preserve"><value>Palette</value></data>
-  <data name="Pad_Lighting_PaletteColor1" xml:space="preserve"><value>Couleur 1</value></data>
-  <data name="Pad_Lighting_PaletteColor2" xml:space="preserve"><value>Couleur 2</value></data>
-  <data name="Pad_Lighting_PaletteColor3" xml:space="preserve"><value>Couleur 3</value></data>
-  <data name="Pad_Lighting_PaletteColor4" xml:space="preserve"><value>Couleur 4</value></data>
   <data name="Pad_Lighting_ColorCycleSmooth" xml:space="preserve"><value>Fondre doucement entre les couleurs de la palette</value></data>
   <data name="Pad_Lighting_AddColor" xml:space="preserve"><value>Ajouter une couleur</value></data>
   <data name="Pad_Lighting_ResetPalette" xml:space="preserve"><value>Réinitialiser la palette</value></data>
@@ -1468,7 +1419,7 @@
   <data name="Pad_ResetAudioMidB" xml:space="preserve"><value>Réinitialiser la bande moyenne bleue</value></data>
   <data name="Pad_ResetAudioHighR" xml:space="preserve"><value>Réinitialiser la bande forte rouge</value></data>
   <data name="Pad_ResetAudioHighG" xml:space="preserve"><value>Réinitialiser la bande forte verte</value></data>
-  <data name="Pad_ResetAudioHighB" xml:space="preserve"><value>Réinitialiser la bande forte bleue</value></data>  <data name="Pad_Lighting_InputReactive" xml:space="preserve"><value>Réactif aux entrées</value></data>  <data name="Pad_Lighting_InputReactive_Off" xml:space="preserve"><value>Désactivé</value></data>  <data name="Pad_Lighting_InputReactive_Random" xml:space="preserve"><value>Couleur aléatoire par appui</value></data>  <data name="Pad_Lighting_InputReactive_Cycle" xml:space="preserve"><value>Parcourir la palette</value></data>  <data name="Pad_Lighting_InputReactive_Fixed" xml:space="preserve"><value>Couleur unique par appui</value></data>  <data name="Pad_ResetInputReactive" xml:space="preserve"><value>Réinitialiser réactif aux entrées</value></data>  <data name="Pad_Lighting_InputReactive_FixedColor" xml:space="preserve"><value>Couleur du flash par appui</value></data>  <data name="Settings_KeepCloaksBetweenLaunchesTooltip" xml:space="preserve"><value>Conserve les masquages HidHide entre les sessions PadForge. Utile quand une autre application (par ex. Steam) recherche des manettes pendant que PadForge est fermé et que vous voulez qu'elle continue à voir les périphériques physiques comme masqués. Désactivé par défaut. Désactiver l'interrupteur principal ci-dessus en cours de session affiche immédiatement les périphériques.</value></data>  <data name="Settings_KeepCloaksBetweenLaunches" xml:space="preserve"><value>Conserver le masquage des périphériques entre les lancements</value></data>  <data name="Pad_AT_LoadGameCubePreset" xml:space="preserve"><value>Charger le preset GameCube</value></data>  <data name="Pad_AT_LoadGameCubePreset_Tooltip" xml:space="preserve"><value>Définit la plage et la force avec les valeurs qui reproduisent le clic physique d'une vraie gâchette GameCube (début ~56 %, fin ~63 %, force max). Ajustez les curseurs ensuite si vous préférez une autre sensation.</value></data>
+  <data name="Pad_ResetAudioHighB" xml:space="preserve"><value>Réinitialiser la bande forte bleue</value></data>  <data name="Pad_Lighting_InputReactive" xml:space="preserve"><value>Réactif aux entrées</value></data>  <data name="Pad_Lighting_InputReactive_Off" xml:space="preserve"><value>Désactivé</value></data>  <data name="Pad_Lighting_InputReactive_Random" xml:space="preserve"><value>Couleur aléatoire par appui</value></data>  <data name="Pad_Lighting_InputReactive_Cycle" xml:space="preserve"><value>Parcourir la palette</value></data>  <data name="Pad_Lighting_InputReactive_Fixed" xml:space="preserve"><value>Couleur unique par appui</value></data>  <data name="Pad_ResetInputReactive" xml:space="preserve"><value>Réinitialiser réactif aux entrées</value></data>  <data name="Pad_Lighting_InputReactive_FixedColor" xml:space="preserve"><value>Couleur du flash par appui</value></data>  <data name="Settings_KeepCloaksBetweenLaunchesTooltip" xml:space="preserve"><value>Conserve les masquages HidHide entre les sessions PadForge. Utile quand une autre application (par ex. Steam) recherche des manettes pendant que PadForge est fermé et que vous voulez qu'elle continue à voir les périphériques physiques comme masqués. Désactivé par défaut. Désactiver l'interrupteur principal ci-dessus en cours de session affiche immédiatement les périphériques.</value></data>  <data name="Settings_KeepCloaksBetweenLaunches" xml:space="preserve"><value>Conserver le masquage des périphériques entre les lancements</value></data>  <data name="Pad_AT_LoadGameCubePreset_Tooltip" xml:space="preserve"><value>Définit la plage et la force avec les valeurs qui reproduisent le clic physique d'une vraie gâchette GameCube (début ~56 %, fin ~63 %, force max). Ajustez les curseurs ensuite si vous préférez une autre sensation.</value></data>
 
 
 
@@ -1508,12 +1459,10 @@
   <data name="Pad_Shift_Delete" xml:space="preserve"><value>Supprimer la couche</value></data>
   <data name="Pad_Shift_DeleteConfirmTitle" xml:space="preserve"><value>Supprimer la couche Shift</value></data>
   <data name="Pad_Shift_DeleteConfirm_Format" xml:space="preserve"><value>Supprimer la couche « {0} » et toutes ses lignes d'affectation ? Cette action est irréversible.</value></data>
-  <data name="Pad_Shift_RenameTitle" xml:space="preserve"><value>Renommer la couche</value></data>
   <data name="Pad_Shift_NoInherit" xml:space="preserve"><value>Ne pas hériter</value></data>
   <data name="Pad_Shift_NoInherit_Tooltip" xml:space="preserve"><value>Lorsque coché, la cible de cette couche reste DÉSACTIVÉE au lieu de retomber sur la ligne Base.</value></data>
   <data name="Pad_Shift_Delay" xml:space="preserve"><value>Délai</value></data>
   <data name="Pad_Shift_Delay_Tooltip" xml:space="preserve"><value>Millisecondes pendant lesquelles l'activateur doit rester engagé avant que le changement de couche se déclenche.</value></data>
-  <data name="Pad_Shift_JumpToLayer" xml:space="preserve"><value>Aller à la couche</value></data>
   <data name="Pad_Shift_ChordSecondInput" xml:space="preserve"><value>Deuxième entrée de l'accord</value></data>
   <data name="Pad_Shift_AxisThreshold" xml:space="preserve"><value>Seuil de l'axe</value></data>
   <data name="Pad_Shift_CycleLayers" xml:space="preserve"><value>Parcourir les couches</value></data>
@@ -1781,7 +1730,6 @@
   <data name="Pad_Steering_Mode_Winding" xml:space="preserve"><value>Enroulement</value></data>
   <data name="Pad_Steering_Mode_AngleX" xml:space="preserve"><value>Angle vers axe (X)</value></data>
   <data name="Pad_Steering_Mode_AngleY" xml:space="preserve"><value>Angle vers axe (Y)</value></data>
-  <data name="Pad_Steering_Mode_MotionLean" xml:space="preserve"><value>Inclinaison par mouvement</value></data>
   <data name="Pad_Steering_WindRange" xml:space="preserve"><value>Plage d'enroulement</value></data>
   <data name="Pad_Steering_WindPower" xml:space="preserve"><value>Puissance d'enroulement</value></data>
   <data name="Pad_Steering_WindUnwindRate" xml:space="preserve"><value>Vitesse de déroulement</value></data>
@@ -1814,9 +1762,7 @@
   <data name="Pad_Steering_Lock_ATResistance" xml:space="preserve"><value>Résistance des gâchettes à l'approche de la butée</value></data>
   <data name="Pad_Steering_Lock_PulseMs" xml:space="preserve"><value>Durée de la pulsation</value></data>
   <data name="Pad_Steering_Lock_LightbarColor" xml:space="preserve"><value>Couleur de la barre lumineuse</value></data>
-  <data name="Pad_Steering_Lock_LightbarFadeMs" xml:space="preserve"><value>Fondu de la barre lumineuse</value></data>
   <data name="Pad_Steering_Reset_PulseMs" xml:space="preserve"><value>Réinitialiser la durée de la pulsation</value></data>
-  <data name="Pad_Steering_Reset_LightbarColor" xml:space="preserve"><value>Réinitialiser la couleur de la barre lumineuse</value></data>
   <data name="Pad_Steering_Reset_LightbarFadeMs" xml:space="preserve"><value>Réinitialiser l'atténuation de la barre lumineuse</value></data>
   <data name="Pad_Wheel" xml:space="preserve"><value>Volant</value></data>
   <data name="Pad_ResetWheel" xml:space="preserve"><value>Réinitialiser le volant</value></data>
@@ -1963,9 +1909,6 @@
   <data name="RemoteLink_PasswordTitle" xml:space="preserve">
     <value>Mot de passe Remote Link</value>
   </data>
-  <data name="Devices_ButtonNumberTooltip" xml:space="preserve">
-    <value>Bouton {0}</value>
-  </data>
   <data name="Dashboard_TouchpadOverlayWindowTitle" xml:space="preserve">
     <value>Pavé tactile PadForge</value>
   </data>
@@ -2056,12 +1999,6 @@
   <data name="Dashboard_RemoteLinkFooter" xml:space="preserve">
     <value>Après un appairage unique, un PC de confiance se reconnecte automatiquement. Un PC appairé peut commander la sortie manette de celui-ci et, sauf si vous le limitez, également son clavier, sa souris et ses macros.</value>
   </data>
-  <data name="Dashboard_RemoteLinkNearby" xml:space="preserve">
-    <value>PC à proximité</value>
-  </data>
-  <data name="Dashboard_RemoteLinkNoPeers" xml:space="preserve">
-    <value>Les PC dont Remote Link est activé, sur le même réseau, apparaissent ici automatiquement.</value>
-  </data>
   <data name="Dashboard_RemoteLinkPairButton" xml:space="preserve">
     <value>Appairer</value>
   </data>
@@ -2079,9 +2016,6 @@
   </data>
   <data name="RemoteLink_Identity" xml:space="preserve">
     <value>Identité</value>
-  </data>
-  <data name="RemoteLink_NoPairedPeers" xml:space="preserve">
-    <value>Aucun PC appairé pour l&apos;instant.</value>
   </data>
   <data name="RemoteLink_Pair" xml:space="preserve">
     <value>Appairer</value>
@@ -2279,11 +2213,6 @@
   <data name="Tour_Slots_Title" xml:space="preserve"><value>Emplacements</value></data>
   <data name="Tour_Status_Body" xml:space="preserve"><value>Le nombre d'appareils, la fréquence d'interrogation et la flamme du moteur, toujours visibles.</value></data>
   <data name="Tour_Status_Title" xml:space="preserve"><value>Barre d'instruments</value></data>
-  <data name="TypeAbbrev_Extended" xml:space="preserve"><value>EXT</value></data>
-  <data name="TypeAbbrev_KeyboardMouse" xml:space="preserve"><value>CS</value></data>
-  <data name="TypeAbbrev_Midi" xml:space="preserve"><value>MIDI</value></data>
-  <data name="TypeAbbrev_PlayStation" xml:space="preserve"><value>PS</value></data>
-  <data name="TypeAbbrev_Xbox" xml:space="preserve"><value>XB</value></data>
   <data name="WiiPair_FamilyDs3" xml:space="preserve"><value>Sony DualShock 3</value></data>
   <data name="Pad_ExtendedCloneDevice" xml:space="preserve"><value>Cloner l'appareil 1:1</value></data>
   <data name="Pad_ExtendedCloneDeviceTooltip" xml:space="preserve"><value>Mappe chaque axe, bouton et croix directionnelle de l'appareil sélectionné directement vers la sortie virtuelle du même numéro. Ajuste la disposition à l'appareil et remplace les lignes de cet appareil sur l'emplacement par une transmission directe 1:1.</value></data>

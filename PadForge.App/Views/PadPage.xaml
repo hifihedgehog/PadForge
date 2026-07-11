@@ -3673,7 +3673,28 @@
                                         </StackPanel>
 
 
-                                        <!-- Custom formula editor — only visible when the row
+                                        <!-- Stick Trim settings (#155): only visible when the
+                                             row is multi-source AND Stick Trim is the picked
+                                             combine, the ShouldShowCustomExpression gating
+                                             pattern. The row's LAST source is the trim stick.
+                                             The earlier sources gate the trigger. -->
+                                        <StackPanel Orientation="Horizontal" Margin="0,0,0,4"
+                                                    Visibility="{Binding ShouldShowTrimSettings, Converter={StaticResource BoolToVisibilityConverter}}">
+                                            <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Pad_Mapping_TrimDeadzone, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="0,0,4,0"/>
+                                            <Slider Value="{Binding TrimDeadzone, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Minimum="0" Maximum="95" SmallChange="1" LargeChange="5" Width="80" VerticalAlignment="Center"
+                                                    ToolTip="{Binding Pad_Mapping_TrimDeadzone_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                            <TextBox Text="{Binding TrimDeadzone, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Width="36" Margin="4,0,0,0" Padding="2,1" VerticalContentAlignment="Center"/>
+                                            <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="%" VerticalAlignment="Center" Margin="1,0,8,0"/>
+                                            <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Pad_Mapping_TrimRate, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="0,0,4,0"/>
+                                            <Slider Value="{Binding TrimRate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Minimum="10" Maximum="400" SmallChange="10" LargeChange="50" Width="80" VerticalAlignment="Center"
+                                                    ToolTip="{Binding Pad_Mapping_TrimRate_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                            <TextBox Text="{Binding TrimRate, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Width="40" Margin="4,0,0,0" Padding="2,1" VerticalContentAlignment="Center"/>
+                                            <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="%/s" VerticalAlignment="Center" Margin="1,0,8,0"/>
+                                            <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}" Content="{Binding Pad_Mapping_TrimReset, Source={x:Static strings:Strings.Instance}}" IsChecked="{Binding TrimResetOnRelease, Mode=TwoWay}" VerticalAlignment="Center" Margin="0,0,8,0"
+                                                      ToolTip="{Binding Pad_Mapping_TrimReset_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                        </StackPanel>
+
+                                        <!-- Custom formula editor: only visible when the row
                                              is multi-source AND Custom is the picked combine.
                                              Gating on ShouldShowCustomExpression instead of
                                              just IsCustomCombine means removing the last

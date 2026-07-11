@@ -4477,10 +4477,16 @@ namespace PadForge.Services
                 mapping.ExtraSources.Clear();
                 mapping.CombineMode = "";
                 mapping.CombineExpression = "";
+                mapping.TrimDeadzone = 25;
+                mapping.TrimRate = 100;
+                mapping.TrimResetOnRelease = true;
                 if (msRowsByTarget.TryGetValue(target, out var msRow2))
                 {
                     mapping.CombineMode = msRow2.CombineMode ?? "";
                     mapping.CombineExpression = msRow2.CombineExpression ?? "";
+                    mapping.TrimDeadzone = msRow2.TrimDeadzone;
+                    mapping.TrimRate = msRow2.TrimRate;
+                    mapping.TrimResetOnRelease = msRow2.TrimResetOnRelease;
                     if (msRow2.Sources != null)
                     {
                         // Sources[0] is the primary (Direct descriptor or a kind loaded
@@ -5167,6 +5173,9 @@ namespace PadForge.Services
                         LayerMask = layer,
                         CombineMode = srcRow.CombineMode ?? "",
                         CombineExpression = srcRow.CombineExpression ?? "",
+                        TrimDeadzone = srcRow.TrimDeadzone,
+                        TrimRate = srcRow.TrimRate,
+                        TrimResetOnRelease = srcRow.TrimResetOnRelease,
                         Sources = new System.Collections.Generic.List<Engine.Data.MappingSource>(),
                     };
                     ms.Rows.Add(targetRow);
@@ -5177,6 +5186,9 @@ namespace PadForge.Services
                     // user-authored Sum / Average / Custom comes along.
                     targetRow.CombineMode = srcRow.CombineMode ?? "";
                     targetRow.CombineExpression = srcRow.CombineExpression ?? "";
+                    targetRow.TrimDeadzone = srcRow.TrimDeadzone;
+                    targetRow.TrimRate = srcRow.TrimRate;
+                    targetRow.TrimResetOnRelease = srcRow.TrimResetOnRelease;
                 }
 
                 // Strip the target device's existing Sources — we're
@@ -5230,6 +5242,9 @@ namespace PadForge.Services
                         CombineMode = r.CombineMode ?? "",
                         CombineExpression = r.CombineExpression ?? "",
                         NoInherit = r.NoInherit,
+                        TrimDeadzone = r.TrimDeadzone,
+                        TrimRate = r.TrimRate,
+                        TrimResetOnRelease = r.TrimResetOnRelease,
                         Sources = new System.Collections.Generic.List<Engine.Data.MappingSource>(),
                     };
                     if (r.Sources != null)
@@ -5418,6 +5433,9 @@ namespace PadForge.Services
                     LayerMask = row.LayerMask ?? "Base",
                     CombineMode = row.CombineMode ?? "",
                     CombineExpression = row.CombineExpression ?? "",
+                    TrimDeadzone = row.TrimDeadzone,
+                    TrimRate = row.TrimRate,
+                    TrimResetOnRelease = row.TrimResetOnRelease,
                     Sources = clonedSources,
                 });
             }
@@ -5447,6 +5465,9 @@ namespace PadForge.Services
                     LayerMask = r.LayerMask ?? "Base",
                     CombineMode = r.CombineMode ?? "",
                     CombineExpression = r.CombineExpression ?? "",
+                    TrimDeadzone = r.TrimDeadzone,
+                    TrimRate = r.TrimRate,
+                    TrimResetOnRelease = r.TrimResetOnRelease,
                     Sources = new System.Collections.Generic.List<Engine.Data.MappingSource>(),
                 };
                 if (r.Sources != null)
@@ -5548,6 +5569,9 @@ namespace PadForge.Services
                     LayerMask = row.LayerMask ?? "Base",
                     CombineMode = row.CombineMode ?? "",
                     CombineExpression = row.CombineExpression ?? "",
+                    TrimDeadzone = row.TrimDeadzone,
+                    TrimRate = row.TrimRate,
+                    TrimResetOnRelease = row.TrimResetOnRelease,
                     Sources = deviceSources,
                 });
             }
@@ -5588,6 +5612,9 @@ namespace PadForge.Services
                         CombineMode = r.CombineMode ?? "",
                         CombineExpression = r.CombineExpression ?? "",
                         NoInherit = r.NoInherit,
+                        TrimDeadzone = r.TrimDeadzone,
+                        TrimRate = r.TrimRate,
+                        TrimResetOnRelease = r.TrimResetOnRelease,
                         Sources = new System.Collections.Generic.List<Engine.Data.MappingSource>(),
                     };
                     if (r.Sources != null)

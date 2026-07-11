@@ -1432,6 +1432,9 @@ namespace PadForge.Views
                     CombineMode = r.CombineMode,
                     CombineExpression = r.CombineExpression,
                     NoInherit = r.NoInherit,
+                    TrimDeadzone = r.TrimDeadzone,
+                    TrimRate = r.TrimRate,
+                    TrimResetOnRelease = r.TrimResetOnRelease,
                     Sources = new System.Collections.Generic.List<Engine.Data.MappingSource>(),
                 };
                 if (r.Sources != null)
@@ -1468,6 +1471,9 @@ namespace PadForge.Views
                     CombineMode = r.CombineMode,
                     CombineExpression = r.CombineExpression,
                     NoInherit = r.NoInherit,
+                    TrimDeadzone = r.TrimDeadzone,
+                    TrimRate = r.TrimRate,
+                    TrimResetOnRelease = r.TrimResetOnRelease,
                     Sources = new System.Collections.Generic.List<Engine.Data.MappingSource>(),
                 };
                 if (r.Sources != null)

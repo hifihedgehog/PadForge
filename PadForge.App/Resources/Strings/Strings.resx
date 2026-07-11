@@ -2286,4 +2286,28 @@
   <data name="Pad_ResetSensorBarComp" xml:space="preserve"><value>Reset Vertical Offset</value></data>
   <data name="Pad_ResetIrSmoothing" xml:space="preserve"><value>Reset Smoothing</value></data>
   <data name="Pad_ResetAudioMirror" xml:space="preserve"><value>Reset Audio Mirror</value></data>
+  <data name="Pad_Combine_StickTrim_Name" xml:space="preserve">
+    <value>Stick Trim</value>
+  </data>
+  <data name="Pad_Combine_StickTrim_Description" xml:space="preserve">
+    <value>The row's last source is a trim stick. While the other sources hold the trigger, pushing the stick up raises the held level and pulling it down lowers it. Built for fine throttle and brake control on pads without analog triggers.</value>
+  </data>
+  <data name="Pad_Mapping_TrimDeadzone" xml:space="preserve">
+    <value>Trim Deadzone</value>
+  </data>
+  <data name="Pad_Mapping_TrimDeadzone_Tooltip" xml:space="preserve">
+    <value>Stick deflection below this percentage is ignored, so steering with the same stick never nudges the held trigger level. Only the stick's stronger vertical pushes adjust it.</value>
+  </data>
+  <data name="Pad_Mapping_TrimRate" xml:space="preserve">
+    <value>Trim Speed</value>
+  </data>
+  <data name="Pad_Mapping_TrimRate_Tooltip" xml:space="preserve">
+    <value>How fast a fully deflected stick slides the held level, in percent of the trigger range per second. 100 sweeps from empty to full in one second.</value>
+  </data>
+  <data name="Pad_Mapping_TrimReset" xml:space="preserve">
+    <value>Reset on Release</value>
+  </data>
+  <data name="Pad_Mapping_TrimReset_Tooltip" xml:space="preserve">
+    <value>When checked, releasing the trigger snaps the held level back to 100% so the next press starts full. Unchecked keeps the trimmed level across releases until you adjust it again.</value>
+  </data>
 </root>

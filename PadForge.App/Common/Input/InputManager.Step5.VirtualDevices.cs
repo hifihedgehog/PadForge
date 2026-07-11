@@ -446,11 +446,10 @@ namespace PadForge.Common.Input
         /// </summary>
         private readonly int[] _slotInactiveCounter = new int[MaxPads];
 
-        /// <summary>
-        /// Number of consecutive inactive cycles before a virtual controller is destroyed.
-        /// At ~1000Hz polling, 10000 cycles ≈ 10 seconds of sustained inactivity.
-        /// </summary>
-        private const int SlotDestroyGraceCycles = 10000;
+        // The former non-HM short grace (SlotDestroyGraceCycles, 10 s) is
+        // retired: every VC type now rides the same HmInactivityTimeoutSeconds
+        // contract (60 s default, 0 = never), so a flaky assigned device is
+        // masked identically regardless of slot type.
 
         /// <summary>
         /// Per-slot cooldown counter after a failed virtual controller creation.
@@ -736,11 +735,17 @@ namespace PadForge.Common.Input
 
                     if (!isHMaestro
                         && vc != null
-                        && _slotInactiveCounter[padIndex] >= SlotDestroyGraceCycles)
+                        && HmInactivityTimeoutSeconds > 0
+                        && _slotInactiveCounter[padIndex]
+                            >= (HmInactivityTimeoutSeconds * 1000) / System.Math.Max(1, PollingIntervalMs))
                     {
-                        // Non-HM (MIDI, KeyboardMouse) destroy on the short
-                        // grace counter — teardown is cheap and there's no
-                        // kernel-slot ordering concern.
+                        // Non-HM (MIDI, KeyboardMouse) teardown is cheap and
+                        // has no kernel-slot ordering concern, but the
+                        // device-dropout grace is ONE user-facing contract:
+                        // the same inactivity timeout (60 s default, 0 =
+                        // never) governs every VC type, so a flaky assigned
+                        // device rides out identically regardless of slot
+                        // type (the 10 s short grace predated the contract).
                         DestroyVirtualController(padIndex);
                         _virtualControllers[padIndex] = null;
                         VibrationStates[padIndex].LeftMotorSpeed = 0;

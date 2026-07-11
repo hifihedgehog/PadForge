@@ -591,7 +591,11 @@ namespace PadForge.ViewModels
         public bool IsVirtualControllerConnected
         {
             get => _isVirtualControllerConnected;
-            set => SetProperty(ref _isVirtualControllerConnected, value);
+            set
+            {
+                if (SetProperty(ref _isVirtualControllerConnected, value))
+                    OnPropertyChanged(nameof(StatusText));
+            }
         }
 
         private bool _isInitializing;
@@ -646,8 +650,13 @@ namespace PadForge.ViewModels
         /// <summary>Status text for the slot (e.g., "Active", "Cold",
         /// "Awaiting Devices", "Disabled"). Ember vocabulary (#175): an
         /// enabled slot with zero mappings reads "Cold"; mapped but with
-        /// nothing connected reads as awaiting devices. Other states pass
-        /// through whatever the engine refresh assigned.</summary>
+        /// nothing connected reads as awaiting devices ONLY once the live
+        /// VC is gone. While the VC survives the inactivity grace (60 s
+        /// default), a device dropout must not flap the card to awaiting:
+        /// the VC teardown is the status transition, exactly like the nav
+        /// flame (the contract a churning Wii chain exposed, 2026-07-11).
+        /// Other states pass through whatever the engine refresh
+        /// assigned.</summary>
         public string StatusText
         {
             get
@@ -656,7 +665,7 @@ namespace PadForge.ViewModels
                 {
                     if (_mappedDeviceCount == 0)
                         return Strings.Instance.Dashboard_StatusCold;
-                    if (_connectedDeviceCount == 0)
+                    if (_connectedDeviceCount == 0 && !_isVirtualControllerConnected)
                         return Strings.Instance.Main_AwaitingDevices;
                 }
                 return _statusText;

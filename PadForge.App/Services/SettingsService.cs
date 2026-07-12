@@ -678,11 +678,6 @@ namespace PadForge.Services
                     row.TrimRate = mapping.TrimRate;
                     row.TrimResetOnRelease = mapping.TrimResetOnRelease;
 
-                    if (string.Equals(row.CombineMode, "StickTrim", StringComparison.Ordinal)
-                        || string.Equals(mapping.CombineMode, "StickTrim", StringComparison.Ordinal))
-                        PadForge.Engine.SdlDiagLog.WriteLine(
-                            $"STICKTRIM push slot={slot} target={mapping.TargetSettingName} activeMask={activeMask} reset={mapping.TrimResetOnRelease}");
-
                     // NoInherit is meaningful only on non-Base rows. Force
                     // false on Base regardless of the MappingItem state so
                     // an unsetter on Base (defensive) can't leak.

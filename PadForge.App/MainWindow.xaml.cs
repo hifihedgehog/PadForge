@@ -5577,10 +5577,6 @@ namespace PadForge
                 {
                     _settingsService.MarkDirty();
 
-                    if (e.PropertyName == nameof(MappingItem.TrimResetOnRelease))
-                        PadForge.Engine.SdlDiagLog.WriteLine(
-                            $"STICKTRIM ui-edit target={mapping.TargetSettingName} vmReset={mapping.TrimResetOnRelease} combine={mapping.CombineMode} suppress={InputService.SuppressMappingEditPush}");
-
                     // Dirty-gate trap (#155): MarkDirty only schedules a
                     // 250 ms debounced save, so the domain MappingSet the
                     // engine reads (and that RefreshMappingsCore mirrors

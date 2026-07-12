@@ -326,10 +326,18 @@ namespace PadForge.Common.Input
                 if (_pending.Count >= MaxPendingModels
                     && !_pending.ContainsKey((ud.VendorId, ud.ProdId))) return false;
 
-                _pending[(ud.VendorId, ud.ProdId)] = (Math.Clamp(percent0to100, 0, 100), 0);
+                int pct = Math.Clamp(percent0to100, 0, 100);
+                // Diag only on a CHANGED request: the apply lanes re-enqueue
+                // the same percent every pass and the writer change-detects,
+                // so steady state was ~2 log lines a second of no-ops that
+                // churned the 8 MB diag cap and drowned real signals.
+                bool changed = !_pending.TryGetValue((ud.VendorId, ud.ProdId), out var prior)
+                               || prior.Percent != pct;
+                _pending[(ud.VendorId, ud.ProdId)] = (pct, 0);
                 _work.Set();
-                PadForge.Engine.SdlDiagLog.WriteLine(
-                    $"GUIDELED enqueue vid=0x{ud.VendorId:X4} pid=0x{ud.ProdId:X4} pct={Math.Clamp(percent0to100, 0, 100)}");
+                if (changed)
+                    PadForge.Engine.SdlDiagLog.WriteLine(
+                        $"GUIDELED enqueue vid=0x{ud.VendorId:X4} pid=0x{ud.ProdId:X4} pct={pct}");
                 return true;
             }
             catch
@@ -582,11 +590,14 @@ namespace PadForge.Common.Input
                     fellBack = true;
                 }
 
-                PadForge.Engine.SdlDiagLog.WriteLine(
-                    $"GUIDELED pend vid=0x{key.Vid:X4} pid=0x{key.Pid:X4} announced={_announced.Count} matches={matches.Count} fallback={fellBack} attempts={attempts}");
-
                 if (matches.Count == 0)
                 {
+                    // Diag on the FIRST miss only: while unmatched the 1 s
+                    // ticks re-walk this entry, and per-tick lines were the
+                    // bulk of the diag churn.
+                    if (attempts == 0)
+                        PadForge.Engine.SdlDiagLog.WriteLine(
+                            $"GUIDELED pend vid=0x{key.Vid:X4} pid=0x{key.Pid:X4} announced={_announced.Count} matches=0");
                     // Nothing announced at all yet. Re-provoke announces
                     // once, then let the 1 s ticks retry until the attempt
                     // budget runs out (a Bluetooth Xbox pad legitimately
@@ -608,6 +619,12 @@ namespace PadForge.Common.Input
                     if (_lastWritten.TryGetValue(deviceId, out var last)
                         && last.Mode == mode && last.Intensity == intensity)
                         continue;
+
+                    // Change detection passed, a real write goes out; the
+                    // write itself logs its result. Note the routing here
+                    // so a wrong-target write is attributable.
+                    PadForge.Engine.SdlDiagLog.WriteLine(
+                        $"GUIDELED route vid=0x{key.Vid:X4} pid=0x{key.Pid:X4} devId=0x{deviceId:X16} fallback={fellBack} pct={percent}");
 
                     if (WriteLedPacket(deviceId, mode, intensity))
                     {

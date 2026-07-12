@@ -1464,26 +1464,6 @@ namespace PadForge.Views
             }
         }
 
-        /// <summary>#155 probe: fires on the trim checkbox's OWN routed
-        /// toggle, independent of any binding. Logs the DataContext type
-        /// and the binding expression status, which pinpoints why a
-        /// visually-toggling checkbox writes nothing (a null DataContext
-        /// raises no binding error and no setter call).</summary>
-        private void TrimReset_Toggled(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                var cb = sender as System.Windows.Controls.CheckBox;
-                var dc = cb?.DataContext;
-                var expr = cb == null ? null
-                    : System.Windows.Data.BindingOperations.GetBindingExpression(
-                        cb, System.Windows.Controls.CheckBox.IsCheckedProperty);
-                PadForge.Engine.SdlDiagLog.WriteLine(
-                    $"STICKTRIM cb-toggle checked={cb?.IsChecked} dcType={dc?.GetType().Name ?? "NULL"} dcHash={dc?.GetHashCode() ?? 0} bindStatus={expr?.Status.ToString() ?? "NO-BINDING"} path={expr?.ParentBinding?.Path?.Path ?? "?"}");
-            }
-            catch { }
-        }
-
         private void ShiftLayer_Paste_Click(object sender, RoutedEventArgs e)
         {
             if (_currentPadVm == null) return;

@@ -328,6 +328,7 @@ namespace PadForge.Common.Input
         private byte _sequence = 1;
         private long _nextOpenAttemptTick;
         private long _lastReenumNudgeTick;
+        private int _lastOpenFailGle;
 
         private const int ReadBufferSize = 4096;
         private const int OpenRetryCooldownMs = 15000;
@@ -493,10 +494,20 @@ namespace PadForge.Common.Input
                 IntPtr.Zero);
             if (_handle == InvalidHandle)
             {
-                PadForge.Engine.SdlDiagLog.WriteLine(
-                    $"GUIDELED open FAILED gle={Marshal.GetLastWin32Error()}");
+                // Once per distinct error code: a machine without xboxgip
+                // loaded (gle=2) retries the open on the cooldown for as
+                // long as a request is pending, and identical lines per
+                // retry read as an error storm for an expected condition.
+                int gle = Marshal.GetLastWin32Error();
+                if (gle != _lastOpenFailGle)
+                {
+                    _lastOpenFailGle = gle;
+                    PadForge.Engine.SdlDiagLog.WriteLine(
+                        $"GUIDELED open unavailable gle={gle}");
+                }
                 return false;
             }
+            _lastOpenFailGle = 0;
 
             bool ioctlOk = DeviceIoControl(_handle, GipReenumerateIoctl,
                 IntPtr.Zero, 0, IntPtr.Zero, 0, out _, IntPtr.Zero);
@@ -573,13 +584,12 @@ namespace PadForge.Common.Input
                     $"GUIDELED rx len={read} cmd=0x{buf[8]:X2} devId=0x{rawId:X16}");
             }
 
+            // Non-announce traffic (status heartbeats and other GIP
+            // commands) is expected and already visible in the rx line's
+            // cmd byte; it needs no line of its own.
             if (!TryParseAnnounce(buf, buf.Length,
                     out ulong deviceId, out ushort vid, out ushort pid, out ulong address))
-            {
-                if (rxLogged)
-                    PadForge.Engine.SdlDiagLog.WriteLine("GUIDELED rx noparse");
                 return;
-            }
 
             // A 0x01 acknowledge (or a 0x02 without an identity payload)
             // carries no VID/PID; keep the value we already learned for

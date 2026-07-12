@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
              xmlns:common="clr-namespace:PadForge.Common"
+             xmlns:vm="clr-namespace:PadForge.ViewModels"
              xmlns:strings="clr-namespace:PadForge.Resources.Strings"
              xmlns:po="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -419,8 +420,15 @@
                         <WrapPanel />
                     </ItemsPanelTemplate>
                 </ItemsControl.ItemsPanel>
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
+                <ItemsControl.Resources>
+                    <!-- Implicit, typed template rather than an explicit
+                         ItemTemplate: the CompositeCollection mixes
+                         SlotSummary cards with the UIElement Add tile, and
+                         an explicit ItemTemplate makes WPF log an
+                         error-level trace for the UIElement item on every
+                         launch. Typed to SlotSummary, this template never
+                         claims the tile and the log stays clean. -->
+                    <DataTemplate DataType="{x:Type vm:SlotSummary}">
                         <!-- 8px item margin (#175 clip report): the card glows
                              (hover 12px, forging host 30px) were truncated at
                              the viewport clip when a card sat at a row edge. -->
@@ -1295,7 +1303,7 @@
                         </Border>
                         </Grid>
                     </DataTemplate>
-                </ItemsControl.ItemTemplate>
+                </ItemsControl.Resources>
             </ItemsControl>
 
             <!-- ═══ Services group (#175): everything below serves other

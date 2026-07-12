@@ -308,6 +308,15 @@ namespace PadForge
             DevicesPageView.DataContext = _viewModel.Devices;
             SettingsPageView.DataContext = _viewModel.Settings;
             ProfilesPageView.DataContext = _viewModel.Settings;
+            // PadPage too: the pages are instantiated eagerly (visibility-
+            // toggled, not navigated), so PadPage's whole binding tree
+            // evaluates at window realization. Without a pad context it
+            // inherits this window's MainViewModel and every path fails
+            // (479 distinct binding path errors in one second on the
+            // 2026-07-12 launch trace). Navigation re-points it at the
+            // selected pad.
+            if (_viewModel.Pads.Count > 0)
+                PadPageView.DataContext = _viewModel.Pads[0];
 
             // Create services.
             _settingsService = new SettingsService(_viewModel);

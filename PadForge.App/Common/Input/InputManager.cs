@@ -654,14 +654,20 @@ namespace PadForge.Common.Input
                 // Allow screensaver/sleep even while SDL video is active.
                 SDL_SetHint(SDL_HINT_VIDEO_ALLOW_SCREENSAVER, "1");
 
-                // Ground-truth diagnostics for the recurring device-freeze
-                // investigation (#210 follow-up): capture the SDL drivers'
-                // own debug narration (the Wii M+ state machine logs its
-                // decisions there) plus the poll-loop stall watchdog, into
-                // diag.log beside the exe. Installed before SDL_Init so
-                // init-time messages land too.
-                Engine.SdlDiagLog.Install(System.IO.Path.Combine(
-                    AppDomain.CurrentDomain.BaseDirectory, "diag.log"));
+                // In-memory diagnostics ring: captures the SDL drivers' own
+                // debug narration plus the poll-loop stall watchdog as
+                // crash context (the crash handler appends the ring to
+                // crash.log). No file is written in normal operation.
+                // Installed before SDL_Init so init-time messages land
+                // too. Pre-v4 builds wrote these lines to diag.log beside
+                // the exe; remove the stale file those builds left behind.
+                try
+                {
+                    System.IO.File.Delete(System.IO.Path.Combine(
+                        AppDomain.CurrentDomain.BaseDirectory, "diag.log"));
+                }
+                catch { }
+                Engine.SdlDiagLog.Install();
 
                 // SDL3: SDL_Init returns bool (true = success), and
                 // SDL_INIT_GAMECONTROLLER is renamed to SDL_INIT_GAMEPAD.
@@ -690,7 +696,7 @@ namespace PadForge.Common.Input
                 // absent (a periodic device-interface poll); attaches only on connect.
                 try
                 {
-                    _ds3Direct = new Ds3DirectService(msg => System.Diagnostics.Debug.WriteLine("[DS3] " + msg));
+                    _ds3Direct = new Ds3DirectService(msg => Engine.SdlDiagLog.WriteLine("DS3 " + msg));
                     _ds3Direct.Start();
 
                     // Battery for the bridged DS3 (#167 lane): SDL has no power
@@ -702,7 +708,7 @@ namespace PadForge.Common.Input
                     // classification): the virtual joystick has no SDL path of its own.
                     Engine.SdlDeviceWrapper.ExternalDevicePathProvider = Ds3DirectService.GetDevicePath;
                 }
-                catch (Exception ex) { System.Diagnostics.Debug.WriteLine("[DS3] service start failed: " + ex.Message); }
+                catch (Exception ex) { Engine.SdlDiagLog.WriteLine("DS3 service start failed: " + ex.Message); }
 
                 return true;
             }

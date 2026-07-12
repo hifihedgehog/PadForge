@@ -53,13 +53,6 @@ namespace PadForge.Services
         private static bool IsWiiClassOfDevice(uint cod) =>
             cod == 0x002504 || cod == 0x000508;
 
-        /// <summary>Path of the human-readable pairing log. Surfaced in the
-        /// dialog so a failed pair can be diagnosed from real data.</summary>
-        public static string LogPath =>
-            Path.Combine(Path.GetTempPath(), "PadForge-WiiPair.log");
-
-        private static readonly object _logLock = new();
-
         /// <summary>Result of one inquiry-and-pair pass.</summary>
         public sealed class PairPassResult
         {
@@ -371,19 +364,11 @@ namespace PadForge.Services
             _ => "see winerror.h"
         };
 
-        /// <summary>Public entry point so the SDL re-enumeration step (in
-        /// InputManager) can write to the same diagnostic log as pairing.</summary>
-        public static void LogLine(string message) => Log(message);
-
+        /// <summary>Pairing narration goes to the in-memory diagnostics
+        /// ring (crash context) and to the dialog via the pairing
+        /// callbacks. PadForge writes no pairing log file.</summary>
         private static void Log(string message)
-        {
-            try
-            {
-                lock (_logLock)
-                    File.AppendAllText(LogPath, $"{DateTime.Now:HH:mm:ss.fff} {message}{Environment.NewLine}");
-            }
-            catch { /* logging must never break pairing */ }
-        }
+            => PadForge.Engine.SdlDiagLog.WriteLine("WIIPAIR " + message);
 
         // ─────────────────────────────────────────────
         //  Win32 bluetoothapis interop

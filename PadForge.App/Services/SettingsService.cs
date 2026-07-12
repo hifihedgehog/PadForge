@@ -1416,6 +1416,7 @@ namespace PadForge.Services
 
             vm.Use2DControllerView = appSettings.Use2DControllerView;
             vm.LegacyDriverCleanupOffered = appSettings.LegacyDriverCleanupOffered;
+            vm.FirstRunTourCompleted = appSettings.FirstRunTourCompleted;
 
             // Restore main window position/size (profile-independent).
             vm.MainWindowLeft = appSettings.MainWindowLeft;
@@ -3160,6 +3161,7 @@ namespace PadForge.Services
                 MainWindowFullScreen = vm.MainWindowFullScreen,
                 Use2DControllerView = vm.Use2DControllerView,
                 LegacyDriverCleanupOffered = vm.LegacyDriverCleanupOffered,
+                FirstRunTourCompleted = vm.FirstRunTourCompleted,
                 EnableInputHiding = vm.EnableInputHiding,
                 KeepHidHideCloaksBetweenLaunches = vm.KeepHidHideCloaksBetweenLaunches,
                 // Default profile's custom gestures. When a named profile is
@@ -4535,6 +4537,15 @@ namespace PadForge.Services
         /// </summary>
         [XmlElement]
         public bool LegacyDriverCleanupOffered { get; set; }
+
+        /// <summary>
+        /// True once the first-run welcome tour has been completed or
+        /// skipped. Replaces the pre-v4 PadForge.firstrun marker file
+        /// beside the exe: all persisted state lives in this single
+        /// settings file.
+        /// </summary>
+        [XmlElement]
+        public bool FirstRunTourCompleted { get; set; }
 
         /// <summary>
         /// Global master switch for device hiding (HidHide + input hooks).

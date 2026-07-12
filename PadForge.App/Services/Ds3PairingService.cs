@@ -40,30 +40,17 @@ namespace PadForge.Services
         public Ds3PairingService(Action<string> log = null)
             => _log = msg => { LogLine(msg); log?.Invoke(msg); };
 
-        /// <summary>Path of the human-readable pairing log, surfaced in the dialog
-        /// so a failed pair can be diagnosed from real data (same convention as
-        /// <see cref="WiiPairingService.LogPath"/>).</summary>
-        public static string LogPath =>
-            System.IO.Path.Combine(System.IO.Path.GetTempPath(), "PadForge-Ds3Pair.log");
-
-        private static readonly object _logLock = new();
-
         // Serializes every operation that touches the Bluetooth radio (pair, unpair).
         // Two radio cycles overlapping, or a cycle racing another teardown, is a path
         // into the same freed-context crash the forced PDO removal caused
         // (BthPS3.sys BSOD 0xD1, 2026-07-09). One radio op at a time, always.
         private static readonly object _radioGate = new();
 
+        /// <summary>Pairing narration goes to the in-memory diagnostics
+        /// ring (crash context) and to the dialog via the injected
+        /// callback. PadForge writes no pairing log file.</summary>
         private static void LogLine(string message)
-        {
-            try
-            {
-                lock (_logLock)
-                    System.IO.File.AppendAllText(LogPath,
-                        $"{DateTime.Now:HH:mm:ss.fff} {message}{Environment.NewLine}");
-            }
-            catch { /* logging must never break pairing */ }
-        }
+            => PadForge.Engine.SdlDiagLog.WriteLine("DS3PAIR " + message);
 
         /// <summary>True when at least one DualShock 3 is currently paired (a
         /// BTHPORT device record with the DS3 VID/PID that PadForge wrote at

@@ -104,7 +104,8 @@ namespace PadForge
             // like a control that ignores clicks (the #155 Reset on Release
             // checkbox produced no save and no event, indistinguishable
             // from a wiring bug until traced). Forward binding ERRORS to
-            // diag.log so a dead binding names itself in the field.
+            // the in-memory diagnostics ring so a dead binding names itself
+            // in a crash report. Nothing is written to disk.
             System.Diagnostics.PresentationTraceSources.Refresh();
             System.Diagnostics.PresentationTraceSources.DataBindingSource.Listeners.Add(
                 new DiagBindingTraceListener());
@@ -328,7 +329,11 @@ namespace PadForge
         private void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
             try { System.IO.File.AppendAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "crash.log"),
-                $"[{DateTime.Now:HH:mm:ss}] DOMAIN: {(e.ExceptionObject is Exception ex2 ? $"{ex2.GetType().Name}: {ex2.Message}\n{ex2.StackTrace}" : e.ExceptionObject?.ToString())}\n\n"); }
+                $"[{DateTime.Now:HH:mm:ss}] DOMAIN: {(e.ExceptionObject is Exception ex2 ? $"{ex2.GetType().Name}: {ex2.Message}\n{ex2.StackTrace}" : e.ExceptionObject?.ToString())}\n\n"
+                // The in-memory diagnostics ring (SDL narration, stall
+                // watchdog, binding errors) is this crash's recent context;
+                // a fatal crash is the one place it reaches disk.
+                + "-- recent diagnostics --\n" + Engine.SdlDiagLog.Snapshot() + "\n\n"); }
             catch { }
 
             // Stop any live rumble / sustained haptic tone BEFORE the
@@ -416,10 +421,10 @@ namespace PadForge
 
     }
 
-    /// <summary>Forwards WPF data-binding ERROR traces to diag.log
-    /// (BINDERR lines). Errors only, so a healthy session writes
-    /// nothing. Never throws: a diagnostics listener must not take the
-    /// UI down.</summary>
+    /// <summary>Forwards WPF data-binding ERROR traces to the in-memory
+    /// diagnostics ring (BINDERR lines, surfaced in crash.log's appendix).
+    /// Errors only, so a healthy session records nothing. Never throws: a
+    /// diagnostics listener must not take the UI down.</summary>
     internal sealed class DiagBindingTraceListener : System.Diagnostics.TraceListener
     {
         public override void Write(string message) { }

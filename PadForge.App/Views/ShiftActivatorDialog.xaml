@@ -498,6 +498,11 @@
                                  Width="56" Margin="8,0,0,0" VerticalAlignment="Center"
                                  HorizontalContentAlignment="Right"/>
                         <TextBlock Text="ms" Margin="4,0,0,0" VerticalAlignment="Center"/>
+                        <ui:Button Click="ResetAutoCancel_Click" Style="{StaticResource EmberIconButton}"
+                                   VerticalAlignment="Center" Margin="4,0,0,0"
+                                   ToolTip="{Binding Pad_ResetShiftAutoCancel, Source={x:Static strings:Strings.Instance}}">
+                            <TextBlock Text="&#xE72C;" FontFamily="Segoe MDL2 Assets" FontSize="12"/>
+                        </ui:Button>
                     </StackPanel>
                 </Grid>
 

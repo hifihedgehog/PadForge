@@ -772,6 +772,11 @@ namespace PadForge.Views
             Close();
         }
 
+        private void ResetAutoCancel_Click(object sender, RoutedEventArgs e)
+        {
+            AutoCancelSlider.Value = 0;
+        }
+
         private void ShowHint(string text)
         {
             HintText.Text = text;

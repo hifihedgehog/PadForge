@@ -1,7 +1,10 @@
-# PadForge binding-error verification sweep (elevated).
-# Deploys the fresh build, launches with PADFORGE_DIAG armed, walks the
-# pages via UIA, then relaunches clean. Output: C:\tmp\pf-sweep-out.txt,
-# diagnostics mirror: C:\tmp\pfdiag-verify.log
+# Runtime self-diagnostics harvest (code-audit lens 1o). Elevated.
+# Deploys the freshly published build, launches it with PADFORGE_DIAG
+# armed (the SdlDiagLog ring mirrors to a file), walks the pages via
+# UIA so lazily realized templates evaluate their bindings, then
+# relaunches clean with the mirror off. Acceptance bar: the harvest at
+# C:\tmp\pfdiag-verify.log contains no error-class lines (BINDERR,
+# FAILED, exception). Progress notes: C:\tmp\pf-sweep-out.txt
 $ErrorActionPreference = 'Continue'
 $out = 'C:\tmp\pf-sweep-out.txt'
 Set-Content $out "sweep start $(Get-Date -Format o)" -Encoding utf8

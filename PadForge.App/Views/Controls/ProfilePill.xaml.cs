@@ -23,8 +23,14 @@ namespace PadForge.Views.Controls
         {
             InitializeComponent();
 
-            // The two hosts inherit different DataContexts (PadViewModel on
-            // the pad page, MainViewModel in the status bar). Rebind to the
+            // Block DataContext inheritance until the Loaded rebind below:
+            // the pill realizes under its host's context (MainViewModel in
+            // the status bar), where ActiveProfileInfo doesn't exist, so
+            // every launch logged a binding path error before Loaded fired.
+            // A null context keeps the bindings dormant instead.
+            PillBorder.DataContext = null;
+
+            // The hosts inherit different DataContexts. Rebind to the
             // single notifying source instead: MainViewModel.Settings.
             // Resolved on Loaded because MainWindow assigns its DataContext
             // after InitializeComponent (same lookup as PadPage's

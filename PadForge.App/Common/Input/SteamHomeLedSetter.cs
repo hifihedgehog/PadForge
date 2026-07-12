@@ -54,14 +54,23 @@ namespace PadForge.Common.Input
         /// refires callbacks when the value actually changes, so repeated
         /// identical writes are free. SDL_SetHint is thread-safe. Never
         /// throws.</summary>
+        // Diag dedup only. SDL itself already ignores same-value hint
+        // writes, but the periodic apply lanes call TrySet every pass and
+        // an unconditional log line churned the diag cap.
+        private static string _lastLoggedValue;
+
         public static void TrySet(int percent)
         {
             string val = FormatHintValue(percent);
             try
             {
                 bool ok = SDL3.SDL.SDL_SetHint(HintName, val);
-                PadForge.Engine.SdlDiagLog.WriteLine(
-                    $"GUIDELED steam sethint val=\"{val}\" ret={ok}");
+                if (!string.Equals(val, _lastLoggedValue, StringComparison.Ordinal))
+                {
+                    _lastLoggedValue = val;
+                    PadForge.Engine.SdlDiagLog.WriteLine(
+                        $"GUIDELED steam sethint val=\"{val}\" ret={ok}");
+                }
             }
             catch (Exception ex)
             {

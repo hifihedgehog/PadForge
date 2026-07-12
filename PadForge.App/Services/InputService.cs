@@ -3000,6 +3000,8 @@ namespace PadForge.Services
         /// tab edits (ActiveDeviceConfigPropertyChanged in MainWindow),
         /// and the 30 s slow lane. Both writers change-detect, so
         /// re-entry is cheap.</summary>
+        private string _lastGuideLedApplySummary;
+
         internal void ApplyGuideLeds()
         {
             try
@@ -3065,9 +3067,19 @@ namespace PadForge.Services
                 if (steamPercent >= 0)
                     PadForge.Common.Input.SteamHomeLedSetter.TrySet(steamPercent);
 
+                // Positive-control summary, logged only when it CHANGES:
+                // the periodic lanes re-run this every pass and identical
+                // summaries were pure diag churn.
                 if (configured > 0)
-                    PadForge.Engine.SdlDiagLog.WriteLine(
-                        $"GUIDELED apply configured={configured} xboxPathed={xboxPathed} steam2015={steam2015} offline={offline}");
+                {
+                    string summary =
+                        $"GUIDELED apply configured={configured} xboxPathed={xboxPathed} steam2015={steam2015} offline={offline}";
+                    if (!string.Equals(summary, _lastGuideLedApplySummary, StringComparison.Ordinal))
+                    {
+                        _lastGuideLedApplySummary = summary;
+                        PadForge.Engine.SdlDiagLog.WriteLine(summary);
+                    }
+                }
             }
             catch { /* LED writes are cosmetic, never block a tick */ }
         }
@@ -4640,13 +4652,6 @@ namespace PadForge.Services
 
                 // ExtraSources / CombineMode / CombineExpression from
                 // the matching MappingSet row.
-                // #155 clobber probe: the VM value about to be replaced by
-                // the domain mirror. With the immediate-push fix the domain
-                // already carries the user's latest edit, so this never
-                // differs for a StickTrim row. A logged CLOBBER means a
-                // stale-domain reload slipped through and reverted an
-                // unsaved edit, the exact failure the fix targets.
-                bool priorTrimReset = mapping.TrimResetOnRelease;
                 mapping.ExtraSources.Clear();
                 mapping.CombineMode = "";
                 mapping.CombineExpression = "";
@@ -4660,10 +4665,6 @@ namespace PadForge.Services
                     mapping.TrimDeadzone = msRow2.TrimDeadzone;
                     mapping.TrimRate = msRow2.TrimRate;
                     mapping.TrimResetOnRelease = msRow2.TrimResetOnRelease;
-                    if (string.Equals(msRow2.CombineMode, "StickTrim", StringComparison.Ordinal)
-                        && priorTrimReset != msRow2.TrimResetOnRelease)
-                        PadForge.Engine.SdlDiagLog.WriteLine(
-                            $"STICKTRIM reload CLOBBER target={target} layer={activeMask} vmWas={priorTrimReset} domain={msRow2.TrimResetOnRelease}");
                     if (msRow2.Sources != null)
                     {
                         // Sources[0] is the primary (Direct descriptor or a kind loaded

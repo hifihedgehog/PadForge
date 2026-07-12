@@ -1491,16 +1491,7 @@ namespace PadForge.ViewModels
         public bool TrimResetOnRelease
         {
             get => _trimResetOnRelease;
-            set
-            {
-                // #155 probe: logs every binding WRITE attempt, changed or
-                // not, before the change gate. Distinguishes "binding never
-                // writes" (no line on click) from "writes but value already
-                // matches" (was == now) from "changed but unobserved".
-                PadForge.Engine.SdlDiagLog.WriteLine(
-                    $"STICKTRIM vm-set target={TargetSettingName} now={value} was={_trimResetOnRelease}");
-                SetProperty(ref _trimResetOnRelease, value);
-            }
+            set => SetProperty(ref _trimResetOnRelease, value);
         }
 
         public RelayCommand ResetTrimDeadzoneCommand =>

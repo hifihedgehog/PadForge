@@ -19,6 +19,15 @@
   <a href="https://x.com/hifihedgehog"><img src="https://img.shields.io/badge/X-@hifihedgehog-black?logo=x&logoColor=white" alt="Follow on X"></a>
 </p>
 
+<p align="center">
+  <a href="https://www.softpedia.com/get/Gaming-Related/PadForge.shtml">
+    <img src="screenshots/softpedia-excellent-editors-review-award.png" alt="Softpedia Editor's Pick: rated 5 out of 5, Excellent" height="120">
+  </a>
+</p>
+
+<p align="center"><b>Softpedia Editor's Pick: rated 5/5, Excellent.</b><br>
+<i>"PadForge shines best in its incredibly vast range of supported controller types."</i> (<a href="https://www.softpedia.com/get/Gaming-Related/PadForge.shtml">Softpedia's editor review</a>)</p>
+
 **PadForge makes any input look like any controller.** Plug in a steering wheel. The game sees a PlayStation pad. Use a DualSense. The game sees an Xbox 360. Map your keyboard. The game sees a flight stick. Open a tab on your phone. That tab becomes a gamepad your PC games can use.
 
 Free Windows app. No subscription. No paywall. No nag screens. Built on SDL3, [HIDMaestro](https://github.com/hifihedgehog/HIDMaestro), [OpenXInput](https://github.com/hifihedgehog/OpenXinput), HidHide, Windows MIDI Services, HelixToolkit, WPF UI, and .NET 10.

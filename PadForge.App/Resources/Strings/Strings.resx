@@ -752,6 +752,22 @@
   <data name="Pad_MidiStartNoteTooltip" xml:space="preserve"><value>First MIDI note number (0-127, 60 = Middle C). Higher values reduce max Note Count.</value></data>
   <data name="Pad_MidiVelocity" xml:space="preserve"><value>Velocity</value></data>
   <data name="Pad_MidiVelocityTooltip" xml:space="preserve"><value>Note-on velocity (0-127). How hard virtual keys are pressed.</value></data>
+  <data name="Pad_Kbm_Socd_Label" xml:space="preserve"><value>Simultaneous Opposite Directions</value></data>
+  <data name="Pad_Kbm_Socd_Tooltip" xml:space="preserve"><value>Resolves both keys of an opposing pair being held at once, like Snap Tap. Applies to this slot's virtual keyboard output.</value></data>
+  <data name="Pad_Kbm_Socd_Mode_Off_Name" xml:space="preserve"><value>Off</value></data>
+  <data name="Pad_Kbm_Socd_Mode_Off_Description" xml:space="preserve"><value>Both keys pass through unchanged.</value></data>
+  <data name="Pad_Kbm_Socd_Mode_LastWins_Name" xml:space="preserve"><value>Last Wins (Snap Tap)</value></data>
+  <data name="Pad_Kbm_Socd_Mode_LastWins_Description" xml:space="preserve"><value>The most recent press wins. Releasing it re-presses the still-held opposite key.</value></data>
+  <data name="Pad_Kbm_Socd_Mode_Neutral_Name" xml:space="preserve"><value>Neutral</value></data>
+  <data name="Pad_Kbm_Socd_Mode_Neutral_Description" xml:space="preserve"><value>Holding both keys releases both until one is let go.</value></data>
+  <data name="Pad_Kbm_Socd_Mode_FirstWins_Name" xml:space="preserve"><value>First Wins</value></data>
+  <data name="Pad_Kbm_Socd_Mode_FirstWins_Description" xml:space="preserve"><value>The earlier press keeps winning until it is released.</value></data>
+  <data name="Pad_Kbm_Socd_AddPair" xml:space="preserve"><value>Add Pair</value></data>
+  <data name="Pad_Kbm_Socd_AddPair_Tooltip" xml:space="preserve"><value>Adds another opposing key pair.</value></data>
+  <data name="Pad_Kbm_Socd_RemovePair_Tooltip" xml:space="preserve"><value>Removes this key pair.</value></data>
+  <data name="Pad_Kbm_Socd_KeyA_Tooltip" xml:space="preserve"><value>First key of the opposing pair.</value></data>
+  <data name="Pad_Kbm_Socd_KeyB_Tooltip" xml:space="preserve"><value>Second key of the opposing pair.</value></data>
+  <data name="Pad_Kbm_Socd_Reset" xml:space="preserve"><value>Reset Simultaneous Opposite Directions</value></data>
   <data name="Pad_SwitchTo2D" xml:space="preserve"><value>Switch to 2D view</value></data>
   <data name="Pad_SwitchTo3D" xml:space="preserve"><value>Switch to 3D view</value></data>
   <data name="Pad_TestLeftMotor" xml:space="preserve"><value>Click to test left motor</value></data>

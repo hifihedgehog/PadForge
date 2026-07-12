@@ -1387,6 +1387,7 @@ namespace PadForge.Services
             ApplyExtendedConfigs(appSettings.ExtendedConfigs);
             ApplyDeviceSlotConfigs(appSettings.DeviceSlotConfigs);
             ApplyMidiConfigs(appSettings.MidiConfigs);
+            ApplyKbmConfigs(appSettings.KbmConfigs);
 
             // Load DSU motion server settings (now on Dashboard VM).
             _mainVm.Dashboard.EnableDsuMotionServer = appSettings.EnableDsuMotionServer;
@@ -1515,7 +1516,7 @@ namespace PadForge.Services
             }
 
             // MIDI port layout (channel / velocity / CC + note ranges) is
-            // also slot-output-shape data — only meaningful across MIDI slots.
+            // also slot-output-shape data, only meaningful across MIDI slots.
             if (src.OutputType == Engine.VirtualControllerType.Midi
                 && dst.OutputType == Engine.VirtualControllerType.Midi)
             {
@@ -1530,6 +1531,20 @@ namespace PadForge.Services
                     d.StartNote = s.StartNote;
                     d.NoteCount = s.NoteCount;
                     dst.RebuildMappings();
+                }
+            }
+
+            // SOCD (#205) is KBM slot-output-shape data, only meaningful
+            // across Keyboard & Mouse slots.
+            if (src.OutputType == Engine.VirtualControllerType.KeyboardMouse
+                && dst.OutputType == Engine.VirtualControllerType.KeyboardMouse)
+            {
+                var s = src.KbmConfig;
+                var d = dst.KbmConfig;
+                if (s != null && d != null)
+                {
+                    d.SocdMode = s.SocdMode;
+                    d.SocdPairs = s.SocdPairs;
                 }
             }
         }
@@ -1768,6 +1783,39 @@ namespace PadForge.Services
             d.StartNote = cfg.StartNote;
             d.NoteCount = cfg.NoteCount;
             padVm.RebuildMappings();
+        }
+
+        /// <summary>Snapshots the KBM (SOCD) layout for a single slot.
+        /// Returns null when the slot isn't KeyboardMouse.</summary>
+        public ViewModels.KbmSlotConfigData BuildKbmConfigSnapshotForSlot(int slotIndex)
+        {
+            if (slotIndex < 0 || slotIndex >= _mainVm.Pads.Count) return null;
+            var padVm = _mainVm.Pads[slotIndex];
+            if (padVm == null) return null;
+            if (padVm.OutputType != Engine.VirtualControllerType.KeyboardMouse) return null;
+            var cfg = padVm.KbmConfig;
+            if (cfg == null) return null;
+            return new ViewModels.KbmSlotConfigData
+            {
+                SlotIndex = slotIndex,
+                SocdMode = cfg.SocdMode,
+                SocdPairs = cfg.SocdPairs,
+            };
+        }
+
+        /// <summary>Paste companion. Only applies when both source and
+        /// destination are KeyboardMouse slots.</summary>
+        public void ApplyKbmConfigToSlot(int slotIndex, ViewModels.KbmSlotConfigData cfg)
+        {
+            if (cfg == null) return;
+            if (slotIndex < 0 || slotIndex >= _mainVm.Pads.Count) return;
+            var padVm = _mainVm.Pads[slotIndex];
+            if (padVm == null) return;
+            if (padVm.OutputType != Engine.VirtualControllerType.KeyboardMouse) return;
+            var d = padVm.KbmConfig;
+            if (d == null) return;
+            d.SocdMode = cfg.SocdMode;
+            d.SocdPairs = cfg.SocdPairs;
         }
 
         /// <summary>
@@ -2107,6 +2155,27 @@ namespace PadForge.Services
                             break;
                         }
                     }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Applies per-slot KBM (SOCD) configurations. Only restores configs
+        /// for slots that are currently created as KeyboardMouse.
+        /// </summary>
+        private void ApplyKbmConfigs(ViewModels.KbmSlotConfigData[] configs)
+        {
+            if (configs == null) return;
+            foreach (var cfgData in configs)
+            {
+                int idx = cfgData.SlotIndex;
+                if (idx >= 0 && idx < _mainVm.Pads.Count &&
+                    SettingsManager.SlotCreated[idx] &&
+                    _mainVm.Pads[idx].OutputType == Engine.VirtualControllerType.KeyboardMouse)
+                {
+                    var cfg = _mainVm.Pads[idx].KbmConfig;
+                    cfg.SocdMode = cfgData.SocdMode;
+                    cfg.SocdPairs = cfgData.SocdPairs;
                 }
             }
         }
@@ -2649,6 +2718,7 @@ namespace PadForge.Services
                 ApplyExtendedConfigs(active.ExtendedConfigs);
                 ApplyDeviceSlotConfigs(active.DeviceSlotConfigs);
                 ApplyMidiConfigs(active.MidiConfigs);
+                ApplyKbmConfigs(active.KbmConfigs);
 
                 // Apply DSU/Web/overlay settings from the active profile.
                 _mainVm.Dashboard.EnableDsuMotionServer = active.EnableDsuMotionServer;
@@ -2720,6 +2790,7 @@ namespace PadForge.Services
             profile.ExtendedConfigs = BuildExtendedConfigSnapshot();
             profile.DeviceSlotConfigs = BuildDeviceConfigSnapshot();
             profile.MidiConfigs = BuildMidiConfigSnapshot();
+            profile.KbmConfigs = BuildKbmConfigSnapshot();
             // Macros ride profiles: edits made while this profile is active
             // persist into it, so switching away and back keeps them, and a
             // .pfprofile export carries them (with their sound packages).
@@ -3099,6 +3170,7 @@ namespace PadForge.Services
                 DeviceSlotConfigs = isDefault ? deviceSlotConfigs.ToArray() : defaultSnap.DeviceSlotConfigs,
                 UserProfiles = _userProfiles.Count > 0 ? _userProfiles.ToArray() : null,
                 MidiConfigs = isDefault ? BuildMidiConfigs() : defaultSnap.MidiConfigs,
+                KbmConfigs = isDefault ? BuildKbmConfigs() : defaultSnap.KbmConfigs,
                 XboxSlotOrder          = isDefault ? SettingsManager.XboxSlotOrder.ToArray()          : defaultSnap.XboxSlotOrder,
                 PlayStationSlotOrder   = isDefault ? SettingsManager.PlayStationSlotOrder.ToArray()   : defaultSnap.PlayStationSlotOrder,
                 ExtendedSlotOrder      = isDefault ? SettingsManager.ExtendedSlotOrder.ToArray()      : defaultSnap.ExtendedSlotOrder,
@@ -3288,6 +3360,45 @@ namespace PadForge.Services
                     StartCc = cfg.StartCc,
                     NoteCount = cfg.NoteCount,
                     StartNote = cfg.StartNote
+                });
+            }
+            return list.ToArray();
+        }
+
+        /// <summary>
+        /// Snapshots KBM (SOCD) configs for only created KeyboardMouse slots
+        /// (for profile storage).
+        /// </summary>
+        private ViewModels.KbmSlotConfigData[] BuildKbmConfigSnapshot()
+        {
+            var list = new System.Collections.Generic.List<ViewModels.KbmSlotConfigData>();
+            for (int i = 0; i < _mainVm.Pads.Count; i++)
+            {
+                if (!SettingsManager.SlotCreated[i] ||
+                    _mainVm.Pads[i].OutputType != Engine.VirtualControllerType.KeyboardMouse)
+                    continue;
+                var cfg = _mainVm.Pads[i].KbmConfig;
+                list.Add(new ViewModels.KbmSlotConfigData
+                {
+                    SlotIndex = i,
+                    SocdMode = cfg.SocdMode,
+                    SocdPairs = cfg.SocdPairs
+                });
+            }
+            return list.Count > 0 ? list.ToArray() : null;
+        }
+
+        private ViewModels.KbmSlotConfigData[] BuildKbmConfigs()
+        {
+            var list = new System.Collections.Generic.List<ViewModels.KbmSlotConfigData>();
+            for (int i = 0; i < _mainVm.Pads.Count; i++)
+            {
+                var cfg = _mainVm.Pads[i].KbmConfig;
+                list.Add(new ViewModels.KbmSlotConfigData
+                {
+                    SlotIndex = i,
+                    SocdMode = cfg.SocdMode,
+                    SocdPairs = cfg.SocdPairs
                 });
             }
             return list.ToArray();
@@ -3752,6 +3863,7 @@ namespace PadForge.Services
                 // the rest of the session.
                 padVm.ExtendedConfig.ResetToDefaults();
                 padVm.MidiConfig.ResetToDefaults();
+                padVm.KbmConfig.ResetToDefaults();
                 padVm.OutputType = Engine.VirtualControllerType.Xbox;
                 padVm.ProfileId = Common.Input.InputManager.GetDefaultProfileId(padVm.OutputType);
                 padVm.ActiveLayerMask = "Base";
@@ -4512,6 +4624,14 @@ namespace PadForge.Services
         public ViewModels.MidiSlotConfigData[] MidiConfigs { get; set; }
 
         /// <summary>
+        /// Per-slot keyboard + mouse configuration (SOCD / Snap Tap,
+        /// discussion #205). Null on old settings files, which use defaults.
+        /// </summary>
+        [XmlArray("KbmConfigs")]
+        [XmlArrayItem("Config")]
+        public ViewModels.KbmSlotConfigData[] KbmConfigs { get; set; }
+
+        /// <summary>
         /// Full snapshot of the default profile's state, saved when a named
         /// profile is active so the default can be restored on restart.
         /// Null when the default profile is active (its state is in the
@@ -4963,6 +5083,11 @@ namespace PadForge.Services
         [XmlArray("ProfileMidiConfigs")]
         [XmlArrayItem("MidiConfig")]
         public ViewModels.MidiSlotConfigData[] MidiConfigs { get; set; }
+
+        /// <summary>Per-slot KBM (SOCD) configurations saved with this profile.</summary>
+        [XmlArray("ProfileKbmConfigs")]
+        [XmlArrayItem("KbmConfig")]
+        public ViewModels.KbmSlotConfigData[] KbmConfigs { get; set; }
 
         /// <summary>Whether the DSU motion server was enabled in this profile.</summary>
         [XmlElement]

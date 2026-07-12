@@ -1863,6 +1863,12 @@ namespace PadForge.Engine.Data
         [System.Text.Json.Serialization.JsonIgnore]
         public string SlotMidiConfigJson { get; set; }
 
+        /// <summary>Opaque JSON payload for the KBM slot configuration
+        /// snapshot (SOCD mode + key pairs, discussion #205).</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        [System.Text.Json.Serialization.JsonIgnore]
+        public string SlotKbmConfigJson { get; set; }
+
         /// <summary>Opaque JSON payload for the slot's shift authoring
         /// (ShiftActivators + Base flyout appearance), so Copy / Paste carries
         /// shift layers like Copy From does (#119).</summary>
@@ -1982,6 +1988,8 @@ namespace PadForge.Engine.Data
                 dict["__SlotExtendedConfig"] = SlotExtendedConfigJson;
             if (!string.IsNullOrEmpty(SlotMidiConfigJson))
                 dict["__SlotMidiConfig"] = SlotMidiConfigJson;
+            if (!string.IsNullOrEmpty(SlotKbmConfigJson))
+                dict["__SlotKbmConfig"] = SlotKbmConfigJson;
             if (!string.IsNullOrEmpty(SlotShiftActivatorsJson))
                 dict["__SlotShiftActivators"] = SlotShiftActivatorsJson;
             if (!string.IsNullOrEmpty(SlotPerDeviceSettingsJson))
@@ -2106,6 +2114,8 @@ namespace PadForge.Engine.Data
                             ps.SlotExtendedConfigJson = kvp.Value;
                         else if (kvp.Key == "__SlotMidiConfig")
                             ps.SlotMidiConfigJson = kvp.Value;
+                        else if (kvp.Key == "__SlotKbmConfig")
+                            ps.SlotKbmConfigJson = kvp.Value;
                         else if (kvp.Key == "__SlotShiftActivators")
                             ps.SlotShiftActivatorsJson = kvp.Value;
                         else if (kvp.Key == "__SlotPerDeviceSettings")

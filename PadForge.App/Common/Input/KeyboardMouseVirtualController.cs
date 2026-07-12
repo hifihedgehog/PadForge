@@ -41,6 +41,15 @@ namespace PadForge.Common.Input
         // Scroll sensitivity: lines per frame at full axis deflection.
         private const float ScrollSensitivity = 3.0f;
 
+        // SOCD cleaner (discussion #205, Snap Tap). Transforms the logical
+        // key bitset before change detection; no-op while mode is Off.
+        private readonly SocdCleaner _socd = new();
+        // Applied config references for the per-poll fast path: the UI thread
+        // swaps whole strings on the slot config (reference writes are
+        // atomic), so two reference compares detect an edit.
+        private string _appliedSocdMode;
+        private string _appliedSocdPairs;
+
         public VirtualControllerType Type => VirtualControllerType.KeyboardMouse;
         public bool IsConnected => _connected;
         public int FeedbackPadIndex { get; set; }
@@ -56,6 +65,22 @@ namespace PadForge.Common.Input
             _connected = true;
             _prevKeys0 = _prevKeys1 = _prevKeys2 = _prevKeys3 = 0;
             _prevMouseButtons = 0;
+            _socd.Reset();
+        }
+
+        /// <summary>
+        /// Applies the slot's SOCD config. Called from the poll loop before
+        /// each submit; reference-compare fast path keeps the steady-state
+        /// cost at two compares.
+        /// </summary>
+        public void ApplySocdConfig(string mode, string pairs)
+        {
+            if (ReferenceEquals(mode, _appliedSocdMode)
+                && ReferenceEquals(pairs, _appliedSocdPairs))
+                return;
+            _appliedSocdMode = mode;
+            _appliedSocdPairs = pairs;
+            _socd.Configure(mode, pairs);
         }
 
         public void Disconnect()
@@ -81,6 +106,14 @@ namespace PadForge.Common.Input
         public void SubmitKbmState(KbmRawState raw)
         {
             if (!_connected) return;
+
+            // --- SOCD cleaning (discussion #205) ---
+            // Transforms the logical bitset before change detection AND
+            // before the _prevKeys assignment, so suppressing a loser emits
+            // its key-up and a later release of the winner lets the still-
+            // held loser's bit through again as a fresh key-down (Snap Tap
+            // re-press, hitboxer's OPPOSITE mode).
+            _socd.Apply(ref raw.Keys0, ref raw.Keys1, ref raw.Keys2, ref raw.Keys3);
 
             // --- Keyboard keys (change detection per VK) ---
             ProcessKeyWord(raw.Keys0, _prevKeys0, 0);
@@ -182,15 +215,28 @@ namespace PadForge.Common.Input
 
         private void ProcessKeyWord(ulong current, ulong previous, int baseVk)
         {
+            // Releases before presses, hitboxer's structural discipline
+            // (windows.jai low_level_keyboard_proc: the loser's KEYUP is
+            // injected before the winner's keydown propagates). Without
+            // the two passes, a SOCD swap whose new key has a lower VK
+            // bit than the suppressed key emitted the key-down first,
+            // and a game sampling between the two SendInput calls saw
+            // both opposite directions held, the exact state SOCD
+            // cleaning exists to make unobservable.
             ulong changed = current ^ previous;
             if (changed == 0) return;
 
+            ulong releases = changed & ~current;
+            ulong presses = changed & current;
             for (int bit = 0; bit < 64; bit++)
             {
-                ulong mask = 1UL << bit;
-                if ((changed & mask) == 0) continue;
-                bool pressed = (current & mask) != 0;
-                SendKeyboard((ushort)(baseVk + bit), pressed);
+                if ((releases & (1UL << bit)) == 0) continue;
+                SendKeyboard((ushort)(baseVk + bit), false);
+            }
+            for (int bit = 0; bit < 64; bit++)
+            {
+                if ((presses & (1UL << bit)) == 0) continue;
+                SendKeyboard((ushort)(baseVk + bit), true);
             }
         }
 

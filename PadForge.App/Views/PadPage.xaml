@@ -877,6 +877,101 @@
             </StackPanel>
         </Border>
 
+        <!-- ══════════════════════════════════════
+             ROW 1 (alt): KBM CONFIGURATION BAR
+             (visible only when OutputType == KeyboardMouse)
+             SOCD / Snap Tap, discussion #205.
+             ══════════════════════════════════════ -->
+        <Border Grid.Row="1" Margin="4,4,4,0"
+                Padding="10,6" CornerRadius="4"
+                Background="{DynamicResource SolidBackgroundFillColorBaseBrush}"
+                BorderBrush="{DynamicResource TextFillColorDisabledBrush}" BorderThickness="1">
+            <Border.Style>
+                <Style TargetType="Border">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding OutputType}" Value="KeyboardMouse">
+                            <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Border.Style>
+            <WrapPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <TextBlock Text="{Binding Pad_Kbm_Socd_Label, Source={x:Static strings:Strings.Instance}}"
+                           VerticalAlignment="Center" Margin="0,0,4,0" FontSize="13"
+                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                           ToolTip="{Binding Pad_Kbm_Socd_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                <!-- Mode dropdown mirrors the Combine dropdown (Name +
+                     Description in the open list, one-line name on the
+                     closed face). -->
+                <ComboBox ItemsSource="{Binding KbmConfig.AvailableSocdModes}"
+                          SelectedValue="{Binding KbmConfig.SocdMode, Mode=TwoWay}"
+                          SelectedValuePath="Value"
+                          MinWidth="170" VerticalAlignment="Center" Padding="4,2"
+                          ToolTip="{Binding Pad_Kbm_Socd_Tooltip, Source={x:Static strings:Strings.Instance}}">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Vertical" Margin="0,2,0,2">
+                                <TextBlock Text="{Binding Name}" FontWeight="SemiBold" FontSize="12"/>
+                                <TextBlock Text="{Binding Description}"
+                                           FontSize="10"
+                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                           TextWrapping="Wrap" MaxWidth="260"
+                                           Visibility="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ComboBoxItem}}, Converter={StaticResource NullToCollapsedConverter}, FallbackValue=Collapsed}"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+                <ui:Button Command="{Binding KbmConfig.ResetSocdCommand}" Style="{StaticResource ResetButton}"
+                           VerticalAlignment="Center" Margin="4,0,10,0"
+                           ToolTip="{Binding Pad_Kbm_Socd_Reset, Source={x:Static strings:Strings.Instance}}"/>
+                <!-- Key pairs: two pickers per pair, sourced from the same
+                     key set as the KBM mapping targets. Never a raw text box. -->
+                <ItemsControl ItemsSource="{Binding KbmConfig.SocdPairItems}" VerticalAlignment="Center">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel Orientation="Horizontal"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal" Margin="0,0,8,0">
+                                <ComboBox ItemsSource="{Binding KeyOptions}"
+                                          SelectedValue="{Binding VkA, Mode=TwoWay}"
+                                          SelectedValuePath="Vk" DisplayMemberPath="Label"
+                                          MinWidth="60" VerticalAlignment="Center" Padding="4,2"
+                                          ToolTip="{Binding Pad_Kbm_Socd_KeyA_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                <TextBlock Text="/" VerticalAlignment="Center" Margin="3,0"
+                                           Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
+                                <ComboBox ItemsSource="{Binding KeyOptions}"
+                                          SelectedValue="{Binding VkB, Mode=TwoWay}"
+                                          SelectedValuePath="Vk" DisplayMemberPath="Label"
+                                          MinWidth="60" VerticalAlignment="Center" Padding="4,2"
+                                          ToolTip="{Binding Pad_Kbm_Socd_KeyB_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                <ui:Button Style="{StaticResource EmberIconButtonHot}"
+                                           VerticalAlignment="Center" Margin="2,0,0,0"
+                                           Command="{Binding DataContext.KbmConfig.RemoveSocdPairCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                           CommandParameter="{Binding}">
+                                    <TextBlock Text="&#xE74D;" FontFamily="Segoe MDL2 Assets"
+                                               Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
+                                    <ui:Button.ToolTip>
+                                        <TextBlock Text="{Binding Pad_Kbm_Socd_RemovePair_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    </ui:Button.ToolTip>
+                                </ui:Button>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                <Button Command="{Binding KbmConfig.AddSocdPairCommand}" VerticalAlignment="Center" Padding="10,4"
+                        ToolTip="{Binding Pad_Kbm_Socd_AddPair_Tooltip, Source={x:Static strings:Strings.Instance}}">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="&#xE710;" FontFamily="Segoe MDL2 Assets" FontSize="12" Margin="0,0,6,0" VerticalAlignment="Center"/>
+                        <TextBlock Text="{Binding Pad_Kbm_Socd_AddPair, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
+            </WrapPanel>
+        </Border>
+
         <!-- Expose Mappings count for UI Automation tests (invisible but accessible) -->
         <TextBlock AutomationProperties.AutomationId="MappingsCountIndicator"
                    AutomationProperties.Name="{Binding Mappings.Count}"

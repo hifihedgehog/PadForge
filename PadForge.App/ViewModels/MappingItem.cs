@@ -1490,6 +1490,18 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _trimResetOnRelease, value);
         }
 
+        public RelayCommand ResetTrimDeadzoneCommand =>
+            _resetTrimDeadzone ??= new RelayCommand(() => TrimDeadzone = 25);
+        private RelayCommand _resetTrimDeadzone;
+
+        public RelayCommand ResetTrimRateCommand =>
+            _resetTrimRate ??= new RelayCommand(() => TrimRate = 100);
+        private RelayCommand _resetTrimRate;
+
+        public RelayCommand ResetTrimResetOnReleaseCommand =>
+            _resetTrimResetOnRelease ??= new RelayCommand(() => TrimResetOnRelease = true);
+        private RelayCommand _resetTrimResetOnRelease;
+
         /// <summary>Friendly entry for the Combine dropdown. Pairs the
         /// engine's mode name (Value, e.g. "MaxAbs") with a layman
         /// label and one-line description so non-STEM users aren't

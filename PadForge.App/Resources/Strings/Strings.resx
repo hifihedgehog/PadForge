@@ -2347,4 +2347,16 @@
   <data name="Pad_Shift_AutoCancel_Tooltip" xml:space="preserve">
     <value>While the layer is toggled on, it switches itself back off after this many milliseconds with none of the layer's own mapped inputs active. The timer starts when the layer engages and restarts on every layer input. 0 keeps the layer on until you toggle it off yourself.</value>
   </data>
+  <data name="Pad_ResetTrimDeadzone" xml:space="preserve">
+    <value>Reset the trim deadzone to 25%.</value>
+  </data>
+  <data name="Pad_ResetTrimRate" xml:space="preserve">
+    <value>Reset the trim speed to 100% per second.</value>
+  </data>
+  <data name="Pad_ResetTrimResetOnRelease" xml:space="preserve">
+    <value>Reset to snapping the level back to 100% on release.</value>
+  </data>
+  <data name="Pad_ResetShiftAutoCancel" xml:space="preserve">
+    <value>Reset auto-cancel to 0 (the layer stays on until toggled off).</value>
+  </data>
 </root>

@@ -283,19 +283,19 @@
   <data name="About_Description" xml:space="preserve"><value>PadForge는 모든 입력 장치를 모든 가상 컨트롤러로 변환합니다. 게임패드, 조이스틱, 키보드, 마우스, 터치스크린을 가상 게임 컨트롤러(Xbox, PlayStation, 플라이트 스틱, 휠, 서드파티 게임패드) 또는 키보드+마우스/MIDI 출력으로 매핑하여 게임이 실제 하드웨어로 인식하게 합니다. HIDMaestro와 Windows MIDI Services로 구동됩니다. 컨트롤러 입력에는 SDL3, 키보드와 마우스 입력에는 Windows Raw Input, 게임별 장치 숨김에는 HidHide를 사용하며, 매핑, 데드존, 감도 곡선, 포스 피드백을 위한 Fluent Design 인터페이스를 제공합니다.</value></data>
   <data name="About_BuiltWith" xml:space="preserve"><value>사용 기술</value></data>
   <data name="About_DotNet10" xml:space="preserve"><value>.NET 10</value></data>
-  <data name="About_DotNet10Desc" xml:space="preserve"><value>런타임 및 WPF 프레임워크</value></data>
+  <data name="About_DotNet10Desc" xml:space="preserve"><value>런타임 및 WPF 프레임워크. MIT.</value></data>
   <data name="About_SDL3" xml:space="preserve"><value>SDL3</value></data>
-  <data name="About_SDL3Desc" xml:space="preserve"><value>컨트롤러 입력 및 열거</value></data>
+  <data name="About_SDL3Desc" xml:space="preserve"><value>컨트롤러 입력 및 열거. zlib.</value></data>
   <data name="About_RawInput" xml:space="preserve"><value>Raw Input</value></data>
   <data name="About_RawInputDesc" xml:space="preserve"><value>장치별 키보드 및 마우스 입력</value></data>
   <data name="About_MidiServices" xml:space="preserve"><value>MIDI Services</value></data>
-  <data name="About_MidiServicesDesc" xml:space="preserve"><value>가상 MIDI 장치 출력 (Windows MIDI Services)</value></data>
+  <data name="About_MidiServicesDesc" xml:space="preserve"><value>가상 MIDI 장치 출력 (Windows MIDI Services). MIT.</value></data>
   <data name="About_HelixToolkit" xml:space="preserve"><value>HelixToolkit</value></data>
-  <data name="About_HelixToolkitDesc" xml:space="preserve"><value>3D 컨트롤러 시각화</value></data>
+  <data name="About_HelixToolkitDesc" xml:space="preserve"><value>3D 컨트롤러 시각화. MIT.</value></data>
   <data name="About_ModernWpf" xml:space="preserve"><value>WPF UI</value></data>
-  <data name="About_ModernWpfDesc" xml:space="preserve"><value>WPF용 Fluent 2 디자인 시스템</value></data>
+  <data name="About_ModernWpfDesc" xml:space="preserve"><value>WPF용 Fluent 2 디자인 시스템. MIT.</value></data>
   <data name="About_MvvmToolkit" xml:space="preserve"><value>MVVM Toolkit</value></data>
-  <data name="About_MvvmToolkitDesc" xml:space="preserve"><value>데이터 바인딩을 위한 CommunityToolkit.Mvvm</value></data>
+  <data name="About_MvvmToolkitDesc" xml:space="preserve"><value>데이터 바인딩을 위한 CommunityToolkit.Mvvm. MIT.</value></data>
   <data name="About_License" xml:space="preserve"><value>라이선스</value></data>
   <data name="About_LicenseText" xml:space="preserve"><value>이 소프트웨어는 CC BY-NC-SA 4.0 (Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International) 라이선스를 따릅니다. 3D 컨트롤러 모델은 Handheld Companion (CC BY-NC-SA 4.0)에서 가져와 수정한 것입니다. 2D 컨트롤러 에셋은 AL2009man의 Gamepad-Asset-Pack (MIT)에서 가져왔습니다. 원본 코드베이스는 x360ce (MIT)에서 포크되었습니다. SDL3은 zlib 라이선스를 따릅니다. HIDMaestro, Windows MIDI Services, HidHide, HelixToolkit, WPF UI는 MIT 라이선스를 따릅니다. OpenXInput은 상위 프로젝트의 상표 면책 조항만 포함하며, 동일한 조건으로 그대로 재배포됩니다.</value></data>
 
@@ -1277,11 +1277,11 @@
   <data name="Settings_HmInactivityTimeoutTooltip" xml:space="preserve"><value>매핑된 모든 장치가 오프라인일 때 가상 컨트롤러가 제거되기까지의 시간(초)입니다. 0이면 비활성화됩니다. 남은 컨트롤러는 빈 자리를 메우기 위해 위로 이동하고 더 낮은 XInput 슬롯에 다시 바인딩됩니다.</value></data>
   <data name="Settings_SecondsZeroNever" xml:space="preserve"><value>초 (0 = 안 함)</value></data>
   <data name="About_HIDMaestro" xml:space="preserve"><value>HIDMaestro</value></data>
-  <data name="About_HIDMaestroDesc" xml:space="preserve"><value>사용자 모드 가상 HID 컨트롤러 엔진 (ViGEmBus 및 vJoy 대체)</value></data>
+  <data name="About_HIDMaestroDesc" xml:space="preserve"><value>사용자 모드 가상 HID 컨트롤러 엔진 (ViGEmBus 및 vJoy 대체). MIT.</value></data>
   <data name="About_HidHide" xml:space="preserve"><value>HidHide</value></data>
-  <data name="About_HidHideDesc" xml:space="preserve"><value>게임에서 물리적 장치를 숨기는 커널 드라이버</value></data>
+  <data name="About_HidHideDesc" xml:space="preserve"><value>게임에서 물리적 장치를 숨기는 커널 드라이버. MIT.</value></data>
   <data name="About_OpenXInput" xml:space="preserve"><value>OpenXInput</value></data>
-  <data name="About_OpenXInputDesc" xml:space="preserve"><value>XInput 드롭인 대체; PadForge 자체의 가상 컨트롤러를 자신의 뷰에서 제외합니다</value></data>
+  <data name="About_OpenXInputDesc" xml:space="preserve"><value>XInput 드롭인 대체; PadForge 자체의 가상 컨트롤러를 자신의 뷰에서 제외합니다. 업스트림 상표 고지, OSS 라이선스 없음.</value></data>
   <data name="About_ZackslyIcons" xml:space="preserve"><value>Zacksly 아이콘 팩</value></data>
   <data name="About_ZackslyIconsDesc" xml:space="preserve"><value>Zacksly의 "Xbox Series Button Icons and Controls"(CC BY 3.0)에서 파생된 스틱 및 트리거 아이콘</value></data>
   <data name="About_Concentus" xml:space="preserve"><value>Concentus</value></data>
@@ -2179,6 +2179,34 @@
   <data name="About_DsHidMiniDesc" xml:space="preserve"><value>Benjamin Höglinger-Stelzer의 DualShock 3 프로토콜 참조 자료: sixpair 기능 리포트, Bluetooth 출력 리포트 템플릿, 활성화 순서, 배터리 맵. PadForge의 구현은 독자적인 C#입니다. BSD 3-Clause.</value></data>
   <data name="About_NefariusDevMgmt" xml:space="preserve"><value>Nefarius.Utilities.DeviceManagement</value></data>
   <data name="About_NefariusDevMgmtDesc" xml:space="preserve"><value>앱 내 BthPS3 설정을 위한 드라이버 저장소 설치, Bluetooth 클래스 필터 등록, USB 포트 순환. nefarius 제작. MIT.</value></data>
+  <data name="About_Libusb" xml:space="preserve"><value>libusb</value></data>
+  <data name="About_LibusbDesc" xml:space="preserve"><value>Switch 2 Pro 유선 드라이버를 위한 USB 액세스, libusb-1.0.dll로 제공. LGPL-2.1.</value></data>
+  <data name="About_Nipplejs" xml:space="preserve"><value>nipplejs</value></data>
+  <data name="About_NipplejsDesc" xml:space="preserve"><value>휴대폰 Web Controller의 터치 조이스틱, Yoann Moinet 제작. MIT.</value></data>
+  <data name="About_GameControllerDb" xml:space="preserve"><value>SDL_GameControllerDB</value></data>
+  <data name="About_GameControllerDbDesc" xml:space="preserve"><value>PadForge의 번들 매핑이 확장하는 커뮤니티 게임패드 매핑 데이터베이스. zlib.</value></data>
+  <data name="About_Xbledctl" xml:space="preserve"><value>xbledctl</value></data>
+  <data name="About_XbledctlDesc" xml:space="preserve"><value>Xbox 가이드 버튼 LED 연구: XboxGIP 패킷 레이아웃 및 검색 시퀀스, Leclowndu93150 제작. MIT.</value></data>
+  <data name="About_JoyShockMapper" xml:space="preserve"><value>JoyShockMapper</value></data>
+  <data name="About_JoyShockMapperDesc" xml:space="preserve"><value>감김 각도 조향 및 기울기 계산, JibbSmart 및 Electronicks 제작. MIT.</value></data>
+  <data name="About_GamepadMotionHelpers" xml:space="preserve"><value>GamepadMotionHelpers</value></data>
+  <data name="About_GamepadMotionHelpersDesc" xml:space="preserve"><value>플레이어 공간 및 월드 공간 자이로 변환, JibbSmart 제작. MIT.</value></data>
+  <data name="About_SteamControllerSinger" xml:space="preserve"><value>SteamControllerSinger</value></data>
+  <data name="About_SteamControllerSingerDesc" xml:space="preserve"><value>Steam Controller (2015) 햅틱 리포트 레이아웃 및 음표 주기 계산, Pila 및 Roboron3042 제작. BSD 3-Clause.</value></data>
+  <data name="About_SteamHapticsSinger" xml:space="preserve"><value>SteamHapticsSinger</value></data>
+  <data name="About_SteamHapticsSingerDesc" xml:space="preserve"><value>Steam Controller 2026 및 Steam Deck LFO 톤 햅틱 레이아웃, Pila, Crazy, AAGaming 제작. BSD 3-Clause.</value></data>
+  <data name="About_Hitboxer" xml:space="preserve"><value>hitboxer</value></data>
+  <data name="About_HitboxerDesc" xml:space="preserve"><value>Snap Tap 모드를 위한 SOCD 클리닝 시맨틱, valignatev 제작. MIT.</value></data>
+  <data name="About_Dolphin" xml:space="preserve"><value>Dolphin</value></data>
+  <data name="About_DolphinDesc" xml:space="preserve"><value>Wii 페어링 절차 및 스피커 ADPCM 문서. GPL, 문서로만 참조하며 GPL 코드는 제공하지 않음.</value></data>
+  <data name="About_Ds4Windows" xml:space="preserve"><value>DS4Windows</value></data>
+  <data name="About_Ds4WindowsDesc" xml:space="preserve"><value>DualShock 동작 문서: 유휴 연결 해제, 터치패드 경계, 배터리 디코딩. GPL, 문서 전용.</value></data>
+  <data name="About_XoneXow" xml:space="preserve"><value>xone / xow</value></data>
+  <data name="About_XoneXowDesc" xml:space="preserve"><value>xbledctl을 뒷받침하는 GIP LED 명령 문서. GPL, 문서 전용.</value></data>
+  <data name="About_WiimoteLib" xml:space="preserve"><value>WiimoteLib</value></data>
+  <data name="About_WiimoteLibDesc" xml:space="preserve"><value>Wii IR 카메라 및 밸런스 보드 동작 문서, Brian Peek 제작. Ms-PL.</value></data>
+  <data name="About_JoyconSinger" xml:space="preserve"><value>joycon-singer</value></data>
+  <data name="About_JoyconSingerDesc" xml:space="preserve"><value>Joy-Con HD 진동 와이어 포맷 문서, Sergey004 제작. 프로토콜 사실 확인용으로만 참조.</value></data>
   <data name="Dashboard_Services" xml:space="preserve"><value>서비스</value></data>
   <data name="Dashboard_Slot" xml:space="preserve"><value>슬롯</value></data>
   <data name="Dashboard_StatusCold" xml:space="preserve"><value>꺼짐</value></data>

@@ -132,9 +132,16 @@ namespace PadForge.Common.Input
                         st.Level, v, row.TrimDeadzone, row.TrimRate, dt);
                 }
             }
-            else if (!held && st.WasHeld && row.TrimResetOnRelease)
+            else if (!held && st.WasHeld)
             {
-                st.Level = 1f;
+                // #155 ground truth: what the ENGINE actually reads for
+                // this row at the release edge. resetFlag=true here means
+                // the domain row is true (persistence bug), false means
+                // the engine correctly holds the level.
+                PadForge.Engine.SdlDiagLog.WriteLine(
+                    $"STICKTRIM engine-release slot={slotIndex} target={row.Target} layer={row.LayerMask ?? "Base"} resetFlag={row.TrimResetOnRelease} level={st.Level:F2}");
+                if (row.TrimResetOnRelease)
+                    st.Level = 1f;
             }
             st.WasHeld = held;
 

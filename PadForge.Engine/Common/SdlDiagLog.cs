@@ -1,48 +1,39 @@
 using System;
-using System.IO;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using System.Text;
 
 namespace PadForge.Engine
 {
-    /// <summary>Ground-truth diagnostics for the ~10 s device-freeze
-    /// investigation (issue #210 follow-up): captures the SDL driver's own
-    /// SDL_LogDebug lines (the Wii Motion Plus state machine narrates its
-    /// CONNECTED/DISCONNECTED/status decisions there, otherwise invisible in
-    /// a WPF app) and accepts stall-watchdog lines from the poll loop. One
-    /// timestamped file, size-capped, always on: the write path costs nothing
-    /// unless a line is actually emitted, and steady-state SDL debug traffic
-    /// is event-driven, not per-frame.</summary>
+    /// <summary>In-memory diagnostics ring. PadForge writes no log file in
+    /// normal operation; the single sanctioned on-disk artifact is
+    /// crash.log. SDL's own log lines (DEBUG priority, e.g. driver state
+    /// machines), the poll-loop stall watchdogs, and subsystem diagnostics
+    /// accumulate in this bounded ring, and the crash handler appends the
+    /// ring's tail to crash.log so a crash still carries its recent
+    /// context. A healthy session leaves nothing on disk.</summary>
     public static class SdlDiagLog
     {
-        private const long MaxBytes = 8 * 1024 * 1024;
+        private const int MaxLines = 400;
         private static readonly object _sync = new object();
-        private static string _path;
+        private static readonly Queue<string> _ring = new Queue<string>(MaxLines);
         // Rooted so the GC never collects the delegate SDL holds.
         private static SDL3.SDL.SDL_LogOutputFunction _sdlCallback;
 
-        /// <summary>Installs the file sink and routes SDL's log output into
-        /// it at DEBUG priority. Call once, before SDL_Init, so init-time
-        /// messages are captured too. Never throws: diagnostics must not be
-        /// able to take the input stack down.</summary>
-        public static void Install(string path)
+        /// <summary>Routes SDL's log output into the ring at DEBUG
+        /// priority. Call once, before SDL_Init, so init-time messages are
+        /// captured too. Never throws: diagnostics must not be able to
+        /// take the input stack down.</summary>
+        public static void Install()
         {
             try
             {
-                lock (_sync)
-                {
-                    _path = path;
-                    File.AppendAllText(_path,
-                        $"{DateTime.Now:yyyy-MM-dd HH:mm:ss.fff} DIAG start pid={Environment.ProcessId}{Environment.NewLine}",
-                        Encoding.UTF8);
-                }
                 _sdlCallback = OnSdlLog;
                 SDL3.SDL.SDL_SetLogOutputFunction(_sdlCallback, IntPtr.Zero);
                 SDL3.SDL.SDL_SetLogPriorities(SDL3.SDL.SDL_LOG_PRIORITY_DEBUG);
             }
             catch
             {
-                _path = null;
+                // Diagnostics never throw into the input stack.
             }
         }
 
@@ -54,30 +45,34 @@ namespace PadForge.Engine
             WriteLine($"SDL [{category}/{priority}] {text}");
         }
 
-        /// <summary>Appends one timestamped line. Used by the SDL callback
-        /// and by the poll-loop stall watchdog. Silently drops on any I/O
-        /// error and truncates the file when it outgrows the cap.</summary>
+        /// <summary>Appends one timestamped line to the ring, evicting the
+        /// oldest when full. Never touches disk and never throws.</summary>
         public static void WriteLine(string line)
         {
-            var path = _path;
-            if (path == null)
-                return;
             try
             {
                 lock (_sync)
                 {
-                    var info = new FileInfo(path);
-                    if (info.Exists && info.Length > MaxBytes)
-                        File.WriteAllText(path, string.Empty);
-                    File.AppendAllText(path,
-                        $"{DateTime.Now:HH:mm:ss.fff} {line}{Environment.NewLine}",
-                        Encoding.UTF8);
+                    if (_ring.Count >= MaxLines) _ring.Dequeue();
+                    _ring.Enqueue($"{DateTime.Now:HH:mm:ss.fff} {line}");
                 }
             }
             catch
             {
                 // Diagnostics never throw into the input stack.
             }
+        }
+
+        /// <summary>The ring's current contents, oldest first. For the
+        /// crash handler's crash.log appendix.</summary>
+        public static string Snapshot()
+        {
+            try
+            {
+                lock (_sync)
+                    return string.Join(Environment.NewLine, _ring);
+            }
+            catch { return string.Empty; }
         }
     }
 }

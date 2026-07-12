@@ -109,11 +109,6 @@
                          Background="{DynamicResource ControlFillColorDefaultBrush}"/>
             </StackPanel>
 
-            <!-- Diagnostic log path (non-localized, it's a file path): mono readout -->
-            <TextBlock Grid.Row="5" x:Name="LogPathText" TextWrapping="Wrap"
-                       FontFamily="{StaticResource TelemetryFontFamily}" FontSize="11"
-                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
-
             <!-- Footer band (#175 dialog language): Pair is the dialog's
                  primary affirmative and wears the ember accent. -->
             <StackPanel Grid.Row="6" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,18,0,0">

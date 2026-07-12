@@ -28,7 +28,6 @@ namespace PadForge.Views
         {
             InitializeComponent();
             Closing += OnClosing;
-            LogPathText.Text = "Log: " + WiiPairingService.LogPath;
         }
 
         /// <summary>0 = Wii (inquiry scan), 1 = DualShock 3 (guided USB ceremony).</summary>
@@ -40,7 +39,6 @@ namespace PadForge.Views
             bool ds3 = IsDs3Family;
             InstructionsText.Text = ds3 ? Strings.Instance.Ds3Pair_Instructions
                                         : Strings.Instance.WiiPair_Instructions;
-            LogPathText.Text = "Log: " + (ds3 ? Ds3PairingService.LogPath : WiiPairingService.LogPath);
             // The "temporary pairing" and live found-list are Wii-only concepts.
             TemporaryCheck.Visibility = ds3 ? Visibility.Collapsed : Visibility.Visible;
             FoundPanel.Visibility = Visibility.Collapsed;

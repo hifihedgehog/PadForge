@@ -728,6 +728,10 @@ namespace PadForge.ViewModels
         /// </summary>
         public bool LegacyDriverCleanupOffered { get; set; }
 
+        /// <summary>True once the first-run welcome tour has been completed
+        /// or skipped (replaces the pre-v4 beside-exe marker file).</summary>
+        public bool FirstRunTourCompleted { get; set; }
+
         // ─────────────────────────────────────────────
         //  Main window position/size (profile-independent)
         // ─────────────────────────────────────────────

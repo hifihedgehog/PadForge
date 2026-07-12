@@ -5796,7 +5796,11 @@ namespace PadForge
         //  First-run welcome + spotlight tour (#175)
         // ─────────────────────────────────────────────
 
-        private static string FirstRunMarkerPath =>
+        /// <summary>Pre-v4 builds tracked tour completion with a marker
+        /// file beside the exe. The flag lives in PadForge.xml now (the
+        /// single settings file); this path exists only to honor and
+        /// delete a leftover marker on upgrade.</summary>
+        private static string LegacyFirstRunMarkerPath =>
             System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "PadForge.firstrun");
 
         private int _tourStep = -1;
@@ -5813,7 +5817,23 @@ namespace PadForge
         private void MaybeShowFirstRun(object sender, RoutedEventArgs e)
         {
             Loaded -= MaybeShowFirstRun;
-            if (!System.IO.File.Exists(FirstRunMarkerPath))
+            // Upgrade migration: a pre-v4 marker file means the tour was
+            // already completed. Fold it into the settings flag and remove
+            // the file from disk.
+            try
+            {
+                if (System.IO.File.Exists(LegacyFirstRunMarkerPath))
+                {
+                    if (!_viewModel.Settings.FirstRunTourCompleted)
+                    {
+                        _viewModel.Settings.FirstRunTourCompleted = true;
+                        _settingsService?.MarkDirty();
+                    }
+                    System.IO.File.Delete(LegacyFirstRunMarkerPath);
+                }
+            }
+            catch { }
+            if (!_viewModel.Settings.FirstRunTourCompleted)
                 FirstRunOverlay.Visibility = Visibility.Visible;
         }
 
@@ -5929,8 +5949,11 @@ namespace PadForge
             WelcomePanel.Visibility = Visibility.Visible;
             TourCanvas.Visibility = Visibility.Collapsed;
             _tourStep = -1;
-            try { System.IO.File.WriteAllText(FirstRunMarkerPath, DateTime.Now.ToString("o")); }
-            catch { /* marker is best effort; worst case the welcome shows again */ }
+            // Persisted in PadForge.xml (the one-time-gate pattern
+            // LegacyDriverCleanupOffered established): set at the mutation
+            // site, then MarkDirty schedules the save.
+            _viewModel.Settings.FirstRunTourCompleted = true;
+            _settingsService?.MarkDirty();
         }
 
         // ─────────────────────────────────────────────

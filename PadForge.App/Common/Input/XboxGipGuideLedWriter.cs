@@ -229,6 +229,39 @@ namespace PadForge.Common.Input
             return true;
         }
 
+        /// <summary>Selects the announced deviceIds a (VID, PID) brightness
+        /// request writes to. Direct identity matches win; with no match the
+        /// request falls back to EVERY announced deviceId. The fallback is
+        /// load-bearing, not best-effort politeness: the request key comes
+        /// from SDL's XInput lane, which SYNTHESIZES a generic product id
+        /// when RAWINPUT correlation is off (PadForge policy), while the GIP
+        /// announce carries the pad's real identity, so the two namespaces
+        /// need not ever agree. Bench ground truth 2026-07-12 (diag.log
+        /// 01:54): request 0x045E/0x02FF, announce 0x045E/0x0B12, LED lit
+        /// via the fallback. Restricting the fallback to identity-matched or
+        /// unidentified entries kills the feature on exactly that rig.
+        /// xbledctl parity agrees: the reference keys nothing on VID/PID
+        /// (xbox_led.c:71-74 takes hdr-&gt;deviceId only). Consequence,
+        /// documented and accepted: multiple GIP pads on one rig share a
+        /// brightness (last configured wins), because no field exists that
+        /// ties an announce to one SDL device.</summary>
+        internal static List<ulong> SelectWriteTargets(
+            (ushort Vid, ushort Pid) key,
+            IEnumerable<KeyValuePair<ulong, (ushort Vid, ushort Pid, ulong Address, long LastSeen)>> announced,
+            out bool fellBack)
+        {
+            var matches = new List<ulong>();
+            var all = new List<ulong>();
+            foreach (var a in announced)
+            {
+                all.Add(a.Key);
+                if (a.Value.Vid == key.Vid && a.Value.Pid == key.Pid)
+                    matches.Add(a.Key);
+            }
+            fellBack = matches.Count == 0 && all.Count > 0;
+            return fellBack ? all : matches;
+        }
+
         /// <summary>True when the device rides Windows' XInput lane
         /// (SDL's synthetic "XInput#N" path, SDL_xinputjoystick.c) AND is
         /// a first-party GIP pad (One / Elite / Series, the Microsoft
@@ -272,6 +305,15 @@ namespace PadForge.Common.Input
         private const int MaxPendingModels = 64;
         private const int MaxAttempts = 20;
 
+        /// <summary>Diag dedup only: last percent LOGGED per model (caller
+        /// threads) and pend lines already emitted (worker thread). Both
+        /// persist across the queue drain, unlike _pending, so steady-state
+        /// re-enqueues stay silent. Cleared wholesale at the model cap;
+        /// losing dedup state costs one duplicate log line, nothing
+        /// else.</summary>
+        private readonly ConcurrentDictionary<(ushort Vid, ushort Pid), int> _lastLoggedEnqueue = new();
+        private readonly HashSet<(ushort Vid, ushort Pid, int Percent)> _pendLogged = new();
+
         private readonly AutoResetEvent _work = new(false);
 
         // Worker-thread-only state.
@@ -285,6 +327,7 @@ namespace PadForge.Common.Input
         private bool _readPending;
         private byte _sequence = 1;
         private long _nextOpenAttemptTick;
+        private long _lastReenumNudgeTick;
 
         private const int ReadBufferSize = 4096;
         private const int OpenRetryCooldownMs = 15000;
@@ -327,17 +370,22 @@ namespace PadForge.Common.Input
                     && !_pending.ContainsKey((ud.VendorId, ud.ProdId))) return false;
 
                 int pct = Math.Clamp(percent0to100, 0, 100);
-                // Diag only on a CHANGED request: the apply lanes re-enqueue
-                // the same percent every pass and the writer change-detects,
-                // so steady state was ~2 log lines a second of no-ops that
-                // churned the 8 MB diag cap and drowned real signals.
-                bool changed = !_pending.TryGetValue((ud.VendorId, ud.ProdId), out var prior)
-                               || prior.Percent != pct;
                 _pending[(ud.VendorId, ud.ProdId)] = (pct, 0);
                 _work.Set();
+                // Diag only on a CHANGED request. The dedup ledger must be
+                // separate from _pending, which ProcessPending DRAINS on
+                // success: a drained key would read as "changed" on every
+                // 30 s re-enqueue and the gate would log a steady-state
+                // no-op line per pass, the exact churn it exists to stop.
+                if (_lastLoggedEnqueue.Count > MaxPendingModels) _lastLoggedEnqueue.Clear();
+                bool changed = !_lastLoggedEnqueue.TryGetValue((ud.VendorId, ud.ProdId), out int prior)
+                               || prior != pct;
                 if (changed)
+                {
+                    _lastLoggedEnqueue[(ud.VendorId, ud.ProdId)] = pct;
                     PadForge.Engine.SdlDiagLog.WriteLine(
                         $"GUIDELED enqueue vid=0x{ud.VendorId:X4} pid=0x{ud.ProdId:X4} pct={pct}");
+                }
                 return true;
             }
             catch
@@ -497,6 +545,14 @@ namespace PadForge.Common.Input
             return false;
         }
 
+        /// <summary>Last rx line logged, worker-thread-only. The interface
+        /// streams periodic status heartbeats (cmd 0x03 and 0x20 observed
+        /// every ~20 s on the bench), so an unconditional rx dump churns
+        /// thousands of identical lines a day. Consecutive duplicates are
+        /// suppressed from the LOG only; every message is still fully
+        /// processed.</summary>
+        private (int Read, byte Cmd, ulong DevId) _lastRxLogged;
+
         private void HarvestAnnounce(int read)
         {
             if (read < HeaderSize) return;
@@ -509,13 +565,19 @@ namespace PadForge.Common.Input
             // the next hardware run. Independent of the parser.
             ulong rawId = 0;
             for (int i = 0; i < 8; i++) rawId |= (ulong)buf[i] << (8 * i);
-            PadForge.Engine.SdlDiagLog.WriteLine(
-                $"GUIDELED rx len={read} cmd=0x{buf[8]:X2} devId=0x{rawId:X16}");
+            bool rxLogged = _lastRxLogged != (read, buf[8], rawId);
+            if (rxLogged)
+            {
+                _lastRxLogged = (read, buf[8], rawId);
+                PadForge.Engine.SdlDiagLog.WriteLine(
+                    $"GUIDELED rx len={read} cmd=0x{buf[8]:X2} devId=0x{rawId:X16}");
+            }
 
             if (!TryParseAnnounce(buf, buf.Length,
                     out ulong deviceId, out ushort vid, out ushort pid, out ulong address))
             {
-                PadForge.Engine.SdlDiagLog.WriteLine("GUIDELED rx noparse");
+                if (rxLogged)
+                    PadForge.Engine.SdlDiagLog.WriteLine("GUIDELED rx noparse");
                 return;
             }
 
@@ -569,42 +631,41 @@ namespace PadForge.Common.Input
                 var key = kvp.Key;
                 var (percent, attempts) = kvp.Value;
 
-                var matches = new List<ulong>();
-                foreach (var a in _announced)
-                    if (a.Value.Vid == key.Vid && a.Value.Pid == key.Pid)
-                        matches.Add(a.Key);
-
-                // xbledctl parity: the reference never keys the write on
-                // VID/PID, it writes to the discovered (single/selected)
-                // device. When our precise VID/PID match finds nothing
-                // (announces arrived as 0x01, or 0x02 without a parseable
-                // identity payload), fall back to every discovered GIP
-                // deviceId so the write still lands. Same-model shared
-                // brightness across two pads is the documented degenerate
-                // case; on the overwhelmingly common single-pad rig this
-                // simply targets the one controller.
-                bool fellBack = false;
-                if (matches.Count == 0 && _announced.Count > 0)
-                {
-                    foreach (var a in _announced) matches.Add(a.Key);
-                    fellBack = true;
-                }
+                var matches = SelectWriteTargets(key, _announced, out bool fellBack);
 
                 if (matches.Count == 0)
                 {
-                    // Diag on the FIRST miss only: while unmatched the 1 s
-                    // ticks re-walk this entry, and per-tick lines were the
-                    // bulk of the diag churn.
-                    if (attempts == 0)
+                    // Diag once per (model, percent) request generation. An
+                    // attempts==0 gate alone is defeated by the 30 s apply
+                    // lanes, which reset attempts on every re-enqueue: a
+                    // configured pad that never announces (Bluetooth) would
+                    // re-log forever.
+                    if (_pendLogged.Count > MaxPendingModels) _pendLogged.Clear();
+                    if (_pendLogged.Add((key.Vid, key.Pid, percent)))
                         PadForge.Engine.SdlDiagLog.WriteLine(
                             $"GUIDELED pend vid=0x{key.Vid:X4} pid=0x{key.Pid:X4} announced={_announced.Count} matches=0");
-                    // Nothing announced at all yet. Re-provoke announces
-                    // once, then let the 1 s ticks retry until the attempt
-                    // budget runs out (a Bluetooth Xbox pad legitimately
-                    // never announces).
-                    if (attempts == 0)
+                    // Nothing announced at all yet (this branch is reachable
+                    // only with an empty announce map, since the fallback
+                    // fills matches otherwise; the explicit gate pins that
+                    // invariant against future fallback changes, because
+                    // re-provoking with announces present would only storm
+                    // 0x02s from connected pads, invalidating their
+                    // _lastWritten and forcing a redundant write per cycle).
+                    // Re-provoke announces on a cooldown, then let the 1 s
+                    // ticks retry until the attempt budget runs out. The
+                    // cooldown matters because the ~2 s apply lanes reset
+                    // attempts on every re-enqueue, and the IOCTL ADDS a
+                    // caller context driver-side (xbledctl registers it
+                    // exactly once); an announce-less rig must not re-add
+                    // one every 2 s for the whole session.
+                    long nowNudge = Environment.TickCount64;
+                    if (attempts == 0 && _announced.Count == 0
+                        && nowNudge - _lastReenumNudgeTick >= OpenRetryCooldownMs)
+                    {
+                        _lastReenumNudgeTick = nowNudge;
                         DeviceIoControl(_handle, GipReenumerateIoctl,
                             IntPtr.Zero, 0, IntPtr.Zero, 0, out _, IntPtr.Zero);
+                    }
                     if (attempts + 1 >= MaxAttempts)
                         _pending.TryRemove(new KeyValuePair<(ushort, ushort), (int, int)>(key, kvp.Value));
                     else

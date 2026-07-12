@@ -99,6 +99,18 @@ namespace PadForge
 
             base.OnStartup(e);
 
+            // WPF data-binding failures are silent in production: they only
+            // reach the debugger trace channel, so a broken binding looks
+            // like a control that ignores clicks (the #155 Reset on Release
+            // checkbox produced no save and no event, indistinguishable
+            // from a wiring bug until traced). Forward binding ERRORS to
+            // diag.log so a dead binding names itself in the field.
+            System.Diagnostics.PresentationTraceSources.Refresh();
+            System.Diagnostics.PresentationTraceSources.DataBindingSource.Listeners.Add(
+                new DiagBindingTraceListener());
+            System.Diagnostics.PresentationTraceSources.DataBindingSource.Switch.Level =
+                System.Diagnostics.SourceLevels.Error;
+
             // Wire the MappingExpression parse-error translator (Issue
             // #61). The Engine project can't reference Strings.Instance
             // (App-only), so the parser holds a delegate it calls per
@@ -402,5 +414,24 @@ namespace PadForge
                     trace.Contains("NotifyPartitionIsZombie"));
         }
 
+    }
+
+    /// <summary>Forwards WPF data-binding ERROR traces to diag.log
+    /// (BINDERR lines). Errors only, so a healthy session writes
+    /// nothing. Never throws: a diagnostics listener must not take the
+    /// UI down.</summary>
+    internal sealed class DiagBindingTraceListener : System.Diagnostics.TraceListener
+    {
+        public override void Write(string message) { }
+
+        public override void WriteLine(string message)
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(message))
+                    Engine.SdlDiagLog.WriteLine("BINDERR " + message);
+            }
+            catch { }
+        }
     }
 }

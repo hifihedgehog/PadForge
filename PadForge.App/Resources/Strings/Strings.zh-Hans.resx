@@ -1461,7 +1461,7 @@
   <data name="Pad_Shift_NoInherit" xml:space="preserve"><value>不继承</value></data>
   <data name="Pad_Shift_NoInherit_Tooltip" xml:space="preserve"><value>选中时,此层的目标保持关闭,而不是回退到基础行。</value></data>
   <data name="Pad_Shift_Delay" xml:space="preserve"><value>延迟</value></data>
-  <data name="Pad_Shift_Delay_Tooltip" xml:space="preserve"><value>触发层切换之前激活器必须保持激活的毫秒数。</value></data>
+  <data name="Pad_Shift_Delay_Tooltip" xml:space="preserve"><value>输入必须保持按住多长时间层才会反应。在按住模式下这是防抖。对切换、锁定和粘性模式，它将切换变为长按：按住时间越过该值时层翻转一次，更短的点按无效。0 表示立即反应。</value></data>
   <data name="Pad_Shift_ChordSecondInput" xml:space="preserve"><value>和弦的第二个输入</value></data>
   <data name="Pad_Shift_AxisThreshold" xml:space="preserve"><value>轴阈值</value></data>
   <data name="Pad_Shift_CycleLayers" xml:space="preserve"><value>循环层</value></data>
@@ -2267,4 +2267,49 @@
   <data name="Pad_ResetSensorBarComp" xml:space="preserve"><value>重置垂直偏移</value></data>
   <data name="Pad_ResetIrSmoothing" xml:space="preserve"><value>重置平滑</value></data>
   <data name="Pad_ResetAudioMirror" xml:space="preserve"><value>重置音频镜像</value></data>
+  <data name="MacroAction_GuideLedBrightness_Format" xml:space="preserve"><value>指南键 LED 亮度：{0}%</value></data>
+  <data name="MacroAction_GuideLedBrightness_Tooltip" xml:space="preserve"><value>为插槽上每个支持的手柄设置指南键或 Home 键的 LED 亮度。Xbox 手柄仅在 USB 连接时接受。</value></data>
+  <data name="MacroAction_Type_GuideLedBrightness" xml:space="preserve"><value>设置指南键 LED 亮度</value></data>
+  <data name="Macro_GuideLedBrightness_Hint" xml:space="preserve"><value>适用于 USB 连接的 Xbox 手柄和 2015 款 Steam Controller。将两个此类动作配对使用，可在宏开始时闪烁 LED，并在结束时恢复。</value></data>
+  <data name="Pad_Combine_StickTrim_Description" xml:space="preserve"><value>该行的最后一个来源是微调摇杆。当其他来源保持扳机时，向上推摇杆会提高保持值，向下拉则降低。专为没有模拟扳机的手柄精细控制油门和刹车而设计。</value></data>
+  <data name="Pad_Combine_StickTrim_Name" xml:space="preserve"><value>摇杆微调</value></data>
+  <data name="Pad_Kbm_Socd_AddPair" xml:space="preserve"><value>添加键对</value></data>
+  <data name="Pad_Kbm_Socd_AddPair_Tooltip" xml:space="preserve"><value>再添加一个反向键对。</value></data>
+  <data name="Pad_Kbm_Socd_KeyA_Tooltip" xml:space="preserve"><value>反向键对中的第一个键。</value></data>
+  <data name="Pad_Kbm_Socd_KeyB_Tooltip" xml:space="preserve"><value>反向键对中的第二个键。</value></data>
+  <data name="Pad_Kbm_Socd_Label" xml:space="preserve"><value>同时反向输入</value></data>
+  <data name="Pad_Kbm_Socd_Mode_FirstWins_Description" xml:space="preserve"><value>先按下的键持续优先，直到它被松开。</value></data>
+  <data name="Pad_Kbm_Socd_Mode_FirstWins_Name" xml:space="preserve"><value>先按优先</value></data>
+  <data name="Pad_Kbm_Socd_Mode_LastWins_Description" xml:space="preserve"><value>最近按下的键优先。松开它时会重新按下仍被按住的反向键。</value></data>
+  <data name="Pad_Kbm_Socd_Mode_LastWins_Name" xml:space="preserve"><value>后按优先 (Snap Tap)</value></data>
+  <data name="Pad_Kbm_Socd_Mode_Neutral_Description" xml:space="preserve"><value>同时按住两个键会将两者都释放，直到松开其中一个。</value></data>
+  <data name="Pad_Kbm_Socd_Mode_Neutral_Name" xml:space="preserve"><value>中立</value></data>
+  <data name="Pad_Kbm_Socd_Mode_Off_Description" xml:space="preserve"><value>两个键均原样通过。</value></data>
+  <data name="Pad_Kbm_Socd_Mode_Off_Name" xml:space="preserve"><value>关闭</value></data>
+  <data name="Pad_Kbm_Socd_RemovePair_Tooltip" xml:space="preserve"><value>移除此键对。</value></data>
+  <data name="Pad_Kbm_Socd_Reset" xml:space="preserve"><value>重置同时反向输入</value></data>
+  <data name="Pad_Kbm_Socd_Tooltip" xml:space="preserve"><value>解决反向键对的两个键被同时按住的冲突，类似 Snap Tap。应用于此插槽的虚拟键盘输出。</value></data>
+  <data name="Pad_Lighting_GuideLed" xml:space="preserve"><value>指南键 LED</value></data>
+  <data name="Pad_Lighting_GuideLed_Battery" xml:space="preserve"><value>电池电量</value></data>
+  <data name="Pad_Lighting_GuideLed_Brightness" xml:space="preserve"><value>亮度</value></data>
+  <data name="Pad_Lighting_GuideLed_Brightness_Tooltip" xml:space="preserve"><value>指南键 LED 的亮度，从 0%（熄灭）到 100%（最亮）。仅在模式为固定亮度时生效。</value></data>
+  <data name="Pad_Lighting_GuideLed_DeviceDefault" xml:space="preserve"><value>设备默认</value></data>
+  <data name="Pad_Lighting_GuideLed_Fixed" xml:space="preserve"><value>固定亮度</value></data>
+  <data name="Pad_Lighting_GuideLed_Mode_Tooltip" xml:space="preserve"><value>设备默认让 LED 保持手柄固件设置的原样。固定亮度保持下方的亮度值。电池电量让电量越足 LED 越亮，且不会低于 10%。Xbox 手柄仅在 USB 连接时接受指南键 LED 命令，因此蓝牙连接下此设置无效。</value></data>
+  <data name="Pad_Lighting_GuideLed_Subtitle" xml:space="preserve"><value>发光的指南键或 Home 键的亮度。Xbox One 及之后的手柄在 USB 连接时接受。2015 款 Steam Controller 在任何连接下都接受，且所有 Steam Controller 共用同一个亮度。</value></data>
+  <data name="Pad_Mapping_TrimDeadzone" xml:space="preserve"><value>微调死区</value></data>
+  <data name="Pad_Mapping_TrimDeadzone_Tooltip" xml:space="preserve"><value>低于此百分比的摇杆偏移会被忽略，因此用同一摇杆转向时不会碰动保持的扳机值。只有摇杆更大幅度的纵向推动才会调整它。</value></data>
+  <data name="Pad_Mapping_TrimRate" xml:space="preserve"><value>微调速度</value></data>
+  <data name="Pad_Mapping_TrimRate_Tooltip" xml:space="preserve"><value>摇杆推到底时保持值滑动的速度，以每秒占扳机行程的百分比表示。100 表示一秒内从空到满。</value></data>
+  <data name="Pad_Mapping_TrimReset" xml:space="preserve"><value>松开时重置</value></data>
+  <data name="Pad_Mapping_TrimReset_Tooltip" xml:space="preserve"><value>勾选时，松开扳机会让保持值回到 100%，下次按下从满值开始。取消勾选时，微调后的值在松开后保留，直到再次调整。</value></data>
+  <data name="Pad_ResetGuideLed" xml:space="preserve"><value>重置指南键 LED</value></data>
+  <data name="Pad_ResetGuideLedBrightness" xml:space="preserve"><value>重置指南键 LED 亮度</value></data>
+  <data name="Pad_ResetGuideLedMode" xml:space="preserve"><value>重置指南键 LED 模式</value></data>
+  <data name="Pad_ResetShiftAutoCancel" xml:space="preserve"><value>将自动取消重置为 0（层保持开启，直到手动切换关闭）。</value></data>
+  <data name="Pad_ResetTrimDeadzone" xml:space="preserve"><value>将微调死区重置为 25%。</value></data>
+  <data name="Pad_ResetTrimRate" xml:space="preserve"><value>将微调速度重置为每秒 100%。</value></data>
+  <data name="Pad_ResetTrimResetOnRelease" xml:space="preserve"><value>重置为松开时保持值回到 100%。</value></data>
+  <data name="Pad_Shift_AutoCancel" xml:space="preserve"><value>无活动后自动取消</value></data>
+  <data name="Pad_Shift_AutoCancel_Tooltip" xml:space="preserve"><value>当层处于切换开启状态时，如果层自身映射的输入在这段毫秒数内均未激活，层会自动关闭。计时器在层激活时启动，并在每次层输入时重新计时。0 表示层保持开启，直到你手动关闭。</value></data>
 </root>

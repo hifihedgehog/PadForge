@@ -1462,7 +1462,7 @@
   <data name="Pad_Shift_NoInherit" xml:space="preserve"><value>Ne pas hériter</value></data>
   <data name="Pad_Shift_NoInherit_Tooltip" xml:space="preserve"><value>Lorsque coché, la cible de cette couche reste DÉSACTIVÉE au lieu de retomber sur la ligne Base.</value></data>
   <data name="Pad_Shift_Delay" xml:space="preserve"><value>Délai</value></data>
-  <data name="Pad_Shift_Delay_Tooltip" xml:space="preserve"><value>Millisecondes pendant lesquelles l'activateur doit rester engagé avant que le changement de couche se déclenche.</value></data>
+  <data name="Pad_Shift_Delay_Tooltip" xml:space="preserve"><value>Durée pendant laquelle l'entrée doit rester maintenue avant que la couche réagisse. En mode Maintenir, cela sert d'anti-rebond. Pour Bascule, Verrouiller et Collant, le changement devient un appui long : la couche bascule une fois quand le maintien dépasse cette durée, et un appui plus court ne fait rien. 0 réagit instantanément.</value></data>
   <data name="Pad_Shift_ChordSecondInput" xml:space="preserve"><value>Deuxième entrée de l'accord</value></data>
   <data name="Pad_Shift_AxisThreshold" xml:space="preserve"><value>Seuil de l'axe</value></data>
   <data name="Pad_Shift_CycleLayers" xml:space="preserve"><value>Parcourir les couches</value></data>
@@ -2267,4 +2267,49 @@
   <data name="Pad_ResetSensorBarComp" xml:space="preserve"><value>Réinitialiser le décalage vertical</value></data>
   <data name="Pad_ResetIrSmoothing" xml:space="preserve"><value>Réinitialiser le lissage</value></data>
   <data name="Pad_ResetAudioMirror" xml:space="preserve"><value>Réinitialiser la duplication audio</value></data>
+  <data name="MacroAction_GuideLedBrightness_Format" xml:space="preserve"><value>Luminosité de la LED Guide : {0}%</value></data>
+  <data name="MacroAction_GuideLedBrightness_Tooltip" xml:space="preserve"><value>Définit la luminosité de la LED du bouton Guide ou Home pour chaque manette compatible du slot. Les manettes Xbox ne l'acceptent qu'en USB.</value></data>
+  <data name="MacroAction_Type_GuideLedBrightness" xml:space="preserve"><value>Définir la luminosité de la LED Guide</value></data>
+  <data name="Macro_GuideLedBrightness_Hint" xml:space="preserve"><value>S'applique aux manettes Xbox en USB et au Steam Controller de 2015. Associez deux de ces actions pour faire clignoter la LED au début d'une macro et la restaurer à la fin.</value></data>
+  <data name="Pad_Combine_StickTrim_Description" xml:space="preserve"><value>La dernière source de la ligne est un stick de trim. Pendant que les autres sources maintiennent la gâchette, pousser le stick vers le haut augmente le niveau retenu et le tirer vers le bas le diminue. Conçu pour doser finement l'accélérateur et le frein sur les manettes sans gâchettes analogiques.</value></data>
+  <data name="Pad_Combine_StickTrim_Name" xml:space="preserve"><value>Trim au stick</value></data>
+  <data name="Pad_Kbm_Socd_AddPair" xml:space="preserve"><value>Ajouter une paire</value></data>
+  <data name="Pad_Kbm_Socd_AddPair_Tooltip" xml:space="preserve"><value>Ajoute une autre paire de touches opposées.</value></data>
+  <data name="Pad_Kbm_Socd_KeyA_Tooltip" xml:space="preserve"><value>Première touche de la paire opposée.</value></data>
+  <data name="Pad_Kbm_Socd_KeyB_Tooltip" xml:space="preserve"><value>Seconde touche de la paire opposée.</value></data>
+  <data name="Pad_Kbm_Socd_Label" xml:space="preserve"><value>Directions opposées simultanées</value></data>
+  <data name="Pad_Kbm_Socd_Mode_FirstWins_Description" xml:space="preserve"><value>L'appui le plus ancien continue de gagner jusqu'à son relâchement.</value></data>
+  <data name="Pad_Kbm_Socd_Mode_FirstWins_Name" xml:space="preserve"><value>La première gagne</value></data>
+  <data name="Pad_Kbm_Socd_Mode_LastWins_Description" xml:space="preserve"><value>L'appui le plus récent gagne. Son relâchement réappuie la touche opposée encore maintenue.</value></data>
+  <data name="Pad_Kbm_Socd_Mode_LastWins_Name" xml:space="preserve"><value>La dernière gagne (Snap Tap)</value></data>
+  <data name="Pad_Kbm_Socd_Mode_Neutral_Description" xml:space="preserve"><value>Maintenir les deux touches les relâche toutes les deux jusqu'à ce que l'une soit lâchée.</value></data>
+  <data name="Pad_Kbm_Socd_Mode_Neutral_Name" xml:space="preserve"><value>Neutre</value></data>
+  <data name="Pad_Kbm_Socd_Mode_Off_Description" xml:space="preserve"><value>Les deux touches passent sans modification.</value></data>
+  <data name="Pad_Kbm_Socd_Mode_Off_Name" xml:space="preserve"><value>Désactivé</value></data>
+  <data name="Pad_Kbm_Socd_RemovePair_Tooltip" xml:space="preserve"><value>Retire cette paire de touches.</value></data>
+  <data name="Pad_Kbm_Socd_Reset" xml:space="preserve"><value>Réinitialiser les directions opposées simultanées</value></data>
+  <data name="Pad_Kbm_Socd_Tooltip" xml:space="preserve"><value>Résout le maintien simultané des deux touches d'une paire opposée, comme Snap Tap. S'applique à la sortie clavier virtuel de ce slot.</value></data>
+  <data name="Pad_Lighting_GuideLed" xml:space="preserve"><value>LED du bouton Guide</value></data>
+  <data name="Pad_Lighting_GuideLed_Battery" xml:space="preserve"><value>Niveau de batterie</value></data>
+  <data name="Pad_Lighting_GuideLed_Brightness" xml:space="preserve"><value>Luminosité</value></data>
+  <data name="Pad_Lighting_GuideLed_Brightness_Tooltip" xml:space="preserve"><value>Luminosité de la LED du bouton Guide de 0% (éteinte) à 100% (pleine). S'applique tant que le mode est Luminosité fixe.</value></data>
+  <data name="Pad_Lighting_GuideLed_DeviceDefault" xml:space="preserve"><value>Par défaut de l'appareil</value></data>
+  <data name="Pad_Lighting_GuideLed_Fixed" xml:space="preserve"><value>Luminosité fixe</value></data>
+  <data name="Pad_Lighting_GuideLed_Mode_Tooltip" xml:space="preserve"><value>Par défaut de l'appareil laisse la LED exactement comme le firmware de la manette l'a réglée. Luminosité fixe maintient le niveau ci-dessous. Niveau de batterie rend la LED plus lumineuse quand la batterie est plus pleine et ne descend jamais sous 10%. Les manettes Xbox n'acceptent les commandes de LED Guide qu'en USB, ce réglage n'a donc aucun effet en Bluetooth.</value></data>
+  <data name="Pad_Lighting_GuideLed_Subtitle" xml:space="preserve"><value>Luminosité du bouton lumineux Guide ou Home. Les manettes Xbox One et ultérieures l'acceptent en USB. Le Steam Controller de 2015 l'accepte sur toute connexion, et tous les Steam Controller partagent une même luminosité.</value></data>
+  <data name="Pad_Mapping_TrimDeadzone" xml:space="preserve"><value>Zone morte du trim</value></data>
+  <data name="Pad_Mapping_TrimDeadzone_Tooltip" xml:space="preserve"><value>La déflexion du stick sous ce pourcentage est ignorée, pour que diriger avec le même stick ne décale jamais le niveau retenu de la gâchette. Seules les poussées verticales plus franches du stick l'ajustent.</value></data>
+  <data name="Pad_Mapping_TrimRate" xml:space="preserve"><value>Vitesse du trim</value></data>
+  <data name="Pad_Mapping_TrimRate_Tooltip" xml:space="preserve"><value>Vitesse à laquelle un stick à fond fait glisser le niveau retenu, en pourcentage de la course de la gâchette par seconde. 100 balaie de vide à plein en une seconde.</value></data>
+  <data name="Pad_Mapping_TrimReset" xml:space="preserve"><value>Réinitialiser au relâchement</value></data>
+  <data name="Pad_Mapping_TrimReset_Tooltip" xml:space="preserve"><value>Lorsque coché, relâcher la gâchette ramène le niveau retenu à 100%, la prochaine pression repart donc à plein. Décoché, le niveau ajusté est conservé d'un relâchement à l'autre jusqu'au prochain ajustement.</value></data>
+  <data name="Pad_ResetGuideLed" xml:space="preserve"><value>Réinitialiser la LED du bouton Guide</value></data>
+  <data name="Pad_ResetGuideLedBrightness" xml:space="preserve"><value>Réinitialiser la luminosité de la LED Guide</value></data>
+  <data name="Pad_ResetGuideLedMode" xml:space="preserve"><value>Réinitialiser le mode de la LED Guide</value></data>
+  <data name="Pad_ResetShiftAutoCancel" xml:space="preserve"><value>Réinitialiser l'annulation automatique à 0 (la couche reste active jusqu'à sa désactivation).</value></data>
+  <data name="Pad_ResetTrimDeadzone" xml:space="preserve"><value>Réinitialiser la zone morte du trim à 25%.</value></data>
+  <data name="Pad_ResetTrimRate" xml:space="preserve"><value>Réinitialiser la vitesse du trim à 100% par seconde.</value></data>
+  <data name="Pad_ResetTrimResetOnRelease" xml:space="preserve"><value>Réinitialiser au retour du niveau à 100% au relâchement.</value></data>
+  <data name="Pad_Shift_AutoCancel" xml:space="preserve"><value>Annulation automatique après inactivité</value></data>
+  <data name="Pad_Shift_AutoCancel_Tooltip" xml:space="preserve"><value>Tant que la couche est activée par bascule, elle se désactive d'elle-même après ce nombre de millisecondes sans aucune des entrées mappées propres à la couche. Le minuteur démarre à l'activation de la couche et repart à chaque entrée de la couche. 0 garde la couche active jusqu'à ce que vous la désactiviez vous-même.</value></data>
 </root>

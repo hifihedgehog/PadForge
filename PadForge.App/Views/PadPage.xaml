@@ -3727,7 +3727,7 @@
                                                 <Slider Value="{Binding ParamReverseMultiplier, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Minimum="1" Maximum="10" SmallChange="1" LargeChange="1" Width="70" VerticalAlignment="Center"
                                                         ToolTip="{Binding Pad_Mapping_Ramp_Reverse_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                                 <TextBox Text="{Binding ParamReverseMultiplier, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat={}{0:0.0}}" Width="40" Margin="4,0,8,0" Padding="2,1" VerticalContentAlignment="Center"/>
-                                                <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}" Content="{Binding Pad_Mapping_Ramp_Autocenter, Source={x:Static strings:Strings.Instance}}" IsChecked="{Binding ParamAutocenter, Mode=TwoWay}" VerticalAlignment="Center" Margin="0,0,8,0"
+                                                <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}" Content="{Binding Pad_Mapping_Ramp_Autocenter, Source={x:Static strings:Strings.Instance}}" IsChecked="{Binding ParamAutocenter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Margin="0,0,8,0"
                                                           ToolTip="{Binding Pad_Mapping_Ramp_Autocenter_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                             </StackPanel>
                                             <StackPanel Orientation="Horizontal" VerticalAlignment="Center"
@@ -3736,7 +3736,7 @@
                                                 <Slider Value="{Binding ParamRate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Minimum="0.05" Maximum="5" SmallChange="0.05" LargeChange="0.5" Width="80" VerticalAlignment="Center"
                                                         ToolTip="{Binding Pad_Mapping_Rate_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                                 <TextBox Text="{Binding ParamRate, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat={}{0:0.00}}" Width="44" Margin="4,0,8,0" Padding="2,1" VerticalContentAlignment="Center"/>
-                                                <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}" Content="{Binding Pad_Mapping_Sticky, Source={x:Static strings:Strings.Instance}}" IsChecked="{Binding ParamSticky, Mode=TwoWay}" VerticalAlignment="Center" Margin="0,0,8,0"
+                                                <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}" Content="{Binding Pad_Mapping_Sticky, Source={x:Static strings:Strings.Instance}}" IsChecked="{Binding ParamSticky, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Margin="0,0,8,0"
                                                           ToolTip="{Binding Pad_Mapping_Sticky_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                                 <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Pad_Mapping_Min, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="0,0,2,0"/>
                                                 <TextBox Text="{Binding ParamMin, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat={}{0:0.00}}" Width="44" Margin="0,0,6,0" Padding="2,1" VerticalContentAlignment="Center"
@@ -3811,7 +3811,7 @@
                                             <TextBox Text="{Binding TrimRate, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Width="40" Margin="4,0,0,0" Padding="2,1" VerticalContentAlignment="Center"/>
                                             <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="%/s" VerticalAlignment="Center" Margin="1,0,2,0"/>
                                             <ui:Button Command="{Binding ResetTrimRateCommand}" Style="{StaticResource ResetButtonTight}" ToolTip="{Binding Pad_ResetTrimRate, Source={x:Static strings:Strings.Instance}}" Margin="0,0,8,0"/>
-                                            <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}" Content="{Binding Pad_Mapping_TrimReset, Source={x:Static strings:Strings.Instance}}" IsChecked="{Binding TrimResetOnRelease, Mode=TwoWay}" VerticalAlignment="Center" Margin="0,0,2,0"
+                                            <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}" Content="{Binding Pad_Mapping_TrimReset, Source={x:Static strings:Strings.Instance}}" IsChecked="{Binding TrimResetOnRelease, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Margin="0,0,2,0"
                                                       Checked="TrimReset_Toggled" Unchecked="TrimReset_Toggled"
                                                       ToolTip="{Binding Pad_Mapping_TrimReset_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                             <ui:Button Command="{Binding ResetTrimResetOnReleaseCommand}" Style="{StaticResource ResetButtonTight}" ToolTip="{Binding Pad_ResetTrimResetOnRelease, Source={x:Static strings:Strings.Instance}}" Margin="0,0,8,0"/>
@@ -4535,7 +4535,7 @@
                                                                      Width="44" Margin="4,0,8,0" Padding="2,1"
                                                                      VerticalContentAlignment="Center"/>
                                                             <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}" Content="{Binding Pad_Mapping_Sticky, Source={x:Static strings:Strings.Instance}}"
-                                                                      IsChecked="{Binding ParamSticky, Mode=TwoWay}"
+                                                                      IsChecked="{Binding ParamSticky, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                                       VerticalAlignment="Center" Margin="0,0,8,0"
                                                                       ToolTip="{Binding Pad_Mapping_Sticky_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                                             <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Pad_Mapping_Min, Source={x:Static strings:Strings.Instance}}"
@@ -4685,7 +4685,7 @@
                                                                      Width="40" Margin="4,0,8,0" Padding="2,1"
                                                                      VerticalContentAlignment="Center"/>
                                                             <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}" Content="{Binding Pad_Mapping_Ramp_Autocenter, Source={x:Static strings:Strings.Instance}}"
-                                                                      IsChecked="{Binding ParamAutocenter, Mode=TwoWay}"
+                                                                      IsChecked="{Binding ParamAutocenter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                                       VerticalAlignment="Center" Margin="0,0,8,0"
                                                                       ToolTip="{Binding Pad_Mapping_Ramp_Autocenter_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                                         </StackPanel>

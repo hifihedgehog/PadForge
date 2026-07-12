@@ -138,6 +138,50 @@ namespace PadForge.Tests
             Assert.Equal(0, pid);
         }
 
+        // ── Write-target selection (which announced pads a request hits) ──
+
+        private static KeyValuePair<ulong, (ushort Vid, ushort Pid, ulong Address, long LastSeen)>
+            Announced(ulong deviceId, ushort vid, ushort pid)
+            => new(deviceId, (vid, pid, 0UL, 0L));
+
+        [Fact]
+        public void Targets_Direct_Identity_Match_Wins()
+        {
+            var targets = XboxGipGuideLedWriter.SelectWriteTargets(
+                (0x045E, 0x0B12),
+                new[] { Announced(1, 0x045E, 0x0B12), Announced(2, 0x045E, 0x02EA) },
+                out bool fellBack);
+            Assert.Equal(new ulong[] { 1 }, targets);
+            Assert.False(fellBack);
+        }
+
+        [Fact]
+        public void Targets_Fall_Back_To_Every_Announce_On_Identity_Mismatch()
+        {
+            // The LOAD-BEARING path, bench-proven 2026-07-12: SDL's XInput
+            // lane synthesizes a generic PID (0x02FF observed) while the GIP
+            // announce carries the real one (0x0B12), so a direct match can
+            // never be required. A request that matches nothing writes to
+            // every announced pad, identified or not.
+            var targets = XboxGipGuideLedWriter.SelectWriteTargets(
+                (0x045E, 0x02FF),
+                new[] { Announced(1, 0x045E, 0x0B12), Announced(7, 0, 0) },
+                out bool fellBack);
+            Assert.Equal(new ulong[] { 1, 7 }, targets);
+            Assert.True(fellBack);
+        }
+
+        [Fact]
+        public void Targets_Empty_When_Nothing_Announced()
+        {
+            var targets = XboxGipGuideLedWriter.SelectWriteTargets(
+                (0x045E, 0x0B12),
+                System.Array.Empty<KeyValuePair<ulong, (ushort, ushort, ulong, long)>>(),
+                out bool fellBack);
+            Assert.Empty(targets);
+            Assert.False(fellBack);
+        }
+
         [Fact]
         public void Announce_Parser_Rejects_Unknown_Command_And_Short_Header()
         {

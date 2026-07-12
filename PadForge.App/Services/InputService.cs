@@ -1180,7 +1180,13 @@ namespace PadForge.Services
                             if (dev == null || dev.InstanceGuid == Guid.Empty) continue;
                             var ud = FindUserDevice(dev.InstanceGuid);
                             if (ud == null || !ud.IsOnline) continue;
-                            if (PadForge.Common.Input.XboxGipGuideLedWriter.IsXboxGipPathed(ud))
+                            // A shared peer device's Guide LED lives on the OWNER's
+                            // machine: relay the percent (#209) instead of writing
+                            // local hardware. A shared 2015 Steam Controller would
+                            // otherwise dim THIS PC's local SCs via the global hint.
+                            if (ud.Device is PadForge.Engine.RemoteLink.RemotePeerDevice rpd)
+                                PadForge.Common.Input.RemoteLinkOutputRouter.ShipGuideLed(rpd.DevicePath, pct);
+                            else if (PadForge.Common.Input.XboxGipGuideLedWriter.IsXboxGipPathed(ud))
                                 PadForge.Common.Input.XboxGipGuideLedWriter.Instance.TrySetBrightness(ud, pct);
                             else if (PadForge.Common.Input.SteamHomeLedSetter.IsSteamController2015(ud.VendorId, ud.ProdId))
                                 PadForge.Common.Input.SteamHomeLedSetter.TrySet(pct);
@@ -3017,7 +3023,7 @@ namespace PadForge.Services
                 // Positive control: an apply pass that walks a configured
                 // device but reaches neither writer is distinguishable
                 // from a silent writer, both lanes in the same log window.
-                int configured = 0, xboxPathed = 0, steam2015 = 0, offline = 0;
+                int configured = 0, xboxPathed = 0, steam2015 = 0, offline = 0, peer = 0;
 
                 foreach (var padVm in _mainVm.Pads)
                 {
@@ -3043,6 +3049,18 @@ namespace PadForge.Services
                         else
                         {
                             percent = Math.Clamp(cfg.GuideLedBrightness, 0, 100);
+                        }
+
+                        // A shared peer device's Guide LED lives on the OWNER's
+                        // machine. Relay the percent (#209) and take the device OUT
+                        // of the LOCAL Steam single-winner competition below, or a
+                        // shared 2015 Steam Controller (VID 0x28DE) would dim THIS
+                        // PC's local Steam Controllers through the process-global hint.
+                        if (ud.Device is PadForge.Engine.RemoteLink.RemotePeerDevice rpd)
+                        {
+                            peer++;
+                            PadForge.Common.Input.RemoteLinkOutputRouter.ShipGuideLed(rpd.DevicePath, percent);
+                            continue;
                         }
 
                         if (PadForge.Common.Input.XboxGipGuideLedWriter.IsXboxGipPathed(ud))
@@ -3073,7 +3091,7 @@ namespace PadForge.Services
                 if (configured > 0)
                 {
                     string summary =
-                        $"GUIDELED apply configured={configured} xboxPathed={xboxPathed} steam2015={steam2015} offline={offline}";
+                        $"GUIDELED apply configured={configured} xboxPathed={xboxPathed} steam2015={steam2015} peer={peer} offline={offline}";
                     if (!string.Equals(summary, _lastGuideLedApplySummary, StringComparison.Ordinal))
                     {
                         _lastGuideLedApplySummary = summary;
@@ -7142,6 +7160,12 @@ namespace PadForge.Services
                                 HasHaptic = dev.HasHaptic,
                                 HasGyro = dev.HasGyro,
                                 HasAccel = dev.HasAccel,
+                                // Aux (left-side) accelerometer (#199/#208): the
+                                // device-list wire already reserves bit 128 and the
+                                // consumer's picker gates 'Motion Accel L' on it, but
+                                // the flag was never populated here, so it shipped
+                                // dead (always false) and the source stayed un-pickable.
+                                HasAccelAux = dev.HasAccelAux,
                                 HasTouchpad = dev.HasTouchpad,
                                 NumTouchpads = dev.NumTouchpads,
                                 TouchpadFingerCounts = dev.TouchpadFingerCounts,
@@ -7288,9 +7312,11 @@ namespace PadForge.Services
             // Sole-writer guard (#138): this frame means a remote game is driving the
             // shared device. Refresh the output lease so the owner's LOCAL output pipeline
             // yields. The apply below is the sole hardware writer (no two-writer stutter).
-            // PlayerIndex is exempt: it's an LED-number update, not an effect claim, so it
-            // must not blank a locally-mapped device's rumble/lightbar for OutputLeaseMs.
-            if (effect.Kind != OutputEffectCodec.Kind.PlayerIndex)
+            // PlayerIndex and GuideLed are exempt: both are cosmetic LED updates, not
+            // effect claims, so they must not blank a locally-mapped device's
+            // rumble/lightbar for OutputLeaseMs.
+            if (effect.Kind != OutputEffectCodec.Kind.PlayerIndex
+                && effect.Kind != OutputEffectCodec.Kind.GuideLed)
                 RemoteLinkOutputRouter.ClaimOutput(ud?.DevicePath ?? source.DevicePath);
             try
             {
@@ -7314,6 +7340,25 @@ namespace PadForge.Services
                             byte brake    = (byte)(effect.Vibration.LeftMotorSpeed >> 8);  // XInput left  -> brake
                             byte throttle = (byte)(effect.Vibration.RightMotorSpeed >> 8); // XInput right -> throttle
                             FanatecRawHidWriter.WritePedalRumble(source.DevicePath, throttle, brake);
+                        }
+                        else if (ud != null
+                            && PadForge.Engine.XboxControllerIdentity.IsImpulseTriggerDevice(ud.VendorId, ud.ProdId))
+                        {
+                            // Xbox One+ sole-writer path (mirrors InputManager.Step2's
+                            // isXboxImpulse gate): write all FOUR channels (large/small +
+                            // LT/RT) via raw HID and NEVER call SDL rumble, or the impulse
+                            // triggers never fire and the family's sole-writer contract
+                            // breaks. The consumer baked every gain in, so write verbatim.
+                            var vib = effect.Vibration;
+                            if (ud.ForceFeedbackState != null
+                                && ud.ForceFeedbackState.TryRecordXboxImpulseSnapshot(
+                                    vib.LeftMotorSpeed, vib.RightMotorSpeed,
+                                    vib.LeftTriggerMotorSpeed, vib.RightTriggerMotorSpeed))
+                            {
+                                PadForge.Common.Input.XboxImpulseHidWriter.Write(
+                                    ud, vib.LeftMotorSpeed, vib.RightMotorSpeed,
+                                    vib.LeftTriggerMotorSpeed, vib.RightTriggerMotorSpeed);
+                            }
                         }
                         else
                         {
@@ -7347,6 +7392,23 @@ namespace PadForge.Services
                         else if (source.VendorId == 0x054C && source.ProductId == 0x0268)
                         {
                             PadForge.Common.Input.Ds3DirectService.TrySetPlayerNumber(source.SdlInstanceId, n);
+                        }
+                        break;
+                    }
+
+                    case OutputEffectCodec.Kind.GuideLed:
+                    {
+                        // #209 over the link: light the owner's real pad's Guide/Home
+                        // LED from the consumer slot's configured percent. SAME writers
+                        // and SAME gate order as the local ApplyGuideLeds path, so a
+                        // relayed device behaves identically to a locally-mapped one.
+                        if (ud != null)
+                        {
+                            int pct = effect.GuideLedPercent;
+                            if (PadForge.Common.Input.XboxGipGuideLedWriter.IsXboxGipPathed(ud))
+                                PadForge.Common.Input.XboxGipGuideLedWriter.Instance.TrySetBrightness(ud, pct);
+                            else if (PadForge.Common.Input.SteamHomeLedSetter.IsSteamController2015(ud.VendorId, ud.ProdId))
+                                PadForge.Common.Input.SteamHomeLedSetter.TrySet(pct);
                         }
                         break;
                     }

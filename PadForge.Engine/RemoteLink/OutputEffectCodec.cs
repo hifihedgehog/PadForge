@@ -11,7 +11,7 @@ namespace PadForge.Engine.RemoteLink
     /// plugged into (owner) re-encodes it for the real hardware and writes it. The
     /// owner synthesizes nothing — it is a pure transport transcoder.
     ///
-    /// <para>Five kinds cover the effect-output channels:</para>
+    /// <para>Six kinds cover the effect-output channels:</para>
     /// <list type="bullet">
     /// <item>SonyEffect carries the transport-normalized DualSense effect report body
     ///   (47 B DS5 / 31 B DS4): rumble + adaptive triggers + lightbar + mic/player
@@ -34,6 +34,12 @@ namespace PadForge.Engine.RemoteLink
     ///   shared pads (Nintendo, BT DS3), whose player LED is otherwise
     ///   machine-local. DualSense/DS4 already carry the player LED inside the
     ///   SonyEffect body, so they never send this kind.</item>
+    /// <item>GuideLed (#209) carries the consumer's configured Guide/Home button
+    ///   LED brightness (0-100 percent) for a shared Xbox GIP pad or 2015 Steam
+    ///   Controller, whose LED is otherwise driven only by the owner's local
+    ///   hardware writers. The owner re-applies it through the SAME writers the
+    ///   local path uses (XboxGipGuideLedWriter / SteamHomeLedSetter). Addressed
+    ///   to one peer device by the ship's device path, exactly as PlayerIndex.</item>
     /// </list>
     /// Audio (the speaker sample stream) is carried out of band on its own
     /// <see cref="LinkMessageType.Audio"/> datagrams, not here.
@@ -57,6 +63,12 @@ namespace PadForge.Engine.RemoteLink
             // number). The owner routes it to SetPlayerIndex (Nintendo) /
             // SetPlayerNumber (BT DS3).
             PlayerIndex = 5,
+            // Guide / Home button LED brightness (#209) for a shared Xbox GIP
+            // pad or 2015 Steam Controller: the consumer's configured percent
+            // (0..100). The owner re-applies via the same writers the local
+            // path uses (XboxGipGuideLedWriter.TrySetBrightness /
+            // SteamHomeLedSetter.TrySet). One byte, PlayerIndex's exact shape.
+            GuideLed = 6,
         }
 
         // ── Sony effect body ────────────────────────────────────────────────
@@ -153,6 +165,17 @@ namespace PadForge.Engine.RemoteLink
             return new byte[] { (byte)Kind.PlayerIndex, (byte)n };
         }
 
+        // ── Guide / Home LED brightness (#209) ──────────────────────────────
+
+        /// <summary>The consumer's configured Guide/Home LED brightness, clamped
+        /// 0-100 percent. One byte, PlayerIndex's shape; the target peer device
+        /// is addressed by the ship's device path, not the payload.</summary>
+        public static byte[] EncodeGuideLed(int percent0to100)
+        {
+            int n = percent0to100 < 0 ? 0 : (percent0to100 > 100 ? 100 : percent0to100);
+            return new byte[] { (byte)Kind.GuideLed, (byte)n };
+        }
+
         // ── Decode ──────────────────────────────────────────────────────────
 
         public readonly struct WheelFrame
@@ -181,11 +204,13 @@ namespace PadForge.Engine.RemoteLink
             public readonly float HapticToneHz;  // HapticTone
             public readonly float HapticToneAmp; // HapticTone
             public readonly int PlayerIndex;     // PlayerIndex (1-based, 0 = unmapped)
+            public readonly int GuideLedPercent; // GuideLed (0-100 percent)
             public OutputEffect(Kind kind, byte[] sonyBody, Vibration vibration, WheelFrame wheel,
-                float hapticToneHz = 0f, float hapticToneAmp = 0f, int playerIndex = 0)
+                float hapticToneHz = 0f, float hapticToneAmp = 0f, int playerIndex = 0, int guideLedPercent = 0)
             {
                 Kind = kind; SonyBody = sonyBody; Vibration = vibration; Wheel = wheel;
                 HapticToneHz = hapticToneHz; HapticToneAmp = hapticToneAmp; PlayerIndex = playerIndex;
+                GuideLedPercent = guideLedPercent;
             }
         }
 
@@ -283,6 +308,14 @@ namespace PadForge.Engine.RemoteLink
                     {
                         if (payload.Length < 2) return false;
                         effect = new OutputEffect(kind, null, null, default, playerIndex: payload[1]);
+                        return true;
+                    }
+
+                    case Kind.GuideLed:
+                    {
+                        if (payload.Length < 2) return false;
+                        int pct = payload[1] > 100 ? 100 : payload[1];
+                        effect = new OutputEffect(kind, null, null, default, guideLedPercent: pct);
                         return true;
                     }
 

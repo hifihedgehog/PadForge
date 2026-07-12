@@ -35,6 +35,42 @@ namespace PadForge.Tests
             },
         };
 
+        /// <summary>The aux (left-side) accelerometer capability (#199/#208) rides
+        /// caps bit 128 in the device list. It must survive the round-trip in both
+        /// states, or the consumer's 'Motion Accel L' source stays un-pickable for a
+        /// shared Nunchuk / left Joy-Con (the flag also drives RemotePeerDevice, whose
+        /// HasAccelAux the mapping picker gates on).</summary>
+        [Theory]
+        [InlineData(true)]
+        [InlineData(false)]
+        public void AccelAuxCapability_RoundTrips(bool hasAccelAux)
+        {
+            var info = new RemotePeerDeviceInfo
+            {
+                Slot = 2,
+                PeerLocalDeviceId = "nunchuk-pad",
+                Name = "Wii Remote + Nunchuk",
+                VendorId = 0x057E,
+                ProductId = 0x0306,
+                NumAxes = 6,
+                NumButtons = 15,
+                InputDeviceType = InputDeviceType.Gamepad,
+                HasGyro = true,
+                HasAccel = true,
+                HasAccelAux = hasAccelAux,
+            };
+
+            var d = LinkConnection.DecodeDeviceList(LinkConnection.EncodeDeviceList(new[] { info }))[0];
+            Assert.Equal(hasAccelAux, d.HasAccelAux);
+            // The other caps in the same byte must not be disturbed by bit 128.
+            Assert.True(d.HasGyro);
+            Assert.True(d.HasAccel);
+
+            d.PeerFingerprintHex = "AB12";
+            var dev = new RemotePeerDevice(d);
+            Assert.Equal(hasAccelAux, dev.HasAccelAux);
+        }
+
         [Fact]
         public void MetadataExtension_RoundTrips()
         {

@@ -98,13 +98,14 @@ namespace PadForge.Common.Input
             _lastWheel.TryRemove(devicePath, out _);
             _lastTone.TryRemove(devicePath, out _);
             _lastPlayerIndex.TryRemove(devicePath, out _);
+            _lastGuideLed.TryRemove(devicePath, out _);
         }
 
         public static void Clear()
         {
             _byPath.Clear();
             _lastSony.Clear(); _lastVib.Clear(); _lastWheel.Clear(); _lastTone.Clear();
-            _lastPlayerIndex.Clear();
+            _lastPlayerIndex.Clear(); _lastGuideLed.Clear();
             // Drop output leases too, or a stale lease would keep the owner's local
             // output suppressed for up to OutputLeaseMs after Remote Link stops.
             _outputLease.Clear();
@@ -192,6 +193,24 @@ namespace PadForge.Common.Input
                 return true;
             _lastPlayerIndex[devicePath] = oneBasedSlotNumber;
             Dispatch(t, OutputEffectCodec.EncodePlayerIndex(oneBasedSlotNumber));
+            return true;
+        }
+
+        // ── Ship: Guide / Home LED brightness (#209, owner re-applies) ──────
+
+        private static readonly ConcurrentDictionary<string, int> _lastGuideLed = new(StringComparer.Ordinal);
+
+        public static bool ShipGuideLed(string devicePath, int percent0to100)
+        {
+            if (!_byPath.TryGetValue(devicePath, out var t)) return false;
+            int pct = percent0to100 < 0 ? 0 : (percent0to100 > 100 ? 100 : percent0to100);
+            // Dedup: brightness changes only on a config edit / battery cadence,
+            // so ship once. The dedup cache is cleared on Unregister, so a peer
+            // replug re-ships on the next apply pass (the PlayerIndex contract).
+            if (_lastGuideLed.TryGetValue(devicePath, out var prev) && prev == pct)
+                return true;
+            _lastGuideLed[devicePath] = pct;
+            Dispatch(t, OutputEffectCodec.EncodeGuideLed(pct));
             return true;
         }
 

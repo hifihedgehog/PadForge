@@ -109,20 +109,45 @@ namespace PadForge.Tests
         }
 
         [Fact]
-        public void Announce_Parser_Rejects_Acknowledge_And_Short_Messages()
+        public void Announce_Parser_Accepts_Acknowledge_By_Header_DeviceId()
         {
-            // 0x01 carries a deviceId but no VID/PID payload, so it cannot
-            // feed the match map.
-            var ack = BuildAnnounce(0x01, 1, 0x045E, 0x0B12);
-            Assert.False(XboxGipGuideLedWriter.TryParseAnnounce(ack, ack.Length,
+            // xbledctl parity (xbox_led.c:71): a 0x01 acknowledge carries a
+            // usable deviceId in its header and MUST be accepted. It has no
+            // identity payload, so VID/PID come back 0 and ProcessPending
+            // falls back to every discovered deviceId. Rejecting it was the
+            // bug that shipped the feature dead.
+            var ack = BuildAnnounce(0x01, 0xAABBCCDD11223344UL, 0x045E, 0x0B12);
+            Assert.True(XboxGipGuideLedWriter.TryParseAnnounce(ack, ack.Length,
+                out ulong deviceId, out ushort vid, out ushort pid, out _));
+            Assert.Equal(0xAABBCCDD11223344UL, deviceId);
+            Assert.Equal(0, vid);
+            Assert.Equal(0, pid);
+        }
+
+        [Fact]
+        public void Announce_Parser_Accepts_Announce_Without_Identity_Payload()
+        {
+            // A 0x02 announce framed without the assumed VID/PID payload is
+            // still a valid device announce: take the header deviceId, leave
+            // VID/PID 0.
+            var shortMsg = BuildAnnounce(0x02, 0x1122334455667788UL, 0, 0, payloadLen: 4);
+            Assert.True(XboxGipGuideLedWriter.TryParseAnnounce(shortMsg, shortMsg.Length,
+                out ulong deviceId, out ushort vid, out ushort pid, out _));
+            Assert.Equal(0x1122334455667788UL, deviceId);
+            Assert.Equal(0, vid);
+            Assert.Equal(0, pid);
+        }
+
+        [Fact]
+        public void Announce_Parser_Rejects_Unknown_Command_And_Short_Header()
+        {
+            // A non-announce command (not 0x01 or 0x02) is not a device
+            // message.
+            var other = BuildAnnounce(0x09, 1, 0x045E, 0x0B12);
+            Assert.False(XboxGipGuideLedWriter.TryParseAnnounce(other, other.Length,
                 out _, out _, out _, out _));
 
-            // Truncated announce: payload shorter than the identity prefix.
-            var shortMsg = BuildAnnounce(0x02, 1, 0, 0, payloadLen: 8);
-            Assert.False(XboxGipGuideLedWriter.TryParseAnnounce(shortMsg, shortMsg.Length,
-                out _, out _, out _, out _));
-
-            // Header alone.
+            // Header alone (shorter than the 20-byte GipHeader).
             Assert.False(XboxGipGuideLedWriter.TryParseAnnounce(new byte[10], 10,
                 out _, out _, out _, out _));
         }

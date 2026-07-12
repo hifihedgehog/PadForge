@@ -56,13 +56,18 @@ namespace PadForge.Common.Input
         /// throws.</summary>
         public static void TrySet(int percent)
         {
+            string val = FormatHintValue(percent);
             try
             {
-                SDL3.SDL.SDL_SetHint(HintName, FormatHintValue(percent));
+                bool ok = SDL3.SDL.SDL_SetHint(HintName, val);
+                PadForge.Engine.SdlDiagLog.WriteLine(
+                    $"GUIDELED steam sethint val=\"{val}\" ret={ok}");
             }
-            catch
+            catch (Exception ex)
             {
                 // SDL not loaded yet. The next apply pass retries.
+                PadForge.Engine.SdlDiagLog.WriteLine(
+                    $"GUIDELED steam sethint val=\"{val}\" EXCEPTION {ex.GetType().Name}");
             }
         }
     }

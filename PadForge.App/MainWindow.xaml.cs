@@ -5574,7 +5574,34 @@ namespace PadForge
                     or nameof(MappingItem.TrimDeadzone)
                     or nameof(MappingItem.TrimRate)
                     or nameof(MappingItem.TrimResetOnRelease))
+                {
                     _settingsService.MarkDirty();
+
+                    // Dirty-gate trap (#155): MarkDirty only schedules a
+                    // 250 ms debounced save, so the domain MappingSet the
+                    // engine reads (and that RefreshMappingsCore mirrors
+                    // BACK into the VM) still holds the pre-edit value. If a
+                    // reload fires inside that window (device select, layer
+                    // switch, or a device blip on a churning rig), it
+                    // reverts the just-made edit from the stale domain and
+                    // the following save then persists the revert. Unchecking
+                    // Reset on Release was lost exactly this way. Push the
+                    // per-row-shape fields to the domain immediately, the
+                    // same idiom device selection already uses, so the
+                    // domain never trails the VM. The SuppressMappingEditPush
+                    // guard skips this while RefreshMappingsCore is itself
+                    // mutating the VM (its own setters raise PropertyChanged),
+                    // so the push never re-enters mid-reload with a
+                    // half-cleared row and clobbers the shared domain object.
+                    if (!InputService.SuppressMappingEditPush
+                        && e.PropertyName is nameof(MappingItem.CombineMode)
+                        or nameof(MappingItem.CombineExpression)
+                        or nameof(MappingItem.NoInherit)
+                        or nameof(MappingItem.TrimDeadzone)
+                        or nameof(MappingItem.TrimRate)
+                        or nameof(MappingItem.TrimResetOnRelease))
+                        _settingsService.PushUiExtraSourcesIntoSlotMappingSets();
+                }
             };
 
             // Phase 2C — wire record events for ExtraSources rows. New

@@ -3012,6 +3012,10 @@ namespace PadForge.Services
                 // precedence contract shared devices use everywhere else.
                 int steamPercent = -1;
                 int steamWinnerNumber = int.MaxValue;
+                // Positive control: an apply pass that walks a configured
+                // device but reaches neither writer is distinguishable
+                // from a silent writer, both lanes in the same log window.
+                int configured = 0, xboxPathed = 0, steam2015 = 0, offline = 0;
 
                 foreach (var padVm in _mainVm.Pads)
                 {
@@ -3022,9 +3026,10 @@ namespace PadForge.Services
                         if (!padVm.PerDeviceSlotConfigs.TryGetValue(dev.InstanceGuid, out var cfg)
                             || cfg == null) continue;
                         if (cfg.GuideLedMode == ViewModels.GuideLedMode.DeviceDefault) continue;
+                        configured++;
 
                         var ud = FindUserDevice(dev.InstanceGuid);
-                        if (ud == null || !ud.IsOnline) continue;
+                        if (ud == null || !ud.IsOnline) { offline++; continue; }
 
                         int percent;
                         if (cfg.GuideLedMode == ViewModels.GuideLedMode.Battery)
@@ -3040,10 +3045,12 @@ namespace PadForge.Services
 
                         if (PadForge.Common.Input.XboxGipGuideLedWriter.IsXboxGipPathed(ud))
                         {
+                            xboxPathed++;
                             PadForge.Common.Input.XboxGipGuideLedWriter.Instance.TrySetBrightness(ud, percent);
                         }
                         else if (PadForge.Common.Input.SteamHomeLedSetter.IsSteamController2015(ud.VendorId, ud.ProdId))
                         {
+                            steam2015++;
                             int n = SettingsManager.SlotOrders.GetGlobalSlotNumber(padVm.PadIndex);
                             if (n <= 0) n = padVm.PadIndex + 1;
                             if (n < steamWinnerNumber)
@@ -3057,6 +3064,10 @@ namespace PadForge.Services
 
                 if (steamPercent >= 0)
                     PadForge.Common.Input.SteamHomeLedSetter.TrySet(steamPercent);
+
+                if (configured > 0)
+                    PadForge.Engine.SdlDiagLog.WriteLine(
+                        $"GUIDELED apply configured={configured} xboxPathed={xboxPathed} steam2015={steam2015} offline={offline}");
             }
             catch { /* LED writes are cosmetic, never block a tick */ }
         }
@@ -4515,9 +4526,24 @@ namespace PadForge.Services
         /// <c>BuildOneSlotFromLegacy</c>) and on device assignment
         /// (<see cref="SettingsService.RefreshMappingSetsFromLegacy"/>);
         /// from that point on the MappingSet is authoritative.</summary>
+        /// <summary>#155 re-entrancy guard. RefreshMappingsCore mutates the
+        /// live MappingItem instances (Clear then repopulate), and every
+        /// watched setter raises PropertyChanged synchronously. The
+        /// MainWindow mapping handler's immediate domain-push must NOT
+        /// re-enter mid-reload: while ExtraSources is transiently empty it
+        /// would rewrite the shared domain row to primary-only and destroy
+        /// a StickTrim/Custom combine mapping. UI-thread-only, so a plain
+        /// bool is sufficient. The user's edits are already pushed at edit
+        /// time, so suppressing the push during a reload loses nothing.</summary>
+        internal static bool SuppressMappingEditPush;
+
         private static void RefreshMappingsCore(PadViewModel padVm)
         {
             if (padVm == null) return;
+
+            SuppressMappingEditPush = true;
+            try
+            {
 
             Engine.Data.MappingSet slotMs = (padVm.PadIndex >= 0
                 && padVm.PadIndex < SettingsManager.SlotMappingSets.Length)
@@ -4614,6 +4640,13 @@ namespace PadForge.Services
 
                 // ExtraSources / CombineMode / CombineExpression from
                 // the matching MappingSet row.
+                // #155 clobber probe: the VM value about to be replaced by
+                // the domain mirror. With the immediate-push fix the domain
+                // already carries the user's latest edit, so this never
+                // differs for a StickTrim row. A logged CLOBBER means a
+                // stale-domain reload slipped through and reverted an
+                // unsaved edit, the exact failure the fix targets.
+                bool priorTrimReset = mapping.TrimResetOnRelease;
                 mapping.ExtraSources.Clear();
                 mapping.CombineMode = "";
                 mapping.CombineExpression = "";
@@ -4627,6 +4660,10 @@ namespace PadForge.Services
                     mapping.TrimDeadzone = msRow2.TrimDeadzone;
                     mapping.TrimRate = msRow2.TrimRate;
                     mapping.TrimResetOnRelease = msRow2.TrimResetOnRelease;
+                    if (string.Equals(msRow2.CombineMode, "StickTrim", StringComparison.Ordinal)
+                        && priorTrimReset != msRow2.TrimResetOnRelease)
+                        PadForge.Engine.SdlDiagLog.WriteLine(
+                            $"STICKTRIM reload CLOBBER target={target} layer={activeMask} vmWas={priorTrimReset} domain={msRow2.TrimResetOnRelease}");
                     if (msRow2.Sources != null)
                     {
                         // Sources[0] is the primary (Direct descriptor or a kind loaded
@@ -4645,6 +4682,11 @@ namespace PadForge.Services
             // (see PadViewModel.MappingsViewLoaded for the mid-assign clobber this
             // guards against).
             padVm.MappingsViewLoaded = true;
+            }
+            finally
+            {
+                SuppressMappingEditPush = false;
+            }
         }
 
         /// <summary>

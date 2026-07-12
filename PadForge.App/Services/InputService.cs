@@ -1157,6 +1157,39 @@ namespace PadForge.Services
                 catch { /* engine shutting down mid-fire */ }
             };
 
+            // Guide LED macro applier (#209): the poll thread hands
+            // (slot, percent) here and the dispatcher walks the slot's
+            // mapped devices, routing each through the Xbox GIP writer
+            // (which only enqueues, its own worker does the I/O) or the
+            // Steam home-LED hint. Transient by design: nothing is
+            // written into DeviceSlotConfig, so a flash-on-engage macro
+            // never dirties settings, and the Lighting tab's Battery
+            // mode simply reasserts on its next cadence.
+            InputManager.GuideLedApply = (slotIdx, percent) =>
+            {
+                try
+                {
+                    System.Windows.Application.Current?.Dispatcher?.BeginInvoke(new Action(() =>
+                    {
+                        if (slotIdx < 0 || slotIdx >= _mainVm.Pads.Count) return;
+                        var padVm = _mainVm.Pads[slotIdx];
+                        if (padVm == null) return;
+                        int pct = Math.Clamp(percent, 0, 100);
+                        foreach (var dev in padVm.MappedDevices)
+                        {
+                            if (dev == null || dev.InstanceGuid == Guid.Empty) continue;
+                            var ud = FindUserDevice(dev.InstanceGuid);
+                            if (ud == null || !ud.IsOnline) continue;
+                            if (PadForge.Common.Input.XboxGipGuideLedWriter.IsXboxGipPathed(ud))
+                                PadForge.Common.Input.XboxGipGuideLedWriter.Instance.TrySetBrightness(ud, pct);
+                            else if (PadForge.Common.Input.SteamHomeLedSetter.IsSteamController2015(ud.VendorId, ud.ProdId))
+                                PadForge.Common.Input.SteamHomeLedSetter.TrySet(pct);
+                        }
+                    }));
+                }
+                catch { /* engine shutting down mid-fire */ }
+            };
+
             // Cursor-position source (#107): a 200 Hz sampler publishes the
             // normalized desktop cursor position into MouseCursorProvider for
             // "Mouse Position X/Y" mapping sources. Disposed on engine stop.
@@ -1726,6 +1759,7 @@ namespace PadForge.Services
                 PadForge.Engine.Common.Mapping.SourceCoercion.IrTuningProvider = null;
                 PadForge.Engine.Common.Mapping.SourceCoercion.IrPointerModeProvider = null;
                 InputManager.PointerModeCycleApply = null;
+                InputManager.GuideLedApply = null;
                 PadForge.Engine.Common.Mapping.SourceCoercion.PollHzProvider = null;
                 PadForge.Engine.Common.Mapping.SourceCoercion.AimEngageStateProvider = null;
                 PadForge.Engine.Common.Mapping.SourceCoercion.TouchpadGestureFiredProvider = null;
@@ -2019,6 +2053,17 @@ namespace PadForge.Services
             {
                 _lastBatteryUiRefreshTick = nowTick;
                 UpdateBatteryIndicators();
+            }
+
+            // ── Guide Button LED (#209): slow lane. Battery mode tracks the
+            //    charge level, and Fixed mode heals from missed writes (a pad
+            //    that had not announced yet when the config was applied). The
+            //    writers change-detect, so an unchanged brightness costs no
+            //    device I/O. ──
+            if (nowTick - _lastGuideLedApplyTick >= 30000)
+            {
+                _lastGuideLedApplyTick = nowTick;
+                ApplyGuideLeds();
             }
 
             // ── Macro trigger recording (accumulate buttons) ──
@@ -2353,11 +2398,16 @@ namespace PadForge.Services
                     capGyro |= ud.HasGyro;
                     capTouchpad |= ud.HasTouchpad;
                     // Same VID/PID gate SyncTabVisibility uses for the
-                    // Lighting tab: DualSense / Edge / DS4.
+                    // Lighting tab: DualSense / Edge / DS4, plus the #209
+                    // Guide LED population (XInput-pathed pads and the
+                    // 2015 Steam Controller) now that the tab shows for
+                    // them too.
                     bool sonyLightbar = ud.VendorId == 0x054C
                         && (ud.ProdId == 0x0CE6 || ud.ProdId == 0x0DF2
                          || ud.ProdId == 0x05C4 || ud.ProdId == 0x09CC || ud.ProdId == 0x0BA0);
-                    capLightbar |= sonyLightbar;
+                    capLightbar |= sonyLightbar
+                        || PadForge.Common.Input.XboxGipGuideLedWriter.IsXboxGipPathed(ud)
+                        || PadForge.Common.Input.SteamHomeLedSetter.IsSteamController2015(ud.VendorId, ud.ProdId);
                     // Audio tab gate: Sony speaker family, Wii Remote
                     // speaker, or haptic-tone actuators (#147).
                     capAudio |= sonyLightbar
@@ -2455,14 +2505,19 @@ namespace PadForge.Services
                 if (ud != null)
                     padVm.PerDeviceSlotConfigs.TryGetValue(ud.InstanceGuid, out cfg);
 
-                if (sonyLightbar)
+                // Guide LED population (#209): the lighting stage line
+                // covers these devices too, mirroring the Lighting tab.
+                bool devGuideLed = ud != null
+                    && (PadForge.Common.Input.XboxGipGuideLedWriter.IsXboxGipPathed(ud)
+                     || PadForge.Common.Input.SteamHomeLedSetter.IsSteamController2015(ud.VendorId, ud.ProdId));
+                if (sonyLightbar || devGuideLed)
                 {
                     // Lighting defaults: LightbarMode.PlayerNumber base +
                     // InputReactiveMode.Off overlay (DeviceSlotConfig
                     // field initializers). Tokens = the picked mode names,
                     // including the deliberate Off (hard dark).
                     var parts = new List<string>();
-                    if (cfg != null)
+                    if (cfg != null && sonyLightbar)
                     {
                         if (cfg.LightbarMode != LightbarMode.PlayerNumber)
                             AddToken(parts, MacroAction.LightbarModeDisplayName(cfg.LightbarMode));
@@ -2490,6 +2545,16 @@ namespace PadForge.Services
                                 MicLedMode.FollowDeviceMute => "MIC FOLLOW",
                                 _ => "MIC SOLID",
                             });
+                    }
+                    // Guide LED default: DeviceDefault (write nothing,
+                    // DeviceSlotConfig field initializer;
+                    // ResetGuideLedAllCommand restores it).
+                    if (cfg != null && devGuideLed
+                        && cfg.GuideLedMode != GuideLedMode.DeviceDefault)
+                    {
+                        AddToken(parts, cfg.GuideLedMode == GuideLedMode.Battery
+                            ? "GUIDE BATT"
+                            : "GUIDE " + cfg.GuideLedBrightness + "%");
                     }
                     AddLine(lightingLines, ref lightingHot, guid, parts);
                 }
@@ -2921,6 +2986,79 @@ namespace PadForge.Services
             int btPct = PadForge.Common.Input.BluetoothBatteryService.TryGetPercent(
                 ud.DevicePath, ud.VendorId, ud.ProdId);
             return (btPct, false);
+        }
+
+        private long _lastGuideLedApplyTick;
+
+        /// <summary>Applies every (slot, device) Guide Button LED config
+        /// (#209). DeviceDefault writes nothing, ever. Fixed pushes the
+        /// configured percent. Battery maps the device's battery percent
+        /// (the same GetEffectiveBattery overlay every battery consumer
+        /// uses) to brightness with a floor of 10, skipping devices whose
+        /// battery is unreadable so the last written level stands. Runs
+        /// on the dispatcher: device connect (OnDevicesUpdated), Lighting
+        /// tab edits (ActiveDeviceConfigPropertyChanged in MainWindow),
+        /// and the 30 s slow lane. Both writers change-detect, so
+        /// re-entry is cheap.</summary>
+        internal void ApplyGuideLeds()
+        {
+            try
+            {
+                // The Steam home-LED hint is process-global (every 2015 SC
+                // shares it), so per-device writes from two slots with
+                // different configs flip-flopped the LED every pass. One
+                // winner per pass instead: the configured SC on the slot
+                // with the smallest displayed player number, the same
+                // precedence contract shared devices use everywhere else.
+                int steamPercent = -1;
+                int steamWinnerNumber = int.MaxValue;
+
+                foreach (var padVm in _mainVm.Pads)
+                {
+                    if (padVm == null) continue;
+                    foreach (var dev in padVm.MappedDevices)
+                    {
+                        if (dev == null || dev.InstanceGuid == Guid.Empty) continue;
+                        if (!padVm.PerDeviceSlotConfigs.TryGetValue(dev.InstanceGuid, out var cfg)
+                            || cfg == null) continue;
+                        if (cfg.GuideLedMode == ViewModels.GuideLedMode.DeviceDefault) continue;
+
+                        var ud = FindUserDevice(dev.InstanceGuid);
+                        if (ud == null || !ud.IsOnline) continue;
+
+                        int percent;
+                        if (cfg.GuideLedMode == ViewModels.GuideLedMode.Battery)
+                        {
+                            var (pct, _) = GetEffectiveBattery(ud);
+                            percent = PadForge.Common.Input.XboxGipGuideLedWriter.BatteryToBrightnessPercent(pct);
+                            if (percent < 0) continue;
+                        }
+                        else
+                        {
+                            percent = Math.Clamp(cfg.GuideLedBrightness, 0, 100);
+                        }
+
+                        if (PadForge.Common.Input.XboxGipGuideLedWriter.IsXboxGipPathed(ud))
+                        {
+                            PadForge.Common.Input.XboxGipGuideLedWriter.Instance.TrySetBrightness(ud, percent);
+                        }
+                        else if (PadForge.Common.Input.SteamHomeLedSetter.IsSteamController2015(ud.VendorId, ud.ProdId))
+                        {
+                            int n = SettingsManager.SlotOrders.GetGlobalSlotNumber(padVm.PadIndex);
+                            if (n <= 0) n = padVm.PadIndex + 1;
+                            if (n < steamWinnerNumber)
+                            {
+                                steamWinnerNumber = n;
+                                steamPercent = percent;
+                            }
+                        }
+                    }
+                }
+
+                if (steamPercent >= 0)
+                    PadForge.Common.Input.SteamHomeLedSetter.TrySet(steamPercent);
+            }
+            catch { /* LED writes are cosmetic, never block a tick */ }
         }
 
         private void UpdateBatteryIndicators()
@@ -5925,6 +6063,13 @@ namespace PadForge.Services
                 // dispatchers skip here: the per-VC re-apply loop below
                 // already runs ApplyOnce for every PlayStation slot.
                 ReseedPlayerIdentities(applySonyDispatchers: false);
+
+                // Guide Button LED (#209): a freshly connected or
+                // reconnected pad picks its configured brightness back up.
+                // The GIP writer retries internally until the pad's
+                // announce arrives, so firing in the same window as the
+                // connect is safe.
+                ApplyGuideLeds();
 
                 // Re-push user-configured DS5 effects to every PlayStation
                 // slot's assigned DualSense.  Catches the "DS5 disconnected

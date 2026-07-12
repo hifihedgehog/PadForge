@@ -1124,6 +1124,13 @@ namespace PadForge
                     _settingsService.MarkDirty();
                     if (e.PropertyName == nameof(ViewModels.DeviceSlotConfig.AudioLightbarEnabled))
                         _inputService.SyncAudioBassDetector();
+                    // Guide Button LED (#209): apply mode / brightness
+                    // edits immediately instead of waiting for the 30 s
+                    // slow lane. The writers change-detect, so dragging
+                    // the slider costs one device write per new value.
+                    if (e.PropertyName == nameof(ViewModels.DeviceSlotConfig.GuideLedMode)
+                        || e.PropertyName == nameof(ViewModels.DeviceSlotConfig.GuideLedBrightness))
+                        _inputService.ApplyGuideLeds();
                 };
             }
 

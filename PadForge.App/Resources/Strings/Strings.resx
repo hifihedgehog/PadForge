@@ -2296,6 +2296,21 @@
   <data name="MacroAction_PointerModeSet_Format" xml:space="preserve"><value>Set pointer mode: {0}</value></data>
   <data name="MacroAction_PointerModeSet_Tooltip" xml:space="preserve"><value>Sets the Wii pointer mode to the one selected below for every IR-capable remote on the slot.</value></data>
   <data name="Macro_PointerSetMode_Hint" xml:space="preserve"><value>Pick the pointer mode this action applies.</value></data>
+  <data name="Pad_Lighting_GuideLed" xml:space="preserve"><value>Guide Button LED</value></data>
+  <data name="Pad_Lighting_GuideLed_Subtitle" xml:space="preserve"><value>Brightness of the glowing Guide or Home button. Xbox One and later controllers accept it over USB. The 2015 Steam Controller accepts it on any connection, and all Steam Controllers share one brightness.</value></data>
+  <data name="Pad_Lighting_GuideLed_Mode_Tooltip" xml:space="preserve"><value>Device Default leaves the LED exactly as the controller firmware set it. Fixed Brightness holds the level below. Battery Level makes a fuller battery brighter and never drops below 10%. Xbox controllers accept Guide LED commands over USB only, so this setting has no effect on a Bluetooth connection.</value></data>
+  <data name="Pad_Lighting_GuideLed_DeviceDefault" xml:space="preserve"><value>Device Default</value></data>
+  <data name="Pad_Lighting_GuideLed_Fixed" xml:space="preserve"><value>Fixed Brightness</value></data>
+  <data name="Pad_Lighting_GuideLed_Battery" xml:space="preserve"><value>Battery Level</value></data>
+  <data name="Pad_Lighting_GuideLed_Brightness" xml:space="preserve"><value>Brightness</value></data>
+  <data name="Pad_Lighting_GuideLed_Brightness_Tooltip" xml:space="preserve"><value>Guide button LED brightness from 0% (off) to 100% (full). Applies while the mode is Fixed Brightness.</value></data>
+  <data name="Pad_ResetGuideLed" xml:space="preserve"><value>Reset Guide Button LED</value></data>
+  <data name="Pad_ResetGuideLedMode" xml:space="preserve"><value>Reset Guide LED Mode</value></data>
+  <data name="Pad_ResetGuideLedBrightness" xml:space="preserve"><value>Reset Guide LED Brightness</value></data>
+  <data name="MacroAction_Type_GuideLedBrightness" xml:space="preserve"><value>Set Guide LED Brightness</value></data>
+  <data name="MacroAction_GuideLedBrightness_Format" xml:space="preserve"><value>Guide LED brightness: {0}%</value></data>
+  <data name="MacroAction_GuideLedBrightness_Tooltip" xml:space="preserve"><value>Sets the Guide or Home button LED brightness for every capable controller on the slot. Xbox controllers accept it over USB only.</value></data>
+  <data name="Macro_GuideLedBrightness_Hint" xml:space="preserve"><value>Applies to Xbox controllers over USB and to the 2015 Steam Controller. Pair two of these actions to flash the LED when a macro starts and restore it when it ends.</value></data>
   <data name="Pad_ResetPointerModeCard" xml:space="preserve"><value>Reset Pointer Mode</value></data>
   <data name="Pad_ResetPointerTuning" xml:space="preserve"><value>Reset Pointer Tuning</value></data>
   <data name="Pad_ResetSensorBarPos" xml:space="preserve"><value>Reset Sensor Bar Position</value></data>

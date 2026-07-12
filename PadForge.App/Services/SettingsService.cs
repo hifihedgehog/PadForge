@@ -1614,6 +1614,9 @@ namespace PadForge.Services
                 || c.MicLedMode != ViewModels.MicLedMode.Off
                 || c.PlayerLedMode != (c.LightingRev >= 1
                     ? ViewModels.PlayerLedMode.PlayerNumber : ViewModels.PlayerLedMode.Off)
+                // #209: a chosen Guide LED mode is a deliberate,
+                // copy-worthy configuration (DeviceDefault writes nothing).
+                || c.GuideLedMode != ViewModels.GuideLedMode.DeviceDefault
                 || c.AudioPassthroughEnabled
                 || c.AudioLightbarEnabled
                 || !string.IsNullOrEmpty(c.AudioMirrorSourceId)
@@ -1634,6 +1637,7 @@ namespace PadForge.Services
                 || c.RightTriggerMode != ViewModels.AdaptiveTriggerMode.Off
                 || c.MicLedMode != ViewModels.MicLedMode.Off
                 || c.PlayerLedMode != ViewModels.PlayerLedMode.PlayerNumber
+                || c.GuideLedMode != ViewModels.GuideLedMode.DeviceDefault
                 || c.AudioPassthroughEnabled
                 || c.AudioLightbarEnabled
                 || !string.IsNullOrEmpty(c.AudioMirrorSourceId)
@@ -1958,6 +1962,8 @@ namespace PadForge.Services
                     cfg.MicLedFollowDeviceId = cfgData.MicLedFollowDeviceId ?? string.Empty;
                     cfg.PlayerLedMode = cfgData.PlayerLedMode;
                     cfg.PlayerLedBrightness = cfgData.PlayerLedBrightness;
+                    cfg.GuideLedMode = cfgData.GuideLedMode;
+                    cfg.GuideLedBrightness = cfgData.GuideLedBrightness;
                     cfg.AudioLightbarEnabled = cfgData.AudioLightbarEnabled;
                     cfg.AudioLightbarSensitivity = cfgData.AudioLightbarSensitivity;
                     cfg.AudioLightbarMode = cfgData.AudioLightbarMode;
@@ -2556,6 +2562,7 @@ namespace PadForge.Services
                 LightbarCycleModesCsv = ad.LightbarCycleModesCsv,
                 PointerCycleModesCsv = ad.PointerCycleModesCsv,
                 PointerSetMode = ad.PointerSetMode ?? "Mouse",
+                GuideLedPercent = ad.GuideLedPercent,
                 SoundFilePath = ad.SoundFilePath ?? string.Empty,
                 SoundVolume = ad.SoundVolume > 0 ? ad.SoundVolume : 100,
                 SoundLoop = ad.SoundLoop,
@@ -3279,6 +3286,8 @@ namespace PadForge.Services
                 MicLightOn = cfg.MicLightOn,
                 PlayerLedMode = cfg.PlayerLedMode,
                 PlayerLedBrightness = cfg.PlayerLedBrightness,
+                GuideLedMode = cfg.GuideLedMode,
+                GuideLedBrightness = cfg.GuideLedBrightness,
                 AudioLightbarEnabled = cfg.AudioLightbarEnabled,
                 AudioLightbarSensitivity = cfg.AudioLightbarSensitivity,
                 AudioLightbarMode = cfg.AudioLightbarMode,
@@ -3496,6 +3505,7 @@ namespace PadForge.Services
                 LightbarCycleModesCsv = a.LightbarCycleModesCsv,
                 PointerCycleModesCsv = a.PointerCycleModesCsv,
                 PointerSetMode = a.PointerSetMode,
+                GuideLedPercent = a.GuideLedPercent,
                 SoundFilePath = string.IsNullOrEmpty(a.SoundFilePath) ? null : a.SoundFilePath,
                 SoundVolume = a.SoundVolume,
                 SoundLoop = a.SoundLoop,
@@ -4846,6 +4856,8 @@ namespace PadForge.Services
         [XmlElement] public string PointerCycleModesCsv { get; set; } = "Mouse,FpsMouse,Mouse43,Mouse169";
         /// <summary>Target mode name for PointerModeSet (issue #203 follow-up).</summary>
         [XmlElement] public string PointerSetMode { get; set; } = "Mouse";
+        /// <summary>Brightness percent for GuideLedBrightness (#209).</summary>
+        [XmlElement] public int GuideLedPercent { get; set; } = 100;
 
         /// <summary>Sound file path for PlaySound (issue #83). Null when unset.</summary>
         [XmlElement]

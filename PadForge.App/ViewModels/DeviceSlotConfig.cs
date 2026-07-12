@@ -556,6 +556,41 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _playerLedBrightness, value);
         }
 
+        private GuideLedMode _guideLedMode = GuideLedMode.DeviceDefault;
+        /// <summary>Guide/Home button LED handling (discussion #209).
+        /// DeviceDefault never writes, leaving the firmware's own
+        /// brightness untouched. Fixed holds <see cref="GuideLedBrightness"/>.
+        /// Battery re-maps the device's battery percent to brightness on a
+        /// slow cadence, floored at 10 so a low battery stays visible.
+        /// Xbox One and later pads take the GIP LED command over the
+        /// \\.\XboxGIP interface (USB only, XboxGipGuideLedWriter). The
+        /// 2015 Steam Controller takes SDL's process-global home-LED hint
+        /// (SteamHomeLedSetter).</summary>
+        public GuideLedMode GuideLedMode
+        {
+            get => _guideLedMode;
+            set
+            {
+                if (SetProperty(ref _guideLedMode, value))
+                    OnPropertyChanged(nameof(IsGuideLedFixed));
+            }
+        }
+
+        /// <summary>True when <see cref="GuideLedMode"/> is Fixed. Gates
+        /// the brightness slider row on the Lighting tab.</summary>
+        [XmlIgnore]
+        public bool IsGuideLedFixed => _guideLedMode == GuideLedMode.Fixed;
+
+        private int _guideLedBrightness = 100;
+        /// <summary>Fixed-mode Guide LED brightness percent, 0 (off) to
+        /// 100 (full). The writers scale it onto each device's own range
+        /// (0-47 for GIP per MS-GIPUSB, 0..1 for the SDL hint).</summary>
+        public int GuideLedBrightness
+        {
+            get => _guideLedBrightness;
+            set => SetProperty(ref _guideLedBrightness, Math.Clamp(value, 0, 100));
+        }
+
         // ────────────────────────────────────────────────
         //  Lightbar — unified mode picker. Replaces the old separate
         //  LightbarEnabled and AudioLightbarEnabled toggles. The legacy
@@ -1332,6 +1367,25 @@ namespace PadForge.ViewModels
             _resetMicLedMode ??= new RelayCommand(() => MicLedMode = MicLedMode.Off);
         private RelayCommand _resetMicLedMode;
 
+        /// <summary>Section-level reset for the Guide Button LED card on
+        /// the Lighting tab (#209). Mirrors the indicator-LEDs card's
+        /// Reset All shape.</summary>
+        public RelayCommand ResetGuideLedAllCommand =>
+            _resetGuideLedAll ??= new RelayCommand(() =>
+            {
+                GuideLedMode = GuideLedMode.DeviceDefault;
+                GuideLedBrightness = 100;
+            });
+        private RelayCommand _resetGuideLedAll;
+
+        public RelayCommand ResetGuideLedModeCommand =>
+            _resetGuideLedMode ??= new RelayCommand(() => GuideLedMode = GuideLedMode.DeviceDefault);
+        private RelayCommand _resetGuideLedMode;
+
+        public RelayCommand ResetGuideLedBrightnessCommand =>
+            _resetGuideLedBrightness ??= new RelayCommand(() => GuideLedBrightness = 100);
+        private RelayCommand _resetGuideLedBrightness;
+
         public RelayCommand ResetLightbarPeriodCommand =>
             _resetLightbarPeriod ??= new RelayCommand(() => LightbarPeriodMs = 3000);
         private RelayCommand _resetLightbarPeriod;
@@ -1480,6 +1534,22 @@ namespace PadForge.ViewModels
         High = 0,
         Medium = 1,
         Low = 2,
+    }
+
+    /// <summary>Guide/Home button LED mode (discussion #209). Sequential
+    /// 0-2 to map 1:1 with the ComboBox dropdown via
+    /// <c>EnumIndexConverter</c>. DeviceDefault is the do-nothing default:
+    /// PadForge never writes, so people who like the firmware's own
+    /// brightness keep it untouched.</summary>
+    public enum GuideLedMode
+    {
+        /// <summary>Write nothing, ever. The firmware value stands.</summary>
+        DeviceDefault = 0,
+        /// <summary>Hold <c>GuideLedBrightness</c>.</summary>
+        Fixed = 1,
+        /// <summary>Track the battery percent (fuller is brighter),
+        /// floored at 10, re-applied on a slow cadence.</summary>
+        Battery = 2,
     }
 
     /// <summary>One entry in the user-defined lightbar palette. Used by
@@ -1666,6 +1736,10 @@ namespace PadForge.ViewModels
         [XmlAttribute] public string MicLedFollowDeviceId { get; set; } = string.Empty;
         [XmlAttribute] public PlayerLedMode PlayerLedMode { get; set; } = PlayerLedMode.Off;
         [XmlAttribute] public PlayerLedBrightness PlayerLedBrightness { get; set; } = PlayerLedBrightness.High;
+        // Guide Button LED (#209). Defaults match the VM: DeviceDefault / 100,
+        // so attribute-absent old saves load as "write nothing".
+        [XmlAttribute] public GuideLedMode GuideLedMode { get; set; } = GuideLedMode.DeviceDefault;
+        [XmlAttribute] public int GuideLedBrightness { get; set; } = 100;
         // Round-trip the legacy MicLightOn so old XML still loads. Mapped
         // to MicLedMode in the UI binding layer.
         [XmlAttribute] public bool MicLightOn { get; set; }

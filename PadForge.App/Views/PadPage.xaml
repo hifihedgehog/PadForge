@@ -1856,6 +1856,9 @@
                                             <ComboBoxItem Content="{Binding MacroAction_Type_PointerModeSet, Source={x:Static strings:Strings.Instance}}"
                                                           Tag="{x:Static vm:MacroActionType.PointerModeSet}"
                                                           ToolTip="{Binding MacroAction_PointerModeSet_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                            <ComboBoxItem Content="{Binding MacroAction_Type_GuideLedBrightness, Source={x:Static strings:Strings.Instance}}"
+                                                          Tag="{x:Static vm:MacroActionType.GuideLedBrightness}"
+                                                          ToolTip="{Binding MacroAction_GuideLedBrightness_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                             <ComboBoxItem Content="{Binding MacroAction_Type_Rumble, Source={x:Static strings:Strings.Instance}}"
                                                           Tag="{x:Static vm:MacroActionType.Rumble}"
                                                           ToolTip="{Binding MacroAction_Rumble_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
@@ -2365,6 +2368,27 @@
                                                 <ComboBoxItem Content="{Binding Pad_Pointer_Mode_43, Source={x:Static strings:Strings.Instance}}" Tag="Mouse43"/>
                                                 <ComboBoxItem Content="{Binding Pad_Pointer_Mode_169, Source={x:Static strings:Strings.Instance}}" Tag="Mouse169"/>
                                             </ComboBox>
+                                        </StackPanel>
+                                    </Border>
+
+                                    <!-- Guide LED brightness card (#209): one transient
+                                         brightness write for every capable controller on
+                                         the slot (Xbox over USB, 2015 Steam Controller). -->
+                                    <Border Style="{StaticResource CardBorder}" Margin="0,0,0,6"
+                                            Visibility="{Binding IsGuideLedBrightnessType, Converter={StaticResource BoolToVisibilityConverter}}">
+                                        <StackPanel>
+                                            <TextBlock Text="{Binding MacroAction_Type_GuideLedBrightness, Source={x:Static strings:Strings.Instance}}"
+                                                       FontWeight="SemiBold" Margin="0,0,0,4"/>
+                                            <TextBlock Text="{Binding Macro_GuideLedBrightness_Hint, Source={x:Static strings:Strings.Instance}}"
+                                                       FontSize="11" TextWrapping="Wrap" Margin="0,0,0,6"
+                                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                                            <StackPanel Orientation="Horizontal">
+                                                <Slider Value="{Binding GuideLedPercent, Mode=TwoWay}" Minimum="0" Maximum="100"
+                                                        Width="180" VerticalAlignment="Center"/>
+                                                <TextBox Text="{Binding GuideLedPercent, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                                         Style="{StaticResource DzValueEdit}"/>
+                                                <TextBlock Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text="%" VerticalAlignment="Center" Margin="2,0,0,0"/>
+                                            </StackPanel>
                                         </StackPanel>
                                     </Border>
 
@@ -7249,13 +7273,18 @@
                             <TextBlock Text="{Binding Pad_Lighting_Header, Source={x:Static strings:Strings.Instance}}"
                                        Style="{StaticResource TitleTextBlockStyle}" FontFamily="{StaticResource DisplayFontFamily}" FontWeight="650" FontSize="26"/>
                         </StackPanel>
-                        <TextBlock Text="{Binding Pad_Lighting_Subtitle, Source={x:Static strings:Strings.Instance}}"
+                        <!-- Both header hints are lightbar prose, so they hide
+                             with the lightbar card when the tab is up for a
+                             guide-LED-only device (SyncTabVisibility). -->
+                        <TextBlock x:Name="LightingLightbarSubtitle"
+                                   Text="{Binding Pad_Lighting_Subtitle, Source={x:Static strings:Strings.Instance}}"
                                    Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                    TextWrapping="Wrap" Margin="0,0,0,4"/>
                         <!-- Player-identity idle floor (#191): the tab states
                              the default so an untouched pad showing a player
                              color reads as designed behavior, not a mystery. -->
-                        <TextBlock Text="{Binding Pad_Lighting_PlayerIdle_Hint, Source={x:Static strings:Strings.Instance}}"
+                        <TextBlock x:Name="LightingPlayerIdleHint"
+                                   Text="{Binding Pad_Lighting_PlayerIdle_Hint, Source={x:Static strings:Strings.Instance}}"
                                    Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                    TextWrapping="Wrap" Margin="0,0,0,16"/>
 
@@ -7267,8 +7296,11 @@
                              Gradient / CrossFade. Period drives the
                              time-based animations. Palette + Smooth
                              belong to ColorCycle; Decay + Randomize +
-                             palette belong to InputReactive. -->
-                        <Border Style="{StaticResource CardBorder}">
+                             palette belong to InputReactive.
+                             Named so SyncTabVisibility can hide the whole
+                             lightbar card when the Lighting tab is shown
+                             for a guide-LED-only device (#209). -->
+                        <Border x:Name="LightbarModeCard" Style="{StaticResource CardBorder}">
                             <StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                     <TextBlock Text="&#xE790;" FontFamily="Segoe MDL2 Assets" FontSize="16" Foreground="{DynamicResource EmberBrush}"
@@ -8501,6 +8533,61 @@
                                               SelectedValue="{Binding DeviceConfig.MicLedFollowDeviceId, Mode=TwoWay}"
                                               DropDownOpened="MicLedDevicePicker_DropDownOpened"
                                               Width="340" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Guide Button LED (#209): the glowing Guide /
+                             Home button on Xbox One-and-later pads (USB
+                             only, via the \\.\XboxGIP GIP LED command) and
+                             the 2015 Steam Controller (SDL's process-global
+                             home-LED hint, so every 2015 SC in the process
+                             shares one brightness). Shown by
+                             SyncTabVisibility when the selected device is
+                             XInput-pathed or a 2015 Steam Controller; the
+                             lightbar card and header hints hide when the
+                             tab is up for a guide-LED-only device. -->
+                        <Border x:Name="GuideLedCard" Style="{StaticResource CardBorder}" Visibility="Collapsed">
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                    <TextBlock Text="&#xE706;" FontFamily="Segoe MDL2 Assets" FontSize="16" Foreground="{DynamicResource EmberBrush}"
+                                               VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                    <TextBlock Text="{Binding Pad_Lighting_GuideLed, Source={x:Static strings:Strings.Instance}}"
+                                               Style="{StaticResource CardTitle}"/>
+                                    <ui:Button Command="{Binding DeviceConfig.ResetGuideLedAllCommand}" Style="{StaticResource ResetAllButton}"
+                                            Content="{Binding Pad_ResetAll, Source={x:Static strings:Strings.Instance}}" Margin="12,0,0,0"
+                                            ToolTip="{Binding Pad_ResetGuideLed, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
+                                <TextBlock Text="{Binding Pad_Lighting_GuideLed_Subtitle, Source={x:Static strings:Strings.Instance}}"
+                                           Style="{StaticResource CardDescription}"/>
+
+                                <!-- Mode. Sequential enum, so SelectedIndex +
+                                     EnumIndexConverter like the brightness combo
+                                     on the indicator-LEDs card. -->
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                                    <TextBlock Text="{Binding Pad_Lighting_Mode, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                    <ComboBox SelectedIndex="{Binding DeviceConfig.GuideLedMode, Mode=TwoWay, Converter={StaticResource EnumIndexConverter}}"
+                                              Width="340" VerticalAlignment="Center"
+                                              ToolTip="{Binding Pad_Lighting_GuideLed_Mode_Tooltip, Source={x:Static strings:Strings.Instance}}">
+                                        <ComboBoxItem Content="{Binding Pad_Lighting_GuideLed_DeviceDefault, Source={x:Static strings:Strings.Instance}}"/>
+                                        <ComboBoxItem Content="{Binding Pad_Lighting_GuideLed_Fixed, Source={x:Static strings:Strings.Instance}}"/>
+                                        <ComboBoxItem Content="{Binding Pad_Lighting_GuideLed_Battery, Source={x:Static strings:Strings.Instance}}"/>
+                                    </ComboBox>
+                                    <ui:Button Command="{Binding DeviceConfig.ResetGuideLedModeCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetGuideLedMode, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
+
+                                <!-- Brightness, Fixed mode only. Battery mode
+                                     derives its level from the charge percent. -->
+                                <StackPanel Orientation="Horizontal"
+                                            Visibility="{Binding DeviceConfig.IsGuideLedFixed, Converter={StaticResource BoolToVisibilityConverter}}">
+                                    <TextBlock Text="{Binding Pad_Lighting_GuideLed_Brightness, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                    <Slider Value="{Binding DeviceConfig.GuideLedBrightness, Mode=TwoWay}" Minimum="0" Maximum="100"
+                                            Width="180" VerticalAlignment="Center"
+                                            ToolTip="{Binding Pad_Lighting_GuideLed_Brightness_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <TextBox Text="{Binding DeviceConfig.GuideLedBrightness, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                             Style="{StaticResource DzValueEdit}"/>
+                                    <TextBlock Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text="%" VerticalAlignment="Center" Margin="2,0,0,0"/>
+                                    <ui:Button Command="{Binding DeviceConfig.ResetGuideLedBrightnessCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetGuideLedBrightness, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
                             </StackPanel>
                         </Border>

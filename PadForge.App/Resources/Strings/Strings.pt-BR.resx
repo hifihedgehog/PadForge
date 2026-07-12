@@ -1462,7 +1462,7 @@
   <data name="Pad_Shift_NoInherit" xml:space="preserve"><value>Não Herdar</value></data>
   <data name="Pad_Shift_NoInherit_Tooltip" xml:space="preserve"><value>Quando marcado, o alvo desta camada permanece DESLIGADO em vez de cair para a linha Base.</value></data>
   <data name="Pad_Shift_Delay" xml:space="preserve"><value>Atraso</value></data>
-  <data name="Pad_Shift_Delay_Tooltip" xml:space="preserve"><value>Milissegundos que o ativador deve permanecer engatado antes que a troca de camada seja acionada.</value></data>
+  <data name="Pad_Shift_Delay_Tooltip" xml:space="preserve"><value>Quanto tempo a entrada deve permanecer pressionada antes de a camada reagir. No modo Manter isso é um debounce. Em Alternar, Fixar e Adesivo, a troca vira um pressionamento longo: a camada muda uma vez quando o tempo pressionado cruza este valor, e um toque mais curto não faz nada. 0 reage na hora.</value></data>
   <data name="Pad_Shift_ChordSecondInput" xml:space="preserve"><value>Segunda Entrada do Acorde</value></data>
   <data name="Pad_Shift_AxisThreshold" xml:space="preserve"><value>Limite do Eixo</value></data>
   <data name="Pad_Shift_CycleLayers" xml:space="preserve"><value>Ciclar entre Camadas</value></data>
@@ -2267,4 +2267,49 @@
   <data name="Pad_ResetSensorBarComp" xml:space="preserve"><value>Restaurar Deslocamento Vertical</value></data>
   <data name="Pad_ResetIrSmoothing" xml:space="preserve"><value>Restaurar Suavização</value></data>
   <data name="Pad_ResetAudioMirror" xml:space="preserve"><value>Restaurar Espelhamento de Áudio</value></data>
+  <data name="MacroAction_GuideLedBrightness_Format" xml:space="preserve"><value>Brilho do LED Guia: {0}%</value></data>
+  <data name="MacroAction_GuideLedBrightness_Tooltip" xml:space="preserve"><value>Define o brilho do LED do botão Guia ou Home para cada controle compatível no slot. Controles Xbox só o aceitam via USB.</value></data>
+  <data name="MacroAction_Type_GuideLedBrightness" xml:space="preserve"><value>Definir Brilho do LED Guia</value></data>
+  <data name="Macro_GuideLedBrightness_Hint" xml:space="preserve"><value>Aplica-se a controles Xbox via USB e ao Steam Controller de 2015. Combine duas dessas ações para piscar o LED quando uma macro começar e restaurá-lo quando terminar.</value></data>
+  <data name="Pad_Combine_StickTrim_Description" xml:space="preserve"><value>A última fonte da linha é um analógico de trim. Enquanto as outras fontes mantêm o gatilho, empurrar o analógico para cima aumenta o nível retido e puxá-lo para baixo o reduz. Feito para dosar com precisão acelerador e freio em controles sem gatilhos analógicos.</value></data>
+  <data name="Pad_Combine_StickTrim_Name" xml:space="preserve"><value>Trim no Analógico</value></data>
+  <data name="Pad_Kbm_Socd_AddPair" xml:space="preserve"><value>Adicionar Par</value></data>
+  <data name="Pad_Kbm_Socd_AddPair_Tooltip" xml:space="preserve"><value>Adiciona outro par de teclas opostas.</value></data>
+  <data name="Pad_Kbm_Socd_KeyA_Tooltip" xml:space="preserve"><value>Primeira tecla do par oposto.</value></data>
+  <data name="Pad_Kbm_Socd_KeyB_Tooltip" xml:space="preserve"><value>Segunda tecla do par oposto.</value></data>
+  <data name="Pad_Kbm_Socd_Label" xml:space="preserve"><value>Direções Opostas Simultâneas</value></data>
+  <data name="Pad_Kbm_Socd_Mode_FirstWins_Description" xml:space="preserve"><value>A pressão mais antiga continua vencendo até ser solta.</value></data>
+  <data name="Pad_Kbm_Socd_Mode_FirstWins_Name" xml:space="preserve"><value>Primeira Vence</value></data>
+  <data name="Pad_Kbm_Socd_Mode_LastWins_Description" xml:space="preserve"><value>A pressão mais recente vence. Ao soltá-la, a tecla oposta ainda pressionada é pressionada de novo.</value></data>
+  <data name="Pad_Kbm_Socd_Mode_LastWins_Name" xml:space="preserve"><value>Última Vence (Snap Tap)</value></data>
+  <data name="Pad_Kbm_Socd_Mode_Neutral_Description" xml:space="preserve"><value>Segurar as duas teclas libera ambas até que uma seja solta.</value></data>
+  <data name="Pad_Kbm_Socd_Mode_Neutral_Name" xml:space="preserve"><value>Neutro</value></data>
+  <data name="Pad_Kbm_Socd_Mode_Off_Description" xml:space="preserve"><value>As duas teclas passam sem alteração.</value></data>
+  <data name="Pad_Kbm_Socd_Mode_Off_Name" xml:space="preserve"><value>Desativado</value></data>
+  <data name="Pad_Kbm_Socd_RemovePair_Tooltip" xml:space="preserve"><value>Remove este par de teclas.</value></data>
+  <data name="Pad_Kbm_Socd_Reset" xml:space="preserve"><value>Redefinir Direções Opostas Simultâneas</value></data>
+  <data name="Pad_Kbm_Socd_Tooltip" xml:space="preserve"><value>Resolve quando as duas teclas de um par oposto são seguradas ao mesmo tempo, como o Snap Tap. Aplica-se à saída de teclado virtual deste slot.</value></data>
+  <data name="Pad_Lighting_GuideLed" xml:space="preserve"><value>LED do Botão Guia</value></data>
+  <data name="Pad_Lighting_GuideLed_Battery" xml:space="preserve"><value>Nível de Bateria</value></data>
+  <data name="Pad_Lighting_GuideLed_Brightness" xml:space="preserve"><value>Brilho</value></data>
+  <data name="Pad_Lighting_GuideLed_Brightness_Tooltip" xml:space="preserve"><value>Brilho do LED do botão Guia de 0% (apagado) a 100% (máximo). Aplica-se enquanto o modo for Brilho Fixo.</value></data>
+  <data name="Pad_Lighting_GuideLed_DeviceDefault" xml:space="preserve"><value>Padrão do Dispositivo</value></data>
+  <data name="Pad_Lighting_GuideLed_Fixed" xml:space="preserve"><value>Brilho Fixo</value></data>
+  <data name="Pad_Lighting_GuideLed_Mode_Tooltip" xml:space="preserve"><value>Padrão do Dispositivo deixa o LED exatamente como o firmware do controle o definiu. Brilho Fixo mantém o nível abaixo. Nível de Bateria deixa o LED mais brilhante com a bateria mais cheia e nunca cai abaixo de 10%. Controles Xbox só aceitam comandos do LED Guia via USB, então esta configuração não tem efeito em uma conexão Bluetooth.</value></data>
+  <data name="Pad_Lighting_GuideLed_Subtitle" xml:space="preserve"><value>Brilho do botão luminoso Guia ou Home. Controles Xbox One e posteriores o aceitam via USB. O Steam Controller de 2015 o aceita em qualquer conexão, e todos os Steam Controllers compartilham um único brilho.</value></data>
+  <data name="Pad_Mapping_TrimDeadzone" xml:space="preserve"><value>Deadzone do Trim</value></data>
+  <data name="Pad_Mapping_TrimDeadzone_Tooltip" xml:space="preserve"><value>A deflexão do analógico abaixo desta porcentagem é ignorada, então dirigir com o mesmo analógico nunca desloca o nível retido do gatilho. Só os empurrões verticais mais fortes do analógico o ajustam.</value></data>
+  <data name="Pad_Mapping_TrimRate" xml:space="preserve"><value>Velocidade do Trim</value></data>
+  <data name="Pad_Mapping_TrimRate_Tooltip" xml:space="preserve"><value>A rapidez com que um analógico totalmente deslocado desliza o nível retido, em porcentagem da faixa do gatilho por segundo. 100 varre de vazio a cheio em um segundo.</value></data>
+  <data name="Pad_Mapping_TrimReset" xml:space="preserve"><value>Redefinir ao Soltar</value></data>
+  <data name="Pad_Mapping_TrimReset_Tooltip" xml:space="preserve"><value>Quando marcado, soltar o gatilho faz o nível retido voltar a 100%, então a próxima pressão começa cheia. Desmarcado, o nível ajustado é mantido entre as soltadas até você ajustá-lo de novo.</value></data>
+  <data name="Pad_ResetGuideLed" xml:space="preserve"><value>Redefinir LED do Botão Guia</value></data>
+  <data name="Pad_ResetGuideLedBrightness" xml:space="preserve"><value>Redefinir Brilho do LED Guia</value></data>
+  <data name="Pad_ResetGuideLedMode" xml:space="preserve"><value>Redefinir Modo do LED Guia</value></data>
+  <data name="Pad_ResetShiftAutoCancel" xml:space="preserve"><value>Redefinir o cancelamento automático para 0 (a camada fica ativa até ser desativada).</value></data>
+  <data name="Pad_ResetTrimDeadzone" xml:space="preserve"><value>Redefinir a deadzone do trim para 25%.</value></data>
+  <data name="Pad_ResetTrimRate" xml:space="preserve"><value>Redefinir a velocidade do trim para 100% por segundo.</value></data>
+  <data name="Pad_ResetTrimResetOnRelease" xml:space="preserve"><value>Redefinir para o nível voltar a 100% ao soltar.</value></data>
+  <data name="Pad_Shift_AutoCancel" xml:space="preserve"><value>Cancelamento Automático por Inatividade</value></data>
+  <data name="Pad_Shift_AutoCancel_Tooltip" xml:space="preserve"><value>Enquanto a camada está alternada como ativa, ela se desliga sozinha após esses milissegundos sem nenhuma das entradas mapeadas da própria camada ativa. O temporizador começa quando a camada é ativada e reinicia a cada entrada da camada. 0 mantém a camada ativa até você desativá-la.</value></data>
 </root>

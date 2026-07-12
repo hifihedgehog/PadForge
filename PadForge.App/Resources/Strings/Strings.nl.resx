@@ -1482,7 +1482,7 @@
   <data name="Pad_Shift_NoInherit" xml:space="preserve"><value>Niet overerven</value></data>
   <data name="Pad_Shift_NoInherit_Tooltip" xml:space="preserve"><value>Indien aangevinkt blijft het doel van deze laag UIT in plaats van terug te vallen op de Basisregel.</value></data>
   <data name="Pad_Shift_Delay" xml:space="preserve"><value>Vertraging</value></data>
-  <data name="Pad_Shift_Delay_Tooltip" xml:space="preserve"><value>Milliseconden dat de activator actief moet blijven voordat de laagwijziging plaatsvindt.</value></data>
+  <data name="Pad_Shift_Delay_Tooltip" xml:space="preserve"><value>Hoe lang de invoer ingedrukt moet blijven voordat de laag reageert. In de modus Vasthouden werkt dit als debounce. Bij Schakelen, Vergrendelen en Plakkerig wordt de omschakeling een lange druk: de laag wisselt één keer wanneer het vasthouden deze tijd overschrijdt, en een kortere tik doet niets. 0 reageert direct.</value></data>
   <data name="Pad_Shift_ChordSecondInput" xml:space="preserve"><value>Tweede akkoord-invoer</value></data>
   <data name="Pad_Shift_AxisThreshold" xml:space="preserve"><value>As-drempel</value></data>
   <data name="Pad_Shift_CycleLayers" xml:space="preserve"><value>Door lagen cyclen</value></data>
@@ -2287,4 +2287,49 @@
   <data name="Pad_ResetSensorBarComp" xml:space="preserve"><value>Verticale verschuiving resetten</value></data>
   <data name="Pad_ResetIrSmoothing" xml:space="preserve"><value>Vloeiend maken resetten</value></data>
   <data name="Pad_ResetAudioMirror" xml:space="preserve"><value>Audiospiegeling resetten</value></data>
+  <data name="MacroAction_GuideLedBrightness_Format" xml:space="preserve"><value>Guide-LED-helderheid: {0}%</value></data>
+  <data name="MacroAction_GuideLedBrightness_Tooltip" xml:space="preserve"><value>Stelt de LED-helderheid van de Guide- of Home-knop in voor elke geschikte controller op de slot. Xbox-controllers accepteren dit alleen via USB.</value></data>
+  <data name="MacroAction_Type_GuideLedBrightness" xml:space="preserve"><value>Guide-LED-helderheid instellen</value></data>
+  <data name="Macro_GuideLedBrightness_Hint" xml:space="preserve"><value>Geldt voor Xbox-controllers via USB en voor de Steam Controller uit 2015. Combineer twee van deze acties om de LED te laten knipperen wanneer een macro start en te herstellen wanneer hij eindigt.</value></data>
+  <data name="Pad_Combine_StickTrim_Description" xml:space="preserve"><value>De laatste bron van de rij is een trim-stick. Terwijl de andere bronnen de trigger vasthouden, verhoogt de stick omhoog duwen het vastgehouden niveau en verlaagt omlaag trekken het. Bedoeld voor fijne gas- en remdosering op pads zonder analoge triggers.</value></data>
+  <data name="Pad_Combine_StickTrim_Name" xml:space="preserve"><value>Stick-trim</value></data>
+  <data name="Pad_Kbm_Socd_AddPair" xml:space="preserve"><value>Paar toevoegen</value></data>
+  <data name="Pad_Kbm_Socd_AddPair_Tooltip" xml:space="preserve"><value>Voegt nog een tegengesteld toetsenpaar toe.</value></data>
+  <data name="Pad_Kbm_Socd_KeyA_Tooltip" xml:space="preserve"><value>Eerste toets van het tegengestelde paar.</value></data>
+  <data name="Pad_Kbm_Socd_KeyB_Tooltip" xml:space="preserve"><value>Tweede toets van het tegengestelde paar.</value></data>
+  <data name="Pad_Kbm_Socd_Label" xml:space="preserve"><value>Gelijktijdige tegengestelde richtingen</value></data>
+  <data name="Pad_Kbm_Socd_Mode_FirstWins_Description" xml:space="preserve"><value>De eerdere druk blijft winnen totdat die wordt losgelaten.</value></data>
+  <data name="Pad_Kbm_Socd_Mode_FirstWins_Name" xml:space="preserve"><value>Eerste wint</value></data>
+  <data name="Pad_Kbm_Socd_Mode_LastWins_Description" xml:space="preserve"><value>De meest recente druk wint. Bij loslaten wordt de nog ingedrukte tegenovergestelde toets opnieuw ingedrukt.</value></data>
+  <data name="Pad_Kbm_Socd_Mode_LastWins_Name" xml:space="preserve"><value>Laatste wint (Snap Tap)</value></data>
+  <data name="Pad_Kbm_Socd_Mode_Neutral_Description" xml:space="preserve"><value>Beide toetsen ingedrukt houden laat beide los totdat er één wordt losgelaten.</value></data>
+  <data name="Pad_Kbm_Socd_Mode_Neutral_Name" xml:space="preserve"><value>Neutraal</value></data>
+  <data name="Pad_Kbm_Socd_Mode_Off_Description" xml:space="preserve"><value>Beide toetsen gaan ongewijzigd door.</value></data>
+  <data name="Pad_Kbm_Socd_Mode_Off_Name" xml:space="preserve"><value>Uit</value></data>
+  <data name="Pad_Kbm_Socd_RemovePair_Tooltip" xml:space="preserve"><value>Verwijdert dit toetsenpaar.</value></data>
+  <data name="Pad_Kbm_Socd_Reset" xml:space="preserve"><value>Gelijktijdige tegengestelde richtingen resetten</value></data>
+  <data name="Pad_Kbm_Socd_Tooltip" xml:space="preserve"><value>Lost het tegelijk ingedrukt houden van beide toetsen van een tegengesteld paar op, zoals Snap Tap. Geldt voor de virtuele toetsenborduitvoer van deze slot.</value></data>
+  <data name="Pad_Lighting_GuideLed" xml:space="preserve"><value>Guide-knop-LED</value></data>
+  <data name="Pad_Lighting_GuideLed_Battery" xml:space="preserve"><value>Batterijniveau</value></data>
+  <data name="Pad_Lighting_GuideLed_Brightness" xml:space="preserve"><value>Helderheid</value></data>
+  <data name="Pad_Lighting_GuideLed_Brightness_Tooltip" xml:space="preserve"><value>LED-helderheid van de Guide-knop van 0% (uit) tot 100% (vol). Geldt zolang de modus Vaste helderheid is.</value></data>
+  <data name="Pad_Lighting_GuideLed_DeviceDefault" xml:space="preserve"><value>Apparaatstandaard</value></data>
+  <data name="Pad_Lighting_GuideLed_Fixed" xml:space="preserve"><value>Vaste helderheid</value></data>
+  <data name="Pad_Lighting_GuideLed_Mode_Tooltip" xml:space="preserve"><value>Apparaatstandaard laat de LED precies zoals de controller-firmware die heeft ingesteld. Vaste helderheid houdt het niveau hieronder aan. Batterijniveau maakt de LED helderder bij een vollere batterij en zakt nooit onder 10%. Xbox-controllers accepteren Guide-LED-opdrachten alleen via USB, dus deze instelling heeft geen effect op een Bluetooth-verbinding.</value></data>
+  <data name="Pad_Lighting_GuideLed_Subtitle" xml:space="preserve"><value>Helderheid van de oplichtende Guide- of Home-knop. Xbox One- en latere controllers accepteren dit via USB. De Steam Controller uit 2015 accepteert het op elke verbinding, en alle Steam Controllers delen één helderheid.</value></data>
+  <data name="Pad_Mapping_TrimDeadzone" xml:space="preserve"><value>Trim-deadzone</value></data>
+  <data name="Pad_Mapping_TrimDeadzone_Tooltip" xml:space="preserve"><value>Stickuitslag onder dit percentage wordt genegeerd, zodat sturen met dezelfde stick het vastgehouden triggerniveau nooit verschuift. Alleen de sterkere verticale uitslagen van de stick passen het aan.</value></data>
+  <data name="Pad_Mapping_TrimRate" xml:space="preserve"><value>Trimsnelheid</value></data>
+  <data name="Pad_Mapping_TrimRate_Tooltip" xml:space="preserve"><value>Hoe snel een volledig uitgeslagen stick het vastgehouden niveau verschuift, in procent van het triggerbereik per seconde. 100 gaat in één seconde van leeg naar vol.</value></data>
+  <data name="Pad_Mapping_TrimReset" xml:space="preserve"><value>Resetten bij loslaten</value></data>
+  <data name="Pad_Mapping_TrimReset_Tooltip" xml:space="preserve"><value>Als aangevinkt, springt het vastgehouden niveau bij het loslaten van de trigger terug naar 100%, zodat de volgende druk vol begint. Als uitgevinkt, blijft het getrimde niveau over loslatingen heen behouden totdat je het weer aanpast.</value></data>
+  <data name="Pad_ResetGuideLed" xml:space="preserve"><value>Guide-knop-LED herstellen</value></data>
+  <data name="Pad_ResetGuideLedBrightness" xml:space="preserve"><value>Guide-LED-helderheid herstellen</value></data>
+  <data name="Pad_ResetGuideLedMode" xml:space="preserve"><value>Guide-LED-modus herstellen</value></data>
+  <data name="Pad_ResetShiftAutoCancel" xml:space="preserve"><value>Automatisch annuleren resetten naar 0 (de laag blijft aan totdat hij wordt uitgeschakeld).</value></data>
+  <data name="Pad_ResetTrimDeadzone" xml:space="preserve"><value>De trim-deadzone resetten naar 25%.</value></data>
+  <data name="Pad_ResetTrimRate" xml:space="preserve"><value>De trimsnelheid resetten naar 100% per seconde.</value></data>
+  <data name="Pad_ResetTrimResetOnRelease" xml:space="preserve"><value>Resetten naar het terugspringen van het niveau naar 100% bij loslaten.</value></data>
+  <data name="Pad_Shift_AutoCancel" xml:space="preserve"><value>Automatisch annuleren na inactiviteit</value></data>
+  <data name="Pad_Shift_AutoCancel_Tooltip" xml:space="preserve"><value>Zolang de laag is ingeschakeld, schakelt hij zichzelf weer uit na dit aantal milliseconden zonder dat een van de eigen toegewezen invoeren van de laag actief is. De timer start wanneer de laag wordt geactiveerd en begint opnieuw bij elke laaginvoer. 0 houdt de laag aan totdat je hem zelf uitschakelt.</value></data>
 </root>

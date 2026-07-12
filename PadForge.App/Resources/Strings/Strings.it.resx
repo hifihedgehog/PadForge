@@ -1482,7 +1482,7 @@
   <data name="Pad_Shift_NoInherit" xml:space="preserve"><value>Non ereditare</value></data>
   <data name="Pad_Shift_NoInherit_Tooltip" xml:space="preserve"><value>Quando selezionato, l'obiettivo di questo livello rimane SPENTO anziché ricadere sulla riga Base.</value></data>
   <data name="Pad_Shift_Delay" xml:space="preserve"><value>Ritardo</value></data>
-  <data name="Pad_Shift_Delay_Tooltip" xml:space="preserve"><value>Millisecondi per cui l'attivatore deve rimanere attivo prima che venga attivato il cambio di livello.</value></data>
+  <data name="Pad_Shift_Delay_Tooltip" xml:space="preserve"><value>Per quanto tempo l'input deve restare premuto prima che il livello reagisca. In modalità Tieni premuto funge da antirimbalzo. Per Alterna, Blocca e Adesivo trasforma il cambio in una pressione lunga: il livello cambia una volta quando la pressione supera questo tempo, e un tocco più breve non fa nulla. 0 reagisce all'istante.</value></data>
   <data name="Pad_Shift_ChordSecondInput" xml:space="preserve"><value>Secondo ingresso dell'accordo</value></data>
   <data name="Pad_Shift_AxisThreshold" xml:space="preserve"><value>Soglia dell'asse</value></data>
   <data name="Pad_Shift_CycleLayers" xml:space="preserve"><value>Cicla tra i livelli</value></data>
@@ -2289,4 +2289,49 @@
   <data name="Pad_ResetSensorBarComp" xml:space="preserve"><value>Ripristina scostamento verticale</value></data>
   <data name="Pad_ResetIrSmoothing" xml:space="preserve"><value>Ripristina smussatura</value></data>
   <data name="Pad_ResetAudioMirror" xml:space="preserve"><value>Ripristina duplicazione audio</value></data>
+  <data name="MacroAction_GuideLedBrightness_Format" xml:space="preserve"><value>Luminosità LED Guida: {0}%</value></data>
+  <data name="MacroAction_GuideLedBrightness_Tooltip" xml:space="preserve"><value>Imposta la luminosità del LED del pulsante Guida o Home per ogni controller compatibile dello slot. I controller Xbox la accettano solo via USB.</value></data>
+  <data name="MacroAction_Type_GuideLedBrightness" xml:space="preserve"><value>Imposta luminosità LED Guida</value></data>
+  <data name="Macro_GuideLedBrightness_Hint" xml:space="preserve"><value>Si applica ai controller Xbox via USB e allo Steam Controller del 2015. Abbina due di queste azioni per far lampeggiare il LED all'avvio di una macro e ripristinarlo alla fine.</value></data>
+  <data name="Pad_Combine_StickTrim_Description" xml:space="preserve"><value>L'ultima sorgente della riga è una levetta di trim. Mentre le altre sorgenti tengono il grilletto, spingere la levetta in su alza il livello mantenuto e tirarla in giù lo abbassa. Pensato per dosare con precisione acceleratore e freno sui pad senza grilletti analogici.</value></data>
+  <data name="Pad_Combine_StickTrim_Name" xml:space="preserve"><value>Trim con levetta</value></data>
+  <data name="Pad_Kbm_Socd_AddPair" xml:space="preserve"><value>Aggiungi coppia</value></data>
+  <data name="Pad_Kbm_Socd_AddPair_Tooltip" xml:space="preserve"><value>Aggiunge un'altra coppia di tasti opposti.</value></data>
+  <data name="Pad_Kbm_Socd_KeyA_Tooltip" xml:space="preserve"><value>Primo tasto della coppia opposta.</value></data>
+  <data name="Pad_Kbm_Socd_KeyB_Tooltip" xml:space="preserve"><value>Secondo tasto della coppia opposta.</value></data>
+  <data name="Pad_Kbm_Socd_Label" xml:space="preserve"><value>Direzioni opposte simultanee</value></data>
+  <data name="Pad_Kbm_Socd_Mode_FirstWins_Description" xml:space="preserve"><value>La pressione più vecchia continua a vincere finché non viene rilasciata.</value></data>
+  <data name="Pad_Kbm_Socd_Mode_FirstWins_Name" xml:space="preserve"><value>Vince il primo</value></data>
+  <data name="Pad_Kbm_Socd_Mode_LastWins_Description" xml:space="preserve"><value>La pressione più recente vince. Al rilascio viene ripremuto il tasto opposto ancora tenuto.</value></data>
+  <data name="Pad_Kbm_Socd_Mode_LastWins_Name" xml:space="preserve"><value>Vince l'ultimo (Snap Tap)</value></data>
+  <data name="Pad_Kbm_Socd_Mode_Neutral_Description" xml:space="preserve"><value>Tenere entrambi i tasti li rilascia entrambi finché uno non viene lasciato.</value></data>
+  <data name="Pad_Kbm_Socd_Mode_Neutral_Name" xml:space="preserve"><value>Neutro</value></data>
+  <data name="Pad_Kbm_Socd_Mode_Off_Description" xml:space="preserve"><value>Entrambi i tasti passano invariati.</value></data>
+  <data name="Pad_Kbm_Socd_Mode_Off_Name" xml:space="preserve"><value>Disattivato</value></data>
+  <data name="Pad_Kbm_Socd_RemovePair_Tooltip" xml:space="preserve"><value>Rimuove questa coppia di tasti.</value></data>
+  <data name="Pad_Kbm_Socd_Reset" xml:space="preserve"><value>Ripristina direzioni opposte simultanee</value></data>
+  <data name="Pad_Kbm_Socd_Tooltip" xml:space="preserve"><value>Risolve il caso in cui entrambi i tasti di una coppia opposta sono tenuti premuti insieme, come Snap Tap. Si applica all'output di tastiera virtuale di questo slot.</value></data>
+  <data name="Pad_Lighting_GuideLed" xml:space="preserve"><value>LED del pulsante Guida</value></data>
+  <data name="Pad_Lighting_GuideLed_Battery" xml:space="preserve"><value>Livello batteria</value></data>
+  <data name="Pad_Lighting_GuideLed_Brightness" xml:space="preserve"><value>Luminosità</value></data>
+  <data name="Pad_Lighting_GuideLed_Brightness_Tooltip" xml:space="preserve"><value>Luminosità del LED del pulsante Guida da 0% (spento) a 100% (piena). Si applica mentre la modalità è Luminosità fissa.</value></data>
+  <data name="Pad_Lighting_GuideLed_DeviceDefault" xml:space="preserve"><value>Predefinito del dispositivo</value></data>
+  <data name="Pad_Lighting_GuideLed_Fixed" xml:space="preserve"><value>Luminosità fissa</value></data>
+  <data name="Pad_Lighting_GuideLed_Mode_Tooltip" xml:space="preserve"><value>Predefinito del dispositivo lascia il LED esattamente come impostato dal firmware del controller. Luminosità fissa mantiene il livello qui sotto. Livello batteria rende il LED più luminoso con la batteria più carica e non scende mai sotto il 10%. I controller Xbox accettano i comandi del LED Guida solo via USB, quindi questa impostazione non ha effetto su una connessione Bluetooth.</value></data>
+  <data name="Pad_Lighting_GuideLed_Subtitle" xml:space="preserve"><value>Luminosità del pulsante luminoso Guida o Home. I controller Xbox One e successivi la accettano via USB. Lo Steam Controller del 2015 la accetta su qualsiasi connessione, e tutti gli Steam Controller condividono una sola luminosità.</value></data>
+  <data name="Pad_Mapping_TrimDeadzone" xml:space="preserve"><value>Zona morta del trim</value></data>
+  <data name="Pad_Mapping_TrimDeadzone_Tooltip" xml:space="preserve"><value>La deflessione della levetta sotto questa percentuale viene ignorata, così sterzare con la stessa levetta non sposta mai il livello mantenuto del grilletto. Solo le spinte verticali più decise della levetta lo regolano.</value></data>
+  <data name="Pad_Mapping_TrimRate" xml:space="preserve"><value>Velocità del trim</value></data>
+  <data name="Pad_Mapping_TrimRate_Tooltip" xml:space="preserve"><value>Quanto velocemente una levetta a fondo corsa fa scorrere il livello mantenuto, in percentuale della corsa del grilletto al secondo. 100 va da vuoto a pieno in un secondo.</value></data>
+  <data name="Pad_Mapping_TrimReset" xml:space="preserve"><value>Ripristina al rilascio</value></data>
+  <data name="Pad_Mapping_TrimReset_Tooltip" xml:space="preserve"><value>Se selezionato, rilasciare il grilletto riporta il livello mantenuto al 100%, così la prossima pressione parte piena. Se deselezionato, il livello regolato resta tra un rilascio e l'altro finché non lo regoli di nuovo.</value></data>
+  <data name="Pad_ResetGuideLed" xml:space="preserve"><value>Ripristina LED del pulsante Guida</value></data>
+  <data name="Pad_ResetGuideLedBrightness" xml:space="preserve"><value>Ripristina luminosità LED Guida</value></data>
+  <data name="Pad_ResetGuideLedMode" xml:space="preserve"><value>Ripristina modalità LED Guida</value></data>
+  <data name="Pad_ResetShiftAutoCancel" xml:space="preserve"><value>Ripristina l'annullamento automatico a 0 (il livello resta attivo finché non viene disattivato).</value></data>
+  <data name="Pad_ResetTrimDeadzone" xml:space="preserve"><value>Ripristina la zona morta del trim al 25%.</value></data>
+  <data name="Pad_ResetTrimRate" xml:space="preserve"><value>Ripristina la velocità del trim al 100% al secondo.</value></data>
+  <data name="Pad_ResetTrimResetOnRelease" xml:space="preserve"><value>Ripristina al ritorno del livello al 100% al rilascio.</value></data>
+  <data name="Pad_Shift_AutoCancel" xml:space="preserve"><value>Annullamento automatico dopo inattività</value></data>
+  <data name="Pad_Shift_AutoCancel_Tooltip" xml:space="preserve"><value>Mentre il livello è attivato, si disattiva da solo dopo questi millisecondi senza nessuno degli input mappati del livello attivo. Il timer parte quando il livello si attiva e riparte a ogni input del livello. 0 mantiene il livello attivo finché non lo disattivi tu.</value></data>
 </root>

@@ -1462,7 +1462,7 @@
   <data name="Pad_Shift_NoInherit" xml:space="preserve"><value>Nicht erben</value></data>
   <data name="Pad_Shift_NoInherit_Tooltip" xml:space="preserve"><value>Wenn aktiviert, bleibt das Ziel dieser Ebene AUS, anstatt auf die Basiszeile zurückzufallen.</value></data>
   <data name="Pad_Shift_Delay" xml:space="preserve"><value>Verzögerung</value></data>
-  <data name="Pad_Shift_Delay_Tooltip" xml:space="preserve"><value>Millisekunden, die der Aktivator aktiviert bleiben muss, bevor die Ebenenänderung ausgelöst wird.</value></data>
+  <data name="Pad_Shift_Delay_Tooltip" xml:space="preserve"><value>Wie lange die Eingabe gehalten werden muss, bevor die Ebene reagiert. Im Modus Halten wirkt das als Entprellung. Bei Umschalten, Einrasten und Klebrig wird der Wechsel zum langen Druck: Die Ebene wechselt einmal, wenn das Halten diese Zeit überschreitet, und ein kürzeres Tippen bewirkt nichts. 0 reagiert sofort.</value></data>
   <data name="Pad_Shift_ChordSecondInput" xml:space="preserve"><value>Zweite Akkord-Eingabe</value></data>
   <data name="Pad_Shift_AxisThreshold" xml:space="preserve"><value>Achsenschwellwert</value></data>
   <data name="Pad_Shift_CycleLayers" xml:space="preserve"><value>Ebenen durchlaufen</value></data>
@@ -2267,4 +2267,49 @@
   <data name="Pad_ResetSensorBarComp" xml:space="preserve"><value>Vertikalen Versatz zurücksetzen</value></data>
   <data name="Pad_ResetIrSmoothing" xml:space="preserve"><value>Glättung zurücksetzen</value></data>
   <data name="Pad_ResetAudioMirror" xml:space="preserve"><value>Audio-Spiegelung zurücksetzen</value></data>
+  <data name="MacroAction_GuideLedBrightness_Format" xml:space="preserve"><value>Guide-LED-Helligkeit: {0}%</value></data>
+  <data name="MacroAction_GuideLedBrightness_Tooltip" xml:space="preserve"><value>Legt die Helligkeit der Guide- oder Home-Tasten-LED für jeden fähigen Controller am Slot fest. Xbox-Controller akzeptieren dies nur über USB.</value></data>
+  <data name="MacroAction_Type_GuideLedBrightness" xml:space="preserve"><value>Guide-LED-Helligkeit festlegen</value></data>
+  <data name="Macro_GuideLedBrightness_Hint" xml:space="preserve"><value>Gilt für Xbox-Controller über USB und für den Steam Controller von 2015. Kombiniere zwei dieser Aktionen, um die LED beim Start eines Makros aufblinken zu lassen und am Ende wiederherzustellen.</value></data>
+  <data name="Pad_Combine_StickTrim_Description" xml:space="preserve"><value>Die letzte Quelle der Zeile ist ein Trimm-Stick. Während die anderen Quellen den Trigger halten, erhöht Drücken des Sticks nach oben den gehaltenen Wert und Ziehen nach unten senkt ihn. Gedacht für feines Gas- und Bremsdosieren auf Pads ohne analoge Trigger.</value></data>
+  <data name="Pad_Combine_StickTrim_Name" xml:space="preserve"><value>Stick-Trimmung</value></data>
+  <data name="Pad_Kbm_Socd_AddPair" xml:space="preserve"><value>Paar hinzufügen</value></data>
+  <data name="Pad_Kbm_Socd_AddPair_Tooltip" xml:space="preserve"><value>Fügt ein weiteres gegensätzliches Tastenpaar hinzu.</value></data>
+  <data name="Pad_Kbm_Socd_KeyA_Tooltip" xml:space="preserve"><value>Erste Taste des gegensätzlichen Paars.</value></data>
+  <data name="Pad_Kbm_Socd_KeyB_Tooltip" xml:space="preserve"><value>Zweite Taste des gegensätzlichen Paars.</value></data>
+  <data name="Pad_Kbm_Socd_Label" xml:space="preserve"><value>Gleichzeitige entgegengesetzte Richtungen</value></data>
+  <data name="Pad_Kbm_Socd_Mode_FirstWins_Description" xml:space="preserve"><value>Der frühere Tastendruck gewinnt weiter, bis er losgelassen wird.</value></data>
+  <data name="Pad_Kbm_Socd_Mode_FirstWins_Name" xml:space="preserve"><value>Erste gewinnt</value></data>
+  <data name="Pad_Kbm_Socd_Mode_LastWins_Description" xml:space="preserve"><value>Der jüngste Tastendruck gewinnt. Beim Loslassen wird die noch gehaltene Gegentaste erneut gedrückt.</value></data>
+  <data name="Pad_Kbm_Socd_Mode_LastWins_Name" xml:space="preserve"><value>Letzte gewinnt (Snap Tap)</value></data>
+  <data name="Pad_Kbm_Socd_Mode_Neutral_Description" xml:space="preserve"><value>Das Halten beider Tasten gibt beide frei, bis eine losgelassen wird.</value></data>
+  <data name="Pad_Kbm_Socd_Mode_Neutral_Name" xml:space="preserve"><value>Neutral</value></data>
+  <data name="Pad_Kbm_Socd_Mode_Off_Description" xml:space="preserve"><value>Beide Tasten werden unverändert durchgereicht.</value></data>
+  <data name="Pad_Kbm_Socd_Mode_Off_Name" xml:space="preserve"><value>Aus</value></data>
+  <data name="Pad_Kbm_Socd_RemovePair_Tooltip" xml:space="preserve"><value>Entfernt dieses Tastenpaar.</value></data>
+  <data name="Pad_Kbm_Socd_Reset" xml:space="preserve"><value>Gleichzeitige entgegengesetzte Richtungen zurücksetzen</value></data>
+  <data name="Pad_Kbm_Socd_Tooltip" xml:space="preserve"><value>Löst das gleichzeitige Halten beider Tasten eines gegensätzlichen Paars auf, wie Snap Tap. Gilt für die virtuelle Tastaturausgabe dieses Slots.</value></data>
+  <data name="Pad_Lighting_GuideLed" xml:space="preserve"><value>Guide-Tasten-LED</value></data>
+  <data name="Pad_Lighting_GuideLed_Battery" xml:space="preserve"><value>Akkustand</value></data>
+  <data name="Pad_Lighting_GuideLed_Brightness" xml:space="preserve"><value>Helligkeit</value></data>
+  <data name="Pad_Lighting_GuideLed_Brightness_Tooltip" xml:space="preserve"><value>Helligkeit der Guide-Tasten-LED von 0% (aus) bis 100% (voll). Gilt, solange der Modus Feste Helligkeit ist.</value></data>
+  <data name="Pad_Lighting_GuideLed_DeviceDefault" xml:space="preserve"><value>Gerätestandard</value></data>
+  <data name="Pad_Lighting_GuideLed_Fixed" xml:space="preserve"><value>Feste Helligkeit</value></data>
+  <data name="Pad_Lighting_GuideLed_Mode_Tooltip" xml:space="preserve"><value>Gerätestandard lässt die LED genau so, wie die Controller-Firmware sie eingestellt hat. Feste Helligkeit hält den unten eingestellten Wert. Akkustand macht die LED bei vollerem Akku heller und fällt nie unter 10%. Xbox-Controller akzeptieren Guide-LED-Befehle nur über USB, daher hat diese Einstellung bei einer Bluetooth-Verbindung keine Wirkung.</value></data>
+  <data name="Pad_Lighting_GuideLed_Subtitle" xml:space="preserve"><value>Helligkeit der leuchtenden Guide- oder Home-Taste. Xbox-One-Controller und neuere akzeptieren sie über USB. Der Steam Controller von 2015 akzeptiert sie über jede Verbindung, und alle Steam Controller teilen sich eine Helligkeit.</value></data>
+  <data name="Pad_Mapping_TrimDeadzone" xml:space="preserve"><value>Trimm-Deadzone</value></data>
+  <data name="Pad_Mapping_TrimDeadzone_Tooltip" xml:space="preserve"><value>Stick-Ausschläge unterhalb dieses Prozentsatzes werden ignoriert, damit Lenken mit demselben Stick den gehaltenen Triggerwert nie verschiebt. Nur die stärkeren vertikalen Ausschläge des Sticks verstellen ihn.</value></data>
+  <data name="Pad_Mapping_TrimRate" xml:space="preserve"><value>Trimmgeschwindigkeit</value></data>
+  <data name="Pad_Mapping_TrimRate_Tooltip" xml:space="preserve"><value>Wie schnell ein voll ausgelenkter Stick den gehaltenen Wert verschiebt, in Prozent des Triggerbereichs pro Sekunde. 100 fährt in einer Sekunde von leer bis voll.</value></data>
+  <data name="Pad_Mapping_TrimReset" xml:space="preserve"><value>Beim Loslassen zurücksetzen</value></data>
+  <data name="Pad_Mapping_TrimReset_Tooltip" xml:space="preserve"><value>Wenn aktiviert, springt der gehaltene Wert beim Loslassen des Triggers auf 100% zurück, sodass der nächste Druck voll beginnt. Wenn deaktiviert, bleibt der getrimmte Wert über das Loslassen hinaus erhalten, bis du ihn wieder anpasst.</value></data>
+  <data name="Pad_ResetGuideLed" xml:space="preserve"><value>Guide-Tasten-LED zurücksetzen</value></data>
+  <data name="Pad_ResetGuideLedBrightness" xml:space="preserve"><value>Guide-LED-Helligkeit zurücksetzen</value></data>
+  <data name="Pad_ResetGuideLedMode" xml:space="preserve"><value>Guide-LED-Modus zurücksetzen</value></data>
+  <data name="Pad_ResetShiftAutoCancel" xml:space="preserve"><value>Auto-Abschaltung auf 0 zurücksetzen (die Ebene bleibt an, bis sie ausgeschaltet wird).</value></data>
+  <data name="Pad_ResetTrimDeadzone" xml:space="preserve"><value>Trimm-Deadzone auf 25% zurücksetzen.</value></data>
+  <data name="Pad_ResetTrimRate" xml:space="preserve"><value>Trimmgeschwindigkeit auf 100% pro Sekunde zurücksetzen.</value></data>
+  <data name="Pad_ResetTrimResetOnRelease" xml:space="preserve"><value>Zurücksetzen, sodass der Wert beim Loslassen auf 100% zurückspringt.</value></data>
+  <data name="Pad_Shift_AutoCancel" xml:space="preserve"><value>Auto-Abschaltung nach Inaktivität</value></data>
+  <data name="Pad_Shift_AutoCancel_Tooltip" xml:space="preserve"><value>Solange die Ebene eingeschaltet ist, schaltet sie sich nach so vielen Millisekunden ohne aktive eigene zugewiesene Eingaben selbst wieder aus. Der Timer startet beim Aktivieren der Ebene und beginnt bei jeder Ebenen-Eingabe neu. 0 lässt die Ebene an, bis du sie selbst ausschaltest.</value></data>
 </root>

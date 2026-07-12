@@ -1462,7 +1462,7 @@
   <data name="Pad_Shift_NoInherit" xml:space="preserve"><value>継承しない</value></data>
   <data name="Pad_Shift_NoInherit_Tooltip" xml:space="preserve"><value>オンにすると、このレイヤーのターゲットはベース行にフォールスルーせず、オフのままになります。</value></data>
   <data name="Pad_Shift_Delay" xml:space="preserve"><value>遅延</value></data>
-  <data name="Pad_Shift_Delay_Tooltip" xml:space="preserve"><value>レイヤーの変更が発火する前に、アクティベーターがアクティブな状態を維持する必要があるミリ秒。</value></data>
+  <data name="Pad_Shift_Delay_Tooltip" xml:space="preserve"><value>レイヤーが反応するまでに入力を押し続ける必要がある時間。ホールド モードではデバウンスとして働きます。トグル、固定、スティッキーでは切り替えが長押しになり、押し続けた時間がこの値を超えた瞬間にレイヤーが 1 回切り替わり、それより短いタップでは何も起こりません。0 なら即座に反応します。</value></data>
   <data name="Pad_Shift_ChordSecondInput" xml:space="preserve"><value>コードの2番目の入力</value></data>
   <data name="Pad_Shift_AxisThreshold" xml:space="preserve"><value>軸のしきい値</value></data>
   <data name="Pad_Shift_CycleLayers" xml:space="preserve"><value>レイヤーをサイクル</value></data>
@@ -2267,4 +2267,49 @@
   <data name="Pad_ResetSensorBarComp" xml:space="preserve"><value>垂直オフセットをリセット</value></data>
   <data name="Pad_ResetIrSmoothing" xml:space="preserve"><value>スムージングをリセット</value></data>
   <data name="Pad_ResetAudioMirror" xml:space="preserve"><value>オーディオミラーをリセット</value></data>
+  <data name="MacroAction_GuideLedBrightness_Format" xml:space="preserve"><value>ガイドLEDの明るさ: {0}%</value></data>
+  <data name="MacroAction_GuideLedBrightness_Tooltip" xml:space="preserve"><value>スロット上の対応する各コントローラーに対して、ガイドまたはホームボタンの LED の明るさを設定します。Xbox コントローラーは USB 接続時のみ受け付けます。</value></data>
+  <data name="MacroAction_Type_GuideLedBrightness" xml:space="preserve"><value>ガイドLEDの明るさを設定</value></data>
+  <data name="Macro_GuideLedBrightness_Hint" xml:space="preserve"><value>USB 接続の Xbox コントローラーと 2015 年版 Steam Controller に適用されます。このアクションを 2 つ組み合わせると、マクロ開始時に LED を点滅させ、終了時に元へ戻せます。</value></data>
+  <data name="Pad_Combine_StickTrim_Description" xml:space="preserve"><value>行の最後のソースがトリム用スティックになります。他のソースがトリガーを保持している間、スティックを上に倒すと保持レベルが上がり、下に倒すと下がります。アナログトリガーのないパッドでスロットルとブレーキを細かく操作するための機能です。</value></data>
+  <data name="Pad_Combine_StickTrim_Name" xml:space="preserve"><value>スティックトリム</value></data>
+  <data name="Pad_Kbm_Socd_AddPair" xml:space="preserve"><value>ペアを追加</value></data>
+  <data name="Pad_Kbm_Socd_AddPair_Tooltip" xml:space="preserve"><value>対向するキーペアをもう 1 組追加します。</value></data>
+  <data name="Pad_Kbm_Socd_KeyA_Tooltip" xml:space="preserve"><value>対向ペアの 1 つ目のキー。</value></data>
+  <data name="Pad_Kbm_Socd_KeyB_Tooltip" xml:space="preserve"><value>対向ペアの 2 つ目のキー。</value></data>
+  <data name="Pad_Kbm_Socd_Label" xml:space="preserve"><value>同時反対方向入力</value></data>
+  <data name="Pad_Kbm_Socd_Mode_FirstWins_Description" xml:space="preserve"><value>先に押したキーが、離されるまで勝ち続けます。</value></data>
+  <data name="Pad_Kbm_Socd_Mode_FirstWins_Name" xml:space="preserve"><value>先押し優先</value></data>
+  <data name="Pad_Kbm_Socd_Mode_LastWins_Description" xml:space="preserve"><value>最後に押したキーが勝ちます。離すと、まだ押されている反対側のキーが再び押されます。</value></data>
+  <data name="Pad_Kbm_Socd_Mode_LastWins_Name" xml:space="preserve"><value>後押し優先 (Snap Tap)</value></data>
+  <data name="Pad_Kbm_Socd_Mode_Neutral_Description" xml:space="preserve"><value>両方のキーを押し続けると、どちらかを離すまで両方とも解除されます。</value></data>
+  <data name="Pad_Kbm_Socd_Mode_Neutral_Name" xml:space="preserve"><value>ニュートラル</value></data>
+  <data name="Pad_Kbm_Socd_Mode_Off_Description" xml:space="preserve"><value>両方のキーがそのまま通過します。</value></data>
+  <data name="Pad_Kbm_Socd_Mode_Off_Name" xml:space="preserve"><value>オフ</value></data>
+  <data name="Pad_Kbm_Socd_RemovePair_Tooltip" xml:space="preserve"><value>このキーペアを削除します。</value></data>
+  <data name="Pad_Kbm_Socd_Reset" xml:space="preserve"><value>同時反対方向入力をリセット</value></data>
+  <data name="Pad_Kbm_Socd_Tooltip" xml:space="preserve"><value>対向ペアの両方のキーが同時に押されたときの競合を Snap Tap のように解決します。このスロットの仮想キーボード出力に適用されます。</value></data>
+  <data name="Pad_Lighting_GuideLed" xml:space="preserve"><value>ガイドボタン LED</value></data>
+  <data name="Pad_Lighting_GuideLed_Battery" xml:space="preserve"><value>バッテリー残量</value></data>
+  <data name="Pad_Lighting_GuideLed_Brightness" xml:space="preserve"><value>明るさ</value></data>
+  <data name="Pad_Lighting_GuideLed_Brightness_Tooltip" xml:space="preserve"><value>ガイドボタン LED の明るさを 0% (消灯) から 100% (最大) まで設定します。モードが固定の明るさの間だけ適用されます。</value></data>
+  <data name="Pad_Lighting_GuideLed_DeviceDefault" xml:space="preserve"><value>デバイスの既定</value></data>
+  <data name="Pad_Lighting_GuideLed_Fixed" xml:space="preserve"><value>固定の明るさ</value></data>
+  <data name="Pad_Lighting_GuideLed_Mode_Tooltip" xml:space="preserve"><value>デバイスの既定は、コントローラーのファームウェアが設定したままの LED にします。固定の明るさは下のレベルを維持します。バッテリー残量は、バッテリーが多いほど明るくなり、10% を下回ることはありません。Xbox コントローラーはガイド LED コマンドを USB 接続時のみ受け付けるため、Bluetooth 接続ではこの設定は効果がありません。</value></data>
+  <data name="Pad_Lighting_GuideLed_Subtitle" xml:space="preserve"><value>光るガイドまたはホームボタンの明るさ。Xbox One 以降のコントローラーは USB 接続時に受け付けます。2015 年版 Steam Controller はどの接続でも受け付け、すべての Steam Controller で 1 つの明るさを共有します。</value></data>
+  <data name="Pad_Mapping_TrimDeadzone" xml:space="preserve"><value>トリムデッドゾーン</value></data>
+  <data name="Pad_Mapping_TrimDeadzone_Tooltip" xml:space="preserve"><value>この割合未満のスティックの倒し込みは無視されるため、同じスティックでの操舵が保持中のトリガーレベルを揺らすことはありません。スティックを縦方向へ強く倒したときだけ調整されます。</value></data>
+  <data name="Pad_Mapping_TrimRate" xml:space="preserve"><value>トリム速度</value></data>
+  <data name="Pad_Mapping_TrimRate_Tooltip" xml:space="preserve"><value>スティックを最大まで倒したときに保持レベルが動く速さを、トリガー範囲に対する毎秒のパーセントで指定します。100 なら 1 秒で空から最大まで動きます。</value></data>
+  <data name="Pad_Mapping_TrimReset" xml:space="preserve"><value>リリース時にリセット</value></data>
+  <data name="Pad_Mapping_TrimReset_Tooltip" xml:space="preserve"><value>チェックすると、トリガーを離したときに保持レベルが 100% に戻り、次の押下は最大から始まります。チェックなしの場合、トリム済みレベルは再調整するまでリリース後も保持されます。</value></data>
+  <data name="Pad_ResetGuideLed" xml:space="preserve"><value>ガイドボタン LED をリセット</value></data>
+  <data name="Pad_ResetGuideLedBrightness" xml:space="preserve"><value>ガイド LED の明るさをリセット</value></data>
+  <data name="Pad_ResetGuideLedMode" xml:space="preserve"><value>ガイド LED モードをリセット</value></data>
+  <data name="Pad_ResetShiftAutoCancel" xml:space="preserve"><value>自動解除を 0 にリセット (レイヤーはオフに切り替えるまで有効のまま)。</value></data>
+  <data name="Pad_ResetTrimDeadzone" xml:space="preserve"><value>トリムデッドゾーンを 25% にリセット。</value></data>
+  <data name="Pad_ResetTrimRate" xml:space="preserve"><value>トリム速度を毎秒 100% にリセット。</value></data>
+  <data name="Pad_ResetTrimResetOnRelease" xml:space="preserve"><value>リリース時にレベルが 100% に戻る設定にリセット。</value></data>
+  <data name="Pad_Shift_AutoCancel" xml:space="preserve"><value>無操作時の自動解除</value></data>
+  <data name="Pad_Shift_AutoCancel_Tooltip" xml:space="preserve"><value>レイヤーがトグルでオンの間、レイヤー自身にマッピングされた入力が何もアクティブでない状態がこのミリ秒続くと、自動的にオフへ戻ります。タイマーはレイヤーの有効化時に開始し、レイヤーへの入力があるたびにやり直されます。0 なら自分でオフに切り替えるまでオンのままです。</value></data>
 </root>

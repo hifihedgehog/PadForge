@@ -201,6 +201,7 @@ namespace PadForge.Views
                 ModeCombo.SelectedValue = existing.Mode ?? "Hold";
                 AxisThresholdSlider.Value = existing.AxisThreshold;
                 DelaySlider.Value = existing.DelayMs;
+                AutoCancelSlider.Value = existing.AutoCancelMs;
                 InheritUnmappedBox.IsChecked = existing.InheritUnmapped;
                 PostponeMappingBox.IsChecked = existing.PostponeMapping;
 
@@ -604,6 +605,12 @@ namespace PadForge.Views
             KindLabel.Visibility = (isPassive || isCycle) ? Visibility.Collapsed : Visibility.Visible;
             KindCombo.Visibility = (isPassive || isCycle) ? Visibility.Collapsed : Visibility.Visible;
             DelayRow.Visibility = (isPassive || isCycle) ? Visibility.Collapsed : Visibility.Visible;
+            // Auto-cancel (#206) is Toggle-only: auto-unlatching was
+            // flagged as surprising by the requester, and Hold/Sticky
+            // have their own release semantics.
+            bool isToggle = mode == "Toggle";
+            AutoCancelLabel.Visibility = isToggle ? Visibility.Visible : Visibility.Collapsed;
+            AutoCancelRow.Visibility = isToggle ? Visibility.Visible : Visibility.Collapsed;
             PostponeMappingBox.Visibility = isPassive ? Visibility.Collapsed : Visibility.Visible;
 
             if (isPassive)
@@ -755,6 +762,7 @@ namespace PadForge.Views
                 CycleWrap = CycleWrapBox.IsChecked == true,
                 CycleIncludeBase = CycleIncludeBaseBox.IsChecked == true,
                 DelayMs = (int)Math.Round(DelaySlider.Value),
+                AutoCancelMs = mode == "Toggle" ? (int)Math.Round(AutoCancelSlider.Value) : 0,
                 PostponeMapping = PostponeMappingBox.IsChecked == true,
                 Color = colorHex,
                 Icon = _selectedIcon ?? "",

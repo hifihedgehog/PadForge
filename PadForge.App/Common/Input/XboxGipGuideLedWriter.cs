@@ -216,15 +216,17 @@ namespace PadForge.Common.Input
 
         /// <summary>True when the device rides Windows' XInput lane
         /// (SDL's synthetic "XInput#N" path, SDL_xinputjoystick.c) AND is
-        /// a GIP-family pad (One / Elite / Series, the impulse-trigger
-        /// PID set that mirrors controller_list.h's XBoxOneController
-        /// class). The path check alone over-matched: SDL hands XInput#N
-        /// to every XInput userid, so Xbox 360 and third-party XUSB pads
-        /// got a fully interactive card whose writes could never match a
-        /// GIP announce (xbledctl RESEARCH.md section 9: XUSB speaks only
-        /// the XInput protocol). Bluetooth GIP pads still pass the PID
-        /// gate but announce nothing, the USB-only case the card's
-        /// subtitle discloses.</summary>
+        /// a first-party GIP pad (One / Elite / Series, the Microsoft
+        /// impulse-trigger PID set). The path check alone over-matched:
+        /// SDL hands XInput#N to every XInput userid, so Xbox 360 and
+        /// third-party XUSB pads got a fully interactive card whose
+        /// writes could never match a GIP announce (xbledctl RESEARCH.md
+        /// section 9: XUSB speaks only the XInput protocol). Known
+        /// scope: licensed third-party GIP pads and the Adaptive
+        /// Controller are outside the gate until their PIDs are curated.
+        /// Bluetooth GIP pads still pass the PID gate but announce
+        /// nothing, the USB-only case the card's subtitle
+        /// discloses.</summary>
         internal static bool IsXboxGipPathed(UserDevice ud)
             => ud?.DevicePath != null
             && ud.DevicePath.StartsWith("XInput#", StringComparison.OrdinalIgnoreCase)

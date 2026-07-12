@@ -116,10 +116,19 @@ namespace PadForge.Common.Input
             _socd.Apply(ref raw.Keys0, ref raw.Keys1, ref raw.Keys2, ref raw.Keys3);
 
             // --- Keyboard keys (change detection per VK) ---
-            ProcessKeyWord(raw.Keys0, _prevKeys0, 0);
-            ProcessKeyWord(raw.Keys1, _prevKeys1, 64);
-            ProcessKeyWord(raw.Keys2, _prevKeys2, 128);
-            ProcessKeyWord(raw.Keys3, _prevKeys3, 192);
+            // Releases across ALL four words before any press: the
+            // release-before-press discipline must be global, not
+            // per-word, or a cross-word SOCD pair (arrow + letter) still
+            // exposed both directions held between the two SendInput
+            // calls when the winner's word processed first.
+            ProcessKeyWord(raw.Keys0, _prevKeys0, 0, releases: true);
+            ProcessKeyWord(raw.Keys1, _prevKeys1, 64, releases: true);
+            ProcessKeyWord(raw.Keys2, _prevKeys2, 128, releases: true);
+            ProcessKeyWord(raw.Keys3, _prevKeys3, 192, releases: true);
+            ProcessKeyWord(raw.Keys0, _prevKeys0, 0, releases: false);
+            ProcessKeyWord(raw.Keys1, _prevKeys1, 64, releases: false);
+            ProcessKeyWord(raw.Keys2, _prevKeys2, 128, releases: false);
+            ProcessKeyWord(raw.Keys3, _prevKeys3, 192, releases: false);
             _prevKeys0 = raw.Keys0;
             _prevKeys1 = raw.Keys1;
             _prevKeys2 = raw.Keys2;
@@ -213,30 +222,26 @@ namespace PadForge.Common.Input
         //  Key/mouse state processing
         // ─────────────────────────────────────────────
 
-        private void ProcessKeyWord(ulong current, ulong previous, int baseVk)
+        /// <summary>One phase of the frame's key flush. Callers run a
+        /// full release pass over all four VK words, then a full press
+        /// pass, hitboxer's structural discipline (windows.jai
+        /// low_level_keyboard_proc: the loser's KEYUP is injected before
+        /// the winner's keydown propagates). Without global two-phase
+        /// ordering, a SOCD swap emitted the key-down first whenever the
+        /// winner's VK bit or word sorted lower, and a game sampling
+        /// between the two SendInput calls saw both opposite directions
+        /// held, the exact state SOCD cleaning exists to make
+        /// unobservable.</summary>
+        private void ProcessKeyWord(ulong current, ulong previous, int baseVk, bool releases)
         {
-            // Releases before presses, hitboxer's structural discipline
-            // (windows.jai low_level_keyboard_proc: the loser's KEYUP is
-            // injected before the winner's keydown propagates). Without
-            // the two passes, a SOCD swap whose new key has a lower VK
-            // bit than the suppressed key emitted the key-down first,
-            // and a game sampling between the two SendInput calls saw
-            // both opposite directions held, the exact state SOCD
-            // cleaning exists to make unobservable.
             ulong changed = current ^ previous;
             if (changed == 0) return;
 
-            ulong releases = changed & ~current;
-            ulong presses = changed & current;
+            ulong phaseBits = releases ? (changed & ~current) : (changed & current);
             for (int bit = 0; bit < 64; bit++)
             {
-                if ((releases & (1UL << bit)) == 0) continue;
-                SendKeyboard((ushort)(baseVk + bit), false);
-            }
-            for (int bit = 0; bit < 64; bit++)
-            {
-                if ((presses & (1UL << bit)) == 0) continue;
-                SendKeyboard((ushort)(baseVk + bit), true);
+                if ((phaseBits & (1UL << bit)) == 0) continue;
+                SendKeyboard((ushort)(baseVk + bit), !releases);
             }
         }
 
@@ -264,11 +269,12 @@ namespace PadForge.Common.Input
 
         private void ReleaseAll()
         {
-            // Release all held keys
-            ProcessKeyWord(0, _prevKeys0, 0);
-            ProcessKeyWord(0, _prevKeys1, 64);
-            ProcessKeyWord(0, _prevKeys2, 128);
-            ProcessKeyWord(0, _prevKeys3, 192);
+            // Release all held keys (current = 0, so only the release
+            // phase has work).
+            ProcessKeyWord(0, _prevKeys0, 0, releases: true);
+            ProcessKeyWord(0, _prevKeys1, 64, releases: true);
+            ProcessKeyWord(0, _prevKeys2, 128, releases: true);
+            ProcessKeyWord(0, _prevKeys3, 192, releases: true);
             _prevKeys0 = _prevKeys1 = _prevKeys2 = _prevKeys3 = 0;
 
             // Release all mouse buttons

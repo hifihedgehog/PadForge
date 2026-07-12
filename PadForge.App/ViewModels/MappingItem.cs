@@ -1447,16 +1447,20 @@ namespace PadForge.ViewModels
         public bool IsStickTrimCombine => string.Equals(_combineMode, "StickTrim", StringComparison.Ordinal);
 
         /// <summary>True when this row targets a trigger-class output,
-        /// the only class the engine's StickTrim combine intercepts
-        /// (gamepad triggers + Extended axes, where trigger-configured
-        /// slots honor it). Gates both the dropdown entry and the trim
-        /// strip so the mode is never offered where it would silently
-        /// degrade to the OR/MaxAbs default (a "trim stick" on a button
-        /// row would just OR into the press).</summary>
+        /// the only class the engine's StickTrim combine intercepts.
+        /// Gates both the dropdown entry and the trim strip so the mode
+        /// is never offered where it would silently degrade to the
+        /// OR/MaxAbs default (a "trim stick" on a button row would just
+        /// OR into the press). Extended rows are admitted by their
+        /// creation-time category: PadViewModel builds trigger-slot axis
+        /// rows with MappingCategory.Triggers and stick-slot rows with
+        /// the stick categories, so stick-configured Extended axes stay
+        /// out.</summary>
         public bool IsTriggerTarget =>
             string.Equals(TargetSettingName, "LeftTrigger", StringComparison.Ordinal)
          || string.Equals(TargetSettingName, "RightTrigger", StringComparison.Ordinal)
-         || (TargetSettingName?.StartsWith("ExtendedAxis", StringComparison.Ordinal) ?? false);
+         || ((TargetSettingName?.StartsWith("ExtendedAxis", StringComparison.Ordinal) ?? false)
+             && Category == MappingCategory.Triggers);
 
         /// <summary>Gates the Stick Trim settings strip (#155), same
         /// pattern as <see cref="ShouldShowCustomExpression"/> plus the

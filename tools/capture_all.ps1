@@ -586,7 +586,20 @@ try {
         $devicesNode.AppendChild((New-WiiDevice "cccc1111-2222-3333-4444-555566667777" "Nintendo Wii Balance Board" 1406 774 "HID\VID_057E&PID_0306\dummy")) | Out-Null
         $devicesNode.AppendChild((New-WiiDevice "dddd1111-2222-3333-4444-555566667777" "Nintendo Switch Joy-Con (R)" 1406 8199 "HID\VID_057E&PID_2007\dummy")) | Out-Null
         $devicesNode.AppendChild((New-WiiDevice "eeee1111-2222-3333-4444-555566667777" "Nintendo Switch 2 Joy-Con (L)" 1406 8198 "HID\VID_057E&PID_2066\dummy")) | Out-Null
-        Write-Host "  Injected synthetic G29 wheel + MIDI Keyboard + 3 Wii-family devices" -ForegroundColor Green
+
+        # v4 additions. DualShock 3 (#194/#195 motion + the BT/USB support):
+        # a Bluetooth-looking path so the Devices-page dossier shows the BT
+        # link line, gyro+accel true so the Gyro tab gates on (SDL sixaxis
+        # motion). Keeps gamepad DeviceObjects so the mapping grid has rows.
+        $ds3 = New-WiiDevice "ffff1111-2222-3333-4444-555566667777" "PLAYSTATION(R)3 Controller" 1356 616 "BTHENUM\{00001124-0000-1000-8000-00805f9b34fb}_VID&0002054c_PID&0268\dummy"
+        $n = $ds3.SelectSingleNode("HasGyro"); if ($n) { $n.InnerText = "true" }
+        $n = $ds3.SelectSingleNode("HasAccel"); if ($n) { $n.InnerText = "true" }
+        $devicesNode.AppendChild($ds3) | Out-Null
+        # Steam Controller 2015 (#202 haptic high-tone + #209 home-LED steam
+        # lane): VID 0x28DE PID 0x1102 trips IsSteamController2015 and the
+        # Guide LED card's steam path.
+        $devicesNode.AppendChild((New-WiiDevice "abab1111-2222-3333-4444-555566667777" "Steam Controller" 10462 4354 "HID\VID_28DE&PID_1102\dummy")) | Out-Null
+        Write-Host "  Injected synthetic G29 wheel + MIDI Keyboard + 3 Wii-family + DS3 + Steam Controller" -ForegroundColor Green
     }
 } catch {
     Write-Host "  !! Failed to inject synthetic devices: $_" -ForegroundColor Yellow
@@ -1252,6 +1265,15 @@ if ($slots.Count -ge 1) {
         if (Tab "Wheel") { Start-Sleep -Milliseconds 700; Cap "pad-wheel" }
         else { Write-Host "  !! Wheel tab not found" -ForegroundColor Yellow }
     }
+    # 13d. Guide Button LED (#209): the Xbox pad is XInput-pathed, so the
+    # Lighting tab surfaces the Guide LED brightness card (the lightbar
+    # card hides for a guide-LED-only device).
+    Write-Host "[$(Next)/$total] Guide Button LED"
+    if (Select-MappedDevice "Xbox Series X") {
+        if (Tab "Lighting") { Start-Sleep -Milliseconds 700; Cap "pad-guide-led" }
+        else { Write-Host "  !! Lighting tab not found for the Xbox pad" -ForegroundColor Yellow }
+    }
+
     # Return the selection to the DualSense so later navigation is predictable.
     Select-MappedDevice "DualSense" | Out-Null
 
@@ -1519,6 +1541,23 @@ if ($kbmIdx -ge 0 -and $cards.Count -ge 2) {
     # KBM defaults to Controller tab (keyboard+mouse preview) — no need to click a tab
     Start-Sleep -Milliseconds 800
     Cap "pad-kbm-preview"
+
+    # SOCD cleaning (#205): the Snap Tap card sits below the KBM preview.
+    Write-Host "[$(Next)/$total] KBM SOCD"
+    ScrollContent -Clicks -12
+    Start-Sleep -Milliseconds 400
+    Cap "pad-kbm-socd"
+    ScrollContent -Clicks 12
+
+    # Mouse gestures (#200): hold a mouse button, flick, an action fires.
+    # The gesture card lives on the Mouse tab.
+    Write-Host "[$(Next)/$total] Mouse gestures"
+    if (Tab "Mouse") {
+        Start-Sleep -Milliseconds 700
+        ScrollContent -Clicks -10
+        Start-Sleep -Milliseconds 300
+        Cap "pad-mouse-gestures"
+    } else { Write-Host "  !! Mouse tab not found on the KBM slot" -ForegroundColor Yellow }
 } else {
     Write-Host "  !! KBM slot not found" -ForegroundColor Yellow
     $n++
@@ -1707,6 +1746,25 @@ foreach ($wp in $wiiPick) {
     Assign-DeviceToSlot -DeviceNamePart $wp.Dev -SlotNumberLabel "1" -Unassign | Out-Null
 }
 
+# --- DualShock 3 (v4): motion tab + Devices dossier ---
+# Same swap idiom as the Wii pickers: the DS3 dummy rides slot 1 alone.
+Write-Host "[3c] DualShock 3"
+Nav "Devices"; Start-Sleep -Milliseconds 600
+Assign-DeviceToSlot -DeviceNamePart "PLAYSTATION(R)3" -SlotNumberLabel "1" | Out-Null
+Start-Sleep -Milliseconds 800
+Nav "Dashboard"; Start-Sleep -Milliseconds 900
+$shD = Find-UIA -Aid "SlotsItemsControl"
+$cdD = if ($shD) { @($shD.FindAll($TC, [System.Windows.Automation.Condition]::TrueCondition)) } else { @() }
+if ($cdD.Count -ge 1) {
+    Click-El $cdD[0] -Label "Xbox card (DS3)" -Delay 1500 | Out-Null
+    Select-MappedDevice "PLAYSTATION(R)3" | Out-Null
+    if (Tab "Gyro") { Start-Sleep -Milliseconds 700; Cap "pad-ds3-gyro" }
+    else { Write-Host "  !! Gyro tab not found for the DS3" -ForegroundColor Yellow }
+} else { Write-Host "  !! slot card not found for the DS3" -ForegroundColor Yellow }
+Nav "Devices"; Start-Sleep -Milliseconds 700
+if (Select-DeviceByName36 "PLAYSTATION(R)3") { Cap "devices-ds3" }
+Assign-DeviceToSlot -DeviceNamePart "PLAYSTATION(R)3" -SlotNumberLabel "1" -Unassign | Out-Null
+
 # --- Devices page: the new 3.6.0 device types ---
 Nav "Devices"; Start-Sleep -Milliseconds 900
 
@@ -1739,6 +1797,25 @@ foreach ($b in $script:uiaWin.FindAll($TD, $btn36)) {
 if ($pairBtn) {
     Click-El $pairBtn -Label "Pair" -Delay 2200 | Out-Null
     Cap "wii-pair"
+    # DualShock 3 family (v4): flip the family combo to DS3 for its guided
+    # USB ceremony instructions, then flip back before closing.
+    $famCombo = $null
+    foreach ($cb in $script:uiaWin.FindAll($TD, (New-Object System.Windows.Automation.PropertyCondition(
+        [System.Windows.Automation.AutomationElement]::ControlTypeProperty,
+        [System.Windows.Automation.ControlType]::ComboBox)))) { $famCombo = $cb; break }
+    if ($famCombo) {
+        try {
+            $exp = $famCombo.GetCurrentPattern([System.Windows.Automation.ExpandCollapsePattern]::Pattern)
+            $exp.Expand(); Start-Sleep -Milliseconds 500
+            [System.Windows.Forms.SendKeys]::SendWait("{DOWN}{ENTER}")
+            Start-Sleep -Milliseconds 800
+            Cap "ds3-pair"
+            $exp2 = $famCombo.GetCurrentPattern([System.Windows.Automation.ExpandCollapsePattern]::Pattern)
+            $exp2.Expand(); Start-Sleep -Milliseconds 500
+            [System.Windows.Forms.SendKeys]::SendWait("{UP}{ENTER}")
+            Start-Sleep -Milliseconds 400
+        } catch { Write-Host "  !! DS3 family switch failed: $_" -ForegroundColor Yellow }
+    } else { Write-Host "  !! Pair dialog family combo not found" -ForegroundColor Yellow }
     $wrP = New-Object Win32+RECT
     [Win32]::GetWindowRect($script:hwnd, [ref]$wrP) | Out-Null
     $pClose = $null

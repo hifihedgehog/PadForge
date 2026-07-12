@@ -777,6 +777,11 @@ namespace PadForge.Views
             AutoCancelSlider.Value = 0;
         }
 
+        private void ResetDelay_Click(object sender, RoutedEventArgs e)
+        {
+            DelaySlider.Value = 0;
+        }
+
         private void ShowHint(string text)
         {
             HintText.Text = text;

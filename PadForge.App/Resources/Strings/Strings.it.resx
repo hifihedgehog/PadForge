@@ -2334,4 +2334,7 @@
   <data name="Pad_ResetTrimResetOnRelease" xml:space="preserve"><value>Ripristina al ritorno del livello al 100% al rilascio.</value></data>
   <data name="Pad_Shift_AutoCancel" xml:space="preserve"><value>Annullamento automatico dopo inattività</value></data>
   <data name="Pad_Shift_AutoCancel_Tooltip" xml:space="preserve"><value>Mentre il livello è attivato, si disattiva da solo dopo questi millisecondi senza nessuno degli input mappati del livello attivo. Il timer parte quando il livello si attiva e riparte a ogni input del livello. 0 mantiene il livello attivo finché non lo disattivi tu.</value></data>
+  <data name="Pad_ResetShiftDelay" xml:space="preserve">
+    <value>Ripristina il ritardo a 0 (il livello reagisce all'istante).</value>
+  </data>
 </root>

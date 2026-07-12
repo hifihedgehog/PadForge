@@ -484,9 +484,14 @@
                         <Slider x:Name="DelaySlider" Width="320" Minimum="0" Maximum="2000" Value="0"
                                 TickFrequency="50" IsSnapToTickEnabled="True"/>
                         <TextBox Text="{Binding ElementName=DelaySlider, Path=Value, StringFormat={}{0:F0}, UpdateSourceTrigger=LostFocus}"
-                                 Width="56" Margin="8,0,0,0" VerticalAlignment="Center"
+                                 Width="72" Margin="8,0,0,0" VerticalAlignment="Center"
                                  HorizontalContentAlignment="Right"/>
                         <TextBlock Text="ms" Margin="4,0,0,0" VerticalAlignment="Center"/>
+                        <ui:Button Click="ResetDelay_Click" Style="{StaticResource EmberIconButton}"
+                                   VerticalAlignment="Center" Margin="4,0,0,0"
+                                   ToolTip="{Binding Pad_ResetShiftDelay, Source={x:Static strings:Strings.Instance}}">
+                            <TextBlock Text="&#xE72C;" FontFamily="Segoe MDL2 Assets" FontSize="12"/>
+                        </ui:Button>
                     </StackPanel>
                     <TextBlock Grid.Row="2" x:Name="AutoCancelLabel" Margin="0,8,0,4"
                                Text="{Binding Pad_Shift_AutoCancel, Source={x:Static strings:Strings.Instance}}"
@@ -495,7 +500,7 @@
                         <Slider x:Name="AutoCancelSlider" Width="320" Minimum="0" Maximum="30000" Value="0"
                                 TickFrequency="500" IsSnapToTickEnabled="True"/>
                         <TextBox Text="{Binding ElementName=AutoCancelSlider, Path=Value, StringFormat={}{0:F0}, UpdateSourceTrigger=LostFocus}"
-                                 Width="56" Margin="8,0,0,0" VerticalAlignment="Center"
+                                 Width="72" Margin="8,0,0,0" VerticalAlignment="Center"
                                  HorizontalContentAlignment="Right"/>
                         <TextBlock Text="ms" Margin="4,0,0,0" VerticalAlignment="Center"/>
                         <ui:Button Click="ResetAutoCancel_Click" Style="{StaticResource EmberIconButton}"

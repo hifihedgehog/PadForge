@@ -2359,4 +2359,7 @@
   <data name="Pad_ResetShiftAutoCancel" xml:space="preserve">
     <value>Reset auto-cancel to 0 (the layer stays on until toggled off).</value>
   </data>
+  <data name="Pad_ResetShiftDelay" xml:space="preserve">
+    <value>Reset the delay to 0 (the layer reacts instantly).</value>
+  </data>
 </root>

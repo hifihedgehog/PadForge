@@ -2312,4 +2312,7 @@
   <data name="Pad_ResetTrimResetOnRelease" xml:space="preserve"><value>Restablecer a que el nivel vuelva al 100% al soltar.</value></data>
   <data name="Pad_Shift_AutoCancel" xml:space="preserve"><value>Autocancelación tras inactividad</value></data>
   <data name="Pad_Shift_AutoCancel_Tooltip" xml:space="preserve"><value>Mientras la capa está activada por alternancia, se desactiva sola después de estos milisegundos sin ninguna de las entradas mapeadas propias de la capa activa. El temporizador arranca cuando la capa se activa y se reinicia con cada entrada de la capa. 0 mantiene la capa activa hasta que la desactives tú mismo.</value></data>
+  <data name="Pad_ResetShiftDelay" xml:space="preserve">
+    <value>Restablecer el retardo a 0 (la capa reacciona al instante).</value>
+  </data>
 </root>

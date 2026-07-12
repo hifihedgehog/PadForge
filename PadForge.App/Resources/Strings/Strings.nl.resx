@@ -283,19 +283,19 @@
   <data name="About_Description" xml:space="preserve"><value>PadForge zet elk invoerapparaat om in elke virtuele controller. Gamepads, joysticks, toetsenborden, muizen en touchscreens worden toegewezen aan virtuele game-controllers (Xbox, PlayStation, flight sticks, stuurwielen, gamepads van derden) of aan toetsenbord+muis/MIDI-uitvoer die games als echte hardware behandelen. Mogelijk gemaakt door HIDMaestro en Windows MIDI Services. Het gebruikt SDL3 voor controller-invoer, Windows Raw Input voor toetsenbord en muis, HidHide voor apparaatmaskering per spel, en biedt een moderne Fluent Design-interface voor toewijzing, deadzones, gevoeligheidscurves en force feedback.</value></data>
   <data name="About_BuiltWith" xml:space="preserve"><value>Gebouwd met</value></data>
   <data name="About_DotNet10" xml:space="preserve"><value>.NET 10</value></data>
-  <data name="About_DotNet10Desc" xml:space="preserve"><value>Runtime en WPF-framework</value></data>
+  <data name="About_DotNet10Desc" xml:space="preserve"><value>Runtime en WPF-framework. MIT.</value></data>
   <data name="About_SDL3" xml:space="preserve"><value>SDL3</value></data>
-  <data name="About_SDL3Desc" xml:space="preserve"><value>Controller-invoer en -detectie</value></data>
+  <data name="About_SDL3Desc" xml:space="preserve"><value>Controller-invoer en -detectie. zlib.</value></data>
   <data name="About_RawInput" xml:space="preserve"><value>Raw Input</value></data>
   <data name="About_RawInputDesc" xml:space="preserve"><value>Apparaatspecifieke toetsenbord- en muisinvoer</value></data>
   <data name="About_MidiServices" xml:space="preserve"><value>MIDI Services</value></data>
-  <data name="About_MidiServicesDesc" xml:space="preserve"><value>Virtuele MIDI-apparaatuitvoer (Windows MIDI Services)</value></data>
+  <data name="About_MidiServicesDesc" xml:space="preserve"><value>Virtuele MIDI-apparaatuitvoer (Windows MIDI Services). MIT.</value></data>
   <data name="About_HelixToolkit" xml:space="preserve"><value>HelixToolkit</value></data>
-  <data name="About_HelixToolkitDesc" xml:space="preserve"><value>3D-controllervisualisatie</value></data>
+  <data name="About_HelixToolkitDesc" xml:space="preserve"><value>3D-controllervisualisatie. MIT.</value></data>
   <data name="About_ModernWpf" xml:space="preserve"><value>WPF UI</value></data>
-  <data name="About_ModernWpfDesc" xml:space="preserve"><value>Fluent 2-ontwerpsysteem voor WPF</value></data>
+  <data name="About_ModernWpfDesc" xml:space="preserve"><value>Fluent 2-ontwerpsysteem voor WPF. MIT.</value></data>
   <data name="About_MvvmToolkit" xml:space="preserve"><value>MVVM Toolkit</value></data>
-  <data name="About_MvvmToolkitDesc" xml:space="preserve"><value>CommunityToolkit.Mvvm voor gegevensbinding</value></data>
+  <data name="About_MvvmToolkitDesc" xml:space="preserve"><value>CommunityToolkit.Mvvm voor gegevensbinding. MIT.</value></data>
   <data name="About_License" xml:space="preserve"><value>Licentie</value></data>
   <data name="About_LicenseText" xml:space="preserve"><value>Deze software is gelicentieerd onder CC BY-NC-SA 4.0 (Creative Commons Naamsvermelding-NietCommercieel-GelijkDelen 4.0 Internationaal). 3D-controllermodellen aangepast van Handheld Companion (CC BY-NC-SA 4.0). 2D-controllerassets van Gamepad-Asset-Pack door AL2009man (MIT). Oorspronkelijke codebasis geforkt van x360ce (MIT). SDL3 is gelicentieerd onder de zlib License. HIDMaestro, Windows MIDI Services, HidHide, HelixToolkit en WPF UI zijn gelicentieerd onder de MIT License. OpenXInput bevat alleen een handelsmerkdisclaimer van het upstream project. Wordt onder dezelfde voorwaarden ongewijzigd opnieuw gedistribueerd.</value></data>
 
@@ -1297,11 +1297,11 @@
   <data name="Settings_HmInactivityTimeoutTooltip" xml:space="preserve"><value>Seconden voordat een virtuele controller wordt verwijderd wanneer alle gekoppelde apparaten offline zijn. 0 schakelt dit uit. Overgebleven controllers schuiven omhoog om het gat op te vullen en worden opnieuw gebonden aan lagere XInput-slots.</value></data>
   <data name="Settings_SecondsZeroNever" xml:space="preserve"><value>seconden (0 = nooit)</value></data>
   <data name="About_HIDMaestro" xml:space="preserve"><value>HIDMaestro</value></data>
-  <data name="About_HIDMaestroDesc" xml:space="preserve"><value>Virtuele HID-controllerengine in gebruikersmodus (vervangt ViGEmBus en vJoy)</value></data>
+  <data name="About_HIDMaestroDesc" xml:space="preserve"><value>Virtuele HID-controllerengine in gebruikersmodus (vervangt ViGEmBus en vJoy). MIT.</value></data>
   <data name="About_HidHide" xml:space="preserve"><value>HidHide</value></data>
-  <data name="About_HidHideDesc" xml:space="preserve"><value>Kernel-stuurprogramma om fysieke apparaten te verbergen voor games</value></data>
+  <data name="About_HidHideDesc" xml:space="preserve"><value>Kernel-stuurprogramma om fysieke apparaten te verbergen voor games. MIT.</value></data>
   <data name="About_OpenXInput" xml:space="preserve"><value>OpenXInput</value></data>
-  <data name="About_OpenXInputDesc" xml:space="preserve"><value>Drop-in vervanging voor XInput. Filtert PadForge's eigen virtuele controllers uit zijn eigen weergave.</value></data>
+  <data name="About_OpenXInputDesc" xml:space="preserve"><value>Drop-in vervanging voor XInput. Filtert PadForge's eigen virtuele controllers uit zijn eigen weergave. Upstream-handelsmerkdisclaimer, geen OSS-licentie.</value></data>
   <data name="About_ZackslyIcons" xml:space="preserve"><value>Zacksly-iconenpakket</value></data>
   <data name="About_ZackslyIconsDesc" xml:space="preserve"><value>Stick- en trigger-iconen afgeleid van "Xbox Series Button Icons and Controls" door Zacksly (CC BY 3.0)</value></data>
   <data name="About_Concentus" xml:space="preserve"><value>Concentus</value></data>
@@ -2199,6 +2199,34 @@
   <data name="About_DsHidMiniDesc" xml:space="preserve"><value>DualShock 3-protocolreferentie van Benjamin Höglinger-Stelzer: sixpair-featurereports, Bluetooth-outputreporttemplate, inschakelvolgorde, batterijmapping. De implementatie van PadForge is originele C#. BSD 3-Clause.</value></data>
   <data name="About_NefariusDevMgmt" xml:space="preserve"><value>Nefarius.Utilities.DeviceManagement</value></data>
   <data name="About_NefariusDevMgmtDesc" xml:space="preserve"><value>Installatie in de driver-store, registratie van het Bluetooth-klassefilter en het in- en uitschakelen van de USB-poort voor de BthPS3-installatie in de app, door nefarius. MIT.</value></data>
+  <data name="About_Libusb" xml:space="preserve"><value>libusb</value></data>
+  <data name="About_LibusbDesc" xml:space="preserve"><value>USB-toegang voor het bekabelde Switch 2 Pro-stuurprogramma, geleverd als libusb-1.0.dll. LGPL-2.1.</value></data>
+  <data name="About_Nipplejs" xml:space="preserve"><value>nipplejs</value></data>
+  <data name="About_NipplejsDesc" xml:space="preserve"><value>Touch-joystick in de Web Controller voor de telefoon, door Yoann Moinet. MIT.</value></data>
+  <data name="About_GameControllerDb" xml:space="preserve"><value>SDL_GameControllerDB</value></data>
+  <data name="About_GameControllerDbDesc" xml:space="preserve"><value>Community-database met gamepad-toewijzingen die de meegeleverde toewijzingen van PadForge uitbreiden. zlib.</value></data>
+  <data name="About_Xbledctl" xml:space="preserve"><value>xbledctl</value></data>
+  <data name="About_XbledctlDesc" xml:space="preserve"><value>Onderzoek naar de LED van de Xbox Guide-knop: de XboxGIP-pakketindeling en de detectievolgorde, door Leclowndu93150. MIT.</value></data>
+  <data name="About_JoyShockMapper" xml:space="preserve"><value>JoyShockMapper</value></data>
+  <data name="About_JoyShockMapperDesc" xml:space="preserve"><value>Berekening van sturen via wikkelhoek en leunen, door JibbSmart en Electronicks. MIT.</value></data>
+  <data name="About_GamepadMotionHelpers" xml:space="preserve"><value>GamepadMotionHelpers</value></data>
+  <data name="About_GamepadMotionHelpersDesc" xml:space="preserve"><value>Gyro-conversie naar spelerruimte en wereldruimte, door JibbSmart. MIT.</value></data>
+  <data name="About_SteamControllerSinger" xml:space="preserve"><value>SteamControllerSinger</value></data>
+  <data name="About_SteamControllerSingerDesc" xml:space="preserve"><value>Haptische-rapportindeling van de Steam Controller (2015) en berekening van de nootduur, door Pila en Roboron3042. BSD 3-Clause.</value></data>
+  <data name="About_SteamHapticsSinger" xml:space="preserve"><value>SteamHapticsSinger</value></data>
+  <data name="About_SteamHapticsSingerDesc" xml:space="preserve"><value>Haptische LFO-toonindeling voor Steam Controller 2026 en Steam Deck, door Pila, Crazy en AAGaming. BSD 3-Clause.</value></data>
+  <data name="About_Hitboxer" xml:space="preserve"><value>hitboxer</value></data>
+  <data name="About_HitboxerDesc" xml:space="preserve"><value>SOCD-opschoningssemantiek voor de Snap Tap-modi, door valignatev. MIT.</value></data>
+  <data name="About_Dolphin" xml:space="preserve"><value>Dolphin</value></data>
+  <data name="About_DolphinDesc" xml:space="preserve"><value>Documentatie van de Wii-koppelingsceremonie en de luidspreker-ADPCM. GPL, alleen als documentatie gelezen, er wordt geen GPL-code meegeleverd.</value></data>
+  <data name="About_Ds4Windows" xml:space="preserve"><value>DS4Windows</value></data>
+  <data name="About_Ds4WindowsDesc" xml:space="preserve"><value>Documentatie van DualShock-gedrag: inactiviteitsverbreking, touchpadgrenzen, batterijdecodering. GPL, alleen documentatie.</value></data>
+  <data name="About_XoneXow" xml:space="preserve"><value>xone / xow</value></data>
+  <data name="About_XoneXowDesc" xml:space="preserve"><value>Documentatie van de GIP-LED-opdrachten die xbledctl bevestigt. GPL, alleen documentatie.</value></data>
+  <data name="About_WiimoteLib" xml:space="preserve"><value>WiimoteLib</value></data>
+  <data name="About_WiimoteLibDesc" xml:space="preserve"><value>Documentatie van het gedrag van de Wii IR-camera en het Balance Board, door Brian Peek. Ms-PL.</value></data>
+  <data name="About_JoyconSinger" xml:space="preserve"><value>joycon-singer</value></data>
+  <data name="About_JoyconSingerDesc" xml:space="preserve"><value>Documentatie van het wire-formaat van de Joy-Con HD-rumble, door Sergey004. Alleen gelezen voor protocolfeiten.</value></data>
   <data name="Dashboard_Services" xml:space="preserve"><value>Services</value></data>
   <data name="Dashboard_Slot" xml:space="preserve"><value>Slot</value></data>
   <data name="Dashboard_StatusCold" xml:space="preserve"><value>Koud</value></data>

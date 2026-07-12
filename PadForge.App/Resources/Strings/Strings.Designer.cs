@@ -2167,6 +2167,8 @@ public class Strings : INotifyPropertyChanged
     public string Pad_Shift_NoInherit_Tooltip => Get("Pad_Shift_NoInherit_Tooltip");
     public string Pad_Shift_Delay => Get("Pad_Shift_Delay");
     public string Pad_Shift_Delay_Tooltip => Get("Pad_Shift_Delay_Tooltip");
+    public string Pad_Shift_AutoCancel => Get("Pad_Shift_AutoCancel");
+    public string Pad_Shift_AutoCancel_Tooltip => Get("Pad_Shift_AutoCancel_Tooltip");
     public string Pad_Shift_PostponeMapping => Get("Pad_Shift_PostponeMapping");
     public string Pad_Shift_PostponeMapping_Tooltip => Get("Pad_Shift_PostponeMapping_Tooltip");
     public string Pad_Shift_ChordSecondInput => Get("Pad_Shift_ChordSecondInput");

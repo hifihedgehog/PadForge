@@ -464,9 +464,15 @@
                     </ListBox.ItemTemplate>
                 </ListBox>
 
-                <!-- Delay slider + numeric -->
+                <!-- Delay slider + numeric. With an edge mode (Toggle /
+                     Latch / Sticky) a non-zero delay is a LONG PRESS:
+                     the switch fires once when the hold crosses it
+                     (#206). Rows 2-3 are the auto-cancel companion,
+                     Toggle only, hidden per mode in ApplyModeVisibility. -->
                 <Grid Grid.Row="17" x:Name="DelayRow" Margin="0,0,0,12">
                     <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
@@ -478,6 +484,17 @@
                         <Slider x:Name="DelaySlider" Width="320" Minimum="0" Maximum="2000" Value="0"
                                 TickFrequency="50" IsSnapToTickEnabled="True"/>
                         <TextBox Text="{Binding ElementName=DelaySlider, Path=Value, StringFormat={}{0:F0}, UpdateSourceTrigger=LostFocus}"
+                                 Width="56" Margin="8,0,0,0" VerticalAlignment="Center"
+                                 HorizontalContentAlignment="Right"/>
+                        <TextBlock Text="ms" Margin="4,0,0,0" VerticalAlignment="Center"/>
+                    </StackPanel>
+                    <TextBlock Grid.Row="2" x:Name="AutoCancelLabel" Margin="0,8,0,4"
+                               Text="{Binding Pad_Shift_AutoCancel, Source={x:Static strings:Strings.Instance}}"
+                               ToolTip="{Binding Pad_Shift_AutoCancel_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                    <StackPanel Grid.Row="3" x:Name="AutoCancelRow" Orientation="Horizontal">
+                        <Slider x:Name="AutoCancelSlider" Width="320" Minimum="0" Maximum="30000" Value="0"
+                                TickFrequency="500" IsSnapToTickEnabled="True"/>
+                        <TextBox Text="{Binding ElementName=AutoCancelSlider, Path=Value, StringFormat={}{0:F0}, UpdateSourceTrigger=LostFocus}"
                                  Width="56" Margin="8,0,0,0" VerticalAlignment="Center"
                                  HorizontalContentAlignment="Right"/>
                         <TextBlock Text="ms" Margin="4,0,0,0" VerticalAlignment="Center"/>

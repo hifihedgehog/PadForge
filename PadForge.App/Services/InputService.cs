@@ -5467,6 +5467,7 @@ namespace PadForge.Services
                     CycleWrap = a.CycleWrap,
                     CycleIncludeBase = a.CycleIncludeBase,
                     Icon = a.Icon ?? "",
+                    AutoCancelMs = a.AutoCancelMs,
                 });
             }
         }

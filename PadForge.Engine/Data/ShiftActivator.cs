@@ -150,5 +150,17 @@ namespace PadForge.Engine.Data
         /// shown on the engaged-layer flyout. Empty falls back to the
         /// universal Shift glyph <c>⇧</c>.</summary>
         [XmlAttribute] public string Icon { get; set; } = "";
+
+        // ── v4 fields (#206) ──
+
+        /// <summary>v4 auto-cancel (#206): Toggle mode only. While the
+        /// layer is engaged, if none of the layer's own mapped inputs
+        /// (sources on rows whose LayerMask is this layer, Base
+        /// fallthrough excluded) is active for this many milliseconds,
+        /// the toggle disengages by itself. <c>0</c> (default) = never.
+        /// The timer starts at engage and re-arms on every layer-input
+        /// activity. Deliberately not offered for Latch: auto-unlatching
+        /// was flagged as surprising by the requester.</summary>
+        [XmlAttribute] public int AutoCancelMs { get; set; } = 0;
     }
 }

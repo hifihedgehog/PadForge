@@ -1917,7 +1917,7 @@
   <data name="Pad_Shift_NoInherit" xml:space="preserve"><value>Do not inherit</value></data>
   <data name="Pad_Shift_NoInherit_Tooltip" xml:space="preserve"><value>When checked, this layer's target stays OFF instead of falling through to the Base row.</value></data>
   <data name="Pad_Shift_Delay" xml:space="preserve"><value>Delay</value></data>
-  <data name="Pad_Shift_Delay_Tooltip" xml:space="preserve"><value>Milliseconds the activator must stay engaged before the layer change fires.</value></data>
+  <data name="Pad_Shift_Delay_Tooltip" xml:space="preserve"><value>How long the input must stay held before the layer reacts. For Hold mode this is a debounce. For Toggle, Latch, and Sticky it makes the switch a long press: the layer flips once when the hold crosses this time, and a shorter tap does nothing. 0 reacts instantly.</value></data>
   <data name="Pad_Shift_ChordSecondInput" xml:space="preserve"><value>Second Chord Input</value></data>
   <data name="Pad_Shift_AxisThreshold" xml:space="preserve"><value>Axis Threshold</value></data>
   <data name="Pad_Shift_CycleLayers" xml:space="preserve"><value>Cycle Through Layers</value></data>
@@ -2340,5 +2340,11 @@
   </data>
   <data name="Pad_Mapping_TrimReset_Tooltip" xml:space="preserve">
     <value>When checked, releasing the trigger snaps the held level back to 100% so the next press starts full. Unchecked keeps the trimmed level across releases until you adjust it again.</value>
+  </data>
+  <data name="Pad_Shift_AutoCancel" xml:space="preserve">
+    <value>Auto-Cancel After Inactivity</value>
+  </data>
+  <data name="Pad_Shift_AutoCancel_Tooltip" xml:space="preserve">
+    <value>While the layer is toggled on, it switches itself back off after this many milliseconds with none of the layer's own mapped inputs active. The timer starts when the layer engages and restarts on every layer input. 0 keeps the layer on until you toggle it off yourself.</value>
   </data>
 </root>

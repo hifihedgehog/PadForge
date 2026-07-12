@@ -1269,6 +1269,7 @@ namespace PadForge.Views
             existing.CycleWrap = dlg.Result.CycleWrap;
             existing.CycleIncludeBase = dlg.Result.CycleIncludeBase;
             existing.DelayMs = dlg.Result.DelayMs;
+            existing.AutoCancelMs = dlg.Result.AutoCancelMs;
             existing.Color = dlg.Result.Color;
             existing.Icon = dlg.Result.Icon;
             existing.PostponeMapping = dlg.Result.PostponeMapping;

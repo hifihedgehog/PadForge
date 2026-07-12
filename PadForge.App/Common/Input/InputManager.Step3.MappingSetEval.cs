@@ -513,6 +513,23 @@ namespace PadForge.Common.Input
             // Gyro/accel are intentionally excluded (idle hand movement
             // would constantly release the layer).
             public StickyEngagementSnapshot[] StickyBaselines = System.Array.Empty<StickyEngagementSnapshot>();
+            // #206 long-press: per-activator once-per-hold latch. With
+            // DelayMs > 0 the edge modes (Toggle / Latch / Sticky) fire
+            // when the hold crosses the threshold, and this keeps the
+            // continued hold from re-firing every frame. Cleared on
+            // release.
+            public bool[] LongPressFired = System.Array.Empty<bool>();
+            // #206 auto-cancel: last tick the engaged layer showed
+            // activity (stamped at engage, refreshed from
+            // LayerOutputTicks). Only meaningful while ToggleOn and
+            // AutoCancelMs > 0.
+            public long[] AutoCancelLastActivityTicks = System.Array.Empty<long>();
+            // #206 auto-cancel: per-layer last-output-activity ticks,
+            // written by StampLayerActivity from the row write sites on
+            // the polling thread and read by the Toggle auto-cancel
+            // block on the same thread.
+            public readonly Dictionary<string, long> LayerOutputTicks =
+                new Dictionary<string, long>(System.StringComparer.Ordinal);
             public readonly List<int> Stack = new();
             public string CustomLayer = "";   // v2 Custom mode current layer (overrides stack when non-empty)
 
@@ -538,6 +555,8 @@ namespace PadForge.Common.Input
                 StickyEngaged = ResizeBool(StickyEngaged, newSize);
                 StickyConsumerActive = ResizeBool(StickyConsumerActive, newSize);
                 StickyBaselines = ResizeStickyBaselines(StickyBaselines, newSize);
+                LongPressFired = ResizeBool(LongPressFired, newSize);
+                AutoCancelLastActivityTicks = ResizeLong(AutoCancelLastActivityTicks, newSize);
             }
 
             public void Clear()
@@ -551,6 +570,9 @@ namespace PadForge.Common.Input
                 System.Array.Clear(StickyEngaged, 0, StickyEngaged.Length);
                 System.Array.Clear(StickyConsumerActive, 0, StickyConsumerActive.Length);
                 System.Array.Clear(StickyBaselines, 0, StickyBaselines.Length);
+                System.Array.Clear(LongPressFired, 0, LongPressFired.Length);
+                System.Array.Clear(AutoCancelLastActivityTicks, 0, AutoCancelLastActivityTicks.Length);
+                LayerOutputTicks.Clear();
                 lock (SyncRoot)
                 {
                     Stack.Clear();
@@ -772,14 +794,51 @@ namespace PadForge.Common.Input
                 : 0;
             bool delayMet = act.DelayMs <= 0 || !inputDown || heldMs >= act.DelayMs;
 
+            // #206 long-press: the edge modes fire once when the hold
+            // crosses DelayMs. The old rising-edge && delayMet gate was
+            // dead code for DelayMs > 0 (the edge frame can never satisfy
+            // the delay, and later frames are no longer edges), so Toggle
+            // / Latch / Sticky with a delay simply never fired.
+            bool fireEdge = ComputeActivatorFire(
+                inputDown, rt.WasDown[actIdx], heldMs, act.DelayMs,
+                ref rt.LongPressFired[actIdx]);
+
             string mode = act.Mode ?? "Hold";
             switch (mode)
             {
                 case "Toggle":
                 {
-                    bool risingEdge = inputDown && !rt.WasDown[actIdx] && delayMet;
-                    if (risingEdge)
+                    bool justEngaged = false;
+                    if (fireEdge)
+                    {
                         rt.ToggleOn[actIdx] = !rt.ToggleOn[actIdx];
+                        justEngaged = rt.ToggleOn[actIdx];
+                    }
+
+                    // #206 auto-cancel: while engaged, disengage after
+                    // AutoCancelMs with none of the layer's own rows
+                    // producing output. Output stamps (StampLayerActivity
+                    // at the row write sites) carry every source kind and
+                    // flag already applied, where a descriptor-level
+                    // re-probe misread resting triggers as active and
+                    // missed any-device and Param-driven sources. The
+                    // timer starts at engage.
+                    if (rt.ToggleOn[actIdx] && act.AutoCancelMs > 0)
+                    {
+                        if (justEngaged)
+                            rt.AutoCancelLastActivityTicks[actIdx] = nowTicks;
+
+                        long last = rt.AutoCancelLastActivityTicks[actIdx];
+                        if (rt.LayerOutputTicks.TryGetValue(act.LayerMask ?? "", out long stamped)
+                            && stamped > last)
+                        {
+                            last = stamped;
+                            rt.AutoCancelLastActivityTicks[actIdx] = stamped;
+                        }
+                        if ((nowTicks - last) / System.TimeSpan.TicksPerMillisecond >= act.AutoCancelMs)
+                            rt.ToggleOn[actIdx] = false;
+                    }
+
                     UpdateStack(rt, actIdx, rt.ToggleOn[actIdx]);
                     break;
                 }
@@ -791,7 +850,9 @@ namespace PadForge.Common.Input
                     // (single-valued override). The own layer's mappings fire
                     // while latched. (Legacy value "Custom"; the old jump-to-a-
                     // separate-target behavior is gone, its own layer was unused.)
-                    bool risingEdge = inputDown && !rt.WasDown[actIdx] && delayMet;
+                    // No auto-cancel here on purpose (#206): the requester
+                    // flagged auto-unlatching as surprising.
+                    bool risingEdge = fireEdge;
                     if (risingEdge)
                     {
                         string own = act.LayerMask ?? "";
@@ -895,8 +956,7 @@ namespace PadForge.Common.Input
                     }
                     else
                     {
-                        bool risingEdge = inputDown && !rt.WasDown[actIdx] && delayMet;
-                        if (risingEdge)
+                        if (fireEdge)
                         {
                             UpdateStack(rt, actIdx, true);
                             rt.StickyEngaged[actIdx] = true;
@@ -991,6 +1051,47 @@ namespace PadForge.Common.Input
                     rt.Stack.RemoveAt(existing);
                 }
             }
+        }
+
+        /// <summary>#206 edge-mode fire decision, one place for Toggle /
+        /// Latch / Sticky. DelayMs 0 keeps the classic rising edge.
+        /// DelayMs &gt; 0 is a long press: fires exactly once when the hold
+        /// crosses the threshold; <paramref name="longPressFired"/> is
+        /// the once-per-hold latch, cleared on release. Pure so the
+        /// state machine is testable frame by frame.</summary>
+        internal static bool ComputeActivatorFire(
+            bool inputDown, bool wasDown, long heldMs, int delayMs, ref bool longPressFired)
+        {
+            if (!inputDown)
+            {
+                longPressFired = false;
+                return false;
+            }
+            if (delayMs <= 0)
+                return !wasDown;
+            if (longPressFired || heldMs < delayMs)
+                return false;
+            longPressFired = true;
+            return true;
+        }
+
+        /// <summary>#206 auto-cancel activity stamp, called from the
+        /// gamepad row write sites when a non-Base row produces output
+        /// (button pressed, |axis| past 10%, trigger past 5%). Output
+        /// carries every source kind and flag already applied, so this
+        /// is the layer's "targets are pressed" signal with no
+        /// re-derivation. Same-thread with the reader (both on the
+        /// polling tick).</summary>
+        private static void StampLayerActivity(int slotIndex, MappingRow row)
+        {
+            string layer = row?.LayerMask;
+            if (string.IsNullOrEmpty(layer)
+                || string.Equals(layer, "Base", System.StringComparison.Ordinal))
+                return;
+            if (slotIndex < 0 || slotIndex >= _shiftRuntime.Length) return;
+            var rt = _shiftRuntime[slotIndex];
+            if (rt == null) return;
+            rt.LayerOutputTicks[layer] = System.DateTime.UtcNow.Ticks;
         }
 
         /// <summary>Axis read used by the Axis activator kind. Mirrors
@@ -1234,6 +1335,7 @@ namespace PadForge.Common.Input
                             for (int bi = 0; bi < positional.Count; bi++) bools.Add(positional[bi] > 0.5f);
                             combined = CombineHelper.CombineButton(row.CombineMode, bools);
                         }
+                        if (combined) StampLayerActivity(slotIndex, row);
                         WriteBoolTarget(row.Target, combined, ref gp);
                         multiDone?.Add(row.Target);
                         continue;
@@ -1250,8 +1352,9 @@ namespace PadForge.Common.Input
                             evaluatedDeviceGuid: thisDeviceGuid));
                     }
                     if (boolContribs.Count == 0) continue;
-                    WriteBoolTarget(row.Target,
-                        CombineHelper.CombineButton(row.CombineMode, boolContribs), ref gp);
+                    bool singlePressed = CombineHelper.CombineButton(row.CombineMode, boolContribs);
+                    if (singlePressed) StampLayerActivity(slotIndex, row);
+                    WriteBoolTarget(row.Target, singlePressed, ref gp);
                 }
                 else if (kind == TargetKind.BipolarAxis)
                 {
@@ -1263,6 +1366,7 @@ namespace PadForge.Common.Input
                             ? ClampBipolar(EvaluateCustomFloat(row, positional))
                             : ClampBipolar(CombineHelper.CombineAxis(row.CombineMode, positional));
                         if (IsInvertOnHoldActive(row, state, thisDeviceGuid, slotIndex)) combined = -combined;
+                        if (System.Math.Abs(combined) > 0.10f) StampLayerActivity(slotIndex, row);
                         WriteBipolarAxisTarget(row.Target, combined, ref gp);
                         multiDone?.Add(row.Target);
                         continue;
@@ -1280,6 +1384,7 @@ namespace PadForge.Common.Input
                     if (axisContribs.Count == 0) continue;
                     float combinedSingle = ClampBipolar(CombineHelper.CombineAxis(row.CombineMode, axisContribs));
                     if (IsInvertOnHoldActive(row, state, thisDeviceGuid, slotIndex)) combinedSingle = -combinedSingle;
+                    if (System.Math.Abs(combinedSingle) > 0.10f) StampLayerActivity(slotIndex, row);
                     WriteBipolarAxisTarget(row.Target, combinedSingle, ref gp);
                 }
                 else if (kind == TargetKind.Trigger)
@@ -1303,6 +1408,7 @@ namespace PadForge.Common.Input
                                 : ClampUnipolar(CombineHelper.CombineAxis(row.CombineMode, positional));
                         }
                         if (IsInvertOnHoldActive(row, state, thisDeviceGuid, slotIndex)) combined = 1f - combined;
+                        if (combined > 0.05f) StampLayerActivity(slotIndex, row);
                         WriteTriggerTarget(row.Target, combined, ref gp);
                         multiDone?.Add(row.Target);
                         continue;
@@ -1320,6 +1426,7 @@ namespace PadForge.Common.Input
                     if (axisContribs.Count == 0) continue;
                     float combinedTrig = ClampUnipolar(CombineHelper.CombineAxis(row.CombineMode, axisContribs));
                     if (IsInvertOnHoldActive(row, state, thisDeviceGuid, slotIndex)) combinedTrig = 1f - combinedTrig;
+                    if (combinedTrig > 0.05f) StampLayerActivity(slotIndex, row);
                     WriteTriggerTarget(row.Target, combinedTrig, ref gp);
                 }
             }

@@ -3812,6 +3812,7 @@
                                             <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="%/s" VerticalAlignment="Center" Margin="1,0,2,0"/>
                                             <ui:Button Command="{Binding ResetTrimRateCommand}" Style="{StaticResource ResetButtonTight}" ToolTip="{Binding Pad_ResetTrimRate, Source={x:Static strings:Strings.Instance}}" Margin="0,0,8,0"/>
                                             <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}" Content="{Binding Pad_Mapping_TrimReset, Source={x:Static strings:Strings.Instance}}" IsChecked="{Binding TrimResetOnRelease, Mode=TwoWay}" VerticalAlignment="Center" Margin="0,0,2,0"
+                                                      Checked="TrimReset_Toggled" Unchecked="TrimReset_Toggled"
                                                       ToolTip="{Binding Pad_Mapping_TrimReset_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                             <ui:Button Command="{Binding ResetTrimResetOnReleaseCommand}" Style="{StaticResource ResetButtonTight}" ToolTip="{Binding Pad_ResetTrimResetOnRelease, Source={x:Static strings:Strings.Instance}}" Margin="0,0,8,0"/>
                                         </StackPanel>

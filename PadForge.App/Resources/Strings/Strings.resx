@@ -341,19 +341,19 @@
   <data name="About_Description" xml:space="preserve"><value>PadForge turns any input device into any virtual controller. Gamepads, joysticks, keyboards, mice, and touchscreens are mapped to virtual game controllers (Xbox, PlayStation, flight sticks, wheels, third-party gamepads) or keyboard+mouse / MIDI output that games treat as real hardware. Powered by HIDMaestro and Windows MIDI Services. It uses SDL3 for controller input, Windows Raw Input for keyboard and mouse, HidHide for per-game device masking, and provides a modern Fluent Design interface for mapping, deadzones, sensitivity curves, and force feedback.</value></data>
   <data name="About_BuiltWith" xml:space="preserve"><value>Built With</value></data>
   <data name="About_DotNet10" xml:space="preserve"><value>.NET 10</value></data>
-  <data name="About_DotNet10Desc" xml:space="preserve"><value>Runtime and WPF framework</value></data>
+  <data name="About_DotNet10Desc" xml:space="preserve"><value>Runtime and WPF framework. MIT.</value></data>
   <data name="About_SDL3" xml:space="preserve"><value>SDL3</value></data>
-  <data name="About_SDL3Desc" xml:space="preserve"><value>Controller input and enumeration</value></data>
+  <data name="About_SDL3Desc" xml:space="preserve"><value>Controller input and enumeration. zlib.</value></data>
   <data name="About_RawInput" xml:space="preserve"><value>Raw Input</value></data>
   <data name="About_RawInputDesc" xml:space="preserve"><value>Per-device keyboard and mouse input</value></data>
   <data name="About_MidiServices" xml:space="preserve"><value>MIDI Services</value></data>
-  <data name="About_MidiServicesDesc" xml:space="preserve"><value>Virtual MIDI device output (Windows MIDI Services)</value></data>
+  <data name="About_MidiServicesDesc" xml:space="preserve"><value>Virtual MIDI device output (Windows MIDI Services). MIT.</value></data>
   <data name="About_HelixToolkit" xml:space="preserve"><value>HelixToolkit</value></data>
-  <data name="About_HelixToolkitDesc" xml:space="preserve"><value>3D controller visualization</value></data>
+  <data name="About_HelixToolkitDesc" xml:space="preserve"><value>3D controller visualization. MIT.</value></data>
   <data name="About_ModernWpf" xml:space="preserve"><value>WPF UI</value></data>
-  <data name="About_ModernWpfDesc" xml:space="preserve"><value>Fluent 2 design system for WPF</value></data>
+  <data name="About_ModernWpfDesc" xml:space="preserve"><value>Fluent 2 design system for WPF. MIT.</value></data>
   <data name="About_MvvmToolkit" xml:space="preserve"><value>MVVM Toolkit</value></data>
-  <data name="About_MvvmToolkitDesc" xml:space="preserve"><value>CommunityToolkit.Mvvm for data binding</value></data>
+  <data name="About_MvvmToolkitDesc" xml:space="preserve"><value>CommunityToolkit.Mvvm for data binding. MIT.</value></data>
   <data name="About_ZackslyIcons" xml:space="preserve"><value>Zacksly Icon Pack</value></data>
   <data name="About_ZackslyIconsDesc" xml:space="preserve"><value>Stick and trigger icons derived from "Xbox Series Button Icons and Controls" by Zacksly (CC BY 3.0)</value></data>
   <data name="About_QDollar" xml:space="preserve"><value>$Q Recognizer</value></data>
@@ -363,11 +363,11 @@
   <data name="About_License" xml:space="preserve"><value>License</value></data>
   <data name="About_LicenseText" xml:space="preserve"><value>This software is licensed under CC BY-NC-SA 4.0 (Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International). 3D controller models adapted from Handheld Companion (CC BY-NC-SA 4.0). 2D controller assets from Gamepad-Asset-Pack by AL2009man (MIT). Original codebase forked from x360ce (MIT). SDL3 is licensed under the zlib License. HIDMaestro, Windows MIDI Services, HidHide, HelixToolkit, and WPF UI are licensed under the MIT License. OpenXInput ships only an upstream trademark disclaimer. Redistributed as-is under the same terms. $Q Recognizer (Magrofuoco / Vatavu / Anthony / Wobbrock) and GestureSign's PointPatternAnalyzer (TransposonY) are both licensed under the BSD 3-Clause License. PadForge's touchpad ShapeRecognizer and AngularMarginRecognizer are C# re-derivations of those references.</value></data>
   <data name="About_HIDMaestro" xml:space="preserve"><value>HIDMaestro</value></data>
-  <data name="About_HIDMaestroDesc" xml:space="preserve"><value>User-mode virtual HID controller engine (replaces ViGEmBus and vJoy)</value></data>
+  <data name="About_HIDMaestroDesc" xml:space="preserve"><value>User-mode virtual HID controller engine (replaces ViGEmBus and vJoy). MIT.</value></data>
   <data name="About_OpenXInput" xml:space="preserve"><value>OpenXInput</value></data>
-  <data name="About_OpenXInputDesc" xml:space="preserve"><value>Drop-in XInput replacement. Filters PadForge's own virtual controllers from its own view.</value></data>
+  <data name="About_OpenXInputDesc" xml:space="preserve"><value>Drop-in XInput replacement. Filters PadForge's own virtual controllers from its own view. Upstream trademark disclaimer, no OSS license.</value></data>
   <data name="About_HidHide" xml:space="preserve"><value>HidHide</value></data>
-  <data name="About_HidHideDesc" xml:space="preserve"><value>Kernel driver for hiding physical devices from games</value></data>
+  <data name="About_HidHideDesc" xml:space="preserve"><value>Kernel driver for hiding physical devices from games. MIT.</value></data>
   <data name="About_Testimony" xml:space="preserve"><value>Testimony</value></data>
   <data name="About_TestimonyScripture" xml:space="preserve"><value>"And we talk of Christ, we rejoice in Christ, we preach of Christ, we prophesy of Christ, and we write according to our prophecies, that our children may know to what source they may look for a remission of their sins." — 2 Nephi 25:26</value></data>
   <data name="About_TestimonyDoxology" xml:space="preserve"><value>Glory, honor, and praise to the Lord Jesus Christ, the source of all truth, forever and ever.</value></data>
@@ -2237,6 +2237,34 @@
   <data name="About_DsHidMiniDesc" xml:space="preserve"><value>DualShock 3 protocol reference by Benjamin Höglinger-Stelzer: sixpair feature reports, Bluetooth output-report template, enable ordering, battery map. PadForge's implementation is original C#. BSD 3-Clause.</value></data>
   <data name="About_NefariusDevMgmt" xml:space="preserve"><value>Nefarius.Utilities.DeviceManagement</value></data>
   <data name="About_NefariusDevMgmtDesc" xml:space="preserve"><value>Driver-store install, Bluetooth class filter registration, and USB port cycling for the in-app BthPS3 setup, by nefarius. MIT.</value></data>
+  <data name="About_Libusb" xml:space="preserve"><value>libusb</value></data>
+  <data name="About_LibusbDesc" xml:space="preserve"><value>USB access for the Switch 2 Pro wired driver, shipped as libusb-1.0.dll. LGPL-2.1.</value></data>
+  <data name="About_Nipplejs" xml:space="preserve"><value>nipplejs</value></data>
+  <data name="About_NipplejsDesc" xml:space="preserve"><value>Touch joystick in the phone Web Controller, by Yoann Moinet. MIT.</value></data>
+  <data name="About_GameControllerDb" xml:space="preserve"><value>SDL_GameControllerDB</value></data>
+  <data name="About_GameControllerDbDesc" xml:space="preserve"><value>Community gamepad mapping database PadForge's bundled mappings extend. zlib.</value></data>
+  <data name="About_Xbledctl" xml:space="preserve"><value>xbledctl</value></data>
+  <data name="About_XbledctlDesc" xml:space="preserve"><value>Xbox Guide button LED research: the XboxGIP packet layout and discovery sequence, by Leclowndu93150. MIT.</value></data>
+  <data name="About_JoyShockMapper" xml:space="preserve"><value>JoyShockMapper</value></data>
+  <data name="About_JoyShockMapperDesc" xml:space="preserve"><value>Winding-angle steering and lean math, by JibbSmart and Electronicks. MIT.</value></data>
+  <data name="About_GamepadMotionHelpers" xml:space="preserve"><value>GamepadMotionHelpers</value></data>
+  <data name="About_GamepadMotionHelpersDesc" xml:space="preserve"><value>Player-space and world-space gyro conversion, by JibbSmart. MIT.</value></data>
+  <data name="About_SteamControllerSinger" xml:space="preserve"><value>SteamControllerSinger</value></data>
+  <data name="About_SteamControllerSingerDesc" xml:space="preserve"><value>Steam Controller (2015) haptic report layout and note-period math, by Pila and Roboron3042. BSD 3-Clause.</value></data>
+  <data name="About_SteamHapticsSinger" xml:space="preserve"><value>SteamHapticsSinger</value></data>
+  <data name="About_SteamHapticsSingerDesc" xml:space="preserve"><value>Steam Controller 2026 and Steam Deck LFO-tone haptic layout, by Pila, Crazy, and AAGaming. BSD 3-Clause.</value></data>
+  <data name="About_Hitboxer" xml:space="preserve"><value>hitboxer</value></data>
+  <data name="About_HitboxerDesc" xml:space="preserve"><value>SOCD cleaning semantics for the Snap Tap modes, by valignatev. MIT.</value></data>
+  <data name="About_Dolphin" xml:space="preserve"><value>Dolphin</value></data>
+  <data name="About_DolphinDesc" xml:space="preserve"><value>Wii pairing ceremony and speaker ADPCM documentation. GPL, read as documentation only, no GPL code ships.</value></data>
+  <data name="About_Ds4Windows" xml:space="preserve"><value>DS4Windows</value></data>
+  <data name="About_Ds4WindowsDesc" xml:space="preserve"><value>DualShock behavior documentation: idle disconnect, touchpad boundaries, battery decode. GPL, documentation only.</value></data>
+  <data name="About_XoneXow" xml:space="preserve"><value>xone / xow</value></data>
+  <data name="About_XoneXowDesc" xml:space="preserve"><value>GIP LED command documentation corroborating xbledctl. GPL, documentation only.</value></data>
+  <data name="About_WiimoteLib" xml:space="preserve"><value>WiimoteLib</value></data>
+  <data name="About_WiimoteLibDesc" xml:space="preserve"><value>Wii IR camera and Balance Board behavior documentation, by Brian Peek. Ms-PL.</value></data>
+  <data name="About_JoyconSinger" xml:space="preserve"><value>joycon-singer</value></data>
+  <data name="About_JoyconSingerDesc" xml:space="preserve"><value>Joy-Con HD rumble wire-format documentation, by Sergey004. Read for protocol facts only.</value></data>
   <data name="Devices_Pair" xml:space="preserve"><value>Pair</value></data>
   <data name="WiiPair_Title" xml:space="preserve"><value>Pair a Controller</value></data>
   <data name="WiiPair_Family" xml:space="preserve"><value>Controller Family</value></data>

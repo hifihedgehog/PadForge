@@ -11,9 +11,11 @@ namespace PadForge.Services
     ///
     /// Wii Remotes, the Nunchuk/Classic extensions, and the Wii U Pro
     /// Controller use a legacy Bluetooth pairing ceremony that the Windows
-    /// pairing UI cannot drive. This is a direct port of Dolphin's
-    /// Source/Core/Core/HW/WiimoteReal/IOWin.cpp, the canonical decade-old
-    /// Windows reference. The important part Dolphin establishes: do NOT use
+    /// pairing UI cannot drive. The ceremony follows the sequence Dolphin's
+    /// Source/Core/Core/HW/WiimoteReal/IOWin.cpp documents (the canonical
+    /// decade-old Windows reference); the implementation here is original
+    /// C# over the Win32 Bluetooth API, no Dolphin (GPL) code. The
+    /// important facts Dolphin establishes: do NOT use
     /// the BluetoothRegisterForAuthenticationEx callback path. Use the
     /// deprecated BluetoothAuthenticateDevice with the PIN passed directly as a
     /// wide-char array (each of the six Bluetooth-address bytes widened into one

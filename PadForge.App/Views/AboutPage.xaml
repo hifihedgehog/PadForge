@@ -71,6 +71,20 @@
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
 
                     <TextBlock Text="{Binding About_DotNet10, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold"/>
@@ -165,7 +179,63 @@
 
                     <TextBlock Grid.Row="23" Text="{Binding About_NefariusDevMgmt, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
                     <TextBlock Grid.Row="23" Grid.Column="1"
-                               Text="{Binding About_NefariusDevMgmtDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>                </Grid>
+                               Text="{Binding About_NefariusDevMgmtDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
+
+                    <TextBlock Grid.Row="24" Text="{Binding About_Libusb, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0"/>
+                    <TextBlock Grid.Row="24" Grid.Column="1"
+                               Text="{Binding About_LibusbDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
+
+                    <TextBlock Grid.Row="25" Text="{Binding About_Nipplejs, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0"/>
+                    <TextBlock Grid.Row="25" Grid.Column="1"
+                               Text="{Binding About_NipplejsDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
+
+                    <TextBlock Grid.Row="26" Text="{Binding About_GameControllerDb, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="26" Grid.Column="1"
+                               Text="{Binding About_GameControllerDbDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
+
+                    <TextBlock Grid.Row="27" Text="{Binding About_Xbledctl, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0"/>
+                    <TextBlock Grid.Row="27" Grid.Column="1"
+                               Text="{Binding About_XbledctlDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
+
+                    <TextBlock Grid.Row="28" Text="{Binding About_JoyShockMapper, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0"/>
+                    <TextBlock Grid.Row="28" Grid.Column="1"
+                               Text="{Binding About_JoyShockMapperDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
+
+                    <TextBlock Grid.Row="29" Text="{Binding About_GamepadMotionHelpers, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="29" Grid.Column="1"
+                               Text="{Binding About_GamepadMotionHelpersDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
+
+                    <TextBlock Grid.Row="30" Text="{Binding About_SteamControllerSinger, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="30" Grid.Column="1"
+                               Text="{Binding About_SteamControllerSingerDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
+
+                    <TextBlock Grid.Row="31" Text="{Binding About_SteamHapticsSinger, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="31" Grid.Column="1"
+                               Text="{Binding About_SteamHapticsSingerDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
+
+                    <TextBlock Grid.Row="32" Text="{Binding About_Hitboxer, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0"/>
+                    <TextBlock Grid.Row="32" Grid.Column="1"
+                               Text="{Binding About_HitboxerDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
+
+                    <TextBlock Grid.Row="33" Text="{Binding About_Dolphin, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0"/>
+                    <TextBlock Grid.Row="33" Grid.Column="1"
+                               Text="{Binding About_DolphinDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
+
+                    <TextBlock Grid.Row="34" Text="{Binding About_Ds4Windows, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0"/>
+                    <TextBlock Grid.Row="34" Grid.Column="1"
+                               Text="{Binding About_Ds4WindowsDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
+
+                    <TextBlock Grid.Row="35" Text="{Binding About_XoneXow, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0"/>
+                    <TextBlock Grid.Row="35" Grid.Column="1"
+                               Text="{Binding About_XoneXowDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
+
+                    <TextBlock Grid.Row="36" Text="{Binding About_WiimoteLib, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0"/>
+                    <TextBlock Grid.Row="36" Grid.Column="1"
+                               Text="{Binding About_WiimoteLibDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
+
+                    <TextBlock Grid.Row="37" Text="{Binding About_JoyconSinger, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0"/>
+                    <TextBlock Grid.Row="37" Grid.Column="1"
+                               Text="{Binding About_JoyconSingerDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>                </Grid>
             </Border>
 
             <!-- License -->

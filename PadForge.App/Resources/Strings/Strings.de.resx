@@ -2312,4 +2312,7 @@
   <data name="Pad_ResetTrimResetOnRelease" xml:space="preserve"><value>Zurücksetzen, sodass der Wert beim Loslassen auf 100% zurückspringt.</value></data>
   <data name="Pad_Shift_AutoCancel" xml:space="preserve"><value>Auto-Abschaltung nach Inaktivität</value></data>
   <data name="Pad_Shift_AutoCancel_Tooltip" xml:space="preserve"><value>Solange die Ebene eingeschaltet ist, schaltet sie sich nach so vielen Millisekunden ohne aktive eigene zugewiesene Eingaben selbst wieder aus. Der Timer startet beim Aktivieren der Ebene und beginnt bei jeder Ebenen-Eingabe neu. 0 lässt die Ebene an, bis du sie selbst ausschaltest.</value></data>
+  <data name="Pad_ResetShiftDelay" xml:space="preserve">
+    <value>Verzögerung auf 0 zurücksetzen (die Ebene reagiert sofort).</value>
+  </data>
 </root>

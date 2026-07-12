@@ -2173,6 +2173,7 @@ public class Strings : INotifyPropertyChanged
     public string Pad_ResetTrimRate => Get("Pad_ResetTrimRate");
     public string Pad_ResetTrimResetOnRelease => Get("Pad_ResetTrimResetOnRelease");
     public string Pad_ResetShiftAutoCancel => Get("Pad_ResetShiftAutoCancel");
+    public string Pad_ResetShiftDelay => Get("Pad_ResetShiftDelay");
     public string Pad_Shift_PostponeMapping => Get("Pad_Shift_PostponeMapping");
     public string Pad_Shift_PostponeMapping_Tooltip => Get("Pad_Shift_PostponeMapping_Tooltip");
     public string Pad_Shift_ChordSecondInput => Get("Pad_Shift_ChordSecondInput");

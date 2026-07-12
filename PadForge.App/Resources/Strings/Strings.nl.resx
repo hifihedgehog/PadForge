@@ -2332,4 +2332,7 @@
   <data name="Pad_ResetTrimResetOnRelease" xml:space="preserve"><value>Resetten naar het terugspringen van het niveau naar 100% bij loslaten.</value></data>
   <data name="Pad_Shift_AutoCancel" xml:space="preserve"><value>Automatisch annuleren na inactiviteit</value></data>
   <data name="Pad_Shift_AutoCancel_Tooltip" xml:space="preserve"><value>Zolang de laag is ingeschakeld, schakelt hij zichzelf weer uit na dit aantal milliseconden zonder dat een van de eigen toegewezen invoeren van de laag actief is. De timer start wanneer de laag wordt geactiveerd en begint opnieuw bij elke laaginvoer. 0 houdt de laag aan totdat je hem zelf uitschakelt.</value></data>
+  <data name="Pad_ResetShiftDelay" xml:space="preserve">
+    <value>De vertraging resetten naar 0 (de laag reageert direct).</value>
+  </data>
 </root>

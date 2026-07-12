@@ -2312,4 +2312,7 @@
   <data name="Pad_ResetTrimResetOnRelease" xml:space="preserve"><value>Redefinir para o nível voltar a 100% ao soltar.</value></data>
   <data name="Pad_Shift_AutoCancel" xml:space="preserve"><value>Cancelamento Automático por Inatividade</value></data>
   <data name="Pad_Shift_AutoCancel_Tooltip" xml:space="preserve"><value>Enquanto a camada está alternada como ativa, ela se desliga sozinha após esses milissegundos sem nenhuma das entradas mapeadas da própria camada ativa. O temporizador começa quando a camada é ativada e reinicia a cada entrada da camada. 0 mantém a camada ativa até você desativá-la.</value></data>
+  <data name="Pad_ResetShiftDelay" xml:space="preserve">
+    <value>Redefinir o atraso para 0 (a camada reage instantaneamente).</value>
+  </data>
 </root>

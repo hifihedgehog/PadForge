@@ -2312,4 +2312,7 @@
   <data name="Pad_ResetTrimResetOnRelease" xml:space="preserve"><value>重置为松开时保持值回到 100%。</value></data>
   <data name="Pad_Shift_AutoCancel" xml:space="preserve"><value>无活动后自动取消</value></data>
   <data name="Pad_Shift_AutoCancel_Tooltip" xml:space="preserve"><value>当层处于切换开启状态时，如果层自身映射的输入在这段毫秒数内均未激活，层会自动关闭。计时器在层激活时启动，并在每次层输入时重新计时。0 表示层保持开启，直到你手动关闭。</value></data>
+  <data name="Pad_ResetShiftDelay" xml:space="preserve">
+    <value>将延迟重置为 0（层立即响应）。</value>
+  </data>
 </root>

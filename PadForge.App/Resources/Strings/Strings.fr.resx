@@ -2312,4 +2312,7 @@
   <data name="Pad_ResetTrimResetOnRelease" xml:space="preserve"><value>Réinitialiser au retour du niveau à 100% au relâchement.</value></data>
   <data name="Pad_Shift_AutoCancel" xml:space="preserve"><value>Annulation automatique après inactivité</value></data>
   <data name="Pad_Shift_AutoCancel_Tooltip" xml:space="preserve"><value>Tant que la couche est activée par bascule, elle se désactive d'elle-même après ce nombre de millisecondes sans aucune des entrées mappées propres à la couche. Le minuteur démarre à l'activation de la couche et repart à chaque entrée de la couche. 0 garde la couche active jusqu'à ce que vous la désactiviez vous-même.</value></data>
+  <data name="Pad_ResetShiftDelay" xml:space="preserve">
+    <value>Réinitialiser le délai à 0 (la couche réagit instantanément).</value>
+  </data>
 </root>

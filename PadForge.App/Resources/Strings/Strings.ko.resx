@@ -2312,4 +2312,7 @@
   <data name="Pad_ResetTrimResetOnRelease" xml:space="preserve"><value>놓을 때 레벨이 100%로 돌아가도록 재설정합니다.</value></data>
   <data name="Pad_Shift_AutoCancel" xml:space="preserve"><value>미사용 시 자동 해제</value></data>
   <data name="Pad_Shift_AutoCancel_Tooltip" xml:space="preserve"><value>레이어가 토글로 켜져 있는 동안, 레이어 자체에 매핑된 입력이 하나도 활성화되지 않은 채 이 밀리초가 지나면 스스로 꺼집니다. 타이머는 레이어가 활성화될 때 시작되고 레이어 입력이 있을 때마다 다시 시작됩니다. 0이면 직접 끌 때까지 레이어가 켜져 있습니다.</value></data>
+  <data name="Pad_ResetShiftDelay" xml:space="preserve">
+    <value>지연을 0으로 재설정합니다(레이어가 즉시 반응함).</value>
+  </data>
 </root>

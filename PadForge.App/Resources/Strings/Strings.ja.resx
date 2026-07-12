@@ -2312,4 +2312,7 @@
   <data name="Pad_ResetTrimResetOnRelease" xml:space="preserve"><value>リリース時にレベルが 100% に戻る設定にリセット。</value></data>
   <data name="Pad_Shift_AutoCancel" xml:space="preserve"><value>無操作時の自動解除</value></data>
   <data name="Pad_Shift_AutoCancel_Tooltip" xml:space="preserve"><value>レイヤーがトグルでオンの間、レイヤー自身にマッピングされた入力が何もアクティブでない状態がこのミリ秒続くと、自動的にオフへ戻ります。タイマーはレイヤーの有効化時に開始し、レイヤーへの入力があるたびにやり直されます。0 なら自分でオフに切り替えるまでオンのままです。</value></data>
+  <data name="Pad_ResetShiftDelay" xml:space="preserve">
+    <value>遅延を 0 にリセット (レイヤーは即座に反応)。</value>
+  </data>
 </root>

@@ -528,8 +528,12 @@ namespace PadForge.Common.Input
             // written by StampLayerActivity from the row write sites on
             // the polling thread and read by the Toggle auto-cancel
             // block on the same thread.
-            public readonly Dictionary<string, long> LayerOutputTicks =
-                new Dictionary<string, long>(System.StringComparer.Ordinal);
+            // ConcurrentDictionary because Clear() runs on the UI thread
+            // (ApplyProfile / the 30 Hz per-app auto-switch) while the
+            // polling thread stamps, the same reason _stickTrimStates is
+            // concurrent.
+            public readonly System.Collections.Concurrent.ConcurrentDictionary<string, long> LayerOutputTicks =
+                new(System.StringComparer.Ordinal);
             public readonly List<int> Stack = new();
             public string CustomLayer = "";   // v2 Custom mode current layer (overrides stack when non-empty)
 
@@ -825,7 +829,12 @@ namespace PadForge.Common.Input
                     // timer starts at engage.
                     if (rt.ToggleOn[actIdx] && act.AutoCancelMs > 0)
                     {
-                        if (justEngaged)
+                        // Seed at engage, and also when unseeded (the
+                        // layer was engaged before auto-cancel was turned
+                        // on, or before a runtime clear): without the
+                        // zero check, the stale epoch read as an ancient
+                        // last-activity and disengaged instantly.
+                        if (justEngaged || rt.AutoCancelLastActivityTicks[actIdx] == 0)
                             rt.AutoCancelLastActivityTicks[actIdx] = nowTicks;
 
                         long last = rt.AutoCancelLastActivityTicks[actIdx];
@@ -1280,7 +1289,7 @@ namespace PadForge.Common.Input
                 // because the gamepad write touches four bits, not one.
                 if (string.Equals(row.Target, "DPad", System.StringComparison.Ordinal))
                 {
-                    EvaluateCombinedDpad(state, row, thisDeviceGuid, ref gp);
+                    EvaluateCombinedDpad(state, row, thisDeviceGuid, slotIndex, ref gp);
                     continue;
                 }
 
@@ -1576,11 +1585,22 @@ namespace PadForge.Common.Input
                         // re-deriving. A re-derive here would fold the trim
                         // stick's sign away and preview ~50% pull at rest.
                         // Read-only on the state entry, so still safe off
-                        // the polling thread.
-                        return _stickTrimStates.TryGetValue(
-                            (slotIndex, row.Target ?? "", row.LayerMask ?? "Base"), out var trimSt)
-                            ? (ushort)System.Math.Clamp((int)(trimSt.LastOutput * 65535f), 0, 65535)
-                            : (ushort)0;
+                        // the polling thread. Only while the row is truly
+                        // multi-source: degraded to one source, the engine
+                        // takes the single-source path and the state entry
+                        // freezes, so the normal preview below is the
+                        // accurate one.
+                        int contributing = 0;
+                        for (int ci = 0; ci < row.Sources.Count; ci++)
+                            if (row.Sources[ci] != null && !IsRowModifierSource(row.Sources[ci]))
+                                contributing++;
+                        if (contributing >= 2)
+                        {
+                            return _stickTrimStates.TryGetValue(
+                                (slotIndex, row.Target ?? "", row.LayerMask ?? "Base"), out var trimSt)
+                                ? (ushort)System.Math.Clamp((int)(trimSt.LastOutput * 65535f), 0, 65535)
+                                : (ushort)0;
+                        }
                     }
 
                     List<float> contribs = null;
@@ -2268,7 +2288,7 @@ namespace PadForge.Common.Input
         // ─── Combined-DPad target ─────────────────────────────────────────
 
         private static void EvaluateCombinedDpad(
-            CustomInputState state, MappingRow row, string thisDeviceGuid, ref Gamepad gp)
+            CustomInputState state, MappingRow row, string thisDeviceGuid, int slotIndex, ref Gamepad gp)
         {
             // Per the migrator, combined-DPad target only emits when no
             // individual DPadUp/Down/Left/Right rows exist. Sources are
@@ -2286,6 +2306,7 @@ namespace PadForge.Common.Input
                 left  |= EvalPovBool(state, src, "Left");
                 right |= EvalPovBool(state, src, "Right");
             }
+            if (up || down || left || right) StampLayerActivity(slotIndex, row);
             if (up)    gp.SetButton(Gamepad.DPAD_UP, true);
             if (down)  gp.SetButton(Gamepad.DPAD_DOWN, true);
             if (left)  gp.SetButton(Gamepad.DPAD_LEFT, true);

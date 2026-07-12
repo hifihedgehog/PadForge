@@ -186,31 +186,46 @@ namespace PadForge.Common.Input
             return pkt;
         }
 
-        /// <summary>Parses one \\.\XboxGIP message as a device announce.
-        /// Returns true only for commandId 0x02 messages carrying at least
-        /// the identity prefix of gip_pkt_announce (xone protocol.c):
-        /// address[6] + le16 unknown + le16 vendor_id + le16 product_id,
-        /// i.e. VID at payload offset 8 and PID at offset 10. Acknowledge
-        /// messages (0x01) carry a deviceId but no VID/PID, so they cannot
-        /// feed the match map and are ignored here.</summary>
+        /// <summary>Parses one \\.\XboxGIP message for its header deviceId,
+        /// accepting BOTH 0x01 ACKNOWLEDGE and 0x02 ANNOUNCE exactly like
+        /// the proven reference (xbledctl xbox_led.c:71 accepts commandId
+        /// <c>0x01 || 0x02</c> and uses <c>hdr-&gt;deviceId</c> from the
+        /// header with no payload parse). VID/PID are read opportunistically
+        /// from a 0x02 announce payload (xone gip_pkt_announce layout: VID at
+        /// payload+8, PID at +10) and left 0 otherwise.
+        ///
+        /// <para>The earlier version required a 0x02 message carrying a
+        /// parseable VID/PID payload, so on hardware that delivered 0x01, or
+        /// 0x02 framed without our assumed payload, the device map never
+        /// populated and every write silently no-opped. That was the feature
+        /// shipping dead. The reference deliberately keys nothing on the
+        /// payload.</para></summary>
         internal static bool TryParseAnnounce(byte[] buf, int read,
             out ulong deviceId, out ushort vendorId, out ushort productId, out ulong address)
         {
             deviceId = 0; vendorId = 0; productId = 0; address = 0;
             if (buf == null || read < HeaderSize) return false;
 
+            byte cmd = buf[8];
+            if (cmd != GipCmdAnnounce && cmd != GipCmdAcknowledge) return false;
+
             for (int i = 0; i < 8; i++)
                 deviceId |= (ulong)buf[i] << (8 * i);
 
-            if (buf[8] != GipCmdAnnounce) return false;
-
-            uint payloadLen = (uint)(buf[12] | buf[13] << 8 | buf[14] << 16 | buf[15] << 24);
-            if (payloadLen < 12 || read < HeaderSize + 12) return false;
-
-            for (int i = 0; i < 6; i++)
-                address |= (ulong)buf[HeaderSize + i] << (8 * i);
-            vendorId = (ushort)(buf[HeaderSize + 8] | buf[HeaderSize + 9] << 8);
-            productId = (ushort)(buf[HeaderSize + 10] | buf[HeaderSize + 11] << 8);
+            // Identity payload only exists on a 0x02 announce; read it when
+            // present, leave VID/PID at 0 otherwise. ProcessPending falls
+            // back to every discovered deviceId when no VID/PID is known.
+            if (cmd == GipCmdAnnounce)
+            {
+                uint payloadLen = (uint)(buf[12] | buf[13] << 8 | buf[14] << 16 | buf[15] << 24);
+                if (payloadLen >= 12 && read >= HeaderSize + 12)
+                {
+                    for (int i = 0; i < 6; i++)
+                        address |= (ulong)buf[HeaderSize + i] << (8 * i);
+                    vendorId = (ushort)(buf[HeaderSize + 8] | buf[HeaderSize + 9] << 8);
+                    productId = (ushort)(buf[HeaderSize + 10] | buf[HeaderSize + 11] << 8);
+                }
+            }
             return true;
         }
 
@@ -313,6 +328,8 @@ namespace PadForge.Common.Input
 
                 _pending[(ud.VendorId, ud.ProdId)] = (Math.Clamp(percent0to100, 0, 100), 0);
                 _work.Set();
+                PadForge.Engine.SdlDiagLog.WriteLine(
+                    $"GUIDELED enqueue vid=0x{ud.VendorId:X4} pid=0x{ud.ProdId:X4} pct={Math.Clamp(percent0to100, 0, 100)}");
                 return true;
             }
             catch
@@ -418,11 +435,18 @@ namespace PadForge.Common.Input
                 IntPtr.Zero, OPEN_EXISTING,
                 FILE_ATTRIBUTE_NORMAL | FILE_FLAG_OVERLAPPED,
                 IntPtr.Zero);
-            if (_handle == InvalidHandle) return false;
+            if (_handle == InvalidHandle)
+            {
+                PadForge.Engine.SdlDiagLog.WriteLine(
+                    $"GUIDELED open FAILED gle={Marshal.GetLastWin32Error()}");
+                return false;
+            }
 
-            DeviceIoControl(_handle, GipReenumerateIoctl,
+            bool ioctlOk = DeviceIoControl(_handle, GipReenumerateIoctl,
                 IntPtr.Zero, 0, IntPtr.Zero, 0, out _, IntPtr.Zero);
             _readPending = false;
+            PadForge.Engine.SdlDiagLog.WriteLine(
+                $"GUIDELED open ok ioctl={ioctlOk} gle={Marshal.GetLastWin32Error()}");
             return true;
         }
 
@@ -471,37 +495,45 @@ namespace PadForge.Common.Input
             var buf = new byte[Math.Min(read, ReadBufferSize)];
             Marshal.Copy(_readBuffer, buf, 0, buf.Length);
 
+            // Raw reception dump BEFORE any decode: what the interface
+            // actually delivered (command + deviceId), the ground-truth
+            // line that resolves the whole "map stays empty" question on
+            // the next hardware run. Independent of the parser.
+            ulong rawId = 0;
+            for (int i = 0; i < 8; i++) rawId |= (ulong)buf[i] << (8 * i);
+            PadForge.Engine.SdlDiagLog.WriteLine(
+                $"GUIDELED rx len={read} cmd=0x{buf[8]:X2} devId=0x{rawId:X16}");
+
             if (!TryParseAnnounce(buf, buf.Length,
                     out ulong deviceId, out ushort vid, out ushort pid, out ulong address))
             {
-                // Acknowledge (0x01) refreshes liveness of a known entry
-                // but cannot create one, since it carries no VID/PID.
-                if (buf[8] == GipCmdAcknowledge
-                    && _announced.TryGetValue(GetDeviceId(buf), out var known))
-                {
-                    _announced[GetDeviceId(buf)] = (known.Vid, known.Pid, known.Address, Environment.TickCount64);
-                }
+                PadForge.Engine.SdlDiagLog.WriteLine("GUIDELED rx noparse");
                 return;
+            }
+
+            // A 0x01 acknowledge (or a 0x02 without an identity payload)
+            // carries no VID/PID; keep the value we already learned for
+            // this deviceId so a heartbeat never blanks a known identity.
+            bool isAnnounce = buf[8] == GipCmdAnnounce;
+            if (vid == 0 && pid == 0 && _announced.TryGetValue(deviceId, out var prior))
+            {
+                vid = prior.Vid; pid = prior.Pid;
+                if (address == 0) address = prior.Address;
             }
 
             if (_announced.Count >= MaxAnnounceEntries && !_announced.ContainsKey(deviceId))
                 EvictOldestAnnounce();
             _announced[deviceId] = (vid, pid, address, Environment.TickCount64);
-            // A fresh announce means the pad (re)connected at firmware
-            // default brightness, so the write ledger is stale by
-            // definition: xbledctl re-applies unconditionally on every
-            // arrival (main.cpp WM_DEVICECHANGE -> TryAutoApply) because
-            // the LED state resets on unplug. Without this, a replug that
-            // reuses the deviceId skipped the reseed and the pad stayed
-            // at firmware default.
-            _lastWritten.Remove(deviceId);
 
-            static ulong GetDeviceId(byte[] b)
-            {
-                ulong id = 0;
-                for (int i = 0; i < 8; i++) id |= (ulong)b[i] << (8 * i);
-                return id;
-            }
+            // A 0x02 announce means the pad (re)connected at firmware
+            // default brightness, so the write ledger is stale: xbledctl
+            // re-applies unconditionally on every arrival because the LED
+            // state resets on unplug. Gated to the announce (not every
+            // 0x01 heartbeat, which would force a redundant write per
+            // beat) so a replug that reuses the deviceId still reseeds.
+            if (isAnnounce) _lastWritten.Remove(deviceId);
+            PadForge.Engine.SdlDiagLog.WriteLine(
+                $"GUIDELED announced devId=0x{deviceId:X16} vid=0x{vid:X4} pid=0x{pid:X4} announce={isAnnounce}");
         }
 
         private void EvictOldestAnnounce()
@@ -534,12 +566,31 @@ namespace PadForge.Common.Input
                     if (a.Value.Vid == key.Vid && a.Value.Pid == key.Pid)
                         matches.Add(a.Key);
 
+                // xbledctl parity: the reference never keys the write on
+                // VID/PID, it writes to the discovered (single/selected)
+                // device. When our precise VID/PID match finds nothing
+                // (announces arrived as 0x01, or 0x02 without a parseable
+                // identity payload), fall back to every discovered GIP
+                // deviceId so the write still lands. Same-model shared
+                // brightness across two pads is the documented degenerate
+                // case; on the overwhelmingly common single-pad rig this
+                // simply targets the one controller.
+                bool fellBack = false;
+                if (matches.Count == 0 && _announced.Count > 0)
+                {
+                    foreach (var a in _announced) matches.Add(a.Key);
+                    fellBack = true;
+                }
+
+                PadForge.Engine.SdlDiagLog.WriteLine(
+                    $"GUIDELED pend vid=0x{key.Vid:X4} pid=0x{key.Pid:X4} announced={_announced.Count} matches={matches.Count} fallback={fellBack} attempts={attempts}");
+
                 if (matches.Count == 0)
                 {
-                    // Nothing announced for this model yet. Re-provoke
-                    // announces once, then let the 1 s ticks retry until
-                    // the attempt budget runs out (a Bluetooth Xbox pad
-                    // legitimately never announces).
+                    // Nothing announced at all yet. Re-provoke announces
+                    // once, then let the 1 s ticks retry until the attempt
+                    // budget runs out (a Bluetooth Xbox pad legitimately
+                    // never announces).
                     if (attempts == 0)
                         DeviceIoControl(_handle, GipReenumerateIoctl,
                             IntPtr.Zero, 0, IntPtr.Zero, 0, out _, IntPtr.Zero);
@@ -621,9 +672,17 @@ namespace PadForge.Common.Input
                     WaitForSingleObject(_writeEvent, 100);
                     return false;
                 }
-                if (!GetOverlappedResult(_handle, _writeOverlapped, out written, false)) return false;
+                if (!GetOverlappedResult(_handle, _writeOverlapped, out written, false))
+                {
+                    PadForge.Engine.SdlDiagLog.WriteLine(
+                        $"GUIDELED write devId=0x{deviceId:X16} mode={mode} int={intensity} OVERLAPPED-FAIL gle={Marshal.GetLastWin32Error()}");
+                    return false;
+                }
             }
-            return written == pkt.Length;
+            bool wrote = written == pkt.Length;
+            PadForge.Engine.SdlDiagLog.WriteLine(
+                $"GUIDELED write devId=0x{deviceId:X16} mode={mode} int={intensity} ok={wrote} written={written}");
+            return wrote;
         }
 
         // OVERLAPPED: 2 pointers + 2 u32 + event handle.

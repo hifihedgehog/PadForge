@@ -1106,6 +1106,9 @@ namespace PadForge
                 // ExtendedConfig property changes (preset, counts) trigger autosave.
                 pad.ExtendedConfig.PropertyChanged += (s, e) => _settingsService.MarkDirty();
 
+                // KbmConfig property changes (SOCD mode / pairs) trigger autosave.
+                pad.KbmConfig.PropertyChanged += (s, e) => _settingsService.MarkDirty();
+
                 // DeviceConfig changes (Lighting tab, Adaptive Triggers tab)
                 // — autosave + sync audio capture when audio-to-lightbar
                 // toggles. Audio-to-lightbar reuses the same WASAPI capture
@@ -6083,6 +6086,9 @@ namespace PadForge
                 var midiCfg = _settingsService.BuildMidiConfigSnapshotForSlot(padVm.PadIndex);
                 if (midiCfg != null)
                     ps.SlotMidiConfigJson = System.Text.Json.JsonSerializer.Serialize(midiCfg, jsonOpts);
+                var kbmCfg = _settingsService.BuildKbmConfigSnapshotForSlot(padVm.PadIndex);
+                if (kbmCfg != null)
+                    ps.SlotKbmConfigJson = System.Text.Json.JsonSerializer.Serialize(kbmCfg, jsonOpts);
 
                 // Carry the slot's shift authoring (activators + Base appearance)
                 // so Copy / Paste includes shift layers like Copy From (#119).
@@ -6186,6 +6192,15 @@ namespace PadForge
                         _settingsService.ApplyMidiConfigToSlot(padVm.PadIndex, midiCfg);
                     }
                     catch { /* malformed payload — MIDI layout paste skipped */ }
+                }
+                if (!string.IsNullOrEmpty(ps.SlotKbmConfigJson))
+                {
+                    try
+                    {
+                        var kbmCfg = System.Text.Json.JsonSerializer.Deserialize<ViewModels.KbmSlotConfigData>(ps.SlotKbmConfigJson);
+                        _settingsService.ApplyKbmConfigToSlot(padVm.PadIndex, kbmCfg);
+                    }
+                    catch { /* malformed payload, SOCD paste skipped */ }
                 }
 
                 // Per-device tuning for EVERY device on the source slot,

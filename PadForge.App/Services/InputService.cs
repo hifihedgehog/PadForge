@@ -537,6 +537,7 @@ namespace PadForge.Services
                 _inputManager.SlotProfileIds[i] = _mainVm.Pads[i].ProfileId;
                 SyncExtendedConfigToSlot(i, _mainVm.Pads[i]);
                 _inputManager._midiConfigs[i] = _mainVm.Pads[i].MidiConfig;
+                _inputManager._kbmConfigs[i] = _mainVm.Pads[i].KbmConfig;
                 _inputManager._deviceSlotConfigs[i] = _mainVm.Pads[i].DeviceConfig;
                 _inputManager._perDeviceSlotConfigs[i] = _mainVm.Pads[i].PerDeviceSlotConfigs;
                 // Subscribe to PadVm's forwarder so the handler follows
@@ -3595,6 +3596,7 @@ namespace PadForge.Services
                     _inputManager.SlotProfileIds[i] = padVm.ProfileId;
                     SyncExtendedConfigToSlot(i, padVm);
                     _inputManager._midiConfigs[i] = padVm.MidiConfig;
+                    _inputManager._kbmConfigs[i] = padVm.KbmConfig;
                     _inputManager._deviceSlotConfigs[i] = padVm.DeviceConfig;
                     // Per-(slot, device) lighting configs — source of
                     // truth for the dispatcher's per-device synthesis and
@@ -5023,6 +5025,7 @@ namespace PadForge.Services
                 clone.SlotDeviceConfigsJson = null;
                 clone.SlotExtendedConfigJson = null;
                 clone.SlotMidiConfigJson = null;
+                clone.SlotKbmConfigJson = null;
                 clone.SlotPerDeviceSettingsJson = null;
                 clone.SlotMultiSourceRows = null;
                 clone.DeviceScopedMultiSourceRows = null;
@@ -9997,6 +10000,7 @@ namespace PadForge.Services
                     .Select(i => _mainVm.Pads[i].ProfileId).ToArray(),
                 ExtendedConfigs = SnapshotExtendedConfigs(),
                 MidiConfigs = SnapshotMidiConfigs(),
+                KbmConfigs = SnapshotKbmConfigs(),
                 // Macros ride profiles (and .pfprofile exports, where the
                 // import side's sound-package bundling consumes them).
                 Macros = _settingsService?.BuildMacroData(),
@@ -10067,6 +10071,25 @@ namespace PadForge.Services
                     StartCc = cfg.StartCc,
                     NoteCount = cfg.NoteCount,
                     StartNote = cfg.StartNote
+                });
+            }
+            return list.Count > 0 ? list.ToArray() : null;
+        }
+
+        private KbmSlotConfigData[] SnapshotKbmConfigs()
+        {
+            var list = new List<KbmSlotConfigData>();
+            for (int i = 0; i < _mainVm.Pads.Count; i++)
+            {
+                if (!SettingsManager.SlotCreated[i] ||
+                    _mainVm.Pads[i].OutputType != VirtualControllerType.KeyboardMouse)
+                    continue;
+                var cfg = _mainVm.Pads[i].KbmConfig;
+                list.Add(new KbmSlotConfigData
+                {
+                    SlotIndex = i,
+                    SocdMode = cfg.SocdMode,
+                    SocdPairs = cfg.SocdPairs
                 });
             }
             return list.Count > 0 ? list.ToArray() : null;
@@ -10197,6 +10220,12 @@ namespace PadForge.Services
             if (p.MidiConfigs != null)
             {
                 foreach (var cfg in p.MidiConfigs)
+                    if (oldToNew.TryGetValue(cfg.SlotIndex, out var ni))
+                        cfg.SlotIndex = ni;
+            }
+            if (p.KbmConfigs != null)
+            {
+                foreach (var cfg in p.KbmConfigs)
                     if (oldToNew.TryGetValue(cfg.SlotIndex, out var ni))
                         cfg.SlotIndex = ni;
             }
@@ -10626,6 +10655,22 @@ namespace PadForge.Services
                 }
             }
 
+            if (profile.KbmConfigs != null)
+            {
+                foreach (var cfgData in profile.KbmConfigs)
+                {
+                    int idx = cfgData.SlotIndex;
+                    if (idx >= 0 && idx < _mainVm.Pads.Count &&
+                        SettingsManager.SlotCreated[idx] &&
+                        _mainVm.Pads[idx].OutputType == VirtualControllerType.KeyboardMouse)
+                    {
+                        var cfg = _mainVm.Pads[idx].KbmConfig;
+                        cfg.SocdMode = cfgData.SocdMode;
+                        cfg.SocdPairs = cfgData.SocdPairs;
+                    }
+                }
+            }
+
             // ── Apply macros ──
             // Profiles carry their macro set, so switching profiles switches
             // macros (and a shared .pfprofile brings its macros along). Null
@@ -10811,6 +10856,7 @@ namespace PadForge.Services
                     profile.SlotProfileIds = snapshot.SlotProfileIds;
                     profile.ExtendedConfigs = snapshot.ExtendedConfigs;
                     profile.MidiConfigs = snapshot.MidiConfigs;
+                    profile.KbmConfigs = snapshot.KbmConfigs;
                     profile.XboxSlotOrder          = snapshot.XboxSlotOrder;
                     profile.PlayStationSlotOrder   = snapshot.PlayStationSlotOrder;
                     profile.ExtendedSlotOrder      = snapshot.ExtendedSlotOrder;

@@ -505,6 +505,22 @@ namespace PadForge.ViewModels
         }
 
         // ═══════════════════════════════════════════════
+        //  KBM per-slot configuration (discussion #205)
+        // ═══════════════════════════════════════════════
+
+        private KbmSlotConfig _kbmConfig = new();
+
+        /// <summary>
+        /// Per-slot keyboard + mouse configuration (SOCD / Snap Tap).
+        /// Always present. Only meaningful when OutputType == KeyboardMouse.
+        /// </summary>
+        public KbmSlotConfig KbmConfig
+        {
+            get => _kbmConfig;
+            set => SetProperty(ref _kbmConfig, value ?? new());
+        }
+
+        // ═══════════════════════════════════════════════
         //  #1: Multi-device selection within a slot
         // ═══════════════════════════════════════════════
 

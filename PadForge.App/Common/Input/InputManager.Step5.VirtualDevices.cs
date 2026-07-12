@@ -393,6 +393,14 @@ namespace PadForge.Common.Input
         /// </summary>
         internal MidiSlotConfig[] _midiConfigs = new MidiSlotConfig[MaxPads];
 
+        /// <summary>
+        /// Per-slot KBM configuration reference (SOCD / Snap Tap, discussion
+        /// #205). Written by InputService at 30Hz alongside _midiConfigs.
+        /// Read by Pass 3, where the KBM controller's reference-compare fast
+        /// path picks up edits live without a VC rebuild.
+        /// </summary>
+        internal KbmSlotConfig[] _kbmConfigs = new KbmSlotConfig[MaxPads];
+
         /// <summary>Per-slot PlayStation configuration reference (Adaptive
         /// Triggers + Lighting). Mirrors the slot's currently-selected
         /// device's per-device config — the Lighting tab is per-device,
@@ -1083,10 +1091,18 @@ namespace PadForge.Common.Input
                         if (vc is MidiVirtualController midiVc)
                             midiVc.SubmitMidiRawState(CombinedMidiRawStates[padIndex]);
                         else if (vc is KeyboardMouseVirtualController kbmVc)
+                        {
+                            // SOCD config (discussion #205): live reference from
+                            // the slot's KbmSlotConfig, applied through the VC's
+                            // reference-compare fast path.
+                            var kbmCfg = _kbmConfigs[padIndex];
+                            if (kbmCfg != null)
+                                kbmVc.ApplySocdConfig(kbmCfg.SocdMode, kbmCfg.SocdPairs);
                             // A gamepad-only-restricted peer feeding this slot must not
                             // reach the OS via the KBM controller: submit neutral (which
                             // releases anything held) instead of its mapped state.
                             kbmVc.SubmitKbmState(IsSlotRestricted(padIndex) ? default : CombinedKbmRawStates[padIndex]);
+                        }
                         else if (SlotControllerTypes[padIndex] == VirtualControllerType.Extended
                                  && SlotExtendedIsCustom[padIndex]
                                  && vc is HMaestroVirtualController hmExt)

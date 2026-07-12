@@ -43,6 +43,18 @@ $map = @{
     "pad-sticks-deadzone-dropdown"      = "sticks-deadzone-dropdown"
     "pad-sticks-sensitivity-dropdown"   = "sticks-sensitivity-dropdown"
     "pad-triggers-sensitivity-dropdown" = "triggers-sensitivity-dropdown"
+    # v4 additions
+    "pad-guide-led"          = "guide-led"
+    "pad-kbm-socd"           = "kbm-socd"
+    "pad-mouse-gestures"     = "mouse-gestures"
+    "pad-ds3-gyro"           = "ds3-gyro"
+    "devices-ds3"            = "devices-ds3"
+    "ds3-pair"               = "ds3-pair"
+    "wii-balance-sources"    = "wii-balance-sources"
+    "joycon-ir-source"       = "joycon-ir-source"
+    "joycon2-mouse-sources"  = "joycon2-mouse-sources"
+    "macro-disconnect"       = "macro-disconnect"
+    "pad-extended-configbar" = "extended-configbar"
 }
 
 $jpgEncoder = [System.Drawing.Imaging.ImageCodecInfo]::GetImageEncoders() | Where-Object { $_.MimeType -eq "image/jpeg" }

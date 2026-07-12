@@ -124,6 +124,68 @@ namespace PadForge.Tests
             Assert.Equal(3, e.PlayerIndex);
         }
 
+        [Fact]
+        public void VibrationImpulseTriggersSurviveAlongsideDirectional()
+        {
+            // GAP 3 wire pin: the relayed Vibration must carry all FOUR channels
+            // (large / small / LT / RT) so the owner can drive an Xbox impulse
+            // pad's trigger motors. The four must survive with a directional
+            // payload present, since that's what an FFB game frame looks like.
+            var v = new Vibration
+            {
+                LeftMotorSpeed = 0x1111,
+                RightMotorSpeed = 0x2222,
+                LeftTriggerMotorSpeed = 0x3333,
+                RightTriggerMotorSpeed = 0x4444,
+                HasDirectionalData = true,
+                EffectType = 2,
+                SignedMagnitude = 6000,
+                Direction = 8192,
+                Period = 100,
+            };
+            byte[] wire = OutputEffectCodec.EncodeVibration(v);
+            Assert.True(OutputEffectCodec.TryDecode(wire, out var e));
+            var d = e.Vibration;
+            Assert.Equal(0x1111, d.LeftMotorSpeed);
+            Assert.Equal(0x2222, d.RightMotorSpeed);
+            Assert.Equal(0x3333, d.LeftTriggerMotorSpeed);
+            Assert.Equal(0x4444, d.RightTriggerMotorSpeed);
+            Assert.True(d.HasDirectionalData);
+            Assert.Equal(8192, d.Direction);
+        }
+
+        [Fact]
+        public void GuideLedRoundTrips()
+        {
+            byte[] wire = OutputEffectCodec.EncodeGuideLed(35);
+            Assert.True(OutputEffectCodec.TryDecode(wire, out var e));
+            Assert.Equal(OutputEffectCodec.Kind.GuideLed, e.Kind);
+            Assert.Equal(35, e.GuideLedPercent);
+        }
+
+        [Theory]
+        [InlineData(0, 0)]
+        [InlineData(100, 100)]
+        [InlineData(250, 100)]   // encode clamps above 100
+        [InlineData(-7, 0)]      // encode clamps below 0
+        public void GuideLedPercentClampsOnEncode(int input, int expected)
+        {
+            byte[] wire = OutputEffectCodec.EncodeGuideLed(input);
+            Assert.True(OutputEffectCodec.TryDecode(wire, out var e));
+            Assert.Equal(expected, e.GuideLedPercent);
+        }
+
+        [Fact]
+        public void GuideLedOutOfRangeByteClampsOnDecode()
+        {
+            // A hand-framed percent above 100 (e.g. a future/garbled sender)
+            // decodes to the 100 ceiling rather than an out-of-range value.
+            Assert.True(OutputEffectCodec.TryDecode(
+                new byte[] { (byte)OutputEffectCodec.Kind.GuideLed, 200 }, out var e));
+            Assert.Equal(OutputEffectCodec.Kind.GuideLed, e.Kind);
+            Assert.Equal(100, e.GuideLedPercent);
+        }
+
         [Theory]
         [InlineData(new byte[0])]               // empty
         [InlineData(new byte[] { 99 })]         // unknown kind
@@ -131,6 +193,7 @@ namespace PadForge.Tests
         [InlineData(new byte[] { 2, 0, 0 })]    // Vibration truncated
         [InlineData(new byte[] { 3, 0, 0 })]    // Wheel truncated
         [InlineData(new byte[] { 5 })]          // PlayerIndex with no number
+        [InlineData(new byte[] { 6 })]          // GuideLed with no percent byte
         public void MalformedFramesFailClosed(byte[] wire)
         {
             Assert.False(OutputEffectCodec.TryDecode(wire, out var e));

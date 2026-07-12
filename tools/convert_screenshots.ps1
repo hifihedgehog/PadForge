@@ -44,7 +44,7 @@ $map = @{
     "pad-sticks-sensitivity-dropdown"   = "sticks-sensitivity-dropdown"
     "pad-triggers-sensitivity-dropdown" = "triggers-sensitivity-dropdown"
     # v4 additions
-    "pad-guide-led"          = "guide-led"
+    "pad-lighting-guide-led" = "guide-led"
     "pad-kbm-socd"           = "kbm-socd"
     "pad-mouse-gestures"     = "mouse-gestures"
     "pad-ds3-gyro"           = "ds3-gyro"
@@ -55,6 +55,32 @@ $map = @{
     "joycon2-mouse-sources"  = "joycon2-mouse-sources"
     "macro-disconnect"       = "macro-disconnect"
     "pad-extended-configbar" = "extended-configbar"
+    # wiki completeness additions (2026-07-12): one entry per new placeholder.
+    # jpg names drop the pad- prefix, like the rest of the map.
+    "pad-config-tabs"             = "config-tabs"
+    "pad-mapping-annotations"     = "mapping-annotations"
+    "3d-model-annotation-overlay" = "3d-model-annotation-overlay"
+    "2d-annotation-overlay"       = "2d-annotation-overlay"
+    "2d-touchpad-finger-dots"     = "2d-touchpad-finger-dots"
+    "pad-stick-trim"              = "stick-trim"
+    "pad-trigger-instrument"      = "trigger-instrument"
+    "pad-sticks-boundary-calibration" = "sticks-boundary-calibration"
+    "macro-add-from-list"         = "macro-add-from-list"
+    "pad-audio-haptic-controls"   = "audio-haptic-controls"
+    "pad-motor-activity"          = "motor-activity"
+    "touchpad-gesture-recorder"   = "touchpad-gesture-recorder"
+    "wii-pointer-mode"            = "wii-pointer-mode"
+    "nfc-live-preview"            = "nfc-live-preview"
+    "midi-input-mode-devices-page" = "midi-input-mode-devices-page"
+    "pad-extended-clone-device"   = "extended-clone-device"
+    "devices-facet-chips"         = "devices-facet-chips"
+    "devices-dossier"             = "devices-dossier"
+    "dashboard-slot-card"         = "dashboard-slot-card"
+    "dashboard-polling-readout"   = "dashboard-polling-readout"
+    "dsu-port-box"                = "dsu-port-box"
+    "driver-status-flames"        = "driver-status-flames"
+    "settings-driver-cards"       = "settings-driver-cards"
+    "profiles-foreground-readout" = "profiles-foreground-readout"
 }
 
 $jpgEncoder = [System.Drawing.Imaging.ImageCodecInfo]::GetImageEncoders() | Where-Object { $_.MimeType -eq "image/jpeg" }

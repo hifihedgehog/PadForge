@@ -1141,6 +1141,13 @@ namespace PadForge.Common.Input
                     break;
                 }
 
+                case MacroActionType.GuideLedBrightness:
+                {
+                    ApplyGuideLedBrightnessAction(macro, action);
+                    AdvanceAction(macro);
+                    break;
+                }
+
                 case MacroActionType.SetGyroEngaged:
                 {
                     int slotIndex = macro.PadIndex;
@@ -1606,6 +1613,25 @@ namespace PadForge.Common.Input
             if (slotIndex < 0 || slotIndex >= MaxPads) return;
 
             PointerModeCycleApply?.Invoke(slotIndex, action.NormalizedPointerSetMode());
+        }
+
+        /// <summary>Hands a macro Guide LED brightness write (#209) to the
+        /// app layer: (slot index, percent 0-100). The delegate walks the
+        /// slot's mapped devices on the dispatcher and routes each through
+        /// the Xbox GIP writer or the Steam home-LED hint. The write is
+        /// transient, never persisted into DeviceSlotConfig, so a
+        /// flash-on-engage macro doesn't dirty settings on every fire.</summary>
+        internal static Action<int, int> GuideLedApply;
+
+        /// <summary>Fires the slot-level Guide LED brightness apply for a
+        /// GuideLedBrightness action (#209), the LED sibling of
+        /// <see cref="ApplyPointerModeSetAction"/>.</summary>
+        private void ApplyGuideLedBrightnessAction(MacroItem macro, MacroAction action)
+        {
+            int slotIndex = macro.PadIndex;
+            if (slotIndex < 0 || slotIndex >= MaxPads) return;
+
+            GuideLedApply?.Invoke(slotIndex, action.GuideLedPercent);
         }
 
         /// <summary>Advances the action's cycle position and writes the
@@ -2171,6 +2197,11 @@ namespace PadForge.Common.Input
 
                 case MacroActionType.PointerModeSet:
                     ApplyPointerModeSetAction(macro, action);
+                    AdvanceAction(macro);
+                    break;
+
+                case MacroActionType.GuideLedBrightness:
+                    ApplyGuideLedBrightnessAction(macro, action);
                     AdvanceAction(macro);
                     break;
             }

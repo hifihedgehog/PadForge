@@ -221,12 +221,14 @@ namespace PadForge.Tests
             // every previously copied macro. Caught by adversarial review
             // (2026-07-11) after the first cut inserted PointerModeCycle
             // beside LightbarModeCycle. PointerModeSet appended later the
-            // same day; the cycle member's value must never move again.
+            // same day. GuideLedBrightness (#209) is the tail now; the
+            // pointer members' values must never move again.
             var values = (MacroActionType[])System.Enum.GetValues(typeof(MacroActionType));
             int max = 0;
             foreach (var v in values) max = System.Math.Max(max, (int)v);
-            Assert.Equal((int)MacroActionType.PointerModeSet, max);
-            Assert.Equal((int)MacroActionType.PointerModeCycle, max - 1);
+            Assert.Equal((int)MacroActionType.GuideLedBrightness, max);
+            Assert.Equal((int)MacroActionType.PointerModeSet, max - 1);
+            Assert.Equal((int)MacroActionType.PointerModeCycle, max - 2);
         }
 
         [Theory]

@@ -312,6 +312,12 @@ namespace PadForge.Views
             bool hasLightbar = false;
             bool lightbarIsDs4 = false;
             bool hasIndicatorLeds = false;
+            // Guide Button LED (#209): XInput-pathed pads (the \\.\XboxGIP
+            // GIP LED lane, USB only, though Bluetooth pads share the
+            // synthetic path and simply no-op) and the 2015 Steam
+            // Controller (SDL home-LED hint). Puts the Lighting tab up for
+            // those devices with only the Guide LED card visible.
+            bool hasGuideLed = false;
             bool hasForceFeedback = false;
             bool hasGyro = false;
             bool hasMouse = false;
@@ -351,6 +357,9 @@ namespace PadForge.Views
                         hasIrPointer = ud.HasIrCamera;
                         hasImpulseTriggers = ud.HasRumbleTriggers;
                         hasTouchpad = ud.HasTouchpad;
+                        hasGuideLed =
+                            PadForge.Common.Input.XboxGipGuideLedWriter.IsXboxGipPathed(ud)
+                         || PadForge.Common.Input.SteamHomeLedSetter.IsSteamController2015(ud.VendorId, ud.ProdId);
                         // Native-FFB wheel → the Wheel tab (rotation range, auto-center,
                         // RPM LEDs). Same VID/PID gates the wheel HID writers use.
                         hasWheel =
@@ -422,7 +431,17 @@ namespace PadForge.Views
             if (TabAdaptiveTriggers != null)
                 TabAdaptiveTriggers.Visibility = hasAdaptiveTriggers ? Visibility.Visible : Visibility.Collapsed;
             if (TabLighting != null)
-                TabLighting.Visibility = hasLightbar ? Visibility.Visible : Visibility.Collapsed;
+                TabLighting.Visibility = (hasLightbar || hasGuideLed) ? Visibility.Visible : Visibility.Collapsed;
+            // Lightbar-specific content hides when the tab is up for a
+            // guide-LED-only device (Xbox / 2015 Steam Controller).
+            if (LightbarModeCard != null)
+                LightbarModeCard.Visibility = hasLightbar ? Visibility.Visible : Visibility.Collapsed;
+            if (LightingLightbarSubtitle != null)
+                LightingLightbarSubtitle.Visibility = hasLightbar ? Visibility.Visible : Visibility.Collapsed;
+            if (LightingPlayerIdleHint != null)
+                LightingPlayerIdleHint.Visibility = hasLightbar ? Visibility.Visible : Visibility.Collapsed;
+            if (GuideLedCard != null)
+                GuideLedCard.Visibility = hasGuideLed ? Visibility.Visible : Visibility.Collapsed;
             if (TabGyro != null)
                 TabGyro.Visibility = hasGyro ? Visibility.Visible : Visibility.Collapsed;
             if (TabImpulseTriggers != null)

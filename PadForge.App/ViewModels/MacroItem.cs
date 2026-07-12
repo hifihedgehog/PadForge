@@ -1886,6 +1886,7 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(IsLightbarModeCycleType));
                     OnPropertyChanged(nameof(IsPointerModeCycleType));
                     OnPropertyChanged(nameof(IsPointerModeSetType));
+                    OnPropertyChanged(nameof(IsGuideLedBrightnessType));
                     OnPropertyChanged(nameof(IsAnyLightbarType));
                     OnPropertyChanged(nameof(IsLightbarReactiveHold));
                     OnPropertyChanged(nameof(IsLightbarStickyHold));
@@ -2103,6 +2104,10 @@ namespace PadForge.ViewModels
         /// <summary>True when Type is PointerModeSet (issue #203 follow-up).</summary>
         [System.Xml.Serialization.XmlIgnore]
         public bool IsPointerModeSetType => _type == MacroActionType.PointerModeSet;
+
+        /// <summary>True when Type is GuideLedBrightness (discussion #209).</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool IsGuideLedBrightnessType => _type == MacroActionType.GuideLedBrightness;
 
         /// <summary>True when Type is any of the lightbar-related action
         /// types — drives the macro editor's grouping into a single
@@ -3472,6 +3477,21 @@ namespace PadForge.ViewModels
         private static readonly string[] PointerModeNames =
             { "Mouse", "FpsMouse", "Mouse43", "Mouse169" };
 
+        // Brightness percent for GuideLedBrightness (discussion #209),
+        // the Guide/Home LED sibling of the fixed lightbar parameters.
+        private int _guideLedPercent = 100;
+        /// <summary>The brightness percent (0-100) the GuideLedBrightness
+        /// action applies. 0 turns the LED off.</summary>
+        public int GuideLedPercent
+        {
+            get => _guideLedPercent;
+            set
+            {
+                if (SetProperty(ref _guideLedPercent, Math.Clamp(value, 0, 100)))
+                    OnPropertyChanged(nameof(DisplayText));
+            }
+        }
+
         /// <summary>Parses <see cref="PointerCycleModesCsv"/> into the
         /// recognized mode names, preserving CSV order.</summary>
         public string[] ParsedPointerCycleModes()
@@ -3657,6 +3677,9 @@ namespace PadForge.ViewModels
                     MacroActionType.PointerModeSet => string.Format(
                         Strings.Instance.MacroAction_PointerModeSet_Format,
                         PointerModeDisplayName(NormalizedPointerSetMode())),
+                    MacroActionType.GuideLedBrightness => string.Format(
+                        Strings.Instance.MacroAction_GuideLedBrightness_Format,
+                        _guideLedPercent),
                     MacroActionType.Rumble => FormatRumbleSummary(),
                     MacroActionType.RumbleStop => Strings.Instance.MacroAction_RumbleStop,
                     MacroActionType.RumbleTrigger => FormatRumbleTriggerSummary(),
@@ -4170,7 +4193,17 @@ namespace PadForge.ViewModels
         /// fixed mode for every IR-capable device on the slot, the direct
         /// sibling of <see cref="LightbarModeSet"/> beside its cycle. At
         /// the tail per the APPEND-ONLY rule above.</summary>
-        PointerModeSet
+        PointerModeSet,
+
+        /// <summary>Sets the Guide/Home button LED brightness (discussion
+        /// #209) for every capable controller on the slot: Xbox One and
+        /// later pads over USB (the \\.\XboxGIP lane) and the 2015 Steam
+        /// Controller (SDL home-LED hint). One transient write per fire,
+        /// nothing persisted, so a pair of macros can flash the LED when a
+        /// mode engages and restore it after. The Lighting tab's Battery
+        /// mode reasserts on its next cadence. At the tail per the
+        /// APPEND-ONLY rule above.</summary>
+        GuideLedBrightness
     }
 
     /// <summary>Target selector for <see cref="MacroActionType.DisconnectController"/>

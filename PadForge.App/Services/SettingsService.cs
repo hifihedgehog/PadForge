@@ -742,6 +742,7 @@ namespace PadForge.Services
                             GyroSensitivity = mapping.GyroSensitivity > 0 ? mapping.GyroSensitivity : 1.0,
                             MouseCursorSensitivity = mapping.MouseCursorSensitivity > 0 ? mapping.MouseCursorSensitivity : 1.0,
                             IrPointerSensitivity = mapping.IrPointerSensitivity > 0 ? mapping.IrPointerSensitivity : 1.0,
+                            Sensitivity = mapping.Sensitivity > 0 ? mapping.Sensitivity : 1.0,
                         });
 
                         // For bipolar axis rows, also encode the Neg
@@ -774,6 +775,7 @@ namespace PadForge.Services
                                 GyroSensitivity = mapping.GyroSensitivity > 0 ? mapping.GyroSensitivity : 1.0,
                                 MouseCursorSensitivity = mapping.MouseCursorSensitivity > 0 ? mapping.MouseCursorSensitivity : 1.0,
                                 IrPointerSensitivity = mapping.IrPointerSensitivity > 0 ? mapping.IrPointerSensitivity : 1.0,
+                                Sensitivity = mapping.Sensitivity > 0 ? mapping.Sensitivity : 1.0,
                             });
                         }
                     }
@@ -2577,6 +2579,9 @@ namespace PadForge.Services
                 CursorPinMode = ad.CursorPinMode,
                 CursorPinX = ad.CursorPinX,
                 CursorPinY = ad.CursorPinY,
+                MouseX = ad.MouseX,
+                MouseY = ad.MouseY,
+                IntervalMs = ad.IntervalMs,
                 CursorClampMode = ad.CursorClampMode,
                 CursorClampInsetX = ad.CursorClampInsetX,
                 CursorClampInsetY = ad.CursorClampInsetY,
@@ -3521,6 +3526,9 @@ namespace PadForge.Services
                 CursorPinMode = a.CursorPinMode,
                 CursorPinX = a.CursorPinX,
                 CursorPinY = a.CursorPinY,
+                MouseX = a.MouseX,
+                MouseY = a.MouseY,
+                IntervalMs = a.IntervalMs,
                 CursorClampMode = a.CursorClampMode,
                 CursorClampInsetX = a.CursorClampInsetX,
                 CursorClampInsetY = a.CursorClampInsetY,
@@ -4905,6 +4913,13 @@ namespace PadForge.Services
         [XmlElement] public int CursorPinX { get; set; }
         /// <summary>Pin target Y in primary-monitor pixels (issue #109).</summary>
         [XmlElement] public int CursorPinY { get; set; }
+
+        /// <summary>MoveMouseToScreenPosition target X in primary-monitor pixels (issue #9).</summary>
+        [XmlElement] public int MouseX { get; set; }
+        /// <summary>MoveMouseToScreenPosition target Y in primary-monitor pixels (issue #9).</summary>
+        [XmlElement] public int MouseY { get; set; }
+        /// <summary>RepeatKeyWhileHeld autofire interval in milliseconds (issue #9).</summary>
+        [XmlElement] public int IntervalMs { get; set; } = 100;
 
         /// <summary>Which axes a MouseLimitRegion action clamps (issue #110).</summary>
         [XmlElement] public ViewModels.CursorClampMode CursorClampMode { get; set; } = ViewModels.CursorClampMode.XAndY;

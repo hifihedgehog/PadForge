@@ -147,6 +147,16 @@ namespace PadForge.Services
             SetCursorPos(centerX ? cx : p.X, centerY ? cy : p.Y);
         }
 
+        /// <summary>Warps the desktop cursor to an absolute primary-monitor pixel
+        /// (issue #9). Fired once per macro press by the MoveMouseToScreenPosition
+        /// action. The coordinate is already clamped on-screen by the action's
+        /// MouseX / MouseY setters, so this is a straight SetCursorPos.</summary>
+        public void MoveCursorTo(int x, int y)
+        {
+            if (_disposed) return;
+            SetCursorPos(x, y);
+        }
+
         /// <summary>Toggles the sticky cursor pin (issue #109). First call engages
         /// the pin at (<paramref name="x"/>, <paramref name="y"/>) for the selected
         /// axes; the next 200 Hz tick starts writing the cursor there before
@@ -218,6 +228,17 @@ namespace PadForge.Services
             if (!TryGetPrimaryRect(out RECT r)) return false;
             x = (r.Left + r.Right) / 2;
             y = (r.Top + r.Bottom) / 2;
+            return true;
+        }
+
+        /// <summary>Current desktop cursor position in physical pixels (issue #9).
+        /// Used by the MoveMouseToScreenPosition editor's "Pick on screen" capture.
+        /// Static so the macro editor can read it without a running engine.</summary>
+        public static bool TryGetCursorPosition(out int x, out int y)
+        {
+            x = 0; y = 0;
+            if (!GetCursorPos(out POINT p)) return false;
+            x = p.X; y = p.Y;
             return true;
         }
 

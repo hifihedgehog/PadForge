@@ -1389,6 +1389,18 @@ public class Strings : INotifyPropertyChanged
     public string MacroAction_MouseFixPosition_Format => Get("MacroAction_MouseFixPosition_Format");
     public string Macro_CursorPinMode_Label => Get("Macro_CursorPinMode_Label");
     public string Macro_CursorPinX_Label => Get("Macro_CursorPinX_Label");
+    public string MacroAction_Type_MoveMouseToScreenPosition => Get("MacroAction_Type_MoveMouseToScreenPosition");
+    public string MacroAction_MoveMouseToScreenPosition_Tooltip => Get("MacroAction_MoveMouseToScreenPosition_Tooltip");
+    public string MacroAction_MoveMouseToScreenPosition_Format => Get("MacroAction_MoveMouseToScreenPosition_Format");
+    public string MacroAction_Type_RepeatKeyWhileHeld => Get("MacroAction_Type_RepeatKeyWhileHeld");
+    public string MacroAction_RepeatKeyWhileHeld_Tooltip => Get("MacroAction_RepeatKeyWhileHeld_Tooltip");
+    public string MacroAction_RepeatKeyWhileHeld_Format => Get("MacroAction_RepeatKeyWhileHeld_Format");
+    public string Macro_MouseX_Label => Get("Macro_MouseX_Label");
+    public string Macro_MouseY_Label => Get("Macro_MouseY_Label");
+    public string Macro_RepeatInterval_Label => Get("Macro_RepeatInterval_Label");
+    public string Macro_PickOnScreen => Get("Macro_PickOnScreen");
+    public string Macro_PickOnScreen_Countdown_Format => Get("Macro_PickOnScreen_Countdown_Format");
+    public string Macro_PickOnScreen_Tooltip => Get("Macro_PickOnScreen_Tooltip");
     public string Macro_CursorPinY_Label => Get("Macro_CursorPinY_Label");
     public string MacroAction_Type_MouseLimitRegion => Get("MacroAction_Type_MouseLimitRegion");
     public string MacroAction_MouseLimitRegion_Tooltip => Get("MacroAction_MouseLimitRegion_Tooltip");
@@ -1423,6 +1435,7 @@ public class Strings : INotifyPropertyChanged
     public string Mapping_TouchpadFingerX_Format => Get("Mapping_TouchpadFingerX_Format");
     public string Mapping_TouchpadFingerY_Format => Get("Mapping_TouchpadFingerY_Format");
     public string Mapping_TouchpadFingerTouch_Format => Get("Mapping_TouchpadFingerTouch_Format");
+    public string Mapping_TouchpadFingerPressure_Format => Get("Mapping_TouchpadFingerPressure_Format");
     public string Mapping_TouchpadClick => Get("Mapping_TouchpadClick");
     public string Mapping_TouchpadGesture_SwipeUp => Get("Mapping_TouchpadGesture_SwipeUp");
     public string Mapping_TouchpadGesture_SwipeDown => Get("Mapping_TouchpadGesture_SwipeDown");
@@ -1870,6 +1883,9 @@ public class Strings : INotifyPropertyChanged
     public string Mapping_MouseMotionX => Get("Mapping_MouseMotionX");
     public string Mapping_MouseMotionY => Get("Mapping_MouseMotionY");
     public string Mapping_IrPointerSensitivity => Get("Mapping_IrPointerSensitivity");
+    public string Mapping_Sensitivity => Get("Mapping_Sensitivity");
+    public string Mapping_Sensitivity_Tooltip => Get("Mapping_Sensitivity_Tooltip");
+    public string Mapping_Gamepad_Format => Get("Mapping_Gamepad_Format");
     public string Mapping_IrPointerSensitivity_Tooltip => Get("Mapping_IrPointerSensitivity_Tooltip");
     public string Mapping_MouseMotionSensitivity_Tooltip => Get("Mapping_MouseMotionSensitivity_Tooltip");
     public string Mapping_BalanceTotalWeight => Get("Mapping_BalanceTotalWeight");

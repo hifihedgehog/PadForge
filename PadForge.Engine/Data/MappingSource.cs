@@ -148,6 +148,20 @@ namespace PadForge.Engine.Data
         /// starts with "IR Pointer ".</summary>
         [XmlAttribute] public double IrPointerSensitivity { get; set; } = 1.0;
 
+        /// <summary>Generic per-source sensitivity multiplier (issue #9).
+        /// Applied to the coerced value of a plain analog source (an
+        /// <c>"Axis N"</c> / <c>"Slider N"</c> read, including the abstract
+        /// Gamepad sticks and triggers that canonicalize to one) during
+        /// bipolar / trigger coercion, then re-clamped to the target range.
+        /// Default 1.0 = unchanged. Values &gt; 1.0 reach full deflection
+        /// with less travel; values &lt; 1.0 need more. The specialized
+        /// families (gyro / mouse cursor / IR pointer) carry their own
+        /// sensitivity above and are unaffected by this knob, so a source
+        /// only ever exposes one sensitivity slider. Rides every copy leg the
+        /// specialized sensitivities ride (memberwise <see cref="Clone"/> plus
+        /// the hand-listed VM / push / reload mirrors).</summary>
+        [XmlAttribute] public double Sensitivity { get; set; } = 1.0;
+
         /// <summary>
         /// v3.3 per-source Do-not-inherit slot. Reserved in the schema for
         /// future per-source / per-zone fall-through suppression

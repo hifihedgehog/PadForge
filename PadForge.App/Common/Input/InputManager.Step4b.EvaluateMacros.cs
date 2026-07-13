@@ -821,7 +821,8 @@ namespace PadForge.Common.Input
         /// <summary>Returns true for action types that run every frame without advancing.</summary>
         private static bool IsContinuousAction(MacroActionType type) =>
             type is MacroActionType.SystemVolume or MacroActionType.AppVolume
-                 or MacroActionType.MouseMove or MacroActionType.MouseScroll;
+                 or MacroActionType.MouseMove or MacroActionType.MouseScroll
+                 or MacroActionType.RepeatKeyWhileHeld;
 
         /// <summary>
         /// Advances and executes the macro's action sequence.
@@ -933,7 +934,30 @@ namespace PadForge.Common.Input
                         SendMouseScrollInput(delta * 120);
                     break;
                 }
+                case MacroActionType.RepeatKeyWhileHeld:
+                    ExecuteRepeatKeyWhileHeld(action);
+                    break;
             }
+        }
+
+        /// <summary>Continuous autofire for RepeatKeyWhileHeld (issue #9): while the
+        /// macro trigger is held this runs every frame, and once the per-action
+        /// interval has elapsed it sends one full KeyDown+KeyUp pulse for each
+        /// parsed key. The timing state lives on the action (default MinValue) so
+        /// the first held frame fires immediately, then firing is rate-limited to
+        /// one pulse per <see cref="MacroAction.IntervalMs"/>.</summary>
+        private static void ExecuteRepeatKeyWhileHeld(MacroAction action)
+        {
+            var keyCodes = action.ParsedKeyCodes;
+            if (keyCodes.Length == 0) return;
+            var now = DateTime.UtcNow;
+            if ((now - action.RepeatKeyLastFireUtc).TotalMilliseconds < action.IntervalMs)
+                return;
+            action.RepeatKeyLastFireUtc = now;
+            for (int k = 0; k < keyCodes.Length; k++)
+                SendKeyInput((ushort)keyCodes[k], keyUp: false);
+            for (int k = keyCodes.Length - 1; k >= 0; k--)
+                SendKeyInput((ushort)keyCodes[k], keyUp: true);
         }
 
         /// <summary>Executes a sequential (non-continuous) action with advance logic.</summary>
@@ -1202,6 +1226,14 @@ namespace PadForge.Common.Input
                     AdvanceAction(macro);
                     break;
                 }
+
+                case MacroActionType.MoveMouseToScreenPosition:
+                    // System-wide cursor warp (#9): one SetCursorPos to the fixed
+                    // target on press. Coord is already clamped on-screen by the
+                    // action's MouseX / MouseY setters.
+                    CursorControlService.Active?.MoveCursorTo(action.MouseX, action.MouseY);
+                    AdvanceAction(macro);
+                    break;
 
                 case MacroActionType.DisconnectController:
                     ExecuteDisconnectControllerAction(macro, action);
@@ -1978,6 +2010,9 @@ namespace PadForge.Common.Input
                         SendMouseScrollInput(delta * 120);
                     break;
                 }
+                case MacroActionType.RepeatKeyWhileHeld:
+                    ExecuteRepeatKeyWhileHeld(action);
+                    break;
             }
         }
 
@@ -2137,6 +2172,12 @@ namespace PadForge.Common.Input
                     AdvanceAction(macro);
                     break;
                 }
+
+                case MacroActionType.MoveMouseToScreenPosition:
+                    // System-wide cursor warp (#9), identical to the Gamepad path.
+                    CursorControlService.Active?.MoveCursorTo(action.MouseX, action.MouseY);
+                    AdvanceAction(macro);
+                    break;
 
                 case MacroActionType.DisconnectController:
                     ExecuteDisconnectControllerAction(macro, action);

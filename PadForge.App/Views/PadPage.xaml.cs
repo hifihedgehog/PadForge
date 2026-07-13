@@ -2993,6 +2993,7 @@ namespace PadForge.Views
                 mi.GyroSensitivity = 1.0;
                 mi.MouseCursorSensitivity = 1.0;
                 mi.IrPointerSensitivity = 1.0;
+                mi.Sensitivity = 1.0;
 
                 if (demote)
                 {

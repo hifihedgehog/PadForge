@@ -4632,6 +4632,7 @@ namespace PadForge.Services
                     mapping.GyroSensitivity = primary.GyroSensitivity > 0 ? primary.GyroSensitivity : 1.0;
                     mapping.MouseCursorSensitivity = primary.MouseCursorSensitivity > 0 ? primary.MouseCursorSensitivity : 1.0;
                     mapping.IrPointerSensitivity = primary.IrPointerSensitivity > 0 ? primary.IrPointerSensitivity : 1.0;
+                    mapping.Sensitivity = primary.Sensitivity > 0 ? primary.Sensitivity : 1.0;
                     mapping.PrimarySourceDeviceGuid = primary.DeviceGuid ?? "";
                     mapping.PrimarySourceDeviceLabel = ResolveDeviceLabel(primary.DeviceGuid);
                     mapping.LoadPrimaryKind(null); // Direct primary, reset the kind holder
@@ -4655,6 +4656,7 @@ namespace PadForge.Services
                     mapping.GyroSensitivity = 1.0;
                     mapping.MouseCursorSensitivity = 1.0;
                     mapping.IrPointerSensitivity = 1.0;
+                    mapping.Sensitivity = 1.0;
                     mapping.LoadPrimaryKind(primaryIsKind ? primarySrc : null);
                 }
 

@@ -444,6 +444,7 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(IsMouseCursorSource));
                     OnPropertyChanged(nameof(IsIrPointerSource));
                     OnPropertyChanged(nameof(IsMouseMotionSource));
+                    OnPropertyChanged(nameof(IsGenericSensitivitySource));
                     OnPropertyChanged(nameof(ShouldShowEmptyDirectionHint));
                     // Toggling the primary source flips the row's
                     // effective source count, which can change whether
@@ -1028,6 +1029,17 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _irPointerSensitivity, Math.Clamp(value, 0.1, 5.0));
         }
 
+        private double _sensitivity = 1.0;
+        /// <summary>Generic per-source sensitivity for the primary source
+        /// (issue #9). Mirrors <see cref="MappingSourceItem.Sensitivity"/>;
+        /// applied only when the primary descriptor is a plain analog source
+        /// (see <see cref="IsGenericSensitivitySource"/>). 1.0 = unchanged.</summary>
+        public double Sensitivity
+        {
+            get => _sensitivity;
+            set => SetProperty(ref _sensitivity, Math.Clamp(value, 0.1, 5.0));
+        }
+
         /// <summary>True when the primary source descriptor is an absolute cursor
         /// axis ("Mouse Position X/Y"). Mirrors
         /// <see cref="MappingSourceItem.IsMouseCursorSource"/>.</summary>
@@ -1065,6 +1077,15 @@ namespace PadForge.ViewModels
         /// primary's gyro-sensitivity slider can be gated identically.</summary>
         public bool IsGyroSource => !string.IsNullOrEmpty(_sourceDescriptor)
             && _sourceDescriptor.StartsWith("Gyro ", StringComparison.Ordinal);
+
+        /// <summary>True when the primary source carries the generic per-source
+        /// Sensitivity knob (issue #9): a plain "Axis N" / "Slider N" read or an
+        /// abstract Gamepad stick / trigger that canonicalizes to one. Mirrors
+        /// <see cref="MappingSourceItem.IsGenericSensitivitySource"/> so the
+        /// primary's slider is gated identically, mutually exclusive with the
+        /// specialized-family predicates above.</summary>
+        public bool IsGenericSensitivitySource =>
+            PadForge.Engine.Common.Mapping.SourceCoercion.IsGenericSensitivityDescriptor(_sourceDescriptor);
 
         /// <summary>
         /// True when the deadzone column is applicable for this row:
@@ -1274,6 +1295,11 @@ namespace PadForge.ViewModels
         /// <summary>Resets the primary source's gyro sensitivity to 1.0.</summary>
         public RelayCommand ResetGyroSensitivityCommand =>
             _resetGyroSensitivityCommand ??= new RelayCommand(() => GyroSensitivity = 1.0);
+
+        private RelayCommand _resetSensitivityCommand;
+        /// <summary>Resets the primary source's generic sensitivity to 1.0 (#9).</summary>
+        public RelayCommand ResetSensitivityCommand =>
+            _resetSensitivityCommand ??= new RelayCommand(() => Sensitivity = 1.0);
 
         /// <summary>Raised when the user clicks Record on this row.</summary>
         public event EventHandler StartRecordingRequested;

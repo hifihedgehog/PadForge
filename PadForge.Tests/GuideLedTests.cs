@@ -264,13 +264,13 @@ namespace PadForge.Tests
         }
 
         [Fact]
-        public void GuideLed_Action_Sits_At_The_Enum_Tail()
+        public void GuideLed_Action_Ordinal_Is_Stable()
         {
-            // APPEND-ONLY enum: the clipboard serializes ints.
-            var values = (MacroActionType[])System.Enum.GetValues(typeof(MacroActionType));
-            int max = 0;
-            foreach (var v in values) max = System.Math.Max(max, (int)v);
-            Assert.Equal((int)MacroActionType.GuideLedBrightness, max);
+            // APPEND-ONLY enum: the clipboard serializes ints, so GuideLedBrightness's
+            // ordinal must never move. It is no longer the tail (issue #9 appended
+            // MoveMouseToScreenPosition and RepeatKeyWhileHeld after it), so pin its
+            // fixed value directly. A mid-enum insertion still trips this.
+            Assert.Equal(32, (int)MacroActionType.GuideLedBrightness);
         }
 
         [Fact]

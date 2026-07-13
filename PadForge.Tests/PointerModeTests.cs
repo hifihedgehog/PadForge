@@ -214,21 +214,19 @@ namespace PadForge.Tests
         }
 
         [Fact]
-        public void PointerMode_Actions_Sit_At_The_Enum_Tail()
+        public void PointerMode_Action_Ordinals_Are_Stable()
         {
             // The macro clipboard serializes MacroActionType numerically, so
             // the enum is APPEND-ONLY: a mid-enum insertion silently retypes
             // every previously copied macro. Caught by adversarial review
             // (2026-07-11) after the first cut inserted PointerModeCycle
-            // beside LightbarModeCycle. PointerModeSet appended later the
-            // same day. GuideLedBrightness (#209) is the tail now; the
-            // pointer members' values must never move again.
-            var values = (MacroActionType[])System.Enum.GetValues(typeof(MacroActionType));
-            int max = 0;
-            foreach (var v in values) max = System.Math.Max(max, (int)v);
-            Assert.Equal((int)MacroActionType.GuideLedBrightness, max);
-            Assert.Equal((int)MacroActionType.PointerModeSet, max - 1);
-            Assert.Equal((int)MacroActionType.PointerModeCycle, max - 2);
+            // beside LightbarModeCycle. PointerModeSet appended later the same
+            // day. Issue #9 appended two more actions after GuideLedBrightness,
+            // so these are no longer the tail; pin their fixed ordinals so a
+            // mid-enum insertion that moved any of them still trips this.
+            Assert.Equal(30, (int)MacroActionType.PointerModeCycle);
+            Assert.Equal(31, (int)MacroActionType.PointerModeSet);
+            Assert.Equal(32, (int)MacroActionType.GuideLedBrightness);
         }
 
         [Theory]

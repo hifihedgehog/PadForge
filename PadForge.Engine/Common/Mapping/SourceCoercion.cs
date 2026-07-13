@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using PadForge.Engine.Data;
 
 namespace PadForge.Engine.Common.Mapping
@@ -599,7 +600,9 @@ namespace PadForge.Engine.Common.Mapping
             if (string.IsNullOrWhiteSpace(descriptor) || descriptor == "0")
                 return SourceType.Unmapped;
 
-            string s = descriptor.Trim();
+            // Fold an abstract "Gamepad ..." alias to its canonical form so
+            // it classifies as the type it resolves to (Button / Axis / POV).
+            string s = CanonicalDescriptor(descriptor);
             if (s.StartsWith("Touchpad ", StringComparison.Ordinal))
             {
                 // "Touchpad N ..." can be a touchpad-button (Click /
@@ -652,6 +655,133 @@ namespace PadForge.Engine.Common.Mapping
                 _        => SourceType.Unmapped,
             };
         }
+
+        // ─── Abstract "Gamepad ..." descriptor family (issue #9) ───────────
+        //
+        // A device-agnostic namespace that resolves through SDL's gamepad
+        // API to whichever physical controller feeds the slot. The wrapper
+        // (SdlDeviceWrapper.GetGamepadState) already normalizes any
+        // recognized pad into the canonical CustomInputState layout. Face
+        // buttons land at Buttons[0..10], paddles at 12..15, sticks/triggers
+        // at Axis[0..5], the D-pad synthesized onto Povs[0]. So the whole
+        // family is a THIN ALIAS layer: each "Gamepad <Name>" descriptor
+        // maps 1:1 onto the existing per-device canonical descriptor and
+        // rides the same coercion path with zero duplicated read logic
+        // (the design the #9 plan calls for, where "gyro aliases route to
+        // the existing coercion"). Gyro and touchpad members of the family use
+        // the existing "Gyro ..." / "Touchpad ..." descriptors directly:
+        // those already resolve per-device through the gamepad API and need
+        // no rename. The Workshop config translator (Phase B) emits these
+        // descriptors with an empty DeviceGuid ("first device on the slot").
+        //
+        // Ordered so the picker can iterate it to emit the family. The
+        // paddle indices follow SDL's gamepad-button enum order exactly as
+        // GetGamepadState writes them (RIGHT_PADDLE1=12, LEFT_PADDLE1=13,
+        // RIGHT_PADDLE2=14, LEFT_PADDLE2=15); the display layer names each
+        // one so the user sees which physical paddle a family index means.
+        public static readonly (string Member, string Canonical)[] GamepadAliasTable =
+        {
+            ("ButtonA",       "Button 0"),
+            ("ButtonB",       "Button 1"),
+            ("ButtonX",       "Button 2"),
+            ("ButtonY",       "Button 3"),
+            ("LeftShoulder",  "Button 4"),
+            ("RightShoulder", "Button 5"),
+            ("ButtonBack",    "Button 6"),
+            ("ButtonStart",   "Button 7"),
+            ("LeftStick",     "Button 8"),   // click
+            ("RightStick",    "Button 9"),   // click
+            ("ButtonGuide",   "Button 10"),
+            ("Paddle1",       "Button 12"),
+            ("Paddle2",       "Button 13"),
+            ("Paddle3",       "Button 14"),
+            ("Paddle4",       "Button 15"),
+            ("DPadUp",        "POV 0 Up"),
+            ("DPadDown",      "POV 0 Down"),
+            ("DPadLeft",      "POV 0 Left"),
+            ("DPadRight",     "POV 0 Right"),
+            ("LeftStickX",    "Axis 0"),
+            ("LeftStickY",    "Axis 1"),
+            ("RightStickX",   "Axis 3"),
+            ("RightStickY",   "Axis 4"),
+            ("LeftTrigger",   "Axis 2"),
+            ("RightTrigger",  "Axis 5"),
+        };
+
+        private static readonly Dictionary<string, string> _gamepadAliasLookup = BuildGamepadAliasLookup();
+
+        private static Dictionary<string, string> BuildGamepadAliasLookup()
+        {
+            var d = new Dictionary<string, string>(StringComparer.Ordinal);
+            foreach (var (member, canonical) in GamepadAliasTable)
+                d[member] = canonical;
+            return d;
+        }
+
+        /// <summary>True for any descriptor in the abstract gamepad family
+        /// (starts with <c>"Gamepad "</c>). The picker gates these on the
+        /// device being a gamepad; here it is a cheap prefix test used by
+        /// the canonicalizer and the display layer.</summary>
+        public static bool IsGamepadAliasDescriptor(string descriptor)
+            => !string.IsNullOrEmpty(descriptor)
+            && descriptor.StartsWith("Gamepad ", StringComparison.Ordinal);
+
+        /// <summary>Translates a <c>"Gamepad &lt;Name&gt;"</c> alias into the
+        /// canonical per-device descriptor it resolves to
+        /// (<c>"Gamepad LeftStickX"</c> → <c>"Axis 0"</c>). Returns
+        /// <c>null</c> for anything that is not a recognized gamepad alias,
+        /// so callers can fall through to the raw descriptor.</summary>
+        public static string ResolveGamepadAlias(string descriptor)
+        {
+            if (string.IsNullOrEmpty(descriptor)) return null;
+            string s = descriptor.Trim();
+            if (!s.StartsWith("Gamepad ", StringComparison.Ordinal)) return null;
+            string member = s.Substring("Gamepad ".Length).Trim();
+            return _gamepadAliasLookup.TryGetValue(member, out string canonical) ? canonical : null;
+        }
+
+        /// <summary>Returns the descriptor the coercion pipeline should read:
+        /// a recognized <c>"Gamepad ..."</c> alias is folded to its canonical
+        /// per-device form so every existing reader / evaluator branch (and
+        /// the Invert-internalization checks that key off <c>"Axis "</c>)
+        /// sees the resolved type; everything else is returned trimmed,
+        /// unchanged. Runs at the top of each reader and every
+        /// descriptor-type inspection so persisted and displayed descriptors
+        /// keep the "Gamepad ..." form while evaluation stays on the proven
+        /// path.</summary>
+        internal static string CanonicalDescriptor(string descriptor)
+        {
+            if (string.IsNullOrEmpty(descriptor)) return "";
+            string s = descriptor.Trim();
+            if (s.StartsWith("Gamepad ", StringComparison.Ordinal))
+            {
+                string canonical = ResolveGamepadAlias(s);
+                if (!string.IsNullOrEmpty(canonical)) return canonical;
+            }
+            return s;
+        }
+
+        /// <summary>True when a source carries the generic per-source
+        /// <see cref="MappingSource.Sensitivity"/> knob: it resolves to a
+        /// plain <c>"Axis N"</c> / <c>"Slider N"</c> read (including the
+        /// abstract Gamepad sticks / triggers that canonicalize to one).
+        /// Drives the picker/VM slider visibility, mirroring
+        /// <see cref="IsGyroDescriptor"/> and the other per-family
+        /// sensitivity predicates. Gyro / mouse / IR / touchpad families
+        /// carry their own specialized sensitivity, so they are excluded
+        /// here (their canonical form does not start with "Axis "/"Slider ").</summary>
+        public static bool IsGenericSensitivityDescriptor(string descriptor)
+        {
+            string c = CanonicalDescriptor(descriptor);
+            return c.StartsWith("Axis ", StringComparison.Ordinal)
+                || c.StartsWith("Slider ", StringComparison.Ordinal);
+        }
+
+        /// <summary>Per-source generic Sensitivity multiplier, guarded like
+        /// the specialized ones (a persisted 0 from a legacy row reads as
+        /// the 1.0 default rather than zeroing the source).</summary>
+        private static float PerSourceSensitivity(MappingSource src)
+            => (float)(src.Sensitivity > 0 ? src.Sensitivity : 1.0);
 
         /// <summary>True for any MIDI-input descriptor
         /// (<c>"Midi Note N"</c> / <c>"Midi CC N"</c> /
@@ -1518,7 +1648,7 @@ namespace PadForge.Engine.Common.Mapping
             // opposing buttons on a centered axis" pattern (Left half
             // never fired because the inner branch returned true and
             // this outer flip turned it back to false).
-            string desc = src.Descriptor ?? "";
+            string desc = CanonicalDescriptor(src.Descriptor);
             if (desc.StartsWith("Axis", System.StringComparison.Ordinal)) return raw;
             // Mouse Motion internalizes Invert the same way (issue #154):
             // with HalfAxis it picks the direction (left/up vs right/down),
@@ -1593,7 +1723,7 @@ namespace PadForge.Engine.Common.Mapping
         private static bool InvertConsumedByHalfAxisRead(MappingSource src)
         {
             if (!src.HalfAxis) return false;
-            string s = (src.Descriptor ?? "").TrimStart();
+            string s = CanonicalDescriptor(src.Descriptor);
             // Mouse Motion's bipolar read consumes Invert the same way when
             // HalfAxis is set (the read selects the direction); the trigger
             // evaluator already exempts the family unconditionally.
@@ -1629,7 +1759,7 @@ namespace PadForge.Engine.Common.Mapping
 
         private static bool ReadAsBool(CustomInputState state, MappingSource src, int globalThresholdPercent, int slotIndex, string deviceGuid)
         {
-            string s = (src.Descriptor ?? "").Trim();
+            string s = CanonicalDescriptor(src.Descriptor);
             if (string.IsNullOrEmpty(s)) return false;
 
             // Touchpad-gesture descriptors route through the per-tick
@@ -1810,7 +1940,7 @@ namespace PadForge.Engine.Common.Mapping
 
         private static float ReadAsBipolar(CustomInputState state, MappingSource src, int slotIndex, bool relativeTouchpad, string deviceGuid)
         {
-            string s = (src.Descriptor ?? "").Trim();
+            string s = CanonicalDescriptor(src.Descriptor);
             if (string.IsNullOrEmpty(s)) return 0f;
 
             // Touchpad-gesture sources: continuous axes (PinchAxis,
@@ -1930,6 +2060,7 @@ namespace PadForge.Engine.Common.Mapping
             if (!TryParseTypeIndex(s, out var t, out int idx, out string povDir))
                 return 0f;
 
+            float axisValue;
             switch (t)
             {
                 case SourceType.Button:
@@ -1952,16 +2083,20 @@ namespace PadForge.Engine.Common.Mapping
                         // InvertConsumedByHalfAxisRead in the evaluators.
                         int delta = av - 32768;
                         if (src.Bidirectional)
-                            return Math.Min(1f, Math.Abs(delta) / 32767f);
-                        if (src.Invert)
-                            return delta < 0 ? Math.Min(1f, -delta / 32767f) : 0f;
-                        return delta > 0 ? Math.Min(1f, delta / 32767f) : 0f;
+                            axisValue = Math.Min(1f, Math.Abs(delta) / 32767f);
+                        else if (src.Invert)
+                            axisValue = delta < 0 ? Math.Min(1f, -delta / 32767f) : 0f;
+                        else
+                            axisValue = delta > 0 ? Math.Min(1f, delta / 32767f) : 0f;
                     }
-                    return Math.Max(-1f, Math.Min(1f, (av - 32768) / 32767f));
+                    else
+                        axisValue = Math.Max(-1f, Math.Min(1f, (av - 32768) / 32767f));
+                    break;
 
                 case SourceType.Slider:
                     if (idx < 0 || idx >= CustomInputState.MaxSliders) return 0f;
-                    return Math.Max(0f, Math.Min(1f, state.Sliders[idx] / 65535f)) * 2f - 1f;
+                    axisValue = Math.Max(0f, Math.Min(1f, state.Sliders[idx] / 65535f)) * 2f - 1f;
+                    break;
 
                 case SourceType.PovDirection:
                     if (idx < 0 || idx >= CustomInputState.MaxPovs) return 0f;
@@ -1970,11 +2105,22 @@ namespace PadForge.Engine.Common.Mapping
                 default:
                     return 0f;
             }
+
+            // Generic per-source Sensitivity (issue #9): scale the plain
+            // analog generic sources (Axis / Slider, including the abstract
+            // Gamepad sticks and triggers that canonicalize to them), then
+            // re-clamp to the bipolar range. The specialized families (gyro /
+            // mouse / IR / touchpad) applied their own sensitivity above and
+            // return before reaching here, so there is no double-scaling.
+            axisValue *= PerSourceSensitivity(src);
+            if (axisValue < -1f) axisValue = -1f;
+            else if (axisValue > 1f) axisValue = 1f;
+            return axisValue;
         }
 
         private static float ReadAsUnipolar(CustomInputState state, MappingSource src, int slotIndex, string deviceGuid)
         {
-            string s = (src.Descriptor ?? "").Trim();
+            string s = CanonicalDescriptor(src.Descriptor);
             if (string.IsNullOrEmpty(s)) return 0f;
 
             // Touchpad-gesture sources: continuous-axis variants use
@@ -2070,6 +2216,7 @@ namespace PadForge.Engine.Common.Mapping
             if (!TryParseTypeIndex(s, out var t, out int idx, out string povDir))
                 return 0f;
 
+            float axisValue;
             switch (t)
             {
                 case SourceType.Button:
@@ -2092,21 +2239,27 @@ namespace PadForge.Engine.Common.Mapping
                         // InvertConsumedByHalfAxisRead in the evaluators.
                         int delta = av - 32768;
                         if (src.Bidirectional)
-                            return Math.Min(1f, Math.Abs(delta) / 32767f);
-                        if (src.Invert)
-                            return delta < 0 ? Math.Min(1f, -delta / 32767f) : 0f;
-                        return delta > 0 ? Math.Min(1f, delta / 32767f) : 0f;
+                            axisValue = Math.Min(1f, Math.Abs(delta) / 32767f);
+                        else if (src.Invert)
+                            axisValue = delta < 0 ? Math.Min(1f, -delta / 32767f) : 0f;
+                        else
+                            axisValue = delta > 0 ? Math.Min(1f, delta / 32767f) : 0f;
                     }
-                    // Trigger axes are unipolar 0..65535 with 0 = released
-                    // (matches the legacy MapToTriggerSingle clamp). Stick
-                    // axes mapped to triggers without HalfAxis sit at ~50 %
-                    // at rest, same as legacy. Users who want a clean
-                    // stick-to-trigger map opt in via HalfAxis.
-                    return Math.Max(0f, Math.Min(1f, av / 65535f));
+                    else
+                    {
+                        // Trigger axes are unipolar 0..65535 with 0 = released
+                        // (matches the legacy MapToTriggerSingle clamp). Stick
+                        // axes mapped to triggers without HalfAxis sit at ~50 %
+                        // at rest, same as legacy. Users who want a clean
+                        // stick-to-trigger map opt in via HalfAxis.
+                        axisValue = Math.Max(0f, Math.Min(1f, av / 65535f));
+                    }
+                    break;
 
                 case SourceType.Slider:
                     if (idx < 0 || idx >= CustomInputState.MaxSliders) return 0f;
-                    return Math.Max(0f, Math.Min(1f, state.Sliders[idx] / 65535f));
+                    axisValue = Math.Max(0f, Math.Min(1f, state.Sliders[idx] / 65535f));
+                    break;
 
                 case SourceType.PovDirection:
                     if (idx < 0 || idx >= CustomInputState.MaxPovs) return 0f;
@@ -2115,6 +2268,16 @@ namespace PadForge.Engine.Common.Mapping
                 default:
                     return 0f;
             }
+
+            // Generic per-source Sensitivity (issue #9): scale the plain
+            // analog generic sources (Axis / Slider, including the abstract
+            // Gamepad sticks and triggers that canonicalize to them), then
+            // re-clamp to the unipolar range. Specialized families returned
+            // above with their own sensitivity, so there is no double-scaling.
+            axisValue *= PerSourceSensitivity(src);
+            if (axisValue < 0f) axisValue = 0f;
+            else if (axisValue > 1f) axisValue = 1f;
+            return axisValue;
         }
 
         // ─── Descriptor helpers ────────────────────────────────────────

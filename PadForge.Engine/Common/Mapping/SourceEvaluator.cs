@@ -262,20 +262,20 @@ namespace PadForge.Engine.Common.Mapping
             }
         }
 
-        // Builds a shallow copy of <paramref name="src"/> with Kind forced
-        // to Direct and the specified Invert. Lets InvertOnHold reuse
-        // SourceCoercion's coercion table without mutating the original.
+        // Builds a copy of <paramref name="src"/> with Kind forced to Direct and
+        // the specified Invert. Lets InvertOnHold reuse SourceCoercion's coercion
+        // table without mutating the original. Uses the full memberwise
+        // MappingSource.Clone so no per-source field (the DeadZone, the gyro /
+        // mouse / IR sensitivities, and the #9 generic Sensitivity) silently drops
+        // for an axis inner source. Kind = Direct means the copied Param* fields
+        // are never read.
         private static MappingSource CloneAsDirect(MappingSource src, bool invertOverride)
-            => new MappingSource
-            {
-                Kind = "Direct",
-                DeviceGuid = src.DeviceGuid,
-                Descriptor = src.Descriptor,
-                Invert = invertOverride,
-                HalfAxis = src.HalfAxis,
-                Bidirectional = src.Bidirectional,
-                DeadZone = src.DeadZone,
-            };
+        {
+            var clone = src.Clone();
+            clone.Kind = "Direct";
+            clone.Invert = invertOverride;
+            return clone;
+        }
 
         // Mirrors SourceKindRuntime's button-like reader so the
         // InvertOnHold modifier-button check stays consistent with

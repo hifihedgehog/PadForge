@@ -261,6 +261,7 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(IsMouseCursorSource));
                     OnPropertyChanged(nameof(IsIrPointerSource));
                     OnPropertyChanged(nameof(IsMouseMotionSource));
+                    OnPropertyChanged(nameof(IsGenericSensitivitySource));
                 }
             }
         }
@@ -290,6 +291,15 @@ namespace PadForge.ViewModels
         /// family's read in SourceCoercion).</summary>
         public bool IsMouseMotionSource => _descriptor != null
             && _descriptor.StartsWith("Mouse Motion ", StringComparison.Ordinal);
+
+        /// <summary>True when this source carries the generic per-source
+        /// Sensitivity knob (issue #9): a plain "Axis N" / "Slider N" read, or
+        /// an abstract Gamepad stick / trigger that canonicalizes to one.
+        /// Drives that slider's visibility, mutually exclusive with the gyro /
+        /// mouse / IR predicates above.</summary>
+        public bool IsGenericSensitivitySource =>
+            PadForge.Engine.Common.Mapping.SourceCoercion.IsGenericSensitivityDescriptor(_descriptor);
+
         public bool Invert
         {
             get => _invert;
@@ -515,6 +525,17 @@ namespace PadForge.ViewModels
         {
             get => _irPointerSensitivity;
             set => SetProperty(ref _irPointerSensitivity, System.Math.Clamp(value, 0.1, 5.0));
+        }
+
+        private double _sensitivity = 1.0;
+        /// <summary>Generic per-source sensitivity (issue #9). Only applied for
+        /// plain analog sources (see <see cref="IsGenericSensitivitySource"/>):
+        /// "Axis N" / "Slider N" and the abstract Gamepad sticks / triggers that
+        /// canonicalize to them. Default 1.0 = unchanged.</summary>
+        public double Sensitivity
+        {
+            get => _sensitivity;
+            set => SetProperty(ref _sensitivity, System.Math.Clamp(value, 0.1, 5.0));
         }
         public bool ParamSticky { get => _paramSticky; set => SetProperty(ref _paramSticky, value); }
         public double ParamMin { get => _paramMin; set => SetProperty(ref _paramMin, value); }
@@ -790,6 +811,10 @@ namespace PadForge.ViewModels
         public RelayCommand ResetGyroSensitivityCommand =>
             _resetGyroSensitivityCommand ??= new RelayCommand(() => GyroSensitivity = 1.0);
 
+        private RelayCommand _resetSensitivityCommand;
+        public RelayCommand ResetSensitivityCommand =>
+            _resetSensitivityCommand ??= new RelayCommand(() => Sensitivity = 1.0);
+
         /// <summary>Builds a domain <see cref="Engine.Data.MappingSource"/>
         /// from this VM's current values. Used by the Save pipeline.
         /// N/A by design: the steering Param* set (ParamYDescriptor,
@@ -820,6 +845,7 @@ namespace PadForge.ViewModels
             GyroSensitivity = _gyroSensitivity,
             MouseCursorSensitivity = _mouseCursorSensitivity,
             IrPointerSensitivity = _irPointerSensitivity,
+            Sensitivity = _sensitivity,
             ParamAttackTime = _paramAttackTime,
             ParamReleaseTime = _paramReleaseTime,
             ParamAutocenter = _paramAutocenter,
@@ -850,6 +876,7 @@ namespace PadForge.ViewModels
                 GyroSensitivity = src.GyroSensitivity > 0 ? src.GyroSensitivity : 1.0,
                 MouseCursorSensitivity = src.MouseCursorSensitivity > 0 ? src.MouseCursorSensitivity : 1.0,
                 IrPointerSensitivity = src.IrPointerSensitivity > 0 ? src.IrPointerSensitivity : 1.0,
+                Sensitivity = src.Sensitivity > 0 ? src.Sensitivity : 1.0,
                 ParamAttackTime = src.ParamAttackTime,
                 ParamReleaseTime = src.ParamReleaseTime,
                 ParamAutocenter = src.ParamAutocenter,

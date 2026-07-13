@@ -38,6 +38,18 @@ namespace PadForge.Common
                 return;
             }
 
+            // Abstract "Gamepad ..." family (issue #9): device-agnostic
+            // semantic names that resolve without device-object metadata, so
+            // they sit above the raw-numbered / DeviceObjects paths.
+            {
+                string gamepadText = ResolveGamepadText(mapping.SourceDescriptor);
+                if (gamepadText != null)
+                {
+                    mapping.SetResolvedSourceText(gamepadText);
+                    return;
+                }
+            }
+
             if (ud != null && UseRawNumberedNaming(ud))
             {
                 string resolved = ResolveRawNumberedText(mapping.SourceDescriptor);
@@ -183,9 +195,10 @@ namespace PadForge.Common
                     && int.TryParse(tp[3], out int fingerIdx))
                 {
                     string fmt =
-                          tp[4].Equals("X",    System.StringComparison.OrdinalIgnoreCase) ? si.Mapping_TouchpadFingerX_Format
-                        : tp[4].Equals("Y",    System.StringComparison.OrdinalIgnoreCase) ? si.Mapping_TouchpadFingerY_Format
-                        : tp[4].Equals("Down", System.StringComparison.OrdinalIgnoreCase) ? si.Mapping_TouchpadFingerTouch_Format
+                          tp[4].Equals("X",        System.StringComparison.OrdinalIgnoreCase) ? si.Mapping_TouchpadFingerX_Format
+                        : tp[4].Equals("Y",        System.StringComparison.OrdinalIgnoreCase) ? si.Mapping_TouchpadFingerY_Format
+                        : tp[4].Equals("Down",     System.StringComparison.OrdinalIgnoreCase) ? si.Mapping_TouchpadFingerTouch_Format
+                        : tp[4].Equals("Pressure", System.StringComparison.OrdinalIgnoreCase) ? si.Mapping_TouchpadFingerPressure_Format
                         : null;
                     if (fmt == null) return null;
                     return prefix + string.Format(fmt, padIdx + 1, fingerIdx + 1);
@@ -264,6 +277,14 @@ namespace PadForge.Common
                 return prefix + string.Format(si.Mapping_MouseGesture_Format, mgNames[mgBtn], word);
             }
 
+            // Abstract "Gamepad ..." family (issue #9) → localized display.
+            // Device-agnostic, so it resolves without device-object metadata.
+            if (s.StartsWith("Gamepad ", System.StringComparison.Ordinal))
+            {
+                string gp = ResolveGamepadText(s);
+                return gp == null ? null : prefix + gp;
+            }
+
             string[] parts = s.Split(' ', System.StringSplitOptions.RemoveEmptyEntries);
             if (parts.Length < 2 || !int.TryParse(parts[1], out int index))
                 return null;
@@ -307,6 +328,63 @@ namespace PadForge.Common
                 }
             }
             return null;
+        }
+
+        /// <summary>Friendly member label for the abstract gamepad family
+        /// (the token after <c>"Gamepad "</c>). Reuses the existing DevObj_*
+        /// labels so the family reads the same as the raw per-device entries,
+        /// only prefixed by "Gamepad". Paddle members carry SDL's physical
+        /// name (Right/Left Paddle 1/2) so the user sees which paddle a
+        /// family index means. Returns null for an unrecognized member.</summary>
+        private static string GamepadMemberDisplay(string member)
+        {
+            var si = Strings.Instance;
+            switch (member)
+            {
+                case "ButtonA": return "A";
+                case "ButtonB": return "B";
+                case "ButtonX": return "X";
+                case "ButtonY": return "Y";
+                case "LeftShoulder":  return si.DevObj_LeftShoulder;
+                case "RightShoulder": return si.DevObj_RightShoulder;
+                case "ButtonBack":    return si.DevObj_Back;
+                case "ButtonStart":   return si.DevObj_Start;
+                case "LeftStick":     return si.DevObj_LeftStickButton;
+                case "RightStick":    return si.DevObj_RightStickButton;
+                case "ButtonGuide":   return si.DevObj_Guide;
+                case "Paddle1": return si.DevObj_RightPaddle1;
+                case "Paddle2": return si.DevObj_LeftPaddle1;
+                case "Paddle3": return si.DevObj_RightPaddle2;
+                case "Paddle4": return si.DevObj_LeftPaddle2;
+                case "DPadUp":    return $"{si.DevObj_DPad} {ResolvePovDirection("Up")}";
+                case "DPadDown":  return $"{si.DevObj_DPad} {ResolvePovDirection("Down")}";
+                case "DPadLeft":  return $"{si.DevObj_DPad} {ResolvePovDirection("Left")}";
+                case "DPadRight": return $"{si.DevObj_DPad} {ResolvePovDirection("Right")}";
+                case "LeftStickX":   return si.DevObj_LeftStickX;
+                case "LeftStickY":   return si.DevObj_LeftStickY;
+                case "RightStickX":  return si.DevObj_RightStickX;
+                case "RightStickY":  return si.DevObj_RightStickY;
+                case "LeftTrigger":  return si.DevObj_LeftTrigger;
+                case "RightTrigger": return si.DevObj_RightTrigger;
+                default: return null;
+            }
+        }
+
+        /// <summary>Reverse-resolves a <c>"Gamepad ..."</c> descriptor to its
+        /// localized display (<c>"Gamepad Left Stick X"</c>). Returns null when
+        /// the descriptor is not a recognized gamepad-family member. Shared by
+        /// the row resolver, the neg/extra resolver, and the picker builder so
+        /// all three stay in lockstep with SourceCoercion.GamepadAliasTable.</summary>
+        internal static string ResolveGamepadText(string descriptor)
+        {
+            if (string.IsNullOrEmpty(descriptor)
+                || !descriptor.StartsWith("Gamepad ", System.StringComparison.Ordinal))
+                return null;
+            string member = descriptor.Substring("Gamepad ".Length).Trim();
+            string memberDisplay = GamepadMemberDisplay(member);
+            return memberDisplay == null
+                ? null
+                : string.Format(Strings.Instance.Mapping_Gamepad_Format, memberDisplay);
         }
 
         /// <summary>
@@ -787,6 +865,29 @@ namespace PadForge.Common
                 }
             }
 
+            // Abstract "Gamepad ..." family (issue #9). Device-agnostic
+            // semantic names for the standardized gamepad inputs, gated on
+            // the device being a gamepad read through SDL's normalized
+            // mapping (not a force-raw device, where "Gamepad ButtonA" would
+            // read the raw joystick button instead of A). Each descriptor
+            // canonicalizes in SourceCoercion to the per-device Button/Axis/
+            // POV read. Gyro and touchpad members of the family reuse the
+            // existing "Gyro ..." / "Touchpad ..." entries below, so they are
+            // not duplicated here.
+            if (ud.CapType == PadForge.Engine.InputDeviceType.Gamepad && !UseRawNumberedNaming(ud))
+            {
+                foreach (var (member, _) in PadForge.Engine.Common.Mapping.SourceCoercion.GamepadAliasTable)
+                {
+                    string memberDisplay = GamepadMemberDisplay(member);
+                    if (memberDisplay == null) continue;
+                    list.Add(new InputChoice
+                    {
+                        Descriptor = "Gamepad " + member,
+                        DisplayName = string.Format(si.Mapping_Gamepad_Format, memberDisplay)
+                    });
+                }
+            }
+
             // Touchpad raw sources (per-finger axes + click) for devices
             // with HasTouchpad or Touchpad type. Distinct from the
             // higher-level gesture entries below — these are direct
@@ -852,9 +953,10 @@ namespace PadForge.Common
                     int fingers = FingerCount(p);
                     for (int f = 0; f < fingers; f++)
                     {
-                        list.Add(new InputChoice { Descriptor = $"Touchpad {p} Finger {f} X",    DisplayName = string.Format(si.Mapping_TouchpadFingerX_Format,    p + 1, f + 1) });
-                        list.Add(new InputChoice { Descriptor = $"Touchpad {p} Finger {f} Y",    DisplayName = string.Format(si.Mapping_TouchpadFingerY_Format,    p + 1, f + 1) });
-                        list.Add(new InputChoice { Descriptor = $"Touchpad {p} Finger {f} Down", DisplayName = string.Format(si.Mapping_TouchpadFingerTouch_Format, p + 1, f + 1) });
+                        list.Add(new InputChoice { Descriptor = $"Touchpad {p} Finger {f} X",        DisplayName = string.Format(si.Mapping_TouchpadFingerX_Format,        p + 1, f + 1) });
+                        list.Add(new InputChoice { Descriptor = $"Touchpad {p} Finger {f} Y",        DisplayName = string.Format(si.Mapping_TouchpadFingerY_Format,        p + 1, f + 1) });
+                        list.Add(new InputChoice { Descriptor = $"Touchpad {p} Finger {f} Down",     DisplayName = string.Format(si.Mapping_TouchpadFingerTouch_Format,    p + 1, f + 1) });
+                        list.Add(new InputChoice { Descriptor = $"Touchpad {p} Finger {f} Pressure", DisplayName = string.Format(si.Mapping_TouchpadFingerPressure_Format, p + 1, f + 1) });
                     }
                 }
 

@@ -540,6 +540,9 @@ PadForge stands on these projects. Please consider supporting them directly.
 | [SteamControllerSinger](https://github.com/Roboron3042/SteamControllerSinger) | Steam Controller (2015) haptic feature-report layout and note-period math, by Pila and Roboron3042 | BSD 3-Clause |
 | [SteamHapticsSinger](https://github.com/CrazyCritic89/SteamHapticsSinger) | Steam Controller 2026 and Steam Deck LFO-tone haptic report layout and gain tables | BSD 3-Clause |
 | [hitboxer](https://github.com/valignatev/hitboxer) | SOCD-cleaning semantics reference for the Keyboard & Mouse Snap Tap modes, by valignatev | MIT |
+| [SteamKit2](https://github.com/SteamRE/SteamKit) | .NET Steam network client the Steam Workshop controller-config import uses. Connects over an anonymous session, no Steam account needed | LGPL-2.1 |
+| [protobuf-net](https://github.com/protobuf-net/protobuf-net) | Protocol Buffers serializer SteamKit2 uses for the Steam wire protocol, by Marc Gravell | Apache-2.0 |
+| [ZstdSharp](https://github.com/oleg-st/ZstdSharp) | Zstandard decompression SteamKit2 uses for Steam depot chunks. A C# port of the zstd compression library, by Oleg Stepanischev | MIT |
 | [Dolphin](https://github.com/dolphin-emu/dolphin) | Wii controller documentation: the Bluetooth pairing ceremony's Win32 call order and the Wii Remote speaker's Yamaha ADPCM constants. Documentation only, no GPL code ships | GPL-2.0 |
 | [DS4Windows](https://github.com/Ryochan7/DS4Windows) | DualShock behavior documentation: idle-disconnect slop, touchpad boundaries, battery decode. Documentation only, no GPL code ships | GPL-3.0 |
 | [xone](https://github.com/medusalix/xone) / [xow](https://github.com/medusalix/xow) | GIP LED command documentation corroborating xbledctl. Documentation only, no GPL code ships | GPL-2.0 |
@@ -592,6 +595,9 @@ This project is licensed under **CC BY-NC-SA 4.0** (Creative Commons Attribution
 - **JoyShockMapper** and **GamepadMotionHelpers** are licensed under the MIT License. By JibbSmart (Julian Smart) and Electronicks. PadForge's winding-angle steering and player/world-space gyro conversions are C# ports.
 - **SteamControllerSinger** (by Pila, Roboron3042) and **SteamHapticsSinger** (by Pila, Crazy, AAGaming) are licensed under the BSD 3-Clause License. PadForge's Steam Controller haptic tone encoder reproduces their report layouts and timing math in original C#.
 - **hitboxer** is licensed under the MIT License. By valignatev. The SOCD-cleaning mode semantics reference. PadForge's state machine is original C#.
+- **SteamKit2** is licensed under the LGPL-2.1-only. Copyright (C) 2018 Ryan Stecker & SteamRE Team. .NET Steam network client for the Steam Workshop controller-config import, shipped unmodified inside the executable. Source: [github.com/SteamRE/SteamKit](https://github.com/SteamRE/SteamKit). Full license text in [LICENSE](LICENSE).
+- **protobuf-net** is licensed under the Apache License 2.0. Copyright 2008 onwards Marc Gravell. Protocol Buffers serializer SteamKit2 uses for the Steam wire protocol. Full license text in [LICENSE](LICENSE).
+- **ZstdSharp** is licensed under the MIT License. Copyright (c) 2021 Oleg Stepanischev. Zstandard decompression SteamKit2 uses for Steam depot chunks, a C# port of the zstd compression library.
 - **Wii and Xbox protocol documentation** also drew on [Dolphin](https://github.com/dolphin-emu/dolphin) (GPL-2.0), [DS4Windows](https://github.com/Ryochan7/DS4Windows) (GPL-3.0), [xone](https://github.com/medusalix/xone) and [xow](https://github.com/medusalix/xow) (GPL-2.0) as documentation only. PadForge's implementations are original C# and contain no GPL code.
 - **WiimoteLib** (Ms-PL, by Brian Peek) and **joycon-singer** (no license published, by Sergey004) served as behavior documentation for the Wii IR camera, Balance Board, and Joy-Con HD rumble. Facts only, no code copied.
 See [LICENSE](LICENSE) for the full license text.

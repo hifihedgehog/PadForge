@@ -2360,7 +2360,7 @@
   <data name="Mapping_Sensitivity_Tooltip" xml:space="preserve"><value>针对普通轴、滑块或手柄摇杆/扳机的按源灵敏度。1.0 表示输入保持不变。大于 1.0 时用更小的行程即可达到满偏。小于 1.0 时需要更大的行程。</value></data>
   <data name="Mapping_Gamepad_Format" xml:space="preserve"><value>游戏手柄 {0}</value></data>
   <data name="Settings_CommunityConfigs" xml:space="preserve"><value>社区配置</value></data>
-  <data name="Settings_CommunityConfigsDesc" xml:space="preserve"><value>浏览社区制作的 Steam Input 控制器配置，并将其转换为 PadForge 配置文件。PadForge 仅在您搜索和打开配置时才直接连接 Steam（store.steampowered.com、api.steampowered.com、steamcommunity.com、cdn.steamusercontent.com、cdn.cloudflare.steamstatic.com）。发送的数据仅有搜索文本和所选配置。无遥测、无第三方服务、无需登录 Steam。</value></data>
+  <data name="Settings_CommunityConfigsDesc" xml:space="preserve"><value>浏览社区制作的 Steam Input 控制器配置，并将其转换为 PadForge 配置文件。PadForge 仅在您搜索和打开配置时才直接连接 Steam（store.steampowered.com、api.steampowered.com、steamcommunity.com、cdn.steamusercontent.com、cdn.cloudflare.steamstatic.com、avatars.fastly.steamstatic.com）。发送的数据仅有搜索文本和所选配置。无遥测、无第三方服务、无需登录 Steam。</value></data>
   <data name="Settings_EnableCommunityConfigs" xml:space="preserve"><value>启用社区配置</value></data>
   <data name="Settings_ShowLegacyConfigs" xml:space="preserve"><value>显示旧版创意工坊配置</value></data>
   <data name="Settings_ShowLegacyConfigsTooltip" xml:space="preserve"><value>2017 年之前的配置在 Steam CDN 上没有可下载的文件。PadForge 会以 Legacy 徽章列出它们，并改为在 Steam 创意工坊中打开。</value></data>
@@ -2448,6 +2448,9 @@
   <data name="Workshop_Tr_ClickGateDropped" xml:space="preserve"><value>已丢弃 requires_click 条件</value></data>
   <data name="Workshop_Tr_RowCapExceeded" xml:space="preserve"><value>{0} 槽位的行数已超出上限</value></data>
   <data name="Workshop_Tr_PresetHasNoActivator" xml:space="preserve"><value>没有绑定切换到预设 {0}</value></data>
+  <data name="Workshop_Tr_AutomapAlsoActive" xml:space="preserve"><value>设备的自动映射仍会将 {0} 路由到 {1}</value></data>
+  <data name="Workshop_Tr_ShiftLayerEmpty" xml:space="preserve"><value>层切换已丢弃（{0} 未产生任何转换）</value></data>
+  <data name="Workshop_Tr_AbsoluteMouseApproximated" xml:space="preserve"><value>指针绝对定位近似为相对鼠标移动</value></data>
   <data name="Status_WorkshopUpdatesOptInRequired" xml:space="preserve"><value>请先启用社区配置再检查更新</value></data>
   <data name="Status_WorkshopNoImportedProfiles" xml:space="preserve"><value>尚未从 Steam 创意工坊导入任何配置文件</value></data>
   <data name="Status_WorkshopCheckingUpdates" xml:space="preserve"><value>正在检查 Steam 创意工坊更新…</value></data>

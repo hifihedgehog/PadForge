@@ -102,7 +102,7 @@ kbm activators: 3
   Hold Layer_708227783_0_MS_left_trackpad_6 | Gamepad Paddle1 | inherit | name=left_trackpad shift
   Cycle Layer_708227783_1 cycle=Layer_708227783_1+Base | Gamepad ButtonY | name=Preset_1000001 / Default
 macros: 0
-report: v1 rows:x0+k46 macros:0 layers:3 clean:48 partial:6 skipped:23 errors:0
+report: v1 rows:x0+k46 macros:0 layers:3 clean:48 partial:10 skipped:23 errors:0
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_A/Full_Press => KbmKey20 <- Gamepad ButtonA
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_B/Full_Press => KbmKey4F <- Gamepad ButtonB
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_X/Full_Press => KbmKey1B <- Gamepad ButtonX
@@ -110,6 +110,7 @@ report: v1 rows:x0+k46 macros:0 layers:3 clean:48 partial:6 skipped:23 errors:0
   Clean RowEmitted @ Default/button_diamond/group 11 (four_buttons)/button_B/Full_Press => KbmKey72 <- Gamepad ButtonB
   Clean RowEmitted @ Default/button_diamond/group 11 (four_buttons)/button_X/Full_Press => KbmKey74 <- Gamepad ButtonX
   Clean RowEmitted @ Default/button_diamond/group 11 (four_buttons)/button_Y/Full_Press => KbmKey73 <- Gamepad ButtonY
+  Partial AbsoluteMouseApproximated @ Default/gyro/group 10 (absolute_mouse)
   Clean RowEmitted @ Default/gyro/group 10 (absolute_mouse) => KbmMouseX <- Gyro Yaw
   Clean RowEmitted @ Default/gyro/group 10 (absolute_mouse) => KbmMouseY <- Gyro Pitch
   Skipped SteamSystemAction(SHOW_KEYBOARD) @ Default/joystick/group 3 (dpad)/click/Full_Press :: controller_action SHOW_KEYBOARD
@@ -125,6 +126,7 @@ report: v1 rows:x0+k46 macros:0 layers:3 clean:48 partial:6 skipped:23 errors:0
   Clean RowEmitted @ Default/left_trackpad/group 6 (scrollwheel)/click/Full_Press => KbmMBtn2 <- Touchpad 0 Click
   Skipped TouchMenuNeedsOverlay(8) @ Default/left_trackpad/group 9 (touch_menu)
   Clean RowEmitted @ Default/left_trigger/group 4 (trigger)/edge/Full_Press => KbmMBtn1 <- Gamepad LeftTrigger (upper half)
+  Partial AbsoluteMouseApproximated @ Default/right_trackpad/group 2 (absolute_mouse)
   Partial TouchpadTuningNotPerRow(91) @ Default/right_trackpad/group 2 (absolute_mouse) => KbmMouseX <- Touchpad 1 Finger 0 X
   Partial TouchpadTuningNotPerRow(91) @ Default/right_trackpad/group 2 (absolute_mouse) => KbmMouseY <- Touchpad 1 Finger 0 Y
   Clean RowEmitted @ Default/right_trackpad/group 2 (absolute_mouse)/click/Full_Press => KbmKey70 <- Touchpad 1 Click
@@ -143,6 +145,7 @@ report: v1 rows:x0+k46 macros:0 layers:3 clean:48 partial:6 skipped:23 errors:0
   Clean RowEmitted @ Preset_1000001/button_diamond/group 26 (four_buttons)/button_B/Full_Press => KbmKey72 <- Gamepad ButtonB
   Clean RowEmitted @ Preset_1000001/button_diamond/group 26 (four_buttons)/button_X/Full_Press => KbmKey74 <- Gamepad ButtonX
   Clean RowEmitted @ Preset_1000001/button_diamond/group 26 (four_buttons)/button_Y/Full_Press => KbmKey73 <- Gamepad ButtonY
+  Partial AbsoluteMouseApproximated @ Preset_1000001/gyro/group 31 (absolute_mouse)
   Clean RowEmitted @ Preset_1000001/gyro/group 31 (absolute_mouse) => KbmMouseX <- Gyro Yaw
   Clean RowEmitted @ Preset_1000001/gyro/group 31 (absolute_mouse) => KbmMouseY <- Gyro Pitch
   Skipped SteamSystemAction(SHOW_KEYBOARD) @ Preset_1000001/joystick/group 23 (dpad)/click/Full_Press :: controller_action SHOW_KEYBOARD
@@ -163,6 +166,7 @@ report: v1 rows:x0+k46 macros:0 layers:3 clean:48 partial:6 skipped:23 errors:0
   Skipped UnknownPhysicalInput(LeftTrackpad, button_X) @ Preset_1000001/left_trackpad/group 32 (four_buttons)/button_X :: key_press C, Fallback Line Order
   Skipped UnknownPhysicalInput(LeftTrackpad, button_Y) @ Preset_1000001/left_trackpad/group 32 (four_buttons)/button_Y :: key_press V, Garrison Order
   Clean RowEmitted @ Preset_1000001/left_trigger/group 27 (trigger)/edge/Full_Press => KbmMBtn1 <- Gamepad LeftTrigger (upper half)
+  Partial AbsoluteMouseApproximated @ Preset_1000001/right_trackpad/group 19 (absolute_mouse)
   Partial TouchpadTuningNotPerRow(91) @ Preset_1000001/right_trackpad/group 19 (absolute_mouse) => KbmMouseX <- Touchpad 1 Finger 0 X
   Partial TouchpadTuningNotPerRow(91) @ Preset_1000001/right_trackpad/group 19 (absolute_mouse) => KbmMouseY <- Touchpad 1 Finger 0 Y
   Clean RowEmitted @ Preset_1000001/right_trackpad/group 19 (absolute_mouse)/click/Full_Press => KbmKeyBE <- Touchpad 1 Click

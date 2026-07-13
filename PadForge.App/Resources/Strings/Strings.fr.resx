@@ -2360,7 +2360,7 @@
   <data name="Mapping_Sensitivity_Tooltip" xml:space="preserve"><value>Sensibilité par source pour un axe simple, un curseur ou un stick / une gâchette de manette. 1.0 laisse l'entrée inchangée. Les valeurs supérieures à 1.0 atteignent la pleine déflexion avec moins de course. Les valeurs inférieures à 1.0 en demandent davantage.</value></data>
   <data name="Mapping_Gamepad_Format" xml:space="preserve"><value>Manette {0}</value></data>
   <data name="Settings_CommunityConfigs" xml:space="preserve"><value>Configurations de la communauté</value></data>
-  <data name="Settings_CommunityConfigsDesc" xml:space="preserve"><value>Parcourez les configurations de manette Steam Input créées par la communauté et traduisez-les en profils PadForge. PadForge se connecte directement à Steam (store.steampowered.com, api.steampowered.com, steamcommunity.com, cdn.steamusercontent.com, cdn.cloudflare.steamstatic.com) uniquement lorsque vous recherchez et lorsque vous ouvrez une configuration. Votre texte de recherche et la configuration choisie sont les seules données envoyées. Pas de télémétrie, pas de service tiers, pas de connexion à Steam.</value></data>
+  <data name="Settings_CommunityConfigsDesc" xml:space="preserve"><value>Parcourez les configurations de manette Steam Input créées par la communauté et traduisez-les en profils PadForge. PadForge se connecte directement à Steam (store.steampowered.com, api.steampowered.com, steamcommunity.com, cdn.steamusercontent.com, cdn.cloudflare.steamstatic.com, avatars.fastly.steamstatic.com) uniquement lorsque vous recherchez et lorsque vous ouvrez une configuration. Votre texte de recherche et la configuration choisie sont les seules données envoyées. Pas de télémétrie, pas de service tiers, pas de connexion à Steam.</value></data>
   <data name="Settings_EnableCommunityConfigs" xml:space="preserve"><value>Activer les configurations de la communauté</value></data>
   <data name="Settings_ShowLegacyConfigs" xml:space="preserve"><value>Afficher les anciennes configurations du Workshop</value></data>
   <data name="Settings_ShowLegacyConfigsTooltip" xml:space="preserve"><value>Les configurations antérieures à 2017 n'ont pas de fichier téléchargeable sur le CDN de Steam. PadForge les affiche avec un badge Legacy et les ouvre dans le Steam Workshop à la place.</value></data>
@@ -2448,6 +2448,9 @@
   <data name="Workshop_Tr_ClickGateDropped" xml:space="preserve"><value>condition requires_click abandonnée</value></data>
   <data name="Workshop_Tr_RowCapExceeded" xml:space="preserve"><value>plafond de lignes dépassé pour l'emplacement {0}</value></data>
   <data name="Workshop_Tr_PresetHasNoActivator" xml:space="preserve"><value>aucune assignation ne bascule vers le préréglage {0}</value></data>
+  <data name="Workshop_Tr_AutomapAlsoActive" xml:space="preserve"><value>le mappage automatique de l'appareil dirige toujours {0} vers {1}</value></data>
+  <data name="Workshop_Tr_ShiftLayerEmpty" xml:space="preserve"><value>bascule de couche abandonnée ({0} n'a produit aucune traduction)</value></data>
+  <data name="Workshop_Tr_AbsoluteMouseApproximated" xml:space="preserve"><value>positionnement absolu du pointeur approximé en mouvement relatif de la souris</value></data>
   <data name="Status_WorkshopUpdatesOptInRequired" xml:space="preserve"><value>Activez les configurations de la communauté pour vérifier les mises à jour</value></data>
   <data name="Status_WorkshopNoImportedProfiles" xml:space="preserve"><value>Aucun profil importé depuis le Steam Workshop pour l'instant</value></data>
   <data name="Status_WorkshopCheckingUpdates" xml:space="preserve"><value>Vérification des mises à jour sur le Steam Workshop…</value></data>

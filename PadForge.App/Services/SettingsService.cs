@@ -1311,6 +1311,8 @@ namespace PadForge.Services
             vm.SetLanguageFromCode(appSettings.Language);
             vm.EnableAutoProfileSwitching = appSettings.EnableAutoProfileSwitching;
             SettingsManager.EnableAutoProfileSwitching = appSettings.EnableAutoProfileSwitching;
+            vm.EnableCommunityConfigLookup = appSettings.EnableCommunityConfigLookup;
+            vm.ShowLegacyWorkshopConfigs = appSettings.ShowLegacyWorkshopConfigs;
             SettingsManager.ActiveProfileId = appSettings.ActiveProfileId;
             // Migrate legacy global macros and store.
             if (appSettings.GlobalMacros != null)
@@ -3133,6 +3135,8 @@ namespace PadForge.Services
                 ThemeIndex = vm.SelectedThemeIndex,
                 Language = vm.LanguageCode,
                 EnableAutoProfileSwitching = vm.EnableAutoProfileSwitching,
+                EnableCommunityConfigLookup = vm.EnableCommunityConfigLookup,
+                ShowLegacyWorkshopConfigs = vm.ShowLegacyWorkshopConfigs,
                 ActiveProfileId = SettingsManager.ActiveProfileId,
                 GlobalMacros = SettingsManager.GlobalMacros,
                 SlotControllerTypes = isDefault ? slotTypes : defaultSnap.SlotControllerTypes,
@@ -4399,6 +4403,22 @@ namespace PadForge.Services
 
         [XmlElement]
         public bool EnableAutoProfileSwitching { get; set; }
+
+        /// <summary>
+        /// Master opt-in for the Steam Workshop community-config feature
+        /// (issue #9). Default false: PadForge sends nothing to Steam until
+        /// the user flips this in Settings or in the browse dialog's
+        /// cold-forge state.
+        /// </summary>
+        [XmlElement]
+        public bool EnableCommunityConfigLookup { get; set; }
+
+        /// <summary>
+        /// Sub-toggle: surface 2016-era Workshop configs that have no CDN
+        /// file (Legacy badge + Steam-subscribe fallback). Default false.
+        /// </summary>
+        [XmlElement]
+        public bool ShowLegacyWorkshopConfigs { get; set; }
 
         [XmlElement]
         public string ActiveProfileId { get; set; }

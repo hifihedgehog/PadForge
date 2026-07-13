@@ -588,6 +588,73 @@ namespace PadForge.ViewModels
         }
 
         // ─────────────────────────────────────────────
+        //  Community Configs (Steam Workshop, issue #9)
+        // ─────────────────────────────────────────────
+
+        private bool _enableCommunityConfigLookup;
+
+        /// <summary>
+        /// Master opt-in for the Steam Workshop feature. Off by default: no
+        /// PadForge network traffic to Steam ever happens while this is
+        /// false (every PadForge.SteamWorkshop client constructor throws on
+        /// a cold gate as defense in depth).
+        /// </summary>
+        public bool EnableCommunityConfigLookup
+        {
+            get => _enableCommunityConfigLookup;
+            set => SetProperty(ref _enableCommunityConfigLookup, value);
+        }
+
+        private bool _showLegacyWorkshopConfigs;
+
+        /// <summary>
+        /// Sub-toggle: list 2016-era Workshop entries that have no CDN
+        /// file_url. They wear a Legacy badge and route through the
+        /// Steam-subscribe fallback instead of a direct download.
+        /// </summary>
+        public bool ShowLegacyWorkshopConfigs
+        {
+            get => _showLegacyWorkshopConfigs;
+            set => SetProperty(ref _showLegacyWorkshopConfigs, value);
+        }
+
+        private RelayCommand _clearWorkshopCacheCommand;
+
+        /// <summary>Command to purge %LOCALAPPDATA%\PadForge\SteamWorkshopCache.</summary>
+        public RelayCommand ClearWorkshopCacheCommand =>
+            _clearWorkshopCacheCommand ??= new RelayCommand(
+                () => ClearWorkshopCacheRequested?.Invoke(this, EventArgs.Empty));
+
+        private RelayCommand _checkWorkshopUpdatesCommand;
+
+        /// <summary>
+        /// Command surface for "check imported profiles for updates".
+        /// Phase D (#9) wires update detection over SteamWorkshopSource
+        /// provenance; until then the Settings button stays collapsed.
+        /// </summary>
+        public RelayCommand CheckWorkshopUpdatesCommand =>
+            _checkWorkshopUpdatesCommand ??= new RelayCommand(
+                () => CheckWorkshopUpdatesRequested?.Invoke(this, EventArgs.Empty));
+
+        private RelayCommand _browseCommunityConfigsCommand;
+
+        /// <summary>Command to open the Browse Community Configs dialog. Always
+        /// enabled: with the opt-in off, the dialog opens on its cold-forge
+        /// state and offers the enable action itself.</summary>
+        public RelayCommand BrowseCommunityConfigsCommand =>
+            _browseCommunityConfigsCommand ??= new RelayCommand(
+                () => BrowseCommunityConfigsRequested?.Invoke(this, EventArgs.Empty));
+
+        /// <summary>Raised when the user asks to purge the Workshop cache.</summary>
+        public event EventHandler ClearWorkshopCacheRequested;
+
+        /// <summary>Raised when the user asks to re-check imported profiles (Phase D).</summary>
+        public event EventHandler CheckWorkshopUpdatesRequested;
+
+        /// <summary>Raised when the user opens the Browse Community Configs dialog.</summary>
+        public event EventHandler BrowseCommunityConfigsRequested;
+
+        // ─────────────────────────────────────────────
         //  Settings file
         // ─────────────────────────────────────────────
 

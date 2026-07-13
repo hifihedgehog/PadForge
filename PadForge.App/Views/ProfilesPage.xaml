@@ -636,6 +636,12 @@
                         <Button Content="{Binding Profiles_Import, Source={x:Static strings:Strings.Instance}}"
                                 Command="{Binding ImportProfileCommand}"
                                 Margin="0,0,8,0"/>
+                        <!-- Steam Workshop entry (#9): always enabled. With the
+                             opt-in off, the dialog opens on its cold-forge state
+                             and offers the enable action itself. -->
+                        <Button Content="{Binding Profiles_BrowseCommunity, Source={x:Static strings:Strings.Instance}}"
+                                Command="{Binding BrowseCommunityConfigsCommand}"
+                                Margin="0,0,8,0"/>
                         <Button Content="{Binding Common_Delete, Source={x:Static strings:Strings.Instance}}"
                                 Command="{Binding DeleteProfileCommand}"
                                 ToolTipService.ShowOnDisabled="True">

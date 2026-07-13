@@ -26,7 +26,11 @@ namespace PadForge.SteamWorkshop.Cache
         /// <summary>Creator persona names keyed by Steam id (7 d).</summary>
         Personas,
 
-        /// <summary>Artwork bitmaps keyed by app id + CDN filename (separate budget).</summary>
+        /// <summary>
+        /// Artwork bitmaps keyed by app id + CDN filename (separate budget). Entries
+        /// carry a 7 d freshness window (weekly hero re-fetch), and stale entries are
+        /// kept as the offline fallback rather than deleted.
+        /// </summary>
         Art,
     }
 }

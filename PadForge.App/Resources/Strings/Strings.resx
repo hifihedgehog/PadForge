@@ -2495,4 +2495,11 @@
   <data name="Workshop_Tr_ClickGateDropped" xml:space="preserve"><value>requires_click gate dropped</value></data>
   <data name="Workshop_Tr_RowCapExceeded" xml:space="preserve"><value>row cap exceeded for the {0} slot</value></data>
   <data name="Workshop_Tr_PresetHasNoActivator" xml:space="preserve"><value>no binding switches to preset {0}</value></data>
+  <data name="Status_WorkshopUpdatesOptInRequired" xml:space="preserve"><value>Enable Community Configs to check for updates</value></data>
+  <data name="Status_WorkshopNoImportedProfiles" xml:space="preserve"><value>No profiles imported from the Steam Workshop yet</value></data>
+  <data name="Status_WorkshopCheckingUpdates" xml:space="preserve"><value>Checking Steam Workshop for updates…</value></data>
+  <data name="Status_WorkshopProfilesCurrent_Format" xml:space="preserve"><value>Imported profiles are up to date ({0} checked)</value></data>
+  <data name="Workshop_UpdatesTitle" xml:space="preserve"><value>Workshop Updates</value></data>
+  <data name="Workshop_UpdatesBody" xml:space="preserve"><value>These imported profiles have newer versions on the Steam Workshop. Re-import them from Browse Community Configs to pick up the changes.</value></data>
+  <data name="Workshop_UpdateRow_Format" xml:space="preserve"><value>{0} · {1}</value></data>
 </root>

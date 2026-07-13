@@ -16,7 +16,17 @@ namespace PadForge.SteamWorkshop.Cache
         public static readonly TimeSpan Search = TimeSpan.FromHours(24);
         public static readonly TimeSpan Details = TimeSpan.FromHours(24);
         public static readonly TimeSpan Personas = TimeSpan.FromDays(7);
-        // Vdf and Art are immutable per key and carry no TTL; they age out by LRU only.
+
+        /// <summary>
+        /// Freshness window for store artwork (the design's weekly hero re-fetch).
+        /// Art past this age is re-fetched rather than dropped: read it through
+        /// <see cref="SteamWorkshopCache.TryGetBytesStaleOk"/> so the stale copy
+        /// survives as the offline fallback.
+        /// </summary>
+        public static readonly TimeSpan Art = TimeSpan.FromDays(7);
+
+        // Vdf is immutable per key (keyed by file id + time_updated) and carries
+        // no TTL; it ages out by LRU only.
     }
 
     /// <summary>
@@ -117,6 +127,38 @@ namespace PadForge.SteamWorkshop.Cache
             catch (IOException)
             {
                 value = null;
+                return false;
+            }
+
+            TouchAccess(path);
+            return true;
+        }
+
+        /// <summary>
+        /// TTL-aware read that keeps expired entries. A hit older than
+        /// <paramref name="freshFor"/> comes back with <paramref name="stale"/> set instead
+        /// of being deleted, so the caller can re-fetch and still fall back to the old copy
+        /// when the network is down (offline browsing keeps art).
+        /// </summary>
+        public bool TryGetBytesStaleOk(CacheCategory category, string key, TimeSpan freshFor,
+            out byte[] value, out bool stale)
+        {
+            value = null;
+            stale = false;
+            var path = ResolvePath(category, key);
+            if (!File.Exists(path)) return false;
+
+            var age = _clock().UtcDateTime - File.GetLastWriteTimeUtc(path);
+            stale = age > freshFor;
+
+            try
+            {
+                value = File.ReadAllBytes(path);
+            }
+            catch (IOException)
+            {
+                value = null;
+                stale = false;
                 return false;
             }
 

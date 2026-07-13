@@ -11127,6 +11127,10 @@ namespace PadForge.Services
                     profile.TouchpadOverlayWidth = snapshot.TouchpadOverlayWidth;
                     profile.TouchpadOverlayHeight = snapshot.TouchpadOverlayHeight;
                     profile.TouchpadGestures = snapshot.TouchpadGestures;
+                    // Identity members (Id, Name, ExecutableNames, WorkshopSource)
+                    // are intentionally NOT copied. SnapshotCurrentProfile never
+                    // captures them, so copying would null them on the stored
+                    // profile. Keep them off this list.
                 }
             }
         }

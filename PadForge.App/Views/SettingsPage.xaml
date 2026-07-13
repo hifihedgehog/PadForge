@@ -401,13 +401,12 @@
                         <Button Content="{Binding Settings_ClearWorkshopCache, Source={x:Static strings:Strings.Instance}}"
                                 Command="{Binding ClearWorkshopCacheCommand}"
                                 Margin="0,0,8,0"/>
-                        <!-- Update detection is Phase D of #9 (SteamWorkshopSource
-                             provenance + time_updated comparison). The command
-                             surface exists; the button stays collapsed until the
-                             detection lands. -->
+                        <!-- Update detection (#9 Phase D). Stays visible with
+                             the opt-in off, like Clear Cached Configs: the
+                             handler answers with a status message instead of
+                             touching the network. -->
                         <Button Content="{Binding Settings_CheckWorkshopUpdates, Source={x:Static strings:Strings.Instance}}"
-                                Command="{Binding CheckWorkshopUpdatesCommand}"
-                                Visibility="Collapsed"/>
+                                Command="{Binding CheckWorkshopUpdatesCommand}"/>
                     </StackPanel>
                 </StackPanel>
             </Border>

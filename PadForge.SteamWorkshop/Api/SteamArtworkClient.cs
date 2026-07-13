@@ -32,8 +32,10 @@ namespace PadForge.SteamWorkshop.Api
     /// Fetches store artwork from the Steam CDN
     /// (<c>cdn.cloudflare.steamstatic.com/steam/apps/{appid}/{file}</c>), walking the plan's
     /// fallback chains so a missing asset degrades to a coarser one that exists on every
-    /// title. Runtime hotlink only, cache-first; nothing is rehosted. The constructor throws
-    /// if the opt-in gate is off.
+    /// title. Runtime hotlink only, cache-first; nothing is rehosted. Cached art stays fresh
+    /// for <see cref="CacheTtls.Art"/> (weekly hero re-fetch); a stale entry is re-fetched
+    /// and serves as the fallback when the network is down. The constructor throws if the
+    /// opt-in gate is off.
     /// </summary>
     public sealed class SteamArtworkClient
     {
@@ -45,11 +47,15 @@ namespace PadForge.SteamWorkshop.Api
         private static readonly string[] HeroChain = { "library_hero.jpg", "header.jpg" };
 
         private readonly SteamWorkshopCache _cache;
+        private readonly HttpClient _http;
 
-        public SteamArtworkClient(ISteamWorkshopGate gate, SteamWorkshopCache cache = null)
+        /// <summary><paramref name="http"/> overrides the shared Steam HTTP client
+        /// so tests can inject a stub handler.</summary>
+        public SteamArtworkClient(ISteamWorkshopGate gate, SteamWorkshopCache cache = null, HttpClient http = null)
         {
             SteamWorkshopGuard.EnsureEnabled(gate);
             _cache = cache;
+            _http = http ?? SteamHttp.Client;
         }
 
         /// <summary>Portrait art with fallback: 600x900 to capsule_616x353 to header. Null if none resolve.</summary>
@@ -66,10 +72,37 @@ namespace PadForge.SteamWorkshop.Api
             if (string.IsNullOrEmpty(file)) throw new ArgumentException("file is empty.", nameof(file));
 
             var key = $"{appId}_{file}";
-            if (_cache != null && _cache.TryGetBytes(CacheCategory.Art, key, null, out var cached))
-                return new ArtworkResult(appId, file, BuildUrl(appId, file), cached);
+            byte[] staleCopy = null;
+            if (_cache != null && _cache.TryGetBytesStaleOk(CacheCategory.Art, key, CacheTtls.Art, out var cached, out var stale))
+            {
+                if (!stale)
+                    return new ArtworkResult(appId, file, BuildUrl(appId, file), cached);
+                staleCopy = cached;
+            }
 
-            var bytes = await GetRawAsync(appId, file, ct).ConfigureAwait(false);
+            byte[] bytes;
+            try
+            {
+                bytes = await GetRawAsync(appId, file, ct).ConfigureAwait(false);
+            }
+            // Network failure during a stale re-fetch serves the old copy, so offline
+            // browsing keeps art. The HttpClient timeout raises TaskCanceledException
+            // without OUR token being set. The caller's own cancellation propagates.
+            catch (HttpRequestException) when (staleCopy != null)
+            {
+                return new ArtworkResult(appId, file, BuildUrl(appId, file), staleCopy);
+            }
+            catch (IOException) when (staleCopy != null)
+            {
+                return new ArtworkResult(appId, file, BuildUrl(appId, file), staleCopy);
+            }
+            catch (OperationCanceledException) when (staleCopy != null && !ct.IsCancellationRequested)
+            {
+                return new ArtworkResult(appId, file, BuildUrl(appId, file), staleCopy);
+            }
+
+            // A definitive CDN miss (404 / non-image) is not a network failure:
+            // report it so the fallback chain degrades the same as a cold fetch.
             if (bytes == null) return null;
 
             _cache?.PutBytes(CacheCategory.Art, key, bytes);
@@ -90,7 +123,7 @@ namespace PadForge.SteamWorkshop.Api
 
         private async Task<byte[]> GetRawAsync(int appId, string file, CancellationToken ct)
         {
-            using var response = await SteamHttp.Client
+            using var response = await _http
                 .GetAsync(BuildUrl(appId, file), HttpCompletionOption.ResponseHeadersRead, ct)
                 .ConfigureAwait(false);
             if (!response.IsSuccessStatusCode)

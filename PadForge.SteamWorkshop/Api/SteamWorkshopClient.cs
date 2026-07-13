@@ -53,8 +53,16 @@ namespace PadForge.SteamWorkshop.Api
         private Task _pumpTask;
         private TaskCompletionSource<bool> _connectTcs;
         private TaskCompletionSource<EResult> _logonTcs;
+        private TaskCompletionSource<bool> _flushTcs;
         private volatile bool _loggedOn;
         private DateTime _nextRequestUtc = DateTime.MinValue;
+
+        /// <summary>Sentinel posted through the SteamKit callback queue to prove every
+        /// earlier callback has been delivered (the queue is FIFO and delivery happens
+        /// only on the pump thread via <c>RunWaitCallbacks</c>).</summary>
+        private sealed class QueueFlushedCallback : CallbackMsg
+        {
+        }
 
         public SteamWorkshopClient(ISteamWorkshopGate gate, SteamWorkshopCache cache = null)
         {
@@ -72,6 +80,7 @@ namespace PadForge.SteamWorkshop.Api
             _callbacks.Subscribe<SteamClient.ConnectedCallback>(OnConnected);
             _callbacks.Subscribe<SteamClient.DisconnectedCallback>(OnDisconnected);
             _callbacks.Subscribe<SteamUser.LoggedOnCallback>(OnLoggedOn);
+            _callbacks.Subscribe<QueueFlushedCallback>(OnQueueFlushed);
         }
 
         /// <summary>
@@ -88,6 +97,30 @@ namespace PadForge.SteamWorkshop.Api
                 if (_loggedOn && _client.IsConnected) return;
 
                 StartPump();
+
+                // A previous attempt (timeout teardown, failed logon, server drop)
+                // can leave its Connected/Disconnected callbacks undelivered in the
+                // FIFO queue; delivered later, they would complete THIS attempt's
+                // fresh TCSes and fail it spuriously. Tear down any half-open
+                // connection first (CMClient posts the Disconnected callback before
+                // Disconnect() returns), then flush the queue with a sentinel so
+                // every stale callback lands before the new attempt wires up. The
+                // teardown hops to the pool because CMClient.Disconnect blocks on
+                // the connection-setup task (which can include the network-bound
+                // server-directory fetch), and this method can be entered inline on
+                // the caller's thread.
+                await Task.Run(TryDisconnect).ConfigureAwait(false);
+                _flushTcs = new TaskCompletionSource<bool>(TaskCreationOptions.RunContinuationsAsynchronously);
+                _client.PostCallback(new QueueFlushedCallback());
+                try
+                {
+                    await _flushTcs.Task.WaitAsync(TimeSpan.FromSeconds(2), ct).ConfigureAwait(false);
+                }
+                catch (TimeoutException)
+                {
+                    // The flush is best-effort hygiene; a stalled pump surfaces via
+                    // the connect timeout below anyway.
+                }
 
                 _connectTcs = new TaskCompletionSource<bool>(TaskCreationOptions.RunContinuationsAsynchronously);
                 _logonTcs = new TaskCompletionSource<EResult>(TaskCreationOptions.RunContinuationsAsynchronously);
@@ -378,26 +411,36 @@ namespace PadForge.SteamWorkshop.Api
 
         private void OnLoggedOn(SteamUser.LoggedOnCallback callback) => _logonTcs?.TrySetResult(callback.Result);
 
+        private void OnQueueFlushed(QueueFlushedCallback callback) => _flushTcs?.TrySetResult(true);
+
         public async ValueTask DisposeAsync()
         {
-            try
+            // CMClient.Disconnect blocks until the connection-setup task completes,
+            // and that task can include the network-bound server-directory fetch. An
+            // async method runs synchronously to its first await, and the browse
+            // dialog disposes from the UI thread on close, so the teardown hops to
+            // the pool before touching the client.
+            await Task.Run(() =>
             {
-                if (_client.IsConnected)
-                    _user?.LogOff();
-            }
-            catch (Exception)
-            {
-                // Best-effort logoff.
-            }
+                try
+                {
+                    if (_client.IsConnected)
+                        _user?.LogOff();
+                }
+                catch (Exception)
+                {
+                    // Best-effort logoff.
+                }
 
-            try
-            {
-                _client?.Disconnect();
-            }
-            catch (Exception)
-            {
-                // Best-effort disconnect.
-            }
+                try
+                {
+                    _client?.Disconnect();
+                }
+                catch (Exception)
+                {
+                    // Best-effort disconnect.
+                }
+            }).ConfigureAwait(false);
 
             if (_pumpCts != null)
             {

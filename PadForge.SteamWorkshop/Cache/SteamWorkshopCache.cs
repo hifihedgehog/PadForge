@@ -255,11 +255,21 @@ namespace PadForge.SteamWorkshop.Cache
 
             lock (_writeLock)
             {
-                Directory.CreateDirectory(dir);
                 try
                 {
+                    Directory.CreateDirectory(dir);
                     File.WriteAllBytes(tmpPath, data);
                     File.Move(tmpPath, finalPath, overwrite: true);
+                }
+                catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)
+                {
+                    // The cache is an optimization: a write that loses a sharing
+                    // race (a reader holding the destination open) or hits a
+                    // full/locked disk must never fail the operation that produced
+                    // the data. Same principle as the serialize guard at the
+                    // Workshop client's put site.
+                    TryDelete(tmpPath);
+                    return;
                 }
                 catch
                 {

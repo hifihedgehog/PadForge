@@ -2343,4 +2343,116 @@
   <data name="Pad_ResetShiftDelay" xml:space="preserve">
     <value>将延迟重置为 0（层立即响应）。</value>
   </data>
+  <data name="MacroAction_Type_MoveMouseToScreenPosition" xml:space="preserve"><value>移动鼠标到指定位置</value></data>
+  <data name="MacroAction_MoveMouseToScreenPosition_Tooltip" xml:space="preserve"><value>按下时将桌面光标移动到固定的屏幕位置。使用“在屏幕上拾取”可用光标捕获一个位置。</value></data>
+  <data name="MacroAction_MoveMouseToScreenPosition_Format" xml:space="preserve"><value>移动鼠标到 {0}, {1}</value></data>
+  <data name="MacroAction_Type_RepeatKeyWhileHeld" xml:space="preserve"><value>按住时重复按键</value></data>
+  <data name="MacroAction_RepeatKeyWhileHeld_Tooltip" xml:space="preserve"><value>在触发器按住期间以固定间隔发送按键（连发 / 连点）。</value></data>
+  <data name="MacroAction_RepeatKeyWhileHeld_Format" xml:space="preserve"><value>每 {1} ms 重复 {0}</value></data>
+  <data name="Macro_MouseX_Label" xml:space="preserve"><value>鼠标 X</value></data>
+  <data name="Macro_MouseY_Label" xml:space="preserve"><value>鼠标 Y</value></data>
+  <data name="Macro_RepeatInterval_Label" xml:space="preserve"><value>间隔</value></data>
+  <data name="Macro_PickOnScreen" xml:space="preserve"><value>在屏幕上拾取</value></data>
+  <data name="Macro_PickOnScreen_Countdown_Format" xml:space="preserve"><value>{0} 秒后捕获...</value></data>
+  <data name="Macro_PickOnScreen_Tooltip" xml:space="preserve"><value>点击后将光标移到目标上。短暂倒计时后即会捕获其位置。</value></data>
+  <data name="Mapping_TouchpadFingerPressure_Format" xml:space="preserve"><value>触控板 {0} 手指 {1} 压力</value></data>
+  <data name="Mapping_Sensitivity" xml:space="preserve"><value>灵敏度</value></data>
+  <data name="Mapping_Sensitivity_Tooltip" xml:space="preserve"><value>针对普通轴、滑块或手柄摇杆/扳机的按源灵敏度。1.0 表示输入保持不变。大于 1.0 时用更小的行程即可达到满偏。小于 1.0 时需要更大的行程。</value></data>
+  <data name="Mapping_Gamepad_Format" xml:space="preserve"><value>游戏手柄 {0}</value></data>
+  <data name="Settings_CommunityConfigs" xml:space="preserve"><value>社区配置</value></data>
+  <data name="Settings_CommunityConfigsDesc" xml:space="preserve"><value>浏览社区制作的 Steam Input 控制器配置，并将其转换为 PadForge 配置文件。PadForge 仅在您搜索和打开配置时才直接连接 Steam（store.steampowered.com、api.steampowered.com、steamcommunity.com、cdn.steamusercontent.com、cdn.cloudflare.steamstatic.com）。发送的数据仅有搜索文本和所选配置。无遥测、无第三方服务、无需登录 Steam。</value></data>
+  <data name="Settings_EnableCommunityConfigs" xml:space="preserve"><value>启用社区配置</value></data>
+  <data name="Settings_ShowLegacyConfigs" xml:space="preserve"><value>显示旧版创意工坊配置</value></data>
+  <data name="Settings_ShowLegacyConfigsTooltip" xml:space="preserve"><value>2017 年之前的配置在 Steam CDN 上没有可下载的文件。PadForge 会以 Legacy 徽章列出它们，并改为在 Steam 创意工坊中打开。</value></data>
+  <data name="Settings_ClearWorkshopCache" xml:space="preserve"><value>清除缓存的配置</value></data>
+  <data name="Settings_CheckWorkshopUpdates" xml:space="preserve"><value>检查已导入配置文件的更新</value></data>
+  <data name="Status_WorkshopCacheCleared" xml:space="preserve"><value>已清除创意工坊缓存</value></data>
+  <data name="Profiles_BrowseCommunity" xml:space="preserve"><value>浏览社区配置</value></data>
+  <data name="Workshop_DialogTitle" xml:space="preserve"><value>浏览社区配置</value></data>
+  <data name="Workshop_DialogPath" xml:space="preserve"><value>配置文件 · Steam 创意工坊</value></data>
+  <data name="Workshop_ColdTitle" xml:space="preserve"><value>锻炉尚冷</value></data>
+  <data name="Workshop_ColdBody" xml:space="preserve"><value>浏览社区配置时 PadForge 才直接连接 Steam，仅在您搜索时连接，启动时绝不连接。</value></data>
+  <data name="Workshop_EnableButton" xml:space="preserve"><value>启用社区配置</value></data>
+  <data name="Workshop_SearchPlaceholder" xml:space="preserve"><value>搜索游戏</value></data>
+  <data name="Workshop_GamesCount_Format" xml:space="preserve"><value>{0} 个游戏</value></data>
+  <data name="Workshop_NoGamesFound" xml:space="preserve"><value>在 Steam 商店中未找到游戏。</value></data>
+  <data name="Workshop_SearchingSteam" xml:space="preserve"><value>正在搜索 Steam…</value></data>
+  <data name="Workshop_ReadingConfigs" xml:space="preserve"><value>正在从 Steam 读取配置…</value></data>
+  <data name="Workshop_ReadingConfig" xml:space="preserve"><value>正在从 Steam 读取配置…</value></data>
+  <data name="Workshop_SortedByRating" xml:space="preserve"><value>按评分排序</value></data>
+  <data name="Workshop_Found_Format" xml:space="preserve"><value>找到 {0} 个</value></data>
+  <data name="Workshop_ConfigsCount_Format" xml:space="preserve"><value>{0} 个配置</value></data>
+  <data name="Workshop_CommunityConfigsSuffix" xml:space="preserve"><value>个社区配置</value></data>
+  <data name="Workshop_ControllerSupportFull" xml:space="preserve"><value>完全支持控制器</value></data>
+  <data name="Workshop_ControllerSupportPartial" xml:space="preserve"><value>部分支持控制器</value></data>
+  <data name="Workshop_BackToSearch" xml:space="preserve"><value>搜索游戏</value></data>
+  <data name="Workshop_ByLine_Format" xml:space="preserve"><value>作者：{0} · 更新于 {1}</value></data>
+  <data name="Workshop_TimeToday" xml:space="preserve"><value>今天</value></data>
+  <data name="Workshop_TimeDays_Format" xml:space="preserve"><value>{0} 天前</value></data>
+  <data name="Workshop_TimeMonths_Format" xml:space="preserve"><value>{0} 个月前</value></data>
+  <data name="Workshop_TimeYears_Format" xml:space="preserve"><value>{0} 年前</value></data>
+  <data name="Workshop_Subs_Format" xml:space="preserve"><value>{0} 订阅</value></data>
+  <data name="Workshop_TagAll" xml:space="preserve"><value>全部</value></data>
+  <data name="Workshop_EmptyTitle" xml:space="preserve"><value>此游戏暂无配置</value></data>
+  <data name="Workshop_EmptyBody_Format" xml:space="preserve"><value>Steam 创意工坊上还没有 {0} 的社区控制器配置。您可以成为第一个：在 Steam 中制作一个，它就会出现在这里。</value></data>
+  <data name="Workshop_ErrorTitle" xml:space="preserve"><value>无法连接 Steam</value></data>
+  <data name="Workshop_ErrorBody" xml:space="preserve"><value>无法连接 Steam。请检查网络连接。已导入的配置文件保存在本机，仍可继续使用。</value></data>
+  <data name="Workshop_Retry" xml:space="preserve"><value>重试</value></data>
+  <data name="Workshop_LegacyBody" xml:space="preserve"><value>这是 2016 年前后的配置，早于 Steam 的配置 CDN。请在 Steam 中订阅它，PadForge 会从您的 Steam 文件夹读取。</value></data>
+  <data name="Workshop_LegacyOpenButton" xml:space="preserve"><value>在 Steam 创意工坊中打开</value></data>
+  <data name="Workshop_ManifestIdle" xml:space="preserve"><value>选择一个配置以读取其转换清单。</value></data>
+  <data name="Workshop_BindingsRead_Format" xml:space="preserve"><value>已读取 {0} 条绑定</value></data>
+  <data name="Workshop_StatClean" xml:space="preserve"><value>完整</value></data>
+  <data name="Workshop_StatPartial" xml:space="preserve"><value>部分</value></data>
+  <data name="Workshop_StatSkipped" xml:space="preserve"><value>跳过</value></data>
+  <data name="Workshop_SaveProfile" xml:space="preserve"><value>保存配置文件</value></data>
+  <data name="Workshop_SaveAndApply" xml:space="preserve"><value>保存并应用</value></data>
+  <data name="Workshop_GroupOther" xml:space="preserve"><value>绑定</value></data>
+  <data name="Status_WorkshopImported_Format" xml:space="preserve"><value>已导入“{0}”：完整 {1}、部分 {2}、跳过 {3}</value></data>
+  <data name="Workshop_Tr_DefaultAutomapPassthrough" xml:space="preserve"><value>{0} 条绑定已由默认自动映射覆盖</value></data>
+  <data name="Workshop_Tr_RowEmitted" xml:space="preserve"><value>已转换</value></data>
+  <data name="Workshop_Tr_MacroEmitted" xml:space="preserve"><value>已转换为宏</value></data>
+  <data name="Workshop_Tr_ShiftLayerEmitted" xml:space="preserve"><value>层：{0}</value></data>
+  <data name="Workshop_Tr_TrackpadFeatureRequired" xml:space="preserve"><value>需要触控板功能 {0}</value></data>
+  <data name="Workshop_Tr_TouchpadTuningNotPerRow" xml:space="preserve"><value>触控板调节按整块触控板生效，而非按行</value></data>
+  <data name="Workshop_Tr_SoftPressApproximated" xml:space="preserve"><value>Soft_Press 近似为按压阈值</value></data>
+  <data name="Workshop_Tr_TriggerThresholdApproximated" xml:space="preserve"><value>扳机阈值已近似处理</value></data>
+  <data name="Workshop_Tr_MacroTriggerViaXboxOutput" xml:space="preserve"><value>由 Xbox 槽位的合并输出触发</value></data>
+  <data name="Workshop_Tr_NoDeviceFreeTrigger" xml:space="preserve"><value>此输入没有可用的无设备触发器</value></data>
+  <data name="Workshop_Tr_GameActionsNotSupported" xml:space="preserve"><value>{0} 个游戏内动作，仅限 Steam，无游戏侧挂钩</value></data>
+  <data name="Workshop_Tr_SteamSystemAction" xml:space="preserve"><value>Steam 客户端动作 {0}，无对应项</value></data>
+  <data name="Workshop_Tr_UnsupportedControllerAction" xml:space="preserve"><value>不支持控制器动作 {0}</value></data>
+  <data name="Workshop_Tr_UnknownBindingType" xml:space="preserve"><value>未知绑定类型 {0}</value></data>
+  <data name="Workshop_Tr_UnknownKey" xml:space="preserve"><value>未知按键 {0}</value></data>
+  <data name="Workshop_Tr_UnsupportedKey" xml:space="preserve"><value>按键 {0} 没有对应的 Windows 按键</value></data>
+  <data name="Workshop_Tr_UnknownMouseButton" xml:space="preserve"><value>未知鼠标按钮 {0}</value></data>
+  <data name="Workshop_Tr_UnknownXInputButton" xml:space="preserve"><value>未知 XInput 按钮 {0}</value></data>
+  <data name="Workshop_Tr_UnknownPhysicalInput" xml:space="preserve"><value>{0} 上的未知输入 {1}</value></data>
+  <data name="Workshop_Tr_UnknownGroupMode" xml:space="preserve"><value>未知分组模式 {0}</value></data>
+  <data name="Workshop_Tr_TouchMenuNeedsOverlay" xml:space="preserve"><value>已丢弃触摸菜单叠加层（{0} 个单元格）</value></data>
+  <data name="Workshop_Tr_RadialMenuNeedsOverlay" xml:space="preserve"><value>已丢弃径向菜单叠加层（{0} 个扇区）</value></data>
+  <data name="Workshop_Tr_MouseRegionNotSupported" xml:space="preserve"><value>不支持光标区域限制</value></data>
+  <data name="Workshop_Tr_ScrollWheelModeNotSupported" xml:space="preserve"><value>不支持滚轮模式</value></data>
+  <data name="Workshop_Tr_EdgeInputNotSupported" xml:space="preserve"><value>不支持边缘输入</value></data>
+  <data name="Workshop_Tr_ReleaseActivatorNotSupported" xml:space="preserve"><value>此处不支持释放激活方式</value></data>
+  <data name="Workshop_Tr_LongPressNotSupported" xml:space="preserve"><value>此处不支持长按激活方式</value></data>
+  <data name="Workshop_Tr_DoublePressNotSupported" xml:space="preserve"><value>此处不支持双击激活方式</value></data>
+  <data name="Workshop_Tr_UnknownActivatorType" xml:space="preserve"><value>未知激活方式 {0}</value></data>
+  <data name="Workshop_Tr_RepeatDropped" xml:space="preserve"><value>已丢弃自动重复</value></data>
+  <data name="Workshop_Tr_MissingGroup" xml:space="preserve"><value>配置引用了缺失的组 {0}</value></data>
+  <data name="Workshop_Tr_MissingModeShiftGroup" xml:space="preserve"><value>{0} 上的模式切换引用了缺失的组 {1}</value></data>
+  <data name="Workshop_Tr_MissingPreset" xml:space="preserve"><value>配置引用了缺失的预设 {0}</value></data>
+  <data name="Workshop_Tr_ReferenceCycle" xml:space="preserve"><value>组 {0} 存在循环引用</value></data>
+  <data name="Workshop_Tr_RemoveLayerApproximated" xml:space="preserve"><value>remove_layer 近似为切换关闭</value></data>
+  <data name="Workshop_Tr_ActivatorInputNotSupported" xml:space="preserve"><value>此输入无法用于激活层</value></data>
+  <data name="Workshop_Tr_ClickGateDropped" xml:space="preserve"><value>已丢弃 requires_click 条件</value></data>
+  <data name="Workshop_Tr_RowCapExceeded" xml:space="preserve"><value>{0} 槽位的行数已超出上限</value></data>
+  <data name="Workshop_Tr_PresetHasNoActivator" xml:space="preserve"><value>没有绑定切换到预设 {0}</value></data>
+  <data name="Status_WorkshopUpdatesOptInRequired" xml:space="preserve"><value>请先启用社区配置再检查更新</value></data>
+  <data name="Status_WorkshopNoImportedProfiles" xml:space="preserve"><value>尚未从 Steam 创意工坊导入任何配置文件</value></data>
+  <data name="Status_WorkshopCheckingUpdates" xml:space="preserve"><value>正在检查 Steam 创意工坊更新…</value></data>
+  <data name="Status_WorkshopProfilesCurrent_Format" xml:space="preserve"><value>已导入的配置文件均为最新（已检查 {0} 个）</value></data>
+  <data name="Workshop_UpdatesTitle" xml:space="preserve"><value>创意工坊更新</value></data>
+  <data name="Workshop_UpdatesBody" xml:space="preserve"><value>这些已导入的配置文件在 Steam 创意工坊上有更新版本。请在“浏览社区配置”中重新导入以获取更改。</value></data>
+  <data name="Workshop_UpdateRow_Format" xml:space="preserve"><value>{0} · {1}</value></data>
 </root>

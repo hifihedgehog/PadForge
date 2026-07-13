@@ -2343,4 +2343,116 @@
   <data name="Pad_ResetShiftDelay" xml:space="preserve">
     <value>Restablecer el retardo a 0 (la capa reacciona al instante).</value>
   </data>
+  <data name="MacroAction_Type_MoveMouseToScreenPosition" xml:space="preserve"><value>Mover ratón a posición</value></data>
+  <data name="MacroAction_MoveMouseToScreenPosition_Tooltip" xml:space="preserve"><value>Desplaza el cursor del escritorio a una posición fija de la pantalla al presionar. Use Elegir en pantalla para capturar un punto con el cursor.</value></data>
+  <data name="MacroAction_MoveMouseToScreenPosition_Format" xml:space="preserve"><value>Mover ratón a {0}, {1}</value></data>
+  <data name="MacroAction_Type_RepeatKeyWhileHeld" xml:space="preserve"><value>Repetir tecla mientras se mantiene</value></data>
+  <data name="MacroAction_RepeatKeyWhileHeld_Tooltip" xml:space="preserve"><value>Envía la tecla a un intervalo fijo mientras el activador se mantenga presionado (autofire / turbo).</value></data>
+  <data name="MacroAction_RepeatKeyWhileHeld_Format" xml:space="preserve"><value>Repetir {0} cada {1} ms</value></data>
+  <data name="Macro_MouseX_Label" xml:space="preserve"><value>Ratón X</value></data>
+  <data name="Macro_MouseY_Label" xml:space="preserve"><value>Ratón Y</value></data>
+  <data name="Macro_RepeatInterval_Label" xml:space="preserve"><value>Intervalo</value></data>
+  <data name="Macro_PickOnScreen" xml:space="preserve"><value>Elegir en pantalla</value></data>
+  <data name="Macro_PickOnScreen_Countdown_Format" xml:space="preserve"><value>Capturando en {0}...</value></data>
+  <data name="Macro_PickOnScreen_Tooltip" xml:space="preserve"><value>Haga clic y luego mueva el cursor sobre el objetivo. Su posición se captura tras una breve cuenta atrás.</value></data>
+  <data name="Mapping_TouchpadFingerPressure_Format" xml:space="preserve"><value>Touchpad {0} dedo {1} presión</value></data>
+  <data name="Mapping_Sensitivity" xml:space="preserve"><value>Sensibilidad</value></data>
+  <data name="Mapping_Sensitivity_Tooltip" xml:space="preserve"><value>Sensibilidad por fuente para un eje simple, un deslizador o un stick / gatillo de gamepad. 1.0 deja la entrada sin cambios. Los valores por encima de 1.0 alcanzan la deflexión completa con menos recorrido. Los valores por debajo de 1.0 necesitan más.</value></data>
+  <data name="Mapping_Gamepad_Format" xml:space="preserve"><value>Gamepad {0}</value></data>
+  <data name="Settings_CommunityConfigs" xml:space="preserve"><value>Configuraciones de la comunidad</value></data>
+  <data name="Settings_CommunityConfigsDesc" xml:space="preserve"><value>Explore configuraciones de mando de Steam Input creadas por la comunidad y tradúzcalas a perfiles de PadForge. PadForge se conecta directamente a Steam (store.steampowered.com, api.steampowered.com, steamcommunity.com, cdn.steamusercontent.com, cdn.cloudflare.steamstatic.com) solo cuando busca y cuando abre una configuración. Su texto de búsqueda y la configuración elegida son los únicos datos enviados. Sin telemetría, sin servicios de terceros, sin inicio de sesión en Steam.</value></data>
+  <data name="Settings_EnableCommunityConfigs" xml:space="preserve"><value>Habilitar configuraciones de la comunidad</value></data>
+  <data name="Settings_ShowLegacyConfigs" xml:space="preserve"><value>Mostrar configuraciones Legacy del Workshop</value></data>
+  <data name="Settings_ShowLegacyConfigsTooltip" xml:space="preserve"><value>Las configuraciones anteriores a 2017 no tienen archivo descargable en el CDN de Steam. PadForge las muestra con una insignia Legacy y las abre en Steam Workshop en su lugar.</value></data>
+  <data name="Settings_ClearWorkshopCache" xml:space="preserve"><value>Borrar configuraciones en caché</value></data>
+  <data name="Settings_CheckWorkshopUpdates" xml:space="preserve"><value>Buscar actualizaciones de los perfiles importados</value></data>
+  <data name="Status_WorkshopCacheCleared" xml:space="preserve"><value>Caché del Workshop borrada</value></data>
+  <data name="Profiles_BrowseCommunity" xml:space="preserve"><value>Explorar configuraciones de la comunidad</value></data>
+  <data name="Workshop_DialogTitle" xml:space="preserve"><value>Explorar configuraciones de la comunidad</value></data>
+  <data name="Workshop_DialogPath" xml:space="preserve"><value>Perfiles · Steam Workshop</value></data>
+  <data name="Workshop_ColdTitle" xml:space="preserve"><value>La forja está fría</value></data>
+  <data name="Workshop_ColdBody" xml:space="preserve"><value>Explorar configuraciones de la comunidad conecta PadForge directamente a Steam, solo cuando usted busca, nunca al iniciar.</value></data>
+  <data name="Workshop_EnableButton" xml:space="preserve"><value>Habilitar configuraciones de la comunidad</value></data>
+  <data name="Workshop_SearchPlaceholder" xml:space="preserve"><value>Buscar juegos</value></data>
+  <data name="Workshop_GamesCount_Format" xml:space="preserve"><value>{0} juegos</value></data>
+  <data name="Workshop_NoGamesFound" xml:space="preserve"><value>No se encontraron juegos en la tienda de Steam.</value></data>
+  <data name="Workshop_SearchingSteam" xml:space="preserve"><value>Buscando en Steam…</value></data>
+  <data name="Workshop_ReadingConfigs" xml:space="preserve"><value>Leyendo configuraciones de Steam…</value></data>
+  <data name="Workshop_ReadingConfig" xml:space="preserve"><value>Leyendo configuración de Steam…</value></data>
+  <data name="Workshop_SortedByRating" xml:space="preserve"><value>ordenadas por valoración</value></data>
+  <data name="Workshop_Found_Format" xml:space="preserve"><value>{0} encontradas</value></data>
+  <data name="Workshop_ConfigsCount_Format" xml:space="preserve"><value>{0} configuraciones</value></data>
+  <data name="Workshop_CommunityConfigsSuffix" xml:space="preserve"><value>configuraciones de la comunidad</value></data>
+  <data name="Workshop_ControllerSupportFull" xml:space="preserve"><value>compatibilidad total con mando</value></data>
+  <data name="Workshop_ControllerSupportPartial" xml:space="preserve"><value>compatibilidad parcial con mando</value></data>
+  <data name="Workshop_BackToSearch" xml:space="preserve"><value>Buscar juegos</value></data>
+  <data name="Workshop_ByLine_Format" xml:space="preserve"><value>por {0} · actualizada {1}</value></data>
+  <data name="Workshop_TimeToday" xml:space="preserve"><value>hoy</value></data>
+  <data name="Workshop_TimeDays_Format" xml:space="preserve"><value>hace {0} d</value></data>
+  <data name="Workshop_TimeMonths_Format" xml:space="preserve"><value>hace {0} meses</value></data>
+  <data name="Workshop_TimeYears_Format" xml:space="preserve"><value>hace {0} a.</value></data>
+  <data name="Workshop_Subs_Format" xml:space="preserve"><value>{0} suscriptores</value></data>
+  <data name="Workshop_TagAll" xml:space="preserve"><value>Todos</value></data>
+  <data name="Workshop_EmptyTitle" xml:space="preserve"><value>Aún no hay configuraciones para este juego</value></data>
+  <data name="Workshop_EmptyBody_Format" xml:space="preserve"><value>Steam Workshop no tiene configuraciones de mando de la comunidad para {0}. Puede ser el primero: cree una en Steam y aparecerá aquí.</value></data>
+  <data name="Workshop_ErrorTitle" xml:space="preserve"><value>No se puede acceder a Steam</value></data>
+  <data name="Workshop_ErrorBody" xml:space="preserve"><value>No se pudo conectar con Steam. Compruebe su conexión. Los perfiles que ya importó siguen funcionando: residen en este PC.</value></data>
+  <data name="Workshop_Retry" xml:space="preserve"><value>Reintentar</value></data>
+  <data name="Workshop_LegacyBody" xml:space="preserve"><value>Esta configuración de la era 2016 es anterior al CDN de configuraciones de Steam. Suscríbase a ella en Steam y PadForge la leerá desde su carpeta de Steam.</value></data>
+  <data name="Workshop_LegacyOpenButton" xml:space="preserve"><value>Abrir en Steam Workshop</value></data>
+  <data name="Workshop_ManifestIdle" xml:space="preserve"><value>Seleccione una configuración para leer su manifiesto de traducción.</value></data>
+  <data name="Workshop_BindingsRead_Format" xml:space="preserve"><value>{0} asignaciones leídas</value></data>
+  <data name="Workshop_StatClean" xml:space="preserve"><value>Limpias</value></data>
+  <data name="Workshop_StatPartial" xml:space="preserve"><value>Parciales</value></data>
+  <data name="Workshop_StatSkipped" xml:space="preserve"><value>Omitidas</value></data>
+  <data name="Workshop_SaveProfile" xml:space="preserve"><value>Guardar perfil</value></data>
+  <data name="Workshop_SaveAndApply" xml:space="preserve"><value>Guardar y aplicar</value></data>
+  <data name="Workshop_GroupOther" xml:space="preserve"><value>Asignaciones</value></data>
+  <data name="Status_WorkshopImported_Format" xml:space="preserve"><value>Se importó '{0}': {1} limpias, {2} parciales, {3} omitidas</value></data>
+  <data name="Workshop_Tr_DefaultAutomapPassthrough" xml:space="preserve"><value>{0} asignaciones cubiertas por el mapeo automático predeterminado</value></data>
+  <data name="Workshop_Tr_RowEmitted" xml:space="preserve"><value>traducida</value></data>
+  <data name="Workshop_Tr_MacroEmitted" xml:space="preserve"><value>traducida como macro</value></data>
+  <data name="Workshop_Tr_ShiftLayerEmitted" xml:space="preserve"><value>capa: {0}</value></data>
+  <data name="Workshop_Tr_TrackpadFeatureRequired" xml:space="preserve"><value>necesita la función de panel táctil {0}</value></data>
+  <data name="Workshop_Tr_TouchpadTuningNotPerRow" xml:space="preserve"><value>el ajuste del panel táctil se aplica por panel, no por fila</value></data>
+  <data name="Workshop_Tr_SoftPressApproximated" xml:space="preserve"><value>Soft_Press aproximado como umbral de presión</value></data>
+  <data name="Workshop_Tr_TriggerThresholdApproximated" xml:space="preserve"><value>umbral de gatillo aproximado</value></data>
+  <data name="Workshop_Tr_MacroTriggerViaXboxOutput" xml:space="preserve"><value>se dispara desde la salida combinada de la ranura Xbox</value></data>
+  <data name="Workshop_Tr_NoDeviceFreeTrigger" xml:space="preserve"><value>no hay activador sin dispositivo para esta entrada</value></data>
+  <data name="Workshop_Tr_GameActionsNotSupported" xml:space="preserve"><value>{0} acciones del juego, solo Steam, sin integración del lado del juego</value></data>
+  <data name="Workshop_Tr_SteamSystemAction" xml:space="preserve"><value>acción del cliente Steam {0}, sin equivalente</value></data>
+  <data name="Workshop_Tr_UnsupportedControllerAction" xml:space="preserve"><value>acción de mando {0} no compatible</value></data>
+  <data name="Workshop_Tr_UnknownBindingType" xml:space="preserve"><value>tipo de asignación desconocido {0}</value></data>
+  <data name="Workshop_Tr_UnknownKey" xml:space="preserve"><value>tecla desconocida {0}</value></data>
+  <data name="Workshop_Tr_UnsupportedKey" xml:space="preserve"><value>la tecla {0} no tiene equivalente en Windows</value></data>
+  <data name="Workshop_Tr_UnknownMouseButton" xml:space="preserve"><value>botón del ratón desconocido {0}</value></data>
+  <data name="Workshop_Tr_UnknownXInputButton" xml:space="preserve"><value>botón XInput desconocido {0}</value></data>
+  <data name="Workshop_Tr_UnknownPhysicalInput" xml:space="preserve"><value>entrada desconocida {1} en {0}</value></data>
+  <data name="Workshop_Tr_UnknownGroupMode" xml:space="preserve"><value>modo de grupo desconocido {0}</value></data>
+  <data name="Workshop_Tr_TouchMenuNeedsOverlay" xml:space="preserve"><value>superposición de menú táctil descartada ({0} celdas)</value></data>
+  <data name="Workshop_Tr_RadialMenuNeedsOverlay" xml:space="preserve"><value>superposición de menú radial descartada ({0} sectores)</value></data>
+  <data name="Workshop_Tr_MouseRegionNotSupported" xml:space="preserve"><value>restricción de región del cursor no compatible</value></data>
+  <data name="Workshop_Tr_ScrollWheelModeNotSupported" xml:space="preserve"><value>modo de rueda de desplazamiento no compatible</value></data>
+  <data name="Workshop_Tr_EdgeInputNotSupported" xml:space="preserve"><value>entrada de borde no compatible</value></data>
+  <data name="Workshop_Tr_ReleaseActivatorNotSupported" xml:space="preserve"><value>activador de liberación no compatible aquí</value></data>
+  <data name="Workshop_Tr_LongPressNotSupported" xml:space="preserve"><value>activador de pulsación larga no compatible aquí</value></data>
+  <data name="Workshop_Tr_DoublePressNotSupported" xml:space="preserve"><value>activador de doble pulsación no compatible aquí</value></data>
+  <data name="Workshop_Tr_UnknownActivatorType" xml:space="preserve"><value>activador desconocido {0}</value></data>
+  <data name="Workshop_Tr_RepeatDropped" xml:space="preserve"><value>repetición automática descartada</value></data>
+  <data name="Workshop_Tr_MissingGroup" xml:space="preserve"><value>la configuración hace referencia al grupo faltante {0}</value></data>
+  <data name="Workshop_Tr_MissingModeShiftGroup" xml:space="preserve"><value>el cambio de modo en {0} hace referencia al grupo faltante {1}</value></data>
+  <data name="Workshop_Tr_MissingPreset" xml:space="preserve"><value>la configuración hace referencia al preajuste faltante {0}</value></data>
+  <data name="Workshop_Tr_ReferenceCycle" xml:space="preserve"><value>ciclo de referencias en el grupo {0}</value></data>
+  <data name="Workshop_Tr_RemoveLayerApproximated" xml:space="preserve"><value>remove_layer aproximado como desactivación</value></data>
+  <data name="Workshop_Tr_ActivatorInputNotSupported" xml:space="preserve"><value>esta entrada no puede accionar un activador de capa</value></data>
+  <data name="Workshop_Tr_ClickGateDropped" xml:space="preserve"><value>condición requires_click descartada</value></data>
+  <data name="Workshop_Tr_RowCapExceeded" xml:space="preserve"><value>límite de filas superado para la ranura {0}</value></data>
+  <data name="Workshop_Tr_PresetHasNoActivator" xml:space="preserve"><value>ninguna asignación cambia al preajuste {0}</value></data>
+  <data name="Status_WorkshopUpdatesOptInRequired" xml:space="preserve"><value>Habilite las configuraciones de la comunidad para buscar actualizaciones</value></data>
+  <data name="Status_WorkshopNoImportedProfiles" xml:space="preserve"><value>Aún no hay perfiles importados de Steam Workshop</value></data>
+  <data name="Status_WorkshopCheckingUpdates" xml:space="preserve"><value>Buscando actualizaciones en Steam Workshop…</value></data>
+  <data name="Status_WorkshopProfilesCurrent_Format" xml:space="preserve"><value>Los perfiles importados están al día ({0} comprobados)</value></data>
+  <data name="Workshop_UpdatesTitle" xml:space="preserve"><value>Actualizaciones del Workshop</value></data>
+  <data name="Workshop_UpdatesBody" xml:space="preserve"><value>Estos perfiles importados tienen versiones más recientes en Steam Workshop. Vuelva a importarlos desde Explorar configuraciones de la comunidad para incorporar los cambios.</value></data>
+  <data name="Workshop_UpdateRow_Format" xml:space="preserve"><value>{0} · {1}</value></data>
 </root>

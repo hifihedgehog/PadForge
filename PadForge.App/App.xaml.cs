@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -39,6 +40,16 @@ namespace PadForge
 
         /// <summary>Suppressed error count since last shown popup.</summary>
         private int _suppressedErrorCount;
+
+        /// <summary>Occurrences per dispatcher-exception signature this
+        /// session. A storyboard that dies during template application is
+        /// retried and rethrown by every subsequent layout pass (the
+        /// 2026-07-13 workshop forge-bar storm logged 300k+ identical
+        /// entries and re-showed the same dialog every 3 seconds), so the
+        /// dialog shows once per signature per session and crash.log keeps
+        /// the first three full entries plus a periodic one-line counter.
+        /// Dispatcher-thread only.</summary>
+        private readonly Dictionary<string, int> _dispatcherErrorSignatures = new();
 
         /// <summary>Set when GPU render thread is zombied. Suppresses all cascading exceptions.</summary>
         private bool _gpuLost;
@@ -427,20 +438,41 @@ namespace PadForge
         {
             e.Handled = true;
 
-            try { System.IO.File.AppendAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "crash.log"),
-                $"[{DateTime.Now:HH:mm:ss}] DISPATCHER: {ExceptionMessageChain(e.Exception)}\n{ExceptionStackChain(e.Exception)}\n\n"
-                // Before startup completes, a dispatcher exception is a
-                // failed launch (OnStartup aborted): flush the diagnostics
-                // ring like the fatal DOMAIN path does. Steady-state
-                // dispatcher errors skip the appendix so an exception storm
-                // doesn't snowball crash.log.
-                + (!_startupUiReady
-                    ? "-- recent diagnostics --\n" + Engine.SdlDiagLog.Snapshot() + "\n\n"
-                    : string.Empty)); }
+            string signature = ExceptionMessageChain(e.Exception);
+            _dispatcherErrorSignatures.TryGetValue(signature, out int priorHits);
+            int hits = priorHits + 1;
+            _dispatcherErrorSignatures[signature] = hits;
+
+            // Storm bound: full entries for the first three hits of a
+            // signature, then a one-line counter every 500th, nothing in
+            // between. A layout-retry storm otherwise appends the same
+            // multi-kilobyte stack thousands of times.
+            try
+            {
+                string logPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "crash.log");
+                if (hits <= 3)
+                {
+                    System.IO.File.AppendAllText(logPath,
+                        $"[{DateTime.Now:HH:mm:ss}] DISPATCHER{(hits > 1 ? $" (hit {hits})" : string.Empty)}: {signature}\n{ExceptionStackChain(e.Exception)}\n\n"
+                        // Before startup completes, a dispatcher exception is a
+                        // failed launch (OnStartup aborted): flush the diagnostics
+                        // ring like the fatal DOMAIN path does. Steady-state
+                        // dispatcher errors skip the appendix so an exception storm
+                        // doesn't snowball crash.log.
+                        + (!_startupUiReady
+                            ? "-- recent diagnostics --\n" + Engine.SdlDiagLog.Snapshot() + "\n\n"
+                            : string.Empty));
+                }
+                else if (hits == 4 || hits % 500 == 0)
+                {
+                    System.IO.File.AppendAllText(logPath,
+                        $"[{DateTime.Now:HH:mm:ss}] DISPATCHER (hit {hits}, further identical entries suppressed): {signature.Split('\n')[0]}\n\n");
+                }
+            }
             catch { }
 
             // Once the render thread is zombied, suppress ALL cascading exceptions
-            // silently — they're all downstream failures from the same GPU device loss.
+            // silently: they're all downstream failures from the same GPU device loss.
             if (_gpuLost)
                 return;
 
@@ -452,6 +484,18 @@ namespace PadForge
                 return;
             }
 
+            // One dialog per signature per session. A storyboard that dies
+            // during template application rethrows on every layout retry,
+            // and the 3-second limiter alone re-shows the same dialog for
+            // as long as the storm lasts.
+            if (hits > 1)
+            {
+                _suppressedErrorCount++;
+                if (!_startupUiReady)
+                    Shutdown(1);
+                return;
+            }
+
             // Rate-limit: if an error was shown in the last 3 seconds, suppress
             // the popup to prevent the infinite MessageBox loop that occurs when
             // the 30Hz DispatcherTimer fires during the modal MessageBox.Show()
@@ -459,6 +503,8 @@ namespace PadForge
             if (_lastErrorTime.IsRunning && _lastErrorTime.ElapsedMilliseconds < 3000)
             {
                 _suppressedErrorCount++;
+                if (!_startupUiReady)
+                    Shutdown(1);
                 return;
             }
 
@@ -470,7 +516,7 @@ namespace PadForge
 
             MessageBox.Show(
                 string.Format(Strings.Instance.App_UnexpectedError_Format,
-                    ExceptionMessageChain(e.Exception), ExceptionStackChain(e.Exception)) + suppressed,
+                    signature, ExceptionStackChain(e.Exception)) + suppressed,
                 Strings.Instance.App_Error,
                 MessageBoxButton.OK,
                 MessageBoxImage.Error);

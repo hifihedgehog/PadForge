@@ -477,7 +477,10 @@ namespace PadForge.Engine.Common.Mapping
         private static double ReadNormAxis(CustomInputState state, string descriptor)
         {
             if (state == null || string.IsNullOrWhiteSpace(descriptor)) return 0;
-            string s = descriptor.Trim();
+            // Fold "Gamepad LeftStickX"-style aliases to their canonical
+            // "Axis N" form so the Param pickers' abstract entries (#9)
+            // read the same axis the raw entry would.
+            string s = SourceCoercion.CanonicalDescriptor(descriptor);
             if (!s.StartsWith("Axis", StringComparison.Ordinal)) return 0;
             var parts = s.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
             if (parts.Length < 2 || !int.TryParse(parts[1], out int idx)) return 0;
@@ -493,7 +496,9 @@ namespace PadForge.Engine.Common.Mapping
         private static bool ReadButtonLikeBool(CustomInputState state, string descriptor)
         {
             if (state == null || string.IsNullOrWhiteSpace(descriptor)) return false;
-            string s = descriptor.Trim();
+            // Fold "Gamepad ButtonA" / "Gamepad DPadUp" aliases (#9) to
+            // their canonical "Button N" / "POV 0 Dir" form.
+            string s = SourceCoercion.CanonicalDescriptor(descriptor);
 
             if (s.StartsWith("Button ", StringComparison.Ordinal))
             {

@@ -818,13 +818,12 @@ namespace PadForge.SteamWorkshop.Translation
                 InheritUnmapped = true, // mode shift overlays the slot; everything else keeps working
                 Descriptor = source.Descriptor,
                 // Button kind even for trigger pulls: the button-like
-                        // activator read thresholds the raw axis at 50% of
-                        // full range, which is a half pull on a unipolar
-                        // trigger. The Axis kind tests |bipolar| >= 0.5 and a
-                        // trigger RESTS at bipolar -1, so it would engage the
-                        // layer permanently.
-                        Kind = "Button",
-                AxisThreshold = source.IsAnalogTriggerPull ? 0.5 : 0.5,
+                // activator read thresholds the raw axis at 50% of
+                // full range, which is a half pull on a unipolar
+                // trigger. The Axis kind tests |bipolar| >= 0.5 and a
+                // trigger RESTS at bipolar -1, so it would engage the
+                // layer permanently.
+                Kind = "Button",
                 Path = path,
             });
         }

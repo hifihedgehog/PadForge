@@ -5890,8 +5890,10 @@ namespace PadForge
                 d = d.Substring(1);
             else if (d.StartsWith("H", StringComparison.OrdinalIgnoreCase) && d.Length > 1 && !char.IsDigit(d[1]))
                 d = d.Substring(1);
-            return d.StartsWith("Axis ", StringComparison.Ordinal)
-                || d.StartsWith("Slider ", StringComparison.Ordinal);
+            // "Axis N" / "Slider N" plus the abstract Gamepad sticks /
+            // triggers that canonicalize to one (#9), so a recording over
+            // an alias primary joins it instead of overwriting it.
+            return PadForge.Engine.Common.Mapping.SourceCoercion.IsGenericSensitivityDescriptor(d);
         }
 
         private void WireMacroRecording(MacroItem macro, int padIndex)

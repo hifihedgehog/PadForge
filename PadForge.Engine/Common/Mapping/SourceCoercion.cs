@@ -1177,7 +1177,7 @@ namespace PadForge.Engine.Common.Mapping
         /// Lean is a pure ratio and needs no calibration; Total Weight uses
         /// <see cref="BalanceCalibrationProvider"/> per-corner kg interpolation when
         /// available, else a raw-proportional fallback.</summary>
-        private static float ReadTunedBalanceBoard(CustomInputState state, MappingSource src)
+        private static float ReadTunedBalanceBoard(CustomInputState state, MappingSource src, string deviceGuid)
         {
             if (src == null || state == null || state.Axis == null) return 0f;
 
@@ -1208,7 +1208,12 @@ namespace PadForge.Engine.Common.Mapping
             if (s.EndsWith("Total Weight", StringComparison.Ordinal))
             {
                 float kg;
-                var cal = BalanceCalibrationProvider?.Invoke(src.DeviceGuid ?? "");
+                // Caller-resolved guid (EffectiveDeviceGuid), not the bare
+                // src.DeviceGuid: an empty source guid is the documented
+                // "the device on this slot" form and the provider returns
+                // null (uncalibrated) for it, same trap as the gesture
+                // providers above.
+                var cal = BalanceCalibrationProvider?.Invoke(deviceGuid ?? "");
                 if (cal != null && cal.Length >= 12)
                 {
                     kg = RawCornerToKg(tl, cal, 0) + RawCornerToKg(bl, cal, 1)
@@ -1222,7 +1227,7 @@ namespace PadForge.Engine.Common.Mapping
                     // coarse fallback, replaced the moment calibration arrives).
                     kg = (tl + bl + tr + br) / 200f;
                 }
-                float tare = BalanceTareKgProvider?.Invoke(src.DeviceGuid ?? "") ?? 0f;
+                float tare = BalanceTareKgProvider?.Invoke(deviceGuid ?? "") ?? 0f;
                 kg -= tare;
                 if (kg < 0f) kg = 0f;
                 return Math.Min(1f, kg / BalanceMaxKg);
@@ -1858,7 +1863,7 @@ namespace PadForge.Engine.Common.Mapping
 
             if (s.StartsWith("Balance ", StringComparison.Ordinal))
             {
-                float v = ReadTunedBalanceBoard(state, src);
+                float v = ReadTunedBalanceBoard(state, src, deviceGuid);
                 int cdz = src.DeadZone > 0 ? src.DeadZone : globalThresholdPercent;
                 return Math.Abs(v) > Math.Max(cdz, 1) / 100f;
             }
@@ -2066,7 +2071,7 @@ namespace PadForge.Engine.Common.Mapping
                 return ReadTunedIrPointer(state, src, slotIndex, deviceGuid);
 
             if (s.StartsWith("Balance ", StringComparison.Ordinal))
-                return ReadTunedBalanceBoard(state, src);
+                return ReadTunedBalanceBoard(state, src, deviceGuid);
 
             if (s.Equals("IR Brightness", StringComparison.Ordinal))
                 return state.JoyConIrIntensity;
@@ -2230,7 +2235,7 @@ namespace PadForge.Engine.Common.Mapping
                 return Math.Abs(ReadTunedIrPointer(state, src, slotIndex, deviceGuid));
 
             if (s.StartsWith("Balance ", StringComparison.Ordinal))
-                return Math.Abs(ReadTunedBalanceBoard(state, src));
+                return Math.Abs(ReadTunedBalanceBoard(state, src, deviceGuid));
 
             if (s.Equals("IR Brightness", StringComparison.Ordinal))
                 return state.JoyConIrIntensity; // already unipolar 0..1

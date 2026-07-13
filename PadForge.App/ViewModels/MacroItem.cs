@@ -775,6 +775,11 @@ namespace PadForge.ViewModels
             if (string.IsNullOrEmpty(d)) return false;
             if (!Guid.TryParse(choice.DeviceGuid, out var g) || g == Guid.Empty) return false;
 
+            // Abstract Gamepad aliases (#9) fold to their canonical
+            // "Button N" / "POV 0 Dir" / "Axis N" form so the family's
+            // picker entries convert the same as the raw ones.
+            d = PadForge.Engine.Common.Mapping.SourceCoercion.ResolveGamepadAlias(d) ?? d;
+
             if (d.StartsWith("Button ", StringComparison.Ordinal)
                 && int.TryParse(d.Substring(7), out int btn) && btn >= 0)
             {
@@ -4353,7 +4358,7 @@ namespace PadForge.ViewModels
         /// <summary>Warps the desktop cursor to a fixed primary-monitor pixel
         /// (issue #9). One press, one <c>SetCursorPos</c> write via
         /// <see cref="CursorControlService"/>. <see cref="MacroAction.MouseX"/> /
-        /// <c>MouseY</c> hold the target, seeded to the current cursor position
+        /// <c>MouseY</c> hold the target, seeded to the primary-monitor center
         /// on first type switch and pickable on screen from the editor. At the
         /// tail per the APPEND-ONLY rule above.</summary>
         MoveMouseToScreenPosition,

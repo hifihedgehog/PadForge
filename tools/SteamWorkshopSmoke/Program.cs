@@ -10,7 +10,7 @@ using PadForge.SteamWorkshop.Vdf;
 //
 //   SteamWorkshopSmoke store   "the elder scrolls v skyrim"
 //   SteamWorkshopSmoke details 793611331
-//   SteamWorkshopSmoke download 793611331
+//   SteamWorkshopSmoke download 793611331 [out.vdf]  # optional: save raw VDF
 //   SteamWorkshopSmoke search  72850                # appid of Skyrim
 //   SteamWorkshopSmoke persona 76561198001901205
 
@@ -44,11 +44,15 @@ internal static class Program
                     await DetailsAsync(gate, long.Parse(arg));
                     break;
                 case "download":
-                    await DownloadAsync(gate, long.Parse(arg));
+                    await DownloadAsync(gate, long.Parse(arg),
+                        args.Length > 2 ? args[2] : null);
                     break;
                 case "search":
                     await SearchAsync(gate, int.Parse(arg),
-                        args.Length > 2 ? int.Parse(args[2]) : 9);
+                        args.Length > 2 ? int.Parse(args[2]) : 9,
+                        args.Length > 3 ? int.Parse(args[3]) : 1,
+                        args.Length > 4 ? int.Parse(args[4]) : 10,
+                        args.Length > 5 ? args[5] : null);
                     break;
                 case "cmdetails":
                     await CmDetailsAsync(gate, ulong.Parse(arg));
@@ -95,7 +99,7 @@ internal static class Program
         Console.WriteLine($"tags       : {string.Join(", ", (d.Tags ?? new()).ConvertAll(t => t.Tag))}");
     }
 
-    private static async Task DownloadAsync(ISteamWorkshopGate gate, long fileId)
+    private static async Task DownloadAsync(ISteamWorkshopGate gate, long fileId, string savePath)
     {
         var storage = new SteamRemoteStorageClient(gate);
         var details = await storage.GetDetailsAsync(fileId);
@@ -108,6 +112,12 @@ internal static class Program
         var downloader = new SteamUgcDownloader(gate);
         var vdf = await downloader.DownloadVdfAsync(details.FileUrl, details.FileSizeBytes ?? 0);
 
+        if (!string.IsNullOrEmpty(savePath))
+        {
+            await File.WriteAllTextAsync(savePath, vdf);
+            Console.WriteLine($"saved       : {savePath} ({vdf.Length} chars)");
+        }
+
         var config = SteamInputConfig.FromVdf(VdfParser.Parse(vdf));
         Console.WriteLine($"title       : {config.Title}");
         Console.WriteLine($"version     : {config.Version}");
@@ -117,10 +127,11 @@ internal static class Program
         Console.WriteLine($"languages   : {config.Localization.Count}");
     }
 
-    private static async Task SearchAsync(ISteamWorkshopGate gate, int appId, int queryType)
+    private static async Task SearchAsync(ISteamWorkshopGate gate, int appId, int queryType, int page, int perPage, string requiredTag)
     {
         await using var client = new SteamWorkshopClient(gate, cache: null);
-        var response = await client.SearchAsync(appId, (EPublishedFileQueryType)queryType, page: 1, perPage: 10);
+        var response = await client.SearchAsync(appId, (EPublishedFileQueryType)queryType, page, perPage,
+            requiredTag == null ? null : new[] { requiredTag });
         Console.WriteLine($"total={response.total} returned={response.publishedfiledetails.Count}");
         foreach (var file in response.publishedfiledetails)
             Console.WriteLine($"  {file.publishedfileid,-12} {file.title}");

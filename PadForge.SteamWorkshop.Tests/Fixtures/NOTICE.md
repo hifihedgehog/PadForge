@@ -1,6 +1,6 @@
 # Fixture attribution
 
-These 20 Steam Input controller configurations are community-contributed Steam
+These 22 Steam Input controller configurations are community-contributed Steam
 Workshop items (creator_appid 241100), fetched from Valve's public UGC CDN via
 `ISteamRemoteStorage/GetPublishedFileDetails` and used here as read-only parser and
 model test fixtures. Each item is owned by its creator and governed by the Steam
@@ -31,5 +31,7 @@ Each fixture file is named by its Workshop file id.
 | `2795727040.vdf` | Miracle's AOE II Steam Deck Layout | 76561198097880448 | hasactivators, splitconfig, feature_activator, feature_keboard, feature_mouseregion, feature_radialmenu, controller_neptune | <https://steamcommunity.com/sharedfiles/filedetails/?id=2795727040> |
 | `3456927474.vdf` | RCT3 Weno V0.1 | 76561198045232859 | hasactivators, feature_activator, feature_mouse, feature_keboard, feature_gyro, feature_gamepad, feature_mouseregion, feature_radialmenu, controller_neptune | <https://steamcommunity.com/sharedfiles/filedetails/?id=3456927474> |
 | `2790927974.vdf` | Steam Deck: The Gabe Generation | 76561197983252671 | hasactivators, splitconfig, feature_activator, feature_mouse, feature_keboard, feature_radialmenu, controller_neptune | <https://steamcommunity.com/sharedfiles/filedetails/?id=2790927974> |
+| `3354224367.vdf` | sonic campaign | 76561199115437856 | hasactivators, feature_gamepad, controller_switch_pro | <https://steamcommunity.com/sharedfiles/filedetails/?id=3354224367> |
+| `3443409487.vdf` | Cuphead Nintendo Switch Joy-Con Layout | 76561199504160692 | hasactivators, feature_gamepad, controller_switch_joycon_pair | <https://steamcommunity.com/sharedfiles/filedetails/?id=3443409487> |
 
-Total: 20 fixtures.
+Total: 22 fixtures.

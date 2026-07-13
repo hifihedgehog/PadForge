@@ -105,6 +105,10 @@ namespace PadForge.SteamWorkshop.Translation
             public bool XboxRowCapHit;
             public bool KbmRowCapHit;
 
+            /// <summary>Switch-family config: diamond members are named by
+            /// Nintendo label and fold onto positions during resolution.</summary>
+            public readonly bool NintendoLabels;
+
             public Run(SteamInputConfig config, TranslationOptions options)
             {
                 Config = config;
@@ -112,6 +116,7 @@ namespace PadForge.SteamWorkshop.Translation
                 Report = Profile.Report;
                 Report.SchemaVersion = config.Version;
                 Report.ControllerType = config.ControllerType ?? "";
+                NintendoLabels = PhysicalSlotResolver.UsesNintendoLabels(config.ControllerType);
                 foreach (var g in config.Groups)
                     if (!GroupsById.ContainsKey(g.Id))
                         GroupsById[g.Id] = g;
@@ -367,7 +372,7 @@ namespace PadForge.SteamWorkshop.Translation
                 var input = group.Inputs[inputName];
                 if (input.Activators.Count == 0) continue;
 
-                var source = PhysicalSlotResolver.Resolve(slot, inputName);
+                var source = PhysicalSlotResolver.Resolve(slot, inputName, run.NintendoLabels);
                 string inputPath = $"{path}/{inputName}";
                 if (source == null)
                 {

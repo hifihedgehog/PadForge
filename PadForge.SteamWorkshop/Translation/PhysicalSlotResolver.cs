@@ -110,16 +110,59 @@ namespace PadForge.SteamWorkshop.Translation
         public const string FeatureJoystickOutput = "Touchpad joystick output";
         public const string FeatureTouchSpots = "Touchpad touch spots";
 
+        /// <summary>True for the Switch family, whose configs serialize the
+        /// button diamond by NINTENDO LABEL (button_a = the A-labeled cap,
+        /// physical EAST), not by position. Ground truth: Valve's shipped
+        /// controller_switch_pro gamepad template is the label-identity
+        /// diamond (button_a -> xinput A), while every positional-feel
+        /// community Switch config in the corpus carries the crossed diamond
+        /// (button_b -> xinput A: physical south emits A). PadForge's
+        /// "Gamepad Button*" family is positional (SDL: RemapButton in
+        /// SDL_hidapi_switch.c is identity for Pro/Joy-Con, so ButtonA =
+        /// Button 0 = SOUTH), so these types need the label->position swap
+        /// in <see cref="Resolve"/>. Family list mirrors Steam's
+        /// controller_type vocabulary (switch2_pro included: same labels).</summary>
+        public static bool UsesNintendoLabels(string controllerType)
+            => (controllerType ?? "").Trim().ToLowerInvariant() switch
+            {
+                "controller_switch_pro" => true,
+                "controller_switch2_pro" => true,
+                "controller_switch_joycon_left" => true,
+                "controller_switch_joycon_right" => true,
+                "controller_switch_joycon_pair" => true,
+                _ => false,
+            };
+
         /// <summary>Resolves one named input within a group hosted on
-        /// <paramref name="slot"/>. Returns null when PadForge has no source
-        /// for it (caller reports Skipped/UnknownPhysicalInput or a more
-        /// specific reason).</summary>
-        public static ResolvedSource Resolve(SteamSlot slot, string inputName)
+        /// <paramref name="slot"/>. <paramref name="nintendoLabels"/>
+        /// (from <see cref="UsesNintendoLabels"/> on the config's
+        /// controller_type) folds label-named diamond members onto their
+        /// physical positions before resolving, so every downstream
+        /// consumer (rows, identity detection, activators, macro trigger
+        /// bits) sees the positional source. Returns null when PadForge has
+        /// no source for it (caller reports Skipped/UnknownPhysicalInput or
+        /// a more specific reason).</summary>
+        public static ResolvedSource Resolve(SteamSlot slot, string inputName, bool nintendoLabels)
         {
             string name = (inputName ?? "").Trim().ToLowerInvariant();
             switch (slot)
             {
                 case SteamSlot.ButtonDiamond:
+                    // Nintendo labels sit crossed against position:
+                    // A=east, B=south, X=north, Y=west. Fold the label onto
+                    // the position, then resolve positionally. Everything
+                    // else on the diamond is already positional.
+                    if (nintendoLabels)
+                    {
+                        name = name switch
+                        {
+                            "button_a" => "button_b",
+                            "button_b" => "button_a",
+                            "button_x" => "button_y",
+                            "button_y" => "button_x",
+                            _ => name,
+                        };
+                    }
                     return name switch
                     {
                         "button_a" => Btn("Gamepad ButtonA", "ButtonA", Gamepad.A),

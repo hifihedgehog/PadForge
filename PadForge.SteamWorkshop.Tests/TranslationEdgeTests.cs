@@ -280,6 +280,159 @@ namespace PadForge.SteamWorkshop.Tests
                 e.ReasonKey == TranslationReasons.AutomapAlsoActive);
         }
 
+        // ─── Nintendo-labeled diamond (Switch family) ───────────────────
+
+        private static string HeadWithType(string controllerType)
+            => "\"controller_mappings\"\n{\n\t\"version\"\t\"3\"\n\t\"title\"\t\"Edge\"\n"
+             + $"\t\"controller_type\"\t\"{controllerType}\"\n";
+
+        [Theory]
+        [InlineData("controller_switch_pro")]
+        [InlineData("controller_switch2_pro")]
+        [InlineData("controller_switch_joycon_left")]
+        [InlineData("controller_switch_joycon_right")]
+        [InlineData("controller_switch_joycon_pair")]
+        public void SwitchFamily_DiamondResolvesByNintendoLabel(string type)
+        {
+            // Switch configs name the diamond by label: button_a is the
+            // A-labeled cap on the EAST, which is the positional ButtonB.
+            string vdf = HeadWithType(type)
+                + Group(1, "four_buttons",
+                    "\t\t\"inputs\"\n\t\t{\n"
+                    + Inp("button_a", "key_press E")
+                    + Inp("button_x", "key_press Q")
+                    + "\t\t}\n")
+                + Preset(0, "Default", (1, "button_diamond active"))
+                + "}\n";
+            var p = Translate(vdf);
+            var e = p.KbmMappingSet.Rows.Single(r => r.Target == "KbmKey45"); // E
+            var q = p.KbmMappingSet.Rows.Single(r => r.Target == "KbmKey51"); // Q
+            Assert.Equal("Gamepad ButtonB", Assert.Single(e.Sources).Descriptor);
+            Assert.Equal("Gamepad ButtonY", Assert.Single(q.Sources).Descriptor);
+        }
+
+        [Theory]
+        [InlineData("controller_xbox360")]
+        [InlineData("controller_xboxone")]
+        [InlineData("controller_ps4")]
+        [InlineData("controller_ps5")]
+        [InlineData("controller_neptune")]
+        [InlineData("controller_steamcontroller_gordon")]
+        [InlineData("")]
+        public void NonSwitchTypes_DiamondStaysPositional(string type)
+        {
+            string vdf = (type.Length == 0 ? Head : HeadWithType(type))
+                + Group(1, "four_buttons", SimpleInput("button_a", "key_press E"))
+                + Preset(0, "Default", (1, "button_diamond active"))
+                + "}\n";
+            var p = Translate(vdf);
+            var row = Assert.Single(p.KbmMappingSet.Rows);
+            Assert.Equal("Gamepad ButtonA", Assert.Single(row.Sources).Descriptor);
+        }
+
+        [Fact]
+        public void SwitchConfig_LabelCrossBinding_IsPositionalIdentity()
+        {
+            // The corpus norm (sonic campaign, 3354224367): a Switch config
+            // that binds label-A to xinput B IS the positional passthrough.
+            // Identity detection must run on the post-swap source, so the
+            // whole crossed diamond materializes as clean identity rows.
+            string vdf = HeadWithType("controller_switch_pro")
+                + Group(1, "four_buttons",
+                    "\t\t\"inputs\"\n\t\t{\n"
+                    + Inp("button_a", "xinput_button B")
+                    + Inp("button_b", "xinput_button A")
+                    + Inp("button_x", "xinput_button Y")
+                    + Inp("button_y", "xinput_button X")
+                    + "\t\t}\n")
+                + Preset(0, "Default", (1, "button_diamond active"))
+                + "}\n";
+            var p = Translate(vdf);
+            Assert.Equal(new[] { "ButtonA", "ButtonB", "ButtonX", "ButtonY" },
+                p.XboxMappingSet.Rows.Select(r => r.Target).ToArray());
+            foreach (var row in p.XboxMappingSet.Rows)
+                Assert.Equal("Gamepad " + row.Target, Assert.Single(row.Sources).Descriptor);
+            Assert.All(p.Report.Entries, e =>
+            {
+                Assert.Equal(TranslationStatus.Clean, e.Status);
+                Assert.Equal(TranslationReasons.RowEmitted, e.ReasonKey);
+            });
+        }
+
+        [Fact]
+        public void SwitchConfig_LabelIdentityBinding_IsCrossedRow()
+        {
+            // The converse: label-A to xinput A means the EAST cap emits A,
+            // a real crossed row (ButtonA <- Gamepad ButtonB), never an
+            // identity.
+            string vdf = HeadWithType("controller_switch_pro")
+                + Group(1, "four_buttons", SimpleInput("button_a", "xinput_button A"))
+                + Preset(0, "Default", (1, "button_diamond active"))
+                + "}\n";
+            var p = Translate(vdf);
+            var row = Assert.Single(p.XboxMappingSet.Rows);
+            Assert.Equal("ButtonA", row.Target);
+            Assert.Equal("Gamepad ButtonB", Assert.Single(row.Sources).Descriptor);
+        }
+
+        [Fact]
+        public void SwitchConfig_NonDiamondInputs_Unaffected()
+        {
+            string vdf = HeadWithType("controller_switch_pro")
+                + Group(1, "dpad", SimpleInput("dpad_north", "key_press E"))
+                + Group(2, "switches",
+                    "\t\t\"inputs\"\n\t\t{\n"
+                    + Inp("button_escape", "key_press Q")
+                    + Inp("left_bumper", "key_press R")
+                    + "\t\t}\n")
+                + Preset(0, "Default", (1, "dpad active"), (2, "switch active"))
+                + "}\n";
+            var p = Translate(vdf);
+            Assert.Equal("Gamepad DPadUp",
+                p.KbmMappingSet.Rows.Single(r => r.Target == "KbmKey45").Sources.Single().Descriptor);
+            Assert.Equal("Gamepad ButtonStart",
+                p.KbmMappingSet.Rows.Single(r => r.Target == "KbmKey51").Sources.Single().Descriptor);
+            Assert.Equal("Gamepad LeftShoulder",
+                p.KbmMappingSet.Rows.Single(r => r.Target == "KbmKey52").Sources.Single().Descriptor);
+        }
+
+        [Fact]
+        public void SwitchConfig_ActivatorReference_UsesPostSwapSource()
+        {
+            // Activator references must ride the post-swap source too:
+            // label-A holds the layer from the EAST cap (Gamepad ButtonB).
+            string vdf = HeadWithType("controller_switch_pro")
+                + Group(1, "four_buttons",
+                    "\t\t\"inputs\"\n\t\t{\n"
+                    + Inp("button_a", "controller_action HOLD_LAYER 2")
+                    + "\t\t}\n")
+                + Group(2, "four_buttons", SimpleInput("button_b", "key_press E"))
+                + Preset(0, "Default", (1, "button_diamond active"))
+                + Preset(1, "Alt", (2, "button_diamond active"))
+                + "}\n";
+            var p = Translate(vdf);
+            var act = Assert.Single(p.KbmMappingSet.ShiftActivators);
+            Assert.Equal("Gamepad ButtonB", act.Descriptor);
+            // And the layer's own row reads label-B as positional south.
+            var row = Assert.Single(p.KbmMappingSet.Rows);
+            Assert.Equal("Gamepad ButtonA", Assert.Single(row.Sources).Descriptor);
+        }
+
+        [Fact]
+        public void SwitchConfig_MacroTriggerBit_UsesPostSwapSource()
+        {
+            // Release-activator key taps become macros triggered by the
+            // Xbox combined-output bit. Label-B is the positional SOUTH
+            // cap, so the trigger mask must be the Xbox A bit.
+            string vdf = HeadWithType("controller_switch_pro")
+                + Group(1, "four_buttons", SimpleInput("button_b", "key_press E", "Release"))
+                + Preset(0, "Default", (1, "button_diamond active"))
+                + "}\n";
+            var p = Translate(vdf);
+            var macro = Assert.Single(p.Macros);
+            Assert.Equal(PadForge.Engine.Gamepad.A, macro.TriggerXboxButtons);
+        }
+
         // ─── Matched-side implicit analog outputs ───────────────────────
 
         [Fact]

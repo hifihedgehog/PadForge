@@ -866,6 +866,26 @@ namespace PadForge.ViewModels
             SourceDescriptor = d;
         }
 
+        /// <summary>The primary descriptor with any legacy I/H invert/half
+        /// prefix removed (same parse as <see cref="LoadDescriptor"/> and
+        /// <see cref="RebuildDescriptor"/>). The primary KEEPS the encoded
+        /// form ("IAxis 2") while the flags are set, so every family
+        /// predicate below must test grammar on this body; testing the raw
+        /// string made the matching slider/checkbox vanish the moment the
+        /// user checked Invert or Half.</summary>
+        private static string StripLegacyPrefix(string descriptor)
+        {
+            string d = descriptor ?? string.Empty;
+            if (d.StartsWith("IH", StringComparison.OrdinalIgnoreCase))
+                return d.Substring(2);
+            if (d.StartsWith("I", StringComparison.OrdinalIgnoreCase) && d.Length > 1 && !char.IsDigit(d[1])
+                && !PadForge.Engine.Common.Mapping.SourceCoercion.IsPrefixExemptDescriptor(d))
+                return d.Substring(1);
+            if (d.StartsWith("H", StringComparison.OrdinalIgnoreCase) && d.Length > 1 && !char.IsDigit(d[1]))
+                return d.Substring(1);
+            return d;
+        }
+
         /// <summary>
         /// Loads a negative-direction descriptor, parsing any I/H prefixes.
         /// </summary>
@@ -1044,7 +1064,7 @@ namespace PadForge.ViewModels
         /// axis ("Mouse Position X/Y"). Mirrors
         /// <see cref="MappingSourceItem.IsMouseCursorSource"/>.</summary>
         public bool IsMouseCursorSource => !string.IsNullOrEmpty(_sourceDescriptor)
-            && _sourceDescriptor.StartsWith("Mouse Position ", StringComparison.Ordinal);
+            && StripLegacyPrefix(_sourceDescriptor).StartsWith("Mouse Position ", StringComparison.Ordinal);
 
         /// <summary>True when the primary source descriptor is a Wii IR pointer axis
         /// ("IR Pointer X/Y", issue #146). Mirrors
@@ -1058,7 +1078,7 @@ namespace PadForge.ViewModels
         /// legacy-row template too (a missing property leaves the failed
         /// binding at Visibility's default, which is Visible on EVERY row).</summary>
         public bool IsMouseMotionSource => !string.IsNullOrEmpty(_sourceDescriptor)
-            && _sourceDescriptor.StartsWith("Mouse Motion ", StringComparison.Ordinal);
+            && StripLegacyPrefix(_sourceDescriptor).StartsWith("Mouse Motion ", StringComparison.Ordinal);
 
         /// <summary>Per-source gyro sensitivity multiplier for the primary
         /// source. Mirrors <see cref="MappingSourceItem.GyroSensitivity"/>;
@@ -1076,7 +1096,7 @@ namespace PadForge.ViewModels
         /// Mirrors <see cref="MappingSourceItem.IsGyroSource"/> so the
         /// primary's gyro-sensitivity slider can be gated identically.</summary>
         public bool IsGyroSource => !string.IsNullOrEmpty(_sourceDescriptor)
-            && _sourceDescriptor.StartsWith("Gyro ", StringComparison.Ordinal);
+            && StripLegacyPrefix(_sourceDescriptor).StartsWith("Gyro ", StringComparison.Ordinal);
 
         /// <summary>True when the primary source carries the generic per-source
         /// Sensitivity knob (issue #9): a plain "Axis N" / "Slider N" read or an
@@ -1085,7 +1105,8 @@ namespace PadForge.ViewModels
         /// primary's slider is gated identically, mutually exclusive with the
         /// specialized-family predicates above.</summary>
         public bool IsGenericSensitivitySource =>
-            PadForge.Engine.Common.Mapping.SourceCoercion.IsGenericSensitivityDescriptor(_sourceDescriptor);
+            PadForge.Engine.Common.Mapping.SourceCoercion.IsGenericSensitivityDescriptor(
+                StripLegacyPrefix(_sourceDescriptor));
 
         /// <summary>
         /// True when the deadzone column is applicable for this row:
@@ -1096,8 +1117,9 @@ namespace PadForge.ViewModels
         {
             get
             {
-                // Check source is axis/slider.
-                var desc = _sourceDescriptor;
+                // Check source is axis/slider, on the prefix-stripped body
+                // (the primary keeps the legacy I/H encoding).
+                var desc = StripLegacyPrefix(_sourceDescriptor);
                 if (string.IsNullOrEmpty(desc)) return false;
 
                 // Engine-owned continuous families whose button-thresholding
@@ -1110,11 +1132,9 @@ namespace PadForge.ViewModels
                     || desc.StartsWith("Balance ", StringComparison.Ordinal);
                 if (!engineFamily)
                 {
-                    int start = 0;
-                    if (start < desc.Length && desc[start] == 'I') start++;
-                    if (start < desc.Length && desc[start] == 'H') start++;
-                    var body = desc.AsSpan(start);
-                    if (!body.StartsWith("Axis") && !body.StartsWith("Slider"))
+                    // Covers "Axis N" / "Slider N" plus the abstract Gamepad
+                    // sticks / triggers that canonicalize to one (#9).
+                    if (!PadForge.Engine.Common.Mapping.SourceCoercion.IsGenericSensitivityDescriptor(desc))
                         return false;
                 }
 
@@ -1143,7 +1163,11 @@ namespace PadForge.ViewModels
         {
             get
             {
-                var desc = _sourceDescriptor;
+                // Evaluate on the prefix-stripped body: the primary keeps
+                // the legacy I/H encoding while the flags are set, which
+                // otherwise hid the checkbox for every family below the
+                // moment Invert was checked.
+                var desc = StripLegacyPrefix(_sourceDescriptor);
                 if (string.IsNullOrEmpty(desc)) return false;
 
                 // Gyro is always axis-like.
@@ -1165,12 +1189,9 @@ namespace PadForge.ViewModels
                         || desc.EndsWith(" Pressure", StringComparison.Ordinal);
                 }
 
-                // Strip leading I / H prefix flags before checking the type token.
-                int start = 0;
-                if (start < desc.Length && desc[start] == 'I') start++;
-                if (start < desc.Length && desc[start] == 'H') start++;
-                var body = desc.AsSpan(start);
-                return body.StartsWith("Axis") || body.StartsWith("Slider");
+                // "Axis N" / "Slider N" plus the abstract Gamepad sticks /
+                // triggers that canonicalize to one (#9).
+                return PadForge.Engine.Common.Mapping.SourceCoercion.IsGenericSensitivityDescriptor(desc);
             }
         }
 
@@ -1364,7 +1385,10 @@ namespace PadForge.ViewModels
 
                 // Primary descriptor must be button-class (button / POV /
                 // touchpad). An axis source is bidirectional on its own.
+                // Abstract Gamepad button/D-pad aliases (#9) fold to their
+                // canonical "Button N" / "POV 0 Dir" form first.
                 var d = _sourceDescriptor.Trim();
+                d = PadForge.Engine.Common.Mapping.SourceCoercion.ResolveGamepadAlias(d) ?? d;
                 if (d.StartsWith("Button ", StringComparison.Ordinal)) return true;
                 if (d.StartsWith("POV ", StringComparison.Ordinal)) return true;
                 if (d.StartsWith("Touchpad ", StringComparison.Ordinal)) return true;

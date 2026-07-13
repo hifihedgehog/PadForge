@@ -628,9 +628,9 @@ namespace PadForge.ViewModels
         private RelayCommand _checkWorkshopUpdatesCommand;
 
         /// <summary>
-        /// Command surface for "check imported profiles for updates".
-        /// Phase D (#9) wires update detection over SteamWorkshopSource
-        /// provenance; until then the Settings button stays collapsed.
+        /// Command for "check imported profiles for updates" (#9 Phase D):
+        /// MainWindow walks the SteamWorkshopSource-stamped profiles and
+        /// compares each stored time_updated against a fresh Steam read.
         /// </summary>
         public RelayCommand CheckWorkshopUpdatesCommand =>
             _checkWorkshopUpdatesCommand ??= new RelayCommand(

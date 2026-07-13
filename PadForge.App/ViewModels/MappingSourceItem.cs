@@ -321,6 +321,9 @@ namespace PadForge.ViewModels
             {
                 var d = _descriptor?.Trim() ?? "";
                 if (d.Length == 0) return false;
+                // Abstract Gamepad button/D-pad aliases (#9) fold to their
+                // canonical "Button N" / "POV 0 Dir" form first.
+                d = PadForge.Engine.Common.Mapping.SourceCoercion.ResolveGamepadAlias(d) ?? d;
                 if (d.StartsWith("Button ", System.StringComparison.Ordinal)) return true;
                 if (d.StartsWith("POV ", System.StringComparison.Ordinal)) return true;
                 if (d.StartsWith("Touchpad ", System.StringComparison.Ordinal)) return true;
@@ -383,8 +386,10 @@ namespace PadForge.ViewModels
                 int start = 0;
                 if (start < d.Length && (d[start] == 'I' || d[start] == 'i')) start++;
                 if (start < d.Length && (d[start] == 'H' || d[start] == 'h')) start++;
-                var body = d.AsSpan(start);
-                return body.StartsWith("Axis") || body.StartsWith("Slider");
+                // "Axis N" / "Slider N" plus the abstract Gamepad sticks /
+                // triggers that canonicalize to one (#9).
+                return PadForge.Engine.Common.Mapping.SourceCoercion
+                    .IsGenericSensitivityDescriptor(d.Substring(start));
             }
         }
 
@@ -450,8 +455,11 @@ namespace PadForge.ViewModels
                 int start = 0;
                 if (start < desc.Length && (desc[start] == 'I' || desc[start] == 'i')) start++;
                 if (start < desc.Length && (desc[start] == 'H' || desc[start] == 'h')) start++;
-                var body = desc.AsSpan(start);
-                if (!body.StartsWith("Axis") && !body.StartsWith("Slider")) return false;
+                // "Axis N" / "Slider N" plus the abstract Gamepad sticks /
+                // triggers that canonicalize to one (#9).
+                if (!PadForge.Engine.Common.Mapping.SourceCoercion
+                        .IsGenericSensitivityDescriptor(desc.Substring(start)))
+                    return false;
                 return _parentTargetIsDiscrete;
             }
         }

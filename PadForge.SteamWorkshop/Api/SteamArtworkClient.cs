@@ -137,13 +137,23 @@ namespace PadForge.SteamWorkshop.Api
             return bytes != null && LooksLikeImage(bytes) ? bytes : null;
         }
 
+        /// <summary>Whole-body read budget. HttpClient.Timeout stops applying
+        /// once the headers are in under ResponseHeadersRead
+        /// (dotnet/runtime#36822), so a stalled CDN body needs its own bound.
+        /// The timeout surfaces as an OperationCanceledException without the
+        /// caller's token set, which is exactly the shape the stale-copy
+        /// fallback in <see cref="GetFileAsync"/> already catches.</summary>
+        private static readonly TimeSpan BodyReadTimeout = TimeSpan.FromSeconds(30);
+
         private static async Task<byte[]> ReadCappedAsync(HttpContent content, long cap, CancellationToken ct)
         {
-            await using var stream = await content.ReadAsStreamAsync(ct).ConfigureAwait(false);
+            using var timeout = CancellationTokenSource.CreateLinkedTokenSource(ct);
+            timeout.CancelAfter(BodyReadTimeout);
+            await using var stream = await content.ReadAsStreamAsync(timeout.Token).ConfigureAwait(false);
             using var buffer = new MemoryStream();
             var chunk = new byte[81920];
             int read;
-            while ((read = await stream.ReadAsync(chunk.AsMemory(0, chunk.Length), ct).ConfigureAwait(false)) > 0)
+            while ((read = await stream.ReadAsync(chunk.AsMemory(0, chunk.Length), timeout.Token).ConfigureAwait(false)) > 0)
             {
                 buffer.Write(chunk, 0, read);
                 if (buffer.Length > cap)

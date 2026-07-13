@@ -283,7 +283,10 @@ namespace PadForge.Engine.Common.Mapping
         private static bool ReadButtonLikeBool(CustomInputState state, string descriptor)
         {
             if (state == null || string.IsNullOrWhiteSpace(descriptor)) return false;
-            string s = descriptor.Trim();
+            // Fold "Gamepad ButtonA" / "Gamepad DPadUp" aliases (#9) to
+            // their canonical "Button N" / "POV 0 Dir" form, mirroring
+            // SourceKindRuntime's reader.
+            string s = SourceCoercion.CanonicalDescriptor(descriptor);
 
             if (s.StartsWith("Button ", StringComparison.Ordinal))
             {

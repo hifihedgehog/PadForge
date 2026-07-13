@@ -93,6 +93,11 @@ namespace PadForge.SteamWorkshop.Api
                 }
                 catch (TimeoutException)
                 {
+                    // Tear the half-open attempt down so a retry starts from a
+                    // clean state instead of racing this attempt's late
+                    // Connected/Disconnected callbacks (SteamKit asserts on
+                    // exactly that overlap).
+                    TryDisconnect();
                     throw new SteamWorkshopException("Timed out connecting to Steam.");
                 }
 
@@ -108,6 +113,8 @@ namespace PadForge.SteamWorkshop.Api
                 }
                 catch (TimeoutException)
                 {
+                    // Same clean-state teardown as the connect timeout above.
+                    TryDisconnect();
                     throw new SteamWorkshopException("Timed out during anonymous Steam logon.");
                 }
 
@@ -190,11 +197,27 @@ namespace PadForge.SteamWorkshop.Api
                 }
             }
 
-            var response = await _publishedFile.QueryFiles(request).ToTask().ConfigureAwait(false);
-            if (response.Result != EResult.OK)
-                throw new SteamWorkshopException($"Steam QueryFiles failed: {response.Result}.");
-
-            var body = response.Body;
+            CPublishedFile_QueryFiles_Response body;
+            try
+            {
+                var response = await _publishedFile.QueryFiles(request).ToTask().ConfigureAwait(false);
+                if (response.Result != EResult.OK)
+                    throw new SteamWorkshopException($"Steam QueryFiles failed: {response.Result}.");
+                body = response.Body;
+            }
+            catch (TaskCanceledException)
+            {
+                // The AsyncJob's default timeout cancels the job task. No
+                // caller token reaches this single-flight task, so a
+                // cancellation here always means Steam never answered. Wrap
+                // it so callers see the same exception type the connect and
+                // logon timeouts throw.
+                throw new SteamWorkshopException("Timed out querying the Steam Workshop.");
+            }
+            catch (AsyncJobFailedException)
+            {
+                throw new SteamWorkshopException("Steam reported the Workshop query failed.");
+            }
             if (_cache != null && body != null)
             {
                 var bytes = TrySerialize(body);
@@ -288,6 +311,21 @@ namespace PadForge.SteamWorkshop.Api
                     }
                 }
             }, token);
+        }
+
+        /// <summary>Best-effort disconnect for the timeout paths. Disconnect
+        /// is safe to call on a client that never finished connecting.</summary>
+        private void TryDisconnect()
+        {
+            try
+            {
+                _client.Disconnect();
+            }
+            catch (Exception)
+            {
+                // Teardown is best-effort. The thrown SteamWorkshopException
+                // already carries the user-facing failure.
+            }
         }
 
         private void OnConnected(SteamClient.ConnectedCallback callback) => _connectTcs?.TrySetResult(true);

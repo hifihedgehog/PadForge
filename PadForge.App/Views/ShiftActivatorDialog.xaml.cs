@@ -140,6 +140,9 @@ namespace PadForge.Views
             {
                 if (c == null) continue;
                 var d = c.Descriptor ?? "";
+                // Abstract Gamepad stick/trigger aliases (#9) fold to their
+                // canonical "Axis N" form so they land in the axis class.
+                d = PadForge.Engine.Common.Mapping.SourceCoercion.ResolveGamepadAlias(d) ?? d;
                 if (d.StartsWith("Axis ", StringComparison.OrdinalIgnoreCase)
                     || d.StartsWith("Slider ", StringComparison.OrdinalIgnoreCase))
                     axes.Add(c);

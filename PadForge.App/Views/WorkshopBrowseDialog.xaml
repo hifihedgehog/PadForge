@@ -907,10 +907,10 @@
                                             <Button MinWidth="90" Margin="0,0,8,0"
                                                     Content="{Binding Common_Cancel, Source={x:Static strings:Strings.Instance}}"
                                                     Click="Dismiss_Click"/>
-                                            <Button x:Name="SaveProfileButton" MinWidth="90" Margin="0,0,8,0"
+                                            <Button MinWidth="90" Margin="0,0,8,0"
                                                     Content="{Binding Workshop_SaveProfile, Source={x:Static strings:Strings.Instance}}"
                                                     Click="SaveProfile_Click"/>
-                                            <ui:Button x:Name="SaveAndApplyButton" MinWidth="90"
+                                            <ui:Button MinWidth="90"
                                                        Style="{StaticResource EmberPrimaryButton}"
                                                        Content="{Binding Workshop_SaveAndApply, Source={x:Static strings:Strings.Instance}}"
                                                        Click="SaveAndApply_Click"/>

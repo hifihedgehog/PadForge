@@ -204,11 +204,23 @@
              rest brush per ground, and per-ground hover MultiDataTriggers
              carry the heat/cool storyboards. Light rest matches the
              SteelLineBrush light value; dark values are unchanged. The
-             theme trigger's zero-length animations stomp any color a
-             completed hover storyboard still holds on the animation
-             layer, so a live theme flip never leaves a stale stroke.
-             The hover animations omit From so a mid-fade re-enter eases
-             from the current color instead of snapping. -->
+             theme stomp (zero-length animation clearing any color a
+             completed hover storyboard still holds on a per-element
+             brush clone) lives in ExitActions ONLY, one per ground:
+             ExitActions never run at initial style application, while
+             EnterActions on an x:Static-sourced DataTrigger DO run the
+             moment the binding transfers a matching value, mid style
+             application, before the BorderBrush setter has applied.
+             With the stomp in the light trigger's EnterActions, every
+             light/HC launch died in Storyboard.VerifyPathIsAnimatable
+             ("'BorderBrush' property does not point to a
+             DependencyObject") while MainWindow loaded DashboardPage
+             (v4.0.0 crash-on-launch, Discord report 2026-07). Dark
+             never crashed because IsDark=True keeps the light trigger
+             inactive at load. Live flips still stomp both ways via the
+             exit pair below. The hover animations omit From so a
+             mid-fade re-enter eases from the current color instead of
+             snapping. -->
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="BorderBrush">
             <Setter.Value>
@@ -216,9 +228,12 @@
             </Setter.Value>
         </Setter>
         <Style.Triggers>
+            <!-- Leaving dark = entering light: stomp held hover colors to
+                 the light rest. Actions-only twin of the trigger below; no
+                 setters, so BorderBrush precedence is unchanged. -->
             <DataTrigger Binding="{Binding IsDark, Source={x:Static common:EmberThemeProbe.Instance}}"
-                         Value="False">
-                <DataTrigger.EnterActions>
+                         Value="True">
+                <DataTrigger.ExitActions>
                     <BeginStoryboard>
                         <Storyboard>
                             <ColorAnimation
@@ -227,7 +242,10 @@
                                 Duration="0:0:0"/>
                         </Storyboard>
                     </BeginStoryboard>
-                </DataTrigger.EnterActions>
+                </DataTrigger.ExitActions>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding IsDark, Source={x:Static common:EmberThemeProbe.Instance}}"
+                         Value="False">
                 <DataTrigger.ExitActions>
                     <BeginStoryboard>
                         <Storyboard>

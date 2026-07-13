@@ -1902,11 +1902,25 @@ namespace PadForge.Engine.Common.Mapping
                 case SourceType.Axis:
                     if (idx < 0 || idx >= CustomInputState.MaxAxis) return false;
                     int av = state.Axis[idx];
+                    // Generic per-source Sensitivity (issue #9) scales the
+                    // value before the threshold test so the knob acts on
+                    // button targets too, mirroring how the gyro / mouse /
+                    // IR families consume theirs inside the read. Origin
+                    // follows the matching analog leg: deviation-from-center
+                    // for half-axis, magnitude-from-zero for full-axis
+                    // (trigger semantics). sens == 1 leaves every comparison
+                    // bit-identical to the unscaled path.
+                    float boolSens = PerSourceSensitivity(src);
                     if (src.HalfAxis)
                     {
+                        if (boolSens != 1f)
+                        {
+                            float scaled = 32768f + (av - 32768) * boolSens;
+                            av = scaled < 0f ? 0 : scaled > 65535f ? 65535 : (int)scaled;
+                        }
                         if (src.Bidirectional)
                         {
-                            // Either side of center past deadzone counts —
+                            // Either side of center past deadzone counts:
                             // |av − 32768| > 32767 * thresh. Invert is
                             // irrelevant here since mirroring around center
                             // already covers both directions.
@@ -1918,6 +1932,11 @@ namespace PadForge.Engine.Common.Mapping
                             return av < (int)(32767 * (1.0 - thresh));
                         return av > (int)(32768 + 32767 * thresh);
                     }
+                    if (boolSens != 1f)
+                    {
+                        float scaledFull = av * boolSens;
+                        av = scaledFull > 65535f ? 65535 : (int)scaledFull;
+                    }
                     int hi = (int)(thresh * 65535);
                     if (src.Invert)
                         return av < 65535 - hi;
@@ -1926,6 +1945,14 @@ namespace PadForge.Engine.Common.Mapping
                 case SourceType.Slider:
                     if (idx < 0 || idx >= CustomInputState.MaxSliders) return false;
                     int sv = state.Sliders[idx];
+                    // Same sensitivity contract as the Axis leg above,
+                    // magnitude-from-zero like the unipolar slider read.
+                    float sliderSens = PerSourceSensitivity(src);
+                    if (sliderSens != 1f)
+                    {
+                        float scaledSv = sv * sliderSens;
+                        sv = scaledSv > 65535f ? 65535 : (int)scaledSv;
+                    }
                     int shi = (int)(thresh * 65535);
                     return sv > shi;
 

@@ -111,5 +111,68 @@ namespace PadForge.Tests
         {
             Assert.Equal(1.0, new MappingSource().Sensitivity);
         }
+
+        [Fact]
+        public void Sensitivity_ScalesHalfAxisButtonThreshold()
+        {
+            // The knob must act on button targets too (the slider is visible
+            // whenever the source is a plain analog read, so an inert knob on
+            // an axis-to-button row would be a dead control). Half-axis leg:
+            // +0.4 deflection against a 50 % threshold fires only once
+            // sensitivity lifts it past the line.
+            var s = CenteredState();
+            s.Axis[0] = 32768 + 13107; // +0.4
+            var src = new MappingSource { Descriptor = "Axis 0", HalfAxis = true, Sensitivity = 1.0 };
+            Assert.False(SourceCoercion.EvaluateForButtonTarget(s, src, 50));
+
+            src.Sensitivity = 2.0; // effective +0.8 > 0.5
+            Assert.True(SourceCoercion.EvaluateForButtonTarget(s, src, 50));
+
+            src.Sensitivity = 0.5; // effective +0.2, still below
+            Assert.False(SourceCoercion.EvaluateForButtonTarget(s, src, 50));
+        }
+
+        [Fact]
+        public void Sensitivity_ScalesFullAxisButtonThreshold_TriggerAlias()
+        {
+            // Full-axis (trigger-semantics) leg through the abstract alias:
+            // ~30 % pull vs the 50 % line, magnitude-from-zero scaling.
+            var s = CenteredState();
+            s.Axis[2] = 20000;
+            var src = new MappingSource { Descriptor = "Gamepad LeftTrigger", Sensitivity = 1.0 };
+            Assert.False(SourceCoercion.EvaluateForButtonTarget(s, src, 50));
+
+            src.Sensitivity = 2.0; // 40000 > 32767
+            Assert.True(SourceCoercion.EvaluateForButtonTarget(s, src, 50));
+        }
+
+        [Fact]
+        public void Sensitivity_ScalesBidirectionalHalfAxisButton_LowerHalf()
+        {
+            // Bidirectional half-axis counts either side of center; scaling
+            // is deviation-from-center so the lower half amplifies too.
+            var s = CenteredState();
+            s.Axis[0] = 32768 - 13107; // -0.4
+            var src = new MappingSource
+            {
+                Descriptor = "Axis 0", HalfAxis = true, Bidirectional = true, Sensitivity = 1.0,
+            };
+            Assert.False(SourceCoercion.EvaluateForButtonTarget(s, src, 50));
+
+            src.Sensitivity = 2.0;
+            Assert.True(SourceCoercion.EvaluateForButtonTarget(s, src, 50));
+        }
+
+        [Fact]
+        public void Sensitivity_ScalesSliderButtonThreshold()
+        {
+            var s = CenteredState();
+            s.Sliders[0] = 20000; // ~30 % vs the 50 % line
+            var src = new MappingSource { Descriptor = "Slider 0", Sensitivity = 1.0 };
+            Assert.False(SourceCoercion.EvaluateForButtonTarget(s, src, 50));
+
+            src.Sensitivity = 2.0; // 40000 > 32767
+            Assert.True(SourceCoercion.EvaluateForButtonTarget(s, src, 50));
+        }
     }
 }

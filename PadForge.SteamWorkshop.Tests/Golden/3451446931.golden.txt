@@ -1,5 +1,6 @@
 name: EPICMAN's Steam Deck/Game Pad Layout
 description: A New Ergonomic Control Layout, aiming for a Friction-less player experience. All inputs are labeled...
+slots: kbm
 xbox rows: 0
 kbm rows: 31
   Base | KbmKey0D

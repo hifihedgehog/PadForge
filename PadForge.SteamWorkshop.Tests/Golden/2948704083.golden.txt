@@ -1,5 +1,6 @@
 name: City Skylines - Thank me later
 description: Your modified layout for this game.
+slots: kbm
 xbox rows: 0
 kbm rows: 29
   Base | KbmKey1B

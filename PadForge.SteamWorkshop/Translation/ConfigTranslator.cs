@@ -1217,6 +1217,18 @@ namespace PadForge.SteamWorkshop.Translation
             run.Report.MacroCount = profile.Macros.Count;
             run.Report.ShiftActivatorCount =
                 profile.XboxMappingSet.ShiftActivators.Count + profile.KbmMappingSet.ShiftActivators.Count;
+
+            // Slot demand (owner report 2026-07-13: a pure keyboard config
+            // imported with an empty Xbox VC). The Xbox slot is needed for
+            // rows/activators, for identity bindings that ride the default
+            // automap as a zero-row passthrough, and for macros, whose
+            // triggers read the Xbox slot's combined output.
+            profile.NeedsXboxSlot = profile.XboxMappingSet.Rows.Count > 0
+                || profile.XboxMappingSet.ShiftActivators.Count > 0
+                || run.Identities.Count > 0
+                || profile.Macros.Count > 0;
+            profile.NeedsKbmSlot = profile.KbmMappingSet.Rows.Count > 0
+                || profile.KbmMappingSet.ShiftActivators.Count > 0;
             return profile;
         }
 

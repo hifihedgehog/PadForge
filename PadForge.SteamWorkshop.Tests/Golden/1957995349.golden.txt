@@ -1,5 +1,6 @@
 name: AoE II Definitive: Controller for the Ages
 description: Comprehensive bindings with a focus on control group management.
+slots: kbm
 xbox rows: 0
 kbm rows: 25
   Base | KbmKey20

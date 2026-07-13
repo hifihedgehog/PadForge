@@ -1,5 +1,6 @@
 name: Gyrospeck's Hearts of Iron 4 V2
 description: Updated June 21, 2016.  Nearly every shortcut is accessible.  The controls are simple, yet deep.  Ha...
+slots: kbm
 xbox rows: 0
 kbm rows: 46
   Base | KbmKey1B

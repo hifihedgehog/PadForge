@@ -1,5 +1,6 @@
 name: HoMM3 HotA Deckified
 description: !! This layout needs HOTA for full functionality. !! Right trackpad/left analog for mouse, right ana...
+slots: kbm
 xbox rows: 0
 kbm rows: 23
   Base | KbmKey0D

@@ -1,5 +1,6 @@
 name: Stardew for Dualshock 4 (PS4 Controller)
 description: This takes the basic Gamepad setup with a few minor changes including L2 to quickly view the map and...
+slots: xbox kbm
 xbox rows: 4
   Base | ButtonA
     <- Gamepad Paddle2

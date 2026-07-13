@@ -1,5 +1,6 @@
 name: RCT3 Weno V0.1
 description: Track pad radial menu don't fully works
+slots: kbm
 xbox rows: 0
 kbm rows: 18
   Base | KbmKey08

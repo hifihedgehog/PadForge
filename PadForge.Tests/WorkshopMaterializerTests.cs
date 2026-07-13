@@ -23,7 +23,13 @@ namespace PadForge.Tests
     {
         private static TranslatedProfile SampleProfile()
         {
-            var t = new TranslatedProfile { Name = "Sample", Description = "d" };
+            var t = new TranslatedProfile
+            {
+                Name = "Sample",
+                Description = "d",
+                NeedsXboxSlot = true,
+                NeedsKbmSlot = true,
+            };
             t.XboxMappingSet.Rows.Add(new MappingRow
             {
                 Target = "ButtonA",
@@ -186,11 +192,46 @@ namespace PadForge.Tests
         [Fact]
         public void Materialize_NullMacros_AndEmptySets_AreValid()
         {
+            // An empty translation demands no slots at all.
             var p = WorkshopProfileMaterializer.Materialize(new TranslatedProfile { Name = "Empty" });
             Assert.Null(p.Macros);
             Assert.All(p.SlotMappingSets, s => Assert.NotNull(s));
+            Assert.DoesNotContain(true, p.SlotCreated);
+            Assert.DoesNotContain(true, p.SlotEnabled);
+        }
+
+        [Fact]
+        public void Materialize_KeyboardOnlyConfig_CreatesOnlyTheKbmSlot()
+        {
+            // Owner report 2026-07-13: a pure keyboard config (Gubble)
+            // imported with an empty Xbox VC alongside the mapped KbM slot.
+            var t = new TranslatedProfile { Name = "KbOnly", NeedsKbmSlot = true };
+            t.KbmMappingSet.Rows.Add(new MappingRow
+            {
+                Target = "KbmKey57",
+                Sources = { new MappingSource { Descriptor = "Gamepad ButtonA" } },
+            });
+
+            var p = WorkshopProfileMaterializer.Materialize(t);
+            Assert.True(p.SlotCreated[0]);
+            Assert.DoesNotContain(true, p.SlotCreated.Skip(1));
+            Assert.Equal((int)VirtualControllerType.KeyboardMouse, p.SlotControllerTypes[0]);
+            Assert.Equal("KbmKey57", p.SlotMappingSets[0].Rows[0].Target);
+        }
+
+        [Fact]
+        public void Materialize_PassthroughOnlyConfig_KeepsTheZeroRowXboxSlot()
+        {
+            // A default-automap passthrough carries zero explicit rows but
+            // still needs the Xbox slot; the translator marks the demand.
+            var t = new TranslatedProfile { Name = "Passthrough", NeedsXboxSlot = true };
+
+            var p = WorkshopProfileMaterializer.Materialize(t);
+            Assert.True(p.SlotCreated[0]);
+            Assert.DoesNotContain(true, p.SlotCreated.Skip(1));
+            Assert.Equal((int)VirtualControllerType.Xbox, p.SlotControllerTypes[0]);
             Assert.Empty(p.SlotMappingSets[0].Rows);
-            Assert.Empty(p.SlotMappingSets[1].Rows);
+            Assert.False(string.IsNullOrEmpty(p.SlotProfileIds[0]));
         }
     }
 }

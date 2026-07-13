@@ -1,4 +1,5 @@
 name: Steam Workshop Config
+slots: kbm
 xbox rows: 0
 kbm rows: 11
   Base | KbmKey0D

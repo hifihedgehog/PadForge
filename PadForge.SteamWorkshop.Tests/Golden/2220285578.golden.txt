@@ -1,5 +1,6 @@
 name: Gimler's Crusader Kings III
 description: A fairly intuitive mapping of CKIII commands and keyboard shortcuts for Steam controller. I play 100...
+slots: kbm
 xbox rows: 0
 kbm rows: 18
   Base | KbmKey1B

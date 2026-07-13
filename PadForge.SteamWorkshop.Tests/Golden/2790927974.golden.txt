@@ -1,5 +1,6 @@
 name: Steam Deck: The Gabe Generation
 description: Your modified layout for this game.
+slots: kbm
 xbox rows: 0
 kbm rows: 31
   Base | KbmKey09

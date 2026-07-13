@@ -32,6 +32,18 @@ namespace PadForge.SteamWorkshop.Translation
         /// key-on-release). The materializer builds MacroData from these.</summary>
         public List<TranslatedMacro> Macros { get; set; } = new();
 
+        /// <summary>True when the config binds the Xbox side at all: explicit
+        /// rows or activators, identity bindings riding the default automap
+        /// (a zero-row passthrough still needs the slot), or macros (their
+        /// triggers read the Xbox slot's combined output). A pure
+        /// keyboard/mouse config leaves this false and the materializer
+        /// creates no Xbox slot for it.</summary>
+        public bool NeedsXboxSlot { get; set; }
+
+        /// <summary>True when the keyboard/mouse side received rows or
+        /// activators.</summary>
+        public bool NeedsKbmSlot { get; set; }
+
         public TranslationReport Report { get; set; } = new();
     }
 

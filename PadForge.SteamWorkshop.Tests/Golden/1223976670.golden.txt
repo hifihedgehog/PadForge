@@ -1,5 +1,6 @@
 name: Don't Starve
 description: Official Don't Starve Steam Controller Configuration
+slots: xbox kbm
 xbox rows: 0
 kbm rows: 1
   Base | KbmScroll | Sum

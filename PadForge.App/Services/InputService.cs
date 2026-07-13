@@ -4691,8 +4691,15 @@ namespace PadForge.Services
                         // into PrimaryKindSource above), so extras start at index 1.
                         for (int si = 1; si < msRow2.Sources.Count; si++)
                         {
-                            mapping.ExtraSources.Add(
-                                ViewModels.MappingSourceItem.FromDomain(msRow2.Sources[si]));
+                            var extra = ViewModels.MappingSourceItem.FromDomain(msRow2.Sources[si]);
+                            // Resolve the extra's own device to a label, exactly
+                            // as the primary above does, so an empty guid reads
+                            // "(Any device)". FromDomain leaves the label empty;
+                            // without this an imported (empty-guid) secondary
+                            // showed blank, or once synced against the slot's
+                            // inputs borrowed the slot's first concrete controller.
+                            extra.DeviceLabel = ResolveDeviceLabel(msRow2.Sources[si].DeviceGuid);
+                            mapping.ExtraSources.Add(extra);
                         }
                     }
                 }

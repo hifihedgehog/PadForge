@@ -246,6 +246,21 @@ namespace PadForge.ViewModels
             get => _deviceLabel;
             set => SetProperty(ref _deviceLabel, value ?? "");
         }
+
+        /// <summary>Device label to DISPLAY for this source, honoring the
+        /// "(Any device)" contract. For a concrete-guid source the picker's
+        /// resolved choice wins (recovers the friendly name when the stored
+        /// <see cref="DeviceLabel"/> was not hydrated). For an empty-guid
+        /// ("any device") source the source's own label is used, never a
+        /// concrete device borrowed from a descriptor-only picker fallback.
+        /// Mirrors the primary row's PrimarySourceDeviceLabel, which resolves
+        /// straight from its own guid. Read by the annotation overlays and the
+        /// pipeline-chip tooltip so every device readout stays consistent with
+        /// the per-source picker subtitle.</summary>
+        public string DisplayDeviceLabel =>
+            string.IsNullOrEmpty(_deviceGuid)
+                ? _deviceLabel
+                : (SelectedInput?.DeviceLabel ?? _deviceLabel);
         public string Descriptor
         {
             get => _descriptor;
@@ -663,8 +678,16 @@ namespace PadForge.ViewModels
                 }
                 var picked = match ?? descriptorOnlyMatch;
                 _selectedInput = picked;
-                if (picked != null && !string.IsNullOrEmpty(picked.DeviceLabel))
-                    DeviceLabel = picked.DeviceLabel;
+                // Only adopt a device label when the picked choice matched on
+                // GUID. A descriptor-only fallback (empty guid = "any device",
+                // or a concrete guid whose device is offline) must NOT borrow
+                // the fallback device's name. Doing so made empty-guid secondary
+                // sources from a Workshop import display the slot's first
+                // concrete controller instead of "(Any device)". The primary row
+                // resolves its label straight from its own guid and never did
+                // this, so gating here unifies the two paths.
+                if (match != null && !string.IsNullOrEmpty(match.DeviceLabel))
+                    DeviceLabel = match.DeviceLabel;
                 OnPropertyChanged(nameof(SelectedInput));
             }
             finally

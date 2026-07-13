@@ -424,7 +424,7 @@ namespace PadForge.Views
                 else if (src.Invert) name = s.Mapping_Inv + " " + name;
                 else if (src.HalfAxis) name = s.Mapping_Half + " " + name;
                 AppendAnnotationWire(rows, src.DeviceGuid,
-                    src.SelectedInput?.DeviceLabel ?? src.DeviceLabel, name);
+                    src.DisplayDeviceLabel, name);
             }
             if (src.IsInvertOnHoldKind)
                 AppendAnnotationParamWire(rows, src, src.ParamModifier, src.ParamModifierInputChoice);

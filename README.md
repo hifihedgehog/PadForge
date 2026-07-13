@@ -548,6 +548,7 @@ PadForge stands on these projects. Please consider supporting them directly.
 | [xone](https://github.com/medusalix/xone) / [xow](https://github.com/medusalix/xow) | GIP LED command documentation corroborating xbledctl. Documentation only, no GPL code ships | GPL-2.0 |
 | [WiimoteLib](https://github.com/BrianPeek/WiimoteLib) | Wii IR camera and Balance Board behavior documentation | Ms-PL |
 | [joycon-singer](https://github.com/Sergey004/joycon-singer) | Joy-Con HD-rumble wire-format documentation, cross-checked against dekuNukem's research. Facts only | none published |
+
 Special thanks to [TechAntohere](https://github.com/TechAntohere) (u/Idkiamaguy645) for sharing his DualSense Bluetooth findings and testing, and for pointing PadForge to the working speaker recipe.
 
 ---
@@ -570,6 +571,8 @@ This project is licensed under **CC BY-NC-SA 4.0** (Creative Commons Attribution
 - **SDL3** is licensed under the [zlib License](https://github.com/libsdl-org/SDL/blob/main/LICENSE.txt).
 - **HIDMaestro** is licensed under the MIT License.
 - **WPF UI** is licensed under the MIT License.
+- **HelixToolkit** is licensed under the MIT License.
+- **CommunityToolkit.Mvvm** is licensed under the MIT License.
 - **Windows MIDI Services** is licensed under the MIT License.
 - **HidHide** is licensed under the MIT License.
 - **BthPS3** is licensed under the BSD 3-Clause License. Copyright (c) 2018-2026, Nefarius Software Solutions e.U. PadForge bundles the Microsoft-attestation-signed BthPS3 and BthPS3PSM driver binaries unmodified and installs them on demand for DualShock 3 Bluetooth support. Full license text in [LICENSE](LICENSE).

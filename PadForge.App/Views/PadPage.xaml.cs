@@ -3146,10 +3146,16 @@ namespace PadForge.Views
         // back in that case dirties the config without any user action, so
         // each handler skips the write when the stored curve already
         // normalizes to the picked preset.
+        //
+        // Each handler also requires DataContext and Tag to agree on the row:
+        // during container recycling the two rebind in separate passes, and
+        // between them a binding-driven SelectionChanged pairs the new row's
+        // preset name with the old row's item.
         private void StickPresetX_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (sender is ComboBox cb && cb.SelectedItem is string name && cb.Tag is StickConfigItem item)
             {
+                if (!ReferenceEquals(cb.DataContext, item)) return;
                 var serialized = FindPresetSerialized(name);
                 if (serialized != null && CurveLut.Normalize(item.SensitivityCurveX) != CurveLut.Normalize(serialized))
                     item.SensitivityCurveX = serialized;
@@ -3160,6 +3166,7 @@ namespace PadForge.Views
         {
             if (sender is ComboBox cb && cb.SelectedItem is string name && cb.Tag is StickConfigItem item)
             {
+                if (!ReferenceEquals(cb.DataContext, item)) return;
                 var serialized = FindPresetSerialized(name);
                 if (serialized != null && CurveLut.Normalize(item.SensitivityCurveY) != CurveLut.Normalize(serialized))
                     item.SensitivityCurveY = serialized;
@@ -3170,6 +3177,7 @@ namespace PadForge.Views
         {
             if (sender is ComboBox cb && cb.SelectedItem is string name && cb.Tag is TriggerConfigItem item)
             {
+                if (!ReferenceEquals(cb.DataContext, item)) return;
                 var serialized = FindPresetSerialized(name);
                 if (serialized != null && CurveLut.Normalize(item.SensitivityCurve) != CurveLut.Normalize(serialized))
                     item.SensitivityCurve = serialized;

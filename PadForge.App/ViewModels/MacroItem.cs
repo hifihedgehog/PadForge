@@ -2575,18 +2575,36 @@ namespace PadForge.ViewModels
             }
         }
 
+        private int[] _parsedKeyCodesCache;
+        private string _parsedKeyCodesCacheKeyString;
+        private int _parsedKeyCodesCacheKeyCode;
+
         /// <summary>
         /// Parses KeyString into an array of VK codes. Falls back to legacy KeyCode
-        /// if KeyString is empty but KeyCode is set.
+        /// if KeyString is empty but KeyCode is set. Memoized against the inputs it
+        /// was computed from because the macro executor reads this on the ~1000Hz
+        /// poll thread every held frame, where a per-call regex parse and array
+        /// allocation are not affordable.
         /// </summary>
         [System.Xml.Serialization.XmlIgnore]
         public int[] ParsedKeyCodes
         {
             get
             {
-                if (!string.IsNullOrWhiteSpace(_keyString))
-                    return ParseKeyString(_keyString);
-                return _keyCode != 0 ? new[] { _keyCode } : Array.Empty<int>();
+                string keyString = _keyString;
+                int keyCode = _keyCode;
+                var cached = _parsedKeyCodesCache;
+                if (cached != null
+                    && _parsedKeyCodesCacheKeyCode == keyCode
+                    && string.Equals(_parsedKeyCodesCacheKeyString, keyString, StringComparison.Ordinal))
+                    return cached;
+                cached = !string.IsNullOrWhiteSpace(keyString)
+                    ? ParseKeyString(keyString)
+                    : (keyCode != 0 ? new[] { keyCode } : Array.Empty<int>());
+                _parsedKeyCodesCacheKeyString = keyString;
+                _parsedKeyCodesCacheKeyCode = keyCode;
+                _parsedKeyCodesCache = cached;
+                return cached;
             }
         }
 

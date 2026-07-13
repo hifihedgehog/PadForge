@@ -78,6 +78,16 @@ namespace PadForge.Views
             return http;
         });
 
+        /// <summary>Response cap for avatar fetches, mirroring
+        /// SteamArtworkClient.MaxArtBytes.</summary>
+        private const long MaxAvatarBytes = 16L * 1024 * 1024;
+
+        /// <summary>Whole-body read budget, mirroring SteamArtworkClient:
+        /// HttpClient.Timeout stops applying once the headers are in under
+        /// ResponseHeadersRead (dotnet/runtime#36822), so a stalled avatar
+        /// body needs its own bound.</summary>
+        private static readonly TimeSpan AvatarBodyReadTimeout = TimeSpan.FromSeconds(30);
+
         /// <summary>Set by MainWindow: registers the translated profile through
         /// the same path as the .pfprofile Import button and returns the
         /// deduped display name. Second arg loads it as the active profile.</summary>
@@ -701,10 +711,59 @@ namespace PadForge.Views
                 _cache.TryGetBytes(CacheCategory.Art, key, null, out var v) ? v : null, ct);
             if (cached != null) return cached;
 
-            var bytes = await AvatarHttp.Value.GetByteArrayAsync(url, ct);
-            if (bytes is { Length: > 0 })
+            var bytes = await FetchAvatarAsync(url, ct);
+            if (bytes != null)
                 await Task.Run(() => _cache.PutBytes(CacheCategory.Art, key, bytes), CancellationToken.None);
             return bytes;
+        }
+
+        /// <summary>SteamArtworkClient.GetRawAsync's hardening applied to the
+        /// avatar host: 16 MB response cap and an image-signature sniff. Null
+        /// for anything oversized or non-image (the initials tile stands in).</summary>
+        private static async Task<byte[]> FetchAvatarAsync(string url, CancellationToken ct)
+        {
+            using var response = await AvatarHttp.Value
+                .GetAsync(url, HttpCompletionOption.ResponseHeadersRead, ct);
+            if (!response.IsSuccessStatusCode)
+                return null;
+
+            var declared = response.Content.Headers.ContentLength;
+            if (declared.HasValue && declared.Value > MaxAvatarBytes)
+                return null;
+
+            using var timeout = CancellationTokenSource.CreateLinkedTokenSource(ct);
+            timeout.CancelAfter(AvatarBodyReadTimeout);
+            await using var stream = await response.Content.ReadAsStreamAsync(timeout.Token);
+            using var buffer = new MemoryStream();
+            var chunk = new byte[81920];
+            int read;
+            while ((read = await stream.ReadAsync(chunk.AsMemory(0, chunk.Length), timeout.Token)) > 0)
+            {
+                buffer.Write(chunk, 0, read);
+                if (buffer.Length > MaxAvatarBytes)
+                    return null; // oversized: treat as unusable
+            }
+
+            var bytes = buffer.ToArray();
+            return LooksLikeAvatarImage(bytes) ? bytes : null;
+        }
+
+        /// <summary>Mirrors SteamArtworkClient.LooksLikeImage.</summary>
+        private static bool LooksLikeAvatarImage(byte[] b)
+        {
+            if (b.Length < 4) return false;
+
+            // JPEG
+            if (b[0] == 0xFF && b[1] == 0xD8 && b[2] == 0xFF) return true;
+            // PNG
+            if (b[0] == 0x89 && b[1] == 0x50 && b[2] == 0x4E && b[3] == 0x47) return true;
+            // GIF
+            if (b[0] == 0x47 && b[1] == 0x49 && b[2] == 0x46) return true;
+            // WEBP (RIFF....WEBP)
+            if (b.Length >= 12 && b[0] == 0x52 && b[1] == 0x49 && b[2] == 0x46 && b[3] == 0x46 &&
+                b[8] == 0x57 && b[9] == 0x45 && b[10] == 0x42 && b[11] == 0x50) return true;
+
+            return false;
         }
 
         // ─────────────────────────────────────────────

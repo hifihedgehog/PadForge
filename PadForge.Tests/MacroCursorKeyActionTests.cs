@@ -65,6 +65,29 @@ namespace PadForge.Tests
         }
 
         [Fact]
+        public void ParsedKeyCodes_MemoizedUntilInputsChange()
+        {
+            var a = new MacroAction { KeyString = "{Control}{Alt}" };
+            var first = a.ParsedKeyCodes;
+            Assert.Equal(2, first.Length);
+            Assert.Same(first, a.ParsedKeyCodes);
+
+            a.KeyString = "{Delete}";
+            var second = a.ParsedKeyCodes;
+            Assert.NotSame(first, second);
+            Assert.Single(second);
+            Assert.Same(second, a.ParsedKeyCodes);
+
+            var legacy = new MacroAction { KeyCode = 0x41 };
+            var firstLegacy = legacy.ParsedKeyCodes;
+            Assert.Equal(new[] { 0x41 }, firstLegacy);
+            Assert.Same(firstLegacy, legacy.ParsedKeyCodes);
+
+            legacy.KeyCode = 0x42;
+            Assert.Equal(new[] { 0x42 }, legacy.ParsedKeyCodes);
+        }
+
+        [Fact]
         public void NewActionTypes_AppendedAtEnumTail()
         {
             // The macro clipboard serializes MacroActionType numerically, so the

@@ -12,9 +12,7 @@ namespace PadForge.SteamWorkshop.Cache
     public static class CacheTtls
     {
         public static readonly TimeSpan Games = TimeSpan.FromHours(24);
-        public static readonly TimeSpan Apps = TimeSpan.FromDays(7);
         public static readonly TimeSpan Search = TimeSpan.FromHours(24);
-        public static readonly TimeSpan Details = TimeSpan.FromHours(24);
         public static readonly TimeSpan Personas = TimeSpan.FromDays(7);
 
         /// <summary>
@@ -63,9 +61,7 @@ namespace PadForge.SteamWorkshop.Cache
             new Dictionary<CacheCategory, CategoryInfo>
             {
                 [CacheCategory.Games] = new CategoryInfo("games", BudgetGroup.General, ".json"),
-                [CacheCategory.Apps] = new CategoryInfo("apps", BudgetGroup.General, ".json"),
                 [CacheCategory.Search] = new CategoryInfo("search", BudgetGroup.General, ".json"),
-                [CacheCategory.Details] = new CategoryInfo("details", BudgetGroup.General, ".json"),
                 [CacheCategory.Vdf] = new CategoryInfo("vdf", BudgetGroup.General, ".vdf"),
                 [CacheCategory.Personas] = new CategoryInfo("personas", BudgetGroup.General, ".json"),
                 [CacheCategory.Art] = new CategoryInfo("art", BudgetGroup.Art, ".img"),

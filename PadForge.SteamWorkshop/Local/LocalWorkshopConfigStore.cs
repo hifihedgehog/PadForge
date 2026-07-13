@@ -4,6 +4,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using Microsoft.Win32;
+using PadForge.SteamWorkshop.Api;
 using PadForge.SteamWorkshop.Vdf;
 
 namespace PadForge.SteamWorkshop.Local
@@ -20,10 +21,6 @@ namespace PadForge.SteamWorkshop.Local
     /// </summary>
     public static class LocalWorkshopConfigStore
     {
-        /// <summary>The Workshop bucket Steam files all controller configs under
-        /// ("Steam Controller Configs" on SteamDB).</summary>
-        public const int ControllerConfigsAppId = 241100;
-
         /// <summary>
         /// Finds and reads the local copy of a subscribed config. Null when no Steam
         /// install is present, no library holds the item, or the file is unreadable
@@ -68,7 +65,7 @@ namespace PadForge.SteamWorkshop.Local
                 if (string.IsNullOrWhiteSpace(root)) continue;
 
                 var dir = Path.Combine(root, "steamapps", "workshop", "content",
-                    ControllerConfigsAppId.ToString(CultureInfo.InvariantCulture),
+                    SteamWorkshopClient.ControllerConfigsAppId.ToString(CultureInfo.InvariantCulture),
                     publishedFileId.ToString(CultureInfo.InvariantCulture));
                 if (!Directory.Exists(dir)) continue;
 

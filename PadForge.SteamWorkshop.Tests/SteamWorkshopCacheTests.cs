@@ -42,8 +42,8 @@ namespace PadForge.SteamWorkshop.Tests
         public void String_round_trips()
         {
             var cache = NewCache();
-            cache.PutString(CacheCategory.Details, "123", "hello");
-            Assert.True(cache.TryGetString(CacheCategory.Details, "123", CacheTtls.Details, out var value));
+            cache.PutString(CacheCategory.Search, "123", "hello");
+            Assert.True(cache.TryGetString(CacheCategory.Search, "123", CacheTtls.Search, out var value));
             Assert.Equal("hello", value);
         }
 
@@ -61,8 +61,8 @@ namespace PadForge.SteamWorkshop.Tests
         public void Json_round_trips()
         {
             var cache = NewCache();
-            cache.PutJson(CacheCategory.Apps, "440", new Sample { Name = "TF2", Id = 440 });
-            Assert.True(cache.TryGetJson<Sample>(CacheCategory.Apps, "440", CacheTtls.Apps, out var sample));
+            cache.PutJson(CacheCategory.Personas, "440", new Sample { Name = "TF2", Id = 440 });
+            Assert.True(cache.TryGetJson<Sample>(CacheCategory.Personas, "440", CacheTtls.Personas, out var sample));
             Assert.Equal("TF2", sample.Name);
             Assert.Equal(440, sample.Id);
         }
@@ -71,7 +71,7 @@ namespace PadForge.SteamWorkshop.Tests
         public void Absent_key_is_a_miss()
         {
             var cache = NewCache();
-            Assert.False(cache.TryGetString(CacheCategory.Details, "nope", CacheTtls.Details, out var value));
+            Assert.False(cache.TryGetString(CacheCategory.Search, "nope", CacheTtls.Search, out var value));
             Assert.Null(value);
         }
 
@@ -102,13 +102,13 @@ namespace PadForge.SteamWorkshop.Tests
         public void Entry_expires_after_ttl()
         {
             var cache = NewCache();
-            cache.PutString(CacheCategory.Details, "k", "v");
+            cache.PutString(CacheCategory.Search, "k", "v");
 
             _now = _now.AddHours(1);
-            Assert.True(cache.TryGetString(CacheCategory.Details, "k", TimeSpan.FromHours(24), out _));
+            Assert.True(cache.TryGetString(CacheCategory.Search, "k", TimeSpan.FromHours(24), out _));
 
             _now = _now.AddHours(48); // 49 h total, past the 24 h TTL
-            Assert.False(cache.TryGetString(CacheCategory.Details, "k", TimeSpan.FromHours(24), out _));
+            Assert.False(cache.TryGetString(CacheCategory.Search, "k", TimeSpan.FromHours(24), out _));
         }
 
         [Fact]
@@ -127,15 +127,15 @@ namespace PadForge.SteamWorkshop.Tests
             var payload = new string('x', 150); // 150 bytes each
 
             var t0 = _now;
-            _now = t0; cache.PutString(CacheCategory.Details, "a", payload);
-            _now = t0.AddMinutes(1); cache.PutString(CacheCategory.Details, "b", payload);
-            _now = t0.AddMinutes(2); Assert.True(cache.TryGetString(CacheCategory.Details, "a", null, out _)); // touch a
-            _now = t0.AddMinutes(3); cache.PutString(CacheCategory.Details, "c", payload); // 450 > 320 -> evict
+            _now = t0; cache.PutString(CacheCategory.Search, "a", payload);
+            _now = t0.AddMinutes(1); cache.PutString(CacheCategory.Search, "b", payload);
+            _now = t0.AddMinutes(2); Assert.True(cache.TryGetString(CacheCategory.Search, "a", null, out _)); // touch a
+            _now = t0.AddMinutes(3); cache.PutString(CacheCategory.Search, "c", payload); // 450 > 320 -> evict
 
-            Assert.False(cache.TryGetString(CacheCategory.Details, "b", null, out _)); // b was least recently used
-            Assert.True(cache.TryGetString(CacheCategory.Details, "a", null, out _));
-            Assert.True(cache.TryGetString(CacheCategory.Details, "c", null, out _));
-            Assert.True(cache.BudgetUsedBytes(CacheCategory.Details) <= 320);
+            Assert.False(cache.TryGetString(CacheCategory.Search, "b", null, out _)); // b was least recently used
+            Assert.True(cache.TryGetString(CacheCategory.Search, "a", null, out _));
+            Assert.True(cache.TryGetString(CacheCategory.Search, "c", null, out _));
+            Assert.True(cache.BudgetUsedBytes(CacheCategory.Search) <= 320);
         }
 
         [Fact]
@@ -148,39 +148,39 @@ namespace PadForge.SteamWorkshop.Tests
             for (var i = 0; i < 6; i++)
             {
                 _now = _now.AddMinutes(1);
-                cache.PutString(CacheCategory.Details, "g" + i, new string('x', 150));
+                cache.PutString(CacheCategory.Search, "g" + i, new string('x', 150));
             }
 
             Assert.True(cache.TryGetBytes(CacheCategory.Art, "hero", null, out _));
-            Assert.True(cache.BudgetUsedBytes(CacheCategory.Details) <= 300);
+            Assert.True(cache.BudgetUsedBytes(CacheCategory.Search) <= 300);
         }
 
         [Fact]
         public void Overwrite_is_atomic_and_leaves_no_temp_files()
         {
             var cache = NewCache();
-            cache.PutString(CacheCategory.Details, "k", "first");
-            cache.PutString(CacheCategory.Details, "k", "second");
+            cache.PutString(CacheCategory.Search, "k", "first");
+            cache.PutString(CacheCategory.Search, "k", "second");
 
-            Assert.True(cache.TryGetString(CacheCategory.Details, "k", null, out var value));
+            Assert.True(cache.TryGetString(CacheCategory.Search, "k", null, out var value));
             Assert.Equal("second", value);
 
-            var detailsDir = Path.Combine(_root, "details");
-            Assert.DoesNotContain(Directory.EnumerateFiles(detailsDir), f => f.Contains(".tmp-"));
+            var searchDir = Path.Combine(_root, "search");
+            Assert.DoesNotContain(Directory.EnumerateFiles(searchDir), f => f.Contains(".tmp-"));
         }
 
         [Fact]
         public void Clear_removes_all_entries()
         {
             var cache = NewCache();
-            cache.PutString(CacheCategory.Details, "k", "v");
+            cache.PutString(CacheCategory.Search, "k", "v");
             cache.PutBytes(CacheCategory.Art, "a", new byte[] { 1, 2, 3 });
 
             cache.Clear();
 
-            Assert.False(cache.TryGetString(CacheCategory.Details, "k", null, out _));
+            Assert.False(cache.TryGetString(CacheCategory.Search, "k", null, out _));
             Assert.False(cache.TryGetBytes(CacheCategory.Art, "a", null, out _));
-            Assert.Equal(0, cache.BudgetUsedBytes(CacheCategory.Details));
+            Assert.Equal(0, cache.BudgetUsedBytes(CacheCategory.Search));
             Assert.Equal(0, cache.BudgetUsedBytes(CacheCategory.Art));
         }
 
@@ -188,8 +188,8 @@ namespace PadForge.SteamWorkshop.Tests
         public void Corrupt_json_is_treated_as_a_miss()
         {
             var cache = NewCache();
-            cache.PutString(CacheCategory.Apps, "bad", "{ not valid json ");
-            Assert.False(cache.TryGetJson<Sample>(CacheCategory.Apps, "bad", null, out _));
+            cache.PutString(CacheCategory.Personas, "bad", "{ not valid json ");
+            Assert.False(cache.TryGetJson<Sample>(CacheCategory.Personas, "bad", null, out _));
         }
 
         [Fact]

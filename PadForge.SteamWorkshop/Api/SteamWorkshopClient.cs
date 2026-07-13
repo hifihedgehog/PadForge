@@ -55,6 +55,7 @@ namespace PadForge.SteamWorkshop.Api
         private TaskCompletionSource<EResult> _logonTcs;
         private TaskCompletionSource<bool> _flushTcs;
         private volatile bool _loggedOn;
+        private volatile bool _disposed;
         private DateTime _nextRequestUtc = DateTime.MinValue;
 
         /// <summary>Sentinel posted through the SteamKit callback queue to prove every
@@ -89,9 +90,22 @@ namespace PadForge.SteamWorkshop.Api
         /// </summary>
         public async Task EnsureLoggedOnAsync(CancellationToken ct = default)
         {
+            if (_disposed)
+                throw new SteamWorkshopException("The Steam client is disposed.");
             if (_loggedOn && _client.IsConnected) return;
 
-            await _logonGate.WaitAsync(ct).ConfigureAwait(false);
+            // The browse dialog disposes this client on close, racing any
+            // in-flight logon. The gate's ObjectDisposedException must surface
+            // as the typed error every caller already handles, not escape as
+            // an unobserved ODE on the single-flight task.
+            try
+            {
+                await _logonGate.WaitAsync(ct).ConfigureAwait(false);
+            }
+            catch (ObjectDisposedException)
+            {
+                throw new SteamWorkshopException("The Steam client is disposed.");
+            }
             try
             {
                 if (_loggedOn && _client.IsConnected) return;
@@ -166,7 +180,14 @@ namespace PadForge.SteamWorkshop.Api
             }
             finally
             {
-                _logonGate.Release();
+                try
+                {
+                    _logonGate.Release();
+                }
+                catch (ObjectDisposedException)
+                {
+                    throw new SteamWorkshopException("The Steam client is disposed.");
+                }
             }
         }
 
@@ -415,6 +436,8 @@ namespace PadForge.SteamWorkshop.Api
 
         public async ValueTask DisposeAsync()
         {
+            _disposed = true;
+
             // CMClient.Disconnect blocks until the connection-setup task completes,
             // and that task can include the network-bound server-directory fetch. An
             // async method runs synchronously to its first await, and the browse

@@ -64,6 +64,17 @@ namespace PadForge.Tests
             Assert.True(mi.IsDeadZoneApplicable); // engine family reads the per-source DeadZone
         }
 
+        [Theory]
+        [InlineData("IR Pointer X")]
+        [InlineData("IIR Pointer X")]
+        public void MappingItem_IrPointerGate_SurvivesPrefix(string encoded)
+        {
+            var mi = new MappingItem("A", "ButtonA", MappingCategory.Buttons);
+            mi.LoadDescriptor(encoded);
+            Assert.True(mi.IsIrPointerSource);
+            Assert.False(mi.IsGenericSensitivitySource);
+        }
+
         // ── MappingSourceItem (grid extras, clean descriptors) ──
 
         [Fact]

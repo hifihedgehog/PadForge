@@ -329,8 +329,8 @@
             <Border Background="#D9070A0E"/>
 
             <Border x:Name="WelcomePanel"
-                    Background="{DynamicResource SteelCardBrush}"
-                    BorderBrush="{DynamicResource SteelLineBrush}" BorderThickness="1"
+                    Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
+                    BorderBrush="{DynamicResource ControlElevationBorderBrush}" BorderThickness="1"
                     CornerRadius="12" Padding="40,32"
                     HorizontalAlignment="Center" VerticalAlignment="Center"
                     MaxWidth="470">
@@ -344,10 +344,11 @@
                     </Path>
                     <TextBlock Text="{Binding FirstRun_Title, Source={x:Static strings:Strings.Instance}}"
                                FontFamily="{StaticResource DisplayFontFamily}"
-                               FontSize="24" FontWeight="SemiBold" Foreground="#E9EDF4"
+                               FontSize="24" FontWeight="SemiBold"
+                               Foreground="{DynamicResource TextFillColorPrimaryBrush}"
                                HorizontalAlignment="Center" Margin="0,16,0,6"/>
                     <TextBlock Text="{Binding FirstRun_Body, Source={x:Static strings:Strings.Instance}}"
-                               Foreground="#94A3BD" TextWrapping="Wrap" TextAlignment="Center"
+                               Foreground="{DynamicResource TextFillColorSecondaryBrush}" TextWrapping="Wrap" TextAlignment="Center"
                                MaxWidth="360"/>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,22,0,0">
                         <!-- No Appearance=Primary: EmberPrimaryButton is the
@@ -371,8 +372,8 @@
                     </Border.Effect>
                 </Border>
                 <Border x:Name="TourTip"
-                        Background="{DynamicResource SteelRaisedBrush}"
-                        BorderBrush="{DynamicResource SteelLineBrush}" BorderThickness="1"
+                        Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
+                        BorderBrush="{DynamicResource ControlElevationBorderBrush}" BorderThickness="1"
                         CornerRadius="10" Padding="16" Width="320">
                     <StackPanel>
                         <TextBlock x:Name="TourStepLabel"

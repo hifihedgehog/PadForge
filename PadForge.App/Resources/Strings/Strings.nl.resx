@@ -2363,4 +2363,116 @@
   <data name="Pad_ResetShiftDelay" xml:space="preserve">
     <value>De vertraging resetten naar 0 (de laag reageert direct).</value>
   </data>
+  <data name="MacroAction_Type_MoveMouseToScreenPosition" xml:space="preserve"><value>Muis naar positie verplaatsen</value></data>
+  <data name="MacroAction_MoveMouseToScreenPosition_Tooltip" xml:space="preserve"><value>Verplaatst de bureaubladcursor bij indrukken naar een vaste schermpositie. Gebruik Op scherm kiezen om een punt met de cursor vast te leggen.</value></data>
+  <data name="MacroAction_MoveMouseToScreenPosition_Format" xml:space="preserve"><value>Muis verplaatsen naar {0}, {1}</value></data>
+  <data name="MacroAction_Type_RepeatKeyWhileHeld" xml:space="preserve"><value>Toets herhalen zolang ingedrukt</value></data>
+  <data name="MacroAction_RepeatKeyWhileHeld_Tooltip" xml:space="preserve"><value>Verstuurt de toets met een vast interval zolang de trigger ingedrukt blijft (autofire / turbo).</value></data>
+  <data name="MacroAction_RepeatKeyWhileHeld_Format" xml:space="preserve"><value>{0} elke {1} ms herhalen</value></data>
+  <data name="Macro_MouseX_Label" xml:space="preserve"><value>Muis X</value></data>
+  <data name="Macro_MouseY_Label" xml:space="preserve"><value>Muis Y</value></data>
+  <data name="Macro_RepeatInterval_Label" xml:space="preserve"><value>Interval</value></data>
+  <data name="Macro_PickOnScreen" xml:space="preserve"><value>Op scherm kiezen</value></data>
+  <data name="Macro_PickOnScreen_Countdown_Format" xml:space="preserve"><value>Vastleggen over {0}...</value></data>
+  <data name="Macro_PickOnScreen_Tooltip" xml:space="preserve"><value>Klik en beweeg de cursor daarna naar het doel. De positie wordt na een korte aftelling vastgelegd.</value></data>
+  <data name="Mapping_TouchpadFingerPressure_Format" xml:space="preserve"><value>Touchpad {0} vinger {1} druk</value></data>
+  <data name="Mapping_Sensitivity" xml:space="preserve"><value>Gevoeligheid</value></data>
+  <data name="Mapping_Sensitivity_Tooltip" xml:space="preserve"><value>Gevoeligheid per bron voor een gewone as, schuifregelaar of gamepad-stick / -trigger. 1.0 laat de invoer ongewijzigd. Waarden boven 1.0 bereiken volledige uitslag met minder beweging. Waarden onder 1.0 hebben meer nodig.</value></data>
+  <data name="Mapping_Gamepad_Format" xml:space="preserve"><value>Gamepad {0}</value></data>
+  <data name="Settings_CommunityConfigs" xml:space="preserve"><value>Communityconfiguraties</value></data>
+  <data name="Settings_CommunityConfigsDesc" xml:space="preserve"><value>Blader door door de community gemaakte Steam Input-controllerconfiguraties en vertaal ze naar PadForge-profielen. PadForge maakt alleen rechtstreeks verbinding met Steam (store.steampowered.com, api.steampowered.com, steamcommunity.com, cdn.steamusercontent.com, cdn.cloudflare.steamstatic.com) wanneer u zoekt en wanneer u een configuratie opent. Uw zoektekst en de gekozen configuratie zijn de enige verzonden gegevens. Geen telemetrie, geen externe dienst, geen Steam-aanmelding.</value></data>
+  <data name="Settings_EnableCommunityConfigs" xml:space="preserve"><value>Communityconfiguraties inschakelen</value></data>
+  <data name="Settings_ShowLegacyConfigs" xml:space="preserve"><value>Verouderde Workshop-configuraties tonen</value></data>
+  <data name="Settings_ShowLegacyConfigsTooltip" xml:space="preserve"><value>Configuraties van vóór 2017 hebben geen downloadbaar bestand op het CDN van Steam. PadForge toont ze met een Legacy-badge en opent ze in plaats daarvan op de Steam Workshop.</value></data>
+  <data name="Settings_ClearWorkshopCache" xml:space="preserve"><value>Gecachte configuraties wissen</value></data>
+  <data name="Settings_CheckWorkshopUpdates" xml:space="preserve"><value>Geïmporteerde profielen op updates controleren</value></data>
+  <data name="Status_WorkshopCacheCleared" xml:space="preserve"><value>Workshop-cache gewist</value></data>
+  <data name="Profiles_BrowseCommunity" xml:space="preserve"><value>Communityconfiguraties verkennen</value></data>
+  <data name="Workshop_DialogTitle" xml:space="preserve"><value>Communityconfiguraties verkennen</value></data>
+  <data name="Workshop_DialogPath" xml:space="preserve"><value>Profielen · Steam Workshop</value></data>
+  <data name="Workshop_ColdTitle" xml:space="preserve"><value>De smidse is koud</value></data>
+  <data name="Workshop_ColdBody" xml:space="preserve"><value>Bij het verkennen van communityconfiguraties maakt PadForge rechtstreeks verbinding met Steam, alleen wanneer u zoekt, nooit bij het opstarten.</value></data>
+  <data name="Workshop_EnableButton" xml:space="preserve"><value>Communityconfiguraties inschakelen</value></data>
+  <data name="Workshop_SearchPlaceholder" xml:space="preserve"><value>Spellen zoeken</value></data>
+  <data name="Workshop_GamesCount_Format" xml:space="preserve"><value>{0} spellen</value></data>
+  <data name="Workshop_NoGamesFound" xml:space="preserve"><value>Geen spellen gevonden in de Steam-winkel.</value></data>
+  <data name="Workshop_SearchingSteam" xml:space="preserve"><value>Steam doorzoeken…</value></data>
+  <data name="Workshop_ReadingConfigs" xml:space="preserve"><value>Configuraties lezen van Steam…</value></data>
+  <data name="Workshop_ReadingConfig" xml:space="preserve"><value>Configuratie lezen van Steam…</value></data>
+  <data name="Workshop_SortedByRating" xml:space="preserve"><value>gesorteerd op beoordeling</value></data>
+  <data name="Workshop_Found_Format" xml:space="preserve"><value>{0} gevonden</value></data>
+  <data name="Workshop_ConfigsCount_Format" xml:space="preserve"><value>{0} configuraties</value></data>
+  <data name="Workshop_CommunityConfigsSuffix" xml:space="preserve"><value>communityconfiguraties</value></data>
+  <data name="Workshop_ControllerSupportFull" xml:space="preserve"><value>volledige controllerondersteuning</value></data>
+  <data name="Workshop_ControllerSupportPartial" xml:space="preserve"><value>gedeeltelijke controllerondersteuning</value></data>
+  <data name="Workshop_BackToSearch" xml:space="preserve"><value>Spellen zoeken</value></data>
+  <data name="Workshop_ByLine_Format" xml:space="preserve"><value>door {0} · bijgewerkt {1}</value></data>
+  <data name="Workshop_TimeToday" xml:space="preserve"><value>vandaag</value></data>
+  <data name="Workshop_TimeDays_Format" xml:space="preserve"><value>{0} d geleden</value></data>
+  <data name="Workshop_TimeMonths_Format" xml:space="preserve"><value>{0} mnd geleden</value></data>
+  <data name="Workshop_TimeYears_Format" xml:space="preserve"><value>{0} jr geleden</value></data>
+  <data name="Workshop_Subs_Format" xml:space="preserve"><value>{0} abonnees</value></data>
+  <data name="Workshop_TagAll" xml:space="preserve"><value>Alle</value></data>
+  <data name="Workshop_EmptyTitle" xml:space="preserve"><value>Nog geen configuraties voor dit spel</value></data>
+  <data name="Workshop_EmptyBody_Format" xml:space="preserve"><value>De Steam Workshop heeft geen community-controllerconfiguraties voor {0}. U kunt de eerste zijn: maak er een in Steam, en hij verschijnt hier.</value></data>
+  <data name="Workshop_ErrorTitle" xml:space="preserve"><value>Steam is onbereikbaar</value></data>
+  <data name="Workshop_ErrorBody" xml:space="preserve"><value>Kon Steam niet bereiken. Controleer uw verbinding. Al geïmporteerde profielen blijven werken: ze staan op deze pc.</value></data>
+  <data name="Workshop_Retry" xml:space="preserve"><value>Opnieuw proberen</value></data>
+  <data name="Workshop_LegacyBody" xml:space="preserve"><value>Deze configuratie uit het 2016-tijdperk dateert van vóór Steams configuratie-CDN. Abonneer u erop in Steam, dan leest PadForge hem uit uw Steam-map.</value></data>
+  <data name="Workshop_LegacyOpenButton" xml:space="preserve"><value>Openen in Steam Workshop</value></data>
+  <data name="Workshop_ManifestIdle" xml:space="preserve"><value>Selecteer een configuratie om het vertaalmanifest te lezen.</value></data>
+  <data name="Workshop_BindingsRead_Format" xml:space="preserve"><value>{0} bindingen gelezen</value></data>
+  <data name="Workshop_StatClean" xml:space="preserve"><value>Schoon</value></data>
+  <data name="Workshop_StatPartial" xml:space="preserve"><value>Gedeeltelijk</value></data>
+  <data name="Workshop_StatSkipped" xml:space="preserve"><value>Overgeslagen</value></data>
+  <data name="Workshop_SaveProfile" xml:space="preserve"><value>Profiel opslaan</value></data>
+  <data name="Workshop_SaveAndApply" xml:space="preserve"><value>Opslaan en toepassen</value></data>
+  <data name="Workshop_GroupOther" xml:space="preserve"><value>Bindingen</value></data>
+  <data name="Status_WorkshopImported_Format" xml:space="preserve"><value>'{0}' geïmporteerd: {1} schoon, {2} gedeeltelijk, {3} overgeslagen</value></data>
+  <data name="Workshop_Tr_DefaultAutomapPassthrough" xml:space="preserve"><value>{0} bindingen gedekt door de standaard automatische toewijzing</value></data>
+  <data name="Workshop_Tr_RowEmitted" xml:space="preserve"><value>vertaald</value></data>
+  <data name="Workshop_Tr_MacroEmitted" xml:space="preserve"><value>vertaald als macro</value></data>
+  <data name="Workshop_Tr_ShiftLayerEmitted" xml:space="preserve"><value>laag: {0}</value></data>
+  <data name="Workshop_Tr_TrackpadFeatureRequired" xml:space="preserve"><value>vereist de touchpadfunctie {0}</value></data>
+  <data name="Workshop_Tr_TouchpadTuningNotPerRow" xml:space="preserve"><value>touchpad-afstelling geldt per pad, niet per rij</value></data>
+  <data name="Workshop_Tr_SoftPressApproximated" xml:space="preserve"><value>Soft_Press benaderd als indrukdrempel</value></data>
+  <data name="Workshop_Tr_TriggerThresholdApproximated" xml:space="preserve"><value>triggerdrempel benaderd</value></data>
+  <data name="Workshop_Tr_MacroTriggerViaXboxOutput" xml:space="preserve"><value>vuurt via de gecombineerde uitvoer van het Xbox-slot</value></data>
+  <data name="Workshop_Tr_NoDeviceFreeTrigger" xml:space="preserve"><value>geen apparaatvrije trigger voor deze invoer</value></data>
+  <data name="Workshop_Tr_GameActionsNotSupported" xml:space="preserve"><value>{0} in-game acties, alleen Steam, geen koppeling aan spelzijde</value></data>
+  <data name="Workshop_Tr_SteamSystemAction" xml:space="preserve"><value>Steam-clientactie {0}, geen equivalent</value></data>
+  <data name="Workshop_Tr_UnsupportedControllerAction" xml:space="preserve"><value>controlleractie {0} niet ondersteund</value></data>
+  <data name="Workshop_Tr_UnknownBindingType" xml:space="preserve"><value>onbekend bindingstype {0}</value></data>
+  <data name="Workshop_Tr_UnknownKey" xml:space="preserve"><value>onbekende toets {0}</value></data>
+  <data name="Workshop_Tr_UnsupportedKey" xml:space="preserve"><value>toets {0} heeft geen Windows-equivalent</value></data>
+  <data name="Workshop_Tr_UnknownMouseButton" xml:space="preserve"><value>onbekende muisknop {0}</value></data>
+  <data name="Workshop_Tr_UnknownXInputButton" xml:space="preserve"><value>onbekende XInput-knop {0}</value></data>
+  <data name="Workshop_Tr_UnknownPhysicalInput" xml:space="preserve"><value>onbekende invoer {1} op {0}</value></data>
+  <data name="Workshop_Tr_UnknownGroupMode" xml:space="preserve"><value>onbekende groepsmodus {0}</value></data>
+  <data name="Workshop_Tr_TouchMenuNeedsOverlay" xml:space="preserve"><value>touch-menu-overlay vervallen ({0} cellen)</value></data>
+  <data name="Workshop_Tr_RadialMenuNeedsOverlay" xml:space="preserve"><value>radiaal-menu-overlay vervallen ({0} sectoren)</value></data>
+  <data name="Workshop_Tr_MouseRegionNotSupported" xml:space="preserve"><value>cursorgebiedbeperking niet ondersteund</value></data>
+  <data name="Workshop_Tr_ScrollWheelModeNotSupported" xml:space="preserve"><value>scrollwielmodus niet ondersteund</value></data>
+  <data name="Workshop_Tr_EdgeInputNotSupported" xml:space="preserve"><value>randinvoer niet ondersteund</value></data>
+  <data name="Workshop_Tr_ReleaseActivatorNotSupported" xml:space="preserve"><value>loslaat-activator hier niet ondersteund</value></data>
+  <data name="Workshop_Tr_LongPressNotSupported" xml:space="preserve"><value>lang-indrukken-activator hier niet ondersteund</value></data>
+  <data name="Workshop_Tr_DoublePressNotSupported" xml:space="preserve"><value>dubbel-indrukken-activator hier niet ondersteund</value></data>
+  <data name="Workshop_Tr_UnknownActivatorType" xml:space="preserve"><value>onbekende activator {0}</value></data>
+  <data name="Workshop_Tr_RepeatDropped" xml:space="preserve"><value>automatische herhaling vervallen</value></data>
+  <data name="Workshop_Tr_MissingGroup" xml:space="preserve"><value>configuratie verwijst naar ontbrekende groep {0}</value></data>
+  <data name="Workshop_Tr_MissingModeShiftGroup" xml:space="preserve"><value>modusverschuiving op {0} verwijst naar ontbrekende groep {1}</value></data>
+  <data name="Workshop_Tr_MissingPreset" xml:space="preserve"><value>configuratie verwijst naar ontbrekende preset {0}</value></data>
+  <data name="Workshop_Tr_ReferenceCycle" xml:space="preserve"><value>verwijzingscyclus bij groep {0}</value></data>
+  <data name="Workshop_Tr_RemoveLayerApproximated" xml:space="preserve"><value>remove_layer benaderd als uitschakelen</value></data>
+  <data name="Workshop_Tr_ActivatorInputNotSupported" xml:space="preserve"><value>deze invoer kan geen laag-activator aansturen</value></data>
+  <data name="Workshop_Tr_ClickGateDropped" xml:space="preserve"><value>requires_click-voorwaarde vervallen</value></data>
+  <data name="Workshop_Tr_RowCapExceeded" xml:space="preserve"><value>rijlimiet overschreden voor het {0}-slot</value></data>
+  <data name="Workshop_Tr_PresetHasNoActivator" xml:space="preserve"><value>geen binding schakelt naar preset {0}</value></data>
+  <data name="Status_WorkshopUpdatesOptInRequired" xml:space="preserve"><value>Schakel communityconfiguraties in om op updates te controleren</value></data>
+  <data name="Status_WorkshopNoImportedProfiles" xml:space="preserve"><value>Nog geen profielen geïmporteerd van de Steam Workshop</value></data>
+  <data name="Status_WorkshopCheckingUpdates" xml:space="preserve"><value>Steam Workshop controleren op updates…</value></data>
+  <data name="Status_WorkshopProfilesCurrent_Format" xml:space="preserve"><value>Geïmporteerde profielen zijn up-to-date ({0} gecontroleerd)</value></data>
+  <data name="Workshop_UpdatesTitle" xml:space="preserve"><value>Workshop-updates</value></data>
+  <data name="Workshop_UpdatesBody" xml:space="preserve"><value>Deze geïmporteerde profielen hebben nieuwere versies op de Steam Workshop. Importeer ze opnieuw via Communityconfiguraties verkennen om de wijzigingen over te nemen.</value></data>
+  <data name="Workshop_UpdateRow_Format" xml:space="preserve"><value>{0} · {1}</value></data>
 </root>

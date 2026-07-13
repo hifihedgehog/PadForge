@@ -2343,4 +2343,116 @@
   <data name="Pad_ResetShiftDelay" xml:space="preserve">
     <value>遅延を 0 にリセット (レイヤーは即座に反応)。</value>
   </data>
+  <data name="MacroAction_Type_MoveMouseToScreenPosition" xml:space="preserve"><value>マウスを位置へ移動</value></data>
+  <data name="MacroAction_MoveMouseToScreenPosition_Tooltip" xml:space="preserve"><value>押すとデスクトップのカーソルを画面上の固定位置へ移動します。「画面上で選択」を使うと、カーソルで位置を取得できます。</value></data>
+  <data name="MacroAction_MoveMouseToScreenPosition_Format" xml:space="preserve"><value>マウスを {0}, {1} へ移動</value></data>
+  <data name="MacroAction_Type_RepeatKeyWhileHeld" xml:space="preserve"><value>押している間キーをリピート</value></data>
+  <data name="MacroAction_RepeatKeyWhileHeld_Tooltip" xml:space="preserve"><value>トリガーを押している間、一定間隔でキーを送信します (連射 / ターボ)。</value></data>
+  <data name="MacroAction_RepeatKeyWhileHeld_Format" xml:space="preserve"><value>{0} を {1} ms ごとにリピート</value></data>
+  <data name="Macro_MouseX_Label" xml:space="preserve"><value>マウス X</value></data>
+  <data name="Macro_MouseY_Label" xml:space="preserve"><value>マウス Y</value></data>
+  <data name="Macro_RepeatInterval_Label" xml:space="preserve"><value>間隔</value></data>
+  <data name="Macro_PickOnScreen" xml:space="preserve"><value>画面上で選択</value></data>
+  <data name="Macro_PickOnScreen_Countdown_Format" xml:space="preserve"><value>あと {0} 秒でキャプチャ...</value></data>
+  <data name="Macro_PickOnScreen_Tooltip" xml:space="preserve"><value>クリックしてから、カーソルを目標の位置へ移動してください。短いカウントダウンの後に位置が取得されます。</value></data>
+  <data name="Mapping_TouchpadFingerPressure_Format" xml:space="preserve"><value>タッチパッド {0} 指 {1} 圧力</value></data>
+  <data name="Mapping_Sensitivity" xml:space="preserve"><value>感度</value></data>
+  <data name="Mapping_Sensitivity_Tooltip" xml:space="preserve"><value>通常の軸、スライダー、ゲームパッドのスティック / トリガーに対するソースごとの感度です。1.0 は入力をそのまま通します。1.0 より大きい値では少ない操作量で最大に到達します。1.0 より小さい値ではより多くの操作量が必要です。</value></data>
+  <data name="Mapping_Gamepad_Format" xml:space="preserve"><value>ゲームパッド {0}</value></data>
+  <data name="Settings_CommunityConfigs" xml:space="preserve"><value>コミュニティコンフィグ</value></data>
+  <data name="Settings_CommunityConfigsDesc" xml:space="preserve"><value>コミュニティ製の Steam Input コントローラーコンフィグを閲覧し、PadForge プロファイルへ変換します。PadForge が Steam (store.steampowered.com、api.steampowered.com、steamcommunity.com、cdn.steamusercontent.com、cdn.cloudflare.steamstatic.com) に直接接続するのは、検索したときとコンフィグを開いたときだけです。送信されるデータは検索テキストと選択したコンフィグのみです。テレメトリーなし、サードパーティサービスなし、Steam サインイン不要です。</value></data>
+  <data name="Settings_EnableCommunityConfigs" xml:space="preserve"><value>コミュニティコンフィグを有効にする</value></data>
+  <data name="Settings_ShowLegacyConfigs" xml:space="preserve"><value>レガシーワークショップコンフィグを表示</value></data>
+  <data name="Settings_ShowLegacyConfigsTooltip" xml:space="preserve"><value>2017 年より前のコンフィグには Steam の CDN にダウンロード可能なファイルがありません。PadForge はレガシーバッジ付きで一覧に表示し、代わりに Steam ワークショップで開きます。</value></data>
+  <data name="Settings_ClearWorkshopCache" xml:space="preserve"><value>キャッシュ済みコンフィグをクリア</value></data>
+  <data name="Settings_CheckWorkshopUpdates" xml:space="preserve"><value>インポート済みプロファイルの更新を確認</value></data>
+  <data name="Status_WorkshopCacheCleared" xml:space="preserve"><value>ワークショップキャッシュをクリアしました</value></data>
+  <data name="Profiles_BrowseCommunity" xml:space="preserve"><value>コミュニティコンフィグを閲覧</value></data>
+  <data name="Workshop_DialogTitle" xml:space="preserve"><value>コミュニティコンフィグを閲覧</value></data>
+  <data name="Workshop_DialogPath" xml:space="preserve"><value>プロファイル · Steam ワークショップ</value></data>
+  <data name="Workshop_ColdTitle" xml:space="preserve"><value>炉は冷えています</value></data>
+  <data name="Workshop_ColdBody" xml:space="preserve"><value>コミュニティコンフィグの閲覧時のみ PadForge は Steam に直接接続します。検索したときだけで、起動時には接続しません。</value></data>
+  <data name="Workshop_EnableButton" xml:space="preserve"><value>コミュニティコンフィグを有効にする</value></data>
+  <data name="Workshop_SearchPlaceholder" xml:space="preserve"><value>ゲームを検索</value></data>
+  <data name="Workshop_GamesCount_Format" xml:space="preserve"><value>{0} 件のゲーム</value></data>
+  <data name="Workshop_NoGamesFound" xml:space="preserve"><value>Steam ストアでゲームが見つかりませんでした。</value></data>
+  <data name="Workshop_SearchingSteam" xml:space="preserve"><value>Steam を検索しています…</value></data>
+  <data name="Workshop_ReadingConfigs" xml:space="preserve"><value>Steam からコンフィグを読み込んでいます…</value></data>
+  <data name="Workshop_ReadingConfig" xml:space="preserve"><value>Steam からコンフィグを読み込んでいます…</value></data>
+  <data name="Workshop_SortedByRating" xml:space="preserve"><value>評価順</value></data>
+  <data name="Workshop_Found_Format" xml:space="preserve"><value>{0} 件見つかりました</value></data>
+  <data name="Workshop_ConfigsCount_Format" xml:space="preserve"><value>{0} 件のコンフィグ</value></data>
+  <data name="Workshop_CommunityConfigsSuffix" xml:space="preserve"><value>件のコミュニティコンフィグ</value></data>
+  <data name="Workshop_ControllerSupportFull" xml:space="preserve"><value>フルコントローラーサポート</value></data>
+  <data name="Workshop_ControllerSupportPartial" xml:space="preserve"><value>部分的なコントローラーサポート</value></data>
+  <data name="Workshop_BackToSearch" xml:space="preserve"><value>ゲームを検索</value></data>
+  <data name="Workshop_ByLine_Format" xml:space="preserve"><value>作者: {0} · 更新: {1}</value></data>
+  <data name="Workshop_TimeToday" xml:space="preserve"><value>今日</value></data>
+  <data name="Workshop_TimeDays_Format" xml:space="preserve"><value>{0} 日前</value></data>
+  <data name="Workshop_TimeMonths_Format" xml:space="preserve"><value>{0} か月前</value></data>
+  <data name="Workshop_TimeYears_Format" xml:space="preserve"><value>{0} 年前</value></data>
+  <data name="Workshop_Subs_Format" xml:space="preserve"><value>登録者 {0}</value></data>
+  <data name="Workshop_TagAll" xml:space="preserve"><value>すべて</value></data>
+  <data name="Workshop_EmptyTitle" xml:space="preserve"><value>このゲームのコンフィグはまだありません</value></data>
+  <data name="Workshop_EmptyBody_Format" xml:space="preserve"><value>Steam ワークショップには {0} のコミュニティ製コントローラーコンフィグがありません。最初の作成者になれます。Steam で作成すれば、ここに表示されます。</value></data>
+  <data name="Workshop_ErrorTitle" xml:space="preserve"><value>Steam に接続できません</value></data>
+  <data name="Workshop_ErrorBody" xml:space="preserve"><value>Steam に到達できませんでした。接続を確認してください。インポート済みのプロファイルはこの PC に保存されているため、引き続き使用できます。</value></data>
+  <data name="Workshop_Retry" xml:space="preserve"><value>再試行</value></data>
+  <data name="Workshop_LegacyBody" xml:space="preserve"><value>この 2016 年前後のコンフィグは Steam のコンフィグ CDN より前のものです。Steam でサブスクライブすると、PadForge が Steam フォルダーから読み込みます。</value></data>
+  <data name="Workshop_LegacyOpenButton" xml:space="preserve"><value>Steam ワークショップで開く</value></data>
+  <data name="Workshop_ManifestIdle" xml:space="preserve"><value>コンフィグを選択すると変換マニフェストを読み込みます。</value></data>
+  <data name="Workshop_BindingsRead_Format" xml:space="preserve"><value>{0} 件のバインドを読み込みました</value></data>
+  <data name="Workshop_StatClean" xml:space="preserve"><value>完全</value></data>
+  <data name="Workshop_StatPartial" xml:space="preserve"><value>部分</value></data>
+  <data name="Workshop_StatSkipped" xml:space="preserve"><value>スキップ</value></data>
+  <data name="Workshop_SaveProfile" xml:space="preserve"><value>プロファイルを保存</value></data>
+  <data name="Workshop_SaveAndApply" xml:space="preserve"><value>保存して適用</value></data>
+  <data name="Workshop_GroupOther" xml:space="preserve"><value>バインド</value></data>
+  <data name="Status_WorkshopImported_Format" xml:space="preserve"><value>「{0}」をインポートしました: 完全 {1}、部分 {2}、スキップ {3}</value></data>
+  <data name="Workshop_Tr_DefaultAutomapPassthrough" xml:space="preserve"><value>{0} 件のバインドは既定の自動マッピングでカバーされています</value></data>
+  <data name="Workshop_Tr_RowEmitted" xml:space="preserve"><value>変換済み</value></data>
+  <data name="Workshop_Tr_MacroEmitted" xml:space="preserve"><value>マクロとして変換</value></data>
+  <data name="Workshop_Tr_ShiftLayerEmitted" xml:space="preserve"><value>レイヤー: {0}</value></data>
+  <data name="Workshop_Tr_TrackpadFeatureRequired" xml:space="preserve"><value>タッチパッド機能 {0} が必要</value></data>
+  <data name="Workshop_Tr_TouchpadTuningNotPerRow" xml:space="preserve"><value>タッチパッドの調整は行ごとではなくパッドごとに適用されます</value></data>
+  <data name="Workshop_Tr_SoftPressApproximated" xml:space="preserve"><value>Soft_Press は押し込みしきい値として近似</value></data>
+  <data name="Workshop_Tr_TriggerThresholdApproximated" xml:space="preserve"><value>トリガーしきい値を近似</value></data>
+  <data name="Workshop_Tr_MacroTriggerViaXboxOutput" xml:space="preserve"><value>Xbox スロットの結合出力から発火します</value></data>
+  <data name="Workshop_Tr_NoDeviceFreeTrigger" xml:space="preserve"><value>この入力にはデバイス非依存のトリガーがありません</value></data>
+  <data name="Workshop_Tr_GameActionsNotSupported" xml:space="preserve"><value>{0} 件のゲーム内アクション、Steam 専用、ゲーム側フックなし</value></data>
+  <data name="Workshop_Tr_SteamSystemAction" xml:space="preserve"><value>Steam クライアントアクション {0}、対応するものがありません</value></data>
+  <data name="Workshop_Tr_UnsupportedControllerAction" xml:space="preserve"><value>コントローラーアクション {0} は未対応</value></data>
+  <data name="Workshop_Tr_UnknownBindingType" xml:space="preserve"><value>不明なバインドタイプ {0}</value></data>
+  <data name="Workshop_Tr_UnknownKey" xml:space="preserve"><value>不明なキー {0}</value></data>
+  <data name="Workshop_Tr_UnsupportedKey" xml:space="preserve"><value>キー {0} には Windows の対応キーがありません</value></data>
+  <data name="Workshop_Tr_UnknownMouseButton" xml:space="preserve"><value>不明なマウスボタン {0}</value></data>
+  <data name="Workshop_Tr_UnknownXInputButton" xml:space="preserve"><value>不明な XInput ボタン {0}</value></data>
+  <data name="Workshop_Tr_UnknownPhysicalInput" xml:space="preserve"><value>{0} 上の不明な入力 {1}</value></data>
+  <data name="Workshop_Tr_UnknownGroupMode" xml:space="preserve"><value>不明なグループモード {0}</value></data>
+  <data name="Workshop_Tr_TouchMenuNeedsOverlay" xml:space="preserve"><value>タッチメニューオーバーレイを破棄 ({0} セル)</value></data>
+  <data name="Workshop_Tr_RadialMenuNeedsOverlay" xml:space="preserve"><value>ラジアルメニューオーバーレイを破棄 ({0} セクター)</value></data>
+  <data name="Workshop_Tr_MouseRegionNotSupported" xml:space="preserve"><value>カーソル領域の制限は未対応</value></data>
+  <data name="Workshop_Tr_ScrollWheelModeNotSupported" xml:space="preserve"><value>スクロールホイールモードは未対応</value></data>
+  <data name="Workshop_Tr_EdgeInputNotSupported" xml:space="preserve"><value>エッジ入力は未対応</value></data>
+  <data name="Workshop_Tr_ReleaseActivatorNotSupported" xml:space="preserve"><value>リリースアクティベーターはここでは未対応</value></data>
+  <data name="Workshop_Tr_LongPressNotSupported" xml:space="preserve"><value>長押しアクティベーターはここでは未対応</value></data>
+  <data name="Workshop_Tr_DoublePressNotSupported" xml:space="preserve"><value>ダブルプレスアクティベーターはここでは未対応</value></data>
+  <data name="Workshop_Tr_UnknownActivatorType" xml:space="preserve"><value>不明なアクティベーター {0}</value></data>
+  <data name="Workshop_Tr_RepeatDropped" xml:space="preserve"><value>自動リピートを破棄</value></data>
+  <data name="Workshop_Tr_MissingGroup" xml:space="preserve"><value>コンフィグが存在しないグループ {0} を参照しています</value></data>
+  <data name="Workshop_Tr_MissingModeShiftGroup" xml:space="preserve"><value>{0} のモードシフトが存在しないグループ {1} を参照しています</value></data>
+  <data name="Workshop_Tr_MissingPreset" xml:space="preserve"><value>コンフィグが存在しないプリセット {0} を参照しています</value></data>
+  <data name="Workshop_Tr_ReferenceCycle" xml:space="preserve"><value>グループ {0} で参照の循環</value></data>
+  <data name="Workshop_Tr_RemoveLayerApproximated" xml:space="preserve"><value>remove_layer はトグルオフとして近似</value></data>
+  <data name="Workshop_Tr_ActivatorInputNotSupported" xml:space="preserve"><value>この入力ではレイヤーアクティベーターを駆動できません</value></data>
+  <data name="Workshop_Tr_ClickGateDropped" xml:space="preserve"><value>requires_click 条件を破棄</value></data>
+  <data name="Workshop_Tr_RowCapExceeded" xml:space="preserve"><value>{0} スロットの行数上限を超過</value></data>
+  <data name="Workshop_Tr_PresetHasNoActivator" xml:space="preserve"><value>プリセット {0} へ切り替えるバインドがありません</value></data>
+  <data name="Status_WorkshopUpdatesOptInRequired" xml:space="preserve"><value>更新を確認するにはコミュニティコンフィグを有効にしてください</value></data>
+  <data name="Status_WorkshopNoImportedProfiles" xml:space="preserve"><value>Steam ワークショップからインポートしたプロファイルはまだありません</value></data>
+  <data name="Status_WorkshopCheckingUpdates" xml:space="preserve"><value>Steam ワークショップの更新を確認しています…</value></data>
+  <data name="Status_WorkshopProfilesCurrent_Format" xml:space="preserve"><value>インポート済みプロファイルは最新です ({0} 件確認)</value></data>
+  <data name="Workshop_UpdatesTitle" xml:space="preserve"><value>ワークショップの更新</value></data>
+  <data name="Workshop_UpdatesBody" xml:space="preserve"><value>これらのインポート済みプロファイルには Steam ワークショップに新しいバージョンがあります。「コミュニティコンフィグを閲覧」から再インポートすると変更を取り込めます。</value></data>
+  <data name="Workshop_UpdateRow_Format" xml:space="preserve"><value>{0} · {1}</value></data>
 </root>

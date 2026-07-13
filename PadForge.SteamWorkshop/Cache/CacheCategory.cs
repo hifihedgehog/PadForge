@@ -11,14 +11,8 @@ namespace PadForge.SteamWorkshop.Cache
         /// <summary>Store-search results keyed by query (24 h).</summary>
         Games,
 
-        /// <summary>App metadata keyed by app id (7 d).</summary>
-        Apps,
-
         /// <summary>Workshop QueryFiles results keyed by app/rank/page (24 h).</summary>
         Search,
-
-        /// <summary>Per-file published-file metadata keyed by file id (24 h).</summary>
-        Details,
 
         /// <summary>Raw VDF blobs keyed by file id + time_updated (immutable, evict by budget).</summary>
         Vdf,

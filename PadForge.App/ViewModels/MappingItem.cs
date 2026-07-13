@@ -1070,7 +1070,7 @@ namespace PadForge.ViewModels
         /// ("IR Pointer X/Y", issue #146). Mirrors
         /// <see cref="MappingSourceItem.IsIrPointerSource"/>.</summary>
         public bool IsIrPointerSource => !string.IsNullOrEmpty(_sourceDescriptor)
-            && _sourceDescriptor.StartsWith("IR Pointer ", StringComparison.Ordinal);
+            && StripLegacyPrefix(_sourceDescriptor).StartsWith("IR Pointer ", StringComparison.Ordinal);
 
         /// <summary>True for a "Mouse Motion X/Y" primary source (#154).
         /// Mirrors <see cref="MappingSourceItem.IsMouseMotionSource"/> so the

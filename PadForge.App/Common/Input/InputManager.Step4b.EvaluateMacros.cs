@@ -948,11 +948,11 @@ namespace PadForge.Common.Input
         /// one pulse per <see cref="MacroAction.IntervalMs"/>.</summary>
         private static void ExecuteRepeatKeyWhileHeld(MacroAction action)
         {
-            var keyCodes = action.ParsedKeyCodes;
-            if (keyCodes.Length == 0) return;
             var now = DateTime.UtcNow;
             if ((now - action.RepeatKeyLastFireUtc).TotalMilliseconds < action.IntervalMs)
                 return;
+            var keyCodes = action.ParsedKeyCodes;
+            if (keyCodes.Length == 0) return;
             action.RepeatKeyLastFireUtc = now;
             for (int k = 0; k < keyCodes.Length; k++)
                 SendKeyInput((ushort)keyCodes[k], keyUp: false);

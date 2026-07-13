@@ -1284,21 +1284,6 @@ namespace PadForge.Engine.Common.Mapping
             => !string.IsNullOrEmpty(descriptor)
             && string.Equals(descriptor.Trim(), MotionLeanAuxDescriptor, StringComparison.OrdinalIgnoreCase);
 
-        /// <summary>Public form of <see cref="ReadCalibratedGyroRate"/>:
-        /// returns the bias-subtracted gyro rate (rad/s) for the source's
-        /// descriptor on the given state, or 0 for non-gyro descriptors /
-        /// unknown axes / null state.Gyro. <paramref name="slotIndex"/>
-        /// selects which slot's per-(device, slot) bias to subtract; pass
-        /// -1 for callers that have no slot context (no bias subtraction
-        /// is applied in that case — the read passes through raw).</summary>
-        public static float GetCalibratedGyroRate(CustomInputState state, MappingSource src, int slotIndex = -1)
-        {
-            if (src == null) return 0f;
-            int axis = ParseGyroAxisIndex(src.Descriptor);
-            if (axis < 0) return 0f;
-            return ReadCalibratedGyroRate(state, axis, src.DeviceGuid, slotIndex);
-        }
-
         /// <summary>Returns a gyro reading processed through the full
         /// per-device tuning chain:
         /// <list type="number">

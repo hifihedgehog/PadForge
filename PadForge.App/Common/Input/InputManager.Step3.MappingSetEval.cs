@@ -637,8 +637,25 @@ namespace PadForge.Common.Input
             var set = _suppressedSourcesBySlot[slotIndex];
             if (set == null || set.Count == 0) return false;
             // Key shape mirrors the population loop below.
-            string key = (deviceGuid ?? "") + "|" + (descriptor ?? "");
+            string key = (deviceGuid ?? "") + "|" + CanonicalPostponeDescriptor(descriptor);
             return set.Contains(key);
+        }
+
+        /// <summary>Folds a "Gamepad ..." alias to the canonical per-device
+        /// descriptor (the public shape of Engine's internal
+        /// CanonicalDescriptor) so the suppression key and its lookup agree
+        /// when the activator and a source row spell the same control
+        /// differently ("Gamepad ButtonBack" vs "Button 6"). Non-alias
+        /// descriptors pass through unchanged, with no allocation, because
+        /// this runs per row per frame on the poll thread.</summary>
+        private static string CanonicalPostponeDescriptor(string descriptor)
+        {
+            if (SourceCoercion.IsGamepadAliasDescriptor(descriptor))
+            {
+                string resolved = SourceCoercion.ResolveGamepadAlias(descriptor);
+                if (!string.IsNullOrEmpty(resolved)) return resolved;
+            }
+            return descriptor ?? "";
         }
 
         /// <summary>Clears every slot's shift runtime state. Called from
@@ -747,18 +764,18 @@ namespace PadForge.Common.Input
                 if (string.Equals(a.Mode, "Cycle", System.StringComparison.Ordinal))
                 {
                     if (rt.WasDown[i] && !string.IsNullOrEmpty(a.Descriptor))
-                        suppressed.Add((a.DeviceGuid ?? "") + "|" + a.Descriptor);
+                        suppressed.Add((a.DeviceGuid ?? "") + "|" + CanonicalPostponeDescriptor(a.Descriptor));
                     if (rt.CyclePrevWasDown[i] && !string.IsNullOrEmpty(a.CyclePrevDescriptor))
-                        suppressed.Add((a.CyclePrevDeviceGuid ?? "") + "|" + a.CyclePrevDescriptor);
+                        suppressed.Add((a.CyclePrevDeviceGuid ?? "") + "|" + CanonicalPostponeDescriptor(a.CyclePrevDescriptor));
                     continue;
                 }
                 if (!rt.WasDown[i]) continue;
                 if (!string.IsNullOrEmpty(a.Descriptor))
-                    suppressed.Add((a.DeviceGuid ?? "") + "|" + a.Descriptor);
+                    suppressed.Add((a.DeviceGuid ?? "") + "|" + CanonicalPostponeDescriptor(a.Descriptor));
                 if (string.Equals(a.Kind, "Chord", System.StringComparison.Ordinal)
                     && !string.IsNullOrEmpty(a.ChordSecondDescriptor))
                 {
-                    suppressed.Add((a.ChordSecondDeviceGuid ?? "") + "|" + a.ChordSecondDescriptor);
+                    suppressed.Add((a.ChordSecondDeviceGuid ?? "") + "|" + CanonicalPostponeDescriptor(a.ChordSecondDescriptor));
                 }
             }
 

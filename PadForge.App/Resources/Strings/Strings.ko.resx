@@ -2455,4 +2455,10 @@
   <data name="Workshop_UpdatesTitle" xml:space="preserve"><value>창작마당 업데이트</value></data>
   <data name="Workshop_UpdatesBody" xml:space="preserve"><value>이 가져온 프로필들에는 Steam 창작마당에 더 새로운 버전이 있습니다. 변경 사항을 반영하려면 커뮤니티 구성 둘러보기에서 다시 가져오십시오.</value></data>
   <data name="Workshop_UpdateRow_Format" xml:space="preserve"><value>{0} · {1}</value></data>
+  <data name="About_SteamKit2" xml:space="preserve"><value>SteamKit2</value></data>
+  <data name="About_SteamKit2Desc" xml:space="preserve"><value>익명 세션으로 Steam 창작마당 컨트롤러 구성을 가져오는 Steam 네트워크 클라이언트. Ryan Stecker와 SteamRE Team 제작. LGPL-2.1.</value></data>
+  <data name="About_ProtobufNet" xml:space="preserve"><value>protobuf-net</value></data>
+  <data name="About_ProtobufNetDesc" xml:space="preserve"><value>SteamKit2가 Steam 통신 프로토콜에 사용하는 Protocol Buffers 직렬 변환기. Marc Gravell 제작. Apache-2.0.</value></data>
+  <data name="About_ZstdSharp" xml:space="preserve"><value>ZstdSharp</value></data>
+  <data name="About_ZstdSharpDesc" xml:space="preserve"><value>SteamKit2가 Steam 디포 청크에 사용하는 Zstandard 압축 해제. Oleg Stepanischev가 zstd 라이브러리를 C#으로 이식한 것. MIT.</value></data>
 </root>

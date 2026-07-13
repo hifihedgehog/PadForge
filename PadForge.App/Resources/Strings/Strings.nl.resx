@@ -2475,4 +2475,10 @@
   <data name="Workshop_UpdatesTitle" xml:space="preserve"><value>Workshop-updates</value></data>
   <data name="Workshop_UpdatesBody" xml:space="preserve"><value>Deze geïmporteerde profielen hebben nieuwere versies op de Steam Workshop. Importeer ze opnieuw via Communityconfiguraties verkennen om de wijzigingen over te nemen.</value></data>
   <data name="Workshop_UpdateRow_Format" xml:space="preserve"><value>{0} · {1}</value></data>
+  <data name="About_SteamKit2" xml:space="preserve"><value>SteamKit2</value></data>
+  <data name="About_SteamKit2Desc" xml:space="preserve"><value>Steam-netwerkclient die Steam Workshop-controllerconfiguraties ophaalt via een anonieme sessie, door Ryan Stecker en het SteamRE Team. LGPL-2.1.</value></data>
+  <data name="About_ProtobufNet" xml:space="preserve"><value>protobuf-net</value></data>
+  <data name="About_ProtobufNetDesc" xml:space="preserve"><value>Protocol Buffers-serializer die SteamKit2 gebruikt voor het netwerkprotocol van Steam, door Marc Gravell. Apache-2.0.</value></data>
+  <data name="About_ZstdSharp" xml:space="preserve"><value>ZstdSharp</value></data>
+  <data name="About_ZstdSharpDesc" xml:space="preserve"><value>Zstandard-decompressie die SteamKit2 gebruikt voor Steam-depotchunks, een C#-port van de zstd-bibliotheek door Oleg Stepanischev. MIT.</value></data>
 </root>

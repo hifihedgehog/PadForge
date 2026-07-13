@@ -2455,4 +2455,10 @@
   <data name="Workshop_UpdatesTitle" xml:space="preserve"><value>Actualizaciones del Workshop</value></data>
   <data name="Workshop_UpdatesBody" xml:space="preserve"><value>Estos perfiles importados tienen versiones más recientes en Steam Workshop. Vuelva a importarlos desde Explorar configuraciones de la comunidad para incorporar los cambios.</value></data>
   <data name="Workshop_UpdateRow_Format" xml:space="preserve"><value>{0} · {1}</value></data>
+  <data name="About_SteamKit2" xml:space="preserve"><value>SteamKit2</value></data>
+  <data name="About_SteamKit2Desc" xml:space="preserve"><value>Cliente de red de Steam que obtiene configuraciones de mando de Steam Workshop mediante una sesión anónima, por Ryan Stecker y el SteamRE Team. LGPL-2.1.</value></data>
+  <data name="About_ProtobufNet" xml:space="preserve"><value>protobuf-net</value></data>
+  <data name="About_ProtobufNetDesc" xml:space="preserve"><value>Serializador de Protocol Buffers que SteamKit2 usa para el protocolo de red de Steam, por Marc Gravell. Apache-2.0.</value></data>
+  <data name="About_ZstdSharp" xml:space="preserve"><value>ZstdSharp</value></data>
+  <data name="About_ZstdSharpDesc" xml:space="preserve"><value>Descompresión Zstandard que SteamKit2 usa para los fragmentos de depot de Steam, una adaptación a C# de la biblioteca zstd por Oleg Stepanischev. MIT.</value></data>
 </root>

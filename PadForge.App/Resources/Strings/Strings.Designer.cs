@@ -482,6 +482,12 @@ public class Strings : INotifyPropertyChanged
     public string About_SteamHapticsSingerDesc => Get("About_SteamHapticsSingerDesc");
     public string About_Hitboxer => Get("About_Hitboxer");
     public string About_HitboxerDesc => Get("About_HitboxerDesc");
+    public string About_SteamKit2 => Get("About_SteamKit2");
+    public string About_SteamKit2Desc => Get("About_SteamKit2Desc");
+    public string About_ProtobufNet => Get("About_ProtobufNet");
+    public string About_ProtobufNetDesc => Get("About_ProtobufNetDesc");
+    public string About_ZstdSharp => Get("About_ZstdSharp");
+    public string About_ZstdSharpDesc => Get("About_ZstdSharpDesc");
     public string About_Dolphin => Get("About_Dolphin");
     public string About_DolphinDesc => Get("About_DolphinDesc");
     public string About_Ds4Windows => Get("About_Ds4Windows");

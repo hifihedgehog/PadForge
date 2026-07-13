@@ -2455,4 +2455,10 @@
   <data name="Workshop_UpdatesTitle" xml:space="preserve"><value>ワークショップの更新</value></data>
   <data name="Workshop_UpdatesBody" xml:space="preserve"><value>これらのインポート済みプロファイルには Steam ワークショップに新しいバージョンがあります。「コミュニティコンフィグを閲覧」から再インポートすると変更を取り込めます。</value></data>
   <data name="Workshop_UpdateRow_Format" xml:space="preserve"><value>{0} · {1}</value></data>
+  <data name="About_SteamKit2" xml:space="preserve"><value>SteamKit2</value></data>
+  <data name="About_SteamKit2Desc" xml:space="preserve"><value>匿名セッションで Steam ワークショップのコントローラーコンフィグを取得する Steam ネットワーククライアント。Ryan Stecker と SteamRE Team による。LGPL-2.1。</value></data>
+  <data name="About_ProtobufNet" xml:space="preserve"><value>protobuf-net</value></data>
+  <data name="About_ProtobufNetDesc" xml:space="preserve"><value>SteamKit2 が Steam の通信プロトコルに使用する Protocol Buffers シリアライザー。Marc Gravell による。Apache-2.0。</value></data>
+  <data name="About_ZstdSharp" xml:space="preserve"><value>ZstdSharp</value></data>
+  <data name="About_ZstdSharpDesc" xml:space="preserve"><value>SteamKit2 が Steam デポチャンクに使用する Zstandard 展開処理。Oleg Stepanischev による zstd ライブラリの C# 移植。MIT。</value></data>
 </root>

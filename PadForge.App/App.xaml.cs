@@ -40,8 +40,16 @@ namespace PadForge
         /// <summary>Suppressed error count since last shown popup.</summary>
         private int _suppressedErrorCount;
 
-        /// <summary>Set when GPU render thread is zombied — suppresses all cascading exceptions.</summary>
+        /// <summary>Set when GPU render thread is zombied. Suppresses all cascading exceptions.</summary>
         private bool _gpuLost;
+
+        /// <summary>Set at the end of OnStartup, after the main window is
+        /// constructed and shown (or deliberately held for the tray). A
+        /// dispatcher exception before this point is a failed launch.
+        /// Application.MainWindow is NOT a usable signal for that: WPF
+        /// auto-assigns it inside the Window base constructor, so a window
+        /// that died mid-InitializeComponent still occupies it.</summary>
+        private bool _startupUiReady;
 
         /// <summary>Window state before sleep for restore on wake.</summary>
         private WindowState _windowStateBeforeSleep;
@@ -261,13 +269,13 @@ namespace PadForge
             SystemEvents.PowerModeChanged += OnPowerModeChanged;
 
             // Create main window manually (instead of StartupUri) so we can
-            // control whether Show() is called — required for start-minimized-to-tray.
+            // control whether Show() is called, required for start-minimized-to-tray.
             var window = new MainWindow();
             MainWindow = window;
 
             if (window.ShouldStartMinimizedToTray)
             {
-                // Don't call Show() at all — the tray icon handles restore.
+                // Don't call Show() at all. The tray icon handles restore.
             }
             else if (window.ShouldStartMinimized)
             {
@@ -278,6 +286,8 @@ namespace PadForge
             {
                 window.Show();
             }
+
+            _startupUiReady = true;
         }
 
         private void OnPowerModeChanged(object sender, PowerModeChangedEventArgs e)
@@ -326,10 +336,55 @@ namespace PadForge
             }
         }
 
+        /// <summary>One "Type: Message" line per exception in the inner
+        /// chain. Wrapper exceptions (XamlParseException rewraps, TIEs,
+        /// AggregateExceptions) carry a generic outer message; the real
+        /// cause lives at the bottom of the chain. A v4.0.0 Discord
+        /// crash report showed only "Set property
+        /// 'System.Windows.FrameworkElement.Style' threw an exception."
+        /// because both handlers printed the outer level alone.</summary>
+        private static string ExceptionMessageChain(Exception ex)
+        {
+            var sb = new System.Text.StringBuilder();
+            for (var e = ex; e != null && sb.Length < 4096; e = e.InnerException)
+            {
+                if (sb.Length > 0)
+                    sb.Append("\n--> ");
+                sb.Append(e.GetType().Name).Append(": ").Append(e.Message);
+                // BAML rewraps know which XAML file failed even when the
+                // release build has no line info.
+                if (e is System.Windows.Markup.XamlParseException xpe)
+                {
+                    if (xpe.BaseUri != null)
+                        sb.Append(" [").Append(xpe.BaseUri).Append(']');
+                    if (xpe.LineNumber > 0)
+                        sb.Append(" [line ").Append(xpe.LineNumber)
+                          .Append(", pos ").Append(xpe.LinePosition).Append(']');
+                }
+            }
+            return sb.ToString();
+        }
+
+        /// <summary>Every stack in the inner chain, outermost first.
+        /// Exception.ToString() carries the same data, but interleaves
+        /// messages and stacks; this keeps the dialog's message block
+        /// (ExceptionMessageChain) and stack block separable.</summary>
+        private static string ExceptionStackChain(Exception ex)
+        {
+            var sb = new System.Text.StringBuilder();
+            for (var e = ex; e != null && sb.Length < 16384; e = e.InnerException)
+            {
+                if (sb.Length > 0)
+                    sb.Append("\n-- inner (").Append(e.GetType().Name).Append(") --\n");
+                sb.Append(e.StackTrace ?? "(no stack)");
+            }
+            return sb.ToString();
+        }
+
         private void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
             try { System.IO.File.AppendAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "crash.log"),
-                $"[{DateTime.Now:HH:mm:ss}] DOMAIN: {(e.ExceptionObject is Exception ex2 ? $"{ex2.GetType().Name}: {ex2.Message}\n{ex2.StackTrace}" : e.ExceptionObject?.ToString())}\n\n"
+                $"[{DateTime.Now:HH:mm:ss}] DOMAIN: {(e.ExceptionObject is Exception ex2 ? $"{ExceptionMessageChain(ex2)}\n{ExceptionStackChain(ex2)}" : e.ExceptionObject?.ToString())}\n\n"
                 // The in-memory diagnostics ring (SDL narration, stall
                 // watchdog, binding errors) is this crash's recent context;
                 // a fatal crash is the one place it reaches disk.
@@ -351,7 +406,8 @@ namespace PadForge
             if (e.ExceptionObject is Exception ex)
             {
                 MessageBox.Show(
-                    string.Format(Strings.Instance.App_UnexpectedError_Format, ex.Message, ex.StackTrace),
+                    string.Format(Strings.Instance.App_UnexpectedError_Format,
+                        ExceptionMessageChain(ex), ExceptionStackChain(ex)),
                     Strings.Instance.App_FatalError,
                     MessageBoxButton.OK,
                     MessageBoxImage.Error);
@@ -372,7 +428,15 @@ namespace PadForge
             e.Handled = true;
 
             try { System.IO.File.AppendAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "crash.log"),
-                $"[{DateTime.Now:HH:mm:ss}] DISPATCHER: {e.Exception.GetType().Name}: {e.Exception.Message}\n{e.Exception.StackTrace}\n\n"); }
+                $"[{DateTime.Now:HH:mm:ss}] DISPATCHER: {ExceptionMessageChain(e.Exception)}\n{ExceptionStackChain(e.Exception)}\n\n"
+                // Before startup completes, a dispatcher exception is a
+                // failed launch (OnStartup aborted): flush the diagnostics
+                // ring like the fatal DOMAIN path does. Steady-state
+                // dispatcher errors skip the appendix so an exception storm
+                // doesn't snowball crash.log.
+                + (!_startupUiReady
+                    ? "-- recent diagnostics --\n" + Engine.SdlDiagLog.Snapshot() + "\n\n"
+                    : string.Empty)); }
             catch { }
 
             // Once the render thread is zombied, suppress ALL cascading exceptions
@@ -405,10 +469,19 @@ namespace PadForge
             _suppressedErrorCount = 0;
 
             MessageBox.Show(
-                string.Format(Strings.Instance.App_UnexpectedError_Format, e.Exception.Message, e.Exception.StackTrace) + suppressed,
+                string.Format(Strings.Instance.App_UnexpectedError_Format,
+                    ExceptionMessageChain(e.Exception), ExceptionStackChain(e.Exception)) + suppressed,
                 Strings.Instance.App_Error,
                 MessageBoxButton.OK,
                 MessageBoxImage.Error);
+
+            // A dispatcher exception before startup completes means
+            // OnStartup aborted: the window never finished constructing, so
+            // e.Handled=true would leave a windowless elevated process
+            // running until the user finds it in Task Manager (v4.0.0
+            // light-theme launch crash). Nothing to keep alive. Exit.
+            if (!_startupUiReady)
+                Shutdown(1);
         }
 
         private static bool IsGpuLostException(Exception ex)

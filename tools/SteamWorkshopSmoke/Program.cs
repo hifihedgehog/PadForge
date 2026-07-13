@@ -1,4 +1,5 @@
 using PadForge.SteamWorkshop;
+using SteamKit2;
 using PadForge.SteamWorkshop.Api;
 using PadForge.SteamWorkshop.Cache;
 using PadForge.SteamWorkshop.Model;
@@ -46,7 +47,11 @@ internal static class Program
                     await DownloadAsync(gate, long.Parse(arg));
                     break;
                 case "search":
-                    await SearchAsync(gate, int.Parse(arg));
+                    await SearchAsync(gate, int.Parse(arg),
+                        args.Length > 2 ? int.Parse(args[2]) : 9);
+                    break;
+                case "cmdetails":
+                    await CmDetailsAsync(gate, ulong.Parse(arg));
                     break;
                 case "persona":
                     await PersonaAsync(gate, ulong.Parse(arg));
@@ -112,14 +117,26 @@ internal static class Program
         Console.WriteLine($"languages   : {config.Localization.Count}");
     }
 
-    private static async Task SearchAsync(ISteamWorkshopGate gate, int appId)
+    private static async Task SearchAsync(ISteamWorkshopGate gate, int appId, int queryType)
     {
-        var cache = new SteamWorkshopCache();
-        await using var client = new SteamWorkshopClient(gate, cache);
-        var response = await client.SearchAsync(appId, page: 1, perPage: 10);
+        await using var client = new SteamWorkshopClient(gate, cache: null);
+        var response = await client.SearchAsync(appId, (EPublishedFileQueryType)queryType, page: 1, perPage: 10);
         Console.WriteLine($"total={response.total} returned={response.publishedfiledetails.Count}");
         foreach (var file in response.publishedfiledetails)
             Console.WriteLine($"  {file.publishedfileid,-12} {file.title}");
+    }
+
+    private static async Task CmDetailsAsync(ISteamWorkshopGate gate, ulong fileId)
+    {
+        await using var client = new SteamWorkshopClient(gate, cache: null);
+        var d = await client.GetCmDetailsAsync(fileId);
+        Console.WriteLine($"title       : {d.title}");
+        Console.WriteLine($"creator_app : {d.creator_appid}");
+        Console.WriteLine($"consumer_app: {d.consumer_appid}");
+        Console.WriteLine($"visibility  : {d.visibility}");
+        Console.WriteLine($"file_type   : {d.file_type}");
+        Console.WriteLine($"tags        : {string.Join(", ", d.tags.ConvertAll(t => t.tag))}");
+        Console.WriteLine($"kvtags      : {string.Join(", ", d.kvtags.ConvertAll(t => $"{t.key}={t.value}"))}");
     }
 
     private static async Task PersonaAsync(ISteamWorkshopGate gate, ulong steamId)

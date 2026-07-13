@@ -711,7 +711,7 @@ namespace PadForge.Common.Input
         /// state for activators owned by <paramref name="thisDeviceGuid"/>,
         /// and returns the last-engaged layer's <see cref="ShiftActivator.LayerMask"/>.
         /// Returns <c>"Base"</c> when nothing is engaged.</summary>
-        private static string ResolveActiveLayerMask(
+        internal static string ResolveActiveLayerMask(
             int slotIndex,
             MappingSet mappingSet,
             CustomInputState thisDeviceState,
@@ -1974,6 +1974,101 @@ namespace PadForge.Common.Input
             return _baseRowIndex.TryGetValue(targetName, out var row) ? row : null;
         }
 
+        /// <summary>Resolves the mapping row that should drive
+        /// <paramref name="targetName"/> for the slot's currently-engaged
+        /// shift layer, so the non-gamepad per-VC evaluators (Extended /
+        /// MIDI / KBM / Touchpad) pick the SAME row
+        /// <see cref="ApplyMappingSetToGamepad"/> would. That gamepad path
+        /// was the only output dispatch that consulted the active layer;
+        /// these per-target evaluators hard-filtered to Base via
+        /// <see cref="FindBaseRowForTarget"/>, so a layer that remapped a
+        /// physical input to a different Extended/MIDI/KBM/Touchpad target
+        /// never fired that target and the Base target it was meant to
+        /// replace stayed live regardless of the active layer
+        /// (discussion #220).
+        ///
+        /// <para>Base active → the cached Base row (unchanged fast path).
+        /// A layer engaged → the layer's own row wins when it has sources;
+        /// otherwise the target inherits the Base row (InheritUnmapped with
+        /// no NoInherit block) or is suppressed (replace mode / NoInherit).
+        /// <paramref name="suppressed"/> is true when a shift layer
+        /// deliberately forces the target off: the caller must NOT fall
+        /// back to the legacy per-target descriptor, or replace-mode
+        /// suppression would leak the Base mapping back in.</para>
+        ///
+        /// <para>The engaged mask is read via the pure
+        /// <see cref="GetEngagedLayerMask"/>. The per-frame activator tick
+        /// (<see cref="ResolveActiveLayerMask"/>) already ran on this
+        /// slot's gamepad pass in <c>UpdateOutputStates</c> before any
+        /// non-gamepad path, so reading here never re-ticks the activator
+        /// state machine.</para></summary>
+        private static MappingRow FindActiveRowForTarget(
+            MappingSet mappingSet, string targetName, int slotIndex, out bool suppressed)
+        {
+            suppressed = false;
+            if (mappingSet == null || string.IsNullOrEmpty(targetName)) return null;
+
+            string activeMask = GetEngagedLayerMask(slotIndex, mappingSet);
+            if (string.IsNullOrEmpty(activeMask)
+                || string.Equals(activeMask, "Base", System.StringComparison.Ordinal))
+                return FindBaseRowForTarget(mappingSet, targetName);
+
+            // A non-Base layer is engaged. Weigh the same two candidates
+            // ApplyMappingSetToGamepad does: the layer's own row for the
+            // target and the Base row. One walk, race-guarded the same way
+            // FindBaseRowForTarget's rebuild is (bound by the captured
+            // count AND re-check rows.Count each step).
+            MappingRow layerRow = null, baseRow = null;
+            var rows = mappingSet.Rows;
+            if (rows != null)
+            {
+                int count = rows.Count;
+                for (int i = 0; i < count && i < rows.Count; i++)
+                {
+                    var r = rows[i];
+                    if (r == null) continue;
+                    if (!string.Equals(r.Target, targetName, System.StringComparison.Ordinal)) continue;
+                    string rl = r.LayerMask ?? "Base";
+                    if (string.Equals(rl, activeMask, System.StringComparison.Ordinal)) layerRow = r;
+                    else if (string.Equals(rl, "Base", System.StringComparison.Ordinal)) baseRow = r;
+                }
+            }
+
+            // Layer overrides the target when its own row carries sources.
+            if (layerRow?.Sources != null && layerRow.Sources.Count > 0) return layerRow;
+
+            // The layer doesn't map the target with sources. A zero-source
+            // layer row still BLOCKS Base fallthrough when it's an explicit
+            // NoInherit declaration; otherwise it's transparent.
+            bool layerBlocks = layerRow != null && layerRow.NoInherit;
+            if (LayerInheritsUnmapped(mappingSet, activeMask) && !layerBlocks)
+                return baseRow; // overlay-with-fallthrough: Base drives the target
+
+            // Replace mode, or a NoInherit block: force the target off and
+            // tell the caller to skip the legacy descriptor fallback.
+            suppressed = true;
+            return null;
+        }
+
+        /// <summary>True when the activator engaging
+        /// <paramref name="activeMask"/> has
+        /// <see cref="ShiftActivator.InheritUnmapped"/> set. Mirrors the
+        /// per-layer inherit lookup <see cref="ApplyMappingSetToGamepad"/>
+        /// does inline (first activator whose LayerMask matches wins).</summary>
+        private static bool LayerInheritsUnmapped(MappingSet mappingSet, string activeMask)
+        {
+            var activators = mappingSet?.ShiftActivators;
+            if (activators == null) return false;
+            for (int i = 0; i < activators.Count; i++)
+            {
+                var a = activators[i];
+                if (a == null) continue;
+                if (string.Equals(a.LayerMask, activeMask, System.StringComparison.Ordinal))
+                    return a.InheritUnmapped;
+            }
+            return false;
+        }
+
         /// <summary>Evaluates a button-class target through the per-VC
         /// MappingSet. <paramref name="value"/> = final combined bool;
         /// returns <c>false</c> when no row exists for the target (caller
@@ -1984,7 +2079,8 @@ namespace PadForge.Common.Input
             out bool value)
         {
             value = false;
-            var row = FindBaseRowForTarget(mappingSet, targetName);
+            var row = FindActiveRowForTarget(mappingSet, targetName, slotIndex, out bool shiftSuppressed);
+            if (shiftSuppressed) return true; // shift layer forces this target off; skip legacy fallback
             if (row == null || row.Sources == null || row.Sources.Count == 0)
                 return false;
 
@@ -2040,7 +2136,8 @@ namespace PadForge.Common.Input
             out short value)
         {
             value = 0;
-            var row = FindBaseRowForTarget(mappingSet, targetName);
+            var row = FindActiveRowForTarget(mappingSet, targetName, slotIndex, out bool shiftSuppressed);
+            if (shiftSuppressed) return true; // shift layer forces this target off; skip legacy fallback
             if (row == null || row.Sources == null || row.Sources.Count == 0)
                 return false;
 
@@ -2116,7 +2213,8 @@ namespace PadForge.Common.Input
             out short value)
         {
             value = 0;
-            var row = FindBaseRowForTarget(mappingSet, targetName);
+            var row = FindActiveRowForTarget(mappingSet, targetName, slotIndex, out bool shiftSuppressed);
+            if (shiftSuppressed) return true; // shift layer forces this target off; skip legacy fallback
             if (row == null || row.Sources == null || row.Sources.Count == 0) return false;
 
             var slotRuntime = (slotIndex >= 0 && slotIndex < _slotSourceKindRuntime.Length)
@@ -2225,7 +2323,8 @@ namespace PadForge.Common.Input
             out short value)
         {
             value = short.MinValue;
-            var row = FindBaseRowForTarget(mappingSet, targetName);
+            var row = FindActiveRowForTarget(mappingSet, targetName, slotIndex, out bool shiftSuppressed);
+            if (shiftSuppressed) return true; // shift layer forces this target off; skip legacy fallback
             if (row == null || row.Sources == null || row.Sources.Count == 0)
                 return false;
 

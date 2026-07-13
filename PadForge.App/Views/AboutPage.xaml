@@ -85,6 +85,9 @@
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
 
                     <TextBlock Text="{Binding About_DotNet10, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold"/>
@@ -217,24 +220,36 @@
                     <TextBlock Grid.Row="32" Grid.Column="1"
                                Text="{Binding About_HitboxerDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="33" Text="{Binding About_Dolphin, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0"/>
+                    <TextBlock Grid.Row="33" Text="SteamKit2" FontWeight="SemiBold" Margin="0,6,16,0"/>
                     <TextBlock Grid.Row="33" Grid.Column="1"
+                               Text="Steam network client that fetches Steam Workshop controller configs over an anonymous session, by Ryan Stecker and the SteamRE Team. LGPL-2.1." Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
+
+                    <TextBlock Grid.Row="34" Text="protobuf-net" FontWeight="SemiBold" Margin="0,6,16,0"/>
+                    <TextBlock Grid.Row="34" Grid.Column="1"
+                               Text="Protocol Buffers serializer SteamKit2 uses for the Steam wire protocol, by Marc Gravell. Apache-2.0." Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
+
+                    <TextBlock Grid.Row="35" Text="ZstdSharp" FontWeight="SemiBold" Margin="0,6,16,0"/>
+                    <TextBlock Grid.Row="35" Grid.Column="1"
+                               Text="Zstandard decompression SteamKit2 uses for Steam depot chunks, a C# port of the zstd library by Oleg Stepanischev. MIT." Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
+
+                    <TextBlock Grid.Row="36" Text="{Binding About_Dolphin, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0"/>
+                    <TextBlock Grid.Row="36" Grid.Column="1"
                                Text="{Binding About_DolphinDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="34" Text="{Binding About_Ds4Windows, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0"/>
-                    <TextBlock Grid.Row="34" Grid.Column="1"
+                    <TextBlock Grid.Row="37" Text="{Binding About_Ds4Windows, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0"/>
+                    <TextBlock Grid.Row="37" Grid.Column="1"
                                Text="{Binding About_Ds4WindowsDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="35" Text="{Binding About_XoneXow, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0"/>
-                    <TextBlock Grid.Row="35" Grid.Column="1"
+                    <TextBlock Grid.Row="38" Text="{Binding About_XoneXow, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0"/>
+                    <TextBlock Grid.Row="38" Grid.Column="1"
                                Text="{Binding About_XoneXowDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="36" Text="{Binding About_WiimoteLib, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0"/>
-                    <TextBlock Grid.Row="36" Grid.Column="1"
+                    <TextBlock Grid.Row="39" Text="{Binding About_WiimoteLib, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0"/>
+                    <TextBlock Grid.Row="39" Grid.Column="1"
                                Text="{Binding About_WiimoteLibDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="37" Text="{Binding About_JoyconSinger, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0"/>
-                    <TextBlock Grid.Row="37" Grid.Column="1"
+                    <TextBlock Grid.Row="40" Text="{Binding About_JoyconSinger, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0"/>
+                    <TextBlock Grid.Row="40" Grid.Column="1"
                                Text="{Binding About_JoyconSingerDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>                </Grid>
             </Border>
 

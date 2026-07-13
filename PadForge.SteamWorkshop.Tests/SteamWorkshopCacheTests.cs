@@ -76,6 +76,29 @@ namespace PadForge.SteamWorkshop.Tests
         }
 
         [Fact]
+        public void Put_swallows_a_sharing_violation_and_keeps_the_old_entry()
+        {
+            // The cache is an optimization: a concurrent reader holding the
+            // destination (same-key read racing a rewrite) makes the atomic
+            // replace fail with a sharing violation, and that must never
+            // propagate into the operation that produced the data.
+            var cache = NewCache();
+            cache.PutBytes(CacheCategory.Games, "locked", new byte[] { 1 });
+
+            var path = Path.Combine(_root, "games", "locked.json");
+            using (new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.None))
+            {
+                cache.PutBytes(CacheCategory.Games, "locked", new byte[] { 2 }); // must not throw
+            }
+
+            Assert.True(cache.TryGetBytes(CacheCategory.Games, "locked", null, out var read));
+            Assert.Equal(new byte[] { 1 }, read);
+            // The failed write's temp file was cleaned up.
+            Assert.DoesNotContain(Directory.EnumerateFiles(Path.Combine(_root, "games")),
+                f => f.Contains(".tmp-", StringComparison.Ordinal));
+        }
+
+        [Fact]
         public void Entry_expires_after_ttl()
         {
             var cache = NewCache();

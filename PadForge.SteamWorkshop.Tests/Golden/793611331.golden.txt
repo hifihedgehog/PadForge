@@ -1,5 +1,6 @@
 name: Dualshock 4 Skyrim
 description: Basic controller configuration with left trackpad as touch menu for quicksave and loading. The right...
+slots: xbox kbm
 xbox rows: 2
   Base | ButtonA
     <- Gamepad Paddle2

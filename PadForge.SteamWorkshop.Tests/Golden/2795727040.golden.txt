@@ -1,5 +1,6 @@
 name: Miracle's AOE II Steam Deck Layout
 description: A layout designed for quick gameplay. Has a radial menu for creating and selecting groups. Left pad ...
+slots: kbm
 xbox rows: 0
 kbm rows: 17
   Base | KbmKey1B

@@ -1,5 +1,6 @@
 name: TW Warhammer 2 & 3 - Steam Deck
 description: Clone of Patriclese TWW2 Controller Layout for Steam Deck
+slots: kbm
 xbox rows: 0
 kbm rows: 21
   Base | KbmKey09

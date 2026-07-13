@@ -1,5 +1,6 @@
 name: Config That isnt entirely insane
 description: Mostly the same as the xbox with some run arounds
+slots: xbox kbm
 xbox rows: 2
   Base | ButtonA
     <- Gamepad Paddle2

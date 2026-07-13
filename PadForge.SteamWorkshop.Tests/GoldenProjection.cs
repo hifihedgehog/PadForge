@@ -24,6 +24,12 @@ namespace PadForge.SteamWorkshop.Tests
                 sb.Append("description: ").Append(d).Append('\n');
             }
 
+            sb.Append("slots:");
+            if (p.NeedsXboxSlot) sb.Append(" xbox");
+            if (p.NeedsKbmSlot) sb.Append(" kbm");
+            if (!p.NeedsXboxSlot && !p.NeedsKbmSlot) sb.Append(" none");
+            sb.Append('\n');
+
             RenderSet(sb, "xbox", p.XboxMappingSet);
             RenderSet(sb, "kbm", p.KbmMappingSet);
 

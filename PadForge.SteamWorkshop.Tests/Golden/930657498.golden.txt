@@ -1,5 +1,6 @@
 name: Moovry's Bindings
 description: Your modified configuration for this game.
+slots: kbm
 xbox rows: 0
 kbm rows: 18
   Base | KbmKey09

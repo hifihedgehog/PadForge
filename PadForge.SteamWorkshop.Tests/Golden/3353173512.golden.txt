@@ -1,5 +1,6 @@
 name: Factorio Steam Deck by Zirbs for Space Age / v2.0
 description: New for Space Age / v2.0! Uses default keyboard binds, and leverages your KB and Deck muscle memory ...
+slots: kbm
 xbox rows: 0
 kbm rows: 28
   Base | KbmKey0D

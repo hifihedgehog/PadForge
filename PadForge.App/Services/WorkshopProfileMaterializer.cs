@@ -21,9 +21,6 @@ namespace PadForge.Services
     /// </summary>
     public static class WorkshopProfileMaterializer
     {
-        private const int XboxSlot = 0;
-        private const int KbmSlot = 1;
-
         /// <summary>
         /// Materializes the profile. When <paramref name="source"/> is given
         /// (the browse dialog passes the Workshop item's identity), it is
@@ -43,29 +40,41 @@ namespace PadForge.Services
 
             int maxPads = InputManager.MaxPads;
 
+            // Only the slots the translation actually binds exist on the
+            // imported profile (owner report 2026-07-13: a keyboard-only
+            // config imported with an empty Xbox VC). The Xbox slot, when
+            // needed, always sits first so the macro triggers reading its
+            // combined output keep their index.
+            int nextSlot = 0;
+            int xboxSlot = translated.NeedsXboxSlot ? nextSlot++ : -1;
+            int kbmSlot = translated.NeedsKbmSlot ? nextSlot++ : -1;
+
             var slotCreated = new bool[maxPads];
-            slotCreated[XboxSlot] = true;
-            slotCreated[KbmSlot] = true;
-
             var slotEnabled = new bool[maxPads];
-            slotEnabled[XboxSlot] = true;
-            slotEnabled[KbmSlot] = true;
-
             var slotTypes = new int[maxPads];
-            slotTypes[XboxSlot] = (int)VirtualControllerType.Xbox;
-            slotTypes[KbmSlot] = (int)VirtualControllerType.KeyboardMouse;
-
             var slotProfileIds = new string[maxPads];
-            slotProfileIds[XboxSlot] = InputManager.GetDefaultProfileId(VirtualControllerType.Xbox);
-            slotProfileIds[KbmSlot] = InputManager.GetDefaultProfileId(VirtualControllerType.KeyboardMouse);
-
             var mappingSets = new MappingSet[maxPads];
-            mappingSets[XboxSlot] = translated.XboxMappingSet ?? new MappingSet();
-            mappingSets[KbmSlot] = translated.KbmMappingSet ?? new MappingSet();
+
+            if (xboxSlot >= 0)
+            {
+                slotCreated[xboxSlot] = true;
+                slotEnabled[xboxSlot] = true;
+                slotTypes[xboxSlot] = (int)VirtualControllerType.Xbox;
+                slotProfileIds[xboxSlot] = InputManager.GetDefaultProfileId(VirtualControllerType.Xbox);
+                mappingSets[xboxSlot] = translated.XboxMappingSet ?? new MappingSet();
+            }
+            if (kbmSlot >= 0)
+            {
+                slotCreated[kbmSlot] = true;
+                slotEnabled[kbmSlot] = true;
+                slotTypes[kbmSlot] = (int)VirtualControllerType.KeyboardMouse;
+                slotProfileIds[kbmSlot] = InputManager.GetDefaultProfileId(VirtualControllerType.KeyboardMouse);
+                mappingSets[kbmSlot] = translated.KbmMappingSet ?? new MappingSet();
+            }
             for (int i = 0; i < maxPads; i++)
                 mappingSets[i] ??= new MappingSet();
 
-            var macros = BuildMacros(translated.Macros);
+            var macros = BuildMacros(translated.Macros, Math.Max(xboxSlot, 0));
 
             return new ProfileData
             {
@@ -80,19 +89,19 @@ namespace PadForge.Services
             };
         }
 
-        private static MacroData[] BuildMacros(List<TranslatedMacro> macros)
+        private static MacroData[] BuildMacros(List<TranslatedMacro> macros, int xboxSlot)
         {
             if (macros == null || macros.Count == 0) return null;
             var list = new List<MacroData>(macros.Count);
             foreach (var m in macros)
             {
-                var data = BuildMacro(m);
+                var data = BuildMacro(m, xboxSlot);
                 if (data != null) list.Add(data);
             }
             return list.Count > 0 ? list.ToArray() : null;
         }
 
-        private static MacroData BuildMacro(TranslatedMacro m)
+        private static MacroData BuildMacro(TranslatedMacro m, int xboxSlot)
         {
             if (m == null) return null;
 
@@ -125,7 +134,7 @@ namespace PadForge.Services
 
             return new MacroData
             {
-                PadIndex = XboxSlot,
+                PadIndex = xboxSlot,
                 Name = string.IsNullOrWhiteSpace(m.Name) ? "Workshop Macro" : m.Name,
                 IsEnabled = true,
                 TriggerSource = MacroTriggerSource.OutputController,

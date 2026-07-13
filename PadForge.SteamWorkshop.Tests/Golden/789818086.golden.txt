@@ -1,5 +1,6 @@
 name: SkyrimSE Perfected: KB/M Precision + Gyro + Convenient Touch Menus
 description: A fully labelled and carefully tweaked config that features precise aiming and convenient touch menu...
+slots: kbm
 xbox rows: 0
 kbm rows: 20
   Base | KbmKey09

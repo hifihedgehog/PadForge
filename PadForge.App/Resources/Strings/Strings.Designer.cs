@@ -2339,6 +2339,9 @@ public class Strings : INotifyPropertyChanged
     public string Workshop_Tr_ClickGateDropped => Get("Workshop_Tr_ClickGateDropped");
     public string Workshop_Tr_RowCapExceeded => Get("Workshop_Tr_RowCapExceeded");
     public string Workshop_Tr_PresetHasNoActivator => Get("Workshop_Tr_PresetHasNoActivator");
+    public string Workshop_Tr_AutomapAlsoActive => Get("Workshop_Tr_AutomapAlsoActive");
+    public string Workshop_Tr_ShiftLayerEmpty => Get("Workshop_Tr_ShiftLayerEmpty");
+    public string Workshop_Tr_AbsoluteMouseApproximated => Get("Workshop_Tr_AbsoluteMouseApproximated");
     public string Status_WorkshopUpdatesOptInRequired => Get("Status_WorkshopUpdatesOptInRequired");
     public string Status_WorkshopNoImportedProfiles => Get("Status_WorkshopNoImportedProfiles");
     public string Status_WorkshopCheckingUpdates => Get("Status_WorkshopCheckingUpdates");

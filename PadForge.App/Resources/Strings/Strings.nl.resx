@@ -2380,7 +2380,7 @@
   <data name="Mapping_Sensitivity_Tooltip" xml:space="preserve"><value>Gevoeligheid per bron voor een gewone as, schuifregelaar of gamepad-stick / -trigger. 1.0 laat de invoer ongewijzigd. Waarden boven 1.0 bereiken volledige uitslag met minder beweging. Waarden onder 1.0 hebben meer nodig.</value></data>
   <data name="Mapping_Gamepad_Format" xml:space="preserve"><value>Gamepad {0}</value></data>
   <data name="Settings_CommunityConfigs" xml:space="preserve"><value>Communityconfiguraties</value></data>
-  <data name="Settings_CommunityConfigsDesc" xml:space="preserve"><value>Blader door door de community gemaakte Steam Input-controllerconfiguraties en vertaal ze naar PadForge-profielen. PadForge maakt alleen rechtstreeks verbinding met Steam (store.steampowered.com, api.steampowered.com, steamcommunity.com, cdn.steamusercontent.com, cdn.cloudflare.steamstatic.com) wanneer u zoekt en wanneer u een configuratie opent. Uw zoektekst en de gekozen configuratie zijn de enige verzonden gegevens. Geen telemetrie, geen externe dienst, geen Steam-aanmelding.</value></data>
+  <data name="Settings_CommunityConfigsDesc" xml:space="preserve"><value>Blader door door de community gemaakte Steam Input-controllerconfiguraties en vertaal ze naar PadForge-profielen. PadForge maakt alleen rechtstreeks verbinding met Steam (store.steampowered.com, api.steampowered.com, steamcommunity.com, cdn.steamusercontent.com, cdn.cloudflare.steamstatic.com, avatars.fastly.steamstatic.com) wanneer u zoekt en wanneer u een configuratie opent. Uw zoektekst en de gekozen configuratie zijn de enige verzonden gegevens. Geen telemetrie, geen externe dienst, geen Steam-aanmelding.</value></data>
   <data name="Settings_EnableCommunityConfigs" xml:space="preserve"><value>Communityconfiguraties inschakelen</value></data>
   <data name="Settings_ShowLegacyConfigs" xml:space="preserve"><value>Verouderde Workshop-configuraties tonen</value></data>
   <data name="Settings_ShowLegacyConfigsTooltip" xml:space="preserve"><value>Configuraties van vóór 2017 hebben geen downloadbaar bestand op het CDN van Steam. PadForge toont ze met een Legacy-badge en opent ze in plaats daarvan op de Steam Workshop.</value></data>
@@ -2468,6 +2468,9 @@
   <data name="Workshop_Tr_ClickGateDropped" xml:space="preserve"><value>requires_click-voorwaarde vervallen</value></data>
   <data name="Workshop_Tr_RowCapExceeded" xml:space="preserve"><value>rijlimiet overschreden voor het {0}-slot</value></data>
   <data name="Workshop_Tr_PresetHasNoActivator" xml:space="preserve"><value>geen binding schakelt naar preset {0}</value></data>
+  <data name="Workshop_Tr_AutomapAlsoActive" xml:space="preserve"><value>de automatische toewijzing van het apparaat stuurt {0} nog steeds naar {1}</value></data>
+  <data name="Workshop_Tr_ShiftLayerEmpty" xml:space="preserve"><value>laagwissel vervallen ({0} leverde geen vertalingen op)</value></data>
+  <data name="Workshop_Tr_AbsoluteMouseApproximated" xml:space="preserve"><value>absolute aanwijzerpositionering benaderd als relatieve muisbeweging</value></data>
   <data name="Status_WorkshopUpdatesOptInRequired" xml:space="preserve"><value>Schakel communityconfiguraties in om op updates te controleren</value></data>
   <data name="Status_WorkshopNoImportedProfiles" xml:space="preserve"><value>Nog geen profielen geïmporteerd van de Steam Workshop</value></data>
   <data name="Status_WorkshopCheckingUpdates" xml:space="preserve"><value>Steam Workshop controleren op updates…</value></data>

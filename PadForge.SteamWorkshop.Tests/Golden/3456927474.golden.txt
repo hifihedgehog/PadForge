@@ -52,7 +52,7 @@ kbm rows: 18
 kbm activators: 1
   Toggle Layer_3456927474_1 | Gamepad RightShoulder | inherit | name=Preset_1000001
 macros: 0
-report: v1 rows:x0+k18 macros:0 layers:1 clean:29 partial:4 skipped:10 errors:0
+report: v1 rows:x0+k18 macros:0 layers:1 clean:29 partial:5 skipped:10 errors:0
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_a/Full_Press => KbmMBtn0 <- Gamepad ButtonA
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_b/Full_Press => KbmMBtn1 <- Gamepad ButtonB
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_x/Full_Press => KbmKey45 <- Gamepad ButtonX
@@ -61,6 +61,7 @@ report: v1 rows:x0+k18 macros:0 layers:1 clean:29 partial:4 skipped:10 errors:0
   Clean RowEmitted @ Default/dpad/group 9 (dpad)/dpad_north/Full_Press => KbmKeyA4 <- Gamepad DPadUp
   Clean RowEmitted @ Default/dpad/group 9 (dpad)/dpad_south/Full_Press => KbmKeyA0 <- Gamepad DPadDown
   Clean RowEmitted @ Default/dpad/group 9 (dpad)/dpad_west/Full_Press => KbmKey08 <- Gamepad DPadLeft
+  Partial AbsoluteMouseApproximated @ Default/gyro/group 14 (absolute_mouse)
   Clean RowEmitted @ Default/gyro/group 14 (absolute_mouse) => KbmMouseX <- Gyro Yaw
   Clean RowEmitted @ Default/gyro/group 14 (absolute_mouse) => KbmMouseY <- Gyro Pitch
   Clean RowEmitted @ Default/joystick/group 1 (dpad)/dpad_east/Full_Press => KbmKey44 <- Gamepad LeftStickX (upper half)

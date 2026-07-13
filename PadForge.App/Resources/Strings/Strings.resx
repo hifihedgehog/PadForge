@@ -2413,7 +2413,7 @@
     <value>Reset the delay to 0 (the layer reacts instantly).</value>
   </data>
   <data name="Settings_CommunityConfigs" xml:space="preserve"><value>Community Configs</value></data>
-  <data name="Settings_CommunityConfigsDesc" xml:space="preserve"><value>Browse community-made Steam Input controller configurations and translate them into PadForge profiles. PadForge connects directly to Steam (store.steampowered.com, api.steampowered.com, steamcommunity.com, cdn.steamusercontent.com, cdn.cloudflare.steamstatic.com) only when you search and when you open a config. Your search text and the chosen config are the only data sent. No telemetry, no third-party service, no Steam sign-in.</value></data>
+  <data name="Settings_CommunityConfigsDesc" xml:space="preserve"><value>Browse community-made Steam Input controller configurations and translate them into PadForge profiles. PadForge connects directly to Steam (store.steampowered.com, api.steampowered.com, steamcommunity.com, cdn.steamusercontent.com, cdn.cloudflare.steamstatic.com, avatars.fastly.steamstatic.com) only when you search and when you open a config. Your search text and the chosen config are the only data sent. No telemetry, no third-party service, no Steam sign-in.</value></data>
   <data name="Settings_EnableCommunityConfigs" xml:space="preserve"><value>Enable Community Configs</value></data>
   <data name="Settings_ShowLegacyConfigs" xml:space="preserve"><value>Show Legacy Workshop Configs</value></data>
   <data name="Settings_ShowLegacyConfigsTooltip" xml:space="preserve"><value>Configs from before 2017 have no downloadable file on Steam's CDN. PadForge lists them with a Legacy badge and opens them on Steam Workshop instead.</value></data>
@@ -2501,6 +2501,9 @@
   <data name="Workshop_Tr_ClickGateDropped" xml:space="preserve"><value>requires_click gate dropped</value></data>
   <data name="Workshop_Tr_RowCapExceeded" xml:space="preserve"><value>row cap exceeded for the {0} slot</value></data>
   <data name="Workshop_Tr_PresetHasNoActivator" xml:space="preserve"><value>no binding switches to preset {0}</value></data>
+  <data name="Workshop_Tr_AutomapAlsoActive" xml:space="preserve"><value>the device automap still routes {0} to {1}</value></data>
+  <data name="Workshop_Tr_ShiftLayerEmpty" xml:space="preserve"><value>layer switch dropped ({0} translated to nothing)</value></data>
+  <data name="Workshop_Tr_AbsoluteMouseApproximated" xml:space="preserve"><value>absolute pointer positioning approximated as relative mouse movement</value></data>
   <data name="Status_WorkshopUpdatesOptInRequired" xml:space="preserve"><value>Enable Community Configs to check for updates</value></data>
   <data name="Status_WorkshopNoImportedProfiles" xml:space="preserve"><value>No profiles imported from the Steam Workshop yet</value></data>
   <data name="Status_WorkshopCheckingUpdates" xml:space="preserve"><value>Checking Steam Workshop for updates…</value></data>

@@ -127,6 +127,7 @@ namespace PadForge.SteamWorkshop.Translation
         public const string TrackpadFeatureRequired = "Workshop_Tr_TrackpadFeatureRequired";     // {0} feature name
         public const string TouchpadTuningNotPerRow = "Workshop_Tr_TouchpadTuningNotPerRow";
         public const string SoftPressApproximated = "Workshop_Tr_SoftPressApproximated";
+        public const string AbsoluteMouseApproximated = "Workshop_Tr_AbsoluteMouseApproximated";
         public const string TriggerThresholdApproximated = "Workshop_Tr_TriggerThresholdApproximated";
         public const string MacroTriggerViaXboxOutput = "Workshop_Tr_MacroTriggerViaXboxOutput";
         public const string NoDeviceFreeTrigger = "Workshop_Tr_NoDeviceFreeTrigger";

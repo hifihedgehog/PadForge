@@ -276,6 +276,14 @@ namespace PadForge.SteamWorkshop.Translation
 
                 case "absolute_mouse":
                 case "relative_mouse":
+                    if (mode == "absolute_mouse")
+                    {
+                        // Issue #9 lists absolute_mouse under Partial: Steam
+                        // positions the cursor absolutely on the pad surface,
+                        // PadForge emits relative deltas.
+                        run.Report.Add(TranslationStatus.Partial,
+                            TranslationReasons.AbsoluteMouseApproximated, path);
+                    }
                     EmitMouseAxes(run, slot, layer, path, settings, TrackpadMouseBaseline);
                     TranslateMemberGroup(run, preset, effective, slot, layer, path, settings);
                     break;

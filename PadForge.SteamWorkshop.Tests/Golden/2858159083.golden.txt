@@ -54,7 +54,7 @@ kbm rows: 21
     <- Gamepad LeftShoulder
     <- Gamepad RightShoulder [inverted]
 macros: 0
-report: v1 rows:x0+k21 macros:0 layers:0 clean:26 partial:4 skipped:1 errors:0
+report: v1 rows:x0+k21 macros:0 layers:0 clean:26 partial:5 skipped:1 errors:0
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_a/Full_Press => KbmKey20 <- Gamepad ButtonA
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_b/Full_Press => KbmKey45 <- Gamepad ButtonB
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_x/Full_Press => KbmKey52 <- Gamepad ButtonX
@@ -74,6 +74,7 @@ report: v1 rows:x0+k21 macros:0 layers:0 clean:26 partial:4 skipped:1 errors:0
   Clean RowEmitted @ Default/left_trigger/group 4 (trigger)/click/Full_Press => KbmMBtn1 <- Gamepad LeftTrigger (upper half)
   Clean RowEmitted @ Default/right_joystick/group 9 (joystick_mouse) => KbmMouseX <- Gamepad RightStickX
   Clean RowEmitted @ Default/right_joystick/group 9 (joystick_mouse) => KbmMouseY <- Gamepad RightStickY
+  Partial AbsoluteMouseApproximated @ Default/right_trackpad/group 3 (absolute_mouse)
   Clean RowEmitted @ Default/right_trackpad/group 3 (absolute_mouse) => KbmMouseX <- Touchpad 1 Finger 0 X
   Clean RowEmitted @ Default/right_trackpad/group 3 (absolute_mouse) => KbmMouseY <- Touchpad 1 Finger 0 Y
   Clean RowEmitted @ Default/right_trigger/group 5 (trigger)/click/Full_Press => KbmMBtn0 <- Gamepad RightTrigger (upper half)

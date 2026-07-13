@@ -72,11 +72,12 @@ kbm activators: 2
   Hold Layer_2948704083_0_MS_left_trackpad_14 | Gamepad Paddle1 | inherit | name=left_trackpad shift
   Hold Layer_2948704083_0_MS_right_joystick_20 | Gamepad Paddle1 | inherit | name=right_joystick shift
 macros: 0
-report: v1 rows:x0+k29 macros:0 layers:2 clean:35 partial:6 skipped:3 errors:0
+report: v1 rows:x0+k29 macros:0 layers:2 clean:35 partial:8 skipped:3 errors:0
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_a/Full_Press => KbmMBtn0 <- Gamepad ButtonA
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_b/Full_Press => KbmMBtn1 <- Gamepad ButtonB
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_x/Full_Press => KbmKey42 <- Gamepad ButtonX
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_y/Full_Press => KbmKey49 <- Gamepad ButtonY
+  Partial AbsoluteMouseApproximated @ Default/center_trackpad/group 22 (absolute_mouse)
   Clean RowEmitted @ Default/center_trackpad/group 22 (absolute_mouse) => KbmMouseX <- Touchpad 2 Finger 0 X
   Clean RowEmitted @ Default/center_trackpad/group 22 (absolute_mouse) => KbmMouseY <- Touchpad 2 Finger 0 Y
   Clean RowEmitted @ Default/center_trackpad/group 22 (absolute_mouse)/click/Full_Press => KbmMBtn2 <- Touchpad 2 Click
@@ -103,6 +104,7 @@ report: v1 rows:x0+k29 macros:0 layers:2 clean:35 partial:6 skipped:3 errors:0
   Clean RowEmitted @ Default/right_joystick/group 19 (joystick_mouse)/click/Full_Press => KbmKey5A <- Gamepad RightStick
   Clean RowEmitted @ Default/right_joystick/group 20 (joystick_mouse) => KbmMouseX <- Gamepad RightStickX
   Clean RowEmitted @ Default/right_joystick/group 20 (joystick_mouse) => KbmMouseY <- Gamepad RightStickY
+  Partial AbsoluteMouseApproximated @ Default/right_trackpad/group 2 (absolute_mouse)
   Partial TouchpadTuningNotPerRow(99) @ Default/right_trackpad/group 2 (absolute_mouse) => KbmMouseX <- Touchpad 1 Finger 0 X
   Partial TouchpadTuningNotPerRow(99) @ Default/right_trackpad/group 2 (absolute_mouse) => KbmMouseY <- Touchpad 1 Finger 0 Y
   Clean RowEmitted @ Default/right_trackpad/group 2 (absolute_mouse)/click/Full_Press => KbmMBtn2 <- Touchpad 1 Click

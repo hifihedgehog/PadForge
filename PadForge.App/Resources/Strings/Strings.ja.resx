@@ -2360,7 +2360,7 @@
   <data name="Mapping_Sensitivity_Tooltip" xml:space="preserve"><value>通常の軸、スライダー、ゲームパッドのスティック / トリガーに対するソースごとの感度です。1.0 は入力をそのまま通します。1.0 より大きい値では少ない操作量で最大に到達します。1.0 より小さい値ではより多くの操作量が必要です。</value></data>
   <data name="Mapping_Gamepad_Format" xml:space="preserve"><value>ゲームパッド {0}</value></data>
   <data name="Settings_CommunityConfigs" xml:space="preserve"><value>コミュニティコンフィグ</value></data>
-  <data name="Settings_CommunityConfigsDesc" xml:space="preserve"><value>コミュニティ製の Steam Input コントローラーコンフィグを閲覧し、PadForge プロファイルへ変換します。PadForge が Steam (store.steampowered.com、api.steampowered.com、steamcommunity.com、cdn.steamusercontent.com、cdn.cloudflare.steamstatic.com) に直接接続するのは、検索したときとコンフィグを開いたときだけです。送信されるデータは検索テキストと選択したコンフィグのみです。テレメトリーなし、サードパーティサービスなし、Steam サインイン不要です。</value></data>
+  <data name="Settings_CommunityConfigsDesc" xml:space="preserve"><value>コミュニティ製の Steam Input コントローラーコンフィグを閲覧し、PadForge プロファイルへ変換します。PadForge が Steam (store.steampowered.com、api.steampowered.com、steamcommunity.com、cdn.steamusercontent.com、cdn.cloudflare.steamstatic.com、avatars.fastly.steamstatic.com) に直接接続するのは、検索したときとコンフィグを開いたときだけです。送信されるデータは検索テキストと選択したコンフィグのみです。テレメトリーなし、サードパーティサービスなし、Steam サインイン不要です。</value></data>
   <data name="Settings_EnableCommunityConfigs" xml:space="preserve"><value>コミュニティコンフィグを有効にする</value></data>
   <data name="Settings_ShowLegacyConfigs" xml:space="preserve"><value>レガシーワークショップコンフィグを表示</value></data>
   <data name="Settings_ShowLegacyConfigsTooltip" xml:space="preserve"><value>2017 年より前のコンフィグには Steam の CDN にダウンロード可能なファイルがありません。PadForge はレガシーバッジ付きで一覧に表示し、代わりに Steam ワークショップで開きます。</value></data>
@@ -2448,6 +2448,9 @@
   <data name="Workshop_Tr_ClickGateDropped" xml:space="preserve"><value>requires_click 条件を破棄</value></data>
   <data name="Workshop_Tr_RowCapExceeded" xml:space="preserve"><value>{0} スロットの行数上限を超過</value></data>
   <data name="Workshop_Tr_PresetHasNoActivator" xml:space="preserve"><value>プリセット {0} へ切り替えるバインドがありません</value></data>
+  <data name="Workshop_Tr_AutomapAlsoActive" xml:space="preserve"><value>デバイスの自動マッピングは引き続き {0} を {1} に割り当てます</value></data>
+  <data name="Workshop_Tr_ShiftLayerEmpty" xml:space="preserve"><value>レイヤー切り替えを破棄（{0} に変換結果がありません）</value></data>
+  <data name="Workshop_Tr_AbsoluteMouseApproximated" xml:space="preserve"><value>ポインターの絶対位置指定は相対的なマウス移動として近似</value></data>
   <data name="Status_WorkshopUpdatesOptInRequired" xml:space="preserve"><value>更新を確認するにはコミュニティコンフィグを有効にしてください</value></data>
   <data name="Status_WorkshopNoImportedProfiles" xml:space="preserve"><value>Steam ワークショップからインポートしたプロファイルはまだありません</value></data>
   <data name="Status_WorkshopCheckingUpdates" xml:space="preserve"><value>Steam ワークショップの更新を確認しています…</value></data>

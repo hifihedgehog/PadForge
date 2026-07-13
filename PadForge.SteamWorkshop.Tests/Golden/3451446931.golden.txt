@@ -72,7 +72,7 @@ kbm rows: 31
 kbm activators: 1
   Hold Layer_3451446931_1 | Gamepad LeftStick | inherit | name=Preset_1000001
 macros: 0
-report: v1 rows:x0+k31 macros:0 layers:1 clean:35 partial:2 skipped:4 errors:0
+report: v1 rows:x0+k31 macros:0 layers:1 clean:35 partial:4 skipped:4 errors:0
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_a/Full_Press => KbmKey20 <- Gamepad ButtonA
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_b/Full_Press => KbmKey43 <- Gamepad ButtonB
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_x/Full_Press => KbmKey4E <- Gamepad ButtonX
@@ -88,6 +88,7 @@ report: v1 rows:x0+k31 macros:0 layers:1 clean:35 partial:2 skipped:4 errors:0
   Clean RowEmitted @ Default/right_joystick/group 9 (joystick_mouse) => KbmMouseX <- Gamepad RightStickX
   Clean RowEmitted @ Default/right_joystick/group 9 (joystick_mouse) => KbmMouseY <- Gamepad RightStickY
   Clean RowEmitted @ Default/right_joystick/group 9 (joystick_mouse)/click/Full_Press => KbmKeyA1 <- Gamepad RightStick
+  Partial AbsoluteMouseApproximated @ Default/right_trackpad/group 31 (absolute_mouse)
   Clean RowEmitted @ Default/right_trackpad/group 31 (absolute_mouse) => KbmMouseX <- Touchpad 1 Finger 0 X
   Clean RowEmitted @ Default/right_trackpad/group 31 (absolute_mouse) => KbmMouseY <- Touchpad 1 Finger 0 Y
   Partial SoftPressApproximated @ Default/right_trackpad/group 31 (absolute_mouse)/click/Soft_Press => KbmMBtn0 <- Touchpad 1 Click
@@ -105,6 +106,7 @@ report: v1 rows:x0+k31 macros:0 layers:1 clean:35 partial:2 skipped:4 errors:0
   Clean RowEmitted @ Preset_1000001/button_diamond/group 24 (four_buttons)/button_x/Full_Press => KbmKey4D <- Gamepad ButtonX
   Clean RowEmitted @ Preset_1000001/button_diamond/group 24 (four_buttons)/button_y/Full_Press => KbmKey52 <- Gamepad ButtonY
   Skipped RadialMenuNeedsOverlay(4) @ Preset_1000001/left_trackpad/group 41 (radial_menu)
+  Partial AbsoluteMouseApproximated @ Preset_1000001/right_trackpad/group 33 (absolute_mouse)
   Clean RowEmitted @ Preset_1000001/right_trackpad/group 33 (absolute_mouse) => KbmMouseX <- Touchpad 1 Finger 0 X
   Clean RowEmitted @ Preset_1000001/right_trackpad/group 33 (absolute_mouse) => KbmMouseY <- Touchpad 1 Finger 0 Y
   Partial SoftPressApproximated @ Preset_1000001/right_trackpad/group 33 (absolute_mouse)/click/Soft_Press => KbmMBtn1 <- Touchpad 1 Click

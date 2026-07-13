@@ -25,10 +25,14 @@ namespace PadForge.Tests
         private const string ConcreteGuid = "11111111-1111-1111-1111-111111111111";
         private const string ConcreteLabel = "DualSense Edge";
 
-        // The slot's cross-device picker list only ever holds CONCRETE-device
-        // choices (InputService.PopulateAvailableInputs stamps each with a real
-        // guid + label); there is no empty-guid "(Any device)" entry, which is
-        // why a descriptor-only fallback lands on a real controller.
+        // A concrete-only choice list. Since the picker-bleed fix the live
+        // list also carries a leading empty-guid "(Any device)" group
+        // (InputService.PopulateAvailableInputs prepends
+        // MappingDisplayResolver.BuildDeviceAgnosticChoices), which an
+        // empty-guid source now matches on GUID. This hand-built list pins
+        // the remaining fallback path: when no empty-guid entry covers the
+        // descriptor, a descriptor-only fallback onto a concrete entry must
+        // still not adopt that device's identity.
         private static List<InputChoice> ConcreteSlotChoices() => new()
         {
             new InputChoice

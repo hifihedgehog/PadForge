@@ -193,6 +193,15 @@ namespace PadForge.SteamWorkshop.Translation
                         // members in SC-era configs (mode_shift carriers).
                         "left_click" => new ResolvedSource { Descriptor = "Touchpad 0 Click" },
                         "right_click" => new ResolvedSource { Descriptor = "Touchpad 1 Click" },
+                        // Steam Controller digital trigger pulls also ride
+                        // switches groups (full-pull clicks, incl. mode_shift
+                        // carriers). Ground truth: 1172518660 (Valve's TF2
+                        // config) binds left_trigger/right_trigger to
+                        // mouse buttons inside a switches group, and
+                        // 770509247 carries a left_trigger mode_shift.
+                        // Same shape as the trigger slot's "click" member.
+                        "left_trigger" => TriggerClick(left: true),
+                        "right_trigger" => TriggerClick(left: false),
                         _ => null, // button_capture and friends: no family member
                     };
 
@@ -272,20 +281,7 @@ namespace PadForge.SteamWorkshop.Translation
                     switch (name)
                     {
                         case "click":
-                            // Full-pull switch. The button coercion of an
-                            // "Axis N" source reads the UPPER half of the
-                            // 0..65535 range, so the reachable physical-pull
-                            // window is 50..100%; DeadZone 75 fires at
-                            // roughly 87% pull (the end-of-travel click).
-                            return new ResolvedSource
-                            {
-                                Descriptor = axis,
-                                HalfAxis = true,
-                                DeadZone = 75,
-                                AutomapTarget = target,
-                                MacroAxisTarget = target,
-                                IsAnalogTriggerPull = true,
-                            };
+                            return TriggerClick(left);
                         case "edge":
                             // Soft-pull edge: same read at the lowest useful
                             // threshold (~57% physical pull; 50% is the floor
@@ -332,6 +328,26 @@ namespace PadForge.SteamWorkshop.Translation
             Descriptor = $"Touchpad {p} {dir}",
             TrackpadFeature = FeatureJoystickOutput,
         };
+
+        /// <summary>Full-pull trigger switch, shared by the trigger slot's
+        /// <c>click</c> member and the <c>left_trigger</c>/<c>right_trigger</c>
+        /// members of switches groups. The button coercion of an "Axis N"
+        /// source reads the UPPER half of the 0..65535 range, so the
+        /// reachable physical-pull window is 50..100%; DeadZone 75 fires at
+        /// roughly 87% pull (the end-of-travel click).</summary>
+        private static ResolvedSource TriggerClick(bool left)
+        {
+            string target = left ? "LeftTrigger" : "RightTrigger";
+            return new ResolvedSource
+            {
+                Descriptor = left ? "Gamepad LeftTrigger" : "Gamepad RightTrigger",
+                HalfAxis = true,
+                DeadZone = 75,
+                AutomapTarget = target,
+                MacroAxisTarget = target,
+                IsAnalogTriggerPull = true,
+            };
+        }
 
         private static ResolvedSource Btn(string descriptor, string automapTarget, ushort bit) => new()
         {

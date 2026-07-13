@@ -44,8 +44,15 @@ namespace PadForge.SteamWorkshop.Translation
     public sealed class TranslationReport
     {
         /// <summary>Bumped when translation output changes shape, so
-        /// update detection can flag "translator improved since import".</summary>
-        public const int CurrentTranslatorVersion = 1;
+        /// update detection can flag "translator improved since import".
+        /// The value rides provenance inside
+        /// <see cref="ToSummaryString"/> ("v2 rows:..."), which the
+        /// materializer stamps on SteamWorkshopSource.TranslationSummary.
+        /// v2: Wave 1a (#9 follow-up). Adds single_button / gyro_to_mouse
+        /// modes, Steam Controller digital-trigger switch members, #token
+        /// titles, inner deadzone, set_led macros, Long_Press layer
+        /// carries, and the named-skip vocabulary below.</summary>
+        public const int CurrentTranslatorVersion = 2;
 
         public int TranslatorVersion { get; set; } = CurrentTranslatorVersion;
 
@@ -169,5 +176,16 @@ namespace PadForge.SteamWorkshop.Translation
         // stop the automap from asserting, so there is nothing to warn
         // about) but kept, with its resx strings, for old serialized reports.
         public const string AutomapAlsoActive = "Workshop_Tr_AutomapAlsoActive";                 // {0} source {1} target
+
+        // ── Translator v2 (Wave 1a) vocabulary ──
+        public const string ScrollGestureModeNotSupported = "Workshop_Tr_ScrollGestureModeNotSupported";
+        public const string HapticIntensityDropped = "Workshop_Tr_HapticIntensityDropped";       // {0} count
+        public const string ResponseCurveNotSupported = "Workshop_Tr_ResponseCurveNotSupported"; // {0} setting keys
+        public const string GyroButtonMaskDropped = "Workshop_Tr_GyroButtonMaskDropped";         // {0} setting key {1} value
+        public const string ActivatorDelayDropped = "Workshop_Tr_ActivatorDelayDropped";         // {0} delays
+        public const string InterruptibleDropped = "Workshop_Tr_InterruptibleDropped";
+        public const string PlayerNumberActionNotSupported = "Workshop_Tr_PlayerNumberActionNotSupported";
+        public const string LizardModeActionNotSupported = "Workshop_Tr_LizardModeActionNotSupported";
+        public const string SetLedDefaultApproximated = "Workshop_Tr_SetLedDefaultApproximated";
     }
 }

@@ -2464,4 +2464,5 @@
   <data name="About_ProtobufNetDesc" xml:space="preserve"><value>SteamKit2 が Steam の通信プロトコルに使用する Protocol Buffers シリアライザー。Marc Gravell による。Apache-2.0。</value></data>
   <data name="About_ZstdSharp" xml:space="preserve"><value>ZstdSharp</value></data>
   <data name="About_ZstdSharpDesc" xml:space="preserve"><value>SteamKit2 が Steam デポチャンクに使用する Zstandard 展開処理。Oleg Stepanischev による zstd ライブラリの C# 移植。MIT。</value></data>
+  <data name="Mapping_AnyDevice" xml:space="preserve"><value>(任意のデバイス)</value></data>
 </root>

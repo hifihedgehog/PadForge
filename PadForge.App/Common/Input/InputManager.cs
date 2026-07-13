@@ -1149,6 +1149,15 @@ namespace PadForge.Common.Input
                             // Evaluate global macros (profile shortcuts) even in idle
                             // so the user can switch away from an empty profile.
                             EvaluateGlobalMacros();
+
+                            // The slot macro evaluator (and its ToggleKey
+                            // reconcile) doesn't run in idle, so release any
+                            // latched macro key (issue #9 wave 1b) rather
+                            // than leave it stuck down while PadForge is
+                            // inactive. Latch bits stay set on the actions;
+                            // the desired-set rebuild re-asserts them when
+                            // the pipeline wakes. No-op when nothing is held.
+                            ReleaseAllLatchedMacroKeys();
                         }
                         catch (Exception ex)
                         {
@@ -1307,6 +1316,12 @@ namespace PadForge.Common.Input
             }
             finally
             {
+                // A ToggleKey macro latch (issue #9 wave 1b) holds its key
+                // logically down between polls; the loop's exit must release
+                // whatever is still latched or the key stays pressed in the
+                // OS after the engine stops.
+                try { ReleaseAllLatchedMacroKeys(); } catch { }
+
                 if (hTimer != IntPtr.Zero)
                     CloseHandle(hTimer);
                 if (mmTimerId != 0)

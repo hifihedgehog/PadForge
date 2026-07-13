@@ -81,6 +81,14 @@ namespace PadForge.Engine.Common.Mapping
             RemoveWhere(_lockState, slot, target ?? "");
         }
 
+        /// <summary>Drops the captured MotionLean neutral orientations (the
+        /// GyroRecenter macro action, issue #9 wave 1b) so the next real
+        /// gravity sample re-captures the controller's CURRENT grip as
+        /// neutral, the same re-reference a profile switch's Clear() causes.
+        /// Covers the aux ("|L") captures too; they live in the same dict.
+        /// Instance state, so the per-slot runtime scopes this to its slot.</summary>
+        public void ResetMotionNeutral() => _motionNeutral.Clear();
+
         private static void RemoveWhere<TVal>(
             Dictionary<(int slot, string target, int srcIdx), TVal> dict, int slot, string target)
         {

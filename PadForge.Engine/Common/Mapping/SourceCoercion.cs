@@ -542,6 +542,41 @@ namespace PadForge.Engine.Common.Mapping
         }
         private static readonly Dictionary<string, GyroEmaState> _gyroSmoothingState = new();
 
+        /// <summary>Zeroes every accumulated gyro-rate reference held for a
+        /// slot (the GyroRecenter macro action, issue #9 wave 1b): the
+        /// dual-threshold smoothing rings and the per-axis EMA histories for
+        /// every (device, slot) pair on the slot. Both caches are polling-
+        /// thread-only, so callers MUST be on the polling thread (the macro
+        /// evaluator is). Cleared entries rebuild lazily from the next
+        /// sample, exactly like a fresh (device, slot) pair.</summary>
+        public static void ResetGyroAimStateForSlot(int slotIndex)
+        {
+            List<(string, int)> deadRings = null;
+            foreach (var k in _gyroSampleBuffers.Keys)
+                if (k.Item2 == slotIndex) (deadRings ??= new()).Add(k);
+            if (deadRings != null)
+            {
+                foreach (var k in deadRings)
+                {
+                    _gyroSampleBuffers.Remove(k);
+                    _gyroSampleHeads.Remove(k);
+                    _gyroSampleFrames.Remove(k);
+                }
+            }
+
+            // EMA keys are "deviceGuid|slotIndex"; parse the tail rather than
+            // suffix-match ("|1" would also match slot 11).
+            List<string> deadEma = null;
+            foreach (var k in _gyroSmoothingState.Keys)
+            {
+                int bar = k.LastIndexOf('|');
+                if (bar >= 0 && int.TryParse(k.AsSpan(bar + 1), out int keySlot) && keySlot == slotIndex)
+                    (deadEma ??= new()).Add(k);
+            }
+            if (deadEma != null)
+                foreach (var k in deadEma) _gyroSmoothingState.Remove(k);
+        }
+
         // Internal for the poll-frame-gate test pins (PadForge.Tests).
         internal static float ApplyGyroSmoothing(string deviceGuid, int slotIndex, int axis, float rawRate, float alpha)
         {

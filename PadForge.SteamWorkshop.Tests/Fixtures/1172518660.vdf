@@ -1,0 +1,3262 @@
+"controller_mappings"
+{
+	"version"		"3"
+	"title"		"#Title_TF2Default"
+	"description"		"#Description_TF2Default"
+	"creator"		"76561197993329385"
+	"controller_type"		"controller_steamcontroller_gordon"
+	"actions"
+	{
+		"FPSControls"
+		{
+			"title"		"#FPSControls"
+			"legacy_set"		"0"
+			"StickPadGyro"
+			{
+				"Move"
+				{
+					"title"		"#Move"
+					"input_mode"		"joystick_move"
+				}
+				"Camera"
+				{
+					"title"		"#Camera"
+					"input_mode"		"absolute_mouse"
+				}
+			}
+			"Button"
+			{
+				"attack"		"#Attack"
+				"attack2"		"#AltAttack"
+				"attack3"		"#SpecialAttack"
+				"reload"		"#Reload"
+				"jump"		"#Jump"
+				"use_action_slot_item"		"#Use"
+				"duck"		"#Duck"
+				"invnext"		"#NextWeapon"
+				"invprev"		"#PrevWeapon"
+				"dropitem"		"#Drop"
+				"changeclass"		"#ChangeClass"
+				"changeteam"		"#ChangeTeam"
+				"inspect"		"#Inspect"
+				"taunt"		"#Taunt"
+				"voicerecord"		"#PushToTalk"
+				"open_charinfo_direct"		"#Loadout"
+				"open_charinfo_backpack"		"#Backpack"
+				"cancelselect"		"#ToggleMenu"
+				"show_quest_log"		"#Contracts"
+				"showscores"		"#Scoreboard"
+				"toggleready"		"#ToggleReady"
+				"callvote"		"#CallVote"
+				"cl_trigger_first_notification"		"#VoteYes"
+				"cl_decline_first_notification"		"#VoteNo"
+				"vote_option3"		"#VoteOption3"
+				"vote_option4"		"#VoteOption4"
+				"vote_option5"		"#VoteOption5"
+				"voice_medic"		"#VoiceMedic"
+				"voice_thanks"		"#VoiceThanks"
+				"voice_gogogo"		"#VoiceGoGoGo"
+				"voice_moveup"		"#VoiceMoveUp"
+				"voice_spy"		"#VoiceSpy"
+				"voice_uberready"		"#VoiceUberReady"
+				"voice_help"		"#VoiceHelp"
+			}
+		}
+		"MenuControls"
+		{
+			"title"		"#MenuControls"
+			"legacy_set"		"0"
+			"StickPadGyro"
+			{
+				"Mouse"
+				{
+					"title"		"#Mouse"
+					"input_mode"		"absolute_mouse"
+					"os_mouse"		"1"
+				}
+			}
+			"Button"
+			{
+				"resume_esc"		"#ToggleMenu"
+				"menu_cancel"		"#Cancel"
+				"menu_select"		"#MenuSelect"
+				"menu_up"		"#MenuUp"
+				"menu_down"		"#MenuDown"
+				"menu_left"		"#MenuLeft"
+				"menu_right"		"#MenuRight"
+			}
+		}
+		"SpectatorControls"
+		{
+			"title"		"#SpectatorControls"
+			"legacy_set"		"0"
+			"StickPadGyro"
+			{
+				"Camera"
+				{
+					"title"		"#Camera"
+					"input_mode"		"absolute_mouse"
+				}
+			}
+			"Button"
+			{
+				"next_target"		"#NextTarget"
+				"prev_target"		"#PrevTarget"
+				"voicerecord"		"#PushToTalk"
+				"changeclass"		"#ChangeClass"
+				"changeteam"		"#ChangeTeam"
+				"open_charinfo_direct"		"#Loadout"
+				"open_charinfo_backpack"		"#Backpack"
+				"showscores"		"#Scoreboard"
+				"cancelselect"		"#ToggleMenu"
+				"use_action_slot_item"		"#UseOrBuyback"
+			}
+		}
+		"InGameHUDControls"
+		{
+			"title"		"#InGameHUDControls"
+			"legacy_set"		"0"
+			"StickPadGyro"
+			{
+				"Move"
+				{
+					"title"		"#Move"
+					"input_mode"		"joystick_move"
+				}
+				"Camera"
+				{
+					"title"		"#Camera"
+					"input_mode"		"absolute_mouse"
+				}
+			}
+			"Button"
+			{
+				"jump"		"#Jump"
+				"duck"		"#Duck"
+				"invnext"		"#NextWeapon"
+				"invprev"		"#PrevWeapon"
+				"dropitem"		"#Drop"
+				"inspect"		"#Inspect"
+				"taunt"		"#Taunt"
+				"menu_cancel"		"#Cancel"
+				"menu_select"		"#MenuSelect"
+				"menu_up"		"#MenuUp"
+				"menu_down"		"#MenuDown"
+				"menu_left"		"#MenuLeft"
+				"menu_right"		"#MenuRight"
+				"menu_toggle_function"		"#MenuToggleFunction"
+				"menu_alt_function"		"#MenuAltFunction"
+				"voicerecord"		"#PushToTalk"
+				"cancelselect"		"#ToggleMenu"
+				"showscores"		"#Scoreboard"
+				"toggleready"		"#ToggleReady"
+			}
+		}
+	}
+	"localization"
+	{
+		"english"
+		{
+			"FPSControls"		"In-Game"
+			"MenuControls"		"Menus"
+			"Mouse"		"Mouse Emulation"
+			"Move"		"Move"
+			"Camera"		"Look"
+			"attack"		"Attack"
+			"AltAttack"		"Alt Attack"
+			"reload"		"Reload"
+			"jump"		"Jump"
+			"duck"		"Duck"
+			"Use"		"Use Item"
+			"NextWeapon"		"Next Weapon"
+			"PrevWeapon"		"Previous Weapon"
+			"Drop"		"Drop Item"
+			"changeclass"		"Change Class"
+			"changeteam"		"Change Team"
+			"inspect"		"Inspect"
+			"taunt"		"Taunt"
+			"PushToTalk"		"Push-to-Talk"
+			"Loadout"		"Open Loadout"
+			"backpack"		"Open Backpack"
+			"ToggleMenu"		"Toggle Menu"
+			"Contracts"		"Show Contracts"
+			"Scoreboard"		"Show Scoreboard"
+			"toggleready"		"Toggle Ready"
+			"NextBuilding"		"Next Building"
+			"PrevBuilding"		"Previous Building"
+			"build"		"Build"
+			"Destroy"		"Destroy Building"
+			"Cancel"		"Cancel"
+			"Title_TF2Default"		"Team Fortress 2 Defaults"
+			"Description_TF2Default"		"Recommended controls for Team Fortress 2"
+			"callvote"		"Call a Vote"
+			"VoteYes"		"Yes / Accept"
+			"VoteNo"		"No / Decline"
+			"VoteOption3"		"Vote Option 3"
+			"VoteOption4"		"Vote Option 4"
+			"VoteOption5"		"Vote Option 5"
+			"TeleportTarget1"		"Eureka Teleport to Home"
+			"TeleportTarget2"		"Eureka Teleport to Exit"
+			"MenuSelect"		"Select"
+			"MenuUp"		"Menu Up"
+			"MenuDown"		"Menu Down"
+			"MenuLeft"		"Menu Left"
+			"MenuRight"		"Menu Right"
+			"MenuToggleFunction"		"Toggle Function"
+			"InGameHUDControls"		"In-Game during Popup"
+			"Title_TF2InvertedY"		"Team Fortress 2 (Inverted Look)"
+			"Description_TF2InvertedY"		"Recommended controls for Team Fortress 2 with inverted-y look."
+			"MenuAltFunction"		"Alternate Function"
+			"SpectatorControls"		"Spectator Controls"
+			"NextTarget"		"Next target"
+			"PrevTarget"		"Previous target"
+			"UseOrBuyback"		"Use Item / Buyback"
+			"SpecialAttack"		"Special Attack"
+			"VoiceMedic"		"Call Medic!"
+			"VoiceGoGoGo"		"Say: Go go go!"
+			"VoiceMoveUp"		"Say: Move up!"
+			"VoiceSpy"		"Say: Spy!"
+			"VoiceUberReady"		"Say: Ubercharge ready!"
+			"VoiceHelp"		"Say: Help!"
+		}
+		"czech"
+		{
+			"FPSControls"		"Ve hře"
+			"MenuControls"		"Menu"
+			"Mouse"		"Emulace myši"
+			"Move"		"Pohyb"
+			"Camera"		"Pohled"
+			"attack"		"Útok"
+			"AltAttack"		"Alternativní útok"
+			"reload"		"Přebít"
+			"jump"		"Skok"
+			"duck"		"Přikrčení"
+			"Use"		"Použít předmět"
+			"NextWeapon"		"Další zbraň"
+			"PrevWeapon"		"Předchozí zbraň"
+			"Drop"		"Upustit předmět"
+			"changeclass"		"Změnit třídu"
+			"changeteam"		"Změnit tým"
+			"inspect"		"Prozkoumat"
+			"taunt"		"Taunt"
+			"PushToTalk"		"Push-to-Talk"
+			"Loadout"		"Otevřít vybavení"
+			"backpack"		"Otevřít batoh"
+			"ToggleMenu"		"Vyvolat menu"
+			"Contracts"		"Zobrazit kontrakty"
+			"Scoreboard"		"Vyvolat tabulku skóre"
+			"toggleready"		"Připravit se"
+			"NextBuilding"		"Další budova"
+			"PrevBuilding"		"Předchozí budova"
+			"build"		"Postavit"
+			"Destroy"		"Zničit budovu"
+			"Cancel"		"Zrušit"
+			"Title_TF2Default"		"Team Fortress 2 (výchozí)"
+			"Description_TF2Default"		"Doporučené nastavení pro hru Team Fortress 2"
+			"callvote"		"Hlasovat"
+			"VoteYes"		"Ano / Přijmout"
+			"VoteNo"		"Ne / Zamítnout"
+			"VoteOption3"		"Hlasovat pro možnost 3"
+			"VoteOption4"		"Hlasovat pro možnost 4"
+			"VoteOption5"		"Hlasovat pro možnost 5"
+			"TeleportTarget1"		"Eureka Effect – teleportovat na základnu"
+			"TeleportTarget2"		"Eureka Effect – teleportovat se k Výstupu Teleportu"
+			"MenuSelect"		"Vybrat"
+			"MenuUp"		"Pohyb v nabídce – nahoru"
+			"MenuDown"		"Pohyb v nabídce – dolů"
+			"MenuLeft"		"Pohyb v nabídce – doleva"
+			"MenuRight"		"Pohyb v nabídce – doprava"
+			"MenuToggleFunction"		"Změnit funkci"
+			"InGameHUDControls"		"Nastavení pro herni nabídky"
+			"Title_TF2InvertedY"		"Team Fortress 2 (obrácený pohled)"
+			"Description_TF2InvertedY"		"Doporučené nastavení pro hru Team Fortress 2 s obrácenou osou Y pro pohled."
+			"MenuAltFunction"		"Alternativní funkce"
+			"SpectatorControls"		"Ovládání sledování"
+			"NextTarget"		"Další cíl"
+			"PrevTarget"		"Předchozí cíl"
+			"UseOrBuyback"		"Použít předmět / Vykoupení"
+			"SpecialAttack"		"Speciální útok"
+		}
+		"danish"
+		{
+			"FPSControls"		"I spil"
+			"MenuControls"		"Menuer"
+			"Mouse"		"Museemulering"
+			"Move"		"Bevæg"
+			"Camera"		"Se"
+			"attack"		"Angrib"
+			"AltAttack"		"Alternativt angreb"
+			"reload"		"Genlad"
+			"jump"		"Hop"
+			"duck"		"Duk"
+			"Use"		"Brug genstand"
+			"NextWeapon"		"Næste våben"
+			"PrevWeapon"		"Forrige våben"
+			"Drop"		"Smid genstand"
+			"changeclass"		"Skift klasse"
+			"changeteam"		"Skift hold"
+			"inspect"		"Inspicer"
+			"taunt"		"Hån"
+			"PushToTalk"		"Tryk for tale"
+			"Loadout"		"Åbn udstyr"
+			"backpack"		"Åbn rygsæk"
+			"ToggleMenu"		"Åbn/luk menu"
+			"Contracts"		"Vis kontrakter"
+			"Scoreboard"		"Vis pointtavle"
+			"toggleready"		"Klar/ikke klar"
+			"NextBuilding"		"Næste bygning"
+			"PrevBuilding"		"Forrige bygning"
+			"build"		"Byg"
+			"Destroy"		"Ødelæg bygning"
+			"Cancel"		"Annuller"
+			"Title_TF2Default"		"Standarder til Team Fortress 2"
+			"Description_TF2Default"		"Anbefalede tilknytninger til Team Fortress 2"
+			"callvote"		"Start en afstemning"
+			"VoteYes"		"Stem ja / acceptér"
+			"VoteNo"		"Stem nej / afslå"
+			"VoteOption3"		"Valgmulighed 3"
+			"VoteOption4"		"Valgmulighed 4"
+			"VoteOption5"		"Valgmulighed 5"
+			"TeleportTarget1"		"Eureka-teleport til hjem"
+			"TeleportTarget2"		"Eureka-teleport til udgang"
+			"MenuSelect"		"Vælg"
+			"MenuUp"		"Menu op"
+			"MenuDown"		"Menu ned"
+			"MenuLeft"		"Menu venstre"
+			"MenuRight"		"Menu højre"
+			"MenuToggleFunction"		"Slå funktion til/fra"
+			"InGameHUDControls"		"I spillet under popup"
+			"Title_TF2InvertedY"		"Team Fortress 2 (inverteret)"
+			"Description_TF2InvertedY"		"Anbefalet styring til Team Fortress 2 med inverteret y-akse."
+			"MenuAltFunction"		"Alternativ funktion"
+			"SpectatorControls"		"Tilskuer-styring"
+			"NextTarget"		"Næste mål"
+			"PrevTarget"		"Forrige mål"
+			"UseOrBuyback"		"Brug genstand / Tilbagekøb"
+			"SpecialAttack"		"Specielt angreb"
+		}
+		"dutch"
+		{
+			"FPSControls"		"In het spel"
+			"MenuControls"		"Menu's"
+			"Mouse"		"Muisemulatie"
+			"Move"		"Bewegen"
+			"Camera"		"Kijken"
+			"attack"		"Aanvallen"
+			"AltAttack"		"Alt-aanvallen"
+			"reload"		"Herladen"
+			"jump"		"Springen"
+			"duck"		"Bukken"
+			"Use"		"Item gebruiken"
+			"NextWeapon"		"Volgend wapen"
+			"PrevWeapon"		"Vorig wapen"
+			"Drop"		"Item laten vallen"
+			"changeclass"		"Klasse wijzigen"
+			"changeteam"		"Team wijzigen"
+			"inspect"		"Inspecteren"
+			"taunt"		"Bespotting"
+			"PushToTalk"		"Push-to-Talk"
+			"Loadout"		"Uitrusting openen"
+			"backpack"		"Rugzak openen"
+			"ToggleMenu"		"Menu in-/uitschakelen"
+			"Contracts"		"Contracten weergeven"
+			"Scoreboard"		"Scorebord weergeven"
+			"toggleready"		"Gereed/Niet gereed"
+			"NextBuilding"		"Volgende constructie"
+			"PrevBuilding"		"Vorige constructie"
+			"build"		"Bouwen"
+			"Destroy"		"Cosntructie vernietigen"
+			"Cancel"		"Annuleren"
+			"Title_TF2Default"		"Standaardwaarden Team Fortress 2"
+			"Description_TF2Default"		"Aanbevolen besturing voor Team Fortress 2"
+			"callvote"		"Om een stemming vragen"
+			"VoteYes"		"Ja / Accepteren"
+			"VoteNo"		"Nee / Weigeren"
+			"VoteOption3"		"Voor optie 3 stemmen"
+			"VoteOption4"		"Voor optie 4 stemmen"
+			"VoteOption5"		"Voor optie 5 stemmen"
+			"TeleportTarget1"		"Eureka-effect: naar basis teleporteren"
+			"TeleportTarget2"		"Eureka-effect: naar de uitgang teleporteren"
+			"MenuSelect"		"Selecteren"
+			"MenuUp"		"Menu omhoog"
+			"MenuDown"		"Menu omlaag"
+			"MenuLeft"		"Menu links"
+			"MenuRight"		"Menu rechts"
+			"MenuToggleFunction"		"Functie wisselen"
+			"InGameHUDControls"		"In het spel gedurende pop-up"
+			"Title_TF2InvertedY"		"Team Fortress 2 (omgekeerd)"
+			"Description_TF2InvertedY"		"Aanbevolen besturing voor Team Fortress 2 met een omgekeerde Y-as."
+			"MenuAltFunction"		"Functie wisselen"
+			"SpectatorControls"		"Toeschouwersbesturing"
+			"NextTarget"		"Volgende doel"
+			"PrevTarget"		"Vorige doel"
+			"UseOrBuyback"		"Voorwerp gebruiken/terugkopen"
+			"SpecialAttack"		"Speciale aanval"
+		}
+		"finnish"
+		{
+			"FPSControls"		"Pelinsisäinen"
+			"MenuControls"		"Valikot"
+			"Mouse"		"Hiiriemulaatio"
+			"Move"		"Liiku"
+			"Camera"		"Katselu"
+			"attack"		"Hyökkää"
+			"AltAttack"		"Vaiht hyökkäys"
+			"reload"		"Lataa"
+			"jump"		"Hyppää"
+			"duck"		"Kyykisty"
+			"Use"		"Käytä esinettä"
+			"NextWeapon"		"Seuraava ase"
+			"PrevWeapon"		"Edellinen ase"
+			"Drop"		"Pudota esine"
+			"changeclass"		"Vaihda luokkaa"
+			"changeteam"		"Vaihda tiimiä"
+			"inspect"		"Tarkastele"
+			"taunt"		"Pilkkaa"
+			"PushToTalk"		"Puhu"
+			"Loadout"		"Avaa varustelasti"
+			"backpack"		"Avaa reppu"
+			"ToggleMenu"		"Valikko"
+			"Contracts"		"Näytä sopimukset"
+			"Scoreboard"		"Näytä pistetaulukko"
+			"toggleready"		"Valmis"
+			"NextBuilding"		"Seuraava rakennus"
+			"PrevBuilding"		"Edellinen rakennus"
+			"build"		"Rakenna"
+			"Destroy"		"Tuhoa rakennus"
+			"Cancel"		"Peruuta"
+			"Title_TF2Default"		"Team Fortress 2:n oletukset"
+			"Description_TF2Default"		"Suositellut ohjaimet Team Fortress 2:lle"
+			"callvote"		"Järjestä äänestys"
+			"VoteYes"		"Kyllä / Hyväksy"
+			"VoteNo"		"Ei / Hylkää"
+			"VoteOption3"		"Äänestä vaihtoehto 3"
+			"VoteOption4"		"Äänestä vaihtoehto 4"
+			"VoteOption5"		"Äänestä vaihtoehto 5"
+			"TeleportTarget1"		"Ahaa-elämyksen teleportti kotiin"
+			"TeleportTarget2"		"Ahaa-elämyksen teleportti uloskäynnille"
+			"MenuSelect"		"Valitse"
+			"MenuUp"		"Valikko ylös"
+			"MenuDown"		"Valikko alas"
+			"MenuLeft"		"Valikko vasemmalle"
+			"MenuRight"		"Valikko oikealle"
+			"MenuToggleFunction"		"Vaihtotoiminto"
+			"InGameHUDControls"		"Pelissä popupin aikana"
+			"Title_TF2InvertedY"		"Team Fortress 2 (Käänteinen kamera)"
+			"Description_TF2InvertedY"		"Suositellut ohjaimet Team Fortress 2:lle käänteisellä pystysuunnalla."
+			"MenuAltFunction"		"Vaihtoehtoinen toiminto"
+			"SpectatorControls"		"Katsojan ohjaimet"
+			"NextTarget"		"Seuraava kohde"
+			"PrevTarget"		"Edellinen kohde"
+			"UseOrBuyback"		"Käytä esine / Lunasta"
+			"SpecialAttack"		"Erikoishyökkäys"
+		}
+		"french"
+		{
+			"FPSControls"		"En jeu"
+			"MenuControls"		"Menus"
+			"Mouse"		"Émulation de la souris"
+			"Move"		"Se déplacer"
+			"Camera"		"Regarder"
+			"attack"		"Attaque"
+			"AltAttack"		"Attaque alternative"
+			"reload"		"Recharger"
+			"jump"		"Sauter"
+			"duck"		"S'accroupir"
+			"Use"		"Utiliser un objet"
+			"NextWeapon"		"Arme suivante"
+			"PrevWeapon"		"Arme précédente"
+			"Drop"		"Lâcher l'objet"
+			"changeclass"		"Changer de classe"
+			"changeteam"		"Changer d'équipe"
+			"inspect"		"Inspecter"
+			"taunt"		"Utiliser la raillerie"
+			"PushToTalk"		"Appuyer pour parler"
+			"Loadout"		"Ouvrir l'équipement"
+			"backpack"		"Ouvrir l'inventaire"
+			"ToggleMenu"		"Activer/Désactiver le menu"
+			"Contracts"		"Afficher les contrats"
+			"Scoreboard"		"Afficher le tableau des scores"
+			"toggleready"		"Prêt/Pas prêt"
+			"NextBuilding"		"Construction suivante"
+			"PrevBuilding"		"Construction précédente"
+			"build"		"Assembler"
+			"Destroy"		"Détruire la construction"
+			"Cancel"		"Annuler"
+			"Title_TF2Default"		"Configuration de Team Fortress 2 par défaut"
+			"Description_TF2Default"		"Contrôles recommandés pour Team Fortress 2"
+			"callvote"		"Proposer un vote"
+			"VoteYes"		"Oui / Accepter"
+			"VoteNo"		"Non / Refuser"
+			"VoteOption3"		"Voter pour Option 3"
+			"VoteOption4"		"Voter pour Option 4"
+			"VoteOption5"		"Voter pour Option 5"
+			"TeleportTarget1"		"Effet Eureka - Téléportation vers la base"
+			"TeleportTarget2"		"Effet Eureka - Téléportation vers la sortie"
+			"MenuSelect"		"Sélectionner"
+			"MenuUp"		"Haut (menu)"
+			"MenuDown"		"Bas (menu)"
+			"MenuLeft"		"Gauche (menu)"
+			"MenuRight"		"Droite (menu)"
+			"MenuToggleFunction"		"Activer/désactiver fonction"
+			"InGameHUDControls"		"Interface (HUD) activation"
+			"Title_TF2InvertedY"		"Team Fortress 2 (vue inversée)"
+			"Description_TF2InvertedY"		"Configuration recommandée pour Team Fortress 2 avec une vue inversée (y)."
+			"MenuAltFunction"		"Fonction alternative"
+			"SpectatorControls"		"Contrôles (spectateur)"
+			"NextTarget"		"Cible suivante"
+			"PrevTarget"		"Cible précédente"
+			"UseOrBuyback"		"Utiliser objet / Racheter"
+			"SpecialAttack"		"Attaque spéciale"
+		}
+		"german"
+		{
+			"FPSControls"		"Im Spiel"
+			"MenuControls"		"Menüs"
+			"Mouse"		"Mausemulation"
+			"Move"		"Bewegen"
+			"Camera"		"Umsehen"
+			"attack"		"Angriff"
+			"AltAttack"		"Alt. Angriff"
+			"reload"		"Nachladen"
+			"jump"		"Springen"
+			"duck"		"Ducken"
+			"Use"		"Gegenstand verwenden"
+			"NextWeapon"		"Nächste Waffe"
+			"PrevWeapon"		"Vorherige Waffe"
+			"Drop"		"Gegenstand fallen lassen"
+			"changeclass"		"Klasse ändern"
+			"changeteam"		"Team ändern"
+			"inspect"		"Untersuchen"
+			"taunt"		"Verspottung"
+			"PushToTalk"		"Push-to-Talk"
+			"Loadout"		"Ausrüstung öffnen"
+			"backpack"		"Rucksack öffnen"
+			"ToggleMenu"		"Menü umschalten"
+			"Contracts"		"Aufträge anzeigen"
+			"Scoreboard"		"Punktestand anzeigen"
+			"toggleready"		"Bereitschaft umschalten"
+			"NextBuilding"		"Nächstes Gebäude"
+			"PrevBuilding"		"Vorheriges Gebäude"
+			"build"		"Bauen"
+			"Destroy"		"Gebäude zerstören"
+			"Cancel"		"Abbrechen"
+			"Title_TF2Default"		"Team Fortress 2 Standardeinstellungen"
+			"Description_TF2Default"		"Empfohlene Steuerung für Team Fortress 2"
+			"callvote"		"Abstimmung starten"
+			"VoteYes"		"Ja/Akzeptieren"
+			"VoteNo"		"Nein/Ablehnen"
+			"VoteOption3"		"Für Option 3 stimmen"
+			"VoteOption4"		"Für Option 4 stimmen"
+			"VoteOption5"		"Für Option 5 stimmen"
+			"TeleportTarget1"		"Aha-Effekt-Teleport zur Basis"
+			"TeleportTarget2"		"Aha-Effekt-Teleport zum Ausgang"
+			"MenuSelect"		"Auswählen"
+			"MenuUp"		"Menü hoch"
+			"MenuDown"		"Menü runter"
+			"MenuLeft"		"Menü links"
+			"MenuRight"		"Menü rechts"
+			"MenuToggleFunction"		"Umschaltfunktion"
+			"InGameHUDControls"		"Im Spiel über Pop-up"
+			"Title_TF2InvertedY"		"Team Fortress 2 (Invertierte Y-Achse)"
+			"Description_TF2InvertedY"		"Empfohlene Steuerung für Team Fortress 2 mit invertierter Y-Achse."
+			"MenuAltFunction"		"Funktion wechseln"
+			"SpectatorControls"		"Zuschauersteuerung"
+			"NextTarget"		"Nächstes Ziel"
+			"PrevTarget"		"Vorheriges Ziel"
+			"UseOrBuyback"		"Gegenstand benutzen/zurückkaufen"
+			"SpecialAttack"		"Spezialangriff"
+		}
+		"hungarian"
+		{
+			"FPSControls"		"Játékban"
+			"MenuControls"		"Menük"
+			"Mouse"		"Egér-emuláció"
+			"Move"		"Mozgás"
+			"Camera"		"Nézelődés"
+			"attack"		"Támadás"
+			"AltAttack"		"Alternatív támadás"
+			"reload"		"Újratöltés"
+			"jump"		"Ugrás"
+			"duck"		"Guggolójárás"
+			"Use"		"Tárgy használata"
+			"NextWeapon"		"Következő fegyver"
+			"PrevWeapon"		"Előző fegyver"
+			"Drop"		"Tárgy eldobása"
+			"changeclass"		"Osztályváltás"
+			"changeteam"		"Csapatváltás"
+			"inspect"		"Megvizsgálás"
+			"taunt"		"Beszólás"
+			"PushToTalk"		"Beszédgomb"
+			"Loadout"		"Felszerelés megnyitása"
+			"backpack"		"Hátizsák megnyitása"
+			"ToggleMenu"		"Menü átváltása"
+			"Contracts"		"Szerződések mutatása"
+			"Scoreboard"		"Eredménytábla mutatása"
+			"toggleready"		"Készültség be/ki"
+			"NextBuilding"		"Következő építmény"
+			"PrevBuilding"		"Előző építmény"
+			"build"		"Építés"
+			"Destroy"		"Építmény lerombolása"
+			"Cancel"		"Mégse"
+			"Title_TF2Default"		"Team Fortress 2 alapértelmezett"
+			"Description_TF2Default"		"Ajánlott irányítás a Team Fortress 2-höz"
+			"callvote"		"Szavazás indítása"
+			"VoteYes"		"Igen / Elfogadás"
+			"VoteNo"		"Nem / Elutasítás"
+			"VoteOption3"		"3. szavazási lehetőség"
+			"VoteOption4"		"4. szavazási lehetőség"
+			"VoteOption5"		"5. szavazási lehetőség"
+			"TeleportTarget1"		"Heuréka hazateleportálás"
+			"TeleportTarget2"		"Heuréka kijárathoz teleportálás"
+			"MenuSelect"		"Kiválasztás"
+			"MenuUp"		"Menü fel"
+			"MenuDown"		"Menü le"
+			"MenuLeft"		"Menü balra"
+			"MenuRight"		"Menü jobbra"
+			"MenuToggleFunction"		"Funkció ki/be"
+			"InGameHUDControls"		"Játékban, felugró figyelmeztetésnél"
+			"Title_TF2InvertedY"		"Team Fortress 2 (fordított nézelődés)"
+			"Description_TF2InvertedY"		"Javasolt irányítás a Team Fortress 2-höz fordított függőleges nézelődéssel."
+			"MenuAltFunction"		"Alternatív funkció"
+			"SpectatorControls"		"Nézői irányítás"
+			"NextTarget"		"Következő célpont"
+			"PrevTarget"		"Előző célpont"
+			"UseOrBuyback"		"Tárgy használata / Visszavétel"
+			"SpecialAttack"		"Speciális támadás"
+		}
+		"italian"
+		{
+			"FPSControls"		"In gioco"
+			"MenuControls"		"Menu"
+			"Mouse"		"Emulazione mouse"
+			"Move"		"Muoviti"
+			"Camera"		"Guarda"
+			"attack"		"Attacco"
+			"AltAttack"		"Attacco alternativo"
+			"reload"		"Ricarica"
+			"jump"		"Salta"
+			"duck"		"Accovacciati"
+			"Use"		"Usa oggetto"
+			"NextWeapon"		"Arma successiva"
+			"PrevWeapon"		"Arma precedente"
+			"Drop"		"Lascia oggetto"
+			"changeclass"		"Cambia classe"
+			"changeteam"		"Cambia squadra"
+			"inspect"		"Esamina"
+			"taunt"		"Provocazione"
+			"PushToTalk"		"Push-to-talk"
+			"Loadout"		"Apri equipaggiamento"
+			"backpack"		"Apri zaino"
+			"ToggleMenu"		"Mostra menu"
+			"Contracts"		"Mostra contratti"
+			"Scoreboard"		"Mostra punteggi"
+			"toggleready"		"Cambia stato"
+			"NextBuilding"		"Costruzione successiva"
+			"PrevBuilding"		"Costruzione precedente"
+			"build"		"Costruisci"
+			"Destroy"		"Distruggi Edificio"
+			"Cancel"		"Annulla"
+			"Title_TF2Default"		"Predefiniti di Team Fortress 2"
+			"Description_TF2Default"		"Controlli consigliati per Team Fortress 2"
+			"callvote"		"Richiedi una votazione"
+			"VoteYes"		"Sì / Accetta"
+			"VoteNo"		"No / Rifiuta"
+			"VoteOption3"		"Vota per l'opzione 3"
+			"VoteOption4"		"Vota per l'opzione 4"
+			"VoteOption5"		"Vota per l'opzione 5"
+			"TeleportTarget1"		"Effetto Eureka - Teletrasporto alla base"
+			"TeleportTarget2"		"Effetto Eureka - Teletrasporto all'uscita"
+			"MenuSelect"		"Seleziona"
+			"MenuUp"		"Menu in alto"
+			"MenuDown"		"Menu in basso"
+			"MenuLeft"		"Menu di sinistra"
+			"MenuRight"		"Menu di destra"
+			"MenuToggleFunction"		"Funzione Attiva/disattiva"
+			"InGameHUDControls"		"In gioco durante le notifiche"
+			"Title_TF2InvertedY"		"Team Fortress 2 (Visuale invertita)"
+			"Description_TF2InvertedY"		"Comandi consigliati per Team Fortress 2 con visuale invertita sull'asse (y)."
+			"MenuAltFunction"		"Funzione alternativa"
+			"SpectatorControls"		"Comandi spettatore"
+			"NextTarget"		"Prossimo bersaglio"
+			"PrevTarget"		"Bersaglio precedente"
+			"UseOrBuyback"		"Usa oggetto/Rientro"
+			"SpecialAttack"		"Attacco speciale"
+		}
+		"japanese"
+		{
+			"FPSControls"		"ゲーム中"
+			"MenuControls"		"メニュー"
+			"Mouse"		"マウスエミュレーション"
+			"Move"		"移動"
+			"Camera"		"見る"
+			"attack"		"攻撃"
+			"AltAttack"		"サブ攻撃"
+			"reload"		"リロード"
+			"jump"		"ジャンプ"
+			"duck"		"しゃがむ"
+			"Use"		"アイテムを使う"
+			"NextWeapon"		"次の武器"
+			"PrevWeapon"		"前の武器"
+			"Drop"		"アイテムを捨てる"
+			"changeclass"		"クラスの変更"
+			"changeteam"		"チームの変更"
+			"inspect"		"対象を調べる"
+			"taunt"		"挑発"
+			"PushToTalk"		"発言"
+			"Loadout"		"装備を開く"
+			"backpack"		"バックパックを開く"
+			"ToggleMenu"		"メニューの切り替え"
+			"Contracts"		"契約を表示"
+			"Scoreboard"		"スコアボードを表示"
+			"toggleready"		"切り替えの準備完了"
+			"NextBuilding"		"次の装置"
+			"PrevBuilding"		"前の装置"
+			"build"		"作成"
+			"Destroy"		"装置を破壊"
+			"Cancel"		"キャンセル"
+			"Title_TF2Default"		"Team Fortress 2 デフォルト"
+			"Description_TF2Default"		"Team Fortress 2 の操作にお薦めの設定です。"
+			"callvote"		"投票を呼びかける"
+			"VoteYes"		"はい / 同意"
+			"VoteNo"		"いいえ / 拒否"
+			"VoteOption3"		"オプション3に投票"
+			"VoteOption4"		"オプション4に投票"
+			"VoteOption5"		"オプション5に投票"
+			"TeleportTarget1"		"ホームへユーリカ・テレポート"
+			"TeleportTarget2"		"出口へユーリカ・テレポート"
+			"MenuSelect"		"選択"
+			"MenuUp"		"メニュー　上"
+			"MenuDown"		"メニュー　下"
+			"MenuLeft"		"メニュー　左"
+			"MenuRight"		"メニュー　右"
+			"MenuToggleFunction"		"切り替え機能"
+			"InGameHUDControls"		"ゲーム内のポップアップ"
+			"Title_TF2InvertedY"		"Team Fortress 2 (反転ビュー)"
+			"Description_TF2InvertedY"		"Y 軸反転ビューでの、 Team Fortress 2 操作におすすめの設定です。"
+			"MenuAltFunction"		"代替機能"
+			"SpectatorControls"		"観戦時の操作"
+			"NextTarget"		"次のターゲット"
+			"PrevTarget"		"前のターゲット"
+			"UseOrBuyback"		"アイテム/バイバックを使う"
+			"SpecialAttack"		"特殊攻撃"
+		}
+		"koreana"
+		{
+			"FPSControls"		"게임 중"
+			"MenuControls"		"메뉴"
+			"Mouse"		"마우스 에뮬레이션"
+			"Move"		"이동"
+			"Camera"		"보기"
+			"attack"		"공격"
+			"AltAttack"		"대체 공격"
+			"reload"		"재장전"
+			"jump"		"점프"
+			"duck"		"웅크리기"
+			"Use"		"아이템 사용"
+			"NextWeapon"		"다음 무기"
+			"PrevWeapon"		"이전 무기"
+			"Drop"		"아이템 떨어트리기"
+			"changeclass"		"병과 변경"
+			"changeteam"		"팀 변경"
+			"inspect"		"대상 관찰"
+			"taunt"		"도발"
+			"PushToTalk"		"PTT(Push-To-Talk)"
+			"Loadout"		"장비 설정 보기"
+			"backpack"		"배낭 열어보기"
+			"ToggleMenu"		"메뉴 전환"
+			"Contracts"		"계약 상황 보기"
+			"Scoreboard"		"점수판 보기"
+			"toggleready"		"준비 상태 전환"
+			"NextBuilding"		"다음 구조물"
+			"PrevBuilding"		"이전 구조물"
+			"build"		"설치"
+			"Destroy"		"구조물 파괴"
+			"Cancel"		"취소"
+			"Title_TF2Default"		"팀 포트리스 2 기본값"
+			"Description_TF2Default"		"팀 포트리스 2 추천 설정"
+			"callvote"		"투표 요청"
+			"VoteYes"		"네/ 수락"
+			"VoteNo"		"아니요 / 거절"
+			"VoteOption3"		"투표 선택지 3"
+			"VoteOption4"		"투표 선택지 4"
+			"VoteOption5"		"투표 선택지 5"
+			"TeleportTarget1"		"유레카 홈으로 텔레포트하기"
+			"TeleportTarget2"		"유레카 나가기로 텔레포트하기"
+			"MenuSelect"		"선택"
+			"MenuUp"		"메뉴 위쪽"
+			"MenuDown"		"메뉴 아래쪽"
+			"MenuLeft"		"메뉴 왼쪽"
+			"MenuRight"		"메뉴 오른쪽"
+			"MenuToggleFunction"		"기능 전환"
+			"InGameHUDControls"		"게임 내 팝업"
+			"Title_TF2InvertedY"		"Team Fortress 2 (반전된 시점)"
+			"Description_TF2InvertedY"		"Y 반전 시점의 팀 포트리스 2를 위한 추천 설정입니다."
+			"MenuAltFunction"		"대체 기능"
+			"SpectatorControls"		"관전자 조작"
+			"NextTarget"		"다음 목표"
+			"PrevTarget"		"이전 목표"
+			"UseOrBuyback"		"아이템 사용/ 즉시 부활"
+			"SpecialAttack"		"특수 공격"
+		}
+		"norwegian"
+		{
+			"FPSControls"		"I spill"
+			"NextWeapon"		"Neste våpen"
+			"changeteam"		"Skift lag"
+			"inspect"		"Inspiser"
+			"Cancel"		"Avbryt"
+			"MenuSelect"		"Velg"
+		}
+		"polish"
+		{
+			"FPSControls"		"W grze"
+			"MenuControls"		"Menu"
+			"Mouse"		"Emulacja myszy"
+			"Move"		"Poruszanie się"
+			"Camera"		"Rozglądanie się"
+			"attack"		"Atak"
+			"AltAttack"		"Alt. atak"
+			"reload"		"Przeładowanie"
+			"jump"		"Skakanie"
+			"duck"		"Kucanie"
+			"Use"		"Użycie przedmiotu"
+			"NextWeapon"		"Następna broń"
+			"PrevWeapon"		"Poprzednia broń"
+			"Drop"		"Upuszczenie przedmiotu"
+			"changeclass"		"Zmiana klasy"
+			"changeteam"		"Zmiana drużyny"
+			"inspect"		"Zbadaj"
+			"taunt"		"Drwina"
+			"PushToTalk"		"Naciśnij, by mówić"
+			"Loadout"		"Otwarcie wyposażenia"
+			"backpack"		"Otwarcie plecaka"
+			"ToggleMenu"		"Przełączanie menu"
+			"Contracts"		"Pokaż kontrakty"
+			"Scoreboard"		"Pokaż tabelę wyników"
+			"toggleready"		"Przełączenie gotowości"
+			"NextBuilding"		"Następna konstrukcja"
+			"PrevBuilding"		"Poprzednia konstrukcja"
+			"build"		"Zbuduj"
+			"Destroy"		"Zniszcz konstrukcję"
+			"Cancel"		"Anuluj"
+			"Title_TF2Default"		"Team Fortress 2 - domyślne"
+			"Description_TF2Default"		"Zalecane sterowanie dla Team Fortress 2"
+			"callvote"		"Rozpocznij głosowanie"
+			"VoteYes"		"Tak / Akceptuj"
+			"VoteNo"		"Nie / Odrzuć"
+			"VoteOption3"		"Głos: Opcja 3"
+			"VoteOption4"		"Głos: Opcja 4"
+			"VoteOption5"		"Głos: Opcja 5"
+			"TeleportTarget1"		"Efekt Eureki - teleport do wejścia"
+			"TeleportTarget2"		"Efekt Eureki - teleport do wyjścia"
+			"MenuSelect"		"Wybierz"
+			"MenuUp"		"Menu w górę"
+			"MenuDown"		"Menu w dół"
+			"MenuLeft"		"Menu w lewo"
+			"MenuRight"		"Menu w prawo"
+			"MenuToggleFunction"		"Przełącz funkcję"
+			"InGameHUDControls"		"W oknie dialogowym w grze"
+			"Title_TF2InvertedY"		"Team Fortress 2 (Odwrócone rozglądanie się)"
+			"Description_TF2InvertedY"		"Zalecane sterowanie dla Team Fortress 2 z odwróconą osią Y."
+			"MenuAltFunction"		"Alternatywna funkcja"
+			"SpectatorControls"		"Kontrola widza"
+			"NextTarget"		"Następny cel"
+			"PrevTarget"		"Poprzedni cel"
+			"UseOrBuyback"		"Użyj przedmiotu / wykupienia"
+			"SpecialAttack"		"Atak specjalny"
+		}
+		"portuguese"
+		{
+			"FPSControls"		"No jogo"
+			"MenuControls"		"Menus"
+			"Mouse"		"Emulação do rato"
+			"Move"		"Mover-se"
+			"Camera"		"Olhar"
+			"attack"		"Ataque"
+			"AltAttack"		"Ataque alt."
+			"reload"		"Recarregar"
+			"jump"		"Saltar"
+			"duck"		"Agachar-se"
+			"Use"		"Usar item"
+			"NextWeapon"		"Arma seguinte"
+			"PrevWeapon"		"Arma anterior"
+			"Drop"		"Largar item"
+			"changeclass"		"Mudar de classe"
+			"changeteam"		"Mudar de equipa"
+			"inspect"		"Examinar"
+			"taunt"		"Provocação"
+			"PushToTalk"		"Transmitir voz"
+			"Loadout"		"Abrir equipamento"
+			"backpack"		"Abrir mochila"
+			"ToggleMenu"		"Abrir/fechar menu"
+			"Contracts"		"Ver contratos"
+			"Scoreboard"		"Ver pontuações"
+			"toggleready"		"Pronto/cancelar"
+			"NextBuilding"		"Construção seguinte"
+			"PrevBuilding"		"Construção anterior"
+			"build"		"Construir"
+			"Destroy"		"Destruir construção"
+			"Cancel"		"Cancelar"
+			"Title_TF2Default"		"Predefinições para o Team Fortress 2"
+			"Description_TF2Default"		"Controlos recomendados para o Team Fortress 2"
+			"callvote"		"Iniciar votação"
+			"VoteYes"		"Sim / Aceitar"
+			"VoteNo"		"Não / Recusar"
+			"VoteOption3"		"Votar Opção 3"
+			"VoteOption4"		"Votar Opção 4"
+			"VoteOption5"		"Votar Opção 5"
+			"TeleportTarget1"		"Ef. Eureka - Ir p/ base"
+			"TeleportTarget2"		"Ef. Eureka - Ir p/ saída"
+			"MenuSelect"		"Selecionar"
+			"MenuUp"		"Menu p/ cima"
+			"MenuDown"		"Menu p/ baixo"
+			"MenuLeft"		"Menu p/ esq."
+			"MenuRight"		"Menu p/ dir."
+			"MenuToggleFunction"		"Ativar/desativar função"
+			"InGameHUDControls"		"No jogo durante popup"
+			"Title_TF2InvertedY"		"Team Fortress 2 (Eixo Y invertido)"
+			"Description_TF2InvertedY"		"Controlos recomendados para o Team Fortress 2 com o eixo Y (vertical) invertido."
+			"MenuAltFunction"		"Função alternativa"
+			"SpectatorControls"		"Controlos de espectador"
+			"NextTarget"		"Alvo seguinte"
+			"PrevTarget"		"Alvo anterior"
+			"UseOrBuyback"		"Usar item / Reentrar"
+			"SpecialAttack"		"Ataque especial"
+		}
+		"romanian"
+		{
+			"FPSControls"		"În joc"
+			"MenuControls"		"Meniuri"
+			"Mouse"		"Emulare mouse"
+			"Move"		"Mișcare"
+			"Camera"		"Priveşte"
+			"attack"		"Atac"
+			"AltAttack"		"Atac alternativ"
+			"reload"		"Reîncarcă"
+			"jump"		"Sari"
+			"duck"		"Ghemuire"
+			"Use"		"Folosește obiect"
+			"NextWeapon"		"Arma următoare"
+			"PrevWeapon"		"Arma anterioară"
+			"Drop"		"Aruncă obiect"
+			"changeclass"		"Schimbă clasa"
+			"changeteam"		"Schimbă echipa"
+			"inspect"		"Inspectează"
+			"taunt"		"Batjocură"
+			"PushToTalk"		"Apasă să vorbești"
+			"Loadout"		"Deschide meniul"
+			"backpack"		"Deschide rucsacul"
+			"ToggleMenu"		"Comută meniu"
+			"Contracts"		"Afişează contractele"
+			"Scoreboard"		"Afişează tabela de scor"
+			"toggleready"		"Comută pregătirea"
+			"NextBuilding"		"Construcţia următoare"
+			"PrevBuilding"		"Construcţia anterioară"
+			"build"		"Construieşte"
+			"Destroy"		"Distruge construcţia"
+			"Cancel"		"Anulează"
+			"Title_TF2Default"		"Setările implicite ale Team Fortress 2"
+			"Description_TF2Default"		"Controale recomandate pentru Team Fortress 2"
+			"callvote"		"Solicită un vot"
+			"VoteYes"		"Da / Acceptă"
+			"VoteNo"		"Nu / Respinge"
+			"VoteOption3"		"Votează opţiunea 3"
+			"VoteOption4"		"Votează opţiunea 4"
+			"VoteOption5"		"Votează opţiunea 5"
+			"TeleportTarget1"		"Eureka - Teleportare acasă"
+			"TeleportTarget2"		"Eureka - Teleportare la ieșire"
+			"MenuSelect"		"Selectează"
+			"MenuUp"		"Meniu sus"
+			"MenuDown"		"Meniu jos"
+			"MenuLeft"		"Meniu stânga"
+			"MenuRight"		"Meniu dreapta"
+			"MenuToggleFunction"		"Comută funcția"
+			"InGameHUDControls"		"În joc în timpul Popup-ului"
+			"Title_TF2InvertedY"		"Team Fortress 2 (Privire inversată)"
+			"Description_TF2InvertedY"		"Configuraţii recomandate pentru Team Fortress 2 cu vedere inversată (y)."
+			"MenuAltFunction"		"Funcţie alternativă"
+			"SpectatorControls"		"Controale spectator"
+			"NextTarget"		"Următoarea țintă"
+			"PrevTarget"		"Ţinta anterioară"
+			"UseOrBuyback"		"Folosirea obiectului / Răscumpărare"
+			"SpecialAttack"		"Atac Special"
+		}
+		"russian"
+		{
+			"FPSControls"		"В игре"
+			"MenuControls"		"В меню"
+			"Mouse"		"Эмуляция мыши"
+			"Move"		"Передвижение"
+			"Camera"		"Обзор"
+			"attack"		"Осн. режим оружия"
+			"AltAttack"		"Альт. режим оружия"
+			"reload"		"Перезарядить оружие"
+			"jump"		"Прыжок"
+			"duck"		"Присесть"
+			"Use"		"Использовать предмет"
+			"NextWeapon"		"Следующее оружие"
+			"PrevWeapon"		"Предыдущее оружие"
+			"Drop"		"Бросить предмет"
+			"changeclass"		"Сменить класс"
+			"changeteam"		"Сменить команду"
+			"inspect"		"Осмотреть"
+			"taunt"		"Насмешки"
+			"PushToTalk"		"Голосовая связь"
+			"Loadout"		"Открыть снаряжение"
+			"backpack"		"Открыть рюкзак"
+			"ToggleMenu"		"Открыть/закрыть меню"
+			"Contracts"		"Показать контракты"
+			"Scoreboard"		"Показать счет игроков"
+			"toggleready"		"Изменить готовность"
+			"NextBuilding"		"Следующая постройка"
+			"PrevBuilding"		"Предыдущая постройка"
+			"build"		"Построить"
+			"Destroy"		"Уничтожить постройку"
+			"Cancel"		"Отмена"
+			"Title_TF2Default"		"Управление в Team Fortress 2"
+			"Description_TF2Default"		"Рекомендуемые настройки управления для Team Fortress 2"
+			"callvote"		"Начать голосование"
+			"VoteYes"		"Голос «За» / Принять"
+			"VoteNo"		"Голос «Против» / Отклонить"
+			"VoteOption3"		"Ответ голосования 3"
+			"VoteOption4"		"Ответ голосования 4"
+			"VoteOption5"		"Ответ голосования 5"
+			"TeleportTarget1"		"Вернуться на базу (Озарение)"
+			"TeleportTarget2"		"Вернуться к выходу телепорта (Озарение)"
+			"MenuSelect"		"Выбрать"
+			"MenuUp"		"Вверх (меню)"
+			"MenuDown"		"Вниз (меню)"
+			"MenuLeft"		"Влево (меню)"
+			"MenuRight"		"Вправо (меню)"
+			"MenuToggleFunction"		"Переключить опцию"
+			"InGameHUDControls"		"Оповещения во время игры"
+			"Title_TF2InvertedY"		"Team Fortress 2 (вертикальная инверсия)"
+			"Description_TF2InvertedY"		"Рекомендуемое управление Team Fortress 2 с инвертированием по вертикали."
+			"MenuAltFunction"		"Доп. функция"
+			"SpectatorControls"		"Режим наблюдателя"
+			"NextTarget"		"Следующая цель"
+			"PrevTarget"		"Предыдущая цель"
+			"UseOrBuyback"		"Использовать/Выкуп"
+			"SpecialAttack"		"Особая атака"
+		}
+		"spanish"
+		{
+			"FPSControls"		"En la partida"
+			"MenuControls"		"Menús"
+			"Mouse"		"Emulación del ratón"
+			"Move"		"Moverse"
+			"Camera"		"Mirar"
+			"attack"		"Atacar"
+			"AltAttack"		"Ataque secundario"
+			"reload"		"Recargar"
+			"jump"		"Saltar"
+			"duck"		"Agacharse"
+			"Use"		"Usar objeto"
+			"NextWeapon"		"Arma siguiente"
+			"PrevWeapon"		"Arma anterior"
+			"Drop"		"Soltar objeto"
+			"changeclass"		"Cambiar de clase"
+			"changeteam"		"Cambiar de equipo"
+			"inspect"		"Inspeccionar"
+			"taunt"		"Burla"
+			"PushToTalk"		"Pulsar para hablar"
+			"Loadout"		"Abrir equipamiento"
+			"backpack"		"Abrir mochila"
+			"ToggleMenu"		"Mostrar/Ocultar menú"
+			"Contracts"		"Mostrar contratos"
+			"Scoreboard"		"Mostrar tabla de puntuaciones"
+			"toggleready"		"Listo/No listo"
+			"NextBuilding"		"Construcción siguiente"
+			"PrevBuilding"		"Construcción anterior"
+			"build"		"Construir"
+			"Destroy"		"Destruir construcción"
+			"Cancel"		"Cancelar"
+			"Title_TF2Default"		"Predeterminados de Team Fortress 2"
+			"Description_TF2Default"		"Controles recomendados para Team Fortress 2"
+			"callvote"		"Solicitar una votación"
+			"VoteYes"		"Sí / Aceptar"
+			"VoteNo"		"No / Rechazar"
+			"VoteOption3"		"Votar Opción 3"
+			"VoteOption4"		"Votar Opción 4"
+			"VoteOption5"		"Votar Opción 5"
+			"TeleportTarget1"		"Teletransportarse a base (Efecto Eureka)"
+			"TeleportTarget2"		"Teletransportarse a la salida (Efecto Eureka)"
+			"MenuSelect"		"Seleccionar"
+			"MenuUp"		"Menú arriba"
+			"MenuDown"		"Menú abajo"
+			"MenuLeft"		"Menú izquierda"
+			"MenuRight"		"Menú derecha"
+			"MenuToggleFunction"		"Activar/desactivar función"
+			"InGameHUDControls"		"En la partida durante notificaciones"
+			"Title_TF2InvertedY"		"Team Fortress 2 (Vista invertida)"
+			"Description_TF2InvertedY"		"Controles recomendados para Team Fortress 2 con el eje Y invertido."
+			"MenuAltFunction"		"Función alternativa"
+			"SpectatorControls"		"Controles de espectador"
+			"NextTarget"		"Objetivo siguiente"
+			"PrevTarget"		"Objetivo anterior"
+			"UseOrBuyback"		"Usar objeto / Reaparecer"
+			"SpecialAttack"		"Ataque especial"
+		}
+		"swedish"
+		{
+			"FPSControls"		"I spelet"
+			"MenuControls"		"Menyer"
+			"Mouse"		"Musemulering"
+			"Move"		"Flytta"
+			"Camera"		"Titta"
+			"attack"		"Attack"
+			"AltAttack"		"Alernativ Attack"
+			"reload"		"Ladda om"
+			"jump"		"Hoppa"
+			"duck"		"Huka"
+			"Use"		"Använd föremål"
+			"NextWeapon"		"Nästa vapen"
+			"PrevWeapon"		"Föregående vapen"
+			"Drop"		"Släpp föremål"
+			"changeclass"		"Ändra Klass"
+			"changeteam"		"Ändra Lag"
+			"inspect"		"Inspektera"
+			"taunt"		"Håna"
+			"PushToTalk"		"Push-to-Talk"
+			"Loadout"		"Öppna utrustning"
+			"backpack"		"Öppna ryggsäck"
+			"ToggleMenu"		"Växla meny"
+			"Contracts"		"Visa kontrakt"
+			"Scoreboard"		"Visa poängtavla"
+			"toggleready"		"Växla redo"
+			"NextBuilding"		"Nästa byggnad"
+			"PrevBuilding"		"Föregående byggnad"
+			"build"		"Bygg"
+			"Destroy"		"Förstör byggnad"
+			"Cancel"		"Avbryt"
+			"Title_TF2Default"		"Team Fortress 2 Standardvärden"
+			"Description_TF2Default"		"Rekommenderade kontroller för Team Fortress 2"
+			"callvote"		"Begär omröstning"
+			"VoteYes"		"Ja / Acceptera"
+			"VoteNo"		"Nej / Avböj"
+			"VoteOption3"		"Rösta på val 3"
+			"VoteOption4"		"Rösta på val 4"
+			"VoteOption5"		"Rösta på val 5"
+			"TeleportTarget1"		"Eureka - Teleportera hem"
+			"TeleportTarget2"		"Eureka - Teleportera till utgång"
+			"MenuSelect"		"Välj"
+			"MenuUp"		"Meny upp"
+			"MenuDown"		"Meny ner"
+			"MenuLeft"		"Meny vänster"
+			"MenuRight"		"Meny höger"
+			"MenuToggleFunction"		"Växla funktion"
+			"InGameHUDControls"		"I spelet under popup"
+			"Title_TF2InvertedY"		"Team Fortress 2 (inverterad syn)"
+			"Description_TF2InvertedY"		"Rekommenderade kontroller för Team Fortress 2 med inverterad y-axel."
+			"MenuAltFunction"		"Alternativ funktion"
+			"SpectatorControls"		"Kontroller för åskådning"
+			"NextTarget"		"Nästa mål"
+			"PrevTarget"		"Föregående mål"
+			"UseOrBuyback"		"Använd föremål / Köp tillbaka"
+			"SpecialAttack"		"Specialattack"
+		}
+		"schinese"
+		{
+			"FPSControls"		"游戏中"
+			"MenuControls"		"菜单"
+			"Mouse"		"鼠标仿真"
+			"Move"		"移动"
+			"Camera"		"观看"
+			"attack"		"攻击"
+			"AltAttack"		"Alt 键攻击"
+			"reload"		"装填弹药"
+			"jump"		"跳跃"
+			"duck"		"下蹲"
+			"Use"		"使用物品"
+			"NextWeapon"		"下一把武器"
+			"PrevWeapon"		"上一把武器"
+			"Drop"		"丢弃物品"
+			"changeclass"		"更改兵种"
+			"changeteam"		"变更团队"
+			"inspect"		"检视"
+			"taunt"		"嘲讽"
+			"PushToTalk"		"按键通话"
+			"Loadout"		"打开配置"
+			"backpack"		"打开背包"
+			"ToggleMenu"		"切换菜单"
+			"Contracts"		"显示合同"
+			"Scoreboard"		"显示计分板"
+			"toggleready"		"切换为就绪状态"
+			"NextBuilding"		"下一个建筑物"
+			"PrevBuilding"		"上一个建筑物"
+			"build"		"建造"
+			"Destroy"		"摧毁建造"
+			"Cancel"		"取消"
+			"Title_TF2Default"		"《军团要塞 2》默认"
+			"Description_TF2Default"		"《军团要塞 2》的推荐控制"
+			"callvote"		"投票"
+			"VoteYes"		"赞成 / 接受"
+			"VoteNo"		"反对 / 拒绝"
+			"VoteOption3"		"投选项 3"
+			"VoteOption4"		"投选项 4"
+			"VoteOption5"		"投选项 5"
+			"TeleportTarget1"		"传送扳手传送到基地"
+			"TeleportTarget2"		"传送扳手传送到出口"
+			"MenuSelect"		"选择"
+			"MenuUp"		"菜单向上"
+			"MenuDown"		"菜单向下"
+			"MenuLeft"		"菜单向左"
+			"MenuRight"		"菜单向右"
+			"MenuToggleFunction"		"切换功能"
+			"InGameHUDControls"		"出现弹出项时处于游戏中"
+			"Title_TF2InvertedY"		"《军团要塞 2》（反向观看）"
+			"Description_TF2InvertedY"		"《军团要塞 2》的推荐控制设置，带有 Y 轴反向观看。"
+			"MenuAltFunction"		"次要功能"
+			"SpectatorControls"		"观察者控制"
+			"NextTarget"		"下一个目标"
+			"PrevTarget"		"上一个目标"
+			"UseOrBuyback"		"使用物品 / 买活"
+			"SpecialAttack"		"特殊攻击"
+		}
+		"tchinese"
+		{
+			"FPSControls"		"遊戲中"
+			"MenuControls"		"選單"
+			"Mouse"		"滑鼠模擬"
+			"Move"		"移動"
+			"Camera"		"看"
+			"attack"		"攻擊"
+			"AltAttack"		"替代攻擊"
+			"reload"		"裝填彈藥"
+			"jump"		"跳躍"
+			"duck"		"鴨子"
+			"Use"		"使用物品"
+			"NextWeapon"		"下一種武器"
+			"PrevWeapon"		"上一種武器"
+			"Drop"		"丟棄物品"
+			"changeclass"		"變更兵種"
+			"changeteam"		"變更隊伍"
+			"inspect"		"檢視目標"
+			"taunt"		"嘲諷"
+			"PushToTalk"		"隨按即說"
+			"Loadout"		"開啟裝備"
+			"backpack"		"開啟背包"
+			"ToggleMenu"		"切換選單"
+			"Contracts"		"顯示合約"
+			"Scoreboard"		"顯示記分板"
+			"toggleready"		"切換完成"
+			"NextBuilding"		"下—個建築物"
+			"PrevBuilding"		"上—個建築物"
+			"build"		"建造"
+			"Destroy"		"摧毀建築物"
+			"Cancel"		"取消"
+			"Title_TF2Default"		"《絕地要塞 2》預設"
+			"Description_TF2Default"		"《絕地要塞 2》建議控制"
+			"callvote"		"投票"
+			"VoteYes"		"贊成 / 接受"
+			"VoteNo"		"反對 / 否決"
+			"VoteOption3"		"選項 3"
+			"VoteOption4"		"選項 4"
+			"VoteOption5"		"選項 5"
+			"MenuSelect"		"選擇"
+			"MenuUp"		"選單向上"
+			"MenuDown"		"選單向下"
+			"MenuLeft"		"選單向左"
+			"MenuRight"		"選單向右"
+			"MenuAltFunction"		"其它函數"
+			"SpectatorControls"		"旁觀者選項"
+			"NextTarget"		"下一個目標"
+			"PrevTarget"		"上一個目標"
+			"SpecialAttack"		"特殊攻擊"
+		}
+		"thai"
+		{
+			"FPSControls"		"ในเกม"
+			"MenuControls"		"เมนู"
+			"Mouse"		"การจำลองเมาส์"
+			"Move"		"เคลื่อนที่"
+			"Camera"		"มอง"
+			"attack"		"โจมตี"
+			"AltAttack"		"โจมตีอีกแบบ"
+			"reload"		"บรรจุกระสุน"
+			"jump"		"กระโดด"
+			"duck"		"ย่อตัว"
+			"Use"		"ใช้ไอเท็ม"
+			"NextWeapon"		"อาวุธถัดไป"
+			"PrevWeapon"		"อาวุธก่อนหน้า"
+			"Drop"		"ทิ้งไอเท็ม"
+			"changeclass"		"เปลี่ยนอาชีพ"
+			"changeteam"		"เปลี่ยนทีม"
+			"inspect"		"ตรวจสอบ"
+			"taunt"		"เยาะเย้ย"
+			"PushToTalk"		"กดเพื่อพูด"
+			"Loadout"		"เปิดชุดปรับแต่ง"
+			"backpack"		"เปิดกระเป๋า"
+			"ToggleMenu"		"สลับเมนู"
+			"Contracts"		"แสดงภารกิจ"
+			"Scoreboard"		"แสดงกระดานคะแนน"
+			"toggleready"		"สลับความพร้อม"
+			"NextBuilding"		"สิ่งก่อสร้างถัดไป"
+			"PrevBuilding"		"สิ่งก่อสร้างก่อนหน้า"
+			"build"		"สร้าง"
+			"Destroy"		"ทำลายสิ่งก่อสร้าง"
+			"Cancel"		"ยกเลิก"
+			"Title_TF2Default"		"ค่าเริ่มต้น Team Fortress 2"
+			"Description_TF2Default"		"การควบคุมที่แนะนำสำหรับ Team Fortress 2"
+			"callvote"		"เรียกโหวต"
+			"VoteYes"		"ใช่ / ยอมรับ"
+			"VoteNo"		"ไม่ / ปฏิเสธ"
+			"VoteOption3"		"โหวตตัวเลือก 3"
+			"VoteOption4"		"โหวตตัวเลือก 4"
+			"VoteOption5"		"โหวตตัวเลือก 5"
+			"TeleportTarget1"		"Eureka เทเลพอร์ตไปหน้าหลัก"
+			"TeleportTarget2"		"Eureka เทเลพอร์ตไปทางออก"
+			"MenuSelect"		"เลือก"
+			"MenuUp"		"เมนูขึ้น"
+			"MenuDown"		"เมนูลง"
+			"MenuLeft"		"เมนูซ้าย"
+			"MenuRight"		"เมนูขวา"
+			"MenuToggleFunction"		"สลับฟังก์ชัน"
+			"InGameHUDControls"		"ในเกมระหว่างป็อปอัป"
+			"Title_TF2InvertedY"		"Team Fortress 2 (สลับแกนมุมมอง)"
+			"Description_TF2InvertedY"		"การควบคุมที่แนะนำสำหรับ Team Fortress 2 ที่ใช้มุมมองสลับแกน Y"
+			"MenuAltFunction"		"ฟังก์ชันรอง"
+			"SpectatorControls"		"การควบคุมผู้สังเกตการณ์"
+			"NextTarget"		"เป้าหมายถัดไป"
+			"PrevTarget"		"เป้าหมายก่อนหน้า"
+			"UseOrBuyback"		"ใช้ไอเท็ม / ซื้อเกิด"
+			"SpecialAttack"		"การโจมตีพิเศษ"
+		}
+		"brazilian"
+		{
+			"FPSControls"		"Em jogo"
+			"MenuControls"		"Menus"
+			"Mouse"		"Emulação de mouse"
+			"Move"		"Mover-se"
+			"Camera"		"Olhar"
+			"attack"		"Ataque"
+			"AltAttack"		"Ataque alt."
+			"reload"		"Recarregar"
+			"jump"		"Pular"
+			"duck"		"Agachar-se"
+			"Use"		"Usar item"
+			"NextWeapon"		"Próxima arma"
+			"PrevWeapon"		"Arma anterior"
+			"Drop"		"Largar maleta/poder"
+			"changeclass"		"Mudar de classe"
+			"changeteam"		"Mudar de equipe"
+			"inspect"		"Inspecionar"
+			"taunt"		"Provocar"
+			"PushToTalk"		"Pressionar para falar"
+			"Loadout"		"Abrir equipamento"
+			"backpack"		"Abrir mochila"
+			"ToggleMenu"		"Abrir/Fechar menu"
+			"Contracts"		"Exibir contratos"
+			"Scoreboard"		"Exibir placar"
+			"toggleready"		"Alterar status"
+			"NextBuilding"		"Próxima construção"
+			"PrevBuilding"		"Construção anterior"
+			"build"		"Construir"
+			"Destroy"		"Destruir construção"
+			"Cancel"		"Cancelar"
+			"Title_TF2Default"		"Padrões de Team Fortress 2"
+			"Description_TF2Default"		"Controles recomendados para Team Fortress 2"
+			"callvote"		"Iniciar votação"
+			"VoteYes"		"Sim / Aceitar"
+			"VoteNo"		"Não / Recusar"
+			"VoteOption3"		"Votar na 3ª opção"
+			"VoteOption4"		"Votar na 4ª opção"
+			"VoteOption5"		"Votar na 5ª opção"
+			"TeleportTarget1"		"Teletransportar-se à base (Efeito Eureca)"
+			"TeleportTarget2"		"Teletransportar-se à saída (Efeito Eureca)"
+			"MenuSelect"		"Selecionar"
+			"MenuUp"		"Menu p/ cima"
+			"MenuDown"		"Menu p/ baixo"
+			"MenuLeft"		"Menu p/ esquerda"
+			"MenuRight"		"Menu p/ direita"
+			"MenuToggleFunction"		"Alternar função"
+			"InGameHUDControls"		"Em jogo com pop-up"
+			"Title_TF2InvertedY"		"Team Fortress 2 (visão invertida)"
+			"Description_TF2InvertedY"		"Controles recomendados para Team Fortress 2 com visão invertida no eixo Y (vertical)."
+			"MenuAltFunction"		"Função alternativa"
+			"SpectatorControls"		"Espectador"
+			"NextTarget"		"Próximo alvo"
+			"PrevTarget"		"Alvo anterior"
+			"UseOrBuyback"		"Usar item / reviver"
+			"SpecialAttack"		"Ataque especial"
+		}
+		"bulgarian"
+		{
+			"FPSControls"		"В игра"
+			"MenuControls"		"Менюта"
+			"Mouse"		"Емулация на мишката"
+			"Move"		"Движение"
+			"Camera"		"Изглед"
+			"attack"		"Атака"
+			"AltAttack"		"Алт. атака"
+			"reload"		"Презареждане"
+			"jump"		"Скачане"
+			"duck"		"Клякане"
+			"Use"		"Използване на предмет"
+			"NextWeapon"		"Следващо оръжие"
+			"PrevWeapon"		"Предишно оръжие"
+			"Drop"		"Пускане на предмет"
+			"changeclass"		"Промяна на класа"
+			"changeteam"		"Смяна на отбор"
+			"inspect"		"Оглед"
+			"taunt"		"Присмех"
+			"PushToTalk"		"Натискане за говор"
+			"Loadout"		"Отваряне на снаряжението"
+			"backpack"		"Отваряне на раницата"
+			"ToggleMenu"		"Превключване на менюто"
+			"Contracts"		"Показване на договорите"
+			"Scoreboard"		"Показване на таблото с резултатите"
+			"toggleready"		"Превключване на готовност"
+			"NextBuilding"		"Следващо съоръжение"
+			"PrevBuilding"		"Предишно съоръжение"
+			"build"		"Изграждане на"
+			"Destroy"		"Унищожаване на съоръжение"
+			"Cancel"		"Отказ"
+			"Title_TF2Default"		"По подразбиране за Team Fortress 2"
+			"Description_TF2Default"		"Препоръчани контроли за Team Fortress 2"
+			"callvote"		"Пуснете вот"
+			"VoteYes"		"Да / Приемане"
+			"VoteNo"		"Не / Отхвърляне"
+			"VoteOption3"		"Дайте вот за опция 3"
+			"VoteOption4"		"Дайте вот за опция 4"
+			"VoteOption5"		"Дайте вот за опция 5"
+			"TeleportTarget1"		"Телепортиране към базата с „Еврика“"
+			"TeleportTarget2"		"Телепортиране към изхода с „Еврика“"
+			"MenuSelect"		"Избиране"
+			"MenuUp"		"Меню нагоре"
+			"MenuDown"		"Меню надолу"
+			"MenuLeft"		"Меню наляво"
+			"MenuRight"		"Меню надясно"
+			"MenuToggleFunction"		"Превключване на функцията"
+			"InGameHUDControls"		"В игра при изскачащи съобщения"
+			"Title_TF2InvertedY"		"Team Fortress 2 (обърнат изглед)"
+			"Description_TF2InvertedY"		"Препоръчителни контроли за Team Fortress 2 с обърнат изглед на оста Y."
+			"MenuAltFunction"		"Алтернативна функция"
+			"SpectatorControls"		"Контроли за наблюдател"
+			"NextTarget"		"Следваща цел"
+			"PrevTarget"		"Предишна цел"
+			"UseOrBuyback"		"Използване на предмет / откупуване"
+			"SpecialAttack"		"Специална атака"
+		}
+		"greek"
+		{
+			"FPSControls"		"Εντός παιχνιδιού"
+			"MenuControls"		"Μενού"
+			"Mouse"		"Εξομοίωση ποντικιού"
+			"Move"		"Κίνηση"
+			"Camera"		"Κοίταγμα"
+			"attack"		"Επίθεση"
+			"AltAttack"		"Εναλλακτική επίθεση"
+			"reload"		"Γέμισμα"
+			"jump"		"Άλμα"
+			"duck"		"Σκύψιμο"
+			"Use"		"Χρήση αντικειμένου"
+			"NextWeapon"		"Επόμενο όπλο"
+			"PrevWeapon"		"Προηγούμενο όπλο"
+			"Drop"		"Απόθεση αντικειμένου"
+			"changeclass"		"Αλλαγή κλάσης"
+			"changeteam"		"Αλλαγή ομάδας"
+			"inspect"		"Επιθεώρηση"
+			"taunt"		"Χλευασμός"
+			"PushToTalk"		"Πάτημα για ομιλία"
+			"Loadout"		"Άνοιγμα εξοπλισμού"
+			"backpack"		"Άνοιγμα σακιδίου"
+			"ToggleMenu"		"Εναλλαγή μενού"
+			"Contracts"		"Εμφάνιση συμβολαίων"
+			"Scoreboard"		"Εμφάνιση βαθμολογίας"
+			"toggleready"		"Εναλλαγή ετοιμότητας"
+			"NextBuilding"		"Επόμενο κτήριο"
+			"PrevBuilding"		"Προηγούμενο κτήριο"
+			"build"		"Χτίσιμο"
+			"Destroy"		"Καταστροφή κτηρίου"
+			"Cancel"		"Άκυρο"
+			"Title_TF2Default"		"Προεπιλογές Team Fortress 2"
+			"Description_TF2Default"		"Προεπιλεγμένα πλήκτρα για το Team Fortress 2"
+			"callvote"		"Κάλεσμα ψηφοφορίας"
+			"VoteYes"		"Ναι / Αποδοχή"
+			"VoteNo"		"Όχι / Απόρριψη"
+			"VoteOption3"		"Ψήφος επιλογής 3"
+			"VoteOption4"		"Ψήφος επιλογής 4"
+			"VoteOption5"		"Ψήφος επιλογής 5"
+			"TeleportTarget1"		"Τηλεμεταφορά στη βάση"
+			"TeleportTarget2"		"Τηλεμεταφορά στην έξοδο"
+			"MenuSelect"		"Επιλογή"
+			"MenuUp"		"Μενού πάνω"
+			"MenuDown"		"Μενού κάτω"
+			"MenuLeft"		"Μενού αριστερά"
+			"MenuRight"		"Μενού δεξιά"
+			"MenuToggleFunction"		"Εναλλαγή λειτουργίας"
+			"InGameHUDControls"		"Αναδυόμενο παράθυρο εντός παιχνιδιού"
+			"Title_TF2InvertedY"		"Team Fortress 2 (Ανεστραμμένη κάμερα)"
+			"Description_TF2InvertedY"		"Προτεινόμενα πλήκτρα για το Team Fortress 2 με ανεστραμμένο άξονα Y."
+			"MenuAltFunction"		"Εναλλακτική λειτουργία"
+			"SpectatorControls"		"Πλήκτρα θεατή"
+			"NextTarget"		"Επόμενος στόχος"
+			"PrevTarget"		"Προηγούμενος στόχος"
+			"UseOrBuyback"		"Χρήση αντικειμένου / Εξαγορά"
+			"SpecialAttack"		"Ειδική επίθεση"
+		}
+		"turkish"
+		{
+			"FPSControls"		"Oyun İçi"
+			"MenuControls"		"Menüler"
+			"Mouse"		"Fare Emülasyonu"
+			"Move"		"Hareket Et"
+			"Camera"		"Bak"
+			"attack"		"Saldır"
+			"AltAttack"		"Alternatif Atak"
+			"reload"		"Şarjör Değiştir"
+			"jump"		"Zıpla"
+			"duck"		"Çömel"
+			"Use"		"Öğeyi Kullan"
+			"NextWeapon"		"Sonraki Silah"
+			"PrevWeapon"		"Önceki Silah"
+			"Drop"		"Öğeyi Bırak"
+			"changeclass"		"Sınıf Değiştir"
+			"changeteam"		"Takım Değiştir"
+			"inspect"		"İncele"
+			"taunt"		"Alay Hareketi"
+			"PushToTalk"		"Bas Konuş"
+			"Loadout"		"Ekipmanı Aç"
+			"backpack"		"Çantayı Aç"
+			"ToggleMenu"		"Menüyü Aç/Kapat"
+			"Contracts"		"Sözleşmeleri Göster"
+			"Scoreboard"		"Skor Tablosunu Göster"
+			"toggleready"		"Hazır/Hazır Değil"
+			"NextBuilding"		"Sonraki Kurulum"
+			"PrevBuilding"		"Önceki Kurulum"
+			"build"		"Kur"
+			"Destroy"		"Kurulumu Yok Et"
+			"Cancel"		"İptal"
+			"Title_TF2Default"		"Team Fortress 2 Varsayılanları"
+			"Description_TF2Default"		"Team Fortress 2 için önerilen kontroller"
+			"callvote"		"Oylama yap"
+			"VoteYes"		"Evet  / Kabul Et"
+			"VoteNo"		"Hayır / Reddet"
+			"VoteOption3"		"Secenek 3'ü Oyla"
+			"VoteOption4"		"Seçenek 4'ü Oyla"
+			"VoteOption5"		"Seçenek 5'i Oyla"
+			"TeleportTarget1"		"Eureka Efektli Üsse Işınlanma"
+			"TeleportTarget2"		"Eureka Efektli Çıkışa Işınlanma"
+			"MenuSelect"		"Seç"
+			"MenuUp"		"Menü Yukarı"
+			"MenuDown"		"Menü Aşağı"
+			"MenuLeft"		"Menü Sol"
+			"MenuRight"		"Menü Sağ"
+			"MenuToggleFunction"		"Fonksiyonu Değiştir"
+			"InGameHUDControls"		"Açılır Pencere esnasında Oyun İçi"
+			"Title_TF2InvertedY"		"Team Fortress 2 (Ters Görünüm)"
+			"Description_TF2InvertedY"		"Ters Görünümlü Team Fortress 2 için önerilen kontrol ayarıdır."
+			"MenuAltFunction"		"Alternatif İşlev"
+			"SpectatorControls"		"İzleyici Kontrolleri"
+			"NextTarget"		"Sonraki hedef"
+			"PrevTarget"		"Önceki hedef"
+			"UseOrBuyback"		"Öğe Kullan / Anında Canlanma"
+			"SpecialAttack"		"Özel Saldırı"
+		}
+		"ukrainian"
+		{
+			"FPSControls"		"У грі"
+			"MenuControls"		"Меню"
+			"Mouse"		"Емуляція миші"
+			"Move"		"Рух"
+			"Camera"		"Огляд"
+			"attack"		"Атака"
+			"AltAttack"		"Допоміжна атака"
+			"reload"		"Перезаряджання"
+			"jump"		"Стрибок"
+			"duck"		"Присідання"
+			"Use"		"Використати предмет"
+			"NextWeapon"		"Наступна зброя"
+			"PrevWeapon"		"Попередня зброя"
+			"Drop"		"Викинути предмет"
+			"changeclass"		"Змінити клас"
+			"changeteam"		"Змінити команду"
+			"inspect"		"Оглянути"
+			"taunt"		"Кепкування"
+			"PushToTalk"		"Натисніть для спілкування"
+			"Loadout"		"Відкрити спорядження"
+			"backpack"		"Відкрити рюкзак"
+			"ToggleMenu"		"Перемкнутися до меню"
+			"Contracts"		"Показати контракти"
+			"Scoreboard"		"Показати результати"
+			"toggleready"		"Готові"
+			"NextBuilding"		"Наступна споруда"
+			"PrevBuilding"		"Попередня споруда"
+			"build"		"Збудувати"
+			"Destroy"		"Знищити споруду"
+			"Cancel"		"Скасувати"
+			"Title_TF2Default"		"Стандартні налаштування Team Fortress 2"
+			"Description_TF2Default"		"Рекомендована конфігурація для Team Fortress 2"
+			"callvote"		"Розпочати голосування"
+			"VoteYes"		"Так / Прийняти"
+			"VoteNo"		"Ні / Відхилити"
+			"VoteOption3"		"Голосувати за варіант 3"
+			"VoteOption4"		"Голосувати за варіант 4"
+			"VoteOption5"		"Голосувати за варіант 5"
+			"TeleportTarget1"		"Еврика: телепортація додому"
+			"TeleportTarget2"		"Еврика: телепортація на вихід"
+			"MenuSelect"		"Обрати"
+			"MenuUp"		"Меню — вгору"
+			"MenuDown"		"Меню — вниз"
+			"MenuLeft"		"Меню — ліворуч"
+			"MenuRight"		"Меню — праворуч"
+			"MenuToggleFunction"		"Функція перемикання"
+			"InGameHUDControls"		"Сповіщення підчас гри"
+			"Title_TF2InvertedY"		"Team Fortress 2 (вертикальна інверсія)"
+			"Description_TF2InvertedY"		"Рекомендоване управління Team Fortress 2 з інвертуванням по вертикалі."
+			"MenuAltFunction"		"Альтернативна функція"
+			"SpectatorControls"		"Режим глядача"
+			"NextTarget"		"Наступна ціль"
+			"PrevTarget"		"Попередня ціль"
+			"UseOrBuyback"		"Використати предмет / Викуп"
+			"SpecialAttack"		"Особлива атака"
+		}
+	}
+	"group"
+	{
+		"id"		"0"
+		"mode"		"four_buttons"
+		"inputs"
+		{
+			"button_A"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action FPSControls use_action_slot_item"
+						}
+					}
+				}
+			}
+			"button_B"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action FPSControls show_quest_log"
+						}
+					}
+				}
+			}
+			"button_X"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action FPSControls taunt"
+						}
+					}
+				}
+			}
+			"button_Y"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action FPSControls dropitem"
+						}
+					}
+				}
+			}
+		}
+		"settings"
+		{
+			"button_size"		"17986"
+			"button_dist"		"19986"
+		}
+	}
+	"group"
+	{
+		"id"		"1"
+		"mode"		"trigger"
+		"inputs"
+		{
+			"click"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action FPSControls attack2"
+						}
+						"settings"
+						{
+							"haptic_intensity"		"2"
+						}
+					}
+				}
+			}
+			"edge"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action FPSControls reload"
+						}
+						"settings"
+						{
+							"haptic_intensity"		"2"
+						}
+					}
+				}
+			}
+		}
+		"settings"
+		{
+			"adaptive_threshold"		"3"
+		}
+	}
+	"group"
+	{
+		"id"		"2"
+		"mode"		"trigger"
+		"inputs"
+		{
+			"click"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action FPSControls attack3"
+						}
+						"settings"
+						{
+							"haptic_intensity"		"2"
+						}
+					}
+				}
+			}
+			"edge"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action FPSControls attack"
+						}
+						"settings"
+						{
+							"haptic_intensity"		"2"
+						}
+					}
+				}
+			}
+		}
+		"settings"
+		{
+			"edge_binding_radius"		"11388"
+			"adaptive_threshold"		"0"
+		}
+	}
+	"group"
+	{
+		"id"		"3"
+		"mode"		"four_buttons"
+		"inputs"
+		{
+			"button_A"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action MenuControls menu_select"
+						}
+					}
+				}
+			}
+			"button_B"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action MenuControls menu_cancel"
+						}
+					}
+				}
+			}
+		}
+		"settings"
+		{
+			"button_size"		"17994"
+			"button_dist"		"19994"
+		}
+	}
+	"group"
+	{
+		"id"		"4"
+		"mode"		"trigger"
+		"inputs"
+		{
+		}
+	}
+	"group"
+	{
+		"id"		"5"
+		"mode"		"trigger"
+		"inputs"
+		{
+		}
+	}
+	"group"
+	{
+		"id"		"6"
+		"mode"		"absolute_mouse"
+		"inputs"
+		{
+			"click"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"mouse_button LEFT, Left Mouse"
+						}
+						"settings"
+						{
+							"haptic_intensity"		"1"
+						}
+					}
+				}
+			}
+		}
+		"settings"
+		{
+			"sensitivity"		"93"
+			"trackball"		"0"
+			"doubetap_max_duration"		"322"
+		}
+		"gameactions"
+		{
+			"MenuControls"		"Mouse"
+		}
+	}
+	"group"
+	{
+		"id"		"8"
+		"mode"		"joystick_move"
+		"inputs"
+		{
+		}
+		"settings"
+		{
+			"virtual_mode"		"1"
+			"edge_binding_radius"		"24999"
+			"sensitivity"		"99"
+		}
+	}
+	"group"
+	{
+		"id"		"11"
+		"mode"		"trigger"
+		"inputs"
+		{
+		}
+	}
+	"group"
+	{
+		"id"		"12"
+		"mode"		"trigger"
+		"inputs"
+		{
+		}
+	}
+	"group"
+	{
+		"id"		"14"
+		"mode"		"joystick_move"
+		"inputs"
+		{
+			"click"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action FPSControls toggleready"
+						}
+						"settings"
+						{
+							"haptic_intensity"		"2"
+						}
+					}
+				}
+			}
+		}
+		"settings"
+		{
+			"virtual_mode"		"1"
+			"edge_binding_radius"		"24996"
+			"sensitivity"		"97"
+		}
+		"gameactions"
+		{
+			"FPSControls"		"Move"
+		}
+	}
+	"group"
+	{
+		"id"		"15"
+		"mode"		"absolute_mouse"
+		"inputs"
+		{
+			"click"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action FPSControls voicerecord"
+						}
+						"settings"
+						{
+							"haptic_intensity"		"1"
+						}
+					}
+				}
+			}
+		}
+		"settings"
+		{
+			"virtual_mode"		"1"
+			"sensitivity"		"146"
+			"doubetap_max_duration"		"320"
+		}
+		"gameactions"
+		{
+			"FPSControls"		"Camera"
+		}
+	}
+	"group"
+	{
+		"id"		"16"
+		"mode"		"joystick_move"
+		"inputs"
+		{
+		}
+		"settings"
+		{
+			"virtual_mode"		"1"
+			"edge_binding_radius"		"24997"
+			"sensitivity"		"98"
+		}
+		"gameactions"
+		{
+			"FPSControls"		"Move"
+		}
+	}
+	"group"
+	{
+		"id"		"17"
+		"mode"		"dpad"
+		"inputs"
+		{
+			"dpad_north"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action FPSControls cl_trigger_first_notification"
+						}
+					}
+				}
+			}
+			"dpad_south"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action FPSControls cl_decline_first_notification"
+						}
+					}
+				}
+			}
+			"dpad_east"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action FPSControls voice_medic, Call Medic!"
+						}
+					}
+				}
+			}
+			"dpad_west"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action FPSControls changeclass, #ChangeClass"
+						}
+					}
+				}
+			}
+		}
+		"settings"
+		{
+			"edge_binding_radius"		"24995"
+			"analog_emulation_period"		"29"
+		}
+	}
+	"group"
+	{
+		"id"		"18"
+		"mode"		"four_buttons"
+		"inputs"
+		{
+		}
+		"settings"
+		{
+			"button_size"		"17996"
+			"button_dist"		"19996"
+		}
+	}
+	"group"
+	{
+		"id"		"19"
+		"mode"		"trigger"
+		"inputs"
+		{
+		}
+	}
+	"group"
+	{
+		"id"		"20"
+		"mode"		"trigger"
+		"inputs"
+		{
+		}
+	}
+	"group"
+	{
+		"id"		"21"
+		"mode"		"dpad"
+		"inputs"
+		{
+		}
+		"settings"
+		{
+			"edge_binding_radius"		"24999"
+			"analog_emulation_period"		"29"
+		}
+	}
+	"group"
+	{
+		"id"		"22"
+		"mode"		"four_buttons"
+		"inputs"
+		{
+		}
+		"settings"
+		{
+			"button_size"		"17998"
+			"button_dist"		"19998"
+		}
+	}
+	"group"
+	{
+		"id"		"23"
+		"mode"		"dpad"
+		"inputs"
+		{
+		}
+		"settings"
+		{
+			"edge_binding_radius"		"24997"
+			"analog_emulation_period"		"29"
+		}
+	}
+	"group"
+	{
+		"id"		"24"
+		"mode"		"trigger"
+		"inputs"
+		{
+		}
+	}
+	"group"
+	{
+		"id"		"25"
+		"mode"		"dpad"
+		"inputs"
+		{
+			"dpad_north"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action FPSControls show_quest_log"
+						}
+					}
+				}
+			}
+			"dpad_south"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action FPSControls callvote"
+						}
+					}
+				}
+			}
+		}
+	}
+	"group"
+	{
+		"id"		"26"
+		"mode"		"four_buttons"
+		"inputs"
+		{
+		}
+	}
+	"group"
+	{
+		"id"		"27"
+		"mode"		"trigger"
+		"inputs"
+		{
+		}
+	}
+	"group"
+	{
+		"id"		"28"
+		"mode"		"trigger"
+		"inputs"
+		{
+		}
+	}
+	"group"
+	{
+		"id"		"29"
+		"mode"		"dpad"
+		"inputs"
+		{
+		}
+	}
+	"group"
+	{
+		"id"		"30"
+		"mode"		"joystick_move"
+		"inputs"
+		{
+		}
+		"settings"
+		{
+			"virtual_mode"		"1"
+		}
+	}
+	"group"
+	{
+		"id"		"31"
+		"mode"		"absolute_mouse"
+		"inputs"
+		{
+		}
+		"settings"
+		{
+			"virtual_mode"		"1"
+			"invert_y"		"1"
+		}
+	}
+	"group"
+	{
+		"id"		"32"
+		"mode"		"dpad"
+		"inputs"
+		{
+			"dpad_north"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action MenuControls menu_up"
+						}
+					}
+				}
+			}
+			"dpad_south"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action MenuControls menu_down"
+						}
+					}
+				}
+			}
+			"dpad_east"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action MenuControls menu_right"
+						}
+					}
+				}
+			}
+			"dpad_west"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action MenuControls menu_left"
+						}
+					}
+				}
+			}
+		}
+	}
+	"group"
+	{
+		"id"		"33"
+		"mode"		"dpad"
+		"inputs"
+		{
+			"dpad_north"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action MenuControls menu_up"
+						}
+					}
+				}
+			}
+			"dpad_south"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action MenuControls menu_down"
+						}
+					}
+				}
+			}
+			"dpad_east"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action MenuControls menu_right"
+						}
+					}
+				}
+			}
+			"dpad_west"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action MenuControls menu_left"
+						}
+					}
+				}
+			}
+		}
+	}
+	"group"
+	{
+		"id"		"34"
+		"mode"		"four_buttons"
+		"inputs"
+		{
+			"button_A"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action InGameHUDControls menu_select"
+						}
+					}
+				}
+			}
+			"button_B"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action InGameHUDControls menu_cancel"
+						}
+					}
+				}
+			}
+			"button_X"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action InGameHUDControls menu_alt_function"
+						}
+					}
+				}
+			}
+			"button_Y"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action InGameHUDControls menu_toggle_function"
+						}
+					}
+				}
+			}
+		}
+	}
+	"group"
+	{
+		"id"		"35"
+		"mode"		"trigger"
+		"inputs"
+		{
+		}
+	}
+	"group"
+	{
+		"id"		"36"
+		"mode"		"trigger"
+		"inputs"
+		{
+			"click"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action InGameHUDControls menu_select"
+						}
+						"settings"
+						{
+							"haptic_intensity"		"2"
+						}
+					}
+				}
+			}
+		}
+	}
+	"group"
+	{
+		"id"		"37"
+		"mode"		"absolute_mouse"
+		"inputs"
+		{
+			"click"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action InGameHUDControls voicerecord"
+						}
+						"settings"
+						{
+							"haptic_intensity"		"1"
+						}
+					}
+				}
+			}
+		}
+		"settings"
+		{
+			"virtual_mode"		"1"
+		}
+		"gameactions"
+		{
+			"InGameHUDControls"		"Camera"
+		}
+	}
+	"group"
+	{
+		"id"		"38"
+		"mode"		"joystick_move"
+		"inputs"
+		{
+			"click"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action InGameHUDControls toggleready"
+						}
+						"settings"
+						{
+							"haptic_intensity"		"2"
+						}
+					}
+				}
+			}
+		}
+		"settings"
+		{
+			"virtual_mode"		"1"
+		}
+		"gameactions"
+		{
+			"InGameHUDControls"		"Move"
+		}
+	}
+	"group"
+	{
+		"id"		"39"
+		"mode"		"dpad"
+		"inputs"
+		{
+			"dpad_north"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action InGameHUDControls menu_up"
+						}
+					}
+				}
+			}
+			"dpad_south"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action InGameHUDControls menu_down"
+						}
+					}
+				}
+			}
+			"dpad_east"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action InGameHUDControls menu_right"
+						}
+					}
+				}
+			}
+			"dpad_west"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action InGameHUDControls menu_left"
+						}
+					}
+				}
+			}
+		}
+	}
+	"group"
+	{
+		"id"		"40"
+		"mode"		"touch_menu"
+		"inputs"
+		{
+			"touch_menu_button_0"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action FPSControls changeclass"
+						}
+					}
+				}
+			}
+			"touch_menu_button_1"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action FPSControls changeteam"
+						}
+					}
+				}
+			}
+			"touch_menu_button_2"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action FPSControls taunt"
+						}
+					}
+				}
+			}
+			"touch_menu_button_5"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action FPSControls inspect"
+						}
+					}
+				}
+			}
+			"touch_menu_button_6"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action FPSControls callvote"
+						}
+					}
+				}
+			}
+		}
+		"settings"
+		{
+			"touch_menu_button_count"		"7"
+		}
+	}
+	"group"
+	{
+		"id"		"41"
+		"mode"		"four_buttons"
+		"inputs"
+		{
+			"button_A"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action FPSControls taunt"
+						}
+					}
+				}
+			}
+			"button_B"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action FPSControls changeclass"
+						}
+					}
+				}
+			}
+			"button_X"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action FPSControls changeteam"
+						}
+					}
+				}
+			}
+			"button_Y"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action FPSControls toggleready"
+						}
+					}
+				}
+			}
+		}
+	}
+	"group"
+	{
+		"id"		"42"
+		"mode"		"trigger"
+		"inputs"
+		{
+		}
+	}
+	"group"
+	{
+		"id"		"43"
+		"mode"		"four_buttons"
+		"inputs"
+		{
+			"button_A"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action SpectatorControls use_action_slot_item"
+						}
+					}
+				}
+			}
+			"button_X"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action SpectatorControls changeclass"
+						}
+					}
+				}
+			}
+			"button_Y"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action SpectatorControls changeteam"
+						}
+					}
+				}
+			}
+		}
+	}
+	"group"
+	{
+		"id"		"44"
+		"mode"		"trigger"
+		"inputs"
+		{
+		}
+	}
+	"group"
+	{
+		"id"		"45"
+		"mode"		"trigger"
+		"inputs"
+		{
+		}
+	}
+	"group"
+	{
+		"id"		"46"
+		"mode"		"dpad"
+		"inputs"
+		{
+			"dpad_north"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action SpectatorControls open_charinfo_backpack"
+						}
+					}
+				}
+			}
+			"dpad_south"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action SpectatorControls open_charinfo_direct"
+						}
+					}
+				}
+			}
+			"dpad_east"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action SpectatorControls next_target"
+						}
+					}
+				}
+			}
+			"dpad_west"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action SpectatorControls prev_target"
+						}
+					}
+				}
+			}
+		}
+	}
+	"group"
+	{
+		"id"		"47"
+		"mode"		"absolute_mouse"
+		"inputs"
+		{
+			"click"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action SpectatorControls voicerecord"
+						}
+						"settings"
+						{
+							"haptic_intensity"		"1"
+						}
+					}
+				}
+			}
+		}
+		"settings"
+		{
+			"virtual_mode"		"1"
+		}
+		"gameactions"
+		{
+			"SpectatorControls"		"Camera"
+		}
+	}
+	"group"
+	{
+		"id"		"48"
+		"mode"		"absolute_mouse"
+		"inputs"
+		{
+		}
+		"settings"
+		{
+			"virtual_mode"		"1"
+			"sensitivity"		"56"
+		}
+		"gameactions"
+		{
+			"FPSControls"		"Camera"
+		}
+	}
+	"group"
+	{
+		"id"		"49"
+		"mode"		"switches"
+		"inputs"
+		{
+			"button_escape"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action FPSControls cancelselect"
+						}
+					}
+				}
+			}
+			"button_menu"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action FPSControls showscores"
+						}
+					}
+				}
+			}
+			"left_bumper"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action FPSControls invprev"
+						}
+					}
+				}
+			}
+			"right_bumper"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action FPSControls invnext"
+						}
+					}
+				}
+			}
+			"button_back_left"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action FPSControls duck"
+						}
+					}
+				}
+			}
+			"button_back_right"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action FPSControls jump"
+						}
+					}
+				}
+			}
+		}
+	}
+	"group"
+	{
+		"id"		"50"
+		"mode"		"switches"
+		"inputs"
+		{
+			"button_escape"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action MenuControls resume_esc"
+						}
+					}
+				}
+			}
+			"left_bumper"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"mouse_button MIDDLE, Middle Mouse"
+						}
+					}
+				}
+			}
+			"right_bumper"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"mouse_button LEFT, Left Mouse"
+						}
+					}
+				}
+			}
+			"left_trigger"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"mouse_button RIGHT, Right Mouse"
+						}
+					}
+				}
+			}
+			"right_trigger"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"mouse_button LEFT, Left Mouse"
+						}
+					}
+				}
+			}
+		}
+	}
+	"group"
+	{
+		"id"		"51"
+		"mode"		"switches"
+		"inputs"
+		{
+			"button_escape"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action InGameHUDControls cancelselect"
+						}
+					}
+				}
+			}
+			"button_menu"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action InGameHUDControls showscores"
+						}
+					}
+				}
+			}
+			"left_bumper"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action InGameHUDControls invprev"
+						}
+					}
+				}
+			}
+			"right_bumper"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action InGameHUDControls invnext"
+						}
+					}
+				}
+			}
+			"button_back_left"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action InGameHUDControls duck"
+						}
+					}
+				}
+			}
+			"button_back_right"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action InGameHUDControls jump"
+						}
+					}
+				}
+			}
+		}
+	}
+	"group"
+	{
+		"id"		"52"
+		"mode"		"switches"
+		"inputs"
+		{
+			"button_escape"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action SpectatorControls cancelselect"
+						}
+					}
+				}
+			}
+			"button_menu"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action SpectatorControls showscores"
+						}
+					}
+				}
+			}
+			"left_bumper"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action SpectatorControls prev_target"
+						}
+					}
+				}
+			}
+			"right_bumper"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action SpectatorControls next_target"
+						}
+					}
+				}
+			}
+		}
+	}
+	"preset"
+	{
+		"id"		"0"
+		"name"		"FPSControls"
+		"group_source_bindings"
+		{
+			"49"		"switch active"
+			"0"		"button_diamond active"
+			"1"		"left_trigger active"
+			"2"		"right_trigger active"
+			"42"		"right_trigger active modeshift"
+			"8"		"joystick inactive"
+			"14"		"joystick active"
+			"15"		"right_trackpad active"
+			"16"		"left_trackpad inactive"
+			"17"		"left_trackpad active"
+			"25"		"left_trackpad active modeshift"
+			"40"		"left_trackpad inactive"
+			"41"		"left_trackpad inactive"
+			"48"		"gyro active"
+		}
+	}
+	"preset"
+	{
+		"id"		"1"
+		"name"		"MenuControls"
+		"group_source_bindings"
+		{
+			"50"		"switch active"
+			"3"		"button_diamond active"
+			"4"		"left_trigger active"
+			"5"		"right_trigger active"
+			"33"		"joystick active"
+			"6"		"right_trackpad active"
+			"32"		"left_trackpad active"
+		}
+	}
+	"preset"
+	{
+		"id"		"2"
+		"name"		""
+		"group_source_bindings"
+		{
+		}
+	}
+	"preset"
+	{
+		"id"		"3"
+		"name"		"SpectatorControls"
+		"group_source_bindings"
+		{
+			"52"		"switch active"
+			"43"		"button_diamond active"
+			"44"		"left_trigger active"
+			"45"		"right_trigger active"
+			"47"		"right_trackpad active"
+			"46"		"left_trackpad active"
+		}
+	}
+	"preset"
+	{
+		"id"		"4"
+		"name"		""
+		"group_source_bindings"
+		{
+		}
+	}
+	"preset"
+	{
+		"id"		"5"
+		"name"		"InGameHUDControls"
+		"group_source_bindings"
+		{
+			"51"		"switch active"
+			"34"		"button_diamond active"
+			"35"		"left_trigger active"
+			"36"		"right_trigger active"
+			"38"		"joystick active"
+			"37"		"right_trackpad active"
+			"39"		"left_trackpad active"
+		}
+	}
+	"settings"
+	{
+	}
+}

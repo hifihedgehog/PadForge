@@ -86,14 +86,15 @@ namespace PadForge.SteamWorkshop.Translation
             // only when the Xbox side is otherwise in play: a pure
             // keyboard/mouse config must not sprout an Xbox slot for a
             // stick nobody consumes.
-            public readonly List<(string Layer, string Target, string Descriptor, string Path)>
+            public readonly List<(string Layer, string Target, string Descriptor, string Path, int DeadZonePct)>
                 MatchedAnalogs = new();
             private readonly HashSet<string> _matchedAnalogSeen = new(StringComparer.Ordinal);
 
-            public void AddMatchedAnalog(string layer, string target, string descriptor, string path)
+            public void AddMatchedAnalog(string layer, string target, string descriptor, string path,
+                int deadZonePct = 0)
             {
                 if (_matchedAnalogSeen.Add($"{layer}|{target}|{descriptor}"))
-                    MatchedAnalogs.Add((layer, target, descriptor, path));
+                    MatchedAnalogs.Add((layer, target, descriptor, path, deadZonePct));
             }
 
             public readonly List<ActivatorRequest> Activators = new();
@@ -104,6 +105,12 @@ namespace PadForge.SteamWorkshop.Translation
             public readonly Dictionary<int, string> PresetNames = new();
             public bool XboxRowCapHit;
             public bool KbmRowCapHit;
+
+            /// <summary>Count of haptic_intensity / haptic_intensity_override
+            /// occurrences (value != 0) on translated activators and groups.
+            /// Reported once per config in Finalize; per-binding entries
+            /// would drown the report (49 in one corpus fixture).</summary>
+            public int HapticDropCount;
 
             /// <summary>Switch-family config: diamond members are named by
             /// Nintendo label and fold onto positions during resolution.</summary>
@@ -161,6 +168,10 @@ namespace PadForge.SteamWorkshop.Translation
             public string Kind = "Button";
             public double AxisThreshold = 0.5;
             public string Path = "";
+            /// <summary>Hold-before-engage debounce, ms (ShiftActivator.DelayMs).
+            /// Long_Press layer carries set it to the activator's
+            /// long_press_time; 0 = instant.</summary>
+            public int DelayMs;
             // Cycle mode (same-input preset jumps merged by
             // MergeSameInputJumpsIntoCycles).
             public string CycleLayers = "";
@@ -275,11 +286,21 @@ namespace PadForge.SteamWorkshop.Translation
             string mode = (effective.Mode ?? "").Trim().ToLowerInvariant();
             path = $"{path} ({mode})";
 
+            // Group settings PadForge has no channel for get named notes
+            // instead of silence, but only on modes that otherwise
+            // translate (a wholly-skipped group's own entry covers it).
+            if (ProductiveModes.Contains(mode))
+                ReportDroppedGroupSettings(run, settings, path);
+
             switch (mode)
             {
                 case "four_buttons":
                 case "switches":
                 case "dpad":
+                // single_button: the whole pad / stick face acts as one
+                // button. Its click and touch members resolve like any
+                // other member ("Touchpad {p} Click" / "Finger 0 Down").
+                case "single_button":
                     TranslateMemberGroup(run, preset, effective, slot, layer, path, settings);
                     break;
 
@@ -295,6 +316,19 @@ namespace PadForge.SteamWorkshop.Translation
                 case "mouse_joystick":
                 case "joystick_camera":
                     EmitMouseAxes(run, slot, layer, path, settings, StickMouseBaseline);
+                    TranslateMemberGroup(run, preset, effective, slot, layer, path, settings);
+                    break;
+
+                case "gyro_to_mouse":
+                    // The post-2022 gyro mode: same output surface as the
+                    // joystick_mouse-hosted gyro path (Gyro Yaw/Pitch into
+                    // the KbM mouse delta) with its own sensitivity key.
+                    // gyro_natural_sensitivity stores percent of natural
+                    // 1:1 aim (100 = 1.0x; corpus 3737909570 carries 75,
+                    // and Valve's shipped gyro templates carry no settings
+                    // at all, so absent = 1.0x).
+                    EmitMouseAxes(run, slot, layer, path, settings, GenericBaseline,
+                        sensitivityKey: "gyro_natural_sensitivity");
                     TranslateMemberGroup(run, preset, effective, slot, layer, path, settings);
                     break;
 
@@ -339,6 +373,15 @@ namespace PadForge.SteamWorkshop.Translation
                         onlyInputs: new[] { "click", "touch", "edge" });
                     break;
 
+                case "2dscroll":
+                    // Directional swipe. PadForge has no swipe-step gesture
+                    // channel; named skip instead of the generic
+                    // unknown-mode line (most-seen named gap in the corpus
+                    // discovery run).
+                    run.Report.Add(TranslationStatus.Skipped,
+                        TranslationReasons.ScrollGestureModeNotSupported, path);
+                    break;
+
                 case "disabled":
                 case "":
                     break;
@@ -357,6 +400,90 @@ namespace PadForge.SteamWorkshop.Translation
             foreach (var kv in from) into[kv.Key] = kv.Value;
         }
 
+        /// <summary>Modes that produce output (rows, macros, activators, or
+        /// mouse axes). Only these get the dropped-group-settings notes; a
+        /// wholly-skipped group's own entry already covers its settings.</summary>
+        private static readonly HashSet<string> ProductiveModes = new(StringComparer.Ordinal)
+        {
+            "four_buttons", "switches", "dpad", "single_button", "trigger",
+            "joystick_move", "joystick_mouse", "mouse_joystick", "joystick_camera",
+            "absolute_mouse", "relative_mouse", "scrollwheel", "touch_menu",
+            "radial_menu", "mouse_region", "gyro_to_mouse",
+        };
+
+        /// <summary>Response-shaping group settings PadForge has no per-row
+        /// channel for. Named per issue #20's sensitivity-curve backlog;
+        /// key list grounded on the corpus (deadzone_outer_radius 28640..31999,
+        /// curve_exponent 4) plus the sibling keys of the same UI cluster.</summary>
+        private static readonly string[] CurveSettingKeys =
+        {
+            "deadzone_outer_radius", "deadzone_shape",
+            "custom_curve_exponent", "curve_exponent", "output_curve",
+        };
+
+        /// <summary>Named notes for group settings that used to drop
+        /// silently: response-curve shaping, gyro engage/ratchet button
+        /// masks, and the group-level haptic override (counted into the
+        /// per-config aggregate).</summary>
+        private void ReportDroppedGroupSettings(Run run,
+            Dictionary<string, string> settings, string path)
+        {
+            var curves = CurveSettingKeys.Where(settings.ContainsKey).ToList();
+            if (curves.Count > 0)
+            {
+                run.Report.Add(TranslationStatus.Partial, TranslationReasons.ResponseCurveNotSupported,
+                    path, args: string.Join(", ", curves));
+            }
+
+            foreach (var key in new[] { "gyro_button", "gyro_ratchet_button_mask" })
+            {
+                if (!settings.TryGetValue(key, out var v)) continue;
+                // Ratchet mask 0 = no ratchet button, the default; the
+                // engage button index is meaningful at every value
+                // (0 = right-pad touch on the Steam Controller).
+                if (key == "gyro_ratchet_button_mask" && (v ?? "").Trim() == "0") continue;
+                run.Report.Add(TranslationStatus.Partial, TranslationReasons.GyroButtonMaskDropped,
+                    path, args: new[] { key, v ?? "" });
+            }
+
+            if (settings.TryGetValue("haptic_intensity_override", out var h)
+                && (h ?? "").Trim() != "0")
+            {
+                run.HapticDropCount++;
+            }
+        }
+
+        /// <summary>Steam's group-level inner deadzone (0..32767 of full
+        /// deflection) as a PadForge DeadZone percent. 0 / absent / junk
+        /// return 0 (keep the engine default; Steam's 0 is region geometry,
+        /// not a hair-trigger request).</summary>
+        private static int GroupDeadZonePercent(Dictionary<string, string> settings)
+        {
+            if (!settings.TryGetValue("deadzone_inner_radius", out var raw)
+                || !int.TryParse(raw, NumberStyles.Integer, CultureInfo.InvariantCulture, out int v)
+                || v <= 0)
+            {
+                return 0;
+            }
+            return Math.Clamp((int)Math.Round(v * 100.0 / 32767.0), 1, 100);
+        }
+
+        /// <summary>Copy of <paramref name="s"/> carrying the group inner
+        /// deadzone. Full field list on purpose (ResolvedSource is
+        /// init-only); a new ResolvedSource field must be added here too.</summary>
+        private static ResolvedSource WithDeadZone(ResolvedSource s, int deadZone) => new()
+        {
+            Descriptor = s.Descriptor,
+            HalfAxis = s.HalfAxis,
+            Invert = s.Invert,
+            DeadZone = deadZone,
+            AutomapTarget = s.AutomapTarget,
+            XboxButtonBit = s.XboxButtonBit,
+            MacroAxisTarget = s.MacroAxisTarget,
+            TrackpadFeature = s.TrackpadFeature,
+            IsAnalogTriggerPull = s.IsAnalogTriggerPull,
+        };
+
         /// <summary>Walks a group's named inputs and translates each
         /// activator's bindings against the resolved physical source.</summary>
         private void TranslateMemberGroup(Run run, SteamInputPreset preset, SteamInputGroup group,
@@ -364,6 +491,7 @@ namespace PadForge.SteamWorkshop.Translation
             IReadOnlyList<string> onlyInputs = null)
         {
             bool requiresClick = RequiresClick(slot, group, settings);
+            int groupDeadZonePct = GroupDeadZonePercent(settings);
 
             foreach (var inputName in group.Inputs.Keys.OrderBy(k => k, StringComparer.Ordinal))
             {
@@ -373,6 +501,15 @@ namespace PadForge.SteamWorkshop.Translation
                 if (input.Activators.Count == 0) continue;
 
                 var source = PhysicalSlotResolver.Resolve(slot, inputName, run.NintendoLabels);
+                // The group inner deadzone lands on the axis-natured member
+                // reads (stick-as-dpad wedges). Explicit thresholds (the
+                // trigger click's 75 / edge's 15) encode reachable-range
+                // semantics and stay.
+                if (source != null && groupDeadZonePct > 0
+                    && source.HalfAxis && source.DeadZone == 0)
+                {
+                    source = WithDeadZone(source, groupDeadZonePct);
+                }
                 string inputPath = $"{path}/{inputName}";
                 if (source == null)
                 {
@@ -452,6 +589,7 @@ namespace PadForge.SteamWorkshop.Translation
             if (slot == SteamSlot.LeftTrigger || slot == SteamSlot.RightTrigger)
             {
                 bool left = slot == SteamSlot.LeftTrigger;
+                int dzPct = GroupDeadZonePercent(settings);
                 // output_trigger: 1 = left, 2 = right, 0/absent = matched side.
                 int output = settings.TryGetValue("output_trigger", out var raw)
                     && int.TryParse(raw, NumberStyles.Integer, CultureInfo.InvariantCulture, out int o)
@@ -461,15 +599,17 @@ namespace PadForge.SteamWorkshop.Translation
                 if (crossed)
                 {
                     string target = left ? "RightTrigger" : "LeftTrigger";
+                    var src = new MappingSource { Descriptor = sourceDesc };
+                    if (dzPct > 0) src.DeadZone = dzPct;
                     AddRowSource(run, isKbm: false, layer, target,
-                        new MappingSource { Descriptor = sourceDesc }, isAxis: true,
+                        src, isAxis: true,
                         TranslationStatus.Clean, TranslationReasons.RowEmitted, path,
                         binding: $"output_trigger {output}");
                 }
                 else
                 {
                     run.AddMatchedAnalog(layer, left ? "LeftTrigger" : "RightTrigger",
-                        sourceDesc, path);
+                        sourceDesc, path, dzPct);
                 }
             }
 
@@ -488,6 +628,14 @@ namespace PadForge.SteamWorkshop.Translation
             int output = settings.TryGetValue("output_joystick", out var raw)
                 && int.TryParse(raw, NumberStyles.Integer, CultureInfo.InvariantCulture, out int o)
                     ? o : 0;
+            int dzPct = GroupDeadZonePercent(settings);
+
+            MappingSource Src(string descriptor)
+            {
+                var s = new MappingSource { Descriptor = descriptor };
+                if (dzPct > 0) s.DeadZone = dzPct;
+                return s;
+            }
 
             if (PhysicalSlotResolver.IsStick(slot))
             {
@@ -498,19 +646,19 @@ namespace PadForge.SteamWorkshop.Translation
                 {
                     string dst = left ? "Right" : "Left";
                     AddRowSource(run, isKbm: false, layer, $"{dst}ThumbAxisX",
-                        new MappingSource { Descriptor = $"Gamepad {src}X" }, isAxis: true,
+                        Src($"Gamepad {src}X"), isAxis: true,
                         TranslationStatus.Clean, TranslationReasons.RowEmitted, path,
                         binding: $"output_joystick {output}");
                     AddRowSource(run, isKbm: false, layer, $"{dst}ThumbAxisY",
-                        new MappingSource { Descriptor = $"Gamepad {src}Y" }, isAxis: true,
+                        Src($"Gamepad {src}Y"), isAxis: true,
                         TranslationStatus.Clean, TranslationReasons.RowEmitted, path,
                         binding: $"output_joystick {output}");
                 }
                 else
                 {
                     string dst = left ? "Left" : "Right";
-                    run.AddMatchedAnalog(layer, $"{dst}ThumbAxisX", $"Gamepad {src}X", path);
-                    run.AddMatchedAnalog(layer, $"{dst}ThumbAxisY", $"Gamepad {src}Y", path);
+                    run.AddMatchedAnalog(layer, $"{dst}ThumbAxisX", $"Gamepad {src}X", path, dzPct);
+                    run.AddMatchedAnalog(layer, $"{dst}ThumbAxisY", $"Gamepad {src}Y", path, dzPct);
                 }
             }
             else if (PhysicalSlotResolver.IsTrackpad(slot))
@@ -519,11 +667,11 @@ namespace PadForge.SteamWorkshop.Translation
                 // 2 = right stick, anything else lands on the left.
                 string dst = output == 2 ? "Right" : "Left";
                 AddRowSource(run, isKbm: false, layer, $"{dst}ThumbAxisX",
-                    new MappingSource { Descriptor = $"Touchpad {p} StickX" }, isAxis: true,
+                    Src($"Touchpad {p} StickX"), isAxis: true,
                     TranslationStatus.Partial, TranslationReasons.TrackpadFeatureRequired, path,
                     args: PhysicalSlotResolver.FeatureJoystickOutput);
                 AddRowSource(run, isKbm: false, layer, $"{dst}ThumbAxisY",
-                    new MappingSource { Descriptor = $"Touchpad {p} StickY" }, isAxis: true,
+                    Src($"Touchpad {p} StickY"), isAxis: true,
                     TranslationStatus.Partial, TranslationReasons.TrackpadFeatureRequired, path,
                     args: PhysicalSlotResolver.FeatureJoystickOutput);
             }
@@ -533,15 +681,18 @@ namespace PadForge.SteamWorkshop.Translation
 
         /// <summary>Mouse-mode groups: the slot's analog surface drives the
         /// KbM mouse delta. Multiple groups merging into KbmMouseX/Y get
-        /// Combine=Sum (mouse deltas are additive).</summary>
+        /// Combine=Sum (mouse deltas are additive). The sensitivity key is
+        /// per mode: the classic modes store "sensitivity", gyro_to_mouse
+        /// stores "gyro_natural_sensitivity".</summary>
         private void EmitMouseAxes(Run run, SteamSlot slot, string layer, string path,
-            Dictionary<string, string> settings, double baseline)
+            Dictionary<string, string> settings, double baseline,
+            string sensitivityKey = "sensitivity")
         {
             var pair = PhysicalSlotResolver.MouseAxisPair(slot);
             if (pair == null) return;
 
             double ratio = 1.0;
-            if (settings.TryGetValue("sensitivity", out var sensRaw)
+            if (settings.TryGetValue(sensitivityKey, out var sensRaw)
                 && double.TryParse(sensRaw, NumberStyles.Float, CultureInfo.InvariantCulture, out double sens)
                 && sens > 0)
             {
@@ -549,12 +700,14 @@ namespace PadForge.SteamWorkshop.Translation
             }
 
             var (x, y, family) = pair.Value;
+            int dzPct = GroupDeadZonePercent(settings);
 
             MappingSource Make(string descriptor)
             {
                 var src = new MappingSource { Descriptor = descriptor };
                 if (family == 0) src.Sensitivity = ratio;
                 else if (family == 2) src.GyroSensitivity = ratio;
+                if (dzPct > 0) src.DeadZone = dzPct;
                 return src;
             }
 
@@ -603,8 +756,7 @@ namespace PadForge.SteamWorkshop.Translation
                         onRelease = true;
                         break;
                     case "long_press":
-                        foreach (var b in activator.Bindings)
-                            ReportSkipUnlessSilent(run, TranslationReasons.LongPressNotSupported, actPath, b);
+                        TranslateLongPress(run, preset, activator, input, source, layer, actPath);
                         continue;
                     case "double_press":
                         foreach (var b in activator.Bindings)
@@ -616,6 +768,8 @@ namespace PadForge.SteamWorkshop.Translation
                                 slotArg: type);
                         continue;
                 }
+
+                ReportDroppedActivatorExtras(run, activator, actPath);
 
                 // hold_repeats enables key autofire; repeat_rate alone is
                 // just the stored slider value with the feature off.
@@ -633,6 +787,91 @@ namespace PadForge.SteamWorkshop.Translation
                     TranslateBinding(run, preset, binding, source, clickGate, layer, actPath,
                         soft, onRelease, holdRepeats, intervalMs, input.Name);
                 }
+            }
+        }
+
+        /// <summary>Long_Press activators carrying a layer engage
+        /// (mode_shift / hold_layer / add_layer) map to the layer's
+        /// ShiftActivator with DelayMs = the activator's long_press_time.
+        /// The engine's hold-before-engage debounce is the same construct.
+        /// The stored value is milliseconds (corpus: 222 / 224 on
+        /// 789818086); absent = Steam's UI default of 500 ms. Keys and
+        /// buttons under Long_Press stay skipped this wave (the
+        /// hold-threshold macro trigger is a separate build).</summary>
+        private void TranslateLongPress(Run run, SteamInputPreset preset,
+            SteamInputActivator activator, SteamInputInput input, ResolvedSource source,
+            string layer, string actPath)
+        {
+            int delayMs = 500;
+            if (activator.Settings.TryGetValue("long_press_time", out var lpt)
+                && int.TryParse(lpt, NumberStyles.Integer, CultureInfo.InvariantCulture, out int lptMs))
+            {
+                delayMs = Math.Clamp(lptMs, 1, 5000);
+            }
+
+            bool anyLayerCarry = false;
+            foreach (var binding in activator.Bindings)
+            {
+                string bt = (binding.Type ?? "").Trim().ToLowerInvariant();
+                string action = FirstToken(binding.Param).ToUpperInvariant();
+                if (bt == "mode_shift")
+                {
+                    anyLayerCarry = true;
+                    TranslateModeShift(run, preset, binding, source, actPath, delayMs);
+                }
+                else if (bt == "controller_action"
+                    && (action == "ADD_LAYER" || action == "HOLD_LAYER"))
+                {
+                    anyLayerCarry = true;
+                    TranslateControllerAction(run, preset, binding, source, layer, actPath,
+                        onRelease: false, input.Name, delayMs);
+                }
+                else
+                {
+                    ReportSkipUnlessSilent(run, TranslationReasons.LongPressNotSupported, actPath, binding);
+                }
+            }
+
+            if (anyLayerCarry)
+                ReportDroppedActivatorExtras(run, activator, actPath);
+        }
+
+        /// <summary>Named notes for activator settings that used to drop
+        /// silently: press delays, the interruptible-off flag, and haptic
+        /// intensity (counted into the per-config aggregate). Called only
+        /// for activators that translate; a skipped activator's own entry
+        /// covers its settings.</summary>
+        private static void ReportDroppedActivatorExtras(Run run,
+            SteamInputActivator activator, string path)
+        {
+            var drops = new List<string>();
+            foreach (var key in new[] { "delay_start", "delay_end" })
+            {
+                if (activator.Settings.TryGetValue(key, out var raw)
+                    && int.TryParse(raw, NumberStyles.Integer, CultureInfo.InvariantCulture, out int ms)
+                    && ms > 0)
+                {
+                    drops.Add($"{key} {ms}");
+                }
+            }
+            if (drops.Count > 0)
+            {
+                run.Report.Add(TranslationStatus.Partial, TranslationReasons.ActivatorDelayDropped,
+                    path, args: string.Join(", ", drops));
+            }
+
+            // Steam's default is interruptible on; only the stored "0"
+            // diverges from PadForge behavior.
+            if (activator.Settings.TryGetValue("interruptable", out var i)
+                && (i ?? "").Trim() == "0")
+            {
+                run.Report.Add(TranslationStatus.Partial, TranslationReasons.InterruptibleDropped, path);
+            }
+
+            if (activator.Settings.TryGetValue("haptic_intensity", out var h)
+                && (h ?? "").Trim() != "0")
+            {
+                run.HapticDropCount++;
             }
         }
 
@@ -822,7 +1061,7 @@ namespace PadForge.SteamWorkshop.Translation
         }
 
         private void TranslateModeShift(Run run, SteamInputPreset preset, SteamInputBinding binding,
-            ResolvedSource source, string path)
+            ResolvedSource source, string path, int activatorDelayMs = 0)
         {
             // Param: "{slot} {groupId}". The layer holds the groups the
             // preset marks "{slot} active modeshift".
@@ -860,6 +1099,7 @@ namespace PadForge.SteamWorkshop.Translation
                 LayerName = $"{slotToken} shift",
                 Mode = "Hold",
                 InheritUnmapped = true, // mode shift overlays the slot; everything else keeps working
+                DelayMs = activatorDelayMs,
                 Descriptor = source.Descriptor,
                 // Button kind even for trigger pulls: the button-like
                 // activator read thresholds the raw axis at 50% of
@@ -874,7 +1114,7 @@ namespace PadForge.SteamWorkshop.Translation
 
         private void TranslateControllerAction(Run run, SteamInputPreset preset,
             SteamInputBinding binding, ResolvedSource source, string layer, string path,
-            bool onRelease, string inputName)
+            bool onRelease, string inputName, int activatorDelayMs = 0)
         {
             var tokens = (binding.Param ?? "").Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
             string action = tokens.Length > 0 ? tokens[0] : "";
@@ -952,6 +1192,7 @@ namespace PadForge.SteamWorkshop.Translation
                         LayerName = PresetLayerName(run, presetId),
                         Mode = action.Equals("HOLD_LAYER", StringComparison.OrdinalIgnoreCase) ? "Hold" : "Toggle",
                         InheritUnmapped = true, // Steam action layers overlay the set below
+                        DelayMs = activatorDelayMs,
                         Descriptor = source.Descriptor,
                         // Button kind even for trigger pulls: the button-like
                         // activator read thresholds the raw axis at 50% of
@@ -1006,6 +1247,76 @@ namespace PadForge.SteamWorkshop.Translation
                     });
                     return;
                 }
+
+                case "SET_LED":
+                {
+                    // set_led r g b brightness saturation setting. Arg
+                    // order verified against the corpus: 1451857916 (2018,
+                    // "0 255 0 100 255 1", saturation on the vintage 0-255
+                    // scale) and 3353604014 (2024, "255 0 0 43 100 1",
+                    // saturation 0-100). Brightness is 0-100 in both eras;
+                    // a saturation above 100 marks the vintage scale.
+                    if (tokens.Length < 7
+                        || !int.TryParse(tokens[1], NumberStyles.Integer, CultureInfo.InvariantCulture, out int r)
+                        || !int.TryParse(tokens[2], NumberStyles.Integer, CultureInfo.InvariantCulture, out int g)
+                        || !int.TryParse(tokens[3], NumberStyles.Integer, CultureInfo.InvariantCulture, out int b)
+                        || !int.TryParse(tokens[4], NumberStyles.Integer, CultureInfo.InvariantCulture, out int bright)
+                        || !int.TryParse(tokens[5], NumberStyles.Integer, CultureInfo.InvariantCulture, out int sat)
+                        || !int.TryParse(tokens[6], NumberStyles.Integer, CultureInfo.InvariantCulture, out int ledSetting)
+                        || ledSetting < 0 || ledSetting > 2)
+                    {
+                        run.Report.Add(TranslationStatus.Skipped, TranslationReasons.UnsupportedControllerAction,
+                            path, binding.Raw, args: binding.Param);
+                        return;
+                    }
+                    if (source.XboxButtonBit == 0 && string.IsNullOrEmpty(source.MacroAxisTarget))
+                    {
+                        // Touchpad-hosted set_led (and every other input
+                        // without an Xbox output representation) has no
+                        // device-free trigger yet.
+                        run.Report.Add(TranslationStatus.Skipped, TranslationReasons.NoDeviceFreeTrigger,
+                            path, binding.Raw);
+                        return;
+                    }
+                    int satPct = sat > 100 ? (int)Math.Round(sat * 100.0 / 255.0) : sat;
+                    run.Profile.Macros.Add(new TranslatedMacro
+                    {
+                        Name = $"Set LED ({inputName})",
+                        Action = TranslatedMacroAction.SetLightbarColor,
+                        TriggerMode = onRelease ? "OnRelease" : "OnPress",
+                        TriggerXboxButtons = source.XboxButtonBit,
+                        TriggerAxisTarget = source.XboxButtonBit == 0 ? source.MacroAxisTarget ?? "" : "",
+                        TriggerAxisThresholdPercent = source.DeadZone > 0 ? source.DeadZone : 50,
+                        ConsumeTrigger = false,
+                        LedR = Math.Clamp(r, 0, 255),
+                        LedG = Math.Clamp(g, 0, 255),
+                        LedB = Math.Clamp(b, 0, 255),
+                        LedBrightnessPercent = Math.Clamp(bright, 0, 100),
+                        LedSaturationPercent = Math.Clamp(satPct, 0, 100),
+                        LedSetting = ledSetting,
+                    });
+                    if (ledSetting == 2)
+                    {
+                        // "Restore default lighting" has no PadForge verb;
+                        // the materializer approximates it as clearing the
+                        // override.
+                        run.Report.Add(TranslationStatus.Partial, TranslationReasons.SetLedDefaultApproximated,
+                            path, binding.Raw);
+                    }
+                    run.Report.Add(TranslationStatus.Partial, TranslationReasons.MacroTriggerViaXboxOutput,
+                        path, binding.Raw, emitted: "Set LED macro");
+                    return;
+                }
+
+                case "CHANGE_PLAYER_NUMBER":
+                    run.Report.Add(TranslationStatus.Skipped, TranslationReasons.PlayerNumberActionNotSupported,
+                        path, binding.Raw);
+                    return;
+
+                case "TOGGLE_LIZARD_MODE":
+                    run.Report.Add(TranslationStatus.Skipped, TranslationReasons.LizardModeActionNotSupported,
+                        path, binding.Raw);
+                    return;
 
                 case "SCREENSHOT":
                 case "SYSTEM_KEY_1":
@@ -1179,8 +1490,10 @@ namespace PadForge.SteamWorkshop.Translation
             {
                 foreach (var ma in run.MatchedAnalogs)
                 {
+                    var src = new MappingSource { Descriptor = ma.Descriptor };
+                    if (ma.DeadZonePct > 0) src.DeadZone = ma.DeadZonePct;
                     AddRowSource(run, isKbm: false, ma.Layer, ma.Target,
-                        new MappingSource { Descriptor = ma.Descriptor }, isAxis: true,
+                        src, isAxis: true,
                         TranslationStatus.Clean, TranslationReasons.RowEmitted, ma.Path);
                     if (run.Rows.TryGetValue((false, ma.Layer, ma.Target), out var pr))
                         pr.HasMatchedPassthrough = true;
@@ -1255,6 +1568,15 @@ namespace PadForge.SteamWorkshop.Translation
             EmitActivators(run);
             ReportActivatorlessPresets(run);
 
+            // Haptic feedback has no PadForge channel; one aggregate note
+            // per config (49 per-binding entries in one corpus fixture
+            // would drown the report).
+            if (run.HapticDropCount > 0)
+            {
+                run.Report.Add(TranslationStatus.Partial, TranslationReasons.HapticIntensityDropped,
+                    "config", args: run.HapticDropCount.ToString(CultureInfo.InvariantCulture));
+            }
+
             run.Report.XboxRowCount = profile.XboxMappingSet.Rows.Count;
             run.Report.KbmRowCount = profile.KbmMappingSet.Rows.Count;
             run.Report.MacroCount = profile.Macros.Count;
@@ -1327,6 +1649,7 @@ namespace PadForge.SteamWorkshop.Translation
                     InheritUnmapped = req.InheritUnmapped,
                     Kind = req.Kind,
                     AxisThreshold = req.AxisThreshold,
+                    DelayMs = req.DelayMs,
                     CycleLayers = req.CycleLayers,
                     CycleIncludeBase = req.CycleIncludeBase,
                 };
@@ -1403,6 +1726,7 @@ namespace PadForge.SteamWorkshop.Translation
             InheritUnmapped = a.InheritUnmapped,
             Kind = a.Kind,
             AxisThreshold = a.AxisThreshold,
+            DelayMs = a.DelayMs,
             CycleLayers = a.CycleLayers,
             CycleIncludeBase = a.CycleIncludeBase,
         };
@@ -1435,11 +1759,40 @@ namespace PadForge.SteamWorkshop.Translation
         {
             // Root wins when it is a real string; template-derived configs
             // carry a #token or empty root and localize per language.
-            if (!string.IsNullOrWhiteSpace(rootValue) && !rootValue.StartsWith("#", StringComparison.Ordinal))
-                return rootValue.Trim();
+            string root = (rootValue ?? "").Trim();
+            if (root.Length > 0 && !root.StartsWith("#", StringComparison.Ordinal))
+                return root;
 
             string lang = string.IsNullOrWhiteSpace(run.Options.PreferredLanguage)
                 ? "english" : run.Options.PreferredLanguage;
+
+            // A '#token' root names a key in the config's OWN localization
+            // block. Ground truth: Valve's official TF2 config (1172518660)
+            // carries title "#Title_TF2Default" and localization
+            // english/Title_TF2Default "Team Fortress 2 Defaults".
+            // Preferred language first, then english, then any language in
+            // ordinal order for determinism. Steam-library tokens such as
+            // #Library_ControllerSaveDefaultTitle (770509247) match nothing
+            // in the config and fall through to the fallback.
+            if (root.Length > 1 && root.StartsWith("#", StringComparison.Ordinal))
+            {
+                string token = root.Substring(1);
+                foreach (var candidate in new[] { lang, "english" })
+                {
+                    if (run.Config.Localization.TryGetValue(candidate, out var map)
+                        && map.TryGetValue(token, out var v)
+                        && !string.IsNullOrWhiteSpace(v))
+                        return v.Trim();
+                }
+                foreach (var language in run.Config.Localization.Keys
+                    .OrderBy(k => k, StringComparer.Ordinal))
+                {
+                    if (run.Config.Localization[language].TryGetValue(token, out var v)
+                        && !string.IsNullOrWhiteSpace(v))
+                        return v.Trim();
+                }
+            }
+
             foreach (var candidate in new[] { lang, "english" })
             {
                 if (run.Config.Localization.TryGetValue(candidate, out var map)
@@ -1447,12 +1800,10 @@ namespace PadForge.SteamWorkshop.Translation
                     && !string.IsNullOrWhiteSpace(v))
                     return v.Trim();
             }
-            // No localization either. A '#token' root (Steam library string
-            // reference) is meaningless to users; use the fallback.
-            if (string.IsNullOrWhiteSpace(rootValue)
-                || rootValue.StartsWith("#", StringComparison.Ordinal))
-                return fallback;
-            return rootValue.Trim();
+            // No localization either. An unresolved '#token' root (a Steam
+            // library string reference) is meaningless to users; use the
+            // fallback. Only empty or #token roots reach this point.
+            return fallback;
         }
 
         private static string FirstToken(string s)

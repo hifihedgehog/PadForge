@@ -120,6 +120,9 @@ namespace PadForge.Tests
             Assert.InRange(p.WorkshopSource.ImportedAt, before, after);
             Assert.Equal(translated.Report.ToSummaryString(), p.WorkshopSource.TranslationSummary);
             Assert.Contains("clean:1", p.WorkshopSource.TranslationSummary);
+            // The translator version rides the stored summary, so a v2+
+            // import stays distinguishable from a v1 one.
+            Assert.StartsWith("v2 ", p.WorkshopSource.TranslationSummary);
         }
 
         [Fact]

@@ -328,7 +328,8 @@ namespace PadForge.Views
         /// label wins (it survives disconnects); the slot roster
         /// (_vm.MappedDevices) fills gaps and supplies the DeviceTypeGlyph
         /// vocabulary; the fallbacks mirror InputService.ResolveDeviceLabel
-        /// ("(Any device)" for unbound, truncated GUID for unknown).</summary>
+        /// (the localized "(Any device)" sentinel for unbound, truncated
+        /// GUID for unknown).</summary>
         private void ResolveAnnotationDevice(string deviceGuid, string storedLabel,
             out string name, out string glyph)
         {
@@ -350,7 +351,7 @@ namespace PadForge.Views
             if (name.Length == 0)
             {
                 name = string.IsNullOrEmpty(deviceGuid)
-                    ? "(Any device)"
+                    ? PadForge.Resources.Strings.Strings.Instance.Mapping_AnyDevice
                     : (deviceGuid.Length > 8 ? deviceGuid.Substring(0, 8) + "…" : deviceGuid);
             }
         }

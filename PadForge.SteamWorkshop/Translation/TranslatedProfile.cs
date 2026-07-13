@@ -63,6 +63,19 @@ namespace PadForge.SteamWorkshop.Translation
         /// <summary>One key tap when the trigger releases
         /// (<c>release</c> activator on a key binding).</summary>
         KeyTap = 2,
+
+        /// <summary>Set the pad's LED (<c>controller_action set_led
+        /// r g b brightness saturation setting</c>). The materializer maps
+        /// setting 1 to a Sticky lightbar-color hold, setting 0 to a
+        /// lightbar clear, setting 2 to a clear (approximation, reported
+        /// Partial at translate time), and the whole family to a Guide-LED
+        /// brightness write for Steam Controller configs. Arg order and
+        /// both saturation scales verified against the corpus: 1451857916
+        /// (2018, saturation 0-255) and 3353604014 (2024, saturation
+        /// 0-100); brightness is 0-100 in both eras. Saturation and
+        /// brightness are normalized to percent here so the materializer
+        /// never sees the vintage scale.</summary>
+        SetLightbarColor = 3,
     }
 
     /// <summary>
@@ -110,5 +123,27 @@ namespace PadForge.SteamWorkshop.Translation
 
         /// <summary>Autofire interval, ms (RepeatKeyWhileHeld).</summary>
         public int IntervalMs { get; set; } = 100;
+
+        // ── SetLightbarColor payload (set_led) ──
+
+        /// <summary>LED red 0..255.</summary>
+        public int LedR { get; set; }
+
+        /// <summary>LED green 0..255.</summary>
+        public int LedG { get; set; }
+
+        /// <summary>LED blue 0..255.</summary>
+        public int LedB { get; set; }
+
+        /// <summary>LED brightness percent 0..100.</summary>
+        public int LedBrightnessPercent { get; set; } = 100;
+
+        /// <summary>LED saturation percent 0..100 (already normalized from
+        /// the vintage 0..255 scale when needed).</summary>
+        public int LedSaturationPercent { get; set; } = 100;
+
+        /// <summary>set_led mode argument: 1 = set the user color,
+        /// 0 = restore, 2 = restore-to-default (approximated as restore).</summary>
+        public int LedSetting { get; set; } = 1;
     }
 }

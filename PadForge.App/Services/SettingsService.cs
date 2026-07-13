@@ -2516,6 +2516,7 @@ namespace PadForge.Services
                 TriggerRawButtons = ParseRawButtonIndices(md.TriggerRawButtons),
                 TriggerSource = md.TriggerSource,
                 TriggerMode = md.TriggerMode,
+                TriggerHoldMs = md.TriggerHoldMs,
                 ConsumeTriggerButtons = md.ConsumeTriggerButtons,
                 RepeatMode = md.RepeatMode,
                 RepeatCount = md.RepeatCount,
@@ -3484,6 +3485,7 @@ namespace PadForge.Services
                     ? string.Join(",", macro.TriggerRawButtons) : null,
                 TriggerSource = macro.TriggerSource,
                 TriggerMode = macro.TriggerMode,
+                TriggerHoldMs = macro.TriggerHoldMs,
                 ConsumeTriggerButtons = macro.ConsumeTriggerButtons,
                 RepeatMode = macro.RepeatMode,
                 RepeatCount = macro.RepeatCount,
@@ -4757,6 +4759,13 @@ namespace PadForge.Services
         [XmlElement]
         public MacroTriggerMode TriggerMode { get; set; }
 
+        /// <summary>Continuous-hold threshold in ms for
+        /// <see cref="MacroTriggerMode.HoldForMs"/> (issue #9 wave 1b).
+        /// Default 500 so profiles saved before the mode existed load with
+        /// the same value a fresh macro gets.</summary>
+        [XmlElement]
+        public int TriggerHoldMs { get; set; } = 500;
+
         [XmlElement]
         public bool ConsumeTriggerButtons { get; set; } = true;
 
@@ -4959,7 +4968,13 @@ namespace PadForge.Services
         [XmlElement] public int MouseX { get; set; }
         /// <summary>MoveMouseToScreenPosition target Y in primary-monitor pixels (issue #9).</summary>
         [XmlElement] public int MouseY { get; set; }
-        /// <summary>RepeatKeyWhileHeld autofire interval in milliseconds (issue #9).</summary>
+        /// <summary>Turbo interval in milliseconds (issue #9): the
+        /// RepeatKeyWhileHeld pulse period, shared by the wave-1b
+        /// RepeatVcButtonWhileHeld square wave. The wave-1b actions add no
+        /// DTO fields of their own: the VC-button pair targets via the
+        /// existing ButtonFlags / CustomButtons above (the ButtonPress
+        /// addressing pair) and ToggleKey targets via KeyCode / KeyString,
+        /// so this element plus those carry the whole family.</summary>
         [XmlElement] public int IntervalMs { get; set; } = 100;
 
         /// <summary>Which axes a MouseLimitRegion action clamps (issue #110).</summary>

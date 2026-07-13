@@ -4957,6 +4957,33 @@ namespace PadForge.Services
             }
 
             var flat = new System.Collections.Generic.List<PadForge.ViewModels.InputChoice>();
+
+            // The "(Any device)" group comes FIRST, always. It carries the
+            // device-agnostic descriptor namespaces (abstract "Gamepad ..."
+            // family, gyro, the touchpad families) tagged with the empty
+            // DeviceGuid: exactly what the Workshop translator stores on
+            // every imported row ("resolves on whichever device feeds the
+            // slot"). Empty-guid sources select out of THIS group instead
+            // of borrowing a concrete device's entry, so a device-agnostic
+            // mapping never renders under a concrete controller's header,
+            // and a slot with no devices at all still offers a working
+            // picker (owner report 2026-07-13: imported rows either showed
+            // the previous profile's controller as their group, or, with no
+            // stale device to borrow, lost their selection entirely).
+            // Leading position also means SyncSelectedInputFromDescriptor's
+            // first-match walk lands here for empty-guid sources.
+            string anyLabel = ResolveDeviceLabel(null);
+            foreach (var c in MappingDisplayResolver.BuildDeviceAgnosticChoices())
+            {
+                flat.Add(new PadForge.ViewModels.InputChoice
+                {
+                    Descriptor = c.Descriptor,
+                    DisplayName = c.DisplayName,
+                    DeviceGuid = string.Empty,
+                    DeviceLabel = anyLabel,
+                });
+            }
+
             foreach (var (g, udi) in orderedDevices)
             {
                 string key = g.ToString().ToLowerInvariant();
@@ -8851,10 +8878,39 @@ namespace PadForge.Services
 
                 if (slotSettings == null || slotSettings.Count == 0)
                 {
+                    // Clearing MappedDevices alone is not enough: the
+                    // selection property and the per-row AvailableInputs
+                    // lists are populated state of their own. Leaving
+                    // SelectedMappedDevice pointing at the outgoing
+                    // profile's device made every downstream consumer that
+                    // gates on "selected != null" (ApplyProfile's picker
+                    // rebuild first among them) keep rendering that
+                    // device's inputs on a slot whose card showed no
+                    // device at all (owner report 2026-07-13, Workshop
+                    // import). Drop the selection through the setter so
+                    // the full notification chain runs, retire the
+                    // previous-device tracker BEFORE the setter fires so
+                    // OnSelectedDeviceChanged cannot save stale VM state
+                    // onto the departed device, and rebuild the pickers
+                    // into the device-less state.
+                    bool hadDeviceState = padVm.MappedDevices.Count > 0
+                                          || padVm.SelectedMappedDevice != null;
+                    // Never-populated rows (fresh slot, no device ever
+                    // assigned) also need the pass so the "(Any device)"
+                    // group shows from the start. All rows are filled
+                    // together by PopulateAvailableInputs, so row 0 is
+                    // representative.
+                    bool pickersEmpty = padVm.Mappings.Count > 0
+                                        && padVm.Mappings[0].AvailableInputs.Count == 0;
                     padVm.MappedDevices.Clear();
+                    _previousSelectedDevice.Remove(i);
+                    if (padVm.SelectedMappedDevice != null)
+                        padVm.SelectedMappedDevice = null;
                     padVm.MappedDeviceName = Strings.Instance.Mapping_NoDeviceMapped;
                     padVm.MappedDeviceGuid = Guid.Empty;
                     padVm.IsDeviceOnline = false;
+                    if (hadDeviceState || pickersEmpty)
+                        PopulateAvailableInputs(padVm, null);
                 }
                 else
                 {
@@ -8904,6 +8960,20 @@ namespace PadForge.Services
                     // default lighting config (the user customizes each
                     // device's Lighting tab independently from there).
                     padVm.EnsureDeviceSlotConfigsForMappedDevices();
+
+                    // SyncMappedDevices trims removed entries from the tail
+                    // of the collection. If the selection object was one of
+                    // them it is now detached: not null, so the auto-select
+                    // below never runs, and its guid still names a device
+                    // that is no longer on this slot (the same phantom
+                    // family as the empty-branch stale selection above).
+                    // Null it through the setter so the auto-select
+                    // re-anchors the selection to a real member.
+                    if (padVm.SelectedMappedDevice != null
+                        && !padVm.MappedDevices.Contains(padVm.SelectedMappedDevice))
+                    {
+                        padVm.SelectedMappedDevice = null;
+                    }
 
                     // Auto-select first device if nothing is selected.
                     if (padVm.SelectedMappedDevice == null && padVm.MappedDevices.Count > 0)
@@ -11002,8 +11072,20 @@ namespace PadForge.Services
                 padVm.RebuildLayerTabs(slotMs?.ShiftActivators);
 
                 RefreshMappingsToViewModel(padVm);
-                if (selected != null && selected.InstanceGuid != Guid.Empty)
-                    PopulateAvailableInputs(padVm, FindUserDevice(selected.InstanceGuid));
+                // Rebuild the picker for EVERY slot against the
+                // post-switch device set, not only slots with a selected
+                // device. Gating this on the selection left device-less
+                // slots (a Workshop import carries no device assignments
+                // by design) rendering the OUTGOING profile's
+                // AvailableInputs: the owner-reported phantom "Xbox
+                // Series X controller" groups on unassigned imported
+                // slots. With no devices the populate emits the
+                // device-agnostic "(Any device)" choices, so the
+                // imported abstract "Gamepad ..." rows stay editable.
+                PopulateAvailableInputs(padVm,
+                    selected != null && selected.InstanceGuid != Guid.Empty
+                        ? FindUserDevice(selected.InstanceGuid)
+                        : null);
             }
 
             // Refresh Devices page slot labels.

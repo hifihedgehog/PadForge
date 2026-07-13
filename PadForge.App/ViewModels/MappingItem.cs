@@ -701,8 +701,13 @@ namespace PadForge.ViewModels
                     if (!string.Equals(choice.Descriptor, clean, StringComparison.OrdinalIgnoreCase))
                         continue;
                     if (descriptorOnlyMatch == null) descriptorOnlyMatch = choice;
-                    if (!string.IsNullOrEmpty(wantGuid)
-                        && string.Equals(choice.DeviceGuid ?? "", wantGuid, StringComparison.OrdinalIgnoreCase))
+                    // Straight guid equality, INCLUDING the empty guid: an
+                    // empty-guid ("any device") source genuinely matches
+                    // the picker's empty-guid "(Any device)" entry, so a
+                    // device-agnostic mapping resolves into that group
+                    // instead of borrowing the first concrete device's
+                    // entry and rendering under its header.
+                    if (string.Equals(choice.DeviceGuid ?? "", wantGuid, StringComparison.OrdinalIgnoreCase))
                     {
                         match = choice;
                         break;

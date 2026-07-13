@@ -370,6 +370,72 @@ namespace PadForge.Common
             }
         }
 
+        /// <summary>The picker's device-independent "(Any device)" group
+        /// (#9): every descriptor namespace that resolves per-device at
+        /// evaluation time rather than naming a concrete controller. An
+        /// empty-guid source ("first device on the slot", which is what the
+        /// Workshop translator emits on every row) selects OUT of this group,
+        /// so the picker never has to borrow a concrete device's entry for a
+        /// device-agnostic pick, and a slot with no devices at all still
+        /// offers a working namespace. The set mirrors what the translator
+        /// can emit with an empty guid, plus the Pressure member the #9 plan
+        /// includes in the abstract family:
+        /// the 25 "Gamepad ..." alias members (SourceCoercion
+        /// .GamepadAliasTable), the "Gyro ..." quartet, and per touchpad
+        /// surface 0/1 the "Touchpad {p} ..." finger axes, Click, touch
+        /// spots, anchor D-pad, and stick output. Callers tag each choice
+        /// with the empty device guid so the GroupStyle header renders the
+        /// "(Any device)" label. Touchpad display names always carry the
+        /// 1-based pad prefix: with no device bound there is no single-pad
+        /// case to shorten for.</summary>
+        internal static InputChoice[] BuildDeviceAgnosticChoices()
+        {
+            var si = Strings.Instance;
+            var list = new System.Collections.Generic.List<InputChoice>();
+            foreach (var (member, _) in PadForge.Engine.Common.Mapping.SourceCoercion.GamepadAliasTable)
+            {
+                string memberDisplay = GamepadMemberDisplay(member);
+                if (memberDisplay == null) continue;
+                list.Add(new InputChoice
+                {
+                    Descriptor = "Gamepad " + member,
+                    DisplayName = string.Format(si.Mapping_Gamepad_Format, memberDisplay)
+                });
+            }
+
+            list.Add(new InputChoice { Descriptor = "Gyro Pitch",      DisplayName = si.Mapping_GyroPitch });
+            list.Add(new InputChoice { Descriptor = "Gyro Yaw",        DisplayName = si.Mapping_GyroYaw });
+            list.Add(new InputChoice { Descriptor = "Gyro Roll",       DisplayName = si.Mapping_GyroRoll });
+            list.Add(new InputChoice { Descriptor = "Gyro Horizontal", DisplayName = si.Mapping_GyroHorizontal });
+
+            // Two touchpad surfaces: the translator's trackpad resolvers
+            // emit pad indices 0 (LEFT) and 1 (RIGHT, Steam Controller /
+            // Deck era configs). Descriptor spellings match the resolver
+            // output exactly; display strings reuse the per-device picker's
+            // keys so the two lists read the same.
+            for (int p = 0; p < 2; p++)
+            {
+                string PadWrap(string label) =>
+                    string.Format(si.Mapping_TouchpadGesture_PadPrefix_Format, p + 1, label);
+
+                list.Add(new InputChoice { Descriptor = $"Touchpad {p} Finger 0 X",        DisplayName = string.Format(si.Mapping_TouchpadFingerX_Format,        p + 1, 1) });
+                list.Add(new InputChoice { Descriptor = $"Touchpad {p} Finger 0 Y",        DisplayName = string.Format(si.Mapping_TouchpadFingerY_Format,        p + 1, 1) });
+                list.Add(new InputChoice { Descriptor = $"Touchpad {p} Finger 0 Down",     DisplayName = string.Format(si.Mapping_TouchpadFingerTouch_Format,    p + 1, 1) });
+                list.Add(new InputChoice { Descriptor = $"Touchpad {p} Finger 0 Pressure", DisplayName = string.Format(si.Mapping_TouchpadFingerPressure_Format, p + 1, 1) });
+                list.Add(new InputChoice { Descriptor = $"Touchpad {p} Click",             DisplayName = PadWrap(si.Mapping_TouchpadClick) });
+                list.Add(new InputChoice { Descriptor = $"Touchpad {p} TouchLeft",         DisplayName = PadWrap(si.Mapping_TouchpadGesture_TouchLeft) });
+                list.Add(new InputChoice { Descriptor = $"Touchpad {p} TouchRight",        DisplayName = PadWrap(si.Mapping_TouchpadGesture_TouchRight) });
+                list.Add(new InputChoice { Descriptor = $"Touchpad {p} DPadUp",            DisplayName = PadWrap(si.Mapping_TouchpadGesture_DPadUp) });
+                list.Add(new InputChoice { Descriptor = $"Touchpad {p} DPadRight",         DisplayName = PadWrap(si.Mapping_TouchpadGesture_DPadRight) });
+                list.Add(new InputChoice { Descriptor = $"Touchpad {p} DPadDown",          DisplayName = PadWrap(si.Mapping_TouchpadGesture_DPadDown) });
+                list.Add(new InputChoice { Descriptor = $"Touchpad {p} DPadLeft",          DisplayName = PadWrap(si.Mapping_TouchpadGesture_DPadLeft) });
+                list.Add(new InputChoice { Descriptor = $"Touchpad {p} StickX",            DisplayName = PadWrap(si.Mapping_TouchpadGesture_StickX) });
+                list.Add(new InputChoice { Descriptor = $"Touchpad {p} StickY",            DisplayName = PadWrap(si.Mapping_TouchpadGesture_StickY) });
+            }
+
+            return list.ToArray();
+        }
+
         /// <summary>Reverse-resolves a <c>"Gamepad ..."</c> descriptor to its
         /// localized display (<c>"Gamepad Left Stick X"</c>). Returns null when
         /// the descriptor is not a recognized gamepad-family member. Shared by

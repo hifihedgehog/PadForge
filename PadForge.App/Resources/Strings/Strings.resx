@@ -2271,6 +2271,12 @@
   <data name="About_SteamHapticsSingerDesc" xml:space="preserve"><value>Steam Controller 2026 and Steam Deck LFO-tone haptic layout, by Pila, Crazy, and AAGaming. BSD 3-Clause.</value></data>
   <data name="About_Hitboxer" xml:space="preserve"><value>hitboxer</value></data>
   <data name="About_HitboxerDesc" xml:space="preserve"><value>SOCD cleaning semantics for the Snap Tap modes, by valignatev. MIT.</value></data>
+  <data name="About_SteamKit2" xml:space="preserve"><value>SteamKit2</value></data>
+  <data name="About_SteamKit2Desc" xml:space="preserve"><value>Steam network client that fetches Steam Workshop controller configs over an anonymous session, by Ryan Stecker and the SteamRE Team. LGPL-2.1.</value></data>
+  <data name="About_ProtobufNet" xml:space="preserve"><value>protobuf-net</value></data>
+  <data name="About_ProtobufNetDesc" xml:space="preserve"><value>Protocol Buffers serializer SteamKit2 uses for the Steam wire protocol, by Marc Gravell. Apache-2.0.</value></data>
+  <data name="About_ZstdSharp" xml:space="preserve"><value>ZstdSharp</value></data>
+  <data name="About_ZstdSharpDesc" xml:space="preserve"><value>Zstandard decompression SteamKit2 uses for Steam depot chunks, a C# port of the zstd library by Oleg Stepanischev. MIT.</value></data>
   <data name="About_Dolphin" xml:space="preserve"><value>Dolphin</value></data>
   <data name="About_DolphinDesc" xml:space="preserve"><value>Wii pairing ceremony and speaker ADPCM documentation. GPL, read as documentation only, no GPL code ships.</value></data>
   <data name="About_Ds4Windows" xml:space="preserve"><value>DS4Windows</value></data>

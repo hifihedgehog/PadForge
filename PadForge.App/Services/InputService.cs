@@ -5466,7 +5466,13 @@ namespace PadForge.Services
         public static Engine.Data.MappingSet CloneMappingSetDeep(Engine.Data.MappingSet src)
         {
             if (src == null) return null;
-            var copy = new Engine.Data.MappingSet();
+            var copy = new Engine.Data.MappingSet
+            {
+                // Workshop-import ownership survives profile snapshot / apply
+                // round-trips, or the legacy merge would double every mapping
+                // after the first profile switch.
+                Authoritative = src.Authoritative,
+            };
             CopyShiftActivators(src, copy);
             if (src.Rows != null)
             {
@@ -5694,6 +5700,9 @@ namespace PadForge.Services
             if (padIndex < 0 || padIndex >= SettingsManager.SlotMappingSets.Length) return;
             if (rows == null) return;
 
+            // Authoritative deliberately NOT carried: the clipboard snapshot
+            // holds rows only, and a pasted set is user-recomposed authoring,
+            // which returns to the normal automap merge.
             var copy = new Engine.Data.MappingSet();
             foreach (var r in rows)
             {
@@ -5837,7 +5846,12 @@ namespace PadForge.Services
             var src = sets[sourceSlot];
             if (src == null) { sets[targetSlot] = new Engine.Data.MappingSet(); return; }
 
-            var copy = new Engine.Data.MappingSet();
+            var copy = new Engine.Data.MappingSet
+            {
+                // A slot-level copy reproduces the source set wholesale, so a
+                // Workshop-imported source keeps owning the copy's mappings.
+                Authoritative = src.Authoritative,
+            };
             CopyShiftActivators(src, copy, retargetSlot: targetSlot);
             if (src.Rows != null)
             {

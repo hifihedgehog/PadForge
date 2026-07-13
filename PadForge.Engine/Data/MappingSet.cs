@@ -51,5 +51,16 @@ namespace PadForge.Engine.Data
         /// <summary>Base flyout glyph (emoji or single grapheme). Empty falls
         /// back to the universal Shift glyph.</summary>
         [XmlAttribute] public string BaseIcon { get; set; } = "";
+
+        /// <summary>
+        /// An authoritative set owns its slot's mappings completely: the
+        /// legacy-automap merge must not add rows or inject sources into it.
+        /// Stamped true on Steam Workshop imports, whose rows spell out every
+        /// binding (including automap-identical ones) explicitly, so a
+        /// device's auto-mapped legacy descriptors would double every input.
+        /// Old XML has no attribute and deserializes false, keeping every
+        /// hand-authored set on the normal merge path.
+        /// </summary>
+        [XmlAttribute] public bool Authoritative { get; set; } = false;
     }
 }

@@ -62,6 +62,10 @@ namespace PadForge.Services
                 slotTypes[xboxSlot] = (int)VirtualControllerType.Xbox;
                 slotProfileIds[xboxSlot] = InputManager.GetDefaultProfileId(VirtualControllerType.Xbox);
                 mappingSets[xboxSlot] = translated.XboxMappingSet ?? new MappingSet();
+                // The translator spells out every binding, automap-identical
+                // ones included, so the legacy-automap merge must not add to
+                // this set when the user assigns a device.
+                mappingSets[xboxSlot].Authoritative = true;
             }
             if (kbmSlot >= 0)
             {
@@ -70,7 +74,10 @@ namespace PadForge.Services
                 slotTypes[kbmSlot] = (int)VirtualControllerType.KeyboardMouse;
                 slotProfileIds[kbmSlot] = InputManager.GetDefaultProfileId(VirtualControllerType.KeyboardMouse);
                 mappingSets[kbmSlot] = translated.KbmMappingSet ?? new MappingSet();
+                mappingSets[kbmSlot].Authoritative = true;
             }
+            // Unclaimed slots stay non-authoritative on purpose: a slot the
+            // user creates later must automap normally.
             for (int i = 0; i < maxPads; i++)
                 mappingSets[i] ??= new MappingSet();
 

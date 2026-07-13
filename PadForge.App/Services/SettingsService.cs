@@ -1148,7 +1148,11 @@ namespace PadForge.Services
                     rebuiltByKey[(rr.Target ?? "", rr.LayerMask ?? "Base")] = rr;
                 }
 
-                var merged = new Engine.Data.MappingSet();
+                var merged = new Engine.Data.MappingSet
+                {
+                    // Ownership survives the merge container swap.
+                    Authoritative = current.Authoritative,
+                };
                 var consumedRebuilt = new HashSet<(string, string)>();
 
                 foreach (var er in current.Rows)
@@ -1165,9 +1169,17 @@ namespace PadForge.Services
 
                     var key = (er.Target ?? "", er.LayerMask ?? "Base");
 
+                    // An authoritative set (Workshop import) owns its rows
+                    // completely: the rebuilt-from-legacy set contributes
+                    // nothing, because the imported rows already spell out
+                    // every binding and auto-mapped legacy descriptors
+                    // would double each input. Departed-device cleanup
+                    // (above) and the empty-row drop (below) still run.
+                    //
                     // Only Base-layer rows merge with rebuilt; non-Base
                     // (Shift) rows carry forward intact.
-                    if (string.Equals(er.LayerMask ?? "Base", "Base", StringComparison.Ordinal)
+                    if (!current.Authoritative
+                        && string.Equals(er.LayerMask ?? "Base", "Base", StringComparison.Ordinal)
                         && rebuiltByKey.TryGetValue(key, out var rrow))
                     {
                         // Only inject rebuilt sources for devices that
@@ -1220,14 +1232,18 @@ namespace PadForge.Services
 
                 // Add rebuilt rows that didn't match any existing row
                 // (newly-added device whose auto-mapping introduces a
-                // target the user hasn't authored yet).
-                foreach (var rr in rebuilt.Rows)
+                // target the user hasn't authored yet). Skipped entirely
+                // for authoritative sets, same rationale as above.
+                if (!current.Authoritative)
                 {
-                    if (rr == null) continue;
-                    var key = (rr.Target ?? "", rr.LayerMask ?? "Base");
-                    if (consumedRebuilt.Contains(key)) continue;
-                    if (rr.Sources == null || rr.Sources.Count == 0) continue;
-                    merged.Rows.Add(rr);
+                    foreach (var rr in rebuilt.Rows)
+                    {
+                        if (rr == null) continue;
+                        var key = (rr.Target ?? "", rr.LayerMask ?? "Base");
+                        if (consumedRebuilt.Contains(key)) continue;
+                        if (rr.Sources == null || rr.Sources.Count == 0) continue;
+                        merged.Rows.Add(rr);
+                    }
                 }
 
                 // Preserve any authored shift activators across the legacy

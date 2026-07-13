@@ -489,6 +489,8 @@ namespace PadForge
             _viewModel.Settings.EditProfileRequested += OnEditProfile;
             _viewModel.Settings.LoadProfileRequested += OnLoadProfile;
             _viewModel.Settings.RevertToDefaultRequested += OnRevertToDefault;
+            _viewModel.Settings.BrowseCommunityConfigsRequested += OnBrowseCommunityConfigs;
+            _viewModel.Settings.ClearWorkshopCacheRequested += OnClearWorkshopCache;
 
             // Persist Settings VM changes (theme, polling, checkboxes) and handle login toggle.
             _viewModel.Settings.PropertyChanged += (s, e) =>
@@ -507,7 +509,9 @@ namespace PadForge
                      or nameof(SettingsViewModel.EnableInputHiding)
                      or nameof(SettingsViewModel.KeepHidHideCloaksBetweenLaunches)
                      or nameof(SettingsViewModel.Use2DControllerView)
-                     or nameof(SettingsViewModel.EnableAutoProfileSwitching))
+                     or nameof(SettingsViewModel.EnableAutoProfileSwitching)
+                     or nameof(SettingsViewModel.EnableCommunityConfigLookup)
+                     or nameof(SettingsViewModel.ShowLegacyWorkshopConfigs))
                     _settingsService.MarkDirty();
             };
 
@@ -5391,6 +5395,73 @@ namespace PadForge
             _viewModel.Settings.ProfileItems.Add(listItem);
             _settingsService.MarkDirty();
             _viewModel.StatusText = string.Format(Strings.Instance.Status_ProfileImported_Format, profile.Name, packages.Count);
+        }
+
+        /// <summary>Opens the Steam Workshop browse dialog (#9). Always opens:
+        /// with the opt-in off, the dialog presents its cold-forge state and
+        /// the enable action flips the same persisted setting the Settings
+        /// card toggles.</summary>
+        private void OnBrowseCommunityConfigs(object sender, EventArgs e)
+        {
+            var dlg = new Views.WorkshopBrowseDialog(_viewModel.Settings) { Owner = this };
+            dlg.ImportSink = AddWorkshopProfile;
+            dlg.ShowDialog();
+            // Post-import, the dossier summary rides the status line
+            // (design flow step 4: what came across, in one line).
+            if (dlg.ImportedProfileName != null)
+            {
+                _viewModel.StatusText = string.Format(Strings.Instance.Status_WorkshopImported_Format,
+                    dlg.ImportedProfileName, dlg.ImportedClean, dlg.ImportedPartial, dlg.ImportedSkipped);
+            }
+        }
+
+        /// <summary>Purges the Workshop cache directory (Settings card button).</summary>
+        private void OnClearWorkshopCache(object sender, EventArgs e)
+        {
+            try
+            {
+                new PadForge.SteamWorkshop.Cache.SteamWorkshopCache().Clear();
+                _viewModel.StatusText = Strings.Instance.Status_WorkshopCacheCleared;
+            }
+            catch (Exception ex)
+            {
+                _viewModel.SetStatus(ex.Message, persist: true);
+            }
+        }
+
+        /// <summary>Registers a Workshop-translated profile through the same
+        /// steps the .pfprofile Import path takes (name dedup, registry add,
+        /// list item with topology counts, MarkDirty), then optionally loads
+        /// it as the active profile. Returns the deduped display name.</summary>
+        private string AddWorkshopProfile(Services.ProfileData profile, bool applyAfter)
+        {
+            string baseName = string.IsNullOrWhiteSpace(profile.Name) ? "Imported profile" : profile.Name.Trim();
+            string name = baseName;
+            int n = 2;
+            while (SettingsManager.Profiles.Any(p => string.Equals(p.Name, name, StringComparison.OrdinalIgnoreCase)))
+                name = $"{baseName} ({n++})";
+            profile.Name = name;
+
+            SettingsManager.Profiles.Add(profile);
+            var listItem = new ViewModels.ProfileListItem
+            {
+                Id = profile.Id,
+                Name = profile.Name,
+                Executables = InputService.FormatExePaths(profile.ExecutableNames ?? string.Empty),
+                ExecutablePaths = profile.ExecutableNames ?? string.Empty,
+            };
+            SettingsService.UpdateTopologyCounts(listItem, profile.SlotCreated, profile.SlotControllerTypes);
+            _viewModel.Settings.ProfileItems.Add(listItem);
+            _settingsService.MarkDirty();
+
+            if (applyAfter)
+            {
+                _inputService.LoadProfile(profile.Id);
+                _viewModel.Settings.ActiveProfileInfo = profile.Name;
+                _settingsService.MarkDirty();
+            }
+
+            return profile.Name;
         }
 
         private void OnEditProfile(object sender, EventArgs e)

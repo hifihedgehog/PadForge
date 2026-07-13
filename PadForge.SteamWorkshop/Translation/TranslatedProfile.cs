@@ -1,0 +1,103 @@
+using System.Collections.Generic;
+using PadForge.Engine.Data;
+
+namespace PadForge.SteamWorkshop.Translation
+{
+    /// <summary>
+    /// Neutral translation output. Everything the engine already models is
+    /// carried as the real Engine type (the two per-slot
+    /// <see cref="MappingSet"/>s, rows, sources, shift activators); only the
+    /// App-owned shapes (ProfileData's bag, MacroData/ActionData) stay out.
+    /// PadForge.App's <c>WorkshopProfileMaterializer</c> turns this into a
+    /// real <c>ProfileData</c>. Split layering because ProfileData lives in
+    /// the WPF exe project and this library must not reference it.
+    /// </summary>
+    public sealed class TranslatedProfile
+    {
+        /// <summary>Profile display name (config title, override applied).</summary>
+        public string Name { get; set; } = "";
+
+        /// <summary>Config description (localized fallback applied).</summary>
+        public string Description { get; set; } = "";
+
+        /// <summary>Rows + shift activators for the pre-allocated Xbox VC
+        /// slot. Sources use abstract descriptors with empty DeviceGuid.</summary>
+        public MappingSet XboxMappingSet { get; set; } = new();
+
+        /// <summary>Rows + shift activators for the pre-allocated
+        /// keyboard/mouse VC slot.</summary>
+        public MappingSet KbmMappingSet { get; set; } = new();
+
+        /// <summary>Macro-backed bindings (cursor warp, key autofire,
+        /// key-on-release). The materializer builds MacroData from these.</summary>
+        public List<TranslatedMacro> Macros { get; set; } = new();
+
+        public TranslationReport Report { get; set; } = new();
+    }
+
+    /// <summary>What a translated macro does when its trigger fires.</summary>
+    public enum TranslatedMacroAction
+    {
+        /// <summary>Warp the cursor to a fixed screen position
+        /// (<c>controller_action MOUSE_POSITION</c>). Coordinates are kept in
+        /// Steam's normalized 0..65535 space; the materializer converts to
+        /// primary-monitor pixels at import time (the translator has no
+        /// screen).</summary>
+        MoveMouseToScreenPosition = 0,
+
+        /// <summary>Key autofire while the trigger is held
+        /// (<c>key_press</c> with <c>hold_repeats</c>).</summary>
+        RepeatKeyWhileHeld = 1,
+
+        /// <summary>One key tap when the trigger releases
+        /// (<c>release</c> activator on a key binding).</summary>
+        KeyTap = 2,
+    }
+
+    /// <summary>
+    /// A device-independent macro description. Triggers ride the Xbox VC
+    /// slot's combined output (MacroTriggerSource.OutputController), which is
+    /// the only device-free trigger PadForge's macro engine offers: the
+    /// physical input reaches it through the standard automap once the user
+    /// assigns a pad to the slot. Bindings whose physical input has no Xbox
+    /// output representation (paddles, touchpads, gyro) never produce one of
+    /// these; they are reported Skipped instead.
+    /// </summary>
+    public sealed class TranslatedMacro
+    {
+        public string Name { get; set; } = "";
+
+        public TranslatedMacroAction Action { get; set; }
+
+        /// <summary>"OnPress" / "WhileHeld" / "OnRelease" (MacroTriggerMode names).</summary>
+        public string TriggerMode { get; set; } = "OnPress";
+
+        /// <summary>Xbox output button bitmask (Gamepad.* constants), or 0
+        /// when the trigger is an axis (<see cref="TriggerAxisTarget"/>).</summary>
+        public ushort TriggerXboxButtons { get; set; }
+
+        /// <summary>"LeftTrigger" / "RightTrigger" when the trigger input is
+        /// an analog trigger; null/empty otherwise.</summary>
+        public string TriggerAxisTarget { get; set; } = "";
+
+        /// <summary>Axis trigger threshold percent (1..100).</summary>
+        public int TriggerAxisThresholdPercent { get; set; } = 50;
+
+        /// <summary>When true the trigger buttons are consumed (removed from
+        /// the VC output while the macro fires), reproducing Steam Input's
+        /// "this input is keyboard-natured, not pad-natured" behavior.</summary>
+        public bool ConsumeTrigger { get; set; }
+
+        /// <summary>MOUSE_POSITION x in Steam's normalized 0..65535 space.</summary>
+        public int NormalizedX { get; set; }
+
+        /// <summary>MOUSE_POSITION y in Steam's normalized 0..65535 space.</summary>
+        public int NormalizedY { get; set; }
+
+        /// <summary>Win32 virtual-key code for the key actions.</summary>
+        public int VirtualKey { get; set; }
+
+        /// <summary>Autofire interval, ms (RepeatKeyWhileHeld).</summary>
+        public int IntervalMs { get; set; } = 100;
+    }
+}

@@ -1,0 +1,116 @@
+name: EPICMAN's Steam Deck/Game Pad Layout
+description: A New Ergonomic Control Layout, aiming for a Friction-less player experience. All inputs are labeled...
+xbox rows: 0
+kbm rows: 31
+  Base | KbmKey0D
+    <- Gamepad DPadDown
+  Base | KbmKey1B
+    <- Gamepad ButtonStart
+  Base | KbmKey20
+    <- Gamepad ButtonA
+  Base | KbmKey31
+    <- Gamepad Paddle4
+  Base | KbmKey32
+    <- Gamepad Paddle3
+  Base | KbmKey33
+    <- Gamepad Paddle2
+  Base | KbmKey34
+    <- Gamepad Paddle1
+  Base | KbmKey43
+    <- Gamepad ButtonB
+  Base | KbmKey4A
+    <- Gamepad RightShoulder
+  Base | KbmKey4E
+    <- Gamepad ButtonX
+  Base | KbmKey54
+    <- Gamepad ButtonY
+  Base | KbmKey55
+    <- Gamepad ButtonBack
+  Base | KbmKey56
+    <- Gamepad LeftShoulder
+  Base | KbmKey58
+    <- Gamepad DPadRight
+  Base | KbmKey5A
+    <- Gamepad DPadLeft
+  Base | KbmKeyA1
+    <- Gamepad RightStick
+  Base | KbmKeyBF
+    <- Gamepad DPadUp
+  Base | KbmMBtn0
+    <- Touchpad 1 Click
+    <- Gamepad RightTrigger [upper-half] dz=75
+  Base | KbmMBtn1
+    <- Gamepad LeftTrigger [upper-half] dz=75
+  Base | KbmMouseX | Sum
+    <- Gamepad LeftStickX sens=1.25
+    <- Gamepad RightStickX sens=1.25
+    <- Touchpad 1 Finger 0 X
+  Base | KbmMouseY | Sum
+    <- Gamepad LeftStickY sens=1.25
+    <- Gamepad RightStickY sens=1.25
+    <- Touchpad 1 Finger 0 Y
+  Layer_3451446931_1 | KbmKey35
+    <- Gamepad Paddle4
+  Layer_3451446931_1 | KbmKey36
+    <- Gamepad Paddle3
+  Layer_3451446931_1 | KbmKey37
+    <- Gamepad Paddle2
+  Layer_3451446931_1 | KbmKey38
+    <- Gamepad Paddle1
+  Layer_3451446931_1 | KbmKey42
+    <- Gamepad ButtonB
+  Layer_3451446931_1 | KbmKey4D
+    <- Gamepad ButtonX
+  Layer_3451446931_1 | KbmKey52
+    <- Gamepad ButtonY
+  Layer_3451446931_1 | KbmMBtn1
+    <- Touchpad 1 Click
+  Layer_3451446931_1 | KbmMouseX
+    <- Touchpad 1 Finger 0 X
+  Layer_3451446931_1 | KbmMouseY
+    <- Touchpad 1 Finger 0 Y
+kbm activators: 1
+  Hold Layer_3451446931_1 | Gamepad LeftStick | inherit | name=Preset_1000001
+macros: 0
+report: v1 rows:x0+k31 macros:0 layers:1 clean:35 partial:2 skipped:4 errors:0
+  Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_a/Full_Press => KbmKey20 <- Gamepad ButtonA
+  Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_b/Full_Press => KbmKey43 <- Gamepad ButtonB
+  Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_x/Full_Press => KbmKey4E <- Gamepad ButtonX
+  Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_y/Full_Press => KbmKey54 <- Gamepad ButtonY
+  Clean RowEmitted @ Default/dpad/group 7 (dpad)/dpad_east/Full_Press => KbmKey58 <- Gamepad DPadRight
+  Clean RowEmitted @ Default/dpad/group 7 (dpad)/dpad_north/Full_Press => KbmKeyBF <- Gamepad DPadUp
+  Clean RowEmitted @ Default/dpad/group 7 (dpad)/dpad_south/Full_Press => KbmKey0D <- Gamepad DPadDown
+  Clean RowEmitted @ Default/dpad/group 7 (dpad)/dpad_west/Full_Press => KbmKey5A <- Gamepad DPadLeft
+  Clean RowEmitted @ Default/joystick/group 15 (joystick_mouse) => KbmMouseX <- Gamepad LeftStickX
+  Clean RowEmitted @ Default/joystick/group 15 (joystick_mouse) => KbmMouseY <- Gamepad LeftStickY
+  Skipped RadialMenuNeedsOverlay(4) @ Default/left_trackpad/group 13 (radial_menu)
+  Clean RowEmitted @ Default/left_trigger/group 4 (trigger)/click/Full_Press => KbmMBtn1 <- Gamepad LeftTrigger (upper half)
+  Clean RowEmitted @ Default/right_joystick/group 9 (joystick_mouse) => KbmMouseX <- Gamepad RightStickX
+  Clean RowEmitted @ Default/right_joystick/group 9 (joystick_mouse) => KbmMouseY <- Gamepad RightStickY
+  Clean RowEmitted @ Default/right_joystick/group 9 (joystick_mouse)/click/Full_Press => KbmKeyA1 <- Gamepad RightStick
+  Clean RowEmitted @ Default/right_trackpad/group 31 (absolute_mouse) => KbmMouseX <- Touchpad 1 Finger 0 X
+  Clean RowEmitted @ Default/right_trackpad/group 31 (absolute_mouse) => KbmMouseY <- Touchpad 1 Finger 0 Y
+  Partial SoftPressApproximated @ Default/right_trackpad/group 31 (absolute_mouse)/click/Soft_Press => KbmMBtn0 <- Touchpad 1 Click
+  Clean RowEmitted @ Default/right_trigger/group 5 (trigger)/click/Full_Press => KbmMBtn0 <- Gamepad RightTrigger (upper half)
+  Clean RowEmitted @ Default/switch/group 6 (switches)/button_back_left/Full_Press => KbmKey33 <- Gamepad Paddle2
+  Clean RowEmitted @ Default/switch/group 6 (switches)/button_back_left_upper/Full_Press => KbmKey31 <- Gamepad Paddle4
+  Clean RowEmitted @ Default/switch/group 6 (switches)/button_back_right/Full_Press => KbmKey34 <- Gamepad Paddle1
+  Clean RowEmitted @ Default/switch/group 6 (switches)/button_back_right_upper/Full_Press => KbmKey32 <- Gamepad Paddle3
+  Skipped UnknownPhysicalInput(Switch, button_capture) @ Default/switch/group 6 (switches)/button_capture :: controller_action system_key_1, , 
+  Clean RowEmitted @ Default/switch/group 6 (switches)/button_escape/Full_Press => KbmKey1B <- Gamepad ButtonStart
+  Clean RowEmitted @ Default/switch/group 6 (switches)/button_menu/Full_Press => KbmKey55 <- Gamepad ButtonBack
+  Clean RowEmitted @ Default/switch/group 6 (switches)/left_bumper/Full_Press => KbmKey56 <- Gamepad LeftShoulder
+  Clean RowEmitted @ Default/switch/group 6 (switches)/right_bumper/Full_Press => KbmKey4A <- Gamepad RightShoulder
+  Clean RowEmitted @ Preset_1000001/button_diamond/group 24 (four_buttons)/button_b/Full_Press => KbmKey42 <- Gamepad ButtonB
+  Clean RowEmitted @ Preset_1000001/button_diamond/group 24 (four_buttons)/button_x/Full_Press => KbmKey4D <- Gamepad ButtonX
+  Clean RowEmitted @ Preset_1000001/button_diamond/group 24 (four_buttons)/button_y/Full_Press => KbmKey52 <- Gamepad ButtonY
+  Skipped RadialMenuNeedsOverlay(4) @ Preset_1000001/left_trackpad/group 41 (radial_menu)
+  Clean RowEmitted @ Preset_1000001/right_trackpad/group 33 (absolute_mouse) => KbmMouseX <- Touchpad 1 Finger 0 X
+  Clean RowEmitted @ Preset_1000001/right_trackpad/group 33 (absolute_mouse) => KbmMouseY <- Touchpad 1 Finger 0 Y
+  Partial SoftPressApproximated @ Preset_1000001/right_trackpad/group 33 (absolute_mouse)/click/Soft_Press => KbmMBtn1 <- Touchpad 1 Click
+  Clean RowEmitted @ Preset_1000001/switch/group 27 (switches)/button_back_left/Full_Press => KbmKey37 <- Gamepad Paddle2
+  Clean RowEmitted @ Preset_1000001/switch/group 27 (switches)/button_back_left_upper/Full_Press => KbmKey35 <- Gamepad Paddle4
+  Clean RowEmitted @ Preset_1000001/switch/group 27 (switches)/button_back_right/Full_Press => KbmKey38 <- Gamepad Paddle1
+  Clean RowEmitted @ Preset_1000001/switch/group 27 (switches)/button_back_right_upper/Full_Press => KbmKey36 <- Gamepad Paddle3
+  Skipped UnknownPhysicalInput(Switch, button_capture) @ Preset_1000001/switch/group 27 (switches)/button_capture :: controller_action system_key_1, , 
+  Clean ShiftLayerEmitted(Preset_1000001) @ Default/joystick/group 15 (joystick_mouse)/click/Full_Press => Hold -> Layer_3451446931_1

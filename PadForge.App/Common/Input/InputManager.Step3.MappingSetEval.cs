@@ -79,7 +79,8 @@ namespace PadForge.Common.Input
         /// negation seams live on the stick-target writes only), so a
         /// raw stick-up is NEGATIVE and negative-raises here. A user
         /// who wants the opposite feel inverts the trim source.</para></summary>
-        private static float EvaluateStickTrim(MappingRow row, int slotIndex, double dt)
+        private static float EvaluateStickTrim(MappingRow row, int slotIndex, double dt,
+            CustomInputState currentState, string currentDeviceGuid)
         {
             var srcs = SnapshotSources(row, out int srcsCount);
 
@@ -103,10 +104,15 @@ namespace PadForge.Common.Input
                 var src = srcs[i];
                 if (src == null || IsRowModifierSource(src)) continue;
                 if (IsSourceSuppressedPostpone(slotIndex, src.DeviceGuid, src.Descriptor)) continue;
-                var devState = LookupDeviceState(src.DeviceGuid);
+                // Empty DeviceGuid = "the device currently being evaluated"
+                // (the documented MappingSource.DeviceGuid contract, same
+                // resolution the single-source per-target evaluators use).
+                var devState = string.IsNullOrEmpty(src.DeviceGuid)
+                    ? currentState : LookupDeviceState(src.DeviceGuid);
                 if (devState == null) continue;
                 float v = SourceEvaluator.EvaluateForTriggerTarget(
-                    devState, src, slotIndex, row.Target, i, slotRuntime, dt);
+                    devState, src, slotIndex, row.Target, i, slotRuntime, dt,
+                    evaluatedDeviceGuid: currentDeviceGuid);
                 if (v > gate) gate = v;
             }
 
@@ -122,12 +128,14 @@ namespace PadForge.Common.Input
             if (held && trimIdx >= 0)
             {
                 var trimSrc = srcs[trimIdx];
-                var trimState = LookupDeviceState(trimSrc.DeviceGuid);
+                var trimState = string.IsNullOrEmpty(trimSrc.DeviceGuid)
+                    ? currentState : LookupDeviceState(trimSrc.DeviceGuid);
                 if (trimState != null
                     && !IsSourceSuppressedPostpone(slotIndex, trimSrc.DeviceGuid, trimSrc.Descriptor))
                 {
                     float v = SourceEvaluator.EvaluateForBipolarAxisTarget(
-                        trimState, trimSrc, slotIndex, row.Target, trimIdx, slotRuntime, dt);
+                        trimState, trimSrc, slotIndex, row.Target, trimIdx, slotRuntime, dt,
+                        evaluatedDeviceGuid: currentDeviceGuid);
                     st.Level = AdvanceStickTrimLevel(
                         st.Level, v, row.TrimDeadzone, row.TrimRate, dt);
                 }
@@ -1330,7 +1338,7 @@ namespace PadForge.Common.Input
                     if (isMultiSource)
                     {
                         var positional = BuildCustomContribsForButton(
-                            row, slotIndex, globalAxisToButtonThreshold, dt);
+                            row, slotIndex, globalAxisToButtonThreshold, dt, state, thisDeviceGuid);
                         if (positional.Count == 0) continue;
                         bool combined;
                         if (isCustom)
@@ -1369,7 +1377,7 @@ namespace PadForge.Common.Input
                 {
                     if (isMultiSource)
                     {
-                        var positional = BuildCustomContribsForBipolarAxis(row, slotIndex, dt);
+                        var positional = BuildCustomContribsForBipolarAxis(row, slotIndex, dt, state, thisDeviceGuid);
                         if (positional.Count == 0) continue;
                         float combined = isCustom
                             ? ClampBipolar(EvaluateCustomFloat(row, positional))
@@ -1406,11 +1414,11 @@ namespace PadForge.Common.Input
                             // Stateful combine (#155): walks row.Sources
                             // itself (the trim axis needs its signed value,
                             // which positional trigger contribs fold away).
-                            combined = ClampUnipolar(EvaluateStickTrim(row, slotIndex, dt));
+                            combined = ClampUnipolar(EvaluateStickTrim(row, slotIndex, dt, state, thisDeviceGuid));
                         }
                         else
                         {
-                            var positional = BuildCustomContribsForTrigger(row, slotIndex, dt);
+                            var positional = BuildCustomContribsForTrigger(row, slotIndex, dt, state, thisDeviceGuid);
                             if (positional.Count == 0) continue;
                             combined = isCustom
                                 ? ClampUnipolar(EvaluateCustomFloat(row, positional))
@@ -1770,8 +1778,17 @@ namespace PadForge.Common.Input
         /// coerced value against ITS OWN device's state. Returns an
         /// empty list if no source could be evaluated against any
         /// online device.</summary>
+        // The three positional contribution builders below resolve each
+        // source against ITS OWN device (LookupDeviceState). One seam:
+        // an EMPTY MappingSource.DeviceGuid means "the device currently
+        // being evaluated" (the documented contract, and the resolution
+        // the single-source per-target paths already apply).
+        // currentState / currentDeviceGuid carry that device's state and
+        // guid from the caller. Explicitly-pinned sources whose device is
+        // offline still contribute 0, exactly as before.
         private static List<float> BuildCustomContribsForBipolarAxis(
-            MappingRow row, int slotIndex, double dt)
+            MappingRow row, int slotIndex, double dt,
+            CustomInputState currentState, string currentDeviceGuid)
         {
             var slotRuntime = (slotIndex >= 0 && slotIndex < _slotSourceKindRuntime.Length)
                 ? _slotSourceKindRuntime[slotIndex] : null;
@@ -1798,19 +1815,24 @@ namespace PadForge.Common.Input
                 // stable (sN references are positional).
                 if (IsSourceSuppressedPostpone(slotIndex, src.DeviceGuid, src.Descriptor))
                 { list.Add(0f); continue; }
-                var devState = LookupDeviceState(src.DeviceGuid);
+                var devState = string.IsNullOrEmpty(src.DeviceGuid)
+                    ? currentState : LookupDeviceState(src.DeviceGuid);
                 if (devState == null) { list.Add(0f); continue; }
                 float v = SourceEvaluator.EvaluateForBipolarAxisTarget(
-                    devState, src, slotIndex, row.Target, i, slotRuntime, dt);
+                    devState, src, slotIndex, row.Target, i, slotRuntime, dt,
+                    evaluatedDeviceGuid: currentDeviceGuid);
                 if (i == 0 && negPairIndex == 1)
                 {
                     var negSrc = srcs[1];
-                    var negState = negSrc != null ? LookupDeviceState(negSrc.DeviceGuid) : null;
+                    var negState = negSrc == null ? null
+                        : (string.IsNullOrEmpty(negSrc.DeviceGuid)
+                            ? currentState : LookupDeviceState(negSrc.DeviceGuid));
                     if (negState != null
                         && !IsSourceSuppressedPostpone(slotIndex, negSrc.DeviceGuid, negSrc.Descriptor))
                     {
                         v += SourceEvaluator.EvaluateForBipolarAxisTarget(
-                            negState, negSrc, slotIndex, row.Target, 1, slotRuntime, dt);
+                            negState, negSrc, slotIndex, row.Target, 1, slotRuntime, dt,
+                            evaluatedDeviceGuid: currentDeviceGuid);
                     }
                 }
                 list.Add(v);
@@ -1819,7 +1841,8 @@ namespace PadForge.Common.Input
         }
 
         private static List<float> BuildCustomContribsForTrigger(
-            MappingRow row, int slotIndex, double dt)
+            MappingRow row, int slotIndex, double dt,
+            CustomInputState currentState, string currentDeviceGuid)
         {
             var slotRuntime = (slotIndex >= 0 && slotIndex < _slotSourceKindRuntime.Length)
                 ? _slotSourceKindRuntime[slotIndex] : null;
@@ -1833,16 +1856,19 @@ namespace PadForge.Common.Input
                 if (src == null) { list.Add(0f); continue; }
                 if (IsSourceSuppressedPostpone(slotIndex, src.DeviceGuid, src.Descriptor))
                 { list.Add(0f); continue; }
-                var devState = LookupDeviceState(src.DeviceGuid);
+                var devState = string.IsNullOrEmpty(src.DeviceGuid)
+                    ? currentState : LookupDeviceState(src.DeviceGuid);
                 if (devState == null) { list.Add(0f); continue; }
                 list.Add(SourceEvaluator.EvaluateForTriggerTarget(
-                    devState, src, slotIndex, row.Target, i, slotRuntime, dt));
+                    devState, src, slotIndex, row.Target, i, slotRuntime, dt,
+                    evaluatedDeviceGuid: currentDeviceGuid));
             }
             return list;
         }
 
         private static List<float> BuildCustomContribsForButton(
-            MappingRow row, int slotIndex, int globalAxisToButtonThreshold, double dt)
+            MappingRow row, int slotIndex, int globalAxisToButtonThreshold, double dt,
+            CustomInputState currentState, string currentDeviceGuid)
         {
             var slotRuntime = (slotIndex >= 0 && slotIndex < _slotSourceKindRuntime.Length)
                 ? _slotSourceKindRuntime[slotIndex] : null;
@@ -1856,11 +1882,13 @@ namespace PadForge.Common.Input
                 if (src == null) { list.Add(0f); continue; }
                 if (IsSourceSuppressedPostpone(slotIndex, src.DeviceGuid, src.Descriptor))
                 { list.Add(0f); continue; }
-                var devState = LookupDeviceState(src.DeviceGuid);
+                var devState = string.IsNullOrEmpty(src.DeviceGuid)
+                    ? currentState : LookupDeviceState(src.DeviceGuid);
                 if (devState == null) { list.Add(0f); continue; }
                 list.Add(SourceEvaluator.EvaluateForButtonTarget(
                     devState, src, globalAxisToButtonThreshold,
-                    slotIndex, row.Target, i, slotRuntime, dt) ? 1f : 0f);
+                    slotIndex, row.Target, i, slotRuntime, dt,
+                    evaluatedDeviceGuid: currentDeviceGuid) ? 1f : 0f);
             }
             return list;
         }
@@ -1955,7 +1983,7 @@ namespace PadForge.Common.Input
 
             if (isMultiSource)
             {
-                var positional = BuildCustomContribsForButton(row, slotIndex, globalAxisToButtonThreshold, dt);
+                var positional = BuildCustomContribsForButton(row, slotIndex, globalAxisToButtonThreshold, dt, state, thisDeviceGuid);
                 if (positional.Count == 0) return false;
                 if (isCustom)
                 {
@@ -2012,7 +2040,7 @@ namespace PadForge.Common.Input
 
             if (isMultiSource)
             {
-                var positional = BuildCustomContribsForBipolarAxis(row, slotIndex, dt);
+                var positional = BuildCustomContribsForBipolarAxis(row, slotIndex, dt, state, thisDeviceGuid);
                 if (positional.Count == 0) return false;
                 combined = isCustom
                     ? ClampBipolar(EvaluateCustomFloat(row, positional))
@@ -2201,11 +2229,11 @@ namespace PadForge.Common.Input
                 {
                     // Stateful combine (#155), same intercept as the
                     // gamepad trigger site.
-                    combined = ClampUnipolar(EvaluateStickTrim(row, slotIndex, dt));
+                    combined = ClampUnipolar(EvaluateStickTrim(row, slotIndex, dt, state, thisDeviceGuid));
                 }
                 else
                 {
-                    var positional = BuildCustomContribsForTrigger(row, slotIndex, dt);
+                    var positional = BuildCustomContribsForTrigger(row, slotIndex, dt, state, thisDeviceGuid);
                     if (positional.Count == 0) return false;
                     combined = isCustom
                         ? ClampUnipolar(EvaluateCustomFloat(row, positional))

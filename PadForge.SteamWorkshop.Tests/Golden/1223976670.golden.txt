@@ -1,0 +1,12 @@
+name: Don't Starve
+description: Official Don't Starve Steam Controller Configuration
+xbox rows: 0
+kbm rows: 1
+  Base | KbmScroll | Sum
+    <- Gamepad Paddle2 [inverted]
+    <- Gamepad Paddle1
+macros: 0
+report: v1 rows:x0+k1 macros:0 layers:0 clean:3 partial:0 skipped:0 errors:0
+  Clean RowEmitted @ Default/switch/group 7 (switches)/button_back_left/Full_Press => KbmScroll <- Gamepad Paddle2 (inverted)
+  Clean RowEmitted @ Default/switch/group 7 (switches)/button_back_right/Full_Press => KbmScroll <- Gamepad Paddle1
+  Clean DefaultAutomapPassthrough(16) @ Default

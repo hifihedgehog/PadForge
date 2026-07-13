@@ -1,0 +1,114 @@
+name: XCOM2 Configuration Xbox
+description: Your modified configuration for this game.
+xbox rows: 0
+kbm rows: 19
+  Base | KbmMBtn0
+    <- Gamepad ButtonA
+    <- Gamepad RightTrigger [upper-half] dz=15
+  Base | KbmMBtn1
+    <- Gamepad LeftTrigger [upper-half] dz=15
+  Base | KbmMouseX | Sum
+    <- Gamepad LeftStickX
+    <- Touchpad 0 Finger 0 X
+    <- Gamepad RightStickX
+    <- Touchpad 1 Finger 0 X
+  Base | KbmMouseY | Sum
+    <- Gamepad LeftStickY
+    <- Touchpad 0 Finger 0 Y
+    <- Gamepad RightStickY
+    <- Touchpad 1 Finger 0 Y
+  Layer_1129670518_0_MS_right_joystick_47 | KbmMouseX
+    <- Gamepad RightStickX
+  Layer_1129670518_0_MS_right_joystick_47 | KbmMouseY
+    <- Gamepad RightStickY
+  Layer_1129670518_1 | KbmKey1B
+    <- Gamepad ButtonStart
+  Layer_1129670518_1 | KbmMBtn0
+    <- Gamepad RightStick
+    <- Touchpad 1 Click
+    <- Gamepad RightTrigger [upper-half] dz=15
+  Layer_1129670518_1 | KbmMouseX | Sum
+    <- Gamepad RightStickX sens=1.975
+    <- Touchpad 1 Finger 0 X
+  Layer_1129670518_1 | KbmMouseY | Sum
+    <- Gamepad RightStickY sens=1.975
+    <- Touchpad 1 Finger 0 Y
+  Layer_1129670518_2 | KbmMBtn0
+    <- Gamepad RightStick
+    <- Touchpad 1 Click
+    <- Gamepad RightTrigger [upper-half] dz=15
+  Layer_1129670518_2 | KbmMouseX | Sum
+    <- Touchpad 0 Finger 0 X
+    <- Gamepad RightStickX
+    <- Touchpad 1 Finger 0 X
+  Layer_1129670518_2 | KbmMouseY | Sum
+    <- Touchpad 0 Finger 0 Y
+    <- Gamepad RightStickY
+    <- Touchpad 1 Finger 0 Y
+  Layer_1129670518_2_MS_left_trackpad_16 | KbmMouseX
+    <- Touchpad 0 Finger 0 X
+  Layer_1129670518_2_MS_left_trackpad_16 | KbmMouseY
+    <- Touchpad 0 Finger 0 Y
+  Layer_1129670518_2_MS_right_joystick_50 | KbmMouseX
+    <- Gamepad RightStickX
+  Layer_1129670518_2_MS_right_joystick_50 | KbmMouseY
+    <- Gamepad RightStickY
+  Layer_1129670518_2_MS_right_trackpad_38 | KbmMouseX
+    <- Touchpad 1 Finger 0 X
+  Layer_1129670518_2_MS_right_trackpad_38 | KbmMouseY
+    <- Touchpad 1 Finger 0 Y
+kbm activators: 4
+  Hold Layer_1129670518_0_MS_right_joystick_47 | Gamepad Paddle2 | inherit | name=right_joystick shift
+  Hold Layer_1129670518_2_MS_left_trackpad_16 | Touchpad 1 Click | inherit | name=left_trackpad shift
+  Hold Layer_1129670518_2_MS_right_joystick_50 | Touchpad 0 Click | inherit | name=right_joystick shift
+  Hold Layer_1129670518_2_MS_right_trackpad_38 | Touchpad 0 Click | inherit | name=right_trackpad shift
+macros: 0
+report: v1 rows:x0+k19 macros:0 layers:4 clean:38 partial:6 skipped:4 errors:0
+  Clean RowEmitted @ TacticalControls/button_diamond/group 0 (four_buttons)/button_A/Full_Press => KbmMBtn0 <- Gamepad ButtonA
+  Clean RowEmitted @ TacticalControls/joystick/group 51 (joystick_mouse) => KbmMouseX <- Gamepad LeftStickX
+  Clean RowEmitted @ TacticalControls/joystick/group 51 (joystick_mouse) => KbmMouseY <- Gamepad LeftStickY
+  Partial TouchpadTuningNotPerRow(197) @ TacticalControls/left_trackpad/group 7 (absolute_mouse) => KbmMouseX <- Touchpad 0 Finger 0 X
+  Partial TouchpadTuningNotPerRow(197) @ TacticalControls/left_trackpad/group 7 (absolute_mouse) => KbmMouseY <- Touchpad 0 Finger 0 Y
+  Clean RowEmitted @ TacticalControls/left_trigger/group 1 (trigger)/edge/Full_Press => KbmMBtn1 <- Gamepad LeftTrigger (upper half)
+  Clean RowEmitted @ TacticalControls/right_joystick/group 46 (joystick_mouse) => KbmMouseX <- Gamepad RightStickX
+  Clean RowEmitted @ TacticalControls/right_joystick/group 46 (joystick_mouse) => KbmMouseY <- Gamepad RightStickY
+  Clean RowEmitted @ TacticalControls/right_joystick/group 47 (joystick_mouse) => KbmMouseX <- Gamepad RightStickX
+  Clean RowEmitted @ TacticalControls/right_joystick/group 47 (joystick_mouse) => KbmMouseY <- Gamepad RightStickY
+  Clean RowEmitted @ TacticalControls/right_trackpad/group 9 (absolute_mouse) => KbmMouseX <- Touchpad 1 Finger 0 X
+  Clean RowEmitted @ TacticalControls/right_trackpad/group 9 (absolute_mouse) => KbmMouseY <- Touchpad 1 Finger 0 Y
+  Skipped TouchMenuNeedsOverlay(10) @ TacticalControls/right_trackpad/group 20 (touch_menu)
+  Clean RowEmitted @ TacticalControls/right_trigger/group 2 (trigger)/edge/Full_Press => KbmMBtn0 <- Gamepad RightTrigger (upper half)
+  Skipped GameActionsNotSupported(16) @ TacticalControls
+  Clean RowEmitted @ MenuControls/right_joystick/group 48 (joystick_mouse) => KbmMouseX <- Gamepad RightStickX
+  Clean RowEmitted @ MenuControls/right_joystick/group 48 (joystick_mouse) => KbmMouseY <- Gamepad RightStickY
+  Clean RowEmitted @ MenuControls/right_joystick/group 48 (joystick_mouse)/click/Full_Press => KbmMBtn0 <- Gamepad RightStick
+  Clean RowEmitted @ MenuControls/right_trackpad/group 19 (absolute_mouse) => KbmMouseX <- Touchpad 1 Finger 0 X
+  Clean RowEmitted @ MenuControls/right_trackpad/group 19 (absolute_mouse) => KbmMouseY <- Touchpad 1 Finger 0 Y
+  Clean RowEmitted @ MenuControls/right_trackpad/group 19 (absolute_mouse)/click/Full_Press => KbmMBtn0 <- Touchpad 1 Click
+  Clean RowEmitted @ MenuControls/right_trigger/group 5 (trigger)/edge/Full_Press => KbmMBtn0 <- Gamepad RightTrigger (upper half)
+  Clean RowEmitted @ MenuControls/switch/group 40 (switches)/button_escape/Full_Press => KbmKey1B <- Gamepad ButtonStart
+  Skipped GameActionsNotSupported(11) @ MenuControls
+  Clean RowEmitted @ GeoscapeControls/left_trackpad/group 15 (absolute_mouse) => KbmMouseX <- Touchpad 0 Finger 0 X
+  Clean RowEmitted @ GeoscapeControls/left_trackpad/group 15 (absolute_mouse) => KbmMouseY <- Touchpad 0 Finger 0 Y
+  Clean RowEmitted @ GeoscapeControls/left_trackpad/group 16 (absolute_mouse) => KbmMouseX <- Touchpad 0 Finger 0 X
+  Clean RowEmitted @ GeoscapeControls/left_trackpad/group 16 (absolute_mouse) => KbmMouseY <- Touchpad 0 Finger 0 Y
+  Clean RowEmitted @ GeoscapeControls/right_joystick/group 49 (joystick_mouse) => KbmMouseX <- Gamepad RightStickX
+  Clean RowEmitted @ GeoscapeControls/right_joystick/group 49 (joystick_mouse) => KbmMouseY <- Gamepad RightStickY
+  Clean RowEmitted @ GeoscapeControls/right_joystick/group 49 (joystick_mouse)/click/Full_Press => KbmMBtn0 <- Gamepad RightStick
+  Clean RowEmitted @ GeoscapeControls/right_joystick/group 50 (joystick_mouse) => KbmMouseX <- Gamepad RightStickX
+  Clean RowEmitted @ GeoscapeControls/right_joystick/group 50 (joystick_mouse) => KbmMouseY <- Gamepad RightStickY
+  Clean RowEmitted @ GeoscapeControls/right_trackpad/group 17 (absolute_mouse) => KbmMouseX <- Touchpad 1 Finger 0 X
+  Clean RowEmitted @ GeoscapeControls/right_trackpad/group 17 (absolute_mouse) => KbmMouseY <- Touchpad 1 Finger 0 Y
+  Clean RowEmitted @ GeoscapeControls/right_trackpad/group 17 (absolute_mouse)/click/Full_Press => KbmMBtn0 <- Touchpad 1 Click
+  Clean RowEmitted @ GeoscapeControls/right_trackpad/group 38 (absolute_mouse) => KbmMouseX <- Touchpad 1 Finger 0 X
+  Clean RowEmitted @ GeoscapeControls/right_trackpad/group 38 (absolute_mouse) => KbmMouseY <- Touchpad 1 Finger 0 Y
+  Clean RowEmitted @ GeoscapeControls/right_trigger/group 36 (trigger)/edge/Full_Press => KbmMBtn0 <- Gamepad RightTrigger (upper half)
+  Skipped GameActionsNotSupported(7) @ GeoscapeControls
+  Clean ShiftLayerEmitted(right_joystick shift) @ TacticalControls/switch/group 39 (switches)/button_back_left/Full_Press => Hold -> Layer_1129670518_0_MS_right_joystick_47
+  Partial ShiftLayerEmpty(right_trackpad shift) @ TacticalControls/switch/group 39 (switches)/button_back_left/Full_Press
+  Partial ShiftLayerEmpty(left_trackpad shift) @ MenuControls/switch/group 40 (switches)/right_click/Full_Press
+  Clean ShiftLayerEmitted(left_trackpad shift) @ GeoscapeControls/switch/group 41 (switches)/right_click/Full_Press => Hold -> Layer_1129670518_2_MS_left_trackpad_16
+  Clean ShiftLayerEmitted(right_joystick shift) @ GeoscapeControls/switch/group 41 (switches)/left_click/Full_Press => Hold -> Layer_1129670518_2_MS_right_joystick_50
+  Clean ShiftLayerEmitted(right_trackpad shift) @ GeoscapeControls/switch/group 41 (switches)/left_click/Full_Press => Hold -> Layer_1129670518_2_MS_right_trackpad_38
+  Partial PresetHasNoActivator(MenuControls) @ MenuControls
+  Partial PresetHasNoActivator(GeoscapeControls) @ GeoscapeControls

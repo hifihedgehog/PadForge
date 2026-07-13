@@ -1,0 +1,81 @@
+name: SkyrimSE Perfected: KB/M Precision + Gyro + Convenient Touch Menus
+description: A fully labelled and carefully tweaked config that features precise aiming and convenient touch menu...
+xbox rows: 0
+kbm rows: 20
+  Base | KbmKey09
+    <- Gamepad ButtonB
+  Base | KbmKey14
+    <- Gamepad LeftStick
+  Base | KbmKey20
+    <- Gamepad ButtonY
+  Base | KbmKey41
+    <- Gamepad LeftStickX [lower-half]
+  Base | KbmKey44
+    <- Gamepad LeftStickX [upper-half]
+  Base | KbmKey45
+    <- Gamepad ButtonA
+    <- Gamepad Paddle1
+  Base | KbmKey4A
+    <- Gamepad ButtonStart
+  Base | KbmKey52
+    <- Gamepad ButtonX
+  Base | KbmKey53
+    <- Gamepad LeftStickY [upper-half]
+  Base | KbmKey54
+    <- Gamepad ButtonBack
+  Base | KbmKey57
+    <- Gamepad LeftStickY [lower-half]
+  Base | KbmKey5A
+    <- Gamepad RightShoulder
+  Base | KbmKeyA2
+    <- Gamepad Paddle2
+  Base | KbmKeyA4
+    <- Gamepad LeftShoulder
+  Base | KbmMBtn0
+    <- Gamepad RightTrigger [upper-half] dz=15
+  Base | KbmMBtn1
+    <- Gamepad LeftTrigger [upper-half] dz=15
+  Base | KbmMouseX | Sum
+    <- Gyro Yaw gyroSens=1.1
+    <- Touchpad 1 Finger 0 X
+  Base | KbmMouseY | Sum
+    <- Gyro Pitch gyroSens=1.1
+    <- Touchpad 1 Finger 0 Y
+  Layer_789818086_0_MS_left_trackpad_17 | KbmKey74
+    <- Touchpad 0 TouchLeft
+  Layer_789818086_0_MS_left_trackpad_17 | KbmKey78
+    <- Touchpad 0 TouchRight
+kbm activators: 1
+  Hold Layer_789818086_0_MS_left_trackpad_17 | Gamepad LeftShoulder | inherit | name=left_trackpad shift
+macros: 0
+report: v1 rows:x0+k20 macros:0 layers:1 clean:20 partial:5 skipped:5 errors:0
+  Clean RowEmitted @ Preset 0/button_diamond/group 0 (four_buttons)/button_a/Full_Press => KbmKey45 <- Gamepad ButtonA
+  Clean RowEmitted @ Preset 0/button_diamond/group 0 (four_buttons)/button_b/Full_Press => KbmKey09 <- Gamepad ButtonB
+  Clean RowEmitted @ Preset 0/button_diamond/group 0 (four_buttons)/button_x/Full_Press => KbmKey52 <- Gamepad ButtonX
+  Clean RowEmitted @ Preset 0/button_diamond/group 0 (four_buttons)/button_y/Full_Press => KbmKey20 <- Gamepad ButtonY
+  Clean RowEmitted @ Preset 0/gyro/group 19 (absolute_mouse) => KbmMouseX <- Gyro Yaw
+  Clean RowEmitted @ Preset 0/gyro/group 19 (absolute_mouse) => KbmMouseY <- Gyro Pitch
+  Clean RowEmitted @ Preset 0/joystick/group 11 (dpad)/click/Full_Press => KbmKey14 <- Gamepad LeftStick
+  Clean RowEmitted @ Preset 0/joystick/group 11 (dpad)/dpad_east/Full_Press => KbmKey44 <- Gamepad LeftStickX (upper half)
+  Clean RowEmitted @ Preset 0/joystick/group 11 (dpad)/dpad_north/Full_Press => KbmKey57 <- Gamepad LeftStickY (lower half)
+  Clean RowEmitted @ Preset 0/joystick/group 11 (dpad)/dpad_south/Full_Press => KbmKey53 <- Gamepad LeftStickY (upper half)
+  Clean RowEmitted @ Preset 0/joystick/group 11 (dpad)/dpad_west/Full_Press => KbmKey41 <- Gamepad LeftStickX (lower half)
+  Skipped EdgeInputNotSupported(Joystick, edge) @ Preset 0/joystick/group 11 (dpad)/edge :: key_press RIGHT_CONTROL
+  Partial TrackpadFeatureRequired(Touchpad touch spots) @ Preset 0/left_trackpad/group 17 (touch_menu)/touch_menu_button_0/Full_Press => KbmKey74 <- Touchpad 0 TouchLeft
+  Partial TrackpadFeatureRequired(Touchpad touch spots) @ Preset 0/left_trackpad/group 17 (touch_menu)/touch_menu_button_1/Full_Press => KbmKey78 <- Touchpad 0 TouchRight
+  Skipped TouchMenuNeedsOverlay(4) @ Preset 0/left_trackpad/group 18 (touch_menu)
+  Clean RowEmitted @ Preset 0/left_trigger/group 4 (trigger)/edge/Full_Press => KbmMBtn1 <- Gamepad LeftTrigger (upper half)
+  Partial TouchpadTuningNotPerRow(141) @ Preset 0/right_trackpad/group 7 (absolute_mouse) => KbmMouseX <- Touchpad 1 Finger 0 X
+  Partial TouchpadTuningNotPerRow(141) @ Preset 0/right_trackpad/group 7 (absolute_mouse) => KbmMouseY <- Touchpad 1 Finger 0 Y
+  Skipped RadialMenuNeedsOverlay(9) @ Preset 0/right_trackpad/group 24 (radial_menu)
+  Clean RowEmitted @ Preset 0/right_trigger/group 5 (trigger)/edge/Full_Press => KbmMBtn0 <- Gamepad RightTrigger (upper half)
+  Clean RowEmitted @ Preset 0/switch/group 20 (switches)/button_back_left/Full_Press => KbmKeyA2 <- Gamepad Paddle2
+  Skipped LongPressNotSupported @ Preset 0/switch/group 20 (switches)/button_back_left/Long_Press :: key_press F, FOV (Hold)
+  Clean RowEmitted @ Preset 0/switch/group 20 (switches)/button_back_right/Full_Press => KbmKey45 <- Gamepad Paddle1
+  Skipped LongPressNotSupported @ Preset 0/switch/group 20 (switches)/button_back_right/Long_Press :: key_press SPACE, Jump (Hold)
+  Clean RowEmitted @ Preset 0/switch/group 20 (switches)/button_escape/Full_Press => KbmKey4A <- Gamepad ButtonStart
+  Clean RowEmitted @ Preset 0/switch/group 20 (switches)/button_menu/Full_Press => KbmKey54 <- Gamepad ButtonBack
+  Clean RowEmitted @ Preset 0/switch/group 20 (switches)/left_bumper/Full_Press => KbmKeyA4 <- Gamepad LeftShoulder
+  Clean RowEmitted @ Preset 0/switch/group 20 (switches)/right_bumper/Full_Press => KbmKey5A <- Gamepad RightShoulder
+  Clean ShiftLayerEmitted(left_trackpad shift) @ Preset 0/switch/group 20 (switches)/left_bumper/Full_Press => Hold -> Layer_789818086_0_MS_left_trackpad_17
+  Partial ShiftLayerEmpty(right_trackpad shift) @ Preset 0/switch/group 20 (switches)/right_click/Full_Press

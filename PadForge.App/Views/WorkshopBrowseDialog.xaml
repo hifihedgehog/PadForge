@@ -20,49 +20,61 @@
             <!-- Forge bar (design doc: the one loading treatment, no skeletons,
                  no per-card spinners). The ember segment sweeps the 170px track
                  while visible; with Windows animations off the segment holds
-                 still at the left and the caption carries the state. -->
+                 still at the left and the caption carries the state.
+                 The sweep animates Canvas.Left, a single-step path on the
+                 Rectangle itself, never a (RenderTransform).(X) complex path.
+                 The IsVisible condition is already true while this template
+                 instantiates inside a visible loading panel, so the trigger's
+                 EnterActions run mid-instantiation, before an inline
+                 RenderTransform member would have applied. Storyboard
+                 verification then walks the path against the frozen
+                 Transform.Identity default and every layout pass retries and
+                 rethrows "Cannot animate '(0).(1)' on an immutable object
+                 instance" (the 2026-07-13 crash storm, sibling of the v4.0.0
+                 CardBorder launch crash). Single-step paths attach the clock
+                 directly to the element and never enter
+                 Storyboard.ProcessComplexPath. -->
             <ControlTemplate x:Key="ForgeBarTemplate" TargetType="ContentControl">
                 <Border Width="170" Height="5" CornerRadius="3"
                         Background="{DynamicResource SteelRaisedBrush}" ClipToBounds="True">
-                    <Rectangle Width="68" RadiusX="3" RadiusY="3" HorizontalAlignment="Left">
-                        <Rectangle.Fill>
-                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
-                                <GradientStop Color="#00FF6B2C" Offset="0"/>
-                                <GradientStop Color="#FF6B2C" Offset="0.5"/>
-                                <GradientStop Color="#00FF6B2C" Offset="1"/>
-                            </LinearGradientBrush>
-                        </Rectangle.Fill>
-                        <Rectangle.RenderTransform>
-                            <TranslateTransform X="0"/>
-                        </Rectangle.RenderTransform>
-                        <Rectangle.Style>
-                            <Style TargetType="Rectangle">
-                                <Style.Triggers>
-                                    <MultiDataTrigger>
-                                        <MultiDataTrigger.Conditions>
-                                            <Condition Binding="{Binding IsVisible, RelativeSource={RelativeSource Self}}" Value="True"/>
-                                            <Condition Binding="{Binding Source={x:Static SystemParameters.ClientAreaAnimation}}" Value="True"/>
-                                        </MultiDataTrigger.Conditions>
-                                        <MultiDataTrigger.EnterActions>
-                                            <BeginStoryboard x:Name="ForgeSweep">
-                                                <Storyboard RepeatBehavior="Forever">
-                                                    <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.X)"
-                                                                     From="-68" To="170" Duration="0:0:1.4">
-                                                        <DoubleAnimation.EasingFunction>
-                                                            <SineEase EasingMode="EaseInOut"/>
-                                                        </DoubleAnimation.EasingFunction>
-                                                    </DoubleAnimation>
-                                                </Storyboard>
-                                            </BeginStoryboard>
-                                        </MultiDataTrigger.EnterActions>
-                                        <MultiDataTrigger.ExitActions>
-                                            <StopStoryboard BeginStoryboardName="ForgeSweep"/>
-                                        </MultiDataTrigger.ExitActions>
-                                    </MultiDataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Rectangle.Style>
-                    </Rectangle>
+                    <Canvas>
+                        <Rectangle Canvas.Left="0" Width="68" Height="5" RadiusX="3" RadiusY="3">
+                            <Rectangle.Fill>
+                                <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                                    <GradientStop Color="#00FF6B2C" Offset="0"/>
+                                    <GradientStop Color="#FF6B2C" Offset="0.5"/>
+                                    <GradientStop Color="#00FF6B2C" Offset="1"/>
+                                </LinearGradientBrush>
+                            </Rectangle.Fill>
+                            <Rectangle.Style>
+                                <Style TargetType="Rectangle">
+                                    <Style.Triggers>
+                                        <MultiDataTrigger>
+                                            <MultiDataTrigger.Conditions>
+                                                <Condition Binding="{Binding IsVisible, RelativeSource={RelativeSource Self}}" Value="True"/>
+                                                <Condition Binding="{Binding Source={x:Static SystemParameters.ClientAreaAnimation}}" Value="True"/>
+                                            </MultiDataTrigger.Conditions>
+                                            <MultiDataTrigger.EnterActions>
+                                                <BeginStoryboard x:Name="ForgeSweep">
+                                                    <Storyboard RepeatBehavior="Forever">
+                                                        <DoubleAnimation Storyboard.TargetProperty="(Canvas.Left)"
+                                                                         From="-68" To="170" Duration="0:0:1.4">
+                                                            <DoubleAnimation.EasingFunction>
+                                                                <SineEase EasingMode="EaseInOut"/>
+                                                            </DoubleAnimation.EasingFunction>
+                                                        </DoubleAnimation>
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </MultiDataTrigger.EnterActions>
+                                            <MultiDataTrigger.ExitActions>
+                                                <StopStoryboard BeginStoryboardName="ForgeSweep"/>
+                                            </MultiDataTrigger.ExitActions>
+                                        </MultiDataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Rectangle.Style>
+                        </Rectangle>
+                    </Canvas>
                 </Border>
             </ControlTemplate>
 

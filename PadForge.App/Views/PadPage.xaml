@@ -3670,18 +3670,26 @@
                                     </Trigger>
                                     <!-- Reduced motion (#175 item 98): the looping arm-flash
                                          only runs when ClientAreaAnimation is on; otherwise
-                                         the armed row holds a static ember tint. -->
+                                         the armed row holds a static ember tint.
+                                         The pulse holds the ember tint via the setter and
+                                         breathes the row's Opacity, a single-step path. The
+                                         old (Background).(Color) complex path crashed when a
+                                         recording row re-realized under virtualization: the
+                                         trigger is already true mid-instantiation, before the
+                                         row's Background is an animatable local brush (same
+                                         class as the forge-bar and v4.0.0 launch crashes). -->
                                     <MultiDataTrigger>
                                         <MultiDataTrigger.Conditions>
                                             <Condition Binding="{Binding IsRecording}" Value="True"/>
                                             <Condition Binding="{Binding Source={x:Static SystemParameters.ClientAreaAnimation}}" Value="True"/>
                                         </MultiDataTrigger.Conditions>
+                                        <Setter Property="Background" Value="#48FF6B2C"/>
                                         <MultiDataTrigger.EnterActions>
                                             <BeginStoryboard x:Name="RecordFlash">
                                                 <Storyboard>
-                                                    <ColorAnimation
-                                                        Storyboard.TargetProperty="(DataGridRow.Background).(SolidColorBrush.Color)"
-                                                        From="#00FF6B2C" To="#60FF6B2C"
+                                                    <DoubleAnimation
+                                                        Storyboard.TargetProperty="Opacity"
+                                                        From="1.0" To="0.55"
                                                         Duration="0:0:0.4" AutoReverse="True"
                                                         RepeatBehavior="Forever"/>
                                                 </Storyboard>

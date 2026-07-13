@@ -2834,6 +2834,11 @@ namespace PadForge.Services
             // profile is active vanish at the next save / reload.
             var tg = TouchpadGesturesProvider?.Invoke();
             profile.TouchpadGestures = (tg != null && tg.Length > 0) ? tg : null;
+
+            // Identity members (Id, Name, ExecutableNames, WorkshopSource) are
+            // intentionally NOT rewritten here. This mirror copies runtime
+            // state only. Assigning identity members from runtime would null
+            // the Workshop provenance on every autosave.
         }
 
         /// <summary>
@@ -4986,6 +4991,37 @@ namespace PadForge.Services
     }
 
     /// <summary>
+    /// Steam Workshop provenance stamped on a profile when it is imported
+    /// through Browse Community Configs (#9). Update detection compares the
+    /// stored <see cref="TimeUpdated"/> against a fresh
+    /// GetPublishedFileDetails read to flag profiles whose Workshop item
+    /// changed since import.
+    /// </summary>
+    public class SteamWorkshopSource
+    {
+        /// <summary>Workshop published-file id the profile was translated from.</summary>
+        [XmlElement] public ulong PublishedFileId { get; set; }
+
+        /// <summary>Steam app the config targets.</summary>
+        [XmlElement] public int AppId { get; set; }
+
+        /// <summary>Game name at import time, for update-result display.</summary>
+        [XmlElement] public string GameName { get; set; }
+
+        /// <summary>Workshop item title at import time.</summary>
+        [XmlElement] public string Title { get; set; }
+
+        /// <summary>The Workshop item's time_updated (unix seconds) at import time.</summary>
+        [XmlElement] public long TimeUpdated { get; set; }
+
+        /// <summary>UTC timestamp of the import.</summary>
+        [XmlElement] public DateTime ImportedAt { get; set; }
+
+        /// <summary>TranslationReport.ToSummaryString() digest of the import run.</summary>
+        [XmlElement] public string TranslationSummary { get; set; }
+    }
+
+    /// <summary>
     /// A named profile that stores per-device PadSettings and macros.
     /// When auto-switching is enabled, profiles activate when a matching
     /// executable's window comes to the foreground.
@@ -5183,6 +5219,17 @@ namespace PadForge.Services
 
         [XmlElement]
         public double TouchpadOverlayHeight { get; set; } = 250;
+
+        /// <summary>Steam Workshop provenance for profiles imported via
+        /// Browse Community Configs (#9). Null on every other profile.
+        /// Identity-scoped like <see cref="Name"/> and <see cref="Id"/>:
+        /// the runtime-state mirrors (InputService.SnapshotCurrentProfile,
+        /// SaveActiveProfileState, SettingsService.UpdateActiveProfileSnapshot)
+        /// intentionally leave it alone, because it describes where the
+        /// profile came from, not what state it holds. Slot compaction
+        /// (CompactProfileDataInPlace) mutates in place and never touches it.</summary>
+        [XmlElement("SteamWorkshopSource")]
+        public SteamWorkshopSource WorkshopSource { get; set; }
     }
 
     /// <summary>

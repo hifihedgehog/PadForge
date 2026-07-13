@@ -23,6 +23,7 @@ using PadForge.SteamWorkshop;
 using PadForge.SteamWorkshop.Api;
 using PadForge.SteamWorkshop.Api.Dto;
 using PadForge.SteamWorkshop.Cache;
+using PadForge.SteamWorkshop.Local;
 using PadForge.SteamWorkshop.Model;
 using PadForge.SteamWorkshop.Translation;
 using PadForge.SteamWorkshop.Vdf;
@@ -776,14 +777,17 @@ namespace PadForge.Views
             ManifestRows.Clear();
             PresetChips.Clear();
 
+            SetManifestPanel(ManifestLoadingPanel);
+
             if (item.IsLegacy)
             {
-                // Behind the Settings sub-toggle; honest about the extra step.
-                SetManifestPanel(ManifestLegacyPanel);
+                // No file_url to download. A local Steam subscription copy is the
+                // only readable source, and the subscribe panel the honest miss.
+                if (!await TryShowLocalConfigAsync(item, ct) && !ct.IsCancellationRequested)
+                    SetManifestPanel(ManifestLegacyPanel);
                 return;
             }
 
-            SetManifestPanel(ManifestLoadingPanel);
             try
             {
                 string vdfKey = item.FileId.ToString(CultureInfo.InvariantCulture) + "_" +
@@ -812,8 +816,71 @@ namespace PadForge.Views
             }
             catch (Exception ex) when (!ct.IsCancellationRequested)
             {
+                // A dead file_url (unreachable CDN, or Steam serving an error page
+                // in place of the config) may still have a subscribed local copy.
+                if (IsDeadUrlShaped(ex) && await TryShowLocalConfigAsync(item, ct))
+                    return;
+                if (!ct.IsCancellationRequested)
+                    ShowManifestError(MapErrorMessage(ex));
+            }
+        }
+
+        // ─────────────────────────────────────────────
+        //  Legacy configs (local Steam folder fallback)
+        // ─────────────────────────────────────────────
+
+        /// <summary>Failures where the CDN copy is unreachable or gone, as opposed
+        /// to real config content that failed to parse. SteamWorkshopException out
+        /// of the downloader covers the served-an-error-page and wrong-size cases.</summary>
+        private static bool IsDeadUrlShaped(Exception ex) =>
+            ex is HttpRequestException or TaskCanceledException or SteamWorkshopException;
+
+        /// <summary>
+        /// #9 Phase D fallback: a Steam subscription materializes controller configs
+        /// under steamapps/workshop/content/241100/{fileid} in every Steam library
+        /// (as controller_configuration.vdf or {ugchandle}_legacy.bin, both text VDF),
+        /// so a config the CDN cannot serve may still be readable from disk. Never
+        /// throws. True when this method now owns the manifest panels (a fill, an
+        /// honest parse error, or a cancelled attempt); false when no local copy
+        /// exists and the caller should show its own miss state.
+        /// </summary>
+        private async Task<bool> TryShowLocalConfigAsync(WorkshopConfigItem item, CancellationToken ct)
+        {
+            string vdf;
+            try
+            {
+                vdf = await Task.Run(() => LocalWorkshopConfigStore.ReadConfigText(item.FileId), ct);
+            }
+            catch (OperationCanceledException)
+            {
+                return true; // a newer selection owns the panels now
+            }
+            catch (Exception)
+            {
+                return false; // unreadable disk state counts as no local copy
+            }
+            if (ct.IsCancellationRequested) return true;
+            if (vdf == null) return false;
+
+            try
+            {
+                var parsed = await Task.Run(() => SteamInputConfig.FromVdf(VdfParser.Parse(vdf)), ct);
+                if (ct.IsCancellationRequested) return true;
+                _parsedConfig = parsed;
+
+                BuildPresetChips(parsed);
+                RunTranslationAndShow(item, parsed);
+            }
+            catch (OperationCanceledException) when (ct.IsCancellationRequested)
+            {
+            }
+            catch (Exception ex) when (!ct.IsCancellationRequested)
+            {
+                // A local copy that exists but will not translate reports its own
+                // honest error (version 2 rejection, personalization blob, ...).
                 ShowManifestError(MapErrorMessage(ex));
             }
+            return true;
         }
 
         private void BuildPresetChips(SteamInputConfig parsed)
@@ -897,6 +964,11 @@ namespace PadForge.Views
         private void CompleteImport(bool applyAfter)
         {
             if (_outcome?.Profile == null || ImportSink == null) return;
+            // The materializer stamped ImportedAt when the manifest was
+            // built (config selection). Re-stamp at the actual import so
+            // time spent reading the dossier doesn't age the record.
+            if (_outcome.Profile.WorkshopSource != null)
+                _outcome.Profile.WorkshopSource.ImportedAt = DateTime.UtcNow;
             ImportedProfileName = ImportSink(_outcome.Profile, applyAfter);
             ImportedClean = _outcome.Clean;
             ImportedPartial = _outcome.Partial;
@@ -929,9 +1001,21 @@ namespace PadForge.Views
             var translated = new ConfigTranslator().Translate(parsed, options);
             var report = translated.Report ?? new TranslationReport();
 
+            // Workshop provenance (#9 Phase D): the identity of what was
+            // imported, from the details this dialog already holds. The
+            // materializer fills in the import-time facts.
+            var provenance = new Services.SteamWorkshopSource
+            {
+                PublishedFileId = item.FileId,
+                AppId = _selectedGame?.AppId ?? 0,
+                GameName = _selectedGame?.Name,
+                Title = item.Title,
+                TimeUpdated = item.TimeUpdated,
+            };
+
             return new WorkshopTranslationOutcome
             {
-                Profile = Services.WorkshopProfileMaterializer.Materialize(translated),
+                Profile = Services.WorkshopProfileMaterializer.Materialize(translated, provenance),
                 Clean = report.CleanCount,
                 Partial = report.PartialCount,
                 // The dossier has three stat blocks; a config that errored a

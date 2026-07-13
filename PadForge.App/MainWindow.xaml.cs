@@ -491,6 +491,7 @@ namespace PadForge
             _viewModel.Settings.RevertToDefaultRequested += OnRevertToDefault;
             _viewModel.Settings.BrowseCommunityConfigsRequested += OnBrowseCommunityConfigs;
             _viewModel.Settings.ClearWorkshopCacheRequested += OnClearWorkshopCache;
+            _viewModel.Settings.CheckWorkshopUpdatesRequested += OnCheckWorkshopUpdates;
 
             // Persist Settings VM changes (theme, polling, checkboxes) and handle login toggle.
             _viewModel.Settings.PropertyChanged += (s, e) =>
@@ -2065,6 +2066,9 @@ namespace PadForge
             // Stop driver status polling.
             _driverStatusTimer?.Stop();
             _driverStatusTimer = null;
+
+            // Cancel any in-flight Workshop update check.
+            _workshopUpdateCts?.Cancel();
 
             // Stop the SDL event pump BEFORE the disposal Task.Run below reaches
             // SDL_Quit: the 100ms pump fires SDL_PumpEvents/SDL_UpdateJoysticks on
@@ -5426,6 +5430,114 @@ namespace PadForge
             catch (Exception ex)
             {
                 _viewModel.SetStatus(ex.Message, persist: true);
+            }
+        }
+
+        /// <summary>Non-null while an update check runs. Doubles as the
+        /// reentrancy guard and is cancelled by OnClosing so an in-flight
+        /// Steam query never outlives shutdown.</summary>
+        private System.Threading.CancellationTokenSource _workshopUpdateCts;
+
+        /// <summary>Checks every Workshop-imported profile for a newer
+        /// Workshop version (#9 Phase D): batch-queries
+        /// GetPublishedFileDetails over the stored SteamWorkshopSource ids
+        /// and compares time_updated. Results ride the status line, except
+        /// when something is stale, which gets a dialog listing the profiles
+        /// and offering Browse Community Configs as the re-import route.
+        /// With the opt-in off this never touches the network.</summary>
+        private async void OnCheckWorkshopUpdates(object sender, EventArgs e)
+        {
+            if (!_viewModel.Settings.EnableCommunityConfigLookup)
+            {
+                _viewModel.StatusText = Strings.Instance.Status_WorkshopUpdatesOptInRequired;
+                return;
+            }
+            if (_workshopUpdateCts != null) return;
+
+            var imported = SettingsManager.Profiles
+                .Where(p => p.WorkshopSource != null && p.WorkshopSource.PublishedFileId != 0)
+                .Select(p => (p.Name, Source: p.WorkshopSource))
+                .ToList();
+            if (imported.Count == 0)
+            {
+                _viewModel.StatusText = Strings.Instance.Status_WorkshopNoImportedProfiles;
+                return;
+            }
+
+            _workshopUpdateCts = new System.Threading.CancellationTokenSource();
+            var ct = _workshopUpdateCts.Token;
+            _viewModel.StatusText = Strings.Instance.Status_WorkshopCheckingUpdates;
+            try
+            {
+                var gate = new PadForge.SteamWorkshop.DelegateSteamWorkshopGate(
+                    () => _viewModel.Settings.EnableCommunityConfigLookup);
+                var client = new PadForge.SteamWorkshop.Api.SteamRemoteStorageClient(gate);
+                var ids = imported.Select(x => (long)x.Source.PublishedFileId).Distinct().ToList();
+                var details = await client.GetDetailsAsync(ids, ct);
+                if (ct.IsCancellationRequested) return;
+
+                var freshById = new Dictionary<ulong, PadForge.SteamWorkshop.Api.Dto.PublishedFileDetails>();
+                foreach (var d in details)
+                {
+                    // Per-item result 1 is OK. Removed or banned items come
+                    // back with another code and stay unreported.
+                    if (d.Result == 1 && ulong.TryParse(d.PublishedFileId, out var id))
+                        freshById[id] = d;
+                }
+
+                var stale = new List<string>();
+                foreach (var (name, source) in imported)
+                {
+                    if (freshById.TryGetValue(source.PublishedFileId, out var fresh) &&
+                        fresh.TimeUpdated > source.TimeUpdated)
+                    {
+                        string title = string.IsNullOrWhiteSpace(fresh.Title) ? source.Title : fresh.Title;
+                        stale.Add(string.Format(Strings.Instance.Workshop_UpdateRow_Format, name, title));
+                    }
+                }
+
+                if (stale.Count == 0)
+                {
+                    _viewModel.StatusText = string.Format(
+                        Strings.Instance.Status_WorkshopProfilesCurrent_Format, imported.Count);
+                    return;
+                }
+
+                _viewModel.StatusText = string.Empty;
+                var dialog = new Wpf.Ui.Controls.MessageBox
+                {
+                    Title = Strings.Instance.Workshop_UpdatesTitle,
+                    Content = Strings.Instance.Workshop_UpdatesBody + "\n\n" + string.Join("\n", stale),
+                    PrimaryButtonText = Strings.Instance.Profiles_BrowseCommunity,
+                    CloseButtonText = Strings.Instance.Common_Close,
+                };
+                var result = await dialog.ShowDialogAsync();
+                if (result == Wpf.Ui.Controls.MessageBoxResult.Primary)
+                    OnBrowseCommunityConfigs(this, EventArgs.Empty);
+            }
+            catch (OperationCanceledException) when (ct.IsCancellationRequested)
+            {
+                // Shutdown cancelled the query. Nothing to report.
+            }
+            catch (System.Net.Http.HttpRequestException)
+            {
+                _viewModel.SetStatus(Strings.Instance.Workshop_ErrorBody, persist: true);
+            }
+            catch (System.Threading.Tasks.TaskCanceledException)
+            {
+                // HttpClient timeout, not user cancellation (that case is
+                // filtered above). Same calm connectivity sentence as the
+                // browse dialog's error matrix.
+                _viewModel.SetStatus(Strings.Instance.Workshop_ErrorBody, persist: true);
+            }
+            catch (Exception ex)
+            {
+                _viewModel.SetStatus(ex.Message, persist: true);
+            }
+            finally
+            {
+                _workshopUpdateCts?.Dispose();
+                _workshopUpdateCts = null;
             }
         }
 

@@ -178,5 +178,56 @@ namespace PadForge.SteamWorkshop.Tests
             Assert.True(cache.TryGetString(CacheCategory.Games, query, CacheTtls.Games, out var value));
             Assert.Equal("appids", value);
         }
+
+        [Fact]
+        public void Stale_ok_read_is_fresh_within_the_window()
+        {
+            var cache = NewCache();
+            cache.PutBytes(CacheCategory.Art, "440_header.jpg", new byte[] { 1, 2, 3 });
+
+            _now = _now.AddDays(6);
+            Assert.True(cache.TryGetBytesStaleOk(CacheCategory.Art, "440_header.jpg", CacheTtls.Art, out var value, out var stale));
+            Assert.False(stale);
+            Assert.Equal(new byte[] { 1, 2, 3 }, value);
+        }
+
+        [Fact]
+        public void Stale_ok_read_flags_but_keeps_an_expired_entry()
+        {
+            var cache = NewCache();
+            cache.PutBytes(CacheCategory.Art, "440_header.jpg", new byte[] { 1, 2, 3 });
+
+            _now = _now.AddDays(8);
+            Assert.True(cache.TryGetBytesStaleOk(CacheCategory.Art, "440_header.jpg", CacheTtls.Art, out var value, out var stale));
+            Assert.True(stale);
+            Assert.Equal(new byte[] { 1, 2, 3 }, value);
+
+            // Unlike the TTL read, the expired entry survives as the offline fallback.
+            Assert.True(cache.TryGetBytes(CacheCategory.Art, "440_header.jpg", null, out _));
+        }
+
+        [Fact]
+        public void Stale_ok_read_misses_on_an_absent_key()
+        {
+            var cache = NewCache();
+            Assert.False(cache.TryGetBytesStaleOk(CacheCategory.Art, "nope", CacheTtls.Art, out var value, out var stale));
+            Assert.Null(value);
+            Assert.False(stale);
+        }
+
+        [Fact]
+        public void Rewrite_resets_the_freshness_window()
+        {
+            var cache = NewCache();
+            cache.PutBytes(CacheCategory.Art, "440_header.jpg", new byte[] { 1 });
+
+            _now = _now.AddDays(8);
+            cache.PutBytes(CacheCategory.Art, "440_header.jpg", new byte[] { 2 });
+
+            _now = _now.AddDays(6);
+            Assert.True(cache.TryGetBytesStaleOk(CacheCategory.Art, "440_header.jpg", CacheTtls.Art, out var value, out var stale));
+            Assert.False(stale);
+            Assert.Equal(new byte[] { 2 }, value);
+        }
     }
 }

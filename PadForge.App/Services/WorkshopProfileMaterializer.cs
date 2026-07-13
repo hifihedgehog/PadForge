@@ -24,9 +24,22 @@ namespace PadForge.Services
         private const int XboxSlot = 0;
         private const int KbmSlot = 1;
 
-        public static ProfileData Materialize(TranslatedProfile translated)
+        /// <summary>
+        /// Materializes the profile. When <paramref name="source"/> is given
+        /// (the browse dialog passes the Workshop item's identity), it is
+        /// stamped onto the profile as provenance, with the import-time facts
+        /// (ImportedAt, the report digest) filled in here so the dialog only
+        /// supplies what it already holds.
+        /// </summary>
+        public static ProfileData Materialize(TranslatedProfile translated, SteamWorkshopSource source = null)
         {
             if (translated == null) throw new ArgumentNullException(nameof(translated));
+
+            if (source != null)
+            {
+                source.ImportedAt = DateTime.UtcNow;
+                source.TranslationSummary = translated.Report?.ToSummaryString();
+            }
 
             int maxPads = InputManager.MaxPads;
 
@@ -63,6 +76,7 @@ namespace PadForge.Services
                 SlotControllerTypes = slotTypes,
                 SlotProfileIds = slotProfileIds,
                 Macros = macros,
+                WorkshopSource = source,
             };
         }
 

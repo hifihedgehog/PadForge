@@ -1,0 +1,103 @@
+name: Factorio Steam Deck by Zirbs for Space Age / v2.0
+description: New for Space Age / v2.0! Uses default keyboard binds, and leverages your KB and Deck muscle memory ...
+xbox rows: 0
+kbm rows: 28
+  Base | KbmKey0D
+    <- Gamepad ButtonA
+  Base | KbmKey1B
+    <- Gamepad ButtonB
+  Base | KbmKey20
+    <- Gamepad RightShoulder
+  Base | KbmKey41
+    <- Gamepad LeftStickX [lower-half]
+  Base | KbmKey43
+    <- Gamepad DPadLeft
+    <- Gamepad LeftStick
+  Base | KbmKey44
+    <- Gamepad LeftStickX [upper-half]
+  Base | KbmKey45
+    <- Gamepad DPadUp
+    <- Gamepad ButtonStart
+  Base | KbmKey46
+    <- Gamepad ButtonY
+  Base | KbmKey47
+    <- Gamepad DPadDown
+  Base | KbmKey48
+    <- Gamepad DPadRight
+  Base | KbmKey4D
+    <- Gamepad ButtonBack
+  Base | KbmKey51
+    <- Touchpad 1 Click
+  Base | KbmKey52
+    <- Gamepad LeftShoulder
+  Base | KbmKey53
+    <- Gamepad LeftStickY [upper-half]
+  Base | KbmKey56
+    <- Gamepad DPadDown
+  Base | KbmKey57
+    <- Gamepad LeftStickY [lower-half]
+  Base | KbmKey5A
+    <- Gamepad Paddle1
+  Base | KbmKey6B
+    <- Gamepad RightStickX [upper-half]
+  Base | KbmKey6D
+    <- Gamepad RightStickX [lower-half]
+  Base | KbmKeyA0
+    <- Gamepad Paddle4
+  Base | KbmKeyA2
+    <- Gamepad Paddle2
+  Base | KbmKeyA4
+    <- Gamepad Paddle3
+  Base | KbmMBtn0
+    <- Gamepad RightTrigger [upper-half] dz=15
+  Base | KbmMBtn1
+    <- Gamepad LeftTrigger [upper-half] dz=15
+  Base | KbmMBtn2
+    <- Gamepad RightStick
+  Base | KbmMouseX
+    <- Touchpad 1 Finger 0 X
+  Base | KbmMouseY
+    <- Touchpad 1 Finger 0 Y
+  Base | KbmScroll | Sum
+    <- Gamepad RightStickY [lower-half]
+    <- Gamepad RightStickY [upper-half]
+macros: 0
+report: v1 rows:x0+k28 macros:0 layers:0 clean:28 partial:3 skipped:7 errors:0
+  Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_a/Full_Press => KbmKey0D <- Gamepad ButtonA
+  Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_b/Full_Press => KbmKey1B <- Gamepad ButtonB
+  Skipped SteamSystemAction(SHOW_KEYBOARD) @ Default/button_diamond/group 0 (four_buttons)/button_x/Full_Press :: controller_action SHOW_KEYBOARD, , 
+  Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_y/Full_Press => KbmKey46 <- Gamepad ButtonY
+  Clean RowEmitted @ Default/dpad/group 7 (dpad)/dpad_east/Full_Press => KbmKey48 <- Gamepad DPadRight
+  Clean RowEmitted @ Default/dpad/group 7 (dpad)/dpad_north/Full_Press => KbmKey45 <- Gamepad DPadUp
+  Clean RowEmitted @ Default/dpad/group 7 (dpad)/dpad_south/Full_Press => KbmKey56 <- Gamepad DPadDown
+  Clean RowEmitted @ Default/dpad/group 7 (dpad)/dpad_south/Full_Press => KbmKey47 <- Gamepad DPadDown
+  Clean RowEmitted @ Default/dpad/group 7 (dpad)/dpad_west/Full_Press => KbmKey43 <- Gamepad DPadLeft
+  Clean RowEmitted @ Default/joystick/group 3 (dpad)/click/Full_Press => KbmKey43 <- Gamepad LeftStick
+  Clean RowEmitted @ Default/joystick/group 3 (dpad)/dpad_east/Full_Press => KbmKey44 <- Gamepad LeftStickX (upper half)
+  Clean RowEmitted @ Default/joystick/group 3 (dpad)/dpad_north/Full_Press => KbmKey57 <- Gamepad LeftStickY (lower half)
+  Clean RowEmitted @ Default/joystick/group 3 (dpad)/dpad_south/Full_Press => KbmKey53 <- Gamepad LeftStickY (upper half)
+  Clean RowEmitted @ Default/joystick/group 3 (dpad)/dpad_west/Full_Press => KbmKey41 <- Gamepad LeftStickX (lower half)
+  Skipped TouchMenuNeedsOverlay(11) @ Default/left_trackpad/group 12 (touch_menu)
+  Clean RowEmitted @ Default/left_trigger/group 4 (trigger)/edge/Full_Press => KbmMBtn1 <- Gamepad LeftTrigger (upper half)
+  Clean RowEmitted @ Default/right_joystick/group 11 (dpad)/click/Full_Press => KbmMBtn2 <- Gamepad RightStick
+  Clean RowEmitted @ Default/right_joystick/group 11 (dpad)/dpad_east/Full_Press => KbmKey6B <- Gamepad RightStickX (upper half)
+  Clean RowEmitted @ Default/right_joystick/group 11 (dpad)/dpad_north/Full_Press => KbmScroll <- Gamepad RightStickY (lower half)
+  Clean RowEmitted @ Default/right_joystick/group 11 (dpad)/dpad_south/Full_Press => KbmScroll <- Gamepad RightStickY (upper half)
+  Clean RowEmitted @ Default/right_joystick/group 11 (dpad)/dpad_west/Full_Press => KbmKey6D <- Gamepad RightStickX (lower half)
+  Partial TouchpadTuningNotPerRow(95) @ Default/right_trackpad/group 2 (absolute_mouse) => KbmMouseX <- Touchpad 1 Finger 0 X
+  Partial TouchpadTuningNotPerRow(95) @ Default/right_trackpad/group 2 (absolute_mouse) => KbmMouseY <- Touchpad 1 Finger 0 Y
+  Partial SoftPressApproximated @ Default/right_trackpad/group 2 (absolute_mouse)/click/Soft_Press => KbmKey51 <- Touchpad 1 Click
+  Clean RowEmitted @ Default/right_trigger/group 5 (trigger)/edge/Full_Press => KbmMBtn0 <- Gamepad RightTrigger (upper half)
+  Clean RowEmitted @ Default/switch/group 6 (switches)/button_back_left/Full_Press => KbmKeyA2 <- Gamepad Paddle2
+  Clean RowEmitted @ Default/switch/group 6 (switches)/button_back_left_upper/Full_Press => KbmKeyA0 <- Gamepad Paddle4
+  Clean RowEmitted @ Default/switch/group 6 (switches)/button_back_right/Full_Press => KbmKey5A <- Gamepad Paddle1
+  Clean RowEmitted @ Default/switch/group 6 (switches)/button_back_right_upper/Full_Press => KbmKeyA4 <- Gamepad Paddle3
+  Skipped UnknownPhysicalInput(Switch, button_capture) @ Default/switch/group 6 (switches)/button_capture :: controller_action system_key_1, , 
+  Clean RowEmitted @ Default/switch/group 6 (switches)/button_escape/Full_Press => KbmKey45 <- Gamepad ButtonStart
+  Clean RowEmitted @ Default/switch/group 6 (switches)/button_menu/Full_Press => KbmKey4D <- Gamepad ButtonBack
+  Clean RowEmitted @ Default/switch/group 6 (switches)/left_bumper/Full_Press => KbmKey52 <- Gamepad LeftShoulder
+  Clean RowEmitted @ Default/switch/group 6 (switches)/right_bumper/Full_Press => KbmKey20 <- Gamepad RightShoulder
+  Skipped TouchMenuNeedsOverlay(16) @ Preset_1000003/left_trackpad/group 45 (touch_menu)
+  Skipped UnknownPhysicalInput(Switch, button_capture) @ Preset_1000003/switch/group 34 (switches)/button_capture :: controller_action system_key_1, , 
+  Skipped TouchMenuNeedsOverlay(9) @ Preset_1000002/left_trackpad/group 43 (touch_menu)
+  Skipped UnknownPhysicalInput(Switch, button_capture) @ Preset_1000002/switch/group 40 (switches)/button_capture :: controller_action system_key_1, , 

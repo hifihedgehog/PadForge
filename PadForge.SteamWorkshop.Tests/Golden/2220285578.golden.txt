@@ -1,0 +1,74 @@
+name: Gimler's Crusader Kings III
+description: A fairly intuitive mapping of CKIII commands and keyboard shortcuts for Steam controller. I play 100...
+xbox rows: 0
+kbm rows: 18
+  Base | KbmKey1B
+    <- Gamepad Paddle1
+  Base | KbmKey20
+    <- Gamepad ButtonA
+    <- Touchpad 1 Click
+  Base | KbmKey24
+    <- Gamepad LeftStick
+  Base | KbmKey25
+    <- Gamepad LeftStickX [lower-half]
+  Base | KbmKey26
+    <- Gamepad LeftStickY [lower-half]
+  Base | KbmKey27
+    <- Gamepad LeftStickX [upper-half]
+  Base | KbmKey28
+    <- Gamepad LeftStickY [upper-half]
+  Base | KbmKey42
+    <- Gamepad ButtonY
+  Base | KbmKey46
+    <- Gamepad ButtonBack
+  Base | KbmKey47
+    <- Gamepad ButtonStart
+  Base | KbmKey6B
+    <- Gamepad ButtonB
+  Base | KbmKey6D
+    <- Gamepad ButtonX
+  Base | KbmKeyA0
+    <- Gamepad RightShoulder
+  Base | KbmKeyA2
+    <- Gamepad LeftShoulder
+  Base | KbmMBtn0
+    <- Gamepad RightTrigger [upper-half] dz=15
+  Base | KbmMBtn1
+    <- Gamepad LeftTrigger [upper-half] dz=15
+  Base | KbmMouseX | Sum
+    <- Gyro Yaw
+    <- Touchpad 1 Finger 0 X
+  Base | KbmMouseY | Sum
+    <- Gyro Pitch
+    <- Touchpad 1 Finger 0 Y
+macros: 0
+report: v1 rows:x0+k18 macros:0 layers:0 clean:19 partial:4 skipped:6 errors:0
+  Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_a/Full_Press => KbmKey20 <- Gamepad ButtonA
+  Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_b/Full_Press => KbmKey6B <- Gamepad ButtonB
+  Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_x/Full_Press => KbmKey6D <- Gamepad ButtonX
+  Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_y/Full_Press => KbmKey42 <- Gamepad ButtonY
+  Clean RowEmitted @ Default/gyro/group 9 (absolute_mouse) => KbmMouseX <- Gyro Yaw
+  Clean RowEmitted @ Default/gyro/group 9 (absolute_mouse) => KbmMouseY <- Gyro Pitch
+  Clean RowEmitted @ Default/joystick/group 3 (dpad)/click/Full_Press => KbmKey24 <- Gamepad LeftStick
+  Clean RowEmitted @ Default/joystick/group 3 (dpad)/dpad_east/Full_Press => KbmKey27 <- Gamepad LeftStickX (upper half)
+  Clean RowEmitted @ Default/joystick/group 3 (dpad)/dpad_north/Full_Press => KbmKey26 <- Gamepad LeftStickY (lower half)
+  Clean RowEmitted @ Default/joystick/group 3 (dpad)/dpad_south/Full_Press => KbmKey28 <- Gamepad LeftStickY (upper half)
+  Clean RowEmitted @ Default/joystick/group 3 (dpad)/dpad_west/Full_Press => KbmKey25 <- Gamepad LeftStickX (lower half)
+  Skipped ScrollWheelModeNotSupported @ Default/joystick/group 11 (scrollwheel)
+  Skipped TouchMenuNeedsOverlay(8) @ Default/left_trackpad/group 7 (touch_menu)
+  Skipped TouchMenuNeedsOverlay(11) @ Default/left_trackpad/group 8 (touch_menu)
+  Clean RowEmitted @ Default/left_trigger/group 4 (trigger)/edge/Full_Press => KbmMBtn1 <- Gamepad LeftTrigger (upper half)
+  Partial TouchpadTuningNotPerRow(113) @ Default/right_trackpad/group 2 (absolute_mouse) => KbmMouseX <- Touchpad 1 Finger 0 X
+  Partial TouchpadTuningNotPerRow(113) @ Default/right_trackpad/group 2 (absolute_mouse) => KbmMouseY <- Touchpad 1 Finger 0 Y
+  Clean RowEmitted @ Default/right_trackpad/group 2 (absolute_mouse)/click/Full_Press => KbmKey20 <- Touchpad 1 Click
+  Skipped ScrollWheelModeNotSupported @ Default/right_trackpad/group 10 (scrollwheel)
+  Clean RowEmitted @ Default/right_trigger/group 5 (trigger)/edge/Full_Press => KbmMBtn0 <- Gamepad RightTrigger (upper half)
+  Clean RowEmitted @ Default/switch/group 12 (switches)/button_back_right/Full_Press => KbmKey1B <- Gamepad Paddle1
+  Clean RowEmitted @ Default/switch/group 12 (switches)/button_escape/Full_Press => KbmKey47 <- Gamepad ButtonStart
+  Skipped LongPressNotSupported @ Default/switch/group 12 (switches)/button_escape/Long_Press :: key_press SPACE
+  Clean RowEmitted @ Default/switch/group 12 (switches)/button_menu/Full_Press => KbmKey46 <- Gamepad ButtonBack
+  Skipped LongPressNotSupported @ Default/switch/group 12 (switches)/button_menu/Long_Press :: key_press H, Split Off New Army
+  Clean RowEmitted @ Default/switch/group 12 (switches)/left_bumper/Full_Press => KbmKeyA2 <- Gamepad LeftShoulder
+  Clean RowEmitted @ Default/switch/group 12 (switches)/right_bumper/Full_Press => KbmKeyA0 <- Gamepad RightShoulder
+  Partial ShiftLayerEmpty(left_trackpad shift) @ Default/switch/group 12 (switches)/button_back_left/Full_Press
+  Partial ShiftLayerEmpty(right_trackpad shift) @ Default/switch/group 12 (switches)/button_back_left/Full_Press

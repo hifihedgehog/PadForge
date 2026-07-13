@@ -1,0 +1,50 @@
+name: Steam Workshop Config
+xbox rows: 0
+kbm rows: 11
+  Base | KbmKey0D
+    <- Gamepad Paddle1
+  Base | KbmKey1B
+    <- Gamepad ButtonB
+    <- Gamepad ButtonStart
+  Base | KbmKey25
+    <- Gamepad LeftStickX [lower-half]
+  Base | KbmKey26
+    <- Gamepad LeftStickY [lower-half]
+  Base | KbmKey27
+    <- Gamepad LeftStickX [upper-half]
+  Base | KbmKey28
+    <- Gamepad LeftStickY [upper-half]
+  Base | KbmMBtn0
+    <- Gamepad ButtonA
+    <- Gamepad LeftTrigger [upper-half] dz=15
+    <- Touchpad 1 Click
+  Base | KbmMBtn1
+    <- Gamepad RightTrigger [upper-half] dz=15
+  Base | KbmMouseX
+    <- Touchpad 1 Finger 0 X
+  Base | KbmMouseY
+    <- Touchpad 1 Finger 0 Y
+  Base | KbmScroll | Sum
+    <- Gamepad LeftShoulder
+    <- Gamepad RightShoulder [inverted]
+macros: 0
+report: v1 rows:x0+k11 macros:0 layers:0 clean:15 partial:1 skipped:3 errors:0
+  Clean RowEmitted @ InGameControls/button_diamond/group 0 (four_buttons)/button_A/Full_Press => KbmMBtn0 <- Gamepad ButtonA
+  Clean RowEmitted @ InGameControls/button_diamond/group 0 (four_buttons)/button_B/Full_Press => KbmKey1B <- Gamepad ButtonB
+  Clean RowEmitted @ InGameControls/joystick/group 13 (dpad)/dpad_east/Full_Press => KbmKey27 <- Gamepad LeftStickX (upper half)
+  Clean RowEmitted @ InGameControls/joystick/group 13 (dpad)/dpad_north/Full_Press => KbmKey26 <- Gamepad LeftStickY (lower half)
+  Clean RowEmitted @ InGameControls/joystick/group 13 (dpad)/dpad_south/Full_Press => KbmKey28 <- Gamepad LeftStickY (upper half)
+  Clean RowEmitted @ InGameControls/joystick/group 13 (dpad)/dpad_west/Full_Press => KbmKey25 <- Gamepad LeftStickX (lower half)
+  Skipped TouchMenuNeedsOverlay(8) @ InGameControls/left_trackpad/group 18 (touch_menu)
+  Clean RowEmitted @ InGameControls/left_trigger/group 1 (trigger)/edge/Full_Press => KbmMBtn0 <- Gamepad LeftTrigger (upper half)
+  Clean RowEmitted @ InGameControls/right_trackpad/group 9 (absolute_mouse) => KbmMouseX <- Touchpad 1 Finger 0 X
+  Clean RowEmitted @ InGameControls/right_trackpad/group 9 (absolute_mouse) => KbmMouseY <- Touchpad 1 Finger 0 Y
+  Clean RowEmitted @ InGameControls/right_trackpad/group 9 (absolute_mouse)/click/Full_Press => KbmMBtn0 <- Touchpad 1 Click
+  Clean RowEmitted @ InGameControls/right_trigger/group 2 (trigger)/edge/Full_Press => KbmMBtn1 <- Gamepad RightTrigger (upper half)
+  Clean RowEmitted @ InGameControls/switch/group 10 (switches)/button_back_right/Full_Press => KbmKey0D <- Gamepad Paddle1
+  Clean RowEmitted @ InGameControls/switch/group 10 (switches)/button_escape/Full_Press => KbmKey1B <- Gamepad ButtonStart
+  Clean RowEmitted @ InGameControls/switch/group 10 (switches)/left_bumper/Full_Press => KbmScroll <- Gamepad LeftShoulder
+  Skipped UnknownPhysicalInput(Switch, left_trigger) @ InGameControls/switch/group 10 (switches)/left_trigger :: mode_shift right_trackpad 19
+  Clean RowEmitted @ InGameControls/switch/group 10 (switches)/right_bumper/Full_Press => KbmScroll <- Gamepad RightShoulder (inverted)
+  Skipped GameActionsNotSupported(7) @ InGameControls
+  Partial ShiftLayerEmpty(left_trackpad shift) @ InGameControls/switch/group 10 (switches)/button_back_left/Full_Press

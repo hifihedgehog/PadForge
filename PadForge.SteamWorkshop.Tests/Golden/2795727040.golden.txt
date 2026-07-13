@@ -1,0 +1,67 @@
+name: Miracle's AOE II Steam Deck Layout
+description: A layout designed for quick gameplay. Has a radial menu for creating and selecting groups. Left pad ...
+xbox rows: 0
+kbm rows: 17
+  Base | KbmKey1B
+    <- Gamepad ButtonB
+  Base | KbmKey25
+    <- Gamepad LeftStickX [lower-half]
+  Base | KbmKey26
+    <- Gamepad LeftStickY [lower-half]
+  Base | KbmKey27
+    <- Gamepad LeftStickX [upper-half]
+  Base | KbmKey28
+    <- Gamepad LeftStickY [upper-half]
+  Base | KbmKey48
+    <- Gamepad DPadUp
+  Base | KbmKey72
+    <- Gamepad ButtonA
+  Base | KbmKey75
+    <- Gamepad ButtonBack
+  Base | KbmKey76
+    <- Gamepad ButtonX
+  Base | KbmKey77
+    <- Gamepad ButtonY
+  Base | KbmKey79
+    <- Gamepad ButtonStart
+  Base | KbmKeyA2
+    <- Gamepad DPadDown
+  Base | KbmKeyBC
+    <- Gamepad DPadLeft
+  Base | KbmKeyBE
+    <- Gamepad DPadRight
+  Base | KbmMBtn0
+    <- Touchpad 0 Click
+    <- Touchpad 1 Click
+    <- Gamepad RightTrigger [upper-half] dz=15
+  Base | KbmMBtn1
+    <- Gamepad LeftTrigger [upper-half] dz=15
+  Base | KbmScroll | Sum
+    <- Gamepad LeftShoulder
+    <- Gamepad RightShoulder [inverted]
+macros: 0
+report: v1 rows:x0+k17 macros:0 layers:0 clean:20 partial:0 skipped:4 errors:0
+  Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_a/Full_Press => KbmKey72 <- Gamepad ButtonA
+  Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_b/Full_Press => KbmKey1B <- Gamepad ButtonB
+  Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_x/Full_Press => KbmKey76 <- Gamepad ButtonX
+  Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_y/Full_Press => KbmKey77 <- Gamepad ButtonY
+  Clean RowEmitted @ Default/dpad/group 7 (dpad)/dpad_east/Full_Press => KbmKeyBE <- Gamepad DPadRight
+  Clean RowEmitted @ Default/dpad/group 7 (dpad)/dpad_north/Full_Press => KbmKey48 <- Gamepad DPadUp
+  Clean RowEmitted @ Default/dpad/group 7 (dpad)/dpad_south/Full_Press => KbmKeyA2 <- Gamepad DPadDown
+  Clean RowEmitted @ Default/dpad/group 7 (dpad)/dpad_west/Full_Press => KbmKeyBC <- Gamepad DPadLeft
+  Clean RowEmitted @ Default/joystick/group 3 (dpad)/dpad_east/Full_Press => KbmKey27 <- Gamepad LeftStickX (upper half)
+  Clean RowEmitted @ Default/joystick/group 3 (dpad)/dpad_north/Full_Press => KbmKey26 <- Gamepad LeftStickY (lower half)
+  Clean RowEmitted @ Default/joystick/group 3 (dpad)/dpad_south/Full_Press => KbmKey28 <- Gamepad LeftStickY (upper half)
+  Clean RowEmitted @ Default/joystick/group 3 (dpad)/dpad_west/Full_Press => KbmKey25 <- Gamepad LeftStickX (lower half)
+  Skipped MouseRegionNotSupported @ Default/left_trackpad/group 11 (mouse_region)
+  Clean RowEmitted @ Default/left_trackpad/group 11 (mouse_region)/click/Full_Press => KbmMBtn0 <- Touchpad 0 Click
+  Clean RowEmitted @ Default/left_trigger/group 4 (trigger)/edge/Full_Press => KbmMBtn1 <- Gamepad LeftTrigger (upper half)
+  Skipped RadialMenuNeedsOverlay(8) @ Default/right_joystick/group 12 (radial_menu)
+  Skipped MouseRegionNotSupported @ Default/right_trackpad/group 13 (mouse_region)
+  Clean RowEmitted @ Default/right_trackpad/group 13 (mouse_region)/click/Full_Press => KbmMBtn0 <- Touchpad 1 Click
+  Clean RowEmitted @ Default/right_trigger/group 5 (trigger)/edge/Full_Press => KbmMBtn0 <- Gamepad RightTrigger (upper half)
+  Skipped UnknownPhysicalInput(Switch, button_capture) @ Default/switch/group 6 (switches)/button_capture :: controller_action system_key_1
+  Clean RowEmitted @ Default/switch/group 6 (switches)/button_escape/Full_Press => KbmKey79 <- Gamepad ButtonStart
+  Clean RowEmitted @ Default/switch/group 6 (switches)/button_menu/Full_Press => KbmKey75 <- Gamepad ButtonBack
+  Clean RowEmitted @ Default/switch/group 6 (switches)/left_bumper/Full_Press => KbmScroll <- Gamepad LeftShoulder
+  Clean RowEmitted @ Default/switch/group 6 (switches)/right_bumper/Full_Press => KbmScroll <- Gamepad RightShoulder (inverted)

@@ -1757,6 +1757,13 @@ namespace PadForge.Engine.Common.Mapping
 
         // ─── Internal readers ──────────────────────────────────────────
 
+        // NOTE (readers below): gesture / mouse-gesture provider lookups pass
+        // the caller-resolved <c>deviceGuid</c> (EffectiveDeviceGuid: the
+        // source's own guid when pinned, otherwise the device being
+        // evaluated), NOT the bare src.DeviceGuid. An empty source guid is
+        // the documented "the device on this slot" form (the Workshop
+        // translator emits it), and the providers are keyed by a concrete
+        // (slot, device, pad) triple, so the bare form always missed.
         private static bool ReadAsBool(CustomInputState state, MappingSource src, int globalThresholdPercent, int slotIndex, string deviceGuid)
         {
             string s = CanonicalDescriptor(src.Descriptor);
@@ -1772,7 +1779,7 @@ namespace PadForge.Engine.Common.Mapping
             if (IsMouseGestureDescriptor(s))
             {
                 return MouseGestureFiredProvider?.Invoke(
-                    slotIndex, src.DeviceGuid ?? "", ParseMouseGestureName(s)) ?? false;
+                    slotIndex, deviceGuid ?? "", ParseMouseGestureName(s)) ?? false;
             }
 
             if (IsTouchpadGestureDescriptor(s))
@@ -1781,12 +1788,12 @@ namespace PadForge.Engine.Common.Mapping
                 if (IsTouchpadGestureAxis(gName))
                 {
                     float axisVal = TouchpadGestureAxisProvider?.Invoke(
-                        slotIndex, src.DeviceGuid ?? "", gPad, gName) ?? 0f;
+                        slotIndex, deviceGuid ?? "", gPad, gName) ?? 0f;
                     float gThresh = src.DeadZone > 0 ? src.DeadZone / 100f : 0.5f;
                     return Math.Abs(axisVal) > gThresh;
                 }
                 return TouchpadGestureFiredProvider?.Invoke(
-                    slotIndex, src.DeviceGuid ?? "", gPad, gName) ?? false;
+                    slotIndex, deviceGuid ?? "", gPad, gName) ?? false;
             }
 
             if (s.StartsWith("Touchpad ", StringComparison.Ordinal))
@@ -1980,7 +1987,7 @@ namespace PadForge.Engine.Common.Mapping
             if (IsMouseGestureDescriptor(s))
             {
                 bool mgFired = MouseGestureFiredProvider?.Invoke(
-                    slotIndex, src.DeviceGuid ?? "", ParseMouseGestureName(s)) ?? false;
+                    slotIndex, deviceGuid ?? "", ParseMouseGestureName(s)) ?? false;
                 return mgFired ? 1f : 0f;
             }
 
@@ -1990,10 +1997,10 @@ namespace PadForge.Engine.Common.Mapping
                 if (IsTouchpadGestureAxis(gName))
                 {
                     return TouchpadGestureAxisProvider?.Invoke(
-                        slotIndex, src.DeviceGuid ?? "", gPad, gName) ?? 0f;
+                        slotIndex, deviceGuid ?? "", gPad, gName) ?? 0f;
                 }
                 bool fired = TouchpadGestureFiredProvider?.Invoke(
-                    slotIndex, src.DeviceGuid ?? "", gPad, gName) ?? false;
+                    slotIndex, deviceGuid ?? "", gPad, gName) ?? false;
                 return fired ? 1f : 0f;
             }
 
@@ -2159,7 +2166,7 @@ namespace PadForge.Engine.Common.Mapping
             if (IsMouseGestureDescriptor(s))
             {
                 bool mgFired = MouseGestureFiredProvider?.Invoke(
-                    slotIndex, src.DeviceGuid ?? "", ParseMouseGestureName(s)) ?? false;
+                    slotIndex, deviceGuid ?? "", ParseMouseGestureName(s)) ?? false;
                 return mgFired ? 1f : 0f;
             }
 
@@ -2169,11 +2176,11 @@ namespace PadForge.Engine.Common.Mapping
                 if (IsTouchpadGestureAxis(gName))
                 {
                     float v = TouchpadGestureAxisProvider?.Invoke(
-                        slotIndex, src.DeviceGuid ?? "", gPad, gName) ?? 0f;
+                        slotIndex, deviceGuid ?? "", gPad, gName) ?? 0f;
                     return Math.Abs(v);
                 }
                 bool fired = TouchpadGestureFiredProvider?.Invoke(
-                    slotIndex, src.DeviceGuid ?? "", gPad, gName) ?? false;
+                    slotIndex, deviceGuid ?? "", gPad, gName) ?? false;
                 return fired ? 1f : 0f;
             }
 

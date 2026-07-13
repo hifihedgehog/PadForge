@@ -1,0 +1,88 @@
+name: TW Warhammer 2 & 3 - Steam Deck
+description: Clone of Patriclese TWW2 Controller Layout for Steam Deck
+xbox rows: 0
+kbm rows: 21
+  Base | KbmKey09
+    <- Gamepad ButtonBack
+  Base | KbmKey1B
+    <- Gamepad ButtonStart
+  Base | KbmKey20
+    <- Gamepad ButtonA
+  Base | KbmKey25
+    <- Gamepad DPadLeft
+    <- Touchpad 0 DPadLeft
+  Base | KbmKey26
+    <- Gamepad DPadUp
+    <- Touchpad 0 DPadUp
+  Base | KbmKey27
+    <- Gamepad DPadRight
+    <- Touchpad 0 DPadRight
+  Base | KbmKey28
+    <- Gamepad DPadDown
+    <- Touchpad 0 DPadDown
+  Base | KbmKey41
+    <- Gamepad LeftStickX [lower-half]
+  Base | KbmKey44
+    <- Gamepad LeftStickX [upper-half]
+  Base | KbmKey45
+    <- Gamepad ButtonB
+    <- Gamepad Paddle3
+  Base | KbmKey46
+    <- Gamepad ButtonY
+    <- Gamepad Paddle4
+  Base | KbmKey52
+    <- Gamepad ButtonX
+  Base | KbmKey53
+    <- Gamepad LeftStickY [upper-half]
+  Base | KbmKey57
+    <- Gamepad LeftStickY [lower-half]
+  Base | KbmKeyA2
+    <- Gamepad Paddle1
+  Base | KbmMBtn0
+    <- Gamepad RightTrigger [upper-half] dz=75
+  Base | KbmMBtn1
+    <- Gamepad LeftTrigger [upper-half] dz=75
+  Base | KbmMBtn2
+    <- Gamepad Paddle2
+  Base | KbmMouseX | Sum
+    <- Gamepad RightStickX
+    <- Touchpad 1 Finger 0 X
+  Base | KbmMouseY | Sum
+    <- Gamepad RightStickY
+    <- Touchpad 1 Finger 0 Y
+  Base | KbmScroll | Sum
+    <- Gamepad LeftShoulder
+    <- Gamepad RightShoulder [inverted]
+macros: 0
+report: v1 rows:x0+k21 macros:0 layers:0 clean:26 partial:4 skipped:1 errors:0
+  Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_a/Full_Press => KbmKey20 <- Gamepad ButtonA
+  Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_b/Full_Press => KbmKey45 <- Gamepad ButtonB
+  Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_x/Full_Press => KbmKey52 <- Gamepad ButtonX
+  Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_y/Full_Press => KbmKey46 <- Gamepad ButtonY
+  Clean RowEmitted @ Default/dpad/group 8 (dpad)/dpad_east/Full_Press => KbmKey27 <- Gamepad DPadRight
+  Clean RowEmitted @ Default/dpad/group 8 (dpad)/dpad_north/Full_Press => KbmKey26 <- Gamepad DPadUp
+  Clean RowEmitted @ Default/dpad/group 8 (dpad)/dpad_south/Full_Press => KbmKey28 <- Gamepad DPadDown
+  Clean RowEmitted @ Default/dpad/group 8 (dpad)/dpad_west/Full_Press => KbmKey25 <- Gamepad DPadLeft
+  Clean RowEmitted @ Default/joystick/group 1 (dpad)/dpad_east/Full_Press => KbmKey44 <- Gamepad LeftStickX (upper half)
+  Clean RowEmitted @ Default/joystick/group 1 (dpad)/dpad_north/Full_Press => KbmKey57 <- Gamepad LeftStickY (lower half)
+  Clean RowEmitted @ Default/joystick/group 1 (dpad)/dpad_south/Full_Press => KbmKey53 <- Gamepad LeftStickY (upper half)
+  Clean RowEmitted @ Default/joystick/group 1 (dpad)/dpad_west/Full_Press => KbmKey41 <- Gamepad LeftStickX (lower half)
+  Partial TrackpadFeatureRequired(Touchpad joystick output) @ Default/left_trackpad/group 2 (dpad)/dpad_east/Full_Press => KbmKey27 <- Touchpad 0 DPadRight
+  Partial TrackpadFeatureRequired(Touchpad joystick output) @ Default/left_trackpad/group 2 (dpad)/dpad_north/Full_Press => KbmKey26 <- Touchpad 0 DPadUp
+  Partial TrackpadFeatureRequired(Touchpad joystick output) @ Default/left_trackpad/group 2 (dpad)/dpad_south/Full_Press => KbmKey28 <- Touchpad 0 DPadDown
+  Partial TrackpadFeatureRequired(Touchpad joystick output) @ Default/left_trackpad/group 2 (dpad)/dpad_west/Full_Press => KbmKey25 <- Touchpad 0 DPadLeft
+  Clean RowEmitted @ Default/left_trigger/group 4 (trigger)/click/Full_Press => KbmMBtn1 <- Gamepad LeftTrigger (upper half)
+  Clean RowEmitted @ Default/right_joystick/group 9 (joystick_mouse) => KbmMouseX <- Gamepad RightStickX
+  Clean RowEmitted @ Default/right_joystick/group 9 (joystick_mouse) => KbmMouseY <- Gamepad RightStickY
+  Clean RowEmitted @ Default/right_trackpad/group 3 (absolute_mouse) => KbmMouseX <- Touchpad 1 Finger 0 X
+  Clean RowEmitted @ Default/right_trackpad/group 3 (absolute_mouse) => KbmMouseY <- Touchpad 1 Finger 0 Y
+  Clean RowEmitted @ Default/right_trigger/group 5 (trigger)/click/Full_Press => KbmMBtn0 <- Gamepad RightTrigger (upper half)
+  Clean RowEmitted @ Default/switch/group 6 (switches)/button_back_left/Full_Press => KbmMBtn2 <- Gamepad Paddle2
+  Clean RowEmitted @ Default/switch/group 6 (switches)/button_back_left_upper/Full_Press => KbmKey46 <- Gamepad Paddle4
+  Clean RowEmitted @ Default/switch/group 6 (switches)/button_back_right/Full_Press => KbmKeyA2 <- Gamepad Paddle1
+  Clean RowEmitted @ Default/switch/group 6 (switches)/button_back_right_upper/Full_Press => KbmKey45 <- Gamepad Paddle3
+  Skipped UnknownPhysicalInput(Switch, button_capture) @ Default/switch/group 6 (switches)/button_capture :: controller_action system_key_1
+  Clean RowEmitted @ Default/switch/group 6 (switches)/button_escape/Full_Press => KbmKey1B <- Gamepad ButtonStart
+  Clean RowEmitted @ Default/switch/group 6 (switches)/button_menu/Full_Press => KbmKey09 <- Gamepad ButtonBack
+  Clean RowEmitted @ Default/switch/group 6 (switches)/left_bumper/Full_Press => KbmScroll <- Gamepad LeftShoulder
+  Clean RowEmitted @ Default/switch/group 6 (switches)/right_bumper/Full_Press => KbmScroll <- Gamepad RightShoulder (inverted)

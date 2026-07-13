@@ -1,0 +1,92 @@
+name: X-Box One Controller
+description: Trigger = Zoomen und drehen ; Steuerkreuz = Menüs ; X / A = Maustasten ; Y / B = Spielgeschwindigkei...
+xbox rows: 2
+  Base | ButtonA
+    <- Gamepad Paddle2
+  Base | ButtonX
+    <- Gamepad Paddle1
+kbm rows: 22
+  Base | KbmKey1B
+    <- Gamepad ButtonStart
+  Base | KbmKey21
+    <- Gamepad RightShoulder
+  Base | KbmKey22
+    <- Gamepad LeftShoulder
+  Base | KbmKey24
+    <- Gamepad ButtonBack
+  Base | KbmKey25
+    <- Gamepad RightStickX [lower-half]
+  Base | KbmKey26
+    <- Gamepad RightStickY [lower-half]
+  Base | KbmKey27
+    <- Gamepad RightStickX [upper-half]
+  Base | KbmKey28
+    <- Gamepad RightStickY [upper-half]
+  Base | KbmKey32
+    <- Gamepad ButtonB
+  Base | KbmKey33
+    <- Gamepad ButtonY
+  Base | KbmKey42
+    <- Gamepad DPadUp
+  Base | KbmKey45
+    <- Gamepad RightTrigger [upper-half] dz=75
+  Base | KbmKey48
+    <- Gamepad RightStick
+  Base | KbmKey4F
+    <- Gamepad DPadDown
+  Base | KbmKey51
+    <- Gamepad LeftTrigger [upper-half] dz=75
+  Base | KbmKey54
+    <- Gamepad DPadLeft
+  Base | KbmKey56
+    <- Gamepad DPadRight
+  Base | KbmKeyA4
+    <- Gamepad LeftStick
+  Base | KbmMBtn0
+    <- Gamepad ButtonX
+  Base | KbmMBtn1
+    <- Gamepad ButtonA
+  Base | KbmMouseX
+    <- Gamepad LeftStickX sens=1.888
+  Base | KbmMouseY
+    <- Gamepad LeftStickY sens=1.888
+macros: 0
+report: v1 rows:x2+k22 macros:0 layers:0 clean:24 partial:14 skipped:0 errors:0
+  Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_a/Full_Press => KbmMBtn1 <- Gamepad ButtonA
+  Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_b/Full_Press => KbmKey32 <- Gamepad ButtonB
+  Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_x/Full_Press => KbmMBtn0 <- Gamepad ButtonX
+  Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_y/Full_Press => KbmKey33 <- Gamepad ButtonY
+  Clean RowEmitted @ Default/dpad/group 9 (dpad)/dpad_east/Full_Press => KbmKey56 <- Gamepad DPadRight
+  Clean RowEmitted @ Default/dpad/group 9 (dpad)/dpad_north/Full_Press => KbmKey42 <- Gamepad DPadUp
+  Clean RowEmitted @ Default/dpad/group 9 (dpad)/dpad_south/Full_Press => KbmKey4F <- Gamepad DPadDown
+  Clean RowEmitted @ Default/dpad/group 9 (dpad)/dpad_west/Full_Press => KbmKey54 <- Gamepad DPadLeft
+  Clean RowEmitted @ Default/joystick/group 12 (joystick_mouse) => KbmMouseX <- Gamepad LeftStickX
+  Clean RowEmitted @ Default/joystick/group 12 (joystick_mouse) => KbmMouseY <- Gamepad LeftStickY
+  Clean RowEmitted @ Default/joystick/group 12 (joystick_mouse)/click/Full_Press => KbmKeyA4 <- Gamepad LeftStick
+  Clean RowEmitted @ Default/left_trigger/group 4 (trigger)/click/Full_Press => KbmKey51 <- Gamepad LeftTrigger (upper half)
+  Clean RowEmitted @ Default/right_joystick/group 13 (dpad)/click/Full_Press => KbmKey48 <- Gamepad RightStick
+  Clean RowEmitted @ Default/right_joystick/group 13 (dpad)/dpad_east/Full_Press => KbmKey27 <- Gamepad RightStickX (upper half)
+  Clean RowEmitted @ Default/right_joystick/group 13 (dpad)/dpad_north/Full_Press => KbmKey26 <- Gamepad RightStickY (lower half)
+  Clean RowEmitted @ Default/right_joystick/group 13 (dpad)/dpad_south/Full_Press => KbmKey28 <- Gamepad RightStickY (upper half)
+  Clean RowEmitted @ Default/right_joystick/group 13 (dpad)/dpad_west/Full_Press => KbmKey25 <- Gamepad RightStickX (lower half)
+  Clean RowEmitted @ Default/right_trigger/group 5 (trigger)/click/Full_Press => KbmKey45 <- Gamepad RightTrigger (upper half)
+  Clean RowEmitted @ Default/switch/group 7 (switches)/button_back_left/Full_Press => ButtonA <- Gamepad Paddle2
+  Clean RowEmitted @ Default/switch/group 7 (switches)/button_back_right/Full_Press => ButtonX <- Gamepad Paddle1
+  Clean RowEmitted @ Default/switch/group 7 (switches)/button_escape/Full_Press => KbmKey1B <- Gamepad ButtonStart
+  Clean RowEmitted @ Default/switch/group 7 (switches)/button_menu/Full_Press => KbmKey24 <- Gamepad ButtonBack
+  Clean RowEmitted @ Default/switch/group 7 (switches)/left_bumper/Full_Press => KbmKey22 <- Gamepad LeftShoulder
+  Clean RowEmitted @ Default/switch/group 7 (switches)/right_bumper/Full_Press => KbmKey21 <- Gamepad RightShoulder
+  Partial AutomapAlsoActive(Gamepad ButtonB, ButtonB) @ Default/button_diamond/group 0 (four_buttons)/button_b/Full_Press
+  Partial AutomapAlsoActive(Gamepad ButtonY, ButtonY) @ Default/button_diamond/group 0 (four_buttons)/button_y/Full_Press
+  Partial AutomapAlsoActive(Gamepad DPadRight, DPadRight) @ Default/dpad/group 9 (dpad)/dpad_east/Full_Press
+  Partial AutomapAlsoActive(Gamepad DPadUp, DPadUp) @ Default/dpad/group 9 (dpad)/dpad_north/Full_Press
+  Partial AutomapAlsoActive(Gamepad DPadDown, DPadDown) @ Default/dpad/group 9 (dpad)/dpad_south/Full_Press
+  Partial AutomapAlsoActive(Gamepad DPadLeft, DPadLeft) @ Default/dpad/group 9 (dpad)/dpad_west/Full_Press
+  Partial AutomapAlsoActive(Gamepad LeftStick, LeftThumbButton) @ Default/joystick/group 12 (joystick_mouse)/click/Full_Press
+  Partial AutomapAlsoActive(Gamepad LeftTrigger, LeftTrigger) @ Default/left_trigger/group 4 (trigger)/click/Full_Press
+  Partial AutomapAlsoActive(Gamepad RightStick, RightThumbButton) @ Default/right_joystick/group 13 (dpad)/click/Full_Press
+  Partial AutomapAlsoActive(Gamepad RightTrigger, RightTrigger) @ Default/right_trigger/group 5 (trigger)/click/Full_Press
+  Partial AutomapAlsoActive(Gamepad ButtonStart, ButtonStart) @ Default/switch/group 7 (switches)/button_escape/Full_Press
+  Partial AutomapAlsoActive(Gamepad ButtonBack, ButtonBack) @ Default/switch/group 7 (switches)/button_menu/Full_Press
+  Partial AutomapAlsoActive(Gamepad LeftShoulder, LeftShoulder) @ Default/switch/group 7 (switches)/left_bumper/Full_Press
+  Partial AutomapAlsoActive(Gamepad RightShoulder, RightShoulder) @ Default/switch/group 7 (switches)/right_bumper/Full_Press

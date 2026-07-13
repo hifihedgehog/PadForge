@@ -1,0 +1,70 @@
+name: Moovry's Bindings
+description: Your modified configuration for this game.
+xbox rows: 0
+kbm rows: 18
+  Base | KbmKey09
+    <- Gamepad ButtonBack
+  Base | KbmKey0D
+    <- Gamepad RightTrigger [upper-half] dz=75
+  Base | KbmKey1B
+    <- Gamepad ButtonStart
+  Base | KbmKey20
+    <- Gamepad ButtonX
+    <- Gamepad LeftStick
+  Base | KbmKey31
+    <- Gamepad DPadUp
+  Base | KbmKey32
+    <- Gamepad DPadRight
+  Base | KbmKey33
+    <- Gamepad DPadDown
+  Base | KbmKey34
+    <- Gamepad DPadLeft
+  Base | KbmKey4A
+    <- Gamepad ButtonY
+  Base | KbmKey58
+    <- Gamepad RightShoulder
+  Base | KbmKey5A
+    <- Gamepad LeftShoulder
+  Base | KbmKeyA2
+    <- Gamepad Paddle1
+  Base | KbmKeyBF
+    <- Gamepad LeftTrigger [upper-half] dz=75
+  Base | KbmMBtn0
+    <- Gamepad ButtonA
+  Base | KbmMBtn1
+    <- Gamepad ButtonB
+  Base | KbmMBtn2
+    <- Gamepad Paddle2
+  Base | KbmMouseX | Sum
+    <- Gamepad LeftStickX sens=2.188
+    <- Gamepad RightStickX
+    <- Touchpad 1 Finger 0 X
+  Base | KbmMouseY | Sum
+    <- Gamepad LeftStickY sens=2.188
+    <- Gamepad RightStickY
+    <- Touchpad 1 Finger 0 Y
+macros: 0
+report: v1 rows:x0+k18 macros:0 layers:0 clean:23 partial:0 skipped:0 errors:0
+  Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_a/Full_Press => KbmMBtn0 <- Gamepad ButtonA
+  Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_b/Full_Press => KbmMBtn1 <- Gamepad ButtonB
+  Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_x/Full_Press => KbmKey20 <- Gamepad ButtonX
+  Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_y/Full_Press => KbmKey4A <- Gamepad ButtonY
+  Clean RowEmitted @ Default/dpad/group 2 (dpad)/dpad_east/Full_Press => KbmKey32 <- Gamepad DPadRight
+  Clean RowEmitted @ Default/dpad/group 2 (dpad)/dpad_north/Full_Press => KbmKey31 <- Gamepad DPadUp
+  Clean RowEmitted @ Default/dpad/group 2 (dpad)/dpad_south/Full_Press => KbmKey33 <- Gamepad DPadDown
+  Clean RowEmitted @ Default/dpad/group 2 (dpad)/dpad_west/Full_Press => KbmKey34 <- Gamepad DPadLeft
+  Clean RowEmitted @ Default/joystick/group 8 (joystick_mouse) => KbmMouseX <- Gamepad LeftStickX
+  Clean RowEmitted @ Default/joystick/group 8 (joystick_mouse) => KbmMouseY <- Gamepad LeftStickY
+  Clean RowEmitted @ Default/joystick/group 8 (joystick_mouse)/click/Full_Press => KbmKey20 <- Gamepad LeftStick
+  Clean RowEmitted @ Default/left_trigger/group 4 (trigger)/click/Full_Press => KbmKeyBF <- Gamepad LeftTrigger (upper half)
+  Clean RowEmitted @ Default/right_joystick/group 7 (joystick_mouse) => KbmMouseX <- Gamepad RightStickX
+  Clean RowEmitted @ Default/right_joystick/group 7 (joystick_mouse) => KbmMouseY <- Gamepad RightStickY
+  Clean RowEmitted @ Default/right_trackpad/group 3 (absolute_mouse) => KbmMouseX <- Touchpad 1 Finger 0 X
+  Clean RowEmitted @ Default/right_trackpad/group 3 (absolute_mouse) => KbmMouseY <- Touchpad 1 Finger 0 Y
+  Clean RowEmitted @ Default/right_trigger/group 5 (trigger)/click/Full_Press => KbmKey0D <- Gamepad RightTrigger (upper half)
+  Clean RowEmitted @ Default/switch/group 6 (switches)/button_back_left/Full_Press => KbmMBtn2 <- Gamepad Paddle2
+  Clean RowEmitted @ Default/switch/group 6 (switches)/button_back_right/Full_Press => KbmKeyA2 <- Gamepad Paddle1
+  Clean RowEmitted @ Default/switch/group 6 (switches)/button_escape/Full_Press => KbmKey1B <- Gamepad ButtonStart
+  Clean RowEmitted @ Default/switch/group 6 (switches)/button_menu/Full_Press => KbmKey09 <- Gamepad ButtonBack
+  Clean RowEmitted @ Default/switch/group 6 (switches)/left_bumper/Full_Press => KbmKey5A <- Gamepad LeftShoulder
+  Clean RowEmitted @ Default/switch/group 6 (switches)/right_bumper/Full_Press => KbmKey58 <- Gamepad RightShoulder

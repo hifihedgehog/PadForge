@@ -27,6 +27,8 @@
 
   <ItemGroup>
     <None Include="Fixtures\**\*" CopyToOutputDirectory="PreserveNewest" />
+    <!-- Hand-reviewed translation snapshots; see TranslationGoldenTests. -->
+    <None Include="Golden\**\*" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
 </Project>

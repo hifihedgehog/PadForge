@@ -63,7 +63,7 @@ kbm rows: 28
     <- Gamepad RightStickY [lower-half]
     <- Gamepad RightStickY [upper-half]
 macros: 0
-report: v1 rows:x0+k28 macros:0 layers:0 clean:28 partial:4 skipped:7 errors:0
+report: v2 rows:x0+k28 macros:0 layers:0 clean:28 partial:7 skipped:7 errors:0
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_a/Full_Press => KbmKey0D <- Gamepad ButtonA
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_b/Full_Press => KbmKey1B <- Gamepad ButtonB
   Skipped SteamSystemAction(SHOW_KEYBOARD) @ Default/button_diamond/group 0 (four_buttons)/button_x/Full_Press :: controller_action SHOW_KEYBOARD, , 
@@ -78,6 +78,7 @@ report: v1 rows:x0+k28 macros:0 layers:0 clean:28 partial:4 skipped:7 errors:0
   Clean RowEmitted @ Default/joystick/group 3 (dpad)/dpad_north/Full_Press => KbmKey57 <- Gamepad LeftStickY (lower half)
   Clean RowEmitted @ Default/joystick/group 3 (dpad)/dpad_south/Full_Press => KbmKey53 <- Gamepad LeftStickY (upper half)
   Clean RowEmitted @ Default/joystick/group 3 (dpad)/dpad_west/Full_Press => KbmKey41 <- Gamepad LeftStickX (lower half)
+  Partial GyroButtonMaskDropped(gyro_button, 1) @ Default/left_trackpad/group 12 (touch_menu)
   Skipped TouchMenuNeedsOverlay(11) @ Default/left_trackpad/group 12 (touch_menu)
   Clean RowEmitted @ Default/left_trigger/group 4 (trigger)/edge/Full_Press => KbmMBtn1 <- Gamepad LeftTrigger (upper half)
   Clean RowEmitted @ Default/right_joystick/group 11 (dpad)/click/Full_Press => KbmMBtn2 <- Gamepad RightStick
@@ -101,5 +102,7 @@ report: v1 rows:x0+k28 macros:0 layers:0 clean:28 partial:4 skipped:7 errors:0
   Clean RowEmitted @ Default/switch/group 6 (switches)/right_bumper/Full_Press => KbmKey20 <- Gamepad RightShoulder
   Skipped TouchMenuNeedsOverlay(16) @ Preset_1000003/left_trackpad/group 45 (touch_menu)
   Skipped UnknownPhysicalInput(Switch, button_capture) @ Preset_1000003/switch/group 34 (switches)/button_capture :: controller_action system_key_1, , 
+  Partial GyroButtonMaskDropped(gyro_button, 1) @ Preset_1000002/left_trackpad/group 43 (touch_menu)
   Skipped TouchMenuNeedsOverlay(9) @ Preset_1000002/left_trackpad/group 43 (touch_menu)
   Skipped UnknownPhysicalInput(Switch, button_capture) @ Preset_1000002/switch/group 40 (switches)/button_capture :: controller_action system_key_1, , 
+  Partial HapticIntensityDropped(12) @ config

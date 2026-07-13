@@ -88,13 +88,15 @@ namespace PadForge.Tests
         }
 
         [Fact]
-        public void NewActionTypes_AppendedAtEnumTail()
+        public void NewActionTypes_OrdinalsAreStable()
         {
-            // The macro clipboard serializes MacroActionType numerically, so the
-            // two new members MUST stay the last two ordinals (append-only).
-            var values = System.Enum.GetValues<MacroActionType>();
-            Assert.Equal(MacroActionType.RepeatKeyWhileHeld, values[^1]);
-            Assert.Equal(MacroActionType.MoveMouseToScreenPosition, values[^2]);
+            // The macro clipboard serializes MacroActionType numerically, so
+            // these ordinals must never move. They are no longer the tail
+            // (wave 1b appended four more members after them), so pin the
+            // fixed values directly, the GuideLedBrightness pattern. A
+            // mid-enum insertion still trips this.
+            Assert.Equal(33, (int)MacroActionType.MoveMouseToScreenPosition);
+            Assert.Equal(34, (int)MacroActionType.RepeatKeyWhileHeld);
         }
 
         [Fact]

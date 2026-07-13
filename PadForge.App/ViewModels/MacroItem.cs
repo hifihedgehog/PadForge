@@ -80,11 +80,28 @@ namespace PadForge.ViewModels
 
         private bool _isEnabled = true;
 
-        /// <summary>Whether this macro is active.</summary>
+        /// <summary>Whether this macro is active. Disabling clears every
+        /// action's volatile Toggle latch (issue #9 wave 1b): the evaluator
+        /// skips disabled macros, so the per-frame latch application stops
+        /// immediately, and clearing the bits here keeps a later re-enable
+        /// from silently resurrecting a stale latched button or key. The
+        /// engine's per-frame key reconcile sends the matching KeyUp on the
+        /// next tick once the desired set no longer contains the key.</summary>
         public bool IsEnabled
         {
             get => _isEnabled;
-            set => SetProperty(ref _isEnabled, value);
+            set
+            {
+                if (SetProperty(ref _isEnabled, value) && !value)
+                {
+                    foreach (var action in Actions)
+                    {
+                        if (action == null) continue;
+                        action.VcToggleLatched = false;
+                        action.KeyToggleLatched = false;
+                    }
+                }
+            }
         }
 
         // ─────────────────────────────────────────────
@@ -1261,7 +1278,8 @@ namespace PadForge.ViewModels
 
         private MacroTriggerMode _triggerMode = MacroTriggerMode.OnPress;
 
-        /// <summary>When to fire: on press, on release, while held, always, or custom expression.</summary>
+        /// <summary>When to fire: on press, on release, while held, always, custom
+        /// expression, or after a continuous hold (<see cref="MacroTriggerMode.HoldForMs"/>).</summary>
         public MacroTriggerMode TriggerMode
         {
             get => _triggerMode;
@@ -1271,6 +1289,7 @@ namespace PadForge.ViewModels
                 {
                     OnPropertyChanged(nameof(IsNotAlwaysMode));
                     OnPropertyChanged(nameof(IsCustomExpressionMode));
+                    OnPropertyChanged(nameof(IsHoldForMsMode));
                     OnPropertyChanged(nameof(ShowsTriggerComboEditor));
                 }
             }
@@ -1281,14 +1300,53 @@ namespace PadForge.ViewModels
         [System.Xml.Serialization.XmlIgnore]
         public bool IsNotAlwaysMode => _triggerMode != MacroTriggerMode.Always;
 
+        /// <summary>True when TriggerMode is HoldForMs (issue #9 wave 1b).
+        /// Gates the hold-time ms row in the trigger editor.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool IsHoldForMsMode => _triggerMode == MacroTriggerMode.HoldForMs;
+
         /// <summary>True when the standard trigger-combo recording UI should show
-        /// (i.e. one of OnPress / OnRelease / WhileHeld). Always mode has no
-        /// trigger; CustomExpression mode uses the formula editor instead.</summary>
+        /// (i.e. one of OnPress / OnRelease / WhileHeld / HoldForMs). Always mode
+        /// has no trigger; CustomExpression mode uses the formula editor instead.</summary>
         [System.Xml.Serialization.XmlIgnore]
         public bool ShowsTriggerComboEditor =>
             _triggerMode == MacroTriggerMode.OnPress ||
             _triggerMode == MacroTriggerMode.OnRelease ||
-            _triggerMode == MacroTriggerMode.WhileHeld;
+            _triggerMode == MacroTriggerMode.WhileHeld ||
+            _triggerMode == MacroTriggerMode.HoldForMs;
+
+        private int _triggerHoldMs = 500;
+
+        /// <summary>Continuous-hold threshold in milliseconds for
+        /// <see cref="MacroTriggerMode.HoldForMs"/> (issue #9 wave 1b).
+        /// The macro fires once when the trigger combo has been held this
+        /// long; a shorter tap does nothing. Clamped to 50..10000;
+        /// default 500.</summary>
+        public int TriggerHoldMs
+        {
+            get => _triggerHoldMs;
+            set => SetProperty(ref _triggerHoldMs, Math.Clamp(value, 50, 10000));
+        }
+
+        private RelayCommand _resetTriggerHoldMsCommand;
+        /// <summary>Resets the hold-threshold to the 500 ms default (issue #9
+        /// wave 1b), pairing the ms box with the standard reset glyph.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public RelayCommand ResetTriggerHoldMsCommand =>
+            _resetTriggerHoldMsCommand ??= new RelayCommand(() => TriggerHoldMs = 500);
+
+        /// <summary>Transient timing state for <see cref="MacroTriggerMode.HoldForMs"/>:
+        /// the UTC time the trigger combo last went active (rising edge). The
+        /// evaluator arms it on each press and fires once the hold crosses
+        /// <see cref="TriggerHoldMs"/>. Never serialized.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        internal DateTime TriggerHoldStartUtc { get; set; } = DateTime.MinValue;
+
+        /// <summary>True once the current hold has fired, so a single hold
+        /// never double-fires. Re-armed (cleared) by the evaluator on the
+        /// next rising edge. Never serialized.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        internal bool TriggerHoldFired { get; set; }
 
         private bool _consumeTriggerButtons = true;
 
@@ -1916,6 +1974,12 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(IsMouseLimitRegionType));
                     OnPropertyChanged(nameof(IsMoveMouseToScreenPositionType));
                     OnPropertyChanged(nameof(IsRepeatKeyWhileHeldType));
+                    OnPropertyChanged(nameof(IsRepeatVcButtonWhileHeldType));
+                    OnPropertyChanged(nameof(IsToggleVcButtonType));
+                    OnPropertyChanged(nameof(IsToggleKeyType));
+                    OnPropertyChanged(nameof(IsGyroRecenterType));
+                    OnPropertyChanged(nameof(IsAnyVcButtonType));
+                    OnPropertyChanged(nameof(IsRepeatIntervalType));
                     OnPropertyChanged(nameof(IsDisconnectControllerType));
                     OnPropertyChanged(nameof(IsDisconnectSpecificDevice));
                     OnPropertyChanged(nameof(DisconnectDeviceOptions));
@@ -2071,11 +2135,51 @@ namespace PadForge.ViewModels
         [System.Xml.Serialization.XmlIgnore]
         public bool IsRepeatKeyWhileHeldType => _type == MacroActionType.RepeatKeyWhileHeld;
 
-        /// <summary>True when the key-combo picker applies: KeyPress / KeyRelease or
-        /// the RepeatKeyWhileHeld autofire (issue #9), which reuses the same key
-        /// picker (both read <see cref="ParsedKeyCodes"/>).</summary>
+        /// <summary>True when Type is RepeatVcButtonWhileHeld (issue #9 wave 1b).
+        /// Surfaces the button-target grid (shared with Button Press) plus the
+        /// Interval spinbox.</summary>
         [System.Xml.Serialization.XmlIgnore]
-        public bool IsAnyKeyType => IsKeyType || _type == MacroActionType.RepeatKeyWhileHeld;
+        public bool IsRepeatVcButtonWhileHeldType => _type == MacroActionType.RepeatVcButtonWhileHeld;
+
+        /// <summary>True when Type is ToggleVcButton (issue #9 wave 1b).
+        /// Surfaces the button-target grid (shared with Button Press).</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool IsToggleVcButtonType => _type == MacroActionType.ToggleVcButton;
+
+        /// <summary>True when Type is ToggleKey (issue #9 wave 1b). Surfaces the
+        /// key picker (shared with Key Press).</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool IsToggleKeyType => _type == MacroActionType.ToggleKey;
+
+        /// <summary>True when Type is GyroRecenter (issue #9 wave 1b, B-18).
+        /// Gates the parameter-less info card in the macro editor.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool IsGyroRecenterType => _type == MacroActionType.GyroRecenter;
+
+        /// <summary>True when the VC button-target checkbox grid applies:
+        /// ButtonPress / ButtonRelease plus the wave-1b RepeatVcButtonWhileHeld
+        /// turbo and ToggleVcButton latch, which reuse the same
+        /// <see cref="ButtonFlags"/> / <see cref="CustomButtonWords"/> target
+        /// pair (the IsAnyKeyType pattern applied to the button grid).</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool IsAnyVcButtonType => IsButtonType
+            || _type == MacroActionType.RepeatVcButtonWhileHeld
+            || _type == MacroActionType.ToggleVcButton;
+
+        /// <summary>True when the Interval ms row applies: the two turbo
+        /// actions (RepeatKeyWhileHeld and RepeatVcButtonWhileHeld) share the
+        /// <see cref="IntervalMs"/> knob.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool IsRepeatIntervalType => _type == MacroActionType.RepeatKeyWhileHeld
+            || _type == MacroActionType.RepeatVcButtonWhileHeld;
+
+        /// <summary>True when the key-combo picker applies: KeyPress / KeyRelease,
+        /// the RepeatKeyWhileHeld autofire (issue #9), or the ToggleKey latch
+        /// (issue #9 wave 1b). All read <see cref="ParsedKeyCodes"/>.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool IsAnyKeyType => IsKeyType
+            || _type == MacroActionType.RepeatKeyWhileHeld
+            || _type == MacroActionType.ToggleKey;
 
         /// <summary>True when Type is DisconnectController (issue #162). Surfaces
         /// the target-mode dropdown.</summary>
@@ -2235,7 +2339,10 @@ namespace PadForge.ViewModels
         private ushort _buttonFlags;
 
         /// <summary>
-        /// For ButtonPress/ButtonRelease with gamepad presets: Xbox bitmask flags.
+        /// For ButtonPress/ButtonRelease with gamepad presets: Xbox bitmask
+        /// flags. The wave-1b RepeatVcButtonWhileHeld / ToggleVcButton
+        /// actions address their target button through this same field
+        /// (and <see cref="CustomButtonWords"/> on Extended slots).
         /// </summary>
         public ushort ButtonFlags
         {
@@ -3430,6 +3537,10 @@ namespace PadForge.ViewModels
         /// <summary>Repeat interval in milliseconds for
         /// <see cref="MacroActionType.RepeatKeyWhileHeld"/> (issue #9): the pad
         /// fires one KeyDown+KeyUp pulse each interval while the trigger is held.
+        /// Also the square-wave period for
+        /// <see cref="MacroActionType.RepeatVcButtonWhileHeld"/> (issue #9 wave
+        /// 1b), which holds its target button for half the interval and
+        /// releases it for the other half.
         /// Clamped to 10..1000; default 100 (10 taps/second).</summary>
         public int IntervalMs
         {
@@ -3447,6 +3558,45 @@ namespace PadForge.ViewModels
         /// first held frame fires immediately. Never serialized.</summary>
         [System.Xml.Serialization.XmlIgnore]
         internal DateTime RepeatKeyLastFireUtc { get; set; } = DateTime.MinValue;
+
+        /// <summary>Transient timing state for
+        /// <see cref="MacroActionType.RepeatVcButtonWhileHeld"/> (issue #9 wave
+        /// 1b): the UTC time the pulse phase last flipped. MinValue makes the
+        /// first held frame flip to ON immediately, mirroring
+        /// <see cref="RepeatKeyLastFireUtc"/>. Reset on macro (re)start via
+        /// InputManager.ResetMouseAccumulators. Never serialized.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        internal DateTime RepeatVcLastToggleUtc { get; set; } = DateTime.MinValue;
+
+        /// <summary>Current phase of the RepeatVcButtonWhileHeld square wave:
+        /// true = the target button is written this half-period. Runtime
+        /// state beside <see cref="RepeatVcLastToggleUtc"/>. Never serialized.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        internal bool RepeatVcPulseOn { get; set; }
+
+        /// <summary>Volatile latch bit for <see cref="MacroActionType.ToggleVcButton"/>
+        /// (issue #9 wave 1b). While set, the engine ORs the action's target
+        /// button(s) into the slot's combined output every frame. Cleared when
+        /// the owning macro is disabled; fresh instances (profile switch / app
+        /// restart) start unlatched. Never serialized.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        internal bool VcToggleLatched { get; set; }
+
+        /// <summary>Volatile latch bit for <see cref="MacroActionType.ToggleKey"/>
+        /// (issue #9 wave 1b). While set, the engine's per-frame key reconcile
+        /// holds every parsed key logically down; clearing it (second fire,
+        /// macro disable, or instance discard) releases the key on the next
+        /// tick. Never serialized.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        internal bool KeyToggleLatched { get; set; }
+
+        private RelayCommand _resetIntervalMsCommand;
+        /// <summary>Resets the turbo interval to the 100 ms default (issue #9
+        /// wave 1b), pairing the shared Interval row with the standard reset
+        /// glyph.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public RelayCommand ResetIntervalMsCommand =>
+            _resetIntervalMsCommand ??= new RelayCommand(() => IntervalMs = 100);
 
         private System.Windows.Threading.DispatcherTimer _mousePickTimer;
         private int _mousePickCountdown;
@@ -3871,6 +4021,17 @@ namespace PadForge.ViewModels
                     MacroActionType.RepeatKeyWhileHeld => string.Format(
                         Strings.Instance.MacroAction_RepeatKeyWhileHeld_Format,
                         keyDisplay, _intervalMs),
+                    MacroActionType.RepeatVcButtonWhileHeld => string.Format(
+                        Strings.Instance.MacroAction_RepeatVcButtonWhileHeld_Format,
+                        btnText, _intervalMs),
+                    MacroActionType.ToggleVcButton => string.Format(
+                        Strings.Instance.MacroAction_ToggleVcButton_Format,
+                        btnText),
+                    MacroActionType.ToggleKey => string.Format(
+                        Strings.Instance.MacroAction_ToggleKey_Format,
+                        keyDisplay),
+                    MacroActionType.GyroRecenter =>
+                        Strings.Instance.MacroAction_Type_GyroRecenter,
                     MacroActionType.DisconnectController => string.Format(
                         Strings.Instance.MacroAction_DisconnectController_Format,
                         DisconnectTargetDisplayName()),
@@ -4130,6 +4291,11 @@ namespace PadForge.ViewModels
     //  Enums
     // ─────────────────────────────────────────────
 
+    // APPEND-ONLY: like MacroActionType below, this enum rides the macro
+    // clipboard (MacroData.TriggerMode inside SerializeMacrosToClipboard's
+    // System.Text.Json envelope), which serializes it NUMERICALLY. Inserting
+    // a member re-meanings previously copied payloads. New members go at the
+    // end with pinned ordinals.
     public enum MacroTriggerMode
     {
         /// <summary>Fire once when the trigger combo is first pressed.</summary>
@@ -4148,7 +4314,15 @@ namespace PadForge.ViewModels
         /// variables. Each variable binds to an input-device input or an
         /// virtual-controller-channel value; the compiled formula evaluates to a
         /// float per frame and "trigger active" is <c>result &gt;= 0.5</c>.</summary>
-        CustomExpression
+        CustomExpression,
+
+        /// <summary>Fire once when the trigger combo has been held continuously
+        /// for <see cref="MacroItem.TriggerHoldMs"/> milliseconds (issue #9
+        /// wave 1b, B-8b: the Steam Input Long_Press activator). A shorter
+        /// tap does nothing. Release re-arms, so the next qualifying hold
+        /// fires again. At the tail per the APPEND-ONLY rule above; ordinal
+        /// pinned.</summary>
+        HoldForMs = 5
     }
 
     public enum MacroTriggerSource
@@ -4388,7 +4562,54 @@ namespace PadForge.ViewModels
         /// 100). A continuous action, so a macro whose only action is this one
         /// keeps pulsing until release. At the tail per the APPEND-ONLY rule
         /// above.</summary>
-        RepeatKeyWhileHeld
+        RepeatKeyWhileHeld = 34,
+
+        /// <summary>Turbo / autofire for a virtual controller button (issue
+        /// #9 wave 1b). While the macro trigger is held, pulses the target
+        /// button(s) on and off as a 50 % duty-cycle square wave with period
+        /// <see cref="MacroAction.IntervalMs"/> (the same 10..1000 ms knob
+        /// <see cref="RepeatKeyWhileHeld"/> uses). The target rides the same
+        /// <see cref="MacroAction.ButtonFlags"/> (Xbox bitmask) /
+        /// <see cref="MacroAction.CustomButtonWords"/> (Extended) pair
+        /// <see cref="ButtonPress"/> addresses a slot button with, and the
+        /// pulse ORs into the slot's combined output the same way ButtonPress
+        /// does. A continuous action. At the tail per the APPEND-ONLY rule
+        /// above; ordinal pinned.</summary>
+        RepeatVcButtonWhileHeld = 35,
+
+        /// <summary>Latch / unlatch a virtual controller button (issue #9
+        /// wave 1b). Each fire flips the action's volatile latch bit; while
+        /// latched, the target button(s) (<see cref="MacroAction.ButtonFlags"/>
+        /// / <see cref="MacroAction.CustomButtonWords"/>, the ButtonPress
+        /// addressing pair) are OR-written into the slot's combined output
+        /// every frame, independent of the macro's execution state. Latch is
+        /// per-action volatile: cleared when the macro is disabled and on
+        /// profile switch / app restart. At the tail per the APPEND-ONLY rule
+        /// above; ordinal pinned.</summary>
+        ToggleVcButton = 36,
+
+        /// <summary>Latch / unlatch a keyboard key (issue #9 wave 1b). Each
+        /// fire flips the action's volatile latch bit; while latched, every
+        /// key in <see cref="MacroAction.ParsedKeyCodes"/> is held logically
+        /// down via SendInput (the engine reconciles the desired set per
+        /// frame, sending one KeyDown when the latch engages and one KeyUp
+        /// when it releases, the macro disables, or the macro is removed).
+        /// Latch is per-action volatile like <see cref="ToggleVcButton"/>.
+        /// At the tail per the APPEND-ONLY rule above; ordinal pinned.</summary>
+        ToggleKey = 37,
+
+        /// <summary>Re-references the slot's gyro-aim state (issue #9 wave
+        /// 1b, B-18). One fire zeroes every accumulated gyro reference the
+        /// aim path holds for the slot: the dual-threshold smoothing window
+        /// and EMA rate history (SourceCoercion), the captured MotionLean
+        /// neutral orientation (SourceKindRuntime, re-captured from the next
+        /// real gravity sample), and the per-device gravity estimator
+        /// (re-seeded from the instantaneous accelerometer reading via
+        /// <c>InputManager.GyroRecenterApply</c>), so Player/World-space
+        /// projection and lean steering re-reference the controller's
+        /// CURRENT pose. At the tail per the APPEND-ONLY rule above;
+        /// ordinal pinned.</summary>
+        GyroRecenter = 38
     }
 
     /// <summary>Target selector for <see cref="MacroActionType.DisconnectController"/>

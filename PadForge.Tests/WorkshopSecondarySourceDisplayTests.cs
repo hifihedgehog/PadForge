@@ -48,14 +48,16 @@ namespace PadForge.Tests
         public void EmptyGuidSecondary_DoesNotAdoptConcreteDevice()
         {
             // Mirrors the InputService load path: FromDomain leaves the label
-            // empty, the load path resolves the source's own (empty) guid to the
-            // "(Any device)" sentinel.
+            // empty, the load path resolves the source's own (empty) guid to
+            // the localized "(Any device)" sentinel (Strings.Mapping_AnyDevice
+            // since the wave-1b l10n pass; English value "(Any device)").
+            string anyDevice = PadForge.Resources.Strings.Strings.Instance.Mapping_AnyDevice;
             var src = MappingSourceItem.FromDomain(new MappingSource
             {
                 Descriptor = "Gamepad LeftStick",
                 DeviceGuid = "",
             });
-            src.DeviceLabel = "(Any device)";
+            src.DeviceLabel = anyDevice;
 
             src.SyncSelectedInputFromState(ConcreteSlotChoices());
 
@@ -68,7 +70,7 @@ namespace PadForge.Tests
             // both the per-source subtitle field and the shared display accessor
             // the annotation / tooltip surfaces read.
             Assert.NotEqual(ConcreteLabel, src.DeviceLabel);
-            Assert.Equal("(Any device)", src.DisplayDeviceLabel);
+            Assert.Equal(anyDevice, src.DisplayDeviceLabel);
         }
 
         [Fact]

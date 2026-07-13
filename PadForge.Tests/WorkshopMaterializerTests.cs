@@ -189,6 +189,106 @@ namespace PadForge.Tests
             Assert.Equal(120, Assert.Single(macro.Actions).IntervalMs);
         }
 
+        // ─── set_led macros (Wave 1a, B-7) ──────────────────────────────
+
+        private static TranslatedMacro SetLedMacro(int r, int g, int b,
+            int brightness = 100, int saturation = 100, int setting = 1) => new()
+        {
+            Name = "Set LED (button_a)",
+            Action = TranslatedMacroAction.SetLightbarColor,
+            TriggerMode = "OnPress",
+            TriggerXboxButtons = Gamepad.A,
+            LedR = r,
+            LedG = g,
+            LedB = b,
+            LedBrightnessPercent = brightness,
+            LedSaturationPercent = saturation,
+            LedSetting = setting,
+        };
+
+        [Fact]
+        public void Materialize_SetLed_SettingOne_BuildsStickyLightbarHold()
+        {
+            var t = SampleProfile();
+            t.Macros.Add(SetLedMacro(255, 0, 0, brightness: 43));
+
+            var p = WorkshopProfileMaterializer.Materialize(t);
+            var m = Assert.Single(p.Macros);
+            Assert.Equal(MacroTriggerSource.OutputController, m.TriggerSource);
+            Assert.Equal(Gamepad.A, m.TriggerButtons);
+            var a = Assert.Single(m.Actions);
+            Assert.Equal(PadForge.ViewModels.MacroActionType.LightbarColor, a.Type);
+            Assert.Equal(PadForge.ViewModels.MacroLightbarHoldMode.Sticky, a.LightbarHoldMode);
+            Assert.Equal(PadForge.ViewModels.MacroLightbarColorSource.Fixed, a.LightbarColorSource);
+            // Brightness 43% pre-scales V: (255,0,0) -> (110,0,0).
+            Assert.Equal(110, a.LightbarR);
+            Assert.Equal(0, a.LightbarG);
+            Assert.Equal(0, a.LightbarB);
+        }
+
+        [Fact]
+        public void Materialize_SetLed_SaturationFoldsViaHsv()
+        {
+            var t = SampleProfile();
+            t.Macros.Add(SetLedMacro(255, 0, 0, brightness: 100, saturation: 50));
+
+            var a = Assert.Single(Assert.Single(
+                WorkshopProfileMaterializer.Materialize(t).Macros).Actions);
+            // Half saturation of pure red: V stays 1, S 0.5 -> (255,128,128).
+            Assert.Equal(255, a.LightbarR);
+            Assert.Equal(128, a.LightbarG);
+            Assert.Equal(128, a.LightbarB);
+        }
+
+        [Theory]
+        [InlineData(0)]
+        [InlineData(2)] // "restore default": approximated as a clear
+        public void Materialize_SetLed_SettingZeroAndTwo_BuildClear(int setting)
+        {
+            var t = SampleProfile();
+            t.Macros.Add(SetLedMacro(255, 0, 0, setting: setting));
+
+            var a = Assert.Single(Assert.Single(
+                WorkshopProfileMaterializer.Materialize(t).Macros).Actions);
+            Assert.Equal(PadForge.ViewModels.MacroActionType.LightbarColorClear, a.Type);
+        }
+
+        [Theory]
+        [InlineData("controller_steamcontroller_gordon")]
+        [InlineData("controller_steamcontroller_headcrab")]
+        public void Materialize_SetLed_SteamControllerFamily_DrivesGuideLed(string type)
+        {
+            var t = SampleProfile();
+            t.Report.ControllerType = type;
+            t.Macros.Add(SetLedMacro(255, 0, 0, brightness: 43));
+
+            var a = Assert.Single(Assert.Single(
+                WorkshopProfileMaterializer.Materialize(t).Macros).Actions);
+            Assert.Equal(PadForge.ViewModels.MacroActionType.GuideLedBrightness, a.Type);
+            Assert.Equal(43, a.GuideLedPercent);
+        }
+
+        [Fact]
+        public void Materialize_SetLed_RoundTripsThroughXml()
+        {
+            var t = SampleProfile();
+            t.Macros.Add(SetLedMacro(217, 255, 0, brightness: 100, saturation: 100));
+            var p = WorkshopProfileMaterializer.Materialize(t);
+
+            var serializer = new XmlSerializer(typeof(PadForge.Services.ProfileData));
+            using var buffer = new MemoryStream();
+            serializer.Serialize(buffer, p);
+            buffer.Position = 0;
+            var clone = (PadForge.Services.ProfileData)serializer.Deserialize(buffer);
+
+            var a = Assert.Single(Assert.Single(clone.Macros).Actions);
+            Assert.Equal(PadForge.ViewModels.MacroActionType.LightbarColor, a.Type);
+            Assert.Equal(PadForge.ViewModels.MacroLightbarHoldMode.Sticky, a.LightbarHoldMode);
+            Assert.Equal(217, a.LightbarR);
+            Assert.Equal(255, a.LightbarG);
+            Assert.Equal(0, a.LightbarB);
+        }
+
         [Fact]
         public void Materialize_NullMacros_AndEmptySets_AreValid()
         {

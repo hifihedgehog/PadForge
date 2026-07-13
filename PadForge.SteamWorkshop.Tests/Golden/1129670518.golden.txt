@@ -64,7 +64,7 @@ kbm activators: 4
   Hold Layer_1129670518_2_MS_right_joystick_50 | Touchpad 0 Click | inherit | name=right_joystick shift
   Hold Layer_1129670518_2_MS_right_trackpad_38 | Touchpad 0 Click | inherit | name=right_trackpad shift
 macros: 0
-report: v1 rows:x0+k19 macros:0 layers:4 clean:38 partial:13 skipped:4 errors:0
+report: v2 rows:x0+k19 macros:0 layers:4 clean:38 partial:16 skipped:4 errors:0
   Clean RowEmitted @ TacticalControls/button_diamond/group 0 (four_buttons)/button_A/Full_Press => KbmMBtn0 <- Gamepad ButtonA
   Clean RowEmitted @ TacticalControls/joystick/group 51 (joystick_mouse) => KbmMouseX <- Gamepad LeftStickX
   Clean RowEmitted @ TacticalControls/joystick/group 51 (joystick_mouse) => KbmMouseY <- Gamepad LeftStickY
@@ -81,6 +81,7 @@ report: v1 rows:x0+k19 macros:0 layers:4 clean:38 partial:13 skipped:4 errors:0
   Clean RowEmitted @ TacticalControls/right_trackpad/group 9 (absolute_mouse) => KbmMouseY <- Touchpad 1 Finger 0 Y
   Skipped TouchMenuNeedsOverlay(10) @ TacticalControls/right_trackpad/group 20 (touch_menu)
   Clean RowEmitted @ TacticalControls/right_trigger/group 2 (trigger)/edge/Full_Press => KbmMBtn0 <- Gamepad RightTrigger (upper half)
+  Partial InterruptibleDropped @ TacticalControls/switch/group 39 (switches)/button_back_left/Full_Press
   Skipped GameActionsNotSupported(16) @ TacticalControls
   Clean RowEmitted @ MenuControls/right_joystick/group 48 (joystick_mouse) => KbmMouseX <- Gamepad RightStickX
   Clean RowEmitted @ MenuControls/right_joystick/group 48 (joystick_mouse) => KbmMouseY <- Gamepad RightStickY
@@ -111,6 +112,7 @@ report: v1 rows:x0+k19 macros:0 layers:4 clean:38 partial:13 skipped:4 errors:0
   Clean RowEmitted @ GeoscapeControls/right_trackpad/group 38 (absolute_mouse) => KbmMouseX <- Touchpad 1 Finger 0 X
   Clean RowEmitted @ GeoscapeControls/right_trackpad/group 38 (absolute_mouse) => KbmMouseY <- Touchpad 1 Finger 0 Y
   Clean RowEmitted @ GeoscapeControls/right_trigger/group 36 (trigger)/edge/Full_Press => KbmMBtn0 <- Gamepad RightTrigger (upper half)
+  Partial InterruptibleDropped @ GeoscapeControls/switch/group 41 (switches)/left_click/Full_Press
   Skipped GameActionsNotSupported(7) @ GeoscapeControls
   Clean ShiftLayerEmitted(right_joystick shift) @ TacticalControls/switch/group 39 (switches)/button_back_left/Full_Press => Hold -> Layer_1129670518_0_MS_right_joystick_47
   Partial ShiftLayerEmpty(right_trackpad shift) @ TacticalControls/switch/group 39 (switches)/button_back_left/Full_Press
@@ -120,3 +122,4 @@ report: v1 rows:x0+k19 macros:0 layers:4 clean:38 partial:13 skipped:4 errors:0
   Clean ShiftLayerEmitted(right_trackpad shift) @ GeoscapeControls/switch/group 41 (switches)/left_click/Full_Press => Hold -> Layer_1129670518_2_MS_right_trackpad_38
   Partial PresetHasNoActivator(MenuControls) @ MenuControls
   Partial PresetHasNoActivator(GeoscapeControls) @ GeoscapeControls
+  Partial HapticIntensityDropped(29) @ config

@@ -45,7 +45,7 @@ kbm rows: 18
     <- Gamepad RightStickY
     <- Touchpad 1 Finger 0 Y
 macros: 0
-report: v1 rows:x0+k18 macros:0 layers:0 clean:23 partial:1 skipped:0 errors:0
+report: v2 rows:x0+k18 macros:0 layers:0 clean:23 partial:2 skipped:0 errors:0
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_a/Full_Press => KbmMBtn0 <- Gamepad ButtonA
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_b/Full_Press => KbmMBtn1 <- Gamepad ButtonB
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_x/Full_Press => KbmKey20 <- Gamepad ButtonX
@@ -70,3 +70,4 @@ report: v1 rows:x0+k18 macros:0 layers:0 clean:23 partial:1 skipped:0 errors:0
   Clean RowEmitted @ Default/switch/group 6 (switches)/button_menu/Full_Press => KbmKey09 <- Gamepad ButtonBack
   Clean RowEmitted @ Default/switch/group 6 (switches)/left_bumper/Full_Press => KbmKey5A <- Gamepad LeftShoulder
   Clean RowEmitted @ Default/switch/group 6 (switches)/right_bumper/Full_Press => KbmKey58 <- Gamepad RightShoulder
+  Partial HapticIntensityDropped(6) @ config

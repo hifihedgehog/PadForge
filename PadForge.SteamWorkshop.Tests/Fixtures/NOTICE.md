@@ -1,6 +1,6 @@
 # Fixture attribution
 
-These 22 Steam Input controller configurations are community-contributed Steam
+These 27 Steam Input controller configurations are community-contributed Steam
 Workshop items (creator_appid 241100), fetched from Valve's public UGC CDN via
 `ISteamRemoteStorage/GetPublishedFileDetails` and used here as read-only parser and
 model test fixtures. Each item is owned by its creator and governed by the Steam
@@ -33,5 +33,18 @@ Each fixture file is named by its Workshop file id.
 | `2790927974.vdf` | Steam Deck: The Gabe Generation | 76561197983252671 | hasactivators, splitconfig, feature_activator, feature_mouse, feature_keboard, feature_radialmenu, controller_neptune | <https://steamcommunity.com/sharedfiles/filedetails/?id=2790927974> |
 | `3354224367.vdf` | sonic campaign | 76561199115437856 | hasactivators, feature_gamepad, controller_switch_pro | <https://steamcommunity.com/sharedfiles/filedetails/?id=3354224367> |
 | `3443409487.vdf` | Cuphead Nintendo Switch Joy-Con Layout | 76561199504160692 | hasactivators, feature_gamepad, controller_switch_joycon_pair | <https://steamcommunity.com/sharedfiles/filedetails/?id=3443409487> |
+| `1451857916.vdf` | offical ps4 with led | 76561198292090682 | hasactivators, controller_ps4, splitconfig, feature_keboard, feature_gamepad | <https://steamcommunity.com/sharedfiles/filedetails/?id=1451857916> |
+| `2494749393.vdf` | Dualsence for Skyrim: SE | 76561198106883586 | hasactivators, splitconfig, feature_activator, feature_keboard, feature_gyro, feature_gamepad, controller_ps5 | <https://steamcommunity.com/sharedfiles/filedetails/?id=2494749393> |
+| `1172518660.vdf` | #Title_TF2Default | 76561197993329385 | hasactivators, controller_steamcontroller_gordon, splitconfig, feature_mouse, feature_gyro, controller_native, feature_actionset | <https://steamcommunity.com/sharedfiles/filedetails/?id=1172518660> |
+| `3725174032.vdf` | Pan's Steam Deck & Steam Controller (2026) | 76561198047712021 | hasactivators, controller_triton, feature_gamepad, feature_activator, feature_gyro, feature_mouse, feature_keboard | <https://steamcommunity.com/sharedfiles/filedetails/?id=3725174032> |
+| `3353604014.vdf` | DualSense Light Reactive (Shadow) V2 | 76561199013484378 | hasactivators, feature_gyro, feature_gamepad, controller_ps5 | <https://steamcommunity.com/sharedfiles/filedetails/?id=3353604014> |
 
-Total: 22 fixtures.
+Wave 1a additions (translator v2 coverage): `1451857916` exercises vintage
+set_led (saturation 0-255, settings 0 and 1, all touchpad-hosted),
+`3353604014` exercises button- and trigger-hosted set_led on the current
+0-100 saturation scale plus active single_button groups, `2494749393`
+exercises single_button groups, `1172518660` exercises #token title
+resolution and digital-trigger switches members, `3725174032` exercises
+the gyro_to_mouse mode and the gyro ratchet mask.
+
+Total: 27 fixtures.

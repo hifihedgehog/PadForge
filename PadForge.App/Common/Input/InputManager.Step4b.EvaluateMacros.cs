@@ -253,6 +253,15 @@ namespace PadForge.Common.Input
             _currentMacroSlotRestricted = false; // global macros emit no keystrokes
             EvaluateGlobalMacros();
 
+            // Per-frame rebuild of the ToggleKey desired set (issue #9 wave
+            // 1b): the slot evaluators below add every latched key from every
+            // enabled macro, then the reconcile at the end diffs it against
+            // what is currently held down. Rebuild-and-diff (instead of
+            // sending inputs at flip time) is what releases a latched key
+            // when its macro is disabled, deleted, or replaced by a profile
+            // switch: the key simply stops appearing in the desired set.
+            _desiredLatchedKeys.Clear();
+
             for (int i = 0; i < MaxPads; i++)
             {
                 var macros = MacroSnapshots[i];
@@ -275,13 +284,78 @@ namespace PadForge.Common.Input
                     RaiseError($"Macro error on pad {i}", ex);
                 }
             }
+
+            // Settle ToggleKey latches once per frame, after every slot has
+            // contributed its desired keys. Restriction was enforced at
+            // collection time (a restricted slot's latches never enter the
+            // set); the emission itself must not be suppressed by whatever
+            // restricted flag the LAST slot left behind, and a KeyUp must
+            // always be deliverable.
+            _currentMacroSlotRestricted = false;
+            ReconcileLatchedKeys();
+        }
+
+        // ── ToggleKey latch reconciliation (issue #9 wave 1b) ──
+
+        /// <summary>Keys the enabled macros' latched ToggleKey actions want
+        /// held down this frame. Rebuilt every frame by the slot evaluators;
+        /// internal for the PadForge.Tests dispatch pins. Poll thread only.</summary>
+        internal readonly HashSet<ushort> _desiredLatchedKeys = new();
+
+        /// <summary>Keys this engine currently holds logically down via the
+        /// reconcile. Internal for the PadForge.Tests dispatch pins. Poll
+        /// thread only (plus the engine-stop release).</summary>
+        internal readonly HashSet<ushort> _latchedKeysDown = new();
+
+        // Scratch for the removal pass (no per-frame alloc).
+        private readonly List<ushort> _latchReleaseScratch = new();
+
+        /// <summary>Diffs the desired latched-key set against what is held
+        /// down and sends the boundary transitions: one KeyUp per key that
+        /// left the set, one KeyDown per key that entered it. Steady-state
+        /// frames send nothing (the OS keeps an injected key logically down
+        /// until its KeyUp).</summary>
+        private void ReconcileLatchedKeys()
+        {
+            if (_latchedKeysDown.Count > 0)
+            {
+                _latchReleaseScratch.Clear();
+                foreach (var vk in _latchedKeysDown)
+                    if (!_desiredLatchedKeys.Contains(vk))
+                        _latchReleaseScratch.Add(vk);
+                for (int i = 0; i < _latchReleaseScratch.Count; i++)
+                {
+                    SendKeyInput(_latchReleaseScratch[i], keyUp: true);
+                    _latchedKeysDown.Remove(_latchReleaseScratch[i]);
+                }
+            }
+
+            foreach (var vk in _desiredLatchedKeys)
+            {
+                if (_latchedKeysDown.Add(vk))
+                    SendKeyInput(vk, keyUp: false);
+            }
+        }
+
+        /// <summary>Releases every key the ToggleKey reconcile is holding
+        /// down. Called when the polling loop exits so an engine stop (or
+        /// app shutdown) never strands a latched key logically pressed in
+        /// the OS.</summary>
+        internal void ReleaseAllLatchedMacroKeys()
+        {
+            if (_latchedKeysDown.Count == 0) return;
+            _currentMacroSlotRestricted = false; // KeyUp must always deliver
+            foreach (var vk in _latchedKeysDown)
+                SendKeyInput(vk, keyUp: true);
+            _latchedKeysDown.Clear();
         }
 
         /// <summary>
         /// Evaluates all macros for a single pad slot.
         /// Instance method to allow raw button lookups via FindOnlineDeviceByInstanceGuid.
+        /// Internal for the PadForge.Tests dispatch pins.
         /// </summary>
-        private void EvaluateSlotMacros(ref Gamepad gp, MacroItem[] macros)
+        internal void EvaluateSlotMacros(ref Gamepad gp, MacroItem[] macros)
         {
             for (int m = 0; m < macros.Length; m++)
             {
@@ -440,6 +514,9 @@ namespace PadForge.Common.Input
                         // matching OnPress semantics for a synthetic boolean.
                         shouldStart = triggerActive && !wasTriggerActive;
                         break;
+                    case MacroTriggerMode.HoldForMs:
+                        shouldStart = EvaluateHoldForMsTrigger(macro, triggerActive, wasTriggerActive);
+                        break;
                 }
 
                 // Start new execution if triggered and not already executing.
@@ -479,6 +556,65 @@ namespace PadForge.Common.Input
                     && !macro.UsesRawTrigger)
                 {
                     gp.Buttons &= (ushort)~macro.TriggerButtons;
+                }
+
+                // Toggle latches apply every frame while the macro is enabled
+                // (issue #9 wave 1b), independent of IsExecuting, and AFTER
+                // the consume so a latched button is never stripped as if it
+                // were a trigger input.
+                ApplyMacroLatches(ref gp, macro);
+            }
+        }
+
+        /// <summary>Shared HoldForMs trigger evaluation (issue #9 wave 1b,
+        /// B-8b) for both slot evaluators. Arms the per-macro hold timer on
+        /// the rising edge, fires exactly once when the continuous hold
+        /// crosses <see cref="MacroItem.TriggerHoldMs"/>, and re-arms on the
+        /// next press. A tap shorter than the threshold never fires.</summary>
+        private static bool EvaluateHoldForMsTrigger(MacroItem macro, bool triggerActive, bool wasTriggerActive)
+        {
+            if (triggerActive && !wasTriggerActive)
+            {
+                // Rising edge: arm a fresh hold window.
+                macro.TriggerHoldStartUtc = DateTime.UtcNow;
+                macro.TriggerHoldFired = false;
+            }
+            if (triggerActive && !macro.TriggerHoldFired
+                && macro.TriggerHoldStartUtc != DateTime.MinValue
+                && (DateTime.UtcNow - macro.TriggerHoldStartUtc).TotalMilliseconds >= macro.TriggerHoldMs)
+            {
+                macro.TriggerHoldFired = true;
+                return true;
+            }
+            return false;
+        }
+
+        /// <summary>Applies an enabled macro's volatile Toggle latches for
+        /// this frame (issue #9 wave 1b): latched ToggleVcButton targets OR
+        /// into the combined Gamepad exactly like a ButtonPress write, and
+        /// latched ToggleKey actions contribute their parsed keys to the
+        /// frame's desired latched-key set (a restricted peer's macros never
+        /// contribute, the same gate every keystroke emission has).</summary>
+        private void ApplyMacroLatches(ref Gamepad gp, MacroItem macro)
+        {
+            var actions = macro.Actions;
+            for (int i = 0; i < actions.Count; i++)
+            {
+                var a = actions[i];
+                if (a == null) continue;
+                if (a.Type == MacroActionType.ToggleVcButton)
+                {
+                    if (a.VcToggleLatched)
+                        gp.Buttons |= a.ButtonFlags;
+                }
+                else if (a.Type == MacroActionType.ToggleKey)
+                {
+                    if (a.KeyToggleLatched && !_currentMacroSlotRestricted)
+                    {
+                        var codes = a.ParsedKeyCodes;
+                        for (int k = 0; k < codes.Length; k++)
+                            _desiredLatchedKeys.Add((ushort)codes[k]);
+                    }
                 }
             }
         }
@@ -822,7 +958,8 @@ namespace PadForge.Common.Input
         private static bool IsContinuousAction(MacroActionType type) =>
             type is MacroActionType.SystemVolume or MacroActionType.AppVolume
                  or MacroActionType.MouseMove or MacroActionType.MouseScroll
-                 or MacroActionType.RepeatKeyWhileHeld;
+                 or MacroActionType.RepeatKeyWhileHeld
+                 or MacroActionType.RepeatVcButtonWhileHeld;
 
         /// <summary>
         /// Advances and executes the macro's action sequence.
@@ -937,6 +1074,14 @@ namespace PadForge.Common.Input
                 case MacroActionType.RepeatKeyWhileHeld:
                     ExecuteRepeatKeyWhileHeld(action);
                     break;
+                case MacroActionType.RepeatVcButtonWhileHeld:
+                    // Turbo for a VC button (issue #9 wave 1b): the ON half of
+                    // the square wave ORs the target into the combined output
+                    // exactly like a ButtonPress; the OFF half writes nothing,
+                    // so the button reads released (gp is rebuilt per frame).
+                    if (TickRepeatVcButtonPhase(action))
+                        gp.Buttons |= action.ButtonFlags;
+                    break;
             }
         }
 
@@ -958,6 +1103,27 @@ namespace PadForge.Common.Input
                 SendKeyInput((ushort)keyCodes[k], keyUp: false);
             for (int k = keyCodes.Length - 1; k >= 0; k--)
                 SendKeyInput((ushort)keyCodes[k], keyUp: true);
+        }
+
+        /// <summary>Advances the RepeatVcButtonWhileHeld square wave (issue #9
+        /// wave 1b) and returns the current phase: true while the target
+        /// button should be written this frame. 50 % duty cycle with period
+        /// <see cref="MacroAction.IntervalMs"/>, so a game polling at any
+        /// sane rate sees a full press AND a full release inside each
+        /// interval (a 1-frame pulse at ~1 kHz would be invisible to a 60 Hz
+        /// poll, which is why this is a phase, not a RepeatKey-style one-shot).
+        /// Timing state lives on the action like <see cref="MacroAction.RepeatKeyLastFireUtc"/>;
+        /// the MinValue default flips the phase ON on the first held frame.
+        /// Internal for the PadForge.Tests dispatch pins.</summary>
+        internal static bool TickRepeatVcButtonPhase(MacroAction action)
+        {
+            var now = DateTime.UtcNow;
+            if ((now - action.RepeatVcLastToggleUtc).TotalMilliseconds >= action.IntervalMs * 0.5)
+            {
+                action.RepeatVcLastToggleUtc = now;
+                action.RepeatVcPulseOn = !action.RepeatVcPulseOn;
+            }
+            return action.RepeatVcPulseOn;
         }
 
         /// <summary>Executes a sequential (non-continuous) action with advance logic.</summary>
@@ -1242,6 +1408,29 @@ namespace PadForge.Common.Input
 
                 case MacroActionType.RunProgram:
                     ExecuteRunProgramAction(action);
+                    AdvanceAction(macro);
+                    break;
+
+                case MacroActionType.ToggleVcButton:
+                    // Flip the volatile latch (issue #9 wave 1b). The
+                    // per-frame latch application in EvaluateSlotMacros
+                    // writes the target button while latched, independent of
+                    // the macro's execution state, so the button stays down
+                    // across trigger releases until the next fire unlatches.
+                    action.VcToggleLatched = !action.VcToggleLatched;
+                    AdvanceAction(macro);
+                    break;
+
+                case MacroActionType.ToggleKey:
+                    // Flip the volatile key latch (issue #9 wave 1b). The
+                    // per-frame reconcile in EvaluateMacros sends the actual
+                    // KeyDown / KeyUp when the desired set changes.
+                    action.KeyToggleLatched = !action.KeyToggleLatched;
+                    AdvanceAction(macro);
+                    break;
+
+                case MacroActionType.GyroRecenter:
+                    ApplyGyroRecenterAction(macro);
                     AdvanceAction(macro);
                     break;
             }
@@ -1666,6 +1855,36 @@ namespace PadForge.Common.Input
             GuideLedApply?.Invoke(slotIndex, action.GuideLedPercent);
         }
 
+        /// <summary>App-layer hop for the GyroRecenter action's gravity
+        /// re-seed (issue #9 wave 1b, B-18): (slot index). InputService
+        /// points this at a handler that drops the per-device gravity
+        /// low-pass entries for every device mapped to the slot, so the
+        /// estimator re-seeds from the instantaneous accelerometer sample on
+        /// its next tick (the same fast-converge path a fresh connect takes).
+        /// Invoked SYNCHRONOUSLY on the polling thread; the handler must only
+        /// touch state guarded by its own lock.</summary>
+        internal static Action<int> GyroRecenterApply;
+
+        /// <summary>Executes a GyroRecenter action (issue #9 wave 1b, B-18):
+        /// zeroes every accumulated gyro-aim reference the slot holds. The
+        /// engine-side resets run inline because those caches are polling-
+        /// thread-only (this IS the polling thread); the gravity estimator
+        /// lives in the app layer behind a lock and rides the
+        /// <see cref="GyroRecenterApply"/> hook. Concretely:
+        /// SourceCoercion's dual-threshold smoothing window + EMA rate
+        /// history for the slot, the slot runtime's captured MotionLean
+        /// neutral orientation (re-captured from the next real gravity
+        /// sample), and the app-side gravity filter re-seed.</summary>
+        private void ApplyGyroRecenterAction(MacroItem macro)
+        {
+            int slotIndex = macro.PadIndex;
+            if (slotIndex < 0 || slotIndex >= MaxPads) return;
+
+            PadForge.Engine.Common.Mapping.SourceCoercion.ResetGyroAimStateForSlot(slotIndex);
+            GetSlotSourceKindRuntime(slotIndex)?.ResetMotionNeutral();
+            GyroRecenterApply?.Invoke(slotIndex);
+        }
+
         /// <summary>Advances the action's cycle position and writes the
         /// resulting <c>LightbarMode</c> into every per-device PSConfig
         /// on the slot. Slot-level fan-out: every assigned device
@@ -1724,6 +1943,12 @@ namespace PadForge.Common.Input
                 // macro) must start over from the first character, never
                 // resume from where it stopped.
                 action.TextEmitCursor = 0;
+                // RepeatVcButtonWhileHeld phase rides it too (issue #9 wave
+                // 1b): each fresh hold starts at the ON phase immediately
+                // (MinValue flips on the first tick) instead of resuming
+                // mid-wave from the previous hold.
+                action.RepeatVcLastToggleUtc = DateTime.MinValue;
+                action.RepeatVcPulseOn = false;
             }
         }
 
@@ -1770,7 +1995,8 @@ namespace PadForge.Common.Input
         //  with uint[] button words instead of ushort Gamepad.Buttons.
         // ─────────────────────────────────────────────
 
-        private void EvaluateSlotMacrosExtended(ref ExtendedRawState raw, MacroItem[] macros)
+        // Internal for the PadForge.Tests dispatch pins.
+        internal void EvaluateSlotMacrosExtended(ref ExtendedRawState raw, MacroItem[] macros)
         {
             for (int m = 0; m < macros.Length; m++)
             {
@@ -1847,6 +2073,9 @@ namespace PadForge.Common.Input
                     case MacroTriggerMode.CustomExpression:
                         shouldStart = triggerActive && !wasTriggerActive;
                         break;
+                    case MacroTriggerMode.HoldForMs:
+                        shouldStart = EvaluateHoldForMsTrigger(macro, triggerActive, wasTriggerActive);
+                        break;
                 }
 
                 if (shouldStart && !macro.IsExecuting)
@@ -1883,6 +2112,43 @@ namespace PadForge.Common.Input
                     if (raw.Buttons != null)
                         for (int w = 0; w < raw.Buttons.Length && w < tw.Length; w++)
                             raw.Buttons[w] &= ~tw[w];
+                }
+
+                // Toggle latches apply every frame while the macro is enabled
+                // (issue #9 wave 1b), after the consume, mirroring the
+                // Gamepad-path ordering.
+                ApplyMacroLatchesRaw(ref raw, macro);
+            }
+        }
+
+        /// <summary>Extended twin of <see cref="ApplyMacroLatches"/> (issue #9
+        /// wave 1b): latched ToggleVcButton targets OR their wide button words
+        /// into the raw state, latched ToggleKey actions contribute to the
+        /// frame's desired latched-key set.</summary>
+        private void ApplyMacroLatchesRaw(ref ExtendedRawState raw, MacroItem macro)
+        {
+            var actions = macro.Actions;
+            for (int i = 0; i < actions.Count; i++)
+            {
+                var a = actions[i];
+                if (a == null) continue;
+                if (a.Type == MacroActionType.ToggleVcButton)
+                {
+                    if (a.VcToggleLatched && raw.Buttons != null)
+                    {
+                        var cw = a.CustomButtonWords;
+                        for (int w = 0; w < raw.Buttons.Length && w < cw.Length; w++)
+                            raw.Buttons[w] |= cw[w];
+                    }
+                }
+                else if (a.Type == MacroActionType.ToggleKey)
+                {
+                    if (a.KeyToggleLatched && !_currentMacroSlotRestricted)
+                    {
+                        var codes = a.ParsedKeyCodes;
+                        for (int k = 0; k < codes.Length; k++)
+                            _desiredLatchedKeys.Add((ushort)codes[k]);
+                    }
                 }
             }
         }
@@ -2012,6 +2278,17 @@ namespace PadForge.Common.Input
                 }
                 case MacroActionType.RepeatKeyWhileHeld:
                     ExecuteRepeatKeyWhileHeld(action);
+                    break;
+                case MacroActionType.RepeatVcButtonWhileHeld:
+                    // Extended twin of the Gamepad-path turbo (issue #9 wave
+                    // 1b): the ON half ORs the action's wide button words in,
+                    // mirroring the Extended ButtonPress case.
+                    if (TickRepeatVcButtonPhase(action) && raw.Buttons != null)
+                    {
+                        var cw = action.CustomButtonWords;
+                        for (int w = 0; w < raw.Buttons.Length && w < cw.Length; w++)
+                            raw.Buttons[w] |= cw[w];
+                    }
                     break;
             }
         }
@@ -2243,6 +2520,24 @@ namespace PadForge.Common.Input
 
                 case MacroActionType.GuideLedBrightness:
                     ApplyGuideLedBrightnessAction(macro, action);
+                    AdvanceAction(macro);
+                    break;
+
+                case MacroActionType.ToggleVcButton:
+                    // Extended twin of the Gamepad-path latch flip (issue #9
+                    // wave 1b). Application happens per frame in
+                    // EvaluateSlotMacrosExtended via the wide button words.
+                    action.VcToggleLatched = !action.VcToggleLatched;
+                    AdvanceAction(macro);
+                    break;
+
+                case MacroActionType.ToggleKey:
+                    action.KeyToggleLatched = !action.KeyToggleLatched;
+                    AdvanceAction(macro);
+                    break;
+
+                case MacroActionType.GyroRecenter:
+                    ApplyGyroRecenterAction(macro);
                     AdvanceAction(macro);
                     break;
             }

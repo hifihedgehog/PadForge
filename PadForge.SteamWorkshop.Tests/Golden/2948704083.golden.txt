@@ -73,7 +73,7 @@ kbm activators: 2
   Hold Layer_2948704083_0_MS_left_trackpad_14 | Gamepad Paddle1 | inherit | name=left_trackpad shift
   Hold Layer_2948704083_0_MS_right_joystick_20 | Gamepad Paddle1 | inherit | name=right_joystick shift
 macros: 0
-report: v1 rows:x0+k29 macros:0 layers:2 clean:35 partial:8 skipped:3 errors:0
+report: v2 rows:x0+k29 macros:0 layers:2 clean:35 partial:10 skipped:3 errors:0
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_a/Full_Press => KbmMBtn0 <- Gamepad ButtonA
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_b/Full_Press => KbmMBtn1 <- Gamepad ButtonB
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_x/Full_Press => KbmKey42 <- Gamepad ButtonX
@@ -111,6 +111,7 @@ report: v1 rows:x0+k29 macros:0 layers:2 clean:35 partial:8 skipped:3 errors:0
   Clean RowEmitted @ Default/right_trackpad/group 2 (absolute_mouse)/click/Full_Press => KbmMBtn2 <- Touchpad 1 Click
   Skipped TouchMenuNeedsOverlay(4) @ Default/right_trackpad/group 15 (touch_menu)
   Clean RowEmitted @ Default/right_trigger/group 5 (trigger)/click/Full_Press => KbmKey5A <- Gamepad RightTrigger (upper half)
+  Partial InterruptibleDropped @ Default/switch/group 16 (switches)/button_back_right/Full_Press
   Skipped UnknownPhysicalInput(Switch, button_capture) @ Default/switch/group 16 (switches)/button_capture :: controller_action SCREENSHOT, , 
   Clean RowEmitted @ Default/switch/group 16 (switches)/button_escape/Full_Press => KbmKey1B <- Gamepad ButtonStart
   Clean RowEmitted @ Default/switch/group 16 (switches)/button_menu/Full_Press => KbmKey7B <- Gamepad ButtonBack
@@ -120,3 +121,4 @@ report: v1 rows:x0+k29 macros:0 layers:2 clean:35 partial:8 skipped:3 errors:0
   Clean ShiftLayerEmitted(left_trackpad shift) @ Default/switch/group 16 (switches)/button_back_right/Full_Press => Hold -> Layer_2948704083_0_MS_left_trackpad_14
   Clean ShiftLayerEmitted(right_joystick shift) @ Default/switch/group 16 (switches)/button_back_right/Full_Press => Hold -> Layer_2948704083_0_MS_right_joystick_20
   Partial ShiftLayerEmpty(right_trackpad shift) @ Default/switch/group 16 (switches)/button_back_right/Full_Press
+  Partial HapticIntensityDropped(5) @ config

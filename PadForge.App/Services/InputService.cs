@@ -1196,6 +1196,41 @@ namespace PadForge.Services
                 catch { /* engine shutting down mid-fire */ }
             };
 
+            // Gyro recenter macro applier (issue #9 wave 1b, B-18). The poll
+            // thread invokes this SYNCHRONOUSLY from the macro evaluator (the
+            // engine-side smoothing / neutral caches were already reset
+            // inline there). This app-side half drops the gravity low-pass
+            // entries for every device mapped to the slot, so the estimator
+            // re-seeds from the instantaneous accelerometer sample on its
+            // next tick (the fresh-connect fast-converge path). That is the
+            // "re-reference to the current pose" half of the recenter for
+            // Player/World-space projection and Motion Lean. Touches only
+            // lock-guarded state, per the GyroRecenterApply contract.
+            InputManager.GyroRecenterApply = slotIdx =>
+            {
+                var grSettings = SettingsManager.UserSettings;
+                if (grSettings == null) return;
+                var grGuids = new System.Collections.Generic.List<Guid>();
+                lock (grSettings.SyncRoot)
+                {
+                    for (int i = 0; i < grSettings.Items.Count; i++)
+                    {
+                        var us = grSettings.Items[i];
+                        if (us != null && us.MapTo == slotIdx && us.InstanceGuid != Guid.Empty)
+                            grGuids.Add(us.InstanceGuid);
+                    }
+                }
+                if (grGuids.Count == 0) return;
+                lock (_gravityStateLock)
+                {
+                    for (int i = 0; i < grGuids.Count; i++)
+                    {
+                        _gravityState.Remove(grGuids[i]);
+                        _gravityStateAux.Remove(grGuids[i]);
+                    }
+                }
+            };
+
             // Cursor-position source (#107): a 200 Hz sampler publishes the
             // normalized desktop cursor position into MouseCursorProvider for
             // "Mouse Position X/Y" mapping sources. Disposed on engine stop.
@@ -1766,6 +1801,7 @@ namespace PadForge.Services
                 PadForge.Engine.Common.Mapping.SourceCoercion.IrPointerModeProvider = null;
                 InputManager.PointerModeCycleApply = null;
                 InputManager.GuideLedApply = null;
+                InputManager.GyroRecenterApply = null;
                 PadForge.Engine.Common.Mapping.SourceCoercion.PollHzProvider = null;
                 PadForge.Engine.Common.Mapping.SourceCoercion.AimEngageStateProvider = null;
                 PadForge.Engine.Common.Mapping.SourceCoercion.TouchpadGestureFiredProvider = null;
@@ -4740,13 +4776,14 @@ namespace PadForge.Services
 
         /// <summary>
         /// Looks up the user-friendly device label for a DeviceGuid by
-        /// scanning UserDevices. Returns "(Any device)" for empty GUID
-        /// (the "first available device on this VC" sentinel) and the
-        /// raw GUID truncated to 8 chars when the device is unknown.
+        /// scanning UserDevices. Returns the localized "(Any device)"
+        /// sentinel (Strings.Mapping_AnyDevice) for empty GUID (the "first
+        /// available device on this VC" sentinel) and the raw GUID truncated
+        /// to 8 chars when the device is unknown.
         /// </summary>
         private static string ResolveDeviceLabel(string deviceGuid)
         {
-            if (string.IsNullOrEmpty(deviceGuid)) return "(Any device)";
+            if (string.IsNullOrEmpty(deviceGuid)) return Strings.Instance.Mapping_AnyDevice;
             if (!Guid.TryParse(deviceGuid, out Guid g)) return deviceGuid;
             lock (SettingsManager.UserDevices.SyncRoot)
             {

@@ -2504,6 +2504,15 @@
   <data name="Workshop_Tr_AutomapAlsoActive" xml:space="preserve"><value>the device automap still routes {0} to {1}</value></data>
   <data name="Workshop_Tr_ShiftLayerEmpty" xml:space="preserve"><value>layer switch dropped ({0} translated to nothing)</value></data>
   <data name="Workshop_Tr_AbsoluteMouseApproximated" xml:space="preserve"><value>absolute pointer positioning approximated as relative mouse movement</value></data>
+  <data name="Workshop_Tr_ScrollGestureModeNotSupported" xml:space="preserve"><value>directional-swipe mode not supported</value></data>
+  <data name="Workshop_Tr_HapticIntensityDropped" xml:space="preserve"><value>haptic feedback dropped ({0} bindings)</value></data>
+  <data name="Workshop_Tr_ResponseCurveNotSupported" xml:space="preserve"><value>response curve and range settings dropped ({0})</value></data>
+  <data name="Workshop_Tr_GyroButtonMaskDropped" xml:space="preserve"><value>gyro engage setting {0}={1} dropped (gyro engage is configured per pad)</value></data>
+  <data name="Workshop_Tr_ActivatorDelayDropped" xml:space="preserve"><value>press delay dropped ({0})</value></data>
+  <data name="Workshop_Tr_InterruptibleDropped" xml:space="preserve"><value>non-interruptible press behaves as a normal press</value></data>
+  <data name="Workshop_Tr_PlayerNumberActionNotSupported" xml:space="preserve"><value>player-number change is a Steam-client action, no equivalent</value></data>
+  <data name="Workshop_Tr_LizardModeActionNotSupported" xml:space="preserve"><value>lizard-mode toggle is Steam-internal, no equivalent</value></data>
+  <data name="Workshop_Tr_SetLedDefaultApproximated" xml:space="preserve"><value>restore-default lighting approximated as clearing the override</value></data>
   <data name="Status_WorkshopUpdatesOptInRequired" xml:space="preserve"><value>Enable Community Configs to check for updates</value></data>
   <data name="Status_WorkshopNoImportedProfiles" xml:space="preserve"><value>No profiles imported from the Steam Workshop yet</value></data>
   <data name="Status_WorkshopCheckingUpdates" xml:space="preserve"><value>Checking Steam Workshop for updates…</value></data>
@@ -2511,4 +2520,19 @@
   <data name="Workshop_UpdatesTitle" xml:space="preserve"><value>Workshop Updates</value></data>
   <data name="Workshop_UpdatesBody" xml:space="preserve"><value>These imported profiles have newer versions on the Steam Workshop. Re-import them from Browse Community Configs to pick up the changes.</value></data>
   <data name="Workshop_UpdateRow_Format" xml:space="preserve"><value>{0} · {1}</value></data>
+  <data name="Macro_HoldForMs" xml:space="preserve"><value>On Hold</value></data>
+  <data name="Macro_HoldForMs_Tooltip" xml:space="preserve"><value>Fires once after the trigger has been held continuously for the hold time. A shorter tap does nothing.</value></data>
+  <data name="Macro_TriggerHoldMs_Label" xml:space="preserve"><value>Hold Time</value></data>
+  <data name="MacroAction_Type_RepeatVcButtonWhileHeld" xml:space="preserve"><value>Repeat Button While Held</value></data>
+  <data name="MacroAction_RepeatVcButtonWhileHeld_Tooltip" xml:space="preserve"><value>Pulses the controller button on and off at the interval for as long as the trigger is held (autofire / turbo).</value></data>
+  <data name="MacroAction_RepeatVcButtonWhileHeld_Format" xml:space="preserve"><value>Repeat {0} every {1} ms</value></data>
+  <data name="MacroAction_Type_ToggleVcButton" xml:space="preserve"><value>Toggle Button</value></data>
+  <data name="MacroAction_ToggleVcButton_Tooltip" xml:space="preserve"><value>Each fire latches or unlatches the controller button. A latched button stays held until the next fire or until the macro is disabled.</value></data>
+  <data name="MacroAction_ToggleVcButton_Format" xml:space="preserve"><value>Toggle {0}</value></data>
+  <data name="MacroAction_Type_ToggleKey" xml:space="preserve"><value>Toggle Key</value></data>
+  <data name="MacroAction_ToggleKey_Tooltip" xml:space="preserve"><value>Each fire latches or unlatches the key. A latched key stays held down until the next fire or until the macro is disabled.</value></data>
+  <data name="MacroAction_ToggleKey_Format" xml:space="preserve"><value>Toggle keys {0}</value></data>
+  <data name="MacroAction_Type_GyroRecenter" xml:space="preserve"><value>Gyro Recenter</value></data>
+  <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>Zeroes the pad's accumulated gyro aim references on press. Smoothing history clears, the Motion Lean neutral re-captures, and the gravity estimate re-seeds from the controller's current pose.</value></data>
+  <data name="Mapping_AnyDevice" xml:space="preserve"><value>(Any device)</value></data>
 </root>

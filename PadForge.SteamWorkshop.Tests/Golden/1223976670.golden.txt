@@ -49,7 +49,7 @@ kbm rows: 1
     <- Gamepad Paddle2 [inverted]
     <- Gamepad Paddle1
 macros: 0
-report: v1 rows:x20+k1 macros:0 layers:0 clean:24 partial:0 skipped:0 errors:0
+report: v2 rows:x20+k1 macros:0 layers:0 clean:24 partial:1 skipped:0 errors:0
   Clean RowEmitted @ Default/switch/group 7 (switches)/button_back_left/Full_Press => KbmScroll <- Gamepad Paddle2 (inverted)
   Clean RowEmitted @ Default/switch/group 7 (switches)/button_back_right/Full_Press => KbmScroll <- Gamepad Paddle1
   Clean RowEmitted @ Default/joystick/group 3 (joystick_move) => LeftThumbAxisX <- Gamepad LeftStickX
@@ -74,3 +74,4 @@ report: v1 rows:x20+k1 macros:0 layers:0 clean:24 partial:0 skipped:0 errors:0
   Clean RowEmitted @ Default/switch/group 7 (switches)/button_menu/Full_Press => ButtonBack <- Gamepad ButtonBack
   Clean RowEmitted @ Default/switch/group 7 (switches)/left_bumper/Full_Press => LeftShoulder <- Gamepad LeftShoulder
   Clean RowEmitted @ Default/switch/group 7 (switches)/right_bumper/Full_Press => RightShoulder <- Gamepad RightShoulder
+  Partial HapticIntensityDropped(8) @ config

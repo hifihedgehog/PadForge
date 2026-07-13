@@ -2484,4 +2484,5 @@
   <data name="About_ProtobufNetDesc" xml:space="preserve"><value>Protocol Buffers-serializer die SteamKit2 gebruikt voor het netwerkprotocol van Steam, door Marc Gravell. Apache-2.0.</value></data>
   <data name="About_ZstdSharp" xml:space="preserve"><value>ZstdSharp</value></data>
   <data name="About_ZstdSharpDesc" xml:space="preserve"><value>Zstandard-decompressie die SteamKit2 gebruikt voor Steam-depotchunks, een C#-port van de zstd-bibliotheek door Oleg Stepanischev. MIT.</value></data>
+  <data name="Mapping_AnyDevice" xml:space="preserve"><value>(Elk apparaat)</value></data>
 </root>

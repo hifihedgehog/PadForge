@@ -1256,9 +1256,25 @@
                                     <ComboBoxItem Content="{Binding Macro_OnPress, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroTriggerMode.OnPress}"/>
                                     <ComboBoxItem Content="{Binding Macro_OnRelease, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroTriggerMode.OnRelease}"/>
                                     <ComboBoxItem Content="{Binding Macro_WhileHeld, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroTriggerMode.WhileHeld}"/>
+                                    <ComboBoxItem Content="{Binding Macro_HoldForMs, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroTriggerMode.HoldForMs}"
+                                                  ToolTip="{Binding Macro_HoldForMs_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                     <ComboBoxItem Content="{Binding Macro_Always, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroTriggerMode.Always}"/>
                                     <ComboBoxItem Content="{Binding Macro_CustomExpression, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroTriggerMode.CustomExpression}"/>
                                 </ComboBox>
+                            </StackPanel>
+
+                            <!-- Hold-threshold row (issue #9 wave 1b, B-8b). Visible only in
+                                 On Hold mode: the macro fires once the trigger combo has been
+                                 held this long; a shorter tap does nothing. -->
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,4"
+                                        Visibility="{Binding IsHoldForMsMode, Converter={StaticResource BoolToVisibilityConverter}}">
+                                <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Macro_TriggerHoldMs_Label, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
+                                           Width="80" Margin="0,0,8,0"
+                                           ToolTip="{Binding Macro_HoldForMs_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                <TextBox Text="{Binding TriggerHoldMs, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Width="80"
+                                         ToolTip="{Binding Macro_HoldForMs_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                <TextBlock Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text="{Binding Common_Ms, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="4,0,0,0"/>
+                                <ui:Button Command="{Binding ResetTriggerHoldMsCommand}" Style="{StaticResource ResetButton}" Margin="8,0,0,0"/>
                             </StackPanel>
 
                             <!-- Custom-expression editor (visible only when TriggerMode = CustomExpression).
@@ -1880,6 +1896,9 @@
                                             <ComboBoxItem Content="{Binding Macro_SetGyroEngaged, Source={x:Static strings:Strings.Instance}}"
                                                           Tag="{x:Static vm:MacroActionType.SetGyroEngaged}"
                                                           ToolTip="{Binding Macro_SetGyroEngaged_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                            <ComboBoxItem Content="{Binding MacroAction_Type_GyroRecenter, Source={x:Static strings:Strings.Instance}}"
+                                                          Tag="{x:Static vm:MacroActionType.GyroRecenter}"
+                                                          ToolTip="{Binding MacroAction_GyroRecenter_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                             <ComboBoxItem Content="{Binding MacroAction_Type_MouseRecenter, Source={x:Static strings:Strings.Instance}}"
                                                           Tag="{x:Static vm:MacroActionType.MouseRecenter}"
                                                           ToolTip="{Binding MacroAction_MouseRecenter_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
@@ -1895,6 +1914,15 @@
                                             <ComboBoxItem Content="{Binding MacroAction_Type_RepeatKeyWhileHeld, Source={x:Static strings:Strings.Instance}}"
                                                           Tag="{x:Static vm:MacroActionType.RepeatKeyWhileHeld}"
                                                           ToolTip="{Binding MacroAction_RepeatKeyWhileHeld_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                            <ComboBoxItem Content="{Binding MacroAction_Type_RepeatVcButtonWhileHeld, Source={x:Static strings:Strings.Instance}}"
+                                                          Tag="{x:Static vm:MacroActionType.RepeatVcButtonWhileHeld}"
+                                                          ToolTip="{Binding MacroAction_RepeatVcButtonWhileHeld_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                            <ComboBoxItem Content="{Binding MacroAction_Type_ToggleVcButton, Source={x:Static strings:Strings.Instance}}"
+                                                          Tag="{x:Static vm:MacroActionType.ToggleVcButton}"
+                                                          ToolTip="{Binding MacroAction_ToggleVcButton_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                            <ComboBoxItem Content="{Binding MacroAction_Type_ToggleKey, Source={x:Static strings:Strings.Instance}}"
+                                                          Tag="{x:Static vm:MacroActionType.ToggleKey}"
+                                                          ToolTip="{Binding MacroAction_ToggleKey_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                             <ComboBoxItem Content="{Binding MacroAction_Type_DisconnectController, Source={x:Static strings:Strings.Instance}}"
                                                           Tag="{x:Static vm:MacroActionType.DisconnectController}"
                                                           ToolTip="{Binding MacroAction_DisconnectController_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
@@ -2015,6 +2043,20 @@
                                         </ComboBox>
                                     </StackPanel>
 
+                                    <!-- Gyro Recenter card (issue #9 wave 1b, B-18). Parameter-less;
+                                         the card explains what one fire resets, mirroring the Stop
+                                         Sounds card shape. -->
+                                    <Border Style="{StaticResource CardBorder}" Margin="0,0,0,6"
+                                            Visibility="{Binding IsGyroRecenterType, Converter={StaticResource BoolToVisibilityConverter}}">
+                                        <StackPanel>
+                                            <TextBlock Text="{Binding MacroAction_Type_GyroRecenter, Source={x:Static strings:Strings.Instance}}"
+                                                       FontWeight="SemiBold" Margin="0,0,0,4"/>
+                                            <TextBlock Text="{Binding MacroAction_GyroRecenter_Tooltip, Source={x:Static strings:Strings.Instance}}"
+                                                       FontSize="11" TextWrapping="Wrap"
+                                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                                        </StackPanel>
+                                    </Border>
+
                                     <!-- Cursor Recenter Mode picker (#108). X / Y / X+Y -->
                                     <StackPanel Orientation="Horizontal" Margin="0,0,0,6"
                                                 Visibility="{Binding IsMouseRecenterType, Converter={StaticResource BoolToVisibilityConverter}}">
@@ -2119,18 +2161,23 @@
                                                    Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
                                     </StackPanel>
 
-                                    <!-- Repeat Key While Held interval (#9). Key picker is the shared IsAnyKeyType panel below -->
+                                    <!-- Turbo interval (#9 + wave 1b): shared by Repeat Key While Held
+                                         and Repeat Button While Held. Key picker / button grid are the
+                                         shared panels below. -->
                                     <StackPanel Orientation="Horizontal" Margin="0,0,0,6"
-                                                Visibility="{Binding IsRepeatKeyWhileHeldType, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                Visibility="{Binding IsRepeatIntervalType, Converter={StaticResource BoolToVisibilityConverter}}">
                                         <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Macro_RepeatInterval_Label, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
                                                    Width="80" Margin="0,0,8,0"/>
                                         <TextBox Text="{Binding IntervalMs, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Width="80"/>
                                         <TextBlock Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text="{Binding Common_Ms, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="4,0,0,0"/>
+                                        <ui:Button Command="{Binding ResetIntervalMsCommand}" Style="{StaticResource ResetButton}" Margin="8,0,0,0"/>
                                     </StackPanel>
 
-                                    <!-- Button flags checkbox grid for ButtonPress / ButtonRelease -->
+                                    <!-- Button flags checkbox grid for ButtonPress / ButtonRelease and
+                                         the wave-1b turbo / toggle button actions (all address the
+                                         target via the same ButtonFlags / CustomButtonWords pair) -->
                                     <StackPanel Margin="0,0,0,6"
-                                                Visibility="{Binding IsButtonType, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                Visibility="{Binding IsAnyVcButtonType, Converter={StaticResource BoolToVisibilityConverter}}">
                                         <TextBlock Text="{Binding Macro_Buttons, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,0,0,4"/>
                                         <ItemsControl ItemsSource="{Binding ButtonOptions}">
                                             <ItemsControl.ItemsPanel>
@@ -2148,7 +2195,7 @@
                                         </ItemsControl>
                                     </StackPanel>
 
-                                    <!-- Key combo for KeyPress / KeyRelease / RepeatKeyWhileHeld (#9) -->
+                                    <!-- Key combo for KeyPress / KeyRelease / RepeatKeyWhileHeld (#9) / ToggleKey (wave 1b) -->
                                     <StackPanel Margin="0,0,0,6"
                                                 Visibility="{Binding IsAnyKeyType, Converter={StaticResource BoolToVisibilityConverter}}">
                                         <TextBlock Text="{Binding Macro_KeyCombo, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,0,0,4"/>

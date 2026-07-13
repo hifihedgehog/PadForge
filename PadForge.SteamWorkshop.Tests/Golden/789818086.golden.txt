@@ -49,7 +49,7 @@ kbm rows: 20
 kbm activators: 1
   Hold Layer_789818086_0_MS_left_trackpad_17 | Gamepad LeftShoulder | inherit | name=left_trackpad shift
 macros: 0
-report: v1 rows:x0+k20 macros:0 layers:1 clean:20 partial:7 skipped:5 errors:0
+report: v2 rows:x0+k20 macros:0 layers:1 clean:20 partial:10 skipped:5 errors:0
   Clean RowEmitted @ Preset 0/button_diamond/group 0 (four_buttons)/button_a/Full_Press => KbmKey45 <- Gamepad ButtonA
   Clean RowEmitted @ Preset 0/button_diamond/group 0 (four_buttons)/button_b/Full_Press => KbmKey09 <- Gamepad ButtonB
   Clean RowEmitted @ Preset 0/button_diamond/group 0 (four_buttons)/button_x/Full_Press => KbmKey52 <- Gamepad ButtonX
@@ -66,11 +66,13 @@ report: v1 rows:x0+k20 macros:0 layers:1 clean:20 partial:7 skipped:5 errors:0
   Partial TrackpadFeatureRequired(Touchpad touch spots) @ Preset 0/left_trackpad/group 17 (touch_menu)/touch_menu_button_0/Full_Press => KbmKey74 <- Touchpad 0 TouchLeft
   Partial TrackpadFeatureRequired(Touchpad touch spots) @ Preset 0/left_trackpad/group 17 (touch_menu)/touch_menu_button_1/Full_Press => KbmKey78 <- Touchpad 0 TouchRight
   Skipped TouchMenuNeedsOverlay(4) @ Preset 0/left_trackpad/group 18 (touch_menu)
+  Partial ResponseCurveNotSupported(deadzone_outer_radius) @ Preset 0/left_trigger/group 4 (trigger)
   Clean RowEmitted @ Preset 0/left_trigger/group 4 (trigger)/edge/Full_Press => KbmMBtn1 <- Gamepad LeftTrigger (upper half)
   Partial AbsoluteMouseApproximated @ Preset 0/right_trackpad/group 7 (absolute_mouse)
   Partial TouchpadTuningNotPerRow(141) @ Preset 0/right_trackpad/group 7 (absolute_mouse) => KbmMouseX <- Touchpad 1 Finger 0 X
   Partial TouchpadTuningNotPerRow(141) @ Preset 0/right_trackpad/group 7 (absolute_mouse) => KbmMouseY <- Touchpad 1 Finger 0 Y
   Skipped RadialMenuNeedsOverlay(9) @ Preset 0/right_trackpad/group 24 (radial_menu)
+  Partial ResponseCurveNotSupported(deadzone_outer_radius) @ Preset 0/right_trigger/group 5 (trigger)
   Clean RowEmitted @ Preset 0/right_trigger/group 5 (trigger)/edge/Full_Press => KbmMBtn0 <- Gamepad RightTrigger (upper half)
   Clean RowEmitted @ Preset 0/switch/group 20 (switches)/button_back_left/Full_Press => KbmKeyA2 <- Gamepad Paddle2
   Skipped LongPressNotSupported @ Preset 0/switch/group 20 (switches)/button_back_left/Long_Press :: key_press F, FOV (Hold)
@@ -82,3 +84,4 @@ report: v1 rows:x0+k20 macros:0 layers:1 clean:20 partial:7 skipped:5 errors:0
   Clean RowEmitted @ Preset 0/switch/group 20 (switches)/right_bumper/Full_Press => KbmKey5A <- Gamepad RightShoulder
   Clean ShiftLayerEmitted(left_trackpad shift) @ Preset 0/switch/group 20 (switches)/left_bumper/Full_Press => Hold -> Layer_789818086_0_MS_left_trackpad_17
   Partial ShiftLayerEmpty(right_trackpad shift) @ Preset 0/switch/group 20 (switches)/right_click/Full_Press
+  Partial HapticIntensityDropped(9) @ config

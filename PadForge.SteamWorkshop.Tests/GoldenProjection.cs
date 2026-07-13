@@ -55,6 +55,13 @@ namespace PadForge.SteamWorkshop.Tests
                     case TranslatedMacroAction.KeyTap:
                         sb.Append(" vk=0x").Append(m.VirtualKey.ToString("X2", CultureInfo.InvariantCulture));
                         break;
+                    case TranslatedMacroAction.SetLightbarColor:
+                        sb.Append(" rgb=(").Append(m.LedR).Append(',').Append(m.LedG)
+                          .Append(',').Append(m.LedB).Append(')')
+                          .Append(" bright=").Append(m.LedBrightnessPercent).Append('%')
+                          .Append(" sat=").Append(m.LedSaturationPercent).Append('%')
+                          .Append(" setting=").Append(m.LedSetting);
+                        break;
                 }
                 sb.Append('\n');
             }
@@ -103,6 +110,7 @@ namespace PadForge.SteamWorkshop.Tests
                     }
                     sb.Append(" | ").Append(a.Descriptor);
                     if (a.Kind != "Button") sb.Append(" | kind=").Append(a.Kind);
+                    if (a.DelayMs > 0) sb.Append(" | delay=").Append(a.DelayMs).Append("ms");
                     if (a.InheritUnmapped) sb.Append(" | inherit");
                     if (!string.IsNullOrEmpty(a.LayerName)) sb.Append(" | name=").Append(a.LayerName);
                     sb.Append('\n');

@@ -53,7 +53,7 @@ kbm rows: 18
 kbm activators: 1
   Toggle Layer_3456927474_1 | Gamepad RightShoulder | inherit | name=Preset_1000001
 macros: 0
-report: v1 rows:x0+k18 macros:0 layers:1 clean:29 partial:5 skipped:10 errors:0
+report: v2 rows:x0+k18 macros:0 layers:1 clean:29 partial:8 skipped:10 errors:0
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_a/Full_Press => KbmMBtn0 <- Gamepad ButtonA
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_b/Full_Press => KbmMBtn1 <- Gamepad ButtonB
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_x/Full_Press => KbmKey45 <- Gamepad ButtonX
@@ -62,6 +62,7 @@ report: v1 rows:x0+k18 macros:0 layers:1 clean:29 partial:5 skipped:10 errors:0
   Clean RowEmitted @ Default/dpad/group 9 (dpad)/dpad_north/Full_Press => KbmKeyA4 <- Gamepad DPadUp
   Clean RowEmitted @ Default/dpad/group 9 (dpad)/dpad_south/Full_Press => KbmKeyA0 <- Gamepad DPadDown
   Clean RowEmitted @ Default/dpad/group 9 (dpad)/dpad_west/Full_Press => KbmKey08 <- Gamepad DPadLeft
+  Partial GyroButtonMaskDropped(gyro_ratchet_button_mask, 2199023255552) @ Default/gyro/group 14 (absolute_mouse)
   Partial AbsoluteMouseApproximated @ Default/gyro/group 14 (absolute_mouse)
   Clean RowEmitted @ Default/gyro/group 14 (absolute_mouse) => KbmMouseX <- Gyro Yaw
   Clean RowEmitted @ Default/gyro/group 14 (absolute_mouse) => KbmMouseY <- Gyro Pitch
@@ -74,6 +75,7 @@ report: v1 rows:x0+k18 macros:0 layers:1 clean:29 partial:5 skipped:10 errors:0
   Clean RowEmitted @ Default/left_trigger/group 4 (trigger)/edge/Full_Press => KbmScroll <- Gamepad LeftTrigger (upper half)
   Clean RowEmitted @ Default/right_joystick/group 10 (joystick_mouse) => KbmMouseX <- Gamepad RightStickX
   Clean RowEmitted @ Default/right_joystick/group 10 (joystick_mouse) => KbmMouseY <- Gamepad RightStickY
+  Partial ActivatorDelayDropped(delay_start 25) @ Default/right_joystick/group 10 (joystick_mouse)/click/Full_Press
   Clean RowEmitted @ Default/right_joystick/group 10 (joystick_mouse)/click/Full_Press => KbmMBtn0 <- Gamepad RightStick
   Skipped EdgeInputNotSupported(RightJoystick, edge) @ Default/right_joystick/group 10 (joystick_mouse)/edge :: mouse_button MIDDLE, , 
   Skipped MouseRegionNotSupported @ Default/right_trackpad/group 12 (mouse_region)
@@ -98,3 +100,4 @@ report: v1 rows:x0+k18 macros:0 layers:1 clean:29 partial:5 skipped:10 errors:0
   Skipped UnknownPhysicalInput(Switch, button_capture) @ Preset_1000002/switch/group 27 (switches)/button_capture :: controller_action system_key_1, , 
   Clean ShiftLayerEmitted(Preset_1000001) @ Default/switch/group 8 (switches)/right_bumper/Start_Press => Toggle -> Layer_3456927474_1
   Partial ShiftLayerEmpty(Preset_1000002) @ Default/switch/group 8 (switches)/button_back_right/Full_Press
+  Partial HapticIntensityDropped(4) @ config

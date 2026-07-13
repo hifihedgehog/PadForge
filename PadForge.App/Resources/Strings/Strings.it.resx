@@ -2486,4 +2486,5 @@
   <data name="About_ProtobufNetDesc" xml:space="preserve"><value>Serializzatore Protocol Buffers che SteamKit2 usa per il protocollo di rete di Steam, di Marc Gravell. Apache-2.0.</value></data>
   <data name="About_ZstdSharp" xml:space="preserve"><value>ZstdSharp</value></data>
   <data name="About_ZstdSharpDesc" xml:space="preserve"><value>Decompressione Zstandard che SteamKit2 usa per i chunk dei depot di Steam, un porting in C# della libreria zstd di Oleg Stepanischev. MIT.</value></data>
+  <data name="Mapping_AnyDevice" xml:space="preserve"><value>(Qualsiasi dispositivo)</value></data>
 </root>

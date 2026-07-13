@@ -1,0 +1,99 @@
+name: DualSense Light Reactive (Shadow) V2
+description: Made a minor mistake with the L2 Trigger
+slots: xbox
+xbox rows: 20
+  Base | ButtonA
+    <- Gamepad ButtonA
+  Base | ButtonB
+    <- Gamepad ButtonB
+  Base | ButtonBack
+    <- Touchpad 0 Click
+    <- Gamepad ButtonBack
+  Base | ButtonStart
+    <- Touchpad 1 Click
+    <- Gamepad ButtonStart
+  Base | ButtonX
+    <- Gamepad ButtonX
+  Base | ButtonY
+    <- Gamepad ButtonY
+  Base | DPadDown
+    <- Gamepad DPadDown
+  Base | DPadLeft
+    <- Gamepad DPadLeft
+  Base | DPadRight
+    <- Gamepad DPadRight
+  Base | DPadUp
+    <- Gamepad DPadUp
+  Base | LeftShoulder
+    <- Gamepad LeftShoulder
+  Base | LeftThumbAxisX
+    <- Gamepad LeftStickX
+  Base | LeftThumbAxisY
+    <- Gamepad LeftStickY
+  Base | LeftThumbButton
+    <- Gamepad LeftStick
+  Base | LeftTrigger
+    <- Gamepad LeftTrigger
+    <- Gamepad LeftTrigger [upper-half] dz=75
+  Base | RightShoulder
+    <- Gamepad RightShoulder
+  Base | RightThumbAxisX
+    <- Gamepad RightStickX
+  Base | RightThumbAxisY
+    <- Gamepad RightStickY
+  Base | RightThumbButton
+    <- Gamepad RightStick
+  Base | RightTrigger
+    <- Gamepad RightTrigger
+    <- Gamepad RightTrigger [upper-half] dz=75
+kbm rows: 0
+macros: 10
+  macro SetLightbarColor OnPress | Set LED (button_a) | btns=0x1000 rgb=(255,0,0) bright=43% sat=100% setting=1
+  macro SetLightbarColor OnPress | Set LED (button_b) | btns=0x2000 rgb=(255,0,0) bright=67% sat=100% setting=1
+  macro SetLightbarColor OnPress | Set LED (button_x) | btns=0x4000 rgb=(255,0,0) bright=100% sat=100% setting=1
+  macro SetLightbarColor OnPress | Set LED (button_y) | btns=0x8000 rgb=(217,255,0) bright=100% sat=100% setting=1
+  macro SetLightbarColor OnPress | Set LED (click) | btns=0x0040 rgb=(255,0,0) bright=51% sat=100% setting=1
+  macro SetLightbarColor OnPress | Set LED (click) | btns=0x0000 axis=LeftTrigger@75% rgb=(13,255,0) bright=100% sat=100% setting=1
+  macro SetLightbarColor OnPress | Set LED (click) | btns=0x0080 rgb=(255,0,0) bright=51% sat=100% setting=1
+  macro SetLightbarColor OnPress | Set LED (click) | btns=0x0000 axis=RightTrigger@75% rgb=(255,0,0) bright=79% sat=100% setting=1
+  macro SetLightbarColor OnPress | Set LED (left_bumper) | btns=0x0100 rgb=(255,0,0) bright=43% sat=100% setting=1
+  macro SetLightbarColor OnPress | Set LED (right_bumper) | btns=0x0200 rgb=(255,0,0) bright=43% sat=100% setting=1
+report: v2 rows:x20+k0 macros:10 layers:0 clean:24 partial:13 skipped:1 errors:0
+  Partial MacroTriggerViaXboxOutput @ Preset_1000001/button_diamond/group 14 (four_buttons)/button_a/Full_Press => Set LED macro
+  Partial MacroTriggerViaXboxOutput @ Preset_1000001/button_diamond/group 14 (four_buttons)/button_b/Full_Press => Set LED macro
+  Partial MacroTriggerViaXboxOutput @ Preset_1000001/button_diamond/group 14 (four_buttons)/button_x/Full_Press => Set LED macro
+  Partial MacroTriggerViaXboxOutput @ Preset_1000001/button_diamond/group 14 (four_buttons)/button_y/Full_Press => Set LED macro
+  Partial MacroTriggerViaXboxOutput @ Preset_1000001/joystick/group 30 (joystick_move)/click/Full_Press => Set LED macro
+  Clean RowEmitted @ Preset_1000001/left_trackpad/group 27 (single_button)/click/Full_Press => ButtonBack <- Touchpad 0 Click
+  Partial ResponseCurveNotSupported(curve_exponent) @ Preset_1000001/left_trigger/group 15 (trigger)
+  Partial MacroTriggerViaXboxOutput @ Preset_1000001/left_trigger/group 15 (trigger)/click/Full_Press => Set LED macro
+  Partial MacroTriggerViaXboxOutput @ Preset_1000001/right_joystick/group 31 (joystick_move)/click/Full_Press => Set LED macro
+  Clean RowEmitted @ Preset_1000001/right_trackpad/group 28 (single_button)/click/Full_Press => ButtonStart <- Touchpad 1 Click
+  Partial ResponseCurveNotSupported(curve_exponent) @ Preset_1000001/right_trigger/group 16 (trigger)
+  Partial MacroTriggerViaXboxOutput @ Preset_1000001/right_trigger/group 16 (trigger)/click/Full_Press => Set LED macro
+  Skipped UnknownPhysicalInput(Switch, button_capture) @ Preset_1000001/switch/group 17 (switches)/button_capture :: controller_action CHANGE_PRESET 32766 1 1, , 
+  Partial MacroTriggerViaXboxOutput @ Preset_1000001/switch/group 17 (switches)/left_bumper/Full_Press => Set LED macro
+  Partial MacroTriggerViaXboxOutput @ Preset_1000001/switch/group 17 (switches)/right_bumper/Full_Press => Set LED macro
+  Clean RowEmitted @ Preset_1000001/joystick/group 30 (joystick_move) => LeftThumbAxisX <- Gamepad LeftStickX
+  Clean RowEmitted @ Preset_1000001/joystick/group 30 (joystick_move) => LeftThumbAxisY <- Gamepad LeftStickY
+  Clean RowEmitted @ Preset_1000001/left_trigger/group 15 (trigger) => LeftTrigger <- Gamepad LeftTrigger
+  Clean RowEmitted @ Preset_1000001/right_joystick/group 31 (joystick_move) => RightThumbAxisX <- Gamepad RightStickX
+  Clean RowEmitted @ Preset_1000001/right_joystick/group 31 (joystick_move) => RightThumbAxisY <- Gamepad RightStickY
+  Clean RowEmitted @ Preset_1000001/right_trigger/group 16 (trigger) => RightTrigger <- Gamepad RightTrigger
+  Clean RowEmitted @ Preset_1000001/button_diamond/group 14 (four_buttons)/button_a/Full_Press => ButtonA <- Gamepad ButtonA
+  Clean RowEmitted @ Preset_1000001/button_diamond/group 14 (four_buttons)/button_b/Full_Press => ButtonB <- Gamepad ButtonB
+  Clean RowEmitted @ Preset_1000001/button_diamond/group 14 (four_buttons)/button_x/Full_Press => ButtonX <- Gamepad ButtonX
+  Clean RowEmitted @ Preset_1000001/button_diamond/group 14 (four_buttons)/button_y/Full_Press => ButtonY <- Gamepad ButtonY
+  Clean RowEmitted @ Preset_1000001/dpad/group 32 (dpad)/dpad_east/Full_Press => DPadRight <- Gamepad DPadRight
+  Clean RowEmitted @ Preset_1000001/dpad/group 32 (dpad)/dpad_north/Full_Press => DPadUp <- Gamepad DPadUp
+  Clean RowEmitted @ Preset_1000001/dpad/group 32 (dpad)/dpad_south/Full_Press => DPadDown <- Gamepad DPadDown
+  Clean RowEmitted @ Preset_1000001/dpad/group 32 (dpad)/dpad_west/Full_Press => DPadLeft <- Gamepad DPadLeft
+  Clean RowEmitted @ Preset_1000001/joystick/group 30 (joystick_move)/click/Full_Press => LeftThumbButton <- Gamepad LeftStick
+  Clean RowEmitted @ Preset_1000001/left_trigger/group 15 (trigger)/click/Full_Press => LeftTrigger <- Gamepad LeftTrigger
+  Clean RowEmitted @ Preset_1000001/right_joystick/group 31 (joystick_move)/click/Full_Press => RightThumbButton <- Gamepad RightStick
+  Clean RowEmitted @ Preset_1000001/right_trigger/group 16 (trigger)/click/Full_Press => RightTrigger <- Gamepad RightTrigger
+  Clean RowEmitted @ Preset_1000001/switch/group 17 (switches)/button_escape/Full_Press => ButtonStart <- Gamepad ButtonStart
+  Clean RowEmitted @ Preset_1000001/switch/group 17 (switches)/button_menu/Full_Press => ButtonBack <- Gamepad ButtonBack
+  Clean RowEmitted @ Preset_1000001/switch/group 17 (switches)/left_bumper/Full_Press => LeftShoulder <- Gamepad LeftShoulder
+  Clean RowEmitted @ Preset_1000001/switch/group 17 (switches)/right_bumper/Full_Press => RightShoulder <- Gamepad RightShoulder
+  Partial HapticIntensityDropped(8) @ config

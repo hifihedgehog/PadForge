@@ -81,6 +81,17 @@ $map = @{
     "driver-status-flames"        = "driver-status-flames"
     "settings-driver-cards"       = "settings-driver-cards"
     "profiles-foreground-readout" = "profiles-foreground-readout"
+    # v4.1.0 additions (#9 Workshop import + macro/mapping editors)
+    "workshop-cold"               = "workshop-cold"
+    "workshop-search"             = "workshop-search"
+    "workshop-configs"            = "workshop-configs"
+    "workshop-manifest"           = "workshop-manifest"
+    "workshop-applied"            = "workshop-applied"
+    "settings-community-configs"  = "settings-community-configs"
+    "macro-move-mouse"            = "macro-move-mouse"
+    "macro-repeat-key"            = "macro-repeat-key"
+    "mapping-sensitivity"         = "mapping-sensitivity"
+    "gamepad-source-picker"       = "gamepad-source-picker"
 }
 
 $jpgEncoder = [System.Drawing.Imaging.ImageCodecInfo]::GetImageEncoders() | Where-Object { $_.MimeType -eq "image/jpeg" }

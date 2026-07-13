@@ -1,30 +1,73 @@
 name: Stardew for Dualshock 4 (PS4 Controller)
 description: This takes the basic Gamepad setup with a few minor changes including L2 to quickly view the map and...
 slots: xbox kbm
-xbox rows: 4
+xbox rows: 18
   Base | ButtonA
     <- Gamepad Paddle2
     <- Gamepad ButtonA
+  Base | ButtonB
+    <- Gamepad ButtonB
+  Base | ButtonBack
+    <- Gamepad ButtonBack
+  Base | ButtonStart
+    <- Gamepad ButtonStart
   Base | ButtonX
     <- Gamepad Paddle1
     <- Gamepad ButtonX
+  Base | ButtonY
+    <- Gamepad ButtonY
+  Base | DPadDown
+    <- Gamepad DPadDown
+  Base | DPadLeft
+    <- Gamepad DPadLeft
+  Base | DPadRight
+    <- Gamepad DPadRight
+  Base | DPadUp
+    <- Gamepad DPadUp
+  Base | LeftThumbAxisX
+    <- Gamepad LeftStickX
+  Base | LeftThumbAxisY
+    <- Gamepad LeftStickY
+  Base | LeftThumbButton
+    <- Gamepad LeftStick
   Base | LeftTrigger
     <- Gamepad LeftShoulder
+    <- Gamepad LeftTrigger
+  Base | RightThumbAxisX
+    <- Gamepad RightStickX
+  Base | RightThumbAxisY
+    <- Gamepad RightStickY
+  Base | RightThumbButton
+    <- Gamepad RightStick
   Base | RightTrigger
     <- Gamepad RightShoulder
+    <- Gamepad RightTrigger
 kbm rows: 1
   Base | KbmKey4D
     <- Gamepad LeftTrigger [upper-half] dz=75
 macros: 0
-report: v1 rows:x4+k1 macros:0 layers:0 clean:8 partial:2 skipped:1 errors:0
+report: v1 rows:x18+k1 macros:0 layers:0 clean:23 partial:0 skipped:1 errors:0
   Clean RowEmitted @ Default/left_trigger/group 4 (trigger)/click/Full_Press => KbmKey4D <- Gamepad LeftTrigger (upper half)
   Skipped LongPressNotSupported @ Default/right_trigger/group 5 (trigger)/click/Long_Press :: xinput_button A, Quick Buy Items (Hold)
   Clean RowEmitted @ Default/switch/group 7 (switches)/button_back_left/Full_Press => ButtonA <- Gamepad Paddle2
   Clean RowEmitted @ Default/switch/group 7 (switches)/button_back_right/Full_Press => ButtonX <- Gamepad Paddle1
   Clean RowEmitted @ Default/switch/group 7 (switches)/left_bumper/Full_Press => LeftTrigger <- Gamepad LeftShoulder
   Clean RowEmitted @ Default/switch/group 7 (switches)/right_bumper/Full_Press => RightTrigger <- Gamepad RightShoulder
+  Clean RowEmitted @ Default/joystick/group 3 (joystick_move) => LeftThumbAxisX <- Gamepad LeftStickX
+  Clean RowEmitted @ Default/joystick/group 3 (joystick_move) => LeftThumbAxisY <- Gamepad LeftStickY
+  Clean RowEmitted @ Default/left_trigger/group 4 (trigger) => LeftTrigger <- Gamepad LeftTrigger
+  Clean RowEmitted @ Default/right_joystick/group 8 (joystick_move) => RightThumbAxisX <- Gamepad RightStickX
+  Clean RowEmitted @ Default/right_joystick/group 8 (joystick_move) => RightThumbAxisY <- Gamepad RightStickY
+  Clean RowEmitted @ Default/right_trigger/group 5 (trigger) => RightTrigger <- Gamepad RightTrigger
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_a/Full_Press => ButtonA <- Gamepad ButtonA
+  Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_b/Full_Press => ButtonB <- Gamepad ButtonB
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_x/Full_Press => ButtonX <- Gamepad ButtonX
-  Clean DefaultAutomapPassthrough(10) @ Default
-  Partial AutomapAlsoActive(Gamepad LeftShoulder, LeftShoulder) @ Default/switch/group 7 (switches)/left_bumper/Full_Press
-  Partial AutomapAlsoActive(Gamepad RightShoulder, RightShoulder) @ Default/switch/group 7 (switches)/right_bumper/Full_Press
+  Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_y/Full_Press => ButtonY <- Gamepad ButtonY
+  Clean RowEmitted @ Default/dpad/group 9 (dpad)/dpad_east/Full_Press => DPadRight <- Gamepad DPadRight
+  Clean RowEmitted @ Default/dpad/group 9 (dpad)/dpad_north/Full_Press => DPadUp <- Gamepad DPadUp
+  Clean RowEmitted @ Default/dpad/group 9 (dpad)/dpad_south/Full_Press => DPadDown <- Gamepad DPadDown
+  Clean RowEmitted @ Default/dpad/group 9 (dpad)/dpad_west/Full_Press => DPadLeft <- Gamepad DPadLeft
+  Clean RowEmitted @ Default/joystick/group 3 (joystick_move)/click/Full_Press => LeftThumbButton <- Gamepad LeftStick
+  Clean RowEmitted @ Default/right_joystick/group 8 (joystick_move)/click/Full_Press => RightThumbButton <- Gamepad RightStick
+  Clean RowEmitted @ Default/switch/group 7 (switches)/button_escape/Full_Press => ButtonStart <- Gamepad ButtonStart
+  Clean RowEmitted @ Default/switch/group 7 (switches)/button_menu/Full_Press => ButtonBack <- Gamepad ButtonBack

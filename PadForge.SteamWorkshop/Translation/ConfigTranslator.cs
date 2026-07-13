@@ -23,12 +23,14 @@ namespace PadForge.SteamWorkshop.Translation
     ///
     /// <para>Sources are emitted with an EMPTY DeviceGuid, the documented
     /// "first device on the slot" form, so no device snapshot is baked at
-    /// import time. A binding identical to the device automap canon
-    /// (SettingsManager.CreateDefaultPadSetting) emits ZERO rows: the
-    /// automap that runs when the user assigns a pad already produces it.
-    /// When a target does get a row, any automap-identical bindings for the
-    /// SAME target materialize as sources on that row, because a row
-    /// suppresses the per-target automap fallback.</para>
+    /// import time. Everything Steam would output gets an explicit row:
+    /// automap-identical bindings, and the matched-side implicit analog
+    /// outputs of trigger and joystick_move groups (gated on the Xbox side
+    /// being in play through bindings). Imported sets are authoritative
+    /// (<see cref="MappingSet.Authoritative"/>), so the legacy automap
+    /// never adds to them and nothing may stay implicit. Bindings whose
+    /// target already has a row join it as extra sources instead of
+    /// creating a duplicate.</para>
     /// </summary>
     public sealed class ConfigTranslator
     {
@@ -74,15 +76,25 @@ namespace PadForge.SteamWorkshop.Translation
 
             // Automap-identical xinput bindings, held back until the run
             // ends: targets that gained a real row re-absorb them as
-            // sources; the rest are the zero-row passthrough set.
+            // sources; the rest become explicit identity rows of their own.
             public readonly List<PendingIdentity> Identities = new();
 
-            // Divergent xinput rows whose SOURCE has an automap target the
-            // config never claims: the device automap keeps that default
-            // passthrough live (a row would be needed to suppress it, and
-            // an empty row cannot), so the report flags the divergence.
-            public readonly List<(string Layer, string Descriptor, string AutomapTarget, string Path)>
-                AutomapLeaks = new();
+            // Matched-side implicit analog outputs (a trigger group's pull,
+            // a joystick_move group's axis pair), held back until the run
+            // ends. Steam emits these without any binding object, so the
+            // authoritative set must spell them out too. They materialize
+            // only when the Xbox side is otherwise in play: a pure
+            // keyboard/mouse config must not sprout an Xbox slot for a
+            // stick nobody consumes.
+            public readonly List<(string Layer, string Target, string Descriptor, string Path)>
+                MatchedAnalogs = new();
+            private readonly HashSet<string> _matchedAnalogSeen = new(StringComparer.Ordinal);
+
+            public void AddMatchedAnalog(string layer, string target, string descriptor, string path)
+            {
+                if (_matchedAnalogSeen.Add($"{layer}|{target}|{descriptor}"))
+                    MatchedAnalogs.Add((layer, target, descriptor, path));
+            }
 
             public readonly List<ActivatorRequest> Activators = new();
 
@@ -109,6 +121,11 @@ namespace PadForge.SteamWorkshop.Translation
         private sealed class PendingRow
         {
             public bool IsAxis;
+            // Set by the Finalize matched-analog pass. Keeps the row on the
+            // axis default combine (max-abs) instead of Sum: summing a click
+            // identity's upper-half leg onto the full pull would overdrive
+            // the top half of an otherwise clean analog pull.
+            public bool HasMatchedPassthrough;
             public readonly List<MappingSource> Sources = new();
             // Click gate for a single trackpad-dpad feed. Dropped (with a
             // Partial entry) if any other source joins the same target.
@@ -123,7 +140,9 @@ namespace PadForge.SteamWorkshop.Translation
             public ResolvedSource Source;
             public string Path;
             public string Binding;
-            public int PresetId;
+            // Trigger identities materialize as axis rows (Sum combine when
+            // another source joins), same as EmitSourceRow would build them.
+            public bool IsAxis;
         }
 
         private sealed class ActivatorRequest
@@ -417,8 +436,11 @@ namespace PadForge.SteamWorkshop.Translation
         }
 
         /// <summary>Trigger groups: the analog pull passes through to the
-        /// xinput trigger implicitly. A matched-side output is automap
-        /// identity (zero rows); a crossed output emits an axis row.</summary>
+        /// xinput trigger implicitly. Both sides emit an explicit axis row
+        /// (authoritative sets spell out every output Steam produces): the
+        /// crossed side to the opposite trigger here, the matched side via
+        /// the Finalize matched-analog pass so a click identity for the
+        /// same trigger absorbs behind the analog source.</summary>
         private void TranslateTriggerGroup(Run run, SteamInputPreset preset, SteamInputGroup group,
             SteamSlot slot, string layer, string path, Dictionary<string, string> settings)
         {
@@ -430,26 +452,31 @@ namespace PadForge.SteamWorkshop.Translation
                     && int.TryParse(raw, NumberStyles.Integer, CultureInfo.InvariantCulture, out int o)
                         ? o : 0;
                 bool crossed = (output == 1 && !left) || (output == 2 && left);
+                string sourceDesc = left ? "Gamepad LeftTrigger" : "Gamepad RightTrigger";
                 if (crossed)
                 {
-                    string sourceDesc = left ? "Gamepad LeftTrigger" : "Gamepad RightTrigger";
                     string target = left ? "RightTrigger" : "LeftTrigger";
                     AddRowSource(run, isKbm: false, layer, target,
                         new MappingSource { Descriptor = sourceDesc }, isAxis: true,
                         TranslationStatus.Clean, TranslationReasons.RowEmitted, path,
                         binding: $"output_trigger {output}");
                 }
-                // Matched side: covered by the device automap (Axis 2/5 to
-                // Left/RightTrigger); nothing to emit for the analog pull.
+                else
+                {
+                    run.AddMatchedAnalog(layer, left ? "LeftTrigger" : "RightTrigger",
+                        sourceDesc, path);
+                }
             }
 
             TranslateMemberGroup(run, preset, group, slot, layer, path, settings);
         }
 
-        /// <summary>joystick_move: stick passthrough. Matched side with no
-        /// redirect is pure automap; output_joystick redirects emit the axis
-        /// pair to the other stick. Trackpad-as-stick rides the gesture
-        /// StickX/StickY channel (Partial: needs the Touchpad-tab toggle).</summary>
+        /// <summary>joystick_move: stick passthrough. Both sides emit the
+        /// explicit axis pair (authoritative sets spell out every output
+        /// Steam produces): output_joystick redirects to the other stick
+        /// here, the matched side via the Finalize matched-analog pass.
+        /// Trackpad-as-stick rides the gesture StickX/StickY channel
+        /// (Partial: needs the Touchpad-tab toggle).</summary>
         private void TranslateJoystickMove(Run run, SteamInputPreset preset, SteamInputGroup group,
             SteamSlot slot, string layer, string path, Dictionary<string, string> settings)
         {
@@ -461,9 +488,9 @@ namespace PadForge.SteamWorkshop.Translation
             {
                 bool left = slot == SteamSlot.Joystick;
                 bool crossed = (output == 1 && !left) || (output == 2 && left);
+                string src = left ? "LeftStick" : "RightStick";
                 if (crossed)
                 {
-                    string src = left ? "LeftStick" : "RightStick";
                     string dst = left ? "Right" : "Left";
                     AddRowSource(run, isKbm: false, layer, $"{dst}ThumbAxisX",
                         new MappingSource { Descriptor = $"Gamepad {src}X" }, isAxis: true,
@@ -474,7 +501,12 @@ namespace PadForge.SteamWorkshop.Translation
                         TranslationStatus.Clean, TranslationReasons.RowEmitted, path,
                         binding: $"output_joystick {output}");
                 }
-                // Matched side: automap covers the axis pair.
+                else
+                {
+                    string dst = left ? "Left" : "Right";
+                    run.AddMatchedAnalog(layer, $"{dst}ThumbAxisX", $"Gamepad {src}X", path);
+                    run.AddMatchedAnalog(layer, $"{dst}ThumbAxisY", $"Gamepad {src}Y", path);
+                }
             }
             else if (PhysicalSlotResolver.IsTrackpad(slot))
             {
@@ -653,7 +685,6 @@ namespace PadForge.SteamWorkshop.Translation
                     }
                     var src = BuildSource(source, soft);
                     src.Invert = wheel.Value.invert;
-                    RecordAutomapLeak(run, layer, source, wheel.Value.target, path);
                     AddRowSource(run, isKbm: true, layer, wheel.Value.target, src, isAxis: true,
                         StatusFor(source, soft), ReasonFor(source, soft), path, binding.Raw,
                         args: source.TrackpadFeature);
@@ -693,7 +724,7 @@ namespace PadForge.SteamWorkshop.Translation
                             Source = source,
                             Path = path,
                             Binding = binding.Raw,
-                            PresetId = preset.Id,
+                            IsAxis = xt.IsTriggerAxis,
                         });
                         break;
                     }
@@ -1048,25 +1079,9 @@ namespace PadForge.SteamWorkshop.Translation
         {
             var src = BuildSource(source, soft);
             MappingSource gate = clickGate != null ? new MappingSource { Descriptor = clickGate } : null;
-            RecordAutomapLeak(run, layer, source, target, path);
             AddRowSource(run, isKbm, layer, target, src, isAxis,
                 StatusFor(source, soft), ReasonFor(source, soft), path, binding,
                 args: source.TrackpadFeature, clickGate: gate);
-        }
-
-        /// <summary>Records that a binding routed <paramref name="source"/>
-        /// somewhere other than its automap default. Finalize reports the
-        /// cases where nothing else claims that default target, because the
-        /// device automap keeps the default passthrough firing alongside the
-        /// authored binding (an empty row cannot suppress the per-target
-        /// fallback). Only meaningful when the Xbox slot is in play at all;
-        /// Finalize gates on that.</summary>
-        private static void RecordAutomapLeak(Run run, string layer, ResolvedSource source,
-            string boundTarget, string path)
-        {
-            if (string.IsNullOrEmpty(source.AutomapTarget)) return;
-            if (string.Equals(source.AutomapTarget, boundTarget, StringComparison.Ordinal)) return;
-            run.AutomapLeaks.Add((layer, source.Descriptor, source.AutomapTarget, path));
         }
 
         private void AddRowSource(Run run, bool isKbm, string layer, string target,
@@ -1146,11 +1161,32 @@ namespace PadForge.SteamWorkshop.Translation
             profile.Description = ResolveText(run, run.Config.Description, "description", "");
             run.Report.ConfigTitle = profile.Name;
 
-            // Identity bindings: re-absorb the ones whose target got a real
-            // row (a row suppresses the per-target automap fallback, so the
-            // identity leg must ride the row); count the rest as the
-            // passthrough set, one Clean entry per preset.
-            var passthroughByPreset = new SortedDictionary<int, int>();
+            // Matched-side implicit analog outputs (trigger pulls, stick
+            // axis pairs) become explicit rows, gated on the Xbox side
+            // being in play at all through bindings: a pure keyboard/mouse
+            // config keeps zero Xbox rows (no phantom Xbox slot), and a
+            // macro-only config keeps its zero-row set riding the
+            // whole-set legacy passthrough its triggers depend on. Runs
+            // BEFORE the identity pass so a trigger's click identity
+            // absorbs behind the direct analog source.
+            bool xboxInPlay = run.Identities.Count > 0 || run.RowOrder.Any(k => !k.Kbm);
+            if (xboxInPlay)
+            {
+                foreach (var ma in run.MatchedAnalogs)
+                {
+                    AddRowSource(run, isKbm: false, ma.Layer, ma.Target,
+                        new MappingSource { Descriptor = ma.Descriptor }, isAxis: true,
+                        TranslationStatus.Clean, TranslationReasons.RowEmitted, ma.Path);
+                    if (run.Rows.TryGetValue((false, ma.Layer, ma.Target), out var pr))
+                        pr.HasMatchedPassthrough = true;
+                }
+            }
+
+            // Identity bindings: the ones whose target got a real row from
+            // a divergent binding join that row as extra sources. The rest
+            // become explicit identity rows. Imported sets are
+            // authoritative, the automap never adds to them, so nothing may
+            // stay implicit.
             foreach (var id in run.Identities)
             {
                 var key = (false, id.Layer, id.Target);
@@ -1163,15 +1199,14 @@ namespace PadForge.SteamWorkshop.Translation
                 }
                 else
                 {
-                    passthroughByPreset[id.PresetId] =
-                        passthroughByPreset.GetValueOrDefault(id.PresetId) + 1;
+                    // Registers the row in run.Rows/RowOrder (so a later
+                    // identity for the same target absorbs above) and emits
+                    // the Clean RowEmitted entry.
+                    AddRowSource(run, isKbm: false, id.Layer, id.Target,
+                        BuildSource(id.Source, soft: false), id.IsAxis,
+                        TranslationStatus.Clean, TranslationReasons.RowEmitted,
+                        id.Path, id.Binding);
                 }
-            }
-            foreach (var kv in passthroughByPreset)
-            {
-                run.Report.Add(TranslationStatus.Clean, TranslationReasons.DefaultAutomapPassthrough,
-                    run.PresetNames.TryGetValue(kv.Key, out var name) ? name : $"Preset {kv.Key}",
-                    args: kv.Value.ToString(CultureInfo.InvariantCulture));
             }
 
             // Materialize rows, deterministically ordered (Base first, then
@@ -1200,15 +1235,18 @@ namespace PadForge.SteamWorkshop.Translation
                             pending.ClickGatePath ?? "");
                     }
                     row.Sources.AddRange(pending.Sources);
-                    if (pending.Sources.Count > 1 && pending.IsAxis)
+                    if (pending.Sources.Count > 1 && pending.IsAxis && !pending.HasMatchedPassthrough)
                         row.CombineMode = "Sum"; // mouse deltas and merged axes are additive
-                    // multi-source buttons keep the engine's OR default
+                    // Rows carrying a matched analog passthrough keep the
+                    // axis default (max-abs), so extra legs (a click
+                    // identity, a bumper-as-trigger binding) ride on top of
+                    // a clean analog pull instead of summing into overdrive.
+                    // Multi-source buttons keep the engine's OR default.
                 }
 
                 (key.Kbm ? profile.KbmMappingSet : profile.XboxMappingSet).Rows.Add(row);
             }
 
-            ReportAutomapLeaks(run);
             EmitActivators(run);
             ReportActivatorlessPresets(run);
 
@@ -1220,9 +1258,11 @@ namespace PadForge.SteamWorkshop.Translation
 
             // Slot demand (owner report 2026-07-13: a pure keyboard config
             // imported with an empty Xbox VC). The Xbox slot is needed for
-            // rows/activators, for identity bindings that ride the default
-            // automap as a zero-row passthrough, and for macros, whose
-            // triggers read the Xbox slot's combined output.
+            // rows/activators and for macros, whose triggers read the Xbox
+            // slot's combined output. Identity bindings now materialize as
+            // rows, so the row count covers them; the Identities clause
+            // stays as belt-and-braces (a row-cap overflow could drop an
+            // identity row, and the slot must still exist for it).
             profile.NeedsXboxSlot = profile.XboxMappingSet.Rows.Count > 0
                 || profile.XboxMappingSet.ShiftActivators.Count > 0
                 || run.Identities.Count > 0
@@ -1230,34 +1270,6 @@ namespace PadForge.SteamWorkshop.Translation
             profile.NeedsKbmSlot = profile.KbmMappingSet.Rows.Count > 0
                 || profile.KbmMappingSet.ShiftActivators.Count > 0;
             return profile;
-        }
-
-        /// <summary>Reports re-natured inputs whose automap default target
-        /// stays live. Only when the Xbox slot is in play at all (some
-        /// xinput binding exists): for a pure keyboard/mouse config the user
-        /// feeds the KbM slot only and the Xbox slot never automaps.</summary>
-        private void ReportAutomapLeaks(Run run)
-        {
-            if (run.AutomapLeaks.Count == 0) return;
-            bool xboxInPlay = run.Identities.Count > 0
-                || run.RowOrder.Any(k => !k.Kbm);
-            if (!xboxInPlay) return;
-
-            var seen = new HashSet<string>(StringComparer.Ordinal);
-            foreach (var leak in run.AutomapLeaks)
-            {
-                if (!seen.Add($"{leak.Layer}|{leak.Descriptor}|{leak.AutomapTarget}")) continue;
-                // Claimed by a real row: the row suppresses the per-target
-                // automap fallback, so nothing leaks.
-                if (run.Rows.ContainsKey((false, leak.Layer, leak.AutomapTarget))) continue;
-                // The config itself also binds source -> default (identity):
-                // the default staying live is the authored behavior.
-                if (run.Identities.Any(id => id.Layer == leak.Layer
-                        && id.Target == leak.AutomapTarget
-                        && id.Source.Descriptor == leak.Descriptor)) continue;
-                run.Report.Add(TranslationStatus.Partial, TranslationReasons.AutomapAlsoActive,
-                    leak.Path, args: new[] { leak.Descriptor, leak.AutomapTarget });
-            }
         }
 
         private void EmitActivators(Run run)

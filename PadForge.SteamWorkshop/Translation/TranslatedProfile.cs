@@ -33,8 +33,7 @@ namespace PadForge.SteamWorkshop.Translation
         public List<TranslatedMacro> Macros { get; set; } = new();
 
         /// <summary>True when the config binds the Xbox side at all: explicit
-        /// rows or activators, identity bindings riding the default automap
-        /// (a zero-row passthrough still needs the slot), or macros (their
+        /// rows (identity bindings included) or activators, or macros (their
         /// triggers read the Xbox slot's combined output). A pure
         /// keyboard/mouse config leaves this false and the materializer
         /// creates no Xbox slot for it.</summary>

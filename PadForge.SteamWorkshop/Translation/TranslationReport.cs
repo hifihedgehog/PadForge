@@ -120,6 +120,10 @@ namespace PadForge.SteamWorkshop.Translation
     /// </summary>
     public static class TranslationReasons
     {
+        // Legacy-render-only: no longer emitted (identity bindings now
+        // materialize as explicit rows) but kept, with its resx strings,
+        // because the vocabulary is fixed and reports serialized by older
+        // translator versions must stay renderable.
         public const string DefaultAutomapPassthrough = "Workshop_Tr_DefaultAutomapPassthrough"; // {0} bindings
         public const string RowEmitted = "Workshop_Tr_RowEmitted";
         public const string MacroEmitted = "Workshop_Tr_MacroEmitted";
@@ -161,6 +165,9 @@ namespace PadForge.SteamWorkshop.Translation
         public const string RowCapExceeded = "Workshop_Tr_RowCapExceeded";                       // {0} slot class
         public const string PresetHasNoActivator = "Workshop_Tr_PresetHasNoActivator";           // {0} preset name
         public const string ShiftLayerEmpty = "Workshop_Tr_ShiftLayerEmpty";                     // {0} layer name
+        // Legacy-render-only: no longer emitted (authoritative imported sets
+        // stop the automap from asserting, so there is nothing to warn
+        // about) but kept, with its resx strings, for old serialized reports.
         public const string AutomapAlsoActive = "Workshop_Tr_AutomapAlsoActive";                 // {0} source {1} target
     }
 }

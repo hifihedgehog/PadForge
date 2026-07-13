@@ -202,11 +202,14 @@ namespace PadForge.SteamWorkshop.Tests
             Assert.Empty(p.XboxMappingSet.ShiftActivators);
         }
 
-        // ─── Automap passthrough recognition ────────────────────────────
+        // ─── Explicit identity rows ─────────────────────────────────────
 
         [Fact]
-        public void PureAutomapPreset_EmitsZeroRowsAndOnePassthroughEntry()
+        public void PureAutomapPreset_EmitsExplicitIdentityRows()
         {
+            // Imported sets are authoritative (the legacy automap never adds
+            // to them), so automap-identical bindings must materialize as
+            // real rows instead of the former zero-row passthrough.
             string vdf = Head
                 + Group(1, "four_buttons",
                     "\t\t\"inputs\"\n\t\t{\n"
@@ -218,20 +221,45 @@ namespace PadForge.SteamWorkshop.Tests
                 + Preset(0, "Default", (1, "button_diamond active"))
                 + "}\n";
             var p = Translate(vdf);
-            Assert.Empty(p.XboxMappingSet.Rows);
             Assert.Empty(p.KbmMappingSet.Rows);
-            var entry = Assert.Single(p.Report.Entries);
-            Assert.Equal(TranslationStatus.Clean, entry.Status);
-            Assert.Equal(TranslationReasons.DefaultAutomapPassthrough, entry.ReasonKey);
-            Assert.Equal("4", Assert.Single(entry.ReasonArgs));
+            Assert.Equal(new[] { "ButtonA", "ButtonB", "ButtonX", "ButtonY" },
+                p.XboxMappingSet.Rows.Select(r => r.Target).ToArray());
+            foreach (var row in p.XboxMappingSet.Rows)
+            {
+                var src = Assert.Single(row.Sources);
+                Assert.Equal("Gamepad " + row.Target, src.Descriptor);
+                Assert.True(string.IsNullOrEmpty(src.DeviceGuid));
+            }
+            Assert.Equal(4, p.Report.Entries.Count);
+            Assert.All(p.Report.Entries, e =>
+            {
+                Assert.Equal(TranslationStatus.Clean, e.Status);
+                Assert.Equal(TranslationReasons.RowEmitted, e.ReasonKey);
+            });
+            Assert.DoesNotContain(p.Report.Entries, e =>
+                e.ReasonKey == TranslationReasons.DefaultAutomapPassthrough);
+        }
+
+        [Fact]
+        public void PureIdentityConfig_StillNeedsXboxSlot()
+        {
+            string vdf = Head
+                + Group(1, "four_buttons",
+                    "\t\t\"inputs\"\n\t\t{\n"
+                    + Inp("button_a", "xinput_button A")
+                    + "\t\t}\n")
+                + Preset(0, "Default", (1, "button_diamond active"))
+                + "}\n";
+            var p = Translate(vdf);
+            Assert.True(p.NeedsXboxSlot);
+            Assert.False(p.NeedsKbmSlot);
         }
 
         [Fact]
         public void DivergentTargetAbsorbsIdentityBinding()
         {
             // button_a -> B (divergent), button_b -> B (identity): the B row
-            // must carry BOTH sources, because a row suppresses the automap
-            // fallback for its target.
+            // must carry BOTH sources, not a duplicate ButtonB row.
             string vdf = Head
                 + Group(1, "four_buttons",
                     "\t\t\"inputs\"\n\t\t{\n"
@@ -245,10 +273,92 @@ namespace PadForge.SteamWorkshop.Tests
             Assert.Equal("ButtonB", row.Target);
             Assert.Equal(new[] { "Gamepad ButtonA", "Gamepad ButtonB" },
                 row.Sources.Select(s => s.Descriptor).ToArray());
-            // The remap leaves ButtonA's automap unclaimed: reported.
-            Assert.Contains(p.Report.Entries, e =>
-                e.ReasonKey == TranslationReasons.AutomapAlsoActive
-                && e.ReasonArgs.SequenceEqual(new[] { "Gamepad ButtonA", "ButtonA" }));
+            // ButtonA's automap default no longer fires at all on an
+            // authoritative imported set, so the old "automap also active"
+            // warning would be false and must not appear.
+            Assert.DoesNotContain(p.Report.Entries, e =>
+                e.ReasonKey == TranslationReasons.AutomapAlsoActive);
+        }
+
+        // ─── Matched-side implicit analog outputs ───────────────────────
+
+        [Fact]
+        public void MatchedStick_EmitsExplicitAxisPassthroughRows()
+        {
+            // joystick_move with no output_joystick redirect: Steam passes
+            // the stick through implicitly, so the authoritative set gets
+            // the explicit axis pair.
+            string vdf = Head
+                + Group(1, "joystick_move", SimpleInput("click", "xinput_button JOYSTICK_LEFT"))
+                + Preset(0, "Default", (1, "joystick active"))
+                + "}\n";
+            var p = Translate(vdf);
+
+            var x = p.XboxMappingSet.Rows.Single(r => r.Target == "LeftThumbAxisX");
+            var y = p.XboxMappingSet.Rows.Single(r => r.Target == "LeftThumbAxisY");
+            Assert.Equal("Gamepad LeftStickX", Assert.Single(x.Sources).Descriptor);
+            Assert.Equal("Gamepad LeftStickY", Assert.Single(y.Sources).Descriptor);
+            Assert.False(x.Sources[0].HalfAxis);
+            Assert.True(string.IsNullOrEmpty(x.Sources[0].DeviceGuid));
+            // The click identity still lands as its own row.
+            Assert.Contains(p.XboxMappingSet.Rows, r => r.Target == "LeftThumbButton");
+        }
+
+        [Fact]
+        public void MatchedTrigger_AnalogSourcePrimary_ClickIdentityAbsorbed()
+        {
+            string vdf = Head
+                + Group(1, "trigger", SimpleInput("click", "xinput_button TRIGGER_LEFT"))
+                + Preset(0, "Default", (1, "left_trigger active"))
+                + "}\n";
+            var p = Translate(vdf);
+
+            var row = Assert.Single(p.XboxMappingSet.Rows);
+            Assert.Equal("LeftTrigger", row.Target);
+            // Direct full-axis passthrough is primary; the click identity
+            // absorbs behind it instead of standing alone as the only
+            // upper-half source.
+            Assert.Equal(2, row.Sources.Count);
+            Assert.Equal("Gamepad LeftTrigger", row.Sources[0].Descriptor);
+            Assert.False(row.Sources[0].HalfAxis);
+            Assert.Equal("Gamepad LeftTrigger", row.Sources[1].Descriptor);
+            Assert.True(row.Sources[1].HalfAxis);
+            // Axis default combine (max-abs), not Sum: the pull must stay a
+            // clean analog read with the click leg riding on top.
+            Assert.True(string.IsNullOrEmpty(row.CombineMode));
+        }
+
+        [Fact]
+        public void DivergentStick_MouseMode_GetsNoMatchedAxisRows()
+        {
+            // joystick_mouse re-natures the stick to mouse output: no
+            // implicit stick passthrough exists, so none may be synthesized.
+            string vdf = Head
+                + Group(1, "joystick_mouse", SimpleInput("click", "xinput_button JOYSTICK_LEFT"))
+                + Preset(0, "Default", (1, "joystick active"))
+                + "}\n";
+            var p = Translate(vdf);
+
+            Assert.DoesNotContain(p.XboxMappingSet.Rows, r => r.Target == "LeftThumbAxisX");
+            Assert.DoesNotContain(p.XboxMappingSet.Rows, r => r.Target == "LeftThumbAxisY");
+            Assert.Contains(p.KbmMappingSet.Rows, r => r.Target == "KbmMouseX");
+        }
+
+        [Fact]
+        public void PureKbmConfig_MatchedStickEmitsNothing_XboxStaysEmpty()
+        {
+            // No xinput binding anywhere: the Xbox side is not in play, so
+            // the matched stick must not sprout Xbox rows (a pure keyboard
+            // config imports without a phantom Xbox pad).
+            string vdf = Head
+                + Group(1, "joystick_move", SimpleInput("click", "key_press E"))
+                + Preset(0, "Default", (1, "joystick active"))
+                + "}\n";
+            var p = Translate(vdf);
+
+            Assert.Empty(p.XboxMappingSet.Rows);
+            Assert.False(p.NeedsXboxSlot);
+            Assert.Contains(p.KbmMappingSet.Rows, r => r.Target == "KbmKey45");
         }
 
         // ─── Macros ─────────────────────────────────────────────────────

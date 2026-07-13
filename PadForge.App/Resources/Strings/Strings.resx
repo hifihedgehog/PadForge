@@ -1114,6 +1114,18 @@
   <data name="MacroAction_Type_MouseLimitRegion" xml:space="preserve"><value>Limit Mouse Region</value></data>
   <data name="MacroAction_MouseLimitRegion_Tooltip" xml:space="preserve"><value>Toggles a cursor region clamp on press. Press once to keep the cursor inside the region, press again to release.</value></data>
   <data name="MacroAction_MouseLimitRegion_Format" xml:space="preserve"><value>Limit Mouse Region: {0}</value></data>
+  <data name="MacroAction_Type_MoveMouseToScreenPosition" xml:space="preserve"><value>Move Mouse to Position</value></data>
+  <data name="MacroAction_MoveMouseToScreenPosition_Tooltip" xml:space="preserve"><value>Warps the desktop cursor to a fixed screen position on press. Use Pick on screen to capture a spot with the cursor.</value></data>
+  <data name="MacroAction_MoveMouseToScreenPosition_Format" xml:space="preserve"><value>Move Mouse to {0}, {1}</value></data>
+  <data name="MacroAction_Type_RepeatKeyWhileHeld" xml:space="preserve"><value>Repeat Key While Held</value></data>
+  <data name="MacroAction_RepeatKeyWhileHeld_Tooltip" xml:space="preserve"><value>Fires the key on a fixed interval for as long as the trigger is held (autofire / turbo).</value></data>
+  <data name="MacroAction_RepeatKeyWhileHeld_Format" xml:space="preserve"><value>Repeat {0} every {1} ms</value></data>
+  <data name="Macro_MouseX_Label" xml:space="preserve"><value>Mouse X</value></data>
+  <data name="Macro_MouseY_Label" xml:space="preserve"><value>Mouse Y</value></data>
+  <data name="Macro_RepeatInterval_Label" xml:space="preserve"><value>Interval</value></data>
+  <data name="Macro_PickOnScreen" xml:space="preserve"><value>Pick on screen</value></data>
+  <data name="Macro_PickOnScreen_Countdown_Format" xml:space="preserve"><value>Capturing in {0}...</value></data>
+  <data name="Macro_PickOnScreen_Tooltip" xml:space="preserve"><value>Click, then move the cursor onto the target. Its position is captured after a short countdown.</value></data>
   <data name="Macro_CursorClampMode_Label" xml:space="preserve"><value>Mode</value></data>
   <data name="Macro_CursorClampInsetX_Label" xml:space="preserve"><value>Inset X</value></data>
   <data name="Macro_CursorClampInsetY_Label" xml:space="preserve"><value>Inset Y</value></data>
@@ -1150,6 +1162,7 @@
   <data name="Mapping_TouchpadFingerX_Format" xml:space="preserve"><value>Touchpad {0} Finger {1} X</value></data>
   <data name="Mapping_TouchpadFingerY_Format" xml:space="preserve"><value>Touchpad {0} Finger {1} Y</value></data>
   <data name="Mapping_TouchpadFingerTouch_Format" xml:space="preserve"><value>Touchpad {0} Finger {1} Touch</value></data>
+  <data name="Mapping_TouchpadFingerPressure_Format" xml:space="preserve"><value>Touchpad {0} Finger {1} Pressure</value></data>
 
   <!-- ═══ Touchpad Gesture Mapping Labels ═══ -->
   <data name="Mapping_TouchpadGesture_SwipeUp" xml:space="preserve"><value>Swipe Up</value></data>
@@ -1478,6 +1491,9 @@
   <data name="Mapping_MouseMotionY" xml:space="preserve"><value>Mouse Motion Y</value></data>
   <data name="Mapping_IrPointerSensitivity" xml:space="preserve"><value>Sensitivity</value></data>
   <data name="Mapping_IrPointerSensitivity_Tooltip" xml:space="preserve"><value>Per-source IR pointer sensitivity. 1.0 reaches full stick deflection at the edge of the camera's field of view. Values above 1.0 reach full deflection with less aim travel. Values below 1.0 need more.</value></data>
+  <data name="Mapping_Sensitivity" xml:space="preserve"><value>Sensitivity</value></data>
+  <data name="Mapping_Sensitivity_Tooltip" xml:space="preserve"><value>Per-source sensitivity for a plain axis, slider, or gamepad stick / trigger. 1.0 leaves the input unchanged. Values above 1.0 reach full deflection with less travel. Values below 1.0 need more.</value></data>
+  <data name="Mapping_Gamepad_Format" xml:space="preserve"><value>Gamepad {0}</value></data>
   <data name="Mapping_MouseMotionSensitivity_Tooltip" xml:space="preserve"><value>Sensitivity of the mouse motion per source. 1.0 reaches full deflection at the same speed a real mouse would, values above 1.0 need less motion, values below need more.</value></data>
   <data name="Mapping_BalanceTotalWeight" xml:space="preserve"><value>Balance Total Weight</value></data>
   <data name="Mapping_BalanceLeanX" xml:space="preserve"><value>Balance Lean X</value></data>

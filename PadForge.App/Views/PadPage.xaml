@@ -1889,6 +1889,12 @@
                                             <ComboBoxItem Content="{Binding MacroAction_Type_MouseLimitRegion, Source={x:Static strings:Strings.Instance}}"
                                                           Tag="{x:Static vm:MacroActionType.MouseLimitRegion}"
                                                           ToolTip="{Binding MacroAction_MouseLimitRegion_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                            <ComboBoxItem Content="{Binding MacroAction_Type_MoveMouseToScreenPosition, Source={x:Static strings:Strings.Instance}}"
+                                                          Tag="{x:Static vm:MacroActionType.MoveMouseToScreenPosition}"
+                                                          ToolTip="{Binding MacroAction_MoveMouseToScreenPosition_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                            <ComboBoxItem Content="{Binding MacroAction_Type_RepeatKeyWhileHeld, Source={x:Static strings:Strings.Instance}}"
+                                                          Tag="{x:Static vm:MacroActionType.RepeatKeyWhileHeld}"
+                                                          ToolTip="{Binding MacroAction_RepeatKeyWhileHeld_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                             <ComboBoxItem Content="{Binding MacroAction_Type_DisconnectController, Source={x:Static strings:Strings.Instance}}"
                                                           Tag="{x:Static vm:MacroActionType.DisconnectController}"
                                                           ToolTip="{Binding MacroAction_DisconnectController_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
@@ -2090,7 +2096,39 @@
                                                    Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
                                     </StackPanel>
 
-                                    <!-- Button flags — checkbox grid for ButtonPress / ButtonRelease -->
+                                    <!-- Move Mouse to Screen Position editor (#9). Mouse X / Mouse Y + on-screen pick -->
+                                    <StackPanel Margin="0,0,0,6"
+                                                Visibility="{Binding IsMoveMouseToScreenPositionType, Converter={StaticResource BoolToVisibilityConverter}}">
+                                        <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                            <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Macro_MouseX_Label, Source={x:Static strings:Strings.Instance}}"
+                                                       Width="80" Margin="0,0,8,0" VerticalAlignment="Center"/>
+                                            <TextBox Text="{Binding MouseX, Mode=TwoWay, StringFormat=F0, UpdateSourceTrigger=LostFocus}"
+                                                     Width="80" VerticalAlignment="Center"/>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                            <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Macro_MouseY_Label, Source={x:Static strings:Strings.Instance}}"
+                                                       Width="80" Margin="0,0,8,0" VerticalAlignment="Center"/>
+                                            <TextBox Text="{Binding MouseY, Mode=TwoWay, StringFormat=F0, UpdateSourceTrigger=LostFocus}"
+                                                     Width="80" VerticalAlignment="Center"/>
+                                        </StackPanel>
+                                        <Button Content="{Binding MousePickButtonText}" Command="{Binding PickMousePositionCommand}"
+                                                HorizontalAlignment="Left" Padding="8,4" Margin="0,0,0,4"
+                                                ToolTip="{Binding Macro_PickOnScreen_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                        <TextBlock Text="{Binding Macro_CursorWrite_Caveat, Source={x:Static strings:Strings.Instance}}"
+                                                   FontSize="11" TextWrapping="Wrap"
+                                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                                    </StackPanel>
+
+                                    <!-- Repeat Key While Held interval (#9). Key picker is the shared IsAnyKeyType panel below -->
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,6"
+                                                Visibility="{Binding IsRepeatKeyWhileHeldType, Converter={StaticResource BoolToVisibilityConverter}}">
+                                        <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Macro_RepeatInterval_Label, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
+                                                   Width="80" Margin="0,0,8,0"/>
+                                        <TextBox Text="{Binding IntervalMs, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Width="80"/>
+                                        <TextBlock Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text="{Binding Common_Ms, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="4,0,0,0"/>
+                                    </StackPanel>
+
+                                    <!-- Button flags checkbox grid for ButtonPress / ButtonRelease -->
                                     <StackPanel Margin="0,0,0,6"
                                                 Visibility="{Binding IsButtonType, Converter={StaticResource BoolToVisibilityConverter}}">
                                         <TextBlock Text="{Binding Macro_Buttons, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,0,0,4"/>
@@ -2110,9 +2148,9 @@
                                         </ItemsControl>
                                     </StackPanel>
 
-                                    <!-- Key combo — for KeyPress / KeyRelease -->
+                                    <!-- Key combo for KeyPress / KeyRelease / RepeatKeyWhileHeld (#9) -->
                                     <StackPanel Margin="0,0,0,6"
-                                                Visibility="{Binding IsKeyType, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                Visibility="{Binding IsAnyKeyType, Converter={StaticResource BoolToVisibilityConverter}}">
                                         <TextBlock Text="{Binding Macro_KeyCombo, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,0,0,4"/>
                                         <TextBox Text="{Binding KeyString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                  FontFamily="{StaticResource TelemetryFontFamily}" Margin="0,0,0,4"
@@ -4393,6 +4431,22 @@
                                                             <TextBlock Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text="×" VerticalAlignment="Center" Margin="0,0,2,0"/>
                                                             <ui:Button Command="{Binding ResetIrPointerSensitivityCommand}" Style="{StaticResource ResetButton}"/>
                                                         </StackPanel>
+                                                        <!-- Generic per-source sensitivity (#9). Renders for plain "Axis N" /
+                                                             "Slider N" and the abstract Gamepad sticks / triggers. -->
+                                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="4,0"
+                                                                    Visibility="{Binding IsGenericSensitivitySource, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                            <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Mapping_Sensitivity, Source={x:Static strings:Strings.Instance}}"
+                                                                       VerticalAlignment="Center" Margin="0,0,4,0"/>
+                                                            <Slider Value="{Binding Sensitivity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                                    Minimum="0.1" Maximum="5" SmallChange="0.1" LargeChange="0.5"
+                                                                    Width="120" VerticalAlignment="Center"
+                                                                    ToolTip="{Binding Mapping_Sensitivity_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                                            <TextBox Text="{Binding Sensitivity, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat={}{0:0.00}}"
+                                                                     Width="50" Margin="4,0,4,0" Padding="2,1"
+                                                                     VerticalContentAlignment="Center"/>
+                                                            <TextBlock Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text="×" VerticalAlignment="Center" Margin="0,0,2,0"/>
+                                                            <ui:Button Command="{Binding ResetSensitivityCommand}" Style="{StaticResource ResetButton}"/>
+                                                        </StackPanel>
                                                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="4,0" Width="230"
                                                                     Visibility="{Binding IsKindDescriptorless, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}">
                                                             <StackPanel.Style>
@@ -5151,6 +5205,22 @@
                                                          VerticalContentAlignment="Center"/>
                                                 <TextBlock Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text="×" VerticalAlignment="Center" Margin="0,0,2,0"/>
                                                 <ui:Button Command="{Binding ResetIrPointerSensitivityCommand}" Style="{StaticResource ResetButton}"/>
+                                            </StackPanel>
+                                            <!-- Generic per-source sensitivity (#9). Renders for plain "Axis N" /
+                                                 "Slider N" and the abstract Gamepad sticks / triggers. -->
+                                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="6,0,0,0"
+                                                        Visibility="{Binding IsGenericSensitivitySource, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Mapping_Sensitivity, Source={x:Static strings:Strings.Instance}}"
+                                                           VerticalAlignment="Center" Margin="0,0,4,0"/>
+                                                <Slider Value="{Binding Sensitivity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                        Minimum="0.1" Maximum="5" SmallChange="0.1" LargeChange="0.5"
+                                                        Width="120" VerticalAlignment="Center"
+                                                        ToolTip="{Binding Mapping_Sensitivity_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                                <TextBox Text="{Binding Sensitivity, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat={}{0:0.00}}"
+                                                         Width="50" Margin="4,0,4,0" Padding="2,1"
+                                                         VerticalContentAlignment="Center"/>
+                                                <TextBlock Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text="×" VerticalAlignment="Center" Margin="0,0,2,0"/>
+                                                <ui:Button Command="{Binding ResetSensitivityCommand}" Style="{StaticResource ResetButton}"/>
                                             </StackPanel>
                                         </StackPanel>
                                     </DataTemplate>

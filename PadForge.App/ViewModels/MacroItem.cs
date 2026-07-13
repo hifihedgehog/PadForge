@@ -1873,6 +1873,7 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(DisplayText));
                     OnPropertyChanged(nameof(IsButtonType));
                     OnPropertyChanged(nameof(IsKeyType));
+                    OnPropertyChanged(nameof(IsAnyKeyType));
                     OnPropertyChanged(nameof(IsDurationType));
                     OnPropertyChanged(nameof(IsAxisType));
                     OnPropertyChanged(nameof(IsSystemVolumeType));
@@ -1908,6 +1909,8 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(IsMouseRecenterType));
                     OnPropertyChanged(nameof(IsMouseFixPositionType));
                     OnPropertyChanged(nameof(IsMouseLimitRegionType));
+                    OnPropertyChanged(nameof(IsMoveMouseToScreenPositionType));
+                    OnPropertyChanged(nameof(IsRepeatKeyWhileHeldType));
                     OnPropertyChanged(nameof(IsDisconnectControllerType));
                     OnPropertyChanged(nameof(IsDisconnectSpecificDevice));
                     OnPropertyChanged(nameof(DisconnectDeviceOptions));
@@ -1928,6 +1931,17 @@ namespace PadForge.ViewModels
                     {
                         CursorPinX = pcx;
                         CursorPinY = pcy;
+                    }
+
+                    // Same rationale for a freshly-typed move-cursor action (#9):
+                    // seed the target to the primary-monitor center so an
+                    // unconfigured (0,0) doesn't warp the cursor to the corner.
+                    if (_type == MacroActionType.MoveMouseToScreenPosition
+                        && _mouseX == 0 && _mouseY == 0
+                        && CursorControlService.TryGetPrimaryCenter(out int mcx, out int mcy))
+                    {
+                        MouseX = mcx;
+                        MouseY = mcy;
                     }
                 }
             }
@@ -2041,6 +2055,22 @@ namespace PadForge.ViewModels
         /// Cursor Clamp Mode dropdown plus the Inset X / Inset Y spinboxes.</summary>
         [System.Xml.Serialization.XmlIgnore]
         public bool IsMouseLimitRegionType => _type == MacroActionType.MouseLimitRegion;
+
+        /// <summary>True when Type is MoveMouseToScreenPosition (issue #9). Surfaces
+        /// the Mouse X / Mouse Y spinboxes plus the "Pick on screen" capture button.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool IsMoveMouseToScreenPositionType => _type == MacroActionType.MoveMouseToScreenPosition;
+
+        /// <summary>True when Type is RepeatKeyWhileHeld (issue #9). Surfaces the
+        /// key picker (shared with Key Press) plus the Interval spinbox.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool IsRepeatKeyWhileHeldType => _type == MacroActionType.RepeatKeyWhileHeld;
+
+        /// <summary>True when the key-combo picker applies: KeyPress / KeyRelease or
+        /// the RepeatKeyWhileHeld autofire (issue #9), which reuses the same key
+        /// picker (both read <see cref="ParsedKeyCodes"/>).</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool IsAnyKeyType => IsKeyType || _type == MacroActionType.RepeatKeyWhileHeld;
 
         /// <summary>True when Type is DisconnectController (issue #162). Surfaces
         /// the target-mode dropdown.</summary>
@@ -3341,6 +3371,115 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _cursorPinY, ClampToPrimaryHeight(value));
         }
 
+        private int _mouseX;
+        /// <summary>Target X coordinate (primary-monitor physical pixels) a
+        /// <see cref="MacroActionType.MoveMouseToScreenPosition"/> action warps the
+        /// cursor to on press (issue #9). Seeded to the primary-monitor center on
+        /// first type switch and pickable on screen. Clamped to the primary
+        /// monitor's width, mirroring <see cref="CursorPinX"/>.</summary>
+        public int MouseX
+        {
+            get => _mouseX;
+            set
+            {
+                if (SetProperty(ref _mouseX, ClampToPrimaryWidth(value)))
+                    OnPropertyChanged(nameof(DisplayText));
+            }
+        }
+
+        private int _mouseY;
+        /// <summary>Target Y coordinate (primary-monitor physical pixels) a
+        /// <see cref="MacroActionType.MoveMouseToScreenPosition"/> action warps the
+        /// cursor to on press (issue #9). Seeded to the primary-monitor center on
+        /// first type switch and pickable on screen. Clamped to the primary
+        /// monitor's height, mirroring <see cref="CursorPinY"/>.</summary>
+        public int MouseY
+        {
+            get => _mouseY;
+            set
+            {
+                if (SetProperty(ref _mouseY, ClampToPrimaryHeight(value)))
+                    OnPropertyChanged(nameof(DisplayText));
+            }
+        }
+
+        private int _intervalMs = 100;
+        /// <summary>Repeat interval in milliseconds for
+        /// <see cref="MacroActionType.RepeatKeyWhileHeld"/> (issue #9): the pad
+        /// fires one KeyDown+KeyUp pulse each interval while the trigger is held.
+        /// Clamped to 10..1000; default 100 (10 taps/second).</summary>
+        public int IntervalMs
+        {
+            get => _intervalMs;
+            set
+            {
+                if (SetProperty(ref _intervalMs, Math.Clamp(value, 10, 1000)))
+                    OnPropertyChanged(nameof(DisplayText));
+            }
+        }
+
+        /// <summary>Transient timing state for
+        /// <see cref="MacroActionType.RepeatKeyWhileHeld"/>: the UTC time the last
+        /// autofire pulse was sent. Reset to <see cref="DateTime.MinValue"/> so the
+        /// first held frame fires immediately. Never serialized.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        internal DateTime RepeatKeyLastFireUtc { get; set; } = DateTime.MinValue;
+
+        private System.Windows.Threading.DispatcherTimer _mousePickTimer;
+        private int _mousePickCountdown;
+
+        /// <summary>True while a MoveMouseToScreenPosition "Pick on screen" capture
+        /// countdown is running (issue #9).</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool IsPickingMousePosition => _mousePickTimer != null;
+
+        /// <summary>Label for the "Pick on screen" button: the live countdown while
+        /// capturing, the idle prompt otherwise (issue #9).</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public string MousePickButtonText => _mousePickTimer != null
+            ? string.Format(Strings.Instance.Macro_PickOnScreen_Countdown_Format, _mousePickCountdown)
+            : Strings.Instance.Macro_PickOnScreen;
+
+        private RelayCommand _pickMousePositionCommand;
+        /// <summary>Starts a 3-second "pick on screen" countdown (issue #9); when it
+        /// elapses, the current desktop cursor position is captured into
+        /// <see cref="MouseX"/> / <see cref="MouseY"/>. The delay lets the user move
+        /// the cursor onto the target after clicking the button.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public RelayCommand PickMousePositionCommand =>
+            _pickMousePositionCommand ??= new RelayCommand(StartMousePositionPick);
+
+        private void StartMousePositionPick()
+        {
+            if (_mousePickTimer != null) return; // already picking
+            _mousePickCountdown = 3;
+            _mousePickTimer = new System.Windows.Threading.DispatcherTimer
+            {
+                Interval = TimeSpan.FromSeconds(1)
+            };
+            _mousePickTimer.Tick += (_, _) =>
+            {
+                _mousePickCountdown--;
+                if (_mousePickCountdown > 0)
+                {
+                    OnPropertyChanged(nameof(MousePickButtonText));
+                    return;
+                }
+                _mousePickTimer.Stop();
+                _mousePickTimer = null;
+                if (CursorControlService.TryGetCursorPosition(out int cx, out int cy))
+                {
+                    MouseX = cx;
+                    MouseY = cy;
+                }
+                OnPropertyChanged(nameof(IsPickingMousePosition));
+                OnPropertyChanged(nameof(MousePickButtonText));
+            };
+            OnPropertyChanged(nameof(IsPickingMousePosition));
+            OnPropertyChanged(nameof(MousePickButtonText));
+            _mousePickTimer.Start();
+        }
+
         private CursorClampMode _cursorClampMode = CursorClampMode.XAndY;
         /// <summary>Which axes a <see cref="MacroActionType.MouseLimitRegion"/>
         /// action clamps inside the inset region while engaged (issue #110).</summary>
@@ -3703,6 +3842,12 @@ namespace PadForge.ViewModels
                     MacroActionType.MouseLimitRegion => string.Format(
                         Strings.Instance.MacroAction_MouseLimitRegion_Format,
                         CursorClampModeDisplayName(_cursorClampMode)),
+                    MacroActionType.MoveMouseToScreenPosition => string.Format(
+                        Strings.Instance.MacroAction_MoveMouseToScreenPosition_Format,
+                        _mouseX, _mouseY),
+                    MacroActionType.RepeatKeyWhileHeld => string.Format(
+                        Strings.Instance.MacroAction_RepeatKeyWhileHeld_Format,
+                        keyDisplay, _intervalMs),
                     MacroActionType.DisconnectController => string.Format(
                         Strings.Instance.MacroAction_DisconnectController_Format,
                         DisconnectTargetDisplayName()),
@@ -4203,7 +4348,24 @@ namespace PadForge.ViewModels
         /// mode engages and restore it after. The Lighting tab's Battery
         /// mode reasserts on its next cadence. At the tail per the
         /// APPEND-ONLY rule above.</summary>
-        GuideLedBrightness
+        GuideLedBrightness,
+
+        /// <summary>Warps the desktop cursor to a fixed primary-monitor pixel
+        /// (issue #9). One press, one <c>SetCursorPos</c> write via
+        /// <see cref="CursorControlService"/>. <see cref="MacroAction.MouseX"/> /
+        /// <c>MouseY</c> hold the target, seeded to the current cursor position
+        /// on first type switch and pickable on screen from the editor. At the
+        /// tail per the APPEND-ONLY rule above.</summary>
+        MoveMouseToScreenPosition,
+
+        /// <summary>Turbo / autofire for a keyboard key (issue #9). While the
+        /// macro trigger is held, fires a full KeyDown+KeyUp pulse for
+        /// <see cref="MacroAction.KeyCode"/> every
+        /// <see cref="MacroAction.IntervalMs"/> milliseconds (10..1000, default
+        /// 100). A continuous action, so a macro whose only action is this one
+        /// keeps pulsing until release. At the tail per the APPEND-ONLY rule
+        /// above.</summary>
+        RepeatKeyWhileHeld
     }
 
     /// <summary>Target selector for <see cref="MacroActionType.DisconnectController"/>

@@ -1,0 +1,113 @@
+using System.Collections.Generic;
+using System.Linq;
+using PadForge.Engine.Data;
+using PadForge.Services;
+using PadForge.SteamWorkshop.Translation;
+using PadForge.ViewModels;
+using Xunit;
+
+namespace PadForge.Tests
+{
+    /// <summary>
+    /// Owner report 2026-07-13: an imported Workshop profile displayed a concrete
+    /// controller on the SECONDARY sources of a multi-source mapping row instead
+    /// of "(Any device)". The stored DeviceGuid was correctly empty (see the
+    /// translator guard in PadForge.SteamWorkshop.Tests); the regression was
+    /// display-only. <see cref="MappingSourceItem.SyncSelectedInputFromState"/>
+    /// stamped the slot's first concrete device onto an empty-guid ("any device")
+    /// source via a descriptor-only picker fallback, and the annotation / tooltip
+    /// surfaces read that same fallback. These pin the fix: a genuine GUID match
+    /// still stamps the device; a descriptor-only fallback never does, so the
+    /// source's own "(Any device)" identity stands.
+    /// </summary>
+    public class WorkshopSecondarySourceDisplayTests
+    {
+        private const string ConcreteGuid = "11111111-1111-1111-1111-111111111111";
+        private const string ConcreteLabel = "DualSense Edge";
+
+        // The slot's cross-device picker list only ever holds CONCRETE-device
+        // choices (InputService.PopulateAvailableInputs stamps each with a real
+        // guid + label); there is no empty-guid "(Any device)" entry, which is
+        // why a descriptor-only fallback lands on a real controller.
+        private static List<InputChoice> ConcreteSlotChoices() => new()
+        {
+            new InputChoice
+            {
+                Descriptor = "Gamepad LeftStick",
+                DisplayName = "Left Stick (Click)",
+                DeviceGuid = ConcreteGuid,
+                DeviceLabel = ConcreteLabel,
+            },
+        };
+
+        [Fact]
+        public void EmptyGuidSecondary_DoesNotAdoptConcreteDevice()
+        {
+            // Mirrors the InputService load path: FromDomain leaves the label
+            // empty, the load path resolves the source's own (empty) guid to the
+            // "(Any device)" sentinel.
+            var src = MappingSourceItem.FromDomain(new MappingSource
+            {
+                Descriptor = "Gamepad LeftStick",
+                DeviceGuid = "",
+            });
+            src.DeviceLabel = "(Any device)";
+
+            src.SyncSelectedInputFromState(ConcreteSlotChoices());
+
+            // The picker still resolves a representative so the ComboBox renders
+            // the descriptor.
+            Assert.NotNull(src.SelectedInput);
+            Assert.Equal("Gamepad LeftStick", src.SelectedInput.Descriptor);
+
+            // But the source's displayed device identity stays "any device", on
+            // both the per-source subtitle field and the shared display accessor
+            // the annotation / tooltip surfaces read.
+            Assert.NotEqual(ConcreteLabel, src.DeviceLabel);
+            Assert.Equal("(Any device)", src.DisplayDeviceLabel);
+        }
+
+        [Fact]
+        public void ConcreteGuidSecondary_StillAdoptsItsDevice()
+        {
+            // Positive control: a source genuinely bound to the slot device must
+            // keep showing that device (the 2026-07-05 multi-device wiring fix).
+            var src = MappingSourceItem.FromDomain(new MappingSource
+            {
+                Descriptor = "Gamepad LeftStick",
+                DeviceGuid = ConcreteGuid,
+            });
+
+            src.SyncSelectedInputFromState(ConcreteSlotChoices());
+
+            Assert.NotNull(src.SelectedInput);
+            Assert.Equal(ConcreteLabel, src.DeviceLabel);
+            Assert.Equal(ConcreteLabel, src.DisplayDeviceLabel);
+        }
+
+        [Fact]
+        public void Materializer_PreservesEmptyGuidOnMultiSourceRow()
+        {
+            // The materializer is a pass-through for sources; an empty guid must
+            // survive translate -> materialize so the display contract holds end
+            // to end.
+            var t = new TranslatedProfile { Name = "MS", NeedsKbmSlot = true };
+            t.KbmMappingSet.Rows.Add(new MappingRow
+            {
+                Target = "KbmKey45",
+                CombineMode = "OR",
+                Sources =
+                {
+                    new MappingSource { Descriptor = "Gamepad DPadUp" },
+                    new MappingSource { Descriptor = "Gamepad ButtonStart" },
+                },
+            });
+
+            var p = WorkshopProfileMaterializer.Materialize(t);
+            var row = p.SlotMappingSets[0].Rows.Single(r => r.Target == "KbmKey45");
+
+            Assert.Equal(2, row.Sources.Count);
+            Assert.All(row.Sources, s => Assert.True(string.IsNullOrEmpty(s.DeviceGuid)));
+        }
+    }
+}

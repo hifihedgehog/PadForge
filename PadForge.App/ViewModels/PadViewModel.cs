@@ -1381,7 +1381,7 @@ namespace PadForge.ViewModels
                 if (s == null) continue;
                 string name = (s.SelectedInput?.DisplayName ?? s.Descriptor ?? "").Trim();
                 if (name.Length == 0) continue;
-                string dev = (s.SelectedInput?.DeviceLabel ?? s.DeviceLabel ?? "").Trim();
+                string dev = (s.DisplayDeviceLabel ?? "").Trim();
                 parts.Add(dev.Length > 0 && !string.Equals(dev, primaryDevice, StringComparison.Ordinal)
                     ? dev + ": " + name : name);
             }

@@ -34,7 +34,7 @@ Free Windows app. No subscription. No paywall. No nag screens. Built on SDL3, [H
 
 PadForge is for sim racers running wheels in games that only understand Xbox controllers. For DualSense owners who want adaptive triggers and lightbar effects in Steam games that ignore them. For accessibility users mapping whatever hardware they can use. For anyone whose controller doesn't match what their game expects.
 
-> **New in 4.0.0.** A new look and a stack of new hardware. **DualShock 3 controllers** now work: plug one in over USB and PadForge binds it with WinUSB on the spot, or pair it over Bluetooth from the Devices page, which installs a signed BthPS3 driver on demand. Sixaxis motion, ten pressure axes, rumble, the player LED, and battery all report. **Wii pointer modes** turn the Wii Remote's IR camera into an on-screen pointer, with an FPS-mouse mode, aspect-corrected border modes, and a freeze that holds position when the sensor bar leaves view instead of snapping to a corner. **Mouse gestures** let you hold a mouse button and flick up, down, left, or right to fire an action. **Stick Trim** lets a stick ramp a held digital trigger into a smooth analog press. **SOCD cleaning** resolves opposite key presses on the Keyboard & Mouse controller with last-wins (Snap Tap), first-wins, or neutral. **Guide button LED brightness** dims the Xbox button on Xbox One, Elite, and Series pads over USB, and the 2015 Steam Controller's home LED, fixed or following the battery. **Shift layers** gain a long-press activation delay and an inactivity auto-cancel. Plus a **Text Block** macro action that types text a character at a time, **Clone Device** to copy a device's controls onto an Extended slot in one click, raw Axis N sources up to 24 axes, and a visual overhaul: Ember accent, an instrument-cluster status bar, an active-profile pill, and slot-card heat. Carrying forward from 3.5 and 3.6: Wii Bluetooth pairing, Remote Link across PCs, native wheel force feedback, MIDI in and out, and controller-speaker audio. [Wiki](https://github.com/hifihedgehog/PadForge/wiki).
+> **New in 4.1.0.** **Steam Workshop config import** browses the community controller configs on the Steam Workshop and translates the one you pick into a PadForge profile, over an anonymous Steam connection with no account. A new look and a stack of new hardware. **DualShock 3 controllers** now work: plug one in over USB and PadForge binds it with WinUSB on the spot, or pair it over Bluetooth from the Devices page, which installs a signed BthPS3 driver on demand. Sixaxis motion, ten pressure axes, rumble, the player LED, and battery all report. **Wii pointer modes** turn the Wii Remote's IR camera into an on-screen pointer, with an FPS-mouse mode, aspect-corrected border modes, and a freeze that holds position when the sensor bar leaves view instead of snapping to a corner. **Mouse gestures** let you hold a mouse button and flick up, down, left, or right to fire an action. **Stick Trim** lets a stick ramp a held digital trigger into a smooth analog press. **SOCD cleaning** resolves opposite key presses on the Keyboard & Mouse controller with last-wins (Snap Tap), first-wins, or neutral. **Guide button LED brightness** dims the Xbox button on Xbox One, Elite, and Series pads over USB, and the 2015 Steam Controller's home LED, fixed or following the battery. **Shift layers** gain a long-press activation delay and an inactivity auto-cancel. Plus a **Text Block** macro action that types text a character at a time, **Clone Device** to copy a device's controls onto an Extended slot in one click, raw Axis N sources up to 24 axes, and a visual overhaul: Ember accent, an instrument-cluster status bar, an active-profile pill, and slot-card heat. Carrying forward from 3.5 and 3.6: Wii Bluetooth pairing, Remote Link across PCs, native wheel force feedback, MIDI in and out, and controller-speaker audio. [Wiki](https://github.com/hifihedgehog/PadForge/wiki).
 
 <p align="center">
   <a href="https://github.com/hifihedgehog/HIDMaestro">
@@ -80,6 +80,12 @@ Stick Trim is a combine mode on the mapping row. Hold a digital trigger to arm i
 Assign a device to an Extended slot and click Clone Device. Every button and axis lands on the matching virtual output, straight through, with no per-input mapping. It works even when the device is assigned but unplugged, so you can set the profile up before the controller is plugged in.
 
 ![Clone Device on an Extended slot](screenshots/extended.jpg)
+
+### Borrow a controller layout from the Steam Workshop.
+
+Point PadForge at a game and it browses the community controller configs published on the Steam Workshop, then translates the one you pick into a PadForge profile: buttons, sticks, triggers, keyboard and mouse bindings, shift layers, and macros. The connection to Steam is anonymous, so no account and no login. It stays off until you enable community config lookup in Settings, and an import report shows what came across cleanly and what needed a substitute.
+
+![Steam Workshop config browser](screenshots/workshop-configs.jpg)
 
 ### Caps Lock for your controller.
 
@@ -370,6 +376,10 @@ Combo triggers from buttons, axes, and POV directions. Action sequences with key
 ### Per-app profiles
 ![Profiles](screenshots/profiles.jpg)
 Each profile holds its own mappings, deadzones, force feedback, lighting, and macros. PadForge watches the foreground window and switches profiles automatically when a matching app gains focus. Controller-shortcut combos cycle profiles without touching the keyboard.
+
+### Steam Workshop config import
+![Steam Workshop config browser](screenshots/workshop-search.jpg)
+Browse community controller configs from the Steam Workshop over an anonymous Steam connection with no account, and translate the one you pick into a PadForge profile. A per-import report lists what came across clean, what was approximated, and what was skipped. Off by default until you enable community config lookup in Settings.
 
 ### Keyboard + Mouse virtual controller
 ![KBM Preview](screenshots/kbm-preview.jpg)

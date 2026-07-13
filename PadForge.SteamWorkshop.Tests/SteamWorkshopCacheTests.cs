@@ -1,0 +1,182 @@
+using System;
+using System.IO;
+using System.Linq;
+using PadForge.SteamWorkshop.Cache;
+
+namespace PadForge.SteamWorkshop.Tests
+{
+    public class SteamWorkshopCacheTests : IDisposable
+    {
+        private readonly string _root;
+        private DateTimeOffset _now = new DateTimeOffset(2026, 1, 1, 0, 0, 0, TimeSpan.Zero);
+
+        public SteamWorkshopCacheTests()
+        {
+            _root = Path.Combine(Path.GetTempPath(), "pfsw-cache-tests", Guid.NewGuid().ToString("N"));
+        }
+
+        public void Dispose()
+        {
+            try
+            {
+                if (Directory.Exists(_root)) Directory.Delete(_root, recursive: true);
+            }
+            catch (IOException)
+            {
+                // Best-effort cleanup.
+            }
+        }
+
+        private SteamWorkshopCache NewCache(
+            long general = SteamWorkshopCache.DefaultGeneralBudgetBytes,
+            long art = SteamWorkshopCache.DefaultArtBudgetBytes)
+            => new SteamWorkshopCache(_root, general, art, () => _now);
+
+        private sealed class Sample
+        {
+            public string Name { get; set; }
+            public int Id { get; set; }
+        }
+
+        [Fact]
+        public void String_round_trips()
+        {
+            var cache = NewCache();
+            cache.PutString(CacheCategory.Details, "123", "hello");
+            Assert.True(cache.TryGetString(CacheCategory.Details, "123", CacheTtls.Details, out var value));
+            Assert.Equal("hello", value);
+        }
+
+        [Fact]
+        public void Bytes_round_trip()
+        {
+            var cache = NewCache();
+            var data = new byte[] { 1, 2, 3, 4, 5 };
+            cache.PutBytes(CacheCategory.Vdf, "793611331_1478305293", data);
+            Assert.True(cache.TryGetBytes(CacheCategory.Vdf, "793611331_1478305293", null, out var read));
+            Assert.Equal(data, read);
+        }
+
+        [Fact]
+        public void Json_round_trips()
+        {
+            var cache = NewCache();
+            cache.PutJson(CacheCategory.Apps, "440", new Sample { Name = "TF2", Id = 440 });
+            Assert.True(cache.TryGetJson<Sample>(CacheCategory.Apps, "440", CacheTtls.Apps, out var sample));
+            Assert.Equal("TF2", sample.Name);
+            Assert.Equal(440, sample.Id);
+        }
+
+        [Fact]
+        public void Absent_key_is_a_miss()
+        {
+            var cache = NewCache();
+            Assert.False(cache.TryGetString(CacheCategory.Details, "nope", CacheTtls.Details, out var value));
+            Assert.Null(value);
+        }
+
+        [Fact]
+        public void Entry_expires_after_ttl()
+        {
+            var cache = NewCache();
+            cache.PutString(CacheCategory.Details, "k", "v");
+
+            _now = _now.AddHours(1);
+            Assert.True(cache.TryGetString(CacheCategory.Details, "k", TimeSpan.FromHours(24), out _));
+
+            _now = _now.AddHours(48); // 49 h total, past the 24 h TTL
+            Assert.False(cache.TryGetString(CacheCategory.Details, "k", TimeSpan.FromHours(24), out _));
+        }
+
+        [Fact]
+        public void Null_ttl_never_expires()
+        {
+            var cache = NewCache();
+            cache.PutBytes(CacheCategory.Vdf, "immutable", new byte[] { 9 });
+            _now = _now.AddDays(3650);
+            Assert.True(cache.TryGetBytes(CacheCategory.Vdf, "immutable", null, out _));
+        }
+
+        [Fact]
+        public void Evicts_least_recently_accessed_when_general_budget_exceeded()
+        {
+            var cache = NewCache(general: 320);
+            var payload = new string('x', 150); // 150 bytes each
+
+            var t0 = _now;
+            _now = t0; cache.PutString(CacheCategory.Details, "a", payload);
+            _now = t0.AddMinutes(1); cache.PutString(CacheCategory.Details, "b", payload);
+            _now = t0.AddMinutes(2); Assert.True(cache.TryGetString(CacheCategory.Details, "a", null, out _)); // touch a
+            _now = t0.AddMinutes(3); cache.PutString(CacheCategory.Details, "c", payload); // 450 > 320 -> evict
+
+            Assert.False(cache.TryGetString(CacheCategory.Details, "b", null, out _)); // b was least recently used
+            Assert.True(cache.TryGetString(CacheCategory.Details, "a", null, out _));
+            Assert.True(cache.TryGetString(CacheCategory.Details, "c", null, out _));
+            Assert.True(cache.BudgetUsedBytes(CacheCategory.Details) <= 320);
+        }
+
+        [Fact]
+        public void Art_budget_is_independent_of_general_budget()
+        {
+            var cache = NewCache(general: 300, art: 10 * 1024);
+            cache.PutBytes(CacheCategory.Art, "hero", new byte[500]);
+
+            // Flood the general budget; art must not be touched.
+            for (var i = 0; i < 6; i++)
+            {
+                _now = _now.AddMinutes(1);
+                cache.PutString(CacheCategory.Details, "g" + i, new string('x', 150));
+            }
+
+            Assert.True(cache.TryGetBytes(CacheCategory.Art, "hero", null, out _));
+            Assert.True(cache.BudgetUsedBytes(CacheCategory.Details) <= 300);
+        }
+
+        [Fact]
+        public void Overwrite_is_atomic_and_leaves_no_temp_files()
+        {
+            var cache = NewCache();
+            cache.PutString(CacheCategory.Details, "k", "first");
+            cache.PutString(CacheCategory.Details, "k", "second");
+
+            Assert.True(cache.TryGetString(CacheCategory.Details, "k", null, out var value));
+            Assert.Equal("second", value);
+
+            var detailsDir = Path.Combine(_root, "details");
+            Assert.DoesNotContain(Directory.EnumerateFiles(detailsDir), f => f.Contains(".tmp-"));
+        }
+
+        [Fact]
+        public void Clear_removes_all_entries()
+        {
+            var cache = NewCache();
+            cache.PutString(CacheCategory.Details, "k", "v");
+            cache.PutBytes(CacheCategory.Art, "a", new byte[] { 1, 2, 3 });
+
+            cache.Clear();
+
+            Assert.False(cache.TryGetString(CacheCategory.Details, "k", null, out _));
+            Assert.False(cache.TryGetBytes(CacheCategory.Art, "a", null, out _));
+            Assert.Equal(0, cache.BudgetUsedBytes(CacheCategory.Details));
+            Assert.Equal(0, cache.BudgetUsedBytes(CacheCategory.Art));
+        }
+
+        [Fact]
+        public void Corrupt_json_is_treated_as_a_miss()
+        {
+            var cache = NewCache();
+            cache.PutString(CacheCategory.Apps, "bad", "{ not valid json ");
+            Assert.False(cache.TryGetJson<Sample>(CacheCategory.Apps, "bad", null, out _));
+        }
+
+        [Fact]
+        public void Unsafe_keys_are_hashed_and_still_round_trip()
+        {
+            var cache = NewCache();
+            const string query = "the elder scrolls v: skyrim / special edition";
+            cache.PutString(CacheCategory.Games, query, "appids");
+            Assert.True(cache.TryGetString(CacheCategory.Games, query, CacheTtls.Games, out var value));
+            Assert.Equal("appids", value);
+        }
+    }
+}

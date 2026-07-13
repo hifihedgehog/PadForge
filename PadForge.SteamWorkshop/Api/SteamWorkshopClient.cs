@@ -24,8 +24,14 @@ namespace PadForge.SteamWorkshop.Api
     /// </summary>
     public sealed class SteamWorkshopClient : IAsyncDisposable
     {
-        /// <summary>Steam's "Controller Configs" Workshop bucket app id.</summary>
+        /// <summary>Steam's "Controller Configs" Workshop bucket app id. Config items
+        /// are consumed by this app; the game they belong to rides an "app" kv-tag.</summary>
         public const uint ControllerConfigsAppId = 241100;
+
+        /// <summary>k_PFI_MatchingFileType_ControllerBindings from the Steamworks
+        /// QueryFiles matching-file-type enum. Not the same enum as the per-item
+        /// EWorkshopFileType (where ControllerBinding is 12).</summary>
+        private const uint MatchingFileTypeControllerBindings = 15;
 
         private static readonly TimeSpan ConnectTimeout = TimeSpan.FromSeconds(15);
         private static readonly TimeSpan LogonTimeout = TimeSpan.FromSeconds(15);
@@ -165,6 +171,24 @@ namespace PadForge.SteamWorkshop.Api
             }
         }
 
+        /// <summary>Diagnostic-only single-item details over the CM session with tags and
+        /// kv-tags included. Used by the smoke harness to ground query-shape facts.</summary>
+        public async Task<PublishedFileDetails> GetCmDetailsAsync(ulong fileId, CancellationToken ct = default)
+        {
+            await EnsureLoggedOnAsync(ct).ConfigureAwait(false);
+            var request = new CPublishedFile_GetDetails_Request
+            {
+                includetags = true,
+                includekvtags = true,
+                includemetadata = true,
+            };
+            request.publishedfileids.Add(fileId);
+            var response = await _publishedFile.GetDetails(request).ToTask().ConfigureAwait(false);
+            if (response.Result != EResult.OK)
+                throw new SteamWorkshopException($"Steam GetDetails failed: {response.Result}.");
+            return response.Body.publishedfiledetails.Count > 0 ? response.Body.publishedfiledetails[0] : null;
+        }
+
         private async Task<CPublishedFile_QueryFiles_Response> FetchAndCacheAsync(
             int appId, EPublishedFileQueryType queryType, int page, int perPage,
             IReadOnlyCollection<string> requiredTags, string cacheKey)
@@ -172,13 +196,22 @@ namespace PadForge.SteamWorkshop.Api
             await EnsureLoggedOnAsync(CancellationToken.None).ConfigureAwait(false);
             await ThrottleAsync(CancellationToken.None).ConfigureAwait(false);
 
+            // Query shape grounded live (2026-07-13, smoke harness): controller
+            // configs are consumed by the 241100 bucket (appid filters on the
+            // CONSUMER app), typed ControllerBindings in the matching-file-type
+            // enum (15, k_PFI_MatchingFileType_ControllerBindings; distinct from
+            // EWorkshopFileType.ControllerBinding = 12 on the items themselves),
+            // and scoped to a game by the "app" kv-tag every config carries.
+            // Without filetype the query returns nothing; without the kv-tag it
+            // returns nothing for the bucket (Skyrim SE: 155,694 items under
+            // this shape, zero under appid=game).
             var request = new CPublishedFile_QueryFiles_Request
             {
                 query_type = (uint)queryType,
                 page = (uint)page,
                 numperpage = (uint)perPage,
-                appid = (uint)appId,
-                creator_appid = ControllerConfigsAppId,
+                appid = ControllerConfigsAppId,
+                filetype = MatchingFileTypeControllerBindings,
                 return_vote_data = true,
                 return_tags = true,
                 return_kv_tags = true,
@@ -187,6 +220,12 @@ namespace PadForge.SteamWorkshop.Api
                 return_details = true,
                 return_playtime_stats = 30,
             };
+
+            request.required_kv_tags.Add(new CPublishedFile_QueryFiles_Request.KVTag
+            {
+                key = "app",
+                value = appId.ToString(System.Globalization.CultureInfo.InvariantCulture),
+            });
 
             if (requiredTags != null)
             {

@@ -1142,6 +1142,45 @@ namespace PadForge.Engine
         }
 
         /// <summary>
+        /// HOME button LED brightness for the Switch family (#226, the
+        /// #209 Guide LED's Nintendo lane). Mechanism only: the family
+        /// gate lives in SwitchHomeLedSetter, whose worker is the sole
+        /// caller. SDL routes this to
+        /// HIDAPI_DriverSwitch_SetJoystickLED, which scales max(r,g,b)
+        /// onto 0-100 and holds subcommand 0x38's 4-bit intensity steady
+        /// (SDL_hidapi_switch.c SetHomeLED), so an equal-RGB write
+        /// carries plain brightness. The combined pair driver forwards
+        /// to both children and the right Joy-Con acts
+        /// (SDL_hidapi_combined.c). Devices without the home LED refuse
+        /// inside SDL's own type check and return false. The subcommand
+        /// ACK wait in the Switch driver blocks the caller ~30-100 ms
+        /// while holding SDL's global joystick lock, so call this from a
+        /// dedicated worker, never the poll or UI thread. A stale
+        /// closed handle fails safely (SDL_joystick.c
+        /// CHECK_JOYSTICK_MAGIC is an SDL_ObjectValid lookup, not a
+        /// deref).
+        /// </summary>
+        public bool SetHomeLedBrightness(int percent)
+        {
+            if (Joystick == IntPtr.Zero) return false;
+            byte v = HomeLedPercentToByte(percent);
+            return SDL_SetJoystickLED(Joystick, v, v, v);
+        }
+
+        /// <summary>0-100 percent to the equal-RGB LED byte. Ceiling is
+        /// deliberate: SDL recovers percent as (int)((v / 255.0f) *
+        /// 100.0f) (SDL_hidapi_switch.c
+        /// HIDAPI_DriverSwitch_SetJoystickLED), and v = ceil(p * 2.55)
+        /// makes that round-trip exact for every p in 0..100 (v/2.55 sits
+        /// in [p, p + 0.4), so the truncation lands on p), where plain
+        /// rounding slips to p-1 on some values (99 to 98).</summary>
+        internal static byte HomeLedPercentToByte(int percent)
+        {
+            percent = Math.Clamp(percent, 0, 100);
+            return (byte)Math.Ceiling(percent * 255 / 100.0);
+        }
+
+        /// <summary>
         /// Stops all rumble on the device.
         /// </summary>
         public bool StopRumble()

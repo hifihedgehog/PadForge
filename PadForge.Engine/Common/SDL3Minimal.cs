@@ -615,6 +615,24 @@ namespace SDL3
         public static bool SDL_SetJoystickPlayerIndex(IntPtr joystick, int player_index) =>
             _SDL_SetJoystickPlayerIndex(joystick, player_index);
 
+        /// <summary>
+        /// Set a joystick's LED color. The Switch HIDAPI driver treats
+        /// max(r, g, b), scaled 0-100, as HOME button LED brightness
+        /// (SDL_hidapi_switch.c HIDAPI_DriverSwitch_SetJoystickLED to
+        /// SetHomeLED, subcommand 0x38); the combined Joy-Con pair driver
+        /// forwards to both children and the right one acts
+        /// (SDL_hidapi_combined.c HIDAPI_DriverCombined_SetJoystickLED).
+        /// Drivers without an LED return false (SDL_Unsupported). SDL
+        /// core dedups same-value writes per joystick
+        /// (SDL_joystick.c SDL_SetJoystickLED led_red/green/blue cache).
+        /// </summary>
+        [DllImport(lib, CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_SetJoystickLED")]
+        [return: MarshalAs(UnmanagedType.U1)]
+        private static extern bool _SDL_SetJoystickLED(IntPtr joystick, byte red, byte green, byte blue);
+
+        public static bool SDL_SetJoystickLED(IntPtr joystick, byte red, byte green, byte blue) =>
+            _SDL_SetJoystickLED(joystick, red, green, blue);
+
         // True iff the joystick is an SDL virtual joystick (its driver is the virtual
         // backend). Used to tell the two DS3 transports apart: they share VID/PID
         // 054C/0268, but the BT bridge is a virtual joystick (owned by Ds3DirectService)

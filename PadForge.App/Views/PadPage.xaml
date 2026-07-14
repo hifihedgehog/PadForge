@@ -8756,12 +8756,16 @@
 
                         <!-- Guide Button LED (#209): the glowing Guide /
                              Home button on Xbox One-and-later pads (USB
-                             only, via the \\.\XboxGIP GIP LED command) and
+                             only, via the \\.\XboxGIP GIP LED command),
                              the 2015 Steam Controller (SDL's process-global
                              home-LED hint, so every 2015 SC in the process
-                             shares one brightness). Shown by
-                             SyncTabVisibility when the selected device is
-                             XInput-pathed or a 2015 Steam Controller; the
+                             shares one brightness), and the Switch home LED
+                             population (#226: Pro Controller, right Joy-Con,
+                             combined pair, charging grip; per-device
+                             SDL_SetJoystickLED, variable 4-bit intensity).
+                             Shown by SyncTabVisibility when the selected
+                             device is XInput-pathed, a 2015 Steam
+                             Controller, or a Switch home-LED device; the
                              lightbar card and header hints hide when the
                              tab is up for a guide-LED-only device. -->
                         <Border x:Name="GuideLedCard" Style="{StaticResource CardBorder}" Visibility="Collapsed">

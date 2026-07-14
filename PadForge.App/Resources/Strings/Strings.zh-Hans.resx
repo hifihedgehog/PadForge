@@ -2298,7 +2298,7 @@
   <data name="MacroAction_GuideLedBrightness_Format" xml:space="preserve"><value>指南键 LED 亮度：{0}%</value></data>
   <data name="MacroAction_GuideLedBrightness_Tooltip" xml:space="preserve"><value>为插槽上每个支持的手柄设置指南键或 Home 键的 LED 亮度。Xbox 手柄仅在 USB 连接时接受。</value></data>
   <data name="MacroAction_Type_GuideLedBrightness" xml:space="preserve"><value>设置指南键 LED 亮度</value></data>
-  <data name="Macro_GuideLedBrightness_Hint" xml:space="preserve"><value>适用于 USB 连接的 Xbox 手柄和 2015 款 Steam Controller。将两个此类动作配对使用，可在宏开始时闪烁 LED，并在结束时恢复。</value></data>
+  <data name="Macro_GuideLedBrightness_Hint" xml:space="preserve"><value>适用于 USB 连接的 Xbox 手柄、2015 款 Steam Controller，以及带 Home 键 LED 的 Switch 手柄。将两个此类动作配对使用，可在宏开始时闪烁 LED，并在结束时恢复。</value></data>
   <data name="Pad_Combine_StickTrim_Description" xml:space="preserve"><value>该行的最后一个来源是微调摇杆。当其他来源保持扳机时，向上推摇杆会提高保持值，向下拉则降低。专为没有模拟扳机的手柄精细控制油门和刹车而设计。</value></data>
   <data name="Pad_Combine_StickTrim_Name" xml:space="preserve"><value>摇杆微调</value></data>
   <data name="Pad_Kbm_Socd_AddPair" xml:space="preserve"><value>添加键对</value></data>
@@ -2323,8 +2323,8 @@
   <data name="Pad_Lighting_GuideLed_Brightness_Tooltip" xml:space="preserve"><value>指南键 LED 的亮度，从 0%（熄灭）到 100%（最亮）。仅在模式为固定亮度时生效。</value></data>
   <data name="Pad_Lighting_GuideLed_DeviceDefault" xml:space="preserve"><value>设备默认</value></data>
   <data name="Pad_Lighting_GuideLed_Fixed" xml:space="preserve"><value>固定亮度</value></data>
-  <data name="Pad_Lighting_GuideLed_Mode_Tooltip" xml:space="preserve"><value>设备默认让 LED 保持手柄固件设置的原样。固定亮度保持下方的亮度值。电池电量让电量越足 LED 越亮，且不会低于 10%。Xbox 手柄仅在 USB 连接时接受指南键 LED 命令，因此蓝牙连接下此设置无效。</value></data>
-  <data name="Pad_Lighting_GuideLed_Subtitle" xml:space="preserve"><value>发光的指南键或 Home 键的亮度。Xbox One 及之后的手柄在 USB 连接时接受。2015 款 Steam Controller 在任何连接下都接受，且所有 Steam Controller 共用同一个亮度。</value></data>
+  <data name="Pad_Lighting_GuideLed_Mode_Tooltip" xml:space="preserve"><value>设备默认让 LED 保持手柄固件设置的原样。固定亮度保持下方的亮度值。电池电量让电量越足 LED 越亮，且不会低于 10%。Xbox 手柄仅在 USB 连接时接受指南键 LED 命令，因此蓝牙连接下此设置无效。Switch 手柄在任何连接下都接受 Home 键 LED 命令。</value></data>
+  <data name="Pad_Lighting_GuideLed_Subtitle" xml:space="preserve"><value>发光的指南键或 Home 键的亮度。Xbox One 及之后的手柄在 USB 连接时接受。2015 款 Steam Controller 在任何连接下都接受，且所有 Steam Controller 共用同一个亮度。Switch Pro 手柄和右 Joy-Con（单个、成对或装在充电握把上）在任何连接下都接受。</value></data>
   <data name="Pad_Mapping_TrimDeadzone" xml:space="preserve"><value>微调死区</value></data>
   <data name="Pad_Mapping_TrimDeadzone_Tooltip" xml:space="preserve"><value>低于此百分比的摇杆偏移会被忽略，因此用同一摇杆转向时不会碰动保持的扳机值。只有摇杆更大幅度的纵向推动才会调整它。</value></data>
   <data name="Pad_Mapping_TrimRate" xml:space="preserve"><value>微调速度</value></data>
@@ -2465,4 +2465,149 @@
   <data name="About_ZstdSharp" xml:space="preserve"><value>ZstdSharp</value></data>
   <data name="About_ZstdSharpDesc" xml:space="preserve"><value>SteamKit2 用于 Steam depot 区块的 Zstandard 解压缩，是 Oleg Stepanischev 对 zstd 库的 C# 移植。MIT。</value></data>
   <data name="Mapping_AnyDevice" xml:space="preserve"><value>（任意设备）</value></data>
+  <data name="Mapping_TouchpadFingerXLeft_Format" xml:space="preserve"><value>触控板 {0} 手指 {1} X（左半部分）</value></data>
+  <data name="Mapping_TouchpadFingerXRight_Format" xml:space="preserve"><value>触控板 {0} 手指 {1} X（右半部分）</value></data>
+  <data name="Mapping_TouchpadFingerYLeft_Format" xml:space="preserve"><value>触控板 {0} 手指 {1} Y（左半部分）</value></data>
+  <data name="Mapping_TouchpadFingerYRight_Format" xml:space="preserve"><value>触控板 {0} 手指 {1} Y（右半部分）</value></data>
+  <data name="Mapping_TouchpadPointerX_Format" xml:space="preserve"><value>触控板 {0} 指针 X</value></data>
+  <data name="Mapping_TouchpadPointerY_Format" xml:space="preserve"><value>触控板 {0} 指针 Y</value></data>
+  <data name="Mapping_TouchpadPointerXLeft_Format" xml:space="preserve"><value>触控板 {0} 指针 X（左半部分）</value></data>
+  <data name="Mapping_TouchpadPointerXRight_Format" xml:space="preserve"><value>触控板 {0} 指针 X（右半部分）</value></data>
+  <data name="Mapping_TouchpadPointerYLeft_Format" xml:space="preserve"><value>触控板 {0} 指针 Y（左半部分）</value></data>
+  <data name="Mapping_TouchpadPointerYRight_Format" xml:space="preserve"><value>触控板 {0} 指针 Y（右半部分）</value></data>
+  <data name="Mapping_TouchpadFingerTouchLeft_Format" xml:space="preserve"><value>触控板 {0} 手指 {1} 触摸（左半部分）</value></data>
+  <data name="Mapping_TouchpadFingerTouchRight_Format" xml:space="preserve"><value>触控板 {0} 手指 {1} 触摸（右半部分）</value></data>
+  <data name="Pad_Touchpad_Pointer_Header" xml:space="preserve"><value>绝对指针</value></data>
+  <data name="Pad_Touchpad_Pointer_Subtitle" xml:space="preserve"><value>调整触控板指针 X/Y 源，它们会把光标直接移动到手指在触控板上的位置（请在键盘 / 鼠标虚拟控制器上将其映射到鼠标 X/Y）。1.0 时触控板与屏幕 1:1 对应。调高拉伸可在拇指到达触控板边缘之前到达屏幕边缘。</value></data>
+  <data name="Pad_Touchpad_PointerStretchX" xml:space="preserve"><value>指针拉伸 X</value></data>
+  <data name="Pad_Touchpad_PointerStretchX_Tooltip" xml:space="preserve"><value>以触控板中心为基准的水平边距拉伸。1.5 时在实际移动三分之二处即可到达屏幕边缘。</value></data>
+  <data name="Pad_Touchpad_PointerStretchY" xml:space="preserve"><value>指针拉伸 Y</value></data>
+  <data name="Pad_Touchpad_PointerStretchY_Tooltip" xml:space="preserve"><value>以触控板中心为基准的垂直边距拉伸。</value></data>
+  <data name="Pad_Touchpad_SwipeHaptics_Header" xml:space="preserve"><value>滑动触觉反馈</value></data>
+  <data name="Pad_Touchpad_SwipeHaptics_Subtitle" xml:space="preserve"><value>当手指在此触控板上滑动时使手柄的触觉反馈产生脉冲，类似 Steam Input 的触控板咔嗒反馈。Steam Controller 和 Steam Deck 通过触控板下方的致动器产生咔嗒；DualSense 和 DualShock 4 则脉冲震动马达。</value></data>
+  <data name="Pad_Touchpad_SwipeHapticsEnabled" xml:space="preserve"><value>启用滑动触觉反馈</value></data>
+  <data name="Pad_Touchpad_SwipeHapticsEnabled_Tooltip" xml:space="preserve"><value>手指在此触控板上每移动设定距离就发出一次短促的触觉咔嗒。手指落下或按下触控板不会产生咔嗒。默认关闭。</value></data>
+  <data name="Pad_Touchpad_SwipeHapticsIntensity" xml:space="preserve"><value>脉冲强度</value></data>
+  <data name="Pad_Touchpad_SwipeHapticsIntensity_Tooltip" xml:space="preserve"><value>每次咔嗒的强度。当游戏震动更强时始终以游戏震动为准。</value></data>
+  <data name="Pad_ResetTouchpadPointer" xml:space="preserve"><value>重置绝对指针</value></data>
+  <data name="Pad_ResetTouchpadSwipeHaptics" xml:space="preserve"><value>重置滑动触觉反馈</value></data>
+  <data name="Pad_ResetTouchpadPointerStretchX" xml:space="preserve"><value>重置指针拉伸 X</value></data>
+  <data name="Pad_ResetTouchpadPointerStretchY" xml:space="preserve"><value>重置指针拉伸 Y</value></data>
+  <data name="Pad_ResetTouchpadSwipeHapticsEnabled" xml:space="preserve"><value>重置启用滑动触觉反馈</value></data>
+  <data name="Pad_ResetTouchpadSwipeHapticsIntensity" xml:space="preserve"><value>重置脉冲强度</value></data>
+  <data name="Mapping_FlickStickRight" xml:space="preserve"><value>Flick Stick（右摇杆）</value></data>
+  <data name="Mapping_FlickStickLeft" xml:space="preserve"><value>Flick Stick（左摇杆）</value></data>
+  <data name="Pad_FlickStick_Header" xml:space="preserve"><value>Flick Stick</value></data>
+  <data name="Pad_FlickStick_Subtitle" xml:space="preserve"><value>Flick Stick 输入的设置：推动摇杆，镜头随之转向；沿边缘滑动可微调转向。在映射的输入下拉框中将"Flick Stick（右摇杆）"映射到鼠标 X，任何层均可。</value></data>
+  <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>重置所有 Flick Stick 设置</value></data>
+  <data name="Settings_FlickCountsPer360" xml:space="preserve"><value>每 360° 计数</value></data>
+  <data name="Settings_FlickCountsPer360_Tooltip" xml:space="preserve"><value>镜头旋转整整 360° 所需的鼠标计数。取决于游戏的鼠标灵敏度：如果甩杆转向不足就调高，转向过度就调低。</value></data>
+  <data name="Pad_ResetFlickCountsPer360" xml:space="preserve"><value>重置为 14400</value></data>
+  <data name="Settings_FlickTime" xml:space="preserve"><value>甩杆时间</value></data>
+  <data name="Settings_FlickTime_Tooltip" xml:space="preserve"><value>完成一次完整 180° 甩杆所需的时间（带缓出）。较短的转向在相同时间内完成。</value></data>
+  <data name="Pad_ResetFlickTime" xml:space="preserve"><value>重置为 0.1 s</value></data>
+  <data name="Settings_FlickThreshold" xml:space="preserve"><value>甩杆阈值</value></data>
+  <data name="Settings_FlickThreshold_Tooltip" xml:space="preserve"><value>启动甩杆的摇杆偏移量，为最大偏移量的比例。甩杆期间，释放点降至该值的 90%。</value></data>
+  <data name="Pad_ResetFlickThreshold" xml:space="preserve"><value>重置为 0.9</value></data>
+  <data name="Settings_FlickSnapMode" xml:space="preserve"><value>吸附角度</value></data>
+  <data name="Settings_FlickSnapMode_Tooltip" xml:space="preserve"><value>将甩杆吸附到固定角度，使转向更一致。仅向前会把每次甩杆都吸附到正前方。</value></data>
+  <data name="Settings_FlickSnapMode_None" xml:space="preserve"><value>不吸附</value></data>
+  <data name="Settings_FlickSnapMode_Forward" xml:space="preserve"><value>仅向前</value></data>
+  <data name="Settings_FlickSnapMode_Half" xml:space="preserve"><value>180 度</value></data>
+  <data name="Settings_FlickSnapMode_Four" xml:space="preserve"><value>90 度</value></data>
+  <data name="Settings_FlickSnapMode_Sixths" xml:space="preserve"><value>60 度</value></data>
+  <data name="Settings_FlickSnapMode_Eight" xml:space="preserve"><value>45 度</value></data>
+  <data name="Pad_ResetFlickSnapMode" xml:space="preserve"><value>重置为不吸附</value></data>
+  <data name="Settings_FlickSnapStrength" xml:space="preserve"><value>吸附强度</value></data>
+  <data name="Settings_FlickSnapStrength_Tooltip" xml:space="preserve"><value>甩杆被拉向吸附角度的强度。1 为完全吸附，0 为禁用吸附，中间值按比例混合。</value></data>
+  <data name="Pad_ResetFlickSnapStrength" xml:space="preserve"><value>重置为 1.0</value></data>
+  <data name="Settings_FlickForwardDeadzone" xml:space="preserve"><value>前方角度死区</value></data>
+  <data name="Settings_FlickForwardDeadzone_Tooltip" xml:space="preserve"><value>在正前方此角度范围内的甩杆不会转向。可在不触发甩杆转向的情况下开始沿边微调。</value></data>
+  <data name="Pad_ResetFlickForwardDeadzone" xml:space="preserve"><value>重置为 0°</value></data>
+  <data name="Settings_FlickSmoothing" xml:space="preserve"><value>沿边平滑</value></data>
+  <data name="Settings_FlickSmoothing_Tooltip" xml:space="preserve"><value>平滑沿边滑动的噪声。-1 使用自动分级窗口，0 关闭平滑，值越大可平滑每计数更大的旋转。</value></data>
+  <data name="Pad_ResetFlickSmoothing" xml:space="preserve"><value>重置为自动 (-1)</value></data>
+  <data name="Settings_FlickOnEngage" xml:space="preserve"><value>激活时允许甩杆</value></data>
+  <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>当承载 Flick Stick 的层在摇杆已偏移时激活，立即执行甩杆。关闭时镜头保持不动，并从当前摇杆角度开始跟踪旋转。</value></data>
+  <data name="Pad_ResetFlickOnEngage" xml:space="preserve"><value>重置为关闭</value></data>
+  <data name="Mapping_MouseGestureCustom" xml:space="preserve"><value>自定义</value></data>
+  <data name="Pad_MouseGestures_Custom_Tooltip" xml:space="preserve"><value>使用从任意设备录制的输入（而不是鼠标按键）来待命识别器：可以是按键、手柄按钮或踏板等模拟输入。请在下方录制输入。</value></data>
+  <data name="Pad_MouseGestures_CustomInput" xml:space="preserve"><value>自定义激活输入</value></data>
+  <data name="Pad_MouseGestures_CustomInput_Tooltip" xml:space="preserve"><value>按住期间使自定义手势会话待命的输入，可从此插槽上的任意设备录制。按钮和按键在按下期间待命。踏板等模拟输入超过一半行程时待命。</value></data>
+  <data name="Pad_ResetMouseGestureCustomInput" xml:space="preserve"><value>重置自定义激活输入</value></data>
+  <data name="Workshop_Tr_ScrollGestureModeNotSupported" xml:space="preserve"><value>不支持方向滑动模式</value></data>
+  <data name="Workshop_Tr_HapticIntensityDropped" xml:space="preserve"><value>已丢弃触觉反馈（{0} 个绑定）</value></data>
+  <data name="Workshop_Tr_ResponseCurveNotSupported" xml:space="preserve"><value>已丢弃响应曲线和范围设置（{0}）</value></data>
+  <data name="Workshop_Tr_GyroButtonMaskDropped" xml:space="preserve"><value>已丢弃陀螺仪激活设置 {0}={1}（陀螺仪激活按每个手柄配置）</value></data>
+  <data name="Workshop_Tr_ActivatorDelayDropped" xml:space="preserve"><value>已丢弃按压延迟（{0}）</value></data>
+  <data name="Workshop_Tr_InterruptibleDropped" xml:space="preserve"><value>不可中断按压按普通按压处理</value></data>
+  <data name="Workshop_Tr_PlayerNumberActionNotSupported" xml:space="preserve"><value>更改玩家编号是 Steam 客户端动作，无对应项</value></data>
+  <data name="Workshop_Tr_LizardModeActionNotSupported" xml:space="preserve"><value>蜥蜴模式切换是 Steam 内部功能，无对应项</value></data>
+  <data name="Workshop_Tr_SetLedDefaultApproximated" xml:space="preserve"><value>恢复默认灯光近似为清除覆盖</value></data>
+  <data name="Workshop_Tr_ToggleLatchEmitted" xml:space="preserve"><value>切换按压将保持 {0} 直到下次按压</value></data>
+  <data name="Workshop_Tr_ToggleDropped" xml:space="preserve"><value>已丢弃切换设置（此输出无保持机制）</value></data>
+  <data name="Workshop_Tr_LongPressKeyTap" xml:space="preserve"><value>长按在达到阈值时点按 {0}（Steam 会按住直到松开）</value></data>
+  <data name="Workshop_Tr_CameraResetApproximated" xml:space="preserve"><value>摄像机重置近似为陀螺仪重新居中</value></data>
+  <data name="Workshop_Tr_MouseRegionApproximated" xml:space="preserve"><value>鼠标区域近似为居中的光标限制（屏幕的 {0}%，区域中心 {1}%、{2}%），在按住该表面期间生效</value></data>
+  <data name="Workshop_Tr_MouseRegionTuningDropped" xml:space="preserve"><value>已丢弃鼠标区域的激活/释放设置（{0}）</value></data>
+  <data name="Workshop_Tr_TouchQuadrantApproximated" xml:space="preserve"><value>按钮单元格共享宿主触摸表面（无按单元格分区）</value></data>
+  <data name="Workshop_Tr_TrackpadHalfApproximated" xml:space="preserve"><value>托管在触控板的半区上；PadForge 读取整个触控板</value></data>
+  <data name="Workshop_Tr_FlickStickSurfaceNotSupported" xml:space="preserve"><value>已跳过触摸表面上的 Flick Stick（PadForge 的 Flick Stick 读取实体摇杆）</value></data>
+  <data name="Workshop_Tr_FlickStickTuningDropped" xml:space="preserve"><value>已丢弃 Flick Stick 调整设置（{0}）</value></data>
+  <data name="Macro_HoldForMs" xml:space="preserve"><value>按住时</value></data>
+  <data name="Macro_HoldForMs_Tooltip" xml:space="preserve"><value>在触发器被连续按住达到保持时间后触发一次。更短的点按不起作用。</value></data>
+  <data name="Macro_TriggerHoldMs_Label" xml:space="preserve"><value>保持时间</value></data>
+  <data name="MacroAction_Type_RepeatVcButtonWhileHeld" xml:space="preserve"><value>按住时重复按钮</value></data>
+  <data name="MacroAction_RepeatVcButtonWhileHeld_Tooltip" xml:space="preserve"><value>在触发器按住期间以设定间隔反复按下和松开控制器按钮（连发 / 连点）。</value></data>
+  <data name="MacroAction_RepeatVcButtonWhileHeld_Format" xml:space="preserve"><value>每 {1} ms 重复 {0}</value></data>
+  <data name="MacroAction_Type_ToggleVcButton" xml:space="preserve"><value>切换按钮</value></data>
+  <data name="MacroAction_ToggleVcButton_Tooltip" xml:space="preserve"><value>每次触发都会锁定或解锁控制器按钮。锁定的按钮会保持按下，直到下次触发或宏被禁用。</value></data>
+  <data name="MacroAction_ToggleVcButton_Format" xml:space="preserve"><value>切换 {0}</value></data>
+  <data name="MacroAction_Type_ToggleKey" xml:space="preserve"><value>切换按键</value></data>
+  <data name="MacroAction_ToggleKey_Tooltip" xml:space="preserve"><value>每次触发都会锁定或解锁按键。锁定的按键会保持按下，直到下次触发或宏被禁用。</value></data>
+  <data name="MacroAction_ToggleKey_Format" xml:space="preserve"><value>切换按键 {0}</value></data>
+  <data name="MacroAction_Type_GyroRecenter" xml:space="preserve"><value>陀螺仪重新居中</value></data>
+  <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>按下时将手柄累积的陀螺仪瞄准基准归零。平滑历史被清除，Motion Lean 中立点重新捕获，重力估计从控制器当前姿态重新初始化。</value></data>
+  <data name="Pad_Menus" xml:space="preserve"><value>菜单</value></data>
+  <data name="Menu_EmptyHint" xml:space="preserve"><value>菜单可将摇杆或触控板变成屏幕上的环形或网格。添加菜单，选择其宿主输入，然后为每个单元格添加标签并设置绑定。</value></data>
+  <data name="Menu_NewNameFormat" xml:space="preserve"><value>菜单 {0}</value></data>
+  <data name="Menu_Name" xml:space="preserve"><value>菜单名称</value></data>
+  <data name="Menu_Enabled" xml:space="preserve"><value>已启用</value></data>
+  <data name="Menu_Style" xml:space="preserve"><value>样式</value></data>
+  <data name="Menu_Style_Radial" xml:space="preserve"><value>径向环</value></data>
+  <data name="Menu_Style_Grid" xml:space="preserve"><value>触摸网格</value></data>
+  <data name="Menu_HostInput" xml:space="preserve"><value>宿主输入</value></data>
+  <data name="Menu_Host_LeftStick" xml:space="preserve"><value>左摇杆</value></data>
+  <data name="Menu_Host_RightStick" xml:space="preserve"><value>右摇杆</value></data>
+  <data name="Menu_Host_Touchpad_Format" xml:space="preserve"><value>触控板 {0}</value></data>
+  <data name="Menu_HostHalf" xml:space="preserve"><value>触控板半区</value></data>
+  <data name="Menu_Half_Whole" xml:space="preserve"><value>整个触控板</value></data>
+  <data name="Menu_Half_Left" xml:space="preserve"><value>左半部分</value></data>
+  <data name="Menu_Half_Right" xml:space="preserve"><value>右半部分</value></data>
+  <data name="Menu_FireMode" xml:space="preserve"><value>触发模式</value></data>
+  <data name="Menu_Fire_Click" xml:space="preserve"><value>点击时</value></data>
+  <data name="Menu_Fire_ClickRelease" xml:space="preserve"><value>松开点击时</value></data>
+  <data name="Menu_Fire_TouchRelease" xml:space="preserve"><value>松开触摸时</value></data>
+  <data name="Menu_Fire_Always" xml:space="preserve"><value>悬停时</value></data>
+  <data name="Menu_Cells" xml:space="preserve"><value>单元格</value></data>
+  <data name="Menu_HasCenter" xml:space="preserve"><value>中心单元格</value></data>
+  <data name="Menu_ShowLabels" xml:space="preserve"><value>显示标签</value></data>
+  <data name="Menu_Position" xml:space="preserve"><value>屏幕位置</value></data>
+  <data name="Menu_Scale" xml:space="preserve"><value>大小</value></data>
+  <data name="Menu_Opacity" xml:space="preserve"><value>不透明度</value></data>
+  <data name="Menu_Deadzone" xml:space="preserve"><value>激活死区</value></data>
+  <data name="Menu_CellBindings" xml:space="preserve"><value>单元格绑定</value></data>
+  <data name="Menu_CellIndex_Format" xml:space="preserve"><value>单元格 {0}</value></data>
+  <data name="Menu_CellCenter" xml:space="preserve"><value>中心</value></data>
+  <data name="Menu_Binding_None" xml:space="preserve"><value>无</value></data>
+  <data name="Menu_Binding_Key" xml:space="preserve"><value>键盘按键</value></data>
+  <data name="Menu_Binding_Button" xml:space="preserve"><value>控制器按钮</value></data>
+  <data name="Mapping_MenuItem_Format" xml:space="preserve"><value>菜单 {0} 单元格 {1}</value></data>
+  <data name="Dashboard_MenuOverlay" xml:space="preserve"><value>菜单叠加层</value></data>
+  <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>在径向或触摸菜单激活期间显示屏幕上的环形或网格。即使关闭叠加层，菜单仍会触发。</value></data>
+  <data name="Workshop_Tr_MenuEmitted" xml:space="preserve"><value>已创建屏幕菜单（{0} 个已绑定单元格）</value></data>
+  <data name="Workshop_Tr_MenuEmpty" xml:space="preserve"><value>菜单没有已绑定的单元格</value></data>
+  <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>不支持菜单宿主表面（{0}）</value></data>
+  <data name="Workshop_Tr_MenuIconsDropped" xml:space="preserve"><value>已丢弃菜单单元格图标（{0} 个单元格显示文本标签）</value></data>
+  <data name="Workshop_Tr_MenuTuningDropped" xml:space="preserve"><value>不支持菜单调整设置（{0}）</value></data>
 </root>

@@ -2298,7 +2298,7 @@
   <data name="MacroAction_GuideLedBrightness_Format" xml:space="preserve"><value>ガイドLEDの明るさ: {0}%</value></data>
   <data name="MacroAction_GuideLedBrightness_Tooltip" xml:space="preserve"><value>スロット上の対応する各コントローラーに対して、ガイドまたはホームボタンの LED の明るさを設定します。Xbox コントローラーは USB 接続時のみ受け付けます。</value></data>
   <data name="MacroAction_Type_GuideLedBrightness" xml:space="preserve"><value>ガイドLEDの明るさを設定</value></data>
-  <data name="Macro_GuideLedBrightness_Hint" xml:space="preserve"><value>USB 接続の Xbox コントローラーと 2015 年版 Steam Controller に適用されます。このアクションを 2 つ組み合わせると、マクロ開始時に LED を点滅させ、終了時に元へ戻せます。</value></data>
+  <data name="Macro_GuideLedBrightness_Hint" xml:space="preserve"><value>USB 接続の Xbox コントローラー、2015 年版 Steam Controller、ホームボタン LED を備えた Switch コントローラーに適用されます。このアクションを 2 つ組み合わせると、マクロ開始時に LED を点滅させ、終了時に元へ戻せます。</value></data>
   <data name="Pad_Combine_StickTrim_Description" xml:space="preserve"><value>行の最後のソースがトリム用スティックになります。他のソースがトリガーを保持している間、スティックを上に倒すと保持レベルが上がり、下に倒すと下がります。アナログトリガーのないパッドでスロットルとブレーキを細かく操作するための機能です。</value></data>
   <data name="Pad_Combine_StickTrim_Name" xml:space="preserve"><value>スティックトリム</value></data>
   <data name="Pad_Kbm_Socd_AddPair" xml:space="preserve"><value>ペアを追加</value></data>
@@ -2323,8 +2323,8 @@
   <data name="Pad_Lighting_GuideLed_Brightness_Tooltip" xml:space="preserve"><value>ガイドボタン LED の明るさを 0% (消灯) から 100% (最大) まで設定します。モードが固定の明るさの間だけ適用されます。</value></data>
   <data name="Pad_Lighting_GuideLed_DeviceDefault" xml:space="preserve"><value>デバイスの既定</value></data>
   <data name="Pad_Lighting_GuideLed_Fixed" xml:space="preserve"><value>固定の明るさ</value></data>
-  <data name="Pad_Lighting_GuideLed_Mode_Tooltip" xml:space="preserve"><value>デバイスの既定は、コントローラーのファームウェアが設定したままの LED にします。固定の明るさは下のレベルを維持します。バッテリー残量は、バッテリーが多いほど明るくなり、10% を下回ることはありません。Xbox コントローラーはガイド LED コマンドを USB 接続時のみ受け付けるため、Bluetooth 接続ではこの設定は効果がありません。</value></data>
-  <data name="Pad_Lighting_GuideLed_Subtitle" xml:space="preserve"><value>光るガイドまたはホームボタンの明るさ。Xbox One 以降のコントローラーは USB 接続時に受け付けます。2015 年版 Steam Controller はどの接続でも受け付け、すべての Steam Controller で 1 つの明るさを共有します。</value></data>
+  <data name="Pad_Lighting_GuideLed_Mode_Tooltip" xml:space="preserve"><value>デバイスの既定は、コントローラーのファームウェアが設定したままの LED にします。固定の明るさは下のレベルを維持します。バッテリー残量は、バッテリーが多いほど明るくなり、10% を下回ることはありません。Xbox コントローラーはガイド LED コマンドを USB 接続時のみ受け付けるため、Bluetooth 接続ではこの設定は効果がありません。Switch コントローラーはホーム LED コマンドをどの接続でも受け付けます。</value></data>
+  <data name="Pad_Lighting_GuideLed_Subtitle" xml:space="preserve"><value>光るガイドまたはホームボタンの明るさ。Xbox One 以降のコントローラーは USB 接続時に受け付けます。2015 年版 Steam Controller はどの接続でも受け付け、すべての Steam Controller で 1 つの明るさを共有します。Switch の Proコントローラーと右Joy-Con (単体、ペア、充電グリップ装着時) はどの接続でも受け付けます。</value></data>
   <data name="Pad_Mapping_TrimDeadzone" xml:space="preserve"><value>トリムデッドゾーン</value></data>
   <data name="Pad_Mapping_TrimDeadzone_Tooltip" xml:space="preserve"><value>この割合未満のスティックの倒し込みは無視されるため、同じスティックでの操舵が保持中のトリガーレベルを揺らすことはありません。スティックを縦方向へ強く倒したときだけ調整されます。</value></data>
   <data name="Pad_Mapping_TrimRate" xml:space="preserve"><value>トリム速度</value></data>
@@ -2465,4 +2465,149 @@
   <data name="About_ZstdSharp" xml:space="preserve"><value>ZstdSharp</value></data>
   <data name="About_ZstdSharpDesc" xml:space="preserve"><value>SteamKit2 が Steam デポチャンクに使用する Zstandard 展開処理。Oleg Stepanischev による zstd ライブラリの C# 移植。MIT。</value></data>
   <data name="Mapping_AnyDevice" xml:space="preserve"><value>(任意のデバイス)</value></data>
+  <data name="Mapping_TouchpadFingerXLeft_Format" xml:space="preserve"><value>タッチパッド {0} 指 {1} X (左半分)</value></data>
+  <data name="Mapping_TouchpadFingerXRight_Format" xml:space="preserve"><value>タッチパッド {0} 指 {1} X (右半分)</value></data>
+  <data name="Mapping_TouchpadFingerYLeft_Format" xml:space="preserve"><value>タッチパッド {0} 指 {1} Y (左半分)</value></data>
+  <data name="Mapping_TouchpadFingerYRight_Format" xml:space="preserve"><value>タッチパッド {0} 指 {1} Y (右半分)</value></data>
+  <data name="Mapping_TouchpadPointerX_Format" xml:space="preserve"><value>タッチパッド {0} ポインター X</value></data>
+  <data name="Mapping_TouchpadPointerY_Format" xml:space="preserve"><value>タッチパッド {0} ポインター Y</value></data>
+  <data name="Mapping_TouchpadPointerXLeft_Format" xml:space="preserve"><value>タッチパッド {0} ポインター X (左半分)</value></data>
+  <data name="Mapping_TouchpadPointerXRight_Format" xml:space="preserve"><value>タッチパッド {0} ポインター X (右半分)</value></data>
+  <data name="Mapping_TouchpadPointerYLeft_Format" xml:space="preserve"><value>タッチパッド {0} ポインター Y (左半分)</value></data>
+  <data name="Mapping_TouchpadPointerYRight_Format" xml:space="preserve"><value>タッチパッド {0} ポインター Y (右半分)</value></data>
+  <data name="Mapping_TouchpadFingerTouchLeft_Format" xml:space="preserve"><value>タッチパッド {0} 指 {1} タッチ (左半分)</value></data>
+  <data name="Mapping_TouchpadFingerTouchRight_Format" xml:space="preserve"><value>タッチパッド {0} 指 {1} タッチ (右半分)</value></data>
+  <data name="Pad_Touchpad_Pointer_Header" xml:space="preserve"><value>絶対ポインター</value></data>
+  <data name="Pad_Touchpad_Pointer_Subtitle" xml:space="preserve"><value>カーソルをパッド上の指の位置へ移動させるタッチパッド ポインター X/Y ソースを調整します (キーボード / マウスの仮想コントローラーでマウス X/Y に割り当ててください)。1.0 ではパッドが画面に 1:1 で対応します。親指がパッドの端に届く前に画面の端へ届くようにするには、ストレッチを上げてください。</value></data>
+  <data name="Pad_Touchpad_PointerStretchX" xml:space="preserve"><value>ポインターストレッチ X</value></data>
+  <data name="Pad_Touchpad_PointerStretchX_Tooltip" xml:space="preserve"><value>パッド中心を基準にした水平方向のマージンストレッチです。1.5 では物理移動量の 3 分の 2 で画面の端に到達します。</value></data>
+  <data name="Pad_Touchpad_PointerStretchY" xml:space="preserve"><value>ポインターストレッチ Y</value></data>
+  <data name="Pad_Touchpad_PointerStretchY_Tooltip" xml:space="preserve"><value>パッド中心を基準にした垂直方向のマージンストレッチです。</value></data>
+  <data name="Pad_Touchpad_SwipeHaptics_Header" xml:space="preserve"><value>スワイプハプティクス</value></data>
+  <data name="Pad_Touchpad_SwipeHaptics_Subtitle" xml:space="preserve"><value>Steam Input のトラックパッドのティックのように、指がこのタッチパッド上を移動するあいだコントローラーのハプティクスをパルスさせます。Steam Controller と Steam Deck はパッド下のアクチュエーターをティックし、DualSense と DualShock 4 は振動モーターをパルスします。</value></data>
+  <data name="Pad_Touchpad_SwipeHapticsEnabled" xml:space="preserve"><value>スワイプハプティクスを有効化</value></data>
+  <data name="Pad_Touchpad_SwipeHapticsEnabled_Tooltip" xml:space="preserve"><value>このパッド上で指が設定距離を移動するたびに短いハプティックティックを発生させます。指を置いたりパッドをクリックしたりしてもティックは発生しません。既定ではオフです。</value></data>
+  <data name="Pad_Touchpad_SwipeHapticsIntensity" xml:space="preserve"><value>パルス強度</value></data>
+  <data name="Pad_Touchpad_SwipeHapticsIntensity_Tooltip" xml:space="preserve"><value>各ティックの強さです。ゲームの振動の方が強い場合は常にそちらが優先されます。</value></data>
+  <data name="Pad_ResetTouchpadPointer" xml:space="preserve"><value>絶対ポインターをリセット</value></data>
+  <data name="Pad_ResetTouchpadSwipeHaptics" xml:space="preserve"><value>スワイプハプティクスをリセット</value></data>
+  <data name="Pad_ResetTouchpadPointerStretchX" xml:space="preserve"><value>ポインターストレッチ X をリセット</value></data>
+  <data name="Pad_ResetTouchpadPointerStretchY" xml:space="preserve"><value>ポインターストレッチ Y をリセット</value></data>
+  <data name="Pad_ResetTouchpadSwipeHapticsEnabled" xml:space="preserve"><value>スワイプハプティクスの有効化をリセット</value></data>
+  <data name="Pad_ResetTouchpadSwipeHapticsIntensity" xml:space="preserve"><value>パルス強度をリセット</value></data>
+  <data name="Mapping_FlickStickRight" xml:space="preserve"><value>Flick Stick (右スティック)</value></data>
+  <data name="Mapping_FlickStickLeft" xml:space="preserve"><value>Flick Stick (左スティック)</value></data>
+  <data name="Pad_FlickStick_Header" xml:space="preserve"><value>Flick Stick</value></data>
+  <data name="Pad_FlickStick_Subtitle" xml:space="preserve"><value>Flick Stick 入力の設定です。スティックを倒すとカメラがその方向へ回転し、縁をなぞると微調整できます。マッピングの入力ドロップダウンで "Flick Stick (右スティック)" をマウス X に割り当ててください。どのレイヤーでも使えます。</value></data>
+  <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>Flick Stick の設定をすべてリセット</value></data>
+  <data name="Settings_FlickCountsPer360" xml:space="preserve"><value>360° あたりのカウント</value></data>
+  <data name="Settings_FlickCountsPer360_Tooltip" xml:space="preserve"><value>カメラを 360° 一回転させるのに必要なマウスカウントです。ゲームのマウス感度に依存します。フリックの回転が足りない場合は上げ、回りすぎる場合は下げてください。</value></data>
+  <data name="Pad_ResetFlickCountsPer360" xml:space="preserve"><value>14400 にリセット</value></data>
+  <data name="Settings_FlickTime" xml:space="preserve"><value>フリック時間</value></data>
+  <data name="Settings_FlickTime_Tooltip" xml:space="preserve"><value>180° の完全なフリックが完了するまでの時間です (イーズアウト付き)。より短い回転も同じ時間で完了します。</value></data>
+  <data name="Pad_ResetFlickTime" xml:space="preserve"><value>0.1 s にリセット</value></data>
+  <data name="Settings_FlickThreshold" xml:space="preserve"><value>フリックしきい値</value></data>
+  <data name="Settings_FlickThreshold_Tooltip" xml:space="preserve"><value>フリックを開始するスティックの倒し量です (最大倒し量に対する割合)。フリック中は解除ポイントがこの値の 90% に下がります。</value></data>
+  <data name="Pad_ResetFlickThreshold" xml:space="preserve"><value>0.9 にリセット</value></data>
+  <data name="Settings_FlickSnapMode" xml:space="preserve"><value>スナップ角度</value></data>
+  <data name="Settings_FlickSnapMode_Tooltip" xml:space="preserve"><value>フリックを固定角度にスナップして、回転を安定させます。前方のみはすべてのフリックを真正面にスナップします。</value></data>
+  <data name="Settings_FlickSnapMode_None" xml:space="preserve"><value>スナップなし</value></data>
+  <data name="Settings_FlickSnapMode_Forward" xml:space="preserve"><value>前方のみ</value></data>
+  <data name="Settings_FlickSnapMode_Half" xml:space="preserve"><value>180 度</value></data>
+  <data name="Settings_FlickSnapMode_Four" xml:space="preserve"><value>90 度</value></data>
+  <data name="Settings_FlickSnapMode_Sixths" xml:space="preserve"><value>60 度</value></data>
+  <data name="Settings_FlickSnapMode_Eight" xml:space="preserve"><value>45 度</value></data>
+  <data name="Pad_ResetFlickSnapMode" xml:space="preserve"><value>スナップなしにリセット</value></data>
+  <data name="Settings_FlickSnapStrength" xml:space="preserve"><value>スナップ強度</value></data>
+  <data name="Settings_FlickSnapStrength_Tooltip" xml:space="preserve"><value>フリックがスナップ角度へ引き寄せられる強さです。1 で完全にスナップ、0 でスナップ無効、中間の値はブレンドします。</value></data>
+  <data name="Pad_ResetFlickSnapStrength" xml:space="preserve"><value>1.0 にリセット</value></data>
+  <data name="Settings_FlickForwardDeadzone" xml:space="preserve"><value>前方角度デッドゾーン</value></data>
+  <data name="Settings_FlickForwardDeadzone_Tooltip" xml:space="preserve"><value>真正面からこの角度以内のフリックでは回転しません。フリック回転なしで縁なぞりを開始できます。</value></data>
+  <data name="Pad_ResetFlickForwardDeadzone" xml:space="preserve"><value>0° にリセット</value></data>
+  <data name="Settings_FlickSmoothing" xml:space="preserve"><value>スイープのスムージング</value></data>
+  <data name="Settings_FlickSmoothing_Tooltip" xml:space="preserve"><value>縁なぞり時のノイズを平滑化します。-1 は自動の段階ウィンドウを使用し、0 はスムージングをオフにし、大きい値ほどティックあたりの大きな回転を平滑化します。</value></data>
+  <data name="Pad_ResetFlickSmoothing" xml:space="preserve"><value>自動 (-1) にリセット</value></data>
+  <data name="Settings_FlickOnEngage" xml:space="preserve"><value>起動時のフリックを許可</value></data>
+  <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>Flick Stick を含むレイヤーが、スティックが既に倒れた状態で起動した場合、すぐにフリックを発動します。オフの場合はカメラを動かさず、現在のスティック角度からの回転を追跡します。</value></data>
+  <data name="Pad_ResetFlickOnEngage" xml:space="preserve"><value>オフにリセット</value></data>
+  <data name="Mapping_MouseGestureCustom" xml:space="preserve"><value>カスタム</value></data>
+  <data name="Pad_MouseGestures_Custom_Tooltip" xml:space="preserve"><value>マウスボタンの代わりに、任意のデバイスから記録した入力で認識を待機させます。キー、ゲームパッドのボタン、ペダルなどのアナログ入力が使えます。下で入力を記録してください。</value></data>
+  <data name="Pad_MouseGestures_CustomInput" xml:space="preserve"><value>カスタム起動入力</value></data>
+  <data name="Pad_MouseGestures_CustomInput_Tooltip" xml:space="preserve"><value>押している間カスタムジェスチャーセッションを待機させる入力で、このスロットの任意のデバイスから記録します。ボタンとキーは押している間待機させます。ペダルなどのアナログ入力はストロークの半分を超えると待機させます。</value></data>
+  <data name="Pad_ResetMouseGestureCustomInput" xml:space="preserve"><value>カスタム起動入力をリセット</value></data>
+  <data name="Workshop_Tr_ScrollGestureModeNotSupported" xml:space="preserve"><value>方向スワイプモードは未対応</value></data>
+  <data name="Workshop_Tr_HapticIntensityDropped" xml:space="preserve"><value>触覚フィードバックを破棄 ({0} 件の割り当て)</value></data>
+  <data name="Workshop_Tr_ResponseCurveNotSupported" xml:space="preserve"><value>レスポンスカーブと範囲の設定を破棄 ({0})</value></data>
+  <data name="Workshop_Tr_GyroButtonMaskDropped" xml:space="preserve"><value>ジャイロ起動設定 {0}={1} を破棄 (ジャイロ起動はパッドごとに設定)</value></data>
+  <data name="Workshop_Tr_ActivatorDelayDropped" xml:space="preserve"><value>押下遅延を破棄 ({0})</value></data>
+  <data name="Workshop_Tr_InterruptibleDropped" xml:space="preserve"><value>中断不可の押下は通常の押下として動作</value></data>
+  <data name="Workshop_Tr_PlayerNumberActionNotSupported" xml:space="preserve"><value>プレイヤー番号の変更は Steam クライアントアクションのため、対応するものがありません</value></data>
+  <data name="Workshop_Tr_LizardModeActionNotSupported" xml:space="preserve"><value>リザードモード切替は Steam 内部のため、対応するものがありません</value></data>
+  <data name="Workshop_Tr_SetLedDefaultApproximated" xml:space="preserve"><value>既定のライティングの復元は上書き解除として近似</value></data>
+  <data name="Workshop_Tr_ToggleLatchEmitted" xml:space="preserve"><value>トグル押下は次の押下まで {0} を保持</value></data>
+  <data name="Workshop_Tr_ToggleDropped" xml:space="preserve"><value>トグル設定を破棄 (この出力には保持機構がありません)</value></data>
+  <data name="Workshop_Tr_LongPressKeyTap" xml:space="preserve"><value>長押しはしきい値で {0} をタップ (Steam は離すまで保持)</value></data>
+  <data name="Workshop_Tr_CameraResetApproximated" xml:space="preserve"><value>カメラリセットはジャイロの再センタリングとして近似</value></data>
+  <data name="Workshop_Tr_MouseRegionApproximated" xml:space="preserve"><value>マウス領域は中央基準のカーソル制限として近似 (画面の {0}%、領域中心 {1}%, {2}%)、サーフェスを押している間有効</value></data>
+  <data name="Workshop_Tr_MouseRegionTuningDropped" xml:space="preserve"><value>マウス領域の起動/解除設定を破棄 ({0})</value></data>
+  <data name="Workshop_Tr_TouchQuadrantApproximated" xml:space="preserve"><value>ボタンセルはホストのタッチサーフェスを共有 (セルごとのゾーンなし)</value></data>
+  <data name="Workshop_Tr_TrackpadHalfApproximated" xml:space="preserve"><value>タッチパッドの半分にホストされていますが、PadForge はパッド全体を読み取ります</value></data>
+  <data name="Workshop_Tr_FlickStickSurfaceNotSupported" xml:space="preserve"><value>タッチサーフェス上の Flick Stick をスキップ (PadForge の Flick Stick は物理スティックを読み取ります)</value></data>
+  <data name="Workshop_Tr_FlickStickTuningDropped" xml:space="preserve"><value>Flick Stick の調整設定を破棄 ({0})</value></data>
+  <data name="Macro_HoldForMs" xml:space="preserve"><value>長押し時</value></data>
+  <data name="Macro_HoldForMs_Tooltip" xml:space="preserve"><value>トリガーを保持時間のあいだ押し続けると 1 回だけ発動します。それより短いタップでは何も起こりません。</value></data>
+  <data name="Macro_TriggerHoldMs_Label" xml:space="preserve"><value>保持時間</value></data>
+  <data name="MacroAction_Type_RepeatVcButtonWhileHeld" xml:space="preserve"><value>押している間ボタンをリピート</value></data>
+  <data name="MacroAction_RepeatVcButtonWhileHeld_Tooltip" xml:space="preserve"><value>トリガーを押している間、設定した間隔でコントローラーボタンのオン/オフを繰り返します (連射 / ターボ)。</value></data>
+  <data name="MacroAction_RepeatVcButtonWhileHeld_Format" xml:space="preserve"><value>{0} を {1} ms ごとにリピート</value></data>
+  <data name="MacroAction_Type_ToggleVcButton" xml:space="preserve"><value>ボタンをトグル</value></data>
+  <data name="MacroAction_ToggleVcButton_Tooltip" xml:space="preserve"><value>発動するたびにコントローラーボタンを押しっぱなしにするか解除します。保持されたボタンは、次の発動かマクロの無効化まで押されたままになります。</value></data>
+  <data name="MacroAction_ToggleVcButton_Format" xml:space="preserve"><value>{0} をトグル</value></data>
+  <data name="MacroAction_Type_ToggleKey" xml:space="preserve"><value>キーをトグル</value></data>
+  <data name="MacroAction_ToggleKey_Tooltip" xml:space="preserve"><value>発動するたびにキーを押しっぱなしにするか解除します。保持されたキーは、次の発動かマクロの無効化まで押されたままになります。</value></data>
+  <data name="MacroAction_ToggleKey_Format" xml:space="preserve"><value>キー {0} をトグル</value></data>
+  <data name="MacroAction_Type_GyroRecenter" xml:space="preserve"><value>ジャイロを再センタリング</value></data>
+  <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>押すと、パッドに蓄積されたジャイロ照準の基準をゼロにします。スムージング履歴がクリアされ、Motion Lean のニュートラルが再取得され、重力推定がコントローラーの現在の姿勢から再設定されます。</value></data>
+  <data name="Pad_Menus" xml:space="preserve"><value>メニュー</value></data>
+  <data name="Menu_EmptyHint" xml:space="preserve"><value>メニューはスティックやタッチパッドを画面上のリングまたはグリッドに変えます。メニューを追加し、ホスト入力を選び、各セルにラベルを付けて割り当てを設定してください。</value></data>
+  <data name="Menu_NewNameFormat" xml:space="preserve"><value>メニュー {0}</value></data>
+  <data name="Menu_Name" xml:space="preserve"><value>メニュー名</value></data>
+  <data name="Menu_Enabled" xml:space="preserve"><value>有効</value></data>
+  <data name="Menu_Style" xml:space="preserve"><value>スタイル</value></data>
+  <data name="Menu_Style_Radial" xml:space="preserve"><value>ラジアルリング</value></data>
+  <data name="Menu_Style_Grid" xml:space="preserve"><value>タッチグリッド</value></data>
+  <data name="Menu_HostInput" xml:space="preserve"><value>ホスト入力</value></data>
+  <data name="Menu_Host_LeftStick" xml:space="preserve"><value>左スティック</value></data>
+  <data name="Menu_Host_RightStick" xml:space="preserve"><value>右スティック</value></data>
+  <data name="Menu_Host_Touchpad_Format" xml:space="preserve"><value>タッチパッド {0}</value></data>
+  <data name="Menu_HostHalf" xml:space="preserve"><value>パッドの半分</value></data>
+  <data name="Menu_Half_Whole" xml:space="preserve"><value>パッド全体</value></data>
+  <data name="Menu_Half_Left" xml:space="preserve"><value>左半分</value></data>
+  <data name="Menu_Half_Right" xml:space="preserve"><value>右半分</value></data>
+  <data name="Menu_FireMode" xml:space="preserve"><value>発動モード</value></data>
+  <data name="Menu_Fire_Click" xml:space="preserve"><value>クリック時</value></data>
+  <data name="Menu_Fire_ClickRelease" xml:space="preserve"><value>クリックを離した時</value></data>
+  <data name="Menu_Fire_TouchRelease" xml:space="preserve"><value>タッチを離した時</value></data>
+  <data name="Menu_Fire_Always" xml:space="preserve"><value>ホバー中</value></data>
+  <data name="Menu_Cells" xml:space="preserve"><value>セル</value></data>
+  <data name="Menu_HasCenter" xml:space="preserve"><value>中央セル</value></data>
+  <data name="Menu_ShowLabels" xml:space="preserve"><value>ラベルを表示</value></data>
+  <data name="Menu_Position" xml:space="preserve"><value>画面位置</value></data>
+  <data name="Menu_Scale" xml:space="preserve"><value>サイズ</value></data>
+  <data name="Menu_Opacity" xml:space="preserve"><value>不透明度</value></data>
+  <data name="Menu_Deadzone" xml:space="preserve"><value>起動デッドゾーン</value></data>
+  <data name="Menu_CellBindings" xml:space="preserve"><value>セルの割り当て</value></data>
+  <data name="Menu_CellIndex_Format" xml:space="preserve"><value>セル {0}</value></data>
+  <data name="Menu_CellCenter" xml:space="preserve"><value>中央</value></data>
+  <data name="Menu_Binding_None" xml:space="preserve"><value>なし</value></data>
+  <data name="Menu_Binding_Key" xml:space="preserve"><value>キーボードのキー</value></data>
+  <data name="Menu_Binding_Button" xml:space="preserve"><value>コントローラーボタン</value></data>
+  <data name="Mapping_MenuItem_Format" xml:space="preserve"><value>メニュー {0} セル {1}</value></data>
+  <data name="Dashboard_MenuOverlay" xml:space="preserve"><value>メニューオーバーレイ</value></data>
+  <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>ラジアルメニューまたはタッチメニューが作動している間、画面上のリングまたはグリッドを表示します。オーバーレイがオフでもメニューは発動します。</value></data>
+  <data name="Workshop_Tr_MenuEmitted" xml:space="preserve"><value>画面上メニューを作成 ({0} 個の割り当て済みセル)</value></data>
+  <data name="Workshop_Tr_MenuEmpty" xml:space="preserve"><value>メニューに割り当て済みセルがありません</value></data>
+  <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>メニューのホストサーフェスは未対応 ({0})</value></data>
+  <data name="Workshop_Tr_MenuIconsDropped" xml:space="preserve"><value>メニューセルのアイコンを破棄 ({0} セルはテキストラベルを表示)</value></data>
+  <data name="Workshop_Tr_MenuTuningDropped" xml:space="preserve"><value>メニューの調整設定は未対応 ({0})</value></data>
 </root>

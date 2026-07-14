@@ -1551,6 +1551,60 @@ namespace PadForge.Common.Input
         // on the polling thread so one buffer per type is sufficient.
         [System.ThreadStatic] private static List<float> _contribFloatBuf;
         [System.ThreadStatic] private static List<bool> _contribBoolBuf;
+        [System.ThreadStatic] private static List<CustomInputState> _slotDeviceStatesBuf;
+        [System.ThreadStatic] private static List<string> _slotDeviceGuidsBuf;
+
+        /// <summary>Online input states of every device assigned to a slot.
+        /// A multi-source row is evaluated ONCE per slot (the
+        /// <see cref="_multiSourceEvaluatedTargetsBySlot"/> de-dup), so an
+        /// empty-guid ("any device") source inside it must be read across ALL
+        /// of the slot's devices, not only the one device that happened to be
+        /// evaluated first. Without this, a slot shared by two controllers
+        /// dropped every multi-source row's input from whichever device was
+        /// not first in the loop (owner report 2026-07-14: an imported profile
+        /// OR-ing a paddle / touchpad-click with a face-button passthrough on a
+        /// slot holding both a Steam Controller and an Xbox pad: the Xbox pad
+        /// claimed the rows and read them from itself, so the Steam Controller's
+        /// presses never fired). The single-source path never hit this because
+        /// it evaluates per-device and Step 4 OR-merges across the slot.
+        /// <para>Lock order: GUIDs are collected under UserSettings.SyncRoot,
+        /// which is released before LookupDeviceState takes UserDevices.SyncRoot,
+        /// so the documented UserDevices-before-UserSettings order is never
+        /// inverted.</para>
+        /// <para>Returns the shared ThreadStatic buffer; callers must consume it
+        /// before the next call. Falls back to [currentState] when the slot has
+        /// no enumerable devices (utility / preview callers pass slotIndex -1).</para></summary>
+        private static List<CustomInputState> GetSlotDeviceStates(
+            int slotIndex, CustomInputState currentState, string currentDeviceGuid)
+        {
+            var result = _slotDeviceStatesBuf ??= new List<CustomInputState>(4);
+            result.Clear();
+            var guids = _slotDeviceGuidsBuf ??= new List<string>(4);
+            guids.Clear();
+            var settings = SettingsManager.UserSettings;
+            if (slotIndex >= 0 && settings?.Items != null)
+            {
+                lock (settings.SyncRoot)
+                {
+                    for (int i = 0; i < settings.Items.Count; i++)
+                    {
+                        var us = settings.Items[i];
+                        if (us == null || us.MapTo != slotIndex) continue;
+                        guids.Add(us.InstanceGuid.ToString());
+                    }
+                }
+            }
+            for (int i = 0; i < guids.Count; i++)
+            {
+                var g = guids[i];
+                var st = (currentDeviceGuid != null
+                          && string.Equals(g, currentDeviceGuid, System.StringComparison.OrdinalIgnoreCase))
+                    ? currentState : LookupDeviceState(g);
+                if (st != null && !result.Contains(st)) result.Add(st);
+            }
+            if (result.Count == 0 && currentState != null) result.Add(currentState);
+            return result;
+        }
         [System.ThreadStatic] private static List<float> _contribFlagsBuf;
         [System.ThreadStatic] private static List<float> _contribActiveBuf;
         [System.ThreadStatic] private static HashSet<string> _shiftCoveredTargetsBuf;
@@ -1828,6 +1882,7 @@ namespace PadForge.Common.Input
                 negPairIndex = 1;
             }
 
+            List<CustomInputState> slotStates = null; // lazily filled on the first empty-guid side
             for (int i = 0; i < srcsCount; i++)
             {
                 if (i == negPairIndex) continue;
@@ -1839,27 +1894,61 @@ namespace PadForge.Common.Input
                 // stable (sN references are positional).
                 if (IsSourceSuppressedPostpone(slotIndex, src.DeviceGuid, src.Descriptor))
                 { list.Add(0f); continue; }
-                var devState = string.IsNullOrEmpty(src.DeviceGuid)
-                    ? currentState : LookupDeviceState(src.DeviceGuid);
+
+                bool hasNegPair = (i == 0 && negPairIndex == 1);
+                var negSrc = hasNegPair ? srcs[1] : null;
+                bool useNeg = hasNegPair && negSrc != null
+                    && !IsSourceSuppressedPostpone(slotIndex, negSrc.DeviceGuid, negSrc.Descriptor);
+                bool posAny = string.IsNullOrEmpty(src.DeviceGuid);
+                bool negAny = useNeg && string.IsNullOrEmpty(negSrc.DeviceGuid);
+
+                if (posAny || negAny)
+                {
+                    // Any "any device" side spans the slot's devices (the row is
+                    // evaluated once). The empty-guid side reads per device; a
+                    // concrete side reads its own fixed device. The neg pair's
+                    // (pos + neg) is formed per device, then max-abs selects the
+                    // device with the strongest deflection.
+                    slotStates ??= GetSlotDeviceStates(slotIndex, currentState, currentDeviceGuid);
+                    var posFixed = posAny ? null : LookupDeviceState(src.DeviceGuid);
+                    var negFixed = (useNeg && !negAny) ? LookupDeviceState(negSrc.DeviceGuid) : null;
+                    float best = 0f;
+                    for (int d = 0; d < slotStates.Count; d++)
+                    {
+                        var pState = posAny ? slotStates[d] : posFixed;
+                        if (pState == null) continue;
+                        float v = SourceEvaluator.EvaluateForBipolarAxisTarget(
+                            pState, src, slotIndex, row.Target, i, slotRuntime, dt,
+                            evaluatedDeviceGuid: currentDeviceGuid);
+                        if (useNeg)
+                        {
+                            var nState = negAny ? slotStates[d] : negFixed;
+                            if (nState != null)
+                                v += SourceEvaluator.EvaluateForBipolarAxisTarget(
+                                    nState, negSrc, slotIndex, row.Target, 1, slotRuntime, dt,
+                                    evaluatedDeviceGuid: currentDeviceGuid);
+                        }
+                        if (System.Math.Abs(v) > System.Math.Abs(best)) best = v;
+                    }
+                    list.Add(best);
+                    continue;
+                }
+
+                // Both sides concrete (original single-device behavior).
+                var devState = LookupDeviceState(src.DeviceGuid);
                 if (devState == null) { list.Add(0f); continue; }
-                float v = SourceEvaluator.EvaluateForBipolarAxisTarget(
+                float val = SourceEvaluator.EvaluateForBipolarAxisTarget(
                     devState, src, slotIndex, row.Target, i, slotRuntime, dt,
                     evaluatedDeviceGuid: currentDeviceGuid);
-                if (i == 0 && negPairIndex == 1)
+                if (useNeg)
                 {
-                    var negSrc = srcs[1];
-                    var negState = negSrc == null ? null
-                        : (string.IsNullOrEmpty(negSrc.DeviceGuid)
-                            ? currentState : LookupDeviceState(negSrc.DeviceGuid));
-                    if (negState != null
-                        && !IsSourceSuppressedPostpone(slotIndex, negSrc.DeviceGuid, negSrc.Descriptor))
-                    {
-                        v += SourceEvaluator.EvaluateForBipolarAxisTarget(
+                    var negState = LookupDeviceState(negSrc.DeviceGuid);
+                    if (negState != null)
+                        val += SourceEvaluator.EvaluateForBipolarAxisTarget(
                             negState, negSrc, slotIndex, row.Target, 1, slotRuntime, dt,
                             evaluatedDeviceGuid: currentDeviceGuid);
-                    }
                 }
-                list.Add(v);
+                list.Add(val);
             }
             return list;
         }
@@ -1873,6 +1962,7 @@ namespace PadForge.Common.Input
             var list = _contribFloatBuf ??= new List<float>(8);
             list.Clear();
             var srcs = SnapshotSources(row, out int srcsCount);
+            List<CustomInputState> slotStates = null; // lazily filled on the first empty-guid source
             for (int i = 0; i < srcsCount; i++)
             {
                 var src = srcs[i];
@@ -1880,8 +1970,24 @@ namespace PadForge.Common.Input
                 if (src == null) { list.Add(0f); continue; }
                 if (IsSourceSuppressedPostpone(slotIndex, src.DeviceGuid, src.Descriptor))
                 { list.Add(0f); continue; }
-                var devState = string.IsNullOrEmpty(src.DeviceGuid)
-                    ? currentState : LookupDeviceState(src.DeviceGuid);
+                if (string.IsNullOrEmpty(src.DeviceGuid))
+                {
+                    // "any device": take the strongest pull across the slot's
+                    // devices (this row is evaluated once, so it must span all
+                    // devices, not just the first-evaluated one).
+                    slotStates ??= GetSlotDeviceStates(slotIndex, currentState, currentDeviceGuid);
+                    float mx = 0f;
+                    for (int d = 0; d < slotStates.Count; d++)
+                    {
+                        float t = SourceEvaluator.EvaluateForTriggerTarget(
+                            slotStates[d], src, slotIndex, row.Target, i, slotRuntime, dt,
+                            evaluatedDeviceGuid: currentDeviceGuid);
+                        if (t > mx) mx = t;
+                    }
+                    list.Add(mx);
+                    continue;
+                }
+                var devState = LookupDeviceState(src.DeviceGuid);
                 if (devState == null) { list.Add(0f); continue; }
                 list.Add(SourceEvaluator.EvaluateForTriggerTarget(
                     devState, src, slotIndex, row.Target, i, slotRuntime, dt,
@@ -1899,6 +2005,7 @@ namespace PadForge.Common.Input
             var list = _contribFloatBuf ??= new List<float>(8);
             list.Clear();
             var srcs = SnapshotSources(row, out int srcsCount);
+            List<CustomInputState> slotStates = null; // lazily filled on the first empty-guid source
             for (int i = 0; i < srcsCount; i++)
             {
                 var src = srcs[i];
@@ -1906,8 +2013,24 @@ namespace PadForge.Common.Input
                 if (src == null) { list.Add(0f); continue; }
                 if (IsSourceSuppressedPostpone(slotIndex, src.DeviceGuid, src.Descriptor))
                 { list.Add(0f); continue; }
-                var devState = string.IsNullOrEmpty(src.DeviceGuid)
-                    ? currentState : LookupDeviceState(src.DeviceGuid);
+                if (string.IsNullOrEmpty(src.DeviceGuid))
+                {
+                    // "any device": OR the button read across every device on
+                    // the slot (this row is evaluated once, so it must span all
+                    // devices, not just the first-evaluated one).
+                    slotStates ??= GetSlotDeviceStates(slotIndex, currentState, currentDeviceGuid);
+                    bool any = false;
+                    for (int d = 0; d < slotStates.Count; d++)
+                    {
+                        if (SourceEvaluator.EvaluateForButtonTarget(
+                            slotStates[d], src, globalAxisToButtonThreshold,
+                            slotIndex, row.Target, i, slotRuntime, dt,
+                            evaluatedDeviceGuid: currentDeviceGuid)) { any = true; break; }
+                    }
+                    list.Add(any ? 1f : 0f);
+                    continue;
+                }
+                var devState = LookupDeviceState(src.DeviceGuid);
                 if (devState == null) { list.Add(0f); continue; }
                 list.Add(SourceEvaluator.EvaluateForButtonTarget(
                     devState, src, globalAxisToButtonThreshold,

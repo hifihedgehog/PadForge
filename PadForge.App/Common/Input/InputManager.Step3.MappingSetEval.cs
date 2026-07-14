@@ -1992,7 +1992,7 @@ namespace PadForge.Common.Input
         /// physical input to a different Extended/MIDI/KBM/Touchpad target
         /// never fired that target and the Base target it was meant to
         /// replace stayed live regardless of the active layer
-        /// (discussion #220).
+        /// (issue #221).
         ///
         /// <para>Base active → the cached Base row (unchanged fast path).
         /// A layer engaged → the layer's own row wins when it has sources;

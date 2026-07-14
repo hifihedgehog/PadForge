@@ -28,18 +28,20 @@ namespace PadForge.ViewModels
 
         private int _selectedTouchpadIndex;
 
-        /// <summary>Which pad on the active device the tab is editing
-        /// (0..MaxTouchpadIndex-1). Devices with one pad pin this to 0
-        /// and hide the pivot. Changing the value reloads VM fields
-        /// from the corresponding TouchpadSettings entry.</summary>
+        /// <summary>Which pad on the active device the recorder / input
+        /// preview targets (0..MaxTouchpadIndex-1). Devices with one pad
+        /// pin this to 0 and hide the pivot. Gesture / gating settings are
+        /// per-device now (enabling one applies to every pad the device
+        /// enumerates), so changing this no longer repivots the settings
+        /// cards; it only redirects the recorder and the live input
+        /// preview to the chosen pad.</summary>
         public int SelectedTouchpadIndex
         {
             get => _selectedTouchpadIndex;
             set
             {
                 if (value < 0) value = 0;
-                if (SetProperty(ref _selectedTouchpadIndex, value))
-                    LoadTouchpadGestureSettingsForActiveDevice();
+                SetProperty(ref _selectedTouchpadIndex, value);
             }
         }
 
@@ -784,15 +786,18 @@ namespace PadForge.ViewModels
 
         // ─── Load / sync against PadSetting.TouchpadSettings ──────
 
-        /// <summary>Reads the per-(device, pad) gesture settings from
-        /// <see cref="PadSetting.TouchpadSettings"/> into VM fields.
-        /// Called when the active device or selected touchpad index
-        /// changes. Sets <see cref="_loadingTouchpadGestures"/> for the
-        /// duration so setters don't ping-pong back to PadSetting.</summary>
+        /// <summary>Reads the per-device gesture settings from
+        /// <see cref="PadSetting.TouchpadSettings"/> into VM fields,
+        /// resolving the active device's winning entry via
+        /// <see cref="TouchpadGestureSettings.ResolveForDevice"/>. Called
+        /// when the active device / slot / tab changes. Sets
+        /// <see cref="_loadingTouchpadGestures"/> for the duration so
+        /// setters don't ping-pong back to PadSetting.</summary>
         public void LoadTouchpadGestureSettingsForActiveDevice()
         {
-            var ps = GetActivePadSettingForTouchpad();
-            var s = ResolveTouchpadGestureSettings(ps, _selectedTouchpadIndex);
+            var us = GetActiveUserSettingForTouchpad(out var guid);
+            var ps = us?.GetPadSetting();
+            var s = ResolveTouchpadGestureSettings(ps, guid.ToString());
             _loadingTouchpadGestures = true;
             try
             {
@@ -862,16 +867,16 @@ namespace PadForge.ViewModels
             if (ps == null) return;
 
             string guidStr = us.InstanceGuid.ToString();
-            int padIdx = _selectedTouchpadIndex;
 
             var list = ps.TouchpadSettings != null
                 ? new List<TouchpadSettingsEntry>(ps.TouchpadSettings)
                 : new List<TouchpadSettingsEntry>();
+            // Settings are per-device: match the entry by DeviceGuid ONLY
+            // (the selected pad index no longer partitions them).
             TouchpadSettingsEntry entry = null;
             foreach (var e in list)
             {
                 if (e == null) continue;
-                if (e.TouchpadIndex != padIdx) continue;
                 if (!string.Equals(e.DeviceGuid, guidStr, StringComparison.OrdinalIgnoreCase)) continue;
                 entry = e; break;
             }
@@ -880,7 +885,7 @@ namespace PadForge.ViewModels
                 entry = new TouchpadSettingsEntry
                 {
                     DeviceGuid = guidStr,
-                    TouchpadIndex = padIdx,
+                    TouchpadIndex = 0,
                     Settings = TouchpadGestureSettings.Default(),
                 };
                 list.Add(entry);
@@ -925,6 +930,15 @@ namespace PadForge.ViewModels
             s.SwipeHapticsIntensity = (float)TouchpadSwipeHapticsIntensity;
             entry.Settings = s;
 
+            // Canonicalize to exactly one entry per device, stamped index 0.
+            // Stamp UNCONDITIONALLY (not only in the new-entry branch) so a
+            // legacy [pad1, pad0] array can't leave the survivor at index 1,
+            // then prune any other same-device sibling so no stale entry
+            // shadows the per-device resolver.
+            entry.TouchpadIndex = 0;
+            list.RemoveAll(e => e != null && !ReferenceEquals(e, entry)
+                && string.Equals(e.DeviceGuid, guidStr, StringComparison.OrdinalIgnoreCase));
+
             ps.TouchpadSettings = list.ToArray();
         }
 
@@ -952,12 +966,6 @@ namespace PadForge.ViewModels
         {
             if (_loadingTouchpadGestures) return;
             SyncTouchpadGestureSettingsToActiveDevice();
-        }
-
-        private PadSetting GetActivePadSettingForTouchpad()
-        {
-            var us = GetActiveUserSettingForTouchpad(out _);
-            return us?.GetPadSetting();
         }
 
         /// <summary>Pick the UserSetting whose finger paths the recorder
@@ -1027,18 +1035,12 @@ namespace PadForge.ViewModels
             return chosen;
         }
 
-        private static TouchpadGestureSettings ResolveTouchpadGestureSettings(PadSetting ps, int padIdx)
-        {
-            if (ps?.TouchpadSettings == null) return TouchpadGestureSettings.Default();
-            for (int i = 0; i < ps.TouchpadSettings.Length; i++)
-            {
-                var e = ps.TouchpadSettings[i];
-                if (e == null) continue;
-                if (e.TouchpadIndex == padIdx)
-                    return e.Settings ?? TouchpadGestureSettings.Default();
-            }
-            return TouchpadGestureSettings.Default();
-        }
+        // Per-device resolution keyed by the active device guid (the prior
+        // TouchpadIndex-only match never checked DeviceGuid, a latent
+        // two-device-one-slot bug). Funnels through the same shared resolver
+        // as every runtime read seam.
+        private static TouchpadGestureSettings ResolveTouchpadGestureSettings(PadSetting ps, string guidStr)
+            => TouchpadGestureSettings.ResolveForDevice(ps?.TouchpadSettings, guidStr);
     }
 
     /// <summary>Payload carried by

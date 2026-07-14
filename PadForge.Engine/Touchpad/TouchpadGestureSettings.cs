@@ -309,5 +309,101 @@ namespace PadForge.Engine.Touchpad
         }
 
         public static TouchpadGestureSettings Default() => new TouchpadGestureSettings();
+
+        // ─── Per-device resolution ─────────────────────────────────────
+        //
+        // Touchpad gesture / gating settings are per-DEVICE: enabling a
+        // setting applies to every touchpad the device enumerates (a Steam
+        // Controller has 2 pads). The per-pad distinction survives only in
+        // the output descriptor strings ("Touchpad 0 StickX" vs "Touchpad 1
+        // StickX") the user picks in the mapping grid. The on-disk shape
+        // keeps the TouchpadIndex attribute (no schema break); these
+        // selectors collapse the array to one winner per device so every
+        // read seam agrees mid-migration with legacy per-pad arrays.
+
+        /// <summary>Winner-selection shared by every read seam. Among the
+        /// entries whose DeviceGuid matches <paramref name="guidStr"/>, a
+        /// user-configured entry beats a fresh <see cref="Default"/> one.
+        /// Ties break to the lowest <c>TouchpadIndex</c>. Owner-accepted
+        /// merge policy: two pads configured differently collapse to the
+        /// lowest-index tuning, and the higher pad's tuning is dropped.
+        /// Returns null when no entry matches.</summary>
+        public static TouchpadSettingsEntry ResolveEntryForDevice(TouchpadSettingsEntry[] entries, string guidStr)
+        {
+            if (entries == null || string.IsNullOrEmpty(guidStr)) return null;
+            TouchpadSettingsEntry best = null;
+            foreach (var e in entries)
+            {
+                if (e?.Settings == null) continue;
+                if (!string.Equals(e.DeviceGuid, guidStr, System.StringComparison.OrdinalIgnoreCase)) continue;
+                if (best == null) { best = e; continue; }
+                bool eCfg = IsConfigured(e.Settings), bCfg = IsConfigured(best.Settings);
+                if (eCfg != bCfg) { if (eCfg) best = e; }
+                else if (e.TouchpadIndex < best.TouchpadIndex) best = e;
+            }
+            return best;
+        }
+
+        /// <summary>The resolved settings bundle for a device, or
+        /// <see cref="Default"/> when no entry matches. Every runtime read
+        /// seam (gesture provider, mouse provider, VM loader, picker)
+        /// funnels through this so they agree on which pad's tuning a
+        /// device uses.</summary>
+        public static TouchpadGestureSettings ResolveForDevice(TouchpadSettingsEntry[] entries, string guidStr)
+            => ResolveEntryForDevice(entries, guidStr)?.Settings ?? Default();
+
+        /// <summary>True when <paramref name="s"/> differs from
+        /// <see cref="Default"/> in any user-facing way: any enable toggle
+        /// on, any mouse / pointer / haptic tuning moved off its default,
+        /// any threshold retuned. A configured entry outranks a pristine
+        /// Default entry when the resolver picks a winner, so a pad the user
+        /// set up mouse-only (masters off) still beats an untouched sibling.</summary>
+        internal static bool IsConfigured(TouchpadGestureSettings s)
+        {
+            if (s == null) return false;
+            var d = Default();
+            return s.Enabled != d.Enabled
+                || !string.Equals(s.Mode, d.Mode, System.StringComparison.Ordinal)
+                || s.CooldownMs != d.CooldownMs
+                || s.SwipeDistanceThreshold != d.SwipeDistanceThreshold
+                || s.SwipeTimeWindowMs != d.SwipeTimeWindowMs
+                || s.EnableFourWaySwipes != d.EnableFourWaySwipes
+                || s.EnableEightWaySwipes != d.EnableEightWaySwipes
+                || s.EnableRadialZones != d.EnableRadialZones
+                || s.RadialZoneCount != d.RadialZoneCount
+                || s.RadialCenterDeadzone != d.RadialCenterDeadzone
+                || s.EnableTouchSpots != d.EnableTouchSpots
+                || s.EnableTaps != d.EnableTaps
+                || s.TapTimeWindowMs != d.TapTimeWindowMs
+                || s.TapMaxMotion != d.TapMaxMotion
+                || s.MultiTapGapMs != d.MultiTapGapMs
+                || s.EnableLongPress != d.EnableLongPress
+                || s.LongPressTimeWindowMs != d.LongPressTimeWindowMs
+                || s.LongPressMaxMotion != d.LongPressMaxMotion
+                || s.EnableTwoFingerSwipes != d.EnableTwoFingerSwipes
+                || s.TwoFingerSwipeAngularTolerance != d.TwoFingerSwipeAngularTolerance
+                || s.EnablePinchSpread != d.EnablePinchSpread
+                || s.PinchThreshold != d.PinchThreshold
+                || s.EnableRotate != d.EnableRotate
+                || s.RotateThresholdDegrees != d.RotateThresholdDegrees
+                || s.EnableThreeFingerGestures != d.EnableThreeFingerGestures
+                || s.EnableFourFingerGestures != d.EnableFourFingerGestures
+                || s.EnableFiveFingerGestures != d.EnableFiveFingerGestures
+                || s.EnableShapeGestures != d.EnableShapeGestures
+                || s.GestureMatchThreshold != d.GestureMatchThreshold
+                || s.EnableJoystickOutput != d.EnableJoystickOutput
+                || s.JoystickMaxRadius != d.JoystickMaxRadius
+                || s.JoystickInnerDeadzone != d.JoystickInnerDeadzone
+                || !string.Equals(s.JoystickDPadMode, d.JoystickDPadMode, System.StringComparison.Ordinal)
+                || s.JoystickDPadActivationThreshold != d.JoystickDPadActivationThreshold
+                || s.MouseSensitivityX != d.MouseSensitivityX
+                || s.MouseSensitivityY != d.MouseSensitivityY
+                || s.MouseInvertX != d.MouseInvertX
+                || s.MouseInvertY != d.MouseInvertY
+                || s.PointerStretchX != d.PointerStretchX
+                || s.PointerStretchY != d.PointerStretchY
+                || s.EnableSwipeHaptics != d.EnableSwipeHaptics
+                || s.SwipeHapticsIntensity != d.SwipeHapticsIntensity;
+        }
     }
 }

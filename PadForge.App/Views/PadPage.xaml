@@ -9667,10 +9667,13 @@
                                    Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                    TextWrapping="Wrap" Margin="0,0,0,16"/>
 
-                        <!-- Per-pad pivot — visible only on multi-pad devices -->
+                        <!-- Record / preview pad selector. Visible only on
+                             multi-pad devices. Settings are per-device, so this
+                             no longer pivots the cards below; it only targets
+                             the gesture recorder and the live input preview. -->
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,12"
                                     Visibility="{Binding HasMultipleTouchpads, Converter={StaticResource BoolToVisibilityConverter}}">
-                            <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Pad_Touchpad_TouchpadIndex_Label, Source={x:Static strings:Strings.Instance}}"
+                            <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Pad_Touchpad_RecordTargetLabel, Source={x:Static strings:Strings.Instance}}"
                                        VerticalAlignment="Center" Margin="0,0,8,0"/>
                             <ComboBox ItemsSource="{Binding TouchpadIndexOptions}"
                                       SelectedItem="{Binding SelectedTouchpadIndex, Mode=TwoWay}"

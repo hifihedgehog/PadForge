@@ -1562,6 +1562,7 @@ public class Strings : INotifyPropertyChanged
     public string Pad_Touchpad_Header => Get("Pad_Touchpad_Header");
     public string Pad_Touchpad_Subtitle => Get("Pad_Touchpad_Subtitle");
     public string Pad_Touchpad_TouchpadIndex_Label => Get("Pad_Touchpad_TouchpadIndex_Label");
+    public string Pad_Touchpad_RecordTargetLabel => Get("Pad_Touchpad_RecordTargetLabel");
     public string Pad_Touchpad_Detection_Header => Get("Pad_Touchpad_Detection_Header");
     public string Pad_Touchpad_GesturesEnabled => Get("Pad_Touchpad_GesturesEnabled");
     public string Pad_Touchpad_GesturesEnabled_Tooltip => Get("Pad_Touchpad_GesturesEnabled_Tooltip");

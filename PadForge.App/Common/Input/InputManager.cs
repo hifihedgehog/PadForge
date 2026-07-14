@@ -2039,12 +2039,21 @@ namespace PadForge.Common.Input
 
                 // Each selected gesture button runs its own session; hand
                 // the recognizer the raw pressed mask and let it fan out.
+                // Only the five PHYSICAL indices read from the mouse: a
+                // sixth-plus mouse button must not arm the Custom session.
                 int pressedMask = 0;
-                for (int b = 0; b < Engine.Mouse.MouseGestureContext.ButtonCount
+                for (int b = 0; b < Engine.Mouse.MouseGestureContext.MouseButtonCount
                     && b < newState.Buttons.Length; b++)
                 {
                     if (newState.Buttons[b]) pressedMask |= 1 << b;
                 }
+
+                // Custom activation (discussion #216): the recognizer's
+                // composer ORs in bit 5 while the recorded cross-device
+                // input is held (ButtonHeldProvider, the same reader the
+                // gyro / trigger-route / haptic-mirror engage settles use).
+                pressedMask = Engine.Mouse.MouseGestureRecognizer.ComposePressedMask(
+                    pressedMask, settings, slot);
 
                 Engine.Mouse.MouseGestureRecognizer.Update(
                     ctx, settings, pressedMask, dxCounts, dyCounts, nowMs);

@@ -960,8 +960,10 @@ namespace PadForge.Services
             // because we read at the boolean level.
             // Reused across polls (mutate-in-place). EvaluateForButtonTarget/ReadAsBool
             // are pure reads that never retain the source reference, and this provider
-            // is invoked only from the poll thread's three engage settles (gyro / trigger
-            // route / haptic mirror, run sequentially), non-reentrant. Allocating a
+            // is invoked only from the poll thread's engage reads (the gyro / trigger
+            // route / haptic mirror settles plus the mouse-gesture custom activation
+            // composer inside the Step 2 walk, #216, all sequential on that one
+            // thread), non-reentrant. Allocating a
             // MappingSource per activator per poll at ~1 kHz was pure GC churn. Kind is
             // fixed; only Guid/Descriptor change per call. Default DeadZone(50) matches
             // the threshold arg, Invert(false) matches the old literal.
@@ -5174,6 +5176,7 @@ namespace PadForge.Services
             padVm.OnLeftTriggerRouteActivatorSelectedInputRefresh();
             padVm.OnRightTriggerRouteActivatorSelectedInputRefresh();
             padVm.OnMirrorEngageSelectedInputRefresh();
+            padVm.OnMouseGestureCustomEngageSelectedInputRefresh();
 
             // Macro trigger dropdown (#177): only the choices that
             // convert to a TriggerInputEntry. Same source list, so the

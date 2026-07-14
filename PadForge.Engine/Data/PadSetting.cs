@@ -1470,6 +1470,11 @@ namespace PadForge.Engine.Data
                     sb.Append(entry.DeviceGuid ?? ""); sb.Append(':');
                     sb.Append(s.Enabled).Append(',').Append(s.GestureButtons).Append(',');
                     sb.Append(s.FlickThresholdCounts).Append(',').Append(s.CooldownMs);
+                    // Custom activation (discussion #216): same dedup trap.
+                    // Without these two, devices differing only in the
+                    // recorded custom input collide and one gets dropped.
+                    sb.Append(',').Append(s.CustomEngageButton ?? "");
+                    sb.Append(',').Append(s.CustomEngageDeviceGuid ?? "");
                     sb.Append('|');
                 }
             }

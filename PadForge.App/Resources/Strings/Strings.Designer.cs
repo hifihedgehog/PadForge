@@ -1705,7 +1705,12 @@ public class Strings : INotifyPropertyChanged
     public string Mapping_MouseGestureUp => Get("Mapping_MouseGestureUp");
     public string Mapping_MouseGestureDown => Get("Mapping_MouseGestureDown");
     public string Mapping_MouseGestureClick => Get("Mapping_MouseGestureClick");
+    public string Mapping_MouseGestureCustom => Get("Mapping_MouseGestureCustom");
     public string Mapping_MouseGesture_Format => Get("Mapping_MouseGesture_Format");
+    public string Pad_MouseGestures_Custom_Tooltip => Get("Pad_MouseGestures_Custom_Tooltip");
+    public string Pad_MouseGestures_CustomInput => Get("Pad_MouseGestures_CustomInput");
+    public string Pad_MouseGestures_CustomInput_Tooltip => Get("Pad_MouseGestures_CustomInput_Tooltip");
+    public string Pad_ResetMouseGestureCustomInput => Get("Pad_ResetMouseGestureCustomInput");
     public string Devices_AccelAux => Get("Devices_AccelAux");
     public string Pad_Audio => Get("Pad_Audio");
     public string Pad_Pointer => Get("Pad_Pointer");

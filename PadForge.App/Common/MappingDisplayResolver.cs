@@ -375,7 +375,8 @@ namespace PadForge.Common
                 var si = Strings.Instance;
                 var mg = s.Split(new[] { ' ' }, 4, System.StringSplitOptions.RemoveEmptyEntries);
                 if (mg.Length < 4 || !int.TryParse(mg[2], out int mgBtn)
-                    || mgBtn < 0 || mgBtn >= 5) return null;
+                    || mgBtn < 0
+                    || mgBtn >= PadForge.Engine.Mouse.MouseGestureContext.ButtonCount) return null;
                 string g = mg[3].Trim();
                 string word =
                       g.Equals("Left",  System.StringComparison.OrdinalIgnoreCase) ? si.Mapping_MouseGestureLeft
@@ -386,7 +387,8 @@ namespace PadForge.Common
                     : null;
                 if (word == null) return null;
                 // X1/X2 are proper button names with no locale variants.
-                string[] mgNames = { si.Mouse_LeftClick, si.Mouse_MiddleClick, si.Mouse_RightClick, "X1", "X2" };
+                // Index 5 = the Custom activation (discussion #216).
+                string[] mgNames = { si.Mouse_LeftClick, si.Mouse_MiddleClick, si.Mouse_RightClick, "X1", "X2", si.Mapping_MouseGestureCustom };
                 return prefix + string.Format(si.Mapping_MouseGesture_Format, mgNames[mgBtn], word);
             }
 
@@ -1307,7 +1309,10 @@ namespace PadForge.Common
                 var mgs = mouseGestureSettings?.Invoke()
                     ?? PadForge.Engine.Mouse.MouseGestureSettings.Default();
                 // X1/X2 are proper button names with no locale variants.
-                string[] mgButtonNames = { si.Mouse_LeftClick, si.Mouse_MiddleClick, si.Mouse_RightClick, "X1", "X2" };
+                // Index 5 = the Custom activation (discussion #216): its
+                // five pulses list whenever the Custom button is selected,
+                // same selected-governs-visibility rule as the mouse rows.
+                string[] mgButtonNames = { si.Mouse_LeftClick, si.Mouse_MiddleClick, si.Mouse_RightClick, "X1", "X2", si.Mapping_MouseGestureCustom };
                 string[] mgWords =
                 {
                     si.Mapping_MouseGestureLeft, si.Mapping_MouseGestureRight,

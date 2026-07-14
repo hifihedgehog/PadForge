@@ -830,6 +830,31 @@ namespace PadForge
                     });
                 };
 
+                // Record button on the Mouse Gestures card's custom
+                // activation picker (discussion #216). Same freeform-recorder
+                // toggle as the Aim Engage picker above; the VM setters push
+                // the pair into the active mouse's MouseGestureSettings entry
+                // and the PropertyChanged hook marks dirty + refreshes the
+                // Mappings-tab picker.
+                pad.MouseGestureCustomEngageRecordRequested += (s, e) =>
+                {
+                    if (s is not PadViewModel pvm) return;
+                    if (pvm.MouseGestureCustomEngageRecording)
+                    {
+                        _recorderService.CancelRecording();
+                        pvm.MouseGestureCustomEngageRecording = false;
+                        return;
+                    }
+                    pvm.MouseGestureCustomEngageRecording = true;
+                    _recorderService.StartRecordingFreeform(pvm.PadIndex, (deviceGuid, descriptor) =>
+                    {
+                        pvm.MouseGestureCustomEngageButton = descriptor ?? "";
+                        pvm.MouseGestureCustomEngageDeviceGuid = deviceGuid ?? "";
+                        pvm.MouseGestureCustomEngageRecording = false;
+                        _settingsService.MarkDirty();
+                    });
+                };
+
                 // Record button on the haptic-mirror engage picker (#185).
                 // Same freeform-recorder toggle as the Aim Engage picker above;
                 // the result lands on the SELECTED device's DeviceConfig
@@ -1001,6 +1026,8 @@ namespace PadForge
                     bool isMouseGestureField = e.PropertyName is
                         nameof(PadViewModel.MouseGesturesEnabled) or
                         nameof(PadViewModel.MouseGestureButtons) or
+                        nameof(PadViewModel.MouseGestureCustomEngageButton) or
+                        nameof(PadViewModel.MouseGestureCustomEngageDeviceGuid) or
                         nameof(PadViewModel.MouseGestureFlickThreshold) or
                         nameof(PadViewModel.MouseGestureCooldownMs);
 
@@ -1496,6 +1523,9 @@ namespace PadForge
                     // Haptic-mirror engage record button (#185).
                     if (activePad.MirrorEngageRecording)
                         activePad.MirrorEngageRecording = false;
+                    // Mouse-gesture custom activation record button (#216).
+                    if (activePad.MouseGestureCustomEngageRecording)
+                        activePad.MouseGestureCustomEngageRecording = false;
                 }
             };
 

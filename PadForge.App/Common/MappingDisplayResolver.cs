@@ -190,16 +190,35 @@ namespace PadForge.Common
                 if (tp.Length >= 3 && tp[2].Equals("Click", System.StringComparison.OrdinalIgnoreCase))
                     return prefix + si.Mapping_TouchpadClick;
                 // "Touchpad {pad} Finger {finger} {X|Y|Down}" → explicit axis.
+                // Six-part forms are the #9 B-1 region-windowed halves
+                // ("... X Left" / "Down Right"): same finger reads gated to
+                // one half of the pad, rendered through their own half-
+                // marked formats so the window is visible in every chip.
                 if (tp.Length >= 5 && int.TryParse(tp[1], out int padIdx)
                     && tp[2].Equals("Finger", System.StringComparison.OrdinalIgnoreCase)
                     && int.TryParse(tp[3], out int fingerIdx))
                 {
-                    string fmt =
-                          tp[4].Equals("X",        System.StringComparison.OrdinalIgnoreCase) ? si.Mapping_TouchpadFingerX_Format
-                        : tp[4].Equals("Y",        System.StringComparison.OrdinalIgnoreCase) ? si.Mapping_TouchpadFingerY_Format
-                        : tp[4].Equals("Down",     System.StringComparison.OrdinalIgnoreCase) ? si.Mapping_TouchpadFingerTouch_Format
-                        : tp[4].Equals("Pressure", System.StringComparison.OrdinalIgnoreCase) ? si.Mapping_TouchpadFingerPressure_Format
-                        : null;
+                    string fmt;
+                    if (tp.Length >= 6)
+                    {
+                        bool left = tp[5].Equals("Left", System.StringComparison.OrdinalIgnoreCase);
+                        if (!left && !tp[5].Equals("Right", System.StringComparison.OrdinalIgnoreCase))
+                            return null;
+                        fmt =
+                              tp[4].Equals("X",    System.StringComparison.OrdinalIgnoreCase) ? (left ? si.Mapping_TouchpadFingerXLeft_Format : si.Mapping_TouchpadFingerXRight_Format)
+                            : tp[4].Equals("Y",    System.StringComparison.OrdinalIgnoreCase) ? (left ? si.Mapping_TouchpadFingerYLeft_Format : si.Mapping_TouchpadFingerYRight_Format)
+                            : tp[4].Equals("Down", System.StringComparison.OrdinalIgnoreCase) ? (left ? si.Mapping_TouchpadFingerTouchLeft_Format : si.Mapping_TouchpadFingerTouchRight_Format)
+                            : null;
+                    }
+                    else
+                    {
+                        fmt =
+                              tp[4].Equals("X",        System.StringComparison.OrdinalIgnoreCase) ? si.Mapping_TouchpadFingerX_Format
+                            : tp[4].Equals("Y",        System.StringComparison.OrdinalIgnoreCase) ? si.Mapping_TouchpadFingerY_Format
+                            : tp[4].Equals("Down",     System.StringComparison.OrdinalIgnoreCase) ? si.Mapping_TouchpadFingerTouch_Format
+                            : tp[4].Equals("Pressure", System.StringComparison.OrdinalIgnoreCase) ? si.Mapping_TouchpadFingerPressure_Format
+                            : null;
+                    }
                     if (fmt == null) return null;
                     return prefix + string.Format(fmt, padIdx + 1, fingerIdx + 1);
                 }
@@ -422,6 +441,19 @@ namespace PadForge.Common
                 list.Add(new InputChoice { Descriptor = $"Touchpad {p} Finger 0 Y",        DisplayName = string.Format(si.Mapping_TouchpadFingerY_Format,        p + 1, 1) });
                 list.Add(new InputChoice { Descriptor = $"Touchpad {p} Finger 0 Down",     DisplayName = string.Format(si.Mapping_TouchpadFingerTouch_Format,    p + 1, 1) });
                 list.Add(new InputChoice { Descriptor = $"Touchpad {p} Finger 0 Pressure", DisplayName = string.Format(si.Mapping_TouchpadFingerPressure_Format, p + 1, 1) });
+                // Region-windowed halves (#9 B-1) live on pad 0 only: the
+                // halves model Steam's split of a SINGLE physical pad
+                // (DS4 / DualSense), which is always pad 0. Multi-pad
+                // devices have a real pad per half and don't need them.
+                if (p == 0)
+                {
+                    list.Add(new InputChoice { Descriptor = $"Touchpad {p} Finger 0 X Left",     DisplayName = string.Format(si.Mapping_TouchpadFingerXLeft_Format,      p + 1, 1) });
+                    list.Add(new InputChoice { Descriptor = $"Touchpad {p} Finger 0 X Right",    DisplayName = string.Format(si.Mapping_TouchpadFingerXRight_Format,     p + 1, 1) });
+                    list.Add(new InputChoice { Descriptor = $"Touchpad {p} Finger 0 Y Left",     DisplayName = string.Format(si.Mapping_TouchpadFingerYLeft_Format,      p + 1, 1) });
+                    list.Add(new InputChoice { Descriptor = $"Touchpad {p} Finger 0 Y Right",    DisplayName = string.Format(si.Mapping_TouchpadFingerYRight_Format,     p + 1, 1) });
+                    list.Add(new InputChoice { Descriptor = $"Touchpad {p} Finger 0 Down Left",  DisplayName = string.Format(si.Mapping_TouchpadFingerTouchLeft_Format,  p + 1, 1) });
+                    list.Add(new InputChoice { Descriptor = $"Touchpad {p} Finger 0 Down Right", DisplayName = string.Format(si.Mapping_TouchpadFingerTouchRight_Format, p + 1, 1) });
+                }
                 list.Add(new InputChoice { Descriptor = $"Touchpad {p} Click",             DisplayName = PadWrap(si.Mapping_TouchpadClick) });
                 list.Add(new InputChoice { Descriptor = $"Touchpad {p} TouchLeft",         DisplayName = PadWrap(si.Mapping_TouchpadGesture_TouchLeft) });
                 list.Add(new InputChoice { Descriptor = $"Touchpad {p} TouchRight",        DisplayName = PadWrap(si.Mapping_TouchpadGesture_TouchRight) });
@@ -1023,6 +1055,20 @@ namespace PadForge.Common
                         list.Add(new InputChoice { Descriptor = $"Touchpad {p} Finger {f} Y",        DisplayName = string.Format(si.Mapping_TouchpadFingerY_Format,        p + 1, f + 1) });
                         list.Add(new InputChoice { Descriptor = $"Touchpad {p} Finger {f} Down",     DisplayName = string.Format(si.Mapping_TouchpadFingerTouch_Format,    p + 1, f + 1) });
                         list.Add(new InputChoice { Descriptor = $"Touchpad {p} Finger {f} Pressure", DisplayName = string.Format(si.Mapping_TouchpadFingerPressure_Format, p + 1, f + 1) });
+                        // Region-windowed halves (#9 B-1): only single-pad
+                        // devices (DS4 / DualSense) offer them. Their one
+                        // physical pad is what Steam splits into left/right
+                        // halves; a multi-pad device has a real pad per
+                        // half, so the windowed variants would be noise.
+                        if (numPads == 1)
+                        {
+                            list.Add(new InputChoice { Descriptor = $"Touchpad {p} Finger {f} X Left",     DisplayName = string.Format(si.Mapping_TouchpadFingerXLeft_Format,      p + 1, f + 1) });
+                            list.Add(new InputChoice { Descriptor = $"Touchpad {p} Finger {f} X Right",    DisplayName = string.Format(si.Mapping_TouchpadFingerXRight_Format,     p + 1, f + 1) });
+                            list.Add(new InputChoice { Descriptor = $"Touchpad {p} Finger {f} Y Left",     DisplayName = string.Format(si.Mapping_TouchpadFingerYLeft_Format,      p + 1, f + 1) });
+                            list.Add(new InputChoice { Descriptor = $"Touchpad {p} Finger {f} Y Right",    DisplayName = string.Format(si.Mapping_TouchpadFingerYRight_Format,     p + 1, f + 1) });
+                            list.Add(new InputChoice { Descriptor = $"Touchpad {p} Finger {f} Down Left",  DisplayName = string.Format(si.Mapping_TouchpadFingerTouchLeft_Format,  p + 1, f + 1) });
+                            list.Add(new InputChoice { Descriptor = $"Touchpad {p} Finger {f} Down Right", DisplayName = string.Format(si.Mapping_TouchpadFingerTouchRight_Format, p + 1, f + 1) });
+                        }
                     }
                 }
 

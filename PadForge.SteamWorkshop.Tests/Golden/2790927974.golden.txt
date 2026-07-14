@@ -46,10 +46,10 @@ kbm rows: 31
     <- Gamepad RightTrigger [upper-half] dz=15
   Base | KbmMouseX | Sum
     <- Gamepad RightStickX sens=1.813
-    <- Touchpad 1 Finger 0 X
+    <- Touchpad 1 Finger 0 X sens=2.9
   Base | KbmMouseY | Sum
     <- Gamepad RightStickY sens=1.813
-    <- Touchpad 1 Finger 0 Y
+    <- Touchpad 1 Finger 0 Y sens=2.9
   Layer_2790927974_1 | KbmKey09
     <- Gamepad ButtonStart
   Layer_2790927974_1 | KbmKey0D
@@ -72,7 +72,7 @@ kbm rows: 31
 kbm activators: 1
   Cycle Layer_2790927974_1 cycle=Layer_2790927974_1+Base | Gamepad Paddle2 | name=Preset_1000001 / Default
 macros: 0
-report: v3 rows:x0+k31 macros:0 layers:1 clean:32 partial:7 skipped:4 errors:0
+report: v4 rows:x0+k31 macros:0 layers:1 clean:34 partial:5 skipped:4 errors:0
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_a/Full_Press => KbmKey53 <- Gamepad ButtonA
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_b/Full_Press => KbmKey57 <- Gamepad ButtonB
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_x/Full_Press => KbmKey44 <- Gamepad ButtonX
@@ -89,8 +89,8 @@ report: v3 rows:x0+k31 macros:0 layers:1 clean:32 partial:7 skipped:4 errors:0
   Clean RowEmitted @ Default/right_joystick/group 10 (joystick_mouse) => KbmMouseY <- Gamepad RightStickY
   Clean RowEmitted @ Default/right_joystick/group 10 (joystick_mouse)/click/Full_Press => KbmKey65 <- Gamepad RightStick
   Partial AbsoluteMouseApproximated @ Default/right_trackpad/group 2 (absolute_mouse)
-  Partial TouchpadTuningNotPerRow(145) @ Default/right_trackpad/group 2 (absolute_mouse) => KbmMouseX <- Touchpad 1 Finger 0 X
-  Partial TouchpadTuningNotPerRow(145) @ Default/right_trackpad/group 2 (absolute_mouse) => KbmMouseY <- Touchpad 1 Finger 0 Y
+  Clean RowEmitted @ Default/right_trackpad/group 2 (absolute_mouse) => KbmMouseX <- Touchpad 1 Finger 0 X
+  Clean RowEmitted @ Default/right_trackpad/group 2 (absolute_mouse) => KbmMouseY <- Touchpad 1 Finger 0 Y
   Partial SoftPressApproximated @ Default/right_trackpad/group 2 (absolute_mouse)/click/Soft_Press => KbmKey65 <- Touchpad 1 Click
   Clean RowEmitted @ Default/right_trigger/group 5 (trigger)/edge/Full_Press => KbmMBtn0 <- Gamepad RightTrigger (upper half)
   Clean RowEmitted @ Default/switch/group 6 (switches)/button_back_left_upper/Full_Press => KbmKeyBC <- Gamepad Paddle4

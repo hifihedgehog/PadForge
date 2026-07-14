@@ -10,12 +10,12 @@ kbm rows: 19
     <- Gamepad LeftTrigger [upper-half] dz=15
   Base | KbmMouseX | Sum
     <- Gamepad LeftStickX
-    <- Touchpad 0 Finger 0 X
+    <- Touchpad 0 Finger 0 X sens=3.94
     <- Gamepad RightStickX
     <- Touchpad 1 Finger 0 X
   Base | KbmMouseY | Sum
     <- Gamepad LeftStickY
-    <- Touchpad 0 Finger 0 Y
+    <- Touchpad 0 Finger 0 Y sens=3.94
     <- Gamepad RightStickY
     <- Touchpad 1 Finger 0 Y
   Layer_1129670518_0_MS_right_joystick_47 | KbmMouseX
@@ -64,13 +64,13 @@ kbm activators: 4
   Hold Layer_1129670518_2_MS_right_joystick_50 | Touchpad 0 Click | inherit | name=right_joystick shift
   Hold Layer_1129670518_2_MS_right_trackpad_38 | Touchpad 0 Click | inherit | name=right_trackpad shift
 macros: 0
-report: v3 rows:x0+k19 macros:0 layers:4 clean:38 partial:16 skipped:4 errors:0
+report: v4 rows:x0+k19 macros:0 layers:4 clean:40 partial:14 skipped:4 errors:0
   Clean RowEmitted @ TacticalControls/button_diamond/group 0 (four_buttons)/button_A/Full_Press => KbmMBtn0 <- Gamepad ButtonA
   Clean RowEmitted @ TacticalControls/joystick/group 51 (joystick_mouse) => KbmMouseX <- Gamepad LeftStickX
   Clean RowEmitted @ TacticalControls/joystick/group 51 (joystick_mouse) => KbmMouseY <- Gamepad LeftStickY
   Partial AbsoluteMouseApproximated @ TacticalControls/left_trackpad/group 7 (absolute_mouse)
-  Partial TouchpadTuningNotPerRow(197) @ TacticalControls/left_trackpad/group 7 (absolute_mouse) => KbmMouseX <- Touchpad 0 Finger 0 X
-  Partial TouchpadTuningNotPerRow(197) @ TacticalControls/left_trackpad/group 7 (absolute_mouse) => KbmMouseY <- Touchpad 0 Finger 0 Y
+  Clean RowEmitted @ TacticalControls/left_trackpad/group 7 (absolute_mouse) => KbmMouseX <- Touchpad 0 Finger 0 X
+  Clean RowEmitted @ TacticalControls/left_trackpad/group 7 (absolute_mouse) => KbmMouseY <- Touchpad 0 Finger 0 Y
   Clean RowEmitted @ TacticalControls/left_trigger/group 1 (trigger)/edge/Full_Press => KbmMBtn1 <- Gamepad LeftTrigger (upper half)
   Clean RowEmitted @ TacticalControls/right_joystick/group 46 (joystick_mouse) => KbmMouseX <- Gamepad RightStickX
   Clean RowEmitted @ TacticalControls/right_joystick/group 46 (joystick_mouse) => KbmMouseY <- Gamepad RightStickY

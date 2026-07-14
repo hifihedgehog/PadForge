@@ -134,19 +134,31 @@ namespace PadForge.SteamWorkshop.Translation
     }
 
     /// <summary>
-    /// A device-independent macro description. Triggers ride the Xbox VC
-    /// slot's combined output (MacroTriggerSource.OutputController), which is
-    /// the only device-free trigger PadForge's macro engine offers: the
-    /// physical input reaches it through the standard automap once the user
-    /// assigns a pad to the slot. Bindings whose physical input has no Xbox
-    /// output representation (paddles, touchpads, gyro) never produce one of
-    /// these; they are reported Skipped instead.
+    /// A device-independent macro description. Triggers come in two shapes:
+    /// inputs with an Xbox output representation ride the Xbox VC slot's
+    /// combined output (MacroTriggerSource.OutputController, cheaper and
+    /// consume-capable), and everything else (paddles, touchpads, gyro)
+    /// rides a device-free InputDevice descriptor trigger since wave 3
+    /// (<see cref="TriggerInputDescriptors"/>): empty-guid trigger entries
+    /// resolved against whichever device the user maps into the slot,
+    /// exactly like the mapping rows' empty DeviceGuid contract.
     /// </summary>
     public sealed class TranslatedMacro
     {
         public string Name { get; set; } = "";
 
         public TranslatedMacroAction Action { get; set; }
+
+        /// <summary>Device-free InputDevice trigger descriptors (wave 3).
+        /// Non-empty means the macro triggers on the hosting physical
+        /// input read directly through the engine's descriptor / gesture /
+        /// raw-button entries with an empty device guid ("the device on
+        /// the slot"); the combined-output fields below stay zero. Multiple
+        /// entries AND together (a single-pad click plus its half's touch
+        /// spot). The materializer converts each descriptor through the
+        /// same picker path (MacroItem.TryBuildTriggerEntry) so imported
+        /// macros round-trip the macro editor.</summary>
+        public List<string> TriggerInputDescriptors { get; set; } = new();
 
         /// <summary>"OnPress" / "WhileHeld" / "OnRelease" / "HoldForMs"
         /// (MacroTriggerMode names). For <see cref="TranslatedMacroAction.MouseLimitRegion"/>

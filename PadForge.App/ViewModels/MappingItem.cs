@@ -1192,12 +1192,15 @@ namespace PadForge.ViewModels
                 if (desc.StartsWith("Mouse Motion ", StringComparison.Ordinal))
                     return true;
 
-                // Touchpad: X / Y / Pressure are continuous; Click and
-                // Finger Down are discrete.
+                // Touchpad: X / Y / Pressure (whole-pad or the #9 B-1
+                // half-windowed X/Y variants) are continuous; Click and
+                // Finger Down (windowed included) are discrete. The finger
+                // predicate covers the axis spellings, halves included,
+                // and never matches the bool forms.
                 if (desc.StartsWith("Touchpad ", StringComparison.Ordinal))
                 {
-                    return desc.EndsWith(" X", StringComparison.Ordinal)
-                        || desc.EndsWith(" Y", StringComparison.Ordinal)
+                    return PadForge.Engine.Common.Mapping.SourceCoercion
+                            .IsTouchpadFingerAxisDescriptor(desc)
                         || desc.EndsWith(" Pressure", StringComparison.Ordinal);
                 }
 

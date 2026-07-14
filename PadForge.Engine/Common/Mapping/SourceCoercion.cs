@@ -820,7 +820,10 @@ namespace PadForge.Engine.Common.Mapping
         }
 
         /// <summary>True for the touchpad finger-position axes
-        /// <c>"Touchpad N Finger M X"</c> / <c>"... Y"</c> (#9 B-13).
+        /// <c>"Touchpad N Finger M X"</c> / <c>"... Y"</c> (#9 B-13),
+        /// including the region-windowed half variants <c>"... X Left"</c> /
+        /// <c>"X Right"</c> / <c>"Y Left"</c> / <c>"Y Right"</c> (#9 B-1),
+        /// which are the same position reads gated to one half of the pad.
         /// Pressure (<c>"... Pressure"</c>) is excluded on purpose: the
         /// generic Sensitivity knob scales finger POSITION reads (delta,
         /// absolute, and unipolar), never the physical pressure level.
@@ -832,7 +835,7 @@ namespace PadForge.Engine.Common.Mapping
             if (string.IsNullOrEmpty(descriptor)
                 || !descriptor.StartsWith("Touchpad ", StringComparison.Ordinal))
                 return false;
-            return TryParseTouchpadAxis(descriptor, out _, out _, out int axisOffset)
+            return TryParseTouchpadAxis(descriptor, out _, out _, out int axisOffset, out _)
                 && (axisOffset == 0 || axisOffset == 1);
         }
 
@@ -1848,11 +1851,12 @@ namespace PadForge.Engine.Common.Mapping
             // Touchpad-as-button stays outside the generic Sensitivity
             // contract (#9 B-13 decision, per the 0c4e56cd precedent of
             // never leaving a visible knob inert): the bool read handles
-            // Click and "Finger M Down" only, both unscaled booleans, and
-            // the finger X/Y position axes have NO threshold read here
-            // (they fall through ReadTouchpadBool and read false), so
-            // there is nothing to scale. The VMs' deadzone gates exclude
-            // the finger axes for the same reason.
+            // Click and "Finger M Down" (whole-pad or half-windowed, #9
+            // B-1) only, all unscaled booleans, and the finger X/Y
+            // position axes have NO threshold read here (they fall
+            // through ReadTouchpadBool and read false), so there is
+            // nothing to scale. The VMs' deadzone gates exclude the
+            // finger axes for the same reason.
             if (s.StartsWith("Touchpad ", StringComparison.Ordinal))
                 return ReadTouchpadBool(state, s);
 
@@ -2441,16 +2445,28 @@ namespace PadForge.Engine.Common.Mapping
                 return state.Buttons[16];
             }
 
-            // "Touchpad N Finger M Down"
-            if (parts.Length == 5
+            // "Touchpad N Finger M Down", plus the region-windowed
+            // "... Down Left" / "Down Right" (#9 B-1): contact only while
+            // the finger sits in that half of the pad. The windowed forms
+            // carry the trackpad-half button groups a Steam config hosts on
+            // one half of a single physical pad (B-19) and the mouse_region
+            // engage triggers.
+            if ((parts.Length == 5 || parts.Length == 6)
                 && parts[2].Equals("Finger", StringComparison.Ordinal)
                 && parts[4].Equals("Down", StringComparison.Ordinal))
             {
+                int half = TouchpadHalfNone;
+                if (parts.Length == 6)
+                {
+                    half = ParseTouchpadHalf(parts[5]);
+                    if (half == TouchpadHalfNone) return false;
+                }
                 if (!int.TryParse(parts[3], out int fingerIdx)) return false;
                 var pad = GetTouchpad(state, padIdx);
                 if (pad == null) return false;
                 if (fingerIdx < 0 || fingerIdx >= pad.MaxFingers) return false;
-                return pad.FingerDown[fingerIdx];
+                return pad.FingerDown[fingerIdx]
+                    && FingerInTouchpadHalf(pad, fingerIdx, half);
             }
 
             return false;
@@ -2551,7 +2567,7 @@ namespace PadForge.Engine.Common.Mapping
         private static bool TryReadTouchpadAxis(CustomInputState state, MappingSource src, string descriptor, int slotIndex, out float bipolar)
         {
             bipolar = 0f;
-            if (!TryParseTouchpadAxis(descriptor, out int padIdx, out int fingerIdx, out int axisOffset))
+            if (!TryParseTouchpadAxis(descriptor, out int padIdx, out int fingerIdx, out int axisOffset, out int half))
                 return false;
             var pad = GetTouchpad(state, padIdx);
             if (pad == null) return false;
@@ -2562,11 +2578,18 @@ namespace PadForge.Engine.Common.Mapping
             // track their own previous-frame position, matching the slot-keyed
             // TouchpadMouseSettingsProvider lookup below. Without it the slot
             // evaluated first each frame overwrites PrevValue and the second
-            // slot reads a zero delta.
-            string key = slotIndex + "|" + deviceGuid + "|" + padIdx + "|" + fingerIdx + "|" + axisOffset;
+            // slot reads a zero delta. The half window joins the key so a
+            // "X Left" row and a whole-pad "X" row on the same finger keep
+            // independent previous-frame state (#9 B-1).
+            string key = slotIndex + "|" + deviceGuid + "|" + padIdx + "|" + fingerIdx + "|" + axisOffset + "|" + half;
 
-            // Lifted finger → reset delta tracker, return 0.
-            if (!pad.FingerDown[fingerIdx])
+            // Lifted finger → reset delta tracker, return 0. A finger
+            // outside the descriptor's half window gates the same way
+            // (#9 B-1, "relative-delta reads gate per-sample"): no delta is
+            // produced while outside, and dropping the tracker entry makes
+            // re-entry seed fresh, so crossing back into the half never
+            // manufactures a jump.
+            if (!pad.FingerDown[fingerIdx] || !FingerInTouchpadHalf(pad, fingerIdx, half))
             {
                 _touchpadDeltas.TryRemove(key, out _);
                 return true; // bipolar already 0
@@ -2683,12 +2706,15 @@ namespace PadForge.Engine.Common.Mapping
         private static bool TryReadTouchpadAxisAbsolute(CustomInputState state, MappingSource src, string descriptor, out float bipolar)
         {
             bipolar = 0f;
-            if (!TryParseTouchpadAxis(descriptor, out int padIdx, out int fingerIdx, out int axisOffset))
+            if (!TryParseTouchpadAxis(descriptor, out int padIdx, out int fingerIdx, out int axisOffset, out int half))
                 return false;
             var pad = GetTouchpad(state, padIdx);
             if (pad == null) return false;
             if (fingerIdx < 0 || fingerIdx >= pad.MaxFingers) return false;
             if (!pad.FingerDown[fingerIdx]) return true; // bipolar already 0
+            // Half-windowed source with the finger outside its half:
+            // neutral, exactly like a lifted finger (#9 B-1).
+            if (!FingerInTouchpadHalf(pad, fingerIdx, half)) return true;
             float raw = axisOffset switch
             {
                 0 => pad.FingerX[fingerIdx],
@@ -2702,6 +2728,10 @@ namespace PadForge.Engine.Common.Mapping
                 bipolar = raw;
                 return true;
             }
+            // Windowed X re-normalizes its half to the full range so the
+            // half behaves as a complete miniature pad (#9 B-1); Y and
+            // whole-pad X pass through.
+            raw = RenormalizeTouchpadHalf(raw, axisOffset, half);
             bipolar = raw * 2f - 1f;
             float rowSens = src != null ? PerSourceSensitivity(src) : 1f;
             if (rowSens != 1f)
@@ -2723,12 +2753,14 @@ namespace PadForge.Engine.Common.Mapping
         private static bool TryReadTouchpadAxisRaw(CustomInputState state, MappingSource src, string descriptor, out float unipolar)
         {
             unipolar = 0f;
-            if (!TryParseTouchpadAxis(descriptor, out int padIdx, out int fingerIdx, out int axisOffset))
+            if (!TryParseTouchpadAxis(descriptor, out int padIdx, out int fingerIdx, out int axisOffset, out int half))
                 return false;
             var pad = GetTouchpad(state, padIdx);
             if (pad == null) return false;
             if (fingerIdx < 0 || fingerIdx >= pad.MaxFingers) return false;
             if (!pad.FingerDown[fingerIdx]) return true; // unipolar already 0
+            // Outside the descriptor's half window: neutral (#9 B-1).
+            if (!FingerInTouchpadHalf(pad, fingerIdx, half)) return true;
             float raw = axisOffset switch
             {
                 0 => pad.FingerX[fingerIdx],
@@ -2737,6 +2769,7 @@ namespace PadForge.Engine.Common.Mapping
                 _ => 0f
             };
             if (raw < 0f) raw = 0f; else if (raw > 1f) raw = 1f;
+            raw = RenormalizeTouchpadHalf(raw, axisOffset, half);
             unipolar = raw;
             if (axisOffset != 2)
             {
@@ -2751,16 +2784,26 @@ namespace PadForge.Engine.Common.Mapping
             return true;
         }
 
-        /// <summary>Parses "Touchpad N Finger M X" / "...Y" / "...Pressure".
+        /// <summary>Parses "Touchpad N Finger M X" / "...Y" / "...Pressure",
+        /// plus the region-windowed half variants "... X Left" / "X Right" /
+        /// "Y Left" / "Y Right" (#9 B-1: Steam splits a single physical
+        /// trackpad into left/right halves; the windowed source reads the
+        /// finger coordinate only while the finger is in that half).
         /// <paramref name="axisOffset"/> = 0 for X, 1 for Y, 2 for Pressure.
+        /// <paramref name="half"/> = <see cref="TouchpadHalfNone"/> for the
+        /// classic whole-pad form, <see cref="TouchpadHalfLeft"/> /
+        /// <see cref="TouchpadHalfRight"/> for the windowed forms. Pressure
+        /// has no windowed variant (the halves model Steam's surface split,
+        /// and pressure is a physical magnitude, not a position).
         /// Returns false for "Click" / "Down" / unrecognized formats.</summary>
         private static bool TryParseTouchpadAxis(string descriptor,
-            out int padIdx, out int fingerIdx, out int axisOffset)
+            out int padIdx, out int fingerIdx, out int axisOffset, out int half)
         {
-            padIdx = 0; fingerIdx = 0; axisOffset = -1;
+            padIdx = 0; fingerIdx = 0; axisOffset = -1; half = TouchpadHalfNone;
             string[] parts = descriptor.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-            // Expected: "Touchpad N Finger M X|Y|Pressure" — 5 parts.
-            if (parts.Length != 5) return false;
+            // Expected: "Touchpad N Finger M X|Y|Pressure" (5 parts) or
+            // "Touchpad N Finger M X|Y Left|Right" (6 parts).
+            if (parts.Length != 5 && parts.Length != 6) return false;
             if (!parts[0].Equals("Touchpad", StringComparison.Ordinal)) return false;
             if (!int.TryParse(parts[1], out padIdx)) return false;
             if (!parts[2].Equals("Finger", StringComparison.Ordinal)) return false;
@@ -2772,7 +2815,60 @@ namespace PadForge.Engine.Common.Mapping
                 "Pressure" => 2,
                 _          => -1,
             };
-            return axisOffset >= 0;
+            if (axisOffset < 0) return false;
+            if (parts.Length == 6)
+            {
+                if (axisOffset == 2) return false; // no windowed Pressure
+                half = ParseTouchpadHalf(parts[5]);
+                return half != TouchpadHalfNone;
+            }
+            return true;
+        }
+
+        // ─── Touchpad half windows (#9 B-1) ────────────────────────────
+        //
+        // Steam Input splits a single physical trackpad (DualShock 4 /
+        // DualSense: SDL registers exactly ONE touchpad,
+        // SDL_hidapi_ps4.c:732 / SDL_hidapi_ps5.c:846) into left_trackpad /
+        // right_trackpad halves. The windowed descriptors mirror that: the
+        // source is live only while the finger sits in its half (X < 0.5 =
+        // Left, X >= 0.5 = Right), absolute X reads re-normalize the half to
+        // the full range, and the relative-delta read gates per sample.
+
+        internal const int TouchpadHalfNone = 0;
+        internal const int TouchpadHalfLeft = 1;
+        internal const int TouchpadHalfRight = 2;
+
+        private static int ParseTouchpadHalf(string token) => token switch
+        {
+            "Left"  => TouchpadHalfLeft,
+            "Right" => TouchpadHalfRight,
+            _       => TouchpadHalfNone,
+        };
+
+        /// <summary>True when the finger sits inside the descriptor's half
+        /// window (always true for the whole-pad form). The boundary finger
+        /// X == 0.5 belongs to the Right half, matching the parse-time
+        /// convention documented on <see cref="TryParseTouchpadAxis"/>.</summary>
+        private static bool FingerInTouchpadHalf(TouchpadInputState pad, int fingerIdx, int half)
+            => half switch
+            {
+                TouchpadHalfLeft  => pad.FingerX[fingerIdx] < 0.5f,
+                TouchpadHalfRight => pad.FingerX[fingerIdx] >= 0.5f,
+                _ => true,
+            };
+
+        /// <summary>Re-normalizes a raw finger X inside a half window to the
+        /// full [0..1] range ("absolute reads clamp to the half
+        /// re-normalized"): Left maps [0..0.5] onto [0..1], Right maps
+        /// [0.5..1]. Y (and whole-pad X) pass through unchanged, because the
+        /// halves split the pad horizontally, so a windowed Y spans the full
+        /// pad height.</summary>
+        private static float RenormalizeTouchpadHalf(float raw, int axisOffset, int half)
+        {
+            if (half == TouchpadHalfNone || axisOffset != 0) return raw;
+            float v = half == TouchpadHalfLeft ? raw * 2f : (raw - 0.5f) * 2f;
+            return v < 0f ? 0f : (v > 1f ? 1f : v);
         }
     }
 }

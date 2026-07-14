@@ -83,8 +83,12 @@ kbm rows: 3
   Base | KbmMouseY | Sum
     <- Gyro Pitch
     <- Touchpad 1 Finger 0 Y
-macros: 0
-report: v3 rows:x32+k3 macros:0 layers:2 clean:44 partial:5 skipped:9 errors:0
+macros: 4
+  macro HoldVcButton HoldForMs | Long press ButtonY (button_back_left_upper) | btns=0x0000 in=[Gamepad Paddle4] hold=500ms target=0x8000
+  macro HoldVcButton HoldForMs | Long press ButtonY (button_back_right) | btns=0x0000 in=[Gamepad Paddle1] hold=500ms target=0x8000
+  macro HoldVcButton HoldForMs | Long press LeftShoulder (button_back_right) | btns=0x0000 in=[Gamepad Paddle1] hold=500ms target=0x0100
+  macro HoldVcButton HoldForMs | Long press ButtonY (button_back_left_upper) | btns=0x0000 in=[Gamepad Paddle4] hold=500ms target=0x8000
+report: v4 rows:x32+k3 macros:4 layers:2 clean:48 partial:5 skipped:5 errors:0
   Partial GyroButtonMaskDropped(gyro_ratchet_button_mask, 1048576) @ Default/gyro/group 24 (gyro_to_mouse)
   Clean RowEmitted @ Default/gyro/group 24 (gyro_to_mouse) => KbmMouseX <- Gyro Yaw
   Clean RowEmitted @ Default/gyro/group 24 (gyro_to_mouse) => KbmMouseY <- Gyro Pitch
@@ -92,11 +96,11 @@ report: v3 rows:x32+k3 macros:0 layers:2 clean:44 partial:5 skipped:9 errors:0
   Partial AbsoluteMouseApproximated @ Default/right_trackpad/group 31 (absolute_mouse)
   Clean RowEmitted @ Default/right_trackpad/group 31 (absolute_mouse) => KbmMouseX <- Touchpad 1 Finger 0 X
   Clean RowEmitted @ Default/right_trackpad/group 31 (absolute_mouse) => KbmMouseY <- Touchpad 1 Finger 0 Y
-  Skipped NoDeviceFreeTrigger @ Default/switch/group 0 (switches)/button_back_left_upper/Long_Press :: xinput_button Y, , 
+  Clean MacroEmitted @ Default/switch/group 0 (switches)/button_back_left_upper/Long_Press => Long-press hold macro: ButtonY
   Skipped DoublePressNotSupported @ Default/switch/group 0 (switches)/button_back_right/Double_Press :: xinput_button Y, , 
   Skipped DoublePressNotSupported @ Default/switch/group 0 (switches)/button_back_right/Double_Press :: xinput_button SHOULDER_RIGHT, , 
-  Skipped NoDeviceFreeTrigger @ Default/switch/group 0 (switches)/button_back_right/Long_Press :: xinput_button Y, , 
-  Skipped NoDeviceFreeTrigger @ Default/switch/group 0 (switches)/button_back_right/Long_Press :: xinput_button SHOULDER_LEFT, , 
+  Clean MacroEmitted @ Default/switch/group 0 (switches)/button_back_right/Long_Press => Long-press hold macro: ButtonY
+  Clean MacroEmitted @ Default/switch/group 0 (switches)/button_back_right/Long_Press => Long-press hold macro: LeftShoulder
   Clean RowEmitted @ Default/switch/group 0 (switches)/button_back_right_upper/Full_Press => KbmKeyA0 <- Gamepad Paddle3
   Clean RowEmitted @ Preset_1000001/button_diamond/group 15 (four_buttons)/button_a/Full_Press => ButtonY <- Gamepad ButtonA
   Clean RowEmitted @ Preset_1000001/button_diamond/group 15 (four_buttons)/button_a/Full_Press => DPadDown <- Gamepad ButtonA
@@ -107,7 +111,7 @@ report: v3 rows:x32+k3 macros:0 layers:2 clean:44 partial:5 skipped:9 errors:0
   Clean RowEmitted @ Preset_1000001/button_diamond/group 15 (four_buttons)/button_y/Full_Press => DPadUp <- Gamepad ButtonY
   Skipped UnsupportedControllerAction(empty_binding) @ Preset_1000001/switch/group 18 (switches)/button_back_left/Full_Press :: controller_action empty_binding, , 
   Partial RemoveLayerApproximated @ Preset_1000001/switch/group 18 (switches)/button_back_left_upper/release :: controller_action remove_layer 2 0 0, , 
-  Skipped NoDeviceFreeTrigger @ Preset_1000001/switch/group 18 (switches)/button_back_left_upper/Long_Press :: xinput_button Y, , 
+  Clean MacroEmitted @ Preset_1000001/switch/group 18 (switches)/button_back_left_upper/Long_Press => Long-press hold macro: ButtonY
   Clean RowEmitted @ Preset_1000002/button_diamond/group 26 (four_buttons)/button_a/Full_Press => DPadDown <- Gamepad ButtonA
   Clean RowEmitted @ Preset_1000002/button_diamond/group 26 (four_buttons)/button_b/Full_Press => DPadRight <- Gamepad ButtonB
   Clean RowEmitted @ Preset_1000002/button_diamond/group 26 (four_buttons)/button_x/Full_Press => DPadLeft <- Gamepad ButtonX

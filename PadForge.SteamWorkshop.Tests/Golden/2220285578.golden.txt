@@ -38,14 +38,14 @@ kbm rows: 18
     <- Gamepad LeftTrigger [upper-half] dz=15
   Base | KbmMouseX | Sum
     <- Gyro Yaw
-    <- Touchpad 1 Finger 0 X
+    <- Touchpad 1 Finger 0 X sens=2.26
   Base | KbmMouseY | Sum
     <- Gyro Pitch
-    <- Touchpad 1 Finger 0 Y
+    <- Touchpad 1 Finger 0 Y sens=2.26
 macros: 2
   macro KeyTap HoldForMs | Long press SPACE (button_escape) | btns=0x0010 hold=500ms consume vk=0x20
   macro KeyTap HoldForMs | Long press H (button_menu) | btns=0x0020 hold=500ms consume vk=0x48
-report: v3 rows:x0+k18 macros:2 layers:0 clean:19 partial:11 skipped:4 errors:0
+report: v4 rows:x0+k18 macros:2 layers:0 clean:21 partial:9 skipped:4 errors:0
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_a/Full_Press => KbmKey20 <- Gamepad ButtonA
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_b/Full_Press => KbmKey6B <- Gamepad ButtonB
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_x/Full_Press => KbmKey6D <- Gamepad ButtonX
@@ -64,8 +64,8 @@ report: v3 rows:x0+k18 macros:2 layers:0 clean:19 partial:11 skipped:4 errors:0
   Skipped TouchMenuNeedsOverlay(11) @ Default/left_trackpad/group 8 (touch_menu)
   Clean RowEmitted @ Default/left_trigger/group 4 (trigger)/edge/Full_Press => KbmMBtn1 <- Gamepad LeftTrigger (upper half)
   Partial AbsoluteMouseApproximated @ Default/right_trackpad/group 2 (absolute_mouse)
-  Partial TouchpadTuningNotPerRow(113) @ Default/right_trackpad/group 2 (absolute_mouse) => KbmMouseX <- Touchpad 1 Finger 0 X
-  Partial TouchpadTuningNotPerRow(113) @ Default/right_trackpad/group 2 (absolute_mouse) => KbmMouseY <- Touchpad 1 Finger 0 Y
+  Clean RowEmitted @ Default/right_trackpad/group 2 (absolute_mouse) => KbmMouseX <- Touchpad 1 Finger 0 X
+  Clean RowEmitted @ Default/right_trackpad/group 2 (absolute_mouse) => KbmMouseY <- Touchpad 1 Finger 0 Y
   Clean RowEmitted @ Default/right_trackpad/group 2 (absolute_mouse)/click/Full_Press => KbmKey20 <- Touchpad 1 Click
   Skipped ScrollWheelModeNotSupported @ Default/right_trackpad/group 10 (scrollwheel)
   Clean RowEmitted @ Default/right_trigger/group 5 (trigger)/edge/Full_Press => KbmMBtn0 <- Gamepad RightTrigger (upper half)

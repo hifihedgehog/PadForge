@@ -1163,6 +1163,12 @@
   <data name="Mapping_TouchpadFingerY_Format" xml:space="preserve"><value>Touchpad {0} Finger {1} Y</value></data>
   <data name="Mapping_TouchpadFingerTouch_Format" xml:space="preserve"><value>Touchpad {0} Finger {1} Touch</value></data>
   <data name="Mapping_TouchpadFingerPressure_Format" xml:space="preserve"><value>Touchpad {0} Finger {1} Pressure</value></data>
+  <data name="Mapping_TouchpadFingerXLeft_Format" xml:space="preserve"><value>Touchpad {0} Finger {1} X (Left Half)</value></data>
+  <data name="Mapping_TouchpadFingerXRight_Format" xml:space="preserve"><value>Touchpad {0} Finger {1} X (Right Half)</value></data>
+  <data name="Mapping_TouchpadFingerYLeft_Format" xml:space="preserve"><value>Touchpad {0} Finger {1} Y (Left Half)</value></data>
+  <data name="Mapping_TouchpadFingerYRight_Format" xml:space="preserve"><value>Touchpad {0} Finger {1} Y (Right Half)</value></data>
+  <data name="Mapping_TouchpadFingerTouchLeft_Format" xml:space="preserve"><value>Touchpad {0} Finger {1} Touch (Left Half)</value></data>
+  <data name="Mapping_TouchpadFingerTouchRight_Format" xml:space="preserve"><value>Touchpad {0} Finger {1} Touch (Right Half)</value></data>
 
   <!-- ═══ Touchpad Gesture Mapping Labels ═══ -->
   <data name="Mapping_TouchpadGesture_SwipeUp" xml:space="preserve"><value>Swipe Up</value></data>
@@ -2518,6 +2524,8 @@
   <data name="Workshop_Tr_LongPressKeyTap" xml:space="preserve"><value>long press taps {0} at the threshold (Steam holds it until release)</value></data>
   <data name="Workshop_Tr_CameraResetApproximated" xml:space="preserve"><value>camera reset approximated as a gyro recenter</value></data>
   <data name="Workshop_Tr_MouseRegionApproximated" xml:space="preserve"><value>mouse region approximated as a centered cursor clamp ({0}% of screen, region center {1}%, {2}%) while the surface is held</value></data>
+  <data name="Workshop_Tr_TouchQuadrantApproximated" xml:space="preserve"><value>button cells share the hosting touch surface (no per-cell zones)</value></data>
+  <data name="Workshop_Tr_TrackpadHalfApproximated" xml:space="preserve"><value>hosted on one half of the touchpad; PadForge reads the whole pad</value></data>
   <data name="Status_WorkshopUpdatesOptInRequired" xml:space="preserve"><value>Enable Community Configs to check for updates</value></data>
   <data name="Status_WorkshopNoImportedProfiles" xml:space="preserve"><value>No profiles imported from the Steam Workshop yet</value></data>
   <data name="Status_WorkshopCheckingUpdates" xml:space="preserve"><value>Checking Steam Workshop for updates…</value></data>

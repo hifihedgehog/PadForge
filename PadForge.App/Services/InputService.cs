@@ -3753,13 +3753,33 @@ namespace PadForge.Services
                 if (!int.TryParse(tParts[1], out int padIdx)) return 0;
                 if (tParts.Length == 3 && tParts[2].Equals("Click", StringComparison.Ordinal))
                     return (state.Buttons != null && state.Buttons.Length > 16 && state.Buttons[16]) ? 1 : 0;
-                if (tParts.Length != 5
+                if ((tParts.Length != 5 && tParts.Length != 6)
                     || !tParts[2].Equals("Finger", StringComparison.Ordinal)
                     || !int.TryParse(tParts[3], out int fingerIdx))
                     return 0;
                 if (state.Touchpads == null || padIdx < 0 || padIdx >= state.Touchpads.Length) return 0;
                 var pad = state.Touchpads[padIdx];
                 if (pad == null || fingerIdx < 0 || fingerIdx >= pad.MaxFingers) return 0;
+                // Region-windowed half variants (#9 B-1): live only while
+                // the finger sits in the named half; windowed X previews the
+                // re-normalized half coordinate, matching the engine read.
+                if (tParts.Length == 6)
+                {
+                    bool leftHalf = tParts[5].Equals("Left", StringComparison.Ordinal);
+                    if (!leftHalf && !tParts[5].Equals("Right", StringComparison.Ordinal)) return 0;
+                    bool inHalf = pad.FingerDown[fingerIdx]
+                        && (leftHalf ? pad.FingerX[fingerIdx] < 0.5f : pad.FingerX[fingerIdx] >= 0.5f);
+                    if (!inHalf) return 0;
+                    return tParts[4] switch
+                    {
+                        "X" => (int)(Math.Clamp(leftHalf
+                                ? pad.FingerX[fingerIdx] * 2f
+                                : (pad.FingerX[fingerIdx] - 0.5f) * 2f, 0f, 1f) * 1000),
+                        "Y" => (int)(pad.FingerY[fingerIdx] * 1000),
+                        "Down" => 1,
+                        _ => 0
+                    };
+                }
                 return tParts[4] switch
                 {
                     "X"        => (int)(pad.FingerX[fingerIdx] * 1000),

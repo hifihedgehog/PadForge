@@ -2,7 +2,7 @@ name: Gyrospeck's Hearts of Iron 4 V2
 description: Updated June 21, 2016.  Nearly every shortcut is accessible.  The controls are simple, yet deep.  Ha...
 slots: kbm
 xbox rows: 0
-kbm rows: 46
+kbm rows: 51
   Base | KbmKey1B
     <- Gamepad ButtonX
     <- Gamepad ButtonStart
@@ -32,9 +32,9 @@ kbm rows: 46
   Base | KbmMBtn1
     <- Gamepad LeftTrigger [upper-half] dz=15
   Base | KbmMouseX
-    <- Touchpad 1 Finger 0 X
+    <- Touchpad 1 Finger 0 X sens=1.82
   Base | KbmMouseY
-    <- Touchpad 1 Finger 0 Y
+    <- Touchpad 1 Finger 0 Y sens=1.82
   Layer_708227783_0_MS_button_diamond_11 | KbmKey71
     <- Gamepad ButtonA
   Layer_708227783_0_MS_button_diamond_11 | KbmKey72
@@ -62,16 +62,27 @@ kbm rows: 46
     <- Gamepad LeftStickX [upper-half]
   Layer_708227783_1 | KbmKey28
     <- Gamepad LeftStickY [upper-half]
+  Layer_708227783_1 | KbmKey2E
+    <- Touchpad 0 Finger 0 Down
+  Layer_708227783_1 | KbmKey43
+    <- Touchpad 0 Finger 0 Down
   Layer_708227783_1 | KbmKey47
     <- Gamepad RightShoulder
+  Layer_708227783_1 | KbmKey48
+    <- Touchpad 0 Finger 0 Down
   Layer_708227783_1 | KbmKey53
     <- Gamepad LeftShoulder
+  Layer_708227783_1 | KbmKey56
+    <- Touchpad 0 Finger 0 Down
   Layer_708227783_1 | KbmKey58
     <- Gamepad ButtonA
   Layer_708227783_1 | KbmKey5A
     <- Gamepad ButtonB
   Layer_708227783_1 | KbmKeyA0
     <- Gamepad Paddle2
+  Layer_708227783_1 | KbmKeyA2
+    <- Touchpad 0 Finger 0 Down
+    <- Touchpad 0 Finger 0 Down
   Layer_708227783_1 | KbmKeyA4
     <- Gamepad Paddle1
   Layer_708227783_1 | KbmKeyBE
@@ -81,9 +92,9 @@ kbm rows: 46
   Layer_708227783_1 | KbmMBtn1
     <- Gamepad LeftTrigger [upper-half] dz=15
   Layer_708227783_1 | KbmMouseX
-    <- Touchpad 1 Finger 0 X
+    <- Touchpad 1 Finger 0 X sens=1.82
   Layer_708227783_1 | KbmMouseY
-    <- Touchpad 1 Finger 0 Y
+    <- Touchpad 1 Finger 0 Y sens=1.82
   Layer_708227783_1_MS_button_diamond_26 | KbmKey71
     <- Gamepad ButtonA
   Layer_708227783_1_MS_button_diamond_26 | KbmKey72
@@ -103,7 +114,7 @@ kbm activators: 3
   Hold Layer_708227783_0_MS_left_trackpad_6 | Gamepad Paddle1 | inherit | name=left_trackpad shift
   Cycle Layer_708227783_1 cycle=Layer_708227783_1+Base | Gamepad ButtonY | name=Preset_1000001 / Default
 macros: 0
-report: v3 rows:x0+k46 macros:0 layers:3 clean:48 partial:13 skipped:23 errors:0
+report: v4 rows:x0+k51 macros:0 layers:3 clean:52 partial:15 skipped:17 errors:0
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_A/Full_Press => KbmKey20 <- Gamepad ButtonA
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_B/Full_Press => KbmKey4F <- Gamepad ButtonB
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_X/Full_Press => KbmKey1B <- Gamepad ButtonX
@@ -129,8 +140,8 @@ report: v3 rows:x0+k46 macros:0 layers:3 clean:48 partial:13 skipped:23 errors:0
   Skipped TouchMenuNeedsOverlay(8) @ Default/left_trackpad/group 9 (touch_menu)
   Clean RowEmitted @ Default/left_trigger/group 4 (trigger)/edge/Full_Press => KbmMBtn1 <- Gamepad LeftTrigger (upper half)
   Partial AbsoluteMouseApproximated @ Default/right_trackpad/group 2 (absolute_mouse)
-  Partial TouchpadTuningNotPerRow(91) @ Default/right_trackpad/group 2 (absolute_mouse) => KbmMouseX <- Touchpad 1 Finger 0 X
-  Partial TouchpadTuningNotPerRow(91) @ Default/right_trackpad/group 2 (absolute_mouse) => KbmMouseY <- Touchpad 1 Finger 0 Y
+  Clean RowEmitted @ Default/right_trackpad/group 2 (absolute_mouse) => KbmMouseX <- Touchpad 1 Finger 0 X
+  Clean RowEmitted @ Default/right_trackpad/group 2 (absolute_mouse) => KbmMouseY <- Touchpad 1 Finger 0 Y
   Clean RowEmitted @ Default/right_trackpad/group 2 (absolute_mouse)/click/Full_Press => KbmKey70 <- Touchpad 1 Click
   Skipped ScrollWheelModeNotSupported @ Default/right_trackpad/group 13 (scrollwheel)
   Clean RowEmitted @ Default/right_trigger/group 5 (trigger)/edge/Full_Press => KbmMBtn0 <- Gamepad RightTrigger (upper half)
@@ -162,16 +173,16 @@ report: v3 rows:x0+k46 macros:0 layers:3 clean:48 partial:13 skipped:23 errors:0
   Skipped UnknownPhysicalInput(Joystick, button_Y) @ Preset_1000001/joystick/group 24 (four_buttons)/button_Y :: key_press F8, Diplomacy Map Mode
   Skipped ScrollWheelModeNotSupported @ Preset_1000001/left_trackpad/group 21 (scrollwheel)
   Clean RowEmitted @ Preset_1000001/left_trackpad/group 21 (scrollwheel)/click/Full_Press => KbmMBtn2 <- Touchpad 0 Click
-  Skipped UnknownPhysicalInput(LeftTrackpad, button_A) @ Preset_1000001/left_trackpad/group 32 (four_buttons)/button_A :: key_press LEFT_CONTROL, Remove from Assigned Battleplan
-  Skipped UnknownPhysicalInput(LeftTrackpad, button_A) @ Preset_1000001/left_trackpad/group 32 (four_buttons)/button_A :: key_press LEFT_CONTROL, Remove from Assigned Battleplan
-  Skipped UnknownPhysicalInput(LeftTrackpad, button_A) @ Preset_1000001/left_trackpad/group 32 (four_buttons)/button_A :: key_press H, Remove from Assigned Battleplan
-  Skipped UnknownPhysicalInput(LeftTrackpad, button_B) @ Preset_1000001/left_trackpad/group 32 (four_buttons)/button_B :: key_press DELETE, Remove Plan
-  Skipped UnknownPhysicalInput(LeftTrackpad, button_X) @ Preset_1000001/left_trackpad/group 32 (four_buttons)/button_X :: key_press C, Fallback Line Order
-  Skipped UnknownPhysicalInput(LeftTrackpad, button_Y) @ Preset_1000001/left_trackpad/group 32 (four_buttons)/button_Y :: key_press V, Garrison Order
+  Partial TouchQuadrantApproximated @ Preset_1000001/left_trackpad/group 32 (four_buttons)/button_A/Full_Press => KbmKeyA2 <- Touchpad 0 Finger 0 Down
+  Partial TouchQuadrantApproximated @ Preset_1000001/left_trackpad/group 32 (four_buttons)/button_A/Full_Press => KbmKeyA2 <- Touchpad 0 Finger 0 Down
+  Partial TouchQuadrantApproximated @ Preset_1000001/left_trackpad/group 32 (four_buttons)/button_A/Full_Press => KbmKey48 <- Touchpad 0 Finger 0 Down
+  Partial TouchQuadrantApproximated @ Preset_1000001/left_trackpad/group 32 (four_buttons)/button_B/Full_Press => KbmKey2E <- Touchpad 0 Finger 0 Down
+  Partial TouchQuadrantApproximated @ Preset_1000001/left_trackpad/group 32 (four_buttons)/button_X/Full_Press => KbmKey43 <- Touchpad 0 Finger 0 Down
+  Partial TouchQuadrantApproximated @ Preset_1000001/left_trackpad/group 32 (four_buttons)/button_Y/Full_Press => KbmKey56 <- Touchpad 0 Finger 0 Down
   Clean RowEmitted @ Preset_1000001/left_trigger/group 27 (trigger)/edge/Full_Press => KbmMBtn1 <- Gamepad LeftTrigger (upper half)
   Partial AbsoluteMouseApproximated @ Preset_1000001/right_trackpad/group 19 (absolute_mouse)
-  Partial TouchpadTuningNotPerRow(91) @ Preset_1000001/right_trackpad/group 19 (absolute_mouse) => KbmMouseX <- Touchpad 1 Finger 0 X
-  Partial TouchpadTuningNotPerRow(91) @ Preset_1000001/right_trackpad/group 19 (absolute_mouse) => KbmMouseY <- Touchpad 1 Finger 0 Y
+  Clean RowEmitted @ Preset_1000001/right_trackpad/group 19 (absolute_mouse) => KbmMouseX <- Touchpad 1 Finger 0 X
+  Clean RowEmitted @ Preset_1000001/right_trackpad/group 19 (absolute_mouse) => KbmMouseY <- Touchpad 1 Finger 0 Y
   Clean RowEmitted @ Preset_1000001/right_trackpad/group 19 (absolute_mouse)/click/Full_Press => KbmKeyBE <- Touchpad 1 Click
   Skipped ScrollWheelModeNotSupported @ Preset_1000001/right_trackpad/group 20 (scrollwheel)
   Clean RowEmitted @ Preset_1000001/right_trigger/group 29 (trigger)/edge/Full_Press => KbmMBtn0 <- Gamepad RightTrigger (upper half)

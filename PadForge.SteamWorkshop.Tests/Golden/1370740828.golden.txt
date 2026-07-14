@@ -56,7 +56,7 @@ kbm rows: 22
   Base | KbmMouseY
     <- Gamepad LeftStickY sens=1.888
 macros: 0
-report: v3 rows:x4+k22 macros:0 layers:0 clean:26 partial:1 skipped:0 errors:0
+report: v4 rows:x4+k22 macros:0 layers:0 clean:26 partial:1 skipped:0 errors:0
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_a/Full_Press => KbmMBtn1 <- Gamepad ButtonA
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_b/Full_Press => KbmKey32 <- Gamepad ButtonB
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_x/Full_Press => KbmMBtn0 <- Gamepad ButtonX

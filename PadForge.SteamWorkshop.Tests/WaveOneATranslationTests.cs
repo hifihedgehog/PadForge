@@ -601,15 +601,30 @@ namespace PadForge.SteamWorkshop.Tests
         }
 
         [Fact]
-        public void SetLed_TouchpadHosted_SkippedNoDeviceFreeTrigger()
+        public void SetLed_TouchpadHosted_RidesWedgeDescriptorTrigger()
         {
+            // Wave 3: the trackpad-wedge-hosted set_led triggers on the
+            // wedge gesture descriptor (empty-guid InputDevice entry).
+            // The wedge needs the Touchpad-tab joystick-output feature,
+            // so the entry is the honest feature Partial.
             string vdf = Head
                 + Group(1, "dpad", Inputs(Inp("dpad_north", "controller_action set_led 255 0 0 100 255 1")))
                 + Preset(0, "Default", (1, "left_trackpad active"))
                 + "}\n";
             var p = Translate(vdf);
-            Assert.Empty(p.Macros);
+            var m = Assert.Single(p.Macros);
+            Assert.Equal(TranslatedMacroAction.SetLightbarColor, m.Action);
+            // requires_click is absent on the dpad group, which defaults to
+            // require: the wedge's click gate rides the trigger as its AND
+            // companion.
+            Assert.Equal(new[] { "Touchpad 0 DPadUp", "Touchpad 0 Click" },
+                m.TriggerInputDescriptors.ToArray());
+            Assert.Equal(0, (int)m.TriggerXboxButtons);
             Assert.Contains(p.Report.Entries, e =>
+                e.ReasonKey == TranslationReasons.TrackpadFeatureRequired
+                && e.Status == TranslationStatus.Partial
+                && e.ReasonArgs.Contains(PhysicalSlotResolver.FeatureJoystickOutput));
+            Assert.DoesNotContain(p.Report.Entries, e =>
                 e.ReasonKey == TranslationReasons.NoDeviceFreeTrigger);
         }
 
@@ -646,12 +661,12 @@ namespace PadForge.SteamWorkshop.Tests
         // ─── Translator version ─────────────────────────────────────────
 
         [Fact]
-        public void TranslatorVersion_IsThree_AndRidesTheSummary()
+        public void TranslatorVersion_IsFour_AndRidesTheSummary()
         {
-            Assert.Equal(3, TranslationReport.CurrentTranslatorVersion);
+            Assert.Equal(4, TranslationReport.CurrentTranslatorVersion);
             var p = Translate(Head + "}\n");
-            Assert.Equal(3, p.Report.TranslatorVersion);
-            Assert.StartsWith("v3 ", p.Report.ToSummaryString());
+            Assert.Equal(4, p.Report.TranslatorVersion);
+            Assert.StartsWith("v4 ", p.Report.ToSummaryString());
         }
     }
 }

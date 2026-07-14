@@ -1599,6 +1599,7 @@
   <data name="Pad_Touchpad_Header" xml:space="preserve"><value>Touchpad</value></data>
   <data name="Pad_Touchpad_Subtitle" xml:space="preserve"><value>Eingaben pro Touchpad. Gesten (Wischen, Tippen, Zoomen, Formen) und kontinuierliche Ausgabemodi (virtueller Stick / Steuerkreuz, Maus) werden zu Mapping-Quellen, die du auf der Mapping-Registerkarte binden kannst.</value></data>
   <data name="Pad_Touchpad_TouchpadIndex_Label" xml:space="preserve"><value>Touchpad</value></data>
+  <data name="Pad_Touchpad_RecordTargetLabel" xml:space="preserve"><value>Aufnahme-/Vorschau-Pad</value></data>
   <data name="Pad_Touchpad_Detection_Header" xml:space="preserve"><value>Gestenerkennung</value></data>
   <data name="Pad_Touchpad_GesturesEnabled" xml:space="preserve"><value>Gesten auf diesem Touchpad aktivieren</value></data>
   <data name="Pad_Touchpad_GesturesEnabled_Tooltip" xml:space="preserve"><value>Hauptschalter für dieses Touchpad. Wenn aus, feuern keine Gesten-Deskriptoren für dieses Touchpad. Bestehende Finger-, Klick- und Positionszuordnungen funktionieren weiterhin.</value></data>
@@ -2554,6 +2555,8 @@
   <data name="Workshop_Tr_TrackpadHalfApproximated" xml:space="preserve"><value>auf einer Hälfte des Touchpads gehostet; PadForge liest das ganze Pad</value></data>
   <data name="Workshop_Tr_FlickStickSurfaceNotSupported" xml:space="preserve"><value>Flick Stick auf einer Touch-Oberfläche übersprungen (PadForge-Flick-Stick liest einen physischen Stick)</value></data>
   <data name="Workshop_Tr_FlickStickTuningDropped" xml:space="preserve"><value>Flick-Stick-Feinabstimmung verworfen ({0})</value></data>
+  <data name="Workshop_Tr_MouseModeTuningDropped" xml:space="preserve"><value>Maus-Feinabstimmung verworfen ({0})</value></data>
+  <data name="Workshop_Tr_AxisInversionNotApplied" xml:space="preserve"><value>Achsenumkehr nicht angewendet ({0})</value></data>
   <data name="Macro_HoldForMs" xml:space="preserve"><value>Beim Halten</value></data>
   <data name="Macro_HoldForMs_Tooltip" xml:space="preserve"><value>Löst einmal aus, nachdem der Auslöser ununterbrochen für die Haltezeit gehalten wurde. Ein kürzeres Antippen bewirkt nichts.</value></data>
   <data name="Macro_TriggerHoldMs_Label" xml:space="preserve"><value>Haltezeit</value></data>

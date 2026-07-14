@@ -315,11 +315,16 @@ namespace PadForge.SteamWorkshop.Vdf
                         Advance();
                         while (!Eof && !(Cur == '*' && PeekAt(1) == '/'))
                             Advance();
-                        if (!Eof)
-                        {
-                            Advance(); // '*'
-                            Advance(); // '/'
-                        }
+                        // Reaching EOF here means the '*/' never came, so the
+                        // rest of the document was swallowed as comment text.
+                        // Accepting that returns a silently TRUNCATED tree: the
+                        // import "succeeds" with every binding past the '/*'
+                        // missing and nothing to point at. Reject it, like every
+                        // other unterminated construct here.
+                        if (Eof)
+                            throw Error("Unterminated block comment.");
+                        Advance(); // '*'
+                        Advance(); // '/'
                     }
                     else
                     {

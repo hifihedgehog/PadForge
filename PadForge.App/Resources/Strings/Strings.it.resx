@@ -1621,6 +1621,7 @@
   <data name="Pad_Touchpad_Header" xml:space="preserve"><value>Touchpad</value></data>
   <data name="Pad_Touchpad_Subtitle" xml:space="preserve"><value>Input per touchpad. I gesti (scorrimenti, tap, pizzichi, forme) e le modalità di output continue (stick virtuale / D-pad, mouse) diventano sorgenti di mappatura da collegare nella scheda Mappature.</value></data>
   <data name="Pad_Touchpad_TouchpadIndex_Label" xml:space="preserve"><value>Touchpad</value></data>
+  <data name="Pad_Touchpad_RecordTargetLabel" xml:space="preserve"><value>Pad per registrazione / anteprima</value></data>
   <data name="Pad_Touchpad_Detection_Header" xml:space="preserve"><value>Rilevamento gesti</value></data>
   <data name="Pad_Touchpad_GesturesEnabled" xml:space="preserve"><value>Abilita gesti su questo touchpad</value></data>
   <data name="Pad_Touchpad_GesturesEnabled_Tooltip" xml:space="preserve"><value>Interruttore principale per questo touchpad. Quando disattivato, nessun descrittore di gesto si attiva per questo touchpad. Le mappature esistenti di dita, clic e posizione continuano a funzionare.</value></data>
@@ -2576,6 +2577,8 @@
   <data name="Workshop_Tr_TrackpadHalfApproximated" xml:space="preserve"><value>ospitato su una metà del touchpad; PadForge legge l'intero pad</value></data>
   <data name="Workshop_Tr_FlickStickSurfaceNotSupported" xml:space="preserve"><value>flick stick su una superficie touch saltato (il flick stick di PadForge legge una levetta fisica)</value></data>
   <data name="Workshop_Tr_FlickStickTuningDropped" xml:space="preserve"><value>regolazioni del flick stick scartate ({0})</value></data>
+  <data name="Workshop_Tr_MouseModeTuningDropped" xml:space="preserve"><value>regolazioni del mouse scartate ({0})</value></data>
+  <data name="Workshop_Tr_AxisInversionNotApplied" xml:space="preserve"><value>inversione degli assi non applicata ({0})</value></data>
   <data name="Macro_HoldForMs" xml:space="preserve"><value>Tenendo premuto</value></data>
   <data name="Macro_HoldForMs_Tooltip" xml:space="preserve"><value>Si attiva una volta dopo che l'attivatore è stato tenuto premuto ininterrottamente per il tempo di mantenimento. Un tocco più breve non fa nulla.</value></data>
   <data name="Macro_TriggerHoldMs_Label" xml:space="preserve"><value>Tempo di mantenimento</value></data>

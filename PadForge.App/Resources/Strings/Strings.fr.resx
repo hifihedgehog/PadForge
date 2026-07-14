@@ -1599,6 +1599,7 @@
   <data name="Pad_Touchpad_Header" xml:space="preserve"><value>Pavé tactile</value></data>
   <data name="Pad_Touchpad_Subtitle" xml:space="preserve"><value>Entrée par pavé tactile. Les gestes (glissé, tap, pincement, formes) et les modes de sortie continus (stick virtuel / croix directionnelle, souris) deviennent des sources de mappage à lier dans l'onglet Mappages.</value></data>
   <data name="Pad_Touchpad_TouchpadIndex_Label" xml:space="preserve"><value>Pavé tactile</value></data>
+  <data name="Pad_Touchpad_RecordTargetLabel" xml:space="preserve"><value>Pavé d&apos;enregistrement / d&apos;aperçu</value></data>
   <data name="Pad_Touchpad_Detection_Header" xml:space="preserve"><value>Détection des gestes</value></data>
   <data name="Pad_Touchpad_GesturesEnabled" xml:space="preserve"><value>Activer les gestes sur ce pavé tactile</value></data>
   <data name="Pad_Touchpad_GesturesEnabled_Tooltip" xml:space="preserve"><value>Bascule principale pour ce pavé tactile. Désactivé, aucun descripteur de geste n'est déclenché pour ce pavé tactile. Les affectations doigt / clic / position existantes continuent de fonctionner.</value></data>
@@ -2554,6 +2555,8 @@
   <data name="Workshop_Tr_TrackpadHalfApproximated" xml:space="preserve"><value>hébergé sur une moitié du pavé tactile ; PadForge lit tout le pavé</value></data>
   <data name="Workshop_Tr_FlickStickSurfaceNotSupported" xml:space="preserve"><value>flick stick sur une surface tactile ignoré (le flick stick de PadForge lit un stick physique)</value></data>
   <data name="Workshop_Tr_FlickStickTuningDropped" xml:space="preserve"><value>réglages du flick stick abandonnés ({0})</value></data>
+  <data name="Workshop_Tr_MouseModeTuningDropped" xml:space="preserve"><value>réglages de la souris abandonnés ({0})</value></data>
+  <data name="Workshop_Tr_AxisInversionNotApplied" xml:space="preserve"><value>inversion des axes non appliquée ({0})</value></data>
   <data name="Macro_HoldForMs" xml:space="preserve"><value>Au maintien</value></data>
   <data name="Macro_HoldForMs_Tooltip" xml:space="preserve"><value>Se déclenche une fois lorsque le déclencheur a été maintenu en continu pendant la durée de maintien. Un appui plus court ne fait rien.</value></data>
   <data name="Macro_TriggerHoldMs_Label" xml:space="preserve"><value>Durée de maintien</value></data>

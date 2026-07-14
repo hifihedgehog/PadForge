@@ -5547,6 +5547,7 @@ namespace PadForge.Services
                         LayerMask = layer,
                         CombineMode = srcRow.CombineMode ?? "",
                         CombineExpression = srcRow.CombineExpression ?? "",
+                        NoInherit = srcRow.NoInherit,
                         TrimDeadzone = srcRow.TrimDeadzone,
                         TrimRate = srcRow.TrimRate,
                         TrimResetOnRelease = srcRow.TrimResetOnRelease,
@@ -5560,6 +5561,7 @@ namespace PadForge.Services
                     // user-authored Sum / Average / Custom comes along.
                     targetRow.CombineMode = srcRow.CombineMode ?? "";
                     targetRow.CombineExpression = srcRow.CombineExpression ?? "";
+                    targetRow.NoInherit = srcRow.NoInherit;
                     targetRow.TrimDeadzone = srcRow.TrimDeadzone;
                     targetRow.TrimRate = srcRow.TrimRate;
                     targetRow.TrimResetOnRelease = srcRow.TrimResetOnRelease;
@@ -5871,6 +5873,7 @@ namespace PadForge.Services
                     LayerMask = row.LayerMask ?? "Base",
                     CombineMode = row.CombineMode ?? "",
                     CombineExpression = row.CombineExpression ?? "",
+                    NoInherit = row.NoInherit,
                     TrimDeadzone = row.TrimDeadzone,
                     TrimRate = row.TrimRate,
                     TrimResetOnRelease = row.TrimResetOnRelease,
@@ -5906,6 +5909,7 @@ namespace PadForge.Services
                     LayerMask = r.LayerMask ?? "Base",
                     CombineMode = r.CombineMode ?? "",
                     CombineExpression = r.CombineExpression ?? "",
+                    NoInherit = r.NoInherit,
                     TrimDeadzone = r.TrimDeadzone,
                     TrimRate = r.TrimRate,
                     TrimResetOnRelease = r.TrimResetOnRelease,
@@ -6010,6 +6014,7 @@ namespace PadForge.Services
                     LayerMask = row.LayerMask ?? "Base",
                     CombineMode = row.CombineMode ?? "",
                     CombineExpression = row.CombineExpression ?? "",
+                    NoInherit = row.NoInherit,
                     TrimDeadzone = row.TrimDeadzone,
                     TrimRate = row.TrimRate,
                     TrimResetOnRelease = row.TrimResetOnRelease,
@@ -6094,7 +6099,7 @@ namespace PadForge.Services
         }
 
         /// <summary>Returns true if the given slot's MappingSet carries any
-        /// row or shift activator. Use this instead of
+        /// row, shift activator, or menu. Use this instead of
         /// <see cref="PadSetting.HasAnyMapping"/> when deciding whether a
         /// slot is "configured" — the v3 source of truth is the per-slot
         /// MappingSet, not the legacy PadSetting descriptor fields, which
@@ -6117,6 +6122,12 @@ namespace PadForge.Services
                 }
             }
             if (ms.ShiftActivators != null && ms.ShiftActivators.Count > 0) return true;
+            // Menus (#9 B-17) count as slot data for the same reason rows and
+            // activators do: ReplaceSlotMappingSet copies them, so a
+            // menus-only slot is a meaningful Copy From Slot donor. Without
+            // this leg the Copy From dialog never offered such a slot and the
+            // menus it holds were uncopyable.
+            if (ms.Menus != null && ms.Menus.Count > 0) return true;
             return false;
         }
 
@@ -6201,18 +6212,23 @@ namespace PadForge.Services
 
             // The slot's DeviceConfig anchor (PadVm.DeviceConfig)
             // just swapped to the new device's per-device entry inside
-            // BindDeviceConfigForDevice. Re-attach the slot's HM
-            // dispatcher so it follows the new anchor (and re-subscribes
-            // its inner OnConfigChanged to the right instance).
+            // BindDeviceConfigForDevice. Re-attach the slot's dispatcher
+            // so it follows the new anchor (and re-subscribes its inner
+            // OnConfigChanged to the right instance). Both dispatcher
+            // owners need this: HM-backed slots keep theirs inside the
+            // HM VC, KBM / MIDI slots inside Step 5's parallel array.
+            // Same if / else split as the create-time attach.
             if (_inputManager != null && padVm.PadIndex >= 0 && padVm.PadIndex < InputManager.MaxPads)
             {
-                var vcs = _inputManager.GetVirtualControllers();
-                if (vcs != null && padVm.PadIndex < vcs.Length
-                    && vcs[padVm.PadIndex] is HMaestroVirtualController hmVc)
+                var anchor = padVm.DeviceConfig;
+                if (anchor != null)
                 {
-                    var anchor = padVm.DeviceConfig;
-                    if (anchor != null)
+                    var vcs = _inputManager.GetVirtualControllers();
+                    if (vcs != null && padVm.PadIndex < vcs.Length
+                        && vcs[padVm.PadIndex] is HMaestroVirtualController hmVc)
                         hmVc.AttachDeviceConfig(anchor);
+                    else
+                        _inputManager.AttachNonHmDeviceConfig(padVm.PadIndex, anchor);
                 }
             }
 
@@ -10569,6 +10585,11 @@ namespace PadForge.Services
                 SlotProfileIds = Enumerable.Range(0, _mainVm.Pads.Count)
                     .Select(i => _mainVm.Pads[i].ProfileId).ToArray(),
                 ExtendedConfigs = SnapshotExtendedConfigs(),
+                // Per-(slot, device) lighting / adaptive triggers / audio.
+                // Rides profiles like the Extended / MIDI / KBM configs
+                // above, through SettingsService's converter so this lane
+                // and UpdateActiveProfileSnapshot emit the identical shape.
+                DeviceSlotConfigs = _settingsService?.BuildDeviceConfigSnapshot(),
                 MidiConfigs = SnapshotMidiConfigs(),
                 KbmConfigs = SnapshotKbmConfigs(),
                 // Macros ride profiles (and .pfprofile exports, where the
@@ -10584,6 +10605,7 @@ namespace PadForge.Services
                 EnableWebController = _mainVm.Dashboard.EnableWebController,
                 WebControllerPort = _mainVm.Dashboard.WebControllerPort,
                 EnableTouchpadOverlay = _mainVm.Dashboard.EnableTouchpadOverlay,
+                EnableMenuOverlay = _mainVm.Dashboard.EnableMenuOverlay,
                 TouchpadOverlayOpacity = _mainVm.Dashboard.TouchpadOverlayOpacity,
                 TouchpadOverlayMonitor = _mainVm.Dashboard.TouchpadOverlayMonitor,
                 TouchpadOverlayLeft = _mainVm.Dashboard.TouchpadOverlayLeft,
@@ -10771,7 +10793,12 @@ namespace PadForge.Services
 
             p.SlotCreated = newCreated;
             p.SlotEnabled = newEnabled;
-            p.SlotMappingSets = newMappingSets;
+            // Null-guarded like the two below: on a profile captured before
+            // multi-source rows landed, null MEANS "leave the live sets
+            // alone" (ApplyProfile keys on exactly that). Handing back a
+            // fresh all-null array reads as "this profile has no mappings",
+            // and the apply then clones null over every live slot.
+            if (p.SlotMappingSets != null) p.SlotMappingSets = newMappingSets;
             if (p.SlotControllerTypes != null) p.SlotControllerTypes = newControllerTypes;
             if (p.SlotProfileIds != null) p.SlotProfileIds = newProfileIds;
 
@@ -10786,6 +10813,24 @@ namespace PadForge.Services
                 foreach (var cfg in p.ExtendedConfigs)
                     if (oldToNew.TryGetValue(cfg.SlotIndex, out var ni))
                         cfg.SlotIndex = ni;
+            }
+            if (p.DeviceSlotConfigs != null)
+            {
+                foreach (var cfg in p.DeviceSlotConfigs)
+                    if (oldToNew.TryGetValue(cfg.SlotIndex, out var ni))
+                        cfg.SlotIndex = ni;
+            }
+            if (p.Macros != null)
+            {
+                // BuildMacroData stamps the real slot index, so a macro
+                // whose slot shifts must move with it. Left unmapped, the
+                // healed profile's macros land on the pre-compaction pad
+                // index: LoadMacros places straight into Pads[PadIndex] and
+                // drops anything out of range, so a macro from a high gappy
+                // slot moves to the wrong pad or vanishes.
+                foreach (var m in p.Macros)
+                    if (oldToNew.TryGetValue(m.PadIndex, out var ni))
+                        m.PadIndex = ni;
             }
             if (p.MidiConfigs != null)
             {
@@ -11204,6 +11249,16 @@ namespace PadForge.Services
                 }
             }
 
+            // ── Apply per-(slot, device) configs ──
+            // Lighting / adaptive triggers / audio follow the profile the
+            // same way the Extended configs above do. Runs after topology
+            // so the SlotCreated gate inside sees the INCOMING profile's
+            // slots. Null means a profile saved before these rode profiles:
+            // leave the live configs alone, same legacy sentinel as Macros
+            // below. Ordered to match the app-load lane
+            // (SettingsService: Extended, DeviceSlot, MIDI, KBM).
+            _settingsService?.ApplyDeviceSlotConfigs(profile.DeviceSlotConfigs);
+
             if (profile.MidiConfigs != null)
             {
                 foreach (var cfgData in profile.MidiConfigs)
@@ -11264,6 +11319,7 @@ namespace PadForge.Services
 
             // ── Apply touchpad overlay settings ──
             _mainVm.Dashboard.EnableTouchpadOverlay = profile.EnableTouchpadOverlay;
+            _mainVm.Dashboard.EnableMenuOverlay = profile.EnableMenuOverlay;
             _mainVm.Dashboard.TouchpadOverlayOpacity = profile.TouchpadOverlayOpacity;
             _mainVm.Dashboard.TouchpadOverlayMonitor = profile.TouchpadOverlayMonitor;
             _mainVm.Dashboard.TouchpadOverlayLeft = profile.TouchpadOverlayLeft;
@@ -11437,8 +11493,14 @@ namespace PadForge.Services
                     profile.SlotControllerTypes = snapshot.SlotControllerTypes;
                     profile.SlotProfileIds = snapshot.SlotProfileIds;
                     profile.ExtendedConfigs = snapshot.ExtendedConfigs;
+                    profile.DeviceSlotConfigs = snapshot.DeviceSlotConfigs;
                     profile.MidiConfigs = snapshot.MidiConfigs;
                     profile.KbmConfigs = snapshot.KbmConfigs;
+                    // Macros ride profiles. Without this leg a macro edited
+                    // while this profile was active was lost the moment the
+                    // foreground monitor switched away, since that path never
+                    // reaches Save's UpdateActiveProfileSnapshot.
+                    profile.Macros = snapshot.Macros;
                     profile.XboxSlotOrder          = snapshot.XboxSlotOrder;
                     profile.PlayStationSlotOrder   = snapshot.PlayStationSlotOrder;
                     profile.ExtendedSlotOrder      = snapshot.ExtendedSlotOrder;
@@ -11449,6 +11511,7 @@ namespace PadForge.Services
                     profile.EnableWebController = snapshot.EnableWebController;
                     profile.WebControllerPort = snapshot.WebControllerPort;
                     profile.EnableTouchpadOverlay = snapshot.EnableTouchpadOverlay;
+                    profile.EnableMenuOverlay = snapshot.EnableMenuOverlay;
                     profile.TouchpadOverlayOpacity = snapshot.TouchpadOverlayOpacity;
                     profile.TouchpadOverlayMonitor = snapshot.TouchpadOverlayMonitor;
                     profile.TouchpadOverlayLeft = snapshot.TouchpadOverlayLeft;

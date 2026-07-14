@@ -113,10 +113,17 @@ namespace PadForge.Services
             };
         }
 
+        /// <summary>Lowers the translated macro list into profile DTOs.
+        /// Returns EMPTY, never null, when the config carries no macros (or
+        /// none survive translation). On ProfileData, null Macros is the
+        /// legacy sentinel meaning "saved before macros rode profiles, leave
+        /// the live set alone". A Workshop import is an authored profile that
+        /// owns its state outright, so it must clear the outgoing profile's
+        /// macros rather than inherit them.</summary>
         private static MacroData[] BuildMacros(List<TranslatedMacro> macros, int xboxSlot,
             string controllerType)
         {
-            if (macros == null || macros.Count == 0) return null;
+            if (macros == null || macros.Count == 0) return Array.Empty<MacroData>();
             var list = new List<MacroData>(macros.Count);
             foreach (var m in macros)
             {
@@ -131,7 +138,7 @@ namespace PadForge.Services
                 var data = BuildMacro(m, xboxSlot, controllerType);
                 if (data != null) list.Add(data);
             }
-            return list.Count > 0 ? list.ToArray() : null;
+            return list.ToArray();   // empty, not null: see the sentinel note above
         }
 
         private static MacroData BuildMacro(TranslatedMacro m, int xboxSlot, string controllerType)

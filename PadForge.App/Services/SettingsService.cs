@@ -1355,10 +1355,23 @@ namespace PadForge.Services
                     rebuiltByKey[(rr.Target ?? "", rr.LayerMask ?? "Base")] = rr;
                 }
 
+                // Everything on the set that ISN'T Rows survives the merge
+                // container swap. The merge rebuilds Base rows from the
+                // per-device PadSetting fields, so every field the legacy
+                // data can't repopulate — ownership, shift activators,
+                // menus, and the Base layer's appearance — has to be
+                // carried across by hand or it's dropped on every legacy
+                // load. Lists carry by reference; `current` is discarded.
                 var merged = new Engine.Data.MappingSet
                 {
-                    // Ownership survives the merge container swap.
                     Authoritative = current.Authoritative,
+                    ShiftActivators = current.ShiftActivators
+                        ?? new List<Engine.Data.ShiftActivator>(),
+                    Menus = current.Menus
+                        ?? new List<PadForge.Engine.Menus.MenuDefinitionEntry>(),
+                    BaseLayerName = current.BaseLayerName ?? "",
+                    BaseColor = current.BaseColor ?? "",
+                    BaseIcon = current.BaseIcon ?? "",
                 };
                 var consumedRebuilt = new HashSet<(string, string)>();
 
@@ -1452,15 +1465,6 @@ namespace PadForge.Services
                         merged.Rows.Add(rr);
                     }
                 }
-
-                // Preserve any authored shift activators across the legacy
-                // merge. The merge rebuilds Base rows from per-device
-                // PadSetting fields, so shift state — which never lived in
-                // the legacy fields — must be carried forward by reference
-                // (the merged MappingSet is a fresh container that legacy
-                // data alone wouldn't populate).
-                if (current.ShiftActivators != null && current.ShiftActivators.Count > 0)
-                    merged.ShiftActivators = current.ShiftActivators;
 
                 sets[slot] = merged;
             }
@@ -2083,8 +2087,15 @@ namespace PadForge.Services
         /// <summary>Applies per-(slot, device) configurations (adaptive
         /// triggers, lighting, audio, tone filter). Only restores configs
         /// for slots that are currently created; the body never gates on
-        /// slot output type.</summary>
-        private void ApplyDeviceSlotConfigs(ViewModels.DeviceSlotConfigData[] configs)
+        /// slot output type.
+        /// <para>Internal: both apply lanes (this file's load path and
+        /// InputService.ApplyProfile) reuse it so a runtime profile switch
+        /// restores lighting / adaptive triggers exactly as app load does.
+        /// Every write mutates the existing DeviceSlotConfig in place and
+        /// never reassigns one, which is load-bearing: UserEffectsDispatcher
+        /// holds a direct PropertyChanged subscription to those instances,
+        /// so replacing one would silently orphan the dispatcher.</para></summary>
+        internal void ApplyDeviceSlotConfigs(ViewModels.DeviceSlotConfigData[] configs)
         {
             if (configs == null) return;
 
@@ -3469,10 +3480,14 @@ namespace PadForge.Services
         /// <summary>
         /// Snapshots device configs for every slot for profile
         /// storage. One DTO per slot's anchor (DeviceGuid empty) plus
-        /// one per (slot, device) entry — mirrors the load path's
+        /// one per (slot, device) entry. Mirrors the load path's
         /// per-device handling.
+        /// <para>Internal: the profile snapshot lanes (SnapshotCurrentProfile
+        /// in InputService, UpdateActiveProfileSnapshot here) reuse it so a
+        /// runtime profile switch captures lighting / adaptive triggers
+        /// through the same converter as the main settings file.</para>
         /// </summary>
-        private ViewModels.DeviceSlotConfigData[] BuildDeviceConfigSnapshot()
+        internal ViewModels.DeviceSlotConfigData[] BuildDeviceConfigSnapshot()
         {
             var list = new System.Collections.Generic.List<ViewModels.DeviceSlotConfigData>();
             for (int i = 0; i < _mainVm.Pads.Count; i++)
@@ -3668,6 +3683,14 @@ namespace PadForge.Services
         /// InputService, UpdateActiveProfileSnapshot here) reuse it so
         /// profiles carry macros through the same converter as the main
         /// settings file.
+        /// <para>Returns EMPTY, never null, when no pad has a macro. On
+        /// ProfileData, null Macros is the legacy sentinel for "saved before
+        /// macros rode profiles, leave the live set alone" (see
+        /// InputService.ApplyProfile). Emitting null for a profile the user
+        /// authored with zero macros made it claim to be pre-macros-era, so
+        /// switching to it kept the OUTGOING profile's macros live and
+        /// firing. Only genuinely old XML, where the element is absent, still
+        /// deserializes to null and keeps the legacy behavior.</para>
         /// </summary>
         internal MacroData[] BuildMacroData()
         {
@@ -3680,7 +3703,7 @@ namespace PadForge.Services
                     list.Add(BuildMacroDataForMacro(macro, i));
             }
 
-            return list.Count > 0 ? list.ToArray() : null;
+            return list.ToArray();
         }
 
         /// <summary>Serializes one <see cref="MacroItem"/> into its

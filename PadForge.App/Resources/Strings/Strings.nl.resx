@@ -1619,6 +1619,7 @@
   <data name="Pad_Touchpad_Header" xml:space="preserve"><value>Touchpad</value></data>
   <data name="Pad_Touchpad_Subtitle" xml:space="preserve"><value>Invoer per touchpad. Gebaren (vegen, tikken, knijpen, vormen) en continue uitvoermodi (virtuele stick / D-pad, muis) worden mapping-bronnen die je op het tabblad Mappings kunt binden.</value></data>
   <data name="Pad_Touchpad_TouchpadIndex_Label" xml:space="preserve"><value>Touchpad</value></data>
+  <data name="Pad_Touchpad_RecordTargetLabel" xml:space="preserve"><value>Pad voor opnemen / voorbeeld</value></data>
   <data name="Pad_Touchpad_Detection_Header" xml:space="preserve"><value>Gebarendetectie</value></data>
   <data name="Pad_Touchpad_GesturesEnabled" xml:space="preserve"><value>Gebaren op dit touchpad inschakelen</value></data>
   <data name="Pad_Touchpad_GesturesEnabled_Tooltip" xml:space="preserve"><value>Hoofdschakelaar voor dit touchpad. Bij uitschakeling activeert dit touchpad geen gebaardescriptoren. Bestaande vinger-, klik- en positietoewijzingen blijven werken.</value></data>
@@ -2574,6 +2575,8 @@
   <data name="Workshop_Tr_TrackpadHalfApproximated" xml:space="preserve"><value>gehost op één helft van het touchpad; PadForge leest het hele pad</value></data>
   <data name="Workshop_Tr_FlickStickSurfaceNotSupported" xml:space="preserve"><value>flick stick op een aanraakoppervlak overgeslagen (PadForge-flick-stick leest een fysieke stick)</value></data>
   <data name="Workshop_Tr_FlickStickTuningDropped" xml:space="preserve"><value>flick-stick-afstelling vervallen ({0})</value></data>
+  <data name="Workshop_Tr_MouseModeTuningDropped" xml:space="preserve"><value>muisafstelling vervallen ({0})</value></data>
+  <data name="Workshop_Tr_AxisInversionNotApplied" xml:space="preserve"><value>asomkering niet toegepast ({0})</value></data>
   <data name="Macro_HoldForMs" xml:space="preserve"><value>Bij vasthouden</value></data>
   <data name="Macro_HoldForMs_Tooltip" xml:space="preserve"><value>Vuurt één keer nadat de trigger onafgebroken de vasthoudtijd ingedrukt is gehouden. Een kortere tik doet niets.</value></data>
   <data name="Macro_TriggerHoldMs_Label" xml:space="preserve"><value>Vasthoudtijd</value></data>

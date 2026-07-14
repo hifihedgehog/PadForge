@@ -1599,6 +1599,7 @@
   <data name="Pad_Touchpad_Header" xml:space="preserve"><value>タッチパッド</value></data>
   <data name="Pad_Touchpad_Subtitle" xml:space="preserve"><value>タッチパッドごとの入力。ジェスチャー（スワイプ、タップ、ピンチ、シェイプ）と連続出力モード（仮想スティック / 方向キー、マウス）がマッピングソースになり、マッピングタブで割り当てられます。</value></data>
   <data name="Pad_Touchpad_TouchpadIndex_Label" xml:space="preserve"><value>タッチパッド</value></data>
+  <data name="Pad_Touchpad_RecordTargetLabel" xml:space="preserve"><value>記録 / プレビュー対象パッド</value></data>
   <data name="Pad_Touchpad_Detection_Header" xml:space="preserve"><value>ジェスチャー検出</value></data>
   <data name="Pad_Touchpad_GesturesEnabled" xml:space="preserve"><value>このタッチパッドでジェスチャーを有効にする</value></data>
   <data name="Pad_Touchpad_GesturesEnabled_Tooltip" xml:space="preserve"><value>このタッチパッドのマスタートグルです。オフの場合、このタッチパッドではジェスチャーディスクリプタを発火しません。指 / クリック / 位置のマッピングはそのまま動作します。</value></data>
@@ -2554,6 +2555,8 @@
   <data name="Workshop_Tr_TrackpadHalfApproximated" xml:space="preserve"><value>タッチパッドの半分にホストされていますが、PadForge はパッド全体を読み取ります</value></data>
   <data name="Workshop_Tr_FlickStickSurfaceNotSupported" xml:space="preserve"><value>タッチサーフェス上の Flick Stick をスキップ (PadForge の Flick Stick は物理スティックを読み取ります)</value></data>
   <data name="Workshop_Tr_FlickStickTuningDropped" xml:space="preserve"><value>Flick Stick の調整設定を破棄 ({0})</value></data>
+  <data name="Workshop_Tr_MouseModeTuningDropped" xml:space="preserve"><value>マウスの調整設定を破棄 ({0})</value></data>
+  <data name="Workshop_Tr_AxisInversionNotApplied" xml:space="preserve"><value>軸の反転は未適用 ({0})</value></data>
   <data name="Macro_HoldForMs" xml:space="preserve"><value>長押し時</value></data>
   <data name="Macro_HoldForMs_Tooltip" xml:space="preserve"><value>トリガーを保持時間のあいだ押し続けると 1 回だけ発動します。それより短いタップでは何も起こりません。</value></data>
   <data name="Macro_TriggerHoldMs_Label" xml:space="preserve"><value>保持時間</value></data>

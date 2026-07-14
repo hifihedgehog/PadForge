@@ -1599,6 +1599,7 @@
   <data name="Pad_Touchpad_Header" xml:space="preserve"><value>Touchpad</value></data>
   <data name="Pad_Touchpad_Subtitle" xml:space="preserve"><value>Entrada por touchpad. Los gestos (deslizar, tocar, pellizcar, formas) y los modos de salida continuos (palanca virtual / cruceta, ratón) se convierten en fuentes de mapeo que puedes vincular en la pestaña Mapeos.</value></data>
   <data name="Pad_Touchpad_TouchpadIndex_Label" xml:space="preserve"><value>Touchpad</value></data>
+  <data name="Pad_Touchpad_RecordTargetLabel" xml:space="preserve"><value>Panel para grabar / previsualizar</value></data>
   <data name="Pad_Touchpad_Detection_Header" xml:space="preserve"><value>Detección de gestos</value></data>
   <data name="Pad_Touchpad_GesturesEnabled" xml:space="preserve"><value>Activar gestos en este touchpad</value></data>
   <data name="Pad_Touchpad_GesturesEnabled_Tooltip" xml:space="preserve"><value>Conmutador principal de este touchpad. Cuando está desactivado, no se dispara ningún descriptor de gesto para este touchpad. Las asignaciones existentes de dedo / clic / posición siguen funcionando.</value></data>
@@ -2554,6 +2555,8 @@
   <data name="Workshop_Tr_TrackpadHalfApproximated" xml:space="preserve"><value>alojado en una mitad del touchpad; PadForge lee todo el pad</value></data>
   <data name="Workshop_Tr_FlickStickSurfaceNotSupported" xml:space="preserve"><value>flick stick en una superficie táctil omitido (el flick stick de PadForge lee una palanca física)</value></data>
   <data name="Workshop_Tr_FlickStickTuningDropped" xml:space="preserve"><value>ajustes del flick stick descartados ({0})</value></data>
+  <data name="Workshop_Tr_MouseModeTuningDropped" xml:space="preserve"><value>ajustes de sensación del ratón descartados ({0})</value></data>
+  <data name="Workshop_Tr_AxisInversionNotApplied" xml:space="preserve"><value>inversión de ejes no aplicada ({0})</value></data>
   <data name="Macro_HoldForMs" xml:space="preserve"><value>Al mantener</value></data>
   <data name="Macro_HoldForMs_Tooltip" xml:space="preserve"><value>Se dispara una vez cuando el activador se ha mantenido de forma continua durante el tiempo de retención. Un toque más corto no hace nada.</value></data>
   <data name="Macro_TriggerHoldMs_Label" xml:space="preserve"><value>Tiempo de retención</value></data>

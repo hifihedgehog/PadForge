@@ -434,16 +434,44 @@ namespace PadForge.Common.Input
         private readonly UserEffectsDispatcher[] _nonHmDispatchers
             = new UserEffectsDispatcher[MaxPads];
 
-        /// <summary>Fires <see cref="UserEffectsDispatcher.ApplyOnce"/>
-        /// on every live non-HM dispatcher. Called from InputService's
-        /// DevicesUpdated handler so a Sony pad reconnecting on a KBM /
-        /// MIDI slot gets its lightbar / triggers / mic LED re-pushed,
-        /// matching the HM-side <see cref="HMaestroVirtualController.
-        /// ReApplyUserEffects"/> behavior.</summary>
+        /// <summary>Non-HM mirror of
+        /// <see cref="HMaestroVirtualController.AttachDeviceConfig"/>.
+        /// Rebinds the slot's parallel dispatcher to
+        /// <paramref name="config"/> so it follows the slot's DeviceConfig
+        /// anchor when that anchor is REPLACED (device-selection switch,
+        /// profile apply). The dispatcher holds a direct PropertyChanged
+        /// subscription to the instance it was built with, so without this
+        /// it stays wired to the orphaned config and every later lighting /
+        /// trigger edit on a KBM / MIDI slot is silently dropped.
+        /// Never constructs: a null entry means the slot is HM-backed (the
+        /// HM VC owns that dispatcher) or has no VC at all, and building one
+        /// here would give an HM slot a second writer.</summary>
+        public void AttachNonHmDeviceConfig(int padIndex, DeviceSlotConfig config)
+        {
+            if (config == null) return;
+            if (padIndex < 0 || padIndex >= _nonHmDispatchers.Length) return;
+            _nonHmDispatchers[padIndex]?.Rebind(config);   // Rebind runs ApplyOnce internally
+        }
+
+        /// <summary>Re-binds each live non-HM dispatcher to its slot's
+        /// current config anchor and fires an apply pass. Called from
+        /// InputService's DevicesUpdated handler so a Sony pad reconnecting
+        /// on a KBM / MIDI slot gets its lightbar / triggers / mic LED
+        /// re-pushed, matching the HM-side AttachDeviceConfig +
+        /// <see cref="HMaestroVirtualController.ReApplyUserEffects"/> pair.
+        /// The rebind leg matters when the anchor was replaced while the
+        /// pad was away. An ApplyOnce alone would re-push from the stale
+        /// config.</summary>
         public void ReApplyNonHmUserEffects()
         {
             for (int i = 0; i < _nonHmDispatchers.Length; i++)
-                _nonHmDispatchers[i]?.ApplyOnce();
+            {
+                var d = _nonHmDispatchers[i];
+                if (d == null) continue;
+                var cfg = _deviceSlotConfigs[i];
+                if (cfg != null) d.Rebind(cfg);   // Rebind runs ApplyOnce internally
+                else d.ApplyOnce();
+            }
         }
 
         /// <summary>

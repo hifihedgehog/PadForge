@@ -1599,6 +1599,7 @@
   <data name="Pad_Touchpad_Header" xml:space="preserve"><value>Touchpad</value></data>
   <data name="Pad_Touchpad_Subtitle" xml:space="preserve"><value>Entrada por touchpad. Gestos (deslizar, tocar, pinçar, formas) e modos de saída contínuos (stick virtual / D-pad, mouse) viram fontes de mapeamento que você pode vincular na aba Mapeamentos.</value></data>
   <data name="Pad_Touchpad_TouchpadIndex_Label" xml:space="preserve"><value>Touchpad</value></data>
+  <data name="Pad_Touchpad_RecordTargetLabel" xml:space="preserve"><value>Pad de Gravação / Visualização</value></data>
   <data name="Pad_Touchpad_Detection_Header" xml:space="preserve"><value>Detecção de Gestos</value></data>
   <data name="Pad_Touchpad_GesturesEnabled" xml:space="preserve"><value>Ativar Gestos Neste Touchpad</value></data>
   <data name="Pad_Touchpad_GesturesEnabled_Tooltip" xml:space="preserve"><value>Chave mestra deste touchpad. Quando desligada, nenhum descritor de gesto dispara para este touchpad. Os mapeamentos de dedo / clique / posição existentes continuam funcionando.</value></data>
@@ -2554,6 +2555,8 @@
   <data name="Workshop_Tr_TrackpadHalfApproximated" xml:space="preserve"><value>hospedado em uma metade do touchpad; o PadForge lê o pad inteiro</value></data>
   <data name="Workshop_Tr_FlickStickSurfaceNotSupported" xml:space="preserve"><value>flick stick em uma superfície de toque ignorado (o flick stick do PadForge lê um analógico físico)</value></data>
   <data name="Workshop_Tr_FlickStickTuningDropped" xml:space="preserve"><value>ajustes do flick stick descartados ({0})</value></data>
+  <data name="Workshop_Tr_MouseModeTuningDropped" xml:space="preserve"><value>ajustes de resposta do mouse descartados ({0})</value></data>
+  <data name="Workshop_Tr_AxisInversionNotApplied" xml:space="preserve"><value>inversão de eixo não aplicada ({0})</value></data>
   <data name="Macro_HoldForMs" xml:space="preserve"><value>Ao Segurar</value></data>
   <data name="Macro_HoldForMs_Tooltip" xml:space="preserve"><value>Dispara uma vez depois que o gatilho for mantido continuamente pelo tempo de retenção. Um toque mais curto não faz nada.</value></data>
   <data name="Macro_TriggerHoldMs_Label" xml:space="preserve"><value>Tempo de Retenção</value></data>

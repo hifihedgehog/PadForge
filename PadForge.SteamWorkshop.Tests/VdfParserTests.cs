@@ -99,6 +99,29 @@ namespace PadForge.SteamWorkshop.Tests
         }
 
         [Fact]
+        public void Rejects_an_unterminated_block_comment()
+        {
+            // The missing '*/' swallows "b" "2" to EOF. Accepting this returns
+            // a truncated tree that looks like a clean parse, so the caller
+            // imports a config with bindings silently missing.
+            var text = "\"a\" \"1\" /* never closed \"b\" \"2\"";
+            Assert.Throws<VdfSyntaxException>(() => VdfParser.Parse(text));
+
+            Assert.False(VdfParser.TryParse(text, out var root, out var err));
+            Assert.Null(root);
+            Assert.Contains("Unterminated block comment", err.Message);
+        }
+
+        [Fact]
+        public void Accepts_a_block_comment_closed_at_the_very_end()
+        {
+            // Boundary next to the case above: '*/' as the final two chars
+            // terminates normally and must not trip the EOF check.
+            var root = VdfParser.Parse("\"a\" \"1\" /* closed */");
+            Assert.Equal("1", root["a"].AsString);
+        }
+
+        [Fact]
         public void Handles_newline_and_tab_escapes_and_passes_unknown_escapes_through()
         {
             var root = VdfParser.Parse("\"nl\" \"a\\nb\" \"unknown\" \"a\\zb\"");

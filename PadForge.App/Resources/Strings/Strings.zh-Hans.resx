@@ -1598,6 +1598,7 @@
   <data name="Pad_Touchpad_Header" xml:space="preserve"><value>触控板</value></data>
   <data name="Pad_Touchpad_Subtitle" xml:space="preserve"><value>按触控板的输入。手势（滑动、点按、捏合、形状）和连续输出模式（虚拟摇杆 / 方向键、鼠标）成为可在“映射”选项卡中绑定的映射来源。</value></data>
   <data name="Pad_Touchpad_TouchpadIndex_Label" xml:space="preserve"><value>触控板</value></data>
+  <data name="Pad_Touchpad_RecordTargetLabel" xml:space="preserve"><value>录制 / 预览触控板</value></data>
   <data name="Pad_Touchpad_Detection_Header" xml:space="preserve"><value>手势检测</value></data>
   <data name="Pad_Touchpad_GesturesEnabled" xml:space="preserve"><value>在此触控板上启用手势</value></data>
   <data name="Pad_Touchpad_GesturesEnabled_Tooltip" xml:space="preserve"><value>此触控板的总开关。关闭时，此触控板不触发任何手势描述符。现有的手指、点击与位置映射仍正常工作。</value></data>
@@ -2554,6 +2555,8 @@
   <data name="Workshop_Tr_TrackpadHalfApproximated" xml:space="preserve"><value>托管在触控板的半区上；PadForge 读取整个触控板</value></data>
   <data name="Workshop_Tr_FlickStickSurfaceNotSupported" xml:space="preserve"><value>已跳过触摸表面上的 Flick Stick（PadForge 的 Flick Stick 读取实体摇杆）</value></data>
   <data name="Workshop_Tr_FlickStickTuningDropped" xml:space="preserve"><value>已丢弃 Flick Stick 调整设置（{0}）</value></data>
+  <data name="Workshop_Tr_MouseModeTuningDropped" xml:space="preserve"><value>已丢弃鼠标手感设置（{0}）</value></data>
+  <data name="Workshop_Tr_AxisInversionNotApplied" xml:space="preserve"><value>未应用轴反转（{0}）</value></data>
   <data name="Macro_HoldForMs" xml:space="preserve"><value>按住时</value></data>
   <data name="Macro_HoldForMs_Tooltip" xml:space="preserve"><value>在触发器被连续按住达到保持时间后触发一次。更短的点按不起作用。</value></data>
   <data name="Macro_TriggerHoldMs_Label" xml:space="preserve"><value>保持时间</value></data>

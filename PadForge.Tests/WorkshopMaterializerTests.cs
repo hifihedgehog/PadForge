@@ -489,11 +489,20 @@ namespace PadForge.Tests
         }
 
         [Fact]
-        public void Materialize_NullMacros_AndEmptySets_AreValid()
+        public void Materialize_NoMacros_EmitsEmptyMacros_NotTheLegacyNullSentinel()
         {
             // An empty translation demands no slots at all.
             var p = WorkshopProfileMaterializer.Materialize(new TranslatedProfile { Name = "Empty" });
-            Assert.Null(p.Macros);
+
+            // Empty, NOT null. ApplyProfile reads null Macros as "profile
+            // predates macros riding profiles, leave the live set alone", so a
+            // null here made a freshly-imported profile inherit whatever
+            // macros the OUTGOING profile had and keep firing them. A Workshop
+            // import authors its state outright and owns "no macros".
+            // (This assertion previously read Assert.Null and locked the bug.)
+            Assert.NotNull(p.Macros);
+            Assert.Empty(p.Macros);
+
             Assert.All(p.SlotMappingSets, s => Assert.NotNull(s));
             Assert.DoesNotContain(true, p.SlotCreated);
             Assert.DoesNotContain(true, p.SlotEnabled);

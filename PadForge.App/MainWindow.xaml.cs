@@ -529,7 +529,8 @@ namespace PadForge
                      or nameof(DashboardViewModel.TouchpadOverlayLeft)
                      or nameof(DashboardViewModel.TouchpadOverlayTop)
                      or nameof(DashboardViewModel.TouchpadOverlayWidth)
-                     or nameof(DashboardViewModel.TouchpadOverlayHeight))
+                     or nameof(DashboardViewModel.TouchpadOverlayHeight)
+                     or nameof(DashboardViewModel.EnableMenuOverlay))
                     _settingsService.MarkDirty();
             };
 
@@ -6420,6 +6421,11 @@ namespace PadForge
                 // so Copy / Paste includes shift layers like Copy From (#119).
                 ps.SlotShiftActivatorsJson = InputService.BuildShiftLayerSnapshotJson(padVm.PadIndex);
 
+                // Carry the slot's menus (#9 B-17) the same way. Menus live on
+                // the MappingSet like shift authoring, so Copy must snapshot
+                // them or Paste loses the Menus tab.
+                ps.SlotMenusJson = InputService.BuildMenusSnapshotJson(padVm.PadIndex);
+
                 // Bundle EVERY device's PadSetting on the source slot so
                 // per-device tuning (deadzones, sensitivity, FFB, Gyro,
                 // TouchpadSettings) round-trips for all devices, not just
@@ -6480,6 +6486,16 @@ namespace PadForge
                     && MappingTranslation.IsSameLayout(srcType, srcIsExtended, targetType, targetIsExtended))
                 {
                     InputService.ApplyShiftLayerSnapshotJson(padVm.PadIndex, ps.SlotShiftActivatorsJson);
+                }
+
+                // Restore the slot's menus after the row replace, same gate and
+                // ordering as the shift authoring above. Wiped otherwise: the
+                // fresh rows-only MappingSet from ApplySlotMappingSetFromRows
+                // carries no menus (#9 B-17 clipboard round-trip).
+                if (!string.IsNullOrEmpty(ps.SlotMenusJson)
+                    && MappingTranslation.IsSameLayout(srcType, srcIsExtended, targetType, targetIsExtended))
+                {
+                    InputService.ApplyMenusSnapshotJson(padVm.PadIndex, ps.SlotMenusJson);
                 }
 
                 _inputService.ApplyPadSettingToCurrentDeviceTranslated(
@@ -6555,6 +6571,9 @@ namespace PadForge
                     && padVm.PadIndex >= 0 && padVm.PadIndex < SettingsManager.SlotMappingSets.Length
                     ? SettingsManager.SlotMappingSets[padVm.PadIndex] : null;
                 padVm.RebuildLayerTabs(pastedMs?.ShiftActivators);
+                // Refresh the Menus tab from the restored set so pasted menus
+                // show up immediately instead of staying invisible until relaunch.
+                padVm.ReloadMenus();
 
                 _settingsService.MarkDirty();
                 _viewModel.StatusText = Strings.Instance.Status_SettingsPasted;
@@ -6919,6 +6938,9 @@ namespace PadForge
                     && padVm.PadIndex >= 0 && padVm.PadIndex < SettingsManager.SlotMappingSets.Length
                     ? SettingsManager.SlotMappingSets[padVm.PadIndex] : null;
                 padVm.RebuildLayerTabs(targetMs?.ShiftActivators);
+                // Refresh the Menus tab so menus carried by ReplaceSlotMappingSet
+                // show up immediately instead of staying invisible until relaunch.
+                padVm.ReloadMenus();
 
                 _settingsService.MarkDirty();
                 _viewModel.StatusText = Strings.Instance.Status_SettingsCopiedFromDevice;

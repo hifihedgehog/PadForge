@@ -309,7 +309,8 @@ namespace PadForge.SteamWorkshop.Translation
                     // (#9 B-15), so the curve-drop note must not name
                     // them there; every other host still drops them.
                     skipRegionScales: mode == "mouse_region"
-                        && PhysicalSlotResolver.IsTrackpad(slot));
+                        && PhysicalSlotResolver.IsTrackpad(slot),
+                    reportMouseTuning: MouseTuningModes.Contains(mode));
 
             switch (mode)
             {
@@ -467,13 +468,55 @@ namespace PadForge.SteamWorkshop.Translation
             "sensitivity_horiz_scale", "sensitivity_vert_scale",
         };
 
+        /// <summary>Mouse/region-mode feel settings PadForge has no channel
+        /// for, named per group when present (finding 1g-2). rotation is a
+        /// geometric rotation of the pad-to-cursor map (behavior, not just
+        /// feel); friction / mouse_smoothing / trackball shape the cursor
+        /// response. Corpus values: rotation -18/-21, friction 1,
+        /// mouse_smoothing 22, trackball 0/1. Only named on the mouse/region
+        /// modes (<see cref="MouseTuningModes"/>); flickstick keeps its own
+        /// FlickStickTuningDropped note for the overlapping keys.</summary>
+        private static readonly string[] MouseModeTuningKeys =
+        {
+            "rotation", "friction", "mouse_smoothing", "trackball",
+        };
+
+        /// <summary>Modes whose dropped <see cref="MouseModeTuningKeys"/> get
+        /// the MouseModeTuningDropped note. flickstick is excluded: it reports
+        /// the same keys through FlickStickTuningDropped in EmitFlickStick.</summary>
+        private static readonly HashSet<string> MouseTuningModes = new(StringComparer.Ordinal)
+        {
+            "absolute_mouse", "relative_mouse", "joystick_mouse", "mouse_joystick",
+            "joystick_camera", "gyro_to_mouse", "mouse_region",
+        };
+
+        /// <summary>True when a Steam group setting stores an "on" (non-zero)
+        /// boolean, e.g. <c>invert_x/invert_y/invert_z "1"</c>. Absent / "0" /
+        /// junk read as off.</summary>
+        private static bool SettingIsOn(Dictionary<string, string> settings, string key)
+            => settings.TryGetValue(key, out var v)
+               && int.TryParse((v ?? "").Trim(), NumberStyles.Integer,
+                   CultureInfo.InvariantCulture, out int n)
+               && n != 0;
+
+        /// <summary>Names an axis inversion a mouse-axis emitter could not
+        /// apply, so the row stays honest instead of dropping the flag under
+        /// a Clean label (finding 1g-1 sibling). invert_z has no third
+        /// mouse-delta axis (the pairs are X/Y only); flick stick's angle
+        /// read never consults <see cref="MappingSource.Invert"/>.</summary>
+        private static void ReportUnappliedInversion(Run run, string path, string keys)
+        {
+            run.Report.Add(TranslationStatus.Partial, TranslationReasons.AxisInversionNotApplied,
+                path, args: keys);
+        }
+
         /// <summary>Named notes for group settings that used to drop
         /// silently: response-curve shaping, gyro engage/ratchet button
         /// masks, and the group-level haptic override (counted into the
         /// per-config aggregate).</summary>
         private void ReportDroppedGroupSettings(Run run,
             Dictionary<string, string> settings, string path,
-            bool skipRegionScales = false)
+            bool skipRegionScales = false, bool reportMouseTuning = false)
         {
             var curves = CurveSettingKeys
                 .Where(k => settings.ContainsKey(k)
@@ -484,6 +527,23 @@ namespace PadForge.SteamWorkshop.Translation
             {
                 run.Report.Add(TranslationStatus.Partial, TranslationReasons.ResponseCurveNotSupported,
                     path, args: string.Join(", ", curves));
+            }
+
+            // Mouse/region feel settings with no PadForge channel (finding
+            // 1g-2): rotation rotates the pad-to-cursor map, the rest shape
+            // cursor response. Only on the mouse/region modes; flickstick
+            // names its own overlapping keys.
+            if (reportMouseTuning)
+            {
+                var mouseTuning = MouseModeTuningKeys
+                    .Where(k => settings.TryGetValue(k, out var v)
+                        && (v ?? "").Trim().Length > 0 && (v ?? "").Trim() != "0")
+                    .ToList();
+                if (mouseTuning.Count > 0)
+                {
+                    run.Report.Add(TranslationStatus.Partial, TranslationReasons.MouseModeTuningDropped,
+                        path, args: string.Join(", ", mouseTuning));
+                }
             }
 
             foreach (var key in new[] { "gyro_button", "gyro_ratchet_button_mask" })
@@ -497,8 +557,17 @@ namespace PadForge.SteamWorkshop.Translation
                     path, args: new[] { key, v ?? "" });
             }
 
+            // Group haptics have no PadForge channel; both the override twin
+            // and the plain group-level intensity feed the per-config
+            // aggregate (finding 1g-3; the HapticDropCount field comment
+            // already states both group and activator haptics are counted).
             if (settings.TryGetValue("haptic_intensity_override", out var h)
                 && (h ?? "").Trim() != "0")
+            {
+                run.HapticDropCount++;
+            }
+            if (settings.TryGetValue("haptic_intensity", out var hg)
+                && (hg ?? "").Trim() != "0")
             {
                 run.HapticDropCount++;
             }
@@ -906,18 +975,29 @@ namespace PadForge.SteamWorkshop.Translation
                 double sensH = Math.Clamp(ParseIntSetting(settings, "sensitivity_horiz_scale", 100), 1, 400) / 100.0;
                 double sensV = Math.Clamp(ParseIntSetting(settings, "sensitivity_vert_scale", 100), 1, 400) / 100.0;
 
+                // invert_x/invert_y (finding 1g-1): the absolute pointer
+                // reads through the same bipolar evaluator as the finger
+                // axes and defers Invert to the wrapper's `Invert ? -raw`
+                // (ReadTunedTouchpadPointer applies none itself; Step 3's
+                // MouseAbs routing calls EvaluateForBipolarAxisTarget), so
+                // the flipped map stays Clean.
+                bool invertX = SettingIsOn(settings, "invert_x");
+                bool invertY = SettingIsOn(settings, "invert_y");
+
                 var srcX = new MappingSource
                 {
                     Descriptor = pair.Value.X,
                     ParamPointerCenter = posX / 100.0,
                     ParamPointerExtent = scale / 100.0 * sensH,
                 };
+                if (invertX) srcX.Invert = true;
                 var srcY = new MappingSource
                 {
                     Descriptor = pair.Value.Y,
                     ParamPointerCenter = 1.0 - posY / 100.0,
                     ParamPointerExtent = scale / 100.0 * sensV,
                 };
+                if (invertY) srcY.Invert = true;
                 AddRowSource(run, isKbm: true, layer, "KbmMouseX", srcX, isAxis: true,
                     TranslationStatus.Clean, TranslationReasons.RowEmitted, path);
                 AddRowSource(run, isKbm: true, layer, "KbmMouseY", srcY, isAxis: true,
@@ -932,6 +1012,10 @@ namespace PadForge.SteamWorkshop.Translation
                         TranslationReasons.MouseRegionTuningDropped, path,
                         args: string.Join(", ", dropped));
                 }
+
+                // No third pointer axis: invert_z can't ride the source.
+                if (SettingIsOn(settings, "invert_z"))
+                    ReportUnappliedInversion(run, path, "invert_z");
                 return;
             }
 
@@ -1147,19 +1231,35 @@ namespace PadForge.SteamWorkshop.Translation
             var (x, y, family) = pair.Value;
             int dzPct = GroupDeadZonePercent(settings);
 
-            MappingSource Make(string descriptor)
+            // Steam's per-group axis inversion (finding 1g-1). Every
+            // mouse-axis family here reads through the bipolar evaluator's
+            // `Invert ? -raw` transform (SourceCoercion.EvaluateForBipolarAxisTarget):
+            // the stick axes (family 0), the touchpad finger delta (family 1,
+            // TryReadTouchpadAxis returns the raw delta and the wrapper flips
+            // it), and the gyro rate (family 2) all honor MappingSource.Invert
+            // and don't consume it internally, so the flipped rows stay Clean.
+            bool invertX = SettingIsOn(settings, "invert_x");
+            bool invertY = SettingIsOn(settings, "invert_y");
+
+            MappingSource Make(string descriptor, bool invert)
             {
                 var src = new MappingSource { Descriptor = descriptor };
                 if (family == 0 || family == 1) src.Sensitivity = ratio;
                 else if (family == 2) src.GyroSensitivity = ratio;
                 if (dzPct > 0) src.DeadZone = dzPct;
+                if (invert) src.Invert = true;
                 return src;
             }
 
-            AddRowSource(run, isKbm: true, layer, "KbmMouseX", Make(x), isAxis: true,
+            AddRowSource(run, isKbm: true, layer, "KbmMouseX", Make(x, invertX), isAxis: true,
                 TranslationStatus.Clean, TranslationReasons.RowEmitted, path);
-            AddRowSource(run, isKbm: true, layer, "KbmMouseY", Make(y), isAxis: true,
+            AddRowSource(run, isKbm: true, layer, "KbmMouseY", Make(y, invertY), isAxis: true,
                 TranslationStatus.Clean, TranslationReasons.RowEmitted, path);
+
+            // invert_z addresses a third (roll) axis the X/Y mouse-delta pair
+            // does not emit, so name it rather than drop it under Clean rows.
+            if (SettingIsOn(settings, "invert_z"))
+                ReportUnappliedInversion(run, path, "invert_z");
         }
 
         /// <summary>Flick stick keys the engine has no grounded channel
@@ -1216,6 +1316,17 @@ namespace PadForge.SteamWorkshop.Translation
                     TranslationReasons.FlickStickTuningDropped, path,
                     args: string.Join(", ", dropped));
             }
+
+            // Flick stick maps the stick ANGLE to camera rotation through
+            // SourceKindRuntime.TickFlickStick, a specialized read that never
+            // consults MappingSource.Invert (unlike the plain axis→mouse
+            // modes). A Steam invert_x/y/z can't ride the source flag here, so
+            // name it rather than emit an un-inverted row under a Clean label.
+            var unappliedInvert = new[] { "invert_x", "invert_y", "invert_z" }
+                .Where(k => SettingIsOn(settings, k))
+                .ToList();
+            if (unappliedInvert.Count > 0)
+                ReportUnappliedInversion(run, path, string.Join(", ", unappliedInvert));
         }
 
         // ─────────────────────────────────────────────

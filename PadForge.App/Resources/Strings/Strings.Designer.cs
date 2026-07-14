@@ -2446,6 +2446,8 @@ public class Strings : INotifyPropertyChanged
     public string Workshop_Tr_TrackpadHalfApproximated => Get("Workshop_Tr_TrackpadHalfApproximated");
     public string Workshop_Tr_FlickStickSurfaceNotSupported => Get("Workshop_Tr_FlickStickSurfaceNotSupported");
     public string Workshop_Tr_FlickStickTuningDropped => Get("Workshop_Tr_FlickStickTuningDropped");
+    public string Workshop_Tr_MouseModeTuningDropped => Get("Workshop_Tr_MouseModeTuningDropped");
+    public string Workshop_Tr_AxisInversionNotApplied => Get("Workshop_Tr_AxisInversionNotApplied");
     public string Status_WorkshopUpdatesOptInRequired => Get("Status_WorkshopUpdatesOptInRequired");
     public string Status_WorkshopNoImportedProfiles => Get("Status_WorkshopNoImportedProfiles");
     public string Status_WorkshopCheckingUpdates => Get("Status_WorkshopCheckingUpdates");

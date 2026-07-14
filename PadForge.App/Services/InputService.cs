@@ -5800,6 +5800,52 @@ namespace PadForge.Services
             slotMs.BaseIcon = built.BaseIcon;
         }
 
+        /// <summary>Builds the menu (#9 B-17) clipboard snapshot JSON for a
+        /// slot, or null when the slot authors no menus. The menu twin of
+        /// <see cref="BuildShiftLayerSnapshotJson"/>: menus live on the
+        /// MappingSet like shift activators, so Copy must carry them or the
+        /// paste path drops the Menus tab.</summary>
+        public static string BuildMenusSnapshotJson(int padIndex)
+        {
+            var sets = SettingsManager.SlotMappingSets;
+            if (sets == null || padIndex < 0 || padIndex >= sets.Length) return null;
+            var ms = sets[padIndex];
+            if (ms?.Menus == null || ms.Menus.Count == 0) return null;
+            return System.Text.Json.JsonSerializer.Serialize(ms.Menus,
+                new System.Text.Json.JsonSerializerOptions { WriteIndented = false });
+        }
+
+        /// <summary>Paste companion: restores a slot's menus from a clipboard
+        /// snapshot. Runs AFTER <see cref="ApplySlotMappingSetFromRows"/> (which
+        /// swaps in a fresh rows-only MappingSet), so it re-attaches the menus
+        /// the fresh set would otherwise have wiped. Menus carry no device
+        /// GUIDs to retarget (per-entry DeviceGuid is the empty "any device"
+        /// sentinel or a source-side guid the engine resolves on the slot).</summary>
+        public static void ApplyMenusSnapshotJson(int padIndex, string json)
+        {
+            if (string.IsNullOrEmpty(json)) return;
+            var sets = SettingsManager.SlotMappingSets;
+            if (sets == null || padIndex < 0 || padIndex >= sets.Length) return;
+            System.Collections.Generic.List<Engine.Menus.MenuDefinitionEntry> menus;
+            try { menus = System.Text.Json.JsonSerializer.Deserialize<
+                System.Collections.Generic.List<Engine.Menus.MenuDefinitionEntry>>(json); }
+            catch { return; }
+            if (menus == null) return;
+
+            var slotMs = sets[padIndex] ??= new Engine.Data.MappingSet();
+            // Build the list detached, then swap it on in one reference
+            // assignment: the poll thread enumerates slotMs.Menus every frame
+            // without our lock (InputManager.MenuRuntime), so it must never
+            // see a list mid-fill. Mirrors the ShiftActivators swap above.
+            var built = new System.Collections.Generic.List<Engine.Menus.MenuDefinitionEntry>();
+            foreach (var m in menus)
+            {
+                if (m == null) continue;
+                built.Add(m.Clone());
+            }
+            slotMs.Menus = built;
+        }
+
         /// <summary>Whole-slot snapshot of every row in the given slot's
         /// MappingSet, with source DeviceGuids preserved as-is. Used by
         /// Copy so the clipboard round-trip carries every device's
@@ -6007,6 +6053,18 @@ namespace PadForge.Services
                 Authoritative = src.Authoritative,
             };
             CopyShiftActivators(src, copy, retargetSlot: targetSlot);
+            // Menus (#9 B-17) travel with the set exactly like the shift
+            // authoring above (the same leg CloneMappingSetDeep carries).
+            // Without it, Copy From Slot dropped the source's menus and the
+            // fresh-set swap below wiped the target's own menus.
+            if (src.Menus != null)
+            {
+                foreach (var m in src.Menus)
+                {
+                    if (m == null) continue;
+                    copy.Menus.Add(m.Clone());
+                }
+            }
             if (src.Rows != null)
             {
                 foreach (var r in src.Rows)

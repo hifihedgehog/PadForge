@@ -86,8 +86,20 @@ namespace PadForge.SteamWorkshop.Translation
         /// "Menu {id} Item {k}" source the menu runtime fires on
         /// hover-commit. Retires the TouchMenuNeedsOverlay /
         /// RadialMenuNeedsOverlay skips and the two-cell touch-spot
-        /// approximation; per-cell icons get a named Partial.</summary>
-        public const int CurrentTranslatorVersion = 7;
+        /// approximation; per-cell icons get a named Partial.
+        /// v8: Group axis inversion (finding 1g). The Steam group settings
+        /// invert_x / invert_y now flip the emitted mouse-axis source's
+        /// Invert flag on every mode whose engine read honors it (stick /
+        /// touchpad-finger / gyro mouse modes and the trackpad mouse_region
+        /// pointer), so the imported trackpad axes track the config instead
+        /// of running reversed under a Clean label; invert_z (no third
+        /// mouse-delta axis) and flick-stick inversion (the angle read
+        /// ignores Invert) get the named AxisInversionNotApplied Partial.
+        /// rotation / friction / mouse_smoothing / trackball on the mouse
+        /// modes get the named MouseModeTuningDropped Partial, and group-level
+        /// haptic_intensity now feeds the per-config haptic aggregate
+        /// alongside haptic_intensity_override.</summary>
+        public const int CurrentTranslatorVersion = 8;
 
         public int TranslatorVersion { get; set; } = CurrentTranslatorVersion;
 
@@ -307,5 +319,17 @@ namespace PadForge.SteamWorkshop.Translation
         /// edge command radius): the flick itself translates, these
         /// shape it.</summary>
         public const string FlickStickTuningDropped = "Workshop_Tr_FlickStickTuningDropped";       // {0} setting keys
+
+        // ── Translator v8 (finding 1g) vocabulary ──
+        /// <summary>Mouse/region-mode feel settings with no PadForge channel:
+        /// rotation (a geometric rotation of the pad-to-cursor map),
+        /// friction, mouse_smoothing, trackball. The mouse rows translate;
+        /// these shape their response.</summary>
+        public const string MouseModeTuningDropped = "Workshop_Tr_MouseModeTuningDropped";         // {0} setting keys
+        /// <summary>A Steam axis inversion the emitter could not apply to a
+        /// source the engine honors: invert_z (no third mouse-delta axis) or
+        /// flick-stick inversion (the angle read ignores Invert). The row is
+        /// emitted un-inverted; this names the dropped flip.</summary>
+        public const string AxisInversionNotApplied = "Workshop_Tr_AxisInversionNotApplied";       // {0} invert keys
     }
 }

@@ -55,7 +55,7 @@ kbm activators: 1
 macros: 2
   macro MouseLimitRegion WhileHeld | Cursor region (right_trackpad) | btns=0x0000 in=[Touchpad 1 Finger 0 Down] region=(50%,56%,scale 100%)
   macro MoveMouseToScreenPosition OnPress | Warp cursor (button_back_left_upper) | btns=0x0000 in=[Gamepad Paddle4] norm=(16384,16384)
-report: v4 rows:x0+k18 macros:2 layers:1 clean:30 partial:10 skipped:8 errors:0
+report: v5 rows:x0+k18 macros:2 layers:1 clean:30 partial:10 skipped:8 errors:0
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_a/Full_Press => KbmMBtn0 <- Gamepad ButtonA
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_b/Full_Press => KbmMBtn1 <- Gamepad ButtonB
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_x/Full_Press => KbmKey45 <- Gamepad ButtonX

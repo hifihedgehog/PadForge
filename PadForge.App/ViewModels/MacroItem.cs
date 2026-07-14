@@ -233,12 +233,12 @@ namespace PadForge.ViewModels
                             else if (!string.IsNullOrEmpty(entry.GestureDescriptor))
                             {
                                 inputs.Add(MappingDisplayResolver.ResolveDescriptorText(
-                                    entry.GestureDescriptor, null) ?? entry.GestureDescriptor);
+                                    entry.GestureDescriptor, null, padPrefixAlways: grp.Key == Guid.Empty) ?? entry.GestureDescriptor);
                             }
                             else if (!string.IsNullOrEmpty(entry.SourceDescriptor))
                             {
                                 inputs.Add(MappingDisplayResolver.ResolveDescriptorText(
-                                    entry.SourceDescriptor, null) ?? entry.SourceDescriptor);
+                                    entry.SourceDescriptor, null, padPrefixAlways: grp.Key == Guid.Empty) ?? entry.SourceDescriptor);
                             }
                         }
                         // Guid.Empty is a real group here (#9 B-9): the
@@ -282,12 +282,12 @@ namespace PadForge.ViewModels
                         else if (!string.IsNullOrEmpty(entry.GestureDescriptor))
                         {
                             parts.Add(MappingDisplayResolver.ResolveDescriptorText(
-                                entry.GestureDescriptor, null) ?? entry.GestureDescriptor);
+                                entry.GestureDescriptor, null, padPrefixAlways: grp.Key == Guid.Empty) ?? entry.GestureDescriptor);
                         }
                         else if (!string.IsNullOrEmpty(entry.SourceDescriptor))
                         {
                             parts.Add(MappingDisplayResolver.ResolveDescriptorText(
-                                entry.SourceDescriptor, null) ?? entry.SourceDescriptor);
+                                entry.SourceDescriptor, null, padPrefixAlways: grp.Key == Guid.Empty) ?? entry.SourceDescriptor);
                         }
                     }
                 }
@@ -1224,11 +1224,13 @@ namespace PadForge.ViewModels
             }
             else if (!string.IsNullOrEmpty(entry.GestureDescriptor))
             {
-                input = MappingDisplayResolver.ResolveDescriptorText(entry.GestureDescriptor, null) ?? entry.GestureDescriptor;
+                input = MappingDisplayResolver.ResolveDescriptorText(
+                    entry.GestureDescriptor, null, padPrefixAlways: entry.DeviceGuid == Guid.Empty) ?? entry.GestureDescriptor;
             }
             else if (!string.IsNullOrEmpty(entry.SourceDescriptor))
             {
-                input = MappingDisplayResolver.ResolveDescriptorText(entry.SourceDescriptor, null) ?? entry.SourceDescriptor;
+                input = MappingDisplayResolver.ResolveDescriptorText(
+                    entry.SourceDescriptor, null, padPrefixAlways: entry.DeviceGuid == Guid.Empty) ?? entry.SourceDescriptor;
             }
             else
             {

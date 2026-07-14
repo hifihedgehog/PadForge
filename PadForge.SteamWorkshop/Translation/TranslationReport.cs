@@ -63,8 +63,13 @@ namespace PadForge.SteamWorkshop.Translation
         /// halves (DS4 / DualSense left_/right_trackpad onto pad 0's
         /// region-windowed sources), four_buttons-on-trackpad quadrant
         /// collapse, and per-row touchpad mouse sensitivity replacing the
-        /// TouchpadTuningNotPerRow drop.</summary>
-        public const int CurrentTranslatorVersion = 4;
+        /// TouchpadTuningNotPerRow drop.
+        /// v5: Wave 4a (#225). The flickstick joystick mode emits a
+        /// "Flick Stick Right"/"Flick Stick Left" KbmMouseX source with
+        /// the group's "sensitivity" (Steam's Dots Per 360) carried on
+        /// ParamFlickCountsPer360; trackpad-hosted flickstick and the
+        /// ungrounded flick tuning keys get named entries.</summary>
+        public const int CurrentTranslatorVersion = 5;
 
         public int TranslatorVersion { get; set; } = CurrentTranslatorVersion;
 
@@ -233,5 +238,17 @@ namespace PadForge.SteamWorkshop.Translation
         /// whose translated surface has no half window (anchor D-pad
         /// wedges, two-cell touch menus): the rows read the whole pad.</summary>
         public const string TrackpadHalfApproximated = "Workshop_Tr_TrackpadHalfApproximated";
+
+        // ── Translator v5 (Wave 4a) vocabulary ──
+        /// <summary>A flickstick group hosted on a touch surface (the
+        /// gordon-era corpus binds it to trackpads): PadForge's flick
+        /// stick reads a physical stick only, so the mode is skipped and
+        /// the member inputs translate on their own.</summary>
+        public const string FlickStickSurfaceNotSupported = "Workshop_Tr_FlickStickSurfaceNotSupported";
+        /// <summary>Flickstick tuning keys with no grounded PadForge
+        /// channel (rotation offset, mouse smoothing, transition time,
+        /// edge command radius): the flick itself translates, these
+        /// shape it.</summary>
+        public const string FlickStickTuningDropped = "Workshop_Tr_FlickStickTuningDropped";       // {0} setting keys
     }
 }

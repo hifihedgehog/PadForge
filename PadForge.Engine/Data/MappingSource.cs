@@ -207,6 +207,76 @@ namespace PadForge.Engine.Data
         [XmlAttribute] public double ParamMotionOuterDz  { get; set; } = 135;
         [XmlAttribute] public string ParamControllerOrientation { get; set; } = "Forward";
 
+        // ─── Flick stick (#225, descriptor family "Flick Stick Right"/"Flick
+        // Stick Left" on a KbmMouseX row). Math ported from JoyShockMapper
+        // JoyShock.cpp handleFlickStick (:852-1017), read then written
+        // original. Defaults mirror JSM's registered settings (main.cpp)
+        // except where named. Tuning is per-source so a Workshop import's
+        // per-group values survive materialization; the pad-page card
+        // re-stamps these on save (ApplyFlickStickParamsToRow, the Motion
+        // Steering push pattern). ───
+
+        /// <summary>Flick easing duration in seconds for a full 180° flick
+        /// (shorter turns complete in the same time; JSM FLICK_TIME,
+        /// main.cpp:2262 default 0.1).</summary>
+        [XmlAttribute] public double ParamFlickTime { get; set; } = 0.1;
+
+        /// <summary>Mouse counts emitted per full 360° camera turn (Steam
+        /// "Dots Per 360°"; the wild corpus stores it in the group's
+        /// "sensitivity" key). JSM expresses the same scale as
+        /// REAL_WORLD_CALIBRATION counts-per-degree (default 40,
+        /// main.cpp:2190) → 40 × 360 = 14400 here.</summary>
+        [XmlAttribute] public double ParamFlickCountsPer360 { get; set; } = 14400;
+
+        /// <summary>Stick deflection (raw magnitude, 0..1) at which a flick
+        /// engages. JSM checks length ≥ 1.0 on a deadzone-remapped read
+        /// (JoyShock.cpp:864-869) whose outer deadzone defaults to 0.1
+        /// (main.cpp:2334), i.e. raw ≥ 0.9; the remap is folded into this
+        /// knob directly. JSM's 0.9× release hysteresis is applied on top
+        /// while flicking (JoyShock.cpp:865-868).</summary>
+        [XmlAttribute] public double ParamFlickThreshold { get; set; } = 0.9;
+
+        /// <summary>Flick snap mode: "None" (default), "Forward", "Half",
+        /// "Four", "Sixths", "Eight". JSM FLICK_SNAP_MODE ships
+        /// NONE/FOUR/EIGHT (JoyShockMapper.h:300-306, default NONE
+        /// main.cpp:2144) with a 180° snap interval as the switch fallback
+        /// (JoyShock.cpp:883); "Half"/"Sixths"/"Forward" complete Steam's
+        /// snap vocabulary (NoSnap/ForwardOnly/Half/Quarter/Sixths/Eighths)
+        /// through the same round-to-interval math. String, not a
+        /// serialized enum, so the value set stays append-only.</summary>
+        [XmlAttribute] public string ParamFlickSnapMode { get; set; } = "None";
+
+        /// <summary>Snap lerp strength 0..1 (JSM FLICK_SNAP_STRENGTH,
+        /// main.cpp:2420 default 1.0 = full snap).</summary>
+        [XmlAttribute] public double ParamFlickSnapStrength { get; set; } = 1.0;
+
+        /// <summary>Forward angle deadzone in degrees: a flick whose angle is
+        /// within this of dead-ahead reads as 0° (JSM FLICK_DEADZONE_ANGLE,
+        /// main.cpp:2322 default 0; Steam "Front Angle Deadzone").</summary>
+        [XmlAttribute] public double ParamFlickDeadzoneAngle { get; set; } = 0;
+
+        /// <summary>Rotation smoothing threshold in radians-per-tick.
+        /// Negative (default) = JSM's automatic tiered window (full
+        /// smoothing at 0.02 rad/tick, none above 0.04, JoyShock.cpp:927-933);
+        /// 0 disables smoothing; positive overrides the lower threshold
+        /// (upper = 2×). JSM ROTATE_SMOOTH_OVERRIDE, main.cpp:2414
+        /// default -1.</summary>
+        [XmlAttribute] public double ParamFlickSmooth { get; set; } = -1;
+
+        /// <summary>Arm behavior when evaluation (re)starts with the stick
+        /// already past the threshold (the shift-layer engage case, #225).
+        /// <c>false</c> (default): arm at the current angle and track
+        /// rotation from there, firing no flick. <c>true</c>: fire the
+        /// flick immediately, JSM's behavior (is_flicking starts false, so
+        /// a deflected stick is a "new flick!", JoyShock.cpp:873-876) and
+        /// Steam's "Allow Flick on Awake" ON. The default diverges from
+        /// JSM deliberately: PadForge's layer host means the same stick is
+        /// usually live on the Base layer at engage time, and JSM itself
+        /// suppresses mode-shift transition artifacts on its return path
+        /// (Stick.h:84-87 ignore_stick_mode, "Modeshifting the stick mode
+        /// can create quirky behaviours on transition").</summary>
+        [XmlAttribute] public bool ParamFlickOnEngage { get; set; } = false;
+
         /// <summary>Full-field copy. Every field is a string / value type (strings are
         /// immutable), so a memberwise clone is a complete deep copy. Use this at clone
         /// sites instead of hand-listing fields, so a new Param* can't silently drop on

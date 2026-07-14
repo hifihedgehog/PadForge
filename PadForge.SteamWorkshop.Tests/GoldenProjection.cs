@@ -153,6 +153,12 @@ namespace PadForge.SteamWorkshop.Tests
                 sb.Append(" sens=").Append(s.Sensitivity.ToString("0.###", CultureInfo.InvariantCulture));
             if (s.GyroSensitivity != 1.0)
                 sb.Append(" gyroSens=").Append(s.GyroSensitivity.ToString("0.###", CultureInfo.InvariantCulture));
+            // Flick stick (#225): only the translator-carried knob; the rest
+            // stay at their JSM defaults, so rendering them would add noise
+            // to every source line. Non-default only, so pre-wave-4a goldens
+            // are byte-identical.
+            if (s.ParamFlickCountsPer360 != 14400)
+                sb.Append(" flickDots=").Append(s.ParamFlickCountsPer360.ToString("0.###", CultureInfo.InvariantCulture));
             if (!string.IsNullOrEmpty(s.DeviceGuid)) sb.Append(" guid=").Append(s.DeviceGuid);
             return sb.ToString();
         }

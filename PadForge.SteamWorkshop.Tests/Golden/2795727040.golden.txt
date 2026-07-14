@@ -43,7 +43,7 @@ kbm rows: 17
 macros: 2
   macro MouseLimitRegion WhileHeld | Cursor region (left_trackpad) | btns=0x0000 in=[Touchpad 0 Finger 0 Down] region=(9%,10%,scale 10%)
   macro MouseLimitRegion WhileHeld | Cursor region (right_trackpad) | btns=0x0000 in=[Touchpad 1 Finger 0 Down] region=(50%,50%,scale 100%)
-report: v4 rows:x0+k17 macros:2 layers:0 clean:20 partial:6 skipped:2 errors:0
+report: v5 rows:x0+k17 macros:2 layers:0 clean:20 partial:6 skipped:2 errors:0
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_a/Full_Press => KbmKey72 <- Gamepad ButtonA
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_b/Full_Press => KbmKey1B <- Gamepad ButtonB
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_x/Full_Press => KbmKey76 <- Gamepad ButtonX

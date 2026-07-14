@@ -291,6 +291,13 @@ namespace PadForge.Views
             TabSticks.Visibility = isMidi ? Visibility.Collapsed : Visibility.Visible;
             TabTriggers.Visibility = (isMidi || isKbm) ? Visibility.Collapsed : Visibility.Visible;
 
+            // Flick Stick tuning card (#225): keyboard/mouse slots only.
+            // The flick output is relative mouse movement, so the
+            // "Flick Stick ..." sources it tunes (on Mouse X) only
+            // evaluate there.
+            if (FlickStickCard != null)
+                FlickStickCard.Visibility = isKbm ? Visibility.Visible : Visibility.Collapsed;
+
             // Adaptive Triggers, Lighting, and Force Feedback tabs all
             // reflect what the currently-SELECTED physical device on this
             // slot can do. Slots can have multiple devices assigned; the

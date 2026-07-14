@@ -77,6 +77,44 @@ namespace PadForge.Common
                 }
             }
 
+            // Device-independent touchpad / gyro families: resolve without
+            // device-object metadata so imported empty-guid rows (#9, owner
+            // report 2026-07-13) don't fall back to the raw 0-based
+            // descriptor while their own dropdown shows the localized picker
+            // entry. With no device context there is no single-pad case to
+            // shorten for, so the any-device naming carries the 1-based pad
+            // prefix everywhere, mirroring BuildDeviceAgnosticChoices;
+            // concrete-device rows keep the per-device shortening (bare
+            // pad-0 click).
+            {
+                string t = mapping.SourceDescriptor;
+                string tPrefix = "";
+                if (t.StartsWith("IH", System.StringComparison.OrdinalIgnoreCase))
+                { tPrefix = t.Substring(0, 2); t = t.Substring(2); }
+                else if (t.StartsWith("I", System.StringComparison.OrdinalIgnoreCase) && t.Length > 1 && !char.IsDigit(t[1])
+                         && !PadForge.Engine.Common.Mapping.SourceCoercion.IsPrefixExemptDescriptor(t))
+                { tPrefix = t.Substring(0, 1); t = t.Substring(1); }
+                else if (t.StartsWith("H", System.StringComparison.OrdinalIgnoreCase) && t.Length > 1 && !char.IsDigit(t[1]))
+                { tPrefix = t.Substring(0, 1); t = t.Substring(1); }
+                if (t.StartsWith("Touchpad", System.StringComparison.Ordinal)
+                    || t.StartsWith("Gyro ", System.StringComparison.Ordinal)
+                    || PadForge.Engine.Common.Mapping.SourceCoercion.IsFlickStickDescriptor(t))
+                {
+                    string fam = ResolveDescriptorText(t, null, padPrefixAlways: ud == null);
+                    if (fam != null)
+                    {
+                        if (!string.IsNullOrEmpty(tPrefix))
+                        {
+                            string prefixLabel = ResolvePrefixLabel(tPrefix);
+                            if (!string.IsNullOrEmpty(prefixLabel))
+                                fam = $"{prefixLabel} {fam}";
+                        }
+                        mapping.SetResolvedSourceText(fam);
+                    }
+                    return;
+                }
+            }
+
             var objects = ud?.DeviceObjects;
             if (objects == null || objects.Length == 0)
                 return;
@@ -152,6 +190,38 @@ namespace PadForge.Common
                 return;
             }
 
+            // Device-independent touchpad / gyro families: same delegation
+            // the primary-side resolver applies, so an empty-guid neg source
+            // renders the picker's naming instead of the raw descriptor.
+            {
+                string t = mapping.NegSourceDescriptor;
+                string tPrefix = "";
+                if (t.StartsWith("IH", System.StringComparison.OrdinalIgnoreCase))
+                { tPrefix = t.Substring(0, 2); t = t.Substring(2); }
+                else if (t.StartsWith("I", System.StringComparison.OrdinalIgnoreCase) && t.Length > 1 && !char.IsDigit(t[1])
+                         && !PadForge.Engine.Common.Mapping.SourceCoercion.IsPrefixExemptDescriptor(t))
+                { tPrefix = t.Substring(0, 1); t = t.Substring(1); }
+                else if (t.StartsWith("H", System.StringComparison.OrdinalIgnoreCase) && t.Length > 1 && !char.IsDigit(t[1]))
+                { tPrefix = t.Substring(0, 1); t = t.Substring(1); }
+                if (t.StartsWith("Touchpad", System.StringComparison.Ordinal)
+                    || t.StartsWith("Gyro ", System.StringComparison.Ordinal)
+                    || PadForge.Engine.Common.Mapping.SourceCoercion.IsFlickStickDescriptor(t))
+                {
+                    string fam = ResolveDescriptorText(t, null, padPrefixAlways: ud == null);
+                    if (fam != null)
+                    {
+                        if (!string.IsNullOrEmpty(tPrefix))
+                        {
+                            string prefixLabel = ResolvePrefixLabel(tPrefix);
+                            if (!string.IsNullOrEmpty(prefixLabel))
+                                fam = $"{prefixLabel} {fam}";
+                        }
+                        mapping.SetResolvedNegText(fam);
+                    }
+                    return;
+                }
+            }
+
             var objects = ud?.DeviceObjects;
             if (objects == null || objects.Length == 0)
                 return;
@@ -163,9 +233,13 @@ namespace PadForge.Common
 
         /// <summary>
         /// Resolves a descriptor string to a human-readable name using device object metadata.
-        /// Returns null if no match found.
+        /// Returns null if no match found. <paramref name="padPrefixAlways"/>
+        /// selects the any-device naming for the touchpad families (every
+        /// label carries the 1-based pad prefix, matching
+        /// BuildDeviceAgnosticChoices); false keeps the per-device
+        /// shortening (bare pad-0 click, noun-wrapped pad-0 stick channels).
         /// </summary>
-        internal static string ResolveDescriptorText(string descriptor, DeviceObjectItem[] objects)
+        internal static string ResolveDescriptorText(string descriptor, DeviceObjectItem[] objects, bool padPrefixAlways = false)
         {
             string s = descriptor;
             string prefix = "";
@@ -186,9 +260,18 @@ namespace PadForge.Common
             {
                 var si = Strings.Instance;
                 var tp = s.Split(' ', System.StringSplitOptions.RemoveEmptyEntries);
-                // "Touchpad {pad} Click" → single unnumbered click.
+                // "Touchpad {pad} Click" → the pad-0 click is the single SDL
+                // click button and stays unnumbered on a concrete device; a
+                // pad-1+ click (Steam Controller era imports) and any click
+                // in the any-device context carry the 1-based pad prefix so
+                // the chip reads exactly like its picker entry.
                 if (tp.Length >= 3 && tp[2].Equals("Click", System.StringComparison.OrdinalIgnoreCase))
-                    return prefix + si.Mapping_TouchpadClick;
+                {
+                    string clickLabel = si.Mapping_TouchpadClick;
+                    if (int.TryParse(tp[1], out int cPad) && (padPrefixAlways || cPad > 0))
+                        clickLabel = string.Format(si.Mapping_TouchpadGesture_PadPrefix_Format, cPad + 1, clickLabel);
+                    return prefix + clickLabel;
+                }
                 // "Touchpad {pad} Finger {finger} {X|Y|Down}" → explicit axis.
                 // Six-part forms are the #9 B-1 region-windowed halves
                 // ("... X Left" / "Down Right"): same finger reads gated to
@@ -223,10 +306,11 @@ namespace PadForge.Common
                     return prefix + string.Format(fmt, padIdx + 1, fingerIdx + 1);
                 }
                 // "Touchpad {pad} {GestureName}" → localized gesture label.
-                // Same naming the picker builds via AddTouchpadGestureChoices,
-                // minus the multi-pad disambiguation wrap on pad 0 (this
-                // reverse path has no device context to count pads with;
-                // pads past the first always carry the prefix).
+                // Same naming the picker builds via AddTouchpadGestureChoices.
+                // padPrefixAlways (the any-device context) wraps pad 0 too,
+                // matching BuildDeviceAgnosticChoices; the per-device context
+                // has no pad count on this reverse path, so pad 0 stays
+                // unwrapped and pads past the first always carry the prefix.
                 if (tp.Length >= 3 && int.TryParse(tp[1], out int gPadIdx))
                 {
                     string gestureName = string.Join(" ", tp, 2, tp.Length - 2);
@@ -238,7 +322,7 @@ namespace PadForge.Common
                     // StickWrap policy.
                     bool stickChannel = gestureName is "StickX" or "StickY"
                         or "DPadUp" or "DPadRight" or "DPadDown" or "DPadLeft";
-                    if (gPadIdx > 0)
+                    if (padPrefixAlways || gPadIdx > 0)
                         label = string.Format(si.Mapping_TouchpadGesture_PadPrefix_Format, gPadIdx + 1, label);
                     else if (stickChannel)
                         label = string.Format(si.Mapping_TouchpadGesture_SinglePadNoun_Format, label);
@@ -257,6 +341,16 @@ namespace PadForge.Common
                 if (axis.Equals("Roll",       System.StringComparison.OrdinalIgnoreCase)) return prefix + si.Mapping_GyroRoll;
                 if (axis.Equals("Horizontal", System.StringComparison.OrdinalIgnoreCase)) return prefix + si.Mapping_GyroHorizontal;
                 return null;
+            }
+
+            // Flick stick descriptors (#225) → localized display names. The
+            // leading 'F' never enters the I/H prefix grammar, so the prefix
+            // here is always empty; kept for shape consistency.
+            if (PadForge.Engine.Common.Mapping.SourceCoercion.IsFlickStickDescriptor(s))
+            {
+                var si = Strings.Instance;
+                bool leftStick = s.Trim().EndsWith("Left", System.StringComparison.OrdinalIgnoreCase);
+                return prefix + (leftStick ? si.Mapping_FlickStickLeft : si.Mapping_FlickStickRight);
             }
 
             // Bundled motion-passthrough descriptors → localized display names.
@@ -426,6 +520,11 @@ namespace PadForge.Common
             list.Add(new InputChoice { Descriptor = "Gyro Yaw",        DisplayName = si.Mapping_GyroYaw });
             list.Add(new InputChoice { Descriptor = "Gyro Roll",       DisplayName = si.Mapping_GyroRoll });
             list.Add(new InputChoice { Descriptor = "Gyro Horizontal", DisplayName = si.Mapping_GyroHorizontal });
+
+            // Flick stick (#225): the translator emits these with the empty
+            // guid, so the abstract namespace must offer them too.
+            list.Add(new InputChoice { Descriptor = PadForge.Engine.Common.Mapping.SourceCoercion.FlickStickRightDescriptor, DisplayName = si.Mapping_FlickStickRight });
+            list.Add(new InputChoice { Descriptor = PadForge.Engine.Common.Mapping.SourceCoercion.FlickStickLeftDescriptor,  DisplayName = si.Mapping_FlickStickLeft });
 
             // Two touchpad surfaces: the translator's trackpad resolvers
             // emit pad indices 0 (LEFT) and 1 (RIGHT, Steam Controller /
@@ -984,6 +1083,15 @@ namespace PadForge.Common
                         DisplayName = string.Format(si.Mapping_Gamepad_Format, memberDisplay)
                     });
                 }
+
+                // Flick stick (#225): whole-stick mouse-turn inputs. Map one
+                // to Mouse X on a keyboard/mouse slot; the engine resolves
+                // the stick axes per device through the Gamepad alias table
+                // and the tuning rides the Flick Stick card on the Sticks
+                // tab. Same gamepad gate as the alias family: the read is
+                // the canonical stick pair.
+                list.Add(new InputChoice { Descriptor = PadForge.Engine.Common.Mapping.SourceCoercion.FlickStickRightDescriptor, DisplayName = si.Mapping_FlickStickRight });
+                list.Add(new InputChoice { Descriptor = PadForge.Engine.Common.Mapping.SourceCoercion.FlickStickLeftDescriptor,  DisplayName = si.Mapping_FlickStickLeft });
             }
 
             // Touchpad raw sources (per-finger axes + click) for devices

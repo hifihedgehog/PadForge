@@ -1614,6 +1614,12 @@ namespace PadForge.Engine.Data
             // to defaults on every device-switch save.
             if (k.StartsWith("MotionSteer", StringComparison.Ordinal))
                 return true;
+            // Flick Stick card tuning (#225): FlickStickDots / Time /
+            // Threshold / SnapMode / SnapStrength / ForwardDz / Smoothing /
+            // OnEngage. Per-device tuning, not input routing, same as the
+            // Motion Steering keys above.
+            if (k.StartsWith("FlickStick", StringComparison.Ordinal))
+                return true;
             if (k.StartsWith("ExtendedStick", StringComparison.Ordinal))
                 return true;
             if (k.StartsWith("ExtendedTrigger", StringComparison.Ordinal)

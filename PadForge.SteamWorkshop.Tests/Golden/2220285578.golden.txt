@@ -45,7 +45,7 @@ kbm rows: 18
 macros: 2
   macro KeyTap HoldForMs | Long press SPACE (button_escape) | btns=0x0010 hold=500ms consume vk=0x20
   macro KeyTap HoldForMs | Long press H (button_menu) | btns=0x0020 hold=500ms consume vk=0x48
-report: v4 rows:x0+k18 macros:2 layers:0 clean:21 partial:9 skipped:4 errors:0
+report: v5 rows:x0+k18 macros:2 layers:0 clean:21 partial:9 skipped:4 errors:0
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_a/Full_Press => KbmKey20 <- Gamepad ButtonA
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_b/Full_Press => KbmKey6B <- Gamepad ButtonB
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_x/Full_Press => KbmKey6D <- Gamepad ButtonX

@@ -64,7 +64,7 @@ kbm activators: 4
   Hold Layer_1129670518_2_MS_right_joystick_50 | Touchpad 0 Click | inherit | name=right_joystick shift
   Hold Layer_1129670518_2_MS_right_trackpad_38 | Touchpad 0 Click | inherit | name=right_trackpad shift
 macros: 0
-report: v4 rows:x0+k19 macros:0 layers:4 clean:40 partial:14 skipped:4 errors:0
+report: v5 rows:x0+k19 macros:0 layers:4 clean:40 partial:14 skipped:4 errors:0
   Clean RowEmitted @ TacticalControls/button_diamond/group 0 (four_buttons)/button_A/Full_Press => KbmMBtn0 <- Gamepad ButtonA
   Clean RowEmitted @ TacticalControls/joystick/group 51 (joystick_mouse) => KbmMouseX <- Gamepad LeftStickX
   Clean RowEmitted @ TacticalControls/joystick/group 51 (joystick_mouse) => KbmMouseY <- Gamepad LeftStickY

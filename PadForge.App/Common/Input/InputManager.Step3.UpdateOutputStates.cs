@@ -719,6 +719,49 @@ namespace PadForge.Common.Input
         /// device and state.Ir belongs to that device), then the legacy per-key
         /// descriptor. Returns null when the target is not IR-driven, which
         /// keeps the existing delta path untouched for every other source.</summary>
+        /// <summary>
+        /// Flick stick (#225): ticks every "Flick Stick ..." source on the
+        /// ACTIVE KbmMouseX row and returns the summed mouse X counts for
+        /// this frame. Layer-aware on purpose, unlike
+        /// <see cref="FindIrPointerSource"/>'s Base-only walk: #225's
+        /// headline is flick stick hosted on a shift layer, so the row
+        /// resolution must ride <see cref="FindActiveRowForTarget"/>. While
+        /// the hosting layer is off the row never evaluates, the tick's
+        /// frame-sequence gap detection re-arms on the next engage, and no
+        /// residual counts are emitted. No legacy per-key descriptor leg:
+        /// the family is newer than the MappingSet grid, so no pre-grid
+        /// config can carry it.
+        /// </summary>
+        private static int TickFlickStickSources(
+            CustomInputState state, MappingSet mappingSet, string thisDeviceGuid, int slotIndex)
+        {
+            var row = FindActiveRowForTarget(mappingSet, "KbmMouseX", slotIndex, out _);
+            var sources = row?.Sources;
+            if (sources == null || sources.Count == 0) return 0;
+
+            var runtime = (slotIndex >= 0 && slotIndex < _slotSourceKindRuntime.Length)
+                ? _slotSourceKindRuntime[slotIndex] : null;
+            if (runtime == null) return 0;
+            double dt = ComputeAndAdvanceDelta(slotIndex);
+
+            int counts = 0;
+            for (int i = 0; i < sources.Count; i++)
+            {
+                var src = sources[i];
+                if (src == null
+                    || !PadForge.Engine.Common.Mapping.SourceCoercion.IsFlickStickDescriptor(src.Descriptor))
+                    continue;
+                // Same cross-device resolution the per-target evaluators use:
+                // the source's own DeviceGuid wins; empty = this pass's device.
+                var devState = string.IsNullOrEmpty(src.DeviceGuid)
+                    ? state
+                    : (LookupDeviceState(src.DeviceGuid) ?? state);
+                counts += runtime.TickFlickStick(slotIndex, "KbmMouseX", i, src, devState,
+                    dt, _stickTrimFrameSeq);
+            }
+            return counts;
+        }
+
         private static PadForge.Engine.Data.MappingSource FindIrPointerSource(
             MappingSet mappingSet, string targetName, string legacyDesc, string thisDeviceGuid)
         {
@@ -2126,6 +2169,14 @@ namespace PadForge.Common.Input
 
             bool irPointerDrivesMouse = false;
             bool irDroveMouseX = false, irDroveMouseY = false;
+
+            // Flick stick (#225): exact-counts mouse X lane, additive and
+            // independent of the velocity/absolute chain below. Evaluated
+            // here (not in the bipolar combine) because its output is
+            // calibrated counts, not a [-1..+1] deflection; the same
+            // sources read as 0 through the coercion path, so a mixed
+            // gyro+flick row still sums its other sources normally.
+            raw.MouseFlickX = TickFlickStickSources(state, mappingSet, thisDeviceGuid, slotIndex);
 
             // Map mouse X axis (bidirectional)
             {

@@ -338,6 +338,19 @@ namespace PadForge.SteamWorkshop.Translation
                     TranslateMemberGroup(run, preset, effective, slot, layer, path, settings);
                     break;
 
+                case "flickstick":
+                    // Jibb Smart's flick stick (#225). Token spelling
+                    // grounded on Valve's shipped templates
+                    // (controller_ps4/ps5/switch_pro_gamepad_flickstick.vdf,
+                    // group "mode" "flickstick") and the wild corpus
+                    // (fixture 2374887917 plus DOOM Eternal configs
+                    // 2779652507 / 2228940979). Members (click, and edge on
+                    // sticks) translate through the standard walk, like the
+                    // other joystick modes.
+                    EmitFlickStick(run, slot, layer, path, settings);
+                    TranslateMemberGroup(run, preset, effective, slot, layer, path, settings);
+                    break;
+
                 case "absolute_mouse":
                 case "relative_mouse":
                     if (mode == "absolute_mouse")
@@ -414,7 +427,7 @@ namespace PadForge.SteamWorkshop.Translation
             "four_buttons", "switches", "dpad", "single_button", "trigger",
             "joystick_move", "joystick_mouse", "mouse_joystick", "joystick_camera",
             "absolute_mouse", "relative_mouse", "scrollwheel", "touch_menu",
-            "radial_menu", "mouse_region", "gyro_to_mouse",
+            "radial_menu", "mouse_region", "gyro_to_mouse", "flickstick",
         };
 
         /// <summary>Response-shaping group settings PadForge has no per-row
@@ -908,6 +921,62 @@ namespace PadForge.SteamWorkshop.Translation
                 TranslationStatus.Clean, TranslationReasons.RowEmitted, path);
             AddRowSource(run, isKbm: true, layer, "KbmMouseY", Make(y), isAxis: true,
                 TranslationStatus.Clean, TranslationReasons.RowEmitted, path);
+        }
+
+        /// <summary>Flick stick keys the engine has no grounded channel
+        /// for, named per group when present. The list is the wild-corpus
+        /// vocabulary (2779652507 / 2228940979: edge_binding_radius,
+        /// mouse_smoothing, rotation, transition_time); mapping any of
+        /// them onto the JSM-ported knobs would be a semantics guess, so
+        /// they ride a named Partial instead.</summary>
+        private static readonly string[] FlickStickDroppedKeys =
+        {
+            "edge_binding_radius", "mouse_smoothing", "rotation", "transition_time",
+        };
+
+        /// <summary>flickstick groups (#225): the stick becomes a
+        /// "Flick Stick Right"/"Flick Stick Left" source on the KbM mouse X
+        /// row. The group's "sensitivity" is Steam's shared Dots Per 360
+        /// (client l10n: "Flick Stick ° to Mouse Pixels (Dots Per 360°)";
+        /// corpus values 2603..2800) and lands 1:1 on
+        /// ParamFlickCountsPer360; every other flick knob keeps its
+        /// JSM-grounded default. Trackpad-hosted flickstick has no PadForge
+        /// read (flick stick is a stick-only family), so it gets a named
+        /// skip and the members still translate.</summary>
+        private void EmitFlickStick(Run run, SteamSlot slot, string layer, string path,
+            Dictionary<string, string> settings)
+        {
+            if (!PhysicalSlotResolver.IsStick(slot))
+            {
+                run.Report.Add(TranslationStatus.Skipped,
+                    TranslationReasons.FlickStickSurfaceNotSupported, path,
+                    args: slot.ToString());
+                return;
+            }
+
+            var src = new MappingSource
+            {
+                Descriptor = slot == SteamSlot.RightJoystick
+                    ? "Flick Stick Right"
+                    : "Flick Stick Left",
+            };
+            if (settings.TryGetValue("sensitivity", out var dotsRaw)
+                && double.TryParse(dotsRaw, NumberStyles.Float, CultureInfo.InvariantCulture, out double dots)
+                && dots > 0)
+            {
+                src.ParamFlickCountsPer360 = dots;
+            }
+
+            AddRowSource(run, isKbm: true, layer, "KbmMouseX", src, isAxis: true,
+                TranslationStatus.Clean, TranslationReasons.RowEmitted, path);
+
+            var dropped = FlickStickDroppedKeys.Where(settings.ContainsKey).ToList();
+            if (dropped.Count > 0)
+            {
+                run.Report.Add(TranslationStatus.Partial,
+                    TranslationReasons.FlickStickTuningDropped, path,
+                    args: string.Join(", ", dropped));
+            }
         }
 
         // ─────────────────────────────────────────────

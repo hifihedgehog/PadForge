@@ -4104,6 +4104,10 @@ namespace PadForge.Services
             ps.SetExtendedMapping("MotionSteerOuter", padVm.MotionSteerOuterDz.ToString(ic));
             ps.SetExtendedMapping("MotionSteerOrient", padVm.MotionSteerOrient);
 
+            // Flick Stick card tuning (#225), same extended-mapping bag and
+            // the same device-switch clobber rationale.
+            SettingsService.SaveFlickStickCard(padVm, ps);
+
             // Sensitivity curves. The load mirror at LoadPadSettingToViewModel
             // reads all six; the save side must cover the SAME fields or a
             // curve edit is lost when the device dropdown switches inside the
@@ -4396,6 +4400,10 @@ namespace PadForge.Services
             padVm.MotionSteerInnerDz = TryParseDouble(ps.GetExtendedMapping("MotionSteerInner"), 15);
             padVm.MotionSteerOuterDz = TryParseDouble(ps.GetExtendedMapping("MotionSteerOuter"), 135);
             padVm.SetMotionSteerOrient(ps.GetExtendedMapping("MotionSteerOrient"));
+
+            // Flick Stick card tuning (#225), mirroring the startup load in
+            // SettingsService.LoadPadSettings (import-seed included).
+            SettingsService.LoadFlickStickCard(padVm, ps);
 
             // Max range.
             padVm.LeftMaxRangeX = TryParseDouble(ps.LeftThumbMaxRangeX, 100);

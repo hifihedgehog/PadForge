@@ -6227,6 +6227,95 @@
                             </StackPanel>
                         </StackPanel>
                     </Border>
+
+                    <!-- ─── Flick Stick card (#225): settings for the "Flick Stick"
+                         INPUTS (Right / Left), per assigned device. Flick Stick is a
+                         normal input descriptor: the user maps it to Mouse X from the
+                         input dropdown in Mappings, on any layer (shift-layer hosting
+                         is the headline use). This card never targets or overrides an
+                         axis; it only tunes the flick math. Shown on keyboard/mouse
+                         slots (the output is relative mouse movement). -->
+                    <Border x:Name="FlickStickCard" Style="{StaticResource CardBorder}" Visibility="Collapsed">
+                        <StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                <TextBlock Text="&#xE72C;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="16" Foreground="{DynamicResource EmberBrush}"
+                                           VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                <TextBlock Text="{Binding Pad_FlickStick_Header, Source={x:Static strings:Strings.Instance}}"
+                                           Style="{StaticResource CardTitle}"/>
+                                <ui:Button Command="{Binding ResetFlickStickCardCommand}" Style="{StaticResource ResetAllButton}"
+                                        Content="{Binding Pad_ResetAll, Source={x:Static strings:Strings.Instance}}" Margin="12,0,0,0"
+                                        ToolTip="{Binding Pad_FlickStick_Reset_All, Source={x:Static strings:Strings.Instance}}"/>
+                            </StackPanel>
+                            <TextBlock Text="{Binding Pad_FlickStick_Subtitle, Source={x:Static strings:Strings.Instance}}"
+                                       Style="{StaticResource CardDescription}"/>
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                    <TextBlock Text="{Binding Settings_FlickCountsPer360, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"
+                                               ToolTip="{Binding Settings_FlickCountsPer360_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <Slider Value="{Binding FlickCountsPer360, Mode=TwoWay}" Minimum="100" Maximum="30000" Style="{StaticResource DzSlider}"/>
+                                    <TextBox Text="{Binding FlickCountsPer360, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEdit}"/>
+                                    <ui:Button Command="{Binding ResetFlickCountsPer360Command}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetFlickCountsPer360, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                    <TextBlock Text="{Binding Settings_FlickTime, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"
+                                               ToolTip="{Binding Settings_FlickTime_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <Slider Value="{Binding FlickTime, Mode=TwoWay}" Minimum="0.01" Maximum="1" Style="{StaticResource DzSlider}"/>
+                                    <TextBox Text="{Binding FlickTime, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEdit}"/>
+                                    <TextBlock Text="s" Style="{StaticResource DzPercent}"/>
+                                    <ui:Button Command="{Binding ResetFlickTimeCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetFlickTime, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                    <TextBlock Text="{Binding Settings_FlickThreshold, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"
+                                               ToolTip="{Binding Settings_FlickThreshold_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <Slider Value="{Binding FlickThreshold, Mode=TwoWay}" Minimum="0.1" Maximum="1" Style="{StaticResource DzSlider}"/>
+                                    <TextBox Text="{Binding FlickThreshold, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEdit}"/>
+                                    <ui:Button Command="{Binding ResetFlickThresholdCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetFlickThreshold, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                    <TextBlock Text="{Binding Settings_FlickSnapMode, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"
+                                               ToolTip="{Binding Settings_FlickSnapMode_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <ComboBox SelectedValue="{Binding FlickSnapMode, Mode=TwoWay}" SelectedValuePath="Tag" Width="200" VerticalAlignment="Center">
+                                        <ComboBoxItem Content="{Binding Settings_FlickSnapMode_None, Source={x:Static strings:Strings.Instance}}" Tag="None"/>
+                                        <ComboBoxItem Content="{Binding Settings_FlickSnapMode_Forward, Source={x:Static strings:Strings.Instance}}" Tag="Forward"/>
+                                        <ComboBoxItem Content="{Binding Settings_FlickSnapMode_Half, Source={x:Static strings:Strings.Instance}}" Tag="Half"/>
+                                        <ComboBoxItem Content="{Binding Settings_FlickSnapMode_Four, Source={x:Static strings:Strings.Instance}}" Tag="Four"/>
+                                        <ComboBoxItem Content="{Binding Settings_FlickSnapMode_Sixths, Source={x:Static strings:Strings.Instance}}" Tag="Sixths"/>
+                                        <ComboBoxItem Content="{Binding Settings_FlickSnapMode_Eight, Source={x:Static strings:Strings.Instance}}" Tag="Eight"/>
+                                    </ComboBox>
+                                    <ui:Button Command="{Binding ResetFlickSnapModeCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetFlickSnapMode, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                    <TextBlock Text="{Binding Settings_FlickSnapStrength, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"
+                                               ToolTip="{Binding Settings_FlickSnapStrength_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <Slider Value="{Binding FlickSnapStrength, Mode=TwoWay}" Minimum="0" Maximum="1" Style="{StaticResource DzSlider}"/>
+                                    <TextBox Text="{Binding FlickSnapStrength, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEdit}"/>
+                                    <ui:Button Command="{Binding ResetFlickSnapStrengthCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetFlickSnapStrength, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                    <TextBlock Text="{Binding Settings_FlickForwardDeadzone, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"
+                                               ToolTip="{Binding Settings_FlickForwardDeadzone_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <Slider Value="{Binding FlickForwardDeadzone, Mode=TwoWay}" Minimum="0" Maximum="180" Style="{StaticResource DzSlider}"/>
+                                    <TextBox Text="{Binding FlickForwardDeadzone, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEdit}"/>
+                                    <TextBlock Text="&#176;" Style="{StaticResource DzPercent}"/>
+                                    <ui:Button Command="{Binding ResetFlickForwardDeadzoneCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetFlickForwardDeadzone, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                    <TextBlock Text="{Binding Settings_FlickSmoothing, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"
+                                               ToolTip="{Binding Settings_FlickSmoothing_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <Slider Value="{Binding FlickSmoothing, Mode=TwoWay}" Minimum="-1" Maximum="0.2" Style="{StaticResource DzSlider}"/>
+                                    <TextBox Text="{Binding FlickSmoothing, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEdit}"/>
+                                    <ui:Button Command="{Binding ResetFlickSmoothingCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetFlickSmoothing, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
+                                    <TextBlock Text="{Binding Settings_FlickOnEngage, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"
+                                               ToolTip="{Binding Settings_FlickOnEngage_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <CheckBox IsChecked="{Binding FlickOnEngage, Mode=TwoWay}" VerticalAlignment="Center"
+                                              ToolTip="{Binding Settings_FlickOnEngage_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <ui:Button Command="{Binding ResetFlickOnEngageCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetFlickOnEngage, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
                     </StackPanel>
                 </ScrollViewer>
             </TabItem>

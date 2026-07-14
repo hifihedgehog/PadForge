@@ -2060,6 +2060,56 @@ namespace PadForge.ViewModels
             MotionSteerInnerDz = 15; MotionSteerOuterDz = 135; MotionSteerOrientIndex = 0;
         });
 
+        // ── Flick Stick tuning (#225, wave 4a) ──
+        // Per-(slot, device) lens over the "Flick Stick ..." sources in this
+        // slot's KBM mapping set: the save pipeline stamps these onto every
+        // flick source (ApplyFlickStickParamsToRow, the Motion Steering push
+        // pattern) and persists them in the PadSetting extended-mapping bag
+        // ("FlickStick*" keys). Defaults mirror the MappingSource ParamFlick*
+        // defaults (JSM-grounded; see MappingSource.cs).
+        private double _flickCountsPer360 = 14400;
+        public double FlickCountsPer360 { get => _flickCountsPer360; set => SetProperty(ref _flickCountsPer360, Math.Clamp(value, 100, 100000)); }
+        private double _flickTime = 0.1;
+        public double FlickTime { get => _flickTime; set => SetProperty(ref _flickTime, Math.Clamp(value, 0.01, 2.0)); }
+        private double _flickThreshold = 0.9;
+        public double FlickThreshold { get => _flickThreshold; set => SetProperty(ref _flickThreshold, Math.Clamp(value, 0.1, 1.0)); }
+        private double _flickSnapStrength = 1.0;
+        public double FlickSnapStrength { get => _flickSnapStrength; set => SetProperty(ref _flickSnapStrength, Math.Clamp(value, 0.0, 1.0)); }
+        private double _flickForwardDeadzone;
+        public double FlickForwardDeadzone { get => _flickForwardDeadzone; set => SetProperty(ref _flickForwardDeadzone, Math.Clamp(value, 0.0, 180.0)); }
+        private double _flickSmoothing = -1;
+        public double FlickSmoothing { get => _flickSmoothing; set => SetProperty(ref _flickSmoothing, Math.Clamp(value, -1.0, 0.5)); }
+        private bool _flickOnEngage;
+        public bool FlickOnEngage { get => _flickOnEngage; set => SetProperty(ref _flickOnEngage, value); }
+
+        // Snap mode as a Tag-backed string (the GyroEngageStickSide combo
+        // pattern), value set = SourceKindRuntime.FlickSnapIntervalRad's.
+        private string _flickSnapMode = "None";
+        public string FlickSnapMode
+        {
+            get => _flickSnapMode;
+            set => SetProperty(ref _flickSnapMode, string.IsNullOrEmpty(value) ? "None" : value);
+        }
+
+        private RelayCommand _resetFlickCountsPer360Command, _resetFlickTimeCommand,
+            _resetFlickThresholdCommand, _resetFlickSnapModeCommand, _resetFlickSnapStrengthCommand,
+            _resetFlickForwardDeadzoneCommand, _resetFlickSmoothingCommand, _resetFlickOnEngageCommand,
+            _resetFlickStickCardCommand;
+        public RelayCommand ResetFlickCountsPer360Command => _resetFlickCountsPer360Command ??= new RelayCommand(() => FlickCountsPer360 = 14400);
+        public RelayCommand ResetFlickTimeCommand => _resetFlickTimeCommand ??= new RelayCommand(() => FlickTime = 0.1);
+        public RelayCommand ResetFlickThresholdCommand => _resetFlickThresholdCommand ??= new RelayCommand(() => FlickThreshold = 0.9);
+        public RelayCommand ResetFlickSnapModeCommand => _resetFlickSnapModeCommand ??= new RelayCommand(() => FlickSnapMode = "None");
+        public RelayCommand ResetFlickSnapStrengthCommand => _resetFlickSnapStrengthCommand ??= new RelayCommand(() => FlickSnapStrength = 1.0);
+        public RelayCommand ResetFlickForwardDeadzoneCommand => _resetFlickForwardDeadzoneCommand ??= new RelayCommand(() => FlickForwardDeadzone = 0);
+        public RelayCommand ResetFlickSmoothingCommand => _resetFlickSmoothingCommand ??= new RelayCommand(() => FlickSmoothing = -1);
+        public RelayCommand ResetFlickOnEngageCommand => _resetFlickOnEngageCommand ??= new RelayCommand(() => FlickOnEngage = false);
+        public RelayCommand ResetFlickStickCardCommand => _resetFlickStickCardCommand ??= new RelayCommand(() =>
+        {
+            FlickCountsPer360 = 14400; FlickTime = 0.1; FlickThreshold = 0.9;
+            FlickSnapMode = "None"; FlickSnapStrength = 1.0; FlickForwardDeadzone = 0;
+            FlickSmoothing = -1; FlickOnEngage = false;
+        });
+
         private double _gyroPlayerSpaceYawRelaxFactor = 1.41;
         public double GyroPlayerSpaceYawRelaxFactor
         {

@@ -3060,6 +3060,12 @@ namespace PadForge.Engine.Common.Mapping
         {
             padIdx = 0; axisOffset = -1; half = TouchpadHalfNone;
             if (string.IsNullOrEmpty(descriptor)) return false;
+            // Cheap reject before Split: this predicate runs per poll for every
+            // source on a KbM mouse row (FindEngagedTouchpadPointerSource), and
+            // the common gyro / stick -> mouse sources are not "Touchpad ..."
+            // at all. Splitting them just to fail the parts[0] check below
+            // allocated a string[] on the 1 kHz path for every such config.
+            if (!descriptor.StartsWith("Touchpad ", StringComparison.Ordinal)) return false;
             string[] parts = descriptor.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
             if (parts.Length != 4 && parts.Length != 5) return false;
             if (!parts[0].Equals("Touchpad", StringComparison.Ordinal)) return false;

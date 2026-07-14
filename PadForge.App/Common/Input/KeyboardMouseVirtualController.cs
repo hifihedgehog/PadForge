@@ -34,6 +34,11 @@ namespace PadForge.Common.Input
         private float _myAccumulator;
         private float _scrollAccumulator;
         private float _scrollAccumulatorH;
+        // Last absolute-pointer pixel written, so the per-poll SetCursorPos is
+        // skipped when the target hasn't moved. int.MinValue = "no write yet /
+        // pointer released", which forces the next valid frame to write.
+        private int _lastAbsCursorX = int.MinValue;
+        private int _lastAbsCursorY = int.MinValue;
 
         // Mouse sensitivity: pixels per frame at full axis deflection.
         private const float MouseSensitivity = 15.0f;
@@ -190,7 +195,26 @@ namespace PadForge.Common.Input
                     if (!raw.MouseAbsXValid) px = cur.X;
                     if (!raw.MouseAbsYValid) py = cur.Y;
                 }
-                SetCursorPos(Math.Clamp(px, 0, absW - 1), Math.Clamp(py, 0, absH - 1));
+                px = Math.Clamp(px, 0, absW - 1);
+                py = Math.Clamp(py, 0, absH - 1);
+                // Change-gate: SetCursorPos crosses every WH_MOUSE_LL hook in
+                // the system, so a resting finger firing it every poll (1 kHz)
+                // is the same syscall-storm class as the SendInput poll-rate
+                // regression. Only write when the target pixel actually moved.
+                if (px != _lastAbsCursorX || py != _lastAbsCursorY)
+                {
+                    SetCursorPos(px, py);
+                    _lastAbsCursorX = px;
+                    _lastAbsCursorY = py;
+                }
+            }
+            else
+            {
+                // Pointer released (or absent this frame): drop the cache so the
+                // next engagement always repositions, even to the same pixel the
+                // cursor may have drifted from via other input.
+                _lastAbsCursorX = int.MinValue;
+                _lastAbsCursorY = int.MinValue;
             }
 
             // --- Mouse scroll (deadzone already applied in Step 3) ---

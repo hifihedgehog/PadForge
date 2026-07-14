@@ -49,8 +49,34 @@ namespace PadForge.Engine.Common.Mapping
         // this the centre reads non-zero and the off-axis tilt bleeds into steering.
         // Faithful to JSM's neutralQuat (main.cpp:421-435, 891): captured once when
         // the steering source first sees real gravity for a device, held until profile
-        // switch (Clear). Keyed by device GUID — the resting pose is physical, not per-slot.
+        // switch (Clear). Keyed by device GUID. The resting pose is physical, not per-slot.
         private readonly Dictionary<string, (double x, double y, double z)> _motionNeutral = new();
+
+        // ── Flick stick (#225) ──
+        // Per-row flick stick state, JSM's Stick flick fields (Stick.h:75-90)
+        // plus the frame-sequence guards the StickTrim state uses (the KBM
+        // evaluator runs once per assigned DEVICE per frame, and a shift
+        // layer's row simply stops being evaluated while its layer is off).
+        private sealed class FlickState
+        {
+            public bool IsFlicking;                     // JSM Stick.is_flicking
+            public double LastX, LastY;                 // JSM Stick.lastX/lastY (raw normalized, SDL frame)
+            public double DeltaFlick;                   // JSM Stick.delta_flick (rad)
+            public double FlickProgressSeconds;         // JSM time-since-started_flick, dt-accumulated
+            public double FlickPercentDone = 1.0;       // JSM Stick.flick_percent_done; 1 = no easing pending
+            public double CountRemainder;               // sub-count residual (KBM VC accumulator idiom)
+            public long LastSeq = -1;                   // frame idempotence + layer-suppression gap detection
+            public int LastOutput;                      // replay for the 2nd+ device pass in one frame
+            public readonly float[] Samples = new float[FlickNumSamples]; // JSM _flickSamples
+            public int FrontSample;                     // JSM _frontSample
+        }
+
+        // JSM NUM_SAMPLES (JoyShock.h:123). The live window is capped at
+        // 64 ms of ticks per tick (JoyShock.cpp:926), so this is the
+        // 1000 Hz-poll ceiling, same as JSM's.
+        private const int FlickNumSamples = 256;
+
+        private readonly Dictionary<(int slot, string target, int srcIdx), FlickState> _flickState = new();
 
         // Saturation band for the lock state machine — avoids float-edge thrash at ±1.
         private const double LockEpsilon = 1e-3;
@@ -64,13 +90,15 @@ namespace PadForge.Engine.Common.Mapping
             _windingState.Clear();
             _lockState.Clear();
             _motionNeutral.Clear();
+            _flickState.Clear();
         }
 
-        /// <summary>Drops all steering state for a slot. Called on profile switch.</summary>
+        /// <summary>Drops all steering + flick state for a slot. Called on profile switch.</summary>
         public void ResetForSlot(int slot)
         {
             RemoveWhere(_windingState, slot, null);
             RemoveWhere(_lockState, slot, null);
+            RemoveWhere(_flickState, slot, null);
         }
 
         /// <summary>Drops steering state for one (slot, target). Called on row reorder
@@ -391,6 +419,254 @@ namespace PadForge.Engine.Common.Mapping
             double output = sign * remapped;
             UpdateLock(key, output);
             return output;
+        }
+
+        // ── Flick stick tick (#225) ──
+        // Ported from JoyShockMapper JoyShock.cpp handleFlickStick
+        // (:852-1017, mouse output path) and getSmoothedStickRotation
+        // (:353-392), read then written original. Differences from JSM are
+        // named inline. Output is relative mouse X counts for this tick
+        // (positive = rightward turn), already integer-quantized with the
+        // fractional residual carried in state, so the caller feeds it to
+        // the injector unscaled.
+
+        /// <summary>
+        /// Advances one flick stick source and returns the mouse X counts to
+        /// emit this tick. <paramref name="frameSeq"/> is the caller's
+        /// monotonic once-per-polling-frame sequence: a repeated value
+        /// replays this frame's output (the KBM evaluator runs once per
+        /// assigned device per frame), and a skipped value re-arms the state
+        /// (the row was suppressed, i.e. its shift layer was off, or is
+        /// new). Re-arming with the stick already past the threshold follows
+        /// <see cref="MappingSource.ParamFlickOnEngage"/>: fire the flick
+        /// (JSM's behavior, JoyShock.cpp:873-876; Steam "Allow Flick on
+        /// Awake" ON) or arm at the current angle with no flick and track
+        /// rotation from there (default; #225's layer-host requirement).
+        /// Layer EXIT needs no call: an unevaluated row emits nothing, and
+        /// the next engage re-arms, so a mid-flight easing tail dies with
+        /// the layer. That is a named divergence from JSM, which forces
+        /// FLICK_ONLY until an in-flight flick completes on a chord change
+        /// (JoyShock.h:168-190); #225 requires no residual camera motion
+        /// after layer exit.
+        /// </summary>
+        public int TickFlickStick(int slotIndex, string target, int sourceIndex,
+            MappingSource src, CustomInputState state, double deltaSeconds, long frameSeq)
+        {
+            if (src == null || state == null) return 0;
+            if (!SourceCoercion.TryGetFlickStickAxes(src.Descriptor, out string xDesc, out string yDesc))
+                return 0;
+
+            var key = (slotIndex, target ?? "", sourceIndex);
+            if (!_flickState.TryGetValue(key, out var st))
+                _flickState[key] = st = new FlickState();
+
+            // Second per-device pass in the same frame: replay, never re-advance.
+            if (st.LastSeq == frameSeq) return st.LastOutput;
+            bool rearm = st.LastSeq < 0 || frameSeq - st.LastSeq > 1;
+            st.LastSeq = frameSeq;
+
+            // Raw normalized stick, SDL frame (+Y down). The flick threshold
+            // is checked on the RAW magnitude: JSM tests length >= 1.0 after
+            // an inner+outer deadzone remap whose outer default 0.1 makes
+            // that raw >= 0.9 (JoyShock.cpp:864-869, processStick:1048-1057,
+            // main.cpp:2334); ParamFlickThreshold folds the remap into the
+            // knob. atan2 is scale-invariant, so no deadzone shaping is
+            // needed for the angle.
+            double rx = ReadNormAxis(state, xDesc);
+            double ry = ReadNormAxis(state, yDesc);
+            double len = Math.Sqrt(rx * rx + ry * ry);
+
+            double threshold = src.ParamFlickThreshold > 0 && src.ParamFlickThreshold <= 1
+                ? src.ParamFlickThreshold : 0.9;
+            double countsPer360 = src.ParamFlickCountsPer360 > 0 ? src.ParamFlickCountsPer360 : 14400;
+            double countsPerRad = countsPer360 / (2.0 * Math.PI);
+            double flickTime = src.ParamFlickTime > 0 ? src.ParamFlickTime : 0.1;
+
+            if (rearm)
+            {
+                ResetFlickSmoothing(st);
+                st.CountRemainder = 0;
+                st.FlickPercentDone = 1.0; // kill any pre-suppression easing tail
+                st.DeltaFlick = 0;
+                st.FlickProgressSeconds = 0;
+                st.LastX = rx; st.LastY = ry;
+                if (len >= threshold && !src.ParamFlickOnEngage)
+                {
+                    // Arm as already-flicking with the current angle as the
+                    // rotation baseline; no flick fires. Rotation tracking is
+                    // live from the next tick.
+                    st.IsFlicking = true;
+                    st.LastOutput = 0;
+                    return 0;
+                }
+                // Below threshold, or ParamFlickOnEngage: arm idle and fall
+                // through. With the stick already past the threshold the
+                // block below sees !IsFlicking and fires the flick, which is
+                // exactly JSM's toggle-mid-deflection behavior.
+                st.IsFlicking = false;
+            }
+
+            // 0.9x release hysteresis while flicking (JoyShock.cpp:864-868).
+            double effThreshold = st.IsFlicking ? threshold * 0.9 : threshold;
+
+            double rotationCounts = 0;
+            bool justFlicked = false;
+
+            if (len >= effThreshold)
+            {
+                // JSM stickAngle = atan2f(-x, y) in its up-positive stick
+                // frame (JoyShock.cpp:871) == Atan2(-x, -y) in the SDL
+                // down-positive frame, the same fold the winding port uses
+                // (TickWindingStick above, JoyShock.cpp:1250). Forward = 0,
+                // right = -PI/2.
+                double stickAngle = Math.Atan2(-rx, -ry);
+                if (!st.IsFlicking)
+                {
+                    // "bam! new flick!" (JoyShock.cpp:873-908)
+                    st.IsFlicking = true;
+                    double snapInterval = FlickSnapIntervalRad(src.ParamFlickSnapMode);
+                    if (snapInterval > 0)
+                    {
+                        // C round() rounds halves away from zero; match it
+                        // (Math.Round defaults to banker's rounding). The
+                        // Forward interval (2 PI) folds to 0 explicitly: a
+                        // back flick sits exactly on the round(0.5) boundary
+                        // and would otherwise snap to a full 360-degree spin
+                        // instead of "no turn".
+                        double snapped = snapInterval >= 2.0 * Math.PI
+                            ? 0.0
+                            : Math.Round(stickAngle / snapInterval,
+                                MidpointRounding.AwayFromZero) * snapInterval;
+                        double strength = Math.Clamp(src.ParamFlickSnapStrength, 0.0, 1.0);
+                        stickAngle = stickAngle * (1.0 - strength) + snapped * strength;
+                    }
+                    if (Math.Abs(stickAngle) * (180.0 / Math.PI) < src.ParamFlickDeadzoneAngle)
+                        stickAngle = 0.0; // forward deadzone (JoyShock.cpp:897-900)
+
+                    st.DeltaFlick = stickAngle;
+                    st.FlickProgressSeconds = 0;
+                    st.FlickPercentDone = 0;
+                    ResetFlickSmoothing(st); // JSM resetSmoothSample (JoyShock.cpp:905)
+                    justFlicked = true;
+                }
+                else
+                {
+                    // Rotation tracking at the rim (JoyShock.cpp:910-944).
+                    double lastAngle = Math.Atan2(-st.LastX, -st.LastY);
+                    double angleChange = stickAngle - lastAngle;
+                    // Wrap to the shortest arc in (-PI, PI] (JoyShock.cpp:916-921).
+                    angleChange = (angleChange + Math.PI) % (2.0 * Math.PI);
+                    if (angleChange < 0) angleChange += 2.0 * Math.PI;
+                    angleChange -= Math.PI;
+                    double flickSpeed = -(angleChange * countsPerRad); // JoyShock.cpp:923-924
+                    // 64 ms max smoothing window (JoyShock.cpp:926).
+                    int maxSamples = Math.Min(FlickNumSamples,
+                        (int)Math.Ceiling(0.064 / Math.Max(deltaSeconds, 0.0001)));
+                    const double stepSize = 0.01; // rad, ~minimum stick resolution (JoyShock.cpp:927)
+                    double smooth = src.ParamFlickSmooth;
+                    rotationCounts = smooth < 0
+                        ? GetFlickSmoothedRotation(st, flickSpeed,
+                            countsPerRad * stepSize * 2.0, countsPerRad * stepSize * 4.0, maxSamples)  // JoyShock.cpp:932
+                        : GetFlickSmoothedRotation(st, flickSpeed,
+                            countsPerRad * smooth, countsPerRad * smooth * 2.0, maxSamples);           // JoyShock.cpp:936
+                }
+            }
+            else if (st.IsFlicking)
+            {
+                // Released below threshold: rotation stops; a running flick
+                // easing still completes below (JoyShock.cpp:947-955; the
+                // flick_rotation_counter calibration helper is not ported).
+                st.IsFlicking = false;
+            }
+
+            // Flick easing, every tick regardless of rim state
+            // (JoyShock.cpp:957-982): ease-out x -> 1-(1-x)^2, emitting the
+            // per-tick difference of the shaped percent. FLICK_TIME_EXPONENT
+            // is omitted (JSM default 0 disables its pow() scaling,
+            // main.cpp:2268, JoyShock.cpp:963-966).
+            if (!justFlicked) st.FlickProgressSeconds += deltaSeconds;
+            double flickCounts = 0;
+            if (st.FlickPercentDone < 1.0)
+            {
+                double newPercent = st.FlickProgressSeconds / flickTime;
+                if (newPercent > 1.0) newPercent = 1.0;
+                double oldShaped = 1.0 - st.FlickPercentDone;
+                oldShaped *= oldShaped;
+                oldShaped = 1.0 - oldShaped;
+                st.FlickPercentDone = newPercent;
+                double newShaped = 1.0 - newPercent;
+                newShaped *= newShaped;
+                newShaped = 1.0 - newShaped;
+                // Sign seam (grounded JoyShock.cpp:979 and :923-924): a
+                // rightward flick has angle -PI/2, and the negated
+                // counts-per-radian scale makes that POSITIVE mouse X =
+                // rightward turn, matching SendInput's +dx = right. This is
+                // the ONLY place flick output sign is set; the KBM VC and
+                // injector pass counts through unflipped.
+                flickCounts = (newShaped - oldShaped) * st.DeltaFlick * -countsPerRad;
+            }
+
+            st.LastX = rx; st.LastY = ry;
+
+            double total = rotationCounts + flickCounts + st.CountRemainder;
+            int emit = (int)total; // truncate; residual carries (KBM VC _mxAccumulator idiom)
+            st.CountRemainder = total - emit;
+            st.LastOutput = emit;
+            return emit;
+        }
+
+        /// <summary>Snap-mode name to snap interval in radians; 0 = no
+        /// snapping. NONE/FOUR/EIGHT and the 180-degree fallback interval are
+        /// JSM's (JoyShockMapper.h:300-306, JoyShock.cpp:883-891);
+        /// Forward/Half/Sixths complete Steam's snap vocabulary
+        /// (NoSnap/ForwardOnly/Half/Quarter/Sixths/Eighths) through the same
+        /// round-to-interval math. Unknown values read as None so a newer
+        /// profile degrades gracefully.</summary>
+        internal static double FlickSnapIntervalRad(string mode) => mode switch
+        {
+            "Forward" => 2.0 * Math.PI,
+            "Half"    => Math.PI,
+            "Four"    => Math.PI / 2.0,
+            "Sixths"  => Math.PI / 3.0,
+            "Eight"   => Math.PI / 4.0,
+            _         => 0.0,
+        };
+
+        private static void ResetFlickSmoothing(FlickState st)
+        {
+            st.FrontSample = 0;
+            Array.Clear(st.Samples, 0, st.Samples.Length);
+        }
+
+        // JSM getSmoothedStickRotation (JoyShock.cpp:353-392) on the per-row
+        // circular buffer: input above topThreshold passes through
+        // immediately, below bottomThreshold it is fully averaged over the
+        // window, and the band between blends linearly.
+        private static double GetFlickSmoothedRotation(FlickState st, double value,
+            double bottomThreshold, double topThreshold, int maxSamples)
+        {
+            st.FrontSample--;
+            if (st.FrontSample < 0) st.FrontSample = FlickNumSamples - 1;
+
+            double length = Math.Abs(value);
+            double immediateFactor;
+            if (topThreshold <= bottomThreshold)
+                immediateFactor = 1.0;
+            else
+                immediateFactor = (length - bottomThreshold) / (topThreshold - bottomThreshold);
+            if (immediateFactor < 0.0) immediateFactor = 0.0;
+            else if (immediateFactor > 1.0) immediateFactor = 1.0;
+            double smoothFactor = 1.0 - immediateFactor;
+
+            if (maxSamples < 1) maxSamples = 1;
+            double frontSample = st.Samples[st.FrontSample] = (float)(value * smoothFactor);
+            double result = frontSample / maxSamples;
+            for (int i = 1; i < maxSamples; i++)
+            {
+                int rotatedIndex = (st.FrontSample + i) % FlickNumSamples;
+                result += st.Samples[rotatedIndex] / (double)maxSamples;
+            }
+            return result + value * immediateFactor;
         }
 
         /// <summary>Returns and clears any pending at-lock edge for this row, for the

@@ -51,7 +51,7 @@ kbm activators: 1
 macros: 2
   macro KeyTap HoldForMs | Long press F (button_back_left) | btns=0x0000 in=[Gamepad Paddle2] hold=224ms vk=0x46
   macro KeyTap HoldForMs | Long press SPACE (button_back_right) | btns=0x0000 in=[Gamepad Paddle1] hold=222ms vk=0x20
-report: v4 rows:x0+k20 macros:2 layers:1 clean:22 partial:10 skipped:3 errors:0
+report: v5 rows:x0+k20 macros:2 layers:1 clean:22 partial:10 skipped:3 errors:0
   Clean RowEmitted @ Preset 0/button_diamond/group 0 (four_buttons)/button_a/Full_Press => KbmKey45 <- Gamepad ButtonA
   Clean RowEmitted @ Preset 0/button_diamond/group 0 (four_buttons)/button_b/Full_Press => KbmKey09 <- Gamepad ButtonB
   Clean RowEmitted @ Preset 0/button_diamond/group 0 (four_buttons)/button_x/Full_Press => KbmKey52 <- Gamepad ButtonX

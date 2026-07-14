@@ -29,7 +29,7 @@ kbm rows: 11
     <- Gamepad LeftShoulder
     <- Gamepad RightShoulder [inverted]
 macros: 0
-report: v4 rows:x0+k11 macros:0 layers:0 clean:15 partial:4 skipped:2 errors:0
+report: v5 rows:x0+k11 macros:0 layers:0 clean:15 partial:4 skipped:2 errors:0
   Clean RowEmitted @ InGameControls/button_diamond/group 0 (four_buttons)/button_A/Full_Press => KbmMBtn0 <- Gamepad ButtonA
   Clean RowEmitted @ InGameControls/button_diamond/group 0 (four_buttons)/button_B/Full_Press => KbmKey1B <- Gamepad ButtonB
   Clean RowEmitted @ InGameControls/joystick/group 13 (dpad)/dpad_east/Full_Press => KbmKey27 <- Gamepad LeftStickX (upper half)

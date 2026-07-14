@@ -225,7 +225,7 @@ namespace PadForge.SteamWorkshop.Tests
                 Assert.True(root["controller_mappings"].IsObject, $"controller_mappings missing in {path}");
                 count++;
             }
-            Assert.Equal(29, count);
+            Assert.Equal(30, count);
         }
     }
 }

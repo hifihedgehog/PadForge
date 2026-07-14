@@ -80,6 +80,13 @@ namespace PadForge.Engine.Common.Mapping
             IrOffscreen,     // "IR Offscreen" (issue #203). Debounced
                              // NOT-Ir.Detected per device (the lightgun-reload
                              // mechanic); bool-natured, keyed by device GUID.
+            FlickStick,      // "Flick Stick Right" / "Flick Stick Left" (#225).
+                             // Whole-stick flick-stick read on a KbmMouseX row:
+                             // Step 3 routes it to the exact-counts mouse lane
+                             // via SourceKindRuntime.TickFlickStick instead of
+                             // this enum's scalar coercion path (any other
+                             // target reads it as 0). Leading 'F' keeps it
+                             // clear of the I/H prefix grammar.
         }
 
         /// <summary>Sensitivity constant for gyro bipolar coercion.
@@ -677,6 +684,8 @@ namespace PadForge.Engine.Common.Mapping
                 return SourceType.BalanceBoard;
             if (s.StartsWith("Midi ", StringComparison.Ordinal))
                 return SourceType.Midi;
+            if (IsFlickStickDescriptor(s))
+                return SourceType.FlickStick;
 
             string[] parts = s.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
             if (parts.Length < 2) return SourceType.Unmapped;
@@ -1345,6 +1354,39 @@ namespace PadForge.Engine.Common.Mapping
         public static bool IsMotionLeanAuxDescriptor(string descriptor)
             => !string.IsNullOrEmpty(descriptor)
             && string.Equals(descriptor.Trim(), MotionLeanAuxDescriptor, StringComparison.OrdinalIgnoreCase);
+
+        /// <summary>Flick stick descriptors (#225): first-class inputs like
+        /// <see cref="MotionLeanDescriptor"/>, picked from the input dropdown
+        /// and mapped to the Mouse X (KbmMouseX) target, on any layer. The
+        /// suffix names which of the device's sticks flicks; the axes resolve
+        /// through <see cref="GamepadAliasTable"/> (Right → Axis 3/4, Left →
+        /// Axis 0/1) so the read follows whatever pad feeds the slot. Tuning
+        /// rides the source's ParamFlick* fields.</summary>
+        public const string FlickStickRightDescriptor = "Flick Stick Right";
+        public const string FlickStickLeftDescriptor = "Flick Stick Left";
+
+        /// <summary>True for either flick stick descriptor.</summary>
+        public static bool IsFlickStickDescriptor(string descriptor)
+        {
+            if (string.IsNullOrEmpty(descriptor)) return false;
+            string s = descriptor.Trim();
+            return string.Equals(s, FlickStickRightDescriptor, StringComparison.OrdinalIgnoreCase)
+                || string.Equals(s, FlickStickLeftDescriptor, StringComparison.OrdinalIgnoreCase);
+        }
+
+        /// <summary>Resolves a flick stick descriptor to the canonical stick
+        /// axis pair it reads ("Axis 3"/"Axis 4" for Right, "Axis 0"/"Axis 1"
+        /// for Left, per <see cref="GamepadAliasTable"/>). False for
+        /// non-flick descriptors.</summary>
+        public static bool TryGetFlickStickAxes(string descriptor, out string xAxis, out string yAxis)
+        {
+            xAxis = yAxis = null;
+            if (!IsFlickStickDescriptor(descriptor)) return false;
+            bool left = descriptor.Trim().EndsWith("Left", StringComparison.OrdinalIgnoreCase);
+            xAxis = ResolveGamepadAlias(left ? "Gamepad LeftStickX" : "Gamepad RightStickX");
+            yAxis = ResolveGamepadAlias(left ? "Gamepad LeftStickY" : "Gamepad RightStickY");
+            return xAxis != null && yAxis != null;
+        }
 
         /// <summary>Returns a gyro reading processed through the full
         /// per-device tuning chain:

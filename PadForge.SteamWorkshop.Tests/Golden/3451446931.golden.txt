@@ -73,7 +73,7 @@ kbm rows: 31
 kbm activators: 1
   Hold Layer_3451446931_1 | Gamepad LeftStick | inherit | name=Preset_1000001
 macros: 0
-report: v4 rows:x0+k31 macros:0 layers:1 clean:35 partial:7 skipped:4 errors:0
+report: v5 rows:x0+k31 macros:0 layers:1 clean:35 partial:7 skipped:4 errors:0
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_a/Full_Press => KbmKey20 <- Gamepad ButtonA
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_b/Full_Press => KbmKey43 <- Gamepad ButtonB
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_x/Full_Press => KbmKey4E <- Gamepad ButtonX

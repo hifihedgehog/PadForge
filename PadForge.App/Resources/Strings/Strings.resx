@@ -2001,6 +2001,41 @@
   <data name="Pad_MotionSteer_Header" xml:space="preserve"><value>Motion Steering</value></data>
   <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>Settings for the Motion Lean input: tilt the controller like a wheel. Map "Motion Lean" to a stick axis from the input dropdown in Mappings.</value></data>
   <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>Reset all Motion Steering settings</value></data>
+  <data name="Mapping_FlickStickRight" xml:space="preserve"><value>Flick Stick (Right Stick)</value></data>
+  <data name="Mapping_FlickStickLeft" xml:space="preserve"><value>Flick Stick (Left Stick)</value></data>
+  <data name="Pad_FlickStick_Header" xml:space="preserve"><value>Flick Stick</value></data>
+  <data name="Pad_FlickStick_Subtitle" xml:space="preserve"><value>Settings for the Flick Stick inputs: point the stick and the camera turns to match, sweep the rim to fine-turn. Map "Flick Stick (Right Stick)" to Mouse X from the input dropdown in Mappings, on any layer.</value></data>
+  <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>Reset all Flick Stick settings</value></data>
+  <data name="Settings_FlickCountsPer360" xml:space="preserve"><value>Dots Per 360&#176;</value></data>
+  <data name="Settings_FlickCountsPer360_Tooltip" xml:space="preserve"><value>Mouse counts for one full 360&#176; camera turn. Depends on the game's mouse sensitivity: raise it if a flick under-rotates, lower it if it over-rotates.</value></data>
+  <data name="Pad_ResetFlickCountsPer360" xml:space="preserve"><value>Reset to 14400</value></data>
+  <data name="Settings_FlickTime" xml:space="preserve"><value>Flick Time</value></data>
+  <data name="Settings_FlickTime_Tooltip" xml:space="preserve"><value>How long a full 180&#176; flick takes to complete, with an ease-out. Shorter turns finish in the same time.</value></data>
+  <data name="Pad_ResetFlickTime" xml:space="preserve"><value>Reset to 0.1 s</value></data>
+  <data name="Settings_FlickThreshold" xml:space="preserve"><value>Flick Threshold</value></data>
+  <data name="Settings_FlickThreshold_Tooltip" xml:space="preserve"><value>Stick deflection that starts a flick, as a fraction of full deflection. While flicking, the release point drops to 90% of this.</value></data>
+  <data name="Pad_ResetFlickThreshold" xml:space="preserve"><value>Reset to 0.9</value></data>
+  <data name="Settings_FlickSnapMode" xml:space="preserve"><value>Snap Angle</value></data>
+  <data name="Settings_FlickSnapMode_Tooltip" xml:space="preserve"><value>Snap the flick to fixed angles for more consistent turns. Forward Only snaps every flick to dead ahead.</value></data>
+  <data name="Settings_FlickSnapMode_None" xml:space="preserve"><value>No Snapping</value></data>
+  <data name="Settings_FlickSnapMode_Forward" xml:space="preserve"><value>Forward Only</value></data>
+  <data name="Settings_FlickSnapMode_Half" xml:space="preserve"><value>180 Degrees</value></data>
+  <data name="Settings_FlickSnapMode_Four" xml:space="preserve"><value>90 Degrees</value></data>
+  <data name="Settings_FlickSnapMode_Sixths" xml:space="preserve"><value>60 Degrees</value></data>
+  <data name="Settings_FlickSnapMode_Eight" xml:space="preserve"><value>45 Degrees</value></data>
+  <data name="Pad_ResetFlickSnapMode" xml:space="preserve"><value>Reset to No Snapping</value></data>
+  <data name="Settings_FlickSnapStrength" xml:space="preserve"><value>Snap Strength</value></data>
+  <data name="Settings_FlickSnapStrength_Tooltip" xml:space="preserve"><value>How strongly a flick pulls toward the snapped angle. 1 snaps fully, 0 disables snapping, values between blend.</value></data>
+  <data name="Pad_ResetFlickSnapStrength" xml:space="preserve"><value>Reset to 1.0</value></data>
+  <data name="Settings_FlickForwardDeadzone" xml:space="preserve"><value>Front Angle Deadzone</value></data>
+  <data name="Settings_FlickForwardDeadzone_Tooltip" xml:space="preserve"><value>A flick within this angle of dead ahead turns nothing. Lets you start a sweep without a flick-turn.</value></data>
+  <data name="Pad_ResetFlickForwardDeadzone" xml:space="preserve"><value>Reset to 0&#176;</value></data>
+  <data name="Settings_FlickSmoothing" xml:space="preserve"><value>Sweep Smoothing</value></data>
+  <data name="Settings_FlickSmoothing_Tooltip" xml:space="preserve"><value>Smooths rim-sweep noise. -1 uses the automatic tiered window, 0 turns smoothing off, larger values smooth bigger per-tick rotations.</value></data>
+  <data name="Pad_ResetFlickSmoothing" xml:space="preserve"><value>Reset to Automatic (-1)</value></data>
+  <data name="Settings_FlickOnEngage" xml:space="preserve"><value>Allow Flick on Engage</value></data>
+  <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>When the layer hosting Flick Stick engages with the stick already deflected, fire the flick immediately. Off keeps the camera still and tracks rotation from the current stick angle.</value></data>
+  <data name="Pad_ResetFlickOnEngage" xml:space="preserve"><value>Reset to Off</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>Steering Lock Feedback</value></data>
   <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>When a stick set to a steering mode is turned all the way to full lock, play a cue (rumble, trigger, or lightbar) so you feel the limit. All off by default.</value></data>
   <data name="Pad_Steering_Lock_Rumble" xml:space="preserve"><value>Rumble Pulse on Lock</value></data>
@@ -2526,6 +2561,8 @@
   <data name="Workshop_Tr_MouseRegionApproximated" xml:space="preserve"><value>mouse region approximated as a centered cursor clamp ({0}% of screen, region center {1}%, {2}%) while the surface is held</value></data>
   <data name="Workshop_Tr_TouchQuadrantApproximated" xml:space="preserve"><value>button cells share the hosting touch surface (no per-cell zones)</value></data>
   <data name="Workshop_Tr_TrackpadHalfApproximated" xml:space="preserve"><value>hosted on one half of the touchpad; PadForge reads the whole pad</value></data>
+  <data name="Workshop_Tr_FlickStickSurfaceNotSupported" xml:space="preserve"><value>flick stick on a touch surface skipped (PadForge flick stick reads a physical stick)</value></data>
+  <data name="Workshop_Tr_FlickStickTuningDropped" xml:space="preserve"><value>flick stick tuning settings dropped ({0})</value></data>
   <data name="Status_WorkshopUpdatesOptInRequired" xml:space="preserve"><value>Enable Community Configs to check for updates</value></data>
   <data name="Status_WorkshopNoImportedProfiles" xml:space="preserve"><value>No profiles imported from the Steam Workshop yet</value></data>
   <data name="Status_WorkshopCheckingUpdates" xml:space="preserve"><value>Checking Steam Workshop for updates…</value></data>

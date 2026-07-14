@@ -1104,7 +1104,17 @@ namespace PadForge
                         // lost on exit (audit lens 1m, F2).
                         nameof(PadViewModel.MotionSteerInnerDz) or
                         nameof(PadViewModel.MotionSteerOuterDz) or
-                        nameof(PadViewModel.MotionSteerOrientIndex))
+                        nameof(PadViewModel.MotionSteerOrientIndex) or
+                        // Flick Stick card tunables (#225), same per-(device,
+                        // slot) extended-mapping persistence as Motion Lean.
+                        nameof(PadViewModel.FlickCountsPer360) or
+                        nameof(PadViewModel.FlickTime) or
+                        nameof(PadViewModel.FlickThreshold) or
+                        nameof(PadViewModel.FlickSnapMode) or
+                        nameof(PadViewModel.FlickSnapStrength) or
+                        nameof(PadViewModel.FlickForwardDeadzone) or
+                        nameof(PadViewModel.FlickSmoothing) or
+                        nameof(PadViewModel.FlickOnEngage))
                     {
                         _settingsService.MarkDirty();
                     }

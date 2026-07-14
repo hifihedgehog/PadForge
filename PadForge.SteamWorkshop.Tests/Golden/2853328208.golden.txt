@@ -58,7 +58,7 @@ kbm rows: 23
     <- Gamepad RightStickY sens=0.313
     <- Touchpad 1 Finger 0 Y
 macros: 0
-report: v4 rows:x0+k23 macros:0 layers:0 clean:26 partial:5 skipped:1 errors:0
+report: v5 rows:x0+k23 macros:0 layers:0 clean:26 partial:5 skipped:1 errors:0
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_a/Full_Press => KbmKey57 <- Gamepad ButtonA
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_b/Full_Press => KbmKey44 <- Gamepad ButtonB
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_x/Full_Press => KbmKey43 <- Gamepad ButtonX

@@ -215,6 +215,16 @@ namespace PadForge.Engine
         public bool MouseAbsXValid;
         public bool MouseAbsYValid;
 
+        /// <summary>Flick stick mouse X counts for this frame (#225):
+        /// EXACT relative counts, already calibrated by the source's
+        /// counts-per-360, positive = rightward turn. The KBM virtual
+        /// controller forwards these to the injector 1:1, bypassing the
+        /// <see cref="MouseDeltaX"/> velocity lane's sensitivity scale and
+        /// short clamp (a 180-degree flick at 14400 counts/360 needs ~7200
+        /// counts inside ~100 ms, far past what the velocity lane can
+        /// represent).</summary>
+        public int MouseFlickX;
+
         public bool GetKey(byte vk)
         {
             int word = vk / 64;
@@ -261,6 +271,7 @@ namespace PadForge.Engine
             MouseAbsX = MouseAbsY = 0f;
             MouseAbsValid = false;
             MouseAbsXValid = MouseAbsYValid = false;
+            MouseFlickX = 0;
         }
 
         /// <summary>
@@ -277,6 +288,11 @@ namespace PadForge.Engine
                 Keys3 = a.Keys3 | b.Keys3,
                 MouseDeltaX = Math.Abs(a.MouseDeltaX) >= Math.Abs(b.MouseDeltaX) ? a.MouseDeltaX : b.MouseDeltaX,
                 MouseDeltaY = Math.Abs(a.MouseDeltaY) >= Math.Abs(b.MouseDeltaY) ? a.MouseDeltaY : b.MouseDeltaY,
+                // Flick counts: max-abs like the deltas. Every device pass in
+                // a frame replays the SAME per-row counts (TickFlickStick's
+                // frame-sequence guard), so max-abs merges duplicates without
+                // double-counting.
+                MouseFlickX = Math.Abs(a.MouseFlickX) >= Math.Abs(b.MouseFlickX) ? a.MouseFlickX : b.MouseFlickX,
                 ScrollDelta = Math.Abs(a.ScrollDelta) >= Math.Abs(b.ScrollDelta) ? a.ScrollDelta : b.ScrollDelta,
                 MouseButtons = (byte)(a.MouseButtons | b.MouseButtons),
                 PreDzMouseDeltaX = Math.Abs(a.PreDzMouseDeltaX) >= Math.Abs(b.PreDzMouseDeltaX) ? a.PreDzMouseDeltaX : b.PreDzMouseDeltaX,

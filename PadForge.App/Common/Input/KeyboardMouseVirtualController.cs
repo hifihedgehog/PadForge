@@ -158,6 +158,16 @@ namespace PadForge.Common.Input
                     InputManager.AccumulateMouseMoveInput(dx, dy);
             }
 
+            // --- Flick stick exact counts (#225) ---
+            // Same injector lane, forwarded 1:1. NOT scaled by
+            // MouseSensitivity and NOT run through the accumulator: the
+            // engine tick already calibrated the value in mouse counts
+            // (counts-per-360 on the source) and carries its own sub-count
+            // residual. Scaling here would break the flick = exact camera
+            // angle contract.
+            if (raw.MouseFlickX != 0)
+                InputManager.AccumulateMouseMoveInput(raw.MouseFlickX, 0);
+
             // --- Absolute pointer (Wii IR pointing, issue #146) ---
             // Touchmote idiom: position the OS cursor directly at the aim point
             // (Touchmote MouseSimulator.cs:154, SetCursorPos), mapped over the

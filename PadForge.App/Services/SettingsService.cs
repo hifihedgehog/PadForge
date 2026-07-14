@@ -797,6 +797,12 @@ namespace PadForge.Services
                     // Motion Lean tuning rides every layer's rows (the descriptor is a
                     // normal input, not a Base-only steering mode).
                     ApplyMotionLeanParamsToRow(row, padVm, slot);
+
+                    // Flick stick tuning (#225) rides every layer's rows the same
+                    // way: the descriptor is a normal input and #225's headline is
+                    // the shift-layer host, so layer rows must carry the card's
+                    // knobs too.
+                    ApplyFlickStickParamsToRow(row, padVm, slot);
                 }
 
                 // Steering Kind reconciliation on the Base layer (#94). The per-mapping
@@ -1001,6 +1007,146 @@ namespace PadForge.Services
                 src.ParamMotionOuterDz = D("MotionSteerOuter", 135);
                 src.ParamControllerOrientation = string.IsNullOrEmpty(orient) ? "Forward" : orient;
             }
+        }
+
+        // Pushes the Flick Stick card's per-device tuning (#225) onto every
+        // "Flick Stick ..." source in a row. Same shape as
+        // ApplyMotionLeanParamsToRow: never changes Kind, Descriptor, or
+        // target; the SELECTED device reads the live UI, other devices read
+        // their own stored PadSetting. A device whose PadSetting has never
+        // stored the card ("FlickStickDots" absent) keeps the source's
+        // existing params, so a fresh Workshop import's translator-carried
+        // Dots Per 360 survives until the user actually tunes the card (the
+        // load path seeds the card FROM the source in that state, so the
+        // selected device's stamp writes the same values back).
+        private static void ApplyFlickStickParamsToRow(MappingRow row, PadViewModel padVm, int slot)
+        {
+            if (row?.Sources == null || padVm == null) return;
+            foreach (var src in row.Sources)
+            {
+                if (src == null
+                    || !Engine.Common.Mapping.SourceCoercion.IsFlickStickDescriptor(src.Descriptor))
+                    continue;
+
+                Guid sel = padVm.SelectedMappedDevice?.InstanceGuid ?? Guid.Empty;
+                bool useUi = string.IsNullOrEmpty(src.DeviceGuid)
+                    || (sel != Guid.Empty && Guid.TryParse(src.DeviceGuid, out var dg) && dg == sel);
+                if (useUi)
+                {
+                    src.ParamFlickCountsPer360 = padVm.FlickCountsPer360;
+                    src.ParamFlickTime = padVm.FlickTime;
+                    src.ParamFlickThreshold = padVm.FlickThreshold;
+                    src.ParamFlickSnapMode = padVm.FlickSnapMode;
+                    src.ParamFlickSnapStrength = padVm.FlickSnapStrength;
+                    src.ParamFlickDeadzoneAngle = padVm.FlickForwardDeadzone;
+                    src.ParamFlickSmooth = padVm.FlickSmoothing;
+                    src.ParamFlickOnEngage = padVm.FlickOnEngage;
+                    continue;
+                }
+
+                PadSetting ps = Guid.TryParse(src.DeviceGuid, out var g)
+                    ? SettingsManager.FindSettingByInstanceGuidAndSlot(g, slot)?.GetPadSetting()
+                    : null;
+                if (ps == null) continue; // keep the source's existing params
+                if (string.IsNullOrEmpty(ps.GetExtendedMapping("FlickStickDots")))
+                    continue; // card never stored for this device: keep import values
+                double D(string key, double dflt)
+                    => double.TryParse(ps.GetExtendedMapping(key), System.Globalization.NumberStyles.Float,
+                        System.Globalization.CultureInfo.InvariantCulture, out double v) ? v : dflt;
+                string snap = ps.GetExtendedMapping("FlickStickSnapMode");
+                src.ParamFlickCountsPer360 = D("FlickStickDots", 14400);
+                src.ParamFlickTime = D("FlickStickTime", 0.1);
+                src.ParamFlickThreshold = D("FlickStickThreshold", 0.9);
+                src.ParamFlickSnapMode = string.IsNullOrEmpty(snap) ? "None" : snap;
+                src.ParamFlickSnapStrength = D("FlickStickSnapStrength", 1.0);
+                src.ParamFlickDeadzoneAngle = D("FlickStickForwardDz", 0);
+                src.ParamFlickSmooth = D("FlickStickSmoothing", -1);
+                src.ParamFlickOnEngage = ps.GetExtendedMapping("FlickStickOnEngage") == "1";
+            }
+        }
+
+        /// <summary>Loads the Flick Stick card fields (#225) from a device's
+        /// PadSetting extended mappings into the VM. When the card was never
+        /// stored for this device ("FlickStickDots" absent) and the slot's
+        /// MappingSet carries a flick source, the card seeds FROM that
+        /// source, so a Workshop import's translator-carried Dots Per 360
+        /// surfaces instead of defaults (and the next save persists it).
+        /// One body shared by the startup load (LoadPadSettings) and the
+        /// device-switch load (InputService.LoadPadSettingToViewModel) so
+        /// the two legs cannot drift.</summary>
+        internal static void LoadFlickStickCard(PadViewModel padVm, PadSetting ps)
+        {
+            if (padVm == null || ps == null) return;
+            string dots = ps.GetExtendedMapping("FlickStickDots");
+            if (string.IsNullOrEmpty(dots))
+            {
+                var seed = FindSlotFlickStickSource(padVm.PadIndex);
+                if (seed != null)
+                {
+                    padVm.FlickCountsPer360 = seed.ParamFlickCountsPer360;
+                    padVm.FlickTime = seed.ParamFlickTime;
+                    padVm.FlickThreshold = seed.ParamFlickThreshold;
+                    padVm.FlickSnapMode = seed.ParamFlickSnapMode;
+                    padVm.FlickSnapStrength = seed.ParamFlickSnapStrength;
+                    padVm.FlickForwardDeadzone = seed.ParamFlickDeadzoneAngle;
+                    padVm.FlickSmoothing = seed.ParamFlickSmooth;
+                    padVm.FlickOnEngage = seed.ParamFlickOnEngage;
+                    return;
+                }
+            }
+            double D(string key, double dflt)
+                => double.TryParse(ps.GetExtendedMapping(key), System.Globalization.NumberStyles.Float,
+                    System.Globalization.CultureInfo.InvariantCulture, out double v) ? v : dflt;
+            string snap = ps.GetExtendedMapping("FlickStickSnapMode");
+            padVm.FlickCountsPer360 = D("FlickStickDots", 14400);
+            padVm.FlickTime = D("FlickStickTime", 0.1);
+            padVm.FlickThreshold = D("FlickStickThreshold", 0.9);
+            padVm.FlickSnapMode = string.IsNullOrEmpty(snap) ? "None" : snap;
+            padVm.FlickSnapStrength = D("FlickStickSnapStrength", 1.0);
+            padVm.FlickForwardDeadzone = D("FlickStickForwardDz", 0);
+            padVm.FlickSmoothing = D("FlickStickSmoothing", -1);
+            padVm.FlickOnEngage = ps.GetExtendedMapping("FlickStickOnEngage") == "1";
+        }
+
+        /// <summary>Writes the Flick Stick card fields (#225) into a device's
+        /// PadSetting extended mappings. Shared by the serialize sweep
+        /// (UpdatePadSettingsFromViewModels) and the device-switch save
+        /// (InputService.SaveViewModelToPadSetting), the same mirror
+        /// discipline the Motion Steering keys follow.</summary>
+        internal static void SaveFlickStickCard(PadViewModel padVm, PadSetting ps)
+        {
+            if (padVm == null || ps == null) return;
+            var ic = System.Globalization.CultureInfo.InvariantCulture;
+            ps.SetExtendedMapping("FlickStickDots", padVm.FlickCountsPer360.ToString(ic));
+            ps.SetExtendedMapping("FlickStickTime", padVm.FlickTime.ToString(ic));
+            ps.SetExtendedMapping("FlickStickThreshold", padVm.FlickThreshold.ToString(ic));
+            ps.SetExtendedMapping("FlickStickSnapMode", padVm.FlickSnapMode);
+            ps.SetExtendedMapping("FlickStickSnapStrength", padVm.FlickSnapStrength.ToString(ic));
+            ps.SetExtendedMapping("FlickStickForwardDz", padVm.FlickForwardDeadzone.ToString(ic));
+            ps.SetExtendedMapping("FlickStickSmoothing", padVm.FlickSmoothing.ToString(ic));
+            ps.SetExtendedMapping("FlickStickOnEngage", padVm.FlickOnEngage ? "1" : "0");
+        }
+
+        /// <summary>First "Flick Stick ..." source in a slot's MappingSet, or
+        /// null. The load legs seed the Flick Stick card from it when the
+        /// device's PadSetting has never stored the card, so a Workshop
+        /// import's translator-carried tuning surfaces instead of defaults.</summary>
+        internal static Engine.Data.MappingSource FindSlotFlickStickSource(int slot)
+        {
+            var sets = SettingsManager.SlotMappingSets;
+            if (sets == null || slot < 0 || slot >= sets.Length) return null;
+            var rows = sets[slot]?.Rows;
+            if (rows == null) return null;
+            foreach (var row in rows)
+            {
+                var sources = row?.Sources;
+                if (sources == null) continue;
+                foreach (var src in sources)
+                    if (src != null
+                        && Engine.Common.Mapping.SourceCoercion.IsFlickStickDescriptor(src.Descriptor))
+                        return src;
+            }
+            return null;
         }
 
         // The bare stick-axis descriptor a given device reads for <paramref name="target"/>
@@ -2321,6 +2467,11 @@ namespace PadForge.Services
                 padVm.MotionSteerInnerDz = TryParseDouble(ps.GetExtendedMapping("MotionSteerInner"), 15);
                 padVm.MotionSteerOuterDz = TryParseDouble(ps.GetExtendedMapping("MotionSteerOuter"), 135);
                 padVm.SetMotionSteerOrient(ps.GetExtendedMapping("MotionSteerOrient"));
+
+                // Load Flick Stick card tuning (#225), same per-(device, slot)
+                // extended-mapping bag; seeds from a Workshop import's flick
+                // source when the card was never stored.
+                LoadFlickStickCard(padVm, ps);
 
                 // Load audio bass rumble settings.
                 padVm.AudioRumbleEnabled = ps.AudioRumbleEnabled == "1";
@@ -3693,6 +3844,9 @@ namespace PadForge.Services
                     ps.SetExtendedMapping("MotionSteerInner", padVm.MotionSteerInnerDz.ToString(ic));
                     ps.SetExtendedMapping("MotionSteerOuter", padVm.MotionSteerOuterDz.ToString(ic));
                     ps.SetExtendedMapping("MotionSteerOrient", padVm.MotionSteerOrient);
+
+                    // Write Flick Stick card tuning (#225), same bag.
+                    SaveFlickStickCard(padVm, ps);
 
                     // Write audio bass rumble settings.
                     ps.AudioRumbleEnabled = padVm.AudioRumbleEnabled ? "1" : "0";

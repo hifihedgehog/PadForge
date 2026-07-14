@@ -1,6 +1,6 @@
 # Fixture attribution
 
-These 28 Steam Input controller configurations are community-contributed Steam
+These 30 Steam Input controller configurations are community-contributed Steam
 Workshop items (creator_appid 241100), fetched from Valve's public UGC CDN via
 `ISteamRemoteStorage/GetPublishedFileDetails` and used here as read-only parser and
 model test fixtures. Each item is owned by its creator and governed by the Steam
@@ -40,6 +40,7 @@ Each fixture file is named by its Workshop file id.
 | `3725174032.vdf` | Pan's Steam Deck & Steam Controller (2026) | 76561198047712021 | hasactivators, controller_triton, feature_gamepad, feature_activator, feature_gyro, feature_mouse, feature_keboard | <https://steamcommunity.com/sharedfiles/filedetails/?id=3725174032> |
 | `3353604014.vdf` | DualSense Light Reactive (Shadow) V2 | 76561199013484378 | hasactivators, feature_gyro, feature_gamepad, controller_ps5 | <https://steamcommunity.com/sharedfiles/filedetails/?id=3353604014> |
 | `2774979654.vdf` | 彻底解决翻滚延迟（更新版）Completely solve rollover delay (updated version) | 76561198426304945 | hasactivators, splitconfig, controller_xbox360, GenericXInput, feature_activator, feature_gamepad | <https://steamcommunity.com/sharedfiles/filedetails/?id=2774979654> |
+| `2374887917.vdf` | DualSense flick-stick configuration | 76561198072672981 | hasactivators, splitconfig, feature_mouse, feature_modeshift, feature_gyro, feature_gamepad, controller_ps5 | <https://steamcommunity.com/sharedfiles/filedetails/?id=2374887917> |
 
 Wave 1a additions (translator v2 coverage): `1451857916` exercises vintage
 set_led (saturation 0-255, settings 0 and 1, all touchpad-hosted),
@@ -57,4 +58,13 @@ games (Valve's own shipped templates bind it under Double_Press, which
 stays an activator-level skip). camera_reset is covered by hand-built
 configs in TranslationEdgeTests instead.
 
-Total: 28 fixtures.
+Wave 4a addition (translator v5 coverage): `2374887917` exercises the
+flickstick mode on right_joystick with the Dots Per 360 "sensitivity"
+setting (2788), an inactive flickstick twin, a modeshift back to
+joystick_move, and a second-preset action layer hosting the normal stick.
+The other observed flick tuning keys (edge_binding_radius,
+mouse_smoothing, rotation, transition_time, seen in DOOM Eternal configs
+2779652507 / 2228940979) are covered by hand-built configs in
+WaveFourTranslationTests.
+
+Total: 30 fixtures.

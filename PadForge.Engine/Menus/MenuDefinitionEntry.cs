@@ -73,12 +73,12 @@ namespace PadForge.Engine.Menus
     }
 
     /// <summary>
-    /// XML-serializable per-(device) menu definition. Lives under a
-    /// <see cref="PadForge.Engine.Data.PadSetting"/>'s menu-definitions
-    /// collection (the per-(slot, device) bag, same placement as
-    /// <see cref="PadForge.Engine.Touchpad.TouchpadSettingsEntry"/>).
-    /// An empty <see cref="DeviceGuid"/> means "any device on the slot",
-    /// the documented device-free form Workshop imports use.
+    /// XML-serializable per-(device) menu definition. Lives on
+    /// <see cref="PadForge.Engine.Data.MappingSet.Menus"/> (the slot-scoped
+    /// home shared with shift activators), with per-entry device scope via
+    /// <see cref="DeviceGuid"/>. An empty <see cref="DeviceGuid"/> means
+    /// "any device on the slot", the documented device-free form Workshop
+    /// imports use.
     /// </summary>
     public sealed class MenuDefinitionEntry
     {

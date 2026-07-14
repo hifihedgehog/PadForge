@@ -39,9 +39,11 @@ kbm rows: 18
   Base | KbmMouseX | Sum
     <- Gyro Yaw
     <- Gamepad RightStickX sens=1.25
+    <- Touchpad 1 Pointer X ptrExtent=1.2
   Base | KbmMouseY | Sum
     <- Gyro Pitch
     <- Gamepad RightStickY sens=1.25
+    <- Touchpad 1 Pointer Y ptrCenter=0.44 ptrExtent=0.7
   Base | KbmScroll | Sum
     <- Gamepad LeftTrigger [upper-half] dz=75
     <- Gamepad LeftTrigger [upper-half] dz=15
@@ -52,10 +54,9 @@ kbm rows: 18
     <- Gamepad RightShoulder
 kbm activators: 1
   Toggle Layer_3456927474_1 | Gamepad RightShoulder | inherit | name=Preset_1000001
-macros: 2
-  macro MouseLimitRegion WhileHeld | Cursor region (right_trackpad) | btns=0x0000 in=[Touchpad 1 Finger 0 Down] region=(50%,56%,scale 100%)
+macros: 1
   macro MoveMouseToScreenPosition OnPress | Warp cursor (button_back_left_upper) | btns=0x0000 in=[Gamepad Paddle4] norm=(16384,16384)
-report: v5 rows:x0+k18 macros:2 layers:1 clean:30 partial:10 skipped:8 errors:0
+report: v6 rows:x0+k18 macros:1 layers:1 clean:32 partial:8 skipped:8 errors:0
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_a/Full_Press => KbmMBtn0 <- Gamepad ButtonA
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_b/Full_Press => KbmMBtn1 <- Gamepad ButtonB
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_x/Full_Press => KbmKey45 <- Gamepad ButtonX
@@ -65,7 +66,6 @@ report: v5 rows:x0+k18 macros:2 layers:1 clean:30 partial:10 skipped:8 errors:0
   Clean RowEmitted @ Default/dpad/group 9 (dpad)/dpad_south/Full_Press => KbmKeyA0 <- Gamepad DPadDown
   Clean RowEmitted @ Default/dpad/group 9 (dpad)/dpad_west/Full_Press => KbmKey08 <- Gamepad DPadLeft
   Partial GyroButtonMaskDropped(gyro_ratchet_button_mask, 2199023255552) @ Default/gyro/group 14 (absolute_mouse)
-  Partial AbsoluteMouseApproximated @ Default/gyro/group 14 (absolute_mouse)
   Clean RowEmitted @ Default/gyro/group 14 (absolute_mouse) => KbmMouseX <- Gyro Yaw
   Clean RowEmitted @ Default/gyro/group 14 (absolute_mouse) => KbmMouseY <- Gyro Pitch
   Clean RowEmitted @ Default/joystick/group 1 (dpad)/dpad_east/Full_Press => KbmKey44 <- Gamepad LeftStickX (upper half)
@@ -80,8 +80,9 @@ report: v5 rows:x0+k18 macros:2 layers:1 clean:30 partial:10 skipped:8 errors:0
   Partial ActivatorDelayDropped(delay_start 25) @ Default/right_joystick/group 10 (joystick_mouse)/click/Full_Press
   Clean RowEmitted @ Default/right_joystick/group 10 (joystick_mouse)/click/Full_Press => KbmMBtn0 <- Gamepad RightStick
   Skipped EdgeInputNotSupported(RightJoystick, edge) @ Default/right_joystick/group 10 (joystick_mouse)/edge :: mouse_button MIDDLE, , 
-  Partial ResponseCurveNotSupported(sensitivity_horiz_scale, sensitivity_vert_scale) @ Default/right_trackpad/group 12 (mouse_region)
-  Partial MouseRegionApproximated(100, 50, 56) @ Default/right_trackpad/group 12 (mouse_region) => Cursor region clamp macro
+  Clean RowEmitted @ Default/right_trackpad/group 12 (mouse_region) => KbmMouseX <- Touchpad 1 Pointer X
+  Clean RowEmitted @ Default/right_trackpad/group 12 (mouse_region) => KbmMouseY <- Touchpad 1 Pointer Y
+  Partial MouseRegionTuningDropped(edge_binding_radius, edge_binding_invert) @ Default/right_trackpad/group 12 (mouse_region)
   Partial SoftPressApproximated @ Default/right_trackpad/group 12 (mouse_region)/click/Soft_Press => KbmMBtn0 <- Touchpad 1 Click
   Skipped EdgeInputNotSupported(RightTrackpad, edge) @ Default/right_trackpad/group 12 (mouse_region)/edge :: controller_action mouse_delta 100 0, , 
   Clean RowEmitted @ Default/right_trigger/group 5 (trigger)/click/Full_Press => KbmScroll <- Gamepad RightTrigger (lower half)

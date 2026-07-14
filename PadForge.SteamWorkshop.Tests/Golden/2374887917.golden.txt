@@ -86,9 +86,8 @@ kbm rows: 4
   Layer_2374887917_1 | KbmMouseY
     <- Gyro Pitch
 macros: 0
-report: v5 rows:x32+k4 macros:0 layers:1 clean:42 partial:18 skipped:2 errors:0
+report: v6 rows:x32+k4 macros:0 layers:1 clean:42 partial:16 skipped:2 errors:0
   Partial GyroButtonMaskDropped(gyro_button, 20) @ Default/gyro/group 12 (absolute_mouse)
-  Partial AbsoluteMouseApproximated @ Default/gyro/group 12 (absolute_mouse)
   Clean RowEmitted @ Default/gyro/group 12 (absolute_mouse) => KbmMouseX <- Gyro Yaw
   Clean RowEmitted @ Default/gyro/group 12 (absolute_mouse) => KbmMouseY <- Gyro Pitch
   Partial TrackpadFeatureRequired(Touchpad touch spots) @ Default/left_trackpad/group 11 (single_button)/click/Full_Press => ButtonBack <- Touchpad 0 Click
@@ -102,7 +101,6 @@ report: v5 rows:x32+k4 macros:0 layers:1 clean:42 partial:18 skipped:2 errors:0
   Skipped UnknownPhysicalInput(Switch, button_capture) @ Default/switch/group 7 (switches)/button_capture :: controller_action add_layer 2 1 1
   Partial InterruptibleDropped @ Default/switch/group 7 (switches)/right_bumper/Full_Press
   Partial RemoveLayerApproximated @ Preset_1000001/button_diamond/group 18 (four_buttons)/button_b/Full_Press :: controller_action remove_layer 2 1 1
-  Partial AbsoluteMouseApproximated @ Preset_1000001/gyro/group 25 (absolute_mouse)
   Clean RowEmitted @ Preset_1000001/gyro/group 25 (absolute_mouse) => KbmMouseX <- Gyro Yaw
   Clean RowEmitted @ Preset_1000001/gyro/group 25 (absolute_mouse) => KbmMouseY <- Gyro Pitch
   Partial TrackpadFeatureRequired(Touchpad touch spots) @ Preset_1000001/left_trackpad/group 19 (single_button)/click/Full_Press => ButtonBack <- Touchpad 0 Click

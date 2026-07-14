@@ -68,8 +68,16 @@ namespace PadForge.SteamWorkshop.Translation
         /// "Flick Stick Right"/"Flick Stick Left" KbmMouseX source with
         /// the group's "sensitivity" (Steam's Dots Per 360) carried on
         /// ParamFlickCountsPer360; trackpad-hosted flickstick and the
-        /// ungrounded flick tuning keys get named entries.</summary>
-        public const int CurrentTranslatorVersion = 5;
+        /// ungrounded flick tuning keys get named entries.
+        /// v6: Wave 4b (#9 B-15). Trackpad mouse_region groups emit Clean
+        /// absolute "Touchpad {p} Pointer X/Y" rows (region geometry on the
+        /// per-source ParamPointerCenter/Extent, sensitivity scales
+        /// consumed as extent) instead of the wave-2A clamp macro;
+        /// teleport/edge keys get a named entry. The absolute_mouse
+        /// AbsoluteMouseApproximated Partial is retired as a false alarm
+        /// (the mode is relative on trackpads and gyro; the relative rows
+        /// are faithful and Clean).</summary>
+        public const int CurrentTranslatorVersion = 6;
 
         public int TranslatorVersion { get; set; } = CurrentTranslatorVersion;
 
@@ -159,6 +167,14 @@ namespace PadForge.SteamWorkshop.Translation
         // strings, for reports serialized by older translator versions.
         public const string TouchpadTuningNotPerRow = "Workshop_Tr_TouchpadTuningNotPerRow";
         public const string SoftPressApproximated = "Workshop_Tr_SoftPressApproximated";
+        // Legacy-render-only since translator v6: the v2-v5 Partial was a
+        // false alarm. Trackpad/gyro absolute_mouse IS relative cursor
+        // movement in Steam (trackball/friction settings vocabulary, the
+        // Steam Input API's delta delivery, sc-controller's importer, and
+        // Valve's mobile-touch template naming all agree; see the
+        // absolute_mouse case in ConfigTranslator), so the relative rows
+        // are faithful and Clean. Kept, with its resx strings, for reports
+        // serialized by older translator versions.
         public const string AbsoluteMouseApproximated = "Workshop_Tr_AbsoluteMouseApproximated";
         public const string TriggerThresholdApproximated = "Workshop_Tr_TriggerThresholdApproximated";
         public const string MacroTriggerViaXboxOutput = "Workshop_Tr_MacroTriggerViaXboxOutput";
@@ -226,8 +242,15 @@ namespace PadForge.SteamWorkshop.Translation
         /// motion in Steam; PadForge re-references its gyro aim state.</summary>
         public const string CameraResetApproximated = "Workshop_Tr_CameraResetApproximated";
         /// <summary>mouse_region approximated as a centered cursor clamp
-        /// engaged while the hosting input is held.</summary>
+        /// engaged while the hosting input is held. Stick/gyro hosts only
+        /// since translator v6; trackpad hosts translate to Clean absolute
+        /// pointer rows (#9 B-15).</summary>
         public const string MouseRegionApproximated = "Workshop_Tr_MouseRegionApproximated";       // {0} scale {1} x {2} y
+        /// <summary>Trackpad mouse_region keys with no pointer-row channel
+        /// (teleport start/stop snap, edge-binding radius/invert): the
+        /// region itself translates, these shape its engage/release
+        /// behavior.</summary>
+        public const string MouseRegionTuningDropped = "Workshop_Tr_MouseRegionTuningDropped";     // {0} setting keys
 
         // ── Translator v4 (Wave 3) vocabulary ──
         /// <summary>four_buttons cells hosted on a touch surface: the

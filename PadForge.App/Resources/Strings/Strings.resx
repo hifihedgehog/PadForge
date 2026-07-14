@@ -1167,6 +1167,12 @@
   <data name="Mapping_TouchpadFingerXRight_Format" xml:space="preserve"><value>Touchpad {0} Finger {1} X (Right Half)</value></data>
   <data name="Mapping_TouchpadFingerYLeft_Format" xml:space="preserve"><value>Touchpad {0} Finger {1} Y (Left Half)</value></data>
   <data name="Mapping_TouchpadFingerYRight_Format" xml:space="preserve"><value>Touchpad {0} Finger {1} Y (Right Half)</value></data>
+  <data name="Mapping_TouchpadPointerX_Format" xml:space="preserve"><value>Touchpad {0} Pointer X</value></data>
+  <data name="Mapping_TouchpadPointerY_Format" xml:space="preserve"><value>Touchpad {0} Pointer Y</value></data>
+  <data name="Mapping_TouchpadPointerXLeft_Format" xml:space="preserve"><value>Touchpad {0} Pointer X (Left Half)</value></data>
+  <data name="Mapping_TouchpadPointerXRight_Format" xml:space="preserve"><value>Touchpad {0} Pointer X (Right Half)</value></data>
+  <data name="Mapping_TouchpadPointerYLeft_Format" xml:space="preserve"><value>Touchpad {0} Pointer Y (Left Half)</value></data>
+  <data name="Mapping_TouchpadPointerYRight_Format" xml:space="preserve"><value>Touchpad {0} Pointer Y (Right Half)</value></data>
   <data name="Mapping_TouchpadFingerTouchLeft_Format" xml:space="preserve"><value>Touchpad {0} Finger {1} Touch (Left Half)</value></data>
   <data name="Mapping_TouchpadFingerTouchRight_Format" xml:space="preserve"><value>Touchpad {0} Finger {1} Touch (Right Half)</value></data>
 
@@ -1297,6 +1303,14 @@
   <data name="Pad_Touchpad_MouseInvertY" xml:space="preserve"><value>Invert Mouse Y</value></data>
   <data name="Pad_Touchpad_MouseInvertY_Tooltip" xml:space="preserve"><value>Flip vertical motion. Finger down moves the cursor up.</value></data>
 
+  <!-- Absolute Pointer card (#9 B-15) -->
+  <data name="Pad_Touchpad_Pointer_Header" xml:space="preserve"><value>Absolute Pointer</value></data>
+  <data name="Pad_Touchpad_Pointer_Subtitle" xml:space="preserve"><value>Tunes the Touchpad Pointer X/Y sources, which warp the cursor to your finger's position on the pad (map them to mouse X/Y on a Keyboard / Mouse virtual controller). At 1.0 the pad maps 1:1 to the screen. Raise the stretch to reach the screen edges before your thumb reaches the pad edge.</value></data>
+  <data name="Pad_Touchpad_PointerStretchX" xml:space="preserve"><value>Pointer Stretch X</value></data>
+  <data name="Pad_Touchpad_PointerStretchX_Tooltip" xml:space="preserve"><value>Horizontal margin stretch around the pad center. 1.5 reaches the screen edges at two thirds of the physical travel.</value></data>
+  <data name="Pad_Touchpad_PointerStretchY" xml:space="preserve"><value>Pointer Stretch Y</value></data>
+  <data name="Pad_Touchpad_PointerStretchY_Tooltip" xml:space="preserve"><value>Vertical margin stretch around the pad center.</value></data>
+
   <!-- Swipe Haptics card (discussion #219) -->
   <data name="Pad_Touchpad_SwipeHaptics_Header" xml:space="preserve"><value>Swipe Haptics</value></data>
   <data name="Pad_Touchpad_SwipeHaptics_Subtitle" xml:space="preserve"><value>Pulses the controller's haptics as your finger travels across this touchpad, like Steam Input's trackpad ticks. Steam Controllers and the Steam Deck tick the actuator under the pad; DualSense and DualShock 4 pulse the rumble motors.</value></data>
@@ -1310,6 +1324,7 @@
   <data name="Pad_ResetTouchpadInBox" xml:space="preserve"><value>Reset In-Box Gestures</value></data>
   <data name="Pad_ResetTouchpadStick" xml:space="preserve"><value>Reset Stick / D-Pad Output</value></data>
   <data name="Pad_ResetTouchpadMouse" xml:space="preserve"><value>Reset Mouse Output</value></data>
+  <data name="Pad_ResetTouchpadPointer" xml:space="preserve"><value>Reset Absolute Pointer</value></data>
   <data name="Pad_ResetTouchpadSwipeHaptics" xml:space="preserve"><value>Reset Swipe Haptics</value></data>
 
   <!-- Per-row Reset tooltips for stick / D-pad card -->
@@ -1324,6 +1339,10 @@
   <data name="Pad_ResetTouchpadMouseSensitivityY" xml:space="preserve"><value>Reset Mouse Sensitivity Y</value></data>
   <data name="Pad_ResetTouchpadMouseInvertX" xml:space="preserve"><value>Reset Invert Mouse X</value></data>
   <data name="Pad_ResetTouchpadMouseInvertY" xml:space="preserve"><value>Reset Invert Mouse Y</value></data>
+
+  <!-- Per-row Reset tooltips for absolute-pointer card (#9 B-15) -->
+  <data name="Pad_ResetTouchpadPointerStretchX" xml:space="preserve"><value>Reset Pointer Stretch X</value></data>
+  <data name="Pad_ResetTouchpadPointerStretchY" xml:space="preserve"><value>Reset Pointer Stretch Y</value></data>
 
   <!-- Per-row Reset tooltips for swipe-haptics card -->
   <data name="Pad_ResetTouchpadSwipeHapticsEnabled" xml:space="preserve"><value>Reset Enable Swipe Haptics</value></data>
@@ -2577,6 +2596,7 @@
   <data name="Workshop_Tr_LongPressKeyTap" xml:space="preserve"><value>long press taps {0} at the threshold (Steam holds it until release)</value></data>
   <data name="Workshop_Tr_CameraResetApproximated" xml:space="preserve"><value>camera reset approximated as a gyro recenter</value></data>
   <data name="Workshop_Tr_MouseRegionApproximated" xml:space="preserve"><value>mouse region approximated as a centered cursor clamp ({0}% of screen, region center {1}%, {2}%) while the surface is held</value></data>
+  <data name="Workshop_Tr_MouseRegionTuningDropped" xml:space="preserve"><value>mouse region engage/release settings dropped ({0})</value></data>
   <data name="Workshop_Tr_TouchQuadrantApproximated" xml:space="preserve"><value>button cells share the hosting touch surface (no per-cell zones)</value></data>
   <data name="Workshop_Tr_TrackpadHalfApproximated" xml:space="preserve"><value>hosted on one half of the touchpad; PadForge reads the whole pad</value></data>
   <data name="Workshop_Tr_FlickStickSurfaceNotSupported" xml:space="preserve"><value>flick stick on a touch surface skipped (PadForge flick stick reads a physical stick)</value></data>

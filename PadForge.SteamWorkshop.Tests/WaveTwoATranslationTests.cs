@@ -452,11 +452,14 @@ namespace PadForge.SteamWorkshop.Tests
         // ─── mouse_region ───────────────────────────────────────────────
 
         [Fact]
-        public void MouseRegion_TrackpadHost_EngagesOnTouchDescriptorTrigger()
+        public void MouseRegion_TrackpadHost_EmitsAbsolutePointerRows()
         {
-            // Wave 3, the "light up RegionEngageSource" case: the trackpad
-            // host's clamp macro engages on the touch read's descriptor
-            // entry while the members still translate as rows.
+            // Translator v6 (#9 B-15): the trackpad host is the REAL 1:1
+            // pad-to-screen map, so it emits Clean absolute pointer rows
+            // with the region geometry on the per-source window params
+            // (no clamp macro, no approximation Partial); the members
+            // still translate as rows. position_y is bottom-origin
+            // (sc-controller vdf.py flips it), so 10 lands at center 0.9.
             string vdf = Head
                 + Group(1, "mouse_region",
                     Inputs(Inp("click", "mouse_button LEFT"))
@@ -464,18 +467,22 @@ namespace PadForge.SteamWorkshop.Tests
                 + Preset(0, "Default", (1, "left_trackpad active"))
                 + "}\n";
             var p = Translate(vdf);
-            var m = Assert.Single(p.Macros);
-            Assert.Equal(TranslatedMacroAction.MouseLimitRegion, m.Action);
-            Assert.Equal("WhileHeld", m.TriggerMode);
-            Assert.Equal("Touchpad 0 Finger 0 Down", Assert.Single(m.TriggerInputDescriptors));
-            Assert.Equal(10, m.RegionScalePercent);
-            Assert.Contains(p.Report.Entries, e =>
-                e.Status == TranslationStatus.Partial
-                && e.ReasonKey == TranslationReasons.MouseRegionApproximated);
+            Assert.Empty(p.Macros);
+            var x = Assert.Single(p.KbmMappingSet.Rows, r => r.Target == "KbmMouseX");
+            var sx = Assert.Single(x.Sources);
+            Assert.Equal("Touchpad 0 Pointer X", sx.Descriptor);
+            Assert.Equal(0.09, sx.ParamPointerCenter, 6);
+            Assert.Equal(0.10, sx.ParamPointerExtent, 6);
+            var y = Assert.Single(p.KbmMappingSet.Rows, r => r.Target == "KbmMouseY");
+            var sy = Assert.Single(y.Sources);
+            Assert.Equal("Touchpad 0 Pointer Y", sy.Descriptor);
+            Assert.Equal(0.90, sy.ParamPointerCenter, 6);
+            Assert.Equal(0.10, sy.ParamPointerExtent, 6);
+            Assert.DoesNotContain(p.Report.Entries, e =>
+                e.ReasonKey == TranslationReasons.MouseRegionApproximated);
             Assert.DoesNotContain(p.Report.Entries, e =>
                 e.ReasonKey == TranslationReasons.NoDeviceFreeTrigger);
-            var row = Assert.Single(p.KbmMappingSet.Rows);
-            Assert.Equal("KbmMBtn0", row.Target);
+            Assert.Contains(p.KbmMappingSet.Rows, r => r.Target == "KbmMBtn0");
         }
 
         [Fact]
@@ -505,8 +512,12 @@ namespace PadForge.SteamWorkshop.Tests
         }
 
         [Fact]
-        public void MouseRegion_SensitivityScales_GetTheNamedCurveDrop()
+        public void MouseRegion_SensitivityScales_AreConsumedAsPointerExtent()
         {
+            // Translator v6 (#9 B-15): the per-axis scales SIZE the region
+            // per the shipped configurator (Horizontal-/
+            // VerticalSensitivityMouseRegion), so they ride the pointer
+            // rows' extent instead of the wave-2A named curve drop.
             string vdf = Head
                 + Group(1, "mouse_region",
                     "\t\t\"inputs\"\n\t\t{\n\t\t}\n"
@@ -514,10 +525,12 @@ namespace PadForge.SteamWorkshop.Tests
                 + Preset(0, "Default", (1, "right_trackpad active"))
                 + "}\n";
             var p = Translate(vdf);
-            Assert.Contains(p.Report.Entries, e =>
-                e.ReasonKey == TranslationReasons.ResponseCurveNotSupported
-                && e.ReasonArgs.Count == 1
-                && e.ReasonArgs[0].Contains("sensitivity_horiz_scale"));
+            var x = Assert.Single(p.KbmMappingSet.Rows, r => r.Target == "KbmMouseX");
+            Assert.Equal(1.10, Assert.Single(x.Sources).ParamPointerExtent, 6);
+            var y = Assert.Single(p.KbmMappingSet.Rows, r => r.Target == "KbmMouseY");
+            Assert.Equal(0.70, Assert.Single(y.Sources).ParamPointerExtent, 6);
+            Assert.DoesNotContain(p.Report.Entries, e =>
+                e.ReasonKey == TranslationReasons.ResponseCurveNotSupported);
         }
 
         [Fact]

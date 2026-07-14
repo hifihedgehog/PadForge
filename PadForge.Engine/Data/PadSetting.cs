@@ -1448,7 +1448,10 @@ namespace PadForge.Engine.Data
                     sb.Append(s.JoystickDPadMode).Append(',').Append(s.JoystickDPadActivationThreshold).Append(',');
                     sb.Append(s.MouseSensitivityX).Append(',').Append(s.MouseSensitivityY).Append(',');
                     sb.Append(s.MouseInvertX).Append(',').Append(s.MouseInvertY).Append(',');
-                    sb.Append(s.EnableSwipeHaptics).Append(',').Append(s.SwipeHapticsIntensity);
+                    sb.Append(s.EnableSwipeHaptics).Append(',').Append(s.SwipeHapticsIntensity).Append(',');
+                    // Absolute-pointer stretch (#9 B-15): same dedup-by-
+                    // checksum trap as every field above.
+                    sb.Append(s.PointerStretchX).Append(',').Append(s.PointerStretchY);
                     sb.Append('|');
                 }
             }

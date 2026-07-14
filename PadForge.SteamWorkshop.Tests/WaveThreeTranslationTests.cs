@@ -143,10 +143,14 @@ namespace PadForge.SteamWorkshop.Tests
             Assert.Equal(2.0, Assert.Single(x.Sources).Sensitivity, 3);
             Assert.DoesNotContain(p.Report.Entries, e =>
                 e.ReasonKey == TranslationReasons.TouchpadTuningNotPerRow);
-            // The row entries themselves are Clean (the remaining Partial
-            // is absolute_mouse's own positioning approximation).
             Assert.All(p.Report.Entries.Where(e => e.ReasonKey == TranslationReasons.RowEmitted),
                 e => Assert.Equal(TranslationStatus.Clean, e.Status));
+            // v6 (#9 B-15 verification): trackpad absolute_mouse IS
+            // relative cursor movement in Steam, so the relative rows are
+            // faithful and the old AbsoluteMouseApproximated Partial no
+            // longer fires anywhere.
+            Assert.DoesNotContain(p.Report.Entries, e =>
+                e.ReasonKey == TranslationReasons.AbsoluteMouseApproximated);
         }
 
         [Fact]
@@ -399,8 +403,13 @@ namespace PadForge.SteamWorkshop.Tests
         }
 
         [Fact]
-        public void Ps4_HalfMouseRegion_EngagesOnHalfSpot_WithFeatureNote()
+        public void Ps4_HalfMouseRegion_RidesTheWindowedPointer_NoFeatureNote()
         {
+            // Translator v6 (#9 B-15): a single-pad half hosts the region
+            // through the region-windowed pointer reads directly, so the
+            // wave-2A clamp macro, its touch-spot feature note, and the
+            // geometry approximation all retire. position_y is
+            // bottom-origin, so 20 lands at center 0.8.
             string vdf = HeadPs4
                 + Group(1, "mouse_region",
                     "\t\t\"inputs\"\n\t\t{\n\t\t}\n"
@@ -408,13 +417,19 @@ namespace PadForge.SteamWorkshop.Tests
                 + Preset(0, "Default", (1, "right_trackpad active"))
                 + "}\n";
             var p = Translate(vdf);
-            var m = Assert.Single(p.Macros);
-            Assert.Equal(TranslatedMacroAction.MouseLimitRegion, m.Action);
-            Assert.Equal("Touchpad 0 TouchRight", Assert.Single(m.TriggerInputDescriptors));
-            Assert.Contains(p.Report.Entries, e =>
-                e.ReasonKey == TranslationReasons.TrackpadFeatureRequired
-                && e.ReasonArgs.Contains(PhysicalSlotResolver.FeatureTouchSpots));
-            Assert.Contains(p.Report.Entries, e =>
+            Assert.Empty(p.Macros);
+            var x = Assert.Single(p.KbmMappingSet.Rows, r => r.Target == "KbmMouseX");
+            var sx = Assert.Single(x.Sources);
+            Assert.Equal("Touchpad 0 Pointer X Right", sx.Descriptor);
+            Assert.Equal(0.80, sx.ParamPointerCenter, 6);
+            Assert.Equal(0.25, sx.ParamPointerExtent, 6);
+            var y = Assert.Single(p.KbmMappingSet.Rows, r => r.Target == "KbmMouseY");
+            var sy = Assert.Single(y.Sources);
+            Assert.Equal("Touchpad 0 Pointer Y Right", sy.Descriptor);
+            Assert.Equal(0.80, sy.ParamPointerCenter, 6);
+            Assert.DoesNotContain(p.Report.Entries, e =>
+                e.ReasonKey == TranslationReasons.TrackpadFeatureRequired);
+            Assert.DoesNotContain(p.Report.Entries, e =>
                 e.ReasonKey == TranslationReasons.MouseRegionApproximated);
         }
 

@@ -88,12 +88,11 @@ macros: 4
   macro HoldVcButton HoldForMs | Long press ButtonY (button_back_right) | btns=0x0000 in=[Gamepad Paddle1] hold=500ms target=0x8000
   macro HoldVcButton HoldForMs | Long press LeftShoulder (button_back_right) | btns=0x0000 in=[Gamepad Paddle1] hold=500ms target=0x0100
   macro HoldVcButton HoldForMs | Long press ButtonY (button_back_left_upper) | btns=0x0000 in=[Gamepad Paddle4] hold=500ms target=0x8000
-report: v5 rows:x32+k3 macros:4 layers:2 clean:48 partial:5 skipped:5 errors:0
+report: v6 rows:x32+k3 macros:4 layers:2 clean:48 partial:4 skipped:5 errors:0
   Partial GyroButtonMaskDropped(gyro_ratchet_button_mask, 1048576) @ Default/gyro/group 24 (gyro_to_mouse)
   Clean RowEmitted @ Default/gyro/group 24 (gyro_to_mouse) => KbmMouseX <- Gyro Yaw
   Clean RowEmitted @ Default/gyro/group 24 (gyro_to_mouse) => KbmMouseY <- Gyro Pitch
   Skipped DoublePressNotSupported @ Default/joystick/group 6 (joystick_move)/click/Double_Press :: xinput_button JOYSTICK_LEFT, , 
-  Partial AbsoluteMouseApproximated @ Default/right_trackpad/group 31 (absolute_mouse)
   Clean RowEmitted @ Default/right_trackpad/group 31 (absolute_mouse) => KbmMouseX <- Touchpad 1 Finger 0 X
   Clean RowEmitted @ Default/right_trackpad/group 31 (absolute_mouse) => KbmMouseY <- Touchpad 1 Finger 0 Y
   Clean MacroEmitted @ Default/switch/group 0 (switches)/button_back_left_upper/Long_Press => Long-press hold macro: ButtonY

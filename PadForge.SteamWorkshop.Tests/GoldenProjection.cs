@@ -159,6 +159,12 @@ namespace PadForge.SteamWorkshop.Tests
             // are byte-identical.
             if (s.ParamFlickCountsPer360 != 14400)
                 sb.Append(" flickDots=").Append(s.ParamFlickCountsPer360.ToString("0.###", CultureInfo.InvariantCulture));
+            // Absolute pointer region window (#9 B-15): non-default only,
+            // same byte-stability rule as the flick knob above.
+            if (s.ParamPointerCenter != 0.5)
+                sb.Append(" ptrCenter=").Append(s.ParamPointerCenter.ToString("0.###", CultureInfo.InvariantCulture));
+            if (s.ParamPointerExtent != 1.0)
+                sb.Append(" ptrExtent=").Append(s.ParamPointerExtent.ToString("0.###", CultureInfo.InvariantCulture));
             if (!string.IsNullOrEmpty(s.DeviceGuid)) sb.Append(" guid=").Append(s.DeviceGuid);
             return sb.ToString();
         }

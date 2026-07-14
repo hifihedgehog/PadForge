@@ -1134,7 +1134,14 @@ namespace PadForge.ViewModels
                     desc.StartsWith("Mouse Motion ", StringComparison.Ordinal)
                     || desc.StartsWith("IR Pointer ", StringComparison.Ordinal)
                     || desc.StartsWith("IR Brightness", StringComparison.Ordinal)
-                    || desc.StartsWith("Balance ", StringComparison.Ordinal);
+                    || desc.StartsWith("Balance ", StringComparison.Ordinal)
+                    // Absolute pointer (#9 B-15): continuous position whose
+                    // button coercion thresholds on the per-source DeadZone
+                    // like the IR pointer (same set the grid's
+                    // MappingSourceItem.IsDeadZoneApplicable exposes), so it
+                    // joins the family list ahead of the blanket Touchpad
+                    // exclusion below.
+                    || PadForge.Engine.Common.Mapping.SourceCoercion.IsTouchpadPointerDescriptor(desc);
                 if (!engineFamily)
                 {
                     // Touchpad finger X/Y joined the generic Sensitivity

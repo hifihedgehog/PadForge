@@ -470,6 +470,15 @@ namespace PadForge.ViewModels
                     && PadForge.Engine.Common.Mapping.SourceCoercion.IsTouchpadGestureAxis(gestureName))
                     return _parentTargetIsDiscrete;
 
+                // Absolute pointer (#9 B-15): continuous position whose
+                // button coercion thresholds on the per-source DeadZone
+                // exactly like the IR pointer above, so the knob must be
+                // visible (the retroactive #146/#151 lesson this getter's
+                // header documents). Checked before the blanket Touchpad
+                // exclusion below.
+                if (PadForge.Engine.Common.Mapping.SourceCoercion.IsTouchpadPointerDescriptor(desc))
+                    return _parentTargetIsDiscrete;
+
                 int start = 0;
                 if (start < desc.Length && (desc[start] == 'I' || desc[start] == 'i')) start++;
                 if (start < desc.Length && (desc[start] == 'H' || desc[start] == 'h')) start++;

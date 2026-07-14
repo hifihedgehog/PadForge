@@ -263,6 +263,27 @@ namespace PadForge.Engine.Data
         /// default -1.</summary>
         [XmlAttribute] public double ParamFlickSmooth { get; set; } = -1;
 
+        // ─── Absolute touchpad pointer region window (#9 B-15, descriptor
+        // family "Touchpad N Pointer X/Y[ Left|Right]"). The translator's
+        // channel for Steam's mouse_region geometry: position_x/position_y
+        // (region center as percent of screen; shipped configurator ids
+        // PositionXMouse / PositionYMouse) and scale x
+        // sensitivity_horiz/vert_scale (region size per axis; ids
+        // ScaleMouseRegion / Horizontal-/VerticalSensitivityMouseRegion).
+        // Each source drives ONE axis, so one center + one extent per
+        // source. Defaults are the identity full-screen map. ───
+
+        /// <summary>Region center along this source's screen axis,
+        /// normalized 0..1 (0.5 = screen center). Only read by the
+        /// "Touchpad N Pointer ..." family.</summary>
+        [XmlAttribute] public double ParamPointerCenter { get; set; } = 0.5;
+
+        /// <summary>Region extent along this source's screen axis as a
+        /// fraction of the full axis (1.0 = the whole screen, 0.1 = a
+        /// minimap-sized band). The tuned pad position scales by this
+        /// around the region center, then clamps to the screen.</summary>
+        [XmlAttribute] public double ParamPointerExtent { get; set; } = 1.0;
+
         /// <summary>Arm behavior when evaluation (re)starts with the stick
         /// already past the threshold (the shift-layer engage case, #225).
         /// <c>false</c> (default): arm at the current angle and track

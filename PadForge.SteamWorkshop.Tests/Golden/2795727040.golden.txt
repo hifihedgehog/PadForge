@@ -2,7 +2,7 @@ name: Miracle's AOE II Steam Deck Layout
 description: A layout designed for quick gameplay. Has a radial menu for creating and selecting groups. Left pad ...
 slots: kbm
 xbox rows: 0
-kbm rows: 17
+kbm rows: 19
   Base | KbmKey1B
     <- Gamepad ButtonB
   Base | KbmKey25
@@ -37,13 +37,17 @@ kbm rows: 17
     <- Gamepad RightTrigger [upper-half] dz=15
   Base | KbmMBtn1
     <- Gamepad LeftTrigger [upper-half] dz=15
+  Base | KbmMouseX | Sum
+    <- Touchpad 0 Pointer X ptrCenter=0.09 ptrExtent=0.11
+    <- Touchpad 1 Pointer X ptrExtent=0.7
+  Base | KbmMouseY | Sum
+    <- Touchpad 0 Pointer Y ptrCenter=0.9 ptrExtent=0.07
+    <- Touchpad 1 Pointer Y ptrExtent=0.5
   Base | KbmScroll | Sum
     <- Gamepad LeftShoulder
     <- Gamepad RightShoulder [inverted]
-macros: 2
-  macro MouseLimitRegion WhileHeld | Cursor region (left_trackpad) | btns=0x0000 in=[Touchpad 0 Finger 0 Down] region=(9%,10%,scale 10%)
-  macro MouseLimitRegion WhileHeld | Cursor region (right_trackpad) | btns=0x0000 in=[Touchpad 1 Finger 0 Down] region=(50%,50%,scale 100%)
-report: v5 rows:x0+k17 macros:2 layers:0 clean:20 partial:6 skipped:2 errors:0
+macros: 0
+report: v6 rows:x0+k19 macros:0 layers:0 clean:24 partial:2 skipped:2 errors:0
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_a/Full_Press => KbmKey72 <- Gamepad ButtonA
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_b/Full_Press => KbmKey1B <- Gamepad ButtonB
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_x/Full_Press => KbmKey76 <- Gamepad ButtonX
@@ -56,13 +60,13 @@ report: v5 rows:x0+k17 macros:2 layers:0 clean:20 partial:6 skipped:2 errors:0
   Clean RowEmitted @ Default/joystick/group 3 (dpad)/dpad_north/Full_Press => KbmKey26 <- Gamepad LeftStickY (lower half)
   Clean RowEmitted @ Default/joystick/group 3 (dpad)/dpad_south/Full_Press => KbmKey28 <- Gamepad LeftStickY (upper half)
   Clean RowEmitted @ Default/joystick/group 3 (dpad)/dpad_west/Full_Press => KbmKey25 <- Gamepad LeftStickX (lower half)
-  Partial ResponseCurveNotSupported(sensitivity_horiz_scale, sensitivity_vert_scale) @ Default/left_trackpad/group 11 (mouse_region)
-  Partial MouseRegionApproximated(10, 9, 10) @ Default/left_trackpad/group 11 (mouse_region) => Cursor region clamp macro
+  Clean RowEmitted @ Default/left_trackpad/group 11 (mouse_region) => KbmMouseX <- Touchpad 0 Pointer X
+  Clean RowEmitted @ Default/left_trackpad/group 11 (mouse_region) => KbmMouseY <- Touchpad 0 Pointer Y
   Clean RowEmitted @ Default/left_trackpad/group 11 (mouse_region)/click/Full_Press => KbmMBtn0 <- Touchpad 0 Click
   Clean RowEmitted @ Default/left_trigger/group 4 (trigger)/edge/Full_Press => KbmMBtn1 <- Gamepad LeftTrigger (upper half)
   Skipped RadialMenuNeedsOverlay(8) @ Default/right_joystick/group 12 (radial_menu)
-  Partial ResponseCurveNotSupported(sensitivity_horiz_scale, sensitivity_vert_scale) @ Default/right_trackpad/group 13 (mouse_region)
-  Partial MouseRegionApproximated(100, 50, 50) @ Default/right_trackpad/group 13 (mouse_region) => Cursor region clamp macro
+  Clean RowEmitted @ Default/right_trackpad/group 13 (mouse_region) => KbmMouseX <- Touchpad 1 Pointer X
+  Clean RowEmitted @ Default/right_trackpad/group 13 (mouse_region) => KbmMouseY <- Touchpad 1 Pointer Y
   Partial ActivatorDelayDropped(delay_end 10) @ Default/right_trackpad/group 13 (mouse_region)/click/Full_Press
   Clean RowEmitted @ Default/right_trackpad/group 13 (mouse_region)/click/Full_Press => KbmMBtn0 <- Touchpad 1 Click
   Clean RowEmitted @ Default/right_trigger/group 5 (trigger)/edge/Full_Press => KbmMBtn0 <- Gamepad RightTrigger (upper half)

@@ -9840,6 +9840,53 @@
                             </StackPanel>
                         </Border>
 
+                        <!-- ─── Absolute Pointer card (#9 B-15) ───
+                             Margin stretch for the "Touchpad N Pointer X/Y"
+                             absolute cursor sources. 1.0 = Steam's 1:1
+                             pad-to-screen mouse_region map; higher values
+                             reach the screen edges before the pad bezel
+                             (the Wii aim map's margin-stretch concept). -->
+                        <Border Style="{StaticResource CardBorder}">
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                    <TextBlock Text="&#xE962;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="16" Foreground="{DynamicResource EmberBrush}"
+                                               VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                    <TextBlock Text="{Binding Pad_Touchpad_Pointer_Header, Source={x:Static strings:Strings.Instance}}"
+                                               Style="{StaticResource CardTitle}"/>
+                                    <ui:Button Command="{Binding ResetTouchpadPointerCardCommand}" Style="{StaticResource ResetAllButton}"
+                                            Content="{Binding Pad_ResetAll, Source={x:Static strings:Strings.Instance}}" Margin="12,0,0,0"
+                                            ToolTip="{Binding Pad_ResetTouchpadPointer, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
+                                <TextBlock Text="{Binding Pad_Touchpad_Pointer_Subtitle, Source={x:Static strings:Strings.Instance}}"
+                                           Style="{StaticResource CardDescription}"/>
+
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                                    <TextBlock Text="{Binding Pad_Touchpad_PointerStretchX, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                    <Slider Value="{Binding TouchpadPointerStretchX, Mode=TwoWay}"
+                                            Style="{StaticResource DzSlider}" Minimum="1" Maximum="3" TickFrequency="0.05"
+                                            ToolTip="{Binding Pad_Touchpad_PointerStretchX_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <TextBox Text="{Binding TouchpadPointerStretchX, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat=F2}"
+                                             Style="{StaticResource DzValueEdit}"
+                                             ToolTip="{Binding Pad_Touchpad_PointerStretchX_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <TextBlock Text="×" Style="{StaticResource DzPercent}"/>
+                                    <ui:Button Command="{Binding ResetTouchpadPointerStretchXCommand}" Style="{StaticResource ResetButton}"
+                                            ToolTip="{Binding Pad_ResetTouchpadPointerStretchX, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                                    <TextBlock Text="{Binding Pad_Touchpad_PointerStretchY, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                    <Slider Value="{Binding TouchpadPointerStretchY, Mode=TwoWay}"
+                                            Style="{StaticResource DzSlider}" Minimum="1" Maximum="3" TickFrequency="0.05"
+                                            ToolTip="{Binding Pad_Touchpad_PointerStretchY_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <TextBox Text="{Binding TouchpadPointerStretchY, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat=F2}"
+                                             Style="{StaticResource DzValueEdit}"
+                                             ToolTip="{Binding Pad_Touchpad_PointerStretchY_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <TextBlock Text="×" Style="{StaticResource DzPercent}"/>
+                                    <ui:Button Command="{Binding ResetTouchpadPointerStretchYCommand}" Style="{StaticResource ResetButton}"
+                                            ToolTip="{Binding Pad_ResetTouchpadPointerStretchY, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+
                         <!-- ─── Swipe Haptics card (discussion #219) ───
                              Steam-Input-style pulse ticks as the finger
                              travels the pad. Visible only when the selected

@@ -35,7 +35,11 @@ namespace PadForge.Common.Input
         internal sealed class MenuTickContext
         {
             public readonly MenuRuntimeState State = new();
-            public string HostSig;
+            // Last host signature the wrappers were built for. Split into the
+            // two raw fields so the per-tick rebuild check is two comparisons
+            // instead of an interpolated-string allocation on the 1 kHz path.
+            public string HostSigDescriptor = null;
+            public int HostSigHalf = int.MinValue;
             public bool IsStick;
             public MappingSource SrcX, SrcY, SrcEngage, SrcClick;
             /// <summary>Last tick timestamp. The fired provider treats a
@@ -211,9 +215,10 @@ namespace PadForge.Common.Input
         /// the pad click.</summary>
         private static void EnsureMenuSources(MenuTickContext ctx, MenuDefinitionEntry def)
         {
-            string sig = $"{def.HostDescriptor}|{def.HostHalf}";
-            if (ctx.HostSig == sig) return;
-            ctx.HostSig = sig;
+            if (string.Equals(ctx.HostSigDescriptor, def.HostDescriptor, StringComparison.Ordinal)
+                && ctx.HostSigHalf == def.HostHalf) return;
+            ctx.HostSigDescriptor = def.HostDescriptor;
+            ctx.HostSigHalf = def.HostHalf;
 
             string host = (def.HostDescriptor ?? "").Trim();
             if (host.StartsWith("Gamepad ", StringComparison.Ordinal))

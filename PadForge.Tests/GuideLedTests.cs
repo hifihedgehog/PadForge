@@ -8,8 +8,11 @@ namespace PadForge.Tests
     /// docs/RESEARCH.md, payload per xone gip_pkt_led), the percent to
     /// 0-47 intensity scaling (MS-GIPUSB ceiling), the announce parser
     /// (gip_pkt_announce identity prefix), the Battery-mode brightness
-    /// floor, the SDL Steam home-LED hint value form, and the macro
-    /// action's DTO round-trip + enum-tail pin.</summary>
+    /// floor, the SDL Steam home-LED hint value form, the Switch home
+    /// LED lane (#226: PID gate vs SDL_hidapi_switch.c /
+    /// SDL_hidapi_switch2.c, exact SDL LED-byte round-trip,
+    /// apply-on-change ledger, TrySet gating), and the macro action's
+    /// DTO round-trip + enum-tail pin.</summary>
     public class GuideLedTests
     {
         // ── GIP LED packet, byte-exact vs the reference layout ──
@@ -239,6 +242,96 @@ namespace PadForge.Tests
         {
             Assert.Equal(expected,
                 SteamHomeLedSetter.IsSteamController2015((ushort)vid, (ushort)pid));
+        }
+
+        // ── Switch home LED lane (#226, the third #209 delivery) ──
+
+        [Theory]
+        [InlineData(0x057E, 0x2009, true)]   // Pro Controller: SDL_hidapi_switch.c SetJoystickLED accepts ProController
+        [InlineData(0x057E, 0x2007, true)]   // Joy-Con (R): accepted (JoyConRight)
+        [InlineData(0x057E, 0x2008, true)]   // combined pair: SDL_hidapi_combined.c forwards, right child acts
+        [InlineData(0x057E, 0x200E, true)]   // charging grip: right slot reads type JoyConRight
+        [InlineData(0x057E, 0x2006, false)]  // Joy-Con (L): no home LED, SDL_Unsupported
+        [InlineData(0x057E, 0x2069, false)]  // Switch 2 Pro: SDL_hidapi_switch2.c SetJoystickLED is SDL_Unsupported
+        [InlineData(0x057E, 0x2068, false)]  // Switch 2 Joy-Con pair: same driver, unsupported
+        [InlineData(0x057E, 0x2017, false)]  // NSO SNES: HasHomeLED false past ProController
+        [InlineData(0x057E, 0x2019, false)]  // NSO N64
+        [InlineData(0x0F0D, 0x0092, false)]  // third-party VID (HORI)
+        [InlineData(0x28DE, 0x1102, false)]  // 2015 Steam Controller stays on the Steam lane
+        [InlineData(0x045E, 0x2009, false)]  // wrong vendor, right PID
+        public void Switch_HomeLed_Pid_Gate_Matches_Sdl_Source(int vid, int pid, bool expected)
+        {
+            Assert.Equal(expected,
+                SwitchHomeLedSetter.IsSwitchHomeLedDevice((ushort)vid, (ushort)pid));
+        }
+
+        [Fact]
+        public void Switch_Percent_RoundTrips_Exactly_Through_Sdl_Led_Math()
+        {
+            // SDL recovers percent as (int)((max(r,g,b) / 255.0f) * 100.0f)
+            // (SDL_hidapi_switch.c HIDAPI_DriverSwitch_SetJoystickLED), so
+            // the equal-RGB byte must land every 0..100 percent exactly.
+            int prev = -1;
+            for (int p = 0; p <= 100; p++)
+            {
+                byte v = PadForge.Engine.SdlDeviceWrapper.HomeLedPercentToByte(p);
+                int recovered = (int)((v / 255.0f) * 100.0f);
+                Assert.Equal(p, recovered);
+                Assert.True(v > prev || (p == 0 && v == 0),
+                    $"LED byte not strictly monotone at {p}%: {v} <= {prev}");
+                prev = v;
+            }
+            // Clamps.
+            Assert.Equal(0, PadForge.Engine.SdlDeviceWrapper.HomeLedPercentToByte(-5));
+            Assert.Equal(255, PadForge.Engine.SdlDeviceWrapper.HomeLedPercentToByte(150));
+        }
+
+        [Fact]
+        public void Switch_Write_Ledger_Skips_Same_Value_And_Invalidates_On_Reconnect()
+        {
+            SwitchHomeLedSetter.ResetLedgerForTests();
+            try
+            {
+                // Fresh device: write.
+                Assert.True(SwitchHomeLedSetter.ShouldWrite(101, 60));
+                SwitchHomeLedSetter.RecordWritten(101, 60);
+                // Steady-state re-apply (the 30 s lane): skip.
+                Assert.False(SwitchHomeLedSetter.ShouldWrite(101, 60));
+                // Value change: write.
+                Assert.True(SwitchHomeLedSetter.ShouldWrite(101, 35));
+                // Reconnect mints a new SDL instance id, never reused:
+                // the ledger misses and the brightness reapplies.
+                Assert.True(SwitchHomeLedSetter.ShouldWrite(102, 60));
+            }
+            finally
+            {
+                SwitchHomeLedSetter.ResetLedgerForTests();
+            }
+        }
+
+        [Fact]
+        public void Switch_TrySet_Accepts_Gated_Devices_And_Refuses_The_Rest()
+        {
+            // The same TrySet the macro applier, ApplyGuideLeds, and the
+            // remote-link receive lane all call: a gated device enqueues
+            // (true), everything else refuses at the gate (false). The
+            // worker drains the offline test device as a no-op.
+            var pro = new PadForge.Engine.Data.UserDevice
+            {
+                InstanceGuid = System.Guid.NewGuid(),
+                VendorId = 0x057E,
+                ProdId = 0x2009,
+            };
+            Assert.True(SwitchHomeLedSetter.TrySet(pro, 80));
+
+            var leftJoyCon = new PadForge.Engine.Data.UserDevice
+            {
+                InstanceGuid = System.Guid.NewGuid(),
+                VendorId = 0x057E,
+                ProdId = 0x2006,
+            };
+            Assert.False(SwitchHomeLedSetter.TrySet(leftJoyCon, 80));
+            Assert.False(SwitchHomeLedSetter.TrySet(null, 80));
         }
 
         // ── Macro action: DTO round-trip + enum-tail pin ──

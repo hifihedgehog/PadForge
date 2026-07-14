@@ -557,15 +557,18 @@ namespace PadForge.ViewModels
         }
 
         private GuideLedMode _guideLedMode = GuideLedMode.DeviceDefault;
-        /// <summary>Guide/Home button LED handling (discussion #209).
-        /// DeviceDefault never writes, leaving the firmware's own
-        /// brightness untouched. Fixed holds <see cref="GuideLedBrightness"/>.
-        /// Battery re-maps the device's battery percent to brightness on a
-        /// slow cadence, floored at 10 so a low battery stays visible.
-        /// Xbox One and later pads take the GIP LED command over the
-        /// \\.\XboxGIP interface (USB only, XboxGipGuideLedWriter). The
-        /// 2015 Steam Controller takes SDL's process-global home-LED hint
-        /// (SteamHomeLedSetter).</summary>
+        /// <summary>Guide/Home button LED handling (discussion #209,
+        /// Switch home LED #226). DeviceDefault never writes, leaving the
+        /// firmware's own brightness untouched. Fixed holds
+        /// <see cref="GuideLedBrightness"/>. Battery re-maps the device's
+        /// battery percent to brightness on a slow cadence, floored at 10
+        /// so a low battery stays visible. Xbox One and later pads take
+        /// the GIP LED command over the \\.\XboxGIP interface (USB only,
+        /// XboxGipGuideLedWriter). The 2015 Steam Controller takes SDL's
+        /// process-global home-LED hint (SteamHomeLedSetter). Switch Pro
+        /// Controllers, right Joy-Cons, the combined pair, and the
+        /// charging grip take per-device SDL_SetJoystickLED
+        /// (SwitchHomeLedSetter).</summary>
         public GuideLedMode GuideLedMode
         {
             get => _guideLedMode;
@@ -584,7 +587,8 @@ namespace PadForge.ViewModels
         private int _guideLedBrightness = 100;
         /// <summary>Fixed-mode Guide LED brightness percent, 0 (off) to
         /// 100 (full). The writers scale it onto each device's own range
-        /// (0-47 for GIP per MS-GIPUSB, 0..1 for the SDL hint).</summary>
+        /// (0-47 for GIP per MS-GIPUSB, 0..1 for the SDL hint, a 4-bit
+        /// subcommand 0x38 intensity for the Switch home LED).</summary>
         public int GuideLedBrightness
         {
             get => _guideLedBrightness;

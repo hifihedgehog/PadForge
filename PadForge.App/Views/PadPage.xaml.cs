@@ -321,9 +321,12 @@ namespace PadForge.Views
             bool hasIndicatorLeds = false;
             // Guide Button LED (#209): XInput-pathed pads (the \\.\XboxGIP
             // GIP LED lane, USB only, though Bluetooth pads share the
-            // synthetic path and simply no-op) and the 2015 Steam
-            // Controller (SDL home-LED hint). Puts the Lighting tab up for
-            // those devices with only the Guide LED card visible.
+            // synthetic path and simply no-op), the 2015 Steam
+            // Controller (SDL home-LED hint), and the Switch home LED
+            // population (#226: Pro Controller, right Joy-Con, the
+            // combined pair, the charging grip; per-device
+            // SDL_SetJoystickLED). Puts the Lighting tab up for those
+            // devices with only the Guide LED card visible.
             bool hasGuideLed = false;
             bool hasForceFeedback = false;
             bool hasGyro = false;
@@ -366,7 +369,8 @@ namespace PadForge.Views
                         hasTouchpad = ud.HasTouchpad;
                         hasGuideLed =
                             PadForge.Common.Input.XboxGipGuideLedWriter.IsXboxGipPathed(ud)
-                         || PadForge.Common.Input.SteamHomeLedSetter.IsSteamController2015(ud.VendorId, ud.ProdId);
+                         || PadForge.Common.Input.SteamHomeLedSetter.IsSteamController2015(ud.VendorId, ud.ProdId)
+                         || PadForge.Common.Input.SwitchHomeLedSetter.IsSwitchHomeLedDevice(ud.VendorId, ud.ProdId);
                         // Native-FFB wheel → the Wheel tab (rotation range, auto-center,
                         // RPM LEDs). Same VID/PID gates the wheel HID writers use.
                         hasWheel =
@@ -440,7 +444,8 @@ namespace PadForge.Views
             if (TabLighting != null)
                 TabLighting.Visibility = (hasLightbar || hasGuideLed) ? Visibility.Visible : Visibility.Collapsed;
             // Lightbar-specific content hides when the tab is up for a
-            // guide-LED-only device (Xbox / 2015 Steam Controller).
+            // guide-LED-only device (Xbox / 2015 Steam Controller / Switch
+            // home-LED devices, #226).
             if (LightbarModeCard != null)
                 LightbarModeCard.Visibility = hasLightbar ? Visibility.Visible : Visibility.Collapsed;
             if (LightingLightbarSubtitle != null)

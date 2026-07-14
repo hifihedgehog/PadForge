@@ -2298,7 +2298,7 @@
   <data name="MacroAction_GuideLedBrightness_Format" xml:space="preserve"><value>Brilho do LED Guia: {0}%</value></data>
   <data name="MacroAction_GuideLedBrightness_Tooltip" xml:space="preserve"><value>Define o brilho do LED do botão Guia ou Home para cada controle compatível no slot. Controles Xbox só o aceitam via USB.</value></data>
   <data name="MacroAction_Type_GuideLedBrightness" xml:space="preserve"><value>Definir Brilho do LED Guia</value></data>
-  <data name="Macro_GuideLedBrightness_Hint" xml:space="preserve"><value>Aplica-se a controles Xbox via USB e ao Steam Controller de 2015. Combine duas dessas ações para piscar o LED quando uma macro começar e restaurá-lo quando terminar.</value></data>
+  <data name="Macro_GuideLedBrightness_Hint" xml:space="preserve"><value>Aplica-se a controles Xbox via USB, ao Steam Controller de 2015 e a controles Switch com LED no botão Home. Combine duas dessas ações para piscar o LED quando uma macro começar e restaurá-lo quando terminar.</value></data>
   <data name="Pad_Combine_StickTrim_Description" xml:space="preserve"><value>A última fonte da linha é um analógico de trim. Enquanto as outras fontes mantêm o gatilho, empurrar o analógico para cima aumenta o nível retido e puxá-lo para baixo o reduz. Feito para dosar com precisão acelerador e freio em controles sem gatilhos analógicos.</value></data>
   <data name="Pad_Combine_StickTrim_Name" xml:space="preserve"><value>Trim no Analógico</value></data>
   <data name="Pad_Kbm_Socd_AddPair" xml:space="preserve"><value>Adicionar Par</value></data>
@@ -2323,8 +2323,8 @@
   <data name="Pad_Lighting_GuideLed_Brightness_Tooltip" xml:space="preserve"><value>Brilho do LED do botão Guia de 0% (apagado) a 100% (máximo). Aplica-se enquanto o modo for Brilho Fixo.</value></data>
   <data name="Pad_Lighting_GuideLed_DeviceDefault" xml:space="preserve"><value>Padrão do Dispositivo</value></data>
   <data name="Pad_Lighting_GuideLed_Fixed" xml:space="preserve"><value>Brilho Fixo</value></data>
-  <data name="Pad_Lighting_GuideLed_Mode_Tooltip" xml:space="preserve"><value>Padrão do Dispositivo deixa o LED exatamente como o firmware do controle o definiu. Brilho Fixo mantém o nível abaixo. Nível de Bateria deixa o LED mais brilhante com a bateria mais cheia e nunca cai abaixo de 10%. Controles Xbox só aceitam comandos do LED Guia via USB, então esta configuração não tem efeito em uma conexão Bluetooth.</value></data>
-  <data name="Pad_Lighting_GuideLed_Subtitle" xml:space="preserve"><value>Brilho do botão luminoso Guia ou Home. Controles Xbox One e posteriores o aceitam via USB. O Steam Controller de 2015 o aceita em qualquer conexão, e todos os Steam Controllers compartilham um único brilho.</value></data>
+  <data name="Pad_Lighting_GuideLed_Mode_Tooltip" xml:space="preserve"><value>Padrão do Dispositivo deixa o LED exatamente como o firmware do controle o definiu. Brilho Fixo mantém o nível abaixo. Nível de Bateria deixa o LED mais brilhante com a bateria mais cheia e nunca cai abaixo de 10%. Controles Xbox só aceitam comandos do LED Guia via USB, então esta configuração não tem efeito em uma conexão Bluetooth. Controles Switch aceitam comandos do LED Home em qualquer conexão.</value></data>
+  <data name="Pad_Lighting_GuideLed_Subtitle" xml:space="preserve"><value>Brilho do botão luminoso Guia ou Home. Controles Xbox One e posteriores o aceitam via USB. O Steam Controller de 2015 o aceita em qualquer conexão, e todos os Steam Controllers compartilham um único brilho. Controles Switch Pro e Joy-Cons direitos (sozinhos, pareados ou no suporte de carregamento) o aceitam em qualquer conexão.</value></data>
   <data name="Pad_Mapping_TrimDeadzone" xml:space="preserve"><value>Deadzone do Trim</value></data>
   <data name="Pad_Mapping_TrimDeadzone_Tooltip" xml:space="preserve"><value>A deflexão do analógico abaixo desta porcentagem é ignorada, então dirigir com o mesmo analógico nunca desloca o nível retido do gatilho. Só os empurrões verticais mais fortes do analógico o ajustam.</value></data>
   <data name="Pad_Mapping_TrimRate" xml:space="preserve"><value>Velocidade do Trim</value></data>
@@ -2465,4 +2465,149 @@
   <data name="About_ZstdSharp" xml:space="preserve"><value>ZstdSharp</value></data>
   <data name="About_ZstdSharpDesc" xml:space="preserve"><value>Descompressão Zstandard que o SteamKit2 usa para os chunks de depot do Steam, um port em C# da biblioteca zstd por Oleg Stepanischev. MIT.</value></data>
   <data name="Mapping_AnyDevice" xml:space="preserve"><value>(Qualquer Dispositivo)</value></data>
+  <data name="Mapping_TouchpadFingerXLeft_Format" xml:space="preserve"><value>Touchpad {0} Dedo {1} X (Metade Esquerda)</value></data>
+  <data name="Mapping_TouchpadFingerXRight_Format" xml:space="preserve"><value>Touchpad {0} Dedo {1} X (Metade Direita)</value></data>
+  <data name="Mapping_TouchpadFingerYLeft_Format" xml:space="preserve"><value>Touchpad {0} Dedo {1} Y (Metade Esquerda)</value></data>
+  <data name="Mapping_TouchpadFingerYRight_Format" xml:space="preserve"><value>Touchpad {0} Dedo {1} Y (Metade Direita)</value></data>
+  <data name="Mapping_TouchpadPointerX_Format" xml:space="preserve"><value>Touchpad {0} Ponteiro X</value></data>
+  <data name="Mapping_TouchpadPointerY_Format" xml:space="preserve"><value>Touchpad {0} Ponteiro Y</value></data>
+  <data name="Mapping_TouchpadPointerXLeft_Format" xml:space="preserve"><value>Touchpad {0} Ponteiro X (Metade Esquerda)</value></data>
+  <data name="Mapping_TouchpadPointerXRight_Format" xml:space="preserve"><value>Touchpad {0} Ponteiro X (Metade Direita)</value></data>
+  <data name="Mapping_TouchpadPointerYLeft_Format" xml:space="preserve"><value>Touchpad {0} Ponteiro Y (Metade Esquerda)</value></data>
+  <data name="Mapping_TouchpadPointerYRight_Format" xml:space="preserve"><value>Touchpad {0} Ponteiro Y (Metade Direita)</value></data>
+  <data name="Mapping_TouchpadFingerTouchLeft_Format" xml:space="preserve"><value>Touchpad {0} Dedo {1} Toque (Metade Esquerda)</value></data>
+  <data name="Mapping_TouchpadFingerTouchRight_Format" xml:space="preserve"><value>Touchpad {0} Dedo {1} Toque (Metade Direita)</value></data>
+  <data name="Pad_Touchpad_Pointer_Header" xml:space="preserve"><value>Ponteiro Absoluto</value></data>
+  <data name="Pad_Touchpad_Pointer_Subtitle" xml:space="preserve"><value>Ajusta as fontes Touchpad Ponteiro X/Y, que levam o cursor à posição do dedo no pad (mapeie-as para Mouse X/Y em um controle virtual de Teclado / Mouse). Em 1.0 o pad corresponde 1:1 à tela. Aumente o alongamento para alcançar as bordas da tela antes que o polegar alcance a borda do pad.</value></data>
+  <data name="Pad_Touchpad_PointerStretchX" xml:space="preserve"><value>Alongamento do Ponteiro X</value></data>
+  <data name="Pad_Touchpad_PointerStretchX_Tooltip" xml:space="preserve"><value>Alongamento horizontal da margem ao redor do centro do pad. 1.5 alcança as bordas da tela a dois terços do percurso físico.</value></data>
+  <data name="Pad_Touchpad_PointerStretchY" xml:space="preserve"><value>Alongamento do Ponteiro Y</value></data>
+  <data name="Pad_Touchpad_PointerStretchY_Tooltip" xml:space="preserve"><value>Alongamento vertical da margem ao redor do centro do pad.</value></data>
+  <data name="Pad_Touchpad_SwipeHaptics_Header" xml:space="preserve"><value>Háptica de Deslize</value></data>
+  <data name="Pad_Touchpad_SwipeHaptics_Subtitle" xml:space="preserve"><value>Pulsa a háptica do controle enquanto o dedo percorre este touchpad, como os ticks de trackpad do Steam Input. Steam Controllers e o Steam Deck acionam o atuador sob o pad; DualSense e DualShock 4 pulsam os motores de vibração.</value></data>
+  <data name="Pad_Touchpad_SwipeHapticsEnabled" xml:space="preserve"><value>Ativar Háptica de Deslize</value></data>
+  <data name="Pad_Touchpad_SwipeHapticsEnabled_Tooltip" xml:space="preserve"><value>Emite um tick háptico curto sempre que o dedo percorre uma distância definida neste pad. Pousar um dedo ou clicar no pad nunca emite tick. Desligado por padrão.</value></data>
+  <data name="Pad_Touchpad_SwipeHapticsIntensity" xml:space="preserve"><value>Intensidade do Pulso</value></data>
+  <data name="Pad_Touchpad_SwipeHapticsIntensity_Tooltip" xml:space="preserve"><value>Força de cada tick. A vibração do jogo sempre vence quando é mais forte.</value></data>
+  <data name="Pad_ResetTouchpadPointer" xml:space="preserve"><value>Restaurar Ponteiro Absoluto</value></data>
+  <data name="Pad_ResetTouchpadSwipeHaptics" xml:space="preserve"><value>Restaurar Háptica de Deslize</value></data>
+  <data name="Pad_ResetTouchpadPointerStretchX" xml:space="preserve"><value>Restaurar Alongamento do Ponteiro X</value></data>
+  <data name="Pad_ResetTouchpadPointerStretchY" xml:space="preserve"><value>Restaurar Alongamento do Ponteiro Y</value></data>
+  <data name="Pad_ResetTouchpadSwipeHapticsEnabled" xml:space="preserve"><value>Restaurar Ativar Háptica de Deslize</value></data>
+  <data name="Pad_ResetTouchpadSwipeHapticsIntensity" xml:space="preserve"><value>Restaurar Intensidade do Pulso</value></data>
+  <data name="Mapping_FlickStickRight" xml:space="preserve"><value>Flick Stick (Analógico Direito)</value></data>
+  <data name="Mapping_FlickStickLeft" xml:space="preserve"><value>Flick Stick (Analógico Esquerdo)</value></data>
+  <data name="Pad_FlickStick_Header" xml:space="preserve"><value>Flick Stick</value></data>
+  <data name="Pad_FlickStick_Subtitle" xml:space="preserve"><value>Configurações das entradas de Flick Stick: aponte o analógico e a câmera gira para acompanhar, percorra a borda para ajustar fino. Mapeie "Flick Stick (Analógico Direito)" para Mouse X no menu de entrada em Mapeamentos, em qualquer camada.</value></data>
+  <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>Restaurar Todas as Configurações do Flick Stick</value></data>
+  <data name="Settings_FlickCountsPer360" xml:space="preserve"><value>Contagens por 360°</value></data>
+  <data name="Settings_FlickCountsPer360_Tooltip" xml:space="preserve"><value>Contagens de mouse para uma volta completa de câmera de 360°. Depende da sensibilidade do mouse do jogo: aumente se um flick girar de menos, diminua se girar demais.</value></data>
+  <data name="Pad_ResetFlickCountsPer360" xml:space="preserve"><value>Redefinir para 14400</value></data>
+  <data name="Settings_FlickTime" xml:space="preserve"><value>Tempo de Flick</value></data>
+  <data name="Settings_FlickTime_Tooltip" xml:space="preserve"><value>Quanto tempo um flick completo de 180° leva para concluir, com desaceleração no final. Giros mais curtos terminam no mesmo tempo.</value></data>
+  <data name="Pad_ResetFlickTime" xml:space="preserve"><value>Redefinir para 0.1 s</value></data>
+  <data name="Settings_FlickThreshold" xml:space="preserve"><value>Limiar de Flick</value></data>
+  <data name="Settings_FlickThreshold_Tooltip" xml:space="preserve"><value>Deflexão do analógico que inicia um flick, como fração da deflexão total. Durante o flick, o ponto de liberação cai para 90% deste valor.</value></data>
+  <data name="Pad_ResetFlickThreshold" xml:space="preserve"><value>Redefinir para 0.9</value></data>
+  <data name="Settings_FlickSnapMode" xml:space="preserve"><value>Ângulo de Encaixe</value></data>
+  <data name="Settings_FlickSnapMode_Tooltip" xml:space="preserve"><value>Encaixa o flick em ângulos fixos para giros mais consistentes. Somente para Frente encaixa todo flick diretamente à frente.</value></data>
+  <data name="Settings_FlickSnapMode_None" xml:space="preserve"><value>Sem Encaixe</value></data>
+  <data name="Settings_FlickSnapMode_Forward" xml:space="preserve"><value>Somente para Frente</value></data>
+  <data name="Settings_FlickSnapMode_Half" xml:space="preserve"><value>180 Graus</value></data>
+  <data name="Settings_FlickSnapMode_Four" xml:space="preserve"><value>90 Graus</value></data>
+  <data name="Settings_FlickSnapMode_Sixths" xml:space="preserve"><value>60 Graus</value></data>
+  <data name="Settings_FlickSnapMode_Eight" xml:space="preserve"><value>45 Graus</value></data>
+  <data name="Pad_ResetFlickSnapMode" xml:space="preserve"><value>Redefinir para Sem Encaixe</value></data>
+  <data name="Settings_FlickSnapStrength" xml:space="preserve"><value>Força do Encaixe</value></data>
+  <data name="Settings_FlickSnapStrength_Tooltip" xml:space="preserve"><value>Com que força um flick puxa para o ângulo encaixado. 1 encaixa totalmente, 0 desativa o encaixe, valores intermediários misturam.</value></data>
+  <data name="Pad_ResetFlickSnapStrength" xml:space="preserve"><value>Redefinir para 1.0</value></data>
+  <data name="Settings_FlickForwardDeadzone" xml:space="preserve"><value>Zona Morta do Ângulo Frontal</value></data>
+  <data name="Settings_FlickForwardDeadzone_Tooltip" xml:space="preserve"><value>Um flick dentro deste ângulo em relação à frente não gira nada. Permite começar uma varredura sem um giro de flick.</value></data>
+  <data name="Pad_ResetFlickForwardDeadzone" xml:space="preserve"><value>Redefinir para 0°</value></data>
+  <data name="Settings_FlickSmoothing" xml:space="preserve"><value>Suavização da Varredura</value></data>
+  <data name="Settings_FlickSmoothing_Tooltip" xml:space="preserve"><value>Suaviza o ruído da varredura pela borda. -1 usa a janela escalonada automática, 0 desliga a suavização, valores maiores suavizam rotações por tick maiores.</value></data>
+  <data name="Pad_ResetFlickSmoothing" xml:space="preserve"><value>Redefinir para Automático (-1)</value></data>
+  <data name="Settings_FlickOnEngage" xml:space="preserve"><value>Permitir Flick na Ativação</value></data>
+  <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>Quando a camada que hospeda o Flick Stick é ativada com o analógico já defletido, dispara o flick imediatamente. Desligado mantém a câmera parada e acompanha a rotação a partir do ângulo atual do analógico.</value></data>
+  <data name="Pad_ResetFlickOnEngage" xml:space="preserve"><value>Redefinir para Desligado</value></data>
+  <data name="Mapping_MouseGestureCustom" xml:space="preserve"><value>Personalizado</value></data>
+  <data name="Pad_MouseGestures_Custom_Tooltip" xml:space="preserve"><value>Arma o reconhecedor com uma entrada gravada de qualquer dispositivo em vez de um botão do mouse: uma tecla, um botão de gamepad ou uma entrada analógica como um pedal. Grave a entrada abaixo.</value></data>
+  <data name="Pad_MouseGestures_CustomInput" xml:space="preserve"><value>Entrada de Ativação Personalizada</value></data>
+  <data name="Pad_MouseGestures_CustomInput_Tooltip" xml:space="preserve"><value>A entrada que arma a sessão de gestos Personalizado enquanto mantida, gravada de qualquer dispositivo neste slot. Botões e teclas armam enquanto pressionados. Entradas analógicas como um pedal armam além de metade do curso.</value></data>
+  <data name="Pad_ResetMouseGestureCustomInput" xml:space="preserve"><value>Restaurar Entrada de Ativação Personalizada</value></data>
+  <data name="Workshop_Tr_ScrollGestureModeNotSupported" xml:space="preserve"><value>modo de deslize direcional não suportado</value></data>
+  <data name="Workshop_Tr_HapticIntensityDropped" xml:space="preserve"><value>resposta háptica descartada ({0} atribuições)</value></data>
+  <data name="Workshop_Tr_ResponseCurveNotSupported" xml:space="preserve"><value>configurações de curva de resposta e alcance descartadas ({0})</value></data>
+  <data name="Workshop_Tr_GyroButtonMaskDropped" xml:space="preserve"><value>configuração de ativação do giroscópio {0}={1} descartada (a ativação do giroscópio é configurada por controle)</value></data>
+  <data name="Workshop_Tr_ActivatorDelayDropped" xml:space="preserve"><value>atraso de pressão descartado ({0})</value></data>
+  <data name="Workshop_Tr_InterruptibleDropped" xml:space="preserve"><value>a pressão não interrompível se comporta como uma pressão normal</value></data>
+  <data name="Workshop_Tr_PlayerNumberActionNotSupported" xml:space="preserve"><value>a troca de número do jogador é uma ação do cliente Steam, sem equivalente</value></data>
+  <data name="Workshop_Tr_LizardModeActionNotSupported" xml:space="preserve"><value>a alternância do modo lizard é interna do Steam, sem equivalente</value></data>
+  <data name="Workshop_Tr_SetLedDefaultApproximated" xml:space="preserve"><value>restaurar iluminação padrão aproximado como limpar a sobreposição</value></data>
+  <data name="Workshop_Tr_ToggleLatchEmitted" xml:space="preserve"><value>a pressão de alternância mantém {0} até a próxima pressão</value></data>
+  <data name="Workshop_Tr_ToggleDropped" xml:space="preserve"><value>configuração de alternância descartada (sem retenção para esta saída)</value></data>
+  <data name="Workshop_Tr_LongPressKeyTap" xml:space="preserve"><value>a pressão longa toca {0} no limiar (o Steam a mantém até soltar)</value></data>
+  <data name="Workshop_Tr_CameraResetApproximated" xml:space="preserve"><value>reset de câmera aproximado como recentralização do giroscópio</value></data>
+  <data name="Workshop_Tr_MouseRegionApproximated" xml:space="preserve"><value>região do mouse aproximada como uma limitação centralizada do cursor ({0}% da tela, centro da região {1}%, {2}%) enquanto a superfície é mantida</value></data>
+  <data name="Workshop_Tr_MouseRegionTuningDropped" xml:space="preserve"><value>configurações de ativação/liberação da região do mouse descartadas ({0})</value></data>
+  <data name="Workshop_Tr_TouchQuadrantApproximated" xml:space="preserve"><value>as células de botões compartilham a superfície de toque hospedeira (sem zonas por célula)</value></data>
+  <data name="Workshop_Tr_TrackpadHalfApproximated" xml:space="preserve"><value>hospedado em uma metade do touchpad; o PadForge lê o pad inteiro</value></data>
+  <data name="Workshop_Tr_FlickStickSurfaceNotSupported" xml:space="preserve"><value>flick stick em uma superfície de toque ignorado (o flick stick do PadForge lê um analógico físico)</value></data>
+  <data name="Workshop_Tr_FlickStickTuningDropped" xml:space="preserve"><value>ajustes do flick stick descartados ({0})</value></data>
+  <data name="Macro_HoldForMs" xml:space="preserve"><value>Ao Segurar</value></data>
+  <data name="Macro_HoldForMs_Tooltip" xml:space="preserve"><value>Dispara uma vez depois que o gatilho for mantido continuamente pelo tempo de retenção. Um toque mais curto não faz nada.</value></data>
+  <data name="Macro_TriggerHoldMs_Label" xml:space="preserve"><value>Tempo de Retenção</value></data>
+  <data name="MacroAction_Type_RepeatVcButtonWhileHeld" xml:space="preserve"><value>Repetir Botão Enquanto Segurar</value></data>
+  <data name="MacroAction_RepeatVcButtonWhileHeld_Tooltip" xml:space="preserve"><value>Liga e desliga o botão do controle no intervalo enquanto o gatilho estiver pressionado (autofire / turbo).</value></data>
+  <data name="MacroAction_RepeatVcButtonWhileHeld_Format" xml:space="preserve"><value>Repetir {0} a cada {1} ms</value></data>
+  <data name="MacroAction_Type_ToggleVcButton" xml:space="preserve"><value>Alternar Botão</value></data>
+  <data name="MacroAction_ToggleVcButton_Tooltip" xml:space="preserve"><value>Cada disparo trava ou destrava o botão do controle. Um botão travado permanece pressionado até o próximo disparo ou até a macro ser desativada.</value></data>
+  <data name="MacroAction_ToggleVcButton_Format" xml:space="preserve"><value>Alternar {0}</value></data>
+  <data name="MacroAction_Type_ToggleKey" xml:space="preserve"><value>Alternar Tecla</value></data>
+  <data name="MacroAction_ToggleKey_Tooltip" xml:space="preserve"><value>Cada disparo trava ou destrava a tecla. Uma tecla travada permanece pressionada até o próximo disparo ou até a macro ser desativada.</value></data>
+  <data name="MacroAction_ToggleKey_Format" xml:space="preserve"><value>Alternar teclas {0}</value></data>
+  <data name="MacroAction_Type_GyroRecenter" xml:space="preserve"><value>Recentralizar Giroscópio</value></data>
+  <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>Zera as referências de mira do giroscópio acumuladas do pad ao pressionar. O histórico de suavização é limpo, o neutro do Motion Lean é recapturado e a estimativa de gravidade é reiniciada a partir da pose atual do controle.</value></data>
+  <data name="Pad_Menus" xml:space="preserve"><value>Menus</value></data>
+  <data name="Menu_EmptyHint" xml:space="preserve"><value>Menus transformam um analógico ou touchpad em um anel ou grade na tela. Adicione um menu, escolha sua entrada host, depois rotule cada célula e dê a ela uma atribuição.</value></data>
+  <data name="Menu_NewNameFormat" xml:space="preserve"><value>Menu {0}</value></data>
+  <data name="Menu_Name" xml:space="preserve"><value>Nome do Menu</value></data>
+  <data name="Menu_Enabled" xml:space="preserve"><value>Ativado</value></data>
+  <data name="Menu_Style" xml:space="preserve"><value>Estilo</value></data>
+  <data name="Menu_Style_Radial" xml:space="preserve"><value>Anel Radial</value></data>
+  <data name="Menu_Style_Grid" xml:space="preserve"><value>Grade de Toque</value></data>
+  <data name="Menu_HostInput" xml:space="preserve"><value>Entrada Host</value></data>
+  <data name="Menu_Host_LeftStick" xml:space="preserve"><value>Analógico Esquerdo</value></data>
+  <data name="Menu_Host_RightStick" xml:space="preserve"><value>Analógico Direito</value></data>
+  <data name="Menu_Host_Touchpad_Format" xml:space="preserve"><value>Touchpad {0}</value></data>
+  <data name="Menu_HostHalf" xml:space="preserve"><value>Metade do Pad</value></data>
+  <data name="Menu_Half_Whole" xml:space="preserve"><value>Pad Inteiro</value></data>
+  <data name="Menu_Half_Left" xml:space="preserve"><value>Metade Esquerda</value></data>
+  <data name="Menu_Half_Right" xml:space="preserve"><value>Metade Direita</value></data>
+  <data name="Menu_FireMode" xml:space="preserve"><value>Modo de Disparo</value></data>
+  <data name="Menu_Fire_Click" xml:space="preserve"><value>Ao Clicar</value></data>
+  <data name="Menu_Fire_ClickRelease" xml:space="preserve"><value>Ao Soltar o Clique</value></data>
+  <data name="Menu_Fire_TouchRelease" xml:space="preserve"><value>Ao Soltar o Toque</value></data>
+  <data name="Menu_Fire_Always" xml:space="preserve"><value>Enquanto Apontado</value></data>
+  <data name="Menu_Cells" xml:space="preserve"><value>Células</value></data>
+  <data name="Menu_HasCenter" xml:space="preserve"><value>Célula Central</value></data>
+  <data name="Menu_ShowLabels" xml:space="preserve"><value>Mostrar Rótulos</value></data>
+  <data name="Menu_Position" xml:space="preserve"><value>Posição na Tela</value></data>
+  <data name="Menu_Scale" xml:space="preserve"><value>Tamanho</value></data>
+  <data name="Menu_Opacity" xml:space="preserve"><value>Opacidade</value></data>
+  <data name="Menu_Deadzone" xml:space="preserve"><value>Zona Morta de Ativação</value></data>
+  <data name="Menu_CellBindings" xml:space="preserve"><value>Atribuições de Células</value></data>
+  <data name="Menu_CellIndex_Format" xml:space="preserve"><value>Célula {0}</value></data>
+  <data name="Menu_CellCenter" xml:space="preserve"><value>Centro</value></data>
+  <data name="Menu_Binding_None" xml:space="preserve"><value>Nenhuma</value></data>
+  <data name="Menu_Binding_Key" xml:space="preserve"><value>Tecla do Teclado</value></data>
+  <data name="Menu_Binding_Button" xml:space="preserve"><value>Botão do Controle</value></data>
+  <data name="Mapping_MenuItem_Format" xml:space="preserve"><value>Menu {0} Célula {1}</value></data>
+  <data name="Dashboard_MenuOverlay" xml:space="preserve"><value>Sobreposição de Menu</value></data>
+  <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>Mostra o anel ou a grade na tela enquanto um menu radial ou de toque está ativo. Os menus ainda disparam com a sobreposição desligada.</value></data>
+  <data name="Workshop_Tr_MenuEmitted" xml:space="preserve"><value>menu na tela criado ({0} células atribuídas)</value></data>
+  <data name="Workshop_Tr_MenuEmpty" xml:space="preserve"><value>o menu não tem células atribuídas</value></data>
+  <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>superfície host do menu não suportada ({0})</value></data>
+  <data name="Workshop_Tr_MenuIconsDropped" xml:space="preserve"><value>ícones das células do menu descartados ({0} células exibem rótulos de texto)</value></data>
+  <data name="Workshop_Tr_MenuTuningDropped" xml:space="preserve"><value>ajustes do menu não suportados ({0})</value></data>
 </root>

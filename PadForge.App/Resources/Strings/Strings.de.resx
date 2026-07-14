@@ -2298,7 +2298,7 @@
   <data name="MacroAction_GuideLedBrightness_Format" xml:space="preserve"><value>Guide-LED-Helligkeit: {0}%</value></data>
   <data name="MacroAction_GuideLedBrightness_Tooltip" xml:space="preserve"><value>Legt die Helligkeit der Guide- oder Home-Tasten-LED für jeden fähigen Controller am Slot fest. Xbox-Controller akzeptieren dies nur über USB.</value></data>
   <data name="MacroAction_Type_GuideLedBrightness" xml:space="preserve"><value>Guide-LED-Helligkeit festlegen</value></data>
-  <data name="Macro_GuideLedBrightness_Hint" xml:space="preserve"><value>Gilt für Xbox-Controller über USB und für den Steam Controller von 2015. Kombiniere zwei dieser Aktionen, um die LED beim Start eines Makros aufblinken zu lassen und am Ende wiederherzustellen.</value></data>
+  <data name="Macro_GuideLedBrightness_Hint" xml:space="preserve"><value>Gilt für Xbox-Controller über USB, den Steam Controller von 2015 und Switch-Controller mit Home-Tasten-LED. Kombiniere zwei dieser Aktionen, um die LED beim Start eines Makros aufblinken zu lassen und am Ende wiederherzustellen.</value></data>
   <data name="Pad_Combine_StickTrim_Description" xml:space="preserve"><value>Die letzte Quelle der Zeile ist ein Trimm-Stick. Während die anderen Quellen den Trigger halten, erhöht Drücken des Sticks nach oben den gehaltenen Wert und Ziehen nach unten senkt ihn. Gedacht für feines Gas- und Bremsdosieren auf Pads ohne analoge Trigger.</value></data>
   <data name="Pad_Combine_StickTrim_Name" xml:space="preserve"><value>Stick-Trimmung</value></data>
   <data name="Pad_Kbm_Socd_AddPair" xml:space="preserve"><value>Paar hinzufügen</value></data>
@@ -2323,8 +2323,8 @@
   <data name="Pad_Lighting_GuideLed_Brightness_Tooltip" xml:space="preserve"><value>Helligkeit der Guide-Tasten-LED von 0% (aus) bis 100% (voll). Gilt, solange der Modus Feste Helligkeit ist.</value></data>
   <data name="Pad_Lighting_GuideLed_DeviceDefault" xml:space="preserve"><value>Gerätestandard</value></data>
   <data name="Pad_Lighting_GuideLed_Fixed" xml:space="preserve"><value>Feste Helligkeit</value></data>
-  <data name="Pad_Lighting_GuideLed_Mode_Tooltip" xml:space="preserve"><value>Gerätestandard lässt die LED genau so, wie die Controller-Firmware sie eingestellt hat. Feste Helligkeit hält den unten eingestellten Wert. Akkustand macht die LED bei vollerem Akku heller und fällt nie unter 10%. Xbox-Controller akzeptieren Guide-LED-Befehle nur über USB, daher hat diese Einstellung bei einer Bluetooth-Verbindung keine Wirkung.</value></data>
-  <data name="Pad_Lighting_GuideLed_Subtitle" xml:space="preserve"><value>Helligkeit der leuchtenden Guide- oder Home-Taste. Xbox-One-Controller und neuere akzeptieren sie über USB. Der Steam Controller von 2015 akzeptiert sie über jede Verbindung, und alle Steam Controller teilen sich eine Helligkeit.</value></data>
+  <data name="Pad_Lighting_GuideLed_Mode_Tooltip" xml:space="preserve"><value>Gerätestandard lässt die LED genau so, wie die Controller-Firmware sie eingestellt hat. Feste Helligkeit hält den unten eingestellten Wert. Akkustand macht die LED bei vollerem Akku heller und fällt nie unter 10%. Xbox-Controller akzeptieren Guide-LED-Befehle nur über USB, daher hat diese Einstellung bei einer Bluetooth-Verbindung keine Wirkung. Switch-Controller akzeptieren Home-LED-Befehle über jede Verbindung.</value></data>
+  <data name="Pad_Lighting_GuideLed_Subtitle" xml:space="preserve"><value>Helligkeit der leuchtenden Guide- oder Home-Taste. Xbox-One-Controller und neuere akzeptieren sie über USB. Der Steam Controller von 2015 akzeptiert sie über jede Verbindung, und alle Steam Controller teilen sich eine Helligkeit. Switch-Pro-Controller und rechte Joy-Cons (einzeln, im Paar oder in der Aufladehalterung) akzeptieren sie über jede Verbindung.</value></data>
   <data name="Pad_Mapping_TrimDeadzone" xml:space="preserve"><value>Trimm-Deadzone</value></data>
   <data name="Pad_Mapping_TrimDeadzone_Tooltip" xml:space="preserve"><value>Stick-Ausschläge unterhalb dieses Prozentsatzes werden ignoriert, damit Lenken mit demselben Stick den gehaltenen Triggerwert nie verschiebt. Nur die stärkeren vertikalen Ausschläge des Sticks verstellen ihn.</value></data>
   <data name="Pad_Mapping_TrimRate" xml:space="preserve"><value>Trimmgeschwindigkeit</value></data>
@@ -2465,4 +2465,149 @@
   <data name="About_ZstdSharp" xml:space="preserve"><value>ZstdSharp</value></data>
   <data name="About_ZstdSharpDesc" xml:space="preserve"><value>Zstandard-Dekompression, die SteamKit2 für Steam-Depot-Chunks verwendet, eine C#-Portierung der zstd-Bibliothek von Oleg Stepanischev. MIT.</value></data>
   <data name="Mapping_AnyDevice" xml:space="preserve"><value>(Beliebiges Gerät)</value></data>
+  <data name="Mapping_TouchpadFingerXLeft_Format" xml:space="preserve"><value>Touchpad {0} Finger {1} X (linke Hälfte)</value></data>
+  <data name="Mapping_TouchpadFingerXRight_Format" xml:space="preserve"><value>Touchpad {0} Finger {1} X (rechte Hälfte)</value></data>
+  <data name="Mapping_TouchpadFingerYLeft_Format" xml:space="preserve"><value>Touchpad {0} Finger {1} Y (linke Hälfte)</value></data>
+  <data name="Mapping_TouchpadFingerYRight_Format" xml:space="preserve"><value>Touchpad {0} Finger {1} Y (rechte Hälfte)</value></data>
+  <data name="Mapping_TouchpadPointerX_Format" xml:space="preserve"><value>Touchpad {0} Zeiger X</value></data>
+  <data name="Mapping_TouchpadPointerY_Format" xml:space="preserve"><value>Touchpad {0} Zeiger Y</value></data>
+  <data name="Mapping_TouchpadPointerXLeft_Format" xml:space="preserve"><value>Touchpad {0} Zeiger X (linke Hälfte)</value></data>
+  <data name="Mapping_TouchpadPointerXRight_Format" xml:space="preserve"><value>Touchpad {0} Zeiger X (rechte Hälfte)</value></data>
+  <data name="Mapping_TouchpadPointerYLeft_Format" xml:space="preserve"><value>Touchpad {0} Zeiger Y (linke Hälfte)</value></data>
+  <data name="Mapping_TouchpadPointerYRight_Format" xml:space="preserve"><value>Touchpad {0} Zeiger Y (rechte Hälfte)</value></data>
+  <data name="Mapping_TouchpadFingerTouchLeft_Format" xml:space="preserve"><value>Touchpad {0} Finger {1} Berührung (linke Hälfte)</value></data>
+  <data name="Mapping_TouchpadFingerTouchRight_Format" xml:space="preserve"><value>Touchpad {0} Finger {1} Berührung (rechte Hälfte)</value></data>
+  <data name="Pad_Touchpad_Pointer_Header" xml:space="preserve"><value>Absoluter Zeiger</value></data>
+  <data name="Pad_Touchpad_Pointer_Subtitle" xml:space="preserve"><value>Stimmt die Touchpad-Zeiger-X/Y-Quellen ab, die den Cursor an die Position deines Fingers auf dem Pad versetzen (auf Maus X/Y eines virtuellen Tastatur/Maus-Controllers zuordnen). Bei 1.0 wird das Pad 1:1 auf den Bildschirm abgebildet. Erhöhe die Dehnung, um die Bildschirmränder zu erreichen, bevor der Daumen den Pad-Rand erreicht.</value></data>
+  <data name="Pad_Touchpad_PointerStretchX" xml:space="preserve"><value>Zeiger-Dehnung X</value></data>
+  <data name="Pad_Touchpad_PointerStretchX_Tooltip" xml:space="preserve"><value>Horizontale Rand-Dehnung um die Pad-Mitte. 1.5 erreicht die Bildschirmränder bei zwei Dritteln des physischen Wegs.</value></data>
+  <data name="Pad_Touchpad_PointerStretchY" xml:space="preserve"><value>Zeiger-Dehnung Y</value></data>
+  <data name="Pad_Touchpad_PointerStretchY_Tooltip" xml:space="preserve"><value>Vertikale Rand-Dehnung um die Pad-Mitte.</value></data>
+  <data name="Pad_Touchpad_SwipeHaptics_Header" xml:space="preserve"><value>Wisch-Haptik</value></data>
+  <data name="Pad_Touchpad_SwipeHaptics_Subtitle" xml:space="preserve"><value>Pulsiert die Haptik des Controllers, während der Finger über dieses Touchpad fährt, wie die Trackpad-Ticks von Steam Input. Steam Controller und Steam Deck ticken mit dem Aktuator unter dem Pad; DualSense und DualShock 4 pulsieren die Rumble-Motoren.</value></data>
+  <data name="Pad_Touchpad_SwipeHapticsEnabled" xml:space="preserve"><value>Wisch-Haptik aktivieren</value></data>
+  <data name="Pad_Touchpad_SwipeHapticsEnabled_Tooltip" xml:space="preserve"><value>Löst jedes Mal einen kurzen Haptik-Tick aus, wenn der Finger eine festgelegte Distanz auf diesem Pad zurücklegt. Das Aufsetzen eines Fingers oder Klicken des Pads tickt nie. Standardmäßig aus.</value></data>
+  <data name="Pad_Touchpad_SwipeHapticsIntensity" xml:space="preserve"><value>Puls-Intensität</value></data>
+  <data name="Pad_Touchpad_SwipeHapticsIntensity_Tooltip" xml:space="preserve"><value>Stärke jedes Ticks. Spiel-Rumble gewinnt immer, wenn es stärker ist.</value></data>
+  <data name="Pad_ResetTouchpadPointer" xml:space="preserve"><value>Absoluten Zeiger zurücksetzen</value></data>
+  <data name="Pad_ResetTouchpadSwipeHaptics" xml:space="preserve"><value>Wisch-Haptik zurücksetzen</value></data>
+  <data name="Pad_ResetTouchpadPointerStretchX" xml:space="preserve"><value>Zeiger-Dehnung X zurücksetzen</value></data>
+  <data name="Pad_ResetTouchpadPointerStretchY" xml:space="preserve"><value>Zeiger-Dehnung Y zurücksetzen</value></data>
+  <data name="Pad_ResetTouchpadSwipeHapticsEnabled" xml:space="preserve"><value>Wisch-Haptik aktivieren zurücksetzen</value></data>
+  <data name="Pad_ResetTouchpadSwipeHapticsIntensity" xml:space="preserve"><value>Puls-Intensität zurücksetzen</value></data>
+  <data name="Mapping_FlickStickRight" xml:space="preserve"><value>Flick Stick (rechter Stick)</value></data>
+  <data name="Mapping_FlickStickLeft" xml:space="preserve"><value>Flick Stick (linker Stick)</value></data>
+  <data name="Pad_FlickStick_Header" xml:space="preserve"><value>Flick Stick</value></data>
+  <data name="Pad_FlickStick_Subtitle" xml:space="preserve"><value>Einstellungen für die Flick-Stick-Eingaben: Stick in eine Richtung drücken und die Kamera dreht sich entsprechend, am Rand entlangfahren für Feindrehung. Ordne "Flick Stick (rechter Stick)" im Eingabe-Dropdown unter Zuordnungen Maus X zu, auf einer beliebigen Ebene.</value></data>
+  <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>Alle Flick-Stick-Einstellungen zurücksetzen</value></data>
+  <data name="Settings_FlickCountsPer360" xml:space="preserve"><value>Zählschritte pro 360°</value></data>
+  <data name="Settings_FlickCountsPer360_Tooltip" xml:space="preserve"><value>Maus-Zählschritte für eine volle 360°-Kameradrehung. Hängt von der Maus-Empfindlichkeit des Spiels ab: erhöhen, wenn ein Flick zu wenig dreht, verringern, wenn er zu weit dreht.</value></data>
+  <data name="Pad_ResetFlickCountsPer360" xml:space="preserve"><value>Auf 14400 zurücksetzen</value></data>
+  <data name="Settings_FlickTime" xml:space="preserve"><value>Flick-Zeit</value></data>
+  <data name="Settings_FlickTime_Tooltip" xml:space="preserve"><value>Wie lange ein voller 180°-Flick bis zum Abschluss dauert, mit Ausklingkurve. Kürzere Drehungen sind in derselben Zeit fertig.</value></data>
+  <data name="Pad_ResetFlickTime" xml:space="preserve"><value>Auf 0.1 s zurücksetzen</value></data>
+  <data name="Settings_FlickThreshold" xml:space="preserve"><value>Flick-Schwelle</value></data>
+  <data name="Settings_FlickThreshold_Tooltip" xml:space="preserve"><value>Stick-Auslenkung, die einen Flick startet, als Anteil der vollen Auslenkung. Während eines Flicks sinkt der Loslasspunkt auf 90% dieses Werts.</value></data>
+  <data name="Pad_ResetFlickThreshold" xml:space="preserve"><value>Auf 0.9 zurücksetzen</value></data>
+  <data name="Settings_FlickSnapMode" xml:space="preserve"><value>Einrastwinkel</value></data>
+  <data name="Settings_FlickSnapMode_Tooltip" xml:space="preserve"><value>Rastet den Flick auf feste Winkel ein für gleichmäßigere Drehungen. Nur vorwärts rastet jeden Flick genau nach vorn ein.</value></data>
+  <data name="Settings_FlickSnapMode_None" xml:space="preserve"><value>Kein Einrasten</value></data>
+  <data name="Settings_FlickSnapMode_Forward" xml:space="preserve"><value>Nur vorwärts</value></data>
+  <data name="Settings_FlickSnapMode_Half" xml:space="preserve"><value>180 Grad</value></data>
+  <data name="Settings_FlickSnapMode_Four" xml:space="preserve"><value>90 Grad</value></data>
+  <data name="Settings_FlickSnapMode_Sixths" xml:space="preserve"><value>60 Grad</value></data>
+  <data name="Settings_FlickSnapMode_Eight" xml:space="preserve"><value>45 Grad</value></data>
+  <data name="Pad_ResetFlickSnapMode" xml:space="preserve"><value>Auf Kein Einrasten zurücksetzen</value></data>
+  <data name="Settings_FlickSnapStrength" xml:space="preserve"><value>Einraststärke</value></data>
+  <data name="Settings_FlickSnapStrength_Tooltip" xml:space="preserve"><value>Wie stark ein Flick zum eingerasteten Winkel gezogen wird. 1 rastet vollständig ein, 0 deaktiviert das Einrasten, Werte dazwischen mischen.</value></data>
+  <data name="Pad_ResetFlickSnapStrength" xml:space="preserve"><value>Auf 1.0 zurücksetzen</value></data>
+  <data name="Settings_FlickForwardDeadzone" xml:space="preserve"><value>Frontwinkel-Deadzone</value></data>
+  <data name="Settings_FlickForwardDeadzone_Tooltip" xml:space="preserve"><value>Ein Flick innerhalb dieses Winkels um genau vorn dreht nichts. So kann eine Randdrehung ohne Flick-Drehung beginnen.</value></data>
+  <data name="Pad_ResetFlickForwardDeadzone" xml:space="preserve"><value>Auf 0° zurücksetzen</value></data>
+  <data name="Settings_FlickSmoothing" xml:space="preserve"><value>Randdrehungs-Glättung</value></data>
+  <data name="Settings_FlickSmoothing_Tooltip" xml:space="preserve"><value>Glättet Rauschen beim Entlangfahren am Rand. -1 verwendet das automatische gestufte Fenster, 0 schaltet die Glättung aus, größere Werte glätten größere Drehungen pro Tick.</value></data>
+  <data name="Pad_ResetFlickSmoothing" xml:space="preserve"><value>Auf Automatisch (-1) zurücksetzen</value></data>
+  <data name="Settings_FlickOnEngage" xml:space="preserve"><value>Flick beim Aktivieren erlauben</value></data>
+  <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>Wenn die Ebene mit Flick Stick aktiviert wird, während der Stick bereits ausgelenkt ist, wird der Flick sofort ausgelöst. Aus hält die Kamera still und verfolgt die Drehung ab dem aktuellen Stick-Winkel.</value></data>
+  <data name="Pad_ResetFlickOnEngage" xml:space="preserve"><value>Auf Aus zurücksetzen</value></data>
+  <data name="Mapping_MouseGestureCustom" xml:space="preserve"><value>Benutzerdefiniert</value></data>
+  <data name="Pad_MouseGestures_Custom_Tooltip" xml:space="preserve"><value>Aktiviert die Erkennung mit einer aufgezeichneten Eingabe von einem beliebigen Gerät statt einer Maustaste: eine Taste, eine Gamepad-Taste oder eine analoge Eingabe wie ein Pedal. Zeichne die Eingabe unten auf.</value></data>
+  <data name="Pad_MouseGestures_CustomInput" xml:space="preserve"><value>Benutzerdefinierte Aktivierungseingabe</value></data>
+  <data name="Pad_MouseGestures_CustomInput_Tooltip" xml:space="preserve"><value>Die Eingabe, die die Benutzerdefiniert-Gestensitzung aktiviert, solange sie gehalten wird, aufgezeichnet von einem beliebigen Gerät an diesem Slot. Tasten und Knöpfe aktivieren, solange sie gedrückt sind. Analoge Eingaben wie ein Pedal aktivieren ab der Hälfte des Wegs.</value></data>
+  <data name="Pad_ResetMouseGestureCustomInput" xml:space="preserve"><value>Benutzerdefinierte Aktivierungseingabe zurücksetzen</value></data>
+  <data name="Workshop_Tr_ScrollGestureModeNotSupported" xml:space="preserve"><value>Richtungswisch-Modus nicht unterstützt</value></data>
+  <data name="Workshop_Tr_HapticIntensityDropped" xml:space="preserve"><value>haptisches Feedback verworfen ({0} Belegungen)</value></data>
+  <data name="Workshop_Tr_ResponseCurveNotSupported" xml:space="preserve"><value>Reaktionskurven- und Bereichseinstellungen verworfen ({0})</value></data>
+  <data name="Workshop_Tr_GyroButtonMaskDropped" xml:space="preserve"><value>Gyro-Aktivierungseinstellung {0}={1} verworfen (Gyro-Aktivierung wird pro Pad konfiguriert)</value></data>
+  <data name="Workshop_Tr_ActivatorDelayDropped" xml:space="preserve"><value>Druckverzögerung verworfen ({0})</value></data>
+  <data name="Workshop_Tr_InterruptibleDropped" xml:space="preserve"><value>nicht unterbrechbarer Druck verhält sich wie ein normaler Druck</value></data>
+  <data name="Workshop_Tr_PlayerNumberActionNotSupported" xml:space="preserve"><value>Spielernummer-Wechsel ist eine Steam-Client-Aktion, keine Entsprechung</value></data>
+  <data name="Workshop_Tr_LizardModeActionNotSupported" xml:space="preserve"><value>Lizard-Modus-Umschaltung ist Steam-intern, keine Entsprechung</value></data>
+  <data name="Workshop_Tr_SetLedDefaultApproximated" xml:space="preserve"><value>Standardbeleuchtung wiederherstellen als Aufheben des Overrides angenähert</value></data>
+  <data name="Workshop_Tr_ToggleLatchEmitted" xml:space="preserve"><value>Umschalt-Druck hält {0} bis zum nächsten Druck</value></data>
+  <data name="Workshop_Tr_ToggleDropped" xml:space="preserve"><value>Umschalt-Einstellung verworfen (kein Halten für diese Ausgabe)</value></data>
+  <data name="Workshop_Tr_LongPressKeyTap" xml:space="preserve"><value>Langdruck tippt {0} an der Schwelle an (Steam hält bis zum Loslassen)</value></data>
+  <data name="Workshop_Tr_CameraResetApproximated" xml:space="preserve"><value>Kamera-Reset als Gyro-Zentrierung angenähert</value></data>
+  <data name="Workshop_Tr_MouseRegionApproximated" xml:space="preserve"><value>Mausbereich als zentrierte Cursor-Begrenzung angenähert ({0}% des Bildschirms, Bereichsmitte {1}%, {2}%), solange die Oberfläche gehalten wird</value></data>
+  <data name="Workshop_Tr_MouseRegionTuningDropped" xml:space="preserve"><value>Aktivierungs-/Loslass-Einstellungen des Mausbereichs verworfen ({0})</value></data>
+  <data name="Workshop_Tr_TouchQuadrantApproximated" xml:space="preserve"><value>Tasten-Felder teilen sich die Host-Touch-Oberfläche (keine Zonen pro Feld)</value></data>
+  <data name="Workshop_Tr_TrackpadHalfApproximated" xml:space="preserve"><value>auf einer Hälfte des Touchpads gehostet; PadForge liest das ganze Pad</value></data>
+  <data name="Workshop_Tr_FlickStickSurfaceNotSupported" xml:space="preserve"><value>Flick Stick auf einer Touch-Oberfläche übersprungen (PadForge-Flick-Stick liest einen physischen Stick)</value></data>
+  <data name="Workshop_Tr_FlickStickTuningDropped" xml:space="preserve"><value>Flick-Stick-Feinabstimmung verworfen ({0})</value></data>
+  <data name="Macro_HoldForMs" xml:space="preserve"><value>Beim Halten</value></data>
+  <data name="Macro_HoldForMs_Tooltip" xml:space="preserve"><value>Löst einmal aus, nachdem der Auslöser ununterbrochen für die Haltezeit gehalten wurde. Ein kürzeres Antippen bewirkt nichts.</value></data>
+  <data name="Macro_TriggerHoldMs_Label" xml:space="preserve"><value>Haltezeit</value></data>
+  <data name="MacroAction_Type_RepeatVcButtonWhileHeld" xml:space="preserve"><value>Controller-Taste wiederholen, solange gehalten</value></data>
+  <data name="MacroAction_RepeatVcButtonWhileHeld_Tooltip" xml:space="preserve"><value>Schaltet die Controller-Taste im eingestellten Intervall ein und aus, solange der Auslöser gehalten wird (Autofire / Turbo).</value></data>
+  <data name="MacroAction_RepeatVcButtonWhileHeld_Format" xml:space="preserve"><value>{0} alle {1} ms wiederholen</value></data>
+  <data name="MacroAction_Type_ToggleVcButton" xml:space="preserve"><value>Controller-Taste umschalten</value></data>
+  <data name="MacroAction_ToggleVcButton_Tooltip" xml:space="preserve"><value>Jedes Auslösen hält die Controller-Taste gedrückt oder gibt sie frei. Eine gehaltene Taste bleibt gedrückt bis zum nächsten Auslösen oder bis das Makro deaktiviert wird.</value></data>
+  <data name="MacroAction_ToggleVcButton_Format" xml:space="preserve"><value>{0} umschalten</value></data>
+  <data name="MacroAction_Type_ToggleKey" xml:space="preserve"><value>Taste umschalten</value></data>
+  <data name="MacroAction_ToggleKey_Tooltip" xml:space="preserve"><value>Jedes Auslösen hält die Taste gedrückt oder gibt sie frei. Eine gehaltene Taste bleibt gedrückt bis zum nächsten Auslösen oder bis das Makro deaktiviert wird.</value></data>
+  <data name="MacroAction_ToggleKey_Format" xml:space="preserve"><value>Tasten {0} umschalten</value></data>
+  <data name="MacroAction_Type_GyroRecenter" xml:space="preserve"><value>Gyro zentrieren</value></data>
+  <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>Setzt die aufgelaufenen Gyro-Zielreferenzen des Pads beim Drücken auf null. Der Glättungsverlauf wird geleert, der Motion-Lean-Nullpunkt neu erfasst und die Schwerkraftschätzung aus der aktuellen Lage des Controllers neu initialisiert.</value></data>
+  <data name="Pad_Menus" xml:space="preserve"><value>Menüs</value></data>
+  <data name="Menu_EmptyHint" xml:space="preserve"><value>Menüs machen aus einem Stick oder Touchpad einen Ring oder ein Raster auf dem Bildschirm. Füge ein Menü hinzu, wähle seine Host-Eingabe, beschrifte dann jedes Feld und gib ihm eine Belegung.</value></data>
+  <data name="Menu_NewNameFormat" xml:space="preserve"><value>Menü {0}</value></data>
+  <data name="Menu_Name" xml:space="preserve"><value>Menüname</value></data>
+  <data name="Menu_Enabled" xml:space="preserve"><value>Aktiviert</value></data>
+  <data name="Menu_Style" xml:space="preserve"><value>Stil</value></data>
+  <data name="Menu_Style_Radial" xml:space="preserve"><value>Radialring</value></data>
+  <data name="Menu_Style_Grid" xml:space="preserve"><value>Touch-Raster</value></data>
+  <data name="Menu_HostInput" xml:space="preserve"><value>Host-Eingabe</value></data>
+  <data name="Menu_Host_LeftStick" xml:space="preserve"><value>Linker Stick</value></data>
+  <data name="Menu_Host_RightStick" xml:space="preserve"><value>Rechter Stick</value></data>
+  <data name="Menu_Host_Touchpad_Format" xml:space="preserve"><value>Touchpad {0}</value></data>
+  <data name="Menu_HostHalf" xml:space="preserve"><value>Pad-Hälfte</value></data>
+  <data name="Menu_Half_Whole" xml:space="preserve"><value>Ganzes Pad</value></data>
+  <data name="Menu_Half_Left" xml:space="preserve"><value>Linke Hälfte</value></data>
+  <data name="Menu_Half_Right" xml:space="preserve"><value>Rechte Hälfte</value></data>
+  <data name="Menu_FireMode" xml:space="preserve"><value>Auslösemodus</value></data>
+  <data name="Menu_Fire_Click" xml:space="preserve"><value>Beim Klick</value></data>
+  <data name="Menu_Fire_ClickRelease" xml:space="preserve"><value>Beim Lösen des Klicks</value></data>
+  <data name="Menu_Fire_TouchRelease" xml:space="preserve"><value>Beim Loslassen der Berührung</value></data>
+  <data name="Menu_Fire_Always" xml:space="preserve"><value>Solange markiert</value></data>
+  <data name="Menu_Cells" xml:space="preserve"><value>Felder</value></data>
+  <data name="Menu_HasCenter" xml:space="preserve"><value>Zentrales Feld</value></data>
+  <data name="Menu_ShowLabels" xml:space="preserve"><value>Beschriftungen anzeigen</value></data>
+  <data name="Menu_Position" xml:space="preserve"><value>Bildschirmposition</value></data>
+  <data name="Menu_Scale" xml:space="preserve"><value>Größe</value></data>
+  <data name="Menu_Opacity" xml:space="preserve"><value>Deckkraft</value></data>
+  <data name="Menu_Deadzone" xml:space="preserve"><value>Aktivierungs-Deadzone</value></data>
+  <data name="Menu_CellBindings" xml:space="preserve"><value>Feld-Belegungen</value></data>
+  <data name="Menu_CellIndex_Format" xml:space="preserve"><value>Feld {0}</value></data>
+  <data name="Menu_CellCenter" xml:space="preserve"><value>Mitte</value></data>
+  <data name="Menu_Binding_None" xml:space="preserve"><value>Keine</value></data>
+  <data name="Menu_Binding_Key" xml:space="preserve"><value>Tastaturtaste</value></data>
+  <data name="Menu_Binding_Button" xml:space="preserve"><value>Controller-Taste</value></data>
+  <data name="Mapping_MenuItem_Format" xml:space="preserve"><value>Menü {0} Feld {1}</value></data>
+  <data name="Dashboard_MenuOverlay" xml:space="preserve"><value>Menü-Overlay</value></data>
+  <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>Zeigt den Ring oder das Raster auf dem Bildschirm, solange ein Radial- oder Touch-Menü aktiv ist. Menüs lösen auch bei ausgeschaltetem Overlay aus.</value></data>
+  <data name="Workshop_Tr_MenuEmitted" xml:space="preserve"><value>Bildschirmmenü erstellt ({0} belegte Felder)</value></data>
+  <data name="Workshop_Tr_MenuEmpty" xml:space="preserve"><value>Menü hat keine belegten Felder</value></data>
+  <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>Menü-Host-Oberfläche nicht unterstützt ({0})</value></data>
+  <data name="Workshop_Tr_MenuIconsDropped" xml:space="preserve"><value>Menü-Feld-Symbole verworfen ({0} Felder zeigen Textbeschriftungen)</value></data>
+  <data name="Workshop_Tr_MenuTuningDropped" xml:space="preserve"><value>Menü-Feinabstimmung nicht unterstützt ({0})</value></data>
 </root>

@@ -79,10 +79,10 @@ namespace PadForge.Common.Input
                     // Combined gen-1 Joy-Con pair (SwitchJoyConPair, controller_list.h:589).
                     // SDL combines two Joy-Cons by default (HIDAPI_COMBINE_JOY_CONS = "1",
                     // SDL_hints.h:1623), so a paired set enumerates as 0x2008 -- without
-                    // this it would get no Audio tab. Two coils, same 0x10 packet as the
-                    // Pro (both halves filled). The handle reaches the Joy-Con its
-                    // DevicePath resolves to; full dual-coil drive would need the second
-                    // Joy-Con's path too, which the one-handle sink does not carry yet.
+                    // this it would get no Audio tab. The sink opens BOTH children and
+                    // drives both coils, routing the tone by the slot's commanded motor
+                    // sides (#223); with one child missing it degrades to that child's
+                    // coil alone (#184) until Reconcile resolves the other.
                     case 0x2008: return Family.JoyConPair;
                     case 0x2009: return Family.Pro;       // Switch Pro Controller
                     // Switch 2 (0x2066/0x2067/0x2068/0x2069) intentionally excluded:
@@ -129,6 +129,69 @@ namespace PadForge.Common.Input
         internal const int ToneFilterCut = 1;
         internal const int ToneFilterFold = 2;
         public static Func<int, Guid, (int Mode, int LimitHz)> ToneFilterProvider { get; set; }
+
+        // ── Combined-pair motor-side audio routing (discussion #223) ─────
+        // The reporter holds one Joy-Con per hand and wants the HD-haptic
+        // audio to follow the ACTIVE motor: left motor commanded -> left
+        // Joy-Con coil plays, right motor -> right. SDL routes the combined
+        // pair's rumble exactly that way (the combined driver fans both
+        // values to both children, SDL_hidapi_combined.c:109-121, and each
+        // child keeps only its own side: the left child zeroes
+        // high_frequency_rumble, the right child zeroes
+        // low_frequency_rumble, SDL_hidapi_switch.c:2148-2156), so "left
+        // motor" = low frequency = left child, "right motor" = high
+        // frequency = right child.
+        //
+        // Wired by InputService to the per-slot merged rumble snapshot
+        // (InputManager.FinalVibrationStates: game + macro rumble +
+        // per-device gain/swap/trigger routing, refreshed every poll tick).
+        // Plain field reads on preallocated Vibration objects, no locks;
+        // the pair sink's stream thread calls it once per 10 ms tick.
+        public static Func<int, (bool Left, bool Right)> SlotRumbleActiveProvider { get; set; }
+
+        /// <summary>How long a side stays hot after its motor drops. Game
+        /// rumble flaps at packet rate (SDL batches Switch writes on a 30 ms
+        /// cadence, RUMBLE_WRITE_FREQUENCY_MS in SDL_hidapi_switch.c), so a
+        /// pulsing motor would strobe the coil audio without a hold. Same
+        /// value as <see cref="HangoverMs"/>, this file's existing "quiet
+        /// dips inside a cue must not break the stream" constant, because it
+        /// smooths the same class of gap on the same stream.</summary>
+        internal const int PairSideHoldMs = 300;
+
+        /// <summary>The #223 side-routing decision, shared by the stream loop
+        /// and the unit tests (the HoldEngaged idiom). A side is hot while its
+        /// motor is commanded and for <paramref name="holdMs"/> after it drops.
+        /// NO motor commanded (or both holds expired) means BOTH coils play:
+        /// audio is not rumble, and macro sounds / the system-audio mirror /
+        /// remote frames arrive with no motor state at all, so motor state
+        /// only steers side emphasis while a game is actually rumbling. Both
+        /// motors active means both coils, matching SDL's own fan-out.</summary>
+        internal static (bool Left, bool Right) ResolvePairSides(
+            bool leftActive, bool rightActive, long nowMs,
+            ref long leftLastMs, ref long rightLastMs, int holdMs = PairSideHoldMs)
+        {
+            if (leftActive) leftLastMs = nowMs;
+            if (rightActive) rightLastMs = nowMs;
+            bool leftHot = leftActive || (nowMs - leftLastMs) <= holdMs;
+            bool rightHot = rightActive || (nowMs - rightLastMs) <= holdMs;
+            if (!leftHot && !rightHot) return (true, true);
+            return (leftHot, rightHot);
+        }
+
+        /// <summary>Picks the combined pair's primary child (left 0x2006
+        /// preferred, matching the #184 resolver order) and the second child
+        /// to fan writes to. Null paths mean "not present": with neither
+        /// child found the caller keeps the synthetic path, CreateFileW fails
+        /// as before, and the 3 s Reconcile retry stands. With one child the
+        /// sink degrades to the #184 single-coil behavior and Reconcile
+        /// retries the missing child every 3 s.</summary>
+        internal static (string PrimaryPath, string SecondPath, bool PrimaryIsRight)
+            SelectPairChildPaths(string leftPath, string rightPath)
+        {
+            if (leftPath != null) return (leftPath, rightPath, false);
+            if (rightPath != null) return (rightPath, null, true);
+            return (null, null, false);
+        }
 
         /// <summary>The #202 high-tone transform, shared by the stream loop
         /// and the unit tests (the HoldEngaged idiom). Applies Cut or Fold
@@ -398,6 +461,33 @@ namespace PadForge.Common.Input
             // never static).
             public byte JoyConTimer;
 
+            // ── Combined-pair dual-coil state (discussion #223) ──
+            // A JoyConPair sink drives BOTH physical children when both resolve:
+            // Handle carries the PRIMARY child (left 0x2006 preferred),
+            // PairSecondHandle the other one. PairPrimaryIsRight records which
+            // side Handle drives, so per-child packets fill the correct half
+            // even when only the right child resolved first. Each child gets
+            // its own rolling timer / probed write path / OutputReportByteLength.
+            // That is stricter than joycon-singer's one global g_timer shared
+            // across both devices (main_pc.cpp:50): each child here sees a clean
+            // +1 sequence, the per-device-state rule above. Zero until the second
+            // child resolves; Reconcile retries the missing child every 3 s and
+            // publishes the handle last, so a stale first read at worst drops
+            // one tick (the file's torn-read tolerance).
+            public IntPtr PairSecondHandle = IntPtr.Zero;
+            public bool PairPrimaryIsRight;
+            public byte PairSecondTimer;
+            public bool PairSecondUseWriteFile;
+            public int PairSecondOutLen = 64;
+            // Motor-side routing state, stream-thread only: wall-clock of the
+            // last tick each slot motor was seen commanded (backs the
+            // PairSideHoldMs hold window) and the per-side hot/cold edge for
+            // the one-neutral-then-quiet stop (the JoyConWasStreaming idiom).
+            public long PairLeftMotorLastMs = long.MinValue / 2;
+            public long PairRightMotorLastMs = long.MinValue / 2;
+            public bool PairLeftWasHot;
+            public bool PairRightWasHot;
+
             // Output report length from HID caps (HidD_SetOutputReport / WriteFile
             // require EXACTLY this length; a short buffer is rejected with
             // ERROR_INVALID_PARAMETER). Queried, never hardcoded.
@@ -578,19 +668,6 @@ namespace PadForge.Common.Input
         [StructLayout(LayoutKind.Sequential)]
         private struct SP_DEVICE_INTERFACE_DATA { public uint cbSize; public Guid InterfaceClassGuid; public uint Flags; public IntPtr Reserved; }
         private const uint DIGCF_PRESENT = 0x2, DIGCF_DEVICEINTERFACE = 0x10;
-
-        /// <summary>Resolves a real HID path for one of the combined pair's child
-        /// Joy-Cons (Left 0x2006 preferred, then Right 0x2007). Null if neither is
-        /// found, in which case BuildSink's CreateFileW fails as before.</summary>
-        private static string ResolveJoyConChildPath()
-        {
-            foreach (ushort pid in new ushort[] { 0x2006, 0x2007 })
-            {
-                string p = FindHidPath(NintendoVid, pid);
-                if (p != null) return p;
-            }
-            return null;
-        }
 
         /// <summary>Enumerates present HID device interfaces and returns the first
         /// whose HIDD_ATTRIBUTES match vid/pid. Standard SetupDi walk. Internal so
@@ -780,9 +857,57 @@ namespace PadForge.Common.Input
                     if (!BuildSink(s))
                         lock (_lock) _sinks.Remove(s);
 
+                RetryPairSecondHandles();
                 ReconcileMirrors();
             }
             finally { Interlocked.Exchange(ref _reconcileBusy, 0); }
+        }
+
+        /// <summary>Combined pair, missing-child retry (#223): a pair sink that
+        /// built single-coil (one child offline, or its open failed) picks up
+        /// the second coil on the same 3 s Reconcile cadence that retries a
+        /// fully-failed sink. Runs on the Reconcile timer thread, single-flight
+        /// under _reconcileBusy, so it never races another retry and never
+        /// blocks the stream loop (the init sleeps stay off that thread). The
+        /// handle publishes under _lock only while the sink is still live;
+        /// TeardownSink closes it from then on.</summary>
+        private static void RetryPairSecondHandles()
+        {
+            List<Sink> candidates;
+            lock (_lock)
+            {
+                if (_suppressed) return;
+                // Same synthetic-path gate as BuildSink's child resolution: only
+                // sinks whose handle came from the #184 child resolver can have
+                // a second child to attach.
+                candidates = _sinks.Where(x => x.Family == Family.JoyConPair && !x.Remote
+                    && x.Handle != IntPtr.Zero && x.PairSecondHandle == IntPtr.Zero
+                    && (string.IsNullOrEmpty(x.HidPath)
+                        || !x.HidPath.StartsWith(@"\\?\", StringComparison.Ordinal))).ToList();
+            }
+            foreach (var s in candidates)
+            {
+                // The missing child is the primary's opposite side.
+                ushort pid = s.PairPrimaryIsRight ? (ushort)0x2006 : (ushort)0x2007;
+                string path = FindHidPath(NintendoVid, pid);
+                if (path == null) continue;
+                IntPtr h2 = OpenPairSecondChild(s, path);
+                if (h2 == IntPtr.Zero) continue;
+                lock (_lock)
+                {
+                    if (!_suppressed && _sinks.Contains(s) && s.PairSecondHandle == IntPtr.Zero)
+                    {
+                        s.PairSecondHandle = h2;
+                        h2 = IntPtr.Zero;
+                    }
+                }
+                // Race lost (sink torn down while opening): release the orphan.
+                if (h2 != IntPtr.Zero)
+                {
+                    try { CancelIoEx(h2, IntPtr.Zero); } catch { }
+                    try { CloseHandle(h2); } catch { }
+                }
+            }
         }
 
         // ── Haptic mirror engage gate (#185) ──
@@ -969,6 +1094,7 @@ namespace PadForge.Common.Input
         private static bool BuildSink(Sink s)
         {
             IntPtr h = IntPtr.Zero;
+            IntPtr h2 = IntPtr.Zero;
             try
             {
                 // The 2026 Triton is driven directly, like every other device:
@@ -993,15 +1119,24 @@ namespace PadForge.Common.Input
                     // ("nintendo_joycons_combined", SDL_hidapijoystick.c:1088), not a
                     // real \\?\HID#... path, so CreateFileW fails and the pair gets no
                     // tone (issue #184). Both physical Joy-Cons are still present as
-                    // real HID devices (0x057E/0x2006 L, 0x2007 R); resolve one real
-                    // path so the sink opens and plays on that coil. One handle drives
-                    // one coil; full dual-coil is a documented follow-up.
+                    // real HID devices (0x057E/0x2006 L, 0x2007 R); resolve BOTH real
+                    // paths and drive both coils (discussion #223), the same fan-out
+                    // joycon-singer runs for a separate L+R pair (main_pc.cpp:69-84).
+                    // One child missing degrades to the #184 single-coil sink; the
+                    // other child is retried by Reconcile every 3 s.
                     string path = s.HidPath;
+                    string pairSecondPath = null;
                     if (s.Family == Family.JoyConPair &&
                         (string.IsNullOrEmpty(path) || !path.StartsWith(@"\\?\", StringComparison.Ordinal)))
                     {
-                        string child = ResolveJoyConChildPath();
-                        if (child != null) path = child;
+                        var (primary, second, primaryIsRight) = SelectPairChildPaths(
+                            FindHidPath(NintendoVid, 0x2006), FindHidPath(NintendoVid, 0x2007));
+                        if (primary != null)
+                        {
+                            path = primary;
+                            pairSecondPath = second;
+                            s.PairPrimaryIsRight = primaryIsRight;
+                        }
                     }
                     h = CreateFileW(path, GENERIC_WRITE | GENERIC_READ, SHARE_RW,
                         IntPtr.Zero, OPEN_EXISTING, FILE_FLAG_OVERLAPPED, IntPtr.Zero);
@@ -1023,6 +1158,13 @@ namespace PadForge.Common.Input
                         Thread.Sleep(50);
                         JoyConSendCommand(h, s, subcommand: 0x48, arg: 0x01); // enable vibration
                         Thread.Sleep(50);
+
+                        // Combined pair, second child (#223): open + probe + the
+                        // same 0x30/0x48 init, on its own timer/write-path state.
+                        // Failure leaves h2 zero and the sink runs single-coil;
+                        // Reconcile retries the missing child every 3 s.
+                        if (pairSecondPath != null)
+                            h2 = OpenPairSecondChild(s, pairSecondPath);
                     }
                     // Steam 2015 (no SDL gamepad) / Deck need no init: each feature
                     // write (HidD_SetFeature, report id 0x00) is self-contained.
@@ -1040,10 +1182,13 @@ namespace PadForge.Common.Input
                     {
                         try { CloseHandle(h); } catch { }
                         h = IntPtr.Zero;
+                        if (h2 != IntPtr.Zero) { try { CloseHandle(h2); } catch { } h2 = IntPtr.Zero; }
                         return true; // race lost: sink already dropped
                     }
                     s.Handle = h;
                     h = IntPtr.Zero;
+                    s.PairSecondHandle = h2;
+                    h2 = IntPtr.Zero;
                     s.MonoSource = resampled;
                     s.Reducer = new HapticToneReducer(ReduceRate);
                     s.Running = true;
@@ -1055,6 +1200,7 @@ namespace PadForge.Common.Input
             catch
             {
                 if (h != IntPtr.Zero && h != INVALID) { try { CloseHandle(h); } catch { } }
+                if (h2 != IntPtr.Zero && h2 != INVALID) { try { CloseHandle(h2); } catch { } }
                 TeardownSink(s);
                 return false;
             }
@@ -1092,7 +1238,22 @@ namespace PadForge.Common.Input
                             SteamFeatureWrite(s, HapticToneEncoder.EncodeSteamClassic(0f, 0.0, haptic: 0));
                             SteamFeatureWrite(s, HapticToneEncoder.EncodeSteamClassic(0f, 0.0, haptic: 1));
                             break;
-                        default: JoyConWriteRumble(s, HapticToneEncoder.JoyConNeutral()); break;
+                        default:
+                            // Joy-Con note-off. A dual-handle pair (#223) quiets
+                            // each child through its own handle (stop_all_rumble
+                            // fans neutral to both devices, main_pc.cpp:116-119);
+                            // everything else keeps the one-packet neutral.
+                            if (s.PairSecondHandle != IntPtr.Zero)
+                            {
+                                var n = HapticToneEncoder.JoyConNeutral();
+                                JoyConPairWriteSide(s, rightSide: false, n);
+                                JoyConPairWriteSide(s, rightSide: true, n);
+                            }
+                            else
+                            {
+                                JoyConWriteRumble(s, HapticToneEncoder.JoyConNeutral());
+                            }
+                            break;
                     }
                 }
                 catch { }
@@ -1103,8 +1264,16 @@ namespace PadForge.Common.Input
                     try { CancelIoEx(h, IntPtr.Zero); } catch { }
                     try { CloseHandle(h); } catch { }
                 }
+                var h2 = s.PairSecondHandle;
+                s.PairSecondHandle = IntPtr.Zero;
+                if (h2 != IntPtr.Zero)
+                {
+                    try { CancelIoEx(h2, IntPtr.Zero); } catch { }
+                    try { CloseHandle(h2); } catch { }
+                }
             }
             s.Handle = IntPtr.Zero;
+            s.PairSecondHandle = IntPtr.Zero;
             s.MonoSource = null;
         }
 
@@ -1164,10 +1333,15 @@ namespace PadForge.Common.Input
         // arg] padded to OutLen (main_pc.cpp:90-99 enable_vibration / 103-113
         // set_input_mode). The rolling timer advances per packet.
         private static void JoyConSendCommand(IntPtr h, Sink s, byte subcommand, byte arg)
+            => JoyConSendCommandTo(h, s.OutLen, ref s.JoyConTimer, subcommand, arg);
+
+        // Handle-explicit form so the combined pair's second child inits on its
+        // OWN OutputReportByteLength and rolling timer (#223).
+        private static void JoyConSendCommandTo(IntPtr h, int outLen, ref byte timer, byte subcommand, byte arg)
         {
-            var buf = new byte[s.OutLen < 12 ? 12 : s.OutLen];
+            var buf = new byte[outLen < 12 ? 12 : outLen];
             buf[0] = JoyConCommandReportId;
-            buf[1] = (byte)(s.JoyConTimer++ & 0x0F);
+            buf[1] = (byte)(timer++ & 0x0F);
             var neutral = HapticToneEncoder.JoyConNeutral();
             Array.Copy(neutral, 0, buf, 2, 4);
             Array.Copy(neutral, 0, buf, 6, 4);
@@ -1179,36 +1353,106 @@ namespace PadForge.Common.Input
             try { HidD_SetOutputReport(h, buf, buf.Length); } catch { }
         }
 
-        // Rumble packet: [0x10, timer&0x0F, left4, right4] padded to OutLen
-        // (main_pc.cpp:54-86). Single Joy-Cons get their 4 bytes in the correct
-        // half and neutral in the other; Pro sends the same tone in both halves.
+        /// <summary>Builds the 0x10 rumble report: [0x10, timer&amp;0x0F, left4,
+        /// right4] padded to outLen (joycon-singer main_pc.cpp:54-86; dekuNukem
+        /// bluetooth_hid_notes.md:45, "a timing byte, then 4 bytes of rumble
+        /// data for left Joy-Con, followed by 4 bytes for right Joy-Con").
+        /// Internal for the packet-half tests.</summary>
+        internal static byte[] BuildJoyConRumblePacket(byte timer, byte[] left4, byte[] right4, int outLen)
+        {
+            var buf = new byte[outLen < 10 ? 10 : outLen];
+            buf[0] = JoyConRumbleReportId;
+            buf[1] = (byte)(timer & 0x0F);
+            Array.Copy(left4, 0, buf, 2, 4);
+            Array.Copy(right4, 0, buf, 6, 4);
+            return buf;
+        }
+
+        // Rumble packet on the sink's primary handle. Single Joy-Cons get their
+        // 4 bytes in the correct half and neutral in the other (main_pc.cpp:
+        // 69-84); Pro and the degraded single-handle pair send the same tone in
+        // both halves, and each child only reads its own half.
         private static void JoyConWriteRumble(Sink s, byte[] group4)
         {
             if (s.Handle == IntPtr.Zero) return;
-            var buf = new byte[s.OutLen < 10 ? 10 : s.OutLen];
-            buf[0] = JoyConRumbleReportId;
-            buf[1] = (byte)(s.JoyConTimer++ & 0x0F);
             var neutral = HapticToneEncoder.JoyConNeutral();
             byte[] left = s.Family == Family.JoyConR ? neutral : group4;
             byte[] right = s.Family == Family.JoyConL ? neutral : group4;
-            Array.Copy(left, 0, buf, 2, 4);
-            Array.Copy(right, 0, buf, 6, 4);
-            HidOutputWrite(s, buf);
+            HidOutputWrite(s, BuildJoyConRumblePacket(s.JoyConTimer++, left, right, s.OutLen));
+        }
+
+        // One side of the DUAL-handle combined pair (#223): the child's own
+        // half carries half4, the other half neutral, exactly the packets
+        // joycon-singer sends to its separate g_dev_l / g_dev_r
+        // (main_pc.cpp:69-84). Resolves which physical handle serves the side
+        // via PairPrimaryIsRight and uses that handle's own timer, probed
+        // write path, and report length. No-ops while the side's handle is
+        // missing (degraded single-coil mode).
+        private static void JoyConPairWriteSide(Sink s, bool rightSide, byte[] half4)
+        {
+            bool primary = rightSide == s.PairPrimaryIsRight;
+            IntPtr h = primary ? s.Handle : s.PairSecondHandle;
+            if (h == IntPtr.Zero) return;
+            var neutral = HapticToneEncoder.JoyConNeutral();
+            byte timer = primary ? s.JoyConTimer++ : s.PairSecondTimer++;
+            var buf = BuildJoyConRumblePacket(timer,
+                rightSide ? neutral : half4,
+                rightSide ? half4 : neutral,
+                primary ? s.OutLen : s.PairSecondOutLen);
+            if (primary) HidOutputWriteTo(h, buf, ref s.UseWriteFile);
+            else HidOutputWriteTo(h, buf, ref s.PairSecondUseWriteFile);
         }
 
         // Output write with the probed path: overlapped WriteFile, else
         // synchronous HidD_SetOutputReport (BT-Joy-Con err-87 fallback). Used by
         // the Joy-Con 0x10 rumble lane and the Triton 0x80/0x83 output lane.
         private static void HidOutputWrite(Sink s, byte[] buf)
+            => HidOutputWriteTo(s.Handle, buf, ref s.UseWriteFile);
+
+        // Handle-explicit form: the combined pair's two children each carry
+        // their own probed write-path flag (#223).
+        private static void HidOutputWriteTo(IntPtr h, byte[] buf, ref bool useWriteFile)
         {
-            if (s.UseWriteFile)
+            if (h == IntPtr.Zero) return;
+            if (useWriteFile)
             {
-                if (OverlappedWrite(s.Handle, buf)) return;
-                s.UseWriteFile = false; // fall back for the rest of the cue
+                if (OverlappedWrite(h, buf)) return;
+                useWriteFile = false; // fall back for the rest of the cue
             }
             // Fire-and-forget rumble write: a dropped tick is inaudible, never a
             // crash. Same swallow idiom as the OverlappedWrite/ProbeWriteFile path.
-            try { HidD_SetOutputReport(s.Handle, buf, buf.Length); } catch { }
+            try { HidD_SetOutputReport(h, buf, buf.Length); } catch { }
+        }
+
+        /// <summary>Opens and inits the combined pair's second child (#223):
+        /// CreateFileW on the child's real HID path, report lengths from ITS
+        /// caps, the write-path probe, then the same 0x30/0x48 init sequence
+        /// as the primary (open_controller order, main_pc.cpp:126-135), all on
+        /// the second child's own state fields. Returns IntPtr.Zero on any
+        /// failure; the caller keeps running single-coil. Runs on the
+        /// Reconcile timer / build path, never the stream thread (the two
+        /// 50 ms init sleeps would starve the 10 ms tick).</summary>
+        private static IntPtr OpenPairSecondChild(Sink s, string path)
+        {
+            IntPtr h2 = CreateFileW(path, GENERIC_WRITE | GENERIC_READ, SHARE_RW,
+                IntPtr.Zero, OPEN_EXISTING, FILE_FLAG_OVERLAPPED, IntPtr.Zero);
+            if (h2 == INVALID || h2 == IntPtr.Zero) return IntPtr.Zero;
+            try
+            {
+                var (capOut, _) = QueryReportLens(h2);
+                s.PairSecondOutLen = capOut > 0 ? capOut : 64;
+                s.PairSecondUseWriteFile = ProbeWriteFile(h2, s.PairSecondOutLen);
+                JoyConSendCommandTo(h2, s.PairSecondOutLen, ref s.PairSecondTimer, subcommand: 0x03, arg: 0x30);
+                Thread.Sleep(50);
+                JoyConSendCommandTo(h2, s.PairSecondOutLen, ref s.PairSecondTimer, subcommand: 0x48, arg: 0x01);
+                Thread.Sleep(50);
+                return h2;
+            }
+            catch
+            {
+                try { CloseHandle(h2); } catch { }
+                return IntPtr.Zero;
+            }
         }
 
         // Single in-order overlapped WriteFile that blocks until the write
@@ -1414,7 +1658,7 @@ namespace PadForge.Common.Input
                             // driver and OpenPuck's real-capture both drive it via output reports only).
                             case Family.Steam2026: StreamTritonTick(s, toneHz, amp, streaming); break;
                             case Family.SteamDeck: StreamSteamDeckTick(s, toneHz, amp, streaming); break;
-                            default: StreamJoyConTick(s, toneHz, amp, streaming); break;
+                            default: StreamJoyConTick(s, toneHz, amp, streaming, testActive, nowMs); break;
                         }
                     }
 
@@ -1454,21 +1698,83 @@ namespace PadForge.Common.Input
             finally { if (fast) timeEndPeriod(1); }
         }
 
-        private static void StreamJoyConTick(Sink s, float toneHz, float amp, bool streaming)
+        private static void StreamJoyConTick(Sink s, float toneHz, float amp, bool streaming, bool testActive, long nowMs)
         {
+            // Dual-coil combined pair (#223): both children live, so the tone
+            // routes by the slot's commanded motor sides. A degraded pair
+            // (second child unresolved) and every single Joy-Con / Pro keep the
+            // exact #184/#147 single-handle behavior below.
+            bool dual = s.Family == Family.JoyConPair && s.PairSecondHandle != IntPtr.Zero;
             if (streaming)
             {
-                // Cue active: drive the coil every tick (quiet dips included) so
-                // the firmware FIFO stays fed.
-                JoyConWriteRumble(s, HapticToneEncoder.EncodeJoyConRumble(toneHz, amp));
+                var tone4 = HapticToneEncoder.EncodeJoyConRumble(toneHz, amp);
+                if (dual)
+                {
+                    bool leftHot = true, rightHot = true;
+                    if (!testActive)
+                    {
+                        // The Audio-tab Test button is exempt: it diagnoses the
+                        // sink, so it must prove BOTH coils regardless of what a
+                        // game happens to be rumbling. Everything else consults
+                        // the slot's merged motor snapshot (RemoteDriven sinks
+                        // have Slot -1 and fall through to both-coils).
+                        bool leftActive = false, rightActive = false;
+                        var p = SlotRumbleActiveProvider;
+                        if (p != null && s.Slot >= 0)
+                        {
+                            try { (leftActive, rightActive) = p(s.Slot); } catch { }
+                        }
+                        (leftHot, rightHot) = ResolvePairSides(leftActive, rightActive, nowMs,
+                            ref s.PairLeftMotorLastMs, ref s.PairRightMotorLastMs);
+                    }
+                    // Hot side: drive its coil every tick (quiet dips included)
+                    // so the firmware FIFO stays fed. Cold side: ONE neutral on
+                    // the hot->cold edge, then quiet, the JoyConWasStreaming
+                    // idiom per side (no 100 Hz neutral spam on the shared link).
+                    StreamPairSide(s, rightSide: false, hot: leftHot, tone4, ref s.PairLeftWasHot);
+                    StreamPairSide(s, rightSide: true, hot: rightHot, tone4, ref s.PairRightWasHot);
+                }
+                else
+                {
+                    // Cue active: drive the coil every tick (quiet dips included)
+                    // so the firmware FIFO stays fed.
+                    JoyConWriteRumble(s, tone4);
+                }
                 s.JoyConWasStreaming = true;
             }
             else if (s.JoyConWasStreaming)
             {
                 // Cue just ended: stop the coil with ONE neutral, then go quiet
                 // (no 100 Hz neutral spam fighting SDL on the shared link).
-                JoyConWriteRumble(s, HapticToneEncoder.JoyConNeutral());
+                var neutral = HapticToneEncoder.JoyConNeutral();
+                if (dual)
+                {
+                    JoyConPairWriteSide(s, rightSide: false, neutral);
+                    JoyConPairWriteSide(s, rightSide: true, neutral);
+                    s.PairLeftWasHot = false;
+                    s.PairRightWasHot = false;
+                }
+                else
+                {
+                    JoyConWriteRumble(s, neutral);
+                }
                 s.JoyConWasStreaming = false;
+            }
+        }
+
+        // One side of the dual pair per tick: tone while hot, one neutral on
+        // the hot->cold edge, then silent until the side re-heats.
+        private static void StreamPairSide(Sink s, bool rightSide, bool hot, byte[] tone4, ref bool wasHot)
+        {
+            if (hot)
+            {
+                JoyConPairWriteSide(s, rightSide, tone4);
+                wasHot = true;
+            }
+            else if (wasHot)
+            {
+                JoyConPairWriteSide(s, rightSide, HapticToneEncoder.JoyConNeutral());
+                wasHot = false;
             }
         }
 

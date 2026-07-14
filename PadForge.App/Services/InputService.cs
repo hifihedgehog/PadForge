@@ -1458,6 +1458,27 @@ namespace PadForge.Services
                 return (0, 800);
             };
 
+            // Discussion #223: motor-side audio routing for the combined
+            // Joy-Con pair's dual-coil tone sink. Reads the per-slot merged
+            // rumble snapshot the dashboard meter uses (FinalVibrationStates:
+            // game + macro rumble + per-device gain/swap/trigger routing,
+            // recomputed every poll tick by ComputeFinalVibrationStates).
+            // Plain field reads on preallocated Vibration objects, no locks,
+            // no allocation; the pair sink's stream thread calls this once
+            // per 10 ms tick. Body motors only: SDL routes exactly the low
+            // (left) / high (right) body values to the pair's children
+            // (SDL_hidapi_switch.c:2148-2156), and the Switch has no trigger
+            // motors, so trigger rumble never vibrates a Joy-Con side.
+            PadForge.Common.Input.HapticToneService.SlotRumbleActiveProvider = slotIndex =>
+            {
+                var im = _inputManager;
+                if (im == null || slotIndex < 0 || slotIndex >= im.FinalVibrationStates.Length)
+                    return (false, false);
+                var v = im.FinalVibrationStates[slotIndex];
+                if (v == null) return (false, false);
+                return (v.LeftMotorSpeed > 0, v.RightMotorSpeed > 0);
+            };
+
             // A persisted mirror toggle must resume on launch — the service
             // otherwise only starts when poked (toggle change, assignment
             // change, or a macro's sink lookup). One signal is enough: the

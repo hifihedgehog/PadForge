@@ -48,7 +48,7 @@ xbox rows: 20
     <- Gamepad RightTrigger [upper-half] dz=75
 kbm rows: 0
 macros: 0
-report: v6 rows:x20+k0 macros:0 layers:0 clean:24 partial:1 skipped:1 errors:0
+report: v7 rows:x20+k0 macros:0 menus:0 layers:0 clean:24 partial:1 skipped:1 errors:0
   Clean RowEmitted @ Default/switch/group 7 (switches)/button_back_left/Full_Press => ButtonA <- Gamepad Paddle2
   Clean RowEmitted @ Default/switch/group 7 (switches)/button_back_right/Full_Press => ButtonX <- Gamepad Paddle1
   Skipped UnknownPhysicalInput(Switch, button_capture) @ Default/switch/group 7 (switches)/button_capture :: controller_action SCREENSHOT, , 

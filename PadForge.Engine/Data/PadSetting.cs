@@ -763,6 +763,7 @@ namespace PadForge.Engine.Data
         [XmlArrayItem("Settings")]
         public PadForge.Engine.Mouse.MouseGestureSettingsEntry[] MouseGestureSettings { get; set; }
 
+
         // ─────────────────────────────────────────────
         //  Extended custom mappings (dictionary-based)
         //  Used for custom Extended configurations with arbitrary axis/button/POV counts.
@@ -1891,6 +1892,13 @@ namespace PadForge.Engine.Data
         [System.Text.Json.Serialization.JsonIgnore]
         public string SlotShiftActivatorsJson { get; set; }
 
+        /// <summary>Opaque JSON payload for the slot's radial / touch menu
+        /// definitions (#9 B-17, MappingSet.Menus), so Copy / Paste carries
+        /// the Menus-tab state like the shift authoring above.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        [System.Text.Json.Serialization.JsonIgnore]
+        public string SlotMenusJson { get; set; }
+
         /// <summary>Opaque JSON payload carrying every device's PadSetting
         /// on the source slot. The outer PadSetting that wraps this field
         /// still carries the originally-selected device's tuning (legacy
@@ -1991,6 +1999,7 @@ namespace PadForge.Engine.Data
                 dict["__MouseGestureSettings"] = JsonSerializer.Serialize(MouseGestureSettings);
             }
 
+
             // Opaque per-slot config snapshots (the per-(slot, device)
             // lighting / trigger / audio bag, custom layout for Extended,
             // CC + note layout for MIDI). The caller serialises the
@@ -2007,6 +2016,8 @@ namespace PadForge.Engine.Data
                 dict["__SlotKbmConfig"] = SlotKbmConfigJson;
             if (!string.IsNullOrEmpty(SlotShiftActivatorsJson))
                 dict["__SlotShiftActivators"] = SlotShiftActivatorsJson;
+            if (!string.IsNullOrEmpty(SlotMenusJson))
+                dict["__SlotMenus"] = SlotMenusJson;
             if (!string.IsNullOrEmpty(SlotPerDeviceSettingsJson))
                 dict["__SlotPerDeviceSettings"] = SlotPerDeviceSettingsJson;
 
@@ -2133,6 +2144,8 @@ namespace PadForge.Engine.Data
                             ps.SlotKbmConfigJson = kvp.Value;
                         else if (kvp.Key == "__SlotShiftActivators")
                             ps.SlotShiftActivatorsJson = kvp.Value;
+                        else if (kvp.Key == "__SlotMenus")
+                            ps.SlotMenusJson = kvp.Value;
                         else if (kvp.Key == "__SlotPerDeviceSettings")
                             ps.SlotPerDeviceSettingsJson = kvp.Value;
                         continue;

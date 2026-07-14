@@ -81,6 +81,22 @@ namespace PadForge.Services
             for (int i = 0; i < maxPads; i++)
                 mappingSets[i] ??= new MappingSet();
 
+            // Menus (#9 B-17) ride EVERY claimed slot's MappingSet: split
+            // configs feed both slots from the same physical device, the
+            // menu runtime and the fired-set provider are slot-keyed (like
+            // the gesture engine), and each slot's rows read their own
+            // slot's fires, so both slots need their own copy. The overlay
+            // publisher dedupes at display time (first engaged menu wins).
+            if (translated.Menus != null && translated.Menus.Count > 0)
+            {
+                foreach (var menu in translated.Menus)
+                {
+                    if (menu == null) continue;
+                    if (xboxSlot >= 0) mappingSets[xboxSlot].Menus.Add(menu.Clone());
+                    if (kbmSlot >= 0) mappingSets[kbmSlot].Menus.Add(menu.Clone());
+                }
+            }
+
             var macros = BuildMacros(translated.Macros, Math.Max(xboxSlot, 0),
                 translated.Report?.ControllerType);
 

@@ -2,7 +2,7 @@ name: Miracle's AOE II Steam Deck Layout
 description: A layout designed for quick gameplay. Has a radial menu for creating and selecting groups. Left pad ...
 slots: kbm
 xbox rows: 0
-kbm rows: 19
+kbm rows: 27
   Base | KbmKey1B
     <- Gamepad ButtonB
   Base | KbmKey25
@@ -13,6 +13,22 @@ kbm rows: 19
     <- Gamepad LeftStickX [upper-half]
   Base | KbmKey28
     <- Gamepad LeftStickY [upper-half]
+  Base | KbmKey31
+    <- Menu 1 Item 1
+  Base | KbmKey32
+    <- Menu 1 Item 2
+  Base | KbmKey33
+    <- Menu 1 Item 3
+  Base | KbmKey34
+    <- Menu 1 Item 4
+  Base | KbmKey35
+    <- Menu 1 Item 5
+  Base | KbmKey36
+    <- Menu 1 Item 6
+  Base | KbmKey37
+    <- Menu 1 Item 7
+  Base | KbmKey38
+    <- Menu 1 Item 8
   Base | KbmKey48
     <- Gamepad DPadUp
   Base | KbmKey72
@@ -47,7 +63,17 @@ kbm rows: 19
     <- Gamepad LeftShoulder
     <- Gamepad RightShoulder [inverted]
 macros: 0
-report: v6 rows:x0+k19 macros:0 layers:0 clean:24 partial:2 skipped:2 errors:0
+menus: 1
+  menu 1 Radial | Gamepad RightStick | Base | fire=Click cells=8 pos=(95%,70%) opacity=100% | name=Radial Menu 1
+    [1] 1
+    [2] 2
+    [3] 3
+    [4] 4
+    [5] 5
+    [6] 6
+    [7] 7
+    [8] 8
+report: v7 rows:x0+k27 macros:0 menus:1 layers:0 clean:33 partial:2 skipped:1 errors:0
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_a/Full_Press => KbmKey72 <- Gamepad ButtonA
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_b/Full_Press => KbmKey1B <- Gamepad ButtonB
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_x/Full_Press => KbmKey76 <- Gamepad ButtonX
@@ -64,7 +90,15 @@ report: v6 rows:x0+k19 macros:0 layers:0 clean:24 partial:2 skipped:2 errors:0
   Clean RowEmitted @ Default/left_trackpad/group 11 (mouse_region) => KbmMouseY <- Touchpad 0 Pointer Y
   Clean RowEmitted @ Default/left_trackpad/group 11 (mouse_region)/click/Full_Press => KbmMBtn0 <- Touchpad 0 Click
   Clean RowEmitted @ Default/left_trigger/group 4 (trigger)/edge/Full_Press => KbmMBtn1 <- Gamepad LeftTrigger (upper half)
-  Skipped RadialMenuNeedsOverlay(8) @ Default/right_joystick/group 12 (radial_menu)
+  Clean MenuEmitted(8) @ Default/right_joystick/group 12 (radial_menu) => Radial menu 1 on Gamepad RightStick: 8 bound cells
+  Clean RowEmitted @ Default/right_joystick/group 12 (radial_menu)/touch_menu_button_1/Full_Press => KbmKey31 <- Menu 1 Item 1
+  Clean RowEmitted @ Default/right_joystick/group 12 (radial_menu)/touch_menu_button_2/Full_Press => KbmKey32 <- Menu 1 Item 2
+  Clean RowEmitted @ Default/right_joystick/group 12 (radial_menu)/touch_menu_button_3/Full_Press => KbmKey33 <- Menu 1 Item 3
+  Clean RowEmitted @ Default/right_joystick/group 12 (radial_menu)/touch_menu_button_4/Full_Press => KbmKey34 <- Menu 1 Item 4
+  Clean RowEmitted @ Default/right_joystick/group 12 (radial_menu)/touch_menu_button_5/Full_Press => KbmKey35 <- Menu 1 Item 5
+  Clean RowEmitted @ Default/right_joystick/group 12 (radial_menu)/touch_menu_button_6/Full_Press => KbmKey36 <- Menu 1 Item 6
+  Clean RowEmitted @ Default/right_joystick/group 12 (radial_menu)/touch_menu_button_7/Full_Press => KbmKey37 <- Menu 1 Item 7
+  Clean RowEmitted @ Default/right_joystick/group 12 (radial_menu)/touch_menu_button_8/Full_Press => KbmKey38 <- Menu 1 Item 8
   Clean RowEmitted @ Default/right_trackpad/group 13 (mouse_region) => KbmMouseX <- Touchpad 1 Pointer X
   Clean RowEmitted @ Default/right_trackpad/group 13 (mouse_region) => KbmMouseY <- Touchpad 1 Pointer Y
   Partial ActivatorDelayDropped(delay_end 10) @ Default/right_trackpad/group 13 (mouse_region)/click/Full_Press
@@ -75,4 +109,4 @@ report: v6 rows:x0+k19 macros:0 layers:0 clean:24 partial:2 skipped:2 errors:0
   Clean RowEmitted @ Default/switch/group 6 (switches)/button_menu/Full_Press => KbmKey75 <- Gamepad ButtonBack
   Clean RowEmitted @ Default/switch/group 6 (switches)/left_bumper/Full_Press => KbmScroll <- Gamepad LeftShoulder
   Clean RowEmitted @ Default/switch/group 6 (switches)/right_bumper/Full_Press => KbmScroll <- Gamepad RightShoulder (inverted)
-  Partial HapticIntensityDropped(10) @ config
+  Partial HapticIntensityDropped(18) @ config

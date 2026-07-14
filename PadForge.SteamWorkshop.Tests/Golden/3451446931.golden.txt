@@ -2,7 +2,7 @@ name: EPICMAN's Steam Deck/Game Pad Layout
 description: A New Ergonomic Control Layout, aiming for a Friction-less player experience. All inputs are labeled...
 slots: kbm
 xbox rows: 0
-kbm rows: 31
+kbm rows: 39
   Base | KbmKey0D
     <- Gamepad DPadDown
   Base | KbmKey1B
@@ -17,12 +17,20 @@ kbm rows: 31
     <- Gamepad Paddle2
   Base | KbmKey34
     <- Gamepad Paddle1
+  Base | KbmKey41
+    <- Menu 1 Item 4
   Base | KbmKey43
     <- Gamepad ButtonB
+  Base | KbmKey44
+    <- Menu 1 Item 2
+  Base | KbmKey46
+    <- Menu 1 Item 3
   Base | KbmKey4A
     <- Gamepad RightShoulder
   Base | KbmKey4E
     <- Gamepad ButtonX
+  Base | KbmKey53
+    <- Menu 1 Item 1
   Base | KbmKey54
     <- Gamepad ButtonY
   Base | KbmKey55
@@ -58,12 +66,20 @@ kbm rows: 31
     <- Gamepad Paddle2
   Layer_3451446931_1 | KbmKey38
     <- Gamepad Paddle1
+  Layer_3451446931_1 | KbmKey41
+    <- Menu 2 Item 4
   Layer_3451446931_1 | KbmKey42
     <- Gamepad ButtonB
+  Layer_3451446931_1 | KbmKey44
+    <- Menu 2 Item 2
+  Layer_3451446931_1 | KbmKey46
+    <- Menu 2 Item 3
   Layer_3451446931_1 | KbmKey4D
     <- Gamepad ButtonX
   Layer_3451446931_1 | KbmKey52
     <- Gamepad ButtonY
+  Layer_3451446931_1 | KbmKey53
+    <- Menu 2 Item 1
   Layer_3451446931_1 | KbmMBtn1
     <- Touchpad 1 Click
   Layer_3451446931_1 | KbmMouseX
@@ -73,7 +89,18 @@ kbm rows: 31
 kbm activators: 1
   Hold Layer_3451446931_1 | Gamepad LeftStick | inherit | name=Preset_1000001
 macros: 0
-report: v6 rows:x0+k31 macros:0 layers:1 clean:35 partial:5 skipped:4 errors:0
+menus: 2
+  menu 1 Radial | Touchpad 0 | Base | fire=Click cells=4 labels=off pos=(4%,75%) | name=Systems
+    [1] S
+    [2] D
+    [3] F
+    [4] A
+  menu 2 Radial | Touchpad 0 | Layer_3451446931_1 | fire=Click cells=4 labels=off pos=(4%,75%) | name=Systems
+    [1] S
+    [2] D
+    [3] F
+    [4] A
+report: v7 rows:x0+k39 macros:0 menus:2 layers:1 clean:45 partial:7 skipped:2 errors:0
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_a/Full_Press => KbmKey20 <- Gamepad ButtonA
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_b/Full_Press => KbmKey43 <- Gamepad ButtonB
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_x/Full_Press => KbmKey4E <- Gamepad ButtonX
@@ -85,7 +112,12 @@ report: v6 rows:x0+k31 macros:0 layers:1 clean:35 partial:5 skipped:4 errors:0
   Partial ResponseCurveNotSupported(deadzone_outer_radius) @ Default/joystick/group 15 (joystick_mouse)
   Clean RowEmitted @ Default/joystick/group 15 (joystick_mouse) => KbmMouseX <- Gamepad LeftStickX
   Clean RowEmitted @ Default/joystick/group 15 (joystick_mouse) => KbmMouseY <- Gamepad LeftStickY
-  Skipped RadialMenuNeedsOverlay(4) @ Default/left_trackpad/group 13 (radial_menu)
+  Clean MenuEmitted(4) @ Default/left_trackpad/group 13 (radial_menu) => Radial menu 1 on Touchpad 0: 4 bound cells
+  Partial MenuIconsDropped(4) @ Default/left_trackpad/group 13 (radial_menu)
+  Clean RowEmitted @ Default/left_trackpad/group 13 (radial_menu)/touch_menu_button_1/Full_Press => KbmKey53 <- Menu 1 Item 1
+  Clean RowEmitted @ Default/left_trackpad/group 13 (radial_menu)/touch_menu_button_2/Full_Press => KbmKey44 <- Menu 1 Item 2
+  Clean RowEmitted @ Default/left_trackpad/group 13 (radial_menu)/touch_menu_button_3/Full_Press => KbmKey46 <- Menu 1 Item 3
+  Clean RowEmitted @ Default/left_trackpad/group 13 (radial_menu)/touch_menu_button_4/Full_Press => KbmKey41 <- Menu 1 Item 4
   Clean RowEmitted @ Default/left_trigger/group 4 (trigger)/click/Full_Press => KbmMBtn1 <- Gamepad LeftTrigger (upper half)
   Partial ResponseCurveNotSupported(deadzone_outer_radius, curve_exponent) @ Default/right_joystick/group 9 (joystick_mouse)
   Clean RowEmitted @ Default/right_joystick/group 9 (joystick_mouse) => KbmMouseX <- Gamepad RightStickX
@@ -107,7 +139,12 @@ report: v6 rows:x0+k31 macros:0 layers:1 clean:35 partial:5 skipped:4 errors:0
   Clean RowEmitted @ Preset_1000001/button_diamond/group 24 (four_buttons)/button_b/Full_Press => KbmKey42 <- Gamepad ButtonB
   Clean RowEmitted @ Preset_1000001/button_diamond/group 24 (four_buttons)/button_x/Full_Press => KbmKey4D <- Gamepad ButtonX
   Clean RowEmitted @ Preset_1000001/button_diamond/group 24 (four_buttons)/button_y/Full_Press => KbmKey52 <- Gamepad ButtonY
-  Skipped RadialMenuNeedsOverlay(4) @ Preset_1000001/left_trackpad/group 41 (radial_menu)
+  Clean MenuEmitted(4) @ Preset_1000001/left_trackpad/group 41 (radial_menu) => Radial menu 2 on Touchpad 0: 4 bound cells
+  Partial MenuIconsDropped(4) @ Preset_1000001/left_trackpad/group 41 (radial_menu)
+  Clean RowEmitted @ Preset_1000001/left_trackpad/group 41 (radial_menu)/touch_menu_button_1/Full_Press => KbmKey53 <- Menu 2 Item 1
+  Clean RowEmitted @ Preset_1000001/left_trackpad/group 41 (radial_menu)/touch_menu_button_2/Full_Press => KbmKey44 <- Menu 2 Item 2
+  Clean RowEmitted @ Preset_1000001/left_trackpad/group 41 (radial_menu)/touch_menu_button_3/Full_Press => KbmKey46 <- Menu 2 Item 3
+  Clean RowEmitted @ Preset_1000001/left_trackpad/group 41 (radial_menu)/touch_menu_button_4/Full_Press => KbmKey41 <- Menu 2 Item 4
   Clean RowEmitted @ Preset_1000001/right_trackpad/group 33 (absolute_mouse) => KbmMouseX <- Touchpad 1 Finger 0 X
   Clean RowEmitted @ Preset_1000001/right_trackpad/group 33 (absolute_mouse) => KbmMouseY <- Touchpad 1 Finger 0 Y
   Partial SoftPressApproximated @ Preset_1000001/right_trackpad/group 33 (absolute_mouse)/click/Soft_Press => KbmMBtn1 <- Touchpad 1 Click
@@ -117,4 +154,4 @@ report: v6 rows:x0+k31 macros:0 layers:1 clean:35 partial:5 skipped:4 errors:0
   Clean RowEmitted @ Preset_1000001/switch/group 27 (switches)/button_back_right_upper/Full_Press => KbmKey36 <- Gamepad Paddle3
   Skipped UnknownPhysicalInput(Switch, button_capture) @ Preset_1000001/switch/group 27 (switches)/button_capture :: controller_action system_key_1, , 
   Clean ShiftLayerEmitted(Preset_1000001) @ Default/joystick/group 15 (joystick_mouse)/click/Full_Press => Hold -> Layer_3451446931_1
-  Partial HapticIntensityDropped(4) @ config
+  Partial HapticIntensityDropped(12) @ config

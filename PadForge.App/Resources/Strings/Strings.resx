@@ -2623,4 +2623,46 @@
   <data name="MacroAction_Type_GyroRecenter" xml:space="preserve"><value>Gyro Recenter</value></data>
   <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>Zeroes the pad's accumulated gyro aim references on press. Smoothing history clears, the Motion Lean neutral re-captures, and the gravity estimate re-seeds from the controller's current pose.</value></data>
   <data name="Mapping_AnyDevice" xml:space="preserve"><value>(Any device)</value></data>
+  <data name="Pad_Menus" xml:space="preserve"><value>Menus</value></data>
+  <data name="Menu_EmptyHint" xml:space="preserve"><value>Menus turn a stick or touchpad into an on-screen ring or grid. Add a menu, pick its host input, then label each cell and give it a binding.</value></data>
+  <data name="Menu_NewNameFormat" xml:space="preserve"><value>Menu {0}</value></data>
+  <data name="Menu_Name" xml:space="preserve"><value>Menu Name</value></data>
+  <data name="Menu_Enabled" xml:space="preserve"><value>Enabled</value></data>
+  <data name="Menu_Style" xml:space="preserve"><value>Style</value></data>
+  <data name="Menu_Style_Radial" xml:space="preserve"><value>Radial Ring</value></data>
+  <data name="Menu_Style_Grid" xml:space="preserve"><value>Touch Grid</value></data>
+  <data name="Menu_HostInput" xml:space="preserve"><value>Host Input</value></data>
+  <data name="Menu_Host_LeftStick" xml:space="preserve"><value>Left Stick</value></data>
+  <data name="Menu_Host_RightStick" xml:space="preserve"><value>Right Stick</value></data>
+  <data name="Menu_Host_Touchpad_Format" xml:space="preserve"><value>Touchpad {0}</value></data>
+  <data name="Menu_HostHalf" xml:space="preserve"><value>Pad Half</value></data>
+  <data name="Menu_Half_Whole" xml:space="preserve"><value>Whole Pad</value></data>
+  <data name="Menu_Half_Left" xml:space="preserve"><value>Left Half</value></data>
+  <data name="Menu_Half_Right" xml:space="preserve"><value>Right Half</value></data>
+  <data name="Menu_FireMode" xml:space="preserve"><value>Fire Mode</value></data>
+  <data name="Menu_Fire_Click" xml:space="preserve"><value>On Click</value></data>
+  <data name="Menu_Fire_ClickRelease" xml:space="preserve"><value>On Click Release</value></data>
+  <data name="Menu_Fire_TouchRelease" xml:space="preserve"><value>On Touch Release</value></data>
+  <data name="Menu_Fire_Always" xml:space="preserve"><value>While Hovered</value></data>
+  <data name="Menu_Cells" xml:space="preserve"><value>Cells</value></data>
+  <data name="Menu_HasCenter" xml:space="preserve"><value>Center Cell</value></data>
+  <data name="Menu_ShowLabels" xml:space="preserve"><value>Show Labels</value></data>
+  <data name="Menu_Position" xml:space="preserve"><value>Screen Position</value></data>
+  <data name="Menu_Scale" xml:space="preserve"><value>Size</value></data>
+  <data name="Menu_Opacity" xml:space="preserve"><value>Opacity</value></data>
+  <data name="Menu_Deadzone" xml:space="preserve"><value>Engage Deadzone</value></data>
+  <data name="Menu_CellBindings" xml:space="preserve"><value>Cell Bindings</value></data>
+  <data name="Menu_CellIndex_Format" xml:space="preserve"><value>Cell {0}</value></data>
+  <data name="Menu_CellCenter" xml:space="preserve"><value>Center</value></data>
+  <data name="Menu_Binding_None" xml:space="preserve"><value>None</value></data>
+  <data name="Menu_Binding_Key" xml:space="preserve"><value>Keyboard Key</value></data>
+  <data name="Menu_Binding_Button" xml:space="preserve"><value>Controller Button</value></data>
+  <data name="Mapping_MenuItem_Format" xml:space="preserve"><value>Menu {0} Cell {1}</value></data>
+  <data name="Dashboard_MenuOverlay" xml:space="preserve"><value>Menu Overlay</value></data>
+  <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>Show the on-screen ring or grid while a radial or touch menu is engaged. Menus still fire with the overlay off.</value></data>
+  <data name="Workshop_Tr_MenuEmitted" xml:space="preserve"><value>on-screen menu created ({0} bound cells)</value></data>
+  <data name="Workshop_Tr_MenuEmpty" xml:space="preserve"><value>menu has no bound cells</value></data>
+  <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>menu host surface not supported ({0})</value></data>
+  <data name="Workshop_Tr_MenuIconsDropped" xml:space="preserve"><value>menu cell icons dropped ({0} cells render text labels)</value></data>
+  <data name="Workshop_Tr_MenuTuningDropped" xml:space="preserve"><value>menu tuning not supported ({0})</value></data>
 </root>

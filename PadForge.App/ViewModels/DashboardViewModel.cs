@@ -421,6 +421,18 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _enableTouchpadOverlay, value);
         }
 
+        private bool _enableMenuOverlay = true;
+
+        /// <summary>Whether the radial / touch menu overlay renders while
+        /// a menu is engaged (#9 B-17). Default on; menus still hover and
+        /// commit blind when off (the runtime never depends on the
+        /// window).</summary>
+        public bool EnableMenuOverlay
+        {
+            get => _enableMenuOverlay;
+            set => SetProperty(ref _enableMenuOverlay, value);
+        }
+
         private double _touchpadOverlayOpacity = 0.25;
 
         /// <summary>Surface opacity of the touchpad overlay (0.0–1.0).</summary>

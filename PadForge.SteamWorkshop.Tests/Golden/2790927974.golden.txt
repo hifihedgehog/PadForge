@@ -2,7 +2,7 @@ name: Steam Deck: The Gabe Generation
 description: Your modified layout for this game.
 slots: kbm
 xbox rows: 0
-kbm rows: 31
+kbm rows: 42
   Base | KbmKey09
     <- Gamepad ButtonStart
   Base | KbmKey20
@@ -25,12 +25,24 @@ kbm rows: 31
     <- Gamepad ButtonY
   Base | KbmKey42
     <- Gamepad Paddle1
+  Base | KbmKey43
+    <- Menu 1 Item 5
   Base | KbmKey44
     <- Gamepad ButtonX
+  Base | KbmKey48
+    <- Menu 1 Item 4
+  Base | KbmKey4B
+    <- Menu 1 Item 6
+  Base | KbmKey4E
+    <- Menu 1 Item 3
+  Base | KbmKey4F
+    <- Menu 1 Item 2
   Base | KbmKey50
     <- Gamepad ButtonBack
   Base | KbmKey53
     <- Gamepad ButtonA
+  Base | KbmKey54
+    <- Menu 1 Item 1
   Base | KbmKey57
     <- Gamepad ButtonB
   Base | KbmKey65
@@ -56,10 +68,21 @@ kbm rows: 31
     <- Gamepad ButtonA
   Layer_2790927974_1 | KbmKey1B
     <- Gamepad ButtonX
+    <- Menu 2 Item 0
+  Layer_2790927974_1 | KbmKey47
+    <- Menu 2 Item 4
   Layer_2790927974_1 | KbmKey49
     <- Gamepad ButtonY
+  Layer_2790927974_1 | KbmKey4C
+    <- Menu 2 Item 5
   Layer_2790927974_1 | KbmKey50
     <- Gamepad ButtonBack
+  Layer_2790927974_1 | KbmKey54
+    <- Menu 2 Item 2
+  Layer_2790927974_1 | KbmKey55
+    <- Menu 2 Item 3
+  Layer_2790927974_1 | KbmKey57
+    <- Menu 2 Item 1
   Layer_2790927974_1 | KbmMBtn0
     <- Touchpad 1 Click
     <- Gamepad RightTrigger [upper-half] dz=75
@@ -72,7 +95,22 @@ kbm rows: 31
 kbm activators: 1
   Cycle Layer_2790927974_1 cycle=Layer_2790927974_1+Base | Gamepad Paddle2 | name=Preset_1000001 / Default
 macros: 0
-report: v6 rows:x0+k31 macros:0 layers:1 clean:34 partial:3 skipped:4 errors:0
+menus: 2
+  menu 1 Radial | Touchpad 0 | Base | fire=Click cells=6 | name=Radial Menu 1
+    [1] T
+    [2] O
+    [3] N
+    [4] H
+    [5] C
+    [6] K
+  menu 2 Radial | Touchpad 0 | Layer_2790927974_1 | fire=Click cells=5+center | name=Radial Menu 2
+    [0] ESCAPE
+    [1] W
+    [2] T
+    [3] U
+    [4] G
+    [5] L
+report: v7 rows:x0+k42 macros:0 menus:2 layers:1 clean:48 partial:3 skipped:2 errors:0
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_a/Full_Press => KbmKey53 <- Gamepad ButtonA
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_b/Full_Press => KbmKey57 <- Gamepad ButtonB
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_x/Full_Press => KbmKey44 <- Gamepad ButtonX
@@ -83,7 +121,13 @@ report: v6 rows:x0+k31 macros:0 layers:1 clean:34 partial:3 skipped:4 errors:0
   Clean RowEmitted @ Default/dpad/group 9 (dpad)/dpad_west/Full_Press => KbmKey31 <- Gamepad DPadLeft
   Clean RowEmitted @ Default/joystick/group 3 (dpad)/dpad_north/Full_Press => KbmKey21 <- Gamepad LeftStickY (lower half)
   Clean RowEmitted @ Default/joystick/group 3 (dpad)/dpad_south/Full_Press => KbmKey22 <- Gamepad LeftStickY (upper half)
-  Skipped RadialMenuNeedsOverlay(6) @ Default/left_trackpad/group 7 (radial_menu)
+  Clean MenuEmitted(6) @ Default/left_trackpad/group 7 (radial_menu) => Radial menu 1 on Touchpad 0: 6 bound cells
+  Clean RowEmitted @ Default/left_trackpad/group 7 (radial_menu)/touch_menu_button_1/Full_Press => KbmKey54 <- Menu 1 Item 1
+  Clean RowEmitted @ Default/left_trackpad/group 7 (radial_menu)/touch_menu_button_2/Full_Press => KbmKey4F <- Menu 1 Item 2
+  Clean RowEmitted @ Default/left_trackpad/group 7 (radial_menu)/touch_menu_button_3/Full_Press => KbmKey4E <- Menu 1 Item 3
+  Clean RowEmitted @ Default/left_trackpad/group 7 (radial_menu)/touch_menu_button_4/Full_Press => KbmKey48 <- Menu 1 Item 4
+  Clean RowEmitted @ Default/left_trackpad/group 7 (radial_menu)/touch_menu_button_5/Full_Press => KbmKey43 <- Menu 1 Item 5
+  Clean RowEmitted @ Default/left_trackpad/group 7 (radial_menu)/touch_menu_button_6/Full_Press => KbmKey4B <- Menu 1 Item 6
   Clean RowEmitted @ Default/left_trigger/group 4 (trigger)/edge/Full_Press => KbmKey20 <- Gamepad LeftTrigger (upper half)
   Clean RowEmitted @ Default/right_joystick/group 10 (joystick_mouse) => KbmMouseX <- Gamepad RightStickX
   Clean RowEmitted @ Default/right_joystick/group 10 (joystick_mouse) => KbmMouseY <- Gamepad RightStickY
@@ -103,7 +147,13 @@ report: v6 rows:x0+k31 macros:0 layers:1 clean:34 partial:3 skipped:4 errors:0
   Clean RowEmitted @ Preset_1000001/button_diamond/group 12 (four_buttons)/button_a/Full_Press => KbmKey0D <- Gamepad ButtonA
   Clean RowEmitted @ Preset_1000001/button_diamond/group 12 (four_buttons)/button_x/Full_Press => KbmKey1B <- Gamepad ButtonX
   Clean RowEmitted @ Preset_1000001/button_diamond/group 12 (four_buttons)/button_y/Full_Press => KbmKey49 <- Gamepad ButtonY
-  Skipped RadialMenuNeedsOverlay(6) @ Preset_1000001/left_trackpad/group 17 (radial_menu)
+  Clean MenuEmitted(6) @ Preset_1000001/left_trackpad/group 17 (radial_menu) => Radial menu 2 on Touchpad 0: 6 bound cells
+  Clean RowEmitted @ Preset_1000001/left_trackpad/group 17 (radial_menu)/touch_menu_button_0/Full_Press => KbmKey1B <- Menu 2 Item 0
+  Clean RowEmitted @ Preset_1000001/left_trackpad/group 17 (radial_menu)/touch_menu_button_1/Full_Press => KbmKey57 <- Menu 2 Item 1
+  Clean RowEmitted @ Preset_1000001/left_trackpad/group 17 (radial_menu)/touch_menu_button_2/Full_Press => KbmKey54 <- Menu 2 Item 2
+  Clean RowEmitted @ Preset_1000001/left_trackpad/group 17 (radial_menu)/touch_menu_button_3/Full_Press => KbmKey55 <- Menu 2 Item 3
+  Clean RowEmitted @ Preset_1000001/left_trackpad/group 17 (radial_menu)/touch_menu_button_4/Full_Press => KbmKey47 <- Menu 2 Item 4
+  Clean RowEmitted @ Preset_1000001/left_trackpad/group 17 (radial_menu)/touch_menu_button_5/Full_Press => KbmKey4C <- Menu 2 Item 5
   Clean RowEmitted @ Preset_1000001/left_trigger/group 13 (trigger)/click/Full_Press => KbmMBtn1 <- Gamepad LeftTrigger (upper half)
   Clean RowEmitted @ Preset_1000001/right_trackpad/group 16 (absolute_mouse) => KbmMouseX <- Touchpad 1 Finger 0 X
   Clean RowEmitted @ Preset_1000001/right_trackpad/group 16 (absolute_mouse) => KbmMouseY <- Touchpad 1 Finger 0 Y

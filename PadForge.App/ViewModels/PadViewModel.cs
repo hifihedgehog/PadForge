@@ -1622,6 +1622,12 @@ namespace PadForge.ViewModels
             else
                 InitializeGamepadMappings();
 
+            // Menus (#9 B-17) live on the same slot MappingSet the rows
+            // do, so every path that rebuilds the mapping view (profile
+            // apply, Workshop import, output-type change, Reset to
+            // Defaults) refreshes the Menus tab in the same breath.
+            ReloadMenus();
+
             MappingsRebuilt?.Invoke(this, EventArgs.Empty);
         }
 
@@ -3366,9 +3372,22 @@ namespace PadForge.ViewModels
             // Macros are bound to the slot, not the physical device, so a
             // slot deletion has to drop them. Otherwise the next VC created
             // at this pad index inherits the deleted slot's macros. Their
-            // sounds go with them — a looping sound would be unstoppable.
+            // sounds go with them. A looping sound would be unstoppable.
             PadForge.Common.Input.SoundMacroService.StopSlot(PadIndex);
             Macros.Clear();
+
+            // Menus (#9 B-17) are slot-scoped like macros: a slot deletion
+            // or Reset to Defaults must drop them, or the next VC at this
+            // index inherits the deleted slot's on-screen menus. The
+            // definitions live on the slot's MappingSet, so clear the live
+            // list too (Reset to Defaults already replaced the whole set;
+            // DeleteSlot reaches only through here).
+            {
+                var menuSets = PadForge.Common.Input.SettingsManager.SlotMappingSets;
+                if (menuSets != null && PadIndex >= 0 && PadIndex < menuSets.Length)
+                    menuSets[PadIndex]?.Menus?.Clear();
+            }
+            ReloadMenus();
 
             // Per-device Lighting tab configs live in this PadViewModel's
             // dictionary, keyed by physical device InstanceGuid — not on
@@ -4026,6 +4045,132 @@ namespace PadForge.ViewModels
         public RelayCommand CopyMacroFromCommand =>
             _copyMacroFromCommand ??= new RelayCommand(
                 () => CopyMacroFromRequested?.Invoke(this, EventArgs.Empty));
+
+        // ═══════════════════════════════════════════════
+        //  Radial / touch menus (#9 B-17). Slot-level, like Macros.
+        //  The VM wraps the LIVE MenuDefinitionEntry list on this slot's
+        //  MappingSet (write-through); every edit fires
+        //  ConfigItemDirtyCallback so the autosave path persists the set.
+        // ═══════════════════════════════════════════════
+
+        /// <summary>Menus configured for this pad slot.</summary>
+        public ObservableCollection<MenuEditorItem> Menus { get; } = new();
+
+        private MenuEditorItem _selectedMenu;
+
+        public MenuEditorItem SelectedMenu
+        {
+            get => _selectedMenu;
+            set
+            {
+                if (SetProperty(ref _selectedMenu, value))
+                {
+                    OnPropertyChanged(nameof(HasSelectedMenu));
+                    _removeMenuCommand?.NotifyCanExecuteChanged();
+                    _duplicateMenuCommand?.NotifyCanExecuteChanged();
+                }
+            }
+        }
+
+        public bool HasSelectedMenu => _selectedMenu != null;
+
+        private PadForge.Engine.Data.MappingSet SlotMenuSet
+        {
+            get
+            {
+                var sets = PadForge.Common.Input.SettingsManager.SlotMappingSets;
+                if (sets == null || PadIndex < 0 || PadIndex >= sets.Length) return null;
+                return sets[PadIndex] ??= new PadForge.Engine.Data.MappingSet();
+            }
+        }
+
+        /// <summary>Rebuilds the Menus collection from this slot's live
+        /// MappingSet. Called from <see cref="RebuildMappings"/> so profile
+        /// applies, Workshop imports, and output-type changes all refresh
+        /// the tab (the reset-mirror leg: Reset to Defaults replaces the
+        /// slot sets and lands here too).</summary>
+        public void ReloadMenus()
+        {
+            Menus.Clear();
+            var set = SlotMenuSet;
+            if (set?.Menus != null)
+            {
+                foreach (var entry in set.Menus)
+                {
+                    if (entry == null) continue;
+                    var vm = new MenuEditorItem(entry);
+                    vm.Changed += OnMenuEdited;
+                    Menus.Add(vm);
+                }
+            }
+            SelectedMenu = Menus.Count > 0 ? Menus[0] : null;
+        }
+
+        private void OnMenuEdited() => ConfigItemDirtyCallback?.Invoke();
+
+        private RelayCommand _addMenuCommand;
+        public RelayCommand AddMenuCommand =>
+            _addMenuCommand ??= new RelayCommand(() =>
+            {
+                var set = SlotMenuSet;
+                if (set == null) return;
+                int id = 1;
+                foreach (var m in set.Menus)
+                    if (m != null && m.MenuId >= id) id = m.MenuId + 1;
+                var entry = new PadForge.Engine.Menus.MenuDefinitionEntry
+                {
+                    MenuId = id,
+                    Name = string.Format(Strings.Instance.Menu_NewNameFormat, id),
+                };
+                set.Menus.Add(entry);
+                var vm = new MenuEditorItem(entry);
+                vm.Changed += OnMenuEdited;
+                Menus.Add(vm);
+                SelectedMenu = vm;
+                OnMenuEdited();
+            });
+
+        private RelayCommand _removeMenuCommand;
+        public RelayCommand RemoveMenuCommand =>
+            _removeMenuCommand ??= new RelayCommand(() =>
+            {
+                var vm = _selectedMenu;
+                if (vm == null) return;
+                SlotMenuSet?.Menus.Remove(vm.Entry);
+                Menus.Remove(vm);
+                SelectedMenu = Menus.LastOrDefault();
+                OnMenuEdited();
+            }, () => HasSelectedMenu);
+
+        private RelayCommand _duplicateMenuCommand;
+        public RelayCommand DuplicateMenuCommand =>
+            _duplicateMenuCommand ??= new RelayCommand(() =>
+            {
+                var vm = _selectedMenu;
+                var set = SlotMenuSet;
+                if (vm == null || set == null) return;
+                var clone = vm.Entry.Clone();
+                int id = 1;
+                foreach (var m in set.Menus)
+                    if (m != null && m.MenuId >= id) id = m.MenuId + 1;
+                clone.MenuId = id;
+                clone.Name = string.Format(Strings.Instance.Macro_CopyNameFormat, vm.Entry.Name);
+                set.Menus.Add(clone);
+                var cloneVm = new MenuEditorItem(clone);
+                cloneVm.Changed += OnMenuEdited;
+                Menus.Add(cloneVm);
+                SelectedMenu = cloneVm;
+                OnMenuEdited();
+            }, () => HasSelectedMenu);
+
+        /// <summary>Record button on the menu host picker: MainWindow runs
+        /// the freeform recorder and folds the recorded descriptor onto a
+        /// host choice, the Aim Engage record shape.</summary>
+        public event EventHandler MenuHostRecordRequested;
+        private RelayCommand _menuHostRecordCommand;
+        public RelayCommand MenuHostRecordCommand =>
+            _menuHostRecordCommand ??= new RelayCommand(
+                () => MenuHostRecordRequested?.Invoke(this, EventArgs.Empty));
 
         // ═══════════════════════════════════════════════
         //  Audio tab (issue #83) — per-slot sound output for macro sounds

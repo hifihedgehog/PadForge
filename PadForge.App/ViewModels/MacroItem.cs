@@ -1019,6 +1019,18 @@ namespace PadForge.ViewModels
                 return true;
             }
 
+            // Menu items (#9 B-17): "Menu {id} Item {k}" is a bool the
+            // engine's coercion read answers through the menu runtime's
+            // fired set (asserted / commit-pulsed), so it rides a
+            // descriptor entry exactly like the gyro family. Carries
+            // imported Workshop menu cells whose bindings are macro-shaped
+            // (cursor warps, latches).
+            if (PadForge.Engine.Common.Mapping.SourceCoercion.IsMenuItemDescriptor(d))
+            {
+                entry = new TriggerInputEntry { DeviceGuid = g, SourceDescriptor = d };
+                return true;
+            }
+
             return false;
         }
 

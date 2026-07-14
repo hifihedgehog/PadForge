@@ -251,6 +251,18 @@ namespace PadForge.Common
             else if (s.StartsWith("H", System.StringComparison.OrdinalIgnoreCase) && s.Length > 1 && !char.IsDigit(s[1]))
             { prefix = s.Substring(0, 1); s = s.Substring(1); }
 
+            // "Menu {id} Item {k}" (#9 B-17): a radial / touch menu cell's
+            // hover-commit fire. The label keeps the RAW cell index (the
+            // serialized touch_menu_button_{k} identity, matching the
+            // Menus-tab editor); renumbering for display would re-create
+            // the #196 off-by-one trap.
+            if (PadForge.Engine.Common.Mapping.SourceCoercion.TryParseMenuItem(
+                    s, out int chipMenuId, out int chipMenuItem))
+            {
+                return prefix + string.Format(
+                    Strings.Instance.Mapping_MenuItem_Format, chipMenuId, chipMenuItem);
+            }
+
             // Touchpad descriptors → localized display names. Mirrors the
             // picker (AddTouchpadRawChoices): per-finger axes spell out pad
             // and finger explicitly ("Touchpad 1 Finger 1 X", 1-based for

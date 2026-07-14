@@ -762,14 +762,15 @@ namespace PadForge.Views
             int selected = vm.SelectedConfigTab;
 
             // Two-tier grammar (#175 artifact): tier 1 (slot: Preview/Macros/
-            // Mappings, tags 0-2) and tier 2 (device tabs, tags 3+). Exactly
-            // one tab is checked across BOTH tiers (#175 item 18): a checked
-            // tier-1 pivot over an active device tab lied about what's on
-            // screen. The idle tier drops to hover affordance (both tab
-            // styles keep their IsMouseOver triggers when unchecked).
-            // Navigation rides Click (not Checked), so re-clicking a
-            // still-checked tab still switches back.
-            bool slotTier = selected <= 2;
+            // Mappings, tags 0-2, plus Menus at tag 15, #9 B-17) and tier 2
+            // (device tabs, tags 3-14). Exactly one tab is checked across
+            // BOTH tiers (#175 item 18): a checked tier-1 pivot over an
+            // active device tab lied about what's on screen. The idle tier
+            // drops to hover affordance (both tab styles keep their
+            // IsMouseOver triggers when unchecked). Navigation rides Click
+            // (not Checked), so re-clicking a still-checked tab still
+            // switches back.
+            bool slotTier = selected <= 2 || selected == 15;
             foreach (var rb in FindVisualChildren<RadioButton>(this))
             {
                 if (!TryGetTagIndex(rb, out int idx)) continue;

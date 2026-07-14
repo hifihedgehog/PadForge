@@ -136,6 +136,10 @@ namespace PadForge.Common.Input
                     // above never enters.
                     UpdateMouseGestureContexts(ud, newState);
 
+                    // Radial / touch menu hover-commit state (#9 B-17).
+                    // Not gated on touchpads: sticks host menus too.
+                    UpdateMenuContexts(ud, newState);
+
                     // Apply force feedback (rumble) if applicable.
                     ApplyForceFeedback(ud);
                 }

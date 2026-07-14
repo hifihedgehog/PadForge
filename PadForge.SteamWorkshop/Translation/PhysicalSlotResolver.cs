@@ -437,24 +437,6 @@ namespace PadForge.SteamWorkshop.Translation
             }
         }
 
-        /// <summary>Two-cell touch menus map onto the held-state touch
-        /// spots (left/right split). Cell 0 = left, cell 1 = right.</summary>
-        public static ResolvedSource TouchMenuSpot(int trackpadIndex, int cellIndex)
-            => cellIndex switch
-            {
-                0 => new ResolvedSource
-                {
-                    Descriptor = $"Touchpad {trackpadIndex} TouchLeft",
-                    TrackpadFeature = FeatureTouchSpots,
-                },
-                1 => new ResolvedSource
-                {
-                    Descriptor = $"Touchpad {trackpadIndex} TouchRight",
-                    TrackpadFeature = FeatureTouchSpots,
-                },
-                _ => null,
-            };
-
         private static ResolvedSource TrackpadDpad(int p, string dir) => new()
         {
             Descriptor = $"Touchpad {p} {dir}",

@@ -97,6 +97,14 @@ namespace PadForge.Engine.Common.Mapping
                              // reads 0 and the validity gate freezes the
                              // cursor. Leading 'T' keeps it clear of the I/H
                              // prefix grammar.
+            MenuItem,        // "Menu {menuId} Item {k}" (#9 B-17 radial /
+                             // touch menus). Fires while the menu runtime
+                             // asserts the item (hold-shaped fire types) or
+                             // within a commit's pulse window (one-shot fire
+                             // types), read through MenuItemFiredProvider
+                             // exactly like the touchpad-gesture family.
+                             // Leading 'M' keeps it clear of the I/H prefix
+                             // grammar.
         }
 
         /// <summary>Sensitivity constant for gyro bipolar coercion.
@@ -701,6 +709,8 @@ namespace PadForge.Engine.Common.Mapping
                 return SourceType.Midi;
             if (IsFlickStickDescriptor(s))
                 return SourceType.FlickStick;
+            if (IsMenuItemDescriptor(s))
+                return SourceType.MenuItem;
 
             string[] parts = s.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
             if (parts.Length < 2) return SourceType.Unmapped;
@@ -961,6 +971,29 @@ namespace PadForge.Engine.Common.Mapping
             => !string.IsNullOrEmpty(descriptor)
             && descriptor.StartsWith("Mouse Gesture ", StringComparison.Ordinal);
 
+        /// <summary>True for the menu-item family
+        /// <c>"Menu {menuId} Item {k}"</c> (#9 B-17): exactly four tokens
+        /// with integer id / index. Strict so nothing else beginning with
+        /// "Menu" ever misclassifies.</summary>
+        public static bool IsMenuItemDescriptor(string descriptor)
+            => TryParseMenuItem(descriptor, out _, out _);
+
+        /// <summary>Parses <c>"Menu {menuId} Item {k}"</c> into its menu id
+        /// and item index. Returns false for anything else.</summary>
+        public static bool TryParseMenuItem(string descriptor, out int menuId, out int itemIndex)
+        {
+            menuId = -1;
+            itemIndex = -1;
+            if (string.IsNullOrEmpty(descriptor)) return false;
+            if (!descriptor.StartsWith("Menu ", StringComparison.Ordinal)) return false;
+            var parts = descriptor.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            return parts.Length == 4
+                && parts[2].Equals("Item", StringComparison.Ordinal)
+                && int.TryParse(parts[1], out menuId)
+                && int.TryParse(parts[3], out itemIndex)
+                && menuId >= 0 && itemIndex >= 0;
+        }
+
         /// <summary>Extracts the gesture name from a mouse-gesture
         /// descriptor ("Mouse Gesture Left" becomes "Left"). Empty when the
         /// descriptor is not of the family.</summary>
@@ -1012,6 +1045,14 @@ namespace PadForge.Engine.Common.Mapping
         /// slot's Mouse-tab settings govern only that slot's rows.
         /// Returns false when unwired.</summary>
         public static Func<int, string, string, bool> MouseGestureFiredProvider { get; set; }
+
+        /// <summary>Returns true if menu <c>menuId</c>'s item <c>k</c> is
+        /// fired on the given <c>(slotIndex, deviceGuid, menuId, itemIndex)</c>
+        /// this polling tick (#9 B-17): asserted by a hold-shaped fire type
+        /// (Click / Always) or inside a one-shot commit's pulse window
+        /// (ClickRelease / TouchRelease). Slot-keyed like the gesture
+        /// providers. Returns false when unwired.</summary>
+        public static Func<int, string, int, int, bool> MenuItemFiredProvider { get; set; }
 
         /// <summary>Returns the current value of a continuous gesture
         /// axis (<c>PinchAxis</c> / <c>RotateAxis</c>, plus the per-slot
@@ -1894,6 +1935,14 @@ namespace PadForge.Engine.Common.Mapping
                     slotIndex, deviceGuid ?? "", ParseMouseGestureName(s)) ?? false;
             }
 
+            // Menu items (#9 B-17): pure one-shot / hold bools from the
+            // menu runtime's fired set, same shape as the gesture pulses.
+            if (TryParseMenuItem(s, out int menuFireId, out int menuFireItem))
+            {
+                return MenuItemFiredProvider?.Invoke(
+                    slotIndex, deviceGuid ?? "", menuFireId, menuFireItem) ?? false;
+            }
+
             if (IsTouchpadGestureDescriptor(s))
             {
                 if (!TryParseTouchpadGesture(s, out int gPad, out string gName)) return false;
@@ -2123,6 +2172,15 @@ namespace PadForge.Engine.Common.Mapping
                 return mgFired ? 1f : 0f;
             }
 
+            // Menu-item fire as an axis contribution (#9 B-17): 1 while
+            // asserted / pulsed, 0 otherwise, same as a one-shot gesture.
+            if (TryParseMenuItem(s, out int menuBiId, out int menuBiItem))
+            {
+                bool menuFired = MenuItemFiredProvider?.Invoke(
+                    slotIndex, deviceGuid ?? "", menuBiId, menuBiItem) ?? false;
+                return menuFired ? 1f : 0f;
+            }
+
             if (IsTouchpadGestureDescriptor(s))
             {
                 if (!TryParseTouchpadGesture(s, out int gPad, out string gName)) return 0f;
@@ -2313,6 +2371,14 @@ namespace PadForge.Engine.Common.Mapping
                 bool mgFired = MouseGestureFiredProvider?.Invoke(
                     slotIndex, deviceGuid ?? "", ParseMouseGestureName(s)) ?? false;
                 return mgFired ? 1f : 0f;
+            }
+
+            // Menu-item fire, unipolar (#9 B-17): 0/1.
+            if (TryParseMenuItem(s, out int menuUniId, out int menuUniItem))
+            {
+                bool menuFired = MenuItemFiredProvider?.Invoke(
+                    slotIndex, deviceGuid ?? "", menuUniId, menuUniItem) ?? false;
+                return menuFired ? 1f : 0f;
             }
 
             if (IsTouchpadGestureDescriptor(s))

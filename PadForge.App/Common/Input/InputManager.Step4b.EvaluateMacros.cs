@@ -285,6 +285,12 @@ namespace PadForge.Common.Input
                 }
             }
 
+            // Menu direct bindings (#9 B-17): fired items carrying a direct
+            // key join the desired-set reconcile below (held while fired,
+            // released the frame the fire ends), and direct VC buttons OR
+            // into the slot's combined output like a macro ButtonPress.
+            CollectMenuDirectOutputs();
+
             // Settle ToggleKey latches once per frame, after every slot has
             // contributed its desired keys. Restriction was enforced at
             // collection time (a restricted slot's latches never enter the

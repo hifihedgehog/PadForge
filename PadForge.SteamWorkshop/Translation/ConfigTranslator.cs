@@ -100,6 +100,13 @@ namespace PadForge.SteamWorkshop.Translation
             public readonly List<ActivatorRequest> Activators = new();
 
             public int? BasePresetId;
+
+            /// <summary>Next menu id (#9 B-17). 1-based, assigned in walk
+            /// order (deterministic: presets ascend by id, groups by
+            /// (slot token, group id)); rides the "Menu {id} Item {k}"
+            /// source descriptors and the emitted MenuDefinitionEntry.</summary>
+            public int NextMenuId = 1;
+
             public readonly Dictionary<int, string> LayerByPreset = new();
             public readonly Dictionary<int, int> GameActionsByPreset = new();
             public readonly Dictionary<int, string> PresetNames = new();
@@ -389,19 +396,14 @@ namespace PadForge.SteamWorkshop.Translation
                     break;
 
                 case "touch_menu":
-                    TranslateTouchMenu(run, preset, effective, slot, layer, path, settings);
+                    TranslateMenuGroup(run, preset, effective, slot, layer, path, settings,
+                        radial: false);
                     break;
 
                 case "radial_menu":
-                {
-                    int cells = effective.Inputs.Keys.Count(k =>
-                        k.StartsWith("touch_menu_button_", StringComparison.OrdinalIgnoreCase));
-                    run.Report.Add(TranslationStatus.Skipped, TranslationReasons.RadialMenuNeedsOverlay,
-                        path, args: cells.ToString(CultureInfo.InvariantCulture));
-                    TranslateMemberGroup(run, preset, effective, slot, layer, path, settings,
-                        onlyInputs: new[] { "click" });
+                    TranslateMenuGroup(run, preset, effective, slot, layer, path, settings,
+                        radial: true);
                     break;
-                }
 
                 case "mouse_region":
                     TranslateMouseRegion(run, slot, layer, path, settings);
@@ -657,44 +659,188 @@ namespace PadForge.SteamWorkshop.Translation
                 || !string.Equals(v?.Trim(), "0", StringComparison.Ordinal);
         }
 
-        /// <summary>Two-cell touch menus map onto the touch-spot left/right
-        /// split; anything larger needs Steam's on-screen grid.</summary>
-        private void TranslateTouchMenu(Run run, SteamInputPreset preset, SteamInputGroup group,
-            SteamSlot slot, string layer, string path, Dictionary<string, string> settings)
-        {
-            var cells = group.Inputs.Keys
-                .Where(k => k.StartsWith("touch_menu_button_", StringComparison.OrdinalIgnoreCase))
-                .Select(k => (Name: k, Index: ParseTrailingInt(k)))
-                .Where(c => c.Index >= 0)
-                .OrderBy(c => c.Index)
-                .ToList();
+        /// <summary>Menu group settings the overlay-backed menus have no
+        /// channel for, named per group when present and non-zero. The
+        /// only corpus-era key is "sensitivity" (shipped configurator
+        /// "In-Menu Sensitivity": cursor movement within the menu; the
+        /// PadForge hover math has no in-menu cursor).</summary>
+        private static readonly string[] MenuDroppedKeys = { "sensitivity" };
 
-            if (!PhysicalSlotResolver.IsTrackpad(slot) || cells.Count != 2
-                || cells[0].Index != 0 || cells[1].Index != 1)
+        /// <summary>radial_menu / touch_menu groups (#9 B-17): first-class
+        /// overlay-backed menus. The group becomes a MenuDefinitionEntry
+        /// (structure: kind, host surface, layer, fire type, cells,
+        /// labels, overlay geometry) and each bound
+        /// <c>touch_menu_button_N</c> cell translates its bindings through
+        /// the NORMAL activator/binding walk against a synthetic
+        /// "Menu {id} Item {n}" source descriptor, which the engine's menu
+        /// runtime asserts on hover-commit. Key semantics grounded on the
+        /// shipped configurator strings: fire types Click / Release /
+        /// Touch Release / Always (touchmenu_button_fire_type 0..3);
+        /// radial button_0 is the CENTER button
+        /// ("ControllerBinding_RadialMenuButton0" = "Radial Menu Center
+        /// Button") and 1..N the ring; grids size from
+        /// touch_menu_button_count with "Same As Command Count" when
+        /// absent; position/scale/opacity/show-labels ride the overlay.
+        /// Ring slots are POSITIONAL: buttons serialize under stable slot
+        /// keys and wild configs preserve gaps (corpus 3456927474: ring
+        /// 1,2,3,5,8,9,10,12), so slots = the highest bound ring index
+        /// and unbound slots stay empty wedges.</summary>
+        private void TranslateMenuGroup(Run run, SteamInputPreset preset, SteamInputGroup group,
+            SteamSlot slot, string layer, string path, Dictionary<string, string> settings,
+            bool radial)
+        {
+            // Host surface: a stick (deflection hovers) or a trackpad
+            // (touch position hovers). Nothing else has a direction /
+            // position surface to hover with.
+            string host;
+            int hostHalf = 0;
+            if (PhysicalSlotResolver.IsStick(slot))
             {
-                run.Report.Add(TranslationStatus.Skipped, TranslationReasons.TouchMenuNeedsOverlay,
-                    path, args: cells.Count.ToString(CultureInfo.InvariantCulture));
+                host = slot == SteamSlot.Joystick ? "Gamepad LeftStick" : "Gamepad RightStick";
+            }
+            else if (PhysicalSlotResolver.IsTrackpad(slot))
+            {
+                host = $"Touchpad {PhysicalSlotResolver.TrackpadIndex(slot, run.SinglePadTrackpads)}";
+                hostHalf = (int)PhysicalSlotResolver.HalfFor(slot, run.SinglePadTrackpads);
+            }
+            else
+            {
+                run.Report.Add(TranslationStatus.Skipped, TranslationReasons.MenuSurfaceNotSupported,
+                    path, args: slot.ToString());
                 return;
             }
 
-            int p = PhysicalSlotResolver.TrackpadIndex(slot, run.SinglePadTrackpads);
-            int emittedBefore = CountEmitted(run);
+            // Bound cells: touch_menu_button_{n} inputs with activators.
+            var cells = group.Inputs
+                .Where(kv => kv.Key.StartsWith("touch_menu_button_", StringComparison.OrdinalIgnoreCase))
+                .Select(kv => (Index: ParseTrailingInt(kv.Key), Input: kv.Value))
+                .Where(c => c.Index >= 0 && c.Input.Activators.Count > 0)
+                .OrderBy(c => c.Index)
+                .ToList();
+            if (cells.Count == 0)
+            {
+                run.Report.Add(TranslationStatus.Skipped, TranslationReasons.MenuEmpty, path);
+                return;
+            }
+
+            int maxIndex = cells[cells.Count - 1].Index;
+            bool hasCenter = radial && cells[0].Index == 0;
+            // Positional and uncapped on purpose: every bound cell keeps
+            // its slot (Steam's own vocabulary tops out at RadialMenuButton20
+            // / 16-cell grids, so wild counts are already bounded by what
+            // the configurator can author; the OVERLAY renderer carries its
+            // own sanity cap so a hand-hacked config cannot demand an
+            // unbounded window).
+            int cellCount = radial
+                ? maxIndex // ring slots, center (index 0) excluded
+                : Math.Max(ParseIntSetting(settings, "touch_menu_button_count", 0), maxIndex + 1);
+
+            int menuId = run.NextMenuId++;
+
+            var entry = new PadForge.Engine.Menus.MenuDefinitionEntry
+            {
+                DeviceGuid = "",
+                MenuId = menuId,
+                Name = string.IsNullOrWhiteSpace(group.Name)
+                    ? $"{(radial ? "Radial" : "Touch")} Menu {menuId}" : group.Name.Trim(),
+                Kind = radial ? PadForge.Engine.Menus.MenuKind.Radial
+                              : PadForge.Engine.Menus.MenuKind.Grid,
+                HostDescriptor = host,
+                HostHalf = hostHalf,
+                LayerMask = layer == "Base" ? "" : layer,
+                FireType = (PadForge.Engine.Menus.MenuFireType)Math.Clamp(
+                    ParseIntSetting(settings, "touchmenu_button_fire_type", 0), 0, 3),
+                CellCount = cellCount,
+                HasCenter = hasCenter,
+                ShowLabels = !(settings.TryGetValue("touch_menu_show_labels", out var sl)
+                    && (sl ?? "").Trim() == "0"),
+                PosXPercent = Math.Clamp(ParseIntSetting(settings, "touch_menu_position_x", 50), 0, 100),
+                PosYPercent = Math.Clamp(ParseIntSetting(settings, "touch_menu_position_y", 50), 0, 100),
+                ScalePercent = Math.Clamp(ParseIntSetting(settings, "touch_menu_scale", 100), 10, 400),
+                OpacityPercent = Math.Clamp(ParseIntSetting(settings, "touch_menu_opacity", 90), 5, 100),
+            };
+            int engageDz = GroupDeadZonePercent(settings);
+            if (engageDz > 0) entry.EngageDeadzonePercent = engageDz;
+
+            int iconCells = 0;
             foreach (var cell in cells)
             {
-                var source = PhysicalSlotResolver.TouchMenuSpot(p, cell.Index);
-                TranslateInput(run, preset, group.Inputs[cell.Name], source, null, layer,
-                    $"{path}/{cell.Name}");
+                entry.Items.Add(new PadForge.Engine.Menus.MenuItemDefinition
+                {
+                    Index = cell.Index,
+                    Label = CellLabel(cell.Input),
+                });
+                if (cell.Input.Activators.Any(a => a.Bindings.Any(b =>
+                        (b.Raw ?? "").Contains(".png", StringComparison.OrdinalIgnoreCase))))
+                {
+                    iconCells++;
+                }
             }
-            // A menu hosted on one half of a single physical pad (#9 B-1)
-            // still splits at the whole pad's left/right spots (the spot
-            // grammar has no per-half sub-zones): honest note when the
-            // cells emitted anything.
-            if (PhysicalSlotResolver.HalfFor(slot, run.SinglePadTrackpads) != TrackpadHalf.Whole
-                && CountEmitted(run) > emittedBefore)
+            run.Profile.Menus.Add(entry);
+
+            run.Report.Add(TranslationStatus.Clean, TranslationReasons.MenuEmitted, path,
+                emitted: $"{(radial ? "Radial" : "Grid")} menu {menuId} on {host}: "
+                    + $"{cells.Count} bound cells",
+                args: cells.Count.ToString(CultureInfo.InvariantCulture));
+
+            // Steam renders per-cell icon glyphs (ghost_*.png); PadForge's
+            // overlay renders text labels only. One honest note per menu.
+            if (iconCells > 0)
             {
-                run.Report.Add(TranslationStatus.Partial,
-                    TranslationReasons.TrackpadHalfApproximated, path);
+                run.Report.Add(TranslationStatus.Partial, TranslationReasons.MenuIconsDropped,
+                    path, args: iconCells.ToString(CultureInfo.InvariantCulture));
             }
+
+            var droppedKeys = MenuDroppedKeys
+                .Where(k => settings.TryGetValue(k, out var v) && (v ?? "").Trim() != "0")
+                .ToList();
+            if (droppedKeys.Count > 0)
+            {
+                run.Report.Add(TranslationStatus.Partial, TranslationReasons.MenuTuningDropped,
+                    path, args: string.Join(", ", droppedKeys));
+            }
+
+            // Cell bindings ride the normal activator/binding walk against
+            // the menu-item source, so keys become rows, layer engages
+            // become activators, cursor warps become macros, all triggered
+            // by the item's hover-commit fire.
+            foreach (var cell in cells)
+            {
+                var source = new ResolvedSource { Descriptor = $"Menu {menuId} Item {cell.Index}" };
+                TranslateInput(run, preset, cell.Input, source, null, layer,
+                    $"{path}/touch_menu_button_{cell.Index}");
+            }
+
+            // The configurator also offers menu-level Click / Touch
+            // commands beside the cells ("ControllerBinding_TouchMenuClick"
+            // = "Click"); when bound they translate as ordinary members of
+            // the hosting surface.
+            TranslateMemberGroup(run, preset, group, slot, layer, path, settings,
+                onlyInputs: new[] { "click", "touch" });
+        }
+
+        /// <summary>Overlay label for a menu cell: the author's label when
+        /// the binding carries one (the second comma field), else the
+        /// binding's own parameter ("F5", "A"), matching how Steam falls
+        /// back to the command glyph when no label is set.</summary>
+        private static string CellLabel(SteamInputInput input)
+        {
+            foreach (var act in input.Activators)
+            {
+                foreach (var b in act.Bindings)
+                {
+                    if (!string.IsNullOrWhiteSpace(b.ActionName)) return b.ActionName.Trim();
+                }
+            }
+            foreach (var act in input.Activators)
+            {
+                foreach (var b in act.Bindings)
+                {
+                    string p = FirstToken(b.Param);
+                    if (p.Length > 0) return p;
+                }
+            }
+            return "";
         }
 
         /// <summary>Mouse-region keys the pointer rows have no channel
@@ -2362,6 +2508,7 @@ namespace PadForge.SteamWorkshop.Translation
             run.Report.XboxRowCount = profile.XboxMappingSet.Rows.Count;
             run.Report.KbmRowCount = profile.KbmMappingSet.Rows.Count;
             run.Report.MacroCount = profile.Macros.Count;
+            run.Report.MenuCount = profile.Menus.Count;
             run.Report.ShiftActivatorCount =
                 profile.XboxMappingSet.ShiftActivators.Count + profile.KbmMappingSet.ShiftActivators.Count;
 
@@ -2384,10 +2531,13 @@ namespace PadForge.SteamWorkshop.Translation
             // Every macro still needs SOME slot to evaluate against (its
             // device-free entries resolve that slot's devices); when no
             // Xbox slot is demanded, macros ride the KbM slot, so a
-            // key-latch-only config materializes one.
+            // key-latch-only config materializes one. Menus (#9 B-17)
+            // follow the same rule: their definitions live on a slot's
+            // PadSetting and their runtime resolves that slot's devices.
             profile.NeedsKbmSlot = profile.KbmMappingSet.Rows.Count > 0
                 || profile.KbmMappingSet.ShiftActivators.Count > 0
-                || (!profile.NeedsXboxSlot && profile.Macros.Count > 0);
+                || (!profile.NeedsXboxSlot
+                    && (profile.Macros.Count > 0 || profile.Menus.Count > 0));
             return profile;
         }
 

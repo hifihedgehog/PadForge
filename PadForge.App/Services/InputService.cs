@@ -1313,6 +1313,17 @@ namespace PadForge.Services
                     $"Touchpad {padIdx} {gestureName}");
             };
 
+            // Menu-item fired reads (#9 B-17): the menu runtime asserts /
+            // commit-pulses items per (slot, device, menu); rows, shift
+            // activators, and macro descriptor triggers all read through
+            // this one hook. An empty device guid matches any device
+            // driving the menu on the slot (the direct-binding pass and
+            // preview contexts use it).
+            PadForge.Engine.Common.Mapping.SourceCoercion.MenuItemFiredProvider =
+                (slotIndex, deviceGuid, menuId, itemIndex) =>
+                    _inputManager != null
+                    && _inputManager.IsMenuItemFired(slotIndex, deviceGuid, menuId, itemIndex);
+
             // Mouse-gesture fired reads (issue #200): the recognizer stores
             // bare gesture names ("Left".."Click") in its per-(slot, device)
             // context's fired set.
@@ -1779,6 +1790,11 @@ namespace PadForge.Services
                     _shiftLayerFlyout.Close();
                     _shiftLayerFlyout = null;
                 }
+                if (_menuOverlay != null)
+                {
+                    _menuOverlay.Close();
+                    _menuOverlay = null;
+                }
             });
 
             // Background-safe: foreground monitor, servers, audio detector,
@@ -1845,6 +1861,7 @@ namespace PadForge.Services
                 PadForge.Engine.Common.Mapping.SourceCoercion.AimEngageStateProvider = null;
                 PadForge.Engine.Common.Mapping.SourceCoercion.TouchpadGestureFiredProvider = null;
                 PadForge.Engine.Common.Mapping.SourceCoercion.MouseGestureFiredProvider = null;
+                PadForge.Engine.Common.Mapping.SourceCoercion.MenuItemFiredProvider = null;
                 PadForge.Engine.Common.Mapping.SourceCoercion.TouchpadGestureAxisProvider = null;
                 PadForge.Engine.Common.Mapping.SourceCoercion.TouchpadMouseSettingsProvider = null;
                 // #107: stop sampling the cursor and unhook MouseCursorProvider.
@@ -2113,6 +2130,12 @@ namespace PadForge.Services
             //    layer name + color whenever the slot is on a non-Base
             //    layer.
             UpdateShiftLayerFlyout();
+
+            // ── Drive the radial / touch menu overlay (#9 B-17): pull
+            //    the poll thread's engaged-menu snapshot and render /
+            //    highlight / hide accordingly. Optional (default on);
+            //    menus keep committing blind when disabled.
+            UpdateMenuOverlayWindow();
 
             // ── Update Devices page (only if visible) ──
             if (IsDevicesPageVisible)
@@ -5594,6 +5617,17 @@ namespace PadForge.Services
                 Authoritative = src.Authoritative,
             };
             CopyShiftActivators(src, copy);
+            // Menus (#9 B-17) travel with the set like the shift authoring:
+            // without this leg a profile apply would silently drop every
+            // imported / authored menu.
+            if (src.Menus != null)
+            {
+                foreach (var m in src.Menus)
+                {
+                    if (m == null) continue;
+                    copy.Menus.Add(m.Clone());
+                }
+            }
             if (src.Rows != null)
             {
                 foreach (var r in src.Rows)
@@ -7668,6 +7702,25 @@ namespace PadForge.Services
         // engagement and reused thereafter. State is read by polling
         // InputManager.GetEngagedLayerMask in UiTimer_Tick.
         private Views.ShiftLayerFlyout _shiftLayerFlyout;
+
+        private Views.MenuOverlayWindow _menuOverlay;
+
+        /// <summary>UI-timer leg for the menu overlay (#9 B-17): pulls
+        /// <see cref="Common.Input.InputManager.ActiveMenuOverlay"/> (the
+        /// poll thread's volatile snapshot) and drives the click-through
+        /// HUD window. Lazily created on first engage; hidden when no menu
+        /// is engaged or the setting is off.</summary>
+        private void UpdateMenuOverlayWindow()
+        {
+            var snap = _inputManager?.ActiveMenuOverlay;
+            if (snap == null || !_mainVm.Dashboard.EnableMenuOverlay)
+            {
+                _menuOverlay?.UpdateFromSnapshot(null);
+                return;
+            }
+            _menuOverlay ??= new Views.MenuOverlayWindow();
+            _menuOverlay.UpdateFromSnapshot(snap);
+        }
         private int _shiftLayerFlyoutLastSlot = -1;
         private string _shiftLayerFlyoutLastShown = "Base";
 

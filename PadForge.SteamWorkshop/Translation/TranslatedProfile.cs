@@ -32,6 +32,17 @@ namespace PadForge.SteamWorkshop.Translation
         /// key-on-release). The materializer builds MacroData from these.</summary>
         public List<TranslatedMacro> Macros { get; set; } = new();
 
+        /// <summary>Radial / touch menus (#9 B-17), carried as the real
+        /// Engine menu model (same policy as the two MappingSets above:
+        /// everything the engine already models rides the Engine type).
+        /// Cell BINDINGS are not in here; they lower through the normal
+        /// row / macro / activator paths keyed on the menu-item source
+        /// descriptor ("Menu {id} Item {k}"), so the menus list carries
+        /// only structure: kind, host surface, layer, fire type, cell
+        /// geometry, labels, and overlay hints. DeviceGuid stays empty
+        /// (the "any device on the slot" form).</summary>
+        public List<PadForge.Engine.Menus.MenuDefinitionEntry> Menus { get; set; } = new();
+
         /// <summary>True when the config binds the Xbox side at all: explicit
         /// rows (identity bindings included) or activators, or macros (their
         /// triggers read the Xbox slot's combined output). A pure

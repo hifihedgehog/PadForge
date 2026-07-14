@@ -811,7 +811,7 @@ namespace PadForge.Common.Input
             int slotIndex)
         {
             // ── Read the activator's current input ──
-            bool inputDown = ReadActivatorInput(act, state);
+            bool inputDown = ReadActivatorInput(act, state, slotIndex);
 
             // ── v2 Delay before Jump: gate transitions until the input
             //    has been continuously down for DelayMs ──
@@ -1018,8 +1018,13 @@ namespace PadForge.Common.Input
 
         /// <summary>Reads the input for an activator according to its
         /// <see cref="ShiftActivator.Kind"/>. Returns <c>true</c> when the
-        /// activator should be considered "down" for engagement purposes.</summary>
-        private static bool ReadActivatorInput(ShiftActivator act, CustomInputState state)
+        /// activator should be considered "down" for engagement purposes.
+        /// <paramref name="slotIndex"/> keys the slot-scoped source
+        /// families (menu-item fires, per-(device, slot) tuning) so an
+        /// activator descriptor reads the same state a mapping row on the
+        /// same slot would (#9 B-17).</summary>
+        private static bool ReadActivatorInput(ShiftActivator act, CustomInputState state,
+            int slotIndex)
         {
             // Input-less layers (#119) are passive targets: no own button, so
             // they never self-engage and are reached only via Cycle / Custom jump.
@@ -1036,8 +1041,8 @@ namespace PadForge.Common.Input
                     // through LookupDeviceState when ChordSecondDeviceGuid is
                     // set and points to a different device. Falls back to
                     // the activator's own state when no second-device GUID is
-                    // recorded (same-device chord — legacy / common case).
-                    bool a = SourceKindRuntimeReadButtonLikeBool(state, act.Descriptor, act.DeviceGuid);
+                    // recorded (same-device chord, the legacy / common case).
+                    bool a = SourceKindRuntimeReadButtonLikeBool(state, act.Descriptor, act.DeviceGuid, slotIndex);
                     CustomInputState secondState = state;
                     string secondGuid = act.DeviceGuid;
                     if (!string.IsNullOrEmpty(act.ChordSecondDeviceGuid)
@@ -1047,18 +1052,18 @@ namespace PadForge.Common.Input
                         secondState = LookupDeviceState(act.ChordSecondDeviceGuid) ?? state;
                         secondGuid = act.ChordSecondDeviceGuid;
                     }
-                    bool b = SourceKindRuntimeReadButtonLikeBool(secondState, act.ChordSecondDescriptor, secondGuid);
+                    bool b = SourceKindRuntimeReadButtonLikeBool(secondState, act.ChordSecondDescriptor, secondGuid, slotIndex);
                     return a && b;
                 }
                 case "Axis":
                 {
                     // v2: axis past threshold. ReadAxisLike returns [-1..+1].
-                    float axisVal = SourceKindRuntimeReadAxisLikeFloat(state, act.Descriptor, act.DeviceGuid);
+                    float axisVal = SourceKindRuntimeReadAxisLikeFloat(state, act.Descriptor, act.DeviceGuid, slotIndex);
                     return System.Math.Abs(axisVal) >= act.AxisThreshold;
                 }
                 case "Button":
                 default:
-                    return SourceKindRuntimeReadButtonLikeBool(state, act.Descriptor, act.DeviceGuid);
+                    return SourceKindRuntimeReadButtonLikeBool(state, act.Descriptor, act.DeviceGuid, slotIndex);
             }
         }
 
@@ -1132,24 +1137,26 @@ namespace PadForge.Common.Input
         /// <see cref="SourceKindRuntimeReadButtonLikeBool"/> but returns the
         /// signed [-1..+1] bipolar axis value without thresholding.</summary>
         private static float SourceKindRuntimeReadAxisLikeFloat(CustomInputState state, string descriptor,
-            string deviceGuid = null)
+            string deviceGuid = null, int slotIndex = 0)
             => SourceEvaluator.EvaluateForBipolarAxisTarget(
                 state,
                 // DeviceGuid rides along so per-device engine families
                 // ("IR Offscreen"'s debounce store, the IR EMA keys) never
                 // collapse onto a shared empty-string key (#203 review).
                 new MappingSource { Kind = "Direct", Descriptor = descriptor ?? "", DeviceGuid = deviceGuid ?? "" },
-                0, "", 0, null, 0);
+                slotIndex, "", 0, null, 0);
 
         // Reuses the Engine's button-like reader without going through the
         // managed-cast SourceCoercion wrapper (we already know the activator
-        // is button-class).
+        // is button-class). slotIndex keys the slot-scoped families (menu
+        // fires, per-(device, slot) tuning) for callers that know their
+        // slot (#9 B-17); legacy utility callers keep the 0 default.
         private static bool SourceKindRuntimeReadButtonLikeBool(CustomInputState state, string descriptor,
-            string deviceGuid = null)
+            string deviceGuid = null, int slotIndex = 0)
             => SourceEvaluator.EvaluateForButtonTarget(
                 state,
                 new MappingSource { Kind = "Direct", Descriptor = descriptor ?? "", DeviceGuid = deviceGuid ?? "" },
-                50, 0, "", 0, null, 0);
+                50, slotIndex, "", 0, null, 0);
 
         // ─────────────────────────────────────────────
         //  Issue #61 multi-source / shift Phase 1c-2

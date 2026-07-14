@@ -46,7 +46,7 @@ xbox rows: 19
 kbm rows: 0
 macros: 1
   macro ToggleVcButton OnPress | Toggle ButtonB (click) | btns=0x2000 target=0x2000
-report: v6 rows:x19+k0 macros:1 layers:0 clean:22 partial:2 skipped:1 errors:0
+report: v7 rows:x19+k0 macros:1 menus:0 layers:0 clean:22 partial:2 skipped:1 errors:0
   Skipped DoublePressNotSupported @ Default/button_diamond/group 3 (four_buttons)/button_y/Double_Press :: xinput_button JOYSTICK_LEFT
   Partial ToggleLatchEmitted(ButtonB) @ Default/joystick/group 6 (joystick_move)/click/Full_Press => Toggle ButtonB latch macro
   Clean RowEmitted @ Default/joystick/group 6 (joystick_move)/click/Full_Press => ButtonB <- Gamepad LeftStick

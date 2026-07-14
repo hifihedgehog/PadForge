@@ -63,7 +63,7 @@ kbm rows: 28
     <- Gamepad RightStickY [lower-half]
     <- Gamepad RightStickY [upper-half]
 macros: 0
-report: v2 rows:x0+k28 macros:0 layers:0 clean:28 partial:7 skipped:7 errors:0
+report: v3 rows:x0+k28 macros:0 layers:0 clean:28 partial:7 skipped:7 errors:0
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_a/Full_Press => KbmKey0D <- Gamepad ButtonA
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_b/Full_Press => KbmKey1B <- Gamepad ButtonB
   Skipped SteamSystemAction(SHOW_KEYBOARD) @ Default/button_diamond/group 0 (four_buttons)/button_x/Full_Press :: controller_action SHOW_KEYBOARD, , 

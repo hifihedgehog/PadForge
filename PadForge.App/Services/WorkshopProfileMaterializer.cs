@@ -104,6 +104,14 @@ namespace PadForge.Services
             var list = new List<MacroData>(macros.Count);
             foreach (var m in macros)
             {
+                if (m?.Action == TranslatedMacroAction.MouseLimitRegion)
+                {
+                    // The translator's "WhileHeld" clamp is semantic; the
+                    // engine clamp is a toggle primitive (#110), so it lowers
+                    // to an engage-on-press / release-on-release pair.
+                    list.AddRange(BuildRegionClampPair(m, xboxSlot));
+                    continue;
+                }
                 var data = BuildMacro(m, xboxSlot, controllerType);
                 if (data != null) list.Add(data);
             }
@@ -135,6 +143,37 @@ namespace PadForge.Services
                     KeyCode = m.VirtualKey,
                 },
                 TranslatedMacroAction.SetLightbarColor => BuildSetLedAction(m, controllerType),
+                TranslatedMacroAction.RepeatVcButtonWhileHeld => new ActionData
+                {
+                    Type = MacroActionType.RepeatVcButtonWhileHeld,
+                    ButtonFlags = m.TargetXboxButtons,
+                    IntervalMs = m.IntervalMs > 0 ? m.IntervalMs : 100,
+                },
+                TranslatedMacroAction.ToggleVcButton => new ActionData
+                {
+                    Type = MacroActionType.ToggleVcButton,
+                    ButtonFlags = m.TargetXboxButtons,
+                },
+                TranslatedMacroAction.ToggleKey => new ActionData
+                {
+                    Type = MacroActionType.ToggleKey,
+                    KeyCode = m.VirtualKey,
+                },
+                TranslatedMacroAction.GyroRecenter => new ActionData
+                {
+                    Type = MacroActionType.GyroRecenter,
+                },
+                // HoldVcButton: ButtonPress ORs its flags into the combined
+                // output every frame while it is the current action, and the
+                // UntilRelease + RepeatDelayMs=0 shape below restarts the
+                // sequence each frame, so the button stays down from the
+                // HoldForMs threshold until the physical release (Steam's
+                // documented Long_Press behavior).
+                TranslatedMacroAction.HoldVcButton => new ActionData
+                {
+                    Type = MacroActionType.ButtonPress,
+                    ButtonFlags = m.TargetXboxButtons,
+                },
                 _ => null,
             };
             if (action == null) return null;
@@ -142,7 +181,7 @@ namespace PadForge.Services
             if (!Enum.TryParse(m.TriggerMode, out MacroTriggerMode mode))
                 mode = MacroTriggerMode.OnPress;
 
-            return new MacroData
+            var data = new MacroData
             {
                 PadIndex = xboxSlot,
                 Name = string.IsNullOrWhiteSpace(m.Name) ? "Workshop Macro" : m.Name,
@@ -155,6 +194,84 @@ namespace PadForge.Services
                 TriggerAxisThreshold = Math.Clamp(m.TriggerAxisThresholdPercent, 1, 100),
                 Actions = new[] { action },
             };
+
+            if (mode == MacroTriggerMode.HoldForMs)
+                data.TriggerHoldMs = Math.Clamp(m.TriggerHoldMs, 50, 10000); // MacroItem clamp range
+
+            // Continuous actions (autofire pulses) run for as long as the
+            // macro executes; only RepeatMode=UntilRelease stops execution
+            // when the trigger releases (Step4b stops UntilRelease macros on
+            // !triggerActive; a WhileHeld + Once macro whose actions are all
+            // continuous would keep pulsing forever after release).
+            if (m.Action == TranslatedMacroAction.RepeatKeyWhileHeld
+                || m.Action == TranslatedMacroAction.RepeatVcButtonWhileHeld)
+            {
+                data.RepeatMode = MacroRepeatMode.UntilRelease;
+            }
+            else if (m.Action == TranslatedMacroAction.HoldVcButton)
+            {
+                // Restart the one-action sequence every frame with no gap so
+                // ButtonPress re-writes the button continuously until the
+                // release stops the macro.
+                data.RepeatMode = MacroRepeatMode.UntilRelease;
+                data.RepeatDelayMs = 0;
+            }
+
+            return data;
+        }
+
+        /// <summary>Lowers a translated mouse_region clamp to the engine's
+        /// toggle primitive (#110): one macro engages the clamp on the
+        /// trigger's press, its twin releases it on the release, so the
+        /// region is held exactly while the hosting input is active. Region
+        /// geometry (center position_x/position_y percent, size scale
+        /// percent, Steam's shipped configurator units) folds into the
+        /// centered per-edge insets the clamp supports; an off-center region
+        /// clamps at the same size around the screen center (the translator
+        /// already reported the approximation Partial).</summary>
+        private static MacroData[] BuildRegionClampPair(TranslatedMacro m, int xboxSlot)
+        {
+            int scale = Math.Clamp(m.RegionScalePercent, 1, 100);
+            int insetX = RegionInsetPixels(scale, GetSystemMetrics(SM_CXSCREEN));
+            int insetY = RegionInsetPixels(scale, GetSystemMetrics(SM_CYSCREEN));
+
+            MacroData Build(MacroTriggerMode mode, string suffix) => new()
+            {
+                PadIndex = xboxSlot,
+                Name = $"{(string.IsNullOrWhiteSpace(m.Name) ? "Cursor region" : m.Name)} {suffix}",
+                IsEnabled = true,
+                TriggerSource = MacroTriggerSource.OutputController,
+                TriggerMode = mode,
+                TriggerButtons = m.TriggerXboxButtons,
+                ConsumeTriggerButtons = false,
+                TriggerAxisTargets = string.IsNullOrEmpty(m.TriggerAxisTarget) ? null : m.TriggerAxisTarget,
+                TriggerAxisThreshold = Math.Clamp(m.TriggerAxisThresholdPercent, 1, 100),
+                Actions = new[]
+                {
+                    new ActionData
+                    {
+                        Type = MacroActionType.MouseLimitRegion,
+                        CursorClampMode = ViewModels.CursorClampMode.XAndY,
+                        CursorClampInsetX = insetX,
+                        CursorClampInsetY = insetY,
+                    },
+                },
+            };
+
+            return new[]
+            {
+                Build(MacroTriggerMode.OnPress, "(engage)"),
+                Build(MacroTriggerMode.OnRelease, "(release)"),
+            };
+        }
+
+        /// <summary>Per-edge clamp inset for a centered region covering
+        /// <paramref name="scalePercent"/> of <paramref name="screenSize"/>.</summary>
+        private static int RegionInsetPixels(int scalePercent, int screenSize)
+        {
+            if (screenSize <= 0) return 0;
+            return (int)Math.Clamp(Math.Round(screenSize * (100 - scalePercent) / 200.0),
+                0, screenSize / 2);
         }
 
         /// <summary>Maps a translated set_led macro onto the existing

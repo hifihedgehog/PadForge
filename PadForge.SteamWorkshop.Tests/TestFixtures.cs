@@ -24,5 +24,6 @@ namespace PadForge.SteamWorkshop.Tests
         public const long SkyrimKbm = 789818086;      // "SkyrimSE Perfected: KB/M ..."
         public const long Homm3Deck = 2853328208;     // "HoMM3 HotA Deckified", controller_neptune
         public const long GabeGeneration = 2790927974; // has disabled_activators blocks
+        public const long RollDelayFix = 2774979654;  // Elden Ring roll-delay fix: stick click toggles B (wave 2A)
     }
 }

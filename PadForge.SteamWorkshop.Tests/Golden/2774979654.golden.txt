@@ -1,0 +1,74 @@
+name: 彻底解决翻滚延迟（更新版）Completely solve rollover delay (updated version)
+description: 按下b键立刻翻滚   Press the B key to tumble immediately双击y键下蹲（原版是x，但x是道具，会造成影响）   Double click the Y key to...
+slots: xbox
+xbox rows: 19
+  Base | ButtonA
+    <- Gamepad ButtonA
+  Base | ButtonB
+    <- Gamepad LeftStick
+    <- Gamepad ButtonB
+  Base | ButtonBack
+    <- Gamepad ButtonBack
+  Base | ButtonStart
+    <- Gamepad ButtonStart
+  Base | ButtonX
+    <- Gamepad ButtonX
+  Base | ButtonY
+    <- Gamepad ButtonY
+  Base | DPadDown
+    <- Gamepad DPadDown
+  Base | DPadLeft
+    <- Gamepad DPadLeft
+  Base | DPadRight
+    <- Gamepad DPadRight
+  Base | DPadUp
+    <- Gamepad DPadUp
+  Base | LeftShoulder
+    <- Gamepad LeftShoulder
+  Base | LeftThumbAxisX
+    <- Gamepad LeftStickX
+  Base | LeftThumbAxisY
+    <- Gamepad LeftStickY
+  Base | LeftTrigger
+    <- Gamepad LeftTrigger
+    <- Gamepad LeftTrigger [upper-half] dz=75
+  Base | RightShoulder
+    <- Gamepad RightShoulder
+  Base | RightThumbAxisX
+    <- Gamepad RightStickX
+  Base | RightThumbAxisY
+    <- Gamepad RightStickY
+  Base | RightThumbButton
+    <- Gamepad RightStick
+  Base | RightTrigger
+    <- Gamepad RightTrigger
+    <- Gamepad RightTrigger [upper-half] dz=75
+kbm rows: 0
+macros: 1
+  macro ToggleVcButton OnPress | Toggle ButtonB (click) | btns=0x2000 target=0x2000
+report: v3 rows:x19+k0 macros:1 layers:0 clean:22 partial:2 skipped:1 errors:0
+  Skipped DoublePressNotSupported @ Default/button_diamond/group 3 (four_buttons)/button_y/Double_Press :: xinput_button JOYSTICK_LEFT
+  Partial ToggleLatchEmitted(ButtonB) @ Default/joystick/group 6 (joystick_move)/click/Full_Press => Toggle ButtonB latch macro
+  Clean RowEmitted @ Default/joystick/group 6 (joystick_move)/click/Full_Press => ButtonB <- Gamepad LeftStick
+  Clean RowEmitted @ Default/joystick/group 6 (joystick_move) => LeftThumbAxisX <- Gamepad LeftStickX
+  Clean RowEmitted @ Default/joystick/group 6 (joystick_move) => LeftThumbAxisY <- Gamepad LeftStickY
+  Clean RowEmitted @ Default/left_trigger/group 1 (trigger) => LeftTrigger <- Gamepad LeftTrigger
+  Clean RowEmitted @ Default/right_joystick/group 5 (joystick_move) => RightThumbAxisX <- Gamepad RightStickX
+  Clean RowEmitted @ Default/right_joystick/group 5 (joystick_move) => RightThumbAxisY <- Gamepad RightStickY
+  Clean RowEmitted @ Default/right_trigger/group 2 (trigger) => RightTrigger <- Gamepad RightTrigger
+  Clean RowEmitted @ Default/button_diamond/group 3 (four_buttons)/button_a/Full_Press => ButtonA <- Gamepad ButtonA
+  Clean RowEmitted @ Default/button_diamond/group 3 (four_buttons)/button_b/Start_Press => ButtonB <- Gamepad ButtonB
+  Clean RowEmitted @ Default/button_diamond/group 3 (four_buttons)/button_x/Full_Press => ButtonX <- Gamepad ButtonX
+  Clean RowEmitted @ Default/button_diamond/group 3 (four_buttons)/button_y/Full_Press => ButtonY <- Gamepad ButtonY
+  Clean RowEmitted @ Default/dpad/group 7 (dpad)/dpad_east/Full_Press => DPadRight <- Gamepad DPadRight
+  Clean RowEmitted @ Default/dpad/group 7 (dpad)/dpad_north/Full_Press => DPadUp <- Gamepad DPadUp
+  Clean RowEmitted @ Default/dpad/group 7 (dpad)/dpad_south/Full_Press => DPadDown <- Gamepad DPadDown
+  Clean RowEmitted @ Default/dpad/group 7 (dpad)/dpad_west/Full_Press => DPadLeft <- Gamepad DPadLeft
+  Clean RowEmitted @ Default/left_trigger/group 1 (trigger)/click/Full_Press => LeftTrigger <- Gamepad LeftTrigger
+  Clean RowEmitted @ Default/right_joystick/group 5 (joystick_move)/click/Start_Press => RightThumbButton <- Gamepad RightStick
+  Clean RowEmitted @ Default/right_trigger/group 2 (trigger)/click/Full_Press => RightTrigger <- Gamepad RightTrigger
+  Clean RowEmitted @ Default/switch/group 0 (switches)/button_escape/Full_Press => ButtonStart <- Gamepad ButtonStart
+  Clean RowEmitted @ Default/switch/group 0 (switches)/button_menu/Full_Press => ButtonBack <- Gamepad ButtonBack
+  Clean RowEmitted @ Default/switch/group 0 (switches)/left_bumper/Full_Press => LeftShoulder <- Gamepad LeftShoulder
+  Clean RowEmitted @ Default/switch/group 0 (switches)/right_bumper/Full_Press => RightShoulder <- Gamepad RightShoulder
+  Partial HapticIntensityDropped(2) @ config

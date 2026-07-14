@@ -470,6 +470,15 @@ namespace PadForge.ViewModels
                 int start = 0;
                 if (start < desc.Length && (desc[start] == 'I' || desc[start] == 'i')) start++;
                 if (start < desc.Length && (desc[start] == 'H' || desc[start] == 'h')) start++;
+                // Touchpad finger X/Y joined the generic Sensitivity family
+                // (#9 B-13) but have no axis-to-button threshold read
+                // (ReadAsBool's touchpad branch reads Click / "Finger M
+                // Down" only), so every remaining touchpad descriptor keeps
+                // the pre-widening hidden deadzone. The gesture CONTINUOUS
+                // axes above already opted in explicitly. Tested on the
+                // same stripped body the predicate below receives.
+                if (desc.AsSpan(start).StartsWith("Touchpad ", System.StringComparison.Ordinal))
+                    return false;
                 // "Axis N" / "Slider N" plus the abstract Gamepad sticks /
                 // triggers that canonicalize to one (#9).
                 if (!PadForge.Engine.Common.Mapping.SourceCoercion

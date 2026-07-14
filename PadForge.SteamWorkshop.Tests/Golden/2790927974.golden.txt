@@ -72,7 +72,7 @@ kbm rows: 31
 kbm activators: 1
   Cycle Layer_2790927974_1 cycle=Layer_2790927974_1+Base | Gamepad Paddle2 | name=Preset_1000001 / Default
 macros: 0
-report: v2 rows:x0+k31 macros:0 layers:1 clean:32 partial:7 skipped:4 errors:0
+report: v3 rows:x0+k31 macros:0 layers:1 clean:32 partial:7 skipped:4 errors:0
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_a/Full_Press => KbmKey53 <- Gamepad ButtonA
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_b/Full_Press => KbmKey57 <- Gamepad ButtonB
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_x/Full_Press => KbmKey44 <- Gamepad ButtonX

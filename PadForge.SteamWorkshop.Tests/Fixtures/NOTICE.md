@@ -38,6 +38,7 @@ Each fixture file is named by its Workshop file id.
 | `1172518660.vdf` | #Title_TF2Default | 76561197993329385 | hasactivators, controller_steamcontroller_gordon, splitconfig, feature_mouse, feature_gyro, controller_native, feature_actionset | <https://steamcommunity.com/sharedfiles/filedetails/?id=1172518660> |
 | `3725174032.vdf` | Pan's Steam Deck & Steam Controller (2026) | 76561198047712021 | hasactivators, controller_triton, feature_gamepad, feature_activator, feature_gyro, feature_mouse, feature_keboard | <https://steamcommunity.com/sharedfiles/filedetails/?id=3725174032> |
 | `3353604014.vdf` | DualSense Light Reactive (Shadow) V2 | 76561199013484378 | hasactivators, feature_gyro, feature_gamepad, controller_ps5 | <https://steamcommunity.com/sharedfiles/filedetails/?id=3353604014> |
+| `2774979654.vdf` | 彻底解决翻滚延迟（更新版）Completely solve rollover delay (updated version) | 76561198426304945 | hasactivators, splitconfig, controller_xbox360, GenericXInput, feature_activator, feature_gamepad | <https://steamcommunity.com/sharedfiles/filedetails/?id=2774979654> |
 
 Wave 1a additions (translator v2 coverage): `1451857916` exercises vintage
 set_led (saturation 0-255, settings 0 and 1, all touchpad-hosted),
@@ -47,4 +48,12 @@ exercises single_button groups, `1172518660` exercises #token title
 resolution and digital-trigger switches members, `3725174032` exercises
 the gyro_to_mouse mode and the gyro ratchet mask.
 
-Total: 27 fixtures.
+Wave 2A addition (translator v3 coverage): `2774979654` exercises the
+activator toggle setting on an xinput binding (stick click latches B, the
+Elden Ring roll-delay fix pattern). No public config carrying
+controller_action camera_reset was found in a 24-config sample across six
+games (Valve's own shipped templates bind it under Double_Press, which
+stays an activator-level skip). camera_reset is covered by hand-built
+configs in TranslationEdgeTests instead.
+
+Total: 28 fixtures.

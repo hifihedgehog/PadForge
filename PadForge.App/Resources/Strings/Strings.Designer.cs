@@ -2366,6 +2366,11 @@ public class Strings : INotifyPropertyChanged
     public string Workshop_Tr_PlayerNumberActionNotSupported => Get("Workshop_Tr_PlayerNumberActionNotSupported");
     public string Workshop_Tr_LizardModeActionNotSupported => Get("Workshop_Tr_LizardModeActionNotSupported");
     public string Workshop_Tr_SetLedDefaultApproximated => Get("Workshop_Tr_SetLedDefaultApproximated");
+    public string Workshop_Tr_ToggleLatchEmitted => Get("Workshop_Tr_ToggleLatchEmitted");
+    public string Workshop_Tr_ToggleDropped => Get("Workshop_Tr_ToggleDropped");
+    public string Workshop_Tr_LongPressKeyTap => Get("Workshop_Tr_LongPressKeyTap");
+    public string Workshop_Tr_CameraResetApproximated => Get("Workshop_Tr_CameraResetApproximated");
+    public string Workshop_Tr_MouseRegionApproximated => Get("Workshop_Tr_MouseRegionApproximated");
     public string Status_WorkshopUpdatesOptInRequired => Get("Status_WorkshopUpdatesOptInRequired");
     public string Status_WorkshopNoImportedProfiles => Get("Status_WorkshopNoImportedProfiles");
     public string Status_WorkshopCheckingUpdates => Get("Status_WorkshopCheckingUpdates");

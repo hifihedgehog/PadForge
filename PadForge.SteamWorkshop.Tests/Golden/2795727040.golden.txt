@@ -41,7 +41,7 @@ kbm rows: 17
     <- Gamepad LeftShoulder
     <- Gamepad RightShoulder [inverted]
 macros: 0
-report: v2 rows:x0+k17 macros:0 layers:0 clean:20 partial:2 skipped:4 errors:0
+report: v3 rows:x0+k17 macros:0 layers:0 clean:20 partial:4 skipped:4 errors:0
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_a/Full_Press => KbmKey72 <- Gamepad ButtonA
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_b/Full_Press => KbmKey1B <- Gamepad ButtonB
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_x/Full_Press => KbmKey76 <- Gamepad ButtonX
@@ -54,11 +54,13 @@ report: v2 rows:x0+k17 macros:0 layers:0 clean:20 partial:2 skipped:4 errors:0
   Clean RowEmitted @ Default/joystick/group 3 (dpad)/dpad_north/Full_Press => KbmKey26 <- Gamepad LeftStickY (lower half)
   Clean RowEmitted @ Default/joystick/group 3 (dpad)/dpad_south/Full_Press => KbmKey28 <- Gamepad LeftStickY (upper half)
   Clean RowEmitted @ Default/joystick/group 3 (dpad)/dpad_west/Full_Press => KbmKey25 <- Gamepad LeftStickX (lower half)
-  Skipped MouseRegionNotSupported @ Default/left_trackpad/group 11 (mouse_region)
+  Partial ResponseCurveNotSupported(sensitivity_horiz_scale, sensitivity_vert_scale) @ Default/left_trackpad/group 11 (mouse_region)
+  Skipped NoDeviceFreeTrigger @ Default/left_trackpad/group 11 (mouse_region)
   Clean RowEmitted @ Default/left_trackpad/group 11 (mouse_region)/click/Full_Press => KbmMBtn0 <- Touchpad 0 Click
   Clean RowEmitted @ Default/left_trigger/group 4 (trigger)/edge/Full_Press => KbmMBtn1 <- Gamepad LeftTrigger (upper half)
   Skipped RadialMenuNeedsOverlay(8) @ Default/right_joystick/group 12 (radial_menu)
-  Skipped MouseRegionNotSupported @ Default/right_trackpad/group 13 (mouse_region)
+  Partial ResponseCurveNotSupported(sensitivity_horiz_scale, sensitivity_vert_scale) @ Default/right_trackpad/group 13 (mouse_region)
+  Skipped NoDeviceFreeTrigger @ Default/right_trackpad/group 13 (mouse_region)
   Partial ActivatorDelayDropped(delay_end 10) @ Default/right_trackpad/group 13 (mouse_region)/click/Full_Press
   Clean RowEmitted @ Default/right_trackpad/group 13 (mouse_region)/click/Full_Press => KbmMBtn0 <- Touchpad 1 Click
   Clean RowEmitted @ Default/right_trigger/group 5 (trigger)/edge/Full_Press => KbmMBtn0 <- Gamepad RightTrigger (upper half)

@@ -378,8 +378,8 @@ namespace PadForge.SteamWorkshop.Tests
                 + Preset(0, "Default", (1, "button_diamond active"))
                 + "}\n";
             var p = Translate(vdf);
-            var haptic = Assert.Single(p.Report.Entries.Where(e =>
-                e.ReasonKey == TranslationReasons.HapticIntensityDropped));
+            var haptic = Assert.Single(p.Report.Entries, e =>
+                e.ReasonKey == TranslationReasons.HapticIntensityDropped);
             Assert.Equal(TranslationStatus.Partial, haptic.Status);
             Assert.Equal("2", Assert.Single(haptic.ReasonArgs)); // the 0 is off = faithful
         }
@@ -394,8 +394,8 @@ namespace PadForge.SteamWorkshop.Tests
                 + Preset(0, "Default", (1, "joystick active"))
                 + "}\n";
             var p = Translate(vdf);
-            var entry = Assert.Single(p.Report.Entries.Where(e =>
-                e.ReasonKey == TranslationReasons.ResponseCurveNotSupported));
+            var entry = Assert.Single(p.Report.Entries, e =>
+                e.ReasonKey == TranslationReasons.ResponseCurveNotSupported);
             Assert.Equal("deadzone_outer_radius, curve_exponent", Assert.Single(entry.ReasonArgs));
         }
 
@@ -411,8 +411,8 @@ namespace PadForge.SteamWorkshop.Tests
                 + Preset(0, "Default", (1, "button_diamond active"))
                 + "}\n";
             var p = Translate(vdf);
-            var entry = Assert.Single(p.Report.Entries.Where(e =>
-                e.ReasonKey == TranslationReasons.ActivatorDelayDropped));
+            var entry = Assert.Single(p.Report.Entries, e =>
+                e.ReasonKey == TranslationReasons.ActivatorDelayDropped);
             Assert.Equal("delay_start 50, delay_end 200", Assert.Single(entry.ReasonArgs));
         }
 
@@ -426,8 +426,8 @@ namespace PadForge.SteamWorkshop.Tests
                 + Preset(0, "Default", (1, "button_diamond active"))
                 + "}\n";
             var p = Translate(vdf);
-            var entry = Assert.Single(p.Report.Entries.Where(e =>
-                e.ReasonKey == TranslationReasons.InterruptibleDropped));
+            var entry = Assert.Single(p.Report.Entries, e =>
+                e.ReasonKey == TranslationReasons.InterruptibleDropped);
             Assert.Contains("button_a", entry.SourcePath);
         }
 
@@ -503,10 +503,11 @@ namespace PadForge.SteamWorkshop.Tests
         }
 
         [Fact]
-        public void LongPress_KeyBinding_StaysSkipped()
+        public void LongPress_KeyBinding_BecomesHoldThresholdTapMacro()
         {
-            // Keys/buttons under Long_Press wait for the hold-threshold
-            // macro trigger; the existing skip reason stays.
+            // Wave 2A: a Long_Press key rides the HoldForMs macro trigger,
+            // firing one tap at the threshold (Partial: Steam holds the key
+            // until release).
             string vdf = Head
                 + Group(1, "four_buttons", Inputs(
                     Inp("button_a", "key_press F", activator: "Long_Press",
@@ -515,9 +516,15 @@ namespace PadForge.SteamWorkshop.Tests
                 + "}\n";
             var p = Translate(vdf);
             Assert.Empty(p.KbmMappingSet.Rows);
-            Assert.Empty(p.Macros);
+            var m = Assert.Single(p.Macros);
+            Assert.Equal(TranslatedMacroAction.KeyTap, m.Action);
+            Assert.Equal("HoldForMs", m.TriggerMode);
+            Assert.Equal(224, m.TriggerHoldMs);
+            Assert.Equal(PadForge.Engine.Gamepad.A, m.TriggerXboxButtons);
+            Assert.Equal(0x46, m.VirtualKey); // VK_F
             var entry = Assert.Single(p.Report.Entries);
-            Assert.Equal(TranslationReasons.LongPressNotSupported, entry.ReasonKey);
+            Assert.Equal(TranslationStatus.Partial, entry.Status);
+            Assert.Equal(TranslationReasons.LongPressKeyTap, entry.ReasonKey);
         }
 
         [Fact]
@@ -639,12 +646,12 @@ namespace PadForge.SteamWorkshop.Tests
         // ─── Translator version ─────────────────────────────────────────
 
         [Fact]
-        public void TranslatorVersion_IsTwo_AndRidesTheSummary()
+        public void TranslatorVersion_IsThree_AndRidesTheSummary()
         {
-            Assert.Equal(2, TranslationReport.CurrentTranslatorVersion);
+            Assert.Equal(3, TranslationReport.CurrentTranslatorVersion);
             var p = Translate(Head + "}\n");
-            Assert.Equal(2, p.Report.TranslatorVersion);
-            Assert.StartsWith("v2 ", p.Report.ToSummaryString());
+            Assert.Equal(3, p.Report.TranslatorVersion);
+            Assert.StartsWith("v3 ", p.Report.ToSummaryString());
         }
     }
 }

@@ -56,8 +56,15 @@ namespace PadForge.SteamWorkshop.Translation
         /// xinput hold_repeats turbo, the activator toggle setting
         /// (ToggleVcButton / ToggleKey latches, Toggle-mode layer carries),
         /// camera_reset as a gyro recenter, and mouse_region cursor-clamp
-        /// macros with region geometry.</summary>
-        public const int CurrentTranslatorVersion = 3;
+        /// macros with region geometry.
+        /// v4: Wave 3. Device-free InputDevice macro triggers replace the
+        /// NoDeviceFreeTrigger skips (touchpad / paddle / gyro hosted
+        /// macros, mouse_region engage on trackpads), single-pad trackpad
+        /// halves (DS4 / DualSense left_/right_trackpad onto pad 0's
+        /// region-windowed sources), four_buttons-on-trackpad quadrant
+        /// collapse, and per-row touchpad mouse sensitivity replacing the
+        /// TouchpadTuningNotPerRow drop.</summary>
+        public const int CurrentTranslatorVersion = 4;
 
         public int TranslatorVersion { get; set; } = CurrentTranslatorVersion;
 
@@ -141,6 +148,10 @@ namespace PadForge.SteamWorkshop.Translation
         public const string MacroEmitted = "Workshop_Tr_MacroEmitted";
         public const string ShiftLayerEmitted = "Workshop_Tr_ShiftLayerEmitted";                 // {0} layer name
         public const string TrackpadFeatureRequired = "Workshop_Tr_TrackpadFeatureRequired";     // {0} feature name
+        // Legacy-render-only since translator v4: touchpad mouse rows carry
+        // the per-row Sensitivity now (#9 B-13 widened the knob to the
+        // finger reads), so nothing is dropped. Kept, with its resx
+        // strings, for reports serialized by older translator versions.
         public const string TouchpadTuningNotPerRow = "Workshop_Tr_TouchpadTuningNotPerRow";
         public const string SoftPressApproximated = "Workshop_Tr_SoftPressApproximated";
         public const string AbsoluteMouseApproximated = "Workshop_Tr_AbsoluteMouseApproximated";
@@ -212,5 +223,15 @@ namespace PadForge.SteamWorkshop.Translation
         /// <summary>mouse_region approximated as a centered cursor clamp
         /// engaged while the hosting input is held.</summary>
         public const string MouseRegionApproximated = "Workshop_Tr_MouseRegionApproximated";       // {0} scale {1} x {2} y
+
+        // ── Translator v4 (Wave 3) vocabulary ──
+        /// <summary>four_buttons cells hosted on a touch surface: the
+        /// touch-spot grammar has no quadrant zones, so every cell reads
+        /// the (region-windowed) contact bool and fires together.</summary>
+        public const string TouchQuadrantApproximated = "Workshop_Tr_TouchQuadrantApproximated";
+        /// <summary>A group hosted on one half of a single physical pad
+        /// whose translated surface has no half window (anchor D-pad
+        /// wedges, two-cell touch menus): the rows read the whole pad.</summary>
+        public const string TrackpadHalfApproximated = "Workshop_Tr_TrackpadHalfApproximated";
     }
 }

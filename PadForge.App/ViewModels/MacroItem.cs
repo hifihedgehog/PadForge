@@ -945,22 +945,40 @@ namespace PadForge.ViewModels
             if (d.StartsWith("Touchpad ", StringComparison.Ordinal))
             {
                 var tp = d.Split(new[] { ' ' }, 3, StringSplitOptions.RemoveEmptyEntries);
-                if (tp.Length < 3 || !int.TryParse(tp[1], out _)) return false;
+                if (tp.Length < 3 || !int.TryParse(tp[1], out int tpPad)) return false;
                 if (tp[2].Equals("Click", StringComparison.OrdinalIgnoreCase))
                 {
                     // Canonical touchpad click rides Buttons[16]
                     // (SDL_GAMEPAD_BUTTON_TOUCHPAD), same slot the
-                    // mapping recorder resolves it to.
-                    entry = new TriggerInputEntry { DeviceGuid = g, RawButton = 16 };
+                    // mapping recorder resolves it to. Pads past the
+                    // first have NO Buttons[16] backing (a multi-pad
+                    // device's second click surfaces as its own gamepad
+                    // button), so mapping them to 16 would fire on the
+                    // WRONG pad; they ride a descriptor entry instead,
+                    // which evaluates through the same touchpad bool
+                    // read a mapping row gets (quiet today, live when
+                    // the multi-touchpad click extension lands there).
+                    if (tpPad == 0)
+                    {
+                        entry = new TriggerInputEntry { DeviceGuid = g, RawButton = 16 };
+                        return true;
+                    }
+                    entry = new TriggerInputEntry { DeviceGuid = g, SourceDescriptor = d };
                     return true;
                 }
                 if (tp[2].StartsWith("Finger", StringComparison.OrdinalIgnoreCase))
                 {
                     // "Finger M Down" is a bool the engine's touchpad read
                     // already answers, so it rides a descriptor entry
-                    // (#9 B-9). Finger position axes (X / Y / Pressure)
-                    // stay unconvertible: no bool read exists for them.
-                    if (tp[2].EndsWith(" Down", StringComparison.Ordinal))
+                    // (#9 B-9). The region-windowed "Down Left" / "Down
+                    // Right" halves (#9 B-1) are the same contact bool
+                    // gated to one half of the pad and convert the same
+                    // way. Finger position axes (X / Y / Pressure, whole
+                    // or half-windowed) stay unconvertible: no bool read
+                    // exists for them.
+                    if (tp[2].EndsWith(" Down", StringComparison.Ordinal)
+                        || tp[2].EndsWith(" Down Left", StringComparison.Ordinal)
+                        || tp[2].EndsWith(" Down Right", StringComparison.Ordinal))
                     {
                         entry = new TriggerInputEntry { DeviceGuid = g, SourceDescriptor = d };
                         return true;

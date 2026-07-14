@@ -52,8 +52,10 @@ kbm rows: 18
     <- Gamepad RightShoulder
 kbm activators: 1
   Toggle Layer_3456927474_1 | Gamepad RightShoulder | inherit | name=Preset_1000001
-macros: 0
-report: v3 rows:x0+k18 macros:0 layers:1 clean:29 partial:9 skipped:10 errors:0
+macros: 2
+  macro MouseLimitRegion WhileHeld | Cursor region (right_trackpad) | btns=0x0000 in=[Touchpad 1 Finger 0 Down] region=(50%,56%,scale 100%)
+  macro MoveMouseToScreenPosition OnPress | Warp cursor (button_back_left_upper) | btns=0x0000 in=[Gamepad Paddle4] norm=(16384,16384)
+report: v4 rows:x0+k18 macros:2 layers:1 clean:30 partial:10 skipped:8 errors:0
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_a/Full_Press => KbmMBtn0 <- Gamepad ButtonA
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_b/Full_Press => KbmMBtn1 <- Gamepad ButtonB
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_x/Full_Press => KbmKey45 <- Gamepad ButtonX
@@ -79,13 +81,13 @@ report: v3 rows:x0+k18 macros:0 layers:1 clean:29 partial:9 skipped:10 errors:0
   Clean RowEmitted @ Default/right_joystick/group 10 (joystick_mouse)/click/Full_Press => KbmMBtn0 <- Gamepad RightStick
   Skipped EdgeInputNotSupported(RightJoystick, edge) @ Default/right_joystick/group 10 (joystick_mouse)/edge :: mouse_button MIDDLE, , 
   Partial ResponseCurveNotSupported(sensitivity_horiz_scale, sensitivity_vert_scale) @ Default/right_trackpad/group 12 (mouse_region)
-  Skipped NoDeviceFreeTrigger @ Default/right_trackpad/group 12 (mouse_region)
+  Partial MouseRegionApproximated(100, 50, 56) @ Default/right_trackpad/group 12 (mouse_region) => Cursor region clamp macro
   Partial SoftPressApproximated @ Default/right_trackpad/group 12 (mouse_region)/click/Soft_Press => KbmMBtn0 <- Touchpad 1 Click
   Skipped EdgeInputNotSupported(RightTrackpad, edge) @ Default/right_trackpad/group 12 (mouse_region)/edge :: controller_action mouse_delta 100 0, , 
   Clean RowEmitted @ Default/right_trigger/group 5 (trigger)/click/Full_Press => KbmScroll <- Gamepad RightTrigger (lower half)
   Clean RowEmitted @ Default/right_trigger/group 5 (trigger)/edge/Full_Press => KbmScroll <- Gamepad RightTrigger (lower half)
   Partial RemoveLayerApproximated @ Default/switch/group 8 (switches)/button_back_left/Full_Press :: controller_action remove_layer 3 1 1, , 
-  Skipped NoDeviceFreeTrigger @ Default/switch/group 8 (switches)/button_back_left_upper/Full_Press :: controller_action MOUSE_POSITION 16384 16384 1, , 
+  Clean MacroEmitted @ Default/switch/group 8 (switches)/button_back_left_upper/Full_Press => Cursor warp macro
   Clean RowEmitted @ Default/switch/group 8 (switches)/button_back_left_upper/Full_Press => KbmMBtn0 <- Gamepad Paddle4
   Clean RowEmitted @ Default/switch/group 8 (switches)/button_back_right_upper/Full_Press => KbmMBtn1 <- Gamepad Paddle3
   Skipped UnknownPhysicalInput(Switch, button_capture) @ Default/switch/group 8 (switches)/button_capture :: controller_action system_key_1, , 

@@ -150,7 +150,7 @@ namespace PadForge.SteamWorkshop.Tests
                 Assert.NotEmpty(config.Groups);
                 count++;
             }
-            Assert.Equal(28, count);
+            Assert.Equal(29, count);
         }
     }
 }

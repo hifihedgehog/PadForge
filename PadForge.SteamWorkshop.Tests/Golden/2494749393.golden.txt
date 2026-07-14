@@ -7,10 +7,12 @@ xbox rows: 20
     <- Gamepad ButtonA
   Base | ButtonB
     <- Gamepad ButtonB
-  Base | ButtonBack
+  Base | ButtonBack | AND
     <- Touchpad 0 Click
-  Base | ButtonStart
-    <- Touchpad 1 Click
+    <- Touchpad 0 TouchLeft
+  Base | ButtonStart | AND
+    <- Touchpad 0 Click
+    <- Touchpad 0 TouchRight
   Base | ButtonX
     <- Gamepad Paddle1
     <- Gamepad ButtonX
@@ -54,12 +56,12 @@ kbm rows: 3
   Base | KbmMouseY
     <- Gyro Pitch
 macros: 0
-report: v3 rows:x20+k3 macros:0 layers:0 clean:27 partial:2 skipped:2 errors:0
+report: v4 rows:x20+k3 macros:0 layers:0 clean:25 partial:4 skipped:2 errors:0
   Partial GyroButtonMaskDropped(gyro_button, 9) @ Default/gyro/group 13 (mouse_joystick)
   Clean RowEmitted @ Default/gyro/group 13 (mouse_joystick) => KbmMouseX <- Gyro Yaw
   Clean RowEmitted @ Default/gyro/group 13 (mouse_joystick) => KbmMouseY <- Gyro Pitch
-  Clean RowEmitted @ Default/left_trackpad/group 1 (single_button)/click/Full_Press => ButtonBack <- Touchpad 0 Click
-  Clean RowEmitted @ Default/right_trackpad/group 2 (single_button)/click/Full_Press => ButtonStart <- Touchpad 1 Click
+  Partial TrackpadFeatureRequired(Touchpad touch spots) @ Default/left_trackpad/group 1 (single_button)/click/Full_Press => ButtonBack <- Touchpad 0 Click
+  Partial TrackpadFeatureRequired(Touchpad touch spots) @ Default/right_trackpad/group 2 (single_button)/click/Full_Press => ButtonStart <- Touchpad 0 Click
   Clean RowEmitted @ Default/switch/group 8 (switches)/button_back_left/Full_Press => ButtonA <- Gamepad Paddle2
   Clean RowEmitted @ Default/switch/group 8 (switches)/button_back_right/Full_Press => ButtonX <- Gamepad Paddle1
   Clean RowEmitted @ Default/switch/group 8 (switches)/button_escape/Full_Press => KbmKey74 <- Gamepad ButtonStart

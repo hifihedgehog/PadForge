@@ -1457,6 +1457,12 @@ public class Strings : INotifyPropertyChanged
     public string Mapping_TouchpadFingerY_Format => Get("Mapping_TouchpadFingerY_Format");
     public string Mapping_TouchpadFingerTouch_Format => Get("Mapping_TouchpadFingerTouch_Format");
     public string Mapping_TouchpadFingerPressure_Format => Get("Mapping_TouchpadFingerPressure_Format");
+    public string Mapping_TouchpadFingerXLeft_Format => Get("Mapping_TouchpadFingerXLeft_Format");
+    public string Mapping_TouchpadFingerXRight_Format => Get("Mapping_TouchpadFingerXRight_Format");
+    public string Mapping_TouchpadFingerYLeft_Format => Get("Mapping_TouchpadFingerYLeft_Format");
+    public string Mapping_TouchpadFingerYRight_Format => Get("Mapping_TouchpadFingerYRight_Format");
+    public string Mapping_TouchpadFingerTouchLeft_Format => Get("Mapping_TouchpadFingerTouchLeft_Format");
+    public string Mapping_TouchpadFingerTouchRight_Format => Get("Mapping_TouchpadFingerTouchRight_Format");
     public string Mapping_TouchpadClick => Get("Mapping_TouchpadClick");
     public string Mapping_TouchpadGesture_SwipeUp => Get("Mapping_TouchpadGesture_SwipeUp");
     public string Mapping_TouchpadGesture_SwipeDown => Get("Mapping_TouchpadGesture_SwipeDown");
@@ -2371,6 +2377,8 @@ public class Strings : INotifyPropertyChanged
     public string Workshop_Tr_LongPressKeyTap => Get("Workshop_Tr_LongPressKeyTap");
     public string Workshop_Tr_CameraResetApproximated => Get("Workshop_Tr_CameraResetApproximated");
     public string Workshop_Tr_MouseRegionApproximated => Get("Workshop_Tr_MouseRegionApproximated");
+    public string Workshop_Tr_TouchQuadrantApproximated => Get("Workshop_Tr_TouchQuadrantApproximated");
+    public string Workshop_Tr_TrackpadHalfApproximated => Get("Workshop_Tr_TrackpadHalfApproximated");
     public string Status_WorkshopUpdatesOptInRequired => Get("Status_WorkshopUpdatesOptInRequired");
     public string Status_WorkshopNoImportedProfiles => Get("Status_WorkshopNoImportedProfiles");
     public string Status_WorkshopCheckingUpdates => Get("Status_WorkshopCheckingUpdates");

@@ -156,17 +156,29 @@ namespace PadForge.SteamWorkshop.Tests
         }
 
         [Fact]
-        public void LongPress_TouchpadHosted_HasNoDeviceFreeTrigger()
+        public void LongPress_TouchpadHosted_RidesDeviceFreeDescriptorTrigger()
         {
+            // Wave 3: touchpad-hosted Long_Press holds ride the touch
+            // read's descriptor entry instead of the old
+            // NoDeviceFreeTrigger skip. Descriptor triggers have no output
+            // bits, so the interruptable-pause consume is off.
             string vdf = Head
                 + Group(1, "single_button", Inputs(
                     Inp("touch", "xinput_button A", activator: "Long_Press")))
                 + Preset(0, "Default", (1, "left_trackpad active"))
                 + "}\n";
             var p = Translate(vdf);
-            Assert.Empty(p.Macros);
+            var m = Assert.Single(p.Macros);
+            Assert.Equal(TranslatedMacroAction.HoldVcButton, m.Action);
+            Assert.Equal("HoldForMs", m.TriggerMode);
+            Assert.Equal(500, m.TriggerHoldMs);
+            Assert.Equal("Touchpad 0 Finger 0 Down", Assert.Single(m.TriggerInputDescriptors));
+            Assert.Equal(0, (int)m.TriggerXboxButtons);
+            Assert.False(m.ConsumeTrigger);
+            Assert.True(p.NeedsXboxSlot); // the action writes a VC button
             var entry = Assert.Single(p.Report.Entries);
-            Assert.Equal(TranslationReasons.NoDeviceFreeTrigger, entry.ReasonKey);
+            Assert.Equal(TranslationStatus.Clean, entry.Status);
+            Assert.Equal(TranslationReasons.MacroEmitted, entry.ReasonKey);
         }
 
         // ─── hold_repeats turbo on Full_Press xinput ────────────────────
@@ -303,12 +315,11 @@ namespace PadForge.SteamWorkshop.Tests
         }
 
         [Fact]
-        public void Toggle_TouchpadHosted_KeepsMomentaryRow_WithNamedDrop()
+        public void Toggle_TouchpadHosted_LatchesOnDescriptorTrigger_NoRow()
         {
-            // No device-free trigger for a latch yet (the sibling wave's
-            // device-free triggers will lift this): the Wave-1 momentary row
-            // stays so the binding keeps working, and the toggle drop gets a
-            // named Partial instead of the old silence.
+            // Wave 3 lifts the wave-2A keep-the-row fallback: the latch
+            // macro rides the pad click's own descriptor entry and replaces
+            // the momentary row, matching Steam's toggle semantics exactly.
             string vdf = Head
                 + Group(1, "single_button", Inputs(
                     Inp("click", "key_press E",
@@ -316,11 +327,20 @@ namespace PadForge.SteamWorkshop.Tests
                 + Preset(0, "Default", (1, "right_trackpad active"))
                 + "}\n";
             var p = Translate(vdf);
-            Assert.Empty(p.Macros);
-            var row = Assert.Single(p.KbmMappingSet.Rows);
-            Assert.Equal("KbmKey45", row.Target); // VK_E
-            Assert.Equal("Touchpad 1 Click", row.Sources[0].Descriptor);
-            Assert.Contains(p.Report.Entries, e => e.ReasonKey == TranslationReasons.ToggleDropped);
+            Assert.Empty(p.KbmMappingSet.Rows);
+            var m = Assert.Single(p.Macros);
+            Assert.Equal(TranslatedMacroAction.ToggleKey, m.Action);
+            Assert.Equal(0x45, m.VirtualKey); // VK_E
+            Assert.Equal("Touchpad 1 Click", Assert.Single(m.TriggerInputDescriptors));
+            var entry = Assert.Single(p.Report.Entries,
+                e => e.ReasonKey == TranslationReasons.ToggleLatchEmitted);
+            Assert.Equal(TranslationStatus.Clean, entry.Status);
+            Assert.DoesNotContain(p.Report.Entries,
+                e => e.ReasonKey == TranslationReasons.ToggleDropped);
+            // A key latch on a descriptor trigger needs no Xbox slot; the
+            // macro rides the KbM slot instead.
+            Assert.False(p.NeedsXboxSlot);
+            Assert.True(p.NeedsKbmSlot);
         }
 
         [Fact]
@@ -410,26 +430,33 @@ namespace PadForge.SteamWorkshop.Tests
         }
 
         [Fact]
-        public void CameraReset_TouchpadHosted_SkipsNoDeviceFreeTrigger()
+        public void CameraReset_TouchpadHosted_RidesDeviceFreeDescriptorTrigger()
         {
+            // Wave 3: the pad-click-hosted camera_reset triggers on the
+            // click's own descriptor entry; the action stays the gyro
+            // recenter approximation (Partial).
             string vdf = Head
                 + Group(1, "single_button", Inputs(
                     Inp("click", "controller_action camera_reset 180 66 90")))
                 + Preset(0, "Default", (1, "left_trackpad active"))
                 + "}\n";
             var p = Translate(vdf);
-            Assert.Empty(p.Macros);
+            var m = Assert.Single(p.Macros);
+            Assert.Equal(TranslatedMacroAction.GyroRecenter, m.Action);
+            Assert.Equal("Touchpad 0 Click", Assert.Single(m.TriggerInputDescriptors));
             var entry = Assert.Single(p.Report.Entries);
-            Assert.Equal(TranslationReasons.NoDeviceFreeTrigger, entry.ReasonKey);
+            Assert.Equal(TranslationStatus.Partial, entry.Status);
+            Assert.Equal(TranslationReasons.CameraResetApproximated, entry.ReasonKey);
         }
 
         // ─── mouse_region ───────────────────────────────────────────────
 
         [Fact]
-        public void MouseRegion_TrackpadHost_SkipsClampButKeepsMembers()
+        public void MouseRegion_TrackpadHost_EngagesOnTouchDescriptorTrigger()
         {
-            // Trackpad touch has no device-free trigger yet, so the clamp
-            // macro is a named skip; the click member still translates.
+            // Wave 3, the "light up RegionEngageSource" case: the trackpad
+            // host's clamp macro engages on the touch read's descriptor
+            // entry while the members still translate as rows.
             string vdf = Head
                 + Group(1, "mouse_region",
                     Inputs(Inp("click", "mouse_button LEFT"))
@@ -437,10 +464,16 @@ namespace PadForge.SteamWorkshop.Tests
                 + Preset(0, "Default", (1, "left_trackpad active"))
                 + "}\n";
             var p = Translate(vdf);
-            Assert.Empty(p.Macros);
+            var m = Assert.Single(p.Macros);
+            Assert.Equal(TranslatedMacroAction.MouseLimitRegion, m.Action);
+            Assert.Equal("WhileHeld", m.TriggerMode);
+            Assert.Equal("Touchpad 0 Finger 0 Down", Assert.Single(m.TriggerInputDescriptors));
+            Assert.Equal(10, m.RegionScalePercent);
             Assert.Contains(p.Report.Entries, e =>
-                e.Status == TranslationStatus.Skipped
-                && e.ReasonKey == TranslationReasons.NoDeviceFreeTrigger);
+                e.Status == TranslationStatus.Partial
+                && e.ReasonKey == TranslationReasons.MouseRegionApproximated);
+            Assert.DoesNotContain(p.Report.Entries, e =>
+                e.ReasonKey == TranslationReasons.NoDeviceFreeTrigger);
             var row = Assert.Single(p.KbmMappingSet.Rows);
             Assert.Equal("KbmMBtn0", row.Target);
         }

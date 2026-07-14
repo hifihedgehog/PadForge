@@ -42,6 +42,11 @@ namespace PadForge.SteamWorkshop.Tests
                 if (!string.IsNullOrEmpty(m.TriggerAxisTarget))
                     sb.Append(" axis=").Append(m.TriggerAxisTarget)
                       .Append('@').Append(m.TriggerAxisThresholdPercent).Append('%');
+                // Wave 3 device-free InputDevice trigger descriptors
+                // (empty-guid entries, ANDed). Spelled out so the goldens
+                // review every converted trigger shape.
+                if (m.TriggerInputDescriptors != null && m.TriggerInputDescriptors.Count > 0)
+                    sb.Append(" in=[").Append(string.Join("; ", m.TriggerInputDescriptors)).Append(']');
                 if (m.TriggerHoldMs > 0)
                     sb.Append(" hold=").Append(m.TriggerHoldMs).Append("ms");
                 if (m.ConsumeTrigger) sb.Append(" consume");

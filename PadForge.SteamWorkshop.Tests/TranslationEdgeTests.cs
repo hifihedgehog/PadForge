@@ -564,16 +564,25 @@ namespace PadForge.SteamWorkshop.Tests
         }
 
         [Fact]
-        public void MousePositionOnPaddle_SkippedNoDeviceFreeTrigger()
+        public void MousePositionOnPaddle_RidesDeviceFreeDescriptorTrigger()
         {
+            // Wave 3: paddle-hosted cursor warps trigger on the paddle's
+            // own descriptor (empty-guid InputDevice entry) instead of the
+            // old NoDeviceFreeTrigger skip.
             string vdf = Head
                 + Group(1, "switches", SimpleInput("button_back_left", "controller_action MOUSE_POSITION 100 100 1"))
                 + Preset(0, "Default", (1, "switch active"))
                 + "}\n";
             var p = Translate(vdf);
-            Assert.Empty(p.Macros);
+            var m = Assert.Single(p.Macros);
+            Assert.Equal(TranslatedMacroAction.MoveMouseToScreenPosition, m.Action);
+            Assert.Equal("Gamepad Paddle2", Assert.Single(m.TriggerInputDescriptors));
+            Assert.Equal(0, (int)m.TriggerXboxButtons);
+            Assert.Equal("", m.TriggerAxisTarget);
+            Assert.False(m.ConsumeTrigger);
             var entry = Assert.Single(p.Report.Entries);
-            Assert.Equal(TranslationReasons.NoDeviceFreeTrigger, entry.ReasonKey);
+            Assert.Equal(TranslationStatus.Clean, entry.Status);
+            Assert.Equal(TranslationReasons.MacroEmitted, entry.ReasonKey);
         }
 
         [Fact]

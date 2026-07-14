@@ -52,9 +52,10 @@ kbm rows: 2
   Base | KbmKey78
     <- Touchpad 0 TouchRight
 macros: 0
-report: v3 rows:x20+k2 macros:0 layers:0 clean:24 partial:3 skipped:5 errors:0
+report: v4 rows:x20+k2 macros:0 layers:0 clean:24 partial:4 skipped:5 errors:0
   Partial TrackpadFeatureRequired(Touchpad touch spots) @ Default/left_trackpad/group 10 (touch_menu)/touch_menu_button_0/Full_Press => KbmKey74 <- Touchpad 0 TouchLeft
   Partial TrackpadFeatureRequired(Touchpad touch spots) @ Default/left_trackpad/group 10 (touch_menu)/touch_menu_button_1/Full_Press => KbmKey78 <- Touchpad 0 TouchRight
+  Partial TrackpadHalfApproximated @ Default/left_trackpad/group 10 (touch_menu)
   Skipped SteamSystemAction(SCREENSHOT) @ Default/right_trackpad/group 13 (dpad)/dpad_east/Full_Press :: controller_action SCREENSHOT
   Skipped SteamSystemAction(SCREENSHOT) @ Default/right_trackpad/group 13 (dpad)/dpad_north/Full_Press :: controller_action SCREENSHOT, Screenshot
   Skipped SteamSystemAction(SCREENSHOT) @ Default/right_trackpad/group 13 (dpad)/dpad_south/Full_Press :: controller_action SCREENSHOT

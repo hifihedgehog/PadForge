@@ -2662,17 +2662,31 @@ namespace PadForge.Common.Input
                 return state.Buttons[16];
             }
 
-            // Finger down: "Touchpad N Finger M Down" — 5 parts.
-            if (parts.Length == 5
+            // Finger down: "Touchpad N Finger M Down" (5 parts) plus the
+            // region-windowed "... Down Left" / "Down Right" 6-part forms
+            // (#9 B-1), mirroring SourceCoercion.ReadTouchpadBool so the
+            // legacy per-key path and the mapping-set path agree on the
+            // half-windowed contact bool.
+            if ((parts.Length == 5 || parts.Length == 6)
                 && string.Equals(parts[2], "Finger", StringComparison.Ordinal)
                 && string.Equals(parts[4], "Down", StringComparison.Ordinal)
                 && int.TryParse(parts[3], out int fingerIndex))
             {
+                bool leftHalf = false, rightHalf = false;
+                if (parts.Length == 6)
+                {
+                    leftHalf = string.Equals(parts[5], "Left", StringComparison.Ordinal);
+                    rightHalf = string.Equals(parts[5], "Right", StringComparison.Ordinal);
+                    if (!leftHalf && !rightHalf) return false;
+                }
                 if (state.Touchpads == null
                     || touchpadIndex < 0 || touchpadIndex >= state.Touchpads.Length) return false;
                 var pad = state.Touchpads[touchpadIndex];
                 if (pad == null || fingerIndex < 0 || fingerIndex >= pad.MaxFingers) return false;
-                return pad.FingerDown[fingerIndex];
+                if (!pad.FingerDown[fingerIndex]) return false;
+                if (leftHalf) return pad.FingerX[fingerIndex] < 0.5f;
+                if (rightHalf) return pad.FingerX[fingerIndex] >= 0.5f;
+                return true;
             }
 
             // X/Y descriptors are handled by the touchpad output path in

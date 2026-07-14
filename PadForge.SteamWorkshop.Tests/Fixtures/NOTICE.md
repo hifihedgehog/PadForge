@@ -1,6 +1,6 @@
 # Fixture attribution
 
-These 27 Steam Input controller configurations are community-contributed Steam
+These 28 Steam Input controller configurations are community-contributed Steam
 Workshop items (creator_appid 241100), fetched from Valve's public UGC CDN via
 `ISteamRemoteStorage/GetPublishedFileDetails` and used here as read-only parser and
 model test fixtures. Each item is owned by its creator and governed by the Steam
@@ -11,6 +11,7 @@ Each fixture file is named by its Workshop file id.
 
 | Fixture | Title | Creator (SteamID64) | Tags | Workshop |
 |---|---|---|---|---|
+| `1150803559.vdf` | Ps4 (Official Configuration for DOOM) | 76561198061333181 | hasactivators, controller_ps4, splitconfig, feature_activator, feature_mouse, feature_modeshift, feature_gyro, feature_gamepad | <https://steamcommunity.com/sharedfiles/filedetails/?id=1150803559> |
 | `793611331.vdf` | Dualshock 4 Skyrim | 76561198001901205 | hasactivators, controller_ps4, splitconfig | <https://steamcommunity.com/sharedfiles/filedetails/?id=793611331> |
 | `789818086.vdf` | SkyrimSE Perfected: KB/M Precision + Gyro + Convenient Touch Menus | 76561198020238081 | hasactivators | <https://steamcommunity.com/sharedfiles/filedetails/?id=789818086> |
 | `2853328208.vdf` | HoMM3 HotA Deckified | 76561198992787814 | hasactivators, splitconfig, feature_activator, feature_mouse, feature_keboard, controller_neptune | <https://steamcommunity.com/sharedfiles/filedetails/?id=2853328208> |

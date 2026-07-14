@@ -56,7 +56,7 @@ kbm rows: 17
     <- Gamepad LeftTrigger [upper-half] dz=75
     <- Gamepad RightTrigger [lower-half] dz=75
 macros: 0
-report: v3 rows:x8+k17 macros:0 layers:0 clean:27 partial:1 skipped:0 errors:0
+report: v4 rows:x8+k17 macros:0 layers:0 clean:27 partial:1 skipped:0 errors:0
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_a/Full_Press => KbmMBtn0 <- Gamepad ButtonA
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_b/Full_Press => KbmKey1B <- Gamepad ButtonB
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_x/Full_Press => KbmKey4D <- Gamepad ButtonX

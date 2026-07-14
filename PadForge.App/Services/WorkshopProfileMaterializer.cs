@@ -195,6 +195,8 @@ namespace PadForge.Services
                 Actions = new[] { action },
             };
 
+            if (!ApplyDeviceFreeTrigger(data, m)) return null;
+
             if (mode == MacroTriggerMode.HoldForMs)
                 data.TriggerHoldMs = Math.Clamp(m.TriggerHoldMs, 50, 10000); // MacroItem clamp range
 
@@ -228,41 +230,86 @@ namespace PadForge.Services
         /// percent, Steam's shipped configurator units) folds into the
         /// centered per-edge insets the clamp supports; an off-center region
         /// clamps at the same size around the screen center (the translator
-        /// already reported the approximation Partial).</summary>
+        /// already reported the approximation Partial). Trackpad hosts
+        /// carry a device-free InputDevice trigger (wave 3): both pair
+        /// members get the same descriptor entries, engaging on the touch
+        /// edge and releasing on the lift.</summary>
         private static MacroData[] BuildRegionClampPair(TranslatedMacro m, int xboxSlot)
         {
             int scale = Math.Clamp(m.RegionScalePercent, 1, 100);
             int insetX = RegionInsetPixels(scale, GetSystemMetrics(SM_CXSCREEN));
             int insetY = RegionInsetPixels(scale, GetSystemMetrics(SM_CYSCREEN));
 
-            MacroData Build(MacroTriggerMode mode, string suffix) => new()
+            MacroData Build(MacroTriggerMode mode, string suffix)
             {
-                PadIndex = xboxSlot,
-                Name = $"{(string.IsNullOrWhiteSpace(m.Name) ? "Cursor region" : m.Name)} {suffix}",
-                IsEnabled = true,
-                TriggerSource = MacroTriggerSource.OutputController,
-                TriggerMode = mode,
-                TriggerButtons = m.TriggerXboxButtons,
-                ConsumeTriggerButtons = false,
-                TriggerAxisTargets = string.IsNullOrEmpty(m.TriggerAxisTarget) ? null : m.TriggerAxisTarget,
-                TriggerAxisThreshold = Math.Clamp(m.TriggerAxisThresholdPercent, 1, 100),
-                Actions = new[]
+                var data = new MacroData
                 {
-                    new ActionData
+                    PadIndex = xboxSlot,
+                    Name = $"{(string.IsNullOrWhiteSpace(m.Name) ? "Cursor region" : m.Name)} {suffix}",
+                    IsEnabled = true,
+                    TriggerSource = MacroTriggerSource.OutputController,
+                    TriggerMode = mode,
+                    TriggerButtons = m.TriggerXboxButtons,
+                    ConsumeTriggerButtons = false,
+                    TriggerAxisTargets = string.IsNullOrEmpty(m.TriggerAxisTarget) ? null : m.TriggerAxisTarget,
+                    TriggerAxisThreshold = Math.Clamp(m.TriggerAxisThresholdPercent, 1, 100),
+                    Actions = new[]
                     {
-                        Type = MacroActionType.MouseLimitRegion,
-                        CursorClampMode = ViewModels.CursorClampMode.XAndY,
-                        CursorClampInsetX = insetX,
-                        CursorClampInsetY = insetY,
+                        new ActionData
+                        {
+                            Type = MacroActionType.MouseLimitRegion,
+                            CursorClampMode = ViewModels.CursorClampMode.XAndY,
+                            CursorClampInsetX = insetX,
+                            CursorClampInsetY = insetY,
+                        },
                     },
-                },
-            };
+                };
+                return ApplyDeviceFreeTrigger(data, m) ? data : null;
+            }
 
-            return new[]
+            var engage = Build(MacroTriggerMode.OnPress, "(engage)");
+            var release = Build(MacroTriggerMode.OnRelease, "(release)");
+            if (engage == null || release == null) return Array.Empty<MacroData>();
+            return new[] { engage, release };
+        }
+
+        /// <summary>Applies a translated macro's device-free InputDevice
+        /// trigger (wave 3), when it carries one: every descriptor converts
+        /// through the exact picker path (<see cref="MacroItem.TryBuildTriggerEntry"/>
+        /// from an "(Any device)" choice with the empty guid), the specs
+        /// pipe-join into <see cref="MacroData.TriggerInputs"/>, and the
+        /// combined-output fields zero out. Multiple entries AND together
+        /// per the trigger evaluator's contract. Returns false when any
+        /// descriptor fails to convert (the trigger would be incomplete
+        /// and fire too easily, so the caller drops the macro); by
+        /// construction the translator only emits convertible descriptors.
+        /// Consume is forced off: an input-device trigger has no output
+        /// bits to consume.</summary>
+        private static bool ApplyDeviceFreeTrigger(MacroData data, TranslatedMacro m)
+        {
+            var descriptors = m.TriggerInputDescriptors;
+            if (descriptors == null || descriptors.Count == 0) return true;
+
+            var specs = new List<string>(descriptors.Count);
+            foreach (var descriptor in descriptors)
             {
-                Build(MacroTriggerMode.OnPress, "(engage)"),
-                Build(MacroTriggerMode.OnRelease, "(release)"),
-            };
+                var choice = new ViewModels.InputChoice
+                {
+                    Descriptor = descriptor,
+                    DeviceGuid = string.Empty,
+                };
+                if (!MacroItem.TryBuildTriggerEntry(choice, out var entry)) return false;
+                string spec = entry.Spec;
+                if (string.IsNullOrEmpty(spec)) return false;
+                specs.Add(spec);
+            }
+
+            data.TriggerSource = MacroTriggerSource.InputDevice;
+            data.TriggerInputs = string.Join("|", specs);
+            data.TriggerButtons = 0;
+            data.TriggerAxisTargets = null;
+            data.ConsumeTriggerButtons = false;
+            return true;
         }
 
         /// <summary>Per-edge clamp inset for a centered region covering

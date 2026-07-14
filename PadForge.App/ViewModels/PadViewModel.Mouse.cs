@@ -4,6 +4,7 @@ using CommunityToolkit.Mvvm.Input;
 using PadForge.Common;
 using PadForge.Engine.Data;
 using PadForge.Engine.Mouse;
+using PadForge.Resources.Strings;
 
 namespace PadForge.ViewModels
 {
@@ -33,20 +34,23 @@ namespace PadForge.ViewModels
         private int _mouseGestureButtons = 1 << 3; // X1 only
         /// <summary>Bitmask of the mouse buttons arming the recognizer:
         /// bit 0 Left, bit 1 Middle, bit 2 Right, bit 3 X1, bit 4 X2
-        /// (SdlMouseWrapper order). One, some, or all buttons can be gesture
-        /// buttons. The five bool wrappers below bind the checkboxes.</summary>
+        /// (SdlMouseWrapper order), bit 5 Custom (discussion #216, armed by
+        /// the recorded cross-device input instead of a mouse button). One,
+        /// some, or all buttons can be gesture buttons. The six bool
+        /// wrappers below bind the checkboxes.</summary>
         public int MouseGestureButtons
         {
             get => _mouseGestureButtons;
             set
             {
-                if (SetProperty(ref _mouseGestureButtons, value & 0x1F))
+                if (SetProperty(ref _mouseGestureButtons, value & 0x3F))
                 {
                     OnPropertyChanged(nameof(MouseGestureButtonLeft));
                     OnPropertyChanged(nameof(MouseGestureButtonMiddle));
                     OnPropertyChanged(nameof(MouseGestureButtonRight));
                     OnPropertyChanged(nameof(MouseGestureButtonX1));
                     OnPropertyChanged(nameof(MouseGestureButtonX2));
+                    OnPropertyChanged(nameof(MouseGestureButtonCustom));
                     PushMouseGesturesIfNotLoading();
                 }
             }
@@ -81,6 +85,123 @@ namespace PadForge.ViewModels
             get => (_mouseGestureButtons & (1 << 4)) != 0;
             set => SetGestureButtonBit(4, value);
         }
+        public bool MouseGestureButtonCustom
+        {
+            get => (_mouseGestureButtons & (1 << 5)) != 0;
+            set => SetGestureButtonBit(5, value);
+        }
+
+        // ─── Custom activation input (discussion #216): the recorded
+        //     cross-device descriptor + owning device GUID that arm the
+        //     Custom gesture session while held. Same pair shape, picker
+        //     projection, and record flow as the Gyro tab's Aim Engage
+        //     cluster (PadViewModel.GyroAimEngageButton et al.), scoped
+        //     per (slot, mouse device) with the rest of this card. ───
+
+        private string _mouseGestureCustomEngageButton = "";
+        public string MouseGestureCustomEngageButton
+        {
+            get => _mouseGestureCustomEngageButton;
+            set
+            {
+                if (SetProperty(ref _mouseGestureCustomEngageButton, value ?? ""))
+                {
+                    OnPropertyChanged(nameof(MouseGestureCustomEngageSelectedInput));
+                    PushMouseGesturesIfNotLoading();
+                }
+            }
+        }
+
+        private string _mouseGestureCustomEngageDeviceGuid = "";
+        public string MouseGestureCustomEngageDeviceGuid
+        {
+            get => _mouseGestureCustomEngageDeviceGuid;
+            set
+            {
+                if (SetProperty(ref _mouseGestureCustomEngageDeviceGuid, value ?? ""))
+                {
+                    OnPropertyChanged(nameof(MouseGestureCustomEngageSelectedInput));
+                    PushMouseGesturesIfNotLoading();
+                }
+            }
+        }
+
+        /// <summary>Tells the view to re-resolve
+        /// <see cref="MouseGestureCustomEngageSelectedInput"/> after
+        /// <see cref="SlotAvailableInputs"/> is rebuilt, mirroring
+        /// <see cref="OnGyroAimEngageSelectedInputRefresh"/>.</summary>
+        public void OnMouseGestureCustomEngageSelectedInputRefresh()
+            => OnPropertyChanged(nameof(MouseGestureCustomEngageSelectedInput));
+
+        /// <summary>InputChoice projection over the custom-activation
+        /// pair, twin of <see cref="GyroAimEngageSelectedInput"/>: the
+        /// getter resolves the matching entry in
+        /// <see cref="SlotAvailableInputs"/>; the setter writes both
+        /// backing strings atomically and ignores the ComboBox's transient
+        /// null write-back (the Reset button is the only clear path).</summary>
+        public InputChoice MouseGestureCustomEngageSelectedInput
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(_mouseGestureCustomEngageButton)) return null;
+                foreach (var c in SlotAvailableInputs)
+                {
+                    if (c == null) continue;
+                    if (string.Equals(c.Descriptor, _mouseGestureCustomEngageButton, StringComparison.OrdinalIgnoreCase)
+                        && string.Equals(c.DeviceGuid ?? "", _mouseGestureCustomEngageDeviceGuid ?? "", StringComparison.OrdinalIgnoreCase))
+                        return c;
+                }
+                return null;
+            }
+            set
+            {
+                if (value == null) return;
+                MouseGestureCustomEngageButton = value.Descriptor ?? "";
+                MouseGestureCustomEngageDeviceGuid = value.DeviceGuid ?? "";
+            }
+        }
+
+        /// <summary>Whether the custom-activation recorder is listening
+        /// for the next physical input. Drives the record button's icon +
+        /// tooltip swap, mirroring <see cref="GyroAimEngageRecording"/>.</summary>
+        private bool _mouseGestureCustomEngageRecording;
+        public bool MouseGestureCustomEngageRecording
+        {
+            get => _mouseGestureCustomEngageRecording;
+            set
+            {
+                if (SetProperty(ref _mouseGestureCustomEngageRecording, value))
+                {
+                    OnPropertyChanged(nameof(MouseGestureCustomEngageRecordButtonIcon));
+                    OnPropertyChanged(nameof(MouseGestureCustomEngageRecordButtonText));
+                }
+            }
+        }
+        // Stop glyph while recording, Record glyph while idle. Same
+        // single-line literal convention as GyroAimEngageRecordButtonIcon.
+        public string MouseGestureCustomEngageRecordButtonIcon => _mouseGestureCustomEngageRecording ? "" : "";
+        public string MouseGestureCustomEngageRecordButtonText => _mouseGestureCustomEngageRecording
+            ? Strings.Instance.Common_Recording
+            : Strings.Instance.Common_Record;
+
+        /// <summary>Fires when the user clicks Record next to the custom
+        /// activation picker. MainWindow starts a freeform recorder session
+        /// (or cancels a running one), the Aim Engage toggle pattern.</summary>
+        public event EventHandler MouseGestureCustomEngageRecordRequested;
+        public void FireMouseGestureCustomEngageRecord()
+            => MouseGestureCustomEngageRecordRequested?.Invoke(this, EventArgs.Empty);
+
+        private RelayCommand _mouseGestureCustomEngageRecordCommand;
+        public RelayCommand MouseGestureCustomEngageRecordCommand =>
+            _mouseGestureCustomEngageRecordCommand ??= new RelayCommand(FireMouseGestureCustomEngageRecord);
+
+        private RelayCommand _resetMouseGestureCustomEngageCommand;
+        public RelayCommand ResetMouseGestureCustomEngageCommand =>
+            _resetMouseGestureCustomEngageCommand ??= new RelayCommand(() =>
+            {
+                MouseGestureCustomEngageButton = "";
+                MouseGestureCustomEngageDeviceGuid = "";
+            });
 
         private int _mouseGestureFlickThreshold = 150;
         public int MouseGestureFlickThreshold
@@ -118,6 +239,8 @@ namespace PadForge.ViewModels
             {
                 MouseGesturesEnabled = false;
                 MouseGestureButtons = 1 << 3;
+                MouseGestureCustomEngageButton = "";
+                MouseGestureCustomEngageDeviceGuid = "";
                 MouseGestureFlickThreshold = 150;
                 MouseGestureCooldownMs = 100;
             });
@@ -135,6 +258,8 @@ namespace PadForge.ViewModels
             {
                 MouseGesturesEnabled = s.Enabled;
                 MouseGestureButtons = s.GestureButtons;
+                MouseGestureCustomEngageButton = s.CustomEngageButton ?? "";
+                MouseGestureCustomEngageDeviceGuid = s.CustomEngageDeviceGuid ?? "";
                 MouseGestureFlickThreshold = s.FlickThresholdCounts;
                 MouseGestureCooldownMs = s.CooldownMs;
             }
@@ -171,6 +296,8 @@ namespace PadForge.ViewModels
             {
                 Enabled = MouseGesturesEnabled,
                 GestureButtons = MouseGestureButtons,
+                CustomEngageButton = MouseGestureCustomEngageButton ?? "",
+                CustomEngageDeviceGuid = MouseGestureCustomEngageDeviceGuid ?? "",
                 FlickThresholdCounts = MouseGestureFlickThreshold,
                 CooldownMs = MouseGestureCooldownMs,
             };

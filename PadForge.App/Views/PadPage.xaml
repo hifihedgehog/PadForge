@@ -10694,11 +10694,76 @@
                                                       IsChecked="{Binding MouseGestureButtonX1, Mode=TwoWay}"/>
                                             <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}" Content="X2" VerticalAlignment="Center" Margin="0,2,10,2"
                                                       IsChecked="{Binding MouseGestureButtonX2, Mode=TwoWay}"/>
+                                            <!-- Custom activation (discussion #216): a sixth gesture
+                                                 button armed by a recorded input from ANY device
+                                                 (key, gamepad button, pedal) instead of the mouse. -->
+                                            <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}" Content="{Binding Mapping_MouseGestureCustom, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="0,2,10,2"
+                                                      IsChecked="{Binding MouseGestureButtonCustom, Mode=TwoWay}"
+                                                      ToolTip="{Binding Pad_MouseGestures_Custom_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                         </WrapPanel>
                                         <ui:Button Grid.Column="2" Command="{Binding ResetMouseGestureButtonCommand}" Style="{StaticResource ResetButton}"
                                                 VerticalAlignment="Center"
                                                 ToolTip="{Binding Pad_ResetMouseGestureButton, Source={x:Static strings:Strings.Instance}}"/>
                                     </Grid>
+                                    <!-- Custom activation input (discussion #216): cross-device
+                                         picker + Record + Reset, the Aim Engage cluster's exact
+                                         arrangement (see the Gyro tab's engage-button row). The
+                                         recorded input arms the Custom gesture session while
+                                         held; axes engage past half travel. -->
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8" IsEnabled="{Binding MouseGestureButtonCustom}">
+                                        <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Pad_MouseGestures_CustomInput, Source={x:Static strings:Strings.Instance}}"
+                                                   Width="270" VerticalAlignment="Top" Margin="0,4,0,0"
+                                                   ToolTip="{Binding Pad_MouseGestures_CustomInput_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                        <StackPanel Orientation="Vertical">
+                                            <ComboBox ItemsSource="{Binding SlotAvailableInputsView}"
+                                                      SelectedItem="{Binding MouseGestureCustomEngageSelectedInput, Mode=TwoWay}"
+                                                      DisplayMemberPath="DisplayName"
+                                                      MinWidth="260" Padding="4,2"
+                                                      ToolTip="{Binding Pad_MouseGestures_CustomInput_Tooltip, Source={x:Static strings:Strings.Instance}}">
+                                                <ComboBox.GroupStyle>
+                                                    <GroupStyle>
+                                                        <GroupStyle.HeaderTemplate>
+                                                            <DataTemplate>
+                                                                <Border Background="{DynamicResource SubtleFillColorSecondaryBrush}" Padding="6,3,6,3">
+                                                                    <TextBlock Text="{Binding Name}" FontSize="11" FontWeight="SemiBold"
+                                                                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                                                               TextTrimming="CharacterEllipsis"/>
+                                                                </Border>
+                                                            </DataTemplate>
+                                                        </GroupStyle.HeaderTemplate>
+                                                    </GroupStyle>
+                                                </ComboBox.GroupStyle>
+                                            </ComboBox>
+                                            <TextBlock FontSize="10"
+                                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                                       Margin="4,1,0,0"
+                                                       TextTrimming="CharacterEllipsis">
+                                                <TextBlock.Style>
+                                                    <Style TargetType="TextBlock">
+                                                        <Setter Property="Text" Value="{Binding MouseGestureCustomEngageSelectedInput.DeviceLabel}"/>
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding MouseGestureCustomEngageSelectedInput}" Value="{x:Null}">
+                                                                <Setter Property="Text" Value="{Binding Common_Unassigned, Source={x:Static strings:Strings.Instance}}"/>
+                                                                <Setter Property="FontStyle" Value="Italic"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </TextBlock.Style>
+                                            </TextBlock>
+                                        </StackPanel>
+                                        <ui:Button Command="{Binding MouseGestureCustomEngageRecordCommand}"
+                                                   Style="{StaticResource EmberIconButtonHot}"
+                                                   VerticalAlignment="Top">
+                                            <TextBlock Text="{Binding MouseGestureCustomEngageRecordButtonIcon}" FontFamily="Segoe MDL2 Assets"
+                                                       Foreground="{DynamicResource EmberBrush}"/>
+                                            <ui:Button.ToolTip>
+                                                <TextBlock Text="{Binding MouseGestureCustomEngageRecordButtonText}"/>
+                                            </ui:Button.ToolTip>
+                                        </ui:Button>
+                                        <ui:Button Command="{Binding ResetMouseGestureCustomEngageCommand}" Style="{StaticResource ResetButton}"
+                                                VerticalAlignment="Top"
+                                                ToolTip="{Binding Pad_ResetMouseGestureCustomInput, Source={x:Static strings:Strings.Instance}}"/>
+                                    </StackPanel>
                                     <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                         <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Pad_MouseGestures_FlickThreshold, Source={x:Static strings:Strings.Instance}}"
                                                    Width="270" VerticalAlignment="Center"

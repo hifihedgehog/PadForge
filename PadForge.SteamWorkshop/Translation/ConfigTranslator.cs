@@ -296,7 +296,13 @@ namespace PadForge.SteamWorkshop.Translation
             // instead of silence, but only on modes that otherwise
             // translate (a wholly-skipped group's own entry covers it).
             if (ProductiveModes.Contains(mode))
-                ReportDroppedGroupSettings(run, settings, path);
+                ReportDroppedGroupSettings(run, settings, path,
+                    // Trackpad mouse_region consumes its per-axis
+                    // sensitivity scales as region extent since v6
+                    // (#9 B-15), so the curve-drop note must not name
+                    // them there; every other host still drops them.
+                    skipRegionScales: mode == "mouse_region"
+                        && PhysicalSlotResolver.IsTrackpad(slot));
 
             switch (mode)
             {
@@ -353,14 +359,25 @@ namespace PadForge.SteamWorkshop.Translation
 
                 case "absolute_mouse":
                 case "relative_mouse":
-                    if (mode == "absolute_mouse")
-                    {
-                        // Issue #9 lists absolute_mouse under Partial: Steam
-                        // positions the cursor absolutely on the pad surface,
-                        // PadForge emits relative deltas.
-                        run.Report.Add(TranslationStatus.Partial,
-                            TranslationReasons.AbsoluteMouseApproximated, path);
-                    }
+                    // absolute_mouse is Steam's "As Mouse" style and moves
+                    // the cursor RELATIVELY (v6 verdict, retiring the v2-v5
+                    // AbsoluteMouseApproximated Partial as a false alarm).
+                    // "Absolute" names the pad's input reading, not the
+                    // output: the mode's own settings are trackball /
+                    // friction / smoothing ("Trackball mode makes the pad
+                    // act like a trackball instead of a mouse", shipped
+                    // configurator ControllerBinding_Trackball_Description),
+                    // the Steam Input API delivers absolute_mouse analog
+                    // actions as deltas, sc-controller's proven VDF importer
+                    // lowers the mode to a plain relative MouseAction
+                    // (scc/foreign/vdf.py, mode == "absolute_mouse"), and
+                    // Valve's own template pair names the TOUCHSCREEN
+                    // absolute_mouse "Mouse point and click" vs
+                    // relative_mouse "Mouse trackpad"
+                    // (controller_mobile_touch_*.vdf). The 1:1 pad-to-screen
+                    // construct on trackpads is mouse_region, handled below.
+                    // So the relative rows ARE the faithful translation:
+                    // Clean.
                     EmitMouseAxes(run, slot, layer, path, settings, TrackpadMouseBaseline);
                     TranslateMemberGroup(run, preset, effective, slot, layer, path, settings);
                     break;
@@ -387,7 +404,7 @@ namespace PadForge.SteamWorkshop.Translation
                 }
 
                 case "mouse_region":
-                    TranslateMouseRegion(run, slot, path, settings);
+                    TranslateMouseRegion(run, slot, layer, path, settings);
                     TranslateMemberGroup(run, preset, effective, slot, layer, path, settings,
                         onlyInputs: new[] { "click", "touch", "edge" });
                     break;
@@ -436,9 +453,11 @@ namespace PadForge.SteamWorkshop.Translation
         /// curve_exponent 4) plus the sibling keys of the same UI cluster.
         /// The mouse_region per-axis sensitivity scales (corpus 2795727040:
         /// 110/70; shipped configurator ids
-        /// Horizontal/VerticalSensitivityMouseRegion) shape movement inside
-        /// the region, which the wave-2A clamp approximation does not
-        /// reproduce, so they ride the same named drop.</summary>
+        /// Horizontal/VerticalSensitivityMouseRegion) scale the region per
+        /// axis. Since v6 (#9 B-15) trackpad-hosted regions consume them as
+        /// the pointer rows' extent, so the drop note skips them there
+        /// (skipRegionScales); stick/gyro hosts keep the wave-2A clamp
+        /// approximation and still drop them named.</summary>
         private static readonly string[] CurveSettingKeys =
         {
             "deadzone_outer_radius", "deadzone_shape",
@@ -451,9 +470,14 @@ namespace PadForge.SteamWorkshop.Translation
         /// masks, and the group-level haptic override (counted into the
         /// per-config aggregate).</summary>
         private void ReportDroppedGroupSettings(Run run,
-            Dictionary<string, string> settings, string path)
+            Dictionary<string, string> settings, string path,
+            bool skipRegionScales = false)
         {
-            var curves = CurveSettingKeys.Where(settings.ContainsKey).ToList();
+            var curves = CurveSettingKeys
+                .Where(k => settings.ContainsKey(k)
+                    && !(skipRegionScales
+                        && (k == "sensitivity_horiz_scale" || k == "sensitivity_vert_scale")))
+                .ToList();
             if (curves.Count > 0)
             {
                 run.Report.Add(TranslationStatus.Partial, TranslationReasons.ResponseCurveNotSupported,
@@ -673,31 +697,100 @@ namespace PadForge.SteamWorkshop.Translation
             }
         }
 
-        /// <summary>mouse_region (wave 2A, B-12): Steam maps the hosting
-        /// surface absolutely onto a screen region centered at
-        /// (position_x%, position_y%) sized scale% of the screen, active
-        /// while the surface is touched (shipped configurator: PositionXMouse
-        /// / PositionYMouse are #Unit_Percent "the on screen position that
-        /// the region will be centered around", ScaleMouseRegion "scale[s]
-        /// the size of the region that is mapped to the outer extents of the
-        /// pad/stick"). PadForge's nearest primitive is the #110 cursor
-        /// clamp, a centered inset rectangle, so the translation is a
-        /// while-held clamp macro: engaged on the hosting surface's press,
-        /// released with it, geometry approximated as a centered region.
-        /// Trackpad hosts engage through a device-free InputDevice trigger
-        /// on the touch read (wave 3, whole pad or a single-pad half's
-        /// touch spot); trigger slots through the pull's axis trigger.
-        /// Only hosts with no press surface at all (sticks, gyro) keep the
-        /// named skip. The group's click/touch/edge members translate as
-        /// normal bindings either way (the caller runs
-        /// TranslateMemberGroup).</summary>
-        private void TranslateMouseRegion(Run run, SteamSlot slot, string path,
+        /// <summary>Mouse-region keys the pointer rows have no channel
+        /// for, named per group when present (the flick-stick shape).
+        /// teleport_start/teleport_stop are the shipped configurator's
+        /// "Snap Cursor on Activation" / "Return Cursor on Deactivation"
+        /// (the pointer already warps on touch and freezes on lift, but
+        /// the mode-shift snap-back is a cursor-history behavior PadForge
+        /// does not keep); edge_binding_radius/_invert shape WHERE the
+        /// group's own "edge" member fires, which translates untuned.
+        /// Zero values mean "off" for all four, so only non-zero values
+        /// are named.</summary>
+        private static readonly string[] MouseRegionDroppedKeys =
+        {
+            "teleport_start", "teleport_stop",
+            "edge_binding_radius", "edge_binding_invert",
+        };
+
+        /// <summary>mouse_region: Steam maps the hosting surface absolutely
+        /// onto a screen region centered at (position_x%, position_y%)
+        /// sized scale% of the screen, active while the surface is touched
+        /// (shipped configurator: PositionXMouse / PositionYMouse are
+        /// #Unit_Percent "the on screen position that the region will be
+        /// centered around", ScaleMouseRegion "scale[s] the size of the
+        /// region that is mapped to the outer extents of the pad/stick").
+        /// Since v6 (#9 B-15) trackpad hosts translate FAITHFULLY to the
+        /// engine's absolute "Touchpad {p} Pointer X/Y" rows with the
+        /// region geometry on the per-source window params: Clean rows,
+        /// no macro, halves via the region-window suffix. Hosts whose
+        /// surface has no absolute position (sticks, gyro) keep the wave-2A
+        /// approximation: PadForge's nearest primitive there is the #110
+        /// cursor clamp, a centered inset rectangle, lowered to a
+        /// while-held clamp macro engaged on the pull's axis trigger; hosts
+        /// with no press surface at all keep the named skip. The group's
+        /// click/touch/edge members translate as normal bindings either way
+        /// (the caller runs TranslateMemberGroup).</summary>
+        private void TranslateMouseRegion(Run run, SteamSlot slot, string layer, string path,
             Dictionary<string, string> settings)
         {
             int scale = Math.Clamp(ParseIntSetting(settings, "scale", 100), 1, 100);
             int posX = Math.Clamp(ParseIntSetting(settings, "position_x", 50), 0, 100);
             int posY = Math.Clamp(ParseIntSetting(settings, "position_y", 50), 0, 100);
 
+            // Trackpad hosts get the REAL thing since v6 (#9 B-15): Steam's
+            // mouse_region "treats the pad as a 1:1 map to screen space, so
+            // touching a particular place on the pad will always put the
+            // cursor in the same place on the screen" (Steamworks Input
+            // Source Modes doc), which is exactly the engine's absolute
+            // "Touchpad {p} Pointer X/Y" family on the KbM mouse targets.
+            // Region geometry rides the per-source window params:
+            //   center = position_x / 100 (X), 1 - position_y / 100 (Y;
+            //     Steam's position_y is bottom-origin per sc-controller's
+            //     proven importer, scc/foreign/vdf.py "y = 1.0 - (y/100.0)",
+            //     while the engine's screen axis is top-origin),
+            //   extent = scale/100 x sensitivity_axis_scale/100 (the shipped
+            //     configurator's ScaleMouseRegion and
+            //     Horizontal-/VerticalSensitivityMouseRegion, both percent).
+            // The group engages only while touched, which the pointer's
+            // finger-down validity gate reproduces, so no macro is needed.
+            if (PhysicalSlotResolver.IsTrackpad(slot))
+            {
+                var pair = PhysicalSlotResolver.PointerAxisPair(slot, run.SinglePadTrackpads);
+                double sensH = Math.Clamp(ParseIntSetting(settings, "sensitivity_horiz_scale", 100), 1, 400) / 100.0;
+                double sensV = Math.Clamp(ParseIntSetting(settings, "sensitivity_vert_scale", 100), 1, 400) / 100.0;
+
+                var srcX = new MappingSource
+                {
+                    Descriptor = pair.Value.X,
+                    ParamPointerCenter = posX / 100.0,
+                    ParamPointerExtent = scale / 100.0 * sensH,
+                };
+                var srcY = new MappingSource
+                {
+                    Descriptor = pair.Value.Y,
+                    ParamPointerCenter = 1.0 - posY / 100.0,
+                    ParamPointerExtent = scale / 100.0 * sensV,
+                };
+                AddRowSource(run, isKbm: true, layer, "KbmMouseX", srcX, isAxis: true,
+                    TranslationStatus.Clean, TranslationReasons.RowEmitted, path);
+                AddRowSource(run, isKbm: true, layer, "KbmMouseY", srcY, isAxis: true,
+                    TranslationStatus.Clean, TranslationReasons.RowEmitted, path);
+
+                var dropped = MouseRegionDroppedKeys
+                    .Where(k => settings.TryGetValue(k, out var v) && (v ?? "").Trim() != "0")
+                    .ToList();
+                if (dropped.Count > 0)
+                {
+                    run.Report.Add(TranslationStatus.Partial,
+                        TranslationReasons.MouseRegionTuningDropped, path,
+                        args: string.Join(", ", dropped));
+                }
+                return;
+            }
+
+            // Sticks and gyro have no absolute position surface, so they
+            // keep the wave-2A clamp-macro approximation.
             var host = PhysicalSlotResolver.RegionEngageSource(slot, run.SinglePadTrackpads);
             if (host == null)
             {

@@ -985,6 +985,12 @@ namespace PadForge.ViewModels
                     }
                     return false;
                 }
+                // Absolute pointer axes (#9 B-15): positional analogs like
+                // the finger X/Y reads above, and NOT gesture names, so the
+                // gesture-fire catch-all below must not claim them (it
+                // would build a trigger the gesture parser rejects, dead
+                // forever). They stay mapping-only.
+                if (tp[2].StartsWith("Pointer", StringComparison.Ordinal)) return false;
                 // Continuous gesture axes have no bool entry in the
                 // fired set; they stay recording/mapping-only.
                 if (tp[2] is "PinchAxis" or "RotateAxis" or "StickX" or "StickY") return false;

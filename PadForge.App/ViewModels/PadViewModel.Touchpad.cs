@@ -418,6 +418,38 @@ namespace PadForge.ViewModels
             set { if (SetProperty(ref _touchpadMouseInvertY, value)) PushIfNotLoading(); }
         }
 
+        // ─── Absolute pointer card (#9 B-15) ──────────────────────────
+
+        private double _touchpadPointerStretchX = 1.0;
+
+        /// <summary>Mirrors <see cref="TouchpadGestureSettings.PointerStretchX"/>:
+        /// margin stretch for the "Touchpad N Pointer X" absolute cursor
+        /// sources. 1.0 = Steam's 1:1 pad-to-screen map; higher values
+        /// reach the screen edges before the pad bezel (the Wii aim
+        /// map's margin-stretch concept).</summary>
+        public double TouchpadPointerStretchX
+        {
+            get => _touchpadPointerStretchX;
+            set
+            {
+                var v = Math.Clamp(value, 1.0, 3.0);
+                if (SetProperty(ref _touchpadPointerStretchX, v)) PushIfNotLoading();
+            }
+        }
+
+        private double _touchpadPointerStretchY = 1.0;
+
+        /// <summary>Mirrors <see cref="TouchpadGestureSettings.PointerStretchY"/>.</summary>
+        public double TouchpadPointerStretchY
+        {
+            get => _touchpadPointerStretchY;
+            set
+            {
+                var v = Math.Clamp(value, 1.0, 3.0);
+                if (SetProperty(ref _touchpadPointerStretchY, v)) PushIfNotLoading();
+            }
+        }
+
         // ─── Swipe haptics card (discussion #219) ─────
 
         private bool _touchpadSwipeHapticsEnabled;
@@ -698,6 +730,26 @@ namespace PadForge.ViewModels
                 TouchpadMouseInvertY = false;
             });
 
+        // ─── Absolute-pointer card reset commands (#9 B-15) ─────
+
+        private RelayCommand _resetTouchpadPointerStretchXCommand;
+        public RelayCommand ResetTouchpadPointerStretchXCommand =>
+            _resetTouchpadPointerStretchXCommand ??= new RelayCommand(() => TouchpadPointerStretchX = 1.0);
+
+        private RelayCommand _resetTouchpadPointerStretchYCommand;
+        public RelayCommand ResetTouchpadPointerStretchYCommand =>
+            _resetTouchpadPointerStretchYCommand ??= new RelayCommand(() => TouchpadPointerStretchY = 1.0);
+
+        private RelayCommand _resetTouchpadPointerCardCommand;
+
+        /// <summary>Reset every Absolute-pointer card field to defaults.</summary>
+        public RelayCommand ResetTouchpadPointerCardCommand =>
+            _resetTouchpadPointerCardCommand ??= new RelayCommand(() =>
+            {
+                TouchpadPointerStretchX = 1.0;
+                TouchpadPointerStretchY = 1.0;
+            });
+
         // ─── Swipe-haptics card reset commands ────────
 
         private RelayCommand _resetTouchpadSwipeHapticsEnabledCommand;
@@ -777,6 +829,8 @@ namespace PadForge.ViewModels
                 TouchpadMouseSensitivityY = s.MouseSensitivityY;
                 TouchpadMouseInvertX = s.MouseInvertX;
                 TouchpadMouseInvertY = s.MouseInvertY;
+                TouchpadPointerStretchX = s.PointerStretchX;
+                TouchpadPointerStretchY = s.PointerStretchY;
                 TouchpadSwipeHapticsEnabled = s.EnableSwipeHaptics;
                 TouchpadSwipeHapticsIntensity = s.SwipeHapticsIntensity;
             }
@@ -865,6 +919,8 @@ namespace PadForge.ViewModels
             s.MouseSensitivityY = (float)TouchpadMouseSensitivityY;
             s.MouseInvertX = TouchpadMouseInvertX;
             s.MouseInvertY = TouchpadMouseInvertY;
+            s.PointerStretchX = (float)TouchpadPointerStretchX;
+            s.PointerStretchY = (float)TouchpadPointerStretchY;
             s.EnableSwipeHaptics = TouchpadSwipeHapticsEnabled;
             s.SwipeHapticsIntensity = (float)TouchpadSwipeHapticsIntensity;
             entry.Settings = s;

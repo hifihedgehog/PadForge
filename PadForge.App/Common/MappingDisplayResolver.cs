@@ -305,6 +305,35 @@ namespace PadForge.Common
                     if (fmt == null) return null;
                     return prefix + string.Format(fmt, padIdx + 1, fingerIdx + 1);
                 }
+                // "Touchpad {pad} Pointer {X|Y}[ Left|Right]" → the absolute
+                // pointer (#9 B-15). Same 1-based pad numbering and half-
+                // window formats as the Finger family; MUST run before the
+                // gesture fallback below or "Pointer" would parse as a
+                // gesture name and resolve to null.
+                if (tp.Length >= 4 && int.TryParse(tp[1], out int ptrPad)
+                    && tp[2].Equals("Pointer", System.StringComparison.OrdinalIgnoreCase))
+                {
+                    string fmt;
+                    if (tp.Length >= 5)
+                    {
+                        bool left = tp[4].Equals("Left", System.StringComparison.OrdinalIgnoreCase);
+                        if (!left && !tp[4].Equals("Right", System.StringComparison.OrdinalIgnoreCase))
+                            return null;
+                        fmt =
+                              tp[3].Equals("X", System.StringComparison.OrdinalIgnoreCase) ? (left ? si.Mapping_TouchpadPointerXLeft_Format : si.Mapping_TouchpadPointerXRight_Format)
+                            : tp[3].Equals("Y", System.StringComparison.OrdinalIgnoreCase) ? (left ? si.Mapping_TouchpadPointerYLeft_Format : si.Mapping_TouchpadPointerYRight_Format)
+                            : null;
+                    }
+                    else
+                    {
+                        fmt =
+                              tp[3].Equals("X", System.StringComparison.OrdinalIgnoreCase) ? si.Mapping_TouchpadPointerX_Format
+                            : tp[3].Equals("Y", System.StringComparison.OrdinalIgnoreCase) ? si.Mapping_TouchpadPointerY_Format
+                            : null;
+                    }
+                    if (fmt == null) return null;
+                    return prefix + string.Format(fmt, ptrPad + 1);
+                }
                 // "Touchpad {pad} {GestureName}" → localized gesture label.
                 // Same naming the picker builds via AddTouchpadGestureChoices.
                 // padPrefixAlways (the any-device context) wraps pad 0 too,
@@ -554,6 +583,19 @@ namespace PadForge.Common
                     list.Add(new InputChoice { Descriptor = $"Touchpad {p} Finger 0 Y Right",    DisplayName = string.Format(si.Mapping_TouchpadFingerYRight_Format,     p + 1, 1) });
                     list.Add(new InputChoice { Descriptor = $"Touchpad {p} Finger 0 Down Left",  DisplayName = string.Format(si.Mapping_TouchpadFingerTouchLeft_Format,  p + 1, 1) });
                     list.Add(new InputChoice { Descriptor = $"Touchpad {p} Finger 0 Down Right", DisplayName = string.Format(si.Mapping_TouchpadFingerTouchRight_Format, p + 1, 1) });
+                }
+                // Absolute pointer (#9 B-15): the translator emits these
+                // with the empty guid for trackpad mouse_region groups, so
+                // the abstract namespace must offer them (the flick-stick
+                // precedent). Halves follow the Finger family's pad-0 rule.
+                list.Add(new InputChoice { Descriptor = $"Touchpad {p} Pointer X", DisplayName = string.Format(si.Mapping_TouchpadPointerX_Format, p + 1) });
+                list.Add(new InputChoice { Descriptor = $"Touchpad {p} Pointer Y", DisplayName = string.Format(si.Mapping_TouchpadPointerY_Format, p + 1) });
+                if (p == 0)
+                {
+                    list.Add(new InputChoice { Descriptor = $"Touchpad {p} Pointer X Left",  DisplayName = string.Format(si.Mapping_TouchpadPointerXLeft_Format,  p + 1) });
+                    list.Add(new InputChoice { Descriptor = $"Touchpad {p} Pointer X Right", DisplayName = string.Format(si.Mapping_TouchpadPointerXRight_Format, p + 1) });
+                    list.Add(new InputChoice { Descriptor = $"Touchpad {p} Pointer Y Left",  DisplayName = string.Format(si.Mapping_TouchpadPointerYLeft_Format,  p + 1) });
+                    list.Add(new InputChoice { Descriptor = $"Touchpad {p} Pointer Y Right", DisplayName = string.Format(si.Mapping_TouchpadPointerYRight_Format, p + 1) });
                 }
                 list.Add(new InputChoice { Descriptor = $"Touchpad {p} Click",             DisplayName = PadWrap(si.Mapping_TouchpadClick) });
                 list.Add(new InputChoice { Descriptor = $"Touchpad {p} TouchLeft",         DisplayName = PadWrap(si.Mapping_TouchpadGesture_TouchLeft) });
@@ -1179,6 +1221,20 @@ namespace PadForge.Common
                             list.Add(new InputChoice { Descriptor = $"Touchpad {p} Finger {f} Down Left",  DisplayName = string.Format(si.Mapping_TouchpadFingerTouchLeft_Format,  p + 1, f + 1) });
                             list.Add(new InputChoice { Descriptor = $"Touchpad {p} Finger {f} Down Right", DisplayName = string.Format(si.Mapping_TouchpadFingerTouchRight_Format, p + 1, f + 1) });
                         }
+                    }
+
+                    // Absolute pointer (#9 B-15): one pair per pad (finger 0
+                    // owns the pointer, so no per-finger rows), plus the
+                    // single-pad half windows, mirroring the Finger family's
+                    // halves rule above.
+                    list.Add(new InputChoice { Descriptor = $"Touchpad {p} Pointer X", DisplayName = string.Format(si.Mapping_TouchpadPointerX_Format, p + 1) });
+                    list.Add(new InputChoice { Descriptor = $"Touchpad {p} Pointer Y", DisplayName = string.Format(si.Mapping_TouchpadPointerY_Format, p + 1) });
+                    if (numPads == 1)
+                    {
+                        list.Add(new InputChoice { Descriptor = $"Touchpad {p} Pointer X Left",  DisplayName = string.Format(si.Mapping_TouchpadPointerXLeft_Format,  p + 1) });
+                        list.Add(new InputChoice { Descriptor = $"Touchpad {p} Pointer X Right", DisplayName = string.Format(si.Mapping_TouchpadPointerXRight_Format, p + 1) });
+                        list.Add(new InputChoice { Descriptor = $"Touchpad {p} Pointer Y Left",  DisplayName = string.Format(si.Mapping_TouchpadPointerYLeft_Format,  p + 1) });
+                        list.Add(new InputChoice { Descriptor = $"Touchpad {p} Pointer Y Right", DisplayName = string.Format(si.Mapping_TouchpadPointerYRight_Format, p + 1) });
                     }
                 }
 

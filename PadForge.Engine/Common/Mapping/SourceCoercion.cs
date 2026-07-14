@@ -87,6 +87,16 @@ namespace PadForge.Engine.Common.Mapping
                              // this enum's scalar coercion path (any other
                              // target reads it as 0). Leading 'F' keeps it
                              // clear of the I/H prefix grammar.
+            TouchpadPointer, // "Touchpad N Pointer X/Y[ Left|Right]" (#9 B-15).
+                             // ABSOLUTE finger-0 position on the pad (or on a
+                             // region-windowed half), bipolar [-1..+1] where
+                             // -1 = pad left/top edge. On a KbmMouseX/Y row
+                             // Step 3 routes it to the absolute cursor channel
+                             // (KbmRawState.MouseAbs*) exactly like the Wii
+                             // "IR Pointer" family; no finger in the window
+                             // reads 0 and the validity gate freezes the
+                             // cursor. Leading 'T' keeps it clear of the I/H
+                             // prefix grammar.
         }
 
         /// <summary>Sensitivity constant for gyro bipolar coercion.
@@ -649,13 +659,18 @@ namespace PadForge.Engine.Common.Mapping
             {
                 // "Touchpad N ..." can be a touchpad-button (Click /
                 // Finger M Down), a touchpad-finger axis (Finger M X /
-                // Y / Pressure), or a touchpad-gesture. Disambiguate by
-                // the third token: anything that isn't "Click" or
-                // "Finger" is a gesture name. Touchpad-finger axes fall
+                // Y / Pressure), the absolute pointer (Pointer X/Y,
+                // #9 B-15), or a touchpad-gesture. Disambiguate by
+                // the third token: anything that isn't "Click",
+                // "Finger", or "Pointer" is a gesture name.
+                // Touchpad-finger axes fall
                 // through TouchpadButton classification today since the
                 // axis readers special-case them by descriptor pattern
                 // rather than enum tag.
                 var tpParts = s.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                if (tpParts.Length >= 3
+                    && tpParts[2].Equals("Pointer", StringComparison.Ordinal))
+                    return SourceType.TouchpadPointer;
                 if (tpParts.Length >= 3
                     && !tpParts[2].Equals("Click", StringComparison.Ordinal)
                     && !tpParts[2].Equals("Finger", StringComparison.Ordinal))
@@ -922,12 +937,13 @@ namespace PadForge.Engine.Common.Mapping
             => !string.IsNullOrEmpty(descriptor)
             && descriptor.StartsWith("Motion ", StringComparison.Ordinal);
 
-        /// <summary>True for touchpad-gesture descriptors —
+        /// <summary>True for touchpad-gesture descriptors:
         /// <c>"Touchpad N <GestureName>"</c> where GestureName is
-        /// neither <c>Click</c> nor <c>Finger ...</c>. Distinguishes
-        /// gesture sources from the legacy touchpad-button and per-
-        /// finger axis descriptors that share the same <c>Touchpad </c>
-        /// prefix.</summary>
+        /// neither <c>Click</c>, <c>Finger ...</c>, nor
+        /// <c>Pointer ...</c> (#9 B-15). Distinguishes
+        /// gesture sources from the legacy touchpad-button, per-
+        /// finger axis, and absolute-pointer descriptors that share the
+        /// same <c>Touchpad </c> prefix.</summary>
         public static bool IsTouchpadGestureDescriptor(string descriptor)
         {
             if (string.IsNullOrEmpty(descriptor)) return false;
@@ -935,7 +951,8 @@ namespace PadForge.Engine.Common.Mapping
             var parts = descriptor.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
             return parts.Length >= 3
                 && !parts[2].Equals("Click", StringComparison.Ordinal)
-                && !parts[2].Equals("Finger", StringComparison.Ordinal);
+                && !parts[2].Equals("Finger", StringComparison.Ordinal)
+                && !parts[2].Equals("Pointer", StringComparison.Ordinal);
         }
 
         /// <summary>True for the mouse-gesture family
@@ -971,6 +988,7 @@ namespace PadForge.Engine.Common.Mapping
             if (!int.TryParse(parts[1], out padIdx)) return false;
             if (parts[2].Equals("Click", StringComparison.Ordinal)) return false;
             if (parts[2].Equals("Finger", StringComparison.Ordinal)) return false;
+            if (parts[2].Equals("Pointer", StringComparison.Ordinal)) return false; // #9 B-15 absolute pointer
             gestureName = parts.Length == 3
                 ? parts[2]
                 : string.Join(" ", parts, 2, parts.Length - 2);
@@ -1900,7 +1918,18 @@ namespace PadForge.Engine.Common.Mapping
             // nothing to scale. The VMs' deadzone gates exclude the
             // finger axes for the same reason.
             if (s.StartsWith("Touchpad ", StringComparison.Ordinal))
+            {
+                // Absolute pointer as a button (#9 B-15): fires when the
+                // tuned offset-from-center clears the per-source deadzone,
+                // the same shape as the IR pointer's button coercion below.
+                if (IsTouchpadPointerDescriptor(s))
+                {
+                    float pv = ReadTunedTouchpadPointer(state, src, slotIndex, deviceGuid);
+                    int pdz = src.DeadZone > 0 ? src.DeadZone : globalThresholdPercent;
+                    return Math.Abs(pv) > Math.Max(pdz, 1) / 100f;
+                }
                 return ReadTouchpadBool(state, s);
+            }
 
             if (s.StartsWith("Midi ", StringComparison.Ordinal))
             {
@@ -2109,10 +2138,23 @@ namespace PadForge.Engine.Common.Mapping
 
             if (s.StartsWith("Touchpad ", StringComparison.Ordinal))
             {
+                // Absolute pointer (#9 B-15): the tuned absolute read for
+                // absolute consumers (stick targets, activators, and Step
+                // 3's MouseAbs* routing, which evaluates with the default
+                // relativeTouchpad = false). On the relative-delta lane the
+                // family reads 0: a position is not a delta, and Step 3
+                // falls through to this lane exactly when NO pointer source
+                // on the row is engaged, so a mixed row (gyro + pointer,
+                // corpus 3456927474) keeps its relative sources alive with
+                // the pointer contributing nothing instead of leaking a
+                // constant absolute offset into the delta sum every poll.
+                if (IsTouchpadPointerDescriptor(s))
+                    return relativeTouchpad ? 0f : ReadTunedTouchpadPointer(state, src, slotIndex, deviceGuid);
+
                 // Two readings for touchpad sources:
-                //   relative — per-frame delta scaled to mouse-style
+                //   relative: per-frame delta scaled to mouse-style
                 //     bipolar, used by KBM mouse / scroll targets.
-                //   absolute — raw pad position [0..1] mapped to
+                //   absolute: raw pad position [0..1] mapped to
                 //     [-1..+1], used by touchpad-output passthrough,
                 //     stick axes, and extended-config axes (everything
                 //     that needs "where is the finger right now," not
@@ -2289,6 +2331,10 @@ namespace PadForge.Engine.Common.Mapping
 
             if (s.StartsWith("Touchpad ", StringComparison.Ordinal))
             {
+                // Absolute pointer → trigger (#9 B-15): magnitude of the
+                // tuned offset-from-center, the IR pointer's unipolar shape.
+                if (IsTouchpadPointerDescriptor(s))
+                    return Math.Abs(ReadTunedTouchpadPointer(state, src, slotIndex, deviceGuid));
                 // Touchpad axis → unipolar: return [0..1] directly (raw finger
                 // position; no bipolar centering).
                 if (TryReadTouchpadAxisRaw(state, src, s, out float unipolar)) return unipolar;
@@ -2911,6 +2957,141 @@ namespace PadForge.Engine.Common.Mapping
             if (half == TouchpadHalfNone || axisOffset != 0) return raw;
             float v = half == TouchpadHalfLeft ? raw * 2f : (raw - 0.5f) * 2f;
             return v < 0f ? 0f : (v > 1f ? 1f : v);
+        }
+
+        // ─── Absolute touchpad pointer (#9 B-15) ───────────────────────
+        //
+        // "Touchpad N Pointer X|Y[ Left|Right]": finger 0's ABSOLUTE
+        // position on the pad (or on a region-windowed half), the
+        // touchpad twin of the Wii "IR Pointer X/Y" family. On a
+        // KbmMouseX/Y row Step 3 routes it to KbmRawState.MouseAbs*
+        // (SetCursorPos, the Touchmote idiom) instead of the delta lane,
+        // so touching the pad warps the cursor to the matching screen
+        // position. Steam's construct with the same semantics is the
+        // mouse_region group mode ("treats the pad as a 1:1 map to
+        // screen space, so touching a particular place on the pad will
+        // always put the cursor in the same place on the screen",
+        // Steamworks Input Source Modes doc). Finger 0 only: the first
+        // contact owns the pointer, matching the finger the translator's
+        // relative-mouse rows read.
+
+        /// <summary>True for the absolute-pointer descriptors
+        /// <c>"Touchpad N Pointer X/Y"</c> plus the region-windowed
+        /// half forms <c>"... X Left"</c> etc. (#9 B-15).</summary>
+        public static bool IsTouchpadPointerDescriptor(string descriptor)
+            => TryParseTouchpadPointer(descriptor, out _, out _, out _);
+
+        /// <summary>Parses <c>"Touchpad N Pointer X|Y"</c> (4 parts) or
+        /// <c>"Touchpad N Pointer X|Y Left|Right"</c> (5 parts).
+        /// <paramref name="axisOffset"/> = 0 for X, 1 for Y. The half
+        /// window gates ENGAGEMENT on both axes (a "Y Right" source is
+        /// live only while the finger sits in the right half) and
+        /// re-normalizes X reads exactly like the Finger family
+        /// (<see cref="RenormalizeTouchpadHalf"/>). No finger index in
+        /// the grammar: the pointer always follows finger 0.</summary>
+        public static bool TryParseTouchpadPointer(string descriptor,
+            out int padIdx, out int axisOffset, out int half)
+        {
+            padIdx = 0; axisOffset = -1; half = TouchpadHalfNone;
+            if (string.IsNullOrEmpty(descriptor)) return false;
+            string[] parts = descriptor.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            if (parts.Length != 4 && parts.Length != 5) return false;
+            if (!parts[0].Equals("Touchpad", StringComparison.Ordinal)) return false;
+            if (!int.TryParse(parts[1], out padIdx)) return false;
+            if (!parts[2].Equals("Pointer", StringComparison.Ordinal)) return false;
+            axisOffset = parts[3] switch
+            {
+                "X" => 0,
+                "Y" => 1,
+                _   => -1,
+            };
+            if (axisOffset < 0) return false;
+            if (parts.Length == 5)
+            {
+                half = ParseTouchpadHalf(parts[4]);
+                return half != TouchpadHalfNone;
+            }
+            return true;
+        }
+
+        /// <summary>True while the pointer descriptor's finger 0 is in
+        /// contact inside the descriptor's half window. Step 3 gates
+        /// <c>KbmRawState.MouseAbsValid</c> on this, so a lifted finger
+        /// (or one outside the window) FREEZES the cursor at its last
+        /// position instead of recentering, the same convention the Wii
+        /// pointer applies on sight loss (and Steam's default mouse_region
+        /// behavior with teleport_stop off).</summary>
+        public static bool IsTouchpadPointerEngaged(CustomInputState state, string descriptor)
+        {
+            if (state == null) return false;
+            if (!TryParseTouchpadPointer(descriptor, out int padIdx, out _, out int half)) return false;
+            var pad = GetTouchpad(state, padIdx);
+            if (pad == null || pad.MaxFingers <= 0) return false;
+            return pad.FingerDown[0] && FingerInTouchpadHalf(pad, 0, half);
+        }
+
+        /// <summary>Reads the absolute touchpad pointer axis (#9 B-15) as
+        /// bipolar [-1..+1]: window-renormalized finger-0 position, then the
+        /// per-(slot, device, pad) margin stretch, then the per-source region
+        /// window. Returns 0 (center) when no finger is engaged; the caller's
+        /// validity gate keeps that value from driving the cursor.
+        /// <para>Order of operations, each in its own space:</para>
+        /// <list type="number">
+        /// <item>Half renormalize: pad fraction [0..1] within the window
+        /// (<see cref="RenormalizeTouchpadHalf"/>).</item>
+        /// <item>Margin stretch (pad space, around the pad center):
+        /// <c>0.5 + (v - 0.5) * stretch</c>, clamped. The Wii aim map ships
+        /// the same concept as IrMarginStretchX/Y because tracked aim cannot
+        /// reach the camera edges; on a touchpad the finger CAN reach the
+        /// edges, so the default is 1.0 (Steam's 1:1 mouse_region map) and
+        /// the Touchpad-tab knob raises it for thumbs that stop short of the
+        /// bezel. Per (slot, device, pad) via
+        /// <see cref="TouchpadMouseSettingsProvider"/>
+        /// (<see cref="PadForge.Engine.Touchpad.TouchpadGestureSettings.PointerStretchX"/>/Y),
+        /// looked up with the EFFECTIVE device guid (the IR pointer's
+        /// convention) so translated empty-guid rows read the assigned
+        /// device's tuning.</item>
+        /// <item>Region window (screen space, per source):
+        /// <c>(2*ParamPointerCenter - 1) + v * ParamPointerExtent</c>, the
+        /// translator's channel for Steam mouse_region position_x/position_y
+        /// (region center, percent of screen) and scale x
+        /// sensitivity_horiz/vert_scale (region extent). Defaults 0.5 / 1.0
+        /// are the identity full-screen map.</item>
+        /// </list>
+        /// Invert is applied by the public Evaluate* wrappers, matching the
+        /// IR pointer path.</summary>
+        private static float ReadTunedTouchpadPointer(CustomInputState state, MappingSource src,
+            int slotIndex, string deviceGuid)
+        {
+            if (src == null || state == null) return 0f;
+            if (!TryParseTouchpadPointer(src.Descriptor ?? "", out int padIdx, out int axisOffset, out int half))
+                return 0f;
+            var pad = GetTouchpad(state, padIdx);
+            if (pad == null || pad.MaxFingers <= 0) return 0f;
+            if (!pad.FingerDown[0] || !FingerInTouchpadHalf(pad, 0, half))
+                return 0f; // not engaged; Step 3's validity gate freezes the cursor
+
+            float raw = axisOffset == 0 ? pad.FingerX[0] : pad.FingerY[0];
+            if (raw < 0f) raw = 0f; else if (raw > 1f) raw = 1f;
+            raw = RenormalizeTouchpadHalf(raw, axisOffset, half);
+
+            var tp = TouchpadMouseSettingsProvider?.Invoke(slotIndex, deviceGuid ?? "", padIdx);
+            float stretch = axisOffset == 0
+                ? (tp?.PointerStretchX ?? 1.0f)
+                : (tp?.PointerStretchY ?? 1.0f);
+            if (stretch != 1f)
+            {
+                raw = 0.5f + (raw - 0.5f) * stretch;
+                if (raw < 0f) raw = 0f; else if (raw > 1f) raw = 1f;
+            }
+
+            float v = raw * 2f - 1f;
+            float center = (float)src.ParamPointerCenter * 2f - 1f;
+            float extent = (float)src.ParamPointerExtent;
+            v = center + v * extent;
+            if (v < -1f) v = -1f;
+            else if (v > 1f) v = 1f;
+            return v;
         }
     }
 }

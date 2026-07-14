@@ -30,15 +30,12 @@ kbm rows: 11
   Layer_1172518660_5 | KbmMouseY
     <- Touchpad 1 Finger 0 Y
 macros: 0
-report: v5 rows:x0+k11 macros:0 layers:0 clean:15 partial:9 skipped:4 errors:0
-  Partial AbsoluteMouseApproximated @ FPSControls/gyro/group 48 (absolute_mouse)
+report: v6 rows:x0+k11 macros:0 layers:0 clean:15 partial:4 skipped:4 errors:0
   Clean RowEmitted @ FPSControls/gyro/group 48 (absolute_mouse) => KbmMouseX <- Gyro Yaw
   Clean RowEmitted @ FPSControls/gyro/group 48 (absolute_mouse) => KbmMouseY <- Gyro Pitch
-  Partial AbsoluteMouseApproximated @ FPSControls/right_trackpad/group 15 (absolute_mouse)
   Clean RowEmitted @ FPSControls/right_trackpad/group 15 (absolute_mouse) => KbmMouseX <- Touchpad 1 Finger 0 X
   Clean RowEmitted @ FPSControls/right_trackpad/group 15 (absolute_mouse) => KbmMouseY <- Touchpad 1 Finger 0 Y
   Skipped GameActionsNotSupported(22) @ FPSControls
-  Partial AbsoluteMouseApproximated @ MenuControls/right_trackpad/group 6 (absolute_mouse)
   Clean RowEmitted @ MenuControls/right_trackpad/group 6 (absolute_mouse) => KbmMouseX <- Touchpad 1 Finger 0 X
   Clean RowEmitted @ MenuControls/right_trackpad/group 6 (absolute_mouse) => KbmMouseY <- Touchpad 1 Finger 0 Y
   Clean RowEmitted @ MenuControls/right_trackpad/group 6 (absolute_mouse)/click/Full_Press => KbmMBtn0 <- Touchpad 1 Click
@@ -47,11 +44,9 @@ report: v5 rows:x0+k11 macros:0 layers:0 clean:15 partial:9 skipped:4 errors:0
   Clean RowEmitted @ MenuControls/switch/group 50 (switches)/right_bumper/Full_Press => KbmMBtn0 <- Gamepad RightShoulder
   Clean RowEmitted @ MenuControls/switch/group 50 (switches)/right_trigger/Full_Press => KbmMBtn0 <- Gamepad RightTrigger (upper half)
   Skipped GameActionsNotSupported(11) @ MenuControls
-  Partial AbsoluteMouseApproximated @ SpectatorControls/right_trackpad/group 47 (absolute_mouse)
   Clean RowEmitted @ SpectatorControls/right_trackpad/group 47 (absolute_mouse) => KbmMouseX <- Touchpad 1 Finger 0 X
   Clean RowEmitted @ SpectatorControls/right_trackpad/group 47 (absolute_mouse) => KbmMouseY <- Touchpad 1 Finger 0 Y
   Skipped GameActionsNotSupported(12) @ SpectatorControls
-  Partial AbsoluteMouseApproximated @ InGameHUDControls/right_trackpad/group 37 (absolute_mouse)
   Clean RowEmitted @ InGameHUDControls/right_trackpad/group 37 (absolute_mouse) => KbmMouseX <- Touchpad 1 Finger 0 X
   Clean RowEmitted @ InGameHUDControls/right_trackpad/group 37 (absolute_mouse) => KbmMouseY <- Touchpad 1 Finger 0 Y
   Skipped GameActionsNotSupported(17) @ InGameHUDControls

@@ -553,5 +553,21 @@ namespace PadForge.SteamWorkshop.Translation
                 return ("Gyro Yaw", "Gyro Pitch", 2);
             return null;
         }
+
+        /// <summary>Absolute-pointer axis pair for a trackpad-hosted
+        /// mouse_region group (#9 B-15): ("Touchpad {p} Pointer X{sfx}",
+        /// "... Y{sfx}"). Single-pad halves ride the same region-window
+        /// suffix the finger reads use, so a DualSense right_trackpad
+        /// region maps the right half of the physical pad. Null for
+        /// non-trackpad slots (a stick's deflection is not a position;
+        /// those keep the wave-2A clamp approximation).</summary>
+        public static (string X, string Y)? PointerAxisPair(SteamSlot slot,
+            bool singlePadTrackpads = false)
+        {
+            if (!IsTrackpad(slot)) return null;
+            int p = TrackpadIndex(slot, singlePadTrackpads);
+            string sfx = HalfSuffix(HalfFor(slot, singlePadTrackpads));
+            return ($"Touchpad {p} Pointer X{sfx}", $"Touchpad {p} Pointer Y{sfx}");
+        }
     }
 }

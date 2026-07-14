@@ -51,12 +51,11 @@ kbm activators: 1
 macros: 2
   macro KeyTap HoldForMs | Long press F (button_back_left) | btns=0x0000 in=[Gamepad Paddle2] hold=224ms vk=0x46
   macro KeyTap HoldForMs | Long press SPACE (button_back_right) | btns=0x0000 in=[Gamepad Paddle1] hold=222ms vk=0x20
-report: v5 rows:x0+k20 macros:2 layers:1 clean:22 partial:10 skipped:3 errors:0
+report: v6 rows:x0+k20 macros:2 layers:1 clean:22 partial:8 skipped:3 errors:0
   Clean RowEmitted @ Preset 0/button_diamond/group 0 (four_buttons)/button_a/Full_Press => KbmKey45 <- Gamepad ButtonA
   Clean RowEmitted @ Preset 0/button_diamond/group 0 (four_buttons)/button_b/Full_Press => KbmKey09 <- Gamepad ButtonB
   Clean RowEmitted @ Preset 0/button_diamond/group 0 (four_buttons)/button_x/Full_Press => KbmKey52 <- Gamepad ButtonX
   Clean RowEmitted @ Preset 0/button_diamond/group 0 (four_buttons)/button_y/Full_Press => KbmKey20 <- Gamepad ButtonY
-  Partial AbsoluteMouseApproximated @ Preset 0/gyro/group 19 (absolute_mouse)
   Clean RowEmitted @ Preset 0/gyro/group 19 (absolute_mouse) => KbmMouseX <- Gyro Yaw
   Clean RowEmitted @ Preset 0/gyro/group 19 (absolute_mouse) => KbmMouseY <- Gyro Pitch
   Clean RowEmitted @ Preset 0/joystick/group 11 (dpad)/click/Full_Press => KbmKey14 <- Gamepad LeftStick
@@ -70,7 +69,6 @@ report: v5 rows:x0+k20 macros:2 layers:1 clean:22 partial:10 skipped:3 errors:0
   Skipped TouchMenuNeedsOverlay(4) @ Preset 0/left_trackpad/group 18 (touch_menu)
   Partial ResponseCurveNotSupported(deadzone_outer_radius) @ Preset 0/left_trigger/group 4 (trigger)
   Clean RowEmitted @ Preset 0/left_trigger/group 4 (trigger)/edge/Full_Press => KbmMBtn1 <- Gamepad LeftTrigger (upper half)
-  Partial AbsoluteMouseApproximated @ Preset 0/right_trackpad/group 7 (absolute_mouse)
   Clean RowEmitted @ Preset 0/right_trackpad/group 7 (absolute_mouse) => KbmMouseX <- Touchpad 1 Finger 0 X
   Clean RowEmitted @ Preset 0/right_trackpad/group 7 (absolute_mouse) => KbmMouseY <- Touchpad 1 Finger 0 Y
   Skipped RadialMenuNeedsOverlay(9) @ Preset 0/right_trackpad/group 24 (radial_menu)

@@ -64,14 +64,12 @@ kbm rows: 2
     <- Gamepad RightStickY sens=3.725
     <- Touchpad 0 Finger 0 Y Right sens=5.96
 macros: 0
-report: v5 rows:x22+k2 macros:0 layers:2 clean:34 partial:9 skipped:0 errors:0
-  Partial AbsoluteMouseApproximated @ Default/gyro/group 8 (absolute_mouse)
+report: v6 rows:x22+k2 macros:0 layers:2 clean:34 partial:7 skipped:0 errors:0
   Clean RowEmitted @ Default/gyro/group 8 (absolute_mouse) => KbmMouseX <- Gyro Yaw
   Clean RowEmitted @ Default/gyro/group 8 (absolute_mouse) => KbmMouseY <- Gyro Pitch
   Clean RowEmitted @ Default/right_joystick/group 12 (joystick_mouse) => KbmMouseX <- Gamepad RightStickX
   Clean RowEmitted @ Default/right_joystick/group 12 (joystick_mouse) => KbmMouseY <- Gamepad RightStickY
   Partial ResponseCurveNotSupported(deadzone_outer_radius, deadzone_shape) @ Default/right_joystick/group 14 (joystick_move)
-  Partial AbsoluteMouseApproximated @ Default/right_trackpad/group 6 (absolute_mouse)
   Clean RowEmitted @ Default/right_trackpad/group 6 (absolute_mouse) => KbmMouseX <- Touchpad 0 Finger 0 X Right
   Clean RowEmitted @ Default/right_trackpad/group 6 (absolute_mouse) => KbmMouseY <- Touchpad 0 Finger 0 Y Right
   Partial TrackpadFeatureRequired(Touchpad touch spots) @ Default/right_trackpad/group 6 (absolute_mouse)/click/Full_Press => RightThumbButton <- Touchpad 0 Click

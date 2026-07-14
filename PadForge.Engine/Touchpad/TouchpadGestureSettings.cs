@@ -219,6 +219,28 @@ namespace PadForge.Engine.Touchpad
         /// cursor up when on.</summary>
         [XmlAttribute] public bool MouseInvertY { get; set; }
 
+        // ─── Absolute pointer output (#9 B-15) ─────────────────────────
+        //
+        // Applied by SourceCoercion.ReadTunedTouchpadPointer when a
+        // "Touchpad N Pointer X/Y" descriptor feeds a KBM mouse target
+        // (the absolute cursor lane). The margin stretch is the Wii aim
+        // map's concept (SourceCoercion.IrMarginStretchX/Y, the Touchmote
+        // pointer_margins lineage): values above 1.0 let a thumb that
+        // stops short of the pad bezel still reach the screen edges.
+        // Default 1.0 = Steam's 1:1 mouse_region map ("touching a
+        // particular place on the pad will always put the cursor in the
+        // same place on the screen"), which needs no stretch because a
+        // finger CAN reach the pad edges.
+
+        /// <summary>Horizontal margin stretch for the absolute pointer,
+        /// applied around the pad center in pad space. 1.0 = 1:1 (the
+        /// Steam mouse_region default); 1.5 reaches the screen edges at
+        /// 2/3 of the physical travel.</summary>
+        [XmlAttribute] public float PointerStretchX { get; set; } = 1.0f;
+
+        /// <summary>Vertical margin stretch for the absolute pointer.</summary>
+        [XmlAttribute] public float PointerStretchY { get; set; } = 1.0f;
+
         // ─── Swipe haptics (discussion #219) ───────────────────────────
         //
         // Steam-Input-style trackpad feel: a short haptic tick fires each
@@ -279,6 +301,8 @@ namespace PadForge.Engine.Touchpad
                 MouseSensitivityY = MouseSensitivityY,
                 MouseInvertX = MouseInvertX,
                 MouseInvertY = MouseInvertY,
+                PointerStretchX = PointerStretchX,
+                PointerStretchY = PointerStretchY,
                 EnableSwipeHaptics = EnableSwipeHaptics,
                 SwipeHapticsIntensity = SwipeHapticsIntensity,
             };

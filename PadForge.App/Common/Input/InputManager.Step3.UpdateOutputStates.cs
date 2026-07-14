@@ -797,6 +797,53 @@ namespace PadForge.Common.Input
             return null;
         }
 
+        /// <summary>Finds an ENGAGED "Touchpad N Pointer ..." source feeding
+        /// a KBM mouse target (#9 B-15), so the absolute touchpad pointer
+        /// routes to the absolute cursor channel (KbmRawState.MouseAbs*)
+        /// exactly like the Wii IR pointer above. LAYER-AWARE on purpose,
+        /// unlike FindIrPointerSource's Base-only walk: the Workshop
+        /// translator hosts mouse_region groups on action-set and
+        /// mode-shift layers, so the row resolution must ride
+        /// FindActiveRowForTarget (the flick-stick precedent).
+        /// <para>ENGAGEMENT-GATED, unlike the IR finder: a corpus row can
+        /// mix relative sources with pointer sources (gyro + stick + a
+        /// mouse_region pad summed onto KbmMouseX, fixture 3456927474), and
+        /// an unconditional absolute claim would silence the relative
+        /// sources even with no finger on the pad. While no pointer source
+        /// is engaged the caller falls through to the delta lane, where the
+        /// pointer family reads 0 (a position is not a delta), so gyro aim
+        /// stays live; the moment a finger lands in a source's window the
+        /// row routes absolute and warps the cursor, Steam's mouse_region
+        /// behavior. First engaged source wins when several pads' regions
+        /// share the row. A lifted finger leaves MouseAbsValid unset and
+        /// contributes no delta, so the cursor freezes either way.</para>
+        /// Same cross-device discipline as the IR finder: only sources
+        /// owned by <paramref name="thisDeviceGuid"/> (or the empty "device
+        /// on this slot" guid) match, because the engagement gate reads
+        /// THIS device's touchpad state. No legacy per-key leg: the family
+        /// is newer than the MappingSet grid, so no pre-grid config can
+        /// carry it.</summary>
+        private static PadForge.Engine.Data.MappingSource FindEngagedTouchpadPointerSource(
+            CustomInputState state, MappingSet mappingSet, string targetName,
+            int slotIndex, string thisDeviceGuid)
+        {
+            var row = FindActiveRowForTarget(mappingSet, targetName, slotIndex, out _);
+            if (row?.Sources == null) return null;
+            foreach (var src in row.Sources)
+            {
+                if (src?.Descriptor == null) continue;
+                if (!PadForge.Engine.Common.Mapping.SourceCoercion
+                        .IsTouchpadPointerDescriptor(src.Descriptor)) continue;
+                if (!string.IsNullOrEmpty(src.DeviceGuid)
+                    && !string.Equals(src.DeviceGuid, thisDeviceGuid, StringComparison.OrdinalIgnoreCase))
+                    continue;
+                if (!PadForge.Engine.Common.Mapping.SourceCoercion
+                        .IsTouchpadPointerEngaged(state, src.Descriptor)) continue;
+                return src;
+            }
+            return null;
+        }
+
         /// <summary>
         /// Engine-evaluated source families ("IR Pointer X/Y", "IR Brightness",
         /// "Balance ...", "Mouse Position X/Y", "Midi ...") are owned by
@@ -2197,6 +2244,26 @@ namespace PadForge.Common.Input
                     irPointerDrivesMouse = true;
                     irDroveMouseX = true;
                 }
+                else if (FindEngagedTouchpadPointerSource(state, mappingSet, "KbmMouseX",
+                        slotIndex, thisDeviceGuid) is { } tpSrcX)
+                {
+                    // Absolute touchpad pointer (#9 B-15): the finger's pad
+                    // position IS the cursor position, the same absolute
+                    // channel the IR pointer drives above. The finder
+                    // already gated on engagement (finger in contact inside
+                    // the source's half window), so the value is live by
+                    // construction; a lifted finger falls through to the
+                    // delta lane below, produces no delta, and the cursor
+                    // freezes at its last position (the Wii sight-loss
+                    // convention, and Steam's mouse_region behavior with
+                    // teleport_stop off). Never sets irPointerDrivesMouse:
+                    // the Wii pointer modes (FPS Mouse / borders) stay an
+                    // IR-only feature.
+                    raw.MouseAbsX = PadForge.Engine.Common.Mapping.SourceCoercion
+                        .EvaluateForBipolarAxisTarget(state, tpSrcX, slotIndex,
+                            evaluatedDeviceGuid: thisDeviceGuid);
+                    raw.MouseAbsValid = true; raw.MouseAbsXValid = true;
+                }
                 else if (TryEvaluateMappingSetBipolarAxis(state, mappingSet, thisDeviceGuid,
                         slotIndex, "KbmMouseX", out short msxValue))
                 {
@@ -2222,6 +2289,19 @@ namespace PadForge.Common.Input
                     if (state.Ir.Detected) { raw.MouseAbsValid = true; raw.MouseAbsYValid = true; }
                     irPointerDrivesMouse = true;
                     irDroveMouseY = true;
+                }
+                else if (FindEngagedTouchpadPointerSource(state, mappingSet, "KbmMouseY",
+                        slotIndex, thisDeviceGuid) is { } tpSrcY)
+                {
+                    // Absolute pointer Y (#9 B-15), same as the X block. SDL
+                    // touchpad Y is already screen-aligned (0 = top edge, so
+                    // the tuned bipolar's +1 = bottom), matching the
+                    // MouseAbsY convention the VC consumes; no
+                    // velocity-convention negation here.
+                    raw.MouseAbsY = PadForge.Engine.Common.Mapping.SourceCoercion
+                        .EvaluateForBipolarAxisTarget(state, tpSrcY, slotIndex,
+                            evaluatedDeviceGuid: thisDeviceGuid);
+                    raw.MouseAbsValid = true; raw.MouseAbsYValid = true;
                 }
                 else if (TryEvaluateMappingSetBipolarAxis(state, mappingSet, thisDeviceGuid,
                         slotIndex, "KbmMouseY", out short msyValue))

@@ -64,11 +64,10 @@ kbm activators: 4
   Hold Layer_1129670518_2_MS_right_joystick_50 | Touchpad 0 Click | inherit | name=right_joystick shift
   Hold Layer_1129670518_2_MS_right_trackpad_38 | Touchpad 0 Click | inherit | name=right_trackpad shift
 macros: 0
-report: v5 rows:x0+k19 macros:0 layers:4 clean:40 partial:14 skipped:4 errors:0
+report: v6 rows:x0+k19 macros:0 layers:4 clean:40 partial:7 skipped:4 errors:0
   Clean RowEmitted @ TacticalControls/button_diamond/group 0 (four_buttons)/button_A/Full_Press => KbmMBtn0 <- Gamepad ButtonA
   Clean RowEmitted @ TacticalControls/joystick/group 51 (joystick_mouse) => KbmMouseX <- Gamepad LeftStickX
   Clean RowEmitted @ TacticalControls/joystick/group 51 (joystick_mouse) => KbmMouseY <- Gamepad LeftStickY
-  Partial AbsoluteMouseApproximated @ TacticalControls/left_trackpad/group 7 (absolute_mouse)
   Clean RowEmitted @ TacticalControls/left_trackpad/group 7 (absolute_mouse) => KbmMouseX <- Touchpad 0 Finger 0 X
   Clean RowEmitted @ TacticalControls/left_trackpad/group 7 (absolute_mouse) => KbmMouseY <- Touchpad 0 Finger 0 Y
   Clean RowEmitted @ TacticalControls/left_trigger/group 1 (trigger)/edge/Full_Press => KbmMBtn1 <- Gamepad LeftTrigger (upper half)
@@ -76,7 +75,6 @@ report: v5 rows:x0+k19 macros:0 layers:4 clean:40 partial:14 skipped:4 errors:0
   Clean RowEmitted @ TacticalControls/right_joystick/group 46 (joystick_mouse) => KbmMouseY <- Gamepad RightStickY
   Clean RowEmitted @ TacticalControls/right_joystick/group 47 (joystick_mouse) => KbmMouseX <- Gamepad RightStickX
   Clean RowEmitted @ TacticalControls/right_joystick/group 47 (joystick_mouse) => KbmMouseY <- Gamepad RightStickY
-  Partial AbsoluteMouseApproximated @ TacticalControls/right_trackpad/group 9 (absolute_mouse)
   Clean RowEmitted @ TacticalControls/right_trackpad/group 9 (absolute_mouse) => KbmMouseX <- Touchpad 1 Finger 0 X
   Clean RowEmitted @ TacticalControls/right_trackpad/group 9 (absolute_mouse) => KbmMouseY <- Touchpad 1 Finger 0 Y
   Skipped TouchMenuNeedsOverlay(10) @ TacticalControls/right_trackpad/group 20 (touch_menu)
@@ -86,17 +84,14 @@ report: v5 rows:x0+k19 macros:0 layers:4 clean:40 partial:14 skipped:4 errors:0
   Clean RowEmitted @ MenuControls/right_joystick/group 48 (joystick_mouse) => KbmMouseX <- Gamepad RightStickX
   Clean RowEmitted @ MenuControls/right_joystick/group 48 (joystick_mouse) => KbmMouseY <- Gamepad RightStickY
   Clean RowEmitted @ MenuControls/right_joystick/group 48 (joystick_mouse)/click/Full_Press => KbmMBtn0 <- Gamepad RightStick
-  Partial AbsoluteMouseApproximated @ MenuControls/right_trackpad/group 19 (absolute_mouse)
   Clean RowEmitted @ MenuControls/right_trackpad/group 19 (absolute_mouse) => KbmMouseX <- Touchpad 1 Finger 0 X
   Clean RowEmitted @ MenuControls/right_trackpad/group 19 (absolute_mouse) => KbmMouseY <- Touchpad 1 Finger 0 Y
   Clean RowEmitted @ MenuControls/right_trackpad/group 19 (absolute_mouse)/click/Full_Press => KbmMBtn0 <- Touchpad 1 Click
   Clean RowEmitted @ MenuControls/right_trigger/group 5 (trigger)/edge/Full_Press => KbmMBtn0 <- Gamepad RightTrigger (upper half)
   Clean RowEmitted @ MenuControls/switch/group 40 (switches)/button_escape/Full_Press => KbmKey1B <- Gamepad ButtonStart
   Skipped GameActionsNotSupported(11) @ MenuControls
-  Partial AbsoluteMouseApproximated @ GeoscapeControls/left_trackpad/group 15 (absolute_mouse)
   Clean RowEmitted @ GeoscapeControls/left_trackpad/group 15 (absolute_mouse) => KbmMouseX <- Touchpad 0 Finger 0 X
   Clean RowEmitted @ GeoscapeControls/left_trackpad/group 15 (absolute_mouse) => KbmMouseY <- Touchpad 0 Finger 0 Y
-  Partial AbsoluteMouseApproximated @ GeoscapeControls/left_trackpad/group 16 (absolute_mouse)
   Clean RowEmitted @ GeoscapeControls/left_trackpad/group 16 (absolute_mouse) => KbmMouseX <- Touchpad 0 Finger 0 X
   Clean RowEmitted @ GeoscapeControls/left_trackpad/group 16 (absolute_mouse) => KbmMouseY <- Touchpad 0 Finger 0 Y
   Clean RowEmitted @ GeoscapeControls/right_joystick/group 49 (joystick_mouse) => KbmMouseX <- Gamepad RightStickX
@@ -104,11 +99,9 @@ report: v5 rows:x0+k19 macros:0 layers:4 clean:40 partial:14 skipped:4 errors:0
   Clean RowEmitted @ GeoscapeControls/right_joystick/group 49 (joystick_mouse)/click/Full_Press => KbmMBtn0 <- Gamepad RightStick
   Clean RowEmitted @ GeoscapeControls/right_joystick/group 50 (joystick_mouse) => KbmMouseX <- Gamepad RightStickX
   Clean RowEmitted @ GeoscapeControls/right_joystick/group 50 (joystick_mouse) => KbmMouseY <- Gamepad RightStickY
-  Partial AbsoluteMouseApproximated @ GeoscapeControls/right_trackpad/group 17 (absolute_mouse)
   Clean RowEmitted @ GeoscapeControls/right_trackpad/group 17 (absolute_mouse) => KbmMouseX <- Touchpad 1 Finger 0 X
   Clean RowEmitted @ GeoscapeControls/right_trackpad/group 17 (absolute_mouse) => KbmMouseY <- Touchpad 1 Finger 0 Y
   Clean RowEmitted @ GeoscapeControls/right_trackpad/group 17 (absolute_mouse)/click/Full_Press => KbmMBtn0 <- Touchpad 1 Click
-  Partial AbsoluteMouseApproximated @ GeoscapeControls/right_trackpad/group 38 (absolute_mouse)
   Clean RowEmitted @ GeoscapeControls/right_trackpad/group 38 (absolute_mouse) => KbmMouseX <- Touchpad 1 Finger 0 X
   Clean RowEmitted @ GeoscapeControls/right_trackpad/group 38 (absolute_mouse) => KbmMouseY <- Touchpad 1 Finger 0 Y
   Clean RowEmitted @ GeoscapeControls/right_trigger/group 36 (trigger)/edge/Full_Press => KbmMBtn0 <- Gamepad RightTrigger (upper half)

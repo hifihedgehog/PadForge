@@ -1498,6 +1498,12 @@ public class Strings : INotifyPropertyChanged
     public string Mapping_TouchpadFingerYRight_Format => Get("Mapping_TouchpadFingerYRight_Format");
     public string Mapping_TouchpadFingerTouchLeft_Format => Get("Mapping_TouchpadFingerTouchLeft_Format");
     public string Mapping_TouchpadFingerTouchRight_Format => Get("Mapping_TouchpadFingerTouchRight_Format");
+    public string Mapping_TouchpadPointerX_Format => Get("Mapping_TouchpadPointerX_Format");
+    public string Mapping_TouchpadPointerY_Format => Get("Mapping_TouchpadPointerY_Format");
+    public string Mapping_TouchpadPointerXLeft_Format => Get("Mapping_TouchpadPointerXLeft_Format");
+    public string Mapping_TouchpadPointerXRight_Format => Get("Mapping_TouchpadPointerXRight_Format");
+    public string Mapping_TouchpadPointerYLeft_Format => Get("Mapping_TouchpadPointerYLeft_Format");
+    public string Mapping_TouchpadPointerYRight_Format => Get("Mapping_TouchpadPointerYRight_Format");
     public string Mapping_TouchpadClick => Get("Mapping_TouchpadClick");
     public string Mapping_TouchpadGesture_SwipeUp => Get("Mapping_TouchpadGesture_SwipeUp");
     public string Mapping_TouchpadGesture_SwipeDown => Get("Mapping_TouchpadGesture_SwipeDown");
@@ -1655,6 +1661,15 @@ public class Strings : INotifyPropertyChanged
     public string Pad_ResetTouchpadMouseSensitivityY => Get("Pad_ResetTouchpadMouseSensitivityY");
     public string Pad_ResetTouchpadMouseInvertX => Get("Pad_ResetTouchpadMouseInvertX");
     public string Pad_ResetTouchpadMouseInvertY => Get("Pad_ResetTouchpadMouseInvertY");
+    public string Pad_Touchpad_Pointer_Header => Get("Pad_Touchpad_Pointer_Header");
+    public string Pad_Touchpad_Pointer_Subtitle => Get("Pad_Touchpad_Pointer_Subtitle");
+    public string Pad_Touchpad_PointerStretchX => Get("Pad_Touchpad_PointerStretchX");
+    public string Pad_Touchpad_PointerStretchX_Tooltip => Get("Pad_Touchpad_PointerStretchX_Tooltip");
+    public string Pad_Touchpad_PointerStretchY => Get("Pad_Touchpad_PointerStretchY");
+    public string Pad_Touchpad_PointerStretchY_Tooltip => Get("Pad_Touchpad_PointerStretchY_Tooltip");
+    public string Pad_ResetTouchpadPointer => Get("Pad_ResetTouchpadPointer");
+    public string Pad_ResetTouchpadPointerStretchX => Get("Pad_ResetTouchpadPointerStretchX");
+    public string Pad_ResetTouchpadPointerStretchY => Get("Pad_ResetTouchpadPointerStretchY");
     public string Pad_Touchpad_SwipeHaptics_Header => Get("Pad_Touchpad_SwipeHaptics_Header");
     public string Pad_Touchpad_SwipeHaptics_Subtitle => Get("Pad_Touchpad_SwipeHaptics_Subtitle");
     public string Pad_Touchpad_SwipeHapticsEnabled => Get("Pad_Touchpad_SwipeHapticsEnabled");
@@ -2426,6 +2441,7 @@ public class Strings : INotifyPropertyChanged
     public string Workshop_Tr_LongPressKeyTap => Get("Workshop_Tr_LongPressKeyTap");
     public string Workshop_Tr_CameraResetApproximated => Get("Workshop_Tr_CameraResetApproximated");
     public string Workshop_Tr_MouseRegionApproximated => Get("Workshop_Tr_MouseRegionApproximated");
+    public string Workshop_Tr_MouseRegionTuningDropped => Get("Workshop_Tr_MouseRegionTuningDropped");
     public string Workshop_Tr_TouchQuadrantApproximated => Get("Workshop_Tr_TouchQuadrantApproximated");
     public string Workshop_Tr_TrackpadHalfApproximated => Get("Workshop_Tr_TrackpadHalfApproximated");
     public string Workshop_Tr_FlickStickSurfaceNotSupported => Get("Workshop_Tr_FlickStickSurfaceNotSupported");

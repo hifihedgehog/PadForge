@@ -1388,17 +1388,14 @@ namespace PadForge.Services
                     }
                 }
                 if (ps?.TouchpadSettings == null) return null;
-                string guidStr = g.ToString();
-                for (int i = 0; i < ps.TouchpadSettings.Length; i++)
-                {
-                    var entry = ps.TouchpadSettings[i];
-                    if (entry == null) continue;
-                    if (entry.TouchpadIndex != padIdx) continue;
-                    if (!string.Equals(entry.DeviceGuid, guidStr, StringComparison.OrdinalIgnoreCase))
-                        continue;
-                    return entry.Settings;
-                }
-                return null;
+                // Per-device resolution, agreeing with the gesture provider
+                // above on which entry wins. Null on miss, so use
+                // ResolveEntryForDevice, not ResolveForDevice: mouse tuning
+                // has no Default() fallback. SourceCoercion applies unit
+                // scale when this returns null. padIdx is unused now that
+                // mouse tuning applies to every pad the device enumerates.
+                return PadForge.Engine.Touchpad.TouchpadGestureSettings
+                    .ResolveEntryForDevice(ps.TouchpadSettings, g.ToString())?.Settings;
             };
 
             // — per-(slot, device, pad) touchpad gesture settings.
@@ -1518,7 +1515,12 @@ namespace PadForge.Services
             // Guid.ToString() must not run per poll.
             var touchpadGestureSnapshot = new ProviderSnapshot<(int, Guid, int), PadForge.Engine.Touchpad.TouchpadGestureSettings>(key =>
             {
-                var (slotIndex, deviceGuid, padIdx) = key;
+                // Touchpad gesture settings resolve per-DEVICE now: enabling
+                // a setting applies to every pad the device enumerates, so
+                // the padIdx in the snapshot key no longer selects an entry
+                // (it only keeps the cache keyed per pad). ResolveForDevice
+                // coalesces any legacy per-pad array to one winner per device.
+                var (slotIndex, deviceGuid, _) = key;
                 var settings = SettingsManager.UserSettings;
                 if (settings == null) return PadForge.Engine.Touchpad.TouchpadGestureSettings.Default();
                 PadSetting ps = null;
@@ -1536,17 +1538,8 @@ namespace PadForge.Services
                 }
                 if (ps?.TouchpadSettings == null)
                     return PadForge.Engine.Touchpad.TouchpadGestureSettings.Default();
-                string guidStr = deviceGuid.ToString();
-                for (int i = 0; i < ps.TouchpadSettings.Length; i++)
-                {
-                    var entry = ps.TouchpadSettings[i];
-                    if (entry == null) continue;
-                    if (entry.TouchpadIndex != padIdx) continue;
-                    if (!string.Equals(entry.DeviceGuid, guidStr, StringComparison.OrdinalIgnoreCase))
-                        continue;
-                    return entry.Settings ?? PadForge.Engine.Touchpad.TouchpadGestureSettings.Default();
-                }
-                return PadForge.Engine.Touchpad.TouchpadGestureSettings.Default();
+                return PadForge.Engine.Touchpad.TouchpadGestureSettings.ResolveForDevice(
+                    ps.TouchpadSettings, deviceGuid.ToString());
             });
             _inputManager.TouchpadGestureSettingsProvider = (slotIndex, deviceGuid, padIdx) =>
                 touchpadGestureSnapshot.Get((slotIndex, deviceGuid, padIdx));

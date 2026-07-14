@@ -97,7 +97,7 @@ menus: 3
     [6] 6
     [7] 7
     [8] 8
-report: v7 rows:x0+k33 macros:2 menus:3 layers:2 clean:41 partial:8 skipped:1 errors:0
+report: v8 rows:x0+k33 macros:2 menus:3 layers:2 clean:41 partial:9 skipped:1 errors:0
   Clean RowEmitted @ Preset 0/button_diamond/group 0 (four_buttons)/button_a/Full_Press => KbmKey45 <- Gamepad ButtonA
   Clean RowEmitted @ Preset 0/button_diamond/group 0 (four_buttons)/button_b/Full_Press => KbmKey09 <- Gamepad ButtonB
   Clean RowEmitted @ Preset 0/button_diamond/group 0 (four_buttons)/button_x/Full_Press => KbmKey52 <- Gamepad ButtonX
@@ -122,6 +122,7 @@ report: v7 rows:x0+k33 macros:2 menus:3 layers:2 clean:41 partial:8 skipped:1 er
   Clean RowEmitted @ Preset 0/left_trackpad/group 18 (touch_menu)/touch_menu_button_3/Full_Press => KbmKey4D <- Menu 2 Item 3
   Partial ResponseCurveNotSupported(deadzone_outer_radius) @ Preset 0/left_trigger/group 4 (trigger)
   Clean RowEmitted @ Preset 0/left_trigger/group 4 (trigger)/edge/Full_Press => KbmMBtn1 <- Gamepad LeftTrigger (upper half)
+  Partial MouseModeTuningDropped(rotation, mouse_smoothing) @ Preset 0/right_trackpad/group 7 (absolute_mouse)
   Clean RowEmitted @ Preset 0/right_trackpad/group 7 (absolute_mouse) => KbmMouseX <- Touchpad 1 Finger 0 X
   Clean RowEmitted @ Preset 0/right_trackpad/group 7 (absolute_mouse) => KbmMouseY <- Touchpad 1 Finger 0 Y
   Clean MenuEmitted(9) @ Preset 0/right_trackpad/group 24 (radial_menu) => Radial menu 3 on Touchpad 1: 9 bound cells
@@ -147,4 +148,4 @@ report: v7 rows:x0+k33 macros:2 menus:3 layers:2 clean:41 partial:8 skipped:1 er
   Clean RowEmitted @ Preset 0/switch/group 20 (switches)/right_bumper/Full_Press => KbmKey5A <- Gamepad RightShoulder
   Clean ShiftLayerEmitted(left_trackpad shift) @ Preset 0/switch/group 20 (switches)/left_bumper/Full_Press => Hold -> Layer_789818086_0_MS_left_trackpad_17
   Clean ShiftLayerEmitted(right_trackpad shift) @ Preset 0/switch/group 20 (switches)/right_click/Full_Press => Hold -> Layer_789818086_0_MS_right_trackpad_24
-  Partial HapticIntensityDropped(20) @ config
+  Partial HapticIntensityDropped(21) @ config

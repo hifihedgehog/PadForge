@@ -9,13 +9,13 @@ kbm rows: 29
   Base | KbmMBtn1
     <- Gamepad LeftTrigger [upper-half] dz=15
   Base | KbmMouseX | Sum
-    <- Gamepad LeftStickX
-    <- Touchpad 0 Finger 0 X sens=3.94
+    <- Gamepad LeftStickX [inverted]
+    <- Touchpad 0 Finger 0 X [inverted] sens=3.94
     <- Gamepad RightStickX
     <- Touchpad 1 Finger 0 X
   Base | KbmMouseY | Sum
-    <- Gamepad LeftStickY
-    <- Touchpad 0 Finger 0 Y sens=3.94
+    <- Gamepad LeftStickY [inverted]
+    <- Touchpad 0 Finger 0 Y [inverted] sens=3.94
     <- Gamepad RightStickY
     <- Touchpad 1 Finger 0 Y
   Layer_1129670518_0_MS_right_joystick_47 | KbmMouseX
@@ -97,17 +97,19 @@ menus: 1
     [7] 8
     [8] 9
     [9] 0
-report: v7 rows:x0+k29 macros:0 menus:1 layers:5 clean:52 partial:6 skipped:3 errors:0
+report: v8 rows:x0+k29 macros:0 menus:1 layers:5 clean:52 partial:11 skipped:3 errors:0
   Clean RowEmitted @ TacticalControls/button_diamond/group 0 (four_buttons)/button_A/Full_Press => KbmMBtn0 <- Gamepad ButtonA
-  Clean RowEmitted @ TacticalControls/joystick/group 51 (joystick_mouse) => KbmMouseX <- Gamepad LeftStickX
-  Clean RowEmitted @ TacticalControls/joystick/group 51 (joystick_mouse) => KbmMouseY <- Gamepad LeftStickY
-  Clean RowEmitted @ TacticalControls/left_trackpad/group 7 (absolute_mouse) => KbmMouseX <- Touchpad 0 Finger 0 X
-  Clean RowEmitted @ TacticalControls/left_trackpad/group 7 (absolute_mouse) => KbmMouseY <- Touchpad 0 Finger 0 Y
+  Clean RowEmitted @ TacticalControls/joystick/group 51 (joystick_mouse) => KbmMouseX <- Gamepad LeftStickX (inverted)
+  Clean RowEmitted @ TacticalControls/joystick/group 51 (joystick_mouse) => KbmMouseY <- Gamepad LeftStickY (inverted)
+  Partial MouseModeTuningDropped(rotation, friction, mouse_smoothing) @ TacticalControls/left_trackpad/group 7 (absolute_mouse)
+  Clean RowEmitted @ TacticalControls/left_trackpad/group 7 (absolute_mouse) => KbmMouseX <- Touchpad 0 Finger 0 X (inverted)
+  Clean RowEmitted @ TacticalControls/left_trackpad/group 7 (absolute_mouse) => KbmMouseY <- Touchpad 0 Finger 0 Y (inverted)
   Clean RowEmitted @ TacticalControls/left_trigger/group 1 (trigger)/edge/Full_Press => KbmMBtn1 <- Gamepad LeftTrigger (upper half)
   Clean RowEmitted @ TacticalControls/right_joystick/group 46 (joystick_mouse) => KbmMouseX <- Gamepad RightStickX
   Clean RowEmitted @ TacticalControls/right_joystick/group 46 (joystick_mouse) => KbmMouseY <- Gamepad RightStickY
   Clean RowEmitted @ TacticalControls/right_joystick/group 47 (joystick_mouse) => KbmMouseX <- Gamepad RightStickX
   Clean RowEmitted @ TacticalControls/right_joystick/group 47 (joystick_mouse) => KbmMouseY <- Gamepad RightStickY
+  Partial MouseModeTuningDropped(friction) @ TacticalControls/right_trackpad/group 9 (absolute_mouse)
   Clean RowEmitted @ TacticalControls/right_trackpad/group 9 (absolute_mouse) => KbmMouseX <- Touchpad 1 Finger 0 X
   Clean RowEmitted @ TacticalControls/right_trackpad/group 9 (absolute_mouse) => KbmMouseY <- Touchpad 1 Finger 0 Y
   Clean MenuEmitted(10) @ TacticalControls/right_trackpad/group 20 (touch_menu) => Grid menu 1 on Touchpad 1: 10 bound cells
@@ -127,12 +129,14 @@ report: v7 rows:x0+k29 macros:0 menus:1 layers:5 clean:52 partial:6 skipped:3 er
   Clean RowEmitted @ MenuControls/right_joystick/group 48 (joystick_mouse) => KbmMouseX <- Gamepad RightStickX
   Clean RowEmitted @ MenuControls/right_joystick/group 48 (joystick_mouse) => KbmMouseY <- Gamepad RightStickY
   Clean RowEmitted @ MenuControls/right_joystick/group 48 (joystick_mouse)/click/Full_Press => KbmMBtn0 <- Gamepad RightStick
+  Partial MouseModeTuningDropped(friction) @ MenuControls/right_trackpad/group 19 (absolute_mouse)
   Clean RowEmitted @ MenuControls/right_trackpad/group 19 (absolute_mouse) => KbmMouseX <- Touchpad 1 Finger 0 X
   Clean RowEmitted @ MenuControls/right_trackpad/group 19 (absolute_mouse) => KbmMouseY <- Touchpad 1 Finger 0 Y
   Clean RowEmitted @ MenuControls/right_trackpad/group 19 (absolute_mouse)/click/Full_Press => KbmMBtn0 <- Touchpad 1 Click
   Clean RowEmitted @ MenuControls/right_trigger/group 5 (trigger)/edge/Full_Press => KbmMBtn0 <- Gamepad RightTrigger (upper half)
   Clean RowEmitted @ MenuControls/switch/group 40 (switches)/button_escape/Full_Press => KbmKey1B <- Gamepad ButtonStart
   Skipped GameActionsNotSupported(11) @ MenuControls
+  Partial MouseModeTuningDropped(rotation, friction) @ GeoscapeControls/left_trackpad/group 15 (absolute_mouse)
   Clean RowEmitted @ GeoscapeControls/left_trackpad/group 15 (absolute_mouse) => KbmMouseX <- Touchpad 0 Finger 0 X
   Clean RowEmitted @ GeoscapeControls/left_trackpad/group 15 (absolute_mouse) => KbmMouseY <- Touchpad 0 Finger 0 Y
   Clean RowEmitted @ GeoscapeControls/left_trackpad/group 16 (absolute_mouse) => KbmMouseX <- Touchpad 0 Finger 0 X
@@ -142,6 +146,7 @@ report: v7 rows:x0+k29 macros:0 menus:1 layers:5 clean:52 partial:6 skipped:3 er
   Clean RowEmitted @ GeoscapeControls/right_joystick/group 49 (joystick_mouse)/click/Full_Press => KbmMBtn0 <- Gamepad RightStick
   Clean RowEmitted @ GeoscapeControls/right_joystick/group 50 (joystick_mouse) => KbmMouseX <- Gamepad RightStickX
   Clean RowEmitted @ GeoscapeControls/right_joystick/group 50 (joystick_mouse) => KbmMouseY <- Gamepad RightStickY
+  Partial MouseModeTuningDropped(friction) @ GeoscapeControls/right_trackpad/group 17 (absolute_mouse)
   Clean RowEmitted @ GeoscapeControls/right_trackpad/group 17 (absolute_mouse) => KbmMouseX <- Touchpad 1 Finger 0 X
   Clean RowEmitted @ GeoscapeControls/right_trackpad/group 17 (absolute_mouse) => KbmMouseY <- Touchpad 1 Finger 0 Y
   Clean RowEmitted @ GeoscapeControls/right_trackpad/group 17 (absolute_mouse)/click/Full_Press => KbmMBtn0 <- Touchpad 1 Click
@@ -158,4 +163,4 @@ report: v7 rows:x0+k29 macros:0 menus:1 layers:5 clean:52 partial:6 skipped:3 er
   Clean ShiftLayerEmitted(right_trackpad shift) @ GeoscapeControls/switch/group 41 (switches)/left_click/Full_Press => Hold -> Layer_1129670518_2_MS_right_trackpad_38
   Partial PresetHasNoActivator(MenuControls) @ MenuControls
   Partial PresetHasNoActivator(GeoscapeControls) @ GeoscapeControls
-  Partial HapticIntensityDropped(29) @ config
+  Partial HapticIntensityDropped(37) @ config

@@ -47,7 +47,7 @@ kbm rows: 1
     <- Gamepad LeftTrigger [upper-half] dz=75
 macros: 1
   macro RepeatVcButtonWhileHeld HoldForMs | Turbo ButtonA (click) | btns=0x0000 axis=RightTrigger@75% hold=500ms consume target=0x1000 interval=10ms
-report: v7 rows:x18+k1 macros:1 menus:0 layers:0 clean:23 partial:2 skipped:0 errors:0
+report: v8 rows:x18+k1 macros:1 menus:0 layers:0 clean:23 partial:2 skipped:0 errors:0
   Clean RowEmitted @ Default/left_trigger/group 4 (trigger)/click/Full_Press => KbmKey4D <- Gamepad LeftTrigger (upper half)
   Partial MacroTriggerViaXboxOutput @ Default/right_trigger/group 5 (trigger)/click/Long_Press => Turbo ButtonA macro (10 ms)
   Clean RowEmitted @ Default/switch/group 7 (switches)/button_back_left/Full_Press => ButtonA <- Gamepad Paddle2

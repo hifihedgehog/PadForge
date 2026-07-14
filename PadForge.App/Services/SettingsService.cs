@@ -684,7 +684,16 @@ namespace PadForge.Services
                     row.NoInherit = !string.Equals(activeMask, "Base", StringComparison.Ordinal)
                                     && mapping.NoInherit;
 
-                    // Phase 2C — clear and rebuild Sources from the UI
+                    // Preserve the absolute-pointer region geometry (#9 B-15)
+                    // across the clear+rebuild below. Unlike flick (which has a
+                    // hand-author card to re-stamp from), ParamPointerCenter/
+                    // Extent have no VM card, so the row's own pre-rebuild
+                    // sources are the only source of truth. Without this, the
+                    // first pad-page save of an imported mouse_region mapping
+                    // reset the geometry to the full-screen identity map.
+                    var preservedPointer = CaptureTouchpadPointerParams(row);
+
+                    // Phase 2C. Clear and rebuild Sources from the UI
                     // state so MappingSet is fully authoritative for
                     // this row. This stops keyboard primaries (which
                     // the legacy gamepad-only migrator filters out of
@@ -803,6 +812,12 @@ namespace PadForge.Services
                     // the shift-layer host, so layer rows must carry the card's
                     // knobs too.
                     ApplyFlickStickParamsToRow(row, padVm, slot);
+
+                    // Restore the absolute-pointer region geometry captured
+                    // before the rebuild (#9 B-15). No card sources these, so
+                    // the pre-rebuild values are re-stamped onto the matching
+                    // rebuilt pointer sources.
+                    ApplyTouchpadPointerParamsToRow(row, preservedPointer);
                 }
 
                 // Steering Kind reconciliation on the Base layer (#94). The per-mapping
@@ -1019,6 +1034,52 @@ namespace PadForge.Services
         // Dots Per 360 survives until the user actually tunes the card (the
         // load path seeds the card FROM the source in that state, so the
         // selected device's stamp writes the same values back).
+        // Captures the absolute-pointer region geometry (#9 B-15) from a row's
+        // sources before the save rebuild clears them. Keyed by (device,
+        // descriptor) so a multi-source / multi-device row restores each
+        // pointer source's own geometry. Returns an empty list when the row
+        // holds no pointer source (the common case, zero allocation churn).
+        private static System.Collections.Generic.List<(string device, string desc, double center, double extent)>
+            CaptureTouchpadPointerParams(MappingRow row)
+        {
+            var list = new System.Collections.Generic.List<(string, string, double, double)>();
+            if (row?.Sources == null) return list;
+            foreach (var s in row.Sources)
+            {
+                if (s == null
+                    || !Engine.Common.Mapping.SourceCoercion.IsTouchpadPointerDescriptor(s.Descriptor))
+                    continue;
+                list.Add((s.DeviceGuid ?? "", s.Descriptor ?? "", s.ParamPointerCenter, s.ParamPointerExtent));
+            }
+            return list;
+        }
+
+        // Re-stamps the captured pointer geometry onto the rebuilt pointer
+        // sources. The rebuild strips I/H prefixes, but pointer descriptors
+        // carry none (they start with "Touchpad"), so the clean descriptor
+        // matches the captured one exactly.
+        private static void ApplyTouchpadPointerParamsToRow(MappingRow row,
+            System.Collections.Generic.List<(string device, string desc, double center, double extent)> preserved)
+        {
+            if (row?.Sources == null || preserved == null || preserved.Count == 0) return;
+            foreach (var src in row.Sources)
+            {
+                if (src == null
+                    || !Engine.Common.Mapping.SourceCoercion.IsTouchpadPointerDescriptor(src.Descriptor))
+                    continue;
+                foreach (var p in preserved)
+                {
+                    if (string.Equals(p.desc, src.Descriptor, StringComparison.Ordinal)
+                        && string.Equals(p.device ?? "", src.DeviceGuid ?? "", StringComparison.OrdinalIgnoreCase))
+                    {
+                        src.ParamPointerCenter = p.center;
+                        src.ParamPointerExtent = p.extent;
+                        break;
+                    }
+                }
+            }
+        }
+
         private static void ApplyFlickStickParamsToRow(MappingRow row, PadViewModel padVm, int slot)
         {
             if (row?.Sources == null || padVm == null) return;

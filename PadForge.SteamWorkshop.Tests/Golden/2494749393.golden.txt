@@ -56,7 +56,7 @@ kbm rows: 3
   Base | KbmMouseY
     <- Gyro Pitch
 macros: 0
-report: v7 rows:x20+k3 macros:0 menus:0 layers:0 clean:25 partial:4 skipped:2 errors:0
+report: v8 rows:x20+k3 macros:0 menus:0 layers:0 clean:25 partial:4 skipped:2 errors:0
   Partial GyroButtonMaskDropped(gyro_button, 9) @ Default/gyro/group 13 (mouse_joystick)
   Clean RowEmitted @ Default/gyro/group 13 (mouse_joystick) => KbmMouseX <- Gyro Yaw
   Clean RowEmitted @ Default/gyro/group 13 (mouse_joystick) => KbmMouseY <- Gyro Pitch

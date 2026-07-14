@@ -56,7 +56,7 @@ macros: 7
   macro SetLightbarColor OnPress | Set LED (dpad_east) | btns=0x0000 in=[Touchpad 0 DPadRight; Touchpad 0 Click] rgb=(255,0,238) bright=100% sat=100% setting=1
   macro SetLightbarColor OnPress | Set LED (dpad_north) | btns=0x0000 in=[Touchpad 0 DPadUp; Touchpad 0 Click] rgb=(255,236,0) bright=100% sat=100% setting=1
   macro SetLightbarColor OnPress | Set LED (dpad_south) | btns=0x0000 in=[Touchpad 0 DPadDown; Touchpad 0 Click] rgb=(0,255,255) bright=100% sat=100% setting=0
-report: v7 rows:x19+k1 macros:7 menus:0 layers:0 clean:23 partial:11 skipped:0 errors:0
+report: v8 rows:x19+k1 macros:7 menus:0 layers:0 clean:23 partial:11 skipped:0 errors:0
   Partial TrackpadFeatureRequired(Touchpad joystick output) @ Default/left_trackpad/group 17 (dpad)/dpad_east/Full_Press => Set LED macro
   Partial TrackpadHalfApproximated @ Default/left_trackpad/group 17 (dpad)
   Partial TrackpadFeatureRequired(Touchpad joystick output) @ Default/left_trackpad/group 17 (dpad)/dpad_north/Full_Press => Set LED macro

@@ -100,7 +100,7 @@ menus: 2
     [2] D
     [3] F
     [4] A
-report: v7 rows:x0+k39 macros:0 menus:2 layers:1 clean:45 partial:7 skipped:2 errors:0
+report: v8 rows:x0+k39 macros:0 menus:2 layers:1 clean:45 partial:7 skipped:2 errors:0
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_a/Full_Press => KbmKey20 <- Gamepad ButtonA
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_b/Full_Press => KbmKey43 <- Gamepad ButtonB
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_x/Full_Press => KbmKey4E <- Gamepad ButtonX
@@ -154,4 +154,4 @@ report: v7 rows:x0+k39 macros:0 menus:2 layers:1 clean:45 partial:7 skipped:2 er
   Clean RowEmitted @ Preset_1000001/switch/group 27 (switches)/button_back_right_upper/Full_Press => KbmKey36 <- Gamepad Paddle3
   Skipped UnknownPhysicalInput(Switch, button_capture) @ Preset_1000001/switch/group 27 (switches)/button_capture :: controller_action system_key_1, , 
   Clean ShiftLayerEmitted(Preset_1000001) @ Default/joystick/group 15 (joystick_mouse)/click/Full_Press => Hold -> Layer_3451446931_1
-  Partial HapticIntensityDropped(12) @ config
+  Partial HapticIntensityDropped(14) @ config

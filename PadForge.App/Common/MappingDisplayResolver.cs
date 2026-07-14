@@ -98,6 +98,8 @@ namespace PadForge.Common
                 { tPrefix = t.Substring(0, 1); t = t.Substring(1); }
                 if (t.StartsWith("Touchpad", System.StringComparison.Ordinal)
                     || t.StartsWith("Gyro ", System.StringComparison.Ordinal)
+                    || t.StartsWith("Menu ", System.StringComparison.Ordinal)
+                    || t.StartsWith("Mouse Gesture ", System.StringComparison.Ordinal)
                     || PadForge.Engine.Common.Mapping.SourceCoercion.IsFlickStickDescriptor(t))
                 {
                     string fam = ResolveDescriptorText(t, null, padPrefixAlways: ud == null);
@@ -205,6 +207,8 @@ namespace PadForge.Common
                 { tPrefix = t.Substring(0, 1); t = t.Substring(1); }
                 if (t.StartsWith("Touchpad", System.StringComparison.Ordinal)
                     || t.StartsWith("Gyro ", System.StringComparison.Ordinal)
+                    || t.StartsWith("Menu ", System.StringComparison.Ordinal)
+                    || t.StartsWith("Mouse Gesture ", System.StringComparison.Ordinal)
                     || PadForge.Engine.Common.Mapping.SourceCoercion.IsFlickStickDescriptor(t))
                 {
                     string fam = ResolveDescriptorText(t, null, padPrefixAlways: ud == null);

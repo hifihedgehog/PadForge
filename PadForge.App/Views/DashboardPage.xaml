@@ -1629,6 +1629,23 @@
                 </StackPanel>
             </Border>
 
+            <!-- ═══ Menu Overlay (#9 B-17) ═══ -->
+            <StackPanel Orientation="Horizontal" Margin="0,20,0,12">
+                <!-- E700 = Segoe MDL2 GlobalNavButton, the canonical menu glyph. -->
+                <TextBlock Text="&#xE700;" Style="{StaticResource SectionGlyph}"/>
+                <TextBlock Text="{Binding Dashboard_MenuOverlay, Source={x:Static strings:Strings.Instance}, Converter={StaticResource UpperConverter}}" Style="{StaticResource SectionTitle}"/>
+            </StackPanel>
+
+            <Border Style="{StaticResource CardBorder}" Margin="0,0,0,0">
+                <StackPanel>
+                    <TextBlock Text="{Binding Dashboard_MenuOverlayDescription, Source={x:Static strings:Strings.Instance}}"
+                               Style="{StaticResource CardDescription}" Margin="0,0,0,12"/>
+                    <CheckBox Content="{Binding Dashboard_MenuOverlay, Source={x:Static strings:Strings.Instance}}"
+                              Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                              IsChecked="{Binding EnableMenuOverlay}"/>
+                </StackPanel>
+            </Border>
+
             <!-- ═══ Touchpad Overlay ═══ -->
             <StackPanel Orientation="Horizontal" Margin="0,20,0,12">
                 <TextBlock Text="&#xEDA4;" Style="{StaticResource SectionGlyph}"/>

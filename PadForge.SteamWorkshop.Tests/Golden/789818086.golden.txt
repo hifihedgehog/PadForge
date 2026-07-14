@@ -2,7 +2,7 @@ name: SkyrimSE Perfected: KB/M Precision + Gyro + Convenient Touch Menus
 description: A fully labelled and carefully tweaked config that features precise aiming and convenient touch menu...
 slots: kbm
 xbox rows: 0
-kbm rows: 20
+kbm rows: 33
   Base | KbmKey09
     <- Gamepad ButtonB
   Base | KbmKey14
@@ -16,8 +16,14 @@ kbm rows: 20
   Base | KbmKey45
     <- Gamepad ButtonA
     <- Gamepad Paddle1
+  Base | KbmKey49
+    <- Menu 2 Item 0
   Base | KbmKey4A
     <- Gamepad ButtonStart
+  Base | KbmKey4D
+    <- Menu 2 Item 3
+  Base | KbmKey50
+    <- Menu 2 Item 1
   Base | KbmKey52
     <- Gamepad ButtonX
   Base | KbmKey53
@@ -32,6 +38,8 @@ kbm rows: 20
     <- Gamepad Paddle2
   Base | KbmKeyA4
     <- Gamepad LeftShoulder
+  Base | KbmKeyBF
+    <- Menu 2 Item 2
   Base | KbmMBtn0
     <- Gamepad RightTrigger [upper-half] dz=15
   Base | KbmMBtn1
@@ -43,15 +51,53 @@ kbm rows: 20
     <- Gyro Pitch gyroSens=1.1
     <- Touchpad 1 Finger 0 Y sens=2.82
   Layer_789818086_0_MS_left_trackpad_17 | KbmKey74
-    <- Touchpad 0 TouchLeft
+    <- Menu 1 Item 0
   Layer_789818086_0_MS_left_trackpad_17 | KbmKey78
-    <- Touchpad 0 TouchRight
-kbm activators: 1
+    <- Menu 1 Item 1
+  Layer_789818086_0_MS_right_trackpad_24 | KbmKey31
+    <- Menu 3 Item 1
+  Layer_789818086_0_MS_right_trackpad_24 | KbmKey32
+    <- Menu 3 Item 2
+  Layer_789818086_0_MS_right_trackpad_24 | KbmKey33
+    <- Menu 3 Item 3
+  Layer_789818086_0_MS_right_trackpad_24 | KbmKey34
+    <- Menu 3 Item 4
+  Layer_789818086_0_MS_right_trackpad_24 | KbmKey35
+    <- Menu 3 Item 5
+  Layer_789818086_0_MS_right_trackpad_24 | KbmKey36
+    <- Menu 3 Item 6
+  Layer_789818086_0_MS_right_trackpad_24 | KbmKey37
+    <- Menu 3 Item 7
+  Layer_789818086_0_MS_right_trackpad_24 | KbmKey38
+    <- Menu 3 Item 8
+  Layer_789818086_0_MS_right_trackpad_24 | KbmKey51
+    <- Menu 3 Item 0
+kbm activators: 2
   Hold Layer_789818086_0_MS_left_trackpad_17 | Gamepad LeftShoulder | inherit | name=left_trackpad shift
+  Hold Layer_789818086_0_MS_right_trackpad_24 | Touchpad 1 Click | inherit | name=right_trackpad shift
 macros: 2
   macro KeyTap HoldForMs | Long press F (button_back_left) | btns=0x0000 in=[Gamepad Paddle2] hold=224ms vk=0x46
   macro KeyTap HoldForMs | Long press SPACE (button_back_right) | btns=0x0000 in=[Gamepad Paddle1] hold=222ms vk=0x20
-report: v6 rows:x0+k20 macros:2 layers:1 clean:22 partial:8 skipped:3 errors:0
+menus: 3
+  menu 1 Grid | Touchpad 0 | Layer_789818086_0_MS_left_trackpad_17 | fire=Click cells=2 pos=(2%,2%) scale=74% opacity=89% | name=Touch Menu 1
+    [0] Quick Save
+    [1] Quick Load
+  menu 2 Grid | Touchpad 0 | Base | fire=Click cells=4 labels=off pos=(2%,97%) scale=74% opacity=89% | name=Touch Menu 2
+    [0] Quick Inventory
+    [1] Quick Magic
+    [2] Quick Stats
+    [3] Quick Map
+  menu 3 Radial | Touchpad 1 | Layer_789818086_0_MS_right_trackpad_24 | fire=TouchRelease cells=8+center pos=(97%,97%) scale=99% opacity=89% | name=Radial Menu 3
+    [0] Q
+    [1] 1
+    [2] 2
+    [3] 3
+    [4] 4
+    [5] 5
+    [6] 6
+    [7] 7
+    [8] 8
+report: v7 rows:x0+k33 macros:2 menus:3 layers:2 clean:41 partial:8 skipped:1 errors:0
   Clean RowEmitted @ Preset 0/button_diamond/group 0 (four_buttons)/button_a/Full_Press => KbmKey45 <- Gamepad ButtonA
   Clean RowEmitted @ Preset 0/button_diamond/group 0 (four_buttons)/button_b/Full_Press => KbmKey09 <- Gamepad ButtonB
   Clean RowEmitted @ Preset 0/button_diamond/group 0 (four_buttons)/button_x/Full_Press => KbmKey52 <- Gamepad ButtonX
@@ -64,14 +110,31 @@ report: v6 rows:x0+k20 macros:2 layers:1 clean:22 partial:8 skipped:3 errors:0
   Clean RowEmitted @ Preset 0/joystick/group 11 (dpad)/dpad_south/Full_Press => KbmKey53 <- Gamepad LeftStickY (upper half)
   Clean RowEmitted @ Preset 0/joystick/group 11 (dpad)/dpad_west/Full_Press => KbmKey41 <- Gamepad LeftStickX (lower half)
   Skipped EdgeInputNotSupported(Joystick, edge) @ Preset 0/joystick/group 11 (dpad)/edge :: key_press RIGHT_CONTROL
-  Partial TrackpadFeatureRequired(Touchpad touch spots) @ Preset 0/left_trackpad/group 17 (touch_menu)/touch_menu_button_0/Full_Press => KbmKey74 <- Touchpad 0 TouchLeft
-  Partial TrackpadFeatureRequired(Touchpad touch spots) @ Preset 0/left_trackpad/group 17 (touch_menu)/touch_menu_button_1/Full_Press => KbmKey78 <- Touchpad 0 TouchRight
-  Skipped TouchMenuNeedsOverlay(4) @ Preset 0/left_trackpad/group 18 (touch_menu)
+  Clean MenuEmitted(2) @ Preset 0/left_trackpad/group 17 (touch_menu) => Grid menu 1 on Touchpad 0: 2 bound cells
+  Partial MenuIconsDropped(2) @ Preset 0/left_trackpad/group 17 (touch_menu)
+  Clean RowEmitted @ Preset 0/left_trackpad/group 17 (touch_menu)/touch_menu_button_0/Full_Press => KbmKey74 <- Menu 1 Item 0
+  Clean RowEmitted @ Preset 0/left_trackpad/group 17 (touch_menu)/touch_menu_button_1/Full_Press => KbmKey78 <- Menu 1 Item 1
+  Clean MenuEmitted(4) @ Preset 0/left_trackpad/group 18 (touch_menu) => Grid menu 2 on Touchpad 0: 4 bound cells
+  Partial MenuIconsDropped(4) @ Preset 0/left_trackpad/group 18 (touch_menu)
+  Clean RowEmitted @ Preset 0/left_trackpad/group 18 (touch_menu)/touch_menu_button_0/Full_Press => KbmKey49 <- Menu 2 Item 0
+  Clean RowEmitted @ Preset 0/left_trackpad/group 18 (touch_menu)/touch_menu_button_1/Full_Press => KbmKey50 <- Menu 2 Item 1
+  Clean RowEmitted @ Preset 0/left_trackpad/group 18 (touch_menu)/touch_menu_button_2/Full_Press => KbmKeyBF <- Menu 2 Item 2
+  Clean RowEmitted @ Preset 0/left_trackpad/group 18 (touch_menu)/touch_menu_button_3/Full_Press => KbmKey4D <- Menu 2 Item 3
   Partial ResponseCurveNotSupported(deadzone_outer_radius) @ Preset 0/left_trigger/group 4 (trigger)
   Clean RowEmitted @ Preset 0/left_trigger/group 4 (trigger)/edge/Full_Press => KbmMBtn1 <- Gamepad LeftTrigger (upper half)
   Clean RowEmitted @ Preset 0/right_trackpad/group 7 (absolute_mouse) => KbmMouseX <- Touchpad 1 Finger 0 X
   Clean RowEmitted @ Preset 0/right_trackpad/group 7 (absolute_mouse) => KbmMouseY <- Touchpad 1 Finger 0 Y
-  Skipped RadialMenuNeedsOverlay(9) @ Preset 0/right_trackpad/group 24 (radial_menu)
+  Clean MenuEmitted(9) @ Preset 0/right_trackpad/group 24 (radial_menu) => Radial menu 3 on Touchpad 1: 9 bound cells
+  Partial MenuIconsDropped(1) @ Preset 0/right_trackpad/group 24 (radial_menu)
+  Clean RowEmitted @ Preset 0/right_trackpad/group 24 (radial_menu)/touch_menu_button_0/Full_Press => KbmKey51 <- Menu 3 Item 0
+  Clean RowEmitted @ Preset 0/right_trackpad/group 24 (radial_menu)/touch_menu_button_1/Full_Press => KbmKey31 <- Menu 3 Item 1
+  Clean RowEmitted @ Preset 0/right_trackpad/group 24 (radial_menu)/touch_menu_button_2/Full_Press => KbmKey32 <- Menu 3 Item 2
+  Clean RowEmitted @ Preset 0/right_trackpad/group 24 (radial_menu)/touch_menu_button_3/Full_Press => KbmKey33 <- Menu 3 Item 3
+  Clean RowEmitted @ Preset 0/right_trackpad/group 24 (radial_menu)/touch_menu_button_4/Full_Press => KbmKey34 <- Menu 3 Item 4
+  Clean RowEmitted @ Preset 0/right_trackpad/group 24 (radial_menu)/touch_menu_button_5/Full_Press => KbmKey35 <- Menu 3 Item 5
+  Clean RowEmitted @ Preset 0/right_trackpad/group 24 (radial_menu)/touch_menu_button_6/Full_Press => KbmKey36 <- Menu 3 Item 6
+  Clean RowEmitted @ Preset 0/right_trackpad/group 24 (radial_menu)/touch_menu_button_7/Full_Press => KbmKey37 <- Menu 3 Item 7
+  Clean RowEmitted @ Preset 0/right_trackpad/group 24 (radial_menu)/touch_menu_button_8/Full_Press => KbmKey38 <- Menu 3 Item 8
   Partial ResponseCurveNotSupported(deadzone_outer_radius) @ Preset 0/right_trigger/group 5 (trigger)
   Clean RowEmitted @ Preset 0/right_trigger/group 5 (trigger)/edge/Full_Press => KbmMBtn0 <- Gamepad RightTrigger (upper half)
   Clean RowEmitted @ Preset 0/switch/group 20 (switches)/button_back_left/Full_Press => KbmKeyA2 <- Gamepad Paddle2
@@ -83,5 +146,5 @@ report: v6 rows:x0+k20 macros:2 layers:1 clean:22 partial:8 skipped:3 errors:0
   Clean RowEmitted @ Preset 0/switch/group 20 (switches)/left_bumper/Full_Press => KbmKeyA4 <- Gamepad LeftShoulder
   Clean RowEmitted @ Preset 0/switch/group 20 (switches)/right_bumper/Full_Press => KbmKey5A <- Gamepad RightShoulder
   Clean ShiftLayerEmitted(left_trackpad shift) @ Preset 0/switch/group 20 (switches)/left_bumper/Full_Press => Hold -> Layer_789818086_0_MS_left_trackpad_17
-  Partial ShiftLayerEmpty(right_trackpad shift) @ Preset 0/switch/group 20 (switches)/right_click/Full_Press
-  Partial HapticIntensityDropped(11) @ config
+  Clean ShiftLayerEmitted(right_trackpad shift) @ Preset 0/switch/group 20 (switches)/right_click/Full_Press => Hold -> Layer_789818086_0_MS_right_trackpad_24
+  Partial HapticIntensityDropped(20) @ config

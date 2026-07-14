@@ -532,6 +532,14 @@
                              AutomationProperties.AutomationId="MacrosTab">
                     <TextBlock Text="{Binding Pad_Macros, Source={x:Static strings:Strings.Instance}}" FontSize="15"/>
                 </RadioButton>
+
+                <!-- [Menus] (#9 B-17). Slot tier: menus live on the slot's
+                     MappingSet like the mapping table and macros. Tag 15 =
+                     the appended TabItem's index. -->
+                <RadioButton Tag="15" Style="{StaticResource TabStripButton}" Click="TabBtn_Click"
+                             AutomationProperties.AutomationId="MenusTab">
+                    <TextBlock Text="{Binding Pad_Menus, Source={x:Static strings:Strings.Instance}}" FontSize="15"/>
+                </RadioButton>
                 </StackPanel>
 
             </DockPanel>
@@ -10887,6 +10895,228 @@
                         </Border>
                     </StackPanel>
                 </ScrollViewer>
+            </TabItem>
+
+            <!-- === TAB 15: Menus (slot-level, #9 B-17 radial / touch menus) === -->
+            <TabItem>
+                <Grid Margin="8">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="250"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Menu list -->
+                    <DockPanel Grid.Column="0">
+                        <WrapPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="0,0,0,8">
+                            <Button AutomationProperties.AutomationId="MenuAddButton" Content="{Binding Common_Add, Source={x:Static strings:Strings.Instance}}" Command="{Binding AddMenuCommand}"
+                                    Padding="8,4" Margin="0,0,4,4"/>
+                            <Button AutomationProperties.AutomationId="MenuRemoveButton" Content="{Binding Common_Remove, Source={x:Static strings:Strings.Instance}}" Command="{Binding RemoveMenuCommand}"
+                                    Padding="8,4" Margin="0,0,4,4"/>
+                            <Button Content="{Binding Common_Duplicate, Source={x:Static strings:Strings.Instance}}" Command="{Binding DuplicateMenuCommand}"
+                                    Padding="8,4" Margin="0,0,0,4"/>
+                        </WrapPanel>
+
+                        <ListBox ItemsSource="{Binding Menus}"
+                                 SelectedItem="{Binding SelectedMenu, Mode=TwoWay}"
+                                 ItemContainerStyle="{StaticResource EmberSelectListItem}"
+                                 DisplayMemberPath="Name"/>
+                    </DockPanel>
+
+                    <GridSplitter Grid.Column="1" Width="4" Margin="4,0"
+                                  HorizontalAlignment="Center" VerticalAlignment="Stretch"
+                                  ResizeBehavior="PreviousAndNext"/>
+
+                    <!-- Empty state: cold guidance, same shape as Macros. -->
+                    <Grid Grid.Column="2">
+                        <Grid.Style>
+                            <Style TargetType="Grid">
+                                <Setter Property="Visibility" Value="Visible"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding HasSelectedMenu}" Value="True">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Grid.Style>
+                        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <Path Data="{StaticResource FlameOuterGeometry}" Width="34" Height="34" Stretch="Uniform"
+                                  Fill="Transparent" StrokeThickness="1.2"
+                                  Stroke="{DynamicResource TextFillColorTertiaryBrush}" HorizontalAlignment="Center"/>
+                            <TextBlock Text="{Binding Menu_EmptyHint, Source={x:Static strings:Strings.Instance}}"
+                                       Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                                       Margin="0,12,0,0" TextWrapping="Wrap" TextAlignment="Center" MaxWidth="300"/>
+                        </StackPanel>
+                    </Grid>
+
+                    <!-- Menu editor -->
+                    <ScrollViewer Grid.Column="2" VerticalScrollBarVisibility="Visible"
+                                  HorizontalScrollBarVisibility="Disabled"
+                                  Padding="8"
+                                  DataContext="{Binding SelectedMenu}"
+                                  Visibility="{Binding DataContext.HasSelectedMenu,
+                                      RelativeSource={RelativeSource AncestorType=TabItem},
+                                      Converter={StaticResource BoolToVisibilityConverter}}">
+                        <StackPanel>
+                            <!-- Name + Enabled -->
+                            <TextBlock Text="{Binding Menu_Name, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,0,0,4"
+                                       Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
+                                <TextBox Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="260"/>
+                                <CheckBox Content="{Binding Menu_Enabled, Source={x:Static strings:Strings.Instance}}"
+                                          IsChecked="{Binding Enabled}" Margin="16,0,0,0" VerticalAlignment="Center"/>
+                            </StackPanel>
+
+                            <!-- Style row -->
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                           Text="{Binding Menu_Style, Source={x:Static strings:Strings.Instance}}"
+                                           Width="200" VerticalAlignment="Center"/>
+                                <ComboBox Width="200" ItemsSource="{Binding KindOptions}"
+                                          DisplayMemberPath="Label" SelectedValuePath="Value"
+                                          SelectedValue="{Binding KindIndex, Mode=TwoWay}"/>
+                            </StackPanel>
+
+                            <!-- Host input row (Reset + Record per canon) -->
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                           Text="{Binding Menu_HostInput, Source={x:Static strings:Strings.Instance}}"
+                                           Width="200" VerticalAlignment="Center"/>
+                                <ComboBox Width="200" ItemsSource="{Binding HostOptions}"
+                                          DisplayMemberPath="Label"
+                                          SelectedItem="{Binding SelectedHost, Mode=TwoWay}"/>
+                                <ui:Button Command="{Binding DataContext.MenuHostRecordCommand,
+                                               RelativeSource={RelativeSource AncestorType=TabItem}}"
+                                           Style="{StaticResource EmberIconButtonHot}" Margin="6,0,0,0">
+                                    <TextBlock Text="{Binding HostRecordIcon}" FontFamily="Segoe MDL2 Assets"
+                                               Foreground="{DynamicResource EmberBrush}"/>
+                                </ui:Button>
+                                <ui:Button Command="{Binding ResetHostCommand}" Style="{StaticResource ResetButton}"/>
+                            </StackPanel>
+
+                            <!-- Pad half (touchpad hosts only) -->
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,8"
+                                        Visibility="{Binding HostIsTouchpad, Converter={StaticResource BoolToVisibilityConverter}}">
+                                <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                           Text="{Binding Menu_HostHalf, Source={x:Static strings:Strings.Instance}}"
+                                           Width="200" VerticalAlignment="Center"/>
+                                <ComboBox Width="200" ItemsSource="{Binding HostHalfOptions}"
+                                          DisplayMemberPath="Label" SelectedValuePath="Value"
+                                          SelectedValue="{Binding HostHalfIndex, Mode=TwoWay}"/>
+                            </StackPanel>
+
+                            <!-- Fire mode -->
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                           Text="{Binding Menu_FireMode, Source={x:Static strings:Strings.Instance}}"
+                                           Width="200" VerticalAlignment="Center"/>
+                                <ComboBox Width="200" ItemsSource="{Binding FireOptions}"
+                                          DisplayMemberPath="Label" SelectedValuePath="Value"
+                                          SelectedValue="{Binding FireTypeIndex, Mode=TwoWay}"/>
+                                <ui:Button Command="{Binding ResetFireCommand}" Style="{StaticResource ResetButton}" Margin="6,0,0,0"/>
+                            </StackPanel>
+
+                            <!-- Cells + center -->
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                           Text="{Binding Menu_Cells, Source={x:Static strings:Strings.Instance}}"
+                                           Width="200" VerticalAlignment="Center"/>
+                                <ui:NumberBox Width="120" Minimum="1" Maximum="20" SmallChange="1"
+                                              Value="{Binding CellCount, Mode=TwoWay}"/>
+                                <CheckBox Content="{Binding Menu_HasCenter, Source={x:Static strings:Strings.Instance}}"
+                                          IsChecked="{Binding HasCenter}" Margin="12,0,0,0" VerticalAlignment="Center"
+                                          Visibility="{Binding IsRadial, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                <ui:Button Command="{Binding ResetCellsCommand}" Style="{StaticResource ResetButton}" Margin="6,0,0,0"/>
+                            </StackPanel>
+
+                            <!-- Engage deadzone -->
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                           Text="{Binding Menu_Deadzone, Source={x:Static strings:Strings.Instance}}"
+                                           Width="200" VerticalAlignment="Center"/>
+                                <Slider Width="160" Minimum="1" Maximum="95"
+                                        Value="{Binding EngageDeadzonePercent, Mode=TwoWay}" VerticalAlignment="Center"/>
+                                <ui:NumberBox Width="90" Minimum="1" Maximum="95" SmallChange="1" Margin="8,0,0,0"
+                                              Value="{Binding EngageDeadzonePercent, Mode=TwoWay}"/>
+                                <ui:Button Command="{Binding ResetDeadzoneCommand}" Style="{StaticResource ResetButton}" Margin="6,0,0,0"/>
+                            </StackPanel>
+
+                            <!-- Overlay geometry card -->
+                            <Border Style="{StaticResource CardBorder}" Margin="0,4,0,12" Padding="12">
+                                <StackPanel>
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                        <TextBlock Text="{Binding Dashboard_MenuOverlay, Source={x:Static strings:Strings.Instance}}"
+                                                   FontWeight="SemiBold"
+                                                   Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
+                                        <ui:Button Command="{Binding ResetGeometryCommand}" Style="{StaticResource ResetButton}" Margin="12,0,0,0"/>
+                                    </StackPanel>
+                                    <CheckBox Content="{Binding Menu_ShowLabels, Source={x:Static strings:Strings.Instance}}"
+                                              IsChecked="{Binding ShowLabels}" Margin="0,0,0,8"/>
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                        <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                                   Text="{Binding Menu_Position, Source={x:Static strings:Strings.Instance}}"
+                                                   Width="188" VerticalAlignment="Center"/>
+                                        <ui:NumberBox Width="90" Minimum="0" Maximum="100" SmallChange="5"
+                                                      Value="{Binding PosXPercent, Mode=TwoWay}"/>
+                                        <ui:NumberBox Width="90" Minimum="0" Maximum="100" SmallChange="5" Margin="8,0,0,0"
+                                                      Value="{Binding PosYPercent, Mode=TwoWay}"/>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                        <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                                   Text="{Binding Menu_Scale, Source={x:Static strings:Strings.Instance}}"
+                                                   Width="188" VerticalAlignment="Center"/>
+                                        <ui:NumberBox Width="90" Minimum="10" Maximum="400" SmallChange="10"
+                                                      Value="{Binding ScalePercent, Mode=TwoWay}"/>
+                                        <TextBlock Text="%" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                                   VerticalAlignment="Center" Margin="6,0,0,0"/>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                                   Text="{Binding Menu_Opacity, Source={x:Static strings:Strings.Instance}}"
+                                                   Width="188" VerticalAlignment="Center"/>
+                                        <ui:NumberBox Width="90" Minimum="5" Maximum="100" SmallChange="5"
+                                                      Value="{Binding OpacityPercent, Mode=TwoWay}"/>
+                                        <TextBlock Text="%" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                                   VerticalAlignment="Center" Margin="6,0,0,0"/>
+                                    </StackPanel>
+                                </StackPanel>
+                            </Border>
+
+                            <!-- Cell bindings -->
+                            <TextBlock Text="{Binding Menu_CellBindings, Source={x:Static strings:Strings.Instance}}"
+                                       FontWeight="SemiBold" Margin="0,0,0,6"
+                                       Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
+                            <ItemsControl ItemsSource="{Binding Cells}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                                            <TextBlock Text="{Binding Header}" Width="72" VerticalAlignment="Center"
+                                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                                            <TextBox Text="{Binding Label, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                                     Width="150"
+                                                     ToolTip="{Binding Menu_Name, Source={x:Static strings:Strings.Instance}}"/>
+                                            <ComboBox Width="150" Margin="8,0,0,0"
+                                                      ItemsSource="{Binding BindingKindOptions}"
+                                                      DisplayMemberPath="Label" SelectedValuePath="Value"
+                                                      SelectedValue="{Binding BindingKind, Mode=TwoWay}"/>
+                                            <ComboBox Width="150" Margin="8,0,0,0"
+                                                      ItemsSource="{Binding KeyOptions}"
+                                                      DisplayMemberPath="Label" SelectedValuePath="Vk"
+                                                      SelectedValue="{Binding SelectedKeyVk, Mode=TwoWay}"
+                                                      Visibility="{Binding ShowKeyPicker, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                            <ComboBox Width="150" Margin="8,0,0,0"
+                                                      ItemsSource="{Binding ButtonOptions}"
+                                                      DisplayMemberPath="Label" SelectedValuePath="Value"
+                                                      SelectedValue="{Binding SelectedButtonFlag, Mode=TwoWay}"
+                                                      Visibility="{Binding ShowButtonPicker, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                            <ui:Button Command="{Binding ResetCellCommand}" Style="{StaticResource ResetButton}" Margin="6,0,0,0"/>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </StackPanel>
+                    </ScrollViewer>
+                </Grid>
             </TabItem>
         </TabControl>
     </Grid>

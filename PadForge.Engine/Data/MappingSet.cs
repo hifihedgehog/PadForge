@@ -36,6 +36,18 @@ namespace PadForge.Engine.Data
         [XmlElement("ShiftActivator")]
         public List<ShiftActivator> ShiftActivators { get; set; } = new();
 
+        /// <summary>
+        /// Radial / touch menus authored for (or imported onto) this slot
+        /// (#9 B-17). Same placement rationale as
+        /// <see cref="ShiftActivators"/>: menus are slot-scoped structures
+        /// whose entries carry a per-entry DeviceGuid ("" = any device on
+        /// the slot, the Workshop-import form), and riding the MappingSet
+        /// gives them profile capture / apply and Workshop materialization
+        /// through the existing per-slot plumbing. Empty list = no menus.
+        /// </summary>
+        [XmlElement("Menu")]
+        public List<PadForge.Engine.Menus.MenuDefinitionEntry> Menus { get; set; } = new();
+
         // ── Base layer flyout appearance (#119) ──
         // Base has no activator, so its display name / dot color / glyph for
         // the engaged-layer flyout and the Base tab live here. Empty falls

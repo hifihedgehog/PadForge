@@ -830,6 +830,32 @@ namespace PadForge
                     });
                 };
 
+                // Record button on the Menus tab's host picker (#9 B-17).
+                // Same freeform-recorder toggle as the Aim Engage picker
+                // above; the recorded descriptor folds onto a host choice
+                // (stick axes / stick click pick the stick, any touchpad
+                // read picks the pad) and inputs with no hover surface are
+                // ignored.
+                pad.MenuHostRecordRequested += (s, e) =>
+                {
+                    if (s is not PadViewModel pvm) return;
+                    var menu = pvm.SelectedMenu;
+                    if (menu == null) return;
+                    if (menu.HostRecording)
+                    {
+                        _recorderService.CancelRecording();
+                        menu.HostRecording = false;
+                        return;
+                    }
+                    menu.HostRecording = true;
+                    _recorderService.StartRecordingFreeform(pvm.PadIndex, (deviceGuid, descriptor) =>
+                    {
+                        menu.HostRecording = false;
+                        if (menu.TryApplyRecordedHost(descriptor))
+                            _settingsService.MarkDirty();
+                    });
+                };
+
                 // Record button on the Mouse Gestures card's custom
                 // activation picker (discussion #216). Same freeform-recorder
                 // toggle as the Aim Engage picker above; the VM setters push

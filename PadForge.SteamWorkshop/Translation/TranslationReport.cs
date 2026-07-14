@@ -76,8 +76,18 @@ namespace PadForge.SteamWorkshop.Translation
         /// teleport/edge keys get a named entry. The absolute_mouse
         /// AbsoluteMouseApproximated Partial is retired as a false alarm
         /// (the mode is relative on trackpads and gyro; the relative rows
-        /// are faithful and Clean).</summary>
-        public const int CurrentTranslatorVersion = 6;
+        /// are faithful and Clean).
+        /// v7: Wave 4c (#9 B-17). radial_menu / touch_menu groups become
+        /// first-class overlay-backed menus: the group emits an engine
+        /// MenuDefinitionEntry (kind, host stick/trackpad, layer, Steam's
+        /// touchmenu_button_fire_type commit semantics, cell geometry,
+        /// labels, overlay position/scale/opacity) and every bound cell's
+        /// bindings translate through the normal walk against a
+        /// "Menu {id} Item {k}" source the menu runtime fires on
+        /// hover-commit. Retires the TouchMenuNeedsOverlay /
+        /// RadialMenuNeedsOverlay skips and the two-cell touch-spot
+        /// approximation; per-cell icons get a named Partial.</summary>
+        public const int CurrentTranslatorVersion = 7;
 
         public int TranslatorVersion { get; set; } = CurrentTranslatorVersion;
 
@@ -94,6 +104,8 @@ namespace PadForge.SteamWorkshop.Translation
         public int KbmRowCount { get; set; }
 
         public int MacroCount { get; set; }
+
+        public int MenuCount { get; set; }
 
         public int ShiftActivatorCount { get; set; }
 
@@ -136,6 +148,7 @@ namespace PadForge.SteamWorkshop.Translation
             sb.Append("v").Append(TranslatorVersion)
               .Append(" rows:x").Append(XboxRowCount).Append("+k").Append(KbmRowCount)
               .Append(" macros:").Append(MacroCount)
+              .Append(" menus:").Append(MenuCount)
               .Append(" layers:").Append(ShiftActivatorCount)
               .Append(" clean:").Append(CleanCount)
               .Append(" partial:").Append(PartialCount)
@@ -189,6 +202,10 @@ namespace PadForge.SteamWorkshop.Translation
         public const string UnknownXInputButton = "Workshop_Tr_UnknownXInputButton";             // {0} name
         public const string UnknownPhysicalInput = "Workshop_Tr_UnknownPhysicalInput";           // {0} slot {1} input
         public const string UnknownGroupMode = "Workshop_Tr_UnknownGroupMode";                   // {0} mode
+        // Legacy-render-only since translator v7 (#9 B-17): menus are
+        // first-class now, so nothing needs an overlay it doesn't have.
+        // Kept, with their resx strings, for reports serialized by older
+        // translator versions.
         public const string TouchMenuNeedsOverlay = "Workshop_Tr_TouchMenuNeedsOverlay";         // {0} cell count
         public const string RadialMenuNeedsOverlay = "Workshop_Tr_RadialMenuNeedsOverlay";       // {0} cell count
         public const string MouseRegionNotSupported = "Workshop_Tr_MouseRegionNotSupported";
@@ -261,6 +278,23 @@ namespace PadForge.SteamWorkshop.Translation
         /// whose translated surface has no half window (anchor D-pad
         /// wedges, two-cell touch menus): the rows read the whole pad.</summary>
         public const string TrackpadHalfApproximated = "Workshop_Tr_TrackpadHalfApproximated";
+
+        // ── Translator v7 (Wave 4c, #9 B-17) vocabulary ──
+        /// <summary>A radial_menu / touch_menu group became an
+        /// overlay-backed menu with working hover-commit.</summary>
+        public const string MenuEmitted = "Workshop_Tr_MenuEmitted";                             // {0} bound cell count
+        /// <summary>A menu group with no bound cells: nothing to show or
+        /// fire (corpus carries several placeholder menus).</summary>
+        public const string MenuEmpty = "Workshop_Tr_MenuEmpty";
+        /// <summary>A menu group hosted on a surface with no direction /
+        /// position read (not a stick or trackpad).</summary>
+        public const string MenuSurfaceNotSupported = "Workshop_Tr_MenuSurfaceNotSupported";     // {0} slot
+        /// <summary>Cells carrying Steam icon glyphs (ghost_*.png): the
+        /// PadForge overlay renders text labels only.</summary>
+        public const string MenuIconsDropped = "Workshop_Tr_MenuIconsDropped";                   // {0} cell count
+        /// <summary>Menu settings with no PadForge channel (In-Menu
+        /// Sensitivity).</summary>
+        public const string MenuTuningDropped = "Workshop_Tr_MenuTuningDropped";                 // {0} setting keys
 
         // ── Translator v5 (Wave 4a) vocabulary ──
         /// <summary>A flickstick group hosted on a touch surface (the

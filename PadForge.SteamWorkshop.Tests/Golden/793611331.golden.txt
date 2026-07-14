@@ -48,14 +48,19 @@ xbox rows: 20
     <- Gamepad RightTrigger [upper-half] dz=75
 kbm rows: 2
   Base | KbmKey74
-    <- Touchpad 0 TouchLeft
+    <- Menu 1 Item 0
   Base | KbmKey78
-    <- Touchpad 0 TouchRight
+    <- Menu 1 Item 1
 macros: 0
-report: v6 rows:x20+k2 macros:0 layers:0 clean:24 partial:4 skipped:5 errors:0
-  Partial TrackpadFeatureRequired(Touchpad touch spots) @ Default/left_trackpad/group 10 (touch_menu)/touch_menu_button_0/Full_Press => KbmKey74 <- Touchpad 0 TouchLeft
-  Partial TrackpadFeatureRequired(Touchpad touch spots) @ Default/left_trackpad/group 10 (touch_menu)/touch_menu_button_1/Full_Press => KbmKey78 <- Touchpad 0 TouchRight
-  Partial TrackpadHalfApproximated @ Default/left_trackpad/group 10 (touch_menu)
+menus: 1
+  menu 1 Grid | Touchpad 0 [left half] | Base | fire=Click cells=2 | name=Touch Menu 1
+    [0] Quicksave
+    [1] Quickload
+report: v7 rows:x20+k2 macros:0 menus:1 layers:0 clean:27 partial:2 skipped:5 errors:0
+  Clean MenuEmitted(2) @ Default/left_trackpad/group 10 (touch_menu) => Grid menu 1 on Touchpad 0: 2 bound cells
+  Partial MenuIconsDropped(2) @ Default/left_trackpad/group 10 (touch_menu)
+  Clean RowEmitted @ Default/left_trackpad/group 10 (touch_menu)/touch_menu_button_0/Full_Press => KbmKey74 <- Menu 1 Item 0
+  Clean RowEmitted @ Default/left_trackpad/group 10 (touch_menu)/touch_menu_button_1/Full_Press => KbmKey78 <- Menu 1 Item 1
   Skipped SteamSystemAction(SCREENSHOT) @ Default/right_trackpad/group 13 (dpad)/dpad_east/Full_Press :: controller_action SCREENSHOT
   Skipped SteamSystemAction(SCREENSHOT) @ Default/right_trackpad/group 13 (dpad)/dpad_north/Full_Press :: controller_action SCREENSHOT, Screenshot
   Skipped SteamSystemAction(SCREENSHOT) @ Default/right_trackpad/group 13 (dpad)/dpad_south/Full_Press :: controller_action SCREENSHOT

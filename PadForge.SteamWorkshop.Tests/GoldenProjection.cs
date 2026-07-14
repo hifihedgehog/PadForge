@@ -89,6 +89,39 @@ namespace PadForge.SteamWorkshop.Tests
                 sb.Append('\n');
             }
 
+            // Menus (#9 B-17): structure only; the cell bindings ride the
+            // rows / macros / activators above via "Menu {id} Item {k}"
+            // sources, so every commit path is already reviewable there.
+            if (p.Menus.Count > 0)
+            {
+                sb.Append("menus: ").Append(p.Menus.Count).Append('\n');
+                foreach (var m in p.Menus)
+                {
+                    sb.Append("  menu ").Append(m.MenuId).Append(' ').Append(m.Kind)
+                      .Append(" | ").Append(m.HostDescriptor);
+                    if (m.HostHalf == 1) sb.Append(" [left half]");
+                    else if (m.HostHalf == 2) sb.Append(" [right half]");
+                    sb.Append(" | ").Append(string.IsNullOrEmpty(m.LayerMask) ? "Base" : m.LayerMask)
+                      .Append(" | fire=").Append(m.FireType)
+                      .Append(" cells=").Append(m.CellCount);
+                    if (m.HasCenter) sb.Append("+center");
+                    if (!m.ShowLabels) sb.Append(" labels=off");
+                    if (m.PosXPercent != 50 || m.PosYPercent != 50)
+                        sb.Append(" pos=(").Append(m.PosXPercent).Append("%,")
+                          .Append(m.PosYPercent).Append("%)");
+                    if (m.ScalePercent != 100) sb.Append(" scale=").Append(m.ScalePercent).Append('%');
+                    if (m.OpacityPercent != 90) sb.Append(" opacity=").Append(m.OpacityPercent).Append('%');
+                    if (m.EngageDeadzonePercent != 25) sb.Append(" dz=").Append(m.EngageDeadzonePercent);
+                    if (!string.IsNullOrEmpty(m.Name)) sb.Append(" | name=").Append(m.Name);
+                    sb.Append('\n');
+                    foreach (var it in m.Items)
+                    {
+                        sb.Append("    [").Append(it.Index).Append("] ").Append(it.Label);
+                        sb.Append('\n');
+                    }
+                }
+            }
+
             var r = p.Report;
             sb.Append("report: ").Append(r.ToSummaryString()).Append('\n');
             foreach (var e in r.Entries)

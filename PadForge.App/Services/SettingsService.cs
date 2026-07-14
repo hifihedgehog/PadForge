@@ -1571,6 +1571,7 @@ namespace PadForge.Services
 
             // Load touchpad overlay settings.
             _mainVm.Dashboard.EnableTouchpadOverlay = appSettings.EnableTouchpadOverlay;
+            _mainVm.Dashboard.EnableMenuOverlay = appSettings.EnableMenuOverlay;
             _mainVm.Dashboard.TouchpadOverlayOpacity = appSettings.TouchpadOverlayOpacity;
             _mainVm.Dashboard.TouchpadOverlayMonitor = appSettings.TouchpadOverlayMonitor;
             _mainVm.Dashboard.TouchpadOverlayLeft = appSettings.TouchpadOverlayLeft;
@@ -2911,6 +2912,7 @@ namespace PadForge.Services
                 if (active.WebControllerPort >= 1024 && active.WebControllerPort <= 65535)
                     _mainVm.Dashboard.WebControllerPort = active.WebControllerPort;
                 _mainVm.Dashboard.EnableTouchpadOverlay = active.EnableTouchpadOverlay;
+                _mainVm.Dashboard.EnableMenuOverlay = active.EnableMenuOverlay;
                 _mainVm.Dashboard.TouchpadOverlayOpacity = active.TouchpadOverlayOpacity;
                 _mainVm.Dashboard.TouchpadOverlayMonitor = active.TouchpadOverlayMonitor;
                 _mainVm.Dashboard.TouchpadOverlayLeft = active.TouchpadOverlayLeft;
@@ -2988,6 +2990,7 @@ namespace PadForge.Services
             profile.EnableWebController = _mainVm.Dashboard.EnableWebController;
             profile.WebControllerPort = _mainVm.Dashboard.WebControllerPort;
             profile.EnableTouchpadOverlay = _mainVm.Dashboard.EnableTouchpadOverlay;
+            profile.EnableMenuOverlay = _mainVm.Dashboard.EnableMenuOverlay;
             profile.TouchpadOverlayOpacity = _mainVm.Dashboard.TouchpadOverlayOpacity;
             profile.TouchpadOverlayMonitor = _mainVm.Dashboard.TouchpadOverlayMonitor;
             profile.TouchpadOverlayLeft = _mainVm.Dashboard.TouchpadOverlayLeft;
@@ -3329,6 +3332,7 @@ namespace PadForge.Services
                 RemoteLinkAutoReconnect = _mainVm.Dashboard.AutoReconnect,
                 RemoteLinkPort = _mainVm.Dashboard.RemoteLinkPort,
                 EnableTouchpadOverlay = _mainVm.Dashboard.EnableTouchpadOverlay,
+                EnableMenuOverlay = _mainVm.Dashboard.EnableMenuOverlay,
                 TouchpadOverlayOpacity = _mainVm.Dashboard.TouchpadOverlayOpacity,
                 TouchpadOverlayMonitor = _mainVm.Dashboard.TouchpadOverlayMonitor,
                 TouchpadOverlayLeft = _mainVm.Dashboard.TouchpadOverlayLeft,
@@ -4682,6 +4686,11 @@ namespace PadForge.Services
         [XmlElement]
         public bool EnableTouchpadOverlay { get; set; }
 
+        /// <summary>Radial / touch menu overlay (#9 B-17). Default on;
+        /// menus still hover and commit blind when disabled.</summary>
+        [XmlElement]
+        public bool EnableMenuOverlay { get; set; } = true;
+
         /// <summary>Default profile's custom touchpad gestures.
         /// Named profiles store theirs under each profile's
         /// <c>ProfileData.TouchpadGestures</c>; when the default profile
@@ -5386,6 +5395,11 @@ namespace PadForge.Services
 
         [XmlElement]
         public bool EnableTouchpadOverlay { get; set; }
+
+        /// <summary>Radial / touch menu overlay (#9 B-17), per-profile
+        /// copy. Default on.</summary>
+        [XmlElement]
+        public bool EnableMenuOverlay { get; set; } = true;
 
         [XmlElement]
         public double TouchpadOverlayOpacity { get; set; } = 0.25;

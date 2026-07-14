@@ -2,7 +2,7 @@ name: XCOM2 Configuration Xbox
 description: Your modified configuration for this game.
 slots: kbm
 xbox rows: 0
-kbm rows: 19
+kbm rows: 29
   Base | KbmMBtn0
     <- Gamepad ButtonA
     <- Gamepad RightTrigger [upper-half] dz=15
@@ -22,6 +22,26 @@ kbm rows: 19
     <- Gamepad RightStickX
   Layer_1129670518_0_MS_right_joystick_47 | KbmMouseY
     <- Gamepad RightStickY
+  Layer_1129670518_0_MS_right_trackpad_20 | KbmKey30
+    <- Menu 1 Item 9
+  Layer_1129670518_0_MS_right_trackpad_20 | KbmKey31
+    <- Menu 1 Item 0
+  Layer_1129670518_0_MS_right_trackpad_20 | KbmKey32
+    <- Menu 1 Item 1
+  Layer_1129670518_0_MS_right_trackpad_20 | KbmKey33
+    <- Menu 1 Item 2
+  Layer_1129670518_0_MS_right_trackpad_20 | KbmKey34
+    <- Menu 1 Item 3
+  Layer_1129670518_0_MS_right_trackpad_20 | KbmKey35
+    <- Menu 1 Item 4
+  Layer_1129670518_0_MS_right_trackpad_20 | KbmKey36
+    <- Menu 1 Item 5
+  Layer_1129670518_0_MS_right_trackpad_20 | KbmKey37
+    <- Menu 1 Item 6
+  Layer_1129670518_0_MS_right_trackpad_20 | KbmKey38
+    <- Menu 1 Item 7
+  Layer_1129670518_0_MS_right_trackpad_20 | KbmKey39
+    <- Menu 1 Item 8
   Layer_1129670518_1 | KbmKey1B
     <- Gamepad ButtonStart
   Layer_1129670518_1 | KbmMBtn0
@@ -58,13 +78,26 @@ kbm rows: 19
     <- Touchpad 1 Finger 0 X
   Layer_1129670518_2_MS_right_trackpad_38 | KbmMouseY
     <- Touchpad 1 Finger 0 Y
-kbm activators: 4
+kbm activators: 5
   Hold Layer_1129670518_0_MS_right_joystick_47 | Gamepad Paddle2 | inherit | name=right_joystick shift
+  Hold Layer_1129670518_0_MS_right_trackpad_20 | Gamepad Paddle2 | inherit | name=right_trackpad shift
   Hold Layer_1129670518_2_MS_left_trackpad_16 | Touchpad 1 Click | inherit | name=left_trackpad shift
   Hold Layer_1129670518_2_MS_right_joystick_50 | Touchpad 0 Click | inherit | name=right_joystick shift
   Hold Layer_1129670518_2_MS_right_trackpad_38 | Touchpad 0 Click | inherit | name=right_trackpad shift
 macros: 0
-report: v6 rows:x0+k19 macros:0 layers:4 clean:40 partial:7 skipped:4 errors:0
+menus: 1
+  menu 1 Grid | Touchpad 1 | Layer_1129670518_0_MS_right_trackpad_20 | fire=Click cells=12 pos=(51%,81%) scale=60% opacity=91% | name=Touch Menu 1
+    [0] 1
+    [1] 2
+    [2] 3
+    [3] 4
+    [4] 5
+    [5] 6
+    [6] 7
+    [7] 8
+    [8] 9
+    [9] 0
+report: v7 rows:x0+k29 macros:0 menus:1 layers:5 clean:52 partial:6 skipped:3 errors:0
   Clean RowEmitted @ TacticalControls/button_diamond/group 0 (four_buttons)/button_A/Full_Press => KbmMBtn0 <- Gamepad ButtonA
   Clean RowEmitted @ TacticalControls/joystick/group 51 (joystick_mouse) => KbmMouseX <- Gamepad LeftStickX
   Clean RowEmitted @ TacticalControls/joystick/group 51 (joystick_mouse) => KbmMouseY <- Gamepad LeftStickY
@@ -77,7 +110,17 @@ report: v6 rows:x0+k19 macros:0 layers:4 clean:40 partial:7 skipped:4 errors:0
   Clean RowEmitted @ TacticalControls/right_joystick/group 47 (joystick_mouse) => KbmMouseY <- Gamepad RightStickY
   Clean RowEmitted @ TacticalControls/right_trackpad/group 9 (absolute_mouse) => KbmMouseX <- Touchpad 1 Finger 0 X
   Clean RowEmitted @ TacticalControls/right_trackpad/group 9 (absolute_mouse) => KbmMouseY <- Touchpad 1 Finger 0 Y
-  Skipped TouchMenuNeedsOverlay(10) @ TacticalControls/right_trackpad/group 20 (touch_menu)
+  Clean MenuEmitted(10) @ TacticalControls/right_trackpad/group 20 (touch_menu) => Grid menu 1 on Touchpad 1: 10 bound cells
+  Clean RowEmitted @ TacticalControls/right_trackpad/group 20 (touch_menu)/touch_menu_button_0/Full_Press => KbmKey31 <- Menu 1 Item 0
+  Clean RowEmitted @ TacticalControls/right_trackpad/group 20 (touch_menu)/touch_menu_button_1/Full_Press => KbmKey32 <- Menu 1 Item 1
+  Clean RowEmitted @ TacticalControls/right_trackpad/group 20 (touch_menu)/touch_menu_button_2/Full_Press => KbmKey33 <- Menu 1 Item 2
+  Clean RowEmitted @ TacticalControls/right_trackpad/group 20 (touch_menu)/touch_menu_button_3/Full_Press => KbmKey34 <- Menu 1 Item 3
+  Clean RowEmitted @ TacticalControls/right_trackpad/group 20 (touch_menu)/touch_menu_button_4/Full_Press => KbmKey35 <- Menu 1 Item 4
+  Clean RowEmitted @ TacticalControls/right_trackpad/group 20 (touch_menu)/touch_menu_button_5/Full_Press => KbmKey36 <- Menu 1 Item 5
+  Clean RowEmitted @ TacticalControls/right_trackpad/group 20 (touch_menu)/touch_menu_button_6/Full_Press => KbmKey37 <- Menu 1 Item 6
+  Clean RowEmitted @ TacticalControls/right_trackpad/group 20 (touch_menu)/touch_menu_button_7/Full_Press => KbmKey38 <- Menu 1 Item 7
+  Clean RowEmitted @ TacticalControls/right_trackpad/group 20 (touch_menu)/touch_menu_button_8/Full_Press => KbmKey39 <- Menu 1 Item 8
+  Clean RowEmitted @ TacticalControls/right_trackpad/group 20 (touch_menu)/touch_menu_button_9/Full_Press => KbmKey30 <- Menu 1 Item 9
   Clean RowEmitted @ TacticalControls/right_trigger/group 2 (trigger)/edge/Full_Press => KbmMBtn0 <- Gamepad RightTrigger (upper half)
   Partial InterruptibleDropped @ TacticalControls/switch/group 39 (switches)/button_back_left/Full_Press
   Skipped GameActionsNotSupported(16) @ TacticalControls
@@ -108,7 +151,7 @@ report: v6 rows:x0+k19 macros:0 layers:4 clean:40 partial:7 skipped:4 errors:0
   Partial InterruptibleDropped @ GeoscapeControls/switch/group 41 (switches)/left_click/Full_Press
   Skipped GameActionsNotSupported(7) @ GeoscapeControls
   Clean ShiftLayerEmitted(right_joystick shift) @ TacticalControls/switch/group 39 (switches)/button_back_left/Full_Press => Hold -> Layer_1129670518_0_MS_right_joystick_47
-  Partial ShiftLayerEmpty(right_trackpad shift) @ TacticalControls/switch/group 39 (switches)/button_back_left/Full_Press
+  Clean ShiftLayerEmitted(right_trackpad shift) @ TacticalControls/switch/group 39 (switches)/button_back_left/Full_Press => Hold -> Layer_1129670518_0_MS_right_trackpad_20
   Partial ShiftLayerEmpty(left_trackpad shift) @ MenuControls/switch/group 40 (switches)/right_click/Full_Press
   Clean ShiftLayerEmitted(left_trackpad shift) @ GeoscapeControls/switch/group 41 (switches)/right_click/Full_Press => Hold -> Layer_1129670518_2_MS_left_trackpad_16
   Clean ShiftLayerEmitted(right_joystick shift) @ GeoscapeControls/switch/group 41 (switches)/left_click/Full_Press => Hold -> Layer_1129670518_2_MS_right_joystick_50

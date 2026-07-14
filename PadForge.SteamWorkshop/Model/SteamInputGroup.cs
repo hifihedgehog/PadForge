@@ -15,6 +15,11 @@ namespace PadForge.SteamWorkshop.Model
 
         public string Mode { get; }
 
+        /// <summary>The author's display name for the group ("name" in the
+        /// VDF; radial / touch menus often carry one, e.g. "Systems" in
+        /// corpus 3451446931). Empty when absent.</summary>
+        public string Name { get; }
+
         public IReadOnlyDictionary<string, SteamInputInput> Inputs { get; }
 
         public IReadOnlyDictionary<string, string> Settings { get; }
@@ -25,11 +30,13 @@ namespace PadForge.SteamWorkshop.Model
         /// </summary>
         public int? ReferencedGroupId { get; }
 
-        private SteamInputGroup(int id, string mode, IReadOnlyDictionary<string, SteamInputInput> inputs,
+        private SteamInputGroup(int id, string mode, string name,
+            IReadOnlyDictionary<string, SteamInputInput> inputs,
             IReadOnlyDictionary<string, string> settings, int? referencedGroupId)
         {
             Id = id;
             Mode = mode;
+            Name = name;
             Inputs = inputs;
             Settings = settings;
             ReferencedGroupId = referencedGroupId;
@@ -39,6 +46,7 @@ namespace PadForge.SteamWorkshop.Model
         {
             var id = (int)(node["id"].AsInt ?? -1);
             var mode = node["mode"].AsString;
+            var name = node["name"].AsString ?? "";
 
             var inputs = new Dictionary<string, SteamInputInput>(System.StringComparer.OrdinalIgnoreCase);
             foreach (var kv in node["inputs"].Children)
@@ -56,7 +64,7 @@ namespace PadForge.SteamWorkshop.Model
                 referenced = rmv;
             }
 
-            return new SteamInputGroup(id, mode, inputs, settings, referenced);
+            return new SteamInputGroup(id, mode, name, inputs, settings, referenced);
         }
     }
 }

@@ -9836,6 +9836,55 @@
                             </StackPanel>
                         </Border>
 
+                        <!-- ─── Swipe Haptics card (discussion #219) ───
+                             Steam-Input-style pulse ticks as the finger
+                             travels the pad. Visible only when the selected
+                             device's touchpad has a haptic lane PadForge
+                             drives (Steam Controller family / Sony pads);
+                             a Precision Touchpad or overlay would show a
+                             dead toggle otherwise. Rows follow the Mouse
+                             Output card anatomy; the intensity row uses the
+                             Sticks DZ grammar (slider + percent edit) over
+                             the 0..1 setting via FractionToPercentConverter. -->
+                        <Border Style="{StaticResource CardBorder}"
+                                Visibility="{Binding SelectedDeviceHasTouchpadPulse, Converter={StaticResource BoolToVisibilityConverter}}">
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                    <TextBlock Text="&#xE877;" FontFamily="Segoe MDL2 Assets" FontSize="16" Foreground="{DynamicResource EmberBrush}"
+                                               VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                    <TextBlock Text="{Binding Pad_Touchpad_SwipeHaptics_Header, Source={x:Static strings:Strings.Instance}}"
+                                               Style="{StaticResource CardTitle}"/>
+                                    <ui:Button Command="{Binding ResetTouchpadSwipeHapticsCardCommand}" Style="{StaticResource ResetAllButton}"
+                                            Content="{Binding Pad_ResetAll, Source={x:Static strings:Strings.Instance}}" Margin="12,0,0,0"
+                                            ToolTip="{Binding Pad_ResetTouchpadSwipeHaptics, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
+                                <TextBlock Text="{Binding Pad_Touchpad_SwipeHaptics_Subtitle, Source={x:Static strings:Strings.Instance}}"
+                                           Style="{StaticResource CardDescription}"/>
+
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                                    <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}" Content="{Binding Pad_Touchpad_SwipeHapticsEnabled, Source={x:Static strings:Strings.Instance}}"
+                                              ToolTip="{Binding Pad_Touchpad_SwipeHapticsEnabled_Tooltip, Source={x:Static strings:Strings.Instance}}"
+                                              IsChecked="{Binding TouchpadSwipeHapticsEnabled, Mode=TwoWay}" VerticalAlignment="Center"/>
+                                    <ui:Button Command="{Binding ResetTouchpadSwipeHapticsEnabledCommand}" Style="{StaticResource ResetButton}"
+                                            ToolTip="{Binding Pad_ResetTouchpadSwipeHapticsEnabled, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
+                                <StackPanel IsEnabled="{Binding TouchpadSwipeHapticsEnabled}">
+                                    <StackPanel Orientation="Horizontal" Margin="20,0,0,6">
+                                        <TextBlock Text="{Binding Pad_Touchpad_SwipeHapticsIntensity, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                        <Slider Value="{Binding TouchpadSwipeHapticsIntensity, Mode=TwoWay, Converter={StaticResource FractionToPercentConverter}}"
+                                                Style="{StaticResource DzSlider}" Minimum="5" Maximum="100"
+                                                ToolTip="{Binding Pad_Touchpad_SwipeHapticsIntensity_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                        <TextBox Text="{Binding TouchpadSwipeHapticsIntensity, Mode=TwoWay, UpdateSourceTrigger=LostFocus, Converter={StaticResource FractionToPercentConverter}, StringFormat={}{0:0.#}}"
+                                                 Style="{StaticResource DzValueEdit}"
+                                                 ToolTip="{Binding Pad_Touchpad_SwipeHapticsIntensity_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                        <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
+                                        <ui:Button Command="{Binding ResetTouchpadSwipeHapticsIntensityCommand}" Style="{StaticResource ResetButton}"
+                                                ToolTip="{Binding Pad_ResetTouchpadSwipeHapticsIntensity, Source={x:Static strings:Strings.Instance}}"/>
+                                    </StackPanel>
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+
                         <!-- ─── Gesture Detection card ─── -->
                         <Border Style="{StaticResource CardBorder}">
                             <StackPanel>

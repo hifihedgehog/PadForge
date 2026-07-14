@@ -216,6 +216,12 @@ namespace PadForge.Common.Input
                 // actuators when nothing else is driving the slot.
                 if (!hasGameRumble && SteeringTrigVibOverrides[padIndex].IsActive)
                     hasGameRumble = true;
+                // A touchpad swipe-haptic burst (#219) rides the dispatcher's
+                // rumble bytes on Sony pads; while one is live the timer must
+                // run even on an otherwise idle slot, or the tick silently
+                // never reaches the motors.
+                if (!hasGameRumble && TouchpadPulseService.IsSlotActive(padIndex))
+                    hasGameRumble = true;
 
                 bool hasAudioRumbleEnabled = false;
                 if (settingsForPoke != null)

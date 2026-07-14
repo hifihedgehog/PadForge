@@ -1655,6 +1655,15 @@ public class Strings : INotifyPropertyChanged
     public string Pad_ResetTouchpadMouseSensitivityY => Get("Pad_ResetTouchpadMouseSensitivityY");
     public string Pad_ResetTouchpadMouseInvertX => Get("Pad_ResetTouchpadMouseInvertX");
     public string Pad_ResetTouchpadMouseInvertY => Get("Pad_ResetTouchpadMouseInvertY");
+    public string Pad_Touchpad_SwipeHaptics_Header => Get("Pad_Touchpad_SwipeHaptics_Header");
+    public string Pad_Touchpad_SwipeHaptics_Subtitle => Get("Pad_Touchpad_SwipeHaptics_Subtitle");
+    public string Pad_Touchpad_SwipeHapticsEnabled => Get("Pad_Touchpad_SwipeHapticsEnabled");
+    public string Pad_Touchpad_SwipeHapticsEnabled_Tooltip => Get("Pad_Touchpad_SwipeHapticsEnabled_Tooltip");
+    public string Pad_Touchpad_SwipeHapticsIntensity => Get("Pad_Touchpad_SwipeHapticsIntensity");
+    public string Pad_Touchpad_SwipeHapticsIntensity_Tooltip => Get("Pad_Touchpad_SwipeHapticsIntensity_Tooltip");
+    public string Pad_ResetTouchpadSwipeHaptics => Get("Pad_ResetTouchpadSwipeHaptics");
+    public string Pad_ResetTouchpadSwipeHapticsEnabled => Get("Pad_ResetTouchpadSwipeHapticsEnabled");
+    public string Pad_ResetTouchpadSwipeHapticsIntensity => Get("Pad_ResetTouchpadSwipeHapticsIntensity");
     public string Recorder_Title => Get("Recorder_Title");
     public string Recorder_Subtitle => Get("Recorder_Subtitle");
     public string Recorder_Waiting => Get("Recorder_Waiting");

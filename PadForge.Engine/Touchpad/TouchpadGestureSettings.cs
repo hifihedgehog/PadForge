@@ -219,6 +219,24 @@ namespace PadForge.Engine.Touchpad
         /// cursor up when on.</summary>
         [XmlAttribute] public bool MouseInvertY { get; set; }
 
+        // ─── Swipe haptics (discussion #219) ───────────────────────────
+        //
+        // Steam-Input-style trackpad feel: a short haptic tick fires each
+        // time the finger travels a fixed distance across the pad
+        // (SwipeHapticsEvaluator accumulates travel per finger and emits
+        // detents). Delivery is per device family. The Steam Controller
+        // family pulses the pad-side actuator, Sony pads pulse the rumble
+        // motors through the effects dispatcher.
+
+        /// <summary>Master enable for swipe-haptic ticks on this pad.
+        /// Off by default. The feature is opt-in per (device, pad).</summary>
+        [XmlAttribute] public bool EnableSwipeHaptics { get; set; }
+
+        /// <summary>Tick strength 0..1. 0.5 mirrors the Medium step of
+        /// DS4MapperTest's HapticsIntensity ladder (Light 0.3 / Medium
+        /// 0.5 / Heavy 0.8 / Full 1.0, MapAction.cs GetHapticsIntensityRatio).</summary>
+        [XmlAttribute] public float SwipeHapticsIntensity { get; set; } = 0.5f;
+
         public TouchpadGestureSettings Clone()
         {
             return new TouchpadGestureSettings
@@ -261,6 +279,8 @@ namespace PadForge.Engine.Touchpad
                 MouseSensitivityY = MouseSensitivityY,
                 MouseInvertX = MouseInvertX,
                 MouseInvertY = MouseInvertY,
+                EnableSwipeHaptics = EnableSwipeHaptics,
+                SwipeHapticsIntensity = SwipeHapticsIntensity,
             };
         }
 

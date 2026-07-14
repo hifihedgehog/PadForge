@@ -698,6 +698,7 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(SelectedDeviceHasSpeaker));
                     OnPropertyChanged(nameof(SelectedDeviceHasNoSpeaker));
                     OnPropertyChanged(nameof(SelectedDeviceHasHapticTones));
+                    OnPropertyChanged(nameof(SelectedDeviceHasTouchpadPulse));
                     // Pointer-tab tunables (IrSensorBarPos etc.) are per
                     // (device, slot) on PadSetting; the device-switch reload
                     // repopulates them through the same PadSetting load path
@@ -4075,6 +4076,23 @@ namespace PadForge.ViewModels
                 if (sel == null || sel.InstanceGuid == Guid.Empty) return false;
                 var ud = PadForge.Common.Input.SettingsManager.FindDeviceByInstanceGuid(sel.InstanceGuid);
                 return ud != null && PadForge.Common.Input.HapticToneService.DeviceHasHaptics(ud);
+            }
+        }
+
+        /// <summary>True when the SELECTED assigned device has a touchpad
+        /// AND a haptic lane the swipe-tick feature can drive (Steam
+        /// Controller family actuators, or a dispatcher-driven Sony pad).
+        /// Gates the Touchpad tab's Swipe Haptics card (#219) so devices
+        /// whose touchpads have no haptics (Precision Touchpads, the
+        /// overlay, web controllers) don't show a dead toggle.</summary>
+        public bool SelectedDeviceHasTouchpadPulse
+        {
+            get
+            {
+                var sel = SelectedMappedDevice;
+                if (sel == null || sel.InstanceGuid == Guid.Empty) return false;
+                var ud = PadForge.Common.Input.SettingsManager.FindDeviceByInstanceGuid(sel.InstanceGuid);
+                return PadForge.Common.Input.TouchpadPulseService.DeviceHasSwipePulse(ud);
             }
         }
 

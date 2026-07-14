@@ -418,6 +418,34 @@ namespace PadForge.ViewModels
             set { if (SetProperty(ref _touchpadMouseInvertY, value)) PushIfNotLoading(); }
         }
 
+        // ─── Swipe haptics card (discussion #219) ─────
+
+        private bool _touchpadSwipeHapticsEnabled;
+
+        /// <summary>Mirrors <see cref="TouchpadGestureSettings.EnableSwipeHaptics"/>:
+        /// short haptic ticks as the finger travels across this pad.
+        /// Default off.</summary>
+        public bool TouchpadSwipeHapticsEnabled
+        {
+            get => _touchpadSwipeHapticsEnabled;
+            set { if (SetProperty(ref _touchpadSwipeHapticsEnabled, value)) PushIfNotLoading(); }
+        }
+
+        private double _touchpadSwipeHapticsIntensity = 0.5;
+
+        /// <summary>Mirrors <see cref="TouchpadGestureSettings.SwipeHapticsIntensity"/>
+        /// (0..1). Default 0.5, the Medium step of DS4MapperTest's
+        /// intensity ladder.</summary>
+        public double TouchpadSwipeHapticsIntensity
+        {
+            get => _touchpadSwipeHapticsIntensity;
+            set
+            {
+                var v = Math.Clamp(value, 0.0, 1.0);
+                if (SetProperty(ref _touchpadSwipeHapticsIntensity, v)) PushIfNotLoading();
+            }
+        }
+
         // ─── Custom gestures card ─────────────────────
 
         /// <summary>Profile-scoped custom touchpad gestures filtered by
@@ -670,6 +698,26 @@ namespace PadForge.ViewModels
                 TouchpadMouseInvertY = false;
             });
 
+        // ─── Swipe-haptics card reset commands ────────
+
+        private RelayCommand _resetTouchpadSwipeHapticsEnabledCommand;
+        public RelayCommand ResetTouchpadSwipeHapticsEnabledCommand =>
+            _resetTouchpadSwipeHapticsEnabledCommand ??= new RelayCommand(() => TouchpadSwipeHapticsEnabled = false);
+
+        private RelayCommand _resetTouchpadSwipeHapticsIntensityCommand;
+        public RelayCommand ResetTouchpadSwipeHapticsIntensityCommand =>
+            _resetTouchpadSwipeHapticsIntensityCommand ??= new RelayCommand(() => TouchpadSwipeHapticsIntensity = 0.5);
+
+        private RelayCommand _resetTouchpadSwipeHapticsCardCommand;
+
+        /// <summary>Reset every Swipe-haptics card field to defaults.</summary>
+        public RelayCommand ResetTouchpadSwipeHapticsCardCommand =>
+            _resetTouchpadSwipeHapticsCardCommand ??= new RelayCommand(() =>
+            {
+                TouchpadSwipeHapticsEnabled = false;
+                TouchpadSwipeHapticsIntensity = 0.5;
+            });
+
         // ─── Per-pad pivot / topology helpers ─────────
 
         /// <summary>Update <see cref="MaxTouchpadIndex"/> from the
@@ -729,6 +777,8 @@ namespace PadForge.ViewModels
                 TouchpadMouseSensitivityY = s.MouseSensitivityY;
                 TouchpadMouseInvertX = s.MouseInvertX;
                 TouchpadMouseInvertY = s.MouseInvertY;
+                TouchpadSwipeHapticsEnabled = s.EnableSwipeHaptics;
+                TouchpadSwipeHapticsIntensity = s.SwipeHapticsIntensity;
             }
             finally { _loadingTouchpadGestures = false; }
         }
@@ -815,6 +865,8 @@ namespace PadForge.ViewModels
             s.MouseSensitivityY = (float)TouchpadMouseSensitivityY;
             s.MouseInvertX = TouchpadMouseInvertX;
             s.MouseInvertY = TouchpadMouseInvertY;
+            s.EnableSwipeHaptics = TouchpadSwipeHapticsEnabled;
+            s.SwipeHapticsIntensity = (float)TouchpadSwipeHapticsIntensity;
             entry.Settings = s;
 
             ps.TouchpadSettings = list.ToArray();

@@ -233,6 +233,31 @@ namespace PadForge.Common.Input
             return found;
         }
 
+        /// <summary>Queues one touchpad swipe-haptic tick (#219) for the
+        /// device's pad-side actuator. Pad 0 = left actuator, pad 1 =
+        /// right (the bundled SDL fork's Steam drivers all send the left
+        /// pad as touchpad index 0). Called from the polling thread; the
+        /// sink's stream thread drains and sends the family-specific
+        /// one-shot, so pulse writes never interleave with tone writes on
+        /// the same handle. Matches by device GUID alone: sinks dedup to
+        /// one per device (Reconcile's seen-set), while the tick's
+        /// per-(slot, device) enable was already applied by the caller.</summary>
+        public static void QueueTouchpadPulse(Guid deviceGuid, int padIdx, float amplitude)
+        {
+            if (deviceGuid == Guid.Empty || amplitude <= 0f) return;
+            if (amplitude > 1f) amplitude = 1f;
+            int bit = 1 << (padIdx == 0 ? 0 : 1);
+            lock (_lock)
+            {
+                foreach (var s in _sinks)
+                {
+                    if (s.DeviceGuid != deviceGuid) continue;
+                    if (amplitude > s.PulseAmp) s.PulseAmp = amplitude;
+                    Interlocked.Or(ref s.PulsePendingSides, bit);
+                }
+            }
+        }
+
         // On-demand RemoteDriven sink creation state: one pending build at a
         // time per device, and a backoff window after a failed open so a
         // 100 Hz tone stream cannot spin CreateFile retries (audit F4).
@@ -455,6 +480,16 @@ namespace PadForge.Common.Input
             public string MirrorSourceId = "";
             public WasapiLoopbackCapture MirrorCapture;
             public ISampleProvider MirrorInput;
+
+            // ── #219 touchpad swipe-haptic ticks ──
+            // One-shot per-side pulses queued from the polling thread and
+            // drained by the stream thread, the TestHz idiom. Sides is an
+            // Interlocked bitmask (bit0 = pad 0 / left actuator, bit1 =
+            // pad 1 / right); Amp follows the file's torn-read tolerance.
+            public int PulsePendingSides;
+            public float PulseAmp;
+            public long PulseLastSendMs;
+            public bool PulseRemoteZeroPending;
         }
 
         private static readonly object _lock = new();
@@ -1383,6 +1418,13 @@ namespace PadForge.Common.Input
                         }
                     }
 
+                    // #219 touchpad swipe-haptic ticks, drained after the tone
+                    // dispatch so a pulse and a tone re-arm never land in the
+                    // same tick out of order.
+                    int pulseSides = Interlocked.Exchange(ref s.PulsePendingSides, 0);
+                    if (pulseSides != 0 || s.PulseRemoteZeroPending)
+                        SendTouchpadPulses(s, pulseSides, nowMs);
+
                     if (streaming)
                     {
                         if (!fast)
@@ -1571,6 +1613,101 @@ namespace PadForge.Common.Input
             buf[0] = 0x00;
             Array.Copy(blob, 0, buf, 1, Math.Min(blob.Length, n - 1));
             try { HidD_SetFeature(s.Handle, buf, buf.Length); } catch { }
+        }
+
+        // ── #219 touchpad swipe-haptic tick delivery ──
+        // One-shot per-side pulses, family-specific:
+        //   Steam 2015 / Deck: 0x8F FireHapticPulse, on-time 200-1200 µs by
+        //     intensity, off 600 µs, count 1 (DS4MapperTest's TouchpadCircular
+        //     feedback packet, SteamControllerDevice.cs:404-489).
+        //   Triton: 0x82 HAPTIC_COMMAND tick at -50 dB base gain
+        //     (SteamlessController SteamController.cpp:274-331, Valve's
+        //     MsgHapticCommand). One command can address both sides (0x03).
+        //   Remote (peer:// consumer sink): no native tick crosses the link;
+        //     ship a one-frame tone blip through the #147 haptic-tone relay
+        //     and close it with a zero frame on the next tick.
+        // Runs on the sink's stream thread only, so pulse writes serialize
+        // with tone writes on the same handle.
+
+        /// <summary>Remote-blip pitch. 880 Hz, the TriggerTestTone default,
+        /// rendered for ~one stream tick so it lands as a short tick.</summary>
+        private const float PulseRemoteToneHz = 880f;
+
+        private static void SendTouchpadPulses(Sink s, int sides, long nowMs)
+        {
+            if (s.Remote)
+            {
+                if (sides != 0)
+                {
+                    float rAmp = Math.Clamp(s.PulseAmp, 0f, 1f);
+                    s.PulseAmp = 0f;
+                    RemoteLinkOutputRouter.ShipHapticTone(s.HidPath, PulseRemoteToneHz, rAmp);
+                    s.PulseRemoteZeroPending = true;
+                }
+                else if (s.PulseRemoteZeroPending)
+                {
+                    RemoteLinkOutputRouter.ShipHapticTone(s.HidPath, 0f, 0f);
+                    s.PulseRemoteZeroPending = false;
+                }
+                return;
+            }
+            if (sides == 0) return;
+            if (s.Handle == IntPtr.Zero && s.GamepadHandle == IntPtr.Zero) return;
+
+            // Same 40 ms re-arm cap as the tone paths (SDL's
+            // TRITON_RUMBLE_RESEND_INTERVAL_MS): a fast swipe coalesces
+            // instead of flooding the haptic engine (the 0x83 flood wedge,
+            // observed on hardware 2026-07-01, argues for capping every
+            // burst lane on this handle).
+            if (nowMs - s.PulseLastSendMs < 40) return;
+            s.PulseLastSendMs = nowMs;
+            float pAmp = Math.Clamp(s.PulseAmp, 0f, 1f);
+            s.PulseAmp = 0f;
+            if (pAmp <= 0f) return;
+
+            switch (s.Family)
+            {
+                case Family.Steam:
+                case Family.SteamDeck:
+                {
+                    int onUs = HapticToneEncoder.SteamPulseOnTimeUs(pAmp);
+                    if ((sides & 0x1) != 0)
+                    {
+                        var blob = HapticToneEncoder.EncodeSteamClassicPulse(
+                            HapticToneEncoder.SteamPulsePadLeft, onUs,
+                            HapticToneEncoder.SteamPulseOffTimeUs, 1);
+                        if (s.Family == Family.Steam) SteamSendBlob(s, blob);
+                        else SteamFeatureWrite(s, blob);
+                    }
+                    if ((sides & 0x2) != 0)
+                    {
+                        var blob = HapticToneEncoder.EncodeSteamClassicPulse(
+                            HapticToneEncoder.SteamPulsePadRight, onUs,
+                            HapticToneEncoder.SteamPulseOffTimeUs, 1);
+                        if (s.Family == Family.Steam) SteamSendBlob(s, blob);
+                        else SteamFeatureWrite(s, blob);
+                    }
+                    // The 0x8F pulse replaces whatever the channel was
+                    // playing, so a streaming square must re-arm. Clearing
+                    // SteamOn makes the next tone tick a fresh cue (the
+                    // TriggerTestTone idiom); an idle sink is unaffected.
+                    s.SteamOn = false;
+                    break;
+                }
+                case Family.Steam2026:
+                {
+                    // Side bits map 1:1 onto the 0x82 side bitmask
+                    // (0x01 = L, 0x02 = R, 0x03 = both). The named tick is
+                    // a one-shot that coexists with the 0x83 tone stream;
+                    // SteamlessController fires it alongside its rumble
+                    // heartbeat without re-arming, so no SteamOn reset.
+                    TritonSend(s, HapticToneEncoder.EncodeTritonTickCommand(
+                        sides & 0x3, HapticToneEncoder.TritonTickGainDb(pAmp)));
+                    break;
+                }
+                // Joy-Con families have no touchpad; nothing queues for them.
+                default: break;
+            }
         }
 
         private static byte[] ResizeOut(byte[] report, int outLen)

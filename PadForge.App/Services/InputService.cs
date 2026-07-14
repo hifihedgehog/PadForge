@@ -666,6 +666,18 @@ namespace PadForge.Services
                 _inputManager.GetTriggerRouteMainRedirect(padIndex, out bool zMainL, out bool zMainR);
                 if (zMainL) scaledL = 0;
                 if (zMainR) scaledR = 0;
+
+                // #219 touchpad swipe-haptic burst: max() over the scaled
+                // bytes (the audio-bass idiom), applied after the trigger
+                // redirect and after per-device gains. The burst carries
+                // its own intensity setting, so the rumble-strength knobs
+                // do not double-scale it, and it expires on its own 80 ms
+                // window (TouchpadPulseService.PulseDurationMs). One
+                // consumer per dispatcher tick, so the sole-writer rule
+                // holds unchanged.
+                TouchpadPulseService.MixIntoMotors(ref scaledL, ref scaledR,
+                    TouchpadPulseService.CurrentLevel(padIndex, deviceGuid));
+
                 return ((byte)(scaledR >> 8), (byte)(scaledL >> 8));
             };
 

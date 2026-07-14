@@ -151,6 +151,17 @@ namespace PadForge.Common.Input
         public readonly System.Collections.Concurrent.ConcurrentDictionary<(int Slot, System.Guid DeviceId, int PadIdx), Engine.Touchpad.TouchpadGestureContext> GestureContexts
             = new System.Collections.Concurrent.ConcurrentDictionary<(int, System.Guid, int), Engine.Touchpad.TouchpadGestureContext>();
 
+        /// <summary>Per-(slot, device, touchpad-pad-index) swipe-haptic
+        /// travel accumulators (discussion #219), sibling of
+        /// <see cref="GestureContexts"/> with the same key and lifecycle:
+        /// lazily created on the polling thread inside
+        /// <see cref="UpdateGestureContexts"/>, dropped wholesale by
+        /// <see cref="ResetGestureContexts"/>, and dropped per key the
+        /// moment the pad's settings disable the feature so a re-enable
+        /// starts from a fresh seed. Polling thread only.</summary>
+        private readonly System.Collections.Concurrent.ConcurrentDictionary<(int Slot, System.Guid DeviceId, int PadIdx), Engine.Touchpad.SwipeHapticsState> SwipePulseStates
+            = new System.Collections.Concurrent.ConcurrentDictionary<(int, System.Guid, int), Engine.Touchpad.SwipeHapticsState>();
+
         /// <summary>Active shape templates ready for the gesture
         /// engine's point-cloud matcher (<see cref="Engine.Touchpad.ShapeRecognizer"/>).
         /// Built at startup from the in-box catalog; profile load can
@@ -1961,6 +1972,11 @@ namespace PadForge.Common.Input
                     {
                         if (GestureContexts.TryGetValue((slot, ud.InstanceGuid, p), out var ctxR))
                             ctxR.Reset();
+                        // Drop the swipe-haptic accumulator too: it would
+                        // otherwise freeze across the recording and count
+                        // the position gap as travel on resume, firing a
+                        // spurious tick burst the moment recording stops.
+                        SwipePulseStates.TryRemove((slot, ud.InstanceGuid, p), out _);
                     }
                     var tickHandler = RecordingTick;
                     if (tickHandler != null)
@@ -1986,8 +2002,54 @@ namespace PadForge.Common.Input
                     Engine.Touchpad.GestureRecognizer.Update(
                         padIdx: p, ctx: ctx, pad: pad, settings: settings,
                         nowMs: nowMs, shapeTemplates: _shapeTemplates);
+
+                    // Swipe-haptic ticks (#219): independent of the
+                    // gesture master switch. The pulse toggle stands
+                    // alone, like the joystick-output channel.
+                    UpdateSwipeHaptics(slot, ud, p, pad, settings);
                 }
             }
+        }
+
+        /// <summary>Ticks the swipe-haptic travel accumulator for one
+        /// (slot, device, pad) and routes any earned detent to the
+        /// device's haptic lane (discussion #219). Steam Controller
+        /// family devices get a per-side actuator tick through
+        /// <see cref="HapticToneService.QueueTouchpadPulse"/> (pad 0 =
+        /// left actuator, pad 1 = right; the bundled SDL fork's Steam
+        /// drivers all send the left pad as touchpad index 0). Sony pads
+        /// raise a <see cref="TouchpadPulseService"/> burst that the
+        /// effects dispatcher mixes with game rumble, preserving the
+        /// sole-writer architecture. Ticks earned in one frame coalesce
+        /// into one pulse (the sink-side 40 ms cap would merge them
+        /// anyway). Amplitude is the fixed per-pad intensity setting;
+        /// both references fire fixed-strength ticks (SteamlessController
+        /// TRACKPAD_MOVE_GAIN_DB, DS4MapperTest hapticsIntensityRatio),
+        /// so no speed scaling.</summary>
+        private void UpdateSwipeHaptics(int slot, Engine.Data.UserDevice ud, int padIdx,
+            Engine.TouchpadInputState pad, Engine.Touchpad.TouchpadGestureSettings settings)
+        {
+            var key = (slot, ud.InstanceGuid, padIdx);
+            float amp = settings.SwipeHapticsIntensity;
+            if (!settings.EnableSwipeHaptics || amp <= 0f)
+            {
+                // Drop stale state so a later re-enable seeds fresh
+                // instead of ticking on the accumulated gap.
+                SwipePulseStates.TryRemove(key, out _);
+                return;
+            }
+            if (!SwipePulseStates.TryGetValue(key, out var st))
+            {
+                st = new Engine.Touchpad.SwipeHapticsState();
+                SwipePulseStates[key] = st;
+            }
+            if (Engine.Touchpad.SwipeHapticsEvaluator.Update(st, pad) <= 0) return;
+
+            if (amp > 1f) amp = 1f;
+            if (HapticToneService.DeviceHasHaptics(ud))
+                HapticToneService.QueueTouchpadPulse(ud.InstanceGuid, padIdx, amp);
+            else if (TouchpadPulseService.IsSonyRumblePad(ud))
+                TouchpadPulseService.Pulse(slot, ud.InstanceGuid, amp);
         }
 
         /// <summary>Drops every gesture context. Called on profile
@@ -1997,6 +2059,8 @@ namespace PadForge.Common.Input
         {
             GestureContexts.Clear();
             MouseGestureContexts.Clear();
+            SwipePulseStates.Clear();
+            TouchpadPulseService.Clear();
         }
 
         /// <summary>Mouse-gesture recognizer walk (issue #200), sibling of

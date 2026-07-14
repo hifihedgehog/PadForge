@@ -999,7 +999,9 @@ namespace PadForge
                         nameof(PadViewModel.TouchpadMouseSensitivityX) or
                         nameof(PadViewModel.TouchpadMouseSensitivityY) or
                         nameof(PadViewModel.TouchpadMouseInvertX) or
-                        nameof(PadViewModel.TouchpadMouseInvertY);
+                        nameof(PadViewModel.TouchpadMouseInvertY) or
+                        nameof(PadViewModel.TouchpadSwipeHapticsEnabled) or
+                        nameof(PadViewModel.TouchpadSwipeHapticsIntensity);
 
                     if (isTouchpadField)
                     {

@@ -1297,11 +1297,20 @@
   <data name="Pad_Touchpad_MouseInvertY" xml:space="preserve"><value>Invert Mouse Y</value></data>
   <data name="Pad_Touchpad_MouseInvertY_Tooltip" xml:space="preserve"><value>Flip vertical motion. Finger down moves the cursor up.</value></data>
 
+  <!-- Swipe Haptics card (discussion #219) -->
+  <data name="Pad_Touchpad_SwipeHaptics_Header" xml:space="preserve"><value>Swipe Haptics</value></data>
+  <data name="Pad_Touchpad_SwipeHaptics_Subtitle" xml:space="preserve"><value>Pulses the controller's haptics as your finger travels across this touchpad, like Steam Input's trackpad ticks. Steam Controllers and the Steam Deck tick the actuator under the pad; DualSense and DualShock 4 pulse the rumble motors.</value></data>
+  <data name="Pad_Touchpad_SwipeHapticsEnabled" xml:space="preserve"><value>Enable Swipe Haptics</value></data>
+  <data name="Pad_Touchpad_SwipeHapticsEnabled_Tooltip" xml:space="preserve"><value>Fires a short haptic tick each time the finger moves a set distance on this pad. Landing a finger or clicking the pad never ticks. Off by default.</value></data>
+  <data name="Pad_Touchpad_SwipeHapticsIntensity" xml:space="preserve"><value>Pulse Intensity</value></data>
+  <data name="Pad_Touchpad_SwipeHapticsIntensity_Tooltip" xml:space="preserve"><value>Strength of each tick. Game rumble always wins when it is stronger.</value></data>
+
   <!-- Reset-All tooltips per card -->
   <data name="Pad_ResetTouchpadDetection" xml:space="preserve"><value>Reset Gesture Detection</value></data>
   <data name="Pad_ResetTouchpadInBox" xml:space="preserve"><value>Reset In-Box Gestures</value></data>
   <data name="Pad_ResetTouchpadStick" xml:space="preserve"><value>Reset Stick / D-Pad Output</value></data>
   <data name="Pad_ResetTouchpadMouse" xml:space="preserve"><value>Reset Mouse Output</value></data>
+  <data name="Pad_ResetTouchpadSwipeHaptics" xml:space="preserve"><value>Reset Swipe Haptics</value></data>
 
   <!-- Per-row Reset tooltips for stick / D-pad card -->
   <data name="Pad_ResetTouchpadStickEnabled" xml:space="preserve"><value>Reset Enable Stick / D-Pad Output</value></data>
@@ -1315,6 +1324,10 @@
   <data name="Pad_ResetTouchpadMouseSensitivityY" xml:space="preserve"><value>Reset Mouse Sensitivity Y</value></data>
   <data name="Pad_ResetTouchpadMouseInvertX" xml:space="preserve"><value>Reset Invert Mouse X</value></data>
   <data name="Pad_ResetTouchpadMouseInvertY" xml:space="preserve"><value>Reset Invert Mouse Y</value></data>
+
+  <!-- Per-row Reset tooltips for swipe-haptics card -->
+  <data name="Pad_ResetTouchpadSwipeHapticsEnabled" xml:space="preserve"><value>Reset Enable Swipe Haptics</value></data>
+  <data name="Pad_ResetTouchpadSwipeHapticsIntensity" xml:space="preserve"><value>Reset Pulse Intensity</value></data>
 
   <!-- Per-row Reset tooltips -->
   <data name="Pad_ResetTouchpadGesturesEnabled" xml:space="preserve"><value>Reset Gestures Enabled</value></data>

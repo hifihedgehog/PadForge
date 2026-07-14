@@ -76,6 +76,61 @@ namespace PadForge.SteamWorkshop.Translation
         /// brightness are normalized to percent here so the materializer
         /// never sees the vintage scale.</summary>
         SetLightbarColor = 3,
+
+        /// <summary>Turbo / autofire for a virtual controller button
+        /// (<c>xinput_button</c> with <c>hold_repeats</c>, wave 2A).
+        /// <see cref="TranslatedMacro.TargetXboxButtons"/> names the pulsed
+        /// button, <see cref="TranslatedMacro.IntervalMs"/> the pulse period
+        /// (Steam's <c>repeat_rate</c> is a millisecond interval: the shipped
+        /// configurator labels it "Repeat Interval" with a #Unit_Milliseconds
+        /// suffix in chunk~2dcc5aaf7.js). The materializer lowers this to a
+        /// MacroActionType.RepeatVcButtonWhileHeld action with
+        /// RepeatMode=UntilRelease so pulsing stops at release.</summary>
+        RepeatVcButtonWhileHeld = 4,
+
+        /// <summary>Latch / unlatch a virtual controller button (the
+        /// activator-level <c>toggle</c> setting on an xinput binding, wave
+        /// 2A). Grounded on Valve's shipped strings: "Toggle will make this
+        /// activator continue to be active after releasing it until it is
+        /// pressed again." Lowers to MacroActionType.ToggleVcButton.</summary>
+        ToggleVcButton = 5,
+
+        /// <summary>Latch / unlatch a keyboard key (the <c>toggle</c>
+        /// setting on a key binding, wave 2A). Lowers to
+        /// MacroActionType.ToggleKey.</summary>
+        ToggleKey = 6,
+
+        /// <summary>Re-reference the slot's gyro-aim state
+        /// (<c>controller_action camera_reset</c>, wave 2A). Steam's action
+        /// re-levels the in-game camera through calibrated mouse motion
+        /// ("Reset the camera to the Horizon ... requires the Dots Per 360°
+        /// setting", shipped client strings); PadForge approximates with its
+        /// gyro-recenter primitive, reported Partial at translate time.
+        /// Lowers to MacroActionType.GyroRecenter.</summary>
+        GyroRecenter = 7,
+
+        /// <summary>Press a virtual controller button and hold it until the
+        /// physical input releases (a Long_Press xinput binding, wave 2A).
+        /// Grounded on Valve's shipped Long Press description: "Once the
+        /// long press time has passed, it will activate stay on until you
+        /// release it." Rides <see cref="TranslatedMacro.TriggerHoldMs"/>;
+        /// the materializer lowers it to a ButtonPress action with
+        /// RepeatMode=UntilRelease and RepeatDelayMs=0 (the button is
+        /// re-written every frame from the threshold until release).</summary>
+        HoldVcButton = 8,
+
+        /// <summary>Confine the desktop cursor to a screen region while the
+        /// hosting input is held (a <c>mouse_region</c> group, wave 2A).
+        /// Geometry rides <see cref="TranslatedMacro.RegionXPercent"/> /
+        /// <see cref="TranslatedMacro.RegionYPercent"/> /
+        /// <see cref="TranslatedMacro.RegionScalePercent"/> (Steam stores
+        /// position_x/position_y as screen percent and scale as region size;
+        /// shipped configurator ids PositionXMouse / PositionYMouse /
+        /// ScaleMouseRegion). TriggerMode is the SEMANTIC "WhileHeld"; the
+        /// materializer lowers it to an OnPress + OnRelease pair of
+        /// MouseLimitRegion clamp toggles because the engine clamp is a
+        /// toggle primitive (#110).</summary>
+        MouseLimitRegion = 9,
     }
 
     /// <summary>
@@ -93,8 +148,17 @@ namespace PadForge.SteamWorkshop.Translation
 
         public TranslatedMacroAction Action { get; set; }
 
-        /// <summary>"OnPress" / "WhileHeld" / "OnRelease" (MacroTriggerMode names).</summary>
+        /// <summary>"OnPress" / "WhileHeld" / "OnRelease" / "HoldForMs"
+        /// (MacroTriggerMode names). For <see cref="TranslatedMacroAction.MouseLimitRegion"/>
+        /// "WhileHeld" is semantic (clamp engaged while the trigger holds);
+        /// the materializer lowers it to an OnPress + OnRelease toggle pair.</summary>
         public string TriggerMode { get; set; } = "OnPress";
+
+        /// <summary>Continuous-hold threshold in milliseconds for the
+        /// "HoldForMs" trigger mode (a Long_Press activator's
+        /// long_press_time; Steam's UI default is 500). 0 = not a hold
+        /// trigger.</summary>
+        public int TriggerHoldMs { get; set; }
 
         /// <summary>Xbox output button bitmask (Gamepad.* constants), or 0
         /// when the trigger is an axis (<see cref="TriggerAxisTarget"/>).</summary>
@@ -121,8 +185,32 @@ namespace PadForge.SteamWorkshop.Translation
         /// <summary>Win32 virtual-key code for the key actions.</summary>
         public int VirtualKey { get; set; }
 
-        /// <summary>Autofire interval, ms (RepeatKeyWhileHeld).</summary>
+        /// <summary>Autofire interval, ms (RepeatKeyWhileHeld and
+        /// RepeatVcButtonWhileHeld; Steam's repeat_rate is stored in ms).</summary>
         public int IntervalMs { get; set; } = 100;
+
+        /// <summary>Xbox output button bitmask the VC-button ACTIONS write
+        /// (RepeatVcButtonWhileHeld / ToggleVcButton / HoldVcButton).
+        /// Distinct from <see cref="TriggerXboxButtons"/>, which is the
+        /// physical input's identity on the combined output.</summary>
+        public ushort TargetXboxButtons { get; set; }
+
+        // ── MouseLimitRegion payload (mouse_region) ──
+
+        /// <summary>Region center X as percent of the primary screen
+        /// (Steam position_x; shipped configurator: "the on screen
+        /// horizontal position that the region will be centered around",
+        /// #Unit_Percent). Default 50 = centered.</summary>
+        public int RegionXPercent { get; set; } = 50;
+
+        /// <summary>Region center Y as percent of the primary screen
+        /// (Steam position_y). Default 50 = centered.</summary>
+        public int RegionYPercent { get; set; } = 50;
+
+        /// <summary>Region size as percent of the screen per axis (Steam
+        /// scale; corpus: 10 = a small corner minimap region, 100 = the
+        /// whole screen). Default 100.</summary>
+        public int RegionScalePercent { get; set; } = 100;
 
         // ── SetLightbarColor payload (set_led) ──
 

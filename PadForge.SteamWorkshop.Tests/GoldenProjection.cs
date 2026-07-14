@@ -42,6 +42,8 @@ namespace PadForge.SteamWorkshop.Tests
                 if (!string.IsNullOrEmpty(m.TriggerAxisTarget))
                     sb.Append(" axis=").Append(m.TriggerAxisTarget)
                       .Append('@').Append(m.TriggerAxisThresholdPercent).Append('%');
+                if (m.TriggerHoldMs > 0)
+                    sb.Append(" hold=").Append(m.TriggerHoldMs).Append("ms");
                 if (m.ConsumeTrigger) sb.Append(" consume");
                 switch (m.Action)
                 {
@@ -61,6 +63,22 @@ namespace PadForge.SteamWorkshop.Tests
                           .Append(" bright=").Append(m.LedBrightnessPercent).Append('%')
                           .Append(" sat=").Append(m.LedSaturationPercent).Append('%')
                           .Append(" setting=").Append(m.LedSetting);
+                        break;
+                    case TranslatedMacroAction.RepeatVcButtonWhileHeld:
+                        sb.Append(" target=0x").Append(m.TargetXboxButtons.ToString("X4", CultureInfo.InvariantCulture))
+                          .Append(" interval=").Append(m.IntervalMs).Append("ms");
+                        break;
+                    case TranslatedMacroAction.ToggleVcButton:
+                    case TranslatedMacroAction.HoldVcButton:
+                        sb.Append(" target=0x").Append(m.TargetXboxButtons.ToString("X4", CultureInfo.InvariantCulture));
+                        break;
+                    case TranslatedMacroAction.ToggleKey:
+                        sb.Append(" vk=0x").Append(m.VirtualKey.ToString("X2", CultureInfo.InvariantCulture));
+                        break;
+                    case TranslatedMacroAction.MouseLimitRegion:
+                        sb.Append(" region=(").Append(m.RegionXPercent).Append("%,")
+                          .Append(m.RegionYPercent).Append("%,scale ")
+                          .Append(m.RegionScalePercent).Append("%)");
                         break;
                 }
                 sb.Append('\n');

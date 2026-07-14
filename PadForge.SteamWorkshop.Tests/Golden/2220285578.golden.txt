@@ -1,6 +1,6 @@
 name: Gimler's Crusader Kings III
 description: A fairly intuitive mapping of CKIII commands and keyboard shortcuts for Steam controller. I play 100...
-slots: kbm
+slots: xbox kbm
 xbox rows: 0
 kbm rows: 18
   Base | KbmKey1B
@@ -42,8 +42,10 @@ kbm rows: 18
   Base | KbmMouseY | Sum
     <- Gyro Pitch
     <- Touchpad 1 Finger 0 Y
-macros: 0
-report: v2 rows:x0+k18 macros:0 layers:0 clean:19 partial:9 skipped:6 errors:0
+macros: 2
+  macro KeyTap HoldForMs | Long press SPACE (button_escape) | btns=0x0010 hold=500ms consume vk=0x20
+  macro KeyTap HoldForMs | Long press H (button_menu) | btns=0x0020 hold=500ms consume vk=0x48
+report: v3 rows:x0+k18 macros:2 layers:0 clean:19 partial:11 skipped:4 errors:0
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_a/Full_Press => KbmKey20 <- Gamepad ButtonA
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_b/Full_Press => KbmKey6B <- Gamepad ButtonB
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_x/Full_Press => KbmKey6D <- Gamepad ButtonX
@@ -70,9 +72,9 @@ report: v2 rows:x0+k18 macros:0 layers:0 clean:19 partial:9 skipped:6 errors:0
   Partial InterruptibleDropped @ Default/switch/group 12 (switches)/button_back_left/Full_Press
   Clean RowEmitted @ Default/switch/group 12 (switches)/button_back_right/Full_Press => KbmKey1B <- Gamepad Paddle1
   Clean RowEmitted @ Default/switch/group 12 (switches)/button_escape/Full_Press => KbmKey47 <- Gamepad ButtonStart
-  Skipped LongPressNotSupported @ Default/switch/group 12 (switches)/button_escape/Long_Press :: key_press SPACE
+  Partial LongPressKeyTap(SPACE) @ Default/switch/group 12 (switches)/button_escape/Long_Press => Long press SPACE macro
   Clean RowEmitted @ Default/switch/group 12 (switches)/button_menu/Full_Press => KbmKey46 <- Gamepad ButtonBack
-  Skipped LongPressNotSupported @ Default/switch/group 12 (switches)/button_menu/Long_Press :: key_press H, Split Off New Army
+  Partial LongPressKeyTap(H) @ Default/switch/group 12 (switches)/button_menu/Long_Press => Long press H macro
   Clean RowEmitted @ Default/switch/group 12 (switches)/left_bumper/Full_Press => KbmKeyA2 <- Gamepad LeftShoulder
   Clean RowEmitted @ Default/switch/group 12 (switches)/right_bumper/Full_Press => KbmKeyA0 <- Gamepad RightShoulder
   Partial ShiftLayerEmpty(left_trackpad shift) @ Default/switch/group 12 (switches)/button_back_left/Full_Press

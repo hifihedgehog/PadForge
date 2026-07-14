@@ -235,8 +235,18 @@ namespace PadForge.ViewModels
                                 inputs.Add(MappingDisplayResolver.ResolveDescriptorText(
                                     entry.GestureDescriptor, null) ?? entry.GestureDescriptor);
                             }
+                            else if (!string.IsNullOrEmpty(entry.SourceDescriptor))
+                            {
+                                inputs.Add(MappingDisplayResolver.ResolveDescriptorText(
+                                    entry.SourceDescriptor, null) ?? entry.SourceDescriptor);
+                            }
                         }
-                        string deviceName = ResolveDeviceName(grp.Key);
+                        // Guid.Empty is a real group here (#9 B-9): the
+                        // device-free entries render under the same
+                        // "(Any device)" sentinel the mapping picker uses.
+                        string deviceName = grp.Key == Guid.Empty
+                            ? Strings.Instance.Mapping_AnyDevice
+                            : ResolveDeviceName(grp.Key);
                         if (!string.IsNullOrEmpty(deviceName))
                             parts.Add(deviceName + " [" + string.Join(" + ", inputs) + "]");
                         else
@@ -273,6 +283,11 @@ namespace PadForge.ViewModels
                         {
                             parts.Add(MappingDisplayResolver.ResolveDescriptorText(
                                 entry.GestureDescriptor, null) ?? entry.GestureDescriptor);
+                        }
+                        else if (!string.IsNullOrEmpty(entry.SourceDescriptor))
+                        {
+                            parts.Add(MappingDisplayResolver.ResolveDescriptorText(
+                                entry.SourceDescriptor, null) ?? entry.SourceDescriptor);
                         }
                     }
                 }
@@ -330,12 +345,22 @@ namespace PadForge.ViewModels
                 // Append source device name at end ONLY for single-device legacy /
                 // single-device new-list cases. Multi-device already shows names
                 // inline.
-                if (!multiDevice && (UsesRawTrigger || UsesPovTrigger || UsesAxisTrigger || UsesGestureTrigger))
+                if (!multiDevice && (UsesRawTrigger || UsesPovTrigger || UsesAxisTrigger
+                    || UsesGestureTrigger || UsesDescriptorTrigger))
                 {
                     Guid deviceGuid = entries.Count > 0 ? entries[0].DeviceGuid : _triggerDeviceGuid;
-                    string deviceName = ResolveDeviceName(deviceGuid);
-                    if (!string.IsNullOrEmpty(deviceName))
-                        result = $"{result} ({deviceName})";
+                    if (deviceGuid == Guid.Empty && entries.Count > 0)
+                    {
+                        // Device-free entries (#9 B-9). The sentinel already
+                        // carries its own parentheses, so it appends bare.
+                        result = $"{result} {Strings.Instance.Mapping_AnyDevice}";
+                    }
+                    else
+                    {
+                        string deviceName = ResolveDeviceName(deviceGuid);
+                        if (!string.IsNullOrEmpty(deviceName))
+                            result = $"{result} ({deviceName})";
+                    }
                 }
 
                 return result;
@@ -503,6 +528,22 @@ namespace PadForge.ViewModels
             }
         }
 
+        /// <summary>True if this macro uses descriptor trigger entries
+        /// (#9 B-9): engine-read descriptors ("Gyro Pitch",
+        /// "Touchpad 0 Finger 0 Down") evaluated through SourceCoercion's
+        /// button read. Entry-list only, like the gesture trigger.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool UsesDescriptorTrigger
+        {
+            get
+            {
+                var entries = GetTriggerInputEntries();
+                for (int i = 0; i < entries.Count; i++)
+                    if (!string.IsNullOrEmpty(entries[i].SourceDescriptor)) return true;
+                return false;
+            }
+        }
+
         // ───────────────────────────────────────────────
         //  Multi-device trigger inputs
         //  Authoritative storage for cross-device button + POV combos
@@ -601,6 +642,40 @@ namespace PadForge.ViewModels
                 return _gestureName != null;
             }
 
+            /// <summary>Engine input descriptor evaluated through
+            /// SourceCoercion's button read ("Gyro Pitch",
+            /// "Touchpad 0 Finger 0 Down"), or null if this entry isn't a
+            /// descriptor entry (#9 B-9). Carries the trigger shapes that
+            /// have no raw-entry form: the readers canonicalize abstract
+            /// "Gamepad ..." spellings and evaluate the gyro / touchpad
+            /// families with the same per-(device, slot) tuning a mapping
+            /// row gets. Picked from the trigger dropdown, never recorded.</summary>
+            private string _sourceDescriptor;
+            public string SourceDescriptor
+            {
+                get => _sourceDescriptor;
+                set { if (SetProperty(ref _sourceDescriptor, value)) _descriptorSource = null; }
+            }
+
+            private PadForge.Engine.Data.MappingSource _descriptorSource;
+
+            /// <summary>Cached <see cref="PadForge.Engine.Data.MappingSource"/>
+            /// wrapper for <see cref="SourceDescriptor"/>, so the 1 kHz trigger
+            /// evaluation never allocates (mirrors <see cref="TryGetGestureParts"/>).
+            /// DeadZone is left at 0 (unset) on purpose: the descriptor entry
+            /// has no per-entry threshold editor, so axis-class descriptors
+            /// read the evaluator's default threshold and gyro keeps its
+            /// engine default. Null when this isn't a descriptor entry.</summary>
+            [System.Xml.Serialization.XmlIgnore]
+            public PadForge.Engine.Data.MappingSource DescriptorSource
+                => string.IsNullOrEmpty(_sourceDescriptor)
+                    ? null
+                    : _descriptorSource ??= new PadForge.Engine.Data.MappingSource
+                    {
+                        Descriptor = _sourceDescriptor,
+                        DeadZone = 0,
+                    };
+
             /// <summary>Axis target on the device's standard SDL gamepad layout
             /// (0=LX, 1=LY, 2=LT, 3=RX, 4=RY, 5=RT). <c>None</c> if not an axis entry.</summary>
             private MacroAxisTarget _axisTarget = MacroAxisTarget.None;
@@ -689,13 +764,16 @@ namespace PadForge.ViewModels
             /// <summary>Compact tagged form for XML round-trip.
             /// Format: <c>in:GUID:ax:Target:HalfAxis:Invert:DeadZone:Bidirectional</c>
             /// (e.g. <c>in:GUID:ax:LeftStickX:1:0:50:1</c>). The trailing
-            /// Bidirectional field is optional — parser defaults to 0 when
-            /// reading older XML written before the flag existed.</summary>
+            /// Bidirectional field is optional. The parser defaults it to 0
+            /// when reading older XML written before the flag existed.
+            /// The GUID may be all-zero (#9 B-9): that is the persisted
+            /// "the device on the macro's slot" form, so an empty guid no
+            /// longer voids the spec. A payload-less entry still yields
+            /// "" and gets filtered by the TriggerInputs join.</summary>
             public string Spec
             {
                 get
                 {
-                    if (DeviceGuid == Guid.Empty) return "";
                     if (AxisTarget != MacroAxisTarget.None)
                         return $"in:{DeviceGuid}:ax:{AxisTarget}:{(HalfAxis ? 1 : 0)}:{(Invert ? 1 : 0)}:{DeadZone}:{(Bidirectional ? 1 : 0)}";
                     if (!string.IsNullOrEmpty(Pov)) return $"in:{DeviceGuid}:pov:{Pov}";
@@ -707,6 +785,10 @@ namespace PadForge.ViewModels
                     // '&' is rejected by the gesture-name validator).
                     if (!string.IsNullOrEmpty(GestureDescriptor))
                         return $"in:{DeviceGuid}:tg:{GestureDescriptor.Replace("|", "&P")}";
+                    // Descriptor entries (#9 B-9) ride the same
+                    // tail-escaping shape as gestures.
+                    if (!string.IsNullOrEmpty(SourceDescriptor))
+                        return $"in:{DeviceGuid}:sd:{SourceDescriptor.Replace("|", "&P")}";
                     return "";
                 }
             }
@@ -738,6 +820,17 @@ namespace PadForge.ViewModels
                             || !desc.StartsWith("Touchpad ", StringComparison.Ordinal))
                             return null;
                         entry.GestureDescriptor = desc;
+                        return entry;
+                    case "sd":
+                        // Descriptor entry (#9 B-9): same tail re-join and
+                        // unescape as "tg". Accepted as-is (no family gate)
+                        // so the spec stays forward-compatible; the engine
+                        // read simply evaluates false for descriptors it
+                        // doesn't recognize.
+                        string sd = string.Join(":", parts, 3, parts.Length - 3)
+                            .Replace("&P", "|");
+                        if (string.IsNullOrWhiteSpace(sd)) return null;
+                        entry.SourceDescriptor = sd;
                         return entry;
                     case "ax":
                         if (!Enum.TryParse<MacroAxisTarget>(parts[3], out var at) || at == MacroAxisTarget.None) return null;
@@ -781,16 +874,23 @@ namespace PadForge.ViewModels
         /// <summary>Converts a picker <see cref="InputChoice"/> into a
         /// <see cref="TriggerInputEntry"/> for the macro trigger dropdown
         /// (#177). Returns false for descriptors the trigger engine has
-        /// no entry shape for (finger axes, sliders, continuous gesture
-        /// axes). Buttons, POV directions, gamepad-layout axes 0-5, the
-        /// touchpad click (raw button 16), and bool-valued touchpad
-        /// gestures all convert.</summary>
+        /// no entry shape for (finger position axes, sliders, continuous
+        /// gesture axes). Buttons, POV directions, gamepad-layout axes 0-5,
+        /// the touchpad click (raw button 16), bool-valued touchpad
+        /// gestures, gyro axes, and "Finger M Down" all convert.
+        /// An empty <see cref="InputChoice.DeviceGuid"/> converts too
+        /// (#9 B-9): it is the picker's "(Any device)" group and stores
+        /// <see cref="Guid.Empty"/>, the persisted "the device on the
+        /// macro's slot" form the evaluator resolves per slot device.</summary>
         public static bool TryBuildTriggerEntry(InputChoice choice, out TriggerInputEntry entry)
         {
             entry = null;
             string d = choice?.Descriptor;
             if (string.IsNullOrEmpty(d)) return false;
-            if (!Guid.TryParse(choice.DeviceGuid, out var g) || g == Guid.Empty) return false;
+            Guid g = Guid.Empty;
+            if (!string.IsNullOrEmpty(choice.DeviceGuid)
+                && !Guid.TryParse(choice.DeviceGuid, out g))
+                return false;
 
             // Abstract Gamepad aliases (#9) fold to their canonical
             // "Button N" / "POV 0 Dir" / "Axis N" form so the family's
@@ -854,11 +954,34 @@ namespace PadForge.ViewModels
                     entry = new TriggerInputEntry { DeviceGuid = g, RawButton = 16 };
                     return true;
                 }
-                if (tp[2].StartsWith("Finger", StringComparison.OrdinalIgnoreCase)) return false;
+                if (tp[2].StartsWith("Finger", StringComparison.OrdinalIgnoreCase))
+                {
+                    // "Finger M Down" is a bool the engine's touchpad read
+                    // already answers, so it rides a descriptor entry
+                    // (#9 B-9). Finger position axes (X / Y / Pressure)
+                    // stay unconvertible: no bool read exists for them.
+                    if (tp[2].EndsWith(" Down", StringComparison.Ordinal))
+                    {
+                        entry = new TriggerInputEntry { DeviceGuid = g, SourceDescriptor = d };
+                        return true;
+                    }
+                    return false;
+                }
                 // Continuous gesture axes have no bool entry in the
                 // fired set; they stay recording/mapping-only.
                 if (tp[2] is "PinchAxis" or "RotateAxis" or "StickX" or "StickY") return false;
                 entry = new TriggerInputEntry { DeviceGuid = g, GestureDescriptor = d };
+                return true;
+            }
+
+            // Bare gyro axes (#9 B-9): evaluated through SourceCoercion's
+            // button read (rate past the engine's default threshold), with
+            // the same per-(device, slot) Gyro-tab tuning a mapping row
+            // gets. Covers workshop configs whose bindings live on a gyro
+            // group.
+            if (d.StartsWith("Gyro ", StringComparison.Ordinal))
+            {
+                entry = new TriggerInputEntry { DeviceGuid = g, SourceDescriptor = d };
                 return true;
             }
 
@@ -908,6 +1031,7 @@ namespace PadForge.ViewModels
                 OnPropertyChanged(nameof(UsesRawTrigger));
                 OnPropertyChanged(nameof(UsesPovTrigger));
                 OnPropertyChanged(nameof(UsesGestureTrigger));
+                OnPropertyChanged(nameof(UsesDescriptorTrigger));
                 OnPropertyChanged(nameof(TriggerDisplayText));
             }
         }
@@ -972,6 +1096,7 @@ namespace PadForge.ViewModels
             OnPropertyChanged(nameof(UsesPovTrigger));
             OnPropertyChanged(nameof(UsesAxisTrigger));
             OnPropertyChanged(nameof(UsesGestureTrigger));
+            OnPropertyChanged(nameof(UsesDescriptorTrigger));
             OnPropertyChanged(nameof(TriggerDisplayText));
             OnPropertyChanged(nameof(TriggerAxisEntries));
             OnPropertyChanged(nameof(HasTriggerAxisEntries));
@@ -1083,11 +1208,20 @@ namespace PadForge.ViewModels
             {
                 input = MappingDisplayResolver.ResolveDescriptorText(entry.GestureDescriptor, null) ?? entry.GestureDescriptor;
             }
+            else if (!string.IsNullOrEmpty(entry.SourceDescriptor))
+            {
+                input = MappingDisplayResolver.ResolveDescriptorText(entry.SourceDescriptor, null) ?? entry.SourceDescriptor;
+            }
             else
             {
                 input = "";
             }
-            string deviceName = ResolveDeviceName(entry.DeviceGuid);
+            // Device-free entries (#9 B-9) carry the same "(Any device)"
+            // sentinel the mapping picker's leading group uses, so the
+            // chip round-trips readably when the editor reopens.
+            string deviceName = entry.DeviceGuid == Guid.Empty
+                ? Strings.Instance.Mapping_AnyDevice
+                : ResolveDeviceName(entry.DeviceGuid);
             return !string.IsNullOrEmpty(deviceName) ? $"{deviceName}: {input}" : input;
         }
 

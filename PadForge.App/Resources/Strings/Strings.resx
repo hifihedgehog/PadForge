@@ -2513,6 +2513,11 @@
   <data name="Workshop_Tr_PlayerNumberActionNotSupported" xml:space="preserve"><value>player-number change is a Steam-client action, no equivalent</value></data>
   <data name="Workshop_Tr_LizardModeActionNotSupported" xml:space="preserve"><value>lizard-mode toggle is Steam-internal, no equivalent</value></data>
   <data name="Workshop_Tr_SetLedDefaultApproximated" xml:space="preserve"><value>restore-default lighting approximated as clearing the override</value></data>
+  <data name="Workshop_Tr_ToggleLatchEmitted" xml:space="preserve"><value>toggle press latches {0} until the next press</value></data>
+  <data name="Workshop_Tr_ToggleDropped" xml:space="preserve"><value>toggle setting dropped (no latch for this output)</value></data>
+  <data name="Workshop_Tr_LongPressKeyTap" xml:space="preserve"><value>long press taps {0} at the threshold (Steam holds it until release)</value></data>
+  <data name="Workshop_Tr_CameraResetApproximated" xml:space="preserve"><value>camera reset approximated as a gyro recenter</value></data>
+  <data name="Workshop_Tr_MouseRegionApproximated" xml:space="preserve"><value>mouse region approximated as a centered cursor clamp ({0}% of screen, region center {1}%, {2}%) while the surface is held</value></data>
   <data name="Status_WorkshopUpdatesOptInRequired" xml:space="preserve"><value>Enable Community Configs to check for updates</value></data>
   <data name="Status_WorkshopNoImportedProfiles" xml:space="preserve"><value>No profiles imported from the Steam Workshop yet</value></data>
   <data name="Status_WorkshopCheckingUpdates" xml:space="preserve"><value>Checking Steam Workshop for updates…</value></data>

@@ -51,8 +51,13 @@ namespace PadForge.SteamWorkshop.Translation
         /// v2: Wave 1a (#9 follow-up). Adds single_button / gyro_to_mouse
         /// modes, Steam Controller digital-trigger switch members, #token
         /// titles, inner deadzone, set_led macros, Long_Press layer
-        /// carries, and the named-skip vocabulary below.</summary>
-        public const int CurrentTranslatorVersion = 2;
+        /// carries, and the named-skip vocabulary below.
+        /// v3: Wave 2A. Long_Press key/button macros (HoldForMs trigger),
+        /// xinput hold_repeats turbo, the activator toggle setting
+        /// (ToggleVcButton / ToggleKey latches, Toggle-mode layer carries),
+        /// camera_reset as a gyro recenter, and mouse_region cursor-clamp
+        /// macros with region geometry.</summary>
+        public const int CurrentTranslatorVersion = 3;
 
         public int TranslatorVersion { get; set; } = CurrentTranslatorVersion;
 
@@ -187,5 +192,25 @@ namespace PadForge.SteamWorkshop.Translation
         public const string PlayerNumberActionNotSupported = "Workshop_Tr_PlayerNumberActionNotSupported";
         public const string LizardModeActionNotSupported = "Workshop_Tr_LizardModeActionNotSupported";
         public const string SetLedDefaultApproximated = "Workshop_Tr_SetLedDefaultApproximated";
+
+        // ── Translator v3 (Wave 2A) vocabulary ──
+        /// <summary>The activator toggle setting became a latch macro
+        /// (ToggleVcButton / ToggleKey). Clean for the macro-only structure;
+        /// Partial when the momentary identity row is kept alongside the
+        /// latch so the macro's trigger stays fed.</summary>
+        public const string ToggleLatchEmitted = "Workshop_Tr_ToggleLatchEmitted";                 // {0} target
+        /// <summary>toggle=1 on a binding kind with no latch primitive
+        /// (mouse buttons, wheel, trigger-axis targets): the binding stays
+        /// momentary.</summary>
+        public const string ToggleDropped = "Workshop_Tr_ToggleDropped";
+        /// <summary>A Long_Press key binding fires one tap at the hold
+        /// threshold; Steam holds the key down until release.</summary>
+        public const string LongPressKeyTap = "Workshop_Tr_LongPressKeyTap";                       // {0} key
+        /// <summary>camera_reset re-levels the camera via calibrated mouse
+        /// motion in Steam; PadForge re-references its gyro aim state.</summary>
+        public const string CameraResetApproximated = "Workshop_Tr_CameraResetApproximated";
+        /// <summary>mouse_region approximated as a centered cursor clamp
+        /// engaged while the hosting input is held.</summary>
+        public const string MouseRegionApproximated = "Workshop_Tr_MouseRegionApproximated";       // {0} scale {1} x {2} y
     }
 }

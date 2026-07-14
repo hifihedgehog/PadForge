@@ -368,7 +368,7 @@ namespace PadForge.SteamWorkshop.Translation
                 }
 
                 case "mouse_region":
-                    run.Report.Add(TranslationStatus.Skipped, TranslationReasons.MouseRegionNotSupported, path);
+                    TranslateMouseRegion(run, slot, path, settings);
                     TranslateMemberGroup(run, preset, effective, slot, layer, path, settings,
                         onlyInputs: new[] { "click", "touch", "edge" });
                     break;
@@ -414,11 +414,17 @@ namespace PadForge.SteamWorkshop.Translation
         /// <summary>Response-shaping group settings PadForge has no per-row
         /// channel for. Named per issue #20's sensitivity-curve backlog;
         /// key list grounded on the corpus (deadzone_outer_radius 28640..31999,
-        /// curve_exponent 4) plus the sibling keys of the same UI cluster.</summary>
+        /// curve_exponent 4) plus the sibling keys of the same UI cluster.
+        /// The mouse_region per-axis sensitivity scales (corpus 2795727040:
+        /// 110/70; shipped configurator ids
+        /// Horizontal/VerticalSensitivityMouseRegion) shape movement inside
+        /// the region, which the wave-2A clamp approximation does not
+        /// reproduce, so they ride the same named drop.</summary>
         private static readonly string[] CurveSettingKeys =
         {
             "deadzone_outer_radius", "deadzone_shape",
             "custom_curve_exponent", "curve_exponent", "output_curve",
+            "sensitivity_horiz_scale", "sensitivity_vert_scale",
         };
 
         /// <summary>Named notes for group settings that used to drop
@@ -576,6 +582,83 @@ namespace PadForge.SteamWorkshop.Translation
                     $"{path}/{cell.Name}");
             }
         }
+
+        /// <summary>mouse_region (wave 2A, B-12): Steam maps the hosting
+        /// surface absolutely onto a screen region centered at
+        /// (position_x%, position_y%) sized scale% of the screen, active
+        /// while the surface is touched (shipped configurator: PositionXMouse
+        /// / PositionYMouse are #Unit_Percent "the on screen position that
+        /// the region will be centered around", ScaleMouseRegion "scale[s]
+        /// the size of the region that is mapped to the outer extents of the
+        /// pad/stick"). PadForge's nearest primitive is the #110 cursor
+        /// clamp, a centered inset rectangle, so the translation is a
+        /// while-held clamp macro: engaged on the hosting surface's press,
+        /// released with it, geometry approximated as a centered region.
+        /// Hosts without a device-free trigger (trackpad touch, until
+        /// device-free triggers land) get a named skip; the group's
+        /// click/touch/edge members translate as normal bindings either
+        /// way (the caller runs TranslateMemberGroup).</summary>
+        private void TranslateMouseRegion(Run run, SteamSlot slot, string path,
+            Dictionary<string, string> settings)
+        {
+            int scale = Math.Clamp(ParseIntSetting(settings, "scale", 100), 1, 100);
+            int posX = Math.Clamp(ParseIntSetting(settings, "position_x", 50), 0, 100);
+            int posY = Math.Clamp(ParseIntSetting(settings, "position_y", 50), 0, 100);
+
+            var host = PhysicalSlotResolver.RegionEngageSource(slot);
+            if (host == null
+                || (host.XboxButtonBit == 0 && string.IsNullOrEmpty(host.MacroAxisTarget)))
+            {
+                run.Report.Add(TranslationStatus.Skipped, TranslationReasons.NoDeviceFreeTrigger,
+                    path);
+                return;
+            }
+
+            run.Profile.Macros.Add(new TranslatedMacro
+            {
+                Name = $"Cursor region ({SlotToken(slot)})",
+                Action = TranslatedMacroAction.MouseLimitRegion,
+                TriggerMode = "WhileHeld", // semantic; materializer lowers to an on/off toggle pair
+                TriggerXboxButtons = host.XboxButtonBit,
+                TriggerAxisTarget = host.XboxButtonBit == 0 ? host.MacroAxisTarget ?? "" : "",
+                TriggerAxisThresholdPercent = host.DeadZone > 0 ? host.DeadZone : 50,
+                ConsumeTrigger = false,
+                RegionXPercent = posX,
+                RegionYPercent = posY,
+                RegionScalePercent = scale,
+            });
+            run.Report.Add(TranslationStatus.Partial, TranslationReasons.MouseRegionApproximated,
+                path, emitted: "Cursor region clamp macro",
+                args: new[]
+                {
+                    scale.ToString(CultureInfo.InvariantCulture),
+                    posX.ToString(CultureInfo.InvariantCulture),
+                    posY.ToString(CultureInfo.InvariantCulture),
+                });
+        }
+
+        private static int ParseIntSetting(Dictionary<string, string> settings, string key, int fallback)
+            => settings.TryGetValue(key, out var raw)
+               && int.TryParse(raw, NumberStyles.Integer, CultureInfo.InvariantCulture, out int v)
+                ? v : fallback;
+
+        /// <summary>Display token for macro names, mirroring the config's
+        /// own slot vocabulary.</summary>
+        private static string SlotToken(SteamSlot slot) => slot switch
+        {
+            SteamSlot.LeftTrackpad => "left_trackpad",
+            SteamSlot.RightTrackpad => "right_trackpad",
+            SteamSlot.CenterTrackpad => "center_trackpad",
+            SteamSlot.Joystick => "joystick",
+            SteamSlot.RightJoystick => "right_joystick",
+            SteamSlot.LeftTrigger => "left_trigger",
+            SteamSlot.RightTrigger => "right_trigger",
+            SteamSlot.Gyro => "gyro",
+            SteamSlot.ButtonDiamond => "button_diamond",
+            SteamSlot.Switch => "switch",
+            SteamSlot.Dpad => "dpad",
+            _ => "input",
+        };
 
         /// <summary>Trigger groups: the analog pull passes through to the
         /// xinput trigger implicitly. Both sides emit an explicit axis row
@@ -781,23 +864,41 @@ namespace PadForge.SteamWorkshop.Translation
                 {
                     intervalMs = Math.Clamp(rrv, 10, 1000);
                 }
+                // The activator toggle setting latches the binding's output
+                // until the input is pressed again (Valve's shipped strings:
+                // "Toggle will make this activator continue to be active
+                // after releasing it until it is pressed again"). Grounded
+                // key name: Valve's own chord.vdf carries "toggle" "1" on a
+                // Full_Press key binding.
+                bool toggle = activator.Settings.TryGetValue("toggle", out var tg)
+                    && tg?.Trim() == "1";
 
                 foreach (var binding in activator.Bindings)
                 {
                     TranslateBinding(run, preset, binding, source, clickGate, layer, actPath,
-                        soft, onRelease, holdRepeats, intervalMs, input.Name);
+                        soft, onRelease, holdRepeats, intervalMs, toggle, input.Name);
                 }
             }
         }
 
-        /// <summary>Long_Press activators carrying a layer engage
-        /// (mode_shift / hold_layer / add_layer) map to the layer's
-        /// ShiftActivator with DelayMs = the activator's long_press_time.
-        /// The engine's hold-before-engage debounce is the same construct.
-        /// The stored value is milliseconds (corpus: 222 / 224 on
-        /// 789818086); absent = Steam's UI default of 500 ms. Keys and
-        /// buttons under Long_Press stay skipped this wave (the
-        /// hold-threshold macro trigger is a separate build).</summary>
+        /// <summary>Long_Press activators. Grounded on Valve's shipped
+        /// description: "Long Press Activator requires the button to be held
+        /// for a period of time to activate. Once the long press time has
+        /// passed, it will activate stay on until you release it."
+        /// long_press_time is milliseconds (corpus: 222 / 224 on 789818086;
+        /// shipped configurator suffixes LongPress_LongPressTime with
+        /// #Unit_Milliseconds); absent = Steam's UI default of 500 ms.
+        ///
+        /// <para>Layer engages (mode_shift / hold_layer / add_layer) map to
+        /// the layer's ShiftActivator with DelayMs = long_press_time (the
+        /// engine's hold-before-engage debounce is the same construct).
+        /// Keys and buttons (wave 2A) ride the HoldForMs macro trigger:
+        /// xinput targets hold the output button from the threshold until
+        /// release (exact semantics via ButtonPress + UntilRelease), key
+        /// targets fire one tap at the threshold (Partial: PadForge has no
+        /// hold-a-key-until-release primitive), and the activator's own
+        /// hold_repeats / toggle settings compose the turbo and latch
+        /// variants at the same threshold.</para></summary>
         private void TranslateLongPress(Run run, SteamInputPreset preset,
             SteamInputActivator activator, SteamInputInput input, ResolvedSource source,
             string layer, string actPath)
@@ -809,22 +910,43 @@ namespace PadForge.SteamWorkshop.Translation
                 delayMs = Math.Clamp(lptMs, 1, 5000);
             }
 
-            bool anyLayerCarry = false;
+            bool holdRepeats = activator.Settings.TryGetValue("hold_repeats", out var hr)
+                && hr?.Trim() == "1";
+            int intervalMs = 100;
+            if (activator.Settings.TryGetValue("repeat_rate", out var rr)
+                && int.TryParse(rr, NumberStyles.Integer, CultureInfo.InvariantCulture, out int rrv))
+            {
+                intervalMs = Math.Clamp(rrv, 10, 1000);
+            }
+            bool toggle = activator.Settings.TryGetValue("toggle", out var tg)
+                && tg?.Trim() == "1";
+
+            bool anyCarry = false;
             foreach (var binding in activator.Bindings)
             {
                 string bt = (binding.Type ?? "").Trim().ToLowerInvariant();
                 string action = FirstToken(binding.Param).ToUpperInvariant();
                 if (bt == "mode_shift")
                 {
-                    anyLayerCarry = true;
-                    TranslateModeShift(run, preset, binding, source, actPath, delayMs);
+                    anyCarry = true;
+                    TranslateModeShift(run, preset, binding, source, actPath, delayMs, toggle);
                 }
                 else if (bt == "controller_action"
-                    && (action == "ADD_LAYER" || action == "HOLD_LAYER"))
+                    && (action == "ADD_LAYER" || action == "HOLD_LAYER" || action == "CAMERA_RESET"))
                 {
-                    anyLayerCarry = true;
+                    anyCarry = true;
                     TranslateControllerAction(run, preset, binding, source, layer, actPath,
-                        onRelease: false, input.Name, delayMs);
+                        onRelease: false, input.Name, delayMs, toggle);
+                }
+                else if (bt == "key_press")
+                {
+                    anyCarry |= TranslateLongPressKey(run, preset, binding, source, actPath,
+                        delayMs, holdRepeats, intervalMs, toggle, input.Name);
+                }
+                else if (bt == "xinput_button")
+                {
+                    anyCarry |= TranslateLongPressVc(run, binding, source, actPath,
+                        delayMs, holdRepeats, intervalMs, toggle, input.Name);
                 }
                 else
                 {
@@ -832,8 +954,89 @@ namespace PadForge.SteamWorkshop.Translation
                 }
             }
 
-            if (anyLayerCarry)
+            if (anyCarry)
                 ReportDroppedActivatorExtras(run, activator, actPath);
+        }
+
+        /// <summary>A Long_Press key binding (wave 2A): one tap at the hold
+        /// threshold (or the autofire / latch variants when the activator
+        /// also carries hold_repeats / toggle). Returns true when a macro
+        /// was emitted (the activator counts as translated for the
+        /// dropped-extras notes; a NoDeviceFreeTrigger skip does not).</summary>
+        private bool TranslateLongPressKey(Run run, SteamInputPreset preset,
+            SteamInputBinding binding, ResolvedSource source, string path,
+            int holdMs, bool holdRepeats, int intervalMs, bool toggle, string inputName)
+        {
+            string keyName = FirstToken(binding.Param);
+            if (!SteamInputVkTable.TryResolve(keyName, out byte vk, out bool supported))
+            {
+                run.Report.Add(TranslationStatus.Skipped, TranslationReasons.UnknownKey,
+                    path, binding.Raw, args: keyName);
+                return false;
+            }
+            if (!supported)
+            {
+                run.Report.Add(TranslationStatus.Skipped, TranslationReasons.UnsupportedKey,
+                    path, binding.Raw, args: keyName);
+                return false;
+            }
+
+            if (toggle)
+            {
+                bool latched = EmitKeyToggleMacro(run, binding, source, path, vk, keyName,
+                    onRelease: false, inputName, holdMs);
+                if (latched && holdRepeats)
+                {
+                    run.Report.Add(TranslationStatus.Partial, TranslationReasons.RepeatDropped,
+                        path, binding.Raw);
+                }
+                return latched;
+            }
+
+            return EmitKeyMacro(run, preset, binding, source, path,
+                holdRepeats
+                    ? (TranslatedMacroAction.RepeatKeyWhileHeld, "HoldForMs")
+                    : (TranslatedMacroAction.KeyTap, "HoldForMs"),
+                vk, intervalMs, keyName, inputName, holdMs);
+        }
+
+        /// <summary>A Long_Press xinput binding (wave 2A): the target button
+        /// is pressed at the hold threshold and held until the physical
+        /// input releases (Valve's grounded semantics), or pulsed / latched
+        /// when the activator also carries hold_repeats / toggle.
+        /// Trigger-axis targets (LT/RT pulls) have no button-hold or pulse
+        /// primitive and keep the named Long_Press skip.</summary>
+        private bool TranslateLongPressVc(Run run, SteamInputBinding binding,
+            ResolvedSource source, string path, int holdMs, bool holdRepeats,
+            int intervalMs, bool toggle, string inputName)
+        {
+            if (!XInputTargetTable.TryResolve(binding.Param, out var xt))
+            {
+                run.Report.Add(TranslationStatus.Skipped, TranslationReasons.UnknownXInputButton,
+                    path, binding.Raw, args: binding.Param);
+                return false;
+            }
+            if (xt.IsTriggerAxis)
+            {
+                run.Report.Add(TranslationStatus.Skipped, TranslationReasons.LongPressNotSupported,
+                    path, binding.Raw);
+                return false;
+            }
+
+            if (toggle)
+            {
+                bool latched = EmitVcToggleMacro(run, binding, source, path, xt,
+                    rowKept: false, inputName, holdMs);
+                if (latched && holdRepeats)
+                {
+                    run.Report.Add(TranslationStatus.Partial, TranslationReasons.RepeatDropped,
+                        path, binding.Raw);
+                }
+                return latched;
+            }
+            if (holdRepeats)
+                return EmitVcTurboMacro(run, binding, source, path, xt, intervalMs, holdMs, inputName);
+            return EmitVcHoldMacro(run, binding, source, path, xt, holdMs, inputName);
         }
 
         /// <summary>Named notes for activator settings that used to drop
@@ -877,14 +1080,15 @@ namespace PadForge.SteamWorkshop.Translation
 
         private void TranslateBinding(Run run, SteamInputPreset preset, SteamInputBinding binding,
             ResolvedSource source, string clickGate, string layer, string path,
-            bool soft, bool onRelease, bool holdRepeats, int intervalMs, string inputName)
+            bool soft, bool onRelease, bool holdRepeats, int intervalMs, bool toggle,
+            string inputName)
         {
             string type = (binding.Type ?? "").Trim().ToLowerInvariant();
             switch (type)
             {
                 case "key_press":
                     TranslateKeyPress(run, preset, binding, source, clickGate, layer, path,
-                        soft, onRelease, holdRepeats, intervalMs, inputName);
+                        soft, onRelease, holdRepeats, intervalMs, toggle, inputName);
                     break;
 
                 case "mouse_button":
@@ -900,6 +1104,13 @@ namespace PadForge.SteamWorkshop.Translation
                         run.Report.Add(TranslationStatus.Skipped, TranslationReasons.ReleaseActivatorNotSupported,
                             path, binding.Raw);
                         break;
+                    }
+                    if (toggle)
+                    {
+                        // No mouse-button latch primitive; the binding stays
+                        // momentary (named note instead of the old silence).
+                        run.Report.Add(TranslationStatus.Partial, TranslationReasons.ToggleDropped,
+                            path, binding.Raw);
                     }
                     EmitSourceRow(run, isKbm: true, layer, target, source, clickGate, isAxis: false,
                         soft, path, binding.Raw);
@@ -927,6 +1138,13 @@ namespace PadForge.SteamWorkshop.Translation
                             path, binding.Raw, args: $"mouse_wheel {binding.Param}");
                         break;
                     }
+                    if (toggle)
+                    {
+                        // A latched scroll would scroll forever; the binding
+                        // stays momentary (named note).
+                        run.Report.Add(TranslationStatus.Partial, TranslationReasons.ToggleDropped,
+                            path, binding.Raw);
+                    }
                     var src = BuildSource(source, soft);
                     src.Invert = wheel.Value.invert;
                     AddRowSource(run, isKbm: true, layer, wheel.Value.target, src, isAxis: true,
@@ -949,16 +1167,70 @@ namespace PadForge.SteamWorkshop.Translation
                             path, binding.Raw);
                         break;
                     }
-                    // Steam repeats the xinput press while held; PadForge
-                    // rows hold the output instead (there is no xinput turbo
-                    // action). Note the difference, then translate normally.
-                    if (holdRepeats)
+                    bool identity = !soft && clickGate == null
+                        && string.Equals(source.AutomapTarget, xt.Target, StringComparison.Ordinal);
+
+                    // Activator toggle (wave 2A): the press latches the
+                    // target until the next press. Steam's toggle replaces
+                    // the momentary output, but a macro-only structure is a
+                    // dead letter here: the latch macro's only device-free
+                    // trigger is the combined Xbox output, and with the row
+                    // removed nothing feeds it (proven on 2774979654, whose
+                    // stick click hosts ONLY the toggle binding). So the
+                    // Wave-1 momentary row stays as the trigger's feed, the
+                    // latch macro fires on the TARGET bit's press edge (the
+                    // row asserts it exactly while the physical input is
+                    // held; latches apply after trigger reads each frame, so
+                    // the latch never masks its own edge), and the entry is
+                    // Partial: the row re-asserts the target for the
+                    // duration of the unlatching press, and any other
+                    // binding feeding the same target also flips the latch.
+                    // Trigger-axis targets have no latch primitive and keep
+                    // the momentary row with a named drop.
+                    bool latchEmitted = false;
+                    if (toggle)
                     {
+                        if (!xt.IsTriggerAxis)
+                        {
+                            EmitVcToggleMacro(run, binding, source, path, xt,
+                                rowKept: true, inputName);
+                            latchEmitted = true;
+                            if (holdRepeats)
+                            {
+                                run.Report.Add(TranslationStatus.Partial, TranslationReasons.RepeatDropped,
+                                    path, binding.Raw);
+                            }
+                            // fall through: the row emits below (identity or
+                            // divergent), feeding the latch trigger.
+                        }
+                        else
+                        {
+                            run.Report.Add(TranslationStatus.Partial, TranslationReasons.ToggleDropped,
+                                path, binding.Raw);
+                        }
+                    }
+                    // Turbo (wave 2A): hold_repeats pulses the target while
+                    // the physical input is held (Steam stores repeat_rate
+                    // in ms; shipped configurator suffixes it
+                    // #Unit_Milliseconds). A latch already replaced the
+                    // output when one was emitted above. Identity turbo is
+                    // impossible with the combined-output trigger (the
+                    // identity row that feeds the trigger would hold the
+                    // pulsed bit solid), so it keeps the Wave-1 row +
+                    // RepeatDropped note; trigger-axis targets have no
+                    // button bit to pulse and triggerless hosts have no
+                    // macro trigger, so both keep it too.
+                    if (!latchEmitted && holdRepeats)
+                    {
+                        if (!identity && !xt.IsTriggerAxis && HasDeviceFreeTrigger(source))
+                        {
+                            EmitVcTurboMacro(run, binding, source, path, xt, intervalMs,
+                                holdMs: 0, inputName);
+                            break;
+                        }
                         run.Report.Add(TranslationStatus.Partial, TranslationReasons.RepeatDropped,
                             path, binding.Raw);
                     }
-                    bool identity = !soft && clickGate == null
-                        && string.Equals(source.AutomapTarget, xt.Target, StringComparison.Ordinal);
                     if (identity)
                     {
                         run.Identities.Add(new PendingIdentity
@@ -978,11 +1250,12 @@ namespace PadForge.SteamWorkshop.Translation
                 }
 
                 case "mode_shift":
-                    TranslateModeShift(run, preset, binding, source, path);
+                    TranslateModeShift(run, preset, binding, source, path, toggle: toggle);
                     break;
 
                 case "controller_action":
-                    TranslateControllerAction(run, preset, binding, source, layer, path, onRelease, inputName);
+                    TranslateControllerAction(run, preset, binding, source, layer, path, onRelease,
+                        inputName, toggle: toggle);
                     break;
 
                 case "game_action":
@@ -999,7 +1272,8 @@ namespace PadForge.SteamWorkshop.Translation
 
         private void TranslateKeyPress(Run run, SteamInputPreset preset, SteamInputBinding binding,
             ResolvedSource source, string clickGate, string layer, string path,
-            bool soft, bool onRelease, bool holdRepeats, int intervalMs, string inputName)
+            bool soft, bool onRelease, bool holdRepeats, int intervalMs, bool toggle,
+            string inputName)
         {
             string keyName = FirstToken(binding.Param);
             if (!SteamInputVkTable.TryResolve(keyName, out byte vk, out bool supported))
@@ -1013,6 +1287,29 @@ namespace PadForge.SteamWorkshop.Translation
                 run.Report.Add(TranslationStatus.Skipped, TranslationReasons.UnsupportedKey,
                     path, binding.Raw, args: keyName);
                 return;
+            }
+
+            // Activator toggle (wave 2A): the key latches down until the
+            // input is pressed again. The latch replaces the momentary row
+            // entirely (Steam's toggle replaces the momentary output). A
+            // release activator's toggle flips on release instead.
+            if (toggle)
+            {
+                if (HasDeviceFreeTrigger(source))
+                {
+                    EmitKeyToggleMacro(run, binding, source, path, vk, keyName, onRelease, inputName);
+                    if (holdRepeats)
+                    {
+                        run.Report.Add(TranslationStatus.Partial, TranslationReasons.RepeatDropped,
+                            path, binding.Raw);
+                    }
+                    return;
+                }
+                // No device-free trigger for a latch (touchpad / paddle
+                // hosts): keep the Wave-1 momentary row and name the drop
+                // rather than losing the binding.
+                run.Report.Add(TranslationStatus.Partial, TranslationReasons.ToggleDropped,
+                    path, binding.Raw);
             }
 
             if (onRelease || holdRepeats)
@@ -1031,37 +1328,205 @@ namespace PadForge.SteamWorkshop.Translation
                 source, clickGate, isAxis: false, soft, path, binding.Raw);
         }
 
-        private void EmitKeyMacro(Run run, SteamInputPreset preset, SteamInputBinding binding,
+        private bool EmitKeyMacro(Run run, SteamInputPreset preset, SteamInputBinding binding,
             ResolvedSource source, string path,
             (TranslatedMacroAction Action, string TriggerMode) shape,
-            byte vk, int intervalMs, string keyName, string inputName)
+            byte vk, int intervalMs, string keyName, string inputName, int holdMs = 0)
         {
-            if (source.XboxButtonBit == 0 && string.IsNullOrEmpty(source.MacroAxisTarget))
+            if (!HasDeviceFreeTrigger(source))
             {
                 run.Report.Add(TranslationStatus.Skipped, TranslationReasons.NoDeviceFreeTrigger,
                     path, binding.Raw);
-                return;
+                return false;
             }
 
-            string verb = shape.Action == TranslatedMacroAction.KeyTap ? "Tap" : "Autofire";
-            run.Profile.Macros.Add(new TranslatedMacro
+            bool longPressTap = shape.Action == TranslatedMacroAction.KeyTap && holdMs > 0;
+            string verb = shape.Action == TranslatedMacroAction.KeyTap
+                ? (longPressTap ? "Long press" : "Tap")
+                : "Autofire";
+            var macro = new TranslatedMacro
             {
                 Name = $"{verb} {keyName} ({inputName})",
                 Action = shape.Action,
                 TriggerMode = shape.TriggerMode,
-                TriggerXboxButtons = source.XboxButtonBit,
-                TriggerAxisTarget = source.XboxButtonBit == 0 ? source.MacroAxisTarget ?? "" : "",
-                TriggerAxisThresholdPercent = source.DeadZone > 0 ? source.DeadZone : 50,
+                TriggerHoldMs = holdMs,
                 ConsumeTrigger = true,
                 VirtualKey = vk,
                 IntervalMs = intervalMs,
-            });
+            };
+            FillMacroTrigger(macro, source);
+            run.Profile.Macros.Add(macro);
+            // A Long_Press key gets its own named Partial: Steam holds the
+            // key down from the threshold until release, PadForge fires one
+            // tap at the threshold (no hold-a-key-until-release primitive).
+            if (longPressTap)
+            {
+                run.Report.Add(TranslationStatus.Partial, TranslationReasons.LongPressKeyTap,
+                    path, binding.Raw, emitted: $"{verb} {keyName} macro", keyName);
+            }
+            else
+            {
+                run.Report.Add(TranslationStatus.Partial, TranslationReasons.MacroTriggerViaXboxOutput,
+                    path, binding.Raw, emitted: $"{verb} {keyName} macro");
+            }
+            return true;
+        }
+
+        /// <summary>True when a resolved physical source can drive a
+        /// device-free macro trigger through the Xbox slot's combined
+        /// output: an Xbox button bit or an analog trigger read.</summary>
+        private static bool HasDeviceFreeTrigger(ResolvedSource source)
+            => source.XboxButtonBit != 0 || !string.IsNullOrEmpty(source.MacroAxisTarget);
+
+        /// <summary>Stamps the standard device-free trigger fields (the
+        /// EmitKeyMacro pattern every macro emission shares).</summary>
+        private static void FillMacroTrigger(TranslatedMacro macro, ResolvedSource source)
+        {
+            macro.TriggerXboxButtons = source.XboxButtonBit;
+            macro.TriggerAxisTarget = source.XboxButtonBit == 0 ? source.MacroAxisTarget ?? "" : "";
+            macro.TriggerAxisThresholdPercent = source.DeadZone > 0 ? source.DeadZone : 50;
+        }
+
+        /// <summary>The activator toggle on an xinput binding (wave 2A): a
+        /// ToggleVcButton latch macro. Two trigger shapes:
+        /// <paramref name="rowKept"/> = true (press-type activators) keeps
+        /// the Wave-1 momentary row and fires the latch on the TARGET bit's
+        /// press edge, which that row feeds whenever the physical input is
+        /// pressed (the only self-contained device-free trigger; proven
+        /// necessary on 2774979654, where the host input carries no other
+        /// binding). Reported Partial: the row re-asserts the target during
+        /// the unlatching press, and other feeders of the same target also
+        /// flip the latch. <paramref name="rowKept"/> = false (Long_Press,
+        /// which never emits rows) fires on the SOURCE's identity through
+        /// the standard device-free gate and reports Clean.</summary>
+        private bool EmitVcToggleMacro(Run run, SteamInputBinding binding, ResolvedSource source,
+            string path, XInputTargetTable.XInputTarget xt, bool rowKept, string inputName,
+            int holdMs = 0)
+        {
+            var macro = new TranslatedMacro
+            {
+                Name = $"Toggle {xt.Target} ({inputName})",
+                Action = TranslatedMacroAction.ToggleVcButton,
+                TriggerMode = holdMs > 0 ? "HoldForMs" : "OnPress",
+                TriggerHoldMs = holdMs,
+                TargetXboxButtons = xt.XboxButtonBit,
+                ConsumeTrigger = false,
+            };
+            if (rowKept)
+            {
+                macro.TriggerXboxButtons = xt.XboxButtonBit;
+                macro.TriggerAxisTarget = "";
+            }
+            else
+            {
+                if (!HasDeviceFreeTrigger(source))
+                {
+                    run.Report.Add(TranslationStatus.Skipped, TranslationReasons.NoDeviceFreeTrigger,
+                        path, binding.Raw);
+                    return false;
+                }
+                FillMacroTrigger(macro, source);
+            }
+            run.Profile.Macros.Add(macro);
+            run.Report.Add(rowKept ? TranslationStatus.Partial : TranslationStatus.Clean,
+                TranslationReasons.ToggleLatchEmitted,
+                path, binding.Raw, emitted: $"Toggle {xt.Target} latch macro", xt.Target);
+            return true;
+        }
+
+        /// <summary>The activator toggle on a key binding (wave 2A): a
+        /// ToggleKey latch macro replacing the momentary row.</summary>
+        private bool EmitKeyToggleMacro(Run run, SteamInputBinding binding, ResolvedSource source,
+            string path, byte vk, string keyName, bool onRelease, string inputName, int holdMs = 0)
+        {
+            if (!HasDeviceFreeTrigger(source))
+            {
+                run.Report.Add(TranslationStatus.Skipped, TranslationReasons.NoDeviceFreeTrigger,
+                    path, binding.Raw);
+                return false;
+            }
+            var macro = new TranslatedMacro
+            {
+                Name = $"Toggle {keyName} ({inputName})",
+                Action = TranslatedMacroAction.ToggleKey,
+                TriggerMode = holdMs > 0 ? "HoldForMs" : (onRelease ? "OnRelease" : "OnPress"),
+                TriggerHoldMs = holdMs,
+                ConsumeTrigger = false,
+                VirtualKey = vk,
+            };
+            FillMacroTrigger(macro, source);
+            run.Profile.Macros.Add(macro);
+            run.Report.Add(TranslationStatus.Clean, TranslationReasons.ToggleLatchEmitted,
+                path, binding.Raw, emitted: $"Toggle {keyName} latch macro", keyName);
+            return true;
+        }
+
+        /// <summary>hold_repeats on an xinput binding (wave 2A): a
+        /// RepeatVcButtonWhileHeld turbo macro pulsing the target at
+        /// repeat_rate ms while the physical input is held (from the
+        /// Long_Press threshold when <paramref name="holdMs"/> is set).
+        /// Long_Press turbo consumes its trigger bits, approximating
+        /// Steam's interruptable pause of same-input activators once a
+        /// long press fires.</summary>
+        private bool EmitVcTurboMacro(Run run, SteamInputBinding binding, ResolvedSource source,
+            string path, XInputTargetTable.XInputTarget xt, int intervalMs, int holdMs,
+            string inputName)
+        {
+            if (!HasDeviceFreeTrigger(source))
+            {
+                run.Report.Add(TranslationStatus.Skipped, TranslationReasons.NoDeviceFreeTrigger,
+                    path, binding.Raw);
+                return false;
+            }
+            var macro = new TranslatedMacro
+            {
+                Name = $"Turbo {xt.Target} ({inputName})",
+                Action = TranslatedMacroAction.RepeatVcButtonWhileHeld,
+                TriggerMode = holdMs > 0 ? "HoldForMs" : "WhileHeld",
+                TriggerHoldMs = holdMs,
+                TargetXboxButtons = xt.XboxButtonBit,
+                ConsumeTrigger = holdMs > 0,
+                IntervalMs = intervalMs,
+            };
+            FillMacroTrigger(macro, source);
+            run.Profile.Macros.Add(macro);
             run.Report.Add(TranslationStatus.Partial, TranslationReasons.MacroTriggerViaXboxOutput,
-                path, binding.Raw, emitted: $"{verb} {keyName} macro");
+                path, binding.Raw, emitted: $"Turbo {xt.Target} macro ({intervalMs} ms)");
+            return true;
+        }
+
+        /// <summary>A plain Long_Press xinput binding (wave 2A): the target
+        /// button engages at the hold threshold and stays down until the
+        /// physical input releases, Valve's documented Long_Press shape.
+        /// Consumes its trigger bits while active (the interruptable-pause
+        /// approximation, same as the turbo variant).</summary>
+        private bool EmitVcHoldMacro(Run run, SteamInputBinding binding, ResolvedSource source,
+            string path, XInputTargetTable.XInputTarget xt, int holdMs, string inputName)
+        {
+            if (!HasDeviceFreeTrigger(source))
+            {
+                run.Report.Add(TranslationStatus.Skipped, TranslationReasons.NoDeviceFreeTrigger,
+                    path, binding.Raw);
+                return false;
+            }
+            var macro = new TranslatedMacro
+            {
+                Name = $"Long press {xt.Target} ({inputName})",
+                Action = TranslatedMacroAction.HoldVcButton,
+                TriggerMode = "HoldForMs",
+                TriggerHoldMs = holdMs,
+                TargetXboxButtons = xt.XboxButtonBit,
+                ConsumeTrigger = true,
+            };
+            FillMacroTrigger(macro, source);
+            run.Profile.Macros.Add(macro);
+            run.Report.Add(TranslationStatus.Partial, TranslationReasons.MacroTriggerViaXboxOutput,
+                path, binding.Raw, emitted: $"Long-press hold macro: {xt.Target}");
+            return true;
         }
 
         private void TranslateModeShift(Run run, SteamInputPreset preset, SteamInputBinding binding,
-            ResolvedSource source, string path, int activatorDelayMs = 0)
+            ResolvedSource source, string path, int activatorDelayMs = 0, bool toggle = false)
         {
             // Param: "{slot} {groupId}". The layer holds the groups the
             // preset marks "{slot} active modeshift".
@@ -1097,7 +1562,10 @@ namespace PadForge.SteamWorkshop.Translation
             {
                 LayerMask = layerMask,
                 LayerName = $"{slotToken} shift",
-                Mode = "Hold",
+                // The activator toggle setting latches the shift instead of
+                // holding it (wave 2A); the engine's Toggle mode is the
+                // same construct.
+                Mode = toggle ? "Toggle" : "Hold",
                 InheritUnmapped = true, // mode shift overlays the slot; everything else keeps working
                 DelayMs = activatorDelayMs,
                 Descriptor = source.Descriptor,
@@ -1114,7 +1582,7 @@ namespace PadForge.SteamWorkshop.Translation
 
         private void TranslateControllerAction(Run run, SteamInputPreset preset,
             SteamInputBinding binding, ResolvedSource source, string layer, string path,
-            bool onRelease, string inputName, int activatorDelayMs = 0)
+            bool onRelease, string inputName, int activatorDelayMs = 0, bool toggle = false)
         {
             var tokens = (binding.Param ?? "").Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
             string action = tokens.Length > 0 ? tokens[0] : "";
@@ -1190,7 +1658,11 @@ namespace PadForge.SteamWorkshop.Translation
                     {
                         LayerMask = $"Layer_{run.Options.FileId}_{presetId}",
                         LayerName = PresetLayerName(run, presetId),
-                        Mode = action.Equals("HOLD_LAYER", StringComparison.OrdinalIgnoreCase) ? "Hold" : "Toggle",
+                        // add_layer latches by nature; hold_layer holds
+                        // unless the activator's toggle setting latches it
+                        // (wave 2A).
+                        Mode = action.Equals("HOLD_LAYER", StringComparison.OrdinalIgnoreCase) && !toggle
+                            ? "Hold" : "Toggle",
                         InheritUnmapped = true, // Steam action layers overlay the set below
                         DelayMs = activatorDelayMs,
                         Descriptor = source.Descriptor,
@@ -1305,6 +1777,40 @@ namespace PadForge.SteamWorkshop.Translation
                     }
                     run.Report.Add(TranslationStatus.Partial, TranslationReasons.MacroTriggerViaXboxOutput,
                         path, binding.Raw, emitted: "Set LED macro");
+                    return;
+                }
+
+                case "CAMERA_RESET":
+                {
+                    // controller_action camera_reset {yaw} {pitch} {speed}
+                    // (Valve's shipped gyro/flick-stick templates carry
+                    // "camera_reset 180 66 90"). Steam re-levels the in-game
+                    // camera through calibrated mouse motion ("Reset the
+                    // camera to the Horizon ... requires the Dots Per 360°
+                    // setting"); PadForge has no dots-per-360 channel, so the
+                    // nearest primitive is the gyro-recenter macro, which
+                    // re-references the slot's gyro aim state (wave 2A,
+                    // Partial). The numeric args calibrate Steam's camera
+                    // surgery and are dropped.
+                    if (!HasDeviceFreeTrigger(source))
+                    {
+                        run.Report.Add(TranslationStatus.Skipped, TranslationReasons.NoDeviceFreeTrigger,
+                            path, binding.Raw);
+                        return;
+                    }
+                    var macro = new TranslatedMacro
+                    {
+                        Name = $"Recenter gyro ({inputName})",
+                        Action = TranslatedMacroAction.GyroRecenter,
+                        TriggerMode = activatorDelayMs > 0 ? "HoldForMs"
+                            : onRelease ? "OnRelease" : "OnPress",
+                        TriggerHoldMs = activatorDelayMs,
+                        ConsumeTrigger = false,
+                    };
+                    FillMacroTrigger(macro, source);
+                    run.Profile.Macros.Add(macro);
+                    run.Report.Add(TranslationStatus.Partial, TranslationReasons.CameraResetApproximated,
+                        path, binding.Raw, emitted: "Gyro recenter macro");
                     return;
                 }
 

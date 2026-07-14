@@ -357,6 +357,11 @@ namespace PadForge.Common.Input
         /// </summary>
         internal void EvaluateSlotMacros(ref Gamepad gp, MacroItem[] macros)
         {
+            // Fresh slot-device resolution per evaluator call (#9 B-9):
+            // device-free trigger entries resolve against the slot's
+            // CURRENT online devices, refilled lazily on first need.
+            _slotTriggerDeviceSlot = -1;
+
             for (int m = 0; m < macros.Length; m++)
             {
                 var macro = macros[m];
@@ -364,16 +369,17 @@ namespace PadForge.Common.Input
                     continue;
 
                 // Skip macros with no trigger configured (unless Always /
-                // CustomExpression mode — Custom always has a formula that
+                // CustomExpression mode. Custom always has a formula that
                 // evaluates, even if the formula references no variables).
                 bool hasButtons = macro.UsesRawTrigger || macro.TriggerButtons != 0;
                 if (macro.TriggerMode != MacroTriggerMode.Always &&
                     macro.TriggerMode != MacroTriggerMode.CustomExpression &&
                     !macro.UsesAxisTrigger && !macro.UsesPovTrigger && !hasButtons &&
-                    !macro.UsesGestureTrigger)
+                    !macro.UsesGestureTrigger && !macro.UsesDescriptorTrigger)
                     continue;
 
-                // Determine trigger state. Buttons, POVs, gestures, AND axes must all be active together.
+                // Determine trigger state. Buttons, POVs, gestures, descriptors,
+                // AND axes must all be active together.
                 bool triggerActive;
                 if (macro.TriggerMode == MacroTriggerMode.Always)
                     triggerActive = true;
@@ -384,6 +390,7 @@ namespace PadForge.Common.Input
                     bool buttonOk = true;
                     bool povOk = true;
                     bool gestureOk = true;
+                    bool descriptorOk = true;
                     bool axisOk = true;
 
                     if (hasButtons)
@@ -397,6 +404,8 @@ namespace PadForge.Common.Input
                         povOk = CheckRawPovTrigger(macro);
                     if (macro.UsesGestureTrigger)
                         gestureOk = CheckGestureTrigger(macro);
+                    if (macro.UsesDescriptorTrigger)
+                        descriptorOk = CheckDescriptorTrigger(macro);
                     if (macro.UsesAxisTrigger)
                     {
                         float threshold = macro.TriggerAxisThreshold / 100f;
@@ -429,7 +438,7 @@ namespace PadForge.Common.Input
                     // the same Invert / HalfAxis / DeadZone semantics the
                     // merge-mapping engine uses for axis-to-button sources
                     // (see PadForge.Engine.Common.Mapping.SourceCoercion).
-                    // No per-axis-target classification — every axis index
+                    // No per-axis-target classification. Every axis index
                     // is evaluated uniformly with the entry's three flags.
                     if (axisOk)
                     {
@@ -438,56 +447,26 @@ namespace PadForge.Common.Input
                         {
                             var e = entries[i];
                             if (e.AxisTarget == MacroAxisTarget.None) continue;
-                            var ud = FindSlotDeviceByInstanceGuid(e.DeviceGuid, macro.PadIndex);
-                            if (ud == null || !ud.IsOnline || ud.InputState?.Axis == null)
-                            { axisOk = false; break; }
-                            int axIdx = e.AxisTarget switch
-                            {
-                                MacroAxisTarget.LeftStickX  => 0,
-                                MacroAxisTarget.LeftStickY  => 1,
-                                MacroAxisTarget.LeftTrigger => 2,
-                                MacroAxisTarget.RightStickX => 3,
-                                MacroAxisTarget.RightStickY => 4,
-                                MacroAxisTarget.RightTrigger=> 5,
-                                _ => -1
-                            };
-                            if (axIdx < 0 || axIdx >= ud.InputState.Axis.Length)
-                            { axisOk = false; break; }
-
-                            int av = ud.InputState.Axis[axIdx];
-                            double thresh = Math.Max(e.DeadZone, 1) / 100.0;
                             bool active;
-                            if (e.HalfAxis)
+                            if (e.DeviceGuid == Guid.Empty)
                             {
-                                if (e.Bidirectional)
-                                {
-                                    // Either side of center past deadzone counts —
-                                    // |av − 32768| > 32767 * thresh. Invert is
-                                    // irrelevant here (mirroring around center
-                                    // covers both directions already).
-                                    int delta = av - 32768;
-                                    if (delta < 0) delta = -delta;
-                                    active = delta > (int)(32767 * thresh);
-                                }
-                                else if (e.Invert)
-                                    active = av < (int)(32767 * (1.0 - thresh));
-                                else
-                                    active = av > (int)(32768 + 32767 * thresh);
+                                // Device-free entry (#9 B-9): satisfied when
+                                // ANY online device on the macro's slot
+                                // crosses the threshold, the macro-side
+                                // mirror of the mapping engine's empty-
+                                // DeviceGuid contract.
+                                active = AnySlotDeviceAxisEntryActive(macro.PadIndex, e);
                             }
                             else
                             {
-                                int hi = (int)(thresh * 65535);
-                                if (e.Invert)
-                                    active = av < 65535 - hi;
-                                else
-                                    active = av > hi;
+                                var ud = FindSlotDeviceByInstanceGuid(e.DeviceGuid, macro.PadIndex);
+                                active = TriggerAxisEntryActive(ud, e);
                             }
-
                             if (!active) { axisOk = false; break; }
                         }
                     }
 
-                    triggerActive = buttonOk && povOk && gestureOk && axisOk;
+                    triggerActive = buttonOk && povOk && gestureOk && descriptorOk && axisOk;
                 }
 
                 bool wasTriggerActive = macro.WasTriggerActive;
@@ -793,6 +772,245 @@ namespace PadForge.Common.Input
             return FindOnlineDeviceByInstanceGuid(instanceGuid);
         }
 
+        // ── Device-free trigger entries (#9 B-9) ──
+        //
+        // A TriggerInputEntry with Guid.Empty means "the device on the
+        // macro's slot", the macro-side mirror of the mapping engine's
+        // empty MappingSource.DeviceGuid contract (the Workshop translator
+        // emits it on every binding). Where a mapping row evaluates against
+        // every device feeding the slot and max/OR-combines, a device-free
+        // entry is satisfied when ANY online device on the macro's slot
+        // satisfies it. A slot with no online devices satisfies nothing,
+        // matching the offline-concrete-device behavior.
+        //
+        // The slot's devices are resolved once per evaluator call into
+        // scratch arrays (poll thread only, no steady-state allocation).
+        // The guid snapshot happens under the UserSettings lock and the
+        // device resolution OUTSIDE it: FindOnlineDeviceByInstanceGuid
+        // takes UserDevices.SyncRoot, and the lock order is UserDevices
+        // before UserSettings, never nested the other way.
+
+        private Guid[] _slotTriggerGuidScratch = new Guid[8];
+        private Engine.Data.UserDevice[] _slotTriggerDeviceScratch = new Engine.Data.UserDevice[8];
+        private int _slotTriggerDeviceCount;
+        private int _slotTriggerDeviceSlot = -1;
+
+        /// <summary>Fills the scratch with the slot's online devices on
+        /// first need per evaluator call (the evaluators reset
+        /// <see cref="_slotTriggerDeviceSlot"/> on entry) and returns the
+        /// count. Repeat calls for the same slot re-serve the fill.</summary>
+        private int EnsureSlotTriggerDevices(int slotIndex)
+        {
+            if (_slotTriggerDeviceSlot == slotIndex) return _slotTriggerDeviceCount;
+            _slotTriggerDeviceSlot = slotIndex;
+            _slotTriggerDeviceCount = 0;
+
+            var settings = SettingsManager.UserSettings;
+            if (settings == null) return 0;
+            int guidCount = 0;
+            lock (settings.SyncRoot)
+            {
+                foreach (var us in settings.Items)
+                {
+                    if (us.MapTo != slotIndex) continue;
+                    if (guidCount == _slotTriggerGuidScratch.Length)
+                        Array.Resize(ref _slotTriggerGuidScratch, _slotTriggerGuidScratch.Length * 2);
+                    _slotTriggerGuidScratch[guidCount++] = us.InstanceGuid;
+                }
+            }
+
+            for (int i = 0; i < guidCount; i++)
+            {
+                var ud = FindOnlineDeviceByInstanceGuid(_slotTriggerGuidScratch[i]);
+                if (ud == null || !ud.IsOnline || ud.InputState == null) continue;
+                if (_slotTriggerDeviceCount == _slotTriggerDeviceScratch.Length)
+                    Array.Resize(ref _slotTriggerDeviceScratch, _slotTriggerDeviceScratch.Length * 2);
+                _slotTriggerDeviceScratch[_slotTriggerDeviceCount++] = ud;
+            }
+            return _slotTriggerDeviceCount;
+        }
+
+        /// <summary>Per-device axis trigger entry test, extracted from the
+        /// Gamepad-path inline loop so the device-free resolution can run
+        /// the SAME math against each slot device. Semantics unchanged:
+        /// the entry's Invert / HalfAxis / Bidirectional / DeadZone flags
+        /// applied uniformly to any axis index, exactly as before.</summary>
+        private static bool TriggerAxisEntryActive(Engine.Data.UserDevice ud, MacroItem.TriggerInputEntry e)
+        {
+            if (ud == null || !ud.IsOnline || ud.InputState?.Axis == null) return false;
+            int axIdx = AxisTargetToDeviceIndex(e.AxisTarget);
+            if (axIdx < 0 || axIdx >= ud.InputState.Axis.Length) return false;
+
+            int av = ud.InputState.Axis[axIdx];
+            double thresh = Math.Max(e.DeadZone, 1) / 100.0;
+            if (e.HalfAxis)
+            {
+                if (e.Bidirectional)
+                {
+                    // Either side of center past deadzone counts:
+                    // |av − 32768| > 32767 * thresh. Invert is
+                    // irrelevant here (mirroring around center
+                    // covers both directions already).
+                    int delta = av - 32768;
+                    if (delta < 0) delta = -delta;
+                    return delta > (int)(32767 * thresh);
+                }
+                if (e.Invert)
+                    return av < (int)(32767 * (1.0 - thresh));
+                return av > (int)(32768 + 32767 * thresh);
+            }
+            int hi = (int)(thresh * 65535);
+            if (e.Invert)
+                return av < 65535 - hi;
+            return av > hi;
+        }
+
+        private bool AnySlotDeviceAxisEntryActive(int slotIndex, MacroItem.TriggerInputEntry e)
+        {
+            int n = EnsureSlotTriggerDevices(slotIndex);
+            for (int i = 0; i < n; i++)
+                if (TriggerAxisEntryActive(_slotTriggerDeviceScratch[i], e)) return true;
+            return false;
+        }
+
+        private bool AnySlotDeviceButtonDown(int slotIndex, int rawButton)
+        {
+            int n = EnsureSlotTriggerDevices(slotIndex);
+            for (int i = 0; i < n; i++)
+            {
+                var btns = _slotTriggerDeviceScratch[i].InputState?.Buttons;
+                if (btns != null && rawButton >= 0 && rawButton < btns.Length && btns[rawButton])
+                    return true;
+            }
+            return false;
+        }
+
+        private bool AnySlotDevicePovActive(int slotIndex, int povIdx, int targetCd)
+        {
+            int n = EnsureSlotTriggerDevices(slotIndex);
+            for (int i = 0; i < n; i++)
+            {
+                var povs = _slotTriggerDeviceScratch[i].InputState?.Povs;
+                if (povs == null || povIdx < 0 || povIdx >= povs.Length || povs[povIdx] < 0)
+                    continue;
+                int diff = Math.Abs(povs[povIdx] - targetCd);
+                if (diff > 18000) diff = 36000 - diff;
+                if (diff <= 2250) return true;
+            }
+            return false;
+        }
+
+        /// <summary>Device-free gesture entry test: the entry fires when
+        /// the gesture is asserted for ANY online device on the slot. Uses
+        /// the devices' cached guid strings so the 1 kHz path stays
+        /// allocation-free like the concrete-guid path.</summary>
+        private bool AnySlotDeviceGestureFired(int slotIndex, MacroItem.TriggerInputEntry e)
+        {
+            int n = EnsureSlotTriggerDevices(slotIndex);
+            if (e.GestureDescriptor.StartsWith("Mouse Gesture ", StringComparison.Ordinal))
+            {
+                var mouseProvider = PadForge.Engine.Common.Mapping.SourceCoercion.MouseGestureFiredProvider;
+                if (mouseProvider == null) return false;
+                if (!TryResolveMouseGestureKey(e.GestureDescriptor, out string mgKey)) return false;
+                for (int i = 0; i < n; i++)
+                    if (mouseProvider(slotIndex, _slotTriggerDeviceScratch[i].InstanceGuidString, mgKey))
+                        return true;
+                return false;
+            }
+
+            var provider = PadForge.Engine.Common.Mapping.SourceCoercion.TouchpadGestureFiredProvider;
+            if (provider == null) return false;
+            if (!e.TryGetGestureParts(out int padIdx, out string gestureName)) return false;
+            for (int i = 0; i < n; i++)
+                if (provider(slotIndex, _slotTriggerDeviceScratch[i].InstanceGuidString, padIdx, gestureName))
+                    return true;
+            return false;
+        }
+
+        /// <summary>Resolves a "Mouse Gesture {buttonIndex} {Name}"
+        /// descriptor to the recognizer's precomposed fired-set key, so
+        /// the 1 kHz path never composes strings. Extracted from the
+        /// gesture checker's inline parse so the device-free loop shares
+        /// it.</summary>
+        private static bool TryResolveMouseGestureKey(string desc, out string mgKey)
+        {
+            mgKey = null;
+            const int prefixLen = 14; // "Mouse Gesture ".Length
+            if (desc.Length < prefixLen + 3) return false;
+            int btn = desc[prefixLen] - '0';
+            if (btn < 0 || btn >= PadForge.Engine.Mouse.MouseGestureContext.ButtonCount
+                || desc[prefixLen + 1] != ' ') return false;
+            int gIdx =
+                desc.EndsWith(" Left", StringComparison.Ordinal) ? 0 :
+                desc.EndsWith(" Right", StringComparison.Ordinal) ? 1 :
+                desc.EndsWith(" Up", StringComparison.Ordinal) ? 2 :
+                desc.EndsWith(" Down", StringComparison.Ordinal) ? 3 :
+                desc.EndsWith(" Click", StringComparison.Ordinal) ? 4 : -1;
+            if (gIdx < 0) return false;
+            mgKey = PadForge.Engine.Mouse.MouseGestureRecognizer.Keys[btn][gIdx];
+            return true;
+        }
+
+        // ── Descriptor trigger entries (#9 B-9) ──
+
+        /// <summary>Threshold percent handed to the descriptor-entry button
+        /// read as the global fallback (the entry's cached MappingSource
+        /// leaves DeadZone unset). 50 matches the mapping engine's
+        /// MappingSource.DeadZone default and the legacy axis-trigger
+        /// default, so a descriptor trigger fires where a mapping row with
+        /// default deadzone would. Gyro ignores it and keeps the engine's
+        /// own rate threshold.</summary>
+        private const int DescriptorTriggerThresholdPercent = 50;
+
+        /// <summary>
+        /// Checks whether every descriptor entry on the macro's trigger is
+        /// currently active (#9 B-9). Evaluated through the SAME reader the
+        /// mapping grid uses (SourceCoercion.EvaluateForButtonTarget), so
+        /// abstract "Gamepad ..." spellings canonicalize inside the read and
+        /// the gyro / touchpad families get the identical per-(device, slot)
+        /// tuning, thresholds, and engage gates a mapping row gets. Same
+        /// multi-device AND shape as the button / POV / gesture checkers;
+        /// device-free entries resolve per slot device.
+        /// </summary>
+        private bool CheckDescriptorTrigger(MacroItem macro)
+        {
+            var entries = macro.GetTriggerInputEntries();
+            for (int i = 0; i < entries.Count; i++)
+            {
+                var e = entries[i];
+                var src = e.DescriptorSource;
+                if (src == null) continue;
+                if (e.DeviceGuid == Guid.Empty)
+                {
+                    if (!AnySlotDeviceDescriptorActive(macro.PadIndex, src)) return false;
+                }
+                else
+                {
+                    var ud = FindSlotDeviceByInstanceGuid(e.DeviceGuid, macro.PadIndex);
+                    if (ud == null || !ud.IsOnline || ud.InputState == null) return false;
+                    if (!PadForge.Engine.Common.Mapping.SourceCoercion.EvaluateForButtonTarget(
+                            ud.InputState, src, DescriptorTriggerThresholdPercent,
+                            macro.PadIndex, ud.InstanceGuidString))
+                        return false;
+                }
+            }
+            return true;
+        }
+
+        private bool AnySlotDeviceDescriptorActive(int slotIndex, PadForge.Engine.Data.MappingSource src)
+        {
+            int n = EnsureSlotTriggerDevices(slotIndex);
+            for (int i = 0; i < n; i++)
+            {
+                var ud = _slotTriggerDeviceScratch[i];
+                if (PadForge.Engine.Common.Mapping.SourceCoercion.EvaluateForButtonTarget(
+                        ud.InputState, src, DescriptorTriggerThresholdPercent,
+                        slotIndex, ud.InstanceGuidString))
+                    return true;
+            }
+            return false;
+        }
+
         /// <summary>
         /// Checks whether every raw-button entry on the macro's trigger is
         /// currently pressed on its respective assigned device. Walks the
@@ -813,6 +1031,13 @@ namespace PadForge.Common.Input
                 {
                     var e = entries[i];
                     if (e.RawButton < 0) continue; // POV entries handled by CheckRawPovTrigger
+                    if (e.DeviceGuid == Guid.Empty)
+                    {
+                        // Device-free entry (#9 B-9): ANY online device on
+                        // the macro's slot holding the button satisfies it.
+                        if (!AnySlotDeviceButtonDown(macro.PadIndex, e.RawButton)) return false;
+                        continue;
+                    }
                     var ud = FindSlotDeviceByInstanceGuid(e.DeviceGuid, macro.PadIndex);
                     if (ud == null || !ud.IsOnline || ud.InputState?.Buttons == null) return false;
                     var btns = ud.InputState.Buttons;
@@ -853,6 +1078,13 @@ namespace PadForge.Common.Input
                     var e = entries[i];
                     if (string.IsNullOrEmpty(e.Pov)) continue; // button entries handled separately
                     if (!MacroItem.ParsePovTrigger(e.Pov, out int idx, out int targetCd)) return false;
+                    if (e.DeviceGuid == Guid.Empty)
+                    {
+                        // Device-free entry (#9 B-9): ANY online device on
+                        // the macro's slot in the sector satisfies it.
+                        if (!AnySlotDevicePovActive(macro.PadIndex, idx, targetCd)) return false;
+                        continue;
+                    }
                     var ud = FindSlotDeviceByInstanceGuid(e.DeviceGuid, macro.PadIndex);
                     if (ud == null || !ud.IsOnline || ud.InputState?.Povs == null) return false;
                     var povs = ud.InputState.Povs;
@@ -906,6 +1138,19 @@ namespace PadForge.Common.Input
             {
                 var e = entries[i];
                 if (string.IsNullOrEmpty(e.GestureDescriptor)) continue;
+                if (e.DeviceGuid == Guid.Empty)
+                {
+                    // Device-free entry (#9 B-9): the gesture must be
+                    // asserted for ANY online device on the macro's slot.
+                    // The provider lookups run with each candidate device's
+                    // resolved guid, never the bare empty guid (the
+                    // providers are keyed by a concrete (slot, device, pad)
+                    // triple, so the bare form always missed; same seam the
+                    // 1087f9bb mapping fix closed). Online gating is
+                    // inherent: only online slot devices are enumerated.
+                    if (!AnySlotDeviceGestureFired(macro.PadIndex, e)) return false;
+                    continue;
+                }
                 // Same online/assignment gate the button and POV checkers
                 // apply. Without it a disconnect mid-touch leaves the
                 // device's gesture context frozen with the held spot key
@@ -925,20 +1170,7 @@ namespace PadForge.Common.Input
                     // "Mouse Gesture {buttonIndex} {Name}". The fired key is
                     // looked up from the recognizer's precomposed table so
                     // this 1 kHz path never composes strings.
-                    string desc = e.GestureDescriptor;
-                    const int prefixLen = 14; // "Mouse Gesture ".Length
-                    if (desc.Length < prefixLen + 3) return false;
-                    int btn = desc[prefixLen] - '0';
-                    if (btn < 0 || btn >= PadForge.Engine.Mouse.MouseGestureContext.ButtonCount
-                        || desc[prefixLen + 1] != ' ') return false;
-                    int gIdx =
-                        desc.EndsWith(" Left", StringComparison.Ordinal) ? 0 :
-                        desc.EndsWith(" Right", StringComparison.Ordinal) ? 1 :
-                        desc.EndsWith(" Up", StringComparison.Ordinal) ? 2 :
-                        desc.EndsWith(" Down", StringComparison.Ordinal) ? 3 :
-                        desc.EndsWith(" Click", StringComparison.Ordinal) ? 4 : -1;
-                    if (gIdx < 0) return false;
-                    string mgKey = PadForge.Engine.Mouse.MouseGestureRecognizer.Keys[btn][gIdx];
+                    if (!TryResolveMouseGestureKey(e.GestureDescriptor, out string mgKey)) return false;
                     if (!mouseProvider(macro.PadIndex, e.DeviceGuidString, mgKey))
                         return false;
                     continue;
@@ -1998,6 +2230,10 @@ namespace PadForge.Common.Input
         // Internal for the PadForge.Tests dispatch pins.
         internal void EvaluateSlotMacrosExtended(ref ExtendedRawState raw, MacroItem[] macros)
         {
+            // Fresh slot-device resolution per evaluator call (#9 B-9),
+            // mirroring the Gamepad path.
+            _slotTriggerDeviceSlot = -1;
+
             for (int m = 0; m < macros.Length; m++)
             {
                 var macro = macros[m];
@@ -2010,10 +2246,11 @@ namespace PadForge.Common.Input
                 if (macro.TriggerMode != MacroTriggerMode.Always &&
                     macro.TriggerMode != MacroTriggerMode.CustomExpression &&
                     !macro.UsesAxisTrigger && !macro.UsesPovTrigger && !hasButtons &&
-                    !macro.UsesGestureTrigger)
+                    !macro.UsesGestureTrigger && !macro.UsesDescriptorTrigger)
                     continue;
 
-                // Check trigger condition. Buttons, POVs, gestures, AND axes must all be active together.
+                // Check trigger condition. Buttons, POVs, gestures, descriptors,
+                // AND axes must all be active together.
                 bool triggerActive;
                 if (macro.TriggerMode == MacroTriggerMode.Always)
                     triggerActive = true;
@@ -2024,6 +2261,7 @@ namespace PadForge.Common.Input
                     bool buttonOk = true;
                     bool povOk = true;
                     bool gestureOk = true;
+                    bool descriptorOk = true;
                     bool axisOk = true;
 
                     if (hasButtons)
@@ -2039,6 +2277,8 @@ namespace PadForge.Common.Input
                         povOk = CheckRawPovTrigger(macro);
                     if (macro.UsesGestureTrigger)
                         gestureOk = CheckGestureTrigger(macro);
+                    if (macro.UsesDescriptorTrigger)
+                        descriptorOk = CheckDescriptorTrigger(macro);
                     if (macro.UsesAxisTrigger)
                     {
                         float threshold = macro.TriggerAxisThreshold / 100f;
@@ -2049,7 +2289,7 @@ namespace PadForge.Common.Input
                         }
                     }
 
-                    triggerActive = buttonOk && povOk && gestureOk && axisOk;
+                    triggerActive = buttonOk && povOk && gestureOk && descriptorOk && axisOk;
                 }
 
                 bool wasTriggerActive = macro.WasTriggerActive;

@@ -30,7 +30,7 @@ kbm rows: 11
   Layer_1172518660_5 | KbmMouseY
     <- Touchpad 1 Finger 0 Y
 macros: 0
-report: v2 rows:x0+k11 macros:0 layers:0 clean:11 partial:13 skipped:4 errors:0
+report: v3 rows:x0+k11 macros:0 layers:0 clean:11 partial:13 skipped:4 errors:0
   Partial AbsoluteMouseApproximated @ FPSControls/gyro/group 48 (absolute_mouse)
   Clean RowEmitted @ FPSControls/gyro/group 48 (absolute_mouse) => KbmMouseX <- Gyro Yaw
   Clean RowEmitted @ FPSControls/gyro/group 48 (absolute_mouse) => KbmMouseY <- Gyro Pitch

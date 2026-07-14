@@ -103,7 +103,7 @@ kbm activators: 3
   Hold Layer_708227783_0_MS_left_trackpad_6 | Gamepad Paddle1 | inherit | name=left_trackpad shift
   Cycle Layer_708227783_1 cycle=Layer_708227783_1+Base | Gamepad ButtonY | name=Preset_1000001 / Default
 macros: 0
-report: v2 rows:x0+k46 macros:0 layers:3 clean:48 partial:13 skipped:23 errors:0
+report: v3 rows:x0+k46 macros:0 layers:3 clean:48 partial:13 skipped:23 errors:0
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_A/Full_Press => KbmKey20 <- Gamepad ButtonA
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_B/Full_Press => KbmKey4F <- Gamepad ButtonB
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_X/Full_Press => KbmKey1B <- Gamepad ButtonX

@@ -226,9 +226,14 @@ namespace PadForge.Tests
                 new InputChoice { Descriptor = "Touchpad 0 PinchAxis", DeviceGuid = g }, out _));
             Assert.False(MacroItem.TryBuildTriggerEntry(
                 new InputChoice { Descriptor = "Touchpad 0 Finger 0 X", DeviceGuid = g }, out _));
-            // No device, no entry.
+            // An empty device guid converts to a device-free entry (#9 B-9,
+            // the "(Any device)" picker group); an unparsable guid still
+            // rejects.
+            Assert.True(MacroItem.TryBuildTriggerEntry(
+                new InputChoice { Descriptor = "Button 4", DeviceGuid = "" }, out var anyDev));
+            Assert.Equal(System.Guid.Empty, anyDev.DeviceGuid);
             Assert.False(MacroItem.TryBuildTriggerEntry(
-                new InputChoice { Descriptor = "Button 4", DeviceGuid = "" }, out _));
+                new InputChoice { Descriptor = "Button 4", DeviceGuid = "not-a-guid" }, out _));
         }
 
         // ─── The migrator keeps the new descriptors byte-identical ───

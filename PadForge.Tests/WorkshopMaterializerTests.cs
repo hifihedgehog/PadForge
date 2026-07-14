@@ -99,10 +99,209 @@ namespace PadForge.Tests
             Assert.Equal(MacroTriggerMode.WhileHeld, m.TriggerMode);
             Assert.Equal(Gamepad.A, m.TriggerButtons);
             Assert.True(m.ConsumeTriggerButtons);
+            // Continuous actions only stop on release via UntilRelease
+            // (Step4b's stop clause); Once would autofire forever after
+            // the trigger released (wave 2A fix).
+            Assert.Equal(MacroRepeatMode.UntilRelease, m.RepeatMode);
             var a = Assert.Single(m.Actions);
             Assert.Equal(PadForge.ViewModels.MacroActionType.RepeatKeyWhileHeld, a.Type);
             Assert.Equal(0x57, a.KeyCode);
             Assert.Equal(99, a.IntervalMs);
+        }
+
+        // ─── Wave 2A lowerings ──────────────────────────────────────────
+
+        [Fact]
+        public void Materialize_BuildsVcTurboMacro_UntilRelease()
+        {
+            var t = SampleProfile();
+            t.Macros.Add(new TranslatedMacro
+            {
+                Name = "Turbo ButtonB (button_a)",
+                Action = TranslatedMacroAction.RepeatVcButtonWhileHeld,
+                TriggerMode = "WhileHeld",
+                TriggerXboxButtons = Gamepad.A,
+                TargetXboxButtons = Gamepad.B,
+                IntervalMs = 125,
+            });
+
+            var m = Assert.Single(WorkshopProfileMaterializer.Materialize(t).Macros);
+            Assert.Equal(MacroTriggerMode.WhileHeld, m.TriggerMode);
+            Assert.Equal(MacroRepeatMode.UntilRelease, m.RepeatMode);
+            var a = Assert.Single(m.Actions);
+            Assert.Equal(PadForge.ViewModels.MacroActionType.RepeatVcButtonWhileHeld, a.Type);
+            Assert.Equal(Gamepad.B, a.ButtonFlags);
+            Assert.Equal(125, a.IntervalMs);
+        }
+
+        [Fact]
+        public void Materialize_BuildsHoldVcButton_AsHoldForMsButtonPress()
+        {
+            var t = SampleProfile();
+            t.Macros.Add(new TranslatedMacro
+            {
+                Name = "Long press ButtonY (button_a)",
+                Action = TranslatedMacroAction.HoldVcButton,
+                TriggerMode = "HoldForMs",
+                TriggerHoldMs = 300,
+                TriggerXboxButtons = Gamepad.A,
+                TargetXboxButtons = Gamepad.Y,
+                ConsumeTrigger = true,
+            });
+
+            var m = Assert.Single(WorkshopProfileMaterializer.Materialize(t).Macros);
+            Assert.Equal(MacroTriggerMode.HoldForMs, m.TriggerMode);
+            Assert.Equal(300, m.TriggerHoldMs);
+            // The hold shape: restart the one-action sequence every frame
+            // (RepeatDelayMs 0) until the physical release stops it.
+            Assert.Equal(MacroRepeatMode.UntilRelease, m.RepeatMode);
+            Assert.Equal(0, m.RepeatDelayMs);
+            Assert.True(m.ConsumeTriggerButtons);
+            var a = Assert.Single(m.Actions);
+            Assert.Equal(PadForge.ViewModels.MacroActionType.ButtonPress, a.Type);
+            Assert.Equal(Gamepad.Y, a.ButtonFlags);
+        }
+
+        [Fact]
+        public void Materialize_HoldForMs_ClampsToVmRange()
+        {
+            var t = SampleProfile();
+            t.Macros.Add(new TranslatedMacro
+            {
+                Name = "Long press",
+                Action = TranslatedMacroAction.HoldVcButton,
+                TriggerMode = "HoldForMs",
+                TriggerHoldMs = 10, // corpus can carry tiny values; VM floor is 50
+                TriggerXboxButtons = Gamepad.A,
+                TargetXboxButtons = Gamepad.Y,
+            });
+
+            var m = Assert.Single(WorkshopProfileMaterializer.Materialize(t).Macros);
+            Assert.Equal(50, m.TriggerHoldMs);
+        }
+
+        [Fact]
+        public void Materialize_BuildsToggleVcButton()
+        {
+            var t = SampleProfile();
+            t.Macros.Add(new TranslatedMacro
+            {
+                Name = "Toggle ButtonB (click)",
+                Action = TranslatedMacroAction.ToggleVcButton,
+                TriggerMode = "OnPress",
+                TriggerXboxButtons = Gamepad.B,
+                TargetXboxButtons = Gamepad.B,
+            });
+
+            var m = Assert.Single(WorkshopProfileMaterializer.Materialize(t).Macros);
+            Assert.Equal(MacroTriggerMode.OnPress, m.TriggerMode);
+            Assert.Equal(MacroRepeatMode.Once, m.RepeatMode);
+            var a = Assert.Single(m.Actions);
+            Assert.Equal(PadForge.ViewModels.MacroActionType.ToggleVcButton, a.Type);
+            Assert.Equal(Gamepad.B, a.ButtonFlags);
+        }
+
+        [Fact]
+        public void Materialize_BuildsToggleKey_AndGyroRecenter()
+        {
+            var t = SampleProfile();
+            t.Macros.Add(new TranslatedMacro
+            {
+                Name = "Toggle LEFT_SHIFT (button_x)",
+                Action = TranslatedMacroAction.ToggleKey,
+                TriggerMode = "OnPress",
+                TriggerXboxButtons = Gamepad.X,
+                VirtualKey = 0xA0,
+            });
+            t.Macros.Add(new TranslatedMacro
+            {
+                Name = "Recenter gyro (click)",
+                Action = TranslatedMacroAction.GyroRecenter,
+                TriggerMode = "OnPress",
+                TriggerXboxButtons = Gamepad.RIGHT_THUMB,
+            });
+
+            var p = WorkshopProfileMaterializer.Materialize(t);
+            Assert.Equal(2, p.Macros.Length);
+            var key = Assert.Single(p.Macros[0].Actions);
+            Assert.Equal(PadForge.ViewModels.MacroActionType.ToggleKey, key.Type);
+            Assert.Equal(0xA0, key.KeyCode);
+            var gyro = Assert.Single(p.Macros[1].Actions);
+            Assert.Equal(PadForge.ViewModels.MacroActionType.GyroRecenter, gyro.Type);
+        }
+
+        [Fact]
+        public void Materialize_MouseRegion_LowersToOnPressOnReleaseClampPair()
+        {
+            var t = SampleProfile();
+            t.Macros.Add(new TranslatedMacro
+            {
+                Name = "Cursor region (left_trigger)",
+                Action = TranslatedMacroAction.MouseLimitRegion,
+                TriggerMode = "WhileHeld", // semantic; lowered to the pair
+                TriggerAxisTarget = "LeftTrigger",
+                TriggerAxisThresholdPercent = 75,
+                RegionXPercent = 25,
+                RegionYPercent = 75,
+                RegionScalePercent = 40,
+            });
+
+            var p = WorkshopProfileMaterializer.Materialize(t);
+            Assert.Equal(2, p.Macros.Length);
+            var engage = p.Macros[0];
+            var release = p.Macros[1];
+            Assert.Equal(MacroTriggerMode.OnPress, engage.TriggerMode);
+            Assert.Equal(MacroTriggerMode.OnRelease, release.TriggerMode);
+            Assert.Equal("LeftTrigger", engage.TriggerAxisTargets);
+            Assert.Equal("LeftTrigger", release.TriggerAxisTargets);
+            Assert.Equal(75, engage.TriggerAxisThreshold);
+
+            foreach (var m in p.Macros)
+            {
+                var a = Assert.Single(m.Actions);
+                Assert.Equal(PadForge.ViewModels.MacroActionType.MouseLimitRegion, a.Type);
+                Assert.Equal(PadForge.ViewModels.CursorClampMode.XAndY, a.CursorClampMode);
+                // A 40% region leaves (100-40)/2 = 30% inset per edge.
+                if (GetPrimary(out int w, out int h))
+                {
+                    Assert.Equal((int)Math.Round(w * 0.30), a.CursorClampInsetX);
+                    Assert.Equal((int)Math.Round(h * 0.30), a.CursorClampInsetY);
+                }
+            }
+        }
+
+        [Fact]
+        public void Materialize_MouseRegion_FullScreenScale_HasZeroInsets()
+        {
+            var t = SampleProfile();
+            t.Macros.Add(new TranslatedMacro
+            {
+                Name = "Cursor region",
+                Action = TranslatedMacroAction.MouseLimitRegion,
+                TriggerMode = "WhileHeld",
+                TriggerXboxButtons = Gamepad.A,
+                RegionScalePercent = 100,
+            });
+
+            var p = WorkshopProfileMaterializer.Materialize(t);
+            foreach (var m in p.Macros)
+            {
+                var a = Assert.Single(m.Actions);
+                Assert.Equal(0, a.CursorClampInsetX);
+                Assert.Equal(0, a.CursorClampInsetY);
+            }
+        }
+
+        // The same metric source the materializer converts with, so the
+        // assertion is DPI-context-proof in the test host.
+        [System.Runtime.InteropServices.DllImport("user32.dll")]
+        private static extern int GetSystemMetrics(int nIndex);
+
+        private static bool GetPrimary(out int w, out int h)
+        {
+            w = GetSystemMetrics(0); // SM_CXSCREEN
+            h = GetSystemMetrics(1); // SM_CYSCREEN
+            return w > 0 && h > 0;
         }
 
         [Fact]

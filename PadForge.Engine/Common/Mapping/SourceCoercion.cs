@@ -799,17 +799,41 @@ namespace PadForge.Engine.Common.Mapping
         /// <summary>True when a source carries the generic per-source
         /// <see cref="MappingSource.Sensitivity"/> knob: it resolves to a
         /// plain <c>"Axis N"</c> / <c>"Slider N"</c> read (including the
-        /// abstract Gamepad sticks / triggers that canonicalize to one).
-        /// Drives the picker/VM slider visibility, mirroring
+        /// abstract Gamepad sticks / triggers that canonicalize to one),
+        /// or to a touchpad finger X/Y position read (#9 B-13, so a
+        /// workshop config's per-group touch sensitivity can live on the
+        /// row instead of punting to the Touchpad tab). Drives the
+        /// picker/VM slider visibility, mirroring
         /// <see cref="IsGyroDescriptor"/> and the other per-family
-        /// sensitivity predicates. Gyro / mouse / IR / touchpad families
-        /// carry their own specialized sensitivity, so they are excluded
-        /// here (their canonical form does not start with "Axis "/"Slider ").</summary>
+        /// sensitivity predicates. Gyro / mouse / IR carry their own
+        /// specialized sensitivity and stay excluded. Touchpad Pressure,
+        /// Click, and "Finger M Down" also stay excluded: Pressure is a
+        /// physical magnitude, and the bool descriptors have no analog
+        /// read to scale.</summary>
         public static bool IsGenericSensitivityDescriptor(string descriptor)
         {
             string c = CanonicalDescriptor(descriptor);
-            return c.StartsWith("Axis ", StringComparison.Ordinal)
-                || c.StartsWith("Slider ", StringComparison.Ordinal);
+            if (c.StartsWith("Axis ", StringComparison.Ordinal)
+                || c.StartsWith("Slider ", StringComparison.Ordinal))
+                return true;
+            return IsTouchpadFingerAxisDescriptor(c);
+        }
+
+        /// <summary>True for the touchpad finger-position axes
+        /// <c>"Touchpad N Finger M X"</c> / <c>"... Y"</c> (#9 B-13).
+        /// Pressure (<c>"... Pressure"</c>) is excluded on purpose: the
+        /// generic Sensitivity knob scales finger POSITION reads (delta,
+        /// absolute, and unipolar), never the physical pressure level.
+        /// No "Gamepad ..." alias maps to a touchpad member
+        /// (GamepadAliasTable carries buttons/POV/axes only), so the bare
+        /// spelling is the only one; callers pass the canonical form.</summary>
+        public static bool IsTouchpadFingerAxisDescriptor(string descriptor)
+        {
+            if (string.IsNullOrEmpty(descriptor)
+                || !descriptor.StartsWith("Touchpad ", StringComparison.Ordinal))
+                return false;
+            return TryParseTouchpadAxis(descriptor, out _, out _, out int axisOffset)
+                && (axisOffset == 0 || axisOffset == 1);
         }
 
         /// <summary>Per-source generic Sensitivity multiplier, guarded like
@@ -1821,6 +1845,14 @@ namespace PadForge.Engine.Common.Mapping
                     slotIndex, deviceGuid ?? "", gPad, gName) ?? false;
             }
 
+            // Touchpad-as-button stays outside the generic Sensitivity
+            // contract (#9 B-13 decision, per the 0c4e56cd precedent of
+            // never leaving a visible knob inert): the bool read handles
+            // Click and "Finger M Down" only, both unscaled booleans, and
+            // the finger X/Y position axes have NO threshold read here
+            // (they fall through ReadTouchpadBool and read false), so
+            // there is nothing to scale. The VMs' deadzone gates exclude
+            // the finger axes for the same reason.
             if (s.StartsWith("Touchpad ", StringComparison.Ordinal))
                 return ReadTouchpadBool(state, s);
 
@@ -2046,7 +2078,7 @@ namespace PadForge.Engine.Common.Mapping
                 }
                 else
                 {
-                    if (TryReadTouchpadAxisAbsolute(state, s, out float bipolar)) return bipolar;
+                    if (TryReadTouchpadAxisAbsolute(state, src, s, out float bipolar)) return bipolar;
                 }
                 return ReadTouchpadBool(state, s) ? 1f : 0f;
             }
@@ -2213,7 +2245,7 @@ namespace PadForge.Engine.Common.Mapping
             {
                 // Touchpad axis → unipolar: return [0..1] directly (raw finger
                 // position; no bipolar centering).
-                if (TryReadTouchpadAxisRaw(state, s, out float unipolar)) return unipolar;
+                if (TryReadTouchpadAxisRaw(state, src, s, out float unipolar)) return unipolar;
                 return ReadTouchpadBool(state, s) ? 1f : 0f;
             }
 
@@ -2610,6 +2642,14 @@ namespace PadForge.Engine.Common.Mapping
             if (invert) delta = -delta;
 
             bipolar = delta * TouchpadDeltaScale * sens;
+            // Generic per-source Sensitivity (#9 B-13) multiplies the delta
+            // on top of the slot-level Touchpad-tab tuning, so per-row touch
+            // sensitivity from a workshop config (or the row's slider) acts
+            // exactly here, before the same clamp the base read had. A delta
+            // under a positive multiplier is sign-neutral, and the != 1 guard
+            // keeps the default bit-identical to the unscaled read.
+            float rowSens = src != null ? PerSourceSensitivity(src) : 1f;
+            if (rowSens != 1f) bipolar *= rowSens;
             if (bipolar < -1f) bipolar = -1f;
             else if (bipolar > 1f) bipolar = 1f;
             return true;
@@ -2630,11 +2670,17 @@ namespace PadForge.Engine.Common.Mapping
         /// virtual controller. A Y flip added here would corrupt ALL of
         /// them at once — keep this a faithful [0..1] → [-1..+1] pass.
         /// Pressure (axisOffset == 2) is unipolar, kept as
-        /// [0..1] without recentering — pressure isn't a signed axis.
+        /// [0..1] without recentering. Pressure isn't a signed axis.
         /// Returns 0 when the finger is not in contact (the caller's
         /// gating wrapper usually filters us out first, but this is
-        /// the right defensive default).</summary>
-        private static bool TryReadTouchpadAxisAbsolute(CustomInputState state, string descriptor, out float bipolar)
+        /// the right defensive default).
+        /// <para>Generic per-source Sensitivity (#9 B-13) scales the
+        /// recentered X/Y position (deviation-from-center, the same
+        /// origin the bipolar Axis leg uses) so the slider the widened
+        /// predicate reveals is live on stick / passthrough targets
+        /// too, not only on the mouse-delta path. Pressure is never
+        /// scaled. 1.0 stays bit-identical.</para></summary>
+        private static bool TryReadTouchpadAxisAbsolute(CustomInputState state, MappingSource src, string descriptor, out float bipolar)
         {
             bipolar = 0f;
             if (!TryParseTouchpadAxis(descriptor, out int padIdx, out int fingerIdx, out int axisOffset))
@@ -2651,14 +2697,30 @@ namespace PadForge.Engine.Common.Mapping
                 _ => 0f
             };
             if (raw < 0f) raw = 0f; else if (raw > 1f) raw = 1f;
-            bipolar = axisOffset == 2 ? raw : (raw * 2f - 1f);
+            if (axisOffset == 2)
+            {
+                bipolar = raw;
+                return true;
+            }
+            bipolar = raw * 2f - 1f;
+            float rowSens = src != null ? PerSourceSensitivity(src) : 1f;
+            if (rowSens != 1f)
+            {
+                bipolar *= rowSens;
+                if (bipolar < -1f) bipolar = -1f;
+                else if (bipolar > 1f) bipolar = 1f;
+            }
             return true;
         }
 
         /// <summary>Returns finger position as unipolar [0..1]. Used by
         /// ReadAsUnipolar so a touchpad axis feeding a trigger target reads
-        /// the raw position. Returns 0 when the finger is not in contact.</summary>
-        private static bool TryReadTouchpadAxisRaw(CustomInputState state, string descriptor, out float unipolar)
+        /// the raw position. Returns 0 when the finger is not in contact.
+        /// <para>Generic per-source Sensitivity (#9 B-13) scales the X/Y
+        /// position magnitude-from-zero, the same origin the unipolar
+        /// Slider leg uses, then re-clamps. Pressure is never scaled.
+        /// 1.0 stays bit-identical.</para></summary>
+        private static bool TryReadTouchpadAxisRaw(CustomInputState state, MappingSource src, string descriptor, out float unipolar)
         {
             unipolar = 0f;
             if (!TryParseTouchpadAxis(descriptor, out int padIdx, out int fingerIdx, out int axisOffset))
@@ -2676,6 +2738,16 @@ namespace PadForge.Engine.Common.Mapping
             };
             if (raw < 0f) raw = 0f; else if (raw > 1f) raw = 1f;
             unipolar = raw;
+            if (axisOffset != 2)
+            {
+                float rowSens = src != null ? PerSourceSensitivity(src) : 1f;
+                if (rowSens != 1f)
+                {
+                    unipolar *= rowSens;
+                    if (unipolar < 0f) unipolar = 0f;
+                    else if (unipolar > 1f) unipolar = 1f;
+                }
+            }
             return true;
         }
 

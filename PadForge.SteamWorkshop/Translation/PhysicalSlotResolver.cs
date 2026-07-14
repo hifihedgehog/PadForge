@@ -356,6 +356,24 @@ namespace PadForge.SteamWorkshop.Translation
             XboxButtonBit = bit,
         };
 
+        /// <summary>The surface press that engages a mouse_region group
+        /// hosted on <paramref name="slot"/> (wave 2A): Steam activates the
+        /// region while the hosting surface is touched. Trackpads engage on
+        /// touch ("Touchpad {p} Finger 0 Down"; no device-free macro trigger
+        /// yet, so region macros for them are reported
+        /// NoDeviceFreeTrigger-skipped until device-free triggers land) and
+        /// trigger slots engage on the pull (the full-pull click read, whose
+        /// MacroAxisTarget IS a device-free axis trigger). Sticks and gyro
+        /// have no press-shaped engage surface: null.</summary>
+        public static ResolvedSource RegionEngageSource(SteamSlot slot)
+        {
+            if (IsTrackpad(slot))
+                return Resolve(slot, "touch", nintendoLabels: false);
+            if (slot == SteamSlot.LeftTrigger || slot == SteamSlot.RightTrigger)
+                return TriggerClick(left: slot == SteamSlot.LeftTrigger);
+            return null;
+        }
+
         /// <summary>Mouse-delta axis pair for a mouse-mode group hosted on
         /// <paramref name="slot"/>: (x descriptor, y descriptor, family).
         /// Family: 0 = generic stick axes (per-source Sensitivity), 1 =

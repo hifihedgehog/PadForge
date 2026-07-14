@@ -53,7 +53,7 @@ kbm rows: 18
 kbm activators: 1
   Toggle Layer_3456927474_1 | Gamepad RightShoulder | inherit | name=Preset_1000001
 macros: 0
-report: v2 rows:x0+k18 macros:0 layers:1 clean:29 partial:8 skipped:10 errors:0
+report: v3 rows:x0+k18 macros:0 layers:1 clean:29 partial:9 skipped:10 errors:0
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_a/Full_Press => KbmMBtn0 <- Gamepad ButtonA
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_b/Full_Press => KbmMBtn1 <- Gamepad ButtonB
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_x/Full_Press => KbmKey45 <- Gamepad ButtonX
@@ -78,7 +78,8 @@ report: v2 rows:x0+k18 macros:0 layers:1 clean:29 partial:8 skipped:10 errors:0
   Partial ActivatorDelayDropped(delay_start 25) @ Default/right_joystick/group 10 (joystick_mouse)/click/Full_Press
   Clean RowEmitted @ Default/right_joystick/group 10 (joystick_mouse)/click/Full_Press => KbmMBtn0 <- Gamepad RightStick
   Skipped EdgeInputNotSupported(RightJoystick, edge) @ Default/right_joystick/group 10 (joystick_mouse)/edge :: mouse_button MIDDLE, , 
-  Skipped MouseRegionNotSupported @ Default/right_trackpad/group 12 (mouse_region)
+  Partial ResponseCurveNotSupported(sensitivity_horiz_scale, sensitivity_vert_scale) @ Default/right_trackpad/group 12 (mouse_region)
+  Skipped NoDeviceFreeTrigger @ Default/right_trackpad/group 12 (mouse_region)
   Partial SoftPressApproximated @ Default/right_trackpad/group 12 (mouse_region)/click/Soft_Press => KbmMBtn0 <- Touchpad 1 Click
   Skipped EdgeInputNotSupported(RightTrackpad, edge) @ Default/right_trackpad/group 12 (mouse_region)/edge :: controller_action mouse_delta 100 0, , 
   Clean RowEmitted @ Default/right_trigger/group 5 (trigger)/click/Full_Press => KbmScroll <- Gamepad RightTrigger (lower half)

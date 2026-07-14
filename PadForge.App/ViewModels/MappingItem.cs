@@ -1137,6 +1137,13 @@ namespace PadForge.ViewModels
                     || desc.StartsWith("Balance ", StringComparison.Ordinal);
                 if (!engineFamily)
                 {
+                    // Touchpad finger X/Y joined the generic Sensitivity
+                    // family (#9 B-13) but have no axis-to-button threshold
+                    // read (ReadAsBool's touchpad branch reads Click /
+                    // "Finger M Down" only), so every touchpad descriptor
+                    // keeps the pre-widening hidden deadzone column.
+                    if (desc.StartsWith("Touchpad ", StringComparison.Ordinal))
+                        return false;
                     // Covers "Axis N" / "Slider N" plus the abstract Gamepad
                     // sticks / triggers that canonicalize to one (#9).
                     if (!PadForge.Engine.Common.Mapping.SourceCoercion.IsGenericSensitivityDescriptor(desc))

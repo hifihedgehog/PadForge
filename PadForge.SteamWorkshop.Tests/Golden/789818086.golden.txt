@@ -49,7 +49,7 @@ kbm rows: 20
 kbm activators: 1
   Hold Layer_789818086_0_MS_left_trackpad_17 | Gamepad LeftShoulder | inherit | name=left_trackpad shift
 macros: 0
-report: v2 rows:x0+k20 macros:0 layers:1 clean:20 partial:10 skipped:5 errors:0
+report: v3 rows:x0+k20 macros:0 layers:1 clean:20 partial:10 skipped:5 errors:0
   Clean RowEmitted @ Preset 0/button_diamond/group 0 (four_buttons)/button_a/Full_Press => KbmKey45 <- Gamepad ButtonA
   Clean RowEmitted @ Preset 0/button_diamond/group 0 (four_buttons)/button_b/Full_Press => KbmKey09 <- Gamepad ButtonB
   Clean RowEmitted @ Preset 0/button_diamond/group 0 (four_buttons)/button_x/Full_Press => KbmKey52 <- Gamepad ButtonX
@@ -75,9 +75,9 @@ report: v2 rows:x0+k20 macros:0 layers:1 clean:20 partial:10 skipped:5 errors:0
   Partial ResponseCurveNotSupported(deadzone_outer_radius) @ Preset 0/right_trigger/group 5 (trigger)
   Clean RowEmitted @ Preset 0/right_trigger/group 5 (trigger)/edge/Full_Press => KbmMBtn0 <- Gamepad RightTrigger (upper half)
   Clean RowEmitted @ Preset 0/switch/group 20 (switches)/button_back_left/Full_Press => KbmKeyA2 <- Gamepad Paddle2
-  Skipped LongPressNotSupported @ Preset 0/switch/group 20 (switches)/button_back_left/Long_Press :: key_press F, FOV (Hold)
+  Skipped NoDeviceFreeTrigger @ Preset 0/switch/group 20 (switches)/button_back_left/Long_Press :: key_press F, FOV (Hold)
   Clean RowEmitted @ Preset 0/switch/group 20 (switches)/button_back_right/Full_Press => KbmKey45 <- Gamepad Paddle1
-  Skipped LongPressNotSupported @ Preset 0/switch/group 20 (switches)/button_back_right/Long_Press :: key_press SPACE, Jump (Hold)
+  Skipped NoDeviceFreeTrigger @ Preset 0/switch/group 20 (switches)/button_back_right/Long_Press :: key_press SPACE, Jump (Hold)
   Clean RowEmitted @ Preset 0/switch/group 20 (switches)/button_escape/Full_Press => KbmKey4A <- Gamepad ButtonStart
   Clean RowEmitted @ Preset 0/switch/group 20 (switches)/button_menu/Full_Press => KbmKey54 <- Gamepad ButtonBack
   Clean RowEmitted @ Preset 0/switch/group 20 (switches)/left_bumper/Full_Press => KbmKeyA4 <- Gamepad LeftShoulder

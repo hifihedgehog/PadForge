@@ -90,7 +90,21 @@ namespace PadForge.Views
         public ControllerSchematicView()
         {
             InitializeComponent();
-            CompositionTarget.Rendering += OnRendering;
+            // Rendering rides tree presence, matching MousePreviewControl.
+            // CompositionTarget.Rendering is a STATIC event, so a ctor-lifetime
+            // subscription is a permanent GC root: the view never dies, its
+            // per-frame callback keeps invalidating layout for the life of the
+            // process, and every fresh visit to the hosting page adds another
+            // one. Measured 2026-07-15: one pad-page visit took the process
+            // from 13% of a core to 125%, and it stayed there after navigating
+            // away. The -= before += guards repeated Loaded without an
+            // intervening Unloaded.
+            Loaded += (s, e) =>
+            {
+                CompositionTarget.Rendering -= OnRendering;
+                CompositionTarget.Rendering += OnRendering;
+            };
+            Unloaded += (s, e) => CompositionTarget.Rendering -= OnRendering;
         }
 
         // ─────────────────────────────────────────────

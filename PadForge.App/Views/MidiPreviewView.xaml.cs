@@ -132,7 +132,17 @@ namespace PadForge.Views
         public MidiPreviewView()
         {
             InitializeComponent();
-            CompositionTarget.Rendering += OnRendering;
+            // Rendering rides tree presence, matching MousePreviewControl. A
+            // ctor-lifetime subscription to the STATIC CompositionTarget.Rendering
+            // roots the view forever and keeps its per-frame callback
+            // invalidating layout even when the hosting page is swapped out.
+            // See the note in ControllerSchematicView for the measurement.
+            Loaded += (s, e) =>
+            {
+                CompositionTarget.Rendering -= OnRendering;
+                CompositionTarget.Rendering += OnRendering;
+            };
+            Unloaded += (s, e) => CompositionTarget.Rendering -= OnRendering;
         }
 
         public void Bind(PadViewModel vm)

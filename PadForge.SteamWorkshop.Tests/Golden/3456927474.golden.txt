@@ -57,8 +57,8 @@ kbm rows: 19
   Base | KbmScroll | Sum
     <- Gamepad LeftTrigger [upper-half] dz=75
     <- Gamepad LeftTrigger [upper-half] dz=15
-    <- Gamepad RightTrigger [lower-half] dz=75
-    <- Gamepad RightTrigger [lower-half] dz=15
+    <- Gamepad RightTrigger [upper-half] dz=75
+    <- Gamepad RightTrigger [upper-half] dz=15
   Layer_3456927474_1 | KbmMBtn1
     <- Gamepad LeftShoulder
     <- Gamepad RightShoulder
@@ -175,8 +175,8 @@ report: v8 rows:x0+k19 macros:21 menus:2 layers:4 clean:77 partial:21 skipped:6 
   Partial MouseRegionTuningDropped(edge_binding_radius, edge_binding_invert) @ Default/right_trackpad/group 12 (mouse_region)
   Partial SoftPressApproximated @ Default/right_trackpad/group 12 (mouse_region)/click/Soft_Press => KbmMBtn0 <- Touchpad 1 Click
   Skipped EdgeInputNotSupported(RightTrackpad, edge) @ Default/right_trackpad/group 12 (mouse_region)/edge :: controller_action mouse_delta 100 0, , 
-  Clean RowEmitted @ Default/right_trigger/group 5 (trigger)/click/Full_Press => KbmScroll <- Gamepad RightTrigger (lower half)
-  Clean RowEmitted @ Default/right_trigger/group 5 (trigger)/edge/Full_Press => KbmScroll <- Gamepad RightTrigger (lower half)
+  Clean RowEmitted @ Default/right_trigger/group 5 (trigger)/click/Full_Press => KbmScroll <- Gamepad RightTrigger (upper half)
+  Clean RowEmitted @ Default/right_trigger/group 5 (trigger)/edge/Full_Press => KbmScroll <- Gamepad RightTrigger (upper half)
   Partial RemoveLayerApproximated @ Default/switch/group 8 (switches)/button_back_left/Full_Press :: controller_action remove_layer 3 1 1, , 
   Clean MacroEmitted @ Default/switch/group 8 (switches)/button_back_left_upper/Full_Press => Cursor warp macro
   Clean RowEmitted @ Default/switch/group 8 (switches)/button_back_left_upper/Full_Press => KbmMBtn0 <- Gamepad Paddle4

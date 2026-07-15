@@ -2462,6 +2462,7 @@
   <data name="Workshop_Tr_DoublePressNotSupported" xml:space="preserve"><value>attivatore a doppia pressione non supportato qui</value></data>
   <data name="Workshop_Tr_UnknownActivatorType" xml:space="preserve"><value>attivatore sconosciuto {0}</value></data>
   <data name="Workshop_Tr_RepeatDropped" xml:space="preserve"><value>ripetizione automatica scartata</value></data>
+  <data name="Workshop_Tr_MacroTriggerRetargetedToInput" xml:space="preserve"><value>attivatore spostato sull&apos;ingresso stesso ({0}): nessuna mappatura alimenta il suo pulsante Xbox</value></data>
   <data name="Workshop_Tr_MissingGroup" xml:space="preserve"><value>la configurazione fa riferimento al gruppo mancante {0}</value></data>
   <data name="Workshop_Tr_MissingModeShiftGroup" xml:space="preserve"><value>il cambio modalità su {0} fa riferimento al gruppo mancante {1}</value></data>
   <data name="Workshop_Tr_MissingPreset" xml:space="preserve"><value>la configurazione fa riferimento al preset mancante {0}</value></data>

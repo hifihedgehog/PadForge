@@ -49,6 +49,24 @@ namespace PadForge.Engine.Data
         /// 0..+1 output range, depending on <see cref="Invert"/>).</summary>
         [XmlAttribute] public bool HalfAxis { get; set; }
 
+        /// <summary>Output-side sign flip for sources whose
+        /// <see cref="Invert"/> is already spoken for.
+        ///
+        /// <para>On a half-axis read of a centered <c>"Axis N"</c> (or a
+        /// Mouse Motion source), <see cref="Invert"/> is consumed INSIDE the
+        /// read as the half SELECTOR (lower half instead of upper), so the
+        /// evaluators must not also negate with it or the flag would
+        /// double-apply. That left such a source unable to express "select
+        /// this half AND flip the result": a caller that needed the flip
+        /// could only get it by overwriting Invert, which silently destroyed
+        /// the half selection. This carries the flip separately.</para>
+        ///
+        /// <para>Applies ONLY where Invert is consumed as a selector. Everywhere
+        /// else Invert already IS the output flip and this stays false, so old
+        /// XML (which never carries the attribute) keeps its exact
+        /// behavior.</para></summary>
+        [XmlAttribute] public bool InvertOutput { get; set; }
+
         /// <summary>When <c>true</c> AND <see cref="HalfAxis"/> is also
         /// <c>true</c>, the axis-to-button check fires on absolute
         /// deflection past the deadzone — i.e. either side of center

@@ -1839,8 +1839,10 @@ namespace PadForge.Engine.Common.Mapping
             // read as the half selector (lower half instead of upper),
             // mirroring the bool path, so the same row selects the same
             // physical motion whether it feeds a button or an axis target.
-            // Negating on top would double-apply the flag.
-            if (InvertConsumedByHalfAxisRead(src)) return raw;
+            // Negating on top would double-apply the flag. Such a source
+            // carries its output flip in InvertOutput instead, which is how it
+            // can select a half AND still invert.
+            if (InvertConsumedByHalfAxisRead(src)) return src.InvertOutput ? -raw : raw;
             return src.Invert ? -raw : raw;
         }
 
@@ -1872,8 +1874,15 @@ namespace PadForge.Engine.Common.Mapping
         /// descriptor picks upper vs lower half, mirroring
         /// ReadButtonLikeBool), so the evaluators must not also apply their
         /// output-side Invert transform. Same internalized-Invert shape as
-        /// the Mouse Motion family (issue #154).</summary>
-        private static bool InvertConsumedByHalfAxisRead(MappingSource src)
+        /// the Mouse Motion family (issue #154).
+        ///
+        /// <para>Public because it is the ONE definition of "Invert is spoken
+        /// for on this source". Any producer that wants an output flip must ask
+        /// here first and write <see cref="MappingSource.InvertOutput"/> when
+        /// this returns true, rather than assigning Invert and silently
+        /// destroying the half selection. A second copy of this predicate
+        /// living in a caller is how the two roles drift apart again.</para></summary>
+        public static bool InvertConsumedByHalfAxisRead(MappingSource src)
         {
             if (!src.HalfAxis) return false;
             string s = CanonicalDescriptor(src.Descriptor);

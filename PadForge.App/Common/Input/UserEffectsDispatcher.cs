@@ -231,6 +231,42 @@ namespace PadForge.Common.Input
         // overlapping (non-serialized) timer callbacks could double-insert.
         private readonly System.Collections.Concurrent.ConcurrentDictionary<Guid, DeviceState> _deviceStates = new();
 
+        // ── Write ordering across concurrent dispatches ──────────────────
+        //
+        // DispatchSnapshot runs from the UI thread (ApplyOnce /
+        // OnConfigChanged), the ~1 kHz polling thread (OnPollingTickInstance /
+        // NotifyBatteryPercentChanged), the 33 ms animation timer, and the
+        // audio callback. It is NOT serialized as a whole. _animTickBusy only
+        // excludes timer-vs-timer overlap.
+        //
+        // While the HID write still happened inside devices.SyncRoot, that lock
+        // made capture+write one unit and the last writer was necessarily the
+        // last capturer. The write now runs outside that lock (a synchronous
+        // ~1 kHz-blocking HID write had no business holding the poll thread's
+        // lock), which re-opens the ordering: two dispatches can capture in one
+        // order and land their writes in the other. The concrete loss is a
+        // latched motor. A timer dispatch captures nonzero rumble, the poll
+        // dispatch that stops the timer captures and writes the final zero
+        // frame, then the timer's stale nonzero write lands last and no
+        // further dispatch is coming to correct it.
+        //
+        // Fix: stamp every captured payload with a monotonic sequence INSIDE
+        // devices.SyncRoot (so sequence order == capture order), then drop any
+        // write whose capture is older than one already written to that device.
+        // Newest capture wins regardless of thread scheduling.
+        //
+        // s_writeGate is a LEAF lock: taken only after devices.SyncRoot has
+        // been released, and it acquires nothing while held. That is
+        // deliberate. An outer "serialize the whole dispatch" lock would nest
+        // above devices.SyncRoot and deadlock the moment any caller poked a
+        // dispatch while holding it. It also restores the cross-dispatcher write
+        // serialization that devices.SyncRoot used to provide for one physical
+        // pad shared by two slots.
+        private static readonly object s_writeGate = new();
+        private static long s_dispatchSeq;
+        private static readonly System.Collections.Concurrent.ConcurrentDictionary<string, long> s_lastWriteSeq =
+            new(StringComparer.OrdinalIgnoreCase);
+
         // Per-device flag remembering whether PadForge's last dispatched
         // packet carried non-zero rumble. Drives the validFlag0 bit-0
         // gating: assert the rumble enable bit when current frame has
@@ -465,10 +501,18 @@ namespace PadForge.Common.Input
                     ov.RumbleRight = st.RumbleRight;
                     ov.RumbleLeft  = st.RumbleLeft;
                 }
+                // Copy, don't alias. st.RightTrig / st.LeftTrig are reused
+                // buffers that OnOutputPacket rewrites IN PLACE under this same
+                // lock on every external effect packet. Handing the caller the
+                // live array let a packet arriving between the read and the
+                // encode rewrite bytes the caller had already decided to send,
+                // producing a frame that is neither the old nor the new effect.
+                // The lightbar case below has always allocated for this reason;
+                // these two were the outliers.
                 if (now - st.RightTrigTick < ExternalSubsystemGraceMs && st.RightTrig != null)
-                    ov.RightTriggerEffect = st.RightTrig;
+                    ov.RightTriggerEffect = (byte[])st.RightTrig.Clone();
                 if (now - st.LeftTrigTick < ExternalSubsystemGraceMs && st.LeftTrig != null)
-                    ov.LeftTriggerEffect = st.LeftTrig;
+                    ov.LeftTriggerEffect = (byte[])st.LeftTrig.Clone();
                 if (now - st.MicLedTick < ExternalSubsystemGraceMs)
                     ov.MuteLed = st.MicLed;
                 if (now - st.LightbarTick < ExternalSubsystemGraceMs)
@@ -1189,6 +1233,18 @@ namespace PadForge.Common.Input
             }
             if (guids.Count == 0) return;
 
+            // Payloads are built under the device lock and written after it.
+            // SonyEffectWriter.Write does CreateFileW + WriteFile with a 1000 ms
+            // wait and then an untimed completion drain, and the ~1 kHz poll
+            // thread needs this same lock every cycle to read input. Writing
+            // under it meant one animated pad (a 33 ms timer) held the poll
+            // thread out for the duration of a synchronous HID write, and a
+            // stalled write could hold it out indefinitely. Nothing here needs
+            // the lock: the writer opens its own handle, and every value below
+            // is either a captured string/reference or a per-iteration
+            // allocation.
+            var pending = new List<(string Path, HMProfile Profile, IReadOnlyDictionary<string, object> Fields, long Seq)>();
+
             lock (devices.SyncRoot)
             {
                 foreach (var ud in devices.Items)
@@ -1532,13 +1588,48 @@ namespace PadForge.Common.Input
                             }
                         }
 
-                        SonyEffectWriter.Write(path, profile, fields);
+                        // Sequence stamped under devices.SyncRoot, so sequence
+                        // order is capture order across every dispatching
+                        // thread. The write loop below uses it to drop a
+                        // capture that a newer one has already superseded.
+                        pending.Add((path, profile, fields,
+                            System.Threading.Interlocked.Increment(ref s_dispatchSeq)));
                     }
                     catch
                     {
-                        // Best-effort: a failed write on one device shouldn't
+                        // Best-effort: a failed synthesis on one device shouldn't
                         // prevent the dispatcher from servicing the rest of
                         // the slot's mapped Sony pads on the next tick.
+                    }
+                }
+            }
+
+            // Lock released. Do the blocking HID I/O here, serialized against
+            // every other dispatch's writes and ordered by capture sequence so
+            // the newest captured frame is the one that survives on each
+            // device. See the s_writeGate notes at the field declaration for
+            // why this gate is a leaf and not an outer dispatch lock.
+            if (pending.Count == 0) return;
+            lock (s_writeGate)
+            {
+                foreach (var w in pending)
+                {
+                    try
+                    {
+                        // A newer capture already landed on this device: this
+                        // frame is stale and writing it would undo the newer
+                        // one. That is the latched-rumble case, where the stale
+                        // frame carries motor bytes the newer one just zeroed
+                        // and no further dispatch is scheduled to correct it.
+                        if (s_lastWriteSeq.TryGetValue(w.Path, out var last) && last > w.Seq)
+                            continue;
+                        s_lastWriteSeq[w.Path] = w.Seq;
+                        SonyEffectWriter.Write(w.Path, w.Profile, w.Fields);
+                    }
+                    catch
+                    {
+                        // Same best-effort contract as the synthesis loop: one
+                        // device's failed write must not skip the others.
                     }
                 }
             }

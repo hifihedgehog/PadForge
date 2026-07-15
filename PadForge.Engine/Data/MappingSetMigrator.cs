@@ -254,10 +254,25 @@ namespace PadForge.Engine.Data
                         var src = BuildSource(guid, rawNeg, ps?.GetMappingDeadZone(target));
                         if (src != null)
                         {
-                            // Negative source: flip Invert relative to the
-                            // descriptor's encoded inversion. Net effect:
+                            // Negative source: flip the OUTPUT sign relative to
+                            // the descriptor's encoded inversion. Net effect:
                             // pressed → -1 instead of +1 on a button source.
-                            src.Invert = !src.Invert;
+                            //
+                            // Which field carries that flip is not a free
+                            // choice. On a half-axis read of a centered
+                            // "Axis N" the engine consumes Invert INSIDE the
+                            // read as the half SELECTOR, so assigning the
+                            // polarity there does not negate anything: it
+                            // silently moves the source to the other half.
+                            // A legacy "HAxis 6" negative leg came out reading
+                            // the lower half and emitting POSITIVE, i.e. wrong
+                            // in both halves of its job. Ask the engine's own
+                            // predicate which field is free rather than
+                            // re-deriving the rule here.
+                            if (Common.Mapping.SourceCoercion.InvertConsumedByHalfAxisRead(src))
+                                src.InvertOutput = !src.InvertOutput;
+                            else
+                                src.Invert = !src.Invert;
                             sources.Add(src);
                         }
                     }

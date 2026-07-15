@@ -1674,7 +1674,7 @@ namespace PadForge.SteamWorkshop.Translation
                             path, binding.Raw);
                     }
                     var src = BuildSource(source, soft);
-                    src.Invert = wheel.Value.invert;
+                    SetOutputInvert(src, wheel.Value.invert);
                     // Same AND-companion handling as EmitSourceRow: a
                     // single-pad click member carries its half's touch-spot
                     // gate (#9 B-1).
@@ -1896,6 +1896,26 @@ namespace PadForge.SteamWorkshop.Translation
             return true;
         }
 
+        /// <summary>Applies an OUTPUT-side sign flip to a built source without
+        /// clobbering a half-axis selection.
+        ///
+        /// <para>MappingSource.Invert is dual-purpose: on a half-axis read of a
+        /// centered "Axis N" it is consumed INSIDE the read as the half
+        /// SELECTOR, and only elsewhere does it mean "negate the result".
+        /// Assigning polarity straight onto Invert therefore silently flipped
+        /// which half of the stick a binding read. The resolver sets the
+        /// selector (PhysicalSlotResolver's north/south split); this writes the
+        /// polarity to InvertOutput for exactly the sources where the engine
+        /// says Invert is already spoken for, asking the engine's own predicate
+        /// rather than re-deriving the rule here.</para></summary>
+        private static void SetOutputInvert(MappingSource src, bool invert)
+        {
+            if (PadForge.Engine.Common.Mapping.SourceCoercion.InvertConsumedByHalfAxisRead(src))
+                src.InvertOutput = invert;
+            else
+                src.Invert = invert;
+        }
+
         /// <summary>True when a resolved physical source can drive a macro
         /// trigger through the Xbox slot's combined output: an Xbox button
         /// bit or an analog trigger read. Sources without one (paddles,
@@ -1925,6 +1945,15 @@ namespace PadForge.SteamWorkshop.Translation
                 macro.TriggerXboxButtons = source.XboxButtonBit;
                 macro.TriggerAxisTarget = source.XboxButtonBit == 0 ? source.MacroAxisTarget ?? "" : "";
                 macro.TriggerAxisThresholdPercent = source.DeadZone > 0 ? source.DeadZone : 50;
+                // Keep the hosting input's own descriptor. A combined-output
+                // trigger only fires if some row actually FEEDS that bit, and
+                // the macro-backed key forms (autofire / on-release) emit no
+                // row for their own source. When nothing else feeds it, the
+                // trigger is unreachable and the macro is dead. FinalizeMacro-
+                // Triggers detects that after all rows materialize and swaps
+                // these in; storing them costs nothing when it doesn't.
+                macro.TriggerFallbackDescriptor = source.Descriptor ?? "";
+                macro.TriggerFallbackGateDescriptor = source.GateDescriptor ?? "";
                 return null;
             }
             macro.TriggerXboxButtons = 0;
@@ -2519,6 +2548,88 @@ namespace PadForge.SteamWorkshop.Translation
         //  Finalize
         // ─────────────────────────────────────────────
 
+        /// <summary>Rescues macros whose trigger rides an Xbox output bit that
+        /// nothing feeds.
+        ///
+        /// <para>A combined-output trigger is indirect by design: it fires when
+        /// the SLOT's output button goes down, whoever drove it. That is a
+        /// feature when the hosting input also emits a row (the Wave-2A xinput
+        /// toggle keeps its row deliberately), and a dead end when it does not.
+        /// The macro-backed key forms return without emitting a row for their
+        /// own source (autofire, on-release), so a config whose button carries
+        /// ONLY such a binding produced a macro triggering on a bit with no
+        /// feeder: the imported profile looked complete and the macro could
+        /// never fire. Imported sets are authoritative, so the legacy automap
+        /// never fills that gap in either.</para>
+        ///
+        /// <para>The hosting input's own descriptor was stashed at trigger-fill
+        /// time, so the rescue is a swap to the Wave-3 device-free descriptor
+        /// trigger, which reads the physical input directly. Only macros whose
+        /// bit has no feeder are touched: a trigger that IS fed keeps the
+        /// cheaper consume-capable combined-output shape.</para></summary>
+        private static void FinalizeMacroTriggers(Run run)
+        {
+            var profile = run.Profile;
+            if (profile.Macros.Count == 0) return;
+
+            // A ZERO-row Xbox set is not a dead end: an empty set does not
+            // replace the legacy mapping at runtime, so the slot's automap
+            // still drives every Xbox bit from the physical pad and a
+            // combined-output trigger fires normally. That is the documented
+            // macro-only shape ("a macro-only config keeps its zero-row set
+            // riding the whole-set legacy passthrough its triggers depend on",
+            // above). The trap is the NON-EMPTY authoritative set: it
+            // suppresses the passthrough, so only its own rows feed anything,
+            // and a bit with no row is unreachable.
+            if (profile.XboxMappingSet.Rows.Count == 0) return;
+
+            // Every Xbox output some emitted row actually drives. Both trigger
+            // shapes FillMacroTrigger can emit are collected here: the button
+            // bitmask AND the analog-trigger target name. A combined-output
+            // macro trigger is unreachable the same way in either shape, and
+            // the axis shape is the one an autofire on a trigger pull takes.
+            ushort fedBits = 0;
+            var fedAxes = new HashSet<string>(StringComparer.Ordinal);
+            foreach (var row in profile.XboxMappingSet.Rows)
+            {
+                if (row?.Sources == null || row.Sources.Count == 0) continue;
+                fedBits |= XInputTargetTable.BitForTarget(row.Target);
+                if (!string.IsNullOrEmpty(row.Target)) fedAxes.Add(row.Target);
+            }
+
+            foreach (var m in profile.Macros)
+            {
+                if (m == null) continue;
+                // Already a device-free descriptor trigger (it reads the
+                // physical input directly), so there is no output bit to be
+                // unreachable. Both combined-output shapes fall through.
+                bool isButtonTrigger = m.TriggerXboxButtons != 0;
+                bool isAxisTrigger = !string.IsNullOrEmpty(m.TriggerAxisTarget);
+                if (!isButtonTrigger && !isAxisTrigger) continue;
+                // Fed by at least one row: the indirect trigger works.
+                if (isButtonTrigger && (m.TriggerXboxButtons & fedBits) != 0) continue;
+                if (isAxisTrigger && fedAxes.Contains(m.TriggerAxisTarget)) continue;
+                // Unfed, and no descriptor to fall back to: leave it alone and
+                // let the existing report entry stand rather than silently
+                // producing a trigger-less macro.
+                if (string.IsNullOrEmpty(m.TriggerFallbackDescriptor)) continue;
+
+                m.TriggerXboxButtons = 0;
+                m.TriggerAxisTarget = "";
+                m.TriggerInputDescriptors.Clear();
+                m.TriggerInputDescriptors.Add(m.TriggerFallbackDescriptor);
+                if (!string.IsNullOrEmpty(m.TriggerFallbackGateDescriptor))
+                    m.TriggerInputDescriptors.Add(m.TriggerFallbackGateDescriptor);
+                // Descriptor triggers read the physical input, not an output
+                // bit, so there are no bits to consume.
+                m.ConsumeTrigger = false;
+
+                run.Report.Add(TranslationStatus.Partial,
+                    TranslationReasons.MacroTriggerRetargetedToInput,
+                    "config", emitted: m.Name, args: m.TriggerFallbackDescriptor);
+            }
+        }
+
         private TranslatedProfile Finalize(Run run)
         {
             var profile = run.Profile;
@@ -2618,6 +2729,12 @@ namespace PadForge.SteamWorkshop.Translation
 
             EmitActivators(run);
             ReportActivatorlessPresets(run);
+
+            // Rows are final, so a combined-output macro trigger can now be
+            // checked against what actually feeds it. Must run before the
+            // counts and NeedsXboxSlot below: rewriting a trigger off the Xbox
+            // output can be what decides a macro no longer needs an Xbox slot.
+            FinalizeMacroTriggers(run);
 
             // Haptic feedback has no PadForge channel; one aggregate note
             // per config (49 per-binding entries in one corpus fixture

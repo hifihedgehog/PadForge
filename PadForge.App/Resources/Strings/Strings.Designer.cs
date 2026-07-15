@@ -2395,6 +2395,7 @@ public class Strings : INotifyPropertyChanged
     public string Workshop_Tr_SoftPressApproximated => Get("Workshop_Tr_SoftPressApproximated");
     public string Workshop_Tr_TriggerThresholdApproximated => Get("Workshop_Tr_TriggerThresholdApproximated");
     public string Workshop_Tr_MacroTriggerViaXboxOutput => Get("Workshop_Tr_MacroTriggerViaXboxOutput");
+    public string Workshop_Tr_MacroTriggerRetargetedToInput => Get("Workshop_Tr_MacroTriggerRetargetedToInput");
     public string Workshop_Tr_NoDeviceFreeTrigger => Get("Workshop_Tr_NoDeviceFreeTrigger");
     public string Workshop_Tr_GameActionsNotSupported => Get("Workshop_Tr_GameActionsNotSupported");
     public string Workshop_Tr_SteamSystemAction => Get("Workshop_Tr_SteamSystemAction");

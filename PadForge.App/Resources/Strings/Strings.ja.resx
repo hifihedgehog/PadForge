@@ -2440,6 +2440,7 @@
   <data name="Workshop_Tr_DoublePressNotSupported" xml:space="preserve"><value>ダブルプレスアクティベーターはここでは未対応</value></data>
   <data name="Workshop_Tr_UnknownActivatorType" xml:space="preserve"><value>不明なアクティベーター {0}</value></data>
   <data name="Workshop_Tr_RepeatDropped" xml:space="preserve"><value>自動リピートを破棄</value></data>
+  <data name="Workshop_Tr_MacroTriggerRetargetedToInput" xml:space="preserve"><value>トリガーを入力自体に変更 ({0}): その Xbox ボタンを駆動するマッピングがありません</value></data>
   <data name="Workshop_Tr_MissingGroup" xml:space="preserve"><value>コンフィグが存在しないグループ {0} を参照しています</value></data>
   <data name="Workshop_Tr_MissingModeShiftGroup" xml:space="preserve"><value>{0} のモードシフトが存在しないグループ {1} を参照しています</value></data>
   <data name="Workshop_Tr_MissingPreset" xml:space="preserve"><value>コンフィグが存在しないプリセット {0} を参照しています</value></data>

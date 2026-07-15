@@ -11073,6 +11073,62 @@ namespace PadForge.Services
             _inputManager?.ClearRecordingTarget();
         }
 
+        /// <summary>Rewrites every device-scoped guid in the live
+        /// SlotMappingSets through <paramref name="remap"/> (old instance ->
+        /// new instance).
+        ///
+        /// <para>ApplyProfile's assignment loop can bind a slot to a DIFFERENT
+        /// instance of the same product (the Bluetooth-reconnect fallback).
+        /// The mapping sets are cloned from the profile before that happens and
+        /// still name the old instance, and every runtime consumer matches the
+        /// guid exactly (empty = "any device on the slot"), so the rebound pad
+        /// would produce no output, engage no shift layer, and open no menu.
+        /// This is the whole set of guid-bearing fields: sources, all three
+        /// activator legs, and menu entries. A new guid-carrying field on any
+        /// of them needs a leg here.</para></summary>
+        private static void RemapDeviceGuidsInSlotMappingSets(
+            System.Collections.Generic.IReadOnlyDictionary<string, string> remap)
+        {
+            if (remap == null || remap.Count == 0) return;
+            var sets = SettingsManager.SlotMappingSets;
+            if (sets == null) return;
+
+            string Map(string guid) =>
+                !string.IsNullOrEmpty(guid) && remap.TryGetValue(guid, out var to) ? to : guid;
+
+            foreach (var ms in sets)
+            {
+                if (ms == null) continue;
+
+                if (ms.Rows != null)
+                {
+                    foreach (var row in ms.Rows)
+                    {
+                        if (row?.Sources == null) continue;
+                        foreach (var s in row.Sources)
+                            if (s != null) s.DeviceGuid = Map(s.DeviceGuid);
+                    }
+                }
+
+                if (ms.ShiftActivators != null)
+                {
+                    foreach (var a in ms.ShiftActivators)
+                    {
+                        if (a == null) continue;
+                        a.DeviceGuid = Map(a.DeviceGuid);
+                        a.ChordSecondDeviceGuid = Map(a.ChordSecondDeviceGuid);
+                        a.CyclePrevDeviceGuid = Map(a.CyclePrevDeviceGuid);
+                    }
+                }
+
+                if (ms.Menus != null)
+                {
+                    foreach (var m in ms.Menus)
+                        if (m != null) m.DeviceGuid = Map(m.DeviceGuid);
+                }
+            }
+        }
+
         public void ApplyProfile(ProfileData profile)
         {
             if (profile == null)
@@ -11177,6 +11233,12 @@ namespace PadForge.Services
             // Build the desired final assignment map first, then transition
             // each UserSetting directly: old → new MapTo for entries that
             // survive, or → -1 for entries dropped from the new profile.
+            // old instance guid -> the instance the same-product fallback
+            // actually bound. Filled by the assignment loop, applied to the
+            // cloned mapping sets afterward.
+            var deviceGuidRemap = new System.Collections.Generic.Dictionary<string, string>(
+                StringComparer.OrdinalIgnoreCase);
+
             lock (SettingsManager.UserSettings.SyncRoot)
             {
                 var assignments = new System.Collections.Generic.Dictionary<UserSetting, (int MapTo, PadSetting Ps)>();
@@ -11204,6 +11266,23 @@ namespace PadForge.Services
                         {
                             us = SettingsManager.UserSettings.Items
                                 .FirstOrDefault(s => s.ProductGuid == entry.ProductGuid && !consumed.Contains(s));
+
+                            // The same product, a different instance: a
+                            // Bluetooth pad that came back with a new
+                            // InstanceGuid. The assignment below rebinds the
+                            // slot to it, but the mapping sets cloned at the
+                            // top of this method still name the OLD instance,
+                            // and sources / activators / menus all require an
+                            // exact-or-empty guid match at evaluation. Without
+                            // a remap the profile applies "successfully" and
+                            // the reconnected pad drives nothing. Recorded
+                            // here, applied after the loop.
+                            if (us != null && us.InstanceGuid != entry.InstanceGuid
+                                && entry.InstanceGuid != Guid.Empty)
+                            {
+                                deviceGuidRemap[entry.InstanceGuid.ToString().ToLowerInvariant()] =
+                                    us.InstanceGuid.ToString().ToLowerInvariant();
+                            }
                         }
 
                         if (us == null)
@@ -11234,6 +11313,10 @@ namespace PadForge.Services
                     }
                 }
             }
+
+            // Point the just-cloned mapping sets at the instances the
+            // same-product fallback actually bound (see the remap note above).
+            RemapDeviceGuidsInSlotMappingSets(deviceGuidRemap);
 
             // ── Reconcile per-group order lists with the new topology ──
             // Profile activation has just reset SlotCreated and OutputType for

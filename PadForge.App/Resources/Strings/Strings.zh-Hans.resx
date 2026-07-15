@@ -2440,6 +2440,7 @@
   <data name="Workshop_Tr_DoublePressNotSupported" xml:space="preserve"><value>此处不支持双击激活方式</value></data>
   <data name="Workshop_Tr_UnknownActivatorType" xml:space="preserve"><value>未知激活方式 {0}</value></data>
   <data name="Workshop_Tr_RepeatDropped" xml:space="preserve"><value>已丢弃自动重复</value></data>
+  <data name="Workshop_Tr_MacroTriggerRetargetedToInput" xml:space="preserve"><value>已将触发改为输入本身（{0}）：没有映射驱动其 Xbox 按钮</value></data>
   <data name="Workshop_Tr_MissingGroup" xml:space="preserve"><value>配置引用了缺失的组 {0}</value></data>
   <data name="Workshop_Tr_MissingModeShiftGroup" xml:space="preserve"><value>{0} 上的模式切换引用了缺失的组 {1}</value></data>
   <data name="Workshop_Tr_MissingPreset" xml:space="preserve"><value>配置引用了缺失的预设 {0}</value></data>

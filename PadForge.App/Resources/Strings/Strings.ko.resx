@@ -2440,6 +2440,7 @@
   <data name="Workshop_Tr_DoublePressNotSupported" xml:space="preserve"><value>두 번 누르기 활성화 방식은 여기서 지원되지 않음</value></data>
   <data name="Workshop_Tr_UnknownActivatorType" xml:space="preserve"><value>알 수 없는 활성화 방식 {0}</value></data>
   <data name="Workshop_Tr_RepeatDropped" xml:space="preserve"><value>자동 반복 제외됨</value></data>
+  <data name="Workshop_Tr_MacroTriggerRetargetedToInput" xml:space="preserve"><value>트리거를 입력 자체로 변경({0}): 해당 Xbox 버튼을 구동하는 매핑이 없음</value></data>
   <data name="Workshop_Tr_MissingGroup" xml:space="preserve"><value>구성이 없는 그룹 {0}을(를) 참조합니다</value></data>
   <data name="Workshop_Tr_MissingModeShiftGroup" xml:space="preserve"><value>{0}의 모드 시프트가 없는 그룹 {1}을(를) 참조합니다</value></data>
   <data name="Workshop_Tr_MissingPreset" xml:space="preserve"><value>구성이 없는 프리셋 {0}을(를) 참조합니다</value></data>

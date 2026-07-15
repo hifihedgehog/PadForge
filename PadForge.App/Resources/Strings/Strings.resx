@@ -2571,6 +2571,7 @@
   <data name="Workshop_Tr_DoublePressNotSupported" xml:space="preserve"><value>double-press activator not supported here</value></data>
   <data name="Workshop_Tr_UnknownActivatorType" xml:space="preserve"><value>unknown activator {0}</value></data>
   <data name="Workshop_Tr_RepeatDropped" xml:space="preserve"><value>auto-repeat dropped</value></data>
+  <data name="Workshop_Tr_MacroTriggerRetargetedToInput" xml:space="preserve"><value>trigger moved onto the input itself ({0}): no mapping feeds its Xbox button</value></data>
   <data name="Workshop_Tr_MissingGroup" xml:space="preserve"><value>config references missing group {0}</value></data>
   <data name="Workshop_Tr_MissingModeShiftGroup" xml:space="preserve"><value>mode shift on {0} references missing group {1}</value></data>
   <data name="Workshop_Tr_MissingPreset" xml:space="preserve"><value>config references missing preset {0}</value></data>

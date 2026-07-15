@@ -292,6 +292,56 @@ namespace PadForge.Common.Input
             }
         }
 
+        /// <summary>Re-points this VC's effect dispatchers at a different pad.
+        ///
+        /// <para>A slot reorder REUSES a kernel VC at a new pad index (pad
+        /// index is data identity, visual position is the kernel-slot anchor),
+        /// and moving the pointer plus <see cref="FeedbackPadIndex"/> is not
+        /// enough: both dispatchers capture their pad index in a readonly
+        /// field at construction and resolve their physical target devices
+        /// from it (<c>us.MapTo != _padIndex</c>). Left alone they keep
+        /// writing lightbar / triggers / rumble to the OLD pad's controllers.
+        /// Worse, the DevicesUpdated handler re-binds their CONFIG by the new
+        /// index, so they end up running the new pad's settings against the
+        /// old pad's hardware.</para>
+        ///
+        /// <para>The fields are readonly by design (they are read from a timer
+        /// thread), so the honest fix is to rebuild rather than mutate. The
+        /// registry hand-off is safe: a disposing dispatcher only removes its
+        /// slot key when it is still the registered instance, so on a two-pad
+        /// swap the second rebuild cannot evict the first's fresh
+        /// entry.</para></summary>
+        internal void RetargetToPad(int newPadIndex, PadForge.ViewModels.DeviceSlotConfig config)
+        {
+            FeedbackPadIndex = newPadIndex;
+
+            // DS5 pass-through: rebuild against the new pad. Recreated here
+            // rather than deferred, because RegisterFeedbackCallback (its only
+            // other creator) runs solely from VC construction, so a reset alone
+            // would leave pass-through dead until the slot was torn down.
+            if (IsDualSenseVirtual)
+            {
+                try { _ds5Dispatcher?.Dispose(); }
+                catch { /* best-effort teardown */ }
+                _ds5Dispatcher = null;
+                if (_controller != null && IsConnected)
+                {
+                    _ds5Dispatcher = new DualSensePassthroughDispatcher(newPadIndex);
+                    _ds5Dispatcher.Start();
+                }
+            }
+
+            // User effects: drop, then let AttachDeviceConfig rebuild against
+            // the new FeedbackPadIndex set above.
+            lock (_dispatcherLock)
+            {
+                try { _userEffectsDispatcher?.Dispose(); }
+                catch { /* best-effort teardown */ }
+                _userEffectsDispatcher = null;
+            }
+            if (config != null) AttachDeviceConfig(config);
+        }
+
         /// <summary>Triggers a fresh apply pass on the user-effects
         /// dispatcher. Called by InputService on every
         /// <see cref="InputManager.DevicesUpdated"/> tick so a freshly-

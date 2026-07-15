@@ -10738,10 +10738,33 @@ namespace PadForge.Services
                 var snap = SnapshotCurrentProfile();
                 CompactProfileDataInPlace(snap, oldToNew, maxPads);
 
+                // Per-slot macro-sound volume rides AppSettings.SlotSoundVolumes,
+                // not ProfileData, so CompactProfileDataInPlace cannot move it and
+                // ApplyProfile below will not restore it. Shift it here, or the
+                // macro moves to its new pad while its volume stays orphaned at
+                // the old index and the next save persists that split.
+                var oldVolumes = new int[_mainVm.Pads.Count];
+                for (int i = 0; i < oldVolumes.Length; i++)
+                    oldVolumes[i] = _mainVm.Pads[i].SoundMasterVolume;
+
                 // Apply the shifted snapshot. ApplyProfile rebuilds every
                 // PadViewModel from the new layout. The recursion guard
                 // suppresses the ApplyProfile→CompactSlotsForGaps tail call.
                 ApplyProfile(snap);
+
+                // Re-place the volumes through the same old→new map. Slots that
+                // no longer exist fall back to the 100% default rather than
+                // inheriting whatever sat at their index before the shift.
+                var newVolumes = new int[_mainVm.Pads.Count];
+                for (int i = 0; i < newVolumes.Length; i++) newVolumes[i] = 100;
+                foreach (var (oldIdx, newIdx) in oldToNew)
+                {
+                    if (oldIdx < 0 || oldIdx >= oldVolumes.Length) continue;
+                    if (newIdx < 0 || newIdx >= newVolumes.Length) continue;
+                    newVolumes[newIdx] = oldVolumes[oldIdx];
+                }
+                for (int i = 0; i < newVolumes.Length; i++)
+                    _mainVm.Pads[i].SoundMasterVolume = newVolumes[i];
 
                 // Persist the compacted layout so the file no longer has gaps.
                 _settingsService?.MarkDirty();

@@ -103,9 +103,14 @@ namespace PadForge.Common
                     if (!target.StartsWith(Path.GetFullPath(appDir), StringComparison.OrdinalIgnoreCase))
                         continue;
 
-                    if (File.Exists(target) && new FileInfo(target).Length == e.Length)
+                    if (File.Exists(target) && EntryMatchesFile(e, target))
                     {
-                        // Same name + size: assume the same package and reuse.
+                        // Byte-identical package already here: reuse it.
+                        // Name + length alone is NOT identity. Two different
+                        // packages that happen to share a name and a size
+                        // (same tool, same layout, different audio) silently
+                        // resolved to whichever landed first, so the imported
+                        // macro played the wrong sounds. Compare content.
                     }
                     else
                     {
@@ -164,6 +169,56 @@ namespace PadForge.Common
             {
                 return null;
             }
+        }
+
+        /// <summary>True when the archive entry and the on-disk file are
+        /// byte-identical. Length is only the cheap pre-filter: two different
+        /// packages authored by the same tool routinely share a name AND a
+        /// size, and treating that as identity made an import silently reuse
+        /// the resident package's audio instead of the bundled one. Streamed
+        /// and length-capped so a hostile entry cannot be read unbounded.</summary>
+        private static bool EntryMatchesFile(ZipArchiveEntry e, string path)
+        {
+            try
+            {
+                var fi = new FileInfo(path);
+                if (fi.Length != e.Length) return false;
+
+                using var a = e.Open();
+                using var b = File.OpenRead(path);
+                var ba = new byte[81920];
+                var bb = new byte[81920];
+                long remaining = fi.Length;
+                while (remaining > 0)
+                {
+                    int want = (int)Math.Min(ba.Length, remaining);
+                    int ra = ReadFully(a, ba, want);
+                    int rb = ReadFully(b, bb, want);
+                    if (ra != want || rb != want) return false;
+                    if (!ba.AsSpan(0, want).SequenceEqual(bb.AsSpan(0, want))) return false;
+                    remaining -= want;
+                }
+                return true;
+            }
+            catch
+            {
+                // Unreadable either side: fall through to the copy path, which
+                // dedup-renames rather than silently reusing a file we could
+                // not verify.
+                return false;
+            }
+        }
+
+        private static int ReadFully(Stream s, byte[] buf, int count)
+        {
+            int total = 0;
+            while (total < count)
+            {
+                int got = s.Read(buf, total, count - total);
+                if (got <= 0) break;
+                total += got;
+            }
+            return total;
         }
 
         /// <summary>Rewrites every macro sound ref pointing at

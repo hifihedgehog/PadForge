@@ -1654,6 +1654,18 @@ namespace PadForge.SteamWorkshop.Translation
                             path, binding.Raw, args: $"mouse_wheel {binding.Param}");
                         break;
                     }
+                    if (onRelease)
+                    {
+                        // Same reason the mouse_button and XInput legs above
+                        // skip: the emitted row reads the source's CURRENT
+                        // state, so a release binding would scroll for the
+                        // whole hold and stop on release, which is the
+                        // opposite of what it asked for. Skip with a named
+                        // note rather than emit the inverted behavior.
+                        run.Report.Add(TranslationStatus.Skipped, TranslationReasons.ReleaseActivatorNotSupported,
+                            path, binding.Raw);
+                        break;
+                    }
                     if (toggle)
                     {
                         // A latched scroll would scroll forever; the binding

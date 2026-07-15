@@ -997,9 +997,36 @@ namespace PadForge.Common.Input
                                     var vcAsync = CreateVirtualController(capturedIndex);
                                     if (vcAsync != null && vcAsync.IsConnected)
                                     {
-                                        _virtualControllers[capturedIndex] = vcAsync;
-                                        try { _hmaestroContext?.FinalizeNames(); }
-                                        catch { /* best effort */ }
+                                        // Claim the slot only if it is still
+                                        // empty. HM bring-up takes seconds
+                                        // (see the retry note above), and the
+                                        // UI-thread slot reorder can install a
+                                        // reused VC at this index while we were
+                                        // connecting. A blind assign overwrote
+                                        // that pointer, and since the array was
+                                        // its only handle, the reused kernel
+                                        // controller leaked: still live, still
+                                        // holding its kernel slot, never
+                                        // reached by DestroyVirtualController.
+                                        // Losing the race means WE are the
+                                        // spare, so dispose ourselves. This
+                                        // also covers the poll thread starting
+                                        // a spurious create in the reorder's
+                                        // clear-to-repopulate gap: that VC now
+                                        // loses the swap and tears itself down
+                                        // instead of displacing the real one.
+                                        var prior = System.Threading.Interlocked.CompareExchange(
+                                            ref _virtualControllers[capturedIndex], vcAsync, null);
+                                        if (prior != null)
+                                        {
+                                            try { vcAsync.Dispose(); }
+                                            catch { /* best effort */ }
+                                        }
+                                        else
+                                        {
+                                            try { _hmaestroContext?.FinalizeNames(); }
+                                            catch { /* best effort */ }
+                                        }
                                     }
                                     else if (vcAsync == null)
                                     {

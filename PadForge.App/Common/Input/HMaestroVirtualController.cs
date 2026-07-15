@@ -27,6 +27,11 @@ namespace PadForge.Common.Input
         private Vibration[] _fbVibrationStates; // for the per-tick FFB re-evaluation
         private DualSensePassthroughDispatcher _ds5Dispatcher;
         private UserEffectsDispatcher _userEffectsDispatcher;
+        // Guards _userEffectsDispatcher against the attach/teardown race:
+        // AttachDeviceConfig runs on the UI thread (InputService's
+        // DevicesUpdated handler) while Disconnect runs on the poll thread's
+        // destroy pass, and nothing else orders them.
+        private readonly object _dispatcherLock = new();
         private bool _disposed;
 
         // DualSense / DualSense Edge VID/PID — used to gate the
@@ -221,15 +226,22 @@ namespace PadForge.Common.Input
 
             // User-effects dispatcher unsubscribes its PropertyChanged
             // handler on Dispose; safe to call regardless of whether one
-            // was ever attached.
-            try
+            // was ever attached. Under _dispatcherLock so a concurrent
+            // AttachDeviceConfig (UI thread, from the DevicesUpdated
+            // handler) cannot slip between this dispose and the null, nor
+            // construct a replacement after teardown: this runs on the poll
+            // thread's destroy pass, and the two never synchronized.
+            lock (_dispatcherLock)
             {
-                _userEffectsDispatcher?.Dispose();
-            }
-            catch { /* best-effort teardown */ }
-            finally
-            {
-                _userEffectsDispatcher = null;
+                try
+                {
+                    _userEffectsDispatcher?.Dispose();
+                }
+                catch { /* best-effort teardown */ }
+                finally
+                {
+                    _userEffectsDispatcher = null;
+                }
             }
 
             _controller?.Dispose();
@@ -254,14 +266,29 @@ namespace PadForge.Common.Input
         {
             if (config == null) return;
 
-            if (_userEffectsDispatcher == null)
+            // Locked, and gated on IsConnected, against Disconnect's teardown
+            // on the poll thread. Two failures without it: the null-test and
+            // the use below were separate reads of the field, so a teardown
+            // between them threw; and an attach arriving after teardown saw
+            // null and CONSTRUCTED a fresh dispatcher, which registers itself
+            // in the static _instances map and subscribes to the config, so it
+            // outlived the disposed VC as a zombie HID writer that no later
+            // cleanup pass revisits.
+            lock (_dispatcherLock)
             {
-                _userEffectsDispatcher = new UserEffectsDispatcher(FeedbackPadIndex, config);
-                _userEffectsDispatcher.ApplyOnce();
-            }
-            else
-            {
-                _userEffectsDispatcher.Rebind(config);
+                if (!IsConnected) return;
+
+                var d = _userEffectsDispatcher;
+                if (d == null)
+                {
+                    d = new UserEffectsDispatcher(FeedbackPadIndex, config);
+                    _userEffectsDispatcher = d;
+                    d.ApplyOnce();
+                }
+                else
+                {
+                    d.Rebind(config);
+                }
             }
         }
 

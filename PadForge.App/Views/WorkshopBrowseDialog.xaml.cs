@@ -520,6 +520,12 @@ namespace PadForge.Views
         private async Task LoadConfigsAsync(WorkshopGameItem g, string requiredTag)
         {
             _gameCts?.Cancel();
+            // Cancel the manifest/translate task too, exactly as BackToSearch
+            // does. Configs.Clear() below deselects the current row, but a
+            // download already in flight for it keeps its own token alive,
+            // finishes, and restores _outcome plus the Save footer for a
+            // config the active tag no longer lists. Save then imported it.
+            _manifestCts?.Cancel();
             var cts = new CancellationTokenSource();
             _gameCts = cts;
             var ct = cts.Token;

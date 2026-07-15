@@ -4,6 +4,7 @@ using System.Linq;
 using PadForge.Common.Input;
 using PadForge.Engine;
 using PadForge.Engine.Data;
+using PadForge.Engine.Touchpad;
 using PadForge.Services;
 using PadForge.ViewModels;
 using Xunit;
@@ -338,6 +339,136 @@ namespace PadForge.Tests
 
             Assert.NotNull(profile.Macros);
             Assert.Contains(profile.Macros, m => m.Name == "Rapid Fire" && m.PadIndex == 0);
+        }
+
+        // ── Audit 2026-07-14 (Codex finder): cold-start gesture catalog ──
+
+        [Fact]
+        public void ColdLoad_WithNamedProfileActive_InstallsThatProfilesGestures_NotTheDefaults()
+        {
+            // ApplyProfile (and with it ApplyProfileTouchpadGestures) never runs
+            // on the cold path, so the active-profile branch of LoadProfiles is
+            // the ONLY lane that can install a named profile's gestures at
+            // startup. Without it the DEFAULT's catalog stayed live under the
+            // named profile and the first autosave wrote it back over the
+            // profile's stored gestures: silent, permanent user-data loss.
+            var (_, _, ss) = Arrange();
+
+            var named = new ProfileData
+            {
+                Id = "p9",
+                Name = "Named",
+                TouchpadGestures = new[] { new TouchpadCustomGesture { Name = "ProfileGesture" } },
+            };
+            SettingsManager.Profiles.Add(named);
+
+            var app = new AppSettingsData
+            {
+                ActiveProfileId = "p9",
+                TouchpadGestures = new[] { new TouchpadCustomGesture { Name = "DefaultGesture" } },
+            };
+
+            // Capture what the load path installs, the same way InputService's
+            // applier does. Wiring it BEFORE the load also covers the
+            // applier-already-present leg of ApplyOrStageTouchpadGestures.
+            TouchpadCustomGesture[] installed = null;
+            ss.TouchpadGesturesApplier = g => installed = g;
+
+            ss.LoadProfiles(new[] { named }, app);
+
+            Assert.NotNull(installed);
+            Assert.Equal("ProfileGesture", Assert.Single(installed).Name);
+        }
+
+        [Fact]
+        public void ColdLoad_WithNoProfileActive_KeepsTheDefaultGestures()
+        {
+            // Same-window negative control: with no named profile active the
+            // default catalog must survive untouched.
+            var (_, _, ss) = Arrange();
+
+            TouchpadCustomGesture[] installed = null;
+            ss.TouchpadGesturesApplier = g => installed = g;
+
+            var app = new AppSettingsData
+            {
+                ActiveProfileId = null,
+                TouchpadGestures = new[] { new TouchpadCustomGesture { Name = "DefaultGesture" } },
+            };
+            ss.LoadProfiles(Array.Empty<ProfileData>(), app);
+
+            Assert.Null(installed);   // the active-profile branch never ran
+        }
+
+        // ── Audit 2026-07-14 (Codex finder): autosave mirror + empty-profile
+        //    sentinels + copy-builder type gates ──
+
+        [Fact]
+        public void UpdateActiveProfileSnapshot_CapturesSlotMappingSets()
+        {
+            // The autosave mirror. Without this leg the stored profile keeps the
+            // mappings it had at activation, and Export (which reads the STORED
+            // object, not a fresh snapshot) ships them stale.
+            var (_, _, ss) = Arrange();
+            var profile = ArrangeActiveProfile();
+
+            var ms = new MappingSet();
+            ms.Rows.Add(new MappingRow { Target = "ButtonA", LayerMask = "Base" });
+            SettingsManager.SlotMappingSets[0] = ms;
+
+            ss.UpdateActiveProfileSnapshot();
+
+            Assert.NotNull(profile.SlotMappingSets);
+            var stored = profile.SlotMappingSets[0];
+            Assert.NotNull(stored);
+            Assert.Equal("ButtonA", Assert.Single(stored.Rows).Target);
+            // Deep-cloned, not aliased: a later live edit must not mutate the
+            // stored snapshot.
+            Assert.NotSame(ms, stored);
+        }
+
+        [Fact]
+        public void CreateEmptyProfile_StampsAuthoredEmpty_NotTheLegacyNullSentinel()
+        {
+            // null Macros / SlotMappingSets mean "legacy, leave live state
+            // alone", so an unset empty profile INHERITED the outgoing
+            // profile's mappings and macros and then persisted them as its own.
+            var (_, svc, _) = Arrange();
+
+            var p = svc.CreateEmptyProfile("Empty", null);
+
+            Assert.NotNull(p.Macros);
+            Assert.Empty(p.Macros);
+            Assert.NotNull(p.SlotMappingSets);
+            Assert.Equal(InputManager.MaxPads, p.SlotMappingSets.Length);
+            Assert.All(p.SlotMappingSets, s => Assert.Null(s));
+        }
+
+        [Fact]
+        public void CopyBuilders_RejectSlotsOfTheWrongOutputType()
+        {
+            // Every pad owns a dormant ExtendedConfig/MidiConfig regardless of
+            // its output type, so an ungated copy exported those defaults from
+            // an Xbox slot and clobbered a real Extended/MIDI slot on paste.
+            var (vm, _, ss) = Arrange();
+            vm.Pads[0].OutputType = VirtualControllerType.Xbox;
+
+            Assert.Null(ss.BuildExtendedConfigSnapshotForSlot(0));
+            Assert.Null(ss.BuildMidiConfigSnapshotForSlot(0));
+        }
+
+        [Fact]
+        public void CopyBuilders_StillEmitForMatchingOutputType()
+        {
+            // Same-window positive control: the gates above must not break the
+            // legitimate Extended->Extended / MIDI->MIDI copy.
+            var (vm, _, ss) = Arrange();
+
+            vm.Pads[0].OutputType = VirtualControllerType.Extended;
+            Assert.NotNull(ss.BuildExtendedConfigSnapshotForSlot(0));
+
+            vm.Pads[0].OutputType = VirtualControllerType.Midi;
+            Assert.NotNull(ss.BuildMidiConfigSnapshotForSlot(0));
         }
 
         // ── M10 sibling: BuildMacroData's null-vs-empty contract ──

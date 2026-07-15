@@ -516,20 +516,25 @@ namespace PadForge.Views
             // Sync the per-pad pivot to the active device. PadViewModel
             // recomputes MaxTouchpadIndex / SelectedTouchpadIndex and
             // triggers a settings reload for the new (device, pad).
+            // The zero-reset is the else of THIS branch, not the mouse one
+            // below: keyed on hasMouse it fired for every non-mouse device,
+            // wiping the count set two lines earlier, so a DualSense or Steam
+            // Controller reported zero touchpads and the multi-pad selector
+            // never appeared.
             if (DataContext is PadViewModel vmTouch && hasTouchpad)
             {
                 vmTouch.RecomputeTouchpadCountForActiveDevice(numTouchpads);
                 vmTouch.LoadTouchpadGestureSettingsForActiveDevice();
+            }
+            else if (DataContext is PadViewModel vmNoTouch)
+            {
+                vmNoTouch.RecomputeTouchpadCountForActiveDevice(0);
             }
 
             // Mouse tab (#200): reload the per-(slot, device) gesture
             // settings whenever the active device changes.
             if (DataContext is PadViewModel vmMouse && hasMouse)
                 vmMouse.LoadMouseGestureSettingsForActiveDevice();
-            else if (DataContext is PadViewModel vmNoTouch)
-            {
-                vmNoTouch.RecomputeTouchpadCountForActiveDevice(0);
-            }
 
             if (MotorBarsGrid != null)
                 MotorBarsGrid.Visibility = Visibility.Visible;

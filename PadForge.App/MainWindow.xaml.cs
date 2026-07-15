@@ -516,13 +516,21 @@ namespace PadForge
                     _settingsService.MarkDirty();
             };
 
-            // Persist DSU / web controller server settings on change (Dashboard VM).
+            // Persist DSU / Remote Link / web controller / overlay settings on
+            // change (Dashboard VM). This list must cover every Dashboard
+            // property LoadAppSettings restores and BuildAppSettings writes:
+            // a persisted property missing here changes live state but never
+            // marks the file dirty, so a normal close (which saves only when
+            // IsDirty) silently discards it. The Remote Link trio was missing.
             _viewModel.Dashboard.PropertyChanged += (s, e) =>
             {
                 if (e.PropertyName is nameof(DashboardViewModel.EnableDsuMotionServer)
                      or nameof(DashboardViewModel.DsuMotionServerPort)
                      or nameof(DashboardViewModel.EnableWebController)
                      or nameof(DashboardViewModel.WebControllerPort)
+                     or nameof(DashboardViewModel.EnableRemoteLink)
+                     or nameof(DashboardViewModel.AutoReconnect)
+                     or nameof(DashboardViewModel.RemoteLinkPort)
                      or nameof(DashboardViewModel.EnableTouchpadOverlay)
                      or nameof(DashboardViewModel.TouchpadOverlayOpacity)
                      or nameof(DashboardViewModel.TouchpadOverlayMonitor)
@@ -1193,6 +1201,13 @@ namespace PadForge
 
                 // KbmConfig property changes (SOCD mode / pairs) trigger autosave.
                 pad.KbmConfig.PropertyChanged += (s, e) => _settingsService.MarkDirty();
+
+                // MidiConfig property changes (channel, velocity, CC/note ranges)
+                // trigger autosave. The PadPage MIDI fields write straight into
+                // this nested object, which raises PropertyChanged on itself and
+                // not on the PadViewModel, so without this anchor a MIDI-only
+                // edit never marked the file dirty and close discarded it.
+                pad.MidiConfig.PropertyChanged += (s, e) => _settingsService.MarkDirty();
 
                 // DeviceConfig changes (Lighting tab, Adaptive Triggers tab)
                 // — autosave + sync audio capture when audio-to-lightbar

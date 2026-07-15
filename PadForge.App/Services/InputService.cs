@@ -11578,6 +11578,17 @@ namespace PadForge.Services
                 SlotCreated = new bool[InputManager.MaxPads],
                 SlotEnabled = new bool[InputManager.MaxPads],
                 SlotControllerTypes = new int[InputManager.MaxPads],
+                // Empty, NOT null. On ProfileData both of these use null as the
+                // legacy sentinel for "saved before this rode profiles, leave
+                // the live state alone" (ApplyProfile keys on exactly that), so
+                // leaving them unset made a brand-new empty profile INHERIT the
+                // outgoing profile's mappings and macros, then persist them as
+                // its own on the next switch-away. An authored-empty profile
+                // owns zero of each and must say so. Null elements are the
+                // established no-mappings shape: Reset to Defaults assigns the
+                // live array exactly this way.
+                SlotMappingSets = new Engine.Data.MappingSet[InputManager.MaxPads],
+                Macros = Array.Empty<MacroData>(),
             };
             SettingsManager.Profiles.Add(profile);
             return profile;

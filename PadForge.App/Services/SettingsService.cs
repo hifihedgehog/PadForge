@@ -82,6 +82,22 @@ namespace PadForge.Services
             }
         }
 
+        /// <summary>Installs a custom-gesture catalog through the applier when
+        /// it is wired, or stages it for the applier's setter to flush when it
+        /// is not. Both load-path callers (the default catalog in
+        /// LoadAppSettings, the active named profile's own catalog in
+        /// LoadProfiles) share this so the LAST caller wins, which is what
+        /// makes the named profile's catalog override the default's on a cold
+        /// start. Kept as one helper because the two call sites diverging is
+        /// exactly how the named profile's gestures got lost.</summary>
+        private void ApplyOrStageTouchpadGestures(PadForge.Engine.Touchpad.TouchpadCustomGesture[] gestures)
+        {
+            if (_touchpadGesturesApplier != null)
+                _touchpadGesturesApplier(gestures);
+            else
+                _pendingTouchpadGesturesToApply = gestures;
+        }
+
         /// <summary>
         /// Full path to the active settings file.
         /// </summary>
@@ -1519,15 +1535,16 @@ namespace PadForge.Services
             // Default-profile custom-gesture catalog. InputService
             // wires the applier from StartEngine, which runs AFTER
             // this load path on cold start, so stash the loaded list
-            // in a pending slot when the applier isn't ready yet —
-            // the setter on TouchpadGesturesApplier flushes it on
-            // first assignment. Named profiles seed via
-            // ApplyProfileTouchpadGestures on the active profile's
-            // TouchpadGestures field instead.
-            if (_touchpadGesturesApplier != null)
-                _touchpadGesturesApplier(appSettings.TouchpadGestures);
-            else
-                _pendingTouchpadGesturesToApply = appSettings.TouchpadGestures;
+            // in a pending slot when the applier isn't ready yet. The
+            // setter on TouchpadGesturesApplier flushes it on first
+            // assignment. When a NAMED profile is active, the
+            // block in LoadProfiles overrides this with that profile's
+            // own catalog: ApplyProfile (and with it
+            // ApplyProfileTouchpadGestures) does NOT run on the cold
+            // path, so this stash would otherwise stay live and the
+            // first autosave would write the default's gestures back
+            // over the named profile's.
+            ApplyOrStageTouchpadGestures(appSettings.TouchpadGestures);
             vm.HidHideWhitelistPaths.Clear();
             if (appSettings.HidHideWhitelistPaths != null)
             {
@@ -1938,6 +1955,12 @@ namespace PadForge.Services
             if (slotIndex < 0 || slotIndex >= _mainVm.Pads.Count) return null;
             var padVm = _mainVm.Pads[slotIndex];
             if (padVm == null) return null;
+            // The "isn't Extended" half of the contract above. EVERY pad owns an
+            // ExtendedConfig object whether or not it is an Extended slot, so
+            // without this gate copying an Xbox / PlayStation slot exported that
+            // slot's dormant DEFAULTS, and pasting onto a real Extended slot
+            // overwrote its authored counts, VID/PID, and product string.
+            if (padVm.OutputType != Engine.VirtualControllerType.Extended) return null;
             var cfg = padVm.ExtendedConfig;
             if (cfg == null) return null;
             return new ViewModels.ExtendedSlotConfigData
@@ -1988,6 +2011,11 @@ namespace PadForge.Services
             if (slotIndex < 0 || slotIndex >= _mainVm.Pads.Count) return null;
             var padVm = _mainVm.Pads[slotIndex];
             if (padVm == null) return null;
+            // Same contract gate as the Extended builder above: every pad owns a
+            // dormant MidiConfig, so an ungated copy exported channel 1 /
+            // default ranges from an Xbox slot and clobbered a real MIDI slot's
+            // authored channel and CC/note ranges on paste.
+            if (padVm.OutputType != Engine.VirtualControllerType.Midi) return null;
             var cfg = padVm.MidiConfig;
             if (cfg == null) return null;
             return new ViewModels.MidiSlotConfigData
@@ -2859,8 +2887,12 @@ namespace PadForge.Services
 
         /// <summary>
         /// Loads profiles from serialized data into SettingsManager and the ViewModel.
+        /// Internal (not private) so the cold-start tests can drive it with
+        /// plain DTOs: it takes no file handle, and the active-profile branch
+        /// below is the only lane that restores a named profile at startup, so
+        /// a gap in it is invisible to every runtime-switch test.
         /// </summary>
-        private void LoadProfiles(ProfileData[] profiles, AppSettingsData appSettings)
+        internal void LoadProfiles(ProfileData[] profiles, AppSettingsData appSettings)
         {
             SettingsManager.Profiles.Clear();
             _mainVm.Settings.ProfileItems.Clear();
@@ -2976,6 +3008,16 @@ namespace PadForge.Services
                 ApplyMidiConfigs(active.MidiConfigs);
                 ApplyKbmConfigs(active.KbmConfigs);
 
+                // The profile's OWN gesture catalog, overriding the default's
+                // that LoadAppSettings staged a moment ago. ApplyProfile never
+                // runs on the cold path, so without this the default's catalog
+                // stayed live under a named profile AND the first autosave
+                // wrote it back over the profile's stored gestures, destroying
+                // them. The default's copy survives in
+                // AppSettings.DefaultProfileSnapshot.TouchpadGestures, which
+                // PendingDefaultSnapshot (above) carries to the switch-back.
+                ApplyOrStageTouchpadGestures(active.TouchpadGestures);
+
                 // Apply DSU/Web/overlay settings from the active profile.
                 _mainVm.Dashboard.EnableDsuMotionServer = active.EnableDsuMotionServer;
                 if (active.DsuMotionServerPort >= 1024 && active.DsuMotionServerPort <= 65535)
@@ -3002,7 +3044,11 @@ namespace PadForge.Services
         /// active are persisted back to it. Called during Save after checksums
         /// have been recomputed.
         /// </summary>
-        private void UpdateActiveProfileSnapshot()
+        // Internal (not private) so the mirror tests can drive it directly.
+        // It is one of the three runtime-state mirrors named on ProfileData,
+        // and the only one Save() reaches, so an untested gap here is invisible
+        // until an export ships stale data.
+        internal void UpdateActiveProfileSnapshot()
         {
             string activeId = SettingsManager.ActiveProfileId;
             if (string.IsNullOrEmpty(activeId))
@@ -3038,6 +3084,18 @@ namespace PadForge.Services
 
             profile.Entries = entries.ToArray();
             profile.PadSettings = padSettings.ToArray();
+            // Mapping sets ride the autosave like every other runtime field.
+            // Without this leg the stored profile keeps whatever mappings it
+            // had at activation: switching away repairs it via
+            // SaveActiveProfileState, but Export reads the STORED object
+            // (MainWindow.ExportProfile), so exporting the active profile
+            // without switching away shipped its pre-edit mappings. Deep-cloned
+            // for the same reason SnapshotCurrentProfile clones: a reference
+            // copy lets later live edits mutate the stored snapshot.
+            profile.SlotMappingSets = Enumerable
+                .Range(0, SettingsManager.SlotMappingSets.Length)
+                .Select(s => InputService.CloneMappingSetDeep(SettingsManager.SlotMappingSets[s]))
+                .ToArray();
             profile.SlotCreated = (bool[])SettingsManager.SlotCreated.Clone();
             profile.SlotEnabled = (bool[])SettingsManager.SlotEnabled.Clone();
             profile.SlotControllerTypes = Enumerable.Range(0, _mainVm.Pads.Count)

@@ -2862,6 +2862,18 @@ namespace PadForge
                         BeginTime = System.TimeSpan.FromMilliseconds(
                             -(System.DateTime.UtcNow.TimeOfDay.TotalMilliseconds % 3200.0)),
                     };
+                    // Cap the reblur rate. This animates the EFFECT's own
+                    // Opacity, not the element's, so every frame invalidates the
+                    // effect and WPF re-renders the whole BlurRadius=20 Gaussian
+                    // for this card. At the default 60 fps that is a permanent
+                    // per-frame blur per lit slot, and it only starts once a slot
+                    // goes live, which is why it never showed with no controller
+                    // connected. A 1.6s ease-in-out breathe carries no detail
+                    // that needs 60 samples a second; 15 is visually identical
+                    // here and does a quarter of the work. The composite-time
+                    // sibling (the pane adorner below) animates UIElement.Opacity
+                    // instead and needs no cap.
+                    System.Windows.Media.Animation.Timeline.SetDesiredFrameRate(breathe, 15);
                     ring.BeginAnimation(System.Windows.Media.Effects.DropShadowEffect.OpacityProperty, breathe);
                 }
                 else
@@ -3125,6 +3137,10 @@ namespace PadForge
                     BeginTime = System.TimeSpan.FromMilliseconds(
                         -(System.DateTime.UtcNow.TimeOfDay.TotalMilliseconds % 2400.0)),
                 };
+                // Same reblur trap as the heat ring above: this drives the
+                // EFFECT's Opacity, so each frame re-renders the BlurRadius=12
+                // bloom. A 1.2s sine pulse does not need 60 samples a second.
+                System.Windows.Media.Animation.Timeline.SetDesiredFrameRate(pulse, 15);
                 glow.BeginAnimation(System.Windows.Media.Effects.DropShadowEffect.OpacityProperty, pulse);
             }
         }

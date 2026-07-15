@@ -68,6 +68,14 @@ namespace PadForge.Services
         /// Client subscriptions: (endpoint, slot) → last-seen timestamp.
         /// Protected by lock(_subscriptions).
         /// </summary>
+        // Lock-free mirror of _subscriptions.Count + _allSlotSubscriptions.Count,
+        // maintained under lock (_subscriptions) via RecountSubscribers. Exists
+        // so BroadcastMotion, which the 1 kHz poll thread calls once per DSU
+        // slot, can early-out on "no clients" without allocating a List + a
+        // HashSet and taking the subscription lock 4,000 times a second to
+        // discover there is nobody to send to.
+        private volatile int _subCount;
+
         private readonly Dictionary<(EndPoint, int), long> _subscriptions = new();
 
         /// <summary>
@@ -182,6 +190,16 @@ namespace PadForge.Services
 
             _slotConnected[slot] = connected;
             _slotHasMotion[slot] = snapshot.HasMotion;
+
+            // Cheap early-out BEFORE GetSubscribers, which allocates a List and
+            // a HashSet and takes the subscription lock on every call. This runs
+            // on the 1 kHz poll thread once per DSU slot, so with the server on
+            // and no client attached the old order burned ~8,000 allocations and
+            // ~4,000 lock acquisitions a second to learn there was nobody to
+            // send to. The state writes above must stay unconditional: they feed
+            // the ControllerInfo replies a client reads BEFORE it subscribes.
+            if (_subCount == 0)
+                return;
 
             // Only broadcast if there are subscribers.
             var endpoints = GetSubscribers(slot);
@@ -349,8 +367,15 @@ namespace PadForge.Services
                         _allSlotSubscriptions[sender] = now;
                     }
                 }
+                RecountSubscribers();
             }
         }
+
+        /// <summary>Refreshes the lock-free subscriber count BroadcastMotion
+        /// early-outs on. MUST be called inside <c>lock (_subscriptions)</c>
+        /// after any mutation of either subscription dictionary.</summary>
+        private void RecountSubscribers()
+            => _subCount = _subscriptions.Count + _allSlotSubscriptions.Count;
 
         private void SendControllerInfo(int slot, EndPoint sender)
         {
@@ -539,6 +564,15 @@ namespace PadForge.Services
                 if (expiredAll != null)
                     foreach (var key in expiredAll)
                         _allSlotSubscriptions.Remove(key);
+
+                // The other mutation site, so it owes the same recount as the
+                // subscribe path. Skipping it here would leave _subCount high
+                // after the last client timed out (a harmless miss: the
+                // endpoints.Count check below still guards the send), but a
+                // count left LOW would silence a live server, so keep the
+                // mirror exact rather than reasoning about which way it drifts.
+                if (expired != null || expiredAll != null)
+                    RecountSubscribers();
             }
 
             return result;

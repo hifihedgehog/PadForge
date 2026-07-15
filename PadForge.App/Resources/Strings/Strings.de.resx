@@ -2440,6 +2440,7 @@
   <data name="Workshop_Tr_DoublePressNotSupported" xml:space="preserve"><value>Doppeldruck-Aktivator hier nicht unterstützt</value></data>
   <data name="Workshop_Tr_UnknownActivatorType" xml:space="preserve"><value>unbekannter Aktivator {0}</value></data>
   <data name="Workshop_Tr_RepeatDropped" xml:space="preserve"><value>Auto-Wiederholung verworfen</value></data>
+  <data name="Workshop_Tr_MacroTriggerRetargetedToInput" xml:space="preserve"><value>Auslöser auf die Eingabe selbst verschoben ({0}): keine Zuordnung speist deren Xbox-Taste</value></data>
   <data name="Workshop_Tr_MissingGroup" xml:space="preserve"><value>Konfiguration verweist auf fehlende Gruppe {0}</value></data>
   <data name="Workshop_Tr_MissingModeShiftGroup" xml:space="preserve"><value>Mode-Shift auf {0} verweist auf fehlende Gruppe {1}</value></data>
   <data name="Workshop_Tr_MissingPreset" xml:space="preserve"><value>Konfiguration verweist auf fehlendes Preset {0}</value></data>

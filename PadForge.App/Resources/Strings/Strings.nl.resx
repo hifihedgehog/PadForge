@@ -2460,6 +2460,7 @@
   <data name="Workshop_Tr_DoublePressNotSupported" xml:space="preserve"><value>dubbel-indrukken-activator hier niet ondersteund</value></data>
   <data name="Workshop_Tr_UnknownActivatorType" xml:space="preserve"><value>onbekende activator {0}</value></data>
   <data name="Workshop_Tr_RepeatDropped" xml:space="preserve"><value>automatische herhaling vervallen</value></data>
+  <data name="Workshop_Tr_MacroTriggerRetargetedToInput" xml:space="preserve"><value>trigger verplaatst naar de invoer zelf ({0}): geen toewijzing voedt de bijbehorende Xbox-knop</value></data>
   <data name="Workshop_Tr_MissingGroup" xml:space="preserve"><value>configuratie verwijst naar ontbrekende groep {0}</value></data>
   <data name="Workshop_Tr_MissingModeShiftGroup" xml:space="preserve"><value>modusverschuiving op {0} verwijst naar ontbrekende groep {1}</value></data>
   <data name="Workshop_Tr_MissingPreset" xml:space="preserve"><value>configuratie verwijst naar ontbrekende preset {0}</value></data>

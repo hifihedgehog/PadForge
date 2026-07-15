@@ -25,6 +25,24 @@ namespace PadForge.Common
         private const string ProfileEntry = "profile.xml";
         private const string PackagesPrefix = "packages/";
 
+        /// <summary>Maps each macro sound ref's package alias to the bundled
+        /// file that supplies it, one <c>alias\tfilename</c> line per entry.
+        ///
+        /// <para>Why it exists: the alias a macro stores is this machine's
+        /// REGISTERED name, which the registry dedup-renames on collision
+        /// ("SFX" -> "SFX (2)"). The importing machine re-registers from the
+        /// package's own probed name and only rewrites refs when ITS
+        /// registration collided, so an alias that was suffixed on the
+        /// exporting machine and not on the importing one resolved to nothing
+        /// and the macro fell silent. Normalizing the refs to the probed name
+        /// on export would fix that one case and break a worse one: two
+        /// different packages that both probe "SFX" would collapse onto one
+        /// ref. Keying the map by FILE keeps them distinct.</para>
+        ///
+        /// <para>Absent in archives written before this existed, which keep
+        /// the previous behavior.</para></summary>
+        private const string AliasMapEntry = "packages/_aliases.txt";
+
         private static readonly XmlSerializer Serializer = new(typeof(ProfileData));
 
         /// <summary>Writes <paramref name="profile"/> and its referenced
@@ -47,12 +65,27 @@ namespace PadForge.Common
                     using (var s = entry.Open())
                         Serializer.Serialize(s, profile);
 
+                    var aliasMap = new List<string>();
                     foreach (string pkg in ReferencedPackages(profile))
                     {
                         string file = SoundPackageManager.ResolvePackageFile(pkg);
                         if (file == null || !File.Exists(file)) continue;
-                        zip.CreateEntryFromFile(file, PackagesPrefix + Path.GetFileName(file), CompressionLevel.Optimal);
+                        string entryFile = Path.GetFileName(file);
+                        zip.CreateEntryFromFile(file, PackagesPrefix + entryFile, CompressionLevel.Optimal);
                         bundled.Add(pkg);
+                        // Record which bundled file backs this alias so the
+                        // importer can rewrite the ref to whatever name IT
+                        // ends up registering the file under. A tab is safe:
+                        // package names come from a manifest display name or a
+                        // file stem, neither of which can contain one.
+                        if (!pkg.Contains('\t') && !entryFile.Contains('\t'))
+                            aliasMap.Add(pkg + "\t" + entryFile);
+                    }
+                    if (aliasMap.Count > 0)
+                    {
+                        var mapEntry = zip.CreateEntry(AliasMapEntry);
+                        using var ms = new StreamWriter(mapEntry.Open());
+                        foreach (var line in aliasMap) ms.WriteLine(line);
                     }
                 }
                 File.Move(tmpPath, destPath, overwrite: true);
@@ -86,6 +119,10 @@ namespace PadForge.Common
                 // per-(slot, device) configs under the legacy element name.
                 profile.MigrateLegacySchema();
                 profile.Id = Guid.NewGuid().ToString("N");
+
+                // alias -> bundled file, written by Export. Absent on older
+                // archives, which then keep the probed-name-only behavior.
+                var aliasesByFile = ReadAliasMap(zip);
 
                 string appDir = AppDomain.CurrentDomain.BaseDirectory;
                 foreach (var e in zip.Entries.Where(x =>
@@ -156,11 +193,28 @@ namespace PadForge.Common
                     if (name == null) continue;
                     registeredPackages.Add(name);
 
-                    // A name collision on this machine dedup-renamed the
-                    // package; the profile's macro refs still carry the
-                    // package's own name. Rewrite them to the registered
-                    // name so the sounds resolve to the bundled package.
-                    if (!string.Equals(name, probedName, StringComparison.OrdinalIgnoreCase))
+                    // Rewrite the profile's refs onto whatever name this
+                    // machine registered the file under.
+                    //
+                    // The alias map is authoritative when present: it says
+                    // exactly which ref the EXPORTING machine used for THIS
+                    // file, including a dedup-suffixed alias ("SFX (2)") that
+                    // the probed name alone can never reconstruct. That case
+                    // used to leave the macro pointing at a package name no
+                    // machine had, and the sound silently never played.
+                    bool rewrote = false;
+                    if (aliasesByFile.TryGetValue(fileName, out var aliases))
+                    {
+                        foreach (var alias in aliases)
+                        {
+                            if (string.Equals(alias, name, StringComparison.OrdinalIgnoreCase)) { rewrote = true; continue; }
+                            RewritePackageRefs(profile, alias, name);
+                            rewrote = true;
+                        }
+                    }
+                    // Older archives carry no map: fall back to the probed
+                    // name, which is what those refs were written against.
+                    if (!rewrote && !string.Equals(name, probedName, StringComparison.OrdinalIgnoreCase))
                         RewritePackageRefs(profile, probedName, name);
                 }
                 return profile;
@@ -169,6 +223,37 @@ namespace PadForge.Common
             {
                 return null;
             }
+        }
+
+        /// <summary>Reads the alias map written by Export, keyed by bundled
+        /// file name (one file can back several aliases). Returns empty for
+        /// archives that predate the map, or a malformed one: an unreadable
+        /// map must degrade to the old probed-name path, never fail the
+        /// import.</summary>
+        private static Dictionary<string, List<string>> ReadAliasMap(ZipArchive zip)
+        {
+            var map = new Dictionary<string, List<string>>(StringComparer.OrdinalIgnoreCase);
+            try
+            {
+                var e = zip.GetEntry(AliasMapEntry);
+                if (e == null) return map;
+                using var r = new StreamReader(e.Open());
+                string line;
+                while ((line = r.ReadLine()) != null)
+                {
+                    int tab = line.IndexOf('\t');
+                    if (tab <= 0 || tab == line.Length - 1) continue;
+                    string alias = line.Substring(0, tab);
+                    string file = line.Substring(tab + 1).Trim();
+                    if (string.IsNullOrWhiteSpace(alias) || string.IsNullOrWhiteSpace(file)) continue;
+                    if (!map.TryGetValue(file, out var list))
+                        map[file] = list = new List<string>();
+                    if (!list.Contains(alias, StringComparer.OrdinalIgnoreCase))
+                        list.Add(alias);
+                }
+            }
+            catch { /* malformed map: fall back to probed-name rewriting */ }
+            return map;
         }
 
         /// <summary>True when the archive entry and the on-disk file are

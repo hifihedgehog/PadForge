@@ -133,6 +133,86 @@ namespace PadForge.Tests
             };
         }
 
+        // ── Load-time compaction of a legacy gappy profile (S1) ──
+        //
+        // Profiles saved before compaction-on-delete can carry non-contiguous
+        // slot indices. LoadProfiles heals the STORED ones in place, but the
+        // ACTIVE profile's topology is the ROOT topology: LoadProfiles
+        // Array.Copy's active.SlotCreated straight into
+        // SettingsManager.SlotCreated, while UserSettings.MapTo, the live
+        // SlotMappingSets, the pad ViewModels, the macros and the per-slot
+        // volumes all hydrate from the same file at the OLD indices.
+        //
+        // InputService.Start already heals that, via CompactSlotsForGaps, which
+        // shifts the whole live state through one map and rebuilds the
+        // ViewModels through ApplyProfile. It arms itself off
+        // SettingsManager.SlotCreated. Compacting the active profile at load
+        // therefore DISARMED it: root came up contiguous, the healer saw no
+        // gap, and every other mirror stayed at the old index with the slot
+        // created and empty.
+
+        /// <summary>A legacy profile with its only created slot at index 2.</summary>
+        private static ProfileData GappyProfile(string id)
+        {
+            var created = new bool[InputManager.MaxPads];
+            var enabled = new bool[InputManager.MaxPads];
+            created[2] = true;
+            enabled[2] = true;
+            var sets = new MappingSet[InputManager.MaxPads];
+            sets[2] = new MappingSet();
+            sets[2].Rows.Add(new MappingRow { Target = "ButtonA" });
+            return new ProfileData
+            {
+                Id = id,
+                Name = "Legacy " + id,
+                SlotCreated = created,
+                SlotEnabled = enabled,
+                SlotMappingSets = sets,
+                SlotControllerTypes = Enumerable.Repeat((int)VirtualControllerType.Xbox, InputManager.MaxPads).ToArray(),
+            };
+        }
+
+        [Fact]
+        public void LoadProfiles_ActiveGappyProfile_StaysGappySoTheLiveHealerStaysArmed()
+        {
+            var (_, _, ss) = Arrange();
+            var active = GappyProfile("p1");
+
+            ss.LoadProfiles(new[] { active }, new AppSettingsData { ActiveProfileId = "p1" });
+
+            // The active profile keeps its gap: root SlotCreated is copied from
+            // it, and every other root mirror is still at the old index, so a
+            // contiguous root here is precisely the inconsistency that orphans
+            // the pad. CompactSlotsForGaps arms off this array and moves the
+            // whole live state together once the engine starts.
+            Assert.True(active.SlotCreated[2]);
+            Assert.False(active.SlotCreated[0]);
+            Assert.True(SettingsManager.SlotCreated[2]);
+            Assert.False(SettingsManager.SlotCreated[0]);
+
+            // The slot's mappings are still reachable at the index its devices
+            // and ViewModels are keyed to.
+            Assert.NotNull(active.SlotMappingSets[2]);
+            Assert.Single(active.SlotMappingSets[2].Rows);
+        }
+
+        [Fact]
+        public void LoadProfiles_InactiveGappyProfile_IsStillCompactedInPlace()
+        {
+            var (_, _, ss) = Arrange();
+            var stored = GappyProfile("p2");
+
+            // No active profile: the stored snapshot is not the root state, so
+            // healing the file in place stays correct and must not regress.
+            ss.LoadProfiles(new[] { stored }, new AppSettingsData { ActiveProfileId = null });
+
+            Assert.True(stored.SlotCreated[0]);
+            Assert.False(stored.SlotCreated[2]);
+            Assert.NotNull(stored.SlotMappingSets[0]);
+            Assert.Single(stored.SlotMappingSets[0].Rows);
+            Assert.Null(stored.SlotMappingSets[2]);
+        }
+
         // ── NoInherit through the Paste / Copy From lane ──
         // ApplyMultiSourceRowsToCurrentDevice is private, so these drive it
         // through ApplyPadSettingToCurrentDevice, the public entry both
@@ -339,6 +419,144 @@ namespace PadForge.Tests
 
             Assert.NotNull(profile.Macros);
             Assert.Contains(profile.Macros, m => m.Name == "Rapid Fire" && m.PadIndex == 0);
+        }
+
+        // ── Audit 2026-07-14 (Codex finder): same-product reconnect remap ──
+
+        [Fact]
+        public void ApplyProfile_SameProductFallback_RepointsMappingSourcesAtTheNewInstance()
+        {
+            // A Bluetooth pad returns with a new InstanceGuid. The assignment
+            // falls back to ProductGuid and rebinds the slot, but the mapping
+            // sets were cloned from the profile naming the OLD instance, and
+            // every runtime consumer matches the guid exactly. Without the
+            // remap the profile applies "successfully" and the reconnected pad
+            // drives nothing.
+            var (_, svc, _) = Arrange();
+
+            var oldGuid = new Guid("aaaaaaaa-0000-0000-0000-000000000001");
+            var newGuid = new Guid("bbbbbbbb-0000-0000-0000-000000000002");
+            var product = new Guid("cccccccc-0000-0000-0000-000000000003");
+
+            // Only the NEW instance exists now, same product. The device and
+            // its UserSetting travel together, as enumeration creates them.
+            var ud = new UserDevice
+            {
+                InstanceGuid = newGuid,
+                ProductGuid = product,
+                ProductName = "Reconnected Pad",
+                CapType = InputDeviceType.Gamepad,
+                IsOnline = true,
+            };
+            lock (SettingsManager.UserDevices.SyncRoot)
+                SettingsManager.UserDevices.Items.Add(ud);
+
+            var us = new UserSetting { InstanceGuid = newGuid, ProductGuid = product, MapTo = -1 };
+            us.SetPadSetting(new PadSetting());
+            lock (SettingsManager.UserSettings.SyncRoot)
+                SettingsManager.UserSettings.Items.Add(us);
+
+            var ps = new PadSetting();
+            var incoming = IncomingProfile();
+            incoming.PadSettings = new[] { ps };
+            incoming.Entries = new[]
+            {
+                new ProfileEntry
+                {
+                    InstanceGuid = oldGuid,
+                    ProductGuid = product,
+                    MapTo = 0,
+                    PadSettingChecksum = ps.PadSettingChecksum,
+                },
+            };
+
+            var ms = new MappingSet();
+            ms.Rows.Add(new MappingRow
+            {
+                Target = "ButtonA",
+                Sources = { new MappingSource
+                {
+                    Descriptor = "Button 0",
+                    DeviceGuid = oldGuid.ToString().ToLowerInvariant(),
+                } },
+            });
+            ms.ShiftActivators.Add(new ShiftActivator
+            {
+                LayerMask = "Shift1",
+                DeviceGuid = oldGuid.ToString().ToLowerInvariant(),
+            });
+            incoming.SlotMappingSets = new MappingSet[InputManager.MaxPads];
+            incoming.SlotMappingSets[0] = ms;
+
+            svc.ApplyProfile(incoming);
+
+            Assert.Equal(0, us.MapTo);   // the fallback bound the new instance
+
+            // Assert the CONTRACT, not a row count: the legacy automap merge
+            // also rebuilds this device's rows (canonicalizing descriptors and
+            // dropping sources for devices no longer on the slot), so the
+            // durable statement is that the OLD instance survives nowhere and
+            // the activator, which the merge never rewrites, names the new one.
+            var live = SettingsManager.SlotMappingSets[0];
+            string oldStr = oldGuid.ToString().ToLowerInvariant();
+            string newStr = newGuid.ToString().ToLowerInvariant();
+
+            Assert.DoesNotContain(live.Rows.SelectMany(r => r.Sources),
+                s => string.Equals(s.DeviceGuid, oldStr, StringComparison.OrdinalIgnoreCase));
+            Assert.Equal(newStr, Assert.Single(live.ShiftActivators).DeviceGuid);
+        }
+
+        [Fact]
+        public void ApplyProfile_ExactInstanceMatch_LeavesGuidsAlone()
+        {
+            // Same-window negative control: when the exact instance is present
+            // there is no remap, and an empty ("any device") guid must never be
+            // rewritten into a concrete one.
+            var (_, svc, _) = Arrange();
+
+            var guid = new Guid("dddddddd-0000-0000-0000-000000000004");
+            var ud = new UserDevice
+            {
+                InstanceGuid = guid,
+                ProductGuid = guid,
+                ProductName = "Same Pad",
+                CapType = InputDeviceType.Gamepad,
+                IsOnline = true,
+            };
+            lock (SettingsManager.UserDevices.SyncRoot)
+                SettingsManager.UserDevices.Items.Add(ud);
+
+            var us = new UserSetting { InstanceGuid = guid, ProductGuid = guid, MapTo = -1 };
+            us.SetPadSetting(new PadSetting());
+            lock (SettingsManager.UserSettings.SyncRoot)
+                SettingsManager.UserSettings.Items.Add(us);
+
+            var ps = new PadSetting();
+            var incoming = IncomingProfile();
+            incoming.PadSettings = new[] { ps };
+            incoming.Entries = new[]
+            {
+                new ProfileEntry
+                {
+                    InstanceGuid = guid,
+                    ProductGuid = guid,
+                    MapTo = 0,
+                    PadSettingChecksum = ps.PadSettingChecksum,
+                },
+            };
+
+            var ms = new MappingSet();
+            ms.ShiftActivators.Add(new ShiftActivator { LayerMask = "Shift1", DeviceGuid = "" });
+            incoming.SlotMappingSets = new MappingSet[InputManager.MaxPads];
+            incoming.SlotMappingSets[0] = ms;
+
+            svc.ApplyProfile(incoming);
+
+            // With the exact instance present no remap is recorded, so the
+            // "any device" sentinel must survive untouched. A remap that
+            // rewrote empty guids would silently pin every abstract binding to
+            // one controller.
+            Assert.Equal("", Assert.Single(SettingsManager.SlotMappingSets[0].ShiftActivators).DeviceGuid);
         }
 
         // ── Audit 2026-07-14 (Codex finder): cold-start gesture catalog ──

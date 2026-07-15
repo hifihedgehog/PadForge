@@ -876,14 +876,17 @@ namespace PadForge.ViewModels
         /// N/A by design: the steering Param* set (ParamYDescriptor,
         /// ParamStickDeadzone, ParamWind*, ParamAngle*, ParamMotion*,
         /// ParamControllerOrientation), the flick Param* set (ParamFlick*),
-        /// the absolute-pointer geometry (ParamPointerCenter/Extent), and
-        /// NoInherit are NOT round-tripped here. KindOptions offers only
-        /// Direct/Incremental/InvertOnHold/Ramped, so an ExtraSource can
-        /// never author those; the steering/flick kinds are re-stamped on the
+        /// the absolute-pointer geometry (ParamPointerCenter/Extent),
+        /// InvertOutput, and NoInherit are NOT round-tripped here. KindOptions
+        /// offers only Direct/Incremental/InvertOnHold/Ramped, so an ExtraSource
+        /// can never author those; the steering/flick kinds are re-stamped on the
         /// row after the rebuild (ApplySteeringKindToRow /
         /// ApplyFlickStickParamsToRow), the pointer geometry is preserved
         /// across the rebuild (CaptureTouchpadPointerParams /
-        /// ApplyTouchpadPointerParamsToRow), and NoInherit lives on
+        /// ApplyTouchpadPointerParamsToRow), InvertOutput likewise
+        /// (CaptureInvertOutputFlags / ApplyInvertOutputFlagsToRow) because the
+        /// UI has no card for it and the legacy I/H prefix grammar the primary
+        /// round-trips through cannot encode a third flag, and NoInherit lives on
         /// MappingRow. Any new per-source Param* family that becomes
         /// selectable here must be added to BOTH ToDomain and FromDomain, or
         /// carried by a post-rebuild re-stamp, or it drops silently through

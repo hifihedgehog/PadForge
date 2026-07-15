@@ -1021,6 +1021,35 @@ namespace PadForge.Common.Input
                                         {
                                             try { vcAsync.Dispose(); }
                                             catch { /* best effort */ }
+
+                                            // The spare we just tore down owned
+                                            // a UserEffectsDispatcher, and it
+                                            // registered that dispatcher under
+                                            // this pad's key while it was
+                                            // connecting. If it registered
+                                            // AFTER the winner did, it replaced
+                                            // the winner in the static registry
+                                            // and its Dispose just removed the
+                                            // key (its own instance being the
+                                            // registered one, the "don't yank a
+                                            // fresh dispatcher's key" guard
+                                            // does not fire). The winner is
+                                            // then live but unreachable from
+                                            // the registry, so battery /
+                                            // sound-routing pokes for this slot
+                                            // silently stop. Re-attach it to
+                                            // re-claim the key. Idempotent when
+                                            // the key already points at the
+                                            // winner.
+                                            if (prior is HMaestroVirtualController priorHm)
+                                            {
+                                                var cfg = _deviceSlotConfigs[capturedIndex];
+                                                if (cfg != null)
+                                                {
+                                                    try { priorHm.AttachDeviceConfig(cfg); }
+                                                    catch { /* best effort */ }
+                                                }
+                                            }
                                         }
                                         else
                                         {
@@ -1938,8 +1967,14 @@ namespace PadForge.Common.Input
                 _oemOverrideClaimedVidPid[newPad] = stateOemOverrideClaimedVidPid[V];
                 _lastAppliedOemLabel[newPad] = stateLastAppliedOemLabel[V];
 
+                // Re-point the VC's effect dispatchers too, not just its
+                // feedback index. They capture their pad in a readonly field
+                // and resolve physical targets from it, so a moved VC kept
+                // driving the OLD pad's controllers. _deviceSlotConfigs is
+                // keyed by pad index, which is data identity and does not move
+                // in a reorder, so newPad's entry is already the right config.
                 if (vc is HMaestroVirtualController hm)
-                    hm.FeedbackPadIndex = newPad;
+                    hm.RetargetToPad(newPad, _deviceSlotConfigs[newPad]);
             }
         }
 

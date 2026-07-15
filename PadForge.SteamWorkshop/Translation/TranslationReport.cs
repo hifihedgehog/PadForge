@@ -228,6 +228,10 @@ namespace PadForge.SteamWorkshop.Translation
         public const string DoublePressNotSupported = "Workshop_Tr_DoublePressNotSupported";
         public const string UnknownActivatorType = "Workshop_Tr_UnknownActivatorType";           // {0} type
         public const string RepeatDropped = "Workshop_Tr_RepeatDropped";
+        // {0} = the physical input descriptor the trigger moved to. Raised when
+        // a macro's combined-output trigger had no row feeding its bit, so the
+        // trigger was retargeted onto the hosting input itself.
+        public const string MacroTriggerRetargetedToInput = "Workshop_Tr_MacroTriggerRetargetedToInput";
         public const string MissingGroup = "Workshop_Tr_MissingGroup";                           // {0} group id
         public const string MissingModeShiftGroup = "Workshop_Tr_MissingModeShiftGroup";         // {0} slot {1} group id
         public const string MissingPreset = "Workshop_Tr_MissingPreset";                         // {0} preset id

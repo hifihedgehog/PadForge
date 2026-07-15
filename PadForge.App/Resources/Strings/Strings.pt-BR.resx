@@ -2440,6 +2440,7 @@
   <data name="Workshop_Tr_DoublePressNotSupported" xml:space="preserve"><value>ativador de pressão dupla não suportado aqui</value></data>
   <data name="Workshop_Tr_UnknownActivatorType" xml:space="preserve"><value>ativador desconhecido {0}</value></data>
   <data name="Workshop_Tr_RepeatDropped" xml:space="preserve"><value>repetição automática descartada</value></data>
+  <data name="Workshop_Tr_MacroTriggerRetargetedToInput" xml:space="preserve"><value>gatilho movido para a própria entrada ({0}): nenhum mapeamento alimenta seu botão do Xbox</value></data>
   <data name="Workshop_Tr_MissingGroup" xml:space="preserve"><value>a configuração referencia o grupo ausente {0}</value></data>
   <data name="Workshop_Tr_MissingModeShiftGroup" xml:space="preserve"><value>a mudança de modo em {0} referencia o grupo ausente {1}</value></data>
   <data name="Workshop_Tr_MissingPreset" xml:space="preserve"><value>a configuração referencia a predefinição ausente {0}</value></data>

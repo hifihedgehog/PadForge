@@ -187,6 +187,20 @@ namespace PadForge.SteamWorkshop.Translation
         /// when the trigger is an axis (<see cref="TriggerAxisTarget"/>).</summary>
         public ushort TriggerXboxButtons { get; set; }
 
+        /// <summary>The hosting physical input's own descriptor, stashed when
+        /// the trigger was pointed at the combined Xbox output
+        /// (<see cref="TriggerXboxButtons"/>). Not part of the emitted macro:
+        /// it is the fallback the translator's finalize pass swaps in when it
+        /// turns out NO emitted row feeds that output bit, which would leave
+        /// the trigger permanently unreachable. Empty when the trigger never
+        /// took the combined-output shape.</summary>
+        public string TriggerFallbackDescriptor { get; set; } = "";
+
+        /// <summary>The hosting input's AND-gate companion descriptor, if any,
+        /// carried alongside <see cref="TriggerFallbackDescriptor"/> for the
+        /// same finalize swap.</summary>
+        public string TriggerFallbackGateDescriptor { get; set; } = "";
+
         /// <summary>"LeftTrigger" / "RightTrigger" when the trigger input is
         /// an analog trigger; null/empty otherwise.</summary>
         public string TriggerAxisTarget { get; set; } = "";

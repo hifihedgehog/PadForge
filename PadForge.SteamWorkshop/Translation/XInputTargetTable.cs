@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using PadForge.Engine;
 
 namespace PadForge.SteamWorkshop.Translation
@@ -96,5 +97,23 @@ namespace PadForge.SteamWorkshop.Translation
 
         public static bool TryResolve(string param, out XInputTarget target)
             => ByParam.TryGetValue((param ?? "").Trim(), out target);
+
+        // Reverse index: MappingRow.Target -> the Xbox output bit that target
+        // feeds. ByParam is keyed by the STEAM param ("a", "dpad_up"), which
+        // answers "what does this binding mean". This answers the opposite
+        // question, "does any emitted row actually feed bit X", which is what a
+        // macro triggering on a combined-output bit needs in order to know its
+        // trigger is live. Several params share one target, hence Distinct.
+        private static readonly Dictionary<string, ushort> BitByTarget =
+            ByParam.Values
+                   .GroupBy(t => t.Target, StringComparer.OrdinalIgnoreCase)
+                   .ToDictionary(g => g.Key, g => g.First().XboxButtonBit,
+                                 StringComparer.OrdinalIgnoreCase);
+
+        /// <summary>The Xbox output bit a <see cref="MappingRow.Target"/> name
+        /// feeds, or 0 when the target is not a combined-output button (the
+        /// trigger axes, or any non-Xbox target).</summary>
+        public static ushort BitForTarget(string target)
+            => BitByTarget.TryGetValue((target ?? "").Trim(), out var bit) ? bit : (ushort)0;
     }
 }

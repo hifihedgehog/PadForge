@@ -709,6 +709,16 @@ namespace PadForge.Services
                     // reset the geometry to the full-screen identity map.
                     var preservedPointer = CaptureTouchpadPointerParams(row);
 
+                    // Same reason, same shape: preserve the half-axis output
+                    // flip across the clear+rebuild below. InvertOutput has no
+                    // VM card (the user cannot author it; only the Workshop
+                    // translator and the legacy migrator emit it), and the
+                    // rebuild reconstructs the primary from a legacy I/H
+                    // prefix string that has no third flag to carry it. Without
+                    // this, an imported source survived exactly until the first
+                    // autosave and then silently lost its inversion.
+                    var preservedInvertOutput = CaptureInvertOutputFlags(row);
+
                     // Phase 2C. Clear and rebuild Sources from the UI
                     // state so MappingSet is fully authoritative for
                     // this row. This stops keyboard primaries (which
@@ -834,6 +844,7 @@ namespace PadForge.Services
                     // the pre-rebuild values are re-stamped onto the matching
                     // rebuilt pointer sources.
                     ApplyTouchpadPointerParamsToRow(row, preservedPointer);
+                    ApplyInvertOutputFlagsToRow(row, preservedInvertOutput);
                 }
 
                 // Steering Kind reconciliation on the Base layer (#94). The per-mapping
@@ -1090,6 +1101,61 @@ namespace PadForge.Services
                     {
                         src.ParamPointerCenter = p.center;
                         src.ParamPointerExtent = p.extent;
+                        break;
+                    }
+                }
+            }
+        }
+
+        // Captures the half-axis OUTPUT flip from a row's sources before the
+        // save rebuild clears them. Direct analog of CaptureTouchpadPointerParams
+        // above, for the same reason: MappingSource.InvertOutput has no VM card
+        // to re-stamp from, so the row's own pre-rebuild sources are the only
+        // source of truth.
+        //
+        // Why it needs preserving at all: the rebuild reconstructs each source
+        // from the VM's legacy prefix-encoded descriptor, whose grammar is only
+        // I / H / IH. There is no prefix for "select this half AND negate the
+        // result", which is exactly what InvertOutput expresses, so a straight
+        // rebuild drops it. MappingSourceItem.ToDomain / FromDomain omit it for
+        // the same reason (see the N/A note there): a field the UI cannot author
+        // is carried by a post-rebuild re-stamp instead.
+        //
+        // Keyed by (device, descriptor) so a multi-source / multi-device row
+        // restores each source's own flag. Returns an empty list for the common
+        // case of a row with no such source.
+        private static System.Collections.Generic.List<(string device, string desc)>
+            CaptureInvertOutputFlags(MappingRow row)
+        {
+            var list = new System.Collections.Generic.List<(string, string)>();
+            if (row?.Sources == null) return list;
+            foreach (var s in row.Sources)
+            {
+                if (s == null || !s.InvertOutput) continue;
+                list.Add((s.DeviceGuid ?? "", s.Descriptor ?? ""));
+            }
+            return list;
+        }
+
+        // Re-stamps the captured output flips onto the rebuilt sources. The
+        // rebuild strips the I/H prefix back off, so the rebuilt descriptor
+        // matches the captured (already-clean) one exactly. A source the user
+        // re-authored to a different descriptor no longer matches and correctly
+        // keeps the default: the translator's polarity was about the descriptor
+        // it was emitted for.
+        private static void ApplyInvertOutputFlagsToRow(MappingRow row,
+            System.Collections.Generic.List<(string device, string desc)> preserved)
+        {
+            if (row?.Sources == null || preserved == null || preserved.Count == 0) return;
+            foreach (var src in row.Sources)
+            {
+                if (src == null) continue;
+                foreach (var p in preserved)
+                {
+                    if (string.Equals(p.desc, src.Descriptor ?? "", StringComparison.Ordinal)
+                        && string.Equals(p.device ?? "", src.DeviceGuid ?? "", StringComparison.OrdinalIgnoreCase))
+                    {
+                        src.InvertOutput = true;
                         break;
                     }
                 }
@@ -2919,8 +2985,39 @@ namespace PadForge.Services
                     // can have non-contiguous slot indices; rewriting them as
                     // contiguous fixes the source data, not just the runtime
                     // view of it.
+                    //
+                    // NOT the active profile. Its topology is the ROOT
+                    // topology: the active branch below Array.Copy's
+                    // p.SlotCreated straight into SettingsManager.SlotCreated,
+                    // while UserSettings.MapTo, SlotMappingSets, the pad
+                    // ViewModels, the macros and the per-slot sound volumes all
+                    // hydrate from this same file at the OLD indices. Compacting
+                    // it here would move only the created-slot flags and leave
+                    // every one of those mirrors behind.
+                    //
+                    // The healer for exactly that already exists and is already
+                    // wired: InputService.Start calls CompactSlotsForGaps right
+                    // after load, which snapshots the whole live state, shifts
+                    // every slot-indexed field through one map, and drives the
+                    // PadViewModel rebuild through ApplyProfile. It arms itself
+                    // off SettingsManager.SlotCreated, so compacting the active
+                    // profile here is precisely what disarmed it: root came up
+                    // contiguous, the healer saw no gap, and the mappings stayed
+                    // at the old indices with the slot created and empty.
+                    //
+                    // Leaving the active profile gappy keeps every mirror
+                    // mutually consistent until that healer runs, and its
+                    // MarkDirty + UpdateActiveProfileSnapshot then persist the
+                    // compacted layout back into this profile, so the gap is
+                    // gone on the next load. Do NOT hand-move the root mirrors
+                    // instead: that list is exactly the set of lanes the rebuild
+                    // exists to keep in one place, and a hand list silently
+                    // omitted the ViewModels the 250 ms autosave rebuilds from,
+                    // which then cleared the rows it had just moved.
+                    bool isActive = !string.IsNullOrEmpty(appSettings?.ActiveProfileId)
+                        && string.Equals(p.Id, appSettings.ActiveProfileId, StringComparison.Ordinal);
                     var (map, needs) = InputService.BuildCompactionMap(p);
-                    if (needs)
+                    if (needs && !isActive)
                     {
                         InputService.CompactProfileDataInPlace(p, map, maxPads);
                         anyProfileCompacted = true;

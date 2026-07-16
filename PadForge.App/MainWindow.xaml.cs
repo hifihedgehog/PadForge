@@ -677,9 +677,6 @@ namespace PadForge
                     if (selected != null && selected.InstanceGuid != Guid.Empty)
                         InputService.LoadPadSettingToViewModel(padVm, selected.InstanceGuid);
                     _inputService.RefreshAvailableInputsForSlot(padVm);
-                    // Menus' opener picker is capability-gated on the same
-                    // assignment data; tell open views to re-read.
-                    padVm.RefreshMenuHostOptions();
                 }
             };
 
@@ -5398,7 +5395,6 @@ namespace PadForge
                     var selected = padVm.SelectedMappedDevice;
                     if (selected != null && selected.InstanceGuid != Guid.Empty)
                         _inputService.RefreshAvailableInputsForSlot(padVm);
-                    padVm.RefreshMenuHostOptions();
                     PadPageView.DataContext = padVm;
                 }
             }

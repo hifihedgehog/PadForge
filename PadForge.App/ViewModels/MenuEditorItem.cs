@@ -227,68 +227,62 @@ namespace PadForge.ViewModels
 
         // ── Opener surface (the PHYSICAL controller side) ────────
 
-        /// <summary>Live capability read for the slot's assigned devices:
-        /// whether any is a gamepad (the abstract stick aliases only exist
-        /// on gamepads) and the largest physical touchpad count. Supplied
-        /// by PadViewModel as a closure over SettingsManager so every read
-        /// is current; null (tests) offers everything.</summary>
-        internal Func<(bool HasGamepad, int TouchpadCount)> HostCapsProvider;
-
-        /// <summary>Pickable openers, capability-gated: touchpads are
-        /// listed only up to what the slot's assigned devices physically
-        /// have, and stick options on a slot with no gamepad device are
-        /// marked rather than offered as if live. The AUTHORED opener is
-        /// always listed (marked "(not connected)" when absent) so the
-        /// selection never silently lies; the old getter fell back to
-        /// Right Stick when the authored descriptor was missing, showing
-        /// a host the menu was not actually on.</summary>
+        /// <summary>Pickable openers: the full device-agnostic grammar,
+        /// always. Mirrors the mapping picker's "(Any device)" convention
+        /// (MappingDisplayResolver.BuildDeviceAgnosticChoices): two sticks,
+        /// touchpads 0 and 1 (everything the Workshop translator emits for
+        /// real hardware), and Custom Axes. Never gated on assignment or
+        /// online state: imported profiles land on slots with nothing
+        /// assigned yet, and the menu must be fully editable before any
+        /// device exists. An authored descriptor outside the grammar
+        /// (hand-edited XML, a typeless config's center_trackpad third
+        /// pad) is still listed so the selection never silently lies.</summary>
         public IReadOnlyList<MenuHostOption> HostOptions
         {
             get
             {
-                var caps = HostCapsProvider?.Invoke() ?? (true, 3);
                 var s = Strings.Instance;
-                var list = new List<MenuHostOption>(6);
-                void Add(string desc, string label, bool present, bool touch)
+                var list = new List<MenuHostOption>(6)
                 {
-                    if (!present && !string.Equals(Entry.HostDescriptor, desc, StringComparison.Ordinal))
-                        return;
+                    new MenuHostOption { Descriptor = "Gamepad LeftStick", Label = s.Menu_Host_LeftStick },
+                    new MenuHostOption { Descriptor = "Gamepad RightStick", Label = s.Menu_Host_RightStick },
+                };
+                for (int n = 0; n < 2; n++)
                     list.Add(new MenuHostOption
                     {
-                        Descriptor = desc,
-                        Label = present ? label : string.Format(s.Menu_Host_Missing_Format, label),
-                        IsTouchpad = touch,
+                        Descriptor = $"Touchpad {n}",
+                        Label = string.Format(s.Menu_Host_Touchpad_Format, n + 1),
+                        IsTouchpad = true,
                     });
-                }
-                Add("Gamepad LeftStick", s.Menu_Host_LeftStick, caps.HasGamepad, touch: false);
-                Add("Gamepad RightStick", s.Menu_Host_RightStick, caps.HasGamepad, touch: false);
-                for (int n = 0; n < 3; n++)
-                    Add($"Touchpad {n}", string.Format(s.Menu_Host_Touchpad_Format, n + 1),
-                        n < caps.TouchpadCount, touch: true);
-                // Custom Axes: always offered. It exists precisely for
-                // devices the named surfaces cannot describe (joysticks,
-                // wheels, anything not detected as a gamepad).
+                // Custom Axes: exists precisely for devices the named
+                // surfaces cannot describe (joysticks, wheels, anything
+                // not detected as a gamepad).
                 list.Add(new MenuHostOption { Descriptor = "Custom", Label = s.Menu_Host_Custom });
-                // Defensive: an authored descriptor outside the known five
-                // (hand-edited XML) still shows rather than vanishing.
                 bool found = false;
                 foreach (var o in list)
                     if (string.Equals(o.Descriptor, Entry.HostDescriptor, StringComparison.Ordinal))
                     { found = true; break; }
                 if (!found && !string.IsNullOrEmpty(Entry.HostDescriptor))
+                {
+                    bool touch = Entry.HostDescriptor.StartsWith("Touchpad ", StringComparison.Ordinal);
+                    string label = Entry.HostDescriptor;
+                    var parts = Entry.HostDescriptor.Split(' ');
+                    if (touch && parts.Length == 2 && int.TryParse(parts[1], out int pad) && pad >= 0)
+                        label = string.Format(s.Menu_Host_Touchpad_Format, pad + 1);
                     list.Add(new MenuHostOption
                     {
                         Descriptor = Entry.HostDescriptor,
-                        Label = string.Format(s.Menu_Host_Missing_Format, Entry.HostDescriptor),
-                        IsTouchpad = Entry.HostDescriptor.StartsWith("Touchpad ", StringComparison.Ordinal),
+                        Label = label,
+                        IsTouchpad = touch,
                     });
+                }
                 return list;
             }
         }
 
-        /// <summary>Raises the opener list after the slot context (assigned
-        /// devices, output type) changes. The provider itself reads live;
-        /// this just tells open views to re-read.</summary>
+        /// <summary>Re-raises the opener list and selection after a direct
+        /// Entry.HostDescriptor mutation (record fold, reset) or a culture
+        /// change rebuilds the labels.</summary>
         internal void RefreshHostOptions()
         {
             OnPropertyChanged(nameof(HostOptions));

@@ -2643,9 +2643,7 @@
   <data name="Menu_Opacity_Tip" xml:space="preserve"><value>Overlaydekking. 100% is volledig dekkend.</value></data>
   <data name="Menu_CellLabel_Tip" xml:space="preserve"><value>Tekst die op deze cel in de overlay wordt getoond.</value></data>
   <data name="Menu_BindingKind_Tip" xml:space="preserve"><value>Wat deze cel doet bij activeren: "Toetsenbordtoets" drukt een toetsenbordtoets in, "Controllerknop" drukt een knop op de virtuele controller van dit slot in. Een cel op "Geen" activeert nog steeds als menu-itembron voor toewijzingsrijen en macrotriggers.</value></data>
-  <data name="Menu_ExtendedSlot_Warning" xml:space="preserve"><value>Dit slottype geeft geen controllerknoppen uit, dus "Controllerknop"-toewijzingen hebben hier geen effect. Gebruik "Toetsenbordtoets", of koppel de menu-itembron van de cel op het tabblad Toewijzingen.</value></data>
   <data name="Menu_HostInput_Caption" xml:space="preserve"><value>Gelezen van de fysieke controllers die aan dit slot zijn toegewezen, niet van de indeling van de virtuele controller. De celtoewijzingen hieronder zijn wat het menu uitvoert.</value></data>
-  <data name="Menu_Host_Missing_Format" xml:space="preserve"><value>{0} (niet verbonden)</value></data>
   <data name="Menu_Host_Custom" xml:space="preserve"><value>Aangepaste assen</value></data>
   <data name="Menu_CustomX" xml:space="preserve"><value>Besturing X</value></data>
   <data name="Menu_CustomY" xml:space="preserve"><value>Besturing Y</value></data>

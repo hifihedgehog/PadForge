@@ -2532,9 +2532,7 @@ public class Strings : INotifyPropertyChanged
     public string Menu_Opacity_Tip => Get("Menu_Opacity_Tip");
     public string Menu_CellLabel_Tip => Get("Menu_CellLabel_Tip");
     public string Menu_BindingKind_Tip => Get("Menu_BindingKind_Tip");
-    public string Menu_ExtendedSlot_Warning => Get("Menu_ExtendedSlot_Warning");
     public string Menu_HostInput_Caption => Get("Menu_HostInput_Caption");
-    public string Menu_Host_Missing_Format => Get("Menu_Host_Missing_Format");
     public string Menu_Host_Custom => Get("Menu_Host_Custom");
     public string Menu_CustomX => Get("Menu_CustomX");
     public string Menu_CustomY => Get("Menu_CustomY");

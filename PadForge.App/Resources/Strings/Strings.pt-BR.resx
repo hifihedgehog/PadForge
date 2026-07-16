@@ -2623,9 +2623,7 @@
   <data name="Menu_Opacity_Tip" xml:space="preserve"><value>Opacidade da sobreposição. 100% é totalmente sólida.</value></data>
   <data name="Menu_CellLabel_Tip" xml:space="preserve"><value>Texto mostrado nesta célula na sobreposição.</value></data>
   <data name="Menu_BindingKind_Tip" xml:space="preserve"><value>O que esta célula faz ao disparar: "Tecla do Teclado" pressiona uma tecla do teclado, "Botão do Controle" pressiona um botão do controle virtual deste slot. Uma célula em "Nenhuma" ainda dispara como origem de item de menu para linhas de Mapeamentos e gatilhos de macro.</value></data>
-  <data name="Menu_ExtendedSlot_Warning" xml:space="preserve"><value>Este tipo de slot não emite botões de controle, então atribuições "Botão do Controle" não têm efeito aqui. Use "Tecla do Teclado" ou vincule a origem do item de menu da célula na aba Mapeamentos.</value></data>
   <data name="Menu_HostInput_Caption" xml:space="preserve"><value>Lido dos controles físicos atribuídos a este slot, não do layout do controle virtual. As atribuições de célula abaixo são o que o menu emite.</value></data>
-  <data name="Menu_Host_Missing_Format" xml:space="preserve"><value>{0} (não conectado)</value></data>
   <data name="Menu_Host_Custom" xml:space="preserve"><value>Eixos personalizados</value></data>
   <data name="Menu_CustomX" xml:space="preserve"><value>Direção X</value></data>
   <data name="Menu_CustomY" xml:space="preserve"><value>Direção Y</value></data>

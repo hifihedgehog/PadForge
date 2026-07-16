@@ -2623,9 +2623,7 @@
   <data name="Menu_Opacity_Tip" xml:space="preserve"><value>オーバーレイの不透明度。100%で完全に不透明です。</value></data>
   <data name="Menu_CellLabel_Tip" xml:space="preserve"><value>オーバーレイ上でこのセルに表示されるテキストです。</value></data>
   <data name="Menu_BindingKind_Tip" xml:space="preserve"><value>セルが発動したときの動作です。「キーボードのキー」はキーボードのキーを押し、「コントローラーボタン」はこのスロットの仮想コントローラーのボタンを押します。「なし」のセルも、マッピング行やマクロトリガー用のメニュー項目ソースとして発動します。</value></data>
-  <data name="Menu_ExtendedSlot_Warning" xml:space="preserve"><value>このスロットタイプはコントローラーボタンを出力しないため、「コントローラーボタン」の割り当てはここでは無効です。「キーボードのキー」を使うか、マッピングタブでセルのメニュー項目ソースを割り当ててください。</value></data>
   <data name="Menu_HostInput_Caption" xml:space="preserve"><value>このスロットに割り当てられた物理コントローラーから読み取られます。仮想コントローラーのレイアウトではありません。下のセル割り当てがメニューの出力内容です。</value></data>
-  <data name="Menu_Host_Missing_Format" xml:space="preserve"><value>{0}(未接続)</value></data>
   <data name="Menu_Host_Custom" xml:space="preserve"><value>カスタム軸</value></data>
   <data name="Menu_CustomX" xml:space="preserve"><value>操作軸X</value></data>
   <data name="Menu_CustomY" xml:space="preserve"><value>操作軸Y</value></data>

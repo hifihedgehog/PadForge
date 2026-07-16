@@ -2606,6 +2606,24 @@
   <data name="Menu_Binding_None" xml:space="preserve"><value>Aucune</value></data>
   <data name="Menu_Binding_Key" xml:space="preserve"><value>Touche du clavier</value></data>
   <data name="Menu_Binding_Button" xml:space="preserve"><value>Bouton de manette</value></data>
+  <data name="Menu_Style_Tip" xml:space="preserve"><value>Anneau radial choisit une cellule par direction, comme une roue d'armes. Grille tactile choisit une cellule par position sur la surface.</value></data>
+  <data name="Menu_HostInput_Tip" xml:space="preserve"><value>L'entrée qui ouvre le menu. Un stick s'active quand on le pousse au-delà de la zone morte d'activation. Un pavé tactile s'active au toucher.</value></data>
+  <data name="Menu_HostHalf_Tip" xml:space="preserve"><value>Limite ce menu à une moitié du pavé tactile, pour que deux menus puissent se partager le pavé.</value></data>
+  <data name="Menu_FireMode_Tip" xml:space="preserve"><value>Quand la cellule en surbrillance déclenche son affectation. Chaque choix est expliqué ci-dessous.</value></data>
+  <data name="Menu_Fire_Click_Desc" xml:space="preserve"><value>Déclenche tant que l'hôte est enfoncé : visez la cellule, puis enfoncez le stick (clic de stick) ou cliquez le pavé tactile. L'affectation reste tenue jusqu'au relâchement du clic.</value></data>
+  <data name="Menu_Fire_ClickRelease_Desc" xml:space="preserve"><value>Déclenche une fois au relâchement du clic : visez la cellule, enfoncez le stick ou le pavé, puis relâchez le clic.</value></data>
+  <data name="Menu_Fire_TouchRelease_Desc" xml:space="preserve"><value>Déclenche une fois quand vous lâchez : levez le doigt du pavé, ou laissez le stick revenir au centre pendant qu'une cellule est en surbrillance.</value></data>
+  <data name="Menu_Fire_Always_Desc" xml:space="preserve"><value>L'affectation reste tenue tant que la cellule est en surbrillance. Aucun clic nécessaire.</value></data>
+  <data name="Menu_Cells_Tip" xml:space="preserve"><value>Combien de cellules le menu contient. Pour un anneau radial, seul l'anneau compte ; la cellule centrale est à part.</value></data>
+  <data name="Menu_HasCenter_Tip" xml:space="preserve"><value>Ajoute une cellule centrale, sélectionnée tant que le stick reste dans la zone morte d'activation.</value></data>
+  <data name="Menu_Deadzone_Tip" xml:space="preserve"><value>Distance que le stick doit parcourir pour activer le menu et surligner les cellules de l'anneau. À l'intérieur, la cellule centrale est sélectionnée si elle existe.</value></data>
+  <data name="Menu_ShowLabels_Tip" xml:space="preserve"><value>Affiche l'étiquette de chaque cellule sur la superposition à l'écran.</value></data>
+  <data name="Menu_Position_Tip" xml:space="preserve"><value>Position du centre de la superposition à l'écran, en pourcentage. 50 et 50 correspond au milieu.</value></data>
+  <data name="Menu_Scale_Tip" xml:space="preserve"><value>Taille de la superposition, en pourcentage de sa taille normale.</value></data>
+  <data name="Menu_Opacity_Tip" xml:space="preserve"><value>Opacité de la superposition. 100 % est entièrement opaque.</value></data>
+  <data name="Menu_CellLabel_Tip" xml:space="preserve"><value>Texte affiché sur cette cellule dans la superposition.</value></data>
+  <data name="Menu_BindingKind_Tip" xml:space="preserve"><value>Ce que fait cette cellule quand elle se déclenche : presser une touche du clavier, ou tenir un bouton de la manette virtuelle de cet emplacement. Une cellule sur Aucun se déclenche quand même comme source d'élément de menu pour les lignes de Mappages et les déclencheurs de macros.</value></data>
+  <data name="Menu_ExtendedSlot_Warning" xml:space="preserve"><value>Cet emplacement émet une manette personnalisée : les affectations Bouton de manette n'ont donc aucun effet ici. Utilisez Touche du clavier, ou liez la source d'élément de menu de la cellule dans l'onglet Mappages.</value></data>
   <data name="Mapping_MenuItem_Format" xml:space="preserve"><value>Menu {0} case {1}</value></data>
   <data name="Dashboard_MenuOverlay" xml:space="preserve"><value>Superposition de menu</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>Affiche l'anneau ou la grille à l'écran tant qu'un menu radial ou tactile est actif. Les menus se déclenchent même si la superposition est désactivée.</value></data>

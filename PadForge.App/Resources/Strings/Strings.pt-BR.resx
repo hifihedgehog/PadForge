@@ -2606,6 +2606,24 @@
   <data name="Menu_Binding_None" xml:space="preserve"><value>Nenhuma</value></data>
   <data name="Menu_Binding_Key" xml:space="preserve"><value>Tecla do Teclado</value></data>
   <data name="Menu_Binding_Button" xml:space="preserve"><value>Botão do Controle</value></data>
+  <data name="Menu_Style_Tip" xml:space="preserve"><value>Anel radial escolhe uma célula pela direção, como uma roda de armas. Grade de toque escolhe uma célula pela posição na superfície.</value></data>
+  <data name="Menu_HostInput_Tip" xml:space="preserve"><value>A entrada que abre o menu. Um analógico ativa ao ser empurrado além da zona morta de ativação. Um touchpad ativa ao toque.</value></data>
+  <data name="Menu_HostHalf_Tip" xml:space="preserve"><value>Limita este menu a uma metade do trackpad, para que dois menus possam dividir o pad.</value></data>
+  <data name="Menu_FireMode_Tip" xml:space="preserve"><value>Quando a célula destacada dispara sua atribuição. Cada opção é explicada abaixo.</value></data>
+  <data name="Menu_Fire_Click_Desc" xml:space="preserve"><value>Dispara enquanto o host está clicado: aponte para a célula e pressione o analógico para dentro (clique do analógico) ou clique no trackpad. A atribuição fica segurada até soltar o clique.</value></data>
+  <data name="Menu_Fire_ClickRelease_Desc" xml:space="preserve"><value>Dispara uma vez ao soltar o clique: aponte para a célula, pressione o analógico ou o trackpad e solte o clique.</value></data>
+  <data name="Menu_Fire_TouchRelease_Desc" xml:space="preserve"><value>Dispara uma vez quando você solta: tire o dedo do pad ou deixe o analógico voltar ao centro enquanto uma célula está destacada.</value></data>
+  <data name="Menu_Fire_Always_Desc" xml:space="preserve"><value>A atribuição fica segurada o tempo todo em que a célula estiver destacada. Não precisa de clique.</value></data>
+  <data name="Menu_Cells_Tip" xml:space="preserve"><value>Quantas células o menu tem. Em um anel radial conta apenas o anel; a célula central é separada.</value></data>
+  <data name="Menu_HasCenter_Tip" xml:space="preserve"><value>Adiciona uma célula central, selecionada enquanto o analógico repousa dentro da zona morta de ativação.</value></data>
+  <data name="Menu_Deadzone_Tip" xml:space="preserve"><value>Quanto o analógico precisa se mover para ativar o menu e destacar células do anel. Dentro dela, a célula central é selecionada, se existir.</value></data>
+  <data name="Menu_ShowLabels_Tip" xml:space="preserve"><value>Desenha o rótulo de cada célula na sobreposição na tela.</value></data>
+  <data name="Menu_Position_Tip" xml:space="preserve"><value>Onde o centro da sobreposição fica na tela, em porcentagem. 50 e 50 é o meio.</value></data>
+  <data name="Menu_Scale_Tip" xml:space="preserve"><value>Tamanho da sobreposição, em porcentagem do tamanho normal.</value></data>
+  <data name="Menu_Opacity_Tip" xml:space="preserve"><value>Opacidade da sobreposição. 100% é totalmente sólida.</value></data>
+  <data name="Menu_CellLabel_Tip" xml:space="preserve"><value>Texto mostrado nesta célula na sobreposição.</value></data>
+  <data name="Menu_BindingKind_Tip" xml:space="preserve"><value>O que esta célula faz ao disparar: pressionar uma tecla do teclado ou segurar um botão do controle virtual deste slot. Uma célula em Nenhum ainda dispara como origem de item de menu para linhas de Mapeamentos e gatilhos de macro.</value></data>
+  <data name="Menu_ExtendedSlot_Warning" xml:space="preserve"><value>Este slot emite um controle personalizado, então atribuições de Botão do controle não têm efeito aqui. Use Tecla do teclado ou vincule a origem do item de menu da célula na aba Mapeamentos.</value></data>
   <data name="Mapping_MenuItem_Format" xml:space="preserve"><value>Menu {0} Célula {1}</value></data>
   <data name="Dashboard_MenuOverlay" xml:space="preserve"><value>Sobreposição de Menu</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>Mostra o anel ou a grade na tela enquanto um menu radial ou de toque está ativo. Os menus ainda disparam com a sobreposição desligada.</value></data>

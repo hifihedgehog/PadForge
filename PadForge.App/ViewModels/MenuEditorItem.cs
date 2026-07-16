@@ -19,11 +19,14 @@ namespace PadForge.ViewModels
     }
 
     /// <summary>Generic labeled int option (fire mode, half, binding kind,
-    /// key, button).</summary>
+    /// key, button). <see cref="Description"/> feeds the option's tooltip
+    /// and, for fire modes, the persistent caption under the combo; empty
+    /// for options that need no explanation.</summary>
     public sealed class MenuIntOption
     {
         public int Value { get; init; }
         public string Label { get; init; } = "";
+        public string Description { get; init; } = "";
         public override string ToString() => Label;
     }
 
@@ -213,13 +216,25 @@ namespace PadForge.ViewModels
 
         private static readonly IReadOnlyList<MenuIntOption> FireOptionsBacking = new[]
         {
-            new MenuIntOption { Value = 0, Label = Strings.Instance.Menu_Fire_Click },
-            new MenuIntOption { Value = 1, Label = Strings.Instance.Menu_Fire_ClickRelease },
-            new MenuIntOption { Value = 2, Label = Strings.Instance.Menu_Fire_TouchRelease },
-            new MenuIntOption { Value = 3, Label = Strings.Instance.Menu_Fire_Always },
+            new MenuIntOption { Value = 0, Label = Strings.Instance.Menu_Fire_Click,
+                                Description = Strings.Instance.Menu_Fire_Click_Desc },
+            new MenuIntOption { Value = 1, Label = Strings.Instance.Menu_Fire_ClickRelease,
+                                Description = Strings.Instance.Menu_Fire_ClickRelease_Desc },
+            new MenuIntOption { Value = 2, Label = Strings.Instance.Menu_Fire_TouchRelease,
+                                Description = Strings.Instance.Menu_Fire_TouchRelease_Desc },
+            new MenuIntOption { Value = 3, Label = Strings.Instance.Menu_Fire_Always,
+                                Description = Strings.Instance.Menu_Fire_Always_Desc },
         };
 
         public IReadOnlyList<MenuIntOption> FireOptions => FireOptionsBacking;
+
+        /// <summary>The selected fire mode's explanation, rendered as a
+        /// persistent caption under the combo. A tooltip alone was not
+        /// enough: "On Click" reads as self-explanatory while actually
+        /// requiring a stick / trackpad CLICK, and the one user test we
+        /// have (owner, 2026-07-16) walked straight past it.</summary>
+        public string SelectedFireDescription =>
+            FireOptionsBacking[Math.Clamp((int)Entry.FireType, 0, 3)].Description;
 
         public int FireTypeIndex
         {
@@ -230,6 +245,7 @@ namespace PadForge.ViewModels
                 if (Entry.FireType == f) return;
                 Entry.FireType = f;
                 OnPropertyChanged();
+                OnPropertyChanged(nameof(SelectedFireDescription));
                 OnEdited();
             }
         }
@@ -308,6 +324,12 @@ namespace PadForge.ViewModels
 
         public RelayCommand ResetFireCommand => _resetFire ??= new RelayCommand(() => FireTypeIndex = 0);
         private RelayCommand _resetFire;
+
+        public RelayCommand ResetStyleCommand => _resetStyle ??= new RelayCommand(() => KindIndex = 0);
+        private RelayCommand _resetStyle;
+
+        public RelayCommand ResetHostHalfCommand => _resetHostHalf ??= new RelayCommand(() => HostHalfIndex = 0);
+        private RelayCommand _resetHostHalf;
 
         public RelayCommand ResetCellsCommand => _resetCells ??= new RelayCommand(() =>
         {

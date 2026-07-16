@@ -2606,6 +2606,24 @@
   <data name="Menu_Binding_None" xml:space="preserve"><value>无</value></data>
   <data name="Menu_Binding_Key" xml:space="preserve"><value>键盘按键</value></data>
   <data name="Menu_Binding_Button" xml:space="preserve"><value>控制器按钮</value></data>
+  <data name="Menu_Style_Tip" xml:space="preserve"><value>径向环像武器轮盘一样按方向选择单元格。触摸网格按表面上的位置选择单元格。</value></data>
+  <data name="Menu_HostInput_Tip" xml:space="preserve"><value>打开菜单的输入。摇杆推过触发死区后生效,触摸板触碰即生效。</value></data>
+  <data name="Menu_HostHalf_Tip" xml:space="preserve"><value>将此菜单限制在触摸板的一半上,这样两个菜单可以共用一块触摸板。</value></data>
+  <data name="Menu_FireMode_Tip" xml:space="preserve"><value>高亮单元格的绑定何时触发。每个选项在下方均有说明。</value></data>
+  <data name="Menu_Fire_Click_Desc" xml:space="preserve"><value>按下宿主时持续触发:指向单元格,然后按下摇杆(摇杆按键)或按下触摸板。绑定会一直保持,直到松开按压。</value></data>
+  <data name="Menu_Fire_ClickRelease_Desc" xml:space="preserve"><value>松开按压时触发一次:指向单元格,按下摇杆或触摸板,再松开按压。</value></data>
+  <data name="Menu_Fire_TouchRelease_Desc" xml:space="preserve"><value>松手时触发一次:在单元格高亮时抬起手指离开触摸板,或让摇杆弹回中心。</value></data>
+  <data name="Menu_Fire_Always_Desc" xml:space="preserve"><value>单元格高亮期间绑定一直保持按下。无需按压。</value></data>
+  <data name="Menu_Cells_Tip" xml:space="preserve"><value>菜单的单元格数量。径向环只计环上的单元格,中心单元格另算。</value></data>
+  <data name="Menu_HasCenter_Tip" xml:space="preserve"><value>添加一个中心单元格,摇杆停在触发死区内时选中它。</value></data>
+  <data name="Menu_Deadzone_Tip" xml:space="preserve"><value>摇杆需要移动多远才能激活菜单并高亮环上的单元格。在死区内,若存在中心单元格则选中它。</value></data>
+  <data name="Menu_ShowLabels_Tip" xml:space="preserve"><value>在屏幕悬浮层上绘制每个单元格的标签。</value></data>
+  <data name="Menu_Position_Tip" xml:space="preserve"><value>悬浮层中心在屏幕上的位置(百分比)。50 和 50 为正中。</value></data>
+  <data name="Menu_Scale_Tip" xml:space="preserve"><value>悬浮层大小(相对正常大小的百分比)。</value></data>
+  <data name="Menu_Opacity_Tip" xml:space="preserve"><value>悬浮层不透明度。100% 为完全不透明。</value></data>
+  <data name="Menu_CellLabel_Tip" xml:space="preserve"><value>悬浮层中此单元格上显示的文字。</value></data>
+  <data name="Menu_BindingKind_Tip" xml:space="preserve"><value>单元格触发时的动作:按下键盘按键,或按住此插槽虚拟控制器上的按钮。设为无的单元格仍会作为菜单项来源触发,可用于映射行和宏触发器。</value></data>
+  <data name="Menu_ExtendedSlot_Warning" xml:space="preserve"><value>此插槽输出自定义控制器,因此控制器按钮绑定在这里无效。请使用键盘按键,或在映射选项卡中绑定该单元格的菜单项来源。</value></data>
   <data name="Mapping_MenuItem_Format" xml:space="preserve"><value>菜单 {0} 单元格 {1}</value></data>
   <data name="Dashboard_MenuOverlay" xml:space="preserve"><value>菜单叠加层</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>在径向或触摸菜单激活期间显示屏幕上的环形或网格。即使关闭叠加层，菜单仍会触发。</value></data>

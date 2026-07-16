@@ -10975,13 +10975,18 @@
                             <TextBlock Text="{Binding Menu_Name, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,0,0,4"
                                        Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
                             <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
+                                <!-- Fixed width: a Min/Max auto-sized TextBox in a
+                                     left-aligned StackPanel resizes while you type. -->
                                 <TextBox Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                         MinWidth="260" MaxWidth="420" HorizontalAlignment="Left"/>
+                                         Width="260" HorizontalAlignment="Left"/>
                                 <CheckBox Content="{Binding Menu_Enabled, Source={x:Static strings:Strings.Instance}}"
                                           IsChecked="{Binding Enabled}" Margin="16,0,0,0" VerticalAlignment="Center"/>
                             </StackPanel>
 
-                            <!-- Style row -->
+                            <!-- Style row. All four setting combos below share one FIXED
+                                 width: MinWidth-only combos size to their selected item,
+                                 so picking a longer option visibly widened the box and
+                                 broke the column rhythm (owner report 2026-07-16). -->
                             <Grid Margin="0,0,0,8">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto" SharedSizeGroup="MenuEditorLabel"/>
@@ -10989,10 +10994,15 @@
                                 </Grid.ColumnDefinitions>
                                 <TextBlock Grid.Column="0" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                            Text="{Binding Menu_Style, Source={x:Static strings:Strings.Instance}}"
+                                           ToolTip="{Binding Menu_Style_Tip, Source={x:Static strings:Strings.Instance}}"
                                            Margin="0,0,12,0" VerticalAlignment="Center" TextWrapping="Wrap" MaxWidth="260"/>
-                                <ComboBox Grid.Column="1" MinWidth="200" HorizontalAlignment="Left" ItemsSource="{Binding KindOptions}"
-                                          DisplayMemberPath="Label" SelectedValuePath="Value"
-                                          SelectedValue="{Binding KindIndex, Mode=TwoWay}"/>
+                                <StackPanel Grid.Column="1" Orientation="Horizontal">
+                                    <ComboBox Width="240" ItemsSource="{Binding KindOptions}"
+                                              ToolTip="{Binding Menu_Style_Tip, Source={x:Static strings:Strings.Instance}}"
+                                              DisplayMemberPath="Label" SelectedValuePath="Value"
+                                              SelectedValue="{Binding KindIndex, Mode=TwoWay}"/>
+                                    <ui:Button Command="{Binding ResetStyleCommand}" Style="{StaticResource ResetButton}" Margin="6,0,0,0"/>
+                                </StackPanel>
                             </Grid>
 
                             <!-- Host input row (Reset + Record per canon) -->
@@ -11003,9 +11013,11 @@
                                 </Grid.ColumnDefinitions>
                                 <TextBlock Grid.Column="0" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                            Text="{Binding Menu_HostInput, Source={x:Static strings:Strings.Instance}}"
+                                           ToolTip="{Binding Menu_HostInput_Tip, Source={x:Static strings:Strings.Instance}}"
                                            Margin="0,0,12,0" VerticalAlignment="Center" TextWrapping="Wrap" MaxWidth="260"/>
                                 <StackPanel Grid.Column="1" Orientation="Horizontal">
-                                    <ComboBox MinWidth="200" ItemsSource="{Binding HostOptions}"
+                                    <ComboBox Width="240" ItemsSource="{Binding HostOptions}"
+                                              ToolTip="{Binding Menu_HostInput_Tip, Source={x:Static strings:Strings.Instance}}"
                                               DisplayMemberPath="Label"
                                               SelectedItem="{Binding SelectedHost, Mode=TwoWay}"/>
                                     <ui:Button Command="{Binding DataContext.MenuHostRecordCommand,
@@ -11027,27 +11039,54 @@
                                 </Grid.ColumnDefinitions>
                                 <TextBlock Grid.Column="0" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                            Text="{Binding Menu_HostHalf, Source={x:Static strings:Strings.Instance}}"
+                                           ToolTip="{Binding Menu_HostHalf_Tip, Source={x:Static strings:Strings.Instance}}"
                                            Margin="0,0,12,0" VerticalAlignment="Center" TextWrapping="Wrap" MaxWidth="260"/>
-                                <ComboBox Grid.Column="1" MinWidth="200" HorizontalAlignment="Left" ItemsSource="{Binding HostHalfOptions}"
-                                          DisplayMemberPath="Label" SelectedValuePath="Value"
-                                          SelectedValue="{Binding HostHalfIndex, Mode=TwoWay}"/>
+                                <StackPanel Grid.Column="1" Orientation="Horizontal">
+                                    <ComboBox Width="240" ItemsSource="{Binding HostHalfOptions}"
+                                              ToolTip="{Binding Menu_HostHalf_Tip, Source={x:Static strings:Strings.Instance}}"
+                                              DisplayMemberPath="Label" SelectedValuePath="Value"
+                                              SelectedValue="{Binding HostHalfIndex, Mode=TwoWay}"/>
+                                    <ui:Button Command="{Binding ResetHostHalfCommand}" Style="{StaticResource ResetButton}" Margin="6,0,0,0"/>
+                                </StackPanel>
                             </Grid>
 
                             <!-- Fire mode -->
-                            <Grid Margin="0,0,0,8">
+                            <Grid Margin="0,0,0,4">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto" SharedSizeGroup="MenuEditorLabel"/>
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
                                 <TextBlock Grid.Column="0" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                            Text="{Binding Menu_FireMode, Source={x:Static strings:Strings.Instance}}"
+                                           ToolTip="{Binding Menu_FireMode_Tip, Source={x:Static strings:Strings.Instance}}"
                                            Margin="0,0,12,0" VerticalAlignment="Center" TextWrapping="Wrap" MaxWidth="260"/>
                                 <StackPanel Grid.Column="1" Orientation="Horizontal">
-                                    <ComboBox MinWidth="200" ItemsSource="{Binding FireOptions}"
+                                    <ComboBox Width="240" ItemsSource="{Binding FireOptions}"
+                                              ToolTip="{Binding Menu_FireMode_Tip, Source={x:Static strings:Strings.Instance}}"
                                               DisplayMemberPath="Label" SelectedValuePath="Value"
-                                              SelectedValue="{Binding FireTypeIndex, Mode=TwoWay}"/>
+                                              SelectedValue="{Binding FireTypeIndex, Mode=TwoWay}">
+                                        <ComboBox.ItemContainerStyle>
+                                            <Style TargetType="ComboBoxItem" BasedOn="{StaticResource {x:Type ComboBoxItem}}">
+                                                <Setter Property="ToolTip" Value="{Binding Description}"/>
+                                            </Style>
+                                        </ComboBox.ItemContainerStyle>
+                                    </ComboBox>
                                     <ui:Button Command="{Binding ResetFireCommand}" Style="{StaticResource ResetButton}" Margin="6,0,0,0"/>
                                 </StackPanel>
+                            </Grid>
+                            <!-- Persistent caption for the selected fire mode. A tooltip
+                                 alone failed its one field test: "On Click" reads as
+                                 self-explanatory while actually requiring a stick or
+                                 trackpad CLICK, and the user walked straight past it. -->
+                            <Grid Margin="0,0,0,10">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" SharedSizeGroup="MenuEditorLabel"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="1" Text="{Binding SelectedFireDescription}"
+                                           Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                                           TextWrapping="Wrap" MaxWidth="520" HorizontalAlignment="Left"
+                                           Margin="0,2,0,0" FontSize="12"/>
                             </Grid>
 
                             <!-- Cells + center -->
@@ -11058,11 +11097,14 @@
                                 </Grid.ColumnDefinitions>
                                 <TextBlock Grid.Column="0" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                            Text="{Binding Menu_Cells, Source={x:Static strings:Strings.Instance}}"
+                                           ToolTip="{Binding Menu_Cells_Tip, Source={x:Static strings:Strings.Instance}}"
                                            Margin="0,0,12,0" VerticalAlignment="Center" TextWrapping="Wrap" MaxWidth="260"/>
                                 <StackPanel Grid.Column="1" Orientation="Horizontal">
                                     <ui:NumberBox Width="120" Minimum="1" Maximum="20" SmallChange="1"
+                                                  ToolTip="{Binding Menu_Cells_Tip, Source={x:Static strings:Strings.Instance}}"
                                                   Value="{Binding CellCount, Mode=TwoWay}"/>
                                     <CheckBox Content="{Binding Menu_HasCenter, Source={x:Static strings:Strings.Instance}}"
+                                              ToolTip="{Binding Menu_HasCenter_Tip, Source={x:Static strings:Strings.Instance}}"
                                               IsChecked="{Binding HasCenter}" Margin="12,0,0,0" VerticalAlignment="Center"
                                               Visibility="{Binding IsRadial, Converter={StaticResource BoolToVisibilityConverter}}"/>
                                     <ui:Button Command="{Binding ResetCellsCommand}" Style="{StaticResource ResetButton}" Margin="6,0,0,0"/>
@@ -11077,16 +11119,18 @@
                                 </Grid.ColumnDefinitions>
                                 <TextBlock Grid.Column="0" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                            Text="{Binding Menu_Deadzone, Source={x:Static strings:Strings.Instance}}"
+                                           ToolTip="{Binding Menu_Deadzone_Tip, Source={x:Static strings:Strings.Instance}}"
                                            Margin="0,0,12,0" VerticalAlignment="Center" TextWrapping="Wrap" MaxWidth="260"/>
                                 <StackPanel Grid.Column="1" Orientation="Horizontal">
                                     <Slider Width="160" Minimum="1" Maximum="95"
+                                            ToolTip="{Binding Menu_Deadzone_Tip, Source={x:Static strings:Strings.Instance}}"
                                             Value="{Binding EngageDeadzonePercent, Mode=TwoWay}" VerticalAlignment="Center"/>
-                                    <!-- 120, not 90. A ui:NumberBox reserves its spin buttons
-                                         out of its own width, and at 90 the text area collapses
-                                         to nothing: the value renders blank while the arrows
-                                         still show. The Cells box above is 120 and displays its
-                                         number, which is the working control to match. -->
-                                    <ui:NumberBox MinWidth="120" Minimum="1" Maximum="95" SmallChange="1" Margin="8,0,0,0"
+                                    <!-- 120 FIXED, not 90 and not MinWidth. A ui:NumberBox
+                                         reserves its spin buttons out of its own width, and at
+                                         90 the text area collapses to nothing. MinWidth let the
+                                         box grow with its value and drift out of column with
+                                         the other number boxes. -->
+                                    <ui:NumberBox Width="120" Minimum="1" Maximum="95" SmallChange="1" Margin="8,0,0,0"
                                                   Value="{Binding EngageDeadzonePercent, Mode=TwoWay}"/>
                                     <ui:Button Command="{Binding ResetDeadzoneCommand}" Style="{StaticResource ResetButton}" Margin="6,0,0,0"/>
                                 </StackPanel>
@@ -11104,6 +11148,7 @@
                                         <ui:Button Command="{Binding ResetGeometryCommand}" Style="{StaticResource ResetButton}" Margin="12,0,0,0"/>
                                     </StackPanel>
                                     <CheckBox Content="{Binding Menu_ShowLabels, Source={x:Static strings:Strings.Instance}}"
+                                              ToolTip="{Binding Menu_ShowLabels_Tip, Source={x:Static strings:Strings.Instance}}"
                                               IsChecked="{Binding ShowLabels}" Margin="0,0,0,8"/>
                                     <Grid Margin="0,0,0,8">
                                         <Grid.ColumnDefinitions>
@@ -11112,13 +11157,15 @@
                                         </Grid.ColumnDefinitions>
                                         <TextBlock Grid.Column="0" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                                    Text="{Binding Menu_Position, Source={x:Static strings:Strings.Instance}}"
+                                                   ToolTip="{Binding Menu_Position_Tip, Source={x:Static strings:Strings.Instance}}"
                                                    Margin="0,0,12,0" VerticalAlignment="Center" TextWrapping="Wrap" MaxWidth="240"/>
-                                        <StackPanel Grid.Column="1" Orientation="Horizontal">
-                                            <!-- 120: at 90 the spin buttons consume the whole
-                                                 control and the value renders blank. -->
-                                            <ui:NumberBox MinWidth="120" Minimum="0" Maximum="100" SmallChange="5"
+                                        <StackPanel Grid.Column="1" Orientation="Horizontal"
+                                                    ToolTip="{Binding Menu_Position_Tip, Source={x:Static strings:Strings.Instance}}">
+                                            <!-- 120 fixed: at 90 the spin buttons consume the
+                                                 whole control and the value renders blank. -->
+                                            <ui:NumberBox Width="120" Minimum="0" Maximum="100" SmallChange="5"
                                                           Value="{Binding PosXPercent, Mode=TwoWay}"/>
-                                            <ui:NumberBox MinWidth="120" Minimum="0" Maximum="100" SmallChange="5" Margin="8,0,0,0"
+                                            <ui:NumberBox Width="120" Minimum="0" Maximum="100" SmallChange="5" Margin="8,0,0,0"
                                                           Value="{Binding PosYPercent, Mode=TwoWay}"/>
                                         </StackPanel>
                                     </Grid>
@@ -11129,9 +11176,11 @@
                                         </Grid.ColumnDefinitions>
                                         <TextBlock Grid.Column="0" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                                    Text="{Binding Menu_Scale, Source={x:Static strings:Strings.Instance}}"
+                                                   ToolTip="{Binding Menu_Scale_Tip, Source={x:Static strings:Strings.Instance}}"
                                                    Margin="0,0,12,0" VerticalAlignment="Center" TextWrapping="Wrap" MaxWidth="240"/>
                                         <StackPanel Grid.Column="1" Orientation="Horizontal">
-                                            <ui:NumberBox MinWidth="120" Minimum="10" Maximum="400" SmallChange="10"
+                                            <ui:NumberBox Width="120" Minimum="10" Maximum="400" SmallChange="10"
+                                                          ToolTip="{Binding Menu_Scale_Tip, Source={x:Static strings:Strings.Instance}}"
                                                           Value="{Binding ScalePercent, Mode=TwoWay}"/>
                                             <TextBlock Text="%" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                                        VerticalAlignment="Center" Margin="6,0,0,0"/>
@@ -11144,9 +11193,11 @@
                                         </Grid.ColumnDefinitions>
                                         <TextBlock Grid.Column="0" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                                    Text="{Binding Menu_Opacity, Source={x:Static strings:Strings.Instance}}"
+                                                   ToolTip="{Binding Menu_Opacity_Tip, Source={x:Static strings:Strings.Instance}}"
                                                    Margin="0,0,12,0" VerticalAlignment="Center" TextWrapping="Wrap" MaxWidth="240"/>
                                         <StackPanel Grid.Column="1" Orientation="Horizontal">
-                                            <ui:NumberBox MinWidth="120" Minimum="5" Maximum="100" SmallChange="5"
+                                            <ui:NumberBox Width="120" Minimum="5" Maximum="100" SmallChange="5"
+                                                          ToolTip="{Binding Menu_Opacity_Tip, Source={x:Static strings:Strings.Instance}}"
                                                           Value="{Binding OpacityPercent, Mode=TwoWay}"/>
                                             <TextBlock Text="%" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                                        VerticalAlignment="Center" Margin="6,0,0,0"/>
@@ -11159,6 +11210,27 @@
                             <TextBlock Text="{Binding Menu_CellBindings, Source={x:Static strings:Strings.Instance}}"
                                        FontWeight="SemiBold" Margin="0,0,0,6"
                                        Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
+                            <!-- Extended slots emit raw HID, so a Controller Button cell
+                                 binding is silently dropped by the delivery pass
+                                 (CollectMenuDirectOutputs gates on SlotExtendedIsCustom).
+                                 Say so instead of letting the binding eat itself. -->
+                            <TextBlock Text="{Binding Menu_ExtendedSlot_Warning, Source={x:Static strings:Strings.Instance}}"
+                                       Foreground="{DynamicResource SystemFillColorCautionBrush}"
+                                       TextWrapping="Wrap" MaxWidth="560" HorizontalAlignment="Left"
+                                       Margin="0,0,0,8" FontSize="12">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding DataContext.OutputType,
+                                                              RelativeSource={RelativeSource AncestorType=TabItem}}"
+                                                         Value="Extended">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
                             <!-- Cell rows share their own auto column for the "Center"/"Item N"
                                  header (Menu_CellCenter is a word, not a number, and is longer
                                  than 72px in several locales). The pickers keep their rhythm
@@ -11175,19 +11247,24 @@
                                                        Margin="0,0,8,0" TextWrapping="Wrap" MaxWidth="160"
                                                        Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
                                             <StackPanel Grid.Column="1" Orientation="Horizontal">
+                                                <!-- Fixed widths: MinWidth-only pickers resized
+                                                     to whatever key / button name was selected,
+                                                     so neighboring rows fell out of column. Long
+                                                     names clip and show in full via tooltip. -->
                                                 <TextBox Text="{Binding Label, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
-                                                         MinWidth="150" MaxWidth="240"
-                                                         ToolTip="{Binding Menu_Name, Source={x:Static strings:Strings.Instance}}"/>
-                                                <ComboBox MinWidth="150" Margin="8,0,0,0"
+                                                         Width="160"
+                                                         ToolTip="{Binding Menu_CellLabel_Tip, Source={x:Static strings:Strings.Instance}}"/>
+                                                <ComboBox Width="160" Margin="8,0,0,0"
+                                                          ToolTip="{Binding Menu_BindingKind_Tip, Source={x:Static strings:Strings.Instance}}"
                                                           ItemsSource="{Binding BindingKindOptions}"
                                                           DisplayMemberPath="Label" SelectedValuePath="Value"
                                                           SelectedValue="{Binding BindingKind, Mode=TwoWay}"/>
-                                                <ComboBox MinWidth="150" Margin="8,0,0,0"
+                                                <ComboBox Width="160" Margin="8,0,0,0"
                                                           ItemsSource="{Binding KeyOptions}"
                                                           DisplayMemberPath="Label" SelectedValuePath="Vk"
                                                           SelectedValue="{Binding SelectedKeyVk, Mode=TwoWay}"
                                                           Visibility="{Binding ShowKeyPicker, Converter={StaticResource BoolToVisibilityConverter}}"/>
-                                                <ComboBox MinWidth="150" Margin="8,0,0,0"
+                                                <ComboBox Width="160" Margin="8,0,0,0"
                                                           ItemsSource="{Binding ButtonOptions}"
                                                           DisplayMemberPath="Label" SelectedValuePath="Value"
                                                           SelectedValue="{Binding SelectedButtonFlag, Mode=TwoWay}"

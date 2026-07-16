@@ -88,12 +88,25 @@ namespace PadForge.Common.Input
         // by key lookup and is fine with reused references.
         private readonly Dictionary<HMAxis, float> _axesScratch = new();
 
-        // Idle dedup state for the plain SubmitGamepadState path (Xbox and
-        // Extended-non-custom slots). See the contract note at the skip site.
+        // Idle dedup state for the plain SubmitGamepadState path (in
+        // practice Xbox slots: every Extended slot is custom and uses
+        // SubmitExtendedRawState, and Sony rides the extended overload).
+        // See the contract note at the skip site.
+        //
+        // 16 ms, NOT longer: the GIP companion's stale watchdog counts
+        // READS (companion.c ReadGipData, incremented by the 8 ms pump AND
+        // by every IOCTL_XUSB_GET_STATE), and at >500 unchanged-SeqNo reads
+        // it tears the mapping down and zeroes the XInput state. A 250 ms
+        // keepalive let any consumer mix totalling ~2 000 reads/sec force
+        // repeated one-frame releases of held inputs (Codex audit
+        // 2026-07-16). 16 ms tolerates ~31 000 reads/sec, which matches the
+        // watchdog margin the slowest configurable baseline poll interval
+        // (16 ms) already had, and still cuts idle submits ~94% at the
+        // default 1 kHz poll.
         private Gamepad _lastSubmittedGp;
         private long _lastSubmitTick;
         private bool _hasSubmitted;
-        private const int SubmitKeepaliveMs = 250;
+        private const int SubmitKeepaliveMs = 16;
 
         public HMaestroVirtualController(HMContext ctx, HMProfile profile, VirtualControllerType type)
         {
@@ -403,26 +416,25 @@ namespace PadForge.Common.Input
             if (_controller == null) return;
             TickFfb();
 
-            // Idle dedup with a 250 ms keepalive. An unchanged state means an
+            // Idle dedup with a 16 ms keepalive. An unchanged state means an
             // identical frame: the driver reads a seqlocked LATCH (shared
             // section, HMController class doc: "no internal pumping thread;
             // the consumer drives the cadence"), so skipping an identical
-            // write is invisible to every consumer. The exceptions are three
-            // watchdogs in the driver source that bound how long SeqNo may
-            // sit still:
+            // write changes nothing for state-latching consumers. Three
+            // driver watchdogs bound how long SeqNo may sit still:
             //   * driver.c SharedInputWorkerProc: recycles all handles on any
             //     500 ms without an event signal (WAIT_TIMEOUT -> recycle).
             //   * driver.c: staleWakeups > 250 signals-without-SeqNo-advance
             //     recycles too (keepalives advance SeqNo, resetting it).
-            //   * companion.c ReadGipData: > 500 consecutive reads with an
-            //     unchanged SeqNo at the 8 ms GIP pump (~4 s) tears down the
-            //     mapping and DecodeGipToXInput ZEROES the XInput state. A
-            //     button held steady that long would release in-game.
-            // A forced real submit every 250 ms sits far inside all three
-            // bounds. Changes still submit the same tick they happen, so
-            // latency is untouched; only redundant identical frames drop
-            // (idle: ~1000 -> 4 submits/sec; active play with a 250 Hz
-            // device: ~75% of ticks are duplicates).
+            //   * companion.c ReadGipData: > 500 consecutive unchanged-SeqNo
+            //     READS (8 ms pump + every XInput GET_STATE) tears the GIP
+            //     mapping down and DecodeGipToXInput ZEROES the XInput
+            //     state. The count is read-rate-bound, not time-bound, which
+            //     is why the keepalive is 16 ms (see the field note).
+            // Changes still submit the same tick they happen, so latency is
+            // untouched; only redundant identical frames drop. RawInput
+            // consumers see idle reports at ~62 Hz instead of the poll rate,
+            // which is within the app's configurable baseline range.
             long nowTick = Environment.TickCount64;
             if (_hasSubmitted
                 && nowTick - _lastSubmitTick < SubmitKeepaliveMs

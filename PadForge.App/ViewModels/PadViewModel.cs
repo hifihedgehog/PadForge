@@ -4909,6 +4909,31 @@ namespace PadForge.ViewModels
         private void StartMapAll()
         {
             if (Mappings.Count == 0) return;
+
+            // Ground-truth online recheck at click time. The command
+            // predicate reads MappedDeviceInfo.IsOnline, which refreshes on
+            // the dashboard lane (1 Hz-gated while the app is backgrounded),
+            // and a poll-read failure marks UserDevice.IsOnline false
+            // without raising DevicesUpdated. A click that reactivates the
+            // window can therefore pass a stale CanExecute; starting anyway
+            // walks every mapping into the recorder's no-device timeout.
+            var selGuid = SelectedMappedDevice?.InstanceGuid ?? Guid.Empty;
+            if (selGuid != Guid.Empty)
+            {
+                bool live = false;
+                var devs = PadForge.Common.Input.SettingsManager.UserDevices;
+                if (devs?.Items != null)
+                {
+                    lock (devs.SyncRoot)
+                    {
+                        foreach (var d in devs.Items)
+                            if (d != null && d.InstanceGuid == selGuid && d.IsOnline)
+                            { live = true; break; }
+                    }
+                }
+                if (!live) return;
+            }
+
             IsMapAllActive = true;
             MapAllCurrentIndex = 0;
             _mapAllCommand?.NotifyCanExecuteChanged();

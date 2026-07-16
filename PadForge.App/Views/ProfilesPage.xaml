@@ -230,21 +230,26 @@
                                                         <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=ListBoxItem}}" Value="True">
                                                             <Setter Property="Opacity" Value="0.74"/>
                                                         </DataTrigger>
+                                                        <!-- TWO triggers so the ambient gate and the deselect
+                                                             fade stay independent. Folding IsAppActive into the
+                                                             fade trigger made mere window deactivation run the
+                                                             fade-to-0, whose fill hold outranks the IsSelected
+                                                             setter, so an inactive-but-visible window lost its
+                                                             selection aura entirely (Codex audit 2026-07-16).
+                                                             Breathe trigger: all three conditions; its exit STOPS
+                                                             the storyboard, returning Opacity to the setter's
+                                                             static 0.74. Fade trigger: selection + motion only,
+                                                             keeping the baseline 1.2s fade on deselect. -->
                                                         <MultiDataTrigger>
                                                             <MultiDataTrigger.Conditions>
                                                                 <Condition Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=ListBoxItem}}" Value="True"/>
                                                                 <Condition Binding="{Binding Source={x:Static SystemParameters.ClientAreaAnimation}}" Value="True"/>
-                                                                <!-- Ambient gate + 30fps: same measured rationale as the
-                                                                     dashboard aura, and this page is retained after
-                                                                     navigation, so an ungated breathe here kept burning
-                                                                     on every other page. The IsSelected setter keeps the
-                                                                     static aura while backgrounded. -->
                                                                 <Condition Binding="{Binding IsAppActive, Source={x:Static common:AmbientMotionProbe.Instance}}" Value="True"/>
                                                             </MultiDataTrigger.Conditions>
                                                             <MultiDataTrigger.EnterActions>
-                                                                <BeginStoryboard>
-                                                                    <!-- 30fps on the STORYBOARD (clock-tree root); on the
-                                                                         child animation it is a silent no-op. -->
+                                                                <!-- 30fps on the STORYBOARD (clock-tree root); on the
+                                                                     child animation it is a silent no-op. -->
+                                                                <BeginStoryboard x:Name="ProfilesAuraBreatheSb">
                                                                     <Storyboard Timeline.DesiredFrameRate="30">
                                                                         <!-- Artifact breathe: 3.2s ease-in-out aura pulse. -->
                                                                         <DoubleAnimation Storyboard.TargetProperty="Opacity"
@@ -257,6 +262,15 @@
                                                                     </Storyboard>
                                                                 </BeginStoryboard>
                                                             </MultiDataTrigger.EnterActions>
+                                                            <MultiDataTrigger.ExitActions>
+                                                                <StopStoryboard BeginStoryboardName="ProfilesAuraBreatheSb"/>
+                                                            </MultiDataTrigger.ExitActions>
+                                                        </MultiDataTrigger>
+                                                        <MultiDataTrigger>
+                                                            <MultiDataTrigger.Conditions>
+                                                                <Condition Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=ListBoxItem}}" Value="True"/>
+                                                                <Condition Binding="{Binding Source={x:Static SystemParameters.ClientAreaAnimation}}" Value="True"/>
+                                                            </MultiDataTrigger.Conditions>
                                                             <MultiDataTrigger.ExitActions>
                                                                 <BeginStoryboard>
                                                                     <Storyboard>

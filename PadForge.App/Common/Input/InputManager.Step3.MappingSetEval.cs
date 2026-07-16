@@ -1770,16 +1770,25 @@ namespace PadForge.Common.Input
         //
         // Scope rule: the memo participates ONLY between BeginDeviceStateMemo
         // and EndDeviceStateMemo, which UpdateOutputStates brackets around one
-        // Step-3 pass. Within one pass the answer cannot change observably
-        // (Step 2 published this cycle's InputStates before Step 3 began);
-        // a device's online flip lands next cycle either way. Every OTHER
-        // caller (tests, UI preview at 30 Hz, utility evaluators) takes the
-        // always-live locked scan exactly as before, so no semantic changes
-        // exist off the poll path. Wall-clock and generation scopes were both
-        // tried first and failed a multi-source test: they leaked one pass's
-        // states into the next caller's evaluation. Negative results are
-        // memoed too, which is exactly the offline-contributes-zero contract.
-        [System.ThreadStatic] private static Dictionary<string, CustomInputState> _devStateMemo;
+        // Step-3 pass. Every OTHER caller (tests, UI preview at 30 Hz,
+        // utility evaluators) takes the always-live locked scan exactly as
+        // before, so no semantic changes exist off the poll path. Wall-clock
+        // and generation scopes were both tried first and failed a
+        // multi-source test: they leaked one pass's states into the next
+        // caller's evaluation.
+        //
+        // The memo stores the UserDevice REFERENCE, not its InputState:
+        // IsOnline and InputState are re-read live on every hit. Web/Remote
+        // disconnect callbacks run MarkDeviceOffline off the poll thread
+        // (clears IsOnline + InputState, neutralizes OutputState), and a
+        // memoized snapshot could resurrect a held button for the rest of
+        // the pass on a shared slot (Codex audit 2026-07-16). The per-hit
+        // re-read restores the baseline scan's per-row freshness while
+        // still taking UserDevices.SyncRoot only once per GUID per pass.
+        // Negative results (no such device) are memoed too, which is the
+        // offline-contributes-zero contract; a device REGISTERED mid-pass
+        // publishes its first InputState at the next Step 2 anyway.
+        [System.ThreadStatic] private static Dictionary<string, UserDevice> _devStateMemo;
         [System.ThreadStatic] private static bool _devStateMemoActive;
 
         /// <summary>Arms (and clears) the per-pass device-state memo on this
@@ -1789,7 +1798,7 @@ namespace PadForge.Common.Input
         /// arms its own flag.</summary>
         internal static void BeginDeviceStateMemo()
         {
-            var memo = _devStateMemo ??= new Dictionary<string, CustomInputState>(System.StringComparer.OrdinalIgnoreCase);
+            var memo = _devStateMemo ??= new Dictionary<string, UserDevice>(System.StringComparer.OrdinalIgnoreCase);
             memo.Clear();
             _devStateMemoActive = true;
         }
@@ -1807,10 +1816,10 @@ namespace PadForge.Common.Input
         {
             if (string.IsNullOrEmpty(deviceGuid)) return null;
             bool useMemo = _devStateMemoActive;
-            if (useMemo && _devStateMemo.TryGetValue(deviceGuid, out var cached))
-                return cached;
+            if (useMemo && _devStateMemo.TryGetValue(deviceGuid, out var cachedDev))
+                return (cachedDev != null && cachedDev.IsOnline) ? cachedDev.InputState : null;
 
-            CustomInputState found = null;
+            UserDevice found = null;
             if (System.Guid.TryParse(deviceGuid, out var g))
             {
                 var devs = SettingsManager.UserDevices?.Items;
@@ -1821,31 +1830,30 @@ namespace PadForge.Common.Input
                         for (int i = 0; i < devs.Count; i++)
                         {
                             var d = devs[i];
-                            if (d == null) continue;
-                            if (d.InstanceGuid == g && d.IsOnline)
-                            {
-                                found = d.InputState;
-                                break;
-                            }
+                            if (d == null || d.InstanceGuid != g) continue;
+                            if (d.IsOnline) { found = d; break; }
+                            // Remember the first offline match too: the
+                            // per-hit IsOnline re-read picks it up if it
+                            // comes back within the pass, matching what a
+                            // fresh baseline scan would have seen.
+                            found ??= d;
                         }
                     }
                 }
             }
             if (useMemo) _devStateMemo[deviceGuid] = found;
-            return found;
+            return (found != null && found.IsOnline) ? found.InputState : null;
         }
 
-        /// <summary>LookupDeviceState with the current-device fast path: a
-        /// concrete source naming the device already being evaluated reads
-        /// the caller's own state with zero locks. The memo above covers the
-        /// remaining foreign-device sources.</summary>
-        // (kept adjacent to LookupDeviceState so the memo contract reads as one unit)
+        /// <summary>Memoized lookup for concrete-source sites. The captured
+        /// current-state shortcut this once had was removed: it returned a
+        /// state snapshot with no IsOnline re-read, so a device that went
+        /// offline mid-pass kept contributing its held state (the resurrect
+        /// race above). The memo hit is lock-free and re-checks liveness, so
+        /// the shortcut bought nothing worth that hole.</summary>
         private static CustomInputState LookupDeviceStateFast(
             string deviceGuid, CustomInputState currentState, string currentDeviceGuid)
         {
-            if (currentDeviceGuid != null && currentState != null
-                && string.Equals(deviceGuid, currentDeviceGuid, System.StringComparison.OrdinalIgnoreCase))
-                return currentState;
             return LookupDeviceState(deviceGuid);
         }
 

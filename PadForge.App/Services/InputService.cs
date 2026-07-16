@@ -4921,6 +4921,9 @@ namespace PadForge.Services
         {
             if (string.IsNullOrEmpty(deviceGuid)) return Strings.Instance.Mapping_AnyDevice;
             if (!Guid.TryParse(deviceGuid, out Guid g)) return deviceGuid;
+            // Culture-change handlers can call this before the managers
+            // exist (early startup, tests); an unknown label beats an NRE.
+            if (SettingsManager.UserDevices == null) return deviceGuid;
             lock (SettingsManager.UserDevices.SyncRoot)
             {
                 foreach (var ud in SettingsManager.UserDevices.Items)

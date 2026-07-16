@@ -2211,7 +2211,9 @@
                                                  FontFamily="{StaticResource TelemetryFontFamily}" Margin="0,0,0,4"
                                                  ToolTip="{Binding Macro_KeyComboTooltip, Source={x:Static strings:Strings.Instance}}"/>
                                         <StackPanel Orientation="Horizontal">
-                                            <ComboBox ItemsSource="{x:Static vm:MacroAction.VirtualKeyValues}"
+                                            <!-- Instance binding, NOT x:Static: an x:Static ItemsSource is
+                                                 evaluated once and never refreshes on a live language change. -->
+                                            <ComboBox ItemsSource="{Binding VirtualKeyChoices}"
                                                       DisplayMemberPath="DisplayName"
                                                       SelectedValuePath="Key"
                                                       SelectedValue="{Binding SelectedKeyToAdd, Mode=TwoWay}"
@@ -4237,7 +4239,9 @@
                                                              "InvertOnHold") round-trips via SelectedValue; the dropdown
                                                              shows the friendly display name from KindChoice.Name so the
                                                              user reads "Invert On Hold" instead of the camel-case identifier. -->
-                                                        <ComboBox ItemsSource="{x:Static vm:MappingSourceItem.KindOptions}"
+                                                        <!-- Instance binding, NOT x:Static: an x:Static ItemsSource is
+                                                             evaluated once and never refreshes on a live language change. -->
+                                                        <ComboBox ItemsSource="{Binding KindChoices}"
                                                                   SelectedValue="{Binding Kind, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                                   SelectedValuePath="Value"
                                                                   DisplayMemberPath="Name"
@@ -5498,9 +5502,11 @@
                                                        Style="{StaticResource CardDescription}"/>
                                             <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                                 <TextBlock Text="{Binding Pad_SensitivityX, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                                <!-- Instance binding, NOT x:Static: an x:Static ItemsSource never
+                                                     refreshes on a live language change. -->
                                                 <ComboBox AutomationProperties.AutomationId="SensitivityXCombo"
                                                           Width="120"
-                                                          ItemsSource="{x:Static vm:StickConfigItem.CurvePresetNames}"
+                                                          ItemsSource="{Binding CurvePresetChoices}"
                                                           SelectedItem="{Binding PresetNameX, Mode=OneWay}"
                                                           SelectionChanged="StickPresetX_SelectionChanged"
                                                           Tag="{Binding}"/>
@@ -5509,7 +5515,7 @@
                                             <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                                 <TextBlock Text="{Binding Pad_SensitivityY, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
                                                 <ComboBox Width="120"
-                                                          ItemsSource="{x:Static vm:StickConfigItem.CurvePresetNames}"
+                                                          ItemsSource="{Binding CurvePresetChoices}"
                                                           SelectedItem="{Binding PresetNameY, Mode=OneWay}"
                                                           SelectionChanged="StickPresetY_SelectionChanged"
                                                           Tag="{Binding}"/>
@@ -6418,9 +6424,10 @@
                                                        Style="{StaticResource CardDescription}"/>
                                             <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                                 <TextBlock Text="{Binding Pad_Preset_Label, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                                <!-- Instance binding, NOT x:Static (see the stick preset twin). -->
                                                 <ComboBox AutomationProperties.AutomationId="TriggerPresetCombo"
                                                           Width="120"
-                                                          ItemsSource="{x:Static vm:TriggerConfigItem.CurvePresetNames}"
+                                                          ItemsSource="{Binding CurvePresetChoices}"
                                                           SelectedItem="{Binding PresetName, Mode=OneWay}"
                                                           SelectionChanged="TriggerPreset_SelectionChanged"
                                                           Tag="{Binding}"/>

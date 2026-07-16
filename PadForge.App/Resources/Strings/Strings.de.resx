@@ -2573,14 +2573,14 @@
   <data name="MacroAction_Type_GyroRecenter" xml:space="preserve"><value>Gyro zentrieren</value></data>
   <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>Setzt die aufgelaufenen Gyro-Zielreferenzen des Pads beim Drücken auf null. Der Glättungsverlauf wird geleert, der Motion-Lean-Nullpunkt neu erfasst und die Schwerkraftschätzung aus der aktuellen Lage des Controllers neu initialisiert.</value></data>
   <data name="Pad_Menus" xml:space="preserve"><value>Menüs</value></data>
-  <data name="Menu_EmptyHint" xml:space="preserve"><value>Menüs machen aus einem Stick oder Touchpad einen Ring oder ein Raster auf dem Bildschirm. Füge ein Menü hinzu, wähle seine Host-Eingabe, beschrifte dann jedes Feld und gib ihm eine Belegung.</value></data>
+  <data name="Menu_EmptyHint" xml:space="preserve"><value>Menüs machen aus einem Stick oder Touchpad Ihres physischen Controllers einen Ring oder ein Raster auf dem Bildschirm. Fügen Sie ein Menü hinzu, wählen Sie, womit es sich öffnet, und geben Sie dann jeder Zelle eine Beschriftung und eine Belegung.</value></data>
   <data name="Menu_NewNameFormat" xml:space="preserve"><value>Menü {0}</value></data>
   <data name="Menu_Name" xml:space="preserve"><value>Menüname</value></data>
   <data name="Menu_Enabled" xml:space="preserve"><value>Aktiviert</value></data>
   <data name="Menu_Style" xml:space="preserve"><value>Stil</value></data>
   <data name="Menu_Style_Radial" xml:space="preserve"><value>Radialring</value></data>
   <data name="Menu_Style_Grid" xml:space="preserve"><value>Touch-Raster</value></data>
-  <data name="Menu_HostInput" xml:space="preserve"><value>Host-Eingabe</value></data>
+  <data name="Menu_HostInput" xml:space="preserve"><value>Öffnet mit</value></data>
   <data name="Menu_Host_LeftStick" xml:space="preserve"><value>Linker Stick</value></data>
   <data name="Menu_Host_RightStick" xml:space="preserve"><value>Rechter Stick</value></data>
   <data name="Menu_Host_Touchpad_Format" xml:space="preserve"><value>Touchpad {0}</value></data>
@@ -2607,7 +2607,7 @@
   <data name="Menu_Binding_Key" xml:space="preserve"><value>Tastaturtaste</value></data>
   <data name="Menu_Binding_Button" xml:space="preserve"><value>Controller-Taste</value></data>
   <data name="Menu_Style_Tip" xml:space="preserve"><value>Radialring wählt eine Zelle über die Richtung, wie ein Waffenrad. Touch-Raster wählt eine Zelle über die Position auf der Fläche.</value></data>
-  <data name="Menu_HostInput_Tip" xml:space="preserve"><value>Die Eingabe, die das Menü öffnet. Ein Stick aktiviert beim Auslenken über die Aktivierungs-Deadzone hinaus. Ein Touchpad aktiviert bei Berührung.</value></data>
+  <data name="Menu_HostInput_Tip" xml:space="preserve"><value>Die Eingabe am physischen Controller, die dieses Menü öffnet und steuert. Ein Stick öffnet es beim Auslenken über die Aktivierungs-Deadzone hinaus. Ein Touchpad öffnet es bei Berührung.</value></data>
   <data name="Menu_HostHalf_Tip" xml:space="preserve"><value>Beschränkt dieses Menü auf eine Hälfte des Trackpads, sodass zwei Menüs sich das Pad teilen können.</value></data>
   <data name="Menu_FireMode_Tip" xml:space="preserve"><value>Wann die hervorgehobene Zelle ihre Belegung auslöst. Jede Option wird unten erklärt.</value></data>
   <data name="Menu_Fire_Click_Desc" xml:space="preserve"><value>Löst aus, solange der Host eingedrückt ist: auf die Zelle zeigen, dann den Stick herunterdrücken (Stick-Klick) oder das Trackpad klicken. Die Belegung bleibt gehalten, bis der Klick endet.</value></data>
@@ -2624,6 +2624,8 @@
   <data name="Menu_CellLabel_Tip" xml:space="preserve"><value>Text, der auf dieser Zelle im Overlay angezeigt wird.</value></data>
   <data name="Menu_BindingKind_Tip" xml:space="preserve"><value>Was diese Zelle beim Auslösen tut: eine Tastaturtaste drücken oder eine Controller-Taste am virtuellen Controller dieses Slots halten. Eine Zelle mit Keine löst weiterhin als Menüelement-Quelle für Zuordnungszeilen und Makro-Trigger aus.</value></data>
   <data name="Menu_ExtendedSlot_Warning" xml:space="preserve"><value>Dieser Slot-Typ gibt keine Controller-Tasten aus, daher haben Controller-Tasten-Belegungen hier keine Wirkung. Nutzen Sie Tastaturtaste oder belegen Sie die Menüelement-Quelle der Zelle im Zuordnungen-Tab.</value></data>
+  <data name="Menu_HostInput_Caption" xml:space="preserve"><value>Eine Eingabe am physischen Controller dieses Slots, unabhängig vom Layout des virtuellen Controllers. Die Zellenbelegungen unten sind das, was das Menü ausgibt.</value></data>
+  <data name="Menu_Host_Missing_Format" xml:space="preserve"><value>{0} (nicht verbunden)</value></data>
   <data name="Mapping_MenuItem_Format" xml:space="preserve"><value>Menü {0} Feld {1}</value></data>
   <data name="Dashboard_MenuOverlay" xml:space="preserve"><value>Menü-Overlay</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>Zeigt den Ring oder das Raster auf dem Bildschirm, solange ein Radial- oder Touch-Menü aktiv ist. Menüs lösen auch bei ausgeschaltetem Overlay aus.</value></data>

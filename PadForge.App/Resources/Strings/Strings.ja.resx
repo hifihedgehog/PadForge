@@ -2573,14 +2573,14 @@
   <data name="MacroAction_Type_GyroRecenter" xml:space="preserve"><value>ジャイロを再センタリング</value></data>
   <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>押すと、パッドに蓄積されたジャイロ照準の基準をゼロにします。スムージング履歴がクリアされ、Motion Lean のニュートラルが再取得され、重力推定がコントローラーの現在の姿勢から再設定されます。</value></data>
   <data name="Pad_Menus" xml:space="preserve"><value>メニュー</value></data>
-  <data name="Menu_EmptyHint" xml:space="preserve"><value>メニューはスティックやタッチパッドを画面上のリングまたはグリッドに変えます。メニューを追加し、ホスト入力を選び、各セルにラベルを付けて割り当てを設定してください。</value></data>
+  <data name="Menu_EmptyHint" xml:space="preserve"><value>メニューは、物理コントローラーのスティックやタッチパッドを画面上のリングやグリッドに変えます。メニューを追加し、開く操作を選んでから、各セルにラベルと割り当てを設定してください。</value></data>
   <data name="Menu_NewNameFormat" xml:space="preserve"><value>メニュー {0}</value></data>
   <data name="Menu_Name" xml:space="preserve"><value>メニュー名</value></data>
   <data name="Menu_Enabled" xml:space="preserve"><value>有効</value></data>
   <data name="Menu_Style" xml:space="preserve"><value>スタイル</value></data>
   <data name="Menu_Style_Radial" xml:space="preserve"><value>ラジアルリング</value></data>
   <data name="Menu_Style_Grid" xml:space="preserve"><value>タッチグリッド</value></data>
-  <data name="Menu_HostInput" xml:space="preserve"><value>ホスト入力</value></data>
+  <data name="Menu_HostInput" xml:space="preserve"><value>開く操作</value></data>
   <data name="Menu_Host_LeftStick" xml:space="preserve"><value>左スティック</value></data>
   <data name="Menu_Host_RightStick" xml:space="preserve"><value>右スティック</value></data>
   <data name="Menu_Host_Touchpad_Format" xml:space="preserve"><value>タッチパッド {0}</value></data>
@@ -2607,7 +2607,7 @@
   <data name="Menu_Binding_Key" xml:space="preserve"><value>キーボードのキー</value></data>
   <data name="Menu_Binding_Button" xml:space="preserve"><value>コントローラーボタン</value></data>
   <data name="Menu_Style_Tip" xml:space="preserve"><value>放射リングは方向でセルを選びます(武器ホイールのように)。タッチグリッドは面上の位置でセルを選びます。</value></data>
-  <data name="Menu_HostInput_Tip" xml:space="preserve"><value>メニューを開く入力です。スティックは作動デッドゾーンを超えて倒すと作動し、タッチパッドは触れると作動します。</value></data>
+  <data name="Menu_HostInput_Tip" xml:space="preserve"><value>このメニューを開いて操作する、物理コントローラー側の入力です。スティックは作動デッドゾーンを超えて倒すと開き、タッチパッドは触れると開きます。</value></data>
   <data name="Menu_HostHalf_Tip" xml:space="preserve"><value>このメニューをトラックパッドの半分に限定します。2つのメニューで1つのパッドを分け合えます。</value></data>
   <data name="Menu_FireMode_Tip" xml:space="preserve"><value>ハイライトされたセルの割り当てがいつ発動するかです。各選択肢は下で説明されます。</value></data>
   <data name="Menu_Fire_Click_Desc" xml:space="preserve"><value>ホストを押し込んでいる間だけ発動します。セルに合わせてから、スティックを押し込む(スティッククリック)かトラックパッドをクリックします。クリックを離すまで割り当ては押されたままになります。</value></data>
@@ -2624,6 +2624,8 @@
   <data name="Menu_CellLabel_Tip" xml:space="preserve"><value>オーバーレイ上でこのセルに表示されるテキストです。</value></data>
   <data name="Menu_BindingKind_Tip" xml:space="preserve"><value>セルが発動したときの動作です。キーボードのキーを押すか、このスロットの仮想コントローラーのボタンを押し続けます。「なし」のセルも、マッピング行やマクロトリガー用のメニュー項目ソースとして発動します。</value></data>
   <data name="Menu_ExtendedSlot_Warning" xml:space="preserve"><value>このスロットタイプはコントローラーボタンを出力しないため、コントローラーボタンの割り当てはここでは無効です。キーボードキーを使うか、マッピングタブでセルのメニュー項目ソースを割り当ててください。</value></data>
+  <data name="Menu_HostInput_Caption" xml:space="preserve"><value>このスロットに割り当てられた物理コントローラー側の入力で、仮想コントローラーのレイアウトとは別物です。下のセル割り当てがメニューの出力内容です。</value></data>
+  <data name="Menu_Host_Missing_Format" xml:space="preserve"><value>{0}(未接続)</value></data>
   <data name="Mapping_MenuItem_Format" xml:space="preserve"><value>メニュー {0} セル {1}</value></data>
   <data name="Dashboard_MenuOverlay" xml:space="preserve"><value>メニューオーバーレイ</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>ラジアルメニューまたはタッチメニューが作動している間、画面上のリングまたはグリッドを表示します。オーバーレイがオフでもメニューは発動します。</value></data>

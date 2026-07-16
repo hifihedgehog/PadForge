@@ -2573,14 +2573,14 @@
   <data name="MacroAction_Type_GyroRecenter" xml:space="preserve"><value>Recentralizar Giroscópio</value></data>
   <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>Zera as referências de mira do giroscópio acumuladas do pad ao pressionar. O histórico de suavização é limpo, o neutro do Motion Lean é recapturado e a estimativa de gravidade é reiniciada a partir da pose atual do controle.</value></data>
   <data name="Pad_Menus" xml:space="preserve"><value>Menus</value></data>
-  <data name="Menu_EmptyHint" xml:space="preserve"><value>Menus transformam um analógico ou touchpad em um anel ou grade na tela. Adicione um menu, escolha sua entrada host, depois rotule cada célula e dê a ela uma atribuição.</value></data>
+  <data name="Menu_EmptyHint" xml:space="preserve"><value>Os menus transformam um analógico ou touchpad do seu controle físico em um anel ou grade na tela. Adicione um menu, escolha o que o abre e depois rotule cada célula e dê a ela uma atribuição.</value></data>
   <data name="Menu_NewNameFormat" xml:space="preserve"><value>Menu {0}</value></data>
   <data name="Menu_Name" xml:space="preserve"><value>Nome do Menu</value></data>
   <data name="Menu_Enabled" xml:space="preserve"><value>Ativado</value></data>
   <data name="Menu_Style" xml:space="preserve"><value>Estilo</value></data>
   <data name="Menu_Style_Radial" xml:space="preserve"><value>Anel Radial</value></data>
   <data name="Menu_Style_Grid" xml:space="preserve"><value>Grade de Toque</value></data>
-  <data name="Menu_HostInput" xml:space="preserve"><value>Entrada Host</value></data>
+  <data name="Menu_HostInput" xml:space="preserve"><value>Abre com</value></data>
   <data name="Menu_Host_LeftStick" xml:space="preserve"><value>Analógico Esquerdo</value></data>
   <data name="Menu_Host_RightStick" xml:space="preserve"><value>Analógico Direito</value></data>
   <data name="Menu_Host_Touchpad_Format" xml:space="preserve"><value>Touchpad {0}</value></data>
@@ -2607,7 +2607,7 @@
   <data name="Menu_Binding_Key" xml:space="preserve"><value>Tecla do Teclado</value></data>
   <data name="Menu_Binding_Button" xml:space="preserve"><value>Botão do Controle</value></data>
   <data name="Menu_Style_Tip" xml:space="preserve"><value>Anel radial escolhe uma célula pela direção, como uma roda de armas. Grade de toque escolhe uma célula pela posição na superfície.</value></data>
-  <data name="Menu_HostInput_Tip" xml:space="preserve"><value>A entrada que abre o menu. Um analógico ativa ao ser empurrado além da zona morta de ativação. Um touchpad ativa ao toque.</value></data>
+  <data name="Menu_HostInput_Tip" xml:space="preserve"><value>A entrada do controle físico que abre e direciona este menu. Um analógico o abre ao ser empurrado além da zona morta de ativação. Um touchpad o abre ao toque.</value></data>
   <data name="Menu_HostHalf_Tip" xml:space="preserve"><value>Limita este menu a uma metade do trackpad, para que dois menus possam dividir o pad.</value></data>
   <data name="Menu_FireMode_Tip" xml:space="preserve"><value>Quando a célula destacada dispara sua atribuição. Cada opção é explicada abaixo.</value></data>
   <data name="Menu_Fire_Click_Desc" xml:space="preserve"><value>Dispara enquanto o host está clicado: aponte para a célula e pressione o analógico para dentro (clique do analógico) ou clique no trackpad. A atribuição fica segurada até soltar o clique.</value></data>
@@ -2624,6 +2624,8 @@
   <data name="Menu_CellLabel_Tip" xml:space="preserve"><value>Texto mostrado nesta célula na sobreposição.</value></data>
   <data name="Menu_BindingKind_Tip" xml:space="preserve"><value>O que esta célula faz ao disparar: pressionar uma tecla do teclado ou segurar um botão do controle virtual deste slot. Uma célula em Nenhum ainda dispara como origem de item de menu para linhas de Mapeamentos e gatilhos de macro.</value></data>
   <data name="Menu_ExtendedSlot_Warning" xml:space="preserve"><value>Este tipo de slot não emite botões de controle, então atribuições de Botão do controle não têm efeito aqui. Use Tecla do teclado ou vincule a origem do item de menu da célula na aba Mapeamentos.</value></data>
+  <data name="Menu_HostInput_Caption" xml:space="preserve"><value>Uma entrada do controle físico atribuído a este slot, separada do layout do controle virtual. As atribuições de célula abaixo são o que o menu emite.</value></data>
+  <data name="Menu_Host_Missing_Format" xml:space="preserve"><value>{0} (não conectado)</value></data>
   <data name="Mapping_MenuItem_Format" xml:space="preserve"><value>Menu {0} Célula {1}</value></data>
   <data name="Dashboard_MenuOverlay" xml:space="preserve"><value>Sobreposição de Menu</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>Mostra o anel ou a grade na tela enquanto um menu radial ou de toque está ativo. Os menus ainda disparam com a sobreposição desligada.</value></data>

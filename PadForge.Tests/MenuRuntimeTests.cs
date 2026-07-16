@@ -405,6 +405,34 @@ namespace PadForge.Tests
         }
 
         [Fact]
+        public void MenuHostOptions_AreCapabilityGated_AndNeverLieAboutTheSelection()
+        {
+            var editor = new PadForge.ViewModels.MenuEditorItem(new MenuDefinitionEntry
+            {
+                HostDescriptor = "Touchpad 1",
+            });
+
+            // Slot with a gamepad and one physical touchpad: both sticks,
+            // Touchpad 1 (present), PLUS the authored-but-absent Touchpad 2
+            // marked missing instead of silently falling back to Right Stick.
+            editor.HostCapsProvider = () => (true, 1);
+            var opts = editor.HostOptions;
+            Assert.Equal(4, opts.Count);
+            Assert.Equal("Touchpad 0", opts[2].Descriptor);
+            Assert.Equal("Touchpad 1", opts[3].Descriptor);
+            Assert.Equal("Touchpad 1", editor.SelectedHost.Descriptor);
+            Assert.NotEqual(opts[2].Label, opts[3].Label); // absent one is marked
+
+            // No gamepad on the slot, three touchpads: sticks drop out
+            // (nothing physical can drive them), all three pads offered.
+            editor.Entry.HostDescriptor = "Touchpad 0";
+            editor.HostCapsProvider = () => (false, 3);
+            opts = editor.HostOptions;
+            Assert.Equal(3, opts.Count);
+            Assert.All(opts, o => Assert.StartsWith("Touchpad", o.Descriptor));
+        }
+
+        [Fact]
         public void MenuCell_ButtonPicker_FollowsSlotLettering()
         {
             // Xbox lettering (default): the picker's value space is the

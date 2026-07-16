@@ -11061,6 +11061,21 @@
                                     <ui:Button Command="{Binding ResetHostCommand}" Style="{StaticResource ResetButton}"/>
                                 </StackPanel>
                             </Grid>
+                            <!-- Persistent caption: "Opens With" is the PHYSICAL side,
+                                 and menus are the one tab where input and output meet,
+                                 so users read the stick / touchpad options as the
+                                 virtual controller's layout without this (owner report
+                                 2026-07-16). -->
+                            <Grid Margin="0,0,0,10">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" SharedSizeGroup="MenuEditorLabel"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="1" Text="{Binding Menu_HostInput_Caption, Source={x:Static strings:Strings.Instance}}"
+                                           Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                                           TextWrapping="Wrap" MaxWidth="520" HorizontalAlignment="Left"
+                                           Margin="0,2,0,0" FontSize="12"/>
+                            </Grid>
 
                             <!-- Pad half (touchpad hosts only) -->
                             <Grid Margin="0,0,0,8"

@@ -456,10 +456,16 @@ namespace PadForge.ViewModels
         /// first (empty descriptor), then the slot's picker choices
         /// filtered by the SAME gate the record path applies (analog
         /// families steer, everything else clicks), deduplicated by
-        /// canonical descriptor so per-device duplicates of the same
-        /// read collapse (menus read every assigned device, so device
-        /// identity is meaningless here). The authored value always
-        /// gets an entry so the selection never silently lies.</summary>
+        /// descriptor so per-device duplicates of the same read
+        /// collapse (menus read every assigned device, so device
+        /// identity is meaningless here). The abstract "Gamepad ..."
+        /// alias family is EXCLUDED: its lettered vocabulary reads as
+        /// virtual-controller buttons, and every alias is just a raw
+        /// read the per-device entries already list under the
+        /// device's own naming (a non-gamepad's Button 0..N, POV
+        /// hats, axes; a gamepad's object names). The authored value
+        /// always gets an entry so the selection never silently
+        /// lies.</summary>
         private List<MenuInputOption> BuildInputChoices(bool analog, string emptyLabel, string current)
         {
             var list = new List<MenuInputOption>
@@ -475,11 +481,10 @@ namespace PadForge.ViewModels
                     if (c == null || string.IsNullOrEmpty(c.Descriptor)) continue;
                     // A menu reading its own items back would feed itself.
                     if (c.Descriptor.StartsWith("Menu ", StringComparison.Ordinal)) continue;
-                    string canonical = PadForge.Engine.Common.Mapping.SourceCoercion
-                        .ResolveGamepadAlias(c.Descriptor) ?? c.Descriptor;
-                    if (IsAnalogDescriptor(canonical) != analog) continue;
-                    if (!seen.Add(canonical)) continue;
-                    list.Add(new MenuInputOption { Descriptor = canonical, Label = c.DisplayName });
+                    if (c.Descriptor.StartsWith("Gamepad ", StringComparison.Ordinal)) continue;
+                    if (IsAnalogDescriptor(c.Descriptor) != analog) continue;
+                    if (!seen.Add(c.Descriptor)) continue;
+                    list.Add(new MenuInputOption { Descriptor = c.Descriptor, Label = c.DisplayName });
                 }
             }
             string cur = (current ?? "").Trim();

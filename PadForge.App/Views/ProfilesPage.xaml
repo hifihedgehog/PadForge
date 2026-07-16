@@ -234,12 +234,19 @@
                                                             <MultiDataTrigger.Conditions>
                                                                 <Condition Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=ListBoxItem}}" Value="True"/>
                                                                 <Condition Binding="{Binding Source={x:Static SystemParameters.ClientAreaAnimation}}" Value="True"/>
+                                                                <!-- Ambient gate + 30fps: same measured rationale as the
+                                                                     dashboard aura, and this page is retained after
+                                                                     navigation, so an ungated breathe here kept burning
+                                                                     on every other page. The IsSelected setter keeps the
+                                                                     static aura while backgrounded. -->
+                                                                <Condition Binding="{Binding IsAppActive, Source={x:Static common:AmbientMotionProbe.Instance}}" Value="True"/>
                                                             </MultiDataTrigger.Conditions>
                                                             <MultiDataTrigger.EnterActions>
                                                                 <BeginStoryboard>
                                                                     <Storyboard>
                                                                         <!-- Artifact breathe: 3.2s ease-in-out aura pulse. -->
                                                                         <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                                                                                         Timeline.DesiredFrameRate="30"
                                                                                          From="0.55" To="1.0" Duration="0:0:1.6"
                                                                                          AutoReverse="True" RepeatBehavior="Forever">
                                                                             <DoubleAnimation.EasingFunction>

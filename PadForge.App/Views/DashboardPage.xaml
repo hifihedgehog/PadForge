@@ -497,12 +497,22 @@
                                                 <MultiDataTrigger.Conditions>
                                                     <Condition Binding="{Binding IsVirtualControllerConnected}" Value="True"/>
                                                     <Condition Binding="{Binding Source={x:Static SystemParameters.ClientAreaAnimation}}" Value="True"/>
+                                                    <!-- Ambient gate (2026-07-16): a permanent breathe pays WPF's
+                                                         fixed per-frame pipeline cost (~18% of a core at 60fps,
+                                                         isolated measurement) even when the app is behind a game.
+                                                         Backgrounded, the ExitActions ease the aura to its static
+                                                         0.5 glow; re-activation restarts the breathe. -->
+                                                    <Condition Binding="{Binding IsAppActive, Source={x:Static common:AmbientMotionProbe.Instance}}" Value="True"/>
                                                 </MultiDataTrigger.Conditions>
                                                 <MultiDataTrigger.EnterActions>
                                                     <BeginStoryboard>
                                                         <Storyboard>
-                                                            <!-- Artifact breathe: 3.2s ease-in-out shadow pulse. -->
+                                                            <!-- Artifact breathe: 3.2s ease-in-out shadow pulse.
+                                                                 30fps: a soft opacity fade has no spatial motion,
+                                                                 and every ambient animation frame costs the same
+                                                                 fixed pipeline work (see the gate note above). -->
                                                             <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                                                                             Timeline.DesiredFrameRate="30"
                                                                              From="0.55" To="1.0" Duration="0:0:1.6"
                                                                              AutoReverse="True" RepeatBehavior="Forever">
                                                                 <DoubleAnimation.EasingFunction>

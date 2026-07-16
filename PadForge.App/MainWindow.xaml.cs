@@ -2026,6 +2026,23 @@ namespace PadForge
                 FullScreenIcon.Text = "\uE73F";
             }
 
+            // Ambient-motion gate: the always-on breathes (rail heat ring,
+            // dashboard/profiles auras, selection pulses) pay WPF's fixed
+            // per-animation-frame pipeline cost (~18% of a core per breathe
+            // at 60fps, measured in isolation 2026-07-16) even when the app
+            // is buried behind a game. Foreground state flips the probe; the
+            // XAML breathes react through their trigger conditions and the
+            // code-built rail ring re-evaluates via the section rebuild.
+            // Every effect stays exactly as designed whenever the app is
+            // visible and focused.
+            Activated += (_, _) => SetAmbientMotion(true);
+            Deactivated += (_, _) => SetAmbientMotion(false);
+            StateChanged += (_, _) =>
+            {
+                if (WindowState == WindowState.Minimized) SetAmbientMotion(false);
+                else if (IsActive) SetAmbientMotion(true);
+            };
+
             SetupNativeTooltip();
 
             // Driver detection and timer are initialized in the constructor so they
@@ -2844,8 +2861,11 @@ namespace PadForge
                 card.Effect = ring;
                 // Reduced motion (#175 item 98): breathe swaps for a static
                 // glow pinned near the spec's rgba(...,0.22) point of the
-                // 0.25-0.60 breathe range.
-                if (MotionEnabled)
+                // 0.25-0.60 breathe range. The ambient gate swaps the same
+                // way while the app is backgrounded (see SetAmbientMotion):
+                // a static ring is visually the breathe's midpoint, and the
+                // rebuild on re-activation restarts the phase-locked loop.
+                if (MotionEnabled && PadForge.Common.AmbientMotionProbe.Instance.IsAppActive)
                 {
                     var breathe = new System.Windows.Media.Animation.DoubleAnimation
                     {
@@ -2862,15 +2882,16 @@ namespace PadForge
                         BeginTime = System.TimeSpan.FromMilliseconds(
                             -(System.DateTime.UtcNow.TimeOfDay.TotalMilliseconds % 3200.0)),
                     };
-                    // Full frame rate on purpose. DropShadowEffect.Opacity is
-                    // one of WPF's independently animated properties (probe
-                    // scenario A: six of these pills cost under 2% of a core),
-                    // so the 15fps cap this line briefly carried was solving
-                    // the wrong mechanism and degrading the breathe. The
-                    // expensive shape is animating the ELEMENT's Opacity over
-                    // an effect, which is a dependent animation that re-renders
-                    // the effect intermediate per tick; the dashboard aura had
-                    // that shape and is fixed with a BitmapCache wrap instead.
+                    // 30fps ambient rate. Every animation frame pays WPF's
+                    // fixed pipeline cost (measured 2026-07-16: ~18% of a
+                    // core per permanent breathe at the default 60fps,
+                    // independent of caching or which property animates), so
+                    // halving the rate halves that budget. A 1.6s ease-in-out
+                    // sine on a soft blur has no spatial motion; 30 samples a
+                    // second is beyond what the fade can show. This is a
+                    // considered rate for ambient loops, not the earlier
+                    // blanket 15fps cap that stood in for unfixed mechanisms.
+                    System.Windows.Media.Animation.Timeline.SetDesiredFrameRate(breathe, 30);
                     ring.BeginAnimation(System.Windows.Media.Effects.DropShadowEffect.OpacityProperty, breathe);
                 }
                 else
@@ -3111,6 +3132,20 @@ namespace PadForge
             };
         }
 
+        /// <summary>Drives <see cref="PadForge.Common.AmbientMotionProbe"/>
+        /// from window activation/minimize and rebuilds the controller rail
+        /// so the code-built heat rings re-evaluate their gate. XAML breathes
+        /// react on their own through trigger conditions. Guarded on actual
+        /// state change: dialogs toggle activation constantly and the rail
+        /// rebuild is not free.</summary>
+        private void SetAmbientMotion(bool active)
+        {
+            var probe = PadForge.Common.AmbientMotionProbe.Instance;
+            if (probe.IsAppActive == active) return;
+            probe.IsAppActive = active;
+            RebuildControllerSection();
+        }
+
         /// <summary>True when this tag is the focused controller page (a "PadN"
         /// tag equal to the app-wide selection).</summary>
         private bool IsControllerTagSelected(string tag)
@@ -3138,7 +3173,7 @@ namespace PadForge
                 Opacity = 0.6,
             };
             icon.Effect = glow;
-            if (MotionEnabled)
+            if (MotionEnabled && PadForge.Common.AmbientMotionProbe.Instance.IsAppActive)
             {
                 var pulse = new System.Windows.Media.Animation.DoubleAnimation(0.5, 0.95,
                     System.TimeSpan.FromMilliseconds(1200))
@@ -3150,10 +3185,12 @@ namespace PadForge
                     BeginTime = System.TimeSpan.FromMilliseconds(
                         -(System.DateTime.UtcNow.TimeOfDay.TotalMilliseconds % 2400.0)),
                 };
-                // Full frame rate on purpose: DropShadowEffect.Opacity is
-                // independently animated (see the heat ring note above), and a
-                // 12px icon bloom is far below the size where even the
-                // dependent shape would register.
+                // 30fps ambient rate + foreground gate: same measured
+                // rationale as the heat ring (every permanent animation frame
+                // pays the fixed pipeline cost; a soft pulse cannot show 60
+                // samples a second). The static glow above remains while
+                // backgrounded.
+                System.Windows.Media.Animation.Timeline.SetDesiredFrameRate(pulse, 30);
                 glow.BeginAnimation(System.Windows.Media.Effects.DropShadowEffect.OpacityProperty, pulse);
             }
         }
@@ -3190,7 +3227,7 @@ namespace PadForge
                 layer.Add(adorner);
                 _selGlowAdorner = adorner;
                 _selGlowLayer = layer;
-                if (MotionEnabled)
+                if (MotionEnabled && PadForge.Common.AmbientMotionProbe.Instance.IsAppActive)
                 {
                     double lo = lit ? 0.55 : cooling ? 0.45 : 0.35;
                     double periodMs = lit ? 1100 : cooling ? 1600 : 2200;
@@ -3200,17 +3237,20 @@ namespace PadForge
                     // DEPENDENT animation in WPF, not composite-time. The old
                     // claim here was wrong. The adorner carries a BitmapCache
                     // so each tick recomposes a cached texture instead of
-                    // re-rasterizing the stroke.
-                    adorner.BeginAnimation(System.Windows.UIElement.OpacityProperty,
-                        new System.Windows.Media.Animation.DoubleAnimation(lo, 1.0,
-                            System.TimeSpan.FromMilliseconds(periodMs))
-                        {
-                            AutoReverse = true,
-                            RepeatBehavior = System.Windows.Media.Animation.RepeatBehavior.Forever,
-                            EasingFunction = new System.Windows.Media.Animation.SineEase
-                            { EasingMode = System.Windows.Media.Animation.EasingMode.EaseInOut },
-                            BeginTime = phase,
-                        });
+                    // re-rasterizing the stroke. Gated on foreground +
+                    // 30fps for the same measured reasons as the heat ring;
+                    // the ungated static adorner keeps the selection visible.
+                    var selBreathe = new System.Windows.Media.Animation.DoubleAnimation(lo, 1.0,
+                        System.TimeSpan.FromMilliseconds(periodMs))
+                    {
+                        AutoReverse = true,
+                        RepeatBehavior = System.Windows.Media.Animation.RepeatBehavior.Forever,
+                        EasingFunction = new System.Windows.Media.Animation.SineEase
+                        { EasingMode = System.Windows.Media.Animation.EasingMode.EaseInOut },
+                        BeginTime = phase,
+                    };
+                    System.Windows.Media.Animation.Timeline.SetDesiredFrameRate(selBreathe, 30);
+                    adorner.BeginAnimation(System.Windows.UIElement.OpacityProperty, selBreathe);
                 }
             }
             if (card.IsLoaded && card.ActualWidth > 0)

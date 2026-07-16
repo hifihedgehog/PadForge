@@ -553,12 +553,18 @@ namespace PadForge.Tests
             editor.CustomYSelected = "HAxis 7";
             Assert.Contains(editor.CustomYChoices, o => o.Descriptor == "HAxis 7");
 
-            // Empty-state subtitles: Custom openers have no default click,
+            // Subtitles carry the selected entry's owning-device label
+            // (the mapping / macro picker cue); empty rows show the
+            // empty-state text: Custom openers have no default click,
             // named hosts fall back to theirs.
+            editor.CustomXSelected = "Axis 0";
+            Assert.Equal("Flight Stick", editor.CustomXSubtitle);
+            editor.ClickSelected = "Gamepad ButtonA";
+            Assert.Equal("(Any device)", editor.ClickSubtitle);
             editor.ResetClickCommand.Execute(null);
-            Assert.Equal(PadForge.Resources.Strings.Strings.Instance.Menu_NotRecorded, editor.ClickEmptyLabel);
+            Assert.Equal(PadForge.Resources.Strings.Strings.Instance.Menu_NotRecorded, editor.ClickSubtitle);
             editor.Entry.HostDescriptor = "Gamepad RightStick";
-            Assert.Equal(PadForge.Resources.Strings.Strings.Instance.Menu_ClickDefault, editor.ClickEmptyLabel);
+            Assert.Equal(PadForge.Resources.Strings.Strings.Instance.Menu_ClickDefault, editor.ClickSubtitle);
 
             // Reset returns the row to empty.
             editor.ResetCustomXCommand.Execute(null);

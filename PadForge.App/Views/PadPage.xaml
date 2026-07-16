@@ -11110,15 +11110,15 @@
                                                 </GroupStyle>
                                             </ComboBox.GroupStyle>
                                         </ComboBox>
-                                        <TextBlock FontSize="10" FontStyle="Italic"
+                                        <TextBlock FontSize="10"
                                                    Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                                   Margin="4,1,0,0" Text="{Binding CustomEmptyLabel}">
+                                                   Margin="4,1,0,0" TextTrimming="CharacterEllipsis"
+                                                   Text="{Binding CustomXSubtitle}">
                                             <TextBlock.Style>
                                                 <Style TargetType="TextBlock">
-                                                    <Setter Property="Visibility" Value="Collapsed"/>
                                                     <Style.Triggers>
                                                         <DataTrigger Binding="{Binding CustomXSelected}" Value="">
-                                                            <Setter Property="Visibility" Value="Visible"/>
+                                                            <Setter Property="FontStyle" Value="Italic"/>
                                                         </DataTrigger>
                                                     </Style.Triggers>
                                                 </Style>
@@ -11166,15 +11166,15 @@
                                                 </GroupStyle>
                                             </ComboBox.GroupStyle>
                                         </ComboBox>
-                                        <TextBlock FontSize="10" FontStyle="Italic"
+                                        <TextBlock FontSize="10"
                                                    Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                                   Margin="4,1,0,0" Text="{Binding CustomEmptyLabel}">
+                                                   Margin="4,1,0,0" TextTrimming="CharacterEllipsis"
+                                                   Text="{Binding CustomYSubtitle}">
                                             <TextBlock.Style>
                                                 <Style TargetType="TextBlock">
-                                                    <Setter Property="Visibility" Value="Collapsed"/>
                                                     <Style.Triggers>
                                                         <DataTrigger Binding="{Binding CustomYSelected}" Value="">
-                                                            <Setter Property="Visibility" Value="Visible"/>
+                                                            <Setter Property="FontStyle" Value="Italic"/>
                                                         </DataTrigger>
                                                     </Style.Triggers>
                                                 </Style>
@@ -11226,15 +11226,15 @@
                                                 </GroupStyle>
                                             </ComboBox.GroupStyle>
                                         </ComboBox>
-                                        <TextBlock FontSize="10" FontStyle="Italic"
+                                        <TextBlock FontSize="10"
                                                    Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                                   Margin="4,1,0,0" Text="{Binding ClickEmptyLabel}">
+                                                   Margin="4,1,0,0" TextTrimming="CharacterEllipsis"
+                                                   Text="{Binding ClickSubtitle}">
                                             <TextBlock.Style>
                                                 <Style TargetType="TextBlock">
-                                                    <Setter Property="Visibility" Value="Collapsed"/>
                                                     <Style.Triggers>
                                                         <DataTrigger Binding="{Binding ClickSelected}" Value="">
-                                                            <Setter Property="Visibility" Value="Visible"/>
+                                                            <Setter Property="FontStyle" Value="Italic"/>
                                                         </DataTrigger>
                                                     </Style.Triggers>
                                                 </Style>

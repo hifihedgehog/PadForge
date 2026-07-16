@@ -11091,10 +11091,12 @@
                                            ToolTip="{Binding Menu_CustomAxis_Tip, Source={x:Static strings:Strings.Instance}}"
                                            Margin="0,0,12,0" VerticalAlignment="Center" TextWrapping="Wrap" MaxWidth="260"/>
                                 <StackPanel Grid.Column="1" Orientation="Horizontal">
-                                    <TextBlock Text="{Binding CustomXDisplay}" VerticalAlignment="Center"
-                                               MinWidth="200" MaxWidth="320" TextTrimming="CharacterEllipsis"
-                                               ToolTip="{Binding Menu_CustomAxis_Tip, Source={x:Static strings:Strings.Instance}}"
-                                               Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
+                                    <ComboBox MinWidth="200" ItemsSource="{Binding CustomXChoices}"
+                                              common:ComboBoxWidthBehavior.SizeToItems="True"
+                                              common:ComboBoxWidthBehavior.WidthGroup="MenuSettingCombos"
+                                              ToolTip="{Binding Menu_CustomAxis_Tip, Source={x:Static strings:Strings.Instance}}"
+                                              DisplayMemberPath="Label" SelectedValuePath="Descriptor"
+                                              SelectedValue="{Binding CustomXSelected, Mode=TwoWay}"/>
                                     <ui:Button Command="{Binding DataContext.MenuRecordTargetCommand,
                                                    RelativeSource={RelativeSource AncestorType=TabItem}}"
                                                CommandParameter="CustomX"
@@ -11116,10 +11118,12 @@
                                            ToolTip="{Binding Menu_CustomAxis_Tip, Source={x:Static strings:Strings.Instance}}"
                                            Margin="0,0,12,0" VerticalAlignment="Center" TextWrapping="Wrap" MaxWidth="260"/>
                                 <StackPanel Grid.Column="1" Orientation="Horizontal">
-                                    <TextBlock Text="{Binding CustomYDisplay}" VerticalAlignment="Center"
-                                               MinWidth="200" MaxWidth="320" TextTrimming="CharacterEllipsis"
-                                               ToolTip="{Binding Menu_CustomAxis_Tip, Source={x:Static strings:Strings.Instance}}"
-                                               Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
+                                    <ComboBox MinWidth="200" ItemsSource="{Binding CustomYChoices}"
+                                              common:ComboBoxWidthBehavior.SizeToItems="True"
+                                              common:ComboBoxWidthBehavior.WidthGroup="MenuSettingCombos"
+                                              ToolTip="{Binding Menu_CustomAxis_Tip, Source={x:Static strings:Strings.Instance}}"
+                                              DisplayMemberPath="Label" SelectedValuePath="Descriptor"
+                                              SelectedValue="{Binding CustomYSelected, Mode=TwoWay}"/>
                                     <ui:Button Command="{Binding DataContext.MenuRecordTargetCommand,
                                                    RelativeSource={RelativeSource AncestorType=TabItem}}"
                                                CommandParameter="CustomY"
@@ -11145,10 +11149,12 @@
                                            ToolTip="{Binding Menu_ClickInput_Tip, Source={x:Static strings:Strings.Instance}}"
                                            Margin="0,0,12,0" VerticalAlignment="Center" TextWrapping="Wrap" MaxWidth="260"/>
                                 <StackPanel Grid.Column="1" Orientation="Horizontal">
-                                    <TextBlock Text="{Binding ClickDisplay}" VerticalAlignment="Center"
-                                               MinWidth="200" MaxWidth="320" TextTrimming="CharacterEllipsis"
-                                               ToolTip="{Binding Menu_ClickInput_Tip, Source={x:Static strings:Strings.Instance}}"
-                                               Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
+                                    <ComboBox MinWidth="200" ItemsSource="{Binding ClickChoices}"
+                                              common:ComboBoxWidthBehavior.SizeToItems="True"
+                                              common:ComboBoxWidthBehavior.WidthGroup="MenuSettingCombos"
+                                              ToolTip="{Binding Menu_ClickInput_Tip, Source={x:Static strings:Strings.Instance}}"
+                                              DisplayMemberPath="Label" SelectedValuePath="Descriptor"
+                                              SelectedValue="{Binding ClickSelected, Mode=TwoWay}"/>
                                     <ui:Button Command="{Binding DataContext.MenuRecordTargetCommand,
                                                    RelativeSource={RelativeSource AncestorType=TabItem}}"
                                                CommandParameter="Click"

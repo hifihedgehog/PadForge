@@ -1733,9 +1733,12 @@
                                 </Style>
                             </Slider.Style>
                         </Slider>
+                        <!-- 200 like the port boxes: the focus-time clear X plus
+                             the inline spin buttons cramped the value at 130
+                             (same fix as the Menus tab's number boxes). -->
                         <ui:NumberBox Value="{Binding TouchpadOverlayOpacityPercent, Mode=TwoWay}"
                                       Minimum="0" Maximum="100"
-                                      SpinButtonPlacementMode="Inline" Width="130"
+                                      SpinButtonPlacementMode="Inline" Width="200"
                                       Margin="8,0,0,0"/>
                         <TextBlock Text="%" VerticalAlignment="Center" Margin="4,0,0,0" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
                         <ui:Button Style="{StaticResource EmberIconButton}"

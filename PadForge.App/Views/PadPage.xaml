@@ -11136,7 +11136,13 @@
                                            ToolTip="{Binding Menu_Cells_Tip, Source={x:Static strings:Strings.Instance}}"
                                            Margin="0,0,12,0" VerticalAlignment="Center" TextWrapping="Wrap" MaxWidth="260"/>
                                 <StackPanel Grid.Column="1" Orientation="Horizontal">
-                                    <ui:NumberBox Width="120" Minimum="1" Maximum="20" SmallChange="1"
+                                    <!-- 200, the app's proven NumberBox width (Dashboard port
+                                         boxes): the inline spin buttons PLUS the clear X that
+                                         appears on focus consume ~100px of chrome, so 120 left
+                                         the value cramped the moment the box was clicked
+                                         (owner report 2026-07-16). Applies to every NumberBox
+                                         on this tab. -->
+                                    <ui:NumberBox Width="200" Minimum="1" Maximum="20" SmallChange="1"
                                                   ToolTip="{Binding Menu_Cells_Tip, Source={x:Static strings:Strings.Instance}}"
                                                   Value="{Binding CellCount, Mode=TwoWay}"/>
                                     <CheckBox Content="{Binding Menu_HasCenter, Source={x:Static strings:Strings.Instance}}"
@@ -11161,12 +11167,7 @@
                                     <Slider Width="160" Minimum="1" Maximum="95"
                                             ToolTip="{Binding Menu_Deadzone_Tip, Source={x:Static strings:Strings.Instance}}"
                                             Value="{Binding EngageDeadzonePercent, Mode=TwoWay}" VerticalAlignment="Center"/>
-                                    <!-- 120 FIXED, not 90 and not MinWidth. A ui:NumberBox
-                                         reserves its spin buttons out of its own width, and at
-                                         90 the text area collapses to nothing. MinWidth let the
-                                         box grow with its value and drift out of column with
-                                         the other number boxes. -->
-                                    <ui:NumberBox Width="120" Minimum="1" Maximum="95" SmallChange="1" Margin="8,0,0,0"
+                                    <ui:NumberBox Width="200" Minimum="1" Maximum="95" SmallChange="1" Margin="8,0,0,0"
                                                   Value="{Binding EngageDeadzonePercent, Mode=TwoWay}"/>
                                     <ui:Button Command="{Binding ResetDeadzoneCommand}" Style="{StaticResource ResetButton}" Margin="6,0,0,0"/>
                                 </StackPanel>
@@ -11197,11 +11198,9 @@
                                                    Margin="0,0,12,0" VerticalAlignment="Center" TextWrapping="Wrap" MaxWidth="240"/>
                                         <StackPanel Grid.Column="1" Orientation="Horizontal"
                                                     ToolTip="{Binding Menu_Position_Tip, Source={x:Static strings:Strings.Instance}}">
-                                            <!-- 120 fixed: at 90 the spin buttons consume the
-                                                 whole control and the value renders blank. -->
-                                            <ui:NumberBox Width="120" Minimum="0" Maximum="100" SmallChange="5"
+                                            <ui:NumberBox Width="200" Minimum="0" Maximum="100" SmallChange="5"
                                                           Value="{Binding PosXPercent, Mode=TwoWay}"/>
-                                            <ui:NumberBox Width="120" Minimum="0" Maximum="100" SmallChange="5" Margin="8,0,0,0"
+                                            <ui:NumberBox Width="200" Minimum="0" Maximum="100" SmallChange="5" Margin="8,0,0,0"
                                                           Value="{Binding PosYPercent, Mode=TwoWay}"/>
                                         </StackPanel>
                                     </Grid>
@@ -11215,7 +11214,7 @@
                                                    ToolTip="{Binding Menu_Scale_Tip, Source={x:Static strings:Strings.Instance}}"
                                                    Margin="0,0,12,0" VerticalAlignment="Center" TextWrapping="Wrap" MaxWidth="240"/>
                                         <StackPanel Grid.Column="1" Orientation="Horizontal">
-                                            <ui:NumberBox Width="120" Minimum="10" Maximum="400" SmallChange="10"
+                                            <ui:NumberBox Width="200" Minimum="10" Maximum="400" SmallChange="10"
                                                           ToolTip="{Binding Menu_Scale_Tip, Source={x:Static strings:Strings.Instance}}"
                                                           Value="{Binding ScalePercent, Mode=TwoWay}"/>
                                             <TextBlock Text="%" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
@@ -11232,7 +11231,7 @@
                                                    ToolTip="{Binding Menu_Opacity_Tip, Source={x:Static strings:Strings.Instance}}"
                                                    Margin="0,0,12,0" VerticalAlignment="Center" TextWrapping="Wrap" MaxWidth="240"/>
                                         <StackPanel Grid.Column="1" Orientation="Horizontal">
-                                            <ui:NumberBox Width="120" Minimum="5" Maximum="100" SmallChange="5"
+                                            <ui:NumberBox Width="200" Minimum="5" Maximum="100" SmallChange="5"
                                                           ToolTip="{Binding Menu_Opacity_Tip, Source={x:Static strings:Strings.Instance}}"
                                                           Value="{Binding OpacityPercent, Mode=TwoWay}"/>
                                             <TextBlock Text="%" Foreground="{DynamicResource TextFillColorSecondaryBrush}"

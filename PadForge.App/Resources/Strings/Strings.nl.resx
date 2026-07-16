@@ -2643,7 +2643,7 @@
   <data name="Menu_Opacity_Tip" xml:space="preserve"><value>Overlaydekking. 100% is volledig dekkend.</value></data>
   <data name="Menu_CellLabel_Tip" xml:space="preserve"><value>Tekst die op deze cel in de overlay wordt getoond.</value></data>
   <data name="Menu_BindingKind_Tip" xml:space="preserve"><value>Wat deze cel doet bij activeren: een toetsenbordtoets indrukken of een controllerknop op de virtuele controller van dit slot vasthouden. Een cel op Geen activeert nog steeds als menu-itembron voor toewijzingsrijen en macrotriggers.</value></data>
-  <data name="Menu_ExtendedSlot_Warning" xml:space="preserve"><value>Dit slot geeft een aangepaste controller uit, dus Controllerknop-toewijzingen hebben hier geen effect. Gebruik Toetsenbordtoets, of koppel de menu-itembron van de cel op het tabblad Toewijzingen.</value></data>
+  <data name="Menu_ExtendedSlot_Warning" xml:space="preserve"><value>Dit slottype geeft geen controllerknoppen uit, dus Controllerknop-toewijzingen hebben hier geen effect. Gebruik Toetsenbordtoets, of koppel de menu-itembron van de cel op het tabblad Toewijzingen.</value></data>
   <data name="Mapping_MenuItem_Format" xml:space="preserve"><value>Menu {0} cel {1}</value></data>
   <data name="Dashboard_MenuOverlay" xml:space="preserve"><value>Menu-overlay</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>Toont de ring of het raster op het scherm zolang een radiaal of touch-menu actief is. Menu's vuren ook met de overlay uit.</value></data>

@@ -2623,7 +2623,7 @@
   <data name="Menu_Opacity_Tip" xml:space="preserve"><value>Opacité de la superposition. 100 % est entièrement opaque.</value></data>
   <data name="Menu_CellLabel_Tip" xml:space="preserve"><value>Texte affiché sur cette cellule dans la superposition.</value></data>
   <data name="Menu_BindingKind_Tip" xml:space="preserve"><value>Ce que fait cette cellule quand elle se déclenche : presser une touche du clavier, ou tenir un bouton de la manette virtuelle de cet emplacement. Une cellule sur Aucun se déclenche quand même comme source d'élément de menu pour les lignes de Mappages et les déclencheurs de macros.</value></data>
-  <data name="Menu_ExtendedSlot_Warning" xml:space="preserve"><value>Cet emplacement émet une manette personnalisée : les affectations Bouton de manette n'ont donc aucun effet ici. Utilisez Touche du clavier, ou liez la source d'élément de menu de la cellule dans l'onglet Mappages.</value></data>
+  <data name="Menu_ExtendedSlot_Warning" xml:space="preserve"><value>Ce type d'emplacement n'émet pas de boutons de manette : les affectations Bouton de manette n'ont donc aucun effet ici. Utilisez Touche du clavier, ou liez la source d'élément de menu de la cellule dans l'onglet Mappages.</value></data>
   <data name="Mapping_MenuItem_Format" xml:space="preserve"><value>Menu {0} case {1}</value></data>
   <data name="Dashboard_MenuOverlay" xml:space="preserve"><value>Superposition de menu</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>Affiche l'anneau ou la grille à l'écran tant qu'un menu radial ou tactile est actif. Les menus se déclenchent même si la superposition est désactivée.</value></data>

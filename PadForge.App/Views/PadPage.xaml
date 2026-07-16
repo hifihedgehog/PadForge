@@ -11245,10 +11245,14 @@
                             <TextBlock Text="{Binding Menu_CellBindings, Source={x:Static strings:Strings.Instance}}"
                                        FontWeight="SemiBold" Margin="0,0,0,6"
                                        Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
-                            <!-- Extended slots emit raw HID, so a Controller Button cell
-                                 binding is silently dropped by the delivery pass
-                                 (CollectMenuDirectOutputs gates on SlotExtendedIsCustom).
-                                 Say so instead of letting the binding eat itself. -->
+                            <!-- Slot types that never output controller buttons drop a
+                                 Controller Button cell binding silently: Extended emits
+                                 raw HID (CollectMenuDirectOutputs gates on
+                                 SlotExtendedIsCustom), and the Midi / KeyboardMouse
+                                 virtual controllers' SubmitGamepadState is a no-op stub.
+                                 Say so instead of letting the binding eat itself.
+                                 Keyboard Key cells and menu-item sources work on every
+                                 slot type. -->
                             <TextBlock Text="{Binding Menu_ExtendedSlot_Warning, Source={x:Static strings:Strings.Instance}}"
                                        Foreground="{DynamicResource SystemFillColorCautionBrush}"
                                        TextWrapping="Wrap" MaxWidth="560" HorizontalAlignment="Left"
@@ -11260,6 +11264,16 @@
                                             <DataTrigger Binding="{Binding DataContext.OutputType,
                                                               RelativeSource={RelativeSource AncestorType=TabItem}}"
                                                          Value="Extended">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding DataContext.OutputType,
+                                                              RelativeSource={RelativeSource AncestorType=TabItem}}"
+                                                         Value="Midi">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding DataContext.OutputType,
+                                                              RelativeSource={RelativeSource AncestorType=TabItem}}"
+                                                         Value="KeyboardMouse">
                                                 <Setter Property="Visibility" Value="Visible"/>
                                             </DataTrigger>
                                         </Style.Triggers>

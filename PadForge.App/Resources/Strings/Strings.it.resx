@@ -2595,14 +2595,14 @@
   <data name="MacroAction_Type_GyroRecenter" xml:space="preserve"><value>Ricentra giroscopio</value></data>
   <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>Azzera alla pressione i riferimenti di mira del giroscopio accumulati dal pad. La cronologia di smussatura si svuota, il punto neutro di Motion Lean viene ricatturato e la stima della gravità si reinizializza dalla posa attuale del controller.</value></data>
   <data name="Pad_Menus" xml:space="preserve"><value>Menu</value></data>
-  <data name="Menu_EmptyHint" xml:space="preserve"><value>I menu trasformano una levetta o un touchpad in un anello o una griglia su schermo. Aggiungi un menu, scegli il suo input host, poi etichetta ogni cella e assegnale un'assegnazione.</value></data>
+  <data name="Menu_EmptyHint" xml:space="preserve"><value>I menu trasformano uno stick o un touchpad del controller fisico in un anello o una griglia sullo schermo. Aggiungi un menu, scegli con cosa si apre, poi etichetta ogni cella e assegnale un'azione.</value></data>
   <data name="Menu_NewNameFormat" xml:space="preserve"><value>Menu {0}</value></data>
   <data name="Menu_Name" xml:space="preserve"><value>Nome del menu</value></data>
   <data name="Menu_Enabled" xml:space="preserve"><value>Attivato</value></data>
   <data name="Menu_Style" xml:space="preserve"><value>Stile</value></data>
   <data name="Menu_Style_Radial" xml:space="preserve"><value>Anello radiale</value></data>
   <data name="Menu_Style_Grid" xml:space="preserve"><value>Griglia touch</value></data>
-  <data name="Menu_HostInput" xml:space="preserve"><value>Input host</value></data>
+  <data name="Menu_HostInput" xml:space="preserve"><value>Si apre con</value></data>
   <data name="Menu_Host_LeftStick" xml:space="preserve"><value>Levetta sinistra</value></data>
   <data name="Menu_Host_RightStick" xml:space="preserve"><value>Levetta destra</value></data>
   <data name="Menu_Host_Touchpad_Format" xml:space="preserve"><value>Touchpad {0}</value></data>
@@ -2629,7 +2629,7 @@
   <data name="Menu_Binding_Key" xml:space="preserve"><value>Tasto della tastiera</value></data>
   <data name="Menu_Binding_Button" xml:space="preserve"><value>Pulsante del controller</value></data>
   <data name="Menu_Style_Tip" xml:space="preserve"><value>Anello radiale sceglie una cella in base alla direzione, come una ruota delle armi. Griglia tattile sceglie una cella in base alla posizione sulla superficie.</value></data>
-  <data name="Menu_HostInput_Tip" xml:space="preserve"><value>L'input che apre il menu. Uno stick si attiva quando viene spinto oltre la zona morta di attivazione. Un touchpad si attiva al tocco.</value></data>
+  <data name="Menu_HostInput_Tip" xml:space="preserve"><value>L'input del controller fisico che apre e guida questo menu. Uno stick lo apre quando viene spinto oltre la zona morta di attivazione. Un touchpad lo apre al tocco.</value></data>
   <data name="Menu_HostHalf_Tip" xml:space="preserve"><value>Limita questo menu a una metà del trackpad, così due menu possono condividere il pad.</value></data>
   <data name="Menu_FireMode_Tip" xml:space="preserve"><value>Quando la cella evidenziata attiva la sua assegnazione. Ogni scelta è spiegata sotto.</value></data>
   <data name="Menu_Fire_Click_Desc" xml:space="preserve"><value>Si attiva finché l'host è premuto: punta la cella, poi premi lo stick verso il basso (clic dello stick) o fai clic sul trackpad. L'assegnazione resta tenuta finché il clic non viene rilasciato.</value></data>
@@ -2646,6 +2646,8 @@
   <data name="Menu_CellLabel_Tip" xml:space="preserve"><value>Testo mostrato su questa cella nell'overlay.</value></data>
   <data name="Menu_BindingKind_Tip" xml:space="preserve"><value>Cosa fa questa cella quando si attiva: premere un tasto della tastiera o tenere un pulsante del controller virtuale di questo slot. Una cella su Nessuno si attiva comunque come sorgente di voce di menu per le righe di Mappature e i trigger delle macro.</value></data>
   <data name="Menu_ExtendedSlot_Warning" xml:space="preserve"><value>Questo tipo di slot non emette pulsanti del controller, quindi le assegnazioni Pulsante controller non hanno effetto qui. Usa Tasto tastiera, oppure collega la sorgente della voce di menu della cella nella scheda Mappature.</value></data>
+  <data name="Menu_HostInput_Caption" xml:space="preserve"><value>Un input del controller fisico assegnato a questo slot, separato dal layout del controller virtuale. Le assegnazioni delle celle qui sotto sono ciò che il menu emette.</value></data>
+  <data name="Menu_Host_Missing_Format" xml:space="preserve"><value>{0} (non collegato)</value></data>
   <data name="Mapping_MenuItem_Format" xml:space="preserve"><value>Menu {0} cella {1}</value></data>
   <data name="Dashboard_MenuOverlay" xml:space="preserve"><value>Overlay menu</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>Mostra l'anello o la griglia su schermo mentre un menu radiale o touch è attivo. I menu si attivano anche con l'overlay disattivato.</value></data>

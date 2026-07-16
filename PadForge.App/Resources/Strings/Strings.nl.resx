@@ -2593,14 +2593,14 @@
   <data name="MacroAction_Type_GyroRecenter" xml:space="preserve"><value>Gyro hercentreren</value></data>
   <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>Zet de opgebouwde gyro-richtreferenties van de pad op nul bij indrukken. De smoothing-geschiedenis wordt gewist, het Motion Lean-neutraalpunt wordt opnieuw vastgelegd en de zwaartekrachtschatting wordt opnieuw geïnitialiseerd vanuit de huidige stand van de controller.</value></data>
   <data name="Pad_Menus" xml:space="preserve"><value>Menu's</value></data>
-  <data name="Menu_EmptyHint" xml:space="preserve"><value>Menu's veranderen een stick of touchpad in een ring of raster op het scherm. Voeg een menu toe, kies de hostinvoer, geef daarna elke cel een label en een toewijzing.</value></data>
+  <data name="Menu_EmptyHint" xml:space="preserve"><value>Menu's veranderen een stick of touchpad van je fysieke controller in een ring of raster op het scherm. Voeg een menu toe, kies waarmee het opent en geef elke cel daarna een label en een toewijzing.</value></data>
   <data name="Menu_NewNameFormat" xml:space="preserve"><value>Menu {0}</value></data>
   <data name="Menu_Name" xml:space="preserve"><value>Menunaam</value></data>
   <data name="Menu_Enabled" xml:space="preserve"><value>Ingeschakeld</value></data>
   <data name="Menu_Style" xml:space="preserve"><value>Stijl</value></data>
   <data name="Menu_Style_Radial" xml:space="preserve"><value>Radiale ring</value></data>
   <data name="Menu_Style_Grid" xml:space="preserve"><value>Touch-raster</value></data>
-  <data name="Menu_HostInput" xml:space="preserve"><value>Hostinvoer</value></data>
+  <data name="Menu_HostInput" xml:space="preserve"><value>Opent met</value></data>
   <data name="Menu_Host_LeftStick" xml:space="preserve"><value>Linker stick</value></data>
   <data name="Menu_Host_RightStick" xml:space="preserve"><value>Rechter stick</value></data>
   <data name="Menu_Host_Touchpad_Format" xml:space="preserve"><value>Touchpad {0}</value></data>
@@ -2627,7 +2627,7 @@
   <data name="Menu_Binding_Key" xml:space="preserve"><value>Toetsenbordtoets</value></data>
   <data name="Menu_Binding_Button" xml:space="preserve"><value>Controllerknop</value></data>
   <data name="Menu_Style_Tip" xml:space="preserve"><value>Radiale ring kiest een cel op richting, zoals een wapenwiel. Aanraakraster kiest een cel op positie op het oppervlak.</value></data>
-  <data name="Menu_HostInput_Tip" xml:space="preserve"><value>De invoer die het menu opent. Een stick activeert wanneer je hem voorbij de activeringsdeadzone duwt. Een touchpad activeert bij aanraking.</value></data>
+  <data name="Menu_HostInput_Tip" xml:space="preserve"><value>De invoer op de fysieke controller die dit menu opent en bestuurt. Een stick opent het wanneer je hem voorbij de activeringsdeadzone duwt. Een touchpad opent het bij aanraking.</value></data>
   <data name="Menu_HostHalf_Tip" xml:space="preserve"><value>Beperk dit menu tot één helft van het trackpad, zodat twee menu's het pad kunnen delen.</value></data>
   <data name="Menu_FireMode_Tip" xml:space="preserve"><value>Wanneer de gemarkeerde cel zijn toewijzing activeert. Elke keuze wordt hieronder uitgelegd.</value></data>
   <data name="Menu_Fire_Click_Desc" xml:space="preserve"><value>Activeert zolang de host is ingeklikt: wijs de cel aan en druk de stick in (stick-klik) of klik het trackpad. De toewijzing blijft vastgehouden tot de klik loslaat.</value></data>
@@ -2644,6 +2644,8 @@
   <data name="Menu_CellLabel_Tip" xml:space="preserve"><value>Tekst die op deze cel in de overlay wordt getoond.</value></data>
   <data name="Menu_BindingKind_Tip" xml:space="preserve"><value>Wat deze cel doet bij activeren: een toetsenbordtoets indrukken of een controllerknop op de virtuele controller van dit slot vasthouden. Een cel op Geen activeert nog steeds als menu-itembron voor toewijzingsrijen en macrotriggers.</value></data>
   <data name="Menu_ExtendedSlot_Warning" xml:space="preserve"><value>Dit slottype geeft geen controllerknoppen uit, dus Controllerknop-toewijzingen hebben hier geen effect. Gebruik Toetsenbordtoets, of koppel de menu-itembron van de cel op het tabblad Toewijzingen.</value></data>
+  <data name="Menu_HostInput_Caption" xml:space="preserve"><value>Een invoer op de fysieke controller van dit slot, los van de indeling van de virtuele controller. De celtoewijzingen hieronder zijn wat het menu uitvoert.</value></data>
+  <data name="Menu_Host_Missing_Format" xml:space="preserve"><value>{0} (niet verbonden)</value></data>
   <data name="Mapping_MenuItem_Format" xml:space="preserve"><value>Menu {0} cel {1}</value></data>
   <data name="Dashboard_MenuOverlay" xml:space="preserve"><value>Menu-overlay</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>Toont de ring of het raster op het scherm zolang een radiaal of touch-menu actief is. Menu's vuren ook met de overlay uit.</value></data>

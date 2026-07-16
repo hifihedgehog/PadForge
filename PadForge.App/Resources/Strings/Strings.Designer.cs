@@ -2521,6 +2521,8 @@ public class Strings : INotifyPropertyChanged
     public string Menu_CellLabel_Tip => Get("Menu_CellLabel_Tip");
     public string Menu_BindingKind_Tip => Get("Menu_BindingKind_Tip");
     public string Menu_ExtendedSlot_Warning => Get("Menu_ExtendedSlot_Warning");
+    public string Menu_HostInput_Caption => Get("Menu_HostInput_Caption");
+    public string Menu_Host_Missing_Format => Get("Menu_Host_Missing_Format");
     public string Mapping_MenuItem_Format => Get("Mapping_MenuItem_Format");
     public string Dashboard_MenuOverlay => Get("Dashboard_MenuOverlay");
     public string Dashboard_MenuOverlayDescription => Get("Dashboard_MenuOverlayDescription");

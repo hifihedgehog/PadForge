@@ -2573,14 +2573,14 @@
   <data name="MacroAction_Type_GyroRecenter" xml:space="preserve"><value>陀螺仪重新居中</value></data>
   <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>按下时将手柄累积的陀螺仪瞄准基准归零。平滑历史被清除，Motion Lean 中立点重新捕获，重力估计从控制器当前姿态重新初始化。</value></data>
   <data name="Pad_Menus" xml:space="preserve"><value>菜单</value></data>
-  <data name="Menu_EmptyHint" xml:space="preserve"><value>菜单可将摇杆或触控板变成屏幕上的环形或网格。添加菜单，选择其宿主输入，然后为每个单元格添加标签并设置绑定。</value></data>
+  <data name="Menu_EmptyHint" xml:space="preserve"><value>菜单可以把物理控制器上的摇杆或触摸板变成屏幕上的环形或网格菜单。添加菜单,选择打开方式,然后为每个单元格设置标签和绑定。</value></data>
   <data name="Menu_NewNameFormat" xml:space="preserve"><value>菜单 {0}</value></data>
   <data name="Menu_Name" xml:space="preserve"><value>菜单名称</value></data>
   <data name="Menu_Enabled" xml:space="preserve"><value>已启用</value></data>
   <data name="Menu_Style" xml:space="preserve"><value>样式</value></data>
   <data name="Menu_Style_Radial" xml:space="preserve"><value>径向环</value></data>
   <data name="Menu_Style_Grid" xml:space="preserve"><value>触摸网格</value></data>
-  <data name="Menu_HostInput" xml:space="preserve"><value>宿主输入</value></data>
+  <data name="Menu_HostInput" xml:space="preserve"><value>打开方式</value></data>
   <data name="Menu_Host_LeftStick" xml:space="preserve"><value>左摇杆</value></data>
   <data name="Menu_Host_RightStick" xml:space="preserve"><value>右摇杆</value></data>
   <data name="Menu_Host_Touchpad_Format" xml:space="preserve"><value>触控板 {0}</value></data>
@@ -2607,7 +2607,7 @@
   <data name="Menu_Binding_Key" xml:space="preserve"><value>键盘按键</value></data>
   <data name="Menu_Binding_Button" xml:space="preserve"><value>控制器按钮</value></data>
   <data name="Menu_Style_Tip" xml:space="preserve"><value>径向环像武器轮盘一样按方向选择单元格。触摸网格按表面上的位置选择单元格。</value></data>
-  <data name="Menu_HostInput_Tip" xml:space="preserve"><value>打开菜单的输入。摇杆推过触发死区后生效,触摸板触碰即生效。</value></data>
+  <data name="Menu_HostInput_Tip" xml:space="preserve"><value>打开并操控此菜单的物理控制器输入。摇杆推过触发死区后打开,触摸板触碰即打开。</value></data>
   <data name="Menu_HostHalf_Tip" xml:space="preserve"><value>将此菜单限制在触摸板的一半上,这样两个菜单可以共用一块触摸板。</value></data>
   <data name="Menu_FireMode_Tip" xml:space="preserve"><value>高亮单元格的绑定何时触发。每个选项在下方均有说明。</value></data>
   <data name="Menu_Fire_Click_Desc" xml:space="preserve"><value>按下宿主时持续触发:指向单元格,然后按下摇杆(摇杆按键)或按下触摸板。绑定会一直保持,直到松开按压。</value></data>
@@ -2624,6 +2624,8 @@
   <data name="Menu_CellLabel_Tip" xml:space="preserve"><value>悬浮层中此单元格上显示的文字。</value></data>
   <data name="Menu_BindingKind_Tip" xml:space="preserve"><value>单元格触发时的动作:按下键盘按键,或按住此插槽虚拟控制器上的按钮。设为无的单元格仍会作为菜单项来源触发,可用于映射行和宏触发器。</value></data>
   <data name="Menu_ExtendedSlot_Warning" xml:space="preserve"><value>此插槽类型不输出控制器按钮,因此控制器按钮绑定在这里无效。请使用键盘按键,或在映射选项卡中绑定该单元格的菜单项来源。</value></data>
+  <data name="Menu_HostInput_Caption" xml:space="preserve"><value>这是分配到此插槽的物理控制器上的输入,与虚拟控制器的布局无关。下方的单元格绑定才是菜单的输出内容。</value></data>
+  <data name="Menu_Host_Missing_Format" xml:space="preserve"><value>{0}(未连接)</value></data>
   <data name="Mapping_MenuItem_Format" xml:space="preserve"><value>菜单 {0} 单元格 {1}</value></data>
   <data name="Dashboard_MenuOverlay" xml:space="preserve"><value>菜单叠加层</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>在径向或触摸菜单激活期间显示屏幕上的环形或网格。即使关闭叠加层，菜单仍会触发。</value></data>

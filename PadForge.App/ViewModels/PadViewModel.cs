@@ -4677,14 +4677,54 @@ namespace PadForge.ViewModels
                 ApplyMenuButtonStyle(menu);
         }
 
-        /// <summary>Stamps the slot's button lettering onto a menu editor
-        /// item: the same style derivation and Extended button count the
-        /// macro editor uses (see <see cref="SyncMacroButtonStyle"/>).</summary>
+        /// <summary>Stamps the slot's context onto a menu editor item: the
+        /// same button-lettering derivation and Extended button count the
+        /// macro editor uses (see <see cref="SyncMacroButtonStyle"/>), plus
+        /// the live physical-capability provider that gates the opener
+        /// picker (sticks need a gamepad device, touchpads list only what
+        /// the assigned devices actually have).</summary>
         private void ApplyMenuButtonStyle(MenuEditorItem vm)
         {
             vm.ButtonStyle = MacroButtonNames.DeriveStyle(_outputType);
             vm.ExtendedButtonCount =
                 (_outputType == VirtualControllerType.Extended ? _extendedConfig?.ButtonCount : null) ?? 11;
+            vm.HostCapsProvider = ComputeSlotHostCaps;
+            vm.RefreshHostOptions();
+        }
+
+        /// <summary>Physical capabilities of this slot's assigned devices:
+        /// any gamepad present, and the largest touchpad count. Sequential
+        /// (never nested) locks, so the UserDevices-before-UserSettings
+        /// order rule is not in play. No assigned devices reads as
+        /// (gamepad, 0 touchpads) so a freshly created slot still offers
+        /// the stick hosts.</summary>
+        private (bool HasGamepad, int TouchpadCount) ComputeSlotHostCaps()
+        {
+            var settings = SettingsManager.UserSettings;
+            var devices = SettingsManager.UserDevices;
+            if (settings?.Items == null || devices?.Items == null) return (true, 0);
+
+            var guids = new List<Guid>();
+            lock (settings.SyncRoot)
+            {
+                foreach (var us in settings.Items)
+                    if (us != null && us.MapTo == PadIndex)
+                        guids.Add(us.InstanceGuid);
+            }
+            if (guids.Count == 0) return (true, 0);
+
+            bool hasGamepad = false;
+            int touchpads = 0;
+            lock (devices.SyncRoot)
+            {
+                foreach (var d in devices.Items)
+                {
+                    if (d == null || !guids.Contains(d.InstanceGuid)) continue;
+                    if (d.CapType == PadForge.Engine.InputDeviceType.Gamepad) hasGamepad = true;
+                    if (d.CapTouchpadCount > touchpads) touchpads = d.CapTouchpadCount;
+                }
+            }
+            return (hasGamepad, touchpads);
         }
 
         // ═══════════════════════════════════════════════

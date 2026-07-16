@@ -8,14 +8,19 @@ using PadForge.Resources.Strings;
 
 namespace PadForge.ViewModels
 {
-    /// <summary>One pickable menu host surface (Left Stick / Right Stick /
-    /// Touchpad N).</summary>
+    /// <summary>One pickable menu opener (Left Stick / Right Stick /
+    /// Touchpad N) on the PHYSICAL controller. Equality is by descriptor:
+    /// the option lists rebuild on culture / capability changes, and the
+    /// ComboBox's SelectedItem must keep matching across instance churn.</summary>
     public sealed class MenuHostOption
     {
         public string Descriptor { get; init; } = "";
         public string Label { get; init; } = "";
         public bool IsTouchpad { get; init; }
         public override string ToString() => Label;
+        public override bool Equals(object obj)
+            => obj is MenuHostOption o && string.Equals(o.Descriptor, Descriptor, StringComparison.Ordinal);
+        public override int GetHashCode() => Descriptor.GetHashCode();
     }
 
     /// <summary>Generic labeled int option (fire mode, half, binding kind,
@@ -56,7 +61,6 @@ namespace PadForge.ViewModels
             Strings.CultureChanged += static () =>
             {
                 KindOptionsBacking = BuildKindOptions();
-                HostOptionsBacking = BuildHostOptions();
                 HostHalfOptionsBacking = BuildHostHalfOptions();
                 FireOptionsBacking = BuildFireOptions();
             };
@@ -185,28 +189,81 @@ namespace PadForge.ViewModels
 
         public IReadOnlyList<MenuIntOption> KindOptions => KindOptionsBacking;
 
-        // ── Host surface ─────────────────────────────────────────
+        // ── Opener surface (the PHYSICAL controller side) ────────
 
-        private static IReadOnlyList<MenuHostOption> HostOptionsBacking = BuildHostOptions();
+        /// <summary>Live capability read for the slot's assigned devices:
+        /// whether any is a gamepad (the abstract stick aliases only exist
+        /// on gamepads) and the largest physical touchpad count. Supplied
+        /// by PadViewModel as a closure over SettingsManager so every read
+        /// is current; null (tests) offers everything.</summary>
+        internal Func<(bool HasGamepad, int TouchpadCount)> HostCapsProvider;
 
-        private static IReadOnlyList<MenuHostOption> BuildHostOptions() => new[]
+        /// <summary>Pickable openers, capability-gated: touchpads are
+        /// listed only up to what the slot's assigned devices physically
+        /// have, and stick options on a slot with no gamepad device are
+        /// marked rather than offered as if live. The AUTHORED opener is
+        /// always listed (marked "(not connected)" when absent) so the
+        /// selection never silently lies; the old getter fell back to
+        /// Right Stick when the authored descriptor was missing, showing
+        /// a host the menu was not actually on.</summary>
+        public IReadOnlyList<MenuHostOption> HostOptions
         {
-            new MenuHostOption { Descriptor = "Gamepad LeftStick", Label = Strings.Instance.Menu_Host_LeftStick },
-            new MenuHostOption { Descriptor = "Gamepad RightStick", Label = Strings.Instance.Menu_Host_RightStick },
-            new MenuHostOption { Descriptor = "Touchpad 0", Label = string.Format(Strings.Instance.Menu_Host_Touchpad_Format, 1), IsTouchpad = true },
-            new MenuHostOption { Descriptor = "Touchpad 1", Label = string.Format(Strings.Instance.Menu_Host_Touchpad_Format, 2), IsTouchpad = true },
-            new MenuHostOption { Descriptor = "Touchpad 2", Label = string.Format(Strings.Instance.Menu_Host_Touchpad_Format, 3), IsTouchpad = true },
-        };
+            get
+            {
+                var caps = HostCapsProvider?.Invoke() ?? (true, 3);
+                var s = Strings.Instance;
+                var list = new List<MenuHostOption>(6);
+                void Add(string desc, string label, bool present, bool touch)
+                {
+                    if (!present && !string.Equals(Entry.HostDescriptor, desc, StringComparison.Ordinal))
+                        return;
+                    list.Add(new MenuHostOption
+                    {
+                        Descriptor = desc,
+                        Label = present ? label : string.Format(s.Menu_Host_Missing_Format, label),
+                        IsTouchpad = touch,
+                    });
+                }
+                Add("Gamepad LeftStick", s.Menu_Host_LeftStick, caps.HasGamepad, touch: false);
+                Add("Gamepad RightStick", s.Menu_Host_RightStick, caps.HasGamepad, touch: false);
+                for (int n = 0; n < 3; n++)
+                    Add($"Touchpad {n}", string.Format(s.Menu_Host_Touchpad_Format, n + 1),
+                        n < caps.TouchpadCount, touch: true);
+                // Defensive: an authored descriptor outside the known five
+                // (hand-edited XML) still shows rather than vanishing.
+                bool found = false;
+                foreach (var o in list)
+                    if (string.Equals(o.Descriptor, Entry.HostDescriptor, StringComparison.Ordinal))
+                    { found = true; break; }
+                if (!found && !string.IsNullOrEmpty(Entry.HostDescriptor))
+                    list.Add(new MenuHostOption
+                    {
+                        Descriptor = Entry.HostDescriptor,
+                        Label = string.Format(s.Menu_Host_Missing_Format, Entry.HostDescriptor),
+                        IsTouchpad = Entry.HostDescriptor.StartsWith("Touchpad ", StringComparison.Ordinal),
+                    });
+                return list;
+            }
+        }
 
-        public IReadOnlyList<MenuHostOption> HostOptions => HostOptionsBacking;
+        /// <summary>Raises the opener list after the slot context (assigned
+        /// devices, output type) changes. The provider itself reads live;
+        /// this just tells open views to re-read.</summary>
+        internal void RefreshHostOptions()
+        {
+            OnPropertyChanged(nameof(HostOptions));
+            OnPropertyChanged(nameof(SelectedHost));
+            OnPropertyChanged(nameof(HostIsTouchpad));
+        }
 
         public MenuHostOption SelectedHost
         {
             get
             {
-                foreach (var h in HostOptions)
+                var options = HostOptions;
+                foreach (var h in options)
                     if (h.Descriptor == Entry.HostDescriptor) return h;
-                return HostOptions[1]; // right stick default
+                return options[0];
             }
             set
             {

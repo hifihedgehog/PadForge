@@ -2117,13 +2117,19 @@ namespace PadForge.Services
             // ── Update Dashboard ──
             // Display-only lane (dashboard VM, slot summaries, nav counts)
             // that takes UserDevices.SyncRoot + UserSettings.SyncRoot every
-            // tick and feeds pixels nobody can see when the app is
-            // backgrounded. Drop to 1 Hz while ambient motion is gated; the
-            // first tick after reactivation refreshes within 33 ms. The
-            // overlay lanes below (shift-layer flyout, radial menu) stay at
-            // full rate: they render DURING gameplay with the app behind.
-            if (PadForge.Common.AmbientMotionProbe.Instance.IsAppActive
-                || Environment.TickCount64 - _lastGatedDashboardTick >= 1000)
+            // tick. Two throttle tiers, because a DEACTIVATED window is not
+            // an invisible one (it can sit fully visible beside the game or
+            // on another monitor): minimized drops to 1 Hz, merely inactive
+            // drops to 5 Hz. The first tick after reactivation refreshes at
+            // full rate. Action handlers must still read ground truth, not
+            // these VMs (power toggle, Map All). The overlay lanes below
+            // (shift-layer flyout, radial menu) stay at full rate: they
+            // render DURING gameplay with the app behind.
+            var ambientProbe = PadForge.Common.AmbientMotionProbe.Instance;
+            long dashGateMs = ambientProbe.IsAppActive ? 0
+                : ambientProbe.IsWindowMinimized ? 1000 : 200;
+            if (dashGateMs == 0
+                || Environment.TickCount64 - _lastGatedDashboardTick >= dashGateMs)
             {
                 _lastGatedDashboardTick = Environment.TickCount64;
                 UpdateDashboard();

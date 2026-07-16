@@ -1756,6 +1756,14 @@ namespace PadForge.Common.Input
         // cache the parse outcome per string. Same shape as the shipped
         // SourceCoercion.s_typeIndexCache. The null sentinel marks an
         // unparseable string, so each call site still gets ITS OWN default.
+        //
+        // Capped: profile imports deserialize arbitrary strings into these
+        // fields, and an uncapped cache would root every distinct key until
+        // process exit. Past the cap, values still parse; they just stop
+        // being remembered. Ints parse invariant to match the double policy
+        // (memoizing a CurrentCulture-sensitive parse would make the first
+        // culture win globally).
+        private const int ParseCacheCap = 4096;
         private static readonly System.Collections.Concurrent.ConcurrentDictionary<string, double?>
             s_doubleParseCache = new(StringComparer.Ordinal);
         private static readonly System.Collections.Concurrent.ConcurrentDictionary<string, int?>
@@ -1765,10 +1773,14 @@ namespace PadForge.Common.Input
         {
             if (string.IsNullOrEmpty(value))
                 return defaultValue;
-            var parsed = s_doubleParseCache.GetOrAdd(value, static key =>
-                double.TryParse(key, System.Globalization.NumberStyles.Float,
+            if (!s_doubleParseCache.TryGetValue(value, out var parsed))
+            {
+                parsed = double.TryParse(value, System.Globalization.NumberStyles.Float,
                     System.Globalization.CultureInfo.InvariantCulture, out double result)
-                    ? result : (double?)null);
+                    ? result : (double?)null;
+                if (s_doubleParseCache.Count < ParseCacheCap)
+                    s_doubleParseCache[value] = parsed;
+            }
             return parsed ?? defaultValue;
         }
 
@@ -1776,8 +1788,14 @@ namespace PadForge.Common.Input
         {
             if (string.IsNullOrEmpty(value))
                 return defaultValue;
-            var parsed = s_intParseCache.GetOrAdd(value, static key =>
-                int.TryParse(key, out int result) ? result : (int?)null);
+            if (!s_intParseCache.TryGetValue(value, out var parsed))
+            {
+                parsed = int.TryParse(value, System.Globalization.NumberStyles.Integer,
+                    System.Globalization.CultureInfo.InvariantCulture, out int result)
+                    ? result : (int?)null;
+                if (s_intParseCache.Count < ParseCacheCap)
+                    s_intParseCache[value] = parsed;
+            }
             return parsed ?? defaultValue;
         }
 

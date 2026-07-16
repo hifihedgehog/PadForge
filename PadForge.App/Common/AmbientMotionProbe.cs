@@ -42,5 +42,12 @@ namespace PadForge.Common
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
+
+        /// <summary>True while the main window is minimized. Not bindable
+        /// (no change event raised): consumed only by code-side rate gates
+        /// that distinguish "minimized, nothing renders" from "deactivated
+        /// but possibly visible beside the foreground app", where display
+        /// lanes throttle less aggressively.</summary>
+        public bool IsWindowMinimized { get; set; }
     }
 }

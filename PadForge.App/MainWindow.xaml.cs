@@ -2039,7 +2039,11 @@ namespace PadForge
             Deactivated += (_, _) => SetAmbientMotion(false);
             StateChanged += (_, _) =>
             {
-                if (WindowState == WindowState.Minimized) SetAmbientMotion(false);
+                bool minimized = WindowState == WindowState.Minimized;
+                // Code-side rate gates (dashboard publisher) throttle harder
+                // when nothing can render at all vs merely unfocused.
+                PadForge.Common.AmbientMotionProbe.Instance.IsWindowMinimized = minimized;
+                if (minimized) SetAmbientMotion(false);
                 else if (IsActive) SetAmbientMotion(true);
             };
 

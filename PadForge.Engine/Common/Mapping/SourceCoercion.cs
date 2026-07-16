@@ -2546,35 +2546,48 @@ namespace PadForge.Engine.Common.Mapping
         // hundred thousand allocations per second sustained (profiled cost
         // model, 2026-07-16). Keys are immutable strings, so no invalidation
         // exists: an edited mapping carries a different string and simply
-        // adds an entry. The population is bounded by the distinct
-        // descriptors a session ever evaluates.
+        // adds an entry. Capped: descriptors arrive from imported profiles
+        // too, and an uncapped cache would root every distinct key until
+        // process exit; past the cap, descriptors still parse, they just
+        // stop being remembered. Index parsing is invariant so the memoized
+        // result cannot depend on whichever culture parsed it first.
+        private const int TypeIndexCacheCap = 4096;
         private static readonly System.Collections.Concurrent.ConcurrentDictionary<string, (SourceType T, int Index, string PovDir, bool Ok)>
             s_typeIndexCache = new(StringComparer.Ordinal);
 
         private static bool TryParseTypeIndex(string s, out SourceType t, out int index, out string povDir)
         {
-            var hit = s_typeIndexCache.GetOrAdd(s, static key =>
+            if (!s_typeIndexCache.TryGetValue(s, out var hit))
             {
-                string[] parts = key.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-                if (parts.Length < 2) return (SourceType.Unmapped, 0, null, false);
-
-                var pt = parts[0].ToLowerInvariant() switch
-                {
-                    "button" => SourceType.Button,
-                    "axis"   => SourceType.Axis,
-                    "slider" => SourceType.Slider,
-                    "pov"    => SourceType.PovDirection,
-                    _        => SourceType.Unmapped,
-                };
-                if (pt == SourceType.Unmapped) return (SourceType.Unmapped, 0, null, false);
-                if (!int.TryParse(parts[1], out int idx)) return (SourceType.Unmapped, 0, null, false);
-                string dir = (pt == SourceType.PovDirection && parts.Length >= 3) ? parts[2] : null;
-                return (pt, idx, dir, true);
-            });
+                hit = ParseTypeIndexUncached(s);
+                if (s_typeIndexCache.Count < TypeIndexCacheCap)
+                    s_typeIndexCache[s] = hit;
+            }
             t = hit.T;
             index = hit.Index;
             povDir = hit.PovDir;
             return hit.Ok;
+        }
+
+        private static (SourceType T, int Index, string PovDir, bool Ok) ParseTypeIndexUncached(string key)
+        {
+            string[] parts = key.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            if (parts.Length < 2) return (SourceType.Unmapped, 0, null, false);
+
+            var pt = parts[0].ToLowerInvariant() switch
+            {
+                "button" => SourceType.Button,
+                "axis"   => SourceType.Axis,
+                "slider" => SourceType.Slider,
+                "pov"    => SourceType.PovDirection,
+                _        => SourceType.Unmapped,
+            };
+            if (pt == SourceType.Unmapped) return (SourceType.Unmapped, 0, null, false);
+            if (!int.TryParse(parts[1], System.Globalization.NumberStyles.Integer,
+                    System.Globalization.CultureInfo.InvariantCulture, out int idx))
+                return (SourceType.Unmapped, 0, null, false);
+            string dir = (pt == SourceType.PovDirection && parts.Length >= 3) ? parts[2] : null;
+            return (pt, idx, dir, true);
         }
 
         private static bool PovMatches(int povCentidegrees, string direction)

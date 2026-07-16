@@ -93,8 +93,15 @@ namespace PadForge.Views
         {
             if (sender is Button btn && btn.Tag is int slotIndex)
             {
-                if (btn.DataContext is ViewModels.SlotSummary summary)
-                    SlotEnabledToggled?.Invoke(this, (slotIndex, !summary.IsEnabled));
+                // Invert GROUND TRUTH, not the SlotSummary VM: the summary
+                // refreshes on the (now 1 Hz-gated while backgrounded)
+                // dashboard lane, and a controller shortcut can flip
+                // SlotEnabled while this window is inactive. A click that
+                // also activates the window lands before the next publish,
+                // and inverting the stale VM value would re-write the
+                // current state instead of toggling it.
+                SlotEnabledToggled?.Invoke(this,
+                    (slotIndex, !PadForge.Common.Input.SettingsManager.SlotEnabled[slotIndex]));
             }
         }
 
@@ -138,6 +145,32 @@ namespace PadForge.Views
         private bool _isDragging;
         private Point _dragStartPoint;
         private Border _dragSourceCard;
+        // The template-root element BeginDrag hid (card + aura + wrappers);
+        // EndDrag restores exactly this element instead of re-deriving it
+        // from a parent chain that the cache wrappers have since changed.
+        private FrameworkElement _dragHiddenRoot;
+
+        /// <summary>Topmost element of the slot item's template under its
+        /// ContentPresenter, climbing from the card through any wrapper
+        /// grids. This is the element that contains BOTH the card and its
+        /// glow-host aura sibling.</summary>
+        private static FrameworkElement FindDragTemplateRoot(FrameworkElement card)
+        {
+            FrameworkElement root = null;
+            DependencyObject cur = card;
+            // Depth cap: the real chain is card -> cache wrapper -> template
+            // root -> ContentPresenter. If the tree ever changes shape, stop
+            // climbing rather than risk hiding an ancestor panel.
+            for (int depth = 0; depth < 4; depth++)
+            {
+                if (System.Windows.Media.VisualTreeHelper.GetParent(cur) is not FrameworkElement p
+                    || p is ContentPresenter)
+                    break;
+                root = p;
+                cur = p;
+            }
+            return root;
+        }
         private int _dragSourcePadIndex;
         private int _dragSourceVisualPos;
         private bool _dragIsSwapMode;
@@ -237,8 +270,13 @@ namespace PadForge.Views
             // Capture bitmap before hiding the card.
             var snapshot = CaptureCardVisual(card);
             // Hide the whole template root: hiding only the card leaves the
-            // glow-host sibling painting a silhouette in the old spot.
-            if (card.Parent is FrameworkElement dragTemplateRoot) dragTemplateRoot.Opacity = 0;
+            // glow-host sibling painting a silhouette in the old spot. The
+            // card's IMMEDIATE parent is no longer that root (a BitmapCache
+            // wrapper Grid sits between them since the perf work), so climb
+            // to the topmost element under the item's ContentPresenter and
+            // remember it for EndDrag.
+            _dragHiddenRoot = FindDragTemplateRoot(card);
+            if (_dragHiddenRoot != null) _dragHiddenRoot.Opacity = 0;
             else card.Opacity = 0;
 
             Mouse.Capture(SlotsItemsControl, CaptureMode.SubTree);
@@ -433,9 +471,10 @@ namespace PadForge.Views
 
             if (_dragSourceCard != null)
             {
-                if (_dragSourceCard.Parent is FrameworkElement dropTemplateRoot) dropTemplateRoot.Opacity = 1;
+                if (_dragHiddenRoot != null) _dragHiddenRoot.Opacity = 1;
                 _dragSourceCard.Opacity = 1;
             }
+            _dragHiddenRoot = null;
 
             ClearSwapHighlight();
 

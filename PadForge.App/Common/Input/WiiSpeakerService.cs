@@ -380,8 +380,9 @@ namespace PadForge.Common.Input
                     }
                     // Resolve devices OUTSIDE the UserSettings lock. FindDeviceByInstanceGuid
                     // takes UserDevices.SyncRoot, and holding UserSettings.SyncRoot while
-                    // acquiring it inverts UpdateDashboard's order (UserDevices then
-                    // UserSettings) and deadlocks. Same snapshot-then-resolve shape as
+                    // acquiring it inverts the canonical lock order (UserDevices before
+                    // UserSettings), which deadlocks against any canonical-order nester.
+                    // Same snapshot-then-resolve shape as
                     // AudioPassthroughService.EnumerateAssignedSonyPads.
                     foreach (var (mapTo, guid) in assigned)
                     {

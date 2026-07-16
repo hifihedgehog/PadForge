@@ -88,6 +88,13 @@ namespace PadForge.Common.Input
         // by key lookup and is fine with reused references.
         private readonly Dictionary<HMAxis, float> _axesScratch = new();
 
+        // Idle dedup state for the plain SubmitGamepadState path (Xbox and
+        // Extended-non-custom slots). See the contract note at the skip site.
+        private Gamepad _lastSubmittedGp;
+        private long _lastSubmitTick;
+        private bool _hasSubmitted;
+        private const int SubmitKeepaliveMs = 250;
+
         public HMaestroVirtualController(HMContext ctx, HMProfile profile, VirtualControllerType type)
         {
             _ctx = ctx ?? throw new ArgumentNullException(nameof(ctx));
@@ -179,6 +186,11 @@ namespace PadForge.Common.Input
         {
             if (IsConnected) return;
             _controller = _ctx.CreateController(_profile);
+
+            // Fresh HMController = fresh shared section. Reset the idle-dedup
+            // memory so the first frame always submits instead of waiting out
+            // a keepalive window against the previous controller's state.
+            _hasSubmitted = false;
 
             // Publish PID Pool + initial PID State BEFORE any GetFeature can
             // race in. DirectInput's CDIEffect::CreateEffect issues
@@ -391,12 +403,43 @@ namespace PadForge.Common.Input
             if (_controller == null) return;
             TickFfb();
 
-            // No dedup and no rate limit here — Step 5 already honors the
-            // user-configured polling interval (default 1kHz). HIDMaestro is
-            // consumer-driven ("the consumer drives the cadence" per the SDK
-            // docstring) so every call forwards a fresh frame. Deduping on
-            // unchanged state risked dropping rapid press+release bursts
-            // between the game's HID reads.
+            // Idle dedup with a 250 ms keepalive. An unchanged state means an
+            // identical frame: the driver reads a seqlocked LATCH (shared
+            // section, HMController class doc: "no internal pumping thread;
+            // the consumer drives the cadence"), so skipping an identical
+            // write is invisible to every consumer. The exceptions are three
+            // watchdogs in the driver source that bound how long SeqNo may
+            // sit still:
+            //   * driver.c SharedInputWorkerProc: recycles all handles on any
+            //     500 ms without an event signal (WAIT_TIMEOUT -> recycle).
+            //   * driver.c: staleWakeups > 250 signals-without-SeqNo-advance
+            //     recycles too (keepalives advance SeqNo, resetting it).
+            //   * companion.c ReadGipData: > 500 consecutive reads with an
+            //     unchanged SeqNo at the 8 ms GIP pump (~4 s) tears down the
+            //     mapping and DecodeGipToXInput ZEROES the XInput state. A
+            //     button held steady that long would release in-game.
+            // A forced real submit every 250 ms sits far inside all three
+            // bounds. Changes still submit the same tick they happen, so
+            // latency is untouched; only redundant identical frames drop
+            // (idle: ~1000 -> 4 submits/sec; active play with a 250 Hz
+            // device: ~75% of ticks are duplicates).
+            long nowTick = Environment.TickCount64;
+            if (_hasSubmitted
+                && nowTick - _lastSubmitTick < SubmitKeepaliveMs
+                && gp.Buttons == _lastSubmittedGp.Buttons
+                && gp.LeftTrigger == _lastSubmittedGp.LeftTrigger
+                && gp.RightTrigger == _lastSubmittedGp.RightTrigger
+                && gp.ThumbLX == _lastSubmittedGp.ThumbLX
+                && gp.ThumbLY == _lastSubmittedGp.ThumbLY
+                && gp.ThumbRX == _lastSubmittedGp.ThumbRX
+                && gp.ThumbRY == _lastSubmittedGp.ThumbRY
+                && gp.Share == _lastSubmittedGp.Share)
+            {
+                return;
+            }
+            _lastSubmittedGp = gp;
+            _lastSubmitTick = nowTick;
+            _hasSubmitted = true;
 
             // HM v1.3.9: HMGamepadState.Axes is a Dictionary<HMAxis, float>
             // keyed by HID usage; named LeftStickX / LeftStickY / RightStickX /

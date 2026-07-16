@@ -2607,7 +2607,7 @@
   <data name="Menu_Binding_Key" xml:space="preserve"><value>Tecla do Teclado</value></data>
   <data name="Menu_Binding_Button" xml:space="preserve"><value>Botão do Controle</value></data>
   <data name="Menu_Style_Tip" xml:space="preserve"><value>Anel radial escolhe uma célula pela direção, como uma roda de armas. Grade de toque escolhe uma célula pela posição na superfície.</value></data>
-  <data name="Menu_HostInput_Tip" xml:space="preserve"><value>A entrada do controle físico que abre e direciona este menu. Um analógico o abre ao ser empurrado além da zona morta de ativação. Um touchpad o abre ao toque.</value></data>
+  <data name="Menu_HostInput_Tip" xml:space="preserve"><value>A entrada que abre e direciona este menu, lida de todos os controles físicos atribuídos ao slot. Um analógico o abre ao ser empurrado além da zona morta de ativação. Um touchpad o abre ao toque.</value></data>
   <data name="Menu_HostHalf_Tip" xml:space="preserve"><value>Limita este menu a uma metade do trackpad, para que dois menus possam dividir o pad.</value></data>
   <data name="Menu_FireMode_Tip" xml:space="preserve"><value>Quando a célula destacada dispara sua atribuição. Cada opção é explicada abaixo.</value></data>
   <data name="Menu_Fire_Click_Desc" xml:space="preserve"><value>Dispara enquanto o host está clicado: aponte para a célula e pressione o analógico para dentro (clique do analógico) ou clique no trackpad. A atribuição fica segurada até soltar o clique.</value></data>
@@ -2624,7 +2624,7 @@
   <data name="Menu_CellLabel_Tip" xml:space="preserve"><value>Texto mostrado nesta célula na sobreposição.</value></data>
   <data name="Menu_BindingKind_Tip" xml:space="preserve"><value>O que esta célula faz ao disparar: pressionar uma tecla do teclado ou segurar um botão do controle virtual deste slot. Uma célula em Nenhum ainda dispara como origem de item de menu para linhas de Mapeamentos e gatilhos de macro.</value></data>
   <data name="Menu_ExtendedSlot_Warning" xml:space="preserve"><value>Este tipo de slot não emite botões de controle, então atribuições de Botão do controle não têm efeito aqui. Use Tecla do teclado ou vincule a origem do item de menu da célula na aba Mapeamentos.</value></data>
-  <data name="Menu_HostInput_Caption" xml:space="preserve"><value>Uma entrada do controle físico atribuído a este slot, separada do layout do controle virtual. As atribuições de célula abaixo são o que o menu emite.</value></data>
+  <data name="Menu_HostInput_Caption" xml:space="preserve"><value>Qualquer controle físico atribuído a este slot pode abrir o menu com esta entrada. É o lado de entrada, separado do layout do controle virtual. As atribuições de célula abaixo são o que o menu emite.</value></data>
   <data name="Menu_Host_Missing_Format" xml:space="preserve"><value>{0} (não conectado)</value></data>
   <data name="Mapping_MenuItem_Format" xml:space="preserve"><value>Menu {0} Célula {1}</value></data>
   <data name="Dashboard_MenuOverlay" xml:space="preserve"><value>Sobreposição de Menu</value></data>

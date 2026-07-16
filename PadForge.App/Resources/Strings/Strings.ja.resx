@@ -2607,7 +2607,7 @@
   <data name="Menu_Binding_Key" xml:space="preserve"><value>キーボードのキー</value></data>
   <data name="Menu_Binding_Button" xml:space="preserve"><value>コントローラーボタン</value></data>
   <data name="Menu_Style_Tip" xml:space="preserve"><value>放射リングは方向でセルを選びます(武器ホイールのように)。タッチグリッドは面上の位置でセルを選びます。</value></data>
-  <data name="Menu_HostInput_Tip" xml:space="preserve"><value>このメニューを開いて操作する、物理コントローラー側の入力です。スティックは作動デッドゾーンを超えて倒すと開き、タッチパッドは触れると開きます。</value></data>
+  <data name="Menu_HostInput_Tip" xml:space="preserve"><value>このメニューを開いて操作する入力で、スロットに割り当てられたすべての物理コントローラーから読み取られます。スティックは作動デッドゾーンを超えて倒すと開き、タッチパッドは触れると開きます。</value></data>
   <data name="Menu_HostHalf_Tip" xml:space="preserve"><value>このメニューをトラックパッドの半分に限定します。2つのメニューで1つのパッドを分け合えます。</value></data>
   <data name="Menu_FireMode_Tip" xml:space="preserve"><value>ハイライトされたセルの割り当てがいつ発動するかです。各選択肢は下で説明されます。</value></data>
   <data name="Menu_Fire_Click_Desc" xml:space="preserve"><value>ホストを押し込んでいる間だけ発動します。セルに合わせてから、スティックを押し込む(スティッククリック)かトラックパッドをクリックします。クリックを離すまで割り当ては押されたままになります。</value></data>
@@ -2624,7 +2624,7 @@
   <data name="Menu_CellLabel_Tip" xml:space="preserve"><value>オーバーレイ上でこのセルに表示されるテキストです。</value></data>
   <data name="Menu_BindingKind_Tip" xml:space="preserve"><value>セルが発動したときの動作です。キーボードのキーを押すか、このスロットの仮想コントローラーのボタンを押し続けます。「なし」のセルも、マッピング行やマクロトリガー用のメニュー項目ソースとして発動します。</value></data>
   <data name="Menu_ExtendedSlot_Warning" xml:space="preserve"><value>このスロットタイプはコントローラーボタンを出力しないため、コントローラーボタンの割り当てはここでは無効です。キーボードキーを使うか、マッピングタブでセルのメニュー項目ソースを割り当ててください。</value></data>
-  <data name="Menu_HostInput_Caption" xml:space="preserve"><value>このスロットに割り当てられた物理コントローラー側の入力で、仮想コントローラーのレイアウトとは別物です。下のセル割り当てがメニューの出力内容です。</value></data>
+  <data name="Menu_HostInput_Caption" xml:space="preserve"><value>このスロットに割り当てられたどの物理コントローラーでも、この入力でメニューを開けます。これは入力側で、仮想コントローラーのレイアウトとは別物です。下のセル割り当てがメニューの出力内容です。</value></data>
   <data name="Menu_Host_Missing_Format" xml:space="preserve"><value>{0}(未接続)</value></data>
   <data name="Mapping_MenuItem_Format" xml:space="preserve"><value>メニュー {0} セル {1}</value></data>
   <data name="Dashboard_MenuOverlay" xml:space="preserve"><value>メニューオーバーレイ</value></data>

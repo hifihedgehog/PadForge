@@ -2626,6 +2626,15 @@
   <data name="Menu_ExtendedSlot_Warning" xml:space="preserve"><value>このスロットタイプはコントローラーボタンを出力しないため、「コントローラーボタン」の割り当てはここでは無効です。「キーボードのキー」を使うか、マッピングタブでセルのメニュー項目ソースを割り当ててください。</value></data>
   <data name="Menu_HostInput_Caption" xml:space="preserve"><value>このスロットに割り当てられた物理コントローラーから読み取られます。仮想コントローラーのレイアウトではありません。下のセル割り当てがメニューの出力内容です。</value></data>
   <data name="Menu_Host_Missing_Format" xml:space="preserve"><value>{0}(未接続)</value></data>
+  <data name="Menu_Host_Custom" xml:space="preserve"><value>カスタム軸</value></data>
+  <data name="Menu_CustomX" xml:space="preserve"><value>操作軸X</value></data>
+  <data name="Menu_CustomY" xml:space="preserve"><value>操作軸Y</value></data>
+  <data name="Menu_CustomAxis_Tip" xml:space="preserve"><value>任意の2軸を記録してメニューを操作します。作動デッドゾーンを超えて倒すと開きます。ジョイスティックやホイールなど、ゲームパッド以外のデバイスはこの方法でメニューを操作します。</value></data>
+  <data name="Menu_ClickInput" xml:space="preserve"><value>クリック入力</value></data>
+  <data name="Menu_ClickInput_Tip" xml:space="preserve"><value>「クリック時」と「クリックを離したとき」の発動モードが使うボタンで、割り当てられた任意のデバイスから記録できます。空欄なら開く操作の既定(スティッククリックまたはトラックパッドクリック)を使います。カスタム軸には既定がないため、これらのモードを使うにはボタンを記録してください。</value></data>
+  <data name="Menu_ClickDefault" xml:space="preserve"><value>(既定)</value></data>
+  <data name="Menu_NotRecorded" xml:space="preserve"><value>(未設定)</value></data>
+  <data name="Menu_Binding_Unsupported_Format" xml:space="preserve"><value>{0}(このスロットタイプでは不可)</value></data>
   <data name="Mapping_MenuItem_Format" xml:space="preserve"><value>メニュー {0} セル {1}</value></data>
   <data name="Dashboard_MenuOverlay" xml:space="preserve"><value>メニューオーバーレイ</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>ラジアルメニューまたはタッチメニューが作動している間、画面上のリングまたはグリッドを表示します。オーバーレイがオフでもメニューは発動します。</value></data>

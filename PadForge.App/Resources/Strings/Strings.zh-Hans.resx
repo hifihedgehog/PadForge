@@ -2626,6 +2626,15 @@
   <data name="Menu_ExtendedSlot_Warning" xml:space="preserve"><value>此插槽类型不输出控制器按钮,因此"控制器按钮"绑定在这里无效。请使用"键盘按键",或在映射选项卡中绑定该单元格的菜单项来源。</value></data>
   <data name="Menu_HostInput_Caption" xml:space="preserve"><value>读取自分配到此插槽的物理控制器,而非虚拟控制器的布局。下方的单元格绑定才是菜单的输出内容。</value></data>
   <data name="Menu_Host_Missing_Format" xml:space="preserve"><value>{0}(未连接)</value></data>
+  <data name="Menu_Host_Custom" xml:space="preserve"><value>自定义轴</value></data>
+  <data name="Menu_CustomX" xml:space="preserve"><value>操控轴X</value></data>
+  <data name="Menu_CustomY" xml:space="preserve"><value>操控轴Y</value></data>
+  <data name="Menu_CustomAxis_Tip" xml:space="preserve"><value>录制任意两个轴来操控菜单:推过触发死区即可打开。摇杆、方向盘等非手柄设备就是通过这种方式承载菜单的。</value></data>
+  <data name="Menu_ClickInput" xml:space="preserve"><value>点击输入</value></data>
+  <data name="Menu_ClickInput_Tip" xml:space="preserve"><value>「按下时」和「松开按压时」触发模式使用的按钮,可从任何已分配设备录制。留空则使用打开方式的默认值:摇杆按键或触摸板按键。自定义轴没有默认值,要使用这些模式请录制一个按钮。</value></data>
+  <data name="Menu_ClickDefault" xml:space="preserve"><value>(默认)</value></data>
+  <data name="Menu_NotRecorded" xml:space="preserve"><value>(未设置)</value></data>
+  <data name="Menu_Binding_Unsupported_Format" xml:space="preserve"><value>{0}(此插槽类型不可用)</value></data>
   <data name="Mapping_MenuItem_Format" xml:space="preserve"><value>菜单 {0} 单元格 {1}</value></data>
   <data name="Dashboard_MenuOverlay" xml:space="preserve"><value>菜单叠加层</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>在径向或触摸菜单激活期间显示屏幕上的环形或网格。即使关闭叠加层，菜单仍会触发。</value></data>

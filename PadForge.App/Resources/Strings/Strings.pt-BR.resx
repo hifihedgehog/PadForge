@@ -2626,6 +2626,15 @@
   <data name="Menu_ExtendedSlot_Warning" xml:space="preserve"><value>Este tipo de slot não emite botões de controle, então atribuições "Botão do Controle" não têm efeito aqui. Use "Tecla do Teclado" ou vincule a origem do item de menu da célula na aba Mapeamentos.</value></data>
   <data name="Menu_HostInput_Caption" xml:space="preserve"><value>Lido dos controles físicos atribuídos a este slot, não do layout do controle virtual. As atribuições de célula abaixo são o que o menu emite.</value></data>
   <data name="Menu_Host_Missing_Format" xml:space="preserve"><value>{0} (não conectado)</value></data>
+  <data name="Menu_Host_Custom" xml:space="preserve"><value>Eixos personalizados</value></data>
+  <data name="Menu_CustomX" xml:space="preserve"><value>Direção X</value></data>
+  <data name="Menu_CustomY" xml:space="preserve"><value>Direção Y</value></data>
+  <data name="Menu_CustomAxis_Tip" xml:space="preserve"><value>Grave dois eixos quaisquer para direcionar o menu: empurre além da zona morta de ativação para abri-lo. É assim que joysticks, volantes e outros dispositivos que não são gamepads hospedam menus.</value></data>
+  <data name="Menu_ClickInput" xml:space="preserve"><value>Entrada de clique</value></data>
+  <data name="Menu_ClickInput_Tip" xml:space="preserve"><value>O botão que os modos Ao clicar e Ao soltar o clique usam, gravável de qualquer dispositivo atribuído. Vazio mantém o padrão do abridor: o clique do analógico ou do trackpad. Eixos personalizados não têm padrão, então grave um para usar esses modos.</value></data>
+  <data name="Menu_ClickDefault" xml:space="preserve"><value>(padrão do abridor)</value></data>
+  <data name="Menu_NotRecorded" xml:space="preserve"><value>(não definido)</value></data>
+  <data name="Menu_Binding_Unsupported_Format" xml:space="preserve"><value>{0} (não neste tipo de slot)</value></data>
   <data name="Mapping_MenuItem_Format" xml:space="preserve"><value>Menu {0} Célula {1}</value></data>
   <data name="Dashboard_MenuOverlay" xml:space="preserve"><value>Sobreposição de Menu</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>Mostra o anel ou a grade na tela enquanto um menu radial ou de toque está ativo. Os menus ainda disparam com a sobreposição desligada.</value></data>

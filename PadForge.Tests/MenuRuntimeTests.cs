@@ -310,6 +310,9 @@ namespace PadForge.Tests
             Kind = MenuKind.Radial,
             HostDescriptor = "Touchpad 0",
             HostHalf = 1,
+            CustomXDescriptor = "Axis 5",
+            CustomYDescriptor = "Slider 0",
+            ClickDescriptor = "Button 3",
             LayerMask = "Layer_47_1",
             FireType = MenuFireType.TouchRelease,
             CellCount = 5,
@@ -337,6 +340,9 @@ namespace PadForge.Tests
             Assert.Equal(a.Kind, b.Kind);
             Assert.Equal(a.HostDescriptor, b.HostDescriptor);
             Assert.Equal(a.HostHalf, b.HostHalf);
+            Assert.Equal(a.CustomXDescriptor, b.CustomXDescriptor);
+            Assert.Equal(a.CustomYDescriptor, b.CustomYDescriptor);
+            Assert.Equal(a.ClickDescriptor, b.ClickDescriptor);
             Assert.Equal(a.LayerMask, b.LayerMask);
             Assert.Equal(a.FireType, b.FireType);
             Assert.Equal(a.CellCount, b.CellCount);
@@ -413,23 +419,79 @@ namespace PadForge.Tests
             });
 
             // Slot with a gamepad and one physical touchpad: both sticks,
-            // Touchpad 1 (present), PLUS the authored-but-absent Touchpad 2
-            // marked missing instead of silently falling back to Right Stick.
+            // Touchpad 1 (present), the authored-but-absent Touchpad 2
+            // marked missing instead of silently falling back to Right
+            // Stick, plus the always-offered Custom Axes opener.
             editor.HostCapsProvider = () => (true, 1);
             var opts = editor.HostOptions;
-            Assert.Equal(4, opts.Count);
+            Assert.Equal(5, opts.Count);
             Assert.Equal("Touchpad 0", opts[2].Descriptor);
             Assert.Equal("Touchpad 1", opts[3].Descriptor);
+            Assert.Equal("Custom", opts[4].Descriptor);
             Assert.Equal("Touchpad 1", editor.SelectedHost.Descriptor);
             Assert.NotEqual(opts[2].Label, opts[3].Label); // absent one is marked
 
             // No gamepad on the slot, three touchpads: sticks drop out
-            // (nothing physical can drive them), all three pads offered.
+            // (nothing physical can drive them), all three pads offered,
+            // and Custom Axes remains for non-gamepad devices.
             editor.Entry.HostDescriptor = "Touchpad 0";
             editor.HostCapsProvider = () => (false, 3);
             opts = editor.HostOptions;
-            Assert.Equal(3, opts.Count);
-            Assert.All(opts, o => Assert.StartsWith("Touchpad", o.Descriptor));
+            Assert.Equal(4, opts.Count);
+            Assert.All(opts, o => Assert.True(
+                o.Descriptor.StartsWith("Touchpad") || o.Descriptor == "Custom"));
+        }
+
+        [Fact]
+        public void MenuCell_BindingKinds_AreDynamicPerSlotType()
+        {
+            var editor = new PadForge.ViewModels.MenuEditorItem(new MenuDefinitionEntry());
+            var cell = editor.Cells[0];
+
+            // Button-capable slots (default): all three kinds offered.
+            Assert.Equal(3, cell.BindingKindOptions.Count);
+
+            // A KBM / MIDI slot must not OFFER a dead Controller Button
+            // choice at all.
+            editor.SupportsControllerButtons = false;
+            Assert.Equal(2, cell.BindingKindOptions.Count);
+            Assert.DoesNotContain(cell.BindingKindOptions, o => o.Value == 2);
+
+            // ...unless the cell already carries a stale button binding
+            // (slot-type switch): then the choice stays visible, marked,
+            // so the selection never lies.
+            editor.SupportsControllerButtons = true;
+            cell.BindingKind = 2;
+            editor.SupportsControllerButtons = false;
+            Assert.Contains(cell.BindingKindOptions, o => o.Value == 2);
+            Assert.NotEqual(
+                PadForge.Resources.Strings.Strings.Instance.Menu_Binding_Button,
+                cell.BindingKindOptions[2].Label);
+        }
+
+        [Fact]
+        public void CustomOpener_RecordedAxesAndClick_RoundTripThroughTheEditor()
+        {
+            var editor = new PadForge.ViewModels.MenuEditorItem(new MenuDefinitionEntry());
+
+            // Recording a non-gamepad analog folds to a Custom opener.
+            Assert.True(editor.TryApplyRecordedHost("Axis 6"));
+            Assert.True(editor.IsCustomHost);
+            Assert.Equal("Axis 6", editor.Entry.CustomXDescriptor);
+
+            // Steer Y and Click record through the shared targets; the
+            // Click slot rejects analogs and the steer slots reject
+            // buttons.
+            Assert.True(editor.TryApplyRecorded(
+                PadForge.ViewModels.MenuEditorItem.MenuRecordTarget.CustomY, "Slider 1"));
+            Assert.Equal("Slider 1", editor.Entry.CustomYDescriptor);
+            Assert.False(editor.TryApplyRecorded(
+                PadForge.ViewModels.MenuEditorItem.MenuRecordTarget.Click, "Axis 2"));
+            Assert.True(editor.TryApplyRecorded(
+                PadForge.ViewModels.MenuEditorItem.MenuRecordTarget.Click, "Button 5"));
+            Assert.Equal("Button 5", editor.Entry.ClickDescriptor);
+            Assert.False(editor.TryApplyRecorded(
+                PadForge.ViewModels.MenuEditorItem.MenuRecordTarget.CustomX, "Button 1"));
         }
 
         [Fact]

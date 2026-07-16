@@ -194,10 +194,13 @@ namespace PadForge.Common.Input
                     bool clicked = false;
                     if (ctx.IsStick)
                     {
-                        dx = SourceCoercion.EvaluateForBipolarAxisTarget(
-                            newState, ctx.SrcX, slot, false, ud.InstanceGuidString);
-                        dy = SourceCoercion.EvaluateForBipolarAxisTarget(
-                            newState, ctx.SrcY, slot, false, ud.InstanceGuidString);
+                        // Null sources = an unconfigured Custom opener
+                        // (or one with no click assigned): axes read
+                        // centered, so the menu simply never engages.
+                        dx = ctx.SrcX != null ? SourceCoercion.EvaluateForBipolarAxisTarget(
+                            newState, ctx.SrcX, slot, false, ud.InstanceGuidString) : 0;
+                        dy = ctx.SrcY != null ? SourceCoercion.EvaluateForBipolarAxisTarget(
+                            newState, ctx.SrcY, slot, false, ud.InstanceGuidString) : 0;
                         // Engage/release hysteresis (sc-controller's proven
                         // stick-menu shape: engage at 1/3 deflection, cancel
                         // near center at 1/8). Without it the stick surface
@@ -216,7 +219,7 @@ namespace PadForge.Common.Input
                         double mag = Math.Sqrt(dx * dx + dy * dy);
                         double engageAt = centerNeedsHold && ctx.State.Engaged ? dz * 0.4 : dz;
                         physical = mag >= engageAt;
-                        clicked = SourceCoercion.EvaluateForButtonTarget(
+                        clicked = ctx.SrcClick != null && SourceCoercion.EvaluateForButtonTarget(
                             newState, ctx.SrcClick, 50, slot, ud.InstanceGuidString);
                     }
                     else
@@ -274,26 +277,50 @@ namespace PadForge.Common.Input
         }
 
         /// <summary>Builds (or rebuilds after a host edit) the cached
-        /// MappingSource wrappers for a menu's host surface. Sticks read
-        /// the abstract "Gamepad {side}Stick{X|Y}" axes and the stick
-        /// click; touchpads read the absolute finger-0 position (half-
-        /// windowed on single-pad halves, #9 B-1), the contact bool, and
-        /// the pad click.</summary>
+        /// MappingSource wrappers for a menu's opener. Sticks read the
+        /// abstract "Gamepad {side}Stick{X|Y}" axes; touchpads read the
+        /// absolute finger-0 position (half-windowed on single-pad halves,
+        /// #9 B-1) and the contact bool; the Custom opener reads the two
+        /// user-recorded raw axes (any device family, engage by deadzone
+        /// like a stick). The Click source follows the host's DEFAULT
+        /// (stick click / pad click / none for Custom) unless the user
+        /// assigned ClickDescriptor, which overrides on EVERY host type:
+        /// the old hard-wired under-stick click is a gamepad convention
+        /// non-gamepad devices do not share.</summary>
         private static void EnsureMenuSources(MenuTickContext ctx, MenuDefinitionEntry def)
         {
-            if (string.Equals(ctx.HostSigDescriptor, def.HostDescriptor, StringComparison.Ordinal)
+            string sig = $"{def.HostDescriptor}|{def.CustomXDescriptor}|{def.CustomYDescriptor}|{def.ClickDescriptor}";
+            if (string.Equals(ctx.HostSigDescriptor, sig, StringComparison.Ordinal)
                 && ctx.HostSigHalf == def.HostHalf) return;
-            ctx.HostSigDescriptor = def.HostDescriptor;
+            ctx.HostSigDescriptor = sig;
             ctx.HostSigHalf = def.HostHalf;
 
+            string clickOverride = (def.ClickDescriptor ?? "").Trim();
             string host = (def.HostDescriptor ?? "").Trim();
+
+            if (host.Equals("Custom", StringComparison.Ordinal))
+            {
+                ctx.IsStick = true; // deadzone-engaged axis pair
+                string cx = (def.CustomXDescriptor ?? "").Trim();
+                string cy = (def.CustomYDescriptor ?? "").Trim();
+                ctx.SrcX = cx.Length > 0 ? new MappingSource { Descriptor = cx } : null;
+                ctx.SrcY = cy.Length > 0 ? new MappingSource { Descriptor = cy } : null;
+                ctx.SrcEngage = null;
+                ctx.SrcClick = clickOverride.Length > 0
+                    ? new MappingSource { Descriptor = clickOverride } : null;
+                return;
+            }
+
             if (host.StartsWith("Gamepad ", StringComparison.Ordinal))
             {
                 ctx.IsStick = true;
                 ctx.SrcX = new MappingSource { Descriptor = host + "X" };
                 ctx.SrcY = new MappingSource { Descriptor = host + "Y" };
                 ctx.SrcEngage = null;
-                ctx.SrcClick = new MappingSource { Descriptor = host };
+                ctx.SrcClick = new MappingSource
+                {
+                    Descriptor = clickOverride.Length > 0 ? clickOverride : host,
+                };
                 return;
             }
 
@@ -302,7 +329,10 @@ namespace PadForge.Common.Input
             ctx.SrcX = new MappingSource { Descriptor = $"{host} Finger 0 X{sfx}" };
             ctx.SrcY = new MappingSource { Descriptor = $"{host} Finger 0 Y{sfx}" };
             ctx.SrcEngage = new MappingSource { Descriptor = $"{host} Finger 0 Down{sfx}" };
-            ctx.SrcClick = new MappingSource { Descriptor = $"{host} Click" };
+            ctx.SrcClick = new MappingSource
+            {
+                Descriptor = clickOverride.Length > 0 ? clickOverride : $"{host} Click",
+            };
         }
 
         /// <summary>The SourceCoercion.MenuItemFiredProvider body: true

@@ -2628,6 +2628,24 @@
   <data name="Menu_Binding_None" xml:space="preserve"><value>Nessuna</value></data>
   <data name="Menu_Binding_Key" xml:space="preserve"><value>Tasto della tastiera</value></data>
   <data name="Menu_Binding_Button" xml:space="preserve"><value>Pulsante del controller</value></data>
+  <data name="Menu_Style_Tip" xml:space="preserve"><value>Anello radiale sceglie una cella in base alla direzione, come una ruota delle armi. Griglia tattile sceglie una cella in base alla posizione sulla superficie.</value></data>
+  <data name="Menu_HostInput_Tip" xml:space="preserve"><value>L'input che apre il menu. Uno stick si attiva quando viene spinto oltre la zona morta di attivazione. Un touchpad si attiva al tocco.</value></data>
+  <data name="Menu_HostHalf_Tip" xml:space="preserve"><value>Limita questo menu a una metà del trackpad, così due menu possono condividere il pad.</value></data>
+  <data name="Menu_FireMode_Tip" xml:space="preserve"><value>Quando la cella evidenziata attiva la sua assegnazione. Ogni scelta è spiegata sotto.</value></data>
+  <data name="Menu_Fire_Click_Desc" xml:space="preserve"><value>Si attiva finché l'host è premuto: punta la cella, poi premi lo stick verso il basso (clic dello stick) o fai clic sul trackpad. L'assegnazione resta tenuta finché il clic non viene rilasciato.</value></data>
+  <data name="Menu_Fire_ClickRelease_Desc" xml:space="preserve"><value>Si attiva una volta al rilascio del clic: punta la cella, premi lo stick o il trackpad, poi rilascia il clic.</value></data>
+  <data name="Menu_Fire_TouchRelease_Desc" xml:space="preserve"><value>Si attiva una volta quando lasci andare: solleva il dito dal pad o lascia che lo stick torni al centro mentre una cella è evidenziata.</value></data>
+  <data name="Menu_Fire_Always_Desc" xml:space="preserve"><value>L'assegnazione resta tenuta per tutto il tempo in cui la cella è evidenziata. Nessun clic necessario.</value></data>
+  <data name="Menu_Cells_Tip" xml:space="preserve"><value>Quante celle ha il menu. Per un anello radiale conta solo l'anello; la cella centrale è a parte.</value></data>
+  <data name="Menu_HasCenter_Tip" xml:space="preserve"><value>Aggiunge una cella centrale, selezionata mentre lo stick riposa dentro la zona morta di attivazione.</value></data>
+  <data name="Menu_Deadzone_Tip" xml:space="preserve"><value>Quanto deve muoversi lo stick per attivare il menu ed evidenziare le celle dell'anello. Al suo interno è selezionata la cella centrale, se esiste.</value></data>
+  <data name="Menu_ShowLabels_Tip" xml:space="preserve"><value>Disegna l'etichetta di ogni cella sull'overlay a schermo.</value></data>
+  <data name="Menu_Position_Tip" xml:space="preserve"><value>Dove si trova il centro dell'overlay sullo schermo, in percentuale. 50 e 50 è il centro.</value></data>
+  <data name="Menu_Scale_Tip" xml:space="preserve"><value>Dimensione dell'overlay, in percentuale della dimensione normale.</value></data>
+  <data name="Menu_Opacity_Tip" xml:space="preserve"><value>Opacità dell'overlay. 100% è completamente solido.</value></data>
+  <data name="Menu_CellLabel_Tip" xml:space="preserve"><value>Testo mostrato su questa cella nell'overlay.</value></data>
+  <data name="Menu_BindingKind_Tip" xml:space="preserve"><value>Cosa fa questa cella quando si attiva: premere un tasto della tastiera o tenere un pulsante del controller virtuale di questo slot. Una cella su Nessuno si attiva comunque come sorgente di voce di menu per le righe di Mappature e i trigger delle macro.</value></data>
+  <data name="Menu_ExtendedSlot_Warning" xml:space="preserve"><value>Questo slot emette un controller personalizzato, quindi le assegnazioni Pulsante controller non hanno effetto qui. Usa Tasto tastiera, oppure collega la sorgente della voce di menu della cella nella scheda Mappature.</value></data>
   <data name="Mapping_MenuItem_Format" xml:space="preserve"><value>Menu {0} cella {1}</value></data>
   <data name="Dashboard_MenuOverlay" xml:space="preserve"><value>Overlay menu</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>Mostra l'anello o la griglia su schermo mentre un menu radiale o touch è attivo. I menu si attivano anche con l'overlay disattivato.</value></data>

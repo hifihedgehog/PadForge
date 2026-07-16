@@ -2661,6 +2661,24 @@
   <data name="Menu_Binding_None" xml:space="preserve"><value>None</value></data>
   <data name="Menu_Binding_Key" xml:space="preserve"><value>Keyboard Key</value></data>
   <data name="Menu_Binding_Button" xml:space="preserve"><value>Controller Button</value></data>
+  <data name="Menu_Style_Tip" xml:space="preserve"><value>Radial Ring picks a cell by direction, like a weapon wheel. Touch Grid picks a cell by position on the surface.</value></data>
+  <data name="Menu_HostInput_Tip" xml:space="preserve"><value>The input that opens the menu. A stick engages when pushed past the Engage Deadzone. A touchpad engages on touch.</value></data>
+  <data name="Menu_HostHalf_Tip" xml:space="preserve"><value>Limit this menu to one half of the trackpad, so two menus can share the pad.</value></data>
+  <data name="Menu_FireMode_Tip" xml:space="preserve"><value>When the highlighted cell fires its binding. Each choice is explained below.</value></data>
+  <data name="Menu_Fire_Click_Desc" xml:space="preserve"><value>Fires while the host is clicked in: point at the cell, then press the stick down (stick click) or click the trackpad. The binding is held until the click releases.</value></data>
+  <data name="Menu_Fire_ClickRelease_Desc" xml:space="preserve"><value>Fires once when the click releases: point at the cell, click the stick or trackpad in, then let the click go.</value></data>
+  <data name="Menu_Fire_TouchRelease_Desc" xml:space="preserve"><value>Fires once when you let go: lift your finger off the pad, or let the stick snap back to center while a cell is highlighted.</value></data>
+  <data name="Menu_Fire_Always_Desc" xml:space="preserve"><value>The binding is held the whole time the cell is highlighted. No click needed.</value></data>
+  <data name="Menu_Cells_Tip" xml:space="preserve"><value>How many cells the menu has. For a radial ring this counts the ring only; the center cell is separate.</value></data>
+  <data name="Menu_HasCenter_Tip" xml:space="preserve"><value>Adds a center cell, selected while the stick rests inside the Engage Deadzone.</value></data>
+  <data name="Menu_Deadzone_Tip" xml:space="preserve"><value>How far the stick must move to engage the menu and highlight ring cells. Inside it, the center cell is selected when one exists.</value></data>
+  <data name="Menu_ShowLabels_Tip" xml:space="preserve"><value>Draw each cell's label on the on-screen overlay.</value></data>
+  <data name="Menu_Position_Tip" xml:space="preserve"><value>Where the overlay's center sits on screen, in percent. 50 and 50 is the middle.</value></data>
+  <data name="Menu_Scale_Tip" xml:space="preserve"><value>Overlay size, in percent of its normal size.</value></data>
+  <data name="Menu_Opacity_Tip" xml:space="preserve"><value>Overlay opacity. 100% is fully solid.</value></data>
+  <data name="Menu_CellLabel_Tip" xml:space="preserve"><value>Text shown on this cell in the overlay.</value></data>
+  <data name="Menu_BindingKind_Tip" xml:space="preserve"><value>What this cell does when it fires: press a keyboard key, or hold a controller button on this slot's virtual controller. A cell set to None still fires as a menu-item source for Mappings rows and macro triggers.</value></data>
+  <data name="Menu_ExtendedSlot_Warning" xml:space="preserve"><value>This slot outputs a custom controller, so Controller Button bindings have no effect here. Use Keyboard Key, or bind the cell's menu-item source in the Mappings tab.</value></data>
   <data name="Mapping_MenuItem_Format" xml:space="preserve"><value>Menu {0} Cell {1}</value></data>
   <data name="Dashboard_MenuOverlay" xml:space="preserve"><value>Menu Overlay</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>Show the on-screen ring or grid while a radial or touch menu is engaged. Menus still fire with the overlay off.</value></data>

@@ -2678,7 +2678,7 @@
   <data name="Menu_Opacity_Tip" xml:space="preserve"><value>Overlay opacity. 100% is fully solid.</value></data>
   <data name="Menu_CellLabel_Tip" xml:space="preserve"><value>Text shown on this cell in the overlay.</value></data>
   <data name="Menu_BindingKind_Tip" xml:space="preserve"><value>What this cell does when it fires: press a keyboard key, or hold a controller button on this slot's virtual controller. A cell set to None still fires as a menu-item source for Mappings rows and macro triggers.</value></data>
-  <data name="Menu_ExtendedSlot_Warning" xml:space="preserve"><value>This slot outputs a custom controller, so Controller Button bindings have no effect here. Use Keyboard Key, or bind the cell's menu-item source in the Mappings tab.</value></data>
+  <data name="Menu_ExtendedSlot_Warning" xml:space="preserve"><value>This slot type does not output controller buttons, so Controller Button bindings have no effect here. Use Keyboard Key, or bind the cell's menu-item source in the Mappings tab.</value></data>
   <data name="Mapping_MenuItem_Format" xml:space="preserve"><value>Menu {0} Cell {1}</value></data>
   <data name="Dashboard_MenuOverlay" xml:space="preserve"><value>Menu Overlay</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>Show the on-screen ring or grid while a radial or touch menu is engaged. Menus still fire with the overlay off.</value></data>

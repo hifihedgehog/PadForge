@@ -2623,7 +2623,7 @@
   <data name="Menu_Opacity_Tip" xml:space="preserve"><value>オーバーレイの不透明度。100%で完全に不透明です。</value></data>
   <data name="Menu_CellLabel_Tip" xml:space="preserve"><value>オーバーレイ上でこのセルに表示されるテキストです。</value></data>
   <data name="Menu_BindingKind_Tip" xml:space="preserve"><value>セルが発動したときの動作です。キーボードのキーを押すか、このスロットの仮想コントローラーのボタンを押し続けます。「なし」のセルも、マッピング行やマクロトリガー用のメニュー項目ソースとして発動します。</value></data>
-  <data name="Menu_ExtendedSlot_Warning" xml:space="preserve"><value>このスロットはカスタムコントローラーを出力するため、コントローラーボタンの割り当てはここでは無効です。キーボードキーを使うか、マッピングタブでセルのメニュー項目ソースを割り当ててください。</value></data>
+  <data name="Menu_ExtendedSlot_Warning" xml:space="preserve"><value>このスロットタイプはコントローラーボタンを出力しないため、コントローラーボタンの割り当てはここでは無効です。キーボードキーを使うか、マッピングタブでセルのメニュー項目ソースを割り当ててください。</value></data>
   <data name="Mapping_MenuItem_Format" xml:space="preserve"><value>メニュー {0} セル {1}</value></data>
   <data name="Dashboard_MenuOverlay" xml:space="preserve"><value>メニューオーバーレイ</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>ラジアルメニューまたはタッチメニューが作動している間、画面上のリングまたはグリッドを表示します。オーバーレイがオフでもメニューは発動します。</value></data>

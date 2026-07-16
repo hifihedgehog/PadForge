@@ -2623,7 +2623,7 @@
   <data name="Menu_Opacity_Tip" xml:space="preserve"><value>Opacidade da sobreposição. 100% é totalmente sólida.</value></data>
   <data name="Menu_CellLabel_Tip" xml:space="preserve"><value>Texto mostrado nesta célula na sobreposição.</value></data>
   <data name="Menu_BindingKind_Tip" xml:space="preserve"><value>O que esta célula faz ao disparar: pressionar uma tecla do teclado ou segurar um botão do controle virtual deste slot. Uma célula em Nenhum ainda dispara como origem de item de menu para linhas de Mapeamentos e gatilhos de macro.</value></data>
-  <data name="Menu_ExtendedSlot_Warning" xml:space="preserve"><value>Este slot emite um controle personalizado, então atribuições de Botão do controle não têm efeito aqui. Use Tecla do teclado ou vincule a origem do item de menu da célula na aba Mapeamentos.</value></data>
+  <data name="Menu_ExtendedSlot_Warning" xml:space="preserve"><value>Este tipo de slot não emite botões de controle, então atribuições de Botão do controle não têm efeito aqui. Use Tecla do teclado ou vincule a origem do item de menu da célula na aba Mapeamentos.</value></data>
   <data name="Mapping_MenuItem_Format" xml:space="preserve"><value>Menu {0} Célula {1}</value></data>
   <data name="Dashboard_MenuOverlay" xml:space="preserve"><value>Sobreposição de Menu</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>Mostra o anel ou a grade na tela enquanto um menu radial ou de toque está ativo. Os menus ainda disparam com a sobreposição desligada.</value></data>

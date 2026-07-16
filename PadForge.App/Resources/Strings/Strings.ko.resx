@@ -2623,7 +2623,7 @@
   <data name="Menu_Opacity_Tip" xml:space="preserve"><value>오버레이 불투명도입니다. 100%면 완전히 불투명합니다.</value></data>
   <data name="Menu_CellLabel_Tip" xml:space="preserve"><value>오버레이에서 이 셀에 표시되는 텍스트입니다.</value></data>
   <data name="Menu_BindingKind_Tip" xml:space="preserve"><value>셀이 실행될 때 하는 동작입니다. 키보드 키를 누르거나 이 슬롯의 가상 컨트롤러 버튼을 유지합니다. 없음으로 둔 셀도 매핑 행과 매크로 트리거용 메뉴 항목 소스로 실행됩니다.</value></data>
-  <data name="Menu_ExtendedSlot_Warning" xml:space="preserve"><value>이 슬롯은 사용자 지정 컨트롤러를 출력하므로 컨트롤러 버튼 할당이 여기서는 효과가 없습니다. 키보드 키를 사용하거나 매핑 탭에서 셀의 메뉴 항목 소스를 할당하세요.</value></data>
+  <data name="Menu_ExtendedSlot_Warning" xml:space="preserve"><value>이 슬롯 유형은 컨트롤러 버튼을 출력하지 않으므로 컨트롤러 버튼 할당이 여기서는 효과가 없습니다. 키보드 키를 사용하거나 매핑 탭에서 셀의 메뉴 항목 소스를 할당하세요.</value></data>
   <data name="Mapping_MenuItem_Format" xml:space="preserve"><value>메뉴 {0} 셀 {1}</value></data>
   <data name="Dashboard_MenuOverlay" xml:space="preserve"><value>메뉴 오버레이</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>방사형 또는 터치 메뉴가 활성화된 동안 화면에 링 또는 그리드를 표시합니다. 오버레이가 꺼져 있어도 메뉴는 실행됩니다.</value></data>

@@ -2623,7 +2623,7 @@
   <data name="Menu_Opacity_Tip" xml:space="preserve"><value>Overlay-Deckkraft. 100 % ist vollständig deckend.</value></data>
   <data name="Menu_CellLabel_Tip" xml:space="preserve"><value>Text, der auf dieser Zelle im Overlay angezeigt wird.</value></data>
   <data name="Menu_BindingKind_Tip" xml:space="preserve"><value>Was diese Zelle beim Auslösen tut: eine Tastaturtaste drücken oder eine Controller-Taste am virtuellen Controller dieses Slots halten. Eine Zelle mit Keine löst weiterhin als Menüelement-Quelle für Zuordnungszeilen und Makro-Trigger aus.</value></data>
-  <data name="Menu_ExtendedSlot_Warning" xml:space="preserve"><value>Dieser Slot gibt einen benutzerdefinierten Controller aus, daher haben Controller-Tasten-Belegungen hier keine Wirkung. Nutzen Sie Tastaturtaste oder belegen Sie die Menüelement-Quelle der Zelle im Zuordnungen-Tab.</value></data>
+  <data name="Menu_ExtendedSlot_Warning" xml:space="preserve"><value>Dieser Slot-Typ gibt keine Controller-Tasten aus, daher haben Controller-Tasten-Belegungen hier keine Wirkung. Nutzen Sie Tastaturtaste oder belegen Sie die Menüelement-Quelle der Zelle im Zuordnungen-Tab.</value></data>
   <data name="Mapping_MenuItem_Format" xml:space="preserve"><value>Menü {0} Feld {1}</value></data>
   <data name="Dashboard_MenuOverlay" xml:space="preserve"><value>Menü-Overlay</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>Zeigt den Ring oder das Raster auf dem Bildschirm, solange ein Radial- oder Touch-Menü aktiv ist. Menüs lösen auch bei ausgeschaltetem Overlay aus.</value></data>

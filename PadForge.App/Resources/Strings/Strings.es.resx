@@ -2623,7 +2623,7 @@
   <data name="Menu_Opacity_Tip" xml:space="preserve"><value>Opacidad de la superposición. 100 % es totalmente sólida.</value></data>
   <data name="Menu_CellLabel_Tip" xml:space="preserve"><value>Texto mostrado en esta celda en la superposición.</value></data>
   <data name="Menu_BindingKind_Tip" xml:space="preserve"><value>Qué hace esta celda al dispararse: pulsar una tecla del teclado o mantener un botón del mando virtual de esta ranura. Una celda en Ninguno sigue disparándose como origen de elemento de menú para filas de Asignaciones y disparadores de macros.</value></data>
-  <data name="Menu_ExtendedSlot_Warning" xml:space="preserve"><value>Esta ranura emite un mando personalizado, así que las asignaciones de Botón del mando no tienen efecto aquí. Usa Tecla del teclado o asigna el origen del elemento de menú de la celda en la pestaña Asignaciones.</value></data>
+  <data name="Menu_ExtendedSlot_Warning" xml:space="preserve"><value>Este tipo de ranura no emite botones de mando, así que las asignaciones de Botón del mando no tienen efecto aquí. Usa Tecla del teclado o asigna el origen del elemento de menú de la celda en la pestaña Asignaciones.</value></data>
   <data name="Mapping_MenuItem_Format" xml:space="preserve"><value>Menú {0} celda {1}</value></data>
   <data name="Dashboard_MenuOverlay" xml:space="preserve"><value>Superposición de menú</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>Muestra el anillo o la cuadrícula en pantalla mientras un menú radial o táctil está activo. Los menús siguen disparándose con la superposición apagada.</value></data>

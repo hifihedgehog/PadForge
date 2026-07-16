@@ -2623,7 +2623,7 @@
   <data name="Menu_Opacity_Tip" xml:space="preserve"><value>悬浮层不透明度。100% 为完全不透明。</value></data>
   <data name="Menu_CellLabel_Tip" xml:space="preserve"><value>悬浮层中此单元格上显示的文字。</value></data>
   <data name="Menu_BindingKind_Tip" xml:space="preserve"><value>单元格触发时的动作:按下键盘按键,或按住此插槽虚拟控制器上的按钮。设为无的单元格仍会作为菜单项来源触发,可用于映射行和宏触发器。</value></data>
-  <data name="Menu_ExtendedSlot_Warning" xml:space="preserve"><value>此插槽输出自定义控制器,因此控制器按钮绑定在这里无效。请使用键盘按键,或在映射选项卡中绑定该单元格的菜单项来源。</value></data>
+  <data name="Menu_ExtendedSlot_Warning" xml:space="preserve"><value>此插槽类型不输出控制器按钮,因此控制器按钮绑定在这里无效。请使用键盘按键,或在映射选项卡中绑定该单元格的菜单项来源。</value></data>
   <data name="Mapping_MenuItem_Format" xml:space="preserve"><value>菜单 {0} 单元格 {1}</value></data>
   <data name="Dashboard_MenuOverlay" xml:space="preserve"><value>菜单叠加层</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>在径向或触摸菜单激活期间显示屏幕上的环形或网格。即使关闭叠加层，菜单仍会触发。</value></data>

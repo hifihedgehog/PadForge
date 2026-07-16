@@ -4099,6 +4099,7 @@ namespace PadForge.ViewModels
                 {
                     if (entry == null) continue;
                     var vm = new MenuEditorItem(entry);
+                    ApplyMenuButtonStyle(vm);
                     vm.Changed += OnMenuEdited;
                     Menus.Add(vm);
                 }
@@ -4124,6 +4125,7 @@ namespace PadForge.ViewModels
                 };
                 set.Menus.Add(entry);
                 var vm = new MenuEditorItem(entry);
+                ApplyMenuButtonStyle(vm);
                 vm.Changed += OnMenuEdited;
                 Menus.Add(vm);
                 SelectedMenu = vm;
@@ -4157,6 +4159,7 @@ namespace PadForge.ViewModels
                 clone.Name = string.Format(Strings.Instance.Macro_CopyNameFormat, vm.Entry.Name);
                 set.Menus.Add(clone);
                 var cloneVm = new MenuEditorItem(clone);
+                ApplyMenuButtonStyle(cloneVm);
                 cloneVm.Changed += OnMenuEdited;
                 Menus.Add(cloneVm);
                 SelectedMenu = cloneVm;
@@ -4669,6 +4672,19 @@ namespace PadForge.ViewModels
                 foreach (var action in macro.Actions)
                     action.CustomButtonCount = btnCount;
             }
+            // The menu editor's cell pickers follow the same lettering.
+            foreach (var menu in Menus)
+                ApplyMenuButtonStyle(menu);
+        }
+
+        /// <summary>Stamps the slot's button lettering onto a menu editor
+        /// item: the same style derivation and Extended button count the
+        /// macro editor uses (see <see cref="SyncMacroButtonStyle"/>).</summary>
+        private void ApplyMenuButtonStyle(MenuEditorItem vm)
+        {
+            vm.ButtonStyle = MacroButtonNames.DeriveStyle(_outputType);
+            vm.ExtendedButtonCount =
+                (_outputType == VirtualControllerType.Extended ? _extendedConfig?.ButtonCount : null) ?? 11;
         }
 
         // ═══════════════════════════════════════════════

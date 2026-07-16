@@ -68,8 +68,17 @@ namespace PadForge.Engine.Menus
         [XmlAttribute] public int VirtualKey { get; set; }
 
         /// <summary>Direct virtual-controller binding: Xbox button bitmask
-        /// (Gamepad.* constants), 0 = none.</summary>
+        /// (Gamepad.* constants), 0 = none. Delivered on Xbox and
+        /// PlayStation slots (the Sony packer translates the shared mask).</summary>
         [XmlAttribute] public int XboxButtons { get; set; }
+
+        /// <summary>Direct virtual-controller binding for Extended slots:
+        /// 1-based raw button number in the slot's custom layout, 0 = none.
+        /// Extended output is raw HID (up to 128 buttons), where an Xbox
+        /// mask has no meaning, so Extended cells bind by button number the
+        /// same way macro custom-button actions do. Schema append-only:
+        /// absent in older files = 0.</summary>
+        [XmlAttribute] public int ExtendedButton { get; set; }
     }
 
     /// <summary>
@@ -185,6 +194,7 @@ namespace PadForge.Engine.Menus
                         Label = it.Label,
                         VirtualKey = it.VirtualKey,
                         XboxButtons = it.XboxButtons,
+                        ExtendedButton = it.ExtendedButton,
                     });
                 }
             }

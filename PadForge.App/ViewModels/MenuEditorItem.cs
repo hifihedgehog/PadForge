@@ -70,6 +70,44 @@ namespace PadForge.ViewModels
             Strings.CultureChanged += OnCultureChanged;
         }
 
+        private MacroButtonStyle _buttonStyle = MacroButtonStyle.Xbox360;
+
+        /// <summary>The slot's button lettering, derived from its output
+        /// type exactly like the macro editor
+        /// (MacroButtonNames.DeriveStyle). The owning PadViewModel sets it
+        /// at construction and re-syncs it when the slot type changes; the
+        /// cells' pickers re-letter and re-value themselves on the flip.</summary>
+        public MacroButtonStyle ButtonStyle
+        {
+            get => _buttonStyle;
+            set
+            {
+                if (_buttonStyle == value) return;
+                _buttonStyle = value;
+                foreach (var cell in Cells)
+                    cell.RefreshButtonStyle();
+            }
+        }
+
+        private int _extendedButtonCount = 11;
+
+        /// <summary>Raw button count of the Extended slot's custom layout
+        /// (bounds the numbered picker), mirroring the macro editor's
+        /// CustomButtonCount source.</summary>
+        public int ExtendedButtonCount
+        {
+            get => _extendedButtonCount;
+            set
+            {
+                value = Math.Max(1, value);
+                if (_extendedButtonCount == value) return;
+                _extendedButtonCount = value;
+                if (_buttonStyle == MacroButtonStyle.Numbered)
+                    foreach (var cell in Cells)
+                        cell.RefreshButtonStyle();
+            }
+        }
+
         /// <summary>Re-raises every localized computed property after a
         /// language change. The lists themselves were already rebuilt by
         /// the static handler; SelectedHost must re-raise too because the
@@ -460,7 +498,8 @@ namespace PadForge.ViewModels
         internal void DropItemIfEmpty(MenuItemDefinition item)
         {
             if (item == null || Entry.Items == null) return;
-            if (string.IsNullOrEmpty(item.Label) && item.VirtualKey <= 0 && item.XboxButtons == 0)
+            if (string.IsNullOrEmpty(item.Label) && item.VirtualKey <= 0
+                && item.XboxButtons == 0 && item.ExtendedButton <= 0)
                 Entry.Items.Remove(item);
         }
 
@@ -526,10 +565,7 @@ namespace PadForge.ViewModels
         static MenuCellItem()
         {
             Strings.CultureChanged += static () =>
-            {
                 BindingKindOptionsBacking = BuildBindingKindOptions();
-                _buttonOptions = null; // next read rebuilds from the live macro table
-            };
         }
 
         /// <summary>Called by the owning editor's culture handler: re-raises
@@ -546,10 +582,14 @@ namespace PadForge.ViewModels
             OnPropertyChanged(nameof(SelectedButtonFlag));
         }
 
-        /// <summary>0 = none, 1 = key, 2 = VC button.</summary>
+        /// <summary>0 = none, 1 = key, 2 = VC button (Xbox mask on
+        /// Xbox / PlayStation slots, 1-based raw button number on
+        /// Extended slots, per the owner's button style).</summary>
         public int BindingKind
         {
-            get => _item == null ? 0 : _item.VirtualKey > 0 ? 1 : _item.XboxButtons != 0 ? 2 : 0;
+            get => _item == null ? 0
+                : _item.VirtualKey > 0 ? 1
+                : (_item.XboxButtons != 0 || _item.ExtendedButton > 0) ? 2 : 0;
             set
             {
                 int cur = BindingKind;
@@ -560,6 +600,7 @@ namespace PadForge.ViewModels
                     {
                         _item.VirtualKey = 0;
                         _item.XboxButtons = 0;
+                        _item.ExtendedButton = 0;
                         _owner.DropItemIfEmpty(_item);
                         if (_owner.Entry.Items?.Contains(_item) != true) _item = null;
                     }
@@ -570,13 +611,23 @@ namespace PadForge.ViewModels
                     if (value == 1)
                     {
                         _item.XboxButtons = 0;
+                        _item.ExtendedButton = 0;
                         if (_item.VirtualKey <= 0) _item.VirtualKey = 0x20; // Space
                     }
                     else
                     {
                         _item.VirtualKey = 0;
-                        if (_item.XboxButtons == 0)
-                            _item.XboxButtons = PadForge.Engine.Gamepad.A;
+                        if (_owner.ButtonStyle == MacroButtonStyle.Numbered)
+                        {
+                            _item.XboxButtons = 0;
+                            if (_item.ExtendedButton <= 0) _item.ExtendedButton = 1;
+                        }
+                        else
+                        {
+                            _item.ExtendedButton = 0;
+                            if (_item.XboxButtons == 0)
+                                _item.XboxButtons = PadForge.Engine.Gamepad.A;
+                        }
                     }
                 }
                 OnPropertyChanged();
@@ -608,37 +659,73 @@ namespace PadForge.ViewModels
             }
         }
 
-        private static IReadOnlyList<MenuIntOption> _buttonOptions;
-
-        /// <summary>Xbox-family button choices, labels mirrored from the
-        /// macro editor's table (MacroButtonNames).</summary>
+        /// <summary>Button choices in the SLOT'S lettering, mirrored from
+        /// the macro editor's tables (MacroButtonNames.DeriveStyle): Xbox
+        /// letters on Xbox slots, DualShock symbols on PlayStation slots,
+        /// numbered raw buttons (1..layout count) on Extended slots. Built
+        /// fresh per read: the lists are tiny, and both a language switch
+        /// and a slot-type switch re-raise this property.</summary>
         public IReadOnlyList<MenuIntOption> ButtonOptions
         {
             get
             {
-                if (_buttonOptions == null)
+                var list = new List<MenuIntOption>();
+                if (_owner.ButtonStyle == MacroButtonStyle.Numbered)
                 {
-                    var list = new List<MenuIntOption>();
-                    foreach (var (label, flag) in MacroButtonNames.GetButtonDefs(MacroButtonStyle.Xbox360))
-                        list.Add(new MenuIntOption { Value = flag, Label = label });
-                    _buttonOptions = list;
+                    int count = Math.Clamp(_owner.ExtendedButtonCount, 1, 128);
+                    for (int n = 1; n <= count; n++)
+                        list.Add(new MenuIntOption
+                        {
+                            Value = n,
+                            Label = string.Format(Strings.Instance.Extended_Button_Format, n),
+                        });
                 }
-                return _buttonOptions;
+                else
+                {
+                    foreach (var (label, flag) in MacroButtonNames.GetButtonDefs(_owner.ButtonStyle))
+                        list.Add(new MenuIntOption { Value = flag, Label = label });
+                }
+                return list;
             }
         }
 
+        /// <summary>The picker's value: the Xbox mask on Xbox / PlayStation
+        /// slots, the 1-based raw button number on Extended slots.</summary>
         public int SelectedButtonFlag
         {
-            get => _item?.XboxButtons ?? 0;
+            get => _owner.ButtonStyle == MacroButtonStyle.Numbered
+                ? _item?.ExtendedButton ?? 0
+                : _item?.XboxButtons ?? 0;
             set
             {
-                if (value == 0 || (_item?.XboxButtons ?? 0) == value) return;
+                if (value == 0 || SelectedButtonFlag == value) return;
                 _item ??= _owner.EnsureItem(Index);
-                _item.XboxButtons = value;
+                if (_owner.ButtonStyle == MacroButtonStyle.Numbered)
+                {
+                    _item.ExtendedButton = value;
+                    _item.XboxButtons = 0;
+                }
+                else
+                {
+                    _item.XboxButtons = value;
+                    _item.ExtendedButton = 0;
+                }
                 _item.VirtualKey = 0;
                 OnPropertyChanged();
                 _owner.RaiseChanged();
             }
+        }
+
+        /// <summary>Called by the owner when the slot's output type changes:
+        /// the lettering, the value space, and the option list all follow
+        /// the new style.</summary>
+        internal void RefreshButtonStyle()
+        {
+            OnPropertyChanged(nameof(ButtonOptions));
+            OnPropertyChanged(nameof(SelectedButtonFlag));
+            OnPropertyChanged(nameof(BindingKind));
+            OnPropertyChanged(nameof(ShowKeyPicker));
+            OnPropertyChanged(nameof(ShowButtonPicker));
         }
 
         public RelayCommand ResetCellCommand => _resetCell ??= new RelayCommand(() =>

@@ -270,11 +270,16 @@ namespace PadForge.Common.Input
         /// items (hand-authored keys / VC buttons). Keys join the ToggleKey
         /// desired-set reconcile, so a Click-held item holds its key and a
         /// commit pulse taps it, with the release edge guaranteed by the
-        /// same diff that releases latches; VC buttons OR into the slot's
-        /// combined output exactly like a macro ButtonPress. Called by
-        /// EvaluateMacros before ReconcileLatchedKeys. Imported Workshop
-        /// items carry no direct bindings (their cells ride rows / macros),
-        /// so this pass is hand-author-only by construction.</summary>
+        /// same diff that releases latches. VC buttons OR into the slot's
+        /// combined output exactly like a macro ButtonPress: the Xbox mask
+        /// on Xbox / PlayStation slots (the Sony packer translates it), the
+        /// 1-based ExtendedButton number as a raw button-word bit on
+        /// Extended slots (the macro CustomButtonWords shape,
+        /// ApplyMacroLatchesRaw). Called by EvaluateMacros before
+        /// ReconcileLatchedKeys, after Step 4 combined both output states.
+        /// Imported Workshop items carry no direct bindings (their cells
+        /// ride rows / macros), so this pass is hand-author-only by
+        /// construction.</summary>
         private void CollectMenuDirectOutputs()
         {
             var sets = SettingsManager.SlotMappingSets;
@@ -285,6 +290,8 @@ namespace PadForge.Common.Input
                 var menus = sets[slot]?.Menus;
                 if (menus == null || menus.Count == 0) continue;
                 bool restricted = IsSlotRestricted(slot);
+                bool extended = SlotExtendedIsCustom[slot];
+                uint[] extButtons = extended ? CombinedExtendedRawStates[slot].Buttons : null;
                 ushort orMask = 0;
 
                 for (int i = 0; i < menus.Count; i++)
@@ -297,17 +304,25 @@ namespace PadForge.Common.Input
                     {
                         MenuItemDefinition item;
                         try { item = def.Items[k]; } catch { break; }
-                        if (item == null || (item.VirtualKey <= 0 && item.XboxButtons == 0))
+                        if (item == null
+                            || (item.VirtualKey <= 0 && item.XboxButtons == 0 && item.ExtendedButton <= 0))
                             continue;
                         if (!IsMenuItemFired(slot, null, def.MenuId, item.Index)) continue;
                         if (item.VirtualKey > 0 && !restricted)
                             _desiredLatchedKeys.Add((ushort)item.VirtualKey);
                         if (item.XboxButtons != 0)
                             orMask |= (ushort)item.XboxButtons;
+                        if (extended && extButtons != null && item.ExtendedButton > 0)
+                        {
+                            int n = item.ExtendedButton - 1;
+                            int w = n >> 5;
+                            if (w < extButtons.Length)
+                                extButtons[w] |= 1u << (n & 31);
+                        }
                     }
                 }
 
-                if (orMask != 0 && !SlotExtendedIsCustom[slot])
+                if (orMask != 0 && !extended)
                     CombinedOutputStates[slot].Buttons |= orMask;
             }
         }

@@ -5320,6 +5320,7 @@ namespace PadForge.Services
             padVm.OnRightTriggerRouteActivatorSelectedInputRefresh();
             padVm.OnMirrorEngageSelectedInputRefresh();
             padVm.OnMouseGestureCustomEngageSelectedInputRefresh();
+            padVm.RefreshMenuInputChoices();
 
             // Macro trigger dropdown (#177): only the choices that
             // convert to a TriggerInputEntry. Same source list, so the

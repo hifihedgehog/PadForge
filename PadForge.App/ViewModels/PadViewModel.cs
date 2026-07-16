@@ -4712,6 +4712,17 @@ namespace PadForge.ViewModels
                 or VirtualControllerType.PlayStation
                 or VirtualControllerType.Extended;
             vm.DescriptorDisplayProvider = ResolveInputDisplayName;
+            vm.InputChoicesProvider = () => SlotAvailableInputs;
+        }
+
+        /// <summary>Re-raises every menu editor's Custom steer / Click
+        /// dropdowns after the slot's picker list repopulates. Called by
+        /// PopulateAvailableInputs beside the other per-feature selected-
+        /// input refreshers.</summary>
+        public void RefreshMenuInputChoices()
+        {
+            foreach (var menu in Menus)
+                menu.RefreshInputChoices();
         }
 
         /// <summary>Friendly name for a recorded raw descriptor: the

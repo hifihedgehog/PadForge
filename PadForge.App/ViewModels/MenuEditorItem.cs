@@ -23,6 +23,17 @@ namespace PadForge.ViewModels
         public override int GetHashCode() => Descriptor.GetHashCode();
     }
 
+    /// <summary>One pickable input for a menu's Custom steer / Click
+    /// dropdowns. Descriptor is the CANONICAL storage form (the same
+    /// grammar the record path writes); the empty descriptor is the
+    /// "(not set)" / "(host default)" sentinel.</summary>
+    public sealed class MenuInputOption
+    {
+        public string Descriptor { get; init; } = "";
+        public string Label { get; init; } = "";
+        public override string ToString() => Label;
+    }
+
     /// <summary>Generic labeled int option (fire mode, half, binding kind,
     /// key, button). <see cref="Description"/> feeds the option's tooltip
     /// and, for fire modes, the persistent caption under the combo; empty
@@ -161,6 +172,7 @@ namespace PadForge.ViewModels
             OnPropertyChanged(nameof(FireOptions));
             OnPropertyChanged(nameof(SelectedHost));
             OnPropertyChanged(nameof(SelectedFireDescription));
+            RefreshInputChoices();
             foreach (var cell in Cells)
                 cell.RefreshCulture();
         }
@@ -308,9 +320,7 @@ namespace PadForge.ViewModels
                 OnPropertyChanged(nameof(HostIsTouchpad));
                 OnPropertyChanged(nameof(HostHalfIndex));
                 OnPropertyChanged(nameof(IsCustomHost));
-                OnPropertyChanged(nameof(CustomXDisplay));
-                OnPropertyChanged(nameof(CustomYDisplay));
-                OnPropertyChanged(nameof(ClickDisplay));
+                RefreshInputChoices();
                 OnEdited();
             }
         }
@@ -366,8 +376,8 @@ namespace PadForge.ViewModels
                 Entry.CustomXDescriptor = canonical;
                 RefreshHostOptions();
                 OnPropertyChanged(nameof(IsCustomHost));
-                OnPropertyChanged(nameof(CustomXDisplay));
-                OnPropertyChanged(nameof(ClickDisplay));
+                RaiseCustomInput(MenuRecordTarget.CustomX);
+                RaiseCustomInput(MenuRecordTarget.Click);
                 OnEdited();
                 return true;
             }
@@ -403,15 +413,14 @@ namespace PadForge.ViewModels
                     if (!IsAnalogDescriptor(canonical)) return false;
                     if (target == MenuRecordTarget.CustomX) Entry.CustomXDescriptor = canonical;
                     else Entry.CustomYDescriptor = canonical;
-                    OnPropertyChanged(nameof(CustomXDisplay));
-                    OnPropertyChanged(nameof(CustomYDisplay));
+                    RaiseCustomInput(target);
                     OnEdited();
                     return true;
 
                 case MenuRecordTarget.Click:
                     if (IsAnalogDescriptor(canonical)) return false;
                     Entry.ClickDescriptor = canonical;
-                    OnPropertyChanged(nameof(ClickDisplay));
+                    RaiseCustomInput(MenuRecordTarget.Click);
                     OnEdited();
                     return true;
             }
@@ -438,41 +447,140 @@ namespace PadForge.ViewModels
         public bool IsCustomHost =>
             string.Equals(Entry.HostDescriptor, "Custom", StringComparison.Ordinal);
 
-        public string CustomXDisplay => DisplayFor(Entry.CustomXDescriptor);
-        public string CustomYDisplay => DisplayFor(Entry.CustomYDescriptor);
+        /// <summary>The slot's pickable inputs (the mapping picker's
+        /// cross-device list), supplied by PadViewModel. Null (tests)
+        /// offers only the sentinel and the authored value.</summary>
+        internal Func<IEnumerable<InputChoice>> InputChoicesProvider;
 
-        /// <summary>The Click input's display: the recorded override, the
-        /// host's default marker, or "(not set)" for Custom openers, which
-        /// have no default click.</summary>
-        public string ClickDisplay
-            => !string.IsNullOrEmpty(Entry.ClickDescriptor)
-                ? DisplayFor(Entry.ClickDescriptor)
-                : IsCustomHost
-                    ? Strings.Instance.Menu_NotRecorded
-                    : Strings.Instance.Menu_ClickDefault;
-
-        public RelayCommand ResetClickCommand => _resetClick ??= new RelayCommand(() =>
+        /// <summary>Builds a Custom-steer / Click dropdown: sentinel
+        /// first (empty descriptor), then the slot's picker choices
+        /// filtered by the SAME gate the record path applies (analog
+        /// families steer, everything else clicks), deduplicated by
+        /// canonical descriptor so per-device duplicates of the same
+        /// read collapse (menus read every assigned device, so device
+        /// identity is meaningless here). The authored value always
+        /// gets an entry so the selection never silently lies.</summary>
+        private List<MenuInputOption> BuildInputChoices(bool analog, string emptyLabel, string current)
         {
-            Entry.ClickDescriptor = "";
-            OnPropertyChanged(nameof(ClickDisplay));
+            var list = new List<MenuInputOption>
+            {
+                new MenuInputOption { Descriptor = "", Label = emptyLabel },
+            };
+            var seen = new HashSet<string>(StringComparer.Ordinal) { "" };
+            var provided = InputChoicesProvider?.Invoke();
+            if (provided != null)
+            {
+                foreach (var c in provided)
+                {
+                    if (c == null || string.IsNullOrEmpty(c.Descriptor)) continue;
+                    // A menu reading its own items back would feed itself.
+                    if (c.Descriptor.StartsWith("Menu ", StringComparison.Ordinal)) continue;
+                    string canonical = PadForge.Engine.Common.Mapping.SourceCoercion
+                        .ResolveGamepadAlias(c.Descriptor) ?? c.Descriptor;
+                    if (IsAnalogDescriptor(canonical) != analog) continue;
+                    if (!seen.Add(canonical)) continue;
+                    list.Add(new MenuInputOption { Descriptor = canonical, Label = c.DisplayName });
+                }
+            }
+            string cur = (current ?? "").Trim();
+            if (cur.Length > 0 && !seen.Contains(cur))
+                list.Add(new MenuInputOption { Descriptor = cur, Label = DisplayFor(cur) });
+            return list;
+        }
+
+        public IReadOnlyList<MenuInputOption> CustomXChoices
+            => BuildInputChoices(analog: true, Strings.Instance.Menu_NotRecorded, Entry.CustomXDescriptor);
+
+        public IReadOnlyList<MenuInputOption> CustomYChoices
+            => BuildInputChoices(analog: true, Strings.Instance.Menu_NotRecorded, Entry.CustomYDescriptor);
+
+        public IReadOnlyList<MenuInputOption> ClickChoices
+            => BuildInputChoices(analog: false,
+                IsCustomHost ? Strings.Instance.Menu_NotRecorded : Strings.Instance.Menu_ClickDefault,
+                Entry.ClickDescriptor);
+
+        public string CustomXSelected
+        {
+            get => Entry.CustomXDescriptor ?? "";
+            set => SetCustomInput(MenuRecordTarget.CustomX, value);
+        }
+
+        public string CustomYSelected
+        {
+            get => Entry.CustomYDescriptor ?? "";
+            set => SetCustomInput(MenuRecordTarget.CustomY, value);
+        }
+
+        public string ClickSelected
+        {
+            get => Entry.ClickDescriptor ?? "";
+            set => SetCustomInput(MenuRecordTarget.Click, value);
+        }
+
+        private void SetCustomInput(MenuRecordTarget target, string value)
+        {
+            string v = (value ?? "").Trim();
+            switch (target)
+            {
+                case MenuRecordTarget.CustomX:
+                    if ((Entry.CustomXDescriptor ?? "") == v) return;
+                    Entry.CustomXDescriptor = v;
+                    break;
+                case MenuRecordTarget.CustomY:
+                    if ((Entry.CustomYDescriptor ?? "") == v) return;
+                    Entry.CustomYDescriptor = v;
+                    break;
+                default:
+                    if ((Entry.ClickDescriptor ?? "") == v) return;
+                    Entry.ClickDescriptor = v;
+                    break;
+            }
+            RaiseCustomInput(target);
             OnEdited();
-        });
+        }
+
+        /// <summary>Re-raises one input row's selection, choices (the
+        /// never-lie entry may appear or vanish), and display.</summary>
+        private void RaiseCustomInput(MenuRecordTarget target)
+        {
+            switch (target)
+            {
+                case MenuRecordTarget.CustomX:
+                    OnPropertyChanged(nameof(CustomXSelected));
+                    OnPropertyChanged(nameof(CustomXChoices));
+                    break;
+                case MenuRecordTarget.CustomY:
+                    OnPropertyChanged(nameof(CustomYSelected));
+                    OnPropertyChanged(nameof(CustomYChoices));
+                    break;
+                default:
+                    OnPropertyChanged(nameof(ClickSelected));
+                    OnPropertyChanged(nameof(ClickChoices));
+                    break;
+            }
+        }
+
+        /// <summary>Re-raises the three input dropdowns after the slot's
+        /// picker list repopulates (device assignment changes) or the
+        /// culture moves. Labels come from the live picker, so both
+        /// events can relabel every entry.</summary>
+        internal void RefreshInputChoices()
+        {
+            RaiseCustomInput(MenuRecordTarget.CustomX);
+            RaiseCustomInput(MenuRecordTarget.CustomY);
+            RaiseCustomInput(MenuRecordTarget.Click);
+        }
+
+        public RelayCommand ResetClickCommand => _resetClick ??= new RelayCommand(
+            () => SetCustomInput(MenuRecordTarget.Click, ""));
         private RelayCommand _resetClick;
 
-        public RelayCommand ResetCustomXCommand => _resetCustomX ??= new RelayCommand(() =>
-        {
-            Entry.CustomXDescriptor = "";
-            OnPropertyChanged(nameof(CustomXDisplay));
-            OnEdited();
-        });
+        public RelayCommand ResetCustomXCommand => _resetCustomX ??= new RelayCommand(
+            () => SetCustomInput(MenuRecordTarget.CustomX, ""));
         private RelayCommand _resetCustomX;
 
-        public RelayCommand ResetCustomYCommand => _resetCustomY ??= new RelayCommand(() =>
-        {
-            Entry.CustomYDescriptor = "";
-            OnPropertyChanged(nameof(CustomYDisplay));
-            OnEdited();
-        });
+        public RelayCommand ResetCustomYCommand => _resetCustomY ??= new RelayCommand(
+            () => SetCustomInput(MenuRecordTarget.CustomY, ""));
         private RelayCommand _resetCustomY;
 
         /// <summary>Aims the NEXT record at the given target without
@@ -640,10 +748,9 @@ namespace PadForge.ViewModels
 
         public RelayCommand ResetHostCommand => _resetHost ??= new RelayCommand(() =>
         {
-            // Write the MODEL default directly. Indexing HostOptions[1]
-            // assumed the fixed five-option list; capability gating can
-            // shrink the list to one entry (index crash) or reorder it
-            // (reset landing on the wrong surface).
+            // Write the MODEL default directly, never by list index: a
+            // never-lie entry for an out-of-grammar descriptor can extend
+            // the list, so positions are not fixed.
             Entry.HostDescriptor = "Gamepad RightStick";
             Entry.HostHalf = 0;
             Entry.CustomXDescriptor = "";
@@ -653,9 +760,7 @@ namespace PadForge.ViewModels
             OnPropertyChanged(nameof(HostIsTouchpad));
             OnPropertyChanged(nameof(HostHalfIndex));
             OnPropertyChanged(nameof(IsCustomHost));
-            OnPropertyChanged(nameof(CustomXDisplay));
-            OnPropertyChanged(nameof(CustomYDisplay));
-            OnPropertyChanged(nameof(ClickDisplay));
+            RefreshInputChoices();
             OnEdited();
         });
         private RelayCommand _resetHost;

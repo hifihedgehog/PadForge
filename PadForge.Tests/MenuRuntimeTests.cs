@@ -498,6 +498,57 @@ namespace PadForge.Tests
         }
 
         [Fact]
+        public void MenuCustomInputDropdowns_MirrorTheRecordGates_AndNeverLie()
+        {
+            var editor = new PadForge.ViewModels.MenuEditorItem(new MenuDefinitionEntry
+            {
+                HostDescriptor = "Custom",
+            });
+            editor.InputChoicesProvider = () => new[]
+            {
+                // Abstract alias: canonicalizes to "Axis 0", analog.
+                new PadForge.ViewModels.InputChoice { Descriptor = "Gamepad LeftStickX", DisplayName = "Left Stick X" },
+                // Raw duplicate of the same canonical read: must collapse.
+                new PadForge.ViewModels.InputChoice { Descriptor = "Axis 0", DisplayName = "Axis 1" },
+                new PadForge.ViewModels.InputChoice { Descriptor = "Slider 0", DisplayName = "Slider 1" },
+                new PadForge.ViewModels.InputChoice { Descriptor = "Button 3", DisplayName = "Button 4" },
+                // A menu's own items must never feed its opener.
+                new PadForge.ViewModels.InputChoice { Descriptor = "Menu 1 Item 2", DisplayName = "Menu 1 Item 2" },
+            };
+
+            // Steer: sentinel + the two analog reads (alias entry wins the
+            // dedupe and carries the friendly label, canonical storage).
+            var steer = editor.CustomXChoices;
+            Assert.Equal(3, steer.Count);
+            Assert.Equal("", steer[0].Descriptor);
+            Assert.Equal("Axis 0", steer[1].Descriptor);
+            Assert.Equal("Left Stick X", steer[1].Label);
+            Assert.Equal("Slider 0", steer[2].Descriptor);
+
+            // Click: sentinel + the button only. No analogs, no menu items.
+            var click = editor.ClickChoices;
+            Assert.Equal(2, click.Count);
+            Assert.Equal("", click[0].Descriptor);
+            Assert.Equal("Button 3", click[1].Descriptor);
+
+            // Dropdown selection writes the model like the record path.
+            editor.CustomXSelected = "Axis 0";
+            Assert.Equal("Axis 0", editor.Entry.CustomXDescriptor);
+            editor.ClickSelected = "Button 3";
+            Assert.Equal("Button 3", editor.Entry.ClickDescriptor);
+
+            // A stored descriptor the picker no longer offers still shows
+            // as a never-lie entry instead of a blank combo.
+            editor.CustomYSelected = "HAxis 7";
+            Assert.Contains(editor.CustomYChoices, o => o.Descriptor == "HAxis 7");
+
+            // Reset returns the row to the sentinel.
+            editor.ResetCustomXCommand.Execute(null);
+            Assert.Equal("", editor.CustomXSelected);
+            Assert.Equal("", editor.Entry.CustomXDescriptor);
+        }
+
+        [Fact]
         public void MenuCell_ButtonPicker_FollowsSlotLettering()
         {
             // Xbox lettering (default): the picker's value space is the

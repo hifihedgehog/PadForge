@@ -1590,7 +1590,10 @@ namespace PadForge.Common.Input
                     {
                         var us = settings.Items[i];
                         if (us == null || us.MapTo != slotIndex) continue;
-                        guids.Add(us.InstanceGuid.ToString());
+                        // Cached string (UserSetting memoizes it): the previous
+                        // Guid.ToString() here allocated once per any-device row
+                        // per assigned device per 1 kHz tick.
+                        guids.Add(us.InstanceGuidString);
                     }
                 }
             }
@@ -1758,23 +1761,83 @@ namespace PadForge.Common.Input
         //  pass's state. Missing-device sources contribute 0.
         // ─────────────────────────────────────────────
 
+        // Step-3-pass-scoped memo for LookupDeviceState. Multi-source rows
+        // resolve the same device GUIDs once per source per tick, and at the
+        // ~1 kHz poll rate that meant hundreds of UserDevices.SyncRoot
+        // acquisitions per second CONTENDING with the 33 ms UI publisher's
+        // long dashboard critical section (profiled: Monitor.Enter_Slowpath
+        // inside this function on the poll thread).
+        //
+        // Scope rule: the memo participates ONLY between BeginDeviceStateMemo
+        // and EndDeviceStateMemo, which UpdateOutputStates brackets around one
+        // Step-3 pass. Within one pass the answer cannot change observably
+        // (Step 2 published this cycle's InputStates before Step 3 began);
+        // a device's online flip lands next cycle either way. Every OTHER
+        // caller (tests, UI preview at 30 Hz, utility evaluators) takes the
+        // always-live locked scan exactly as before, so no semantic changes
+        // exist off the poll path. Wall-clock and generation scopes were both
+        // tried first and failed a multi-source test: they leaked one pass's
+        // states into the next caller's evaluation. Negative results are
+        // memoed too, which is exactly the offline-contributes-zero contract.
+        [System.ThreadStatic] private static Dictionary<string, CustomInputState> _devStateMemo;
+        [System.ThreadStatic] private static bool _devStateMemoActive;
+
+        /// <summary>Arms (and clears) the per-pass device-state memo on this
+        /// thread. Only the poll thread calls this, once per Step-3 pass; the
+        /// clear-on-arm makes a pass that aborted mid-way harmless, because
+        /// the next pass never sees its entries, and no other thread ever
+        /// arms its own flag.</summary>
+        internal static void BeginDeviceStateMemo()
+        {
+            var memo = _devStateMemo ??= new Dictionary<string, CustomInputState>(System.StringComparer.OrdinalIgnoreCase);
+            memo.Clear();
+            _devStateMemoActive = true;
+        }
+
         private static CustomInputState LookupDeviceState(string deviceGuid)
         {
             if (string.IsNullOrEmpty(deviceGuid)) return null;
-            if (!System.Guid.TryParse(deviceGuid, out var g)) return null;
-            var devs = SettingsManager.UserDevices?.Items;
-            if (devs == null) return null;
-            lock (SettingsManager.UserDevices.SyncRoot)
+            bool useMemo = _devStateMemoActive;
+            if (useMemo && _devStateMemo.TryGetValue(deviceGuid, out var cached))
+                return cached;
+
+            CustomInputState found = null;
+            if (System.Guid.TryParse(deviceGuid, out var g))
             {
-                for (int i = 0; i < devs.Count; i++)
+                var devs = SettingsManager.UserDevices?.Items;
+                if (devs != null)
                 {
-                    var d = devs[i];
-                    if (d == null) continue;
-                    if (d.InstanceGuid == g && d.IsOnline)
-                        return d.InputState;
+                    lock (SettingsManager.UserDevices.SyncRoot)
+                    {
+                        for (int i = 0; i < devs.Count; i++)
+                        {
+                            var d = devs[i];
+                            if (d == null) continue;
+                            if (d.InstanceGuid == g && d.IsOnline)
+                            {
+                                found = d.InputState;
+                                break;
+                            }
+                        }
+                    }
                 }
             }
-            return null;
+            if (useMemo) _devStateMemo[deviceGuid] = found;
+            return found;
+        }
+
+        /// <summary>LookupDeviceState with the current-device fast path: a
+        /// concrete source naming the device already being evaluated reads
+        /// the caller's own state with zero locks. The memo above covers the
+        /// remaining foreign-device sources.</summary>
+        // (kept adjacent to LookupDeviceState so the memo contract reads as one unit)
+        private static CustomInputState LookupDeviceStateFast(
+            string deviceGuid, CustomInputState currentState, string currentDeviceGuid)
+        {
+            if (currentDeviceGuid != null && currentState != null
+                && string.Equals(deviceGuid, currentDeviceGuid, System.StringComparison.OrdinalIgnoreCase))
+                return currentState;
+            return LookupDeviceState(deviceGuid);
         }
 
         /// <summary>True when sources[i] looks like the bipolar Neg
@@ -1910,8 +1973,8 @@ namespace PadForge.Common.Input
                     // (pos + neg) is formed per device, then max-abs selects the
                     // device with the strongest deflection.
                     slotStates ??= GetSlotDeviceStates(slotIndex, currentState, currentDeviceGuid);
-                    var posFixed = posAny ? null : LookupDeviceState(src.DeviceGuid);
-                    var negFixed = (useNeg && !negAny) ? LookupDeviceState(negSrc.DeviceGuid) : null;
+                    var posFixed = posAny ? null : LookupDeviceStateFast(src.DeviceGuid, currentState, currentDeviceGuid);
+                    var negFixed = (useNeg && !negAny) ? LookupDeviceStateFast(negSrc.DeviceGuid, currentState, currentDeviceGuid) : null;
                     float best = 0f;
                     for (int d = 0; d < slotStates.Count; d++)
                     {
@@ -1935,14 +1998,14 @@ namespace PadForge.Common.Input
                 }
 
                 // Both sides concrete (original single-device behavior).
-                var devState = LookupDeviceState(src.DeviceGuid);
+                var devState = LookupDeviceStateFast(src.DeviceGuid, currentState, currentDeviceGuid);
                 if (devState == null) { list.Add(0f); continue; }
                 float val = SourceEvaluator.EvaluateForBipolarAxisTarget(
                     devState, src, slotIndex, row.Target, i, slotRuntime, dt,
                     evaluatedDeviceGuid: currentDeviceGuid);
                 if (useNeg)
                 {
-                    var negState = LookupDeviceState(negSrc.DeviceGuid);
+                    var negState = LookupDeviceStateFast(negSrc.DeviceGuid, currentState, currentDeviceGuid);
                     if (negState != null)
                         val += SourceEvaluator.EvaluateForBipolarAxisTarget(
                             negState, negSrc, slotIndex, row.Target, 1, slotRuntime, dt,
@@ -1987,7 +2050,7 @@ namespace PadForge.Common.Input
                     list.Add(mx);
                     continue;
                 }
-                var devState = LookupDeviceState(src.DeviceGuid);
+                var devState = LookupDeviceStateFast(src.DeviceGuid, currentState, currentDeviceGuid);
                 if (devState == null) { list.Add(0f); continue; }
                 list.Add(SourceEvaluator.EvaluateForTriggerTarget(
                     devState, src, slotIndex, row.Target, i, slotRuntime, dt,
@@ -2030,7 +2093,7 @@ namespace PadForge.Common.Input
                     list.Add(any ? 1f : 0f);
                     continue;
                 }
-                var devState = LookupDeviceState(src.DeviceGuid);
+                var devState = LookupDeviceStateFast(src.DeviceGuid, currentState, currentDeviceGuid);
                 if (devState == null) { list.Add(0f); continue; }
                 list.Add(SourceEvaluator.EvaluateForButtonTarget(
                     devState, src, globalAxisToButtonThreshold,

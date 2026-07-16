@@ -2540,27 +2540,41 @@ namespace PadForge.Engine.Common.Mapping
 
         // ─── Descriptor helpers ────────────────────────────────────────
 
+        // Parse results memoized by the descriptor STRING. Descriptors are
+        // parsed on every source evaluation, and at the ~1 kHz poll rate the
+        // Split + ToLowerInvariant + token strings amounted to well over a
+        // hundred thousand allocations per second sustained (profiled cost
+        // model, 2026-07-16). Keys are immutable strings, so no invalidation
+        // exists: an edited mapping carries a different string and simply
+        // adds an entry. The population is bounded by the distinct
+        // descriptors a session ever evaluates.
+        private static readonly System.Collections.Concurrent.ConcurrentDictionary<string, (SourceType T, int Index, string PovDir, bool Ok)>
+            s_typeIndexCache = new(StringComparer.Ordinal);
+
         private static bool TryParseTypeIndex(string s, out SourceType t, out int index, out string povDir)
         {
-            t = SourceType.Unmapped;
-            index = 0;
-            povDir = null;
-
-            string[] parts = s.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-            if (parts.Length < 2) return false;
-
-            t = parts[0].ToLowerInvariant() switch
+            var hit = s_typeIndexCache.GetOrAdd(s, static key =>
             {
-                "button" => SourceType.Button,
-                "axis"   => SourceType.Axis,
-                "slider" => SourceType.Slider,
-                "pov"    => SourceType.PovDirection,
-                _        => SourceType.Unmapped,
-            };
-            if (t == SourceType.Unmapped) return false;
-            if (!int.TryParse(parts[1], out index)) return false;
-            if (t == SourceType.PovDirection && parts.Length >= 3) povDir = parts[2];
-            return true;
+                string[] parts = key.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                if (parts.Length < 2) return (SourceType.Unmapped, 0, null, false);
+
+                var pt = parts[0].ToLowerInvariant() switch
+                {
+                    "button" => SourceType.Button,
+                    "axis"   => SourceType.Axis,
+                    "slider" => SourceType.Slider,
+                    "pov"    => SourceType.PovDirection,
+                    _        => SourceType.Unmapped,
+                };
+                if (pt == SourceType.Unmapped) return (SourceType.Unmapped, 0, null, false);
+                if (!int.TryParse(parts[1], out int idx)) return (SourceType.Unmapped, 0, null, false);
+                string dir = (pt == SourceType.PovDirection && parts.Length >= 3) ? parts[2] : null;
+                return (pt, idx, dir, true);
+            });
+            t = hit.T;
+            index = hit.Index;
+            povDir = hit.PovDir;
+            return hit.Ok;
         }
 
         private static bool PovMatches(int povCentidegrees, string direction)
@@ -2570,14 +2584,18 @@ namespace PadForge.Engine.Common.Mapping
 
             // Normalize to 0..35999.
             int v = ((povCentidegrees % 36000) + 36000) % 36000;
-            return direction.ToLowerInvariant() switch
-            {
-                "up"    => v >= 31500 || v <= 4500,    // 315°..360°/0°..45°
-                "right" => v >= 4500 && v <= 13500,    // 45°..135°
-                "down"  => v >= 13500 && v <= 22500,   // 135°..225°
-                "left"  => v >= 22500 && v <= 31500,   // 225°..315°
-                _       => false,
-            };
+            // Case-insensitive compares instead of ToLowerInvariant: this runs
+            // per POV source per tick and the lowercase copy was a per-call
+            // allocation on the 1 kHz path.
+            if (string.Equals(direction, "up", StringComparison.OrdinalIgnoreCase))
+                return v >= 31500 || v <= 4500;        // 315°..360°/0°..45°
+            if (string.Equals(direction, "right", StringComparison.OrdinalIgnoreCase))
+                return v >= 4500 && v <= 13500;        // 45°..135°
+            if (string.Equals(direction, "down", StringComparison.OrdinalIgnoreCase))
+                return v >= 13500 && v <= 22500;       // 135°..225°
+            if (string.Equals(direction, "left", StringComparison.OrdinalIgnoreCase))
+                return v >= 22500 && v <= 31500;       // 225°..315°
+            return false;
         }
 
         // ─── Touchpad bool descriptors ─────────────────────────────────

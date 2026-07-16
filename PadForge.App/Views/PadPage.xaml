@@ -11091,20 +11091,49 @@
                                            ToolTip="{Binding Menu_CustomAxis_Tip, Source={x:Static strings:Strings.Instance}}"
                                            Margin="0,0,12,0" VerticalAlignment="Center" TextWrapping="Wrap" MaxWidth="260"/>
                                 <StackPanel Grid.Column="1" Orientation="Horizontal">
-                                    <ComboBox MinWidth="200" ItemsSource="{Binding CustomXChoices}"
-                                              common:ComboBoxWidthBehavior.SizeToItems="True"
-                                              common:ComboBoxWidthBehavior.WidthGroup="MenuSettingCombos"
-                                              ToolTip="{Binding Menu_CustomAxis_Tip, Source={x:Static strings:Strings.Instance}}"
-                                              DisplayMemberPath="Label" SelectedValuePath="Descriptor"
-                                              SelectedValue="{Binding CustomXSelected, Mode=TwoWay}"/>
+                                    <StackPanel Orientation="Vertical">
+                                        <ComboBox MinWidth="260" ItemsSource="{Binding CustomXChoicesView}"
+                                                  ToolTip="{Binding Menu_CustomAxis_Tip, Source={x:Static strings:Strings.Instance}}"
+                                                  DisplayMemberPath="DisplayName" SelectedValuePath="Descriptor"
+                                                  SelectedValue="{Binding CustomXSelected, Mode=TwoWay}">
+                                            <ComboBox.GroupStyle>
+                                                <GroupStyle>
+                                                    <GroupStyle.HeaderTemplate>
+                                                        <DataTemplate>
+                                                            <Border Background="{DynamicResource SubtleFillColorSecondaryBrush}" Padding="6,3,6,3">
+                                                                <TextBlock Text="{Binding Name}" FontSize="11" FontWeight="SemiBold"
+                                                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                                                           TextTrimming="CharacterEllipsis"/>
+                                                            </Border>
+                                                        </DataTemplate>
+                                                    </GroupStyle.HeaderTemplate>
+                                                </GroupStyle>
+                                            </ComboBox.GroupStyle>
+                                        </ComboBox>
+                                        <TextBlock FontSize="10" FontStyle="Italic"
+                                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                                   Margin="4,1,0,0" Text="{Binding CustomEmptyLabel}">
+                                            <TextBlock.Style>
+                                                <Style TargetType="TextBlock">
+                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding CustomXSelected}" Value="">
+                                                            <Setter Property="Visibility" Value="Visible"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </TextBlock.Style>
+                                        </TextBlock>
+                                    </StackPanel>
                                     <ui:Button Command="{Binding DataContext.MenuRecordTargetCommand,
                                                    RelativeSource={RelativeSource AncestorType=TabItem}}"
                                                CommandParameter="CustomX"
-                                               Style="{StaticResource EmberIconButtonHot}" Margin="6,0,0,0">
+                                               Style="{StaticResource EmberIconButtonHot}" Margin="6,0,0,0"
+                                               VerticalAlignment="Top">
                                         <TextBlock Text="{Binding CustomXRecordIcon}" FontFamily="Segoe MDL2 Assets"
                                                    Foreground="{DynamicResource EmberBrush}"/>
                                     </ui:Button>
-                                    <ui:Button Command="{Binding ResetCustomXCommand}" Style="{StaticResource ResetButton}"/>
+                                    <ui:Button Command="{Binding ResetCustomXCommand}" Style="{StaticResource ResetButton}" VerticalAlignment="Top"/>
                                 </StackPanel>
                             </Grid>
                             <Grid Margin="0,0,0,8"
@@ -11118,20 +11147,49 @@
                                            ToolTip="{Binding Menu_CustomAxis_Tip, Source={x:Static strings:Strings.Instance}}"
                                            Margin="0,0,12,0" VerticalAlignment="Center" TextWrapping="Wrap" MaxWidth="260"/>
                                 <StackPanel Grid.Column="1" Orientation="Horizontal">
-                                    <ComboBox MinWidth="200" ItemsSource="{Binding CustomYChoices}"
-                                              common:ComboBoxWidthBehavior.SizeToItems="True"
-                                              common:ComboBoxWidthBehavior.WidthGroup="MenuSettingCombos"
-                                              ToolTip="{Binding Menu_CustomAxis_Tip, Source={x:Static strings:Strings.Instance}}"
-                                              DisplayMemberPath="Label" SelectedValuePath="Descriptor"
-                                              SelectedValue="{Binding CustomYSelected, Mode=TwoWay}"/>
+                                    <StackPanel Orientation="Vertical">
+                                        <ComboBox MinWidth="260" ItemsSource="{Binding CustomYChoicesView}"
+                                                  ToolTip="{Binding Menu_CustomAxis_Tip, Source={x:Static strings:Strings.Instance}}"
+                                                  DisplayMemberPath="DisplayName" SelectedValuePath="Descriptor"
+                                                  SelectedValue="{Binding CustomYSelected, Mode=TwoWay}">
+                                            <ComboBox.GroupStyle>
+                                                <GroupStyle>
+                                                    <GroupStyle.HeaderTemplate>
+                                                        <DataTemplate>
+                                                            <Border Background="{DynamicResource SubtleFillColorSecondaryBrush}" Padding="6,3,6,3">
+                                                                <TextBlock Text="{Binding Name}" FontSize="11" FontWeight="SemiBold"
+                                                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                                                           TextTrimming="CharacterEllipsis"/>
+                                                            </Border>
+                                                        </DataTemplate>
+                                                    </GroupStyle.HeaderTemplate>
+                                                </GroupStyle>
+                                            </ComboBox.GroupStyle>
+                                        </ComboBox>
+                                        <TextBlock FontSize="10" FontStyle="Italic"
+                                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                                   Margin="4,1,0,0" Text="{Binding CustomEmptyLabel}">
+                                            <TextBlock.Style>
+                                                <Style TargetType="TextBlock">
+                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding CustomYSelected}" Value="">
+                                                            <Setter Property="Visibility" Value="Visible"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </TextBlock.Style>
+                                        </TextBlock>
+                                    </StackPanel>
                                     <ui:Button Command="{Binding DataContext.MenuRecordTargetCommand,
                                                    RelativeSource={RelativeSource AncestorType=TabItem}}"
                                                CommandParameter="CustomY"
-                                               Style="{StaticResource EmberIconButtonHot}" Margin="6,0,0,0">
+                                               Style="{StaticResource EmberIconButtonHot}" Margin="6,0,0,0"
+                                               VerticalAlignment="Top">
                                         <TextBlock Text="{Binding CustomYRecordIcon}" FontFamily="Segoe MDL2 Assets"
                                                    Foreground="{DynamicResource EmberBrush}"/>
                                     </ui:Button>
-                                    <ui:Button Command="{Binding ResetCustomYCommand}" Style="{StaticResource ResetButton}"/>
+                                    <ui:Button Command="{Binding ResetCustomYCommand}" Style="{StaticResource ResetButton}" VerticalAlignment="Top"/>
                                 </StackPanel>
                             </Grid>
 
@@ -11149,20 +11207,49 @@
                                            ToolTip="{Binding Menu_ClickInput_Tip, Source={x:Static strings:Strings.Instance}}"
                                            Margin="0,0,12,0" VerticalAlignment="Center" TextWrapping="Wrap" MaxWidth="260"/>
                                 <StackPanel Grid.Column="1" Orientation="Horizontal">
-                                    <ComboBox MinWidth="200" ItemsSource="{Binding ClickChoices}"
-                                              common:ComboBoxWidthBehavior.SizeToItems="True"
-                                              common:ComboBoxWidthBehavior.WidthGroup="MenuSettingCombos"
-                                              ToolTip="{Binding Menu_ClickInput_Tip, Source={x:Static strings:Strings.Instance}}"
-                                              DisplayMemberPath="Label" SelectedValuePath="Descriptor"
-                                              SelectedValue="{Binding ClickSelected, Mode=TwoWay}"/>
+                                    <StackPanel Orientation="Vertical">
+                                        <ComboBox MinWidth="260" ItemsSource="{Binding ClickChoicesView}"
+                                                  ToolTip="{Binding Menu_ClickInput_Tip, Source={x:Static strings:Strings.Instance}}"
+                                                  DisplayMemberPath="DisplayName" SelectedValuePath="Descriptor"
+                                                  SelectedValue="{Binding ClickSelected, Mode=TwoWay}">
+                                            <ComboBox.GroupStyle>
+                                                <GroupStyle>
+                                                    <GroupStyle.HeaderTemplate>
+                                                        <DataTemplate>
+                                                            <Border Background="{DynamicResource SubtleFillColorSecondaryBrush}" Padding="6,3,6,3">
+                                                                <TextBlock Text="{Binding Name}" FontSize="11" FontWeight="SemiBold"
+                                                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                                                           TextTrimming="CharacterEllipsis"/>
+                                                            </Border>
+                                                        </DataTemplate>
+                                                    </GroupStyle.HeaderTemplate>
+                                                </GroupStyle>
+                                            </ComboBox.GroupStyle>
+                                        </ComboBox>
+                                        <TextBlock FontSize="10" FontStyle="Italic"
+                                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                                   Margin="4,1,0,0" Text="{Binding ClickEmptyLabel}">
+                                            <TextBlock.Style>
+                                                <Style TargetType="TextBlock">
+                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding ClickSelected}" Value="">
+                                                            <Setter Property="Visibility" Value="Visible"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </TextBlock.Style>
+                                        </TextBlock>
+                                    </StackPanel>
                                     <ui:Button Command="{Binding DataContext.MenuRecordTargetCommand,
                                                    RelativeSource={RelativeSource AncestorType=TabItem}}"
                                                CommandParameter="Click"
-                                               Style="{StaticResource EmberIconButtonHot}" Margin="6,0,0,0">
+                                               Style="{StaticResource EmberIconButtonHot}" Margin="6,0,0,0"
+                                               VerticalAlignment="Top">
                                         <TextBlock Text="{Binding ClickRecordIcon}" FontFamily="Segoe MDL2 Assets"
                                                    Foreground="{DynamicResource EmberBrush}"/>
                                     </ui:Button>
-                                    <ui:Button Command="{Binding ResetClickCommand}" Style="{StaticResource ResetButton}"/>
+                                    <ui:Button Command="{Binding ResetClickCommand}" Style="{StaticResource ResetButton}" VerticalAlignment="Top"/>
                                 </StackPanel>
                             </Grid>
 

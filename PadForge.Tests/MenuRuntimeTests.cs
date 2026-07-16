@@ -498,58 +498,69 @@ namespace PadForge.Tests
         }
 
         [Fact]
-        public void MenuCustomInputDropdowns_MirrorTheRecordGates_AndNeverLie()
+        public void MenuCustomInputDropdowns_MirrorTheMappingPicker_AndNeverLie()
         {
             var editor = new PadForge.ViewModels.MenuEditorItem(new MenuDefinitionEntry
             {
                 HostDescriptor = "Custom",
             });
+            const string anyDev = "";
             editor.InputChoicesProvider = () => new[]
             {
-                // Gamepad alias vocabulary reads as virtual-controller
-                // lettering and shadows the raw space: excluded.
-                new PadForge.ViewModels.InputChoice { Descriptor = "Gamepad LeftStickX", DisplayName = "Left Stick X" },
-                new PadForge.ViewModels.InputChoice { Descriptor = "Gamepad ButtonA", DisplayName = "A" },
-                // The raw device space keeps its own naming.
-                new PadForge.ViewModels.InputChoice { Descriptor = "Axis 0", DisplayName = "Axis 1" },
-                // Cross-device duplicate of the same read: must collapse.
-                new PadForge.ViewModels.InputChoice { Descriptor = "Axis 0", DisplayName = "X Axis" },
-                new PadForge.ViewModels.InputChoice { Descriptor = "Slider 0", DisplayName = "Slider 1" },
-                new PadForge.ViewModels.InputChoice { Descriptor = "Button 3", DisplayName = "Button 4" },
-                new PadForge.ViewModels.InputChoice { Descriptor = "POV 0 Up", DisplayName = "POV 1 Up" },
+                // The "(Any device)" abstract group leads, exactly as the
+                // mapping picker lays it out.
+                new PadForge.ViewModels.InputChoice { Descriptor = "Gamepad LeftStickX", DisplayName = "Left Stick X", DeviceGuid = anyDev, DeviceLabel = "(Any device)" },
+                new PadForge.ViewModels.InputChoice { Descriptor = "Gamepad ButtonA", DisplayName = "A", DeviceGuid = anyDev, DeviceLabel = "(Any device)" },
                 // A menu's own items must never feed its opener.
-                new PadForge.ViewModels.InputChoice { Descriptor = "Menu 1 Item 2", DisplayName = "Menu 1 Item 2" },
+                new PadForge.ViewModels.InputChoice { Descriptor = "Menu 1 Item 2", DisplayName = "Menu 1 Item 2", DeviceGuid = anyDev, DeviceLabel = "(Any device)" },
+                // Each device's group keeps its own naming, including the
+                // same raw read on two devices (no dedupe, two groups).
+                new PadForge.ViewModels.InputChoice { Descriptor = "Axis 0", DisplayName = "Axis 0", DeviceGuid = "g1", DeviceLabel = "Flight Stick" },
+                new PadForge.ViewModels.InputChoice { Descriptor = "Button 3", DisplayName = "Button 3", DeviceGuid = "g1", DeviceLabel = "Flight Stick" },
+                new PadForge.ViewModels.InputChoice { Descriptor = "POV 0 Up", DisplayName = "POV 0 Up", DeviceGuid = "g1", DeviceLabel = "Flight Stick" },
+                new PadForge.ViewModels.InputChoice { Descriptor = "Axis 0", DisplayName = "Left Stick X", DeviceGuid = "g2", DeviceLabel = "Gamepad" },
+                new PadForge.ViewModels.InputChoice { Descriptor = "Slider 0", DisplayName = "Slider 0", DeviceGuid = "g2", DeviceLabel = "Gamepad" },
             };
 
-            // Steer: sentinel + the two raw analog reads, first device's
-            // label winning the cross-device dedupe. No gamepad aliases.
+            // Steer: analog reads only, aliases resolved before the gate so
+            // the abstract stick axis stays; both devices keep their own
+            // "Axis 0" entry under their own group label.
             var steer = editor.CustomXChoices;
-            Assert.Equal(3, steer.Count);
-            Assert.Equal("", steer[0].Descriptor);
+            Assert.Equal(4, steer.Count);
+            Assert.Equal("Gamepad LeftStickX", steer[0].Descriptor);
             Assert.Equal("Axis 0", steer[1].Descriptor);
-            Assert.Equal("Axis 1", steer[1].Label);
-            Assert.Equal("Slider 0", steer[2].Descriptor);
+            Assert.Equal("Flight Stick", steer[1].DeviceLabel);
+            Assert.Equal("Axis 0", steer[2].Descriptor);
+            Assert.Equal("Gamepad", steer[2].DeviceLabel);
+            Assert.Equal("Slider 0", steer[3].Descriptor);
 
-            // Click: sentinel + the raw button + the POV direction. No
-            // analogs, no aliases, no menu items.
+            // Click: everything non-analog except menu items.
             var click = editor.ClickChoices;
             Assert.Equal(3, click.Count);
-            Assert.Equal("", click[0].Descriptor);
+            Assert.Equal("Gamepad ButtonA", click[0].Descriptor);
             Assert.Equal("Button 3", click[1].Descriptor);
             Assert.Equal("POV 0 Up", click[2].Descriptor);
 
-            // Dropdown selection writes the model like the record path.
+            // Dropdown selection writes the model verbatim, like a mapping
+            // row source pick.
             editor.CustomXSelected = "Axis 0";
             Assert.Equal("Axis 0", editor.Entry.CustomXDescriptor);
-            editor.ClickSelected = "Button 3";
-            Assert.Equal("Button 3", editor.Entry.ClickDescriptor);
+            editor.ClickSelected = "Gamepad ButtonA";
+            Assert.Equal("Gamepad ButtonA", editor.Entry.ClickDescriptor);
 
-            // A stored descriptor the picker no longer offers still shows
-            // as a never-lie entry instead of a blank combo.
+            // A stored descriptor no group lists still shows, under the
+            // any-device label, instead of a blank combo.
             editor.CustomYSelected = "HAxis 7";
             Assert.Contains(editor.CustomYChoices, o => o.Descriptor == "HAxis 7");
 
-            // Reset returns the row to the sentinel.
+            // Empty-state subtitles: Custom openers have no default click,
+            // named hosts fall back to theirs.
+            editor.ResetClickCommand.Execute(null);
+            Assert.Equal(PadForge.Resources.Strings.Strings.Instance.Menu_NotRecorded, editor.ClickEmptyLabel);
+            editor.Entry.HostDescriptor = "Gamepad RightStick";
+            Assert.Equal(PadForge.Resources.Strings.Strings.Instance.Menu_ClickDefault, editor.ClickEmptyLabel);
+
+            // Reset returns the row to empty.
             editor.ResetCustomXCommand.Execute(null);
             Assert.Equal("", editor.CustomXSelected);
             Assert.Equal("", editor.Entry.CustomXDescriptor);

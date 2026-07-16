@@ -5160,6 +5160,40 @@ namespace PadForge.Services
                 });
             }
 
+            // Menu-item sources (#9 B-17): every cell of every menu on THIS
+            // slot is pickable, exactly as the Menus tab's tooltips promise
+            // (they previously pointed users at descriptors NO picker
+            // exposed, Codex audit 2026-07-16). Any-device by default, so
+            // they join the device-agnostic group; display names use the
+            // same localized formatter the row chips resolve through.
+            var menuSets = SettingsManager.SlotMappingSets;
+            var slotMenus = menuSets != null
+                && padVm.PadIndex >= 0 && padVm.PadIndex < menuSets.Length
+                ? menuSets[padVm.PadIndex]?.Menus : null;
+            if (slotMenus != null)
+            {
+                foreach (var menu in slotMenus)
+                {
+                    if (menu == null || !menu.Enabled) continue;
+                    int cells = System.Math.Clamp(menu.CellCount, 1, 20);
+                    int first = menu.Kind == PadForge.Engine.Menus.MenuKind.Radial
+                        ? (menu.HasCenter ? 0 : 1) : 0;
+                    int last = menu.Kind == PadForge.Engine.Menus.MenuKind.Radial
+                        ? cells : cells - 1;
+                    for (int k = first; k <= last; k++)
+                    {
+                        flat.Add(new PadForge.ViewModels.InputChoice
+                        {
+                            Descriptor = $"Menu {menu.MenuId} Item {k}",
+                            DisplayName = string.Format(
+                                Strings.Instance.Mapping_MenuItem_Format, menu.MenuId, k),
+                            DeviceGuid = string.Empty,
+                            DeviceLabel = anyLabel,
+                        });
+                    }
+                }
+            }
+
             foreach (var (g, udi) in orderedDevices)
             {
                 string key = g.ToString().ToLowerInvariant();
@@ -5854,9 +5888,13 @@ namespace PadForge.Services
         /// <summary>Paste companion: restores a slot's menus from a clipboard
         /// snapshot. Runs AFTER <see cref="ApplySlotMappingSetFromRows"/> (which
         /// swaps in a fresh rows-only MappingSet), so it re-attaches the menus
-        /// the fresh set would otherwise have wiped. Menus carry no device
-        /// GUIDs to retarget (per-entry DeviceGuid is the empty "any device"
-        /// sentinel or a source-side guid the engine resolves on the slot).</summary>
+        /// the fresh set would otherwise have wiped. A device-scoped menu's
+        /// DeviceGuid is retargeted onto the target slot's same-product
+        /// device, the same rule the mapping-row sources use; the runtime
+        /// matches the guid exactly, so an unretargeted scoped menu would
+        /// paste as an editor-visible but dead definition (Codex audit
+        /// 2026-07-16). A scoped menu whose product has no device on the
+        /// target slot degrades to the any-device form rather than dying.</summary>
         public static void ApplyMenusSnapshotJson(int padIndex, string json)
         {
             if (string.IsNullOrEmpty(json)) return;
@@ -5877,7 +5915,10 @@ namespace PadForge.Services
             foreach (var m in menus)
             {
                 if (m == null) continue;
-                built.Add(m.Clone());
+                var clone = m.Clone();
+                if (!string.IsNullOrEmpty(clone.DeviceGuid))
+                    clone.DeviceGuid = RetargetDeviceGuidForSlot(clone.DeviceGuid, padIndex) ?? "";
+                built.Add(clone);
             }
             slotMs.Menus = built;
         }
@@ -6095,13 +6136,19 @@ namespace PadForge.Services
             // Menus (#9 B-17) travel with the set exactly like the shift
             // authoring above (the same leg CloneMappingSetDeep carries).
             // Without it, Copy From Slot dropped the source's menus and the
-            // fresh-set swap below wiped the target's own menus.
+            // fresh-set swap below wiped the target's own menus. Scoped
+            // menu DeviceGuids retarget onto the target slot's same-product
+            // device like row sources do (the runtime matches exactly), and
+            // degrade to any-device when the product is absent there.
             if (src.Menus != null)
             {
                 foreach (var m in src.Menus)
                 {
                     if (m == null) continue;
-                    copy.Menus.Add(m.Clone());
+                    var clone = m.Clone();
+                    if (!string.IsNullOrEmpty(clone.DeviceGuid))
+                        clone.DeviceGuid = RetargetDeviceGuidForSlot(clone.DeviceGuid, targetSlot) ?? "";
+                    copy.Menus.Add(clone);
                 }
             }
             if (src.Rows != null)
@@ -7821,7 +7868,13 @@ namespace PadForge.Services
         private void UpdateMenuOverlayWindow()
         {
             var snap = _inputManager?.ActiveMenuOverlay;
-            if (snap == null || !_mainVm.Dashboard.EnableMenuOverlay)
+            // Stale gate: a deleted / disabled / emptied menu, or an
+            // unplugged device, stops refreshing its snapshot without ever
+            // clearing it, and the HUD would freeze on screen forever
+            // (Codex audit 2026-07-16). Anything the poll thread has not
+            // stamped within its own staleness window is treated as gone.
+            if (snap == null || !_mainVm.Dashboard.EnableMenuOverlay
+                || Environment.TickCount64 - snap.StampMs > 250)
             {
                 _menuOverlay?.UpdateFromSnapshot(null);
                 return;
@@ -11182,6 +11235,13 @@ namespace PadForge.Services
             // engagement and the wrong layer effective from frame zero.
             Common.Input.InputManager.ClearAllShiftRuntime();
 
+            // Same reset for the menu runtime: contexts key on
+            // (slot, device, menu id) and would survive the swap, letting
+            // the NEW profile's cell actions fire from the OLD profile's
+            // in-flight gesture (e.g. a Touch Release commit consuming
+            // inherited engagement). Null pre-engine-start and in tests.
+            _inputManager?.ResetMenuRuntime();
+
             // Restore per-VC MappingSet from the profile snapshot
             // (Issue #61). Multi-source rows + per-row CombineMode +
             // ShiftActivator round-trip with the profile. Profiles
@@ -11302,6 +11362,32 @@ namespace PadForge.Services
                         // still claims one UserSetting per entry.
                         var us = SettingsManager.UserSettings.Items
                             .FirstOrDefault(s => s.InstanceGuid == entry.InstanceGuid && !consumed.Contains(s));
+
+                        // A PRIOR entry in this pass that referenced the same
+                        // old instance may already have rebound it to a new
+                        // physical instance (the same-product fallback below).
+                        // One device legitimately feeds many slots, so this
+                        // entry must FOLLOW that rebinding: consuming a
+                        // different same-product device, or resurrecting the
+                        // stale guid as a ghost row, split one physical pad's
+                        // slots across two identities (Codex audit 2026-07-16).
+                        if (us == null && entry.InstanceGuid != Guid.Empty
+                            && deviceGuidRemap.TryGetValue(
+                                entry.InstanceGuid.ToString().ToLowerInvariant(), out var followG)
+                            && Guid.TryParse(followG, out var followInst))
+                        {
+                            us = SettingsManager.UserSettings.Items
+                                .FirstOrDefault(s => s.InstanceGuid == followInst && !consumed.Contains(s));
+                            if (us == null)
+                            {
+                                us = new UserSetting
+                                {
+                                    InstanceGuid = followInst,
+                                    ProductGuid = entry.ProductGuid
+                                };
+                                SettingsManager.UserSettings.Items.Add(us);
+                            }
+                        }
 
                         if (us == null && entry.ProductGuid != Guid.Empty)
                         {

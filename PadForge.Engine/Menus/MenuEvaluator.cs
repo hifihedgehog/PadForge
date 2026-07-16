@@ -96,9 +96,21 @@ namespace PadForge.Engine.Menus
                     break;
 
                 case MenuFireType.ClickRelease:
-                    // Click released while an item is hovered: one-shot.
-                    if (st.Engaged && st.Clicked && !clicked && surfaceActive && st.HoveredIndex >= 0)
-                        Pulse(st, st.HoveredIndex, nowMs);
+                    // Click released: one-shot on the cell under the pointer
+                    // AT RELEASE (this frame's hover when the surface is
+                    // still active), falling back to the last hover when the
+                    // release and the lift land in the same poll frame.
+                    // Firing the PREVIOUS frame's hover fired the wrong cell
+                    // on a fast flick-and-click, and requiring the surface
+                    // to still be active dropped the commit entirely when
+                    // release and re-center arrived together (Codex audit
+                    // 2026-07-16).
+                    if (st.Engaged && st.Clicked && !clicked)
+                    {
+                        int commit = surfaceActive && hover >= 0 ? hover : st.HoveredIndex;
+                        if (commit >= 0)
+                            Pulse(st, commit, nowMs);
+                    }
                     st.AssertedIndex = -1;
                     break;
 

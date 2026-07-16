@@ -2573,7 +2573,7 @@
   <data name="MacroAction_Type_GyroRecenter" xml:space="preserve"><value>자이로 재중심</value></data>
   <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>누르면 패드에 누적된 자이로 조준 기준을 0으로 되돌립니다. 스무딩 기록이 지워지고, Motion Lean 중립점이 다시 캡처되며, 중력 추정치가 컨트롤러의 현재 자세에서 다시 초기화됩니다.</value></data>
   <data name="Pad_Menus" xml:space="preserve"><value>메뉴</value></data>
-  <data name="Menu_EmptyHint" xml:space="preserve"><value>메뉴는 실제 컨트롤러의 스틱이나 터치패드를 화면 위의 링이나 그리드로 바꿉니다. 메뉴를 추가하고 여는 입력을 고른 뒤, 각 셀에 라벨과 할당을 지정하세요.</value></data>
+  <data name="Menu_EmptyHint" xml:space="preserve"><value>메뉴는 실제 스틱이나 터치패드를 화면 위의 링이나 그리드로 바꿉니다. 메뉴를 추가하고 여는 입력을 고른 뒤, 각 셀에 라벨과 할당을 지정하세요.</value></data>
   <data name="Menu_NewNameFormat" xml:space="preserve"><value>메뉴 {0}</value></data>
   <data name="Menu_Name" xml:space="preserve"><value>메뉴 이름</value></data>
   <data name="Menu_Enabled" xml:space="preserve"><value>활성화됨</value></data>
@@ -2606,25 +2606,25 @@
   <data name="Menu_Binding_None" xml:space="preserve"><value>없음</value></data>
   <data name="Menu_Binding_Key" xml:space="preserve"><value>키보드 키</value></data>
   <data name="Menu_Binding_Button" xml:space="preserve"><value>컨트롤러 버튼</value></data>
-  <data name="Menu_Style_Tip" xml:space="preserve"><value>방사형 링은 무기 휠처럼 방향으로 셀을 선택합니다. 터치 그리드는 표면 위 위치로 셀을 선택합니다.</value></data>
-  <data name="Menu_HostInput_Tip" xml:space="preserve"><value>이 메뉴를 열고 조작하는 입력으로, 슬롯에 할당된 모든 실제 컨트롤러에서 읽습니다. 스틱은 작동 데드존을 넘어 기울이면 열리고, 터치패드는 터치하면 열립니다.</value></data>
+  <data name="Menu_Style_Tip" xml:space="preserve"><value>방사형 링은 무기 휠처럼 방향으로 셀을 선택합니다. 터치 그리드는 위치로 셀을 선택합니다. 패드 위 손가락의 위치나 스틱이 가리키는 곳입니다.</value></data>
+  <data name="Menu_HostInput_Tip" xml:space="preserve"><value>이 메뉴를 열고 조작하는 입력으로, 슬롯에 할당된 실제 컨트롤러에서 읽습니다. 스틱은 작동 데드존을 넘어 기울이면 열리고, 터치패드는 터치하면 열립니다.</value></data>
   <data name="Menu_HostHalf_Tip" xml:space="preserve"><value>이 메뉴를 트랙패드의 한쪽 절반으로 제한합니다. 두 메뉴가 하나의 패드를 나눠 쓸 수 있습니다.</value></data>
   <data name="Menu_FireMode_Tip" xml:space="preserve"><value>강조된 셀의 할당이 언제 실행되는지입니다. 각 선택지는 아래에 설명됩니다.</value></data>
-  <data name="Menu_Fire_Click_Desc" xml:space="preserve"><value>호스트를 눌러 클릭하는 동안 실행됩니다. 셀을 가리킨 뒤 스틱을 눌러 넣거나(스틱 클릭) 트랙패드를 클릭하세요. 클릭을 놓을 때까지 할당이 유지됩니다.</value></data>
+  <data name="Menu_Fire_Click_Desc" xml:space="preserve"><value>스틱이나 트랙패드를 눌러 클릭하는 동안 실행됩니다. 셀을 가리킨 뒤 스틱을 눌러 넣거나(스틱 클릭) 트랙패드를 클릭하세요. 클릭을 놓을 때까지 할당이 유지됩니다.</value></data>
   <data name="Menu_Fire_ClickRelease_Desc" xml:space="preserve"><value>클릭을 놓는 순간 한 번 실행됩니다. 셀을 가리키고 스틱이나 트랙패드를 눌렀다가 클릭을 놓으세요.</value></data>
   <data name="Menu_Fire_TouchRelease_Desc" xml:space="preserve"><value>손을 떼는 순간 한 번 실행됩니다. 셀이 강조된 상태에서 패드에서 손가락을 떼거나 스틱을 중앙으로 되돌리세요.</value></data>
   <data name="Menu_Fire_Always_Desc" xml:space="preserve"><value>셀이 강조되어 있는 동안 내내 할당이 유지됩니다. 클릭이 필요 없습니다.</value></data>
   <data name="Menu_Cells_Tip" xml:space="preserve"><value>메뉴의 셀 개수입니다. 방사형 링에서는 링 부분만 세며, 중앙 셀은 별도입니다.</value></data>
-  <data name="Menu_HasCenter_Tip" xml:space="preserve"><value>중앙 셀을 추가합니다. 스틱이 작동 데드존 안에 있는 동안 중앙 셀이 선택됩니다.</value></data>
-  <data name="Menu_Deadzone_Tip" xml:space="preserve"><value>메뉴를 작동시키고 링 셀을 강조하는 데 필요한 스틱 이동량입니다. 이 안에서는 중앙 셀이 있으면 그것이 선택됩니다.</value></data>
+  <data name="Menu_HasCenter_Tip" xml:space="preserve"><value>중앙 셀을 추가합니다. 스틱이나 손가락이 작동 데드존 안에 있는 동안 중앙 셀이 선택됩니다.</value></data>
+  <data name="Menu_Deadzone_Tip" xml:space="preserve"><value>스틱의 경우 얼마나 기울여야 메뉴가 열리고 링 셀이 강조되는지를 정합니다. 방사형 메뉴에서는 스틱과 터치패드 모두의 중앙 영역이기도 합니다. 그 안에서는 중앙 셀이 있으면 선택됩니다.</value></data>
   <data name="Menu_ShowLabels_Tip" xml:space="preserve"><value>화면 오버레이에 각 셀의 라벨을 표시합니다.</value></data>
   <data name="Menu_Position_Tip" xml:space="preserve"><value>오버레이 중심이 화면에서 놓이는 위치(퍼센트)입니다. 50과 50이 가운데입니다.</value></data>
   <data name="Menu_Scale_Tip" xml:space="preserve"><value>오버레이 크기(기본 크기 대비 퍼센트)입니다.</value></data>
   <data name="Menu_Opacity_Tip" xml:space="preserve"><value>오버레이 불투명도입니다. 100%면 완전히 불투명합니다.</value></data>
   <data name="Menu_CellLabel_Tip" xml:space="preserve"><value>오버레이에서 이 셀에 표시되는 텍스트입니다.</value></data>
-  <data name="Menu_BindingKind_Tip" xml:space="preserve"><value>셀이 실행될 때 하는 동작입니다. 키보드 키를 누르거나 이 슬롯의 가상 컨트롤러 버튼을 유지합니다. 없음으로 둔 셀도 매핑 행과 매크로 트리거용 메뉴 항목 소스로 실행됩니다.</value></data>
-  <data name="Menu_ExtendedSlot_Warning" xml:space="preserve"><value>이 슬롯 유형은 컨트롤러 버튼을 출력하지 않으므로 컨트롤러 버튼 할당이 여기서는 효과가 없습니다. 키보드 키를 사용하거나 매핑 탭에서 셀의 메뉴 항목 소스를 할당하세요.</value></data>
-  <data name="Menu_HostInput_Caption" xml:space="preserve"><value>이 슬롯에 할당된 어떤 실제 컨트롤러든 이 입력으로 메뉴를 열 수 있습니다. 이것은 입력 측이며 가상 컨트롤러의 레이아웃과는 별개입니다. 아래의 셀 할당이 메뉴가 출력하는 내용입니다.</value></data>
+  <data name="Menu_BindingKind_Tip" xml:space="preserve"><value>셀이 실행될 때 하는 동작입니다. "키보드 키"은 키보드 키를 누르고, "컨트롤러 버튼"은 이 슬롯의 가상 컨트롤러 버튼을 누릅니다. "없음"으로 둔 셀도 매핑 행과 매크로 트리거용 메뉴 항목 소스로 실행됩니다.</value></data>
+  <data name="Menu_ExtendedSlot_Warning" xml:space="preserve"><value>이 슬롯 유형은 컨트롤러 버튼을 출력하지 않으므로 "컨트롤러 버튼" 할당이 여기서는 효과가 없습니다. "키보드 키"를 사용하거나 매핑 탭에서 셀의 메뉴 항목 소스를 할당하세요.</value></data>
+  <data name="Menu_HostInput_Caption" xml:space="preserve"><value>이 슬롯에 할당된 실제 컨트롤러에서 읽으며, 가상 컨트롤러의 레이아웃이 아닙니다. 아래의 셀 할당이 메뉴가 출력하는 내용입니다.</value></data>
   <data name="Menu_Host_Missing_Format" xml:space="preserve"><value>{0} (연결되지 않음)</value></data>
   <data name="Mapping_MenuItem_Format" xml:space="preserve"><value>메뉴 {0} 셀 {1}</value></data>
   <data name="Dashboard_MenuOverlay" xml:space="preserve"><value>메뉴 오버레이</value></data>

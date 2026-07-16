@@ -517,7 +517,14 @@ namespace PadForge.Services
                     ? persisted[slot]
                     : null;
 
-                bool xmlHasContent = fromXml != null && fromXml.Rows != null && fromXml.Rows.Count > 0;
+                // Content = rows OR menus OR shift activators. Gating on
+                // rows alone discarded a rows-empty set on restart, deleting
+                // any menus / activators it carried (a menus-only slot lost
+                // its menu on every launch, Codex audit 2026-07-16).
+                bool xmlHasContent = fromXml != null
+                    && ((fromXml.Rows != null && fromXml.Rows.Count > 0)
+                        || (fromXml.Menus != null && fromXml.Menus.Count > 0)
+                        || (fromXml.ShiftActivators != null && fromXml.ShiftActivators.Count > 0));
                 if (xmlHasContent)
                 {
                     SanitizeMappingSet(fromXml, slot);

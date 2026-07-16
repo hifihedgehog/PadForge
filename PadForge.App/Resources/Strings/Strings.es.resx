@@ -2573,7 +2573,7 @@
   <data name="MacroAction_Type_GyroRecenter" xml:space="preserve"><value>Recentrar giroscopio</value></data>
   <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>Pone a cero las referencias acumuladas de apuntado del giroscopio del pad al presionar. El historial de suavizado se borra, el punto neutro de Motion Lean se vuelve a capturar y la estimación de gravedad se reinicia desde la pose actual del mando.</value></data>
   <data name="Pad_Menus" xml:space="preserve"><value>Menús</value></data>
-  <data name="Menu_EmptyHint" xml:space="preserve"><value>Los menús convierten un stick o panel táctil de tu mando físico en un anillo o cuadrícula en pantalla. Añade un menú, elige con qué se abre y luego etiqueta cada celda y dale una asignación.</value></data>
+  <data name="Menu_EmptyHint" xml:space="preserve"><value>Los menús convierten un stick o panel táctil físico en un anillo o cuadrícula en pantalla. Añade un menú, elige con qué se abre y luego etiqueta cada celda y dale una asignación.</value></data>
   <data name="Menu_NewNameFormat" xml:space="preserve"><value>Menú {0}</value></data>
   <data name="Menu_Name" xml:space="preserve"><value>Nombre del menú</value></data>
   <data name="Menu_Enabled" xml:space="preserve"><value>Activado</value></data>
@@ -2606,25 +2606,25 @@
   <data name="Menu_Binding_None" xml:space="preserve"><value>Ninguna</value></data>
   <data name="Menu_Binding_Key" xml:space="preserve"><value>Tecla de teclado</value></data>
   <data name="Menu_Binding_Button" xml:space="preserve"><value>Botón del mando</value></data>
-  <data name="Menu_Style_Tip" xml:space="preserve"><value>Anillo radial elige una celda por dirección, como una rueda de armas. Cuadrícula táctil elige una celda por posición sobre la superficie.</value></data>
-  <data name="Menu_HostInput_Tip" xml:space="preserve"><value>La entrada que abre y dirige este menú, leída de todos los mandos físicos asignados a la ranura. Un stick lo abre al empujarlo más allá de la zona muerta de activación. Un panel táctil lo abre al tocarlo.</value></data>
+  <data name="Menu_Style_Tip" xml:space="preserve"><value>Anillo radial elige una celda por dirección, como una rueda de armas. Cuadrícula táctil elige una celda por posición: donde está el dedo en el panel o hacia dónde apunta el stick.</value></data>
+  <data name="Menu_HostInput_Tip" xml:space="preserve"><value>La entrada que abre y dirige este menú, leída de los mandos físicos asignados a la ranura. Un stick lo abre al empujarlo más allá de la zona muerta de activación. Un panel táctil lo abre al tocarlo.</value></data>
   <data name="Menu_HostHalf_Tip" xml:space="preserve"><value>Limita este menú a una mitad del panel táctil, para que dos menús puedan compartir el panel.</value></data>
   <data name="Menu_FireMode_Tip" xml:space="preserve"><value>Cuándo la celda resaltada dispara su asignación. Cada opción se explica abajo.</value></data>
-  <data name="Menu_Fire_Click_Desc" xml:space="preserve"><value>Dispara mientras el host está pulsado: apunta a la celda y presiona el stick hacia dentro (clic de stick) o haz clic en el panel táctil. La asignación se mantiene hasta soltar el clic.</value></data>
+  <data name="Menu_Fire_Click_Desc" xml:space="preserve"><value>Dispara mientras el stick o el panel táctil está pulsado: apunta a la celda y presiona el stick hacia dentro (clic de stick) o haz clic en el panel. La asignación se mantiene hasta soltar el clic.</value></data>
   <data name="Menu_Fire_ClickRelease_Desc" xml:space="preserve"><value>Dispara una vez al soltar el clic: apunta a la celda, pulsa el stick o el panel hacia dentro y suelta el clic.</value></data>
   <data name="Menu_Fire_TouchRelease_Desc" xml:space="preserve"><value>Dispara una vez al soltar: levanta el dedo del panel o deja que el stick vuelva al centro mientras hay una celda resaltada.</value></data>
   <data name="Menu_Fire_Always_Desc" xml:space="preserve"><value>La asignación se mantiene todo el tiempo que la celda esté resaltada. No hace falta clic.</value></data>
   <data name="Menu_Cells_Tip" xml:space="preserve"><value>Cuántas celdas tiene el menú. En un anillo radial solo cuenta el anillo; la celda central es aparte.</value></data>
-  <data name="Menu_HasCenter_Tip" xml:space="preserve"><value>Añade una celda central, seleccionada mientras el stick descansa dentro de la zona muerta de activación.</value></data>
-  <data name="Menu_Deadzone_Tip" xml:space="preserve"><value>Cuánto debe moverse el stick para activar el menú y resaltar celdas del anillo. Dentro de ella se selecciona la celda central, si existe.</value></data>
+  <data name="Menu_HasCenter_Tip" xml:space="preserve"><value>Añade una celda central, seleccionada mientras el stick o el dedo descansa dentro de la zona muerta de activación.</value></data>
+  <data name="Menu_Deadzone_Tip" xml:space="preserve"><value>En sticks, cuánto hay que empujar antes de que el menú se abra y se resalten las celdas del anillo. En menús radiales también es la región central para sticks y paneles táctiles: dentro de ella se selecciona la celda central, si existe.</value></data>
   <data name="Menu_ShowLabels_Tip" xml:space="preserve"><value>Dibuja la etiqueta de cada celda en la superposición en pantalla.</value></data>
   <data name="Menu_Position_Tip" xml:space="preserve"><value>Dónde queda el centro de la superposición en pantalla, en porcentaje. 50 y 50 es el centro.</value></data>
   <data name="Menu_Scale_Tip" xml:space="preserve"><value>Tamaño de la superposición, en porcentaje de su tamaño normal.</value></data>
   <data name="Menu_Opacity_Tip" xml:space="preserve"><value>Opacidad de la superposición. 100 % es totalmente sólida.</value></data>
   <data name="Menu_CellLabel_Tip" xml:space="preserve"><value>Texto mostrado en esta celda en la superposición.</value></data>
-  <data name="Menu_BindingKind_Tip" xml:space="preserve"><value>Qué hace esta celda al dispararse: pulsar una tecla del teclado o mantener un botón del mando virtual de esta ranura. Una celda en Ninguno sigue disparándose como origen de elemento de menú para filas de Asignaciones y disparadores de macros.</value></data>
-  <data name="Menu_ExtendedSlot_Warning" xml:space="preserve"><value>Este tipo de ranura no emite botones de mando, así que las asignaciones de Botón del mando no tienen efecto aquí. Usa Tecla del teclado o asigna el origen del elemento de menú de la celda en la pestaña Asignaciones.</value></data>
-  <data name="Menu_HostInput_Caption" xml:space="preserve"><value>Cualquier mando físico asignado a esta ranura puede abrir el menú con esta entrada. Es el lado de entrada, independiente del diseño del mando virtual. Las asignaciones de celda de abajo son lo que el menú emite.</value></data>
+  <data name="Menu_BindingKind_Tip" xml:space="preserve"><value>Qué hace esta celda al dispararse: "Tecla de teclado" pulsa una tecla del teclado, "Botón del mando" pulsa un botón del mando virtual de esta ranura. Una celda en "Ninguna" sigue disparándose como origen de elemento de menú para filas de Asignaciones y disparadores de macros.</value></data>
+  <data name="Menu_ExtendedSlot_Warning" xml:space="preserve"><value>Este tipo de ranura no emite botones de mando, así que las asignaciones "Botón del mando" no tienen efecto aquí. Usa "Tecla de teclado" o asigna el origen del elemento de menú de la celda en la pestaña Asignaciones.</value></data>
+  <data name="Menu_HostInput_Caption" xml:space="preserve"><value>Se lee de los mandos físicos asignados a esta ranura, no del diseño del mando virtual. Las asignaciones de celda de abajo son lo que el menú emite.</value></data>
   <data name="Menu_Host_Missing_Format" xml:space="preserve"><value>{0} (no conectado)</value></data>
   <data name="Mapping_MenuItem_Format" xml:space="preserve"><value>Menú {0} celda {1}</value></data>
   <data name="Dashboard_MenuOverlay" xml:space="preserve"><value>Superposición de menú</value></data>

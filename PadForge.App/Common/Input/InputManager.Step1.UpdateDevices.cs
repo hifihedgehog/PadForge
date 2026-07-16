@@ -1375,6 +1375,13 @@ namespace PadForge.Common.Input
             if (target != null)
                 MarkDeviceOffline(target);
 
+            // Drop the device's menu runtime contexts NOW: a fired context
+            // stays credible for the staleness window, and a restricted
+            // peer's restriction is cleared at disconnect, so leaving the
+            // context alive allowed one last key injection after the gate
+            // was gone.
+            PurgeMenuContextsForDevice(instanceGuid);
+
             DevicesUpdated?.Invoke(this, EventArgs.Empty);
         }
 

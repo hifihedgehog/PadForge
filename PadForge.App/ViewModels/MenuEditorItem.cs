@@ -52,18 +52,26 @@ namespace PadForge.ViewModels
         /// <summary>Raised after any persisted field changes.</summary>
         public event Action Changed;
 
-        /// <summary>Static option lists rebuild once per language change
-        /// (static handlers run before instance ones, so the per-instance
-        /// refresh below always re-reads fresh lists). Same pattern as
-        /// StickConfigItem's preset names.</summary>
-        static MenuEditorItem()
+        // ── Culture-current option lists ─────────────────────────
+        // NO ordering dependence on the CultureChanged event: a C# `static`
+        // lambda compiles to an INSTANCE delegate on a compiler-generated
+        // singleton, so it lands in the event's weak list and can run AFTER
+        // instance handlers (Codex audit 2026-07-16: dropdowns stayed one
+        // culture behind because the re-raise preceded the rebuild). The
+        // backing lists are stamped with the LCID they were built for, and
+        // every consumer path rebuilds them first when the culture moved.
+        // Whoever runs first does the work; order stops mattering.
+        private static int s_optionsLcid = System.Globalization.CultureInfo.CurrentUICulture.LCID;
+
+        internal static void EnsureOptionsCultureCurrent()
         {
-            Strings.CultureChanged += static () =>
-            {
-                KindOptionsBacking = BuildKindOptions();
-                HostHalfOptionsBacking = BuildHostHalfOptions();
-                FireOptionsBacking = BuildFireOptions();
-            };
+            int lcid = System.Globalization.CultureInfo.CurrentUICulture.LCID;
+            if (lcid == s_optionsLcid) return;
+            s_optionsLcid = lcid;
+            KindOptionsBacking = BuildKindOptions();
+            HostHalfOptionsBacking = BuildHostHalfOptions();
+            FireOptionsBacking = BuildFireOptions();
+            MenuCellItem.RebuildCultureOptions();
         }
 
         public MenuEditorItem(MenuDefinitionEntry entry)
@@ -103,7 +111,10 @@ namespace PadForge.ViewModels
             get => _extendedButtonCount;
             set
             {
-                value = Math.Max(1, value);
+                // 0 is legal: an axis-only Extended layout has no buttons,
+                // and clamping to 1 offered a "Btn 1" that the zero-word
+                // raw state could never emit.
+                value = Math.Max(0, value);
                 if (_extendedButtonCount == value) return;
                 _extendedButtonCount = value;
                 if (_buttonStyle == MacroButtonStyle.Numbered)
@@ -119,6 +130,8 @@ namespace PadForge.ViewModels
         /// SelectedItem by reference.</summary>
         private void OnCultureChanged()
         {
+            // Rebuild-before-raise, with no reliance on handler order.
+            EnsureOptionsCultureCurrent();
             OnPropertyChanged(nameof(KindOptions));
             OnPropertyChanged(nameof(HostOptions));
             OnPropertyChanged(nameof(HostHalfOptions));
@@ -458,8 +471,17 @@ namespace PadForge.ViewModels
 
         public RelayCommand ResetHostCommand => _resetHost ??= new RelayCommand(() =>
         {
-            SelectedHost = HostOptions[1];
-            HostHalfIndex = 0;
+            // Write the MODEL default directly. Indexing HostOptions[1]
+            // assumed the fixed five-option list; capability gating can
+            // shrink the list to one entry (index crash) or reorder it
+            // (reset landing on the wrong surface).
+            Entry.HostDescriptor = "Gamepad RightStick";
+            Entry.HostHalf = 0;
+            OnPropertyChanged(nameof(SelectedHost));
+            OnPropertyChanged(nameof(HostOptions));
+            OnPropertyChanged(nameof(HostIsTouchpad));
+            OnPropertyChanged(nameof(HostHalfIndex));
+            OnEdited();
         });
         private RelayCommand _resetHost;
 
@@ -528,14 +550,21 @@ namespace PadForge.ViewModels
             }
 
             // Prune entries the shape no longer reaches (a shrunken ring's
-            // tail, a removed center) so exports and the overlay agree
-            // with what the editor shows.
+            // tail, a removed center) ONLY when they carry no data. An
+            // authored cell surviving out of reach is invisible to the
+            // runtime (nothing hovers its index) but reappears intact when
+            // the shape flips back; deleting it made a Radial/Grid style
+            // toggle silently destroy the user's bindings (Codex audit
+            // 2026-07-16: grid cell 0 died on Grid-to-Radial, ring cell N
+            // and the center died the other way).
             if (Entry.Items != null)
             {
                 Entry.Items.RemoveAll(it => it == null
-                    || (Entry.Kind == MenuKind.Radial
-                        ? it.Index > Entry.CellCount || (it.Index == 0 && !Entry.HasCenter)
-                        : it.Index >= Entry.CellCount || it.Index < 0));
+                    || ((string.IsNullOrEmpty(it.Label)
+                         && it.VirtualKey <= 0 && it.XboxButtons == 0 && it.ExtendedButton <= 0)
+                        && (Entry.Kind == MenuKind.Radial
+                            ? it.Index > Entry.CellCount || (it.Index == 0 && !Entry.HasCenter)
+                            : it.Index >= Entry.CellCount || it.Index < 0)));
             }
         }
 
@@ -619,10 +648,14 @@ namespace PadForge.ViewModels
         /// statics).</summary>
         public IReadOnlyList<MenuIntOption> BindingKindOptions => BindingKindOptionsBacking;
 
-        static MenuCellItem()
+        /// <summary>Called by MenuEditorItem.EnsureOptionsCultureCurrent so
+        /// the cell lists ride the same order-independent LCID stamp rather
+        /// than subscribing to the event themselves (a `static` lambda's
+        /// compiler-generated target lands in the WEAK handler list and can
+        /// run after the re-raises).</summary>
+        internal static void RebuildCultureOptions()
         {
-            Strings.CultureChanged += static () =>
-                BindingKindOptionsBacking = BuildBindingKindOptions();
+            BindingKindOptionsBacking = BuildBindingKindOptions();
         }
 
         /// <summary>Called by the owning editor's culture handler: re-raises
@@ -729,7 +762,8 @@ namespace PadForge.ViewModels
                 var list = new List<MenuIntOption>();
                 if (_owner.ButtonStyle == MacroButtonStyle.Numbered)
                 {
-                    int count = Math.Clamp(_owner.ExtendedButtonCount, 1, 128);
+                    // 0 buttons = empty picker (axis-only Extended layout).
+                    int count = Math.Clamp(_owner.ExtendedButtonCount, 0, 128);
                     for (int n = 1; n <= count; n++)
                         list.Add(new MenuIntOption
                         {
@@ -747,12 +781,24 @@ namespace PadForge.ViewModels
         }
 
         /// <summary>The picker's value: the Xbox mask on Xbox / PlayStation
-        /// slots, the 1-based raw button number on Extended slots.</summary>
+        /// slots, the 1-based raw button number on Extended slots. When the
+        /// slot's TYPE changed after the cell was authored, the other value
+        /// space's stored binding is presented through the shared
+        /// mask-to-number equivalence (MacroButtonNames.NumberedMaskOrder)
+        /// instead of showing a blank picker over live data.</summary>
         public int SelectedButtonFlag
         {
-            get => _owner.ButtonStyle == MacroButtonStyle.Numbered
-                ? _item?.ExtendedButton ?? 0
-                : _item?.XboxButtons ?? 0;
+            get
+            {
+                if (_item == null) return 0;
+                if (_owner.ButtonStyle == MacroButtonStyle.Numbered)
+                    return _item.ExtendedButton > 0
+                        ? _item.ExtendedButton
+                        : MacroButtonNames.NumberFromMask(_item.XboxButtons);
+                return _item.XboxButtons != 0
+                    ? _item.XboxButtons
+                    : MacroButtonNames.MaskFromNumber(_item.ExtendedButton);
+            }
             set
             {
                 if (value == 0 || SelectedButtonFlag == value) return;

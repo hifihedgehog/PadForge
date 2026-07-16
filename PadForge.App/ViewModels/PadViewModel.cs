@@ -4692,6 +4692,16 @@ namespace PadForge.ViewModels
             vm.RefreshHostOptions();
         }
 
+        /// <summary>Re-raises every menu editor's opener options. Called
+        /// beside RefreshAvailableInputsForSlot on device-assignment and
+        /// connection changes: the capability provider reads live, but an
+        /// open view only re-reads when told.</summary>
+        public void RefreshMenuHostOptions()
+        {
+            foreach (var menu in Menus)
+                menu.RefreshHostOptions();
+        }
+
         /// <summary>Physical capabilities of this slot's assigned devices:
         /// any gamepad present, and the largest touchpad count. Sequential
         /// (never nested) locks, so the UserDevices-before-UserSettings
@@ -4719,7 +4729,10 @@ namespace PadForge.ViewModels
             {
                 foreach (var d in devices.Items)
                 {
-                    if (d == null || !guids.Contains(d.InstanceGuid)) continue;
+                    // IsOnline gate: the picker marks absent surfaces
+                    // "(not connected)", so an assigned-but-offline pad
+                    // must count as absent, not as capability.
+                    if (d == null || !d.IsOnline || !guids.Contains(d.InstanceGuid)) continue;
                     if (d.CapType == PadForge.Engine.InputDeviceType.Gamepad) hasGamepad = true;
                     if (d.CapTouchpadCount > touchpads) touchpads = d.CapTouchpadCount;
                 }

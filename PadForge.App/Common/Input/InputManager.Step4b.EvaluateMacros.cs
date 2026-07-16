@@ -262,6 +262,15 @@ namespace PadForge.Common.Input
             // switch: the key simply stops appearing in the desired set.
             _desiredLatchedKeys.Clear();
 
+            // Menu direct bindings (#9 B-17) run BEFORE the macro pass so a
+            // macro triggering on a virtual button can see and consume a
+            // button a menu cell pressed this frame, exactly as it would a
+            // physically-mapped button. (They previously ran after, so
+            // menu-pressed buttons were invisible to same-frame macro
+            // triggers, Codex audit 2026-07-16.) Keys still join the same
+            // desired-set reconcile below.
+            CollectMenuDirectOutputs();
+
             for (int i = 0; i < MaxPads; i++)
             {
                 var macros = MacroSnapshots[i];
@@ -284,12 +293,6 @@ namespace PadForge.Common.Input
                     RaiseError($"Macro error on pad {i}", ex);
                 }
             }
-
-            // Menu direct bindings (#9 B-17): fired items carrying a direct
-            // key join the desired-set reconcile below (held while fired,
-            // released the frame the fire ends), and direct VC buttons OR
-            // into the slot's combined output like a macro ButtonPress.
-            CollectMenuDirectOutputs();
 
             // Settle ToggleKey latches once per frame, after every slot has
             // contributed its desired keys. Restriction was enforced at

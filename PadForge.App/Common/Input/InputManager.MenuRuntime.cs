@@ -52,6 +52,35 @@ namespace PadForge.Common.Input
         /// (poll hiccups ride through; a deleted menu expires).</summary>
         private const int MenuContextStaleMs = 250;
 
+        private long _menuCtxLastPurgeMs;
+
+        /// <summary>Clears every menu runtime context and the overlay
+        /// snapshot. Called on profile apply: contexts keyed
+        /// (slot, device, menu id) would otherwise survive the switch and
+        /// the NEW profile's actions could fire from the OLD profile's
+        /// in-flight gesture (a Touch Release commit consuming inherited
+        /// engagement, Codex audit 2026-07-16).</summary>
+        internal void ResetMenuRuntime()
+        {
+            MenuContexts.Clear();
+            _activeMenuOverlay = null;
+        }
+
+        /// <summary>Drops one device's menu contexts (and its overlay
+        /// ownership). Called when a device unregisters: a restricted
+        /// Remote Link peer's fired context otherwise stays credible for
+        /// the stale window AFTER its restriction was cleared, letting it
+        /// inject one last key.</summary>
+        internal void PurgeMenuContextsForDevice(Guid device)
+        {
+            foreach (var kv in MenuContexts)
+                if (kv.Key.Device == device)
+                    MenuContexts.TryRemove(kv.Key, out _);
+            var cur = _activeMenuOverlay;
+            if (cur != null && cur.Device == device)
+                _activeMenuOverlay = null;
+        }
+
         /// <summary>Overlay snapshot: the currently engaged menu, or null.
         /// Published by the poll thread, consumed by the UI timer at
         /// ~30 Hz (the same pull model every preview uses).</summary>
@@ -87,6 +116,19 @@ namespace PadForge.Common.Input
             if (assignedSlots.Length == 0) return;
 
             long nowMs = Environment.TickCount64;
+
+            // Bounded growth: contexts key on (slot, device, menu id), menu
+            // ids grow monotonically across add/delete cycles, and nothing
+            // else removes entries, so a long session leaked dead contexts.
+            // A slow sweep drops anything nobody has ticked for 10 s.
+            if (nowMs - _menuCtxLastPurgeMs > 5000)
+            {
+                _menuCtxLastPurgeMs = nowMs;
+                foreach (var kv in MenuContexts)
+                    if (nowMs - kv.Value.LastTickMs > 10000)
+                        MenuContexts.TryRemove(kv.Key, out _);
+            }
+
             foreach (int slot in assignedSlots)
             {
                 if (slot < 0 || slot >= sets.Length) continue;
@@ -102,7 +144,14 @@ namespace PadForge.Common.Input
                 {
                     MenuDefinitionEntry def;
                     try { def = menus[i]; } catch { break; }
-                    if (def == null || !def.Enabled || def.Items == null || def.Items.Count == 0)
+                    // Items are NOT required: a menu whose cells carry no
+                    // direct bindings (or no items at all) still hovers,
+                    // shows the overlay, and fires its cells as menu-item
+                    // sources for mapping rows and macro triggers, exactly
+                    // as the binding-kind tooltip promises. The old
+                    // Items.Count == 0 skip silently killed pure-source
+                    // menus (Codex audit 2026-07-16).
+                    if (def == null || !def.Enabled)
                         continue;
                     if (!string.IsNullOrEmpty(def.DeviceGuid)
                         && !string.Equals(def.DeviceGuid, ud.InstanceGuidString,
@@ -149,7 +198,24 @@ namespace PadForge.Common.Input
                             newState, ctx.SrcX, slot, false, ud.InstanceGuidString);
                         dy = SourceCoercion.EvaluateForBipolarAxisTarget(
                             newState, ctx.SrcY, slot, false, ud.InstanceGuidString);
-                        physical = Math.Sqrt(dx * dx + dy * dy) >= dz;
+                        // Engage/release hysteresis (sc-controller's proven
+                        // stick-menu shape: engage at 1/3 deflection, cancel
+                        // near center at 1/8). Without it the stick surface
+                        // DISENGAGED the moment it re-entered the deadzone,
+                        // which made a radial CENTER cell unreachable on
+                        // stick hosts: center selection requires resting
+                        // inside the deadzone while the menu stays open.
+                        // Scoped to radial-with-center menus on the click /
+                        // hover fire modes: for Touch Release, re-centering
+                        // IS the commit gesture (Steam: a stick inside the
+                        // deadzone counts as untouched), so hysteresis there
+                        // would break every no-click commit.
+                        bool centerNeedsHold = def.Kind == MenuKind.Radial
+                            && def.HasCenter
+                            && def.FireType != MenuFireType.TouchRelease;
+                        double mag = Math.Sqrt(dx * dx + dy * dy);
+                        double engageAt = centerNeedsHold && ctx.State.Engaged ? dz * 0.4 : dz;
+                        physical = mag >= engageAt;
                         clicked = SourceCoercion.EvaluateForButtonTarget(
                             newState, ctx.SrcClick, 50, slot, ud.InstanceGuidString);
                     }
@@ -251,9 +317,20 @@ namespace PadForge.Common.Input
             long nowMs = Environment.TickCount64;
             if (!string.IsNullOrEmpty(deviceGuid) && Guid.TryParse(deviceGuid, out var g))
             {
-                return MenuContexts.TryGetValue((slotIndex, g, menuId), out var ctx)
+                if (MenuContexts.TryGetValue((slotIndex, g, menuId), out var ctx)
                     && nowMs - ctx.LastTickMs <= MenuContextStaleMs
-                    && MenuEvaluator.IsItemFired(ctx.State, itemIndex, nowMs);
+                    && MenuEvaluator.IsItemFired(ctx.State, itemIndex, nowMs))
+                    return true;
+
+                // The reader layer folds an empty (any-device) source guid
+                // onto whichever device is being evaluated, so a
+                // multi-device slot could query the WRONG device's context
+                // and lose another controller's fire (Codex audit
+                // 2026-07-16). When the menu DEFINITION is any-device, any
+                // driving device's context is a legitimate match; contexts
+                // only ever exist for devices the definition admits, so
+                // this cannot cross-match a scoped menu.
+                if (!IsMenuDefinitionAnyDevice(slotIndex, menuId)) return false;
             }
 
             foreach (var kv in MenuContexts)
@@ -262,6 +339,45 @@ namespace PadForge.Common.Input
                 var ctx = kv.Value;
                 if (nowMs - ctx.LastTickMs > MenuContextStaleMs) continue;
                 if (MenuEvaluator.IsItemFired(ctx.State, itemIndex, nowMs)) return true;
+            }
+            return false;
+        }
+
+        /// <summary>True while item is fired by at least one device that is
+        /// NOT in <paramref name="restrictedDevices"/>. The key-injection
+        /// lane uses this instead of the slot-wide restriction so a
+        /// restricted Remote Link peer only mutes ITS OWN fires, not a
+        /// local controller sharing the slot.</summary>
+        private bool IsMenuItemFiredByUnrestricted(
+            int slotIndex, int menuId, int itemIndex, Guid[] restrictedDevices)
+        {
+            long nowMs = Environment.TickCount64;
+            foreach (var kv in MenuContexts)
+            {
+                if (kv.Key.Slot != slotIndex || kv.Key.MenuId != menuId) continue;
+                if (restrictedDevices != null
+                    && Array.IndexOf(restrictedDevices, kv.Key.Device) >= 0) continue;
+                var ctx = kv.Value;
+                if (nowMs - ctx.LastTickMs > MenuContextStaleMs) continue;
+                if (MenuEvaluator.IsItemFired(ctx.State, itemIndex, nowMs)) return true;
+            }
+            return false;
+        }
+
+        /// <summary>True when slot's menu {menuId} exists with an empty
+        /// DeviceGuid (the any-device form).</summary>
+        private static bool IsMenuDefinitionAnyDevice(int slotIndex, int menuId)
+        {
+            var sets = SettingsManager.SlotMappingSets;
+            if (sets == null || slotIndex < 0 || slotIndex >= sets.Length) return false;
+            var menus = sets[slotIndex]?.Menus;
+            if (menus == null) return false;
+            for (int i = 0; i < menus.Count; i++)
+            {
+                MenuDefinitionEntry def;
+                try { def = menus[i]; } catch { break; }
+                if (def != null && def.MenuId == menuId)
+                    return string.IsNullOrEmpty(def.DeviceGuid);
             }
             return false;
         }
@@ -285,11 +401,16 @@ namespace PadForge.Common.Input
             var sets = SettingsManager.SlotMappingSets;
             if (sets == null) return;
 
+            // Per-DEVICE restriction for the key lane: gating on
+            // IsSlotRestricted suppressed a local controller's keyboard
+            // cells merely because a restricted peer shared the slot,
+            // breaking many-device independence (Codex audit 2026-07-16).
+            Guid[] restrictedDevices = RestrictedSnapshot();
+
             for (int slot = 0; slot < MaxPads && slot < sets.Length; slot++)
             {
                 var menus = sets[slot]?.Menus;
                 if (menus == null || menus.Count == 0) continue;
-                bool restricted = IsSlotRestricted(slot);
                 bool extended = SlotExtendedIsCustom[slot];
                 uint[] extButtons = extended ? CombinedExtendedRawStates[slot].Buttons : null;
                 ushort orMask = 0;
@@ -308,16 +429,35 @@ namespace PadForge.Common.Input
                             || (item.VirtualKey <= 0 && item.XboxButtons == 0 && item.ExtendedButton <= 0))
                             continue;
                         if (!IsMenuItemFired(slot, null, def.MenuId, item.Index)) continue;
-                        if (item.VirtualKey > 0 && !restricted)
+                        if (item.VirtualKey > 0
+                            && IsMenuItemFiredByUnrestricted(slot, def.MenuId, item.Index, restrictedDevices))
                             _desiredLatchedKeys.Add((ushort)item.VirtualKey);
-                        if (item.XboxButtons != 0)
-                            orMask |= (ushort)item.XboxButtons;
-                        if (extended && extButtons != null && item.ExtendedButton > 0)
+
+                        // Cross-type equivalence (MacroButtonNames.
+                        // NumberedMaskOrder): a slot's output-type switch
+                        // must not strand an authored binding, so a lone
+                        // Xbox mask still fires on an Extended slot as its
+                        // numbered equivalent and a lone raw number 1..11
+                        // still fires on a mask slot as its button.
+                        if (extended)
                         {
-                            int n = item.ExtendedButton - 1;
-                            int w = n >> 5;
-                            if (w < extButtons.Length)
-                                extButtons[w] |= 1u << (n & 31);
+                            int number = item.ExtendedButton > 0
+                                ? item.ExtendedButton
+                                : ViewModels.MacroButtonNames.NumberFromMask(item.XboxButtons);
+                            if (extButtons != null && number > 0)
+                            {
+                                int n = number - 1;
+                                int w = n >> 5;
+                                if (w < extButtons.Length)
+                                    extButtons[w] |= 1u << (n & 31);
+                            }
+                        }
+                        else
+                        {
+                            ushort mask = item.XboxButtons != 0
+                                ? (ushort)item.XboxButtons
+                                : ViewModels.MacroButtonNames.MaskFromNumber(item.ExtendedButton);
+                            orMask |= mask;
                         }
                     }
                 }

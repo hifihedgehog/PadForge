@@ -21,10 +21,20 @@ namespace PadForge.ViewModels
         public static string[] CurvePresetNames { get; private set; } =
             Common.CurveLut.BuildPresetDisplayNames();
 
-        static StickConfigItem()
+        // LCID-stamped rebuild, no handler-order dependence: the previous
+        // static-ctor lambda landed in CultureChanged's weak list (compiler
+        // instance target) and could run AFTER the instance re-raises, so
+        // the preset combo re-read the OLD-language list against the NEW
+        // localized PresetName and the selection went blank (Codex audit
+        // 2026-07-16).
+        private static int s_presetLcid = System.Globalization.CultureInfo.CurrentUICulture.LCID;
+
+        internal static void EnsurePresetsCultureCurrent()
         {
-            Resources.Strings.Strings.CultureChanged += () =>
-                CurvePresetNames = Common.CurveLut.BuildPresetDisplayNames();
+            int lcid = System.Globalization.CultureInfo.CurrentUICulture.LCID;
+            if (lcid == s_presetLcid) return;
+            s_presetLcid = lcid;
+            CurvePresetNames = Common.CurveLut.BuildPresetDisplayNames();
         }
 
         public string PresetNameX => Common.CurveLut.MatchPreset(SensitivityCurveX);
@@ -429,6 +439,7 @@ namespace PadForge.ViewModels
 
         private void OnCultureChanged()
         {
+            EnsurePresetsCultureCurrent();
             OnPropertyChanged(nameof(CurvePresetChoices));
             OnPropertyChanged(nameof(PresetNameX));
             OnPropertyChanged(nameof(PresetNameY));

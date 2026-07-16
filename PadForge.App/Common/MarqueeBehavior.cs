@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -35,6 +36,9 @@ namespace PadForge.Common
                 {
                     fe.Loaded += OnElementLoaded;
                     fe.SizeChanged += OnElementSizeChanged;
+                    fe.IsVisibleChanged += OnElementIsVisibleChanged;
+                    EnsureProbeHook();
+                    s_tracked.Add(new WeakReference<FrameworkElement>(fe));
 
                     if (fe.IsLoaded)
                         EvaluateMarquee(fe);
@@ -43,6 +47,10 @@ namespace PadForge.Common
                 {
                     fe.Loaded -= OnElementLoaded;
                     fe.SizeChanged -= OnElementSizeChanged;
+                    fe.IsVisibleChanged -= OnElementIsVisibleChanged;
+                    for (int i = s_tracked.Count - 1; i >= 0; i--)
+                        if (!s_tracked[i].TryGetTarget(out var t) || ReferenceEquals(t, fe))
+                            s_tracked.RemoveAt(i);
                     StopMarquee(fe);
                 }
             }
@@ -58,6 +66,42 @@ namespace PadForge.Common
         {
             if (sender is FrameworkElement fe)
                 EvaluateMarquee(fe);
+        }
+
+        private static void OnElementIsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if (sender is FrameworkElement fe)
+                EvaluateMarquee(fe);
+        }
+
+        // Every scrolling marquee is a PERMANENT 60fps animator, and marquees
+        // were the one ambient-motion family with no foreground gate. Profiled
+        // 2026-07-16 with the window iconic: the render thread was still
+        // creating textures every frame (device-name marquees inside
+        // BitmapCache'd slot cards force a full card re-render per scroll
+        // step). Gate on AmbientMotionProbe.IsAppActive exactly like the
+        // breathes, plus the element's own IsVisible so marquees on hidden
+        // retained pages stop instead of ticking the animation tree. The
+        // tracked list is UI-thread-only (attached-property changes, element
+        // events, and the probe's PropertyChanged all raise on the UI thread).
+        private static readonly List<WeakReference<FrameworkElement>> s_tracked = new();
+        private static bool s_probeHooked;
+
+        private static void EnsureProbeHook()
+        {
+            if (s_probeHooked) return;
+            s_probeHooked = true;
+            AmbientMotionProbe.Instance.PropertyChanged += (_, e) =>
+            {
+                if (e.PropertyName != nameof(AmbientMotionProbe.IsAppActive)) return;
+                for (int i = s_tracked.Count - 1; i >= 0; i--)
+                {
+                    if (s_tracked[i].TryGetTarget(out var fe))
+                        EvaluateMarquee(fe);
+                    else
+                        s_tracked.RemoveAt(i);
+                }
+            };
         }
 
         // Edge fade applied to the clip ancestor ONLY while the marquee
@@ -98,6 +142,17 @@ namespace PadForge.Common
 
         private static void EvaluateMarquee(FrameworkElement fe)
         {
+            // Ambient gate: no scrolling while the app can't be seen
+            // (minimized / background) or while this element sits on a hidden
+            // retained page. The edge fade is left as-is; it belongs to the
+            // overflow state, nobody can see the element right now, and the
+            // re-evaluation on reactivation re-derives it anyway.
+            if (!AmbientMotionProbe.Instance.IsAppActive || !fe.IsVisible)
+            {
+                StopMarquee(fe);
+                return;
+            }
+
             // Walk up the visual tree to find the first ancestor with ClipToBounds.
             // That ancestor's width is the visible container width.
             double containerWidth = 0;

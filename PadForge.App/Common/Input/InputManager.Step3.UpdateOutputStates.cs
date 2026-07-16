@@ -1749,19 +1749,36 @@ namespace PadForge.Common.Input
             return (ushort)Math.Clamp((int)(output * 65535.0), 0, 65535);
         }
 
+        // Poll-hot parse memo: ApplyPadSettingTuning re-parses ~26 tuning
+        // strings per device per tick, and the profiler put
+        // System.Number.TryParseFloat on the poll thread inside it. The
+        // distinct-string population is tiny (user-entered tuning values), so
+        // cache the parse outcome per string. Same shape as the shipped
+        // SourceCoercion.s_typeIndexCache. The null sentinel marks an
+        // unparseable string, so each call site still gets ITS OWN default.
+        private static readonly System.Collections.Concurrent.ConcurrentDictionary<string, double?>
+            s_doubleParseCache = new(StringComparer.Ordinal);
+        private static readonly System.Collections.Concurrent.ConcurrentDictionary<string, int?>
+            s_intParseCache = new(StringComparer.Ordinal);
+
         private static double TryParseDoubleStatic(string value, double defaultValue)
         {
             if (string.IsNullOrEmpty(value))
                 return defaultValue;
-            return double.TryParse(value, System.Globalization.NumberStyles.Float,
-                System.Globalization.CultureInfo.InvariantCulture, out double result) ? result : defaultValue;
+            var parsed = s_doubleParseCache.GetOrAdd(value, static key =>
+                double.TryParse(key, System.Globalization.NumberStyles.Float,
+                    System.Globalization.CultureInfo.InvariantCulture, out double result)
+                    ? result : (double?)null);
+            return parsed ?? defaultValue;
         }
 
         private static int TryParseIntStatic(string value, int defaultValue)
         {
             if (string.IsNullOrEmpty(value))
                 return defaultValue;
-            return int.TryParse(value, out int result) ? result : defaultValue;
+            var parsed = s_intParseCache.GetOrAdd(value, static key =>
+                int.TryParse(key, out int result) ? result : (int?)null);
+            return parsed ?? defaultValue;
         }
 
         // ─────────────────────────────────────────────

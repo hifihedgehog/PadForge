@@ -324,6 +324,7 @@ namespace PadForge.Tests
             {
                 new MenuItemDefinition { Index = 0, Label = "Center", VirtualKey = 0x51 },
                 new MenuItemDefinition { Index = 2, Label = "Fire", XboxButtons = Gamepad.A },
+                new MenuItemDefinition { Index = 3, Label = "Raw", ExtendedButton = 37 },
                 new MenuItemDefinition { Index = 5, Label = "Map" },
             },
         };
@@ -353,6 +354,7 @@ namespace PadForge.Tests
                 Assert.Equal(a.Items[i].Label, b.Items[i].Label);
                 Assert.Equal(a.Items[i].VirtualKey, b.Items[i].VirtualKey);
                 Assert.Equal(a.Items[i].XboxButtons, b.Items[i].XboxButtons);
+                Assert.Equal(a.Items[i].ExtendedButton, b.Items[i].ExtendedButton);
             }
         }
 
@@ -400,6 +402,34 @@ namespace PadForge.Tests
             b.CellCount = 9;
             Assert.Equal("Center", a.Items[0].Label);
             Assert.Equal(5, a.CellCount);
+        }
+
+        [Fact]
+        public void MenuCell_ButtonPicker_FollowsSlotLettering()
+        {
+            // Xbox lettering (default): the picker's value space is the
+            // shared button mask.
+            var editor = new PadForge.ViewModels.MenuEditorItem(new MenuDefinitionEntry());
+            var cell = editor.Cells[0];
+            cell.BindingKind = 2;
+            Assert.Equal(Gamepad.A, editor.Entry.Items[0].XboxButtons);
+            Assert.Equal(0, editor.Entry.Items[0].ExtendedButton);
+
+            // Extended lettering: the options become the layout's 1..N raw
+            // button numbers and the value space swaps to ExtendedButton.
+            editor.ExtendedButtonCount = 24;
+            editor.ButtonStyle = PadForge.ViewModels.MacroButtonStyle.Numbered;
+            Assert.Equal(24, cell.ButtonOptions.Count);
+            Assert.Equal(5, cell.ButtonOptions[4].Value);
+            cell.SelectedButtonFlag = 17;
+            Assert.Equal(17, editor.Entry.Items[0].ExtendedButton);
+            Assert.Equal(0, editor.Entry.Items[0].XboxButtons);
+
+            // Back to a mask style: picking re-clears the raw number.
+            editor.ButtonStyle = PadForge.ViewModels.MacroButtonStyle.DualShock4;
+            cell.SelectedButtonFlag = Gamepad.B;
+            Assert.Equal(Gamepad.B, editor.Entry.Items[0].XboxButtons);
+            Assert.Equal(0, editor.Entry.Items[0].ExtendedButton);
         }
 
         [Fact]

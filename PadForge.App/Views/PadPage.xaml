@@ -11246,11 +11246,11 @@
                                        FontWeight="SemiBold" Margin="0,0,0,6"
                                        Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
                             <!-- Slot types that never output controller buttons drop a
-                                 Controller Button cell binding silently: Extended emits
-                                 raw HID (CollectMenuDirectOutputs gates on
-                                 SlotExtendedIsCustom), and the Midi / KeyboardMouse
-                                 virtual controllers' SubmitGamepadState is a no-op stub.
-                                 Say so instead of letting the binding eat itself.
+                                 Controller Button cell binding silently: the Midi /
+                                 KeyboardMouse virtual controllers' SubmitGamepadState is
+                                 a no-op stub. Say so instead of letting the binding eat
+                                 itself. Xbox / PlayStation deliver via the shared button
+                                 mask, Extended via the cell's raw button number, and
                                  Keyboard Key cells and menu-item sources work on every
                                  slot type. -->
                             <TextBlock Text="{Binding Menu_ExtendedSlot_Warning, Source={x:Static strings:Strings.Instance}}"
@@ -11261,11 +11261,6 @@
                                     <Style TargetType="TextBlock">
                                         <Setter Property="Visibility" Value="Collapsed"/>
                                         <Style.Triggers>
-                                            <DataTrigger Binding="{Binding DataContext.OutputType,
-                                                              RelativeSource={RelativeSource AncestorType=TabItem}}"
-                                                         Value="Extended">
-                                                <Setter Property="Visibility" Value="Visible"/>
-                                            </DataTrigger>
                                             <DataTrigger Binding="{Binding DataContext.OutputType,
                                                               RelativeSource={RelativeSource AncestorType=TabItem}}"
                                                          Value="Midi">

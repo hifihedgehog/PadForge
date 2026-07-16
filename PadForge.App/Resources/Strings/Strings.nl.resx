@@ -2627,7 +2627,7 @@
   <data name="Menu_Binding_Key" xml:space="preserve"><value>Toetsenbordtoets</value></data>
   <data name="Menu_Binding_Button" xml:space="preserve"><value>Controllerknop</value></data>
   <data name="Menu_Style_Tip" xml:space="preserve"><value>Radiale ring kiest een cel op richting, zoals een wapenwiel. Aanraakraster kiest een cel op positie op het oppervlak.</value></data>
-  <data name="Menu_HostInput_Tip" xml:space="preserve"><value>De invoer op de fysieke controller die dit menu opent en bestuurt. Een stick opent het wanneer je hem voorbij de activeringsdeadzone duwt. Een touchpad opent het bij aanraking.</value></data>
+  <data name="Menu_HostInput_Tip" xml:space="preserve"><value>De invoer die dit menu opent en bestuurt, gelezen van elke fysieke controller die aan het slot is toegewezen. Een stick opent het wanneer je hem voorbij de activeringsdeadzone duwt. Een touchpad opent het bij aanraking.</value></data>
   <data name="Menu_HostHalf_Tip" xml:space="preserve"><value>Beperk dit menu tot één helft van het trackpad, zodat twee menu's het pad kunnen delen.</value></data>
   <data name="Menu_FireMode_Tip" xml:space="preserve"><value>Wanneer de gemarkeerde cel zijn toewijzing activeert. Elke keuze wordt hieronder uitgelegd.</value></data>
   <data name="Menu_Fire_Click_Desc" xml:space="preserve"><value>Activeert zolang de host is ingeklikt: wijs de cel aan en druk de stick in (stick-klik) of klik het trackpad. De toewijzing blijft vastgehouden tot de klik loslaat.</value></data>
@@ -2644,7 +2644,7 @@
   <data name="Menu_CellLabel_Tip" xml:space="preserve"><value>Tekst die op deze cel in de overlay wordt getoond.</value></data>
   <data name="Menu_BindingKind_Tip" xml:space="preserve"><value>Wat deze cel doet bij activeren: een toetsenbordtoets indrukken of een controllerknop op de virtuele controller van dit slot vasthouden. Een cel op Geen activeert nog steeds als menu-itembron voor toewijzingsrijen en macrotriggers.</value></data>
   <data name="Menu_ExtendedSlot_Warning" xml:space="preserve"><value>Dit slottype geeft geen controllerknoppen uit, dus Controllerknop-toewijzingen hebben hier geen effect. Gebruik Toetsenbordtoets, of koppel de menu-itembron van de cel op het tabblad Toewijzingen.</value></data>
-  <data name="Menu_HostInput_Caption" xml:space="preserve"><value>Een invoer op de fysieke controller van dit slot, los van de indeling van de virtuele controller. De celtoewijzingen hieronder zijn wat het menu uitvoert.</value></data>
+  <data name="Menu_HostInput_Caption" xml:space="preserve"><value>Elke fysieke controller die aan dit slot is toegewezen kan het menu met deze invoer openen. Dit is de invoerkant, los van de indeling van de virtuele controller. De celtoewijzingen hieronder zijn wat het menu uitvoert.</value></data>
   <data name="Menu_Host_Missing_Format" xml:space="preserve"><value>{0} (niet verbonden)</value></data>
   <data name="Mapping_MenuItem_Format" xml:space="preserve"><value>Menu {0} cel {1}</value></data>
   <data name="Dashboard_MenuOverlay" xml:space="preserve"><value>Menu-overlay</value></data>

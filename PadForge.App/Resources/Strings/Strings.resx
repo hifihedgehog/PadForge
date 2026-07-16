@@ -2662,7 +2662,7 @@
   <data name="Menu_Binding_Key" xml:space="preserve"><value>Keyboard Key</value></data>
   <data name="Menu_Binding_Button" xml:space="preserve"><value>Controller Button</value></data>
   <data name="Menu_Style_Tip" xml:space="preserve"><value>Radial Ring picks a cell by direction, like a weapon wheel. Touch Grid picks a cell by position on the surface.</value></data>
-  <data name="Menu_HostInput_Tip" xml:space="preserve"><value>The input on the physical controller that opens and steers this menu. A stick opens it when pushed past the Engage Deadzone. A touchpad opens it on touch.</value></data>
+  <data name="Menu_HostInput_Tip" xml:space="preserve"><value>The input that opens and steers this menu, read from every physical controller assigned to the slot. A stick opens it when pushed past the Engage Deadzone. A touchpad opens it on touch.</value></data>
   <data name="Menu_HostHalf_Tip" xml:space="preserve"><value>Limit this menu to one half of the trackpad, so two menus can share the pad.</value></data>
   <data name="Menu_FireMode_Tip" xml:space="preserve"><value>When the highlighted cell fires its binding. Each choice is explained below.</value></data>
   <data name="Menu_Fire_Click_Desc" xml:space="preserve"><value>Fires while the host is clicked in: point at the cell, then press the stick down (stick click) or click the trackpad. The binding is held until the click releases.</value></data>
@@ -2679,7 +2679,7 @@
   <data name="Menu_CellLabel_Tip" xml:space="preserve"><value>Text shown on this cell in the overlay.</value></data>
   <data name="Menu_BindingKind_Tip" xml:space="preserve"><value>What this cell does when it fires: press a keyboard key, or hold a controller button on this slot's virtual controller. A cell set to None still fires as a menu-item source for Mappings rows and macro triggers.</value></data>
   <data name="Menu_ExtendedSlot_Warning" xml:space="preserve"><value>This slot type does not output controller buttons, so Controller Button bindings have no effect here. Use Keyboard Key, or bind the cell's menu-item source in the Mappings tab.</value></data>
-  <data name="Menu_HostInput_Caption" xml:space="preserve"><value>An input on the physical controller assigned to this slot, separate from the virtual controller's layout. The cell bindings below are what the menu outputs.</value></data>
+  <data name="Menu_HostInput_Caption" xml:space="preserve"><value>Any physical controller assigned to this slot can open the menu with this input. It is the input side, separate from the virtual controller's layout. The cell bindings below are what the menu outputs.</value></data>
   <data name="Menu_Host_Missing_Format" xml:space="preserve"><value>{0} (not connected)</value></data>
   <data name="Mapping_MenuItem_Format" xml:space="preserve"><value>Menu {0} Cell {1}</value></data>
   <data name="Dashboard_MenuOverlay" xml:space="preserve"><value>Menu Overlay</value></data>

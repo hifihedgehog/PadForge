@@ -2607,7 +2607,7 @@
   <data name="Menu_Binding_Key" xml:space="preserve"><value>Tastaturtaste</value></data>
   <data name="Menu_Binding_Button" xml:space="preserve"><value>Controller-Taste</value></data>
   <data name="Menu_Style_Tip" xml:space="preserve"><value>Radialring wählt eine Zelle über die Richtung, wie ein Waffenrad. Touch-Raster wählt eine Zelle über die Position auf der Fläche.</value></data>
-  <data name="Menu_HostInput_Tip" xml:space="preserve"><value>Die Eingabe am physischen Controller, die dieses Menü öffnet und steuert. Ein Stick öffnet es beim Auslenken über die Aktivierungs-Deadzone hinaus. Ein Touchpad öffnet es bei Berührung.</value></data>
+  <data name="Menu_HostInput_Tip" xml:space="preserve"><value>Die Eingabe, die dieses Menü öffnet und steuert, gelesen von jedem diesem Slot zugewiesenen physischen Controller. Ein Stick öffnet es beim Auslenken über die Aktivierungs-Deadzone hinaus. Ein Touchpad öffnet es bei Berührung.</value></data>
   <data name="Menu_HostHalf_Tip" xml:space="preserve"><value>Beschränkt dieses Menü auf eine Hälfte des Trackpads, sodass zwei Menüs sich das Pad teilen können.</value></data>
   <data name="Menu_FireMode_Tip" xml:space="preserve"><value>Wann die hervorgehobene Zelle ihre Belegung auslöst. Jede Option wird unten erklärt.</value></data>
   <data name="Menu_Fire_Click_Desc" xml:space="preserve"><value>Löst aus, solange der Host eingedrückt ist: auf die Zelle zeigen, dann den Stick herunterdrücken (Stick-Klick) oder das Trackpad klicken. Die Belegung bleibt gehalten, bis der Klick endet.</value></data>
@@ -2624,7 +2624,7 @@
   <data name="Menu_CellLabel_Tip" xml:space="preserve"><value>Text, der auf dieser Zelle im Overlay angezeigt wird.</value></data>
   <data name="Menu_BindingKind_Tip" xml:space="preserve"><value>Was diese Zelle beim Auslösen tut: eine Tastaturtaste drücken oder eine Controller-Taste am virtuellen Controller dieses Slots halten. Eine Zelle mit Keine löst weiterhin als Menüelement-Quelle für Zuordnungszeilen und Makro-Trigger aus.</value></data>
   <data name="Menu_ExtendedSlot_Warning" xml:space="preserve"><value>Dieser Slot-Typ gibt keine Controller-Tasten aus, daher haben Controller-Tasten-Belegungen hier keine Wirkung. Nutzen Sie Tastaturtaste oder belegen Sie die Menüelement-Quelle der Zelle im Zuordnungen-Tab.</value></data>
-  <data name="Menu_HostInput_Caption" xml:space="preserve"><value>Eine Eingabe am physischen Controller dieses Slots, unabhängig vom Layout des virtuellen Controllers. Die Zellenbelegungen unten sind das, was das Menü ausgibt.</value></data>
+  <data name="Menu_HostInput_Caption" xml:space="preserve"><value>Jeder diesem Slot zugewiesene physische Controller kann das Menü mit dieser Eingabe öffnen. Sie ist die Eingabeseite, unabhängig vom Layout des virtuellen Controllers. Die Zellenbelegungen unten sind das, was das Menü ausgibt.</value></data>
   <data name="Menu_Host_Missing_Format" xml:space="preserve"><value>{0} (nicht verbunden)</value></data>
   <data name="Mapping_MenuItem_Format" xml:space="preserve"><value>Menü {0} Feld {1}</value></data>
   <data name="Dashboard_MenuOverlay" xml:space="preserve"><value>Menü-Overlay</value></data>

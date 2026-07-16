@@ -2607,7 +2607,7 @@
   <data name="Menu_Binding_Key" xml:space="preserve"><value>Touche du clavier</value></data>
   <data name="Menu_Binding_Button" xml:space="preserve"><value>Bouton de manette</value></data>
   <data name="Menu_Style_Tip" xml:space="preserve"><value>Anneau radial choisit une cellule par direction, comme une roue d'armes. Grille tactile choisit une cellule par position sur la surface.</value></data>
-  <data name="Menu_HostInput_Tip" xml:space="preserve"><value>L'entrée de la manette physique qui ouvre et dirige ce menu. Un stick l'ouvre quand on le pousse au-delà de la zone morte d'activation. Un pavé tactile l'ouvre au toucher.</value></data>
+  <data name="Menu_HostInput_Tip" xml:space="preserve"><value>L'entrée qui ouvre et dirige ce menu, lue sur chaque manette physique assignée à l'emplacement. Un stick l'ouvre quand on le pousse au-delà de la zone morte d'activation. Un pavé tactile l'ouvre au toucher.</value></data>
   <data name="Menu_HostHalf_Tip" xml:space="preserve"><value>Limite ce menu à une moitié du pavé tactile, pour que deux menus puissent se partager le pavé.</value></data>
   <data name="Menu_FireMode_Tip" xml:space="preserve"><value>Quand la cellule en surbrillance déclenche son affectation. Chaque choix est expliqué ci-dessous.</value></data>
   <data name="Menu_Fire_Click_Desc" xml:space="preserve"><value>Déclenche tant que l'hôte est enfoncé : visez la cellule, puis enfoncez le stick (clic de stick) ou cliquez le pavé tactile. L'affectation reste tenue jusqu'au relâchement du clic.</value></data>
@@ -2624,7 +2624,7 @@
   <data name="Menu_CellLabel_Tip" xml:space="preserve"><value>Texte affiché sur cette cellule dans la superposition.</value></data>
   <data name="Menu_BindingKind_Tip" xml:space="preserve"><value>Ce que fait cette cellule quand elle se déclenche : presser une touche du clavier, ou tenir un bouton de la manette virtuelle de cet emplacement. Une cellule sur Aucun se déclenche quand même comme source d'élément de menu pour les lignes de Mappages et les déclencheurs de macros.</value></data>
   <data name="Menu_ExtendedSlot_Warning" xml:space="preserve"><value>Ce type d'emplacement n'émet pas de boutons de manette : les affectations Bouton de manette n'ont donc aucun effet ici. Utilisez Touche du clavier, ou liez la source d'élément de menu de la cellule dans l'onglet Mappages.</value></data>
-  <data name="Menu_HostInput_Caption" xml:space="preserve"><value>Une entrée de la manette physique assignée à cet emplacement, indépendante de la disposition de la manette virtuelle. Les affectations de cellules ci-dessous sont ce que le menu émet.</value></data>
+  <data name="Menu_HostInput_Caption" xml:space="preserve"><value>N'importe quelle manette physique assignée à cet emplacement peut ouvrir le menu avec cette entrée. C'est le côté entrée, indépendant de la disposition de la manette virtuelle. Les affectations de cellules ci-dessous sont ce que le menu émet.</value></data>
   <data name="Menu_Host_Missing_Format" xml:space="preserve"><value>{0} (non connecté)</value></data>
   <data name="Mapping_MenuItem_Format" xml:space="preserve"><value>Menu {0} case {1}</value></data>
   <data name="Dashboard_MenuOverlay" xml:space="preserve"><value>Superposition de menu</value></data>

@@ -10910,6 +10910,24 @@
             <!-- === TAB 15: Menus (slot-level, #9 B-17 radial / touch menus) === -->
             <TabItem>
                 <Grid Margin="8">
+                    <Grid.Resources>
+                        <!-- Every tooltip on this tab is a sentence-or-three
+                             string; without a cap + wrap they render as one
+                             screen-wide line. Scoped here because a GLOBAL
+                             wrap template would stringify element-content
+                             tooltips elsewhere. BasedOn keeps the app's
+                             tooltip typography (theme-strip canon). -->
+                        <Style TargetType="ToolTip" BasedOn="{StaticResource {x:Type ToolTip}}">
+                            <Setter Property="MaxWidth" Value="440"/>
+                            <Setter Property="ContentTemplate">
+                                <Setter.Value>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding}" TextWrapping="Wrap" MaxWidth="400"/>
+                                    </DataTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </Grid.Resources>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="250"/>
                         <ColumnDefinition Width="Auto"/>
@@ -10990,10 +11008,13 @@
                                           IsChecked="{Binding Enabled}" Margin="16,0,0,0" VerticalAlignment="Center"/>
                             </StackPanel>
 
-                            <!-- Style row. All four setting combos below share one FIXED
-                                 width: MinWidth-only combos size to their selected item,
-                                 so picking a longer option visibly widened the box and
-                                 broke the column rhythm (owner report 2026-07-16). -->
+                            <!-- Style row. All four setting combos below auto-size to
+                                 their WIDEST ITEM and share one width group: MinWidth-only
+                                 combos resized to the selected option (column rhythm
+                                 broke), and the fixed widths that replaced them clipped
+                                 longer locales like Italian and German (owner reports
+                                 2026-07-16). The behavior remeasures when a language
+                                 switch hands the combo a rebuilt list. -->
                             <Grid Margin="0,0,0,8">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto" SharedSizeGroup="MenuEditorLabel"/>
@@ -11004,7 +11025,9 @@
                                            ToolTip="{Binding Menu_Style_Tip, Source={x:Static strings:Strings.Instance}}"
                                            Margin="0,0,12,0" VerticalAlignment="Center" TextWrapping="Wrap" MaxWidth="260"/>
                                 <StackPanel Grid.Column="1" Orientation="Horizontal">
-                                    <ComboBox Width="240" ItemsSource="{Binding KindOptions}"
+                                    <ComboBox MinWidth="200" ItemsSource="{Binding KindOptions}"
+                                              common:ComboBoxWidthBehavior.SizeToItems="True"
+                                              common:ComboBoxWidthBehavior.WidthGroup="MenuSettingCombos"
                                               ToolTip="{Binding Menu_Style_Tip, Source={x:Static strings:Strings.Instance}}"
                                               DisplayMemberPath="Label" SelectedValuePath="Value"
                                               SelectedValue="{Binding KindIndex, Mode=TwoWay}"/>
@@ -11023,7 +11046,9 @@
                                            ToolTip="{Binding Menu_HostInput_Tip, Source={x:Static strings:Strings.Instance}}"
                                            Margin="0,0,12,0" VerticalAlignment="Center" TextWrapping="Wrap" MaxWidth="260"/>
                                 <StackPanel Grid.Column="1" Orientation="Horizontal">
-                                    <ComboBox Width="240" ItemsSource="{Binding HostOptions}"
+                                    <ComboBox MinWidth="200" ItemsSource="{Binding HostOptions}"
+                                              common:ComboBoxWidthBehavior.SizeToItems="True"
+                                              common:ComboBoxWidthBehavior.WidthGroup="MenuSettingCombos"
                                               ToolTip="{Binding Menu_HostInput_Tip, Source={x:Static strings:Strings.Instance}}"
                                               DisplayMemberPath="Label"
                                               SelectedItem="{Binding SelectedHost, Mode=TwoWay}"/>
@@ -11049,7 +11074,9 @@
                                            ToolTip="{Binding Menu_HostHalf_Tip, Source={x:Static strings:Strings.Instance}}"
                                            Margin="0,0,12,0" VerticalAlignment="Center" TextWrapping="Wrap" MaxWidth="260"/>
                                 <StackPanel Grid.Column="1" Orientation="Horizontal">
-                                    <ComboBox Width="240" ItemsSource="{Binding HostHalfOptions}"
+                                    <ComboBox MinWidth="200" ItemsSource="{Binding HostHalfOptions}"
+                                              common:ComboBoxWidthBehavior.SizeToItems="True"
+                                              common:ComboBoxWidthBehavior.WidthGroup="MenuSettingCombos"
                                               ToolTip="{Binding Menu_HostHalf_Tip, Source={x:Static strings:Strings.Instance}}"
                                               DisplayMemberPath="Label" SelectedValuePath="Value"
                                               SelectedValue="{Binding HostHalfIndex, Mode=TwoWay}"/>
@@ -11068,7 +11095,9 @@
                                            ToolTip="{Binding Menu_FireMode_Tip, Source={x:Static strings:Strings.Instance}}"
                                            Margin="0,0,12,0" VerticalAlignment="Center" TextWrapping="Wrap" MaxWidth="260"/>
                                 <StackPanel Grid.Column="1" Orientation="Horizontal">
-                                    <ComboBox Width="240" ItemsSource="{Binding FireOptions}"
+                                    <ComboBox MinWidth="200" ItemsSource="{Binding FireOptions}"
+                                              common:ComboBoxWidthBehavior.SizeToItems="True"
+                                              common:ComboBoxWidthBehavior.WidthGroup="MenuSettingCombos"
                                               ToolTip="{Binding Menu_FireMode_Tip, Source={x:Static strings:Strings.Instance}}"
                                               DisplayMemberPath="Label" SelectedValuePath="Value"
                                               SelectedValue="{Binding FireTypeIndex, Mode=TwoWay}">
@@ -11254,24 +11283,31 @@
                                                        Margin="0,0,8,0" TextWrapping="Wrap" MaxWidth="160"
                                                        Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
                                             <StackPanel Grid.Column="1" Orientation="Horizontal">
-                                                <!-- Fixed widths: MinWidth-only pickers resized
-                                                     to whatever key / button name was selected,
-                                                     so neighboring rows fell out of column. Long
-                                                     names clip and show in full via tooltip. -->
+                                                <!-- Pickers auto-size to their widest ITEM, one
+                                                     width group per column, so rows stay in
+                                                     column across selections AND long locales
+                                                     never clip (fixed widths clipped Italian /
+                                                     German option names). -->
                                                 <TextBox Text="{Binding Label, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                                          Width="160"
                                                          ToolTip="{Binding Menu_CellLabel_Tip, Source={x:Static strings:Strings.Instance}}"/>
-                                                <ComboBox Width="160" Margin="8,0,0,0"
+                                                <ComboBox MinWidth="140" Margin="8,0,0,0"
+                                                          common:ComboBoxWidthBehavior.SizeToItems="True"
+                                                          common:ComboBoxWidthBehavior.WidthGroup="MenuCellKindCombos"
                                                           ToolTip="{Binding Menu_BindingKind_Tip, Source={x:Static strings:Strings.Instance}}"
                                                           ItemsSource="{Binding BindingKindOptions}"
                                                           DisplayMemberPath="Label" SelectedValuePath="Value"
                                                           SelectedValue="{Binding BindingKind, Mode=TwoWay}"/>
-                                                <ComboBox Width="160" Margin="8,0,0,0"
+                                                <ComboBox MinWidth="140" Margin="8,0,0,0"
+                                                          common:ComboBoxWidthBehavior.SizeToItems="True"
+                                                          common:ComboBoxWidthBehavior.WidthGroup="MenuCellKeyCombos"
                                                           ItemsSource="{Binding KeyOptions}"
                                                           DisplayMemberPath="Label" SelectedValuePath="Vk"
                                                           SelectedValue="{Binding SelectedKeyVk, Mode=TwoWay}"
                                                           Visibility="{Binding ShowKeyPicker, Converter={StaticResource BoolToVisibilityConverter}}"/>
-                                                <ComboBox Width="160" Margin="8,0,0,0"
+                                                <ComboBox MinWidth="140" Margin="8,0,0,0"
+                                                          common:ComboBoxWidthBehavior.SizeToItems="True"
+                                                          common:ComboBoxWidthBehavior.WidthGroup="MenuCellButtonCombos"
                                                           ItemsSource="{Binding ButtonOptions}"
                                                           DisplayMemberPath="Label" SelectedValuePath="Value"
                                                           SelectedValue="{Binding SelectedButtonFlag, Mode=TwoWay}"

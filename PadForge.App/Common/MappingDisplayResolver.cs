@@ -800,6 +800,19 @@ namespace PadForge.Common
                 int.TryParse(name.AsSpan(7), out int numpadIdx))
                 return string.Format(s.Key_Numpad, numpadIdx);
 
+            // Keyboard keys the engine's invariant table leaves as hex
+            // ("Key 0xNN"): resolve through the macro editor's VirtualKey
+            // vocabulary, which names and localizes the whole VK space.
+            // The one seam covers both twin surfaces (the picker and the
+            // row chips localize through this method). Undefined VK values
+            // keep the hex fallback.
+            if (name.StartsWith("Key 0x", System.StringComparison.Ordinal)
+                && int.TryParse(name.AsSpan(6), System.Globalization.NumberStyles.HexNumber,
+                    System.Globalization.CultureInfo.InvariantCulture, out int vkCode)
+                && System.Enum.IsDefined(typeof(PadForge.Common.VirtualKey), vkCode))
+                return ViewModels.MacroAction.VirtualKeyDisplayName(
+                    (PadForge.Common.VirtualKey)vkCode);
+
             // Parametric patterns: "Axis 6", "Slider 0", "POV 2", "Button 5".
             // "Axis N" is the generic extra-axis family (issue #193): the named
             // standard axes ("X Axis", "Left Stick X", ...) are matched by the

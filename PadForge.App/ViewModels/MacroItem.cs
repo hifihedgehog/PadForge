@@ -2729,8 +2729,11 @@ namespace PadForge.ViewModels
             return items;
         }
 
-        /// <summary>Returns a user-friendly localized display name for a virtual key.</summary>
-        private static string VirtualKeyDisplayName(VirtualKey vk) => vk switch
+        /// <summary>Returns a user-friendly localized display name for a
+        /// virtual key. Internal: MappingDisplayResolver reuses this
+        /// vocabulary for keyboard-device keys the engine's invariant
+        /// table leaves as "Key 0xNN" hex.</summary>
+        internal static string VirtualKeyDisplayName(VirtualKey vk) => vk switch
         {
             VirtualKey.None => Strings.Instance.Macro_None,
             // Mouse buttons

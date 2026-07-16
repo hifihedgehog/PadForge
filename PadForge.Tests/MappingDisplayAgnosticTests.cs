@@ -138,5 +138,20 @@ namespace PadForge.Tests
             Assert.False(string.IsNullOrEmpty(mi.SourceDisplayText));
             Assert.NotEqual("Mouse Gesture 0 Up", mi.SourceDisplayText);
         }
+
+        [Fact]
+        public void KeyboardHexKeyNames_ResolveThroughTheMacroVkVocabulary()
+        {
+            var si = Strings.Instance;
+            // Keys the engine's invariant table leaves as hex resolve to the
+            // macro editor's names: defined VK values get real names...
+            Assert.Equal("A", MappingDisplayResolver.LocalizeObjectName("Key 0x41"));
+            Assert.Equal(si.Key_Delete, MappingDisplayResolver.LocalizeObjectName("Key 0x2E"));
+            Assert.Equal(si.Key_LButton, MappingDisplayResolver.LocalizeObjectName("Key 0x01"));
+            // ...the friendly-named engine subset keeps its existing path...
+            Assert.Equal(si.Key_Backspace, MappingDisplayResolver.LocalizeObjectName("Backspace"));
+            // ...and an undefined VK value keeps the hex fallback.
+            Assert.Equal("Key 0x07", MappingDisplayResolver.LocalizeObjectName("Key 0x07"));
+        }
     }
 }

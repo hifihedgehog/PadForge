@@ -23,17 +23,6 @@ namespace PadForge.ViewModels
         public override int GetHashCode() => Descriptor.GetHashCode();
     }
 
-    /// <summary>One pickable input for a menu's Custom steer / Click
-    /// dropdowns. Descriptor is the CANONICAL storage form (the same
-    /// grammar the record path writes); the empty descriptor is the
-    /// "(not set)" / "(host default)" sentinel.</summary>
-    public sealed class MenuInputOption
-    {
-        public string Descriptor { get; init; } = "";
-        public string Label { get; init; } = "";
-        public override string ToString() => Label;
-    }
-
     /// <summary>Generic labeled int option (fire mode, half, binding kind,
     /// key, button). <see cref="Description"/> feeds the option's tooltip
     /// and, for fire modes, the persistent caption under the combo; empty
@@ -452,27 +441,24 @@ namespace PadForge.ViewModels
         /// offers only the sentinel and the authored value.</summary>
         internal Func<IEnumerable<InputChoice>> InputChoicesProvider;
 
-        /// <summary>Builds a Custom-steer / Click dropdown: sentinel
-        /// first (empty descriptor), then the slot's picker choices
-        /// filtered by the SAME gate the record path applies (analog
-        /// families steer, everything else clicks), deduplicated by
-        /// descriptor so per-device duplicates of the same read
-        /// collapse (menus read every assigned device, so device
-        /// identity is meaningless here). The abstract "Gamepad ..."
-        /// alias family is EXCLUDED: its lettered vocabulary reads as
-        /// virtual-controller buttons, and every alias is just a raw
-        /// read the per-device entries already list under the
-        /// device's own naming (a non-gamepad's Button 0..N, POV
-        /// hats, axes; a gamepad's object names). The authored value
-        /// always gets an entry so the selection never silently
-        /// lies.</summary>
-        private List<MenuInputOption> BuildInputChoices(bool analog, string emptyLabel, string current)
+        /// <summary>Builds a Custom-steer / Click dropdown: the slot's
+        /// cross-device picker list EXACTLY as the mapping table shows
+        /// it (the "(Any device)" abstract group first, then every
+        /// assigned device's own group of its mappable items), filtered
+        /// by the SAME gate the record path applies: analog families
+        /// steer (gamepad axis aliases resolve before the test, so the
+        /// abstract stick/trigger entries stay pickable), everything
+        /// else clicks. No deduplication and no relabeling: each entry
+        /// keeps its device group and its device's naming, so a
+        /// non-gamepad's Button 0..N, POV hats, and axes read raw while
+        /// a gamepad's read by its object names. The authored value
+        /// always gets an "(Any device)" entry when no group lists it,
+        /// so the selection never silently lies.</summary>
+        private List<InputChoice> BuildInputChoices(bool analog, string current)
         {
-            var list = new List<MenuInputOption>
-            {
-                new MenuInputOption { Descriptor = "", Label = emptyLabel },
-            };
-            var seen = new HashSet<string>(StringComparer.Ordinal) { "" };
+            var list = new List<InputChoice>();
+            string cur = (current ?? "").Trim();
+            bool found = false;
             var provided = InputChoicesProvider?.Invoke();
             if (provided != null)
             {
@@ -481,28 +467,62 @@ namespace PadForge.ViewModels
                     if (c == null || string.IsNullOrEmpty(c.Descriptor)) continue;
                     // A menu reading its own items back would feed itself.
                     if (c.Descriptor.StartsWith("Menu ", StringComparison.Ordinal)) continue;
-                    if (c.Descriptor.StartsWith("Gamepad ", StringComparison.Ordinal)) continue;
-                    if (IsAnalogDescriptor(c.Descriptor) != analog) continue;
-                    if (!seen.Add(c.Descriptor)) continue;
-                    list.Add(new MenuInputOption { Descriptor = c.Descriptor, Label = c.DisplayName });
+                    string canonical = PadForge.Engine.Common.Mapping.SourceCoercion
+                        .ResolveGamepadAlias(c.Descriptor) ?? c.Descriptor;
+                    if (IsAnalogDescriptor(canonical) != analog) continue;
+                    list.Add(c);
+                    if (cur.Length > 0 && string.Equals(c.Descriptor, cur, StringComparison.Ordinal))
+                        found = true;
                 }
             }
-            string cur = (current ?? "").Trim();
-            if (cur.Length > 0 && !seen.Contains(cur))
-                list.Add(new MenuInputOption { Descriptor = cur, Label = DisplayFor(cur) });
+            if (cur.Length > 0 && !found)
+                list.Add(new InputChoice
+                {
+                    Descriptor = cur,
+                    DisplayName = DisplayFor(cur),
+                    DeviceGuid = "",
+                    DeviceLabel = Strings.Instance.Mapping_AnyDevice,
+                });
             return list;
         }
 
-        public IReadOnlyList<MenuInputOption> CustomXChoices
-            => BuildInputChoices(analog: true, Strings.Instance.Menu_NotRecorded, Entry.CustomXDescriptor);
+        /// <summary>Grouped view over a choice list, keyed on DeviceLabel
+        /// like <c>PadViewModel.SlotAvailableInputsView</c> so the combo
+        /// renders the mapping picker's device-name headers.</summary>
+        private static System.ComponentModel.ICollectionView BuildChoicesView(List<InputChoice> items)
+        {
+            var view = new System.Windows.Data.ListCollectionView(items);
+            view.GroupDescriptions.Add(
+                new System.Windows.Data.PropertyGroupDescription(nameof(InputChoice.DeviceLabel)));
+            return view;
+        }
 
-        public IReadOnlyList<MenuInputOption> CustomYChoices
-            => BuildInputChoices(analog: true, Strings.Instance.Menu_NotRecorded, Entry.CustomYDescriptor);
+        public IReadOnlyList<InputChoice> CustomXChoices
+            => BuildInputChoices(analog: true, Entry.CustomXDescriptor);
 
-        public IReadOnlyList<MenuInputOption> ClickChoices
-            => BuildInputChoices(analog: false,
-                IsCustomHost ? Strings.Instance.Menu_NotRecorded : Strings.Instance.Menu_ClickDefault,
-                Entry.ClickDescriptor);
+        public IReadOnlyList<InputChoice> CustomYChoices
+            => BuildInputChoices(analog: true, Entry.CustomYDescriptor);
+
+        public IReadOnlyList<InputChoice> ClickChoices
+            => BuildInputChoices(analog: false, Entry.ClickDescriptor);
+
+        public System.ComponentModel.ICollectionView CustomXChoicesView
+            => BuildChoicesView(BuildInputChoices(analog: true, Entry.CustomXDescriptor));
+
+        public System.ComponentModel.ICollectionView CustomYChoicesView
+            => BuildChoicesView(BuildInputChoices(analog: true, Entry.CustomYDescriptor));
+
+        public System.ComponentModel.ICollectionView ClickChoicesView
+            => BuildChoicesView(BuildInputChoices(analog: false, Entry.ClickDescriptor));
+
+        /// <summary>Subtitle under an EMPTY steer combo, mirroring the
+        /// Aim Engage cluster's "(Unassigned)" line.</summary>
+        public string CustomEmptyLabel => Strings.Instance.Menu_NotRecorded;
+
+        /// <summary>Subtitle under an empty Click combo: named openers
+        /// fall back to their default click, Custom has none.</summary>
+        public string ClickEmptyLabel
+            => IsCustomHost ? Strings.Instance.Menu_NotRecorded : Strings.Instance.Menu_ClickDefault;
 
         public string CustomXSelected
         {
@@ -553,14 +573,18 @@ namespace PadForge.ViewModels
                 case MenuRecordTarget.CustomX:
                     OnPropertyChanged(nameof(CustomXSelected));
                     OnPropertyChanged(nameof(CustomXChoices));
+                    OnPropertyChanged(nameof(CustomXChoicesView));
                     break;
                 case MenuRecordTarget.CustomY:
                     OnPropertyChanged(nameof(CustomYSelected));
                     OnPropertyChanged(nameof(CustomYChoices));
+                    OnPropertyChanged(nameof(CustomYChoicesView));
                     break;
                 default:
                     OnPropertyChanged(nameof(ClickSelected));
                     OnPropertyChanged(nameof(ClickChoices));
+                    OnPropertyChanged(nameof(ClickChoicesView));
+                    OnPropertyChanged(nameof(ClickEmptyLabel));
                     break;
             }
         }
@@ -574,6 +598,7 @@ namespace PadForge.ViewModels
             RaiseCustomInput(MenuRecordTarget.CustomX);
             RaiseCustomInput(MenuRecordTarget.CustomY);
             RaiseCustomInput(MenuRecordTarget.Click);
+            OnPropertyChanged(nameof(CustomEmptyLabel));
         }
 
         public RelayCommand ResetClickCommand => _resetClick ??= new RelayCommand(

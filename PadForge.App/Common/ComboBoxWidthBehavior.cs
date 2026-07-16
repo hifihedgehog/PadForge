@@ -96,6 +96,10 @@ namespace PadForge.Common
             DependencyPropertyDescriptor
                 .FromProperty(ItemsControl.ItemsSourceProperty, typeof(ComboBox))
                 .RemoveValueChanged(cb, OnItemsSourceChanged);
+            // A regenerated template's dead combo can linger alive (weak
+            // ref, not yet collected) and would otherwise pin the group
+            // maximum at its last measurement.
+            cb.SetValue(MeasuredWidthProperty, 0.0);
         }
 
         private static void OnItemsSourceChanged(object sender, EventArgs e)
@@ -127,17 +131,20 @@ namespace PadForge.Common
                 return;
             }
 
-            // Group max over live members, applied to every live member so
-            // the whole column moves together (and dead entries prune here).
+            // Group max over LOADED live members, applied to every one so
+            // the whole column moves together (dead entries prune here;
+            // unloaded members neither contribute nor get resized, so a
+            // regenerated template's leftovers cannot pin the group wide).
             double groupMax = measured;
             for (int i = list.Count - 1; i >= 0; i--)
             {
                 if (!list[i].TryGetTarget(out var member)) { list.RemoveAt(i); continue; }
+                if (!member.IsLoaded) continue;
                 double w = (double)member.GetValue(MeasuredWidthProperty);
                 if (w > groupMax) groupMax = w;
             }
             for (int i = 0; i < list.Count; i++)
-                if (list[i].TryGetTarget(out var member))
+                if (list[i].TryGetTarget(out var member) && member.IsLoaded)
                     member.Width = groupMax;
         }
 

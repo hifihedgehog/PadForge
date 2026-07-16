@@ -828,8 +828,11 @@ namespace PadForge.SteamWorkshop.Translation
                 ScalePercent = Math.Clamp(ParseIntSetting(settings, "touch_menu_scale", 100), 10, 400),
                 OpacityPercent = Math.Clamp(ParseIntSetting(settings, "touch_menu_opacity", 90), 5, 100),
             };
+            // Cap at the runtime's own clamp (menus engage-clamp 1..95):
+            // storing 96-100 while reporting the conversion Clean hid a
+            // silent runtime change of the imported value.
             int engageDz = GroupDeadZonePercent(settings);
-            if (engageDz > 0) entry.EngageDeadzonePercent = engageDz;
+            if (engageDz > 0) entry.EngageDeadzonePercent = Math.Min(engageDz, 95);
 
             int iconCells = 0;
             foreach (var cell in cells)

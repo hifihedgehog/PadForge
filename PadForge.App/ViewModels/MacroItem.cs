@@ -5424,6 +5424,36 @@ namespace PadForge.ViewModels
 
     public static class MacroButtonNames
     {
+        /// <summary>The Numbered convention's mask order: numbered button N
+        /// (1-based) corresponds to NumberedMaskOrder[N-1]. This is exactly
+        /// the mapping BuildNumberedDefs labels (A = Button 1 ... Guide =
+        /// Button 11). Shared by the menu editor and delivery so a slot's
+        /// output-type switch translates an authored button instead of
+        /// stranding it.</summary>
+        public static readonly ushort[] NumberedMaskOrder =
+        {
+            0x1000, 0x2000, 0x4000, 0x8000, // A B X Y
+            0x0100, 0x0200,                 // LB RB
+            0x0020, 0x0010,                 // Back Start
+            0x0040, 0x0080,                 // LS RS
+            0x0400,                         // Guide
+        };
+
+        /// <summary>1-based numbered-button equivalent of the LOWEST set
+        /// mask bit, or 0 when none maps.</summary>
+        public static int NumberFromMask(int mask)
+        {
+            for (int i = 0; i < NumberedMaskOrder.Length; i++)
+                if ((mask & NumberedMaskOrder[i]) != 0) return i + 1;
+            return 0;
+        }
+
+        /// <summary>Mask equivalent of a 1-based numbered button, or 0 when
+        /// the number is outside the shared 1..11 range.</summary>
+        public static ushort MaskFromNumber(int number)
+            => number >= 1 && number <= NumberedMaskOrder.Length
+                ? NumberedMaskOrder[number - 1] : (ushort)0;
+
         /// <summary>
         /// Returns the button label/flag pairs for the given style.
         /// Flags are always the same Xbox-standard bitmask; only labels differ.

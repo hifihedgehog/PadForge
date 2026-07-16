@@ -54,9 +54,21 @@ public class Strings : INotifyPropertyChanged
             lock (_cultureLock)
             {
                 if (value.Target == null)
+                {
                     _staticCultureHandlers.Add(value);
-                else
-                    _weakCultureHandlers.Add(new WeakCultureEntry(value.Target, value.Method));
+                    return;
+                }
+                // Periodic prune at subscribe time: raises prune dead
+                // entries, but an app whose language never changes only
+                // ever ADDS here (editor VMs resubscribe on every rebuild),
+                // so the registry grew without bound between raises.
+                if (_weakCultureHandlers.Count % 64 == 63)
+                {
+                    for (int i = _weakCultureHandlers.Count - 1; i >= 0; i--)
+                        if (!_weakCultureHandlers[i].TargetRef.TryGetTarget(out _))
+                            _weakCultureHandlers.RemoveAt(i);
+                }
+                _weakCultureHandlers.Add(new WeakCultureEntry(value.Target, value.Method));
             }
         }
         remove

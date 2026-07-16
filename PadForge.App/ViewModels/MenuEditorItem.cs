@@ -515,14 +515,33 @@ namespace PadForge.ViewModels
         public System.ComponentModel.ICollectionView ClickChoicesView
             => BuildChoicesView(BuildInputChoices(analog: false, Entry.ClickDescriptor));
 
-        /// <summary>Subtitle under an EMPTY steer combo, mirroring the
-        /// Aim Engage cluster's "(Unassigned)" line.</summary>
-        public string CustomEmptyLabel => Strings.Instance.Menu_NotRecorded;
+        /// <summary>Subtitle under a steer / Click combo, mirroring the
+        /// mapping and macro pickers: the SELECTED entry's owning-device
+        /// label (the first provider match, which is also the instance
+        /// the combo displays), or the empty-state text when nothing is
+        /// assigned ("(not set)"; the Click row of a named opener reads
+        /// "(host default)" because its default click still fires).</summary>
+        private string SubtitleFor(string descriptor, string emptyLabel)
+        {
+            string d = (descriptor ?? "").Trim();
+            if (d.Length == 0) return emptyLabel;
+            var provided = InputChoicesProvider?.Invoke();
+            if (provided != null)
+                foreach (var c in provided)
+                    if (c != null && string.Equals(c.Descriptor, d, StringComparison.Ordinal))
+                        return c.DeviceLabel;
+            return Strings.Instance.Mapping_AnyDevice;
+        }
 
-        /// <summary>Subtitle under an empty Click combo: named openers
-        /// fall back to their default click, Custom has none.</summary>
-        public string ClickEmptyLabel
-            => IsCustomHost ? Strings.Instance.Menu_NotRecorded : Strings.Instance.Menu_ClickDefault;
+        public string CustomXSubtitle
+            => SubtitleFor(Entry.CustomXDescriptor, Strings.Instance.Menu_NotRecorded);
+
+        public string CustomYSubtitle
+            => SubtitleFor(Entry.CustomYDescriptor, Strings.Instance.Menu_NotRecorded);
+
+        public string ClickSubtitle
+            => SubtitleFor(Entry.ClickDescriptor,
+                IsCustomHost ? Strings.Instance.Menu_NotRecorded : Strings.Instance.Menu_ClickDefault);
 
         public string CustomXSelected
         {
@@ -542,8 +561,19 @@ namespace PadForge.ViewModels
             set => SetCustomInput(MenuRecordTarget.Click, value);
         }
 
+        /// <summary>True while RaiseCustomInput swaps a combo's grouped
+        /// ItemsSource view: the WPF Selector transiently clears its
+        /// selection during the swap and the TwoWay SelectedValue binding
+        /// writes that clear back through the setter, wiping the value
+        /// that triggered the raise (a freshly recorded click vanished
+        /// this way). Setter writes are ignored while the flag is up; the
+        /// Selected re-raise that follows the swap re-asserts the stored
+        /// value against the new view.</summary>
+        private bool _raisingInputChoices;
+
         private void SetCustomInput(MenuRecordTarget target, string value)
         {
+            if (_raisingInputChoices) return;
             string v = (value ?? "").Trim();
             switch (target)
             {
@@ -568,24 +598,36 @@ namespace PadForge.ViewModels
         /// never-lie entry may appear or vanish), and display.</summary>
         private void RaiseCustomInput(MenuRecordTarget target)
         {
-            switch (target)
+            _raisingInputChoices = true;
+            try
             {
-                case MenuRecordTarget.CustomX:
-                    OnPropertyChanged(nameof(CustomXSelected));
-                    OnPropertyChanged(nameof(CustomXChoices));
-                    OnPropertyChanged(nameof(CustomXChoicesView));
-                    break;
-                case MenuRecordTarget.CustomY:
-                    OnPropertyChanged(nameof(CustomYSelected));
-                    OnPropertyChanged(nameof(CustomYChoices));
-                    OnPropertyChanged(nameof(CustomYChoicesView));
-                    break;
-                default:
-                    OnPropertyChanged(nameof(ClickSelected));
-                    OnPropertyChanged(nameof(ClickChoices));
-                    OnPropertyChanged(nameof(ClickChoicesView));
-                    OnPropertyChanged(nameof(ClickEmptyLabel));
-                    break;
+                // View before Selected: the Selected re-read must resolve
+                // against the NEW ItemsSource, not the one being replaced.
+                switch (target)
+                {
+                    case MenuRecordTarget.CustomX:
+                        OnPropertyChanged(nameof(CustomXChoices));
+                        OnPropertyChanged(nameof(CustomXChoicesView));
+                        OnPropertyChanged(nameof(CustomXSelected));
+                        OnPropertyChanged(nameof(CustomXSubtitle));
+                        break;
+                    case MenuRecordTarget.CustomY:
+                        OnPropertyChanged(nameof(CustomYChoices));
+                        OnPropertyChanged(nameof(CustomYChoicesView));
+                        OnPropertyChanged(nameof(CustomYSelected));
+                        OnPropertyChanged(nameof(CustomYSubtitle));
+                        break;
+                    default:
+                        OnPropertyChanged(nameof(ClickChoices));
+                        OnPropertyChanged(nameof(ClickChoicesView));
+                        OnPropertyChanged(nameof(ClickSelected));
+                        OnPropertyChanged(nameof(ClickSubtitle));
+                        break;
+                }
+            }
+            finally
+            {
+                _raisingInputChoices = false;
             }
         }
 
@@ -598,7 +640,6 @@ namespace PadForge.ViewModels
             RaiseCustomInput(MenuRecordTarget.CustomX);
             RaiseCustomInput(MenuRecordTarget.CustomY);
             RaiseCustomInput(MenuRecordTarget.Click);
-            OnPropertyChanged(nameof(CustomEmptyLabel));
         }
 
         public RelayCommand ResetClickCommand => _resetClick ??= new RelayCommand(

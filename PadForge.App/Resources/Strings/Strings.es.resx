@@ -2626,6 +2626,15 @@
   <data name="Menu_ExtendedSlot_Warning" xml:space="preserve"><value>Este tipo de ranura no emite botones de mando, así que las asignaciones "Botón del mando" no tienen efecto aquí. Usa "Tecla de teclado" o asigna el origen del elemento de menú de la celda en la pestaña Asignaciones.</value></data>
   <data name="Menu_HostInput_Caption" xml:space="preserve"><value>Se lee de los mandos físicos asignados a esta ranura, no del diseño del mando virtual. Las asignaciones de celda de abajo son lo que el menú emite.</value></data>
   <data name="Menu_Host_Missing_Format" xml:space="preserve"><value>{0} (no conectado)</value></data>
+  <data name="Menu_Host_Custom" xml:space="preserve"><value>Ejes personalizados</value></data>
+  <data name="Menu_CustomX" xml:space="preserve"><value>Dirección X</value></data>
+  <data name="Menu_CustomY" xml:space="preserve"><value>Dirección Y</value></data>
+  <data name="Menu_CustomAxis_Tip" xml:space="preserve"><value>Graba dos ejes cualesquiera para dirigir el menú: empuja más allá de la zona muerta de activación para abrirlo. Así alojan menús los joysticks, volantes y otros dispositivos que no son gamepads.</value></data>
+  <data name="Menu_ClickInput" xml:space="preserve"><value>Entrada de clic</value></data>
+  <data name="Menu_ClickInput_Tip" xml:space="preserve"><value>El botón que usan los modos Al hacer clic y Al soltar el clic, grabable desde cualquier dispositivo asignado. Vacío mantiene el predeterminado: el clic del stick o del panel táctil. Los ejes personalizados no tienen predeterminado, así que graba uno para usar esos modos.</value></data>
+  <data name="Menu_ClickDefault" xml:space="preserve"><value>(predeterminado del host)</value></data>
+  <data name="Menu_NotRecorded" xml:space="preserve"><value>(sin definir)</value></data>
+  <data name="Menu_Binding_Unsupported_Format" xml:space="preserve"><value>{0} (no en este tipo de ranura)</value></data>
   <data name="Mapping_MenuItem_Format" xml:space="preserve"><value>Menú {0} celda {1}</value></data>
   <data name="Dashboard_MenuOverlay" xml:space="preserve"><value>Superposición de menú</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>Muestra el anillo o la cuadrícula en pantalla mientras un menú radial o táctil está activo. Los menús siguen disparándose con la superposición apagada.</value></data>

@@ -2626,6 +2626,15 @@
   <data name="Menu_ExtendedSlot_Warning" xml:space="preserve"><value>Dieser Slot-Typ gibt keine Controller-Tasten aus, daher haben "Controller-Taste"-Belegungen hier keine Wirkung. Nutzen Sie "Tastaturtaste" oder belegen Sie die Menüelement-Quelle der Zelle im Zuordnungen-Tab.</value></data>
   <data name="Menu_HostInput_Caption" xml:space="preserve"><value>Wird von den diesem Slot zugewiesenen physischen Controllern gelesen, nicht vom Layout des virtuellen Controllers. Die Zellenbelegungen unten sind das, was das Menü ausgibt.</value></data>
   <data name="Menu_Host_Missing_Format" xml:space="preserve"><value>{0} (nicht verbunden)</value></data>
+  <data name="Menu_Host_Custom" xml:space="preserve"><value>Eigene Achsen</value></data>
+  <data name="Menu_CustomX" xml:space="preserve"><value>Steuerung X</value></data>
+  <data name="Menu_CustomY" xml:space="preserve"><value>Steuerung Y</value></data>
+  <data name="Menu_CustomAxis_Tip" xml:space="preserve"><value>Nehmen Sie zwei beliebige Achsen auf, um das Menü zu steuern: über die Aktivierungs-Deadzone hinaus auslenken, um es zu öffnen. So hosten Joysticks, Lenkräder und andere Nicht-Gamepad-Geräte Menüs.</value></data>
+  <data name="Menu_ClickInput" xml:space="preserve"><value>Klick-Eingabe</value></data>
+  <data name="Menu_ClickInput_Tip" xml:space="preserve"><value>Die Taste, die die Auslösearten Beim Klick und Beim Loslassen des Klicks verwenden, aufnehmbar von jedem zugewiesenen Gerät. Leer behält den Standard des Openers bei: Stick-Klick oder Trackpad-Klick. Eigene-Achsen-Opener haben keinen Standard, nehmen Sie also eine Taste auf, um diese Auslösearten zu nutzen.</value></data>
+  <data name="Menu_ClickDefault" xml:space="preserve"><value>(Standard des Openers)</value></data>
+  <data name="Menu_NotRecorded" xml:space="preserve"><value>(nicht festgelegt)</value></data>
+  <data name="Menu_Binding_Unsupported_Format" xml:space="preserve"><value>{0} (nicht bei diesem Slot-Typ)</value></data>
   <data name="Mapping_MenuItem_Format" xml:space="preserve"><value>Menü {0} Feld {1}</value></data>
   <data name="Dashboard_MenuOverlay" xml:space="preserve"><value>Menü-Overlay</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>Zeigt den Ring oder das Raster auf dem Bildschirm, solange ein Radial- oder Touch-Menü aktiv ist. Menüs lösen auch bei ausgeschaltetem Overlay aus.</value></data>

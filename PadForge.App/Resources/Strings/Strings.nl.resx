@@ -2646,6 +2646,15 @@
   <data name="Menu_ExtendedSlot_Warning" xml:space="preserve"><value>Dit slottype geeft geen controllerknoppen uit, dus "Controllerknop"-toewijzingen hebben hier geen effect. Gebruik "Toetsenbordtoets", of koppel de menu-itembron van de cel op het tabblad Toewijzingen.</value></data>
   <data name="Menu_HostInput_Caption" xml:space="preserve"><value>Gelezen van de fysieke controllers die aan dit slot zijn toegewezen, niet van de indeling van de virtuele controller. De celtoewijzingen hieronder zijn wat het menu uitvoert.</value></data>
   <data name="Menu_Host_Missing_Format" xml:space="preserve"><value>{0} (niet verbonden)</value></data>
+  <data name="Menu_Host_Custom" xml:space="preserve"><value>Aangepaste assen</value></data>
+  <data name="Menu_CustomX" xml:space="preserve"><value>Besturing X</value></data>
+  <data name="Menu_CustomY" xml:space="preserve"><value>Besturing Y</value></data>
+  <data name="Menu_CustomAxis_Tip" xml:space="preserve"><value>Neem twee willekeurige assen op om het menu te besturen: duw voorbij de activeringsdeadzone om het te openen. Zo hosten joysticks, sturen en andere niet-gamepadapparaten menu's.</value></data>
+  <data name="Menu_ClickInput" xml:space="preserve"><value>Klikinvoer</value></data>
+  <data name="Menu_ClickInput_Tip" xml:space="preserve"><value>De knop die de modi Bij klik en Bij loslaten van klik gebruiken, op te nemen van elk toegewezen apparaat. Leeg behoudt de standaard van de opener: de stick-klik of trackpad-klik. Aangepaste assen hebben geen standaard, dus neem er een op om die modi te gebruiken.</value></data>
+  <data name="Menu_ClickDefault" xml:space="preserve"><value>(standaard van opener)</value></data>
+  <data name="Menu_NotRecorded" xml:space="preserve"><value>(niet ingesteld)</value></data>
+  <data name="Menu_Binding_Unsupported_Format" xml:space="preserve"><value>{0} (niet bij dit slottype)</value></data>
   <data name="Mapping_MenuItem_Format" xml:space="preserve"><value>Menu {0} cel {1}</value></data>
   <data name="Dashboard_MenuOverlay" xml:space="preserve"><value>Menu-overlay</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>Toont de ring of het raster op het scherm zolang een radiaal of touch-menu actief is. Menu's vuren ook met de overlay uit.</value></data>

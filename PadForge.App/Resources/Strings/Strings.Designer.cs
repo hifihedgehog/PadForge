@@ -2535,6 +2535,15 @@ public class Strings : INotifyPropertyChanged
     public string Menu_ExtendedSlot_Warning => Get("Menu_ExtendedSlot_Warning");
     public string Menu_HostInput_Caption => Get("Menu_HostInput_Caption");
     public string Menu_Host_Missing_Format => Get("Menu_Host_Missing_Format");
+    public string Menu_Host_Custom => Get("Menu_Host_Custom");
+    public string Menu_CustomX => Get("Menu_CustomX");
+    public string Menu_CustomY => Get("Menu_CustomY");
+    public string Menu_CustomAxis_Tip => Get("Menu_CustomAxis_Tip");
+    public string Menu_ClickInput => Get("Menu_ClickInput");
+    public string Menu_ClickInput_Tip => Get("Menu_ClickInput_Tip");
+    public string Menu_ClickDefault => Get("Menu_ClickDefault");
+    public string Menu_NotRecorded => Get("Menu_NotRecorded");
+    public string Menu_Binding_Unsupported_Format => Get("Menu_Binding_Unsupported_Format");
     public string Mapping_MenuItem_Format => Get("Mapping_MenuItem_Format");
     public string Dashboard_MenuOverlay => Get("Dashboard_MenuOverlay");
     public string Dashboard_MenuOverlayDescription => Get("Dashboard_MenuOverlayDescription");

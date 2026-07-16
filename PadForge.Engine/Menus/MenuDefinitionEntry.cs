@@ -112,6 +112,26 @@ namespace PadForge.Engine.Menus
         /// 1 = left half, 2 = right half. Sticks are always 0.</summary>
         [XmlAttribute] public int HostHalf { get; set; }
 
+        /// <summary>Custom opener: when <see cref="HostDescriptor"/> is
+        /// <c>"Custom"</c>, these two RAW axis descriptors ("Axis 3",
+        /// "Slider 0", ...) steer the menu instead of a named stick or
+        /// touchpad. This is what makes joysticks, wheels, and other
+        /// non-gamepad devices first-class openers: "Left/Right Stick" is
+        /// a gamepad-only convention that means nothing on them. Engage
+        /// follows the same deadzone rule as sticks. Schema append-only:
+        /// absent in older files = empty.</summary>
+        [XmlAttribute] public string CustomXDescriptor { get; set; } = "";
+
+        [XmlAttribute] public string CustomYDescriptor { get; set; } = "";
+
+        /// <summary>Assignable Click input for the Click / Click Release
+        /// fire modes, any button-family descriptor. Empty = the host's
+        /// default (stick click for stick hosts, pad click for touchpads,
+        /// none for Custom). The default used to be HARD-WIRED to the
+        /// under-stick button, which is not a convention non-gamepad
+        /// devices share. Schema append-only.</summary>
+        [XmlAttribute] public string ClickDescriptor { get; set; } = "";
+
         /// <summary>Shift layer this menu belongs to. Empty or "Base" =
         /// always available; anything else engages the menu only while
         /// that layer is held (imported mode-shift menus).</summary>
@@ -171,6 +191,9 @@ namespace PadForge.Engine.Menus
                 Kind = Kind,
                 HostDescriptor = HostDescriptor,
                 HostHalf = HostHalf,
+                CustomXDescriptor = CustomXDescriptor,
+                CustomYDescriptor = CustomYDescriptor,
+                ClickDescriptor = ClickDescriptor,
                 LayerMask = LayerMask,
                 FireType = FireType,
                 CellCount = CellCount,

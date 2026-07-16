@@ -71,8 +71,12 @@ namespace PadForge.ViewModels
             KindOptionsBacking = BuildKindOptions();
             HostHalfOptionsBacking = BuildHostHalfOptions();
             FireOptionsBacking = BuildFireOptions();
-            MenuCellItem.RebuildCultureOptions();
         }
+
+        /// <summary>Which input the freeform recorder is currently aimed
+        /// at: the opener fold, one of the Custom steer axes, or the
+        /// Click input.</summary>
+        public enum MenuRecordTarget { Host, CustomX, CustomY, Click }
 
         public MenuEditorItem(MenuDefinitionEntry entry)
         {
@@ -96,6 +100,25 @@ namespace PadForge.ViewModels
             {
                 if (_buttonStyle == value) return;
                 _buttonStyle = value;
+                foreach (var cell in Cells)
+                    cell.RefreshButtonStyle();
+            }
+        }
+
+        private bool _supportsControllerButtons = true;
+
+        /// <summary>Whether this slot's output can press controller
+        /// buttons at all (Xbox / PlayStation / Extended). MIDI and
+        /// Keyboard-Mouse slots CANNOT, and their cells must not offer a
+        /// dead Controller Button choice: options are dynamic per slot
+        /// type, never offered-then-warned-about.</summary>
+        public bool SupportsControllerButtons
+        {
+            get => _supportsControllerButtons;
+            set
+            {
+                if (_supportsControllerButtons == value) return;
+                _supportsControllerButtons = value;
                 foreach (var cell in Cells)
                     cell.RefreshButtonStyle();
             }
@@ -242,6 +265,10 @@ namespace PadForge.ViewModels
                 for (int n = 0; n < 3; n++)
                     Add($"Touchpad {n}", string.Format(s.Menu_Host_Touchpad_Format, n + 1),
                         n < caps.TouchpadCount, touch: true);
+                // Custom Axes: always offered. It exists precisely for
+                // devices the named surfaces cannot describe (joysticks,
+                // wheels, anything not detected as a gamepad).
+                list.Add(new MenuHostOption { Descriptor = "Custom", Label = s.Menu_Host_Custom });
                 // Defensive: an authored descriptor outside the known five
                 // (hand-edited XML) still shows rather than vanishing.
                 bool found = false;
@@ -286,6 +313,10 @@ namespace PadForge.ViewModels
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(HostIsTouchpad));
                 OnPropertyChanged(nameof(HostHalfIndex));
+                OnPropertyChanged(nameof(IsCustomHost));
+                OnPropertyChanged(nameof(CustomXDisplay));
+                OnPropertyChanged(nameof(CustomYDisplay));
+                OnPropertyChanged(nameof(ClickDisplay));
                 OnEdited();
             }
         }
@@ -332,6 +363,20 @@ namespace PadForge.ViewModels
                 if (parts.Length >= 2 && int.TryParse(parts[1], out int pad) && pad >= 0 && pad <= 2)
                     host = $"Touchpad {pad}";
             }
+            else if (IsAnalogDescriptor(canonical))
+            {
+                // A flight stick, wheel, or throttle axis has no gamepad
+                // stick to fold onto: it becomes a Custom Axes opener with
+                // the recorded axis as Steer X.
+                Entry.HostDescriptor = "Custom";
+                Entry.CustomXDescriptor = canonical;
+                RefreshHostOptions();
+                OnPropertyChanged(nameof(IsCustomHost));
+                OnPropertyChanged(nameof(CustomXDisplay));
+                OnPropertyChanged(nameof(ClickDisplay));
+                OnEdited();
+                return true;
+            }
             if (host == null) return false;
 
             foreach (var h in HostOptions)
@@ -345,24 +390,154 @@ namespace PadForge.ViewModels
             return false;
         }
 
-        private bool _hostRecording;
+        /// <summary>Applies a freeform-recorded descriptor to the given
+        /// record target. Custom steer slots accept analog descriptors,
+        /// the Click slot accepts button-family ones.</summary>
+        public bool TryApplyRecorded(MenuRecordTarget target, string descriptor)
+        {
+            string d = (descriptor ?? "").Trim();
+            if (d.Length == 0) return false;
+            string canonical = PadForge.Engine.Common.Mapping.SourceCoercion.ResolveGamepadAlias(d) ?? d;
 
-        /// <summary>True while the freeform recorder is capturing the host
-        /// input (drives the record button's glyph swap).</summary>
+            switch (target)
+            {
+                case MenuRecordTarget.Host:
+                    return TryApplyRecordedHost(descriptor);
+
+                case MenuRecordTarget.CustomX:
+                case MenuRecordTarget.CustomY:
+                    if (!IsAnalogDescriptor(canonical)) return false;
+                    if (target == MenuRecordTarget.CustomX) Entry.CustomXDescriptor = canonical;
+                    else Entry.CustomYDescriptor = canonical;
+                    OnPropertyChanged(nameof(CustomXDisplay));
+                    OnPropertyChanged(nameof(CustomYDisplay));
+                    OnEdited();
+                    return true;
+
+                case MenuRecordTarget.Click:
+                    if (IsAnalogDescriptor(canonical)) return false;
+                    Entry.ClickDescriptor = canonical;
+                    OnPropertyChanged(nameof(ClickDisplay));
+                    OnEdited();
+                    return true;
+            }
+            return false;
+        }
+
+        private static bool IsAnalogDescriptor(string canonical)
+            => canonical.StartsWith("Axis ", StringComparison.Ordinal)
+            || canonical.StartsWith("Slider ", StringComparison.Ordinal)
+            || canonical.StartsWith("IAxis ", StringComparison.Ordinal)
+            || canonical.StartsWith("HAxis ", StringComparison.Ordinal)
+            || canonical.StartsWith("IHAxis ", StringComparison.Ordinal);
+
+        /// <summary>Friendly-name lookup for a recorded raw descriptor,
+        /// supplied by PadViewModel from the slot's picker choices. Null
+        /// (tests) shows the raw descriptor.</summary>
+        internal Func<string, string> DescriptorDisplayProvider;
+
+        private string DisplayFor(string descriptor)
+            => string.IsNullOrEmpty(descriptor)
+                ? Strings.Instance.Menu_NotRecorded
+                : DescriptorDisplayProvider?.Invoke(descriptor) ?? descriptor;
+
+        public bool IsCustomHost =>
+            string.Equals(Entry.HostDescriptor, "Custom", StringComparison.Ordinal);
+
+        public string CustomXDisplay => DisplayFor(Entry.CustomXDescriptor);
+        public string CustomYDisplay => DisplayFor(Entry.CustomYDescriptor);
+
+        /// <summary>The Click input's display: the recorded override, the
+        /// host's default marker, or "(not set)" for Custom openers, which
+        /// have no default click.</summary>
+        public string ClickDisplay
+            => !string.IsNullOrEmpty(Entry.ClickDescriptor)
+                ? DisplayFor(Entry.ClickDescriptor)
+                : IsCustomHost
+                    ? Strings.Instance.Menu_NotRecorded
+                    : Strings.Instance.Menu_ClickDefault;
+
+        public RelayCommand ResetClickCommand => _resetClick ??= new RelayCommand(() =>
+        {
+            Entry.ClickDescriptor = "";
+            OnPropertyChanged(nameof(ClickDisplay));
+            OnEdited();
+        });
+        private RelayCommand _resetClick;
+
+        public RelayCommand ResetCustomXCommand => _resetCustomX ??= new RelayCommand(() =>
+        {
+            Entry.CustomXDescriptor = "";
+            OnPropertyChanged(nameof(CustomXDisplay));
+            OnEdited();
+        });
+        private RelayCommand _resetCustomX;
+
+        public RelayCommand ResetCustomYCommand => _resetCustomY ??= new RelayCommand(() =>
+        {
+            Entry.CustomYDescriptor = "";
+            OnPropertyChanged(nameof(CustomYDisplay));
+            OnEdited();
+        });
+        private RelayCommand _resetCustomY;
+
+        /// <summary>Aims the NEXT record at the given target without
+        /// arming the glyphs (the window's recorder handler arms).</summary>
+        public void PrepareRecord(MenuRecordTarget target) => PendingRecordTarget = target;
+
+        // ── Record plumbing (one freeform recorder, four targets) ──
+
+        private MenuRecordTarget? _recordingTarget;
+
+        /// <summary>The target the armed record button points at. The
+        /// recorder callback routes the captured descriptor through
+        /// <see cref="TryApplyRecorded"/> with this value.</summary>
+        public MenuRecordTarget PendingRecordTarget { get; private set; } = MenuRecordTarget.Host;
+
+        /// <summary>True while ANY record target is armed. The legacy
+        /// setter shape stays for the recorder callback: writing false
+        /// ends whatever recording was active.</summary>
         public bool HostRecording
         {
-            get => _hostRecording;
+            get => _recordingTarget != null;
             set
             {
-                if (SetProperty(ref _hostRecording, value))
-                    OnPropertyChanged(nameof(HostRecordIcon));
+                if (!value) RecordingTarget = null;
+                else if (_recordingTarget == null) RecordingTarget = MenuRecordTarget.Host;
             }
         }
 
-        /// <summary>Segoe MDL2 glyph for the host record button: Stop
-        /// (E71A) while recording, Record (E7C8) while idle, mirroring the
-        /// Aim Engage record button.</summary>
-        public string HostRecordIcon => _hostRecording ? "" : "";
+        private MenuRecordTarget? RecordingTarget
+        {
+            get => _recordingTarget;
+            set
+            {
+                if (_recordingTarget == value) return;
+                _recordingTarget = value;
+                OnPropertyChanged(nameof(HostRecording));
+                OnPropertyChanged(nameof(HostRecordIcon));
+                OnPropertyChanged(nameof(CustomXRecordIcon));
+                OnPropertyChanged(nameof(CustomYRecordIcon));
+                OnPropertyChanged(nameof(ClickRecordIcon));
+            }
+        }
+
+        internal void BeginRecord(MenuRecordTarget target)
+        {
+            PendingRecordTarget = target;
+            RecordingTarget = target;
+        }
+
+        private string IconFor(MenuRecordTarget t)
+            => _recordingTarget == t ? "" : "";
+
+        /// <summary>Segoe MDL2 glyphs: Stop (E71A) while that target is
+        /// recording, Record (E7C8) while idle, mirroring the Aim Engage
+        /// record button.</summary>
+        public string HostRecordIcon => IconFor(MenuRecordTarget.Host);
+        public string CustomXRecordIcon => IconFor(MenuRecordTarget.CustomX);
+        public string CustomYRecordIcon => IconFor(MenuRecordTarget.CustomY);
+        public string ClickRecordIcon => IconFor(MenuRecordTarget.Click);
 
         // ── Fire mode / shape ────────────────────────────────────
 
@@ -477,10 +652,16 @@ namespace PadForge.ViewModels
             // (reset landing on the wrong surface).
             Entry.HostDescriptor = "Gamepad RightStick";
             Entry.HostHalf = 0;
+            Entry.CustomXDescriptor = "";
+            Entry.CustomYDescriptor = "";
             OnPropertyChanged(nameof(SelectedHost));
             OnPropertyChanged(nameof(HostOptions));
             OnPropertyChanged(nameof(HostIsTouchpad));
             OnPropertyChanged(nameof(HostHalfIndex));
+            OnPropertyChanged(nameof(IsCustomHost));
+            OnPropertyChanged(nameof(CustomXDisplay));
+            OnPropertyChanged(nameof(CustomYDisplay));
+            OnPropertyChanged(nameof(ClickDisplay));
             OnEdited();
         });
         private RelayCommand _resetHost;
@@ -632,31 +813,35 @@ namespace PadForge.ViewModels
             }
         }
 
-        // Rebuilt on language change by the static ctor's CultureChanged
-        // handler; a readonly capture shipped stale labels after a live
-        // language switch.
-        private static IReadOnlyList<MenuIntOption> BindingKindOptionsBacking = BuildBindingKindOptions();
-
-        private static IReadOnlyList<MenuIntOption> BuildBindingKindOptions() => new[]
+        /// <summary>Binding kinds, DYNAMIC per slot type: None and
+        /// Keyboard Key everywhere, Controller Button only where the
+        /// slot's output can actually press one. A stale button binding
+        /// left by a slot-type switch stays visible, marked, so the
+        /// selection never lies, but dead choices are never offered
+        /// fresh. Built per read (tiny list, culture-safe).</summary>
+        public IReadOnlyList<MenuIntOption> BindingKindOptions
         {
-            new MenuIntOption { Value = 0, Label = Strings.Instance.Menu_Binding_None },
-            new MenuIntOption { Value = 1, Label = Strings.Instance.Menu_Binding_Key },
-            new MenuIntOption { Value = 2, Label = Strings.Instance.Menu_Binding_Button },
-        };
-
-        /// <summary>Instance accessor (WPF instance bindings never see
-        /// statics).</summary>
-        public IReadOnlyList<MenuIntOption> BindingKindOptions => BindingKindOptionsBacking;
-
-        /// <summary>Called by MenuEditorItem.EnsureOptionsCultureCurrent so
-        /// the cell lists ride the same order-independent LCID stamp rather
-        /// than subscribing to the event themselves (a `static` lambda's
-        /// compiler-generated target lands in the WEAK handler list and can
-        /// run after the re-raises).</summary>
-        internal static void RebuildCultureOptions()
-        {
-            BindingKindOptionsBacking = BuildBindingKindOptions();
+            get
+            {
+                var s = Strings.Instance;
+                var list = new List<MenuIntOption>(3)
+                {
+                    new MenuIntOption { Value = 0, Label = s.Menu_Binding_None },
+                    new MenuIntOption { Value = 1, Label = s.Menu_Binding_Key },
+                };
+                if (_owner.SupportsControllerButtons)
+                    list.Add(new MenuIntOption { Value = 2, Label = s.Menu_Binding_Button });
+                else if (_item != null && (_item.XboxButtons != 0 || _item.ExtendedButton > 0))
+                    list.Add(new MenuIntOption
+                    {
+                        Value = 2,
+                        Label = string.Format(s.Menu_Binding_Unsupported_Format, s.Menu_Binding_Button),
+                    });
+                return list;
+            }
         }
+
+
 
         /// <summary>Called by the owning editor's culture handler: re-raises
         /// every localized property on this cell row. The owner drives it

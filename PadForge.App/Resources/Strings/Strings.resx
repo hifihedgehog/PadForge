@@ -2681,6 +2681,15 @@
   <data name="Menu_ExtendedSlot_Warning" xml:space="preserve"><value>This slot type does not output controller buttons, so "Controller Button" bindings have no effect here. Use "Keyboard Key", or bind the cell's menu-item source in the Mappings tab.</value></data>
   <data name="Menu_HostInput_Caption" xml:space="preserve"><value>Read from the physical controllers assigned to this slot, not from the virtual controller's layout. The cell bindings below are what the menu outputs.</value></data>
   <data name="Menu_Host_Missing_Format" xml:space="preserve"><value>{0} (not connected)</value></data>
+  <data name="Menu_Host_Custom" xml:space="preserve"><value>Custom Axes</value></data>
+  <data name="Menu_CustomX" xml:space="preserve"><value>Steer X</value></data>
+  <data name="Menu_CustomY" xml:space="preserve"><value>Steer Y</value></data>
+  <data name="Menu_CustomAxis_Tip" xml:space="preserve"><value>Record any two axes to steer the menu: push past the Engage Deadzone to open it. This is how joysticks, wheels, and other non-gamepad devices host menus.</value></data>
+  <data name="Menu_ClickInput" xml:space="preserve"><value>Click Input</value></data>
+  <data name="Menu_ClickInput_Tip" xml:space="preserve"><value>The button the On Click and On Click Release fire modes use, recordable from any assigned device. Empty keeps the host's default: the stick click or the trackpad click. Custom Axes openers have no default, so record one to use those fire modes.</value></data>
+  <data name="Menu_ClickDefault" xml:space="preserve"><value>(host default)</value></data>
+  <data name="Menu_NotRecorded" xml:space="preserve"><value>(not set)</value></data>
+  <data name="Menu_Binding_Unsupported_Format" xml:space="preserve"><value>{0} (not on this slot type)</value></data>
   <data name="Mapping_MenuItem_Format" xml:space="preserve"><value>Menu {0} Cell {1}</value></data>
   <data name="Dashboard_MenuOverlay" xml:space="preserve"><value>Menu Overlay</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>Show the on-screen ring or grid while a radial or touch menu is engaged. Menus still fire with the overlay off.</value></data>

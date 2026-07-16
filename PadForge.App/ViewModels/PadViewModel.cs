@@ -4172,8 +4172,25 @@ namespace PadForge.ViewModels
         public event EventHandler MenuHostRecordRequested;
         private RelayCommand _menuHostRecordCommand;
         public RelayCommand MenuHostRecordCommand =>
-            _menuHostRecordCommand ??= new RelayCommand(
-                () => MenuHostRecordRequested?.Invoke(this, EventArgs.Empty));
+            _menuHostRecordCommand ??= new RelayCommand(() =>
+            {
+                SelectedMenu?.PrepareRecord(MenuEditorItem.MenuRecordTarget.Host);
+                MenuHostRecordRequested?.Invoke(this, EventArgs.Empty);
+            });
+
+        /// <summary>Record buttons for the Custom opener's steer axes and
+        /// the Click input: same freeform recorder, aimed by parameter
+        /// ("CustomX" / "CustomY" / "Click").</summary>
+        public CommunityToolkit.Mvvm.Input.RelayCommand<string> MenuRecordTargetCommand =>
+            _menuRecordTargetCommand ??= new CommunityToolkit.Mvvm.Input.RelayCommand<string>(p =>
+            {
+                var menu = SelectedMenu;
+                if (menu == null) return;
+                if (!Enum.TryParse<MenuEditorItem.MenuRecordTarget>(p, out var target)) return;
+                menu.PrepareRecord(target);
+                MenuHostRecordRequested?.Invoke(this, EventArgs.Empty);
+            });
+        private CommunityToolkit.Mvvm.Input.RelayCommand<string> _menuRecordTargetCommand;
 
         // ═══════════════════════════════════════════════
         //  Audio tab (issue #83) — per-slot sound output for macro sounds
@@ -4688,8 +4705,28 @@ namespace PadForge.ViewModels
             vm.ButtonStyle = MacroButtonNames.DeriveStyle(_outputType);
             vm.ExtendedButtonCount =
                 (_outputType == VirtualControllerType.Extended ? _extendedConfig?.ButtonCount : null) ?? 11;
+            // MIDI / Keyboard-Mouse outputs cannot press controller
+            // buttons: their cells' binding-kind list omits the choice
+            // entirely instead of offering it plus a warning.
+            vm.SupportsControllerButtons = _outputType
+                is VirtualControllerType.Xbox
+                or VirtualControllerType.PlayStation
+                or VirtualControllerType.Extended;
             vm.HostCapsProvider = ComputeSlotHostCaps;
+            vm.DescriptorDisplayProvider = ResolveInputDisplayName;
             vm.RefreshHostOptions();
+        }
+
+        /// <summary>Friendly name for a recorded raw descriptor: the
+        /// slot's picker choice when one matches, the raw descriptor
+        /// otherwise (a device family the picker does not list).</summary>
+        private string ResolveInputDisplayName(string descriptor)
+        {
+            if (string.IsNullOrEmpty(descriptor)) return descriptor;
+            foreach (var c in SlotAvailableInputs)
+                if (c != null && string.Equals(c.Descriptor, descriptor, StringComparison.Ordinal))
+                    return c.DisplayName;
+            return descriptor;
         }
 
         /// <summary>Re-raises every menu editor's opener options. Called

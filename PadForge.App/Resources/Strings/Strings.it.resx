@@ -2648,6 +2648,15 @@
   <data name="Menu_ExtendedSlot_Warning" xml:space="preserve"><value>Questo tipo di slot non emette pulsanti del controller, quindi le assegnazioni "Pulsante del controller" non hanno effetto qui. Usa "Tasto della tastiera", oppure collega la sorgente della voce di menu della cella nella scheda Mappature.</value></data>
   <data name="Menu_HostInput_Caption" xml:space="preserve"><value>Letto dai controller fisici assegnati a questo slot, non dal layout del controller virtuale. Le assegnazioni delle celle qui sotto sono ciò che il menu emette.</value></data>
   <data name="Menu_Host_Missing_Format" xml:space="preserve"><value>{0} (non collegato)</value></data>
+  <data name="Menu_Host_Custom" xml:space="preserve"><value>Assi personalizzati</value></data>
+  <data name="Menu_CustomX" xml:space="preserve"><value>Direzione X</value></data>
+  <data name="Menu_CustomY" xml:space="preserve"><value>Direzione Y</value></data>
+  <data name="Menu_CustomAxis_Tip" xml:space="preserve"><value>Registra due assi qualsiasi per guidare il menu: spingi oltre la zona morta di attivazione per aprirlo. È così che joystick, volanti e altri dispositivi non gamepad ospitano i menu.</value></data>
+  <data name="Menu_ClickInput" xml:space="preserve"><value>Input di clic</value></data>
+  <data name="Menu_ClickInput_Tip" xml:space="preserve"><value>Il pulsante usato dalle modalità Al clic e Al rilascio del clic, registrabile da qualsiasi dispositivo assegnato. Vuoto mantiene il predefinito dell'opener: il clic dello stick o del trackpad. Gli assi personalizzati non hanno un predefinito, quindi registrane uno per usare quelle modalità.</value></data>
+  <data name="Menu_ClickDefault" xml:space="preserve"><value>(predefinito dell'opener)</value></data>
+  <data name="Menu_NotRecorded" xml:space="preserve"><value>(non impostato)</value></data>
+  <data name="Menu_Binding_Unsupported_Format" xml:space="preserve"><value>{0} (non su questo tipo di slot)</value></data>
   <data name="Mapping_MenuItem_Format" xml:space="preserve"><value>Menu {0} cella {1}</value></data>
   <data name="Dashboard_MenuOverlay" xml:space="preserve"><value>Overlay menu</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>Mostra l'anello o la griglia su schermo mentre un menu radiale o touch è attivo. I menu si attivano anche con l'overlay disattivato.</value></data>

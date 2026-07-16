@@ -859,11 +859,17 @@ namespace PadForge
                         menu.HostRecording = false;
                         return;
                     }
-                    menu.HostRecording = true;
+                    // Four targets share the one freeform recorder: the
+                    // opener fold, the Custom steer axes, and the Click
+                    // input. The command aimed PendingRecordTarget before
+                    // raising; capture it so a re-aim mid-record cannot
+                    // misroute the callback.
+                    var target = menu.PendingRecordTarget;
+                    menu.BeginRecord(target);
                     _recorderService.StartRecordingFreeform(pvm.PadIndex, (deviceGuid, descriptor) =>
                     {
                         menu.HostRecording = false;
-                        if (menu.TryApplyRecordedHost(descriptor))
+                        if (menu.TryApplyRecorded(target, descriptor))
                             _settingsService.MarkDirty();
                     });
                 };

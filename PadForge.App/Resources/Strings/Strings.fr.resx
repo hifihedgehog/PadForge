@@ -2626,6 +2626,15 @@
   <data name="Menu_ExtendedSlot_Warning" xml:space="preserve"><value>Ce type d'emplacement n'émet pas de boutons de manette : les affectations "Bouton de manette" n'ont donc aucun effet ici. Utilisez "Touche du clavier", ou liez la source d'élément de menu de la cellule dans l'onglet Mappages.</value></data>
   <data name="Menu_HostInput_Caption" xml:space="preserve"><value>Lu sur les manettes physiques assignées à cet emplacement, pas sur la disposition de la manette virtuelle. Les affectations de cellules ci-dessous sont ce que le menu émet.</value></data>
   <data name="Menu_Host_Missing_Format" xml:space="preserve"><value>{0} (non connecté)</value></data>
+  <data name="Menu_Host_Custom" xml:space="preserve"><value>Axes personnalisés</value></data>
+  <data name="Menu_CustomX" xml:space="preserve"><value>Direction X</value></data>
+  <data name="Menu_CustomY" xml:space="preserve"><value>Direction Y</value></data>
+  <data name="Menu_CustomAxis_Tip" xml:space="preserve"><value>Enregistrez deux axes quelconques pour diriger le menu : poussez au-delà de la zone morte d'activation pour l'ouvrir. C'est ainsi que les joysticks, volants et autres périphériques non-manettes hébergent des menus.</value></data>
+  <data name="Menu_ClickInput" xml:space="preserve"><value>Entrée de clic</value></data>
+  <data name="Menu_ClickInput_Tip" xml:space="preserve"><value>Le bouton utilisé par les modes Au clic et Au relâchement du clic, enregistrable depuis n'importe quel périphérique assigné. Vide conserve la valeur par défaut de l'ouvreur : clic du stick ou du pavé tactile. Les axes personnalisés n'ont pas de valeur par défaut, enregistrez-en un pour utiliser ces modes.</value></data>
+  <data name="Menu_ClickDefault" xml:space="preserve"><value>(défaut de l'ouvreur)</value></data>
+  <data name="Menu_NotRecorded" xml:space="preserve"><value>(non défini)</value></data>
+  <data name="Menu_Binding_Unsupported_Format" xml:space="preserve"><value>{0} (pas sur ce type d'emplacement)</value></data>
   <data name="Mapping_MenuItem_Format" xml:space="preserve"><value>Menu {0} case {1}</value></data>
   <data name="Dashboard_MenuOverlay" xml:space="preserve"><value>Superposition de menu</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>Affiche l'anneau ou la grille à l'écran tant qu'un menu radial ou tactile est actif. Les menus se déclenchent même si la superposition est désactivée.</value></data>

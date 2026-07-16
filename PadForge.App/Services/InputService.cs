@@ -2115,7 +2115,19 @@ namespace PadForge.Services
             UpdateGravityEstimates();
 
             // ── Update Dashboard ──
-            UpdateDashboard();
+            // Display-only lane (dashboard VM, slot summaries, nav counts)
+            // that takes UserDevices.SyncRoot + UserSettings.SyncRoot every
+            // tick and feeds pixels nobody can see when the app is
+            // backgrounded. Drop to 1 Hz while ambient motion is gated; the
+            // first tick after reactivation refreshes within 33 ms. The
+            // overlay lanes below (shift-layer flyout, radial menu) stay at
+            // full rate: they render DURING gameplay with the app behind.
+            if (PadForge.Common.AmbientMotionProbe.Instance.IsAppActive
+                || Environment.TickCount64 - _lastGatedDashboardTick >= 1000)
+            {
+                _lastGatedDashboardTick = Environment.TickCount64;
+                UpdateDashboard();
+            }
 
             // ── Drive the v3 shift-layer flyout. Polls the engine's
             //    engagement state for the currently-selected pad and
@@ -3081,6 +3093,7 @@ namespace PadForge.Services
         }
 
         private long _lastBatteryUiRefreshTick;
+        private long _lastGatedDashboardTick;
         private long _lastForegroundUiRefreshTick;
 
         /// <summary>Pushes the latest per-device battery readings into the

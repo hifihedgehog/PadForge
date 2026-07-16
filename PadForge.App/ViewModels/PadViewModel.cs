@@ -4696,10 +4696,9 @@ namespace PadForge.ViewModels
 
         /// <summary>Stamps the slot's context onto a menu editor item: the
         /// same button-lettering derivation and Extended button count the
-        /// macro editor uses (see <see cref="SyncMacroButtonStyle"/>), plus
-        /// the live physical-capability provider that gates the opener
-        /// picker (sticks need a gamepad device, touchpads list only what
-        /// the assigned devices actually have).</summary>
+        /// macro editor uses (see <see cref="SyncMacroButtonStyle"/>).
+        /// The opener picker itself is device-agnostic (the mapping
+        /// table's "(Any device)" convention) and needs no slot caps.</summary>
         private void ApplyMenuButtonStyle(MenuEditorItem vm)
         {
             vm.ButtonStyle = MacroButtonNames.DeriveStyle(_outputType);
@@ -4712,9 +4711,7 @@ namespace PadForge.ViewModels
                 is VirtualControllerType.Xbox
                 or VirtualControllerType.PlayStation
                 or VirtualControllerType.Extended;
-            vm.HostCapsProvider = ComputeSlotHostCaps;
             vm.DescriptorDisplayProvider = ResolveInputDisplayName;
-            vm.RefreshHostOptions();
         }
 
         /// <summary>Friendly name for a recorded raw descriptor: the
@@ -4727,54 +4724,6 @@ namespace PadForge.ViewModels
                 if (c != null && string.Equals(c.Descriptor, descriptor, StringComparison.Ordinal))
                     return c.DisplayName;
             return descriptor;
-        }
-
-        /// <summary>Re-raises every menu editor's opener options. Called
-        /// beside RefreshAvailableInputsForSlot on device-assignment and
-        /// connection changes: the capability provider reads live, but an
-        /// open view only re-reads when told.</summary>
-        public void RefreshMenuHostOptions()
-        {
-            foreach (var menu in Menus)
-                menu.RefreshHostOptions();
-        }
-
-        /// <summary>Physical capabilities of this slot's assigned devices:
-        /// any gamepad present, and the largest touchpad count. Sequential
-        /// (never nested) locks, so the UserDevices-before-UserSettings
-        /// order rule is not in play. No assigned devices reads as
-        /// (gamepad, 0 touchpads) so a freshly created slot still offers
-        /// the stick hosts.</summary>
-        private (bool HasGamepad, int TouchpadCount) ComputeSlotHostCaps()
-        {
-            var settings = SettingsManager.UserSettings;
-            var devices = SettingsManager.UserDevices;
-            if (settings?.Items == null || devices?.Items == null) return (true, 0);
-
-            var guids = new List<Guid>();
-            lock (settings.SyncRoot)
-            {
-                foreach (var us in settings.Items)
-                    if (us != null && us.MapTo == PadIndex)
-                        guids.Add(us.InstanceGuid);
-            }
-            if (guids.Count == 0) return (true, 0);
-
-            bool hasGamepad = false;
-            int touchpads = 0;
-            lock (devices.SyncRoot)
-            {
-                foreach (var d in devices.Items)
-                {
-                    // IsOnline gate: the picker marks absent surfaces
-                    // "(not connected)", so an assigned-but-offline pad
-                    // must count as absent, not as capability.
-                    if (d == null || !d.IsOnline || !guids.Contains(d.InstanceGuid)) continue;
-                    if (d.CapType == PadForge.Engine.InputDeviceType.Gamepad) hasGamepad = true;
-                    if (d.CapTouchpadCount > touchpads) touchpads = d.CapTouchpadCount;
-                }
-            }
-            return (hasGamepad, touchpads);
         }
 
         // ═══════════════════════════════════════════════

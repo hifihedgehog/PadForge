@@ -411,35 +411,38 @@ namespace PadForge.Tests
         }
 
         [Fact]
-        public void MenuHostOptions_AreCapabilityGated_AndNeverLieAboutTheSelection()
+        public void MenuHostOptions_AreTheFullGrammar_UngatedAndNeverLying()
         {
+            // The opener list is device-agnostic, like the mapping
+            // picker's "(Any device)" group: imported profiles land on
+            // slots with nothing assigned yet, so every possible host is
+            // prefilled regardless of assignment or connection state.
             var editor = new PadForge.ViewModels.MenuEditorItem(new MenuDefinitionEntry
             {
                 HostDescriptor = "Touchpad 1",
             });
-
-            // Slot with a gamepad and one physical touchpad: both sticks,
-            // Touchpad 1 (present), the authored-but-absent Touchpad 2
-            // marked missing instead of silently falling back to Right
-            // Stick, plus the always-offered Custom Axes opener.
-            editor.HostCapsProvider = () => (true, 1);
             var opts = editor.HostOptions;
             Assert.Equal(5, opts.Count);
+            Assert.Equal("Gamepad LeftStick", opts[0].Descriptor);
+            Assert.Equal("Gamepad RightStick", opts[1].Descriptor);
             Assert.Equal("Touchpad 0", opts[2].Descriptor);
             Assert.Equal("Touchpad 1", opts[3].Descriptor);
             Assert.Equal("Custom", opts[4].Descriptor);
+            Assert.True(opts[2].IsTouchpad);
+            Assert.True(opts[3].IsTouchpad);
             Assert.Equal("Touchpad 1", editor.SelectedHost.Descriptor);
-            Assert.NotEqual(opts[2].Label, opts[3].Label); // absent one is marked
 
-            // No gamepad on the slot, three touchpads: sticks drop out
-            // (nothing physical can drive them), all three pads offered,
-            // and Custom Axes remains for non-gamepad devices.
-            editor.Entry.HostDescriptor = "Touchpad 0";
-            editor.HostCapsProvider = () => (false, 3);
+            // An authored descriptor outside the grammar (a typeless
+            // config's center_trackpad third pad, hand-edited XML) is
+            // still listed with a faithful 1-based label, so the
+            // selection never silently lies or falls back.
+            editor.Entry.HostDescriptor = "Touchpad 2";
             opts = editor.HostOptions;
-            Assert.Equal(4, opts.Count);
-            Assert.All(opts, o => Assert.True(
-                o.Descriptor.StartsWith("Touchpad") || o.Descriptor == "Custom"));
+            Assert.Equal(6, opts.Count);
+            Assert.Equal("Touchpad 2", opts[5].Descriptor);
+            Assert.True(opts[5].IsTouchpad);
+            Assert.Contains("3", opts[5].Label);
+            Assert.Equal("Touchpad 2", editor.SelectedHost.Descriptor);
         }
 
         [Fact]

@@ -2678,9 +2678,7 @@
   <data name="Menu_Opacity_Tip" xml:space="preserve"><value>Overlay opacity. 100% is fully solid.</value></data>
   <data name="Menu_CellLabel_Tip" xml:space="preserve"><value>Text shown on this cell in the overlay.</value></data>
   <data name="Menu_BindingKind_Tip" xml:space="preserve"><value>What this cell does when it fires: "Keyboard Key" presses a keyboard key, "Controller Button" presses a button on this slot's virtual controller. A cell set to "None" still fires as a menu-item source for Mappings rows and macro triggers.</value></data>
-  <data name="Menu_ExtendedSlot_Warning" xml:space="preserve"><value>This slot type does not output controller buttons, so "Controller Button" bindings have no effect here. Use "Keyboard Key", or bind the cell's menu-item source in the Mappings tab.</value></data>
   <data name="Menu_HostInput_Caption" xml:space="preserve"><value>Read from the physical controllers assigned to this slot, not from the virtual controller's layout. The cell bindings below are what the menu outputs.</value></data>
-  <data name="Menu_Host_Missing_Format" xml:space="preserve"><value>{0} (not connected)</value></data>
   <data name="Menu_Host_Custom" xml:space="preserve"><value>Custom Axes</value></data>
   <data name="Menu_CustomX" xml:space="preserve"><value>Steer X</value></data>
   <data name="Menu_CustomY" xml:space="preserve"><value>Steer Y</value></data>

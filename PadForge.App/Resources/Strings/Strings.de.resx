@@ -2623,9 +2623,7 @@
   <data name="Menu_Opacity_Tip" xml:space="preserve"><value>Overlay-Deckkraft. 100 % ist vollständig deckend.</value></data>
   <data name="Menu_CellLabel_Tip" xml:space="preserve"><value>Text, der auf dieser Zelle im Overlay angezeigt wird.</value></data>
   <data name="Menu_BindingKind_Tip" xml:space="preserve"><value>Was diese Zelle beim Auslösen tut: "Tastaturtaste" drückt eine Tastaturtaste, "Controller-Taste" drückt eine Taste am virtuellen Controller dieses Slots. Eine Zelle mit "Keine" löst weiterhin als Menüelement-Quelle für Zuordnungszeilen und Makro-Trigger aus.</value></data>
-  <data name="Menu_ExtendedSlot_Warning" xml:space="preserve"><value>Dieser Slot-Typ gibt keine Controller-Tasten aus, daher haben "Controller-Taste"-Belegungen hier keine Wirkung. Nutzen Sie "Tastaturtaste" oder belegen Sie die Menüelement-Quelle der Zelle im Zuordnungen-Tab.</value></data>
   <data name="Menu_HostInput_Caption" xml:space="preserve"><value>Wird von den diesem Slot zugewiesenen physischen Controllern gelesen, nicht vom Layout des virtuellen Controllers. Die Zellenbelegungen unten sind das, was das Menü ausgibt.</value></data>
-  <data name="Menu_Host_Missing_Format" xml:space="preserve"><value>{0} (nicht verbunden)</value></data>
   <data name="Menu_Host_Custom" xml:space="preserve"><value>Eigene Achsen</value></data>
   <data name="Menu_CustomX" xml:space="preserve"><value>Steuerung X</value></data>
   <data name="Menu_CustomY" xml:space="preserve"><value>Steuerung Y</value></data>

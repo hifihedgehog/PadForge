@@ -2645,9 +2645,7 @@
   <data name="Menu_Opacity_Tip" xml:space="preserve"><value>Opacità dell'overlay. 100% è completamente solido.</value></data>
   <data name="Menu_CellLabel_Tip" xml:space="preserve"><value>Testo mostrato su questa cella nell'overlay.</value></data>
   <data name="Menu_BindingKind_Tip" xml:space="preserve"><value>Cosa fa questa cella quando si attiva: "Tasto della tastiera" preme un tasto della tastiera, "Pulsante del controller" preme un pulsante del controller virtuale di questo slot. Una cella su "Nessuna" si attiva comunque come sorgente di voce di menu per le righe di Mappature e i trigger delle macro.</value></data>
-  <data name="Menu_ExtendedSlot_Warning" xml:space="preserve"><value>Questo tipo di slot non emette pulsanti del controller, quindi le assegnazioni "Pulsante del controller" non hanno effetto qui. Usa "Tasto della tastiera", oppure collega la sorgente della voce di menu della cella nella scheda Mappature.</value></data>
   <data name="Menu_HostInput_Caption" xml:space="preserve"><value>Letto dai controller fisici assegnati a questo slot, non dal layout del controller virtuale. Le assegnazioni delle celle qui sotto sono ciò che il menu emette.</value></data>
-  <data name="Menu_Host_Missing_Format" xml:space="preserve"><value>{0} (non collegato)</value></data>
   <data name="Menu_Host_Custom" xml:space="preserve"><value>Assi personalizzati</value></data>
   <data name="Menu_CustomX" xml:space="preserve"><value>Direzione X</value></data>
   <data name="Menu_CustomY" xml:space="preserve"><value>Direzione Y</value></data>

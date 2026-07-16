@@ -2623,9 +2623,7 @@
   <data name="Menu_Opacity_Tip" xml:space="preserve"><value>悬浮层不透明度。100% 为完全不透明。</value></data>
   <data name="Menu_CellLabel_Tip" xml:space="preserve"><value>悬浮层中此单元格上显示的文字。</value></data>
   <data name="Menu_BindingKind_Tip" xml:space="preserve"><value>单元格触发时的动作:"键盘按键"按下键盘按键,"控制器按钮"按下此插槽虚拟控制器上的按钮。设为"无"的单元格仍会作为菜单项来源触发,可用于映射行和宏触发器。</value></data>
-  <data name="Menu_ExtendedSlot_Warning" xml:space="preserve"><value>此插槽类型不输出控制器按钮,因此"控制器按钮"绑定在这里无效。请使用"键盘按键",或在映射选项卡中绑定该单元格的菜单项来源。</value></data>
   <data name="Menu_HostInput_Caption" xml:space="preserve"><value>读取自分配到此插槽的物理控制器,而非虚拟控制器的布局。下方的单元格绑定才是菜单的输出内容。</value></data>
-  <data name="Menu_Host_Missing_Format" xml:space="preserve"><value>{0}(未连接)</value></data>
   <data name="Menu_Host_Custom" xml:space="preserve"><value>自定义轴</value></data>
   <data name="Menu_CustomX" xml:space="preserve"><value>操控轴X</value></data>
   <data name="Menu_CustomY" xml:space="preserve"><value>操控轴Y</value></data>

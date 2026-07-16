@@ -2623,9 +2623,7 @@
   <data name="Menu_Opacity_Tip" xml:space="preserve"><value>Opacité de la superposition. 100 % est entièrement opaque.</value></data>
   <data name="Menu_CellLabel_Tip" xml:space="preserve"><value>Texte affiché sur cette cellule dans la superposition.</value></data>
   <data name="Menu_BindingKind_Tip" xml:space="preserve"><value>Ce que fait cette cellule quand elle se déclenche : "Touche du clavier" presse une touche du clavier, "Bouton de manette" presse un bouton de la manette virtuelle de cet emplacement. Une cellule sur "Aucune" se déclenche quand même comme source d'élément de menu pour les lignes de Mappages et les déclencheurs de macros.</value></data>
-  <data name="Menu_ExtendedSlot_Warning" xml:space="preserve"><value>Ce type d'emplacement n'émet pas de boutons de manette : les affectations "Bouton de manette" n'ont donc aucun effet ici. Utilisez "Touche du clavier", ou liez la source d'élément de menu de la cellule dans l'onglet Mappages.</value></data>
   <data name="Menu_HostInput_Caption" xml:space="preserve"><value>Lu sur les manettes physiques assignées à cet emplacement, pas sur la disposition de la manette virtuelle. Les affectations de cellules ci-dessous sont ce que le menu émet.</value></data>
-  <data name="Menu_Host_Missing_Format" xml:space="preserve"><value>{0} (non connecté)</value></data>
   <data name="Menu_Host_Custom" xml:space="preserve"><value>Axes personnalisés</value></data>
   <data name="Menu_CustomX" xml:space="preserve"><value>Direction X</value></data>
   <data name="Menu_CustomY" xml:space="preserve"><value>Direction Y</value></data>

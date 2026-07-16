@@ -196,7 +196,13 @@
                         </Style.Triggers>
                     </Style>
                 </Border.Style>
-                <Grid>
+                <!-- Content cached (perf, 2026-07-15): the engine card's rim
+                     effect sits on the Border above; caching the content Grid
+                     keeps per-frame repaints (from any dirty rect that crosses
+                     this card) as texture blits instead of re-rasterizing the
+                     flame path and status glyphs. Status text changes re-render
+                     the cache once, which is the cheap direction. -->
+                <Grid CacheMode="BitmapCache">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
@@ -438,13 +444,24 @@
                                  card carries the effect, its plain Opacity
                                  animates. 300ms ease-out up, 1200ms ease-in down.
                                  One-shot storyboards, no Forever loops. -->
-                            <Border CornerRadius="8" IsHitTestVisible="False" Opacity="0"
-                                    Background="{DynamicResource CardBackgroundFillColorDefaultBrush}">
-                                <Border.Effect>
-                                    <DropShadowEffect Color="#FF6B2C" BlurRadius="30" ShadowDepth="0" Opacity="0.55"/>
-                                </Border.Effect>
-                                <Border.Style>
-                                    <Style TargetType="Border">
+                            <!-- BitmapCache wrap (perf, 2026-07-15): the Grid is
+                                 the cache root and the storyboards' target; the
+                                 effect-bearing Border inside renders its blur-30
+                                 ONCE into the cache. The previous shape animated
+                                 the effect-bearing element's own Opacity, which
+                                 is a DEPENDENT animation: every tick re-rendered
+                                 the whole card-sized blur intermediate, measured
+                                 at ~17% of one core PER CONNECTED CARD (isolated
+                                 probe, shapes K vs N). The storyboards below are
+                                 untouched; their pathless "Opacity" now lands on
+                                 this cache root, whose alpha is applied to the
+                                 cached texture instead of re-blurring. -->
+                            <Grid IsHitTestVisible="False" Opacity="0">
+                                <Grid.CacheMode>
+                                    <BitmapCache/>
+                                </Grid.CacheMode>
+                                <Grid.Style>
+                                    <Style TargetType="Grid">
                                         <Style.Triggers>
                                             <!-- Heat requires fuel (#175): the enable glow
                                                  only ignites once devices are mapped. -->
@@ -534,8 +551,22 @@
                                             </MultiDataTrigger>
                                         </Style.Triggers>
                                     </Style>
-                                </Border.Style>
-                            </Border>
+                                </Grid.Style>
+                                <Border CornerRadius="8"
+                                        Background="{DynamicResource CardBackgroundFillColorDefaultBrush}">
+                                    <Border.Effect>
+                                        <DropShadowEffect Color="#FF6B2C" BlurRadius="30" ShadowDepth="0" Opacity="0.55"/>
+                                    </Border.Effect>
+                                </Border>
+                            </Grid>
+                        <!-- Content cached as a texture (perf, 2026-07-15): the
+                             breathing aura behind this card dirties the card's
+                             rect every frame, and WPF repaints everything the
+                             rect covers. Profiled: per-frame re-rasterization
+                             of every icon path plus a DropShadow pipeline run
+                             per glyph glow. Cached, that repaint is a blit;
+                             the cache re-renders only when the card's own
+                             content actually changes. -->
                         <Border Background="{DynamicResource CrucibleCardBrush}"
                                 CornerRadius="8" Padding="10"
                                 BorderThickness="2"
@@ -545,6 +576,9 @@
                                 Loaded="SlotCard_Loaded"
                                 ToolTip="{Binding Dashboard_SlotCard_Configure, Source={x:Static strings:Strings.Instance}}"
                                 ToolTipService.InitialShowDelay="600">
+                            <Border.CacheMode>
+                                <BitmapCache/>
+                            </Border.CacheMode>
                             <!-- Hover lift (#175): element-level transform so the
                                  trigger storyboard animates a per-card instance. -->
                             <Border.RenderTransform>

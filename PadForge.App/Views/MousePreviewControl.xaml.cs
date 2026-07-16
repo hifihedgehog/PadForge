@@ -228,6 +228,11 @@ namespace PadForge.Views
         private void OnRendering(object sender, EventArgs e)
         {
             if (!_built) return;
+            // Pages are retained and visibility-toggled, not unloaded, so this
+            // per-frame handler keeps firing after navigating away. Skip the
+            // widget rewrite while hidden (same guard as MidiPreviewView's
+            // input path); the next visible frame repaints from live state.
+            if (!IsVisible) return;
             // Rebuild on theme change.
             var currentTheme = Wpf.Ui.Appearance.ApplicationThemeManager.GetAppTheme();
             if (_lastTheme != currentTheme) BuildMouse();

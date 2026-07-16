@@ -704,6 +704,10 @@ namespace PadForge.Views
                 return;
             }
 
+            // Retained-page guard for the OUTPUT path, mirroring the input
+            // path's guard above: skip the repaint while the hosting page is
+            // hidden. _dirty stays set for the first visible frame.
+            if (!IsVisible) return;
             if (!_dirty || _vm == null) return;
             _dirty = false;
 

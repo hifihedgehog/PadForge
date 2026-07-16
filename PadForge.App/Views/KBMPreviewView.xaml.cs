@@ -496,6 +496,9 @@ namespace PadForge.Views
 
         private void OnRendering(object sender, EventArgs e)
         {
+            // Retained-page guard (see ControllerModelView.OnRendering): skip
+            // all per-frame work while hidden, including the theme check.
+            if (!IsVisible) return;
             // Rebuild on theme change.
             var currentTheme = Wpf.Ui.Appearance.ApplicationThemeManager.GetAppTheme();
             if (_layoutBuilt && _lastTheme != currentTheme) { _lastTheme = currentTheme; RebuildLayout(); }

@@ -2805,6 +2805,17 @@ namespace PadForge
             // flat text items read as a foreign object on real pixels.
             // The Border stays only as the drag/drop + click surface; heat
             // lives in the flame color alone.
+            // Cache the pill's CONTENT as a texture. The breathing heat ring
+            // dirties this pill's rect 60 times a second, and WPF repaints
+            // everything intersecting a dirty rect: profiled on the render
+            // thread (wpr, 2026-07-15), the repaint re-rasterized every icon
+            // path and re-ran every glyph glow's DropShadow pipeline per
+            // frame (CHwRasterizer::RasterizePath / CMilDropShadowEffectDuce::
+            // ApplyEffect dominating a >1-core burn). With the row cached the
+            // repaint is a texture blit; the card is rebuilt wholesale on any
+            // content change, so staleness is impossible.
+            row.CacheMode = new System.Windows.Media.BitmapCache();
+
             var card = new System.Windows.Controls.Border
             {
                 // Pill geometry (#175 pitch .slotpill): radius 10, 10/6 padding.
@@ -2862,18 +2873,15 @@ namespace PadForge
                         BeginTime = System.TimeSpan.FromMilliseconds(
                             -(System.DateTime.UtcNow.TimeOfDay.TotalMilliseconds % 3200.0)),
                     };
-                    // Cap the reblur rate. This animates the EFFECT's own
-                    // Opacity, not the element's, so every frame invalidates the
-                    // effect and WPF re-renders the whole BlurRadius=20 Gaussian
-                    // for this card. At the default 60 fps that is a permanent
-                    // per-frame blur per lit slot, and it only starts once a slot
-                    // goes live, which is why it never showed with no controller
-                    // connected. A 1.6s ease-in-out breathe carries no detail
-                    // that needs 60 samples a second; 15 is visually identical
-                    // here and does a quarter of the work. The composite-time
-                    // sibling (the pane adorner below) animates UIElement.Opacity
-                    // instead and needs no cap.
-                    System.Windows.Media.Animation.Timeline.SetDesiredFrameRate(breathe, 15);
+                    // Full frame rate on purpose. DropShadowEffect.Opacity is
+                    // one of WPF's independently animated properties (probe
+                    // scenario A: six of these pills cost under 2% of a core),
+                    // so the 15fps cap this line briefly carried was solving
+                    // the wrong mechanism and degrading the breathe. The
+                    // expensive shape is animating the ELEMENT's Opacity over
+                    // an effect, which is a dependent animation that re-renders
+                    // the effect intermediate per tick; the dashboard aura had
+                    // that shape and is fixed with a BitmapCache wrap instead.
                     ring.BeginAnimation(System.Windows.Media.Effects.DropShadowEffect.OpacityProperty, breathe);
                 }
                 else
@@ -3137,10 +3145,10 @@ namespace PadForge
                     BeginTime = System.TimeSpan.FromMilliseconds(
                         -(System.DateTime.UtcNow.TimeOfDay.TotalMilliseconds % 2400.0)),
                 };
-                // Same reblur trap as the heat ring above: this drives the
-                // EFFECT's Opacity, so each frame re-renders the BlurRadius=12
-                // bloom. A 1.2s sine pulse does not need 60 samples a second.
-                System.Windows.Media.Animation.Timeline.SetDesiredFrameRate(pulse, 15);
+                // Full frame rate on purpose: DropShadowEffect.Opacity is
+                // independently animated (see the heat ring note above), and a
+                // 12px icon bloom is far below the size where even the
+                // dependent shape would register.
                 glow.BeginAnimation(System.Windows.Media.Effects.DropShadowEffect.OpacityProperty, pulse);
             }
         }

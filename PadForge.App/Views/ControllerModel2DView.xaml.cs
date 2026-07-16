@@ -444,6 +444,10 @@ namespace PadForge.Views
 
         private void OnRendering(object sender, EventArgs e)
         {
+            // Retained-page guard (see ControllerModelView.OnRendering): skip
+            // the overlay repaint while hidden; _dirty catches up on the first
+            // visible frame.
+            if (!IsVisible) return;
             if (!_dirty || _vm == null || _loadedModel == null)
                 return;
             _dirty = false;

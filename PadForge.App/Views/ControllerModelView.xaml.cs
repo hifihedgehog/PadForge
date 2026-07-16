@@ -404,6 +404,15 @@ namespace PadForge.Views
 
         private void OnRendering(object sender, EventArgs e)
         {
+            // Retained-page guard: pages are eagerly instantiated and
+            // visibility-toggled, so Loaded fires at startup even for hidden
+            // pages and Unloaded never fires. Without this, a connected
+            // device's 30Hz VM updates kept _dirty set and this handler
+            // rebuilt the WHOLE WPF3D transform/material graph every frame
+            // while completely invisible, burning the render thread on every
+            // page of the app. _dirty stays set; the first visible frame
+            // catches up.
+            if (!IsVisible) return;
             if (!_dirty || _vm == null || _currentModel == null)
                 return;
             _dirty = false;

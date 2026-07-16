@@ -210,13 +210,21 @@
                                              IsSelected setter guarantees presence from the
                                              first frame; the storyboards layer the breathe
                                              on top for every real transition. -->
-                                        <Border CornerRadius="8" IsHitTestVisible="False"
-                                                Background="{DynamicResource CardBackgroundFillColorDefaultBrush}">
-                                            <Border.Effect>
-                                                <DropShadowEffect Color="#FF6B2C" BlurRadius="30" ShadowDepth="0" Opacity="0.55"/>
-                                            </Border.Effect>
-                                            <Border.Style>
-                                                <Style TargetType="Border">
+                                        <!-- BitmapCache wrap (perf, 2026-07-15): same shape
+                                             as the dashboard aura. The Grid is the cache
+                                             root and the storyboards' Opacity target; the
+                                             blur-30 Border renders once into the cache.
+                                             Animating the effect-bearing element's own
+                                             Opacity re-rendered the card-sized blur every
+                                             frame, and this page is retained after
+                                             navigation, so its breathe kept burning on
+                                             other pages too. -->
+                                        <Grid IsHitTestVisible="False">
+                                            <Grid.CacheMode>
+                                                <BitmapCache/>
+                                            </Grid.CacheMode>
+                                            <Grid.Style>
+                                                <Style TargetType="Grid">
                                                     <Setter Property="Opacity" Value="0"/>
                                                     <Style.Triggers>
                                                         <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=ListBoxItem}}" Value="True">
@@ -259,8 +267,14 @@
                                                              while ClientAreaAnimation is off. -->
                                                     </Style.Triggers>
                                                 </Style>
-                                            </Border.Style>
-                                        </Border>
+                                            </Grid.Style>
+                                            <Border CornerRadius="8"
+                                                    Background="{DynamicResource CardBackgroundFillColorDefaultBrush}">
+                                                <Border.Effect>
+                                                    <DropShadowEffect Color="#FF6B2C" BlurRadius="30" ShadowDepth="0" Opacity="0.55"/>
+                                                </Border.Effect>
+                                            </Border>
+                                        </Grid>
                                         <!-- Card root: steel rim, uniform size so the grid
                                              reads as a set. Hover lift (#175) is the
                                              element-level transform on the template root;

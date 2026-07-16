@@ -758,6 +758,11 @@ namespace PadForge.Views
 
         private void OnRendering(object sender, EventArgs e)
         {
+            // Retained-page guard (same as MidiPreviewView's input path): the
+            // page is visibility-toggled, not unloaded, so skip the repaint
+            // while hidden. _dirty stays set, so the first visible frame
+            // catches up.
+            if (!IsVisible) return;
             if (!_dirty || _vm == null || !_layoutBuilt) return;
             _dirty = false;
 

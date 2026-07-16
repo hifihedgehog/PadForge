@@ -587,6 +587,13 @@ namespace PadForge.ViewModels
         {
             OnPropertyChanged(nameof(SourceDisplayText));
             OnPropertyChanged(nameof(RecordButtonText));
+            // The Kind pickers' option labels are localized. The list getter
+            // is culture-aware (LCID-keyed cache), but nothing re-read it on
+            // a live language switch, so the dropdowns kept the old language
+            // (owner report 2026-07-16, found alongside the Menus-tab twin).
+            OnPropertyChanged(nameof(PrimaryKindOptions));
+            foreach (var src in ExtraSources)
+                src.RefreshCulture();
         }
 
         // ─────────────────────────────────────────────

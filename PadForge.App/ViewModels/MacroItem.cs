@@ -2093,7 +2093,16 @@ namespace PadForge.ViewModels
         private void OnCultureChanged()
         {
             OnPropertyChanged(nameof(DisplayText));
+            // The static list is rebuilt by RefreshVirtualKeyValues, but an
+            // x:Static binding never re-reads it; the instance accessor +
+            // this raise are what reach open views.
+            OnPropertyChanged(nameof(VirtualKeyChoices));
         }
+
+        /// <summary>Instance accessor over <see cref="VirtualKeyValues"/>.
+        /// x:Static ItemsSource bindings evaluate once and kept the old
+        /// language after a live switch (owner report 2026-07-16).</summary>
+        public List<KeyDisplayItem> VirtualKeyChoices => VirtualKeyValues;
 
         private MacroActionType _type = MacroActionType.ButtonPress;
 

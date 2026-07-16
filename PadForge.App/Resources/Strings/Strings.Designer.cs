@@ -87,8 +87,20 @@ public class Strings : INotifyPropertyChanged
                     _weakCultureHandlers.RemoveAt(i);
             }
         }
+        // Per-handler isolation: one throwing subscriber must not abort the
+        // refresh of every later subscriber, nor crash the language picker
+        // that called ChangeCulture. (Surfaced by a test where a leftover
+        // service's handler hit a null manager; production handlers can be
+        // equally unlucky during early startup.)
         foreach (var handler in snapshot)
-            handler();
+        {
+            try { handler(); }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine(
+                    $"CultureChanged handler failed: {ex}");
+            }
+        }
     }
 
     public static string Get(string key) => _rm.GetString(key, CultureInfo.CurrentUICulture) ?? key;

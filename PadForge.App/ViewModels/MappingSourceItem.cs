@@ -125,6 +125,19 @@ namespace PadForge.ViewModels
             }
         }
 
+        /// <summary>Instance accessor over <see cref="KindOptions"/> for the
+        /// extra-source row template. The XAML previously bound the static
+        /// list via x:Static, which WPF evaluates exactly once, so a live
+        /// language change left the Kind dropdown in the old language even
+        /// though the getter itself is culture-aware.</summary>
+        public System.Collections.Generic.IReadOnlyList<KindChoice> KindChoices => KindOptions;
+
+        /// <summary>Called by the owning MappingItem's culture handler.</summary>
+        internal void RefreshCulture()
+        {
+            OnPropertyChanged(nameof(KindChoices));
+        }
+
         internal MappingItem ParentMappingItem { get; set; }
 
         private InputChoice ResolveParamChoice(string descriptor)

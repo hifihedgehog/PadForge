@@ -416,6 +416,22 @@ namespace PadForge.ViewModels
             AxisYIndex = axisYIndex;
             IconLabel = iconLabel ?? string.Empty;
             SupportsBoundaryCalibration = supportsBoundaryCalibration;
+            // Weak event: no unsubscribe needed.
+            Resources.Strings.Strings.CultureChanged += OnCultureChanged;
+        }
+
+        /// <summary>Instance accessor over <see cref="CurvePresetNames"/>.
+        /// The XAML previously bound the static via x:Static, which WPF
+        /// evaluates exactly once, so the static-ctor rebuild above never
+        /// reached open views and the preset dropdown kept the old language
+        /// after a live switch (owner report 2026-07-16).</summary>
+        public string[] CurvePresetChoices => CurvePresetNames;
+
+        private void OnCultureChanged()
+        {
+            OnPropertyChanged(nameof(CurvePresetChoices));
+            OnPropertyChanged(nameof(PresetNameX));
+            OnPropertyChanged(nameof(PresetNameY));
         }
 
         // ── Steering mode (v3.4 #94) ──

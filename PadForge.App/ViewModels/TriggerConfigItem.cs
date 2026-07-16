@@ -141,6 +141,19 @@ namespace PadForge.ViewModels
             AxisIndex = axisIndex;
             IconLabel = iconLabel ?? string.Empty;
             IconRightSide = iconRightSide;
+            // Weak event: no unsubscribe needed.
+            Resources.Strings.Strings.CultureChanged += OnCultureChanged;
+        }
+
+        /// <summary>Instance accessor over <see cref="CurvePresetNames"/>.
+        /// x:Static bindings evaluate once and never see the static-ctor
+        /// rebuild; see the StickConfigItem twin.</summary>
+        public string[] CurvePresetChoices => CurvePresetNames;
+
+        private void OnCultureChanged()
+        {
+            OnPropertyChanged(nameof(CurvePresetChoices));
+            OnPropertyChanged(nameof(PresetName));
         }
     }
 }

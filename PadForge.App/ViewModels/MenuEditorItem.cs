@@ -47,10 +47,44 @@ namespace PadForge.ViewModels
         /// <summary>Raised after any persisted field changes.</summary>
         public event Action Changed;
 
+        /// <summary>Static option lists rebuild once per language change
+        /// (static handlers run before instance ones, so the per-instance
+        /// refresh below always re-reads fresh lists). Same pattern as
+        /// StickConfigItem's preset names.</summary>
+        static MenuEditorItem()
+        {
+            Strings.CultureChanged += static () =>
+            {
+                KindOptionsBacking = BuildKindOptions();
+                HostOptionsBacking = BuildHostOptions();
+                HostHalfOptionsBacking = BuildHostHalfOptions();
+                FireOptionsBacking = BuildFireOptions();
+            };
+        }
+
         public MenuEditorItem(MenuDefinitionEntry entry)
         {
             Entry = entry ?? throw new ArgumentNullException(nameof(entry));
             RebuildCells();
+            // Weak event (Strings.CultureChanged): no unsubscribe needed.
+            Strings.CultureChanged += OnCultureChanged;
+        }
+
+        /// <summary>Re-raises every localized computed property after a
+        /// language change. The lists themselves were already rebuilt by
+        /// the static handler; SelectedHost must re-raise too because the
+        /// rebuild replaced the option INSTANCES and the host combo binds
+        /// SelectedItem by reference.</summary>
+        private void OnCultureChanged()
+        {
+            OnPropertyChanged(nameof(KindOptions));
+            OnPropertyChanged(nameof(HostOptions));
+            OnPropertyChanged(nameof(HostHalfOptions));
+            OnPropertyChanged(nameof(FireOptions));
+            OnPropertyChanged(nameof(SelectedHost));
+            OnPropertyChanged(nameof(SelectedFireDescription));
+            foreach (var cell in Cells)
+                cell.RefreshCulture();
         }
 
         private void OnEdited()
@@ -98,8 +132,14 @@ namespace PadForge.ViewModels
         // NOTE: the option lists below are instance accessors over static
         // backing fields on purpose. WPF's {Binding X} resolves against
         // the DataContext INSTANCE and never finds static properties, so
-        // a static-only list binds silently empty.
-        private static readonly IReadOnlyList<MenuIntOption> KindOptionsBacking = new[]
+        // a static-only list binds silently empty. The backings are NOT
+        // readonly: they capture localized labels, so the static
+        // CultureChanged handler in the static ctor rebuilds them on every
+        // language change (a readonly one-shot capture shipped stale
+        // dropdowns after a live language switch, owner report 2026-07-16).
+        private static IReadOnlyList<MenuIntOption> KindOptionsBacking = BuildKindOptions();
+
+        private static IReadOnlyList<MenuIntOption> BuildKindOptions() => new[]
         {
             new MenuIntOption { Value = 0, Label = Strings.Instance.Menu_Style_Radial },
             new MenuIntOption { Value = 1, Label = Strings.Instance.Menu_Style_Grid },
@@ -109,7 +149,9 @@ namespace PadForge.ViewModels
 
         // ── Host surface ─────────────────────────────────────────
 
-        private static readonly IReadOnlyList<MenuHostOption> HostOptionsBacking = new[]
+        private static IReadOnlyList<MenuHostOption> HostOptionsBacking = BuildHostOptions();
+
+        private static IReadOnlyList<MenuHostOption> BuildHostOptions() => new[]
         {
             new MenuHostOption { Descriptor = "Gamepad LeftStick", Label = Strings.Instance.Menu_Host_LeftStick },
             new MenuHostOption { Descriptor = "Gamepad RightStick", Label = Strings.Instance.Menu_Host_RightStick },
@@ -142,7 +184,9 @@ namespace PadForge.ViewModels
 
         public bool HostIsTouchpad => SelectedHost.IsTouchpad;
 
-        private static readonly IReadOnlyList<MenuIntOption> HostHalfOptionsBacking = new[]
+        private static IReadOnlyList<MenuIntOption> HostHalfOptionsBacking = BuildHostHalfOptions();
+
+        private static IReadOnlyList<MenuIntOption> BuildHostHalfOptions() => new[]
         {
             new MenuIntOption { Value = 0, Label = Strings.Instance.Menu_Half_Whole },
             new MenuIntOption { Value = 1, Label = Strings.Instance.Menu_Half_Left },
@@ -214,7 +258,9 @@ namespace PadForge.ViewModels
 
         // ── Fire mode / shape ────────────────────────────────────
 
-        private static readonly IReadOnlyList<MenuIntOption> FireOptionsBacking = new[]
+        private static IReadOnlyList<MenuIntOption> FireOptionsBacking = BuildFireOptions();
+
+        private static IReadOnlyList<MenuIntOption> BuildFireOptions() => new[]
         {
             new MenuIntOption { Value = 0, Label = Strings.Instance.Menu_Fire_Click,
                                 Description = Strings.Instance.Menu_Fire_Click_Desc },
@@ -461,7 +507,12 @@ namespace PadForge.ViewModels
             }
         }
 
-        private static readonly IReadOnlyList<MenuIntOption> BindingKindOptionsBacking = new[]
+        // Rebuilt on language change by the static ctor's CultureChanged
+        // handler; a readonly capture shipped stale labels after a live
+        // language switch.
+        private static IReadOnlyList<MenuIntOption> BindingKindOptionsBacking = BuildBindingKindOptions();
+
+        private static IReadOnlyList<MenuIntOption> BuildBindingKindOptions() => new[]
         {
             new MenuIntOption { Value = 0, Label = Strings.Instance.Menu_Binding_None },
             new MenuIntOption { Value = 1, Label = Strings.Instance.Menu_Binding_Key },
@@ -471,6 +522,29 @@ namespace PadForge.ViewModels
         /// <summary>Instance accessor (WPF instance bindings never see
         /// statics).</summary>
         public IReadOnlyList<MenuIntOption> BindingKindOptions => BindingKindOptionsBacking;
+
+        static MenuCellItem()
+        {
+            Strings.CultureChanged += static () =>
+            {
+                BindingKindOptionsBacking = BuildBindingKindOptions();
+                _buttonOptions = null; // next read rebuilds from the live macro table
+            };
+        }
+
+        /// <summary>Called by the owning editor's culture handler: re-raises
+        /// every localized property on this cell row. The owner drives it
+        /// (rather than each cell subscribing) so the raise order stays
+        /// after the static list rebuilds.</summary>
+        internal void RefreshCulture()
+        {
+            OnPropertyChanged(nameof(Header));
+            OnPropertyChanged(nameof(BindingKindOptions));
+            OnPropertyChanged(nameof(KeyOptions));
+            OnPropertyChanged(nameof(ButtonOptions));
+            OnPropertyChanged(nameof(SelectedKeyVk));
+            OnPropertyChanged(nameof(SelectedButtonFlag));
+        }
 
         /// <summary>0 = none, 1 = key, 2 = VC button.</summary>
         public int BindingKind

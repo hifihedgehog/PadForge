@@ -506,13 +506,15 @@
                                                 </MultiDataTrigger.Conditions>
                                                 <MultiDataTrigger.EnterActions>
                                                     <BeginStoryboard>
-                                                        <Storyboard>
-                                                            <!-- Artifact breathe: 3.2s ease-in-out shadow pulse.
-                                                                 30fps: a soft opacity fade has no spatial motion,
-                                                                 and every ambient animation frame costs the same
-                                                                 fixed pipeline work (see the gate note above). -->
+                                                        <!-- 30fps on the STORYBOARD: WPF consults DesiredFrameRate
+                                                             only on the root of a clock tree, so setting it on the
+                                                             child animation is a silent no-op. A soft opacity fade
+                                                             has no spatial motion, and every ambient animation
+                                                             frame costs the same fixed pipeline work (gate note
+                                                             above). -->
+                                                        <Storyboard Timeline.DesiredFrameRate="30">
+                                                            <!-- Artifact breathe: 3.2s ease-in-out shadow pulse. -->
                                                             <DoubleAnimation Storyboard.TargetProperty="Opacity"
-                                                                             Timeline.DesiredFrameRate="30"
                                                                              From="0.55" To="1.0" Duration="0:0:1.6"
                                                                              AutoReverse="True" RepeatBehavior="Forever">
                                                                 <DoubleAnimation.EasingFunction>

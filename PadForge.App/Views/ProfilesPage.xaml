@@ -243,10 +243,11 @@
                                                             </MultiDataTrigger.Conditions>
                                                             <MultiDataTrigger.EnterActions>
                                                                 <BeginStoryboard>
-                                                                    <Storyboard>
+                                                                    <!-- 30fps on the STORYBOARD (clock-tree root); on the
+                                                                         child animation it is a silent no-op. -->
+                                                                    <Storyboard Timeline.DesiredFrameRate="30">
                                                                         <!-- Artifact breathe: 3.2s ease-in-out aura pulse. -->
                                                                         <DoubleAnimation Storyboard.TargetProperty="Opacity"
-                                                                                         Timeline.DesiredFrameRate="30"
                                                                                          From="0.55" To="1.0" Duration="0:0:1.6"
                                                                                          AutoReverse="True" RepeatBehavior="Forever">
                                                                             <DoubleAnimation.EasingFunction>

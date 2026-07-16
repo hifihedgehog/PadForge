@@ -1794,6 +1794,15 @@ namespace PadForge.Common.Input
             _devStateMemoActive = true;
         }
 
+        /// <summary>Disarms the memo at the end of a Step-3 pass so any code
+        /// running later on the same thread (Step 4 macros, SOCD, tests
+        /// calling eval helpers directly) takes the always-live locked scan
+        /// instead of finished-pass entries.</summary>
+        internal static void EndDeviceStateMemo()
+        {
+            _devStateMemoActive = false;
+        }
+
         private static CustomInputState LookupDeviceState(string deviceGuid)
         {
             if (string.IsNullOrEmpty(deviceGuid)) return null;

@@ -173,11 +173,18 @@ namespace PadForge.Common.Input
                 }
                 catch (Exception ex)
                 {
-                    // Don't zero OutputState — keep last valid state to prevent
+                    // Don't zero OutputState. Keep last valid state to prevent
                     // transient glitches from propagating through the pipeline.
                     RaiseError($"Error mapping device {us.InstanceGuid}", ex);
                 }
             }
+
+            // Disarm the memo so nothing that runs on this thread after the
+            // pass (Step 4 macros, SOCD, tests driving eval helpers directly)
+            // can observe entries from a finished pass. The only path that
+            // skips this is an uncaught throw above, and the next pass's
+            // BeginDeviceStateMemo clears before arming anyway.
+            EndDeviceStateMemo();
         }
 
         // ─────────────────────────────────────────────

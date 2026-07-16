@@ -567,6 +567,14 @@
                              per glyph glow. Cached, that repaint is a blit;
                              the cache re-renders only when the card's own
                              content actually changes. -->
+                        <!-- The cache root wraps the card from OUTSIDE so the
+                             heat-rim Effect (trigger-set on the Border below)
+                             renders INTO the cache. A CacheMode on the same
+                             node as an Effect is ignored for the effect path
+                             (WpfGfx rule), which left the rim's pipeline and
+                             the card's rounded-rect chrome re-running every
+                             frame under the aura's dirty rect. -->
+                        <Grid CacheMode="BitmapCache">
                         <Border Background="{DynamicResource CrucibleCardBrush}"
                                 CornerRadius="8" Padding="10"
                                 BorderThickness="2"
@@ -576,9 +584,6 @@
                                 Loaded="SlotCard_Loaded"
                                 ToolTip="{Binding Dashboard_SlotCard_Configure, Source={x:Static strings:Strings.Instance}}"
                                 ToolTipService.InitialShowDelay="600">
-                            <Border.CacheMode>
-                                <BitmapCache/>
-                            </Border.CacheMode>
                             <!-- Hover lift (#175): element-level transform so the
                                  trigger storyboard animates a per-card instance. -->
                             <Border.RenderTransform>
@@ -1335,6 +1340,7 @@
                                 </TextBlock>
                             </Grid>
                         </Border>
+                        </Grid>
                         </Grid>
                     </DataTemplate>
                 </ItemsControl.Resources>

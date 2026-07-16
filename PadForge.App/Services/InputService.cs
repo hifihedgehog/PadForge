@@ -2272,26 +2272,45 @@ namespace PadForge.Services
 
             // Snapshot devices under lock to avoid cross-thread collection-modified
             // exceptions when the engine's UpdateDevices runs concurrently.
+            // Copy-only critical sections: this runs at 30 Hz on the UI thread
+            // and UserDevices.SyncRoot is the SAME monitor the ~1 kHz poll
+            // thread takes for device-state lookups. The previous shape held
+            // it through LINQ counts and a NESTED settings lock with an
+            // O(devices x settings) scan, which profiled as
+            // Monitor.Enter_Slowpath contention on the poll thread. Now each
+            // lock holds only long enough to ToArray, and every count runs on
+            // the snapshots outside.
             UserDevice[] deviceSnapshot = null;
             var ud = SettingsManager.UserDevices;
             if (ud != null)
             {
-                int total, online, mapped;
                 lock (ud.SyncRoot)
-                {
-                    var devices = ud.Items;
-                    deviceSnapshot = devices.ToArray();
-                    total = deviceSnapshot.Length;
-                    online = deviceSnapshot.Count(d => d.IsOnline);
-                    mapped = 0;
+                    deviceSnapshot = ud.Items.ToArray();
 
-                    var settings = SettingsManager.UserSettings?.Items;
-                    if (settings != null)
+                int total = deviceSnapshot.Length;
+                int online = 0;
+                for (int i = 0; i < deviceSnapshot.Length; i++)
+                    if (deviceSnapshot[i] != null && deviceSnapshot[i].IsOnline) online++;
+
+                int mapped = 0;
+                var settingsCol = SettingsManager.UserSettings;
+                if (settingsCol?.Items != null)
+                {
+                    UserSetting[] settingsSnapshot;
+                    lock (settingsCol.SyncRoot)
+                        settingsSnapshot = settingsCol.Items.ToArray();
+                    for (int s = 0; s < settingsSnapshot.Length; s++)
                     {
-                        lock (SettingsManager.UserSettings.SyncRoot)
+                        var us = settingsSnapshot[s];
+                        if (us == null) continue;
+                        for (int i = 0; i < deviceSnapshot.Length; i++)
                         {
-                            mapped = settings.Count(s =>
-                                deviceSnapshot.Any(d => d.InstanceGuid == s.InstanceGuid && d.IsOnline));
+                            var d = deviceSnapshot[i];
+                            if (d != null && d.IsOnline && d.InstanceGuid == us.InstanceGuid)
+                            {
+                                mapped++;
+                                break;
+                            }
                         }
                     }
                 }

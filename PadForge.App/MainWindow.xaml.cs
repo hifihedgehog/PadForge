@@ -2805,17 +2805,6 @@ namespace PadForge
             // flat text items read as a foreign object on real pixels.
             // The Border stays only as the drag/drop + click surface; heat
             // lives in the flame color alone.
-            // Cache the pill's CONTENT as a texture. The breathing heat ring
-            // dirties this pill's rect 60 times a second, and WPF repaints
-            // everything intersecting a dirty rect: profiled on the render
-            // thread (wpr, 2026-07-15), the repaint re-rasterized every icon
-            // path and re-ran every glyph glow's DropShadow pipeline per
-            // frame (CHwRasterizer::RasterizePath / CMilDropShadowEffectDuce::
-            // ApplyEffect dominating a >1-core burn). With the row cached the
-            // repaint is a texture blit; the card is rebuilt wholesale on any
-            // content change, so staleness is impossible.
-            row.CacheMode = new System.Windows.Media.BitmapCache();
-
             var card = new System.Windows.Controls.Border
             {
                 // Pill geometry (#175 pitch .slotpill): radius 10, 10/6 padding.
@@ -2908,6 +2897,22 @@ namespace PadForge
             {
                 card.SetResourceReference(System.Windows.Controls.Border.BorderBrushProperty, "ControlStrokeColorDefaultBrush");
             }
+
+            // Cache placement follows WPF's rule that a CacheMode on the SAME
+            // node as an Effect is ignored for the effect path (learned the
+            // hard way twice tonight, profiled both times). Effect-bearing
+            // pills (lit ring, cooling bloom) cache their CONTENT, so the
+            // animated ring's per-frame ApplyEffect re-renders "chrome +
+            // one texture blit" instead of re-tessellating every glyph in
+            // the row. Effect-free pills cache the whole card, chrome
+            // included, so a neighbor's blur pad recomposes them as blits.
+            // Cards rebuild wholesale on any content change, so staleness is
+            // impossible; the hover-lift transform rides the card, which a
+            // BitmapCache survives without invalidating.
+            if (card.Effect != null)
+                row.CacheMode = new System.Windows.Media.BitmapCache();
+            else
+                card.CacheMode = new System.Windows.Media.BitmapCache();
 
             // Selection = focus. The focused pill gets a bright pulsing ember/gold
             // rounded-rect border PLUS a wide pulsing bloom, color and pace tracking
@@ -3191,7 +3196,11 @@ namespace PadForge
                     double periodMs = lit ? 1100 : cooling ? 1600 : 2200;
                     var phase = System.TimeSpan.FromMilliseconds(
                         -(System.DateTime.UtcNow.TimeOfDay.TotalMilliseconds % (periodMs * 2.0)));
-                    // Opacity is a composite-time pulse (no per-frame reblur of the effect).
+                    // NOTE (corrected 2026-07-16): element Opacity is a
+                    // DEPENDENT animation in WPF, not composite-time. The old
+                    // claim here was wrong. The adorner carries a BitmapCache
+                    // so each tick recomposes a cached texture instead of
+                    // re-rasterizing the stroke.
                     adorner.BeginAnimation(System.Windows.UIElement.OpacityProperty,
                         new System.Windows.Media.Animation.DoubleAnimation(lo, 1.0,
                             System.TimeSpan.FromMilliseconds(periodMs))
@@ -3281,6 +3290,13 @@ namespace PadForge
                 IsHitTestVisible = false;
                 Effect = new System.Windows.Media.Effects.DropShadowEffect
                 { Color = color, BlurRadius = blur, ShadowDepth = 0, Opacity = opacity };
+                // The breathe animates this adorner's ELEMENT Opacity, which is
+                // a DEPENDENT animation (ordinary UIPropertyMetadata): each
+                // tick dirties the adorner and, uncached, re-rasterized the
+                // rounded-rect pen stroke every frame. Cached, the tick
+                // recomposes a texture. The Effect stays outside the cache by
+                // WPF's rules and keeps blooming.
+                CacheMode = new System.Windows.Media.BitmapCache();
                 _onLayout = (s, e) => InvalidateVisual();
                 _target.LayoutUpdated += _onLayout;
             }

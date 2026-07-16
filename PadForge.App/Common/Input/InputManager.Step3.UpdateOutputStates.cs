@@ -34,6 +34,11 @@ namespace PadForge.Common.Input
             var settings = SettingsManager.UserSettings?.Items;
             if (settings == null) return;
 
+            // New Step-3 pass: arm the per-pass device-state memo so
+            // multi-source foreign-device lookups lock UserDevices once per
+            // unique GUID per pass instead of once per source per row.
+            BeginDeviceStateMemo();
+
             // Reset per-slot multi-source row evaluation tracking so
             // the new frame's first device pass triggers fresh cross-
             // device evaluation. Every multi-source row (Sum, Average,

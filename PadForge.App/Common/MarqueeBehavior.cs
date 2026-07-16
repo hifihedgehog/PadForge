@@ -138,6 +138,17 @@ namespace PadForge.Common
                 fe.RenderTransform = transform;
             }
 
+            // A scrolling marquee moves text at 60fps, and translating an
+            // uncached TextBlock re-rasterizes its glyph run at each new
+            // subpixel offset (profiled: per-frame CHwRasterizer work). A
+            // BitmapCache survives transform changes without invalidating, so
+            // the glyphs raster once and the scroll becomes a texture
+            // composite. Text anti-aliasing inside a cache is grayscale
+            // rather than ClearType, which is the standard trade for moving
+            // text.
+            if (fe.CacheMode == null)
+                fe.CacheMode = new System.Windows.Media.BitmapCache();
+
             // Speed: ~40px/sec, with 2s pause at each end.
             double durationSeconds = overflow / 40.0;
 

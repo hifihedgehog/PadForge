@@ -98,8 +98,18 @@ namespace PadForge.SteamWorkshop.Translation
         /// rotation / friction / mouse_smoothing / trackball on the mouse
         /// modes get the named MouseModeTuningDropped Partial, and group-level
         /// haptic_intensity now feeds the per-config haptic aggregate
-        /// alongside haptic_intensity_override.</summary>
-        public const int CurrentTranslatorVersion = 8;
+        /// alongside haptic_intensity_override.
+        /// v9: Audit 2026-07-16. mouse_joystick emits right-stick (or
+        /// output_joystick-redirected) axis rows instead of KbM mouse;
+        /// unmerged CHANGE_PRESET lowers to a Latch of the target layer
+        /// (Base jumps to a single-stop Cycle) instead of latching a
+        /// rowless Jump_* mask; stick-hosted button_a/b/x/y resolve onto
+        /// the positional wedge reads; multi-pad center_trackpad groups
+        /// get a reasoned skip instead of dead Touchpad 2 output; the
+        /// clamp-macro mouse_region branch names its dropped teleport /
+        /// edge keys; single-pad half clicks drive mode shifts and layer
+        /// switches as Kind=Chord activators (click + half touch spot).</summary>
+        public const int CurrentTranslatorVersion = 9;
 
         public int TranslatorVersion { get; set; } = CurrentTranslatorVersion;
 

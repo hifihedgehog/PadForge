@@ -2633,6 +2633,7 @@
   <data name="Menu_ClickDefault" xml:space="preserve"><value>(padrão do abridor)</value></data>
   <data name="Menu_NotRecorded" xml:space="preserve"><value>(não definido)</value></data>
   <data name="Menu_Binding_Unsupported_Format" xml:space="preserve"><value>{0} (não neste tipo de slot)</value></data>
+  <data name="Menu_Binding_RowBound" xml:space="preserve"><value>Vinculada por linhas de Mapeamentos</value></data>
   <data name="Mapping_MenuItem_Format" xml:space="preserve"><value>Menu {0} Célula {1}</value></data>
   <data name="Dashboard_MenuOverlay" xml:space="preserve"><value>Sobreposição de Menu</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>Mostra o anel ou a grade na tela enquanto um menu radial ou de toque está ativo. Os menus ainda disparam com a sobreposição desligada.</value></data>

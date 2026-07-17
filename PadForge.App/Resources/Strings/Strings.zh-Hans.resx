@@ -2633,6 +2633,7 @@
   <data name="Menu_ClickDefault" xml:space="preserve"><value>(默认)</value></data>
   <data name="Menu_NotRecorded" xml:space="preserve"><value>(未设置)</value></data>
   <data name="Menu_Binding_Unsupported_Format" xml:space="preserve"><value>{0}(此插槽类型不可用)</value></data>
+  <data name="Menu_Binding_RowBound" xml:space="preserve"><value>通过映射行绑定</value></data>
   <data name="Mapping_MenuItem_Format" xml:space="preserve"><value>菜单 {0} 单元格 {1}</value></data>
   <data name="Dashboard_MenuOverlay" xml:space="preserve"><value>菜单叠加层</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>在径向或触摸菜单激活期间显示屏幕上的环形或网格。即使关闭叠加层，菜单仍会触发。</value></data>

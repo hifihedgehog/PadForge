@@ -2633,6 +2633,7 @@
   <data name="Menu_ClickDefault" xml:space="preserve"><value>(기본값)</value></data>
   <data name="Menu_NotRecorded" xml:space="preserve"><value>(설정 안 됨)</value></data>
   <data name="Menu_Binding_Unsupported_Format" xml:space="preserve"><value>{0} (이 슬롯 유형에서는 불가)</value></data>
+  <data name="Menu_Binding_RowBound" xml:space="preserve"><value>매핑 행으로 바인딩됨</value></data>
   <data name="Mapping_MenuItem_Format" xml:space="preserve"><value>메뉴 {0} 셀 {1}</value></data>
   <data name="Dashboard_MenuOverlay" xml:space="preserve"><value>메뉴 오버레이</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>방사형 또는 터치 메뉴가 활성화된 동안 화면에 링 또는 그리드를 표시합니다. 오버레이가 꺼져 있어도 메뉴는 실행됩니다.</value></data>

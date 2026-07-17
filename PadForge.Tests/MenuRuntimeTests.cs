@@ -473,6 +473,69 @@ namespace PadForge.Tests
         }
 
         [Fact]
+        public void MenuCell_RowBound_ShowsTheMarkedEntry_InsteadOfNone()
+        {
+            var editor = new PadForge.ViewModels.MenuEditorItem(
+                new MenuDefinitionEntry { MenuId = 2 });
+            editor.RowBoundProvider = (menuId, idx) => menuId == 2 && idx == 1;
+            var bound = editor.Cells[0];   // ring cell 1
+            var unbound = editor.Cells[1]; // ring cell 2
+
+            // No direct binding, but a mapping row / macro trigger reads
+            // "Menu 2 Item 1": the cell reads row-bound, not "None", and
+            // the options carry the marked entry.
+            Assert.Equal(3, bound.BindingKind);
+            Assert.Contains(bound.BindingKindOptions, o => o.Value == 3);
+            Assert.Equal(0, unbound.BindingKind);
+            Assert.DoesNotContain(unbound.BindingKindOptions, o => o.Value == 3);
+
+            // Picking the sentinel itself authors nothing.
+            bound.BindingKind = 3;
+            Assert.True(editor.Entry.Items == null || editor.Entry.Items.Count == 0);
+
+            // Picking a real kind still works (never blocked); the direct
+            // binding then outranks the sentinel and the entry drops.
+            bound.BindingKind = 1;
+            Assert.Equal(1, bound.BindingKind);
+            Assert.DoesNotContain(bound.BindingKindOptions, o => o.Value == 3);
+        }
+
+        [Fact]
+        public void MenuCell_KeyPick_ClearsBothButtonValueSpaces()
+        {
+            // An Extended-slot cell holding a raw button number must lose
+            // it when a key is picked, or the cell double-fires.
+            var editor = new PadForge.ViewModels.MenuEditorItem(new MenuDefinitionEntry());
+            editor.ButtonStyle = PadForge.ViewModels.MacroButtonStyle.Numbered;
+            var cell = editor.Cells[0];
+            cell.BindingKind = 2;
+            Assert.Equal(1, editor.Entry.Items[0].ExtendedButton);
+
+            cell.SelectedKeyVk = 0x20;
+            Assert.Equal(0x20, editor.Entry.Items[0].VirtualKey);
+            Assert.Equal(0, editor.Entry.Items[0].XboxButtons);
+            Assert.Equal(0, editor.Entry.Items[0].ExtendedButton);
+        }
+
+        [Fact]
+        public void RebuildCells_PrunesDataFreeNegativeIndexes_OnBothShapes()
+        {
+            var entry = new MenuDefinitionEntry();
+            entry.Items.Add(new MenuItemDefinition { Index = -1 });
+            entry.Items.Add(new MenuItemDefinition { Index = -2, Label = "keep" });
+            var editor = new PadForge.ViewModels.MenuEditorItem(entry); // Radial
+
+            // The data-free negative index is unreachable and prunes; the
+            // authored one survives (never destroy user data).
+            Assert.DoesNotContain(entry.Items, it => it.Index == -1);
+            Assert.Contains(entry.Items, it => it.Index == -2);
+
+            editor.KindIndex = 1; // Grid arm already pruned negatives
+            Assert.Contains(entry.Items, it => it.Index == -2);
+            Assert.DoesNotContain(entry.Items, it => it.Index == -1);
+        }
+
+        [Fact]
         public void CustomOpener_RecordedAxesAndClick_RoundTripThroughTheEditor()
         {
             var editor = new PadForge.ViewModels.MenuEditorItem(new MenuDefinitionEntry());

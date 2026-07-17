@@ -181,6 +181,17 @@ namespace PadForge.SteamWorkshop.Translation
             public string Kind = "Button";
             public double AxisThreshold = 0.5;
             public string Path = "";
+            /// <summary>AND companion of the activator input (a single-pad
+            /// half click gated on its half's touch spot, #9 B-1).
+            /// Materializes as Kind=Chord with ChordSecondDescriptor.</summary>
+            public string GateDescriptor = "";
+            /// <summary>Touchpad-tab feature the activator read depends on;
+            /// emitted activators get a TrackpadFeatureRequired note.</summary>
+            public string TrackpadFeature = "";
+            /// <summary>Layer of the preset hosting the binding. A lone
+            /// CHANGE_PRESET to Base lowers to a single-stop Cycle through
+            /// this layer (the runtime has no one-way jump).</summary>
+            public string HostLayer = "";
             /// <summary>Hold-before-engage debounce, ms (ShiftActivator.DelayMs).
             /// Long_Press layer carries set it to the activator's
             /// long_press_time; 0 = instant.</summary>
@@ -270,6 +281,19 @@ namespace PadForge.SteamWorkshop.Translation
         private void TranslateGroup(Run run, SteamInputPreset preset, SteamInputGroup group,
             SteamSlot slot, string slotToken, string layer, string path)
         {
+            // Multi-pad families have no center pad: SDL registers two
+            // touchpads on the gordon/neptune/triton family (one on
+            // DS4/DualSense), so the "Touchpad 2" index this slot would
+            // resolve to reads on no device. Single-pad types route
+            // center_trackpad onto pad 0 (#9 B-1); everything else skips
+            // the group whole, rows and menu hosts alike.
+            if (slot == SteamSlot.CenterTrackpad && !run.SinglePadTrackpads)
+            {
+                run.Report.Add(TranslationStatus.Skipped, TranslationReasons.UnknownPhysicalInput,
+                    path, args: new[] { slot.ToString(), slotToken });
+                return;
+            }
+
             // reference groups inline another group's mode/inputs (cycle-safe).
             var visited = new HashSet<int> { group.Id };
             var effective = group;
@@ -333,9 +357,19 @@ namespace PadForge.SteamWorkshop.Translation
                     break;
 
                 case "joystick_mouse":
-                case "mouse_joystick":
                 case "joystick_camera":
                     EmitMouseAxes(run, slot, layer, path, settings, StickMouseBaseline);
+                    TranslateMemberGroup(run, preset, effective, slot, layer, path, settings);
+                    break;
+
+                case "mouse_joystick":
+                    // "As Joystick (Mouse-like)" OUTPUTS a stick, not the
+                    // cursor: sc-controller's proven importer lowers the
+                    // mode to ABS_RX/ABS_RY (scc/foreign/vdf.py,
+                    // mode == "mouse_joystick"), so the host's analog pair
+                    // lands on the right-stick axes (output_joystick 1
+                    // redirects to the left).
+                    EmitMouseJoystickAxes(run, slot, layer, path, settings, StickMouseBaseline);
                     TranslateMemberGroup(run, preset, effective, slot, layer, path, settings);
                     break;
 
@@ -1060,6 +1094,19 @@ namespace PadForge.SteamWorkshop.Translation
                     posX.ToString(CultureInfo.InvariantCulture),
                     posY.ToString(CultureInfo.InvariantCulture),
                 });
+
+            // The teleport / edge-binding keys shape engage and release
+            // behavior the clamp macro has no channel for, same named
+            // note the trackpad pointer branch carries.
+            var clampDropped = MouseRegionDroppedKeys
+                .Where(k => settings.TryGetValue(k, out var v) && (v ?? "").Trim() != "0")
+                .ToList();
+            if (clampDropped.Count > 0)
+            {
+                run.Report.Add(TranslationStatus.Partial,
+                    TranslationReasons.MouseRegionTuningDropped, path,
+                    args: string.Join(", ", clampDropped));
+            }
         }
 
         private static int ParseIntSetting(Dictionary<string, string> settings, string key, int fallback)
@@ -1261,6 +1308,54 @@ namespace PadForge.SteamWorkshop.Translation
 
             // invert_z addresses a third (roll) axis the X/Y mouse-delta pair
             // does not emit, so name it rather than drop it under Clean rows.
+            if (SettingIsOn(settings, "invert_z"))
+                ReportUnappliedInversion(run, path, "invert_z");
+        }
+
+        /// <summary>mouse_joystick groups: the slot's analog surface drives a
+        /// VIRTUAL STICK, not the cursor (sc-controller's proven importer
+        /// lowers the mode to ABS_RX/ABS_RY). Same source pair, sensitivity
+        /// ratio, deadzone, and inversion handling as
+        /// <see cref="EmitMouseAxes"/>, targeting the thumb axes on the Xbox
+        /// slot. output_joystick 1 redirects to the left stick (the value
+        /// joystick_move reads as "left"); anything else keeps the mode's
+        /// right-stick default.</summary>
+        private void EmitMouseJoystickAxes(Run run, SteamSlot slot, string layer, string path,
+            Dictionary<string, string> settings, double baseline)
+        {
+            var pair = PhysicalSlotResolver.MouseAxisPair(slot, run.SinglePadTrackpads);
+            if (pair == null) return;
+
+            double ratio = 1.0;
+            if (settings.TryGetValue("sensitivity", out var sensRaw)
+                && double.TryParse(sensRaw, NumberStyles.Float, CultureInfo.InvariantCulture, out double sens)
+                && sens > 0)
+            {
+                ratio = Math.Clamp(sens / baseline, 0.05, 20.0);
+            }
+
+            var (x, y, family) = pair.Value;
+            int dzPct = GroupDeadZonePercent(settings);
+            bool invertX = SettingIsOn(settings, "invert_x");
+            bool invertY = SettingIsOn(settings, "invert_y");
+            string dst = ParseIntSetting(settings, "output_joystick", 0) == 1 ? "Left" : "Right";
+
+            MappingSource Make(string descriptor, bool invert)
+            {
+                var src = new MappingSource { Descriptor = descriptor };
+                if (family == 0 || family == 1) src.Sensitivity = ratio;
+                else if (family == 2) src.GyroSensitivity = ratio;
+                if (dzPct > 0) src.DeadZone = dzPct;
+                if (invert) src.Invert = true;
+                return src;
+            }
+
+            AddRowSource(run, isKbm: false, layer, $"{dst}ThumbAxisX", Make(x, invertX), isAxis: true,
+                TranslationStatus.Clean, TranslationReasons.RowEmitted, path);
+            AddRowSource(run, isKbm: false, layer, $"{dst}ThumbAxisY", Make(y, invertY), isAxis: true,
+                TranslationStatus.Clean, TranslationReasons.RowEmitted, path);
+
+            // invert_z addresses a third axis the X/Y pair does not emit.
             if (SettingIsOn(settings, "invert_z"))
                 ReportUnappliedInversion(run, path, "invert_z");
         }
@@ -2158,8 +2253,11 @@ namespace PadForge.SteamWorkshop.Translation
                 // full range, which is a half pull on a unipolar
                 // trigger. The Axis kind tests |bipolar| >= 0.5 and a
                 // trigger RESTS at bipolar -1, so it would engage the
-                // layer permanently.
-                Kind = "Button",
+                // layer permanently. A gate-legged source (a single-pad
+                // half click, #9 B-1) rides Kind=Chord.
+                Kind = string.IsNullOrEmpty(source.GateDescriptor) ? "Button" : "Chord",
+                GateDescriptor = source.GateDescriptor ?? "",
+                TrackpadFeature = source.TrackpadFeature ?? "",
                 Path = path,
             });
         }
@@ -2250,8 +2348,11 @@ namespace PadForge.SteamWorkshop.Translation
                         // full range, which is a half pull on a unipolar
                         // trigger. The Axis kind tests |bipolar| >= 0.5 and a
                         // trigger RESTS at bipolar -1, so it would engage the
-                        // layer permanently.
-                        Kind = "Button",
+                        // layer permanently. A gate-legged source (a
+                        // single-pad half click, #9 B-1) rides Kind=Chord.
+                        Kind = string.IsNullOrEmpty(source.GateDescriptor) ? "Button" : "Chord",
+                        GateDescriptor = source.GateDescriptor ?? "",
+                        TrackpadFeature = source.TrackpadFeature ?? "",
                         Path = path,
                     });
                     return;
@@ -2279,6 +2380,11 @@ namespace PadForge.SteamWorkshop.Translation
                         return;
                     }
                     bool toBase = run.BasePresetId.HasValue && presetId == run.BasePresetId.Value;
+                    // The Jump_* mask is a merge placeholder only: paired
+                    // same-input jumps become one Cycle, and any leftover is
+                    // re-lowered by LowerUnmergedJumps (the runtime's Custom
+                    // mode latches LayerMask itself and ignores JumpToLayer,
+                    // so a persisted Jump_* mask would engage a rowless layer).
                     run.Activators.Add(new ActivatorRequest
                     {
                         LayerMask = $"Jump_{run.Options.FileId}_{presetId}",
@@ -2292,8 +2398,12 @@ namespace PadForge.SteamWorkshop.Translation
                         // full range, which is a half pull on a unipolar
                         // trigger. The Axis kind tests |bipolar| >= 0.5 and a
                         // trigger RESTS at bipolar -1, so it would engage the
-                        // layer permanently.
-                        Kind = "Button",
+                        // layer permanently. A gate-legged source (a
+                        // single-pad half click, #9 B-1) rides Kind=Chord.
+                        Kind = string.IsNullOrEmpty(source.GateDescriptor) ? "Button" : "Chord",
+                        GateDescriptor = source.GateDescriptor ?? "",
+                        TrackpadFeature = source.TrackpadFeature ?? "",
+                        HostLayer = layer,
                         Path = path,
                     });
                     return;
@@ -2430,10 +2540,17 @@ namespace PadForge.SteamWorkshop.Translation
         }
 
         /// <summary>Shift activators read button-like inputs (or an axis
-        /// with a threshold). Gesture-gated trackpad wedges can't drive one.</summary>
+        /// with a threshold). Gesture-gated trackpad wedges can't drive one.
+        /// A single-pad half click (#9 B-1) can: its own read is a plain
+        /// pad-click button AND-gated on the half's touch spot, which is
+        /// exactly the runtime's Kind=Chord read (both legs go through the
+        /// button-like evaluator); the touch-spots feature it depends on
+        /// rides a TrackpadFeatureRequired note at emission.</summary>
         private static bool IsActivatorCapable(ResolvedSource source)
             => source != null
-            && string.IsNullOrEmpty(source.TrackpadFeature)
+            && (string.IsNullOrEmpty(source.TrackpadFeature)
+                || (source.TrackpadFeature == PhysicalSlotResolver.FeatureTouchSpots
+                    && !string.IsNullOrEmpty(source.GateDescriptor)))
             && !source.Descriptor.StartsWith("Gyro ", StringComparison.Ordinal);
 
         // ─────────────────────────────────────────────
@@ -2800,6 +2917,7 @@ namespace PadForge.SteamWorkshop.Translation
         private void EmitActivators(Run run)
         {
             MergeSameInputJumpsIntoCycles(run);
+            LowerUnmergedJumps(run);
 
             var seen = new HashSet<string>(StringComparer.Ordinal);
             foreach (var req in run.Activators
@@ -2807,7 +2925,7 @@ namespace PadForge.SteamWorkshop.Translation
                 .ThenBy(a => a.Descriptor, StringComparer.Ordinal)
                 .ThenBy(a => a.Mode, StringComparer.Ordinal))
             {
-                if (!seen.Add($"{req.LayerMask}|{req.Descriptor}|{req.Mode}|{req.JumpToLayer}|{req.CycleLayers}")) continue;
+                if (!seen.Add($"{req.LayerMask}|{req.Descriptor}|{req.GateDescriptor}|{req.Mode}|{req.JumpToLayer}|{req.CycleLayers}")) continue;
 
                 bool xboxHas, kbmHas;
                 if (req.Mode == "Cycle")
@@ -2818,15 +2936,10 @@ namespace PadForge.SteamWorkshop.Translation
                 }
                 else
                 {
-                    string engagedLayer = req.Mode == "Custom" ? req.JumpToLayer : req.LayerMask;
-                    xboxHas = LayerHasRows(run.Profile.XboxMappingSet, engagedLayer);
-                    kbmHas = LayerHasRows(run.Profile.KbmMappingSet, engagedLayer);
-                    if (engagedLayer == "Base")
-                    {
-                        // "Return to base" applies wherever any layer rows exist.
-                        xboxHas = run.Profile.XboxMappingSet.Rows.Any(r => (r.LayerMask ?? "Base") != "Base");
-                        kbmHas = run.Profile.KbmMappingSet.Rows.Any(r => (r.LayerMask ?? "Base") != "Base");
-                    }
+                    // Every non-Cycle mode engages its own LayerMask (the
+                    // unmerged-jump lowering already rewrote Custom masks).
+                    xboxHas = LayerHasRows(run.Profile.XboxMappingSet, req.LayerMask);
+                    kbmHas = LayerHasRows(run.Profile.KbmMappingSet, req.LayerMask);
                 }
                 if (!xboxHas && !kbmHas)
                 {
@@ -2846,6 +2959,7 @@ namespace PadForge.SteamWorkshop.Translation
                     JumpToLayer = req.JumpToLayer,
                     InheritUnmapped = req.InheritUnmapped,
                     Kind = req.Kind,
+                    ChordSecondDescriptor = req.GateDescriptor,
                     AxisThreshold = req.AxisThreshold,
                     DelayMs = req.DelayMs,
                     CycleLayers = req.CycleLayers,
@@ -2856,13 +2970,60 @@ namespace PadForge.SteamWorkshop.Translation
 
                 string engagedText = req.Mode switch
                 {
-                    "Custom" => req.JumpToLayer,
                     "Cycle" => req.CycleLayers + (req.CycleIncludeBase ? "|Base" : ""),
                     _ => req.LayerMask,
                 };
                 run.Report.Add(TranslationStatus.Clean, TranslationReasons.ShiftLayerEmitted,
                     req.Path, emitted: $"{req.Mode} -> {engagedText}",
                     args: req.LayerName);
+
+                // A chord leg riding a touch spot only reads once the
+                // Touchpad-tab feature is on, same note the rows carry.
+                if (!string.IsNullOrEmpty(req.TrackpadFeature))
+                {
+                    run.Report.Add(TranslationStatus.Partial,
+                        TranslationReasons.TrackpadFeatureRequired,
+                        req.Path, args: req.TrackpadFeature);
+                }
+            }
+        }
+
+        /// <summary>CHANGE_PRESET jumps left unmerged (no counterpart on the
+        /// same input) can't keep the placeholder Jump_* mask: the runtime's
+        /// Custom mode latches the activator's OWN LayerMask and ignores
+        /// JumpToLayer (#119 retired the jump-to-target behavior), so the
+        /// placeholder engaged a rowless layer and blanked the pad. A jump
+        /// to a preset layer becomes a Latch of that layer (press again
+        /// releases back to Base, the mode's own gesture). A lone jump to
+        /// Base becomes a single-stop Cycle through the hosting preset's
+        /// layer with Base in the ring, the runtime's press-to-step
+        /// return construct.</summary>
+        private static void LowerUnmergedJumps(Run run)
+        {
+            for (int i = run.Activators.Count - 1; i >= 0; i--)
+            {
+                var req = run.Activators[i];
+                if (req.Mode != "Custom") continue;
+                if (req.JumpToLayer == "Base")
+                {
+                    if (string.IsNullOrEmpty(req.HostLayer) || req.HostLayer == "Base")
+                    {
+                        // A Base-hosted jump to Base switches nothing.
+                        run.Activators.RemoveAt(i);
+                        run.Report.Add(TranslationStatus.Partial, TranslationReasons.ShiftLayerEmpty,
+                            req.Path, args: req.LayerName);
+                        continue;
+                    }
+                    req.Mode = "Cycle";
+                    req.LayerMask = req.HostLayer;
+                    req.CycleLayers = req.HostLayer;
+                    req.CycleIncludeBase = true;
+                }
+                else
+                {
+                    req.LayerMask = req.JumpToLayer;
+                }
+                req.JumpToLayer = "";
             }
         }
 
@@ -2878,7 +3039,10 @@ namespace PadForge.SteamWorkshop.Translation
         {
             var jumpGroups = run.Activators
                 .Where(a => a.Mode == "Custom")
-                .GroupBy(a => $"{a.Kind}|{a.Descriptor}", StringComparer.Ordinal)
+                // The gate leg is part of the input's identity: a single-pad
+                // left-half click and right-half click share the pad-click
+                // descriptor and differ only in gate (#9 B-1).
+                .GroupBy(a => $"{a.Kind}|{a.Descriptor}|{a.GateDescriptor}", StringComparer.Ordinal)
                 .Where(g => g.Select(a => a.JumpToLayer).Distinct(StringComparer.Ordinal).Count() > 1)
                 .ToList();
 
@@ -2906,6 +3070,8 @@ namespace PadForge.SteamWorkshop.Translation
                     Mode = "Cycle",
                     Descriptor = first.Descriptor,
                     Kind = first.Kind,
+                    GateDescriptor = first.GateDescriptor,
+                    TrackpadFeature = first.TrackpadFeature,
                     AxisThreshold = first.AxisThreshold,
                     CycleLayers = string.Join("|", stops),
                     CycleIncludeBase = includeBase,
@@ -2923,6 +3089,7 @@ namespace PadForge.SteamWorkshop.Translation
             JumpToLayer = a.JumpToLayer,
             InheritUnmapped = a.InheritUnmapped,
             Kind = a.Kind,
+            ChordSecondDescriptor = a.ChordSecondDescriptor,
             AxisThreshold = a.AxisThreshold,
             DelayMs = a.DelayMs,
             CycleLayers = a.CycleLayers,

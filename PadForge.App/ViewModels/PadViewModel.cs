@@ -4056,6 +4056,16 @@ namespace PadForge.ViewModels
         /// <summary>Menus configured for this pad slot.</summary>
         public ObservableCollection<MenuEditorItem> Menus { get; } = new();
 
+        /// <summary>
+        /// Callback invoked after a structural menu change (add / remove /
+        /// duplicate, kind, cell count, center cell, enabled) that changes
+        /// which "Menu N Item K" descriptors exist. Wired by MainWindow to
+        /// InputService.RefreshAvailableInputsForSlot so the Mappings and
+        /// macro pickers stop offering stale entries. Label / name typing
+        /// must NOT invoke it.
+        /// </summary>
+        public Action MenusStructureChanged { get; set; }
+
         private MenuEditorItem _selectedMenu;
 
         public MenuEditorItem SelectedMenu
@@ -4130,6 +4140,7 @@ namespace PadForge.ViewModels
                 Menus.Add(vm);
                 SelectedMenu = vm;
                 OnMenuEdited();
+                MenusStructureChanged?.Invoke();
             });
 
         private RelayCommand _removeMenuCommand;
@@ -4142,6 +4153,7 @@ namespace PadForge.ViewModels
                 Menus.Remove(vm);
                 SelectedMenu = Menus.LastOrDefault();
                 OnMenuEdited();
+                MenusStructureChanged?.Invoke();
             }, () => HasSelectedMenu);
 
         private RelayCommand _duplicateMenuCommand;
@@ -4164,6 +4176,7 @@ namespace PadForge.ViewModels
                 Menus.Add(cloneVm);
                 SelectedMenu = cloneVm;
                 OnMenuEdited();
+                MenusStructureChanged?.Invoke();
             }, () => HasSelectedMenu);
 
         /// <summary>Record button on the menu host picker: MainWindow runs
@@ -4713,6 +4726,44 @@ namespace PadForge.ViewModels
                 or VirtualControllerType.Extended;
             vm.DescriptorDisplayProvider = ResolveInputDisplayName;
             vm.InputChoicesProvider = () => SlotAvailableInputs;
+            vm.RowBoundProvider = IsMenuItemRowBound;
+            vm.StructureChanged = () => MenusStructureChanged?.Invoke();
+        }
+
+        /// <summary>True when a Mappings row source or a macro trigger on
+        /// this slot reads "Menu {menuId} Item {itemIndex}". Workshop
+        /// imports bind cells through rows instead of the cell's direct
+        /// binding, and the cell editor must not show "None" while those
+        /// rows fire (audit 2026-07-16 C12). Same unlocked UI-thread read
+        /// of the slot's MappingSet as SlotMenuSet.</summary>
+        internal bool IsMenuItemRowBound(int menuId, int itemIndex)
+        {
+            var rows = SlotMenuSet?.Rows;
+            if (rows != null)
+            {
+                foreach (var row in rows)
+                {
+                    var sources = row?.Sources;
+                    if (sources == null) continue;
+                    foreach (var src in sources)
+                        if (src != null
+                            && PadForge.Engine.Common.Mapping.SourceCoercion.TryParseMenuItem(
+                                src.Descriptor, out int m, out int k)
+                            && m == menuId && k == itemIndex)
+                            return true;
+                }
+            }
+            foreach (var macro in Macros)
+            {
+                if (macro == null) continue;
+                foreach (var entry in macro.GetTriggerInputEntries())
+                    if (entry != null
+                        && PadForge.Engine.Common.Mapping.SourceCoercion.TryParseMenuItem(
+                            entry.SourceDescriptor, out int m, out int k)
+                        && m == menuId && k == itemIndex)
+                        return true;
+            }
+            return false;
         }
 
         /// <summary>Re-raises every menu editor's Custom steer / Click

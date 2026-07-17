@@ -81,6 +81,9 @@ namespace PadForge.ViewModels
         public MenuEditorItem(MenuDefinitionEntry entry)
         {
             Entry = entry ?? throw new ArgumentNullException(nameof(entry));
+            // A VM built after a language switch must not serve option
+            // lists still stamped for the previous culture.
+            EnsureOptionsCultureCurrent();
             RebuildCells();
             // Weak event (Strings.CultureChanged): no unsubscribe needed.
             Strings.CultureChanged += OnCultureChanged;
@@ -186,7 +189,7 @@ namespace PadForge.ViewModels
         public bool Enabled
         {
             get => Entry.Enabled;
-            set { if (Entry.Enabled != value) { Entry.Enabled = value; OnPropertyChanged(); OnEdited(); } }
+            set { if (Entry.Enabled != value) { Entry.Enabled = value; OnPropertyChanged(); OnEdited(); StructureChanged?.Invoke(); } }
         }
 
         public bool IsRadial => Entry.Kind == MenuKind.Radial;
@@ -205,6 +208,7 @@ namespace PadForge.ViewModels
                 OnPropertyChanged(nameof(IsRadial));
                 RebuildCells();
                 OnEdited();
+                StructureChanged?.Invoke();
             }
         }
 
@@ -212,9 +216,10 @@ namespace PadForge.ViewModels
         // backing fields on purpose. WPF's {Binding X} resolves against
         // the DataContext INSTANCE and never finds static properties, so
         // a static-only list binds silently empty. The backings are NOT
-        // readonly: they capture localized labels, so the static
-        // CultureChanged handler in the static ctor rebuilds them on every
-        // language change (a readonly one-shot capture shipped stale
+        // readonly: they capture localized labels, so
+        // EnsureOptionsCultureCurrent rebuilds them whenever the stamped
+        // LCID moved, called from the ctor and every culture-sensitive
+        // consumer path (a readonly one-shot capture shipped stale
         // dropdowns after a live language switch, owner report 2026-07-16).
         private static IReadOnlyList<MenuIntOption> KindOptionsBacking = BuildKindOptions();
 
@@ -440,6 +445,19 @@ namespace PadForge.ViewModels
         /// cross-device list), supplied by PadViewModel. Null (tests)
         /// offers only the sentinel and the authored value.</summary>
         internal Func<IEnumerable<InputChoice>> InputChoicesProvider;
+
+        /// <summary>(menuId, cellIndex) -> whether a Mappings row source
+        /// or macro trigger on this slot reads "Menu {menuId} Item
+        /// {cellIndex}". Supplied by PadViewModel; null (tests) means
+        /// never. Cells consult it so an imported, row-bound cell shows
+        /// a marked entry instead of a lying "None".</summary>
+        internal Func<int, int, bool> RowBoundProvider;
+
+        /// <summary>Raised after a structural edit (kind, cell count,
+        /// center cell, enabled) that changes which "Menu N Item K"
+        /// descriptors exist, so the owner can refresh the slot's input
+        /// pickers. Label / name typing must NOT raise it.</summary>
+        internal Action StructureChanged;
 
         /// <summary>Builds a Custom-steer / Click dropdown: the slot's
         /// cross-device picker list EXACTLY as the mapping table shows
@@ -763,6 +781,7 @@ namespace PadForge.ViewModels
                 OnPropertyChanged();
                 RebuildCells();
                 OnEdited();
+                StructureChanged?.Invoke();
             }
         }
 
@@ -776,6 +795,7 @@ namespace PadForge.ViewModels
                 OnPropertyChanged();
                 RebuildCells();
                 OnEdited();
+                StructureChanged?.Invoke();
             }
         }
 
@@ -914,7 +934,7 @@ namespace PadForge.ViewModels
                     || ((string.IsNullOrEmpty(it.Label)
                          && it.VirtualKey <= 0 && it.XboxButtons == 0 && it.ExtendedButton <= 0)
                         && (Entry.Kind == MenuKind.Radial
-                            ? it.Index > Entry.CellCount || (it.Index == 0 && !Entry.HasCenter)
+                            ? it.Index > Entry.CellCount || it.Index < 0 || (it.Index == 0 && !Entry.HasCenter)
                             : it.Index >= Entry.CellCount || it.Index < 0)));
             }
         }
@@ -983,18 +1003,25 @@ namespace PadForge.ViewModels
             }
         }
 
+        /// <summary>Sentinel binding-kind value: no direct binding on the
+        /// cell, but a Mappings row source or macro trigger reads this
+        /// cell's "Menu N Item K" descriptor (the Workshop-import form).</summary>
+        internal const int RowBoundKind = 3;
+
         /// <summary>Binding kinds, DYNAMIC per slot type: None and
         /// Keyboard Key everywhere, Controller Button only where the
         /// slot's output can actually press one. A stale button binding
         /// left by a slot-type switch stays visible, marked, so the
         /// selection never lies, but dead choices are never offered
-        /// fresh. Built per read (tiny list, culture-safe).</summary>
+        /// fresh. A cell bound only through mapping rows gets a marked
+        /// entry too, instead of a lying "None". Built per read (tiny
+        /// list, culture-safe).</summary>
         public IReadOnlyList<MenuIntOption> BindingKindOptions
         {
             get
             {
                 var s = Strings.Instance;
-                var list = new List<MenuIntOption>(3)
+                var list = new List<MenuIntOption>(4)
                 {
                     new MenuIntOption { Value = 0, Label = s.Menu_Binding_None },
                     new MenuIntOption { Value = 1, Label = s.Menu_Binding_Key },
@@ -1007,6 +1034,8 @@ namespace PadForge.ViewModels
                         Value = 2,
                         Label = string.Format(s.Menu_Binding_Unsupported_Format, s.Menu_Binding_Button),
                     });
+                if (BindingKind == RowBoundKind)
+                    list.Add(new MenuIntOption { Value = RowBoundKind, Label = s.Menu_Binding_RowBound });
                 return list;
             }
         }
@@ -1029,16 +1058,28 @@ namespace PadForge.ViewModels
 
         /// <summary>0 = none, 1 = key, 2 = VC button (Xbox mask on
         /// Xbox / PlayStation slots, 1-based raw button number on
-        /// Extended slots, per the owner's button style).</summary>
+        /// Extended slots, per the owner's button style), 3 = no direct
+        /// binding but bound via mapping rows (read-only sentinel; the
+        /// cell still fires as a menu-item source).</summary>
         public int BindingKind
         {
-            get => _item == null ? 0
-                : _item.VirtualKey > 0 ? 1
-                : (_item.XboxButtons != 0 || _item.ExtendedButton > 0) ? 2 : 0;
+            get
+            {
+                if (_item != null)
+                {
+                    if (_item.VirtualKey > 0) return 1;
+                    if (_item.XboxButtons != 0 || _item.ExtendedButton > 0) return 2;
+                }
+                return _owner.RowBoundProvider?.Invoke(_owner.Entry.MenuId, Index) == true
+                    ? RowBoundKind : 0;
+            }
             set
             {
                 int cur = BindingKind;
                 if (cur == value) return;
+                // The row-bound sentinel is informational: picking it
+                // must never author a direct binding.
+                if (value == RowBoundKind) return;
                 if (value == 0)
                 {
                     if (_item != null)
@@ -1080,6 +1121,9 @@ namespace PadForge.ViewModels
                 OnPropertyChanged(nameof(ShowButtonPicker));
                 OnPropertyChanged(nameof(SelectedKeyVk));
                 OnPropertyChanged(nameof(SelectedButtonFlag));
+                // The row-bound sentinel entry appears only while no
+                // direct binding exists, so the list follows the kind.
+                OnPropertyChanged(nameof(BindingKindOptions));
                 _owner.RaiseChanged();
             }
         }
@@ -1131,6 +1175,7 @@ namespace PadForge.ViewModels
                 _item ??= _owner.EnsureItem(Index);
                 _item.VirtualKey = value;
                 _item.XboxButtons = 0;
+                _item.ExtendedButton = 0;
                 OnPropertyChanged();
                 _owner.RaiseChanged();
             }

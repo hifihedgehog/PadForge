@@ -175,7 +175,7 @@ menus: 3
     [6] Flip Combinator
     [7] Move Down
     [8] Back Menu
-report: v8 rows:x0+k57 macros:0 menus:3 layers:2 clean:75 partial:25 skipped:4 errors:0
+report: v9 rows:x0+k57 macros:0 menus:3 layers:2 clean:75 partial:25 skipped:4 errors:0
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_a/Full_Press => KbmKey0D <- Gamepad ButtonA
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_b/Full_Press => KbmKey1B <- Gamepad ButtonB
   Skipped SteamSystemAction(SHOW_KEYBOARD) @ Default/button_diamond/group 0 (four_buttons)/button_x/Full_Press :: controller_action SHOW_KEYBOARD, , 

@@ -539,8 +539,9 @@ namespace PadForge.Services
 
         /// <summary>
         /// In-place cleanup of a loaded MappingSet:
-        /// 1. Deduplicates row Sources by (DeviceGuid, Descriptor) — heals
-        ///    the per-save accumulation bug from earlier multi-source builds.
+        /// 1. Deduplicates row Sources by (DeviceGuid, Descriptor, Invert,
+        ///    HalfAxis, InvertOutput, Kind). Heals the per-save
+        ///    accumulation bug from earlier multi-source builds.
         /// 2. Drops sources whose owning device is not gamepad-class for
         ///    gamepad-class targets — heals the "joystick stuck left"
         ///    symptom caused by stale auto-mapped gamepad descriptors on
@@ -555,18 +556,23 @@ namespace PadForge.Services
             // {DeviceGuid=keyboard, Descriptor="Button N"}. The
             // earlier non-gamepad-on-gamepad-target filter dropped
             // those legitimate rows and clobbered the user's mappings.
-            // Sanitize now only dedups by (DeviceGuid, Descriptor) and
-            // strips empty rows.
+            // Sanitize now only dedups true duplicates and strips empty
+            // rows. Invert / HalfAxis / InvertOutput / Kind are part of
+            // the key: two sources sharing a descriptor but differing in
+            // a modifier are distinct reads (a half-axis scroll pair
+            // differs only in Invert), and collapsing them dropped one
+            // direction on reload.
             foreach (var row in ms.Rows)
             {
                 if (row?.Sources == null) continue;
-                var seen = new HashSet<(string, string)>();
+                var seen = new HashSet<(string, string, bool, bool, bool, string)>();
                 int writeIdx = 0;
                 for (int i = 0; i < row.Sources.Count; i++)
                 {
                     var s = row.Sources[i];
                     if (s == null) continue;
-                    var key = ((s.DeviceGuid ?? "").ToLowerInvariant(), s.Descriptor ?? "");
+                    var key = ((s.DeviceGuid ?? "").ToLowerInvariant(), s.Descriptor ?? "",
+                        s.Invert, s.HalfAxis, s.InvertOutput, s.Kind ?? "");
                     if (!seen.Add(key)) continue;
                     row.Sources[writeIdx++] = s;
                 }
@@ -1169,9 +1175,19 @@ namespace PadForge.Services
             }
         }
 
+        // PadViewModels whose Flick Stick card LoadFlickStickCard has
+        // loaded at least once. The save-side stamp below must not push
+        // VM values into a row when the card was never loaded for the
+        // VM (the no-device save leg skips LoadFlickStickCard), because
+        // the VM then holds ctor defaults and stamping them wipes an
+        // import's translator-carried tuning.
+        private static readonly System.Runtime.CompilerServices.ConditionalWeakTable<PadViewModel, object>
+            _flickStickCardSeeded = new();
+
         private static void ApplyFlickStickParamsToRow(MappingRow row, PadViewModel padVm, int slot)
         {
             if (row?.Sources == null || padVm == null) return;
+            bool cardSeeded = _flickStickCardSeeded.TryGetValue(padVm, out _);
             foreach (var src in row.Sources)
             {
                 if (src == null
@@ -1183,6 +1199,9 @@ namespace PadForge.Services
                     || (sel != Guid.Empty && Guid.TryParse(src.DeviceGuid, out var dg) && dg == sel);
                 if (useUi)
                 {
+                    // Unseeded card: the VM carries ctor defaults, not
+                    // user edits, so keep the source's existing params.
+                    if (!cardSeeded) continue;
                     src.ParamFlickCountsPer360 = padVm.FlickCountsPer360;
                     src.ParamFlickTime = padVm.FlickTime;
                     src.ParamFlickThreshold = padVm.FlickThreshold;
@@ -1227,6 +1246,9 @@ namespace PadForge.Services
         internal static void LoadFlickStickCard(PadViewModel padVm, PadSetting ps)
         {
             if (padVm == null || ps == null) return;
+            // Both legs below fill every card field, so the VM is seeded
+            // from here on and the save-side stamp may trust its values.
+            _flickStickCardSeeded.AddOrUpdate(padVm, null);
             string dots = ps.GetExtendedMapping("FlickStickDots");
             if (string.IsNullOrEmpty(dots))
             {

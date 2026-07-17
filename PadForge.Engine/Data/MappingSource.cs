@@ -316,6 +316,19 @@ namespace PadForge.Engine.Data
         /// can create quirky behaviours on transition").</summary>
         [XmlAttribute] public bool ParamFlickOnEngage { get; set; } = false;
 
+        // ─── Runtime "Menu {id} Item {k}" parse cache (not serialized:
+        // XmlSerializer ignores non-public members). The per-tick readers
+        // re-split the descriptor per row per tick on the poll thread;
+        // caching the parse here makes the hot read a reference compare
+        // (SourceCoercion.TryParseMenuItemCached). Poll thread is the only
+        // reader and writer. The UI thread can swap Descriptor mid-tick,
+        // so the key is compared by reference and a one-tick stale parse
+        // is accepted. MemberwiseClone copying the fields stays valid:
+        // the clone shares the same Descriptor reference. ───
+        internal string MenuParseKey;
+        internal int MenuParseMenuId = -1;
+        internal int MenuParseItemIndex = -1;
+
         /// <summary>Full-field copy. Every field is a string / value type (strings are
         /// immutable), so a memberwise clone is a complete deep copy. Use this at clone
         /// sites instead of hand-listing fields, so a new Param* can't silently drop on

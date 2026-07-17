@@ -91,7 +91,7 @@ menus: 2
     [1] Game Areas
     [2] Bulldoze
     [3] Unlocking Panel
-report: v8 rows:x0+k33 macros:0 menus:2 layers:3 clean:44 partial:7 skipped:2 errors:0
+report: v9 rows:x0+k33 macros:0 menus:2 layers:3 clean:44 partial:7 skipped:2 errors:0
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_a/Full_Press => KbmMBtn0 <- Gamepad ButtonA
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_b/Full_Press => KbmMBtn1 <- Gamepad ButtonB
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_x/Full_Press => KbmKey42 <- Gamepad ButtonX
@@ -139,8 +139,8 @@ report: v8 rows:x0+k33 macros:0 menus:2 layers:3 clean:44 partial:7 skipped:2 er
   Clean RowEmitted @ Default/switch/group 16 (switches)/button_escape/Full_Press => KbmKey1B <- Gamepad ButtonStart
   Clean RowEmitted @ Default/switch/group 16 (switches)/button_menu/Full_Press => KbmKey7B <- Gamepad ButtonBack
   Clean RowEmitted @ Default/switch/group 16 (switches)/left_bumper/Full_Press => KbmKey21 <- Gamepad LeftShoulder
-  Partial ActivatorInputNotSupported @ Default/switch/group 16 (switches)/left_click/Full_Press :: mode_shift joystick 10
   Clean RowEmitted @ Default/switch/group 16 (switches)/right_bumper/Full_Press => KbmKey22 <- Gamepad RightShoulder
+  Partial ShiftLayerEmpty(joystick shift) @ Default/switch/group 16 (switches)/left_click/Full_Press
   Clean ShiftLayerEmitted(left_trackpad shift) @ Default/switch/group 16 (switches)/button_back_right/Full_Press => Hold -> Layer_2948704083_0_MS_left_trackpad_14
   Clean ShiftLayerEmitted(right_joystick shift) @ Default/switch/group 16 (switches)/button_back_right/Full_Press => Hold -> Layer_2948704083_0_MS_right_joystick_20
   Clean ShiftLayerEmitted(right_trackpad shift) @ Default/switch/group 16 (switches)/button_back_right/Full_Press => Hold -> Layer_2948704083_0_MS_right_trackpad_15

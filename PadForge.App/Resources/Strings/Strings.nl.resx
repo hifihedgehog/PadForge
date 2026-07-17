@@ -2653,6 +2653,7 @@
   <data name="Menu_ClickDefault" xml:space="preserve"><value>(standaard van opener)</value></data>
   <data name="Menu_NotRecorded" xml:space="preserve"><value>(niet ingesteld)</value></data>
   <data name="Menu_Binding_Unsupported_Format" xml:space="preserve"><value>{0} (niet bij dit slottype)</value></data>
+  <data name="Menu_Binding_RowBound" xml:space="preserve"><value>Gebonden via toewijzingsrijen</value></data>
   <data name="Mapping_MenuItem_Format" xml:space="preserve"><value>Menu {0} cel {1}</value></data>
   <data name="Dashboard_MenuOverlay" xml:space="preserve"><value>Menu-overlay</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>Toont de ring of het raster op het scherm zolang een radiaal of touch-menu actief is. Menu's vuren ook met de overlay uit.</value></data>

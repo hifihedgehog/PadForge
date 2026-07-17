@@ -1198,6 +1198,12 @@ namespace PadForge
                 // Extended custom stick/trigger config changes (indices 2+) trigger autosave.
                 pad.ConfigItemDirtyCallback = () => _settingsService.MarkDirty();
 
+                // Structural menu edits (add / remove / duplicate, kind,
+                // cell count, center, enabled) change which "Menu N Item K"
+                // descriptors exist, so the slot's input pickers rebuild.
+                // Label / name typing does not fire this.
+                pad.MenusStructureChanged = () => _inputService?.RefreshAvailableInputsForSlot(capturedPad);
+
                 // Steering-mode change (incl. Reset all) re-stamps the engine MappingSets now
                 // so the stick stops/starts steering immediately, not on the 2s autosave.
                 pad.SteeringModeChangedCallback = () => _settingsService.PushUiExtraSourcesIntoSlotMappingSets();
@@ -2174,6 +2180,14 @@ namespace PadForge
                 try { Show(); } catch (InvalidOperationException) { }
                 WindowState = WindowState.Normal;
             }
+
+            // Commit an in-progress TextBox edit before the dirty check:
+            // closing from the title bar never moves focus, so an
+            // UpdateSourceTrigger=LostFocus Text binding still holds the
+            // typed value and the save below would drop it (the
+            // DevicesPage.IdleDisconnect_LostFocus force-commit pattern).
+            if (System.Windows.Input.Keyboard.FocusedElement is TextBox focusedTb)
+                focusedTb.GetBindingExpression(TextBox.TextProperty)?.UpdateSource();
 
             // Save settings synchronously (fast, UI-bound data).
             if (_settingsService.IsDirty)

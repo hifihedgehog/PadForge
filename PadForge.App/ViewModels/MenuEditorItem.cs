@@ -1087,8 +1087,40 @@ namespace PadForge.ViewModels
         public bool ShowKeyPicker => BindingKind == 1;
         public bool ShowButtonPicker => BindingKind == 2;
 
+        private static SocdKeyOption[] _fullKeyOptionsCache;
+        private static int _fullKeyOptionsCulture;
+
+        /// <summary>Every key the macro editor's Key Press offers (the
+        /// full VirtualKey vocabulary, same localized labels), as cell
+        /// key bindings. The SOCD subset the first cut reused was
+        /// missing the Windows keys, media keys, and the rest of the
+        /// extended set (owner report 2026-07-17). VirtualKey.None is
+        /// dropped: a cell with no key is an EMPTY cell, cleared by
+        /// its reset button, never by a "None" pick.</summary>
         public System.Collections.Generic.IReadOnlyList<SocdKeyOption> KeyOptions
-            => KbmSlotConfig.GetKeyOptions();
+        {
+            get
+            {
+                int culture = System.Globalization.CultureInfo.CurrentUICulture.LCID;
+                var cached = _fullKeyOptionsCache;
+                if (cached != null && _fullKeyOptionsCulture == culture)
+                    return cached;
+                // Rebuild-before-read: the macro table's own culture
+                // rebuild has NO ordering guarantee against this getter
+                // (the CultureChanged weak-list trap), so refresh it
+                // here instead of trusting handler order.
+                MacroAction.RefreshVirtualKeyValues();
+                var source = MacroAction.VirtualKeyValues;
+                var list = new System.Collections.Generic.List<SocdKeyOption>(source.Count);
+                foreach (var k in source)
+                    if ((int)k.Key > 0)
+                        list.Add(new SocdKeyOption { Vk = (int)k.Key, Label = k.DisplayName });
+                var arr = list.ToArray();
+                _fullKeyOptionsCache = arr;
+                _fullKeyOptionsCulture = culture;
+                return arr;
+            }
+        }
 
         public int SelectedKeyVk
         {

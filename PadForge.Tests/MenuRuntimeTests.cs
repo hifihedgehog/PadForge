@@ -573,6 +573,26 @@ namespace PadForge.Tests
         }
 
         [Fact]
+        public void MenuCell_KeyPicker_OffersTheFullMacroVocabulary()
+        {
+            var editor = new PadForge.ViewModels.MenuEditorItem(new MenuDefinitionEntry());
+            var keys = editor.Cells[0].KeyOptions;
+
+            // Parity with the macro editor's Key Press list (minus None:
+            // an empty cell is cleared by reset, not by a "None" pick).
+            int macroKeys = 0;
+            foreach (var k in PadForge.ViewModels.MacroAction.VirtualKeyValues)
+                if ((int)k.Key > 0) macroKeys++;
+            Assert.Equal(macroKeys, keys.Count);
+
+            // The extended set the SOCD subset lacked is pickable.
+            Assert.Contains(keys, o => o.Vk == 0x5B); // Left Windows
+            Assert.Contains(keys, o => o.Vk == 0x5D); // Applications
+            Assert.Contains(keys, o => o.Vk == 0xB3); // Media Play/Pause
+            Assert.DoesNotContain(keys, o => o.Vk == 0);
+        }
+
+        [Fact]
         public void MenuCell_ButtonPicker_FollowsSlotLettering()
         {
             // Xbox lettering (default): the picker's value space is the

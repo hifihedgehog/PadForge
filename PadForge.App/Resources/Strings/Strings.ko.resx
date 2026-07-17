@@ -2415,7 +2415,6 @@
   <data name="Workshop_Tr_MacroEmitted" xml:space="preserve"><value>매크로로 변환됨</value></data>
   <data name="Workshop_Tr_ShiftLayerEmitted" xml:space="preserve"><value>레이어: {0}</value></data>
   <data name="Workshop_Tr_TouchpadTuningNotPerRow" xml:space="preserve"><value>터치패드 조정은 행이 아니라 패드 단위로 적용됩니다</value></data>
-  <data name="Workshop_Tr_SoftPressApproximated" xml:space="preserve"><value>Soft_Press를 누름 임계값으로 근사</value></data>
   <data name="Workshop_Tr_TriggerThresholdApproximated" xml:space="preserve"><value>트리거 임계값 근사</value></data>
   <data name="Workshop_Tr_NoDeviceFreeTrigger" xml:space="preserve"><value>이 입력에는 장치 독립 트리거가 없습니다</value></data>
   <data name="Workshop_Tr_GameActionsNotSupported" xml:space="preserve"><value>게임 내 동작 {0}개, Steam 전용, 게임 측 후크 없음</value></data>
@@ -2431,10 +2430,8 @@
   <data name="Workshop_Tr_TouchMenuNeedsOverlay" xml:space="preserve"><value>터치 메뉴 오버레이 제외({0}개 셀)</value></data>
   <data name="Workshop_Tr_RadialMenuNeedsOverlay" xml:space="preserve"><value>방사형 메뉴 오버레이 제외({0}개 섹터)</value></data>
   <data name="Workshop_Tr_MouseRegionNotSupported" xml:space="preserve"><value>커서 영역 제한 미지원</value></data>
-  <data name="Workshop_Tr_EdgeInputNotSupported" xml:space="preserve"><value>가장자리 입력 미지원</value></data>
   <data name="Workshop_Tr_ReleaseActivatorNotSupported" xml:space="preserve"><value>놓기 활성화 방식은 여기서 지원되지 않음</value></data>
   <data name="Workshop_Tr_LongPressNotSupported" xml:space="preserve"><value>길게 누르기 활성화 방식은 여기서 지원되지 않음</value></data>
-  <data name="Workshop_Tr_DoublePressNotSupported" xml:space="preserve"><value>두 번 누르기 활성화 방식은 여기서 지원되지 않음</value></data>
   <data name="Workshop_Tr_UnknownActivatorType" xml:space="preserve"><value>알 수 없는 활성화 방식 {0}</value></data>
   <data name="Workshop_Tr_RepeatDropped" xml:space="preserve"><value>자동 반복 제외됨</value></data>
   <data name="Workshop_Tr_MissingGroup" xml:space="preserve"><value>구성이 없는 그룹 {0}을(를) 참조합니다</value></data>
@@ -2495,6 +2492,8 @@
   <data name="Pad_ResetTouchpadSwipeHapticsIntensity" xml:space="preserve"><value>펄스 강도 재설정</value></data>
   <data name="Mapping_FlickStickRight" xml:space="preserve"><value>Flick Stick (오른쪽 스틱)</value></data>
   <data name="Mapping_FlickStickLeft" xml:space="preserve"><value>Flick Stick (왼쪽 스틱)</value></data>
+  <data name="Mapping_LeftStickRing" xml:space="preserve"><value>왼쪽 스틱 링</value></data>
+  <data name="Mapping_RightStickRing" xml:space="preserve"><value>오른쪽 스틱 링</value></data>
   <data name="Pad_FlickStick_Header" xml:space="preserve"><value>Flick Stick</value></data>
   <data name="Pad_FlickStick_Subtitle" xml:space="preserve"><value>Flick Stick 입력의 설정입니다. 스틱을 기울이면 카메라가 그 방향으로 회전하고, 가장자리를 따라 돌리면 미세 조정됩니다. 매핑의 입력 드롭다운에서 "Flick Stick (오른쪽 스틱)"을 마우스 X에 매핑하세요. 어느 레이어에서도 됩니다.</value></data>
   <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>Flick Stick 설정 모두 재설정</value></data>
@@ -2540,7 +2539,6 @@
   <data name="Workshop_Tr_InterruptibleDropped" xml:space="preserve"><value>중단 불가 누름은 일반 누름으로 동작</value></data>
   <data name="Workshop_Tr_PlayerNumberActionNotSupported" xml:space="preserve"><value>플레이어 번호 변경은 Steam 클라이언트 동작으로, 대응 없음</value></data>
   <data name="Workshop_Tr_LizardModeActionNotSupported" xml:space="preserve"><value>리저드 모드 전환은 Steam 내부 기능으로, 대응 없음</value></data>
-  <data name="Workshop_Tr_SetLedDefaultApproximated" xml:space="preserve"><value>기본 조명 복원을 재정의 해제로 근사</value></data>
   <data name="Workshop_Tr_ToggleLatchEmitted" xml:space="preserve"><value>토글 누름은 다음 누름까지 {0}을(를) 유지</value></data>
   <data name="Workshop_Tr_ToggleDropped" xml:space="preserve"><value>토글 설정 제외됨(이 출력에는 유지 기능 없음)</value></data>
   <data name="Workshop_Tr_LongPressKeyTap" xml:space="preserve"><value>길게 누르기는 임계값에서 {0}을(를) 탭(Steam은 뗄 때까지 유지)</value></data>
@@ -2554,10 +2552,11 @@
   <data name="Workshop_Tr_MouseModeTuningDropped" xml:space="preserve"><value>마우스 조정 설정 제외됨({0})</value></data>
   <data name="Workshop_Tr_AxisInversionNotApplied" xml:space="preserve"><value>축 반전이 적용되지 않음({0})</value></data>
   <data name="Workshop_Tr_ScrollWheelApproximated" xml:space="preserve"><value>원형 스크롤 휠을 세로 드래그로 근사</value></data>
-  <data name="Workshop_Tr_ScreenshotApproximated" xml:space="preserve"><value>SCREENSHOT을 PrintScreen 키 입력으로 근사</value></data>
-  <data name="Workshop_Tr_ShowKeyboardApproximated" xml:space="preserve"><value>SHOW_KEYBOARD를 화면 키보드 실행으로 근사</value></data>
   <data name="Macro_HoldForMs" xml:space="preserve"><value>길게 누를 때</value></data>
   <data name="Macro_HoldForMs_Tooltip" xml:space="preserve"><value>트리거를 유지 시간 동안 계속 누르고 있으면 한 번 실행됩니다. 더 짧게 누르면 아무 일도 일어나지 않습니다.</value></data>
+  <data name="Macro_DoublePress" xml:space="preserve"><value>두 번 누를 때</value></data>
+  <data name="Macro_DoublePress_Tooltip" xml:space="preserve"><value>두 번 누르기 시간 안에 두 번 누르면 발동합니다. 두 번째 누름을 유지하면 놓을 때까지 활성 상태로 유지됩니다.</value></data>
+  <data name="Macro_TriggerDoublePressMs_Label" xml:space="preserve"><value>두 번 누르기 시간</value></data>
   <data name="Macro_TriggerHoldMs_Label" xml:space="preserve"><value>유지 시간</value></data>
   <data name="MacroAction_Type_RepeatVcButtonWhileHeld" xml:space="preserve"><value>누르고 있는 동안 버튼 반복</value></data>
   <data name="MacroAction_RepeatVcButtonWhileHeld_Tooltip" xml:space="preserve"><value>트리거를 누르고 있는 동안 설정한 간격으로 컨트롤러 버튼을 켰다 껐다 반복합니다(연사 / 터보).</value></data>

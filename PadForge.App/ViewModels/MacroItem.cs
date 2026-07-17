@@ -1058,6 +1058,18 @@ namespace PadForge.ViewModels
                 return true;
             }
 
+            // Stick deflection rings (translator v17): a bool the engine's
+            // ring read answers (magnitude vs the DeadZone radius, Invert =
+            // inner), so the family rides a descriptor entry exactly like
+            // the gyro axes. The check must come after the alias fold: the
+            // ring spelling is in the "Gamepad " namespace but is not an
+            // alias-table member, so the fold leaves it intact.
+            if (PadForge.Engine.Common.Mapping.SourceCoercion.IsStickRingDescriptor(d))
+            {
+                entry = new TriggerInputEntry { DeviceGuid = g, SourceDescriptor = d };
+                return true;
+            }
+
             // Mouse gestures (issue #200): every family member is a one-shot
             // bool in the recognizer's fired set, so the whole family rides
             // GestureDescriptor. Evaluated by CheckGestureTrigger's mouse
@@ -1511,6 +1523,7 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(IsNotAlwaysMode));
                     OnPropertyChanged(nameof(IsCustomExpressionMode));
                     OnPropertyChanged(nameof(IsHoldForMsMode));
+                    OnPropertyChanged(nameof(IsDoublePressMode));
                     OnPropertyChanged(nameof(ShowsTriggerComboEditor));
                 }
             }
@@ -1526,15 +1539,22 @@ namespace PadForge.ViewModels
         [System.Xml.Serialization.XmlIgnore]
         public bool IsHoldForMsMode => _triggerMode == MacroTriggerMode.HoldForMs;
 
+        /// <summary>True when TriggerMode is DoublePress (translator v17).
+        /// Gates the double-press window ms row in the trigger editor.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool IsDoublePressMode => _triggerMode == MacroTriggerMode.DoublePress;
+
         /// <summary>True when the standard trigger-combo recording UI should show
-        /// (i.e. one of OnPress / OnRelease / WhileHeld / HoldForMs). Always mode
-        /// has no trigger; CustomExpression mode uses the formula editor instead.</summary>
+        /// (i.e. one of OnPress / OnRelease / WhileHeld / HoldForMs /
+        /// DoublePress). Always mode has no trigger; CustomExpression mode
+        /// uses the formula editor instead.</summary>
         [System.Xml.Serialization.XmlIgnore]
         public bool ShowsTriggerComboEditor =>
             _triggerMode == MacroTriggerMode.OnPress ||
             _triggerMode == MacroTriggerMode.OnRelease ||
             _triggerMode == MacroTriggerMode.WhileHeld ||
-            _triggerMode == MacroTriggerMode.HoldForMs;
+            _triggerMode == MacroTriggerMode.HoldForMs ||
+            _triggerMode == MacroTriggerMode.DoublePress;
 
         private int _triggerHoldMs = 500;
 
@@ -1555,6 +1575,35 @@ namespace PadForge.ViewModels
         [System.Xml.Serialization.XmlIgnore]
         public RelayCommand ResetTriggerHoldMsCommand =>
             _resetTriggerHoldMsCommand ??= new RelayCommand(() => TriggerHoldMs = 500);
+
+        private int _triggerDoublePressMs = 442;
+
+        /// <summary>Double-press window in milliseconds for
+        /// <see cref="MacroTriggerMode.DoublePress"/> (translator v17). The
+        /// macro fires on the second rising edge when it lands within this
+        /// window of the first. A slower second press re-arms as a fresh
+        /// first press. Clamped to 50..5000; default 442, the double-tap
+        /// window Valve's own shipped controller_base templates author
+        /// (basicui.vdf / basicui_neptune.vdf, "double_tap_time" "442").</summary>
+        public int TriggerDoublePressMs
+        {
+            get => _triggerDoublePressMs;
+            set => SetProperty(ref _triggerDoublePressMs, Math.Clamp(value, 50, 5000));
+        }
+
+        private RelayCommand _resetTriggerDoublePressMsCommand;
+        /// <summary>Resets the double-press window to the 442 ms default,
+        /// pairing the ms box with the standard reset glyph.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public RelayCommand ResetTriggerDoublePressMsCommand =>
+            _resetTriggerDoublePressMsCommand ??= new RelayCommand(() => TriggerDoublePressMs = 442);
+
+        /// <summary>Transient timing state for
+        /// <see cref="MacroTriggerMode.DoublePress"/>: the UTC time of the
+        /// previous rising edge, or <see cref="DateTime.MinValue"/> when no
+        /// first press is armed. Never serialized.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        internal DateTime TriggerLastPressUtc { get; set; } = DateTime.MinValue;
 
         /// <summary>Transient timing state for <see cref="MacroTriggerMode.HoldForMs"/>:
         /// the UTC time the trigger combo last went active (rising edge). The
@@ -4713,7 +4762,20 @@ namespace PadForge.ViewModels
         /// tap does nothing. Release re-arms, so the next qualifying hold
         /// fires again. At the tail per the APPEND-ONLY rule above; ordinal
         /// pinned.</summary>
-        HoldForMs = 5
+        HoldForMs = 5,
+
+        /// <summary>Fire once when the trigger combo sees press, release,
+        /// press within <see cref="MacroItem.TriggerDoublePressMs"/>
+        /// milliseconds (translator v17: the Steam Input Double_Press
+        /// activator, whose window key is double_tap_time in the
+        /// serializer's own token table). A single press, or a second
+        /// press outside the window, only re-arms as a fresh first press.
+        /// The trigger stays active through the second press's hold, so
+        /// UntilRelease shapes stop on its release ("If held on the second
+        /// press, it will remain pressed", Valve's shipped Double Press
+        /// string). At the tail per the APPEND-ONLY rule above; ordinal
+        /// pinned.</summary>
+        DoublePress = 6
     }
 
     public enum MacroTriggerSource

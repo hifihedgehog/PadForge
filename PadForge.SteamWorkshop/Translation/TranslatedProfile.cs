@@ -346,6 +346,15 @@ namespace PadForge.SteamWorkshop.Translation
         /// trigger.</summary>
         public int TriggerHoldMs { get; set; }
 
+        /// <summary>Double-press window in milliseconds for the
+        /// "DoublePress" trigger mode (v17: a Double_Press activator's
+        /// double_tap_time, the serializer's own key beside repeat_rate
+        /// and long_press_time in steamclient.dll's token table). Absent
+        /// in the corpus; Valve's shipped controller_base templates
+        /// author 442, the default here. 0 = not a double-press
+        /// trigger.</summary>
+        public int TriggerDoublePressMs { get; set; }
+
         /// <summary>Xbox output button bitmask (Gamepad.* constants), or 0
         /// when the trigger is an axis (<see cref="TriggerAxisTarget"/>).</summary>
         public ushort TriggerXboxButtons { get; set; }

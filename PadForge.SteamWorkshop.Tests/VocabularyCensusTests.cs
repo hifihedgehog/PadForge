@@ -183,6 +183,10 @@ namespace PadForge.SteamWorkshop.Tests
             "mouse_dampening_trigger", "mouse_move_threshold",
             "gyro_button", "gyro_ratchet_button_mask", "gyro_button_invert",
             "invert_z",
+            // edge_binding_radius/_invert: consumed on stick hosts since
+            // v17 (the ring family's radius / inner selector) and on
+            // whole-pad trackpad zones (v16); named via the region tuning
+            // note on partial trackpad rings.
             "edge_binding_radius", "edge_binding_invert", "transition_time",
             "teleport_start", "teleport_stop",
             // benign: group metadata, not behavior
@@ -210,10 +214,11 @@ namespace PadForge.SteamWorkshop.Tests
 
         private static readonly HashSet<string> KnownActivatorSettingKeys = new(StringComparer.OrdinalIgnoreCase)
         {
-            // consumed
+            // consumed (double_tap_time since v17: the DoublePress macro
+            // trigger's window; trackpad hosts keep the gesture engine's
+            // own tap window)
             "toggle", "hold_repeats", "repeat_rate", "long_press_time",
             "delay_start", "delay_end", "haptic_intensity", "interruptable",
-            // benign: double-press window, engine tap window applies
             "double_tap_time",
         };
 

@@ -68,15 +68,24 @@ namespace PadForge.SteamWorkshop.Tests
             Assert.Equal(Translate(fileId), Translate(fileId));
         }
 
-        /// <summary>v14/v15/v16 arm closures: the retired vocabulary has zero
-        /// emission sites across the whole corpus. TrackpadFeatureRequired
-        /// died to the apply-time auto-arm (v14), the directional-swipe
-        /// skip family died to the gyro half reads, the member walk, and
-        /// the AxisHold / MouseWheelTap / half-stamped-activator channels
-        /// (v15), the two macro-trigger plumbing notes went silent
-        /// Clean (v15), and the terminal round built the mouse_delta nudge
-        /// and the scroll_wheel_list cycle while the census retired the
-        /// surfaceless-scrollwheel arm (v16), so none of these keys may
+        /// <summary>v14/v15/v16/v17 arm closures: the retired vocabulary has
+        /// zero emission sites across the whole corpus.
+        /// TrackpadFeatureRequired died to the apply-time auto-arm (v14),
+        /// the directional-swipe skip family died to the gyro half reads,
+        /// the member walk, and the AxisHold / MouseWheelTap /
+        /// half-stamped-activator channels (v15), the two macro-trigger
+        /// plumbing notes went silent Clean (v15), the terminal round
+        /// built the mouse_delta nudge and the scroll_wheel_list cycle
+        /// while the census retired the surfaceless-scrollwheel arm (v16),
+        /// and the last two gaps built in v17: Double_Press lowers to the
+        /// engine's DoublePress macro trigger on every host, and edge
+        /// members build on the stick-ring family / the trackpad touch
+        /// read. The expected-behavior notes retired with v17 too:
+        /// SCREENSHOT and SHOW_KEYBOARD keep their macros but report
+        /// nothing, Soft_Press rows report Clean (a soft press IS a
+        /// press threshold), and set_led restore-default reports Clean
+        /// (clearing the override IS the restore), because those notes
+        /// described exactly what a user expects. None of these keys may
         /// ever appear in a fresh report again.</summary>
         [Theory]
         [MemberData(nameof(FixtureIds))]
@@ -100,6 +109,12 @@ namespace PadForge.SteamWorkshop.Tests
                 "Workshop_Tr_MacroTriggerRetargetedToInput",
                 "Workshop_Tr_MouseDeltaNotSupported",
                 "Workshop_Tr_ScrollWheelModeNotSupported",
+                "Workshop_Tr_DoublePressNotSupported",
+                "Workshop_Tr_EdgeInputNotSupported",
+                "Workshop_Tr_ScreenshotApproximated",
+                "Workshop_Tr_ShowKeyboardApproximated",
+                "Workshop_Tr_SoftPressApproximated",
+                "Workshop_Tr_SetLedDefaultApproximated",
             };
             Assert.DoesNotContain(translated.Report.Entries, e =>
                 System.Array.IndexOf(retired, e.ReasonKey) >= 0);
@@ -134,6 +149,87 @@ namespace PadForge.SteamWorkshop.Tests
                         Assert.True(
                             PhysicalSlotResolver.IsTrackpad(slot) || PhysicalSlotResolver.IsStick(slot),
                             $"{Path.GetFileName(path)}: scrollwheel group {kv.Key} hosts on '{kv.Value}'");
+                    }
+                }
+            }
+        }
+
+        /// <summary>v17 retired-arm census guard for EdgeInputNotSupported:
+        /// the key was deleted on the proof that Steam's grammar hosts edge
+        /// members only where a ring-capable read exists (trigger pulls,
+        /// trackpads, sticks: the 2026-07-17 census over the corpus plus
+        /// Valve's 54 shipped controller_base templates found no other
+        /// host). This walks every group carrying an "edge" input across
+        /// every fixture, wider than translation reaches, and fails the
+        /// moment one binds a host outside that set, which would demand a
+        /// new ring surface instead of the UnknownPhysicalInput net.</summary>
+        [Fact]
+        public void EdgeMembers_Corpus_HostOnlyOnRingCapableSurfaces()
+        {
+            foreach (var path in TestFixtures.AllVdfPaths())
+            {
+                var config = SteamInputConfig.FromVdf(VdfParser.Parse(File.ReadAllText(path)));
+                var edgeGroups = config.Groups
+                    .Where(g => g.Inputs.Keys.Any(k =>
+                        string.Equals(k, "edge", StringComparison.OrdinalIgnoreCase)))
+                    .Select(g => g.Id)
+                    .ToHashSet();
+                if (edgeGroups.Count == 0) continue;
+                foreach (var preset in config.Presets)
+                {
+                    foreach (var kv in preset.GroupSourceBindings)
+                    {
+                        if (!edgeGroups.Contains(kv.Key)) continue;
+                        var tokens = (kv.Value ?? "").Split(' ', StringSplitOptions.RemoveEmptyEntries);
+                        var slot = PhysicalSlotResolver.ParseSlot(tokens.Length > 0 ? tokens[0] : "");
+                        Assert.True(
+                            PhysicalSlotResolver.IsTrackpad(slot)
+                            || PhysicalSlotResolver.IsStick(slot)
+                            || slot == SteamSlot.LeftTrigger || slot == SteamSlot.RightTrigger,
+                            $"{Path.GetFileName(path)}: edge group {kv.Key} hosts on '{kv.Value}'");
+                    }
+                }
+            }
+        }
+
+        /// <summary>v17 retired-arm census guard for
+        /// DoublePressNotSupported: the key was deleted when the
+        /// double-press macro trigger built. The two arms with no
+        /// construct (layer verbs, mode shifts) route to the
+        /// ActivatorInputNotSupported net, on the census proof that no
+        /// Double_Press activator in the corpus (nor in Valve's 54
+        /// shipped templates, checked 2026-07-17) carries one. This walk
+        /// pins the committed half of that census: every Double_Press
+        /// binding stays inside the built vocabulary.</summary>
+        [Fact]
+        public void DoublePressActivators_Corpus_CarryOnlyBuiltVocabulary()
+        {
+            foreach (var path in TestFixtures.AllVdfPaths())
+            {
+                var config = SteamInputConfig.FromVdf(VdfParser.Parse(File.ReadAllText(path)));
+                foreach (var group in config.Groups)
+                {
+                    foreach (var input in group.Inputs.Values)
+                    {
+                        foreach (var act in input.Activators)
+                        {
+                            if (!string.Equals((act.Type ?? "").Trim(), "Double_Press",
+                                    StringComparison.OrdinalIgnoreCase))
+                                continue;
+                            foreach (var b in act.Bindings)
+                            {
+                                string t = (b.Type ?? "").Trim().ToLowerInvariant();
+                                Assert.True(
+                                    t is "key_press" or "mouse_button" or "mouse_wheel"
+                                      or "xinput_button" or "game_action" or ""
+                                    || (t == "controller_action"
+                                        && !b.Param.TrimStart().StartsWith("add_layer", StringComparison.OrdinalIgnoreCase)
+                                        && !b.Param.TrimStart().StartsWith("hold_layer", StringComparison.OrdinalIgnoreCase)
+                                        && !b.Param.TrimStart().StartsWith("remove_layer", StringComparison.OrdinalIgnoreCase)
+                                        && !b.Param.TrimStart().StartsWith("change_preset", StringComparison.OrdinalIgnoreCase)),
+                                    $"{Path.GetFileName(path)}: Double_Press hosts '{b.Raw}'");
+                            }
+                        }
                     }
                 }
             }

@@ -104,7 +104,7 @@ macros: 7
   macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Gamepad LeftStick] strength=66%
   macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Gamepad LeftTrigger] in-half=upper in-dz=75 strength=66%
   macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Gamepad RightTrigger] in-half=upper in-dz=75 strength=66%
-report: v16 rows:x32+k4 macros:7 menus:0 layers:11 clean:50 partial:12 skipped:0 errors:0
+report: v17 rows:x32+k4 macros:7 menus:0 layers:11 clean:50 partial:12 skipped:0 errors:0
   Partial GyroButtonMaskDropped(gyro_button, 20) @ Default/gyro/group 12 (absolute_mouse)
   Clean RowEmitted @ Default/gyro/group 12 (absolute_mouse) => KbmMouseX <- Gyro Yaw
   Clean RowEmitted @ Default/gyro/group 12 (absolute_mouse) => KbmMouseY <- Gyro Pitch

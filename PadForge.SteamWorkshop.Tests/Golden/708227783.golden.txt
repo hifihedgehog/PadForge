@@ -151,7 +151,7 @@ kbm activators: 5
   Hold Layer_708227783_0_MS_left_trackpad_6 | Gamepad Paddle1 | inherit | name=left_trackpad shift
   Hold Layer_708227783_0_MS_right_trackpad_13 | Gamepad Paddle1 | inherit | name=right_trackpad shift
   Cycle Layer_708227783_1 cycle=Layer_708227783_1+Base | Gamepad ButtonY | name=Army Hotkeys / Default Config / Map Modes
-macros: 16
+macros: 18
   macro ShowOnScreenKeyboard OnPress | On-screen keyboard (click) | btns=0x0000 in=[Gamepad LeftStick]
   macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Gamepad LeftStick] strength=33%
   macro RumblePulse OnPress | Haptic pulse (dpad_east) | btns=0x0000 in=[Gamepad LeftStickX] in-half=upper strength=33%
@@ -160,6 +160,7 @@ macros: 16
   macro RumblePulse OnPress | Haptic pulse (dpad_west) | btns=0x0000 in=[Gamepad LeftStickX] in-half=lower strength=33%
   macro KeyTap OnPress | Tap KEYPAD_PLUS (scroll_clockwise) | btns=0x0000 in=[Touchpad 0 SwipeDown] vk=0x6B
   macro KeyTap OnPress | Tap KEYPAD_DASH (scroll_counterclockwise) | btns=0x0000 in=[Touchpad 0 SwipeUp] vk=0x6D
+  macro HoldKey DoublePress | Hold LEFT_CONTROL (button_back_left) | btns=0x0000 in=[Gamepad Paddle2] dbl=442ms vk=0xA2
   macro ShowOnScreenKeyboard OnPress | On-screen keyboard (click) | btns=0x0000 in=[Gamepad LeftStick]
   macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Gamepad LeftStick] strength=33%
   macro RumblePulse OnPress | Haptic pulse (dpad_east) | btns=0x0000 in=[Gamepad LeftStickX] in-half=upper strength=33%
@@ -168,6 +169,7 @@ macros: 16
   macro RumblePulse OnPress | Haptic pulse (dpad_west) | btns=0x0000 in=[Gamepad LeftStickX] in-half=lower strength=33%
   macro KeyTap OnPress | Tap KEYPAD_PLUS (scroll_clockwise) | btns=0x0000 in=[Touchpad 0 SwipeDown] vk=0x6B
   macro KeyTap OnPress | Tap KEYPAD_DASH (scroll_counterclockwise) | btns=0x0000 in=[Touchpad 0 SwipeUp] vk=0x6D
+  macro HoldKey DoublePress | Hold LEFT_CONTROL (button_back_left) | btns=0x0000 in=[Gamepad Paddle2] dbl=442ms vk=0xA2
 menus: 1
   menu 1 Grid | Touchpad 0 | Base | fire=TouchRelease cells=9 scale=109% | name=Touch Menu 1
     [0] Government
@@ -178,7 +180,7 @@ menus: 1
     [6] Research
     [7] Recruit and Deploy
     [8] Logistics
-report: v16 rows:x0+k69 macros:16 menus:1 layers:5 clean:77 partial:16 skipped:2 errors:0
+report: v17 rows:x0+k69 macros:18 menus:1 layers:5 clean:79 partial:14 skipped:0 errors:0
   Clean RowEmitted @ Default Config / Map Modes/button_diamond/group 0 (four_buttons)/button_A/Full_Press => KbmKey20 <- Gamepad ButtonA
   Clean RowEmitted @ Default Config / Map Modes/button_diamond/group 0 (four_buttons)/button_B/Full_Press => KbmKey4F <- Gamepad ButtonB
   Clean RowEmitted @ Default Config / Map Modes/button_diamond/group 0 (four_buttons)/button_X/Full_Press => KbmKey1B <- Gamepad ButtonX
@@ -189,7 +191,6 @@ report: v16 rows:x0+k69 macros:16 menus:1 layers:5 clean:77 partial:16 skipped:2
   Partial GyroButtonMaskDropped(gyro_button, 0) @ Default Config / Map Modes/gyro/group 10 (absolute_mouse)
   Clean RowEmitted @ Default Config / Map Modes/gyro/group 10 (absolute_mouse) => KbmMouseX <- Gyro Yaw
   Clean RowEmitted @ Default Config / Map Modes/gyro/group 10 (absolute_mouse) => KbmMouseY <- Gyro Pitch
-  Partial ShowKeyboardApproximated @ Default Config / Map Modes/joystick/group 3 (dpad)/click/Full_Press => On-screen keyboard macro
   Clean RowEmitted @ Default Config / Map Modes/joystick/group 3 (dpad)/dpad_east/Full_Press => KbmKey27 <- Gamepad LeftStickX (upper half)
   Clean RowEmitted @ Default Config / Map Modes/joystick/group 3 (dpad)/dpad_north/Full_Press => KbmKey26 <- Gamepad LeftStickY (lower half)
   Clean RowEmitted @ Default Config / Map Modes/joystick/group 3 (dpad)/dpad_south/Full_Press => KbmKey28 <- Gamepad LeftStickY (upper half)
@@ -220,7 +221,7 @@ report: v16 rows:x0+k69 macros:16 menus:1 layers:5 clean:77 partial:16 skipped:2
   Partial ScrollWheelApproximated @ Default Config / Map Modes/right_trackpad/group 13 (scrollwheel)
   Clean RowEmitted @ Default Config / Map Modes/right_trigger/group 5 (trigger)/edge/Full_Press => KbmMBtn0 <- Gamepad RightTrigger (upper half)
   Clean RowEmitted @ Default Config / Map Modes/switch/group 14 (switches)/button_back_left/Full_Press => KbmKeyA0 <- Gamepad Paddle2
-  Skipped DoublePressNotSupported @ Default Config / Map Modes/switch/group 14 (switches)/button_back_left/Double_Press :: key_press LEFT_CONTROL
+  Clean MacroEmitted @ Default Config / Map Modes/switch/group 14 (switches)/button_back_left/Double_Press => Hold LEFT_CONTROL macro
   Clean RowEmitted @ Default Config / Map Modes/switch/group 14 (switches)/button_escape/Full_Press => KbmKey1B <- Gamepad ButtonStart
   Clean RowEmitted @ Default Config / Map Modes/switch/group 14 (switches)/button_menu/Full_Press => KbmKey20 <- Gamepad ButtonBack
   Clean RowEmitted @ Default Config / Map Modes/switch/group 14 (switches)/left_bumper/Full_Press => KbmKey4C <- Gamepad LeftShoulder
@@ -235,7 +236,6 @@ report: v16 rows:x0+k69 macros:16 menus:1 layers:5 clean:77 partial:16 skipped:2
   Partial GyroButtonMaskDropped(gyro_button, 0) @ Army Hotkeys/gyro/group 31 (absolute_mouse)
   Clean RowEmitted @ Army Hotkeys/gyro/group 31 (absolute_mouse) => KbmMouseX <- Gyro Yaw
   Clean RowEmitted @ Army Hotkeys/gyro/group 31 (absolute_mouse) => KbmMouseY <- Gyro Pitch
-  Partial ShowKeyboardApproximated @ Army Hotkeys/joystick/group 23 (dpad)/click/Full_Press => On-screen keyboard macro
   Clean RowEmitted @ Army Hotkeys/joystick/group 23 (dpad)/dpad_east/Full_Press => KbmKey27 <- Gamepad LeftStickX (upper half)
   Clean RowEmitted @ Army Hotkeys/joystick/group 23 (dpad)/dpad_north/Full_Press => KbmKey26 <- Gamepad LeftStickY (lower half)
   Clean RowEmitted @ Army Hotkeys/joystick/group 23 (dpad)/dpad_south/Full_Press => KbmKey28 <- Gamepad LeftStickY (upper half)
@@ -263,7 +263,7 @@ report: v16 rows:x0+k69 macros:16 menus:1 layers:5 clean:77 partial:16 skipped:2
   Partial ScrollWheelApproximated @ Army Hotkeys/right_trackpad/group 20 (scrollwheel)
   Clean RowEmitted @ Army Hotkeys/right_trigger/group 29 (trigger)/edge/Full_Press => KbmMBtn0 <- Gamepad RightTrigger (upper half)
   Clean RowEmitted @ Army Hotkeys/switch/group 18 (switches)/button_back_left/Full_Press => KbmKeyA0 <- Gamepad Paddle2
-  Skipped DoublePressNotSupported @ Army Hotkeys/switch/group 18 (switches)/button_back_left/Double_Press :: key_press LEFT_CONTROL, Assignment Mode / Support Attack
+  Clean MacroEmitted @ Army Hotkeys/switch/group 18 (switches)/button_back_left/Double_Press => Hold LEFT_CONTROL macro
   Clean RowEmitted @ Army Hotkeys/switch/group 18 (switches)/button_back_right/Full_Press => KbmKeyA4 <- Gamepad Paddle1
   Clean RowEmitted @ Army Hotkeys/switch/group 18 (switches)/button_escape/Full_Press => KbmKey1B <- Gamepad ButtonStart
   Clean RowEmitted @ Army Hotkeys/switch/group 18 (switches)/button_menu/Full_Press => KbmKey20 <- Gamepad ButtonBack

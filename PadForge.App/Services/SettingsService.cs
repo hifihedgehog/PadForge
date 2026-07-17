@@ -2920,6 +2920,7 @@ namespace PadForge.Services
                 TriggerSource = md.TriggerSource,
                 TriggerMode = md.TriggerMode,
                 TriggerHoldMs = md.TriggerHoldMs,
+                TriggerDoublePressMs = md.TriggerDoublePressMs,
                 ConsumeTriggerButtons = md.ConsumeTriggerButtons,
                 RepeatMode = md.RepeatMode,
                 RepeatCount = md.RepeatCount,
@@ -3970,6 +3971,7 @@ namespace PadForge.Services
                 TriggerSource = macro.TriggerSource,
                 TriggerMode = macro.TriggerMode,
                 TriggerHoldMs = macro.TriggerHoldMs,
+                TriggerDoublePressMs = macro.TriggerDoublePressMs,
                 ConsumeTriggerButtons = macro.ConsumeTriggerButtons,
                 RepeatMode = macro.RepeatMode,
                 RepeatCount = macro.RepeatCount,
@@ -5262,6 +5264,13 @@ namespace PadForge.Services
         /// the same value a fresh macro gets.</summary>
         [XmlElement]
         public int TriggerHoldMs { get; set; } = 500;
+
+        /// <summary>Double-press window in ms for
+        /// <see cref="MacroTriggerMode.DoublePress"/> (translator v17).
+        /// Default 442, matching a fresh macro (Valve's own controller_base
+        /// templates author "double_tap_time" "442").</summary>
+        [XmlElement]
+        public int TriggerDoublePressMs { get; set; } = 442;
 
         [XmlElement]
         public bool ConsumeTriggerButtons { get; set; } = true;

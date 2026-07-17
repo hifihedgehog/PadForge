@@ -2036,6 +2036,8 @@
   <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>Reset all Motion Steering settings</value></data>
   <data name="Mapping_FlickStickRight" xml:space="preserve"><value>Flick Stick (Right Stick)</value></data>
   <data name="Mapping_FlickStickLeft" xml:space="preserve"><value>Flick Stick (Left Stick)</value></data>
+  <data name="Mapping_LeftStickRing" xml:space="preserve"><value>Left Stick Ring</value></data>
+  <data name="Mapping_RightStickRing" xml:space="preserve"><value>Right Stick Ring</value></data>
   <data name="Pad_FlickStick_Header" xml:space="preserve"><value>Flick Stick</value></data>
   <data name="Pad_FlickStick_Subtitle" xml:space="preserve"><value>Settings for the Flick Stick inputs: point the stick and the camera turns to match, sweep the rim to fine-turn. Map "Flick Stick (Right Stick)" to Mouse X from the input dropdown in Mappings, on any layer.</value></data>
   <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>Reset all Flick Stick settings</value></data>
@@ -2546,7 +2548,6 @@
   <data name="Workshop_Tr_MacroEmitted" xml:space="preserve"><value>translated as a macro</value></data>
   <data name="Workshop_Tr_ShiftLayerEmitted" xml:space="preserve"><value>layer: {0}</value></data>
   <data name="Workshop_Tr_TouchpadTuningNotPerRow" xml:space="preserve"><value>touchpad tuning applies per pad, not per row</value></data>
-  <data name="Workshop_Tr_SoftPressApproximated" xml:space="preserve"><value>Soft_Press approximated as a press threshold</value></data>
   <data name="Workshop_Tr_TriggerThresholdApproximated" xml:space="preserve"><value>trigger threshold approximated</value></data>
   <data name="Workshop_Tr_NoDeviceFreeTrigger" xml:space="preserve"><value>no device-free trigger for this input</value></data>
   <data name="Workshop_Tr_GameActionsNotSupported" xml:space="preserve"><value>{0} in-game actions, Steam-only, no game-side hook</value></data>
@@ -2562,10 +2563,8 @@
   <data name="Workshop_Tr_TouchMenuNeedsOverlay" xml:space="preserve"><value>touch-menu overlay dropped ({0} cells)</value></data>
   <data name="Workshop_Tr_RadialMenuNeedsOverlay" xml:space="preserve"><value>radial-menu overlay dropped ({0} sectors)</value></data>
   <data name="Workshop_Tr_MouseRegionNotSupported" xml:space="preserve"><value>cursor region constraint not supported</value></data>
-  <data name="Workshop_Tr_EdgeInputNotSupported" xml:space="preserve"><value>edge input not supported</value></data>
   <data name="Workshop_Tr_ReleaseActivatorNotSupported" xml:space="preserve"><value>release activator not supported here</value></data>
   <data name="Workshop_Tr_LongPressNotSupported" xml:space="preserve"><value>long-press activator not supported here</value></data>
-  <data name="Workshop_Tr_DoublePressNotSupported" xml:space="preserve"><value>double-press activator not supported here</value></data>
   <data name="Workshop_Tr_UnknownActivatorType" xml:space="preserve"><value>unknown activator {0}</value></data>
   <data name="Workshop_Tr_RepeatDropped" xml:space="preserve"><value>auto-repeat dropped</value></data>
   <data name="Workshop_Tr_MissingGroup" xml:space="preserve"><value>config references missing group {0}</value></data>
@@ -2587,7 +2586,6 @@
   <data name="Workshop_Tr_InterruptibleDropped" xml:space="preserve"><value>non-interruptible press behaves as a normal press</value></data>
   <data name="Workshop_Tr_PlayerNumberActionNotSupported" xml:space="preserve"><value>player-number change is a Steam-client action, no equivalent</value></data>
   <data name="Workshop_Tr_LizardModeActionNotSupported" xml:space="preserve"><value>lizard-mode toggle is Steam-internal, no equivalent</value></data>
-  <data name="Workshop_Tr_SetLedDefaultApproximated" xml:space="preserve"><value>restore-default lighting approximated as clearing the override</value></data>
   <data name="Workshop_Tr_ToggleLatchEmitted" xml:space="preserve"><value>toggle press latches {0} until the next press</value></data>
   <data name="Workshop_Tr_ToggleDropped" xml:space="preserve"><value>toggle setting dropped (no latch for this output)</value></data>
   <data name="Workshop_Tr_LongPressKeyTap" xml:space="preserve"><value>long press taps {0} at the threshold (Steam holds it until release)</value></data>
@@ -2601,8 +2599,6 @@
   <data name="Workshop_Tr_MouseModeTuningDropped" xml:space="preserve"><value>mouse feel settings dropped ({0})</value></data>
   <data name="Workshop_Tr_AxisInversionNotApplied" xml:space="preserve"><value>axis inversion not applied ({0})</value></data>
   <data name="Workshop_Tr_ScrollWheelApproximated" xml:space="preserve"><value>circular scroll wheel approximated as a vertical drag</value></data>
-  <data name="Workshop_Tr_ScreenshotApproximated" xml:space="preserve"><value>SCREENSHOT approximated as a PrintScreen key tap</value></data>
-  <data name="Workshop_Tr_ShowKeyboardApproximated" xml:space="preserve"><value>SHOW_KEYBOARD approximated as launching the on-screen keyboard</value></data>
   <data name="Status_WorkshopUpdatesOptInRequired" xml:space="preserve"><value>Enable Community Configs to check for updates</value></data>
   <data name="Status_WorkshopNoImportedProfiles" xml:space="preserve"><value>No profiles imported from the Steam Workshop yet</value></data>
   <data name="Status_WorkshopCheckingUpdates" xml:space="preserve"><value>Checking Steam Workshop for updates…</value></data>
@@ -2612,6 +2608,9 @@
   <data name="Workshop_UpdateRow_Format" xml:space="preserve"><value>{0} · {1}</value></data>
   <data name="Macro_HoldForMs" xml:space="preserve"><value>On Hold</value></data>
   <data name="Macro_HoldForMs_Tooltip" xml:space="preserve"><value>Fires once after the trigger has been held continuously for the hold time. A shorter tap does nothing.</value></data>
+  <data name="Macro_DoublePress" xml:space="preserve"><value>On Double Press</value></data>
+  <data name="Macro_DoublePress_Tooltip" xml:space="preserve"><value>Fires when the trigger is pressed twice within the double press time. If held on the second press, it stays active until release.</value></data>
+  <data name="Macro_TriggerDoublePressMs_Label" xml:space="preserve"><value>Double Press Time</value></data>
   <data name="Macro_TriggerHoldMs_Label" xml:space="preserve"><value>Hold Time</value></data>
   <data name="MacroAction_Type_RepeatVcButtonWhileHeld" xml:space="preserve"><value>Repeat Button While Held</value></data>
   <data name="MacroAction_RepeatVcButtonWhileHeld_Tooltip" xml:space="preserve"><value>Pulses the controller button on and off at the interval for as long as the trigger is held (autofire / turbo).</value></data>

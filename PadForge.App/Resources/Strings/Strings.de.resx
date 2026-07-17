@@ -2415,7 +2415,6 @@
   <data name="Workshop_Tr_MacroEmitted" xml:space="preserve"><value>als Makro übersetzt</value></data>
   <data name="Workshop_Tr_ShiftLayerEmitted" xml:space="preserve"><value>Ebene: {0}</value></data>
   <data name="Workshop_Tr_TouchpadTuningNotPerRow" xml:space="preserve"><value>Touchpad-Feinabstimmung gilt pro Pad, nicht pro Zeile</value></data>
-  <data name="Workshop_Tr_SoftPressApproximated" xml:space="preserve"><value>Soft_Press als Druckschwelle angenähert</value></data>
   <data name="Workshop_Tr_TriggerThresholdApproximated" xml:space="preserve"><value>Trigger-Schwelle angenähert</value></data>
   <data name="Workshop_Tr_NoDeviceFreeTrigger" xml:space="preserve"><value>kein gerätefreier Auslöser für diese Eingabe</value></data>
   <data name="Workshop_Tr_GameActionsNotSupported" xml:space="preserve"><value>{0} Ingame-Aktionen, nur Steam, kein spielseitiger Hook</value></data>
@@ -2431,10 +2430,8 @@
   <data name="Workshop_Tr_TouchMenuNeedsOverlay" xml:space="preserve"><value>Touch-Menü-Overlay verworfen ({0} Felder)</value></data>
   <data name="Workshop_Tr_RadialMenuNeedsOverlay" xml:space="preserve"><value>Radialmenü-Overlay verworfen ({0} Sektoren)</value></data>
   <data name="Workshop_Tr_MouseRegionNotSupported" xml:space="preserve"><value>Cursor-Bereichsbegrenzung nicht unterstützt</value></data>
-  <data name="Workshop_Tr_EdgeInputNotSupported" xml:space="preserve"><value>Randeingabe nicht unterstützt</value></data>
   <data name="Workshop_Tr_ReleaseActivatorNotSupported" xml:space="preserve"><value>Loslass-Aktivator hier nicht unterstützt</value></data>
   <data name="Workshop_Tr_LongPressNotSupported" xml:space="preserve"><value>Langdruck-Aktivator hier nicht unterstützt</value></data>
-  <data name="Workshop_Tr_DoublePressNotSupported" xml:space="preserve"><value>Doppeldruck-Aktivator hier nicht unterstützt</value></data>
   <data name="Workshop_Tr_UnknownActivatorType" xml:space="preserve"><value>unbekannter Aktivator {0}</value></data>
   <data name="Workshop_Tr_RepeatDropped" xml:space="preserve"><value>Auto-Wiederholung verworfen</value></data>
   <data name="Workshop_Tr_MissingGroup" xml:space="preserve"><value>Konfiguration verweist auf fehlende Gruppe {0}</value></data>
@@ -2495,6 +2492,8 @@
   <data name="Pad_ResetTouchpadSwipeHapticsIntensity" xml:space="preserve"><value>Puls-Intensität zurücksetzen</value></data>
   <data name="Mapping_FlickStickRight" xml:space="preserve"><value>Flick Stick (rechter Stick)</value></data>
   <data name="Mapping_FlickStickLeft" xml:space="preserve"><value>Flick Stick (linker Stick)</value></data>
+  <data name="Mapping_LeftStickRing" xml:space="preserve"><value>Linker Stick Ring</value></data>
+  <data name="Mapping_RightStickRing" xml:space="preserve"><value>Rechter Stick Ring</value></data>
   <data name="Pad_FlickStick_Header" xml:space="preserve"><value>Flick Stick</value></data>
   <data name="Pad_FlickStick_Subtitle" xml:space="preserve"><value>Einstellungen für die Flick-Stick-Eingaben: Stick in eine Richtung drücken und die Kamera dreht sich entsprechend, am Rand entlangfahren für Feindrehung. Ordne "Flick Stick (rechter Stick)" im Eingabe-Dropdown unter Zuordnungen Maus X zu, auf einer beliebigen Ebene.</value></data>
   <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>Alle Flick-Stick-Einstellungen zurücksetzen</value></data>
@@ -2540,7 +2539,6 @@
   <data name="Workshop_Tr_InterruptibleDropped" xml:space="preserve"><value>nicht unterbrechbarer Druck verhält sich wie ein normaler Druck</value></data>
   <data name="Workshop_Tr_PlayerNumberActionNotSupported" xml:space="preserve"><value>Spielernummer-Wechsel ist eine Steam-Client-Aktion, keine Entsprechung</value></data>
   <data name="Workshop_Tr_LizardModeActionNotSupported" xml:space="preserve"><value>Lizard-Modus-Umschaltung ist Steam-intern, keine Entsprechung</value></data>
-  <data name="Workshop_Tr_SetLedDefaultApproximated" xml:space="preserve"><value>Standardbeleuchtung wiederherstellen als Aufheben des Overrides angenähert</value></data>
   <data name="Workshop_Tr_ToggleLatchEmitted" xml:space="preserve"><value>Umschalt-Druck hält {0} bis zum nächsten Druck</value></data>
   <data name="Workshop_Tr_ToggleDropped" xml:space="preserve"><value>Umschalt-Einstellung verworfen (kein Halten für diese Ausgabe)</value></data>
   <data name="Workshop_Tr_LongPressKeyTap" xml:space="preserve"><value>Langdruck tippt {0} an der Schwelle an (Steam hält bis zum Loslassen)</value></data>
@@ -2554,10 +2552,11 @@
   <data name="Workshop_Tr_MouseModeTuningDropped" xml:space="preserve"><value>Maus-Feinabstimmung verworfen ({0})</value></data>
   <data name="Workshop_Tr_AxisInversionNotApplied" xml:space="preserve"><value>Achsenumkehr nicht angewendet ({0})</value></data>
   <data name="Workshop_Tr_ScrollWheelApproximated" xml:space="preserve"><value>kreisförmiges Scrollrad als vertikales Ziehen angenähert</value></data>
-  <data name="Workshop_Tr_ScreenshotApproximated" xml:space="preserve"><value>SCREENSHOT als Druck-Taste angenähert</value></data>
-  <data name="Workshop_Tr_ShowKeyboardApproximated" xml:space="preserve"><value>SHOW_KEYBOARD als Start der Bildschirmtastatur angenähert</value></data>
   <data name="Macro_HoldForMs" xml:space="preserve"><value>Beim Halten</value></data>
   <data name="Macro_HoldForMs_Tooltip" xml:space="preserve"><value>Löst einmal aus, nachdem der Auslöser ununterbrochen für die Haltezeit gehalten wurde. Ein kürzeres Antippen bewirkt nichts.</value></data>
+  <data name="Macro_DoublePress" xml:space="preserve"><value>Bei Doppeldruck</value></data>
+  <data name="Macro_DoublePress_Tooltip" xml:space="preserve"><value>Wird ausgelöst, wenn der Auslöser zweimal innerhalb der Doppeldruckzeit gedrückt wird. Wird der zweite Druck gehalten, bleibt er bis zum Loslassen aktiv.</value></data>
+  <data name="Macro_TriggerDoublePressMs_Label" xml:space="preserve"><value>Doppeldruckzeit</value></data>
   <data name="Macro_TriggerHoldMs_Label" xml:space="preserve"><value>Haltezeit</value></data>
   <data name="MacroAction_Type_RepeatVcButtonWhileHeld" xml:space="preserve"><value>Controller-Taste wiederholen, solange gehalten</value></data>
   <data name="MacroAction_RepeatVcButtonWhileHeld_Tooltip" xml:space="preserve"><value>Schaltet die Controller-Taste im eingestellten Intervall ein und aus, solange der Auslöser gehalten wird (Autofire / Turbo).</value></data>

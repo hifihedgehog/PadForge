@@ -60,6 +60,10 @@ namespace PadForge.SteamWorkshop.Tests
                 }
                 if (m.TriggerHoldMs > 0)
                     sb.Append(" hold=").Append(m.TriggerHoldMs).Append("ms");
+                // Double-press window (v17): non-default only, so pre-v17
+                // goldens stay byte-identical on this seam.
+                if (m.TriggerDoublePressMs > 0)
+                    sb.Append(" dbl=").Append(m.TriggerDoublePressMs).Append("ms");
                 if (m.ConsumeTrigger) sb.Append(" consume");
                 switch (m.Action)
                 {

@@ -112,7 +112,7 @@ menus: 2
     [2] D
     [3] F
     [4] A
-report: v16 rows:x0+k39 macros:12 menus:2 layers:1 clean:45 partial:5 skipped:2 errors:0
+report: v17 rows:x0+k39 macros:12 menus:2 layers:1 clean:47 partial:3 skipped:2 errors:0
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_a/Full_Press => KbmKey20 <- Gamepad ButtonA
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_b/Full_Press => KbmKey43 <- Gamepad ButtonB
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_x/Full_Press => KbmKey4E <- Gamepad ButtonX
@@ -135,7 +135,7 @@ report: v16 rows:x0+k39 macros:12 menus:2 layers:1 clean:45 partial:5 skipped:2 
   Clean RowEmitted @ Default/right_joystick/group 9 (joystick_mouse)/click/Full_Press => KbmKeyA1 <- Gamepad RightStick
   Clean RowEmitted @ Default/right_trackpad/group 31 (absolute_mouse) => KbmMouseX <- Touchpad 1 Finger 0 X
   Clean RowEmitted @ Default/right_trackpad/group 31 (absolute_mouse) => KbmMouseY <- Touchpad 1 Finger 0 Y
-  Partial SoftPressApproximated @ Default/right_trackpad/group 31 (absolute_mouse)/click/Soft_Press => KbmMBtn0 <- Touchpad 1 Click
+  Clean RowEmitted @ Default/right_trackpad/group 31 (absolute_mouse)/click/Soft_Press => KbmMBtn0 <- Touchpad 1 Click
   Clean RowEmitted @ Default/right_trigger/group 5 (trigger)/click/Full_Press => KbmMBtn0 <- Gamepad RightTrigger (upper half)
   Clean RowEmitted @ Default/switch/group 6 (switches)/button_back_left/Full_Press => KbmKey33 <- Gamepad Paddle2
   Clean RowEmitted @ Default/switch/group 6 (switches)/button_back_left_upper/Full_Press => KbmKey31 <- Gamepad Paddle4
@@ -157,7 +157,7 @@ report: v16 rows:x0+k39 macros:12 menus:2 layers:1 clean:45 partial:5 skipped:2 
   Clean RowEmitted @ Secondary/left_trackpad/group 41 (radial_menu)/touch_menu_button_4/Full_Press => KbmKey41 <- Menu 2 Item 4
   Clean RowEmitted @ Secondary/right_trackpad/group 33 (absolute_mouse) => KbmMouseX <- Touchpad 1 Finger 0 X
   Clean RowEmitted @ Secondary/right_trackpad/group 33 (absolute_mouse) => KbmMouseY <- Touchpad 1 Finger 0 Y
-  Partial SoftPressApproximated @ Secondary/right_trackpad/group 33 (absolute_mouse)/click/Soft_Press => KbmMBtn1 <- Touchpad 1 Click
+  Clean RowEmitted @ Secondary/right_trackpad/group 33 (absolute_mouse)/click/Soft_Press => KbmMBtn1 <- Touchpad 1 Click
   Clean RowEmitted @ Secondary/switch/group 27 (switches)/button_back_left/Full_Press => KbmKey37 <- Gamepad Paddle2
   Clean RowEmitted @ Secondary/switch/group 27 (switches)/button_back_left_upper/Full_Press => KbmKey35 <- Gamepad Paddle4
   Clean RowEmitted @ Secondary/switch/group 27 (switches)/button_back_right/Full_Press => KbmKey38 <- Gamepad Paddle1

@@ -102,10 +102,13 @@ namespace PadForge.Tests
         [Fact]
         public void HoldForMs_TriggerMode_AppendedAtEnumTail_WithPinnedOrdinal()
         {
-            // MacroData.TriggerMode rides the same numeric clipboard JSON.
+            // MacroData.TriggerMode rides the same numeric clipboard JSON
+            // (wave 1b appended HoldForMs = 5; v17 appended DoublePress = 6).
             var values = Enum.GetValues<MacroTriggerMode>();
-            Assert.Equal(MacroTriggerMode.HoldForMs, values[^1]);
+            Assert.Equal(MacroTriggerMode.DoublePress, values[^1]);
+            Assert.Equal(MacroTriggerMode.HoldForMs, values[^2]);
             Assert.Equal(5, (int)MacroTriggerMode.HoldForMs);
+            Assert.Equal(6, (int)MacroTriggerMode.DoublePress);
         }
 
         // ── DTO round-trips (settings XML + clipboard share these) ──
@@ -413,6 +416,156 @@ namespace PadForge.Tests
             gp = new Gamepad { Buttons = Gamepad.A };
             im.EvaluateSlotMacros(ref gp, macros);
             Assert.False(action.VcToggleLatched); // second fire unlatched
+        }
+
+        // ── DoublePress trigger mode (translator v17) ──
+
+        [Fact]
+        public void DoublePress_GamepadPath_FiresOnDouble_NotOnSingle()
+        {
+            var im = new InputManager();
+            var action = new MacroAction
+            {
+                Type = MacroActionType.ToggleVcButton,
+                ButtonFlags = Gamepad.B,
+            };
+            var macro = GamepadTriggerMacro(MacroTriggerMode.DoublePress, MacroRepeatMode.Once, action);
+            var macros = new[] { macro };
+
+            // Single press, held frames, release: never fires.
+            var gp = new Gamepad { Buttons = Gamepad.A };
+            im.EvaluateSlotMacros(ref gp, macros);
+            Assert.False(action.VcToggleLatched);
+            gp = new Gamepad { Buttons = Gamepad.A };
+            im.EvaluateSlotMacros(ref gp, macros);
+            Assert.False(action.VcToggleLatched);
+            gp = new Gamepad();
+            im.EvaluateSlotMacros(ref gp, macros);
+            Assert.False(action.VcToggleLatched);
+
+            // Second press within the window (evaluations above ran well
+            // inside the 442 ms default): fires on the rising edge.
+            gp = new Gamepad { Buttons = Gamepad.A };
+            im.EvaluateSlotMacros(ref gp, macros);
+            Assert.True(action.VcToggleLatched);
+
+            // Held frames after the fire: no repeat.
+            gp = new Gamepad { Buttons = Gamepad.A };
+            im.EvaluateSlotMacros(ref gp, macros);
+            Assert.True(action.VcToggleLatched);
+        }
+
+        [Fact]
+        public void DoublePress_GamepadPath_SlowSecondPress_OnlyRearms()
+        {
+            var im = new InputManager();
+            var action = new MacroAction
+            {
+                Type = MacroActionType.ToggleVcButton,
+                ButtonFlags = Gamepad.B,
+            };
+            var macro = GamepadTriggerMacro(MacroTriggerMode.DoublePress, MacroRepeatMode.Once, action);
+            var macros = new[] { macro };
+
+            // First press + release, then age the armed press past the
+            // window via the injected timestamp.
+            var gp = new Gamepad { Buttons = Gamepad.A };
+            im.EvaluateSlotMacros(ref gp, macros);
+            gp = new Gamepad();
+            im.EvaluateSlotMacros(ref gp, macros);
+            macro.TriggerLastPressUtc = DateTime.UtcNow.AddMilliseconds(-600);
+
+            // Slow second press: no fire, but it re-arms as a fresh first
+            // press.
+            gp = new Gamepad { Buttons = Gamepad.A };
+            im.EvaluateSlotMacros(ref gp, macros);
+            Assert.False(action.VcToggleLatched);
+            Assert.NotEqual(DateTime.MinValue, macro.TriggerLastPressUtc);
+
+            // A quick third press completes the re-armed pair and fires.
+            gp = new Gamepad();
+            im.EvaluateSlotMacros(ref gp, macros);
+            gp = new Gamepad { Buttons = Gamepad.A };
+            im.EvaluateSlotMacros(ref gp, macros);
+            Assert.True(action.VcToggleLatched);
+        }
+
+        [Fact]
+        public void DoublePress_GamepadPath_FireConsumesThePair()
+        {
+            var im = new InputManager();
+            var action = new MacroAction
+            {
+                Type = MacroActionType.ToggleVcButton,
+                ButtonFlags = Gamepad.B,
+            };
+            var macro = GamepadTriggerMacro(MacroTriggerMode.DoublePress, MacroRepeatMode.Once, action);
+            var macros = new[] { macro };
+
+            void Tap()
+            {
+                var down = new Gamepad { Buttons = Gamepad.A };
+                im.EvaluateSlotMacros(ref down, macros);
+                var up = new Gamepad();
+                im.EvaluateSlotMacros(ref up, macros);
+            }
+
+            Tap();
+            Tap(); // fires on the second press
+            Assert.True(action.VcToggleLatched);
+            // The pair was consumed: the third press only arms again...
+            Tap();
+            Assert.True(action.VcToggleLatched);
+            // ...and the fourth press fires the second double.
+            Tap();
+            Assert.False(action.VcToggleLatched);
+        }
+
+        [Fact]
+        public void DoublePress_ExtendedPath_FiresOnDouble()
+        {
+            var im = new InputManager();
+            var action = new MacroAction
+            {
+                Type = MacroActionType.ToggleVcButton,
+                CustomButtons = "00000002,00000000,00000000,00000000",
+            };
+            var macro = ExtendedTriggerMacro(MacroTriggerMode.DoublePress, MacroRepeatMode.Once, action);
+            var macros = new[] { macro };
+
+            var raw = RawState(0x1);
+            im.EvaluateSlotMacrosExtended(ref raw, macros);
+            Assert.False(action.VcToggleLatched);
+            raw = RawState(0);
+            im.EvaluateSlotMacrosExtended(ref raw, macros);
+            raw = RawState(0x1);
+            im.EvaluateSlotMacrosExtended(ref raw, macros);
+            Assert.True(action.VcToggleLatched);
+        }
+
+        [Fact]
+        public void TriggerDoublePressMs_RoundTripsOnMacroData_AndClamps()
+        {
+            var m = new MacroItem
+            {
+                Name = "Dbl",
+                TriggerMode = MacroTriggerMode.DoublePress,
+                TriggerDoublePressMs = 300,
+            };
+            var data = SettingsService.BuildMacroDataForMacro(m, 0);
+            Assert.Equal(300, data.TriggerDoublePressMs);
+            var clone = SettingsService.LoadMacroFromData(data, VirtualControllerType.Xbox, null);
+            Assert.Equal(MacroTriggerMode.DoublePress, clone.TriggerMode);
+            Assert.Equal(300, clone.TriggerDoublePressMs);
+
+            // VM clamp + default (442, Valve's own controller_base value).
+            Assert.Equal(442, new MacroItem().TriggerDoublePressMs);
+            Assert.Equal(50, new MacroItem { TriggerDoublePressMs = 1 }.TriggerDoublePressMs);
+            Assert.Equal(5000, new MacroItem { TriggerDoublePressMs = 99999 }.TriggerDoublePressMs);
+
+            // A pre-v17 MacroData (no element in the XML) hydrates the same
+            // default a fresh macro gets.
+            Assert.Equal(442, new MacroData().TriggerDoublePressMs);
         }
 
         // ── Dispatch: Extended raw path ──

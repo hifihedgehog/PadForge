@@ -644,11 +644,11 @@ namespace PadForge.SteamWorkshop.Tests
             var p = Translate(vdf);
             Assert.Equal(0, Assert.Single(p.Macros).LedSetting);
             Assert.DoesNotContain(p.Report.Entries, e =>
-                e.ReasonKey == TranslationReasons.SetLedDefaultApproximated);
+                e.Status == TranslationStatus.Partial);
         }
 
         [Fact]
-        public void SetLed_SettingTwo_MacroPlusApproximationNote()
+        public void SetLed_SettingTwo_MacroWithoutApproximationNote()
         {
             string vdf = Head
                 + Group(1, "four_buttons", Inputs(Inp("button_a", "controller_action set_led 255 0 0 100 100 2")))
@@ -656,9 +656,10 @@ namespace PadForge.SteamWorkshop.Tests
                 + "}\n";
             var p = Translate(vdf);
             Assert.Equal(2, Assert.Single(p.Macros).LedSetting);
-            Assert.Contains(p.Report.Entries, e =>
-                e.ReasonKey == TranslationReasons.SetLedDefaultApproximated
-                && e.Status == TranslationStatus.Partial);
+            // v17: no note. Clearing the override IS restoring the
+            // default lighting, so the macro reports Clean.
+            Assert.DoesNotContain(p.Report.Entries, e =>
+                e.Status == TranslationStatus.Partial);
         }
 
         [Fact]
@@ -723,12 +724,12 @@ namespace PadForge.SteamWorkshop.Tests
         // ─── Translator version ─────────────────────────────────────────
 
         [Fact]
-        public void TranslatorVersion_IsSixteen_AndRidesTheSummary()
+        public void TranslatorVersion_IsSeventeen_AndRidesTheSummary()
         {
-            Assert.Equal(16, TranslationReport.CurrentTranslatorVersion);
+            Assert.Equal(17, TranslationReport.CurrentTranslatorVersion);
             var p = Translate(Head + "}\n");
-            Assert.Equal(16, p.Report.TranslatorVersion);
-            Assert.StartsWith("v16 ", p.Report.ToSummaryString());
+            Assert.Equal(17, p.Report.TranslatorVersion);
+            Assert.StartsWith("v17 ", p.Report.ToSummaryString());
         }
     }
 }

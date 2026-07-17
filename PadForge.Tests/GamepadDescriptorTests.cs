@@ -153,5 +153,92 @@ namespace PadForge.Tests
             // Guide + 4 paddles + 4 dpad + 4 sticks + 2 triggers.
             Assert.Equal(25, SourceCoercion.GamepadAliasTable.Length);
         }
+
+        // ── Stick deflection rings (translator v17) ────────────────────
+
+        private static CustomInputState RingState(double x01, double y01, bool right = true)
+        {
+            var s = CenteredState();
+            int xi = right ? 3 : 0;
+            s.Axis[xi] = 32768 + (int)(x01 * 32767);
+            s.Axis[xi + 1] = 32768 + (int)(y01 * 32767);
+            return s;
+        }
+
+        [Fact]
+        public void StickRing_ClassifiesAsRing_AndNeverAsAlias()
+        {
+            Assert.Equal(SourceCoercion.SourceType.StickRing,
+                SourceCoercion.ClassifyDescriptor("Gamepad LeftStickRing"));
+            Assert.Equal(SourceCoercion.SourceType.StickRing,
+                SourceCoercion.ClassifyDescriptor("Gamepad RightStickRing"));
+            // Not an alias-table member: the canonicalizer must leave the
+            // spelling intact so the ring read keys on it.
+            Assert.Null(SourceCoercion.ResolveGamepadAlias("Gamepad LeftStickRing"));
+            Assert.True(SourceCoercion.TryGetStickRingAxes("Gamepad RightStickRing",
+                out string rx, out string ry));
+            Assert.Equal("Axis 3", rx);
+            Assert.Equal("Axis 4", ry);
+        }
+
+        [Fact]
+        public void StickRing_OuterRing_EngagesAtRadius()
+        {
+            var src = new MappingSource
+            {
+                Descriptor = "Gamepad RightStickRing",
+                HalfAxis = true,
+                DeadZone = 75, // ring radius percent (edge_binding_radius scale)
+            };
+            Assert.False(SourceCoercion.EvaluateForButtonTarget(RingState(0, 0), src, 50));
+            Assert.False(SourceCoercion.EvaluateForButtonTarget(RingState(0.5, 0), src, 50));
+            Assert.True(SourceCoercion.EvaluateForButtonTarget(RingState(0.9, 0), src, 50));
+            // The read is the PAIR magnitude: a diagonal each axis of which
+            // sits below the radius still crosses it radially.
+            Assert.True(SourceCoercion.EvaluateForButtonTarget(RingState(0.6, 0.6), src, 50));
+        }
+
+        [Fact]
+        public void StickRing_InnerRing_InvertFlips_AndRestFloorGates()
+        {
+            var src = new MappingSource
+            {
+                Descriptor = "Gamepad RightStickRing",
+                HalfAxis = true,
+                Invert = true, // inner ring: inside the radius
+                DeadZone = 75,
+            };
+            // Centered stick sits inside every radius but must NOT fire
+            // (the rest floor), or an inner-ring key would be held forever.
+            Assert.False(SourceCoercion.EvaluateForButtonTarget(RingState(0, 0), src, 50));
+            Assert.True(SourceCoercion.EvaluateForButtonTarget(RingState(0.3, 0), src, 50));
+            Assert.False(SourceCoercion.EvaluateForButtonTarget(RingState(0.9, 0), src, 50));
+            // Invert is the inner/outer selector, consumed inside the read.
+            Assert.True(SourceCoercion.InvertConsumedByHalfAxisRead(src));
+        }
+
+        [Fact]
+        public void StickRing_LeftAndRight_ReadTheirOwnPairs()
+        {
+            var left = new MappingSource
+            { Descriptor = "Gamepad LeftStickRing", HalfAxis = true, DeadZone = 75 };
+            var right = new MappingSource
+            { Descriptor = "Gamepad RightStickRing", HalfAxis = true, DeadZone = 75 };
+            var s = RingState(0.9, 0, right: false); // left stick deflected
+            Assert.True(SourceCoercion.EvaluateForButtonTarget(s, left, 50));
+            Assert.False(SourceCoercion.EvaluateForButtonTarget(s, right, 50));
+        }
+
+        [Fact]
+        public void StickRing_ScalarReads_AreTheUnsignedMagnitude()
+        {
+            var src = new MappingSource
+            { Descriptor = "Gamepad RightStickRing", HalfAxis = true, Invert = true, DeadZone = 75 };
+            var s = RingState(0.6, 0);
+            // Invert never becomes a sign: the inner selector is consumed
+            // by the read on every target class.
+            Assert.Equal(0.6f, SourceCoercion.EvaluateForBipolarAxisTarget(s, src), 2);
+            Assert.Equal(0.6f, SourceCoercion.EvaluateForTriggerTarget(s, src), 2);
+        }
     }
 }

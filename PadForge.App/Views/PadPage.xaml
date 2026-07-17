@@ -1266,6 +1266,8 @@
                                     <ComboBoxItem Content="{Binding Macro_WhileHeld, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroTriggerMode.WhileHeld}"/>
                                     <ComboBoxItem Content="{Binding Macro_HoldForMs, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroTriggerMode.HoldForMs}"
                                                   ToolTip="{Binding Macro_HoldForMs_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <ComboBoxItem Content="{Binding Macro_DoublePress, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroTriggerMode.DoublePress}"
+                                                  ToolTip="{Binding Macro_DoublePress_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                     <ComboBoxItem Content="{Binding Macro_Always, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroTriggerMode.Always}"/>
                                     <ComboBoxItem Content="{Binding Macro_CustomExpression, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroTriggerMode.CustomExpression}"/>
                                 </ComboBox>
@@ -1283,6 +1285,20 @@
                                          ToolTip="{Binding Macro_HoldForMs_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                 <TextBlock Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text="{Binding Common_Ms, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="4,0,0,0"/>
                                 <ui:Button Command="{Binding ResetTriggerHoldMsCommand}" Style="{StaticResource ResetButton}" Margin="8,0,0,0"/>
+                            </StackPanel>
+
+                            <!-- Double-press window row (translator v17). Visible only in
+                                 Double Press mode: the macro fires when the trigger sees a
+                                 second press within this window of the first. -->
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,4"
+                                        Visibility="{Binding IsDoublePressMode, Converter={StaticResource BoolToVisibilityConverter}}">
+                                <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Macro_TriggerDoublePressMs_Label, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
+                                           Width="80" Margin="0,0,8,0"
+                                           ToolTip="{Binding Macro_DoublePress_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                <TextBox Text="{Binding TriggerDoublePressMs, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Width="80"
+                                         ToolTip="{Binding Macro_DoublePress_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                <TextBlock Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text="{Binding Common_Ms, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="4,0,0,0"/>
+                                <ui:Button Command="{Binding ResetTriggerDoublePressMsCommand}" Style="{StaticResource ResetButton}" Margin="8,0,0,0"/>
                             </StackPanel>
 
                             <!-- Custom-expression editor (visible only when TriggerMode = CustomExpression).

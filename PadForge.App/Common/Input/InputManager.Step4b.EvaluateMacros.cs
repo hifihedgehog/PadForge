@@ -505,6 +505,9 @@ namespace PadForge.Common.Input
                     case MacroTriggerMode.HoldForMs:
                         shouldStart = EvaluateHoldForMsTrigger(macro, triggerActive, wasTriggerActive);
                         break;
+                    case MacroTriggerMode.DoublePress:
+                        shouldStart = EvaluateDoublePressTrigger(macro, triggerActive, wasTriggerActive);
+                        break;
                 }
 
                 // Start new execution if triggered and not already executing.
@@ -552,6 +555,33 @@ namespace PadForge.Common.Input
                 // were a trigger input.
                 ApplyMacroLatches(ref gp, macro);
             }
+        }
+
+        /// <summary>Shared DoublePress trigger evaluation (translator v17,
+        /// Steam's Double_Press activator) for both slot evaluators. Fires
+        /// exactly once, on a rising edge whose predecessor rising edge lay
+        /// within <see cref="MacroItem.TriggerDoublePressMs"/>. Press,
+        /// release, press is inherent in two rising edges (the trigger must
+        /// drop between them). A single press only arms. A second press
+        /// outside the window re-arms as a fresh first press, and the
+        /// armed pair is consumed on fire so a triple press starts a new
+        /// sequence instead of firing twice. The trigger reads active
+        /// through the second press's hold, so UntilRelease action shapes
+        /// stop on its release, Valve's "if held on the second press, it
+        /// will remain pressed" semantics.</summary>
+        private static bool EvaluateDoublePressTrigger(MacroItem macro, bool triggerActive, bool wasTriggerActive)
+        {
+            if (!triggerActive || wasTriggerActive) return false;
+            var now = DateTime.UtcNow;
+            var last = macro.TriggerLastPressUtc;
+            if (last != DateTime.MinValue
+                && (now - last).TotalMilliseconds <= macro.TriggerDoublePressMs)
+            {
+                macro.TriggerLastPressUtc = DateTime.MinValue;
+                return true;
+            }
+            macro.TriggerLastPressUtc = now;
+            return false;
         }
 
         /// <summary>Shared HoldForMs trigger evaluation (issue #9 wave 1b,
@@ -2533,6 +2563,9 @@ namespace PadForge.Common.Input
                         break;
                     case MacroTriggerMode.HoldForMs:
                         shouldStart = EvaluateHoldForMsTrigger(macro, triggerActive, wasTriggerActive);
+                        break;
+                    case MacroTriggerMode.DoublePress:
+                        shouldStart = EvaluateDoublePressTrigger(macro, triggerActive, wasTriggerActive);
                         break;
                 }
 

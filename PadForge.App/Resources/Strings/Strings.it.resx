@@ -2437,7 +2437,6 @@
   <data name="Workshop_Tr_MacroEmitted" xml:space="preserve"><value>tradotta come macro</value></data>
   <data name="Workshop_Tr_ShiftLayerEmitted" xml:space="preserve"><value>livello: {0}</value></data>
   <data name="Workshop_Tr_TouchpadTuningNotPerRow" xml:space="preserve"><value>la regolazione del touchpad si applica per pad, non per riga</value></data>
-  <data name="Workshop_Tr_SoftPressApproximated" xml:space="preserve"><value>Soft_Press approssimato come soglia di pressione</value></data>
   <data name="Workshop_Tr_TriggerThresholdApproximated" xml:space="preserve"><value>soglia del grilletto approssimata</value></data>
   <data name="Workshop_Tr_NoDeviceFreeTrigger" xml:space="preserve"><value>nessun attivatore senza dispositivo per questo input</value></data>
   <data name="Workshop_Tr_GameActionsNotSupported" xml:space="preserve"><value>{0} azioni di gioco, solo Steam, nessun aggancio lato gioco</value></data>
@@ -2453,10 +2452,8 @@
   <data name="Workshop_Tr_TouchMenuNeedsOverlay" xml:space="preserve"><value>overlay del menu touch scartato ({0} celle)</value></data>
   <data name="Workshop_Tr_RadialMenuNeedsOverlay" xml:space="preserve"><value>overlay del menu radiale scartato ({0} settori)</value></data>
   <data name="Workshop_Tr_MouseRegionNotSupported" xml:space="preserve"><value>vincolo di regione del cursore non supportato</value></data>
-  <data name="Workshop_Tr_EdgeInputNotSupported" xml:space="preserve"><value>input di bordo non supportato</value></data>
   <data name="Workshop_Tr_ReleaseActivatorNotSupported" xml:space="preserve"><value>attivatore al rilascio non supportato qui</value></data>
   <data name="Workshop_Tr_LongPressNotSupported" xml:space="preserve"><value>attivatore a pressione lunga non supportato qui</value></data>
-  <data name="Workshop_Tr_DoublePressNotSupported" xml:space="preserve"><value>attivatore a doppia pressione non supportato qui</value></data>
   <data name="Workshop_Tr_UnknownActivatorType" xml:space="preserve"><value>attivatore sconosciuto {0}</value></data>
   <data name="Workshop_Tr_RepeatDropped" xml:space="preserve"><value>ripetizione automatica scartata</value></data>
   <data name="Workshop_Tr_MissingGroup" xml:space="preserve"><value>la configurazione fa riferimento al gruppo mancante {0}</value></data>
@@ -2517,6 +2514,8 @@
   <data name="Pad_ResetTouchpadSwipeHapticsIntensity" xml:space="preserve"><value>Ripristina intensità dell'impulso</value></data>
   <data name="Mapping_FlickStickRight" xml:space="preserve"><value>Flick Stick (levetta destra)</value></data>
   <data name="Mapping_FlickStickLeft" xml:space="preserve"><value>Flick Stick (levetta sinistra)</value></data>
+  <data name="Mapping_LeftStickRing" xml:space="preserve"><value>Anello levetta sinistra</value></data>
+  <data name="Mapping_RightStickRing" xml:space="preserve"><value>Anello levetta destra</value></data>
   <data name="Pad_FlickStick_Header" xml:space="preserve"><value>Flick Stick</value></data>
   <data name="Pad_FlickStick_Subtitle" xml:space="preserve"><value>Impostazioni degli input Flick Stick: punta la levetta e la telecamera ruota di conseguenza, percorri il bordo per rifinire la rotazione. Mappa "Flick Stick (levetta destra)" su Mouse X dal menu a discesa degli input in Mappature, su qualsiasi livello.</value></data>
   <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>Ripristina tutte le impostazioni di Flick Stick</value></data>
@@ -2562,7 +2561,6 @@
   <data name="Workshop_Tr_InterruptibleDropped" xml:space="preserve"><value>la pressione non interrompibile si comporta come una pressione normale</value></data>
   <data name="Workshop_Tr_PlayerNumberActionNotSupported" xml:space="preserve"><value>il cambio del numero giocatore è un'azione del client Steam, nessun equivalente</value></data>
   <data name="Workshop_Tr_LizardModeActionNotSupported" xml:space="preserve"><value>l'alternanza della modalità lizard è interna a Steam, nessun equivalente</value></data>
-  <data name="Workshop_Tr_SetLedDefaultApproximated" xml:space="preserve"><value>ripristino dell'illuminazione predefinita approssimato come cancellazione della sostituzione</value></data>
   <data name="Workshop_Tr_ToggleLatchEmitted" xml:space="preserve"><value>la pressione di alternanza mantiene {0} fino alla pressione successiva</value></data>
   <data name="Workshop_Tr_ToggleDropped" xml:space="preserve"><value>impostazione di alternanza scartata (nessun mantenimento per questa uscita)</value></data>
   <data name="Workshop_Tr_LongPressKeyTap" xml:space="preserve"><value>la pressione lunga preme {0} alla soglia (Steam la tiene fino al rilascio)</value></data>
@@ -2576,10 +2574,11 @@
   <data name="Workshop_Tr_MouseModeTuningDropped" xml:space="preserve"><value>regolazioni del mouse scartate ({0})</value></data>
   <data name="Workshop_Tr_AxisInversionNotApplied" xml:space="preserve"><value>inversione degli assi non applicata ({0})</value></data>
   <data name="Workshop_Tr_ScrollWheelApproximated" xml:space="preserve"><value>rotella circolare approssimata con un trascinamento verticale</value></data>
-  <data name="Workshop_Tr_ScreenshotApproximated" xml:space="preserve"><value>SCREENSHOT approssimato con la pressione del tasto Stamp</value></data>
-  <data name="Workshop_Tr_ShowKeyboardApproximated" xml:space="preserve"><value>SHOW_KEYBOARD approssimato con l'avvio della tastiera su schermo</value></data>
   <data name="Macro_HoldForMs" xml:space="preserve"><value>Tenendo premuto</value></data>
   <data name="Macro_HoldForMs_Tooltip" xml:space="preserve"><value>Si attiva una volta dopo che l'attivatore è stato tenuto premuto ininterrottamente per il tempo di mantenimento. Un tocco più breve non fa nulla.</value></data>
+  <data name="Macro_DoublePress" xml:space="preserve"><value>Alla doppia pressione</value></data>
+  <data name="Macro_DoublePress_Tooltip" xml:space="preserve"><value>Si attiva quando il trigger viene premuto due volte entro il tempo di doppia pressione. Se la seconda pressione viene mantenuta, resta attivo fino al rilascio.</value></data>
+  <data name="Macro_TriggerDoublePressMs_Label" xml:space="preserve"><value>Tempo di doppia pressione</value></data>
   <data name="Macro_TriggerHoldMs_Label" xml:space="preserve"><value>Tempo di mantenimento</value></data>
   <data name="MacroAction_Type_RepeatVcButtonWhileHeld" xml:space="preserve"><value>Ripeti pulsante finché tenuto</value></data>
   <data name="MacroAction_RepeatVcButtonWhileHeld_Tooltip" xml:space="preserve"><value>Attiva e rilascia il pulsante del controller all'intervallo impostato finché l'attivatore resta premuto (autofire / turbo).</value></data>

@@ -85,23 +85,26 @@ kbm rows: 3
   Base | KbmMouseY | Sum
     <- Gyro Pitch
     <- Touchpad 1 Finger 0 Y
-macros: 6
+macros: 9
+  macro HoldVcButton DoublePress | Double press LeftThumbButton (click) | btns=0x0000 in=[Gamepad LeftStick] dbl=442ms target=0x0040
   macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Gamepad LeftTrigger] in-half=upper in-dz=75 strength=66%
   macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Gamepad RightTrigger] in-half=upper in-dz=75 strength=66%
   macro HoldVcButton HoldForMs | Long press ButtonY (button_back_left_upper) | btns=0x0000 in=[Gamepad Paddle4] hold=500ms target=0x8000
+  macro HoldVcButton DoublePress | Double press ButtonY (button_back_right) | btns=0x0000 in=[Gamepad Paddle1] dbl=442ms target=0x8000
+  macro HoldVcButton DoublePress | Double press RightShoulder (button_back_right) | btns=0x0000 in=[Gamepad Paddle1] dbl=442ms target=0x0200
   macro HoldVcButton HoldForMs | Long press ButtonY (button_back_right) | btns=0x0000 in=[Gamepad Paddle1] hold=500ms target=0x8000
   macro HoldVcButton HoldForMs | Long press LeftShoulder (button_back_right) | btns=0x0000 in=[Gamepad Paddle1] hold=500ms target=0x0100
   macro HoldVcButton HoldForMs | Long press ButtonY (button_back_left_upper) | btns=0x0000 in=[Gamepad Paddle4] hold=500ms target=0x8000
-report: v16 rows:x32+k3 macros:6 menus:0 layers:4 clean:50 partial:3 skipped:3 errors:0
+report: v17 rows:x32+k3 macros:9 menus:0 layers:4 clean:53 partial:3 skipped:0 errors:0
   Partial GyroButtonMaskDropped(gyro_ratchet_button_mask, 1048576) @ Default/gyro/group 24 (gyro_to_mouse)
   Clean RowEmitted @ Default/gyro/group 24 (gyro_to_mouse) => KbmMouseX <- Gyro Yaw
   Clean RowEmitted @ Default/gyro/group 24 (gyro_to_mouse) => KbmMouseY <- Gyro Pitch
-  Skipped DoublePressNotSupported @ Default/joystick/group 6 (joystick_move)/click/Double_Press :: xinput_button JOYSTICK_LEFT, , 
+  Clean MacroEmitted @ Default/joystick/group 6 (joystick_move)/click/Double_Press => Double-press hold macro: LeftThumbButton
   Clean RowEmitted @ Default/right_trackpad/group 31 (absolute_mouse) => KbmMouseX <- Touchpad 1 Finger 0 X
   Clean RowEmitted @ Default/right_trackpad/group 31 (absolute_mouse) => KbmMouseY <- Touchpad 1 Finger 0 Y
   Clean MacroEmitted @ Default/switch/group 0 (switches)/button_back_left_upper/Long_Press => Long-press hold macro: ButtonY
-  Skipped DoublePressNotSupported @ Default/switch/group 0 (switches)/button_back_right/Double_Press :: xinput_button Y, , 
-  Skipped DoublePressNotSupported @ Default/switch/group 0 (switches)/button_back_right/Double_Press :: xinput_button SHOULDER_RIGHT, , 
+  Clean MacroEmitted @ Default/switch/group 0 (switches)/button_back_right/Double_Press => Double-press hold macro: ButtonY
+  Clean MacroEmitted @ Default/switch/group 0 (switches)/button_back_right/Double_Press => Double-press hold macro: RightShoulder
   Clean MacroEmitted @ Default/switch/group 0 (switches)/button_back_right/Long_Press => Long-press hold macro: ButtonY
   Clean MacroEmitted @ Default/switch/group 0 (switches)/button_back_right/Long_Press => Long-press hold macro: LeftShoulder
   Clean RowEmitted @ Default/switch/group 0 (switches)/button_back_right_upper/Full_Press => KbmKeyA0 <- Gamepad Paddle3

@@ -234,10 +234,47 @@ namespace PadForge.SteamWorkshop.Translation
         /// (edge_binding_invert 1 with radius at the 32767 ceiling, or
         /// invert 0 with radius 0) IS the touch read, so its bindings
         /// translate on "Touchpad {p} Finger 0 Down" and the two consumed
-        /// geometry keys drop out of the region tuning note. Non-degenerate
-        /// rings (and stick hosts) keep EdgeInputNotSupported: the engine
-        /// has no deflection-magnitude / finger-radius source family.</summary>
-        public const int CurrentTranslatorVersion = 16;
+        /// geometry keys drop out of the region tuning note.
+        /// v17: The last two gaps build. Double_Press activators on ANY
+        /// host lower to macros on the engine's new DoublePress trigger
+        /// (press, release, press within the window; trackpad hosts keep
+        /// the shipped DoubleTap gesture read): keys / mouse buttons / VC
+        /// targets take the Hold* shapes (Valve's "if held on the second
+        /// press, it will remain pressed"), toggle / hold_repeats compose
+        /// the latch and turbo variants, wheel detents tap, and
+        /// camera_reset rides the canonical verb walk. The window is the
+        /// activator's double_tap_time (steamclient.dll's own token,
+        /// beside repeat_rate and long_press_time), default 442 ms, the
+        /// value Valve's own controller_base templates author
+        /// (DoublePressNotSupported retired, key and locale strings
+        /// deleted; layer verbs and mode shifts have no double-press
+        /// activator construct, are absent from every Double_Press in the
+        /// corpus and Valve's 54 templates, and land on the existing
+        /// ActivatorInputNotSupported net). Stick-hosted edge members
+        /// build on the new deflection-magnitude family "Gamepad
+        /// LeftStickRing" / "Gamepad RightStickRing" (sqrt(x*x + y*y) of
+        /// the flick-stick axis pair): the authored edge_binding_radius
+        /// (0..32767, the v11 scale) rides the source DeadZone as the
+        /// ring radius and edge_binding_invert rides Invert as the inner
+        /// ring, gated on the engine's 5 percent rest floor so a centered
+        /// stick never fires. Partial trackpad rings approximate onto the
+        /// touch read with the ring geometry named through the existing
+        /// region tuning note (EdgeInputNotSupported retired, key and
+        /// locale strings deleted; the census guard pins edge members to
+        /// trigger / trackpad / stick hosts, and anything hand-edited
+        /// outside that grammar routes through UnknownPhysicalInput).
+        /// The expected-behavior notes retire with it: SCREENSHOT and
+        /// SHOW_KEYBOARD keep their macros but report nothing, because
+        /// "approximated as a PrintScreen key tap" (and the on-screen
+        /// keyboard sibling) is exactly what a user expects the action to
+        /// do (ScreenshotApproximated / ShowKeyboardApproximated retired,
+        /// keys and locale strings deleted). Soft_Press rows report Clean
+        /// because a soft press IS a press threshold, with the
+        /// trigger-pull lowering kept (SoftPressApproximated retired),
+        /// and set_led restore-default reports Clean because clearing the
+        /// override IS restoring the default (SetLedDefaultApproximated
+        /// retired).</summary>
+        public const int CurrentTranslatorVersion = 17;
 
         public int TranslatorVersion { get; set; } = CurrentTranslatorVersion;
 
@@ -332,7 +369,11 @@ namespace PadForge.SteamWorkshop.Translation
         // finger reads), so nothing is dropped. Kept, with its resx
         // strings, for reports serialized by older translator versions.
         public const string TouchpadTuningNotPerRow = "Workshop_Tr_TouchpadTuningNotPerRow";
-        public const string SoftPressApproximated = "Workshop_Tr_SoftPressApproximated";
+        // SoftPressApproximated retired in v17: "Soft_Press approximated
+        // as a press threshold" described exactly what a soft press is,
+        // so the note was noise, not a fidelity loss. Soft rows report
+        // Clean now (the trigger-pull threshold lowering stays in
+        // BuildSource) and the key plus its locale strings were deleted.
         // Legacy-render-only since translator v6: the v2-v5 Partial was a
         // false alarm. Trackpad/gyro absolute_mouse IS relative cursor
         // movement in Steam (trackball/friction settings vocabulary, the
@@ -374,10 +415,20 @@ namespace PadForge.SteamWorkshop.Translation
         // arm is unreachable in Steam's grammar (the mode hosts on
         // trackpads and joysticks only, census-guarded). The key plus its
         // locale strings were deleted.
-        public const string EdgeInputNotSupported = "Workshop_Tr_EdgeInputNotSupported";
+        // EdgeInputNotSupported retired in v17: stick-hosted edge members
+        // build on the "Gamepad Left/RightStickRing" deflection-magnitude
+        // family, partial trackpad rings approximate onto the touch read
+        // (geometry named via MouseRegionTuningDropped), and the census
+        // guard pins edge members to trigger / trackpad / stick hosts.
+        // The key plus its locale strings were deleted.
         public const string ReleaseActivatorNotSupported = "Workshop_Tr_ReleaseActivatorNotSupported";
         public const string LongPressNotSupported = "Workshop_Tr_LongPressNotSupported";
-        public const string DoublePressNotSupported = "Workshop_Tr_DoublePressNotSupported";
+        // DoublePressNotSupported retired in v17: button-hosted (and every
+        // other non-trackpad) Double_Press lowers to macros on the
+        // engine's DoublePress trigger. The double-press-hostable
+        // vocabulary is census-guarded, and the two arms with no construct
+        // (layer verbs, mode shifts) land on ActivatorInputNotSupported.
+        // The key plus its locale strings were deleted.
         public const string UnknownActivatorType = "Workshop_Tr_UnknownActivatorType";           // {0} type
         public const string RepeatDropped = "Workshop_Tr_RepeatDropped";
         // MacroTriggerRetargetedToInput retired in v15: the finalize pass's
@@ -415,7 +466,11 @@ namespace PadForge.SteamWorkshop.Translation
         public const string InterruptibleDropped = "Workshop_Tr_InterruptibleDropped";
         public const string PlayerNumberActionNotSupported = "Workshop_Tr_PlayerNumberActionNotSupported";
         public const string LizardModeActionNotSupported = "Workshop_Tr_LizardModeActionNotSupported";
-        public const string SetLedDefaultApproximated = "Workshop_Tr_SetLedDefaultApproximated";
+        // SetLedDefaultApproximated retired in v17: "restore-default
+        // lighting approximated as clearing the override" described
+        // exactly what restoring is (clearing the override IS the
+        // restore), so the note was noise. The macro still emits and
+        // reports Clean; the key plus its locale strings were deleted.
 
         // ── Translator v3 (Wave 2A) vocabulary ──
         /// <summary>The activator toggle setting became a latch macro
@@ -505,12 +560,12 @@ namespace PadForge.SteamWorkshop.Translation
         /// finger drag: circular scratch geometry approximated as a linear
         /// drag (up = counterclockwise, down = clockwise).</summary>
         public const string ScrollWheelApproximated = "Workshop_Tr_ScrollWheelApproximated";
-        /// <summary>SCREENSHOT approximated as a PrintScreen key tap; the
-        /// Steam overlay's capture pipeline has no client here.</summary>
-        public const string ScreenshotApproximated = "Workshop_Tr_ScreenshotApproximated";
-        /// <summary>SHOW_KEYBOARD approximated as launching the Windows
-        /// on-screen keyboard (TabTip.exe / osk.exe).</summary>
-        public const string ShowKeyboardApproximated = "Workshop_Tr_ShowKeyboardApproximated";
+        // ScreenshotApproximated / ShowKeyboardApproximated retired in v17:
+        // "SCREENSHOT approximated as a PrintScreen key tap" and the
+        // on-screen-keyboard sibling describe exactly what a user expects
+        // those actions to do, so the notes were noise, not fidelity
+        // losses. The macros still emit, silently now, and the keys plus
+        // their locale strings were deleted.
 
         // ── Translator v13 (vocabulary census) vocabulary ──
         // MouseDeltaNotSupported retired in v16, three translator versions

@@ -224,8 +224,7 @@ namespace PadForge.SteamWorkshop.Translation
             bool isBase = preset.Id == run.BasePresetId.Value;
             string layer = isBase ? "Base" : $"Layer_{run.Options.FileId}_{preset.Id}";
             run.LayerByPreset[preset.Id] = layer;
-            run.PresetNames[preset.Id] = string.IsNullOrWhiteSpace(preset.Name)
-                ? $"Preset {preset.Id}" : preset.Name;
+            run.PresetNames[preset.Id] = PresetDisplayName(run, preset);
 
             // Deterministic slot walk: (slot token, group id).
             var entries = preset.GroupSourceBindings
@@ -285,6 +284,22 @@ namespace PadForge.SteamWorkshop.Translation
         private void TranslateGroup(Run run, SteamInputPreset preset, SteamInputGroup group,
             SteamSlot slot, string slotToken, string layer, string path)
         {
+            // Analog gameactions linkage (v13 section census): the group
+            // drives an in-game Steam Input API action while this set is
+            // active (XCOM 2's TacticalCamera stick, TF2's Move pad). Same
+            // Steam-only surface as game_action bindings, so it feeds the
+            // same per-preset aggregate skip. The pair's key names its set.
+            // A pair keyed to another set is counted where that set hosts
+            // this group.
+            foreach (var ga in group.GameActions)
+            {
+                if (string.Equals(ga.Key, preset.Name, StringComparison.OrdinalIgnoreCase))
+                {
+                    run.GameActionsByPreset[preset.Id] =
+                        run.GameActionsByPreset.GetValueOrDefault(preset.Id) + 1;
+                }
+            }
+
             // Multi-pad families have no center pad: SDL registers two
             // touchpads on the gordon/neptune/triton family (one on
             // DS4/DualSense), so the "Touchpad 2" index this slot would
@@ -551,6 +566,11 @@ namespace PadForge.SteamWorkshop.Translation
             "deadzone_outer_radius", "deadzone_shape",
             "custom_curve_exponent", "curve_exponent", "output_curve",
             "sensitivity_horiz_scale", "sensitivity_vert_scale",
+            // Output anti-deadzone (v13 census): a floor added to the
+            // output response (Valve's basicui templates carry it on
+            // joystick groups). No engine channel, so it stays named
+            // beside the rest of the response cluster.
+            "anti_deadzone",
         };
 
         /// <summary>Modes whose stick-hosted analog pair rides the v11
@@ -676,6 +696,15 @@ namespace PadForge.SteamWorkshop.Translation
         private static readonly string[] MouseModeTuningKeys =
         {
             "rotation", "friction", "mouse_smoothing", "trackball",
+            // v13 census additions, same feel family (corpus hosts them on
+            // absolute_mouse groups): acceleration is the cursor accel
+            // curve, friction_vert_scale scales trackball friction per
+            // axis, mouse_dampening_trigger slows the cursor while the
+            // named trigger is pulled, mouse_move_threshold gates small
+            // motions. Zero values mean off for all four, so the existing
+            // non-zero filter keeps defaults silent.
+            "acceleration", "friction_vert_scale",
+            "mouse_dampening_trigger", "mouse_move_threshold",
         };
 
         /// <summary>Modes whose dropped <see cref="MouseModeTuningKeys"/> get
@@ -748,13 +777,19 @@ namespace PadForge.SteamWorkshop.Translation
                 }
             }
 
-            foreach (var key in new[] { "gyro_button", "gyro_ratchet_button_mask" })
+            foreach (var key in new[] { "gyro_button", "gyro_ratchet_button_mask", "gyro_button_invert" })
             {
                 if (!settings.TryGetValue(key, out var v)) continue;
                 // Ratchet mask 0 = no ratchet button, the default; the
                 // engage button index is meaningful at every value
-                // (0 = right-pad touch on the Steam Controller).
-                if (key == "gyro_ratchet_button_mask" && (v ?? "").Trim() == "0") continue;
+                // (0 = right-pad touch on the Steam Controller). The
+                // invert flag (v13 census: engage while NOT held) is
+                // default-off, so only a stored non-zero diverges.
+                if ((key == "gyro_ratchet_button_mask" || key == "gyro_button_invert")
+                    && (v ?? "").Trim() == "0")
+                {
+                    continue;
+                }
                 run.Report.Add(TranslationStatus.Partial, TranslationReasons.GyroButtonMaskDropped,
                     path, args: new[] { key, v ?? "" });
             }
@@ -1024,6 +1059,22 @@ namespace PadForge.SteamWorkshop.Translation
                     TranslationReasons.ScrollWheelApproximated, path);
             }
 
+            // Scroll Wheel List members (v13 census: scroll_wheel_list_0..8
+            // in the wild corpus): Steam steps the wheel through the list,
+            // firing the NEXT item's binding per detent. PadForge has no
+            // cycle-through-bindings primitive, so the bound items get the
+            // mode's named skip per binding instead of the old silence.
+            foreach (var memberName in group.Inputs.Keys.OrderBy(k => k, StringComparer.Ordinal))
+            {
+                if (!memberName.StartsWith("scroll_wheel_list_", StringComparison.OrdinalIgnoreCase))
+                    continue;
+                string listPath = $"{path}/{memberName}";
+                foreach (var act in group.Inputs[memberName].Activators)
+                    foreach (var b in act.Bindings)
+                        ReportSkipUnlessSilent(run, TranslationReasons.ScrollWheelModeNotSupported,
+                            listPath, b);
+            }
+
             TranslateMemberGroup(run, preset, group, slot, layer, path, settings,
                 onlyInputs: new[] { "click" });
         }
@@ -1196,10 +1247,11 @@ namespace PadForge.SteamWorkshop.Translation
                             actPath, binding.Raw, args: binding.Param);
                         break;
                     }
-                    if (xt.IsTriggerAxis)
+                    if (xt.IsTriggerAxis || xt.IsStickAxis)
                     {
-                        // No discrete trigger-pull tap primitive, the same
-                        // gate the release-activator path keeps.
+                        // No discrete tap primitive for the axis-natured
+                        // targets (trigger pulls, stick directions), the
+                        // same gate the release-activator path keeps.
                         run.Report.Add(TranslationStatus.Skipped,
                             TranslationReasons.ScrollGestureModeNotSupported, actPath, binding.Raw);
                         break;
@@ -2076,11 +2128,9 @@ namespace PadForge.SteamWorkshop.Translation
             // is exactly that shape).
             string feature = FillMacroTrigger(macro, WithoutOutputTrigger(source));
             run.Profile.Macros.Add(macro);
-            // Partial by nature: Steam ticks the pad actuator, PadForge
-            // pulses the rumble motors.
-            run.Report.Add(TranslationStatus.Partial, TranslationReasons.HapticPulseEmitted,
-                path, emitted: $"Rumble pulse macro ({macro.RumbleStrengthPercent}%)",
-                args: level.ToString(CultureInfo.InvariantCulture));
+            // Silent clean lowering. Steam Input treats rumble and haptics
+            // interchangeably, so the rumble pulse IS the haptic tick and
+            // carries no report note (owner ruling 2026-07-17).
             if (feature != null)
             {
                 run.Report.Add(TranslationStatus.Partial,
@@ -2335,7 +2385,9 @@ namespace PadForge.SteamWorkshop.Translation
                     path, binding.Raw, args: binding.Param);
                 return false;
             }
-            if (xt.IsTriggerAxis)
+            // No button-hold / pulse primitive exists for the axis-natured
+            // targets: trigger pulls, and the stick-direction params (v13).
+            if (xt.IsTriggerAxis || xt.IsStickAxis)
             {
                 run.Report.Add(TranslationStatus.Skipped, TranslationReasons.LongPressNotSupported,
                     path, binding.Raw);
@@ -2473,6 +2525,39 @@ namespace PadForge.SteamWorkshop.Translation
                             path, binding.Raw, args: binding.Param);
                         break;
                     }
+                    // LSTICK_/RSTICK_ direction params (v13): the binding
+                    // drives one direction of a virtual thumb stick, so it
+                    // lowers to a bipolar axis row with the direction as
+                    // the output polarity (the same output-flip seam the
+                    // mouse_wheel rows use). Steam holds the stick at full
+                    // deflection while the input is held. A pressed button
+                    // source evaluates to the full axis value, and an
+                    // analog host (a stick wedge, a trigger pull) carries
+                    // its own magnitude. Like the trigger-axis targets,
+                    // there is no discrete tap, latch, or pulse primitive
+                    // for a stick direction, so the release / toggle /
+                    // turbo variants keep the trigger-axis notes.
+                    if (xt.IsStickAxis)
+                    {
+                        if (onRelease)
+                        {
+                            run.Report.Add(TranslationStatus.Skipped, TranslationReasons.ReleaseActivatorNotSupported,
+                                path, binding.Raw);
+                            break;
+                        }
+                        if (toggle)
+                        {
+                            run.Report.Add(TranslationStatus.Partial, TranslationReasons.ToggleDropped,
+                                path, binding.Raw);
+                        }
+                        if (holdRepeats)
+                        {
+                            run.Report.Add(TranslationStatus.Partial, TranslationReasons.RepeatDropped,
+                                path, binding.Raw);
+                        }
+                        EmitStickDirectionRow(run, binding, source, clickGate, layer, path, soft, xt);
+                        break;
+                    }
                     if (onRelease)
                     {
                         if (xt.IsTriggerAxis)
@@ -2590,6 +2675,33 @@ namespace PadForge.SteamWorkshop.Translation
                         path, binding.Raw, args: binding.Type ?? "");
                     break;
             }
+        }
+
+        /// <summary>An LSTICK_/RSTICK_ direction binding (v13) as a bipolar
+        /// axis row on the thumb-axis target. Row value convention is SDL
+        /// "+X right, +Y down" (identical to the joystick_move rows;
+        /// Step 3's WriteBipolarAxisTarget negates Y onto the XInput
+        /// thumb), so <see cref="XInputTargetTable.XInputTarget.StickAxisNegative"/>
+        /// is the output polarity for up / left. The polarity composes
+        /// with a member-level output flip exactly like the mouse_wheel
+        /// rows: on a half-axis host Invert stays the half SELECTOR and
+        /// the polarity rides InvertOutput (SetOutputInvert asks the
+        /// engine's own predicate), so a stick wedge keeps its wedge and
+        /// still pushes the virtual stick the bound way.</summary>
+        private void EmitStickDirectionRow(Run run, SteamInputBinding binding,
+            ResolvedSource source, string clickGate, string layer, string path, bool soft,
+            XInputTargetTable.XInputTarget xt)
+        {
+            var src = BuildSource(source, soft);
+            bool memberFlip = !src.HalfAxis && src.Invert;
+            if (memberFlip) src.Invert = false;
+            SetOutputInvert(src, xt.StickAxisNegative ^ memberFlip);
+            string gateDescriptor = clickGate ?? source.GateDescriptor;
+            AddRowSource(run, isKbm: false, layer, xt.Target, src, isAxis: true,
+                StatusFor(source, soft), ReasonFor(source, soft), path, binding.Raw,
+                args: source.TrackpadFeature,
+                clickGate: gateDescriptor != null
+                    ? new MappingSource { Descriptor = gateDescriptor } : null);
         }
 
         /// <summary>mouse_wheel param to its KbM target and output flip.
@@ -3343,8 +3455,22 @@ namespace PadForge.SteamWorkshop.Translation
                     return;
 
                 case "TOGGLE_LIZARD_MODE":
+                case "TOGGLE_LIZARD": // the serializer's own spelling (steamclient.dll token table)
                     run.Report.Add(TranslationStatus.Skipped, TranslationReasons.LizardModeActionNotSupported,
                         path, binding.Raw);
+                    return;
+
+                case "MOUSE_DELTA":
+                    // "Move by Amount" (shipped configurator: "Each time
+                    // this command fires the mouse will move by a set
+                    // number of pixels", args dx dy, and corpus 3456927474
+                    // carries "mouse_delta 100 0"). PadForge's macro
+                    // vocabulary has continuous axis-driven MouseMove and
+                    // the absolute warp, but no one-shot fixed-pixel
+                    // nudge, so the binding gets its own named skip (v13)
+                    // instead of the generic unknown.
+                    run.Report.Add(TranslationStatus.Skipped, TranslationReasons.MouseDeltaNotSupported,
+                        path, binding.Raw, args: binding.Param);
                     return;
 
                 case "SCREENSHOT":
@@ -3403,15 +3529,86 @@ namespace PadForge.SteamWorkshop.Translation
                     return; // placeholder, silent
 
                 default:
+                    // Steam-client system verbs (v13) get the named
+                    // SteamSystemAction entry the SYSTEM_KEY_1 arm already
+                    // uses. The generic unknown below stays only for verbs
+                    // outside Steam's own serializer vocabulary.
+                    if (IsSteamClientAction(action))
+                    {
+                        run.Report.Add(TranslationStatus.Skipped, TranslationReasons.SteamSystemAction,
+                            path, binding.Raw, args: action);
+                        return;
+                    }
                     run.Report.Add(TranslationStatus.Skipped, TranslationReasons.UnsupportedControllerAction,
                         path, binding.Raw, args: action);
                     return;
             }
         }
 
+        /// <summary>The Steam-client system verbs of the controller_action
+        /// grammar (v13): actions that drive the Steam client, the host
+        /// machine, or a Steam-side subsystem PadForge has no client for.
+        /// Vocabulary harvested from the serializer's own token table
+        /// (steamclient.dll: toggle_magnifier ... sr_prev_heading) plus
+        /// Valve's shipped controller_base configs (chord / desktop /
+        /// basicui carry TOGGLE_MAGNIFIER, BRIGHTNESS_UP/DOWN,
+        /// CONTROLLER_POWEROFF, QUIT_APPLICATION and the SR_/GR_/TS_
+        /// families). Prefix families cover the enumerated members and any
+        /// sibling Valve adds later: SR_ = screen reader, GR_ = game
+        /// recording, TS_ = touchscreen verbs, STEAMMUSIC_ = the Steam
+        /// Music player, BIGPICTURE_ = Big Picture, HOST_ = power
+        /// controls, CHORD_HINT_ = chord hint overlay.</summary>
+        private static readonly HashSet<string> SteamClientActions = new(StringComparer.Ordinal)
+        {
+            "BRIGHTNESS_UP", "BRIGHTNESS_DOWN",
+            "CONTROLLER_POWEROFF",
+            "QUIT_APPLICATION",
+            "TOGGLE_MAGNIFIER", "TOGGLE_RUMBLE", "TOGGLE_HAPTICS", "TOGGLE_HUD",
+            "OPEN_CONFIGURATOR", "OPEN_QUICKMENU",
+            "FORCE_GUIDE_UP",
+            "SYSTEM_KEY_0",
+            "DOTS_PER_360_CALIBRATION_SPIN",
+            "TURN_TO_FACE_DIRECTION",
+        };
+
+        private static bool IsSteamClientAction(string action)
+        {
+            string a = (action ?? "").ToUpperInvariant();
+            return SteamClientActions.Contains(a)
+                || a.StartsWith("SR_", StringComparison.Ordinal)
+                || a.StartsWith("GR_", StringComparison.Ordinal)
+                || a.StartsWith("TS_", StringComparison.Ordinal)
+                || a.StartsWith("STEAMMUSIC_", StringComparison.Ordinal)
+                || a.StartsWith("BIGPICTURE_", StringComparison.Ordinal)
+                || a.StartsWith("HOST_", StringComparison.Ordinal)
+                || a.StartsWith("CHORD_HINT_", StringComparison.Ordinal);
+        }
+
         private static string PresetLayerName(Run run, int presetId)
-            => run.PresetNames.TryGetValue(presetId, out var n) ? n :
-                (run.Config.Presets.FirstOrDefault(p => p.Id == presetId)?.Name ?? $"Preset {presetId}");
+        {
+            if (run.PresetNames.TryGetValue(presetId, out var n)) return n;
+            var preset = run.Config.Presets.FirstOrDefault(p => p.Id == presetId);
+            return preset != null ? PresetDisplayName(run, preset) : $"Preset {presetId}";
+        }
+
+        /// <summary>The author-facing set name (v13 section census). A
+        /// preset's <c>name</c> is a set token (<c>Preset_1000001</c>,
+        /// <c>MenuControls</c>). The actions / action_layers block carries
+        /// the display title behind it, often a <c>#token</c> into the
+        /// config's localization (Valve's TF2 config titles its sets
+        /// <c>#MenuControls</c>-style, community layers carry plain titles
+        /// such as "Secondary"). Falls back to the raw token.</summary>
+        private static string PresetDisplayName(Run run, SteamInputPreset preset)
+        {
+            string raw = string.IsNullOrWhiteSpace(preset.Name)
+                ? $"Preset {preset.Id}" : preset.Name;
+            if (!string.IsNullOrWhiteSpace(preset.Name)
+                && run.Config.ActionSetTitles.TryGetValue(preset.Name.Trim(), out var title))
+            {
+                return ResolveText(run, title, preset.Name.Trim(), raw);
+            }
+            return raw;
+        }
 
         /// <summary>CHANGE_PRESET / add_layer / hold_layer reference presets
         /// by 1-BASED INDEX in id order, not by preset id. Corpus ground

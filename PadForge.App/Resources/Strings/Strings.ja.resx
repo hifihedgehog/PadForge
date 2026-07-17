@@ -2558,10 +2558,10 @@
   <data name="Workshop_Tr_FlickStickTuningDropped" xml:space="preserve"><value>Flick Stick の調整設定を破棄 ({0})</value></data>
   <data name="Workshop_Tr_MouseModeTuningDropped" xml:space="preserve"><value>マウスの調整設定を破棄 ({0})</value></data>
   <data name="Workshop_Tr_AxisInversionNotApplied" xml:space="preserve"><value>軸の反転は未適用 ({0})</value></data>
-  <data name="Workshop_Tr_HapticPulseEmitted" xml:space="preserve"><value>ハプティクスを振動パルスで近似 (レベル {0})</value></data>
   <data name="Workshop_Tr_ScrollWheelApproximated" xml:space="preserve"><value>円形スクロールホイールを縦ドラッグで近似</value></data>
   <data name="Workshop_Tr_ScreenshotApproximated" xml:space="preserve"><value>SCREENSHOT を PrintScreen キー入力で近似</value></data>
   <data name="Workshop_Tr_ShowKeyboardApproximated" xml:space="preserve"><value>SHOW_KEYBOARD をスクリーンキーボードの起動で近似</value></data>
+  <data name="Workshop_Tr_MouseDeltaNotSupported" xml:space="preserve"><value>カーソル相対移動 mouse_delta ({0}) は未対応</value></data>
   <data name="Macro_HoldForMs" xml:space="preserve"><value>長押し時</value></data>
   <data name="Macro_HoldForMs_Tooltip" xml:space="preserve"><value>トリガーを保持時間のあいだ押し続けると 1 回だけ発動します。それより短いタップでは何も起こりません。</value></data>
   <data name="Macro_TriggerHoldMs_Label" xml:space="preserve"><value>保持時間</value></data>

@@ -210,6 +210,9 @@ namespace PadForge.SteamWorkshop.Tests
             sb.Append(s.Descriptor);
             if (s.HalfAxis) sb.Append(s.Invert ? " [lower-half]" : " [upper-half]");
             else if (s.Invert) sb.Append(" [inverted]");
+            // Output-side polarity (the half-axis-safe flip: wheel rows,
+            // v13 stick-direction rows). Non-default only.
+            if (s.InvertOutput) sb.Append(" [out-inverted]");
             if (s.Bidirectional) sb.Append(" [bidir]");
             if (s.DeadZone != 50) sb.Append(" dz=").Append(s.DeadZone);
             if (s.Sensitivity != 1.0)

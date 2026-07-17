@@ -2558,10 +2558,10 @@
   <data name="Workshop_Tr_FlickStickTuningDropped" xml:space="preserve"><value>réglages du flick stick abandonnés ({0})</value></data>
   <data name="Workshop_Tr_MouseModeTuningDropped" xml:space="preserve"><value>réglages de la souris abandonnés ({0})</value></data>
   <data name="Workshop_Tr_AxisInversionNotApplied" xml:space="preserve"><value>inversion des axes non appliquée ({0})</value></data>
-  <data name="Workshop_Tr_HapticPulseEmitted" xml:space="preserve"><value>retour haptique approximé par une impulsion de vibration (niveau {0})</value></data>
   <data name="Workshop_Tr_ScrollWheelApproximated" xml:space="preserve"><value>molette circulaire approximée par un glissement vertical</value></data>
   <data name="Workshop_Tr_ScreenshotApproximated" xml:space="preserve"><value>SCREENSHOT approximé par un appui sur la touche Impr. écran</value></data>
   <data name="Workshop_Tr_ShowKeyboardApproximated" xml:space="preserve"><value>SHOW_KEYBOARD approximé par le lancement du clavier visuel</value></data>
+  <data name="Workshop_Tr_MouseDeltaNotSupported" xml:space="preserve"><value>déplacement relatif du curseur mouse_delta ({0}) non pris en charge</value></data>
   <data name="Macro_HoldForMs" xml:space="preserve"><value>Au maintien</value></data>
   <data name="Macro_HoldForMs_Tooltip" xml:space="preserve"><value>Se déclenche une fois lorsque le déclencheur a été maintenu en continu pendant la durée de maintien. Un appui plus court ne fait rien.</value></data>
   <data name="Macro_TriggerHoldMs_Label" xml:space="preserve"><value>Durée de maintien</value></data>

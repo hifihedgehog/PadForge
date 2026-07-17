@@ -117,30 +117,24 @@ menus: 3
     [6] 6
     [7] 7
     [8] 8
-report: v12 rows:x0+k33 macros:22 menus:3 layers:2 clean:43 partial:27 skipped:1 errors:0
+report: v13 rows:x0+k33 macros:22 menus:3 layers:2 clean:43 partial:8 skipped:1 errors:0
   Clean RowEmitted @ Preset 0/button_diamond/group 0 (four_buttons)/button_a/Full_Press => KbmKey45 <- Gamepad ButtonA
   Clean RowEmitted @ Preset 0/button_diamond/group 0 (four_buttons)/button_b/Full_Press => KbmKey09 <- Gamepad ButtonB
   Clean RowEmitted @ Preset 0/button_diamond/group 0 (four_buttons)/button_x/Full_Press => KbmKey52 <- Gamepad ButtonX
   Clean RowEmitted @ Preset 0/button_diamond/group 0 (four_buttons)/button_y/Full_Press => KbmKey20 <- Gamepad ButtonY
+  Partial MouseModeTuningDropped(acceleration) @ Preset 0/gyro/group 19 (absolute_mouse)
   Clean RowEmitted @ Preset 0/gyro/group 19 (absolute_mouse) => KbmMouseX <- Gyro Yaw
   Clean RowEmitted @ Preset 0/gyro/group 19 (absolute_mouse) => KbmMouseY <- Gyro Pitch
   Clean RowEmitted @ Preset 0/joystick/group 11 (dpad)/click/Full_Press => KbmKey14 <- Gamepad LeftStick
-  Partial HapticPulseEmitted(1) @ Preset 0/joystick/group 11 (dpad)/click/Full_Press => Rumble pulse macro (33%)
   Clean RowEmitted @ Preset 0/joystick/group 11 (dpad)/dpad_east/Full_Press => KbmKey44 <- Gamepad LeftStickX (upper half)
-  Partial HapticPulseEmitted(1) @ Preset 0/joystick/group 11 (dpad)/dpad_east/Full_Press => Rumble pulse macro (33%)
   Clean RowEmitted @ Preset 0/joystick/group 11 (dpad)/dpad_north/Full_Press => KbmKey57 <- Gamepad LeftStickY (lower half)
-  Partial HapticPulseEmitted(1) @ Preset 0/joystick/group 11 (dpad)/dpad_north/Full_Press => Rumble pulse macro (33%)
   Clean RowEmitted @ Preset 0/joystick/group 11 (dpad)/dpad_south/Full_Press => KbmKey53 <- Gamepad LeftStickY (upper half)
-  Partial HapticPulseEmitted(1) @ Preset 0/joystick/group 11 (dpad)/dpad_south/Full_Press => Rumble pulse macro (33%)
   Clean RowEmitted @ Preset 0/joystick/group 11 (dpad)/dpad_west/Full_Press => KbmKey41 <- Gamepad LeftStickX (lower half)
-  Partial HapticPulseEmitted(1) @ Preset 0/joystick/group 11 (dpad)/dpad_west/Full_Press => Rumble pulse macro (33%)
   Skipped EdgeInputNotSupported(Joystick, edge) @ Preset 0/joystick/group 11 (dpad)/edge :: key_press RIGHT_CONTROL
   Clean MenuEmitted(2) @ Preset 0/left_trackpad/group 17 (touch_menu) => Grid menu 1 on Touchpad 0: 2 bound cells
   Partial MenuIconsDropped(2) @ Preset 0/left_trackpad/group 17 (touch_menu)
   Clean RowEmitted @ Preset 0/left_trackpad/group 17 (touch_menu)/touch_menu_button_0/Full_Press => KbmKey74 <- Menu 1 Item 0
-  Partial HapticPulseEmitted(3) @ Preset 0/left_trackpad/group 17 (touch_menu)/touch_menu_button_0/Full_Press => Rumble pulse macro (100%)
   Clean RowEmitted @ Preset 0/left_trackpad/group 17 (touch_menu)/touch_menu_button_1/Full_Press => KbmKey78 <- Menu 1 Item 1
-  Partial HapticPulseEmitted(3) @ Preset 0/left_trackpad/group 17 (touch_menu)/touch_menu_button_1/Full_Press => Rumble pulse macro (100%)
   Clean MenuEmitted(4) @ Preset 0/left_trackpad/group 18 (touch_menu) => Grid menu 2 on Touchpad 0: 4 bound cells
   Partial MenuIconsDropped(4) @ Preset 0/left_trackpad/group 18 (touch_menu)
   Clean RowEmitted @ Preset 0/left_trackpad/group 18 (touch_menu)/touch_menu_button_0/Full_Press => KbmKey49 <- Menu 2 Item 0
@@ -149,39 +143,26 @@ report: v12 rows:x0+k33 macros:22 menus:3 layers:2 clean:43 partial:27 skipped:1
   Clean RowEmitted @ Preset 0/left_trackpad/group 18 (touch_menu)/touch_menu_button_3/Full_Press => KbmKey4D <- Menu 2 Item 3
   Partial ResponseCurveNotSupported(deadzone_outer_radius) @ Preset 0/left_trigger/group 4 (trigger)
   Clean RowEmitted @ Preset 0/left_trigger/group 4 (trigger)/edge/Full_Press => KbmMBtn1 <- Gamepad LeftTrigger (upper half)
-  Partial HapticPulseEmitted(2) @ Preset 0/left_trigger/group 4 (trigger)/edge/Full_Press => Rumble pulse macro (66%)
-  Partial MouseModeTuningDropped(rotation, mouse_smoothing) @ Preset 0/right_trackpad/group 7 (absolute_mouse)
+  Partial MouseModeTuningDropped(rotation, mouse_smoothing, acceleration, friction_vert_scale) @ Preset 0/right_trackpad/group 7 (absolute_mouse)
   Clean RowEmitted @ Preset 0/right_trackpad/group 7 (absolute_mouse) => KbmMouseX <- Touchpad 1 Finger 0 X
   Clean RowEmitted @ Preset 0/right_trackpad/group 7 (absolute_mouse) => KbmMouseY <- Touchpad 1 Finger 0 Y
   Clean MenuEmitted(9) @ Preset 0/right_trackpad/group 24 (radial_menu) => Radial menu 3 on Touchpad 1: 9 bound cells
   Partial MenuIconsDropped(1) @ Preset 0/right_trackpad/group 24 (radial_menu)
   Clean RowEmitted @ Preset 0/right_trackpad/group 24 (radial_menu)/touch_menu_button_0/Full_Press => KbmKey51 <- Menu 3 Item 0
-  Partial HapticPulseEmitted(2) @ Preset 0/right_trackpad/group 24 (radial_menu)/touch_menu_button_0/Full_Press => Rumble pulse macro (66%)
   Clean RowEmitted @ Preset 0/right_trackpad/group 24 (radial_menu)/touch_menu_button_1/Full_Press => KbmKey31 <- Menu 3 Item 1
-  Partial HapticPulseEmitted(2) @ Preset 0/right_trackpad/group 24 (radial_menu)/touch_menu_button_1/Full_Press => Rumble pulse macro (66%)
   Clean RowEmitted @ Preset 0/right_trackpad/group 24 (radial_menu)/touch_menu_button_2/Full_Press => KbmKey32 <- Menu 3 Item 2
-  Partial HapticPulseEmitted(2) @ Preset 0/right_trackpad/group 24 (radial_menu)/touch_menu_button_2/Full_Press => Rumble pulse macro (66%)
   Clean RowEmitted @ Preset 0/right_trackpad/group 24 (radial_menu)/touch_menu_button_3/Full_Press => KbmKey33 <- Menu 3 Item 3
-  Partial HapticPulseEmitted(2) @ Preset 0/right_trackpad/group 24 (radial_menu)/touch_menu_button_3/Full_Press => Rumble pulse macro (66%)
   Clean RowEmitted @ Preset 0/right_trackpad/group 24 (radial_menu)/touch_menu_button_4/Full_Press => KbmKey34 <- Menu 3 Item 4
-  Partial HapticPulseEmitted(2) @ Preset 0/right_trackpad/group 24 (radial_menu)/touch_menu_button_4/Full_Press => Rumble pulse macro (66%)
   Clean RowEmitted @ Preset 0/right_trackpad/group 24 (radial_menu)/touch_menu_button_5/Full_Press => KbmKey35 <- Menu 3 Item 5
-  Partial HapticPulseEmitted(2) @ Preset 0/right_trackpad/group 24 (radial_menu)/touch_menu_button_5/Full_Press => Rumble pulse macro (66%)
   Clean RowEmitted @ Preset 0/right_trackpad/group 24 (radial_menu)/touch_menu_button_6/Full_Press => KbmKey36 <- Menu 3 Item 6
-  Partial HapticPulseEmitted(2) @ Preset 0/right_trackpad/group 24 (radial_menu)/touch_menu_button_6/Full_Press => Rumble pulse macro (66%)
   Clean RowEmitted @ Preset 0/right_trackpad/group 24 (radial_menu)/touch_menu_button_7/Full_Press => KbmKey37 <- Menu 3 Item 7
-  Partial HapticPulseEmitted(2) @ Preset 0/right_trackpad/group 24 (radial_menu)/touch_menu_button_7/Full_Press => Rumble pulse macro (66%)
   Clean RowEmitted @ Preset 0/right_trackpad/group 24 (radial_menu)/touch_menu_button_8/Full_Press => KbmKey38 <- Menu 3 Item 8
-  Partial HapticPulseEmitted(2) @ Preset 0/right_trackpad/group 24 (radial_menu)/touch_menu_button_8/Full_Press => Rumble pulse macro (66%)
   Partial ResponseCurveNotSupported(deadzone_outer_radius) @ Preset 0/right_trigger/group 5 (trigger)
   Clean RowEmitted @ Preset 0/right_trigger/group 5 (trigger)/edge/Full_Press => KbmMBtn0 <- Gamepad RightTrigger (upper half)
-  Partial HapticPulseEmitted(2) @ Preset 0/right_trigger/group 5 (trigger)/edge/Full_Press => Rumble pulse macro (66%)
   Clean RowEmitted @ Preset 0/switch/group 20 (switches)/button_back_left/Full_Press => KbmKeyA2 <- Gamepad Paddle2
   Clean MacroEmitted @ Preset 0/switch/group 20 (switches)/button_back_left/Long_Press => Hold F macro
-  Partial HapticPulseEmitted(3) @ Preset 0/switch/group 20 (switches)/button_back_left/Long_Press => Rumble pulse macro (100%)
   Clean RowEmitted @ Preset 0/switch/group 20 (switches)/button_back_right/Full_Press => KbmKey45 <- Gamepad Paddle1
   Clean MacroEmitted @ Preset 0/switch/group 20 (switches)/button_back_right/Long_Press => Hold SPACE macro
-  Partial HapticPulseEmitted(3) @ Preset 0/switch/group 20 (switches)/button_back_right/Long_Press => Rumble pulse macro (100%)
   Clean RowEmitted @ Preset 0/switch/group 20 (switches)/button_escape/Full_Press => KbmKey4A <- Gamepad ButtonStart
   Clean RowEmitted @ Preset 0/switch/group 20 (switches)/button_menu/Full_Press => KbmKey54 <- Gamepad ButtonBack
   Clean RowEmitted @ Preset 0/switch/group 20 (switches)/left_bumper/Full_Press => KbmKeyA4 <- Gamepad LeftShoulder

@@ -48,12 +48,10 @@ macros: 3
   macro ToggleVcButton OnPress | Toggle ButtonB (click) | btns=0x2000 target=0x2000
   macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Gamepad LeftTrigger] in-half=upper in-dz=75 strength=66%
   macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Gamepad RightTrigger] in-half=upper in-dz=75 strength=66%
-report: v12 rows:x19+k0 macros:3 menus:0 layers:0 clean:22 partial:3 skipped:1 errors:0
+report: v13 rows:x19+k0 macros:3 menus:0 layers:0 clean:22 partial:1 skipped:1 errors:0
   Skipped DoublePressNotSupported @ Default/button_diamond/group 3 (four_buttons)/button_y/Double_Press :: xinput_button JOYSTICK_LEFT
   Partial ToggleLatchEmitted(ButtonB) @ Default/joystick/group 6 (joystick_move)/click/Full_Press => Toggle ButtonB latch macro
   Clean RowEmitted @ Default/joystick/group 6 (joystick_move)/click/Full_Press => ButtonB <- Gamepad LeftStick
-  Partial HapticPulseEmitted(2) @ Default/left_trigger/group 1 (trigger)/click/Full_Press => Rumble pulse macro (66%)
-  Partial HapticPulseEmitted(2) @ Default/right_trigger/group 2 (trigger)/click/Full_Press => Rumble pulse macro (66%)
   Clean RowEmitted @ Default/joystick/group 6 (joystick_move) => LeftThumbAxisX <- Gamepad LeftStickX
   Clean RowEmitted @ Default/joystick/group 6 (joystick_move) => LeftThumbAxisY <- Gamepad LeftStickY
   Clean RowEmitted @ Default/left_trigger/group 1 (trigger) => LeftTrigger <- Gamepad LeftTrigger

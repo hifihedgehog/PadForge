@@ -78,7 +78,7 @@ kbm rows: 57
   Base | KbmMouseY
     <- Touchpad 1 Finger 0 Y sens=1.9
   Base | KbmScroll | Sum
-    <- Gamepad RightStickY [lower-half]
+    <- Gamepad RightStickY [lower-half] [out-inverted]
     <- Gamepad RightStickY [upper-half]
   Layer_3353173512_1 | KbmKey08
     <- Menu 2 Item 3
@@ -132,10 +132,10 @@ kbm rows: 57
     <- Menu 3 Item 5
     <- Menu 3 Item 7
 kbm activators: 4
-  Toggle Layer_3353173512_1 | Menu 1 Item 3 | inherit | name=Preset_1000003
-  Cycle Layer_3353173512_1 cycle=Layer_3353173512_1+Base | Menu 2 Item 15 | inherit | name=Preset_1000003
-  Toggle Layer_3353173512_2 | Menu 1 Item 7 | inherit | name=Preset_1000002
-  Cycle Layer_3353173512_2 cycle=Layer_3353173512_2+Base | Menu 3 Item 8 | inherit | name=Preset_1000002
+  Toggle Layer_3353173512_1 | Menu 1 Item 3 | inherit | name=Numpad
+  Cycle Layer_3353173512_1 cycle=Layer_3353173512_1+Base | Menu 2 Item 15 | inherit | name=Numpad
+  Toggle Layer_3353173512_2 | Menu 1 Item 7 | inherit | name=Picker Dollies
+  Cycle Layer_3353173512_2 cycle=Layer_3353173512_2+Base | Menu 3 Item 8 | inherit | name=Picker Dollies
 macros: 20
   macro ShowOnScreenKeyboard OnPress | On-screen keyboard (button_x) | btns=0x0000 in=[Gamepad ButtonX]
   macro RumblePulse OnPress | Haptic pulse (dpad_east) | btns=0x0000 in=[Gamepad DPadRight] strength=33%
@@ -197,28 +197,21 @@ menus: 3
     [6] Flip Combinator
     [7] Move Down
     [8] Back Menu
-report: v12 rows:x0+k57 macros:20 menus:3 layers:4 clean:77 partial:45 skipped:3 errors:0
+report: v13 rows:x0+k57 macros:20 menus:3 layers:4 clean:77 partial:26 skipped:3 errors:0
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_a/Full_Press => KbmKey0D <- Gamepad ButtonA
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_b/Full_Press => KbmKey1B <- Gamepad ButtonB
   Partial ShowKeyboardApproximated @ Default/button_diamond/group 0 (four_buttons)/button_x/Full_Press => On-screen keyboard macro
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_y/Full_Press => KbmKey46 <- Gamepad ButtonY
   Clean RowEmitted @ Default/dpad/group 7 (dpad)/dpad_east/Full_Press => KbmKey48 <- Gamepad DPadRight
-  Partial HapticPulseEmitted(1) @ Default/dpad/group 7 (dpad)/dpad_east/Full_Press => Rumble pulse macro (33%)
   Clean RowEmitted @ Default/dpad/group 7 (dpad)/dpad_north/Full_Press => KbmKey45 <- Gamepad DPadUp
   Clean RowEmitted @ Default/dpad/group 7 (dpad)/dpad_south/Full_Press => KbmKey56 <- Gamepad DPadDown
-  Partial HapticPulseEmitted(1) @ Default/dpad/group 7 (dpad)/dpad_south/Full_Press => Rumble pulse macro (33%)
   Clean RowEmitted @ Default/dpad/group 7 (dpad)/dpad_south/Full_Press => KbmKey47 <- Gamepad DPadDown
   Clean RowEmitted @ Default/dpad/group 7 (dpad)/dpad_west/Full_Press => KbmKey43 <- Gamepad DPadLeft
   Clean RowEmitted @ Default/joystick/group 3 (dpad)/click/Full_Press => KbmKey43 <- Gamepad LeftStick
-  Partial HapticPulseEmitted(1) @ Default/joystick/group 3 (dpad)/click/Full_Press => Rumble pulse macro (33%)
   Clean RowEmitted @ Default/joystick/group 3 (dpad)/dpad_east/Full_Press => KbmKey44 <- Gamepad LeftStickX (upper half)
-  Partial HapticPulseEmitted(1) @ Default/joystick/group 3 (dpad)/dpad_east/Full_Press => Rumble pulse macro (33%)
   Clean RowEmitted @ Default/joystick/group 3 (dpad)/dpad_north/Full_Press => KbmKey57 <- Gamepad LeftStickY (lower half)
-  Partial HapticPulseEmitted(1) @ Default/joystick/group 3 (dpad)/dpad_north/Full_Press => Rumble pulse macro (33%)
   Clean RowEmitted @ Default/joystick/group 3 (dpad)/dpad_south/Full_Press => KbmKey53 <- Gamepad LeftStickY (upper half)
-  Partial HapticPulseEmitted(1) @ Default/joystick/group 3 (dpad)/dpad_south/Full_Press => Rumble pulse macro (33%)
   Clean RowEmitted @ Default/joystick/group 3 (dpad)/dpad_west/Full_Press => KbmKey41 <- Gamepad LeftStickX (lower half)
-  Partial HapticPulseEmitted(1) @ Default/joystick/group 3 (dpad)/dpad_west/Full_Press => Rumble pulse macro (33%)
   Partial GyroButtonMaskDropped(gyro_button, 1) @ Default/left_trackpad/group 12 (touch_menu)
   Clean MenuEmitted(11) @ Default/left_trackpad/group 12 (touch_menu) => Grid menu 1 on Touchpad 0: 11 bound cells
   Partial MenuIconsDropped(11) @ Default/left_trackpad/group 12 (touch_menu)
@@ -242,20 +235,16 @@ report: v12 rows:x0+k57 macros:20 menus:3 layers:4 clean:77 partial:45 skipped:3
   Partial ActivatorDelayDropped(delay_start 50, delay_end 100) @ Default/left_trackpad/group 12 (touch_menu)/touch_menu_button_10/Full_Press
   Clean RowEmitted @ Default/left_trackpad/group 12 (touch_menu)/touch_menu_button_11/Full_Press => KbmKey42 <- Menu 1 Item 11
   Clean RowEmitted @ Default/left_trigger/group 4 (trigger)/edge/Full_Press => KbmMBtn1 <- Gamepad LeftTrigger (upper half)
-  Partial HapticPulseEmitted(3) @ Default/left_trigger/group 4 (trigger)/edge/Full_Press => Rumble pulse macro (100%)
   Clean RowEmitted @ Default/right_joystick/group 11 (dpad)/click/Full_Press => KbmMBtn2 <- Gamepad RightStick
   Clean RowEmitted @ Default/right_joystick/group 11 (dpad)/dpad_east/Full_Press => KbmKey6B <- Gamepad RightStickX (upper half)
   Clean RowEmitted @ Default/right_joystick/group 11 (dpad)/dpad_north/Full_Press => KbmScroll <- Gamepad RightStickY (lower half)
-  Partial HapticPulseEmitted(2) @ Default/right_joystick/group 11 (dpad)/dpad_north/Full_Press => Rumble pulse macro (66%)
   Clean RowEmitted @ Default/right_joystick/group 11 (dpad)/dpad_south/Full_Press => KbmScroll <- Gamepad RightStickY (upper half)
-  Partial HapticPulseEmitted(2) @ Default/right_joystick/group 11 (dpad)/dpad_south/Full_Press => Rumble pulse macro (66%)
   Clean RowEmitted @ Default/right_joystick/group 11 (dpad)/dpad_west/Full_Press => KbmKey6D <- Gamepad RightStickX (lower half)
-  Partial MouseModeTuningDropped(mouse_smoothing) @ Default/right_trackpad/group 2 (absolute_mouse)
+  Partial MouseModeTuningDropped(mouse_smoothing, acceleration, mouse_dampening_trigger, mouse_move_threshold) @ Default/right_trackpad/group 2 (absolute_mouse)
   Clean RowEmitted @ Default/right_trackpad/group 2 (absolute_mouse) => KbmMouseX <- Touchpad 1 Finger 0 X
   Clean RowEmitted @ Default/right_trackpad/group 2 (absolute_mouse) => KbmMouseY <- Touchpad 1 Finger 0 Y
   Partial SoftPressApproximated @ Default/right_trackpad/group 2 (absolute_mouse)/click/Soft_Press => KbmKey51 <- Touchpad 1 Click
   Clean RowEmitted @ Default/right_trigger/group 5 (trigger)/edge/Full_Press => KbmMBtn0 <- Gamepad RightTrigger (upper half)
-  Partial HapticPulseEmitted(3) @ Default/right_trigger/group 5 (trigger)/edge/Full_Press => Rumble pulse macro (100%)
   Clean RowEmitted @ Default/switch/group 6 (switches)/button_back_left/Full_Press => KbmKeyA2 <- Gamepad Paddle2
   Clean RowEmitted @ Default/switch/group 6 (switches)/button_back_left_upper/Full_Press => KbmKeyA0 <- Gamepad Paddle4
   Clean RowEmitted @ Default/switch/group 6 (switches)/button_back_right/Full_Press => KbmKey5A <- Gamepad Paddle1
@@ -265,61 +254,53 @@ report: v12 rows:x0+k57 macros:20 menus:3 layers:4 clean:77 partial:45 skipped:3
   Clean RowEmitted @ Default/switch/group 6 (switches)/button_menu/Full_Press => KbmKey4D <- Gamepad ButtonBack
   Clean RowEmitted @ Default/switch/group 6 (switches)/left_bumper/Full_Press => KbmKey52 <- Gamepad LeftShoulder
   Clean RowEmitted @ Default/switch/group 6 (switches)/right_bumper/Full_Press => KbmKey20 <- Gamepad RightShoulder
-  Clean MenuEmitted(16) @ Preset_1000003/left_trackpad/group 45 (touch_menu) => Grid menu 2 on Touchpad 0: 16 bound cells
-  Partial MenuIconsDropped(1) @ Preset_1000003/left_trackpad/group 45 (touch_menu)
-  Clean RowEmitted @ Preset_1000003/left_trackpad/group 45 (touch_menu)/touch_menu_button_0/Full_Press => KbmKey37 <- Menu 2 Item 0
-  Clean RowEmitted @ Preset_1000003/left_trackpad/group 45 (touch_menu)/touch_menu_button_1/Full_Press => KbmKey38 <- Menu 2 Item 1
-  Clean RowEmitted @ Preset_1000003/left_trackpad/group 45 (touch_menu)/touch_menu_button_2/Full_Press => KbmKey39 <- Menu 2 Item 2
-  Clean RowEmitted @ Preset_1000003/left_trackpad/group 45 (touch_menu)/touch_menu_button_3/Full_Press => KbmKey08 <- Menu 2 Item 3
-  Clean RowEmitted @ Preset_1000003/left_trackpad/group 45 (touch_menu)/touch_menu_button_4/Full_Press => KbmKey34 <- Menu 2 Item 4
-  Clean RowEmitted @ Preset_1000003/left_trackpad/group 45 (touch_menu)/touch_menu_button_5/Full_Press => KbmKey35 <- Menu 2 Item 5
-  Clean RowEmitted @ Preset_1000003/left_trackpad/group 45 (touch_menu)/touch_menu_button_6/Full_Press => KbmKey36 <- Menu 2 Item 6
-  Clean RowEmitted @ Preset_1000003/left_trackpad/group 45 (touch_menu)/touch_menu_button_7/Full_Press => KbmKey6D <- Menu 2 Item 7
-  Clean RowEmitted @ Preset_1000003/left_trackpad/group 45 (touch_menu)/touch_menu_button_8/Full_Press => KbmKey31 <- Menu 2 Item 8
-  Clean RowEmitted @ Preset_1000003/left_trackpad/group 45 (touch_menu)/touch_menu_button_9/Full_Press => KbmKey32 <- Menu 2 Item 9
-  Clean RowEmitted @ Preset_1000003/left_trackpad/group 45 (touch_menu)/touch_menu_button_10/Full_Press => KbmKey33 <- Menu 2 Item 10
-  Clean RowEmitted @ Preset_1000003/left_trackpad/group 45 (touch_menu)/touch_menu_button_11/Full_Press => KbmKey6B <- Menu 2 Item 11
-  Clean RowEmitted @ Preset_1000003/left_trackpad/group 45 (touch_menu)/touch_menu_button_12/Full_Press => KbmKey30 <- Menu 2 Item 12
-  Clean RowEmitted @ Preset_1000003/left_trackpad/group 45 (touch_menu)/touch_menu_button_13/Full_Press => KbmKeyBE <- Menu 2 Item 13
-  Clean RowEmitted @ Preset_1000003/left_trackpad/group 45 (touch_menu)/touch_menu_button_14/Full_Press => KbmKey0D <- Menu 2 Item 14
-  Partial RemoveLayerApproximated @ Preset_1000003/left_trackpad/group 45 (touch_menu)/touch_menu_button_15/release :: controller_action remove_layer 2 1 1, Back Menu, ghost_050_menu_0306.png, #23232...
-  Skipped SteamSystemAction(system_key_1) @ Preset_1000003/switch/group 34 (switches)/button_capture/release :: controller_action system_key_1, , 
-  Partial GyroButtonMaskDropped(gyro_button, 1) @ Preset_1000002/left_trackpad/group 43 (touch_menu)
-  Clean MenuEmitted(9) @ Preset_1000002/left_trackpad/group 43 (touch_menu) => Grid menu 3 on Touchpad 0: 9 bound cells
-  Partial MenuIconsDropped(5) @ Preset_1000002/left_trackpad/group 43 (touch_menu)
-  Clean RowEmitted @ Preset_1000002/left_trackpad/group 43 (touch_menu)/touch_menu_button_0/Full_Press => KbmKey52 <- Menu 3 Item 0
-  Clean RowEmitted @ Preset_1000002/left_trackpad/group 43 (touch_menu)/touch_menu_button_0/Full_Press => KbmKeyA0 <- Menu 3 Item 0
-  Partial HapticPulseEmitted(2) @ Preset_1000002/left_trackpad/group 43 (touch_menu)/touch_menu_button_0/Full_Press => Rumble pulse macro (66%)
-  Clean RowEmitted @ Preset_1000002/left_trackpad/group 43 (touch_menu)/touch_menu_button_1/Full_Press => KbmKey26 <- Menu 3 Item 1
-  Partial ActivatorDelayDropped(delay_start 50, delay_end 100) @ Preset_1000002/left_trackpad/group 43 (touch_menu)/touch_menu_button_1/Full_Press
-  Clean RowEmitted @ Preset_1000002/left_trackpad/group 43 (touch_menu)/touch_menu_button_1/Full_Press => KbmKeyA0 <- Menu 3 Item 1
-  Partial HapticPulseEmitted(2) @ Preset_1000002/left_trackpad/group 43 (touch_menu)/touch_menu_button_1/Full_Press => Rumble pulse macro (66%)
-  Partial ActivatorDelayDropped(delay_end 200) @ Preset_1000002/left_trackpad/group 43 (touch_menu)/touch_menu_button_1/Full_Press
-  Clean RowEmitted @ Preset_1000002/left_trackpad/group 43 (touch_menu)/touch_menu_button_2/Full_Press => KbmKey52 <- Menu 3 Item 2
-  Partial HapticPulseEmitted(2) @ Preset_1000002/left_trackpad/group 43 (touch_menu)/touch_menu_button_2/Full_Press => Rumble pulse macro (66%)
-  Clean RowEmitted @ Preset_1000002/left_trackpad/group 43 (touch_menu)/touch_menu_button_3/Full_Press => KbmKey25 <- Menu 3 Item 3
-  Partial ActivatorDelayDropped(delay_start 50, delay_end 100) @ Preset_1000002/left_trackpad/group 43 (touch_menu)/touch_menu_button_3/Full_Press
-  Clean RowEmitted @ Preset_1000002/left_trackpad/group 43 (touch_menu)/touch_menu_button_3/Full_Press => KbmKeyA0 <- Menu 3 Item 3
-  Partial HapticPulseEmitted(2) @ Preset_1000002/left_trackpad/group 43 (touch_menu)/touch_menu_button_3/Full_Press => Rumble pulse macro (66%)
-  Partial ActivatorDelayDropped(delay_end 200) @ Preset_1000002/left_trackpad/group 43 (touch_menu)/touch_menu_button_3/Full_Press
-  Clean RowEmitted @ Preset_1000002/left_trackpad/group 43 (touch_menu)/touch_menu_button_4/Full_Press => KbmKey73 <- Menu 3 Item 4
-  Partial HapticPulseEmitted(2) @ Preset_1000002/left_trackpad/group 43 (touch_menu)/touch_menu_button_4/Full_Press => Rumble pulse macro (66%)
-  Clean RowEmitted @ Preset_1000002/left_trackpad/group 43 (touch_menu)/touch_menu_button_5/Full_Press => KbmKey27 <- Menu 3 Item 5
-  Partial ActivatorDelayDropped(delay_start 50, delay_end 100) @ Preset_1000002/left_trackpad/group 43 (touch_menu)/touch_menu_button_5/Full_Press
-  Clean RowEmitted @ Preset_1000002/left_trackpad/group 43 (touch_menu)/touch_menu_button_5/Full_Press => KbmKeyA0 <- Menu 3 Item 5
-  Partial HapticPulseEmitted(2) @ Preset_1000002/left_trackpad/group 43 (touch_menu)/touch_menu_button_5/Full_Press => Rumble pulse macro (66%)
-  Partial ActivatorDelayDropped(delay_end 200) @ Preset_1000002/left_trackpad/group 43 (touch_menu)/touch_menu_button_5/Full_Press
-  Clean RowEmitted @ Preset_1000002/left_trackpad/group 43 (touch_menu)/touch_menu_button_6/Full_Press => KbmKey6A <- Menu 3 Item 6
-  Partial HapticPulseEmitted(2) @ Preset_1000002/left_trackpad/group 43 (touch_menu)/touch_menu_button_6/Full_Press => Rumble pulse macro (66%)
-  Clean RowEmitted @ Preset_1000002/left_trackpad/group 43 (touch_menu)/touch_menu_button_7/Full_Press => KbmKey28 <- Menu 3 Item 7
-  Partial ActivatorDelayDropped(delay_start 50, delay_end 100) @ Preset_1000002/left_trackpad/group 43 (touch_menu)/touch_menu_button_7/Full_Press
-  Clean RowEmitted @ Preset_1000002/left_trackpad/group 43 (touch_menu)/touch_menu_button_7/Full_Press => KbmKeyA0 <- Menu 3 Item 7
-  Partial HapticPulseEmitted(2) @ Preset_1000002/left_trackpad/group 43 (touch_menu)/touch_menu_button_7/Full_Press => Rumble pulse macro (66%)
-  Partial ActivatorDelayDropped(delay_end 200) @ Preset_1000002/left_trackpad/group 43 (touch_menu)/touch_menu_button_7/Full_Press
-  Partial RemoveLayerApproximated @ Preset_1000002/left_trackpad/group 43 (touch_menu)/touch_menu_button_8/release :: controller_action remove_layer 3 1 1, Back Menu, ghost_050_menu_0306.png, #23232...
-  Skipped SteamSystemAction(system_key_1) @ Preset_1000002/switch/group 40 (switches)/button_capture/release :: controller_action system_key_1, , 
-  Clean ShiftLayerEmitted(Preset_1000003) @ Default/left_trackpad/group 12 (touch_menu)/touch_menu_button_3/release => Toggle -> Layer_3353173512_1
-  Clean ShiftLayerEmitted(Preset_1000003) @ Preset_1000003/left_trackpad/group 45 (touch_menu)/touch_menu_button_15/release => Cycle -> Layer_3353173512_1|Base
-  Clean ShiftLayerEmitted(Preset_1000002) @ Default/left_trackpad/group 12 (touch_menu)/touch_menu_button_7/release => Toggle -> Layer_3353173512_2
-  Clean ShiftLayerEmitted(Preset_1000002) @ Preset_1000002/left_trackpad/group 43 (touch_menu)/touch_menu_button_8/release => Cycle -> Layer_3353173512_2|Base
+  Clean MenuEmitted(16) @ Numpad/left_trackpad/group 45 (touch_menu) => Grid menu 2 on Touchpad 0: 16 bound cells
+  Partial MenuIconsDropped(1) @ Numpad/left_trackpad/group 45 (touch_menu)
+  Clean RowEmitted @ Numpad/left_trackpad/group 45 (touch_menu)/touch_menu_button_0/Full_Press => KbmKey37 <- Menu 2 Item 0
+  Clean RowEmitted @ Numpad/left_trackpad/group 45 (touch_menu)/touch_menu_button_1/Full_Press => KbmKey38 <- Menu 2 Item 1
+  Clean RowEmitted @ Numpad/left_trackpad/group 45 (touch_menu)/touch_menu_button_2/Full_Press => KbmKey39 <- Menu 2 Item 2
+  Clean RowEmitted @ Numpad/left_trackpad/group 45 (touch_menu)/touch_menu_button_3/Full_Press => KbmKey08 <- Menu 2 Item 3
+  Clean RowEmitted @ Numpad/left_trackpad/group 45 (touch_menu)/touch_menu_button_4/Full_Press => KbmKey34 <- Menu 2 Item 4
+  Clean RowEmitted @ Numpad/left_trackpad/group 45 (touch_menu)/touch_menu_button_5/Full_Press => KbmKey35 <- Menu 2 Item 5
+  Clean RowEmitted @ Numpad/left_trackpad/group 45 (touch_menu)/touch_menu_button_6/Full_Press => KbmKey36 <- Menu 2 Item 6
+  Clean RowEmitted @ Numpad/left_trackpad/group 45 (touch_menu)/touch_menu_button_7/Full_Press => KbmKey6D <- Menu 2 Item 7
+  Clean RowEmitted @ Numpad/left_trackpad/group 45 (touch_menu)/touch_menu_button_8/Full_Press => KbmKey31 <- Menu 2 Item 8
+  Clean RowEmitted @ Numpad/left_trackpad/group 45 (touch_menu)/touch_menu_button_9/Full_Press => KbmKey32 <- Menu 2 Item 9
+  Clean RowEmitted @ Numpad/left_trackpad/group 45 (touch_menu)/touch_menu_button_10/Full_Press => KbmKey33 <- Menu 2 Item 10
+  Clean RowEmitted @ Numpad/left_trackpad/group 45 (touch_menu)/touch_menu_button_11/Full_Press => KbmKey6B <- Menu 2 Item 11
+  Clean RowEmitted @ Numpad/left_trackpad/group 45 (touch_menu)/touch_menu_button_12/Full_Press => KbmKey30 <- Menu 2 Item 12
+  Clean RowEmitted @ Numpad/left_trackpad/group 45 (touch_menu)/touch_menu_button_13/Full_Press => KbmKeyBE <- Menu 2 Item 13
+  Clean RowEmitted @ Numpad/left_trackpad/group 45 (touch_menu)/touch_menu_button_14/Full_Press => KbmKey0D <- Menu 2 Item 14
+  Partial RemoveLayerApproximated @ Numpad/left_trackpad/group 45 (touch_menu)/touch_menu_button_15/release :: controller_action remove_layer 2 1 1, Back Menu, ghost_050_menu_0306.png, #23232...
+  Skipped SteamSystemAction(system_key_1) @ Numpad/switch/group 34 (switches)/button_capture/release :: controller_action system_key_1, , 
+  Partial GyroButtonMaskDropped(gyro_button, 1) @ Picker Dollies/left_trackpad/group 43 (touch_menu)
+  Clean MenuEmitted(9) @ Picker Dollies/left_trackpad/group 43 (touch_menu) => Grid menu 3 on Touchpad 0: 9 bound cells
+  Partial MenuIconsDropped(5) @ Picker Dollies/left_trackpad/group 43 (touch_menu)
+  Clean RowEmitted @ Picker Dollies/left_trackpad/group 43 (touch_menu)/touch_menu_button_0/Full_Press => KbmKey52 <- Menu 3 Item 0
+  Clean RowEmitted @ Picker Dollies/left_trackpad/group 43 (touch_menu)/touch_menu_button_0/Full_Press => KbmKeyA0 <- Menu 3 Item 0
+  Clean RowEmitted @ Picker Dollies/left_trackpad/group 43 (touch_menu)/touch_menu_button_1/Full_Press => KbmKey26 <- Menu 3 Item 1
+  Partial ActivatorDelayDropped(delay_start 50, delay_end 100) @ Picker Dollies/left_trackpad/group 43 (touch_menu)/touch_menu_button_1/Full_Press
+  Clean RowEmitted @ Picker Dollies/left_trackpad/group 43 (touch_menu)/touch_menu_button_1/Full_Press => KbmKeyA0 <- Menu 3 Item 1
+  Partial ActivatorDelayDropped(delay_end 200) @ Picker Dollies/left_trackpad/group 43 (touch_menu)/touch_menu_button_1/Full_Press
+  Clean RowEmitted @ Picker Dollies/left_trackpad/group 43 (touch_menu)/touch_menu_button_2/Full_Press => KbmKey52 <- Menu 3 Item 2
+  Clean RowEmitted @ Picker Dollies/left_trackpad/group 43 (touch_menu)/touch_menu_button_3/Full_Press => KbmKey25 <- Menu 3 Item 3
+  Partial ActivatorDelayDropped(delay_start 50, delay_end 100) @ Picker Dollies/left_trackpad/group 43 (touch_menu)/touch_menu_button_3/Full_Press
+  Clean RowEmitted @ Picker Dollies/left_trackpad/group 43 (touch_menu)/touch_menu_button_3/Full_Press => KbmKeyA0 <- Menu 3 Item 3
+  Partial ActivatorDelayDropped(delay_end 200) @ Picker Dollies/left_trackpad/group 43 (touch_menu)/touch_menu_button_3/Full_Press
+  Clean RowEmitted @ Picker Dollies/left_trackpad/group 43 (touch_menu)/touch_menu_button_4/Full_Press => KbmKey73 <- Menu 3 Item 4
+  Clean RowEmitted @ Picker Dollies/left_trackpad/group 43 (touch_menu)/touch_menu_button_5/Full_Press => KbmKey27 <- Menu 3 Item 5
+  Partial ActivatorDelayDropped(delay_start 50, delay_end 100) @ Picker Dollies/left_trackpad/group 43 (touch_menu)/touch_menu_button_5/Full_Press
+  Clean RowEmitted @ Picker Dollies/left_trackpad/group 43 (touch_menu)/touch_menu_button_5/Full_Press => KbmKeyA0 <- Menu 3 Item 5
+  Partial ActivatorDelayDropped(delay_end 200) @ Picker Dollies/left_trackpad/group 43 (touch_menu)/touch_menu_button_5/Full_Press
+  Clean RowEmitted @ Picker Dollies/left_trackpad/group 43 (touch_menu)/touch_menu_button_6/Full_Press => KbmKey6A <- Menu 3 Item 6
+  Clean RowEmitted @ Picker Dollies/left_trackpad/group 43 (touch_menu)/touch_menu_button_7/Full_Press => KbmKey28 <- Menu 3 Item 7
+  Partial ActivatorDelayDropped(delay_start 50, delay_end 100) @ Picker Dollies/left_trackpad/group 43 (touch_menu)/touch_menu_button_7/Full_Press
+  Clean RowEmitted @ Picker Dollies/left_trackpad/group 43 (touch_menu)/touch_menu_button_7/Full_Press => KbmKeyA0 <- Menu 3 Item 7
+  Partial ActivatorDelayDropped(delay_end 200) @ Picker Dollies/left_trackpad/group 43 (touch_menu)/touch_menu_button_7/Full_Press
+  Partial RemoveLayerApproximated @ Picker Dollies/left_trackpad/group 43 (touch_menu)/touch_menu_button_8/release :: controller_action remove_layer 3 1 1, Back Menu, ghost_050_menu_0306.png, #23232...
+  Skipped SteamSystemAction(system_key_1) @ Picker Dollies/switch/group 40 (switches)/button_capture/release :: controller_action system_key_1, , 
+  Clean ShiftLayerEmitted(Numpad) @ Default/left_trackpad/group 12 (touch_menu)/touch_menu_button_3/release => Toggle -> Layer_3353173512_1
+  Clean ShiftLayerEmitted(Numpad) @ Numpad/left_trackpad/group 45 (touch_menu)/touch_menu_button_15/release => Cycle -> Layer_3353173512_1|Base
+  Clean ShiftLayerEmitted(Picker Dollies) @ Default/left_trackpad/group 12 (touch_menu)/touch_menu_button_7/release => Toggle -> Layer_3353173512_2
+  Clean ShiftLayerEmitted(Picker Dollies) @ Picker Dollies/left_trackpad/group 43 (touch_menu)/touch_menu_button_8/release => Cycle -> Layer_3353173512_2|Base
   Partial HapticIntensityDropped(1) @ config

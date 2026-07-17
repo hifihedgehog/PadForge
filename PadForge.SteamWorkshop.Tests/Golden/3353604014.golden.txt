@@ -47,33 +47,49 @@ xbox rows: 20
     <- Gamepad RightTrigger
     <- Gamepad RightTrigger [upper-half] dz=75
 kbm rows: 0
-macros: 10
+macros: 18
   macro SetLightbarColor OnPress | Set LED (button_a) | btns=0x1000 rgb=(255,0,0) bright=43% sat=100% setting=1
+  macro RumblePulse OnPress | Haptic pulse (button_a) | btns=0x0000 in=[Gamepad ButtonA] strength=33%
   macro SetLightbarColor OnPress | Set LED (button_b) | btns=0x2000 rgb=(255,0,0) bright=67% sat=100% setting=1
   macro SetLightbarColor OnPress | Set LED (button_x) | btns=0x4000 rgb=(255,0,0) bright=100% sat=100% setting=1
+  macro RumblePulse OnPress | Haptic pulse (button_x) | btns=0x0000 in=[Gamepad ButtonX] strength=100%
   macro SetLightbarColor OnPress | Set LED (button_y) | btns=0x8000 rgb=(217,255,0) bright=100% sat=100% setting=1
   macro SetLightbarColor OnPress | Set LED (click) | btns=0x0040 rgb=(255,0,0) bright=51% sat=100% setting=1
+  macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Gamepad LeftTrigger] strength=66%
   macro SetLightbarColor OnPress | Set LED (click) | btns=0x0000 axis=LeftTrigger@75% rgb=(13,255,0) bright=100% sat=100% setting=1
+  macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Gamepad LeftTrigger] strength=66%
   macro SetLightbarColor OnPress | Set LED (click) | btns=0x0080 rgb=(255,0,0) bright=51% sat=100% setting=1
+  macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Gamepad RightTrigger] strength=66%
   macro SetLightbarColor OnPress | Set LED (click) | btns=0x0000 axis=RightTrigger@75% rgb=(255,0,0) bright=79% sat=100% setting=1
+  macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Gamepad RightTrigger] strength=66%
   macro SetLightbarColor OnPress | Set LED (left_bumper) | btns=0x0100 rgb=(255,0,0) bright=43% sat=100% setting=1
+  macro RumblePulse OnPress | Haptic pulse (left_bumper) | btns=0x0000 in=[Gamepad LeftShoulder] strength=33%
   macro SetLightbarColor OnPress | Set LED (right_bumper) | btns=0x0200 rgb=(255,0,0) bright=43% sat=100% setting=1
-report: v9 rows:x20+k0 macros:10 menus:0 layers:0 clean:22 partial:17 skipped:1 errors:0
+  macro RumblePulse OnPress | Haptic pulse (right_bumper) | btns=0x0000 in=[Gamepad RightShoulder] strength=33%
+report: v10 rows:x20+k0 macros:18 menus:0 layers:0 clean:22 partial:25 skipped:0 errors:0
   Partial MacroTriggerViaXboxOutput @ Preset_1000001/button_diamond/group 14 (four_buttons)/button_a/Full_Press => Set LED macro
+  Partial HapticPulseEmitted(1) @ Preset_1000001/button_diamond/group 14 (four_buttons)/button_a/Full_Press => Rumble pulse macro (33%)
   Partial MacroTriggerViaXboxOutput @ Preset_1000001/button_diamond/group 14 (four_buttons)/button_b/Full_Press => Set LED macro
   Partial MacroTriggerViaXboxOutput @ Preset_1000001/button_diamond/group 14 (four_buttons)/button_x/Full_Press => Set LED macro
+  Partial HapticPulseEmitted(3) @ Preset_1000001/button_diamond/group 14 (four_buttons)/button_x/Full_Press => Rumble pulse macro (100%)
   Partial MacroTriggerViaXboxOutput @ Preset_1000001/button_diamond/group 14 (four_buttons)/button_y/Full_Press => Set LED macro
   Partial MacroTriggerViaXboxOutput @ Preset_1000001/joystick/group 30 (joystick_move)/click/Full_Press => Set LED macro
   Partial TrackpadFeatureRequired(Touchpad touch spots) @ Preset_1000001/left_trackpad/group 27 (single_button)/click/Full_Press => ButtonBack <- Touchpad 0 Click
   Partial ResponseCurveNotSupported(curve_exponent) @ Preset_1000001/left_trigger/group 15 (trigger)
+  Partial HapticPulseEmitted(2) @ Preset_1000001/left_trigger/group 15 (trigger)/click/Full_Press => Rumble pulse macro (66%)
   Partial MacroTriggerViaXboxOutput @ Preset_1000001/left_trigger/group 15 (trigger)/click/Full_Press => Set LED macro
+  Partial HapticPulseEmitted(2) @ Preset_1000001/left_trigger/group 15 (trigger)/click/Full_Press => Rumble pulse macro (66%)
   Partial MacroTriggerViaXboxOutput @ Preset_1000001/right_joystick/group 31 (joystick_move)/click/Full_Press => Set LED macro
   Partial TrackpadFeatureRequired(Touchpad touch spots) @ Preset_1000001/right_trackpad/group 28 (single_button)/click/Full_Press => ButtonStart <- Touchpad 0 Click
   Partial ResponseCurveNotSupported(curve_exponent) @ Preset_1000001/right_trigger/group 16 (trigger)
+  Partial HapticPulseEmitted(2) @ Preset_1000001/right_trigger/group 16 (trigger)/click/Full_Press => Rumble pulse macro (66%)
   Partial MacroTriggerViaXboxOutput @ Preset_1000001/right_trigger/group 16 (trigger)/click/Full_Press => Set LED macro
-  Skipped UnknownPhysicalInput(Switch, button_capture) @ Preset_1000001/switch/group 17 (switches)/button_capture :: controller_action CHANGE_PRESET 32766 1 1, , 
+  Partial HapticPulseEmitted(2) @ Preset_1000001/right_trigger/group 16 (trigger)/click/Full_Press => Rumble pulse macro (66%)
+  Partial MissingPreset(32766) @ Preset_1000001/switch/group 17 (switches)/button_capture/Full_Press :: controller_action CHANGE_PRESET 32766 1 1, , 
   Partial MacroTriggerViaXboxOutput @ Preset_1000001/switch/group 17 (switches)/left_bumper/Full_Press => Set LED macro
+  Partial HapticPulseEmitted(1) @ Preset_1000001/switch/group 17 (switches)/left_bumper/Full_Press => Rumble pulse macro (33%)
   Partial MacroTriggerViaXboxOutput @ Preset_1000001/switch/group 17 (switches)/right_bumper/Full_Press => Set LED macro
+  Partial HapticPulseEmitted(1) @ Preset_1000001/switch/group 17 (switches)/right_bumper/Full_Press => Rumble pulse macro (33%)
   Clean RowEmitted @ Preset_1000001/joystick/group 30 (joystick_move) => LeftThumbAxisX <- Gamepad LeftStickX
   Clean RowEmitted @ Preset_1000001/joystick/group 30 (joystick_move) => LeftThumbAxisY <- Gamepad LeftStickY
   Clean RowEmitted @ Preset_1000001/left_trigger/group 15 (trigger) => LeftTrigger <- Gamepad LeftTrigger
@@ -98,4 +114,3 @@ report: v9 rows:x20+k0 macros:10 menus:0 layers:0 clean:22 partial:17 skipped:1 
   Clean RowEmitted @ Preset_1000001/switch/group 17 (switches)/right_bumper/Full_Press => RightShoulder <- Gamepad RightShoulder
   Partial ClickGateDropped @ Preset_1000001/left_trackpad/group 27 (single_button)/click/Full_Press
   Partial ClickGateDropped @ Preset_1000001/right_trackpad/group 28 (single_button)/click/Full_Press
-  Partial HapticIntensityDropped(8) @ config

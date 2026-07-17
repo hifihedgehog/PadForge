@@ -85,7 +85,24 @@ namespace PadForge.SteamWorkshop.Tests
                           .Append(m.RegionYPercent).Append("%,scale ")
                           .Append(m.RegionScalePercent).Append("%)");
                         break;
+                    case TranslatedMacroAction.RumblePulse:
+                        sb.Append(" strength=").Append(m.RumbleStrengthPercent).Append('%');
+                        break;
+                    case TranslatedMacroAction.MouseButtonTap:
+                    case TranslatedMacroAction.HoldMouseButton:
+                        sb.Append(" mbtn=").Append(m.MouseButtonIndex);
+                        break;
+                    case TranslatedMacroAction.VcButtonTap:
+                        sb.Append(" target=0x").Append(m.TargetXboxButtons.ToString("X4", CultureInfo.InvariantCulture));
+                        break;
+                    case TranslatedMacroAction.HoldKey:
+                        sb.Append(" vk=0x").Append(m.VirtualKey.ToString("X2", CultureInfo.InvariantCulture));
+                        break;
                 }
+                // Activator fire delays (v10 G5): non-default only, so
+                // pre-v10 goldens stay byte-identical on this seam.
+                if (m.DelayStartMs > 0) sb.Append(" delayStart=").Append(m.DelayStartMs).Append("ms");
+                if (m.DelayEndMs > 0) sb.Append(" delayEnd=").Append(m.DelayEndMs).Append("ms");
                 sb.Append('\n');
             }
 

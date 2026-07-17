@@ -193,6 +193,8 @@ namespace PadForge.SteamWorkshop.Translation
         /// <summary>Feature-name reason args for gesture-gated sources.</summary>
         public const string FeatureJoystickOutput = "Touchpad joystick output";
         public const string FeatureTouchSpots = "Touchpad touch spots";
+        public const string FeatureSwipes = "Touchpad swipe gestures";
+        public const string FeatureTaps = "Touchpad tap gestures";
 
         /// <summary>True for the Switch family, whose configs serialize the
         /// button diamond by NINTENDO LABEL (button_a = the A-labeled cap,
@@ -293,7 +295,15 @@ namespace PadForge.SteamWorkshop.Translation
                         // Same shape as the trigger slot's "click" member.
                         "left_trigger" => TriggerClick(left: true),
                         "right_trigger" => TriggerClick(left: false),
-                        _ => null, // button_capture and friends: no family member
+                        // Share / Capture button (Steam Deck, Xbox Series,
+                        // DualSense mic): SDL posts it as MISC1, which the
+                        // wrapper fills into Buttons[11]
+                        // (SdlDeviceWrapper.GetGamepadState). Raw descriptor
+                        // on purpose: index 11 has no Gamepad alias, no
+                        // automap target, and no Xbox output bit, the same
+                        // paddle shape as button_back_*.
+                        "button_capture" => new ResolvedSource { Descriptor = "Button 11" },
+                        _ => null, // touchpads-as-switch and friends: no family member
                     };
 
                 case SteamSlot.Dpad:

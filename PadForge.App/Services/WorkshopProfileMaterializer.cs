@@ -135,6 +135,15 @@ namespace PadForge.Services
                     list.AddRange(BuildRegionClampPair(m, xboxSlot));
                     continue;
                 }
+                if (m?.Action == TranslatedMacroAction.HoldKey
+                    || m?.Action == TranslatedMacroAction.HoldMouseButton)
+                {
+                    // Held key / mouse button (v10 G10/G11): a press leg
+                    // that keeps the key down until the trigger releases,
+                    // plus an OnRelease twin that sends the up.
+                    list.AddRange(BuildHoldPair(m, xboxSlot));
+                    continue;
+                }
                 var data = BuildMacro(m, xboxSlot, controllerType);
                 if (data != null) list.Add(data);
             }
@@ -185,6 +194,38 @@ namespace PadForge.Services
                 TranslatedMacroAction.GyroRecenter => new ActionData
                 {
                     Type = MacroActionType.GyroRecenter,
+                },
+                // RumblePulse (v10 G1): one reactive rumble hit, both motors
+                // at the level-scaled strength. Hold/fade ride the ActionData
+                // defaults (100 ms hold + 200 ms fade), the macro Rumble
+                // action's one-shot pulse shape.
+                TranslatedMacroAction.RumblePulse => new ActionData
+                {
+                    Type = MacroActionType.Rumble,
+                    RumbleHoldMode = ViewModels.MacroRumbleHoldMode.Reactive,
+                    RumbleStrengthLeft = Math.Clamp(m.RumbleStrengthPercent, 1, 100),
+                    RumbleStrengthRight = Math.Clamp(m.RumbleStrengthPercent, 1, 100),
+                },
+                // MouseButtonTap (v10 G6): MouseButtonPress is down +
+                // DurationMs + up, one click.
+                TranslatedMacroAction.MouseButtonTap => new ActionData
+                {
+                    Type = MacroActionType.MouseButtonPress,
+                    MouseButton = (ViewModels.MacroMouseButton)Math.Clamp(m.MouseButtonIndex, 0, 4),
+                },
+                // VcButtonTap (v10 G6): ButtonPress ORs the target for
+                // DurationMs, one tap.
+                TranslatedMacroAction.VcButtonTap => new ActionData
+                {
+                    Type = MacroActionType.ButtonPress,
+                    ButtonFlags = m.TargetXboxButtons,
+                },
+                // SHOW_KEYBOARD (v10 G7): launch the Windows touch keyboard,
+                // falling back to the classic osk.exe when TabTip is absent.
+                TranslatedMacroAction.ShowOnScreenKeyboard => new ActionData
+                {
+                    Type = MacroActionType.RunProgram,
+                    ProgramPath = ResolveOnScreenKeyboardPath(),
                 },
                 // HoldVcButton: ButtonPress ORs its flags into the combined
                 // output every frame while it is the current action, and the
@@ -242,7 +283,112 @@ namespace PadForge.Services
                 data.RepeatDelayMs = 0;
             }
 
+            // Activator fire delays (v10 G5): a Delay step before the
+            // action. OnRelease-triggered macros are the release leg and
+            // take delay_end; everything else takes delay_start. The
+            // translator stamps these on one-shot shapes only.
+            int preDelayMs = mode == MacroTriggerMode.OnRelease ? m.DelayEndMs : m.DelayStartMs;
+            if (preDelayMs > 0)
+            {
+                data.Actions = new[]
+                {
+                    new ActionData { Type = MacroActionType.Delay, DurationMs = preDelayMs },
+                    action,
+                };
+            }
+
             return data;
+        }
+
+        /// <summary>How long the hold-pair press leg keeps its key / mouse
+        /// button down before the executor's built-in up fires (v10
+        /// G10/G11). Release normally stops the leg first (UntilRelease)
+        /// and the OnRelease twin sends the up; this is the ceiling for a
+        /// hold nobody releases.</summary>
+        private const int HoldLegDurationMs = 600000;
+
+        /// <summary>Lowers a translated HoldKey / HoldMouseButton to the
+        /// engine pair (v10 G10/G11): the press leg fires on the
+        /// translated trigger (OnPress or HoldForMs) and holds the key /
+        /// button down via a long-duration press action riding
+        /// RepeatMode=UntilRelease, so the trigger's release stops the leg
+        /// with the key still logically down; the OnRelease twin then
+        /// sends the up. Releasing an unpressed key or button is a
+        /// SendInput no-op, so short taps (below a Long_Press threshold)
+        /// stay harmless. Activator fire delays ride the pair naturally:
+        /// delay_start before the press leg, delay_end before the release
+        /// leg (Steam's shifted-window semantics).</summary>
+        private static MacroData[] BuildHoldPair(TranslatedMacro m, int xboxSlot)
+        {
+            bool key = m.Action == TranslatedMacroAction.HoldKey;
+            if (!Enum.TryParse(m.TriggerMode, out MacroTriggerMode pressMode))
+                pressMode = MacroTriggerMode.OnPress;
+            var mouseButton = (ViewModels.MacroMouseButton)Math.Clamp(m.MouseButtonIndex, 0, 4);
+
+            MacroData Build(MacroTriggerMode mode, ActionData action, int preDelayMs,
+                string suffix, bool untilRelease)
+            {
+                var data = new MacroData
+                {
+                    PadIndex = xboxSlot,
+                    Name = $"{(string.IsNullOrWhiteSpace(m.Name) ? "Workshop Macro" : m.Name)} {suffix}",
+                    IsEnabled = true,
+                    TriggerSource = MacroTriggerSource.OutputController,
+                    TriggerMode = mode,
+                    TriggerButtons = m.TriggerXboxButtons,
+                    // Never consume: both legs read the same trigger, and a
+                    // consumed bit would release the twin early.
+                    ConsumeTriggerButtons = false,
+                    TriggerAxisTargets = string.IsNullOrEmpty(m.TriggerAxisTarget) ? null : m.TriggerAxisTarget,
+                    TriggerAxisThreshold = Math.Clamp(m.TriggerAxisThresholdPercent, 1, 100),
+                    Actions = preDelayMs > 0
+                        ? new[]
+                        {
+                            new ActionData { Type = MacroActionType.Delay, DurationMs = preDelayMs },
+                            action,
+                        }
+                        : new[] { action },
+                };
+                if (mode == MacroTriggerMode.HoldForMs)
+                    data.TriggerHoldMs = Math.Clamp(m.TriggerHoldMs, 50, 10000); // MacroItem clamp range
+                if (untilRelease)
+                    data.RepeatMode = MacroRepeatMode.UntilRelease;
+                return ApplyDeviceFreeTrigger(data, m) ? data : null;
+            }
+
+            var press = Build(pressMode,
+                key
+                    ? new ActionData
+                    {
+                        Type = MacroActionType.KeyPress,
+                        KeyCode = m.VirtualKey,
+                        DurationMs = HoldLegDurationMs,
+                    }
+                    : new ActionData
+                    {
+                        Type = MacroActionType.MouseButtonPress,
+                        MouseButton = mouseButton,
+                        DurationMs = HoldLegDurationMs,
+                    },
+                m.DelayStartMs, "(hold)", untilRelease: true);
+            var release = Build(MacroTriggerMode.OnRelease,
+                key
+                    ? new ActionData { Type = MacroActionType.KeyRelease, KeyCode = m.VirtualKey }
+                    : new ActionData { Type = MacroActionType.MouseButtonRelease, MouseButton = mouseButton },
+                m.DelayEndMs, "(release)", untilRelease: false);
+            if (press == null || release == null) return Array.Empty<MacroData>();
+            return new[] { press, release };
+        }
+
+        /// <summary>The Windows touch keyboard when present, else the
+        /// classic on-screen keyboard (v10 G7). Resolved at import time so
+        /// the RunProgram action carries a concrete path.</summary>
+        private static string ResolveOnScreenKeyboardPath()
+        {
+            string tabTip = System.IO.Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.CommonProgramFiles),
+                "microsoft shared", "ink", "TabTip.exe");
+            return System.IO.File.Exists(tabTip) ? tabTip : "osk.exe";
         }
 
         /// <summary>Lowers a translated mouse_region clamp to the engine's

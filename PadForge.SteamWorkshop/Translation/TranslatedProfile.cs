@@ -142,6 +142,47 @@ namespace PadForge.SteamWorkshop.Translation
         /// MouseLimitRegion clamp toggles because the engine clamp is a
         /// toggle primitive (#110).</summary>
         MouseLimitRegion = 9,
+
+        /// <summary>One reactive rumble pulse when the hosting activator
+        /// fires (an activator-level <c>haptic_intensity</c>, v10 G1).
+        /// Steam plays a haptic tick through the pad actuator; PadForge's
+        /// nearest primitive is the macro rumble override's Reactive
+        /// one-shot (MacroActionType.Rumble), strength scaled by the
+        /// stored level via <see cref="TranslatedMacro.RumbleStrengthPercent"/>.</summary>
+        RumblePulse = 10,
+
+        /// <summary>One mouse-button click when the trigger fires (a
+        /// <c>release</c> activator on a mouse_button binding, v10 G6).
+        /// Lowers to MacroActionType.MouseButtonPress, whose executor is
+        /// down + DurationMs + up: one click.</summary>
+        MouseButtonTap = 11,
+
+        /// <summary>One virtual-controller button tap when the trigger
+        /// fires (a <c>release</c> activator on an xinput binding, v10 G6).
+        /// Lowers to MacroActionType.ButtonPress for one DurationMs.</summary>
+        VcButtonTap = 12,
+
+        /// <summary>Hold a keyboard key down from the trigger fire until
+        /// the physical input releases (v10 G10/G11: Long_Press keys at
+        /// full fidelity, and any-VK keys outside the KbM row engine's
+        /// closed set). The materializer lowers it to a PAIR: a KeyPress
+        /// with a long duration riding RepeatMode=UntilRelease (release
+        /// stops the macro with the key still down), plus an OnRelease
+        /// KeyRelease twin that sends the key-up. Releasing an unpressed
+        /// key is a SendInput no-op, so short taps are harmless.</summary>
+        HoldKey = 13,
+
+        /// <summary>Hold a mouse button down from the trigger fire until
+        /// the physical input releases (a Long_Press mouse_button binding,
+        /// v10 G10). Same pair lowering as <see cref="HoldKey"/> with
+        /// MouseButtonPress / MouseButtonRelease.</summary>
+        HoldMouseButton = 14,
+
+        /// <summary>Launch the Windows on-screen keyboard
+        /// (<c>controller_action SHOW_KEYBOARD</c>, v10 G7). Lowers to a
+        /// RunProgram action; the materializer resolves TabTip.exe and
+        /// falls back to osk.exe.</summary>
+        ShowOnScreenKeyboard = 15,
     }
 
     /// <summary>
@@ -270,5 +311,34 @@ namespace PadForge.SteamWorkshop.Translation
         /// <summary>set_led mode argument: 1 = set the user color,
         /// 0 = restore, 2 = restore-to-default (approximated as restore).</summary>
         public int LedSetting { get; set; } = 1;
+
+        // ── v10 payloads ──
+
+        /// <summary>Mouse button index for <see cref="TranslatedMacroAction.MouseButtonTap"/>
+        /// and <see cref="TranslatedMacroAction.HoldMouseButton"/>:
+        /// 0=Left 1=Right 2=Middle 3=X1 4=X2 (the MacroMouseButton order,
+        /// same index the KbmMBtn{n} targets use).</summary>
+        public int MouseButtonIndex { get; set; }
+
+        /// <summary>Rumble strength percent for
+        /// <see cref="TranslatedMacroAction.RumblePulse"/>, both motors.
+        /// Steam stores haptic_intensity 1..3 (Low/Medium/High); the
+        /// translator maps 1=33, 2=66, 3=100.</summary>
+        public int RumbleStrengthPercent { get; set; } = 100;
+
+        /// <summary>Activator delay_start in ms (v10 G5): a Delay step the
+        /// materializer prepends before the PRESS-leg action. Steam's
+        /// shipped strings: "The activator will wait for this period of
+        /// time after the button has been pressed before activating."
+        /// 0 = none. Rides one-shot macro shapes only; continuous shapes
+        /// (autofire, VC holds, region clamps) keep the dropped note.</summary>
+        public int DelayStartMs { get; set; }
+
+        /// <summary>Activator delay_end in ms (v10 G5): a Delay step before
+        /// the RELEASE-leg action ("wait ... after the button has been
+        /// released before deactivating"). On single OnRelease-triggered
+        /// macros the whole action IS the release leg; on the Hold* pairs
+        /// it lands on the release twin.</summary>
+        public int DelayEndMs { get; set; }
     }
 }

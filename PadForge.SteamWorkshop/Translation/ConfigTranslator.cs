@@ -113,10 +113,12 @@ namespace PadForge.SteamWorkshop.Translation
             public bool XboxRowCapHit;
             public bool KbmRowCapHit;
 
-            /// <summary>Count of haptic_intensity / haptic_intensity_override
-            /// occurrences (value != 0) on translated activators and groups.
-            /// Reported once per config in Finalize; per-binding entries
-            /// would drown the report (49 in one corpus fixture).</summary>
+            /// <summary>Count of GROUP-level haptic_intensity /
+            /// haptic_intensity_override occurrences (value != 0), which
+            /// still have no channel (a group haptic ticks continuously
+            /// with the surface, not on an activator fire). Reported once
+            /// per config in Finalize. Activator-level haptics became
+            /// RumblePulse macros in v10 (G1) and no longer feed this.</summary>
             public int HapticDropCount;
 
             /// <summary>Switch-family config: diamond members are named by
@@ -425,12 +427,28 @@ namespace PadForge.SteamWorkshop.Translation
                     break;
 
                 case "scrollwheel":
-                    run.Report.Add(TranslationStatus.Skipped, TranslationReasons.ScrollWheelModeNotSupported, path);
-                    TranslateMemberGroup(run, preset, effective, slot, layer, path, settings,
-                        onlyInputs: new[] { "click" });
+                    // Trackpad hosts lower to a vertical finger drag (v10
+                    // G4): the wheel-shaped scroll_clockwise /
+                    // scroll_counterclockwise bindings feed KbmScroll from
+                    // the finger delta, sign per direction. Non-trackpad
+                    // hosts have no drag surface and keep the named skip.
+                    if (PhysicalSlotResolver.IsTrackpad(slot))
+                    {
+                        TranslateScrollWheel(run, preset, effective, slot, layer, path, settings);
+                    }
+                    else
+                    {
+                        run.Report.Add(TranslationStatus.Skipped, TranslationReasons.ScrollWheelModeNotSupported, path);
+                        TranslateMemberGroup(run, preset, effective, slot, layer, path, settings,
+                            onlyInputs: new[] { "click" });
+                    }
                     break;
 
                 case "touch_menu":
+                // hotbar serializes exactly like touch_menu
+                // (touch_menu_button_{n} cells; corpus 2494749393), so it
+                // lowers through the same grid-menu path (v10 G15).
+                case "hotbar":
                     TranslateMenuGroup(run, preset, effective, slot, layer, path, settings,
                         radial: false);
                     break;
@@ -447,12 +465,20 @@ namespace PadForge.SteamWorkshop.Translation
                     break;
 
                 case "2dscroll":
-                    // Directional swipe. PadForge has no swipe-step gesture
-                    // channel; named skip instead of the generic
-                    // unknown-mode line (most-seen named gap in the corpus
-                    // discovery run).
-                    run.Report.Add(TranslationStatus.Skipped,
-                        TranslationReasons.ScrollGestureModeNotSupported, path);
+                    // Directional swipe. Trackpad hosts lower onto the
+                    // gesture engine's one-shot swipe fires (v10 G3):
+                    // each dpad_* member reads "Touchpad {p} Swipe{Dir}"
+                    // and needs the Touchpad-tab swipe toggle. Hosts
+                    // without a swipe surface keep the named skip.
+                    if (PhysicalSlotResolver.IsTrackpad(slot))
+                    {
+                        TranslateSwipeGroup(run, preset, effective, slot, layer, path, settings);
+                    }
+                    else
+                    {
+                        run.Report.Add(TranslationStatus.Skipped,
+                            TranslationReasons.ScrollGestureModeNotSupported, path);
+                    }
                     break;
 
                 case "disabled":
@@ -482,6 +508,7 @@ namespace PadForge.SteamWorkshop.Translation
             "joystick_move", "joystick_mouse", "mouse_joystick", "joystick_camera",
             "absolute_mouse", "relative_mouse", "scrollwheel", "touch_menu",
             "radial_menu", "mouse_region", "gyro_to_mouse", "flickstick",
+            "2dscroll", "hotbar",
         };
 
         /// <summary>Response-shaping group settings PadForge has no per-row
@@ -760,6 +787,130 @@ namespace PadForge.SteamWorkshop.Translation
             // trackpad D-pad default); explicit "0" = act on touch.
             return !settings.TryGetValue("requires_click", out var v)
                 || !string.Equals(v?.Trim(), "0", StringComparison.Ordinal);
+        }
+
+        /// <summary>scrollwheel on a trackpad (v10 G4): Steam spins a
+        /// virtual wheel from circular finger motion and fires
+        /// scroll_clockwise / scroll_counterclockwise per detent. PadForge
+        /// has no circular-motion read; the nearest live channel is the
+        /// finger's vertical drag delta ("Touchpad {p} Finger 0 Y", the
+        /// same read the mouse modes use, no feature toggle), so
+        /// wheel-shaped bindings become KbmScroll rows fed by the drag:
+        /// clockwise = drag down (+Y in SDL's convention, the physical
+        /// wheel gesture), counterclockwise = the inverted read. Bindings
+        /// that are not mouse_wheel (keys on a wheel detent) have no
+        /// continuous channel and keep the named skip. One geometry
+        /// Partial per group names the circular-vs-linear approximation.
+        /// The click member translates as a normal member either way.</summary>
+        private void TranslateScrollWheel(Run run, SteamInputPreset preset, SteamInputGroup group,
+            SteamSlot slot, string layer, string path, Dictionary<string, string> settings)
+        {
+            int p = PhysicalSlotResolver.TrackpadIndex(slot, run.SinglePadTrackpads);
+            string sfx = PhysicalSlotResolver.HalfSuffix(
+                PhysicalSlotResolver.HalfFor(slot, run.SinglePadTrackpads));
+            bool emitted = false;
+            // (target, net invert) pairs already emitted. The default
+            // wheel is symmetric (clockwise scrolls down AND
+            // counterclockwise scrolls up name the same drag-to-wheel
+            // map), and both sources summing on one row would double the
+            // scroll rate, so the twin folds into the first emission.
+            var seen = new HashSet<string>(StringComparer.Ordinal);
+
+            foreach (var memberName in new[] { "scroll_clockwise", "scroll_counterclockwise" })
+            {
+                if (!group.Inputs.TryGetValue(memberName, out var input)
+                    || input.Activators.Count == 0)
+                {
+                    continue;
+                }
+                bool memberFlip = memberName == "scroll_counterclockwise";
+                var source = new ResolvedSource
+                {
+                    Descriptor = $"Touchpad {p} Finger 0 Y{sfx}",
+                    Invert = memberFlip,
+                };
+                string inputPath = $"{path}/{memberName}";
+                foreach (var activator in input.Activators)
+                {
+                    string actPath = $"{inputPath}/{(activator.Type ?? "").Trim()}";
+                    foreach (var binding in activator.Bindings)
+                    {
+                        // Only the wheel-shaped bindings can ride a
+                        // continuous drag axis: the finger X/Y reads have
+                        // no bool coercion, so a key or button row fed by
+                        // them would never fire.
+                        var wheel = string.Equals((binding.Type ?? "").Trim(), "mouse_wheel",
+                            StringComparison.OrdinalIgnoreCase)
+                                ? ParseWheelParam(binding.Param) : null;
+                        if (wheel == null)
+                        {
+                            ReportSkipUnlessSilent(run,
+                                TranslationReasons.ScrollWheelModeNotSupported, actPath, binding);
+                            continue;
+                        }
+                        if (!seen.Add($"{wheel.Value.Target}|{wheel.Value.Invert ^ memberFlip}"))
+                        {
+                            emitted = true; // represented by the twin's source
+                            continue;
+                        }
+                        TranslateBinding(run, preset, binding, source, clickGate: null,
+                            layer, actPath, soft: false, onRelease: false,
+                            holdRepeats: false, intervalMs: 100, toggle: false,
+                            input.Name);
+                        emitted = true;
+                    }
+                }
+            }
+
+            if (emitted)
+            {
+                run.Report.Add(TranslationStatus.Partial,
+                    TranslationReasons.ScrollWheelApproximated, path);
+            }
+
+            TranslateMemberGroup(run, preset, group, slot, layer, path, settings,
+                onlyInputs: new[] { "click" });
+        }
+
+        /// <summary>2dscroll on a trackpad (v10 G3): Steam's directional
+        /// swipe fires a dpad_* member per swipe step. The gesture
+        /// engine's one-shot swipe fires ("Touchpad {p} SwipeUp/Down/
+        /// Left/Right", GestureRecognizer end-of-gesture classification)
+        /// are the same construct read on finger lift, gated behind the
+        /// Touchpad-tab swipe toggle, so each member's bindings translate
+        /// against the matching swipe descriptor through the normal walk.</summary>
+        private void TranslateSwipeGroup(Run run, SteamInputPreset preset, SteamInputGroup group,
+            SteamSlot slot, string layer, string path, Dictionary<string, string> settings)
+        {
+            int p = PhysicalSlotResolver.TrackpadIndex(slot, run.SinglePadTrackpads);
+            foreach (var inputName in group.Inputs.Keys.OrderBy(k => k, StringComparer.Ordinal))
+            {
+                string dir = inputName.ToLowerInvariant() switch
+                {
+                    "dpad_north" => "SwipeUp",
+                    "dpad_south" => "SwipeDown",
+                    "dpad_east" => "SwipeRight",
+                    "dpad_west" => "SwipeLeft",
+                    _ => null,
+                };
+                var input = group.Inputs[inputName];
+                if (input.Activators.Count == 0) continue;
+                string inputPath = $"{path}/{inputName}";
+                if (dir == null)
+                {
+                    foreach (var act in input.Activators)
+                        foreach (var b in act.Bindings)
+                            ReportSkipUnlessSilent(run, TranslationReasons.UnknownPhysicalInput,
+                                inputPath, b, slotArg: slot.ToString(), inputArg: inputName);
+                    continue;
+                }
+                var source = new ResolvedSource
+                {
+                    Descriptor = $"Touchpad {p} {dir}",
+                    TrackpadFeature = PhysicalSlotResolver.FeatureSwipes,
+                };
+                TranslateInput(run, preset, input, source, clickGate: null, layer, inputPath);
+            }
         }
 
         /// <summary>Menu group settings the overlay-backed menus have no
@@ -1456,8 +1607,7 @@ namespace PadForge.SteamWorkshop.Translation
                         TranslateLongPress(run, preset, activator, input, source, layer, actPath);
                         continue;
                     case "double_press":
-                        foreach (var b in activator.Bindings)
-                            ReportSkipUnlessSilent(run, TranslationReasons.DoublePressNotSupported, actPath, b);
+                        TranslateDoublePress(run, preset, activator, input, source, layer, actPath);
                         continue;
                     default:
                         foreach (var b in activator.Bindings)
@@ -1487,13 +1637,175 @@ namespace PadForge.SteamWorkshop.Translation
                 bool toggle = activator.Settings.TryGetValue("toggle", out var tg)
                     && tg?.Trim() == "1";
 
+                int macrosBefore = run.Profile.Macros.Count;
                 foreach (var binding in activator.Bindings)
                 {
                     TranslateBinding(run, preset, binding, source, clickGate, layer, actPath,
                         soft, onRelease, holdRepeats, intervalMs, toggle, input.Name);
                 }
+                EmitHapticPulse(run, activator, source, input.Name, actPath,
+                    onRelease ? "OnRelease" : "OnPress", holdMs: 0);
+                ConsumeActivatorDelays(run, activator, actPath, macrosBefore);
             }
         }
+
+        /// <summary>double_press activators (v10 G13). Trackpad-hosted
+        /// inputs approximate through the gesture engine's DoubleTap fire
+        /// ("Touchpad {p} DoubleTap", GestureRecognizer's tap counter):
+        /// the whole pad's double tap stands in for Steam's double press
+        /// of the member, gated behind the Touchpad-tab tap toggle.
+        /// Button hosts keep the named skip (the engine has no
+        /// double-press read for plain buttons).</summary>
+        private void TranslateDoublePress(Run run, SteamInputPreset preset,
+            SteamInputActivator activator, SteamInputInput input, ResolvedSource source,
+            string layer, string actPath)
+        {
+            int pad = TouchpadIndexOf(source);
+            if (pad < 0)
+            {
+                foreach (var b in activator.Bindings)
+                    ReportSkipUnlessSilent(run, TranslationReasons.DoublePressNotSupported, actPath, b);
+                return;
+            }
+
+            var tap = new ResolvedSource
+            {
+                Descriptor = $"Touchpad {pad} DoubleTap",
+                TrackpadFeature = PhysicalSlotResolver.FeatureTaps,
+            };
+            ReportDroppedActivatorExtras(run, activator, actPath);
+            int macrosBefore = run.Profile.Macros.Count;
+            foreach (var binding in activator.Bindings)
+            {
+                // DoubleTap is a one-frame pulse, so press-shaped
+                // translation is the whole vocabulary here: release /
+                // turbo / toggle variants have no held state to ride.
+                TranslateBinding(run, preset, binding, tap, clickGate: null, layer, actPath,
+                    soft: false, onRelease: false, holdRepeats: false, intervalMs: 100,
+                    toggle: false, input.Name);
+            }
+            EmitHapticPulse(run, activator, tap, input.Name, actPath, "OnPress", holdMs: 0);
+            ConsumeActivatorDelays(run, activator, actPath, macrosBefore);
+        }
+
+        /// <summary>Physical touchpad index of a resolved source
+        /// ("Touchpad {p} ..."), or -1 when the source is not
+        /// touchpad-hosted.</summary>
+        private static int TouchpadIndexOf(ResolvedSource source)
+        {
+            string d = source?.Descriptor ?? "";
+            if (!d.StartsWith("Touchpad ", StringComparison.Ordinal)) return -1;
+            var parts = d.Split(' ');
+            return parts.Length >= 2
+                && int.TryParse(parts[1], NumberStyles.Integer, CultureInfo.InvariantCulture, out int p)
+                && p >= 0 ? p : -1;
+        }
+
+        /// <summary>An activator-level <c>haptic_intensity</c> (v10 G1)
+        /// becomes a reactive rumble pulse fired the same way the
+        /// activator fires. Steam levels 1..3 (Low/Medium/High) scale the
+        /// pulse to 33/66/100 percent. The trigger never consumes: haptics
+        /// are feedback beside the binding, not a replacement for it.</summary>
+        private void EmitHapticPulse(Run run, SteamInputActivator activator,
+            ResolvedSource source, string inputName, string path, string triggerMode, int holdMs)
+        {
+            if (!activator.Settings.TryGetValue("haptic_intensity", out var raw)) return;
+            if (!int.TryParse((raw ?? "").Trim(), NumberStyles.Integer,
+                    CultureInfo.InvariantCulture, out int level) || level <= 0)
+            {
+                return;
+            }
+
+            var macro = new TranslatedMacro
+            {
+                Name = $"Haptic pulse ({inputName})",
+                Action = TranslatedMacroAction.RumblePulse,
+                TriggerMode = holdMs > 0 ? "HoldForMs" : triggerMode,
+                TriggerHoldMs = holdMs,
+                ConsumeTrigger = false,
+                RumbleStrengthPercent = level >= 3 ? 100 : level == 2 ? 66 : 33,
+            };
+            // Always the device-free descriptor trigger: a combined-output
+            // trigger would demand an Xbox slot, and feedback on a pure
+            // keyboard config must not sprout one (owner report 2026-07-13
+            // is exactly that shape).
+            string feature = FillMacroTrigger(macro, WithoutOutputTrigger(source));
+            run.Profile.Macros.Add(macro);
+            // Partial by nature: Steam ticks the pad actuator, PadForge
+            // pulses the rumble motors.
+            run.Report.Add(TranslationStatus.Partial, TranslationReasons.HapticPulseEmitted,
+                path, emitted: $"Rumble pulse macro ({macro.RumbleStrengthPercent}%)",
+                args: level.ToString(CultureInfo.InvariantCulture));
+            if (feature != null)
+            {
+                run.Report.Add(TranslationStatus.Partial,
+                    TranslationReasons.TrackpadFeatureRequired, path, args: feature);
+            }
+        }
+
+        /// <summary>Activator delay_start / delay_end (v10 G5): stamped as
+        /// Delay steps onto the one-shot macros the activator just emitted
+        /// (press-leg macros take delay_start, release-leg macros take
+        /// delay_end, the Hold* pairs take both), grounded on Valve's
+        /// shipped strings ("wait for this period of time after the button
+        /// has been pressed before activating" / "... after the button has
+        /// been released before deactivating"). Whatever found no carrier
+        /// keeps the named ActivatorDelayDropped Partial: rows have no
+        /// delay channel, and the continuous shapes (autofire, VC holds,
+        /// region clamps) would re-run a Delay step per repeat cycle.</summary>
+        private static void ConsumeActivatorDelays(Run run, SteamInputActivator activator,
+            string path, int macrosBefore)
+        {
+            int delayStart = ParseDelaySetting(activator, "delay_start");
+            int delayEnd = ParseDelaySetting(activator, "delay_end");
+            if (delayStart <= 0 && delayEnd <= 0) return;
+
+            bool usedStart = false, usedEnd = false;
+            var macros = run.Profile.Macros;
+            for (int i = macrosBefore; i < macros.Count; i++)
+            {
+                var m = macros[i];
+                if (!IsOneShotMacro(m.Action)) continue;
+                bool pair = m.Action == TranslatedMacroAction.HoldKey
+                    || m.Action == TranslatedMacroAction.HoldMouseButton;
+                bool releaseLeg = m.TriggerMode == "OnRelease";
+                if (delayStart > 0 && (pair || !releaseLeg))
+                {
+                    m.DelayStartMs = delayStart;
+                    usedStart = true;
+                }
+                if (delayEnd > 0 && (pair || releaseLeg))
+                {
+                    m.DelayEndMs = delayEnd;
+                    usedEnd = true;
+                }
+            }
+
+            var drops = new List<string>();
+            if (delayStart > 0 && !usedStart) drops.Add($"delay_start {delayStart}");
+            if (delayEnd > 0 && !usedEnd) drops.Add($"delay_end {delayEnd}");
+            if (drops.Count > 0)
+            {
+                run.Report.Add(TranslationStatus.Partial, TranslationReasons.ActivatorDelayDropped,
+                    path, args: string.Join(", ", drops));
+            }
+        }
+
+        private static int ParseDelaySetting(SteamInputActivator activator, string key)
+            => activator.Settings.TryGetValue(key, out var raw)
+                && int.TryParse(raw, NumberStyles.Integer, CultureInfo.InvariantCulture, out int ms)
+                && ms > 0 ? Math.Min(ms, 10000) : 0;
+
+        /// <summary>Macro shapes whose action fires once per trigger, so a
+        /// prepended Delay step runs exactly once (v10 G5).</summary>
+        private static bool IsOneShotMacro(TranslatedMacroAction a) => a switch
+        {
+            TranslatedMacroAction.RepeatKeyWhileHeld => false,
+            TranslatedMacroAction.RepeatVcButtonWhileHeld => false,
+            TranslatedMacroAction.HoldVcButton => false,
+            TranslatedMacroAction.MouseLimitRegion => false,
+            _ => true,
+        };
 
         /// <summary>Long_Press activators. Grounded on Valve's shipped
         /// description: "Long Press Activator requires the button to be held
@@ -1536,6 +1848,7 @@ namespace PadForge.SteamWorkshop.Translation
                 && tg?.Trim() == "1";
 
             bool anyCarry = false;
+            int macrosBefore = run.Profile.Macros.Count;
             foreach (var binding in activator.Bindings)
             {
                 string bt = (binding.Type ?? "").Trim().ToLowerInvariant();
@@ -1546,7 +1859,10 @@ namespace PadForge.SteamWorkshop.Translation
                     TranslateModeShift(run, preset, binding, source, actPath, delayMs, toggle);
                 }
                 else if (bt == "controller_action"
-                    && (action == "ADD_LAYER" || action == "HOLD_LAYER" || action == "CAMERA_RESET"))
+                    && (action == "ADD_LAYER" || action == "HOLD_LAYER" || action == "CAMERA_RESET"
+                        // v10 G10: CHANGE_PRESET rides the activator's
+                        // DelayMs debounce, SET_LED the HoldForMs trigger.
+                        || action == "CHANGE_PRESET" || action == "SET_LED"))
                 {
                     anyCarry = true;
                     TranslateControllerAction(run, preset, binding, source, layer, actPath,
@@ -1554,8 +1870,13 @@ namespace PadForge.SteamWorkshop.Translation
                 }
                 else if (bt == "key_press")
                 {
-                    anyCarry |= TranslateLongPressKey(run, preset, binding, source, actPath,
+                    anyCarry |= TranslateLongPressKey(run, binding, source, actPath,
                         delayMs, holdRepeats, intervalMs, toggle, input.Name);
+                }
+                else if (bt == "mouse_button")
+                {
+                    anyCarry |= TranslateLongPressMouse(run, binding, source, actPath,
+                        delayMs, input.Name);
                 }
                 else if (bt == "xinput_button")
                 {
@@ -1569,28 +1890,30 @@ namespace PadForge.SteamWorkshop.Translation
             }
 
             if (anyCarry)
+            {
                 ReportDroppedActivatorExtras(run, activator, actPath);
+                EmitHapticPulse(run, activator, source, input.Name, actPath,
+                    "OnPress", holdMs: delayMs);
+                ConsumeActivatorDelays(run, activator, actPath, macrosBefore);
+            }
         }
 
-        /// <summary>A Long_Press key binding (wave 2A): one tap at the hold
-        /// threshold (or the autofire / latch variants when the activator
-        /// also carries hold_repeats / toggle). Returns true when a macro
-        /// was emitted (the activator counts as translated for the
-        /// dropped-extras notes; a NoDeviceFreeTrigger skip does not).</summary>
-        private bool TranslateLongPressKey(Run run, SteamInputPreset preset,
-            SteamInputBinding binding, ResolvedSource source, string path,
+        /// <summary>A Long_Press key binding (v10 G10): the key goes down
+        /// at the hold threshold and stays down until the physical input
+        /// releases, Valve's documented Long_Press shape, via the HoldKey
+        /// pair. The autofire / latch variants keep their wave-2A shapes
+        /// at the same threshold. Any VK rides SendInput on the macro
+        /// forms, so the KbM row engine's closed key list does not gate
+        /// here (v10 G11). Returns true when a macro was emitted (the
+        /// activator counts as translated for the dropped-extras notes).</summary>
+        private bool TranslateLongPressKey(Run run, SteamInputBinding binding,
+            ResolvedSource source, string path,
             int holdMs, bool holdRepeats, int intervalMs, bool toggle, string inputName)
         {
             string keyName = FirstToken(binding.Param);
-            if (!SteamInputVkTable.TryResolve(keyName, out byte vk, out bool supported))
+            if (!SteamInputVkTable.TryResolve(keyName, out byte vk, out _))
             {
                 run.Report.Add(TranslationStatus.Skipped, TranslationReasons.UnknownKey,
-                    path, binding.Raw, args: keyName);
-                return false;
-            }
-            if (!supported)
-            {
-                run.Report.Add(TranslationStatus.Skipped, TranslationReasons.UnsupportedKey,
                     path, binding.Raw, args: keyName);
                 return false;
             }
@@ -1607,11 +1930,48 @@ namespace PadForge.SteamWorkshop.Translation
                 return latched;
             }
 
-            return EmitKeyMacro(run, preset, binding, source, path,
-                holdRepeats
-                    ? (TranslatedMacroAction.RepeatKeyWhileHeld, "HoldForMs")
-                    : (TranslatedMacroAction.KeyTap, "HoldForMs"),
-                vk, intervalMs, keyName, inputName, holdMs);
+            if (holdRepeats)
+            {
+                return EmitKeyMacro(run, binding, source, path,
+                    (TranslatedMacroAction.RepeatKeyWhileHeld, "HoldForMs"),
+                    vk, intervalMs, keyName, inputName, holdMs);
+            }
+            return EmitKeyHoldMacro(run, binding, source, path, vk, keyName,
+                "HoldForMs", holdMs, inputName);
+        }
+
+        /// <summary>A Long_Press mouse_button binding (v10 G10): the mouse
+        /// button goes down at the hold threshold and holds until the
+        /// physical release, via the HoldMouseButton pair (the
+        /// materializer's MouseButtonPress-until-release + OnRelease
+        /// MouseButtonRelease twin).</summary>
+        private bool TranslateLongPressMouse(Run run, SteamInputBinding binding,
+            ResolvedSource source, string path, int holdMs, string inputName)
+        {
+            if (!SteamInputVkTable.TryResolveMouseButtonIndex(binding.Param, out int btn))
+            {
+                run.Report.Add(TranslationStatus.Skipped, TranslationReasons.UnknownMouseButton,
+                    path, binding.Raw, args: binding.Param);
+                return false;
+            }
+            var macro = new TranslatedMacro
+            {
+                Name = $"Hold mouse {FirstToken(binding.Param).ToUpperInvariant()} ({inputName})",
+                Action = TranslatedMacroAction.HoldMouseButton,
+                TriggerMode = "HoldForMs",
+                TriggerHoldMs = holdMs,
+                // Never consumed: the OnRelease twin reads the same
+                // trigger, and a consumed bit would release it early.
+                ConsumeTrigger = false,
+                MouseButtonIndex = btn,
+            };
+            string feature = FillMacroTrigger(macro, source);
+            run.Profile.Macros.Add(macro);
+            var (status, reason, arg) = MacroTriggerReport(source, feature);
+            run.Report.Add(status, reason, path, binding.Raw,
+                emitted: $"Long-press hold macro: mouse button {macro.MouseButtonIndex}",
+                args: arg == null ? Array.Empty<string>() : new[] { arg });
+            return true;
         }
 
         /// <summary>A Long_Press xinput binding (wave 2A): the target button
@@ -1653,42 +2013,20 @@ namespace PadForge.SteamWorkshop.Translation
             return EmitVcHoldMacro(run, binding, source, path, xt, holdMs, inputName);
         }
 
-        /// <summary>Named notes for activator settings that used to drop
-        /// silently: press delays, the interruptible-off flag, and haptic
-        /// intensity (counted into the per-config aggregate). Called only
-        /// for activators that translate; a skipped activator's own entry
-        /// covers its settings.</summary>
+        /// <summary>Named note for the interruptible-off flag, which still
+        /// has no channel. Called only for activators that translate; a
+        /// skipped activator's own entry covers its settings. The press
+        /// delays moved to <see cref="ConsumeActivatorDelays"/> and the
+        /// activator haptics to <see cref="EmitHapticPulse"/> (v10 G1/G5).</summary>
         private static void ReportDroppedActivatorExtras(Run run,
             SteamInputActivator activator, string path)
         {
-            var drops = new List<string>();
-            foreach (var key in new[] { "delay_start", "delay_end" })
-            {
-                if (activator.Settings.TryGetValue(key, out var raw)
-                    && int.TryParse(raw, NumberStyles.Integer, CultureInfo.InvariantCulture, out int ms)
-                    && ms > 0)
-                {
-                    drops.Add($"{key} {ms}");
-                }
-            }
-            if (drops.Count > 0)
-            {
-                run.Report.Add(TranslationStatus.Partial, TranslationReasons.ActivatorDelayDropped,
-                    path, args: string.Join(", ", drops));
-            }
-
             // Steam's default is interruptible on; only the stored "0"
             // diverges from PadForge behavior.
             if (activator.Settings.TryGetValue("interruptable", out var i)
                 && (i ?? "").Trim() == "0")
             {
                 run.Report.Add(TranslationStatus.Partial, TranslationReasons.InterruptibleDropped, path);
-            }
-
-            if (activator.Settings.TryGetValue("haptic_intensity", out var h)
-                && (h ?? "").Trim() != "0")
-            {
-                run.HapticDropCount++;
             }
         }
 
@@ -1715,8 +2053,10 @@ namespace PadForge.SteamWorkshop.Translation
                     }
                     if (onRelease)
                     {
-                        run.Report.Add(TranslationStatus.Skipped, TranslationReasons.ReleaseActivatorNotSupported,
-                            path, binding.Raw);
+                        // v10 G6: one click when the input releases, via a
+                        // MouseButtonTap macro (a row would click for the
+                        // whole hold instead).
+                        EmitMouseTapMacro(run, binding, source, path, inputName);
                         break;
                     }
                     if (toggle)
@@ -1733,19 +2073,7 @@ namespace PadForge.SteamWorkshop.Translation
 
                 case "mouse_wheel":
                 {
-                    // KbmScroll positive = up after Step 3's negation, and a
-                    // pressed button source evaluates positive (SDL "down"),
-                    // so scroll-up needs Invert and scroll-down doesn't.
-                    // Horizontal has no negation: right is plain.
-                    string param = (binding.Param ?? "").Trim().ToUpperInvariant();
-                    (string target, bool invert)? wheel = param switch
-                    {
-                        "SCROLL_UP" => ("KbmScroll", true),
-                        "SCROLL_DOWN" => ("KbmScroll", false),
-                        "SCROLL_RIGHT" => ("KbmScrollH", false),
-                        "SCROLL_LEFT" => ("KbmScrollH", true),
-                        _ => null,
-                    };
+                    var wheel = ParseWheelParam(binding.Param);
                     if (wheel == null)
                     {
                         run.Report.Add(TranslationStatus.Skipped, TranslationReasons.UnknownBindingType,
@@ -1772,11 +2100,19 @@ namespace PadForge.SteamWorkshop.Translation
                             path, binding.Raw);
                     }
                     var src = BuildSource(source, soft);
-                    SetOutputInvert(src, wheel.Value.invert);
+                    // Compose the wheel direction with a member-level
+                    // output flip (a scrollwheel counterclockwise drag,
+                    // v10 G4). On a non-half source Invert IS the output
+                    // flip, so XOR the two rather than clobber; half-axis
+                    // sources keep Invert as their half selector and take
+                    // the wheel flip on InvertOutput as before.
+                    bool memberFlip = !src.HalfAxis && src.Invert;
+                    if (memberFlip) src.Invert = false;
+                    SetOutputInvert(src, wheel.Value.Invert ^ memberFlip);
                     // Same AND-companion handling as EmitSourceRow: a
                     // single-pad click member carries its half's touch-spot
                     // gate (#9 B-1).
-                    AddRowSource(run, isKbm: true, layer, wheel.Value.target, src, isAxis: true,
+                    AddRowSource(run, isKbm: true, layer, wheel.Value.Target, src, isAxis: true,
                         StatusFor(source, soft), ReasonFor(source, soft), path, binding.Raw,
                         args: source.TrackpadFeature,
                         clickGate: source.GateDescriptor != null
@@ -1794,8 +2130,17 @@ namespace PadForge.SteamWorkshop.Translation
                     }
                     if (onRelease)
                     {
-                        run.Report.Add(TranslationStatus.Skipped, TranslationReasons.ReleaseActivatorNotSupported,
-                            path, binding.Raw);
+                        if (xt.IsTriggerAxis)
+                        {
+                            // No discrete trigger-pull tap primitive; the
+                            // named skip stays for the axis targets.
+                            run.Report.Add(TranslationStatus.Skipped, TranslationReasons.ReleaseActivatorNotSupported,
+                                path, binding.Raw);
+                            break;
+                        }
+                        // v10 G6: one button tap when the input releases,
+                        // via a VcButtonTap macro.
+                        EmitVcTapMacro(run, binding, source, path, xt, inputName);
                         break;
                     }
                     bool identity = !soft && clickGate == null
@@ -1844,20 +2189,20 @@ namespace PadForge.SteamWorkshop.Translation
                     // the physical input is held (Steam stores repeat_rate
                     // in ms; shipped configurator suffixes it
                     // #Unit_Milliseconds). A latch already replaced the
-                    // output when one was emitted above. Identity turbo is
-                    // impossible with the combined-output trigger (the
-                    // identity row that feeds the trigger would hold the
-                    // pulsed bit solid), so it keeps the Wave-1 row +
-                    // RepeatDropped note; trigger-axis targets have no
-                    // button bit to pulse and keep it too. Triggerless
-                    // hosts (touchpads, paddles) ride device-free
-                    // InputDevice descriptor triggers since wave 3.
+                    // output when one was emitted above. Identity turbo
+                    // (v10 G14) drops the identity row and pulses through
+                    // a device-free descriptor trigger on the hosting
+                    // input itself: a combined-output trigger fed by the
+                    // identity row would hold the pulsed bit solid.
+                    // Trigger-axis targets have no button bit to pulse and
+                    // keep the RepeatDropped note.
                     if (!latchEmitted && holdRepeats)
                     {
-                        if (!identity && !xt.IsTriggerAxis)
+                        if (!xt.IsTriggerAxis)
                         {
-                            EmitVcTurboMacro(run, binding, source, path, xt, intervalMs,
-                                holdMs: 0, inputName);
+                            EmitVcTurboMacro(run, binding,
+                                identity ? WithoutOutputTrigger(source) : source,
+                                path, xt, intervalMs, holdMs: 0, inputName);
                             break;
                         }
                         run.Report.Add(TranslationStatus.Partial, TranslationReasons.RepeatDropped,
@@ -1902,6 +2247,21 @@ namespace PadForge.SteamWorkshop.Translation
             }
         }
 
+        /// <summary>mouse_wheel param to its KbM target and output flip.
+        /// KbmScroll positive = up after Step 3's negation, and a pressed
+        /// button source evaluates positive (SDL "down"), so scroll-up
+        /// needs Invert and scroll-down doesn't. Horizontal has no
+        /// negation: right is plain. Null for unknown params.</summary>
+        private static (string Target, bool Invert)? ParseWheelParam(string param)
+            => (param ?? "").Trim().ToUpperInvariant() switch
+            {
+                "SCROLL_UP" => ("KbmScroll", true),
+                "SCROLL_DOWN" => ("KbmScroll", false),
+                "SCROLL_RIGHT" => ("KbmScrollH", false),
+                "SCROLL_LEFT" => ("KbmScrollH", true),
+                _ => null,
+            };
+
         private void TranslateKeyPress(Run run, SteamInputPreset preset, SteamInputBinding binding,
             ResolvedSource source, string clickGate, string layer, string path,
             bool soft, bool onRelease, bool holdRepeats, int intervalMs, bool toggle,
@@ -1911,12 +2271,6 @@ namespace PadForge.SteamWorkshop.Translation
             if (!SteamInputVkTable.TryResolve(keyName, out byte vk, out bool supported))
             {
                 run.Report.Add(TranslationStatus.Skipped, TranslationReasons.UnknownKey,
-                    path, binding.Raw, args: keyName);
-                return;
-            }
-            if (!supported)
-            {
-                run.Report.Add(TranslationStatus.Skipped, TranslationReasons.UnsupportedKey,
                     path, binding.Raw, args: keyName);
                 return;
             }
@@ -1941,9 +2295,8 @@ namespace PadForge.SteamWorkshop.Translation
 
             if (onRelease || holdRepeats)
             {
-                // Macro-backed forms. Both need a device-free trigger, which
-                // exists only for inputs with an Xbox output representation.
-                EmitKeyMacro(run, preset, binding, source, path,
+                // Macro-backed forms (SendInput, so any VK works here).
+                EmitKeyMacro(run, binding, source, path,
                     onRelease
                         ? (TranslatedMacroAction.KeyTap, "OnRelease")
                         : (TranslatedMacroAction.RepeatKeyWhileHeld, "WhileHeld"),
@@ -1951,19 +2304,28 @@ namespace PadForge.SteamWorkshop.Translation
                 return;
             }
 
+            // VKs outside the KbM row engine's closed key list (F13-F24,
+            // PrintScreen, the lock keys) have no row channel, so the
+            // plain press rides the SendInput HoldKey pair instead of the
+            // old UnsupportedKey skip (v10 G11): down on press, up on
+            // release, exact Steam semantics.
+            if (!supported)
+            {
+                EmitKeyHoldMacro(run, binding, source, path, vk, keyName,
+                    "OnPress", holdMs: 0, inputName);
+                return;
+            }
+
             EmitSourceRow(run, isKbm: true, layer, SteamInputVkTable.KbmKeyTarget(vk),
                 source, clickGate, isAxis: false, soft, path, binding.Raw);
         }
 
-        private bool EmitKeyMacro(Run run, SteamInputPreset preset, SteamInputBinding binding,
+        private bool EmitKeyMacro(Run run, SteamInputBinding binding,
             ResolvedSource source, string path,
             (TranslatedMacroAction Action, string TriggerMode) shape,
             byte vk, int intervalMs, string keyName, string inputName, int holdMs = 0)
         {
-            bool longPressTap = shape.Action == TranslatedMacroAction.KeyTap && holdMs > 0;
-            string verb = shape.Action == TranslatedMacroAction.KeyTap
-                ? (longPressTap ? "Long press" : "Tap")
-                : "Autofire";
+            string verb = shape.Action == TranslatedMacroAction.KeyTap ? "Tap" : "Autofire";
             var macro = new TranslatedMacro
             {
                 Name = $"{verb} {keyName} ({inputName})",
@@ -1976,23 +2338,107 @@ namespace PadForge.SteamWorkshop.Translation
             };
             string feature = FillMacroTrigger(macro, source);
             run.Profile.Macros.Add(macro);
-            // A Long_Press key gets its own named Partial: Steam holds the
-            // key down from the threshold until release, PadForge fires one
-            // tap at the threshold (no hold-a-key-until-release primitive).
-            if (longPressTap)
-            {
-                run.Report.Add(TranslationStatus.Partial, TranslationReasons.LongPressKeyTap,
-                    path, binding.Raw, emitted: $"{verb} {keyName} macro", keyName);
-            }
-            else
-            {
-                var (status, reason, arg) = MacroTriggerReport(source, feature);
-                run.Report.Add(status, reason, path, binding.Raw,
-                    emitted: $"{verb} {keyName} macro",
-                    args: arg == null ? Array.Empty<string>() : new[] { arg });
-            }
+            var (status, reason, arg) = MacroTriggerReport(source, feature);
+            run.Report.Add(status, reason, path, binding.Raw,
+                emitted: $"{verb} {keyName} macro",
+                args: arg == null ? Array.Empty<string>() : new[] { arg });
             return true;
         }
+
+        /// <summary>The full-fidelity held key (v10 G10/G11): a HoldKey
+        /// macro the materializer lowers to a KeyPress-until-release plus
+        /// an OnRelease KeyRelease twin. <paramref name="triggerMode"/> is
+        /// "OnPress" (plain press hosts whose VK has no row channel) or
+        /// "HoldForMs" (Long_Press at <paramref name="holdMs"/>).</summary>
+        private bool EmitKeyHoldMacro(Run run, SteamInputBinding binding, ResolvedSource source,
+            string path, byte vk, string keyName, string triggerMode, int holdMs, string inputName)
+        {
+            var macro = new TranslatedMacro
+            {
+                Name = $"Hold {keyName} ({inputName})",
+                Action = TranslatedMacroAction.HoldKey,
+                TriggerMode = triggerMode,
+                TriggerHoldMs = holdMs,
+                // Never consumed: the OnRelease twin reads the same
+                // trigger, and a consumed bit would release it early.
+                ConsumeTrigger = false,
+                VirtualKey = vk,
+            };
+            string feature = FillMacroTrigger(macro, source);
+            run.Profile.Macros.Add(macro);
+            var (status, reason, arg) = MacroTriggerReport(source, feature);
+            run.Report.Add(status, reason, path, binding.Raw,
+                emitted: $"Hold {keyName} macro",
+                args: arg == null ? Array.Empty<string>() : new[] { arg });
+            return true;
+        }
+
+        /// <summary>A release activator on a mouse_button binding (v10 G6):
+        /// one click when the hosting input releases, via a MouseButtonTap
+        /// macro (down + tap duration + up through SendInput).</summary>
+        private void EmitMouseTapMacro(Run run, SteamInputBinding binding,
+            ResolvedSource source, string path, string inputName)
+        {
+            SteamInputVkTable.TryResolveMouseButtonIndex(binding.Param, out int btn);
+            var macro = new TranslatedMacro
+            {
+                Name = $"Click mouse {FirstToken(binding.Param).ToUpperInvariant()} ({inputName})",
+                Action = TranslatedMacroAction.MouseButtonTap,
+                TriggerMode = "OnRelease",
+                ConsumeTrigger = false,
+                MouseButtonIndex = btn,
+            };
+            string feature = FillMacroTrigger(macro, source);
+            run.Profile.Macros.Add(macro);
+            var (status, reason, arg) = MacroTriggerReport(source, feature);
+            run.Report.Add(status, reason, path, binding.Raw,
+                emitted: $"Mouse tap macro (button {btn})",
+                args: arg == null ? Array.Empty<string>() : new[] { arg });
+        }
+
+        /// <summary>A release activator on an xinput binding (v10 G6): one
+        /// tap of the target button when the hosting input releases, via a
+        /// VcButtonTap macro.</summary>
+        private void EmitVcTapMacro(Run run, SteamInputBinding binding,
+            ResolvedSource source, string path, XInputTargetTable.XInputTarget xt,
+            string inputName)
+        {
+            var macro = new TranslatedMacro
+            {
+                Name = $"Tap {xt.Target} ({inputName})",
+                Action = TranslatedMacroAction.VcButtonTap,
+                TriggerMode = "OnRelease",
+                TargetXboxButtons = xt.XboxButtonBit,
+                ConsumeTrigger = false,
+            };
+            string feature = FillMacroTrigger(macro, source);
+            run.Profile.Macros.Add(macro);
+            var (status, reason, arg) = MacroTriggerReport(source, feature);
+            run.Report.Add(status, reason, path, binding.Raw,
+                emitted: $"Tap {xt.Target} macro",
+                args: arg == null ? Array.Empty<string>() : new[] { arg });
+        }
+
+        /// <summary>Copy of <paramref name="s"/> with the combined-output
+        /// trigger identity stripped, so <see cref="FillMacroTrigger"/>
+        /// takes the device-free descriptor shape. Used by the identity
+        /// turbo (v10 G14), where the pulsed target bit and the trigger
+        /// bit are the same bit and a combined trigger would read its own
+        /// pulses. Same full-field discipline as <see cref="WithDeadZone"/>.</summary>
+        private static ResolvedSource WithoutOutputTrigger(ResolvedSource s) => new()
+        {
+            Descriptor = s.Descriptor,
+            HalfAxis = s.HalfAxis,
+            Invert = s.Invert,
+            DeadZone = s.DeadZone,
+            AutomapTarget = s.AutomapTarget,
+            XboxButtonBit = 0,
+            MacroAxisTarget = null,
+            TrackpadFeature = s.TrackpadFeature,
+            IsAnalogTriggerPull = s.IsAnalogTriggerPull,
+            GateDescriptor = s.GateDescriptor,
+            PartialReasonKey = s.PartialReasonKey,
+        };
 
         /// <summary>Applies an OUTPUT-side sign flip to a built source without
         /// clobbering a half-axis selection.
@@ -2313,8 +2759,40 @@ namespace PadForge.SteamWorkshop.Translation
                     }
                     if (action.Equals("REMOVE_LAYER", StringComparison.OrdinalIgnoreCase))
                     {
-                        // PadForge's Toggle disengages on the SAME input; a
-                        // separate remove binding has no direct equivalent.
+                        // v10 G8: the corpus shape is a "back" binding
+                        // hosted INSIDE the layer it removes. That lowers
+                        // to a single-stop Cycle through the hosting layer
+                        // with Base in the ring (the same press-to-step
+                        // return construct the v9 unmerged-jump lowering
+                        // uses), replacing the old no-op. A remove that
+                        // targets a DIFFERENT layer, or one hosted in
+                        // Base, still has no construct and keeps the
+                        // note-only Partial.
+                        bool hosted = TryResolvePresetIndex(run, presetIndex, out int removeId)
+                            && !string.IsNullOrEmpty(layer) && layer != "Base"
+                            && layer == $"Layer_{run.Options.FileId}_{removeId}"
+                            && IsActivatorCapable(source);
+                        if (hosted)
+                        {
+                            run.Activators.Add(new ActivatorRequest
+                            {
+                                LayerMask = layer,
+                                LayerName = PresetLayerName(run, removeId),
+                                Mode = "Cycle",
+                                InheritUnmapped = true, // leaving an overlay layer
+                                DelayMs = activatorDelayMs,
+                                Descriptor = source.Descriptor,
+                                Kind = string.IsNullOrEmpty(source.GateDescriptor) ? "Button" : "Chord",
+                                GateDescriptor = source.GateDescriptor ?? "",
+                                TrackpadFeature = source.TrackpadFeature ?? "",
+                                CycleLayers = layer,
+                                CycleIncludeBase = true,
+                                Path = path,
+                            });
+                        }
+                        // Partial either way: the Cycle is its own stepper
+                        // beside whatever engaged the layer, so a press
+                        // can need one extra step before it lands on Base.
                         run.Report.Add(TranslationStatus.Partial, TranslationReasons.RemoveLayerApproximated,
                             path, binding.Raw);
                         return;
@@ -2392,6 +2870,10 @@ namespace PadForge.SteamWorkshop.Translation
                         Mode = "Custom",
                         JumpToLayer = toBase ? "Base" : $"Layer_{run.Options.FileId}_{presetId}",
                         InheritUnmapped = false, // action sets replace
+                        // A Long_Press CHANGE_PRESET rides the activator's
+                        // hold-before-fire debounce (#206 honors DelayMs on
+                        // the Custom / Cycle edge modes too), v10 G10.
+                        DelayMs = activatorDelayMs,
                         Descriptor = source.Descriptor,
                         // Button kind even for trigger pulls: the button-like
                         // activator read thresholds the raw axis at 50% of
@@ -2435,7 +2917,11 @@ namespace PadForge.SteamWorkshop.Translation
                     {
                         Name = $"Set LED ({inputName})",
                         Action = TranslatedMacroAction.SetLightbarColor,
-                        TriggerMode = onRelease ? "OnRelease" : "OnPress",
+                        // Long_Press set_led fires at the hold threshold,
+                        // same shape as camera_reset (v10 G10).
+                        TriggerMode = activatorDelayMs > 0 ? "HoldForMs"
+                            : onRelease ? "OnRelease" : "OnPress",
+                        TriggerHoldMs = activatorDelayMs,
                         ConsumeTrigger = false,
                         LedR = Math.Clamp(r, 0, 255),
                         LedG = Math.Clamp(g, 0, 255),
@@ -2503,13 +2989,58 @@ namespace PadForge.SteamWorkshop.Translation
                     return;
 
                 case "SCREENSHOT":
-                case "SYSTEM_KEY_1":
+                {
+                    // v10 G7: Steam's overlay screenshot has no client here;
+                    // the nearest verb is a PrintScreen tap (VK_SNAPSHOT via
+                    // SendInput), which most capture tools bind. Named
+                    // Partial: it is an approximation, not Steam's capture.
+                    var shot = new TranslatedMacro
+                    {
+                        Name = $"Screenshot key ({inputName})",
+                        Action = TranslatedMacroAction.KeyTap,
+                        TriggerMode = onRelease ? "OnRelease" : "OnPress",
+                        ConsumeTrigger = false,
+                        VirtualKey = 0x2C, // VK_SNAPSHOT
+                    };
+                    // Descriptor trigger on purpose: a combined-output
+                    // trigger would demand an Xbox slot, and a system
+                    // action on a pure keyboard config must not sprout one.
+                    FillMacroTrigger(shot, WithoutOutputTrigger(source));
+                    run.Profile.Macros.Add(shot);
+                    run.Report.Add(TranslationStatus.Partial, TranslationReasons.ScreenshotApproximated,
+                        path, binding.Raw, emitted: "PrintScreen tap macro");
+                    return;
+                }
+
                 case "SHOW_KEYBOARD":
+                {
+                    // v10 G7: Steam's overlay keyboard has no client here;
+                    // launch the Windows on-screen keyboard instead (the
+                    // materializer resolves TabTip.exe, falling back to
+                    // osk.exe). Named Partial: approximation.
+                    var osk = new TranslatedMacro
+                    {
+                        Name = $"On-screen keyboard ({inputName})",
+                        Action = TranslatedMacroAction.ShowOnScreenKeyboard,
+                        TriggerMode = onRelease ? "OnRelease" : "OnPress",
+                        ConsumeTrigger = false,
+                    };
+                    // Descriptor trigger for the same no-phantom-Xbox-slot
+                    // reason as SCREENSHOT above.
+                    FillMacroTrigger(osk, WithoutOutputTrigger(source));
+                    run.Profile.Macros.Add(osk);
+                    run.Report.Add(TranslationStatus.Partial, TranslationReasons.ShowKeyboardApproximated,
+                        path, binding.Raw, emitted: "On-screen keyboard macro");
+                    return;
+                }
+
+                case "SYSTEM_KEY_1":
                     run.Report.Add(TranslationStatus.Skipped, TranslationReasons.SteamSystemAction,
                         path, binding.Raw, args: action);
                     return;
 
                 case "EMPTY_SUB_COMMAND":
+                case "EMPTY_BINDING": // same placeholder, later vintage (v10 G15)
                     return; // placeholder, silent
 
                 default:
@@ -2655,7 +3186,8 @@ namespace PadForge.SteamWorkshop.Translation
             string t = (binding.Type ?? "").Trim().ToLowerInvariant();
             if (t.Length == 0) return;
             if (t == "controller_action"
-                && (binding.Param ?? "").StartsWith("empty_sub_command", StringComparison.OrdinalIgnoreCase))
+                && ((binding.Param ?? "").StartsWith("empty_sub_command", StringComparison.OrdinalIgnoreCase)
+                    || (binding.Param ?? "").StartsWith("empty_binding", StringComparison.OrdinalIgnoreCase)))
                 return;
             var args = new List<string>();
             if (slotArg != null) args.Add(slotArg);
@@ -2912,7 +3444,8 @@ namespace PadForge.SteamWorkshop.Translation
             || m.TriggerInputDescriptors.Count == 0
             || m.Action == TranslatedMacroAction.RepeatVcButtonWhileHeld
             || m.Action == TranslatedMacroAction.ToggleVcButton
-            || m.Action == TranslatedMacroAction.HoldVcButton;
+            || m.Action == TranslatedMacroAction.HoldVcButton
+            || m.Action == TranslatedMacroAction.VcButtonTap;
 
         private void EmitActivators(Run run)
         {

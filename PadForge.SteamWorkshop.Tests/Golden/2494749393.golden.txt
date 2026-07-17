@@ -53,18 +53,35 @@ xbox rows: 20
 kbm rows: 1
   Base | KbmKey74
     <- Gamepad ButtonStart
-macros: 0
-report: v9 rows:x20+k1 macros:0 menus:0 layers:0 clean:25 partial:4 skipped:2 errors:0
+macros: 9
+  macro RumblePulse OnPress | Haptic pulse (dpad_east) | btns=0x0000 in=[Gamepad DPadRight] strength=33%
+  macro RumblePulse OnPress | Haptic pulse (dpad_north) | btns=0x0000 in=[Gamepad DPadUp] strength=33%
+  macro RumblePulse OnPress | Haptic pulse (dpad_south) | btns=0x0000 in=[Gamepad DPadDown] strength=33%
+  macro RumblePulse OnPress | Haptic pulse (dpad_west) | btns=0x0000 in=[Gamepad DPadLeft] strength=33%
+  macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Gamepad LeftStick] strength=66%
+  macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Gamepad LeftTrigger] strength=66%
+  macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Gamepad RightTrigger] strength=66%
+  macro RumblePulse OnPress | Haptic pulse (button_escape) | btns=0x0000 in=[Gamepad ButtonStart] strength=33%
+  macro KeyTap OnPress | Screenshot key (button_menu) | btns=0x0000 in=[Gamepad ButtonBack] vk=0x2C
+report: v10 rows:x20+k1 macros:9 menus:0 layers:0 clean:25 partial:12 skipped:1 errors:0
+  Partial HapticPulseEmitted(1) @ Default/dpad/group 10 (dpad)/dpad_east/Full_Press => Rumble pulse macro (33%)
+  Partial HapticPulseEmitted(1) @ Default/dpad/group 10 (dpad)/dpad_north/Full_Press => Rumble pulse macro (33%)
+  Partial HapticPulseEmitted(1) @ Default/dpad/group 10 (dpad)/dpad_south/Full_Press => Rumble pulse macro (33%)
+  Partial HapticPulseEmitted(1) @ Default/dpad/group 10 (dpad)/dpad_west/Full_Press => Rumble pulse macro (33%)
   Partial GyroButtonMaskDropped(gyro_button, 9) @ Default/gyro/group 13 (mouse_joystick)
   Clean RowEmitted @ Default/gyro/group 13 (mouse_joystick) => RightThumbAxisX <- Gyro Yaw
   Clean RowEmitted @ Default/gyro/group 13 (mouse_joystick) => RightThumbAxisY <- Gyro Pitch
+  Partial HapticPulseEmitted(2) @ Default/joystick/group 3 (joystick_move)/click/Full_Press => Rumble pulse macro (66%)
   Partial TrackpadFeatureRequired(Touchpad touch spots) @ Default/left_trackpad/group 1 (single_button)/click/Full_Press => ButtonBack <- Touchpad 0 Click
+  Partial HapticPulseEmitted(2) @ Default/left_trigger/group 4 (trigger)/click/Full_Press => Rumble pulse macro (66%)
   Partial TrackpadFeatureRequired(Touchpad touch spots) @ Default/right_trackpad/group 2 (single_button)/click/Full_Press => ButtonStart <- Touchpad 0 Click
+  Partial HapticPulseEmitted(2) @ Default/right_trigger/group 5 (trigger)/click/Full_Press => Rumble pulse macro (66%)
   Clean RowEmitted @ Default/switch/group 8 (switches)/button_back_left/Full_Press => ButtonA <- Gamepad Paddle2
   Clean RowEmitted @ Default/switch/group 8 (switches)/button_back_right/Full_Press => ButtonX <- Gamepad Paddle1
   Clean RowEmitted @ Default/switch/group 8 (switches)/button_escape/Full_Press => KbmKey74 <- Gamepad ButtonStart
+  Partial HapticPulseEmitted(1) @ Default/switch/group 8 (switches)/button_escape/Full_Press => Rumble pulse macro (33%)
   Skipped DoublePressNotSupported @ Default/switch/group 8 (switches)/button_escape/Double_Press :: key_press F9
-  Skipped SteamSystemAction(SCREENSHOT) @ Default/switch/group 8 (switches)/button_menu/Full_Press :: controller_action SCREENSHOT
+  Partial ScreenshotApproximated @ Default/switch/group 8 (switches)/button_menu/Full_Press => PrintScreen tap macro
   Clean RowEmitted @ Default/joystick/group 3 (joystick_move) => LeftThumbAxisX <- Gamepad LeftStickX
   Clean RowEmitted @ Default/joystick/group 3 (joystick_move) => LeftThumbAxisY <- Gamepad LeftStickY
   Clean RowEmitted @ Default/left_trigger/group 4 (trigger) => LeftTrigger <- Gamepad LeftTrigger
@@ -85,4 +102,3 @@ report: v9 rows:x20+k1 macros:0 menus:0 layers:0 clean:25 partial:4 skipped:2 er
   Clean RowEmitted @ Default/right_trigger/group 5 (trigger)/click/Full_Press => RightTrigger <- Gamepad RightTrigger
   Clean RowEmitted @ Default/switch/group 8 (switches)/left_bumper/Full_Press => LeftShoulder <- Gamepad LeftShoulder
   Clean RowEmitted @ Default/switch/group 8 (switches)/right_bumper/Full_Press => RightShoulder <- Gamepad RightShoulder
-  Partial HapticIntensityDropped(8) @ config

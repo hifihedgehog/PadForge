@@ -108,8 +108,26 @@ namespace PadForge.SteamWorkshop.Translation
         /// get a reasoned skip instead of dead Touchpad 2 output; the
         /// clamp-macro mouse_region branch names its dropped teleport /
         /// edge keys; single-pad half clicks drive mode shifts and layer
-        /// switches as Kind=Chord activators (click + half touch spot).</summary>
-        public const int CurrentTranslatorVersion = 9;
+        /// switches as Kind=Chord activators (click + half touch spot).
+        /// v10: Gap closure 2026-07-17 (G1-G15). Activator haptic_intensity
+        /// becomes a RumblePulse macro per activator (levels 1..3 scale
+        /// strength); button_capture resolves to the raw "Button 11"
+        /// (SDL MISC1) source; 2dscroll lowers onto the one-shot swipe
+        /// gestures and scrollwheel onto a KbmScroll finger drag on
+        /// trackpad hosts; activator delay_start / delay_end become Delay
+        /// steps on one-shot macros; release activators on mouse_button /
+        /// xinput emit MouseButtonTap / VcButtonTap macros; SCREENSHOT
+        /// taps PrintScreen and SHOW_KEYBOARD launches the on-screen
+        /// keyboard (named Partials); self-hosted REMOVE_LAYER lowers to
+        /// the single-stop return Cycle; Long_Press gains mouse-button
+        /// holds, CHANGE_PRESET debounce, set_led thresholds, and the
+        /// HoldKey pair replacing the tap-at-threshold approximation;
+        /// VKs outside the KbM row list ride SendInput HoldKey macros;
+        /// trackpad-hosted Double_Press reads the DoubleTap gesture;
+        /// identity turbo pulses through a descriptor trigger with the
+        /// identity row dropped; hotbar lowers as a grid menu and
+        /// empty_binding placeholders go silent.</summary>
+        public const int CurrentTranslatorVersion = 10;
 
         public int TranslatorVersion { get; set; } = CurrentTranslatorVersion;
 
@@ -219,6 +237,10 @@ namespace PadForge.SteamWorkshop.Translation
         public const string UnsupportedControllerAction = "Workshop_Tr_UnsupportedControllerAction"; // {0} action
         public const string UnknownBindingType = "Workshop_Tr_UnknownBindingType";               // {0} type
         public const string UnknownKey = "Workshop_Tr_UnknownKey";                               // {0} key
+        // Legacy-render-only since translator v10 (G11): VKs outside the
+        // KbM row engine's closed list ride SendInput HoldKey macros now,
+        // so nothing is unsupported. Kept, with its resx strings, for
+        // reports serialized by older translator versions.
         public const string UnsupportedKey = "Workshop_Tr_UnsupportedKey";                       // {0} key
         public const string UnknownMouseButton = "Workshop_Tr_UnknownMouseButton";               // {0} name
         public const string UnknownXInputButton = "Workshop_Tr_UnknownXInputButton";             // {0} name
@@ -278,8 +300,10 @@ namespace PadForge.SteamWorkshop.Translation
         /// (mouse buttons, wheel, trigger-axis targets): the binding stays
         /// momentary.</summary>
         public const string ToggleDropped = "Workshop_Tr_ToggleDropped";
-        /// <summary>A Long_Press key binding fires one tap at the hold
-        /// threshold; Steam holds the key down until release.</summary>
+        /// <summary>Legacy-render-only since translator v10 (G10): a
+        /// Long_Press key rides the HoldKey pair now (down at threshold,
+        /// up on release), so nothing taps. Kept, with its resx strings,
+        /// for reports serialized by older translator versions.</summary>
         public const string LongPressKeyTap = "Workshop_Tr_LongPressKeyTap";                       // {0} key
         /// <summary>camera_reset re-levels the camera via calibrated mouse
         /// motion in Steam; PadForge re-references its gyro aim state.</summary>
@@ -345,5 +369,21 @@ namespace PadForge.SteamWorkshop.Translation
         /// flick-stick inversion (the angle read ignores Invert). The row is
         /// emitted un-inverted; this names the dropped flip.</summary>
         public const string AxisInversionNotApplied = "Workshop_Tr_AxisInversionNotApplied";       // {0} invert keys
+
+        // ── Translator v10 (gap closure) vocabulary ──
+        /// <summary>An activator-level haptic_intensity became a reactive
+        /// rumble pulse macro. Partial by nature: Steam ticks the pad
+        /// actuator, PadForge pulses the rumble motors.</summary>
+        public const string HapticPulseEmitted = "Workshop_Tr_HapticPulseEmitted";                 // {0} level
+        /// <summary>A trackpad scrollwheel group lowered onto the vertical
+        /// finger drag: circular scratch geometry approximated as a linear
+        /// drag (up = counterclockwise, down = clockwise).</summary>
+        public const string ScrollWheelApproximated = "Workshop_Tr_ScrollWheelApproximated";
+        /// <summary>SCREENSHOT approximated as a PrintScreen key tap; the
+        /// Steam overlay's capture pipeline has no client here.</summary>
+        public const string ScreenshotApproximated = "Workshop_Tr_ScreenshotApproximated";
+        /// <summary>SHOW_KEYBOARD approximated as launching the Windows
+        /// on-screen keyboard (TabTip.exe / osk.exe).</summary>
+        public const string ShowKeyboardApproximated = "Workshop_Tr_ShowKeyboardApproximated";
     }
 }

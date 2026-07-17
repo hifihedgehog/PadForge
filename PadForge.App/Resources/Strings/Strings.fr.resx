@@ -2414,7 +2414,6 @@
   <data name="Workshop_Tr_RowEmitted" xml:space="preserve"><value>traduite</value></data>
   <data name="Workshop_Tr_MacroEmitted" xml:space="preserve"><value>traduite en macro</value></data>
   <data name="Workshop_Tr_ShiftLayerEmitted" xml:space="preserve"><value>couche : {0}</value></data>
-  <data name="Workshop_Tr_TrackpadFeatureRequired" xml:space="preserve"><value>nécessite la fonction de pavé tactile {0}</value></data>
   <data name="Workshop_Tr_TouchpadTuningNotPerRow" xml:space="preserve"><value>le réglage du pavé tactile s'applique par pavé, pas par ligne</value></data>
   <data name="Workshop_Tr_SoftPressApproximated" xml:space="preserve"><value>Soft_Press approximé en seuil d'appui</value></data>
   <data name="Workshop_Tr_TriggerThresholdApproximated" xml:space="preserve"><value>seuil de gâchette approximé</value></data>
@@ -2537,7 +2536,6 @@
   <data name="Pad_MouseGestures_CustomInput" xml:space="preserve"><value>Entrée d'activation personnalisée</value></data>
   <data name="Pad_MouseGestures_CustomInput_Tooltip" xml:space="preserve"><value>L'entrée qui arme la session de gestes Personnalisé tant qu'elle est maintenue, enregistrée depuis n'importe quel appareil de ce slot. Les boutons et touches arment tant qu'ils sont enfoncés. Les entrées analogiques comme une pédale arment au-delà de la moitié de la course.</value></data>
   <data name="Pad_ResetMouseGestureCustomInput" xml:space="preserve"><value>Réinitialiser l'entrée d'activation personnalisée</value></data>
-  <data name="Workshop_Tr_ScrollGestureModeNotSupported" xml:space="preserve"><value>mode de balayage directionnel non pris en charge</value></data>
   <data name="Workshop_Tr_HapticIntensityDropped" xml:space="preserve"><value>retour haptique abandonné ({0} affectations)</value></data>
   <data name="Workshop_Tr_ResponseCurveNotSupported" xml:space="preserve"><value>réglages de courbe de réponse et de plage abandonnés ({0})</value></data>
   <data name="Workshop_Tr_GyroButtonMaskDropped" xml:space="preserve"><value>réglage d'activation du gyroscope {0}={1} abandonné (l'activation du gyroscope se règle par manette)</value></data>
@@ -2562,6 +2560,10 @@
   <data name="Workshop_Tr_ScreenshotApproximated" xml:space="preserve"><value>SCREENSHOT approximé par un appui sur la touche Impr. écran</value></data>
   <data name="Workshop_Tr_ShowKeyboardApproximated" xml:space="preserve"><value>SHOW_KEYBOARD approximé par le lancement du clavier visuel</value></data>
   <data name="Workshop_Tr_MouseDeltaNotSupported" xml:space="preserve"><value>déplacement relatif du curseur mouse_delta ({0}) non pris en charge</value></data>
+  <data name="Workshop_Tr_GyroSwipeNotSupported" xml:space="preserve"><value>le balayage directionnel hébergé sur le gyroscope n'a pas de canal moteur (lecture de vitesse non signée, pas de déclenchement unique par direction)</value></data>
+  <data name="Workshop_Tr_SwipeSurfaceNotSupported" xml:space="preserve"><value>le balayage directionnel hébergé sur {0} n'a pas de surface directionnelle à balayer</value></data>
+  <data name="Workshop_Tr_FlickAxisTargetNotSupported" xml:space="preserve"><value>une pichenette de stick n'a pas de primitive d'appui pour les cibles gâchette ou axe de stick</value></data>
+  <data name="Workshop_Tr_FlickBindingNotOneShot" xml:space="preserve"><value>ce type d'affectation nécessite un état maintenu, qu'une pichenette de stick unique ne peut pas porter</value></data>
   <data name="Macro_HoldForMs" xml:space="preserve"><value>Au maintien</value></data>
   <data name="Macro_HoldForMs_Tooltip" xml:space="preserve"><value>Se déclenche une fois lorsque le déclencheur a été maintenu en continu pendant la durée de maintien. Un appui plus court ne fait rien.</value></data>
   <data name="Macro_TriggerHoldMs_Label" xml:space="preserve"><value>Durée de maintien</value></data>

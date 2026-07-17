@@ -164,9 +164,10 @@ namespace PadForge.SteamWorkshop.Tests
             var row = Assert.Single(p.KbmMappingSet.Rows);
             Assert.Equal("KbmKey45", row.Target);
             Assert.Equal("Touchpad 0 TouchLeft", Assert.Single(row.Sources).Descriptor);
-            Assert.Contains(p.Report.Entries, e =>
-                e.ReasonKey == TranslationReasons.TrackpadFeatureRequired
-                && e.ReasonArgs.Contains(PhysicalSlotResolver.FeatureTouchSpots));
+            // Touch spots self-arm at apply (v14): Clean row, no feature
+            // note.
+            Assert.All(p.Report.Entries, e =>
+                Assert.Equal(TranslationStatus.Clean, e.Status));
         }
 
         [Fact]
@@ -231,9 +232,9 @@ namespace PadForge.SteamWorkshop.Tests
             Assert.Equal("Touchpad 0 Finger 0 X Right", Assert.Single(x.Sources).Descriptor);
             var y = Assert.Single(p.XboxMappingSet.Rows, r => r.Target == "RightThumbAxisY");
             Assert.Equal("Touchpad 0 Finger 0 Y Right", Assert.Single(y.Sources).Descriptor);
-            // Live by default: no gesture feature required.
+            // Live by default: no gesture feature involved at all.
             Assert.DoesNotContain(p.Report.Entries, e =>
-                e.ReasonKey == TranslationReasons.TrackpadFeatureRequired);
+                e.ReasonKey == "Workshop_Tr_TrackpadFeatureRequired");
         }
 
         [Fact]
@@ -379,10 +380,11 @@ namespace PadForge.SteamWorkshop.Tests
             Assert.Equal(TranslatedMacroAction.ToggleKey, m.Action);
             Assert.Equal(new[] { "Touchpad 0 Click", "Touchpad 0 TouchLeft" },
                 m.TriggerInputDescriptors.ToArray());
-            // Feature-gated trigger: the latch entry is the honest Partial.
+            // The touch-spot leg self-arms at apply (v14): the latch
+            // entry is Clean.
             var entry = Assert.Single(p.Report.Entries,
                 e => e.ReasonKey == TranslationReasons.ToggleLatchEmitted);
-            Assert.Equal(TranslationStatus.Partial, entry.Status);
+            Assert.Equal(TranslationStatus.Clean, entry.Status);
         }
 
         [Fact]
@@ -429,7 +431,7 @@ namespace PadForge.SteamWorkshop.Tests
             Assert.Equal("Touchpad 0 Pointer Y Right", sy.Descriptor);
             Assert.Equal(0.80, sy.ParamPointerCenter, 6);
             Assert.DoesNotContain(p.Report.Entries, e =>
-                e.ReasonKey == TranslationReasons.TrackpadFeatureRequired);
+                e.ReasonKey == "Workshop_Tr_TrackpadFeatureRequired");
             Assert.DoesNotContain(p.Report.Entries, e =>
                 e.ReasonKey == TranslationReasons.MouseRegionApproximated);
         }

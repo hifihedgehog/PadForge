@@ -353,10 +353,12 @@ namespace PadForge.SteamWorkshop.Tests
         // ─── Named-skip batch ───────────────────────────────────────────
 
         [Fact]
-        public void TwoDScroll_NonTrackpadHost_GetsNamedSkip()
+        public void TwoDScroll_GyroHost_NamesTheUnsignedRateSkip()
         {
-            // Trackpad hosts lower onto the swipe gestures since v10 (G3);
-            // a gyro host has no swipe surface and keeps the named skip.
+            // Trackpad hosts lower onto the swipe gestures since v10 (G3)
+            // and stick hosts onto wedge taps (v12). The gyro read is an
+            // unsigned rate with no per-direction one-shot, so the gyro
+            // arm names exactly that fact (v14).
             string vdf = Head
                 + Group(1, "2dscroll", Inputs(Inp("dpad_east", "key_press F9")))
                 + Preset(0, "Default", (1, "gyro active"))
@@ -364,9 +366,25 @@ namespace PadForge.SteamWorkshop.Tests
             var p = Translate(vdf);
             var entry = Assert.Single(p.Report.Entries);
             Assert.Equal(TranslationStatus.Skipped, entry.Status);
-            Assert.Equal(TranslationReasons.ScrollGestureModeNotSupported, entry.ReasonKey);
+            Assert.Equal(TranslationReasons.GyroSwipeNotSupported, entry.ReasonKey);
             Assert.DoesNotContain(p.Report.Entries, e =>
                 e.ReasonKey == TranslationReasons.UnknownGroupMode);
+        }
+
+        [Fact]
+        public void TwoDScroll_ButtonHost_NamesTheMissingSurface()
+        {
+            // A hand-hacked config can host 2dscroll on a surface with no
+            // 2D direction read at all. The skip names the host (v14).
+            string vdf = Head
+                + Group(1, "2dscroll", Inputs(Inp("dpad_east", "key_press F9")))
+                + Preset(0, "Default", (1, "button_diamond active"))
+                + "}\n";
+            var p = Translate(vdf);
+            var entry = Assert.Single(p.Report.Entries);
+            Assert.Equal(TranslationStatus.Skipped, entry.Status);
+            Assert.Equal(TranslationReasons.SwipeSurfaceNotSupported, entry.ReasonKey);
+            Assert.Equal("ButtonDiamond", Assert.Single(entry.ReasonArgs));
         }
 
         [Fact]
@@ -620,8 +638,8 @@ namespace PadForge.SteamWorkshop.Tests
         {
             // Wave 3: the trackpad-wedge-hosted set_led triggers on the
             // wedge gesture descriptor (empty-guid InputDevice entry).
-            // The wedge needs the Touchpad-tab joystick-output feature,
-            // so the entry is the honest feature Partial.
+            // The wedge's joystick-output feature self-arms at apply
+            // since v14, so the macro reports Clean.
             string vdf = Head
                 + Group(1, "dpad", Inputs(Inp("dpad_north", "controller_action set_led 255 0 0 100 255 1")))
                 + Preset(0, "Default", (1, "left_trackpad active"))
@@ -636,9 +654,10 @@ namespace PadForge.SteamWorkshop.Tests
                 m.TriggerInputDescriptors.ToArray());
             Assert.Equal(0, (int)m.TriggerXboxButtons);
             Assert.Contains(p.Report.Entries, e =>
-                e.ReasonKey == TranslationReasons.TrackpadFeatureRequired
-                && e.Status == TranslationStatus.Partial
-                && e.ReasonArgs.Contains(PhysicalSlotResolver.FeatureJoystickOutput));
+                e.ReasonKey == TranslationReasons.MacroEmitted
+                && e.Status == TranslationStatus.Clean);
+            Assert.DoesNotContain(p.Report.Entries, e =>
+                e.ReasonKey == "Workshop_Tr_TrackpadFeatureRequired");
             Assert.DoesNotContain(p.Report.Entries, e =>
                 e.ReasonKey == TranslationReasons.NoDeviceFreeTrigger);
         }
@@ -676,12 +695,12 @@ namespace PadForge.SteamWorkshop.Tests
         // ─── Translator version ─────────────────────────────────────────
 
         [Fact]
-        public void TranslatorVersion_IsThirteen_AndRidesTheSummary()
+        public void TranslatorVersion_IsFourteen_AndRidesTheSummary()
         {
-            Assert.Equal(13, TranslationReport.CurrentTranslatorVersion);
+            Assert.Equal(14, TranslationReport.CurrentTranslatorVersion);
             var p = Translate(Head + "}\n");
-            Assert.Equal(13, p.Report.TranslatorVersion);
-            Assert.StartsWith("v13 ", p.Report.ToSummaryString());
+            Assert.Equal(14, p.Report.TranslatorVersion);
+            Assert.StartsWith("v14 ", p.Report.ToSummaryString());
         }
     }
 }

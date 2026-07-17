@@ -2414,7 +2414,6 @@
   <data name="Workshop_Tr_RowEmitted" xml:space="preserve"><value>traduzida</value></data>
   <data name="Workshop_Tr_MacroEmitted" xml:space="preserve"><value>traduzida como macro</value></data>
   <data name="Workshop_Tr_ShiftLayerEmitted" xml:space="preserve"><value>camada: {0}</value></data>
-  <data name="Workshop_Tr_TrackpadFeatureRequired" xml:space="preserve"><value>precisa do recurso de touchpad {0}</value></data>
   <data name="Workshop_Tr_TouchpadTuningNotPerRow" xml:space="preserve"><value>o ajuste do touchpad se aplica por pad, não por linha</value></data>
   <data name="Workshop_Tr_SoftPressApproximated" xml:space="preserve"><value>Soft_Press aproximado como limiar de pressão</value></data>
   <data name="Workshop_Tr_TriggerThresholdApproximated" xml:space="preserve"><value>limiar de gatilho aproximado</value></data>
@@ -2537,7 +2536,6 @@
   <data name="Pad_MouseGestures_CustomInput" xml:space="preserve"><value>Entrada de Ativação Personalizada</value></data>
   <data name="Pad_MouseGestures_CustomInput_Tooltip" xml:space="preserve"><value>A entrada que arma a sessão de gestos Personalizado enquanto mantida, gravada de qualquer dispositivo neste slot. Botões e teclas armam enquanto pressionados. Entradas analógicas como um pedal armam além de metade do curso.</value></data>
   <data name="Pad_ResetMouseGestureCustomInput" xml:space="preserve"><value>Restaurar Entrada de Ativação Personalizada</value></data>
-  <data name="Workshop_Tr_ScrollGestureModeNotSupported" xml:space="preserve"><value>modo de deslize direcional não suportado</value></data>
   <data name="Workshop_Tr_HapticIntensityDropped" xml:space="preserve"><value>resposta háptica descartada ({0} atribuições)</value></data>
   <data name="Workshop_Tr_ResponseCurveNotSupported" xml:space="preserve"><value>configurações de curva de resposta e alcance descartadas ({0})</value></data>
   <data name="Workshop_Tr_GyroButtonMaskDropped" xml:space="preserve"><value>configuração de ativação do giroscópio {0}={1} descartada (a ativação do giroscópio é configurada por controle)</value></data>
@@ -2562,6 +2560,10 @@
   <data name="Workshop_Tr_ScreenshotApproximated" xml:space="preserve"><value>SCREENSHOT aproximado como toque na tecla Print Screen</value></data>
   <data name="Workshop_Tr_ShowKeyboardApproximated" xml:space="preserve"><value>SHOW_KEYBOARD aproximado como abertura do teclado virtual</value></data>
   <data name="Workshop_Tr_MouseDeltaNotSupported" xml:space="preserve"><value>deslocamento relativo do cursor mouse_delta ({0}) não suportado</value></data>
+  <data name="Workshop_Tr_GyroSwipeNotSupported" xml:space="preserve"><value>o deslize direcional hospedado no giroscópio não tem canal no motor (leitura de taxa sem sinal, sem disparo único por direção)</value></data>
+  <data name="Workshop_Tr_SwipeSurfaceNotSupported" xml:space="preserve"><value>o deslize direcional hospedado em {0} não tem superfície direcional para deslizar</value></data>
+  <data name="Workshop_Tr_FlickAxisTargetNotSupported" xml:space="preserve"><value>um flick do analógico não tem primitiva de toque para alvos de gatilho ou de eixo do analógico</value></data>
+  <data name="Workshop_Tr_FlickBindingNotOneShot" xml:space="preserve"><value>este tipo de vínculo precisa de estado mantido, que um flick único do analógico não consegue carregar</value></data>
   <data name="Macro_HoldForMs" xml:space="preserve"><value>Ao Segurar</value></data>
   <data name="Macro_HoldForMs_Tooltip" xml:space="preserve"><value>Dispara uma vez depois que o gatilho for mantido continuamente pelo tempo de retenção. Um toque mais curto não faz nada.</value></data>
   <data name="Macro_TriggerHoldMs_Label" xml:space="preserve"><value>Tempo de Retenção</value></data>

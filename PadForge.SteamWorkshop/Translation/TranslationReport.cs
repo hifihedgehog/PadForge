@@ -175,8 +175,23 @@ namespace PadForge.SteamWorkshop.Translation
         /// gyro_button_invert joins the named gyro-mask note, and the
         /// census-grounded feel keys (acceleration, friction_vert_scale,
         /// mouse_dampening_trigger, mouse_move_threshold, anti_deadzone)
-        /// join their named drop lists.</summary>
-        public const int CurrentTranslatorVersion = 13;
+        /// join their named drop lists.
+        /// v14: Self-arming gesture reads and per-arm swipe skips. The
+        /// TrackpadFeatureRequired vocabulary retires whole: imported sets
+        /// are Authoritative, and the engine's gesture gate now treats a
+        /// descriptor as enabled when an authoritative slot's mapping set
+        /// (rows, activator legs, device-free macro triggers) references
+        /// it (TouchpadGestureAutoArm, gate = user toggle OR
+        /// referenced-by-mapping), so gesture-hosted rows, macros, and
+        /// chord legs report Clean with no user action required. The
+        /// generic directional-swipe skip splits into precise per-arm
+        /// facts: gyro hosts name the unsigned-rate read
+        /// (GyroSwipeNotSupported), non-2D hosts name the missing
+        /// direction surface (SwipeSurfaceNotSupported), and the stick
+        /// flick arms name the axis-natured target with no tap primitive
+        /// (FlickAxisTargetNotSupported) or the binding kind with no
+        /// one-shot form (FlickBindingNotOneShot).</summary>
+        public const int CurrentTranslatorVersion = 14;
 
         public int TranslatorVersion { get; set; } = CurrentTranslatorVersion;
 
@@ -262,7 +277,10 @@ namespace PadForge.SteamWorkshop.Translation
         public const string RowEmitted = "Workshop_Tr_RowEmitted";
         public const string MacroEmitted = "Workshop_Tr_MacroEmitted";
         public const string ShiftLayerEmitted = "Workshop_Tr_ShiftLayerEmitted";                 // {0} layer name
-        public const string TrackpadFeatureRequired = "Workshop_Tr_TrackpadFeatureRequired";     // {0} feature name
+        // TrackpadFeatureRequired retired in v14: imported sets are
+        // Authoritative and the engine auto-arms every referenced gesture
+        // family at apply (TouchpadGestureAutoArm), so no note remains and
+        // the key plus its locale strings were deleted.
         // Legacy-render-only since translator v4: touchpad mouse rows carry
         // the per-row Sensitivity now (#9 B-13 widened the knob to the
         // finger reads), so nothing is dropped. Kept, with its resx
@@ -329,7 +347,11 @@ namespace PadForge.SteamWorkshop.Translation
         public const string AutomapAlsoActive = "Workshop_Tr_AutomapAlsoActive";                 // {0} source {1} target
 
         // ── Translator v2 (Wave 1a) vocabulary ──
-        public const string ScrollGestureModeNotSupported = "Workshop_Tr_ScrollGestureModeNotSupported";
+        // ScrollGestureModeNotSupported retired in v14: its three emission
+        // arms carry precise per-arm reasons now (GyroSwipeNotSupported,
+        // SwipeSurfaceNotSupported, FlickAxisTargetNotSupported,
+        // FlickBindingNotOneShot) and the generic key plus its locale
+        // strings were deleted.
         public const string HapticIntensityDropped = "Workshop_Tr_HapticIntensityDropped";       // {0} count
         // Since v11 the args carry only genuinely dropped keys: stick-hosted
         // joystick groups consume the curve cluster into the per-source
@@ -444,5 +466,27 @@ namespace PadForge.SteamWorkshop.Translation
         /// vocabulary has continuous axis-driven mouse motion and the
         /// absolute warp, but no one-shot fixed-pixel nudge.</summary>
         public const string MouseDeltaNotSupported = "Workshop_Tr_MouseDeltaNotSupported";       // {0} dx dy
+
+        // ── Translator v14 (per-arm swipe skips) vocabulary ──
+        /// <summary>2dscroll hosted on the gyro. The engine's gyro button
+        /// read thresholds an unsigned rotation rate, so a signed
+        /// per-direction one-shot (flick up vs flick down) does not exist
+        /// there and the mode has no channel.</summary>
+        public const string GyroSwipeNotSupported = "Workshop_Tr_GyroSwipeNotSupported";
+        /// <summary>2dscroll hosted on a surface with no 2D direction read
+        /// to flick (button clusters, a lone trigger). Trackpads ride the
+        /// swipe gestures and sticks ride wedge tap macros. Nothing else
+        /// has a swipe to classify.</summary>
+        public const string SwipeSurfaceNotSupported = "Workshop_Tr_SwipeSurfaceNotSupported";   // {0} slot
+        /// <summary>A stick-flick binding targeting a virtual trigger pull
+        /// or stick direction. The one-shot macro vocabulary taps buttons,
+        /// keys, and mouse buttons only, and an axis write is a one-frame
+        /// set with no timed hold, so an axis-natured target has no tap
+        /// to ride.</summary>
+        public const string FlickAxisTargetNotSupported = "Workshop_Tr_FlickAxisTargetNotSupported";
+        /// <summary>A stick-flick binding whose kind needs held state
+        /// (mode shifts, layer holds, wheel detents, latches). A flick is
+        /// a one-shot with nothing held, so the kind has no carrier.</summary>
+        public const string FlickBindingNotOneShot = "Workshop_Tr_FlickBindingNotOneShot";
     }
 }

@@ -2414,7 +2414,6 @@ public class Strings : INotifyPropertyChanged
     public string Workshop_Tr_RowEmitted => Get("Workshop_Tr_RowEmitted");
     public string Workshop_Tr_MacroEmitted => Get("Workshop_Tr_MacroEmitted");
     public string Workshop_Tr_ShiftLayerEmitted => Get("Workshop_Tr_ShiftLayerEmitted");
-    public string Workshop_Tr_TrackpadFeatureRequired => Get("Workshop_Tr_TrackpadFeatureRequired");
     public string Workshop_Tr_TouchpadTuningNotPerRow => Get("Workshop_Tr_TouchpadTuningNotPerRow");
     public string Workshop_Tr_SoftPressApproximated => Get("Workshop_Tr_SoftPressApproximated");
     public string Workshop_Tr_TriggerThresholdApproximated => Get("Workshop_Tr_TriggerThresholdApproximated");
@@ -2453,7 +2452,6 @@ public class Strings : INotifyPropertyChanged
     public string Workshop_Tr_AutomapAlsoActive => Get("Workshop_Tr_AutomapAlsoActive");
     public string Workshop_Tr_ShiftLayerEmpty => Get("Workshop_Tr_ShiftLayerEmpty");
     public string Workshop_Tr_AbsoluteMouseApproximated => Get("Workshop_Tr_AbsoluteMouseApproximated");
-    public string Workshop_Tr_ScrollGestureModeNotSupported => Get("Workshop_Tr_ScrollGestureModeNotSupported");
     public string Workshop_Tr_HapticIntensityDropped => Get("Workshop_Tr_HapticIntensityDropped");
     public string Workshop_Tr_ResponseCurveNotSupported => Get("Workshop_Tr_ResponseCurveNotSupported");
     public string Workshop_Tr_GyroButtonMaskDropped => Get("Workshop_Tr_GyroButtonMaskDropped");
@@ -2478,6 +2476,10 @@ public class Strings : INotifyPropertyChanged
     public string Workshop_Tr_ScreenshotApproximated => Get("Workshop_Tr_ScreenshotApproximated");
     public string Workshop_Tr_ShowKeyboardApproximated => Get("Workshop_Tr_ShowKeyboardApproximated");
     public string Workshop_Tr_MouseDeltaNotSupported => Get("Workshop_Tr_MouseDeltaNotSupported");
+    public string Workshop_Tr_GyroSwipeNotSupported => Get("Workshop_Tr_GyroSwipeNotSupported");
+    public string Workshop_Tr_SwipeSurfaceNotSupported => Get("Workshop_Tr_SwipeSurfaceNotSupported");
+    public string Workshop_Tr_FlickAxisTargetNotSupported => Get("Workshop_Tr_FlickAxisTargetNotSupported");
+    public string Workshop_Tr_FlickBindingNotOneShot => Get("Workshop_Tr_FlickBindingNotOneShot");
     public string Status_WorkshopUpdatesOptInRequired => Get("Status_WorkshopUpdatesOptInRequired");
     public string Status_WorkshopNoImportedProfiles => Get("Status_WorkshopNoImportedProfiles");
     public string Status_WorkshopCheckingUpdates => Get("Status_WorkshopCheckingUpdates");

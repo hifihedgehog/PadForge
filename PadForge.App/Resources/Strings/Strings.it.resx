@@ -2436,7 +2436,6 @@
   <data name="Workshop_Tr_RowEmitted" xml:space="preserve"><value>tradotta</value></data>
   <data name="Workshop_Tr_MacroEmitted" xml:space="preserve"><value>tradotta come macro</value></data>
   <data name="Workshop_Tr_ShiftLayerEmitted" xml:space="preserve"><value>livello: {0}</value></data>
-  <data name="Workshop_Tr_TrackpadFeatureRequired" xml:space="preserve"><value>richiede la funzione touchpad {0}</value></data>
   <data name="Workshop_Tr_TouchpadTuningNotPerRow" xml:space="preserve"><value>la regolazione del touchpad si applica per pad, non per riga</value></data>
   <data name="Workshop_Tr_SoftPressApproximated" xml:space="preserve"><value>Soft_Press approssimato come soglia di pressione</value></data>
   <data name="Workshop_Tr_TriggerThresholdApproximated" xml:space="preserve"><value>soglia del grilletto approssimata</value></data>
@@ -2559,7 +2558,6 @@
   <data name="Pad_MouseGestures_CustomInput" xml:space="preserve"><value>Input di attivazione personalizzato</value></data>
   <data name="Pad_MouseGestures_CustomInput_Tooltip" xml:space="preserve"><value>L'input che tiene attiva la sessione di gesti Personalizzato finché è premuto, registrato da qualsiasi dispositivo di questo slot. Pulsanti e tasti attivano finché premuti. Gli input analogici come un pedale attivano oltre metà corsa.</value></data>
   <data name="Pad_ResetMouseGestureCustomInput" xml:space="preserve"><value>Ripristina input di attivazione personalizzato</value></data>
-  <data name="Workshop_Tr_ScrollGestureModeNotSupported" xml:space="preserve"><value>modalità di scorrimento direzionale non supportata</value></data>
   <data name="Workshop_Tr_HapticIntensityDropped" xml:space="preserve"><value>feedback aptico scartato ({0} assegnazioni)</value></data>
   <data name="Workshop_Tr_ResponseCurveNotSupported" xml:space="preserve"><value>impostazioni di curva di risposta e intervallo scartate ({0})</value></data>
   <data name="Workshop_Tr_GyroButtonMaskDropped" xml:space="preserve"><value>impostazione di attivazione del giroscopio {0}={1} scartata (l'attivazione del giroscopio si configura per controller)</value></data>
@@ -2584,6 +2582,10 @@
   <data name="Workshop_Tr_ScreenshotApproximated" xml:space="preserve"><value>SCREENSHOT approssimato con la pressione del tasto Stamp</value></data>
   <data name="Workshop_Tr_ShowKeyboardApproximated" xml:space="preserve"><value>SHOW_KEYBOARD approssimato con l'avvio della tastiera su schermo</value></data>
   <data name="Workshop_Tr_MouseDeltaNotSupported" xml:space="preserve"><value>spostamento relativo del cursore mouse_delta ({0}) non supportato</value></data>
+  <data name="Workshop_Tr_GyroSwipeNotSupported" xml:space="preserve"><value>lo scorrimento direzionale ospitato sul giroscopio non ha un canale nel motore (lettura di velocità senza segno, nessuno scatto singolo per direzione)</value></data>
+  <data name="Workshop_Tr_SwipeSurfaceNotSupported" xml:space="preserve"><value>lo scorrimento direzionale ospitato su {0} non ha una superficie direzionale da scorrere</value></data>
+  <data name="Workshop_Tr_FlickAxisTargetNotSupported" xml:space="preserve"><value>uno scatto della levetta non ha una primitiva di tocco per bersagli grilletto o asse della levetta</value></data>
+  <data name="Workshop_Tr_FlickBindingNotOneShot" xml:space="preserve"><value>questo tipo di assegnazione richiede uno stato mantenuto, che un singolo scatto della levetta non può portare</value></data>
   <data name="Macro_HoldForMs" xml:space="preserve"><value>Tenendo premuto</value></data>
   <data name="Macro_HoldForMs_Tooltip" xml:space="preserve"><value>Si attiva una volta dopo che l'attivatore è stato tenuto premuto ininterrottamente per il tempo di mantenimento. Un tocco più breve non fa nulla.</value></data>
   <data name="Macro_TriggerHoldMs_Label" xml:space="preserve"><value>Tempo di mantenimento</value></data>

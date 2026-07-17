@@ -262,12 +262,11 @@ namespace PadForge.SteamWorkshop.Tests
             Assert.Equal("Layer_42_0_MS_joystick_2", act.LayerMask);
             Assert.True(act.InheritUnmapped);
 
-            // The chord's touch-spot leg needs the Touchpad-tab feature.
-            var note = p.Report.Entries.Single(
-                e => e.ReasonKey == TranslationReasons.TrackpadFeatureRequired
-                    && e.SourcePath.Contains("left_click"));
-            Assert.Equal(TranslationStatus.Partial, note.Status);
-            Assert.Equal(PhysicalSlotResolver.FeatureTouchSpots, Assert.Single(note.ReasonArgs));
+            // The chord's touch-spot leg self-arms at apply (v14): the
+            // activator's descriptors reference the spot, so no feature
+            // note remains.
+            Assert.DoesNotContain(p.Report.Entries,
+                e => e.ReasonKey == "Workshop_Tr_TrackpadFeatureRequired");
         }
 
         [Fact]

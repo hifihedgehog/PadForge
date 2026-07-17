@@ -99,7 +99,8 @@ namespace PadForge.SteamWorkshop.Tests
             Assert.False(east.TriggerDescriptorInvert); // east = X upper half
 
             Assert.DoesNotContain(p.Report.Entries, e =>
-                e.ReasonKey == TranslationReasons.ScrollGestureModeNotSupported);
+                e.ReasonKey == TranslationReasons.FlickBindingNotOneShot
+                || e.ReasonKey == TranslationReasons.FlickAxisTargetNotSupported);
             Assert.Equal(2, p.Report.Entries.Count(e =>
                 e.ReasonKey == TranslationReasons.MacroEmitted
                 && e.Status == TranslationStatus.Clean));
@@ -197,16 +198,19 @@ namespace PadForge.SteamWorkshop.Tests
             Assert.Empty(p.Macros);
             Assert.Empty(p.XboxMappingSet.ShiftActivators);
             Assert.Empty(p.KbmMappingSet.ShiftActivators);
+            // A mode shift needs held state, which a one-shot flick has
+            // no carrier for: the per-arm reason names that (v14).
             Assert.Contains(p.Report.Entries, e =>
-                e.ReasonKey == TranslationReasons.ScrollGestureModeNotSupported
+                e.ReasonKey == TranslationReasons.FlickBindingNotOneShot
                 && e.Status == TranslationStatus.Skipped);
         }
 
         [Fact]
         public void TwoDScroll_StickHost_TriggerAxisTarget_KeepsNamedSkip()
         {
-            // No discrete trigger-pull tap primitive exists, same gate as
-            // the release-activator path.
+            // No discrete trigger-pull tap primitive exists (AxisSet is a
+            // one-frame write), same gate as the release-activator path.
+            // The per-arm reason names the axis-natured target (v14).
             string vdf = Head
                 + Group(1, "2dscroll", Inputs(Inp("dpad_south", "xinput_button TRIGGER_LEFT")))
                 + Preset(0, "Default", (1, "joystick active"))
@@ -215,7 +219,7 @@ namespace PadForge.SteamWorkshop.Tests
 
             Assert.Empty(p.Macros);
             Assert.Contains(p.Report.Entries, e =>
-                e.ReasonKey == TranslationReasons.ScrollGestureModeNotSupported
+                e.ReasonKey == TranslationReasons.FlickAxisTargetNotSupported
                 && e.Status == TranslationStatus.Skipped);
         }
 

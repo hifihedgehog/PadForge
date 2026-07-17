@@ -2414,7 +2414,6 @@
   <data name="Workshop_Tr_RowEmitted" xml:space="preserve"><value>已转换</value></data>
   <data name="Workshop_Tr_MacroEmitted" xml:space="preserve"><value>已转换为宏</value></data>
   <data name="Workshop_Tr_ShiftLayerEmitted" xml:space="preserve"><value>层：{0}</value></data>
-  <data name="Workshop_Tr_TrackpadFeatureRequired" xml:space="preserve"><value>需要触控板功能 {0}</value></data>
   <data name="Workshop_Tr_TouchpadTuningNotPerRow" xml:space="preserve"><value>触控板调节按整块触控板生效，而非按行</value></data>
   <data name="Workshop_Tr_SoftPressApproximated" xml:space="preserve"><value>Soft_Press 近似为按压阈值</value></data>
   <data name="Workshop_Tr_TriggerThresholdApproximated" xml:space="preserve"><value>扳机阈值已近似处理</value></data>
@@ -2537,7 +2536,6 @@
   <data name="Pad_MouseGestures_CustomInput" xml:space="preserve"><value>自定义激活输入</value></data>
   <data name="Pad_MouseGestures_CustomInput_Tooltip" xml:space="preserve"><value>按住期间使自定义手势会话待命的输入，可从此插槽上的任意设备录制。按钮和按键在按下期间待命。踏板等模拟输入超过一半行程时待命。</value></data>
   <data name="Pad_ResetMouseGestureCustomInput" xml:space="preserve"><value>重置自定义激活输入</value></data>
-  <data name="Workshop_Tr_ScrollGestureModeNotSupported" xml:space="preserve"><value>不支持方向滑动模式</value></data>
   <data name="Workshop_Tr_HapticIntensityDropped" xml:space="preserve"><value>已丢弃触觉反馈（{0} 个绑定）</value></data>
   <data name="Workshop_Tr_ResponseCurveNotSupported" xml:space="preserve"><value>已丢弃响应曲线和范围设置（{0}）</value></data>
   <data name="Workshop_Tr_GyroButtonMaskDropped" xml:space="preserve"><value>已丢弃陀螺仪激活设置 {0}={1}（陀螺仪激活按每个手柄配置）</value></data>
@@ -2562,6 +2560,10 @@
   <data name="Workshop_Tr_ScreenshotApproximated" xml:space="preserve"><value>SCREENSHOT 近似为 PrintScreen 按键</value></data>
   <data name="Workshop_Tr_ShowKeyboardApproximated" xml:space="preserve"><value>SHOW_KEYBOARD 近似为启动屏幕键盘</value></data>
   <data name="Workshop_Tr_MouseDeltaNotSupported" xml:space="preserve"><value>不支持光标相对移动 mouse_delta ({0})</value></data>
+  <data name="Workshop_Tr_GyroSwipeNotSupported" xml:space="preserve"><value>陀螺仪上的方向滑动没有引擎通道（无符号速率读取，无法按方向单次触发）</value></data>
+  <data name="Workshop_Tr_SwipeSurfaceNotSupported" xml:space="preserve"><value>{0} 上的方向滑动没有可滑动的方向表面</value></data>
+  <data name="Workshop_Tr_FlickAxisTargetNotSupported" xml:space="preserve"><value>摇杆快拨没有针对扳机或摇杆轴目标的点按原语</value></data>
+  <data name="Workshop_Tr_FlickBindingNotOneShot" xml:space="preserve"><value>此绑定类型需要按住状态，单次摇杆快拨无法承载</value></data>
   <data name="Macro_HoldForMs" xml:space="preserve"><value>按住时</value></data>
   <data name="Macro_HoldForMs_Tooltip" xml:space="preserve"><value>在触发器被连续按住达到保持时间后触发一次。更短的点按不起作用。</value></data>
   <data name="Macro_TriggerHoldMs_Label" xml:space="preserve"><value>保持时间</value></data>

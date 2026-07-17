@@ -190,7 +190,7 @@ namespace PadForge.SteamWorkshop.Tests
             Assert.DoesNotContain(p.KbmMappingSet.Rows, r =>
                 r.Sources.Any(s => s.Descriptor.Contains("TouchLeft") || s.Descriptor.Contains("TouchRight")));
             Assert.DoesNotContain(p.Report.Entries, e =>
-                e.ReasonKey == TranslationReasons.TrackpadFeatureRequired);
+                e.ReasonKey == "Workshop_Tr_TrackpadFeatureRequired");
             Assert.DoesNotContain(p.Report.Entries, e =>
                 e.ReasonKey == TranslationReasons.TouchMenuNeedsOverlay);
         }

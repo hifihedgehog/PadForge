@@ -2545,7 +2545,6 @@
   <data name="Workshop_Tr_RowEmitted" xml:space="preserve"><value>translated</value></data>
   <data name="Workshop_Tr_MacroEmitted" xml:space="preserve"><value>translated as a macro</value></data>
   <data name="Workshop_Tr_ShiftLayerEmitted" xml:space="preserve"><value>layer: {0}</value></data>
-  <data name="Workshop_Tr_TrackpadFeatureRequired" xml:space="preserve"><value>needs the {0} touchpad feature</value></data>
   <data name="Workshop_Tr_TouchpadTuningNotPerRow" xml:space="preserve"><value>touchpad tuning applies per pad, not per row</value></data>
   <data name="Workshop_Tr_SoftPressApproximated" xml:space="preserve"><value>Soft_Press approximated as a press threshold</value></data>
   <data name="Workshop_Tr_TriggerThresholdApproximated" xml:space="preserve"><value>trigger threshold approximated</value></data>
@@ -2584,7 +2583,6 @@
   <data name="Workshop_Tr_AutomapAlsoActive" xml:space="preserve"><value>the device automap still routes {0} to {1}</value></data>
   <data name="Workshop_Tr_ShiftLayerEmpty" xml:space="preserve"><value>layer switch dropped ({0} translated to nothing)</value></data>
   <data name="Workshop_Tr_AbsoluteMouseApproximated" xml:space="preserve"><value>absolute pointer positioning approximated as relative mouse movement</value></data>
-  <data name="Workshop_Tr_ScrollGestureModeNotSupported" xml:space="preserve"><value>directional-swipe mode not supported</value></data>
   <data name="Workshop_Tr_HapticIntensityDropped" xml:space="preserve"><value>haptic feedback dropped ({0} bindings)</value></data>
   <data name="Workshop_Tr_ResponseCurveNotSupported" xml:space="preserve"><value>response curve and range settings dropped ({0})</value></data>
   <data name="Workshop_Tr_GyroButtonMaskDropped" xml:space="preserve"><value>gyro engage setting {0}={1} dropped (gyro engage is configured per pad)</value></data>
@@ -2609,6 +2607,10 @@
   <data name="Workshop_Tr_ScreenshotApproximated" xml:space="preserve"><value>SCREENSHOT approximated as a PrintScreen key tap</value></data>
   <data name="Workshop_Tr_ShowKeyboardApproximated" xml:space="preserve"><value>SHOW_KEYBOARD approximated as launching the on-screen keyboard</value></data>
   <data name="Workshop_Tr_MouseDeltaNotSupported" xml:space="preserve"><value>relative cursor nudge mouse_delta ({0}) not supported</value></data>
+  <data name="Workshop_Tr_GyroSwipeNotSupported" xml:space="preserve"><value>gyro-hosted directional swipe has no engine channel (unsigned rate read, no per-direction one-shot)</value></data>
+  <data name="Workshop_Tr_SwipeSurfaceNotSupported" xml:space="preserve"><value>directional swipe hosted on {0} has no direction surface to flick</value></data>
+  <data name="Workshop_Tr_FlickAxisTargetNotSupported" xml:space="preserve"><value>a stick flick has no tap primitive for trigger or stick-axis targets</value></data>
+  <data name="Workshop_Tr_FlickBindingNotOneShot" xml:space="preserve"><value>this binding kind needs held state, which a one-shot stick flick cannot carry</value></data>
   <data name="Status_WorkshopUpdatesOptInRequired" xml:space="preserve"><value>Enable Community Configs to check for updates</value></data>
   <data name="Status_WorkshopNoImportedProfiles" xml:space="preserve"><value>No profiles imported from the Steam Workshop yet</value></data>
   <data name="Status_WorkshopCheckingUpdates" xml:space="preserve"><value>Checking Steam Workshop for updates…</value></data>

@@ -2558,6 +2558,10 @@
   <data name="Workshop_Tr_FlickStickTuningDropped" xml:space="preserve"><value>Flick Stick 조정 설정 제외됨({0})</value></data>
   <data name="Workshop_Tr_MouseModeTuningDropped" xml:space="preserve"><value>마우스 조정 설정 제외됨({0})</value></data>
   <data name="Workshop_Tr_AxisInversionNotApplied" xml:space="preserve"><value>축 반전이 적용되지 않음({0})</value></data>
+  <data name="Workshop_Tr_HapticPulseEmitted" xml:space="preserve"><value>햅틱 피드백을 진동 펄스로 근사(레벨 {0})</value></data>
+  <data name="Workshop_Tr_ScrollWheelApproximated" xml:space="preserve"><value>원형 스크롤 휠을 세로 드래그로 근사</value></data>
+  <data name="Workshop_Tr_ScreenshotApproximated" xml:space="preserve"><value>SCREENSHOT을 PrintScreen 키 입력으로 근사</value></data>
+  <data name="Workshop_Tr_ShowKeyboardApproximated" xml:space="preserve"><value>SHOW_KEYBOARD를 화면 키보드 실행으로 근사</value></data>
   <data name="Macro_HoldForMs" xml:space="preserve"><value>길게 누를 때</value></data>
   <data name="Macro_HoldForMs_Tooltip" xml:space="preserve"><value>트리거를 유지 시간 동안 계속 누르고 있으면 한 번 실행됩니다. 더 짧게 누르면 아무 일도 일어나지 않습니다.</value></data>
   <data name="Macro_TriggerHoldMs_Label" xml:space="preserve"><value>유지 시간</value></data>

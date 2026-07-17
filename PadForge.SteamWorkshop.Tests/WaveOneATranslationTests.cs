@@ -353,11 +353,13 @@ namespace PadForge.SteamWorkshop.Tests
         // ─── Named-skip batch ───────────────────────────────────────────
 
         [Fact]
-        public void TwoDScroll_GetsNamedSkip()
+        public void TwoDScroll_NonTrackpadHost_GetsNamedSkip()
         {
+            // Trackpad hosts lower onto the swipe gestures since v10 (G3);
+            // a gyro host has no swipe surface and keeps the named skip.
             string vdf = Head
                 + Group(1, "2dscroll", Inputs(Inp("dpad_east", "key_press F9")))
-                + Preset(0, "Default", (1, "right_trackpad active"))
+                + Preset(0, "Default", (1, "gyro active"))
                 + "}\n";
             var p = Translate(vdf);
             var entry = Assert.Single(p.Report.Entries);
@@ -368,8 +370,10 @@ namespace PadForge.SteamWorkshop.Tests
         }
 
         [Fact]
-        public void HapticIntensity_OneAggregateNotePerConfig()
+        public void HapticIntensity_EmitsRumblePulsePerActivator()
         {
+            // v10 G1: activator-level haptics become RumblePulse macros,
+            // level-scaled; a stored 0 is off and stays silent.
             string vdf = Head
                 + Group(1, "four_buttons", Inputs(
                     Inp("button_a", "key_press E", activatorSettings: ActSettings(("haptic_intensity", "2"))),
@@ -378,10 +382,15 @@ namespace PadForge.SteamWorkshop.Tests
                 + Preset(0, "Default", (1, "button_diamond active"))
                 + "}\n";
             var p = Translate(vdf);
-            var haptic = Assert.Single(p.Report.Entries, e =>
+            var pulses = p.Macros.Where(m => m.Action == TranslatedMacroAction.RumblePulse).ToList();
+            Assert.Equal(2, pulses.Count);
+            Assert.Equal(new[] { 66, 33 }, pulses.Select(m => m.RumbleStrengthPercent).ToArray());
+            Assert.All(pulses, m => Assert.False(m.ConsumeTrigger));
+            Assert.Equal(2, p.Report.Entries.Count(e =>
+                e.ReasonKey == TranslationReasons.HapticPulseEmitted
+                && e.Status == TranslationStatus.Partial));
+            Assert.DoesNotContain(p.Report.Entries, e =>
                 e.ReasonKey == TranslationReasons.HapticIntensityDropped);
-            Assert.Equal(TranslationStatus.Partial, haptic.Status);
-            Assert.Equal("2", Assert.Single(haptic.ReasonArgs)); // the 0 is off = faithful
         }
 
         [Fact]
@@ -503,11 +512,12 @@ namespace PadForge.SteamWorkshop.Tests
         }
 
         [Fact]
-        public void LongPress_KeyBinding_BecomesHoldThresholdTapMacro()
+        public void LongPress_KeyBinding_BecomesHoldKeyPairMacro()
         {
-            // Wave 2A: a Long_Press key rides the HoldForMs macro trigger,
-            // firing one tap at the threshold (Partial: Steam holds the key
-            // until release).
+            // v10 G10: a Long_Press key rides the HoldForMs HoldKey macro,
+            // which the materializer lowers to a press-until-release +
+            // OnRelease KeyRelease pair (Steam's exact semantics), retiring
+            // the wave-2A tap-at-threshold approximation.
             string vdf = Head
                 + Group(1, "four_buttons", Inputs(
                     Inp("button_a", "key_press F", activator: "Long_Press",
@@ -517,14 +527,14 @@ namespace PadForge.SteamWorkshop.Tests
             var p = Translate(vdf);
             Assert.Empty(p.KbmMappingSet.Rows);
             var m = Assert.Single(p.Macros);
-            Assert.Equal(TranslatedMacroAction.KeyTap, m.Action);
+            Assert.Equal(TranslatedMacroAction.HoldKey, m.Action);
             Assert.Equal("HoldForMs", m.TriggerMode);
             Assert.Equal(224, m.TriggerHoldMs);
             Assert.Equal(PadForge.Engine.Gamepad.A, m.TriggerXboxButtons);
             Assert.Equal(0x46, m.VirtualKey); // VK_F
-            var entry = Assert.Single(p.Report.Entries);
-            Assert.Equal(TranslationStatus.Partial, entry.Status);
-            Assert.Equal(TranslationReasons.LongPressKeyTap, entry.ReasonKey);
+            Assert.False(m.ConsumeTrigger); // the OnRelease twin reads the same trigger
+            Assert.DoesNotContain(p.Report.Entries,
+                e => e.ReasonKey == TranslationReasons.LongPressKeyTap);
         }
 
         [Fact]
@@ -661,12 +671,12 @@ namespace PadForge.SteamWorkshop.Tests
         // ─── Translator version ─────────────────────────────────────────
 
         [Fact]
-        public void TranslatorVersion_IsNine_AndRidesTheSummary()
+        public void TranslatorVersion_IsTen_AndRidesTheSummary()
         {
-            Assert.Equal(9, TranslationReport.CurrentTranslatorVersion);
+            Assert.Equal(10, TranslationReport.CurrentTranslatorVersion);
             var p = Translate(Head + "}\n");
-            Assert.Equal(9, p.Report.TranslatorVersion);
-            Assert.StartsWith("v9 ", p.Report.ToSummaryString());
+            Assert.Equal(10, p.Report.TranslatorVersion);
+            Assert.StartsWith("v10 ", p.Report.ToSummaryString());
         }
     }
 }

@@ -307,10 +307,11 @@ namespace PadForge.SteamWorkshop.Tests
         public void Ps4_HalfDpadWithOnlySkippedBindings_GetsNoHalfNote()
         {
             // A group whose bindings all skip approximates nothing: the
-            // half note stays out of the report.
+            // half note stays out of the report. (SCREENSHOT emits a macro
+            // since v10, so the still-skipped lizard toggle carries this.)
             string vdf = HeadPs4
                 + Group(1, "dpad", Inputs(
-                    Inp("dpad_north", "controller_action SCREENSHOT"))
+                    Inp("dpad_north", "controller_action TOGGLE_LIZARD_MODE"))
                     + Settings(("requires_click", "0")))
                 + Preset(0, "Default", (1, "right_trackpad active"))
                 + "}\n";

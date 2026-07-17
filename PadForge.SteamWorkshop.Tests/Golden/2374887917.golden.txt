@@ -73,8 +73,13 @@ xbox rows: 32
     <- Gamepad RightStickX
   Layer_2374887917_1_MS_right_joystick_17 | RightThumbAxisY
     <- Gamepad RightStickY
-xbox activators: 1
+xbox activators: 6
   Hold Layer_2374887917_0_MS_right_joystick_14 | Gamepad RightShoulder | inherit | name=right_joystick shift
+  Cycle Layer_2374887917_1 cycle=Layer_2374887917_1+Base | Button 11 | inherit | name=Preset_1000001
+  Toggle Layer_2374887917_1 | Button 11 | inherit | name=Preset_1000001
+  Cycle Layer_2374887917_1 cycle=Layer_2374887917_1+Base | Gamepad ButtonB | inherit | name=Preset_1000001
+  Cycle Layer_2374887917_1 cycle=Layer_2374887917_1+Base | Gamepad ButtonBack | inherit | name=Preset_1000001
+  Cycle Layer_2374887917_1 cycle=Layer_2374887917_1+Base | Touchpad 0 Click & Touchpad 0 TouchLeft | kind=Chord | inherit | name=Preset_1000001
 kbm rows: 4
   Base | KbmMouseX | Sum
     <- Gyro Yaw gyroSens=4.1
@@ -85,27 +90,46 @@ kbm rows: 4
     <- Gyro Yaw
   Layer_2374887917_1 | KbmMouseY
     <- Gyro Pitch
-macros: 0
-report: v9 rows:x32+k4 macros:0 menus:0 layers:1 clean:42 partial:16 skipped:2 errors:0
+kbm activators: 5
+  Cycle Layer_2374887917_1 cycle=Layer_2374887917_1+Base | Button 11 | inherit | name=Preset_1000001
+  Toggle Layer_2374887917_1 | Button 11 | inherit | name=Preset_1000001
+  Cycle Layer_2374887917_1 cycle=Layer_2374887917_1+Base | Gamepad ButtonB | inherit | name=Preset_1000001
+  Cycle Layer_2374887917_1 cycle=Layer_2374887917_1+Base | Gamepad ButtonBack | inherit | name=Preset_1000001
+  Cycle Layer_2374887917_1 cycle=Layer_2374887917_1+Base | Touchpad 0 Click & Touchpad 0 TouchLeft | kind=Chord | inherit | name=Preset_1000001
+macros: 7
+  macro RumblePulse OnPress | Haptic pulse (dpad_east) | btns=0x0000 in=[Gamepad DPadRight] strength=33%
+  macro RumblePulse OnPress | Haptic pulse (dpad_north) | btns=0x0000 in=[Gamepad DPadUp] strength=33%
+  macro RumblePulse OnPress | Haptic pulse (dpad_south) | btns=0x0000 in=[Gamepad DPadDown] strength=33%
+  macro RumblePulse OnPress | Haptic pulse (dpad_west) | btns=0x0000 in=[Gamepad DPadLeft] strength=33%
+  macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Gamepad LeftStick] strength=66%
+  macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Gamepad LeftTrigger] strength=66%
+  macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Gamepad RightTrigger] strength=66%
+report: v10 rows:x32+k4 macros:7 menus:0 layers:11 clean:47 partial:23 skipped:0 errors:0
+  Partial HapticPulseEmitted(1) @ Default/dpad/group 9 (dpad)/dpad_east/Full_Press => Rumble pulse macro (33%)
+  Partial HapticPulseEmitted(1) @ Default/dpad/group 9 (dpad)/dpad_north/Full_Press => Rumble pulse macro (33%)
+  Partial HapticPulseEmitted(1) @ Default/dpad/group 9 (dpad)/dpad_south/Full_Press => Rumble pulse macro (33%)
+  Partial HapticPulseEmitted(1) @ Default/dpad/group 9 (dpad)/dpad_west/Full_Press => Rumble pulse macro (33%)
   Partial GyroButtonMaskDropped(gyro_button, 20) @ Default/gyro/group 12 (absolute_mouse)
   Clean RowEmitted @ Default/gyro/group 12 (absolute_mouse) => KbmMouseX <- Gyro Yaw
   Clean RowEmitted @ Default/gyro/group 12 (absolute_mouse) => KbmMouseY <- Gyro Pitch
+  Partial HapticPulseEmitted(2) @ Default/joystick/group 3 (joystick_move)/click/Full_Press => Rumble pulse macro (66%)
   Partial TrackpadFeatureRequired(Touchpad touch spots) @ Default/left_trackpad/group 11 (single_button)/click/Full_Press => ButtonBack <- Touchpad 0 Click
   Partial ActivatorInputNotSupported @ Default/left_trackpad/group 11 (single_button)/touch/Full_Press :: controller_action hold_layer 2 0 1
+  Partial HapticPulseEmitted(2) @ Default/left_trigger/group 4 (trigger)/click/Full_Press => Rumble pulse macro (66%)
   Clean RowEmitted @ Default/right_joystick/group 13 (flickstick) => KbmMouseX <- Flick Stick Right
   Partial ResponseCurveNotSupported(deadzone_outer_radius, deadzone_shape) @ Default/right_joystick/group 14 (joystick_move)
   Partial TrackpadFeatureRequired(Touchpad touch spots) @ Default/right_trackpad/group 10 (single_button)/click/Full_Press => ButtonStart <- Touchpad 0 Click
   Partial ActivatorInputNotSupported @ Default/right_trackpad/group 10 (single_button)/touch/Full_Press :: controller_action hold_layer 2 0 1
+  Partial HapticPulseEmitted(2) @ Default/right_trigger/group 5 (trigger)/click/Full_Press => Rumble pulse macro (66%)
   Clean RowEmitted @ Default/switch/group 7 (switches)/button_back_left/Full_Press => ButtonA <- Gamepad Paddle2
   Clean RowEmitted @ Default/switch/group 7 (switches)/button_back_right/Full_Press => ButtonX <- Gamepad Paddle1
-  Skipped UnknownPhysicalInput(Switch, button_capture) @ Default/switch/group 7 (switches)/button_capture :: controller_action add_layer 2 1 1
   Partial InterruptibleDropped @ Default/switch/group 7 (switches)/right_bumper/Full_Press
   Partial RemoveLayerApproximated @ Preset_1000001/button_diamond/group 18 (four_buttons)/button_b/Full_Press :: controller_action remove_layer 2 1 1
   Clean RowEmitted @ Preset_1000001/gyro/group 25 (absolute_mouse) => KbmMouseX <- Gyro Yaw
   Clean RowEmitted @ Preset_1000001/gyro/group 25 (absolute_mouse) => KbmMouseY <- Gyro Pitch
   Partial TrackpadFeatureRequired(Touchpad touch spots) @ Preset_1000001/left_trackpad/group 19 (single_button)/click/Full_Press => ButtonBack <- Touchpad 0 Click
   Partial RemoveLayerApproximated @ Preset_1000001/left_trackpad/group 19 (single_button)/click/Full_Press :: controller_action remove_layer 2 1 1
-  Skipped UnknownPhysicalInput(Switch, button_capture) @ Preset_1000001/switch/group 15 (switches)/button_capture :: controller_action remove_layer 2 1 1
+  Partial RemoveLayerApproximated @ Preset_1000001/switch/group 15 (switches)/button_capture/Full_Press :: controller_action remove_layer 2 1 1
   Partial RemoveLayerApproximated @ Preset_1000001/switch/group 15 (switches)/button_menu/Full_Press :: controller_action remove_layer 2 1 1
   Clean RowEmitted @ Default/joystick/group 3 (joystick_move) => LeftThumbAxisX <- Gamepad LeftStickX
   Clean RowEmitted @ Default/joystick/group 3 (joystick_move) => LeftThumbAxisY <- Gamepad LeftStickY
@@ -145,5 +169,9 @@ report: v9 rows:x32+k4 macros:0 menus:0 layers:1 clean:42 partial:16 skipped:2 e
   Partial ClickGateDropped @ Default/right_trackpad/group 10 (single_button)/click/Full_Press
   Partial ClickGateDropped @ Preset_1000001/left_trackpad/group 19 (single_button)/click/Full_Press
   Clean ShiftLayerEmitted(right_joystick shift) @ Default/switch/group 7 (switches)/right_bumper/Full_Press => Hold -> Layer_2374887917_0_MS_right_joystick_14
-  Partial PresetHasNoActivator(Preset_1000001) @ Preset_1000001
-  Partial HapticIntensityDropped(7) @ config
+  Clean ShiftLayerEmitted(Preset_1000001) @ Preset_1000001/switch/group 15 (switches)/button_capture/Full_Press => Cycle -> Layer_2374887917_1|Base
+  Clean ShiftLayerEmitted(Preset_1000001) @ Default/switch/group 7 (switches)/button_capture/Full_Press => Toggle -> Layer_2374887917_1
+  Clean ShiftLayerEmitted(Preset_1000001) @ Preset_1000001/button_diamond/group 18 (four_buttons)/button_b/Full_Press => Cycle -> Layer_2374887917_1|Base
+  Clean ShiftLayerEmitted(Preset_1000001) @ Preset_1000001/switch/group 15 (switches)/button_menu/Full_Press => Cycle -> Layer_2374887917_1|Base
+  Clean ShiftLayerEmitted(Preset_1000001) @ Preset_1000001/left_trackpad/group 19 (single_button)/click/Full_Press => Cycle -> Layer_2374887917_1|Base
+  Partial TrackpadFeatureRequired(Touchpad touch spots) @ Preset_1000001/left_trackpad/group 19 (single_button)/click/Full_Press

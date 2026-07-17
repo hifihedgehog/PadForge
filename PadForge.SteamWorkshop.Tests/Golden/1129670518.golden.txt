@@ -84,7 +84,36 @@ kbm activators: 5
   Hold Layer_1129670518_2_MS_left_trackpad_16 | Touchpad 1 Click | inherit | name=left_trackpad shift
   Hold Layer_1129670518_2_MS_right_joystick_50 | Touchpad 0 Click | inherit | name=right_joystick shift
   Hold Layer_1129670518_2_MS_right_trackpad_38 | Touchpad 0 Click | inherit | name=right_trackpad shift
-macros: 0
+macros: 29
+  macro RumblePulse OnPress | Haptic pulse (dpad_east) | btns=0x0000 in=[Gamepad DPadRight] strength=33%
+  macro RumblePulse OnPress | Haptic pulse (dpad_north) | btns=0x0000 in=[Gamepad DPadUp] strength=33%
+  macro RumblePulse OnPress | Haptic pulse (dpad_south) | btns=0x0000 in=[Gamepad DPadDown] strength=33%
+  macro RumblePulse OnPress | Haptic pulse (dpad_west) | btns=0x0000 in=[Gamepad DPadLeft] strength=33%
+  macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Touchpad 0 Click] strength=66%
+  macro RumblePulse OnPress | Haptic pulse (edge) | btns=0x0000 in=[Gamepad LeftTrigger] strength=66%
+  macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Gamepad RightStick] strength=66%
+  macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Touchpad 1 Click] strength=66%
+  macro RumblePulse OnPress | Haptic pulse (edge) | btns=0x0000 in=[Gamepad RightTrigger] strength=66%
+  macro RumblePulse OnPress | Haptic pulse (dpad_east) | btns=0x0000 in=[Gamepad LeftStickX] strength=33%
+  macro RumblePulse OnPress | Haptic pulse (dpad_north) | btns=0x0000 in=[Gamepad LeftStickY] strength=33%
+  macro RumblePulse OnPress | Haptic pulse (dpad_south) | btns=0x0000 in=[Gamepad LeftStickY] strength=33%
+  macro RumblePulse OnPress | Haptic pulse (dpad_west) | btns=0x0000 in=[Gamepad LeftStickX] strength=33%
+  macro RumblePulse OnPress | Haptic pulse (dpad_east) | btns=0x0000 in=[Touchpad 0 DPadRight; Touchpad 0 Click] strength=33%
+  macro RumblePulse OnPress | Haptic pulse (dpad_north) | btns=0x0000 in=[Touchpad 0 DPadUp; Touchpad 0 Click] strength=33%
+  macro RumblePulse OnPress | Haptic pulse (dpad_south) | btns=0x0000 in=[Touchpad 0 DPadDown; Touchpad 0 Click] strength=33%
+  macro RumblePulse OnPress | Haptic pulse (dpad_west) | btns=0x0000 in=[Touchpad 0 DPadLeft; Touchpad 0 Click] strength=33%
+  macro RumblePulse OnPress | Haptic pulse (edge) | btns=0x0000 in=[Gamepad LeftTrigger] strength=66%
+  macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Gamepad RightStick] strength=66%
+  macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Touchpad 1 Click] strength=66%
+  macro RumblePulse OnPress | Haptic pulse (edge) | btns=0x0000 in=[Gamepad RightTrigger] strength=66%
+  macro RumblePulse OnPress | Haptic pulse (dpad_east) | btns=0x0000 in=[Gamepad LeftStickX] strength=33%
+  macro RumblePulse OnPress | Haptic pulse (dpad_north) | btns=0x0000 in=[Gamepad LeftStickY] strength=33%
+  macro RumblePulse OnPress | Haptic pulse (dpad_south) | btns=0x0000 in=[Gamepad LeftStickY] strength=33%
+  macro RumblePulse OnPress | Haptic pulse (dpad_west) | btns=0x0000 in=[Gamepad LeftStickX] strength=33%
+  macro RumblePulse OnPress | Haptic pulse (edge) | btns=0x0000 in=[Gamepad LeftTrigger] strength=66%
+  macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Gamepad RightStick] strength=66%
+  macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Touchpad 1 Click] strength=66%
+  macro RumblePulse OnPress | Haptic pulse (edge) | btns=0x0000 in=[Gamepad RightTrigger] strength=66%
 menus: 1
   menu 1 Grid | Touchpad 1 | Layer_1129670518_0_MS_right_trackpad_20 | fire=Click cells=12 pos=(51%,81%) scale=60% opacity=91% | name=Touch Menu 1
     [0] 1
@@ -97,21 +126,29 @@ menus: 1
     [7] 8
     [8] 9
     [9] 0
-report: v9 rows:x0+k29 macros:0 menus:1 layers:5 clean:52 partial:11 skipped:3 errors:0
+report: v10 rows:x0+k29 macros:29 menus:1 layers:5 clean:52 partial:44 skipped:3 errors:0
   Clean RowEmitted @ TacticalControls/button_diamond/group 0 (four_buttons)/button_A/Full_Press => KbmMBtn0 <- Gamepad ButtonA
+  Partial HapticPulseEmitted(1) @ TacticalControls/dpad/group 42 (dpad)/dpad_east/Full_Press => Rumble pulse macro (33%)
+  Partial HapticPulseEmitted(1) @ TacticalControls/dpad/group 42 (dpad)/dpad_north/Full_Press => Rumble pulse macro (33%)
+  Partial HapticPulseEmitted(1) @ TacticalControls/dpad/group 42 (dpad)/dpad_south/Full_Press => Rumble pulse macro (33%)
+  Partial HapticPulseEmitted(1) @ TacticalControls/dpad/group 42 (dpad)/dpad_west/Full_Press => Rumble pulse macro (33%)
   Clean RowEmitted @ TacticalControls/joystick/group 51 (joystick_mouse) => KbmMouseX <- Gamepad LeftStickX (inverted)
   Clean RowEmitted @ TacticalControls/joystick/group 51 (joystick_mouse) => KbmMouseY <- Gamepad LeftStickY (inverted)
   Partial MouseModeTuningDropped(rotation, friction, mouse_smoothing) @ TacticalControls/left_trackpad/group 7 (absolute_mouse)
   Clean RowEmitted @ TacticalControls/left_trackpad/group 7 (absolute_mouse) => KbmMouseX <- Touchpad 0 Finger 0 X (inverted)
   Clean RowEmitted @ TacticalControls/left_trackpad/group 7 (absolute_mouse) => KbmMouseY <- Touchpad 0 Finger 0 Y (inverted)
+  Partial HapticPulseEmitted(2) @ TacticalControls/left_trackpad/group 7 (absolute_mouse)/click/Full_Press => Rumble pulse macro (66%)
   Clean RowEmitted @ TacticalControls/left_trigger/group 1 (trigger)/edge/Full_Press => KbmMBtn1 <- Gamepad LeftTrigger (upper half)
+  Partial HapticPulseEmitted(2) @ TacticalControls/left_trigger/group 1 (trigger)/edge/Full_Press => Rumble pulse macro (66%)
   Clean RowEmitted @ TacticalControls/right_joystick/group 46 (joystick_mouse) => KbmMouseX <- Gamepad RightStickX
   Clean RowEmitted @ TacticalControls/right_joystick/group 46 (joystick_mouse) => KbmMouseY <- Gamepad RightStickY
+  Partial HapticPulseEmitted(2) @ TacticalControls/right_joystick/group 46 (joystick_mouse)/click/Full_Press => Rumble pulse macro (66%)
   Clean RowEmitted @ TacticalControls/right_joystick/group 47 (joystick_mouse) => KbmMouseX <- Gamepad RightStickX
   Clean RowEmitted @ TacticalControls/right_joystick/group 47 (joystick_mouse) => KbmMouseY <- Gamepad RightStickY
   Partial MouseModeTuningDropped(friction) @ TacticalControls/right_trackpad/group 9 (absolute_mouse)
   Clean RowEmitted @ TacticalControls/right_trackpad/group 9 (absolute_mouse) => KbmMouseX <- Touchpad 1 Finger 0 X
   Clean RowEmitted @ TacticalControls/right_trackpad/group 9 (absolute_mouse) => KbmMouseY <- Touchpad 1 Finger 0 Y
+  Partial HapticPulseEmitted(2) @ TacticalControls/right_trackpad/group 9 (absolute_mouse)/click/Full_Press => Rumble pulse macro (66%)
   Clean MenuEmitted(10) @ TacticalControls/right_trackpad/group 20 (touch_menu) => Grid menu 1 on Touchpad 1: 10 bound cells
   Clean RowEmitted @ TacticalControls/right_trackpad/group 20 (touch_menu)/touch_menu_button_0/Full_Press => KbmKey31 <- Menu 1 Item 0
   Clean RowEmitted @ TacticalControls/right_trackpad/group 20 (touch_menu)/touch_menu_button_1/Full_Press => KbmKey32 <- Menu 1 Item 1
@@ -124,35 +161,60 @@ report: v9 rows:x0+k29 macros:0 menus:1 layers:5 clean:52 partial:11 skipped:3 e
   Clean RowEmitted @ TacticalControls/right_trackpad/group 20 (touch_menu)/touch_menu_button_8/Full_Press => KbmKey39 <- Menu 1 Item 8
   Clean RowEmitted @ TacticalControls/right_trackpad/group 20 (touch_menu)/touch_menu_button_9/Full_Press => KbmKey30 <- Menu 1 Item 9
   Clean RowEmitted @ TacticalControls/right_trigger/group 2 (trigger)/edge/Full_Press => KbmMBtn0 <- Gamepad RightTrigger (upper half)
+  Partial HapticPulseEmitted(2) @ TacticalControls/right_trigger/group 2 (trigger)/edge/Full_Press => Rumble pulse macro (66%)
   Partial InterruptibleDropped @ TacticalControls/switch/group 39 (switches)/button_back_left/Full_Press
   Skipped GameActionsNotSupported(16) @ TacticalControls
+  Partial HapticPulseEmitted(1) @ MenuControls/joystick/group 11 (dpad)/dpad_east/Full_Press => Rumble pulse macro (33%)
+  Partial HapticPulseEmitted(1) @ MenuControls/joystick/group 11 (dpad)/dpad_north/Full_Press => Rumble pulse macro (33%)
+  Partial HapticPulseEmitted(1) @ MenuControls/joystick/group 11 (dpad)/dpad_south/Full_Press => Rumble pulse macro (33%)
+  Partial HapticPulseEmitted(1) @ MenuControls/joystick/group 11 (dpad)/dpad_west/Full_Press => Rumble pulse macro (33%)
+  Partial HapticPulseEmitted(1) @ MenuControls/left_trackpad/group 34 (dpad)/dpad_east/Full_Press => Rumble pulse macro (33%)
+  Partial TrackpadFeatureRequired(Touchpad joystick output) @ MenuControls/left_trackpad/group 34 (dpad)/dpad_east/Full_Press
+  Partial HapticPulseEmitted(1) @ MenuControls/left_trackpad/group 34 (dpad)/dpad_north/Full_Press => Rumble pulse macro (33%)
+  Partial TrackpadFeatureRequired(Touchpad joystick output) @ MenuControls/left_trackpad/group 34 (dpad)/dpad_north/Full_Press
+  Partial HapticPulseEmitted(1) @ MenuControls/left_trackpad/group 34 (dpad)/dpad_south/Full_Press => Rumble pulse macro (33%)
+  Partial TrackpadFeatureRequired(Touchpad joystick output) @ MenuControls/left_trackpad/group 34 (dpad)/dpad_south/Full_Press
+  Partial HapticPulseEmitted(1) @ MenuControls/left_trackpad/group 34 (dpad)/dpad_west/Full_Press => Rumble pulse macro (33%)
+  Partial TrackpadFeatureRequired(Touchpad joystick output) @ MenuControls/left_trackpad/group 34 (dpad)/dpad_west/Full_Press
+  Partial HapticPulseEmitted(2) @ MenuControls/left_trigger/group 4 (trigger)/edge/Full_Press => Rumble pulse macro (66%)
   Clean RowEmitted @ MenuControls/right_joystick/group 48 (joystick_mouse) => KbmMouseX <- Gamepad RightStickX
   Clean RowEmitted @ MenuControls/right_joystick/group 48 (joystick_mouse) => KbmMouseY <- Gamepad RightStickY
   Clean RowEmitted @ MenuControls/right_joystick/group 48 (joystick_mouse)/click/Full_Press => KbmMBtn0 <- Gamepad RightStick
+  Partial HapticPulseEmitted(2) @ MenuControls/right_joystick/group 48 (joystick_mouse)/click/Full_Press => Rumble pulse macro (66%)
   Partial MouseModeTuningDropped(friction) @ MenuControls/right_trackpad/group 19 (absolute_mouse)
   Clean RowEmitted @ MenuControls/right_trackpad/group 19 (absolute_mouse) => KbmMouseX <- Touchpad 1 Finger 0 X
   Clean RowEmitted @ MenuControls/right_trackpad/group 19 (absolute_mouse) => KbmMouseY <- Touchpad 1 Finger 0 Y
   Clean RowEmitted @ MenuControls/right_trackpad/group 19 (absolute_mouse)/click/Full_Press => KbmMBtn0 <- Touchpad 1 Click
+  Partial HapticPulseEmitted(2) @ MenuControls/right_trackpad/group 19 (absolute_mouse)/click/Full_Press => Rumble pulse macro (66%)
   Clean RowEmitted @ MenuControls/right_trigger/group 5 (trigger)/edge/Full_Press => KbmMBtn0 <- Gamepad RightTrigger (upper half)
+  Partial HapticPulseEmitted(2) @ MenuControls/right_trigger/group 5 (trigger)/edge/Full_Press => Rumble pulse macro (66%)
   Clean RowEmitted @ MenuControls/switch/group 40 (switches)/button_escape/Full_Press => KbmKey1B <- Gamepad ButtonStart
   Skipped GameActionsNotSupported(11) @ MenuControls
+  Partial HapticPulseEmitted(1) @ GeoscapeControls/joystick/group 18 (dpad)/dpad_east/Full_Press => Rumble pulse macro (33%)
+  Partial HapticPulseEmitted(1) @ GeoscapeControls/joystick/group 18 (dpad)/dpad_north/Full_Press => Rumble pulse macro (33%)
+  Partial HapticPulseEmitted(1) @ GeoscapeControls/joystick/group 18 (dpad)/dpad_south/Full_Press => Rumble pulse macro (33%)
+  Partial HapticPulseEmitted(1) @ GeoscapeControls/joystick/group 18 (dpad)/dpad_west/Full_Press => Rumble pulse macro (33%)
   Partial MouseModeTuningDropped(rotation, friction) @ GeoscapeControls/left_trackpad/group 15 (absolute_mouse)
   Clean RowEmitted @ GeoscapeControls/left_trackpad/group 15 (absolute_mouse) => KbmMouseX <- Touchpad 0 Finger 0 X
   Clean RowEmitted @ GeoscapeControls/left_trackpad/group 15 (absolute_mouse) => KbmMouseY <- Touchpad 0 Finger 0 Y
   Clean RowEmitted @ GeoscapeControls/left_trackpad/group 16 (absolute_mouse) => KbmMouseX <- Touchpad 0 Finger 0 X
   Clean RowEmitted @ GeoscapeControls/left_trackpad/group 16 (absolute_mouse) => KbmMouseY <- Touchpad 0 Finger 0 Y
+  Partial HapticPulseEmitted(2) @ GeoscapeControls/left_trigger/group 35 (trigger)/edge/Full_Press => Rumble pulse macro (66%)
   Clean RowEmitted @ GeoscapeControls/right_joystick/group 49 (joystick_mouse) => KbmMouseX <- Gamepad RightStickX
   Clean RowEmitted @ GeoscapeControls/right_joystick/group 49 (joystick_mouse) => KbmMouseY <- Gamepad RightStickY
   Clean RowEmitted @ GeoscapeControls/right_joystick/group 49 (joystick_mouse)/click/Full_Press => KbmMBtn0 <- Gamepad RightStick
+  Partial HapticPulseEmitted(2) @ GeoscapeControls/right_joystick/group 49 (joystick_mouse)/click/Full_Press => Rumble pulse macro (66%)
   Clean RowEmitted @ GeoscapeControls/right_joystick/group 50 (joystick_mouse) => KbmMouseX <- Gamepad RightStickX
   Clean RowEmitted @ GeoscapeControls/right_joystick/group 50 (joystick_mouse) => KbmMouseY <- Gamepad RightStickY
   Partial MouseModeTuningDropped(friction) @ GeoscapeControls/right_trackpad/group 17 (absolute_mouse)
   Clean RowEmitted @ GeoscapeControls/right_trackpad/group 17 (absolute_mouse) => KbmMouseX <- Touchpad 1 Finger 0 X
   Clean RowEmitted @ GeoscapeControls/right_trackpad/group 17 (absolute_mouse) => KbmMouseY <- Touchpad 1 Finger 0 Y
   Clean RowEmitted @ GeoscapeControls/right_trackpad/group 17 (absolute_mouse)/click/Full_Press => KbmMBtn0 <- Touchpad 1 Click
+  Partial HapticPulseEmitted(2) @ GeoscapeControls/right_trackpad/group 17 (absolute_mouse)/click/Full_Press => Rumble pulse macro (66%)
   Clean RowEmitted @ GeoscapeControls/right_trackpad/group 38 (absolute_mouse) => KbmMouseX <- Touchpad 1 Finger 0 X
   Clean RowEmitted @ GeoscapeControls/right_trackpad/group 38 (absolute_mouse) => KbmMouseY <- Touchpad 1 Finger 0 Y
   Clean RowEmitted @ GeoscapeControls/right_trigger/group 36 (trigger)/edge/Full_Press => KbmMBtn0 <- Gamepad RightTrigger (upper half)
+  Partial HapticPulseEmitted(2) @ GeoscapeControls/right_trigger/group 36 (trigger)/edge/Full_Press => Rumble pulse macro (66%)
   Partial InterruptibleDropped @ GeoscapeControls/switch/group 41 (switches)/left_click/Full_Press
   Skipped GameActionsNotSupported(7) @ GeoscapeControls
   Clean ShiftLayerEmitted(right_joystick shift) @ TacticalControls/switch/group 39 (switches)/button_back_left/Full_Press => Hold -> Layer_1129670518_0_MS_right_joystick_47
@@ -163,4 +225,4 @@ report: v9 rows:x0+k29 macros:0 menus:1 layers:5 clean:52 partial:11 skipped:3 e
   Clean ShiftLayerEmitted(right_trackpad shift) @ GeoscapeControls/switch/group 41 (switches)/left_click/Full_Press => Hold -> Layer_1129670518_2_MS_right_trackpad_38
   Partial PresetHasNoActivator(MenuControls) @ MenuControls
   Partial PresetHasNoActivator(GeoscapeControls) @ GeoscapeControls
-  Partial HapticIntensityDropped(37) @ config
+  Partial HapticIntensityDropped(8) @ config

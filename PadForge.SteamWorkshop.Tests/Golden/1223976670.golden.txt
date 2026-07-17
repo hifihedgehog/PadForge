@@ -48,8 +48,24 @@ kbm rows: 1
   Base | KbmScroll | Sum
     <- Gamepad Paddle2 [inverted]
     <- Gamepad Paddle1
-macros: 0
-report: v9 rows:x20+k1 macros:0 menus:0 layers:0 clean:24 partial:1 skipped:0 errors:0
+macros: 8
+  macro RumblePulse OnPress | Haptic pulse (dpad_east) | btns=0x0000 in=[Gamepad DPadRight] strength=33%
+  macro RumblePulse OnPress | Haptic pulse (dpad_north) | btns=0x0000 in=[Gamepad DPadUp] strength=33%
+  macro RumblePulse OnPress | Haptic pulse (dpad_south) | btns=0x0000 in=[Gamepad DPadDown] strength=33%
+  macro RumblePulse OnPress | Haptic pulse (dpad_west) | btns=0x0000 in=[Gamepad DPadLeft] strength=33%
+  macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Gamepad LeftStick] strength=66%
+  macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Gamepad LeftTrigger] strength=66%
+  macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Gamepad RightStick] strength=66%
+  macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Gamepad RightTrigger] strength=66%
+report: v10 rows:x20+k1 macros:8 menus:0 layers:0 clean:24 partial:8 skipped:0 errors:0
+  Partial HapticPulseEmitted(1) @ Default/dpad/group 1 (dpad)/dpad_east/Full_Press => Rumble pulse macro (33%)
+  Partial HapticPulseEmitted(1) @ Default/dpad/group 1 (dpad)/dpad_north/Full_Press => Rumble pulse macro (33%)
+  Partial HapticPulseEmitted(1) @ Default/dpad/group 1 (dpad)/dpad_south/Full_Press => Rumble pulse macro (33%)
+  Partial HapticPulseEmitted(1) @ Default/dpad/group 1 (dpad)/dpad_west/Full_Press => Rumble pulse macro (33%)
+  Partial HapticPulseEmitted(2) @ Default/joystick/group 3 (joystick_move)/click/Full_Press => Rumble pulse macro (66%)
+  Partial HapticPulseEmitted(2) @ Default/left_trigger/group 4 (trigger)/click/Full_Press => Rumble pulse macro (66%)
+  Partial HapticPulseEmitted(2) @ Default/right_joystick/group 6 (joystick_move)/click/Full_Press => Rumble pulse macro (66%)
+  Partial HapticPulseEmitted(2) @ Default/right_trigger/group 5 (trigger)/click/Full_Press => Rumble pulse macro (66%)
   Clean RowEmitted @ Default/switch/group 7 (switches)/button_back_left/Full_Press => KbmScroll <- Gamepad Paddle2 (inverted)
   Clean RowEmitted @ Default/switch/group 7 (switches)/button_back_right/Full_Press => KbmScroll <- Gamepad Paddle1
   Clean RowEmitted @ Default/joystick/group 3 (joystick_move) => LeftThumbAxisX <- Gamepad LeftStickX
@@ -74,4 +90,3 @@ report: v9 rows:x20+k1 macros:0 menus:0 layers:0 clean:24 partial:1 skipped:0 er
   Clean RowEmitted @ Default/switch/group 7 (switches)/button_menu/Full_Press => ButtonBack <- Gamepad ButtonBack
   Clean RowEmitted @ Default/switch/group 7 (switches)/left_bumper/Full_Press => LeftShoulder <- Gamepad LeftShoulder
   Clean RowEmitted @ Default/switch/group 7 (switches)/right_bumper/Full_Press => RightShoulder <- Gamepad RightShoulder
-  Partial HapticIntensityDropped(8) @ config

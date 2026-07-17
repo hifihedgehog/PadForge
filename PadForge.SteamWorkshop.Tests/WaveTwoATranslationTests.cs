@@ -207,11 +207,12 @@ namespace PadForge.SteamWorkshop.Tests
         }
 
         [Fact]
-        public void HoldRepeats_XInput_Identity_KeepsRowAndRepeatDroppedNote()
+        public void HoldRepeats_XInput_Identity_PulsesViaDescriptorTrigger()
         {
-            // Identity turbo cannot pulse: the identity row that feeds the
-            // combined-output trigger would hold the pulsed bit solid, so
-            // the Wave-1 row + named note stays.
+            // Identity turbo (v10 G14): the identity row is dropped and the
+            // pulse rides a device-free descriptor trigger on the hosting
+            // input itself. A combined-output trigger fed by the identity
+            // row would hold the pulsed bit solid.
             string vdf = Head
                 + Group(1, "four_buttons", Inputs(
                     Inp("button_a", "xinput_button A",
@@ -219,10 +220,15 @@ namespace PadForge.SteamWorkshop.Tests
                 + Preset(0, "Default", (1, "button_diamond active"))
                 + "}\n";
             var p = Translate(vdf);
-            Assert.Empty(p.Macros);
-            var row = Assert.Single(p.XboxMappingSet.Rows);
-            Assert.Equal("ButtonA", row.Target);
-            Assert.Contains(p.Report.Entries, e => e.ReasonKey == TranslationReasons.RepeatDropped);
+            Assert.Empty(p.XboxMappingSet.Rows); // the macro replaces the row
+            var m = Assert.Single(p.Macros);
+            Assert.Equal(TranslatedMacroAction.RepeatVcButtonWhileHeld, m.Action);
+            Assert.Equal(0, (int)m.TriggerXboxButtons);
+            Assert.Equal("Gamepad ButtonA", Assert.Single(m.TriggerInputDescriptors));
+            Assert.Equal(Gamepad.A, m.TargetXboxButtons);
+            Assert.Equal(99, m.IntervalMs);
+            Assert.False(m.ConsumeTrigger);
+            Assert.DoesNotContain(p.Report.Entries, e => e.ReasonKey == TranslationReasons.RepeatDropped);
         }
 
         [Fact]

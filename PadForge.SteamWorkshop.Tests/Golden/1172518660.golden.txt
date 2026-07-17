@@ -29,16 +29,34 @@ kbm rows: 11
     <- Touchpad 1 Finger 0 X
   Layer_1172518660_5 | KbmMouseY
     <- Touchpad 1 Finger 0 Y
-macros: 0
-report: v9 rows:x0+k11 macros:0 menus:0 layers:0 clean:15 partial:4 skipped:4 errors:0
+macros: 11
+  macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Gamepad LeftStick] strength=66%
+  macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Gamepad LeftTrigger] strength=66%
+  macro RumblePulse OnPress | Haptic pulse (edge) | btns=0x0000 in=[Gamepad LeftTrigger] strength=66%
+  macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Touchpad 1 Click] strength=33%
+  macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Gamepad RightTrigger] strength=66%
+  macro RumblePulse OnPress | Haptic pulse (edge) | btns=0x0000 in=[Gamepad RightTrigger] strength=66%
+  macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Touchpad 1 Click] strength=33%
+  macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Touchpad 1 Click] strength=33%
+  macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Gamepad LeftStick] strength=66%
+  macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Touchpad 1 Click] strength=33%
+  macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Gamepad RightTrigger] strength=66%
+report: v10 rows:x0+k11 macros:11 menus:0 layers:0 clean:15 partial:14 skipped:4 errors:0
   Clean RowEmitted @ FPSControls/gyro/group 48 (absolute_mouse) => KbmMouseX <- Gyro Yaw
   Clean RowEmitted @ FPSControls/gyro/group 48 (absolute_mouse) => KbmMouseY <- Gyro Pitch
+  Partial HapticPulseEmitted(2) @ FPSControls/joystick/group 14 (joystick_move)/click/Full_Press => Rumble pulse macro (66%)
+  Partial HapticPulseEmitted(2) @ FPSControls/left_trigger/group 1 (trigger)/click/Full_Press => Rumble pulse macro (66%)
+  Partial HapticPulseEmitted(2) @ FPSControls/left_trigger/group 1 (trigger)/edge/Full_Press => Rumble pulse macro (66%)
   Clean RowEmitted @ FPSControls/right_trackpad/group 15 (absolute_mouse) => KbmMouseX <- Touchpad 1 Finger 0 X
   Clean RowEmitted @ FPSControls/right_trackpad/group 15 (absolute_mouse) => KbmMouseY <- Touchpad 1 Finger 0 Y
+  Partial HapticPulseEmitted(1) @ FPSControls/right_trackpad/group 15 (absolute_mouse)/click/Full_Press => Rumble pulse macro (33%)
+  Partial HapticPulseEmitted(2) @ FPSControls/right_trigger/group 2 (trigger)/click/Full_Press => Rumble pulse macro (66%)
+  Partial HapticPulseEmitted(2) @ FPSControls/right_trigger/group 2 (trigger)/edge/Full_Press => Rumble pulse macro (66%)
   Skipped GameActionsNotSupported(22) @ FPSControls
   Clean RowEmitted @ MenuControls/right_trackpad/group 6 (absolute_mouse) => KbmMouseX <- Touchpad 1 Finger 0 X
   Clean RowEmitted @ MenuControls/right_trackpad/group 6 (absolute_mouse) => KbmMouseY <- Touchpad 1 Finger 0 Y
   Clean RowEmitted @ MenuControls/right_trackpad/group 6 (absolute_mouse)/click/Full_Press => KbmMBtn0 <- Touchpad 1 Click
+  Partial HapticPulseEmitted(1) @ MenuControls/right_trackpad/group 6 (absolute_mouse)/click/Full_Press => Rumble pulse macro (33%)
   Clean RowEmitted @ MenuControls/switch/group 50 (switches)/left_bumper/Full_Press => KbmMBtn2 <- Gamepad LeftShoulder
   Clean RowEmitted @ MenuControls/switch/group 50 (switches)/left_trigger/Full_Press => KbmMBtn1 <- Gamepad LeftTrigger (upper half)
   Clean RowEmitted @ MenuControls/switch/group 50 (switches)/right_bumper/Full_Press => KbmMBtn0 <- Gamepad RightShoulder
@@ -46,11 +64,14 @@ report: v9 rows:x0+k11 macros:0 menus:0 layers:0 clean:15 partial:4 skipped:4 er
   Skipped GameActionsNotSupported(11) @ MenuControls
   Clean RowEmitted @ SpectatorControls/right_trackpad/group 47 (absolute_mouse) => KbmMouseX <- Touchpad 1 Finger 0 X
   Clean RowEmitted @ SpectatorControls/right_trackpad/group 47 (absolute_mouse) => KbmMouseY <- Touchpad 1 Finger 0 Y
+  Partial HapticPulseEmitted(1) @ SpectatorControls/right_trackpad/group 47 (absolute_mouse)/click/Full_Press => Rumble pulse macro (33%)
   Skipped GameActionsNotSupported(12) @ SpectatorControls
+  Partial HapticPulseEmitted(2) @ InGameHUDControls/joystick/group 38 (joystick_move)/click/Full_Press => Rumble pulse macro (66%)
   Clean RowEmitted @ InGameHUDControls/right_trackpad/group 37 (absolute_mouse) => KbmMouseX <- Touchpad 1 Finger 0 X
   Clean RowEmitted @ InGameHUDControls/right_trackpad/group 37 (absolute_mouse) => KbmMouseY <- Touchpad 1 Finger 0 Y
+  Partial HapticPulseEmitted(1) @ InGameHUDControls/right_trackpad/group 37 (absolute_mouse)/click/Full_Press => Rumble pulse macro (33%)
+  Partial HapticPulseEmitted(2) @ InGameHUDControls/right_trigger/group 36 (trigger)/click/Full_Press => Rumble pulse macro (66%)
   Skipped GameActionsNotSupported(17) @ InGameHUDControls
   Partial PresetHasNoActivator(MenuControls) @ MenuControls
   Partial PresetHasNoActivator(SpectatorControls) @ SpectatorControls
   Partial PresetHasNoActivator(InGameHUDControls) @ InGameHUDControls
-  Partial HapticIntensityDropped(11) @ config

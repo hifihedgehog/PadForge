@@ -2474,6 +2474,10 @@ public class Strings : INotifyPropertyChanged
     public string Workshop_Tr_FlickStickTuningDropped => Get("Workshop_Tr_FlickStickTuningDropped");
     public string Workshop_Tr_MouseModeTuningDropped => Get("Workshop_Tr_MouseModeTuningDropped");
     public string Workshop_Tr_AxisInversionNotApplied => Get("Workshop_Tr_AxisInversionNotApplied");
+    public string Workshop_Tr_HapticPulseEmitted => Get("Workshop_Tr_HapticPulseEmitted");
+    public string Workshop_Tr_ScrollWheelApproximated => Get("Workshop_Tr_ScrollWheelApproximated");
+    public string Workshop_Tr_ScreenshotApproximated => Get("Workshop_Tr_ScreenshotApproximated");
+    public string Workshop_Tr_ShowKeyboardApproximated => Get("Workshop_Tr_ShowKeyboardApproximated");
     public string Status_WorkshopUpdatesOptInRequired => Get("Status_WorkshopUpdatesOptInRequired");
     public string Status_WorkshopNoImportedProfiles => Get("Status_WorkshopNoImportedProfiles");
     public string Status_WorkshopCheckingUpdates => Get("Status_WorkshopCheckingUpdates");

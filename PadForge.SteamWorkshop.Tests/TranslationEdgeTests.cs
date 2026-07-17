@@ -135,17 +135,23 @@ namespace PadForge.SteamWorkshop.Tests
         }
 
         [Fact]
-        public void KnownButUnsupportedKey_SkippedWithReason()
+        public void KnownButUnsupportedKey_RidesTheHoldKeyMacro()
         {
-            // F13 resolves to a VK but the KbM output engine has no channel.
+            // F13 resolves to a VK the KbM row engine has no channel for,
+            // so the plain press rides the SendInput HoldKey pair instead
+            // of a row (v10 G11): down on press, up on release.
             string vdf = Head
                 + Group(1, "four_buttons", SimpleInput("button_a", "key_press F13"))
                 + Preset(0, "Default", (1, "button_diamond active"))
                 + "}\n";
             var p = Translate(vdf);
             Assert.Empty(p.KbmMappingSet.Rows);
-            var entry = Assert.Single(p.Report.Entries);
-            Assert.Equal(TranslationReasons.UnsupportedKey, entry.ReasonKey);
+            var m = Assert.Single(p.Macros);
+            Assert.Equal(TranslatedMacroAction.HoldKey, m.Action);
+            Assert.Equal("OnPress", m.TriggerMode);
+            Assert.Equal(0x7C, m.VirtualKey); // VK_F13
+            Assert.DoesNotContain(p.Report.Entries,
+                e => e.ReasonKey == TranslationReasons.UnsupportedKey);
         }
 
         [Fact]

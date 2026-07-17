@@ -2558,6 +2558,10 @@
   <data name="Workshop_Tr_FlickStickTuningDropped" xml:space="preserve"><value>ajustes del flick stick descartados ({0})</value></data>
   <data name="Workshop_Tr_MouseModeTuningDropped" xml:space="preserve"><value>ajustes de sensación del ratón descartados ({0})</value></data>
   <data name="Workshop_Tr_AxisInversionNotApplied" xml:space="preserve"><value>inversión de ejes no aplicada ({0})</value></data>
+  <data name="Workshop_Tr_HapticPulseEmitted" xml:space="preserve"><value>respuesta háptica aproximada como pulso de vibración (nivel {0})</value></data>
+  <data name="Workshop_Tr_ScrollWheelApproximated" xml:space="preserve"><value>rueda de desplazamiento circular aproximada como arrastre vertical</value></data>
+  <data name="Workshop_Tr_ScreenshotApproximated" xml:space="preserve"><value>SCREENSHOT aproximado como pulsación de la tecla Imprimir Pantalla</value></data>
+  <data name="Workshop_Tr_ShowKeyboardApproximated" xml:space="preserve"><value>SHOW_KEYBOARD aproximado como apertura del teclado en pantalla</value></data>
   <data name="Macro_HoldForMs" xml:space="preserve"><value>Al mantener</value></data>
   <data name="Macro_HoldForMs_Tooltip" xml:space="preserve"><value>Se dispara una vez cuando el activador se ha mantenido de forma continua durante el tiempo de retención. Un toque más corto no hace nada.</value></data>
   <data name="Macro_TriggerHoldMs_Label" xml:space="preserve"><value>Tiempo de retención</value></data>

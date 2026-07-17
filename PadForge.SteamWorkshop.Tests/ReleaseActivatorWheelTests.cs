@@ -65,14 +65,18 @@ namespace PadForge.SteamWorkshop.Tests
         }
 
         [Fact]
-        public void ReleaseActivator_OnMouseButton_StillSkips()
+        public void ReleaseActivator_OnMouseButton_EmitsTapMacro()
         {
-            // The sibling leg this fix was mirrored from. Pins that the
-            // established behavior is what the wheel leg now matches.
+            // v10 G6: the mouse_button release leg emits one click on the
+            // release edge instead of the old named skip. The wheel keeps
+            // the skip above (no discrete tick action exists).
             var t = Translate(Vdf("mouse_button LEFT", "release"));
 
-            Assert.Contains(t.Report.Entries, e =>
-                e.Status == TranslationStatus.Skipped &&
+            var m = Assert.Single(t.Macros);
+            Assert.Equal(TranslatedMacroAction.MouseButtonTap, m.Action);
+            Assert.Equal("OnRelease", m.TriggerMode);
+            Assert.Equal(0, m.MouseButtonIndex);
+            Assert.DoesNotContain(t.Report.Entries, e =>
                 e.ReasonKey == TranslationReasons.ReleaseActivatorNotSupported);
         }
     }

@@ -2,7 +2,7 @@ name: Gyrospeck's Hearts of Iron 4 V2
 description: Updated June 21, 2016.  Nearly every shortcut is accessible.  The controls are simple, yet deep.  Ha...
 slots: kbm
 xbox rows: 0
-kbm rows: 67
+kbm rows: 69
   Base | KbmKey1B
     <- Gamepad ButtonX
     <- Gamepad ButtonStart
@@ -73,6 +73,8 @@ kbm rows: 67
     <- Gamepad LeftStickX [lower-half]
   Layer_708227783_0_MS_left_trackpad_6 | KbmMBtn2
     <- Touchpad 0 Click
+  Layer_708227783_0_MS_right_trackpad_13 | KbmScroll
+    <- Touchpad 1 Finger 0 Y [inverted]
   Layer_708227783_1 | KbmKey1B
     <- Gamepad ButtonX
     <- Gamepad ButtonStart
@@ -141,12 +143,27 @@ kbm rows: 67
     <- Gamepad LeftStickX [lower-half]
   Layer_708227783_1_MS_left_trackpad_21 | KbmMBtn2
     <- Touchpad 0 Click
-kbm activators: 4
+  Layer_708227783_1_MS_right_trackpad_20 | KbmScroll
+    <- Touchpad 1 Finger 0 Y [inverted]
+kbm activators: 5
   Hold Layer_708227783_0_MS_button_diamond_11 | Gamepad Paddle1 | inherit | name=button_diamond shift
   Hold Layer_708227783_0_MS_joystick_12 | Gamepad Paddle1 | inherit | name=joystick shift
   Hold Layer_708227783_0_MS_left_trackpad_6 | Gamepad Paddle1 | inherit | name=left_trackpad shift
+  Hold Layer_708227783_0_MS_right_trackpad_13 | Gamepad Paddle1 | inherit | name=right_trackpad shift
   Cycle Layer_708227783_1 cycle=Layer_708227783_1+Base | Gamepad ButtonY | name=Preset_1000001 / Default
-macros: 0
+macros: 12
+  macro ShowOnScreenKeyboard OnPress | On-screen keyboard (click) | btns=0x0000 in=[Gamepad LeftStick]
+  macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Gamepad LeftStick] strength=33%
+  macro RumblePulse OnPress | Haptic pulse (dpad_east) | btns=0x0000 in=[Gamepad LeftStickX] strength=33%
+  macro RumblePulse OnPress | Haptic pulse (dpad_north) | btns=0x0000 in=[Gamepad LeftStickY] strength=33%
+  macro RumblePulse OnPress | Haptic pulse (dpad_south) | btns=0x0000 in=[Gamepad LeftStickY] strength=33%
+  macro RumblePulse OnPress | Haptic pulse (dpad_west) | btns=0x0000 in=[Gamepad LeftStickX] strength=33%
+  macro ShowOnScreenKeyboard OnPress | On-screen keyboard (click) | btns=0x0000 in=[Gamepad LeftStick]
+  macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Gamepad LeftStick] strength=33%
+  macro RumblePulse OnPress | Haptic pulse (dpad_east) | btns=0x0000 in=[Gamepad LeftStickX] strength=33%
+  macro RumblePulse OnPress | Haptic pulse (dpad_north) | btns=0x0000 in=[Gamepad LeftStickY] strength=33%
+  macro RumblePulse OnPress | Haptic pulse (dpad_south) | btns=0x0000 in=[Gamepad LeftStickY] strength=33%
+  macro RumblePulse OnPress | Haptic pulse (dpad_west) | btns=0x0000 in=[Gamepad LeftStickX] strength=33%
 menus: 1
   menu 1 Grid | Touchpad 0 | Base | fire=TouchRelease cells=9 scale=109% | name=Touch Menu 1
     [0] Government
@@ -157,7 +174,7 @@ menus: 1
     [6] Research
     [7] Recruit and Deploy
     [8] Logistics
-report: v9 rows:x0+k67 macros:0 menus:1 layers:4 clean:70 partial:10 skipped:8 errors:0
+report: v10 rows:x0+k69 macros:12 menus:1 layers:5 clean:73 partial:22 skipped:6 errors:0
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_A/Full_Press => KbmKey20 <- Gamepad ButtonA
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_B/Full_Press => KbmKey4F <- Gamepad ButtonB
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_X/Full_Press => KbmKey1B <- Gamepad ButtonX
@@ -168,16 +185,22 @@ report: v9 rows:x0+k67 macros:0 menus:1 layers:4 clean:70 partial:10 skipped:8 e
   Partial GyroButtonMaskDropped(gyro_button, 0) @ Default/gyro/group 10 (absolute_mouse)
   Clean RowEmitted @ Default/gyro/group 10 (absolute_mouse) => KbmMouseX <- Gyro Yaw
   Clean RowEmitted @ Default/gyro/group 10 (absolute_mouse) => KbmMouseY <- Gyro Pitch
-  Skipped SteamSystemAction(SHOW_KEYBOARD) @ Default/joystick/group 3 (dpad)/click/Full_Press :: controller_action SHOW_KEYBOARD
+  Partial ShowKeyboardApproximated @ Default/joystick/group 3 (dpad)/click/Full_Press => On-screen keyboard macro
+  Partial HapticPulseEmitted(1) @ Default/joystick/group 3 (dpad)/click/Full_Press => Rumble pulse macro (33%)
   Clean RowEmitted @ Default/joystick/group 3 (dpad)/dpad_east/Full_Press => KbmKey27 <- Gamepad LeftStickX (upper half)
+  Partial HapticPulseEmitted(1) @ Default/joystick/group 3 (dpad)/dpad_east/Full_Press => Rumble pulse macro (33%)
   Clean RowEmitted @ Default/joystick/group 3 (dpad)/dpad_north/Full_Press => KbmKey26 <- Gamepad LeftStickY (lower half)
+  Partial HapticPulseEmitted(1) @ Default/joystick/group 3 (dpad)/dpad_north/Full_Press => Rumble pulse macro (33%)
   Clean RowEmitted @ Default/joystick/group 3 (dpad)/dpad_south/Full_Press => KbmKey28 <- Gamepad LeftStickY (upper half)
+  Partial HapticPulseEmitted(1) @ Default/joystick/group 3 (dpad)/dpad_south/Full_Press => Rumble pulse macro (33%)
   Clean RowEmitted @ Default/joystick/group 3 (dpad)/dpad_west/Full_Press => KbmKey25 <- Gamepad LeftStickX (lower half)
+  Partial HapticPulseEmitted(1) @ Default/joystick/group 3 (dpad)/dpad_west/Full_Press => Rumble pulse macro (33%)
   Clean RowEmitted @ Default/joystick/group 12 (four_buttons)/button_A/Full_Press => KbmKey75 <- Gamepad LeftStickY (upper half)
   Clean RowEmitted @ Default/joystick/group 12 (four_buttons)/button_B/Full_Press => KbmKey76 <- Gamepad LeftStickX (upper half)
   Clean RowEmitted @ Default/joystick/group 12 (four_buttons)/button_X/Full_Press => KbmKey78 <- Gamepad LeftStickX (lower half)
   Clean RowEmitted @ Default/joystick/group 12 (four_buttons)/button_Y/Full_Press => KbmKey77 <- Gamepad LeftStickY (lower half)
-  Skipped ScrollWheelModeNotSupported @ Default/left_trackpad/group 6 (scrollwheel)
+  Skipped ScrollWheelModeNotSupported @ Default/left_trackpad/group 6 (scrollwheel)/scroll_clockwise/Full_Press :: key_press KEYPAD_PLUS, Increase Speed
+  Skipped ScrollWheelModeNotSupported @ Default/left_trackpad/group 6 (scrollwheel)/scroll_counterclockwise/Full_Press :: key_press KEYPAD_DASH, Decrease Speed
   Clean RowEmitted @ Default/left_trackpad/group 6 (scrollwheel)/click/Full_Press => KbmMBtn2 <- Touchpad 0 Click
   Clean MenuEmitted(8) @ Default/left_trackpad/group 9 (touch_menu) => Grid menu 1 on Touchpad 0: 8 bound cells
   Clean RowEmitted @ Default/left_trackpad/group 9 (touch_menu)/touch_menu_button_0/Full_Press => KbmKey51 <- Menu 1 Item 0
@@ -192,7 +215,8 @@ report: v9 rows:x0+k67 macros:0 menus:1 layers:4 clean:70 partial:10 skipped:8 e
   Clean RowEmitted @ Default/right_trackpad/group 2 (absolute_mouse) => KbmMouseX <- Touchpad 1 Finger 0 X
   Clean RowEmitted @ Default/right_trackpad/group 2 (absolute_mouse) => KbmMouseY <- Touchpad 1 Finger 0 Y
   Clean RowEmitted @ Default/right_trackpad/group 2 (absolute_mouse)/click/Full_Press => KbmKey70 <- Touchpad 1 Click
-  Skipped ScrollWheelModeNotSupported @ Default/right_trackpad/group 13 (scrollwheel)
+  Clean RowEmitted @ Default/right_trackpad/group 13 (scrollwheel)/scroll_clockwise/Full_Press => KbmScroll <- Touchpad 1 Finger 0 Y (inverted)
+  Partial ScrollWheelApproximated @ Default/right_trackpad/group 13 (scrollwheel)
   Clean RowEmitted @ Default/right_trigger/group 5 (trigger)/edge/Full_Press => KbmMBtn0 <- Gamepad RightTrigger (upper half)
   Clean RowEmitted @ Default/switch/group 14 (switches)/button_back_left/Full_Press => KbmKeyA0 <- Gamepad Paddle2
   Skipped DoublePressNotSupported @ Default/switch/group 14 (switches)/button_back_left/Double_Press :: key_press LEFT_CONTROL
@@ -210,16 +234,22 @@ report: v9 rows:x0+k67 macros:0 menus:1 layers:4 clean:70 partial:10 skipped:8 e
   Partial GyroButtonMaskDropped(gyro_button, 0) @ Preset_1000001/gyro/group 31 (absolute_mouse)
   Clean RowEmitted @ Preset_1000001/gyro/group 31 (absolute_mouse) => KbmMouseX <- Gyro Yaw
   Clean RowEmitted @ Preset_1000001/gyro/group 31 (absolute_mouse) => KbmMouseY <- Gyro Pitch
-  Skipped SteamSystemAction(SHOW_KEYBOARD) @ Preset_1000001/joystick/group 23 (dpad)/click/Full_Press :: controller_action SHOW_KEYBOARD
+  Partial ShowKeyboardApproximated @ Preset_1000001/joystick/group 23 (dpad)/click/Full_Press => On-screen keyboard macro
+  Partial HapticPulseEmitted(1) @ Preset_1000001/joystick/group 23 (dpad)/click/Full_Press => Rumble pulse macro (33%)
   Clean RowEmitted @ Preset_1000001/joystick/group 23 (dpad)/dpad_east/Full_Press => KbmKey27 <- Gamepad LeftStickX (upper half)
+  Partial HapticPulseEmitted(1) @ Preset_1000001/joystick/group 23 (dpad)/dpad_east/Full_Press => Rumble pulse macro (33%)
   Clean RowEmitted @ Preset_1000001/joystick/group 23 (dpad)/dpad_north/Full_Press => KbmKey26 <- Gamepad LeftStickY (lower half)
+  Partial HapticPulseEmitted(1) @ Preset_1000001/joystick/group 23 (dpad)/dpad_north/Full_Press => Rumble pulse macro (33%)
   Clean RowEmitted @ Preset_1000001/joystick/group 23 (dpad)/dpad_south/Full_Press => KbmKey28 <- Gamepad LeftStickY (upper half)
+  Partial HapticPulseEmitted(1) @ Preset_1000001/joystick/group 23 (dpad)/dpad_south/Full_Press => Rumble pulse macro (33%)
   Clean RowEmitted @ Preset_1000001/joystick/group 23 (dpad)/dpad_west/Full_Press => KbmKey25 <- Gamepad LeftStickX (lower half)
+  Partial HapticPulseEmitted(1) @ Preset_1000001/joystick/group 23 (dpad)/dpad_west/Full_Press => Rumble pulse macro (33%)
   Clean RowEmitted @ Preset_1000001/joystick/group 24 (four_buttons)/button_A/Full_Press => KbmKey75 <- Gamepad LeftStickY (upper half)
   Clean RowEmitted @ Preset_1000001/joystick/group 24 (four_buttons)/button_B/Full_Press => KbmKey76 <- Gamepad LeftStickX (upper half)
   Clean RowEmitted @ Preset_1000001/joystick/group 24 (four_buttons)/button_X/Full_Press => KbmKey78 <- Gamepad LeftStickX (lower half)
   Clean RowEmitted @ Preset_1000001/joystick/group 24 (four_buttons)/button_Y/Full_Press => KbmKey77 <- Gamepad LeftStickY (lower half)
-  Skipped ScrollWheelModeNotSupported @ Preset_1000001/left_trackpad/group 21 (scrollwheel)
+  Skipped ScrollWheelModeNotSupported @ Preset_1000001/left_trackpad/group 21 (scrollwheel)/scroll_clockwise/Full_Press :: key_press KEYPAD_PLUS, Increase Speed
+  Skipped ScrollWheelModeNotSupported @ Preset_1000001/left_trackpad/group 21 (scrollwheel)/scroll_counterclockwise/Full_Press :: key_press KEYPAD_DASH, Decrease Speed
   Clean RowEmitted @ Preset_1000001/left_trackpad/group 21 (scrollwheel)/click/Full_Press => KbmMBtn2 <- Touchpad 0 Click
   Partial TouchQuadrantApproximated @ Preset_1000001/left_trackpad/group 32 (four_buttons)/button_A/Full_Press => KbmKeyA2 <- Touchpad 0 Finger 0 Down
   Partial TouchQuadrantApproximated @ Preset_1000001/left_trackpad/group 32 (four_buttons)/button_A/Full_Press => KbmKeyA2 <- Touchpad 0 Finger 0 Down
@@ -231,7 +261,8 @@ report: v9 rows:x0+k67 macros:0 menus:1 layers:4 clean:70 partial:10 skipped:8 e
   Clean RowEmitted @ Preset_1000001/right_trackpad/group 19 (absolute_mouse) => KbmMouseX <- Touchpad 1 Finger 0 X
   Clean RowEmitted @ Preset_1000001/right_trackpad/group 19 (absolute_mouse) => KbmMouseY <- Touchpad 1 Finger 0 Y
   Clean RowEmitted @ Preset_1000001/right_trackpad/group 19 (absolute_mouse)/click/Full_Press => KbmKeyBE <- Touchpad 1 Click
-  Skipped ScrollWheelModeNotSupported @ Preset_1000001/right_trackpad/group 20 (scrollwheel)
+  Clean RowEmitted @ Preset_1000001/right_trackpad/group 20 (scrollwheel)/scroll_clockwise/Full_Press => KbmScroll <- Touchpad 1 Finger 0 Y (inverted)
+  Partial ScrollWheelApproximated @ Preset_1000001/right_trackpad/group 20 (scrollwheel)
   Clean RowEmitted @ Preset_1000001/right_trigger/group 29 (trigger)/edge/Full_Press => KbmMBtn0 <- Gamepad RightTrigger (upper half)
   Clean RowEmitted @ Preset_1000001/switch/group 18 (switches)/button_back_left/Full_Press => KbmKeyA0 <- Gamepad Paddle2
   Skipped DoublePressNotSupported @ Preset_1000001/switch/group 18 (switches)/button_back_left/Double_Press :: key_press LEFT_CONTROL, Assignment Mode / Support Attack
@@ -243,6 +274,5 @@ report: v9 rows:x0+k67 macros:0 menus:1 layers:4 clean:70 partial:10 skipped:8 e
   Clean ShiftLayerEmitted(button_diamond shift) @ Default/switch/group 14 (switches)/button_back_right/Full_Press => Hold -> Layer_708227783_0_MS_button_diamond_11
   Clean ShiftLayerEmitted(joystick shift) @ Default/switch/group 14 (switches)/button_back_right/Full_Press => Hold -> Layer_708227783_0_MS_joystick_12
   Clean ShiftLayerEmitted(left_trackpad shift) @ Default/switch/group 14 (switches)/button_back_right/Full_Press => Hold -> Layer_708227783_0_MS_left_trackpad_6
-  Partial ShiftLayerEmpty(right_trackpad shift) @ Default/switch/group 14 (switches)/button_back_right/Full_Press
+  Clean ShiftLayerEmitted(right_trackpad shift) @ Default/switch/group 14 (switches)/button_back_right/Full_Press => Hold -> Layer_708227783_0_MS_right_trackpad_13
   Clean ShiftLayerEmitted(Preset_1000001 / Default) @ Default/button_diamond/group 0 (four_buttons)/button_Y/Full_Press => Cycle -> Layer_708227783_1|Base
-  Partial HapticIntensityDropped(10) @ config

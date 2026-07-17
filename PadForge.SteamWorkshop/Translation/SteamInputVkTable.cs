@@ -19,8 +19,8 @@ namespace PadForge.SteamWorkshop.Translation
     /// ctor, KbmKeyVkCodes): only those VKs are iterated by
     /// MapInputToKbmRaw, so a row targeting any other <c>KbmKey..</c> would
     /// sit in the mapping set and never fire. Keys that map to a VK outside
-    /// this set are reported Skipped(UnsupportedKey) instead of emitting a
-    /// dead row.</para>
+    /// this set ride SendInput macro forms instead of emitting a dead row
+    /// (HoldKey pairs since translator v10).</para>
     /// </summary>
     public static class SteamInputVkTable
     {
@@ -46,15 +46,25 @@ namespace PadForge.SteamWorkshop.Translation
         /// <c>KbmMBtn{0-4}</c> target (LMB, RMB, MMB, X1, X2).</summary>
         public static bool TryResolveMouseButton(string name, out string target)
         {
-            target = null;
+            bool ok = TryResolveMouseButtonIndex(name, out int idx);
+            target = ok ? $"KbmMBtn{idx}" : null;
+            return ok;
+        }
+
+        /// <summary>Steam Input mouse-button name to the shared 0..4 index
+        /// (Left, Right, Middle, X1, X2), which is both the KbmMBtn{n}
+        /// target index and the MacroMouseButton enum order the
+        /// macro-backed forms use (v10 G6/G10).</summary>
+        public static bool TryResolveMouseButtonIndex(string name, out int index)
+        {
             switch ((name ?? "").Trim().ToUpperInvariant())
             {
-                case "LEFT": target = "KbmMBtn0"; return true;
-                case "RIGHT": target = "KbmMBtn1"; return true;
-                case "MIDDLE": target = "KbmMBtn2"; return true;
-                case "BACK": target = "KbmMBtn3"; return true;
-                case "FORWARD": target = "KbmMBtn4"; return true;
-                default: return false;
+                case "LEFT": index = 0; return true;
+                case "RIGHT": index = 1; return true;
+                case "MIDDLE": index = 2; return true;
+                case "BACK": index = 3; return true;
+                case "FORWARD": index = 4; return true;
+                default: index = -1; return false;
             }
         }
 

@@ -44,12 +44,16 @@ xbox rows: 19
     <- Gamepad RightTrigger
     <- Gamepad RightTrigger [upper-half] dz=75
 kbm rows: 0
-macros: 1
+macros: 3
   macro ToggleVcButton OnPress | Toggle ButtonB (click) | btns=0x2000 target=0x2000
-report: v9 rows:x19+k0 macros:1 menus:0 layers:0 clean:22 partial:2 skipped:1 errors:0
+  macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Gamepad LeftTrigger] strength=66%
+  macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Gamepad RightTrigger] strength=66%
+report: v10 rows:x19+k0 macros:3 menus:0 layers:0 clean:22 partial:3 skipped:1 errors:0
   Skipped DoublePressNotSupported @ Default/button_diamond/group 3 (four_buttons)/button_y/Double_Press :: xinput_button JOYSTICK_LEFT
   Partial ToggleLatchEmitted(ButtonB) @ Default/joystick/group 6 (joystick_move)/click/Full_Press => Toggle ButtonB latch macro
   Clean RowEmitted @ Default/joystick/group 6 (joystick_move)/click/Full_Press => ButtonB <- Gamepad LeftStick
+  Partial HapticPulseEmitted(2) @ Default/left_trigger/group 1 (trigger)/click/Full_Press => Rumble pulse macro (66%)
+  Partial HapticPulseEmitted(2) @ Default/right_trigger/group 2 (trigger)/click/Full_Press => Rumble pulse macro (66%)
   Clean RowEmitted @ Default/joystick/group 6 (joystick_move) => LeftThumbAxisX <- Gamepad LeftStickX
   Clean RowEmitted @ Default/joystick/group 6 (joystick_move) => LeftThumbAxisY <- Gamepad LeftStickY
   Clean RowEmitted @ Default/left_trigger/group 1 (trigger) => LeftTrigger <- Gamepad LeftTrigger
@@ -71,4 +75,3 @@ report: v9 rows:x19+k0 macros:1 menus:0 layers:0 clean:22 partial:2 skipped:1 er
   Clean RowEmitted @ Default/switch/group 0 (switches)/button_menu/Full_Press => ButtonBack <- Gamepad ButtonBack
   Clean RowEmitted @ Default/switch/group 0 (switches)/left_bumper/Full_Press => LeftShoulder <- Gamepad LeftShoulder
   Clean RowEmitted @ Default/switch/group 0 (switches)/right_bumper/Full_Press => RightShoulder <- Gamepad RightShoulder
-  Partial HapticIntensityDropped(2) @ config

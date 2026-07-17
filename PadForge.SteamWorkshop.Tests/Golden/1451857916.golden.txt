@@ -48,25 +48,31 @@ kbm rows: 1
   Base | KbmKey4E | AND
     <- Touchpad 0 DPadLeft
     <- Touchpad 0 Click
-macros: 7
+macros: 10
+  macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Gamepad LeftStick] strength=66%
   macro SetLightbarColor OnPress | Set LED (dpad_east) | btns=0x0000 in=[Touchpad 0 DPadRight; Touchpad 0 Click] rgb=(255,6,0) bright=100% sat=100% setting=1
   macro SetLightbarColor OnPress | Set LED (dpad_north) | btns=0x0000 in=[Touchpad 0 DPadUp; Touchpad 0 Click] rgb=(51,255,0) bright=100% sat=100% setting=1
   macro SetLightbarColor OnPress | Set LED (dpad_south) | btns=0x0000 in=[Touchpad 0 DPadDown; Touchpad 0 Click] rgb=(0,255,0) bright=100% sat=100% setting=1
   macro SetLightbarColor OnPress | Set LED (dpad_west) | btns=0x0000 in=[Touchpad 0 DPadLeft; Touchpad 0 Click] rgb=(0,41,255) bright=100% sat=100% setting=1
+  macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Gamepad LeftTrigger] strength=66%
   macro SetLightbarColor OnPress | Set LED (dpad_east) | btns=0x0000 in=[Touchpad 0 DPadRight; Touchpad 0 Click] rgb=(255,0,238) bright=100% sat=100% setting=1
   macro SetLightbarColor OnPress | Set LED (dpad_north) | btns=0x0000 in=[Touchpad 0 DPadUp; Touchpad 0 Click] rgb=(255,236,0) bright=100% sat=100% setting=1
   macro SetLightbarColor OnPress | Set LED (dpad_south) | btns=0x0000 in=[Touchpad 0 DPadDown; Touchpad 0 Click] rgb=(0,255,255) bright=100% sat=100% setting=0
-report: v9 rows:x19+k1 macros:7 menus:0 layers:0 clean:23 partial:11 skipped:0 errors:0
+  macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Gamepad RightTrigger] strength=66%
+report: v10 rows:x19+k1 macros:10 menus:0 layers:0 clean:23 partial:13 skipped:0 errors:0
+  Partial HapticPulseEmitted(2) @ Default/joystick/group 3 (joystick_move)/click/Full_Press => Rumble pulse macro (66%)
   Partial TrackpadFeatureRequired(Touchpad joystick output) @ Default/left_trackpad/group 17 (dpad)/dpad_east/Full_Press => Set LED macro
   Partial TrackpadHalfApproximated @ Default/left_trackpad/group 17 (dpad)
   Partial TrackpadFeatureRequired(Touchpad joystick output) @ Default/left_trackpad/group 17 (dpad)/dpad_north/Full_Press => Set LED macro
   Partial TrackpadFeatureRequired(Touchpad joystick output) @ Default/left_trackpad/group 17 (dpad)/dpad_south/Full_Press => Set LED macro
   Partial TrackpadFeatureRequired(Touchpad joystick output) @ Default/left_trackpad/group 17 (dpad)/dpad_west/Full_Press => Set LED macro
+  Partial HapticPulseEmitted(2) @ Default/left_trigger/group 4 (trigger)/click/Full_Press => Rumble pulse macro (66%)
   Partial TrackpadFeatureRequired(Touchpad joystick output) @ Default/right_trackpad/group 19 (dpad)/dpad_east/Full_Press => Set LED macro
   Partial TrackpadHalfApproximated @ Default/right_trackpad/group 19 (dpad)
   Partial TrackpadFeatureRequired(Touchpad joystick output) @ Default/right_trackpad/group 19 (dpad)/dpad_north/Full_Press => Set LED macro
   Partial TrackpadFeatureRequired(Touchpad joystick output) @ Default/right_trackpad/group 19 (dpad)/dpad_south/Full_Press => Set LED macro
   Partial TrackpadFeatureRequired(Touchpad joystick output) @ Default/right_trackpad/group 19 (dpad)/dpad_west/Full_Press => KbmKey4E <- Touchpad 0 DPadLeft
+  Partial HapticPulseEmitted(2) @ Default/right_trigger/group 5 (trigger)/click/Full_Press => Rumble pulse macro (66%)
   Clean RowEmitted @ Default/switch/group 9 (switches)/button_back_left/Full_Press => ButtonA <- Gamepad Paddle2
   Clean RowEmitted @ Default/switch/group 9 (switches)/button_back_right/Full_Press => ButtonX <- Gamepad Paddle1
   Clean RowEmitted @ Default/joystick/group 3 (joystick_move) => LeftThumbAxisX <- Gamepad LeftStickX
@@ -90,4 +96,3 @@ report: v9 rows:x19+k1 macros:7 menus:0 layers:0 clean:23 partial:11 skipped:0 e
   Clean RowEmitted @ Default/switch/group 9 (switches)/button_menu/Full_Press => ButtonBack <- Gamepad ButtonBack
   Clean RowEmitted @ Default/switch/group 9 (switches)/left_bumper/Full_Press => LeftShoulder <- Gamepad LeftShoulder
   Clean RowEmitted @ Default/switch/group 9 (switches)/right_bumper/Full_Press => RightShoulder <- Gamepad RightShoulder
-  Partial HapticIntensityDropped(3) @ config

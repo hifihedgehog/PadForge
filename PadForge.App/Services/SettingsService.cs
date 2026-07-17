@@ -732,6 +732,15 @@ namespace PadForge.Services
                     // autosave and then silently lost its inversion.
                     var preservedInvertOutput = CaptureInvertOutputFlags(row);
 
+                    // Same reason, same shape: preserve the response-curve /
+                    // outer-range channel (translator v11) across the
+                    // clear+rebuild. ParamCurveExponent / ParamRangeOuter have
+                    // no VM card (only the Workshop translator stamps them),
+                    // so the row's own pre-rebuild sources are the only source
+                    // of truth. Without this an imported response curve
+                    // survived exactly until the first pad-page save.
+                    var preservedCurveRange = CaptureCurveRangeParams(row);
+
                     // Phase 2C. Clear and rebuild Sources from the UI
                     // state so MappingSet is fully authoritative for
                     // this row. This stops keyboard primaries (which
@@ -858,6 +867,7 @@ namespace PadForge.Services
                     // rebuilt pointer sources.
                     ApplyTouchpadPointerParamsToRow(row, preservedPointer);
                     ApplyInvertOutputFlagsToRow(row, preservedInvertOutput);
+                    ApplyCurveRangeParamsToRow(row, preservedCurveRange);
                 }
 
                 // Steering Kind reconciliation on the Base layer (#94). The per-mapping
@@ -1114,6 +1124,52 @@ namespace PadForge.Services
                     {
                         src.ParamPointerCenter = p.center;
                         src.ParamPointerExtent = p.extent;
+                        break;
+                    }
+                }
+            }
+        }
+
+        // Captures the response-curve / outer-range channel (translator v11)
+        // from a row's sources before the save rebuild clears them. Direct
+        // analog of CaptureTouchpadPointerParams above, same reason:
+        // ParamCurveExponent / ParamRangeOuter have no VM card to re-stamp
+        // from, so the pre-rebuild sources are the only source of truth.
+        // Keyed by (device, descriptor); captures only sources carrying a
+        // non-default value (the common case returns an empty list).
+        private static System.Collections.Generic.List<(string device, string desc, double exponent, double outer)>
+            CaptureCurveRangeParams(MappingRow row)
+        {
+            var list = new System.Collections.Generic.List<(string, string, double, double)>();
+            if (row?.Sources == null) return list;
+            foreach (var s in row.Sources)
+            {
+                if (s == null || (s.ParamCurveExponent <= 0 && s.ParamRangeOuter <= 0)) continue;
+                list.Add((s.DeviceGuid ?? "", s.Descriptor ?? "", s.ParamCurveExponent, s.ParamRangeOuter));
+            }
+            return list;
+        }
+
+        // Re-stamps the captured curve/range params onto the rebuilt sources.
+        // The rebuild strips the I/H prefix back off, so the rebuilt
+        // descriptor matches the captured (already-clean) one exactly; a
+        // source re-authored to a different descriptor correctly keeps the
+        // off default, since the translator stamped the params for the
+        // descriptor it emitted.
+        private static void ApplyCurveRangeParamsToRow(MappingRow row,
+            System.Collections.Generic.List<(string device, string desc, double exponent, double outer)> preserved)
+        {
+            if (row?.Sources == null || preserved == null || preserved.Count == 0) return;
+            foreach (var src in row.Sources)
+            {
+                if (src == null) continue;
+                foreach (var p in preserved)
+                {
+                    if (string.Equals(p.desc, src.Descriptor ?? "", StringComparison.Ordinal)
+                        && string.Equals(p.device ?? "", src.DeviceGuid ?? "", StringComparison.OrdinalIgnoreCase))
+                    {
+                        if (p.exponent > 0) src.ParamCurveExponent = p.exponent;
+                        if (p.outer > 0) src.ParamRangeOuter = p.outer;
                         break;
                     }
                 }

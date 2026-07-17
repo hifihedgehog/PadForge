@@ -75,7 +75,7 @@ menus: 1
   menu 1 Grid | Touchpad 0 [left half] | Base | fire=Click cells=2 | name=Touch Menu 1
     [0] Quicksave
     [1] Quickload
-report: v10 rows:x20+k2 macros:19 menus:1 layers:0 clean:27 partial:27 skipped:0 errors:0
+report: v11 rows:x20+k2 macros:19 menus:1 layers:0 clean:27 partial:27 skipped:0 errors:0
   Partial HapticPulseEmitted(1) @ Default/dpad/group 9 (dpad)/dpad_east/Full_Press => Rumble pulse macro (33%)
   Partial HapticPulseEmitted(1) @ Default/dpad/group 9 (dpad)/dpad_north/Full_Press => Rumble pulse macro (33%)
   Partial HapticPulseEmitted(1) @ Default/dpad/group 9 (dpad)/dpad_south/Full_Press => Rumble pulse macro (33%)

@@ -53,7 +53,7 @@ macros: 7
   macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Gamepad LeftStick] strength=66%
   macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Gamepad LeftTrigger] strength=66%
   macro RepeatVcButtonWhileHeld HoldForMs | Turbo ButtonA (click) | btns=0x0000 axis=RightTrigger@75% hold=500ms consume target=0x1000 interval=10ms
-report: v10 rows:x18+k1 macros:7 menus:0 layers:0 clean:23 partial:7 skipped:0 errors:0
+report: v11 rows:x18+k1 macros:7 menus:0 layers:0 clean:23 partial:7 skipped:0 errors:0
   Partial HapticPulseEmitted(1) @ Default/dpad/group 9 (dpad)/dpad_east/Full_Press => Rumble pulse macro (33%)
   Partial HapticPulseEmitted(1) @ Default/dpad/group 9 (dpad)/dpad_north/Full_Press => Rumble pulse macro (33%)
   Partial HapticPulseEmitted(1) @ Default/dpad/group 9 (dpad)/dpad_south/Full_Press => Rumble pulse macro (33%)

@@ -217,6 +217,12 @@ namespace PadForge.SteamWorkshop.Tests
                 sb.Append(" ptrCenter=").Append(s.ParamPointerCenter.ToString("0.###", CultureInfo.InvariantCulture));
             if (s.ParamPointerExtent != 1.0)
                 sb.Append(" ptrExtent=").Append(s.ParamPointerExtent.ToString("0.###", CultureInfo.InvariantCulture));
+            // Response curve / outer range channel (translator v11):
+            // non-default only, same byte-stability rule.
+            if (s.ParamCurveExponent != 0)
+                sb.Append(" curve=").Append(s.ParamCurveExponent.ToString("0.###", CultureInfo.InvariantCulture));
+            if (s.ParamRangeOuter != 0)
+                sb.Append(" rangeOuter=").Append(s.ParamRangeOuter.ToString("0.###", CultureInfo.InvariantCulture));
             if (!string.IsNullOrEmpty(s.DeviceGuid)) sb.Append(" guid=").Append(s.DeviceGuid);
             return sb.ToString();
         }

@@ -45,9 +45,9 @@ xbox rows: 32
     <- Gamepad RightTrigger
     <- Gamepad RightTrigger [upper-half] dz=75
   Layer_2374887917_0_MS_right_joystick_14 | RightThumbAxisX
-    <- Gamepad RightStickX
+    <- Gamepad RightStickX rangeOuter=0.977
   Layer_2374887917_0_MS_right_joystick_14 | RightThumbAxisY
-    <- Gamepad RightStickY
+    <- Gamepad RightStickY rangeOuter=0.977
   Layer_2374887917_0_MS_right_joystick_14 | RightThumbButton
     <- Gamepad RightStick
   Layer_2374887917_1 | ButtonB
@@ -104,7 +104,7 @@ macros: 7
   macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Gamepad LeftStick] strength=66%
   macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Gamepad LeftTrigger] strength=66%
   macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Gamepad RightTrigger] strength=66%
-report: v10 rows:x32+k4 macros:7 menus:0 layers:11 clean:47 partial:23 skipped:0 errors:0
+report: v11 rows:x32+k4 macros:7 menus:0 layers:11 clean:47 partial:23 skipped:0 errors:0
   Partial HapticPulseEmitted(1) @ Default/dpad/group 9 (dpad)/dpad_east/Full_Press => Rumble pulse macro (33%)
   Partial HapticPulseEmitted(1) @ Default/dpad/group 9 (dpad)/dpad_north/Full_Press => Rumble pulse macro (33%)
   Partial HapticPulseEmitted(1) @ Default/dpad/group 9 (dpad)/dpad_south/Full_Press => Rumble pulse macro (33%)
@@ -117,7 +117,7 @@ report: v10 rows:x32+k4 macros:7 menus:0 layers:11 clean:47 partial:23 skipped:0
   Partial ActivatorInputNotSupported @ Default/left_trackpad/group 11 (single_button)/touch/Full_Press :: controller_action hold_layer 2 0 1
   Partial HapticPulseEmitted(2) @ Default/left_trigger/group 4 (trigger)/click/Full_Press => Rumble pulse macro (66%)
   Clean RowEmitted @ Default/right_joystick/group 13 (flickstick) => KbmMouseX <- Flick Stick Right
-  Partial ResponseCurveNotSupported(deadzone_outer_radius, deadzone_shape) @ Default/right_joystick/group 14 (joystick_move)
+  Partial ResponseCurveNotSupported(deadzone_shape) @ Default/right_joystick/group 14 (joystick_move)
   Partial TrackpadFeatureRequired(Touchpad touch spots) @ Default/right_trackpad/group 10 (single_button)/click/Full_Press => ButtonStart <- Touchpad 0 Click
   Partial ActivatorInputNotSupported @ Default/right_trackpad/group 10 (single_button)/touch/Full_Press :: controller_action hold_layer 2 0 1
   Partial HapticPulseEmitted(2) @ Default/right_trigger/group 5 (trigger)/click/Full_Press => Rumble pulse macro (66%)

@@ -2431,7 +2431,6 @@
   <data name="Workshop_Tr_TouchMenuNeedsOverlay" xml:space="preserve"><value>sobreposição de menu de toque descartada ({0} células)</value></data>
   <data name="Workshop_Tr_RadialMenuNeedsOverlay" xml:space="preserve"><value>sobreposição de menu radial descartada ({0} setores)</value></data>
   <data name="Workshop_Tr_MouseRegionNotSupported" xml:space="preserve"><value>restrição de região do cursor não suportada</value></data>
-  <data name="Workshop_Tr_ScrollWheelModeNotSupported" xml:space="preserve"><value>modo de roda de rolagem não suportado</value></data>
   <data name="Workshop_Tr_EdgeInputNotSupported" xml:space="preserve"><value>entrada de borda não suportada</value></data>
   <data name="Workshop_Tr_ReleaseActivatorNotSupported" xml:space="preserve"><value>ativador ao soltar não suportado aqui</value></data>
   <data name="Workshop_Tr_LongPressNotSupported" xml:space="preserve"><value>ativador de pressão longa não suportado aqui</value></data>
@@ -2557,7 +2556,6 @@
   <data name="Workshop_Tr_ScrollWheelApproximated" xml:space="preserve"><value>roda de rolagem circular aproximada como arrasto vertical</value></data>
   <data name="Workshop_Tr_ScreenshotApproximated" xml:space="preserve"><value>SCREENSHOT aproximado como toque na tecla Print Screen</value></data>
   <data name="Workshop_Tr_ShowKeyboardApproximated" xml:space="preserve"><value>SHOW_KEYBOARD aproximado como abertura do teclado virtual</value></data>
-  <data name="Workshop_Tr_MouseDeltaNotSupported" xml:space="preserve"><value>deslocamento relativo do cursor mouse_delta ({0}) não suportado</value></data>
   <data name="Macro_HoldForMs" xml:space="preserve"><value>Ao Segurar</value></data>
   <data name="Macro_HoldForMs_Tooltip" xml:space="preserve"><value>Dispara uma vez depois que o gatilho for mantido continuamente pelo tempo de retenção. Um toque mais curto não faz nada.</value></data>
   <data name="Macro_TriggerHoldMs_Label" xml:space="preserve"><value>Tempo de Retenção</value></data>
@@ -2574,6 +2572,14 @@
   <data name="MacroAction_HoldAxis_Format" xml:space="preserve"><value>Manter {0} = {1} ({2} ms)</value></data>
   <data name="MacroAction_Type_MouseWheelTap" xml:space="preserve"><value>Clique da roda do mouse</value></data>
   <data name="MacroAction_MouseWheelTap_Tooltip" xml:space="preserve"><value>Envia um clique discreto da roda do mouse por disparo. O valor é o número de cliques com sinal (positivo rola para cima ou para a direita).</value></data>
+  <data name="MacroAction_Type_MouseNudge" xml:space="preserve"><value>Empurrar cursor</value></data>
+  <data name="MacroAction_MouseNudge_Tooltip" xml:space="preserve"><value>Move o cursor do mouse um número fixo de pixels por disparo. X positivo move para a direita, Y positivo para baixo. Valores negativos são permitidos.</value></data>
+  <data name="MacroAction_MouseNudge_Format" xml:space="preserve"><value>Empurrar o cursor em ({0}, {1}) px</value></data>
+  <data name="MacroAction_Type_CycleTapList" xml:space="preserve"><value>Lista de toques cíclica</value></data>
+  <data name="MacroAction_CycleTapList_Tooltip" xml:space="preserve"><value>Cada disparo executa o próximo passo da lista e avança. Com o ciclo ativado, a lista recomeça após o último passo. Sem ele, a saída para no fim.</value></data>
+  <data name="MacroAction_CycleTapList_Format" xml:space="preserve"><value>Lista de toques cíclica ({0} passos)</value></data>
+  <data name="Macro_CycleSteps_Label" xml:space="preserve"><value>Passos</value></data>
+  <data name="Macro_CycleWrap_Label" xml:space="preserve"><value>Ciclo</value></data>
   <data name="MacroAction_ToggleKey_Format" xml:space="preserve"><value>Alternar teclas {0}</value></data>
   <data name="MacroAction_Type_GyroRecenter" xml:space="preserve"><value>Recentralizar Giroscópio</value></data>
   <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>Zera as referências de mira do giroscópio acumuladas do pad ao pressionar. O histórico de suavização é limpo, o neutro do Motion Lean é recapturado e a estimativa de gravidade é reiniciada a partir da pose atual do controle.</value></data>

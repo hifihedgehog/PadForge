@@ -77,14 +77,17 @@ namespace PadForge.Tests
         {
             // The macro clipboard serializes MacroActionType numerically, so
             // new members MUST append at the tail and their values must
-            // never move (wave 1b pinned 35..38; v15 appended 39..40).
+            // never move (wave 1b pinned 35..38; v15 appended 39..40; v16
+            // appended 41..42).
             var values = Enum.GetValues<MacroActionType>();
-            Assert.Equal(MacroActionType.MouseWheelTap, values[^1]);
-            Assert.Equal(MacroActionType.AxisHold, values[^2]);
-            Assert.Equal(MacroActionType.GyroRecenter, values[^3]);
-            Assert.Equal(MacroActionType.ToggleKey, values[^4]);
-            Assert.Equal(MacroActionType.ToggleVcButton, values[^5]);
-            Assert.Equal(MacroActionType.RepeatVcButtonWhileHeld, values[^6]);
+            Assert.Equal(MacroActionType.CycleTapList, values[^1]);
+            Assert.Equal(MacroActionType.MouseNudge, values[^2]);
+            Assert.Equal(MacroActionType.MouseWheelTap, values[^3]);
+            Assert.Equal(MacroActionType.AxisHold, values[^4]);
+            Assert.Equal(MacroActionType.GyroRecenter, values[^5]);
+            Assert.Equal(MacroActionType.ToggleKey, values[^6]);
+            Assert.Equal(MacroActionType.ToggleVcButton, values[^7]);
+            Assert.Equal(MacroActionType.RepeatVcButtonWhileHeld, values[^8]);
 
             Assert.Equal(35, (int)MacroActionType.RepeatVcButtonWhileHeld);
             Assert.Equal(36, (int)MacroActionType.ToggleVcButton);
@@ -92,6 +95,8 @@ namespace PadForge.Tests
             Assert.Equal(38, (int)MacroActionType.GyroRecenter);
             Assert.Equal(39, (int)MacroActionType.AxisHold);
             Assert.Equal(40, (int)MacroActionType.MouseWheelTap);
+            Assert.Equal(41, (int)MacroActionType.MouseNudge);
+            Assert.Equal(42, (int)MacroActionType.CycleTapList);
         }
 
         [Fact]

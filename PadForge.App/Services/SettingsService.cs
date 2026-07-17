@@ -3004,6 +3004,10 @@ namespace PadForge.Services
                 CursorPinY = ad.CursorPinY,
                 MouseX = ad.MouseX,
                 MouseY = ad.MouseY,
+                NudgeDx = ad.NudgeDx,
+                NudgeDy = ad.NudgeDy,
+                CycleStepsCsv = ad.CycleStepsCsv ?? "",
+                CycleWrap = ad.CycleWrap,
                 IntervalMs = ad.IntervalMs,
                 CursorClampMode = ad.CursorClampMode,
                 CursorClampInsetX = ad.CursorClampInsetX,
@@ -4036,6 +4040,10 @@ namespace PadForge.Services
                 CursorPinY = a.CursorPinY,
                 MouseX = a.MouseX,
                 MouseY = a.MouseY,
+                NudgeDx = a.NudgeDx,
+                NudgeDy = a.NudgeDy,
+                CycleStepsCsv = string.IsNullOrEmpty(a.CycleStepsCsv) ? null : a.CycleStepsCsv,
+                CycleWrap = a.CycleWrap,
                 IntervalMs = a.IntervalMs,
                 CursorClampMode = a.CursorClampMode,
                 CursorClampInsetX = a.CursorClampInsetX,
@@ -5384,6 +5392,26 @@ namespace PadForge.Services
         /// (MOUSEEVENTF_HWHEEL) lane instead of the vertical wheel.</summary>
         [XmlElement]
         public bool WheelHorizontal { get; set; }
+
+        /// <summary>MouseNudge (v16): signed X pixel delta per fire,
+        /// screen frame (+x right).</summary>
+        [XmlElement]
+        public int NudgeDx { get; set; }
+
+        /// <summary>MouseNudge (v16): signed Y pixel delta per fire,
+        /// screen frame (+y down).</summary>
+        [XmlElement]
+        public int NudgeDy { get; set; }
+
+        /// <summary>CycleTapList (v16): the ordered step list
+        /// (MacroAction.CycleStepsCsv vocabulary).</summary>
+        [XmlElement]
+        public string CycleStepsCsv { get; set; }
+
+        /// <summary>CycleTapList (v16): wrap past the last step back to
+        /// the first.</summary>
+        [XmlElement]
+        public bool CycleWrap { get; set; }
 
         /// <summary>When true, show the Windows volume flyout OSD on volume changes.</summary>
         [XmlElement]

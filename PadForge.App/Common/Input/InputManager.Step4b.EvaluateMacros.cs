@@ -1445,6 +1445,27 @@ namespace PadForge.Common.Input
                     AdvanceAction(macro);
                     break;
 
+                case MacroActionType.MouseNudge:
+                    // One fixed-pixel cursor nudge per fire (v16): the
+                    // signed delta joins the accumulate-and-flush mouse
+                    // lane once, so the injector thread batches it with
+                    // whatever else is pending and the poll thread stays
+                    // syscall-free.
+                    ExecuteMouseNudge(action);
+                    AdvanceAction(macro);
+                    break;
+
+                case MacroActionType.CycleTapList:
+                    // Steam's Scroll Wheel List (v16): fire the NEXT step
+                    // and advance the per-action index. VC-button / VC-axis
+                    // parts assert for the action's DurationMs so a game
+                    // poll sees them. Injection parts fire on the first
+                    // frame. The executor owns the index advance (wrap /
+                    // dead-end rules live there).
+                    if (ExecuteCycleTapList(ref gp, action, actionElapsed))
+                        AdvanceAction(macro);
+                    break;
+
                 case MacroActionType.MouseButtonPress:
                     if (actionElapsed < 1)
                         SendMouseButtonInput(action.MouseButton, down: true);
@@ -2208,6 +2229,11 @@ namespace PadForge.Common.Input
                 // mid-wave from the previous hold.
                 action.RepeatVcLastToggleUtc = DateTime.MinValue;
                 action.RepeatVcPulseOn = false;
+                // CycleTapList injection latch (v16): a run interrupted
+                // mid-hold must not swallow the next fire's one-shot
+                // parts. The cycle POSITION deliberately survives (that
+                // is the whole primitive). Only the latch re-arms.
+                action.CycleInjectionFired = false;
             }
         }
 
@@ -2293,6 +2319,124 @@ namespace PadForge.Common.Input
                 AccumulateMouseScrollHInput(ticks * 120);
             else
                 AccumulateMouseScrollInput(ticks * 120);
+        }
+
+        /// <summary>One fixed-pixel cursor nudge (v16): the signed
+        /// NudgeDx/NudgeDy delta joins the same accumulate-and-flush lane
+        /// the continuous MouseMove action feeds, exactly once per fire.
+        /// The injector thread flushes it batched, so the poll thread
+        /// stays syscall-free (the lane's whole point).</summary>
+        private static void ExecuteMouseNudge(MacroAction action)
+        {
+            if (_currentMacroSlotRestricted) return; // gamepad-only peer: no mouse
+            AccumulateMouseMoveInput(action.NudgeDx, action.NudgeDy);
+        }
+
+        /// <summary>Steam's Scroll Wheel List step (v16). Executes the
+        /// current step of the parsed cycle and returns true when the
+        /// action may advance. Injection parts (key tap, mouse click,
+        /// wheel tick) fire on the first frame only. VC-button and VC-axis
+        /// parts assert every frame until DurationMs elapses, the
+        /// ButtonPress shape, so a 60 Hz game poll sees the tap. The
+        /// per-action <see cref="MacroAction.CycleIndex"/> advances here:
+        /// wrap-on returns to step 0 past the end, wrap-off parks the
+        /// index past the end and later fires produce nothing (Steam's
+        /// "Wrap List - Off": no further output past the end, and the
+        /// forward-only lowering has no back-step to free it, which the
+        /// translator's group note covers).</summary>
+        private static bool ExecuteCycleTapList(ref Gamepad gp, MacroAction action, double actionElapsed)
+        {
+            var steps = action.ParsedCycleSteps;
+            if (steps.Length == 0) return true;
+            int idx = action.CycleIndex;
+            if (idx >= steps.Length)
+            {
+                if (!action.CycleWrap) return true; // parked past the end
+                idx = 0;
+                action.CycleIndex = 0;
+            }
+            var parts = steps[idx];
+            bool held = false;
+            // One-shot latch, not the actionElapsed < 1 convention: a
+            // loaded frame can arrive later than 1 ms after the trigger
+            // stamp, which would swallow the injection parts entirely.
+            bool first = !action.CycleInjectionFired;
+            action.CycleInjectionFired = true;
+            for (int i = 0; i < parts.Length; i++)
+            {
+                var p = parts[i];
+                switch (p.Kind)
+                {
+                    case 'K':
+                        // One full tap, the RepeatKeyWhileHeld pulse shape.
+                        if (first)
+                        {
+                            SendKeyInput((ushort)p.Value, keyUp: false);
+                            SendKeyInput((ushort)p.Value, keyUp: true);
+                        }
+                        break;
+                    case 'M':
+                    {
+                        if (first)
+                        {
+                            var btn = (MacroMouseButton)Math.Clamp(p.Value, 0, 4);
+                            SendMouseButtonInput(btn, down: true);
+                            SendMouseButtonInput(btn, down: false);
+                        }
+                        break;
+                    }
+                    case 'W':
+                        if (first && !_currentMacroSlotRestricted)
+                            AccumulateMouseScrollInput((p.Value == 0 ? 1 : p.Value) * 120);
+                        break;
+                    case 'H':
+                        if (first && !_currentMacroSlotRestricted)
+                            AccumulateMouseScrollHInput((p.Value == 0 ? 1 : p.Value) * 120);
+                        break;
+                    case 'B':
+                        gp.Buttons |= (ushort)p.Value;
+                        held = true;
+                        break;
+                    case 'A':
+                        WriteCycleAxisPart(ref gp, p);
+                        held = true;
+                        break;
+                }
+            }
+            if (held && actionElapsed < action.DurationMs)
+                return false; // keep asserting the held parts
+            action.CycleInjectionFired = false; // re-arm for the next step
+            action.CycleIndex = idx + 1;
+            if (action.CycleWrap && action.CycleIndex >= steps.Length)
+                action.CycleIndex = 0;
+            return true;
+        }
+
+        /// <summary>Writes one 'A' cycle part (v16): the AxisHold write
+        /// shape (triggers on the doubled pull scale, sticks signed).</summary>
+        private static void WriteCycleAxisPart(ref Gamepad gp, CycleStepPart p)
+        {
+            switch ((MacroAxisTarget)p.Value)
+            {
+                case MacroAxisTarget.LeftStickX:
+                    gp.ThumbLX = p.Value2;
+                    break;
+                case MacroAxisTarget.LeftStickY:
+                    gp.ThumbLY = p.Value2;
+                    break;
+                case MacroAxisTarget.RightStickX:
+                    gp.ThumbRX = p.Value2;
+                    break;
+                case MacroAxisTarget.RightStickY:
+                    gp.ThumbRY = p.Value2;
+                    break;
+                case MacroAxisTarget.LeftTrigger:
+                    gp.LeftTrigger = TriggerPullFromAxisValue(p.Value2);
+                    break;
+                case MacroAxisTarget.RightTrigger:
+                    gp.RightTrigger = TriggerPullFromAxisValue(p.Value2);
+                    break;
+            }
         }
 
         // ─────────────────────────────────────────────
@@ -2693,6 +2837,27 @@ namespace PadForge.Common.Input
                     ExecuteMouseWheelTap(action);
                     AdvanceAction(macro);
                     break;
+
+                case MacroActionType.MouseNudge:
+                    // Extended twin (v16): the nudge is pure injection, so
+                    // the Gamepad-path executor applies unchanged.
+                    ExecuteMouseNudge(action);
+                    AdvanceAction(macro);
+                    break;
+
+                case MacroActionType.CycleTapList:
+                {
+                    // Extended twin (v16): injection parts fire the same.
+                    // The VC-button ('B', an Xbox bitmask) and VC-axis
+                    // ('A', the Xbox axis frame) parts address the Xbox
+                    // output shape and have no meaning on an Extended
+                    // slot's word array, so they no-op here via the
+                    // scratch pad the executor writes into.
+                    var scratch = new Gamepad();
+                    if (ExecuteCycleTapList(ref scratch, action, actionElapsed))
+                        AdvanceAction(macro);
+                    break;
+                }
 
                 case MacroActionType.MouseButtonPress:
                     if (actionElapsed < 1)
@@ -3299,6 +3464,14 @@ namespace PadForge.Common.Input
         internal static (int Vertical, int Horizontal) DrainPendingScrollForTests()
             => (Interlocked.Exchange(ref _pendingScroll, 0),
                 Interlocked.Exchange(ref _pendingScrollH, 0));
+
+        /// <summary>Test pin (v16 MouseNudge): drains the pending
+        /// mouse-move lane without SendInput, returning the batched
+        /// (dx, dy) in pixels. Same contract as
+        /// <see cref="DrainPendingScrollForTests"/>.</summary>
+        internal static (int Dx, int Dy) DrainPendingMouseMoveForTests()
+            => (Interlocked.Exchange(ref _pendingMouseDx, 0),
+                Interlocked.Exchange(ref _pendingMouseDy, 0));
 
         /// <summary>
         /// Reads a source axis as a signed float (-1.0..+1.0) for mouse delta calculation.

@@ -2562,7 +2562,6 @@
   <data name="Workshop_Tr_TouchMenuNeedsOverlay" xml:space="preserve"><value>touch-menu overlay dropped ({0} cells)</value></data>
   <data name="Workshop_Tr_RadialMenuNeedsOverlay" xml:space="preserve"><value>radial-menu overlay dropped ({0} sectors)</value></data>
   <data name="Workshop_Tr_MouseRegionNotSupported" xml:space="preserve"><value>cursor region constraint not supported</value></data>
-  <data name="Workshop_Tr_ScrollWheelModeNotSupported" xml:space="preserve"><value>scroll-wheel mode not supported</value></data>
   <data name="Workshop_Tr_EdgeInputNotSupported" xml:space="preserve"><value>edge input not supported</value></data>
   <data name="Workshop_Tr_ReleaseActivatorNotSupported" xml:space="preserve"><value>release activator not supported here</value></data>
   <data name="Workshop_Tr_LongPressNotSupported" xml:space="preserve"><value>long-press activator not supported here</value></data>
@@ -2604,7 +2603,6 @@
   <data name="Workshop_Tr_ScrollWheelApproximated" xml:space="preserve"><value>circular scroll wheel approximated as a vertical drag</value></data>
   <data name="Workshop_Tr_ScreenshotApproximated" xml:space="preserve"><value>SCREENSHOT approximated as a PrintScreen key tap</value></data>
   <data name="Workshop_Tr_ShowKeyboardApproximated" xml:space="preserve"><value>SHOW_KEYBOARD approximated as launching the on-screen keyboard</value></data>
-  <data name="Workshop_Tr_MouseDeltaNotSupported" xml:space="preserve"><value>relative cursor nudge mouse_delta ({0}) not supported</value></data>
   <data name="Status_WorkshopUpdatesOptInRequired" xml:space="preserve"><value>Enable Community Configs to check for updates</value></data>
   <data name="Status_WorkshopNoImportedProfiles" xml:space="preserve"><value>No profiles imported from the Steam Workshop yet</value></data>
   <data name="Status_WorkshopCheckingUpdates" xml:space="preserve"><value>Checking Steam Workshop for updates…</value></data>
@@ -2628,6 +2626,14 @@
   <data name="MacroAction_HoldAxis_Format" xml:space="preserve"><value>Hold {0} = {1} ({2} ms)</value></data>
   <data name="MacroAction_Type_MouseWheelTap" xml:space="preserve"><value>Mouse Wheel Tick</value></data>
   <data name="MacroAction_MouseWheelTap_Tooltip" xml:space="preserve"><value>Sends one discrete mouse wheel detent per fire. The value is the signed tick count (positive scrolls up or right).</value></data>
+  <data name="MacroAction_Type_MouseNudge" xml:space="preserve"><value>Nudge Cursor</value></data>
+  <data name="MacroAction_MouseNudge_Tooltip" xml:space="preserve"><value>Moves the mouse cursor by a fixed number of pixels per fire. Positive X moves right, positive Y moves down; negative values are allowed.</value></data>
+  <data name="MacroAction_MouseNudge_Format" xml:space="preserve"><value>Nudge cursor by ({0}, {1}) px</value></data>
+  <data name="MacroAction_Type_CycleTapList" xml:space="preserve"><value>Cycle Tap List</value></data>
+  <data name="MacroAction_CycleTapList_Tooltip" xml:space="preserve"><value>Each fire performs the next tap in the step list and advances. With wrap enabled the list restarts after the last step; without it, firing stops at the end.</value></data>
+  <data name="MacroAction_CycleTapList_Format" xml:space="preserve"><value>Cycle tap list ({0} steps)</value></data>
+  <data name="Macro_CycleSteps_Label" xml:space="preserve"><value>Steps</value></data>
+  <data name="Macro_CycleWrap_Label" xml:space="preserve"><value>Wrap</value></data>
   <data name="MacroAction_ToggleKey_Format" xml:space="preserve"><value>Toggle keys {0}</value></data>
   <data name="MacroAction_Type_GyroRecenter" xml:space="preserve"><value>Gyro Recenter</value></data>
   <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>Zeroes the pad's accumulated gyro aim references on press. Smoothing history clears, the Motion Lean neutral re-captures, and the gravity estimate re-seeds from the controller's current pose.</value></data>

@@ -2431,7 +2431,6 @@
   <data name="Workshop_Tr_TouchMenuNeedsOverlay" xml:space="preserve"><value>터치 메뉴 오버레이 제외({0}개 셀)</value></data>
   <data name="Workshop_Tr_RadialMenuNeedsOverlay" xml:space="preserve"><value>방사형 메뉴 오버레이 제외({0}개 섹터)</value></data>
   <data name="Workshop_Tr_MouseRegionNotSupported" xml:space="preserve"><value>커서 영역 제한 미지원</value></data>
-  <data name="Workshop_Tr_ScrollWheelModeNotSupported" xml:space="preserve"><value>스크롤 휠 모드 미지원</value></data>
   <data name="Workshop_Tr_EdgeInputNotSupported" xml:space="preserve"><value>가장자리 입력 미지원</value></data>
   <data name="Workshop_Tr_ReleaseActivatorNotSupported" xml:space="preserve"><value>놓기 활성화 방식은 여기서 지원되지 않음</value></data>
   <data name="Workshop_Tr_LongPressNotSupported" xml:space="preserve"><value>길게 누르기 활성화 방식은 여기서 지원되지 않음</value></data>
@@ -2557,7 +2556,6 @@
   <data name="Workshop_Tr_ScrollWheelApproximated" xml:space="preserve"><value>원형 스크롤 휠을 세로 드래그로 근사</value></data>
   <data name="Workshop_Tr_ScreenshotApproximated" xml:space="preserve"><value>SCREENSHOT을 PrintScreen 키 입력으로 근사</value></data>
   <data name="Workshop_Tr_ShowKeyboardApproximated" xml:space="preserve"><value>SHOW_KEYBOARD를 화면 키보드 실행으로 근사</value></data>
-  <data name="Workshop_Tr_MouseDeltaNotSupported" xml:space="preserve"><value>커서 상대 이동 mouse_delta ({0}) 미지원</value></data>
   <data name="Macro_HoldForMs" xml:space="preserve"><value>길게 누를 때</value></data>
   <data name="Macro_HoldForMs_Tooltip" xml:space="preserve"><value>트리거를 유지 시간 동안 계속 누르고 있으면 한 번 실행됩니다. 더 짧게 누르면 아무 일도 일어나지 않습니다.</value></data>
   <data name="Macro_TriggerHoldMs_Label" xml:space="preserve"><value>유지 시간</value></data>
@@ -2574,6 +2572,14 @@
   <data name="MacroAction_HoldAxis_Format" xml:space="preserve"><value>{0} = {1} 유지 ({2} ms)</value></data>
   <data name="MacroAction_Type_MouseWheelTap" xml:space="preserve"><value>휠 한 칸</value></data>
   <data name="MacroAction_MouseWheelTap_Tooltip" xml:space="preserve"><value>발동할 때마다 마우스 휠을 한 칸 보냅니다. 값은 부호 있는 칸 수입니다(양수는 위 또는 오른쪽으로 스크롤).</value></data>
+  <data name="MacroAction_Type_MouseNudge" xml:space="preserve"><value>커서 살짝 이동</value></data>
+  <data name="MacroAction_MouseNudge_Tooltip" xml:space="preserve"><value>발동할 때마다 마우스 커서를 고정 픽셀 수만큼 이동합니다. X 양수는 오른쪽, Y 양수는 아래쪽입니다. 음수도 사용할 수 있습니다.</value></data>
+  <data name="MacroAction_MouseNudge_Format" xml:space="preserve"><value>커서를 ({0}, {1}) px 이동</value></data>
+  <data name="MacroAction_Type_CycleTapList" xml:space="preserve"><value>탭 목록 순환</value></data>
+  <data name="MacroAction_CycleTapList_Tooltip" xml:space="preserve"><value>발동할 때마다 목록의 다음 단계를 실행하고 앞으로 이동합니다. 순환을 켜면 마지막 단계 후 처음으로 돌아갑니다. 끄면 목록 끝에서 출력이 멈춥니다.</value></data>
+  <data name="MacroAction_CycleTapList_Format" xml:space="preserve"><value>탭 목록 순환({0}단계)</value></data>
+  <data name="Macro_CycleSteps_Label" xml:space="preserve"><value>단계</value></data>
+  <data name="Macro_CycleWrap_Label" xml:space="preserve"><value>순환</value></data>
   <data name="MacroAction_ToggleKey_Format" xml:space="preserve"><value>키 {0} 토글</value></data>
   <data name="MacroAction_Type_GyroRecenter" xml:space="preserve"><value>자이로 재중심</value></data>
   <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>누르면 패드에 누적된 자이로 조준 기준을 0으로 되돌립니다. 스무딩 기록이 지워지고, Motion Lean 중립점이 다시 캡처되며, 중력 추정치가 컨트롤러의 현재 자세에서 다시 초기화됩니다.</value></data>

@@ -2170,6 +2170,8 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(IsDurationType));
                     OnPropertyChanged(nameof(IsAxisType));
                     OnPropertyChanged(nameof(IsMouseWheelTapType));
+                    OnPropertyChanged(nameof(IsMouseNudgeType));
+                    OnPropertyChanged(nameof(IsCycleTapListType));
                     OnPropertyChanged(nameof(IsSystemVolumeType));
                     OnPropertyChanged(nameof(IsAppVolumeType));
                     OnPropertyChanged(nameof(IsMouseMoveType));
@@ -2273,6 +2275,14 @@ namespace PadForge.ViewModels
         /// <summary>True when Type is MouseWheelTap (v15).</summary>
         [System.Xml.Serialization.XmlIgnore]
         public bool IsMouseWheelTapType => _type == MacroActionType.MouseWheelTap;
+
+        /// <summary>True when Type is MouseNudge (v16).</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool IsMouseNudgeType => _type == MacroActionType.MouseNudge;
+
+        /// <summary>True when Type is CycleTapList (v16).</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool IsCycleTapListType => _type == MacroActionType.CycleTapList;
 
         /// <summary>True when Type is SystemVolume.</summary>
         [System.Xml.Serialization.XmlIgnore]
@@ -3084,6 +3094,95 @@ namespace PadForge.ViewModels
             }
         }
 
+        private string _cycleStepsCsv = "";
+
+        /// <summary>For CycleTapList (v16): the ordered step list. Steps
+        /// separated by ','; parts of one step joined '+' (they fire
+        /// together); part = kind ':' value. Kinds: K:{vk} key tap,
+        /// M:{0..4} mouse-button click, W:{ticks} vertical wheel,
+        /// H:{ticks} horizontal wheel, B:{mask} VC button flags,
+        /// A:{axisTarget}:{value} VC axis assert (MacroAxisTarget ordinal,
+        /// trigger targets on the AxisHold pull scale). Example:
+        /// "K:49,K:50,W:1+M:0".</summary>
+        public string CycleStepsCsv
+        {
+            get => _cycleStepsCsv;
+            set
+            {
+                if (SetProperty(ref _cycleStepsCsv, value ?? ""))
+                {
+                    OnPropertyChanged(nameof(DisplayText));
+                    OnPropertyChanged(nameof(ParsedCycleSteps));
+                }
+            }
+        }
+
+        private bool _cycleWrap = true;
+
+        /// <summary>For CycleTapList (v16): wrap past the last step back
+        /// to the first. Off = further fires produce nothing once the end
+        /// is reached (Steam's Wrap List - Off).</summary>
+        public bool CycleWrap
+        {
+            get => _cycleWrap;
+            set
+            {
+                if (SetProperty(ref _cycleWrap, value))
+                    OnPropertyChanged(nameof(DisplayText));
+            }
+        }
+
+        /// <summary>CycleTapList runtime position (v16): index of the NEXT
+        /// step to fire. Per-action volatile like the ToggleVcButton
+        /// latch: lives with the loaded action, resets on profile switch
+        /// and app restart, never persisted.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public int CycleIndex { get; set; }
+
+        /// <summary>Transient CycleTapList latch (v16): true once the
+        /// current step's injection parts (key / mouse / wheel) have
+        /// fired, cleared when the step completes. A latch instead of the
+        /// executor's usual actionElapsed &lt; 1 convention because a
+        /// loaded frame can arrive later than 1 ms after the trigger
+        /// stamp, which would silently swallow the one-shot parts. Never
+        /// serialized.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool CycleInjectionFired { get; set; }
+
+        private CycleStepPart[][] _parsedCycleStepsCache;
+        private string _parsedCycleStepsCacheCsv;
+
+        /// <summary>Parses <see cref="CycleStepsCsv"/> into step parts,
+        /// memoized against the CSV (the executor reads this per fire on
+        /// the poll thread). Unparseable parts are dropped, and a step whose
+        /// parts all drop is dropped whole.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public CycleStepPart[][] ParsedCycleSteps
+        {
+            get
+            {
+                string csv = _cycleStepsCsv;
+                var cached = _parsedCycleStepsCache;
+                if (cached != null && ReferenceEquals(_parsedCycleStepsCacheCsv, csv))
+                    return cached;
+                var steps = new List<CycleStepPart[]>();
+                foreach (var stepText in (csv ?? "").Split(',', StringSplitOptions.RemoveEmptyEntries))
+                {
+                    var parts = new List<CycleStepPart>();
+                    foreach (var partText in stepText.Split('+', StringSplitOptions.RemoveEmptyEntries))
+                    {
+                        if (CycleStepPart.TryParse(partText, out var part))
+                            parts.Add(part);
+                    }
+                    if (parts.Count > 0) steps.Add(parts.ToArray());
+                }
+                var result = steps.ToArray();
+                _parsedCycleStepsCache = result;
+                _parsedCycleStepsCacheCsv = csv;
+                return result;
+            }
+        }
+
         private bool _showVolumeOsd = true;
 
         /// <summary>When true, trigger the Windows volume flyout OSD. Only relevant for SystemVolume/AppVolume.</summary>
@@ -3787,6 +3886,38 @@ namespace PadForge.ViewModels
             }
         }
 
+        private int _nudgeDx;
+
+        /// <summary>Signed X pixel delta a
+        /// <see cref="MacroActionType.MouseNudge"/> action moves the cursor
+        /// by per fire (v16). Screen frame: positive = right. Deliberately
+        /// NOT the clamped <see cref="MouseX"/> warp coordinate: a nudge is
+        /// a relative offset and negative values are the point.</summary>
+        public int NudgeDx
+        {
+            get => _nudgeDx;
+            set
+            {
+                if (SetProperty(ref _nudgeDx, value))
+                    OnPropertyChanged(nameof(DisplayText));
+            }
+        }
+
+        private int _nudgeDy;
+
+        /// <summary>Signed Y pixel delta for
+        /// <see cref="MacroActionType.MouseNudge"/> (v16). Screen frame:
+        /// positive = down (the SendInput MOUSEEVENTF_MOVE convention).</summary>
+        public int NudgeDy
+        {
+            get => _nudgeDy;
+            set
+            {
+                if (SetProperty(ref _nudgeDy, value))
+                    OnPropertyChanged(nameof(DisplayText));
+            }
+        }
+
         private int _intervalMs = 100;
         /// <summary>Repeat interval in milliseconds for
         /// <see cref="MacroActionType.RepeatKeyWhileHeld"/> (issue #9): the pad
@@ -4220,6 +4351,10 @@ namespace PadForge.ViewModels
                     MacroActionType.AxisSet => string.Format(Strings.Instance.MacroAction_SetAxis_Format, _axisTarget, _axisValue),
                     MacroActionType.AxisHold => string.Format(Strings.Instance.MacroAction_HoldAxis_Format, _axisTarget, _axisValue, _durationMs),
                     MacroActionType.MouseWheelTap => Strings.Instance.MacroAction_Type_MouseWheelTap,
+                    MacroActionType.MouseNudge => string.Format(
+                        Strings.Instance.MacroAction_MouseNudge_Format, _nudgeDx, _nudgeDy),
+                    MacroActionType.CycleTapList => string.Format(
+                        Strings.Instance.MacroAction_CycleTapList_Format, ParsedCycleSteps.Length),
                     MacroActionType.SystemVolume => _volumeLimit < 100
                         ? string.Format(Strings.Instance.MacroAction_SysVolLimit_Format, axisLabel, _volumeLimit)
                         : string.Format(Strings.Instance.MacroAction_SysVol_Format, axisLabel),
@@ -4888,7 +5023,86 @@ namespace PadForge.ViewModels
         /// <see cref="MacroAction.WheelHorizontal"/> selects the
         /// MOUSEEVENTF_HWHEEL lane. At the tail per the APPEND-ONLY rule
         /// above; ordinal pinned.</summary>
-        MouseWheelTap = 40
+        MouseWheelTap = 40,
+
+        /// <summary>One fixed-pixel cursor nudge per fire (translator v16,
+        /// Steam's <c>mouse_delta</c> "Move by Amount").
+        /// <see cref="MacroAction.NudgeDx"/> / <see cref="MacroAction.NudgeDy"/>
+        /// are signed screen-frame pixels (+x right, +y down), enqueued
+        /// ONCE into the same accumulate-and-flush mouse lane the
+        /// continuous MouseMove action feeds, so the injector thread
+        /// batches it off the poll thread. At the tail per the APPEND-ONLY
+        /// rule above; ordinal pinned.</summary>
+        MouseNudge = 41,
+
+        /// <summary>Cycle through a list of one-shot taps (translator v16,
+        /// Steam's Scroll Wheel List): each fire executes the NEXT step of
+        /// <see cref="MacroAction.CycleStepsCsv"/> and advances the
+        /// per-action volatile <see cref="MacroAction.CycleIndex"/>,
+        /// wrapping when <see cref="MacroAction.CycleWrap"/> is set and
+        /// dead-ending past the last step otherwise. Step vocabulary in
+        /// the CSV doc. At the tail per the APPEND-ONLY rule above;
+        /// ordinal pinned.</summary>
+        CycleTapList = 42
+    }
+
+    /// <summary>One parsed part of a <see cref="MacroActionType.CycleTapList"/>
+    /// step (v16). Kinds: 'K' key tap (Value = VK), 'M' mouse-button click
+    /// (Value = 0..4), 'W' vertical wheel ticks, 'H' horizontal wheel
+    /// ticks, 'B' VC button flags (Value = Xbox bitmask), 'A' VC axis
+    /// assert (Value = MacroAxisTarget ordinal, Value2 = axis value on the
+    /// AxisHold scale).</summary>
+    public readonly struct CycleStepPart
+    {
+        public CycleStepPart(char kind, int value, short value2 = 0)
+        {
+            Kind = kind;
+            Value = value;
+            Value2 = value2;
+        }
+
+        public char Kind { get; }
+
+        public int Value { get; }
+
+        public short Value2 { get; }
+
+        /// <summary>Parses "K:49", "B:4096", "A:2:32767" forms. Unknown
+        /// kinds and junk numbers fail rather than guessing.</summary>
+        public static bool TryParse(string text, out CycleStepPart part)
+        {
+            part = default;
+            var tokens = (text ?? "").Trim().Split(':');
+            if (tokens.Length < 2 || tokens[0].Length != 1) return false;
+            char kind = char.ToUpperInvariant(tokens[0][0]);
+            if (!int.TryParse(tokens[1], System.Globalization.NumberStyles.Integer,
+                    System.Globalization.CultureInfo.InvariantCulture, out int value))
+            {
+                return false;
+            }
+            switch (kind)
+            {
+                case 'K':
+                case 'M':
+                case 'W':
+                case 'H':
+                case 'B':
+                    if (tokens.Length != 2) return false;
+                    part = new CycleStepPart(kind, value);
+                    return true;
+                case 'A':
+                    if (tokens.Length != 3
+                        || !short.TryParse(tokens[2], System.Globalization.NumberStyles.Integer,
+                            System.Globalization.CultureInfo.InvariantCulture, out short axisValue))
+                    {
+                        return false;
+                    }
+                    part = new CycleStepPart(kind, value, axisValue);
+                    return true;
+                default:
+                    return false;
+            }
+        }
     }
 
     /// <summary>Target selector for <see cref="MacroActionType.DisconnectController"/>

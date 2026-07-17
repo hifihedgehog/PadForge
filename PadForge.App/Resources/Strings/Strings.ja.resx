@@ -2431,7 +2431,6 @@
   <data name="Workshop_Tr_TouchMenuNeedsOverlay" xml:space="preserve"><value>タッチメニューオーバーレイを破棄 ({0} セル)</value></data>
   <data name="Workshop_Tr_RadialMenuNeedsOverlay" xml:space="preserve"><value>ラジアルメニューオーバーレイを破棄 ({0} セクター)</value></data>
   <data name="Workshop_Tr_MouseRegionNotSupported" xml:space="preserve"><value>カーソル領域の制限は未対応</value></data>
-  <data name="Workshop_Tr_ScrollWheelModeNotSupported" xml:space="preserve"><value>スクロールホイールモードは未対応</value></data>
   <data name="Workshop_Tr_EdgeInputNotSupported" xml:space="preserve"><value>エッジ入力は未対応</value></data>
   <data name="Workshop_Tr_ReleaseActivatorNotSupported" xml:space="preserve"><value>リリースアクティベーターはここでは未対応</value></data>
   <data name="Workshop_Tr_LongPressNotSupported" xml:space="preserve"><value>長押しアクティベーターはここでは未対応</value></data>
@@ -2557,7 +2556,6 @@
   <data name="Workshop_Tr_ScrollWheelApproximated" xml:space="preserve"><value>円形スクロールホイールを縦ドラッグで近似</value></data>
   <data name="Workshop_Tr_ScreenshotApproximated" xml:space="preserve"><value>SCREENSHOT を PrintScreen キー入力で近似</value></data>
   <data name="Workshop_Tr_ShowKeyboardApproximated" xml:space="preserve"><value>SHOW_KEYBOARD をスクリーンキーボードの起動で近似</value></data>
-  <data name="Workshop_Tr_MouseDeltaNotSupported" xml:space="preserve"><value>カーソル相対移動 mouse_delta ({0}) は未対応</value></data>
   <data name="Macro_HoldForMs" xml:space="preserve"><value>長押し時</value></data>
   <data name="Macro_HoldForMs_Tooltip" xml:space="preserve"><value>トリガーを保持時間のあいだ押し続けると 1 回だけ発動します。それより短いタップでは何も起こりません。</value></data>
   <data name="Macro_TriggerHoldMs_Label" xml:space="preserve"><value>保持時間</value></data>
@@ -2574,6 +2572,14 @@
   <data name="MacroAction_HoldAxis_Format" xml:space="preserve"><value>{0} = {1} をホールド ({2} ms)</value></data>
   <data name="MacroAction_Type_MouseWheelTap" xml:space="preserve"><value>ホイール1ノッチ</value></data>
   <data name="MacroAction_MouseWheelTap_Tooltip" xml:space="preserve"><value>発火ごとにマウスホイールを1ノッチ送ります。値は符号付きのノッチ数です(正の値で上または右にスクロール)。</value></data>
+  <data name="MacroAction_Type_MouseNudge" xml:space="preserve"><value>カーソルを少し移動</value></data>
+  <data name="MacroAction_MouseNudge_Tooltip" xml:space="preserve"><value>発火ごとにマウスカーソルを固定ピクセル数だけ移動します。Xの正は右、Yの正は下方向です。負の値も使えます。</value></data>
+  <data name="MacroAction_MouseNudge_Format" xml:space="preserve"><value>カーソルを ({0}, {1}) px 移動</value></data>
+  <data name="MacroAction_Type_CycleTapList" xml:space="preserve"><value>タップリスト巡回</value></data>
+  <data name="MacroAction_CycleTapList_Tooltip" xml:space="preserve"><value>発火ごとにリストの次のステップを実行して進みます。折り返しを有効にすると最後のステップの後に先頭へ戻ります。無効の場合は末尾で出力が止まります。</value></data>
+  <data name="MacroAction_CycleTapList_Format" xml:space="preserve"><value>タップリスト巡回({0} ステップ)</value></data>
+  <data name="Macro_CycleSteps_Label" xml:space="preserve"><value>ステップ</value></data>
+  <data name="Macro_CycleWrap_Label" xml:space="preserve"><value>折り返し</value></data>
   <data name="MacroAction_ToggleKey_Format" xml:space="preserve"><value>キー {0} をトグル</value></data>
   <data name="MacroAction_Type_GyroRecenter" xml:space="preserve"><value>ジャイロを再センタリング</value></data>
   <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>押すと、パッドに蓄積されたジャイロ照準の基準をゼロにします。スムージング履歴がクリアされ、Motion Lean のニュートラルが再取得され、重力推定がコントローラーの現在の姿勢から再設定されます。</value></data>

@@ -2451,7 +2451,6 @@
   <data name="Workshop_Tr_TouchMenuNeedsOverlay" xml:space="preserve"><value>touch-menu-overlay vervallen ({0} cellen)</value></data>
   <data name="Workshop_Tr_RadialMenuNeedsOverlay" xml:space="preserve"><value>radiaal-menu-overlay vervallen ({0} sectoren)</value></data>
   <data name="Workshop_Tr_MouseRegionNotSupported" xml:space="preserve"><value>cursorgebiedbeperking niet ondersteund</value></data>
-  <data name="Workshop_Tr_ScrollWheelModeNotSupported" xml:space="preserve"><value>scrollwielmodus niet ondersteund</value></data>
   <data name="Workshop_Tr_EdgeInputNotSupported" xml:space="preserve"><value>randinvoer niet ondersteund</value></data>
   <data name="Workshop_Tr_ReleaseActivatorNotSupported" xml:space="preserve"><value>loslaat-activator hier niet ondersteund</value></data>
   <data name="Workshop_Tr_LongPressNotSupported" xml:space="preserve"><value>lang-indrukken-activator hier niet ondersteund</value></data>
@@ -2577,7 +2576,6 @@
   <data name="Workshop_Tr_ScrollWheelApproximated" xml:space="preserve"><value>cirkelvormig scrollwiel benaderd als verticaal slepen</value></data>
   <data name="Workshop_Tr_ScreenshotApproximated" xml:space="preserve"><value>SCREENSHOT benaderd als een PrintScreen-toetsaanslag</value></data>
   <data name="Workshop_Tr_ShowKeyboardApproximated" xml:space="preserve"><value>SHOW_KEYBOARD benaderd als het starten van het schermtoetsenbord</value></data>
-  <data name="Workshop_Tr_MouseDeltaNotSupported" xml:space="preserve"><value>relatieve cursorverplaatsing mouse_delta ({0}) niet ondersteund</value></data>
   <data name="Macro_HoldForMs" xml:space="preserve"><value>Bij vasthouden</value></data>
   <data name="Macro_HoldForMs_Tooltip" xml:space="preserve"><value>Vuurt één keer nadat de trigger onafgebroken de vasthoudtijd ingedrukt is gehouden. Een kortere tik doet niets.</value></data>
   <data name="Macro_TriggerHoldMs_Label" xml:space="preserve"><value>Vasthoudtijd</value></data>
@@ -2594,6 +2592,14 @@
   <data name="MacroAction_HoldAxis_Format" xml:space="preserve"><value>{0} = {1} vasthouden ({2} ms)</value></data>
   <data name="MacroAction_Type_MouseWheelTap" xml:space="preserve"><value>Muiswiel-klik</value></data>
   <data name="MacroAction_MouseWheelTap_Tooltip" xml:space="preserve"><value>Stuurt één discrete muiswiel-klik per activering. De waarde is het aantal klikken met teken (positief scrolt omhoog of naar rechts).</value></data>
+  <data name="MacroAction_Type_MouseNudge" xml:space="preserve"><value>Cursor verschuiven</value></data>
+  <data name="MacroAction_MouseNudge_Tooltip" xml:space="preserve"><value>Verplaatst de muiscursor per activering een vast aantal pixels. Positieve X gaat naar rechts, positieve Y omlaag. Negatieve waarden zijn toegestaan.</value></data>
+  <data name="MacroAction_MouseNudge_Format" xml:space="preserve"><value>Cursor ({0}, {1}) px verschuiven</value></data>
+  <data name="MacroAction_Type_CycleTapList" xml:space="preserve"><value>Taplijst doorlopen</value></data>
+  <data name="MacroAction_CycleTapList_Tooltip" xml:space="preserve"><value>Elke activering voert de volgende stap van de lijst uit en gaat verder. Met herhalen begint de lijst na de laatste stap opnieuw. Zonder stopt de uitvoer aan het einde.</value></data>
+  <data name="MacroAction_CycleTapList_Format" xml:space="preserve"><value>Taplijst doorlopen ({0} stappen)</value></data>
+  <data name="Macro_CycleSteps_Label" xml:space="preserve"><value>Stappen</value></data>
+  <data name="Macro_CycleWrap_Label" xml:space="preserve"><value>Herhalen</value></data>
   <data name="MacroAction_ToggleKey_Format" xml:space="preserve"><value>Toetsen {0} schakelen</value></data>
   <data name="MacroAction_Type_GyroRecenter" xml:space="preserve"><value>Gyro hercentreren</value></data>
   <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>Zet de opgebouwde gyro-richtreferenties van de pad op nul bij indrukken. De smoothing-geschiedenis wordt gewist, het Motion Lean-neutraalpunt wordt opnieuw vastgelegd en de zwaartekrachtschatting wordt opnieuw geïnitialiseerd vanuit de huidige stand van de controller.</value></data>

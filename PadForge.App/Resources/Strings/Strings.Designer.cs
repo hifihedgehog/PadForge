@@ -1473,6 +1473,14 @@ public class Strings : INotifyPropertyChanged
     public string MacroAction_HoldAxis_Format => Get("MacroAction_HoldAxis_Format");
     public string MacroAction_Type_MouseWheelTap => Get("MacroAction_Type_MouseWheelTap");
     public string MacroAction_MouseWheelTap_Tooltip => Get("MacroAction_MouseWheelTap_Tooltip");
+    public string MacroAction_Type_MouseNudge => Get("MacroAction_Type_MouseNudge");
+    public string MacroAction_MouseNudge_Tooltip => Get("MacroAction_MouseNudge_Tooltip");
+    public string MacroAction_MouseNudge_Format => Get("MacroAction_MouseNudge_Format");
+    public string MacroAction_Type_CycleTapList => Get("MacroAction_Type_CycleTapList");
+    public string MacroAction_CycleTapList_Tooltip => Get("MacroAction_CycleTapList_Tooltip");
+    public string MacroAction_CycleTapList_Format => Get("MacroAction_CycleTapList_Format");
+    public string Macro_CycleSteps_Label => Get("Macro_CycleSteps_Label");
+    public string Macro_CycleWrap_Label => Get("Macro_CycleWrap_Label");
     public string MacroAction_ToggleKey_Format => Get("MacroAction_ToggleKey_Format");
     public string MacroAction_Type_GyroRecenter => Get("MacroAction_Type_GyroRecenter");
     public string MacroAction_GyroRecenter_Tooltip => Get("MacroAction_GyroRecenter_Tooltip");
@@ -2436,7 +2444,6 @@ public class Strings : INotifyPropertyChanged
     public string Workshop_Tr_TouchMenuNeedsOverlay => Get("Workshop_Tr_TouchMenuNeedsOverlay");
     public string Workshop_Tr_RadialMenuNeedsOverlay => Get("Workshop_Tr_RadialMenuNeedsOverlay");
     public string Workshop_Tr_MouseRegionNotSupported => Get("Workshop_Tr_MouseRegionNotSupported");
-    public string Workshop_Tr_ScrollWheelModeNotSupported => Get("Workshop_Tr_ScrollWheelModeNotSupported");
     public string Workshop_Tr_EdgeInputNotSupported => Get("Workshop_Tr_EdgeInputNotSupported");
     public string Workshop_Tr_ReleaseActivatorNotSupported => Get("Workshop_Tr_ReleaseActivatorNotSupported");
     public string Workshop_Tr_LongPressNotSupported => Get("Workshop_Tr_LongPressNotSupported");
@@ -2478,7 +2485,6 @@ public class Strings : INotifyPropertyChanged
     public string Workshop_Tr_ScrollWheelApproximated => Get("Workshop_Tr_ScrollWheelApproximated");
     public string Workshop_Tr_ScreenshotApproximated => Get("Workshop_Tr_ScreenshotApproximated");
     public string Workshop_Tr_ShowKeyboardApproximated => Get("Workshop_Tr_ShowKeyboardApproximated");
-    public string Workshop_Tr_MouseDeltaNotSupported => Get("Workshop_Tr_MouseDeltaNotSupported");
     public string Status_WorkshopUpdatesOptInRequired => Get("Status_WorkshopUpdatesOptInRequired");
     public string Status_WorkshopNoImportedProfiles => Get("Status_WorkshopNoImportedProfiles");
     public string Status_WorkshopCheckingUpdates => Get("Status_WorkshopCheckingUpdates");

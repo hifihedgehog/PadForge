@@ -56,7 +56,7 @@ macros: 8
   macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Gamepad LeftTrigger] in-half=upper in-dz=75 strength=66%
   macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Gamepad RightTrigger] in-half=upper in-dz=75 strength=66%
   macro KeyTap OnPress | Screenshot key (button_capture) | btns=0x0000 in=[Button 11] vk=0x2C
-report: v15 rows:x20+k0 macros:8 menus:0 layers:0 clean:24 partial:1 skipped:0 errors:0
+report: v16 rows:x20+k0 macros:8 menus:0 layers:0 clean:24 partial:1 skipped:0 errors:0
   Clean RowEmitted @ Default/switch/group 7 (switches)/button_back_left/Full_Press => ButtonA <- Gamepad Paddle2
   Clean RowEmitted @ Default/switch/group 7 (switches)/button_back_right/Full_Press => ButtonX <- Gamepad Paddle1
   Partial ScreenshotApproximated @ Default/switch/group 7 (switches)/button_capture/Full_Press => PrintScreen tap macro

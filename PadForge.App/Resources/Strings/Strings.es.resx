@@ -2431,7 +2431,6 @@
   <data name="Workshop_Tr_TouchMenuNeedsOverlay" xml:space="preserve"><value>superposición de menú táctil descartada ({0} celdas)</value></data>
   <data name="Workshop_Tr_RadialMenuNeedsOverlay" xml:space="preserve"><value>superposición de menú radial descartada ({0} sectores)</value></data>
   <data name="Workshop_Tr_MouseRegionNotSupported" xml:space="preserve"><value>restricción de región del cursor no compatible</value></data>
-  <data name="Workshop_Tr_ScrollWheelModeNotSupported" xml:space="preserve"><value>modo de rueda de desplazamiento no compatible</value></data>
   <data name="Workshop_Tr_EdgeInputNotSupported" xml:space="preserve"><value>entrada de borde no compatible</value></data>
   <data name="Workshop_Tr_ReleaseActivatorNotSupported" xml:space="preserve"><value>activador de liberación no compatible aquí</value></data>
   <data name="Workshop_Tr_LongPressNotSupported" xml:space="preserve"><value>activador de pulsación larga no compatible aquí</value></data>
@@ -2557,7 +2556,6 @@
   <data name="Workshop_Tr_ScrollWheelApproximated" xml:space="preserve"><value>rueda de desplazamiento circular aproximada como arrastre vertical</value></data>
   <data name="Workshop_Tr_ScreenshotApproximated" xml:space="preserve"><value>SCREENSHOT aproximado como pulsación de la tecla Imprimir Pantalla</value></data>
   <data name="Workshop_Tr_ShowKeyboardApproximated" xml:space="preserve"><value>SHOW_KEYBOARD aproximado como apertura del teclado en pantalla</value></data>
-  <data name="Workshop_Tr_MouseDeltaNotSupported" xml:space="preserve"><value>desplazamiento relativo del cursor mouse_delta ({0}) no compatible</value></data>
   <data name="Macro_HoldForMs" xml:space="preserve"><value>Al mantener</value></data>
   <data name="Macro_HoldForMs_Tooltip" xml:space="preserve"><value>Se dispara una vez cuando el activador se ha mantenido de forma continua durante el tiempo de retención. Un toque más corto no hace nada.</value></data>
   <data name="Macro_TriggerHoldMs_Label" xml:space="preserve"><value>Tiempo de retención</value></data>
@@ -2574,6 +2572,14 @@
   <data name="MacroAction_HoldAxis_Format" xml:space="preserve"><value>Mantener {0} = {1} ({2} ms)</value></data>
   <data name="MacroAction_Type_MouseWheelTap" xml:space="preserve"><value>Paso de rueda del ratón</value></data>
   <data name="MacroAction_MouseWheelTap_Tooltip" xml:space="preserve"><value>Envía un paso discreto de la rueda del ratón por disparo. El valor es el número de pasos con signo (positivo desplaza hacia arriba o a la derecha).</value></data>
+  <data name="MacroAction_Type_MouseNudge" xml:space="preserve"><value>Empujar cursor</value></data>
+  <data name="MacroAction_MouseNudge_Tooltip" xml:space="preserve"><value>Mueve el cursor del ratón un número fijo de píxeles por disparo. X positivo mueve a la derecha, Y positivo hacia abajo. Se permiten valores negativos.</value></data>
+  <data name="MacroAction_MouseNudge_Format" xml:space="preserve"><value>Empujar cursor ({0}, {1}) px</value></data>
+  <data name="MacroAction_Type_CycleTapList" xml:space="preserve"><value>Lista de pulsaciones cíclica</value></data>
+  <data name="MacroAction_CycleTapList_Tooltip" xml:space="preserve"><value>Cada disparo ejecuta el siguiente paso de la lista y avanza. Con el ciclo activado la lista vuelve a empezar tras el último paso. Sin él, la salida se detiene al final.</value></data>
+  <data name="MacroAction_CycleTapList_Format" xml:space="preserve"><value>Lista de pulsaciones cíclica ({0} pasos)</value></data>
+  <data name="Macro_CycleSteps_Label" xml:space="preserve"><value>Pasos</value></data>
+  <data name="Macro_CycleWrap_Label" xml:space="preserve"><value>Ciclo</value></data>
   <data name="MacroAction_ToggleKey_Format" xml:space="preserve"><value>Alternar teclas {0}</value></data>
   <data name="MacroAction_Type_GyroRecenter" xml:space="preserve"><value>Recentrar giroscopio</value></data>
   <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>Pone a cero las referencias acumuladas de apuntado del giroscopio del pad al presionar. El historial de suavizado se borra, el punto neutro de Motion Lean se vuelve a capturar y la estimación de gravedad se reinicia desde la pose actual del mando.</value></data>

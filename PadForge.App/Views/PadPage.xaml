@@ -1937,6 +1937,12 @@
                                             <ComboBoxItem Content="{Binding MacroAction_Type_MouseWheelTap, Source={x:Static strings:Strings.Instance}}"
                                                           Tag="{x:Static vm:MacroActionType.MouseWheelTap}"
                                                           ToolTip="{Binding MacroAction_MouseWheelTap_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                            <ComboBoxItem Content="{Binding MacroAction_Type_MouseNudge, Source={x:Static strings:Strings.Instance}}"
+                                                          Tag="{x:Static vm:MacroActionType.MouseNudge}"
+                                                          ToolTip="{Binding MacroAction_MouseNudge_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                            <ComboBoxItem Content="{Binding MacroAction_Type_CycleTapList, Source={x:Static strings:Strings.Instance}}"
+                                                          Tag="{x:Static vm:MacroActionType.CycleTapList}"
+                                                          ToolTip="{Binding MacroAction_CycleTapList_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                             <ComboBoxItem Content="{Binding MacroAction_Type_DisconnectController, Source={x:Static strings:Strings.Instance}}"
                                                           Tag="{x:Static vm:MacroActionType.DisconnectController}"
                                                           ToolTip="{Binding MacroAction_DisconnectController_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
@@ -2173,6 +2179,43 @@
                                         <TextBlock Text="{Binding Macro_CursorWrite_Caveat, Source={x:Static strings:Strings.Instance}}"
                                                    FontSize="11" TextWrapping="Wrap"
                                                    Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                                    </StackPanel>
+
+                                    <!-- Nudge Cursor editor (v16): signed dx / dy pixel deltas.
+                                         Deliberately no on-screen pick: a nudge is a relative
+                                         offset, not a coordinate. -->
+                                    <StackPanel Margin="0,0,0,6"
+                                                Visibility="{Binding IsMouseNudgeType, Converter={StaticResource BoolToVisibilityConverter}}">
+                                        <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                            <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Macro_MouseX_Label, Source={x:Static strings:Strings.Instance}}"
+                                                       Width="80" Margin="0,0,8,0" VerticalAlignment="Center"/>
+                                            <TextBox Text="{Binding NudgeDx, Mode=TwoWay, StringFormat=F0, UpdateSourceTrigger=LostFocus}"
+                                                     Width="80" VerticalAlignment="Center"/>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                            <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Macro_MouseY_Label, Source={x:Static strings:Strings.Instance}}"
+                                                       Width="80" Margin="0,0,8,0" VerticalAlignment="Center"/>
+                                            <TextBox Text="{Binding NudgeDy, Mode=TwoWay, StringFormat=F0, UpdateSourceTrigger=LostFocus}"
+                                                     Width="80" VerticalAlignment="Center"/>
+                                        </StackPanel>
+                                        <TextBlock Text="{Binding Macro_CursorWrite_Caveat, Source={x:Static strings:Strings.Instance}}"
+                                                   FontSize="11" TextWrapping="Wrap"
+                                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                                    </StackPanel>
+
+                                    <!-- Cycle Tap List editor (v16): the step CSV plus the wrap
+                                         toggle. The CSV is the persisted vocabulary the importer
+                                         writes (see MacroAction.CycleStepsCsv). -->
+                                    <StackPanel Margin="0,0,0,6"
+                                                Visibility="{Binding IsCycleTapListType, Converter={StaticResource BoolToVisibilityConverter}}">
+                                        <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                            <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Macro_CycleSteps_Label, Source={x:Static strings:Strings.Instance}}"
+                                                       Width="80" Margin="0,0,8,0" VerticalAlignment="Center"/>
+                                            <TextBox Text="{Binding CycleStepsCsv, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                                     Width="220" VerticalAlignment="Center"/>
+                                        </StackPanel>
+                                        <CheckBox IsChecked="{Binding CycleWrap, Mode=TwoWay}"
+                                                  Content="{Binding Macro_CycleWrap_Label, Source={x:Static strings:Strings.Instance}}"/>
                                     </StackPanel>
 
                                     <!-- Turbo interval (#9 + wave 1b): shared by Repeat Key While Held

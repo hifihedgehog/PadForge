@@ -2417,7 +2417,6 @@
   <data name="Workshop_Tr_TouchpadTuningNotPerRow" xml:space="preserve"><value>le réglage du pavé tactile s'applique par pavé, pas par ligne</value></data>
   <data name="Workshop_Tr_SoftPressApproximated" xml:space="preserve"><value>Soft_Press approximé en seuil d'appui</value></data>
   <data name="Workshop_Tr_TriggerThresholdApproximated" xml:space="preserve"><value>seuil de gâchette approximé</value></data>
-  <data name="Workshop_Tr_MacroTriggerViaXboxOutput" xml:space="preserve"><value>se déclenche via la sortie combinée de l'emplacement Xbox</value></data>
   <data name="Workshop_Tr_NoDeviceFreeTrigger" xml:space="preserve"><value>aucun déclencheur sans périphérique pour cette entrée</value></data>
   <data name="Workshop_Tr_GameActionsNotSupported" xml:space="preserve"><value>{0} actions en jeu, réservées à Steam, sans point d'accroche côté jeu</value></data>
   <data name="Workshop_Tr_SteamSystemAction" xml:space="preserve"><value>action du client Steam {0}, sans équivalent</value></data>
@@ -2439,7 +2438,6 @@
   <data name="Workshop_Tr_DoublePressNotSupported" xml:space="preserve"><value>activateur de double appui non pris en charge ici</value></data>
   <data name="Workshop_Tr_UnknownActivatorType" xml:space="preserve"><value>activateur inconnu {0}</value></data>
   <data name="Workshop_Tr_RepeatDropped" xml:space="preserve"><value>répétition automatique abandonnée</value></data>
-  <data name="Workshop_Tr_MacroTriggerRetargetedToInput" xml:space="preserve"><value>déclencheur déplacé sur l&apos;entrée elle-même ({0}) : aucune association n&apos;alimente son bouton Xbox</value></data>
   <data name="Workshop_Tr_MissingGroup" xml:space="preserve"><value>la configuration référence le groupe manquant {0}</value></data>
   <data name="Workshop_Tr_MissingModeShiftGroup" xml:space="preserve"><value>le changement de mode sur {0} référence le groupe manquant {1}</value></data>
   <data name="Workshop_Tr_MissingPreset" xml:space="preserve"><value>la configuration référence le préréglage manquant {0}</value></data>
@@ -2560,10 +2558,6 @@
   <data name="Workshop_Tr_ScreenshotApproximated" xml:space="preserve"><value>SCREENSHOT approximé par un appui sur la touche Impr. écran</value></data>
   <data name="Workshop_Tr_ShowKeyboardApproximated" xml:space="preserve"><value>SHOW_KEYBOARD approximé par le lancement du clavier visuel</value></data>
   <data name="Workshop_Tr_MouseDeltaNotSupported" xml:space="preserve"><value>déplacement relatif du curseur mouse_delta ({0}) non pris en charge</value></data>
-  <data name="Workshop_Tr_GyroSwipeNotSupported" xml:space="preserve"><value>le balayage directionnel hébergé sur le gyroscope n'a pas de canal moteur (lecture de vitesse non signée, pas de déclenchement unique par direction)</value></data>
-  <data name="Workshop_Tr_SwipeSurfaceNotSupported" xml:space="preserve"><value>le balayage directionnel hébergé sur {0} n'a pas de surface directionnelle à balayer</value></data>
-  <data name="Workshop_Tr_FlickAxisTargetNotSupported" xml:space="preserve"><value>une pichenette de stick n'a pas de primitive d'appui pour les cibles gâchette ou axe de stick</value></data>
-  <data name="Workshop_Tr_FlickBindingNotOneShot" xml:space="preserve"><value>ce type d'affectation nécessite un état maintenu, qu'une pichenette de stick unique ne peut pas porter</value></data>
   <data name="Macro_HoldForMs" xml:space="preserve"><value>Au maintien</value></data>
   <data name="Macro_HoldForMs_Tooltip" xml:space="preserve"><value>Se déclenche une fois lorsque le déclencheur a été maintenu en continu pendant la durée de maintien. Un appui plus court ne fait rien.</value></data>
   <data name="Macro_TriggerHoldMs_Label" xml:space="preserve"><value>Durée de maintien</value></data>
@@ -2575,6 +2569,11 @@
   <data name="MacroAction_ToggleVcButton_Format" xml:space="preserve"><value>Basculer {0}</value></data>
   <data name="MacroAction_Type_ToggleKey" xml:space="preserve"><value>Basculer la touche</value></data>
   <data name="MacroAction_ToggleKey_Tooltip" xml:space="preserve"><value>Chaque déclenchement verrouille ou déverrouille la touche. Une touche verrouillée reste enfoncée jusqu'au prochain déclenchement ou jusqu'à la désactivation de la macro.</value></data>
+  <data name="MacroAction_Type_AxisHold" xml:space="preserve"><value>Maintenir l'axe</value></data>
+  <data name="MacroAction_AxisHold_Tooltip" xml:space="preserve"><value>Écrit la valeur de l'axe à chaque trame pendant la durée. Avec la répétition Jusqu'au relâchement, l'axe reste maintenu jusqu'au relâchement du déclencheur.</value></data>
+  <data name="MacroAction_HoldAxis_Format" xml:space="preserve"><value>Maintenir {0} = {1} ({2} ms)</value></data>
+  <data name="MacroAction_Type_MouseWheelTap" xml:space="preserve"><value>Cran de molette</value></data>
+  <data name="MacroAction_MouseWheelTap_Tooltip" xml:space="preserve"><value>Envoie un cran discret de molette par déclenchement. La valeur est le nombre de crans signé (positif fait défiler vers le haut ou la droite).</value></data>
   <data name="MacroAction_ToggleKey_Format" xml:space="preserve"><value>Basculer les touches {0}</value></data>
   <data name="MacroAction_Type_GyroRecenter" xml:space="preserve"><value>Recentrer le gyroscope</value></data>
   <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>Remet à zéro les références de visée gyroscopique accumulées du pad à l'appui. L'historique de lissage s'efface, le neutre du Motion Lean se recapture et l'estimation de gravité se réinitialise depuis la pose actuelle de la manette.</value></data>

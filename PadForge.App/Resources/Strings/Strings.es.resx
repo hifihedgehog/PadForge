@@ -2417,7 +2417,6 @@
   <data name="Workshop_Tr_TouchpadTuningNotPerRow" xml:space="preserve"><value>el ajuste del panel táctil se aplica por panel, no por fila</value></data>
   <data name="Workshop_Tr_SoftPressApproximated" xml:space="preserve"><value>Soft_Press aproximado como umbral de presión</value></data>
   <data name="Workshop_Tr_TriggerThresholdApproximated" xml:space="preserve"><value>umbral de gatillo aproximado</value></data>
-  <data name="Workshop_Tr_MacroTriggerViaXboxOutput" xml:space="preserve"><value>se dispara desde la salida combinada de la ranura Xbox</value></data>
   <data name="Workshop_Tr_NoDeviceFreeTrigger" xml:space="preserve"><value>no hay activador sin dispositivo para esta entrada</value></data>
   <data name="Workshop_Tr_GameActionsNotSupported" xml:space="preserve"><value>{0} acciones del juego, solo Steam, sin integración del lado del juego</value></data>
   <data name="Workshop_Tr_SteamSystemAction" xml:space="preserve"><value>acción del cliente Steam {0}, sin equivalente</value></data>
@@ -2439,7 +2438,6 @@
   <data name="Workshop_Tr_DoublePressNotSupported" xml:space="preserve"><value>activador de doble pulsación no compatible aquí</value></data>
   <data name="Workshop_Tr_UnknownActivatorType" xml:space="preserve"><value>activador desconocido {0}</value></data>
   <data name="Workshop_Tr_RepeatDropped" xml:space="preserve"><value>repetición automática descartada</value></data>
-  <data name="Workshop_Tr_MacroTriggerRetargetedToInput" xml:space="preserve"><value>activador movido a la propia entrada ({0}): ninguna asignación alimenta su botón de Xbox</value></data>
   <data name="Workshop_Tr_MissingGroup" xml:space="preserve"><value>la configuración hace referencia al grupo faltante {0}</value></data>
   <data name="Workshop_Tr_MissingModeShiftGroup" xml:space="preserve"><value>el cambio de modo en {0} hace referencia al grupo faltante {1}</value></data>
   <data name="Workshop_Tr_MissingPreset" xml:space="preserve"><value>la configuración hace referencia al preajuste faltante {0}</value></data>
@@ -2560,10 +2558,6 @@
   <data name="Workshop_Tr_ScreenshotApproximated" xml:space="preserve"><value>SCREENSHOT aproximado como pulsación de la tecla Imprimir Pantalla</value></data>
   <data name="Workshop_Tr_ShowKeyboardApproximated" xml:space="preserve"><value>SHOW_KEYBOARD aproximado como apertura del teclado en pantalla</value></data>
   <data name="Workshop_Tr_MouseDeltaNotSupported" xml:space="preserve"><value>desplazamiento relativo del cursor mouse_delta ({0}) no compatible</value></data>
-  <data name="Workshop_Tr_GyroSwipeNotSupported" xml:space="preserve"><value>el deslizamiento direccional alojado en el giroscopio no tiene canal en el motor (lectura de tasa sin signo, sin disparo único por dirección)</value></data>
-  <data name="Workshop_Tr_SwipeSurfaceNotSupported" xml:space="preserve"><value>el deslizamiento direccional alojado en {0} no tiene superficie direccional que deslizar</value></data>
-  <data name="Workshop_Tr_FlickAxisTargetNotSupported" xml:space="preserve"><value>un movimiento rápido de la palanca no tiene primitiva de pulsación para objetivos de gatillo o eje de palanca</value></data>
-  <data name="Workshop_Tr_FlickBindingNotOneShot" xml:space="preserve"><value>este tipo de asignación necesita estado mantenido, que un movimiento rápido único de la palanca no puede llevar</value></data>
   <data name="Macro_HoldForMs" xml:space="preserve"><value>Al mantener</value></data>
   <data name="Macro_HoldForMs_Tooltip" xml:space="preserve"><value>Se dispara una vez cuando el activador se ha mantenido de forma continua durante el tiempo de retención. Un toque más corto no hace nada.</value></data>
   <data name="Macro_TriggerHoldMs_Label" xml:space="preserve"><value>Tiempo de retención</value></data>
@@ -2575,6 +2569,11 @@
   <data name="MacroAction_ToggleVcButton_Format" xml:space="preserve"><value>Alternar {0}</value></data>
   <data name="MacroAction_Type_ToggleKey" xml:space="preserve"><value>Alternar tecla</value></data>
   <data name="MacroAction_ToggleKey_Tooltip" xml:space="preserve"><value>Cada disparo retiene o suelta la tecla. Una tecla retenida se mantiene pulsada hasta el siguiente disparo o hasta que el macro se desactive.</value></data>
+  <data name="MacroAction_Type_AxisHold" xml:space="preserve"><value>Mantener eje</value></data>
+  <data name="MacroAction_AxisHold_Tooltip" xml:space="preserve"><value>Escribe el valor del eje en cada fotograma durante la duración. Con repetición Hasta Soltar, el eje se mantiene hasta que se suelta el disparador.</value></data>
+  <data name="MacroAction_HoldAxis_Format" xml:space="preserve"><value>Mantener {0} = {1} ({2} ms)</value></data>
+  <data name="MacroAction_Type_MouseWheelTap" xml:space="preserve"><value>Paso de rueda del ratón</value></data>
+  <data name="MacroAction_MouseWheelTap_Tooltip" xml:space="preserve"><value>Envía un paso discreto de la rueda del ratón por disparo. El valor es el número de pasos con signo (positivo desplaza hacia arriba o a la derecha).</value></data>
   <data name="MacroAction_ToggleKey_Format" xml:space="preserve"><value>Alternar teclas {0}</value></data>
   <data name="MacroAction_Type_GyroRecenter" xml:space="preserve"><value>Recentrar giroscopio</value></data>
   <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>Pone a cero las referencias acumuladas de apuntado del giroscopio del pad al presionar. El historial de suavizado se borra, el punto neutro de Motion Lean se vuelve a capturar y la estimación de gravedad se reinicia desde la pose actual del mando.</value></data>

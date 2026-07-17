@@ -2417,7 +2417,6 @@
   <data name="Workshop_Tr_TouchpadTuningNotPerRow" xml:space="preserve"><value>o ajuste do touchpad se aplica por pad, não por linha</value></data>
   <data name="Workshop_Tr_SoftPressApproximated" xml:space="preserve"><value>Soft_Press aproximado como limiar de pressão</value></data>
   <data name="Workshop_Tr_TriggerThresholdApproximated" xml:space="preserve"><value>limiar de gatilho aproximado</value></data>
-  <data name="Workshop_Tr_MacroTriggerViaXboxOutput" xml:space="preserve"><value>dispara pela saída combinada do slot Xbox</value></data>
   <data name="Workshop_Tr_NoDeviceFreeTrigger" xml:space="preserve"><value>nenhum gatilho sem dispositivo para esta entrada</value></data>
   <data name="Workshop_Tr_GameActionsNotSupported" xml:space="preserve"><value>{0} ações do jogo, exclusivas do Steam, sem gancho no lado do jogo</value></data>
   <data name="Workshop_Tr_SteamSystemAction" xml:space="preserve"><value>ação do cliente Steam {0}, sem equivalente</value></data>
@@ -2439,7 +2438,6 @@
   <data name="Workshop_Tr_DoublePressNotSupported" xml:space="preserve"><value>ativador de pressão dupla não suportado aqui</value></data>
   <data name="Workshop_Tr_UnknownActivatorType" xml:space="preserve"><value>ativador desconhecido {0}</value></data>
   <data name="Workshop_Tr_RepeatDropped" xml:space="preserve"><value>repetição automática descartada</value></data>
-  <data name="Workshop_Tr_MacroTriggerRetargetedToInput" xml:space="preserve"><value>gatilho movido para a própria entrada ({0}): nenhum mapeamento alimenta seu botão do Xbox</value></data>
   <data name="Workshop_Tr_MissingGroup" xml:space="preserve"><value>a configuração referencia o grupo ausente {0}</value></data>
   <data name="Workshop_Tr_MissingModeShiftGroup" xml:space="preserve"><value>a mudança de modo em {0} referencia o grupo ausente {1}</value></data>
   <data name="Workshop_Tr_MissingPreset" xml:space="preserve"><value>a configuração referencia a predefinição ausente {0}</value></data>
@@ -2560,10 +2558,6 @@
   <data name="Workshop_Tr_ScreenshotApproximated" xml:space="preserve"><value>SCREENSHOT aproximado como toque na tecla Print Screen</value></data>
   <data name="Workshop_Tr_ShowKeyboardApproximated" xml:space="preserve"><value>SHOW_KEYBOARD aproximado como abertura do teclado virtual</value></data>
   <data name="Workshop_Tr_MouseDeltaNotSupported" xml:space="preserve"><value>deslocamento relativo do cursor mouse_delta ({0}) não suportado</value></data>
-  <data name="Workshop_Tr_GyroSwipeNotSupported" xml:space="preserve"><value>o deslize direcional hospedado no giroscópio não tem canal no motor (leitura de taxa sem sinal, sem disparo único por direção)</value></data>
-  <data name="Workshop_Tr_SwipeSurfaceNotSupported" xml:space="preserve"><value>o deslize direcional hospedado em {0} não tem superfície direcional para deslizar</value></data>
-  <data name="Workshop_Tr_FlickAxisTargetNotSupported" xml:space="preserve"><value>um flick do analógico não tem primitiva de toque para alvos de gatilho ou de eixo do analógico</value></data>
-  <data name="Workshop_Tr_FlickBindingNotOneShot" xml:space="preserve"><value>este tipo de vínculo precisa de estado mantido, que um flick único do analógico não consegue carregar</value></data>
   <data name="Macro_HoldForMs" xml:space="preserve"><value>Ao Segurar</value></data>
   <data name="Macro_HoldForMs_Tooltip" xml:space="preserve"><value>Dispara uma vez depois que o gatilho for mantido continuamente pelo tempo de retenção. Um toque mais curto não faz nada.</value></data>
   <data name="Macro_TriggerHoldMs_Label" xml:space="preserve"><value>Tempo de Retenção</value></data>
@@ -2575,6 +2569,11 @@
   <data name="MacroAction_ToggleVcButton_Format" xml:space="preserve"><value>Alternar {0}</value></data>
   <data name="MacroAction_Type_ToggleKey" xml:space="preserve"><value>Alternar Tecla</value></data>
   <data name="MacroAction_ToggleKey_Tooltip" xml:space="preserve"><value>Cada disparo trava ou destrava a tecla. Uma tecla travada permanece pressionada até o próximo disparo ou até a macro ser desativada.</value></data>
+  <data name="MacroAction_Type_AxisHold" xml:space="preserve"><value>Manter eixo</value></data>
+  <data name="MacroAction_AxisHold_Tooltip" xml:space="preserve"><value>Grava o valor do eixo a cada quadro durante a duração. Com repetição Até Soltar, o eixo permanece acionado até o gatilho ser solto.</value></data>
+  <data name="MacroAction_HoldAxis_Format" xml:space="preserve"><value>Manter {0} = {1} ({2} ms)</value></data>
+  <data name="MacroAction_Type_MouseWheelTap" xml:space="preserve"><value>Clique da roda do mouse</value></data>
+  <data name="MacroAction_MouseWheelTap_Tooltip" xml:space="preserve"><value>Envia um clique discreto da roda do mouse por disparo. O valor é o número de cliques com sinal (positivo rola para cima ou para a direita).</value></data>
   <data name="MacroAction_ToggleKey_Format" xml:space="preserve"><value>Alternar teclas {0}</value></data>
   <data name="MacroAction_Type_GyroRecenter" xml:space="preserve"><value>Recentralizar Giroscópio</value></data>
   <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>Zera as referências de mira do giroscópio acumuladas do pad ao pressionar. O histórico de suavização é limpo, o neutro do Motion Lean é recapturado e a estimativa de gravidade é reiniciada a partir da pose atual do controle.</value></data>

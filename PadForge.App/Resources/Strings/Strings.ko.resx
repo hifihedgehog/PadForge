@@ -2417,7 +2417,6 @@
   <data name="Workshop_Tr_TouchpadTuningNotPerRow" xml:space="preserve"><value>터치패드 조정은 행이 아니라 패드 단위로 적용됩니다</value></data>
   <data name="Workshop_Tr_SoftPressApproximated" xml:space="preserve"><value>Soft_Press를 누름 임계값으로 근사</value></data>
   <data name="Workshop_Tr_TriggerThresholdApproximated" xml:space="preserve"><value>트리거 임계값 근사</value></data>
-  <data name="Workshop_Tr_MacroTriggerViaXboxOutput" xml:space="preserve"><value>Xbox 슬롯의 결합 출력에서 발동</value></data>
   <data name="Workshop_Tr_NoDeviceFreeTrigger" xml:space="preserve"><value>이 입력에는 장치 독립 트리거가 없습니다</value></data>
   <data name="Workshop_Tr_GameActionsNotSupported" xml:space="preserve"><value>게임 내 동작 {0}개, Steam 전용, 게임 측 후크 없음</value></data>
   <data name="Workshop_Tr_SteamSystemAction" xml:space="preserve"><value>Steam 클라이언트 동작 {0}, 대응 없음</value></data>
@@ -2439,7 +2438,6 @@
   <data name="Workshop_Tr_DoublePressNotSupported" xml:space="preserve"><value>두 번 누르기 활성화 방식은 여기서 지원되지 않음</value></data>
   <data name="Workshop_Tr_UnknownActivatorType" xml:space="preserve"><value>알 수 없는 활성화 방식 {0}</value></data>
   <data name="Workshop_Tr_RepeatDropped" xml:space="preserve"><value>자동 반복 제외됨</value></data>
-  <data name="Workshop_Tr_MacroTriggerRetargetedToInput" xml:space="preserve"><value>트리거를 입력 자체로 변경({0}): 해당 Xbox 버튼을 구동하는 매핑이 없음</value></data>
   <data name="Workshop_Tr_MissingGroup" xml:space="preserve"><value>구성이 없는 그룹 {0}을(를) 참조합니다</value></data>
   <data name="Workshop_Tr_MissingModeShiftGroup" xml:space="preserve"><value>{0}의 모드 시프트가 없는 그룹 {1}을(를) 참조합니다</value></data>
   <data name="Workshop_Tr_MissingPreset" xml:space="preserve"><value>구성이 없는 프리셋 {0}을(를) 참조합니다</value></data>
@@ -2560,10 +2558,6 @@
   <data name="Workshop_Tr_ScreenshotApproximated" xml:space="preserve"><value>SCREENSHOT을 PrintScreen 키 입력으로 근사</value></data>
   <data name="Workshop_Tr_ShowKeyboardApproximated" xml:space="preserve"><value>SHOW_KEYBOARD를 화면 키보드 실행으로 근사</value></data>
   <data name="Workshop_Tr_MouseDeltaNotSupported" xml:space="preserve"><value>커서 상대 이동 mouse_delta ({0}) 미지원</value></data>
-  <data name="Workshop_Tr_GyroSwipeNotSupported" xml:space="preserve"><value>자이로에 배치된 방향 스와이프는 엔진 채널이 없음(부호 없는 속도 읽기, 방향별 원샷 없음)</value></data>
-  <data name="Workshop_Tr_SwipeSurfaceNotSupported" xml:space="preserve"><value>{0}에 배치된 방향 스와이프는 스와이프할 방향 면이 없음</value></data>
-  <data name="Workshop_Tr_FlickAxisTargetNotSupported" xml:space="preserve"><value>스틱 플릭에는 트리거나 스틱 축 대상용 탭 동작이 없음</value></data>
-  <data name="Workshop_Tr_FlickBindingNotOneShot" xml:space="preserve"><value>이 바인딩 종류는 유지 상태가 필요하며 원샷 스틱 플릭으로는 처리할 수 없음</value></data>
   <data name="Macro_HoldForMs" xml:space="preserve"><value>길게 누를 때</value></data>
   <data name="Macro_HoldForMs_Tooltip" xml:space="preserve"><value>트리거를 유지 시간 동안 계속 누르고 있으면 한 번 실행됩니다. 더 짧게 누르면 아무 일도 일어나지 않습니다.</value></data>
   <data name="Macro_TriggerHoldMs_Label" xml:space="preserve"><value>유지 시간</value></data>
@@ -2575,6 +2569,11 @@
   <data name="MacroAction_ToggleVcButton_Format" xml:space="preserve"><value>{0} 토글</value></data>
   <data name="MacroAction_Type_ToggleKey" xml:space="preserve"><value>키 토글</value></data>
   <data name="MacroAction_ToggleKey_Tooltip" xml:space="preserve"><value>실행될 때마다 키를 눌린 상태로 고정하거나 해제합니다. 고정된 키는 다음 실행 또는 매크로 비활성화 시까지 눌린 상태를 유지합니다.</value></data>
+  <data name="MacroAction_Type_AxisHold" xml:space="preserve"><value>축 유지</value></data>
+  <data name="MacroAction_AxisHold_Tooltip" xml:space="preserve"><value>지속 시간 동안 매 프레임 축 값을 기록합니다. 반복을 놓을 때까지로 설정하면 트리거를 놓을 때까지 축이 유지됩니다.</value></data>
+  <data name="MacroAction_HoldAxis_Format" xml:space="preserve"><value>{0} = {1} 유지 ({2} ms)</value></data>
+  <data name="MacroAction_Type_MouseWheelTap" xml:space="preserve"><value>휠 한 칸</value></data>
+  <data name="MacroAction_MouseWheelTap_Tooltip" xml:space="preserve"><value>발동할 때마다 마우스 휠을 한 칸 보냅니다. 값은 부호 있는 칸 수입니다(양수는 위 또는 오른쪽으로 스크롤).</value></data>
   <data name="MacroAction_ToggleKey_Format" xml:space="preserve"><value>키 {0} 토글</value></data>
   <data name="MacroAction_Type_GyroRecenter" xml:space="preserve"><value>자이로 재중심</value></data>
   <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>누르면 패드에 누적된 자이로 조준 기준을 0으로 되돌립니다. 스무딩 기록이 지워지고, Motion Lean 중립점이 다시 캡처되며, 중력 추정치가 컨트롤러의 현재 자세에서 다시 초기화됩니다.</value></data>

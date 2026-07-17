@@ -185,13 +185,34 @@ namespace PadForge.SteamWorkshop.Translation
         /// referenced-by-mapping), so gesture-hosted rows, macros, and
         /// chord legs report Clean with no user action required. The
         /// generic directional-swipe skip splits into precise per-arm
-        /// facts: gyro hosts name the unsigned-rate read
-        /// (GyroSwipeNotSupported), non-2D hosts name the missing
-        /// direction surface (SwipeSurfaceNotSupported), and the stick
-        /// flick arms name the axis-natured target with no tap primitive
-        /// (FlickAxisTargetNotSupported) or the binding kind with no
-        /// one-shot form (FlickBindingNotOneShot).</summary>
-        public const int CurrentTranslatorVersion = 14;
+        /// facts (all four arms built and retired again in v15).
+        /// v15: The swipe / flick skip family closes. Gyro-hosted 2dscroll
+        /// lowers each dpad_* member onto one-shot tap macros triggered by
+        /// the SIGNED gyro rate descriptor with the matching half (up =
+        /// pitch upper half, west = yaw upper half; the engine's gyro bool
+        /// read honors the half stamp now), re-arming below the 30 deg/s
+        /// engine rate threshold. Non-2D hosts route through the same
+        /// member walk (a dpad-hosted swipe taps once per press;
+        /// unresolvable members keep UnknownPhysicalInput), retiring
+        /// GyroSwipeNotSupported and SwipeSurfaceNotSupported. The macro
+        /// channel gains the timed-axis assert (AxisHold: VcAxisTap /
+        /// HoldVcAxis) and the discrete wheel detent (MouseWheelTap), so
+        /// flick / release / Long_Press bindings onto trigger pulls, stick
+        /// directions, and mouse_wheel detents all lower instead of
+        /// skipping (FlickAxisTargetNotSupported retired; the release /
+        /// Long_Press axis arms close with it). Flick-hosted mode shifts
+        /// and layer verbs lower to Toggle / Latch / Cycle shift
+        /// activators riding the new Kind=Axis half stamp (ShiftActivator
+        /// AxisHalf / AxisInvert; wedge-hosted held shifts pick up the
+        /// same direction fix), and flick controller_actions route through
+        /// the canonical verb lowering, retiring FlickBindingNotOneShot.
+        /// Scrollwheel detent members with non-wheel bindings ride the
+        /// one-shot tap walk (stick drag wedge / trackpad swipe gesture).
+        /// The two macro-trigger plumbing notes
+        /// (MacroTriggerViaXboxOutput, MacroTriggerRetargetedToInput)
+        /// retire: they narrated HOW a working trigger is wired, not a
+        /// fidelity loss, so those emissions are silent Clean now.</summary>
+        public const int CurrentTranslatorVersion = 15;
 
         public int TranslatorVersion { get; set; } = CurrentTranslatorVersion;
 
@@ -297,7 +318,10 @@ namespace PadForge.SteamWorkshop.Translation
         // serialized by older translator versions.
         public const string AbsoluteMouseApproximated = "Workshop_Tr_AbsoluteMouseApproximated";
         public const string TriggerThresholdApproximated = "Workshop_Tr_TriggerThresholdApproximated";
-        public const string MacroTriggerViaXboxOutput = "Workshop_Tr_MacroTriggerViaXboxOutput";
+        // MacroTriggerViaXboxOutput retired in v15: it narrated the trigger's
+        // combined-output plumbing on a WORKING macro, not a fidelity loss,
+        // so those emissions are silent Clean now and the key plus its
+        // locale strings were deleted.
         public const string NoDeviceFreeTrigger = "Workshop_Tr_NoDeviceFreeTrigger";
         public const string GameActionsNotSupported = "Workshop_Tr_GameActionsNotSupported";     // {0} count
         public const string SteamSystemAction = "Workshop_Tr_SteamSystemAction";                 // {0} action
@@ -327,10 +351,11 @@ namespace PadForge.SteamWorkshop.Translation
         public const string DoublePressNotSupported = "Workshop_Tr_DoublePressNotSupported";
         public const string UnknownActivatorType = "Workshop_Tr_UnknownActivatorType";           // {0} type
         public const string RepeatDropped = "Workshop_Tr_RepeatDropped";
-        // {0} = the physical input descriptor the trigger moved to. Raised when
-        // a macro's combined-output trigger had no row feeding its bit, so the
-        // trigger was retargeted onto the hosting input itself.
-        public const string MacroTriggerRetargetedToInput = "Workshop_Tr_MacroTriggerRetargetedToInput";
+        // MacroTriggerRetargetedToInput retired in v15: the finalize pass's
+        // swap onto the hosting input's own descriptor is normal working
+        // plumbing (the macro fires exactly as the config asks), so the
+        // rescue is silent now and the key plus its locale strings were
+        // deleted.
         public const string MissingGroup = "Workshop_Tr_MissingGroup";                           // {0} group id
         public const string MissingModeShiftGroup = "Workshop_Tr_MissingModeShiftGroup";         // {0} slot {1} group id
         public const string MissingPreset = "Workshop_Tr_MissingPreset";                         // {0} preset id
@@ -347,11 +372,9 @@ namespace PadForge.SteamWorkshop.Translation
         public const string AutomapAlsoActive = "Workshop_Tr_AutomapAlsoActive";                 // {0} source {1} target
 
         // ── Translator v2 (Wave 1a) vocabulary ──
-        // ScrollGestureModeNotSupported retired in v14: its three emission
-        // arms carry precise per-arm reasons now (GyroSwipeNotSupported,
-        // SwipeSurfaceNotSupported, FlickAxisTargetNotSupported,
-        // FlickBindingNotOneShot) and the generic key plus its locale
-        // strings were deleted.
+        // ScrollGestureModeNotSupported retired in v14 (split into per-arm
+        // reasons) and the per-arm family itself retired in v15 when every
+        // arm was built; the keys plus their locale strings were deleted.
         public const string HapticIntensityDropped = "Workshop_Tr_HapticIntensityDropped";       // {0} count
         // Since v11 the args carry only genuinely dropped keys: stick-hosted
         // joystick groups consume the curve cluster into the per-source
@@ -468,25 +491,14 @@ namespace PadForge.SteamWorkshop.Translation
         public const string MouseDeltaNotSupported = "Workshop_Tr_MouseDeltaNotSupported";       // {0} dx dy
 
         // ── Translator v14 (per-arm swipe skips) vocabulary ──
-        /// <summary>2dscroll hosted on the gyro. The engine's gyro button
-        /// read thresholds an unsigned rotation rate, so a signed
-        /// per-direction one-shot (flick up vs flick down) does not exist
-        /// there and the mode has no channel.</summary>
-        public const string GyroSwipeNotSupported = "Workshop_Tr_GyroSwipeNotSupported";
-        /// <summary>2dscroll hosted on a surface with no 2D direction read
-        /// to flick (button clusters, a lone trigger). Trackpads ride the
-        /// swipe gestures and sticks ride wedge tap macros. Nothing else
-        /// has a swipe to classify.</summary>
-        public const string SwipeSurfaceNotSupported = "Workshop_Tr_SwipeSurfaceNotSupported";   // {0} slot
-        /// <summary>A stick-flick binding targeting a virtual trigger pull
-        /// or stick direction. The one-shot macro vocabulary taps buttons,
-        /// keys, and mouse buttons only, and an axis write is a one-frame
-        /// set with no timed hold, so an axis-natured target has no tap
-        /// to ride.</summary>
-        public const string FlickAxisTargetNotSupported = "Workshop_Tr_FlickAxisTargetNotSupported";
-        /// <summary>A stick-flick binding whose kind needs held state
-        /// (mode shifts, layer holds, wheel detents, latches). A flick is
-        /// a one-shot with nothing held, so the kind has no carrier.</summary>
-        public const string FlickBindingNotOneShot = "Workshop_Tr_FlickBindingNotOneShot";
+        // The whole family retired in v15, one translator version after it
+        // landed, because every arm BUILT instead of skipping: gyro hosts
+        // ride the signed-rate half read (GyroSwipeNotSupported), non-2D
+        // hosts route through the member walk (SwipeSurfaceNotSupported),
+        // axis-natured flick targets ride the AxisHold channel
+        // (FlickAxisTargetNotSupported), and held-state flick bindings
+        // lower to half-stamped shift activators, wheel taps, and the
+        // canonical controller_action walk (FlickBindingNotOneShot). The
+        // keys plus their locale strings were deleted.
     }
 }

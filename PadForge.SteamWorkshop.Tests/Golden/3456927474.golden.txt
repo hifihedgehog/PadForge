@@ -149,7 +149,7 @@ menus: 2
     [9] MOUSE_POSITION
     [10] MOUSE_POSITION
     [12] MOUSE_POSITION
-report: v14 rows:x0+k19 macros:50 menus:2 layers:5 clean:78 partial:21 skipped:5 errors:0
+report: v15 rows:x0+k19 macros:50 menus:2 layers:5 clean:79 partial:20 skipped:5 errors:0
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_a/Full_Press => KbmMBtn0 <- Gamepad ButtonA
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_b/Full_Press => KbmMBtn1 <- Gamepad ButtonB
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_x/Full_Press => KbmKey45 <- Gamepad ButtonX
@@ -218,7 +218,7 @@ report: v14 rows:x0+k19 macros:50 menus:2 layers:5 clean:78 partial:21 skipped:5
   Clean RowEmitted @ Deactivate trackpad/switch/group 22 (switches)/left_bumper/Full_Press => KbmMBtn1 <- Gamepad LeftShoulder
   Clean RowEmitted @ Deactivate trackpad/switch/group 22 (switches)/right_bumper/Start_Press => KbmMBtn1 <- Gamepad RightShoulder
   Partial RemoveLayerApproximated @ Deactivate trackpad/switch/group 22 (switches)/right_bumper/release :: controller_action remove_layer 2 1 1, , 
-  Partial MacroTriggerViaXboxOutput @ Deactivate trackpad/switch/group 22 (switches)/right_bumper/release => Mouse tap macro (button 1)
+  Clean MacroEmitted @ Deactivate trackpad/switch/group 22 (switches)/right_bumper/release => Mouse tap macro (button 1)
   Clean MenuEmitted(8) @ Menu save/left_trackpad/group 30 (radial_menu) => Radial menu 2 on Touchpad 0: 8 bound cells
   Partial MenuIconsDropped(8) @ Menu save/left_trackpad/group 30 (radial_menu)
   Clean MacroEmitted @ Menu save/left_trackpad/group 30 (radial_menu)/touch_menu_button_1/Full_Press => Cursor warp macro

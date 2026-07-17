@@ -2417,7 +2417,6 @@
   <data name="Workshop_Tr_TouchpadTuningNotPerRow" xml:space="preserve"><value>Touchpad-Feinabstimmung gilt pro Pad, nicht pro Zeile</value></data>
   <data name="Workshop_Tr_SoftPressApproximated" xml:space="preserve"><value>Soft_Press als Druckschwelle angenähert</value></data>
   <data name="Workshop_Tr_TriggerThresholdApproximated" xml:space="preserve"><value>Trigger-Schwelle angenähert</value></data>
-  <data name="Workshop_Tr_MacroTriggerViaXboxOutput" xml:space="preserve"><value>löst über die kombinierte Ausgabe des Xbox-Slots aus</value></data>
   <data name="Workshop_Tr_NoDeviceFreeTrigger" xml:space="preserve"><value>kein gerätefreier Auslöser für diese Eingabe</value></data>
   <data name="Workshop_Tr_GameActionsNotSupported" xml:space="preserve"><value>{0} Ingame-Aktionen, nur Steam, kein spielseitiger Hook</value></data>
   <data name="Workshop_Tr_SteamSystemAction" xml:space="preserve"><value>Steam-Client-Aktion {0}, keine Entsprechung</value></data>
@@ -2439,7 +2438,6 @@
   <data name="Workshop_Tr_DoublePressNotSupported" xml:space="preserve"><value>Doppeldruck-Aktivator hier nicht unterstützt</value></data>
   <data name="Workshop_Tr_UnknownActivatorType" xml:space="preserve"><value>unbekannter Aktivator {0}</value></data>
   <data name="Workshop_Tr_RepeatDropped" xml:space="preserve"><value>Auto-Wiederholung verworfen</value></data>
-  <data name="Workshop_Tr_MacroTriggerRetargetedToInput" xml:space="preserve"><value>Auslöser auf die Eingabe selbst verschoben ({0}): keine Zuordnung speist deren Xbox-Taste</value></data>
   <data name="Workshop_Tr_MissingGroup" xml:space="preserve"><value>Konfiguration verweist auf fehlende Gruppe {0}</value></data>
   <data name="Workshop_Tr_MissingModeShiftGroup" xml:space="preserve"><value>Mode-Shift auf {0} verweist auf fehlende Gruppe {1}</value></data>
   <data name="Workshop_Tr_MissingPreset" xml:space="preserve"><value>Konfiguration verweist auf fehlendes Preset {0}</value></data>
@@ -2560,10 +2558,6 @@
   <data name="Workshop_Tr_ScreenshotApproximated" xml:space="preserve"><value>SCREENSHOT als Druck-Taste angenähert</value></data>
   <data name="Workshop_Tr_ShowKeyboardApproximated" xml:space="preserve"><value>SHOW_KEYBOARD als Start der Bildschirmtastatur angenähert</value></data>
   <data name="Workshop_Tr_MouseDeltaNotSupported" xml:space="preserve"><value>relative Cursorbewegung mouse_delta ({0}) nicht unterstützt</value></data>
-  <data name="Workshop_Tr_GyroSwipeNotSupported" xml:space="preserve"><value>gyrogehosteter Richtungswisch hat keinen Engine-Kanal (vorzeichenlose Ratenmessung, kein Einzelauslöser pro Richtung)</value></data>
-  <data name="Workshop_Tr_SwipeSurfaceNotSupported" xml:space="preserve"><value>Richtungswisch auf {0} hat keine Richtungsfläche zum Wischen</value></data>
-  <data name="Workshop_Tr_FlickAxisTargetNotSupported" xml:space="preserve"><value>ein Stick-Schnipp hat kein Tipp-Primitiv für Trigger- oder Stick-Achsenziele</value></data>
-  <data name="Workshop_Tr_FlickBindingNotOneShot" xml:space="preserve"><value>diese Bindungsart braucht gehaltenen Zustand, den ein einmaliger Stick-Schnipp nicht tragen kann</value></data>
   <data name="Macro_HoldForMs" xml:space="preserve"><value>Beim Halten</value></data>
   <data name="Macro_HoldForMs_Tooltip" xml:space="preserve"><value>Löst einmal aus, nachdem der Auslöser ununterbrochen für die Haltezeit gehalten wurde. Ein kürzeres Antippen bewirkt nichts.</value></data>
   <data name="Macro_TriggerHoldMs_Label" xml:space="preserve"><value>Haltezeit</value></data>
@@ -2575,6 +2569,11 @@
   <data name="MacroAction_ToggleVcButton_Format" xml:space="preserve"><value>{0} umschalten</value></data>
   <data name="MacroAction_Type_ToggleKey" xml:space="preserve"><value>Taste umschalten</value></data>
   <data name="MacroAction_ToggleKey_Tooltip" xml:space="preserve"><value>Jedes Auslösen hält die Taste gedrückt oder gibt sie frei. Eine gehaltene Taste bleibt gedrückt bis zum nächsten Auslösen oder bis das Makro deaktiviert wird.</value></data>
+  <data name="MacroAction_Type_AxisHold" xml:space="preserve"><value>Achse halten</value></data>
+  <data name="MacroAction_AxisHold_Tooltip" xml:space="preserve"><value>Schreibt den Achsenwert in jedem Frame für die Dauer. Mit Wiederholung Bis Loslassen bleibt die Achse ausgelenkt, bis der Auslöser losgelassen wird.</value></data>
+  <data name="MacroAction_HoldAxis_Format" xml:space="preserve"><value>{0} = {1} halten ({2} ms)</value></data>
+  <data name="MacroAction_Type_MouseWheelTap" xml:space="preserve"><value>Mausrad-Raste</value></data>
+  <data name="MacroAction_MouseWheelTap_Tooltip" xml:space="preserve"><value>Sendet pro Auslösung eine diskrete Mausrad-Raste. Der Wert ist die vorzeichenbehaftete Rastenzahl (positiv rollt nach oben oder rechts).</value></data>
   <data name="MacroAction_ToggleKey_Format" xml:space="preserve"><value>Tasten {0} umschalten</value></data>
   <data name="MacroAction_Type_GyroRecenter" xml:space="preserve"><value>Gyro zentrieren</value></data>
   <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>Setzt die aufgelaufenen Gyro-Zielreferenzen des Pads beim Drücken auf null. Der Glättungsverlauf wird geleert, der Motion-Lean-Nullpunkt neu erfasst und die Schwerkraftschätzung aus der aktuellen Lage des Controllers neu initialisiert.</value></data>

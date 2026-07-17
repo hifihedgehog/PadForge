@@ -68,11 +68,14 @@ namespace PadForge.SteamWorkshop.Tests
             Assert.Equal(Translate(fileId), Translate(fileId));
         }
 
-        /// <summary>v14 arm closure: the retired vocabulary has zero
+        /// <summary>v14/v15 arm closures: the retired vocabulary has zero
         /// emission sites across the whole corpus. TrackpadFeatureRequired
-        /// died to the apply-time auto-arm and the generic directional
-        /// swipe skip was reworded per arm, so neither key may ever appear
-        /// in a fresh report again.</summary>
+        /// died to the apply-time auto-arm (v14), the directional-swipe
+        /// skip family died to the gyro half reads, the member walk, and
+        /// the AxisHold / MouseWheelTap / half-stamped-activator channels
+        /// (v15), and the two macro-trigger plumbing notes went silent
+        /// Clean (v15), so none of these keys may ever appear in a fresh
+        /// report again.</summary>
         [Theory]
         [MemberData(nameof(FixtureIds))]
         public void Fixture_EmitsNoRetiredReason(long fileId)
@@ -83,9 +86,19 @@ namespace PadForge.SteamWorkshop.Tests
             {
                 FileId = fileId,
             });
+            var retired = new[]
+            {
+                "Workshop_Tr_TrackpadFeatureRequired",
+                "Workshop_Tr_ScrollGestureModeNotSupported",
+                "Workshop_Tr_GyroSwipeNotSupported",
+                "Workshop_Tr_SwipeSurfaceNotSupported",
+                "Workshop_Tr_FlickAxisTargetNotSupported",
+                "Workshop_Tr_FlickBindingNotOneShot",
+                "Workshop_Tr_MacroTriggerViaXboxOutput",
+                "Workshop_Tr_MacroTriggerRetargetedToInput",
+            };
             Assert.DoesNotContain(translated.Report.Entries, e =>
-                e.ReasonKey == "Workshop_Tr_TrackpadFeatureRequired"
-                || e.ReasonKey == "Workshop_Tr_ScrollGestureModeNotSupported");
+                System.Array.IndexOf(retired, e.ReasonKey) >= 0);
         }
 
         private static string Translate(long fileId)

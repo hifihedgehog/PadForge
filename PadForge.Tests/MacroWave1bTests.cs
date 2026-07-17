@@ -76,18 +76,22 @@ namespace PadForge.Tests
         public void Wave1b_ActionTypes_AppendedAtEnumTail_WithPinnedOrdinals()
         {
             // The macro clipboard serializes MacroActionType numerically, so
-            // the four new members MUST be the last four ordinals and their
-            // values must never move.
+            // new members MUST append at the tail and their values must
+            // never move (wave 1b pinned 35..38; v15 appended 39..40).
             var values = Enum.GetValues<MacroActionType>();
-            Assert.Equal(MacroActionType.GyroRecenter, values[^1]);
-            Assert.Equal(MacroActionType.ToggleKey, values[^2]);
-            Assert.Equal(MacroActionType.ToggleVcButton, values[^3]);
-            Assert.Equal(MacroActionType.RepeatVcButtonWhileHeld, values[^4]);
+            Assert.Equal(MacroActionType.MouseWheelTap, values[^1]);
+            Assert.Equal(MacroActionType.AxisHold, values[^2]);
+            Assert.Equal(MacroActionType.GyroRecenter, values[^3]);
+            Assert.Equal(MacroActionType.ToggleKey, values[^4]);
+            Assert.Equal(MacroActionType.ToggleVcButton, values[^5]);
+            Assert.Equal(MacroActionType.RepeatVcButtonWhileHeld, values[^6]);
 
             Assert.Equal(35, (int)MacroActionType.RepeatVcButtonWhileHeld);
             Assert.Equal(36, (int)MacroActionType.ToggleVcButton);
             Assert.Equal(37, (int)MacroActionType.ToggleKey);
             Assert.Equal(38, (int)MacroActionType.GyroRecenter);
+            Assert.Equal(39, (int)MacroActionType.AxisHold);
+            Assert.Equal(40, (int)MacroActionType.MouseWheelTap);
         }
 
         [Fact]

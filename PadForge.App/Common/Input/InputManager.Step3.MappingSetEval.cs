@@ -1065,6 +1065,15 @@ namespace PadForge.Common.Input
                 {
                     // v2: axis past threshold. ReadAxisLike returns [-1..+1].
                     float axisVal = SourceKindRuntimeReadAxisLikeFloat(state, act.Descriptor, act.DeviceGuid, slotIndex);
+                    // v5 half stamp (translator v15): one signed direction
+                    // engages instead of the direction-blind |axis| test, so
+                    // a wedge- or gyro-hosted flick drives only its own layer.
+                    if (act.AxisHalf)
+                    {
+                        return act.AxisInvert
+                            ? axisVal <= -act.AxisThreshold
+                            : axisVal >= act.AxisThreshold;
+                    }
                     return System.Math.Abs(axisVal) >= act.AxisThreshold;
                 }
                 case "Button":

@@ -2417,7 +2417,6 @@
   <data name="Workshop_Tr_TouchpadTuningNotPerRow" xml:space="preserve"><value>触控板调节按整块触控板生效，而非按行</value></data>
   <data name="Workshop_Tr_SoftPressApproximated" xml:space="preserve"><value>Soft_Press 近似为按压阈值</value></data>
   <data name="Workshop_Tr_TriggerThresholdApproximated" xml:space="preserve"><value>扳机阈值已近似处理</value></data>
-  <data name="Workshop_Tr_MacroTriggerViaXboxOutput" xml:space="preserve"><value>由 Xbox 槽位的合并输出触发</value></data>
   <data name="Workshop_Tr_NoDeviceFreeTrigger" xml:space="preserve"><value>此输入没有可用的无设备触发器</value></data>
   <data name="Workshop_Tr_GameActionsNotSupported" xml:space="preserve"><value>{0} 个游戏内动作，仅限 Steam，无游戏侧挂钩</value></data>
   <data name="Workshop_Tr_SteamSystemAction" xml:space="preserve"><value>Steam 客户端动作 {0}，无对应项</value></data>
@@ -2439,7 +2438,6 @@
   <data name="Workshop_Tr_DoublePressNotSupported" xml:space="preserve"><value>此处不支持双击激活方式</value></data>
   <data name="Workshop_Tr_UnknownActivatorType" xml:space="preserve"><value>未知激活方式 {0}</value></data>
   <data name="Workshop_Tr_RepeatDropped" xml:space="preserve"><value>已丢弃自动重复</value></data>
-  <data name="Workshop_Tr_MacroTriggerRetargetedToInput" xml:space="preserve"><value>已将触发改为输入本身（{0}）：没有映射驱动其 Xbox 按钮</value></data>
   <data name="Workshop_Tr_MissingGroup" xml:space="preserve"><value>配置引用了缺失的组 {0}</value></data>
   <data name="Workshop_Tr_MissingModeShiftGroup" xml:space="preserve"><value>{0} 上的模式切换引用了缺失的组 {1}</value></data>
   <data name="Workshop_Tr_MissingPreset" xml:space="preserve"><value>配置引用了缺失的预设 {0}</value></data>
@@ -2560,10 +2558,6 @@
   <data name="Workshop_Tr_ScreenshotApproximated" xml:space="preserve"><value>SCREENSHOT 近似为 PrintScreen 按键</value></data>
   <data name="Workshop_Tr_ShowKeyboardApproximated" xml:space="preserve"><value>SHOW_KEYBOARD 近似为启动屏幕键盘</value></data>
   <data name="Workshop_Tr_MouseDeltaNotSupported" xml:space="preserve"><value>不支持光标相对移动 mouse_delta ({0})</value></data>
-  <data name="Workshop_Tr_GyroSwipeNotSupported" xml:space="preserve"><value>陀螺仪上的方向滑动没有引擎通道（无符号速率读取，无法按方向单次触发）</value></data>
-  <data name="Workshop_Tr_SwipeSurfaceNotSupported" xml:space="preserve"><value>{0} 上的方向滑动没有可滑动的方向表面</value></data>
-  <data name="Workshop_Tr_FlickAxisTargetNotSupported" xml:space="preserve"><value>摇杆快拨没有针对扳机或摇杆轴目标的点按原语</value></data>
-  <data name="Workshop_Tr_FlickBindingNotOneShot" xml:space="preserve"><value>此绑定类型需要按住状态，单次摇杆快拨无法承载</value></data>
   <data name="Macro_HoldForMs" xml:space="preserve"><value>按住时</value></data>
   <data name="Macro_HoldForMs_Tooltip" xml:space="preserve"><value>在触发器被连续按住达到保持时间后触发一次。更短的点按不起作用。</value></data>
   <data name="Macro_TriggerHoldMs_Label" xml:space="preserve"><value>保持时间</value></data>
@@ -2575,6 +2569,11 @@
   <data name="MacroAction_ToggleVcButton_Format" xml:space="preserve"><value>切换 {0}</value></data>
   <data name="MacroAction_Type_ToggleKey" xml:space="preserve"><value>切换按键</value></data>
   <data name="MacroAction_ToggleKey_Tooltip" xml:space="preserve"><value>每次触发都会锁定或解锁按键。锁定的按键会保持按下，直到下次触发或宏被禁用。</value></data>
+  <data name="MacroAction_Type_AxisHold" xml:space="preserve"><value>保持轴</value></data>
+  <data name="MacroAction_AxisHold_Tooltip" xml:space="preserve"><value>在持续时间内每帧写入轴值。将重复设为“直到松开”时,轴会一直保持到触发器松开。</value></data>
+  <data name="MacroAction_HoldAxis_Format" xml:space="preserve"><value>保持 {0} = {1}({2} 毫秒)</value></data>
+  <data name="MacroAction_Type_MouseWheelTap" xml:space="preserve"><value>滚轮一格</value></data>
+  <data name="MacroAction_MouseWheelTap_Tooltip" xml:space="preserve"><value>每次触发发送一格鼠标滚轮。数值为带符号的格数(正值向上或向右滚动)。</value></data>
   <data name="MacroAction_ToggleKey_Format" xml:space="preserve"><value>切换按键 {0}</value></data>
   <data name="MacroAction_Type_GyroRecenter" xml:space="preserve"><value>陀螺仪重新居中</value></data>
   <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>按下时将手柄累积的陀螺仪瞄准基准归零。平滑历史被清除，Motion Lean 中立点重新捕获，重力估计从控制器当前姿态重新初始化。</value></data>

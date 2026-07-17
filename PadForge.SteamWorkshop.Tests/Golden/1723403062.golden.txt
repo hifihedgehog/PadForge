@@ -60,9 +60,9 @@ macros: 6
   macro RumblePulse OnPress | Haptic pulse (dpad_north) | btns=0x0000 in=[Gamepad DPadUp] strength=33%
   macro RumblePulse OnPress | Haptic pulse (dpad_south) | btns=0x0000 in=[Gamepad DPadDown] strength=33%
   macro RumblePulse OnPress | Haptic pulse (dpad_west) | btns=0x0000 in=[Gamepad DPadLeft] strength=33%
-  macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Gamepad LeftTrigger] strength=66%
-  macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Gamepad RightTrigger] strength=66%
-report: v11 rows:x8+k17 macros:6 menus:0 layers:0 clean:27 partial:6 skipped:0 errors:0
+  macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Gamepad LeftTrigger] in-half=upper in-dz=75 strength=66%
+  macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Gamepad RightTrigger] in-half=upper in-dz=75 strength=66%
+report: v12 rows:x8+k17 macros:6 menus:0 layers:0 clean:27 partial:6 skipped:0 errors:0
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_a/Full_Press => KbmMBtn0 <- Gamepad ButtonA
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_b/Full_Press => KbmKey1B <- Gamepad ButtonB
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_x/Full_Press => KbmKey4D <- Gamepad ButtonX

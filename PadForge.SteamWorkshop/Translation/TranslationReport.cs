@@ -135,8 +135,23 @@ namespace PadForge.SteamWorkshop.Translation
         /// deadzone_outer_radius / 32767 on ParamRangeOuter, and
         /// sensitivity_horiz/vert_scale fold into the X / Y row Sensitivity,
         /// so ResponseCurveNotSupported names only genuinely dropped keys
-        /// (deadzone_shape; trigger, trackpad, and gyro hosts unchanged).</summary>
-        public const int CurrentTranslatorVersion = 11;
+        /// (deadzone_shape; trigger, trackpad, and gyro hosts unchanged).
+        /// v12: Stick-hosted swipe and wheel. 2dscroll on a stick lowers
+        /// each dpad_* member's one-shot-able bindings onto tap macros
+        /// (KeyTap / MouseButtonTap / VcButtonTap plus the one-shot
+        /// controller_action verbs) triggered on the member's own wedge
+        /// read, one fire per deflection entry; scrollwheel on a stick
+        /// lowers scroll_clockwise / scroll_counterclockwise onto
+        /// KbmScroll rows fed by the stick's Y deflection drag (the G4
+        /// shape: composed invert, deduped symmetric twins, group
+        /// deadzone honored); 2dscroll non-swipe members (click) translate
+        /// as normal members on both hosts. Device-free descriptor macro
+        /// triggers now carry the hosting read's half-axis shape (half,
+        /// direction, deadzone) end to end, so wedge-hosted macros from
+        /// earlier waves (haptic pulses and key latches on stick dpad
+        /// members, trigger-pull hosts after the finalize swap) fire on
+        /// their own wedge instead of any full-axis deflection.</summary>
+        public const int CurrentTranslatorVersion = 12;
 
         public int TranslatorVersion { get; set; } = CurrentTranslatorVersion;
 

@@ -31,17 +31,17 @@ kbm rows: 11
     <- Touchpad 1 Finger 0 Y
 macros: 11
   macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Gamepad LeftStick] strength=66%
-  macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Gamepad LeftTrigger] strength=66%
-  macro RumblePulse OnPress | Haptic pulse (edge) | btns=0x0000 in=[Gamepad LeftTrigger] strength=66%
+  macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Gamepad LeftTrigger] in-half=upper in-dz=75 strength=66%
+  macro RumblePulse OnPress | Haptic pulse (edge) | btns=0x0000 in=[Gamepad LeftTrigger] in-half=upper in-dz=15 strength=66%
   macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Touchpad 1 Click] strength=33%
-  macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Gamepad RightTrigger] strength=66%
-  macro RumblePulse OnPress | Haptic pulse (edge) | btns=0x0000 in=[Gamepad RightTrigger] strength=66%
+  macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Gamepad RightTrigger] in-half=upper in-dz=75 strength=66%
+  macro RumblePulse OnPress | Haptic pulse (edge) | btns=0x0000 in=[Gamepad RightTrigger] in-half=upper in-dz=15 strength=66%
   macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Touchpad 1 Click] strength=33%
   macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Touchpad 1 Click] strength=33%
   macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Gamepad LeftStick] strength=66%
   macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Touchpad 1 Click] strength=33%
-  macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Gamepad RightTrigger] strength=66%
-report: v11 rows:x0+k11 macros:11 menus:0 layers:0 clean:15 partial:14 skipped:4 errors:0
+  macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Gamepad RightTrigger] in-half=upper in-dz=75 strength=66%
+report: v12 rows:x0+k11 macros:11 menus:0 layers:0 clean:15 partial:14 skipped:4 errors:0
   Clean RowEmitted @ FPSControls/gyro/group 48 (absolute_mouse) => KbmMouseX <- Gyro Yaw
   Clean RowEmitted @ FPSControls/gyro/group 48 (absolute_mouse) => KbmMouseY <- Gyro Pitch
   Partial HapticPulseEmitted(2) @ FPSControls/joystick/group 14 (joystick_move)/click/Full_Press => Rumble pulse macro (66%)

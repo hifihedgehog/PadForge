@@ -154,16 +154,16 @@ kbm activators: 5
 macros: 12
   macro ShowOnScreenKeyboard OnPress | On-screen keyboard (click) | btns=0x0000 in=[Gamepad LeftStick]
   macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Gamepad LeftStick] strength=33%
-  macro RumblePulse OnPress | Haptic pulse (dpad_east) | btns=0x0000 in=[Gamepad LeftStickX] strength=33%
-  macro RumblePulse OnPress | Haptic pulse (dpad_north) | btns=0x0000 in=[Gamepad LeftStickY] strength=33%
-  macro RumblePulse OnPress | Haptic pulse (dpad_south) | btns=0x0000 in=[Gamepad LeftStickY] strength=33%
-  macro RumblePulse OnPress | Haptic pulse (dpad_west) | btns=0x0000 in=[Gamepad LeftStickX] strength=33%
+  macro RumblePulse OnPress | Haptic pulse (dpad_east) | btns=0x0000 in=[Gamepad LeftStickX] in-half=upper strength=33%
+  macro RumblePulse OnPress | Haptic pulse (dpad_north) | btns=0x0000 in=[Gamepad LeftStickY] in-half=lower strength=33%
+  macro RumblePulse OnPress | Haptic pulse (dpad_south) | btns=0x0000 in=[Gamepad LeftStickY] in-half=upper strength=33%
+  macro RumblePulse OnPress | Haptic pulse (dpad_west) | btns=0x0000 in=[Gamepad LeftStickX] in-half=lower strength=33%
   macro ShowOnScreenKeyboard OnPress | On-screen keyboard (click) | btns=0x0000 in=[Gamepad LeftStick]
   macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Gamepad LeftStick] strength=33%
-  macro RumblePulse OnPress | Haptic pulse (dpad_east) | btns=0x0000 in=[Gamepad LeftStickX] strength=33%
-  macro RumblePulse OnPress | Haptic pulse (dpad_north) | btns=0x0000 in=[Gamepad LeftStickY] strength=33%
-  macro RumblePulse OnPress | Haptic pulse (dpad_south) | btns=0x0000 in=[Gamepad LeftStickY] strength=33%
-  macro RumblePulse OnPress | Haptic pulse (dpad_west) | btns=0x0000 in=[Gamepad LeftStickX] strength=33%
+  macro RumblePulse OnPress | Haptic pulse (dpad_east) | btns=0x0000 in=[Gamepad LeftStickX] in-half=upper strength=33%
+  macro RumblePulse OnPress | Haptic pulse (dpad_north) | btns=0x0000 in=[Gamepad LeftStickY] in-half=lower strength=33%
+  macro RumblePulse OnPress | Haptic pulse (dpad_south) | btns=0x0000 in=[Gamepad LeftStickY] in-half=upper strength=33%
+  macro RumblePulse OnPress | Haptic pulse (dpad_west) | btns=0x0000 in=[Gamepad LeftStickX] in-half=lower strength=33%
 menus: 1
   menu 1 Grid | Touchpad 0 | Base | fire=TouchRelease cells=9 scale=109% | name=Touch Menu 1
     [0] Government
@@ -174,7 +174,7 @@ menus: 1
     [6] Research
     [7] Recruit and Deploy
     [8] Logistics
-report: v11 rows:x0+k69 macros:12 menus:1 layers:5 clean:73 partial:22 skipped:6 errors:0
+report: v12 rows:x0+k69 macros:12 menus:1 layers:5 clean:73 partial:22 skipped:6 errors:0
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_A/Full_Press => KbmKey20 <- Gamepad ButtonA
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_B/Full_Press => KbmKey4F <- Gamepad ButtonB
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_X/Full_Press => KbmKey1B <- Gamepad ButtonX

@@ -90,30 +90,30 @@ macros: 29
   macro RumblePulse OnPress | Haptic pulse (dpad_south) | btns=0x0000 in=[Gamepad DPadDown] strength=33%
   macro RumblePulse OnPress | Haptic pulse (dpad_west) | btns=0x0000 in=[Gamepad DPadLeft] strength=33%
   macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Touchpad 0 Click] strength=66%
-  macro RumblePulse OnPress | Haptic pulse (edge) | btns=0x0000 in=[Gamepad LeftTrigger] strength=66%
+  macro RumblePulse OnPress | Haptic pulse (edge) | btns=0x0000 in=[Gamepad LeftTrigger] in-half=upper in-dz=15 strength=66%
   macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Gamepad RightStick] strength=66%
   macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Touchpad 1 Click] strength=66%
-  macro RumblePulse OnPress | Haptic pulse (edge) | btns=0x0000 in=[Gamepad RightTrigger] strength=66%
-  macro RumblePulse OnPress | Haptic pulse (dpad_east) | btns=0x0000 in=[Gamepad LeftStickX] strength=33%
-  macro RumblePulse OnPress | Haptic pulse (dpad_north) | btns=0x0000 in=[Gamepad LeftStickY] strength=33%
-  macro RumblePulse OnPress | Haptic pulse (dpad_south) | btns=0x0000 in=[Gamepad LeftStickY] strength=33%
-  macro RumblePulse OnPress | Haptic pulse (dpad_west) | btns=0x0000 in=[Gamepad LeftStickX] strength=33%
+  macro RumblePulse OnPress | Haptic pulse (edge) | btns=0x0000 in=[Gamepad RightTrigger] in-half=upper in-dz=15 strength=66%
+  macro RumblePulse OnPress | Haptic pulse (dpad_east) | btns=0x0000 in=[Gamepad LeftStickX] in-half=upper strength=33%
+  macro RumblePulse OnPress | Haptic pulse (dpad_north) | btns=0x0000 in=[Gamepad LeftStickY] in-half=lower strength=33%
+  macro RumblePulse OnPress | Haptic pulse (dpad_south) | btns=0x0000 in=[Gamepad LeftStickY] in-half=upper strength=33%
+  macro RumblePulse OnPress | Haptic pulse (dpad_west) | btns=0x0000 in=[Gamepad LeftStickX] in-half=lower strength=33%
   macro RumblePulse OnPress | Haptic pulse (dpad_east) | btns=0x0000 in=[Touchpad 0 DPadRight; Touchpad 0 Click] strength=33%
   macro RumblePulse OnPress | Haptic pulse (dpad_north) | btns=0x0000 in=[Touchpad 0 DPadUp; Touchpad 0 Click] strength=33%
   macro RumblePulse OnPress | Haptic pulse (dpad_south) | btns=0x0000 in=[Touchpad 0 DPadDown; Touchpad 0 Click] strength=33%
   macro RumblePulse OnPress | Haptic pulse (dpad_west) | btns=0x0000 in=[Touchpad 0 DPadLeft; Touchpad 0 Click] strength=33%
-  macro RumblePulse OnPress | Haptic pulse (edge) | btns=0x0000 in=[Gamepad LeftTrigger] strength=66%
+  macro RumblePulse OnPress | Haptic pulse (edge) | btns=0x0000 in=[Gamepad LeftTrigger] in-half=upper in-dz=15 strength=66%
   macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Gamepad RightStick] strength=66%
   macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Touchpad 1 Click] strength=66%
-  macro RumblePulse OnPress | Haptic pulse (edge) | btns=0x0000 in=[Gamepad RightTrigger] strength=66%
-  macro RumblePulse OnPress | Haptic pulse (dpad_east) | btns=0x0000 in=[Gamepad LeftStickX] strength=33%
-  macro RumblePulse OnPress | Haptic pulse (dpad_north) | btns=0x0000 in=[Gamepad LeftStickY] strength=33%
-  macro RumblePulse OnPress | Haptic pulse (dpad_south) | btns=0x0000 in=[Gamepad LeftStickY] strength=33%
-  macro RumblePulse OnPress | Haptic pulse (dpad_west) | btns=0x0000 in=[Gamepad LeftStickX] strength=33%
-  macro RumblePulse OnPress | Haptic pulse (edge) | btns=0x0000 in=[Gamepad LeftTrigger] strength=66%
+  macro RumblePulse OnPress | Haptic pulse (edge) | btns=0x0000 in=[Gamepad RightTrigger] in-half=upper in-dz=15 strength=66%
+  macro RumblePulse OnPress | Haptic pulse (dpad_east) | btns=0x0000 in=[Gamepad LeftStickX] in-half=upper strength=33%
+  macro RumblePulse OnPress | Haptic pulse (dpad_north) | btns=0x0000 in=[Gamepad LeftStickY] in-half=lower strength=33%
+  macro RumblePulse OnPress | Haptic pulse (dpad_south) | btns=0x0000 in=[Gamepad LeftStickY] in-half=upper strength=33%
+  macro RumblePulse OnPress | Haptic pulse (dpad_west) | btns=0x0000 in=[Gamepad LeftStickX] in-half=lower strength=33%
+  macro RumblePulse OnPress | Haptic pulse (edge) | btns=0x0000 in=[Gamepad LeftTrigger] in-half=upper in-dz=15 strength=66%
   macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Gamepad RightStick] strength=66%
   macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Touchpad 1 Click] strength=66%
-  macro RumblePulse OnPress | Haptic pulse (edge) | btns=0x0000 in=[Gamepad RightTrigger] strength=66%
+  macro RumblePulse OnPress | Haptic pulse (edge) | btns=0x0000 in=[Gamepad RightTrigger] in-half=upper in-dz=15 strength=66%
 menus: 1
   menu 1 Grid | Touchpad 1 | Layer_1129670518_0_MS_right_trackpad_20 | fire=Click cells=12 pos=(51%,81%) scale=60% opacity=91% | name=Touch Menu 1
     [0] 1
@@ -126,7 +126,7 @@ menus: 1
     [7] 8
     [8] 9
     [9] 0
-report: v11 rows:x0+k29 macros:29 menus:1 layers:5 clean:52 partial:44 skipped:3 errors:0
+report: v12 rows:x0+k29 macros:29 menus:1 layers:5 clean:52 partial:44 skipped:3 errors:0
   Clean RowEmitted @ TacticalControls/button_diamond/group 0 (four_buttons)/button_A/Full_Press => KbmMBtn0 <- Gamepad ButtonA
   Partial HapticPulseEmitted(1) @ TacticalControls/dpad/group 42 (dpad)/dpad_east/Full_Press => Rumble pulse macro (33%)
   Partial HapticPulseEmitted(1) @ TacticalControls/dpad/group 42 (dpad)/dpad_north/Full_Press => Rumble pulse macro (33%)

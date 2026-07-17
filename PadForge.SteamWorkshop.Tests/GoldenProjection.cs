@@ -46,7 +46,18 @@ namespace PadForge.SteamWorkshop.Tests
                 // (empty-guid entries, ANDed). Spelled out so the goldens
                 // review every converted trigger shape.
                 if (m.TriggerInputDescriptors != null && m.TriggerInputDescriptors.Count > 0)
+                {
                     sb.Append(" in=[").Append(string.Join("; ", m.TriggerInputDescriptors)).Append(']');
+                    // Wedge shape on the descriptor trigger (v12):
+                    // non-default only, so goldens without half-axis hosts
+                    // stay byte-identical.
+                    if (m.TriggerDescriptorHalfAxis)
+                    {
+                        sb.Append(m.TriggerDescriptorInvert ? " in-half=lower" : " in-half=upper");
+                        if (m.TriggerDescriptorDeadZonePercent > 0)
+                            sb.Append(" in-dz=").Append(m.TriggerDescriptorDeadZonePercent);
+                    }
+                }
                 if (m.TriggerHoldMs > 0)
                     sb.Append(" hold=").Append(m.TriggerHoldMs).Append("ms");
                 if (m.ConsumeTrigger) sb.Append(" consume");

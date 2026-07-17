@@ -468,6 +468,19 @@ namespace PadForge.Services
                     DeviceGuid = string.Empty,
                 };
                 if (!MacroItem.TryBuildTriggerEntry(choice, out var entry)) return false;
+                // Axis-shaped entries read the FULL axis by default. A
+                // wedge-hosted trigger (v12: a stick-as-dpad member, a
+                // trigger-pull click) carries the hosting read's half-axis
+                // shape on the translated macro, so the entry keeps the
+                // wedge's direction and threshold instead of firing on any
+                // deflection of the whole axis.
+                if (entry.AxisTarget != MacroAxisTarget.None && m.TriggerDescriptorHalfAxis)
+                {
+                    entry.HalfAxis = true;
+                    entry.Invert = m.TriggerDescriptorInvert;
+                    if (m.TriggerDescriptorDeadZonePercent > 0)
+                        entry.DeadZone = m.TriggerDescriptorDeadZonePercent;
+                }
                 string spec = entry.Spec;
                 if (string.IsNullOrEmpty(spec)) return false;
                 specs.Add(spec);

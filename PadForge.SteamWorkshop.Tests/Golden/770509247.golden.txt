@@ -29,10 +29,10 @@ kbm rows: 11
     <- Gamepad LeftShoulder
     <- Gamepad RightShoulder [inverted]
 macros: 9
-  macro RumblePulse OnPress | Haptic pulse (dpad_east) | btns=0x0000 in=[Gamepad LeftStickX] strength=33%
-  macro RumblePulse OnPress | Haptic pulse (dpad_north) | btns=0x0000 in=[Gamepad LeftStickY] strength=33%
-  macro RumblePulse OnPress | Haptic pulse (dpad_south) | btns=0x0000 in=[Gamepad LeftStickY] strength=33%
-  macro RumblePulse OnPress | Haptic pulse (dpad_west) | btns=0x0000 in=[Gamepad LeftStickX] strength=33%
+  macro RumblePulse OnPress | Haptic pulse (dpad_east) | btns=0x0000 in=[Gamepad LeftStickX] in-half=upper strength=33%
+  macro RumblePulse OnPress | Haptic pulse (dpad_north) | btns=0x0000 in=[Gamepad LeftStickY] in-half=lower strength=33%
+  macro RumblePulse OnPress | Haptic pulse (dpad_south) | btns=0x0000 in=[Gamepad LeftStickY] in-half=upper strength=33%
+  macro RumblePulse OnPress | Haptic pulse (dpad_west) | btns=0x0000 in=[Gamepad LeftStickX] in-half=lower strength=33%
   macro RumblePulse OnPress | Haptic pulse (dpad_east) | btns=0x0000 in=[Touchpad 0 DPadRight; Touchpad 0 Click] strength=33%
   macro RumblePulse OnPress | Haptic pulse (dpad_north) | btns=0x0000 in=[Touchpad 0 DPadUp; Touchpad 0 Click] strength=33%
   macro RumblePulse OnPress | Haptic pulse (dpad_south) | btns=0x0000 in=[Touchpad 0 DPadDown; Touchpad 0 Click] strength=33%
@@ -48,7 +48,7 @@ menus: 1
     [5] Sleep
     [6] Skip Turn
     [7] Found a city
-report: v11 rows:x0+k11 macros:9 menus:1 layers:0 clean:16 partial:16 skipped:1 errors:0
+report: v12 rows:x0+k11 macros:9 menus:1 layers:0 clean:16 partial:16 skipped:1 errors:0
   Clean RowEmitted @ InGameControls/button_diamond/group 0 (four_buttons)/button_A/Full_Press => KbmMBtn0 <- Gamepad ButtonA
   Clean RowEmitted @ InGameControls/button_diamond/group 0 (four_buttons)/button_B/Full_Press => KbmKey1B <- Gamepad ButtonB
   Clean RowEmitted @ InGameControls/joystick/group 13 (dpad)/dpad_east/Full_Press => KbmKey27 <- Gamepad LeftStickX (upper half)

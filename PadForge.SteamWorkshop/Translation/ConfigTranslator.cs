@@ -436,11 +436,12 @@ namespace PadForge.SteamWorkshop.Translation
 
                 case "scrollwheel":
                     // Trackpad hosts lower to a vertical finger drag (v10
-                    // G4): the wheel-shaped scroll_clockwise /
+                    // G4) and stick hosts to the stick's Y deflection drag
+                    // (v12): the wheel-shaped scroll_clockwise /
                     // scroll_counterclockwise bindings feed KbmScroll from
-                    // the finger delta, sign per direction. Non-trackpad
-                    // hosts have no drag surface and keep the named skip.
-                    if (PhysicalSlotResolver.IsTrackpad(slot))
+                    // the drag axis, sign per direction. Hosts with
+                    // neither surface keep the named skip.
+                    if (PhysicalSlotResolver.IsTrackpad(slot) || PhysicalSlotResolver.IsStick(slot))
                     {
                         TranslateScrollWheel(run, preset, effective, slot, layer, path, settings);
                     }
@@ -476,11 +477,19 @@ namespace PadForge.SteamWorkshop.Translation
                     // Directional swipe. Trackpad hosts lower onto the
                     // gesture engine's one-shot swipe fires (v10 G3):
                     // each dpad_* member reads "Touchpad {p} Swipe{Dir}"
-                    // and needs the Touchpad-tab swipe toggle. Hosts
-                    // without a swipe surface keep the named skip.
+                    // and needs the Touchpad-tab swipe toggle. Stick hosts
+                    // lower onto one-shot wedge-triggered tap macros (v12):
+                    // a flick toward a direction fires the binding once.
+                    // Gyro keeps the named skip: the gyro trigger read is
+                    // an unsigned rate bool, so a signed per-direction
+                    // flick read does not exist there.
                     if (PhysicalSlotResolver.IsTrackpad(slot))
                     {
                         TranslateSwipeGroup(run, preset, effective, slot, layer, path, settings);
+                    }
+                    else if (PhysicalSlotResolver.IsStick(slot))
+                    {
+                        TranslateStickSwipeGroup(run, preset, effective, slot, layer, path, settings);
                     }
                     else
                     {
@@ -921,25 +930,39 @@ namespace PadForge.SteamWorkshop.Translation
                 || !string.Equals(v?.Trim(), "0", StringComparison.Ordinal);
         }
 
-        /// <summary>scrollwheel on a trackpad (v10 G4): Steam spins a
-        /// virtual wheel from circular finger motion and fires
-        /// scroll_clockwise / scroll_counterclockwise per detent. PadForge
-        /// has no circular-motion read; the nearest live channel is the
-        /// finger's vertical drag delta ("Touchpad {p} Finger 0 Y", the
-        /// same read the mouse modes use, no feature toggle), so
-        /// wheel-shaped bindings become KbmScroll rows fed by the drag:
-        /// clockwise = drag down (+Y in SDL's convention, the physical
-        /// wheel gesture), counterclockwise = the inverted read. Bindings
-        /// that are not mouse_wheel (keys on a wheel detent) have no
-        /// continuous channel and keep the named skip. One geometry
-        /// Partial per group names the circular-vs-linear approximation.
+        /// <summary>scrollwheel on a trackpad (v10 G4) or a stick (v12):
+        /// Steam spins a virtual wheel from circular finger motion (or
+        /// stick rotation) and fires scroll_clockwise /
+        /// scroll_counterclockwise per detent. PadForge has no
+        /// circular-motion read; the nearest live channel is a vertical
+        /// drag axis, so wheel-shaped bindings become KbmScroll rows fed
+        /// by it: clockwise = drag down (+Y in SDL's convention, the
+        /// physical wheel gesture), counterclockwise = the inverted read.
+        /// Trackpads read the finger delta ("Touchpad {p} Finger 0 Y", the
+        /// same read the mouse modes use, no feature toggle); sticks read
+        /// the Y deflection ("Gamepad {stick}Y") with the group inner
+        /// deadzone keeping centered rest jitter out of the wheel.
+        /// Bindings that are not mouse_wheel (keys on a wheel detent) have
+        /// no continuous channel and keep the named skip. One geometry
+        /// Partial per group names the rotation-vs-drag approximation.
         /// The click member translates as a normal member either way.</summary>
         private void TranslateScrollWheel(Run run, SteamInputPreset preset, SteamInputGroup group,
             SteamSlot slot, string layer, string path, Dictionary<string, string> settings)
         {
-            int p = PhysicalSlotResolver.TrackpadIndex(slot, run.SinglePadTrackpads);
-            string sfx = PhysicalSlotResolver.HalfSuffix(
-                PhysicalSlotResolver.HalfFor(slot, run.SinglePadTrackpads));
+            string drag;
+            int dragDeadZone = 0;
+            if (PhysicalSlotResolver.IsStick(slot))
+            {
+                drag = slot == SteamSlot.Joystick ? "Gamepad LeftStickY" : "Gamepad RightStickY";
+                dragDeadZone = GroupDeadZonePercent(settings);
+            }
+            else
+            {
+                int p = PhysicalSlotResolver.TrackpadIndex(slot, run.SinglePadTrackpads);
+                string sfx = PhysicalSlotResolver.HalfSuffix(
+                    PhysicalSlotResolver.HalfFor(slot, run.SinglePadTrackpads));
+                drag = $"Touchpad {p} Finger 0 Y{sfx}";
+            }
             bool emitted = false;
             // (target, net invert) pairs already emitted. The default
             // wheel is symmetric (clockwise scrolls down AND
@@ -958,8 +981,9 @@ namespace PadForge.SteamWorkshop.Translation
                 bool memberFlip = memberName == "scroll_counterclockwise";
                 var source = new ResolvedSource
                 {
-                    Descriptor = $"Touchpad {p} Finger 0 Y{sfx}",
+                    Descriptor = drag,
                     Invert = memberFlip,
+                    DeadZone = dragDeadZone,
                 };
                 string inputPath = $"{path}/{memberName}";
                 foreach (var activator in input.Activators)
@@ -1030,6 +1054,17 @@ namespace PadForge.SteamWorkshop.Translation
                 string inputPath = $"{path}/{inputName}";
                 if (dir == null)
                 {
+                    // Non-swipe members (the mode's own click command)
+                    // are plain surface inputs and translate through the
+                    // normal walk (v12); only members PadForge has no
+                    // source for keep the skip.
+                    var member = PhysicalSlotResolver.Resolve(slot, inputName,
+                        run.NintendoLabels, run.SinglePadTrackpads);
+                    if (member != null)
+                    {
+                        TranslateInput(run, preset, input, member, clickGate: null, layer, inputPath);
+                        continue;
+                    }
                     foreach (var act in input.Activators)
                         foreach (var b in act.Bindings)
                             ReportSkipUnlessSilent(run, TranslationReasons.UnknownPhysicalInput,
@@ -1044,6 +1079,160 @@ namespace PadForge.SteamWorkshop.Translation
                 TranslateInput(run, preset, input, source, clickGate: null, layer, inputPath);
             }
         }
+
+        /// <summary>2dscroll on a stick (v12): Steam's directional swipe on
+        /// a stick host is a flick toward a direction, firing the binding
+        /// once per flick. The wedge read the stick-as-dpad members already
+        /// resolve to (half of the matching axis, group deadzone honored)
+        /// IS that construct once it drives a one-shot macro on its rising
+        /// edge: entering the wedge fires exactly once and re-centering
+        /// re-arms it. So each dpad_* member lowers its one-shot-able
+        /// bindings onto descriptor-triggered tap macros (the v10 G6
+        /// KeyTap / MouseButtonTap / VcButtonTap shapes plus the one-shot
+        /// controller_action macros), with the wedge's half-axis shape
+        /// carried on the trigger entry. Press / release / long-press
+        /// activator distinctions have no carrier on a one-shot flick (the
+        /// same collapse the DoubleTap path documents), so every
+        /// activator's bindings fire on the wedge entry edge. Bindings
+        /// with no one-shot form (mode shifts, layer ops, wheel detents,
+        /// trigger-pull targets) keep the named skip per binding. Non-dpad
+        /// members (the mode's click command) translate through the normal
+        /// walk.</summary>
+        private void TranslateStickSwipeGroup(Run run, SteamInputPreset preset, SteamInputGroup group,
+            SteamSlot slot, string layer, string path, Dictionary<string, string> settings)
+        {
+            int dzPct = GroupDeadZonePercent(settings);
+            foreach (var inputName in group.Inputs.Keys.OrderBy(k => k, StringComparer.Ordinal))
+            {
+                var input = group.Inputs[inputName];
+                if (input.Activators.Count == 0) continue;
+                string inputPath = $"{path}/{inputName}";
+
+                var source = PhysicalSlotResolver.Resolve(slot, inputName,
+                    run.NintendoLabels, run.SinglePadTrackpads);
+                if (source == null)
+                {
+                    foreach (var act in input.Activators)
+                        foreach (var b in act.Bindings)
+                            ReportSkipUnlessSilent(run, TranslationReasons.UnknownPhysicalInput,
+                                inputPath, b, slotArg: slot.ToString(), inputArg: inputName);
+                    continue;
+                }
+
+                if (!inputName.StartsWith("dpad_", StringComparison.OrdinalIgnoreCase))
+                {
+                    // The mode's own click command is a plain button and
+                    // keeps continuous press semantics.
+                    TranslateInput(run, preset, input, source, clickGate: null, layer, inputPath);
+                    continue;
+                }
+
+                // The group inner deadzone shapes how far a flick must
+                // travel before it counts, the same seam the member walk
+                // applies to wedge rows.
+                if (dzPct > 0 && source.HalfAxis && source.DeadZone == 0)
+                    source = WithDeadZone(source, dzPct);
+
+                foreach (var activator in input.Activators)
+                {
+                    string actPath = $"{inputPath}/{(activator.Type ?? "").Trim()}";
+                    ReportDroppedActivatorExtras(run, activator, actPath);
+                    int macrosBefore = run.Profile.Macros.Count;
+                    foreach (var binding in activator.Bindings)
+                        TranslateStickSwipeBinding(run, preset, binding, source, layer, actPath,
+                            input.Name);
+                    EmitHapticPulse(run, activator, source, input.Name, actPath, "OnPress", holdMs: 0);
+                    ConsumeActivatorDelays(run, activator, actPath, macrosBefore);
+                }
+            }
+        }
+
+        /// <summary>One binding of a stick-hosted swipe member (v12): the
+        /// one-shot-able kinds become tap macros on the wedge's rising
+        /// edge, everything else keeps the named skip (a flick has no held
+        /// state for rows, latches, layer holds, or wheel detents to ride).</summary>
+        private void TranslateStickSwipeBinding(Run run, SteamInputPreset preset,
+            SteamInputBinding binding, ResolvedSource source, string layer, string actPath,
+            string inputName)
+        {
+            string type = (binding.Type ?? "").Trim().ToLowerInvariant();
+            switch (type)
+            {
+                case "key_press":
+                {
+                    string keyName = FirstToken(binding.Param);
+                    if (!SteamInputVkTable.TryResolve(keyName, out byte vk, out _))
+                    {
+                        run.Report.Add(TranslationStatus.Skipped, TranslationReasons.UnknownKey,
+                            actPath, binding.Raw, args: keyName);
+                        break;
+                    }
+                    // One tap per flick via SendInput (any VK works on the
+                    // macro form, v10 G11).
+                    EmitKeyMacro(run, binding, source, actPath,
+                        (TranslatedMacroAction.KeyTap, "OnPress"), vk, intervalMs: 100,
+                        keyName, inputName);
+                    break;
+                }
+
+                case "mouse_button":
+                {
+                    if (!SteamInputVkTable.TryResolveMouseButtonIndex(binding.Param, out _))
+                    {
+                        run.Report.Add(TranslationStatus.Skipped, TranslationReasons.UnknownMouseButton,
+                            actPath, binding.Raw, args: binding.Param);
+                        break;
+                    }
+                    EmitMouseTapMacro(run, binding, source, actPath, inputName,
+                        triggerMode: "OnPress");
+                    break;
+                }
+
+                case "xinput_button":
+                {
+                    if (!XInputTargetTable.TryResolve(binding.Param, out var xt))
+                    {
+                        run.Report.Add(TranslationStatus.Skipped, TranslationReasons.UnknownXInputButton,
+                            actPath, binding.Raw, args: binding.Param);
+                        break;
+                    }
+                    if (xt.IsTriggerAxis)
+                    {
+                        // No discrete trigger-pull tap primitive, the same
+                        // gate the release-activator path keeps.
+                        run.Report.Add(TranslationStatus.Skipped,
+                            TranslationReasons.ScrollGestureModeNotSupported, actPath, binding.Raw);
+                        break;
+                    }
+                    EmitVcTapMacro(run, binding, source, actPath, xt, inputName,
+                        triggerMode: "OnPress");
+                    break;
+                }
+
+                case "controller_action" when IsOneShotControllerAction(binding.Param):
+                    // The one-shot system actions (cursor warp, set_led,
+                    // camera_reset, screenshot, on-screen keyboard) already
+                    // lower to OnPress macros through FillMacroTrigger, so
+                    // the wedge trigger gives them the same
+                    // one-fire-per-flick shape.
+                    TranslateControllerAction(run, preset, binding, source, layer, actPath,
+                        onRelease: false, inputName);
+                    break;
+
+                default:
+                    ReportSkipUnlessSilent(run, TranslationReasons.ScrollGestureModeNotSupported,
+                        actPath, binding);
+                    break;
+            }
+        }
+
+        /// <summary>controller_action verbs whose lowering is a one-shot
+        /// macro, so a swipe flick can carry them (v12). Layer ops and
+        /// mode shifts are hold or latch natured and stay out.</summary>
+        private static bool IsOneShotControllerAction(string param)
+            => FirstToken(param).ToUpperInvariant()
+                is "MOUSE_POSITION" or "SET_LED" or "CAMERA_RESET"
+                or "SCREENSHOT" or "SHOW_KEYBOARD";
 
         /// <summary>Menu group settings the overlay-backed menus have no
         /// channel for, named per group when present and non-zero. The
@@ -2529,18 +2718,19 @@ namespace PadForge.SteamWorkshop.Translation
             return true;
         }
 
-        /// <summary>A release activator on a mouse_button binding (v10 G6):
-        /// one click when the hosting input releases, via a MouseButtonTap
-        /// macro (down + tap duration + up through SendInput).</summary>
+        /// <summary>A one-shot mouse_button tap via a MouseButtonTap macro
+        /// (down + tap duration + up through SendInput). Release activators
+        /// ride "OnRelease" (v10 G6), stick swipe flicks "OnPress" (v12).</summary>
         private void EmitMouseTapMacro(Run run, SteamInputBinding binding,
-            ResolvedSource source, string path, string inputName)
+            ResolvedSource source, string path, string inputName,
+            string triggerMode = "OnRelease")
         {
             SteamInputVkTable.TryResolveMouseButtonIndex(binding.Param, out int btn);
             var macro = new TranslatedMacro
             {
                 Name = $"Click mouse {FirstToken(binding.Param).ToUpperInvariant()} ({inputName})",
                 Action = TranslatedMacroAction.MouseButtonTap,
-                TriggerMode = "OnRelease",
+                TriggerMode = triggerMode,
                 ConsumeTrigger = false,
                 MouseButtonIndex = btn,
             };
@@ -2552,18 +2742,18 @@ namespace PadForge.SteamWorkshop.Translation
                 args: arg == null ? Array.Empty<string>() : new[] { arg });
         }
 
-        /// <summary>A release activator on an xinput binding (v10 G6): one
-        /// tap of the target button when the hosting input releases, via a
-        /// VcButtonTap macro.</summary>
+        /// <summary>A one-shot tap of the target virtual-controller button
+        /// via a VcButtonTap macro. Release activators ride "OnRelease"
+        /// (v10 G6), stick swipe flicks "OnPress" (v12).</summary>
         private void EmitVcTapMacro(Run run, SteamInputBinding binding,
             ResolvedSource source, string path, XInputTargetTable.XInputTarget xt,
-            string inputName)
+            string inputName, string triggerMode = "OnRelease")
         {
             var macro = new TranslatedMacro
             {
                 Name = $"Tap {xt.Target} ({inputName})",
                 Action = TranslatedMacroAction.VcButtonTap,
-                TriggerMode = "OnRelease",
+                TriggerMode = triggerMode,
                 TargetXboxButtons = xt.XboxButtonBit,
                 ConsumeTrigger = false,
             };
@@ -2640,6 +2830,19 @@ namespace PadForge.SteamWorkshop.Translation
         /// report entry.</summary>
         private static string FillMacroTrigger(TranslatedMacro macro, ResolvedSource source)
         {
+            // Half-axis hosts (stick wedges, trigger pulls) carry their read
+            // shape beside the trigger (v12). A descriptor trigger converts
+            // to an axis entry that reads the FULL axis by default, so
+            // without the stamp a dpad_north macro would fire on any
+            // deflection of the whole Y axis. Stamped unconditionally: the
+            // combined-output path needs it too, because FinalizeMacroTriggers
+            // can swap that trigger onto the fallback descriptor later.
+            if (source.HalfAxis)
+            {
+                macro.TriggerDescriptorHalfAxis = true;
+                macro.TriggerDescriptorInvert = source.Invert;
+                macro.TriggerDescriptorDeadZonePercent = source.DeadZone;
+            }
             if (HasDeviceFreeTrigger(source))
             {
                 macro.TriggerXboxButtons = source.XboxButtonBit;

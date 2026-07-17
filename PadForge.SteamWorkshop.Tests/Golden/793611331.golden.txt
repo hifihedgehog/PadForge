@@ -59,7 +59,7 @@ macros: 19
   macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Gamepad LeftStick] strength=66%
   macro RumblePulse OnPress | Haptic pulse (touch_menu_button_0) | btns=0x0000 in=[Menu 1 Item 0] strength=66%
   macro RumblePulse OnPress | Haptic pulse (touch_menu_button_1) | btns=0x0000 in=[Menu 1 Item 1] strength=66%
-  macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Gamepad LeftTrigger] strength=66%
+  macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Gamepad LeftTrigger] in-half=upper in-dz=75 strength=66%
   macro KeyTap OnPress | Screenshot key (dpad_east) | btns=0x0000 in=[Touchpad 0 DPadRight; Touchpad 0 Click] vk=0x2C
   macro RumblePulse OnPress | Haptic pulse (dpad_east) | btns=0x0000 in=[Touchpad 0 DPadRight; Touchpad 0 Click] strength=33%
   macro KeyTap OnPress | Screenshot key (dpad_north) | btns=0x0000 in=[Touchpad 0 DPadUp; Touchpad 0 Click] vk=0x2C
@@ -70,12 +70,12 @@ macros: 19
   macro RumblePulse OnPress | Haptic pulse (dpad_west) | btns=0x0000 in=[Touchpad 0 DPadLeft; Touchpad 0 Click] strength=33%
   macro KeyTap OnPress | Screenshot key (dpad_north) | btns=0x0000 in=[Touchpad 0 DPadUp; Touchpad 0 Click] vk=0x2C
   macro RumblePulse OnPress | Haptic pulse (dpad_north) | btns=0x0000 in=[Touchpad 0 DPadUp; Touchpad 0 Click] strength=33%
-  macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Gamepad RightTrigger] strength=66%
+  macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Gamepad RightTrigger] in-half=upper in-dz=75 strength=66%
 menus: 1
   menu 1 Grid | Touchpad 0 [left half] | Base | fire=Click cells=2 | name=Touch Menu 1
     [0] Quicksave
     [1] Quickload
-report: v11 rows:x20+k2 macros:19 menus:1 layers:0 clean:27 partial:27 skipped:0 errors:0
+report: v12 rows:x20+k2 macros:19 menus:1 layers:0 clean:27 partial:27 skipped:0 errors:0
   Partial HapticPulseEmitted(1) @ Default/dpad/group 9 (dpad)/dpad_east/Full_Press => Rumble pulse macro (33%)
   Partial HapticPulseEmitted(1) @ Default/dpad/group 9 (dpad)/dpad_north/Full_Press => Rumble pulse macro (33%)
   Partial HapticPulseEmitted(1) @ Default/dpad/group 9 (dpad)/dpad_south/Full_Press => Rumble pulse macro (33%)

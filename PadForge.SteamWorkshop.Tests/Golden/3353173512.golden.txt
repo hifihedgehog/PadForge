@@ -197,10 +197,9 @@ menus: 3
     [6] Flip Combinator
     [7] Move Down
     [8] Back Menu
-report: v16 rows:x0+k57 macros:20 menus:3 layers:4 clean:77 partial:26 skipped:3 errors:0
+report: v17 rows:x0+k57 macros:20 menus:3 layers:4 clean:78 partial:24 skipped:3 errors:0
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_a/Full_Press => KbmKey0D <- Gamepad ButtonA
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_b/Full_Press => KbmKey1B <- Gamepad ButtonB
-  Partial ShowKeyboardApproximated @ Default/button_diamond/group 0 (four_buttons)/button_x/Full_Press => On-screen keyboard macro
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_y/Full_Press => KbmKey46 <- Gamepad ButtonY
   Clean RowEmitted @ Default/dpad/group 7 (dpad)/dpad_east/Full_Press => KbmKey48 <- Gamepad DPadRight
   Clean RowEmitted @ Default/dpad/group 7 (dpad)/dpad_north/Full_Press => KbmKey45 <- Gamepad DPadUp
@@ -243,7 +242,7 @@ report: v16 rows:x0+k57 macros:20 menus:3 layers:4 clean:77 partial:26 skipped:3
   Partial MouseModeTuningDropped(mouse_smoothing, acceleration, mouse_dampening_trigger, mouse_move_threshold) @ Default/right_trackpad/group 2 (absolute_mouse)
   Clean RowEmitted @ Default/right_trackpad/group 2 (absolute_mouse) => KbmMouseX <- Touchpad 1 Finger 0 X
   Clean RowEmitted @ Default/right_trackpad/group 2 (absolute_mouse) => KbmMouseY <- Touchpad 1 Finger 0 Y
-  Partial SoftPressApproximated @ Default/right_trackpad/group 2 (absolute_mouse)/click/Soft_Press => KbmKey51 <- Touchpad 1 Click
+  Clean RowEmitted @ Default/right_trackpad/group 2 (absolute_mouse)/click/Soft_Press => KbmKey51 <- Touchpad 1 Click
   Clean RowEmitted @ Default/right_trigger/group 5 (trigger)/edge/Full_Press => KbmMBtn0 <- Gamepad RightTrigger (upper half)
   Clean RowEmitted @ Default/switch/group 6 (switches)/button_back_left/Full_Press => KbmKeyA2 <- Gamepad Paddle2
   Clean RowEmitted @ Default/switch/group 6 (switches)/button_back_left_upper/Full_Press => KbmKeyA0 <- Gamepad Paddle4

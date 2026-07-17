@@ -2,7 +2,7 @@ name: SkyrimSE Perfected: KB/M Precision + Gyro + Convenient Touch Menus
 description: A fully labelled and carefully tweaked config that features precise aiming and convenient touch menu...
 slots: kbm
 xbox rows: 0
-kbm rows: 33
+kbm rows: 34
   Base | KbmKey09
     <- Gamepad ButtonB
   Base | KbmKey14
@@ -36,6 +36,8 @@ kbm rows: 33
     <- Gamepad RightShoulder
   Base | KbmKeyA2
     <- Gamepad Paddle2
+  Base | KbmKeyA3
+    <- Gamepad LeftStickRing [lower-half] dz=75
   Base | KbmKeyA4
     <- Gamepad LeftShoulder
   Base | KbmKeyBF
@@ -75,12 +77,13 @@ kbm rows: 33
 kbm activators: 2
   Hold Layer_789818086_0_MS_left_trackpad_17 | Gamepad LeftShoulder | inherit | name=left_trackpad shift
   Hold Layer_789818086_0_MS_right_trackpad_24 | Touchpad 1 Click | inherit | name=right_trackpad shift
-macros: 22
+macros: 23
   macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Gamepad LeftStick] strength=33%
   macro RumblePulse OnPress | Haptic pulse (dpad_east) | btns=0x0000 in=[Gamepad LeftStickX] in-half=upper strength=33%
   macro RumblePulse OnPress | Haptic pulse (dpad_north) | btns=0x0000 in=[Gamepad LeftStickY] in-half=lower strength=33%
   macro RumblePulse OnPress | Haptic pulse (dpad_south) | btns=0x0000 in=[Gamepad LeftStickY] in-half=upper strength=33%
   macro RumblePulse OnPress | Haptic pulse (dpad_west) | btns=0x0000 in=[Gamepad LeftStickX] in-half=lower strength=33%
+  macro RumblePulse OnPress | Haptic pulse (edge) | btns=0x0000 in=[Gamepad LeftStickRing] in-half=lower in-dz=75 strength=33%
   macro RumblePulse OnPress | Haptic pulse (touch_menu_button_0) | btns=0x0000 in=[Menu 1 Item 0] strength=100%
   macro RumblePulse OnPress | Haptic pulse (touch_menu_button_1) | btns=0x0000 in=[Menu 1 Item 1] strength=100%
   macro RumblePulse OnPress | Haptic pulse (edge) | btns=0x0000 in=[Gamepad LeftTrigger] in-half=upper in-dz=15 strength=66%
@@ -117,7 +120,7 @@ menus: 3
     [6] 6
     [7] 7
     [8] 8
-report: v16 rows:x0+k33 macros:22 menus:3 layers:2 clean:43 partial:8 skipped:1 errors:0
+report: v17 rows:x0+k34 macros:23 menus:3 layers:2 clean:44 partial:8 skipped:0 errors:0
   Clean RowEmitted @ Preset 0/button_diamond/group 0 (four_buttons)/button_a/Full_Press => KbmKey45 <- Gamepad ButtonA
   Clean RowEmitted @ Preset 0/button_diamond/group 0 (four_buttons)/button_b/Full_Press => KbmKey09 <- Gamepad ButtonB
   Clean RowEmitted @ Preset 0/button_diamond/group 0 (four_buttons)/button_x/Full_Press => KbmKey52 <- Gamepad ButtonX
@@ -130,7 +133,7 @@ report: v16 rows:x0+k33 macros:22 menus:3 layers:2 clean:43 partial:8 skipped:1 
   Clean RowEmitted @ Preset 0/joystick/group 11 (dpad)/dpad_north/Full_Press => KbmKey57 <- Gamepad LeftStickY (lower half)
   Clean RowEmitted @ Preset 0/joystick/group 11 (dpad)/dpad_south/Full_Press => KbmKey53 <- Gamepad LeftStickY (upper half)
   Clean RowEmitted @ Preset 0/joystick/group 11 (dpad)/dpad_west/Full_Press => KbmKey41 <- Gamepad LeftStickX (lower half)
-  Skipped EdgeInputNotSupported(Joystick, edge) @ Preset 0/joystick/group 11 (dpad)/edge :: key_press RIGHT_CONTROL
+  Clean RowEmitted @ Preset 0/joystick/group 11 (dpad)/edge/Full_Press => KbmKeyA3 <- Gamepad LeftStickRing (lower half)
   Clean MenuEmitted(2) @ Preset 0/left_trackpad/group 17 (touch_menu) => Grid menu 1 on Touchpad 0: 2 bound cells
   Partial MenuIconsDropped(2) @ Preset 0/left_trackpad/group 17 (touch_menu)
   Clean RowEmitted @ Preset 0/left_trackpad/group 17 (touch_menu)/touch_menu_button_0/Full_Press => KbmKey74 <- Menu 1 Item 0

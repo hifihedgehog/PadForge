@@ -118,7 +118,7 @@ menus: 2
     [3] U
     [4] G
     [5] L
-report: v16 rows:x0+k42 macros:8 menus:2 layers:1 clean:48 partial:2 skipped:2 errors:0
+report: v17 rows:x0+k42 macros:8 menus:2 layers:1 clean:50 partial:0 skipped:2 errors:0
   Clean RowEmitted @ Controls - Enterprise/button_diamond/group 0 (four_buttons)/button_a/Full_Press => KbmKey53 <- Gamepad ButtonA
   Clean RowEmitted @ Controls - Enterprise/button_diamond/group 0 (four_buttons)/button_b/Full_Press => KbmKey57 <- Gamepad ButtonB
   Clean RowEmitted @ Controls - Enterprise/button_diamond/group 0 (four_buttons)/button_x/Full_Press => KbmKey44 <- Gamepad ButtonX
@@ -142,7 +142,7 @@ report: v16 rows:x0+k42 macros:8 menus:2 layers:1 clean:48 partial:2 skipped:2 e
   Clean RowEmitted @ Controls - Enterprise/right_joystick/group 10 (joystick_mouse)/click/Full_Press => KbmKey65 <- Gamepad RightStick
   Clean RowEmitted @ Controls - Enterprise/right_trackpad/group 2 (absolute_mouse) => KbmMouseX <- Touchpad 1 Finger 0 X
   Clean RowEmitted @ Controls - Enterprise/right_trackpad/group 2 (absolute_mouse) => KbmMouseY <- Touchpad 1 Finger 0 Y
-  Partial SoftPressApproximated @ Controls - Enterprise/right_trackpad/group 2 (absolute_mouse)/click/Soft_Press => KbmKey65 <- Touchpad 1 Click
+  Clean RowEmitted @ Controls - Enterprise/right_trackpad/group 2 (absolute_mouse)/click/Soft_Press => KbmKey65 <- Touchpad 1 Click
   Clean RowEmitted @ Controls - Enterprise/right_trigger/group 5 (trigger)/edge/Full_Press => KbmMBtn0 <- Gamepad RightTrigger (upper half)
   Clean RowEmitted @ Controls - Enterprise/switch/group 6 (switches)/button_back_left_upper/Full_Press => KbmKeyBC <- Gamepad Paddle4
   Clean RowEmitted @ Controls - Enterprise/switch/group 6 (switches)/button_back_right/Full_Press => KbmKey42 <- Gamepad Paddle1
@@ -165,7 +165,7 @@ report: v16 rows:x0+k42 macros:8 menus:2 layers:1 clean:48 partial:2 skipped:2 e
   Clean RowEmitted @ Controls - Landing party/left_trigger/group 13 (trigger)/click/Full_Press => KbmMBtn1 <- Gamepad LeftTrigger (upper half)
   Clean RowEmitted @ Controls - Landing party/right_trackpad/group 16 (absolute_mouse) => KbmMouseX <- Touchpad 1 Finger 0 X
   Clean RowEmitted @ Controls - Landing party/right_trackpad/group 16 (absolute_mouse) => KbmMouseY <- Touchpad 1 Finger 0 Y
-  Partial SoftPressApproximated @ Controls - Landing party/right_trackpad/group 16 (absolute_mouse)/click/Soft_Press => KbmMBtn0 <- Touchpad 1 Click
+  Clean RowEmitted @ Controls - Landing party/right_trackpad/group 16 (absolute_mouse)/click/Soft_Press => KbmMBtn0 <- Touchpad 1 Click
   Clean RowEmitted @ Controls - Landing party/right_trigger/group 14 (trigger)/click/Full_Press => KbmMBtn0 <- Gamepad RightTrigger (upper half)
   Skipped SteamSystemAction(system_key_1) @ Controls - Landing party/switch/group 15 (switches)/button_capture/release :: controller_action system_key_1
   Clean RowEmitted @ Controls - Landing party/switch/group 15 (switches)/button_escape/Full_Press => KbmKey09 <- Gamepad ButtonStart

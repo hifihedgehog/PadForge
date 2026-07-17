@@ -105,6 +105,20 @@ namespace PadForge.Engine.Common.Mapping
                              // exactly like the touchpad-gesture family.
                              // Leading 'M' keeps it clear of the I/H prefix
                              // grammar.
+            StickRing,       // "Gamepad LeftStickRing" / "Gamepad
+                             // RightStickRing" (translator v17, Steam's
+                             // joystick Outer Ring Binding). Deflection
+                             // MAGNITUDE of the stick pair,
+                             // sqrt(x*x + y*y) clamped to [0..1], read from
+                             // the same canonical axis pair flick stick
+                             // resolves (Left = Axis 0/1, Right = Axis 3/4).
+                             // Bool read: outer = magnitude at or past the
+                             // radius (per-source DeadZone percent), inner
+                             // (Invert) = deflected but inside the radius.
+                             // Lives in the "Gamepad " abstract namespace so
+                             // the picker's any-device group and the
+                             // gamepad-capability gate cover it. Leading 'G'
+                             // keeps it clear of the I/H prefix grammar.
         }
 
         /// <summary>Sensitivity constant for gyro bipolar coercion.
@@ -731,6 +745,8 @@ namespace PadForge.Engine.Common.Mapping
                 return SourceType.Midi;
             if (IsFlickStickDescriptor(s))
                 return SourceType.FlickStick;
+            if (IsStickRingDescriptor(s))
+                return SourceType.StickRing;
             if (IsMenuItemDescriptor(s))
                 return SourceType.MenuItem;
 
@@ -1492,6 +1508,91 @@ namespace PadForge.Engine.Common.Mapping
             return xAxis != null && yAxis != null;
         }
 
+        /// <summary>Stick deflection-ring descriptors (translator v17,
+        /// Steam's joystick Outer Ring Binding). The value is the stick
+        /// pair's deflection magnitude, sqrt(x*x + y*y) clamped to [0..1],
+        /// the same pair read flick stick uses (Left = Axis 0/1, Right =
+        /// Axis 3/4 via <see cref="GamepadAliasTable"/>). The bool read
+        /// consumes the source flags as ring geometry: DeadZone percent is
+        /// the ring RADIUS (Steam's edge_binding_radius on the 0..32767
+        /// deflection scale, the v11 grounding, mapped to percent), and
+        /// Invert selects the INNER ring ("the command will be sent when
+        /// inside the radius instead of outside", Steam's shipped
+        /// EdgeBindingInvert string) instead of the default outer ring.</summary>
+        public const string LeftStickRingDescriptor = "Gamepad LeftStickRing";
+        public const string RightStickRingDescriptor = "Gamepad RightStickRing";
+
+        /// <summary>True for either stick-ring descriptor.</summary>
+        public static bool IsStickRingDescriptor(string descriptor)
+        {
+            if (string.IsNullOrEmpty(descriptor)) return false;
+            string s = descriptor.Trim();
+            return string.Equals(s, LeftStickRingDescriptor, StringComparison.OrdinalIgnoreCase)
+                || string.Equals(s, RightStickRingDescriptor, StringComparison.OrdinalIgnoreCase);
+        }
+
+        /// <summary>Resolves a stick-ring descriptor to the canonical axis
+        /// pair it reads, the <see cref="TryGetFlickStickAxes"/> shape.</summary>
+        public static bool TryGetStickRingAxes(string descriptor, out string xAxis, out string yAxis)
+        {
+            xAxis = yAxis = null;
+            if (!IsStickRingDescriptor(descriptor)) return false;
+            bool left = descriptor.Trim().StartsWith("Gamepad Left", StringComparison.OrdinalIgnoreCase);
+            xAxis = ResolveGamepadAlias(left ? "Gamepad LeftStickX" : "Gamepad RightStickX");
+            yAxis = ResolveGamepadAlias(left ? "Gamepad LeftStickY" : "Gamepad RightStickY");
+            return xAxis != null && yAxis != null;
+        }
+
+        /// <summary>Rest floor for the INNER ring read, percent of full
+        /// deflection. Steam gates ring commands on the stick actually
+        /// being deflected (a centered stick sits inside every radius, and
+        /// without a floor an inner-ring key would be held forever at
+        /// rest). The only wild inner-ring authoring in the corpus
+        /// (789818086, the walk-modifier config) pairs its ring with an
+        /// authored stick deadzone of 1638/32767, 5 percent. This floor
+        /// matches it. A detection-layer constant by design, not a lineage
+        /// value.</summary>
+        internal const int StickRingInnerFloorPercent = 5;
+
+        /// <summary>Deflection magnitude of the ring's stick pair,
+        /// [0..1]. Same normalization as the flick-stick pair read
+        /// (SourceKindRuntime.ReadNormAxis: center 32768, span 32767).</summary>
+        internal static float ReadStickRingMagnitude(CustomInputState state, string canonical)
+        {
+            if (state == null || !TryGetStickRingAxes(canonical, out string xDesc, out string yDesc))
+                return 0f;
+            float x = ReadRingNormAxis(state, xDesc);
+            float y = ReadRingNormAxis(state, yDesc);
+            float mag = (float)Math.Sqrt(x * x + y * y);
+            return mag > 1f ? 1f : mag;
+        }
+
+        private static float ReadRingNormAxis(CustomInputState state, string axisDesc)
+        {
+            var parts = axisDesc.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            if (parts.Length < 2 || !int.TryParse(parts[1], out int idx)
+                || idx < 0 || idx >= CustomInputState.MaxAxis)
+                return 0f;
+            float v = (state.Axis[idx] - 32768) / 32767f;
+            return v < -1f ? -1f : (v > 1f ? 1f : v);
+        }
+
+        /// <summary>The ring's bool read: outer = magnitude at or past the
+        /// radius, inner (Invert) = deflected past the rest floor but
+        /// inside the radius. The radius rides the per-source DeadZone
+        /// percent (falling back to the caller's global threshold, the
+        /// standard per-source-DeadZone contract).</summary>
+        private static bool ReadStickRingBool(CustomInputState state, MappingSource src,
+            string canonical, int globalThresholdPercent)
+        {
+            float mag = ReadStickRingMagnitude(state, canonical);
+            int radiusPct = src.DeadZone > 0 ? src.DeadZone : globalThresholdPercent;
+            float r01 = Math.Max(radiusPct, 1) / 100f;
+            if (src.Invert)
+                return mag > StickRingInnerFloorPercent / 100f && mag <= r01;
+            return mag >= r01;
+        }
+
         /// <summary>Returns a gyro reading processed through the full
         /// per-device tuning chain:
         /// <list type="number">
@@ -1858,6 +1959,10 @@ namespace PadForge.Engine.Common.Mapping
             // (v15 gyro swipes), same shape as Mouse Motion. Non-half gyro
             // sources keep the legacy outer flip below.
             if (src.HalfAxis && desc.StartsWith("Gyro ", System.StringComparison.Ordinal)) return raw;
+            // The stick-ring read consumes Invert as its inner/outer
+            // selector (v17): flipping here would turn an inner ring into
+            // NOT-inner, which fires at full deflection instead.
+            if (IsStickRingDescriptor(desc)) return raw;
 
             return src.Invert ? !raw : raw;
         }
@@ -1938,8 +2043,12 @@ namespace PadForge.Engine.Common.Mapping
             // Mouse Motion's bipolar read consumes Invert the same way when
             // HalfAxis is set (the read selects the direction); the trigger
             // evaluator already exempts the family unconditionally.
+            // The stick ring (v17) consumes Invert as its inner/outer
+            // selector. Its scalar reads return the unsigned deflection
+            // magnitude either way, so no output flip may ride the flag.
             return s.StartsWith("Axis ", StringComparison.OrdinalIgnoreCase)
-                || s.StartsWith("Mouse Motion ", StringComparison.Ordinal);
+                || s.StartsWith("Mouse Motion ", StringComparison.Ordinal)
+                || IsStickRingDescriptor(s);
         }
 
         /// <summary>Evaluates a source for a POV-direction target
@@ -2142,6 +2251,11 @@ namespace PadForge.Engine.Common.Mapping
                 }
                 return Math.Abs(v) > th;
             }
+
+            // Stick deflection ring (v17): ring geometry (radius on
+            // DeadZone, inner on Invert) is consumed inside the read.
+            if (IsStickRingDescriptor(s))
+                return ReadStickRingBool(state, src, s, globalThresholdPercent);
 
             if (!TryParseTypeIndex(s, out var t, out int idx, out string povDir))
                 return false;
@@ -2361,6 +2475,13 @@ namespace PadForge.Engine.Common.Mapping
                 return mv;
             }
 
+            // Stick ring as an analog contribution (v17): the unsigned
+            // deflection magnitude [0..1]. Inner/outer is a bool
+            // construct, so Invert is consumed as that selector, never
+            // as a sign (InvertConsumedByHalfAxisRead).
+            if (IsStickRingDescriptor(s))
+                return ReadStickRingMagnitude(state, s);
+
             if (!TryParseTypeIndex(s, out var t, out int idx, out string povDir))
                 return 0f;
 
@@ -2534,6 +2655,11 @@ namespace PadForge.Engine.Common.Mapping
                 if (src.HalfAxis) return Math.Max(0f, src.Invert ? -mv : mv);
                 return Math.Abs(mv);
             }
+
+            // Stick ring as a trigger pull (v17): the unsigned deflection
+            // magnitude [0..1], the bipolar read's twin.
+            if (IsStickRingDescriptor(s))
+                return ReadStickRingMagnitude(state, s);
 
             if (!TryParseTypeIndex(s, out var t, out int idx, out string povDir))
                 return 0f;

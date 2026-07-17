@@ -2415,7 +2415,6 @@
   <data name="Workshop_Tr_MacroEmitted" xml:space="preserve"><value>已转换为宏</value></data>
   <data name="Workshop_Tr_ShiftLayerEmitted" xml:space="preserve"><value>层：{0}</value></data>
   <data name="Workshop_Tr_TouchpadTuningNotPerRow" xml:space="preserve"><value>触控板调节按整块触控板生效，而非按行</value></data>
-  <data name="Workshop_Tr_SoftPressApproximated" xml:space="preserve"><value>Soft_Press 近似为按压阈值</value></data>
   <data name="Workshop_Tr_TriggerThresholdApproximated" xml:space="preserve"><value>扳机阈值已近似处理</value></data>
   <data name="Workshop_Tr_NoDeviceFreeTrigger" xml:space="preserve"><value>此输入没有可用的无设备触发器</value></data>
   <data name="Workshop_Tr_GameActionsNotSupported" xml:space="preserve"><value>{0} 个游戏内动作，仅限 Steam，无游戏侧挂钩</value></data>
@@ -2431,10 +2430,8 @@
   <data name="Workshop_Tr_TouchMenuNeedsOverlay" xml:space="preserve"><value>已丢弃触摸菜单叠加层（{0} 个单元格）</value></data>
   <data name="Workshop_Tr_RadialMenuNeedsOverlay" xml:space="preserve"><value>已丢弃径向菜单叠加层（{0} 个扇区）</value></data>
   <data name="Workshop_Tr_MouseRegionNotSupported" xml:space="preserve"><value>不支持光标区域限制</value></data>
-  <data name="Workshop_Tr_EdgeInputNotSupported" xml:space="preserve"><value>不支持边缘输入</value></data>
   <data name="Workshop_Tr_ReleaseActivatorNotSupported" xml:space="preserve"><value>此处不支持释放激活方式</value></data>
   <data name="Workshop_Tr_LongPressNotSupported" xml:space="preserve"><value>此处不支持长按激活方式</value></data>
-  <data name="Workshop_Tr_DoublePressNotSupported" xml:space="preserve"><value>此处不支持双击激活方式</value></data>
   <data name="Workshop_Tr_UnknownActivatorType" xml:space="preserve"><value>未知激活方式 {0}</value></data>
   <data name="Workshop_Tr_RepeatDropped" xml:space="preserve"><value>已丢弃自动重复</value></data>
   <data name="Workshop_Tr_MissingGroup" xml:space="preserve"><value>配置引用了缺失的组 {0}</value></data>
@@ -2495,6 +2492,8 @@
   <data name="Pad_ResetTouchpadSwipeHapticsIntensity" xml:space="preserve"><value>重置脉冲强度</value></data>
   <data name="Mapping_FlickStickRight" xml:space="preserve"><value>Flick Stick（右摇杆）</value></data>
   <data name="Mapping_FlickStickLeft" xml:space="preserve"><value>Flick Stick（左摇杆）</value></data>
+  <data name="Mapping_LeftStickRing" xml:space="preserve"><value>左摇杆环</value></data>
+  <data name="Mapping_RightStickRing" xml:space="preserve"><value>右摇杆环</value></data>
   <data name="Pad_FlickStick_Header" xml:space="preserve"><value>Flick Stick</value></data>
   <data name="Pad_FlickStick_Subtitle" xml:space="preserve"><value>Flick Stick 输入的设置：推动摇杆，镜头随之转向；沿边缘滑动可微调转向。在映射的输入下拉框中将"Flick Stick（右摇杆）"映射到鼠标 X，任何层均可。</value></data>
   <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>重置所有 Flick Stick 设置</value></data>
@@ -2540,7 +2539,6 @@
   <data name="Workshop_Tr_InterruptibleDropped" xml:space="preserve"><value>不可中断按压按普通按压处理</value></data>
   <data name="Workshop_Tr_PlayerNumberActionNotSupported" xml:space="preserve"><value>更改玩家编号是 Steam 客户端动作，无对应项</value></data>
   <data name="Workshop_Tr_LizardModeActionNotSupported" xml:space="preserve"><value>蜥蜴模式切换是 Steam 内部功能，无对应项</value></data>
-  <data name="Workshop_Tr_SetLedDefaultApproximated" xml:space="preserve"><value>恢复默认灯光近似为清除覆盖</value></data>
   <data name="Workshop_Tr_ToggleLatchEmitted" xml:space="preserve"><value>切换按压将保持 {0} 直到下次按压</value></data>
   <data name="Workshop_Tr_ToggleDropped" xml:space="preserve"><value>已丢弃切换设置（此输出无保持机制）</value></data>
   <data name="Workshop_Tr_LongPressKeyTap" xml:space="preserve"><value>长按在达到阈值时点按 {0}（Steam 会按住直到松开）</value></data>
@@ -2554,10 +2552,11 @@
   <data name="Workshop_Tr_MouseModeTuningDropped" xml:space="preserve"><value>已丢弃鼠标手感设置（{0}）</value></data>
   <data name="Workshop_Tr_AxisInversionNotApplied" xml:space="preserve"><value>未应用轴反转（{0}）</value></data>
   <data name="Workshop_Tr_ScrollWheelApproximated" xml:space="preserve"><value>环形滚轮近似为纵向拖动</value></data>
-  <data name="Workshop_Tr_ScreenshotApproximated" xml:space="preserve"><value>SCREENSHOT 近似为 PrintScreen 按键</value></data>
-  <data name="Workshop_Tr_ShowKeyboardApproximated" xml:space="preserve"><value>SHOW_KEYBOARD 近似为启动屏幕键盘</value></data>
   <data name="Macro_HoldForMs" xml:space="preserve"><value>按住时</value></data>
   <data name="Macro_HoldForMs_Tooltip" xml:space="preserve"><value>在触发器被连续按住达到保持时间后触发一次。更短的点按不起作用。</value></data>
+  <data name="Macro_DoublePress" xml:space="preserve"><value>双击时</value></data>
+  <data name="Macro_DoublePress_Tooltip" xml:space="preserve"><value>在双击时间内按下两次时触发。若第二次按住不放，将保持激活直到松开。</value></data>
+  <data name="Macro_TriggerDoublePressMs_Label" xml:space="preserve"><value>双击时间</value></data>
   <data name="Macro_TriggerHoldMs_Label" xml:space="preserve"><value>保持时间</value></data>
   <data name="MacroAction_Type_RepeatVcButtonWhileHeld" xml:space="preserve"><value>按住时重复按钮</value></data>
   <data name="MacroAction_RepeatVcButtonWhileHeld_Tooltip" xml:space="preserve"><value>在触发器按住期间以设定间隔反复按下和松开控制器按钮（连发 / 连点）。</value></data>

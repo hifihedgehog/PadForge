@@ -526,6 +526,12 @@ namespace PadForge.Common
                 case "RightStickY":  return si.DevObj_RightStickY;
                 case "LeftTrigger":  return si.DevObj_LeftTrigger;
                 case "RightTrigger": return si.DevObj_RightTrigger;
+                // Stick deflection rings (translator v17): not alias-table
+                // members (they read the axis PAIR, not one canonical
+                // input), but they live in the same "Gamepad " namespace so
+                // the reverse resolver and the pickers name them here.
+                case "LeftStickRing":  return si.Mapping_LeftStickRing;
+                case "RightStickRing": return si.Mapping_RightStickRing;
                 default: return null;
             }
         }
@@ -572,6 +578,12 @@ namespace PadForge.Common
             // guid, so the abstract namespace must offer them too.
             list.Add(new InputChoice { Descriptor = PadForge.Engine.Common.Mapping.SourceCoercion.FlickStickRightDescriptor, DisplayName = si.Mapping_FlickStickRight });
             list.Add(new InputChoice { Descriptor = PadForge.Engine.Common.Mapping.SourceCoercion.FlickStickLeftDescriptor,  DisplayName = si.Mapping_FlickStickLeft });
+
+            // Stick deflection rings (translator v17): emitted with the
+            // empty guid for stick-hosted Outer Ring bindings, so the
+            // abstract namespace offers them too (the flick-stick rule).
+            list.Add(new InputChoice { Descriptor = PadForge.Engine.Common.Mapping.SourceCoercion.LeftStickRingDescriptor,  DisplayName = string.Format(si.Mapping_Gamepad_Format, si.Mapping_LeftStickRing) });
+            list.Add(new InputChoice { Descriptor = PadForge.Engine.Common.Mapping.SourceCoercion.RightStickRingDescriptor, DisplayName = string.Format(si.Mapping_Gamepad_Format, si.Mapping_RightStickRing) });
 
             // Two touchpad surfaces: the translator's trackpad resolvers
             // emit pad indices 0 (LEFT) and 1 (RIGHT, Steam Controller /
@@ -1165,6 +1177,12 @@ namespace PadForge.Common
                 // the canonical stick pair.
                 list.Add(new InputChoice { Descriptor = PadForge.Engine.Common.Mapping.SourceCoercion.FlickStickRightDescriptor, DisplayName = si.Mapping_FlickStickRight });
                 list.Add(new InputChoice { Descriptor = PadForge.Engine.Common.Mapping.SourceCoercion.FlickStickLeftDescriptor,  DisplayName = si.Mapping_FlickStickLeft });
+
+                // Stick deflection rings (translator v17): whole-stick
+                // magnitude reads, same gamepad gate and pair resolution
+                // as flick stick.
+                list.Add(new InputChoice { Descriptor = PadForge.Engine.Common.Mapping.SourceCoercion.LeftStickRingDescriptor,  DisplayName = string.Format(si.Mapping_Gamepad_Format, si.Mapping_LeftStickRing) });
+                list.Add(new InputChoice { Descriptor = PadForge.Engine.Common.Mapping.SourceCoercion.RightStickRingDescriptor, DisplayName = string.Format(si.Mapping_Gamepad_Format, si.Mapping_RightStickRing) });
             }
 
             // Touchpad raw sources (per-finger axes + click) for devices

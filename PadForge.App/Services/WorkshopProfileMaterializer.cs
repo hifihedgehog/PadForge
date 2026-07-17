@@ -292,6 +292,8 @@ namespace PadForge.Services
 
             if (mode == MacroTriggerMode.HoldForMs)
                 data.TriggerHoldMs = Math.Clamp(m.TriggerHoldMs, 50, 10000); // MacroItem clamp range
+            if (mode == MacroTriggerMode.DoublePress)
+                data.TriggerDoublePressMs = Math.Clamp(m.TriggerDoublePressMs, 50, 5000); // MacroItem clamp range
 
             // Continuous actions (autofire pulses) run for as long as the
             // macro executes; only RepeatMode=UntilRelease stops execution
@@ -381,6 +383,8 @@ namespace PadForge.Services
                 };
                 if (mode == MacroTriggerMode.HoldForMs)
                     data.TriggerHoldMs = Math.Clamp(m.TriggerHoldMs, 50, 10000); // MacroItem clamp range
+                if (mode == MacroTriggerMode.DoublePress)
+                    data.TriggerDoublePressMs = Math.Clamp(m.TriggerDoublePressMs, 50, 5000); // MacroItem clamp range
                 if (untilRelease)
                     data.RepeatMode = MacroRepeatMode.UntilRelease;
                 return ApplyDeviceFreeTrigger(data, m) ? data : null;

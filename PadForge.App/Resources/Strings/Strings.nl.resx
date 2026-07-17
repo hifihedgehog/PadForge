@@ -2435,7 +2435,6 @@
   <data name="Workshop_Tr_MacroEmitted" xml:space="preserve"><value>vertaald als macro</value></data>
   <data name="Workshop_Tr_ShiftLayerEmitted" xml:space="preserve"><value>laag: {0}</value></data>
   <data name="Workshop_Tr_TouchpadTuningNotPerRow" xml:space="preserve"><value>touchpad-afstelling geldt per pad, niet per rij</value></data>
-  <data name="Workshop_Tr_SoftPressApproximated" xml:space="preserve"><value>Soft_Press benaderd als indrukdrempel</value></data>
   <data name="Workshop_Tr_TriggerThresholdApproximated" xml:space="preserve"><value>triggerdrempel benaderd</value></data>
   <data name="Workshop_Tr_NoDeviceFreeTrigger" xml:space="preserve"><value>geen apparaatvrije trigger voor deze invoer</value></data>
   <data name="Workshop_Tr_GameActionsNotSupported" xml:space="preserve"><value>{0} in-game acties, alleen Steam, geen koppeling aan spelzijde</value></data>
@@ -2451,10 +2450,8 @@
   <data name="Workshop_Tr_TouchMenuNeedsOverlay" xml:space="preserve"><value>touch-menu-overlay vervallen ({0} cellen)</value></data>
   <data name="Workshop_Tr_RadialMenuNeedsOverlay" xml:space="preserve"><value>radiaal-menu-overlay vervallen ({0} sectoren)</value></data>
   <data name="Workshop_Tr_MouseRegionNotSupported" xml:space="preserve"><value>cursorgebiedbeperking niet ondersteund</value></data>
-  <data name="Workshop_Tr_EdgeInputNotSupported" xml:space="preserve"><value>randinvoer niet ondersteund</value></data>
   <data name="Workshop_Tr_ReleaseActivatorNotSupported" xml:space="preserve"><value>loslaat-activator hier niet ondersteund</value></data>
   <data name="Workshop_Tr_LongPressNotSupported" xml:space="preserve"><value>lang-indrukken-activator hier niet ondersteund</value></data>
-  <data name="Workshop_Tr_DoublePressNotSupported" xml:space="preserve"><value>dubbel-indrukken-activator hier niet ondersteund</value></data>
   <data name="Workshop_Tr_UnknownActivatorType" xml:space="preserve"><value>onbekende activator {0}</value></data>
   <data name="Workshop_Tr_RepeatDropped" xml:space="preserve"><value>automatische herhaling vervallen</value></data>
   <data name="Workshop_Tr_MissingGroup" xml:space="preserve"><value>configuratie verwijst naar ontbrekende groep {0}</value></data>
@@ -2515,6 +2512,8 @@
   <data name="Pad_ResetTouchpadSwipeHapticsIntensity" xml:space="preserve"><value>Pulsintensiteit resetten</value></data>
   <data name="Mapping_FlickStickRight" xml:space="preserve"><value>Flick Stick (rechter stick)</value></data>
   <data name="Mapping_FlickStickLeft" xml:space="preserve"><value>Flick Stick (linker stick)</value></data>
+  <data name="Mapping_LeftStickRing" xml:space="preserve"><value>Ring linker stick</value></data>
+  <data name="Mapping_RightStickRing" xml:space="preserve"><value>Ring rechter stick</value></data>
   <data name="Pad_FlickStick_Header" xml:space="preserve"><value>Flick Stick</value></data>
   <data name="Pad_FlickStick_Subtitle" xml:space="preserve"><value>Instellingen voor de Flick Stick-invoer: duw de stick in een richting en de camera draait mee, veeg langs de rand om fijn te draaien. Wijs "Flick Stick (rechter stick)" toe aan muis X via de invoerlijst in Toewijzingen, op elke laag.</value></data>
   <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>Alle Flick Stick-instellingen resetten</value></data>
@@ -2560,7 +2559,6 @@
   <data name="Workshop_Tr_InterruptibleDropped" xml:space="preserve"><value>niet-onderbreekbare druk gedraagt zich als een normale druk</value></data>
   <data name="Workshop_Tr_PlayerNumberActionNotSupported" xml:space="preserve"><value>wijziging van spelernummer is een Steam-clientactie, geen equivalent</value></data>
   <data name="Workshop_Tr_LizardModeActionNotSupported" xml:space="preserve"><value>lizard-modus-schakeling is Steam-intern, geen equivalent</value></data>
-  <data name="Workshop_Tr_SetLedDefaultApproximated" xml:space="preserve"><value>herstel van standaardverlichting benaderd als het wissen van de overschrijving</value></data>
   <data name="Workshop_Tr_ToggleLatchEmitted" xml:space="preserve"><value>schakel-druk houdt {0} vast tot de volgende druk</value></data>
   <data name="Workshop_Tr_ToggleDropped" xml:space="preserve"><value>schakelinstelling vervallen (geen vergrendeling voor deze uitvoer)</value></data>
   <data name="Workshop_Tr_LongPressKeyTap" xml:space="preserve"><value>lang indrukken tikt {0} aan bij de drempel (Steam houdt hem vast tot loslaten)</value></data>
@@ -2574,10 +2572,11 @@
   <data name="Workshop_Tr_MouseModeTuningDropped" xml:space="preserve"><value>muisafstelling vervallen ({0})</value></data>
   <data name="Workshop_Tr_AxisInversionNotApplied" xml:space="preserve"><value>asomkering niet toegepast ({0})</value></data>
   <data name="Workshop_Tr_ScrollWheelApproximated" xml:space="preserve"><value>cirkelvormig scrollwiel benaderd als verticaal slepen</value></data>
-  <data name="Workshop_Tr_ScreenshotApproximated" xml:space="preserve"><value>SCREENSHOT benaderd als een PrintScreen-toetsaanslag</value></data>
-  <data name="Workshop_Tr_ShowKeyboardApproximated" xml:space="preserve"><value>SHOW_KEYBOARD benaderd als het starten van het schermtoetsenbord</value></data>
   <data name="Macro_HoldForMs" xml:space="preserve"><value>Bij vasthouden</value></data>
   <data name="Macro_HoldForMs_Tooltip" xml:space="preserve"><value>Vuurt één keer nadat de trigger onafgebroken de vasthoudtijd ingedrukt is gehouden. Een kortere tik doet niets.</value></data>
+  <data name="Macro_DoublePress" xml:space="preserve"><value>Bij dubbel indrukken</value></data>
+  <data name="Macro_DoublePress_Tooltip" xml:space="preserve"><value>Vuurt wanneer de trigger twee keer binnen de dubbel-indruktijd wordt ingedrukt. Blijft actief tot loslaten als de tweede druk wordt vastgehouden.</value></data>
+  <data name="Macro_TriggerDoublePressMs_Label" xml:space="preserve"><value>Dubbel-indruktijd</value></data>
   <data name="Macro_TriggerHoldMs_Label" xml:space="preserve"><value>Vasthoudtijd</value></data>
   <data name="MacroAction_Type_RepeatVcButtonWhileHeld" xml:space="preserve"><value>Knop herhalen zolang ingedrukt</value></data>
   <data name="MacroAction_RepeatVcButtonWhileHeld_Tooltip" xml:space="preserve"><value>Schakelt de controllerknop met het interval aan en uit zolang de trigger ingedrukt blijft (autofire / turbo).</value></data>

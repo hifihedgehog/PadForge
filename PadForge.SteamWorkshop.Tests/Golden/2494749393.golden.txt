@@ -53,7 +53,7 @@ xbox rows: 20
 kbm rows: 1
   Base | KbmKey74
     <- Gamepad ButtonStart
-macros: 9
+macros: 10
   macro RumblePulse OnPress | Haptic pulse (dpad_east) | btns=0x0000 in=[Gamepad DPadRight] strength=33%
   macro RumblePulse OnPress | Haptic pulse (dpad_north) | btns=0x0000 in=[Gamepad DPadUp] strength=33%
   macro RumblePulse OnPress | Haptic pulse (dpad_south) | btns=0x0000 in=[Gamepad DPadDown] strength=33%
@@ -62,8 +62,9 @@ macros: 9
   macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Gamepad LeftTrigger] in-half=upper in-dz=75 strength=66%
   macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Gamepad RightTrigger] in-half=upper in-dz=75 strength=66%
   macro RumblePulse OnPress | Haptic pulse (button_escape) | btns=0x0000 in=[Gamepad ButtonStart] strength=33%
+  macro HoldKey DoublePress | Hold F9 (button_escape) | btns=0x0010 dbl=442ms vk=0x78
   macro KeyTap OnPress | Screenshot key (button_menu) | btns=0x0000 in=[Gamepad ButtonBack] vk=0x2C
-report: v16 rows:x20+k1 macros:9 menus:0 layers:0 clean:27 partial:2 skipped:1 errors:0
+report: v17 rows:x20+k1 macros:10 menus:0 layers:0 clean:28 partial:1 skipped:0 errors:0
   Partial GyroButtonMaskDropped(gyro_button, 9) @ Default/gyro/group 13 (mouse_joystick)
   Clean RowEmitted @ Default/gyro/group 13 (mouse_joystick) => RightThumbAxisX <- Gyro Yaw
   Clean RowEmitted @ Default/gyro/group 13 (mouse_joystick) => RightThumbAxisY <- Gyro Pitch
@@ -72,8 +73,7 @@ report: v16 rows:x20+k1 macros:9 menus:0 layers:0 clean:27 partial:2 skipped:1 e
   Clean RowEmitted @ Default/switch/group 8 (switches)/button_back_left/Full_Press => ButtonA <- Gamepad Paddle2
   Clean RowEmitted @ Default/switch/group 8 (switches)/button_back_right/Full_Press => ButtonX <- Gamepad Paddle1
   Clean RowEmitted @ Default/switch/group 8 (switches)/button_escape/Full_Press => KbmKey74 <- Gamepad ButtonStart
-  Skipped DoublePressNotSupported @ Default/switch/group 8 (switches)/button_escape/Double_Press :: key_press F9
-  Partial ScreenshotApproximated @ Default/switch/group 8 (switches)/button_menu/Full_Press => PrintScreen tap macro
+  Clean MacroEmitted @ Default/switch/group 8 (switches)/button_escape/Double_Press => Hold F9 macro
   Clean RowEmitted @ Default/joystick/group 3 (joystick_move) => LeftThumbAxisX <- Gamepad LeftStickX
   Clean RowEmitted @ Default/joystick/group 3 (joystick_move) => LeftThumbAxisY <- Gamepad LeftStickY
   Clean RowEmitted @ Default/left_trigger/group 4 (trigger) => LeftTrigger <- Gamepad LeftTrigger

@@ -294,9 +294,9 @@ namespace PadForge.SteamWorkshop.Tests
             var m = Assert.Single(p.Macros);
             Assert.Equal(TranslatedMacroAction.KeyTap, m.Action);
             Assert.Equal(0x2C, m.VirtualKey); // VK_SNAPSHOT
-            var entry = Assert.Single(p.Report.Entries);
-            Assert.Equal(TranslationStatus.Partial, entry.Status);
-            Assert.Equal(TranslationReasons.ScreenshotApproximated, entry.ReasonKey);
+            // v17: no note. "Approximated as a PrintScreen key tap" is
+            // exactly what a user expects the action to do.
+            Assert.Empty(p.Report.Entries);
         }
 
         [Fact]
@@ -310,8 +310,8 @@ namespace PadForge.SteamWorkshop.Tests
             var p = Translate(vdf);
             var m = Assert.Single(p.Macros);
             Assert.Equal(TranslatedMacroAction.ShowOnScreenKeyboard, m.Action);
-            var entry = Assert.Single(p.Report.Entries);
-            Assert.Equal(TranslationReasons.ShowKeyboardApproximated, entry.ReasonKey);
+            // v17: silent, the SCREENSHOT ruling.
+            Assert.Empty(p.Report.Entries);
         }
 
         [Fact]
@@ -483,13 +483,15 @@ namespace PadForge.SteamWorkshop.Tests
             // no feature note.
             Assert.All(p.Report.Entries, e =>
                 Assert.Equal(TranslationStatus.Clean, e.Status));
-            Assert.DoesNotContain(p.Report.Entries,
-                e => e.ReasonKey == TranslationReasons.DoublePressNotSupported);
         }
 
         [Fact]
-        public void DoublePress_ButtonHost_KeepsNamedSkip()
+        public void DoublePress_ButtonHost_BuildsHoldKeyMacro_OnTheDoublePressTrigger()
         {
+            // v17: the button-hosted Double_Press lowers to a HoldKey macro
+            // on the engine's DoublePress trigger (Valve's "if held on the
+            // second press, it will remain pressed"), window at the 442 ms
+            // template-grounded default when unauthored.
             string vdf = Head
                 + Group(1, "four_buttons", Inputs(
                     Inp("button_a", "key_press E", activator: "Double_Press")))
@@ -497,8 +499,30 @@ namespace PadForge.SteamWorkshop.Tests
                 + "}\n";
             var p = Translate(vdf);
             Assert.Empty(p.KbmMappingSet.Rows);
-            Assert.Contains(p.Report.Entries, e =>
-                e.ReasonKey == TranslationReasons.DoublePressNotSupported);
+            var m = Assert.Single(p.Macros);
+            Assert.Equal(TranslatedMacroAction.HoldKey, m.Action);
+            Assert.Equal("DoublePress", m.TriggerMode);
+            Assert.Equal(442, m.TriggerDoublePressMs);
+            Assert.Equal(0x45, m.VirtualKey); // VK_E
+        }
+
+        [Fact]
+        public void DoublePress_AuthoredWindow_AndVcTarget_CarryThrough()
+        {
+            // The activator's double_tap_time (the serializer's own token,
+            // authored 442 in Valve's basicui templates) rides the emitted
+            // macro; an xinput button takes the HoldVcButton shape.
+            string vdf = Head
+                + Group(1, "four_buttons", Inputs(
+                    Inp("button_a", "xinput_button Y", activator: "Double_Press",
+                        activatorSettings: ActSettings(("double_tap_time", "300")))))
+                + Preset(0, "Default", (1, "button_diamond active"))
+                + "}\n";
+            var p = Translate(vdf);
+            var m = Assert.Single(p.Macros);
+            Assert.Equal(TranslatedMacroAction.HoldVcButton, m.Action);
+            Assert.Equal("DoublePress", m.TriggerMode);
+            Assert.Equal(300, m.TriggerDoublePressMs);
         }
 
         // ─── G15: hotbar + empty_binding ────────────────────────────────
@@ -566,16 +590,15 @@ namespace PadForge.SteamWorkshop.Tests
             Assert.Equal(0, nudge.DeltaY);
             Assert.Equal("Touchpad 1 Finger 0 Down", Assert.Single(nudge.TriggerInputDescriptors));
             Assert.DoesNotContain(p.Report.Entries, e =>
-                e.ReasonKey == TranslationReasons.EdgeInputNotSupported);
-            Assert.DoesNotContain(p.Report.Entries, e =>
                 e.ReasonKey == TranslationReasons.MouseRegionTuningDropped);
         }
 
         [Fact]
-        public void MouseRegion_PartialRingEdge_KeepsTheNamedSkip()
+        public void MouseRegion_PartialRingEdge_BuildsOnTheTouchRead_NamingTheGeometry()
         {
-            // A real ring (radius below the ceiling) has no engine read:
-            // the named skip and the tuning note both stay.
+            // v17: a real ring (radius below the ceiling) approximates onto
+            // the touch read, so the binding fires on any touch. The
+            // dropped ring geometry stays named in the region tuning note.
             string vdf = Head
                 + Group(1, "mouse_region",
                     Inputs(Inp("edge", "key_press E"))
@@ -586,21 +609,21 @@ namespace PadForge.SteamWorkshop.Tests
                 + "}\n";
             var p = Translate(vdf);
 
-            Assert.Empty(p.Macros);
-            Assert.Contains(p.Report.Entries, e =>
-                e.ReasonKey == TranslationReasons.EdgeInputNotSupported);
+            var row = Assert.Single(p.KbmMappingSet.Rows, r => r.Target == "KbmKey45");
+            Assert.Equal("Touchpad 1 Finger 0 Down", Assert.Single(row.Sources).Descriptor);
             Assert.Contains(p.Report.Entries, e =>
                 e.ReasonKey == TranslationReasons.MouseRegionTuningDropped
                 && e.ReasonArgs.Single().Contains("edge_binding_radius"));
         }
 
         [Fact]
-        public void StickHostedEdge_StaysTheNamedSkip()
+        public void StickHostedEdge_BuildsOnTheRingRead()
         {
-            // A stick's rest position sits inside any inverted radius, so
-            // the whole-pad collapse would hold the binding forever. The
-            // stick edge keeps the named skip (no deflection-magnitude
-            // read exists).
+            // v17: the stick edge lowers onto the deflection-magnitude ring
+            // family. The inverted full-radius zone of corpus 3456927474
+            // ("middle mouse while the stick is deflected at all") becomes
+            // an inner ring at 100 percent. The engine's rest floor keeps
+            // the centered stick silent.
             string vdf = Head
                 + Group(1, "joystick_mouse",
                     Inputs(Inp("edge", "mouse_button MIDDLE"))
@@ -610,9 +633,55 @@ namespace PadForge.SteamWorkshop.Tests
                 + Preset(0, "Default", (1, "right_joystick active"))
                 + "}\n";
             var p = Translate(vdf);
-            Assert.Empty(p.Macros);
-            Assert.Contains(p.Report.Entries, e =>
-                e.ReasonKey == TranslationReasons.EdgeInputNotSupported);
+            // The joystick_mouse group also emits its own mouse rows; the
+            // edge member's row is the ring-sourced one.
+            var row = Assert.Single(p.KbmMappingSet.Rows,
+                r => r.Sources.Any(s => s.Descriptor == "Gamepad RightStickRing"));
+            var src = Assert.Single(row.Sources);
+            Assert.True(src.Invert);
+            Assert.Equal(100, src.DeadZone);
+        }
+
+        [Fact]
+        public void StickHostedEdge_PartialInnerRing_CarriesTheRadiusPercent()
+        {
+            // The 789818086 walk-modifier shape: dpad on the left stick,
+            // RCtrl while deflected but inside 74.6 percent of full
+            // deflection (24432/32767). The ring source carries the radius
+            // as its DeadZone percent.
+            string vdf = Head
+                + Group(1, "dpad",
+                    Inputs(Inp("edge", "key_press RIGHT_CONTROL"))
+                    + GroupSettings(
+                        ("edge_binding_radius", "24432"),
+                        ("edge_binding_invert", "1")))
+                + Preset(0, "Default", (1, "joystick active"))
+                + "}\n";
+            var p = Translate(vdf);
+            var row = Assert.Single(p.KbmMappingSet.Rows);
+            Assert.Equal("KbmKeyA3", row.Target); // VK 0xA3, Right Ctrl
+            var src = Assert.Single(row.Sources);
+            Assert.Equal("Gamepad LeftStickRing", src.Descriptor);
+            Assert.True(src.Invert);
+            Assert.Equal(75, src.DeadZone);
+        }
+
+        [Fact]
+        public void StickHostedEdge_OuterRingDefaultRadius_UsesTheSerializerDefault()
+        {
+            // No authored radius: the untouched-slider default the
+            // serializer writes across the corpus and Valve's templates
+            // (24995..24999) grounds the 76 percent outer ring.
+            string vdf = Head
+                + Group(1, "dpad", Inputs(Inp("edge", "key_press E")))
+                + Preset(0, "Default", (1, "joystick active"))
+                + "}\n";
+            var p = Translate(vdf);
+            var row = Assert.Single(p.KbmMappingSet.Rows);
+            var src = Assert.Single(row.Sources);
+            Assert.Equal("Gamepad LeftStickRing", src.Descriptor);
+            Assert.False(src.Invert);
+            Assert.Equal(76, src.DeadZone);
         }
     }
 }

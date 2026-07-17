@@ -2,7 +2,7 @@ name: RCT3 Weno V0.1
 description: Track pad radial menu don't fully works
 slots: xbox kbm
 xbox rows: 0
-kbm rows: 19
+kbm rows: 20
   Base | KbmKey08
     <- Gamepad DPadLeft
   Base | KbmKey09
@@ -46,6 +46,8 @@ kbm rows: 19
   Base | KbmMBtn1
     <- Gamepad ButtonB
     <- Gamepad Paddle3
+  Base | KbmMBtn2
+    <- Gamepad RightStickRing [lower-half] dz=100
   Base | KbmMouseX | Sum
     <- Gyro Yaw
     <- Gamepad RightStickX sens=1.25
@@ -151,7 +153,7 @@ menus: 2
     [9] MOUSE_POSITION
     [10] MOUSE_POSITION
     [12] MOUSE_POSITION
-report: v16 rows:x0+k19 macros:52 menus:2 layers:5 clean:80 partial:19 skipped:4 errors:0
+report: v17 rows:x0+k20 macros:52 menus:2 layers:5 clean:82 partial:18 skipped:3 errors:0
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_a/Full_Press => KbmMBtn0 <- Gamepad ButtonA
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_b/Full_Press => KbmMBtn1 <- Gamepad ButtonB
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_x/Full_Press => KbmKey45 <- Gamepad ButtonX
@@ -200,10 +202,10 @@ report: v16 rows:x0+k19 macros:52 menus:2 layers:5 clean:80 partial:19 skipped:4
   Clean RowEmitted @ Default/right_joystick/group 10 (joystick_mouse) => KbmMouseX <- Gamepad RightStickX
   Clean RowEmitted @ Default/right_joystick/group 10 (joystick_mouse) => KbmMouseY <- Gamepad RightStickY
   Clean RowEmitted @ Default/right_joystick/group 10 (joystick_mouse)/click/Full_Press => KbmMBtn0 <- Gamepad RightStick
-  Skipped EdgeInputNotSupported(RightJoystick, edge) @ Default/right_joystick/group 10 (joystick_mouse)/edge :: mouse_button MIDDLE, , 
+  Clean RowEmitted @ Default/right_joystick/group 10 (joystick_mouse)/edge/Full_Press => KbmMBtn2 <- Gamepad RightStickRing (lower half)
   Clean RowEmitted @ Default/right_trackpad/group 12 (mouse_region) => KbmMouseX <- Touchpad 1 Pointer X
   Clean RowEmitted @ Default/right_trackpad/group 12 (mouse_region) => KbmMouseY <- Touchpad 1 Pointer Y
-  Partial SoftPressApproximated @ Default/right_trackpad/group 12 (mouse_region)/click/Soft_Press => KbmMBtn0 <- Touchpad 1 Click
+  Clean RowEmitted @ Default/right_trackpad/group 12 (mouse_region)/click/Soft_Press => KbmMBtn0 <- Touchpad 1 Click
   Clean MacroEmitted @ Default/right_trackpad/group 12 (mouse_region)/edge/Full_Press => Cursor nudge macro
   Clean RowEmitted @ Default/right_trigger/group 5 (trigger)/click/Full_Press => KbmScroll <- Gamepad RightTrigger (upper half)
   Clean RowEmitted @ Default/right_trigger/group 5 (trigger)/edge/Full_Press => KbmScroll <- Gamepad RightTrigger (upper half)

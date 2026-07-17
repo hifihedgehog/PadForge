@@ -1427,6 +1427,24 @@ namespace PadForge.Common.Input
                     AdvanceAction(macro);
                     break;
 
+                case MacroActionType.AxisHold:
+                    // Timed axis assert (v15): the value is re-written every
+                    // frame while the action is current, the ButtonPress
+                    // shape. gp is rebuilt per frame, so once the duration
+                    // elapses (or an UntilRelease macro stops) the axis
+                    // reads released again like a lifted button.
+                    ApplyAxisHoldAction(ref gp, action);
+                    if (actionElapsed >= action.DurationMs)
+                        AdvanceAction(macro);
+                    break;
+
+                case MacroActionType.MouseWheelTap:
+                    // One discrete wheel detent per fire (v15): a single
+                    // WHEEL_DELTA tick, horizontal when the action says so.
+                    ExecuteMouseWheelTap(action);
+                    AdvanceAction(macro);
+                    break;
+
                 case MacroActionType.MouseButtonPress:
                     if (actionElapsed < 1)
                         SendMouseButtonInput(action.MouseButton, down: true);
@@ -2230,6 +2248,53 @@ namespace PadForge.Common.Input
             }
         }
 
+        /// <summary>
+        /// Applies an AxisHold action to the gamepad (v15). Sticks share
+        /// AxisSet's signed-short write. Triggers read AxisValue on the
+        /// PULL scale (0..32767 = 0..100%) and double it onto the 0..65535
+        /// output so a full pull is expressible, which the short-typed
+        /// AxisSet write cannot reach; AxisSet keeps its legacy raw write
+        /// untouched.
+        /// </summary>
+        private static void ApplyAxisHoldAction(ref Gamepad gp, MacroAction action)
+        {
+            switch (action.AxisTarget)
+            {
+                case MacroAxisTarget.LeftTrigger:
+                    gp.LeftTrigger = TriggerPullFromAxisValue(action.AxisValue);
+                    break;
+                case MacroAxisTarget.RightTrigger:
+                    gp.RightTrigger = TriggerPullFromAxisValue(action.AxisValue);
+                    break;
+                default:
+                    ApplyAxisAction(ref gp, action);
+                    break;
+            }
+        }
+
+        /// <summary>0..32767 pull scale to the 0..65535 trigger output;
+        /// 32767 maps exactly to 65535 (full pull).</summary>
+        private static ushort TriggerPullFromAxisValue(short value)
+        {
+            if (value <= 0) return 0;
+            int scaled = value * 2 + 1;
+            return (ushort)Math.Min(scaled, 65535);
+        }
+
+        /// <summary>One discrete mouse-wheel detent (v15): AxisValue is the
+        /// signed tick count (0 reads as +1; positive = up / right), routed
+        /// through the same accumulate-and-flush lanes the continuous
+        /// scroll actions use so the poll thread stays syscall-free.</summary>
+        private static void ExecuteMouseWheelTap(MacroAction action)
+        {
+            if (_currentMacroSlotRestricted) return; // gamepad-only peer: no scroll
+            int ticks = action.AxisValue == 0 ? 1 : action.AxisValue;
+            if (action.WheelHorizontal)
+                AccumulateMouseScrollHInput(ticks * 120);
+            else
+                AccumulateMouseScrollInput(ticks * 120);
+        }
+
         // ─────────────────────────────────────────────
         //  Custom Extended macro evaluation
         //  Mirrors EvaluateSlotMacros but operates on ExtendedRawState
@@ -2610,6 +2675,22 @@ namespace PadForge.Common.Input
                 case MacroActionType.AxisSet:
                     if (raw.Axes != null)
                         ApplyAxisActionRaw(ref raw, action);
+                    AdvanceAction(macro);
+                    break;
+
+                case MacroActionType.AxisHold:
+                    // Extended twin of the Gamepad-path timed assert (v15):
+                    // straight signed write per frame (the Extended axis
+                    // frame is -32768..32767 on every index, so no trigger
+                    // rescale applies here).
+                    if (raw.Axes != null)
+                        ApplyAxisActionRaw(ref raw, action);
+                    if (actionElapsed >= action.DurationMs)
+                        AdvanceAction(macro);
+                    break;
+
+                case MacroActionType.MouseWheelTap:
+                    ExecuteMouseWheelTap(action);
                     AdvanceAction(macro);
                     break;
 
@@ -3210,6 +3291,14 @@ namespace PadForge.Common.Input
             if (amount == 0) return;
             Interlocked.Add(ref _pendingScrollH, amount);
         }
+
+        /// <summary>Test pin (v15 MouseWheelTap): drains both pending
+        /// scroll lanes without SendInput, returning (vertical,
+        /// horizontal) in WHEEL_DELTA units. The injector thread normally
+        /// flushes these; the tests observe them here instead.</summary>
+        internal static (int Vertical, int Horizontal) DrainPendingScrollForTests()
+            => (Interlocked.Exchange(ref _pendingScroll, 0),
+                Interlocked.Exchange(ref _pendingScrollH, 0));
 
         /// <summary>
         /// Reads a source axis as a signed float (-1.0..+1.0) for mouse delta calculation.

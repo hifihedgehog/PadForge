@@ -1468,6 +1468,11 @@ public class Strings : INotifyPropertyChanged
     public string MacroAction_ToggleVcButton_Format => Get("MacroAction_ToggleVcButton_Format");
     public string MacroAction_Type_ToggleKey => Get("MacroAction_Type_ToggleKey");
     public string MacroAction_ToggleKey_Tooltip => Get("MacroAction_ToggleKey_Tooltip");
+    public string MacroAction_Type_AxisHold => Get("MacroAction_Type_AxisHold");
+    public string MacroAction_AxisHold_Tooltip => Get("MacroAction_AxisHold_Tooltip");
+    public string MacroAction_HoldAxis_Format => Get("MacroAction_HoldAxis_Format");
+    public string MacroAction_Type_MouseWheelTap => Get("MacroAction_Type_MouseWheelTap");
+    public string MacroAction_MouseWheelTap_Tooltip => Get("MacroAction_MouseWheelTap_Tooltip");
     public string MacroAction_ToggleKey_Format => Get("MacroAction_ToggleKey_Format");
     public string MacroAction_Type_GyroRecenter => Get("MacroAction_Type_GyroRecenter");
     public string MacroAction_GyroRecenter_Tooltip => Get("MacroAction_GyroRecenter_Tooltip");
@@ -2417,8 +2422,6 @@ public class Strings : INotifyPropertyChanged
     public string Workshop_Tr_TouchpadTuningNotPerRow => Get("Workshop_Tr_TouchpadTuningNotPerRow");
     public string Workshop_Tr_SoftPressApproximated => Get("Workshop_Tr_SoftPressApproximated");
     public string Workshop_Tr_TriggerThresholdApproximated => Get("Workshop_Tr_TriggerThresholdApproximated");
-    public string Workshop_Tr_MacroTriggerViaXboxOutput => Get("Workshop_Tr_MacroTriggerViaXboxOutput");
-    public string Workshop_Tr_MacroTriggerRetargetedToInput => Get("Workshop_Tr_MacroTriggerRetargetedToInput");
     public string Workshop_Tr_NoDeviceFreeTrigger => Get("Workshop_Tr_NoDeviceFreeTrigger");
     public string Workshop_Tr_GameActionsNotSupported => Get("Workshop_Tr_GameActionsNotSupported");
     public string Workshop_Tr_SteamSystemAction => Get("Workshop_Tr_SteamSystemAction");
@@ -2476,10 +2479,6 @@ public class Strings : INotifyPropertyChanged
     public string Workshop_Tr_ScreenshotApproximated => Get("Workshop_Tr_ScreenshotApproximated");
     public string Workshop_Tr_ShowKeyboardApproximated => Get("Workshop_Tr_ShowKeyboardApproximated");
     public string Workshop_Tr_MouseDeltaNotSupported => Get("Workshop_Tr_MouseDeltaNotSupported");
-    public string Workshop_Tr_GyroSwipeNotSupported => Get("Workshop_Tr_GyroSwipeNotSupported");
-    public string Workshop_Tr_SwipeSurfaceNotSupported => Get("Workshop_Tr_SwipeSurfaceNotSupported");
-    public string Workshop_Tr_FlickAxisTargetNotSupported => Get("Workshop_Tr_FlickAxisTargetNotSupported");
-    public string Workshop_Tr_FlickBindingNotOneShot => Get("Workshop_Tr_FlickBindingNotOneShot");
     public string Status_WorkshopUpdatesOptInRequired => Get("Status_WorkshopUpdatesOptInRequired");
     public string Status_WorkshopNoImportedProfiles => Get("Status_WorkshopNoImportedProfiles");
     public string Status_WorkshopCheckingUpdates => Get("Status_WorkshopCheckingUpdates");

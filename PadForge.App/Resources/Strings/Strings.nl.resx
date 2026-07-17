@@ -2437,7 +2437,6 @@
   <data name="Workshop_Tr_TouchpadTuningNotPerRow" xml:space="preserve"><value>touchpad-afstelling geldt per pad, niet per rij</value></data>
   <data name="Workshop_Tr_SoftPressApproximated" xml:space="preserve"><value>Soft_Press benaderd als indrukdrempel</value></data>
   <data name="Workshop_Tr_TriggerThresholdApproximated" xml:space="preserve"><value>triggerdrempel benaderd</value></data>
-  <data name="Workshop_Tr_MacroTriggerViaXboxOutput" xml:space="preserve"><value>vuurt via de gecombineerde uitvoer van het Xbox-slot</value></data>
   <data name="Workshop_Tr_NoDeviceFreeTrigger" xml:space="preserve"><value>geen apparaatvrije trigger voor deze invoer</value></data>
   <data name="Workshop_Tr_GameActionsNotSupported" xml:space="preserve"><value>{0} in-game acties, alleen Steam, geen koppeling aan spelzijde</value></data>
   <data name="Workshop_Tr_SteamSystemAction" xml:space="preserve"><value>Steam-clientactie {0}, geen equivalent</value></data>
@@ -2459,7 +2458,6 @@
   <data name="Workshop_Tr_DoublePressNotSupported" xml:space="preserve"><value>dubbel-indrukken-activator hier niet ondersteund</value></data>
   <data name="Workshop_Tr_UnknownActivatorType" xml:space="preserve"><value>onbekende activator {0}</value></data>
   <data name="Workshop_Tr_RepeatDropped" xml:space="preserve"><value>automatische herhaling vervallen</value></data>
-  <data name="Workshop_Tr_MacroTriggerRetargetedToInput" xml:space="preserve"><value>trigger verplaatst naar de invoer zelf ({0}): geen toewijzing voedt de bijbehorende Xbox-knop</value></data>
   <data name="Workshop_Tr_MissingGroup" xml:space="preserve"><value>configuratie verwijst naar ontbrekende groep {0}</value></data>
   <data name="Workshop_Tr_MissingModeShiftGroup" xml:space="preserve"><value>modusverschuiving op {0} verwijst naar ontbrekende groep {1}</value></data>
   <data name="Workshop_Tr_MissingPreset" xml:space="preserve"><value>configuratie verwijst naar ontbrekende preset {0}</value></data>
@@ -2580,10 +2578,6 @@
   <data name="Workshop_Tr_ScreenshotApproximated" xml:space="preserve"><value>SCREENSHOT benaderd als een PrintScreen-toetsaanslag</value></data>
   <data name="Workshop_Tr_ShowKeyboardApproximated" xml:space="preserve"><value>SHOW_KEYBOARD benaderd als het starten van het schermtoetsenbord</value></data>
   <data name="Workshop_Tr_MouseDeltaNotSupported" xml:space="preserve"><value>relatieve cursorverplaatsing mouse_delta ({0}) niet ondersteund</value></data>
-  <data name="Workshop_Tr_GyroSwipeNotSupported" xml:space="preserve"><value>richtingsveeg op de gyro heeft geen enginekanaal (tekenloze snelheidsmeting, geen eenmalige trigger per richting)</value></data>
-  <data name="Workshop_Tr_SwipeSurfaceNotSupported" xml:space="preserve"><value>richtingsveeg op {0} heeft geen richtingsoppervlak om te vegen</value></data>
-  <data name="Workshop_Tr_FlickAxisTargetNotSupported" xml:space="preserve"><value>een stickflick heeft geen tikprimitief voor trigger- of stickasdoelen</value></data>
-  <data name="Workshop_Tr_FlickBindingNotOneShot" xml:space="preserve"><value>dit bindingstype vereist een vastgehouden toestand, die een eenmalige stickflick niet kan dragen</value></data>
   <data name="Macro_HoldForMs" xml:space="preserve"><value>Bij vasthouden</value></data>
   <data name="Macro_HoldForMs_Tooltip" xml:space="preserve"><value>Vuurt één keer nadat de trigger onafgebroken de vasthoudtijd ingedrukt is gehouden. Een kortere tik doet niets.</value></data>
   <data name="Macro_TriggerHoldMs_Label" xml:space="preserve"><value>Vasthoudtijd</value></data>
@@ -2595,6 +2589,11 @@
   <data name="MacroAction_ToggleVcButton_Format" xml:space="preserve"><value>{0} schakelen</value></data>
   <data name="MacroAction_Type_ToggleKey" xml:space="preserve"><value>Toets schakelen</value></data>
   <data name="MacroAction_ToggleKey_Tooltip" xml:space="preserve"><value>Elke uitvoering vergrendelt of ontgrendelt de toets. Een vergrendelde toets blijft ingedrukt tot de volgende uitvoering of tot de macro wordt uitgeschakeld.</value></data>
+  <data name="MacroAction_Type_AxisHold" xml:space="preserve"><value>As vasthouden</value></data>
+  <data name="MacroAction_AxisHold_Tooltip" xml:space="preserve"><value>Schrijft de aswaarde elk frame gedurende de duur. Met herhaling Tot Loslaten blijft de as actief totdat de trigger wordt losgelaten.</value></data>
+  <data name="MacroAction_HoldAxis_Format" xml:space="preserve"><value>{0} = {1} vasthouden ({2} ms)</value></data>
+  <data name="MacroAction_Type_MouseWheelTap" xml:space="preserve"><value>Muiswiel-klik</value></data>
+  <data name="MacroAction_MouseWheelTap_Tooltip" xml:space="preserve"><value>Stuurt één discrete muiswiel-klik per activering. De waarde is het aantal klikken met teken (positief scrolt omhoog of naar rechts).</value></data>
   <data name="MacroAction_ToggleKey_Format" xml:space="preserve"><value>Toetsen {0} schakelen</value></data>
   <data name="MacroAction_Type_GyroRecenter" xml:space="preserve"><value>Gyro hercentreren</value></data>
   <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>Zet de opgebouwde gyro-richtreferenties van de pad op nul bij indrukken. De smoothing-geschiedenis wordt gewist, het Motion Lean-neutraalpunt wordt opnieuw vastgelegd en de zwaartekrachtschatting wordt opnieuw geïnitialiseerd vanuit de huidige stand van de controller.</value></data>

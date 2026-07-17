@@ -2548,7 +2548,6 @@
   <data name="Workshop_Tr_TouchpadTuningNotPerRow" xml:space="preserve"><value>touchpad tuning applies per pad, not per row</value></data>
   <data name="Workshop_Tr_SoftPressApproximated" xml:space="preserve"><value>Soft_Press approximated as a press threshold</value></data>
   <data name="Workshop_Tr_TriggerThresholdApproximated" xml:space="preserve"><value>trigger threshold approximated</value></data>
-  <data name="Workshop_Tr_MacroTriggerViaXboxOutput" xml:space="preserve"><value>fires from the Xbox slot's combined output</value></data>
   <data name="Workshop_Tr_NoDeviceFreeTrigger" xml:space="preserve"><value>no device-free trigger for this input</value></data>
   <data name="Workshop_Tr_GameActionsNotSupported" xml:space="preserve"><value>{0} in-game actions, Steam-only, no game-side hook</value></data>
   <data name="Workshop_Tr_SteamSystemAction" xml:space="preserve"><value>Steam-client action {0}, no equivalent</value></data>
@@ -2570,7 +2569,6 @@
   <data name="Workshop_Tr_DoublePressNotSupported" xml:space="preserve"><value>double-press activator not supported here</value></data>
   <data name="Workshop_Tr_UnknownActivatorType" xml:space="preserve"><value>unknown activator {0}</value></data>
   <data name="Workshop_Tr_RepeatDropped" xml:space="preserve"><value>auto-repeat dropped</value></data>
-  <data name="Workshop_Tr_MacroTriggerRetargetedToInput" xml:space="preserve"><value>trigger moved onto the input itself ({0}): no mapping feeds its Xbox button</value></data>
   <data name="Workshop_Tr_MissingGroup" xml:space="preserve"><value>config references missing group {0}</value></data>
   <data name="Workshop_Tr_MissingModeShiftGroup" xml:space="preserve"><value>mode shift on {0} references missing group {1}</value></data>
   <data name="Workshop_Tr_MissingPreset" xml:space="preserve"><value>config references missing preset {0}</value></data>
@@ -2607,10 +2605,6 @@
   <data name="Workshop_Tr_ScreenshotApproximated" xml:space="preserve"><value>SCREENSHOT approximated as a PrintScreen key tap</value></data>
   <data name="Workshop_Tr_ShowKeyboardApproximated" xml:space="preserve"><value>SHOW_KEYBOARD approximated as launching the on-screen keyboard</value></data>
   <data name="Workshop_Tr_MouseDeltaNotSupported" xml:space="preserve"><value>relative cursor nudge mouse_delta ({0}) not supported</value></data>
-  <data name="Workshop_Tr_GyroSwipeNotSupported" xml:space="preserve"><value>gyro-hosted directional swipe has no engine channel (unsigned rate read, no per-direction one-shot)</value></data>
-  <data name="Workshop_Tr_SwipeSurfaceNotSupported" xml:space="preserve"><value>directional swipe hosted on {0} has no direction surface to flick</value></data>
-  <data name="Workshop_Tr_FlickAxisTargetNotSupported" xml:space="preserve"><value>a stick flick has no tap primitive for trigger or stick-axis targets</value></data>
-  <data name="Workshop_Tr_FlickBindingNotOneShot" xml:space="preserve"><value>this binding kind needs held state, which a one-shot stick flick cannot carry</value></data>
   <data name="Status_WorkshopUpdatesOptInRequired" xml:space="preserve"><value>Enable Community Configs to check for updates</value></data>
   <data name="Status_WorkshopNoImportedProfiles" xml:space="preserve"><value>No profiles imported from the Steam Workshop yet</value></data>
   <data name="Status_WorkshopCheckingUpdates" xml:space="preserve"><value>Checking Steam Workshop for updates…</value></data>
@@ -2629,6 +2623,11 @@
   <data name="MacroAction_ToggleVcButton_Format" xml:space="preserve"><value>Toggle {0}</value></data>
   <data name="MacroAction_Type_ToggleKey" xml:space="preserve"><value>Toggle Key</value></data>
   <data name="MacroAction_ToggleKey_Tooltip" xml:space="preserve"><value>Each fire latches or unlatches the key. A latched key stays held down until the next fire or until the macro is disabled.</value></data>
+  <data name="MacroAction_Type_AxisHold" xml:space="preserve"><value>Hold Axis</value></data>
+  <data name="MacroAction_AxisHold_Tooltip" xml:space="preserve"><value>Writes the axis value every frame for the duration. With repeat Until Release the axis stays asserted until the trigger releases.</value></data>
+  <data name="MacroAction_HoldAxis_Format" xml:space="preserve"><value>Hold {0} = {1} ({2} ms)</value></data>
+  <data name="MacroAction_Type_MouseWheelTap" xml:space="preserve"><value>Mouse Wheel Tick</value></data>
+  <data name="MacroAction_MouseWheelTap_Tooltip" xml:space="preserve"><value>Sends one discrete mouse wheel detent per fire. The value is the signed tick count (positive scrolls up or right).</value></data>
   <data name="MacroAction_ToggleKey_Format" xml:space="preserve"><value>Toggle keys {0}</value></data>
   <data name="MacroAction_Type_GyroRecenter" xml:space="preserve"><value>Gyro Recenter</value></data>
   <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>Zeroes the pad's accumulated gyro aim references on press. Smoothing history clears, the Motion Lean neutral re-captures, and the gravity estimate re-seeds from the controller's current pose.</value></data>

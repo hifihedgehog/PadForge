@@ -91,24 +91,33 @@ namespace PadForge.SteamWorkshop.Tests
             // is consumed while the long press is active.
             Assert.True(m.ConsumeTrigger);
             Assert.True(p.NeedsXboxSlot);
+            // v15: the combined-output trigger is normal working plumbing,
+            // so the emission reports silent Clean.
             var entry = Assert.Single(p.Report.Entries);
-            Assert.Equal(TranslationStatus.Partial, entry.Status);
-            Assert.Equal(TranslationReasons.MacroTriggerViaXboxOutput, entry.ReasonKey);
+            Assert.Equal(TranslationStatus.Clean, entry.Status);
+            Assert.Equal(TranslationReasons.MacroEmitted, entry.ReasonKey);
         }
 
         [Fact]
-        public void LongPress_XInput_TriggerAxisTarget_StaysSkipped()
+        public void LongPress_XInput_TriggerAxisTarget_HoldsTheAxisUntilRelease()
         {
-            // No button-hold primitive reaches LT/RT pulls.
+            // v15: LT/RT pulls ride the AxisHold channel. The pull asserts
+            // at the hold threshold and stays until the physical release.
             string vdf = Head
                 + Group(1, "four_buttons", Inputs(
                     Inp("button_a", "xinput_button TRIGGER_LEFT", activator: "Long_Press")))
                 + Preset(0, "Default", (1, "button_diamond active"))
                 + "}\n";
             var p = Translate(vdf);
-            Assert.Empty(p.Macros);
-            var entry = Assert.Single(p.Report.Entries);
-            Assert.Equal(TranslationReasons.LongPressNotSupported, entry.ReasonKey);
+            var m = Assert.Single(p.Macros);
+            Assert.Equal(TranslatedMacroAction.HoldVcAxis, m.Action);
+            Assert.Equal("HoldForMs", m.TriggerMode);
+            Assert.Equal(500, m.TriggerHoldMs);
+            Assert.Equal("LeftTrigger", m.TargetAxis);
+            Assert.True(m.ConsumeTrigger);
+            Assert.True(p.NeedsXboxSlot);
+            Assert.DoesNotContain(p.Report.Entries, e =>
+                e.ReasonKey == TranslationReasons.LongPressNotSupported);
         }
 
         [Fact]
@@ -202,8 +211,10 @@ namespace PadForge.SteamWorkshop.Tests
             Assert.Equal(Gamepad.B, m.TargetXboxButtons);
             Assert.Equal(125, m.IntervalMs);
             Assert.False(m.ConsumeTrigger);
+            // v15: silent Clean (the trigger's plumbing is not a note).
             var entry = Assert.Single(p.Report.Entries);
-            Assert.Equal(TranslationReasons.MacroTriggerViaXboxOutput, entry.ReasonKey);
+            Assert.Equal(TranslationStatus.Clean, entry.Status);
+            Assert.Equal(TranslationReasons.MacroEmitted, entry.ReasonKey);
         }
 
         [Fact]

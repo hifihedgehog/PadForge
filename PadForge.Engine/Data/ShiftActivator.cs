@@ -111,6 +111,22 @@ namespace PadForge.Engine.Data
         /// |axis| &gt;= 0.5 engages.</summary>
         [XmlAttribute] public double AxisThreshold { get; set; } = 0.5;
 
+        /// <summary>v5 axis activator half selector (translator v15 swipe
+        /// flicks). When <c>false</c> (default) the Axis kind keeps its
+        /// legacy direction-blind |axis| &gt;= threshold test. When
+        /// <c>true</c> only ONE signed direction engages, with
+        /// <see cref="AxisInvert"/> picking which, so a stick wedge or a
+        /// signed gyro rate can drive a layer without its opposite
+        /// direction also firing.</summary>
+        [XmlAttribute] public bool AxisHalf { get; set; } = false;
+
+        /// <summary>v5 half selector for <see cref="AxisHalf"/>: false =
+        /// the positive direction (axis &gt;= threshold), true = the
+        /// negative direction (axis &lt;= -threshold). Same
+        /// half-selection contract as <c>MappingSource.HalfAxis</c> +
+        /// <c>Invert</c>.</summary>
+        [XmlAttribute] public bool AxisInvert { get; set; } = false;
+
         // ── v3 fields ──
 
         /// <summary>v3 Cycle mode: pipe-separated ordered list of layer

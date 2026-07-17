@@ -6,14 +6,11 @@ using PadForge.SteamWorkshop.Vdf;
 namespace PadForge.SteamWorkshop.Tests
 {
     /// <summary>
-    /// A `release` activator bound to mouse_wheel must be skipped with a named
-    /// note, exactly as the mouse_button and XInput legs already do.
-    ///
-    /// <para>The emitted row reads its source's CURRENT state, so a
-    /// release-activator wheel binding scrolled for the whole hold and stopped
-    /// on release, which is the inverse of what the config asked for. The wheel
-    /// leg was the only one of the three that never inspected the flag
-    /// (audit 2026-07-14, found by Codex).</para>
+    /// A `release` activator bound to mouse_wheel: a row would scroll for the
+    /// whole hold and stop on release, the inverse of what the config asked
+    /// for (audit 2026-07-14, found by Codex, skipped then). Since v15 the
+    /// leg emits one discrete MouseWheelTap detent on the release edge, the
+    /// wheel sibling of the mouse_button / XInput tap macros.
     /// </summary>
     public class ReleaseActivatorWheelTests
     {
@@ -40,14 +37,18 @@ namespace PadForge.SteamWorkshop.Tests
             + "}\n";
 
         [Fact]
-        public void ReleaseActivator_OnMouseWheel_IsSkippedWithANamedNote()
+        public void ReleaseActivator_OnMouseWheel_EmitsOneDetentTap()
         {
             var t = Translate(Vdf("mouse_wheel SCROLL_UP", "release"));
 
             Assert.DoesNotContain(t.XboxMappingSet.Rows, r => r.Target.StartsWith("KbmScroll"));
             Assert.DoesNotContain(t.KbmMappingSet.Rows, r => r.Target.StartsWith("KbmScroll"));
-            Assert.Contains(t.Report.Entries, e =>
-                e.Status == TranslationStatus.Skipped &&
+            var m = Assert.Single(t.Macros);
+            Assert.Equal(TranslatedMacroAction.MouseWheelTap, m.Action);
+            Assert.Equal("OnRelease", m.TriggerMode);
+            Assert.Equal(1, m.WheelTicks);
+            Assert.False(m.WheelHorizontal);
+            Assert.DoesNotContain(t.Report.Entries, e =>
                 e.ReasonKey == TranslationReasons.ReleaseActivatorNotSupported);
         }
 
@@ -68,8 +69,7 @@ namespace PadForge.SteamWorkshop.Tests
         public void ReleaseActivator_OnMouseButton_EmitsTapMacro()
         {
             // v10 G6: the mouse_button release leg emits one click on the
-            // release edge instead of the old named skip. The wheel keeps
-            // the skip above (no discrete tick action exists).
+            // release edge instead of the old named skip.
             var t = Translate(Vdf("mouse_button LEFT", "release"));
 
             var m = Assert.Single(t.Macros);

@@ -1931,6 +1931,12 @@
                                             <ComboBoxItem Content="{Binding MacroAction_Type_ToggleKey, Source={x:Static strings:Strings.Instance}}"
                                                           Tag="{x:Static vm:MacroActionType.ToggleKey}"
                                                           ToolTip="{Binding MacroAction_ToggleKey_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                            <ComboBoxItem Content="{Binding MacroAction_Type_AxisHold, Source={x:Static strings:Strings.Instance}}"
+                                                          Tag="{x:Static vm:MacroActionType.AxisHold}"
+                                                          ToolTip="{Binding MacroAction_AxisHold_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                            <ComboBoxItem Content="{Binding MacroAction_Type_MouseWheelTap, Source={x:Static strings:Strings.Instance}}"
+                                                          Tag="{x:Static vm:MacroActionType.MouseWheelTap}"
+                                                          ToolTip="{Binding MacroAction_MouseWheelTap_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                             <ComboBoxItem Content="{Binding MacroAction_Type_DisconnectController, Source={x:Static strings:Strings.Instance}}"
                                                           Tag="{x:Static vm:MacroActionType.DisconnectController}"
                                                           ToolTip="{Binding MacroAction_DisconnectController_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
@@ -2627,7 +2633,19 @@
                                         <TextBox Text="{Binding AxisValue, Mode=TwoWay}" Width="80"/>
                                     </StackPanel>
 
-                                    <!-- Source axis — for SystemVolume -->
+                                    <!-- Wheel tick count for MouseWheelTap (v15). Reuses the
+                                         AxisValue field as the signed tick count. -->
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,6"
+                                                Visibility="{Binding IsMouseWheelTapType, Converter={StaticResource BoolToVisibilityConverter}}">
+                                        <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Macro_AxisValue, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
+                                                   Width="80" Margin="0,0,8,0"/>
+                                        <TextBox Text="{Binding AxisValue, Mode=TwoWay}" Width="80"/>
+                                        <CheckBox IsChecked="{Binding WheelHorizontal, Mode=TwoWay}" Margin="12,0,0,0"
+                                                  Content="{Binding Mouse_ScrollH, Source={x:Static strings:Strings.Instance}}"
+                                                  VerticalAlignment="Center"/>
+                                    </StackPanel>
+
+                                    <!-- Source axis for SystemVolume -->
                                     <StackPanel Margin="0,0,0,6"
                                                 Visibility="{Binding IsSystemVolumeType, Converter={StaticResource BoolToVisibilityConverter}}">
                                         <!-- Axis source selector -->

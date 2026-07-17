@@ -1854,6 +1854,10 @@ namespace PadForge.Engine.Common.Mapping
             // irrelevant. Flipping here would double-cancel the directional
             // rows exactly like the axis case above.
             if (desc.StartsWith("Mouse Motion ", System.StringComparison.Ordinal)) return raw;
+            // A half-axis gyro read consumes Invert as its direction selector
+            // (v15 gyro swipes), same shape as Mouse Motion. Non-half gyro
+            // sources keep the legacy outer flip below.
+            if (src.HalfAxis && desc.StartsWith("Gyro ", System.StringComparison.Ordinal)) return raw;
 
             return src.Invert ? !raw : raw;
         }
@@ -2068,6 +2072,15 @@ namespace PadForge.Engine.Common.Mapping
                 float gyroThresh = src.DeadZone > 0
                     ? src.DeadZone / 100f * GyroButtonThreshold * 3f  // DeadZone% × ~90°/s headroom
                     : GyroButtonThreshold;
+                // The rate is a SIGNED bipolar axis, so HalfAxis selects one
+                // rotation direction exactly like the Axis / Mouse Motion
+                // grammar (v15 gyro swipes): Invert picks the half (false =
+                // positive rate, true = negative) and Bidirectional restores
+                // the any-direction test. Sign frame per SDL_sensor.h with
+                // Dolphin's SDLGamepad.h SDL_AXES_GYRO as the proven consumer:
+                // positive pitch = nose up, positive yaw = nose left.
+                if (src.HalfAxis && !src.Bidirectional)
+                    return src.Invert ? tunedRate < -gyroThresh : tunedRate > gyroThresh;
                 return Math.Abs(tunedRate) > gyroThresh;
             }
 

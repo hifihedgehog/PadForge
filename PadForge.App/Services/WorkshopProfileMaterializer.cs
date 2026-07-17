@@ -238,6 +238,19 @@ namespace PadForge.Services
                     Type = MacroActionType.ButtonPress,
                     ButtonFlags = m.TargetXboxButtons,
                 },
+                // VcAxisTap / HoldVcAxis (v15): AxisHold asserts the axis
+                // value every frame while current. The tap form runs one
+                // default-duration assert; the hold form takes the
+                // HoldVcButton repeat shape below.
+                TranslatedMacroAction.VcAxisTap => BuildAxisHoldAction(m),
+                TranslatedMacroAction.HoldVcAxis => BuildAxisHoldAction(m),
+                // MouseWheelTap (v15): one discrete wheel detent per fire.
+                TranslatedMacroAction.MouseWheelTap => new ActionData
+                {
+                    Type = MacroActionType.MouseWheelTap,
+                    AxisValue = (short)Math.Clamp(m.WheelTicks, short.MinValue, short.MaxValue),
+                    WheelHorizontal = m.WheelHorizontal,
+                },
                 _ => null,
             };
             if (action == null) return null;
@@ -274,11 +287,12 @@ namespace PadForge.Services
             {
                 data.RepeatMode = MacroRepeatMode.UntilRelease;
             }
-            else if (m.Action == TranslatedMacroAction.HoldVcButton)
+            else if (m.Action == TranslatedMacroAction.HoldVcButton
+                || m.Action == TranslatedMacroAction.HoldVcAxis)
             {
                 // Restart the one-action sequence every frame with no gap so
-                // ButtonPress re-writes the button continuously until the
-                // release stops the macro.
+                // ButtonPress / AxisHold re-writes the output continuously
+                // until the release stops the macro.
                 data.RepeatMode = MacroRepeatMode.UntilRelease;
                 data.RepeatDelayMs = 0;
             }
@@ -378,6 +392,37 @@ namespace PadForge.Services
                 m.DelayEndMs, "(release)", untilRelease: false);
             if (press == null || release == null) return Array.Empty<MacroData>();
             return new[] { press, release };
+        }
+
+        /// <summary>Lowers a VcAxisTap / HoldVcAxis payload (v15) to the
+        /// AxisHold action. Trigger targets assert a FULL pull (32767 on
+        /// AxisHold's 0..32767 pull scale). Stick targets convert the
+        /// translator's SDL row frame (+Y down, up / left = negative via
+        /// TargetAxisNegative) into the XInput thumb frame the executor
+        /// writes: X keeps its sign, Y negates (XInput up = positive).
+        /// Unknown axis names return null and the macro is dropped, the
+        /// same contract as an unconvertible trigger descriptor.</summary>
+        private static ActionData BuildAxisHoldAction(TranslatedMacro m)
+        {
+            bool neg = m.TargetAxisNegative;
+            (MacroAxisTarget Target, short Value)? payload = m.TargetAxis switch
+            {
+                "LeftTrigger" => (MacroAxisTarget.LeftTrigger, (short)32767),
+                "RightTrigger" => (MacroAxisTarget.RightTrigger, (short)32767),
+                "LeftThumbAxisX" => (MacroAxisTarget.LeftStickX, neg ? (short)-32768 : (short)32767),
+                "RightThumbAxisX" => (MacroAxisTarget.RightStickX, neg ? (short)-32768 : (short)32767),
+                // SDL-frame up (negative) is XInput +32767; down is -32768.
+                "LeftThumbAxisY" => (MacroAxisTarget.LeftStickY, neg ? (short)32767 : (short)-32768),
+                "RightThumbAxisY" => (MacroAxisTarget.RightStickY, neg ? (short)32767 : (short)-32768),
+                _ => null,
+            };
+            if (payload == null) return null;
+            return new ActionData
+            {
+                Type = MacroActionType.AxisHold,
+                AxisTarget = payload.Value.Target,
+                AxisValue = payload.Value.Value,
+            };
         }
 
         /// <summary>The Windows touch keyboard when present, else the
@@ -480,6 +525,20 @@ namespace PadForge.Services
                     entry.Invert = m.TriggerDescriptorInvert;
                     if (m.TriggerDescriptorDeadZonePercent > 0)
                         entry.DeadZone = m.TriggerDescriptorDeadZonePercent;
+                }
+                // Descriptor-shaped entries (v15: a gyro-hosted swipe's
+                // signed rate read) take the same half stamp on the entry's
+                // cached MappingSource, so the engine's half-aware reads
+                // fire on ONE direction. The deadzone stamp rides
+                // DescriptorDeadZone (0 keeps the engine default, e.g. the
+                // gyro read's 30 deg/s rate threshold).
+                else if (!string.IsNullOrEmpty(entry.SourceDescriptor)
+                    && m.TriggerDescriptorHalfAxis)
+                {
+                    entry.HalfAxis = true;
+                    entry.Invert = m.TriggerDescriptorInvert;
+                    if (m.TriggerDescriptorDeadZonePercent > 0)
+                        entry.DescriptorDeadZone = m.TriggerDescriptorDeadZonePercent;
                 }
                 string spec = entry.Spec;
                 if (string.IsNullOrEmpty(spec)) return false;

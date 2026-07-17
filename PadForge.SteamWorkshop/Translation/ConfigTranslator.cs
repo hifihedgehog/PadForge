@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -184,6 +184,12 @@ namespace PadForge.SteamWorkshop.Translation
             public string Descriptor = "";
             public string Kind = "Button";
             public double AxisThreshold = 0.5;
+            /// <summary>v15 half stamp for Kind=Axis: one signed direction
+            /// engages (ShiftActivator.AxisHalf / AxisInvert), so a wedge-
+            /// or gyro-hosted request never fires on the opposite
+            /// direction of its own axis.</summary>
+            public bool AxisHalf;
+            public bool AxisInvert;
             public string Path = "";
             /// <summary>AND companion of the activator input (a single-pad
             /// half click gated on its half's touch spot, #9 B-1).
@@ -489,32 +495,26 @@ namespace PadForge.SteamWorkshop.Translation
                     // Directional swipe. Trackpad hosts lower onto the
                     // gesture engine's one-shot swipe fires (v10 G3):
                     // each dpad_* member reads "Touchpad {p} Swipe{Dir}",
-                    // self-armed at apply since v14. Stick hosts lower
-                    // onto one-shot wedge-triggered tap macros (v12): a
-                    // flick toward a direction fires the binding once.
-                    // The remaining hosts keep per-arm named skips (v14).
-                    // Gyro: the gyro trigger read thresholds an unsigned
-                    // rate, so a signed per-direction flick read does not
-                    // exist there. Everything else (button clusters, a
-                    // lone trigger) has no 2D direction surface to flick.
+                    // self-armed at apply since v14. Gyro hosts lower onto
+                    // one-shot tap macros triggered by the SIGNED gyro
+                    // rate descriptor's matching half (v15): a flick of
+                    // the pad in a direction fires the binding once and
+                    // re-arms below the engine's rate threshold. Every
+                    // other host walks the same one-shot member lowering
+                    // (v12 wedge taps on sticks; a dpad-hosted swipe taps
+                    // once per press; members with no PadForge source keep
+                    // UnknownPhysicalInput), so no host-level skip remains.
                     if (PhysicalSlotResolver.IsTrackpad(slot))
                     {
                         TranslateSwipeGroup(run, preset, effective, slot, layer, path, settings);
                     }
-                    else if (PhysicalSlotResolver.IsStick(slot))
-                    {
-                        TranslateStickSwipeGroup(run, preset, effective, slot, layer, path, settings);
-                    }
                     else if (slot == SteamSlot.Gyro)
                     {
-                        run.Report.Add(TranslationStatus.Skipped,
-                            TranslationReasons.GyroSwipeNotSupported, path);
+                        TranslateGyroSwipeGroup(run, preset, effective, layer, path);
                     }
                     else
                     {
-                        run.Report.Add(TranslationStatus.Skipped,
-                            TranslationReasons.SwipeSurfaceNotSupported, path,
-                            args: slot.ToString());
+                        TranslateStickSwipeGroup(run, preset, effective, slot, layer, path, settings);
                     }
                     break;
 
@@ -982,10 +982,12 @@ namespace PadForge.SteamWorkshop.Translation
         /// same read the mouse modes use, no feature toggle); sticks read
         /// the Y deflection ("Gamepad {stick}Y") with the group inner
         /// deadzone keeping centered rest jitter out of the wheel.
-        /// Bindings that are not mouse_wheel (keys on a wheel detent) have
-        /// no continuous channel and keep the named skip. One geometry
-        /// Partial per group names the rotation-vs-drag approximation.
-        /// The click member translates as a normal member either way.</summary>
+        /// Bindings that are not mouse_wheel (keys on a wheel detent) ride
+        /// the one-shot tap walk on the detent direction read since v15
+        /// (stick drag wedge / trackpad swipe gesture), one fire per
+        /// flick. One geometry Partial per group names the
+        /// rotation-vs-drag approximation. The click member translates as
+        /// a normal member either way.</summary>
         private void TranslateScrollWheel(Run run, SteamInputPreset preset, SteamInputGroup group,
             SteamSlot slot, string layer, string path, Dictionary<string, string> settings)
         {
@@ -1025,6 +1027,26 @@ namespace PadForge.SteamWorkshop.Translation
                     Invert = memberFlip,
                     DeadZone = dragDeadZone,
                 };
+                // One-shot detent read for the NON-wheel bindings (v15):
+                // sticks flick the drag wedge (clockwise = deflect down =
+                // Y upper half in SDL frame), trackpads ride the one-shot
+                // swipe gestures (clockwise = SwipeDown, the same
+                // drag-to-wheel map the rows use), so a key on a detent
+                // fires once per flick / swipe instead of skipping.
+                var tapSource = PhysicalSlotResolver.IsStick(slot)
+                    ? new ResolvedSource
+                    {
+                        Descriptor = drag,
+                        HalfAxis = true,
+                        Invert = memberFlip,
+                        DeadZone = dragDeadZone,
+                    }
+                    : new ResolvedSource
+                    {
+                        Descriptor = $"Touchpad {PhysicalSlotResolver.TrackpadIndex(slot, run.SinglePadTrackpads)} "
+                            + (memberFlip ? "SwipeUp" : "SwipeDown"),
+                        TrackpadFeature = PhysicalSlotResolver.FeatureSwipes,
+                    };
                 string inputPath = $"{path}/{memberName}";
                 foreach (var activator in input.Activators)
                 {
@@ -1034,14 +1056,21 @@ namespace PadForge.SteamWorkshop.Translation
                         // Only the wheel-shaped bindings can ride a
                         // continuous drag axis: the finger X/Y reads have
                         // no bool coercion, so a key or button row fed by
-                        // them would never fire.
+                        // them would never fire. Everything else lowers
+                        // through the one-shot tap walk on the detent
+                        // direction read (v15).
                         var wheel = string.Equals((binding.Type ?? "").Trim(), "mouse_wheel",
                             StringComparison.OrdinalIgnoreCase)
                                 ? ParseWheelParam(binding.Param) : null;
                         if (wheel == null)
                         {
-                            ReportSkipUnlessSilent(run,
-                                TranslationReasons.ScrollWheelModeNotSupported, actPath, binding);
+                            int before = run.Profile.Macros.Count + run.Activators.Count;
+                            TranslateOneShotSwipeBinding(run, preset, binding, tapSource,
+                                layer, actPath, input.Name);
+                            // The geometry Partial covers real emissions
+                            // only; a skipped unknown key stays outside it.
+                            if (run.Profile.Macros.Count + run.Activators.Count > before)
+                                emitted = true;
                             continue;
                         }
                         if (!seen.Add($"{wheel.Value.Target}|{wheel.Value.Invert ^ memberFlip}"))
@@ -1136,24 +1165,26 @@ namespace PadForge.SteamWorkshop.Translation
             }
         }
 
-        /// <summary>2dscroll on a stick (v12): Steam's directional swipe on
-        /// a stick host is a flick toward a direction, firing the binding
-        /// once per flick. The wedge read the stick-as-dpad members already
-        /// resolve to (half of the matching axis, group deadzone honored)
-        /// IS that construct once it drives a one-shot macro on its rising
-        /// edge: entering the wedge fires exactly once and re-centering
-        /// re-arms it. So each dpad_* member lowers its one-shot-able
-        /// bindings onto descriptor-triggered tap macros (the v10 G6
-        /// KeyTap / MouseButtonTap / VcButtonTap shapes plus the one-shot
+        /// <summary>2dscroll on a stick (v12) or any other non-trackpad,
+        /// non-gyro host (v15): Steam's directional swipe is a flick toward
+        /// a direction, firing the binding once per flick. The wedge read
+        /// the stick-as-dpad members already resolve to (half of the
+        /// matching axis, group deadzone honored) IS that construct once it
+        /// drives a one-shot macro on its rising edge: entering the wedge
+        /// fires exactly once and re-centering re-arms it. A button-natured
+        /// member (a physical dpad host) fires once per press the same way.
+        /// So each dpad_* member lowers its bindings onto one-shot
+        /// descriptor-triggered macros (KeyTap / MouseButtonTap /
+        /// VcButtonTap / VcAxisTap / MouseWheelTap plus the one-shot
         /// controller_action macros), with the wedge's half-axis shape
-        /// carried on the trigger entry. Press / release / long-press
-        /// activator distinctions have no carrier on a one-shot flick (the
-        /// same collapse the DoubleTap path documents), so every
-        /// activator's bindings fire on the wedge entry edge. Bindings
-        /// with no one-shot form (mode shifts, layer ops, wheel detents,
-        /// trigger-pull targets) keep the named skip per binding. Non-dpad
+        /// carried on the trigger entry, and mode shifts / layer verbs
+        /// lower to half-stamped shift activators (v15). Press / release /
+        /// long-press activator distinctions have no carrier on a one-shot
+        /// flick (the same collapse the DoubleTap path documents), so every
+        /// activator's bindings fire on the wedge entry edge. Non-dpad
         /// members (the mode's click command) translate through the normal
-        /// walk.</summary>
+        /// walk; members with no PadForge source keep
+        /// UnknownPhysicalInput.</summary>
         private void TranslateStickSwipeGroup(Run run, SteamInputPreset preset, SteamInputGroup group,
             SteamSlot slot, string layer, string path, Dictionary<string, string> settings)
         {
@@ -1195,7 +1226,7 @@ namespace PadForge.SteamWorkshop.Translation
                     ReportDroppedActivatorExtras(run, activator, actPath);
                     int macrosBefore = run.Profile.Macros.Count;
                     foreach (var binding in activator.Bindings)
-                        TranslateStickSwipeBinding(run, preset, binding, source, layer, actPath,
+                        TranslateOneShotSwipeBinding(run, preset, binding, source, layer, actPath,
                             input.Name);
                     EmitHapticPulse(run, activator, source, input.Name, actPath, "OnPress", holdMs: 0);
                     ConsumeActivatorDelays(run, activator, actPath, macrosBefore);
@@ -1203,11 +1234,82 @@ namespace PadForge.SteamWorkshop.Translation
             }
         }
 
-        /// <summary>One binding of a stick-hosted swipe member (v12): the
-        /// one-shot-able kinds become tap macros on the wedge's rising
-        /// edge, everything else keeps the named skip (a flick has no held
-        /// state for rows, latches, layer holds, or wheel detents to ride).</summary>
-        private void TranslateStickSwipeBinding(Run run, SteamInputPreset preset,
+        /// <summary>2dscroll on the gyro (v15): a flick of the pad itself.
+        /// Gyro rates are SIGNED bipolar axes, so each dpad_* member reads
+        /// the matching HALF of the matching rate descriptor: up = "Gyro
+        /// Pitch" upper half, down = its lower half, west = "Gyro Yaw"
+        /// upper half, east = its lower half. Sign frame per SDL_sensor.h
+        /// (+X right / +Y up / +Z toward the player, counterclockwise
+        /// positive), with Dolphin's SDLGamepad.h SDL_AXES_GYRO ("Pitch
+        /// Up" = axis 0 scale +1, "Yaw Left" = axis 1 scale +1) as the
+        /// proven consumer of the same frame: positive pitch = nose up,
+        /// positive yaw = nose left. The trigger entry keeps DeadZone
+        /// unset, so the engine's own gyro-as-button rate threshold
+        /// (SourceCoercion.GyroButtonThreshold, 30 deg/s: "a deliberate
+        /// twist, not idle hand tremor") gates the flick and dropping
+        /// below it re-arms the one-shot. Steam's group inner deadzone is
+        /// a stick-deflection quantity with no grounded rate meaning, so
+        /// it does not remap onto the rate threshold. Bindings lower
+        /// through the same one-shot walk the stick flicks use; the gyro
+        /// has no non-dpad members to resolve (Resolve returns null for
+        /// the whole slot), so anything else keeps
+        /// UnknownPhysicalInput.</summary>
+        private void TranslateGyroSwipeGroup(Run run, SteamInputPreset preset,
+            SteamInputGroup group, string layer, string path)
+        {
+            foreach (var inputName in group.Inputs.Keys.OrderBy(k => k, StringComparer.Ordinal))
+            {
+                var input = group.Inputs[inputName];
+                if (input.Activators.Count == 0) continue;
+                string inputPath = $"{path}/{inputName}";
+
+                var source = inputName.ToLowerInvariant() switch
+                {
+                    "dpad_north" => new ResolvedSource
+                    { Descriptor = "Gyro Pitch", HalfAxis = true },
+                    "dpad_south" => new ResolvedSource
+                    { Descriptor = "Gyro Pitch", HalfAxis = true, Invert = true },
+                    "dpad_west" => new ResolvedSource
+                    { Descriptor = "Gyro Yaw", HalfAxis = true },
+                    "dpad_east" => new ResolvedSource
+                    { Descriptor = "Gyro Yaw", HalfAxis = true, Invert = true },
+                    _ => null,
+                };
+                if (source == null)
+                {
+                    foreach (var act in input.Activators)
+                        foreach (var b in act.Bindings)
+                            ReportSkipUnlessSilent(run, TranslationReasons.UnknownPhysicalInput,
+                                inputPath, b, slotArg: SteamSlot.Gyro.ToString(), inputArg: inputName);
+                    continue;
+                }
+
+                foreach (var activator in input.Activators)
+                {
+                    string actPath = $"{inputPath}/{(activator.Type ?? "").Trim()}";
+                    ReportDroppedActivatorExtras(run, activator, actPath);
+                    int macrosBefore = run.Profile.Macros.Count;
+                    foreach (var binding in activator.Bindings)
+                        TranslateOneShotSwipeBinding(run, preset, binding, source, layer, actPath,
+                            input.Name);
+                    EmitHapticPulse(run, activator, source, input.Name, actPath, "OnPress", holdMs: 0);
+                    ConsumeActivatorDelays(run, activator, actPath, macrosBefore);
+                }
+            }
+        }
+
+        /// <summary>One binding of a one-shot swipe member (v12, closed
+        /// v15): every kind lowers on the flick's rising edge. Keys, mouse
+        /// buttons, and VC buttons tap; trigger pulls and stick directions
+        /// ride the AxisHold tap (VcAxisTap); mouse_wheel fires one
+        /// discrete detent (MouseWheelTap); mode shifts and layer verbs
+        /// lower to half-stamped shift activators (Toggle / Latch / Cycle,
+        /// the flick's one-shot fires their edge); every other
+        /// controller_action routes through the canonical verb lowering
+        /// (one-shot verbs fire per flick, Steam-client-only verbs keep
+        /// their named skips); game_action feeds the per-preset aggregate.
+        /// Only genuinely unknown vocabulary still skips.</summary>
+        private void TranslateOneShotSwipeBinding(Run run, SteamInputPreset preset,
             SteamInputBinding binding, ResolvedSource source, string layer, string actPath,
             string inputName)
         {
@@ -1244,6 +1346,21 @@ namespace PadForge.SteamWorkshop.Translation
                     break;
                 }
 
+                case "mouse_wheel":
+                {
+                    // One discrete detent per flick (v15).
+                    var wheel = ParseWheelParam(binding.Param);
+                    if (wheel == null)
+                    {
+                        run.Report.Add(TranslationStatus.Skipped, TranslationReasons.UnknownBindingType,
+                            actPath, binding.Raw, args: $"mouse_wheel {binding.Param}");
+                        break;
+                    }
+                    EmitWheelTapMacro(run, binding, source, actPath, wheel.Value, inputName,
+                        triggerMode: "OnPress");
+                    break;
+                }
+
                 case "xinput_button":
                 {
                     if (!XInputTargetTable.TryResolve(binding.Param, out var xt))
@@ -1254,13 +1371,10 @@ namespace PadForge.SteamWorkshop.Translation
                     }
                     if (xt.IsTriggerAxis || xt.IsStickAxis)
                     {
-                        // No discrete tap primitive for the axis-natured
-                        // targets (trigger pulls, stick directions): the
-                        // macro AxisSet action is a one-frame write with no
-                        // timed hold, the same gate the release-activator
-                        // path keeps. Named per arm since v14.
-                        run.Report.Add(TranslationStatus.Skipped,
-                            TranslationReasons.FlickAxisTargetNotSupported, actPath, binding.Raw);
+                        // Axis-natured targets ride the timed-axis channel
+                        // (v15): one AxisHold tap per flick.
+                        EmitVcAxisTapMacro(run, binding, source, actPath, xt, inputName,
+                            triggerMode: "OnPress");
                         break;
                     }
                     EmitVcTapMacro(run, binding, source, actPath, xt, inputName,
@@ -1268,33 +1382,39 @@ namespace PadForge.SteamWorkshop.Translation
                     break;
                 }
 
-                case "controller_action" when IsOneShotControllerAction(binding.Param):
-                    // The one-shot system actions (cursor warp, set_led,
-                    // camera_reset, screenshot, on-screen keyboard) already
-                    // lower to OnPress macros through FillMacroTrigger, so
-                    // the wedge trigger gives them the same
-                    // one-fire-per-flick shape.
+                case "mode_shift":
+                    // A flick toggles the shift (v15): the one-shot wedge /
+                    // rate read drives the activator's edge through the
+                    // Kind=Axis half stamp.
+                    TranslateModeShift(run, preset, binding, source, actPath,
+                        toggle: true, oneShotHost: true);
+                    break;
+
+                case "controller_action":
+                    // The canonical verb walk (v15): one-shot verbs (cursor
+                    // warp, set_led, camera_reset, screenshot, on-screen
+                    // keyboard) fire once per flick through FillMacroTrigger;
+                    // layer verbs lower to half-stamped activators; the
+                    // Steam-client-only families keep their named skips.
                     TranslateControllerAction(run, preset, binding, source, layer, actPath,
-                        onRelease: false, inputName);
+                        onRelease: false, inputName, oneShotHost: true);
+                    break;
+
+                case "game_action":
+                    run.GameActionsByPreset[preset.Id] =
+                        run.GameActionsByPreset.GetValueOrDefault(preset.Id) + 1;
                     break;
 
                 default:
-                    // Held-state binding kinds (mode shifts, layer ops,
-                    // wheel detents, latch verbs) have no one-shot form to
-                    // ride a flick. Named per arm since v14.
-                    ReportSkipUnlessSilent(run, TranslationReasons.FlickBindingNotOneShot,
-                        actPath, binding);
+                    // Empty placeholder rows add noise, not signal (the
+                    // ReportSkipUnlessSilent contract); only genuinely
+                    // unknown vocabulary gets the named skip.
+                    if (type.Length == 0) break;
+                    run.Report.Add(TranslationStatus.Skipped, TranslationReasons.UnknownBindingType,
+                        actPath, binding.Raw, args: binding.Type ?? "");
                     break;
             }
         }
-
-        /// <summary>controller_action verbs whose lowering is a one-shot
-        /// macro, so a swipe flick can carry them (v12). Layer ops and
-        /// mode shifts are hold or latch natured and stay out.</summary>
-        private static bool IsOneShotControllerAction(string param)
-            => FirstToken(param).ToUpperInvariant()
-                is "MOUSE_POSITION" or "SET_LED" or "CAMERA_RESET"
-                or "SCREENSHOT" or "SHOW_KEYBOARD";
 
         /// <summary>Menu group settings the overlay-backed menus have no
         /// channel for, named per group when present and non-zero. The
@@ -2200,6 +2320,7 @@ namespace PadForge.SteamWorkshop.Translation
             TranslatedMacroAction.RepeatKeyWhileHeld => false,
             TranslatedMacroAction.RepeatVcButtonWhileHeld => false,
             TranslatedMacroAction.HoldVcButton => false,
+            TranslatedMacroAction.HoldVcAxis => false,
             TranslatedMacroAction.MouseLimitRegion => false,
             _ => true,
         };
@@ -2279,6 +2400,14 @@ namespace PadForge.SteamWorkshop.Translation
                 {
                     anyCarry |= TranslateLongPressVc(run, binding, source, actPath,
                         delayMs, holdRepeats, intervalMs, toggle, input.Name);
+                }
+                else if (bt == "mouse_wheel" && ParseWheelParam(binding.Param) is { } lpWheel)
+                {
+                    // One discrete detent at the hold threshold (v15): the
+                    // MouseWheelTap macro on the HoldForMs trigger.
+                    EmitWheelTapMacro(run, binding, source, actPath, lpWheel,
+                        input.Name, triggerMode: "HoldForMs", holdMs: delayMs);
+                    anyCarry = true;
                 }
                 else
                 {
@@ -2364,8 +2493,8 @@ namespace PadForge.SteamWorkshop.Translation
             };
             FillMacroTrigger(macro, source);
             run.Profile.Macros.Add(macro);
-            var (status, reason) = MacroTriggerReport(source);
-            run.Report.Add(status, reason, path, binding.Raw,
+            run.Report.Add(TranslationStatus.Clean, TranslationReasons.MacroEmitted,
+                path, binding.Raw,
                 emitted: $"Long-press hold macro: mouse button {macro.MouseButtonIndex}");
             return true;
         }
@@ -2386,13 +2515,25 @@ namespace PadForge.SteamWorkshop.Translation
                     path, binding.Raw, args: binding.Param);
                 return false;
             }
-            // No button-hold / pulse primitive exists for the axis-natured
-            // targets: trigger pulls, and the stick-direction params (v13).
+            // Axis-natured targets (trigger pulls, stick directions) ride
+            // the AxisHold channel since v15: the axis asserts at the hold
+            // threshold and stays asserted until release, exact Long_Press
+            // semantics. Latch and pulse still have no axis primitive, so
+            // those variants hold plainly and note the dropped setting.
             if (xt.IsTriggerAxis || xt.IsStickAxis)
             {
-                run.Report.Add(TranslationStatus.Skipped, TranslationReasons.LongPressNotSupported,
-                    path, binding.Raw);
-                return false;
+                if (toggle)
+                {
+                    run.Report.Add(TranslationStatus.Partial, TranslationReasons.ToggleDropped,
+                        path, binding.Raw);
+                }
+                if (holdRepeats)
+                {
+                    run.Report.Add(TranslationStatus.Partial, TranslationReasons.RepeatDropped,
+                        path, binding.Raw);
+                }
+                EmitVcAxisHoldMacro(run, binding, source, path, xt, holdMs, inputName);
+                return true;
             }
 
             if (toggle)
@@ -2480,14 +2621,11 @@ namespace PadForge.SteamWorkshop.Translation
                     }
                     if (onRelease)
                     {
-                        // Same reason the mouse_button and XInput legs above
-                        // skip: the emitted row reads the source's CURRENT
-                        // state, so a release binding would scroll for the
-                        // whole hold and stop on release, which is the
-                        // opposite of what it asked for. Skip with a named
-                        // note rather than emit the inverted behavior.
-                        run.Report.Add(TranslationStatus.Skipped, TranslationReasons.ReleaseActivatorNotSupported,
-                            path, binding.Raw);
+                        // One discrete detent on the release edge (v15): a
+                        // row would scroll for the whole hold instead, the
+                        // inverse of what the config asked for.
+                        EmitWheelTapMacro(run, binding, source, path, wheel.Value,
+                            inputName, triggerMode: "OnRelease");
                         break;
                     }
                     if (toggle)
@@ -2533,16 +2671,14 @@ namespace PadForge.SteamWorkshop.Translation
                     // deflection while the input is held. A pressed button
                     // source evaluates to the full axis value, and an
                     // analog host (a stick wedge, a trigger pull) carries
-                    // its own magnitude. Like the trigger-axis targets,
-                    // there is no discrete tap, latch, or pulse primitive
-                    // for a stick direction, so the release / toggle /
-                    // turbo variants keep the trigger-axis notes.
+                    // its own magnitude. The release variant rides the
+                    // AxisHold tap since v15; toggle / turbo still have no
+                    // axis latch or pulse primitive and keep their notes.
                     if (xt.IsStickAxis)
                     {
                         if (onRelease)
                         {
-                            run.Report.Add(TranslationStatus.Skipped, TranslationReasons.ReleaseActivatorNotSupported,
-                                path, binding.Raw);
+                            EmitVcAxisTapMacro(run, binding, source, path, xt, inputName);
                             break;
                         }
                         if (toggle)
@@ -2562,10 +2698,9 @@ namespace PadForge.SteamWorkshop.Translation
                     {
                         if (xt.IsTriggerAxis)
                         {
-                            // No discrete trigger-pull tap primitive; the
-                            // named skip stays for the axis targets.
-                            run.Report.Add(TranslationStatus.Skipped, TranslationReasons.ReleaseActivatorNotSupported,
-                                path, binding.Raw);
+                            // One full-pull AxisHold tap on the release
+                            // edge (v15).
+                            EmitVcAxisTapMacro(run, binding, source, path, xt, inputName);
                             break;
                         }
                         // v10 G6: one button tap when the input releases,
@@ -2794,9 +2929,8 @@ namespace PadForge.SteamWorkshop.Translation
             };
             FillMacroTrigger(macro, source);
             run.Profile.Macros.Add(macro);
-            var (status, reason) = MacroTriggerReport(source);
-            run.Report.Add(status, reason, path, binding.Raw,
-                emitted: $"{verb} {keyName} macro");
+            run.Report.Add(TranslationStatus.Clean, TranslationReasons.MacroEmitted,
+                path, binding.Raw, emitted: $"{verb} {keyName} macro");
             return true;
         }
 
@@ -2821,9 +2955,8 @@ namespace PadForge.SteamWorkshop.Translation
             };
             FillMacroTrigger(macro, source);
             run.Profile.Macros.Add(macro);
-            var (status, reason) = MacroTriggerReport(source);
-            run.Report.Add(status, reason, path, binding.Raw,
-                emitted: $"Hold {keyName} macro");
+            run.Report.Add(TranslationStatus.Clean, TranslationReasons.MacroEmitted,
+                path, binding.Raw, emitted: $"Hold {keyName} macro");
             return true;
         }
 
@@ -2845,9 +2978,8 @@ namespace PadForge.SteamWorkshop.Translation
             };
             FillMacroTrigger(macro, source);
             run.Profile.Macros.Add(macro);
-            var (status, reason) = MacroTriggerReport(source);
-            run.Report.Add(status, reason, path, binding.Raw,
-                emitted: $"Mouse tap macro (button {btn})");
+            run.Report.Add(TranslationStatus.Clean, TranslationReasons.MacroEmitted,
+                path, binding.Raw, emitted: $"Mouse tap macro (button {btn})");
         }
 
         /// <summary>A one-shot tap of the target virtual-controller button
@@ -2867,9 +2999,90 @@ namespace PadForge.SteamWorkshop.Translation
             };
             FillMacroTrigger(macro, source);
             run.Profile.Macros.Add(macro);
-            var (status, reason) = MacroTriggerReport(source);
-            run.Report.Add(status, reason, path, binding.Raw,
-                emitted: $"Tap {xt.Target} macro");
+            run.Report.Add(TranslationStatus.Clean, TranslationReasons.MacroEmitted,
+                path, binding.Raw, emitted: $"Tap {xt.Target} macro");
+        }
+
+        /// <summary>A one-shot assert of an axis-natured VC target (v15):
+        /// trigger pulls at full pull, stick directions at full deflection,
+        /// via a VcAxisTap macro (the AxisHold action at the default tap
+        /// duration). Release activators ride "OnRelease", swipe flicks
+        /// "OnPress".</summary>
+        private void EmitVcAxisTapMacro(Run run, SteamInputBinding binding,
+            ResolvedSource source, string path, XInputTargetTable.XInputTarget xt,
+            string inputName, string triggerMode = "OnRelease")
+        {
+            var macro = new TranslatedMacro
+            {
+                Name = $"Tap {xt.Target} ({inputName})",
+                Action = TranslatedMacroAction.VcAxisTap,
+                TriggerMode = triggerMode,
+                ConsumeTrigger = false,
+                TargetAxis = xt.Target,
+                TargetAxisNegative = xt.StickAxisNegative,
+            };
+            FillMacroTrigger(macro, source);
+            run.Profile.Macros.Add(macro);
+            run.Report.Add(TranslationStatus.Clean, TranslationReasons.MacroEmitted,
+                path, binding.Raw, emitted: $"Tap {xt.Target} axis macro");
+        }
+
+        /// <summary>A Long_Press binding onto an axis-natured VC target
+        /// (v15): the axis asserts at the hold threshold and stays asserted
+        /// until the physical input releases, via a HoldVcAxis macro (the
+        /// AxisHold action riding the HoldVcButton repeat shape). Consumes
+        /// its trigger bits like the button hold (the interruptable-pause
+        /// approximation); descriptor-triggered hosts have no bits and
+        /// FillMacroTrigger forces the flag off there.</summary>
+        private void EmitVcAxisHoldMacro(Run run, SteamInputBinding binding,
+            ResolvedSource source, string path, XInputTargetTable.XInputTarget xt,
+            int holdMs, string inputName)
+        {
+            var macro = new TranslatedMacro
+            {
+                Name = $"Long press {xt.Target} ({inputName})",
+                Action = TranslatedMacroAction.HoldVcAxis,
+                TriggerMode = "HoldForMs",
+                TriggerHoldMs = holdMs,
+                ConsumeTrigger = true,
+                TargetAxis = xt.Target,
+                TargetAxisNegative = xt.StickAxisNegative,
+            };
+            FillMacroTrigger(macro, source);
+            run.Profile.Macros.Add(macro);
+            run.Report.Add(TranslationStatus.Clean, TranslationReasons.MacroEmitted,
+                path, binding.Raw, emitted: $"Long-press hold macro: {xt.Target} axis");
+        }
+
+        /// <summary>One discrete mouse-wheel detent per fire (v15), via a
+        /// MouseWheelTap macro. Wheel direction from the parsed param:
+        /// KbmScroll rides the vertical lane (its Invert flag means
+        /// scroll-UP after Step 3's negation, so ticks are +1 when set,
+        /// -1 for scroll-down), KbmScrollH the horizontal (Invert = left =
+        /// -1). Release activators ride "OnRelease", swipe flicks
+        /// "OnPress", Long_Press "HoldForMs".</summary>
+        private void EmitWheelTapMacro(Run run, SteamInputBinding binding,
+            ResolvedSource source, string path, (string Target, bool Invert) wheel,
+            string inputName, string triggerMode, int holdMs = 0)
+        {
+            bool horizontal = wheel.Target == "KbmScrollH";
+            var macro = new TranslatedMacro
+            {
+                Name = $"Wheel tick ({inputName})",
+                Action = TranslatedMacroAction.MouseWheelTap,
+                TriggerMode = triggerMode,
+                TriggerHoldMs = holdMs,
+                ConsumeTrigger = false,
+                WheelHorizontal = horizontal,
+                // Vertical: ParseWheelParam sets Invert for SCROLL_UP (the
+                // row convention needs the flip); the tap sends +ticks for
+                // up. Horizontal: Invert marks SCROLL_LEFT; +ticks = right.
+                WheelTicks = horizontal ? (wheel.Invert ? -1 : 1) : (wheel.Invert ? 1 : -1),
+            };
+            FillMacroTrigger(macro, source);
+            run.Profile.Macros.Add(macro);
+            run.Report.Add(TranslationStatus.Clean, TranslationReasons.MacroEmitted,
+                path, binding.Raw, emitted: $"Wheel tick macro ({FirstToken(binding.Param).ToUpperInvariant()})");
         }
 
         /// <summary>Copy of <paramref name="s"/> with the combined-output
@@ -2973,19 +3186,11 @@ namespace PadForge.SteamWorkshop.Translation
             macro.ConsumeTrigger = false;
         }
 
-        /// <summary>Status/reason pair for a macro whose trigger came from
-        /// <see cref="FillMacroTrigger"/>: combined-output triggers keep the
-        /// wave-2A Partial (the trigger rides the Xbox output, not the
-        /// physical input); descriptor triggers read the hosting input
-        /// directly and are Clean (gesture-gated reads self-arm at apply
-        /// since v14).</summary>
-        private static (TranslationStatus Status, string Reason) MacroTriggerReport(
-            ResolvedSource source)
-        {
-            if (HasDeviceFreeTrigger(source))
-                return (TranslationStatus.Partial, TranslationReasons.MacroTriggerViaXboxOutput);
-            return (TranslationStatus.Clean, TranslationReasons.MacroEmitted);
-        }
+        // MacroTriggerReport retired in v15: both trigger shapes
+        // FillMacroTrigger emits are normal working plumbing (the
+        // combined-output form is rescued by FinalizeMacroTriggers when
+        // unfed), so every macro emission reports Clean MacroEmitted at
+        // its own site now.
 
         /// <summary>The activator toggle on an xinput binding (wave 2A): a
         /// ToggleVcButton latch macro. Two trigger shapes:
@@ -3077,8 +3282,7 @@ namespace PadForge.SteamWorkshop.Translation
             };
             FillMacroTrigger(macro, source);
             run.Profile.Macros.Add(macro);
-            var (status, reason) = MacroTriggerReport(source);
-            run.Report.Add(status, reason,
+            run.Report.Add(TranslationStatus.Clean, TranslationReasons.MacroEmitted,
                 path, binding.Raw, emitted: $"Turbo {xt.Target} macro ({intervalMs} ms)");
             return true;
         }
@@ -3102,14 +3306,14 @@ namespace PadForge.SteamWorkshop.Translation
             };
             FillMacroTrigger(macro, source);
             run.Profile.Macros.Add(macro);
-            var (status, reason) = MacroTriggerReport(source);
-            run.Report.Add(status, reason,
+            run.Report.Add(TranslationStatus.Clean, TranslationReasons.MacroEmitted,
                 path, binding.Raw, emitted: $"Long-press hold macro: {xt.Target}");
             return true;
         }
 
         private void TranslateModeShift(Run run, SteamInputPreset preset, SteamInputBinding binding,
-            ResolvedSource source, string path, int activatorDelayMs = 0, bool toggle = false)
+            ResolvedSource source, string path, int activatorDelayMs = 0, bool toggle = false,
+            bool oneShotHost = false)
         {
             // Param: "{slot} {groupId}". The layer holds the groups the
             // preset marks "{slot} active modeshift".
@@ -3133,7 +3337,7 @@ namespace PadForge.SteamWorkshop.Translation
                 return;
             }
 
-            if (!IsActivatorCapable(source))
+            if (!IsActivatorCapable(source, allowGyroHalf: oneShotHost))
             {
                 run.Report.Add(TranslationStatus.Partial, TranslationReasons.ActivatorInputNotSupported,
                     path, binding.Raw);
@@ -3141,33 +3345,27 @@ namespace PadForge.SteamWorkshop.Translation
             }
 
             string layerMask = ModeShiftLayer(run, preset.Id, slotToken, groupId);
-            run.Activators.Add(new ActivatorRequest
+            var req = new ActivatorRequest
             {
                 LayerMask = layerMask,
                 LayerName = $"{slotToken} shift",
                 // The activator toggle setting latches the shift instead of
                 // holding it (wave 2A); the engine's Toggle mode is the
-                // same construct.
-                Mode = toggle ? "Toggle" : "Hold",
+                // same construct. A one-shot flick host (v15) has no held
+                // state, so it always latches.
+                Mode = toggle || oneShotHost ? "Toggle" : "Hold",
                 InheritUnmapped = true, // mode shift overlays the slot; everything else keeps working
                 DelayMs = activatorDelayMs,
-                Descriptor = source.Descriptor,
-                // Button kind even for trigger pulls: the button-like
-                // activator read thresholds the raw axis at 50% of
-                // full range, which is a half pull on a unipolar
-                // trigger. The Axis kind tests |bipolar| >= 0.5 and a
-                // trigger RESTS at bipolar -1, so it would engage the
-                // layer permanently. A gate-legged source (a single-pad
-                // half click, #9 B-1) rides Kind=Chord.
-                Kind = string.IsNullOrEmpty(source.GateDescriptor) ? "Button" : "Chord",
-                GateDescriptor = source.GateDescriptor ?? "",
                 Path = path,
-            });
+            };
+            FillActivatorInput(req, source);
+            run.Activators.Add(req);
         }
 
         private void TranslateControllerAction(Run run, SteamInputPreset preset,
             SteamInputBinding binding, ResolvedSource source, string layer, string path,
-            bool onRelease, string inputName, int activatorDelayMs = 0, bool toggle = false)
+            bool onRelease, string inputName, int activatorDelayMs = 0, bool toggle = false,
+            bool oneShotHost = false)
         {
             var tokens = (binding.Param ?? "").Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
             string action = tokens.Length > 0 ? tokens[0] : "";
@@ -3195,8 +3393,7 @@ namespace PadForge.SteamWorkshop.Translation
                     };
                     FillMacroTrigger(warp, source);
                     run.Profile.Macros.Add(warp);
-                    var (warpStatus, warpReason) = MacroTriggerReport(source);
-                    run.Report.Add(warpStatus, warpReason,
+                    run.Report.Add(TranslationStatus.Clean, TranslationReasons.MacroEmitted,
                         path, binding.Raw, emitted: "Cursor warp macro");
                     return;
                 }
@@ -3227,23 +3424,22 @@ namespace PadForge.SteamWorkshop.Translation
                         bool hosted = TryResolvePresetIndex(run, presetIndex, out int removeId)
                             && !string.IsNullOrEmpty(layer) && layer != "Base"
                             && layer == $"Layer_{run.Options.FileId}_{removeId}"
-                            && IsActivatorCapable(source);
+                            && IsActivatorCapable(source, allowGyroHalf: oneShotHost);
                         if (hosted)
                         {
-                            run.Activators.Add(new ActivatorRequest
+                            var removeReq = new ActivatorRequest
                             {
                                 LayerMask = layer,
                                 LayerName = PresetLayerName(run, removeId),
                                 Mode = "Cycle",
                                 InheritUnmapped = true, // leaving an overlay layer
                                 DelayMs = activatorDelayMs,
-                                Descriptor = source.Descriptor,
-                                Kind = string.IsNullOrEmpty(source.GateDescriptor) ? "Button" : "Chord",
-                                GateDescriptor = source.GateDescriptor ?? "",
                                 CycleLayers = layer,
                                 CycleIncludeBase = true,
                                 Path = path,
-                            });
+                            };
+                            FillActivatorInput(removeReq, source);
+                            run.Activators.Add(removeReq);
                         }
                         // Partial either way: the Cycle is its own stepper
                         // beside whatever engaged the layer, so a press
@@ -3258,35 +3454,29 @@ namespace PadForge.SteamWorkshop.Translation
                             path, binding.Raw, args: presetIndex.ToString(CultureInfo.InvariantCulture));
                         return;
                     }
-                    if (!IsActivatorCapable(source))
+                    if (!IsActivatorCapable(source, allowGyroHalf: oneShotHost))
                     {
                         run.Report.Add(TranslationStatus.Partial, TranslationReasons.ActivatorInputNotSupported,
                             path, binding.Raw);
                         return;
                     }
-                    run.Activators.Add(new ActivatorRequest
+                    var layerReq = new ActivatorRequest
                     {
                         LayerMask = $"Layer_{run.Options.FileId}_{presetId}",
                         LayerName = PresetLayerName(run, presetId),
                         // add_layer latches by nature; hold_layer holds
                         // unless the activator's toggle setting latches it
-                        // (wave 2A).
-                        Mode = action.Equals("HOLD_LAYER", StringComparison.OrdinalIgnoreCase) && !toggle
+                        // (wave 2A) or the host is a one-shot flick (v15:
+                        // nothing is held on a flick, so it latches).
+                        Mode = action.Equals("HOLD_LAYER", StringComparison.OrdinalIgnoreCase)
+                            && !toggle && !oneShotHost
                             ? "Hold" : "Toggle",
                         InheritUnmapped = true, // Steam action layers overlay the set below
                         DelayMs = activatorDelayMs,
-                        Descriptor = source.Descriptor,
-                        // Button kind even for trigger pulls: the button-like
-                        // activator read thresholds the raw axis at 50% of
-                        // full range, which is a half pull on a unipolar
-                        // trigger. The Axis kind tests |bipolar| >= 0.5 and a
-                        // trigger RESTS at bipolar -1, so it would engage the
-                        // layer permanently. A gate-legged source (a
-                        // single-pad half click, #9 B-1) rides Kind=Chord.
-                        Kind = string.IsNullOrEmpty(source.GateDescriptor) ? "Button" : "Chord",
-                        GateDescriptor = source.GateDescriptor ?? "",
                         Path = path,
-                    });
+                    };
+                    FillActivatorInput(layerReq, source);
+                    run.Activators.Add(layerReq);
                     return;
                 }
 
@@ -3305,7 +3495,7 @@ namespace PadForge.SteamWorkshop.Translation
                             path, binding.Raw, args: presetIndex.ToString(CultureInfo.InvariantCulture));
                         return;
                     }
-                    if (!IsActivatorCapable(source))
+                    if (!IsActivatorCapable(source, allowGyroHalf: oneShotHost))
                     {
                         run.Report.Add(TranslationStatus.Partial, TranslationReasons.ActivatorInputNotSupported,
                             path, binding.Raw);
@@ -3317,7 +3507,7 @@ namespace PadForge.SteamWorkshop.Translation
                     // re-lowered by LowerUnmergedJumps (the runtime's Custom
                     // mode latches LayerMask itself and ignores JumpToLayer,
                     // so a persisted Jump_* mask would engage a rowless layer).
-                    run.Activators.Add(new ActivatorRequest
+                    var jumpReq = new ActivatorRequest
                     {
                         LayerMask = $"Jump_{run.Options.FileId}_{presetId}",
                         LayerName = PresetLayerName(run, presetId),
@@ -3328,19 +3518,11 @@ namespace PadForge.SteamWorkshop.Translation
                         // hold-before-fire debounce (#206 honors DelayMs on
                         // the Custom / Cycle edge modes too), v10 G10.
                         DelayMs = activatorDelayMs,
-                        Descriptor = source.Descriptor,
-                        // Button kind even for trigger pulls: the button-like
-                        // activator read thresholds the raw axis at 50% of
-                        // full range, which is a half pull on a unipolar
-                        // trigger. The Axis kind tests |bipolar| >= 0.5 and a
-                        // trigger RESTS at bipolar -1, so it would engage the
-                        // layer permanently. A gate-legged source (a
-                        // single-pad half click, #9 B-1) rides Kind=Chord.
-                        Kind = string.IsNullOrEmpty(source.GateDescriptor) ? "Button" : "Chord",
-                        GateDescriptor = source.GateDescriptor ?? "",
                         HostLayer = layer,
                         Path = path,
-                    });
+                    };
+                    FillActivatorInput(jumpReq, source);
+                    run.Activators.Add(jumpReq);
                     return;
                 }
 
@@ -3393,8 +3575,7 @@ namespace PadForge.SteamWorkshop.Translation
                         run.Report.Add(TranslationStatus.Partial, TranslationReasons.SetLedDefaultApproximated,
                             path, binding.Raw);
                     }
-                    var (ledStatus, ledReason) = MacroTriggerReport(source);
-                    run.Report.Add(ledStatus, ledReason,
+                    run.Report.Add(TranslationStatus.Clean, TranslationReasons.MacroEmitted,
                         path, binding.Raw, emitted: "Set LED macro");
                     return;
                 }
@@ -3614,13 +3795,61 @@ namespace PadForge.SteamWorkshop.Translation
         /// exactly the runtime's Kind=Chord read (both legs go through the
         /// button-like evaluator). The touch-spots feature it depends on
         /// self-arms at apply since v14 (the imported set references the
-        /// spot descriptor on the chord leg).</summary>
-        private static bool IsActivatorCapable(ResolvedSource source)
+        /// spot descriptor on the chord leg).
+        /// <paramref name="allowGyroHalf"/> (v15): a one-shot flick host
+        /// admits a HALF-stamped gyro rate read, because the request rides
+        /// Kind=Axis with the half selector and an edge-fired mode
+        /// (Toggle / Latch / Cycle), so the rate's instant return to zero
+        /// never flickers a held layer. Hold-natured gyro activators stay
+        /// out.</summary>
+        private static bool IsActivatorCapable(ResolvedSource source, bool allowGyroHalf = false)
             => source != null
             && (string.IsNullOrEmpty(source.TrackpadFeature)
                 || (source.TrackpadFeature == PhysicalSlotResolver.FeatureTouchSpots
                     && !string.IsNullOrEmpty(source.GateDescriptor)))
-            && !source.Descriptor.StartsWith("Gyro ", StringComparison.Ordinal);
+            && (!source.Descriptor.StartsWith("Gyro ", StringComparison.Ordinal)
+                || (allowGyroHalf && source.HalfAxis));
+
+        /// <summary>The engine's gyro-as-button rate threshold as a
+        /// normalized Kind=Axis threshold (v15). Numerator: SourceCoercion.
+        /// GyroButtonThreshold (30 deg/s, "a deliberate twist, not idle
+        /// hand tremor"). Denominator: the full-scale rate behind the
+        /// engine's normalized gyro axis read (SourceCoercion.GyroScale =
+        /// one over 500 deg/s in rad), which is what the activator's
+        /// Kind=Axis bipolar read returns. A gyro-hosted activator
+        /// therefore fires exactly where a gyro-as-button mapping row
+        /// fires.</summary>
+        private const double GyroActivatorThreshold01 = 30.0 / 500.0;
+
+        /// <summary>Stamps an activator request's input from the hosting
+        /// source (v15). Directional analog hosts (stick wedges, gyro rate
+        /// halves) carry HalfAxis: the button-like activator read has no
+        /// half selector (it thresholds the raw upper half, so a north
+        /// wedge would engage on the SOUTH deflection), so these ride
+        /// Kind=Axis with the half stamp and the source's own threshold.
+        /// Trigger pulls deliberately KEEP the Button kind: the
+        /// button-like read thresholds the raw axis at 50% of full range
+        /// (a half pull on a unipolar trigger), while the Axis kind's
+        /// bipolar read rests at -1 and would engage permanently.
+        /// Everything else keeps the Button / Chord pair.</summary>
+        private static void FillActivatorInput(ActivatorRequest req, ResolvedSource source)
+        {
+            req.Descriptor = source.Descriptor;
+            req.GateDescriptor = source.GateDescriptor ?? "";
+            if (source.HalfAxis && !source.IsAnalogTriggerPull)
+            {
+                req.Kind = "Axis";
+                req.AxisHalf = true;
+                req.AxisInvert = source.Invert;
+                req.AxisThreshold = source.Descriptor.StartsWith("Gyro ", StringComparison.Ordinal)
+                    ? GyroActivatorThreshold01
+                    : Math.Max(source.DeadZone > 0 ? source.DeadZone : 50, 1) / 100.0;
+            }
+            else
+            {
+                req.Kind = string.IsNullOrEmpty(source.GateDescriptor) ? "Button" : "Chord";
+            }
+        }
 
         // ─────────────────────────────────────────────
         //  Row accumulation
@@ -3812,12 +4041,11 @@ namespace PadForge.SteamWorkshop.Translation
                 if (!string.IsNullOrEmpty(m.TriggerFallbackGateDescriptor))
                     m.TriggerInputDescriptors.Add(m.TriggerFallbackGateDescriptor);
                 // Descriptor triggers read the physical input, not an output
-                // bit, so there are no bits to consume.
+                // bit, so there are no bits to consume. The swap itself is
+                // silent since v15: the macro fires exactly as the config
+                // asks, so there is nothing for the user to do or feel
+                // differently and a note would narrate plumbing.
                 m.ConsumeTrigger = false;
-
-                run.Report.Add(TranslationStatus.Partial,
-                    TranslationReasons.MacroTriggerRetargetedToInput,
-                    "config", emitted: m.Name, args: m.TriggerFallbackDescriptor);
             }
         }
 
@@ -3990,7 +4218,9 @@ namespace PadForge.SteamWorkshop.Translation
             || m.Action == TranslatedMacroAction.RepeatVcButtonWhileHeld
             || m.Action == TranslatedMacroAction.ToggleVcButton
             || m.Action == TranslatedMacroAction.HoldVcButton
-            || m.Action == TranslatedMacroAction.VcButtonTap;
+            || m.Action == TranslatedMacroAction.VcButtonTap
+            || m.Action == TranslatedMacroAction.VcAxisTap
+            || m.Action == TranslatedMacroAction.HoldVcAxis;
 
         private void EmitActivators(Run run)
         {
@@ -4003,7 +4233,7 @@ namespace PadForge.SteamWorkshop.Translation
                 .ThenBy(a => a.Descriptor, StringComparer.Ordinal)
                 .ThenBy(a => a.Mode, StringComparer.Ordinal))
             {
-                if (!seen.Add($"{req.LayerMask}|{req.Descriptor}|{req.GateDescriptor}|{req.Mode}|{req.JumpToLayer}|{req.CycleLayers}")) continue;
+                if (!seen.Add($"{req.LayerMask}|{req.Descriptor}|{req.GateDescriptor}|{req.Mode}|{req.JumpToLayer}|{req.CycleLayers}|{(req.AxisHalf ? 1 : 0)}{(req.AxisInvert ? 1 : 0)}")) continue;
 
                 bool xboxHas, kbmHas;
                 if (req.Mode == "Cycle")
@@ -4039,6 +4269,8 @@ namespace PadForge.SteamWorkshop.Translation
                     Kind = req.Kind,
                     ChordSecondDescriptor = req.GateDescriptor,
                     AxisThreshold = req.AxisThreshold,
+                    AxisHalf = req.AxisHalf,
+                    AxisInvert = req.AxisInvert,
                     DelayMs = req.DelayMs,
                     CycleLayers = req.CycleLayers,
                     CycleIncludeBase = req.CycleIncludeBase,
@@ -4110,8 +4342,10 @@ namespace PadForge.SteamWorkshop.Translation
                 .Where(a => a.Mode == "Custom")
                 // The gate leg is part of the input's identity: a single-pad
                 // left-half click and right-half click share the pad-click
-                // descriptor and differ only in gate (#9 B-1).
-                .GroupBy(a => $"{a.Kind}|{a.Descriptor}|{a.GateDescriptor}", StringComparer.Ordinal)
+                // descriptor and differ only in gate (#9 B-1). The v15 half
+                // stamp is too: opposite flick directions share an axis
+                // descriptor and differ only in half.
+                .GroupBy(a => $"{a.Kind}|{a.Descriptor}|{a.GateDescriptor}|{(a.AxisHalf ? 1 : 0)}{(a.AxisInvert ? 1 : 0)}", StringComparer.Ordinal)
                 .Where(g => g.Select(a => a.JumpToLayer).Distinct(StringComparer.Ordinal).Count() > 1)
                 .ToList();
 
@@ -4141,6 +4375,8 @@ namespace PadForge.SteamWorkshop.Translation
                     Kind = first.Kind,
                     GateDescriptor = first.GateDescriptor,
                     AxisThreshold = first.AxisThreshold,
+                    AxisHalf = first.AxisHalf,
+                    AxisInvert = first.AxisInvert,
                     CycleLayers = string.Join("|", stops),
                     CycleIncludeBase = includeBase,
                     Path = first.Path,
@@ -4159,6 +4395,8 @@ namespace PadForge.SteamWorkshop.Translation
             Kind = a.Kind,
             ChordSecondDescriptor = a.ChordSecondDescriptor,
             AxisThreshold = a.AxisThreshold,
+            AxisHalf = a.AxisHalf,
+            AxisInvert = a.AxisInvert,
             DelayMs = a.DelayMs,
             CycleLayers = a.CycleLayers,
             CycleIncludeBase = a.CycleIncludeBase,

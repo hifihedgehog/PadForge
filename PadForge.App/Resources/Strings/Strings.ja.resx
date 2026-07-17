@@ -2417,7 +2417,6 @@
   <data name="Workshop_Tr_TouchpadTuningNotPerRow" xml:space="preserve"><value>タッチパッドの調整は行ごとではなくパッドごとに適用されます</value></data>
   <data name="Workshop_Tr_SoftPressApproximated" xml:space="preserve"><value>Soft_Press は押し込みしきい値として近似</value></data>
   <data name="Workshop_Tr_TriggerThresholdApproximated" xml:space="preserve"><value>トリガーしきい値を近似</value></data>
-  <data name="Workshop_Tr_MacroTriggerViaXboxOutput" xml:space="preserve"><value>Xbox スロットの結合出力から発火します</value></data>
   <data name="Workshop_Tr_NoDeviceFreeTrigger" xml:space="preserve"><value>この入力にはデバイス非依存のトリガーがありません</value></data>
   <data name="Workshop_Tr_GameActionsNotSupported" xml:space="preserve"><value>{0} 件のゲーム内アクション、Steam 専用、ゲーム側フックなし</value></data>
   <data name="Workshop_Tr_SteamSystemAction" xml:space="preserve"><value>Steam クライアントアクション {0}、対応するものがありません</value></data>
@@ -2439,7 +2438,6 @@
   <data name="Workshop_Tr_DoublePressNotSupported" xml:space="preserve"><value>ダブルプレスアクティベーターはここでは未対応</value></data>
   <data name="Workshop_Tr_UnknownActivatorType" xml:space="preserve"><value>不明なアクティベーター {0}</value></data>
   <data name="Workshop_Tr_RepeatDropped" xml:space="preserve"><value>自動リピートを破棄</value></data>
-  <data name="Workshop_Tr_MacroTriggerRetargetedToInput" xml:space="preserve"><value>トリガーを入力自体に変更 ({0}): その Xbox ボタンを駆動するマッピングがありません</value></data>
   <data name="Workshop_Tr_MissingGroup" xml:space="preserve"><value>コンフィグが存在しないグループ {0} を参照しています</value></data>
   <data name="Workshop_Tr_MissingModeShiftGroup" xml:space="preserve"><value>{0} のモードシフトが存在しないグループ {1} を参照しています</value></data>
   <data name="Workshop_Tr_MissingPreset" xml:space="preserve"><value>コンフィグが存在しないプリセット {0} を参照しています</value></data>
@@ -2560,10 +2558,6 @@
   <data name="Workshop_Tr_ScreenshotApproximated" xml:space="preserve"><value>SCREENSHOT を PrintScreen キー入力で近似</value></data>
   <data name="Workshop_Tr_ShowKeyboardApproximated" xml:space="preserve"><value>SHOW_KEYBOARD をスクリーンキーボードの起動で近似</value></data>
   <data name="Workshop_Tr_MouseDeltaNotSupported" xml:space="preserve"><value>カーソル相対移動 mouse_delta ({0}) は未対応</value></data>
-  <data name="Workshop_Tr_GyroSwipeNotSupported" xml:space="preserve"><value>ジャイロ上の方向スワイプにはエンジン経路がありません (符号なしレート読み取りのため方向別ワンショットなし)</value></data>
-  <data name="Workshop_Tr_SwipeSurfaceNotSupported" xml:space="preserve"><value>{0} 上の方向スワイプにはスワイプできる方向面がありません</value></data>
-  <data name="Workshop_Tr_FlickAxisTargetNotSupported" xml:space="preserve"><value>スティックフリックにはトリガーやスティック軸ターゲット用のタップ動作がありません</value></data>
-  <data name="Workshop_Tr_FlickBindingNotOneShot" xml:space="preserve"><value>このバインドは押し続け状態が必要で、ワンショットのスティックフリックでは扱えません</value></data>
   <data name="Macro_HoldForMs" xml:space="preserve"><value>長押し時</value></data>
   <data name="Macro_HoldForMs_Tooltip" xml:space="preserve"><value>トリガーを保持時間のあいだ押し続けると 1 回だけ発動します。それより短いタップでは何も起こりません。</value></data>
   <data name="Macro_TriggerHoldMs_Label" xml:space="preserve"><value>保持時間</value></data>
@@ -2575,6 +2569,11 @@
   <data name="MacroAction_ToggleVcButton_Format" xml:space="preserve"><value>{0} をトグル</value></data>
   <data name="MacroAction_Type_ToggleKey" xml:space="preserve"><value>キーをトグル</value></data>
   <data name="MacroAction_ToggleKey_Tooltip" xml:space="preserve"><value>発動するたびにキーを押しっぱなしにするか解除します。保持されたキーは、次の発動かマクロの無効化まで押されたままになります。</value></data>
+  <data name="MacroAction_Type_AxisHold" xml:space="preserve"><value>軸をホールド</value></data>
+  <data name="MacroAction_AxisHold_Tooltip" xml:space="preserve"><value>指定時間のあいだ毎フレーム軸の値を書き込みます。リピートを「離すまで」にすると、トリガーを離すまで軸が維持されます。</value></data>
+  <data name="MacroAction_HoldAxis_Format" xml:space="preserve"><value>{0} = {1} をホールド ({2} ms)</value></data>
+  <data name="MacroAction_Type_MouseWheelTap" xml:space="preserve"><value>ホイール1ノッチ</value></data>
+  <data name="MacroAction_MouseWheelTap_Tooltip" xml:space="preserve"><value>発火ごとにマウスホイールを1ノッチ送ります。値は符号付きのノッチ数です(正の値で上または右にスクロール)。</value></data>
   <data name="MacroAction_ToggleKey_Format" xml:space="preserve"><value>キー {0} をトグル</value></data>
   <data name="MacroAction_Type_GyroRecenter" xml:space="preserve"><value>ジャイロを再センタリング</value></data>
   <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>押すと、パッドに蓄積されたジャイロ照準の基準をゼロにします。スムージング履歴がクリアされ、Motion Lean のニュートラルが再取得され、重力推定がコントローラーの現在の姿勢から再設定されます。</value></data>

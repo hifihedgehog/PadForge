@@ -99,8 +99,7 @@ namespace PadForge.SteamWorkshop.Tests
             Assert.False(east.TriggerDescriptorInvert); // east = X upper half
 
             Assert.DoesNotContain(p.Report.Entries, e =>
-                e.ReasonKey == TranslationReasons.FlickBindingNotOneShot
-                || e.ReasonKey == TranslationReasons.FlickAxisTargetNotSupported);
+                e.Status == TranslationStatus.Skipped);
             Assert.Equal(2, p.Report.Entries.Count(e =>
                 e.ReasonKey == TranslationReasons.MacroEmitted
                 && e.Status == TranslationStatus.Clean));
@@ -185,8 +184,10 @@ namespace PadForge.SteamWorkshop.Tests
         }
 
         [Fact]
-        public void TwoDScroll_StickHost_ModeShift_KeepsNamedSkip()
+        public void TwoDScroll_StickHost_ModeShift_TogglesViaHalfStampedActivator()
         {
+            // v15: a flick toggles the shift. The activator rides Kind=Axis
+            // with the wedge's half stamp so only the west flick fires it.
             string vdf = Head
                 + Group(1, "2dscroll", Inputs(Inp("dpad_west", "mode_shift joystick 5")))
                 + Group(5, "dpad", Inputs(Inp("dpad_north", "key_press Q")))
@@ -196,31 +197,58 @@ namespace PadForge.SteamWorkshop.Tests
             var p = Translate(vdf);
 
             Assert.Empty(p.Macros);
-            Assert.Empty(p.XboxMappingSet.ShiftActivators);
-            Assert.Empty(p.KbmMappingSet.ShiftActivators);
-            // A mode shift needs held state, which a one-shot flick has
-            // no carrier for: the per-arm reason names that (v14).
-            Assert.Contains(p.Report.Entries, e =>
-                e.ReasonKey == TranslationReasons.FlickBindingNotOneShot
-                && e.Status == TranslationStatus.Skipped);
+            var act = Assert.Single(p.KbmMappingSet.ShiftActivators);
+            Assert.Equal("Toggle", act.Mode);
+            Assert.Equal("Axis", act.Kind);
+            Assert.Equal("Gamepad LeftStickX", act.Descriptor);
+            Assert.True(act.AxisHalf);
+            Assert.True(act.AxisInvert); // west = X lower half
+            Assert.Equal(0.5, act.AxisThreshold, 3);
+            Assert.DoesNotContain(p.Report.Entries, e =>
+                e.Status == TranslationStatus.Skipped);
         }
 
         [Fact]
-        public void TwoDScroll_StickHost_TriggerAxisTarget_KeepsNamedSkip()
+        public void TwoDScroll_StickHost_TriggerAxisTarget_TapsTheAxisHold()
         {
-            // No discrete trigger-pull tap primitive exists (AxisSet is a
-            // one-frame write), same gate as the release-activator path.
-            // The per-arm reason names the axis-natured target (v14).
+            // v15: the AxisHold channel gives trigger pulls a discrete tap,
+            // so a flick onto TRIGGER_LEFT fires one full pull.
             string vdf = Head
                 + Group(1, "2dscroll", Inputs(Inp("dpad_south", "xinput_button TRIGGER_LEFT")))
                 + Preset(0, "Default", (1, "joystick active"))
                 + "}\n";
             var p = Translate(vdf);
 
-            Assert.Empty(p.Macros);
-            Assert.Contains(p.Report.Entries, e =>
-                e.ReasonKey == TranslationReasons.FlickAxisTargetNotSupported
-                && e.Status == TranslationStatus.Skipped);
+            var tap = Assert.Single(p.Macros);
+            Assert.Equal(TranslatedMacroAction.VcAxisTap, tap.Action);
+            Assert.Equal("OnPress", tap.TriggerMode);
+            Assert.Equal("LeftTrigger", tap.TargetAxis);
+            Assert.Equal("Gamepad LeftStickY", Assert.Single(tap.TriggerInputDescriptors));
+            Assert.True(tap.TriggerDescriptorHalfAxis);
+            Assert.False(tap.TriggerDescriptorInvert); // south = Y upper half
+            Assert.True(p.NeedsXboxSlot);
+            Assert.DoesNotContain(p.Report.Entries, e =>
+                e.Status == TranslationStatus.Skipped);
+        }
+
+        [Fact]
+        public void TwoDScroll_StickHost_WheelDetent_TicksOncePerFlick()
+        {
+            // v15: mouse_wheel on a flick fires one discrete detent.
+            string vdf = Head
+                + Group(1, "2dscroll", Inputs(Inp("dpad_north", "mouse_wheel SCROLL_UP")))
+                + Preset(0, "Default", (1, "joystick active"))
+                + "}\n";
+            var p = Translate(vdf);
+
+            var tick = Assert.Single(p.Macros);
+            Assert.Equal(TranslatedMacroAction.MouseWheelTap, tick.Action);
+            Assert.Equal("OnPress", tick.TriggerMode);
+            Assert.Equal(1, tick.WheelTicks); // SCROLL_UP = +1 (up)
+            Assert.False(tick.WheelHorizontal);
+            Assert.Equal("Gamepad LeftStickY", Assert.Single(tick.TriggerInputDescriptors));
+            Assert.True(tick.TriggerDescriptorHalfAxis);
+            Assert.True(tick.TriggerDescriptorInvert); // north = Y lower half
         }
 
         [Fact]
@@ -308,10 +336,10 @@ namespace PadForge.SteamWorkshop.Tests
         }
 
         [Fact]
-        public void ScrollWheel_StickHost_KeyOnDetent_KeepsNamedSkip()
+        public void ScrollWheel_StickHost_KeyOnDetent_TapsOncePerFlick()
         {
-            // A key on a wheel detent has no continuous channel on a
-            // deflection drag either, so it keeps the named skip.
+            // v15: a key on a wheel detent rides the one-shot tap walk on
+            // the drag wedge (clockwise = deflect down = Y upper half).
             string vdf = Head
                 + Group(1, "scrollwheel", Inputs(Inp("scroll_clockwise", "key_press A")))
                 + Preset(0, "Default", (1, "joystick active"))
@@ -319,9 +347,38 @@ namespace PadForge.SteamWorkshop.Tests
             var p = Translate(vdf);
 
             Assert.Empty(p.KbmMappingSet.Rows);
+            var tap = Assert.Single(p.Macros);
+            Assert.Equal(TranslatedMacroAction.KeyTap, tap.Action);
+            Assert.Equal("OnPress", tap.TriggerMode);
+            Assert.Equal(0x41, tap.VirtualKey); // 'A'
+            Assert.Equal("Gamepad LeftStickY", Assert.Single(tap.TriggerInputDescriptors));
+            Assert.True(tap.TriggerDescriptorHalfAxis);
+            Assert.False(tap.TriggerDescriptorInvert);
+            Assert.DoesNotContain(p.Report.Entries, e =>
+                e.ReasonKey == TranslationReasons.ScrollWheelModeNotSupported);
+            // The rotation-vs-drag geometry Partial covers the tap too.
             Assert.Contains(p.Report.Entries, e =>
-                e.ReasonKey == TranslationReasons.ScrollWheelModeNotSupported
-                && e.Status == TranslationStatus.Skipped);
+                e.ReasonKey == TranslationReasons.ScrollWheelApproximated);
+        }
+
+        [Fact]
+        public void ScrollWheel_TrackpadHost_KeyOnDetent_RidesTheSwipeGesture()
+        {
+            // v15: on a trackpad the detent tap reads the one-shot swipe
+            // gesture (clockwise = SwipeDown), self-armed at apply.
+            string vdf = Head
+                + Group(1, "scrollwheel", Inputs(
+                    Inp("scroll_counterclockwise", "key_press B")))
+                + Preset(0, "Default", (1, "left_trackpad active"))
+                + "}\n";
+            var p = Translate(vdf);
+
+            var tap = Assert.Single(p.Macros);
+            Assert.Equal(TranslatedMacroAction.KeyTap, tap.Action);
+            Assert.Equal("Touchpad 0 SwipeUp", Assert.Single(tap.TriggerInputDescriptors));
+            Assert.False(tap.TriggerDescriptorHalfAxis);
+            Assert.DoesNotContain(p.Report.Entries, e =>
+                e.ReasonKey == TranslationReasons.ScrollWheelModeNotSupported);
         }
     }
 }

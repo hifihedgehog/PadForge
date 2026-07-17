@@ -2974,6 +2974,7 @@ namespace PadForge.Services
                 MouseSensitivity = ad.MouseSensitivity > 0 ? ad.MouseSensitivity : 10f,
                 MouseButton = ad.MouseButton,
                 InvertAxis = ad.InvertAxis,
+                WheelHorizontal = ad.WheelHorizontal,
                 ShowVolumeOsd = ad.ShowVolumeOsd,
                 LightbarR = ad.LightbarR,
                 LightbarG = ad.LightbarG,
@@ -4005,6 +4006,7 @@ namespace PadForge.Services
                 MouseSensitivity = a.MouseSensitivity,
                 MouseButton = a.MouseButton,
                 InvertAxis = a.InvertAxis,
+                WheelHorizontal = a.WheelHorizontal,
                 ShowVolumeOsd = a.ShowVolumeOsd,
                 LightbarR = a.LightbarR,
                 LightbarG = a.LightbarG,
@@ -5377,6 +5379,11 @@ namespace PadForge.Services
         /// <summary>When true, invert the axis value (0→1 becomes 1→0).</summary>
         [XmlElement]
         public bool InvertAxis { get; set; }
+
+        /// <summary>MouseWheelTap (v15): tick the horizontal
+        /// (MOUSEEVENTF_HWHEEL) lane instead of the vertical wheel.</summary>
+        [XmlElement]
+        public bool WheelHorizontal { get; set; }
 
         /// <summary>When true, show the Windows volume flyout OSD on volume changes.</summary>
         [XmlElement]

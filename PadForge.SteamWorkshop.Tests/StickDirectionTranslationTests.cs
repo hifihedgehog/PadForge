@@ -132,7 +132,7 @@ namespace PadForge.SteamWorkshop.Tests
         }
 
         [Fact]
-        public void StickDirection_ReleaseToggleTurboLongPress_KeepNamedNotes()
+        public void StickDirection_ReleaseToggleTurboLongPress_V15Closure()
         {
             string vdf = Head
                 + Group(1, "four_buttons", Inputs(
@@ -146,18 +146,26 @@ namespace PadForge.SteamWorkshop.Tests
                 + "}\n";
             var p = Translate(vdf);
 
-            Assert.Contains(p.Report.Entries, e =>
-                e.ReasonKey == TranslationReasons.ReleaseActivatorNotSupported);
+            // Toggle and turbo still have no axis latch / pulse primitive.
             Assert.Contains(p.Report.Entries, e =>
                 e.ReasonKey == TranslationReasons.ToggleDropped);
             Assert.Contains(p.Report.Entries, e =>
                 e.ReasonKey == TranslationReasons.RepeatDropped);
-            Assert.Contains(p.Report.Entries, e =>
-                e.ReasonKey == TranslationReasons.LongPressNotSupported);
+            // Release and Long_Press ride the AxisHold channel since v15.
+            Assert.DoesNotContain(p.Report.Entries, e =>
+                e.ReasonKey == TranslationReasons.ReleaseActivatorNotSupported
+                || e.ReasonKey == TranslationReasons.LongPressNotSupported);
             // The toggle and turbo variants still emit the momentary row
-            // (button_b / button_x). Release and long-press emit nothing.
+            // (button_b / button_x).
             Assert.Equal(2, p.XboxMappingSet.Rows.Count);
-            Assert.Empty(p.Macros);
+            var tap = Assert.Single(p.Macros, m => m.Action == TranslatedMacroAction.VcAxisTap);
+            Assert.Equal("OnRelease", tap.TriggerMode);
+            Assert.Equal("LeftThumbAxisY", tap.TargetAxis);
+            Assert.True(tap.TargetAxisNegative); // LSTICK_UP = SDL-frame negative
+            var hold = Assert.Single(p.Macros, m => m.Action == TranslatedMacroAction.HoldVcAxis);
+            Assert.Equal("HoldForMs", hold.TriggerMode);
+            Assert.Equal("LeftThumbAxisY", hold.TargetAxis);
+            Assert.False(hold.TargetAxisNegative); // LSTICK_DOWN = SDL-frame positive
         }
 
         [Fact]

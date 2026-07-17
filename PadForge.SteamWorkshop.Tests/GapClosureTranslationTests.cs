@@ -168,10 +168,10 @@ namespace PadForge.SteamWorkshop.Tests
         }
 
         [Fact]
-        public void ScrollWheel_KeyBindingOnScrollMember_KeepsNamedSkip()
+        public void ScrollWheel_KeyBindingOnScrollMember_TapsOnTheSwipeGesture()
         {
-            // A key on a wheel detent has no continuous channel (the finger
-            // axes have no bool read), so it keeps the named skip.
+            // v15: a key on a wheel detent rides the one-shot swipe walk
+            // (clockwise = SwipeDown), one tap per swipe.
             string vdf = Head
                 + Group(1, "scrollwheel", Inputs(
                     Inp("scroll_clockwise", "key_press KEYPAD_PLUS")))
@@ -179,9 +179,11 @@ namespace PadForge.SteamWorkshop.Tests
                 + "}\n";
             var p = Translate(vdf);
             Assert.Empty(p.KbmMappingSet.Rows);
-            Assert.Contains(p.Report.Entries, e =>
-                e.ReasonKey == TranslationReasons.ScrollWheelModeNotSupported
-                && e.Status == TranslationStatus.Skipped);
+            var tap = Assert.Single(p.Macros);
+            Assert.Equal(TranslatedMacroAction.KeyTap, tap.Action);
+            Assert.Equal("Touchpad 0 SwipeDown", Assert.Single(tap.TriggerInputDescriptors));
+            Assert.DoesNotContain(p.Report.Entries, e =>
+                e.ReasonKey == TranslationReasons.ScrollWheelModeNotSupported);
         }
 
         // ─── G5: activator fire delays ──────────────────────────────────
@@ -261,16 +263,20 @@ namespace PadForge.SteamWorkshop.Tests
         }
 
         [Fact]
-        public void ReleaseActivator_OnTriggerAxisTarget_KeepsNamedSkip()
+        public void ReleaseActivator_OnTriggerAxisTarget_TapsTheAxisHold()
         {
+            // v15: one full-pull AxisHold tap on the release edge.
             string vdf = Head
                 + Group(1, "four_buttons", Inputs(
                     Inp("button_a", "xinput_button TRIGGER_LEFT", activator: "release")))
                 + Preset(0, "Default", (1, "button_diamond active"))
                 + "}\n";
             var p = Translate(vdf);
-            Assert.Empty(p.Macros);
-            Assert.Contains(p.Report.Entries, e =>
+            var m = Assert.Single(p.Macros);
+            Assert.Equal(TranslatedMacroAction.VcAxisTap, m.Action);
+            Assert.Equal("OnRelease", m.TriggerMode);
+            Assert.Equal("LeftTrigger", m.TargetAxis);
+            Assert.DoesNotContain(p.Report.Entries, e =>
                 e.ReasonKey == TranslationReasons.ReleaseActivatorNotSupported);
         }
 

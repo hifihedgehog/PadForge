@@ -659,13 +659,32 @@ namespace PadForge.ViewModels
 
             private PadForge.Engine.Data.MappingSource _descriptorSource;
 
+            /// <summary>Deadzone / threshold percent stamped onto the cached
+            /// <see cref="DescriptorSource"/> (v15). 0 (default) leaves the
+            /// source's DeadZone unset so axis-class descriptors read the
+            /// evaluator's default threshold and gyro keeps its engine-default
+            /// 30°/s rate. Distinct from <see cref="DeadZone"/>, whose 1..100
+            /// clamp cannot express "engine default" and whose 50 default
+            /// would silently retune every existing descriptor entry.</summary>
+            private int _descriptorDeadZone;
+            public int DescriptorDeadZone
+            {
+                get => _descriptorDeadZone;
+                set { if (SetProperty(ref _descriptorDeadZone, Math.Clamp(value, 0, 100))) _descriptorSource = null; }
+            }
+
             /// <summary>Cached <see cref="PadForge.Engine.Data.MappingSource"/>
             /// wrapper for <see cref="SourceDescriptor"/>, so the 1 kHz trigger
             /// evaluation never allocates (mirrors <see cref="TryGetGestureParts"/>).
-            /// DeadZone is left at 0 (unset) on purpose: the descriptor entry
-            /// has no per-entry threshold editor, so axis-class descriptors
-            /// read the evaluator's default threshold and gyro keeps its
-            /// engine default. Null when this isn't a descriptor entry.</summary>
+            /// DeadZone is left at 0 (unset) unless a
+            /// <see cref="DescriptorDeadZone"/> was stamped, so axis-class
+            /// descriptors read the evaluator's default threshold and gyro
+            /// keeps its engine default. The entry's HalfAxis / Invert /
+            /// Bidirectional flags ride onto the source (v15): all default
+            /// false, so plain entries evaluate exactly as before, and a
+            /// stamped gyro entry reads ONE signed rotation direction through
+            /// the engine's half-aware gyro bool read. Null when this isn't a
+            /// descriptor entry.</summary>
             [System.Xml.Serialization.XmlIgnore]
             public PadForge.Engine.Data.MappingSource DescriptorSource
                 => string.IsNullOrEmpty(_sourceDescriptor)
@@ -673,7 +692,10 @@ namespace PadForge.ViewModels
                     : _descriptorSource ??= new PadForge.Engine.Data.MappingSource
                     {
                         Descriptor = _sourceDescriptor,
-                        DeadZone = 0,
+                        DeadZone = _descriptorDeadZone,
+                        HalfAxis = _halfAxis,
+                        Invert = _invert,
+                        Bidirectional = _bidirectional,
                     };
 
             /// <summary>Axis target on the device's standard SDL gamepad layout
@@ -695,7 +717,7 @@ namespace PadForge.ViewModels
             public bool HalfAxis
             {
                 get => _halfAxis;
-                set => SetProperty(ref _halfAxis, value);
+                set { if (SetProperty(ref _halfAxis, value)) _descriptorSource = null; }
             }
 
             /// <summary>When true the axis reading is flipped (val → 1−val)
@@ -705,7 +727,7 @@ namespace PadForge.ViewModels
             public bool Invert
             {
                 get => _invert;
-                set => SetProperty(ref _invert, value);
+                set { if (SetProperty(ref _invert, value)) _descriptorSource = null; }
             }
 
             /// <summary>When true (and <see cref="HalfAxis"/> is also on) the
@@ -719,7 +741,7 @@ namespace PadForge.ViewModels
             public bool Bidirectional
             {
                 get => _bidirectional;
-                set => SetProperty(ref _bidirectional, value);
+                set { if (SetProperty(ref _bidirectional, value)) _descriptorSource = null; }
             }
 
             /// <summary>Axis-to-button deadzone in percent (1..100). Default
@@ -766,6 +788,9 @@ namespace PadForge.ViewModels
             /// (e.g. <c>in:GUID:ax:LeftStickX:1:0:50:1</c>). The trailing
             /// Bidirectional field is optional. The parser defaults it to 0
             /// when reading older XML written before the flag existed.
+            /// Descriptor entries write <c>sd:{descriptor}</c> when
+            /// unstamped and the v15 <c>sdh:h:i:b:dz:{descriptor}</c> form
+            /// when a half selector or explicit threshold rides along.
             /// The GUID may be all-zero (#9 B-9): that is the persisted
             /// "the device on the macro's slot" form, so an empty guid no
             /// longer voids the spec. A payload-less entry still yields
@@ -786,9 +811,17 @@ namespace PadForge.ViewModels
                     if (!string.IsNullOrEmpty(GestureDescriptor))
                         return $"in:{DeviceGuid}:tg:{GestureDescriptor.Replace("|", "&P")}";
                     // Descriptor entries (#9 B-9) ride the same
-                    // tail-escaping shape as gestures.
+                    // tail-escaping shape as gestures. A stamped entry
+                    // (v15: half selector and/or explicit threshold) takes
+                    // the extended "sdh" tag with the flags BEFORE the
+                    // descriptor tail so the tail re-join keeps working;
+                    // plain entries keep the byte-identical "sd" form.
                     if (!string.IsNullOrEmpty(SourceDescriptor))
+                    {
+                        if (HalfAxis || DescriptorDeadZone > 0)
+                            return $"in:{DeviceGuid}:sdh:{(HalfAxis ? 1 : 0)}:{(Invert ? 1 : 0)}:{(Bidirectional ? 1 : 0)}:{DescriptorDeadZone}:{SourceDescriptor.Replace("|", "&P")}";
                         return $"in:{DeviceGuid}:sd:{SourceDescriptor.Replace("|", "&P")}";
+                    }
                     return "";
                 }
             }
@@ -831,6 +864,22 @@ namespace PadForge.ViewModels
                             .Replace("&P", "|");
                         if (string.IsNullOrWhiteSpace(sd)) return null;
                         entry.SourceDescriptor = sd;
+                        return entry;
+                    case "sdh":
+                        // Stamped descriptor entry (v15): HalfAxis, Invert,
+                        // Bidirectional, and the descriptor threshold ride
+                        // in front of the descriptor tail
+                        // (in:GUID:sdh:h:i:b:dz:{descriptor}).
+                        if (parts.Length < 8) return null;
+                        string sdh = string.Join(":", parts, 7, parts.Length - 7)
+                            .Replace("&P", "|");
+                        if (string.IsNullOrWhiteSpace(sdh)) return null;
+                        entry.SourceDescriptor = sdh;
+                        entry.HalfAxis = parts[3] == "1";
+                        entry.Invert = parts[4] == "1";
+                        entry.Bidirectional = parts[5] == "1";
+                        if (int.TryParse(parts[6], out int sdz))
+                            entry.DescriptorDeadZone = sdz;
                         return entry;
                     case "ax":
                         if (!Enum.TryParse<MacroAxisTarget>(parts[3], out var at) || at == MacroAxisTarget.None) return null;
@@ -2120,6 +2169,7 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(IsAnyKeyType));
                     OnPropertyChanged(nameof(IsDurationType));
                     OnPropertyChanged(nameof(IsAxisType));
+                    OnPropertyChanged(nameof(IsMouseWheelTapType));
                     OnPropertyChanged(nameof(IsSystemVolumeType));
                     OnPropertyChanged(nameof(IsAppVolumeType));
                     OnPropertyChanged(nameof(IsMouseMoveType));
@@ -2206,17 +2256,23 @@ namespace PadForge.ViewModels
         public bool IsKeyType => _type == MacroActionType.KeyPress || _type == MacroActionType.KeyRelease;
 
         /// <summary>True when Type uses the generic <c>DurationMs</c>
-        /// field for its hold time — ButtonPress / KeyPress / Delay /
-        /// MouseButtonPress. LightbarColor uses its own
+        /// field for its hold time: ButtonPress / KeyPress / Delay /
+        /// MouseButtonPress / AxisHold. LightbarColor uses its own
         /// <c>LightbarHoldMs</c>/<c>LightbarFadeMs</c> pair instead so
         /// the hold and fade sliders can be scaled and labeled
         /// separately from the generic ms field.</summary>
         [System.Xml.Serialization.XmlIgnore]
-        public bool IsDurationType => _type == MacroActionType.ButtonPress || _type == MacroActionType.KeyPress || _type == MacroActionType.Delay || _type == MacroActionType.MouseButtonPress;
+        public bool IsDurationType => _type == MacroActionType.ButtonPress || _type == MacroActionType.KeyPress || _type == MacroActionType.Delay || _type == MacroActionType.MouseButtonPress || _type == MacroActionType.AxisHold;
 
-        /// <summary>True when Type is AxisSet.</summary>
+        /// <summary>True when Type is AxisSet or AxisHold (both edit the
+        /// axis target + value pair; AxisHold adds the duration knob via
+        /// <see cref="IsDurationType"/>).</summary>
         [System.Xml.Serialization.XmlIgnore]
-        public bool IsAxisType => _type == MacroActionType.AxisSet;
+        public bool IsAxisType => _type == MacroActionType.AxisSet || _type == MacroActionType.AxisHold;
+
+        /// <summary>True when Type is MouseWheelTap (v15).</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool IsMouseWheelTapType => _type == MacroActionType.MouseWheelTap;
 
         /// <summary>True when Type is SystemVolume.</summary>
         [System.Xml.Serialization.XmlIgnore]
@@ -3010,6 +3066,20 @@ namespace PadForge.ViewModels
             set
             {
                 if (SetProperty(ref _invertAxis, value))
+                    OnPropertyChanged(nameof(DisplayText));
+            }
+        }
+
+        private bool _wheelHorizontal;
+
+        /// <summary>For MouseWheelTap (v15): tick the horizontal
+        /// (MOUSEEVENTF_HWHEEL) lane instead of the vertical wheel.</summary>
+        public bool WheelHorizontal
+        {
+            get => _wheelHorizontal;
+            set
+            {
+                if (SetProperty(ref _wheelHorizontal, value))
                     OnPropertyChanged(nameof(DisplayText));
             }
         }
@@ -4148,6 +4218,8 @@ namespace PadForge.ViewModels
                     MacroActionType.KeyRelease => string.Format(Strings.Instance.MacroAction_KeyRelease_Format, keyDisplay),
                     MacroActionType.Delay => string.Format(Strings.Instance.MacroAction_Wait_Format, _durationMs),
                     MacroActionType.AxisSet => string.Format(Strings.Instance.MacroAction_SetAxis_Format, _axisTarget, _axisValue),
+                    MacroActionType.AxisHold => string.Format(Strings.Instance.MacroAction_HoldAxis_Format, _axisTarget, _axisValue, _durationMs),
+                    MacroActionType.MouseWheelTap => Strings.Instance.MacroAction_Type_MouseWheelTap,
                     MacroActionType.SystemVolume => _volumeLimit < 100
                         ? string.Format(Strings.Instance.MacroAction_SysVolLimit_Format, axisLabel, _volumeLimit)
                         : string.Format(Strings.Instance.MacroAction_SysVol_Format, axisLabel),
@@ -4793,7 +4865,30 @@ namespace PadForge.ViewModels
         /// projection and lean steering re-reference the controller's
         /// CURRENT pose. At the tail per the APPEND-ONLY rule above;
         /// ordinal pinned.</summary>
-        GyroRecenter = 38
+        GyroRecenter = 38,
+
+        /// <summary>Timed axis assert (translator v15). Writes
+        /// <see cref="MacroAction.AxisValue"/> to
+        /// <see cref="MacroAction.AxisTarget"/> EVERY frame while the action
+        /// is current, advancing only when <see cref="MacroAction.DurationMs"/>
+        /// elapses, mirroring how ButtonPress keeps its flags asserted per
+        /// frame. The hold-until-release form rides
+        /// RepeatMode=UntilRelease + RepeatDelayMs=0, the HoldVcButton
+        /// lowering shape. Trigger targets read AxisValue on the pull scale
+        /// (0..32767 = 0..100%, doubled onto the 0..65535 output), so a
+        /// full pull IS reachable; sticks keep the signed short frame
+        /// AxisSet uses. At the tail per the APPEND-ONLY rule above;
+        /// ordinal pinned.</summary>
+        AxisHold = 39,
+
+        /// <summary>One discrete mouse-wheel detent per fire (translator
+        /// v15): a single WHEEL_DELTA SendInput tick.
+        /// <see cref="MacroAction.AxisValue"/> is the signed tick count
+        /// (positive = up / right, 0 reads as +1);
+        /// <see cref="MacroAction.WheelHorizontal"/> selects the
+        /// MOUSEEVENTF_HWHEEL lane. At the tail per the APPEND-ONLY rule
+        /// above; ordinal pinned.</summary>
+        MouseWheelTap = 40
     }
 
     /// <summary>Target selector for <see cref="MacroActionType.DisconnectController"/>

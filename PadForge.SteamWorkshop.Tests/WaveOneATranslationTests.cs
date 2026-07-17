@@ -1,4 +1,5 @@
 using System.Linq;
+using PadForge.Engine;
 using PadForge.SteamWorkshop.Model;
 using PadForge.SteamWorkshop.Translation;
 using PadForge.SteamWorkshop.Vdf;
@@ -353,29 +354,35 @@ namespace PadForge.SteamWorkshop.Tests
         // ─── Named-skip batch ───────────────────────────────────────────
 
         [Fact]
-        public void TwoDScroll_GyroHost_NamesTheUnsignedRateSkip()
+        public void TwoDScroll_GyroHost_TapsOnTheSignedRateHalf()
         {
-            // Trackpad hosts lower onto the swipe gestures since v10 (G3)
-            // and stick hosts onto wedge taps (v12). The gyro read is an
-            // unsigned rate with no per-direction one-shot, so the gyro
-            // arm names exactly that fact (v14).
+            // v15: a gyro flick east reads the yaw rate's LOWER half
+            // (SDL frame: positive yaw = nose left, so east = negative)
+            // through a half-stamped descriptor trigger.
             string vdf = Head
                 + Group(1, "2dscroll", Inputs(Inp("dpad_east", "key_press F9")))
                 + Preset(0, "Default", (1, "gyro active"))
                 + "}\n";
             var p = Translate(vdf);
-            var entry = Assert.Single(p.Report.Entries);
-            Assert.Equal(TranslationStatus.Skipped, entry.Status);
-            Assert.Equal(TranslationReasons.GyroSwipeNotSupported, entry.ReasonKey);
+            var m = Assert.Single(p.Macros);
+            Assert.Equal(TranslatedMacroAction.KeyTap, m.Action);
+            Assert.Equal("OnPress", m.TriggerMode);
+            Assert.Equal("Gyro Yaw", Assert.Single(m.TriggerInputDescriptors));
+            Assert.True(m.TriggerDescriptorHalfAxis);
+            Assert.True(m.TriggerDescriptorInvert);
+            // Unset on purpose: the engine's own 30 deg/s gyro-as-button
+            // rate threshold gates the flick.
+            Assert.Equal(0, m.TriggerDescriptorDeadZonePercent);
             Assert.DoesNotContain(p.Report.Entries, e =>
                 e.ReasonKey == TranslationReasons.UnknownGroupMode);
         }
 
         [Fact]
-        public void TwoDScroll_ButtonHost_NamesTheMissingSurface()
+        public void TwoDScroll_ButtonHost_SkipsPerMemberNotPerGroup()
         {
             // A hand-hacked config can host 2dscroll on a surface with no
-            // 2D direction read at all. The skip names the host (v14).
+            // dpad_* member sources. The member walk (v15) names each
+            // unresolvable input instead of skipping the group whole.
             string vdf = Head
                 + Group(1, "2dscroll", Inputs(Inp("dpad_east", "key_press F9")))
                 + Preset(0, "Default", (1, "button_diamond active"))
@@ -383,8 +390,29 @@ namespace PadForge.SteamWorkshop.Tests
             var p = Translate(vdf);
             var entry = Assert.Single(p.Report.Entries);
             Assert.Equal(TranslationStatus.Skipped, entry.Status);
-            Assert.Equal(TranslationReasons.SwipeSurfaceNotSupported, entry.ReasonKey);
-            Assert.Equal("ButtonDiamond", Assert.Single(entry.ReasonArgs));
+            Assert.Equal(TranslationReasons.UnknownPhysicalInput, entry.ReasonKey);
+            Assert.Equal(new[] { "ButtonDiamond", "dpad_east" }, entry.ReasonArgs);
+        }
+
+        [Fact]
+        public void TwoDScroll_DpadHost_TapsOncePerPress()
+        {
+            // v15: a physical-dpad-hosted swipe member is a button read,
+            // and the one-shot walk taps once per press edge.
+            string vdf = Head
+                + Group(1, "2dscroll", Inputs(Inp("dpad_north", "key_press F5")))
+                + Preset(0, "Default", (1, "dpad active"))
+                + "}\n";
+            var p = Translate(vdf);
+            var m = Assert.Single(p.Macros);
+            Assert.Equal(TranslatedMacroAction.KeyTap, m.Action);
+            Assert.Equal("OnPress", m.TriggerMode);
+            // Button host: the combined-output trigger shape (a zero-row
+            // Xbox set keeps the automap passthrough feeding the bit, the
+            // FinalizeMacroTriggers contract).
+            Assert.Equal(Gamepad.DPAD_UP, m.TriggerXboxButtons);
+            Assert.Equal("Gamepad DPadUp", m.TriggerFallbackDescriptor);
+            Assert.False(m.TriggerDescriptorHalfAxis);
         }
 
         [Fact]
@@ -695,12 +723,12 @@ namespace PadForge.SteamWorkshop.Tests
         // ─── Translator version ─────────────────────────────────────────
 
         [Fact]
-        public void TranslatorVersion_IsFourteen_AndRidesTheSummary()
+        public void TranslatorVersion_IsFifteen_AndRidesTheSummary()
         {
-            Assert.Equal(14, TranslationReport.CurrentTranslatorVersion);
+            Assert.Equal(15, TranslationReport.CurrentTranslatorVersion);
             var p = Translate(Head + "}\n");
-            Assert.Equal(14, p.Report.TranslatorVersion);
-            Assert.StartsWith("v14 ", p.Report.ToSummaryString());
+            Assert.Equal(15, p.Report.TranslatorVersion);
+            Assert.StartsWith("v15 ", p.Report.ToSummaryString());
         }
     }
 }

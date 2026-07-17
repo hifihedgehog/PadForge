@@ -183,6 +183,30 @@ namespace PadForge.SteamWorkshop.Translation
         /// RunProgram action; the materializer resolves TabTip.exe and
         /// falls back to osk.exe.</summary>
         ShowOnScreenKeyboard = 15,
+
+        /// <summary>One timed assert of a virtual-controller axis (v15):
+        /// a swipe flick or release activator on a trigger-pull / stick-
+        /// direction target. <see cref="TranslatedMacro.TargetAxis"/> names
+        /// the axis and <see cref="TranslatedMacro.TargetAxisNegative"/>
+        /// the direction. Lowers to MacroActionType.AxisHold at the
+        /// default tap duration.</summary>
+        VcAxisTap = 16,
+
+        /// <summary>Assert a virtual-controller axis from the trigger fire
+        /// until the physical input releases (v15): a Long_Press binding
+        /// on a trigger-pull / stick-direction target. Lowers to
+        /// MacroActionType.AxisHold riding RepeatMode=UntilRelease +
+        /// RepeatDelayMs=0, the HoldVcButton shape.</summary>
+        HoldVcAxis = 17,
+
+        /// <summary>One discrete mouse-wheel detent per fire (v15): a
+        /// <c>mouse_wheel</c> binding hosted on a one-shot context (swipe
+        /// flick, release activator, Long_Press threshold).
+        /// <see cref="TranslatedMacro.WheelTicks"/> is the signed count
+        /// (positive = up / right) and
+        /// <see cref="TranslatedMacro.WheelHorizontal"/> picks the lane.
+        /// Lowers to MacroActionType.MouseWheelTap.</summary>
+        MouseWheelTap = 18,
     }
 
     /// <summary>
@@ -360,5 +384,30 @@ namespace PadForge.SteamWorkshop.Translation
         /// macros the whole action IS the release leg; on the Hold* pairs
         /// it lands on the release twin.</summary>
         public int DelayEndMs { get; set; }
+
+        // ── v15 payloads ──
+
+        /// <summary>Virtual-controller axis the
+        /// <see cref="TranslatedMacroAction.VcAxisTap"/> /
+        /// <see cref="TranslatedMacroAction.HoldVcAxis"/> actions write:
+        /// an <see cref="XInputTargetTable.XInputTarget.Target"/> name
+        /// ("LeftTrigger", "LeftThumbAxisY", ...).</summary>
+        public string TargetAxis { get; set; } = "";
+
+        /// <summary>Direction for stick-axis targets, in the translator's
+        /// SDL row frame (+X right, +Y down): true = the negative end
+        /// (up / left), matching XInputTarget.StickAxisNegative. The
+        /// materializer converts to the XInput thumb frame. Ignored for
+        /// trigger targets (a pull has one direction).</summary>
+        public bool TargetAxisNegative { get; set; }
+
+        /// <summary>Signed wheel tick count for
+        /// <see cref="TranslatedMacroAction.MouseWheelTap"/>
+        /// (positive = up / right). One Steam detent = 1.</summary>
+        public int WheelTicks { get; set; } = 1;
+
+        /// <summary>MouseWheelTap lane selector: true = the horizontal
+        /// (MOUSEEVENTF_HWHEEL) wheel.</summary>
+        public bool WheelHorizontal { get; set; }
     }
 }

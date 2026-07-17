@@ -117,7 +117,7 @@ menus: 2
     [8] De Jure Empires
     [9] Counties
     [10] Houses
-report: v14 rows:x0+k38 macros:9 menus:2 layers:2 clean:45 partial:6 skipped:0 errors:0
+report: v15 rows:x0+k38 macros:9 menus:2 layers:2 clean:47 partial:4 skipped:0 errors:0
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_a/Full_Press => KbmKey20 <- Gamepad ButtonA
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_b/Full_Press => KbmKey6B <- Gamepad ButtonB
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_x/Full_Press => KbmKey6D <- Gamepad ButtonX
@@ -162,9 +162,9 @@ report: v14 rows:x0+k38 macros:9 menus:2 layers:2 clean:45 partial:6 skipped:0 e
   Partial InterruptibleDropped @ Default/switch/group 12 (switches)/button_back_left/Full_Press
   Clean RowEmitted @ Default/switch/group 12 (switches)/button_back_right/Full_Press => KbmKey1B <- Gamepad Paddle1
   Clean RowEmitted @ Default/switch/group 12 (switches)/button_escape/Full_Press => KbmKey47 <- Gamepad ButtonStart
-  Partial MacroTriggerViaXboxOutput @ Default/switch/group 12 (switches)/button_escape/Long_Press => Hold SPACE macro
+  Clean MacroEmitted @ Default/switch/group 12 (switches)/button_escape/Long_Press => Hold SPACE macro
   Clean RowEmitted @ Default/switch/group 12 (switches)/button_menu/Full_Press => KbmKey46 <- Gamepad ButtonBack
-  Partial MacroTriggerViaXboxOutput @ Default/switch/group 12 (switches)/button_menu/Long_Press => Hold H macro
+  Clean MacroEmitted @ Default/switch/group 12 (switches)/button_menu/Long_Press => Hold H macro
   Clean RowEmitted @ Default/switch/group 12 (switches)/left_bumper/Full_Press => KbmKeyA2 <- Gamepad LeftShoulder
   Clean RowEmitted @ Default/switch/group 12 (switches)/right_bumper/Full_Press => KbmKeyA0 <- Gamepad RightShoulder
   Clean ShiftLayerEmitted(left_trackpad shift) @ Default/switch/group 12 (switches)/button_back_left/Full_Press => Hold -> Layer_2220285578_0_MS_left_trackpad_8

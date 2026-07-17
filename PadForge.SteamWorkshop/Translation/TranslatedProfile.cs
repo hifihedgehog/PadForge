@@ -242,6 +242,26 @@ namespace PadForge.SteamWorkshop.Translation
         /// same finalize swap.</summary>
         public string TriggerFallbackGateDescriptor { get; set; } = "";
 
+        /// <summary>Half-axis shape of the hosting input's own read (v12),
+        /// carried beside the descriptor triggers. An axis-class descriptor
+        /// converts to a trigger entry that reads the FULL axis by default,
+        /// so a wedge-hosted macro (a stick-as-dpad member) would fire on
+        /// any deflection of the whole axis. When true, the materializer
+        /// stamps the axis-shaped entry as a half-axis read with
+        /// <see cref="TriggerDescriptorInvert"/> selecting the half, the
+        /// same MappingSource.HalfAxis/Invert contract the wedge row uses.</summary>
+        public bool TriggerDescriptorHalfAxis { get; set; }
+
+        /// <summary>Half selector for <see cref="TriggerDescriptorHalfAxis"/>:
+        /// false reads the upper half (SDL positive: south and east wedges),
+        /// true the lower half (north and west wedges).</summary>
+        public bool TriggerDescriptorInvert { get; set; }
+
+        /// <summary>Deadzone percent for the axis-shaped trigger entry
+        /// (1..100), from the hosting source's own threshold (a group inner
+        /// deadzone, the trigger click's 75). 0 keeps the entry default.</summary>
+        public int TriggerDescriptorDeadZonePercent { get; set; }
+
         /// <summary>"LeftTrigger" / "RightTrigger" when the trigger input is
         /// an analog trigger; null/empty otherwise.</summary>
         public string TriggerAxisTarget { get; set; } = "";

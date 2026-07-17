@@ -83,10 +83,10 @@ kbm activators: 3
   Hold Layer_2948704083_0_MS_right_trackpad_15 | Gamepad Paddle1 | inherit | name=right_trackpad shift
 macros: 6
   macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Touchpad 0 Click] strength=33%
-  macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Gamepad LeftTrigger] strength=66%
+  macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Gamepad LeftTrigger] in-half=upper in-dz=75 strength=66%
   macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Gamepad RightStick] strength=33%
   macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Touchpad 0 Click; Touchpad 0 TouchRight] strength=33%
-  macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Gamepad RightTrigger] strength=66%
+  macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Gamepad RightTrigger] in-half=upper in-dz=75 strength=66%
   macro KeyTap OnPress | Screenshot key (button_capture) | btns=0x0000 in=[Button 11] vk=0x2C
 menus: 2
   menu 1 Grid | Touchpad 0 [left half] | Layer_2948704083_0_MS_left_trackpad_14 | fire=Click cells=2 pos=(2%,78%) | name=Touch Menu 1
@@ -97,7 +97,7 @@ menus: 2
     [1] Game Areas
     [2] Bulldoze
     [3] Unlocking Panel
-report: v11 rows:x0+k33 macros:6 menus:2 layers:3 clean:44 partial:13 skipped:0 errors:0
+report: v12 rows:x0+k33 macros:6 menus:2 layers:3 clean:44 partial:13 skipped:0 errors:0
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_a/Full_Press => KbmMBtn0 <- Gamepad ButtonA
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_b/Full_Press => KbmMBtn1 <- Gamepad ButtonB
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_x/Full_Press => KbmKey42 <- Gamepad ButtonX

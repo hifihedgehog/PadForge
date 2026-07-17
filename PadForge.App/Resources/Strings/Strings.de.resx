@@ -2558,10 +2558,10 @@
   <data name="Workshop_Tr_FlickStickTuningDropped" xml:space="preserve"><value>Flick-Stick-Feinabstimmung verworfen ({0})</value></data>
   <data name="Workshop_Tr_MouseModeTuningDropped" xml:space="preserve"><value>Maus-Feinabstimmung verworfen ({0})</value></data>
   <data name="Workshop_Tr_AxisInversionNotApplied" xml:space="preserve"><value>Achsenumkehr nicht angewendet ({0})</value></data>
-  <data name="Workshop_Tr_HapticPulseEmitted" xml:space="preserve"><value>haptisches Feedback als Rumble-Impuls angenähert (Stufe {0})</value></data>
   <data name="Workshop_Tr_ScrollWheelApproximated" xml:space="preserve"><value>kreisförmiges Scrollrad als vertikales Ziehen angenähert</value></data>
   <data name="Workshop_Tr_ScreenshotApproximated" xml:space="preserve"><value>SCREENSHOT als Druck-Taste angenähert</value></data>
   <data name="Workshop_Tr_ShowKeyboardApproximated" xml:space="preserve"><value>SHOW_KEYBOARD als Start der Bildschirmtastatur angenähert</value></data>
+  <data name="Workshop_Tr_MouseDeltaNotSupported" xml:space="preserve"><value>relative Cursorbewegung mouse_delta ({0}) nicht unterstützt</value></data>
   <data name="Macro_HoldForMs" xml:space="preserve"><value>Beim Halten</value></data>
   <data name="Macro_HoldForMs_Tooltip" xml:space="preserve"><value>Löst einmal aus, nachdem der Auslöser ununterbrochen für die Haltezeit gehalten wurde. Ein kürzeres Antippen bewirkt nichts.</value></data>
   <data name="Macro_TriggerHoldMs_Label" xml:space="preserve"><value>Haltezeit</value></data>

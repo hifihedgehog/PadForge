@@ -373,7 +373,9 @@ namespace PadForge.SteamWorkshop.Tests
         public void HapticIntensity_EmitsRumblePulsePerActivator()
         {
             // v10 G1: activator-level haptics become RumblePulse macros,
-            // level-scaled; a stored 0 is off and stays silent.
+            // level-scaled. A stored 0 is off and stays silent. The lowering
+            // is clean and silent since v13: Steam Input treats rumble and
+            // haptics interchangeably, so no Partial note fires.
             string vdf = Head
                 + Group(1, "four_buttons", Inputs(
                     Inp("button_a", "key_press E", activatorSettings: ActSettings(("haptic_intensity", "2"))),
@@ -386,9 +388,8 @@ namespace PadForge.SteamWorkshop.Tests
             Assert.Equal(2, pulses.Count);
             Assert.Equal(new[] { 66, 33 }, pulses.Select(m => m.RumbleStrengthPercent).ToArray());
             Assert.All(pulses, m => Assert.False(m.ConsumeTrigger));
-            Assert.Equal(2, p.Report.Entries.Count(e =>
-                e.ReasonKey == TranslationReasons.HapticPulseEmitted
-                && e.Status == TranslationStatus.Partial));
+            Assert.DoesNotContain(p.Report.Entries, e =>
+                e.Status == TranslationStatus.Partial);
             Assert.DoesNotContain(p.Report.Entries, e =>
                 e.ReasonKey == TranslationReasons.HapticIntensityDropped);
         }
@@ -675,12 +676,12 @@ namespace PadForge.SteamWorkshop.Tests
         // ─── Translator version ─────────────────────────────────────────
 
         [Fact]
-        public void TranslatorVersion_IsTwelve_AndRidesTheSummary()
+        public void TranslatorVersion_IsThirteen_AndRidesTheSummary()
         {
-            Assert.Equal(12, TranslationReport.CurrentTranslatorVersion);
+            Assert.Equal(13, TranslationReport.CurrentTranslatorVersion);
             var p = Translate(Head + "}\n");
-            Assert.Equal(12, p.Report.TranslatorVersion);
-            Assert.StartsWith("v12 ", p.Report.ToSummaryString());
+            Assert.Equal(13, p.Report.TranslatorVersion);
+            Assert.StartsWith("v13 ", p.Report.ToSummaryString());
         }
     }
 }

@@ -59,20 +59,17 @@ macros: 10
   macro SetLightbarColor OnPress | Set LED (dpad_north) | btns=0x0000 in=[Touchpad 0 DPadUp; Touchpad 0 Click] rgb=(255,236,0) bright=100% sat=100% setting=1
   macro SetLightbarColor OnPress | Set LED (dpad_south) | btns=0x0000 in=[Touchpad 0 DPadDown; Touchpad 0 Click] rgb=(0,255,255) bright=100% sat=100% setting=0
   macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Gamepad RightTrigger] in-half=upper in-dz=75 strength=66%
-report: v12 rows:x19+k1 macros:10 menus:0 layers:0 clean:23 partial:13 skipped:0 errors:0
-  Partial HapticPulseEmitted(2) @ Default/joystick/group 3 (joystick_move)/click/Full_Press => Rumble pulse macro (66%)
+report: v13 rows:x19+k1 macros:10 menus:0 layers:0 clean:23 partial:10 skipped:0 errors:0
   Partial TrackpadFeatureRequired(Touchpad joystick output) @ Default/left_trackpad/group 17 (dpad)/dpad_east/Full_Press => Set LED macro
   Partial TrackpadHalfApproximated @ Default/left_trackpad/group 17 (dpad)
   Partial TrackpadFeatureRequired(Touchpad joystick output) @ Default/left_trackpad/group 17 (dpad)/dpad_north/Full_Press => Set LED macro
   Partial TrackpadFeatureRequired(Touchpad joystick output) @ Default/left_trackpad/group 17 (dpad)/dpad_south/Full_Press => Set LED macro
   Partial TrackpadFeatureRequired(Touchpad joystick output) @ Default/left_trackpad/group 17 (dpad)/dpad_west/Full_Press => Set LED macro
-  Partial HapticPulseEmitted(2) @ Default/left_trigger/group 4 (trigger)/click/Full_Press => Rumble pulse macro (66%)
   Partial TrackpadFeatureRequired(Touchpad joystick output) @ Default/right_trackpad/group 19 (dpad)/dpad_east/Full_Press => Set LED macro
   Partial TrackpadHalfApproximated @ Default/right_trackpad/group 19 (dpad)
   Partial TrackpadFeatureRequired(Touchpad joystick output) @ Default/right_trackpad/group 19 (dpad)/dpad_north/Full_Press => Set LED macro
   Partial TrackpadFeatureRequired(Touchpad joystick output) @ Default/right_trackpad/group 19 (dpad)/dpad_south/Full_Press => Set LED macro
   Partial TrackpadFeatureRequired(Touchpad joystick output) @ Default/right_trackpad/group 19 (dpad)/dpad_west/Full_Press => KbmKey4E <- Touchpad 0 DPadLeft
-  Partial HapticPulseEmitted(2) @ Default/right_trigger/group 5 (trigger)/click/Full_Press => Rumble pulse macro (66%)
   Clean RowEmitted @ Default/switch/group 9 (switches)/button_back_left/Full_Press => ButtonA <- Gamepad Paddle2
   Clean RowEmitted @ Default/switch/group 9 (switches)/button_back_right/Full_Press => ButtonX <- Gamepad Paddle1
   Clean RowEmitted @ Default/joystick/group 3 (joystick_move) => LeftThumbAxisX <- Gamepad LeftStickX

@@ -86,10 +86,15 @@ namespace PadForge.SteamWorkshop.Translation
             d["LEFT_CONTROL"] = 0xA2; d["RIGHT_CONTROL"] = 0xA3;
             d["LEFT_ALT"] = 0xA4; d["RIGHT_ALT"] = 0xA5;
 
-            // Specials.
+            // Specials. ENTER / ESC / BREAK are the serializer's alias
+            // spellings (steamclient.dll key token table: RETURN, ENTER,
+            // ESCAPE, ESC, ... SCROLL_LOCK, BREAK, INSERT), and Valve's
+            // own controller_base templates carry ENTER.
             d["SPACE"] = 0x20;
             d["RETURN"] = 0x0D;
+            d["ENTER"] = 0x0D;
             d["ESCAPE"] = 0x1B;
+            d["ESC"] = 0x1B;
             d["TAB"] = 0x09;
             d["BACKSPACE"] = 0x08;
             d["CAPSLOCK"] = 0x14;
@@ -97,6 +102,23 @@ namespace PadForge.SteamWorkshop.Translation
             d["SCROLL_LOCK"] = 0x91;
             d["PRINT_SCREEN"] = 0x2C;
             d["PAUSE"] = 0x13;
+            d["BREAK"] = 0x13;
+
+            // Windows keys and the media row (steamclient.dll token table:
+            // LEFT_WINDOWS ... RIGHT_CONTROL, VOLUME_UP, VOLUME_DOWN, MUTE,
+            // PLAY, STOP, NEXT_TRACK, PREV_TRACK, and Valve's desktop
+            // template binds VOLUME_UP / PLAY / NEXT_TRACK). All land
+            // outside the KbM row engine's closed set, so they ride the
+            // SendInput HoldKey macro channel (v10 G11).
+            d["LEFT_WINDOWS"] = 0x5B;
+            d["RIGHT_WINDOWS"] = 0x5C;
+            d["VOLUME_UP"] = 0xAF;    // VK_VOLUME_UP
+            d["VOLUME_DOWN"] = 0xAE;  // VK_VOLUME_DOWN
+            d["MUTE"] = 0xAD;         // VK_VOLUME_MUTE
+            d["PLAY"] = 0xB3;         // VK_MEDIA_PLAY_PAUSE
+            d["STOP"] = 0xB2;         // VK_MEDIA_STOP
+            d["NEXT_TRACK"] = 0xB0;   // VK_MEDIA_NEXT_TRACK
+            d["PREV_TRACK"] = 0xB1;   // VK_MEDIA_PREV_TRACK
 
             // Navigation.
             d["UP_ARROW"] = 0x26; d["DOWN_ARROW"] = 0x28;
@@ -116,6 +138,9 @@ namespace PadForge.SteamWorkshop.Translation
             d["BACK_TICK"] = 0xC0;
             d["LEFT_BRACKET"] = 0xDB;
             d["BACK_SLASH"] = 0xDC;
+            // The serializer's own spelling (steamclient.dll token table:
+            // LEFT_BRACKET, RIGHT_BRACKET, BACKSLASH).
+            d["BACKSLASH"] = 0xDC;
             d["RIGHT_BRACKET"] = 0xDD;
             d["SINGLE_QUOTE"] = 0xDE;
 

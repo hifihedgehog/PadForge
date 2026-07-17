@@ -150,8 +150,33 @@ namespace PadForge.SteamWorkshop.Translation
         /// direction, deadzone) end to end, so wedge-hosted macros from
         /// earlier waves (haptic pulses and key latches on stick dpad
         /// members, trigger-pull hosts after the finalize swap) fire on
-        /// their own wedge instead of any full-axis deflection.</summary>
-        public const int CurrentTranslatorVersion = 12;
+        /// their own wedge instead of any full-axis deflection.
+        /// v13: Vocabulary census against Steam's own serializer (the
+        /// steamclient.dll token table, Valve's controller_base configs,
+        /// and the fixture corpus). The LSTICK_/RSTICK_ direction params
+        /// lower to bipolar thumb-axis rows with the direction as the
+        /// output polarity (LSTICK_UP pushes the virtual left stick up
+        /// while the input is held, and wedge / trigger hosts keep their
+        /// half-axis read with the polarity on InvertOutput).
+        /// "STEAM" resolves as the Guide button and the axis-natured
+        /// release / toggle / turbo / long-press variants keep the
+        /// trigger-axis notes. The key table gains the serializer's
+        /// alias spellings (ENTER, ESC, BACKSLASH, BREAK), the Windows
+        /// keys, and the media row (MUTE, PLAY, STOP, VOLUME_*,
+        /// NEXT_/PREV_TRACK), all riding the SendInput macro channel.
+        /// controller_action gains mouse_delta as a named skip (no
+        /// one-shot cursor-nudge primitive), toggle_lizard as the
+        /// serializer spelling of TOGGLE_LIZARD_MODE, and the
+        /// Steam-client verb families (SR_/GR_/TS_/STEAMMUSIC_/
+        /// BIGPICTURE_/HOST_/CHORD_HINT_ plus brightness, poweroff,
+        /// magnifier, quit, hud, rumble/haptics toggles and friends) as
+        /// named SteamSystemAction skips. Scroll Wheel List members get
+        /// the wheel mode's named skip per binding instead of silence,
+        /// gyro_button_invert joins the named gyro-mask note, and the
+        /// census-grounded feel keys (acceleration, friction_vert_scale,
+        /// mouse_dampening_trigger, mouse_move_threshold, anti_deadzone)
+        /// join their named drop lists.</summary>
+        public const int CurrentTranslatorVersion = 13;
 
         public int TranslatorVersion { get; set; } = CurrentTranslatorVersion;
 
@@ -399,10 +424,9 @@ namespace PadForge.SteamWorkshop.Translation
         public const string AxisInversionNotApplied = "Workshop_Tr_AxisInversionNotApplied";       // {0} invert keys
 
         // ── Translator v10 (gap closure) vocabulary ──
-        /// <summary>An activator-level haptic_intensity became a reactive
-        /// rumble pulse macro. Partial by nature: Steam ticks the pad
-        /// actuator, PadForge pulses the rumble motors.</summary>
-        public const string HapticPulseEmitted = "Workshop_Tr_HapticPulseEmitted";                 // {0} level
+        // Activator-level haptic_intensity lowers to a RumblePulse macro
+        // silently. Steam Input treats rumble and haptics interchangeably,
+        // so the lowering is clean, not an approximation (v13 ruling).
         /// <summary>A trackpad scrollwheel group lowered onto the vertical
         /// finger drag: circular scratch geometry approximated as a linear
         /// drag (up = counterclockwise, down = clockwise).</summary>
@@ -413,5 +437,12 @@ namespace PadForge.SteamWorkshop.Translation
         /// <summary>SHOW_KEYBOARD approximated as launching the Windows
         /// on-screen keyboard (TabTip.exe / osk.exe).</summary>
         public const string ShowKeyboardApproximated = "Workshop_Tr_ShowKeyboardApproximated";
+
+        // ── Translator v13 (vocabulary census) vocabulary ──
+        /// <summary>controller_action mouse_delta ("Move by Amount": the
+        /// cursor moves by a fixed pixel offset per fire). PadForge's macro
+        /// vocabulary has continuous axis-driven mouse motion and the
+        /// absolute warp, but no one-shot fixed-pixel nudge.</summary>
+        public const string MouseDeltaNotSupported = "Workshop_Tr_MouseDeltaNotSupported";       // {0} dx dy
     }
 }

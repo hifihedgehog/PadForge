@@ -117,7 +117,7 @@ menus: 2
     [8] De Jure Empires
     [9] Counties
     [10] Houses
-report: v12 rows:x0+k38 macros:9 menus:2 layers:2 clean:45 partial:13 skipped:0 errors:0
+report: v13 rows:x0+k38 macros:9 menus:2 layers:2 clean:45 partial:6 skipped:0 errors:0
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_a/Full_Press => KbmKey20 <- Gamepad ButtonA
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_b/Full_Press => KbmKey6B <- Gamepad ButtonB
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_x/Full_Press => KbmKey6D <- Gamepad ButtonX
@@ -127,13 +127,9 @@ report: v12 rows:x0+k38 macros:9 menus:2 layers:2 clean:45 partial:13 skipped:0 
   Clean RowEmitted @ Default/gyro/group 9 (absolute_mouse) => KbmMouseY <- Gyro Pitch
   Clean RowEmitted @ Default/joystick/group 3 (dpad)/click/Full_Press => KbmKey24 <- Gamepad LeftStick
   Clean RowEmitted @ Default/joystick/group 3 (dpad)/dpad_east/Full_Press => KbmKey27 <- Gamepad LeftStickX (upper half)
-  Partial HapticPulseEmitted(1) @ Default/joystick/group 3 (dpad)/dpad_east/Full_Press => Rumble pulse macro (33%)
   Clean RowEmitted @ Default/joystick/group 3 (dpad)/dpad_north/Full_Press => KbmKey26 <- Gamepad LeftStickY (lower half)
-  Partial HapticPulseEmitted(1) @ Default/joystick/group 3 (dpad)/dpad_north/Full_Press => Rumble pulse macro (33%)
   Clean RowEmitted @ Default/joystick/group 3 (dpad)/dpad_south/Full_Press => KbmKey28 <- Gamepad LeftStickY (upper half)
-  Partial HapticPulseEmitted(1) @ Default/joystick/group 3 (dpad)/dpad_south/Full_Press => Rumble pulse macro (33%)
   Clean RowEmitted @ Default/joystick/group 3 (dpad)/dpad_west/Full_Press => KbmKey25 <- Gamepad LeftStickX (lower half)
-  Partial HapticPulseEmitted(1) @ Default/joystick/group 3 (dpad)/dpad_west/Full_Press => Rumble pulse macro (33%)
   Clean MenuEmitted(8) @ Default/left_trackpad/group 7 (touch_menu) => Grid menu 1 on Touchpad 0: 8 bound cells
   Partial MenuIconsDropped(8) @ Default/left_trackpad/group 7 (touch_menu)
   Clean RowEmitted @ Default/left_trackpad/group 7 (touch_menu)/touch_menu_button_0/Full_Press => KbmKey70 <- Menu 1 Item 0
@@ -157,15 +153,12 @@ report: v12 rows:x0+k38 macros:9 menus:2 layers:2 clean:45 partial:13 skipped:0 
   Clean RowEmitted @ Default/left_trackpad/group 8 (touch_menu)/touch_menu_button_9/Full_Press => KbmKey4C <- Menu 2 Item 9
   Clean RowEmitted @ Default/left_trackpad/group 8 (touch_menu)/touch_menu_button_10/Full_Press => KbmKey59 <- Menu 2 Item 10
   Clean RowEmitted @ Default/left_trigger/group 4 (trigger)/edge/Full_Press => KbmMBtn1 <- Gamepad LeftTrigger (upper half)
-  Partial HapticPulseEmitted(2) @ Default/left_trigger/group 4 (trigger)/edge/Full_Press => Rumble pulse macro (66%)
   Clean RowEmitted @ Default/right_trackpad/group 2 (absolute_mouse) => KbmMouseX <- Touchpad 1 Finger 0 X
   Clean RowEmitted @ Default/right_trackpad/group 2 (absolute_mouse) => KbmMouseY <- Touchpad 1 Finger 0 Y
   Clean RowEmitted @ Default/right_trackpad/group 2 (absolute_mouse)/click/Full_Press => KbmKey20 <- Touchpad 1 Click
-  Partial HapticPulseEmitted(1) @ Default/right_trackpad/group 2 (absolute_mouse)/click/Full_Press => Rumble pulse macro (33%)
   Clean RowEmitted @ Default/right_trackpad/group 10 (scrollwheel)/scroll_clockwise/Full_Press => KbmScroll <- Touchpad 1 Finger 0 Y
   Partial ScrollWheelApproximated @ Default/right_trackpad/group 10 (scrollwheel)
   Clean RowEmitted @ Default/right_trigger/group 5 (trigger)/edge/Full_Press => KbmMBtn0 <- Gamepad RightTrigger (upper half)
-  Partial HapticPulseEmitted(2) @ Default/right_trigger/group 5 (trigger)/edge/Full_Press => Rumble pulse macro (66%)
   Partial InterruptibleDropped @ Default/switch/group 12 (switches)/button_back_left/Full_Press
   Clean RowEmitted @ Default/switch/group 12 (switches)/button_back_right/Full_Press => KbmKey1B <- Gamepad Paddle1
   Clean RowEmitted @ Default/switch/group 12 (switches)/button_escape/Full_Press => KbmKey47 <- Gamepad ButtonStart

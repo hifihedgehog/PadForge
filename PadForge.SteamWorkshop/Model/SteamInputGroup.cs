@@ -24,6 +24,15 @@ namespace PadForge.SteamWorkshop.Model
 
         public IReadOnlyDictionary<string, string> Settings { get; }
 
+        /// <summary>The group's <c>gameactions</c> pairs: action-set name to
+        /// the in-game (Steam Input API) action the group drives while that
+        /// set is active, e.g. <c>TacticalControls / TacticalCamera</c> in
+        /// Valve's XCOM 2 config. Analog sibling of <c>game_action</c>
+        /// bindings: the linkage has no game-side hook outside Steam, so
+        /// the translator counts it into the same per-preset skip.
+        /// Empty blocks (common in official configs) contribute nothing.</summary>
+        public IReadOnlyList<KeyValuePair<string, string>> GameActions { get; }
+
         /// <summary>
         /// The group this one inlines when <see cref="Mode"/> is <c>reference</c>, taken from
         /// the <c>referenced_mode</c> setting. Null when the group defines its own bindings.
@@ -32,13 +41,15 @@ namespace PadForge.SteamWorkshop.Model
 
         private SteamInputGroup(int id, string mode, string name,
             IReadOnlyDictionary<string, SteamInputInput> inputs,
-            IReadOnlyDictionary<string, string> settings, int? referencedGroupId)
+            IReadOnlyDictionary<string, string> settings,
+            IReadOnlyList<KeyValuePair<string, string>> gameActions, int? referencedGroupId)
         {
             Id = id;
             Mode = mode;
             Name = name;
             Inputs = inputs;
             Settings = settings;
+            GameActions = gameActions;
             ReferencedGroupId = referencedGroupId;
         }
 
@@ -57,6 +68,14 @@ namespace PadForge.SteamWorkshop.Model
 
             var settings = VdfModelHelpers.ScalarSettings(node["settings"]);
 
+            List<KeyValuePair<string, string>> gameActions = null;
+            foreach (var kv in node["gameactions"].Children)
+            {
+                if (!kv.Value.IsValue) continue;
+                (gameActions ??= new List<KeyValuePair<string, string>>())
+                    .Add(new KeyValuePair<string, string>(kv.Key, kv.Value.AsString ?? ""));
+            }
+
             int? referenced = null;
             if (settings.TryGetValue("referenced_mode", out var rm) &&
                 int.TryParse(rm, NumberStyles.Integer, CultureInfo.InvariantCulture, out var rmv))
@@ -64,7 +83,10 @@ namespace PadForge.SteamWorkshop.Model
                 referenced = rmv;
             }
 
-            return new SteamInputGroup(id, mode, name, inputs, settings, referenced);
+            return new SteamInputGroup(id, mode, name, inputs, settings,
+                (IReadOnlyList<KeyValuePair<string, string>>)gameActions
+                    ?? System.Array.Empty<KeyValuePair<string, string>>(),
+                referenced);
         }
     }
 }

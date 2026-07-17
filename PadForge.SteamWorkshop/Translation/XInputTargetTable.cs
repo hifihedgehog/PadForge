@@ -38,12 +38,28 @@ namespace PadForge.SteamWorkshop.Translation
             /// <summary>True for LeftTrigger/RightTrigger (axis targets).</summary>
             public bool IsTriggerAxis { get; }
 
-            public XInputTarget(string target, string identitySource, ushort bit, bool isTriggerAxis = false)
+            /// <summary>True for the LSTICK_/RSTICK_ direction params
+            /// (v13): the binding drives one direction of a virtual thumb
+            /// stick, so it lowers to a bipolar axis row on
+            /// <see cref="Target"/> instead of a button row.</summary>
+            public bool IsStickAxis { get; }
+
+            /// <summary>Output polarity for <see cref="IsStickAxis"/>
+            /// params: true when the direction is the NEGATIVE end of the
+            /// emitted row's SDL-convention axis value (up, left). The row
+            /// value convention is SDL "+X right, +Y down", and Step 3's
+            /// WriteBipolarAxisTarget negates Y onto the XInput thumb.</summary>
+            public bool StickAxisNegative { get; }
+
+            public XInputTarget(string target, string identitySource, ushort bit,
+                bool isTriggerAxis = false, bool isStickAxis = false, bool stickAxisNegative = false)
             {
                 Target = target;
                 IdentitySource = identitySource;
                 XboxButtonBit = bit;
                 IsTriggerAxis = isTriggerAxis;
+                IsStickAxis = isStickAxis;
+                StickAxisNegative = stickAxisNegative;
             }
         }
 
@@ -69,6 +85,26 @@ namespace PadForge.SteamWorkshop.Translation
             var lt = new XInputTarget("LeftTrigger", "Gamepad LeftTrigger", 0, isTriggerAxis: true);
             var rt = new XInputTarget("RightTrigger", "Gamepad RightTrigger", 0, isTriggerAxis: true);
 
+            // Virtual-stick direction params (v13). Steam's serializer
+            // vocabulary (the steamclient.dll token table: ... START,
+            // SELECT, STEAM, DPAD_*, LSTICK_UP/DOWN/LEFT/RIGHT,
+            // RSTICK_UP/DOWN/LEFT/RIGHT) binds a button to one direction
+            // of the emulated stick. The wild corpus carries them
+            // (fixture 3725174032: "xinput_button LSTICK_DOWN" on a
+            // D-pad member) and the owner's import report hit LSTICK_UP.
+            // Row value convention is SDL "+X right, +Y down" (the same
+            // frame the joystick_move rows emit, before
+            // WriteBipolarAxisTarget negates Y onto the XInput thumb),
+            // so up and left are the negative ends.
+            var lsu = new XInputTarget("LeftThumbAxisY", "Gamepad LeftStickY", 0, isStickAxis: true, stickAxisNegative: true);
+            var lsd = new XInputTarget("LeftThumbAxisY", "Gamepad LeftStickY", 0, isStickAxis: true);
+            var lsl = new XInputTarget("LeftThumbAxisX", "Gamepad LeftStickX", 0, isStickAxis: true, stickAxisNegative: true);
+            var lsr = new XInputTarget("LeftThumbAxisX", "Gamepad LeftStickX", 0, isStickAxis: true);
+            var rsu = new XInputTarget("RightThumbAxisY", "Gamepad RightStickY", 0, isStickAxis: true, stickAxisNegative: true);
+            var rsd = new XInputTarget("RightThumbAxisY", "Gamepad RightStickY", 0, isStickAxis: true);
+            var rsl = new XInputTarget("RightThumbAxisX", "Gamepad RightStickX", 0, isStickAxis: true, stickAxisNegative: true);
+            var rsr = new XInputTarget("RightThumbAxisX", "Gamepad RightStickX", 0, isStickAxis: true);
+
             // Steam Input spells these in several cases/aliases across
             // config vintages; the dictionary is case-insensitive so only
             // spelling variants need rows.
@@ -84,6 +120,9 @@ namespace PadForge.SteamWorkshop.Translation
                 ["back"] = back,
                 ["start"] = start,
                 ["guide"] = guide,
+                // The serializer's own spelling for the Guide button
+                // (steamclient.dll token table: START, SELECT, STEAM).
+                ["steam"] = guide,
                 ["joystick_left"] = ls,
                 ["joystick_right"] = rs,
                 ["trigger_left"] = lt,
@@ -92,6 +131,14 @@ namespace PadForge.SteamWorkshop.Translation
                 ["dpad_down"] = dd,
                 ["dpad_left"] = dl,
                 ["dpad_right"] = dr,
+                ["lstick_up"] = lsu,
+                ["lstick_down"] = lsd,
+                ["lstick_left"] = lsl,
+                ["lstick_right"] = lsr,
+                ["rstick_up"] = rsu,
+                ["rstick_down"] = rsd,
+                ["rstick_left"] = rsl,
+                ["rstick_right"] = rsr,
             };
         }
 

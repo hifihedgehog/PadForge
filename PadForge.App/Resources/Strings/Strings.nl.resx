@@ -2578,10 +2578,10 @@
   <data name="Workshop_Tr_FlickStickTuningDropped" xml:space="preserve"><value>flick-stick-afstelling vervallen ({0})</value></data>
   <data name="Workshop_Tr_MouseModeTuningDropped" xml:space="preserve"><value>muisafstelling vervallen ({0})</value></data>
   <data name="Workshop_Tr_AxisInversionNotApplied" xml:space="preserve"><value>asomkering niet toegepast ({0})</value></data>
-  <data name="Workshop_Tr_HapticPulseEmitted" xml:space="preserve"><value>haptische feedback benaderd als een rumble-puls (niveau {0})</value></data>
   <data name="Workshop_Tr_ScrollWheelApproximated" xml:space="preserve"><value>cirkelvormig scrollwiel benaderd als verticaal slepen</value></data>
   <data name="Workshop_Tr_ScreenshotApproximated" xml:space="preserve"><value>SCREENSHOT benaderd als een PrintScreen-toetsaanslag</value></data>
   <data name="Workshop_Tr_ShowKeyboardApproximated" xml:space="preserve"><value>SHOW_KEYBOARD benaderd als het starten van het schermtoetsenbord</value></data>
+  <data name="Workshop_Tr_MouseDeltaNotSupported" xml:space="preserve"><value>relatieve cursorverplaatsing mouse_delta ({0}) niet ondersteund</value></data>
   <data name="Macro_HoldForMs" xml:space="preserve"><value>Bij vasthouden</value></data>
   <data name="Macro_HoldForMs_Tooltip" xml:space="preserve"><value>Vuurt één keer nadat de trigger onafgebroken de vasthoudtijd ingedrukt is gehouden. Een kortere tik doet niets.</value></data>
   <data name="Macro_TriggerHoldMs_Label" xml:space="preserve"><value>Vasthoudtijd</value></data>

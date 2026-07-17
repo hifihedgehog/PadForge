@@ -58,7 +58,7 @@ kbm rows: 25
   Base | KbmMouseY
     <- Touchpad 1 Finger 0 Y
 macros: 0
-report: v8 rows:x0+k25 macros:0 menus:0 layers:0 clean:21 partial:5 skipped:0 errors:0
+report: v9 rows:x0+k25 macros:0 menus:0 layers:0 clean:21 partial:5 skipped:0 errors:0
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_a/Full_Press => KbmKey33 <- Gamepad ButtonA
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_b/Full_Press => KbmKey32 <- Gamepad ButtonB
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_x/Full_Press => KbmKey34 <- Gamepad ButtonX

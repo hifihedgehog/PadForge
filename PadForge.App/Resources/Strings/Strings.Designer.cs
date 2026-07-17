@@ -2542,6 +2542,7 @@ public class Strings : INotifyPropertyChanged
     public string Menu_ClickDefault => Get("Menu_ClickDefault");
     public string Menu_NotRecorded => Get("Menu_NotRecorded");
     public string Menu_Binding_Unsupported_Format => Get("Menu_Binding_Unsupported_Format");
+    public string Menu_Binding_RowBound => Get("Menu_Binding_RowBound");
     public string Mapping_MenuItem_Format => Get("Mapping_MenuItem_Format");
     public string Dashboard_MenuOverlay => Get("Dashboard_MenuOverlay");
     public string Dashboard_MenuOverlayDescription => Get("Dashboard_MenuOverlayDescription");

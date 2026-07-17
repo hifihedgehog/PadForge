@@ -58,7 +58,7 @@ macros: 10
   macro SetLightbarColor OnPress | Set LED (click) | btns=0x0000 axis=RightTrigger@75% rgb=(255,0,0) bright=79% sat=100% setting=1
   macro SetLightbarColor OnPress | Set LED (left_bumper) | btns=0x0100 rgb=(255,0,0) bright=43% sat=100% setting=1
   macro SetLightbarColor OnPress | Set LED (right_bumper) | btns=0x0200 rgb=(255,0,0) bright=43% sat=100% setting=1
-report: v8 rows:x20+k0 macros:10 menus:0 layers:0 clean:22 partial:17 skipped:1 errors:0
+report: v9 rows:x20+k0 macros:10 menus:0 layers:0 clean:22 partial:17 skipped:1 errors:0
   Partial MacroTriggerViaXboxOutput @ Preset_1000001/button_diamond/group 14 (four_buttons)/button_a/Full_Press => Set LED macro
   Partial MacroTriggerViaXboxOutput @ Preset_1000001/button_diamond/group 14 (four_buttons)/button_b/Full_Press => Set LED macro
   Partial MacroTriggerViaXboxOutput @ Preset_1000001/button_diamond/group 14 (four_buttons)/button_x/Full_Press => Set LED macro

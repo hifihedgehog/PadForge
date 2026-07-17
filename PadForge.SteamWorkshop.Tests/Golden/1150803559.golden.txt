@@ -64,7 +64,7 @@ kbm rows: 2
     <- Gamepad RightStickY sens=3.725
     <- Touchpad 0 Finger 0 Y Right sens=5.96
 macros: 0
-report: v8 rows:x22+k2 macros:0 menus:0 layers:2 clean:34 partial:8 skipped:0 errors:0
+report: v9 rows:x22+k2 macros:0 menus:0 layers:2 clean:34 partial:8 skipped:0 errors:0
   Clean RowEmitted @ Default/gyro/group 8 (absolute_mouse) => KbmMouseX <- Gyro Yaw
   Clean RowEmitted @ Default/gyro/group 8 (absolute_mouse) => KbmMouseY <- Gyro Pitch
   Clean RowEmitted @ Default/right_joystick/group 12 (joystick_mouse) => KbmMouseX <- Gamepad RightStickX

@@ -311,6 +311,31 @@ namespace PadForge.SteamWorkshop.Translation
                 {
                     bool left = slot == SteamSlot.Joystick;
                     string stick = left ? "LeftStick" : "RightStick";
+                    // Stick-hosted diamond cells (four_buttons on a stick)
+                    // fire on deflection toward the cell's seat, so each
+                    // folds onto the matching wedge read below (A=south,
+                    // B=east, X=west, Y=north). Nintendo-labeled configs
+                    // address cells by label, crossed against position,
+                    // same as the button_diamond slot.
+                    if (nintendoLabels)
+                    {
+                        name = name switch
+                        {
+                            "button_a" => "button_b",
+                            "button_b" => "button_a",
+                            "button_x" => "button_y",
+                            "button_y" => "button_x",
+                            _ => name,
+                        };
+                    }
+                    name = name switch
+                    {
+                        "button_a" => "dpad_south",
+                        "button_b" => "dpad_east",
+                        "button_x" => "dpad_west",
+                        "button_y" => "dpad_north",
+                        _ => name,
+                    };
                     switch (name)
                     {
                         case "click":

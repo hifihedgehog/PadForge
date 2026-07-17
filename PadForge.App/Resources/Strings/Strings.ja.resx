@@ -2633,6 +2633,7 @@
   <data name="Menu_ClickDefault" xml:space="preserve"><value>(既定)</value></data>
   <data name="Menu_NotRecorded" xml:space="preserve"><value>(未設定)</value></data>
   <data name="Menu_Binding_Unsupported_Format" xml:space="preserve"><value>{0}(このスロットタイプでは不可)</value></data>
+  <data name="Menu_Binding_RowBound" xml:space="preserve"><value>マッピング行経由でバインド</value></data>
   <data name="Mapping_MenuItem_Format" xml:space="preserve"><value>メニュー {0} セル {1}</value></data>
   <data name="Dashboard_MenuOverlay" xml:space="preserve"><value>メニューオーバーレイ</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>ラジアルメニューまたはタッチメニューが作動している間、画面上のリングまたはグリッドを表示します。オーバーレイがオフでもメニューは発動します。</value></data>

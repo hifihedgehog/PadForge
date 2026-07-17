@@ -2633,6 +2633,7 @@
   <data name="Menu_ClickDefault" xml:space="preserve"><value>(Standard des Openers)</value></data>
   <data name="Menu_NotRecorded" xml:space="preserve"><value>(nicht festgelegt)</value></data>
   <data name="Menu_Binding_Unsupported_Format" xml:space="preserve"><value>{0} (nicht bei diesem Slot-Typ)</value></data>
+  <data name="Menu_Binding_RowBound" xml:space="preserve"><value>Über Zuordnungszeilen gebunden</value></data>
   <data name="Mapping_MenuItem_Format" xml:space="preserve"><value>Menü {0} Feld {1}</value></data>
   <data name="Dashboard_MenuOverlay" xml:space="preserve"><value>Menü-Overlay</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>Zeigt den Ring oder das Raster auf dem Bildschirm, solange ein Radial- oder Touch-Menü aktiv ist. Menüs lösen auch bei ausgeschaltetem Overlay aus.</value></data>

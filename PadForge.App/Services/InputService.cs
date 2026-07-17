@@ -45,6 +45,11 @@ namespace PadForge.Services
         private readonly MainViewModel _mainVm;
         private readonly Dispatcher _dispatcher;
         private InputManager _inputManager;
+        // Static mirror of the live engine for the static MappingSet swap
+        // helpers (menus paste, Copy From Slot), which must reset the menu
+        // runtime the same way the instance-side profile apply does.
+        // Written on the UI thread in Start/Stop, read on the UI thread.
+        private static InputManager _inputManagerStatic;
         // Reused across SlotRumbleForDeviceProvider invocations so the
         // dispatcher's per-device rumble pump doesn't allocate per tick.
         private Vibration _constantForceScratchSony;
@@ -526,6 +531,7 @@ namespace PadForge.Services
 
             // Create engine with the configured polling interval.
             _inputManager = new InputManager();
+            _inputManagerStatic = _inputManager;
             _inputManager.PollingIntervalMs = _mainVm.Settings.PollingRateMs;
             _inputManager.HmInactivityTimeoutSeconds = _mainVm.Settings.HmInactivityDestroyTimeoutSeconds;
 
@@ -1828,6 +1834,7 @@ namespace PadForge.Services
                 _inputManager.Stop();
                 _inputManager.Dispose();
                 _inputManager = null;
+                _inputManagerStatic = null;
                 UserEffectsDispatcher.SlotButtonsProvider = null;
                 UserEffectsDispatcher.SlotRumbleForDeviceProvider = null;
                 UserEffectsDispatcher.SlotRawRumbleProvider = null;
@@ -5922,6 +5929,12 @@ namespace PadForge.Services
                 built.Add(clone);
             }
             slotMs.Menus = built;
+
+            // Menu runtime contexts key on (slot, device, menu id) and
+            // survive the swap, so the pasted definitions could fire from
+            // the old menus' in-flight gesture. Same reset ApplyProfile
+            // performs. Null pre-engine-start.
+            _inputManagerStatic?.ResetMenuRuntime();
         }
 
         /// <summary>Whole-slot snapshot of every row in the given slot's
@@ -6185,6 +6198,11 @@ namespace PadForge.Services
                 }
             }
             sets[targetSlot] = copy;
+
+            // Same menu-runtime reset the profile apply performs: stale
+            // (slot, device, menu id) contexts must not fire the copied
+            // menus from an in-flight gesture. Null pre-engine-start.
+            _inputManagerStatic?.ResetMenuRuntime();
         }
 
         /// <summary>Returns true if the given slot's MappingSet carries any

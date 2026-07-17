@@ -165,6 +165,8 @@ namespace PadForge.SteamWorkshop.Tests
                         if (a.CycleIncludeBase) sb.Append("+Base");
                     }
                     sb.Append(" | ").Append(a.Descriptor);
+                    if (!string.IsNullOrEmpty(a.ChordSecondDescriptor))
+                        sb.Append(" & ").Append(a.ChordSecondDescriptor);
                     if (a.Kind != "Button") sb.Append(" | kind=").Append(a.Kind);
                     if (a.DelayMs > 0) sb.Append(" | delay=").Append(a.DelayMs).Append("ms");
                     if (a.InheritUnmapped) sb.Append(" | inherit");

@@ -97,7 +97,7 @@ menus: 1
     [7] 8
     [8] 9
     [9] 0
-report: v8 rows:x0+k29 macros:0 menus:1 layers:5 clean:52 partial:11 skipped:3 errors:0
+report: v9 rows:x0+k29 macros:0 menus:1 layers:5 clean:52 partial:11 skipped:3 errors:0
   Clean RowEmitted @ TacticalControls/button_diamond/group 0 (four_buttons)/button_A/Full_Press => KbmMBtn0 <- Gamepad ButtonA
   Clean RowEmitted @ TacticalControls/joystick/group 51 (joystick_mouse) => KbmMouseX <- Gamepad LeftStickX (inverted)
   Clean RowEmitted @ TacticalControls/joystick/group 51 (joystick_mouse) => KbmMouseY <- Gamepad LeftStickY (inverted)

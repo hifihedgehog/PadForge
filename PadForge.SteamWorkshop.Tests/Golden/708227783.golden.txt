@@ -2,7 +2,7 @@ name: Gyrospeck's Hearts of Iron 4 V2
 description: Updated June 21, 2016.  Nearly every shortcut is accessible.  The controls are simple, yet deep.  Ha...
 slots: kbm
 xbox rows: 0
-kbm rows: 59
+kbm rows: 67
   Base | KbmKey1B
     <- Gamepad ButtonX
     <- Gamepad ButtonStart
@@ -63,6 +63,14 @@ kbm rows: 59
     <- Gyro Yaw
   Layer_708227783_0_MS_gyro_10 | KbmMouseY
     <- Gyro Pitch
+  Layer_708227783_0_MS_joystick_12 | KbmKey75
+    <- Gamepad LeftStickY [upper-half]
+  Layer_708227783_0_MS_joystick_12 | KbmKey76
+    <- Gamepad LeftStickX [upper-half]
+  Layer_708227783_0_MS_joystick_12 | KbmKey77
+    <- Gamepad LeftStickY [lower-half]
+  Layer_708227783_0_MS_joystick_12 | KbmKey78
+    <- Gamepad LeftStickX [lower-half]
   Layer_708227783_0_MS_left_trackpad_6 | KbmMBtn2
     <- Touchpad 0 Click
   Layer_708227783_1 | KbmKey1B
@@ -123,10 +131,19 @@ kbm rows: 59
     <- Gyro Yaw
   Layer_708227783_1_MS_gyro_31 | KbmMouseY
     <- Gyro Pitch
+  Layer_708227783_1_MS_joystick_24 | KbmKey75
+    <- Gamepad LeftStickY [upper-half]
+  Layer_708227783_1_MS_joystick_24 | KbmKey76
+    <- Gamepad LeftStickX [upper-half]
+  Layer_708227783_1_MS_joystick_24 | KbmKey77
+    <- Gamepad LeftStickY [lower-half]
+  Layer_708227783_1_MS_joystick_24 | KbmKey78
+    <- Gamepad LeftStickX [lower-half]
   Layer_708227783_1_MS_left_trackpad_21 | KbmMBtn2
     <- Touchpad 0 Click
-kbm activators: 3
+kbm activators: 4
   Hold Layer_708227783_0_MS_button_diamond_11 | Gamepad Paddle1 | inherit | name=button_diamond shift
+  Hold Layer_708227783_0_MS_joystick_12 | Gamepad Paddle1 | inherit | name=joystick shift
   Hold Layer_708227783_0_MS_left_trackpad_6 | Gamepad Paddle1 | inherit | name=left_trackpad shift
   Cycle Layer_708227783_1 cycle=Layer_708227783_1+Base | Gamepad ButtonY | name=Preset_1000001 / Default
 macros: 0
@@ -140,7 +157,7 @@ menus: 1
     [6] Research
     [7] Recruit and Deploy
     [8] Logistics
-report: v8 rows:x0+k59 macros:0 menus:1 layers:3 clean:61 partial:11 skipped:16 errors:0
+report: v9 rows:x0+k67 macros:0 menus:1 layers:4 clean:70 partial:10 skipped:8 errors:0
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_A/Full_Press => KbmKey20 <- Gamepad ButtonA
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_B/Full_Press => KbmKey4F <- Gamepad ButtonB
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_X/Full_Press => KbmKey1B <- Gamepad ButtonX
@@ -156,10 +173,10 @@ report: v8 rows:x0+k59 macros:0 menus:1 layers:3 clean:61 partial:11 skipped:16 
   Clean RowEmitted @ Default/joystick/group 3 (dpad)/dpad_north/Full_Press => KbmKey26 <- Gamepad LeftStickY (lower half)
   Clean RowEmitted @ Default/joystick/group 3 (dpad)/dpad_south/Full_Press => KbmKey28 <- Gamepad LeftStickY (upper half)
   Clean RowEmitted @ Default/joystick/group 3 (dpad)/dpad_west/Full_Press => KbmKey25 <- Gamepad LeftStickX (lower half)
-  Skipped UnknownPhysicalInput(Joystick, button_A) @ Default/joystick/group 12 (four_buttons)/button_A :: key_press F6, Resistance Map Mode
-  Skipped UnknownPhysicalInput(Joystick, button_B) @ Default/joystick/group 12 (four_buttons)/button_B :: key_press F7, Resource Map Mode
-  Skipped UnknownPhysicalInput(Joystick, button_X) @ Default/joystick/group 12 (four_buttons)/button_X :: key_press F9, Faction Map Mode
-  Skipped UnknownPhysicalInput(Joystick, button_Y) @ Default/joystick/group 12 (four_buttons)/button_Y :: key_press F8, Diplomacy Map Mode
+  Clean RowEmitted @ Default/joystick/group 12 (four_buttons)/button_A/Full_Press => KbmKey75 <- Gamepad LeftStickY (upper half)
+  Clean RowEmitted @ Default/joystick/group 12 (four_buttons)/button_B/Full_Press => KbmKey76 <- Gamepad LeftStickX (upper half)
+  Clean RowEmitted @ Default/joystick/group 12 (four_buttons)/button_X/Full_Press => KbmKey78 <- Gamepad LeftStickX (lower half)
+  Clean RowEmitted @ Default/joystick/group 12 (four_buttons)/button_Y/Full_Press => KbmKey77 <- Gamepad LeftStickY (lower half)
   Skipped ScrollWheelModeNotSupported @ Default/left_trackpad/group 6 (scrollwheel)
   Clean RowEmitted @ Default/left_trackpad/group 6 (scrollwheel)/click/Full_Press => KbmMBtn2 <- Touchpad 0 Click
   Clean MenuEmitted(8) @ Default/left_trackpad/group 9 (touch_menu) => Grid menu 1 on Touchpad 0: 8 bound cells
@@ -198,10 +215,10 @@ report: v8 rows:x0+k59 macros:0 menus:1 layers:3 clean:61 partial:11 skipped:16 
   Clean RowEmitted @ Preset_1000001/joystick/group 23 (dpad)/dpad_north/Full_Press => KbmKey26 <- Gamepad LeftStickY (lower half)
   Clean RowEmitted @ Preset_1000001/joystick/group 23 (dpad)/dpad_south/Full_Press => KbmKey28 <- Gamepad LeftStickY (upper half)
   Clean RowEmitted @ Preset_1000001/joystick/group 23 (dpad)/dpad_west/Full_Press => KbmKey25 <- Gamepad LeftStickX (lower half)
-  Skipped UnknownPhysicalInput(Joystick, button_A) @ Preset_1000001/joystick/group 24 (four_buttons)/button_A :: key_press F6, Resistance Map Mode
-  Skipped UnknownPhysicalInput(Joystick, button_B) @ Preset_1000001/joystick/group 24 (four_buttons)/button_B :: key_press F7, Resource Map Mode
-  Skipped UnknownPhysicalInput(Joystick, button_X) @ Preset_1000001/joystick/group 24 (four_buttons)/button_X :: key_press F9, Faction Map Mode
-  Skipped UnknownPhysicalInput(Joystick, button_Y) @ Preset_1000001/joystick/group 24 (four_buttons)/button_Y :: key_press F8, Diplomacy Map Mode
+  Clean RowEmitted @ Preset_1000001/joystick/group 24 (four_buttons)/button_A/Full_Press => KbmKey75 <- Gamepad LeftStickY (upper half)
+  Clean RowEmitted @ Preset_1000001/joystick/group 24 (four_buttons)/button_B/Full_Press => KbmKey76 <- Gamepad LeftStickX (upper half)
+  Clean RowEmitted @ Preset_1000001/joystick/group 24 (four_buttons)/button_X/Full_Press => KbmKey78 <- Gamepad LeftStickX (lower half)
+  Clean RowEmitted @ Preset_1000001/joystick/group 24 (four_buttons)/button_Y/Full_Press => KbmKey77 <- Gamepad LeftStickY (lower half)
   Skipped ScrollWheelModeNotSupported @ Preset_1000001/left_trackpad/group 21 (scrollwheel)
   Clean RowEmitted @ Preset_1000001/left_trackpad/group 21 (scrollwheel)/click/Full_Press => KbmMBtn2 <- Touchpad 0 Click
   Partial TouchQuadrantApproximated @ Preset_1000001/left_trackpad/group 32 (four_buttons)/button_A/Full_Press => KbmKeyA2 <- Touchpad 0 Finger 0 Down
@@ -224,7 +241,7 @@ report: v8 rows:x0+k59 macros:0 menus:1 layers:3 clean:61 partial:11 skipped:16 
   Clean RowEmitted @ Preset_1000001/switch/group 18 (switches)/left_bumper/Full_Press => KbmKey53 <- Gamepad LeftShoulder
   Clean RowEmitted @ Preset_1000001/switch/group 18 (switches)/right_bumper/Full_Press => KbmKey47 <- Gamepad RightShoulder
   Clean ShiftLayerEmitted(button_diamond shift) @ Default/switch/group 14 (switches)/button_back_right/Full_Press => Hold -> Layer_708227783_0_MS_button_diamond_11
-  Partial ShiftLayerEmpty(joystick shift) @ Default/switch/group 14 (switches)/button_back_right/Full_Press
+  Clean ShiftLayerEmitted(joystick shift) @ Default/switch/group 14 (switches)/button_back_right/Full_Press => Hold -> Layer_708227783_0_MS_joystick_12
   Clean ShiftLayerEmitted(left_trackpad shift) @ Default/switch/group 14 (switches)/button_back_right/Full_Press => Hold -> Layer_708227783_0_MS_left_trackpad_6
   Partial ShiftLayerEmpty(right_trackpad shift) @ Default/switch/group 14 (switches)/button_back_right/Full_Press
   Clean ShiftLayerEmitted(Preset_1000001 / Default) @ Default/button_diamond/group 0 (four_buttons)/button_Y/Full_Press => Cycle -> Layer_708227783_1|Base

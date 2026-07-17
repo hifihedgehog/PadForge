@@ -923,12 +923,18 @@ namespace PadForge.Common.Input
                     if (!string.IsNullOrEmpty(act.CyclePrevDescriptor))
                     {
                         CustomInputState prevState = state;
+                        string prevGuid = act.DeviceGuid;
                         if (!string.IsNullOrEmpty(act.CyclePrevDeviceGuid)
                             && !string.Equals(act.CyclePrevDeviceGuid, act.DeviceGuid, System.StringComparison.OrdinalIgnoreCase))
                         {
                             prevState = LookupDeviceState(act.CyclePrevDeviceGuid) ?? state;
+                            prevGuid = act.CyclePrevDeviceGuid;
                         }
-                        prevDown = SourceKindRuntimeReadButtonLikeBool(prevState, act.CyclePrevDescriptor);
+                        // Device guid + slot ride along like the chord second
+                        // read at ReadActivatorInput, so the slot-keyed source
+                        // families (menu items, touchpad gestures) evaluate
+                        // against THIS slot instead of slot 0.
+                        prevDown = SourceKindRuntimeReadButtonLikeBool(prevState, act.CyclePrevDescriptor, prevGuid, slotIndex);
                     }
 
                     // Cycle steps on a press edge; Delay (a hold-to-engage

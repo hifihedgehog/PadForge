@@ -2633,6 +2633,7 @@
   <data name="Menu_ClickDefault" xml:space="preserve"><value>(défaut de l'ouvreur)</value></data>
   <data name="Menu_NotRecorded" xml:space="preserve"><value>(non défini)</value></data>
   <data name="Menu_Binding_Unsupported_Format" xml:space="preserve"><value>{0} (pas sur ce type d'emplacement)</value></data>
+  <data name="Menu_Binding_RowBound" xml:space="preserve"><value>Liée via les lignes de Mappages</value></data>
   <data name="Mapping_MenuItem_Format" xml:space="preserve"><value>Menu {0} case {1}</value></data>
   <data name="Dashboard_MenuOverlay" xml:space="preserve"><value>Superposition de menu</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>Affiche l'anneau ou la grille à l'écran tant qu'un menu radial ou tactile est actif. Les menus se déclenchent même si la superposition est désactivée.</value></data>

@@ -140,6 +140,26 @@ namespace PadForge.Tests
         }
 
         [Fact]
+        public void NonZeroPadClick_ReadsPerPadClicked()
+        {
+            // Workshop imports emit "Touchpad 1 Click" for Deck / SC 2026
+            // right-pad clicks. The reader must consult the per-pad
+            // Clicked flag instead of bailing on nonzero indices.
+            var s = new PadForge.Engine.CustomInputState();
+            s.Touchpads = new[]
+            {
+                new PadForge.Engine.TouchpadInputState { Clicked = false },
+                new PadForge.Engine.TouchpadInputState { Clicked = true },
+            };
+            var src = new PadForge.Engine.Data.MappingSource { Descriptor = "Touchpad 1 Click" };
+            Assert.True(PadForge.Engine.Common.Mapping.SourceCoercion
+                .EvaluateForButtonTarget(s, src, 50, 0, null));
+            src = new PadForge.Engine.Data.MappingSource { Descriptor = "Touchpad 0 Click" };
+            Assert.False(PadForge.Engine.Common.Mapping.SourceCoercion
+                .EvaluateForButtonTarget(s, src, 50, 0, null));
+        }
+
+        [Fact]
         public void KeyboardHexKeyNames_ResolveThroughTheMacroVkVocabulary()
         {
             var si = Strings.Instance;

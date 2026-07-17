@@ -35,10 +35,14 @@ namespace PadForge.Common.Input
         internal sealed class MenuTickContext
         {
             public readonly MenuRuntimeState State = new();
-            // Last host signature the wrappers were built for. Split into the
-            // two raw fields so the per-tick rebuild check is two comparisons
-            // instead of an interpolated-string allocation on the 1 kHz path.
-            public string HostSigDescriptor = null;
+            // Last host signature the wrappers were built for. The four
+            // descriptor fields are stored raw and compared individually
+            // so the per-tick rebuild check allocates nothing on the
+            // 1 kHz path.
+            public string HostSigHost;
+            public string HostSigCustomX;
+            public string HostSigCustomY;
+            public string HostSigClick;
             public int HostSigHalf = int.MinValue;
             public bool IsStick;
             public MappingSource SrcX, SrcY, SrcEngage, SrcClick;
@@ -258,17 +262,28 @@ namespace PadForge.Common.Input
 
             if (surfaceActive)
             {
-                if (cur == null || owner || nowMs - cur.StampMs > MenuContextStaleMs)
+                // Another engaged menu owns the snapshot and is still
+                // refreshing it. First-engaged keeps winning.
+                if (cur != null && !owner && nowMs - cur.StampMs <= MenuContextStaleMs)
+                    return;
+
+                // The snapshot is immutable once published (the UI timer
+                // reads it lock-free), so every refresh is an allocation.
+                // Republish only when the hover moved or the stamp needs
+                // renewing: the consumers' stale gates read 250 ms, so a
+                // 100 ms heartbeat keeps an unchanged snapshot credible.
+                if (owner && cur.HoveredIndex == st.HoveredIndex
+                    && nowMs - cur.StampMs <= 100)
+                    return;
+
+                _activeMenuOverlay = new MenuOverlayState
                 {
-                    _activeMenuOverlay = new MenuOverlayState
-                    {
-                        Slot = slot,
-                        Device = device,
-                        Menu = def,
-                        HoveredIndex = st.HoveredIndex,
-                        StampMs = nowMs,
-                    };
-                }
+                    Slot = slot,
+                    Device = device,
+                    Menu = def,
+                    HoveredIndex = st.HoveredIndex,
+                    StampMs = nowMs,
+                };
             }
             else if (owner)
             {
@@ -289,10 +304,15 @@ namespace PadForge.Common.Input
         /// non-gamepad devices do not share.</summary>
         private static void EnsureMenuSources(MenuTickContext ctx, MenuDefinitionEntry def)
         {
-            string sig = $"{def.HostDescriptor}|{def.CustomXDescriptor}|{def.CustomYDescriptor}|{def.ClickDescriptor}";
-            if (string.Equals(ctx.HostSigDescriptor, sig, StringComparison.Ordinal)
+            if (string.Equals(ctx.HostSigHost, def.HostDescriptor, StringComparison.Ordinal)
+                && string.Equals(ctx.HostSigCustomX, def.CustomXDescriptor, StringComparison.Ordinal)
+                && string.Equals(ctx.HostSigCustomY, def.CustomYDescriptor, StringComparison.Ordinal)
+                && string.Equals(ctx.HostSigClick, def.ClickDescriptor, StringComparison.Ordinal)
                 && ctx.HostSigHalf == def.HostHalf) return;
-            ctx.HostSigDescriptor = sig;
+            ctx.HostSigHost = def.HostDescriptor;
+            ctx.HostSigCustomX = def.CustomXDescriptor;
+            ctx.HostSigCustomY = def.CustomYDescriptor;
+            ctx.HostSigClick = def.ClickDescriptor;
             ctx.HostSigHalf = def.HostHalf;
 
             string clickOverride = (def.ClickDescriptor ?? "").Trim();

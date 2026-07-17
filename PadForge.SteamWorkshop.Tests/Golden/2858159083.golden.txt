@@ -55,7 +55,7 @@ kbm rows: 21
     <- Gamepad LeftShoulder
     <- Gamepad RightShoulder [inverted]
 macros: 0
-report: v8 rows:x0+k21 macros:0 menus:0 layers:0 clean:26 partial:5 skipped:1 errors:0
+report: v9 rows:x0+k21 macros:0 menus:0 layers:0 clean:26 partial:5 skipped:1 errors:0
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_a/Full_Press => KbmKey20 <- Gamepad ButtonA
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_b/Full_Press => KbmKey45 <- Gamepad ButtonB
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_x/Full_Press => KbmKey52 <- Gamepad ButtonX

@@ -2655,6 +2655,7 @@
   <data name="Menu_ClickDefault" xml:space="preserve"><value>(predefinito dell'opener)</value></data>
   <data name="Menu_NotRecorded" xml:space="preserve"><value>(non impostato)</value></data>
   <data name="Menu_Binding_Unsupported_Format" xml:space="preserve"><value>{0} (non su questo tipo di slot)</value></data>
+  <data name="Menu_Binding_RowBound" xml:space="preserve"><value>Associata tramite righe di Mappature</value></data>
   <data name="Mapping_MenuItem_Format" xml:space="preserve"><value>Menu {0} cella {1}</value></data>
   <data name="Dashboard_MenuOverlay" xml:space="preserve"><value>Overlay menu</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>Mostra l'anello o la griglia su schermo mentre un menu radiale o touch è attivo. I menu si attivano anche con l'overlay disattivato.</value></data>

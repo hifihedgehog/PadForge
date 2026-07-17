@@ -2832,10 +2832,17 @@ namespace PadForge.Common.Input
             if (parts.Length < 3) return false;
             if (!int.TryParse(parts[1], out int touchpadIndex)) return false;
 
-            // Click: "Touchpad N Click" — 3 parts.
+            // Click: "Touchpad N Click", 3 parts. Pad 0 = the canonical
+            // Buttons[16] click; nonzero pads read per-pad Clicked
+            // (mirrors SourceCoercion.ReadTouchpadBool, which carries the
+            // rationale: imported right-pad click rows were dead).
             if (parts.Length == 3 && string.Equals(parts[2], "Click", StringComparison.Ordinal))
             {
-                if (touchpadIndex != 0) return false;
+                if (touchpadIndex != 0)
+                    return state.Touchpads != null
+                        && touchpadIndex < state.Touchpads.Length
+                        && state.Touchpads[touchpadIndex] != null
+                        && state.Touchpads[touchpadIndex].Clicked;
                 if (state.Buttons == null || state.Buttons.Length <= 16) return false;
                 return state.Buttons[16];
             }

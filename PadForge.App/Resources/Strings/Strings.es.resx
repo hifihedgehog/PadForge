@@ -2633,6 +2633,7 @@
   <data name="Menu_ClickDefault" xml:space="preserve"><value>(predeterminado del host)</value></data>
   <data name="Menu_NotRecorded" xml:space="preserve"><value>(sin definir)</value></data>
   <data name="Menu_Binding_Unsupported_Format" xml:space="preserve"><value>{0} (no en este tipo de ranura)</value></data>
+  <data name="Menu_Binding_RowBound" xml:space="preserve"><value>Vinculada mediante filas de Asignaciones</value></data>
   <data name="Mapping_MenuItem_Format" xml:space="preserve"><value>Menú {0} celda {1}</value></data>
   <data name="Dashboard_MenuOverlay" xml:space="preserve"><value>Superposición de menú</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>Muestra el anillo o la cuadrícula en pantalla mientras un menú radial o táctil está activo. Los menús siguen disparándose con la superposición apagada.</value></data>

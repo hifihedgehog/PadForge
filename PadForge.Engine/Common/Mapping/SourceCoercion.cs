@@ -994,6 +994,29 @@ namespace PadForge.Engine.Common.Mapping
                 && menuId >= 0 && itemIndex >= 0;
         }
 
+        /// <summary>Cached twin of <see cref="TryParseMenuItem"/> for the
+        /// per-tick readers: keys the parse on the source's Descriptor
+        /// REFERENCE so the hot path skips the Split. Poll thread only. A
+        /// UI-thread descriptor swap misses the key and reparses next tick
+        /// (one-tick staleness accepted). A cached menu id of -1 records a
+        /// non-menu descriptor, so those also skip the Split.</summary>
+        internal static bool TryParseMenuItemCached(MappingSource src, string canonical,
+            out int menuId, out int itemIndex)
+        {
+            string key = src.Descriptor;
+            if (ReferenceEquals(src.MenuParseKey, key))
+            {
+                menuId = src.MenuParseMenuId;
+                itemIndex = src.MenuParseItemIndex;
+                return menuId >= 0;
+            }
+            bool ok = TryParseMenuItem(canonical, out menuId, out itemIndex);
+            src.MenuParseMenuId = ok ? menuId : -1;
+            src.MenuParseItemIndex = ok ? itemIndex : -1;
+            src.MenuParseKey = key;
+            return ok;
+        }
+
         /// <summary>Extracts the gesture name from a mouse-gesture
         /// descriptor ("Mouse Gesture Left" becomes "Left"). Empty when the
         /// descriptor is not of the family.</summary>
@@ -1946,7 +1969,7 @@ namespace PadForge.Engine.Common.Mapping
 
             // Menu items (#9 B-17): pure one-shot / hold bools from the
             // menu runtime's fired set, same shape as the gesture pulses.
-            if (TryParseMenuItem(s, out int menuFireId, out int menuFireItem))
+            if (TryParseMenuItemCached(src, s, out int menuFireId, out int menuFireItem))
             {
                 return MenuItemFiredProvider?.Invoke(
                     slotIndex, deviceGuid ?? "", menuFireId, menuFireItem) ?? false;
@@ -2183,7 +2206,7 @@ namespace PadForge.Engine.Common.Mapping
 
             // Menu-item fire as an axis contribution (#9 B-17): 1 while
             // asserted / pulsed, 0 otherwise, same as a one-shot gesture.
-            if (TryParseMenuItem(s, out int menuBiId, out int menuBiItem))
+            if (TryParseMenuItemCached(src, s, out int menuBiId, out int menuBiItem))
             {
                 bool menuFired = MenuItemFiredProvider?.Invoke(
                     slotIndex, deviceGuid ?? "", menuBiId, menuBiItem) ?? false;
@@ -2383,7 +2406,7 @@ namespace PadForge.Engine.Common.Mapping
             }
 
             // Menu-item fire, unipolar (#9 B-17): 0/1.
-            if (TryParseMenuItem(s, out int menuUniId, out int menuUniItem))
+            if (TryParseMenuItemCached(src, s, out int menuUniId, out int menuUniItem))
             {
                 bool menuFired = MenuItemFiredProvider?.Invoke(
                     slotIndex, deviceGuid ?? "", menuUniId, menuUniItem) ?? false;
@@ -2627,14 +2650,18 @@ namespace PadForge.Engine.Common.Mapping
             // "Touchpad N Click"
             if (parts.Length == 3 && parts[2].Equals("Click", StringComparison.Ordinal))
             {
-                // Canonical touchpad click rides Buttons[16] (the slot
-                // SdlDeviceWrapper populates from SDL_GAMEPAD_BUTTON_TOUCHPAD,
-                // matching SDL's enum position between paddles and Misc2-6).
-                // Multi-touchpad devices (Steam Controller 2026) route their
-                // additional clicks through the SDL3 fork patch into other
-                // Buttons[] slots; that mapping lives in the device-specific
-                // recipe, not here.
-                if (padIdx != 0) return false;
+                // Canonical pad-0 click rides Buttons[16] (the slot
+                // SdlDeviceWrapper populates from SDL_GAMEPAD_BUTTON_TOUCHPAD).
+                // Nonzero pads read their own per-pad Clicked, which the
+                // wrapper fills from the fork's touchpad-click-as-button
+                // recipe (pad 1 = MISC2 on Deck / SC 2026): Workshop imports
+                // emit "Touchpad 1 Click" for right-pad clicks, and the old
+                // padIdx!=0 bail made every such row permanently false.
+                if (padIdx != 0)
+                    return state.Touchpads != null
+                        && padIdx < state.Touchpads.Length
+                        && state.Touchpads[padIdx] != null
+                        && state.Touchpads[padIdx].Clicked;
                 if (state.Buttons == null || state.Buttons.Length <= 16) return false;
                 return state.Buttons[16];
             }

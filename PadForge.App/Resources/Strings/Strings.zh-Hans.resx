@@ -2431,7 +2431,6 @@
   <data name="Workshop_Tr_TouchMenuNeedsOverlay" xml:space="preserve"><value>已丢弃触摸菜单叠加层（{0} 个单元格）</value></data>
   <data name="Workshop_Tr_RadialMenuNeedsOverlay" xml:space="preserve"><value>已丢弃径向菜单叠加层（{0} 个扇区）</value></data>
   <data name="Workshop_Tr_MouseRegionNotSupported" xml:space="preserve"><value>不支持光标区域限制</value></data>
-  <data name="Workshop_Tr_ScrollWheelModeNotSupported" xml:space="preserve"><value>不支持滚轮模式</value></data>
   <data name="Workshop_Tr_EdgeInputNotSupported" xml:space="preserve"><value>不支持边缘输入</value></data>
   <data name="Workshop_Tr_ReleaseActivatorNotSupported" xml:space="preserve"><value>此处不支持释放激活方式</value></data>
   <data name="Workshop_Tr_LongPressNotSupported" xml:space="preserve"><value>此处不支持长按激活方式</value></data>
@@ -2557,7 +2556,6 @@
   <data name="Workshop_Tr_ScrollWheelApproximated" xml:space="preserve"><value>环形滚轮近似为纵向拖动</value></data>
   <data name="Workshop_Tr_ScreenshotApproximated" xml:space="preserve"><value>SCREENSHOT 近似为 PrintScreen 按键</value></data>
   <data name="Workshop_Tr_ShowKeyboardApproximated" xml:space="preserve"><value>SHOW_KEYBOARD 近似为启动屏幕键盘</value></data>
-  <data name="Workshop_Tr_MouseDeltaNotSupported" xml:space="preserve"><value>不支持光标相对移动 mouse_delta ({0})</value></data>
   <data name="Macro_HoldForMs" xml:space="preserve"><value>按住时</value></data>
   <data name="Macro_HoldForMs_Tooltip" xml:space="preserve"><value>在触发器被连续按住达到保持时间后触发一次。更短的点按不起作用。</value></data>
   <data name="Macro_TriggerHoldMs_Label" xml:space="preserve"><value>保持时间</value></data>
@@ -2574,6 +2572,14 @@
   <data name="MacroAction_HoldAxis_Format" xml:space="preserve"><value>保持 {0} = {1}({2} 毫秒)</value></data>
   <data name="MacroAction_Type_MouseWheelTap" xml:space="preserve"><value>滚轮一格</value></data>
   <data name="MacroAction_MouseWheelTap_Tooltip" xml:space="preserve"><value>每次触发发送一格鼠标滚轮。数值为带符号的格数(正值向上或向右滚动)。</value></data>
+  <data name="MacroAction_Type_MouseNudge" xml:space="preserve"><value>微移光标</value></data>
+  <data name="MacroAction_MouseNudge_Tooltip" xml:space="preserve"><value>每次触发将鼠标光标移动固定的像素数。X 为正向右,Y 为正向下,允许负值。</value></data>
+  <data name="MacroAction_MouseNudge_Format" xml:space="preserve"><value>光标微移 ({0}, {1}) px</value></data>
+  <data name="MacroAction_Type_CycleTapList" xml:space="preserve"><value>循环点击列表</value></data>
+  <data name="MacroAction_CycleTapList_Tooltip" xml:space="preserve"><value>每次触发执行列表中的下一步并前进。开启循环时,最后一步之后回到开头。关闭时,到达末尾后不再输出。</value></data>
+  <data name="MacroAction_CycleTapList_Format" xml:space="preserve"><value>循环点击列表({0} 步)</value></data>
+  <data name="Macro_CycleSteps_Label" xml:space="preserve"><value>步骤</value></data>
+  <data name="Macro_CycleWrap_Label" xml:space="preserve"><value>循环</value></data>
   <data name="MacroAction_ToggleKey_Format" xml:space="preserve"><value>切换按键 {0}</value></data>
   <data name="MacroAction_Type_GyroRecenter" xml:space="preserve"><value>陀螺仪重新居中</value></data>
   <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>按下时将手柄累积的陀螺仪瞄准基准归零。平滑历史被清除，Motion Lean 中立点重新捕获，重力估计从控制器当前姿态重新初始化。</value></data>

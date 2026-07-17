@@ -207,6 +207,104 @@ namespace PadForge.SteamWorkshop.Translation
         /// <see cref="TranslatedMacro.WheelHorizontal"/> picks the lane.
         /// Lowers to MacroActionType.MouseWheelTap.</summary>
         MouseWheelTap = 18,
+
+        /// <summary>One fixed-pixel cursor nudge per fire (v16):
+        /// <c>controller_action mouse_delta dx dy</c>, Steam's "Move by
+        /// Amount" ("Each time this command fires the mouse will move by a
+        /// set number of pixels", shipped configurator
+        /// ControllerBinding_MouseDeltaModal_Desc, and corpus 3456927474
+        /// carries "mouse_delta 100 0"). <see cref="TranslatedMacro.DeltaX"/> /
+        /// <see cref="TranslatedMacro.DeltaY"/> are signed screen-space
+        /// pixels (+x right, +y down, the SendInput MOUSEEVENTF_MOVE
+        /// frame). Lowers to MacroActionType.MouseNudge, which enqueues
+        /// the delta once into the engine's accumulate-and-flush mouse
+        /// lane.</summary>
+        MouseNudge = 19,
+
+        /// <summary>Steam's Scroll Wheel List (v16): the wheel steps
+        /// through <c>scroll_wheel_list_0..N</c>, firing the reached
+        /// item's binding per detent ("You can assign a button or key to
+        /// be sent to the game when the Nth item is reached", shipped
+        /// configurator ControllerBinding_ScrollWheelListN_Description).
+        /// <see cref="TranslatedMacro.CycleSteps"/> carries the items in
+        /// VDF order and <see cref="TranslatedMacro.CycleWrap"/> Steam's
+        /// scroll_wrap ("Wrap List"). Lowers to
+        /// MacroActionType.CycleTapList, whose per-action index advances
+        /// one step per fire.</summary>
+        CycleList = 20,
+    }
+
+    /// <summary>Which one-shot form a <see cref="TranslatedCycleStep"/>
+    /// fires. Mirrors the tap macro family: the reached list item is
+    /// exactly one of the existing one-shot lowerings.</summary>
+    public enum TranslatedCycleStepKind
+    {
+        /// <summary>Key tap via SendInput (<c>key_press</c>).
+        /// <see cref="TranslatedCycleStep.VirtualKey"/>.</summary>
+        KeyTap = 0,
+
+        /// <summary>Mouse-button click (<c>mouse_button</c>).
+        /// <see cref="TranslatedCycleStep.MouseButtonIndex"/>.</summary>
+        MouseButtonTap = 1,
+
+        /// <summary>Wheel detent (<c>mouse_wheel</c>).
+        /// <see cref="TranslatedCycleStep.WheelTicks"/> /
+        /// <see cref="TranslatedCycleStep.WheelHorizontal"/>.</summary>
+        WheelTap = 2,
+
+        /// <summary>Virtual-controller button tap (<c>xinput_button</c>).
+        /// <see cref="TranslatedCycleStep.TargetXboxButtons"/>.</summary>
+        VcButtonTap = 3,
+
+        /// <summary>Axis-natured VC target tap (<c>xinput_button</c> onto
+        /// a trigger pull or stick direction).
+        /// <see cref="TranslatedCycleStep.TargetAxis"/> /
+        /// <see cref="TranslatedCycleStep.TargetAxisNegative"/>.</summary>
+        VcAxisTap = 4,
+    }
+
+    /// <summary>One Scroll Wheel List item (v16), device-independent. The
+    /// materializer encodes the ordered list into the engine's
+    /// CycleTapList step string.</summary>
+    public sealed class TranslatedCycleStep
+    {
+        public TranslatedCycleStepKind Kind { get; set; }
+
+        /// <summary>The scroll_wheel_list_N index this step came from. An
+        /// item slot carrying several bindings contributes several steps
+        /// with the same index. The materializer folds them into one
+        /// detent stop so they fire together, Steam's reached-item
+        /// semantics.</summary>
+        public int ItemIndex { get; set; }
+
+        /// <summary>Win32 VK for <see cref="TranslatedCycleStepKind.KeyTap"/>.</summary>
+        public int VirtualKey { get; set; }
+
+        /// <summary>0=Left 1=Right 2=Middle 3=X1 4=X2 for
+        /// <see cref="TranslatedCycleStepKind.MouseButtonTap"/>.</summary>
+        public int MouseButtonIndex { get; set; }
+
+        /// <summary>Signed tick count for
+        /// <see cref="TranslatedCycleStepKind.WheelTap"/> (positive = up /
+        /// right).</summary>
+        public int WheelTicks { get; set; } = 1;
+
+        /// <summary>Horizontal-lane selector for
+        /// <see cref="TranslatedCycleStepKind.WheelTap"/>.</summary>
+        public bool WheelHorizontal { get; set; }
+
+        /// <summary>Xbox button bitmask for
+        /// <see cref="TranslatedCycleStepKind.VcButtonTap"/>.</summary>
+        public ushort TargetXboxButtons { get; set; }
+
+        /// <summary>XInputTarget name ("LeftTrigger", "LeftThumbAxisY",
+        /// ...) for <see cref="TranslatedCycleStepKind.VcAxisTap"/>.</summary>
+        public string TargetAxis { get; set; } = "";
+
+        /// <summary>Direction for stick-axis targets, translator SDL row
+        /// frame (true = up / left), the TranslatedMacro.TargetAxisNegative
+        /// contract.</summary>
+        public bool TargetAxisNegative { get; set; }
     }
 
     /// <summary>
@@ -409,5 +507,29 @@ namespace PadForge.SteamWorkshop.Translation
         /// <summary>MouseWheelTap lane selector: true = the horizontal
         /// (MOUSEEVENTF_HWHEEL) wheel.</summary>
         public bool WheelHorizontal { get; set; }
+
+        // ── v16 payloads ──
+
+        /// <summary>MOUSE_DELTA dx for
+        /// <see cref="TranslatedMacroAction.MouseNudge"/>, signed pixels,
+        /// +x right (screen space).</summary>
+        public int DeltaX { get; set; }
+
+        /// <summary>MOUSE_DELTA dy for
+        /// <see cref="TranslatedMacroAction.MouseNudge"/>, signed pixels,
+        /// +y down (screen space).</summary>
+        public int DeltaY { get; set; }
+
+        /// <summary>Ordered Scroll Wheel List items for
+        /// <see cref="TranslatedMacroAction.CycleList"/> (VDF
+        /// scroll_wheel_list_N order).</summary>
+        public List<TranslatedCycleStep> CycleSteps { get; set; } = new();
+
+        /// <summary>Steam's scroll_wrap for
+        /// <see cref="TranslatedMacroAction.CycleList"/>: true wraps past
+        /// the last item back to the first ("Wrap List - On"). False stops
+        /// producing output past the end ("scrolling past an end won't
+        /// generate any command").</summary>
+        public bool CycleWrap { get; set; } = true;
     }
 }

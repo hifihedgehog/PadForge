@@ -2431,7 +2431,6 @@
   <data name="Workshop_Tr_TouchMenuNeedsOverlay" xml:space="preserve"><value>Touch-Menü-Overlay verworfen ({0} Felder)</value></data>
   <data name="Workshop_Tr_RadialMenuNeedsOverlay" xml:space="preserve"><value>Radialmenü-Overlay verworfen ({0} Sektoren)</value></data>
   <data name="Workshop_Tr_MouseRegionNotSupported" xml:space="preserve"><value>Cursor-Bereichsbegrenzung nicht unterstützt</value></data>
-  <data name="Workshop_Tr_ScrollWheelModeNotSupported" xml:space="preserve"><value>Scrollrad-Modus nicht unterstützt</value></data>
   <data name="Workshop_Tr_EdgeInputNotSupported" xml:space="preserve"><value>Randeingabe nicht unterstützt</value></data>
   <data name="Workshop_Tr_ReleaseActivatorNotSupported" xml:space="preserve"><value>Loslass-Aktivator hier nicht unterstützt</value></data>
   <data name="Workshop_Tr_LongPressNotSupported" xml:space="preserve"><value>Langdruck-Aktivator hier nicht unterstützt</value></data>
@@ -2557,7 +2556,6 @@
   <data name="Workshop_Tr_ScrollWheelApproximated" xml:space="preserve"><value>kreisförmiges Scrollrad als vertikales Ziehen angenähert</value></data>
   <data name="Workshop_Tr_ScreenshotApproximated" xml:space="preserve"><value>SCREENSHOT als Druck-Taste angenähert</value></data>
   <data name="Workshop_Tr_ShowKeyboardApproximated" xml:space="preserve"><value>SHOW_KEYBOARD als Start der Bildschirmtastatur angenähert</value></data>
-  <data name="Workshop_Tr_MouseDeltaNotSupported" xml:space="preserve"><value>relative Cursorbewegung mouse_delta ({0}) nicht unterstützt</value></data>
   <data name="Macro_HoldForMs" xml:space="preserve"><value>Beim Halten</value></data>
   <data name="Macro_HoldForMs_Tooltip" xml:space="preserve"><value>Löst einmal aus, nachdem der Auslöser ununterbrochen für die Haltezeit gehalten wurde. Ein kürzeres Antippen bewirkt nichts.</value></data>
   <data name="Macro_TriggerHoldMs_Label" xml:space="preserve"><value>Haltezeit</value></data>
@@ -2574,6 +2572,14 @@
   <data name="MacroAction_HoldAxis_Format" xml:space="preserve"><value>{0} = {1} halten ({2} ms)</value></data>
   <data name="MacroAction_Type_MouseWheelTap" xml:space="preserve"><value>Mausrad-Raste</value></data>
   <data name="MacroAction_MouseWheelTap_Tooltip" xml:space="preserve"><value>Sendet pro Auslösung eine diskrete Mausrad-Raste. Der Wert ist die vorzeichenbehaftete Rastenzahl (positiv rollt nach oben oder rechts).</value></data>
+  <data name="MacroAction_Type_MouseNudge" xml:space="preserve"><value>Cursor anstoßen</value></data>
+  <data name="MacroAction_MouseNudge_Tooltip" xml:space="preserve"><value>Bewegt den Mauszeiger pro Auslösung um eine feste Pixelzahl. Positives X bewegt nach rechts, positives Y nach unten. Negative Werte sind erlaubt.</value></data>
+  <data name="MacroAction_MouseNudge_Format" xml:space="preserve"><value>Cursor um ({0}, {1}) px anstoßen</value></data>
+  <data name="MacroAction_Type_CycleTapList" xml:space="preserve"><value>Tipp-Liste durchlaufen</value></data>
+  <data name="MacroAction_CycleTapList_Tooltip" xml:space="preserve"><value>Jede Auslösung führt den nächsten Schritt der Liste aus und rückt weiter. Mit Umlauf beginnt die Liste nach dem letzten Schritt von vorn, ohne endet die Ausgabe am Listenende.</value></data>
+  <data name="MacroAction_CycleTapList_Format" xml:space="preserve"><value>Tipp-Liste durchlaufen ({0} Schritte)</value></data>
+  <data name="Macro_CycleSteps_Label" xml:space="preserve"><value>Schritte</value></data>
+  <data name="Macro_CycleWrap_Label" xml:space="preserve"><value>Umlauf</value></data>
   <data name="MacroAction_ToggleKey_Format" xml:space="preserve"><value>Tasten {0} umschalten</value></data>
   <data name="MacroAction_Type_GyroRecenter" xml:space="preserve"><value>Gyro zentrieren</value></data>
   <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>Setzt die aufgelaufenen Gyro-Zielreferenzen des Pads beim Drücken auf null. Der Glättungsverlauf wird geleert, der Motion-Lean-Nullpunkt neu erfasst und die Schwerkraftschätzung aus der aktuellen Lage des Controllers neu initialisiert.</value></data>

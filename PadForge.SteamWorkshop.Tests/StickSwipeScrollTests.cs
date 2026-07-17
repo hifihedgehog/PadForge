@@ -314,7 +314,7 @@ namespace PadForge.SteamWorkshop.Tests
                 e.ReasonKey == TranslationReasons.ScrollWheelApproximated
                 && e.Status == TranslationStatus.Partial);
             Assert.DoesNotContain(p.Report.Entries, e =>
-                e.ReasonKey == TranslationReasons.ScrollWheelModeNotSupported);
+                e.ReasonKey == "Workshop_Tr_ScrollWheelModeNotSupported");
         }
 
         [Fact]
@@ -355,7 +355,7 @@ namespace PadForge.SteamWorkshop.Tests
             Assert.True(tap.TriggerDescriptorHalfAxis);
             Assert.False(tap.TriggerDescriptorInvert);
             Assert.DoesNotContain(p.Report.Entries, e =>
-                e.ReasonKey == TranslationReasons.ScrollWheelModeNotSupported);
+                e.ReasonKey == "Workshop_Tr_ScrollWheelModeNotSupported");
             // The rotation-vs-drag geometry Partial covers the tap too.
             Assert.Contains(p.Report.Entries, e =>
                 e.ReasonKey == TranslationReasons.ScrollWheelApproximated);
@@ -378,7 +378,7 @@ namespace PadForge.SteamWorkshop.Tests
             Assert.Equal("Touchpad 0 SwipeUp", Assert.Single(tap.TriggerInputDescriptors));
             Assert.False(tap.TriggerDescriptorHalfAxis);
             Assert.DoesNotContain(p.Report.Entries, e =>
-                e.ReasonKey == TranslationReasons.ScrollWheelModeNotSupported);
+                e.ReasonKey == "Workshop_Tr_ScrollWheelModeNotSupported");
         }
     }
 }

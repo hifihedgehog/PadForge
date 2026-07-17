@@ -178,7 +178,7 @@ menus: 1
     [6] Research
     [7] Recruit and Deploy
     [8] Logistics
-report: v15 rows:x0+k69 macros:16 menus:1 layers:5 clean:77 partial:16 skipped:2 errors:0
+report: v16 rows:x0+k69 macros:16 menus:1 layers:5 clean:77 partial:16 skipped:2 errors:0
   Clean RowEmitted @ Default Config / Map Modes/button_diamond/group 0 (four_buttons)/button_A/Full_Press => KbmKey20 <- Gamepad ButtonA
   Clean RowEmitted @ Default Config / Map Modes/button_diamond/group 0 (four_buttons)/button_B/Full_Press => KbmKey4F <- Gamepad ButtonB
   Clean RowEmitted @ Default Config / Map Modes/button_diamond/group 0 (four_buttons)/button_X/Full_Press => KbmKey1B <- Gamepad ButtonX

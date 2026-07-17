@@ -68,14 +68,16 @@ namespace PadForge.SteamWorkshop.Tests
             Assert.Equal(Translate(fileId), Translate(fileId));
         }
 
-        /// <summary>v14/v15 arm closures: the retired vocabulary has zero
+        /// <summary>v14/v15/v16 arm closures: the retired vocabulary has zero
         /// emission sites across the whole corpus. TrackpadFeatureRequired
         /// died to the apply-time auto-arm (v14), the directional-swipe
         /// skip family died to the gyro half reads, the member walk, and
         /// the AxisHold / MouseWheelTap / half-stamped-activator channels
-        /// (v15), and the two macro-trigger plumbing notes went silent
-        /// Clean (v15), so none of these keys may ever appear in a fresh
-        /// report again.</summary>
+        /// (v15), the two macro-trigger plumbing notes went silent
+        /// Clean (v15), and the terminal round built the mouse_delta nudge
+        /// and the scroll_wheel_list cycle while the census retired the
+        /// surfaceless-scrollwheel arm (v16), so none of these keys may
+        /// ever appear in a fresh report again.</summary>
         [Theory]
         [MemberData(nameof(FixtureIds))]
         public void Fixture_EmitsNoRetiredReason(long fileId)
@@ -96,9 +98,45 @@ namespace PadForge.SteamWorkshop.Tests
                 "Workshop_Tr_FlickBindingNotOneShot",
                 "Workshop_Tr_MacroTriggerViaXboxOutput",
                 "Workshop_Tr_MacroTriggerRetargetedToInput",
+                "Workshop_Tr_MouseDeltaNotSupported",
+                "Workshop_Tr_ScrollWheelModeNotSupported",
             };
             Assert.DoesNotContain(translated.Report.Entries, e =>
                 System.Array.IndexOf(retired, e.ReasonKey) >= 0);
+        }
+
+        /// <summary>v16 retired-arm census guard: the surfaceless-
+        /// scrollwheel skip arm was deleted on the proof that no
+        /// scrollwheel group in Steam's grammar hosts anywhere but a
+        /// trackpad or joystick. This walks EVERY group_source_bindings
+        /// entry of every fixture (active, inactive, and modeshift alike,
+        /// wider than translation reaches) and fails the moment a
+        /// scrollwheel group binds a non-drag host, which would demand
+        /// the per-press detent lowering the arm's deletion note names.</summary>
+        [Fact]
+        public void ScrollWheelGroups_Corpus_HostOnlyOnDragSurfaces()
+        {
+            foreach (var path in TestFixtures.AllVdfPaths())
+            {
+                var config = SteamInputConfig.FromVdf(VdfParser.Parse(File.ReadAllText(path)));
+                var wheelGroups = config.Groups
+                    .Where(g => string.Equals(g.Mode, "scrollwheel", StringComparison.OrdinalIgnoreCase))
+                    .Select(g => g.Id)
+                    .ToHashSet();
+                if (wheelGroups.Count == 0) continue;
+                foreach (var preset in config.Presets)
+                {
+                    foreach (var kv in preset.GroupSourceBindings)
+                    {
+                        if (!wheelGroups.Contains(kv.Key)) continue;
+                        var tokens = (kv.Value ?? "").Split(' ', StringSplitOptions.RemoveEmptyEntries);
+                        var slot = PhysicalSlotResolver.ParseSlot(tokens.Length > 0 ? tokens[0] : "");
+                        Assert.True(
+                            PhysicalSlotResolver.IsTrackpad(slot) || PhysicalSlotResolver.IsStick(slot),
+                            $"{Path.GetFileName(path)}: scrollwheel group {kv.Key} hosts on '{kv.Value}'");
+                    }
+                }
+            }
         }
 
         private static string Translate(long fileId)

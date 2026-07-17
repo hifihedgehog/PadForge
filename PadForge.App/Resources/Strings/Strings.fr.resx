@@ -2431,7 +2431,6 @@
   <data name="Workshop_Tr_TouchMenuNeedsOverlay" xml:space="preserve"><value>superposition de menu tactile abandonnée ({0} cases)</value></data>
   <data name="Workshop_Tr_RadialMenuNeedsOverlay" xml:space="preserve"><value>superposition de menu radial abandonnée ({0} secteurs)</value></data>
   <data name="Workshop_Tr_MouseRegionNotSupported" xml:space="preserve"><value>contrainte de zone du curseur non prise en charge</value></data>
-  <data name="Workshop_Tr_ScrollWheelModeNotSupported" xml:space="preserve"><value>mode molette non pris en charge</value></data>
   <data name="Workshop_Tr_EdgeInputNotSupported" xml:space="preserve"><value>entrée de bord non prise en charge</value></data>
   <data name="Workshop_Tr_ReleaseActivatorNotSupported" xml:space="preserve"><value>activateur au relâchement non pris en charge ici</value></data>
   <data name="Workshop_Tr_LongPressNotSupported" xml:space="preserve"><value>activateur d'appui long non pris en charge ici</value></data>
@@ -2557,7 +2556,6 @@
   <data name="Workshop_Tr_ScrollWheelApproximated" xml:space="preserve"><value>molette circulaire approximée par un glissement vertical</value></data>
   <data name="Workshop_Tr_ScreenshotApproximated" xml:space="preserve"><value>SCREENSHOT approximé par un appui sur la touche Impr. écran</value></data>
   <data name="Workshop_Tr_ShowKeyboardApproximated" xml:space="preserve"><value>SHOW_KEYBOARD approximé par le lancement du clavier visuel</value></data>
-  <data name="Workshop_Tr_MouseDeltaNotSupported" xml:space="preserve"><value>déplacement relatif du curseur mouse_delta ({0}) non pris en charge</value></data>
   <data name="Macro_HoldForMs" xml:space="preserve"><value>Au maintien</value></data>
   <data name="Macro_HoldForMs_Tooltip" xml:space="preserve"><value>Se déclenche une fois lorsque le déclencheur a été maintenu en continu pendant la durée de maintien. Un appui plus court ne fait rien.</value></data>
   <data name="Macro_TriggerHoldMs_Label" xml:space="preserve"><value>Durée de maintien</value></data>
@@ -2574,6 +2572,14 @@
   <data name="MacroAction_HoldAxis_Format" xml:space="preserve"><value>Maintenir {0} = {1} ({2} ms)</value></data>
   <data name="MacroAction_Type_MouseWheelTap" xml:space="preserve"><value>Cran de molette</value></data>
   <data name="MacroAction_MouseWheelTap_Tooltip" xml:space="preserve"><value>Envoie un cran discret de molette par déclenchement. La valeur est le nombre de crans signé (positif fait défiler vers le haut ou la droite).</value></data>
+  <data name="MacroAction_Type_MouseNudge" xml:space="preserve"><value>Décaler le curseur</value></data>
+  <data name="MacroAction_MouseNudge_Tooltip" xml:space="preserve"><value>Déplace le curseur de la souris d'un nombre fixe de pixels à chaque déclenchement. X positif vers la droite, Y positif vers le bas. Les valeurs négatives sont autorisées.</value></data>
+  <data name="MacroAction_MouseNudge_Format" xml:space="preserve"><value>Décaler le curseur de ({0}, {1}) px</value></data>
+  <data name="MacroAction_Type_CycleTapList" xml:space="preserve"><value>Liste de frappes cyclique</value></data>
+  <data name="MacroAction_CycleTapList_Tooltip" xml:space="preserve"><value>Chaque déclenchement exécute l'étape suivante de la liste puis avance. Avec le bouclage, la liste recommence après la dernière étape. Sans lui, la sortie s'arrête en fin de liste.</value></data>
+  <data name="MacroAction_CycleTapList_Format" xml:space="preserve"><value>Liste de frappes cyclique ({0} étapes)</value></data>
+  <data name="Macro_CycleSteps_Label" xml:space="preserve"><value>Étapes</value></data>
+  <data name="Macro_CycleWrap_Label" xml:space="preserve"><value>Bouclage</value></data>
   <data name="MacroAction_ToggleKey_Format" xml:space="preserve"><value>Basculer les touches {0}</value></data>
   <data name="MacroAction_Type_GyroRecenter" xml:space="preserve"><value>Recentrer le gyroscope</value></data>
   <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>Remet à zéro les références de visée gyroscopique accumulées du pad à l'appui. L'historique de lissage s'efface, le neutre du Motion Lean se recapture et l'estimation de gravité se réinitialise depuis la pose actuelle de la manette.</value></data>

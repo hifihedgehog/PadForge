@@ -109,6 +109,40 @@ namespace PadForge.SteamWorkshop.Tests
                     case TranslatedMacroAction.HoldKey:
                         sb.Append(" vk=0x").Append(m.VirtualKey.ToString("X2", CultureInfo.InvariantCulture));
                         break;
+                    case TranslatedMacroAction.MouseNudge:
+                        sb.Append(" delta=(").Append(m.DeltaX).Append(',').Append(m.DeltaY).Append(')');
+                        break;
+                    case TranslatedMacroAction.CycleList:
+                        sb.Append(" steps=[");
+                        for (int i = 0; i < m.CycleSteps.Count; i++)
+                        {
+                            if (i > 0) sb.Append("; ");
+                            var s = m.CycleSteps[i];
+                            sb.Append(s.ItemIndex).Append(':');
+                            switch (s.Kind)
+                            {
+                                case TranslatedCycleStepKind.KeyTap:
+                                    sb.Append("K0x").Append(s.VirtualKey.ToString("X2", CultureInfo.InvariantCulture));
+                                    break;
+                                case TranslatedCycleStepKind.MouseButtonTap:
+                                    sb.Append("M").Append(s.MouseButtonIndex);
+                                    break;
+                                case TranslatedCycleStepKind.WheelTap:
+                                    sb.Append("W").Append(s.WheelTicks);
+                                    if (s.WheelHorizontal) sb.Append('H');
+                                    break;
+                                case TranslatedCycleStepKind.VcButtonTap:
+                                    sb.Append("B0x").Append(s.TargetXboxButtons.ToString("X4", CultureInfo.InvariantCulture));
+                                    break;
+                                case TranslatedCycleStepKind.VcAxisTap:
+                                    sb.Append("A").Append(s.TargetAxis);
+                                    if (s.TargetAxisNegative) sb.Append('-');
+                                    break;
+                            }
+                        }
+                        sb.Append(']');
+                        if (!m.CycleWrap) sb.Append(" nowrap");
+                        break;
                 }
                 // Activator fire delays (v10 G5): non-default only, so
                 // pre-v10 goldens stay byte-identical on this seam.

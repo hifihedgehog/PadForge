@@ -211,8 +211,33 @@ namespace PadForge.SteamWorkshop.Translation
         /// The two macro-trigger plumbing notes
         /// (MacroTriggerViaXboxOutput, MacroTriggerRetargetedToInput)
         /// retire: they narrated HOW a working trigger is wired, not a
-        /// fidelity loss, so those emissions are silent Clean now.</summary>
-        public const int CurrentTranslatorVersion = 15;
+        /// fidelity loss, so those emissions are silent Clean now.
+        /// v16: Terminal gap round. controller_action mouse_delta builds:
+        /// the new one-shot MouseNudge macro enqueues the authored pixel
+        /// delta once into the engine's accumulate-and-flush mouse lane
+        /// (MouseDeltaNotSupported retired, key and locale strings
+        /// deleted). Scroll Wheel List builds: the ordered
+        /// scroll_wheel_list_0..N items lower to one CycleTapList macro on
+        /// the clockwise detent read (stick drag wedge / trackpad
+        /// SwipeDown), each detent firing the next item's one-shot form
+        /// (key / mouse / wheel / VC button / VC axis taps), scroll_wrap
+        /// consumed as the wrap flag. The surfaceless-scrollwheel skip arm
+        /// retires with the census proof that no non-drag host exists in
+        /// Steam's grammar (corpus + Valve's shipped controller_base
+        /// templates host the mode on trackpads and joysticks only, and
+        /// the shipped strings say "click the pad/stick"). A hand-edited
+        /// host outside that grammar routes through the member walk's
+        /// UnknownPhysicalInput safety net
+        /// (ScrollWheelModeNotSupported retired, key and locale strings
+        /// deleted). The degenerate whole-pad Outer Ring closes: a
+        /// trackpad-hosted edge member whose zone covers the whole pad
+        /// (edge_binding_invert 1 with radius at the 32767 ceiling, or
+        /// invert 0 with radius 0) IS the touch read, so its bindings
+        /// translate on "Touchpad {p} Finger 0 Down" and the two consumed
+        /// geometry keys drop out of the region tuning note. Non-degenerate
+        /// rings (and stick hosts) keep EdgeInputNotSupported: the engine
+        /// has no deflection-magnitude / finger-radius source family.</summary>
+        public const int CurrentTranslatorVersion = 16;
 
         public int TranslatorVersion { get; set; } = CurrentTranslatorVersion;
 
@@ -344,7 +369,11 @@ namespace PadForge.SteamWorkshop.Translation
         public const string TouchMenuNeedsOverlay = "Workshop_Tr_TouchMenuNeedsOverlay";         // {0} cell count
         public const string RadialMenuNeedsOverlay = "Workshop_Tr_RadialMenuNeedsOverlay";       // {0} cell count
         public const string MouseRegionNotSupported = "Workshop_Tr_MouseRegionNotSupported";
-        public const string ScrollWheelModeNotSupported = "Workshop_Tr_ScrollWheelModeNotSupported";
+        // ScrollWheelModeNotSupported retired in v16: scroll_wheel_list
+        // items lower to the CycleTapList macro, and the surfaceless-host
+        // arm is unreachable in Steam's grammar (the mode hosts on
+        // trackpads and joysticks only, census-guarded). The key plus its
+        // locale strings were deleted.
         public const string EdgeInputNotSupported = "Workshop_Tr_EdgeInputNotSupported";
         public const string ReleaseActivatorNotSupported = "Workshop_Tr_ReleaseActivatorNotSupported";
         public const string LongPressNotSupported = "Workshop_Tr_LongPressNotSupported";
@@ -484,11 +513,11 @@ namespace PadForge.SteamWorkshop.Translation
         public const string ShowKeyboardApproximated = "Workshop_Tr_ShowKeyboardApproximated";
 
         // ── Translator v13 (vocabulary census) vocabulary ──
-        /// <summary>controller_action mouse_delta ("Move by Amount": the
-        /// cursor moves by a fixed pixel offset per fire). PadForge's macro
-        /// vocabulary has continuous axis-driven mouse motion and the
-        /// absolute warp, but no one-shot fixed-pixel nudge.</summary>
-        public const string MouseDeltaNotSupported = "Workshop_Tr_MouseDeltaNotSupported";       // {0} dx dy
+        // MouseDeltaNotSupported retired in v16, three translator versions
+        // after it landed, because the arm BUILT instead of skipping: the
+        // one-shot MouseNudge macro carries the authored pixel delta into
+        // the engine's accumulate-and-flush mouse lane. The key plus its
+        // locale strings were deleted.
 
         // ── Translator v14 (per-arm swipe skips) vocabulary ──
         // The whole family retired in v15, one translator version after it

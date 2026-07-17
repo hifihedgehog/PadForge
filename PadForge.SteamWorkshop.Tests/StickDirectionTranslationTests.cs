@@ -45,6 +45,15 @@ namespace PadForge.SteamWorkshop.Tests
             return sb.ToString();
         }
 
+        private static string Settings(params (string Key, string Value)[] kvs)
+        {
+            var sb = new System.Text.StringBuilder("\t\t\"settings\"\n\t\t{\n");
+            foreach (var (k, v) in kvs)
+                sb.Append($"\t\t\t\"{k}\"\t\"{v}\"\n");
+            sb.Append("\t\t}\n");
+            return sb.ToString();
+        }
+
         private static string Preset(int id, string name, params (int GroupId, string Binding)[] entries)
         {
             var sb = new System.Text.StringBuilder();
@@ -224,17 +233,52 @@ namespace PadForge.SteamWorkshop.Tests
         // ─── controller_action census closures ──────────────────────────
 
         [Fact]
-        public void MouseDelta_GetsItsNamedSkip()
+        public void MouseDelta_LowersToOneShotNudgeMacro()
         {
+            // v16: "Move by Amount" builds. The authored dx/dy pixels ride
+            // the MouseNudge macro on the hosting input's own descriptor
+            // (no phantom Xbox slot for a cursor verb).
             string vdf = Head
                 + Group(1, "four_buttons", Inputs(Inp("button_a", "controller_action mouse_delta 100 0")))
                 + Preset(0, "Default", (1, "button_diamond active"))
                 + "}\n";
             var p = Translate(vdf);
+            var m = Assert.Single(p.Macros);
+            Assert.Equal(TranslatedMacroAction.MouseNudge, m.Action);
+            Assert.Equal(100, m.DeltaX);
+            Assert.Equal(0, m.DeltaY);
+            Assert.Equal("OnPress", m.TriggerMode);
+            Assert.Equal("Gamepad ButtonA", Assert.Single(m.TriggerInputDescriptors));
             var entry = Assert.Single(p.Report.Entries);
-            Assert.Equal(TranslationReasons.MouseDeltaNotSupported, entry.ReasonKey);
-            Assert.Equal(TranslationStatus.Skipped, entry.Status);
-            Assert.Equal("mouse_delta 100 0", entry.ReasonArgs.Single());
+            Assert.Equal(TranslationReasons.MacroEmitted, entry.ReasonKey);
+            Assert.Equal(TranslationStatus.Clean, entry.Status);
+        }
+
+        [Fact]
+        public void MouseDelta_NegativeDeltas_PassThroughSigned()
+        {
+            string vdf = Head
+                + Group(1, "four_buttons", Inputs(Inp("button_a", "controller_action mouse_delta -250 -40")))
+                + Preset(0, "Default", (1, "button_diamond active"))
+                + "}\n";
+            var p = Translate(vdf);
+            var m = Assert.Single(p.Macros);
+            Assert.Equal(TranslatedMacroAction.MouseNudge, m.Action);
+            Assert.Equal(-250, m.DeltaX);
+            Assert.Equal(-40, m.DeltaY);
+        }
+
+        [Fact]
+        public void MouseDelta_Malformed_SkipsAsUnsupported()
+        {
+            string vdf = Head
+                + Group(1, "four_buttons", Inputs(Inp("button_a", "controller_action mouse_delta 100")))
+                + Preset(0, "Default", (1, "button_diamond active"))
+                + "}\n";
+            var p = Translate(vdf);
+            Assert.Empty(p.Macros);
+            var entry = Assert.Single(p.Report.Entries);
+            Assert.Equal(TranslationReasons.UnsupportedControllerAction, entry.ReasonKey);
         }
 
         [Theory]
@@ -274,28 +318,91 @@ namespace PadForge.SteamWorkshop.Tests
             Assert.Equal(TranslationReasons.LizardModeActionNotSupported, entry.ReasonKey);
         }
 
-        // ─── Scroll Wheel List members ──────────────────────────────────
+        // ─── Scroll Wheel List: the v16 cycle lowering ──────────────────
 
         [Fact]
-        public void ScrollWheelList_Members_GetNamedSkipsInsteadOfSilence()
+        public void ScrollWheelList_Trackpad_LowersToOneCycleMacro()
         {
+            // v16: the ordered list becomes ONE CycleList macro on the
+            // clockwise detent gesture. The cw/ccw wheel members keep
+            // their drag row beside it.
             string vdf = Head
                 + Group(1, "scrollwheel", Inputs(
                     Inp("scroll_clockwise", "mouse_wheel SCROLL_DOWN"),
                     Inp("scroll_wheel_list_0", "key_press 1"),
-                    Inp("scroll_wheel_list_1", "key_press 2")))
+                    Inp("scroll_wheel_list_1", "key_press 2"),
+                    Inp("scroll_wheel_list_2", "key_press 3")))
                 + Preset(0, "Default", (1, "left_trackpad active"))
                 + "}\n";
             var p = Translate(vdf);
 
-            var listSkips = p.Report.Entries
-                .Where(e => e.ReasonKey == TranslationReasons.ScrollWheelModeNotSupported)
-                .ToList();
-            Assert.Equal(2, listSkips.Count);
-            Assert.Contains(listSkips, e => e.SourcePath.EndsWith("/scroll_wheel_list_0"));
-            Assert.Contains(listSkips, e => e.SourcePath.EndsWith("/scroll_wheel_list_1"));
-            // The wheel itself still lowers onto the drag row.
+            var cycle = Assert.Single(p.Macros);
+            Assert.Equal(TranslatedMacroAction.CycleList, cycle.Action);
+            Assert.Equal("Touchpad 0 SwipeDown", Assert.Single(cycle.TriggerInputDescriptors));
+            Assert.True(cycle.CycleWrap); // scroll_wrap absent = wrap
+            Assert.Equal(3, cycle.CycleSteps.Count);
+            Assert.All(cycle.CycleSteps, s => Assert.Equal(TranslatedCycleStepKind.KeyTap, s.Kind));
+            Assert.Equal(new[] { 0x31, 0x32, 0x33 },
+                cycle.CycleSteps.Select(s => s.VirtualKey).ToArray());
+            Assert.Equal(new[] { 0, 1, 2 },
+                cycle.CycleSteps.Select(s => s.ItemIndex).ToArray());
+
+            // The wheel itself still lowers onto the drag row, one Clean
+            // entry per list item names its step, and the geometry
+            // Partial covers the group.
             Assert.Single(p.KbmMappingSet.Rows);
+            Assert.Equal(3, p.Report.Entries.Count(e =>
+                e.ReasonKey == TranslationReasons.MacroEmitted
+                && e.SourcePath.Contains("scroll_wheel_list_")));
+            Assert.Contains(p.Report.Entries, e =>
+                e.ReasonKey == TranslationReasons.ScrollWheelApproximated);
+        }
+
+        [Fact]
+        public void ScrollWheelList_Stick_TriggersOnDragWedge_AndCarriesWrapOff()
+        {
+            string vdf = Head
+                + Group(1, "scrollwheel",
+                    Inputs(
+                        Inp("scroll_wheel_list_0", "mouse_wheel SCROLL_UP"),
+                        Inp("scroll_wheel_list_1", "mouse_wheel SCROLL_DOWN"))
+                    + Settings(("scroll_wrap", "0"), ("deadzone_inner_radius", "6553")))
+                + Preset(0, "Default", (1, "joystick active"))
+                + "}\n";
+            var p = Translate(vdf);
+
+            var cycle = Assert.Single(p.Macros);
+            Assert.Equal(TranslatedMacroAction.CycleList, cycle.Action);
+            Assert.False(cycle.CycleWrap);
+            Assert.Equal("Gamepad LeftStickY", Assert.Single(cycle.TriggerInputDescriptors));
+            Assert.True(cycle.TriggerDescriptorHalfAxis); // clockwise = deflect down
+            Assert.False(cycle.TriggerDescriptorInvert);
+            Assert.Equal(20, cycle.TriggerDescriptorDeadZonePercent);
+            Assert.Equal(2, cycle.CycleSteps.Count);
+            Assert.All(cycle.CycleSteps, s => Assert.Equal(TranslatedCycleStepKind.WheelTap, s.Kind));
+            Assert.Equal(new[] { 1, -1 },
+                cycle.CycleSteps.Select(s => s.WheelTicks).ToArray()); // UP then DOWN
+        }
+
+        [Fact]
+        public void ScrollWheel_OutOfGrammarHost_FallsToTheSafetyNet()
+        {
+            // v16 retired-arm shape: Steam's own serializer never hosts
+            // scrollwheel off a pad/stick (census guard in
+            // TranslationGoldenTests), so a hand-edited diamond host is
+            // out-of-grammar config and routes through the member walk's
+            // named safety net instead of a dedicated skip arm.
+            string vdf = Head
+                + Group(1, "scrollwheel", Inputs(
+                    Inp("scroll_clockwise", "mouse_wheel SCROLL_DOWN"),
+                    Inp("scroll_wheel_list_0", "key_press 1")))
+                + Preset(0, "Default", (1, "button_diamond active"))
+                + "}\n";
+            var p = Translate(vdf);
+            Assert.Empty(p.Macros);
+            Assert.Empty(p.KbmMappingSet.Rows);
+            Assert.Equal(2, p.Report.Entries.Count(e =>
+                e.ReasonKey == TranslationReasons.UnknownPhysicalInput));
         }
     }
 }

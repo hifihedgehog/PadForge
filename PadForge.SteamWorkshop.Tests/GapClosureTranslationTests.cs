@@ -149,7 +149,7 @@ namespace PadForge.SteamWorkshop.Tests
                 e.ReasonKey == TranslationReasons.ScrollWheelApproximated
                 && e.Status == TranslationStatus.Partial);
             Assert.DoesNotContain(p.Report.Entries,
-                e => e.ReasonKey == TranslationReasons.ScrollWheelModeNotSupported);
+                e => e.ReasonKey == "Workshop_Tr_ScrollWheelModeNotSupported");
         }
 
         [Fact]
@@ -183,7 +183,7 @@ namespace PadForge.SteamWorkshop.Tests
             Assert.Equal(TranslatedMacroAction.KeyTap, tap.Action);
             Assert.Equal("Touchpad 0 SwipeDown", Assert.Single(tap.TriggerInputDescriptors));
             Assert.DoesNotContain(p.Report.Entries, e =>
-                e.ReasonKey == TranslationReasons.ScrollWheelModeNotSupported);
+                e.ReasonKey == "Workshop_Tr_ScrollWheelModeNotSupported");
         }
 
         // ─── G5: activator fire delays ──────────────────────────────────
@@ -530,6 +530,89 @@ namespace PadForge.SteamWorkshop.Tests
                 + "}\n";
             var p = Translate(vdf);
             Assert.Empty(p.Report.Entries);
+        }
+
+        // ─── v16: the degenerate whole-pad Outer Ring ───────────────────
+
+        private static string GroupSettings(params (string Key, string Value)[] kvs)
+        {
+            var sb = new System.Text.StringBuilder("\t\t\"settings\"\n\t\t{\n");
+            foreach (var (k, v) in kvs)
+                sb.Append($"\t\t\t\"{k}\"\t\"{v}\"\n");
+            sb.Append("\t\t}\n");
+            return sb.ToString();
+        }
+
+        [Fact]
+        public void MouseRegion_WholePadEdge_ResolvesToTheTouchRead()
+        {
+            // Inverted ring at the 32767 ceiling = anywhere on the pad
+            // (the corpus 3456927474 shape): the edge member IS the touch
+            // read, so its mouse_delta binding lands as a nudge macro and
+            // the two consumed geometry keys leave the tuning note.
+            string vdf = Head
+                + Group(1, "mouse_region",
+                    Inputs(Inp("edge", "controller_action mouse_delta 100 0"))
+                    + GroupSettings(
+                        ("edge_binding_radius", "32767"),
+                        ("edge_binding_invert", "1")))
+                + Preset(0, "Default", (1, "right_trackpad active"))
+                + "}\n";
+            var p = Translate(vdf);
+
+            var nudge = Assert.Single(p.Macros);
+            Assert.Equal(TranslatedMacroAction.MouseNudge, nudge.Action);
+            Assert.Equal(100, nudge.DeltaX);
+            Assert.Equal(0, nudge.DeltaY);
+            Assert.Equal("Touchpad 1 Finger 0 Down", Assert.Single(nudge.TriggerInputDescriptors));
+            Assert.DoesNotContain(p.Report.Entries, e =>
+                e.ReasonKey == TranslationReasons.EdgeInputNotSupported);
+            Assert.DoesNotContain(p.Report.Entries, e =>
+                e.ReasonKey == TranslationReasons.MouseRegionTuningDropped);
+        }
+
+        [Fact]
+        public void MouseRegion_PartialRingEdge_KeepsTheNamedSkip()
+        {
+            // A real ring (radius below the ceiling) has no engine read:
+            // the named skip and the tuning note both stay.
+            string vdf = Head
+                + Group(1, "mouse_region",
+                    Inputs(Inp("edge", "key_press E"))
+                    + GroupSettings(
+                        ("edge_binding_radius", "20000"),
+                        ("edge_binding_invert", "1")))
+                + Preset(0, "Default", (1, "right_trackpad active"))
+                + "}\n";
+            var p = Translate(vdf);
+
+            Assert.Empty(p.Macros);
+            Assert.Contains(p.Report.Entries, e =>
+                e.ReasonKey == TranslationReasons.EdgeInputNotSupported);
+            Assert.Contains(p.Report.Entries, e =>
+                e.ReasonKey == TranslationReasons.MouseRegionTuningDropped
+                && e.ReasonArgs.Single().Contains("edge_binding_radius"));
+        }
+
+        [Fact]
+        public void StickHostedEdge_StaysTheNamedSkip()
+        {
+            // A stick's rest position sits inside any inverted radius, so
+            // the whole-pad collapse would hold the binding forever. The
+            // stick edge keeps the named skip (no deflection-magnitude
+            // read exists).
+            string vdf = Head
+                + Group(1, "joystick_mouse",
+                    Inputs(Inp("edge", "mouse_button MIDDLE"))
+                    + GroupSettings(
+                        ("edge_binding_radius", "32767"),
+                        ("edge_binding_invert", "1")))
+                + Preset(0, "Default", (1, "right_joystick active"))
+                + "}\n";
+            var p = Translate(vdf);
+            Assert.Empty(p.Macros);
+            Assert.Contains(p.Report.Entries, e =>
+                e.ReasonKey == TranslationReasons.EdgeInputNotSupported);
         }
     }
 }

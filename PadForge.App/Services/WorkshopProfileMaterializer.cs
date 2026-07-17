@@ -251,6 +251,22 @@ namespace PadForge.Services
                     AxisValue = (short)Math.Clamp(m.WheelTicks, short.MinValue, short.MaxValue),
                     WheelHorizontal = m.WheelHorizontal,
                 },
+                // MouseNudge (v16): one fixed-pixel cursor nudge per fire
+                // (Steam's mouse_delta "Move by Amount"). The authored
+                // values are already SendInput screen-frame pixels, so
+                // they pass through unscaled and unclamped (negative
+                // deltas are the point).
+                TranslatedMacroAction.MouseNudge => new ActionData
+                {
+                    Type = MacroActionType.MouseNudge,
+                    NudgeDx = m.DeltaX,
+                    NudgeDy = m.DeltaY,
+                },
+                // CycleList (v16): Steam's Scroll Wheel List as the
+                // engine's CycleTapList, steps encoded into the CSV
+                // vocabulary (same-item bindings fold into one '+'-joined
+                // stop so they fire together).
+                TranslatedMacroAction.CycleList => BuildCycleTapListAction(m),
                 _ => null,
             };
             if (action == null) return null;
@@ -404,8 +420,23 @@ namespace PadForge.Services
         /// same contract as an unconvertible trigger descriptor.</summary>
         private static ActionData BuildAxisHoldAction(TranslatedMacro m)
         {
-            bool neg = m.TargetAxisNegative;
-            (MacroAxisTarget Target, short Value)? payload = m.TargetAxis switch
+            var payload = MapAxisTarget(m.TargetAxis, m.TargetAxisNegative);
+            if (payload == null) return null;
+            return new ActionData
+            {
+                Type = MacroActionType.AxisHold,
+                AxisTarget = payload.Value.Target,
+                AxisValue = payload.Value.Value,
+            };
+        }
+
+        /// <summary>Translator SDL row frame to the XInput macro axis frame
+        /// (v15, shared by the v16 cycle steps): trigger targets assert a
+        /// full pull on AxisHold's 0..32767 pull scale. Stick X keeps its
+        /// sign and stick Y negates (XInput up = positive). Unknown names
+        /// return null.</summary>
+        private static (MacroAxisTarget Target, short Value)? MapAxisTarget(string targetAxis, bool neg)
+            => targetAxis switch
             {
                 "LeftTrigger" => (MacroAxisTarget.LeftTrigger, (short)32767),
                 "RightTrigger" => (MacroAxisTarget.RightTrigger, (short)32767),
@@ -416,12 +447,54 @@ namespace PadForge.Services
                 "RightThumbAxisY" => (MacroAxisTarget.RightStickY, neg ? (short)32767 : (short)-32768),
                 _ => null,
             };
-            if (payload == null) return null;
+
+        /// <summary>Lowers a CycleList payload (v16) to the CycleTapList
+        /// action: each TranslatedCycleStep becomes one CSV part, steps
+        /// sharing an ItemIndex fold into one '+'-joined stop (Steam fires
+        /// everything on the reached item together). Unencodable steps
+        /// (an axis name outside the table) are dropped part-wise, and a list
+        /// with no encodable step drops the macro, the null contract.</summary>
+        private static ActionData BuildCycleTapListAction(TranslatedMacro m)
+        {
+            if (m.CycleSteps == null || m.CycleSteps.Count == 0) return null;
+            var stops = new List<string>();
+            string current = null;
+            int currentIndex = int.MinValue;
+            foreach (var step in m.CycleSteps)
+            {
+                string part = step.Kind switch
+                {
+                    TranslatedCycleStepKind.KeyTap => $"K:{step.VirtualKey}",
+                    TranslatedCycleStepKind.MouseButtonTap => $"M:{Math.Clamp(step.MouseButtonIndex, 0, 4)}",
+                    TranslatedCycleStepKind.WheelTap => step.WheelHorizontal
+                        ? $"H:{step.WheelTicks}"
+                        : $"W:{step.WheelTicks}",
+                    TranslatedCycleStepKind.VcButtonTap => $"B:{step.TargetXboxButtons}",
+                    TranslatedCycleStepKind.VcAxisTap =>
+                        MapAxisTarget(step.TargetAxis, step.TargetAxisNegative) is { } axis
+                            ? $"A:{(int)axis.Target}:{axis.Value}"
+                            : null,
+                    _ => null,
+                };
+                if (part == null) continue;
+                if (step.ItemIndex == currentIndex && current != null)
+                {
+                    current = $"{current}+{part}";
+                }
+                else
+                {
+                    if (current != null) stops.Add(current);
+                    current = part;
+                    currentIndex = step.ItemIndex;
+                }
+            }
+            if (current != null) stops.Add(current);
+            if (stops.Count == 0) return null;
             return new ActionData
             {
-                Type = MacroActionType.AxisHold,
-                AxisTarget = payload.Value.Target,
-                AxisValue = payload.Value.Value,
+                Type = MacroActionType.CycleTapList,
+                CycleStepsCsv = string.Join(",", stops),
+                CycleWrap = m.CycleWrap,
             };
         }
 

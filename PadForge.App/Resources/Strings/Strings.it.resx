@@ -2453,7 +2453,6 @@
   <data name="Workshop_Tr_TouchMenuNeedsOverlay" xml:space="preserve"><value>overlay del menu touch scartato ({0} celle)</value></data>
   <data name="Workshop_Tr_RadialMenuNeedsOverlay" xml:space="preserve"><value>overlay del menu radiale scartato ({0} settori)</value></data>
   <data name="Workshop_Tr_MouseRegionNotSupported" xml:space="preserve"><value>vincolo di regione del cursore non supportato</value></data>
-  <data name="Workshop_Tr_ScrollWheelModeNotSupported" xml:space="preserve"><value>modalità rotellina non supportata</value></data>
   <data name="Workshop_Tr_EdgeInputNotSupported" xml:space="preserve"><value>input di bordo non supportato</value></data>
   <data name="Workshop_Tr_ReleaseActivatorNotSupported" xml:space="preserve"><value>attivatore al rilascio non supportato qui</value></data>
   <data name="Workshop_Tr_LongPressNotSupported" xml:space="preserve"><value>attivatore a pressione lunga non supportato qui</value></data>
@@ -2579,7 +2578,6 @@
   <data name="Workshop_Tr_ScrollWheelApproximated" xml:space="preserve"><value>rotella circolare approssimata con un trascinamento verticale</value></data>
   <data name="Workshop_Tr_ScreenshotApproximated" xml:space="preserve"><value>SCREENSHOT approssimato con la pressione del tasto Stamp</value></data>
   <data name="Workshop_Tr_ShowKeyboardApproximated" xml:space="preserve"><value>SHOW_KEYBOARD approssimato con l'avvio della tastiera su schermo</value></data>
-  <data name="Workshop_Tr_MouseDeltaNotSupported" xml:space="preserve"><value>spostamento relativo del cursore mouse_delta ({0}) non supportato</value></data>
   <data name="Macro_HoldForMs" xml:space="preserve"><value>Tenendo premuto</value></data>
   <data name="Macro_HoldForMs_Tooltip" xml:space="preserve"><value>Si attiva una volta dopo che l'attivatore è stato tenuto premuto ininterrottamente per il tempo di mantenimento. Un tocco più breve non fa nulla.</value></data>
   <data name="Macro_TriggerHoldMs_Label" xml:space="preserve"><value>Tempo di mantenimento</value></data>
@@ -2596,6 +2594,14 @@
   <data name="MacroAction_HoldAxis_Format" xml:space="preserve"><value>Mantieni {0} = {1} ({2} ms)</value></data>
   <data name="MacroAction_Type_MouseWheelTap" xml:space="preserve"><value>Scatto rotellina</value></data>
   <data name="MacroAction_MouseWheelTap_Tooltip" xml:space="preserve"><value>Invia uno scatto discreto della rotellina per attivazione. Il valore è il numero di scatti con segno (positivo scorre in alto o a destra).</value></data>
+  <data name="MacroAction_Type_MouseNudge" xml:space="preserve"><value>Sposta cursore</value></data>
+  <data name="MacroAction_MouseNudge_Tooltip" xml:space="preserve"><value>Sposta il cursore del mouse di un numero fisso di pixel per attivazione. X positivo verso destra, Y positivo verso il basso. Sono ammessi valori negativi.</value></data>
+  <data name="MacroAction_MouseNudge_Format" xml:space="preserve"><value>Sposta il cursore di ({0}, {1}) px</value></data>
+  <data name="MacroAction_Type_CycleTapList" xml:space="preserve"><value>Lista di tocchi ciclica</value></data>
+  <data name="MacroAction_CycleTapList_Tooltip" xml:space="preserve"><value>Ogni attivazione esegue il passo successivo della lista e avanza. Con il ciclo attivo la lista ricomincia dopo l'ultimo passo. Senza, l'uscita si ferma a fine lista.</value></data>
+  <data name="MacroAction_CycleTapList_Format" xml:space="preserve"><value>Lista di tocchi ciclica ({0} passi)</value></data>
+  <data name="Macro_CycleSteps_Label" xml:space="preserve"><value>Passi</value></data>
+  <data name="Macro_CycleWrap_Label" xml:space="preserve"><value>Ciclo</value></data>
   <data name="MacroAction_ToggleKey_Format" xml:space="preserve"><value>Attiva/disattiva tasti {0}</value></data>
   <data name="MacroAction_Type_GyroRecenter" xml:space="preserve"><value>Ricentra giroscopio</value></data>
   <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>Azzera alla pressione i riferimenti di mira del giroscopio accumulati dal pad. La cronologia di smussatura si svuota, il punto neutro di Motion Lean viene ricatturato e la stima della gravità si reinizializza dalla posa attuale del controller.</value></data>

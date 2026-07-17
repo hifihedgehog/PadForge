@@ -457,17 +457,24 @@ namespace PadForge.SteamWorkshop.Translation
                     // G4) and stick hosts to the stick's Y deflection drag
                     // (v12): the wheel-shaped scroll_clockwise /
                     // scroll_counterclockwise bindings feed KbmScroll from
-                    // the drag axis, sign per direction. Hosts with
-                    // neither surface keep the named skip.
+                    // the drag axis, sign per direction, and the Scroll
+                    // Wheel List items step a CycleTapList macro per
+                    // detent (v16). No other host exists in Steam's
+                    // grammar (v16 census: every scrollwheel
+                    // group_source_bindings entry across the corpus and
+                    // Valve's shipped controller_base templates is a
+                    // trackpad or joystick, and the shipped strings bind
+                    // the mode's members to "the pad/stick"), so the old
+                    // surfaceless-host skip arm is retired, and a hand-edited
+                    // config outside that grammar routes through the
+                    // member walk's UnknownPhysicalInput safety net.
                     if (PhysicalSlotResolver.IsTrackpad(slot) || PhysicalSlotResolver.IsStick(slot))
                     {
                         TranslateScrollWheel(run, preset, effective, slot, layer, path, settings);
                     }
                     else
                     {
-                        run.Report.Add(TranslationStatus.Skipped, TranslationReasons.ScrollWheelModeNotSupported, path);
-                        TranslateMemberGroup(run, preset, effective, slot, layer, path, settings,
-                            onlyInputs: new[] { "click" });
+                        TranslateMemberGroup(run, preset, effective, slot, layer, path, settings);
                     }
                     break;
 
@@ -830,6 +837,27 @@ namespace PadForge.SteamWorkshop.Translation
             return Math.Clamp((int)Math.Round(v * 100.0 / 32767.0), 1, 100);
         }
 
+        /// <summary>True when the group's Outer Ring zone covers the whole
+        /// trackpad (v16): edge_binding_invert set with the radius at the
+        /// 32767 ceiling ("inside the radius" = anywhere on the pad), or
+        /// an un-inverted radius of 0 ("outside" = anywhere). Radius scale
+        /// is the pad's own 0..32767 (corpus 3456927474 carries 32767
+        /// alongside invert 1 on its mouse_region and joystick_mouse
+        /// groups, and bare 0 on its trigger groups. The wild default
+        /// rings sit near 25000). An absent radius is NOT degenerate:
+        /// Steam's default is a partial ring.</summary>
+        private static bool IsWholePadEdgeZone(Dictionary<string, string> settings)
+        {
+            bool invert = settings.TryGetValue("edge_binding_invert", out var inv)
+                && (inv ?? "").Trim() != "0";
+            if (!settings.TryGetValue("edge_binding_radius", out var raw)
+                || !int.TryParse(raw, NumberStyles.Integer, CultureInfo.InvariantCulture, out int radius))
+            {
+                return false;
+            }
+            return invert ? radius >= 32767 : radius <= 0;
+        }
+
         /// <summary>Copy of <paramref name="s"/> carrying the group inner
         /// deadzone. Full field list on purpose (ResolvedSource is
         /// init-only); a new ResolvedSource field must be added here too.</summary>
@@ -888,6 +916,26 @@ namespace PadForge.SteamWorkshop.Translation
 
                 var source = PhysicalSlotResolver.Resolve(slot, inputName, run.NintendoLabels,
                     run.SinglePadTrackpads);
+                // Degenerate whole-pad Outer Ring (v16): Steam's edge
+                // member fires while the finger is outside
+                // edge_binding_radius, or inside it with
+                // edge_binding_invert ("If set, the command will be sent
+                // when inside the radius instead of outside", shipped
+                // EdgeBindingInvert strings). A trackpad zone that covers
+                // the WHOLE pad (invert with the radius at the 32767
+                // ceiling, or radius 0 un-inverted) is exactly the touch
+                // read, so it resolves instead of skipping (corpus
+                // 3456927474 authors its mouse_delta nudge this way).
+                // Partial rings keep the named skip below: the engine has
+                // no finger-radius source.
+                if (source == null
+                    && inputName.Equals("edge", StringComparison.OrdinalIgnoreCase)
+                    && PhysicalSlotResolver.IsTrackpad(slot)
+                    && IsWholePadEdgeZone(settings))
+                {
+                    source = PhysicalSlotResolver.Resolve(slot, "touch", run.NintendoLabels,
+                        run.SinglePadTrackpads);
+                }
                 // The group inner deadzone lands on the axis-natured member
                 // reads (stick-as-dpad wedges). Explicit thresholds (the
                 // trigger click's 75 / edge's 15) encode reachable-range
@@ -1087,26 +1135,91 @@ namespace PadForge.SteamWorkshop.Translation
                 }
             }
 
+            // Scroll Wheel List (v16). Steam steps the wheel through
+            // scroll_wheel_list_0..N, firing the REACHED item's binding
+            // per detent ("You can assign a button or key to be sent to
+            // the game when the Nth item is reached"), wrapping per
+            // scroll_wrap ("When scrolling in a single direction, the
+            // list will restart once either end is reached"). Lowered to
+            // ONE CycleTapList macro triggered on the clockwise detent
+            // read (the same one-shot shape the non-wheel detent bindings
+            // ride: stick drag-down wedge / trackpad SwipeDown), whose
+            // per-action index advances one item per fire. Forward
+            // stepping only: a second trigger lane cannot share the
+            // per-action index, so the counterclockwise back-step
+            // collapses onto the forward walk, and the group's geometry
+            // Partial names the wheel approximation. The corpus lists are
+            // unlabeled plain bindings (key_press 1..9 on 2790927974,
+            // wheel ticks on 3353604014), so the cycle primitive is the
+            // honest lowering, not the labeled-grid hotbar shape.
+            var cycleSteps = new List<TranslatedCycleStep>();
+            var cycleEntries = new List<(string Path, string Raw, string Desc)>();
+            var listMembers = group.Inputs.Keys
+                .Where(k => k.StartsWith("scroll_wheel_list_", StringComparison.OrdinalIgnoreCase))
+                .Select(k => (Name: k, Index: ParseTrailingInt(k)))
+                .Where(m => m.Index >= 0)
+                .OrderBy(m => m.Index)
+                .ToList();
+            foreach (var member in listMembers)
+            {
+                string listPath = $"{path}/{member.Name}";
+                foreach (var act in group.Inputs[member.Name].Activators)
+                {
+                    foreach (var b in act.Bindings)
+                    {
+                        var step = TryBuildCycleStep(run, preset, b, listPath);
+                        if (step == null) continue;
+                        step.ItemIndex = member.Index;
+                        cycleSteps.Add(step);
+                        cycleEntries.Add((listPath, b.Raw,
+                            $"Wheel list step {member.Index + 1}: {DescribeCycleStep(step)}"));
+                    }
+                }
+            }
+            if (cycleSteps.Count > 0)
+            {
+                var detent = PhysicalSlotResolver.IsStick(slot)
+                    ? new ResolvedSource
+                    {
+                        Descriptor = drag,
+                        HalfAxis = true,
+                        DeadZone = dragDeadZone,
+                    }
+                    : new ResolvedSource
+                    {
+                        Descriptor = $"Touchpad {PhysicalSlotResolver.TrackpadIndex(slot, run.SinglePadTrackpads)} SwipeDown",
+                        TrackpadFeature = PhysicalSlotResolver.FeatureSwipes,
+                    };
+                var cycle = new TranslatedMacro
+                {
+                    Name = $"Wheel list ({SlotToken(slot)})",
+                    Action = TranslatedMacroAction.CycleList,
+                    TriggerMode = "OnPress",
+                    ConsumeTrigger = false,
+                    CycleSteps = cycleSteps,
+                    // scroll_wrap consumed (v16). Absent = wrap: the
+                    // forward-only walk would otherwise dead-end at the
+                    // last item with no back-step to free it.
+                    CycleWrap = !settings.TryGetValue("scroll_wrap", out var wrapRaw)
+                        || (wrapRaw ?? "").Trim() != "0",
+                };
+                FillMacroTrigger(cycle, detent);
+                run.Profile.Macros.Add(cycle);
+                foreach (var e in cycleEntries)
+                {
+                    run.Report.Add(TranslationStatus.Clean, TranslationReasons.MacroEmitted,
+                        e.Path, e.Raw, emitted: e.Desc);
+                }
+                emitted = true;
+            }
+
+            // One geometry Partial per group, covering the drag-for-
+            // rotation approximation on the detent rows AND the cycle's
+            // forward-only stepping.
             if (emitted)
             {
                 run.Report.Add(TranslationStatus.Partial,
                     TranslationReasons.ScrollWheelApproximated, path);
-            }
-
-            // Scroll Wheel List members (v13 census: scroll_wheel_list_0..8
-            // in the wild corpus): Steam steps the wheel through the list,
-            // firing the NEXT item's binding per detent. PadForge has no
-            // cycle-through-bindings primitive, so the bound items get the
-            // mode's named skip per binding instead of the old silence.
-            foreach (var memberName in group.Inputs.Keys.OrderBy(k => k, StringComparer.Ordinal))
-            {
-                if (!memberName.StartsWith("scroll_wheel_list_", StringComparison.OrdinalIgnoreCase))
-                    continue;
-                string listPath = $"{path}/{memberName}";
-                foreach (var act in group.Inputs[memberName].Activators)
-                    foreach (var b in act.Bindings)
-                        ReportSkipUnlessSilent(run, TranslationReasons.ScrollWheelModeNotSupported,
-                            listPath, b);
             }
 
             TranslateMemberGroup(run, preset, group, slot, layer, path, settings,
@@ -1696,6 +1809,12 @@ namespace PadForge.SteamWorkshop.Translation
 
                 var dropped = MouseRegionDroppedKeys
                     .Where(k => settings.TryGetValue(k, out var v) && (v ?? "").Trim() != "0")
+                    // A whole-pad Outer Ring is CONSUMED (v16): the edge
+                    // member resolves to the touch read, so the two
+                    // geometry keys shaped exactly what got built and
+                    // drop out of the note. Partial rings keep them named.
+                    .Where(k => !(IsWholePadEdgeZone(settings)
+                        && (k == "edge_binding_radius" || k == "edge_binding_invert")))
                     .ToList();
                 if (dropped.Count > 0)
                 {
@@ -3085,6 +3204,129 @@ namespace PadForge.SteamWorkshop.Translation
                 path, binding.Raw, emitted: $"Wheel tick macro ({FirstToken(binding.Param).ToUpperInvariant()})");
         }
 
+        /// <summary>One Scroll Wheel List item binding as a cycle step
+        /// (v16). The list picker's own vocabulary is "a button or key"
+        /// (shipped ScrollWheelListN strings), so the step kinds are the
+        /// one-shot tap family: key / mouse button / wheel tick / VC
+        /// button / VC axis. Wheel tick signs reuse
+        /// <see cref="EmitWheelTapMacro"/>'s math. Anything outside that
+        /// vocabulary gets its existing named skip (Steam-client verbs,
+        /// game actions) or the generic safety net, and returns null.</summary>
+        private TranslatedCycleStep TryBuildCycleStep(Run run, SteamInputPreset preset,
+            SteamInputBinding binding, string listPath)
+        {
+            string type = (binding.Type ?? "").Trim().ToLowerInvariant();
+            switch (type)
+            {
+                case "key_press":
+                {
+                    string keyName = FirstToken(binding.Param);
+                    if (!SteamInputVkTable.TryResolve(keyName, out byte vk, out _))
+                    {
+                        run.Report.Add(TranslationStatus.Skipped, TranslationReasons.UnknownKey,
+                            listPath, binding.Raw, args: keyName);
+                        return null;
+                    }
+                    return new TranslatedCycleStep
+                    { Kind = TranslatedCycleStepKind.KeyTap, VirtualKey = vk };
+                }
+
+                case "mouse_button":
+                {
+                    if (!SteamInputVkTable.TryResolveMouseButtonIndex(binding.Param, out int btn))
+                    {
+                        run.Report.Add(TranslationStatus.Skipped, TranslationReasons.UnknownMouseButton,
+                            listPath, binding.Raw, args: binding.Param);
+                        return null;
+                    }
+                    return new TranslatedCycleStep
+                    { Kind = TranslatedCycleStepKind.MouseButtonTap, MouseButtonIndex = btn };
+                }
+
+                case "mouse_wheel":
+                {
+                    var wheel = ParseWheelParam(binding.Param);
+                    if (wheel == null)
+                    {
+                        run.Report.Add(TranslationStatus.Skipped, TranslationReasons.UnknownBindingType,
+                            listPath, binding.Raw, args: $"mouse_wheel {binding.Param}");
+                        return null;
+                    }
+                    bool horizontal = wheel.Value.Target == "KbmScrollH";
+                    return new TranslatedCycleStep
+                    {
+                        Kind = TranslatedCycleStepKind.WheelTap,
+                        WheelHorizontal = horizontal,
+                        WheelTicks = horizontal
+                            ? (wheel.Value.Invert ? -1 : 1)
+                            : (wheel.Value.Invert ? 1 : -1),
+                    };
+                }
+
+                case "xinput_button":
+                {
+                    if (!XInputTargetTable.TryResolve(binding.Param, out var xt))
+                    {
+                        run.Report.Add(TranslationStatus.Skipped, TranslationReasons.UnknownXInputButton,
+                            listPath, binding.Raw, args: binding.Param);
+                        return null;
+                    }
+                    if (xt.IsTriggerAxis || xt.IsStickAxis)
+                    {
+                        return new TranslatedCycleStep
+                        {
+                            Kind = TranslatedCycleStepKind.VcAxisTap,
+                            TargetAxis = xt.Target,
+                            TargetAxisNegative = xt.StickAxisNegative,
+                        };
+                    }
+                    return new TranslatedCycleStep
+                    { Kind = TranslatedCycleStepKind.VcButtonTap, TargetXboxButtons = xt.XboxButtonBit };
+                }
+
+                case "controller_action":
+                {
+                    // A list stop has no press/hold state to drive the
+                    // verb walk's layer / hold shapes, and the Steam-only
+                    // families keep their class skips.
+                    string verb = FirstToken(binding.Param).ToUpperInvariant();
+                    run.Report.Add(TranslationStatus.Skipped,
+                        IsSteamClientAction(verb)
+                            ? TranslationReasons.SteamSystemAction
+                            : TranslationReasons.UnsupportedControllerAction,
+                        listPath, binding.Raw, args: verb);
+                    return null;
+                }
+
+                case "game_action":
+                    // The per-preset aggregate, same as every other walk.
+                    run.GameActionsByPreset[preset.Id] =
+                        run.GameActionsByPreset.GetValueOrDefault(preset.Id) + 1;
+                    return null;
+
+                default:
+                    if (type.Length == 0) return null; // placeholder, silent
+                    run.Report.Add(TranslationStatus.Skipped, TranslationReasons.UnknownBindingType,
+                        listPath, binding.Raw, args: binding.Type ?? "");
+                    return null;
+            }
+        }
+
+        /// <summary>Report / golden text for one cycle step.</summary>
+        private static string DescribeCycleStep(TranslatedCycleStep s) => s.Kind switch
+        {
+            TranslatedCycleStepKind.KeyTap =>
+                $"Tap VK 0x{s.VirtualKey.ToString("X2", CultureInfo.InvariantCulture)}",
+            TranslatedCycleStepKind.MouseButtonTap => $"Click mouse button {s.MouseButtonIndex}",
+            TranslatedCycleStepKind.WheelTap =>
+                $"Wheel tick {(s.WheelTicks >= 0 ? "+" : "")}{s.WheelTicks}{(s.WheelHorizontal ? " H" : "")}",
+            TranslatedCycleStepKind.VcButtonTap =>
+                $"Tap 0x{s.TargetXboxButtons.ToString("X4", CultureInfo.InvariantCulture)}",
+            TranslatedCycleStepKind.VcAxisTap =>
+                $"Tap {s.TargetAxis}{(s.TargetAxisNegative ? " (neg)" : "")}",
+            _ => "step",
+        };
+
         /// <summary>Copy of <paramref name="s"/> with the combined-output
         /// trigger identity stripped, so <see cref="FillMacroTrigger"/>
         /// takes the device-free descriptor shape. Used by the identity
@@ -3623,17 +3865,46 @@ namespace PadForge.SteamWorkshop.Translation
                     return;
 
                 case "MOUSE_DELTA":
+                {
                     // "Move by Amount" (shipped configurator: "Each time
                     // this command fires the mouse will move by a set
                     // number of pixels", args dx dy, and corpus 3456927474
-                    // carries "mouse_delta 100 0"). PadForge's macro
-                    // vocabulary has continuous axis-driven MouseMove and
-                    // the absolute warp, but no one-shot fixed-pixel
-                    // nudge, so the binding gets its own named skip (v13)
-                    // instead of the generic unknown.
-                    run.Report.Add(TranslationStatus.Skipped, TranslationReasons.MouseDeltaNotSupported,
-                        path, binding.Raw, args: binding.Param);
+                    // carries "mouse_delta 100 0"). One fire = one nudge
+                    // (v16): the MouseNudge macro enqueues the signed pixel
+                    // delta once into the engine's accumulate-and-flush
+                    // mouse lane, screen frame (+x right, +y down), the
+                    // same coordinate space SendInput MOUSEEVENTF_MOVE
+                    // consumes, so the authored values pass through
+                    // unscaled. Long_Press fires at the hold threshold and
+                    // release activators on release, the SET_LED shape.
+                    if (tokens.Length < 3
+                        || !int.TryParse(tokens[1], NumberStyles.Integer, CultureInfo.InvariantCulture, out int ndx)
+                        || !int.TryParse(tokens[2], NumberStyles.Integer, CultureInfo.InvariantCulture, out int ndy))
+                    {
+                        run.Report.Add(TranslationStatus.Skipped, TranslationReasons.UnsupportedControllerAction,
+                            path, binding.Raw, args: binding.Param);
+                        return;
+                    }
+                    var nudge = new TranslatedMacro
+                    {
+                        Name = $"Nudge cursor ({inputName})",
+                        Action = TranslatedMacroAction.MouseNudge,
+                        TriggerMode = activatorDelayMs > 0 ? "HoldForMs"
+                            : onRelease ? "OnRelease" : "OnPress",
+                        TriggerHoldMs = activatorDelayMs,
+                        ConsumeTrigger = false,
+                        DeltaX = ndx,
+                        DeltaY = ndy,
+                    };
+                    // Descriptor trigger on purpose, the SCREENSHOT rule:
+                    // a cursor verb on a pure keyboard config must not
+                    // sprout an Xbox slot.
+                    FillMacroTrigger(nudge, WithoutOutputTrigger(source));
+                    run.Profile.Macros.Add(nudge);
+                    run.Report.Add(TranslationStatus.Clean, TranslationReasons.MacroEmitted,
+                        path, binding.Raw, emitted: "Cursor nudge macro");
                     return;
+                }
 
                 case "SCREENSHOT":
                 {
@@ -4220,7 +4491,12 @@ namespace PadForge.SteamWorkshop.Translation
             || m.Action == TranslatedMacroAction.HoldVcButton
             || m.Action == TranslatedMacroAction.VcButtonTap
             || m.Action == TranslatedMacroAction.VcAxisTap
-            || m.Action == TranslatedMacroAction.HoldVcAxis;
+            || m.Action == TranslatedMacroAction.HoldVcAxis
+            // A wheel-list cycle needs the Xbox slot only when a step
+            // writes a virtual-controller target (v16).
+            || (m.Action == TranslatedMacroAction.CycleList
+                && m.CycleSteps.Any(s => s.Kind == TranslatedCycleStepKind.VcButtonTap
+                    || s.Kind == TranslatedCycleStepKind.VcAxisTap));
 
         private void EmitActivators(Run run)
         {

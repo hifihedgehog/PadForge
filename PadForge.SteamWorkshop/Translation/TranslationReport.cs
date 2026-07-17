@@ -126,8 +126,17 @@ namespace PadForge.SteamWorkshop.Translation
         /// trackpad-hosted Double_Press reads the DoubleTap gesture;
         /// identity turbo pulses through a descriptor trigger with the
         /// identity row dropped; hotbar lowers as a grid menu and
-        /// empty_binding placeholders go silent.</summary>
-        public const int CurrentTranslatorVersion = 10;
+        /// empty_binding placeholders go silent.
+        /// v11: Response-curve channel. Stick-hosted joystick groups
+        /// (joystick_move / joystick_mouse / joystick_camera /
+        /// mouse_joystick) carry Steam's curve cluster on the emitted axis
+        /// pair as per-source params: the curve_exponent preset selector
+        /// (and the x100 Custom slider) lands on ParamCurveExponent,
+        /// deadzone_outer_radius / 32767 on ParamRangeOuter, and
+        /// sensitivity_horiz/vert_scale fold into the X / Y row Sensitivity,
+        /// so ResponseCurveNotSupported names only genuinely dropped keys
+        /// (deadzone_shape; trigger, trackpad, and gyro hosts unchanged).</summary>
+        public const int CurrentTranslatorVersion = 11;
 
         public int TranslatorVersion { get; set; } = CurrentTranslatorVersion;
 
@@ -282,6 +291,10 @@ namespace PadForge.SteamWorkshop.Translation
         // ── Translator v2 (Wave 1a) vocabulary ──
         public const string ScrollGestureModeNotSupported = "Workshop_Tr_ScrollGestureModeNotSupported";
         public const string HapticIntensityDropped = "Workshop_Tr_HapticIntensityDropped";       // {0} count
+        // Since v11 the args carry only genuinely dropped keys: stick-hosted
+        // joystick groups consume the curve cluster into the per-source
+        // ParamCurveExponent / ParamRangeOuter / Sensitivity channel, leaving
+        // deadzone_shape (and trigger / trackpad / gyro hosts) in the note.
         public const string ResponseCurveNotSupported = "Workshop_Tr_ResponseCurveNotSupported"; // {0} setting keys
         public const string GyroButtonMaskDropped = "Workshop_Tr_GyroButtonMaskDropped";         // {0} setting key {1} value
         public const string ActivatorDelayDropped = "Workshop_Tr_ActivatorDelayDropped";         // {0} delays

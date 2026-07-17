@@ -302,6 +302,29 @@ namespace PadForge.Engine.Data
         /// around the region center, then clamps to the screen.</summary>
         [XmlAttribute] public double ParamPointerExtent { get; set; } = 1.0;
 
+        // ─── Response curve / outer range (translator v11). The Workshop
+        // translator's per-source lane for Steam's stick response-curve
+        // cluster: curve_exponent / custom_curve_exponent land on
+        // ParamCurveExponent, deadzone_outer_radius on ParamRangeOuter.
+        // Applied ONLY in the generic bipolar tail of
+        // SourceCoercion.ReadAsBipolar, after Sensitivity, outer range
+        // first and then the exponent, sign carried via magnitude math.
+        // Defaults are 0 = off, so existing XML and every hand-authored
+        // source keep exact pass-through behavior. ───
+
+        /// <summary>Sign-preserving output shaping: magnitude maps
+        /// |x| to |x|^e, sign carried through unchanged. 0 (default) and
+        /// 1 mean off. The engine's named curve presets correspond to
+        /// e = 0.5 (Relaxed), 1.5 (Wide), 2 (Aggressive), 2.5 (ExtraWide),
+        /// the same shapes as SourceCoercion.ApplyOutputCurve.</summary>
+        [XmlAttribute] public double ParamCurveExponent { get; set; }
+
+        /// <summary>Outer range as a 0..1 fraction of full deflection.
+        /// The output magnitude rescales v = min(1, |v| / outer), so full
+        /// deflection is reached AT this radius (Steam's
+        /// deadzone_outer_radius / 32767). 0 (default) = off.</summary>
+        [XmlAttribute] public double ParamRangeOuter { get; set; }
+
         /// <summary>Arm behavior when evaluation (re)starts with the stick
         /// already past the threshold (the shift-layer engage case, #225).
         /// <c>false</c> (default): arm at the current angle and track

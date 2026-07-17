@@ -86,15 +86,17 @@ namespace PadForge.SteamWorkshop.Translation
             // only when the Xbox side is otherwise in play: a pure
             // keyboard/mouse config must not sprout an Xbox slot for a
             // stick nobody consumes.
-            public readonly List<(string Layer, string Target, string Descriptor, string Path, int DeadZonePct)>
+            public readonly List<(string Layer, string Target, string Descriptor, string Path, int DeadZonePct,
+                    double CurveExponent, double RangeOuter, double Sensitivity)>
                 MatchedAnalogs = new();
             private readonly HashSet<string> _matchedAnalogSeen = new(StringComparer.Ordinal);
 
             public void AddMatchedAnalog(string layer, string target, string descriptor, string path,
-                int deadZonePct = 0)
+                int deadZonePct = 0, double curveExponent = 0, double rangeOuter = 0, double sensitivity = 1.0)
             {
                 if (_matchedAnalogSeen.Add($"{layer}|{target}|{descriptor}"))
-                    MatchedAnalogs.Add((layer, target, descriptor, path, deadZonePct));
+                    MatchedAnalogs.Add((layer, target, descriptor, path, deadZonePct,
+                        curveExponent, rangeOuter, sensitivity));
             }
 
             public readonly List<ActivatorRequest> Activators = new();
@@ -336,7 +338,11 @@ namespace PadForge.SteamWorkshop.Translation
                     // them there; every other host still drops them.
                     skipRegionScales: mode == "mouse_region"
                         && PhysicalSlotResolver.IsTrackpad(slot),
-                    reportMouseTuning: MouseTuningModes.Contains(mode));
+                    reportMouseTuning: MouseTuningModes.Contains(mode),
+                    // Stick-hosted joystick groups consume the curve
+                    // cluster into the per-source channel since v11, so
+                    // the note names only the still-dropped keys there.
+                    skipCurveChannel: CurveChannelApplies(slot, mode));
 
             switch (mode)
             {
@@ -360,7 +366,8 @@ namespace PadForge.SteamWorkshop.Translation
 
                 case "joystick_mouse":
                 case "joystick_camera":
-                    EmitMouseAxes(run, slot, layer, path, settings, StickMouseBaseline);
+                    EmitMouseAxes(run, slot, layer, path, settings, StickMouseBaseline,
+                        curveChannel: CurveChannelApplies(slot, mode));
                     TranslateMemberGroup(run, preset, effective, slot, layer, path, settings);
                     break;
 
@@ -371,7 +378,8 @@ namespace PadForge.SteamWorkshop.Translation
                     // mode == "mouse_joystick"), so the host's analog pair
                     // lands on the right-stick axes (output_joystick 1
                     // redirects to the left).
-                    EmitMouseJoystickAxes(run, slot, layer, path, settings, StickMouseBaseline);
+                    EmitMouseJoystickAxes(run, slot, layer, path, settings, StickMouseBaseline,
+                        curveChannel: CurveChannelApplies(slot, mode));
                     TranslateMemberGroup(run, preset, effective, slot, layer, path, settings);
                     break;
 
@@ -511,23 +519,142 @@ namespace PadForge.SteamWorkshop.Translation
             "2dscroll", "hotbar",
         };
 
-        /// <summary>Response-shaping group settings PadForge has no per-row
-        /// channel for. Named per issue #20's sensitivity-curve backlog;
-        /// key list grounded on the corpus (deadzone_outer_radius 28640..31999,
-        /// curve_exponent 4) plus the sibling keys of the same UI cluster.
-        /// The mouse_region per-axis sensitivity scales (corpus 2795727040:
-        /// 110/70; shipped configurator ids
+        /// <summary>Response-shaping group settings. Key list grounded on
+        /// the corpus (deadzone_outer_radius 28640..31999, curve_exponent
+        /// 1/4) plus the sibling keys of the same UI cluster. Since v11
+        /// stick-hosted joystick groups CONSUME most of this cluster into
+        /// the per-source curve/range channel (<see cref="CurveChannelConsumedKeys"/>,
+        /// skipCurveChannel), so only genuinely dropped keys reach the note
+        /// there. The mouse_region per-axis sensitivity scales (corpus
+        /// 2795727040: 110/70; shipped configurator ids
         /// Horizontal/VerticalSensitivityMouseRegion) scale the region per
         /// axis. Since v6 (#9 B-15) trackpad-hosted regions consume them as
         /// the pointer rows' extent, so the drop note skips them there
         /// (skipRegionScales); stick/gyro hosts keep the wave-2A clamp
-        /// approximation and still drop them named.</summary>
+        /// approximation and still drop them named. output_curve has
+        /// NEGATIVE grounding as a real Steam key (absent from the corpus,
+        /// Valve's shipped controller_base templates, Valve's CSGO
+        /// controller configs, and OpenSteamworks' EControllerSetting enum);
+        /// it stays listed defensively so an unknown config carrying it
+        /// still gets a named drop instead of silence.</summary>
         private static readonly string[] CurveSettingKeys =
         {
             "deadzone_outer_radius", "deadzone_shape",
             "custom_curve_exponent", "curve_exponent", "output_curve",
             "sensitivity_horiz_scale", "sensitivity_vert_scale",
         };
+
+        /// <summary>Modes whose stick-hosted analog pair rides the v11
+        /// per-source curve/range channel: the emitted rows read
+        /// "Gamepad ...Stick" axes, which the engine shapes in the generic
+        /// bipolar tail (SourceCoercion.ApplyCurveRangeShaping, the
+        /// Sensitivity seam). Trackpad and gyro hosts read specialized
+        /// families that return before that seam, and trigger groups
+        /// evaluate through the unipolar path, so their curve keys stay
+        /// honestly dropped and named.</summary>
+        private static readonly HashSet<string> CurveChannelModes = new(StringComparer.Ordinal)
+        {
+            "joystick_move", "joystick_mouse", "joystick_camera", "mouse_joystick",
+        };
+
+        /// <summary>True when a group's curve cluster lands on the emitted
+        /// axis rows (v11). MUST stay the same predicate the emitters use to
+        /// stamp, or the drop note and the stamps drift apart.</summary>
+        private static bool CurveChannelApplies(SteamSlot slot, string mode)
+            => PhysicalSlotResolver.IsStick(slot) && CurveChannelModes.Contains(mode);
+
+        /// <summary>Curve-cluster keys the v11 channel consumes on groups
+        /// where <see cref="CurveChannelApplies"/>. deadzone_shape (the
+        /// engine's radial read has no square/cross option) and the
+        /// negatively-grounded output_curve stay dropped everywhere.</summary>
+        private static readonly string[] CurveChannelConsumedKeys =
+        {
+            "deadzone_outer_radius", "custom_curve_exponent", "curve_exponent",
+            "sensitivity_horiz_scale", "sensitivity_vert_scale",
+        };
+
+        /// <summary>Per-group curve/range channel values (v11), parsed once
+        /// and stamped onto both member rows of the emitted axis pair.
+        ///
+        /// <para>Grounding. curve_exponent is Steam's PRESET SELECTOR, not a
+        /// raw exponent: the shipped configurator strings enumerate
+        /// ControllerBinding_CurveExponent_joystick_move_{Linear,Curve_1..4,
+        /// Curve_Custom} as Linear / Aggressive / Relaxed / Wide / Extra
+        /// Wide / Custom (steamui localization), matching corpus values 0/1/4
+        /// and the wild custom form (curve_exponent 5 beside
+        /// custom_curve_exponent 60, gw2-steam-controller). Steam's
+        /// Aggressive "gets to 100% output faster" (exponent below 1) and
+        /// Extra Wide "only reaching 100% at the extremes" (highest
+        /// exponent), so the preset ints map onto the engine's curve shapes
+        /// by SEMANTICS, not by PadForge's preset names: 1 = 0.5, 2 = 1.5,
+        /// 3 = 2.0, 4 = 2.5. custom_curve_exponent stores the slider x100
+        /// (Valve's CSGO ps4 gyro config: 195 = 1.95; wild 50/60 = 0.5/0.6;
+        /// raw 195 or a x1000 read are implausible exponents).
+        /// deadzone_outer_radius shares deadzone_inner_radius's 0..32767
+        /// full-deflection scale (GroupDeadZonePercent): Valve's basicui
+        /// templates carry 28000/32000/32767, i.e. full output at 85..100%
+        /// travel, so 32767 is the identity and the fraction is
+        /// value / 32767. sensitivity_horiz/vert_scale are percent (the
+        /// shipped configurator ids are #Unit_Percent; the mouse_region path
+        /// reads them clamp(1,400)/100 the same way).</para></summary>
+        private readonly struct CurveRangeChannel
+        {
+            public readonly double Exponent;   // 0 = off (Linear)
+            public readonly double RangeOuter; // 0 = off (full range)
+            public readonly double SensX;      // 1.0 = neutral
+            public readonly double SensY;
+
+            private CurveRangeChannel(double exponent, double rangeOuter, double sensX, double sensY)
+            {
+                Exponent = exponent;
+                RangeOuter = rangeOuter;
+                SensX = sensX;
+                SensY = sensY;
+            }
+
+            public static CurveRangeChannel FromSettings(Dictionary<string, string> settings)
+            {
+                int preset = ParseIntSetting(settings, "curve_exponent", 0);
+                double exponent = preset switch
+                {
+                    1 => 0.5, // Steam Aggressive: reaches 100% output faster
+                    2 => 1.5, // Steam Relaxed: slightly more fine range
+                    3 => 2.0, // Steam Wide: much slower ramp
+                    4 => 2.5, // Steam Extra Wide: 100% only at the extremes
+                    _ => 0.0, // 0 / absent = Linear; >= 5 = Custom, below
+                };
+                if (preset >= 5)
+                {
+                    // Custom slider, stored x100. A preset 1..4 beside a
+                    // custom value means the stale slider lost to the named
+                    // preset (Steam ignores it too), so custom reads only
+                    // when the selector says Custom. Clamp = junk guard.
+                    double custom = ParseIntSetting(settings, "custom_curve_exponent", 0) / 100.0;
+                    if (custom > 0) exponent = Math.Clamp(custom, 0.1, 10.0);
+                }
+                if (exponent == 1.0) exponent = 0.0; // x^1 = identity, keep the off default
+
+                double outer = 0.0;
+                int outerRaw = ParseIntSetting(settings, "deadzone_outer_radius", 0);
+                // 32767 (and junk past it) is the identity; 0 / absent is off.
+                if (outerRaw > 0 && outerRaw < 32767) outer = outerRaw / 32767.0;
+
+                double sensX = Math.Clamp(ParseIntSetting(settings, "sensitivity_horiz_scale", 100), 1, 400) / 100.0;
+                double sensY = Math.Clamp(ParseIntSetting(settings, "sensitivity_vert_scale", 100), 1, 400) / 100.0;
+                return new CurveRangeChannel(exponent, outer, sensX, sensY);
+            }
+
+            /// <summary>Stamps one member row's source. The per-axis
+            /// sensitivity scale multiplies INTO the existing Sensitivity so
+            /// a mouse-mode ratio already on the source is preserved.</summary>
+            public void StampAxis(MappingSource src, bool isX)
+            {
+                if (Exponent > 0) src.ParamCurveExponent = Exponent;
+                if (RangeOuter > 0) src.ParamRangeOuter = RangeOuter;
+                double s = isX ? SensX : SensY;
+                if (s != 1.0) src.Sensitivity *= s;
+            }
+        }
 
         /// <summary>Mouse/region-mode feel settings PadForge has no channel
         /// for, named per group when present (finding 1g-2). rotation is a
@@ -577,12 +704,17 @@ namespace PadForge.SteamWorkshop.Translation
         /// per-config aggregate).</summary>
         private void ReportDroppedGroupSettings(Run run,
             Dictionary<string, string> settings, string path,
-            bool skipRegionScales = false, bool reportMouseTuning = false)
+            bool skipRegionScales = false, bool reportMouseTuning = false,
+            bool skipCurveChannel = false)
         {
             var curves = CurveSettingKeys
                 .Where(k => settings.ContainsKey(k)
                     && !(skipRegionScales
-                        && (k == "sensitivity_horiz_scale" || k == "sensitivity_vert_scale")))
+                        && (k == "sensitivity_horiz_scale" || k == "sensitivity_vert_scale"))
+                    // v11: stick-hosted joystick groups carry these on the
+                    // emitted axis rows (CurveRangeChannel), so only the
+                    // genuinely dropped keys stay in the note.
+                    && !(skipCurveChannel && CurveChannelConsumedKeys.Contains(k)))
                 .ToList();
             if (curves.Count > 0)
             {
@@ -1348,23 +1480,32 @@ namespace PadForge.SteamWorkshop.Translation
                 bool left = slot == SteamSlot.Joystick;
                 bool crossed = (output == 1 && !left) || (output == 2 && left);
                 string src = left ? "LeftStick" : "RightStick";
+                // v11: the group's response-curve cluster rides the emitted
+                // pair as per-source params (both member rows, X and Y).
+                var curve = CurveRangeChannel.FromSettings(settings);
                 if (crossed)
                 {
                     string dst = left ? "Right" : "Left";
+                    var sx = Src($"Gamepad {src}X");
+                    curve.StampAxis(sx, isX: true);
                     AddRowSource(run, isKbm: false, layer, $"{dst}ThumbAxisX",
-                        Src($"Gamepad {src}X"), isAxis: true,
+                        sx, isAxis: true,
                         TranslationStatus.Clean, TranslationReasons.RowEmitted, path,
                         binding: $"output_joystick {output}");
+                    var sy = Src($"Gamepad {src}Y");
+                    curve.StampAxis(sy, isX: false);
                     AddRowSource(run, isKbm: false, layer, $"{dst}ThumbAxisY",
-                        Src($"Gamepad {src}Y"), isAxis: true,
+                        sy, isAxis: true,
                         TranslationStatus.Clean, TranslationReasons.RowEmitted, path,
                         binding: $"output_joystick {output}");
                 }
                 else
                 {
                     string dst = left ? "Left" : "Right";
-                    run.AddMatchedAnalog(layer, $"{dst}ThumbAxisX", $"Gamepad {src}X", path, dzPct);
-                    run.AddMatchedAnalog(layer, $"{dst}ThumbAxisY", $"Gamepad {src}Y", path, dzPct);
+                    run.AddMatchedAnalog(layer, $"{dst}ThumbAxisX", $"Gamepad {src}X", path, dzPct,
+                        curve.Exponent, curve.RangeOuter, curve.SensX);
+                    run.AddMatchedAnalog(layer, $"{dst}ThumbAxisY", $"Gamepad {src}Y", path, dzPct,
+                        curve.Exponent, curve.RangeOuter, curve.SensY);
                 }
             }
             else if (PhysicalSlotResolver.IsTrackpad(slot))
@@ -1416,7 +1557,7 @@ namespace PadForge.SteamWorkshop.Translation
         /// the row instead of the old TouchpadTuningNotPerRow drop.</summary>
         private void EmitMouseAxes(Run run, SteamSlot slot, string layer, string path,
             Dictionary<string, string> settings, double baseline,
-            string sensitivityKey = "sensitivity")
+            string sensitivityKey = "sensitivity", bool curveChannel = false)
         {
             var pair = PhysicalSlotResolver.MouseAxisPair(slot, run.SinglePadTrackpads);
             if (pair == null) return;
@@ -1431,6 +1572,14 @@ namespace PadForge.SteamWorkshop.Translation
 
             var (x, y, family) = pair.Value;
             int dzPct = GroupDeadZonePercent(settings);
+            // v11: stick-hosted joystick_mouse / joystick_camera groups
+            // carry the response-curve cluster on the emitted pair (Steam's
+            // "Stick Response Curve" is defined for these modes). The caller
+            // gates on CurveChannelApplies, so family is always 0 here when
+            // the flag is set.
+            var curve = curveChannel
+                ? CurveRangeChannel.FromSettings(settings)
+                : default;
 
             // Steam's per-group axis inversion (finding 1g-1). Every
             // mouse-axis family here reads through the bipolar evaluator's
@@ -1442,19 +1591,20 @@ namespace PadForge.SteamWorkshop.Translation
             bool invertX = SettingIsOn(settings, "invert_x");
             bool invertY = SettingIsOn(settings, "invert_y");
 
-            MappingSource Make(string descriptor, bool invert)
+            MappingSource Make(string descriptor, bool invert, bool isX)
             {
                 var src = new MappingSource { Descriptor = descriptor };
                 if (family == 0 || family == 1) src.Sensitivity = ratio;
                 else if (family == 2) src.GyroSensitivity = ratio;
                 if (dzPct > 0) src.DeadZone = dzPct;
                 if (invert) src.Invert = true;
+                if (curveChannel) curve.StampAxis(src, isX);
                 return src;
             }
 
-            AddRowSource(run, isKbm: true, layer, "KbmMouseX", Make(x, invertX), isAxis: true,
+            AddRowSource(run, isKbm: true, layer, "KbmMouseX", Make(x, invertX, isX: true), isAxis: true,
                 TranslationStatus.Clean, TranslationReasons.RowEmitted, path);
-            AddRowSource(run, isKbm: true, layer, "KbmMouseY", Make(y, invertY), isAxis: true,
+            AddRowSource(run, isKbm: true, layer, "KbmMouseY", Make(y, invertY, isX: false), isAxis: true,
                 TranslationStatus.Clean, TranslationReasons.RowEmitted, path);
 
             // invert_z addresses a third (roll) axis the X/Y mouse-delta pair
@@ -1472,7 +1622,7 @@ namespace PadForge.SteamWorkshop.Translation
         /// joystick_move reads as "left"); anything else keeps the mode's
         /// right-stick default.</summary>
         private void EmitMouseJoystickAxes(Run run, SteamSlot slot, string layer, string path,
-            Dictionary<string, string> settings, double baseline)
+            Dictionary<string, string> settings, double baseline, bool curveChannel = false)
         {
             var pair = PhysicalSlotResolver.MouseAxisPair(slot, run.SinglePadTrackpads);
             if (pair == null) return;
@@ -1490,20 +1640,26 @@ namespace PadForge.SteamWorkshop.Translation
             bool invertX = SettingIsOn(settings, "invert_x");
             bool invertY = SettingIsOn(settings, "invert_y");
             string dst = ParseIntSetting(settings, "output_joystick", 0) == 1 ? "Left" : "Right";
+            // v11: same curve-channel stamps as EmitMouseAxes, gated the
+            // same way by the caller (stick host only).
+            var curve = curveChannel
+                ? CurveRangeChannel.FromSettings(settings)
+                : default;
 
-            MappingSource Make(string descriptor, bool invert)
+            MappingSource Make(string descriptor, bool invert, bool isX)
             {
                 var src = new MappingSource { Descriptor = descriptor };
                 if (family == 0 || family == 1) src.Sensitivity = ratio;
                 else if (family == 2) src.GyroSensitivity = ratio;
                 if (dzPct > 0) src.DeadZone = dzPct;
                 if (invert) src.Invert = true;
+                if (curveChannel) curve.StampAxis(src, isX);
                 return src;
             }
 
-            AddRowSource(run, isKbm: false, layer, $"{dst}ThumbAxisX", Make(x, invertX), isAxis: true,
+            AddRowSource(run, isKbm: false, layer, $"{dst}ThumbAxisX", Make(x, invertX, isX: true), isAxis: true,
                 TranslationStatus.Clean, TranslationReasons.RowEmitted, path);
-            AddRowSource(run, isKbm: false, layer, $"{dst}ThumbAxisY", Make(y, invertY), isAxis: true,
+            AddRowSource(run, isKbm: false, layer, $"{dst}ThumbAxisY", Make(y, invertY, isX: false), isAxis: true,
                 TranslationStatus.Clean, TranslationReasons.RowEmitted, path);
 
             // invert_z addresses a third axis the X/Y pair does not emit.
@@ -3306,6 +3462,12 @@ namespace PadForge.SteamWorkshop.Translation
                 {
                     var src = new MappingSource { Descriptor = ma.Descriptor };
                     if (ma.DeadZonePct > 0) src.DeadZone = ma.DeadZonePct;
+                    // Curve/range channel (v11): the matched side of a
+                    // stick-hosted joystick_move carries the group's cluster
+                    // exactly like the crossed rows do.
+                    if (ma.CurveExponent > 0) src.ParamCurveExponent = ma.CurveExponent;
+                    if (ma.RangeOuter > 0) src.ParamRangeOuter = ma.RangeOuter;
+                    if (ma.Sensitivity > 0 && ma.Sensitivity != 1.0) src.Sensitivity = ma.Sensitivity;
                     AddRowSource(run, isKbm: false, ma.Layer, ma.Target,
                         src, isAxis: true,
                         TranslationStatus.Clean, TranslationReasons.RowEmitted, ma.Path);

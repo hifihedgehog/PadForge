@@ -890,6 +890,8 @@ namespace PadForge.ViewModels
         /// ParamStickDeadzone, ParamWind*, ParamAngle*, ParamMotion*,
         /// ParamControllerOrientation), the flick Param* set (ParamFlick*),
         /// the absolute-pointer geometry (ParamPointerCenter/Extent),
+        /// the curve/range channel (ParamCurveExponent/ParamRangeOuter,
+        /// preserved by CaptureCurveRangeParams / ApplyCurveRangeParamsToRow),
         /// InvertOutput, and NoInherit are NOT round-tripped here. KindOptions
         /// offers only Direct/Incremental/InvertOnHold/Ramped, so an ExtraSource
         /// can never author those; the steering/flick kinds are re-stamped on the

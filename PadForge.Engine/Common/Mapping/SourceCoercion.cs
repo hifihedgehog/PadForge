@@ -642,6 +642,28 @@ namespace PadForge.Engine.Common.Mapping
             return sign * shaped;
         }
 
+        /// <summary>Per-source response-curve / outer-range shaping
+        /// (translator v11, the Workshop channel for Steam's curve cluster).
+        /// Order is outer range FIRST, then exponent: Steam remaps the
+        /// deflection so full output lands at the outer radius, then shapes
+        /// the remapped 0..1 value. Sign is extracted once and re-applied to
+        /// the shaped magnitude; a second sign operation here would recreate
+        /// the multi-layer sign bug. Both params 0 (the serialized default)
+        /// returns the input unchanged, as does exponent 1 with no outer.</summary>
+        private static float ApplyCurveRangeShaping(float v, MappingSource src)
+        {
+            double outer = src.ParamRangeOuter;
+            double exponent = src.ParamCurveExponent;
+            bool hasOuter = outer > 0.0 && outer < 1.0;
+            bool hasCurve = exponent > 0.0 && exponent != 1.0;
+            if (!hasOuter && !hasCurve) return v;
+            float mag = v < 0f ? -v : v;
+            if (mag <= 0f) return 0f;
+            if (hasOuter) mag = Math.Min(1f, mag / (float)outer);
+            if (hasCurve) mag = (float)Math.Pow(mag, exponent);
+            return v < 0f ? -mag : mag;
+        }
+
         private static float ApplyGyroAcceleration(float normalized, float accel)
         {
             // Rate-dependent gain: slow movements pass through unchanged,
@@ -2384,7 +2406,13 @@ namespace PadForge.Engine.Common.Mapping
             axisValue *= PerSourceSensitivity(src);
             if (axisValue < -1f) axisValue = -1f;
             else if (axisValue > 1f) axisValue = 1f;
-            return axisValue;
+            // Response curve / outer range channel (translator v11): the ONE
+            // application seam, deliberately shared with the Sensitivity knob
+            // so the specialized families that returned above are never
+            // double-shaped and every evaluator lane (Step 3 mapping-set
+            // eval, menus steer, the MouseAbs routing) inherits it through
+            // EvaluateForBipolarAxisTarget.
+            return ApplyCurveRangeShaping(axisValue, src);
         }
 
         private static float ReadAsUnipolar(CustomInputState state, MappingSource src, int slotIndex, string deviceGuid)

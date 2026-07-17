@@ -149,7 +149,7 @@ menus: 2
     [9] MOUSE_POSITION
     [10] MOUSE_POSITION
     [12] MOUSE_POSITION
-report: v10 rows:x0+k19 macros:50 menus:2 layers:5 clean:78 partial:49 skipped:5 errors:0
+report: v11 rows:x0+k19 macros:50 menus:2 layers:5 clean:78 partial:49 skipped:5 errors:0
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_a/Full_Press => KbmMBtn0 <- Gamepad ButtonA
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_b/Full_Press => KbmMBtn1 <- Gamepad ButtonB
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_x/Full_Press => KbmKey45 <- Gamepad ButtonX

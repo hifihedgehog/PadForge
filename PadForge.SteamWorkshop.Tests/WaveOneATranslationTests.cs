@@ -394,13 +394,17 @@ namespace PadForge.SteamWorkshop.Tests
         }
 
         [Fact]
-        public void CurveSettings_NamedPartialListsKeys()
+        public void CurveSettings_NamedPartialListsKeys_WhereNoChannelExists()
         {
+            // v11 moved the stick-hosted cluster onto the emitted axis rows
+            // (CurveChannelTranslationTests); hosts without the channel keep
+            // the named drop. A trigger group evaluates through the unipolar
+            // path, so its curve keys still ride the note.
             string vdf = Head
-                + Group(1, "joystick_move",
+                + Group(1, "trigger",
                     Inputs(Inp("click", "key_press E"))
                     + Settings(("deadzone_outer_radius", "28800"), ("curve_exponent", "4")))
-                + Preset(0, "Default", (1, "joystick active"))
+                + Preset(0, "Default", (1, "left_trigger active"))
                 + "}\n";
             var p = Translate(vdf);
             var entry = Assert.Single(p.Report.Entries, e =>
@@ -671,12 +675,12 @@ namespace PadForge.SteamWorkshop.Tests
         // ─── Translator version ─────────────────────────────────────────
 
         [Fact]
-        public void TranslatorVersion_IsTen_AndRidesTheSummary()
+        public void TranslatorVersion_IsEleven_AndRidesTheSummary()
         {
-            Assert.Equal(10, TranslationReport.CurrentTranslatorVersion);
+            Assert.Equal(11, TranslationReport.CurrentTranslatorVersion);
             var p = Translate(Head + "}\n");
-            Assert.Equal(10, p.Report.TranslatorVersion);
-            Assert.StartsWith("v10 ", p.Report.ToSummaryString());
+            Assert.Equal(11, p.Report.TranslatorVersion);
+            Assert.StartsWith("v11 ", p.Report.ToSummaryString());
         }
     }
 }

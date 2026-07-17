@@ -126,7 +126,7 @@ menus: 1
     [7] 8
     [8] 9
     [9] 0
-report: v13 rows:x0+k29 macros:29 menus:1 layers:5 clean:52 partial:15 skipped:3 errors:0
+report: v14 rows:x0+k29 macros:29 menus:1 layers:5 clean:52 partial:11 skipped:3 errors:0
   Clean RowEmitted @ Tactical/button_diamond/group 0 (four_buttons)/button_A/Full_Press => KbmMBtn0 <- Gamepad ButtonA
   Clean RowEmitted @ Tactical/joystick/group 51 (joystick_mouse) => KbmMouseX <- Gamepad LeftStickX (inverted)
   Clean RowEmitted @ Tactical/joystick/group 51 (joystick_mouse) => KbmMouseY <- Gamepad LeftStickY (inverted)
@@ -155,10 +155,6 @@ report: v13 rows:x0+k29 macros:29 menus:1 layers:5 clean:52 partial:15 skipped:3
   Clean RowEmitted @ Tactical/right_trigger/group 2 (trigger)/edge/Full_Press => KbmMBtn0 <- Gamepad RightTrigger (upper half)
   Partial InterruptibleDropped @ Tactical/switch/group 39 (switches)/button_back_left/Full_Press
   Skipped GameActionsNotSupported(20) @ Tactical
-  Partial TrackpadFeatureRequired(Touchpad joystick output) @ Menus / Base/left_trackpad/group 34 (dpad)/dpad_east/Full_Press
-  Partial TrackpadFeatureRequired(Touchpad joystick output) @ Menus / Base/left_trackpad/group 34 (dpad)/dpad_north/Full_Press
-  Partial TrackpadFeatureRequired(Touchpad joystick output) @ Menus / Base/left_trackpad/group 34 (dpad)/dpad_south/Full_Press
-  Partial TrackpadFeatureRequired(Touchpad joystick output) @ Menus / Base/left_trackpad/group 34 (dpad)/dpad_west/Full_Press
   Clean RowEmitted @ Menus / Base/right_joystick/group 48 (joystick_mouse) => KbmMouseX <- Gamepad RightStickX
   Clean RowEmitted @ Menus / Base/right_joystick/group 48 (joystick_mouse) => KbmMouseY <- Gamepad RightStickY
   Clean RowEmitted @ Menus / Base/right_joystick/group 48 (joystick_mouse)/click/Full_Press => KbmMBtn0 <- Gamepad RightStick

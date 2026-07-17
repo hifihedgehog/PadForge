@@ -57,7 +57,7 @@ kbm rows: 21
 macros: 2
   macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Gamepad LeftTrigger] in-half=upper in-dz=75 strength=66%
   macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Gamepad RightTrigger] in-half=upper in-dz=75 strength=66%
-report: v13 rows:x0+k21 macros:2 menus:0 layers:0 clean:26 partial:4 skipped:1 errors:0
+report: v14 rows:x0+k21 macros:2 menus:0 layers:0 clean:30 partial:0 skipped:1 errors:0
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_a/Full_Press => KbmKey20 <- Gamepad ButtonA
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_b/Full_Press => KbmKey45 <- Gamepad ButtonB
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_x/Full_Press => KbmKey52 <- Gamepad ButtonX
@@ -70,10 +70,10 @@ report: v13 rows:x0+k21 macros:2 menus:0 layers:0 clean:26 partial:4 skipped:1 e
   Clean RowEmitted @ Default/joystick/group 1 (dpad)/dpad_north/Full_Press => KbmKey57 <- Gamepad LeftStickY (lower half)
   Clean RowEmitted @ Default/joystick/group 1 (dpad)/dpad_south/Full_Press => KbmKey53 <- Gamepad LeftStickY (upper half)
   Clean RowEmitted @ Default/joystick/group 1 (dpad)/dpad_west/Full_Press => KbmKey41 <- Gamepad LeftStickX (lower half)
-  Partial TrackpadFeatureRequired(Touchpad joystick output) @ Default/left_trackpad/group 2 (dpad)/dpad_east/Full_Press => KbmKey27 <- Touchpad 0 DPadRight
-  Partial TrackpadFeatureRequired(Touchpad joystick output) @ Default/left_trackpad/group 2 (dpad)/dpad_north/Full_Press => KbmKey26 <- Touchpad 0 DPadUp
-  Partial TrackpadFeatureRequired(Touchpad joystick output) @ Default/left_trackpad/group 2 (dpad)/dpad_south/Full_Press => KbmKey28 <- Touchpad 0 DPadDown
-  Partial TrackpadFeatureRequired(Touchpad joystick output) @ Default/left_trackpad/group 2 (dpad)/dpad_west/Full_Press => KbmKey25 <- Touchpad 0 DPadLeft
+  Clean RowEmitted @ Default/left_trackpad/group 2 (dpad)/dpad_east/Full_Press => KbmKey27 <- Touchpad 0 DPadRight
+  Clean RowEmitted @ Default/left_trackpad/group 2 (dpad)/dpad_north/Full_Press => KbmKey26 <- Touchpad 0 DPadUp
+  Clean RowEmitted @ Default/left_trackpad/group 2 (dpad)/dpad_south/Full_Press => KbmKey28 <- Touchpad 0 DPadDown
+  Clean RowEmitted @ Default/left_trackpad/group 2 (dpad)/dpad_west/Full_Press => KbmKey25 <- Touchpad 0 DPadLeft
   Clean RowEmitted @ Default/left_trigger/group 4 (trigger)/click/Full_Press => KbmMBtn1 <- Gamepad LeftTrigger (upper half)
   Clean RowEmitted @ Default/right_joystick/group 9 (joystick_mouse) => KbmMouseX <- Gamepad RightStickX
   Clean RowEmitted @ Default/right_joystick/group 9 (joystick_mouse) => KbmMouseY <- Gamepad RightStickY

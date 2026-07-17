@@ -66,17 +66,17 @@ macros: 18
   macro RumblePulse OnPress | Haptic pulse (left_bumper) | btns=0x0000 in=[Gamepad LeftShoulder] strength=33%
   macro SetLightbarColor OnPress | Set LED (right_bumper) | btns=0x0200 rgb=(255,0,0) bright=43% sat=100% setting=1
   macro RumblePulse OnPress | Haptic pulse (right_bumper) | btns=0x0000 in=[Gamepad RightShoulder] strength=33%
-report: v13 rows:x20+k0 macros:18 menus:0 layers:0 clean:22 partial:17 skipped:0 errors:0
+report: v14 rows:x20+k0 macros:18 menus:0 layers:0 clean:24 partial:15 skipped:0 errors:0
   Partial MacroTriggerViaXboxOutput @ When Trigger is pressed/button_diamond/group 14 (four_buttons)/button_a/Full_Press => Set LED macro
   Partial MacroTriggerViaXboxOutput @ When Trigger is pressed/button_diamond/group 14 (four_buttons)/button_b/Full_Press => Set LED macro
   Partial MacroTriggerViaXboxOutput @ When Trigger is pressed/button_diamond/group 14 (four_buttons)/button_x/Full_Press => Set LED macro
   Partial MacroTriggerViaXboxOutput @ When Trigger is pressed/button_diamond/group 14 (four_buttons)/button_y/Full_Press => Set LED macro
   Partial MacroTriggerViaXboxOutput @ When Trigger is pressed/joystick/group 30 (joystick_move)/click/Full_Press => Set LED macro
-  Partial TrackpadFeatureRequired(Touchpad touch spots) @ When Trigger is pressed/left_trackpad/group 27 (single_button)/click/Full_Press => ButtonBack <- Touchpad 0 Click
+  Clean RowEmitted @ When Trigger is pressed/left_trackpad/group 27 (single_button)/click/Full_Press => ButtonBack <- Touchpad 0 Click
   Partial ResponseCurveNotSupported(curve_exponent) @ When Trigger is pressed/left_trigger/group 15 (trigger)
   Partial MacroTriggerViaXboxOutput @ When Trigger is pressed/left_trigger/group 15 (trigger)/click/Full_Press => Set LED macro
   Partial MacroTriggerViaXboxOutput @ When Trigger is pressed/right_joystick/group 31 (joystick_move)/click/Full_Press => Set LED macro
-  Partial TrackpadFeatureRequired(Touchpad touch spots) @ When Trigger is pressed/right_trackpad/group 28 (single_button)/click/Full_Press => ButtonStart <- Touchpad 0 Click
+  Clean RowEmitted @ When Trigger is pressed/right_trackpad/group 28 (single_button)/click/Full_Press => ButtonStart <- Touchpad 0 Click
   Partial ResponseCurveNotSupported(curve_exponent) @ When Trigger is pressed/right_trigger/group 16 (trigger)
   Partial MacroTriggerViaXboxOutput @ When Trigger is pressed/right_trigger/group 16 (trigger)/click/Full_Press => Set LED macro
   Partial MissingPreset(32766) @ When Trigger is pressed/switch/group 17 (switches)/button_capture/Full_Press :: controller_action CHANGE_PRESET 32766 1 1, , 

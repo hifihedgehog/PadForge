@@ -2414,7 +2414,6 @@
   <data name="Workshop_Tr_RowEmitted" xml:space="preserve"><value>변환됨</value></data>
   <data name="Workshop_Tr_MacroEmitted" xml:space="preserve"><value>매크로로 변환됨</value></data>
   <data name="Workshop_Tr_ShiftLayerEmitted" xml:space="preserve"><value>레이어: {0}</value></data>
-  <data name="Workshop_Tr_TrackpadFeatureRequired" xml:space="preserve"><value>{0} 터치패드 기능 필요</value></data>
   <data name="Workshop_Tr_TouchpadTuningNotPerRow" xml:space="preserve"><value>터치패드 조정은 행이 아니라 패드 단위로 적용됩니다</value></data>
   <data name="Workshop_Tr_SoftPressApproximated" xml:space="preserve"><value>Soft_Press를 누름 임계값으로 근사</value></data>
   <data name="Workshop_Tr_TriggerThresholdApproximated" xml:space="preserve"><value>트리거 임계값 근사</value></data>
@@ -2537,7 +2536,6 @@
   <data name="Pad_MouseGestures_CustomInput" xml:space="preserve"><value>사용자 지정 활성화 입력</value></data>
   <data name="Pad_MouseGestures_CustomInput_Tooltip" xml:space="preserve"><value>누르고 있는 동안 사용자 지정 제스처 세션을 대기시키는 입력으로, 이 슬롯의 아무 장치에서나 기록합니다. 버튼과 키는 누르는 동안 대기시킵니다. 페달 같은 아날로그 입력은 절반 이상 밟으면 대기시킵니다.</value></data>
   <data name="Pad_ResetMouseGestureCustomInput" xml:space="preserve"><value>사용자 지정 활성화 입력 재설정</value></data>
-  <data name="Workshop_Tr_ScrollGestureModeNotSupported" xml:space="preserve"><value>방향 스와이프 모드 미지원</value></data>
   <data name="Workshop_Tr_HapticIntensityDropped" xml:space="preserve"><value>햅틱 피드백 제외됨({0}개 할당)</value></data>
   <data name="Workshop_Tr_ResponseCurveNotSupported" xml:space="preserve"><value>응답 곡선 및 범위 설정 제외됨({0})</value></data>
   <data name="Workshop_Tr_GyroButtonMaskDropped" xml:space="preserve"><value>자이로 활성화 설정 {0}={1} 제외됨(자이로 활성화는 패드별로 구성)</value></data>
@@ -2562,6 +2560,10 @@
   <data name="Workshop_Tr_ScreenshotApproximated" xml:space="preserve"><value>SCREENSHOT을 PrintScreen 키 입력으로 근사</value></data>
   <data name="Workshop_Tr_ShowKeyboardApproximated" xml:space="preserve"><value>SHOW_KEYBOARD를 화면 키보드 실행으로 근사</value></data>
   <data name="Workshop_Tr_MouseDeltaNotSupported" xml:space="preserve"><value>커서 상대 이동 mouse_delta ({0}) 미지원</value></data>
+  <data name="Workshop_Tr_GyroSwipeNotSupported" xml:space="preserve"><value>자이로에 배치된 방향 스와이프는 엔진 채널이 없음(부호 없는 속도 읽기, 방향별 원샷 없음)</value></data>
+  <data name="Workshop_Tr_SwipeSurfaceNotSupported" xml:space="preserve"><value>{0}에 배치된 방향 스와이프는 스와이프할 방향 면이 없음</value></data>
+  <data name="Workshop_Tr_FlickAxisTargetNotSupported" xml:space="preserve"><value>스틱 플릭에는 트리거나 스틱 축 대상용 탭 동작이 없음</value></data>
+  <data name="Workshop_Tr_FlickBindingNotOneShot" xml:space="preserve"><value>이 바인딩 종류는 유지 상태가 필요하며 원샷 스틱 플릭으로는 처리할 수 없음</value></data>
   <data name="Macro_HoldForMs" xml:space="preserve"><value>길게 누를 때</value></data>
   <data name="Macro_HoldForMs_Tooltip" xml:space="preserve"><value>트리거를 유지 시간 동안 계속 누르고 있으면 한 번 실행됩니다. 더 짧게 누르면 아무 일도 일어나지 않습니다.</value></data>
   <data name="Macro_TriggerHoldMs_Label" xml:space="preserve"><value>유지 시간</value></data>

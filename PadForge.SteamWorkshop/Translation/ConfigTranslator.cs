@@ -189,9 +189,6 @@ namespace PadForge.SteamWorkshop.Translation
             /// half click gated on its half's touch spot, #9 B-1).
             /// Materializes as Kind=Chord with ChordSecondDescriptor.</summary>
             public string GateDescriptor = "";
-            /// <summary>Touchpad-tab feature the activator read depends on;
-            /// emitted activators get a TrackpadFeatureRequired note.</summary>
-            public string TrackpadFeature = "";
             /// <summary>Layer of the preset hosting the binding. A lone
             /// CHANGE_PRESET to Base lowers to a single-stop Cycle through
             /// this layer (the runtime has no one-way jump).</summary>
@@ -491,13 +488,15 @@ namespace PadForge.SteamWorkshop.Translation
                 case "2dscroll":
                     // Directional swipe. Trackpad hosts lower onto the
                     // gesture engine's one-shot swipe fires (v10 G3):
-                    // each dpad_* member reads "Touchpad {p} Swipe{Dir}"
-                    // and needs the Touchpad-tab swipe toggle. Stick hosts
-                    // lower onto one-shot wedge-triggered tap macros (v12):
-                    // a flick toward a direction fires the binding once.
-                    // Gyro keeps the named skip: the gyro trigger read is
-                    // an unsigned rate bool, so a signed per-direction
-                    // flick read does not exist there.
+                    // each dpad_* member reads "Touchpad {p} Swipe{Dir}",
+                    // self-armed at apply since v14. Stick hosts lower
+                    // onto one-shot wedge-triggered tap macros (v12): a
+                    // flick toward a direction fires the binding once.
+                    // The remaining hosts keep per-arm named skips (v14).
+                    // Gyro: the gyro trigger read thresholds an unsigned
+                    // rate, so a signed per-direction flick read does not
+                    // exist there. Everything else (button clusters, a
+                    // lone trigger) has no 2D direction surface to flick.
                     if (PhysicalSlotResolver.IsTrackpad(slot))
                     {
                         TranslateSwipeGroup(run, preset, effective, slot, layer, path, settings);
@@ -506,10 +505,16 @@ namespace PadForge.SteamWorkshop.Translation
                     {
                         TranslateStickSwipeGroup(run, preset, effective, slot, layer, path, settings);
                     }
+                    else if (slot == SteamSlot.Gyro)
+                    {
+                        run.Report.Add(TranslationStatus.Skipped,
+                            TranslationReasons.GyroSwipeNotSupported, path);
+                    }
                     else
                     {
                         run.Report.Add(TranslationStatus.Skipped,
-                            TranslationReasons.ScrollGestureModeNotSupported, path);
+                            TranslationReasons.SwipeSurfaceNotSupported, path,
+                            args: slot.ToString());
                     }
                     break;
 
@@ -1083,9 +1088,9 @@ namespace PadForge.SteamWorkshop.Translation
         /// swipe fires a dpad_* member per swipe step. The gesture
         /// engine's one-shot swipe fires ("Touchpad {p} SwipeUp/Down/
         /// Left/Right", GestureRecognizer end-of-gesture classification)
-        /// are the same construct read on finger lift, gated behind the
-        /// Touchpad-tab swipe toggle, so each member's bindings translate
-        /// against the matching swipe descriptor through the normal walk.</summary>
+        /// are the same construct read on finger lift, self-armed at
+        /// apply since v14, so each member's bindings translate against
+        /// the matching swipe descriptor through the normal walk.</summary>
         private void TranslateSwipeGroup(Run run, SteamInputPreset preset, SteamInputGroup group,
             SteamSlot slot, string layer, string path, Dictionary<string, string> settings)
         {
@@ -1250,10 +1255,12 @@ namespace PadForge.SteamWorkshop.Translation
                     if (xt.IsTriggerAxis || xt.IsStickAxis)
                     {
                         // No discrete tap primitive for the axis-natured
-                        // targets (trigger pulls, stick directions), the
-                        // same gate the release-activator path keeps.
+                        // targets (trigger pulls, stick directions): the
+                        // macro AxisSet action is a one-frame write with no
+                        // timed hold, the same gate the release-activator
+                        // path keeps. Named per arm since v14.
                         run.Report.Add(TranslationStatus.Skipped,
-                            TranslationReasons.ScrollGestureModeNotSupported, actPath, binding.Raw);
+                            TranslationReasons.FlickAxisTargetNotSupported, actPath, binding.Raw);
                         break;
                     }
                     EmitVcTapMacro(run, binding, source, actPath, xt, inputName,
@@ -1272,7 +1279,10 @@ namespace PadForge.SteamWorkshop.Translation
                     break;
 
                 default:
-                    ReportSkipUnlessSilent(run, TranslationReasons.ScrollGestureModeNotSupported,
+                    // Held-state binding kinds (mode shifts, layer ops,
+                    // wheel detents, latch verbs) have no one-shot form to
+                    // ride a flick. Named per arm since v14.
+                    ReportSkipUnlessSilent(run, TranslationReasons.FlickBindingNotOneShot,
                         actPath, binding);
                     break;
             }
@@ -1600,16 +1610,11 @@ namespace PadForge.SteamWorkshop.Translation
                 RegionYPercent = posY,
                 RegionScalePercent = scale,
             };
-            string feature = FillMacroTrigger(macro, host);
+            // A half-hosted region engages on the half's touch spot,
+            // self-armed at apply since v14 (the imported set references
+            // the spot descriptor), so only the geometry note remains.
+            FillMacroTrigger(macro, host);
             run.Profile.Macros.Add(macro);
-            if (feature != null)
-            {
-                // A half-hosted region engages on the half's touch spot,
-                // which needs the Touchpad-tab feature: name it beside the
-                // geometry approximation below.
-                run.Report.Add(TranslationStatus.Partial,
-                    TranslationReasons.TrackpadFeatureRequired, path, args: feature);
-            }
             run.Report.Add(TranslationStatus.Partial, TranslationReasons.MouseRegionApproximated,
                 path, emitted: "Cursor region clamp macro",
                 args: new[]
@@ -1699,8 +1704,8 @@ namespace PadForge.SteamWorkshop.Translation
         /// explicit axis pair (authoritative sets spell out every output
         /// Steam produces): output_joystick redirects to the other stick
         /// here, the matched side via the Finalize matched-analog pass.
-        /// Trackpad-as-stick rides the gesture StickX/StickY channel
-        /// (Partial: needs the Touchpad-tab toggle).</summary>
+        /// Trackpad-as-stick rides the gesture StickX/StickY channel,
+        /// self-armed at apply since v14.</summary>
         private void TranslateJoystickMove(Run run, SteamInputPreset preset, SteamInputGroup group,
             SteamSlot slot, string layer, string path, Dictionary<string, string> settings)
         {
@@ -1773,14 +1778,15 @@ namespace PadForge.SteamWorkshop.Translation
                 }
                 else
                 {
+                    // The gesture Stick channel self-arms at apply since
+                    // v14 (the imported set references the descriptors),
+                    // so the rows are Clean with no user action needed.
                     AddRowSource(run, isKbm: false, layer, $"{dst}ThumbAxisX",
                         Src($"Touchpad {p} StickX"), isAxis: true,
-                        TranslationStatus.Partial, TranslationReasons.TrackpadFeatureRequired, path,
-                        args: PhysicalSlotResolver.FeatureJoystickOutput);
+                        TranslationStatus.Clean, TranslationReasons.RowEmitted, path);
                     AddRowSource(run, isKbm: false, layer, $"{dst}ThumbAxisY",
                         Src($"Touchpad {p} StickY"), isAxis: true,
-                        TranslationStatus.Partial, TranslationReasons.TrackpadFeatureRequired, path,
-                        args: PhysicalSlotResolver.FeatureJoystickOutput);
+                        TranslationStatus.Clean, TranslationReasons.RowEmitted, path);
                 }
             }
 
@@ -2050,9 +2056,9 @@ namespace PadForge.SteamWorkshop.Translation
         /// inputs approximate through the gesture engine's DoubleTap fire
         /// ("Touchpad {p} DoubleTap", GestureRecognizer's tap counter):
         /// the whole pad's double tap stands in for Steam's double press
-        /// of the member, gated behind the Touchpad-tab tap toggle.
-        /// Button hosts keep the named skip (the engine has no
-        /// double-press read for plain buttons).</summary>
+        /// of the member, self-armed at apply since v14. Button hosts
+        /// keep the named skip (the engine has no double-press read for
+        /// plain buttons).</summary>
         private void TranslateDoublePress(Run run, SteamInputPreset preset,
             SteamInputActivator activator, SteamInputInput input, ResolvedSource source,
             string layer, string actPath)
@@ -2126,16 +2132,12 @@ namespace PadForge.SteamWorkshop.Translation
             // trigger would demand an Xbox slot, and feedback on a pure
             // keyboard config must not sprout one (owner report 2026-07-13
             // is exactly that shape).
-            string feature = FillMacroTrigger(macro, WithoutOutputTrigger(source));
+            FillMacroTrigger(macro, WithoutOutputTrigger(source));
             run.Profile.Macros.Add(macro);
             // Silent clean lowering. Steam Input treats rumble and haptics
             // interchangeably, so the rumble pulse IS the haptic tick and
-            // carries no report note (owner ruling 2026-07-17).
-            if (feature != null)
-            {
-                run.Report.Add(TranslationStatus.Partial,
-                    TranslationReasons.TrackpadFeatureRequired, path, args: feature);
-            }
+            // carries no report note (owner ruling 2026-07-17). A
+            // gesture-hosted trigger self-arms at apply since v14.
         }
 
         /// <summary>Activator delay_start / delay_end (v10 G5): stamped as
@@ -2360,12 +2362,11 @@ namespace PadForge.SteamWorkshop.Translation
                 ConsumeTrigger = false,
                 MouseButtonIndex = btn,
             };
-            string feature = FillMacroTrigger(macro, source);
+            FillMacroTrigger(macro, source);
             run.Profile.Macros.Add(macro);
-            var (status, reason, arg) = MacroTriggerReport(source, feature);
+            var (status, reason) = MacroTriggerReport(source);
             run.Report.Add(status, reason, path, binding.Raw,
-                emitted: $"Long-press hold macro: mouse button {macro.MouseButtonIndex}",
-                args: arg == null ? Array.Empty<string>() : new[] { arg });
+                emitted: $"Long-press hold macro: mouse button {macro.MouseButtonIndex}");
             return true;
         }
 
@@ -2511,7 +2512,6 @@ namespace PadForge.SteamWorkshop.Translation
                     // gate (#9 B-1).
                     AddRowSource(run, isKbm: true, layer, wheel.Value.Target, src, isAxis: true,
                         StatusFor(source, soft), ReasonFor(source, soft), path, binding.Raw,
-                        args: source.TrackpadFeature,
                         clickGate: source.GateDescriptor != null
                             ? new MappingSource { Descriptor = source.GateDescriptor } : null);
                     break;
@@ -2699,7 +2699,6 @@ namespace PadForge.SteamWorkshop.Translation
             string gateDescriptor = clickGate ?? source.GateDescriptor;
             AddRowSource(run, isKbm: false, layer, xt.Target, src, isAxis: true,
                 StatusFor(source, soft), ReasonFor(source, soft), path, binding.Raw,
-                args: source.TrackpadFeature,
                 clickGate: gateDescriptor != null
                     ? new MappingSource { Descriptor = gateDescriptor } : null);
         }
@@ -2793,12 +2792,11 @@ namespace PadForge.SteamWorkshop.Translation
                 VirtualKey = vk,
                 IntervalMs = intervalMs,
             };
-            string feature = FillMacroTrigger(macro, source);
+            FillMacroTrigger(macro, source);
             run.Profile.Macros.Add(macro);
-            var (status, reason, arg) = MacroTriggerReport(source, feature);
+            var (status, reason) = MacroTriggerReport(source);
             run.Report.Add(status, reason, path, binding.Raw,
-                emitted: $"{verb} {keyName} macro",
-                args: arg == null ? Array.Empty<string>() : new[] { arg });
+                emitted: $"{verb} {keyName} macro");
             return true;
         }
 
@@ -2821,12 +2819,11 @@ namespace PadForge.SteamWorkshop.Translation
                 ConsumeTrigger = false,
                 VirtualKey = vk,
             };
-            string feature = FillMacroTrigger(macro, source);
+            FillMacroTrigger(macro, source);
             run.Profile.Macros.Add(macro);
-            var (status, reason, arg) = MacroTriggerReport(source, feature);
+            var (status, reason) = MacroTriggerReport(source);
             run.Report.Add(status, reason, path, binding.Raw,
-                emitted: $"Hold {keyName} macro",
-                args: arg == null ? Array.Empty<string>() : new[] { arg });
+                emitted: $"Hold {keyName} macro");
             return true;
         }
 
@@ -2846,12 +2843,11 @@ namespace PadForge.SteamWorkshop.Translation
                 ConsumeTrigger = false,
                 MouseButtonIndex = btn,
             };
-            string feature = FillMacroTrigger(macro, source);
+            FillMacroTrigger(macro, source);
             run.Profile.Macros.Add(macro);
-            var (status, reason, arg) = MacroTriggerReport(source, feature);
+            var (status, reason) = MacroTriggerReport(source);
             run.Report.Add(status, reason, path, binding.Raw,
-                emitted: $"Mouse tap macro (button {btn})",
-                args: arg == null ? Array.Empty<string>() : new[] { arg });
+                emitted: $"Mouse tap macro (button {btn})");
         }
 
         /// <summary>A one-shot tap of the target virtual-controller button
@@ -2869,12 +2865,11 @@ namespace PadForge.SteamWorkshop.Translation
                 TargetXboxButtons = xt.XboxButtonBit,
                 ConsumeTrigger = false,
             };
-            string feature = FillMacroTrigger(macro, source);
+            FillMacroTrigger(macro, source);
             run.Profile.Macros.Add(macro);
-            var (status, reason, arg) = MacroTriggerReport(source, feature);
+            var (status, reason) = MacroTriggerReport(source);
             run.Report.Add(status, reason, path, binding.Raw,
-                emitted: $"Tap {xt.Target} macro",
-                args: arg == null ? Array.Empty<string>() : new[] { arg });
+                emitted: $"Tap {xt.Target} macro");
         }
 
         /// <summary>Copy of <paramref name="s"/> with the combined-output
@@ -2935,12 +2930,11 @@ namespace PadForge.SteamWorkshop.Translation
         /// ("the device on the slot"), plus its AND-gate companion when the
         /// source carries one (a click gated on its half's touch spot).
         /// Descriptor triggers have no output bits to consume, so
-        /// ConsumeTrigger is forced off for them. Returns the
-        /// Touchpad-tab feature the trigger depends on (the source's
-        /// TrackpadFeature), or null when the trigger is live by
-        /// default; callers fold a non-null feature into a Partial
-        /// report entry.</summary>
-        private static string FillMacroTrigger(TranslatedMacro macro, ResolvedSource source)
+        /// ConsumeTrigger is forced off for them. Gesture-gated reads
+        /// need no note since v14: the imported set is Authoritative and
+        /// the engine self-arms every referenced gesture family at apply
+        /// (TouchpadGestureAutoArm).</summary>
+        private static void FillMacroTrigger(TranslatedMacro macro, ResolvedSource source)
         {
             // Half-axis hosts (stick wedges, trigger pulls) carry their read
             // shape beside the trigger (v12). A descriptor trigger converts
@@ -2969,7 +2963,7 @@ namespace PadForge.SteamWorkshop.Translation
                 // these in; storing them costs nothing when it doesn't.
                 macro.TriggerFallbackDescriptor = source.Descriptor ?? "";
                 macro.TriggerFallbackGateDescriptor = source.GateDescriptor ?? "";
-                return null;
+                return;
             }
             macro.TriggerXboxButtons = 0;
             macro.TriggerAxisTarget = "";
@@ -2977,23 +2971,20 @@ namespace PadForge.SteamWorkshop.Translation
             if (!string.IsNullOrEmpty(source.GateDescriptor))
                 macro.TriggerInputDescriptors.Add(source.GateDescriptor);
             macro.ConsumeTrigger = false;
-            return source.TrackpadFeature;
         }
 
         /// <summary>Status/reason pair for a macro whose trigger came from
         /// <see cref="FillMacroTrigger"/>: combined-output triggers keep the
         /// wave-2A Partial (the trigger rides the Xbox output, not the
         /// physical input); descriptor triggers read the hosting input
-        /// directly and are Clean unless they depend on a Touchpad-tab
-        /// feature.</summary>
-        private static (TranslationStatus Status, string Reason, string Arg) MacroTriggerReport(
-            ResolvedSource source, string feature)
+        /// directly and are Clean (gesture-gated reads self-arm at apply
+        /// since v14).</summary>
+        private static (TranslationStatus Status, string Reason) MacroTriggerReport(
+            ResolvedSource source)
         {
             if (HasDeviceFreeTrigger(source))
-                return (TranslationStatus.Partial, TranslationReasons.MacroTriggerViaXboxOutput, null);
-            if (feature != null)
-                return (TranslationStatus.Partial, TranslationReasons.TrackpadFeatureRequired, feature);
-            return (TranslationStatus.Clean, TranslationReasons.MacroEmitted, null);
+                return (TranslationStatus.Partial, TranslationReasons.MacroTriggerViaXboxOutput);
+            return (TranslationStatus.Clean, TranslationReasons.MacroEmitted);
         }
 
         /// <summary>The activator toggle on an xinput binding (wave 2A): a
@@ -3021,7 +3012,6 @@ namespace PadForge.SteamWorkshop.Translation
                 TargetXboxButtons = xt.XboxButtonBit,
                 ConsumeTrigger = false,
             };
-            string feature = null;
             if (rowKept)
             {
                 macro.TriggerXboxButtons = xt.XboxButtonBit;
@@ -3029,15 +3019,14 @@ namespace PadForge.SteamWorkshop.Translation
             }
             else
             {
-                feature = FillMacroTrigger(macro, source);
+                FillMacroTrigger(macro, source);
             }
             run.Profile.Macros.Add(macro);
             // rowKept latches stay Partial (the kept row re-asserts the
             // target during the unlatching press); descriptor-triggered
-            // latches are Partial only when the trigger needs a
-            // Touchpad-tab feature.
-            run.Report.Add(rowKept || feature != null
-                    ? TranslationStatus.Partial : TranslationStatus.Clean,
+            // latches are Clean (gesture-gated triggers self-arm at
+            // apply since v14).
+            run.Report.Add(rowKept ? TranslationStatus.Partial : TranslationStatus.Clean,
                 TranslationReasons.ToggleLatchEmitted,
                 path, binding.Raw, emitted: $"Toggle {xt.Target} latch macro", xt.Target);
             return true;
@@ -3057,9 +3046,9 @@ namespace PadForge.SteamWorkshop.Translation
                 ConsumeTrigger = false,
                 VirtualKey = vk,
             };
-            string feature = FillMacroTrigger(macro, source);
+            FillMacroTrigger(macro, source);
             run.Profile.Macros.Add(macro);
-            run.Report.Add(feature != null ? TranslationStatus.Partial : TranslationStatus.Clean,
+            run.Report.Add(TranslationStatus.Clean,
                 TranslationReasons.ToggleLatchEmitted,
                 path, binding.Raw, emitted: $"Toggle {keyName} latch macro", keyName);
             return true;
@@ -3086,12 +3075,11 @@ namespace PadForge.SteamWorkshop.Translation
                 ConsumeTrigger = holdMs > 0,
                 IntervalMs = intervalMs,
             };
-            string feature = FillMacroTrigger(macro, source);
+            FillMacroTrigger(macro, source);
             run.Profile.Macros.Add(macro);
-            var (status, reason, arg) = MacroTriggerReport(source, feature);
+            var (status, reason) = MacroTriggerReport(source);
             run.Report.Add(status, reason,
-                path, binding.Raw, emitted: $"Turbo {xt.Target} macro ({intervalMs} ms)",
-                args: arg == null ? Array.Empty<string>() : new[] { arg });
+                path, binding.Raw, emitted: $"Turbo {xt.Target} macro ({intervalMs} ms)");
             return true;
         }
 
@@ -3112,12 +3100,11 @@ namespace PadForge.SteamWorkshop.Translation
                 TargetXboxButtons = xt.XboxButtonBit,
                 ConsumeTrigger = true,
             };
-            string feature = FillMacroTrigger(macro, source);
+            FillMacroTrigger(macro, source);
             run.Profile.Macros.Add(macro);
-            var (status, reason, arg) = MacroTriggerReport(source, feature);
+            var (status, reason) = MacroTriggerReport(source);
             run.Report.Add(status, reason,
-                path, binding.Raw, emitted: $"Long-press hold macro: {xt.Target}",
-                args: arg == null ? Array.Empty<string>() : new[] { arg });
+                path, binding.Raw, emitted: $"Long-press hold macro: {xt.Target}");
             return true;
         }
 
@@ -3174,7 +3161,6 @@ namespace PadForge.SteamWorkshop.Translation
                 // half click, #9 B-1) rides Kind=Chord.
                 Kind = string.IsNullOrEmpty(source.GateDescriptor) ? "Button" : "Chord",
                 GateDescriptor = source.GateDescriptor ?? "",
-                TrackpadFeature = source.TrackpadFeature ?? "",
                 Path = path,
             });
         }
@@ -3207,12 +3193,11 @@ namespace PadForge.SteamWorkshop.Translation
                         NormalizedX = Math.Clamp(nx, 0, 65535),
                         NormalizedY = Math.Clamp(ny, 0, 65535),
                     };
-                    string warpFeature = FillMacroTrigger(warp, source);
+                    FillMacroTrigger(warp, source);
                     run.Profile.Macros.Add(warp);
-                    var (warpStatus, warpReason, warpArg) = MacroTriggerReport(source, warpFeature);
+                    var (warpStatus, warpReason) = MacroTriggerReport(source);
                     run.Report.Add(warpStatus, warpReason,
-                        path, binding.Raw, emitted: "Cursor warp macro",
-                        args: warpArg == null ? Array.Empty<string>() : new[] { warpArg });
+                        path, binding.Raw, emitted: "Cursor warp macro");
                     return;
                 }
 
@@ -3255,7 +3240,6 @@ namespace PadForge.SteamWorkshop.Translation
                                 Descriptor = source.Descriptor,
                                 Kind = string.IsNullOrEmpty(source.GateDescriptor) ? "Button" : "Chord",
                                 GateDescriptor = source.GateDescriptor ?? "",
-                                TrackpadFeature = source.TrackpadFeature ?? "",
                                 CycleLayers = layer,
                                 CycleIncludeBase = true,
                                 Path = path,
@@ -3301,7 +3285,6 @@ namespace PadForge.SteamWorkshop.Translation
                         // single-pad half click, #9 B-1) rides Kind=Chord.
                         Kind = string.IsNullOrEmpty(source.GateDescriptor) ? "Button" : "Chord",
                         GateDescriptor = source.GateDescriptor ?? "",
-                        TrackpadFeature = source.TrackpadFeature ?? "",
                         Path = path,
                     });
                     return;
@@ -3355,7 +3338,6 @@ namespace PadForge.SteamWorkshop.Translation
                         // single-pad half click, #9 B-1) rides Kind=Chord.
                         Kind = string.IsNullOrEmpty(source.GateDescriptor) ? "Button" : "Chord",
                         GateDescriptor = source.GateDescriptor ?? "",
-                        TrackpadFeature = source.TrackpadFeature ?? "",
                         HostLayer = layer,
                         Path = path,
                     });
@@ -3401,7 +3383,7 @@ namespace PadForge.SteamWorkshop.Translation
                         LedSaturationPercent = Math.Clamp(satPct, 0, 100),
                         LedSetting = ledSetting,
                     };
-                    string ledFeature = FillMacroTrigger(led, source);
+                    FillMacroTrigger(led, source);
                     run.Profile.Macros.Add(led);
                     if (ledSetting == 2)
                     {
@@ -3411,10 +3393,9 @@ namespace PadForge.SteamWorkshop.Translation
                         run.Report.Add(TranslationStatus.Partial, TranslationReasons.SetLedDefaultApproximated,
                             path, binding.Raw);
                     }
-                    var (ledStatus, ledReason, ledArg) = MacroTriggerReport(source, ledFeature);
+                    var (ledStatus, ledReason) = MacroTriggerReport(source);
                     run.Report.Add(ledStatus, ledReason,
-                        path, binding.Raw, emitted: "Set LED macro",
-                        args: ledArg == null ? Array.Empty<string>() : new[] { ledArg });
+                        path, binding.Raw, emitted: "Set LED macro");
                     return;
                 }
 
@@ -3631,8 +3612,9 @@ namespace PadForge.SteamWorkshop.Translation
         /// A single-pad half click (#9 B-1) can: its own read is a plain
         /// pad-click button AND-gated on the half's touch spot, which is
         /// exactly the runtime's Kind=Chord read (both legs go through the
-        /// button-like evaluator); the touch-spots feature it depends on
-        /// rides a TrackpadFeatureRequired note at emission.</summary>
+        /// button-like evaluator). The touch-spots feature it depends on
+        /// self-arms at apply since v14 (the imported set references the
+        /// spot descriptor on the chord leg).</summary>
         private static bool IsActivatorCapable(ResolvedSource source)
             => source != null
             && (string.IsNullOrEmpty(source.TrackpadFeature)
@@ -3644,15 +3626,16 @@ namespace PadForge.SteamWorkshop.Translation
         //  Row accumulation
         // ─────────────────────────────────────────────
 
+        // Gesture-gated sources (TrackpadFeature != null) report Clean
+        // since v14: the imported set is Authoritative and the engine
+        // self-arms every referenced gesture family at apply.
         private static TranslationStatus StatusFor(ResolvedSource source, bool soft)
-            => source.TrackpadFeature != null ? TranslationStatus.Partial
-             : source.PartialReasonKey != null ? TranslationStatus.Partial
+            => source.PartialReasonKey != null ? TranslationStatus.Partial
              : soft ? TranslationStatus.Partial
              : TranslationStatus.Clean;
 
         private static string ReasonFor(ResolvedSource source, bool soft)
-            => source.TrackpadFeature != null ? TranslationReasons.TrackpadFeatureRequired
-             : source.PartialReasonKey != null ? source.PartialReasonKey
+            => source.PartialReasonKey != null ? source.PartialReasonKey
              : soft ? TranslationReasons.SoftPressApproximated
              : TranslationReasons.RowEmitted;
 
@@ -3684,7 +3667,7 @@ namespace PadForge.SteamWorkshop.Translation
                 ? new MappingSource { Descriptor = gateDescriptor } : null;
             AddRowSource(run, isKbm, layer, target, src, isAxis,
                 StatusFor(source, soft), ReasonFor(source, soft), path, binding,
-                args: source.TrackpadFeature, clickGate: gate);
+                clickGate: gate);
         }
 
         private void AddRowSource(Run run, bool isKbm, string layer, string target,
@@ -4071,15 +4054,6 @@ namespace PadForge.SteamWorkshop.Translation
                 run.Report.Add(TranslationStatus.Clean, TranslationReasons.ShiftLayerEmitted,
                     req.Path, emitted: $"{req.Mode} -> {engagedText}",
                     args: req.LayerName);
-
-                // A chord leg riding a touch spot only reads once the
-                // Touchpad-tab feature is on, same note the rows carry.
-                if (!string.IsNullOrEmpty(req.TrackpadFeature))
-                {
-                    run.Report.Add(TranslationStatus.Partial,
-                        TranslationReasons.TrackpadFeatureRequired,
-                        req.Path, args: req.TrackpadFeature);
-                }
             }
         }
 
@@ -4166,7 +4140,6 @@ namespace PadForge.SteamWorkshop.Translation
                     Descriptor = first.Descriptor,
                     Kind = first.Kind,
                     GateDescriptor = first.GateDescriptor,
-                    TrackpadFeature = first.TrackpadFeature,
                     AxisThreshold = first.AxisThreshold,
                     CycleLayers = string.Join("|", stops),
                     CycleIncludeBase = includeBase,

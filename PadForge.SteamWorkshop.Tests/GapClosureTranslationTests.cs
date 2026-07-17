@@ -111,12 +111,12 @@ namespace PadForge.SteamWorkshop.Tests
             var f9 = p.KbmMappingSet.Rows.Single(r => r.Target == "KbmKey78"); // F9
             Assert.Equal("Touchpad 1 SwipeLeft", Assert.Single(f5.Sources).Descriptor);
             Assert.Equal("Touchpad 1 SwipeRight", Assert.Single(f9.Sources).Descriptor);
-            // Swipe fires need the Touchpad-tab gesture toggle.
-            Assert.Contains(p.Report.Entries, e =>
-                e.ReasonKey == TranslationReasons.TrackpadFeatureRequired
-                && e.ReasonArgs.Contains(PhysicalSlotResolver.FeatureSwipes));
+            // Swipe fires self-arm at apply (v14): the rows are Clean and
+            // no feature note remains anywhere in the report.
+            Assert.All(p.Report.Entries, e =>
+                Assert.Equal(TranslationStatus.Clean, e.Status));
             Assert.DoesNotContain(p.Report.Entries,
-                e => e.ReasonKey == TranslationReasons.ScrollGestureModeNotSupported);
+                e => e.ReasonKey == "Workshop_Tr_TrackpadFeatureRequired");
         }
 
         // ─── G4: scrollwheel on a trackpad ──────────────────────────────
@@ -473,9 +473,10 @@ namespace PadForge.SteamWorkshop.Tests
             var row = Assert.Single(p.KbmMappingSet.Rows);
             Assert.Equal("KbmKey45", row.Target);
             Assert.Equal("Touchpad 1 DoubleTap", Assert.Single(row.Sources).Descriptor);
-            Assert.Contains(p.Report.Entries, e =>
-                e.ReasonKey == TranslationReasons.TrackpadFeatureRequired
-                && e.ReasonArgs.Contains(PhysicalSlotResolver.FeatureTaps));
+            // The tap-gesture family self-arms at apply (v14): Clean row,
+            // no feature note.
+            Assert.All(p.Report.Entries, e =>
+                Assert.Equal(TranslationStatus.Clean, e.Status));
             Assert.DoesNotContain(p.Report.Entries,
                 e => e.ReasonKey == TranslationReasons.DoublePressNotSupported);
         }

@@ -92,7 +92,7 @@ macros: 6
   macro HoldVcButton HoldForMs | Long press ButtonY (button_back_right) | btns=0x0000 in=[Gamepad Paddle1] hold=500ms target=0x8000
   macro HoldVcButton HoldForMs | Long press LeftShoulder (button_back_right) | btns=0x0000 in=[Gamepad Paddle1] hold=500ms target=0x0100
   macro HoldVcButton HoldForMs | Long press ButtonY (button_back_left_upper) | btns=0x0000 in=[Gamepad Paddle4] hold=500ms target=0x8000
-report: v13 rows:x32+k3 macros:6 menus:0 layers:4 clean:50 partial:3 skipped:3 errors:0
+report: v14 rows:x32+k3 macros:6 menus:0 layers:4 clean:50 partial:3 skipped:3 errors:0
   Partial GyroButtonMaskDropped(gyro_ratchet_button_mask, 1048576) @ Default/gyro/group 24 (gyro_to_mouse)
   Clean RowEmitted @ Default/gyro/group 24 (gyro_to_mouse) => KbmMouseX <- Gyro Yaw
   Clean RowEmitted @ Default/gyro/group 24 (gyro_to_mouse) => KbmMouseY <- Gyro Pitch

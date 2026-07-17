@@ -1542,10 +1542,16 @@ namespace PadForge.Services
                         break;
                     }
                 }
-                if (ps?.TouchpadSettings == null)
-                    return PadForge.Engine.Touchpad.TouchpadGestureSettings.Default();
-                return PadForge.Engine.Touchpad.TouchpadGestureSettings.ResolveForDevice(
-                    ps.TouchpadSettings, deviceGuid.ToString());
+                var resolved = ps?.TouchpadSettings == null
+                    ? PadForge.Engine.Touchpad.TouchpadGestureSettings.Default()
+                    : PadForge.Engine.Touchpad.TouchpadGestureSettings.ResolveForDevice(
+                        ps.TouchpadSettings, deviceGuid.ToString());
+                // Workshop imports self-arm (translator v14): an
+                // authoritative slot's referenced gesture descriptors turn
+                // their feature families on without a Touchpad-tab toggle
+                // (gate = user toggle OR referenced-by-mapping). Manual
+                // slots return unchanged, keeping the tab authoritative.
+                return ApplyWorkshopGestureAutoArm(slotIndex, resolved);
             });
             _inputManager.TouchpadGestureSettingsProvider = (slotIndex, deviceGuid, padIdx) =>
                 touchpadGestureSnapshot.Get((slotIndex, deviceGuid, padIdx));
@@ -5060,6 +5066,48 @@ namespace PadForge.Services
                 _map[key] = (now, v);
                 return v;
             }
+        }
+
+        /// <summary>Applies the Workshop auto-arm overlay (translator v14)
+        /// to a slot's resolved touchpad gesture settings. When the slot's
+        /// active MappingSet is Authoritative (a Workshop import), every
+        /// gesture descriptor it references, plus the descriptors on the
+        /// slot's device-free macro triggers, arms its feature family via
+        /// <see cref="PadForge.Engine.Touchpad.TouchpadGestureAutoArm"/>.
+        /// Non-authoritative slots pass through untouched so the Touchpad
+        /// tab's toggles stay the single gate for manual mappings.</summary>
+        private PadForge.Engine.Touchpad.TouchpadGestureSettings ApplyWorkshopGestureAutoArm(
+            int slotIndex, PadForge.Engine.Touchpad.TouchpadGestureSettings resolved)
+        {
+            var sets = SettingsManager.SlotMappingSets;
+            var set = sets != null && slotIndex >= 0 && slotIndex < sets.Length
+                ? sets[slotIndex] : null;
+            if (set == null || !set.Authoritative) return resolved;
+
+            List<string> macroDescriptors = null;
+            var im = _inputManager;
+            var macros = im != null && slotIndex < InputManager.MaxPads
+                ? im.MacroSnapshots[slotIndex] : null;
+            if (macros != null)
+            {
+                foreach (var macro in macros)
+                {
+                    if (macro == null) continue;
+                    if (macro.TriggerSource != MacroTriggerSource.InputDevice) continue;
+                    var entries = macro.GetTriggerInputEntries();
+                    for (int i = 0; i < entries.Count; i++)
+                    {
+                        var e = entries[i];
+                        if (e == null) continue;
+                        if (!string.IsNullOrEmpty(e.GestureDescriptor))
+                            (macroDescriptors ??= new List<string>()).Add(e.GestureDescriptor);
+                        if (!string.IsNullOrEmpty(e.SourceDescriptor))
+                            (macroDescriptors ??= new List<string>()).Add(e.SourceDescriptor);
+                    }
+                }
+            }
+            return PadForge.Engine.Touchpad.TouchpadGestureAutoArm.Apply(
+                resolved, set, macroDescriptors);
         }
 
         /// <summary>Resolves the per-(slot, device) mouse-gesture settings

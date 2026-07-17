@@ -68,6 +68,26 @@ namespace PadForge.SteamWorkshop.Tests
             Assert.Equal(Translate(fileId), Translate(fileId));
         }
 
+        /// <summary>v14 arm closure: the retired vocabulary has zero
+        /// emission sites across the whole corpus. TrackpadFeatureRequired
+        /// died to the apply-time auto-arm and the generic directional
+        /// swipe skip was reworded per arm, so neither key may ever appear
+        /// in a fresh report again.</summary>
+        [Theory]
+        [MemberData(nameof(FixtureIds))]
+        public void Fixture_EmitsNoRetiredReason(long fileId)
+        {
+            var root = VdfParser.Parse(TestFixtures.Read(fileId));
+            var config = SteamInputConfig.FromVdf(root);
+            var translated = new ConfigTranslator().Translate(config, new TranslationOptions
+            {
+                FileId = fileId,
+            });
+            Assert.DoesNotContain(translated.Report.Entries, e =>
+                e.ReasonKey == "Workshop_Tr_TrackpadFeatureRequired"
+                || e.ReasonKey == "Workshop_Tr_ScrollGestureModeNotSupported");
+        }
+
         private static string Translate(long fileId)
         {
             var root = VdfParser.Parse(TestFixtures.Read(fileId));

@@ -64,9 +64,12 @@ namespace PadForge.SteamWorkshop.Translation
         /// trigger pull (device-free macro axis trigger); else null.</summary>
         public string MacroAxisTarget { get; init; }
 
-        /// <summary>Non-null when the source only fires after the user
-        /// enables a Touchpad-tab feature on their device; value is the
-        /// reason-arg naming the feature. Emitted rows get Partial status.</summary>
+        /// <summary>Non-null when the source is a gesture-gated read. The
+        /// value names the Touchpad-tab feature family. Since v14 this is
+        /// no longer a report concern (imported sets are Authoritative and
+        /// the engine self-arms referenced gesture families at apply, so
+        /// emitted rows are Clean). It still marks reads that cannot drive
+        /// shift activators (see the translator's IsActivatorCapable).</summary>
         public string TrackpadFeature { get; init; }
 
         /// <summary>True for analog trigger pulls, where Soft_Press can be
@@ -190,7 +193,8 @@ namespace PadForge.SteamWorkshop.Translation
         public static bool IsStick(SteamSlot slot)
             => slot == SteamSlot.Joystick || slot == SteamSlot.RightJoystick;
 
-        /// <summary>Feature-name reason args for gesture-gated sources.</summary>
+        /// <summary>Feature-family names for gesture-gated sources
+        /// (<see cref="ResolvedSource.TrackpadFeature"/> markers).</summary>
         public const string FeatureJoystickOutput = "Touchpad joystick output";
         public const string FeatureTouchSpots = "Touchpad touch spots";
         public const string FeatureSwipes = "Touchpad swipe gestures";
@@ -405,9 +409,9 @@ namespace PadForge.SteamWorkshop.Translation
                             return new ResolvedSource { Descriptor = $"Touchpad {p} Finger 0 Down" };
                         // Trackpad-as-dpad rides the anchor-relative D-pad
                         // gesture channel ("Touchpad {p} DPadUp" etc., read
-                        // through TouchpadGestureFiredProvider). It needs the
-                        // per-device "joystick output" Touchpad-tab toggle,
-                        // so emitted rows are Partial. On a half-hosted
+                        // through TouchpadGestureFiredProvider). The
+                        // joystick-output feature self-arms at apply since
+                        // v14, so emitted rows are Clean. On a half-hosted
                         // group the wedge is whole-pad (the anchor gesture
                         // has no half window); the translator adds one
                         // TrackpadHalfApproximated note per group.

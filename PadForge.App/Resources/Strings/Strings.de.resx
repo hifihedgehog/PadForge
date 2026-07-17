@@ -2414,7 +2414,6 @@
   <data name="Workshop_Tr_RowEmitted" xml:space="preserve"><value>übersetzt</value></data>
   <data name="Workshop_Tr_MacroEmitted" xml:space="preserve"><value>als Makro übersetzt</value></data>
   <data name="Workshop_Tr_ShiftLayerEmitted" xml:space="preserve"><value>Ebene: {0}</value></data>
-  <data name="Workshop_Tr_TrackpadFeatureRequired" xml:space="preserve"><value>benötigt die Touchpad-Funktion {0}</value></data>
   <data name="Workshop_Tr_TouchpadTuningNotPerRow" xml:space="preserve"><value>Touchpad-Feinabstimmung gilt pro Pad, nicht pro Zeile</value></data>
   <data name="Workshop_Tr_SoftPressApproximated" xml:space="preserve"><value>Soft_Press als Druckschwelle angenähert</value></data>
   <data name="Workshop_Tr_TriggerThresholdApproximated" xml:space="preserve"><value>Trigger-Schwelle angenähert</value></data>
@@ -2537,7 +2536,6 @@
   <data name="Pad_MouseGestures_CustomInput" xml:space="preserve"><value>Benutzerdefinierte Aktivierungseingabe</value></data>
   <data name="Pad_MouseGestures_CustomInput_Tooltip" xml:space="preserve"><value>Die Eingabe, die die Benutzerdefiniert-Gestensitzung aktiviert, solange sie gehalten wird, aufgezeichnet von einem beliebigen Gerät an diesem Slot. Tasten und Knöpfe aktivieren, solange sie gedrückt sind. Analoge Eingaben wie ein Pedal aktivieren ab der Hälfte des Wegs.</value></data>
   <data name="Pad_ResetMouseGestureCustomInput" xml:space="preserve"><value>Benutzerdefinierte Aktivierungseingabe zurücksetzen</value></data>
-  <data name="Workshop_Tr_ScrollGestureModeNotSupported" xml:space="preserve"><value>Richtungswisch-Modus nicht unterstützt</value></data>
   <data name="Workshop_Tr_HapticIntensityDropped" xml:space="preserve"><value>haptisches Feedback verworfen ({0} Belegungen)</value></data>
   <data name="Workshop_Tr_ResponseCurveNotSupported" xml:space="preserve"><value>Reaktionskurven- und Bereichseinstellungen verworfen ({0})</value></data>
   <data name="Workshop_Tr_GyroButtonMaskDropped" xml:space="preserve"><value>Gyro-Aktivierungseinstellung {0}={1} verworfen (Gyro-Aktivierung wird pro Pad konfiguriert)</value></data>
@@ -2562,6 +2560,10 @@
   <data name="Workshop_Tr_ScreenshotApproximated" xml:space="preserve"><value>SCREENSHOT als Druck-Taste angenähert</value></data>
   <data name="Workshop_Tr_ShowKeyboardApproximated" xml:space="preserve"><value>SHOW_KEYBOARD als Start der Bildschirmtastatur angenähert</value></data>
   <data name="Workshop_Tr_MouseDeltaNotSupported" xml:space="preserve"><value>relative Cursorbewegung mouse_delta ({0}) nicht unterstützt</value></data>
+  <data name="Workshop_Tr_GyroSwipeNotSupported" xml:space="preserve"><value>gyrogehosteter Richtungswisch hat keinen Engine-Kanal (vorzeichenlose Ratenmessung, kein Einzelauslöser pro Richtung)</value></data>
+  <data name="Workshop_Tr_SwipeSurfaceNotSupported" xml:space="preserve"><value>Richtungswisch auf {0} hat keine Richtungsfläche zum Wischen</value></data>
+  <data name="Workshop_Tr_FlickAxisTargetNotSupported" xml:space="preserve"><value>ein Stick-Schnipp hat kein Tipp-Primitiv für Trigger- oder Stick-Achsenziele</value></data>
+  <data name="Workshop_Tr_FlickBindingNotOneShot" xml:space="preserve"><value>diese Bindungsart braucht gehaltenen Zustand, den ein einmaliger Stick-Schnipp nicht tragen kann</value></data>
   <data name="Macro_HoldForMs" xml:space="preserve"><value>Beim Halten</value></data>
   <data name="Macro_HoldForMs_Tooltip" xml:space="preserve"><value>Löst einmal aus, nachdem der Auslöser ununterbrochen für die Haltezeit gehalten wurde. Ein kürzeres Antippen bewirkt nichts.</value></data>
   <data name="Macro_TriggerHoldMs_Label" xml:space="preserve"><value>Haltezeit</value></data>

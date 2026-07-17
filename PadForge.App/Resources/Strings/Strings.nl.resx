@@ -2434,7 +2434,6 @@
   <data name="Workshop_Tr_RowEmitted" xml:space="preserve"><value>vertaald</value></data>
   <data name="Workshop_Tr_MacroEmitted" xml:space="preserve"><value>vertaald als macro</value></data>
   <data name="Workshop_Tr_ShiftLayerEmitted" xml:space="preserve"><value>laag: {0}</value></data>
-  <data name="Workshop_Tr_TrackpadFeatureRequired" xml:space="preserve"><value>vereist de touchpadfunctie {0}</value></data>
   <data name="Workshop_Tr_TouchpadTuningNotPerRow" xml:space="preserve"><value>touchpad-afstelling geldt per pad, niet per rij</value></data>
   <data name="Workshop_Tr_SoftPressApproximated" xml:space="preserve"><value>Soft_Press benaderd als indrukdrempel</value></data>
   <data name="Workshop_Tr_TriggerThresholdApproximated" xml:space="preserve"><value>triggerdrempel benaderd</value></data>
@@ -2557,7 +2556,6 @@
   <data name="Pad_MouseGestures_CustomInput" xml:space="preserve"><value>Aangepaste activeringsinvoer</value></data>
   <data name="Pad_MouseGestures_CustomInput_Tooltip" xml:space="preserve"><value>De invoer die de sessie voor aangepaste gebaren activeert zolang die wordt vastgehouden, opgenomen van elk apparaat op deze slot. Knoppen en toetsen activeren zolang ze ingedrukt zijn. Analoge invoer zoals een pedaal activeert voorbij de helft van de slag.</value></data>
   <data name="Pad_ResetMouseGestureCustomInput" xml:space="preserve"><value>Aangepaste activeringsinvoer resetten</value></data>
-  <data name="Workshop_Tr_ScrollGestureModeNotSupported" xml:space="preserve"><value>richtingsveegmodus niet ondersteund</value></data>
   <data name="Workshop_Tr_HapticIntensityDropped" xml:space="preserve"><value>haptische feedback vervallen ({0} toewijzingen)</value></data>
   <data name="Workshop_Tr_ResponseCurveNotSupported" xml:space="preserve"><value>instellingen voor responscurve en bereik vervallen ({0})</value></data>
   <data name="Workshop_Tr_GyroButtonMaskDropped" xml:space="preserve"><value>gyro-activeringsinstelling {0}={1} vervallen (gyro-activering wordt per pad ingesteld)</value></data>
@@ -2582,6 +2580,10 @@
   <data name="Workshop_Tr_ScreenshotApproximated" xml:space="preserve"><value>SCREENSHOT benaderd als een PrintScreen-toetsaanslag</value></data>
   <data name="Workshop_Tr_ShowKeyboardApproximated" xml:space="preserve"><value>SHOW_KEYBOARD benaderd als het starten van het schermtoetsenbord</value></data>
   <data name="Workshop_Tr_MouseDeltaNotSupported" xml:space="preserve"><value>relatieve cursorverplaatsing mouse_delta ({0}) niet ondersteund</value></data>
+  <data name="Workshop_Tr_GyroSwipeNotSupported" xml:space="preserve"><value>richtingsveeg op de gyro heeft geen enginekanaal (tekenloze snelheidsmeting, geen eenmalige trigger per richting)</value></data>
+  <data name="Workshop_Tr_SwipeSurfaceNotSupported" xml:space="preserve"><value>richtingsveeg op {0} heeft geen richtingsoppervlak om te vegen</value></data>
+  <data name="Workshop_Tr_FlickAxisTargetNotSupported" xml:space="preserve"><value>een stickflick heeft geen tikprimitief voor trigger- of stickasdoelen</value></data>
+  <data name="Workshop_Tr_FlickBindingNotOneShot" xml:space="preserve"><value>dit bindingstype vereist een vastgehouden toestand, die een eenmalige stickflick niet kan dragen</value></data>
   <data name="Macro_HoldForMs" xml:space="preserve"><value>Bij vasthouden</value></data>
   <data name="Macro_HoldForMs_Tooltip" xml:space="preserve"><value>Vuurt één keer nadat de trigger onafgebroken de vasthoudtijd ingedrukt is gehouden. Een kortere tik doet niets.</value></data>
   <data name="Macro_TriggerHoldMs_Label" xml:space="preserve"><value>Vasthoudtijd</value></data>

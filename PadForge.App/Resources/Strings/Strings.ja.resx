@@ -2414,7 +2414,6 @@
   <data name="Workshop_Tr_RowEmitted" xml:space="preserve"><value>変換済み</value></data>
   <data name="Workshop_Tr_MacroEmitted" xml:space="preserve"><value>マクロとして変換</value></data>
   <data name="Workshop_Tr_ShiftLayerEmitted" xml:space="preserve"><value>レイヤー: {0}</value></data>
-  <data name="Workshop_Tr_TrackpadFeatureRequired" xml:space="preserve"><value>タッチパッド機能 {0} が必要</value></data>
   <data name="Workshop_Tr_TouchpadTuningNotPerRow" xml:space="preserve"><value>タッチパッドの調整は行ごとではなくパッドごとに適用されます</value></data>
   <data name="Workshop_Tr_SoftPressApproximated" xml:space="preserve"><value>Soft_Press は押し込みしきい値として近似</value></data>
   <data name="Workshop_Tr_TriggerThresholdApproximated" xml:space="preserve"><value>トリガーしきい値を近似</value></data>
@@ -2537,7 +2536,6 @@
   <data name="Pad_MouseGestures_CustomInput" xml:space="preserve"><value>カスタム起動入力</value></data>
   <data name="Pad_MouseGestures_CustomInput_Tooltip" xml:space="preserve"><value>押している間カスタムジェスチャーセッションを待機させる入力で、このスロットの任意のデバイスから記録します。ボタンとキーは押している間待機させます。ペダルなどのアナログ入力はストロークの半分を超えると待機させます。</value></data>
   <data name="Pad_ResetMouseGestureCustomInput" xml:space="preserve"><value>カスタム起動入力をリセット</value></data>
-  <data name="Workshop_Tr_ScrollGestureModeNotSupported" xml:space="preserve"><value>方向スワイプモードは未対応</value></data>
   <data name="Workshop_Tr_HapticIntensityDropped" xml:space="preserve"><value>触覚フィードバックを破棄 ({0} 件の割り当て)</value></data>
   <data name="Workshop_Tr_ResponseCurveNotSupported" xml:space="preserve"><value>レスポンスカーブと範囲の設定を破棄 ({0})</value></data>
   <data name="Workshop_Tr_GyroButtonMaskDropped" xml:space="preserve"><value>ジャイロ起動設定 {0}={1} を破棄 (ジャイロ起動はパッドごとに設定)</value></data>
@@ -2562,6 +2560,10 @@
   <data name="Workshop_Tr_ScreenshotApproximated" xml:space="preserve"><value>SCREENSHOT を PrintScreen キー入力で近似</value></data>
   <data name="Workshop_Tr_ShowKeyboardApproximated" xml:space="preserve"><value>SHOW_KEYBOARD をスクリーンキーボードの起動で近似</value></data>
   <data name="Workshop_Tr_MouseDeltaNotSupported" xml:space="preserve"><value>カーソル相対移動 mouse_delta ({0}) は未対応</value></data>
+  <data name="Workshop_Tr_GyroSwipeNotSupported" xml:space="preserve"><value>ジャイロ上の方向スワイプにはエンジン経路がありません (符号なしレート読み取りのため方向別ワンショットなし)</value></data>
+  <data name="Workshop_Tr_SwipeSurfaceNotSupported" xml:space="preserve"><value>{0} 上の方向スワイプにはスワイプできる方向面がありません</value></data>
+  <data name="Workshop_Tr_FlickAxisTargetNotSupported" xml:space="preserve"><value>スティックフリックにはトリガーやスティック軸ターゲット用のタップ動作がありません</value></data>
+  <data name="Workshop_Tr_FlickBindingNotOneShot" xml:space="preserve"><value>このバインドは押し続け状態が必要で、ワンショットのスティックフリックでは扱えません</value></data>
   <data name="Macro_HoldForMs" xml:space="preserve"><value>長押し時</value></data>
   <data name="Macro_HoldForMs_Tooltip" xml:space="preserve"><value>トリガーを保持時間のあいだ押し続けると 1 回だけ発動します。それより短いタップでは何も起こりません。</value></data>
   <data name="Macro_TriggerHoldMs_Label" xml:space="preserve"><value>保持時間</value></data>

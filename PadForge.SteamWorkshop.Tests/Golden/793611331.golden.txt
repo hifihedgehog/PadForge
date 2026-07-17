@@ -75,22 +75,17 @@ menus: 1
   menu 1 Grid | Touchpad 0 [left half] | Base | fire=Click cells=2 | name=Touch Menu 1
     [0] Quicksave
     [1] Quickload
-report: v13 rows:x20+k2 macros:19 menus:1 layers:0 clean:27 partial:13 skipped:0 errors:0
+report: v14 rows:x20+k2 macros:19 menus:1 layers:0 clean:27 partial:8 skipped:0 errors:0
   Clean MenuEmitted(2) @ Default/left_trackpad/group 10 (touch_menu) => Grid menu 1 on Touchpad 0: 2 bound cells
   Partial MenuIconsDropped(2) @ Default/left_trackpad/group 10 (touch_menu)
   Clean RowEmitted @ Default/left_trackpad/group 10 (touch_menu)/touch_menu_button_0/Full_Press => KbmKey74 <- Menu 1 Item 0
   Clean RowEmitted @ Default/left_trackpad/group 10 (touch_menu)/touch_menu_button_1/Full_Press => KbmKey78 <- Menu 1 Item 1
   Partial ScreenshotApproximated @ Default/right_trackpad/group 13 (dpad)/dpad_east/Full_Press => PrintScreen tap macro
-  Partial TrackpadFeatureRequired(Touchpad joystick output) @ Default/right_trackpad/group 13 (dpad)/dpad_east/Full_Press
   Partial TrackpadHalfApproximated @ Default/right_trackpad/group 13 (dpad)
   Partial ScreenshotApproximated @ Default/right_trackpad/group 13 (dpad)/dpad_north/Full_Press => PrintScreen tap macro
-  Partial TrackpadFeatureRequired(Touchpad joystick output) @ Default/right_trackpad/group 13 (dpad)/dpad_north/Full_Press
   Partial ScreenshotApproximated @ Default/right_trackpad/group 13 (dpad)/dpad_south/Full_Press => PrintScreen tap macro
-  Partial TrackpadFeatureRequired(Touchpad joystick output) @ Default/right_trackpad/group 13 (dpad)/dpad_south/Full_Press
   Partial ScreenshotApproximated @ Default/right_trackpad/group 13 (dpad)/dpad_west/Full_Press => PrintScreen tap macro
-  Partial TrackpadFeatureRequired(Touchpad joystick output) @ Default/right_trackpad/group 13 (dpad)/dpad_west/Full_Press
   Partial ScreenshotApproximated @ Default/right_trackpad/group 20 (dpad)/dpad_north/Full_Press => PrintScreen tap macro
-  Partial TrackpadFeatureRequired(Touchpad joystick output) @ Default/right_trackpad/group 20 (dpad)/dpad_north/Full_Press
   Partial TrackpadHalfApproximated @ Default/right_trackpad/group 20 (dpad)
   Clean RowEmitted @ Default/switch/group 7 (switches)/button_back_left/Full_Press => ButtonA <- Gamepad Paddle2
   Clean RowEmitted @ Default/switch/group 7 (switches)/button_back_right/Full_Press => ButtonX <- Gamepad Paddle1

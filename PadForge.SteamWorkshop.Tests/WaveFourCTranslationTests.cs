@@ -256,17 +256,20 @@ namespace PadForge.SteamWorkshop.Tests
         }
 
         [Fact]
-        public void InMenuSensitivity_GetsTheNamedPartial()
+        public void InMenuSensitivity_ConsumesIntoSensitivityPercent()
         {
+            // v26: In-Menu Sensitivity BUILDS (the hover-vector scale the
+            // menu runtime applies before selection), so nothing reports.
             string vdf = Head
                 + Group(1, "radial_menu",
                     Inputs((1, "key_press 1")) + Settings(("sensitivity", "120")))
                 + Preset(0, "Default", (1, "joystick active"))
                 + "}\n";
             var p = Translate(vdf);
-            var entry = Assert.Single(p.Report.Entries, e =>
-                e.ReasonKey == TranslationReasons.MenuTuningDropped);
-            Assert.Contains("sensitivity", entry.ReasonArgs[0]);
+            var m = Assert.Single(p.Menus);
+            Assert.Equal(120, m.SensitivityPercent);
+            Assert.DoesNotContain(p.Report.Entries,
+                e => e.ReasonArgs.Any(a => a.Contains("sensitivity")));
         }
 
         // ─── Labels and icons ────────────────────────────────────────────
@@ -471,18 +474,21 @@ namespace PadForge.SteamWorkshop.Tests
         }
 
         [Fact]
-        public void GridMenuOnGyro_KeepsTheNamedSkip()
+        public void MenuOnGyro_BuildsOnTheLeanPairCustomOpener()
         {
-            // The gyro has no hover surface (and grid menus need an
-            // absolute position even on button hosts): the named skip
-            // survives for exactly these.
+            // v26: a gyro-hosted menu hovers by TILTING the controller,
+            // which is the Custom opener steering on the gravity-lean
+            // pair. Wild witness 2414105511 group 34 (gyro touch_menu).
             string vdf = Head
                 + Group(1, "touch_menu", Inputs((1, "key_press 1")))
                 + Preset(0, "Default", (1, "gyro active"))
                 + "}\n";
             var p = Translate(vdf);
-            Assert.Empty(p.Menus);
-            Assert.Contains(p.Report.Entries, e =>
+            var menu = Assert.Single(p.Menus);
+            Assert.Equal("Custom", menu.HostDescriptor);
+            Assert.Equal("Gyro Lean X", menu.CustomXDescriptor);
+            Assert.Equal("Gyro Lean Y", menu.CustomYDescriptor);
+            Assert.DoesNotContain(p.Report.Entries, e =>
                 e.ReasonKey == TranslationReasons.MenuSurfaceNotSupported);
         }
 

@@ -53,6 +53,9 @@ namespace PadForge.Engine.RemoteLink
             // Unclamped Raw Input mouse counts, issue #200. Appended after
             // AccelAux under the same mixed-version tail rule.
             MouseRaw = 1 << 13,
+            // Capsense touch channels (stick tops / grips, fork API).
+            // Appended after MouseRaw under the same mixed-version tail rule.
+            CapSense = 1 << 14,
         }
 
         /// <summary>
@@ -254,6 +257,23 @@ namespace PadForge.Engine.RemoteLink
                 BinaryPrimitives.WriteInt32LittleEndian(destination.Slice(o, 4), state.MouseRawDY); o += 4;
             }
 
+            // Capsense channels: presence inferred from the state (an
+            // all-untouched frame omits the block, and an omitted block
+            // decodes back to "nothing touched", exactly the neutral the
+            // encoder skipped, per the header contract). One bit per
+            // SDL_GAMEPAD_CAPSENSE_* channel, low bit = channel 0.
+            if (state.CapSense != null)
+            {
+                byte touched = 0;
+                int n = Math.Min(state.CapSense.Length, 8);
+                for (int i = 0; i < n; i++) if (state.CapSense[i]) touched |= (byte)(1 << i);
+                if (touched != 0)
+                {
+                    present |= Block.CapSense;
+                    destination[o++] = touched;
+                }
+            }
+
             BinaryPrimitives.WriteUInt16LittleEndian(destination.Slice(presenceAt, 2), (ushort)present);
             return o;
         }
@@ -284,7 +304,7 @@ namespace PadForge.Engine.RemoteLink
                 foreach (var pad in state.Touchpads) size += 2 + (pad?.MaxFingers ?? 0) * 9;
             }
             if (state?.Midi != null) size += 48 + 1 + MidiInputState.CcCount * 2 + 2;
-            size += 8 + 4 + 8 + 8; // Ir (2 floats) + JoyConIr (1 float) + JoyCon2Mouse (2 floats) + MouseRaw (2 int32)
+            size += 8 + 4 + 8 + 8 + 1; // Ir (2 floats) + JoyConIr (1 float) + JoyCon2Mouse (2 floats) + MouseRaw (2 int32) + CapSense (1 byte)
             return size;
         }
 
@@ -471,6 +491,15 @@ namespace PadForge.Engine.RemoteLink
                     target.MouseRawDY = BinaryPrimitives.ReadInt32LittleEndian(payload.Slice(o, 4)); o += 4;
                 }
 
+                if ((present & Block.CapSense) != 0)
+                {
+                    byte touched = payload[o++];
+                    target.CapSense ??= new bool[4];
+                    int n = Math.Min(target.CapSense.Length, 8);
+                    for (int i = 0; i < n; i++)
+                        target.CapSense[i] = (touched & (1 << i)) != 0;
+                }
+
                 return o <= payload.Length;
             }
             catch
@@ -502,6 +531,7 @@ namespace PadForge.Engine.RemoteLink
             s.JoyCon2MouseDY = 0f;
             s.MouseRawDX = 0;
             s.MouseRawDY = 0;
+            if (s.CapSense != null) Array.Clear(s.CapSense);
             if (s.Midi != null)
             {
                 // The decode contract promises "reset-to-neutral rather than

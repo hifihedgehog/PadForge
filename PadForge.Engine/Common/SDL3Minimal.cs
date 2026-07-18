@@ -556,6 +556,33 @@ namespace SDL3
             _SDL_GetGamepadSensorData(gamepad, type, data, num_values);
 
         // ─────────────────────────────────────────────
+        //  Gamepad capsense (stick-top / grip touch)
+        // ─────────────────────────────────────────────
+
+        // SDL_GamepadCapSenseType enum values (fork, SDL_gamepad.h since 3.6.0)
+        public const int SDL_GAMEPAD_CAPSENSE_LEFT_STICK = 0;
+        public const int SDL_GAMEPAD_CAPSENSE_RIGHT_STICK = 1;
+        public const int SDL_GAMEPAD_CAPSENSE_LEFT_GRIP = 2;
+        public const int SDL_GAMEPAD_CAPSENSE_RIGHT_GRIP = 3;
+        public const int SDL_GAMEPAD_CAPSENSE_COUNT = 4;
+
+        [DllImport(lib, CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GamepadHasCapSense")]
+        [return: MarshalAs(UnmanagedType.U1)]
+        private static extern bool _SDL_GamepadHasCapSense(IntPtr gamepad, int type);
+
+        /// <summary>Returns true if the gamepad has the specified capsense channel.</summary>
+        public static bool SDL_GamepadHasCapSense(IntPtr gamepad, int type) =>
+            _SDL_GamepadHasCapSense(gamepad, type);
+
+        [DllImport(lib, CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GetGamepadCapSense")]
+        [return: MarshalAs(UnmanagedType.U1)]
+        private static extern bool _SDL_GetGamepadCapSense(IntPtr gamepad, int type);
+
+        /// <summary>Reads a capsense channel: true while touched.</summary>
+        public static bool SDL_GetGamepadCapSense(IntPtr gamepad, int type) =>
+            _SDL_GetGamepadCapSense(gamepad, type);
+
+        // ─────────────────────────────────────────────
         //  Gamepad touchpad
         // ─────────────────────────────────────────────
 

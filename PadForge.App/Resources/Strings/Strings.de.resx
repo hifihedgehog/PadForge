@@ -791,6 +791,7 @@
   <data name="POV_DownLeft" xml:space="preserve"><value>Unten-Links</value></data>
   <data name="POV_Left" xml:space="preserve"><value>Links</value></data>
   <data name="POV_UpLeft" xml:space="preserve"><value>Oben-Links</value></data>
+  <data name="POV_Any" xml:space="preserve"><value>Beliebige Richtung</value></data>
 
   <!-- ═══ Mapping ═══ -->
   <data name="Mapping_NotMapped" xml:space="preserve"><value>Nicht zugeordnet</value></data>
@@ -1137,6 +1138,12 @@
   <data name="Mapping_GyroYaw" xml:space="preserve"><value>Gyro Gieren</value></data>
   <data name="Mapping_GyroRoll" xml:space="preserve"><value>Gyro Rollen</value></data>
   <data name="Mapping_GyroHorizontal" xml:space="preserve"><value>Gyro Horizontal (Yaw + Roll)</value></data>
+  <data name="Mapping_GyroLeanX" xml:space="preserve"><value>Gyro-Neigung X</value></data>
+  <data name="Mapping_GyroLeanY" xml:space="preserve"><value>Gyro-Neigung Y</value></data>
+  <data name="Mapping_CapSenseLeftStickTouch" xml:space="preserve"><value>Berührung linker Stick</value></data>
+  <data name="Mapping_CapSenseRightStickTouch" xml:space="preserve"><value>Berührung rechter Stick</value></data>
+  <data name="Mapping_CapSenseLeftGripTouch" xml:space="preserve"><value>Berührung linker Griff</value></data>
+  <data name="Mapping_CapSenseRightGripTouch" xml:space="preserve"><value>Berührung rechter Griff</value></data>
   <data name="Settings_GyroCalibrate_Button" xml:space="preserve"><value>Gyro kalibrieren</value></data>
   <data name="Settings_GyroCalibrate_Tooltip" xml:space="preserve"><value>Lege den Controller auf eine ebene Fläche und klicke auf „Gyro kalibrieren", um den Ruhewert ca. 1,5 Sekunden lang abzutasten. Wird von Rohwerten abgezogen, damit Gyro-Mappings die Maus / den Stick nicht driften, wenn der Controller stillsteht.</value></data>
   <data name="Settings_GyroLastCalibrated_Format" xml:space="preserve"><value>Zuletzt kalibriert: {0:yyyy-MM-dd HH:mm}</value></data>
@@ -2357,6 +2364,7 @@
   <data name="Macro_PickOnScreen_Countdown_Format" xml:space="preserve"><value>Erfassung in {0}...</value></data>
   <data name="Macro_PickOnScreen_Tooltip" xml:space="preserve"><value>Klicken Sie und bewegen Sie dann den Cursor auf das Ziel. Die Position wird nach einem kurzen Countdown erfasst.</value></data>
   <data name="Mapping_TouchpadFingerPressure_Format" xml:space="preserve"><value>Touchpad {0} Finger {1} Druck</value></data>
+  <data name="Mapping_TouchpadFingerRing_Format" xml:space="preserve"><value>Touchpad {0} Finger {1} Ring</value></data>
   <data name="Mapping_Sensitivity" xml:space="preserve"><value>Empfindlichkeit</value></data>
   <data name="Mapping_Sensitivity_Tooltip" xml:space="preserve"><value>Empfindlichkeit pro Quelle für eine einfache Achse, einen Slider oder Gamepad-Stick / -Trigger. 1.0 lässt die Eingabe unverändert. Werte über 1.0 erreichen den Vollausschlag mit weniger Weg. Werte unter 1.0 brauchen mehr.</value></data>
   <data name="Mapping_Gamepad_Format" xml:space="preserve"><value>Gamepad {0}</value></data>
@@ -2427,6 +2435,7 @@
   <data name="Workshop_Tr_UnknownMouseButton" xml:space="preserve"><value>unbekannte Maustaste {0}</value></data>
   <data name="Workshop_Tr_UnknownXInputButton" xml:space="preserve"><value>unbekannte XInput-Taste {0}</value></data>
   <data name="Workshop_Tr_UnknownPhysicalInput" xml:space="preserve"><value>unbekannte Eingabe {1} auf {0}</value></data>
+  <data name="Workshop_Tr_MobileTouchSurfaceOnly" xml:space="preserve"><value>Steam-Link-Bildschirmsteuerung {1}: keine physische Eingabe auf unterstützten Controllern</value></data>
   <data name="Workshop_Tr_UnknownGroupMode" xml:space="preserve"><value>unbekannter Gruppenmodus {0}</value></data>
   <data name="Workshop_Tr_TouchMenuNeedsOverlay" xml:space="preserve"><value>Touch-Menü-Overlay verworfen ({0} Felder)</value></data>
   <data name="Workshop_Tr_RadialMenuNeedsOverlay" xml:space="preserve"><value>Radialmenü-Overlay verworfen ({0} Sektoren)</value></data>
@@ -2434,6 +2443,7 @@
   <data name="Workshop_Tr_ReleaseActivatorNotSupported" xml:space="preserve"><value>Loslass-Aktivator hier nicht unterstützt</value></data>
   <data name="Workshop_Tr_LongPressNotSupported" xml:space="preserve"><value>Langdruck-Aktivator hier nicht unterstützt</value></data>
   <data name="Workshop_Tr_UnknownActivatorType" xml:space="preserve"><value>unbekannter Aktivator {0}</value></data>
+  <data name="Workshop_Tr_ChordWithoutPartner" xml:space="preserve"><value>Chord-Aktivator ohne festgelegte Chord-Taste (kann nie auslösen)</value></data>
   <data name="Workshop_Tr_MissingGroup" xml:space="preserve"><value>Konfiguration verweist auf fehlende Gruppe {0}</value></data>
   <data name="Workshop_Tr_MissingModeShiftGroup" xml:space="preserve"><value>Mode-Shift auf {0} verweist auf fehlende Gruppe {1}</value></data>
   <data name="Workshop_Tr_MissingPreset" xml:space="preserve"><value>Konfiguration verweist auf fehlendes Preset {0}</value></data>
@@ -2491,6 +2501,7 @@
   <data name="Pad_ResetTouchpadSwipeHapticsIntensity" xml:space="preserve"><value>Puls-Intensität zurücksetzen</value></data>
   <data name="Mapping_FlickStickRight" xml:space="preserve"><value>Flick Stick (rechter Stick)</value></data>
   <data name="Mapping_FlickStickLeft" xml:space="preserve"><value>Flick Stick (linker Stick)</value></data>
+  <data name="Mapping_FlickStickTouchpad_Format" xml:space="preserve"><value>Flick Stick (Touchpad {0})</value></data>
   <data name="Mapping_LeftStickRing" xml:space="preserve"><value>Linker Stick Ring</value></data>
   <data name="Mapping_RightStickRing" xml:space="preserve"><value>Rechter Stick Ring</value></data>
   <data name="Pad_FlickStick_Header" xml:space="preserve"><value>Flick Stick</value></data>
@@ -2540,8 +2551,7 @@
   <data name="Workshop_Tr_CameraResetApproximated" xml:space="preserve"><value>Kamera-Reset als Gyro-Zentrierung angenähert</value></data>
   <data name="Workshop_Tr_MouseRegionApproximated" xml:space="preserve"><value>Mausbereich als zentrierte Cursor-Begrenzung angenähert ({0}% des Bildschirms, Bereichsmitte {1}%, {2}%), solange die Oberfläche gehalten wird</value></data>
   <data name="Workshop_Tr_MouseRegionTuningDropped" xml:space="preserve"><value>Aktivierungs-/Loslass-Einstellungen des Mausbereichs verworfen ({0})</value></data>
-  <data name="Workshop_Tr_FlickStickSurfaceNotSupported" xml:space="preserve"><value>Flick Stick auf einer Touch-Oberfläche übersprungen (PadForge-Flick-Stick liest einen physischen Stick)</value></data>
-  <data name="Workshop_Tr_FlickStickTuningDropped" xml:space="preserve"><value>Flick-Stick-Feinabstimmung verworfen ({0})</value></data>
+  <data name="Workshop_Tr_FlickStickSurfaceNotSupported" xml:space="preserve"><value>Flick Stick auf einer Fläche ohne Analogpaar übersprungen</value></data>
   <data name="Workshop_Tr_DeadZoneRadialResidual" xml:space="preserve"><value>Totzonen wirken pro Achse, nicht radial ({0})</value></data>
   <data name="Workshop_Tr_RotationNonlinearWithheld" xml:space="preserve"><value>nichtlineare Kurve auf rotierten Achsen zurückgehalten ({0})</value></data>
   <data name="Workshop_Tr_LayerReleaseEdgeApproximated" xml:space="preserve"><value>{0} beim Loslassen schaltet stattdessen beim Drücken</value></data>
@@ -2661,5 +2671,4 @@
   <data name="Workshop_Tr_MenuEmpty" xml:space="preserve"><value>Menü hat keine belegten Felder</value></data>
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>Menü-Host-Oberfläche nicht unterstützt ({0})</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>Menü-Feld-Symbol nicht erkannt ({0}), das Feld behält daher seine Textbeschriftung</value></data>
-  <data name="Workshop_Tr_MenuTuningDropped" xml:space="preserve"><value>Menü-Feinabstimmung nicht unterstützt ({0})</value></data>
 </root>

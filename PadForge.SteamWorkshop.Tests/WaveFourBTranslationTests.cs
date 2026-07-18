@@ -149,8 +149,11 @@ namespace PadForge.SteamWorkshop.Tests
         }
 
         [Fact]
-        public void MouseRegion_TeleportAndEdgeKeys_GetTheNamedPartial()
+        public void MouseRegion_TeleportKeys_GetTheNamedPartial_EdgeKeysStayQuiet()
         {
+            // v26: edge_binding_radius belongs to the edge MEMBER's ring
+            // read (and shapes nothing when no edge member is bound), so
+            // only the teleport keys stay named.
             string vdf = HeadPs4
                 + Group(1, "mouse_region", EmptyInputs + Settings(
                     ("teleport_stop", "1"), ("edge_binding_radius", "32767")))
@@ -160,7 +163,7 @@ namespace PadForge.SteamWorkshop.Tests
             var entry = Assert.Single(p.Report.Entries, e =>
                 e.ReasonKey == TranslationReasons.MouseRegionTuningDropped);
             Assert.Contains("teleport_stop", entry.ReasonArgs[0]);
-            Assert.Contains("edge_binding_radius", entry.ReasonArgs[0]);
+            Assert.DoesNotContain("edge_binding_radius", entry.ReasonArgs[0]);
         }
 
         [Fact]
@@ -179,18 +182,24 @@ namespace PadForge.SteamWorkshop.Tests
         }
 
         [Fact]
-        public void MouseRegion_OnStick_KeepsTheClampApproximation()
+        public void MouseRegion_OnStick_EngagesTheClampOnTheDeflectionRing()
         {
-            // A stick's deflection is not an absolute position; the wave-2A
-            // path stays: trigger-hosted regions get the clamp macro, and a
-            // stick host (no press surface) keeps the named skip.
+            // A stick's deflection is not an absolute position, so the
+            // wave-2A clamp approximation stays, but the stick ENGAGES
+            // now (v26): the v17 deflection-ring bool drives the clamp
+            // macro's WhileHeld trigger, retiring the old
+            // NoDeviceFreeTrigger skip.
             string vdf = HeadPs4
                 + Group(1, "mouse_region", EmptyInputs)
                 + Preset(0, "Default", (1, "right_joystick active"))
                 + "}\n";
             var p = Translate(vdf);
             Assert.DoesNotContain(p.KbmMappingSet.Rows, r => r.Target == "KbmMouseX");
+            var clamp = Assert.Single(p.Macros, m => m.Action == TranslatedMacroAction.MouseLimitRegion);
+            Assert.Contains("Gamepad RightStickRing", clamp.TriggerInputDescriptors);
             Assert.Contains(p.Report.Entries, e =>
+                e.ReasonKey == TranslationReasons.MouseRegionApproximated);
+            Assert.DoesNotContain(p.Report.Entries, e =>
                 e.ReasonKey == TranslationReasons.NoDeviceFreeTrigger);
         }
 

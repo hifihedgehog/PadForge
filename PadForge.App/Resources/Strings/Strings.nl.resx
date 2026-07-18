@@ -791,6 +791,7 @@
   <data name="POV_DownLeft" xml:space="preserve"><value>Linksonder</value></data>
   <data name="POV_Left" xml:space="preserve"><value>Links</value></data>
   <data name="POV_UpLeft" xml:space="preserve"><value>Linksboven</value></data>
+  <data name="POV_Any" xml:space="preserve"><value>Elke richting</value></data>
 
   <!-- ═══ Mapping ═══ -->
   <data name="Mapping_NotMapped" xml:space="preserve"><value>Niet toegewezen</value></data>
@@ -1157,6 +1158,12 @@
   <data name="Mapping_GyroYaw" xml:space="preserve"><value>Gyro Yaw</value></data>
   <data name="Mapping_GyroRoll" xml:space="preserve"><value>Gyro Roll</value></data>
   <data name="Mapping_GyroHorizontal" xml:space="preserve"><value>Gyro Horizontaal (Yaw + Roll)</value></data>
+  <data name="Mapping_GyroLeanX" xml:space="preserve"><value>Gyro-kanteling X</value></data>
+  <data name="Mapping_GyroLeanY" xml:space="preserve"><value>Gyro-kanteling Y</value></data>
+  <data name="Mapping_CapSenseLeftStickTouch" xml:space="preserve"><value>Linkerstick-aanraking</value></data>
+  <data name="Mapping_CapSenseRightStickTouch" xml:space="preserve"><value>Rechterstick-aanraking</value></data>
+  <data name="Mapping_CapSenseLeftGripTouch" xml:space="preserve"><value>Linkergreep-aanraking</value></data>
+  <data name="Mapping_CapSenseRightGripTouch" xml:space="preserve"><value>Rechtergreep-aanraking</value></data>
   <data name="Settings_GyroCalibrate_Button" xml:space="preserve"><value>Gyro kalibreren</value></data>
   <data name="Settings_GyroCalibrate_Tooltip" xml:space="preserve"><value>Leg de controller op een vlak oppervlak en klik op Gyro kalibreren om de waarde in rust ongeveer 1,5 seconde te bemonsteren. Wordt afgetrokken van ruwe metingen zodat gyro-toewijzingen de muis / stick niet laten driften wanneer de controller stilstaat.</value></data>
   <data name="Settings_GyroLastCalibrated_Format" xml:space="preserve"><value>Laatst gekalibreerd: {0:yyyy-MM-dd HH:mm}</value></data>
@@ -2377,6 +2384,7 @@
   <data name="Macro_PickOnScreen_Countdown_Format" xml:space="preserve"><value>Vastleggen over {0}...</value></data>
   <data name="Macro_PickOnScreen_Tooltip" xml:space="preserve"><value>Klik en beweeg de cursor daarna naar het doel. De positie wordt na een korte aftelling vastgelegd.</value></data>
   <data name="Mapping_TouchpadFingerPressure_Format" xml:space="preserve"><value>Touchpad {0} vinger {1} druk</value></data>
+  <data name="Mapping_TouchpadFingerRing_Format" xml:space="preserve"><value>Touchpad {0} vinger {1} ring</value></data>
   <data name="Mapping_Sensitivity" xml:space="preserve"><value>Gevoeligheid</value></data>
   <data name="Mapping_Sensitivity_Tooltip" xml:space="preserve"><value>Gevoeligheid per bron voor een gewone as, schuifregelaar of gamepad-stick / -trigger. 1.0 laat de invoer ongewijzigd. Waarden boven 1.0 bereiken volledige uitslag met minder beweging. Waarden onder 1.0 hebben meer nodig.</value></data>
   <data name="Mapping_Gamepad_Format" xml:space="preserve"><value>Gamepad {0}</value></data>
@@ -2447,6 +2455,7 @@
   <data name="Workshop_Tr_UnknownMouseButton" xml:space="preserve"><value>onbekende muisknop {0}</value></data>
   <data name="Workshop_Tr_UnknownXInputButton" xml:space="preserve"><value>onbekende XInput-knop {0}</value></data>
   <data name="Workshop_Tr_UnknownPhysicalInput" xml:space="preserve"><value>onbekende invoer {1} op {0}</value></data>
+  <data name="Workshop_Tr_MobileTouchSurfaceOnly" xml:space="preserve"><value>Steam Link-schermbediening {1}: geen fysieke invoer op ondersteunde controllers</value></data>
   <data name="Workshop_Tr_UnknownGroupMode" xml:space="preserve"><value>onbekende groepsmodus {0}</value></data>
   <data name="Workshop_Tr_TouchMenuNeedsOverlay" xml:space="preserve"><value>touch-menu-overlay vervallen ({0} cellen)</value></data>
   <data name="Workshop_Tr_RadialMenuNeedsOverlay" xml:space="preserve"><value>radiaal-menu-overlay vervallen ({0} sectoren)</value></data>
@@ -2454,6 +2463,7 @@
   <data name="Workshop_Tr_ReleaseActivatorNotSupported" xml:space="preserve"><value>loslaat-activator hier niet ondersteund</value></data>
   <data name="Workshop_Tr_LongPressNotSupported" xml:space="preserve"><value>lang-indrukken-activator hier niet ondersteund</value></data>
   <data name="Workshop_Tr_UnknownActivatorType" xml:space="preserve"><value>onbekende activator {0}</value></data>
+  <data name="Workshop_Tr_ChordWithoutPartner" xml:space="preserve"><value>chord-activator zonder ingestelde chord-knop (kan nooit afgaan)</value></data>
   <data name="Workshop_Tr_MissingGroup" xml:space="preserve"><value>configuratie verwijst naar ontbrekende groep {0}</value></data>
   <data name="Workshop_Tr_MissingModeShiftGroup" xml:space="preserve"><value>modusverschuiving op {0} verwijst naar ontbrekende groep {1}</value></data>
   <data name="Workshop_Tr_MissingPreset" xml:space="preserve"><value>configuratie verwijst naar ontbrekende preset {0}</value></data>
@@ -2511,6 +2521,7 @@
   <data name="Pad_ResetTouchpadSwipeHapticsIntensity" xml:space="preserve"><value>Pulsintensiteit resetten</value></data>
   <data name="Mapping_FlickStickRight" xml:space="preserve"><value>Flick Stick (rechter stick)</value></data>
   <data name="Mapping_FlickStickLeft" xml:space="preserve"><value>Flick Stick (linker stick)</value></data>
+  <data name="Mapping_FlickStickTouchpad_Format" xml:space="preserve"><value>Flick Stick (touchpad {0})</value></data>
   <data name="Mapping_LeftStickRing" xml:space="preserve"><value>Ring linker stick</value></data>
   <data name="Mapping_RightStickRing" xml:space="preserve"><value>Ring rechter stick</value></data>
   <data name="Pad_FlickStick_Header" xml:space="preserve"><value>Flick Stick</value></data>
@@ -2560,8 +2571,7 @@
   <data name="Workshop_Tr_CameraResetApproximated" xml:space="preserve"><value>camerareset benaderd als een gyro-hercentrering</value></data>
   <data name="Workshop_Tr_MouseRegionApproximated" xml:space="preserve"><value>muisgebied benaderd als een gecentreerde cursorbegrenzing ({0}% van het scherm, gebiedscentrum {1}%, {2}%) zolang het oppervlak wordt vastgehouden</value></data>
   <data name="Workshop_Tr_MouseRegionTuningDropped" xml:space="preserve"><value>activerings-/loslaatinstellingen van het muisgebied vervallen ({0})</value></data>
-  <data name="Workshop_Tr_FlickStickSurfaceNotSupported" xml:space="preserve"><value>flick stick op een aanraakoppervlak overgeslagen (PadForge-flick-stick leest een fysieke stick)</value></data>
-  <data name="Workshop_Tr_FlickStickTuningDropped" xml:space="preserve"><value>flick-stick-afstelling vervallen ({0})</value></data>
+  <data name="Workshop_Tr_FlickStickSurfaceNotSupported" xml:space="preserve"><value>flick stick op een oppervlak zonder analoog paar overgeslagen</value></data>
   <data name="Workshop_Tr_DeadZoneRadialResidual" xml:space="preserve"><value>dodezones werken per as, niet radiaal ({0})</value></data>
   <data name="Workshop_Tr_RotationNonlinearWithheld" xml:space="preserve"><value>niet-lineaire respons achtergehouden op geroteerde assen ({0})</value></data>
   <data name="Workshop_Tr_LayerReleaseEdgeApproximated" xml:space="preserve"><value>{0} op loslaten schakelt in plaats daarvan bij indrukken</value></data>
@@ -2681,5 +2691,4 @@
   <data name="Workshop_Tr_MenuEmpty" xml:space="preserve"><value>menu heeft geen toegewezen cellen</value></data>
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>menu-hostoppervlak niet ondersteund ({0})</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>menucel-pictogram niet herkend ({0}), de cel behoudt daarom zijn tekstlabel</value></data>
-  <data name="Workshop_Tr_MenuTuningDropped" xml:space="preserve"><value>menu-afstelling niet ondersteund ({0})</value></data>
 </root>

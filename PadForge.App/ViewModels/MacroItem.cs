@@ -1088,6 +1088,18 @@ namespace PadForge.ViewModels
                     // Pressure, whole or half-windowed) stay
                     // unconvertible: no bool read exists for them.
                     var ft = tp[2].Split(' ');
+                    // Finger ring (v26): a bool the engine's ring read
+                    // answers (radius on DeadZone, Invert = inner), whole
+                    // pad or half-windowed, so it rides a descriptor entry
+                    // like the Down forms below.
+                    if (ft.Length is 3 or 4
+                        && ft[0].Equals("Finger", StringComparison.OrdinalIgnoreCase)
+                        && ft[2].Equals("Ring", StringComparison.Ordinal)
+                        && (ft.Length == 3 || IsTouchpadWindowToken(ft[3])))
+                    {
+                        entry = new TriggerInputEntry { DeviceGuid = g, SourceDescriptor = d };
+                        return true;
+                    }
                     if (ft.Length >= 3 && ft.Length <= 5
                         && ft[0].Equals("Finger", StringComparison.OrdinalIgnoreCase)
                         && ft[2].Equals("Down", StringComparison.Ordinal))
@@ -1135,6 +1147,15 @@ namespace PadForge.ViewModels
             // ring spelling is in the "Gamepad " namespace but is not an
             // alias-table member, so the fold leaves it intact.
             if (PadForge.Engine.Common.Mapping.SourceCoercion.IsStickRingDescriptor(d))
+            {
+                entry = new TriggerInputEntry { DeviceGuid = g, SourceDescriptor = d };
+                return true;
+            }
+
+            // Capsense touch channels (translator v26): plain hardware
+            // bools the engine's capsense read answers, same non-alias
+            // "Gamepad " namespace rule as the rings.
+            if (PadForge.Engine.Common.Mapping.SourceCoercion.IsCapSenseDescriptor(d))
             {
                 entry = new TriggerInputEntry { DeviceGuid = g, SourceDescriptor = d };
                 return true;

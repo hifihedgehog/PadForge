@@ -157,7 +157,7 @@ menus: 2
     [9] MOUSE_POSITION icon=ghost_040_act_0327.png
     [10] MOUSE_POSITION icon=ghost_040_act_0307.png
     [12] MOUSE_POSITION icon=ghost_050_menu_0306.png
-report: v25 rows:x0+k19 macros:67 menus:2 layers:5 clean:82 partial:5 skipped:0 errors:0
+report: v26 rows:x0+k19 macros:67 menus:2 layers:5 clean:82 partial:5 skipped:0 errors:0
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_a/Full_Press => KbmMBtn0 <- Gamepad ButtonA
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_b/Full_Press => KbmMBtn1 <- Gamepad ButtonB
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_x/Full_Press => KbmKey45 <- Gamepad ButtonX

@@ -791,6 +791,7 @@
   <data name="POV_DownLeft" xml:space="preserve"><value>左下</value></data>
   <data name="POV_Left" xml:space="preserve"><value>左</value></data>
   <data name="POV_UpLeft" xml:space="preserve"><value>左上</value></data>
+  <data name="POV_Any" xml:space="preserve"><value>任意方向</value></data>
 
   <!-- ═══ Mapping ═══ -->
   <data name="Mapping_NotMapped" xml:space="preserve"><value>未映射</value></data>
@@ -1137,6 +1138,12 @@
   <data name="Mapping_GyroYaw" xml:space="preserve"><value>陀螺仪 偏航</value></data>
   <data name="Mapping_GyroRoll" xml:space="preserve"><value>陀螺仪 翻滚</value></data>
   <data name="Mapping_GyroHorizontal" xml:space="preserve"><value>陀螺仪 水平 (Yaw + Roll)</value></data>
+  <data name="Mapping_GyroLeanX" xml:space="preserve"><value>陀螺仪倾斜 X</value></data>
+  <data name="Mapping_GyroLeanY" xml:space="preserve"><value>陀螺仪倾斜 Y</value></data>
+  <data name="Mapping_CapSenseLeftStickTouch" xml:space="preserve"><value>左摇杆触摸</value></data>
+  <data name="Mapping_CapSenseRightStickTouch" xml:space="preserve"><value>右摇杆触摸</value></data>
+  <data name="Mapping_CapSenseLeftGripTouch" xml:space="preserve"><value>左握把触摸</value></data>
+  <data name="Mapping_CapSenseRightGripTouch" xml:space="preserve"><value>右握把触摸</value></data>
   <data name="Settings_GyroCalibrate_Button" xml:space="preserve"><value>校准陀螺仪</value></data>
   <data name="Settings_GyroCalibrate_Tooltip" xml:space="preserve"><value>将控制器放在平坦表面上,点击"校准陀螺仪"以采样约 1.5 秒的静止读数。从原始读数中减去,以便陀螺仪映射在控制器静止时不会使鼠标 / 摇杆漂移。</value></data>
   <data name="Settings_GyroLastCalibrated_Format" xml:space="preserve"><value>上次校准:{0:yyyy-MM-dd HH:mm}</value></data>
@@ -2357,6 +2364,7 @@
   <data name="Macro_PickOnScreen_Countdown_Format" xml:space="preserve"><value>{0} 秒后捕获...</value></data>
   <data name="Macro_PickOnScreen_Tooltip" xml:space="preserve"><value>点击后将光标移到目标上。短暂倒计时后即会捕获其位置。</value></data>
   <data name="Mapping_TouchpadFingerPressure_Format" xml:space="preserve"><value>触控板 {0} 手指 {1} 压力</value></data>
+  <data name="Mapping_TouchpadFingerRing_Format" xml:space="preserve"><value>触控板 {0} 手指 {1} 环</value></data>
   <data name="Mapping_Sensitivity" xml:space="preserve"><value>灵敏度</value></data>
   <data name="Mapping_Sensitivity_Tooltip" xml:space="preserve"><value>针对普通轴、滑块或手柄摇杆/扳机的按源灵敏度。1.0 表示输入保持不变。大于 1.0 时用更小的行程即可达到满偏。小于 1.0 时需要更大的行程。</value></data>
   <data name="Mapping_Gamepad_Format" xml:space="preserve"><value>游戏手柄 {0}</value></data>
@@ -2427,6 +2435,7 @@
   <data name="Workshop_Tr_UnknownMouseButton" xml:space="preserve"><value>未知鼠标按钮 {0}</value></data>
   <data name="Workshop_Tr_UnknownXInputButton" xml:space="preserve"><value>未知 XInput 按钮 {0}</value></data>
   <data name="Workshop_Tr_UnknownPhysicalInput" xml:space="preserve"><value>{0} 上的未知输入 {1}</value></data>
+  <data name="Workshop_Tr_MobileTouchSurfaceOnly" xml:space="preserve"><value>Steam Link 屏幕控件 {1}：所有受支持的控制器上均无对应物理输入</value></data>
   <data name="Workshop_Tr_UnknownGroupMode" xml:space="preserve"><value>未知分组模式 {0}</value></data>
   <data name="Workshop_Tr_TouchMenuNeedsOverlay" xml:space="preserve"><value>已丢弃触摸菜单叠加层（{0} 个单元格）</value></data>
   <data name="Workshop_Tr_RadialMenuNeedsOverlay" xml:space="preserve"><value>已丢弃径向菜单叠加层（{0} 个扇区）</value></data>
@@ -2434,6 +2443,7 @@
   <data name="Workshop_Tr_ReleaseActivatorNotSupported" xml:space="preserve"><value>此处不支持释放激活方式</value></data>
   <data name="Workshop_Tr_LongPressNotSupported" xml:space="preserve"><value>此处不支持长按激活方式</value></data>
   <data name="Workshop_Tr_UnknownActivatorType" xml:space="preserve"><value>未知激活方式 {0}</value></data>
+  <data name="Workshop_Tr_ChordWithoutPartner" xml:space="preserve"><value>组合键激活器未设置组合按钮（无法触发）</value></data>
   <data name="Workshop_Tr_MissingGroup" xml:space="preserve"><value>配置引用了缺失的组 {0}</value></data>
   <data name="Workshop_Tr_MissingModeShiftGroup" xml:space="preserve"><value>{0} 上的模式切换引用了缺失的组 {1}</value></data>
   <data name="Workshop_Tr_MissingPreset" xml:space="preserve"><value>配置引用了缺失的预设 {0}</value></data>
@@ -2491,6 +2501,7 @@
   <data name="Pad_ResetTouchpadSwipeHapticsIntensity" xml:space="preserve"><value>重置脉冲强度</value></data>
   <data name="Mapping_FlickStickRight" xml:space="preserve"><value>Flick Stick（右摇杆）</value></data>
   <data name="Mapping_FlickStickLeft" xml:space="preserve"><value>Flick Stick（左摇杆）</value></data>
+  <data name="Mapping_FlickStickTouchpad_Format" xml:space="preserve"><value>Flick Stick（触控板 {0}）</value></data>
   <data name="Mapping_LeftStickRing" xml:space="preserve"><value>左摇杆环</value></data>
   <data name="Mapping_RightStickRing" xml:space="preserve"><value>右摇杆环</value></data>
   <data name="Pad_FlickStick_Header" xml:space="preserve"><value>Flick Stick</value></data>
@@ -2540,8 +2551,7 @@
   <data name="Workshop_Tr_CameraResetApproximated" xml:space="preserve"><value>摄像机重置近似为陀螺仪重新居中</value></data>
   <data name="Workshop_Tr_MouseRegionApproximated" xml:space="preserve"><value>鼠标区域近似为居中的光标限制（屏幕的 {0}%，区域中心 {1}%、{2}%），在按住该表面期间生效</value></data>
   <data name="Workshop_Tr_MouseRegionTuningDropped" xml:space="preserve"><value>已丢弃鼠标区域的激活/释放设置（{0}）</value></data>
-  <data name="Workshop_Tr_FlickStickSurfaceNotSupported" xml:space="preserve"><value>已跳过触摸表面上的 Flick Stick（PadForge 的 Flick Stick 读取实体摇杆）</value></data>
-  <data name="Workshop_Tr_FlickStickTuningDropped" xml:space="preserve"><value>已丢弃 Flick Stick 调整设置（{0}）</value></data>
+  <data name="Workshop_Tr_FlickStickSurfaceNotSupported" xml:space="preserve"><value>跳过了没有模拟输入对的表面上的 flick stick</value></data>
   <data name="Workshop_Tr_DeadZoneRadialResidual" xml:space="preserve"><value>死区按轴生效而非径向（{0}）</value></data>
   <data name="Workshop_Tr_RotationNonlinearWithheld" xml:space="preserve"><value>旋转轴上暂不应用非线性响应（{0}）</value></data>
   <data name="Workshop_Tr_LayerReleaseEdgeApproximated" xml:space="preserve"><value>释放触发的 {0} 改为在按下时切换</value></data>
@@ -2661,5 +2671,4 @@
   <data name="Workshop_Tr_MenuEmpty" xml:space="preserve"><value>菜单没有已绑定的单元格</value></data>
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>不支持菜单宿主表面（{0}）</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>无法识别菜单单元格图标（{0}），该单元格保留其文本标签</value></data>
-  <data name="Workshop_Tr_MenuTuningDropped" xml:space="preserve"><value>不支持菜单调整设置（{0}）</value></data>
 </root>

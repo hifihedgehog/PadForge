@@ -150,6 +150,16 @@ namespace PadForge.Engine
         public int MouseRawDX;
         public int MouseRawDY;
 
+        /// <summary>Capacitive touch channels from the SDL fork's
+        /// SDL_GetGamepadCapSense (SDL_gamepad.h since 3.6.0): index by the
+        /// SDL_GAMEPAD_CAPSENSE_* constants (0 = left stick top, 1 = right
+        /// stick top, 2 = left grip, 3 = right grip). True while touched.
+        /// Null when the device exposes no capsense channel (the wrapper
+        /// allocates at device-open only when SDL_GamepadHasCapSense says
+        /// at least one channel exists), same nullable cost model as
+        /// <see cref="Touchpads"/>.</summary>
+        public bool[] CapSense;
+
         /// <summary>Battery percentage from SDL3 (0..100, or -1 if unknown).
         /// Refreshed periodically by SdlDeviceWrapper, not every frame.</summary>
         public int BatteryPercent;
@@ -201,6 +211,11 @@ namespace PadForge.Engine
                 clone.Touchpads = new TouchpadInputState[Touchpads.Length];
                 for (int i = 0; i < Touchpads.Length; i++)
                     clone.Touchpads[i] = Touchpads[i]?.Clone();
+            }
+            if (CapSense != null)
+            {
+                clone.CapSense = new bool[CapSense.Length];
+                Array.Copy(CapSense, clone.CapSense, CapSense.Length);
             }
             clone.Midi = Midi?.Clone();
             clone.Ir = Ir; // value type copy (X/Y/Detected)

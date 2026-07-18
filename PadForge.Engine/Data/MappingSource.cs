@@ -281,6 +281,13 @@ namespace PadForge.Engine.Data
         /// default -1.</summary>
         [XmlAttribute] public double ParamFlickSmooth { get; set; } = -1;
 
+        /// <summary>Constant rotation added to the flick angle, in degrees
+        /// (positive = clockwise / rightward). Steam's flickstick
+        /// "rotation" group setting: the whole input map rotates, so the
+        /// offset lands on the flick angle before snapping; rim-rotation
+        /// deltas are invariant under a constant offset. Default 0.</summary>
+        [XmlAttribute] public double ParamFlickRotationOffsetDeg { get; set; } = 0;
+
         // ─── Absolute touchpad pointer region window (#9 B-15, descriptor
         // family "Touchpad N Pointer X/Y[ Left|Right]"). The translator's
         // channel for Steam's mouse_region geometry: position_x/position_y
@@ -391,6 +398,12 @@ namespace PadForge.Engine.Data
         /// gates. Empty = ungated.</summary>
         [XmlAttribute] public string GateDescriptor { get; set; } = "";
 
+        /// <summary>Second AND companion (v26): a chord partner on a host
+        /// whose primary gate slot is already spent (a single-pad trackpad
+        /// D-pad wedge gated on its half's contact, chorded with another
+        /// button). Both gates must hold. Empty = no second gate.</summary>
+        [XmlAttribute] public string Gate2Descriptor { get; set; } = "";
+
         /// <summary>Arm behavior when evaluation (re)starts with the stick
         /// already past the threshold (the shift-layer engage case, #225).
         /// <c>false</c> (default): arm at the current angle and track
@@ -424,6 +437,8 @@ namespace PadForge.Engine.Data
         // (same reference-compare contract as the menu parse cache). ───
         internal MappingSource GateSourceCache;
         internal string GateSourceCacheKey;
+        internal MappingSource Gate2SourceCache;
+        internal string Gate2SourceCacheKey;
 
         // ─── Runtime mouse-feel state (v18, not serialized): per-source
         // EMA value and trackball velocity, advanced once per poll frame
@@ -451,6 +466,8 @@ namespace PadForge.Engine.Data
             var copy = (MappingSource)MemberwiseClone();
             copy.GateSourceCache = null;
             copy.GateSourceCacheKey = null;
+            copy.Gate2SourceCache = null;
+            copy.Gate2SourceCacheKey = null;
             copy.MouseFeelByDevice = null;
             return copy;
         }

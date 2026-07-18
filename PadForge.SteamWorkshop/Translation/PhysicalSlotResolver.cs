@@ -84,6 +84,12 @@ namespace PadForge.SteamWorkshop.Translation
         /// while the finger sits on the left half.</summary>
         public string GateDescriptor { get; init; }
 
+        /// <summary>Second AND companion (v26): a chord partner on a host
+        /// whose primary gate slot is already spent (the single-pad wedge
+        /// chord). Rides MappingSource.Gate2Descriptor on rows and a
+        /// second ANDed trigger entry on device-free macros.</summary>
+        public string Gate2Descriptor { get; init; }
+
         /// <summary>Reason key forcing Partial status on emitted rows for
         /// named approximations that are not feature-gated (B-19's quadrant
         /// collapse: four_buttons cells hosted on a touch surface share one
@@ -355,6 +361,22 @@ namespace PadForge.SteamWorkshop.Translation
                         // configurator JS and steamclient64's table).
                         "left_stick_click" => Btn("Gamepad LeftStick", "LeftThumbButton", Gamepad.LEFT_THUMB),
                         "right_stick_click" => Btn("Gamepad RightStick", "RightThumbButton", Gamepad.RIGHT_THUMB),
+                        // Grip capsense as switch members (v26): Steam's
+                        // CapSenseLeftAux / CapSenseRightAux
+                        // (k_eGamepadButtonBitMask bits 44 / 45 in the
+                        // shipped configurator JS), the SC 2026 grip
+                        // handles, delivered by the fork's
+                        // SDL_GetGamepadCapSense LEFT_GRIP / RIGHT_GRIP
+                        // channels. Wild witness 3722524382 hosts layer
+                        // verbs on button_leftauxcapsense.
+                        "button_leftauxcapsense" => new ResolvedSource
+                        {
+                            Descriptor = PadForge.Engine.Common.Mapping.SourceCoercion.CapSenseLeftGripDescriptor,
+                        },
+                        "button_rightauxcapsense" => new ResolvedSource
+                        {
+                            Descriptor = PadForge.Engine.Common.Mapping.SourceCoercion.CapSenseRightGripDescriptor,
+                        },
                         // Steam's "Always On Command" (the serializer's
                         // always_on_action member; shipped string
                         // ControllerBinding_SwitchesActionSetAlwaysOn, and
@@ -460,6 +482,21 @@ namespace PadForge.SteamWorkshop.Translation
                         "dpad_south" => Btn("Gamepad DPadDown", "DPadDown", Gamepad.DPAD_DOWN),
                         "dpad_east" => Btn("Gamepad DPadRight", "DPadRight", Gamepad.DPAD_RIGHT),
                         "dpad_west" => Btn("Gamepad DPadLeft", "DPadLeft", Gamepad.DPAD_LEFT),
+                        // edge / click on a PHYSICAL dpad (v26): a dpad
+                        // direction is a switch, always at full deflection
+                        // when pressed and physically clicky, so both
+                        // members ARE "any direction held": the POV
+                        // any-direction read. scroll_clockwise /
+                        // scroll_counterclockwise (a hand-authored
+                        // scrollwheel on the dpad, one wild sighting) fold
+                        // onto the rotation-side directions of the circular
+                        // surface: the right side of a wheel moves down
+                        // when it turns clockwise, so east = clockwise,
+                        // west = counterclockwise.
+                        "edge" => new ResolvedSource { Descriptor = "POV 0 Any" },
+                        "click" => new ResolvedSource { Descriptor = "POV 0 Any" },
+                        "scroll_clockwise" => new ResolvedSource { Descriptor = "POV 0 Right" },
+                        "scroll_counterclockwise" => new ResolvedSource { Descriptor = "POV 0 Left" },
                         _ => null,
                     };
 
@@ -499,6 +536,20 @@ namespace PadForge.SteamWorkshop.Translation
                             return Btn($"Gamepad {stick}",
                                 left ? "LeftThumbButton" : "RightThumbButton",
                                 left ? Gamepad.LEFT_THUMB : Gamepad.RIGHT_THUMB);
+                        // Stick-top capsense as a stick member (v26): the
+                        // "touch" member on a joystick source is Steam's
+                        // CapSenseLeftStick / CapSenseRightStick (enum bits
+                        // 46 / 47), the fork's SDL_GetGamepadCapSense
+                        // LEFT_STICK / RIGHT_STICK channels. Wild
+                        // witnesses: 3705891700 (joystick_mouse touch),
+                        // 3145222926 (radial_menu touch).
+                        case "touch":
+                            return new ResolvedSource
+                            {
+                                Descriptor = left
+                                    ? PadForge.Engine.Common.Mapping.SourceCoercion.CapSenseLeftStickDescriptor
+                                    : PadForge.Engine.Common.Mapping.SourceCoercion.CapSenseRightStickDescriptor,
+                            };
                         // Stick-as-dpad: half-axis reads. SDL convention is
                         // +X right, +Y down, so north = Y lower half
                         // (HalfAxis+Invert), south = Y upper half, east = X
@@ -512,8 +563,54 @@ namespace PadForge.SteamWorkshop.Translation
                         case "dpad_west":
                             return new ResolvedSource { Descriptor = $"Gamepad {stick}X", HalfAxis = true, Invert = true };
                         default:
-                            return null; // "edge" has no PadForge primitive
+                            return null; // "edge" resolves in the member walk (v17 stick ring)
                     }
+                }
+
+                case SteamSlot.Gyro:
+                {
+                    // Gyro-hosted dpad / diamond members (v26): a
+                    // gyro-hosted dpad reads sustained controller TILT
+                    // (the gravity direction from the accelerometer), not
+                    // the rotation rate, so the members lower onto the
+                    // engine's gravity-lean pair with EXACTLY the
+                    // stick-as-dpad wedge table: the lean signs are the
+                    // physical stick's own frame by construction (Lean X
+                    // positive = tilt right, Lean Y positive = nose up =
+                    // stick pulled back), so north = tilt the top edge
+                    // away (push the "stick" forward), south = tilt it
+                    // back, east / west = tilt right / left. Diamond
+                    // cells fold onto their seats first, the stick hosts'
+                    // rule.
+                    if (nintendoLabels)
+                    {
+                        name = name switch
+                        {
+                            "button_a" => "button_b",
+                            "button_b" => "button_a",
+                            "button_x" => "button_y",
+                            "button_y" => "button_x",
+                            _ => name,
+                        };
+                    }
+                    name = name switch
+                    {
+                        "button_a" => "dpad_south",
+                        "button_b" => "dpad_east",
+                        "button_x" => "dpad_west",
+                        "button_y" => "dpad_north",
+                        _ => name,
+                    };
+                    string leanX = PadForge.Engine.Common.Mapping.SourceCoercion.GyroLeanXDescriptor;
+                    string leanY = PadForge.Engine.Common.Mapping.SourceCoercion.GyroLeanYDescriptor;
+                    return name switch
+                    {
+                        "dpad_north" => new ResolvedSource { Descriptor = leanY, HalfAxis = true, Invert = true },
+                        "dpad_south" => new ResolvedSource { Descriptor = leanY, HalfAxis = true },
+                        "dpad_east" => new ResolvedSource { Descriptor = leanX, HalfAxis = true },
+                        "dpad_west" => new ResolvedSource { Descriptor = leanX, HalfAxis = true, Invert = true },
+                        _ => null,
+                    };
                 }
 
                 case SteamSlot.LeftTrackpad:
@@ -636,7 +733,6 @@ namespace PadForge.SteamWorkshop.Translation
                     }
                 }
 
-                case SteamSlot.Gyro:
                 default:
                     return null;
             }
@@ -752,8 +848,44 @@ namespace PadForge.SteamWorkshop.Translation
                 return Resolve(slot, "touch", nintendoLabels: false, singlePadTrackpads);
             if (slot == SteamSlot.LeftTrigger || slot == SteamSlot.RightTrigger)
                 return TriggerClick(left: slot == SteamSlot.LeftTrigger);
+            // Stick hosts (v26): a stick mouse_region engages while the
+            // stick is deflected, which is the v17 deflection-ring bool
+            // (any deflection past the engage radius). 25 percent is the
+            // engine's stick-engage neighborhood (the menu machinery's
+            // EngageDeadzonePercent default, grounded there on
+            // sc-controller's stick-menu thresholds).
+            if (IsStick(slot))
+            {
+                return new ResolvedSource
+                {
+                    Descriptor = slot == SteamSlot.Joystick
+                        ? "Gamepad LeftStickRing"
+                        : "Gamepad RightStickRing",
+                    HalfAxis = true,
+                    DeadZone = 25,
+                };
+            }
             return null;
         }
+
+        /// <summary>The Steam Link on-screen touch controls (v26): switch
+        /// members that exist only on the mobile client's touch overlay.
+        /// Macro Buttons 6-8 (serializer button_macro5..7, enum bits
+        /// 37-39, capability-gated on ATTRIBCAP_MISC5..7) name buttons
+        /// past SDL's whole gamepad surface (SDL_GAMEPAD_BUTTON_MISC6 =
+        /// Steam macro 4 is the last misc slot, SDL_gamepad.h), and the
+        /// One / Two Finger Tap pair (button_macro1finger / 2finger, enum
+        /// bits 48 / 49, "One Finger Tap" / "Two Finger Tap" in the
+        /// shipped strings, filed under the glyph map's eIgnore group)
+        /// are touch-screen tap gestures. No physical controller PadForge
+        /// can drive exposes any of them, so they get the precise
+        /// mobile-only skip instead of the generic unknown-input net.</summary>
+        public static bool IsMobileTouchOnlyToken(string name) => name switch
+        {
+            "button_macro5" or "button_macro6" or "button_macro7"
+                or "button_macro1finger" or "button_macro2finger" => true,
+            _ => false,
+        };
 
         /// <summary>Mouse-delta axis pair for a mouse-mode group hosted on
         /// <paramref name="slot"/>: (x descriptor, y descriptor, family).

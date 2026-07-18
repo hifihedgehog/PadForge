@@ -119,6 +119,29 @@ namespace PadForge.Engine.Common.Mapping
                              // the picker's any-device group and the
                              // gamepad-capability gate cover it. Leading 'G'
                              // keeps it clear of the I/H prefix grammar.
+            GyroLean,        // "Gyro Lean X" / "Gyro Lean Y" (translator
+                             // v26, Steam's gyro-hosted dpad and
+                             // gyro_to_joystick_deflection). Sustained
+                             // controller TILT from the low-passed
+                             // accelerometer gravity direction, bipolar
+                             // [-1..+1] where 90 degrees of tilt from the
+                             // captured resting grip = full scale. X
+                             // positive = right edge tilted down; Y
+                             // positive = nose up (top edge toward the
+                             // player), the same signs a physical stick
+                             // reports (SDL +X right / +Y down), so the
+                             // stick-dpad wedge table lowers onto it 1:1.
+                             // Leading 'G' keeps it clear of the I/H
+                             // prefix grammar.
+            CapSense,        // "Gamepad LeftStickTouch" / "RightStickTouch"
+                             // / "LeftGripTouch" / "RightGripTouch"
+                             // (translator v26). Capacitive touch bools
+                             // from the SDL fork's SDL_GetGamepadCapSense
+                             // (stick tops and grip handles), read PER
+                             // DEVICE from CustomInputState.CapSense.
+                             // Lives in the "Gamepad " abstract namespace
+                             // like StickRing. Leading 'G' keeps it clear
+                             // of the I/H prefix grammar.
         }
 
         /// <summary>Sensitivity constant for gyro bipolar coercion.
@@ -871,9 +894,13 @@ namespace PadForge.Engine.Common.Mapping
                 return SourceType.TouchpadButton;
             }
             // Order matters: "Motion " before "Gyro " (a "Motion Gyro" must not
-            // fall through to the per-axis Gyro classifier).
+            // fall through to the per-axis Gyro classifier), and the lean
+            // pair before the generic rate family (shared "Gyro " prefix,
+            // different sensor).
             if (s.StartsWith("Motion ", StringComparison.Ordinal))
                 return SourceType.Motion;
+            if (IsGyroLeanDescriptor(s))
+                return SourceType.GyroLean;
             if (s.StartsWith("Gyro ", StringComparison.Ordinal))
                 return SourceType.Gyro;
             if (s.StartsWith("Mouse Position ", StringComparison.Ordinal))
@@ -896,6 +923,8 @@ namespace PadForge.Engine.Common.Mapping
                 return SourceType.FlickStick;
             if (IsStickRingDescriptor(s))
                 return SourceType.StickRing;
+            if (IsCapSenseDescriptor(s))
+                return SourceType.CapSense;
             if (IsMenuItemDescriptor(s))
                 return SourceType.MenuItem;
 
@@ -1634,23 +1663,76 @@ namespace PadForge.Engine.Common.Mapping
         public const string FlickStickRightDescriptor = "Flick Stick Right";
         public const string FlickStickLeftDescriptor = "Flick Stick Left";
 
-        /// <summary>True for either flick stick descriptor.</summary>
+        /// <summary>Touch-surface flick stick (translator v26):
+        /// "Flick Stick Touchpad N[ Left|Right]". The finger position's
+        /// centered vector plays the stick pair's role: touching near the
+        /// (window) edge flicks to that angle, sliding around the surface
+        /// while touching rotates, lifting releases. The trackpad twin of
+        /// the stick descriptors, driving the same
+        /// SourceKindRuntime.TickFlickStick math.</summary>
+        public const string FlickStickTouchpadPrefix = "Flick Stick Touchpad ";
+
+        /// <summary>True for any flick stick descriptor (stick or touch
+        /// surface).</summary>
         public static bool IsFlickStickDescriptor(string descriptor)
         {
             if (string.IsNullOrEmpty(descriptor)) return false;
             string s = descriptor.Trim();
             return string.Equals(s, FlickStickRightDescriptor, StringComparison.OrdinalIgnoreCase)
-                || string.Equals(s, FlickStickLeftDescriptor, StringComparison.OrdinalIgnoreCase);
+                || string.Equals(s, FlickStickLeftDescriptor, StringComparison.OrdinalIgnoreCase)
+                || TryGetFlickStickTouchpad(s, out _, out _);
+        }
+
+        /// <summary>Parses the touch-surface flick descriptor
+        /// "Flick Stick Touchpad N[ Left|Right]". Only the horizontal
+        /// halves compose (the single-pad left_/right_trackpad split).</summary>
+        public static bool TryGetFlickStickTouchpad(string descriptor, out int padIdx, out int half)
+        {
+            padIdx = -1; half = TouchpadHalfNone;
+            if (string.IsNullOrEmpty(descriptor)) return false;
+            string s = descriptor.Trim();
+            if (!s.StartsWith(FlickStickTouchpadPrefix, StringComparison.OrdinalIgnoreCase)) return false;
+            string tail = s.Substring(FlickStickTouchpadPrefix.Length).Trim();
+            string[] parts = tail.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            if (parts.Length != 1 && parts.Length != 2) return false;
+            if (!int.TryParse(parts[0], out padIdx) || padIdx < 0) return false;
+            if (parts.Length == 2)
+            {
+                half = ParseTouchpadHalf(parts[1]);
+                return half == TouchpadHalfLeft || half == TouchpadHalfRight;
+            }
+            return true;
+        }
+
+        /// <summary>The touch-surface flick read: the finger 0 centered
+        /// vector in the stick frame ([-1..+1] per axis, +Y down, SDL's
+        /// touchpad origin is the upper left), (0,0) when no finger is
+        /// down in the window. Renormalized inside a half window so the
+        /// half behaves as its own surface, like every other windowed
+        /// read.</summary>
+        internal static (double x, double y) ReadTouchpadFlickVector(CustomInputState state, int padIdx, int half)
+        {
+            var pads = state?.Touchpads;
+            if (pads == null || padIdx < 0 || padIdx >= pads.Length) return (0, 0);
+            var pad = pads[padIdx];
+            if (pad == null || pad.MaxFingers <= 0) return (0, 0);
+            if (!pad.FingerDown[0]) return (0, 0);
+            if (!FingerInTouchpadHalf(pad, 0, half)) return (0, 0);
+            float x = RenormalizeTouchpadHalf(pad.FingerX[0], 0, half);
+            float y = RenormalizeTouchpadHalf(pad.FingerY[0], 1, half);
+            return ((x - 0.5f) * 2f, (y - 0.5f) * 2f);
         }
 
         /// <summary>Resolves a flick stick descriptor to the canonical stick
         /// axis pair it reads ("Axis 3"/"Axis 4" for Right, "Axis 0"/"Axis 1"
         /// for Left, per <see cref="GamepadAliasTable"/>). False for
-        /// non-flick descriptors.</summary>
+        /// non-flick descriptors and for the touch-surface forms (those
+        /// read the finger vector, not an axis pair).</summary>
         public static bool TryGetFlickStickAxes(string descriptor, out string xAxis, out string yAxis)
         {
             xAxis = yAxis = null;
             if (!IsFlickStickDescriptor(descriptor)) return false;
+            if (TryGetFlickStickTouchpad(descriptor, out _, out _)) return false;
             bool left = descriptor.Trim().EndsWith("Left", StringComparison.OrdinalIgnoreCase);
             xAxis = ResolveGamepadAlias(left ? "Gamepad LeftStickX" : "Gamepad RightStickX");
             yAxis = ResolveGamepadAlias(left ? "Gamepad LeftStickY" : "Gamepad RightStickY");
@@ -1775,6 +1857,155 @@ namespace PadForge.Engine.Common.Mapping
             if (src.Invert)
                 return mag > StickRingInnerFloorPercent / 100f && mag <= r01;
             return mag >= r01;
+        }
+
+        // ─── "Gyro Lean X/Y" gravity-tilt pair (translator v26) ────────────
+        //
+        // Sustained controller TILT from the accelerometer's gravity
+        // direction, NOT the rotation rate: the channel Steam's gyro-hosted
+        // dpad and gyro_to_joystick_deflection read. The value is the tilt
+        // angle away from the captured resting grip, normalized so 90
+        // degrees = full scale, in the physical-stick sign frame:
+        //
+        //   Lean X positive = right edge tilted down (stick pushed right)
+        //   Lean Y positive = nose up, top edge toward the player
+        //                     (stick pulled back = SDL +Y down)
+        //
+        // Frame grounding (SDL_sensor.h accel notes + Dolphin
+        // SDLGamepad.h SDL_AXES_ACCELEROMETER as the proven consumer):
+        // the accelerometer reports the reaction force, +X right / +Y top
+        // / +Z toward the player, reading +1g on the axis pointing UP.
+        // Tilting LEFT leans world-up toward +X (Dolphin "Right" = axis 0
+        // scale +1), so gravity-DOWN (the negated read) gains +X when
+        // tilting RIGHT; pitching the top edge AWAY turns the face up and
+        // leans world-up toward +Z, so gravity-down gains +Z when the
+        // nose comes UP. Hence LeanX = asin(gdown.x), LeanY =
+        // asin(gdown.z) after neutral realignment.
+        //
+        // The gravity vector comes from GravityProvider (the App's
+        // low-pass EMA over state.Accel, the same source Player/World
+        // space projection and TickMotionLean consume), and the resting
+        // grip is captured once per device exactly like TickMotionLean's
+        // neutral (gate above 4 m/s² so the no-data sentinel never
+        // latches), then realigned with the shared RealignToDown.
+
+        public const string GyroLeanXDescriptor = "Gyro Lean X";
+        public const string GyroLeanYDescriptor = "Gyro Lean Y";
+
+        /// <summary>True for either gravity-lean descriptor. Checked BEFORE
+        /// the generic "Gyro " rate family everywhere, since the lean pair
+        /// shares the prefix but reads the accelerometer, not the rate.</summary>
+        public static bool IsGyroLeanDescriptor(string descriptor)
+        {
+            if (string.IsNullOrEmpty(descriptor)) return false;
+            string s = descriptor.Trim();
+            return string.Equals(s, GyroLeanXDescriptor, StringComparison.OrdinalIgnoreCase)
+                || string.Equals(s, GyroLeanYDescriptor, StringComparison.OrdinalIgnoreCase);
+        }
+
+        /// <summary>Per-device captured resting grip for the lean pair
+        /// (unit gravity-down vector). Shared by both axes so X and Y
+        /// realign against the same neutral. Cleared by
+        /// <see cref="ResetGyroLeanNeutral"/> on profile switch alongside
+        /// SourceKindRuntime's motion neutral.</summary>
+        private static readonly ConcurrentDictionary<string, (double x, double y, double z)> _gyroLeanNeutral = new();
+
+        /// <summary>Drops every captured lean neutral so the next real
+        /// gravity sample re-latches the resting grip (profile switch /
+        /// device re-open hygiene, the TickMotionLean Clear() twin).</summary>
+        public static void ResetGyroLeanNeutral() => _gyroLeanNeutral.Clear();
+
+        /// <summary>The lean pair read: bipolar [-1..+1], 90 degrees of
+        /// tilt from the resting grip = full scale. Returns 0 until real
+        /// gravity arrives (provider sentinel magnitude is ~1, real
+        /// gravity ~9.8 m/s²). Per-source Sensitivity scales the angle
+        /// like the other derived families.</summary>
+        internal static float ReadGyroLean(MappingSource src, string canonical, string deviceGuid)
+        {
+            bool isX = string.Equals(canonical.Trim(), GyroLeanXDescriptor, StringComparison.OrdinalIgnoreCase);
+            var grav = GravityProvider?.Invoke(deviceGuid ?? "") ?? (0f, 0f, -1f);
+            // Reaction force → gravity-down, the TickMotionLean convention.
+            double gx = -grav.gx, gy = -grav.gy, gz = -grav.gz;
+            double gLen = Math.Sqrt(gx * gx + gy * gy + gz * gz);
+            // No real accel yet (sentinel or dead sensor): no lean. Real
+            // gravity is ~9.8 m/s²; the unit-length fallback must not
+            // produce a full-scale Y at rest.
+            if (gLen < 4.0) return 0f;
+
+            string gid = deviceGuid ?? "";
+            if (!_gyroLeanNeutral.ContainsKey(gid))
+                _gyroLeanNeutral[gid] = (gx / gLen, gy / gLen, gz / gLen);
+            if (_gyroLeanNeutral.TryGetValue(gid, out var n))
+            {
+                (gx, gy, gz) = SourceKindRuntime.RealignToDown(gx, gy, gz, n.x, n.y, n.z);
+                gLen = Math.Sqrt(gx * gx + gy * gy + gz * gz);
+                if (gLen <= 0) return 0f;
+            }
+
+            double comp = isX ? gx : gz;
+            double leanDeg = Math.Asin(Math.Clamp(comp / gLen, -1.0, 1.0)) * 180.0 / Math.PI;
+            float v = (float)(leanDeg / 90.0);
+            float sens = PerSourceSensitivity(src);
+            if (sens != 1f) v *= sens;
+            return v < -1f ? -1f : (v > 1f ? 1f : v);
+        }
+
+        // ─── "Gamepad ...Touch" capsense family (translator v26) ───────────
+        //
+        // Capacitive touch bools from the SDL fork's SDL_GetGamepadCapSense
+        // (SDL_gamepad.h since 3.6.0): stick-top touch on the two sticks,
+        // grip touch on the two handles. Channel indices follow the
+        // SDL_GamepadCapSenseType enum (LEFT_STICK / RIGHT_STICK /
+        // LEFT_GRIP / RIGHT_GRIP = 0..3), which the wrapper mirrors into
+        // CustomInputState.CapSense. Steam's own configurator names the
+        // same four channels as k_eGamepadButtonBitMask bits 44-47
+        // (CapSenseLeftAux / RightAux / LeftStick / RightStick).
+
+        public const string CapSenseLeftStickDescriptor = "Gamepad LeftStickTouch";
+        public const string CapSenseRightStickDescriptor = "Gamepad RightStickTouch";
+        public const string CapSenseLeftGripDescriptor = "Gamepad LeftGripTouch";
+        public const string CapSenseRightGripDescriptor = "Gamepad RightGripTouch";
+
+        /// <summary>Ordered for the picker: descriptor and its
+        /// SDL_GAMEPAD_CAPSENSE_* channel index.</summary>
+        public static readonly (string Descriptor, int Channel)[] CapSenseTable =
+        {
+            (CapSenseLeftStickDescriptor,  0),
+            (CapSenseRightStickDescriptor, 1),
+            (CapSenseLeftGripDescriptor,   2),
+            (CapSenseRightGripDescriptor,  3),
+        };
+
+        /// <summary>True for any capsense descriptor.</summary>
+        public static bool IsCapSenseDescriptor(string descriptor)
+            => TryGetCapSenseChannel(descriptor, out _);
+
+        /// <summary>Resolves a capsense descriptor to its
+        /// SDL_GAMEPAD_CAPSENSE_* channel index. False for anything else.</summary>
+        public static bool TryGetCapSenseChannel(string descriptor, out int channel)
+        {
+            channel = -1;
+            if (string.IsNullOrEmpty(descriptor)) return false;
+            string s = descriptor.Trim();
+            foreach (var (d, ch) in CapSenseTable)
+            {
+                if (string.Equals(s, d, StringComparison.OrdinalIgnoreCase))
+                {
+                    channel = ch;
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        /// <summary>The capsense bool read: touched or not, straight from
+        /// the wrapper's per-frame fill. Null array (device without the
+        /// fork channel) reads false.</summary>
+        private static bool ReadCapSenseBool(CustomInputState state, string canonical)
+        {
+            if (state?.CapSense == null) return false;
+            if (!TryGetCapSenseChannel(canonical, out int ch)) return false;
+            return ch >= 0 && ch < state.CapSense.Length && state.CapSense[ch];
         }
 
         /// <summary>Returns a gyro reading processed through the full
@@ -2147,6 +2378,13 @@ namespace PadForge.Engine.Common.Mapping
             // selector (v17): flipping here would turn an inner ring into
             // NOT-inner, which fires at full deflection instead.
             if (IsStickRingDescriptor(desc)) return raw;
+            // The gravity-lean pair (v26) mirrors Mouse Motion: HalfAxis
+            // consumes Invert as the direction selector, and the non-half
+            // any-direction test makes Invert irrelevant.
+            if (IsGyroLeanDescriptor(desc)) return raw;
+            // The touchpad ring (v26) consumes Invert as its inner/outer
+            // selector, the stick ring's contract on the touch surface.
+            if (TryParseTouchpadRing(desc, out _, out _, out _)) return raw;
 
             return src.Invert ? !raw : raw;
         }
@@ -2230,9 +2468,12 @@ namespace PadForge.Engine.Common.Mapping
             // The stick ring (v17) consumes Invert as its inner/outer
             // selector. Its scalar reads return the unsigned deflection
             // magnitude either way, so no output flip may ride the flag.
+            // The gravity-lean pair (v26) consumes Invert as its wedge
+            // direction selector, the Mouse Motion shape.
             return s.StartsWith("Axis ", StringComparison.OrdinalIgnoreCase)
                 || s.StartsWith("Mouse Motion ", StringComparison.Ordinal)
-                || IsStickRingDescriptor(s);
+                || IsStickRingDescriptor(s)
+                || IsGyroLeanDescriptor(s);
         }
 
         /// <summary>Evaluates a source for a POV-direction target
@@ -2335,6 +2576,10 @@ namespace PadForge.Engine.Common.Mapping
                     int pdz = src.DeadZone > 0 ? src.DeadZone : globalThresholdPercent;
                     return Math.Abs(pv) > Math.Max(pdz, 1) / 100f;
                 }
+                // Finger ring (v26): ring geometry (radius on DeadZone,
+                // inner on Invert) is consumed inside the read.
+                if (TryParseTouchpadRing(s, out int rPad, out int rFinger, out int rHalf))
+                    return ReadTouchpadRingBool(state, src, rPad, rFinger, rHalf, globalThresholdPercent);
                 return ReadTouchpadBool(state, s);
             }
 
@@ -2358,6 +2603,21 @@ namespace PadForge.Engine.Common.Mapping
                         return pdelta > 32767 / 2;
                 }
                 return false;
+            }
+
+            // Gravity-lean pair (v26): a POSITION read, so the wedge grammar
+            // mirrors the generic Axis bool contract exactly (threshold on
+            // the per-source DeadZone, HalfAxis + Invert as the direction
+            // selector, Bidirectional restoring either-side), which is what
+            // lets the stick-dpad wedge table lower onto it 1:1.
+            if (IsGyroLeanDescriptor(s))
+            {
+                float lv = ReadGyroLean(src, s, deviceGuid);
+                int ldz = src.DeadZone > 0 ? src.DeadZone : globalThresholdPercent;
+                float lth = Math.Max(ldz, 1) / 100f;
+                if (src.HalfAxis && !src.Bidirectional)
+                    return src.Invert ? lv < -lth : lv > lth;
+                return Math.Abs(lv) > lth;
             }
 
             if (s.StartsWith("Gyro ", StringComparison.Ordinal))
@@ -2447,6 +2707,10 @@ namespace PadForge.Engine.Common.Mapping
             // DeadZone, inner on Invert) is consumed inside the read.
             if (IsStickRingDescriptor(s))
                 return ReadStickRingBool(state, src, s, globalThresholdPercent);
+
+            // Capsense touch (v26): a plain hardware bool, no threshold.
+            if (IsCapSenseDescriptor(s))
+                return ReadCapSenseBool(state, s);
 
             if (!TryParseTypeIndex(s, out var t, out int idx, out string povDir))
                 return false;
@@ -2590,6 +2854,12 @@ namespace PadForge.Engine.Common.Mapping
                 if (IsTouchpadPointerDescriptor(s))
                     return relativeTouchpad ? 0f : ReadTunedTouchpadPointer(state, src, slotIndex, deviceGuid);
 
+                // Finger ring (v26) as an analog contribution: the
+                // unsigned distance from center [0..1], the stick ring's
+                // scalar shape.
+                if (TryParseTouchpadRing(s, out int rPad, out int rFinger, out int rHalf))
+                    return ReadTouchpadRingMagnitude(state, rPad, rFinger, rHalf);
+
                 // Two readings for touchpad sources:
                 //   relative: per-frame delta scaled to mouse-style
                 //     bipolar, used by KBM mouse / scroll targets.
@@ -2625,6 +2895,25 @@ namespace PadForge.Engine.Common.Mapping
                         (state.Midi.PitchBend - MidiInputState.PitchBendCenter) / 32767f));
                 }
                 return 0f;
+            }
+
+            // Gravity-lean pair (v26): already bipolar [-1..+1]. The
+            // HalfAxis wedge shape mirrors the generic Axis contract
+            // (selected direction ranges [0, +1], other reads 0, Invert
+            // picks the half, Bidirectional folds to magnitude), and the
+            // full-axis read carries the per-source smoothing +
+            // curve/range channel like the other analog lanes.
+            if (IsGyroLeanDescriptor(s))
+            {
+                float lv = ReadGyroLean(src, s, deviceGuid);
+                if (src.HalfAxis)
+                {
+                    if (src.Bidirectional) return Math.Min(1f, Math.Abs(lv));
+                    if (src.Invert) return lv < 0 ? Math.Min(1f, -lv) : 0f;
+                    return lv > 0 ? Math.Min(1f, lv) : 0f;
+                }
+                lv = ApplyPerSourceSmoothing(src, lv, deviceGuid);
+                return ApplyCurveRangeShaping(lv, src);
             }
 
             if (s.StartsWith("Gyro ", StringComparison.Ordinal))
@@ -2688,6 +2977,10 @@ namespace PadForge.Engine.Common.Mapping
             // as a sign (InvertConsumedByHalfAxisRead).
             if (IsStickRingDescriptor(s))
                 return ReadStickRingMagnitude(state, s);
+
+            // Capsense as an analog contribution (v26): 0/1 like a button.
+            if (IsCapSenseDescriptor(s))
+                return ReadCapSenseBool(state, s) ? 1f : 0f;
 
             if (!TryParseTypeIndex(s, out var t, out int idx, out string povDir))
                 return 0f;
@@ -2818,6 +3111,10 @@ namespace PadForge.Engine.Common.Mapping
                 // tuned offset-from-center, the IR pointer's unipolar shape.
                 if (IsTouchpadPointerDescriptor(s))
                     return Math.Abs(ReadTunedTouchpadPointer(state, src, slotIndex, deviceGuid));
+                // Finger ring (v26) as a trigger pull: the unsigned
+                // distance from center [0..1].
+                if (TryParseTouchpadRing(s, out int rPad, out int rFinger, out int rHalf))
+                    return ReadTouchpadRingMagnitude(state, rPad, rFinger, rHalf);
                 // Touchpad axis → unipolar: return [0..1] directly (raw finger
                 // position; no bipolar centering).
                 if (TryReadTouchpadAxisRaw(state, src, s, out float unipolar)) return unipolar;
@@ -2838,6 +3135,17 @@ namespace PadForge.Engine.Common.Mapping
                     case 'P': return Math.Abs(state.Midi.PitchBend - MidiInputState.PitchBendCenter) / 32767f;
                 }
                 return 0f;
+            }
+
+            // Gravity-lean pair (v26) as a trigger pull: HalfAxis selects
+            // one tilt direction (Invert picks which), direction-blind
+            // magnitude otherwise, the Mouse Motion unipolar shape.
+            if (IsGyroLeanDescriptor(s))
+            {
+                float lv = ReadGyroLean(src, s, deviceGuid);
+                if (src.HalfAxis && !src.Bidirectional)
+                    return Math.Max(0f, src.Invert ? -lv : lv);
+                return Math.Abs(lv);
             }
 
             if (s.StartsWith("Gyro ", StringComparison.Ordinal))
@@ -2889,6 +3197,10 @@ namespace PadForge.Engine.Common.Mapping
             // magnitude [0..1], the bipolar read's twin.
             if (IsStickRingDescriptor(s))
                 return ReadStickRingMagnitude(state, s);
+
+            // Capsense as a trigger pull (v26): 0/1 like a button.
+            if (IsCapSenseDescriptor(s))
+                return ReadCapSenseBool(state, s) ? 1f : 0f;
 
             if (!TryParseTypeIndex(s, out var t, out int idx, out string povDir))
                 return 0f;
@@ -3021,6 +3333,11 @@ namespace PadForge.Engine.Common.Mapping
 
             // Normalize to 0..35999.
             int v = ((povCentidegrees % 36000) + 36000) % 36000;
+            // "Any" (v26): any direction held. A physical D-pad is always
+            // at full deflection when pressed, so this is the Steam edge /
+            // click member's read on a dpad host.
+            if (string.Equals(direction, "any", StringComparison.OrdinalIgnoreCase))
+                return true;
             // Case-insensitive compares instead of ToLowerInvariant: this runs
             // per POV source per tick and the lowercase copy was a per-call
             // allocation on the 1 kHz path.
@@ -3622,6 +3939,81 @@ namespace PadForge.Engine.Common.Mapping
             else
                 return raw;
             return v < 0f ? 0f : (v > 1f ? 1f : v);
+        }
+
+        // ─── Touchpad finger ring (translator v26) ─────────────────────
+        //
+        // "Touchpad N Finger M Ring[ Left|Right]": the finger position's
+        // distance from the surface center, [0..1] where 1 = the near
+        // edge midpoint (corners clamp), the trackpad twin of the v17
+        // "Gamepad ...StickRing" family and the read Steam's
+        // edge_binding_radius / edge_binding_invert geometry keys
+        // describe on trackpad-hosted groups. The bool read consumes the
+        // source flags exactly like the stick ring: DeadZone percent is
+        // the ring RADIUS and Invert selects the INNER ring. No rest
+        // floor is needed here: the gate is the finger contact itself
+        // (no touch = no fire; a centered touch IS inside every inner
+        // ring, which is Steam's own edge-invert semantics). On a
+        // half-windowed form the ring is measured inside the half's own
+        // renormalized square, matching how every other windowed read
+        // treats the half as its own surface.
+
+        private static bool TryParseTouchpadRing(string descriptor,
+            out int padIdx, out int fingerIdx, out int half)
+        {
+            padIdx = 0; fingerIdx = 0; half = TouchpadHalfNone;
+            string[] parts = descriptor.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            if (parts.Length != 5 && parts.Length != 6) return false;
+            if (!parts[0].Equals("Touchpad", StringComparison.Ordinal)) return false;
+            if (!int.TryParse(parts[1], out padIdx)) return false;
+            if (!parts[2].Equals("Finger", StringComparison.Ordinal)) return false;
+            if (!int.TryParse(parts[3], out fingerIdx)) return false;
+            if (!parts[4].Equals("Ring", StringComparison.Ordinal)) return false;
+            if (parts.Length == 6)
+            {
+                half = ParseTouchpadHalf(parts[5]);
+                return half == TouchpadHalfLeft || half == TouchpadHalfRight
+                    || half == TouchpadHalfUpper || half == TouchpadHalfLower;
+            }
+            return true;
+        }
+
+        /// <summary>The ring magnitude: 0 when the finger is up or outside
+        /// the window, else the distance from the (window) center scaled so
+        /// the near edge midpoint = 1, clamped.</summary>
+        private static float ReadTouchpadRingMagnitude(CustomInputState state,
+            int padIdx, int fingerIdx, int half)
+        {
+            var pads = state?.Touchpads;
+            if (pads == null || padIdx < 0 || padIdx >= pads.Length) return 0f;
+            var pad = pads[padIdx];
+            if (pad == null || fingerIdx < 0 || fingerIdx >= pad.MaxFingers) return 0f;
+            if (!pad.FingerDown[fingerIdx]) return 0f;
+            if (!FingerInTouchpadHalf(pad, fingerIdx, half)) return 0f;
+            float x = RenormalizeTouchpadHalf(pad.FingerX[fingerIdx], 0, half);
+            float y = RenormalizeTouchpadHalf(pad.FingerY[fingerIdx], 1, half);
+            float dx = (x - 0.5f) * 2f;
+            float dy = (y - 0.5f) * 2f;
+            float mag = (float)Math.Sqrt(dx * dx + dy * dy);
+            return mag > 1f ? 1f : mag;
+        }
+
+        /// <summary>The ring bool read, the stick-ring contract on the
+        /// touch surface: outer = touching at or past the radius, inner
+        /// (Invert) = touching inside it.</summary>
+        private static bool ReadTouchpadRingBool(CustomInputState state, MappingSource src,
+            int padIdx, int fingerIdx, int half, int globalThresholdPercent)
+        {
+            var pads = state?.Touchpads;
+            if (pads == null || padIdx < 0 || padIdx >= pads.Length) return false;
+            var pad = pads[padIdx];
+            if (pad == null || fingerIdx < 0 || fingerIdx >= pad.MaxFingers) return false;
+            if (!pad.FingerDown[fingerIdx]) return false;
+            if (!FingerInTouchpadHalf(pad, fingerIdx, half)) return false;
+            float mag = ReadTouchpadRingMagnitude(state, padIdx, fingerIdx, half);
+            int radiusPct = src.DeadZone > 0 ? src.DeadZone : globalThresholdPercent;
+            float r01 = Math.Max(radiusPct, 1) / 100f;
+            return src.Invert ? mag <= r01 : mag >= r01;
         }
 
         // ─── Absolute touchpad pointer (#9 B-15) ───────────────────────

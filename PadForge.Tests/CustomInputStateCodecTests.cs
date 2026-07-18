@@ -435,6 +435,35 @@ namespace PadForge.Tests
             Assert.Equal(-1, rt.BatteryPercent);
         }
 
+        [Fact]
+        public void CapSense_RoundTrips_AndOmitsTheUntouchedFrame()
+        {
+            // Touched channels ride the one-byte bitmask block (v26).
+            var s = new CustomInputState { CapSense = new bool[4] };
+            s.CapSense[0] = true;  // left stick top
+            s.CapSense[3] = true;  // right grip
+            var rt = CustomInputStateCodec.Decode(CustomInputStateCodec.Encode(s, NoSensors));
+            Assert.NotNull(rt.CapSense);
+            Assert.True(rt.CapSense[0]);
+            Assert.False(rt.CapSense[1]);
+            Assert.False(rt.CapSense[2]);
+            Assert.True(rt.CapSense[3]);
+
+            // All-untouched omits the block: an omitted block decodes to
+            // "nothing touched" (null array reads false everywhere),
+            // exactly the neutral the encoder skipped.
+            var idle = new CustomInputState { CapSense = new bool[4] };
+            var rtIdle = CustomInputStateCodec.Decode(CustomInputStateCodec.Encode(idle, NoSensors));
+            Assert.Null(rtIdle.CapSense);
+
+            // A malformed follow-up frame resets a previously-touched
+            // target to neutral (the decode contract).
+            var target = new CustomInputState { CapSense = new bool[4] };
+            target.CapSense[2] = true;
+            Assert.False(CustomInputStateCodec.DecodeInto(new byte[] { 1, 0 }, target));
+            Assert.All(target.CapSense, b => Assert.False(b));
+        }
+
         /// <summary>
         /// Mirror-surface tripwire (code-audit lens 1m). CustomInputState's
         /// public field list must exactly match the set the codec knowingly
@@ -455,6 +484,10 @@ namespace PadForge.Tests
                 "JoyCon2MouseDX", "JoyCon2MouseDY",
                 "MouseRawDX", "MouseRawDY",
                 "BatteryPercent", "BatteryCharging",
+                // v26 capsense (the fork's SDL_GetGamepadCapSense): wired
+                // into Encode (Block.CapSense bitmask byte), DecodeInto,
+                // ResetToNeutral, and Clone.
+                "CapSense",
             };
             var actual = typeof(CustomInputState)
                 .GetFields(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance)

@@ -41,21 +41,47 @@ namespace PadForge.Engine.Common.Mapping
             int slotIndex, string evaluatedDeviceGuid, int thresholdPercent = 50)
         {
             string gate = src.GateDescriptor;
-            if (string.IsNullOrEmpty(gate)) return true;
-            var cached = src.GateSourceCache;
-            if (cached == null || !ReferenceEquals(src.GateSourceCacheKey, gate))
+            if (!string.IsNullOrEmpty(gate))
             {
-                cached = new MappingSource
+                var cached = src.GateSourceCache;
+                if (cached == null || !ReferenceEquals(src.GateSourceCacheKey, gate))
                 {
-                    Kind = "Direct",
-                    Descriptor = SourceCoercion.CanonicalDescriptor(gate),
-                    DeviceGuid = src.DeviceGuid,
-                };
-                src.GateSourceCache = cached;
-                src.GateSourceCacheKey = gate;
+                    cached = new MappingSource
+                    {
+                        Kind = "Direct",
+                        Descriptor = SourceCoercion.CanonicalDescriptor(gate),
+                        DeviceGuid = src.DeviceGuid,
+                    };
+                    src.GateSourceCache = cached;
+                    src.GateSourceCacheKey = gate;
+                }
+                if (!SourceCoercion.EvaluateForButtonTarget(state, cached, thresholdPercent,
+                        slotIndex, evaluatedDeviceGuid))
+                    return false;
             }
-            return SourceCoercion.EvaluateForButtonTarget(state, cached, thresholdPercent,
-                slotIndex, evaluatedDeviceGuid);
+            // Second AND companion (v26): a chord partner beside a spent
+            // primary gate (the single-pad wedge chord). Same synthetic-
+            // source cache contract as the first leg.
+            string gate2 = src.Gate2Descriptor;
+            if (!string.IsNullOrEmpty(gate2))
+            {
+                var cached2 = src.Gate2SourceCache;
+                if (cached2 == null || !ReferenceEquals(src.Gate2SourceCacheKey, gate2))
+                {
+                    cached2 = new MappingSource
+                    {
+                        Kind = "Direct",
+                        Descriptor = SourceCoercion.CanonicalDescriptor(gate2),
+                        DeviceGuid = src.DeviceGuid,
+                    };
+                    src.Gate2SourceCache = cached2;
+                    src.Gate2SourceCacheKey = gate2;
+                }
+                if (!SourceCoercion.EvaluateForButtonTarget(state, cached2, thresholdPercent,
+                        slotIndex, evaluatedDeviceGuid))
+                    return false;
+            }
+            return true;
         }
 
         public static bool EvaluateForButtonTarget(
@@ -256,6 +282,11 @@ namespace PadForge.Engine.Common.Mapping
             if (src == null) return false;
             if (target != "LeftThumbAxisX" && target != "RightThumbAxisX") return false;
             string desc = src.Descriptor ?? "";
+            // The gravity-lean pair (v26) is a POSITION already authored in
+            // the stick sign frame (Lean X positive = tilt right = stick
+            // right), not a right-hand-rule rate, so the rate correction
+            // must not touch it.
+            if (SourceCoercion.IsGyroLeanDescriptor(desc)) return false;
             return SourceCoercion.IsGyroDescriptor(desc)
                 && !desc.Trim().Equals("Gyro Pitch", StringComparison.OrdinalIgnoreCase);
         }

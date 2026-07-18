@@ -932,6 +932,7 @@ public class Strings : INotifyPropertyChanged
     public string Pad_MotionSteer_Reset_All => Get("Pad_MotionSteer_Reset_All");
     public string Mapping_FlickStickRight => Get("Mapping_FlickStickRight");
     public string Mapping_FlickStickLeft => Get("Mapping_FlickStickLeft");
+    public string Mapping_FlickStickTouchpad_Format => Get("Mapping_FlickStickTouchpad_Format");
     public string Mapping_LeftStickRing => Get("Mapping_LeftStickRing");
     public string Mapping_RightStickRing => Get("Mapping_RightStickRing");
     public string Pad_FlickStick_Header => Get("Pad_FlickStick_Header");
@@ -1538,6 +1539,7 @@ public class Strings : INotifyPropertyChanged
     public string POV_DownLeft => Get("POV_DownLeft");
     public string POV_Left => Get("POV_Left");
     public string POV_UpLeft => Get("POV_UpLeft");
+    public string POV_Any => Get("POV_Any");
     public string Mapping_NotMapped => Get("Mapping_NotMapped");
     public string Mapping_Inv => Get("Mapping_Inv");
     public string Mapping_Half => Get("Mapping_Half");
@@ -1548,6 +1550,7 @@ public class Strings : INotifyPropertyChanged
     public string Mapping_TouchpadFingerY_Format => Get("Mapping_TouchpadFingerY_Format");
     public string Mapping_TouchpadFingerTouch_Format => Get("Mapping_TouchpadFingerTouch_Format");
     public string Mapping_TouchpadFingerPressure_Format => Get("Mapping_TouchpadFingerPressure_Format");
+    public string Mapping_TouchpadFingerRing_Format => Get("Mapping_TouchpadFingerRing_Format");
     public string Mapping_TouchpadFingerXLeft_Format => Get("Mapping_TouchpadFingerXLeft_Format");
     public string Mapping_TouchpadFingerXRight_Format => Get("Mapping_TouchpadFingerXRight_Format");
     public string Mapping_TouchpadFingerYLeft_Format => Get("Mapping_TouchpadFingerYLeft_Format");
@@ -1914,6 +1917,12 @@ public class Strings : INotifyPropertyChanged
     public string Mapping_GyroYaw => Get("Mapping_GyroYaw");
     public string Mapping_GyroRoll => Get("Mapping_GyroRoll");
     public string Mapping_GyroHorizontal => Get("Mapping_GyroHorizontal");
+    public string Mapping_GyroLeanX => Get("Mapping_GyroLeanX");
+    public string Mapping_GyroLeanY => Get("Mapping_GyroLeanY");
+    public string Mapping_CapSenseLeftStickTouch => Get("Mapping_CapSenseLeftStickTouch");
+    public string Mapping_CapSenseRightStickTouch => Get("Mapping_CapSenseRightStickTouch");
+    public string Mapping_CapSenseLeftGripTouch => Get("Mapping_CapSenseLeftGripTouch");
+    public string Mapping_CapSenseRightGripTouch => Get("Mapping_CapSenseRightGripTouch");
     public string Settings_GyroCalibrate_Button => Get("Settings_GyroCalibrate_Button");
     public string Settings_GyroCalibrate_Tooltip => Get("Settings_GyroCalibrate_Tooltip");
     public string Settings_GyroLastCalibrated_Format => Get("Settings_GyroLastCalibrated_Format");
@@ -2459,6 +2468,7 @@ public class Strings : INotifyPropertyChanged
     public string Workshop_Tr_UnknownMouseButton => Get("Workshop_Tr_UnknownMouseButton");
     public string Workshop_Tr_UnknownXInputButton => Get("Workshop_Tr_UnknownXInputButton");
     public string Workshop_Tr_UnknownPhysicalInput => Get("Workshop_Tr_UnknownPhysicalInput");
+    public string Workshop_Tr_MobileTouchSurfaceOnly => Get("Workshop_Tr_MobileTouchSurfaceOnly");
     public string Workshop_Tr_UnknownGroupMode => Get("Workshop_Tr_UnknownGroupMode");
     public string Workshop_Tr_TouchMenuNeedsOverlay => Get("Workshop_Tr_TouchMenuNeedsOverlay");
     public string Workshop_Tr_RadialMenuNeedsOverlay => Get("Workshop_Tr_RadialMenuNeedsOverlay");
@@ -2466,6 +2476,7 @@ public class Strings : INotifyPropertyChanged
     public string Workshop_Tr_ReleaseActivatorNotSupported => Get("Workshop_Tr_ReleaseActivatorNotSupported");
     public string Workshop_Tr_LongPressNotSupported => Get("Workshop_Tr_LongPressNotSupported");
     public string Workshop_Tr_UnknownActivatorType => Get("Workshop_Tr_UnknownActivatorType");
+    public string Workshop_Tr_ChordWithoutPartner => Get("Workshop_Tr_ChordWithoutPartner");
     public string Workshop_Tr_MissingGroup => Get("Workshop_Tr_MissingGroup");
     public string Workshop_Tr_MissingModeShiftGroup => Get("Workshop_Tr_MissingModeShiftGroup");
     public string Workshop_Tr_MissingPreset => Get("Workshop_Tr_MissingPreset");
@@ -2487,7 +2498,6 @@ public class Strings : INotifyPropertyChanged
     public string Workshop_Tr_MouseRegionApproximated => Get("Workshop_Tr_MouseRegionApproximated");
     public string Workshop_Tr_MouseRegionTuningDropped => Get("Workshop_Tr_MouseRegionTuningDropped");
     public string Workshop_Tr_FlickStickSurfaceNotSupported => Get("Workshop_Tr_FlickStickSurfaceNotSupported");
-    public string Workshop_Tr_FlickStickTuningDropped => Get("Workshop_Tr_FlickStickTuningDropped");
     public string Workshop_Tr_DeadZoneRadialResidual => Get("Workshop_Tr_DeadZoneRadialResidual");
     public string Workshop_Tr_RotationNonlinearWithheld => Get("Workshop_Tr_RotationNonlinearWithheld");
     public string Workshop_Tr_LayerReleaseEdgeApproximated => Get("Workshop_Tr_LayerReleaseEdgeApproximated");
@@ -2570,5 +2580,4 @@ public class Strings : INotifyPropertyChanged
     public string Workshop_Tr_MenuEmpty => Get("Workshop_Tr_MenuEmpty");
     public string Workshop_Tr_MenuSurfaceNotSupported => Get("Workshop_Tr_MenuSurfaceNotSupported");
     public string Workshop_Tr_MenuIconUnresolved => Get("Workshop_Tr_MenuIconUnresolved");
-    public string Workshop_Tr_MenuTuningDropped => Get("Workshop_Tr_MenuTuningDropped");
 }

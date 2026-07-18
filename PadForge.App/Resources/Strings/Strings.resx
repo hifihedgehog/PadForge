@@ -1148,6 +1148,7 @@
   <data name="POV_DownLeft" xml:space="preserve"><value>Down-Left</value></data>
   <data name="POV_Left" xml:space="preserve"><value>Left</value></data>
   <data name="POV_UpLeft" xml:space="preserve"><value>Up-Left</value></data>
+  <data name="POV_Any" xml:space="preserve"><value>Any Direction</value></data>
 
   <!-- ═══ Mapping ═══ -->
   <data name="Mapping_NotMapped" xml:space="preserve"><value>Not mapped</value></data>
@@ -1163,6 +1164,7 @@
   <data name="Mapping_TouchpadFingerY_Format" xml:space="preserve"><value>Touchpad {0} Finger {1} Y</value></data>
   <data name="Mapping_TouchpadFingerTouch_Format" xml:space="preserve"><value>Touchpad {0} Finger {1} Touch</value></data>
   <data name="Mapping_TouchpadFingerPressure_Format" xml:space="preserve"><value>Touchpad {0} Finger {1} Pressure</value></data>
+  <data name="Mapping_TouchpadFingerRing_Format" xml:space="preserve"><value>Touchpad {0} Finger {1} Ring</value></data>
   <data name="Mapping_TouchpadFingerXLeft_Format" xml:space="preserve"><value>Touchpad {0} Finger {1} X (Left Half)</value></data>
   <data name="Mapping_TouchpadFingerXRight_Format" xml:space="preserve"><value>Touchpad {0} Finger {1} X (Right Half)</value></data>
   <data name="Mapping_TouchpadFingerYLeft_Format" xml:space="preserve"><value>Touchpad {0} Finger {1} Y (Left Half)</value></data>
@@ -1412,6 +1414,12 @@
   <data name="Mapping_GyroYaw" xml:space="preserve"><value>Gyro Yaw</value></data>
   <data name="Mapping_GyroRoll" xml:space="preserve"><value>Gyro Roll</value></data>
   <data name="Mapping_GyroHorizontal" xml:space="preserve"><value>Gyro Horizontal (Yaw + Roll)</value></data>
+  <data name="Mapping_GyroLeanX" xml:space="preserve"><value>Gyro Lean X</value></data>
+  <data name="Mapping_GyroLeanY" xml:space="preserve"><value>Gyro Lean Y</value></data>
+  <data name="Mapping_CapSenseLeftStickTouch" xml:space="preserve"><value>Left Stick Touch</value></data>
+  <data name="Mapping_CapSenseRightStickTouch" xml:space="preserve"><value>Right Stick Touch</value></data>
+  <data name="Mapping_CapSenseLeftGripTouch" xml:space="preserve"><value>Left Grip Touch</value></data>
+  <data name="Mapping_CapSenseRightGripTouch" xml:space="preserve"><value>Right Grip Touch</value></data>
   <data name="Settings_GyroCalibrate_Button" xml:space="preserve"><value>Calibrate Gyro</value></data>
   <data name="Settings_GyroCalibrate_Tooltip" xml:space="preserve"><value>Place the controller on a flat surface and click Calibrate Gyro to sample the at-rest reading for ~1.5 seconds. Subtracted from raw readings so gyro mappings don't drift the mouse / stick when the controller is still.</value></data>
   <data name="Settings_GyroLastCalibrated_Format" xml:space="preserve"><value>Last calibrated: {0:yyyy-MM-dd HH:mm}</value></data>
@@ -2036,6 +2044,7 @@
   <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>Reset all Motion Steering settings</value></data>
   <data name="Mapping_FlickStickRight" xml:space="preserve"><value>Flick Stick (Right Stick)</value></data>
   <data name="Mapping_FlickStickLeft" xml:space="preserve"><value>Flick Stick (Left Stick)</value></data>
+  <data name="Mapping_FlickStickTouchpad_Format" xml:space="preserve"><value>Flick Stick (Touchpad {0})</value></data>
   <data name="Mapping_LeftStickRing" xml:space="preserve"><value>Left Stick Ring</value></data>
   <data name="Mapping_RightStickRing" xml:space="preserve"><value>Right Stick Ring</value></data>
   <data name="Pad_FlickStick_Header" xml:space="preserve"><value>Flick Stick</value></data>
@@ -2560,6 +2569,7 @@
   <data name="Workshop_Tr_UnknownMouseButton" xml:space="preserve"><value>unknown mouse button {0}</value></data>
   <data name="Workshop_Tr_UnknownXInputButton" xml:space="preserve"><value>unknown XInput button {0}</value></data>
   <data name="Workshop_Tr_UnknownPhysicalInput" xml:space="preserve"><value>unknown input {1} on {0}</value></data>
+  <data name="Workshop_Tr_MobileTouchSurfaceOnly" xml:space="preserve"><value>Steam Link on-screen control {1}: no physical input on any supported controller</value></data>
   <data name="Workshop_Tr_UnknownGroupMode" xml:space="preserve"><value>unknown group mode {0}</value></data>
   <data name="Workshop_Tr_TouchMenuNeedsOverlay" xml:space="preserve"><value>touch-menu overlay dropped ({0} cells)</value></data>
   <data name="Workshop_Tr_RadialMenuNeedsOverlay" xml:space="preserve"><value>radial-menu overlay dropped ({0} sectors)</value></data>
@@ -2567,6 +2577,7 @@
   <data name="Workshop_Tr_ReleaseActivatorNotSupported" xml:space="preserve"><value>release activator not supported here</value></data>
   <data name="Workshop_Tr_LongPressNotSupported" xml:space="preserve"><value>long-press activator not supported here</value></data>
   <data name="Workshop_Tr_UnknownActivatorType" xml:space="preserve"><value>unknown activator {0}</value></data>
+  <data name="Workshop_Tr_ChordWithoutPartner" xml:space="preserve"><value>chord activator has no chord button set (nothing can fire it)</value></data>
   <data name="Workshop_Tr_MissingGroup" xml:space="preserve"><value>config references missing group {0}</value></data>
   <data name="Workshop_Tr_MissingModeShiftGroup" xml:space="preserve"><value>mode shift on {0} references missing group {1}</value></data>
   <data name="Workshop_Tr_MissingPreset" xml:space="preserve"><value>config references missing preset {0}</value></data>
@@ -2587,8 +2598,7 @@
   <data name="Workshop_Tr_CameraResetApproximated" xml:space="preserve"><value>camera reset approximated as a gyro recenter</value></data>
   <data name="Workshop_Tr_MouseRegionApproximated" xml:space="preserve"><value>mouse region approximated as a centered cursor clamp ({0}% of screen, region center {1}%, {2}%) while the surface is held</value></data>
   <data name="Workshop_Tr_MouseRegionTuningDropped" xml:space="preserve"><value>mouse region engage/release settings dropped ({0})</value></data>
-  <data name="Workshop_Tr_FlickStickSurfaceNotSupported" xml:space="preserve"><value>flick stick on a touch surface skipped (PadForge flick stick reads a physical stick)</value></data>
-  <data name="Workshop_Tr_FlickStickTuningDropped" xml:space="preserve"><value>flick stick tuning settings dropped ({0})</value></data>
+  <data name="Workshop_Tr_FlickStickSurfaceNotSupported" xml:space="preserve"><value>flick stick on a surface with no analog pair skipped</value></data>
   <data name="Workshop_Tr_DeadZoneRadialResidual" xml:space="preserve"><value>deadzone radii apply per axis, not radially ({0})</value></data>
   <data name="Workshop_Tr_RotationNonlinearWithheld" xml:space="preserve"><value>nonlinear response withheld on rotated axes ({0})</value></data>
   <data name="Workshop_Tr_LayerReleaseEdgeApproximated" xml:space="preserve"><value>release-hosted {0} switches on press instead</value></data>
@@ -2716,5 +2726,4 @@
   <data name="Workshop_Tr_MenuEmpty" xml:space="preserve"><value>menu has no bound cells</value></data>
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>menu host surface not supported ({0})</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>menu cell icon not recognized ({0}), so the cell keeps its text label</value></data>
-  <data name="Workshop_Tr_MenuTuningDropped" xml:space="preserve"><value>menu tuning not supported ({0})</value></data>
 </root>

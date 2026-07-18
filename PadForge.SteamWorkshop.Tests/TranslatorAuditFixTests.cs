@@ -243,7 +243,10 @@ namespace PadForge.SteamWorkshop.Tests
             var entry = p.Report.Entries.Single(
                 e => e.ReasonKey == TranslationReasons.MouseRegionTuningDropped);
             Assert.Equal(TranslationStatus.Partial, entry.Status);
-            Assert.Equal("teleport_start, edge_binding_radius", Assert.Single(entry.ReasonArgs));
+            // v26: edge_binding_radius belongs to the edge MEMBER's read
+            // (and shapes nothing when no edge member is bound, exactly
+            // as in Steam), so only the teleport key stays named.
+            Assert.Equal("teleport_start", Assert.Single(entry.ReasonArgs));
         }
 
         // ─── F9: single-pad half click drives a chord activator ─────────

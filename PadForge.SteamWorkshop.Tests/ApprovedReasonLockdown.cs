@@ -135,6 +135,41 @@ namespace PadForge.SteamWorkshop.Tests
             // game's own Steam session can deliver these; no virtual
             // controller can.
             "Workshop_Tr_SteamSystemAction",
+            // Physically-impossible input (v26): the Steam Link
+            // on-screen touch controls. button_macro5..7 (enum bits
+            // 37-39, ATTRIBCAP_MISC5..7) name buttons past SDL's whole
+            // gamepad surface (SDL_GAMEPAD_BUTTON_MISC6 = Steam macro 4
+            // is the last misc slot, SDL_gamepad.h), and
+            // button_macro1finger / 2finger (bits 48/49) are the mobile
+            // overlay's "One Finger Tap" / "Two Finger Tap" (shipped
+            // strings; the glyph map files them under eIgnore). PadForge
+            // input comes exclusively through SDL, so no drivable
+            // controller carries them. Proof at
+            // PhysicalSlotResolver.IsMobileTouchOnlyToken.
+            "Workshop_Tr_MobileTouchSurfaceOnly",
+            // Config-error (v26): a chord activator whose settings carry
+            // no chord_button (absent key, or the shared enum's 0 = the
+            // none/default sentinel; Steam's serializer omits defaults).
+            // The partner picker was never set, so not even Steam can
+            // fire the chord; there is nothing to gate on. Proof at
+            // ConfigTranslator.HasChordPartner.
+            "Workshop_Tr_ChordWithoutPartner",
+            // Impossibility proof in code (v26 re-attack): a stick has
+            // no absolute position surface, so the 1:1 region map cannot
+            // exist there; the clamp macro (engaged on the v17
+            // deflection-ring read since v26) is the equivalent
+            // construct and this Partial names the approximation. Proof
+            // at TranslateMouseRegion's clamp branch.
+            "Workshop_Tr_MouseRegionApproximated",
+            // Impossibility-equivalent (v26 re-attack): Steam's
+            // camera_reset unwinds STEAM'S OWN emitted-motion ledger, a
+            // best-effort even there (no remapper knows the game
+            // camera). PadForge re-references its gyro aim integration
+            // state (GyroRecenter), the equivalent state it owns;
+            // rebuilding Steam's ledger would reproduce the same
+            // approximation with more state, not more fidelity. Proof on
+            // TranslationReasons.CameraResetApproximated.
+            "Workshop_Tr_CameraResetApproximated",
         };
 
         /// <summary>The approved reason-key CLASS: the multiset keys (the

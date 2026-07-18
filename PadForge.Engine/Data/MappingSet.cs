@@ -112,6 +112,14 @@ namespace PadForge.Engine.Data
         /// NOT held.</summary>
         [XmlAttribute] public bool WorkshopGyroEngageInvert { get; set; } = false;
 
+        /// <summary>Steam gyro_button_invert value 2 (translator v25): the
+        /// three-state "Gyro Button Behavior" enum's Toggle arm. Each
+        /// press of <see cref="WorkshopGyroEngageDescriptor"/> flips the
+        /// engage state (the slot engage machinery's own Toggle mode)
+        /// instead of holding it. Only meaningful beside a non-empty
+        /// engage descriptor; ignored otherwise.</summary>
+        [XmlAttribute] public bool WorkshopGyroEngageToggle { get; set; } = false;
+
         /// <summary>Steam gyro_ratchet_button_mask (translator v22) as
         /// pipe-joined device-free descriptors: while ANY of them is held
         /// on any slot device, the slot's gyro reads are clutched
@@ -154,6 +162,7 @@ namespace PadForge.Engine.Data
             dst.WorkshopRightStickDeadZoneShape = WorkshopRightStickDeadZoneShape ?? "";
             dst.WorkshopGyroEngageDescriptor = WorkshopGyroEngageDescriptor ?? "";
             dst.WorkshopGyroEngageInvert = WorkshopGyroEngageInvert;
+            dst.WorkshopGyroEngageToggle = WorkshopGyroEngageToggle;
             dst.WorkshopGyroRatchetDescriptors = WorkshopGyroRatchetDescriptors ?? "";
         }
     }

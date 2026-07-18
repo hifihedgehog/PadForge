@@ -332,6 +332,30 @@ namespace PadForge.Engine.Data
         /// curve/range shaping seam, after the exponent. 0 = off.</summary>
         [XmlAttribute] public double ParamAntiDeadzone { get; set; }
 
+        /// <summary>Stick-read deadzone geometry (translator v25, Steam's
+        /// deadzone_shape on the stick-hosted mouse modes): 0 (default) =
+        /// off, the untouched read. 1 = axial: the source's DeadZone
+        /// percent and ParamRangeOuter rescale this axis by its own
+        /// magnitude (Steam Cross / Square, the per-axis check). 2 =
+        /// radial: the rescale factor is computed from the stick PAIR
+        /// magnitude (this axis and its companion, Axis 0/1 or 3/4), so
+        /// the dead region is a circle and diagonals shape correctly
+        /// (Steam Circle). Applied inside the generic bipolar Axis read
+        /// before sensitivity; when set, ParamRangeOuter is consumed here
+        /// instead of the per-axis shaping tail. Retires the v19 "no
+        /// per-source companion-axis channel" residual for the mouse
+        /// lanes.</summary>
+        [XmlAttribute] public int ParamStickDeadZoneShape { get; set; }
+
+        /// <summary>Inner radius for <see cref="ParamStickDeadZoneShape"/>
+        /// as a 0..1 fraction of full deflection (Steam's
+        /// deadzone_inner_radius / 32767). Its own field on purpose:
+        /// <see cref="DeadZone"/> defaults to 50 as the BUTTON coercion's
+        /// "engine default threshold" sentinel, so reading it as an analog
+        /// inner radius would put a silent 50 percent hole in every
+        /// unauthored source. 0 (default) = no inner deadzone.</summary>
+        [XmlAttribute] public double ParamStickDeadZoneInner { get; set; }
+
         /// <summary>Per-source EMA smoothing factor 0..0.99 (v18, Steam's
         /// mouse_smoothing / 100 clamp). One EMA step per poll frame per
         /// source, the GyroTuning.SmoothingAlpha per-tick contract.

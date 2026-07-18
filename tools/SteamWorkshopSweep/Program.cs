@@ -18,6 +18,7 @@ using SteamKit2;
 //
 //   SteamWorkshopSweep harvest   # QueryFiles + download the top configs per game
 //   SteamWorkshopSweep sweep     # translate the cache, digest unapproved reason lines
+//   SteamWorkshopSweep census    # per-args histogram for every unapproved reason key
 //   SteamWorkshopSweep all       # harvest then sweep (default)
 //
 // Inputs beside the exe's source dir: games.csv (committed appid list).
@@ -47,9 +48,9 @@ internal static class Program
     private static async Task<int> Main(string[] args)
     {
         var mode = args.Length > 0 ? args[0].ToLowerInvariant() : "all";
-        if (mode != "harvest" && mode != "sweep" && mode != "all")
+        if (mode != "harvest" && mode != "sweep" && mode != "all" && mode != "census")
         {
-            Console.Error.WriteLine("usage: SteamWorkshopSweep [harvest|sweep|all]");
+            Console.Error.WriteLine("usage: SteamWorkshopSweep [harvest|sweep|census|all]");
             return 2;
         }
 
@@ -71,6 +72,8 @@ internal static class Program
                 await HarvestAsync(gamesPath, cacheDir, manifestPath, cts.Token);
             if (mode is "sweep" or "all")
                 SweepCache(cacheDir, manifestPath);
+            if (mode is "census")
+                CensusCache(cacheDir, manifestPath);
             return 0;
         }
         catch (OperationCanceledException)
@@ -350,6 +353,77 @@ internal static class Program
         Console.WriteLine(digest);
         Directory.CreateDirectory(cacheDir);
         File.WriteAllText(Path.Combine(cacheDir, "digest.txt"), digest);
+    }
+
+    /// <summary>Per-args histogram for every unapproved reason key: the
+    /// worklist view. Where the digest shows 3 examples per key, this
+    /// breaks each key down by its ReasonArgs tuple (the token / verb /
+    /// setting the reason names) so a round can adjudicate token families
+    /// one by one instead of re-deriving them from raw examples.</summary>
+    private static void CensusCache(string cacheDir, string manifestPath)
+    {
+        if (!File.Exists(manifestPath))
+        {
+            Console.Error.WriteLine($"No manifest at {manifestPath}; run harvest first.");
+            return;
+        }
+
+        var manifest = SweepManifest.Load(manifestPath);
+        // key -> args-tuple -> (count, files, one example line)
+        var byKey = new Dictionary<string, Dictionary<string, (int Count, HashSet<long> Files, string Example)>>(StringComparer.Ordinal);
+
+        foreach (var entry in manifest.Entries)
+        {
+            var path = Path.Combine(cacheDir, entry.FileId + ".vdf");
+            if (!File.Exists(path)) continue;
+
+            TranslatedProfile result;
+            try
+            {
+                var config = SteamInputConfig.FromVdf(VdfParser.Parse(File.ReadAllText(path)));
+                result = new ConfigTranslator().Translate(config, new TranslationOptions
+                {
+                    FileId = entry.FileId,
+                });
+            }
+            catch
+            {
+                continue; // the sweep digest already lists parser rejects
+            }
+
+            foreach (var e in result.Report.Entries)
+            {
+                string key = string.IsNullOrEmpty(e.ReasonKey) ? "(empty)" : e.ReasonKey;
+                if (ApprovedReasonLockdown.ApprovedKeys.Contains(key)) continue;
+
+                if (!byKey.TryGetValue(key, out var byArgs))
+                    byKey[key] = byArgs = new Dictionary<string, (int, HashSet<long>, string)>(StringComparer.Ordinal);
+                string argsKey = e.ReasonArgs.Count > 0 ? string.Join("; ", e.ReasonArgs) : "(no args)";
+                if (!byArgs.TryGetValue(argsKey, out var cell))
+                    cell = (0, new HashSet<long>(), $"[{e.Status}] {Truncate(e.SourcePath, 90)} :: {Truncate(e.Binding, 60)}");
+                cell.Count++;
+                cell.Files.Add(entry.FileId);
+                byArgs[argsKey] = cell;
+            }
+        }
+
+        var sb = new StringBuilder();
+        sb.AppendLine("=== CENSUS (unapproved keys, by args tuple) ===");
+        foreach (var kv in byKey.OrderByDescending(kv => kv.Value.Sum(c => c.Value.Count))
+                     .ThenBy(kv => kv.Key, StringComparer.Ordinal))
+        {
+            sb.AppendLine($"{kv.Key}: {kv.Value.Sum(c => c.Value.Count)} lines, {kv.Value.Count} distinct args");
+            foreach (var a in kv.Value.OrderByDescending(a => a.Value.Count).ThenBy(a => a.Key, StringComparer.Ordinal))
+            {
+                sb.AppendLine($"    {a.Key}: {a.Value.Count} lines in {a.Value.Files.Count} configs");
+                sb.AppendLine($"        e.g. {a.Value.Example} (file {a.Value.Files.OrderBy(x => x).First()})");
+            }
+        }
+
+        var census = sb.ToString();
+        Console.WriteLine(census);
+        Directory.CreateDirectory(cacheDir);
+        File.WriteAllText(Path.Combine(cacheDir, "census.txt"), census);
     }
 
     private static string Sha256Hex(byte[] bytes) =>

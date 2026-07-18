@@ -437,11 +437,48 @@ namespace PadForge.SteamWorkshop.Tests
         }
 
         [Fact]
-        public void MenuOnUnsupportedSurface_GetsTheNamedSkip()
+        public void RadialMenuOnDiamond_HostsOnTheButtonPair()
         {
+            // v25: the face diamond hosts radial menus (Steam renders the
+            // menu; the four buttons ARE the selector). Lowered onto the
+            // "Gamepad Diamond" button-pair host.
             string vdf = Head
                 + Group(1, "radial_menu", Inputs((1, "key_press 1")))
                 + Preset(0, "Default", (1, "button_diamond active"))
+                + "}\n";
+            var p = Translate(vdf);
+            var menu = Assert.Single(p.Menus);
+            Assert.Equal("Gamepad Diamond", menu.HostDescriptor);
+            Assert.DoesNotContain(p.Report.Entries, e =>
+                e.ReasonKey == TranslationReasons.MenuSurfaceNotSupported);
+        }
+
+        [Fact]
+        public void RadialMenuOnDpad_HostsOnTheButtonPair()
+        {
+            // Wild witness 1095852548: a six-cell key_press ring hosted on
+            // the physical dpad (diagonal chords select between-wedge
+            // cells through the 8-way pair vector).
+            string vdf = Head
+                + Group(1, "radial_menu", Inputs((1, "key_press 1"), (2, "key_press 2"),
+                    (3, "key_press 3"), (4, "key_press 4"), (5, "key_press 5"), (6, "key_press 6")))
+                + Preset(0, "Default", (1, "dpad active"))
+                + "}\n";
+            var p = Translate(vdf);
+            var menu = Assert.Single(p.Menus);
+            Assert.Equal("Gamepad DPad", menu.HostDescriptor);
+            Assert.Equal(6, menu.CellCount);
+        }
+
+        [Fact]
+        public void GridMenuOnGyro_KeepsTheNamedSkip()
+        {
+            // The gyro has no hover surface (and grid menus need an
+            // absolute position even on button hosts): the named skip
+            // survives for exactly these.
+            string vdf = Head
+                + Group(1, "touch_menu", Inputs((1, "key_press 1")))
+                + Preset(0, "Default", (1, "gyro active"))
                 + "}\n";
             var p = Translate(vdf);
             Assert.Empty(p.Menus);

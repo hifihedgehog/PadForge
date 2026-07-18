@@ -496,6 +496,15 @@ namespace PadForge.Common.Input
                     triggerActive = buttonOk && povOk && gestureOk && descriptorOk && axisOk;
                 }
 
+                // Shift-layer gate (translator v25, always_on_action): a
+                // layer-scoped macro's trigger only counts while its layer
+                // is engaged, so OnPress fires on the layer's ENGAGE edge
+                // (the gated trigger rises there) and UntilRelease shapes
+                // stop on disengage. Applied before the WasTriggerActive
+                // latch so re-engaging the layer is a fresh rising edge.
+                bool layerOpen = MacroLayerGateOpen(macro);
+                if (!layerOpen) triggerActive = false;
+
                 bool wasTriggerActive = macro.WasTriggerActive;
                 macro.WasTriggerActive = triggerActive;
 
@@ -513,7 +522,7 @@ namespace PadForge.Common.Input
                         shouldStart = triggerActive;
                         break;
                     case MacroTriggerMode.Always:
-                        shouldStart = !macro.IsExecuting;
+                        shouldStart = !macro.IsExecuting && layerOpen;
                         break;
                     case MacroTriggerMode.CustomExpression:
                         // Rising edge of the formula result crossing 0.5,
@@ -593,6 +602,34 @@ namespace PadForge.Common.Input
                 // were a trigger input.
                 ApplyMacroLatches(ref gp, macro);
             }
+        }
+
+        /// <summary>Shift-layer gate for layer-scoped macros (translator
+        /// v25, Steam's always_on_action). Open when the macro carries no
+        /// mask (the default, every ordinary macro) or when ANY created
+        /// slot's mapping set currently engages the mask. The any-slot
+        /// walk covers split configs, where the twin activators live on
+        /// whichever set has the layer's rows while the macro rides the
+        /// Xbox slot; masks are per-import unique
+        /// ("Layer_{fileId}_{presetId}"), so a cross-slot match can only
+        /// be the same import's twin. Reads the engaged mask through the
+        /// pure <see cref="GetEngagedLayerMask"/> (no activator re-tick).</summary>
+        private static bool MacroLayerGateOpen(MacroItem macro)
+        {
+            string mask = macro.LayerMask;
+            if (string.IsNullOrEmpty(mask)
+                || string.Equals(mask, "Base", StringComparison.Ordinal))
+                return true;
+            var sets = SettingsManager.SlotMappingSets;
+            if (sets == null) return true; // no layer machinery: fail open
+            for (int s = 0; s < sets.Length; s++)
+            {
+                var set = sets[s];
+                if (set == null) continue;
+                if (string.Equals(GetEngagedLayerMask(s, set), mask, StringComparison.Ordinal))
+                    return true;
+            }
+            return false;
         }
 
         /// <summary>Shared DoublePress trigger evaluation (translator v17,
@@ -2851,6 +2888,12 @@ namespace PadForge.Common.Input
                     triggerActive = buttonOk && povOk && gestureOk && descriptorOk && axisOk;
                 }
 
+                // Shift-layer gate (translator v25), mirroring the Gamepad
+                // path: applied before the latch so re-engage is a fresh
+                // rising edge.
+                bool layerOpen = MacroLayerGateOpen(macro);
+                if (!layerOpen) triggerActive = false;
+
                 bool wasTriggerActive = macro.WasTriggerActive;
                 macro.WasTriggerActive = triggerActive;
 
@@ -2867,7 +2910,7 @@ namespace PadForge.Common.Input
                         shouldStart = triggerActive;
                         break;
                     case MacroTriggerMode.Always:
-                        shouldStart = !macro.IsExecuting;
+                        shouldStart = !macro.IsExecuting && layerOpen;
                         break;
                     case MacroTriggerMode.CustomExpression:
                         shouldStart = triggerActive && !wasTriggerActive;

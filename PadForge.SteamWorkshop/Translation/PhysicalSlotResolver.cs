@@ -134,10 +134,16 @@ namespace PadForge.SteamWorkshop.Translation
         /// single-pad controllers every trackpad token addresses the one
         /// physical pad (index 0, halves selected via
         /// <see cref="HalfFor"/>); multi-pad types keep the classic
-        /// left=0 / right=1 / center=2 mapping.</summary>
+        /// left=0 / right=1 mapping. center_trackpad always reads pad 0
+        /// whole: the token means "the single central pad" in every
+        /// grammar vintage (25 of 30 wild authors are controller_ps4;
+        /// census 2026-07-18), no SDL device registers a third pad, and
+        /// the non-PS authors are type-converted leftovers whose center
+        /// sections should still drive whichever pad-bearing device the
+        /// user maps, not skip.</summary>
         public static int TrackpadIndex(SteamSlot slot, bool singlePadTrackpads)
             => !IsTrackpad(slot) ? -1
-             : singlePadTrackpads ? 0
+             : singlePadTrackpads || slot == SteamSlot.CenterTrackpad ? 0
              : TrackpadIndex(slot);
 
         /// <summary>Which half of the physical pad a trackpad token
@@ -185,6 +191,12 @@ namespace PadForge.SteamWorkshop.Translation
             {
                 "controller_ps4" => true,
                 "controller_ps5" => true,
+                // DualSense Edge: same SDL_hidapi_ps5.c driver, one
+                // touchpad. The wild corpus authors the type
+                // (controller_ps5_edge, e.g. 3485653841) and its ratchet
+                // masks carry the center-pad bits, which only ground
+                // through the single-pad routing.
+                "controller_ps5_edge" => true,
                 _ => false,
             };
 
@@ -263,12 +275,48 @@ namespace PadForge.SteamWorkshop.Translation
                         "button_b" => Btn("Gamepad ButtonB", "ButtonB", Gamepad.B),
                         "button_x" => Btn("Gamepad ButtonX", "ButtonX", Gamepad.X),
                         "button_y" => Btn("Gamepad ButtonY", "ButtonY", Gamepad.Y),
+                        // dpad mode hosted on the diamond (census
+                        // 2026-07-18): the dpad_* members are positional
+                        // seats, so each lands on the button at that seat.
+                        // No label fold: dpad_* names are already
+                        // positional in Steam's own serialization.
+                        "dpad_north" => Btn("Gamepad ButtonY", "ButtonY", Gamepad.Y),
+                        "dpad_south" => Btn("Gamepad ButtonA", "ButtonA", Gamepad.A),
+                        "dpad_east" => Btn("Gamepad ButtonB", "ButtonB", Gamepad.B),
+                        "dpad_west" => Btn("Gamepad ButtonX", "ButtonX", Gamepad.X),
                         _ => null,
                     };
 
                 case SteamSlot.Switch:
+                    // Diamond members ride switches groups in wild configs
+                    // (mode_shift carriers and hand-merged sets; census
+                    // 2026-07-18: button_a/b/x/y across 25+ configs). The
+                    // serializer accepts them anywhere, so they resolve
+                    // exactly as on the button_diamond slot, Nintendo label
+                    // fold included.
+                    if (nintendoLabels)
+                    {
+                        name = name switch
+                        {
+                            "button_a" => "button_b",
+                            "button_b" => "button_a",
+                            "button_x" => "button_y",
+                            "button_y" => "button_x",
+                            _ => name,
+                        };
+                    }
                     return name switch
                     {
+                        "button_a" => Btn("Gamepad ButtonA", "ButtonA", Gamepad.A),
+                        "button_b" => Btn("Gamepad ButtonB", "ButtonB", Gamepad.B),
+                        "button_x" => Btn("Gamepad ButtonX", "ButtonX", Gamepad.X),
+                        "button_y" => Btn("Gamepad ButtonY", "ButtonY", Gamepad.Y),
+                        // Physical dpad directions as switch members (same
+                        // hand-merged shape as the diamond members above).
+                        "dpad_north" => Btn("Gamepad DPadUp", "DPadUp", Gamepad.DPAD_UP),
+                        "dpad_south" => Btn("Gamepad DPadDown", "DPadDown", Gamepad.DPAD_DOWN),
+                        "dpad_east" => Btn("Gamepad DPadRight", "DPadRight", Gamepad.DPAD_RIGHT),
+                        "dpad_west" => Btn("Gamepad DPadLeft", "DPadLeft", Gamepad.DPAD_LEFT),
                         // Steam Input's names are template-era: button_escape
                         // is the Start/Menu button, button_menu is Back/View
                         // (ground truth: fixture switches groups bind them to
@@ -288,8 +336,46 @@ namespace PadForge.SteamWorkshop.Translation
                         // Single-pad controllers (#9 B-1) have ONE physical
                         // click: the side is the finger's half, so the
                         // click gates on the half's touch spot.
+                        // button_lpad / button_rpad are the same pad clicks
+                        // under the serializer's older token pair (both in
+                        // steamclient64.dll's own string table).
                         "left_click" => PadClick(TrackpadHalf.Left, singlePadTrackpads),
                         "right_click" => PadClick(TrackpadHalf.Right, singlePadTrackpads),
+                        "button_lpad" => PadClick(TrackpadHalf.Left, singlePadTrackpads),
+                        "button_rpad" => PadClick(TrackpadHalf.Right, singlePadTrackpads),
+                        // Pad touch contact as a switch member (SC-era
+                        // mode_shift carriers; serializer tokens
+                        // left/right_trackpad_touch). Multi-pad types read
+                        // the side's own contact; single-pad types (#9 B-1)
+                        // read the half's touch spot.
+                        "left_trackpad_touch" => PadTouch(TrackpadHalf.Left, singlePadTrackpads),
+                        "right_trackpad_touch" => PadTouch(TrackpadHalf.Right, singlePadTrackpads),
+                        // Stick clicks as switch members (serializer tokens
+                        // left/right_stick_click, present in the shipped
+                        // configurator JS and steamclient64's table).
+                        "left_stick_click" => Btn("Gamepad LeftStick", "LeftThumbButton", Gamepad.LEFT_THUMB),
+                        "right_stick_click" => Btn("Gamepad RightStick", "RightThumbButton", Gamepad.RIGHT_THUMB),
+                        // Steam's "Always On Command" (the serializer's
+                        // always_on_action member; shipped string
+                        // ControllerBinding_SwitchesActionSetAlwaysOn, and
+                        // Valve's controller_neptune_webbrowser template
+                        // authors one): a virtual input held the whole time
+                        // the hosting action set is active. Lowered onto
+                        // the engine's constant-true read; set scoping
+                        // rides the row's LayerMask / the macro layer gate.
+                        "always_on_action" => new ResolvedSource
+                        {
+                            Descriptor = PadForge.Engine.Common.Mapping.SourceCoercion.AlwaysOnDescriptor,
+                        },
+                        // Soft-pull threshold crossings as switch members.
+                        // Steam's "Soft Pull" binding point
+                        // (ControllerBinding_TriggerAnalogThresholdBinding
+                        // = "Soft Pull" in the shipped strings): same
+                        // analog read as the trigger slot's "edge" member,
+                        // the lowest useful threshold on the upper-half
+                        // pull window.
+                        "left_trigger_threshold" => TriggerSoftPull(left: true),
+                        "right_trigger_threshold" => TriggerSoftPull(left: false),
                         // Steam Controller digital trigger pulls also ride
                         // switches groups (full-pull clicks, incl. mode_shift
                         // carriers). Ground truth: 1172518660 (Valve's TF2
@@ -343,6 +429,31 @@ namespace PadForge.SteamWorkshop.Translation
                     };
 
                 case SteamSlot.Dpad:
+                    // four_buttons hosted on the physical dpad (census
+                    // 2026-07-18): diamond cells fold onto the direction at
+                    // their seat (A=south, B=east, X=west, Y=north), the
+                    // same seat fold the stick hosts use. Nintendo-labeled
+                    // configs address cells by label, crossed against
+                    // position, so the label fold runs first.
+                    if (nintendoLabels)
+                    {
+                        name = name switch
+                        {
+                            "button_a" => "button_b",
+                            "button_b" => "button_a",
+                            "button_x" => "button_y",
+                            "button_y" => "button_x",
+                            _ => name,
+                        };
+                    }
+                    name = name switch
+                    {
+                        "button_a" => "dpad_south",
+                        "button_b" => "dpad_east",
+                        "button_x" => "dpad_west",
+                        "button_y" => "dpad_north",
+                        _ => name,
+                    };
                     return name switch
                     {
                         "dpad_north" => Btn("Gamepad DPadUp", "DPadUp", Gamepad.DPAD_UP),
@@ -480,6 +591,19 @@ namespace PadForge.SteamWorkshop.Translation
                                 Descriptor = $"Touchpad {p} Finger 0 Down {quad}{HalfSuffix(half)}",
                             };
                         }
+                        // Mouse-mode "Double Tap" member ("A button can be
+                        // sent when double tapping on the pad", shipped
+                        // ControllerBinding_DoubleTap strings; census
+                        // 2026-07-18: 70 wild sites on absolute_mouse
+                        // groups). Same gesture read the Double_Press
+                        // activator lowering uses: the pad's DoubleTap
+                        // fire, self-armed at apply (v14).
+                        case "doubletap":
+                            return new ResolvedSource
+                            {
+                                Descriptor = $"Touchpad {p} DoubleTap",
+                                TrackpadFeature = FeatureTaps,
+                            };
                         default:
                             return null; // "edge" and menu cells resolve elsewhere
                     }
@@ -523,6 +647,47 @@ namespace PadForge.SteamWorkshop.Translation
             Descriptor = $"Touchpad {p} {dir}",
             TrackpadFeature = FeatureJoystickOutput,
         };
+
+        /// <summary>A switch-slot pad touch contact ("left_trackpad_touch" /
+        /// "right_trackpad_touch"). Multi-pad controllers read the side's
+        /// own contact bool; single-pad controllers (#9 B-1) read the
+        /// half's held-state touch spot, the same source the trackpad
+        /// slots' half-hosted "touch" member resolves to.</summary>
+        private static ResolvedSource PadTouch(TrackpadHalf side, bool singlePadTrackpads)
+        {
+            if (singlePadTrackpads)
+            {
+                return new ResolvedSource
+                {
+                    Descriptor = HalfSpot(0, side),
+                    TrackpadFeature = FeatureTouchSpots,
+                };
+            }
+            return new ResolvedSource
+            {
+                Descriptor = side == TrackpadHalf.Left
+                    ? "Touchpad 0 Finger 0 Down" : "Touchpad 1 Finger 0 Down",
+            };
+        }
+
+        /// <summary>The soft-pull threshold crossing ("Soft Pull" in the
+        /// shipped configurator strings), shared by the trigger slot's
+        /// <c>edge</c> member and the <c>left/right_trigger_threshold</c>
+        /// members of switches groups: the same analog read at the lowest
+        /// useful threshold (~57% physical pull; 50% is the floor of the
+        /// upper-half read).</summary>
+        private static ResolvedSource TriggerSoftPull(bool left)
+        {
+            string target = left ? "LeftTrigger" : "RightTrigger";
+            return new ResolvedSource
+            {
+                Descriptor = left ? "Gamepad LeftTrigger" : "Gamepad RightTrigger",
+                HalfAxis = true,
+                DeadZone = 15,
+                MacroAxisTarget = target,
+                IsAnalogTriggerPull = true,
+            };
+        }
 
         /// <summary>A switch-slot pad click ("left_click" / "right_click").
         /// Multi-pad controllers own one click per pad; single-pad

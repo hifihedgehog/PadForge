@@ -75,6 +75,14 @@ namespace PadForge.SteamWorkshop.Translation
         /// <summary>Steam gyro_button_invert: engage while NOT held.</summary>
         public bool GyroEngageInvert { get; set; }
 
+        /// <summary>Steam gyro_button_invert value 2 (v25): the three-state
+        /// "Gyro Button Behavior" enum's Toggle arm ("the device's gyro
+        /// will toggle its state each time the button is pressed", shipped
+        /// ControllerBinding_GyroButtonInvert*_Toggle strings). Each press
+        /// of <see cref="GyroEngageDescriptor"/> flips the engage state
+        /// instead of holding it.</summary>
+        public bool GyroEngageToggle { get; set; }
+
         /// <summary>Steam gyro_ratchet_button_mask (v22) as device-free
         /// descriptors, one per grounded mask bit: while ANY is held the
         /// slot's gyro reads are clutched, Steam's ratchet ("while held,
@@ -409,6 +417,16 @@ namespace PadForge.SteamWorkshop.Translation
         /// "WhileHeld" is semantic (clamp engaged while the trigger holds);
         /// the materializer lowers it to an OnPress + OnRelease toggle pair.</summary>
         public string TriggerMode { get; set; } = "OnPress";
+
+        /// <summary>Layer gate (v25, Steam's always_on_action): when
+        /// non-empty and not "Base", the macro's trigger only counts as
+        /// active while this shift layer is the slot's engaged layer, so
+        /// a set-scoped one-shot (a set_led color per action set, a
+        /// mouse_delta nudge) fires at set ENTRY, not at profile apply.
+        /// Rows scope through MappingRow.LayerMask already; this is the
+        /// macro-shaped twin. Empty = ungated (Base-hosted and ordinary
+        /// physical-input macros).</summary>
+        public string LayerMask { get; set; } = "";
 
         /// <summary>Continuous-hold threshold in milliseconds for the
         /// "HoldForMs" trigger mode (a Long_Press activator's

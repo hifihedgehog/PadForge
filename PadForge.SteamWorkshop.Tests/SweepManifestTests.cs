@@ -72,10 +72,16 @@ namespace PadForge.SteamWorkshop.Tests
         }
 
         [Fact]
-        public void ApprovedKeys_DeriveFromTheLockdownMultiset()
+        public void ApprovedKeys_AreTheMultisetKeysPlusTheZeroCorpusClass()
         {
+            // v25: the wild sweep compares against the KEY CLASS, which is
+            // the curated multiset's keys (counts are corpus-specific)
+            // plus the zero-corpus approved keys (fully adjudicated
+            // classes no curated fixture happens to exercise, the
+            // SteamSystemAction structural gap from the v24 digest).
             var expected = ApprovedReasonLockdown.CorpusMultiset
                 .Select(e => e.Substring(0, e.LastIndexOf('=')))
+                .Concat(ApprovedReasonLockdown.ZeroCorpusApprovedKeys)
                 .ToHashSet(StringComparer.Ordinal);
 
             Assert.Equal(expected.Count, ApprovedReasonLockdown.ApprovedKeys.Count);
@@ -86,7 +92,8 @@ namespace PadForge.SteamWorkshop.Tests
             foreach (var key in ApprovedReasonLockdown.ApprovedKeys)
                 Assert.DoesNotContain("=", key);
 
-            // A safety-net key outside the multiset stays unapproved.
+            // A safety-net key adjudicated in neither list stays
+            // unapproved: wild sightings of it must surface in the digest.
             Assert.DoesNotContain("Workshop_Tr_ActivatorInputNotSupported",
                 ApprovedReasonLockdown.ApprovedKeys);
         }

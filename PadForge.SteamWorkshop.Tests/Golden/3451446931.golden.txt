@@ -51,12 +51,12 @@ kbm rows: 39
   Base | KbmMBtn1
     <- Gamepad LeftTrigger [upper-half] dz=75
   Base | KbmMouseX | Sum
-    <- Gamepad LeftStickX dz=5 sens=1.25 rangeOuter=0.874
-    <- Gamepad RightStickX dz=5 sens=1.25 curve=2.5 rangeOuter=0.879
+    <- Gamepad LeftStickX dz=5 sens=1.25 rangeOuter=0.874 dzShape=axial dzInner=0.05
+    <- Gamepad RightStickX dz=5 sens=1.25 curve=2.5 rangeOuter=0.879 dzShape=axial dzInner=0.05
     <- Touchpad 1 Finger 0 X
   Base | KbmMouseY | Sum
-    <- Gamepad LeftStickY dz=5 sens=1.25 rangeOuter=0.874
-    <- Gamepad RightStickY dz=5 sens=1.25 curve=2.5 rangeOuter=0.879
+    <- Gamepad LeftStickY dz=5 sens=1.25 rangeOuter=0.874 dzShape=axial dzInner=0.05
+    <- Gamepad RightStickY dz=5 sens=1.25 curve=2.5 rangeOuter=0.879 dzShape=axial dzInner=0.05
     <- Touchpad 1 Finger 0 Y
   Layer_3451446931_1 | KbmKey35
     <- Gamepad Paddle4
@@ -114,7 +114,7 @@ menus: 2
     [2] D icon=ghost_040_act_0080.png
     [3] F icon=ghost_035_magic_0328.png
     [4] A icon=ghost_100_target_0020.png
-report: v24 rows:x0+k39 macros:14 menus:2 layers:1 clean:47 partial:2 skipped:0 errors:0
+report: v25 rows:x0+k39 macros:14 menus:2 layers:1 clean:47 partial:0 skipped:0 errors:0
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_a/Full_Press => KbmKey20 <- Gamepad ButtonA
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_b/Full_Press => KbmKey43 <- Gamepad ButtonB
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_x/Full_Press => KbmKey4E <- Gamepad ButtonX
@@ -123,7 +123,6 @@ report: v24 rows:x0+k39 macros:14 menus:2 layers:1 clean:47 partial:2 skipped:0 
   Clean RowEmitted @ Default/dpad/group 7 (dpad)/dpad_north/Full_Press => KbmKeyBF <- Gamepad DPadUp
   Clean RowEmitted @ Default/dpad/group 7 (dpad)/dpad_south/Full_Press => KbmKey0D <- Gamepad DPadDown
   Clean RowEmitted @ Default/dpad/group 7 (dpad)/dpad_west/Full_Press => KbmKey5A <- Gamepad DPadLeft
-  Partial DeadZoneRadialResidual(deadzone_inner_radius, deadzone_outer_radius) @ Default/joystick/group 15 (joystick_mouse)
   Clean RowEmitted @ Default/joystick/group 15 (joystick_mouse) => KbmMouseX <- Gamepad LeftStickX
   Clean RowEmitted @ Default/joystick/group 15 (joystick_mouse) => KbmMouseY <- Gamepad LeftStickY
   Clean MenuEmitted(4) @ Default/left_trackpad/group 13 (radial_menu) => Radial menu 1 on Touchpad 0: 4 bound cells
@@ -132,7 +131,6 @@ report: v24 rows:x0+k39 macros:14 menus:2 layers:1 clean:47 partial:2 skipped:0 
   Clean RowEmitted @ Default/left_trackpad/group 13 (radial_menu)/touch_menu_button_3/Full_Press => KbmKey46 <- Menu 1 Item 3
   Clean RowEmitted @ Default/left_trackpad/group 13 (radial_menu)/touch_menu_button_4/Full_Press => KbmKey41 <- Menu 1 Item 4
   Clean RowEmitted @ Default/left_trigger/group 4 (trigger)/click/Full_Press => KbmMBtn1 <- Gamepad LeftTrigger (upper half)
-  Partial DeadZoneRadialResidual(deadzone_inner_radius, deadzone_outer_radius) @ Default/right_joystick/group 9 (joystick_mouse)
   Clean RowEmitted @ Default/right_joystick/group 9 (joystick_mouse) => KbmMouseX <- Gamepad RightStickX
   Clean RowEmitted @ Default/right_joystick/group 9 (joystick_mouse) => KbmMouseY <- Gamepad RightStickY
   Clean RowEmitted @ Default/right_joystick/group 9 (joystick_mouse)/click/Full_Press => KbmKeyA1 <- Gamepad RightStick

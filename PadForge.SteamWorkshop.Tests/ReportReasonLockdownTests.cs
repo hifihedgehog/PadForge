@@ -60,7 +60,34 @@ namespace PadForge.SteamWorkshop.Tests
             foreach (var kv in counts)
                 actual.Append(kv.Key).Append('=').Append(kv.Value).Append('\n');
 
+            // The bless flag writes the ACTUAL multiset to a scratch file
+            // for the deliberate re-bless workflow (the approved list is
+            // shared source with per-key justifications, so it is always
+            // updated BY HAND against this dump, never overwritten).
+            if (Environment.GetEnvironmentVariable("PADFORGE_BLESS_GOLDEN") == "1")
+            {
+                File.WriteAllText(
+                    Path.Combine(Path.GetTempPath(), "padforge-corpus-multiset.txt"),
+                    actual.ToString());
+            }
+
             Assert.Equal(string.Join('\n', ApprovedReasonLockdown.CorpusMultiset), actual.ToString().TrimEnd('\n'));
+        }
+
+        /// <summary>The zero-corpus approved list (v25) exists precisely
+        /// for keys the curated corpus does not exercise. A key appearing
+        /// in BOTH lists means a curated fixture started emitting it: the
+        /// multiset test above already fails on the count, and this pins
+        /// the bookkeeping so the key is MOVED (with its proof comment)
+        /// rather than double-listed.</summary>
+        [Fact]
+        public void ZeroCorpusApprovedKeys_AreDisjointFromTheMultiset()
+        {
+            var multisetKeys = ApprovedReasonLockdown.CorpusMultiset
+                .Select(e => e.Substring(0, e.LastIndexOf('=')))
+                .ToHashSet(StringComparer.Ordinal);
+            foreach (var key in ApprovedReasonLockdown.ZeroCorpusApprovedKeys)
+                Assert.DoesNotContain(key, multisetKeys);
         }
     }
 }

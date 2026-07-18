@@ -527,6 +527,14 @@ namespace PadForge.Common.Input
             // continued hold from re-firing every frame. Cleared on
             // release.
             public bool[] LongPressFired = System.Array.Empty<bool>();
+            // v7 double-press gate (translator v25): raw-input latch for
+            // rising-edge detection (WasDown stores the GATED read for
+            // DoublePressMs activators, so the raw edge needs its own
+            // latch), the first press's anchor timestamp, and whether the
+            // second press of a qualifying pair is currently held.
+            public bool[] DoublePressRawWasDown = System.Array.Empty<bool>();
+            public long[] DoublePressAnchorTicks = System.Array.Empty<long>();
+            public bool[] DoublePressActive = System.Array.Empty<bool>();
             // #206 auto-cancel: last tick the engaged layer showed
             // activity (stamped at engage, refreshed from
             // LayerOutputTicks). Only meaningful while ToggleOn and
@@ -577,6 +585,9 @@ namespace PadForge.Common.Input
                 LongPressFired = ResizeBool(LongPressFired, newSize);
                 AutoCancelLastActivityTicks = ResizeLong(AutoCancelLastActivityTicks, newSize);
                 HoldLingerUntilTicks = ResizeLong(HoldLingerUntilTicks, newSize);
+                DoublePressRawWasDown = ResizeBool(DoublePressRawWasDown, newSize);
+                DoublePressAnchorTicks = ResizeLong(DoublePressAnchorTicks, newSize);
+                DoublePressActive = ResizeBool(DoublePressActive, newSize);
             }
 
             public void Clear()
@@ -593,6 +604,9 @@ namespace PadForge.Common.Input
                 System.Array.Clear(LongPressFired, 0, LongPressFired.Length);
                 System.Array.Clear(AutoCancelLastActivityTicks, 0, AutoCancelLastActivityTicks.Length);
                 System.Array.Clear(HoldLingerUntilTicks, 0, HoldLingerUntilTicks.Length);
+                System.Array.Clear(DoublePressRawWasDown, 0, DoublePressRawWasDown.Length);
+                System.Array.Clear(DoublePressAnchorTicks, 0, DoublePressAnchorTicks.Length);
+                System.Array.Clear(DoublePressActive, 0, DoublePressActive.Length);
                 LayerOutputTicks.Clear();
                 lock (SyncRoot)
                 {
@@ -821,6 +835,37 @@ namespace PadForge.Common.Input
         {
             // ── Read the activator's current input ──
             bool inputDown = ReadActivatorInput(act, state, slotIndex);
+
+            // ── v7 double-press gate (translator v25): when DoublePressMs
+            //    is set, the input counts as engaged only during the
+            //    SECOND press of a press-release-press pair inside the
+            //    window (the macro engine's DoublePress contract:
+            //    press, release, press; a slow second press re-arms as a
+            //    fresh first; a completed pair is consumed). Every mode
+            //    below then sees the gated read: Hold holds through the
+            //    second press, the edge modes fire on its rising edge. ──
+            if (act.DoublePressMs > 0)
+            {
+                long dpNow = System.DateTime.UtcNow.Ticks;
+                bool rawRising = inputDown && !rt.DoublePressRawWasDown[actIdx];
+                if (rawRising)
+                {
+                    long anchor = rt.DoublePressAnchorTicks[actIdx];
+                    long windowTicks = act.DoublePressMs * System.TimeSpan.TicksPerMillisecond;
+                    if (anchor != 0 && dpNow - anchor <= windowTicks)
+                    {
+                        rt.DoublePressActive[actIdx] = true;
+                        rt.DoublePressAnchorTicks[actIdx] = 0; // consume the pair
+                    }
+                    else
+                    {
+                        rt.DoublePressAnchorTicks[actIdx] = dpNow; // fresh first press
+                    }
+                }
+                rt.DoublePressRawWasDown[actIdx] = inputDown;
+                if (!inputDown) rt.DoublePressActive[actIdx] = false;
+                inputDown = rt.DoublePressActive[actIdx];
+            }
 
             // ── v2 Delay before Jump: gate transitions until the input
             //    has been continuously down for DelayMs ──

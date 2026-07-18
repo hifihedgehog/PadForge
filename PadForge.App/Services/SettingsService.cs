@@ -2951,6 +2951,7 @@ namespace PadForge.Services
                 TriggerMode = md.TriggerMode,
                 TriggerHoldMs = md.TriggerHoldMs,
                 TriggerDoublePressMs = md.TriggerDoublePressMs,
+                LayerMask = md.LayerMask ?? "",
                 ConsumeTriggerButtons = md.ConsumeTriggerButtons,
                 RepeatMode = md.RepeatMode,
                 RepeatCount = md.RepeatCount,
@@ -4006,6 +4007,7 @@ namespace PadForge.Services
                 TriggerMode = macro.TriggerMode,
                 TriggerHoldMs = macro.TriggerHoldMs,
                 TriggerDoublePressMs = macro.TriggerDoublePressMs,
+                LayerMask = macro.LayerMask,
                 ConsumeTriggerButtons = macro.ConsumeTriggerButtons,
                 RepeatMode = macro.RepeatMode,
                 RepeatCount = macro.RepeatCount,
@@ -5309,6 +5311,14 @@ namespace PadForge.Services
         /// templates author "double_tap_time" "442").</summary>
         [XmlElement]
         public int TriggerDoublePressMs { get; set; } = 442;
+
+        /// <summary>Shift-layer gate (translator v25, Steam's
+        /// always_on_action): when non-empty and not "Base", the macro's
+        /// trigger only counts as active while this layer is the slot's
+        /// engaged layer. Empty (default, and every pre-v25 profile) =
+        /// ungated.</summary>
+        [XmlElement]
+        public string LayerMask { get; set; } = "";
 
         [XmlElement]
         public bool ConsumeTriggerButtons { get; set; } = true;

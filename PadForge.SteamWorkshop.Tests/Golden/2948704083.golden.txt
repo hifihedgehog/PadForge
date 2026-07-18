@@ -97,7 +97,7 @@ menus: 2
     [1] Game Areas icon=ghost_050_menu_0030.png
     [2] Bulldoze icon=ghost_010_wpn_0320.png
     [3] Unlocking Panel icon=ghost_110_social_0070.png
-report: v23 rows:x0+k33 macros:6 menus:2 layers:3 clean:46 partial:1 skipped:0 errors:0
+report: v24 rows:x0+k33 macros:6 menus:2 layers:3 clean:46 partial:1 skipped:0 errors:0
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_a/Full_Press => KbmMBtn0 <- Gamepad ButtonA
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_b/Full_Press => KbmMBtn1 <- Gamepad ButtonB
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_x/Full_Press => KbmKey42 <- Gamepad ButtonX

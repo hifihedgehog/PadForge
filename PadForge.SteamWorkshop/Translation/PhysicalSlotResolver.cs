@@ -307,6 +307,38 @@ namespace PadForge.SteamWorkshop.Translation
                         // automap target, and no Xbox output bit, the same
                         // paddle shape as button_back_*.
                         "button_capture" => new ResolvedSource { Descriptor = "Button 11" },
+                        // Steam's assignable macro buttons (v24). The
+                        // serializer tokens button_macro0..7 (steamclient64
+                        // string table) are k_eGamepadButtonBitMask
+                        // ButtonMacro0..7 = bits 32-39 in the shipped
+                        // configurator (steamui/chunk~2dcc5aaf7.js), which
+                        // gates each one on the matching device capability
+                        // 1:1 (unCapabilities & ATTRIBCAP_MISCn_BUTTON ->
+                        // ButtonMacroN): they are the device's Nth EXTRA
+                        // button beyond the standard set and beyond the
+                        // capture-shaped button, which Steam models
+                        // separately (Ancillary1 / ATTRIBCAP_CAPTUREBUTTON)
+                        // exactly as SDL reserves MISC1 for it. So Steam
+                        // macro N is SDL misc N+2. Corpus witness: every
+                        // physical button_macro author is a Flydigi Vader 5
+                        // Pro (controller_caps 66578042879 = MISC0..4 set,
+                        // five extra buttons), and SDL maps those same five
+                        // to misc2..misc6 (SDL_gamepad.c Flydigi branch:
+                        // "misc2:b15,misc3:b16" for C/Z plus the Vader-5
+                        // "misc4:b17,misc5:b18,misc6:b19"); the mobile-touch
+                        // overlay's on-screen macro buttons carry the same
+                        // enum identity. The wrapper reads MISC2..MISC6 at
+                        // raw Buttons[17..21] (SdlDeviceWrapper), the
+                        // paddle shape: no automap target, no Xbox bit.
+                        // macro5..7 and the mobile multi-finger taps
+                        // (button_macro1finger/2finger, enum bits 48/49)
+                        // exceed SDL's misc space: null keeps the named
+                        // skip.
+                        "button_macro0" => new ResolvedSource { Descriptor = "Button 17" },
+                        "button_macro1" => new ResolvedSource { Descriptor = "Button 18" },
+                        "button_macro2" => new ResolvedSource { Descriptor = "Button 19" },
+                        "button_macro3" => new ResolvedSource { Descriptor = "Button 20" },
+                        "button_macro4" => new ResolvedSource { Descriptor = "Button 21" },
                         _ => null, // touchpads-as-switch and friends: no family member
                     };
 

@@ -394,8 +394,37 @@ namespace PadForge.SteamWorkshop.Translation
         /// TouchRight spot) drives layer verbs through the same
         /// button-like read a chord leg gets, closing the two corpus
         /// ActivatorInputNotSupported sites (the key survives as the
-        /// safety net for genuinely un-hostable gesture fires).</summary>
-        public const int CurrentTranslatorVersion = 23;
+        /// safety net for genuinely un-hostable gesture fires).
+        /// v24: the mass-sweep top four. button_macro0..4 resolve as the
+        /// device's extra buttons (k_eGamepadButtonBitMask ButtonMacro0..7
+        /// = bits 32-39, capability-gated 1:1 by ATTRIBCAP_MISCn_BUTTON in
+        /// the shipped configurator; Steam macro N = SDL misc N+2 since
+        /// both count the extras past the capture-shaped button, exact on
+        /// the corpus's Flydigi Vader 5 Pro) onto raw "Button 17..21"
+        /// paddle-shaped sources; macro5..7 and the mobile finger taps
+        /// keep the named skip. The chord activator lowers: chord_button
+        /// indexes the same enum (the gyro_button value space; the
+        /// configurator's Chord_ChordButton picker renders through the
+        /// same glyph map) and the partner rides the host source's
+        /// AND-gate leg, so rows gate, macros grow the gate trigger
+        /// entry (combined-output identity deliberately stripped: the
+        /// output bit fires partner-or-not), and layer verbs lower as
+        /// Kind=Chord activators; single-pad half clicks fold into the
+        /// windowed click read to free the gate slot, and only
+        /// out-of-enum chord_buttons or un-foldable double gates keep the
+        /// named skip. Long_Press impossible bindings reroute into their
+        /// binding's OWN class: game_action / game_action_analog feed the
+        /// per-preset GameActionsNotSupported aggregate and every
+        /// controller_action verb routes through the canonical walk
+        /// (mouse_position / screenshot / show_keyboard fire at the hold
+        /// threshold now, the SET_LED shape), so LongPressNotSupported
+        /// names only genuinely unknown vocabulary. "@"-prefixed menu
+        /// icons are the configurator's APP-PROVIDED set
+        /// (GetTouchMenuIconsForApp, client-internal /appcontrollericons):
+        /// unreachable locally by construction, so those cells degrade
+        /// silently to their text labels and MenuIconUnresolved names
+        /// only genuinely malformed references.</summary>
+        public const int CurrentTranslatorVersion = 24;
 
         public int TranslatorVersion { get; set; } = CurrentTranslatorVersion;
 
@@ -711,8 +740,11 @@ namespace PadForge.SteamWorkshop.Translation
         // the items and resolve against the local Steam client's art at
         // display time. The key plus its locale strings were deleted.
         /// <summary>A cell icon reference outside the Steam client's
-        /// bare-filename art shape (v21): the one icon form that cannot
-        /// resolve locally, named per cell with the exact file.</summary>
+        /// bare-filename art shape (v21): a malformed reference, named per
+        /// cell with the exact file. Since v24 the "@"-prefixed names are
+        /// NOT malformed and never land here: they are the configurator's
+        /// app-provided icon namespace (client-internal), so those cells
+        /// degrade silently to their text labels.</summary>
         public const string MenuIconUnresolved = "Workshop_Tr_MenuIconUnresolved";               // {0} icon reference
         /// <summary>Menu settings with no PadForge channel (In-Menu
         /// Sensitivity).</summary>

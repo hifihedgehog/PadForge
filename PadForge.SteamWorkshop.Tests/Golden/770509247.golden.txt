@@ -47,7 +47,7 @@ menus: 1
     [5] Sleep icon=ghost_050_menu_0130.png
     [6] Skip Turn icon=ghost_045_move_0070.png
     [7] Found a city icon=ghost_045_move_0200.png
-report: v23 rows:x0+k10 macros:11 menus:1 layers:0 clean:16 partial:2 skipped:1 errors:0
+report: v24 rows:x0+k10 macros:11 menus:1 layers:0 clean:16 partial:2 skipped:1 errors:0
   Clean RowEmitted @ In-Game Controls/button_diamond/group 0 (four_buttons)/button_A/Full_Press => KbmMBtn0 <- Gamepad ButtonA
   Clean RowEmitted @ In-Game Controls/button_diamond/group 0 (four_buttons)/button_B/Full_Press => KbmKey1B <- Gamepad ButtonB
   Clean RowEmitted @ In-Game Controls/joystick/group 13 (dpad)/dpad_east/Full_Press => KbmKey27 <- Gamepad LeftStickX (upper half)

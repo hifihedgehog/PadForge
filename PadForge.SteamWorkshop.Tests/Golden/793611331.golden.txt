@@ -75,7 +75,7 @@ menus: 1
   menu 1 Grid | Touchpad 0 [left half] | Base | fire=Click cells=2 | name=Touch Menu 1
     [0] Quicksave icon=ghost_030_inv_0100.png
     [1] Quickload icon=ghost_045_move_0020.png
-report: v23 rows:x20+k2 macros:19 menus:1 layers:0 clean:27 partial:0 skipped:0 errors:0
+report: v24 rows:x20+k2 macros:19 menus:1 layers:0 clean:27 partial:0 skipped:0 errors:0
   Clean MenuEmitted(2) @ Default/left_trackpad/group 10 (touch_menu) => Grid menu 1 on Touchpad 0: 2 bound cells
   Clean RowEmitted @ Default/left_trackpad/group 10 (touch_menu)/touch_menu_button_0/Full_Press => KbmKey74 <- Menu 1 Item 0
   Clean RowEmitted @ Default/left_trackpad/group 10 (touch_menu)/touch_menu_button_1/Full_Press => KbmKey78 <- Menu 1 Item 1

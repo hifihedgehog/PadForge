@@ -2605,6 +2605,8 @@
   <data name="Macro_HoldForMs_Tooltip" xml:space="preserve"><value>Dispara uma vez depois que o gatilho for mantido continuamente pelo tempo de retenção. Um toque mais curto não faz nada.</value></data>
   <data name="Macro_DoublePress" xml:space="preserve"><value>Ao Pressionar Duas Vezes</value></data>
   <data name="Macro_DoublePress_Tooltip" xml:space="preserve"><value>Dispara quando o gatilho é pressionado duas vezes dentro da janela de pressão. Se a segunda pressão for mantida, permanece ativo até soltar.</value></data>
+  <data name="Macro_SinglePress" xml:space="preserve"><value>Ao Pressionar Uma Vez</value></data>
+  <data name="Macro_SinglePress_Tooltip" xml:space="preserve"><value>Dispara quando não há um segundo pressionamento dentro da janela de pressionamento, podendo dividir um botão com o pressionamento duplo ou triplo. "Ao Pressionar" dispara na hora.</value></data>
   <data name="Macro_TriplePress" xml:space="preserve"><value>Ao Pressionar Três Vezes</value></data>
   <data name="Macro_TriplePress_Tooltip" xml:space="preserve"><value>Dispara quando o gatilho é pressionado três vezes dentro da janela de pressão. Se a terceira pressão for mantida, permanece ativo até soltar.</value></data>
   <data name="Macro_TriggerDoublePressMs_Label" xml:space="preserve"><value>Janela de Pressão</value></data>

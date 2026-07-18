@@ -2625,6 +2625,8 @@
   <data name="Macro_HoldForMs_Tooltip" xml:space="preserve"><value>Vuurt één keer nadat de trigger onafgebroken de vasthoudtijd ingedrukt is gehouden. Een kortere tik doet niets.</value></data>
   <data name="Macro_DoublePress" xml:space="preserve"><value>Bij dubbel indrukken</value></data>
   <data name="Macro_DoublePress_Tooltip" xml:space="preserve"><value>Vuurt wanneer de trigger twee keer binnen het tijdvenster wordt ingedrukt. Blijft actief tot loslaten als de tweede druk wordt vastgehouden.</value></data>
+  <data name="Macro_SinglePress" xml:space="preserve"><value>Bij enkele druk</value></data>
+  <data name="Macro_SinglePress_Tooltip" xml:space="preserve"><value>Wordt geactiveerd wanneer er geen tweede druk volgt binnen het drukvenster, zodat een knop gedeeld kan worden met dubbele of driedubbele druk. 'Bij indrukken' activeert direct.</value></data>
   <data name="Macro_TriplePress" xml:space="preserve"><value>Bij drievoudig indrukken</value></data>
   <data name="Macro_TriplePress_Tooltip" xml:space="preserve"><value>Vuurt wanneer de trigger drie keer binnen het tijdvenster wordt ingedrukt. Blijft actief tot loslaten als de derde druk wordt vastgehouden.</value></data>
   <data name="Macro_TriggerDoublePressMs_Label" xml:space="preserve"><value>Tijdvenster</value></data>

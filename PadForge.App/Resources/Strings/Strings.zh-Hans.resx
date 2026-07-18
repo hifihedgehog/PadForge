@@ -2605,6 +2605,8 @@
   <data name="Macro_HoldForMs_Tooltip" xml:space="preserve"><value>在触发器被连续按住达到保持时间后触发一次。更短的点按不起作用。</value></data>
   <data name="Macro_DoublePress" xml:space="preserve"><value>双击时</value></data>
   <data name="Macro_DoublePress_Tooltip" xml:space="preserve"><value>在连按时间内按下两次时触发。若第二次按住不放，将保持激活直到松开。</value></data>
+  <data name="Macro_SinglePress" xml:space="preserve"><value>单击时</value></data>
+  <data name="Macro_SinglePress_Tooltip" xml:space="preserve"><value>在按压窗口内没有第二次按下时触发，因此可与同一按钮的双击或三击共存。“按下时”则立即触发。</value></data>
   <data name="Macro_TriplePress" xml:space="preserve"><value>三击时</value></data>
   <data name="Macro_TriplePress_Tooltip" xml:space="preserve"><value>在连按时间内按下三次时触发。若第三次按住不放，将保持激活直到松开。</value></data>
   <data name="Macro_TriggerDoublePressMs_Label" xml:space="preserve"><value>连按时间</value></data>

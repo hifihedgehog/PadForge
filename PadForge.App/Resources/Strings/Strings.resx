@@ -2659,6 +2659,8 @@
   <data name="Macro_HoldForMs_Tooltip" xml:space="preserve"><value>Fires once after the trigger has been held continuously for the hold time. A shorter tap does nothing.</value></data>
   <data name="Macro_DoublePress" xml:space="preserve"><value>On Double Press</value></data>
   <data name="Macro_DoublePress_Tooltip" xml:space="preserve"><value>Fires when the trigger is pressed twice within the press window. If held on the second press, it stays active until release.</value></data>
+  <data name="Macro_SinglePress" xml:space="preserve"><value>On Single Press</value></data>
+  <data name="Macro_SinglePress_Tooltip" xml:space="preserve"><value>Fires when a press is not followed by a second press within the press window, so it can share a button with Double or Triple Press. On Press fires instantly instead.</value></data>
   <data name="Macro_TriplePress" xml:space="preserve"><value>On Triple Press</value></data>
   <data name="Macro_TriplePress_Tooltip" xml:space="preserve"><value>Fires when the trigger is pressed three times within the press window. If held on the third press, it stays active until release.</value></data>
   <data name="Macro_TriggerDoublePressMs_Label" xml:space="preserve"><value>Press Window</value></data>

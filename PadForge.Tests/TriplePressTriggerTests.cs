@@ -101,11 +101,13 @@ namespace PadForge.Tests
         }
 
         [Fact]
-        public void TriggerModeEnum_TriplePressPinnedAtTail()
+        public void TriggerModeEnum_TriplePressPinnedOrdinal()
         {
+            // The tail moved to SinglePress (8); TriplePress's ordinal
+            // stays pinned (the clipboard serializes numerically).
             Assert.Equal(7, (int)MacroTriggerMode.TriplePress);
             var values = Enum.GetValues<MacroTriggerMode>();
-            Assert.Equal(MacroTriggerMode.TriplePress, values[^1]);
+            Assert.Equal(MacroTriggerMode.TriplePress, values[^2]);
         }
 
         [Fact]

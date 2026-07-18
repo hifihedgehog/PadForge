@@ -665,6 +665,27 @@ namespace PadForge.ViewModels
                         if (!string.IsNullOrEmpty(value.DeviceLabel))
                             PrimarySourceDeviceLabel = value.DeviceLabel;
                         LoadDescriptor(value.Descriptor);
+                        // E7 (2026-07-14 audit): the wire contract makes an
+                        // un-inverted button on vertical scroll read DOWN
+                        // (Step 3's documented negation, which the Workshop
+                        // translator compensates for with SCROLL_UP =>
+                        // Invert). A user picking a plain button on a
+                        // scroll-Y row expects scroll UP, so stamp Invert
+                        // as the AUTHORING default, here at the pick seam
+                        // only: hydration and existing rows are untouched
+                        // (no migration, the contract itself is unchanged),
+                        // and the user can uncheck it for scroll down.
+                        // Vertical scroll only ("KbmScroll"): KbmScrollNeg
+                        // is the explicit scroll-DOWN leg and horizontal
+                        // has no up/down expectation.
+                        if (string.Equals(TargetSettingName, "KbmScroll", StringComparison.Ordinal))
+                        {
+                            var picked = PadForge.Engine.Common.Mapping.SourceCoercion
+                                .ClassifyDescriptor(value.Descriptor);
+                            if (picked == PadForge.Engine.Common.Mapping.SourceCoercion.SourceType.Button
+                                || picked == PadForge.Engine.Common.Mapping.SourceCoercion.SourceType.PovDirection)
+                                IsInverted = true;
+                        }
                         InputSelectedFromDropdown?.Invoke(this, EventArgs.Empty);
                     }
                 }

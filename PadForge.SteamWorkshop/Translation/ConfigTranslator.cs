@@ -810,6 +810,38 @@ namespace PadForge.SteamWorkshop.Translation
             }
         }
 
+        /// <summary>Strips the nonlinear response stamps off one rotated
+        /// leg (v19, T5). The rotation lowering Sums two per-source legs,
+        /// and a nonlinear per-leg response does not commute with the sum:
+        /// each leg would shape alone and the summed vector rotates by a
+        /// speed-dependent angle. The linear knobs (sensitivity scales,
+        /// outer range rescale, EMA smoothing, trackball decay) commute
+        /// with the Sum and stay stamped.</summary>
+        private static void WithholdNonlinearForRotation(MappingSource src)
+        {
+            src.ParamCurveExponent = 0;
+            src.ParamAntiDeadzone = 0;
+            src.ParamAccel = 0;
+        }
+
+        /// <summary>Names the withheld nonlinear keys once per rotated
+        /// group (v19, T5), the honest twin of
+        /// <see cref="WithholdNonlinearForRotation"/>.</summary>
+        private void ReportRotationNonlinearWithheld(Run run, string path,
+            in CurveRangeChannel curve, in MouseFeelChannel feel, bool curveChannel)
+        {
+            var keys = new List<string>(3);
+            if (curveChannel && curve.Exponent > 0) keys.Add("curve_exponent");
+            if (curveChannel && curve.Anti > 0) keys.Add("anti_deadzone");
+            if (feel.Accel > 0) keys.Add("acceleration");
+            if (keys.Count > 0)
+            {
+                run.Report.Add(TranslationStatus.Partial,
+                    TranslationReasons.RotationNonlinearWithheld, path,
+                    args: string.Join(", ", keys));
+            }
+        }
+
         /// <summary>Modes whose dropped <see cref="MouseModeTuningKeys"/> get
         /// the MouseModeTuningDropped note. flickstick is excluded: it reports
         /// the same keys through FlickStickTuningDropped in EmitFlickStick.</summary>
@@ -951,16 +983,59 @@ namespace PadForge.SteamWorkshop.Translation
         /// <summary>Steam's group-level inner deadzone (0..32767 of full
         /// deflection) as a PadForge DeadZone percent. 0 / absent / junk
         /// return 0 (keep the engine default; Steam's 0 is region geometry,
-        /// not a hair-trigger request).</summary>
+        /// not a hair-trigger request). v19 (T3): the stick-hosted D-pad
+        /// family stores the same knob under the bare "deadzone" key
+        /// (same 0..32767 scale); deadzone_inner_radius wins when both
+        /// are present.</summary>
         private static int GroupDeadZonePercent(Dictionary<string, string> settings)
         {
-            if (!settings.TryGetValue("deadzone_inner_radius", out var raw)
-                || !int.TryParse(raw, NumberStyles.Integer, CultureInfo.InvariantCulture, out int v)
-                || v <= 0)
+            if (!TryParseDeadZoneRaw(settings, "deadzone_inner_radius", out int v)
+                && !TryParseDeadZoneRaw(settings, "deadzone", out v))
             {
                 return 0;
             }
             return Math.Clamp((int)Math.Round(v * 100.0 / 32767.0), 1, 100);
+        }
+
+        private static bool TryParseDeadZoneRaw(Dictionary<string, string> settings,
+            string key, out int value)
+        {
+            value = 0;
+            return settings.TryGetValue(key, out var raw)
+                && int.TryParse(raw, NumberStyles.Integer, CultureInfo.InvariantCulture, out value)
+                && value > 0;
+        }
+
+        /// <summary>Names the pair-host deadzone residual (v19, T2): the
+        /// authored inner radius lands on the per-source DeadZone, which
+        /// only the digital (button-shaped) reads consume (the analog
+        /// pair read has no per-source inner channel), and the outer
+        /// radius applies per axis (ParamRangeOuter in the scalar shaping
+        /// tail), not radially over the pair, so diagonals reach full
+        /// deflection early. The radial application needs the per-source
+        /// companion-axis pair read (a ParamYDescriptor-style channel on
+        /// MappingSource) the engine does not carry yet; until it exists
+        /// the residual rides this named Partial per analog pair host.</summary>
+        private void ReportRadialDeadZoneResidual(Run run,
+            Dictionary<string, string> settings, string path)
+        {
+            var keys = new List<string>(2);
+            if (GroupDeadZonePercent(settings) > 0)
+            {
+                keys.Add(TryParseDeadZoneRaw(settings, "deadzone_inner_radius", out _)
+                    ? "deadzone_inner_radius" : "deadzone");
+            }
+            if (TryParseDeadZoneRaw(settings, "deadzone_outer_radius", out int outer)
+                && outer < 32767)
+            {
+                keys.Add("deadzone_outer_radius");
+            }
+            if (keys.Count > 0)
+            {
+                run.Report.Add(TranslationStatus.Partial,
+                    TranslationReasons.DeadZoneRadialResidual, path,
+                    args: string.Join(", ", keys));
+            }
         }
 
         /// <summary>True when the group's Outer Ring zone covers the whole
@@ -2114,6 +2189,11 @@ namespace PadForge.SteamWorkshop.Translation
                 && int.TryParse(raw, NumberStyles.Integer, CultureInfo.InvariantCulture, out int o)
                     ? o : 0;
             int dzPct = GroupDeadZonePercent(settings);
+            // v19 (T2): the emitted thumb pair reads each axis alone, so
+            // the authored radii do not apply radially; name the residual
+            // on the pair-emitting hosts.
+            if (PhysicalSlotResolver.IsStick(slot) || PhysicalSlotResolver.IsTrackpad(slot))
+                ReportRadialDeadZoneResidual(run, settings, path);
 
             MappingSource Src(string descriptor)
             {
@@ -2230,6 +2310,9 @@ namespace PadForge.SteamWorkshop.Translation
 
             var (x, y, family) = pair.Value;
             int dzPct = GroupDeadZonePercent(settings);
+            // v19 (T2): the pair-host inner/outer radii do not apply
+            // radially at the analog reads; name the residual.
+            ReportRadialDeadZoneResidual(run, settings, path);
             // v11 (widened to every analog host in v18): the group's
             // response-curve cluster rides the emitted pair as per-source
             // params.
@@ -2260,6 +2343,7 @@ namespace PadForge.SteamWorkshop.Translation
                 if (invert ^ (coeff < 0)) src.Invert = true;
                 if (curveChannel) curve.StampAxis(src, isX);
                 feel.StampFeel(src, isX);
+                if (feel.HasRotation) WithholdNonlinearForRotation(src);
                 return src;
             }
 
@@ -2270,6 +2354,7 @@ namespace PadForge.SteamWorkshop.Translation
                 // axes with the trigonometric coefficients folded into the
                 // per-source sensitivity (sign via Invert). Near-zero legs
                 // are dropped so 90-degree multiples stay two clean rows.
+                ReportRotationNonlinearWithheld(run, path, curve, feel, curveChannel);
                 double t = feel.RotationDeg * Math.PI / 180.0;
                 double cos = Math.Cos(t), sin = Math.Sin(t);
                 void AddLeg(string target, string desc, bool invert, bool isX, double coeff)
@@ -2322,6 +2407,8 @@ namespace PadForge.SteamWorkshop.Translation
 
             var (x, y, family) = pair.Value;
             int dzPct = GroupDeadZonePercent(settings);
+            // v19 (T2): same pair-host radial residual note as EmitMouseAxes.
+            ReportRadialDeadZoneResidual(run, settings, path);
             bool invertX = SettingIsOn(settings, "invert_x");
             bool invertY = SettingIsOn(settings, "invert_y");
             string dst = ParseIntSetting(settings, "output_joystick", 0) == 1 ? "Left" : "Right";
@@ -2342,6 +2429,7 @@ namespace PadForge.SteamWorkshop.Translation
                 if (invert ^ (coeff < 0)) src.Invert = true;
                 if (curveChannel) curve.StampAxis(src, isX);
                 feel.StampFeel(src, isX);
+                if (feel.HasRotation) WithholdNonlinearForRotation(src);
                 return src;
             }
 
@@ -2349,6 +2437,7 @@ namespace PadForge.SteamWorkshop.Translation
             {
                 // rotation (v18): same two-source Sum lowering as
                 // EmitMouseAxes, on the thumb-axis targets.
+                ReportRotationNonlinearWithheld(run, path, curve, feel, curveChannel);
                 double t = feel.RotationDeg * Math.PI / 180.0;
                 double cos = Math.Cos(t), sin = Math.Sin(t);
                 void AddLeg(string target, string desc, bool invert, bool isX, double coeff)
@@ -2358,8 +2447,22 @@ namespace PadForge.SteamWorkshop.Translation
                         Make(desc, invert, isX, coeff), isAxis: true,
                         TranslationStatus.Clean, TranslationReasons.RowEmitted, path);
                 }
+                // Gyro pitch→X cross leg (v19, finding 1i): the engine's
+                // per-source axis-frame seam flips gyro yaw / roll on the
+                // thumb X targets but never pitch
+                // (SourceEvaluator.ShouldFlipForAxisFrame), so the authored
+                // -sin composed with that yaw flip realized
+                // [[-cos, -sin], [sin, cos]] on the stick pair
+                // (det = -cos 2θ, a shear). The rotation acts in the
+                // SENSOR plane before the yaw→stick frame map
+                // (out = B·R(θ)·g with B = diag(-1, 1)), so factoring the
+                // per-source frame into the emitted coefficient means the
+                // pitch→X leg flips to +sin for the gyro family, restoring
+                // an orthogonal realized matrix [[-cos, sin], [sin, cos]]
+                // (det = -1). Stick and touchpad pairs (families 0/1)
+                // never hit that engine flip and keep -sin.
                 AddLeg($"{dst}ThumbAxisX", x, invertX, isX: true, cos);
-                AddLeg($"{dst}ThumbAxisX", y, invertY, isX: true, -sin);
+                AddLeg($"{dst}ThumbAxisX", y, invertY, isX: true, family == 2 ? sin : -sin);
                 AddLeg($"{dst}ThumbAxisY", x, invertX, isX: false, sin);
                 AddLeg($"{dst}ThumbAxisY", y, invertY, isX: false, cos);
             }
@@ -3001,6 +3104,12 @@ namespace PadForge.SteamWorkshop.Translation
             TranslatedMacroAction.RepeatKeyWhileHeld => false,
             TranslatedMacroAction.RepeatVcButtonWhileHeld => false,
             TranslatedMacroAction.RepeatVcAxisWhileHeld => false,
+            // v19 (T1): the wheel turbo repeats its one-shot detent on the
+            // macro repeat machinery, so a prepended Delay step would
+            // re-run inside EVERY iteration and stretch the cadence.
+            // Activator delays on it stay named (ActivatorDelayDropped),
+            // the autofire-delay policy.
+            TranslatedMacroAction.RepeatWheelWhileHeld => false,
             TranslatedMacroAction.HoldVcButton => false,
             TranslatedMacroAction.HoldVcAxis => false,
             TranslatedMacroAction.MouseLimitRegion => false,
@@ -3323,6 +3432,17 @@ namespace PadForge.SteamWorkshop.Translation
                         // inverse of what the config asked for.
                         EmitWheelTapMacro(run, binding, source, path, wheel.Value,
                             inputName, triggerMode: "OnRelease");
+                        break;
+                    }
+                    if (holdRepeats)
+                    {
+                        // hold_repeats (v19, T1): one detent per authored
+                        // repeat_rate while held. The row would scroll
+                        // continuously at the full per-frame rate instead
+                        // (thousands of detents per second), ignoring the
+                        // authored cadence entirely.
+                        EmitWheelTurboMacro(run, binding, source, path, wheel.Value,
+                            inputName, intervalMs);
                         break;
                     }
                     var src = BuildSource(source, soft);
@@ -4168,6 +4288,35 @@ namespace PadForge.SteamWorkshop.Translation
             return true;
         }
 
+        /// <summary>hold_repeats on a mouse_wheel binding (v19, T1): a
+        /// RepeatWheelWhileHeld turbo macro pulsing one discrete detent per
+        /// authored repeat_rate while the physical input is held (the
+        /// materializer lowers it to a MouseWheelTap riding
+        /// RepeatMode=UntilRelease with the interval as the repeat gap).
+        /// Replaces the continuous full-scale row, which ignored the
+        /// authored cadence.</summary>
+        private bool EmitWheelTurboMacro(Run run, SteamInputBinding binding, ResolvedSource source,
+            string path, (string Target, bool Invert) wheel, string inputName, int intervalMs)
+        {
+            bool horizontal = wheel.Target == "KbmScrollH";
+            var macro = new TranslatedMacro
+            {
+                Name = $"Turbo wheel ({inputName})",
+                Action = TranslatedMacroAction.RepeatWheelWhileHeld,
+                TriggerMode = "WhileHeld",
+                ConsumeTrigger = false,
+                WheelHorizontal = horizontal,
+                // Same tick signs as EmitWheelTapMacro.
+                WheelTicks = horizontal ? (wheel.Invert ? -1 : 1) : (wheel.Invert ? 1 : -1),
+                IntervalMs = intervalMs,
+            };
+            FillMacroTrigger(macro, source);
+            run.Profile.Macros.Add(macro);
+            run.Report.Add(TranslationStatus.Clean, TranslationReasons.MacroEmitted,
+                path, binding.Raw, emitted: $"Turbo wheel macro ({intervalMs} ms)");
+            return true;
+        }
+
         /// <summary>The activator toggle on an axis-natured VC target (v18):
         /// a ToggleVcAxis latch macro replacing the momentary output, with
         /// the toggle + hold_repeats composite on the latch pulse.</summary>
@@ -4420,6 +4569,18 @@ namespace PadForge.SteamWorkshop.Translation
                         // can need one extra step before it lands on Base.
                         run.Report.Add(TranslationStatus.Partial, TranslationReasons.RemoveLayerApproximated,
                             path, binding.Raw);
+                        // v19 (T6): a release-hosted remove steps on the
+                        // press edge instead (the Cycle activator has no
+                        // release-edge trigger); name the shifted edge.
+                        // Only when the Cycle actually lowered: the
+                        // unhosted arm emits nothing, so the note-only
+                        // Partial above already covers it whole.
+                        if (onRelease && hosted)
+                        {
+                            run.Report.Add(TranslationStatus.Partial,
+                                TranslationReasons.LayerReleaseEdgeApproximated,
+                                path, binding.Raw, args: "REMOVE_LAYER");
+                        }
                         return;
                     }
                     if (!TryResolvePresetIndex(run, presetIndex, out int presetId))
@@ -4451,6 +4612,19 @@ namespace PadForge.SteamWorkshop.Translation
                     };
                     FillActivatorInput(layerReq, source);
                     run.Activators.Add(layerReq);
+                    // v19 (T6): a release-hosted add_layer / hold_layer
+                    // engages on the press edge instead. Every
+                    // ShiftActivator mode keys on the press edge (Hold
+                    // while held, Toggle / Cycle / Custom on press), so a
+                    // release edge is inexpressible; the layer change
+                    // still lowers, one edge early, under a named Partial
+                    // instead of a silent Clean.
+                    if (onRelease)
+                    {
+                        run.Report.Add(TranslationStatus.Partial,
+                            TranslationReasons.LayerReleaseEdgeApproximated,
+                            path, binding.Raw, args: action.ToUpperInvariant());
+                    }
                     return;
                 }
 
@@ -4497,6 +4671,15 @@ namespace PadForge.SteamWorkshop.Translation
                     };
                     FillActivatorInput(jumpReq, source);
                     run.Activators.Add(jumpReq);
+                    // v19 (T6): a release-hosted preset jump fires on the
+                    // press edge instead (Custom / Cycle activators key on
+                    // the press edge only); named Partial, not silent Clean.
+                    if (onRelease)
+                    {
+                        run.Report.Add(TranslationStatus.Partial,
+                            TranslationReasons.LayerReleaseEdgeApproximated,
+                            path, binding.Raw, args: "CHANGE_PRESET");
+                    }
                     return;
                 }
 

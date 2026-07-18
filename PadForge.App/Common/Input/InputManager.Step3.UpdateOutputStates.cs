@@ -1,5 +1,6 @@
 ﻿using System;
 using PadForge.Engine;
+using PadForge.Engine.Common.Mapping;
 using PadForge.Engine.Data;
 
 namespace PadForge.Common.Input
@@ -2833,78 +2834,20 @@ namespace PadForge.Common.Input
             descriptor.StartsWith("Touchpad", StringComparison.Ordinal);
 
         /// <summary>
-        /// Resolves bool-yielding touchpad descriptors against a CustomInputState.
-        /// Recognized forms:
-        ///   "Touchpad N Click"          — state.Buttons[16] (SDL_GAMEPAD_BUTTON_TOUCHPAD;
-        ///                                  N is parsed but only N==0 currently
-        ///                                  has a backing slot — multi-touchpad
-        ///                                  devices route their extras through
-        ///                                  the SDL3 fork patch into other
-        ///                                  Buttons[] indices, not handled here)
-        ///   "Touchpad N Finger M Down"  — state.TouchpadDown[M], finger M's
-        ///                                  contact bool. N is parsed for
-        ///                                  symmetry with the X/Y descriptors.
-        /// Anything else returns false. The N==0 restriction matches the X/Y
-        /// descriptors elsewhere in Step 3 — PadForge models a single logical
-        /// touchpad with up to two fingers regardless of how many physical
-        /// touchpads SDL reports (multi-touchpad devices like the Steam Deck
-        /// fan their fingers into the same two slots).
+        /// Resolves bool-yielding touchpad descriptors against a
+        /// CustomInputState by delegating to
+        /// <see cref="SourceCoercion.ReadTouchpadBool"/>, the single owner
+        /// of the touchpad bool grammar ("Touchpad N Click" incl. the v18
+        /// windowed click, "Touchpad N Finger M Down" with every window
+        /// token, and the 7-token quadrant-in-half compose). This used to
+        /// be a hand-kept mirror of that reader and diverged on every v18
+        /// window token, so the same descriptor read true on a mapping-set
+        /// row and false on the legacy per-key path (audit 2026-07-17 G1).
+        /// X/Y descriptors still resolve false: a finger position has no
+        /// bool reading, so a stick X can't quietly become a button.
+        /// Internal for the PadForge.Tests twin-sync pins.
         /// </summary>
-        private static bool MapTouchpadButton(CustomInputState state, string descriptor)
-        {
-            // Format: "Touchpad N <suffix>", split on spaces.
-            var parts = descriptor.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-            if (parts.Length < 3) return false;
-            if (!int.TryParse(parts[1], out int touchpadIndex)) return false;
-
-            // Click: "Touchpad N Click", 3 parts. Pad 0 = the canonical
-            // Buttons[16] click; nonzero pads read per-pad Clicked
-            // (mirrors SourceCoercion.ReadTouchpadBool, which carries the
-            // rationale: imported right-pad click rows were dead).
-            if (parts.Length == 3 && string.Equals(parts[2], "Click", StringComparison.Ordinal))
-            {
-                if (touchpadIndex != 0)
-                    return state.Touchpads != null
-                        && touchpadIndex < state.Touchpads.Length
-                        && state.Touchpads[touchpadIndex] != null
-                        && state.Touchpads[touchpadIndex].Clicked;
-                if (state.Buttons == null || state.Buttons.Length <= 16) return false;
-                return state.Buttons[16];
-            }
-
-            // Finger down: "Touchpad N Finger M Down" (5 parts) plus the
-            // region-windowed "... Down Left" / "Down Right" 6-part forms
-            // (#9 B-1), mirroring SourceCoercion.ReadTouchpadBool so the
-            // legacy per-key path and the mapping-set path agree on the
-            // half-windowed contact bool.
-            if ((parts.Length == 5 || parts.Length == 6)
-                && string.Equals(parts[2], "Finger", StringComparison.Ordinal)
-                && string.Equals(parts[4], "Down", StringComparison.Ordinal)
-                && int.TryParse(parts[3], out int fingerIndex))
-            {
-                bool leftHalf = false, rightHalf = false;
-                if (parts.Length == 6)
-                {
-                    leftHalf = string.Equals(parts[5], "Left", StringComparison.Ordinal);
-                    rightHalf = string.Equals(parts[5], "Right", StringComparison.Ordinal);
-                    if (!leftHalf && !rightHalf) return false;
-                }
-                if (state.Touchpads == null
-                    || touchpadIndex < 0 || touchpadIndex >= state.Touchpads.Length) return false;
-                var pad = state.Touchpads[touchpadIndex];
-                if (pad == null || fingerIndex < 0 || fingerIndex >= pad.MaxFingers) return false;
-                if (!pad.FingerDown[fingerIndex]) return false;
-                if (leftHalf) return pad.FingerX[fingerIndex] < 0.5f;
-                if (rightHalf) return pad.FingerX[fingerIndex] >= 0.5f;
-                return true;
-            }
-
-            // X/Y descriptors are handled by the touchpad output path in
-            // Step 3 directly (BuildTouchpadState reads state.Touchpads),
-            // not via MapToButtonPressed. They don't have a meaningful bool
-            // interpretation, so reject them here so the user can't quietly
-            // assign a stick X to a button.
-            return false;
-        }
+        internal static bool MapTouchpadButton(CustomInputState state, string descriptor)
+            => SourceCoercion.ReadTouchpadBool(state, descriptor);
     }
 }

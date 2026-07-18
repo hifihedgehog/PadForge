@@ -2590,6 +2590,9 @@
   <data name="Workshop_Tr_MouseRegionTuningDropped" xml:space="preserve"><value>mouse region engage/release settings dropped ({0})</value></data>
   <data name="Workshop_Tr_FlickStickSurfaceNotSupported" xml:space="preserve"><value>flick stick on a touch surface skipped (PadForge flick stick reads a physical stick)</value></data>
   <data name="Workshop_Tr_FlickStickTuningDropped" xml:space="preserve"><value>flick stick tuning settings dropped ({0})</value></data>
+  <data name="Workshop_Tr_DeadZoneRadialResidual" xml:space="preserve"><value>deadzone radii apply per axis, not radially ({0})</value></data>
+  <data name="Workshop_Tr_RotationNonlinearWithheld" xml:space="preserve"><value>nonlinear response withheld on rotated axes ({0})</value></data>
+  <data name="Workshop_Tr_LayerReleaseEdgeApproximated" xml:space="preserve"><value>release-hosted {0} switches on press instead</value></data>
   <data name="Workshop_Tr_MouseModeTuningDropped" xml:space="preserve"><value>mouse feel settings dropped ({0})</value></data>
   <data name="Workshop_Tr_AxisInversionNotApplied" xml:space="preserve"><value>axis inversion not applied ({0})</value></data>
   <data name="Workshop_Tr_ScrollWheelApproximated" xml:space="preserve"><value>circular scroll wheel approximated as a vertical drag</value></data>
@@ -2624,6 +2627,20 @@
   <data name="MacroAction_MouseNudge_Format" xml:space="preserve"><value>Nudge cursor by ({0}, {1}) px</value></data>
   <data name="MacroAction_Type_CycleTapList" xml:space="preserve"><value>Cycle Tap List</value></data>
   <data name="MacroAction_CycleTapList_Tooltip" xml:space="preserve"><value>Each fire performs the next tap in the step list and advances. With wrap enabled the list restarts after the last step; without it, firing stops at the end.</value></data>
+  <data name="MacroAction_Type_ToggleMouseButton" xml:space="preserve"><value>Toggle Mouse Button</value></data>
+  <data name="MacroAction_ToggleMouseButton_Tooltip" xml:space="preserve"><value>Each fire latches or unlatches the mouse button. A latched button stays held down until the next fire or until the macro is disabled.</value></data>
+  <data name="MacroAction_ToggleMouseButton_Format" xml:space="preserve"><value>Toggle mouse {0}</value></data>
+  <data name="MacroAction_Type_ToggleVcAxis" xml:space="preserve"><value>Toggle Axis</value></data>
+  <data name="MacroAction_ToggleVcAxis_Tooltip" xml:space="preserve"><value>Each fire latches or unlatches the axis value. While latched the axis is written every frame until the next fire or until the macro is disabled.</value></data>
+  <data name="MacroAction_ToggleVcAxis_Format" xml:space="preserve"><value>Toggle {0} = {1}</value></data>
+  <data name="MacroAction_Type_RepeatVcAxisWhileHeld" xml:space="preserve"><value>Repeat Axis While Held</value></data>
+  <data name="MacroAction_RepeatVcAxisWhileHeld_Tooltip" xml:space="preserve"><value>While the trigger is held, asserts the axis value on an on/off square wave with the set interval.</value></data>
+  <data name="MacroAction_RepeatVcAxisWhileHeld_Format" xml:space="preserve"><value>Repeat {0} = {1} every {2} ms</value></data>
+  <data name="MacroAction_Type_ToggleWheel" xml:space="preserve"><value>Toggle Wheel Scroll</value></data>
+  <data name="MacroAction_ToggleWheel_Tooltip" xml:space="preserve"><value>Each fire latches or unlatches a continuous scroll. While latched, sends the tick count once per interval until the next fire or until the macro is disabled.</value></data>
+  <data name="MacroAction_ToggleWheel_Format" xml:space="preserve"><value>Toggle wheel scroll ({0} ticks every {1} ms)</value></data>
+  <data name="Macro_PulseWhileLatched" xml:space="preserve"><value>Pulse While Latched</value></data>
+  <data name="Macro_PulseWhileLatched_Tooltip" xml:space="preserve"><value>While latched, pulse the output on and off at the repeat interval instead of holding it solid.</value></data>
   <data name="MacroAction_CycleTapList_Format" xml:space="preserve"><value>Cycle tap list ({0} steps)</value></data>
   <data name="Macro_CycleSteps_Label" xml:space="preserve"><value>Steps</value></data>
   <data name="Macro_CycleWrap_Label" xml:space="preserve"><value>Wrap</value></data>

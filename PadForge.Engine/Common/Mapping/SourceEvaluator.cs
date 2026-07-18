@@ -28,9 +28,17 @@ namespace PadForge.Engine.Common.Mapping
         /// <see cref="SourceCoercion.EvaluateForButtonTarget"/>). The
         /// synthetic source is cached on the owning source and rebuilt
         /// only when the descriptor reference changes (the menu parse
-        /// cache contract), so the hot path is a reference compare.</summary>
+        /// cache contract), so the hot path is a reference compare. The
+        /// gate descriptor is canonicalized at cache-build time: a
+        /// "Gamepad ..." alias gate otherwise paid the alias Substring on
+        /// every tick, and the canonical form short-circuits the per-read
+        /// CanonicalDescriptor to a reference pass-through. An axis-natured
+        /// gate thresholds at <paramref name="thresholdPercent"/>: the
+        /// button lane forwards its caller's global threshold, the axis /
+        /// trigger lanes keep the 50 percent default (they carry no caller
+        /// threshold of their own).</summary>
         private static bool GateHeld(CustomInputState state, MappingSource src,
-            int slotIndex, string evaluatedDeviceGuid)
+            int slotIndex, string evaluatedDeviceGuid, int thresholdPercent = 50)
         {
             string gate = src.GateDescriptor;
             if (string.IsNullOrEmpty(gate)) return true;
@@ -40,14 +48,14 @@ namespace PadForge.Engine.Common.Mapping
                 cached = new MappingSource
                 {
                     Kind = "Direct",
-                    Descriptor = gate,
+                    Descriptor = SourceCoercion.CanonicalDescriptor(gate),
                     DeviceGuid = src.DeviceGuid,
                 };
                 src.GateSourceCache = cached;
                 src.GateSourceCacheKey = gate;
             }
-            return SourceCoercion.EvaluateForButtonTarget(state, cached, 50, slotIndex,
-                evaluatedDeviceGuid);
+            return SourceCoercion.EvaluateForButtonTarget(state, cached, thresholdPercent,
+                slotIndex, evaluatedDeviceGuid);
         }
 
         public static bool EvaluateForButtonTarget(
@@ -58,7 +66,7 @@ namespace PadForge.Engine.Common.Mapping
             string evaluatedDeviceGuid = null)
         {
             if (src == null) return false;
-            if (!GateHeld(state, src, slotIndex, evaluatedDeviceGuid)) return false;
+            if (!GateHeld(state, src, slotIndex, evaluatedDeviceGuid, globalThresholdPercent)) return false;
 
             switch (src.Kind ?? "Direct")
             {

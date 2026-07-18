@@ -97,7 +97,7 @@ menus: 2
     [1] Game Areas
     [2] Bulldoze
     [3] Unlocking Panel
-report: v18 rows:x0+k33 macros:6 menus:2 layers:3 clean:46 partial:3 skipped:0 errors:0
+report: v19 rows:x0+k33 macros:6 menus:2 layers:3 clean:46 partial:3 skipped:0 errors:0
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_a/Full_Press => KbmMBtn0 <- Gamepad ButtonA
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_b/Full_Press => KbmMBtn1 <- Gamepad ButtonB
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_x/Full_Press => KbmKey42 <- Gamepad ButtonX

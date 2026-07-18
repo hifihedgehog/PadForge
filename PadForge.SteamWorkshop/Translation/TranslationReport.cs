@@ -320,8 +320,25 @@ namespace PadForge.SteamWorkshop.Translation
         /// transition_time consumes into ParamFlickTime.
         /// InterruptibleDropped retires as factually wrong: stored
         /// interruptable 0 matches PadForge's native never-cancel
-        /// evaluation exactly (keys and locale strings deleted).</summary>
-        public const int CurrentTranslatorVersion = 18;
+        /// evaluation exactly (keys and locale strings deleted).
+        /// v19: the audit-2 semantics wave. The gyro-hosted
+        /// mouse_joystick rotation flips its pitch-to-X cross leg so the
+        /// realized family-2 matrix stays orthogonal against the engine's
+        /// yaw-frame flip (finding 1i). mouse_wheel hold_repeats lowers
+        /// to a RepeatWheelWhileHeld turbo (one detent per repeat_rate)
+        /// instead of the continuous full-scale row. The bare "deadzone"
+        /// key parses as the group inner radius beside
+        /// deadzone_inner_radius. Rotated groups withhold the nonlinear
+        /// per-leg stamps (curve exponent, anti-deadzone, accel) under
+        /// the named RotationNonlinearWithheld Partial, since nonlinear
+        /// shaping does not commute with the rotation Sum. Analog pair
+        /// hosts name the radial deadzone residual
+        /// (DeadZoneRadialResidual: inner never reaches the analog read,
+        /// outer applies per axis) pending the companion-axis pair-read
+        /// channel. Release-hosted layer and preset verbs name their
+        /// press-edge approximation (LayerReleaseEdgeApproximated)
+        /// instead of lowering under silent Clean.</summary>
+        public const int CurrentTranslatorVersion = 19;
 
         public int TranslatorVersion { get; set; } = CurrentTranslatorVersion;
 
@@ -492,6 +509,12 @@ namespace PadForge.SteamWorkshop.Translation
         public const string MissingPreset = "Workshop_Tr_MissingPreset";                         // {0} preset id
         public const string ReferenceCycle = "Workshop_Tr_ReferenceCycle";                       // {0} group id
         public const string RemoveLayerApproximated = "Workshop_Tr_RemoveLayerApproximated";
+        /// <summary>A layer / preset verb hosted on a release activator
+        /// (v19, T6). Every ShiftActivator mode keys on the press edge
+        /// (Hold while held, Toggle / Cycle / Custom on press), so the
+        /// change lowers one edge early; this names the shifted edge
+        /// instead of leaving the arm silent Clean. {0} = the verb.</summary>
+        public const string LayerReleaseEdgeApproximated = "Workshop_Tr_LayerReleaseEdgeApproximated"; // {0} verb
         public const string ActivatorInputNotSupported = "Workshop_Tr_ActivatorInputNotSupported";
         // ClickGateDropped retired in v18: the AND companion rides each
         // source itself (MappingSource.GateDescriptor, evaluated like the
@@ -517,6 +540,21 @@ namespace PadForge.SteamWorkshop.Translation
         // X / Y rows have no pair read) and the defensively-listed
         // output_curve.
         public const string ResponseCurveNotSupported = "Workshop_Tr_ResponseCurveNotSupported"; // {0} setting keys
+        /// <summary>The pair-host deadzone radial residual (v19, T2): the
+        /// inner radius lands on the digital per-source DeadZone only (the
+        /// analog pair read has no per-source inner channel) and the outer
+        /// radius applies per axis, not radially, so diagonals overshoot.
+        /// Retires when the per-source companion-axis pair read (a
+        /// ParamYDescriptor-style channel on MappingSource) lands in the
+        /// engine. {0} = the authored keys.</summary>
+        public const string DeadZoneRadialResidual = "Workshop_Tr_DeadZoneRadialResidual";       // {0} setting keys
+        /// <summary>Nonlinear response stamps withheld on a rotated group
+        /// (v19, T5): curve exponent / anti-deadzone / accel do not
+        /// commute with the rotation's two-source Sum (per-leg shaping
+        /// bends the summed vector by a speed-dependent angle), so the
+        /// rotated legs carry only the linear knobs and the withheld keys
+        /// are named. {0} = the withheld keys.</summary>
+        public const string RotationNonlinearWithheld = "Workshop_Tr_RotationNonlinearWithheld"; // {0} setting keys
         // Since v18 the note is the out-of-census net only: gyro_button 0
         // (pad touch) stamps the slot-level engage overlay and
         // gyro_button_invert 1 the inverted hold; non-zero indices and

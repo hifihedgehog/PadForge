@@ -78,6 +78,19 @@ namespace PadForge.ViewModels
         [System.Xml.Serialization.XmlIgnore]
         public int PadIndex { get; set; } = -1;
 
+        /// <summary>Nonzero links the two legs of a materialized hold pair
+        /// (audit #2 M4/M6): the press leg SETs the ToggleKey /
+        /// ToggleMouseButton latch, the OnRelease twin CLEARs it, and the
+        /// shared id is how they reach each other at runtime. A starting
+        /// leg cancels its executing twin, so a re-press kills the twin's
+        /// pending delayed release before the stale Clear can cut the new
+        /// hold short, and an Off fire clears the twin's latches (each
+        /// leg's latch state lives on its own action instance). 0 =
+        /// unpaired, every macro the editor creates. Persisted via
+        /// <c>MacroData.PairId</c>, like <see cref="PadIndex"/>.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public int PairId { get; set; }
+
         private bool _isEnabled = true;
 
         /// <summary>Whether this macro is active. Disabling clears every
@@ -99,6 +112,9 @@ namespace PadForge.ViewModels
                         if (action == null) continue;
                         action.VcToggleLatched = false;
                         action.KeyToggleLatched = false;
+                        action.MouseToggleLatched = false;
+                        action.VcAxisToggleLatched = false;
+                        action.WheelToggleLatched = false;
                     }
                 }
             }
@@ -818,7 +834,12 @@ namespace PadForge.ViewModels
                     // plain entries keep the byte-identical "sd" form.
                     if (!string.IsNullOrEmpty(SourceDescriptor))
                     {
-                        if (HalfAxis || DescriptorDeadZone > 0)
+                        // v19 (G3): the extended form writes whenever ANY
+                        // stamp is non-default. The old HalfAxis-or-deadzone
+                        // gate dropped an Invert-only or Bidirectional-only
+                        // stamp back to the plain "sd" spelling, silently
+                        // shedding the flag on round-trip.
+                        if (HalfAxis || Invert || Bidirectional || DescriptorDeadZone > 0)
                             return $"in:{DeviceGuid}:sdh:{(HalfAxis ? 1 : 0)}:{(Invert ? 1 : 0)}:{(Bidirectional ? 1 : 0)}:{DescriptorDeadZone}:{SourceDescriptor.Replace("|", "&P")}";
                         return $"in:{DeviceGuid}:sd:{SourceDescriptor.Replace("|", "&P")}";
                     }
@@ -1015,22 +1036,53 @@ namespace PadForge.ViewModels
                     entry = new TriggerInputEntry { DeviceGuid = g, SourceDescriptor = d };
                     return true;
                 }
+                if (tp[2].StartsWith("Click ", StringComparison.OrdinalIgnoreCase))
+                {
+                    // Windowed clicks (v19, M8): "Click {window}" is the
+                    // pad's click AND finger 0 inside the window, a bool
+                    // SourceCoercion.ReadTouchpadBool answers for every
+                    // pad index (pad 0 reads Buttons[16] inside it), so
+                    // the whole family rides a descriptor entry. The old
+                    // Equals("Click") test let these fall through to the
+                    // gesture catch-all, building a trigger the gesture
+                    // parser rejects: dead forever. Unknown window tokens
+                    // stay unconvertible.
+                    var ct = tp[2].Split(' ');
+                    if (ct.Length == 2 && IsTouchpadWindowToken(ct[1]))
+                    {
+                        entry = new TriggerInputEntry { DeviceGuid = g, SourceDescriptor = d };
+                        return true;
+                    }
+                    return false;
+                }
                 if (tp[2].StartsWith("Finger", StringComparison.OrdinalIgnoreCase))
                 {
                     // "Finger M Down" is a bool the engine's touchpad read
                     // already answers, so it rides a descriptor entry
-                    // (#9 B-9). The region-windowed "Down Left" / "Down
-                    // Right" halves (#9 B-1) are the same contact bool
-                    // gated to one half of the pad and convert the same
-                    // way. Finger position axes (X / Y / Pressure, whole
-                    // or half-windowed) stay unconvertible: no bool read
-                    // exists for them.
-                    if (tp[2].EndsWith(" Down", StringComparison.Ordinal)
-                        || tp[2].EndsWith(" Down Left", StringComparison.Ordinal)
-                        || tp[2].EndsWith(" Down Right", StringComparison.Ordinal))
+                    // (#9 B-9). The windowed forms are the same contact
+                    // bool gated to one region of the pad and convert the
+                    // same way; the window grammar mirrors
+                    // SourceCoercion.ReadTouchpadBool (v19, M9): one
+                    // window token (halves #9 B-1, the v18 vertical
+                    // halves, or a diamond quadrant), or the v18 7-token
+                    // quadrant-in-half compose (quadrant first, then
+                    // Left / Right). Finger position axes (X / Y /
+                    // Pressure, whole or half-windowed) stay
+                    // unconvertible: no bool read exists for them.
+                    var ft = tp[2].Split(' ');
+                    if (ft.Length >= 3 && ft.Length <= 5
+                        && ft[0].Equals("Finger", StringComparison.OrdinalIgnoreCase)
+                        && ft[2].Equals("Down", StringComparison.Ordinal))
                     {
-                        entry = new TriggerInputEntry { DeviceGuid = g, SourceDescriptor = d };
-                        return true;
+                        bool windowOk = ft.Length == 3
+                            || (ft.Length == 4 && IsTouchpadWindowToken(ft[3]))
+                            || (ft.Length == 5 && IsTouchpadQuadrantToken(ft[3])
+                                && (ft[4] == "Left" || ft[4] == "Right"));
+                        if (windowOk)
+                        {
+                            entry = new TriggerInputEntry { DeviceGuid = g, SourceDescriptor = d };
+                            return true;
+                        }
                     }
                     return false;
                 }
@@ -1094,6 +1146,22 @@ namespace PadForge.ViewModels
 
             return false;
         }
+
+        /// <summary>The touchpad window-token vocabulary (v19, M8/M9),
+        /// mirroring <c>SourceCoercion.ParseTouchpadHalf</c>: horizontal
+        /// halves, the v18 vertical halves, and the v18 diamond
+        /// quadrants. Ordinal on purpose: the engine's parser is exact,
+        /// so a case-mangled token would build a dead trigger.</summary>
+        private static bool IsTouchpadWindowToken(string t)
+            => t is "Left" or "Right" or "Upper" or "Lower"
+                or "North" or "South" or "East" or "West";
+
+        /// <summary>The quadrant subset of the window vocabulary,
+        /// mirroring <c>SourceCoercion.ComposeTouchpadWindow</c>: only a
+        /// quadrant composes with a horizontal half in the 7-token
+        /// form.</summary>
+        private static bool IsTouchpadQuadrantToken(string t)
+            => t is "North" or "South" or "East" or "West";
 
         private List<TriggerInputEntry> _triggerInputEntries;
 
@@ -2260,6 +2328,14 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(IsToggleVcButtonType));
                     OnPropertyChanged(nameof(IsToggleKeyType));
                     OnPropertyChanged(nameof(IsGyroRecenterType));
+                    OnPropertyChanged(nameof(IsToggleMouseButtonType));
+                    OnPropertyChanged(nameof(IsToggleVcAxisType));
+                    OnPropertyChanged(nameof(IsRepeatVcAxisWhileHeldType));
+                    OnPropertyChanged(nameof(IsToggleWheelType));
+                    OnPropertyChanged(nameof(IsAnyMouseButtonType));
+                    OnPropertyChanged(nameof(IsAnyWheelTapType));
+                    OnPropertyChanged(nameof(IsAnyAxisValueType));
+                    OnPropertyChanged(nameof(IsPulseCapableType));
                     OnPropertyChanged(nameof(IsAnyVcButtonType));
                     OnPropertyChanged(nameof(IsRepeatIntervalType));
                     OnPropertyChanged(nameof(IsDisconnectControllerType));
@@ -2452,6 +2528,64 @@ namespace PadForge.ViewModels
         [System.Xml.Serialization.XmlIgnore]
         public bool IsGyroRecenterType => _type == MacroActionType.GyroRecenter;
 
+        /// <summary>True when Type is ToggleMouseButton (v19, M1). Surfaces
+        /// the mouse-button picker (shared with Mouse Button Press) plus the
+        /// pulse-while-latched row.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool IsToggleMouseButtonType => _type == MacroActionType.ToggleMouseButton;
+
+        /// <summary>True when Type is ToggleVcAxis (v19, M1). Surfaces the
+        /// axis target / value pair (shared with Set Axis) plus the
+        /// pulse-while-latched row.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool IsToggleVcAxisType => _type == MacroActionType.ToggleVcAxis;
+
+        /// <summary>True when Type is RepeatVcAxisWhileHeld (v19, M1).
+        /// Surfaces the axis target / value pair plus the Interval
+        /// spinbox.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool IsRepeatVcAxisWhileHeldType => _type == MacroActionType.RepeatVcAxisWhileHeld;
+
+        /// <summary>True when Type is ToggleWheel (v19, M1). Surfaces the
+        /// wheel tick / horizontal pair (shared with Mouse Wheel Tick) plus
+        /// the Interval spinbox.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool IsToggleWheelType => _type == MacroActionType.ToggleWheel;
+
+        /// <summary>True when the mouse-button picker applies:
+        /// MouseButtonPress / MouseButtonRelease plus the v18
+        /// ToggleMouseButton latch, which addresses its target through the
+        /// same <see cref="MouseButton"/> knob (the IsAnyKeyType pattern
+        /// applied to the mouse-button picker, v19 M1).</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool IsAnyMouseButtonType => IsMouseButtonType || IsToggleMouseButtonType;
+
+        /// <summary>True when the wheel tick / horizontal editor applies:
+        /// MouseWheelTap plus the v18 ToggleWheel latch, both reading
+        /// <see cref="AxisValue"/> as the signed tick count and
+        /// <see cref="WheelHorizontal"/> as the lane (v19, M1).</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool IsAnyWheelTapType => IsMouseWheelTapType || IsToggleWheelType;
+
+        /// <summary>True when the axis target / value editor applies:
+        /// AxisSet / AxisHold plus the v18 ToggleVcAxis latch and
+        /// RepeatVcAxisWhileHeld turbo, which write the same
+        /// <see cref="AxisTarget"/> / <see cref="AxisValue"/> pair
+        /// (v19, M1).</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool IsAnyAxisValueType => IsAxisType
+            || _type == MacroActionType.ToggleVcAxis
+            || _type == MacroActionType.RepeatVcAxisWhileHeld;
+
+        /// <summary>True for the latch actions whose held contribution can
+        /// pulse on the turbo square wave (<see cref="PulseWhileLatched"/>):
+        /// ToggleVcButton / ToggleKey plus the v18 ToggleMouseButton and
+        /// ToggleVcAxis. Gates the pulse checkbox row (v19, M1).</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool IsPulseCapableType
+            => _type is MacroActionType.ToggleVcButton or MacroActionType.ToggleKey
+                or MacroActionType.ToggleMouseButton or MacroActionType.ToggleVcAxis;
+
         /// <summary>True when the VC button-target checkbox grid applies:
         /// ButtonPress / ButtonRelease plus the wave-1b RepeatVcButtonWhileHeld
         /// turbo and ToggleVcButton latch, which reuse the same
@@ -2462,12 +2596,18 @@ namespace PadForge.ViewModels
             || _type == MacroActionType.RepeatVcButtonWhileHeld
             || _type == MacroActionType.ToggleVcButton;
 
-        /// <summary>True when the Interval ms row applies: the two turbo
-        /// actions (RepeatKeyWhileHeld and RepeatVcButtonWhileHeld) share the
-        /// <see cref="IntervalMs"/> knob.</summary>
+        /// <summary>True when the Interval ms row applies: the turbo
+        /// actions (RepeatKeyWhileHeld, RepeatVcButtonWhileHeld, and the
+        /// v18 RepeatVcAxisWhileHeld), the ToggleWheel latch (one detent
+        /// per interval), and any pulse-capable latch whose
+        /// <see cref="PulseWhileLatched"/> is on. All share the
+        /// <see cref="IntervalMs"/> knob (v19, M1).</summary>
         [System.Xml.Serialization.XmlIgnore]
         public bool IsRepeatIntervalType => _type == MacroActionType.RepeatKeyWhileHeld
-            || _type == MacroActionType.RepeatVcButtonWhileHeld;
+            || _type == MacroActionType.RepeatVcButtonWhileHeld
+            || _type == MacroActionType.RepeatVcAxisWhileHeld
+            || _type == MacroActionType.ToggleWheel
+            || (IsPulseCapableType && _pulseWhileLatched);
 
         /// <summary>True when the key-combo picker applies: KeyPress / KeyRelease,
         /// the RepeatKeyWhileHeld autofire (issue #9), or the ToggleKey latch
@@ -4055,7 +4195,30 @@ namespace PadForge.ViewModels
         public bool PulseWhileLatched
         {
             get => _pulseWhileLatched;
-            set => SetProperty(ref _pulseWhileLatched, value);
+            set
+            {
+                if (SetProperty(ref _pulseWhileLatched, value))
+                {
+                    // The Interval row shows for a pulsing latch (v19, M1).
+                    OnPropertyChanged(nameof(IsRepeatIntervalType));
+                    OnPropertyChanged(nameof(DisplayText));
+                }
+            }
+        }
+
+        private MacroLatchDirection _latchDirection;
+        /// <summary>How a ToggleKey / ToggleMouseButton fire writes the
+        /// volatile latch (audit #2 M4): Toggle flips (the classic
+        /// behavior and the serialized default), On sets, Off clears.
+        /// The Workshop materializer lowers HoldKey / HoldMouseButton
+        /// pairs to On on the press leg and Off on the release leg, so
+        /// the held key rides the per-frame reconcile and its
+        /// engine-stop / profile-switch release paths instead of a raw
+        /// KeyPress Down those paths cannot see. Serialized.</summary>
+        public MacroLatchDirection LatchDirection
+        {
+            get => _latchDirection;
+            set => SetProperty(ref _latchDirection, value);
         }
 
         private RelayCommand _resetIntervalMsCommand;
@@ -4515,6 +4678,20 @@ namespace PadForge.ViewModels
                     MacroActionType.TextBlock => string.Format(
                         Strings.Instance.MacroAction_TextBlock_Format,
                         TextBlockDisplayName()),
+                    // v19 (M1): the v18 latch / turbo family renders its
+                    // target instead of falling to the unknown label.
+                    MacroActionType.ToggleMouseButton => string.Format(
+                        Strings.Instance.MacroAction_ToggleMouseButton_Format,
+                        MacroMouseButtonDisplayName(_mouseButton)),
+                    MacroActionType.ToggleVcAxis => string.Format(
+                        Strings.Instance.MacroAction_ToggleVcAxis_Format,
+                        _axisTarget, _axisValue),
+                    MacroActionType.RepeatVcAxisWhileHeld => string.Format(
+                        Strings.Instance.MacroAction_RepeatVcAxisWhileHeld_Format,
+                        _axisTarget, _axisValue, _intervalMs),
+                    MacroActionType.ToggleWheel => string.Format(
+                        Strings.Instance.MacroAction_ToggleWheel_Format,
+                        _axisValue, _intervalMs),
                     _ => Strings.Instance.Macro_UnknownAction
                 };
             }
@@ -5306,6 +5483,27 @@ namespace PadForge.ViewModels
         /// <summary>Force the slot's macro-engaged bit true.</summary>
         On = 1,
         /// <summary>Force the slot's macro-engaged bit false.</summary>
+        Off = 2
+    }
+
+    /// <summary>Write mode for the volatile latch on
+    /// <see cref="MacroActionType.ToggleKey"/> and
+    /// <see cref="MacroActionType.ToggleMouseButton"/> (audit #2 M4).
+    /// Toggle keeps the classic flip. On and Off make the fire
+    /// idempotent, so a hold pair can SET the latch on its press leg and
+    /// CLEAR it on its release leg: a two-macro flip decomposition
+    /// alternates or sticks, because each fire inverts whatever state
+    /// the other leg left behind.</summary>
+    public enum MacroLatchDirection
+    {
+        /// <summary>Flip the latch. Each fire toggles.</summary>
+        Toggle = 0,
+        /// <summary>Force the latch on.</summary>
+        On = 1,
+        /// <summary>Force the latch off. On a hold-pair leg
+        /// (<see cref="MacroItem.PairId"/> nonzero) the clear also
+        /// reaches the twin's latches, because each leg's latch state
+        /// lives on its own action instance.</summary>
         Off = 2
     }
 

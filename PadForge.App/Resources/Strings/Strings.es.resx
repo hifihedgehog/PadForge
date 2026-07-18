@@ -2543,6 +2543,9 @@
   <data name="Workshop_Tr_MouseRegionTuningDropped" xml:space="preserve"><value>ajustes de activación/liberación de la región del ratón descartados ({0})</value></data>
   <data name="Workshop_Tr_FlickStickSurfaceNotSupported" xml:space="preserve"><value>flick stick en una superficie táctil omitido (el flick stick de PadForge lee una palanca física)</value></data>
   <data name="Workshop_Tr_FlickStickTuningDropped" xml:space="preserve"><value>ajustes del flick stick descartados ({0})</value></data>
+  <data name="Workshop_Tr_DeadZoneRadialResidual" xml:space="preserve"><value>las zonas muertas se aplican por eje, no radialmente ({0})</value></data>
+  <data name="Workshop_Tr_RotationNonlinearWithheld" xml:space="preserve"><value>respuesta no lineal retenida en los ejes rotados ({0})</value></data>
+  <data name="Workshop_Tr_LayerReleaseEdgeApproximated" xml:space="preserve"><value>{0} alojado en la liberación cambia al pulsar en su lugar</value></data>
   <data name="Workshop_Tr_MouseModeTuningDropped" xml:space="preserve"><value>ajustes de sensación del ratón descartados ({0})</value></data>
   <data name="Workshop_Tr_AxisInversionNotApplied" xml:space="preserve"><value>inversión de ejes no aplicada ({0})</value></data>
   <data name="Workshop_Tr_ScrollWheelApproximated" xml:space="preserve"><value>rueda de desplazamiento circular aproximada como arrastre vertical</value></data>
@@ -2570,6 +2573,20 @@
   <data name="MacroAction_MouseNudge_Format" xml:space="preserve"><value>Empujar cursor ({0}, {1}) px</value></data>
   <data name="MacroAction_Type_CycleTapList" xml:space="preserve"><value>Lista de pulsaciones cíclica</value></data>
   <data name="MacroAction_CycleTapList_Tooltip" xml:space="preserve"><value>Cada disparo ejecuta el siguiente paso de la lista y avanza. Con el ciclo activado la lista vuelve a empezar tras el último paso. Sin él, la salida se detiene al final.</value></data>
+  <data name="MacroAction_Type_ToggleMouseButton" xml:space="preserve"><value>Alternar botón del ratón</value></data>
+  <data name="MacroAction_ToggleMouseButton_Tooltip" xml:space="preserve"><value>Cada disparo fija o suelta el botón del ratón. Un botón fijado se mantiene pulsado hasta el siguiente disparo o hasta desactivar la macro.</value></data>
+  <data name="MacroAction_ToggleMouseButton_Format" xml:space="preserve"><value>Alternar ratón {0}</value></data>
+  <data name="MacroAction_Type_ToggleVcAxis" xml:space="preserve"><value>Alternar eje</value></data>
+  <data name="MacroAction_ToggleVcAxis_Tooltip" xml:space="preserve"><value>Cada disparo fija o suelta el valor del eje. Mientras esté fijado, el eje se escribe en cada fotograma hasta el siguiente disparo o hasta desactivar la macro.</value></data>
+  <data name="MacroAction_ToggleVcAxis_Format" xml:space="preserve"><value>Alternar {0} = {1}</value></data>
+  <data name="MacroAction_Type_RepeatVcAxisWhileHeld" xml:space="preserve"><value>Repetir eje mientras se mantiene</value></data>
+  <data name="MacroAction_RepeatVcAxisWhileHeld_Tooltip" xml:space="preserve"><value>Mientras el disparador se mantiene, aplica el valor del eje en onda cuadrada con el intervalo configurado.</value></data>
+  <data name="MacroAction_RepeatVcAxisWhileHeld_Format" xml:space="preserve"><value>Repetir {0} = {1} cada {2} ms</value></data>
+  <data name="MacroAction_Type_ToggleWheel" xml:space="preserve"><value>Alternar desplazamiento de rueda</value></data>
+  <data name="MacroAction_ToggleWheel_Tooltip" xml:space="preserve"><value>Cada disparo fija o suelta un desplazamiento continuo. Mientras esté fijado, envía los pasos una vez por intervalo hasta el siguiente disparo o hasta desactivar la macro.</value></data>
+  <data name="MacroAction_ToggleWheel_Format" xml:space="preserve"><value>Alternar rueda ({0} pasos cada {1} ms)</value></data>
+  <data name="Macro_PulseWhileLatched" xml:space="preserve"><value>Pulsos mientras esté fijado</value></data>
+  <data name="Macro_PulseWhileLatched_Tooltip" xml:space="preserve"><value>Mientras esté fijado, alterna la salida al ritmo del intervalo de repetición en lugar de mantenerla fija.</value></data>
   <data name="MacroAction_CycleTapList_Format" xml:space="preserve"><value>Lista de pulsaciones cíclica ({0} pasos)</value></data>
   <data name="Macro_CycleSteps_Label" xml:space="preserve"><value>Pasos</value></data>
   <data name="Macro_CycleWrap_Label" xml:space="preserve"><value>Ciclo</value></data>

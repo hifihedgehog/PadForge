@@ -2543,6 +2543,9 @@
   <data name="Workshop_Tr_MouseRegionTuningDropped" xml:space="preserve"><value>Aktivierungs-/Loslass-Einstellungen des Mausbereichs verworfen ({0})</value></data>
   <data name="Workshop_Tr_FlickStickSurfaceNotSupported" xml:space="preserve"><value>Flick Stick auf einer Touch-Oberfläche übersprungen (PadForge-Flick-Stick liest einen physischen Stick)</value></data>
   <data name="Workshop_Tr_FlickStickTuningDropped" xml:space="preserve"><value>Flick-Stick-Feinabstimmung verworfen ({0})</value></data>
+  <data name="Workshop_Tr_DeadZoneRadialResidual" xml:space="preserve"><value>Totzonen wirken pro Achse, nicht radial ({0})</value></data>
+  <data name="Workshop_Tr_RotationNonlinearWithheld" xml:space="preserve"><value>nichtlineare Kurve auf rotierten Achsen zurückgehalten ({0})</value></data>
+  <data name="Workshop_Tr_LayerReleaseEdgeApproximated" xml:space="preserve"><value>{0} beim Loslassen schaltet stattdessen beim Drücken</value></data>
   <data name="Workshop_Tr_MouseModeTuningDropped" xml:space="preserve"><value>Maus-Feinabstimmung verworfen ({0})</value></data>
   <data name="Workshop_Tr_AxisInversionNotApplied" xml:space="preserve"><value>Achsenumkehr nicht angewendet ({0})</value></data>
   <data name="Workshop_Tr_ScrollWheelApproximated" xml:space="preserve"><value>kreisförmiges Scrollrad als vertikales Ziehen angenähert</value></data>
@@ -2570,6 +2573,20 @@
   <data name="MacroAction_MouseNudge_Format" xml:space="preserve"><value>Cursor um ({0}, {1}) px anstoßen</value></data>
   <data name="MacroAction_Type_CycleTapList" xml:space="preserve"><value>Tipp-Liste durchlaufen</value></data>
   <data name="MacroAction_CycleTapList_Tooltip" xml:space="preserve"><value>Jede Auslösung führt den nächsten Schritt der Liste aus und rückt weiter. Mit Umlauf beginnt die Liste nach dem letzten Schritt von vorn, ohne endet die Ausgabe am Listenende.</value></data>
+  <data name="MacroAction_Type_ToggleMouseButton" xml:space="preserve"><value>Maustaste umschalten</value></data>
+  <data name="MacroAction_ToggleMouseButton_Tooltip" xml:space="preserve"><value>Jede Auslösung rastet die Maustaste ein oder aus. Eine eingerastete Taste bleibt gedrückt bis zur nächsten Auslösung oder bis das Makro deaktiviert wird.</value></data>
+  <data name="MacroAction_ToggleMouseButton_Format" xml:space="preserve"><value>Maus {0} umschalten</value></data>
+  <data name="MacroAction_Type_ToggleVcAxis" xml:space="preserve"><value>Achse umschalten</value></data>
+  <data name="MacroAction_ToggleVcAxis_Tooltip" xml:space="preserve"><value>Jede Auslösung rastet den Achsenwert ein oder aus. Solange eingerastet, wird die Achse in jedem Frame geschrieben, bis zur nächsten Auslösung oder bis das Makro deaktiviert wird.</value></data>
+  <data name="MacroAction_ToggleVcAxis_Format" xml:space="preserve"><value>{0} = {1} umschalten</value></data>
+  <data name="MacroAction_Type_RepeatVcAxisWhileHeld" xml:space="preserve"><value>Achse wiederholen solange gehalten</value></data>
+  <data name="MacroAction_RepeatVcAxisWhileHeld_Tooltip" xml:space="preserve"><value>Solange der Auslöser gehalten wird, setzt die Aktion den Achsenwert als Rechteckwelle im eingestellten Intervall.</value></data>
+  <data name="MacroAction_RepeatVcAxisWhileHeld_Format" xml:space="preserve"><value>{0} = {1} alle {2} ms wiederholen</value></data>
+  <data name="MacroAction_Type_ToggleWheel" xml:space="preserve"><value>Mausrad-Scrollen umschalten</value></data>
+  <data name="MacroAction_ToggleWheel_Tooltip" xml:space="preserve"><value>Jede Auslösung rastet ein Dauerscrollen ein oder aus. Solange eingerastet, werden die Rasten einmal pro Intervall gesendet, bis zur nächsten Auslösung oder bis das Makro deaktiviert wird.</value></data>
+  <data name="MacroAction_ToggleWheel_Format" xml:space="preserve"><value>Mausrad umschalten ({0} Rasten alle {1} ms)</value></data>
+  <data name="Macro_PulseWhileLatched" xml:space="preserve"><value>Pulsieren solange eingerastet</value></data>
+  <data name="Macro_PulseWhileLatched_Tooltip" xml:space="preserve"><value>Solange eingerastet, wird die Ausgabe im Wiederholintervall ein- und ausgeschaltet, statt dauerhaft gehalten.</value></data>
   <data name="MacroAction_CycleTapList_Format" xml:space="preserve"><value>Tipp-Liste durchlaufen ({0} Schritte)</value></data>
   <data name="Macro_CycleSteps_Label" xml:space="preserve"><value>Schritte</value></data>
   <data name="Macro_CycleWrap_Label" xml:space="preserve"><value>Umlauf</value></data>

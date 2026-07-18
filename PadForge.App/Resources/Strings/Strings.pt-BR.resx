@@ -2543,6 +2543,9 @@
   <data name="Workshop_Tr_MouseRegionTuningDropped" xml:space="preserve"><value>configurações de ativação/liberação da região do mouse descartadas ({0})</value></data>
   <data name="Workshop_Tr_FlickStickSurfaceNotSupported" xml:space="preserve"><value>flick stick em uma superfície de toque ignorado (o flick stick do PadForge lê um analógico físico)</value></data>
   <data name="Workshop_Tr_FlickStickTuningDropped" xml:space="preserve"><value>ajustes do flick stick descartados ({0})</value></data>
+  <data name="Workshop_Tr_DeadZoneRadialResidual" xml:space="preserve"><value>as zonas mortas se aplicam por eixo, não radialmente ({0})</value></data>
+  <data name="Workshop_Tr_RotationNonlinearWithheld" xml:space="preserve"><value>resposta não linear retida nos eixos rotacionados ({0})</value></data>
+  <data name="Workshop_Tr_LayerReleaseEdgeApproximated" xml:space="preserve"><value>{0} hospedado no soltar passa a alternar ao pressionar</value></data>
   <data name="Workshop_Tr_MouseModeTuningDropped" xml:space="preserve"><value>ajustes de resposta do mouse descartados ({0})</value></data>
   <data name="Workshop_Tr_AxisInversionNotApplied" xml:space="preserve"><value>inversão de eixo não aplicada ({0})</value></data>
   <data name="Workshop_Tr_ScrollWheelApproximated" xml:space="preserve"><value>roda de rolagem circular aproximada como arrasto vertical</value></data>
@@ -2570,6 +2573,20 @@
   <data name="MacroAction_MouseNudge_Format" xml:space="preserve"><value>Empurrar o cursor em ({0}, {1}) px</value></data>
   <data name="MacroAction_Type_CycleTapList" xml:space="preserve"><value>Lista de toques cíclica</value></data>
   <data name="MacroAction_CycleTapList_Tooltip" xml:space="preserve"><value>Cada disparo executa o próximo passo da lista e avança. Com o ciclo ativado, a lista recomeça após o último passo. Sem ele, a saída para no fim.</value></data>
+  <data name="MacroAction_Type_ToggleMouseButton" xml:space="preserve"><value>Alternar botão do mouse</value></data>
+  <data name="MacroAction_ToggleMouseButton_Tooltip" xml:space="preserve"><value>Cada disparo trava ou destrava o botão do mouse. Um botão travado permanece pressionado até o próximo disparo ou até a macro ser desativada.</value></data>
+  <data name="MacroAction_ToggleMouseButton_Format" xml:space="preserve"><value>Alternar mouse {0}</value></data>
+  <data name="MacroAction_Type_ToggleVcAxis" xml:space="preserve"><value>Alternar eixo</value></data>
+  <data name="MacroAction_ToggleVcAxis_Tooltip" xml:space="preserve"><value>Cada disparo trava ou destrava o valor do eixo. Enquanto travado, o eixo é escrito a cada quadro até o próximo disparo ou até a macro ser desativada.</value></data>
+  <data name="MacroAction_ToggleVcAxis_Format" xml:space="preserve"><value>Alternar {0} = {1}</value></data>
+  <data name="MacroAction_Type_RepeatVcAxisWhileHeld" xml:space="preserve"><value>Repetir eixo enquanto pressionado</value></data>
+  <data name="MacroAction_RepeatVcAxisWhileHeld_Tooltip" xml:space="preserve"><value>Enquanto o gatilho estiver pressionado, aplica o valor do eixo em onda quadrada no intervalo definido.</value></data>
+  <data name="MacroAction_RepeatVcAxisWhileHeld_Format" xml:space="preserve"><value>Repetir {0} = {1} a cada {2} ms</value></data>
+  <data name="MacroAction_Type_ToggleWheel" xml:space="preserve"><value>Alternar rolagem da roda</value></data>
+  <data name="MacroAction_ToggleWheel_Tooltip" xml:space="preserve"><value>Cada disparo trava ou destrava uma rolagem contínua. Enquanto travado, envia os cliques uma vez por intervalo até o próximo disparo ou até a macro ser desativada.</value></data>
+  <data name="MacroAction_ToggleWheel_Format" xml:space="preserve"><value>Alternar roda ({0} cliques a cada {1} ms)</value></data>
+  <data name="Macro_PulseWhileLatched" xml:space="preserve"><value>Pulsar enquanto travado</value></data>
+  <data name="Macro_PulseWhileLatched_Tooltip" xml:space="preserve"><value>Enquanto travado, alterna a saída no ritmo do intervalo de repetição em vez de mantê-la fixa.</value></data>
   <data name="MacroAction_CycleTapList_Format" xml:space="preserve"><value>Lista de toques cíclica ({0} passos)</value></data>
   <data name="Macro_CycleSteps_Label" xml:space="preserve"><value>Passos</value></data>
   <data name="Macro_CycleWrap_Label" xml:space="preserve"><value>Ciclo</value></data>

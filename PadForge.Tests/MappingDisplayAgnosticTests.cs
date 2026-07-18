@@ -159,6 +159,41 @@ namespace PadForge.Tests
                 .EvaluateForButtonTarget(s, src, 50, 0, null));
         }
 
+        // ── v18 window forms (audit 2026-07-17 G2) ──
+
+        [Fact]
+        public void WindowedClick_ShowsItsWindow_NotThePlainClick()
+        {
+            var si = Strings.Instance;
+            string plain = MappingDisplayResolver.ResolveDescriptorText("Touchpad 0 Click", null);
+            string windowed = MappingDisplayResolver.ResolveDescriptorText("Touchpad 0 Click Left", null);
+            Assert.NotNull(windowed);
+            // The windowed click used to render as the plain click, hiding
+            // the half from the chip entirely.
+            Assert.NotEqual(plain, windowed);
+            Assert.Contains(si.Menu_Half_Left, windowed);
+        }
+
+        [Theory]
+        [InlineData("Touchpad 0 Finger 0 Down Upper")]
+        [InlineData("Touchpad 0 Finger 0 Down North")]
+        [InlineData("Touchpad 0 Finger 0 Down North Left")]
+        [InlineData("Touchpad 0 Finger 0 X Upper")]
+        [InlineData("Touchpad 0 Pointer Y Lower")]
+        public void V18WindowForms_ResolveAwayFromTheRawDescriptor(string descriptor)
+        {
+            // These returned null and fell back to the raw 0-based chip.
+            string resolved = MappingDisplayResolver.ResolveDescriptorText(descriptor, null);
+            Assert.False(string.IsNullOrEmpty(resolved));
+            Assert.NotEqual(descriptor, resolved);
+            // The window must be visible, not silently dropped: the label
+            // differs from the unwindowed family label.
+            string baseDescriptor = descriptor
+                .Replace(" Upper", "").Replace(" Lower", "")
+                .Replace(" North", "").Replace(" Left", "");
+            Assert.NotEqual(MappingDisplayResolver.ResolveDescriptorText(baseDescriptor, null), resolved);
+        }
+
         [Fact]
         public void KeyboardHexKeyNames_ResolveThroughTheMacroVkVocabulary()
         {

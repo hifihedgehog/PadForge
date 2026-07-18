@@ -1959,6 +1959,18 @@
                                             <ComboBoxItem Content="{Binding MacroAction_Type_CycleTapList, Source={x:Static strings:Strings.Instance}}"
                                                           Tag="{x:Static vm:MacroActionType.CycleTapList}"
                                                           ToolTip="{Binding MacroAction_CycleTapList_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                            <ComboBoxItem Content="{Binding MacroAction_Type_ToggleMouseButton, Source={x:Static strings:Strings.Instance}}"
+                                                          Tag="{x:Static vm:MacroActionType.ToggleMouseButton}"
+                                                          ToolTip="{Binding MacroAction_ToggleMouseButton_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                            <ComboBoxItem Content="{Binding MacroAction_Type_ToggleVcAxis, Source={x:Static strings:Strings.Instance}}"
+                                                          Tag="{x:Static vm:MacroActionType.ToggleVcAxis}"
+                                                          ToolTip="{Binding MacroAction_ToggleVcAxis_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                            <ComboBoxItem Content="{Binding MacroAction_Type_RepeatVcAxisWhileHeld, Source={x:Static strings:Strings.Instance}}"
+                                                          Tag="{x:Static vm:MacroActionType.RepeatVcAxisWhileHeld}"
+                                                          ToolTip="{Binding MacroAction_RepeatVcAxisWhileHeld_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                            <ComboBoxItem Content="{Binding MacroAction_Type_ToggleWheel, Source={x:Static strings:Strings.Instance}}"
+                                                          Tag="{x:Static vm:MacroActionType.ToggleWheel}"
+                                                          ToolTip="{Binding MacroAction_ToggleWheel_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                             <ComboBoxItem Content="{Binding MacroAction_Type_DisconnectController, Source={x:Static strings:Strings.Instance}}"
                                                           Tag="{x:Static vm:MacroActionType.DisconnectController}"
                                                           ToolTip="{Binding MacroAction_DisconnectController_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
@@ -2234,9 +2246,21 @@
                                                   Content="{Binding Macro_CycleWrap_Label, Source={x:Static strings:Strings.Instance}}"/>
                                     </StackPanel>
 
-                                    <!-- Turbo interval (#9 + wave 1b): shared by Repeat Key While Held
-                                         and Repeat Button While Held. Key picker / button grid are the
-                                         shared panels below. -->
+                                    <!-- Pulse while latched (v19, M1): the toggle latches
+                                         (button / key / mouse button / axis) can pulse their held
+                                         contribution on the turbo square wave; checking it surfaces
+                                         the shared Interval row below. -->
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,6"
+                                                Visibility="{Binding IsPulseCapableType, Converter={StaticResource BoolToVisibilityConverter}}">
+                                        <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                                  IsChecked="{Binding PulseWhileLatched, Mode=TwoWay}"
+                                                  Content="{Binding Macro_PulseWhileLatched, Source={x:Static strings:Strings.Instance}}"
+                                                  ToolTip="{Binding Macro_PulseWhileLatched_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    </StackPanel>
+
+                                    <!-- Turbo interval (#9 + wave 1b, widened v19 M1): shared by the
+                                         Repeat While Held turbos, Toggle Wheel Scroll, and any pulsing
+                                         latch. Key picker / button grid are the shared panels below. -->
                                     <StackPanel Orientation="Horizontal" Margin="0,0,0,6"
                                                 Visibility="{Binding IsRepeatIntervalType, Converter={StaticResource BoolToVisibilityConverter}}">
                                         <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Macro_RepeatInterval_Label, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
@@ -2672,9 +2696,10 @@
                                         </StackPanel>
                                     </Border>
 
-                                    <!-- Axis target + value — for AxisSet -->
+                                    <!-- Axis target + value for AxisSet / AxisHold plus the v19 M1
+                                         ToggleVcAxis latch and RepeatVcAxisWhileHeld turbo -->
                                     <StackPanel Orientation="Horizontal" Margin="0,0,0,6"
-                                                Visibility="{Binding IsAxisType, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                Visibility="{Binding IsAnyAxisValueType, Converter={StaticResource BoolToVisibilityConverter}}">
                                         <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Macro_Axis, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
                                                    Width="80" Margin="0,0,8,0"/>
                                         <ComboBox SelectedValue="{Binding AxisTarget, Mode=TwoWay}"
@@ -2692,10 +2717,11 @@
                                         <TextBox Text="{Binding AxisValue, Mode=TwoWay}" Width="80"/>
                                     </StackPanel>
 
-                                    <!-- Wheel tick count for MouseWheelTap (v15). Reuses the
-                                         AxisValue field as the signed tick count. -->
+                                    <!-- Wheel tick count for MouseWheelTap (v15) and the v19 M1
+                                         ToggleWheel latch. Reuses the AxisValue field as the signed
+                                         tick count. -->
                                     <StackPanel Orientation="Horizontal" Margin="0,0,0,6"
-                                                Visibility="{Binding IsMouseWheelTapType, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                Visibility="{Binding IsAnyWheelTapType, Converter={StaticResource BoolToVisibilityConverter}}">
                                         <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Macro_AxisValue, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
                                                    Width="80" Margin="0,0,8,0"/>
                                         <TextBox Text="{Binding AxisValue, Mode=TwoWay}" Width="80"/>
@@ -2926,9 +2952,10 @@
                                                    Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
                                     </StackPanel>
 
-                                    <!-- Mouse button — for MouseButtonPress / MouseButtonRelease -->
+                                    <!-- Mouse button picker for MouseButtonPress / MouseButtonRelease
+                                         plus the v19 M1 ToggleMouseButton latch -->
                                     <StackPanel Margin="0,0,0,6"
-                                                Visibility="{Binding IsMouseButtonType, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                Visibility="{Binding IsAnyMouseButtonType, Converter={StaticResource BoolToVisibilityConverter}}">
                                         <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
                                             <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Macro_Buttons, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
                                                        Width="80" Margin="0,0,8,0"/>

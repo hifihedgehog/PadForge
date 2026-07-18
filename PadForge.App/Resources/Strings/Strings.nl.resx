@@ -2563,6 +2563,9 @@
   <data name="Workshop_Tr_MouseRegionTuningDropped" xml:space="preserve"><value>activerings-/loslaatinstellingen van het muisgebied vervallen ({0})</value></data>
   <data name="Workshop_Tr_FlickStickSurfaceNotSupported" xml:space="preserve"><value>flick stick op een aanraakoppervlak overgeslagen (PadForge-flick-stick leest een fysieke stick)</value></data>
   <data name="Workshop_Tr_FlickStickTuningDropped" xml:space="preserve"><value>flick-stick-afstelling vervallen ({0})</value></data>
+  <data name="Workshop_Tr_DeadZoneRadialResidual" xml:space="preserve"><value>dodezones werken per as, niet radiaal ({0})</value></data>
+  <data name="Workshop_Tr_RotationNonlinearWithheld" xml:space="preserve"><value>niet-lineaire respons achtergehouden op geroteerde assen ({0})</value></data>
+  <data name="Workshop_Tr_LayerReleaseEdgeApproximated" xml:space="preserve"><value>{0} op loslaten schakelt in plaats daarvan bij indrukken</value></data>
   <data name="Workshop_Tr_MouseModeTuningDropped" xml:space="preserve"><value>muisafstelling vervallen ({0})</value></data>
   <data name="Workshop_Tr_AxisInversionNotApplied" xml:space="preserve"><value>asomkering niet toegepast ({0})</value></data>
   <data name="Workshop_Tr_ScrollWheelApproximated" xml:space="preserve"><value>cirkelvormig scrollwiel benaderd als verticaal slepen</value></data>
@@ -2590,6 +2593,20 @@
   <data name="MacroAction_MouseNudge_Format" xml:space="preserve"><value>Cursor ({0}, {1}) px verschuiven</value></data>
   <data name="MacroAction_Type_CycleTapList" xml:space="preserve"><value>Taplijst doorlopen</value></data>
   <data name="MacroAction_CycleTapList_Tooltip" xml:space="preserve"><value>Elke activering voert de volgende stap van de lijst uit en gaat verder. Met herhalen begint de lijst na de laatste stap opnieuw. Zonder stopt de uitvoer aan het einde.</value></data>
+  <data name="MacroAction_Type_ToggleMouseButton" xml:space="preserve"><value>Muisknop omschakelen</value></data>
+  <data name="MacroAction_ToggleMouseButton_Tooltip" xml:space="preserve"><value>Elke activering vergrendelt of ontgrendelt de muisknop. Een vergrendelde knop blijft ingedrukt tot de volgende activering of tot de macro wordt uitgeschakeld.</value></data>
+  <data name="MacroAction_ToggleMouseButton_Format" xml:space="preserve"><value>Muis {0} omschakelen</value></data>
+  <data name="MacroAction_Type_ToggleVcAxis" xml:space="preserve"><value>As omschakelen</value></data>
+  <data name="MacroAction_ToggleVcAxis_Tooltip" xml:space="preserve"><value>Elke activering vergrendelt of ontgrendelt de aswaarde. Zolang vergrendeld wordt de as elk frame geschreven, tot de volgende activering of tot de macro wordt uitgeschakeld.</value></data>
+  <data name="MacroAction_ToggleVcAxis_Format" xml:space="preserve"><value>{0} = {1} omschakelen</value></data>
+  <data name="MacroAction_Type_RepeatVcAxisWhileHeld" xml:space="preserve"><value>As herhalen zolang ingedrukt</value></data>
+  <data name="MacroAction_RepeatVcAxisWhileHeld_Tooltip" xml:space="preserve"><value>Zolang de trigger ingedrukt blijft, past de actie de aswaarde toe als blokgolf met het ingestelde interval.</value></data>
+  <data name="MacroAction_RepeatVcAxisWhileHeld_Format" xml:space="preserve"><value>{0} = {1} elke {2} ms herhalen</value></data>
+  <data name="MacroAction_Type_ToggleWheel" xml:space="preserve"><value>Wielscrollen omschakelen</value></data>
+  <data name="MacroAction_ToggleWheel_Tooltip" xml:space="preserve"><value>Elke activering vergrendelt of ontgrendelt doorlopend scrollen. Zolang vergrendeld worden de klikken eenmaal per interval verstuurd, tot de volgende activering of tot de macro wordt uitgeschakeld.</value></data>
+  <data name="MacroAction_ToggleWheel_Format" xml:space="preserve"><value>Wiel omschakelen ({0} klikken elke {1} ms)</value></data>
+  <data name="Macro_PulseWhileLatched" xml:space="preserve"><value>Pulseren zolang vergrendeld</value></data>
+  <data name="Macro_PulseWhileLatched_Tooltip" xml:space="preserve"><value>Zolang vergrendeld schakelt de uitvoer aan en uit op het herhaalinterval in plaats van vast te houden.</value></data>
   <data name="MacroAction_CycleTapList_Format" xml:space="preserve"><value>Taplijst doorlopen ({0} stappen)</value></data>
   <data name="Macro_CycleSteps_Label" xml:space="preserve"><value>Stappen</value></data>
   <data name="Macro_CycleWrap_Label" xml:space="preserve"><value>Herhalen</value></data>

@@ -95,7 +95,7 @@ macros: 9
   macro HoldVcButton HoldForMs | Long press ButtonY (button_back_right) | btns=0x0000 in=[Gamepad Paddle1] hold=500ms target=0x8000
   macro HoldVcButton HoldForMs | Long press LeftShoulder (button_back_right) | btns=0x0000 in=[Gamepad Paddle1] hold=500ms target=0x0100
   macro HoldVcButton HoldForMs | Long press ButtonY (button_back_left_upper) | btns=0x0000 in=[Gamepad Paddle4] hold=500ms target=0x8000
-report: v18 rows:x32+k3 macros:9 menus:0 layers:4 clean:53 partial:3 skipped:0 errors:0
+report: v19 rows:x32+k3 macros:9 menus:0 layers:4 clean:53 partial:5 skipped:0 errors:0
   Partial GyroButtonMaskDropped(gyro_ratchet_button_mask, 1048576) @ Default/gyro/group 24 (gyro_to_mouse)
   Clean RowEmitted @ Default/gyro/group 24 (gyro_to_mouse) => KbmMouseX <- Gyro Yaw
   Clean RowEmitted @ Default/gyro/group 24 (gyro_to_mouse) => KbmMouseY <- Gyro Pitch
@@ -116,12 +116,14 @@ report: v18 rows:x32+k3 macros:9 menus:0 layers:4 clean:53 partial:3 skipped:0 e
   Clean RowEmitted @ Quick Item/button_diamond/group 15 (four_buttons)/button_x/Full_Press => DPadLeft <- Gamepad ButtonX
   Clean RowEmitted @ Quick Item/button_diamond/group 15 (four_buttons)/button_y/Full_Press => DPadUp <- Gamepad ButtonY
   Partial RemoveLayerApproximated @ Quick Item/switch/group 18 (switches)/button_back_left_upper/release :: controller_action remove_layer 2 0 0, , 
+  Partial LayerReleaseEdgeApproximated(REMOVE_LAYER) @ Quick Item/switch/group 18 (switches)/button_back_left_upper/release :: controller_action remove_layer 2 0 0, , 
   Clean MacroEmitted @ Quick Item/switch/group 18 (switches)/button_back_left_upper/Long_Press => Long-press hold macro: ButtonY
   Clean RowEmitted @ Quick Equip/button_diamond/group 26 (four_buttons)/button_a/Full_Press => DPadDown <- Gamepad ButtonA
   Clean RowEmitted @ Quick Equip/button_diamond/group 26 (four_buttons)/button_b/Full_Press => DPadRight <- Gamepad ButtonB
   Clean RowEmitted @ Quick Equip/button_diamond/group 26 (four_buttons)/button_x/Full_Press => DPadLeft <- Gamepad ButtonX
   Clean RowEmitted @ Quick Equip/button_diamond/group 26 (four_buttons)/button_y/Full_Press => DPadUp <- Gamepad ButtonY
   Partial RemoveLayerApproximated @ Quick Equip/switch/group 29 (switches)/button_back_left/release :: controller_action remove_layer 3 0 0, , 
+  Partial LayerReleaseEdgeApproximated(REMOVE_LAYER) @ Quick Equip/switch/group 29 (switches)/button_back_left/release :: controller_action remove_layer 3 0 0, , 
   Clean RowEmitted @ Default/joystick/group 6 (joystick_move) => LeftThumbAxisX <- Gamepad LeftStickX
   Clean RowEmitted @ Default/joystick/group 6 (joystick_move) => LeftThumbAxisY <- Gamepad LeftStickY
   Clean RowEmitted @ Default/left_trigger/group 1 (trigger) => LeftTrigger <- Gamepad LeftTrigger

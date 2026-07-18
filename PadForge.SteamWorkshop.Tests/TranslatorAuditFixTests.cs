@@ -270,10 +270,16 @@ namespace PadForge.SteamWorkshop.Tests
         }
 
         [Fact]
-        public void WholeTouchModeShift_StaysRejected()
+        public void WholeTouchModeShift_BuildsHeldSpotActivator()
         {
-            // A bare half touch spot has no gate leg: not a chord, still
-            // the named Partial (pinned separately by golden 2374887917).
+            // v23 (the lockdown re-audit): a bare half touch spot is a
+            // held-state bool (the recognizer adds the spot key at contact
+            // and removes it at lift), read by the activator's Button kind
+            // through the same evaluator a chord leg uses, and the
+            // touch-spots feature self-arms off act.Descriptor. So the
+            // rejection was a translator gate, not an engine limit, and
+            // the mode shift lowers (golden 2374887917's hold_layer twins
+            // pin the layer-verb shape).
             string vdf = HeadPs4
                 + Group(1, "single_button", Inputs(("touch", "mode_shift joystick 2")))
                 + Group(2, "dpad", Inputs(("dpad_north", "xinput_button A")))
@@ -281,8 +287,12 @@ namespace PadForge.SteamWorkshop.Tests
                 + "}\n";
             var p = Translate(vdf);
 
-            Assert.Empty(p.XboxMappingSet.ShiftActivators);
-            Assert.Contains(p.Report.Entries,
+            var act = Assert.Single(p.XboxMappingSet.ShiftActivators);
+            Assert.Equal("Hold", act.Mode);
+            Assert.Equal("Button", act.Kind);
+            Assert.Equal("Touchpad 0 TouchLeft", act.Descriptor);
+            Assert.Equal("Layer_42_0_MS_joystick_2", act.LayerMask);
+            Assert.DoesNotContain(p.Report.Entries,
                 e => e.ReasonKey == TranslationReasons.ActivatorInputNotSupported);
         }
     }

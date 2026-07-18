@@ -945,20 +945,26 @@ namespace PadForge.SteamWorkshop.Translation
                 }
             }
 
-            // gyro_button (v18): index 0 is the pad-touch engage (the SC
-            // right-pad touch; the single physical pad's right half on
-            // DS4 / DualSense) and stamps the slot-level device-free
-            // engage descriptor, with gyro_button_invert 1 as the
-            // engage-while-NOT-held flip. Non-zero indices keep the named
-            // note: the gyro_button index table beyond 0 has no public
-            // grounding (searched 2026-07-17; sc-controller's importer
-            // does not parse the key), and the token-table tattoo forbids
-            // guessing. The ratchet BITMASK builds since v22: its bit
-            // space is Steam's own k_eGamepadButtonBitMask enum (see
-            // RatchetBitDescriptor), grounded bits lower onto the
-            // slot-level ratchet clutch lane, and only genuinely
-            // ungrounded bits keep the note (args carry the residual
-            // mask).
+            // gyro_button (v18, full enum since v23): the value INDEXES
+            // Steam's k_eGamepadButtonBitMask enum, the same bit space
+            // the v22 ratchet grounding read out of the shipped
+            // configurator JS (the GyroEnableButton picker renders
+            // through the same GyroButtonPicker visualizer and enum
+            // glyph map as the ratchet mask. Corpus cross-check:
+            // 2374887917, a DualSense config, authors 20, the right pad
+            // touch, the classic gyro engage). Value 0 is the format's
+            // none/default sentinel (Steam's own picker reads mask 0 as
+            // no-button-selected) and keeps the v18 pad-touch default
+            // engage (the SC right-pad touch; the single physical pad's
+            // right half on DS4 / DualSense). Every other index lowers
+            // through RatchetBitDescriptor onto the slot-level
+            // device-free engage stamp, with gyro_button_invert 1 as
+            // the engage-while-NOT-held flip. Only indices with no
+            // grounded read (enum holes, macro buttons, CapSense aux)
+            // keep the named note. The ratchet BITMASK builds since
+            // v22: grounded bits lower onto the slot-level ratchet
+            // clutch lane, and only genuinely ungrounded bits keep the
+            // note (args carry the residual mask).
             foreach (var key in new[] { "gyro_button", "gyro_ratchet_button_mask", "gyro_button_invert" })
             {
                 if (!settings.TryGetValue(key, out var v)) continue;
@@ -973,6 +979,14 @@ namespace PadForge.SteamWorkshop.Translation
                     run.Profile.GyroEngageDescriptor = run.SinglePadTrackpads
                         ? "Touchpad 0 Finger 0 Down Right"
                         : "Touchpad 1 Finger 0 Down";
+                    continue;
+                }
+                if (key == "gyro_button"
+                    && int.TryParse(val, NumberStyles.Integer, CultureInfo.InvariantCulture, out int engageIdx)
+                    && engageIdx > 0 && engageIdx < 64
+                    && RatchetBitDescriptor(engageIdx, run.SinglePadTrackpads) is string engageDesc)
+                {
+                    run.Profile.GyroEngageDescriptor = engageDesc;
                     continue;
                 }
                 if (key == "gyro_button_invert" && val == "1")
@@ -1022,9 +1036,13 @@ namespace PadForge.SteamWorkshop.Translation
             }
         }
 
-        /// <summary>Maps one gyro_ratchet_button_mask bit to its device-free
-        /// descriptor, or null when the bit has no grounded PadForge read
-        /// (v22). The bit space is Steam's own k_eGamepadButtonBitMask
+        /// <summary>Maps one k_eGamepadButtonBitMask position to its
+        /// device-free descriptor, or null when the bit has no grounded
+        /// PadForge read (v22). Serves BOTH gyro lanes: each set
+        /// gyro_ratchet_button_mask bit, and since v23 the gyro_button
+        /// engage value, which indexes the same enum (the configurator
+        /// renders both settings through the one GyroButtonPicker glyph
+        /// map). The bit space is Steam's own k_eGamepadButtonBitMask
         /// enum, read out of the shipped configurator
         /// (steamui/chunk~2dcc5aaf7.js, the same client build the v13
         /// vocabulary census used; the gyro panel renders the mask setting
@@ -5325,13 +5343,21 @@ namespace PadForge.SteamWorkshop.Translation
         }
 
         /// <summary>Shift activators read button-like inputs (or an axis
-        /// with a threshold). Gesture-gated trackpad wedges can't drive one.
-        /// A single-pad half click (#9 B-1) can: its own read is a plain
-        /// pad-click button AND-gated on the half's touch spot, which is
-        /// exactly the runtime's Kind=Chord read (both legs go through the
-        /// button-like evaluator). The touch-spots feature it depends on
-        /// self-arms at apply since v14 (the imported set references the
-        /// spot descriptor on the chord leg).
+        /// with a threshold). Gesture-FIRED trackpad reads (taps, swipes,
+        /// the anchor D-pad wedges) can't drive one. The touch-spot
+        /// family can, in both of its resolver shapes (v23, the lockdown
+        /// re-audit): a single-pad half click (#9 B-1) is a
+        /// plain pad-click button AND-gated on the half's touch spot,
+        /// exactly the runtime's Kind=Chord read, and a bare half-touch
+        /// host ("Touchpad {p} TouchLeft/TouchRight", the single-pad
+        /// "touch" member) is itself a held-state bool: the recognizer
+        /// adds the spot key at contact and removes it at lift
+        /// (TouchpadGestureContext.CurrentTouchSpot), and the button-like
+        /// evaluator reads it through TouchpadGestureFiredProvider, the
+        /// same read a chord leg gets. The touch-spots feature self-arms
+        /// at apply since v14 for both shapes (TouchpadGestureAutoArm
+        /// classifies act.Descriptor and act.ChordSecondDescriptor
+        /// alike).
         /// <paramref name="allowGyroHalf"/> (v15): a one-shot flick host
         /// admits a HALF-stamped gyro rate read, because the request rides
         /// Kind=Axis with the half selector and an edge-fired mode
@@ -5341,8 +5367,7 @@ namespace PadForge.SteamWorkshop.Translation
         private static bool IsActivatorCapable(ResolvedSource source, bool allowGyroHalf = false)
             => source != null
             && (string.IsNullOrEmpty(source.TrackpadFeature)
-                || (source.TrackpadFeature == PhysicalSlotResolver.FeatureTouchSpots
-                    && !string.IsNullOrEmpty(source.GateDescriptor)))
+                || source.TrackpadFeature == PhysicalSlotResolver.FeatureTouchSpots)
             && (!source.Descriptor.StartsWith("Gyro ", StringComparison.Ordinal)
                 || (allowGyroHalf && source.HalfAxis));
 

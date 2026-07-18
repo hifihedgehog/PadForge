@@ -122,7 +122,7 @@ namespace PadForge.Tests
             Assert.Contains("clean:1", p.WorkshopSource.TranslationSummary);
             // The translator version rides the stored summary, so imports
             // from different translator generations stay distinguishable.
-            Assert.StartsWith("v22 ", p.WorkshopSource.TranslationSummary);
+            Assert.StartsWith("v23 ", p.WorkshopSource.TranslationSummary);
         }
 
         [Fact]

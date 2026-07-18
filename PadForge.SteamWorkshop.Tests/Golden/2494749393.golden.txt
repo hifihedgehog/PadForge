@@ -1,6 +1,7 @@
 name: Dualsence for Skyrim: SE
 description: The template works best for games that are designed with a gamepad in mind, but also support a deskt...
 slots: xbox kbm
+gyroEngage: Gamepad DPadRight
 xbox rows: 20
   Base | ButtonA
     <- Gamepad Paddle2
@@ -62,8 +63,7 @@ macros: 10
   macro RumblePulse OnPress | Haptic pulse (button_escape) | btns=0x0000 in=[Gamepad ButtonStart] strength=33%
   macro HoldKey DoublePress | Hold F9 (button_escape) | btns=0x0010 dbl=442ms vk=0x78
   macro KeyTap OnPress | Screenshot key (button_menu) | btns=0x0000 in=[Gamepad ButtonBack] vk=0x2C
-report: v22 rows:x20+k1 macros:10 menus:0 layers:0 clean:28 partial:1 skipped:0 errors:0
-  Partial GyroButtonMaskDropped(gyro_button, 9) @ Default/gyro/group 13 (mouse_joystick)
+report: v23 rows:x20+k1 macros:10 menus:0 layers:0 clean:28 partial:0 skipped:0 errors:0
   Clean RowEmitted @ Default/gyro/group 13 (mouse_joystick) => RightThumbAxisX <- Gyro Yaw
   Clean RowEmitted @ Default/gyro/group 13 (mouse_joystick) => RightThumbAxisY <- Gyro Pitch
   Clean RowEmitted @ Default/left_trackpad/group 1 (single_button)/click/Full_Press => ButtonBack <- Touchpad 0 Click

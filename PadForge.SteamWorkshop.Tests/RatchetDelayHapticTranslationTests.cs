@@ -5,15 +5,16 @@ using PadForge.SteamWorkshop.Vdf;
 
 namespace PadForge.SteamWorkshop.Tests
 {
-    /// <summary>Translator v22 pins: the three Skyrim-profile notes build.
+    /// <summary>Translator v22 pins plus the v23 engage-enum pins.
     /// gyro_ratchet_button_mask lowers bit-by-bit (Steam's own
     /// k_eGamepadButtonBitMask enum, read out of the shipped configurator
     /// JS) onto the slot-level ratchet clutch lane, naming only genuinely
-    /// ungrounded bits; the activator delay family closes whole (layer
-    /// release linger, autofire release linger, wheel-row reroute,
-    /// press-leg tap extension, unobservable-edge proofs); and group-level
-    /// haptic intensity rides every member activation through the
-    /// EmitHapticPulse fallback.</summary>
+    /// ungrounded bits; since v23 gyro_button indexes the same enum and
+    /// lowers onto the engage stamp; the activator delay family closes
+    /// whole (layer release linger, autofire release linger, wheel-row
+    /// reroute, press-leg tap extension, unobservable-edge proofs); and
+    /// group-level haptic intensity rides every member activation through
+    /// the EmitHapticPulse fallback.</summary>
     public class RatchetDelayHapticTranslationTests
     {
         private static TranslatedProfile Translate(string vdf, long fileId = 42)
@@ -171,18 +172,38 @@ namespace PadForge.SteamWorkshop.Tests
         }
 
         [Fact]
-        public void GyroButton_NonZeroIndex_StillKeepsTheNote()
+        public void GyroButton_Index9_LowersTheDPadRightEngage()
         {
-            // The gyro_button INDEX table beyond 0 stays ungrounded; only
-            // the ratchet BITMASK gained the enum grounding.
+            // v23: gyro_button=N indexes the same k_eGamepadButtonBitMask
+            // enum the ratchet mask grounds against (the configurator
+            // renders both settings through the one GyroButtonPicker
+            // glyph map). Index 9 = DPadRight, the exact setting the v22
+            // arm dropped.
             string vdf = Head
-                + Group(1, "gyro_to_mouse", Settings(("gyro_button", "7")))
+                + Group(1, "gyro_to_mouse", Settings(("gyro_button", "9")))
                 + Preset(0, "Default", (1, "gyro active"))
                 + "}\n";
             var p = Translate(vdf);
+            Assert.Equal("Gamepad DPadRight", p.GyroEngageDescriptor);
+            Assert.DoesNotContain(p.Report.Entries, e =>
+                e.ReasonKey == TranslationReasons.GyroButtonMaskDropped);
+        }
+
+        [Fact]
+        public void GyroButton_OutOfEnumIndex_StillKeepsTheNote()
+        {
+            // Index 21 is an enum hole (no k_eGamepadButtonBitMask member,
+            // see RatchetBitDescriptor), so the engage arm may not guess:
+            // the named note survives for genuinely out-of-enum indices.
+            string vdf = Head
+                + Group(1, "gyro_to_mouse", Settings(("gyro_button", "21")))
+                + Preset(0, "Default", (1, "gyro active"))
+                + "}\n";
+            var p = Translate(vdf);
+            Assert.Equal("", p.GyroEngageDescriptor);
             var e = Assert.Single(p.Report.Entries, x =>
                 x.ReasonKey == TranslationReasons.GyroButtonMaskDropped);
-            Assert.Equal(new[] { "gyro_button", "7" }, e.ReasonArgs);
+            Assert.Equal(new[] { "gyro_button", "21" }, e.ReasonArgs);
             Assert.Empty(p.GyroRatchetDescriptors);
         }
 

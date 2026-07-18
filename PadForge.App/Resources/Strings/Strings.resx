@@ -2579,7 +2579,7 @@
   <data name="Workshop_Tr_ShiftLayerEmpty" xml:space="preserve"><value>layer switch dropped ({0} translated to nothing)</value></data>
   <data name="Workshop_Tr_AbsoluteMouseApproximated" xml:space="preserve"><value>absolute pointer positioning approximated as relative mouse movement</value></data>
   <data name="Workshop_Tr_ResponseCurveNotSupported" xml:space="preserve"><value>response curve and range settings dropped ({0})</value></data>
-  <data name="Workshop_Tr_GyroButtonMaskDropped" xml:space="preserve"><value>gyro engage setting {0}={1} dropped (gyro engage is configured per pad)</value></data>
+  <data name="Workshop_Tr_GyroButtonMaskDropped" xml:space="preserve"><value>gyro setting {0}={1} dropped (no readable button behind this value)</value></data>
   <data name="Workshop_Tr_PlayerNumberActionNotSupported" xml:space="preserve"><value>player-number change is a Steam-client action, no equivalent</value></data>
   <data name="Workshop_Tr_LizardModeActionNotSupported" xml:space="preserve"><value>lizard-mode toggle is Steam-internal, no equivalent</value></data>
   <data name="Workshop_Tr_ToggleLatchEmitted" xml:space="preserve"><value>toggle press latches {0} until the next press</value></data>

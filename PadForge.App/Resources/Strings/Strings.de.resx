@@ -2532,7 +2532,7 @@
   <data name="Pad_MouseGestures_CustomInput_Tooltip" xml:space="preserve"><value>Die Eingabe, die die Benutzerdefiniert-Gestensitzung aktiviert, solange sie gehalten wird, aufgezeichnet von einem beliebigen Gerät an diesem Slot. Tasten und Knöpfe aktivieren, solange sie gedrückt sind. Analoge Eingaben wie ein Pedal aktivieren ab der Hälfte des Wegs.</value></data>
   <data name="Pad_ResetMouseGestureCustomInput" xml:space="preserve"><value>Benutzerdefinierte Aktivierungseingabe zurücksetzen</value></data>
   <data name="Workshop_Tr_ResponseCurveNotSupported" xml:space="preserve"><value>Reaktionskurven- und Bereichseinstellungen verworfen ({0})</value></data>
-  <data name="Workshop_Tr_GyroButtonMaskDropped" xml:space="preserve"><value>Gyro-Aktivierungseinstellung {0}={1} verworfen (Gyro-Aktivierung wird pro Pad konfiguriert)</value></data>
+  <data name="Workshop_Tr_GyroButtonMaskDropped" xml:space="preserve"><value>Gyro-Einstellung {0}={1} verworfen (kein lesbarer Button hinter diesem Wert)</value></data>
   <data name="Workshop_Tr_PlayerNumberActionNotSupported" xml:space="preserve"><value>Spielernummer-Wechsel ist eine Steam-Client-Aktion, keine Entsprechung</value></data>
   <data name="Workshop_Tr_LizardModeActionNotSupported" xml:space="preserve"><value>Lizard-Modus-Umschaltung ist Steam-intern, keine Entsprechung</value></data>
   <data name="Workshop_Tr_ToggleLatchEmitted" xml:space="preserve"><value>Umschalt-Druck hält {0} bis zum nächsten Druck</value></data>

@@ -116,8 +116,11 @@ namespace PadForge.Engine.Touchpad
                     any |= Classify(act.Descriptor, ref need);
                     any |= Classify(act.ChordSecondDescriptor, ref need);
                     // An activator's own AND gate reads through the gated
-                    // families too, the row-source rationale above.
+                    // families too, the row-source rationale above. The
+                    // cycle-backward button is read through the same
+                    // runtime lane, so it arms identically.
                     any |= Classify(act.GateDescriptor, ref need);
+                    any |= Classify(act.CyclePrevDescriptor, ref need);
                 }
             }
             if (extraDescriptors != null)

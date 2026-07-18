@@ -1036,6 +1036,10 @@ namespace PadForge.Services
                     mapping.PrimarySourceDeviceLabel = ResolveDeviceLabel(winningDevice);
                 }
                 mapping.LoadDescriptor(descriptor);
+                // E7 authoring default rides the recorder seam too, or
+                // recording a button onto the scroll row scrolls DOWN
+                // while picking the identical button scrolls UP.
+                mapping.ApplyScrollUpAuthoringDefault(mapping.SourceDescriptor);
                 finalDescriptor = mapping.SourceDescriptor;
             }
 
@@ -1170,6 +1174,8 @@ namespace PadForge.Services
                     mapping.PrimarySourceDeviceLabel = ResolveDeviceLabel(winningDevice);
                 }
                 mapping.LoadDescriptor(descriptor);
+                // E7 authoring default, the primary-path twin above.
+                mapping.ApplyScrollUpAuthoringDefault(mapping.SourceDescriptor);
                 finalDescriptor = mapping.SourceDescriptor;
             }
 

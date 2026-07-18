@@ -1665,6 +1665,17 @@ namespace PadForge.ViewModels
             {
                 if (SetProperty(ref _triggerMode, value))
                 {
+                    // Audit 2026-07-18: the evaluator reads this SAME
+                    // object live, so a mode switch must void every
+                    // transient the old mode armed. An armed SinglePress
+                    // timestamp otherwise fires DoublePress on its first
+                    // post-switch press, and a mid-hold switch keeps the
+                    // HoldForMs timer crediting the old mode's hold.
+                    TriggerLastPressUtc = DateTime.MinValue;
+                    TriggerPressStreak = 0;
+                    TriggerHoldStartUtc = DateTime.MinValue;
+                    TriggerHoldFired = false;
+                    RunReleasedFireToCompletion = false;
                     OnPropertyChanged(nameof(IsNotAlwaysMode));
                     OnPropertyChanged(nameof(IsCustomExpressionMode));
                     OnPropertyChanged(nameof(IsHoldForMsMode));
@@ -1702,7 +1713,9 @@ namespace PadForge.ViewModels
         public string TriggerPressWindowToolTip =>
             _triggerMode == MacroTriggerMode.TriplePress
                 ? Strings.Instance.Macro_TriplePress_Tooltip
-                : Strings.Instance.Macro_DoublePress_Tooltip;
+                : _triggerMode == MacroTriggerMode.SinglePress
+                    ? Strings.Instance.Macro_SinglePress_Tooltip
+                    : Strings.Instance.Macro_DoublePress_Tooltip;
 
         /// <summary>True when the standard trigger-combo recording UI should show
         /// (i.e. one of OnPress / OnRelease / WhileHeld / HoldForMs /
@@ -1801,6 +1814,15 @@ namespace PadForge.ViewModels
         /// next rising edge. Never serialized.</summary>
         [System.Xml.Serialization.XmlIgnore]
         internal bool TriggerHoldFired { get; set; }
+
+        /// <summary>Set when a deferred SinglePress fired with the button
+        /// already released (audit 2026-07-18): the activation runs its
+        /// sequence ONE full pass, with the UntilRelease release-stop
+        /// suppressed until the pass completes (the release already
+        /// happened before the fire). Cleared on completion, disable,
+        /// mode switch, and pair-cancel.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        internal bool RunReleasedFireToCompletion { get; set; }
 
         private bool _consumeTriggerButtons = true;
 

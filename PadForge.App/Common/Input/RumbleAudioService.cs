@@ -50,7 +50,6 @@ namespace PadForge.Common.Input
         private sealed class EndpointPlayer
         {
             public string EndpointId = "";      // resolved MMDevice.ID
-            public bool IsDefaultRoute;          // built from EndpointId == ""
             public WasapiOut Player;
             public RumbleAudioSampleProvider Provider;
             public string FriendlyName = "";
@@ -277,7 +276,7 @@ namespace PadForge.Common.Input
             catch { }
 
             // endpoint key → (resolved id, name, voices, uses default route)
-            var wanted = new Dictionary<string, (string Name, bool IsDefaultRoute,
+            var wanted = new Dictionary<string, (string Name,
                 List<RumbleAudioSampleProvider.Voice> Voices)>(StringComparer.OrdinalIgnoreCase);
 
             foreach (var (slot, cfg) in desired)
@@ -313,7 +312,7 @@ namespace PadForge.Common.Input
 
                 if (!wanted.TryGetValue(resolvedId, out var entry))
                 {
-                    entry = (resolvedName ?? "", viaDefault,
+                    entry = (resolvedName ?? "",
                         new List<RumbleAudioSampleProvider.Voice>());
                     wanted[resolvedId] = entry;
                 }
@@ -353,7 +352,7 @@ namespace PadForge.Common.Input
             // under the lock, build unlocked, commit under a short re-check
             // (the AudioPassthroughService committed pattern).
             var toDispose = new List<EndpointPlayer>();
-            var toBuild = new List<(string Id, string Name, bool IsDefaultRoute, RumbleAudioSampleProvider.Voice[] Voices)>();
+            var toBuild = new List<(string Id, string Name, RumbleAudioSampleProvider.Voice[] Voices)>();
             lock (_lock)
             {
                 for (int i = _players.Count - 1; i >= 0; i--)
@@ -399,7 +398,7 @@ namespace PadForge.Common.Input
                         continue;
                     }
 
-                    toBuild.Add((kv.Key, kv.Value.Name, kv.Value.IsDefaultRoute,
+                    toBuild.Add((kv.Key, kv.Value.Name,
                         kv.Value.Voices.ToArray()));
                 }
 
@@ -409,7 +408,7 @@ namespace PadForge.Common.Input
 
             foreach (var b in toBuild)
             {
-                var built = BuildPlayer(b.Id, b.Name, b.IsDefaultRoute, b.Voices);
+                var built = BuildPlayer(b.Id, b.Name, b.Voices);
                 if (built == null) continue;
                 bool committed = false;
                 lock (_lock)
@@ -436,7 +435,7 @@ namespace PadForge.Common.Input
         }
 
         private static EndpointPlayer BuildPlayer(string endpointId, string name,
-            bool isDefaultRoute, RumbleAudioSampleProvider.Voice[] voices)
+            RumbleAudioSampleProvider.Voice[] voices)
         {
             try
             {
@@ -454,7 +453,6 @@ namespace PadForge.Common.Input
                 return new EndpointPlayer
                 {
                     EndpointId = endpointId,
-                    IsDefaultRoute = isDefaultRoute,
                     Player = player,
                     Provider = provider,
                     FriendlyName = name ?? "",

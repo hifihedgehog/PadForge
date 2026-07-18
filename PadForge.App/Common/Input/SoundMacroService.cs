@@ -272,9 +272,14 @@ namespace PadForge.Common.Input
             AudioPassthroughService.Shutdown();
             WiiSpeakerService.Shutdown();
             HapticToneService.Shutdown();
-            // #236: the shaker renderer dies with the engine like the
-            // other audio sinks. EnsureStarted re-arms it on engine start.
-            RumbleAudioService.StopAll();
+            // #236 audit: RumbleAudioService.StopAll deliberately does NOT
+            // ride this method. SettingsService.LoadMacros calls StopAll on
+            // EVERY profile apply (macro sounds are profile-scoped), and
+            // killing the shaker renderer there silenced it on every
+            // profile switch until the next edit or engine restart. The
+            // renderer's lifecycle is the ENGINE's: InputManager.Stop owns
+            // its StopAll, and the poll lane plus the silence edges keep
+            // it correct across profile transitions.
         }
 
         // ─────────────────────────────────────────────

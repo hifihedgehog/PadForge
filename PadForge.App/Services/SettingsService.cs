@@ -1575,6 +1575,9 @@ namespace PadForge.Services
                 // bass-shaker routing whenever a device joined or left.
                 // Reference carry is safe; `current` is discarded.
                 merged.RumbleAudio = current.RumbleAudio;
+                // SOCD authoring (#240), same family.
+                merged.SocdMode = current.SocdMode ?? "";
+                merged.SocdPairs = current.SocdPairs ?? "";
                 var consumedRebuilt = new HashSet<(string, string)>();
 
                 foreach (var er in current.Rows)
@@ -2062,7 +2065,9 @@ namespace PadForge.Services
                 || !string.IsNullOrEmpty(c.AudioMirrorEngageButton)
                 // #202: same keep-alive rule. A chosen tone filter is a
                 // deliberate, copy-worthy configuration.
-                || (c.AudioToneFilterMode != null && c.AudioToneFilterMode != "Off"));
+                || (c.AudioToneFilterMode != null && c.AudioToneFilterMode != "Off")
+                // #239: enabled synthetic pressure is copy-worthy.
+                || c.TouchpadSyntheticPressure);
 
         /// <summary>VM-shape twin of <see cref="IsDeviceSlotConfigDataConfigured"/>,
         /// for the in-process Copy From path.</summary>
@@ -2079,7 +2084,8 @@ namespace PadForge.Services
                 || !string.IsNullOrEmpty(c.AudioMirrorSourceId)
                 || c.AudioMirrorEngageMode != "Always"
                 || !string.IsNullOrEmpty(c.AudioMirrorEngageButton)
-                || c.AudioToneFilterMode != "Off");
+                || c.AudioToneFilterMode != "Off"
+                || c.TouchpadSyntheticPressure);
 
         public void ApplyDeviceSlotConfigsToSlot(int slotIndex,
             ViewModels.DeviceSlotConfigData[] configs)
@@ -2401,6 +2407,8 @@ namespace PadForge.Services
                     cfg.LightbarEnabled = cfgData.LightbarEnabled;
                     cfg.AudioPassthroughEnabled = cfgData.AudioPassthroughEnabled;
                     cfg.AudioMirrorSourceId = cfgData.AudioMirrorSourceId ?? string.Empty;
+                    cfg.TouchpadSyntheticPressure = cfgData.TouchpadSyntheticPressure;
+                    cfg.TouchpadSyntheticTouchPercent = cfgData.TouchpadSyntheticTouchPercent;
                     cfg.AudioMirrorEngageMode = cfgData.AudioMirrorEngageMode ?? "Always";
                     cfg.AudioMirrorEngageDeviceGuid = cfgData.AudioMirrorEngageDeviceGuid ?? string.Empty;
                     cfg.AudioMirrorEngageButton = cfgData.AudioMirrorEngageButton ?? string.Empty;
@@ -2931,7 +2939,7 @@ namespace PadForge.Services
                     continue;
 
                 var padVm = _mainVm.Pads[md.PadIndex];
-                var macro = LoadMacroFromData(md, padVm.OutputType, padVm.ExtendedConfig?.ButtonCount);
+                var macro = LoadMacroFromData(md, padVm.OutputType, padVm.ExtendedConfig?.ButtonCount, padVm.ProfileId);
                 padVm.Macros.Add(macro);
             }
         }
@@ -2940,7 +2948,7 @@ namespace PadForge.Services
         /// <see cref="MacroItem"/>, applying the target pad's button style and count.
         /// Extracted from <see cref="LoadMacros"/> so Duplicate / Paste (#112) rebuild a
         /// macro through the same mapping. The returned macro is not added to any pad.</summary>
-        public static MacroItem LoadMacroFromData(MacroData md, VirtualControllerType outputType, int? extendedButtonCount)
+        public static MacroItem LoadMacroFromData(MacroData md, VirtualControllerType outputType, int? extendedButtonCount, string extendedProfileId = null)
         {
             var macro = new MacroItem
             {
@@ -2981,6 +2989,8 @@ namespace PadForge.Services
             int btnCount = (outputType == VirtualControllerType.Extended ? extendedButtonCount : null) ?? 11;
             macro.CustomButtonCount = btnCount;
             macro.ButtonStyle = style;
+            macro.ExtendedProfileId =
+                outputType == VirtualControllerType.Extended ? extendedProfileId : null;
             foreach (var action in macro.Actions)
                 action.CustomButtonCount = btnCount;
 
@@ -3049,6 +3059,7 @@ namespace PadForge.Services
                 CycleWrap = ad.CycleWrap,
                 IntervalMs = ad.IntervalMs,
                 PulseWhileLatched = ad.PulseWhileLatched,
+                AxisYieldToPhysical = ad.AxisYieldToPhysical,
                 LatchDirection = ad.LatchDirection,
                 CursorClampMode = ad.CursorClampMode,
                 CursorClampInsetX = ad.CursorClampInsetX,
@@ -3825,6 +3836,8 @@ namespace PadForge.Services
                 LightbarEnabled = cfg.LightbarEnabled,
                 AudioPassthroughEnabled = cfg.AudioPassthroughEnabled,
                 AudioMirrorSourceId = cfg.AudioMirrorSourceId ?? string.Empty,
+                TouchpadSyntheticPressure = cfg.TouchpadSyntheticPressure,
+                TouchpadSyntheticTouchPercent = cfg.TouchpadSyntheticTouchPercent,
                 AudioMirrorEngageMode = cfg.AudioMirrorEngageMode ?? "Always",
                 AudioMirrorEngageDeviceGuid = cfg.AudioMirrorEngageDeviceGuid ?? string.Empty,
                 AudioMirrorEngageButton = cfg.AudioMirrorEngageButton ?? string.Empty,
@@ -4091,6 +4104,7 @@ namespace PadForge.Services
                 CycleWrap = a.CycleWrap,
                 IntervalMs = a.IntervalMs,
                 PulseWhileLatched = a.PulseWhileLatched,
+                AxisYieldToPhysical = a.AxisYieldToPhysical,
                 LatchDirection = a.LatchDirection,
                 CursorClampMode = a.CursorClampMode,
                 CursorClampInsetX = a.CursorClampInsetX,
@@ -5495,6 +5509,12 @@ namespace PadForge.Services
         /// solid, composing Steam's toggle + hold_repeats.</summary>
         [XmlElement]
         public bool PulseWhileLatched { get; set; }
+
+        /// <summary>Absolute axis holds (#237): suppress the macro's
+        /// write for the rest of the activation once the physical input
+        /// moves the target past the yield threshold.</summary>
+        [XmlElement]
+        public bool AxisYieldToPhysical { get; set; }
 
         /// <summary>Latch write mode for ToggleKey / ToggleMouseButton
         /// (audit #2 M4): Toggle flips, On sets, Off clears. Default

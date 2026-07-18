@@ -1576,6 +1576,28 @@ namespace PadForge.Services
             _inputManager.TouchpadGestureSettingsProvider = (slotIndex, deviceGuid, padIdx) =>
                 touchpadGestureSnapshot.Get((slotIndex, deviceGuid, padIdx));
 
+            // Synthetic touchpad pressure (#239): per-(slot, device)
+            // DeviceSlotConfig knobs served to the Engine's pressure
+            // reads through the same 250 ms snapshot pattern (the read
+            // runs per pressure source per tick). padIdx joins the key
+            // for shape parity with the gesture provider; the config is
+            // per-device today, so every pad returns the same pair.
+            var syntheticPressureSnapshot = new ProviderSnapshot<(string, int, int), (bool, float)>(key =>
+            {
+                var (guidStr, slotIndex, _) = key;
+                if (slotIndex >= 0 && slotIndex < _mainVm.Pads.Count
+                    && Guid.TryParse(guidStr, out var devGuid)
+                    && _mainVm.Pads[slotIndex].PerDeviceSlotConfigs.TryGetValue(devGuid, out var spc)
+                    && spc != null && spc.TouchpadSyntheticPressure)
+                {
+                    return (true, Math.Clamp(spc.TouchpadSyntheticTouchPercent, 0, 100) / 100f);
+                }
+                return (false, 0.5f);
+            });
+            PadForge.Engine.Common.Mapping.SourceCoercion.TouchpadSyntheticPressureProvider =
+                (deviceGuid, slotIndex, padIdx) =>
+                    syntheticPressureSnapshot.Get((deviceGuid ?? "", slotIndex, padIdx));
+
             // Per-(slot, device) mouse-gesture settings (issue #200), twin
             // of the touchpad provider above minus the pad index. Same
             // UserSettings walk under SyncRoot, Default() on every miss,
@@ -5772,6 +5794,9 @@ namespace PadForge.Services
             // snapshot / apply without this leg would silently disable the
             // slot's bass-shaker routing and wipe it on resave.
             copy.RumbleAudio = src.RumbleAudio?.Clone();
+            // SOCD authoring (#240) rides the same not-Rows family.
+            copy.SocdMode = src.SocdMode ?? "";
+            copy.SocdPairs = src.SocdPairs ?? "";
             // Menus (#9 B-17) travel with the set like the shift authoring:
             // without this leg a profile apply would silently drop every
             // imported / authored menu.
@@ -6061,6 +6086,10 @@ namespace PadForge.Services
             var copy = new Engine.Data.MappingSet
             {
                 RumbleAudio = SettingsManager.SlotMappingSets[padIndex]?.RumbleAudio,
+                // The DESTINATION's SOCD authoring (#240) survives a row
+                // paste for the same reason its rumble-audio config does.
+                SocdMode = SettingsManager.SlotMappingSets[padIndex]?.SocdMode ?? "",
+                SocdPairs = SettingsManager.SlotMappingSets[padIndex]?.SocdPairs ?? "",
             };
             foreach (var r in rows)
             {
@@ -6221,6 +6250,12 @@ namespace PadForge.Services
             // machine, so the selection remains valid. Row/layer-only paste
             // deliberately does NOT carry it (destination keeps its own).
             copy.RumbleAudio = src.RumbleAudio?.Clone();
+            // SOCD authoring (#240) copies whole-slot too. Note the pair
+            // grammar is slot-type dependent (target names vs Extended
+            // indices); Copy From is same-type in the UI, and a mismatched
+            // grammar parses to zero pairs rather than misfiring.
+            copy.SocdMode = src.SocdMode ?? "";
+            copy.SocdPairs = src.SocdPairs ?? "";
             // Menus (#9 B-17) travel with the set exactly like the shift
             // authoring above (the same leg CloneMappingSetDeep carries).
             // Without it, Copy From Slot dropped the source's menus and the
@@ -6312,6 +6347,8 @@ namespace PadForge.Services
             // A rumble-audio config (#236) counts too: a config-only set is
             // a meaningful Copy From Slot donor and a "configured" slot.
             if (ms.RumbleAudio != null) return true;
+            // SOCD authoring (#240), same rationale.
+            if (!string.IsNullOrEmpty(ms.SocdMode) || !string.IsNullOrEmpty(ms.SocdPairs)) return true;
             return false;
         }
 
@@ -10590,7 +10627,7 @@ namespace PadForge.Services
                 {
                     var parts = new List<string>();
                     if (_recordedCustomButtons != null && _recordedCustomButtons.Any(w => w != 0))
-                        parts.Add(MacroButtonNames.FormatCustomButtons(_recordedCustomButtons));
+                        parts.Add(MacroButtonNames.FormatCustomButtons(_recordedCustomButtons, _recordingMacro.ExtendedProfileId));
                     foreach (var ax in _recordedAxisTargets)
                         parts.Add($"{ax.DisplayName()} > {_recordingMacro.TriggerAxisThreshold}%");
                     _recordingMacro.RecordingLiveText = parts.Count > 0
@@ -10609,7 +10646,7 @@ namespace PadForge.Services
                 {
                     var parts = new List<string>();
                     if (_recordedButtons != 0)
-                        parts.Add(MacroButtonNames.FormatButtons(_recordedButtons, _recordingMacro.ButtonStyle));
+                        parts.Add(MacroButtonNames.FormatButtons(_recordedButtons, _recordingMacro.ButtonStyle, _recordingMacro.ExtendedProfileId));
                     foreach (var ax in _recordedAxisTargets)
                         parts.Add($"{ax.DisplayName()} > {_recordingMacro.TriggerAxisThreshold}%");
                     _recordingMacro.RecordingLiveText = parts.Count > 0

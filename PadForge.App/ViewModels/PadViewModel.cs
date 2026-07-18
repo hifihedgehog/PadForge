@@ -219,6 +219,9 @@ namespace PadForge.ViewModels
                         RebuildMappings();
                         RebuildStickConfigs();
                         RebuildTriggerConfigs();
+                        // Macro / menu button lettering follows the profile
+                        // on Extended slots (#215, Switch Pro letters).
+                        SyncMacroButtonStyle();
                     }
                     else if (_outputType == VirtualControllerType.Xbox)
                     {
@@ -1638,6 +1641,9 @@ namespace PadForge.ViewModels
             // The rumble-to-audio config (#236) shares that lifetime, so
             // the Bass Shakers tab re-seeds from the set on the same paths.
             ReloadRumbleAudio();
+            // The SOCD card (#240) lives on the same slot MappingSet and
+            // re-seeds on the same paths.
+            ReloadSocd();
 
             MappingsRebuilt?.Invoke(this, EventArgs.Empty);
         }
@@ -1876,9 +1882,12 @@ namespace PadForge.ViewModels
             for (int i = 0; i < triggerCount; i++)
                 Mappings.Add(new MappingItem(string.Format(Strings.Instance.Extended_Trigger_Format, i + 1), $"ExtendedAxis{triggerAxis[i]}", MappingCategory.Triggers));
 
-            // Buttons
+            // Buttons. Switch Pro profiles letter each raw index in the
+            // Nintendo convention (#215) through the same MacroButtonNames
+            // seam the macro / menu pickers read; other profiles keep the
+            // numbered labels.
             for (int i = 0; i < cfg.ButtonCount; i++)
-                Mappings.Add(new MappingItem(string.Format(Strings.Instance.Extended_Button_Format, i + 1), $"ExtendedBtn{i}", MappingCategory.Buttons));
+                Mappings.Add(new MappingItem(MacroButtonNames.ExtendedButtonLabel(ProfileId, i + 1), $"ExtendedBtn{i}", MappingCategory.Buttons));
 
             // POVs
             for (int i = 0; i < cfg.PovCount; i++)
@@ -3404,12 +3413,21 @@ namespace PadForge.ViewModels
                     // holding its last value until the poll lane's next
                     // tick (or forever, if the engine is stopped).
                     var delSet = menuSets[PadIndex];
-                    if (delSet != null) delSet.RumbleAudio = null;
+                    if (delSet != null)
+                    {
+                        delSet.RumbleAudio = null;
+                        // SOCD config (#240) is slot-scoped the same way:
+                        // the next VC at this index must not inherit the
+                        // deleted slot's pair cleaning.
+                        delSet.SocdMode = "";
+                        delSet.SocdPairs = "";
+                    }
                 }
             }
             PadForge.Common.Input.RumbleAudioService.SilenceSlot(PadIndex);
             ReloadMenus();
             ReloadRumbleAudio();
+            ReloadSocd();
 
             // Per-device Lighting tab configs live in this PadViewModel's
             // dictionary, keyed by physical device InstanceGuid — not on
@@ -4009,7 +4027,8 @@ namespace PadForge.ViewModels
                 {
                     PadIndex = PadIndex,
                     Name = $"Macro {Macros.Count + 1}",
-                    ButtonStyle = MacroButtonNames.DeriveStyle(_outputType)
+                    ButtonStyle = MacroButtonNames.DeriveStyle(_outputType),
+                    ExtendedProfileId = SlotExtendedProfileId
                 };
                 Macros.Add(macro);
                 SelectedMacro = macro;
@@ -4036,7 +4055,7 @@ namespace PadForge.ViewModels
             {
                 if (_selectedMacro == null) return;
                 var data = SettingsService.BuildMacroDataForMacro(_selectedMacro, PadIndex);
-                var clone = SettingsService.LoadMacroFromData(data, OutputType, ExtendedConfig?.ButtonCount);
+                var clone = SettingsService.LoadMacroFromData(data, OutputType, ExtendedConfig?.ButtonCount, ProfileId);
                 clone.PadIndex = PadIndex;
                 clone.Name = string.Format(Strings.Instance.Macro_CopyNameFormat, _selectedMacro.Name);
                 Macros.Add(clone);
@@ -4693,7 +4712,8 @@ namespace PadForge.ViewModels
                 {
                     PadIndex = PadIndex,
                     Name = string.Format(Strings.Instance.Pad_Audio_SoundMacroName_Format, Macros.Count + 1),
-                    ButtonStyle = MacroButtonNames.DeriveStyle(_outputType)
+                    ButtonStyle = MacroButtonNames.DeriveStyle(_outputType),
+                    ExtendedProfileId = SlotExtendedProfileId
                 };
                 macro.Actions.Add(new MacroAction { Type = MacroActionType.PlaySound });
                 Macros.Add(macro);
@@ -4709,18 +4729,26 @@ namespace PadForge.ViewModels
             SelectedConfigTab = 1;
         }
 
+        /// <summary>The slot's profile slug when it letters Extended button
+        /// labels (#215): the ProfileId on Extended slots, null elsewhere.
+        /// Xbox / PlayStation lettering keys on ButtonStyle alone.</summary>
+        private string SlotExtendedProfileId =>
+            _outputType == VirtualControllerType.Extended ? _profileId : null;
+
         /// <summary>
         /// Syncs macro button display style to all macros when the output
-        /// controller type changes.
+        /// controller type (or an Extended slot's profile, #215) changes.
         /// </summary>
         private void SyncMacroButtonStyle()
         {
             var style = MacroButtonNames.DeriveStyle(_outputType);
             int btnCount = (_outputType == VirtualControllerType.Extended ? _extendedConfig?.ButtonCount : null) ?? 11;
+            string letteredProfile = SlotExtendedProfileId;
             foreach (var macro in Macros)
             {
                 macro.ButtonStyle = style;
                 macro.CustomButtonCount = btnCount;
+                macro.ExtendedProfileId = letteredProfile;
                 foreach (var action in macro.Actions)
                     action.CustomButtonCount = btnCount;
             }
@@ -4739,6 +4767,7 @@ namespace PadForge.ViewModels
             vm.ButtonStyle = MacroButtonNames.DeriveStyle(_outputType);
             vm.ExtendedButtonCount =
                 (_outputType == VirtualControllerType.Extended ? _extendedConfig?.ButtonCount : null) ?? 11;
+            vm.ExtendedProfileId = SlotExtendedProfileId;
             // MIDI / Keyboard-Mouse outputs cannot press controller
             // buttons: their cells' binding-kind list omits the choice
             // entirely instead of offering it plus a warning.
@@ -5073,6 +5102,316 @@ namespace PadForge.ViewModels
         public RelayCommand RumbleAudioStopTestCommand =>
             _rumbleAudioStopTestCommand ??= new RelayCommand(() =>
                 RumbleAudioService.StopTest(PadIndex));
+
+        // ═══════════════════════════════════════════════
+        //  Simultaneous Press (SOCD), discussion #240
+        //  Authoring UI over MappingSet.SocdMode / SocdPairs, the
+        //  slot-scoped config Step 5 already applies to the FINAL combined
+        //  output (SlotButtonSocd). Same MappingSet lane as Menus and
+        //  RumbleAudio: reads and writes go through SlotMenuSet, every
+        //  persisted edit marks dirty, and ReloadSocd re-seeds the rows on
+        //  the same paths that reload those features.
+        // ═══════════════════════════════════════════════
+
+        /// <summary>Slot-type gate for the SOCD card. It shapes the slot's
+        /// virtual controller BUTTON output, so KeyboardMouse (its own
+        /// Snap Tap bar) and MIDI (no button surface) hide it.</summary>
+        public bool SocdCardVisible =>
+            _outputType is VirtualControllerType.Xbox
+            or VirtualControllerType.PlayStation
+            or VirtualControllerType.Extended;
+
+        /// <summary>True when the slot's pairs use the flat raw-index
+        /// grammar ("12:13"). Mirrors the engine gate exactly: Step 5
+        /// treats every Extended slot as raw-surface
+        /// (SlotExtendedIsCustom == OutputType is Extended), so Extended
+        /// pairs are indices and Xbox / PlayStation pairs are the
+        /// WriteBoolTarget names.</summary>
+        public bool SocdUsesExtendedIndices =>
+            _outputType == VirtualControllerType.Extended;
+
+        /// <summary>SOCD mode, locale-stable: "" (off), "LastWins",
+        /// "Neutral", "FirstWins". Stored on the slot's MappingSet so it
+        /// rides profiles, Copy From Slot, and the export container.</summary>
+        public string SocdMode
+        {
+            get => SlotMenuSet?.SocdMode ?? "";
+            set
+            {
+                if (value == null) return;
+                var set = SlotMenuSet;
+                if (set == null || string.Equals(set.SocdMode, value, StringComparison.Ordinal)) return;
+                set.SocdMode = value;
+                OnPropertyChanged(nameof(SocdMode));
+                ConfigItemDirtyCallback?.Invoke();
+            }
+        }
+
+        /// <summary>Mode dropdown options. Names are shared with the KBM
+        /// Snap Tap bar (same state machine); descriptions are worded for
+        /// buttons. Built fresh per read (tiny list) so a culture change
+        /// re-letters through the ReloadSocd raise.</summary>
+        public System.Collections.Generic.IReadOnlyList<SocdModeOption> AvailableSlotSocdModes
+        {
+            get
+            {
+                var s = Strings.Instance;
+                return new[]
+                {
+                    new SocdModeOption { Value = "",          Name = s.Pad_Kbm_Socd_Mode_Off_Name,       Description = s.Pad_Socd_Mode_Off_Description },
+                    new SocdModeOption { Value = "LastWins",  Name = s.Pad_Kbm_Socd_Mode_LastWins_Name,  Description = s.Pad_Socd_Mode_LastWins_Description },
+                    new SocdModeOption { Value = "Neutral",   Name = s.Pad_Kbm_Socd_Mode_Neutral_Name,   Description = s.Pad_Socd_Mode_Neutral_Description },
+                    new SocdModeOption { Value = "FirstWins", Name = s.Pad_Kbm_Socd_Mode_FirstWins_Name, Description = s.Pad_Socd_Mode_FirstWins_Description },
+                };
+            }
+        }
+
+        /// <summary>Pickable pair targets for Xbox / PlayStation slots: the
+        /// 15 WriteBoolTarget names in the mapping grid's own lettering
+        /// (PlayStation symbols on PlayStation slots). Values are the
+        /// locale-stable target-name grammar SlotButtonSocd parses.</summary>
+        public System.Collections.Generic.IReadOnlyList<GyroLabeledOption> SocdButtonOptions
+        {
+            get
+            {
+                var s = Strings.Instance;
+                bool ps = _outputType == VirtualControllerType.PlayStation;
+                return new[]
+                {
+                    new GyroLabeledOption(() => ps ? "✕" : "A", "ButtonA"),
+                    new GyroLabeledOption(() => ps ? "○" : "B", "ButtonB"),
+                    new GyroLabeledOption(() => ps ? "◻" : "X", "ButtonX"),
+                    new GyroLabeledOption(() => ps ? "△" : "Y", "ButtonY"),
+                    new GyroLabeledOption(() => ps ? "L1" : s.Btn_LeftShoulder, "LeftShoulder"),
+                    new GyroLabeledOption(() => ps ? "R1" : s.Btn_RightShoulder, "RightShoulder"),
+                    new GyroLabeledOption(() => ps ? s.Btn_Share : s.Btn_Back, "ButtonBack"),
+                    new GyroLabeledOption(() => ps ? s.Btn_Options : s.Btn_Start, "ButtonStart"),
+                    new GyroLabeledOption(() => ps ? s.Btn_PS : s.Btn_Guide, "ButtonGuide"),
+                    new GyroLabeledOption(() => ps ? "L3" : s.Btn_LeftStickButton, "LeftThumbButton"),
+                    new GyroLabeledOption(() => ps ? "R3" : s.Btn_RightStickButton, "RightThumbButton"),
+                    new GyroLabeledOption(() => s.Btn_DPadUp, "DPadUp"),
+                    new GyroLabeledOption(() => s.Btn_DPadDown, "DPadDown"),
+                    new GyroLabeledOption(() => s.Btn_DPadLeft, "DPadLeft"),
+                    new GyroLabeledOption(() => s.Btn_DPadRight, "DPadRight"),
+                };
+            }
+        }
+
+        /// <summary>Editable projection of MappingSet.SocdPairs for the
+        /// card's pair rows.</summary>
+        public ObservableCollection<SlotSocdPairItem> SocdPairItems { get; } = new();
+
+        private bool _syncingSocdPairs;
+
+        /// <summary>Reserializes the rows into the pipe grammar. Called by
+        /// row setters and the add / remove / reset commands.</summary>
+        internal void OnSocdPairEdited()
+        {
+            if (_syncingSocdPairs) return;
+            var set = SlotMenuSet;
+            if (set == null) return;
+            var sb = new System.Text.StringBuilder();
+            foreach (var p in SocdPairItems)
+            {
+                string token = p.Serialize();
+                if (token == null) continue;
+                if (sb.Length > 0) sb.Append('|');
+                sb.Append(token);
+            }
+            string pairs = sb.ToString();
+            if (string.Equals(set.SocdPairs, pairs, StringComparison.Ordinal)) return;
+            set.SocdPairs = pairs;
+            ConfigItemDirtyCallback?.Invoke();
+        }
+
+        /// <summary>Re-seeds the SOCD card from the slot's MappingSet.
+        /// Called on the same paths that reload Menus and RumbleAudio
+        /// (RebuildMappings, slot delete, Paste, Copy From Slot).</summary>
+        public void ReloadSocd()
+        {
+            _syncingSocdPairs = true;
+            try
+            {
+                SocdPairItems.Clear();
+                var set = SlotMenuSet;
+                bool extended = SocdUsesExtendedIndices;
+                if (set != null && !string.IsNullOrEmpty(set.SocdPairs))
+                {
+                    foreach (var token in set.SocdPairs.Split('|', StringSplitOptions.RemoveEmptyEntries))
+                    {
+                        int colon = token.IndexOf(':');
+                        if (colon <= 0 || colon >= token.Length - 1) continue;
+                        string a = token.Substring(0, colon).Trim();
+                        string b = token.Substring(colon + 1).Trim();
+                        if (extended)
+                        {
+                            if (!int.TryParse(a, out int ia) || !int.TryParse(b, out int ib)) continue;
+                            if (ia is < 0 or > 127 || ib is < 0 or > 127) continue;
+                            SocdPairItems.Add(new SlotSocdPairItem(this, ia, ib));
+                        }
+                        else
+                        {
+                            // Keep only names the engine resolves, the same
+                            // leniency SlotButtonSocd.ParsePairs applies.
+                            if (PadForge.Common.Input.SlotButtonSocd.ResolveGamepadMask(a) == 0
+                                || PadForge.Common.Input.SlotButtonSocd.ResolveGamepadMask(b) == 0) continue;
+                            SocdPairItems.Add(new SlotSocdPairItem(this, a, b));
+                        }
+                    }
+                }
+            }
+            finally
+            {
+                _syncingSocdPairs = false;
+            }
+            OnPropertyChanged(nameof(SocdMode));
+            OnPropertyChanged(nameof(SocdCardVisible));
+            OnPropertyChanged(nameof(SocdUsesExtendedIndices));
+            OnPropertyChanged(nameof(AvailableSlotSocdModes));
+            OnPropertyChanged(nameof(SocdButtonOptions));
+        }
+
+        private RelayCommand _addSocdPairCommand;
+        /// <summary>Appends a fresh pair for the user to retarget: the
+        /// D-Pad Left / Right opposites on gamepad slots, raw indices
+        /// 0 and 1 on Extended slots.</summary>
+        public RelayCommand AddSocdPairCommand =>
+            _addSocdPairCommand ??= new RelayCommand(() =>
+            {
+                SocdPairItems.Add(SocdUsesExtendedIndices
+                    ? new SlotSocdPairItem(this, 0, 1)
+                    : new SlotSocdPairItem(this, "DPadLeft", "DPadRight"));
+                OnSocdPairEdited();
+            });
+
+        private RelayCommand<SlotSocdPairItem> _removeSocdPairCommand;
+        public RelayCommand<SlotSocdPairItem> RemoveSocdPairCommand =>
+            _removeSocdPairCommand ??= new RelayCommand<SlotSocdPairItem>(item =>
+            {
+                if (item == null) return;
+                SocdPairItems.Remove(item);
+                OnSocdPairEdited();
+            });
+
+        private RelayCommand _resetSocdModeCommand;
+        /// <summary>Per-row reset for the mode combo. Default is off.</summary>
+        public RelayCommand ResetSocdModeCommand =>
+            _resetSocdModeCommand ??= new RelayCommand(() => SocdMode = "");
+
+        private RelayCommand _resetSocdCardCommand;
+        /// <summary>Card-level Reset All: mode off, every pair removed.</summary>
+        public RelayCommand ResetSocdCardCommand =>
+            _resetSocdCardCommand ??= new RelayCommand(() =>
+            {
+                SocdMode = "";
+                if (SocdPairItems.Count > 0)
+                {
+                    SocdPairItems.Clear();
+                    OnSocdPairEdited();
+                }
+            });
+
+        /// <summary>One editable SOCD pair row (#240). Gamepad rows carry
+        /// two target NAMES for the pickers; Extended rows carry two raw
+        /// button INDICES for the numeric boxes. Edits reserialize the
+        /// owning slot's MappingSet.SocdPairs.</summary>
+        public sealed class SlotSocdPairItem : ObservableObject
+        {
+            private readonly PadViewModel _owner;
+
+            /// <summary>Gamepad-name row.</summary>
+            internal SlotSocdPairItem(PadViewModel owner, string targetA, string targetB)
+            {
+                _owner = owner;
+                IsExtended = false;
+                _targetA = targetA;
+                _targetB = targetB;
+            }
+
+            /// <summary>Extended raw-index row.</summary>
+            internal SlotSocdPairItem(PadViewModel owner, int indexA, int indexB)
+            {
+                _owner = owner;
+                IsExtended = true;
+                _indexA = indexA;
+                _indexB = indexB;
+            }
+
+            /// <summary>True when this row edits flat raw indices (the
+            /// Extended grammar) instead of target names.</summary>
+            public bool IsExtended { get; }
+
+            private string _targetA;
+            public string TargetA
+            {
+                get => _targetA;
+                set
+                {
+                    // Ignore the transient null write-back a ComboBox emits
+                    // while its ItemsSource rebuilds. Removal is the row's
+                    // only sanctioned clear path.
+                    if (value == null) return;
+                    if (SetProperty(ref _targetA, value))
+                        _owner?.OnSocdPairEdited();
+                }
+            }
+
+            private string _targetB;
+            public string TargetB
+            {
+                get => _targetB;
+                set
+                {
+                    if (value == null) return;
+                    if (SetProperty(ref _targetB, value))
+                        _owner?.OnSocdPairEdited();
+                }
+            }
+
+            private int _indexA;
+            public int IndexA
+            {
+                get => _indexA;
+                set
+                {
+                    if (SetProperty(ref _indexA, Math.Clamp(value, 0, 127)))
+                        _owner?.OnSocdPairEdited();
+                }
+            }
+
+            private int _indexB;
+            public int IndexB
+            {
+                get => _indexB;
+                set
+                {
+                    if (SetProperty(ref _indexB, Math.Clamp(value, 0, 127)))
+                        _owner?.OnSocdPairEdited();
+                }
+            }
+
+            /// <summary>Items source for both pickers on gamepad rows.</summary>
+            public System.Collections.Generic.IReadOnlyList<GyroLabeledOption> ButtonOptions
+                => _owner?.SocdButtonOptions;
+
+            /// <summary>The row's "A:B" token, or null when the row is not
+            /// yet a valid pair (same-target or unresolved halves are kept
+            /// on screen for the user to finish, and dropped from the
+            /// persisted grammar exactly as the engine parser would drop
+            /// them).</summary>
+            internal string Serialize()
+            {
+                if (IsExtended)
+                {
+                    if (_indexA == _indexB) return null;
+                    return _indexA.ToString(System.Globalization.CultureInfo.InvariantCulture)
+                        + ":" + _indexB.ToString(System.Globalization.CultureInfo.InvariantCulture);
+                }
+                if (string.IsNullOrEmpty(_targetA) || string.IsNullOrEmpty(_targetB)) return null;
+                if (string.Equals(_targetA, _targetB, StringComparison.Ordinal)) return null;
+                return _targetA + ":" + _targetB;
+            }
+        }
 
         /// <summary>One Bass Shakers voice row (#236). Keyed by voice
         /// index into <see cref="RumbleAudioConfig.SourceOrder"/>. Edits

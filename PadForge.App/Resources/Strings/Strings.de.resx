@@ -979,6 +979,14 @@
   <data name="Btn_Options" xml:space="preserve"><value>Optionen</value></data>
   <data name="Btn_PS" xml:space="preserve"><value>PS</value></data>
   <data name="Btn_Touchpad" xml:space="preserve"><value>Touchpad</value></data>
+  <data name="Btn_L" xml:space="preserve"><value>L</value></data>
+  <data name="Btn_R" xml:space="preserve"><value>R</value></data>
+  <data name="Btn_ZL" xml:space="preserve"><value>ZL</value></data>
+  <data name="Btn_ZR" xml:space="preserve"><value>ZR</value></data>
+  <data name="Btn_Minus" xml:space="preserve"><value>Minus</value></data>
+  <data name="Btn_Plus" xml:space="preserve"><value>Plus</value></data>
+  <data name="Btn_Home" xml:space="preserve"><value>Home</value></data>
+  <data name="Btn_Capture" xml:space="preserve"><value>Aufnahme</value></data>
   <!-- Mouse VK buttons -->
   <data name="Key_LButton" xml:space="preserve"><value>Linke Maustaste</value></data>
   <data name="Key_RButton" xml:space="preserve"><value>Rechte Maustaste</value></data>
@@ -2324,6 +2332,25 @@
   <data name="Pad_Kbm_Socd_Mode_Off_Name" xml:space="preserve"><value>Aus</value></data>
   <data name="Pad_Kbm_Socd_RemovePair_Tooltip" xml:space="preserve"><value>Entfernt dieses Tastenpaar.</value></data>
   <data name="Pad_Kbm_Socd_Reset" xml:space="preserve"><value>Gleichzeitige entgegengesetzte Richtungen zurücksetzen</value></data>
+  <data name="Pad_Socd_Card_Header" xml:space="preserve"><value>Gleichzeitiges Drücken (SOCD)</value></data>
+  <data name="Pad_Socd_Card_Desc" xml:space="preserve"><value>Löst gleichzeitig gehaltene Tastenpaare auf der virtuellen Controller-Ausgabe dieses Slots auf. Sind beide Tasten eines Paars gedrückt, entscheidet die gewählte Regel, welchen Druck das Spiel sieht.</value></data>
+  <data name="Pad_Socd_ResetCard_Tooltip" xml:space="preserve"><value>Gleichzeitiges Drücken zurücksetzen</value></data>
+  <data name="Pad_Socd_Mode_Label" xml:space="preserve"><value>Modus</value></data>
+  <data name="Pad_Socd_Mode_Tooltip" xml:space="preserve"><value>Wie ein gehaltenes Paar aufgelöst wird. Gilt für die endgültige kombinierte Ausgabe des Slots, sodass physische, zugeordnete und Makro-Drücke gleichermaßen bereinigt werden.</value></data>
+  <data name="Pad_Socd_ResetMode_Tooltip" xml:space="preserve"><value>Modus zurücksetzen</value></data>
+  <data name="Pad_Socd_Mode_Off_Description" xml:space="preserve"><value>Beide Tasten werden unverändert durchgereicht.</value></data>
+  <data name="Pad_Socd_Mode_LastWins_Description" xml:space="preserve"><value>Der jüngste Druck gewinnt. Beim Loslassen wird die noch gehaltene Partnertaste erneut gedrückt.</value></data>
+  <data name="Pad_Socd_Mode_Neutral_Description" xml:space="preserve"><value>Das Halten beider Tasten gibt beide frei, bis eine losgelassen wird.</value></data>
+  <data name="Pad_Socd_Mode_FirstWins_Description" xml:space="preserve"><value>Der frühere Druck gewinnt weiter, bis er losgelassen wird.</value></data>
+  <data name="Pad_Socd_Pairs_Label" xml:space="preserve"><value>Tastenpaare</value></data>
+  <data name="Pad_Socd_Pairs_Tooltip" xml:space="preserve"><value>Die Tastenpaare, die die Regel bereinigt. Jedes Paar wird für sich verfolgt.</value></data>
+  <data name="Pad_Socd_ButtonA_Tooltip" xml:space="preserve"><value>Erste Taste des Paars.</value></data>
+  <data name="Pad_Socd_ButtonB_Tooltip" xml:space="preserve"><value>Zweite Taste des Paars.</value></data>
+  <data name="Pad_Socd_IndexA_Tooltip" xml:space="preserve"><value>Erster Roh-Tastenindex des Paars, 0 bis 127. Index 0 entspricht Taste 1 im Zuordnungsraster.</value></data>
+  <data name="Pad_Socd_IndexB_Tooltip" xml:space="preserve"><value>Zweiter Roh-Tastenindex des Paars, 0 bis 127. Index 0 entspricht Taste 1 im Zuordnungsraster.</value></data>
+  <data name="Pad_Socd_AddPair" xml:space="preserve"><value>Paar hinzufügen</value></data>
+  <data name="Pad_Socd_AddPair_Tooltip" xml:space="preserve"><value>Fügt ein weiteres Tastenpaar hinzu.</value></data>
+  <data name="Pad_Socd_RemovePair_Tooltip" xml:space="preserve"><value>Entfernt dieses Tastenpaar.</value></data>
   <data name="Pad_Kbm_Socd_Tooltip" xml:space="preserve"><value>Löst das gleichzeitige Halten beider Tasten eines gegensätzlichen Paars auf, wie Snap Tap. Gilt für die virtuelle Tastaturausgabe dieses Slots.</value></data>
   <data name="Pad_Lighting_GuideLed" xml:space="preserve"><value>Guide-Tasten-LED</value></data>
   <data name="Pad_Lighting_GuideLed_Battery" xml:space="preserve"><value>Akkustand</value></data>
@@ -2561,8 +2588,10 @@
   <data name="Macro_HoldForMs" xml:space="preserve"><value>Beim Halten</value></data>
   <data name="Macro_HoldForMs_Tooltip" xml:space="preserve"><value>Löst einmal aus, nachdem der Auslöser ununterbrochen für die Haltezeit gehalten wurde. Ein kürzeres Antippen bewirkt nichts.</value></data>
   <data name="Macro_DoublePress" xml:space="preserve"><value>Bei Doppeldruck</value></data>
-  <data name="Macro_DoublePress_Tooltip" xml:space="preserve"><value>Wird ausgelöst, wenn der Auslöser zweimal innerhalb der Doppeldruckzeit gedrückt wird. Wird der zweite Druck gehalten, bleibt er bis zum Loslassen aktiv.</value></data>
-  <data name="Macro_TriggerDoublePressMs_Label" xml:space="preserve"><value>Doppeldruckzeit</value></data>
+  <data name="Macro_DoublePress_Tooltip" xml:space="preserve"><value>Wird ausgelöst, wenn der Auslöser zweimal innerhalb des Zeitfensters gedrückt wird. Wird der zweite Druck gehalten, bleibt er bis zum Loslassen aktiv.</value></data>
+  <data name="Macro_TriplePress" xml:space="preserve"><value>Bei Dreifachdruck</value></data>
+  <data name="Macro_TriplePress_Tooltip" xml:space="preserve"><value>Wird ausgelöst, wenn der Auslöser dreimal innerhalb des Zeitfensters gedrückt wird. Wird der dritte Druck gehalten, bleibt er bis zum Loslassen aktiv.</value></data>
+  <data name="Macro_TriggerDoublePressMs_Label" xml:space="preserve"><value>Zeitfenster</value></data>
   <data name="Macro_TriggerHoldMs_Label" xml:space="preserve"><value>Haltezeit</value></data>
   <data name="MacroAction_Type_RepeatVcButtonWhileHeld" xml:space="preserve"><value>Controller-Taste wiederholen, solange gehalten</value></data>
   <data name="MacroAction_RepeatVcButtonWhileHeld_Tooltip" xml:space="preserve"><value>Schaltet die Controller-Taste im eingestellten Intervall ein und aus, solange der Auslöser gehalten wird (Autofire / Turbo).</value></data>
@@ -2596,6 +2625,14 @@
   <data name="MacroAction_ToggleWheel_Format" xml:space="preserve"><value>Mausrad umschalten ({0} Rasten alle {1} ms)</value></data>
   <data name="Macro_PulseWhileLatched" xml:space="preserve"><value>Pulsieren solange eingerastet</value></data>
   <data name="Macro_PulseWhileLatched_Tooltip" xml:space="preserve"><value>Solange eingerastet, wird die Ausgabe im Wiederholintervall ein- und ausgeschaltet, statt dauerhaft gehalten.</value></data>
+  <data name="MacroAction_Type_AxisAdd" xml:space="preserve"><value>Achse addieren (relativ)</value></data>
+  <data name="MacroAction_AxisAdd_Tooltip" xml:space="preserve"><value>Addiert den vorzeichenbehafteten Wert in jedem Frame für die Dauer auf das, was die Zuordnung bereits auf die Achse geschrieben hat. Negative Werte subtrahieren. Trigger-Ziele addieren auf der Zugskala (32767 = voller Zug).</value></data>
+  <data name="MacroAction_AxisAdd_Format" xml:space="preserve"><value>Achse addieren: {0} {1}%</value></data>
+  <data name="MacroAction_Type_ComboBreak" xml:space="preserve"><value>Combo-Unterbrechung</value></data>
+  <data name="MacroAction_ComboBreak_Tooltip" xml:space="preserve"><value>Die Combo pausiert hier. Zum Fortsetzen den Auslöser erneut drücken. Ein gehaltener Auslöser muss zuerst losgelassen werden.</value></data>
+  <data name="Macro_AxisYieldToPhysical" xml:space="preserve"><value>Physischer Eingabe nachgeben</value></data>
+  <data name="Macro_AxisYieldToPhysical_Tooltip" xml:space="preserve"><value>Sobald physische Bewegung das Ziel über die Schwelle bringt, schreibt das Makro die Achse für den Rest der Aktivierung nicht mehr.</value></data>
+  <data name="MacroAction_YieldSuffix" xml:space="preserve"><value>(weicht physischer Eingabe)</value></data>
   <data name="MacroAction_CycleTapList_Format" xml:space="preserve"><value>Tipp-Liste durchlaufen ({0} Schritte)</value></data>
   <data name="Macro_CycleSteps_Label" xml:space="preserve"><value>Schritte</value></data>
   <data name="Macro_CycleWrap_Label" xml:space="preserve"><value>Umlauf</value></data>

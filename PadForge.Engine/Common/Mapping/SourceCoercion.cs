@@ -275,6 +275,32 @@ namespace PadForge.Engine.Common.Mapping
         /// true = left, false = right.</summary>
         public static Func<int, bool, (float x, float y)> SlotStickDeflectionProvider { get; set; }
 
+        /// <summary>Synthetic touchpad pressure hook (#239). Pads without
+        /// true analog pressure (DualShock 4, DualSense, Steam Controller
+        /// 2015: SDL reports touch as pressure 1.0) can synthesize the
+        /// DS2/DS3 three-stop curve: no touch = 0, touch = the configured
+        /// level, pad CLICK = full. Returns (enabled, touchLevel01) per
+        /// (deviceGuid, slotIndex, padIdx); disabled pairs pass the raw
+        /// SDL pressure through. Applied at the MAPPING reads only, so
+        /// the touchpad passthrough output keeps raw fidelity.</summary>
+        public static Func<string, int, int, (bool Enabled, float TouchLevel01)> TouchpadSyntheticPressureProvider { get; set; }
+
+        /// <summary>Applies the #239 synthetic-pressure curve to a raw
+        /// pressure sample when the provider enables it for this
+        /// (device, slot, pad).</summary>
+        private static float ApplySyntheticPressure(
+            TouchpadInputState pad, int fingerIdx, float raw,
+            string deviceGuid, int slotIndex, int padIdx)
+        {
+            var p = TouchpadSyntheticPressureProvider;
+            if (p == null) return raw;
+            var (enabled, touchLevel) = p(deviceGuid ?? "", slotIndex, padIdx);
+            if (!enabled) return raw;
+            if (pad.Clicked) return 1f;
+            if (pad.FingerDown[fingerIdx]) return touchLevel < 0f ? 0f : (touchLevel > 1f ? 1f : touchLevel);
+            return 0f;
+        }
+
         /// <summary>Slot-global inbound game-feedback hook (issue #236).
         /// Returns the packed <c>LfeOutputState</c> long (bits 0-15 low
         /// motor, 16-31 high motor, 32-47 left trigger, 48-63 right
@@ -2687,6 +2713,25 @@ namespace PadForge.Engine.Common.Mapping
                 // inner on Invert) is consumed inside the read.
                 if (TryParseTouchpadRing(s, out int rPad, out int rFinger, out int rHalf))
                     return ReadTouchpadRingBool(state, src, rPad, rFinger, rHalf, globalThresholdPercent);
+                // Pressure as a button / shift activator (#239): fires
+                // when the (optionally zone-windowed) pressure clears the
+                // per-source DeadZone percent, else the global threshold.
+                // This is what makes "whole pad pressed 60% = layer"
+                // expressible with an ordinary Axis-shaped activator.
+                if (TryParseTouchpadAxis(s, out int prPad, out int prFinger, out int prAxis, out int prHalf)
+                    && prAxis == 2)
+                {
+                    var prState = GetTouchpad(state, prPad);
+                    if (prState == null || prFinger < 0 || prFinger >= prState.MaxFingers) return false;
+                    if (!prState.FingerDown[prFinger]) return false;
+                    if (!FingerInTouchpadWindowForAxis(prState, prFinger, prHalf, prAxis)) return false;
+                    float pr = prState.FingerPressure[prFinger];
+                    if (pr < 0f) pr = 0f; else if (pr > 1f) pr = 1f;
+                    pr = ApplySyntheticPressure(prState, prFinger, pr,
+                        src.DeviceGuid ?? deviceGuid, slotIndex, prPad);
+                    int prDz = src.DeadZone > 0 ? src.DeadZone : globalThresholdPercent;
+                    return pr > Math.Max(prDz, 1) / 100f;
+                }
                 return ReadTouchpadBool(state, s);
             }
 
@@ -2988,7 +3033,7 @@ namespace PadForge.Engine.Common.Mapping
                 }
                 else
                 {
-                    if (TryReadTouchpadAxisAbsolute(state, src, s, deviceGuid, out float bipolar)) return bipolar;
+                    if (TryReadTouchpadAxisAbsolute(state, src, s, deviceGuid, out float bipolar, slotIndex)) return bipolar;
                 }
                 return ReadTouchpadBool(state, s) ? 1f : 0f;
             }
@@ -3235,7 +3280,7 @@ namespace PadForge.Engine.Common.Mapping
                     return ReadTouchpadRingMagnitude(state, rPad, rFinger, rHalf);
                 // Touchpad axis → unipolar: return [0..1] directly (raw finger
                 // position; no bipolar centering).
-                if (TryReadTouchpadAxisRaw(state, src, s, out float unipolar)) return unipolar;
+                if (TryReadTouchpadAxisRaw(state, src, s, out float unipolar, slotIndex)) return unipolar;
                 return ReadTouchpadBool(state, s) ? 1f : 0f;
             }
 
@@ -3675,7 +3720,7 @@ namespace PadForge.Engine.Common.Mapping
             // produced while outside, and dropping the tracker entry makes
             // re-entry seed fresh, so crossing back into the half never
             // manufactures a jump.
-            if (!pad.FingerDown[fingerIdx] || !FingerInTouchpadHalf(pad, fingerIdx, half))
+            if (!pad.FingerDown[fingerIdx] || !FingerInTouchpadWindowForAxis(pad, fingerIdx, half, axisOffset))
             {
                 _touchpadDeltas.TryRemove(key, out _);
                 // v18 feel chain: with trackball stamped, the lift keeps
@@ -3698,7 +3743,9 @@ namespace PadForge.Engine.Common.Mapping
             // actual pressure magnitude.
             if (axisOffset == 2)
             {
-                bipolar = raw < 0f ? 0f : (raw > 1f ? 1f : raw);
+                float pr239 = raw < 0f ? 0f : (raw > 1f ? 1f : raw);
+                bipolar = ApplySyntheticPressure(pad, fingerIdx, pr239,
+                    deviceGuid, slotIndex, padIdx);
                 return true;
             }
 
@@ -3799,7 +3846,7 @@ namespace PadForge.Engine.Common.Mapping
         /// predicate reveals is live on stick / passthrough targets
         /// too, not only on the mouse-delta path. Pressure is never
         /// scaled. 1.0 stays bit-identical.</para></summary>
-        private static bool TryReadTouchpadAxisAbsolute(CustomInputState state, MappingSource src, string descriptor, string evaluatedDeviceGuid, out float bipolar)
+        private static bool TryReadTouchpadAxisAbsolute(CustomInputState state, MappingSource src, string descriptor, string evaluatedDeviceGuid, out float bipolar, int slotIndex = -1)
         {
             bipolar = 0f;
             if (!TryParseTouchpadAxis(descriptor, out int padIdx, out int fingerIdx, out int axisOffset, out int half))
@@ -3809,8 +3856,9 @@ namespace PadForge.Engine.Common.Mapping
             if (fingerIdx < 0 || fingerIdx >= pad.MaxFingers) return false;
             if (!pad.FingerDown[fingerIdx]) return true; // bipolar already 0
             // Half-windowed source with the finger outside its half:
-            // neutral, exactly like a lifted finger (#9 B-1).
-            if (!FingerInTouchpadHalf(pad, fingerIdx, half)) return true;
+            // neutral, exactly like a lifted finger (#9 B-1). Pressure
+            // zones resolve exclusively (#239).
+            if (!FingerInTouchpadWindowForAxis(pad, fingerIdx, half, axisOffset)) return true;
             float raw = axisOffset switch
             {
                 0 => pad.FingerX[fingerIdx],
@@ -3821,7 +3869,8 @@ namespace PadForge.Engine.Common.Mapping
             if (raw < 0f) raw = 0f; else if (raw > 1f) raw = 1f;
             if (axisOffset == 2)
             {
-                bipolar = raw;
+                bipolar = ApplySyntheticPressure(pad, fingerIdx, raw,
+                    src?.DeviceGuid ?? evaluatedDeviceGuid, slotIndex, padIdx);
                 return true;
             }
             // Windowed X re-normalizes its half to the full range so the
@@ -3854,7 +3903,7 @@ namespace PadForge.Engine.Common.Mapping
         /// position magnitude-from-zero, the same origin the unipolar
         /// Slider leg uses, then re-clamps. Pressure is never scaled.
         /// 1.0 stays bit-identical.</para></summary>
-        private static bool TryReadTouchpadAxisRaw(CustomInputState state, MappingSource src, string descriptor, out float unipolar)
+        private static bool TryReadTouchpadAxisRaw(CustomInputState state, MappingSource src, string descriptor, out float unipolar, int slotIndex = -1)
         {
             unipolar = 0f;
             if (!TryParseTouchpadAxis(descriptor, out int padIdx, out int fingerIdx, out int axisOffset, out int half))
@@ -3864,7 +3913,8 @@ namespace PadForge.Engine.Common.Mapping
             if (fingerIdx < 0 || fingerIdx >= pad.MaxFingers) return false;
             if (!pad.FingerDown[fingerIdx]) return true; // unipolar already 0
             // Outside the descriptor's half window: neutral (#9 B-1).
-            if (!FingerInTouchpadHalf(pad, fingerIdx, half)) return true;
+            // Pressure zones resolve exclusively (#239).
+            if (!FingerInTouchpadWindowForAxis(pad, fingerIdx, half, axisOffset)) return true;
             float raw = axisOffset switch
             {
                 0 => pad.FingerX[fingerIdx],
@@ -3874,6 +3924,9 @@ namespace PadForge.Engine.Common.Mapping
             };
             if (raw < 0f) raw = 0f; else if (raw > 1f) raw = 1f;
             raw = RenormalizeTouchpadHalf(raw, axisOffset, half);
+            if (axisOffset == 2)
+                raw = ApplySyntheticPressure(pad, fingerIdx, raw,
+                    src?.DeviceGuid, slotIndex, padIdx);
             unipolar = raw;
             if (axisOffset != 2)
             {
@@ -3926,8 +3979,17 @@ namespace PadForge.Engine.Common.Mapping
             if (axisOffset < 0) return false;
             if (parts.Length == 6)
             {
-                if (axisOffset == 2) return false; // no windowed Pressure
+                // Windowed Pressure (#239): the zone tokens gate the
+                // pressure read to a region of the pad, the DS2/DS3
+                // pressure-button surface. Quadrant tokens and Center on
+                // a Pressure axis resolve through the EXCLUSIVE five-zone
+                // resolver (center carved out of the diamond), because the
+                // DS3-sim contract is one zone per finger. X/Y axes keep
+                // the plain overlapping window geometry (v18 clicks).
                 half = ParseTouchpadHalf(parts[5]);
+                if (half == TouchpadHalfNone && axisOffset == 2
+                    && parts[5].Equals("Center", StringComparison.Ordinal))
+                    half = TouchpadZoneCenter;
                 return half != TouchpadHalfNone;
             }
             return true;
@@ -3962,6 +4024,34 @@ namespace PadForge.Engine.Common.Mapping
         // diamond geometry inside that half. Layout: 9 + (quad - North)
         // + (right ? 4 : 0).
         internal const int TouchpadQuadComposedBase = 9;
+
+        // Center zone (#239, pressure-axis grammar only): the radial
+        // center region of the five-zone DS3-sim layout. Pressure reads
+        // with a quadrant token OR this code resolve the finger's zone
+        // EXCLUSIVELY (center wins inside the radius, the diamond
+        // quadrants split the rest), so a center press never also fires
+        // an outer zone the way overlapping click windows would.
+        internal const int TouchpadZoneCenter = 17;
+
+        /// <summary>Normalized center-zone radius for the five-zone
+        /// pressure layout: distance from pad center (0.5, 0.5) at or
+        /// under this = Center. 0.25 puts the center button at half the
+        /// pad's half-width, the Steam five-button pad proportion.</summary>
+        internal const float FiveZoneCenterRadius = 0.25f;
+
+        /// <summary>Resolves a finger position to its EXCLUSIVE five-zone
+        /// code (#239): TouchpadZoneCenter inside the radius, else the
+        /// diamond quadrant (|dy| vs |dx| around pad center, the v18
+        /// four_buttons geometry).</summary>
+        internal static int ResolveFiveZone(float x, float y)
+        {
+            float dx = x - 0.5f, dy = y - 0.5f;
+            if (dx * dx + dy * dy <= FiveZoneCenterRadius * FiveZoneCenterRadius)
+                return TouchpadZoneCenter;
+            if (Math.Abs(dy) >= Math.Abs(dx))
+                return dy < 0 ? TouchpadQuadNorth : TouchpadQuadSouth;
+            return dx < 0 ? TouchpadQuadWest : TouchpadQuadEast;
+        }
 
         private static int ParseTouchpadHalf(string token) => token switch
         {
@@ -4039,6 +4129,26 @@ namespace PadForge.Engine.Common.Mapping
                     }
                     return true;
             }
+        }
+
+        /// <summary>Window membership for AXIS reads (#239 refinement of
+        /// <see cref="FingerInTouchpadHalf"/>): a PRESSURE axis with a
+        /// quadrant or Center window resolves through the EXCLUSIVE
+        /// five-zone resolver (one zone per finger, the DS3-sim
+        /// contract), while X/Y axes and half windows keep the plain
+        /// overlapping geometry the v18 click windows use.</summary>
+        private static bool FingerInTouchpadWindowForAxis(
+            TouchpadInputState pad, int fingerIdx, int half, int axisOffset)
+        {
+            bool fiveZoneCode = half == TouchpadZoneCenter
+                || half == TouchpadQuadNorth || half == TouchpadQuadSouth
+                || half == TouchpadQuadEast || half == TouchpadQuadWest;
+            if (axisOffset == 2 && fiveZoneCode)
+                return ResolveFiveZone(pad.FingerX[fingerIdx], pad.FingerY[fingerIdx]) == half;
+            if (half == TouchpadZoneCenter)
+                return ResolveFiveZone(pad.FingerX[fingerIdx], pad.FingerY[fingerIdx])
+                    == TouchpadZoneCenter;
+            return FingerInTouchpadHalf(pad, fingerIdx, half);
         }
 
         /// <summary>Re-normalizes a raw finger coordinate inside a half

@@ -979,6 +979,14 @@
   <data name="Btn_Options" xml:space="preserve"><value>옵션</value></data>
   <data name="Btn_PS" xml:space="preserve"><value>PS</value></data>
   <data name="Btn_Touchpad" xml:space="preserve"><value>터치패드</value></data>
+  <data name="Btn_L" xml:space="preserve"><value>L</value></data>
+  <data name="Btn_R" xml:space="preserve"><value>R</value></data>
+  <data name="Btn_ZL" xml:space="preserve"><value>ZL</value></data>
+  <data name="Btn_ZR" xml:space="preserve"><value>ZR</value></data>
+  <data name="Btn_Minus" xml:space="preserve"><value>마이너스</value></data>
+  <data name="Btn_Plus" xml:space="preserve"><value>플러스</value></data>
+  <data name="Btn_Home" xml:space="preserve"><value>HOME</value></data>
+  <data name="Btn_Capture" xml:space="preserve"><value>캡처</value></data>
   <!-- Mouse VK buttons -->
   <data name="Key_LButton" xml:space="preserve"><value>마우스 왼쪽 버튼</value></data>
   <data name="Key_RButton" xml:space="preserve"><value>마우스 오른쪽 버튼</value></data>
@@ -2324,6 +2332,25 @@
   <data name="Pad_Kbm_Socd_Mode_Off_Name" xml:space="preserve"><value>끔</value></data>
   <data name="Pad_Kbm_Socd_RemovePair_Tooltip" xml:space="preserve"><value>이 키 쌍을 제거합니다.</value></data>
   <data name="Pad_Kbm_Socd_Reset" xml:space="preserve"><value>동시 반대 방향 입력 재설정</value></data>
+  <data name="Pad_Socd_Card_Header" xml:space="preserve"><value>동시 누름 (SOCD)</value></data>
+  <data name="Pad_Socd_Card_Desc" xml:space="preserve"><value>이 슬롯의 가상 컨트롤러 출력에서 동시에 눌린 버튼 쌍을 해결합니다. 쌍의 두 버튼이 모두 눌려 있으면 선택한 규칙이 게임에 보일 입력을 결정합니다.</value></data>
+  <data name="Pad_Socd_ResetCard_Tooltip" xml:space="preserve"><value>동시 누름 재설정</value></data>
+  <data name="Pad_Socd_Mode_Label" xml:space="preserve"><value>모드</value></data>
+  <data name="Pad_Socd_Mode_Tooltip" xml:space="preserve"><value>누르고 있는 쌍을 해결하는 방식. 슬롯의 최종 결합 출력에 적용되므로 물리, 매핑, 매크로 입력이 모두 동일하게 정리됩니다.</value></data>
+  <data name="Pad_Socd_ResetMode_Tooltip" xml:space="preserve"><value>모드 재설정</value></data>
+  <data name="Pad_Socd_Mode_Off_Description" xml:space="preserve"><value>두 버튼 모두 그대로 통과합니다.</value></data>
+  <data name="Pad_Socd_Mode_LastWins_Description" xml:space="preserve"><value>가장 최근에 누른 버튼이 우선합니다. 놓으면 아직 눌려 있는 상대 버튼이 다시 눌립니다.</value></data>
+  <data name="Pad_Socd_Mode_Neutral_Description" xml:space="preserve"><value>두 버튼을 함께 누르고 있으면 한쪽을 놓을 때까지 둘 다 해제됩니다.</value></data>
+  <data name="Pad_Socd_Mode_FirstWins_Description" xml:space="preserve"><value>먼저 누른 버튼이 놓을 때까지 계속 우선합니다.</value></data>
+  <data name="Pad_Socd_Pairs_Label" xml:space="preserve"><value>버튼 쌍</value></data>
+  <data name="Pad_Socd_Pairs_Tooltip" xml:space="preserve"><value>규칙이 정리하는 버튼 쌍입니다. 각 쌍은 개별적으로 추적됩니다.</value></data>
+  <data name="Pad_Socd_ButtonA_Tooltip" xml:space="preserve"><value>쌍의 첫 번째 버튼.</value></data>
+  <data name="Pad_Socd_ButtonB_Tooltip" xml:space="preserve"><value>쌍의 두 번째 버튼.</value></data>
+  <data name="Pad_Socd_IndexA_Tooltip" xml:space="preserve"><value>쌍의 첫 번째 원시 버튼 번호로, 0부터 127까지입니다. 번호 0은 매핑 표의 버튼 1입니다.</value></data>
+  <data name="Pad_Socd_IndexB_Tooltip" xml:space="preserve"><value>쌍의 두 번째 원시 버튼 번호로, 0부터 127까지입니다. 번호 0은 매핑 표의 버튼 1입니다.</value></data>
+  <data name="Pad_Socd_AddPair" xml:space="preserve"><value>쌍 추가</value></data>
+  <data name="Pad_Socd_AddPair_Tooltip" xml:space="preserve"><value>버튼 쌍을 하나 더 추가합니다.</value></data>
+  <data name="Pad_Socd_RemovePair_Tooltip" xml:space="preserve"><value>이 버튼 쌍을 제거합니다.</value></data>
   <data name="Pad_Kbm_Socd_Tooltip" xml:space="preserve"><value>반대 방향 쌍의 두 키가 동시에 눌린 상황을 Snap Tap처럼 해결합니다. 이 슬롯의 가상 키보드 출력에 적용됩니다.</value></data>
   <data name="Pad_Lighting_GuideLed" xml:space="preserve"><value>가이드 버튼 LED</value></data>
   <data name="Pad_Lighting_GuideLed_Battery" xml:space="preserve"><value>배터리 잔량</value></data>
@@ -2561,8 +2588,10 @@
   <data name="Macro_HoldForMs" xml:space="preserve"><value>길게 누를 때</value></data>
   <data name="Macro_HoldForMs_Tooltip" xml:space="preserve"><value>트리거를 유지 시간 동안 계속 누르고 있으면 한 번 실행됩니다. 더 짧게 누르면 아무 일도 일어나지 않습니다.</value></data>
   <data name="Macro_DoublePress" xml:space="preserve"><value>두 번 누를 때</value></data>
-  <data name="Macro_DoublePress_Tooltip" xml:space="preserve"><value>두 번 누르기 시간 안에 두 번 누르면 발동합니다. 두 번째 누름을 유지하면 놓을 때까지 활성 상태로 유지됩니다.</value></data>
-  <data name="Macro_TriggerDoublePressMs_Label" xml:space="preserve"><value>두 번 누르기 시간</value></data>
+  <data name="Macro_DoublePress_Tooltip" xml:space="preserve"><value>연속 누르기 시간 안에 두 번 누르면 발동합니다. 두 번째 누름을 유지하면 놓을 때까지 활성 상태로 유지됩니다.</value></data>
+  <data name="Macro_TriplePress" xml:space="preserve"><value>세 번 누를 때</value></data>
+  <data name="Macro_TriplePress_Tooltip" xml:space="preserve"><value>연속 누르기 시간 안에 세 번 누르면 발동합니다. 세 번째 누름을 유지하면 놓을 때까지 활성 상태로 유지됩니다.</value></data>
+  <data name="Macro_TriggerDoublePressMs_Label" xml:space="preserve"><value>연속 누르기 시간</value></data>
   <data name="Macro_TriggerHoldMs_Label" xml:space="preserve"><value>유지 시간</value></data>
   <data name="MacroAction_Type_RepeatVcButtonWhileHeld" xml:space="preserve"><value>누르고 있는 동안 버튼 반복</value></data>
   <data name="MacroAction_RepeatVcButtonWhileHeld_Tooltip" xml:space="preserve"><value>트리거를 누르고 있는 동안 설정한 간격으로 컨트롤러 버튼을 켰다 껐다 반복합니다(연사 / 터보).</value></data>
@@ -2596,6 +2625,14 @@
   <data name="MacroAction_ToggleWheel_Format" xml:space="preserve"><value>휠 토글({1}ms마다 {0}틱)</value></data>
   <data name="Macro_PulseWhileLatched" xml:space="preserve"><value>고정 중 펄스</value></data>
   <data name="Macro_PulseWhileLatched_Tooltip" xml:space="preserve"><value>고정된 동안 출력을 계속 유지하는 대신 반복 간격에 맞춰 켰다 껐다 합니다.</value></data>
+  <data name="MacroAction_Type_AxisAdd" xml:space="preserve"><value>축 더하기 (상대)</value></data>
+  <data name="MacroAction_AxisAdd_Tooltip" xml:space="preserve"><value>지속 시간 동안 매 프레임, 매핑이 이미 축에 기록한 값에 부호 있는 값을 더합니다. 음수 값은 뺍니다. 트리거 대상은 당김 스케일(32767 = 최대 당김)로 더합니다.</value></data>
+  <data name="MacroAction_AxisAdd_Format" xml:space="preserve"><value>축 더하기: {0} {1}%</value></data>
+  <data name="MacroAction_Type_ComboBreak" xml:space="preserve"><value>콤보 브레이크</value></data>
+  <data name="MacroAction_ComboBreak_Tooltip" xml:space="preserve"><value>콤보가 여기서 일시 정지합니다. 계속하려면 트리거를 다시 누르세요. 누르고 있는 트리거는 먼저 놓아야 합니다.</value></data>
+  <data name="Macro_AxisYieldToPhysical" xml:space="preserve"><value>물리 입력에 양보</value></data>
+  <data name="Macro_AxisYieldToPhysical_Tooltip" xml:space="preserve"><value>물리 입력이 임계값을 넘어 대상을 움직이면 이번 작동이 끝날 때까지 매크로가 축 기록을 중단합니다.</value></data>
+  <data name="MacroAction_YieldSuffix" xml:space="preserve"><value>(물리 입력에 양보)</value></data>
   <data name="MacroAction_CycleTapList_Format" xml:space="preserve"><value>탭 목록 순환({0}단계)</value></data>
   <data name="Macro_CycleSteps_Label" xml:space="preserve"><value>단계</value></data>
   <data name="Macro_CycleWrap_Label" xml:space="preserve"><value>순환</value></data>

@@ -141,6 +141,29 @@ namespace PadForge.Common.Input
                 ?.InboundRumblePack ?? 0L;
         }
 
+        // ── Button SOCD (#240) ──
+        // Per-slot cleaners for the final combined output, configured
+        // lazily from the slot's MappingSet each tick (Configure is a
+        // no-op on identical strings, the SocdCleaner contract, so the
+        // per-tick refresh costs two string compares).
+        private readonly SlotButtonSocd[] _slotButtonSocd = new SlotButtonSocd[MaxPads];
+
+        /// <summary>Returns the slot's configured button-SOCD cleaner, or
+        /// null when the slot authors no active SOCD. Poll thread only.</summary>
+        private SlotButtonSocd ResolveSlotSocd(int padIndex, bool extendedIndices)
+        {
+            var sets = SettingsManager.SlotMappingSets;
+            if (sets == null || padIndex < 0 || padIndex >= sets.Length) return null;
+            var ms = sets[padIndex];
+            if (ms == null) return null;
+            string mode = ms.SocdMode;
+            string pairs = ms.SocdPairs;
+            if (string.IsNullOrEmpty(mode) || string.IsNullOrEmpty(pairs)) return null;
+            var socd = _slotButtonSocd[padIndex] ??= new SlotButtonSocd();
+            socd.Configure(mode, pairs, extendedIndices);
+            return socd.IsActive ? socd : null;
+        }
+
         /// <summary>
         /// The dedicated slot-scoped feedback lane (issue #236): once per
         /// poll tick, per slot, evaluate the four fixed voice bindings
@@ -1264,6 +1287,12 @@ namespace PadForge.Common.Input
                             // hat — without the lossy 11-button XInput Gamepad
                             // bitmap intermediate.
                             var layout = SlotCustomLayouts[padIndex];
+                            // Button SOCD (#240): clean the final combined
+                            // raw buttons right before submit, flat-index
+                            // grammar on the word array.
+                            var socdExt = ResolveSlotSocd(padIndex, extendedIndices: true);
+                            if (socdExt != null)
+                                socdExt.ApplyExtended(CombinedExtendedRawStates[padIndex].Buttons);
                             hmExt.SubmitExtendedRawState(
                                 CombinedExtendedRawStates[padIndex],
                                 layout.Sticks,
@@ -1289,6 +1318,15 @@ namespace PadForge.Common.Input
                             {
                                 gpOut.Buttons |= Gamepad.TOUCHPAD;
                             }
+
+                            // Button SOCD (#240): clean the final combined
+                            // bitmask right before submit, so physical,
+                            // mapped, and macro contributions are treated
+                            // uniformly and the winner's release re-presses
+                            // the held partner the same frame.
+                            var socdGp = ResolveSlotSocd(padIndex, extendedIndices: false);
+                            if (socdGp != null)
+                                gpOut.Buttons = socdGp.ApplyGamepad(gpOut.Buttons);
 
                             // PlayStation slots backed by an HM virtual go
                             // through the extended SubmitGamepadState overload

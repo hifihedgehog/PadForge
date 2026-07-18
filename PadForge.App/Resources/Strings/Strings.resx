@@ -768,6 +768,25 @@
   <data name="Pad_Kbm_Socd_KeyA_Tooltip" xml:space="preserve"><value>First key of the opposing pair.</value></data>
   <data name="Pad_Kbm_Socd_KeyB_Tooltip" xml:space="preserve"><value>Second key of the opposing pair.</value></data>
   <data name="Pad_Kbm_Socd_Reset" xml:space="preserve"><value>Reset Simultaneous Opposite Directions</value></data>
+  <data name="Pad_Socd_Card_Header" xml:space="preserve"><value>Simultaneous Press (SOCD)</value></data>
+  <data name="Pad_Socd_Card_Desc" xml:space="preserve"><value>Resolves paired buttons held at the same time on this slot&apos;s virtual controller output. When both buttons of a pair are down, the chosen rule decides which press the game sees.</value></data>
+  <data name="Pad_Socd_ResetCard_Tooltip" xml:space="preserve"><value>Reset Simultaneous Press</value></data>
+  <data name="Pad_Socd_Mode_Label" xml:space="preserve"><value>Mode</value></data>
+  <data name="Pad_Socd_Mode_Tooltip" xml:space="preserve"><value>How a held pair resolves. Applies to the slot&apos;s final combined output, so physical, mapped, and macro presses are all cleaned.</value></data>
+  <data name="Pad_Socd_ResetMode_Tooltip" xml:space="preserve"><value>Reset Mode</value></data>
+  <data name="Pad_Socd_Mode_Off_Description" xml:space="preserve"><value>Both buttons pass through unchanged.</value></data>
+  <data name="Pad_Socd_Mode_LastWins_Description" xml:space="preserve"><value>The most recent press wins. Releasing it re-presses the still-held partner button.</value></data>
+  <data name="Pad_Socd_Mode_Neutral_Description" xml:space="preserve"><value>Holding both buttons releases both until one is let go.</value></data>
+  <data name="Pad_Socd_Mode_FirstWins_Description" xml:space="preserve"><value>The earlier press keeps winning until it is released.</value></data>
+  <data name="Pad_Socd_Pairs_Label" xml:space="preserve"><value>Button Pairs</value></data>
+  <data name="Pad_Socd_Pairs_Tooltip" xml:space="preserve"><value>The button pairs the rule cleans. Each pair is tracked on its own.</value></data>
+  <data name="Pad_Socd_ButtonA_Tooltip" xml:space="preserve"><value>First button of the pair.</value></data>
+  <data name="Pad_Socd_ButtonB_Tooltip" xml:space="preserve"><value>Second button of the pair.</value></data>
+  <data name="Pad_Socd_IndexA_Tooltip" xml:space="preserve"><value>First raw button index of the pair, 0 to 127. Index 0 is Button 1 in the mapping grid.</value></data>
+  <data name="Pad_Socd_IndexB_Tooltip" xml:space="preserve"><value>Second raw button index of the pair, 0 to 127. Index 0 is Button 1 in the mapping grid.</value></data>
+  <data name="Pad_Socd_AddPair" xml:space="preserve"><value>Add Pair</value></data>
+  <data name="Pad_Socd_AddPair_Tooltip" xml:space="preserve"><value>Adds another button pair.</value></data>
+  <data name="Pad_Socd_RemovePair_Tooltip" xml:space="preserve"><value>Removes this button pair.</value></data>
   <data name="Pad_SwitchTo2D" xml:space="preserve"><value>Switch to 2D view</value></data>
   <data name="Pad_SwitchTo3D" xml:space="preserve"><value>Switch to 3D view</value></data>
   <data name="Pad_TestLeftMotor" xml:space="preserve"><value>Click to test left motor</value></data>
@@ -1824,6 +1843,14 @@
   <data name="Btn_Options" xml:space="preserve"><value>Options</value></data>
   <data name="Btn_PS" xml:space="preserve"><value>PS</value></data>
   <data name="Btn_Touchpad" xml:space="preserve"><value>Touchpad</value></data>
+  <data name="Btn_L" xml:space="preserve"><value>L</value></data>
+  <data name="Btn_R" xml:space="preserve"><value>R</value></data>
+  <data name="Btn_ZL" xml:space="preserve"><value>ZL</value></data>
+  <data name="Btn_ZR" xml:space="preserve"><value>ZR</value></data>
+  <data name="Btn_Minus" xml:space="preserve"><value>Minus</value></data>
+  <data name="Btn_Plus" xml:space="preserve"><value>Plus</value></data>
+  <data name="Btn_Home" xml:space="preserve"><value>Home</value></data>
+  <data name="Btn_Capture" xml:space="preserve"><value>Capture</value></data>
 
   <!-- ═══ Keyboard Key Labels ═══ -->
   <!-- Mouse VK buttons -->
@@ -2615,8 +2642,10 @@
   <data name="Macro_HoldForMs" xml:space="preserve"><value>On Hold</value></data>
   <data name="Macro_HoldForMs_Tooltip" xml:space="preserve"><value>Fires once after the trigger has been held continuously for the hold time. A shorter tap does nothing.</value></data>
   <data name="Macro_DoublePress" xml:space="preserve"><value>On Double Press</value></data>
-  <data name="Macro_DoublePress_Tooltip" xml:space="preserve"><value>Fires when the trigger is pressed twice within the double press time. If held on the second press, it stays active until release.</value></data>
-  <data name="Macro_TriggerDoublePressMs_Label" xml:space="preserve"><value>Double Press Time</value></data>
+  <data name="Macro_DoublePress_Tooltip" xml:space="preserve"><value>Fires when the trigger is pressed twice within the press window. If held on the second press, it stays active until release.</value></data>
+  <data name="Macro_TriplePress" xml:space="preserve"><value>On Triple Press</value></data>
+  <data name="Macro_TriplePress_Tooltip" xml:space="preserve"><value>Fires when the trigger is pressed three times within the press window. If held on the third press, it stays active until release.</value></data>
+  <data name="Macro_TriggerDoublePressMs_Label" xml:space="preserve"><value>Press Window</value></data>
   <data name="Macro_TriggerHoldMs_Label" xml:space="preserve"><value>Hold Time</value></data>
   <data name="MacroAction_Type_RepeatVcButtonWhileHeld" xml:space="preserve"><value>Repeat Button While Held</value></data>
   <data name="MacroAction_RepeatVcButtonWhileHeld_Tooltip" xml:space="preserve"><value>Pulses the controller button on and off at the interval for as long as the trigger is held (autofire / turbo).</value></data>
@@ -2650,6 +2679,14 @@
   <data name="MacroAction_ToggleWheel_Format" xml:space="preserve"><value>Toggle wheel scroll ({0} ticks every {1} ms)</value></data>
   <data name="Macro_PulseWhileLatched" xml:space="preserve"><value>Pulse While Latched</value></data>
   <data name="Macro_PulseWhileLatched_Tooltip" xml:space="preserve"><value>While latched, pulse the output on and off at the repeat interval instead of holding it solid.</value></data>
+  <data name="MacroAction_Type_AxisAdd" xml:space="preserve"><value>Axis Add (Relative)</value></data>
+  <data name="MacroAction_AxisAdd_Tooltip" xml:space="preserve"><value>Adds the signed value on top of what the mapping already wrote to the axis, every frame for the duration. Negative values subtract. Trigger targets add on the pull scale (32767 = full pull).</value></data>
+  <data name="MacroAction_AxisAdd_Format" xml:space="preserve"><value>Axis Add: {0} {1}%</value></data>
+  <data name="MacroAction_Type_ComboBreak" xml:space="preserve"><value>Combo Break</value></data>
+  <data name="MacroAction_ComboBreak_Tooltip" xml:space="preserve"><value>The combo pauses here. Press the trigger again to continue. A held trigger must be released first.</value></data>
+  <data name="Macro_AxisYieldToPhysical" xml:space="preserve"><value>Yield to Physical Input</value></data>
+  <data name="Macro_AxisYieldToPhysical_Tooltip" xml:space="preserve"><value>When physical movement pushes the target past the threshold, the macro stops writing the axis for the rest of the activation.</value></data>
+  <data name="MacroAction_YieldSuffix" xml:space="preserve"><value>(yields to physical)</value></data>
   <data name="MacroAction_CycleTapList_Format" xml:space="preserve"><value>Cycle tap list ({0} steps)</value></data>
   <data name="Macro_CycleSteps_Label" xml:space="preserve"><value>Steps</value></data>
   <data name="Macro_CycleWrap_Label" xml:space="preserve"><value>Wrap</value></data>

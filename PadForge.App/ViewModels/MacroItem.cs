@@ -40,6 +40,7 @@ namespace PadForge.ViewModels
             OnPropertyChanged(nameof(RecordTriggerButtonText));
             OnPropertyChanged(nameof(RecordTriggerIcon));
             OnPropertyChanged(nameof(TriggerDisplayText));
+            OnPropertyChanged(nameof(TriggerPressWindowToolTip));
             _outputChannelOptions = null;
             OnPropertyChanged(nameof(OutputChannelOptions));
         }
@@ -57,7 +58,7 @@ namespace PadForge.ViewModels
         [System.Xml.Serialization.XmlIgnore]
         public IList<MacroOutputChannelOption> OutputChannelOptions
         {
-            get => _outputChannelOptions ??= MacroOutputChannelNames.GetOptions(_buttonStyle);
+            get => _outputChannelOptions ??= MacroOutputChannelNames.GetOptions(_buttonStyle, _extendedProfileId);
         }
 
         private string _name = Strings.Instance.Macro_NewMacro;
@@ -339,11 +340,11 @@ namespace PadForge.ViewModels
                     }
                     else if (_buttonStyle == MacroButtonStyle.Numbered && UsesCustomTrigger)
                     {
-                        parts.Add(MacroButtonNames.FormatCustomButtons(_triggerCustomButtonWords));
+                        parts.Add(MacroButtonNames.FormatCustomButtons(_triggerCustomButtonWords, _extendedProfileId));
                     }
                     else if (_triggerButtons != 0)
                     {
-                        parts.Add(MacroButtonNames.FormatButtons(_triggerButtons, _buttonStyle));
+                        parts.Add(MacroButtonNames.FormatButtons(_triggerButtons, _buttonStyle, _extendedProfileId));
                     }
 
                     // POV part(s).
@@ -363,9 +364,9 @@ namespace PadForge.ViewModels
                 if (entries.Count > 0)
                 {
                     if (_buttonStyle == MacroButtonStyle.Numbered && UsesCustomTrigger)
-                        parts.Add(MacroButtonNames.FormatCustomButtons(_triggerCustomButtonWords));
+                        parts.Add(MacroButtonNames.FormatCustomButtons(_triggerCustomButtonWords, _extendedProfileId));
                     else if (_triggerButtons != 0)
-                        parts.Add(MacroButtonNames.FormatButtons(_triggerButtons, _buttonStyle));
+                        parts.Add(MacroButtonNames.FormatButtons(_triggerButtons, _buttonStyle, _extendedProfileId));
                 }
 
                 // Axis part(s) — always Xbox-output, no per-device split.
@@ -1342,14 +1343,14 @@ namespace PadForge.ViewModels
                         {
                             int idx = i;
                             yield return new MacroTriggerInputItem(
-                                string.Format(Strings.Instance.Macro_Btn_Format, idx + 1),
+                                MacroButtonNames.ExtendedButtonShortLabel(_extendedProfileId, idx + 1),
                                 new RelayCommand(() => RemoveLegacyCustomButton(idx)));
                         }
                     }
                 }
                 else if (_triggerButtons != 0)
                 {
-                    foreach (var def in MacroButtonNames.GetButtonDefs(_buttonStyle))
+                    foreach (var def in MacroButtonNames.GetButtonDefs(_buttonStyle, _extendedProfileId))
                     {
                         if ((_triggerButtons & def.Flag) != 0)
                         {
@@ -1597,6 +1598,31 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _customButtonCount, Math.Max(1, value));
         }
 
+        private string _extendedProfileId;
+
+        /// <summary>
+        /// The Extended slot's HIDMaestro profile slug, stamped by
+        /// PadViewModel beside ButtonStyle (#215). Null on non-Extended
+        /// slots. Re-letters the Numbered labels on Switch Pro profiles;
+        /// the mask / index value spaces are untouched.
+        /// </summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public string ExtendedProfileId
+        {
+            get => _extendedProfileId;
+            set
+            {
+                if (SetProperty(ref _extendedProfileId, value))
+                {
+                    OnPropertyChanged(nameof(TriggerDisplayText));
+                    _outputChannelOptions = null;
+                    OnPropertyChanged(nameof(OutputChannelOptions));
+                    foreach (var action in Actions)
+                        action.ExtendedProfileId = value;
+                }
+            }
+        }
+
         // ─────────────────────────────────────────────
         //  Trigger options
         // ─────────────────────────────────────────────
@@ -1631,6 +1657,7 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(IsCustomExpressionMode));
                     OnPropertyChanged(nameof(IsHoldForMsMode));
                     OnPropertyChanged(nameof(IsDoublePressMode));
+                    OnPropertyChanged(nameof(TriggerPressWindowToolTip));
                     OnPropertyChanged(nameof(ShowsTriggerComboEditor));
                 }
             }
@@ -1646,22 +1673,35 @@ namespace PadForge.ViewModels
         [System.Xml.Serialization.XmlIgnore]
         public bool IsHoldForMsMode => _triggerMode == MacroTriggerMode.HoldForMs;
 
-        /// <summary>True when TriggerMode is DoublePress (translator v17).
-        /// Gates the double-press window ms row in the trigger editor.</summary>
+        /// <summary>True when TriggerMode is DoublePress (translator v17)
+        /// or TriplePress (#238, which chains presses through the same
+        /// window). Gates the press-window ms row in the trigger editor.</summary>
         [System.Xml.Serialization.XmlIgnore]
-        public bool IsDoublePressMode => _triggerMode == MacroTriggerMode.DoublePress;
+        public bool IsDoublePressMode =>
+            _triggerMode == MacroTriggerMode.DoublePress ||
+            _triggerMode == MacroTriggerMode.TriplePress;
+
+        /// <summary>Tooltip for the shared press-window ms row (#238):
+        /// the double- or triple-press explanation, following the active
+        /// trigger mode. Re-raised on mode and culture changes.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public string TriggerPressWindowToolTip =>
+            _triggerMode == MacroTriggerMode.TriplePress
+                ? Strings.Instance.Macro_TriplePress_Tooltip
+                : Strings.Instance.Macro_DoublePress_Tooltip;
 
         /// <summary>True when the standard trigger-combo recording UI should show
         /// (i.e. one of OnPress / OnRelease / WhileHeld / HoldForMs /
-        /// DoublePress). Always mode has no trigger; CustomExpression mode
-        /// uses the formula editor instead.</summary>
+        /// DoublePress / TriplePress). Always mode has no trigger;
+        /// CustomExpression mode uses the formula editor instead.</summary>
         [System.Xml.Serialization.XmlIgnore]
         public bool ShowsTriggerComboEditor =>
             _triggerMode == MacroTriggerMode.OnPress ||
             _triggerMode == MacroTriggerMode.OnRelease ||
             _triggerMode == MacroTriggerMode.WhileHeld ||
             _triggerMode == MacroTriggerMode.HoldForMs ||
-            _triggerMode == MacroTriggerMode.DoublePress;
+            _triggerMode == MacroTriggerMode.DoublePress ||
+            _triggerMode == MacroTriggerMode.TriplePress;
 
         private int _triggerHoldMs = 500;
 
@@ -1726,6 +1766,13 @@ namespace PadForge.ViewModels
         /// first press is armed. Never serialized.</summary>
         [System.Xml.Serialization.XmlIgnore]
         internal DateTime TriggerLastPressUtc { get; set; } = DateTime.MinValue;
+
+        /// <summary>TriplePress chain length so far (#238): how many
+        /// rising edges the current fast-press chain holds. Volatile
+        /// runtime state, reset when a press lands outside the window
+        /// and consumed on fire.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        internal int TriggerPressStreak { get; set; }
 
         /// <summary>Transient timing state for <see cref="MacroTriggerMode.HoldForMs"/>:
         /// the UTC time the trigger combo last went active (rising edge). The
@@ -2185,6 +2232,21 @@ namespace PadForge.ViewModels
         [System.Xml.Serialization.XmlIgnore]
         public bool WasTriggerActive { get; set; }
 
+        /// <summary>Combo-break park position (discussion #237): the action
+        /// index the NEXT start resumes from. 0 = start from the top. Set
+        /// by a <see cref="MacroActionType.ComboBreak"/> action, cleared on
+        /// normal sequence completion, UntilRelease stop, disable, profile
+        /// switch, engine stop, and app restart (volatile).</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public int ComboResumeIndex { get; set; }
+
+        /// <summary>Set when a combo break parks the sequence while the
+        /// trigger is still held: hold-shaped trigger modes (WhileHeld,
+        /// Always) must not auto-resume through the break, so the start
+        /// gate stays closed until the trigger reads inactive once.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool AwaitReleaseAfterBreak { get; set; }
+
         // ─────────────────────────────────────────────
         //  Commands
         // ─────────────────────────────────────────────
@@ -2230,7 +2292,7 @@ namespace PadForge.ViewModels
         public RelayCommand AddActionCommand =>
             _addActionCommand ??= new RelayCommand(() =>
             {
-                var action = new MacroAction { Type = MacroActionType.ButtonPress, ButtonStyle = _buttonStyle, CustomButtonCount = _customButtonCount };
+                var action = new MacroAction { Type = MacroActionType.ButtonPress, ButtonStyle = _buttonStyle, CustomButtonCount = _customButtonCount, ExtendedProfileId = _extendedProfileId };
                 Actions.Add(action);
                 SelectedAction = action;
             });
@@ -2257,6 +2319,7 @@ namespace PadForge.ViewModels
                 var clone = SettingsService.BuildMacroAction(SettingsService.BuildActionData(_selectedAction));
                 clone.ButtonStyle = _buttonStyle;
                 clone.CustomButtonCount = _customButtonCount;
+                clone.ExtendedProfileId = _extendedProfileId;
                 int idx = Actions.IndexOf(_selectedAction);
                 if (idx < 0) Actions.Add(clone); else Actions.Insert(idx + 1, clone);
                 SelectedAction = clone;
@@ -2386,6 +2449,9 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(IsToggleVcAxisType));
                     OnPropertyChanged(nameof(IsRepeatVcAxisWhileHeldType));
                     OnPropertyChanged(nameof(IsToggleWheelType));
+                    OnPropertyChanged(nameof(IsAxisAddType));
+                    OnPropertyChanged(nameof(IsComboBreakType));
+                    OnPropertyChanged(nameof(IsAxisYieldCapableType));
                     OnPropertyChanged(nameof(IsAnyMouseButtonType));
                     OnPropertyChanged(nameof(IsAnyWheelTapType));
                     OnPropertyChanged(nameof(IsAnyAxisValueType));
@@ -2438,12 +2504,13 @@ namespace PadForge.ViewModels
 
         /// <summary>True when Type uses the generic <c>DurationMs</c>
         /// field for its hold time: ButtonPress / KeyPress / Delay /
-        /// MouseButtonPress / AxisHold. LightbarColor uses its own
-        /// <c>LightbarHoldMs</c>/<c>LightbarFadeMs</c> pair instead so
-        /// the hold and fade sliders can be scaled and labeled
+        /// MouseButtonPress / AxisHold / AxisAdd (the relative add rides
+        /// the AxisHold duration shape, discussion #237). LightbarColor
+        /// uses its own <c>LightbarHoldMs</c>/<c>LightbarFadeMs</c> pair
+        /// instead so the hold and fade sliders can be scaled and labeled
         /// separately from the generic ms field.</summary>
         [System.Xml.Serialization.XmlIgnore]
-        public bool IsDurationType => _type == MacroActionType.ButtonPress || _type == MacroActionType.KeyPress || _type == MacroActionType.Delay || _type == MacroActionType.MouseButtonPress || _type == MacroActionType.AxisHold;
+        public bool IsDurationType => _type == MacroActionType.ButtonPress || _type == MacroActionType.KeyPress || _type == MacroActionType.Delay || _type == MacroActionType.MouseButtonPress || _type == MacroActionType.AxisHold || _type == MacroActionType.AxisAdd;
 
         /// <summary>True when Type is AxisSet or AxisHold (both edit the
         /// axis target + value pair; AxisHold adds the duration knob via
@@ -2606,6 +2673,28 @@ namespace PadForge.ViewModels
         [System.Xml.Serialization.XmlIgnore]
         public bool IsToggleWheelType => _type == MacroActionType.ToggleWheel;
 
+        /// <summary>True when Type is AxisAdd (discussion #237). Surfaces
+        /// the signed-value hint under the shared axis target / value pair
+        /// (the value box already accepts the full -32768..32767 range, so
+        /// the relative add reuses it as is).</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool IsAxisAddType => _type == MacroActionType.AxisAdd;
+
+        /// <summary>True when Type is ComboBreak (discussion #237). Gates
+        /// the parameter-less info card in the macro editor, the
+        /// GyroRecenter card shape.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool IsComboBreakType => _type == MacroActionType.ComboBreak;
+
+        /// <summary>True for the axis holds that honor
+        /// <see cref="AxisYieldToPhysical"/> (discussion #237): AxisHold,
+        /// ToggleVcAxis, and RepeatVcAxisWhileHeld. Gates the yield
+        /// checkbox row.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool IsAxisYieldCapableType
+            => _type is MacroActionType.AxisHold or MacroActionType.ToggleVcAxis
+                or MacroActionType.RepeatVcAxisWhileHeld;
+
         /// <summary>True when the mouse-button picker applies:
         /// MouseButtonPress / MouseButtonRelease plus the v18
         /// ToggleMouseButton latch, which addresses its target through the
@@ -2625,11 +2714,14 @@ namespace PadForge.ViewModels
         /// AxisSet / AxisHold plus the v18 ToggleVcAxis latch and
         /// RepeatVcAxisWhileHeld turbo, which write the same
         /// <see cref="AxisTarget"/> / <see cref="AxisValue"/> pair
-        /// (v19, M1).</summary>
+        /// (v19, M1). The AxisAdd relative deflection (discussion #237)
+        /// rides the same pair, with AxisValue read as the signed
+        /// per-frame add.</summary>
         [System.Xml.Serialization.XmlIgnore]
         public bool IsAnyAxisValueType => IsAxisType
             || _type == MacroActionType.ToggleVcAxis
-            || _type == MacroActionType.RepeatVcAxisWhileHeld;
+            || _type == MacroActionType.RepeatVcAxisWhileHeld
+            || _type == MacroActionType.AxisAdd;
 
         /// <summary>True for the latch actions whose held contribution can
         /// pulse on the turbo square wave (<see cref="PulseWhileLatched"/>):
@@ -2826,6 +2918,28 @@ namespace PadForge.ViewModels
             }
         }
 
+        private string _extendedProfileId;
+
+        /// <summary>
+        /// The Extended slot's HIDMaestro profile slug, cascaded from the
+        /// owning MacroItem (#215). Re-letters the Numbered button labels
+        /// on Switch Pro profiles; display-only.
+        /// </summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public string ExtendedProfileId
+        {
+            get => _extendedProfileId;
+            set
+            {
+                if (SetProperty(ref _extendedProfileId, value))
+                {
+                    _buttonOptions = null;
+                    OnPropertyChanged(nameof(ButtonOptions));
+                    OnPropertyChanged(nameof(DisplayText));
+                }
+            }
+        }
+
         private ushort _buttonFlags;
 
         /// <summary>
@@ -2975,15 +3089,16 @@ namespace PadForge.ViewModels
                 {
                     if (_buttonStyle == MacroButtonStyle.Numbered)
                     {
-                        // Dynamic list for custom Extended — N buttons from config.
+                        // Dynamic list for custom Extended. N buttons from
+                        // config, lettered per profile on Switch Pro (#215).
                         var list = new List<GamepadButtonOption>();
                         for (int i = 0; i < _customButtonCount; i++)
-                            list.Add(new GamepadButtonOption(this, string.Format(Strings.Instance.Macro_Btn_Format, i + 1), customIndex: i));
+                            list.Add(new GamepadButtonOption(this, MacroButtonNames.ExtendedButtonShortLabel(_extendedProfileId, i + 1), customIndex: i));
                         _buttonOptions = list.AsReadOnly();
                     }
                     else
                     {
-                        var defs = MacroButtonNames.GetButtonDefs(_buttonStyle);
+                        var defs = MacroButtonNames.GetButtonDefs(_buttonStyle, _extendedProfileId);
                         _buttonOptions = defs
                             .Select(d => new GamepadButtonOption(this, d.Label, d.Flag))
                             .ToList().AsReadOnly();
@@ -4161,6 +4276,31 @@ namespace PadForge.ViewModels
             }
         }
 
+        private bool _axisYieldToPhysical;
+        /// <summary>Yield-to-physical for the absolute axis holds
+        /// (discussion #237, reWASD's "Absolute deflection" contract:
+        /// "once you move your physical stick, the combo will go back to
+        /// zero, and now your stick will have a higher priority"). While
+        /// set on an <see cref="MacroActionType.AxisHold"/>,
+        /// <see cref="MacroActionType.ToggleVcAxis"/>, or
+        /// <see cref="MacroActionType.RepeatVcAxisWhileHeld"/> action,
+        /// the engine checks the target's already-mapped value each
+        /// frame BEFORE overwriting: the first frame the physical input
+        /// exceeds the yield threshold, the macro write is suppressed
+        /// and STAYS suppressed for the remainder of that activation
+        /// (latched, matching reWASD's "goes back to zero"), re-arming
+        /// when the action re-fires. Off by default so existing macros
+        /// keep their macro-wins semantics.</summary>
+        public bool AxisYieldToPhysical
+        {
+            get => _axisYieldToPhysical;
+            set
+            {
+                if (SetProperty(ref _axisYieldToPhysical, value))
+                    OnPropertyChanged(nameof(DisplayText));
+            }
+        }
+
         private int _intervalMs = 100;
         /// <summary>Repeat interval in milliseconds for
         /// <see cref="MacroActionType.RepeatKeyWhileHeld"/> (issue #9): the pad
@@ -4636,11 +4776,16 @@ namespace PadForge.ViewModels
             {
                 var keyDisplay = !string.IsNullOrEmpty(_keyString) ? _keyString : ResolveKeyName(_keyCode);
                 string btnText = _buttonStyle == MacroButtonStyle.Numbered
-                    ? MacroButtonNames.FormatCustomButtons(_customButtonWords)
-                    : MacroButtonNames.FormatButtons(_buttonFlags, _buttonStyle);
+                    ? MacroButtonNames.FormatCustomButtons(_customButtonWords, _extendedProfileId)
+                    : MacroButtonNames.FormatButtons(_buttonFlags, _buttonStyle, _extendedProfileId);
                 string axisLabel = _axisSource == MacroAxisSource.InputDevice
                     ? string.Format(Strings.Instance.Macro_DeviceAxis_Format, _sourceDeviceAxisIndex)
                     : _axisTarget.DisplayName();
+                // Yield marker for the axis holds (discussion #237). Only
+                // the three yield-capable arms append it.
+                string yieldMark = _axisYieldToPhysical
+                    ? " " + Strings.Instance.MacroAction_YieldSuffix
+                    : string.Empty;
                 return _type switch
                 {
                     MacroActionType.ButtonPress => string.Format(Strings.Instance.MacroAction_Press_Format, btnText, _durationMs),
@@ -4649,7 +4794,7 @@ namespace PadForge.ViewModels
                     MacroActionType.KeyRelease => string.Format(Strings.Instance.MacroAction_KeyRelease_Format, keyDisplay),
                     MacroActionType.Delay => string.Format(Strings.Instance.MacroAction_Wait_Format, _durationMs),
                     MacroActionType.AxisSet => string.Format(Strings.Instance.MacroAction_SetAxis_Format, _axisTarget, _axisValue),
-                    MacroActionType.AxisHold => string.Format(Strings.Instance.MacroAction_HoldAxis_Format, _axisTarget, _axisValue, _durationMs),
+                    MacroActionType.AxisHold => string.Format(Strings.Instance.MacroAction_HoldAxis_Format, _axisTarget, _axisValue, _durationMs) + yieldMark,
                     MacroActionType.MouseWheelTap => Strings.Instance.MacroAction_Type_MouseWheelTap,
                     MacroActionType.MouseNudge => string.Format(
                         Strings.Instance.MacroAction_MouseNudge_Format, _nudgeDx, _nudgeDy),
@@ -4739,16 +4884,36 @@ namespace PadForge.ViewModels
                         MacroMouseButtonDisplayName(_mouseButton)),
                     MacroActionType.ToggleVcAxis => string.Format(
                         Strings.Instance.MacroAction_ToggleVcAxis_Format,
-                        _axisTarget, _axisValue),
+                        _axisTarget, _axisValue) + yieldMark,
                     MacroActionType.RepeatVcAxisWhileHeld => string.Format(
                         Strings.Instance.MacroAction_RepeatVcAxisWhileHeld_Format,
-                        _axisTarget, _axisValue, _intervalMs),
+                        _axisTarget, _axisValue, _intervalMs) + yieldMark,
                     MacroActionType.ToggleWheel => string.Format(
                         Strings.Instance.MacroAction_ToggleWheel_Format,
                         _axisValue, _intervalMs),
+                    // Discussion #237: the relative add renders its signed
+                    // percent of the pull scale, the combo break its type
+                    // label (it carries no parameters).
+                    MacroActionType.AxisAdd => string.Format(
+                        Strings.Instance.MacroAction_AxisAdd_Format,
+                        _axisTarget.DisplayName(), FormatSignedPercent(_axisValue)),
+                    MacroActionType.ComboBreak =>
+                        Strings.Instance.MacroAction_Type_ComboBreak,
                     _ => Strings.Instance.Macro_UnknownAction
                 };
             }
+        }
+
+        /// <summary>Signed percent of the pull scale for the Axis Add
+        /// summary (discussion #237): +32767 renders "+100" and -16384
+        /// renders "-50". The plus sign is explicit because the add
+        /// direction is the point.</summary>
+        private static string FormatSignedPercent(short value)
+        {
+            int pct = (int)Math.Round(value * 100.0 / 32767.0);
+            return pct >= 0
+                ? "+" + pct.ToString(System.Globalization.CultureInfo.InvariantCulture)
+                : pct.ToString(System.Globalization.CultureInfo.InvariantCulture);
         }
 
         /// <summary>Short label for the Run Program summary: the program's file name
@@ -5040,7 +5205,18 @@ namespace PadForge.ViewModels
         /// press, it will remain pressed", Valve's shipped Double Press
         /// string). At the tail per the APPEND-ONLY rule above; ordinal
         /// pinned.</summary>
-        DoublePress = 6
+        DoublePress = 6,
+
+        /// <summary>Fire once on the THIRD rising edge of a press chain
+        /// whose successive presses each land within
+        /// <see cref="MacroItem.TriggerDoublePressMs"/> of the previous
+        /// one (discussion #238, the reWASD / Steam "Triple Press"
+        /// activation mode). A slower press re-arms as a fresh first
+        /// press, and the chain is consumed on fire so six fast taps fire
+        /// twice, never four times. The trigger reads active through the
+        /// third press's hold, the DoublePress UntilRelease contract. At
+        /// the tail per the APPEND-ONLY rule above; ordinal pinned.</summary>
+        TriplePress = 7
     }
 
     public enum MacroTriggerSource
@@ -5406,7 +5582,34 @@ namespace PadForge.ViewModels
         /// <see cref="MacroAction.IntervalMs"/> ms, reproducing the held
         /// KbmScroll row's continuous scroll. At the tail per the
         /// APPEND-ONLY rule above; ordinal pinned.</summary>
-        ToggleWheel = 46
+        ToggleWheel = 46,
+
+        /// <summary>Relative axis deflection (discussion #237, reWASD's
+        /// "Axis Control: Relative deflection"). ADDS
+        /// <see cref="MacroAction.AxisValue"/> to whatever the mapping
+        /// pipeline already wrote to <see cref="MacroAction.AxisTarget"/>
+        /// this frame, clamped to the target's range, re-applied every
+        /// frame while the action is current (the <see cref="AxisHold"/>
+        /// duration shape). Negative values subtract, so a held -50%
+        /// on a stick axis turns a run into a walk while the physical
+        /// stick keeps steering. Trigger targets add on the pull scale
+        /// (0..32767 = 0..100%); sticks add in the signed short frame.
+        /// At the tail per the APPEND-ONLY rule above; ordinal pinned.</summary>
+        AxisAdd = 47,
+
+        /// <summary>Combo break (discussion #237, reWASD's "Combo break"
+        /// block). Divides the action list into parts: reaching the break
+        /// ends this fire and parks the sequence, and the NEXT trigger
+        /// press resumes from the action after the break. Completing the
+        /// final action (or an UntilRelease stop) re-arms from the top.
+        /// Hold-shaped triggers must be RELEASED and pressed again to
+        /// continue (a WhileHeld trigger never auto-resumes through a
+        /// break). Park position is volatile: it resets on app restart,
+        /// profile switch, and macro disable (idle and engine restarts
+        /// within a session deliberately preserve it, so a combo does
+        /// not lose its place because the engine napped). At the tail
+        /// per the APPEND-ONLY rule above; ordinal pinned.</summary>
+        ComboBreak = 48
     }
 
     /// <summary>One parsed part of a <see cref="MacroActionType.CycleTapList"/>
@@ -6020,7 +6223,9 @@ namespace PadForge.ViewModels
     /// dropdown reads the same way as the row labels users already know.</summary>
     public static class MacroOutputChannelNames
     {
-        public static string DisplayName(MacroOutputChannel channel, MacroButtonStyle style)
+        /// <summary>The optional profile id re-letters the Numbered button
+        /// labels on Switch Pro profiles (#215); other styles ignore it.</summary>
+        public static string DisplayName(MacroOutputChannel channel, MacroButtonStyle style, string profileId = null)
         {
             var s = Strings.Instance;
             // Stick axes + D-Pad: same label across all styles (matches the
@@ -6059,17 +6264,17 @@ namespace PadForge.ViewModels
                 case MacroButtonStyle.Numbered:
                     return channel switch
                     {
-                        MacroOutputChannel.A     => string.Format(s.Extended_Button_Format, 1),
-                        MacroOutputChannel.B     => string.Format(s.Extended_Button_Format, 2),
-                        MacroOutputChannel.X     => string.Format(s.Extended_Button_Format, 3),
-                        MacroOutputChannel.Y     => string.Format(s.Extended_Button_Format, 4),
-                        MacroOutputChannel.LB    => string.Format(s.Extended_Button_Format, 5),
-                        MacroOutputChannel.RB    => string.Format(s.Extended_Button_Format, 6),
-                        MacroOutputChannel.Back  => string.Format(s.Extended_Button_Format, 7),
-                        MacroOutputChannel.Start => string.Format(s.Extended_Button_Format, 8),
-                        MacroOutputChannel.LS    => string.Format(s.Extended_Button_Format, 9),
-                        MacroOutputChannel.RS    => string.Format(s.Extended_Button_Format, 10),
-                        MacroOutputChannel.Guide => string.Format(s.Extended_Button_Format, 11),
+                        MacroOutputChannel.A     => MacroButtonNames.ExtendedButtonLabel(profileId, 1),
+                        MacroOutputChannel.B     => MacroButtonNames.ExtendedButtonLabel(profileId, 2),
+                        MacroOutputChannel.X     => MacroButtonNames.ExtendedButtonLabel(profileId, 3),
+                        MacroOutputChannel.Y     => MacroButtonNames.ExtendedButtonLabel(profileId, 4),
+                        MacroOutputChannel.LB    => MacroButtonNames.ExtendedButtonLabel(profileId, 5),
+                        MacroOutputChannel.RB    => MacroButtonNames.ExtendedButtonLabel(profileId, 6),
+                        MacroOutputChannel.Back  => MacroButtonNames.ExtendedButtonLabel(profileId, 7),
+                        MacroOutputChannel.Start => MacroButtonNames.ExtendedButtonLabel(profileId, 8),
+                        MacroOutputChannel.LS    => MacroButtonNames.ExtendedButtonLabel(profileId, 9),
+                        MacroOutputChannel.RS    => MacroButtonNames.ExtendedButtonLabel(profileId, 10),
+                        MacroOutputChannel.Guide => MacroButtonNames.ExtendedButtonLabel(profileId, 11),
                         MacroOutputChannel.LT    => s.Btn_LeftTrigger,
                         MacroOutputChannel.RT    => s.Btn_RightTrigger,
                         _ => channel.ToString()
@@ -6099,7 +6304,7 @@ namespace PadForge.ViewModels
         /// presentation order (face → shoulders → start/back/guide → sticks →
         /// d-pad → triggers → axes). The order mirrors the mapping table so
         /// users find what they're looking for in roughly the same place.</summary>
-        public static List<MacroOutputChannelOption> GetOptions(MacroButtonStyle style)
+        public static List<MacroOutputChannelOption> GetOptions(MacroButtonStyle style, string profileId = null)
         {
             var order = new[]
             {
@@ -6113,7 +6318,7 @@ namespace PadForge.ViewModels
             };
             var list = new List<MacroOutputChannelOption>(order.Length);
             foreach (var ch in order)
-                list.Add(new MacroOutputChannelOption { Value = ch, Name = DisplayName(ch, style) });
+                list.Add(new MacroOutputChannelOption { Value = ch, Name = DisplayName(ch, style, profileId) });
             return list;
         }
     }
@@ -6153,24 +6358,29 @@ namespace PadForge.ViewModels
         /// <summary>
         /// Returns the button label/flag pairs for the given style.
         /// Flags are always the same Xbox-standard bitmask; only labels differ.
+        /// The optional profile id re-letters the Numbered labels on Switch
+        /// Pro profiles (#215); it is ignored for the other styles.
         /// </summary>
-        public static (string Label, ushort Flag)[] GetButtonDefs(MacroButtonStyle style) => style switch
+        public static (string Label, ushort Flag)[] GetButtonDefs(MacroButtonStyle style, string profileId = null) => style switch
         {
             MacroButtonStyle.DualShock4 => BuildDS4Defs(),
-            MacroButtonStyle.Numbered => BuildNumberedDefs(),
+            MacroButtonStyle.Numbered => BuildNumberedDefs(profileId),
             _ => BuildXboxDefs()
         };
 
-        /// <summary>Formats a button bitmask into a human-readable string.</summary>
-        public static string FormatButtons(ushort flags, MacroButtonStyle style)
+        /// <summary>Formats a button bitmask into a human-readable string.
+        /// The optional profile id re-letters Numbered labels on Switch Pro
+        /// profiles (#215).</summary>
+        public static string FormatButtons(ushort flags, MacroButtonStyle style, string profileId = null)
         {
             if (flags == 0) return Strings.Instance.Macro_None;
-            var defs = GetButtonDefs(style);
+            var defs = GetButtonDefs(style, profileId);
             return string.Join(" + ", defs.Where(d => (flags & d.Flag) != 0).Select(d => d.Label));
         }
 
-        /// <summary>Formats custom Extended button words into a human-readable string.</summary>
-        public static string FormatCustomButtons(uint[] words)
+        /// <summary>Formats custom Extended button words into a human-readable
+        /// string. The optional profile id re-letters Switch Pro buttons (#215).</summary>
+        public static string FormatCustomButtons(uint[] words, string profileId = null)
         {
             if (words == null || words.All(w => w == 0)) return Strings.Instance.Macro_None;
             var parts = new List<string>();
@@ -6179,7 +6389,7 @@ namespace PadForge.ViewModels
                 int word = i / 32;
                 int bit = i % 32;
                 if (word < words.Length && (words[word] & (uint)(1 << bit)) != 0)
-                    parts.Add(string.Format(Strings.Instance.Macro_Btn_Format, i + 1));
+                    parts.Add(ExtendedButtonShortLabel(profileId, i + 1));
             }
             return parts.Count > 0 ? string.Join(" + ", parts) : Strings.Instance.Macro_None;
         }
@@ -6187,8 +6397,10 @@ namespace PadForge.ViewModels
         /// <summary>
         /// Derives the button style from the output controller type. Extended
         /// slots show numbered labels (Btn1, Btn2, ...) since the active
-        /// HIDMaestro profile drives the layout — Xbox-style "A B X Y" labels
+        /// HIDMaestro profile drives the layout. Xbox-style "A B X Y" labels
         /// belong on Xbox slots, DualShock labels on PlayStation slots.
+        /// Switch Pro profiles keep the Numbered value space and re-letter
+        /// the labels per raw index (see <see cref="ExtendedButtonLabel"/>).
         /// </summary>
         public static MacroButtonStyle DeriveStyle(VirtualControllerType outputType) => outputType switch
         {
@@ -6196,6 +6408,58 @@ namespace PadForge.ViewModels
             VirtualControllerType.Extended    => MacroButtonStyle.Numbered,
             _                                 => MacroButtonStyle.Xbox360
         };
+
+        /// <summary>Nintendo lettering gate (#215): true when the Extended
+        /// slot's HIDMaestro profile is a Switch Pro family pad whose
+        /// descriptor button order is the Nintendo standard (B A Y X, L R,
+        /// ZL ZR, Minus Plus, stick clicks, Home, Capture). Grounded in the
+        /// switch-pro profile's layout roles. Covers "switch-pro" and the
+        /// "switch2-pro" id family ("switch2-pro-controller" in the current
+        /// catalog).</summary>
+        public static bool IsNintendoLetteredProfile(string profileId) =>
+            !string.IsNullOrEmpty(profileId)
+            && (string.Equals(profileId, "switch-pro", StringComparison.OrdinalIgnoreCase)
+                || profileId.StartsWith("switch2-pro", StringComparison.OrdinalIgnoreCase));
+
+        /// <summary>Nintendo name for a 0-based raw Extended button index on
+        /// a Switch Pro profile, or null past the lettered range (callers
+        /// fall back to the numbered format). Index order matches the
+        /// switch-pro HID descriptor: face 0-3, bumpers 4-5, ZL/ZR 6-7,
+        /// Minus/Plus 8-9, stick clicks 10-11, Home 12, Capture 13.</summary>
+        public static string NintendoExtendedLabel(int index) => index switch
+        {
+            0 => "B",
+            1 => "A",
+            2 => "Y",
+            3 => "X",
+            4 => Strings.Instance.Btn_L,
+            5 => Strings.Instance.Btn_R,
+            6 => Strings.Instance.Btn_ZL,
+            7 => Strings.Instance.Btn_ZR,
+            8 => Strings.Instance.Btn_Minus,
+            9 => Strings.Instance.Btn_Plus,
+            10 => Strings.Instance.Btn_LeftStickButton,
+            11 => Strings.Instance.Btn_RightStickButton,
+            12 => Strings.Instance.Btn_Home,
+            13 => Strings.Instance.Btn_Capture,
+            _ => null,
+        };
+
+        /// <summary>Label for the 1-based Extended button N under the given
+        /// profile: Nintendo lettering on Switch Pro profiles, the "Button
+        /// {N}" format otherwise. The long-form twin of
+        /// <see cref="ExtendedButtonShortLabel"/> (mapping grid, menu cell
+        /// picker, output-channel dropdown).</summary>
+        public static string ExtendedButtonLabel(string profileId, int number) =>
+            (IsNintendoLetteredProfile(profileId) ? NintendoExtendedLabel(number - 1) : null)
+            ?? string.Format(Strings.Instance.Extended_Button_Format, number);
+
+        /// <summary>Compact-label twin of <see cref="ExtendedButtonLabel"/>
+        /// ("Btn {N}" fallback) for the macro trigger chips and button
+        /// checkbox grid.</summary>
+        public static string ExtendedButtonShortLabel(string profileId, int number) =>
+            (IsNintendoLetteredProfile(profileId) ? NintendoExtendedLabel(number - 1) : null)
+            ?? string.Format(Strings.Instance.Macro_Btn_Format, number);
 
         private static (string Label, ushort Flag)[] BuildXboxDefs() => new (string, ushort)[]
         {
@@ -6222,17 +6486,20 @@ namespace PadForge.ViewModels
 
         // Extended Custom: Xbox bitmask bits → Extended button numbers (see SubmitGamepadState mapping).
         // D-pad still shows direction names (they map to POV, not buttons).
-        private static (string Label, ushort Flag)[] BuildNumberedDefs()
+        // Switch Pro profiles letter each number per the descriptor's raw
+        // index (#215); the mask/number value space is unchanged.
+        private static (string Label, ushort Flag)[] BuildNumberedDefs(string profileId)
         {
             var s = Strings.Instance;
+            string L(int n) => ExtendedButtonShortLabel(profileId, n);
             return new (string, ushort)[]
             {
-                (string.Format(s.Macro_Btn_Format, 1), 0x1000), (string.Format(s.Macro_Btn_Format, 2), 0x2000),
-                (string.Format(s.Macro_Btn_Format, 3), 0x4000), (string.Format(s.Macro_Btn_Format, 4), 0x8000),
-                (string.Format(s.Macro_Btn_Format, 5), 0x0100), (string.Format(s.Macro_Btn_Format, 6), 0x0200),
-                (string.Format(s.Macro_Btn_Format, 7), 0x0020), (string.Format(s.Macro_Btn_Format, 8), 0x0010),
-                (string.Format(s.Macro_Btn_Format, 9), 0x0040), (string.Format(s.Macro_Btn_Format, 10), 0x0080),
-                (string.Format(s.Macro_Btn_Format, 11), 0x0400),
+                (L(1), 0x1000), (L(2), 0x2000),
+                (L(3), 0x4000), (L(4), 0x8000),
+                (L(5), 0x0100), (L(6), 0x0200),
+                (L(7), 0x0020), (L(8), 0x0010),
+                (L(9), 0x0040), (L(10), 0x0080),
+                (L(11), 0x0400),
                 (s.Btn_Up, 0x0001), (s.Btn_Down, 0x0002),
                 (s.Btn_Left, 0x0004), (s.Btn_Right, 0x0008),
             };

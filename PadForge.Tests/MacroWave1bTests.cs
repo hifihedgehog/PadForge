@@ -78,16 +78,18 @@ namespace PadForge.Tests
             // The macro clipboard serializes MacroActionType numerically, so
             // new members MUST append at the tail and their values must
             // never move (wave 1b pinned 35..38; v15 appended 39..40; v16
-            // appended 41..42; v18 appended 43..46).
+            // appended 41..42; v18 appended 43..46; #237 appended 47..48).
             var values = Enum.GetValues<MacroActionType>();
-            Assert.Equal(MacroActionType.ToggleWheel, values[^1]);
-            Assert.Equal(MacroActionType.RepeatVcAxisWhileHeld, values[^2]);
-            Assert.Equal(MacroActionType.ToggleVcAxis, values[^3]);
-            Assert.Equal(MacroActionType.ToggleMouseButton, values[^4]);
-            Assert.Equal(MacroActionType.CycleTapList, values[^5]);
-            Assert.Equal(MacroActionType.MouseNudge, values[^6]);
-            Assert.Equal(MacroActionType.MouseWheelTap, values[^7]);
-            Assert.Equal(MacroActionType.AxisHold, values[^8]);
+            Assert.Equal(MacroActionType.ComboBreak, values[^1]);
+            Assert.Equal(MacroActionType.AxisAdd, values[^2]);
+            Assert.Equal(MacroActionType.ToggleWheel, values[^3]);
+            Assert.Equal(MacroActionType.RepeatVcAxisWhileHeld, values[^4]);
+            Assert.Equal(MacroActionType.ToggleVcAxis, values[^5]);
+            Assert.Equal(MacroActionType.ToggleMouseButton, values[^6]);
+            Assert.Equal(MacroActionType.CycleTapList, values[^7]);
+            Assert.Equal(MacroActionType.MouseNudge, values[^8]);
+            Assert.Equal(MacroActionType.MouseWheelTap, values[^9]);
+            Assert.Equal(MacroActionType.AxisHold, values[^10]);
 
             Assert.Equal(35, (int)MacroActionType.RepeatVcButtonWhileHeld);
             Assert.Equal(36, (int)MacroActionType.ToggleVcButton);
@@ -101,6 +103,8 @@ namespace PadForge.Tests
             Assert.Equal(44, (int)MacroActionType.ToggleVcAxis);
             Assert.Equal(45, (int)MacroActionType.RepeatVcAxisWhileHeld);
             Assert.Equal(46, (int)MacroActionType.ToggleWheel);
+            Assert.Equal(47, (int)MacroActionType.AxisAdd);
+            Assert.Equal(48, (int)MacroActionType.ComboBreak);
         }
 
         // ── v18 latch family pins ──
@@ -189,12 +193,15 @@ namespace PadForge.Tests
         public void HoldForMs_TriggerMode_AppendedAtEnumTail_WithPinnedOrdinal()
         {
             // MacroData.TriggerMode rides the same numeric clipboard JSON
-            // (wave 1b appended HoldForMs = 5; v17 appended DoublePress = 6).
+            // (wave 1b appended HoldForMs = 5; v17 appended DoublePress = 6;
+            // #238 appended TriplePress = 7).
             var values = Enum.GetValues<MacroTriggerMode>();
-            Assert.Equal(MacroTriggerMode.DoublePress, values[^1]);
-            Assert.Equal(MacroTriggerMode.HoldForMs, values[^2]);
+            Assert.Equal(MacroTriggerMode.TriplePress, values[^1]);
+            Assert.Equal(MacroTriggerMode.DoublePress, values[^2]);
+            Assert.Equal(MacroTriggerMode.HoldForMs, values[^3]);
             Assert.Equal(5, (int)MacroTriggerMode.HoldForMs);
             Assert.Equal(6, (int)MacroTriggerMode.DoublePress);
+            Assert.Equal(7, (int)MacroTriggerMode.TriplePress);
         }
 
         // ── DTO round-trips (settings XML + clipboard share these) ──

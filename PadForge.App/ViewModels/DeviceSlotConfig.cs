@@ -229,6 +229,30 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _audioMirrorSourceId, value ?? string.Empty);
         }
 
+        private bool _touchpadSyntheticPressure;
+        /// <summary>Discussion #239. Synthesize DS2/DS3-style pressure
+        /// for pads whose hardware reports touch as pressure 1.0
+        /// (DualShock 4, DualSense, Steam Controller 2015): the mapping
+        /// reads see no touch = 0, touch = the configured level, pad
+        /// click = 100%. Per assigned device, off by default. Valve pads
+        /// with true analog pressure need no synthesis and keep raw
+        /// readings while this is off.</summary>
+        public bool TouchpadSyntheticPressure
+        {
+            get => _touchpadSyntheticPressure;
+            set => SetProperty(ref _touchpadSyntheticPressure, value);
+        }
+
+        private int _touchpadSyntheticTouchPercent = 50;
+        /// <summary>The touch stop of the #239 synthetic curve, percent
+        /// of full pressure a resting (unclicked) touch reads. Default 50
+        /// per the discussion's example; clamped 0..100.</summary>
+        public int TouchpadSyntheticTouchPercent
+        {
+            get => _touchpadSyntheticTouchPercent;
+            set => SetProperty(ref _touchpadSyntheticTouchPercent, Math.Clamp(value, 0, 100));
+        }
+
         // ────────────────────────────────────────────────
         //  Haptic mirror engage gate (#185)
         // ────────────────────────────────────────────────
@@ -1728,6 +1752,9 @@ namespace PadForge.ViewModels
         [XmlAttribute] public bool LightbarEnabled { get; set; }
         [XmlAttribute] public bool AudioPassthroughEnabled { get; set; }
         [XmlAttribute] public string AudioMirrorSourceId { get; set; } = string.Empty;
+        // Synthetic touchpad pressure (#239). Defaults match the VM: off / 50.
+        [XmlAttribute] public bool TouchpadSyntheticPressure { get; set; }
+        [XmlAttribute] public int TouchpadSyntheticTouchPercent { get; set; } = 50;
         // Haptic mirror engage gate (#185). Defaults match the VM: Always / 500 ms.
         [XmlAttribute] public string AudioMirrorEngageMode { get; set; } = "Always";
         [XmlAttribute] public string AudioMirrorEngageDeviceGuid { get; set; } = string.Empty;

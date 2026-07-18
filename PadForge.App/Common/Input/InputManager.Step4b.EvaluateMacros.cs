@@ -375,6 +375,13 @@ namespace PadForge.Common.Input
             // so every in-flight press leg starts fresh on the next engine
             // start (and the set can't root dead actions across restarts).
             _pressDownSent.Clear();
+            // #237: yield latches re-arm wholesale for the same reason
+            // (and the set can't root dead actions across restarts).
+            // Combo park positions are per-MacroItem volatiles; they die
+            // with the VM state on profile switch / restart, and a parked
+            // position surviving an idle wake is deliberate (the user's
+            // combo does not lose its place because the engine idled).
+            _axisYielded.Clear();
         }
 
         /// <summary>
@@ -393,7 +400,17 @@ namespace PadForge.Common.Input
             {
                 var macro = macros[m];
                 if (macro == null || !macro.IsEnabled)
+                {
+                    // #237: disabling a macro resets its combo park and
+                    // yield latches, so a re-enable starts from the top.
+                    if (macro != null && (macro.ComboResumeIndex != 0 || macro.AwaitReleaseAfterBreak))
+                    {
+                        macro.ComboResumeIndex = 0;
+                        macro.AwaitReleaseAfterBreak = false;
+                        ClearAxisYields(macro);
+                    }
                     continue;
+                }
 
                 // Skip macros with no trigger configured (unless Always /
                 // CustomExpression mode. Custom always has a formula that
@@ -535,10 +552,20 @@ namespace PadForge.Common.Input
                     case MacroTriggerMode.DoublePress:
                         shouldStart = EvaluateDoublePressTrigger(macro, triggerActive, wasTriggerActive);
                         break;
+                    case MacroTriggerMode.TriplePress:
+                        shouldStart = EvaluateTriplePressTrigger(macro, triggerActive, wasTriggerActive);
+                        break;
                 }
 
+                // #237 combo break: a parked sequence must not auto-resume
+                // while a hold-shaped trigger is still down; the break
+                // demands a fresh press. The guard opens on the first
+                // inactive tick.
+                if (macro.AwaitReleaseAfterBreak && !triggerActive)
+                    macro.AwaitReleaseAfterBreak = false;
+
                 // Start new execution if triggered and not already executing.
-                if (shouldStart && !macro.IsExecuting)
+                if (shouldStart && !macro.IsExecuting && !macro.AwaitReleaseAfterBreak)
                 {
                     // A starting hold-pair leg cancels its executing twin
                     // (audit #2 M6): a re-press during the twin's pending
@@ -552,7 +579,8 @@ namespace PadForge.Common.Input
                     if (macro.PairId != 0)
                         CancelExecutingPairTwin(macros, macro);
                     macro.IsExecuting = true;
-                    macro.CurrentActionIndex = 0;
+                    // #237: resume from a combo-break park (0 = the top).
+                    macro.CurrentActionIndex = macro.ComboResumeIndex;
                     macro.ActionStartTime = DateTime.UtcNow;
                     macro.RemainingRepeats = macro.RepeatMode == MacroRepeatMode.FixedCount
                         ? macro.RepeatCount : 1;
@@ -576,6 +604,10 @@ namespace PadForge.Common.Input
                 {
                     macro.IsExecuting = false;
                     macro.CurrentActionIndex = 0;
+                    // #237: an UntilRelease stop re-arms the combo from the
+                    // top and releases any yield latches.
+                    macro.ComboResumeIndex = 0;
+                    ClearAxisYields(macro);
                     macro.ReleaseLingerStartUtc = DateTime.MinValue;
                     // Looping macro sounds are trigger-bound on this path:
                     // release stops them (one-shots play out).
@@ -659,6 +691,32 @@ namespace PadForge.Common.Input
             return false;
         }
 
+        /// <summary>Shared TriplePress trigger evaluation (#238) for both
+        /// slot evaluators. Counts rising edges whose successive presses
+        /// each land within <see cref="MacroItem.TriggerDoublePressMs"/> of
+        /// the previous one; the THIRD chained edge fires and consumes the
+        /// chain (six fast taps fire twice, never four times). A slower
+        /// press re-arms as a fresh first press. Shares the DoublePress
+        /// timestamp field: a macro has exactly one of the two modes, and
+        /// the streak counter is what distinguishes the chains.</summary>
+        private static bool EvaluateTriplePressTrigger(MacroItem macro, bool triggerActive, bool wasTriggerActive)
+        {
+            if (!triggerActive || wasTriggerActive) return false;
+            var now = DateTime.UtcNow;
+            var last = macro.TriggerLastPressUtc;
+            bool chained = last != DateTime.MinValue
+                && (now - last).TotalMilliseconds <= macro.TriggerDoublePressMs;
+            macro.TriggerPressStreak = chained ? macro.TriggerPressStreak + 1 : 1;
+            macro.TriggerLastPressUtc = now;
+            if (macro.TriggerPressStreak >= 3)
+            {
+                macro.TriggerPressStreak = 0;
+                macro.TriggerLastPressUtc = DateTime.MinValue;
+                return true;
+            }
+            return false;
+        }
+
         /// <summary>Shared HoldForMs trigger evaluation (issue #9 wave 1b,
         /// B-8b) for both slot evaluators. Arms the per-macro hold timer on
         /// the rising edge, fires exactly once when the continuous hold
@@ -712,9 +770,13 @@ namespace PadForge.Common.Input
                 else if (a.Type == MacroActionType.ToggleVcAxis)
                 {
                     // v18: a latched axis target re-writes its assert each
-                    // frame, the AxisHold shape.
-                    if (a.VcAxisToggleLatched && LatchPhaseOn(a))
+                    // frame, the AxisHold shape. #237 yield gate applies:
+                    // the latch stays latched, only the write yields, and
+                    // unlatching re-arms the yield for the next latch.
+                    if (a.VcAxisToggleLatched && LatchPhaseOn(a) && !AxisWriteYields(in gp, a))
                         ApplyAxisHoldAction(ref gp, a);
+                    if (!a.VcAxisToggleLatched)
+                        _axisYielded.Remove(a);
                 }
                 else if (a.Type == MacroActionType.ToggleMouseButton)
                 {
@@ -1455,6 +1517,10 @@ namespace PadForge.Common.Input
             {
                 macro.IsExecuting = false;
                 macro.CurrentActionIndex = 0;
+                // #237: normal completion re-arms the combo from the top
+                // and releases any yield latches.
+                macro.ComboResumeIndex = 0;
+                ClearAxisYields(macro);
             }
         }
 
@@ -1522,8 +1588,9 @@ namespace PadForge.Common.Input
                     // Axis turbo (v18): the same square wave asserting an
                     // axis-natured target (trigger pull, stick direction)
                     // on the ON half. gp is rebuilt per frame, so the OFF
-                    // half reads released.
-                    if (TickRepeatVcButtonPhase(action))
+                    // half reads released. #237 yield gate applies like
+                    // the plain hold.
+                    if (TickRepeatVcButtonPhase(action) && !AxisWriteYields(in gp, action))
                         ApplyAxisHoldAction(ref gp, action);
                     break;
             }
@@ -1641,10 +1708,35 @@ namespace PadForge.Common.Input
                     // frame while the action is current, the ButtonPress
                     // shape. gp is rebuilt per frame, so once the duration
                     // elapses (or an UntilRelease macro stops) the axis
-                    // reads released again like a lifted button.
-                    ApplyAxisHoldAction(ref gp, action);
+                    // reads released again like a lifted button. The #237
+                    // yield gate runs BEFORE the write so the physical
+                    // pipeline's value survives when the user moves.
+                    if (!AxisWriteYields(in gp, action))
+                        ApplyAxisHoldAction(ref gp, action);
                     if (actionElapsed >= action.DurationMs)
                         AdvanceAction(macro);
+                    break;
+
+                case MacroActionType.AxisAdd:
+                    // Relative deflection (#237): summed with the mapped
+                    // value every frame while current, the AxisHold
+                    // duration shape. No yield gate: relative IS the
+                    // compose-with-physical mode.
+                    ApplyAxisAddAction(ref gp, action);
+                    if (actionElapsed >= action.DurationMs)
+                        AdvanceAction(macro);
+                    break;
+
+                case MacroActionType.ComboBreak:
+                    // #237: park the sequence after this fire; the next
+                    // trigger press resumes from the following action.
+                    // Hold-shaped triggers must release first (the start
+                    // gate honors AwaitReleaseAfterBreak).
+                    macro.ComboResumeIndex = macro.CurrentActionIndex + 1;
+                    macro.AwaitReleaseAfterBreak = true;
+                    macro.IsExecuting = false;
+                    macro.CurrentActionIndex = 0;
+                    ClearAxisYields(macro);
                     break;
 
                 case MacroActionType.MouseWheelTap:
@@ -1994,6 +2086,10 @@ namespace PadForge.Common.Input
                 if (twin.PairId != self.PairId || !twin.IsExecuting) continue;
                 twin.IsExecuting = false;
                 twin.CurrentActionIndex = 0;
+                // #237: a cancelled twin's combo state dies with it.
+                twin.ComboResumeIndex = 0;
+                twin.AwaitReleaseAfterBreak = false;
+                ClearAxisYields(twin);
             }
         }
 
@@ -2620,6 +2716,10 @@ namespace PadForge.Common.Input
         /// </summary>
         private static void AdvanceAction(MacroItem macro)
         {
+            // #237: leaving an action re-arms its yield latch so the next
+            // activation starts un-yielded.
+            if (macro.CurrentActionIndex >= 0 && macro.CurrentActionIndex < macro.Actions.Count)
+                _axisYielded.Remove(macro.Actions[macro.CurrentActionIndex]);
             macro.CurrentActionIndex++;
             macro.ActionStartTime = DateTime.UtcNow;
         }
@@ -2683,6 +2783,98 @@ namespace PadForge.Common.Input
             if (value <= 0) return 0;
             int scaled = value * 2 + 1;
             return (ushort)Math.Min(scaled, 65535);
+        }
+
+        // ── #237 absolute-deflection yield (reWASD "Absolute deflection") ──
+        //
+        // Actions whose write is currently suppressed because the physical
+        // input moved their target past the yield threshold. LATCHED for
+        // the remainder of the activation ("the combo will go back to
+        // zero, and now your stick will have a higher priority"), cleared
+        // when the action advances, the macro stops, or the engine stops.
+        private static readonly HashSet<MacroAction> _axisYielded = new();
+
+        /// <summary>~12.5% stick deflection: above any sane deadzone's
+        /// noise floor, low enough that a deliberate push always yields.</summary>
+        private const int YieldStickThreshold = 4096;
+
+        /// <summary>~12.5% trigger pull on the 0..65535 output scale.</summary>
+        private const int YieldTriggerThreshold = 8192;
+
+        /// <summary>True when this frame's macro write must be suppressed:
+        /// the action opts in via <see cref="MacroAction.AxisYieldToPhysical"/>
+        /// and the target's ALREADY-MAPPED value (the physical pipeline's
+        /// result, present in <paramref name="gp"/> because Step 4b runs
+        /// after the mapping steps) exceeds the yield threshold, or did at
+        /// any earlier frame of this activation (latched).</summary>
+        private static bool AxisWriteYields(in Gamepad gp, MacroAction action)
+        {
+            if (!action.AxisYieldToPhysical) return false;
+            if (_axisYielded.Contains(action)) return true;
+            bool moved = action.AxisTarget switch
+            {
+                MacroAxisTarget.LeftStickX => Math.Abs((int)gp.ThumbLX) > YieldStickThreshold,
+                MacroAxisTarget.LeftStickY => Math.Abs((int)gp.ThumbLY) > YieldStickThreshold,
+                MacroAxisTarget.RightStickX => Math.Abs((int)gp.ThumbRX) > YieldStickThreshold,
+                MacroAxisTarget.RightStickY => Math.Abs((int)gp.ThumbRY) > YieldStickThreshold,
+                MacroAxisTarget.LeftTrigger => gp.LeftTrigger > YieldTriggerThreshold,
+                MacroAxisTarget.RightTrigger => gp.RightTrigger > YieldTriggerThreshold,
+                _ => false,
+            };
+            if (moved) _axisYielded.Add(action);
+            return moved;
+        }
+
+        /// <summary>Extended twin of <see cref="AxisWriteYields"/>: the
+        /// word-array frame is signed short on every index, so one stick
+        /// threshold applies to all six canonical axes.</summary>
+        private static bool AxisWriteYieldsRaw(in ExtendedRawState raw, MacroAction action, int axisIndex)
+        {
+            if (!action.AxisYieldToPhysical) return false;
+            if (_axisYielded.Contains(action)) return true;
+            if (raw.Axes == null || axisIndex < 0 || axisIndex >= raw.Axes.Length) return false;
+            bool moved = Math.Abs((int)raw.Axes[axisIndex]) > YieldStickThreshold;
+            if (moved) _axisYielded.Add(action);
+            return moved;
+        }
+
+        /// <summary>Re-arms every yield latch of the macro's actions (macro
+        /// stopped, completed, or was cancelled).</summary>
+        private static void ClearAxisYields(MacroItem macro)
+        {
+            if (_axisYielded.Count == 0 || macro?.Actions == null) return;
+            for (int i = 0; i < macro.Actions.Count; i++)
+                _axisYielded.Remove(macro.Actions[i]);
+        }
+
+        /// <summary>Relative axis deflection (#237, reWASD "Relative
+        /// deflection"): ADDS the signed value onto whatever the mapping
+        /// pipeline already wrote, clamped to the target's range. Sticks
+        /// add in the signed short frame; triggers add on the pull scale
+        /// (AxisValue 32767 = +100% pull, negative subtracts).</summary>
+        private static void ApplyAxisAddAction(ref Gamepad gp, MacroAction action)
+        {
+            switch (action.AxisTarget)
+            {
+                case MacroAxisTarget.LeftStickX:
+                    gp.ThumbLX = (short)Math.Clamp(gp.ThumbLX + action.AxisValue, short.MinValue, short.MaxValue);
+                    break;
+                case MacroAxisTarget.LeftStickY:
+                    gp.ThumbLY = (short)Math.Clamp(gp.ThumbLY + action.AxisValue, short.MinValue, short.MaxValue);
+                    break;
+                case MacroAxisTarget.RightStickX:
+                    gp.ThumbRX = (short)Math.Clamp(gp.ThumbRX + action.AxisValue, short.MinValue, short.MaxValue);
+                    break;
+                case MacroAxisTarget.RightStickY:
+                    gp.ThumbRY = (short)Math.Clamp(gp.ThumbRY + action.AxisValue, short.MinValue, short.MaxValue);
+                    break;
+                case MacroAxisTarget.LeftTrigger:
+                    gp.LeftTrigger = (ushort)Math.Clamp(gp.LeftTrigger + action.AxisValue * 2, 0, 65535);
+                    break;
+                case MacroAxisTarget.RightTrigger:
+                    gp.RightTrigger = (ushort)Math.Clamp(gp.RightTrigger + action.AxisValue * 2, 0, 65535);
+                    break;
+            }
         }
 
         /// <summary>One discrete mouse-wheel detent (v15): AxisValue is the
@@ -2834,7 +3026,17 @@ namespace PadForge.Common.Input
             {
                 var macro = macros[m];
                 if (macro == null || !macro.IsEnabled)
+                {
+                    // #237: disabling a macro resets its combo park and
+                    // yield latches, so a re-enable starts from the top.
+                    if (macro != null && (macro.ComboResumeIndex != 0 || macro.AwaitReleaseAfterBreak))
+                    {
+                        macro.ComboResumeIndex = 0;
+                        macro.AwaitReleaseAfterBreak = false;
+                        ClearAxisYields(macro);
+                    }
                     continue;
+                }
 
                 // Skip macros with no trigger configured (unless Always /
                 // CustomExpression mode).
@@ -2921,16 +3123,24 @@ namespace PadForge.Common.Input
                     case MacroTriggerMode.DoublePress:
                         shouldStart = EvaluateDoublePressTrigger(macro, triggerActive, wasTriggerActive);
                         break;
+                    case MacroTriggerMode.TriplePress:
+                        shouldStart = EvaluateTriplePressTrigger(macro, triggerActive, wasTriggerActive);
+                        break;
                 }
 
-                if (shouldStart && !macro.IsExecuting)
+                // #237 combo break guard, the Gamepad-path twin.
+                if (macro.AwaitReleaseAfterBreak && !triggerActive)
+                    macro.AwaitReleaseAfterBreak = false;
+
+                if (shouldStart && !macro.IsExecuting && !macro.AwaitReleaseAfterBreak)
                 {
                     // Hold-pair twin cancel (audit #2 M6), mirroring the
                     // Gamepad-path start branch.
                     if (macro.PairId != 0)
                         CancelExecutingPairTwin(macros, macro);
                     macro.IsExecuting = true;
-                    macro.CurrentActionIndex = 0;
+                    // #237: resume from a combo-break park (0 = the top).
+                    macro.CurrentActionIndex = macro.ComboResumeIndex;
                     macro.ActionStartTime = DateTime.UtcNow;
                     macro.RemainingRepeats = macro.RepeatMode == MacroRepeatMode.FixedCount
                         ? macro.RepeatCount : 1;
@@ -2949,6 +3159,10 @@ namespace PadForge.Common.Input
                 {
                     macro.IsExecuting = false;
                     macro.CurrentActionIndex = 0;
+                    // #237: an UntilRelease stop re-arms the combo from the
+                    // top and releases any yield latches.
+                    macro.ComboResumeIndex = 0;
+                    ClearAxisYields(macro);
                     macro.ReleaseLingerStartUtc = DateTime.MinValue;
                     // Looping macro sounds are trigger-bound on this path:
                     // release stops them (one-shots play out).
@@ -3006,8 +3220,15 @@ namespace PadForge.Common.Input
                 }
                 else if (a.Type == MacroActionType.ToggleVcAxis)
                 {
+                    // #237 yield gate, the Gamepad-path twin's rationale.
                     if (a.VcAxisToggleLatched && LatchPhaseOn(a) && raw.Axes != null)
-                        ApplyAxisActionRaw(ref raw, a);
+                    {
+                        if (!AxisWriteYieldsRaw(in raw, a,
+                                MacroAxisTargetToRawIndex(a.AxisTarget)))
+                            ApplyAxisActionRaw(ref raw, a);
+                    }
+                    if (!a.VcAxisToggleLatched)
+                        _axisYielded.Remove(a);
                 }
                 else if (a.Type == MacroActionType.ToggleMouseButton)
                 {
@@ -3102,6 +3323,10 @@ namespace PadForge.Common.Input
             {
                 macro.IsExecuting = false;
                 macro.CurrentActionIndex = 0;
+                // #237: normal completion re-arms the combo from the top
+                // and releases any yield latches.
+                macro.ComboResumeIndex = 0;
+                ClearAxisYields(macro);
             }
         }
 
@@ -3169,9 +3394,14 @@ namespace PadForge.Common.Input
                     }
                     break;
                 case MacroActionType.RepeatVcAxisWhileHeld:
-                    // Extended twin of the axis turbo (v18).
+                    // Extended twin of the axis turbo (v18). #237 yield
+                    // gate applies like the plain hold.
                     if (TickRepeatVcButtonPhase(action) && raw.Axes != null)
-                        ApplyAxisActionRaw(ref raw, action);
+                    {
+                        if (!AxisWriteYieldsRaw(in raw, action,
+                                MacroAxisTargetToRawIndex(action.AxisTarget)))
+                            ApplyAxisActionRaw(ref raw, action);
+                    }
                     break;
             }
         }
@@ -3253,11 +3483,35 @@ namespace PadForge.Common.Input
                     // Extended twin of the Gamepad-path timed assert (v15):
                     // straight signed write per frame (the Extended axis
                     // frame is -32768..32767 on every index, so no trigger
-                    // rescale applies here).
+                    // rescale applies here). Same #237 yield gate as the
+                    // Gamepad path, on the raw word frame.
                     if (raw.Axes != null)
-                        ApplyAxisActionRaw(ref raw, action);
+                    {
+                        if (!AxisWriteYieldsRaw(in raw, action,
+                                MacroAxisTargetToRawIndex(action.AxisTarget)))
+                            ApplyAxisActionRaw(ref raw, action);
+                    }
                     if (actionElapsed >= action.DurationMs)
                         AdvanceAction(macro);
+                    break;
+
+                case MacroActionType.AxisAdd:
+                    // Extended twin (#237): signed add in the word frame,
+                    // the AxisHold duration shape.
+                    if (raw.Axes != null)
+                        ApplyAxisAddActionRaw(ref raw, action);
+                    if (actionElapsed >= action.DurationMs)
+                        AdvanceAction(macro);
+                    break;
+
+                case MacroActionType.ComboBreak:
+                    // Extended twin (#237): park + await re-press, exactly
+                    // the Gamepad-path semantics.
+                    macro.ComboResumeIndex = macro.CurrentActionIndex + 1;
+                    macro.AwaitReleaseAfterBreak = true;
+                    macro.IsExecuting = false;
+                    macro.CurrentActionIndex = 0;
+                    ClearAxisYields(macro);
                     break;
 
                 case MacroActionType.MouseWheelTap:
@@ -3525,20 +3779,38 @@ namespace PadForge.Common.Input
         }
 
         /// <summary>Applies an AxisSet action to a ExtendedRawState.</summary>
+        /// <summary>The one canonical MacroAxisTarget → Extended word-array
+        /// index map (LX0 LY1 LT2 RX3 RY4 RT5). Every raw-path axis write
+        /// and the #237 yield gates resolve through this so the map can
+        /// never drift between siblings. -1 = unmapped.</summary>
+        internal static int MacroAxisTargetToRawIndex(MacroAxisTarget target) => target switch
+        {
+            MacroAxisTarget.LeftStickX => 0,
+            MacroAxisTarget.LeftStickY => 1,
+            MacroAxisTarget.RightStickX => 3,
+            MacroAxisTarget.RightStickY => 4,
+            MacroAxisTarget.LeftTrigger => 2,
+            MacroAxisTarget.RightTrigger => 5,
+            _ => -1
+        };
+
         private static void ApplyAxisActionRaw(ref ExtendedRawState raw, MacroAction action)
         {
-            int axisIndex = action.AxisTarget switch
-            {
-                MacroAxisTarget.LeftStickX => 0,
-                MacroAxisTarget.LeftStickY => 1,
-                MacroAxisTarget.RightStickX => 3,
-                MacroAxisTarget.RightStickY => 4,
-                MacroAxisTarget.LeftTrigger => 2,
-                MacroAxisTarget.RightTrigger => 5,
-                _ => -1
-            };
+            int axisIndex = MacroAxisTargetToRawIndex(action.AxisTarget);
             if (axisIndex >= 0 && axisIndex < raw.Axes.Length)
                 raw.Axes[axisIndex] = action.AxisValue;
+        }
+
+        /// <summary>Extended twin of <see cref="ApplyAxisAddAction"/>
+        /// (#237): signed addition in the word-array frame, clamped. The
+        /// Extended axis frame is -32768..32767 on every index, so no
+        /// trigger rescale applies (the AxisHold raw-twin rationale).</summary>
+        private static void ApplyAxisAddActionRaw(ref ExtendedRawState raw, MacroAction action)
+        {
+            int axisIndex = MacroAxisTargetToRawIndex(action.AxisTarget);
+            if (axisIndex >= 0 && axisIndex < raw.Axes.Length)
+                raw.Axes[axisIndex] = (short)Math.Clamp(
+                    raw.Axes[axisIndex] + action.AxisValue, short.MinValue, short.MaxValue);
         }
 
         // ─────────────────────────────────────────────

@@ -45,6 +45,14 @@ namespace PadForge.Common.Input
             public string HostSigClick;
             public int HostSigHalf = int.MinValue;
             public bool IsStick;
+            /// <summary>Button-pair host (translator v25): the hover vector
+            /// is composed from four direction bools (a physical D-pad or
+            /// the face-button diamond) instead of an axis pair. Steam
+            /// hosts radial menus on both surfaces; the four/five buttons
+            /// ARE the selector (an 8-way direction with diagonals on the
+            /// D-pad, 4-way on the diamond).</summary>
+            public bool IsButtonPair;
+            public MappingSource SrcUp, SrcDown, SrcLeft, SrcRight;
             public MappingSource SrcX, SrcY, SrcEngage, SrcClick;
             /// <summary>Last tick timestamp. The fired provider treats a
             /// context nobody ticks (deleted menu, unmapped device) as
@@ -196,7 +204,32 @@ namespace PadForge.Common.Input
                     double dx = 0, dy = 0;
                     bool physical;
                     bool clicked = false;
-                    if (ctx.IsStick)
+                    if (ctx.IsButtonPair)
+                    {
+                        // Button-pair host (v25): the hover vector composes
+                        // from the four direction bools. Diagonal D-pad
+                        // chords land between wedges (Steam's own 8-way
+                        // selection on a dpad-hosted radial); the press
+                        // itself is the default click, so the Click fire
+                        // type commits the pressed cell immediately and
+                        // Touch Release commits on release.
+                        bool up = SourceCoercion.EvaluateForButtonTarget(
+                            newState, ctx.SrcUp, 50, slot, ud.InstanceGuidString);
+                        bool down = SourceCoercion.EvaluateForButtonTarget(
+                            newState, ctx.SrcDown, 50, slot, ud.InstanceGuidString);
+                        bool left = SourceCoercion.EvaluateForButtonTarget(
+                            newState, ctx.SrcLeft, 50, slot, ud.InstanceGuidString);
+                        bool right = SourceCoercion.EvaluateForButtonTarget(
+                            newState, ctx.SrcRight, 50, slot, ud.InstanceGuidString);
+                        dx = (right ? 1 : 0) - (left ? 1 : 0);
+                        dy = (down ? 1 : 0) - (up ? 1 : 0);
+                        physical = up || down || left || right;
+                        clicked = ctx.SrcClick != null
+                            ? SourceCoercion.EvaluateForButtonTarget(
+                                newState, ctx.SrcClick, 50, slot, ud.InstanceGuidString)
+                            : physical;
+                    }
+                    else if (ctx.IsStick)
                     {
                         // Null sources = an unconfigured Custom opener
                         // (or one with no click assigned): axes read
@@ -317,6 +350,7 @@ namespace PadForge.Common.Input
 
             string clickOverride = (def.ClickDescriptor ?? "").Trim();
             string host = (def.HostDescriptor ?? "").Trim();
+            ctx.IsButtonPair = false; // every branch below reasserts its own shape
 
             if (host.Equals("Custom", StringComparison.Ordinal))
             {
@@ -325,6 +359,30 @@ namespace PadForge.Common.Input
                 string cy = (def.CustomYDescriptor ?? "").Trim();
                 ctx.SrcX = cx.Length > 0 ? new MappingSource { Descriptor = cx } : null;
                 ctx.SrcY = cy.Length > 0 ? new MappingSource { Descriptor = cy } : null;
+                ctx.SrcEngage = null;
+                ctx.SrcClick = clickOverride.Length > 0
+                    ? new MappingSource { Descriptor = clickOverride } : null;
+                return;
+            }
+
+            // Button-pair hosts (translator v25): Steam hosts radial menus
+            // on the physical D-pad and the face-button diamond, where the
+            // buttons are the selector. The hover vector composes from the
+            // four direction bools (SDL frame, +Y down: diamond north = Y,
+            // south = A, west = X, east = B); pressing any of them engages
+            // the menu, and the press itself is the default click.
+            if (host.Equals("Gamepad DPad", StringComparison.Ordinal)
+                || host.Equals("Gamepad Diamond", StringComparison.Ordinal))
+            {
+                bool dpad = host[8] == 'D' && host.Length == 12; // "Gamepad DPad"
+                ctx.IsStick = false;
+                ctx.IsButtonPair = true;
+                ctx.SrcUp = new MappingSource { Descriptor = dpad ? "Gamepad DPadUp" : "Gamepad ButtonY" };
+                ctx.SrcDown = new MappingSource { Descriptor = dpad ? "Gamepad DPadDown" : "Gamepad ButtonA" };
+                ctx.SrcLeft = new MappingSource { Descriptor = dpad ? "Gamepad DPadLeft" : "Gamepad ButtonX" };
+                ctx.SrcRight = new MappingSource { Descriptor = dpad ? "Gamepad DPadRight" : "Gamepad ButtonB" };
+                ctx.SrcX = null;
+                ctx.SrcY = null;
                 ctx.SrcEngage = null;
                 ctx.SrcClick = clickOverride.Length > 0
                     ? new MappingSource { Descriptor = clickOverride } : null;

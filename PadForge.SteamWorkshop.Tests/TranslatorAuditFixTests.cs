@@ -189,10 +189,15 @@ namespace PadForge.SteamWorkshop.Tests
             Assert.False(src.Invert);
         }
 
-        // ─── F7: multi-pad center_trackpad has no physical pad ──────────
+        // ─── F7 (re-adjudicated in v25): center_trackpad reads pad 0
+        // whole on EVERY type. The token means "the single central pad"
+        // (25 of 30 wild authors are controller_ps4); no SDL device
+        // registers a third pad, and the non-PS authors are
+        // type-converted leftovers whose sections should drive whichever
+        // pad-bearing device the user maps, not skip. ──────────────────
 
         [Fact]
-        public void CenterTrackpadOnMultiPadConfig_SkipsWholeGroup()
+        public void CenterTrackpadOnMultiPadConfig_ReadsPadZeroWhole()
         {
             string vdf = Head // typeless = multi-pad family
                 + Group(1, "dpad", Inputs(("dpad_north", "key_press E")))
@@ -200,12 +205,11 @@ namespace PadForge.SteamWorkshop.Tests
                 + "}\n";
             var p = Translate(vdf);
 
-            Assert.Empty(p.KbmMappingSet.Rows);
-            Assert.Empty(p.XboxMappingSet.Rows);
-            var entry = Assert.Single(p.Report.Entries);
-            Assert.Equal(TranslationStatus.Skipped, entry.Status);
-            Assert.Equal(TranslationReasons.UnknownPhysicalInput, entry.ReasonKey);
-            Assert.Equal(new[] { "CenterTrackpad", "center_trackpad" }, entry.ReasonArgs);
+            Assert.NotEmpty(p.KbmMappingSet.Rows);
+            var src = p.KbmMappingSet.Rows.SelectMany(r => r.Sources).First();
+            Assert.StartsWith("Touchpad 0 ", src.Descriptor);
+            Assert.DoesNotContain(p.Report.Entries,
+                e => e.ReasonKey == TranslationReasons.UnknownPhysicalInput);
         }
 
         [Fact]

@@ -638,6 +638,50 @@ namespace PadForge.Engine.Common.Mapping
             return st.Values[axis];
         }
 
+        /// <summary>Stick-read deadzone geometry (translator v25, Steam's
+        /// deadzone_shape on the stick-hosted mouse modes). The rescale is
+        /// the scaled-radial remap over [inner, outer]: magnitudes at or
+        /// below the inner radius read 0, the inner..outer band remaps to
+        /// the full 0..1 output, and the tested magnitude is the PAIR
+        /// magnitude for shape 2 (Steam Circle: the companion axis joins
+        /// the test, Axis 0/1 and 3/4 pairs) or this axis's own magnitude
+        /// for shape 1 (Steam Cross / Square, the per-axis check, the
+        /// engine's Axial convention). Inner rides
+        /// ParamStickDeadZoneInner (its own field: DeadZone's 50 default
+        /// is the button coercion's threshold sentinel, not an analog
+        /// radius), outer rides ParamRangeOuter (consumed here, see
+        /// ApplyCurveRangeShaping). An axis without a known companion
+        /// falls back to the axial test.</summary>
+        private static float ApplyStickDeadZoneShape(CustomInputState state, MappingSource src,
+            int idx, float axisValue)
+        {
+            double innerRaw = src.ParamStickDeadZoneInner;
+            float inner = innerRaw > 0.0 && innerRaw < 1.0 ? (float)innerRaw : 0f;
+            double outerRaw = src.ParamRangeOuter;
+            float outer = outerRaw > 0.0 && outerRaw < 1.0 ? (float)outerRaw : 1f;
+            if (inner <= 0f && outer >= 1f) return axisValue; // nothing to shape
+
+            float mag = Math.Abs(axisValue);
+            if (src.ParamStickDeadZoneShape == 2)
+            {
+                int companion = idx switch { 0 => 1, 1 => 0, 3 => 4, 4 => 3, _ => -1 };
+                if (companion >= 0 && companion < CustomInputState.MaxAxis)
+                {
+                    float other = Math.Max(-1f, Math.Min(1f,
+                        (state.Axis[companion] - 32768) / 32767f));
+                    mag = (float)Math.Sqrt(axisValue * axisValue + other * other);
+                    if (mag > 1f) mag = 1f;
+                }
+            }
+            if (mag <= inner) return 0f;
+            float band = Math.Max(outer - inner, 0.0001f);
+            float shaped = Math.Min(1f, (mag - inner) / band);
+            // Rescale the axis by shaped/mag so the vector direction is
+            // preserved (the scaled-radial remap); the axial case reduces
+            // to the plain 1-D remap since mag IS |axisValue| there.
+            return axisValue * (shaped / mag);
+        }
+
         private static float ApplyOutputCurve(float normalized, string curveName)
         {
             // normalized is in [-1..+1] before the caller's clamp.
@@ -669,7 +713,11 @@ namespace PadForge.Engine.Common.Mapping
             double outer = src.ParamRangeOuter;
             double exponent = src.ParamCurveExponent;
             double anti = src.ParamAntiDeadzone;
-            bool hasOuter = outer > 0.0 && outer < 1.0;
+            // v25: a stamped stick deadzone geometry consumes the outer
+            // range inside ApplyStickDeadZoneShape (radially over the
+            // pair, or per axis beside the inner radius), so the scalar
+            // tail must not rescale it a second time.
+            bool hasOuter = outer > 0.0 && outer < 1.0 && src.ParamStickDeadZoneShape == 0;
             bool hasCurve = exponent > 0.0 && exponent != 1.0;
             bool hasAnti = anti > 0.0 && anti < 1.0;
             if (!hasOuter && !hasCurve && !hasAnti) return v;
@@ -1620,6 +1668,16 @@ namespace PadForge.Engine.Common.Mapping
         /// Invert selects the INNER ring ("the command will be sent when
         /// inside the radius instead of outside", Steam's shipped
         /// EdgeBindingInvert string) instead of the default outer ring.</summary>
+        /// <summary>Constant-true source (translator v25): Steam's
+        /// always_on_action switch member, "Always On Command"
+        /// (ControllerBinding_SwitchesActionSetAlwaysOn in the shipped
+        /// strings; Valve's own controller_neptune_webbrowser template
+        /// authors one). The read is unconditionally on; scoping to the
+        /// hosting action set rides the row's LayerMask (or the macro
+        /// layer gate), so an always-on binding asserts exactly while its
+        /// set is active.</summary>
+        public const string AlwaysOnDescriptor = "Always On";
+
         public const string LeftStickRingDescriptor = "Gamepad LeftStickRing";
         public const string RightStickRingDescriptor = "Gamepad RightStickRing";
 
@@ -2215,6 +2273,13 @@ namespace PadForge.Engine.Common.Mapping
             string s = CanonicalDescriptor(src.Descriptor);
             if (string.IsNullOrEmpty(s)) return false;
 
+            // Constant-true source (translator v25, Steam's always_on_action
+            // member): the binding fires the whole time its hosting layer
+            // is active. Layer scoping is the ROW's LayerMask (rows on an
+            // inactive layer are never evaluated) or the macro's layer
+            // gate; the read itself is unconditionally on.
+            if (s.Equals(AlwaysOnDescriptor, StringComparison.Ordinal)) return true;
+
             // Touchpad-gesture descriptors route through the per-tick
             // gesture engine's fire set; continuous-axis variants
             // (PinchAxis / RotateAxis) read as "fired" when their
@@ -2465,6 +2530,10 @@ namespace PadForge.Engine.Common.Mapping
             string s = CanonicalDescriptor(src.Descriptor);
             if (string.IsNullOrEmpty(s)) return 0f;
 
+            // Constant-true source (translator v25): full assert, the
+            // ReadAsBool contract on the analog lanes.
+            if (s.Equals(AlwaysOnDescriptor, StringComparison.Ordinal)) return 1f;
+
             // Touchpad-gesture sources: continuous axes (PinchAxis,
             // RotateAxis) read their bipolar value from the gesture
             // engine's axis provider; one-shot gestures map to ±1
@@ -2653,7 +2722,16 @@ namespace PadForge.Engine.Common.Mapping
                             axisValue = delta > 0 ? Math.Min(1f, delta / 32767f) : 0f;
                     }
                     else
+                    {
                         axisValue = Math.Max(-1f, Math.Min(1f, (av - 32768) / 32767f));
+                        // Stick deadzone geometry (v25): the stamped
+                        // inner/outer rescale, radial over the pair or
+                        // axial per axis. Full-axis reads only; the
+                        // half-axis wedges above keep their own DeadZone
+                        // threshold contract.
+                        if (src.ParamStickDeadZoneShape != 0)
+                            axisValue = ApplyStickDeadZoneShape(state, src, idx, axisValue);
+                    }
                     break;
 
                 case SourceType.Slider:
@@ -2691,6 +2769,10 @@ namespace PadForge.Engine.Common.Mapping
         {
             string s = CanonicalDescriptor(src.Descriptor);
             if (string.IsNullOrEmpty(s)) return 0f;
+
+            // Constant-true source (translator v25): full pull, the
+            // ReadAsBool contract on the trigger lane.
+            if (s.Equals(AlwaysOnDescriptor, StringComparison.Ordinal)) return 1f;
 
             // Touchpad-gesture sources: continuous-axis variants use
             // the absolute value of their bipolar reading (a trigger

@@ -221,6 +221,11 @@ namespace PadForge.SteamWorkshop.Translation
             /// engaged this long past the release; a re-press cancels the
             /// pending disengage. 0 = instant disengage.</summary>
             public int ReleaseDelayMs;
+            /// <summary>Double-press gate, ms (ShiftActivator.DoublePressMs,
+            /// v25): a Double_Press-hosted layer carrier's double_tap_time.
+            /// The activator engages only on the second press of a
+            /// press-release-press pair inside the window. 0 = plain read.</summary>
+            public int DoublePressMs;
             // Cycle mode (same-input preset jumps merged by
             // MergeSameInputJumpsIntoCycles).
             public string CycleLayers = "";
@@ -321,18 +326,12 @@ namespace PadForge.SteamWorkshop.Translation
                 }
             }
 
-            // Multi-pad families have no center pad: SDL registers two
-            // touchpads on the gordon/neptune/triton family (one on
-            // DS4/DualSense), so the "Touchpad 2" index this slot would
-            // resolve to reads on no device. Single-pad types route
-            // center_trackpad onto pad 0 (#9 B-1); everything else skips
-            // the group whole, rows and menu hosts alike.
-            if (slot == SteamSlot.CenterTrackpad && !run.SinglePadTrackpads)
-            {
-                run.Report.Add(TranslationStatus.Skipped, TranslationReasons.UnknownPhysicalInput,
-                    path, args: new[] { slot.ToString(), slotToken });
-                return;
-            }
+            // center_trackpad reads pad 0 whole on every type (v25): the
+            // token means the single central pad (25 of 30 wild authors
+            // are controller_ps4), no SDL device registers a third pad,
+            // and non-PS authors are type-converted leftovers whose
+            // sections should drive whichever pad-bearing device the user
+            // maps. The old multi-pad skip is retired with the routing.
 
             // reference groups inline another group's mode/inputs (cycle-safe).
             var visited = new HashSet<int> { group.Id };
@@ -919,6 +918,19 @@ namespace PadForge.SteamWorkshop.Translation
                 shapeConsumed = true;
             }
 
+            // Stick-hosted mouse modes consume deadzone_shape into the
+            // per-source stick geometry stamp (v25): EmitMouseAxes writes
+            // ParamStickDeadZoneShape onto the emitted pair, and the
+            // engine's bipolar Axis read applies the inner/outer rescale
+            // radially (Steam Circle) or per axis (Cross / Square).
+            if (!shapeConsumed
+                && settings.ContainsKey("deadzone_shape")
+                && PhysicalSlotResolver.IsStick(slot)
+                && (mode == "joystick_mouse" || mode == "joystick_camera"))
+            {
+                shapeConsumed = true;
+            }
+
             var curves = CurveSettingKeys
                 .Where(k => settings.ContainsKey(k)
                     && !(shapeConsumed && k == "deadzone_shape"))
@@ -992,6 +1004,19 @@ namespace PadForge.SteamWorkshop.Translation
                 if (key == "gyro_button_invert" && val == "1")
                 {
                     run.Profile.GyroEngageInvert = true;
+                    continue;
+                }
+                // gyro_button_invert is Steam's three-state "Gyro Button
+                // Behavior" enum (shipped ControllerBinding_GyroButtonInvert*
+                // strings): On (0, engage while held), Off (1, "gyro will
+                // turn off when the button is pressed", the invert above),
+                // Toggle (2, "toggle its state each time the button is
+                // pressed"). 2 lands on the slot engage machinery's own
+                // Toggle mode (UpdateGyroEngageStates flips a sticky bit
+                // per rising edge), stamped beside the engage descriptor.
+                if (key == "gyro_button_invert" && val == "2")
+                {
+                    run.Profile.GyroEngageToggle = true;
                     continue;
                 }
                 if (key == "gyro_ratchet_button_mask"
@@ -1099,6 +1124,15 @@ namespace PadForge.SteamWorkshop.Translation
             29 => "Button 11",
             30 => "Gamepad LeftStickRing",
             31 => "Gamepad RightStickRing",
+            // ButtonMacro0..4 (v25): the v24 button_macro grounding
+            // (Steam macro N = SDL misc N+2, read at raw Buttons[17..21])
+            // serves the mask lanes too. Macro5..7 (bits 37-39) exceed
+            // SDL's misc space and stay null.
+            32 => "Button 17",
+            33 => "Button 18",
+            34 => "Button 19",
+            35 => "Button 20",
+            36 => "Button 21",
             41 => "Gamepad Paddle4",  // button_back_left_upper
             42 => "Gamepad Paddle3",  // button_back_right_upper
             _ => null,
@@ -1440,7 +1474,25 @@ namespace PadForge.SteamWorkshop.Translation
                 if (clickGate != null && source.GateDescriptor == null)
                     source = WithGate(source, clickGate);
 
+                // Always-On members (v25): the constant-true read fires
+                // forever, so macro-shaped bindings (a set_led color per
+                // set, a mouse_delta nudge) must carry the hosting layer
+                // as their gate or a non-Base set's command would fire at
+                // profile apply instead of at set entry. Rows scope
+                // through their own LayerMask; the macros minted in this
+                // member's window get the stamp here.
+                bool alwaysOn = string.Equals(source.Descriptor,
+                    PadForge.Engine.Common.Mapping.SourceCoercion.AlwaysOnDescriptor,
+                    StringComparison.Ordinal);
+                int alwaysOnMacrosBefore = alwaysOn ? run.Profile.Macros.Count : 0;
+
                 TranslateInput(run, preset, input, source, clickGate, layer, inputPath);
+
+                if (alwaysOn && layer != "Base")
+                {
+                    for (int m = alwaysOnMacrosBefore; m < run.Profile.Macros.Count; m++)
+                        run.Profile.Macros[m].LayerMask = layer;
+                }
             }
         }
 
@@ -1997,9 +2049,17 @@ namespace PadForge.SteamWorkshop.Translation
             SteamSlot slot, string layer, string path, Dictionary<string, string> settings,
             bool radial)
         {
-            // Host surface: a stick (deflection hovers) or a trackpad
-            // (touch position hovers). Nothing else has a direction /
-            // position surface to hover with.
+            // Host surface: a stick (deflection hovers), a trackpad (touch
+            // position hovers), or, for RADIAL menus, the physical dpad /
+            // face diamond (v25): Steam renders the menu and the four
+            // direction buttons ARE the selector (wild witness 1095852548
+            // hosts a six-cell key_press ring on the dpad, so diagonal
+            // chords select between-wedge cells). The runtime composes the
+            // hover vector from the four bools ("Gamepad DPad" /
+            // "Gamepad Diamond" button-pair hosts) and the press itself
+            // commits under the Click fire type. Grid menus need an
+            // absolute position and keep the named skip on button hosts,
+            // as does the gyro (no hover surface).
             string host;
             int hostHalf = 0;
             if (PhysicalSlotResolver.IsStick(slot))
@@ -2010,6 +2070,14 @@ namespace PadForge.SteamWorkshop.Translation
             {
                 host = $"Touchpad {PhysicalSlotResolver.TrackpadIndex(slot, run.SinglePadTrackpads)}";
                 hostHalf = (int)PhysicalSlotResolver.HalfFor(slot, run.SinglePadTrackpads);
+            }
+            else if (radial && slot == SteamSlot.Dpad)
+            {
+                host = "Gamepad DPad";
+            }
+            else if (radial && slot == SteamSlot.ButtonDiamond)
+            {
+                host = "Gamepad Diamond";
             }
             else
             {
@@ -2126,9 +2194,14 @@ namespace PadForge.SteamWorkshop.Translation
             // The configurator also offers menu-level Click / Touch
             // commands beside the cells ("ControllerBinding_TouchMenuClick"
             // = "Click"); when bound they translate as ordinary members of
-            // the hosting surface.
-            TranslateMemberGroup(run, preset, group, slot, layer, path, settings,
-                onlyInputs: new[] { "click", "touch" });
+            // the hosting surface. Button-pair hosts (v25) have no click /
+            // touch surface distinct from the selector buttons themselves,
+            // so the tail walk is skipped there (nothing to resolve).
+            if (PhysicalSlotResolver.IsStick(slot) || PhysicalSlotResolver.IsTrackpad(slot))
+            {
+                TranslateMemberGroup(run, preset, group, slot, layer, path, settings,
+                    onlyInputs: new[] { "click", "touch" });
+            }
         }
 
         /// <summary>Overlay label for a menu cell: the author's label when
@@ -2590,8 +2663,11 @@ namespace PadForge.SteamWorkshop.Translation
             var (x, y, family) = pair.Value;
             int dzPct = GroupDeadZonePercent(settings);
             // v19 (T2): the pair-host inner/outer radii do not apply
-            // radially at the analog reads; name the residual.
-            ReportRadialDeadZoneResidual(run, settings, path);
+            // radially at the analog reads; name the residual. Stick
+            // hosts (family 0) consume the radii through the v25
+            // per-source geometry stamp below and drop the note.
+            if (family != 0)
+                ReportRadialDeadZoneResidual(run, settings, path);
             // v11 (widened to every analog host in v18): the group's
             // response-curve cluster rides the emitted pair as per-source
             // params.
@@ -2612,6 +2688,29 @@ namespace PadForge.SteamWorkshop.Translation
             bool invertX = SettingIsOn(settings, "invert_x");
             bool invertY = SettingIsOn(settings, "invert_y");
 
+            // deadzone_shape on a stick-hosted mouse pair (v25): the
+            // per-source geometry stamp. Steam 1 = Circle = the radial
+            // pair test (engine shape 2); 0 = Cross and 2 = Square are
+            // per-axis checks (engine shape 1, the Axial convention the
+            // v18 slot stamp uses for the same fold), and an absent key
+            // reads as the selector's serialized default, Cross. The
+            // stamp rides whenever there is geometry to apply (an inner
+            // radius, or the outer whose application just moves inside
+            // the same transform), so the authored radii genuinely land
+            // on the read and the v19 radial residual retires for stick
+            // mouse hosts. Stick family only: the finger / gyro lanes
+            // have no companion-axis pair read and keep the residual.
+            int stickShape = 0;
+            if (family == 0)
+            {
+                int mouseShapeVal = ParseIntSetting(settings, "deadzone_shape", 0);
+                bool anyGeometry = dzPct > 0
+                    || settings.ContainsKey("deadzone_shape")
+                    || (TryParseDeadZoneRaw(settings, "deadzone_outer_radius", out int mo)
+                        && mo < 32767);
+                if (anyGeometry) stickShape = mouseShapeVal == 1 ? 2 : 1;
+            }
+
             MappingSource Make(string descriptor, bool invert, bool isX, double coeff = 1.0)
             {
                 var src = new MappingSource { Descriptor = descriptor };
@@ -2619,6 +2718,14 @@ namespace PadForge.SteamWorkshop.Translation
                 if (family == 0 || family == 1) src.Sensitivity = scale;
                 else if (family == 2) src.GyroSensitivity = scale;
                 if (dzPct > 0) src.DeadZone = dzPct;
+                if (stickShape != 0)
+                {
+                    src.ParamStickDeadZoneShape = stickShape;
+                    // The geometry's own inner field: DeadZone's 50
+                    // default is the button-threshold sentinel, so the
+                    // analog inner radius must never read it.
+                    if (dzPct > 0) src.ParamStickDeadZoneInner = dzPct / 100.0;
+                }
                 if (invert ^ (coeff < 0)) src.Invert = true;
                 if (curveChannel) curve.StampAxis(src, isX);
                 feel.StampFeel(src, isX);
@@ -2953,14 +3060,13 @@ namespace PadForge.SteamWorkshop.Translation
         /// long_press_time in steamclient.dll's token table); the corpus
         /// authors none, and the default is 442 ms, the value Valve's own
         /// controller_base templates author (basicui.vdf /
-        /// basicui_neptune.vdf). Layer verbs and mode shifts have no
-        /// double-press activator construct (shift activators key on the
-        /// plain read and would misfire on single presses), and no
-        /// Double_Press in the corpus or in Valve's 54 shipped templates
-        /// carries one (census 2026-07-17: key_press / xinput_button /
-        /// game_action / controller_action camera_reset only), so a
-        /// hand-edited one lands on the existing
-        /// ActivatorInputNotSupported safety net.</para></summary>
+        /// basicui_neptune.vdf). Layer verbs, preset jumps, and mode
+        /// shifts lower through their canonical activator walks with the
+        /// v25 double-press gate (ShiftActivator.DoublePressMs) stamped
+        /// on the request, so the activator engages only on the second
+        /// press of a press-release-press pair inside the same window
+        /// (wild census 2026-07-18: 40 Double_Press CHANGE_PRESET sites
+        /// across 20 configs).</para></summary>
         private void TranslateDoublePress(Run run, SteamInputPreset preset,
             SteamInputActivator activator, SteamInputInput input, ResolvedSource source,
             string layer, string actPath)
@@ -3140,33 +3246,33 @@ namespace PadForge.SteamWorkshop.Translation
 
                     case "controller_action":
                     {
+                        // Layer verbs and preset jumps lower through the
+                        // canonical walk with the v25 double-press gate
+                        // stamped on their activators
+                        // (ShiftActivator.DoublePressMs): the request
+                        // engages only on the second press of a
+                        // press-release-press pair inside the window, so
+                        // CHANGE_PRESET / add_layer / hold_layer /
+                        // REMOVE_LAYER carry Steam's Double_Press hosting
+                        // exactly (wild census 2026-07-18: 40
+                        // Double_Press CHANGE_PRESET sites). Macro-shaped
+                        // one-shot verbs ride the DoublePress macro
+                        // trigger (v17); Steam-client-only families keep
+                        // their named skips inside.
                         string verb = FirstToken(binding.Param).ToUpperInvariant();
-                        if (verb is "ADD_LAYER" or "HOLD_LAYER" or "REMOVE_LAYER" or "CHANGE_PRESET")
-                        {
-                            // No double-press shift-activator construct: a
-                            // layer activator keys on the plain read and
-                            // would engage on every single press. Unreached
-                            // in Steam's own output (census above); the
-                            // existing layer-activator safety net names it.
-                            run.Report.Add(TranslationStatus.Partial,
-                                TranslationReasons.ActivatorInputNotSupported, actPath, binding.Raw);
-                            break;
-                        }
-                        // The canonical verb walk with the DoublePress
-                        // trigger on its macro-shaped one-shot verbs
-                        // (camera_reset is the only verb Steam's own
-                        // grammar hosts here). Steam-client-only families
-                        // keep their named skips inside.
                         TranslateControllerAction(run, preset, binding, source, layer, actPath,
-                            onRelease: false, input.Name, triggerModeOverride: "DoublePress");
-                        anyCarry = true;
+                            onRelease: false, input.Name, toggle: toggle,
+                            triggerModeOverride: "DoublePress", doublePressMs: windowMs);
+                        anyCarry |= LongPressEmittingVerbs.Contains(verb);
                         break;
                     }
 
                     case "mode_shift":
-                        // Same missing construct as the layer verbs above.
-                        run.Report.Add(TranslationStatus.Partial,
-                            TranslationReasons.ActivatorInputNotSupported, actPath, binding.Raw);
+                        // Double-press mode shifts ride the same v25 gate
+                        // on the shift activator.
+                        TranslateModeShift(run, preset, binding, source, actPath,
+                            toggle: toggle, doublePressMs: windowMs);
+                        anyCarry = true;
                         break;
 
                     case "game_action_analog": // the analog sibling, same Steam-session surface (v24)
@@ -4861,7 +4967,7 @@ namespace PadForge.SteamWorkshop.Translation
 
         private void TranslateModeShift(Run run, SteamInputPreset preset, SteamInputBinding binding,
             ResolvedSource source, string path, int activatorDelayMs = 0, bool toggle = false,
-            bool oneShotHost = false)
+            bool oneShotHost = false, int doublePressMs = 0)
         {
             // Param: "{slot} {groupId}". The layer holds the groups the
             // preset marks "{slot} active modeshift".
@@ -4904,6 +5010,7 @@ namespace PadForge.SteamWorkshop.Translation
                 Mode = toggle || oneShotHost ? "Toggle" : "Hold",
                 InheritUnmapped = true, // mode shift overlays the slot; everything else keeps working
                 DelayMs = activatorDelayMs,
+                DoublePressMs = doublePressMs,
                 Path = path,
             };
             FillActivatorInput(req, source);
@@ -4919,7 +5026,7 @@ namespace PadForge.SteamWorkshop.Translation
         private void TranslateControllerAction(Run run, SteamInputPreset preset,
             SteamInputBinding binding, ResolvedSource source, string layer, string path,
             bool onRelease, string inputName, int activatorDelayMs = 0, bool toggle = false,
-            bool oneShotHost = false, string triggerModeOverride = null)
+            bool oneShotHost = false, string triggerModeOverride = null, int doublePressMs = 0)
         {
             var tokens = (binding.Param ?? "").Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
             string action = tokens.Length > 0 ? tokens[0] : "";
@@ -4992,6 +5099,7 @@ namespace PadForge.SteamWorkshop.Translation
                                 Mode = "Cycle",
                                 InheritUnmapped = true, // leaving an overlay layer
                                 DelayMs = activatorDelayMs,
+                                DoublePressMs = doublePressMs,
                                 CycleLayers = layer,
                                 CycleIncludeBase = true,
                                 Path = path,
@@ -5043,6 +5151,7 @@ namespace PadForge.SteamWorkshop.Translation
                             ? "Hold" : "Toggle",
                         InheritUnmapped = true, // Steam action layers overlay the set below
                         DelayMs = activatorDelayMs,
+                        DoublePressMs = doublePressMs,
                         Path = path,
                     };
                     FillActivatorInput(layerReq, source);
@@ -5085,7 +5194,8 @@ namespace PadForge.SteamWorkshop.Translation
                     {
                         TranslateSentinelPresetCycle(run,
                             previous: presetIndex == ChangePresetPreviousSentinel,
-                            binding, source, layer, path, onRelease, activatorDelayMs, oneShotHost);
+                            binding, source, layer, path, onRelease, activatorDelayMs, oneShotHost,
+                            doublePressMs);
                         return;
                     }
                     if (!TryResolvePresetIndex(run, presetIndex, out int presetId))
@@ -5115,8 +5225,10 @@ namespace PadForge.SteamWorkshop.Translation
                         InheritUnmapped = false, // action sets replace
                         // A Long_Press CHANGE_PRESET rides the activator's
                         // hold-before-fire debounce (#206 honors DelayMs on
-                        // the Custom / Cycle edge modes too), v10 G10.
+                        // the Custom / Cycle edge modes too), v10 G10. A
+                        // Double_Press one rides the v25 double-press gate.
                         DelayMs = activatorDelayMs,
+                        DoublePressMs = doublePressMs,
                         HostLayer = layer,
                         Path = path,
                     };
@@ -5439,7 +5551,7 @@ namespace PadForge.SteamWorkshop.Translation
         /// next-set press when there is only one set to land on.</summary>
         private static void TranslateSentinelPresetCycle(Run run, bool previous,
             SteamInputBinding binding, ResolvedSource source, string layer, string path,
-            bool onRelease, int activatorDelayMs, bool oneShotHost)
+            bool onRelease, int activatorDelayMs, bool oneShotHost, int doublePressMs = 0)
         {
             if (!IsActivatorCapable(source, allowGyroHalf: oneShotHost))
             {
@@ -5472,8 +5584,10 @@ namespace PadForge.SteamWorkshop.Translation
                 CycleIncludeBase = true,
                 InheritUnmapped = false, // action sets replace
                 // A Long_Press sentinel rides the activator's
-                // hold-before-fire debounce like the jump path (v10 G10).
+                // hold-before-fire debounce like the jump path (v10 G10);
+                // a Double_Press one rides the v25 double-press gate.
                 DelayMs = activatorDelayMs,
+                DoublePressMs = doublePressMs,
                 HostLayer = layer,
                 Path = path,
             };
@@ -5946,11 +6060,19 @@ namespace PadForge.SteamWorkshop.Translation
             {
                 if (!seen.Add($"{req.LayerMask}|{req.Descriptor}|{req.GateDescriptor}|{req.Mode}|{req.JumpToLayer}|{req.CycleLayers}|{(req.AxisHalf ? 1 : 0)}{(req.AxisInvert ? 1 : 0)}")) continue;
 
+                // Layer-gated macros are layer CONTENT too (v25,
+                // always_on_action): a set whose only authored binding is
+                // an always-on one-shot must stay reachable, and its
+                // macros ride the Xbox slot.
+                bool MacroHasLayer(string l) => !string.IsNullOrEmpty(l)
+                    && run.Profile.Macros.Any(m => string.Equals(m.LayerMask, l, StringComparison.Ordinal));
+
                 bool xboxHas, kbmHas;
                 if (req.Mode == "Cycle")
                 {
                     var stops = req.CycleLayers.Split('|', StringSplitOptions.RemoveEmptyEntries);
-                    xboxHas = stops.Any(l => LayerHasRows(run.Profile.XboxMappingSet, l));
+                    xboxHas = stops.Any(l => LayerHasRows(run.Profile.XboxMappingSet, l)
+                        || MacroHasLayer(l));
                     kbmHas = stops.Any(l => LayerHasRows(run.Profile.KbmMappingSet, l));
                     if (stops.Length == 0 && req.CycleIncludeBase)
                     {
@@ -5968,7 +6090,8 @@ namespace PadForge.SteamWorkshop.Translation
                 {
                     // Every non-Cycle mode engages its own LayerMask (the
                     // unmerged-jump lowering already rewrote Custom masks).
-                    xboxHas = LayerHasRows(run.Profile.XboxMappingSet, req.LayerMask);
+                    xboxHas = LayerHasRows(run.Profile.XboxMappingSet, req.LayerMask)
+                        || MacroHasLayer(req.LayerMask);
                     kbmHas = LayerHasRows(run.Profile.KbmMappingSet, req.LayerMask);
                 }
                 if (!xboxHas && !kbmHas)
@@ -5995,6 +6118,7 @@ namespace PadForge.SteamWorkshop.Translation
                     AxisInvert = req.AxisInvert,
                     DelayMs = req.DelayMs,
                     ReleaseDelayMs = req.ReleaseDelayMs,
+                    DoublePressMs = req.DoublePressMs,
                     CycleLayers = req.CycleLayers,
                     CycleIncludeBase = req.CycleIncludeBase,
                 };
@@ -6072,8 +6196,11 @@ namespace PadForge.SteamWorkshop.Translation
                 // left-half click and right-half click share the pad-click
                 // descriptor and differ only in gate (#9 B-1). The v15 half
                 // stamp is too: opposite flick directions share an axis
-                // descriptor and differ only in half.
-                .GroupBy(a => $"{a.Kind}|{a.Descriptor}|{a.GateDescriptor}|{(a.AxisHalf ? 1 : 0)}{(a.AxisInvert ? 1 : 0)}", StringComparer.Ordinal)
+                // descriptor and differ only in half. The v25 double-press
+                // gate likewise: a Double_Press jump and a Full_Press jump
+                // on the same button are two different triggers and must
+                // not fold into one Cycle.
+                .GroupBy(a => $"{a.Kind}|{a.Descriptor}|{a.GateDescriptor}|{(a.AxisHalf ? 1 : 0)}{(a.AxisInvert ? 1 : 0)}|{a.DoublePressMs}", StringComparer.Ordinal)
                 .Where(g => g.Select(a => a.JumpToLayer).Distinct(StringComparer.Ordinal).Count() > 1)
                 .ToList();
 
@@ -6105,6 +6232,7 @@ namespace PadForge.SteamWorkshop.Translation
                     AxisThreshold = first.AxisThreshold,
                     AxisHalf = first.AxisHalf,
                     AxisInvert = first.AxisInvert,
+                    DoublePressMs = first.DoublePressMs,
                     CycleLayers = string.Join("|", stops),
                     CycleIncludeBase = includeBase,
                     Path = first.Path,

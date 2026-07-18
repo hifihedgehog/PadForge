@@ -23,12 +23,18 @@ namespace PadForge.SteamWorkshop.Tests
         /// construction.</summary>
         internal static readonly string[] CorpusMultiset =
         {
-            // Impossibility proof in code: the analog pair read has no
-            // per-source companion-axis channel and the outer radius
-            // applies per axis, so radial geometry cannot lower yet.
-            // Proof at ConfigTranslator.ReportRadialDeadZoneResidual
-            // (v19 T2). Retires when the pair-read channel lands.
-            "Workshop_Tr_DeadZoneRadialResidual=5",
+            // Impossibility proof in code: the VC thumb-pair hosts
+            // (joystick_move / mouse_joystick) still have no per-source
+            // radial channel at their analog reads (the slot-level
+            // DeadZoneShape stamp overlays the VC pair processing, not
+            // the authored radii). Proof at
+            // ConfigTranslator.ReportRadialDeadZoneResidual (v19 T2).
+            // 5 -> 3 in v25: the stick-hosted MOUSE pairs consume their
+            // radii through ParamStickDeadZoneShape now, so their two
+            // residuals retired; the remaining three are pair-output
+            // hosts. Retires fully when the same stamp reaches the
+            // thumb-pair emitters.
+            "Workshop_Tr_DeadZoneRadialResidual=3",
             // Steam-session/client: in-game Steam Input API action
             // blocks are delivered to the game by its own Steam
             // session. No virtual controller can feed them.
@@ -85,8 +91,54 @@ namespace PadForge.SteamWorkshop.Tests
             "Workshop_Tr_ToggleLatchEmitted=1",
         };
 
-        /// <summary>The approved reason keys, derived from
-        /// <see cref="CorpusMultiset"/> by stripping the "=count" tail.
+        /// <summary>Approved reason keys with ZERO occurrences in the
+        /// curated corpus (v25). The corpus multiset above pins the
+        /// curated 30's exact counts; class membership is wider, because
+        /// counts are corpus-specific and a key can be fully adjudicated
+        /// while no curated fixture happens to exercise it. The wild
+        /// sweep compares against the KEY CLASS
+        /// (<see cref="ApprovedKeys"/> = multiset keys plus this list),
+        /// so an approved class never surfaces in the wild digest as if
+        /// it were unadjudicated (the v24 round listed SteamSystemAction
+        /// there for exactly this structural gap). Same admission
+        /// standard as the multiset: each entry carries its class and
+        /// proof.</summary>
+        internal static readonly string[] ZeroCorpusApprovedKeys =
+        {
+            // Config-error: the authored config references a preset index
+            // that resolves to no preset (TryResolvePresetIndex walks the
+            // config's own preset list). Honest reporting of the config's
+            // own dangling reference; nothing exists to lower onto.
+            "Workshop_Tr_MissingPreset",
+            // Config-error: the menu group's inputs block is authored
+            // EMPTY (zero touch_menu_button_N cells with activators).
+            // Wild witness 1574823616 group 25: radial_menu with
+            // inputs {}. The note replaces silence for the config's own
+            // empty content; there are no cells to build.
+            "Workshop_Tr_MenuEmpty",
+            // Config-error: the mode_shift binding names a (slot, group)
+            // pair its OWN hosting preset does not register as an active
+            // modeshift (group_source_bindings is per preset). Wild
+            // witness 3582936576: preset 1 hosts "mode_shift gyro 53"
+            // while only preset 0 registers group 53, an authored
+            // cross-set copy; other sightings reference group ids absent
+            // from the whole config. Honest dangling-reference reporting,
+            // the MissingPreset shape on the mode-shift lane.
+            "Workshop_Tr_MissingModeShiftGroup",
+            // Steam-session/client: controller_action verbs that drive
+            // the Steam client itself or a Steam-side subsystem
+            // (toggle_magnifier, steammusic_*, gr_* game recording,
+            // ts_* touchscreen, bigpicture_open, host_poweroff,
+            // dots_per_360_calibration_spin, turn_to_face_direction; the
+            // SteamClientActions set and its prefix families, harvested
+            // from steamclient.dll's own token table in v13). Only the
+            // game's own Steam session can deliver these; no virtual
+            // controller can.
+            "Workshop_Tr_SteamSystemAction",
+        };
+
+        /// <summary>The approved reason-key CLASS: the multiset keys (the
+        /// "=count" tail stripped) plus the zero-corpus approved keys.
         /// The wild-corpus sweep reports every line outside this set.</summary>
         internal static IReadOnlySet<string> ApprovedKeys { get; } = BuildKeys();
 
@@ -98,6 +150,8 @@ namespace PadForge.SteamWorkshop.Tests
                 int eq = entry.LastIndexOf('=');
                 keys.Add(eq < 0 ? entry : entry.Substring(0, eq));
             }
+            foreach (var key in ZeroCorpusApprovedKeys)
+                keys.Add(key);
             return keys;
         }
     }

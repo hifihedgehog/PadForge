@@ -90,6 +90,9 @@ namespace PadForge.SteamWorkshop.Tests
                 // goldens stay byte-identical on this seam.
                 if (m.TriggerDoublePressMs > 0)
                     sb.Append(" dbl=").Append(m.TriggerDoublePressMs).Append("ms");
+                // v25 layer gate (always_on_action): non-default only.
+                if (!string.IsNullOrEmpty(m.LayerMask))
+                    sb.Append(" layer=").Append(m.LayerMask);
                 if (m.ConsumeTrigger) sb.Append(" consume");
                 switch (m.Action)
                 {
@@ -295,6 +298,8 @@ namespace PadForge.SteamWorkshop.Tests
                     // v22 release linger: non-default only, pre-v22
                     // goldens byte-identical.
                     if (a.ReleaseDelayMs > 0) sb.Append(" | releaseDelay=").Append(a.ReleaseDelayMs).Append("ms");
+                    // v25 double-press gate: non-default only.
+                    if (a.DoublePressMs > 0) sb.Append(" | dbl=").Append(a.DoublePressMs).Append("ms");
                     if (a.InheritUnmapped) sb.Append(" | inherit");
                     if (!string.IsNullOrEmpty(a.LayerName)) sb.Append(" | name=").Append(a.LayerName);
                     sb.Append('\n');
@@ -352,6 +357,13 @@ namespace PadForge.SteamWorkshop.Tests
                 sb.Append(" moveThresh=").Append(s.ParamMoveThreshold.ToString("0.###", CultureInfo.InvariantCulture));
             if (s.ParamTrackballDecay != 0)
                 sb.Append(" trackball=").Append(s.ParamTrackballDecay.ToString("0.####", CultureInfo.InvariantCulture));
+            // v25: the stick deadzone geometry stamp (deadzone_shape on
+            // stick-hosted mouse pairs). Non-default only, same
+            // byte-stability rule.
+            if (s.ParamStickDeadZoneShape != 0)
+                sb.Append(" dzShape=").Append(s.ParamStickDeadZoneShape == 2 ? "radial" : "axial");
+            if (s.ParamStickDeadZoneInner != 0)
+                sb.Append(" dzInner=").Append(s.ParamStickDeadZoneInner.ToString("0.###", CultureInfo.InvariantCulture));
             if (!string.IsNullOrEmpty(s.DeviceGuid)) sb.Append(" guid=").Append(s.DeviceGuid);
             return sb.ToString();
         }

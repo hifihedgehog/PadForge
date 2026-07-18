@@ -423,8 +423,29 @@ namespace PadForge.SteamWorkshop.Translation
         /// (GetTouchMenuIconsForApp, client-internal /appcontrollericons):
         /// unreachable locally by construction, so those cells degrade
         /// silently to their text labels and MenuIconUnresolved names
-        /// only genuinely malformed references.</summary>
-        public const int CurrentTranslatorVersion = 24;
+        /// only genuinely malformed references.
+        /// v25: wild-corpus round 2. Serializer-vocabulary switch members
+        /// resolve (left/right_stick_click, left/right_trigger_threshold
+        /// = the Soft Pull read, diamond and dpad members in switches
+        /// groups, left/right_trackpad_touch, button_lpad/rpad); the
+        /// mouse modes' doubletap member reads the pad's DoubleTap
+        /// gesture; four_buttons cells fold onto dpad seats and dpad
+        /// members onto diamond seats; center_trackpad reads pad 0 whole
+        /// on every type. always_on_action ("Always On Command") lowers
+        /// onto the engine's constant-true source with rows scoped by
+        /// LayerMask and macro-shaped bindings gated by the new macro
+        /// layer gate. Double_Press layer verbs / preset jumps / mode
+        /// shifts ride ShiftActivator.DoublePressMs. Radial menus host on
+        /// the physical dpad / face diamond (button-pair menu hosts).
+        /// deadzone_shape on stick-hosted mouse pairs lands on the
+        /// per-source geometry stamp (ParamStickDeadZoneShape: Circle =
+        /// radial over the pair, Cross / Square = per-axis), retiring the
+        /// radial residual for stick mouse hosts. gyro_button_invert 2 =
+        /// the enum's Toggle arm onto the slot engage machinery's Toggle
+        /// mode; ratchet/engage bits 27/28 ground on single-pad center
+        /// reads (controller_ps5_edge joins the single-pad set) and bits
+        /// 32-36 on the v24 macro buttons.</summary>
+        public const int CurrentTranslatorVersion = 25;
 
         public int TranslatorVersion { get; set; } = CurrentTranslatorVersion;
 

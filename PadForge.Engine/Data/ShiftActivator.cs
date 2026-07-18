@@ -80,6 +80,18 @@ namespace PadForge.Engine.Data
         /// engaged before the layer change fires. <c>0</c> = instant.</summary>
         [XmlAttribute] public int DelayMs { get; set; } = 0;
 
+        /// <summary>v7 double-press gate (translator v25, Steam's
+        /// Double_Press activator hosting layer verbs / preset jumps /
+        /// mode shifts). When &gt; 0, the activator's input only counts as
+        /// engaged during the SECOND press of a press-release-press pair
+        /// whose presses land within this many milliseconds (Steam's
+        /// double_tap_time; Valve's shipped default 442). Every mode sees
+        /// the gated read: Hold holds from the second press until its
+        /// release, Toggle / Custom / Cycle fire on the second press's
+        /// rising edge, and single presses engage nothing. <c>0</c>
+        /// (default) = plain read, no gate.</summary>
+        [XmlAttribute] public int DoublePressMs { get; set; } = 0;
+
         /// <summary>v6 release linger (translator v22, Steam's activator
         /// <c>delay_end</c> on a layer switch: "wait for this period of
         /// time after the button has been released before deactivating").

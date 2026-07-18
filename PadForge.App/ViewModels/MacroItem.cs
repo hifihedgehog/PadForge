@@ -1684,6 +1684,21 @@ namespace PadForge.ViewModels
         public RelayCommand ResetTriggerDoublePressMsCommand =>
             _resetTriggerDoublePressMsCommand ??= new RelayCommand(() => TriggerDoublePressMs = 442);
 
+        private string _layerMask = "";
+
+        /// <summary>Shift-layer gate (translator v25, Steam's
+        /// always_on_action): when non-empty and not "Base", the macro's
+        /// trigger only counts as active while this layer is the slot's
+        /// engaged layer, so a set-scoped always-on command fires at set
+        /// entry and stops at set exit. Empty (default) = ungated. A
+        /// translator-stamped field like ShiftActivator.AxisHalf: not
+        /// surfaced in the editor, carried through the DTO round-trip.</summary>
+        public string LayerMask
+        {
+            get => _layerMask;
+            set => SetProperty(ref _layerMask, value ?? "");
+        }
+
         /// <summary>Transient timing state for
         /// <see cref="MacroTriggerMode.DoublePress"/>: the UTC time of the
         /// previous rising edge, or <see cref="DateTime.MinValue"/> when no

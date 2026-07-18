@@ -1508,7 +1508,12 @@ namespace PadForge.Common.Input
                     descriptor = wsSet.WorkshopGyroEngageDescriptor;
                     workshopInvert = wsSet.WorkshopGyroEngageInvert;
                     deviceGuid = "";
-                    mode = "Hold";
+                    // gyro_button_invert 2 (translator v25): Steam's "Gyro
+                    // Button Behavior - Toggle" rides the same sticky-bit
+                    // Toggle arm the user-facing GyroAimEngageMode uses.
+                    // The invert flag is exclusive by construction (the
+                    // translator stamps one of the two enum arms).
+                    mode = wsSet.WorkshopGyroEngageToggle ? "Toggle" : "Hold";
                 }
 
                 bool buttonDown = false;

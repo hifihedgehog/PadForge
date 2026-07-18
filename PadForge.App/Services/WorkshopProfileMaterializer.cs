@@ -94,11 +94,13 @@ namespace PadForge.Services
                 {
                     mappingSets[xboxSlot].WorkshopGyroEngageDescriptor = translated.GyroEngageDescriptor;
                     mappingSets[xboxSlot].WorkshopGyroEngageInvert = translated.GyroEngageInvert;
+                    mappingSets[xboxSlot].WorkshopGyroEngageToggle = translated.GyroEngageToggle;
                 }
                 if (kbmSlot >= 0)
                 {
                     mappingSets[kbmSlot].WorkshopGyroEngageDescriptor = translated.GyroEngageDescriptor;
                     mappingSets[kbmSlot].WorkshopGyroEngageInvert = translated.GyroEngageInvert;
+                    mappingSets[kbmSlot].WorkshopGyroEngageToggle = translated.GyroEngageToggle;
                 }
             }
             // The gyro ratchet stamp (v22, Steam gyro_ratchet_button_mask)
@@ -368,6 +370,10 @@ namespace PadForge.Services
                 data.TriggerHoldMs = Math.Clamp(m.TriggerHoldMs, 50, 10000); // MacroItem clamp range
             if (mode == MacroTriggerMode.DoublePress)
                 data.TriggerDoublePressMs = Math.Clamp(m.TriggerDoublePressMs, 50, 5000); // MacroItem clamp range
+            // Layer gate (v25, always_on_action): set-scoped macros only
+            // count their trigger active while the stamped layer is
+            // engaged on the slot.
+            data.LayerMask = m.LayerMask ?? "";
 
             // Continuous actions (autofire pulses) run for as long as the
             // macro executes; only RepeatMode=UntilRelease stops execution
@@ -499,6 +505,8 @@ namespace PadForge.Services
                     data.TriggerHoldMs = Math.Clamp(m.TriggerHoldMs, 50, 10000); // MacroItem clamp range
                 if (mode == MacroTriggerMode.DoublePress)
                     data.TriggerDoublePressMs = Math.Clamp(m.TriggerDoublePressMs, 50, 5000); // MacroItem clamp range
+                // Layer gate (v25): both legs of a hold pair carry it.
+                data.LayerMask = m.LayerMask ?? "";
                 if (untilRelease)
                     data.RepeatMode = MacroRepeatMode.UntilRelease;
                 return ApplyDeviceFreeTrigger(data, m) ? data : null;

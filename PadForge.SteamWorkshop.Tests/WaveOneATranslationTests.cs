@@ -381,17 +381,35 @@ namespace PadForge.SteamWorkshop.Tests
         public void TwoDScroll_ButtonHost_SkipsPerMemberNotPerGroup()
         {
             // A hand-hacked config can host 2dscroll on a surface with no
-            // dpad_* member sources. The member walk (v15) names each
+            // member sources at all. The member walk (v15) names each
             // unresolvable input instead of skipping the group whole.
+            // Host is a trigger slot: since v25 the diamond resolves
+            // dpad_* members onto its seats, so it no longer exercises
+            // the safety net.
             string vdf = Head
                 + Group(1, "2dscroll", Inputs(Inp("dpad_east", "key_press F9")))
-                + Preset(0, "Default", (1, "button_diamond active"))
+                + Preset(0, "Default", (1, "left_trigger active"))
                 + "}\n";
             var p = Translate(vdf);
             var entry = Assert.Single(p.Report.Entries);
             Assert.Equal(TranslationStatus.Skipped, entry.Status);
             Assert.Equal(TranslationReasons.UnknownPhysicalInput, entry.ReasonKey);
-            Assert.Equal(new[] { "ButtonDiamond", "dpad_east" }, entry.ReasonArgs);
+            Assert.Equal(new[] { "LeftTrigger", "dpad_east" }, entry.ReasonArgs);
+        }
+
+        [Fact]
+        public void TwoDScroll_DiamondHost_TapsOnTheSeatButton()
+        {
+            // v25: diamond-hosted dpad_* members fold onto the seat's
+            // button (east = B), so the flick taps once per press.
+            string vdf = Head
+                + Group(1, "2dscroll", Inputs(Inp("dpad_east", "key_press F9")))
+                + Preset(0, "Default", (1, "button_diamond active"))
+                + "}\n";
+            var p = Translate(vdf);
+            var m = Assert.Single(p.Macros);
+            Assert.Equal(TranslatedMacroAction.KeyTap, m.Action);
+            Assert.Equal(Gamepad.B, m.TriggerXboxButtons);
         }
 
         [Fact]
@@ -444,9 +462,10 @@ namespace PadForge.SteamWorkshop.Tests
         public void CurveSettings_NameOnlyTheChannelLessKeys()
         {
             // v18 consumes the exponent / range cluster on every analog
-            // host (the trigger pull included), so only deadzone_shape on
-            // a mouse-output host and the defensive output_curve remain
-            // named.
+            // host (the trigger pull included), and v25 consumes
+            // deadzone_shape on stick-hosted mouse pairs into the
+            // per-source geometry stamp, so only the defensive
+            // output_curve remains named here.
             string vdf = Head
                 + Group(1, "joystick_mouse",
                     Inputs(Inp("click", "key_press E"))
@@ -457,7 +476,16 @@ namespace PadForge.SteamWorkshop.Tests
             var p = Translate(vdf);
             var entry = Assert.Single(p.Report.Entries, e =>
                 e.ReasonKey == TranslationReasons.ResponseCurveNotSupported);
-            Assert.Equal("deadzone_shape, output_curve", Assert.Single(entry.ReasonArgs));
+            Assert.Equal("output_curve", Assert.Single(entry.ReasonArgs));
+
+            // Steam Circle (1) = the radial pair stamp; inner/outer land
+            // on the source, so the radial residual retires here.
+            var mouseSrc = p.KbmMappingSet.Rows
+                .Where(r => r.Target == "KbmMouseX")
+                .SelectMany(r => r.Sources).First();
+            Assert.Equal(2, mouseSrc.ParamStickDeadZoneShape);
+            Assert.DoesNotContain(p.Report.Entries, e =>
+                e.ReasonKey == TranslationReasons.DeadZoneRadialResidual);
         }
 
         [Fact]
@@ -735,12 +763,12 @@ namespace PadForge.SteamWorkshop.Tests
         // ─── Translator version ─────────────────────────────────────────
 
         [Fact]
-        public void TranslatorVersion_IsTwentyFour_AndRidesTheSummary()
+        public void TranslatorVersion_IsTwentyFive_AndRidesTheSummary()
         {
-            Assert.Equal(24, TranslationReport.CurrentTranslatorVersion);
+            Assert.Equal(25, TranslationReport.CurrentTranslatorVersion);
             var p = Translate(Head + "}\n");
-            Assert.Equal(24, p.Report.TranslatorVersion);
-            Assert.StartsWith("v24 ", p.Report.ToSummaryString());
+            Assert.Equal(25, p.Report.TranslatorVersion);
+            Assert.StartsWith("v25 ", p.Report.ToSummaryString());
         }
     }
 }

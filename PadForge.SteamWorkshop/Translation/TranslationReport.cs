@@ -337,8 +337,20 @@ namespace PadForge.SteamWorkshop.Translation
         /// outer applies per axis) pending the companion-axis pair-read
         /// channel. Release-hosted layer and preset verbs name their
         /// press-edge approximation (LayerReleaseEdgeApproximated)
-        /// instead of lowering under silent Clean.</summary>
-        public const int CurrentTranslatorVersion = 19;
+        /// instead of lowering under silent Clean.
+        /// v20: CHANGE_PRESET sentinel ids lower as commands, not preset
+        /// references. 32766 (change to next action set) and 32765
+        /// (previous) become one Cycle activator through every action set
+        /// in authored order, Base riding the ring's include-Base stop,
+        /// previous walking the ring in reverse, and a single-set config
+        /// keeping an empty-queue ring that never steps. MissingPreset now
+        /// names only genuinely dangling numeric references. system_key_1
+        /// lowers as the SCREENSHOT PrintScreen tap: every censused
+        /// occurrence (corpus and Valve's controller_base configs) rides
+        /// button_capture Release to restore the Capture button's native
+        /// screenshot, so the SteamSystemAction note no longer fires for
+        /// it. system_key_0 keeps the named note.</summary>
+        public const int CurrentTranslatorVersion = 20;
 
         public int TranslatorVersion { get; set; } = CurrentTranslatorVersion;
 
@@ -506,6 +518,10 @@ namespace PadForge.SteamWorkshop.Translation
         // deleted.
         public const string MissingGroup = "Workshop_Tr_MissingGroup";                           // {0} group id
         public const string MissingModeShiftGroup = "Workshop_Tr_MissingModeShiftGroup";         // {0} slot {1} group id
+        /// <summary>A CHANGE_PRESET / layer verb names a preset index the
+        /// config does not define. Sentinel set-cycle ids (32766 next,
+        /// 32765 previous) never land here since v20: they are commands
+        /// and lower to a Cycle activator through the config's sets.</summary>
         public const string MissingPreset = "Workshop_Tr_MissingPreset";                         // {0} preset id
         public const string ReferenceCycle = "Workshop_Tr_ReferenceCycle";                       // {0} group id
         public const string RemoveLayerApproximated = "Workshop_Tr_RemoveLayerApproximated";

@@ -272,6 +272,12 @@ namespace PadForge.SteamWorkshop.Tests
                         sb.Append(" cycle=").Append(a.CycleLayers);
                         if (a.CycleIncludeBase) sb.Append("+Base");
                     }
+                    else if (a.CycleIncludeBase)
+                    {
+                        // v20 single-set sentinel ring: an empty queue
+                        // with Base as the only stop stays reviewable.
+                        sb.Append(" cycle=Base");
+                    }
                     sb.Append(" | ").Append(a.Descriptor);
                     if (!string.IsNullOrEmpty(a.ChordSecondDescriptor))
                         sb.Append(" & ").Append(a.ChordSecondDescriptor);

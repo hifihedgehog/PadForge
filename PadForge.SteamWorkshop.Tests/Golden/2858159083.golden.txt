@@ -54,10 +54,11 @@ kbm rows: 21
   Base | KbmScroll | Sum
     <- Gamepad LeftShoulder
     <- Gamepad RightShoulder [inverted]
-macros: 2
+macros: 3
   macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Gamepad LeftTrigger] in-half=upper in-dz=75 strength=66%
   macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Gamepad RightTrigger] in-half=upper in-dz=75 strength=66%
-report: v19 rows:x0+k21 macros:2 menus:0 layers:0 clean:30 partial:0 skipped:1 errors:0
+  macro KeyTap OnRelease | Screenshot key (button_capture) | btns=0x0000 in=[Button 11] vk=0x2C
+report: v20 rows:x0+k21 macros:3 menus:0 layers:0 clean:30 partial:0 skipped:0 errors:0
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_a/Full_Press => KbmKey20 <- Gamepad ButtonA
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_b/Full_Press => KbmKey45 <- Gamepad ButtonB
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_x/Full_Press => KbmKey52 <- Gamepad ButtonX
@@ -84,7 +85,6 @@ report: v19 rows:x0+k21 macros:2 menus:0 layers:0 clean:30 partial:0 skipped:1 e
   Clean RowEmitted @ Default/switch/group 6 (switches)/button_back_left_upper/Full_Press => KbmKey46 <- Gamepad Paddle4
   Clean RowEmitted @ Default/switch/group 6 (switches)/button_back_right/Full_Press => KbmKeyA2 <- Gamepad Paddle1
   Clean RowEmitted @ Default/switch/group 6 (switches)/button_back_right_upper/Full_Press => KbmKey45 <- Gamepad Paddle3
-  Skipped SteamSystemAction(system_key_1) @ Default/switch/group 6 (switches)/button_capture/release :: controller_action system_key_1
   Clean RowEmitted @ Default/switch/group 6 (switches)/button_escape/Full_Press => KbmKey1B <- Gamepad ButtonStart
   Clean RowEmitted @ Default/switch/group 6 (switches)/button_menu/Full_Press => KbmKey09 <- Gamepad ButtonBack
   Clean RowEmitted @ Default/switch/group 6 (switches)/left_bumper/Full_Press => KbmScroll <- Gamepad LeftShoulder

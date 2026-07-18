@@ -2097,6 +2097,20 @@ namespace PadForge.Engine.Common.Mapping
         public static bool IsRumbleDescriptor(string descriptor)
             => TryGetRumbleVoice(descriptor, out _);
 
+        /// <summary>True for a touchpad finger PRESSURE descriptor, whole
+        /// pad or zone-windowed ("Touchpad N Finger M Pressure [Zone]",
+        /// #239). Public so the App layer can classify pressure as
+        /// axis-class (it carries an analog magnitude and a threshold),
+        /// e.g. the shift-activator dialog's threshold slider.</summary>
+        public static bool IsTouchpadPressureDescriptor(string descriptor)
+        {
+            if (string.IsNullOrEmpty(descriptor)) return false;
+            string s = CanonicalDescriptor(descriptor);
+            if (!s.StartsWith("Touchpad ", StringComparison.Ordinal)) return false;
+            return TryParseTouchpadAxis(s, out _, out _, out int axisOffset, out _)
+                && axisOffset == 2;
+        }
+
         /// <summary>Resolves a rumble descriptor to its
         /// <see cref="LfeOutputState"/> voice index (0 low, 1 high,
         /// 2 trigger left, 3 trigger right). False for anything else.</summary>
@@ -2727,8 +2741,11 @@ namespace PadForge.Engine.Common.Mapping
                     if (!FingerInTouchpadWindowForAxis(prState, prFinger, prHalf, prAxis)) return false;
                     float pr = prState.FingerPressure[prFinger];
                     if (pr < 0f) pr = 0f; else if (pr > 1f) pr = 1f;
+                    // deviceGuid here is the caller-resolved EFFECTIVE guid
+                    // (see the readers NOTE): the bare src.DeviceGuid is ""
+                    // for device-free sources and would miss the provider.
                     pr = ApplySyntheticPressure(prState, prFinger, pr,
-                        src.DeviceGuid ?? deviceGuid, slotIndex, prPad);
+                        deviceGuid, slotIndex, prPad);
                     int prDz = src.DeadZone > 0 ? src.DeadZone : globalThresholdPercent;
                     return pr > Math.Max(prDz, 1) / 100f;
                 }
@@ -3280,7 +3297,7 @@ namespace PadForge.Engine.Common.Mapping
                     return ReadTouchpadRingMagnitude(state, rPad, rFinger, rHalf);
                 // Touchpad axis → unipolar: return [0..1] directly (raw finger
                 // position; no bipolar centering).
-                if (TryReadTouchpadAxisRaw(state, src, s, out float unipolar, slotIndex)) return unipolar;
+                if (TryReadTouchpadAxisRaw(state, src, s, out float unipolar, slotIndex, deviceGuid)) return unipolar;
                 return ReadTouchpadBool(state, s) ? 1f : 0f;
             }
 
@@ -3745,7 +3762,7 @@ namespace PadForge.Engine.Common.Mapping
             {
                 float pr239 = raw < 0f ? 0f : (raw > 1f ? 1f : raw);
                 bipolar = ApplySyntheticPressure(pad, fingerIdx, pr239,
-                    deviceGuid, slotIndex, padIdx);
+                    EffectiveDeviceGuid(src, evaluatedDeviceGuid), slotIndex, padIdx);
                 return true;
             }
 
@@ -3870,7 +3887,7 @@ namespace PadForge.Engine.Common.Mapping
             if (axisOffset == 2)
             {
                 bipolar = ApplySyntheticPressure(pad, fingerIdx, raw,
-                    src?.DeviceGuid ?? evaluatedDeviceGuid, slotIndex, padIdx);
+                    EffectiveDeviceGuid(src, evaluatedDeviceGuid), slotIndex, padIdx);
                 return true;
             }
             // Windowed X re-normalizes its half to the full range so the
@@ -3903,7 +3920,7 @@ namespace PadForge.Engine.Common.Mapping
         /// position magnitude-from-zero, the same origin the unipolar
         /// Slider leg uses, then re-clamps. Pressure is never scaled.
         /// 1.0 stays bit-identical.</para></summary>
-        private static bool TryReadTouchpadAxisRaw(CustomInputState state, MappingSource src, string descriptor, out float unipolar, int slotIndex = -1)
+        private static bool TryReadTouchpadAxisRaw(CustomInputState state, MappingSource src, string descriptor, out float unipolar, int slotIndex = -1, string effectiveDeviceGuid = null)
         {
             unipolar = 0f;
             if (!TryParseTouchpadAxis(descriptor, out int padIdx, out int fingerIdx, out int axisOffset, out int half))
@@ -3926,7 +3943,7 @@ namespace PadForge.Engine.Common.Mapping
             raw = RenormalizeTouchpadHalf(raw, axisOffset, half);
             if (axisOffset == 2)
                 raw = ApplySyntheticPressure(pad, fingerIdx, raw,
-                    src?.DeviceGuid, slotIndex, padIdx);
+                    effectiveDeviceGuid ?? src?.DeviceGuid ?? "", slotIndex, padIdx);
             unipolar = raw;
             if (axisOffset != 2)
             {

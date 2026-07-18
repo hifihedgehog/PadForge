@@ -569,14 +569,19 @@ namespace PadForge.Services
             foreach (var row in ms.Rows)
             {
                 if (row?.Sources == null) continue;
-                var seen = new HashSet<(string, string, bool, bool, bool, string, string)>();
+                var seen = new HashSet<(string, string, bool, bool, bool, string, string, string)>();
                 int writeIdx = 0;
                 for (int i = 0; i < row.Sources.Count; i++)
                 {
                     var s = row.Sources[i];
                     if (s == null) continue;
+                    // Gate2Descriptor (v26) joins the key for the same
+                    // reason GateDescriptor did: two wedge sources sharing
+                    // everything but the second AND companion are distinct
+                    // reads, and the shorter key deleted one on every load.
                     var key = ((s.DeviceGuid ?? "").ToLowerInvariant(), s.Descriptor ?? "",
-                        s.Invert, s.HalfAxis, s.InvertOutput, s.Kind ?? "", s.GateDescriptor ?? "");
+                        s.Invert, s.HalfAxis, s.InvertOutput, s.Kind ?? "", s.GateDescriptor ?? "",
+                        s.Gate2Descriptor ?? "");
                     if (!seen.Add(key)) continue;
                     row.Sources[writeIdx++] = s;
                 }
@@ -1153,12 +1158,20 @@ namespace PadForge.Services
                 // the per-source AND gate all ride the same no-VM-card
                 // capture. The captured source object itself is the stamp
                 // carrier (it is about to be discarded by the rebuild).
+                // v26 widened it again: the radial stick-deadzone stamps,
+                // the second AND gate, and the flick rotation offset are
+                // no-VM-card fields the rebuild would otherwise wipe on
+                // the first pad-page save.
                 if (s == null
                     || (s.ParamCurveExponent <= 0 && s.ParamRangeOuter <= 0
                         && s.ParamAntiDeadzone <= 0 && s.ParamSmoothingAlpha <= 0
                         && s.ParamMoveThreshold <= 0 && s.ParamAccel <= 0
                         && s.ParamTrackballDecay <= 0
-                        && string.IsNullOrEmpty(s.GateDescriptor)))
+                        && string.IsNullOrEmpty(s.GateDescriptor)
+                        && string.IsNullOrEmpty(s.Gate2Descriptor)
+                        && s.ParamStickDeadZoneShape == 0
+                        && s.ParamStickDeadZoneInner <= 0
+                        && s.ParamFlickRotationOffsetDeg == 0))
                 {
                     continue;
                 }
@@ -1193,6 +1206,10 @@ namespace PadForge.Services
                         if (p.stamp.ParamAccel > 0) src.ParamAccel = p.stamp.ParamAccel;
                         if (p.stamp.ParamTrackballDecay > 0) src.ParamTrackballDecay = p.stamp.ParamTrackballDecay;
                         if (!string.IsNullOrEmpty(p.stamp.GateDescriptor)) src.GateDescriptor = p.stamp.GateDescriptor;
+                        if (!string.IsNullOrEmpty(p.stamp.Gate2Descriptor)) src.Gate2Descriptor = p.stamp.Gate2Descriptor;
+                        if (p.stamp.ParamStickDeadZoneShape != 0) src.ParamStickDeadZoneShape = p.stamp.ParamStickDeadZoneShape;
+                        if (p.stamp.ParamStickDeadZoneInner > 0) src.ParamStickDeadZoneInner = p.stamp.ParamStickDeadZoneInner;
+                        if (p.stamp.ParamFlickRotationOffsetDeg != 0) src.ParamFlickRotationOffsetDeg = p.stamp.ParamFlickRotationOffsetDeg;
                         break;
                     }
                 }

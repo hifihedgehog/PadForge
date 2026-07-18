@@ -131,7 +131,10 @@ namespace PadForge.Tests
         [InlineData("Touchpad 0 Finger 0 Down North Junk")]
         [InlineData("Touchpad 0 Finger 0 Down Upper Left")] // only quadrants compose
         [InlineData("Touchpad 0 Finger 0 X")]
-        [InlineData("Touchpad 0 Finger 0 Pressure")]
+        // "Pressure" left this list with #239 (the bool read exists now);
+        // its convertibility is pinned in MacroDeviceFreeTriggerTests and
+        // out-of-grammar pressure windows still fail below.
+        [InlineData("Touchpad 0 Finger 0 Pressure Junk")]
         public void TryBuildTriggerEntry_OutOfGrammarFingerForms_Fail(string descriptor)
         {
             var choice = new InputChoice { Descriptor = descriptor, DeviceGuid = string.Empty };

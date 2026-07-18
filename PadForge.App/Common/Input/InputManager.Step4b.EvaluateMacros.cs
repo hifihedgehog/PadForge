@@ -403,10 +403,15 @@ namespace PadForge.Common.Input
                 {
                     // #237: disabling a macro resets its combo park and
                     // yield latches, so a re-enable starts from the top.
-                    if (macro != null && (macro.ComboResumeIndex != 0 || macro.AwaitReleaseAfterBreak))
+                    if (macro != null && (macro.ComboResumeIndex != 0 || macro.AwaitReleaseAfterBreak
+                        || macro.TriggerPressStreak != 0))
                     {
                         macro.ComboResumeIndex = 0;
                         macro.AwaitReleaseAfterBreak = false;
+                        // #238: a disabled macro's press chain resets too,
+                        // so re-enable inside the window starts fresh.
+                        macro.TriggerPressStreak = 0;
+                        macro.TriggerLastPressUtc = DateTime.MinValue;
                         ClearAxisYields(macro);
                     }
                     continue;
@@ -748,6 +753,12 @@ namespace PadForge.Common.Input
         /// contribute, the same gate every keystroke emission has).</summary>
         private void ApplyMacroLatches(ref Gamepad gp, MacroItem macro)
         {
+            // #237 yield gate: evaluate against the PRE-LATCH snapshot, so
+            // an earlier latch's write this frame (the 75/85/95 stepping
+            // composition) never reads as "physical input" and false-latches
+            // a later yield-enabled action on the same target. Gamepad is a
+            // struct; the copy is cheap and taken once per macro per frame.
+            var preLatch = gp;
             var actions = macro.Actions;
             for (int i = 0; i < actions.Count; i++)
             {
@@ -773,7 +784,7 @@ namespace PadForge.Common.Input
                     // frame, the AxisHold shape. #237 yield gate applies:
                     // the latch stays latched, only the write yields, and
                     // unlatching re-arms the yield for the next latch.
-                    if (a.VcAxisToggleLatched && LatchPhaseOn(a) && !AxisWriteYields(in gp, a))
+                    if (a.VcAxisToggleLatched && LatchPhaseOn(a) && !AxisWriteYields(in preLatch, a))
                         ApplyAxisHoldAction(ref gp, a);
                     if (!a.VcAxisToggleLatched)
                         _axisYielded.Remove(a);
@@ -2830,10 +2841,26 @@ namespace PadForge.Common.Input
         /// threshold applies to all six canonical axes.</summary>
         private static bool AxisWriteYieldsRaw(in ExtendedRawState raw, MacroAction action, int axisIndex)
         {
+            if (raw.Axes == null || axisIndex < 0 || axisIndex >= raw.Axes.Length) return false;
+            return AxisWriteYieldsRawValue(action, raw.Axes[axisIndex]);
+        }
+
+        /// <summary>Value-based core of the raw yield test, shared with the
+        /// pre-latch snapshot path. Extended TRIGGER channels rest at
+        /// short.MinValue (the signed word frame,
+        /// Step3.UpdateOutputStates.cs:~1324), so deflection is measured
+        /// from that rest point; sticks rest at 0 and keep the plain
+        /// magnitude test. Without the split, |rest| = 32768
+        /// instant-latched the yield on every trigger activation.</summary>
+        private static bool AxisWriteYieldsRawValue(MacroAction action, short value)
+        {
             if (!action.AxisYieldToPhysical) return false;
             if (_axisYielded.Contains(action)) return true;
-            if (raw.Axes == null || axisIndex < 0 || axisIndex >= raw.Axes.Length) return false;
-            bool moved = Math.Abs((int)raw.Axes[axisIndex]) > YieldStickThreshold;
+            bool isTrigger = action.AxisTarget == MacroAxisTarget.LeftTrigger
+                || action.AxisTarget == MacroAxisTarget.RightTrigger;
+            bool moved = isTrigger
+                ? value + 32768 > YieldTriggerThreshold * 2
+                : Math.Abs((int)value) > YieldStickThreshold;
             if (moved) _axisYielded.Add(action);
             return moved;
         }
@@ -3029,10 +3056,15 @@ namespace PadForge.Common.Input
                 {
                     // #237: disabling a macro resets its combo park and
                     // yield latches, so a re-enable starts from the top.
-                    if (macro != null && (macro.ComboResumeIndex != 0 || macro.AwaitReleaseAfterBreak))
+                    if (macro != null && (macro.ComboResumeIndex != 0 || macro.AwaitReleaseAfterBreak
+                        || macro.TriggerPressStreak != 0))
                     {
                         macro.ComboResumeIndex = 0;
                         macro.AwaitReleaseAfterBreak = false;
+                        // #238: a disabled macro's press chain resets too,
+                        // so re-enable inside the window starts fresh.
+                        macro.TriggerPressStreak = 0;
+                        macro.TriggerLastPressUtc = DateTime.MinValue;
                         ClearAxisYields(macro);
                     }
                     continue;
@@ -3195,6 +3227,13 @@ namespace PadForge.Common.Input
         /// frame's desired latched-key set.</summary>
         private void ApplyMacroLatchesRaw(ref ExtendedRawState raw, MacroItem macro)
         {
+            // #237 pre-latch snapshot, the Gamepad-path twin's rationale:
+            // yield reads the six canonical axes as they were BEFORE this
+            // macro's latch writes, stack-only (no per-tick allocation).
+            Span<short> preAxes = stackalloc short[6];
+            if (raw.Axes != null)
+                for (int k = 0; k < 6 && k < raw.Axes.Length; k++)
+                    preAxes[k] = raw.Axes[k];
             var actions = macro.Actions;
             for (int i = 0; i < actions.Count; i++)
             {
@@ -3223,8 +3262,10 @@ namespace PadForge.Common.Input
                     // #237 yield gate, the Gamepad-path twin's rationale.
                     if (a.VcAxisToggleLatched && LatchPhaseOn(a) && raw.Axes != null)
                     {
-                        if (!AxisWriteYieldsRaw(in raw, a,
-                                MacroAxisTargetToRawIndex(a.AxisTarget)))
+                        int yIdx = MacroAxisTargetToRawIndex(a.AxisTarget);
+                        bool yields = yIdx >= 0 && yIdx < 6 && yIdx < raw.Axes.Length
+                            && AxisWriteYieldsRawValue(a, preAxes[yIdx]);
+                        if (!yields)
                             ApplyAxisActionRaw(ref raw, a);
                     }
                     if (!a.VcAxisToggleLatched)
@@ -3808,9 +3849,17 @@ namespace PadForge.Common.Input
         private static void ApplyAxisAddActionRaw(ref ExtendedRawState raw, MacroAction action)
         {
             int axisIndex = MacroAxisTargetToRawIndex(action.AxisTarget);
-            if (axisIndex >= 0 && axisIndex < raw.Axes.Length)
-                raw.Axes[axisIndex] = (short)Math.Clamp(
-                    raw.Axes[axisIndex] + action.AxisValue, short.MinValue, short.MaxValue);
+            if (axisIndex < 0 || axisIndex >= raw.Axes.Length) return;
+            // Trigger channels span the full signed word from a MinValue
+            // rest, so the add doubles onto that span exactly like the
+            // Gamepad path's pull scale. Without it "+100%" only reached
+            // the midpoint from rest and the UI's percent lied per slot
+            // shape. Sticks add in the plain signed frame.
+            bool isTrigger = action.AxisTarget == MacroAxisTarget.LeftTrigger
+                || action.AxisTarget == MacroAxisTarget.RightTrigger;
+            int add = isTrigger ? action.AxisValue * 2 : action.AxisValue;
+            raw.Axes[axisIndex] = (short)Math.Clamp(
+                raw.Axes[axisIndex] + add, short.MinValue, short.MaxValue);
         }
 
         // ─────────────────────────────────────────────

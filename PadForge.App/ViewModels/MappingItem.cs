@@ -1148,14 +1148,19 @@ namespace PadForge.ViewModels
                     // MappingSourceItem.IsDeadZoneApplicable exposes), so it
                     // joins the family list ahead of the blanket Touchpad
                     // exclusion below.
-                    || PadForge.Engine.Common.Mapping.SourceCoercion.IsTouchpadPointerDescriptor(desc);
+                    || PadForge.Engine.Common.Mapping.SourceCoercion.IsTouchpadPointerDescriptor(desc)
+                    // Pressure (#239): the bool coercion thresholds on the
+                    // per-source DeadZone (whole pad or zone-windowed), so
+                    // it joins the family ahead of the blanket exclusion.
+                    || PadForge.Engine.Common.Mapping.SourceCoercion.IsTouchpadPressureDescriptor(desc);
                 if (!engineFamily)
                 {
                     // Touchpad finger X/Y joined the generic Sensitivity
                     // family (#9 B-13) but have no axis-to-button threshold
                     // read (ReadAsBool's touchpad branch reads Click /
-                    // "Finger M Down" only), so every touchpad descriptor
-                    // keeps the pre-widening hidden deadzone column.
+                    // "Finger M Down" / Ring / Pressure only, and Pressure
+                    // is family-listed above), so the remaining touchpad
+                    // descriptors keep the pre-widening hidden column.
                     if (desc.StartsWith("Touchpad ", StringComparison.Ordinal))
                         return false;
                     // Covers "Axis N" / "Slider N" plus the abstract Gamepad

@@ -2605,6 +2605,8 @@
   <data name="Macro_HoldForMs_Tooltip" xml:space="preserve"><value>트리거를 유지 시간 동안 계속 누르고 있으면 한 번 실행됩니다. 더 짧게 누르면 아무 일도 일어나지 않습니다.</value></data>
   <data name="Macro_DoublePress" xml:space="preserve"><value>두 번 누를 때</value></data>
   <data name="Macro_DoublePress_Tooltip" xml:space="preserve"><value>연속 누르기 시간 안에 두 번 누르면 발동합니다. 두 번째 누름을 유지하면 놓을 때까지 활성 상태로 유지됩니다.</value></data>
+  <data name="Macro_SinglePress" xml:space="preserve"><value>싱글 프레스 시</value></data>
+  <data name="Macro_SinglePress_Tooltip" xml:space="preserve"><value>프레스 윈도우 내에 두 번째 누름이 없을 때 발동합니다. 같은 버튼에서 더블/트리플 프레스와 함께 사용할 수 있습니다. '누를 때'는 즉시 발동합니다.</value></data>
   <data name="Macro_TriplePress" xml:space="preserve"><value>세 번 누를 때</value></data>
   <data name="Macro_TriplePress_Tooltip" xml:space="preserve"><value>연속 누르기 시간 안에 세 번 누르면 발동합니다. 세 번째 누름을 유지하면 놓을 때까지 활성 상태로 유지됩니다.</value></data>
   <data name="Macro_TriggerDoublePressMs_Label" xml:space="preserve"><value>연속 누르기 시간</value></data>

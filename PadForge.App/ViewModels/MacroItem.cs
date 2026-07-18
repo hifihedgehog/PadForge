@@ -1685,13 +1685,15 @@ namespace PadForge.ViewModels
         [System.Xml.Serialization.XmlIgnore]
         public bool IsHoldForMsMode => _triggerMode == MacroTriggerMode.HoldForMs;
 
-        /// <summary>True when TriggerMode is DoublePress (translator v17)
-        /// or TriplePress (#238, which chains presses through the same
-        /// window). Gates the press-window ms row in the trigger editor.</summary>
+        /// <summary>True when TriggerMode is DoublePress (translator v17),
+        /// TriplePress, or SinglePress (#238, all three consume the same
+        /// press window: the chains chain through it, the single defers
+        /// by it). Gates the press-window ms row in the trigger editor.</summary>
         [System.Xml.Serialization.XmlIgnore]
         public bool IsDoublePressMode =>
             _triggerMode == MacroTriggerMode.DoublePress ||
-            _triggerMode == MacroTriggerMode.TriplePress;
+            _triggerMode == MacroTriggerMode.TriplePress ||
+            _triggerMode == MacroTriggerMode.SinglePress;
 
         /// <summary>Tooltip for the shared press-window ms row (#238):
         /// the double- or triple-press explanation, following the active
@@ -1713,7 +1715,8 @@ namespace PadForge.ViewModels
             _triggerMode == MacroTriggerMode.WhileHeld ||
             _triggerMode == MacroTriggerMode.HoldForMs ||
             _triggerMode == MacroTriggerMode.DoublePress ||
-            _triggerMode == MacroTriggerMode.TriplePress;
+            _triggerMode == MacroTriggerMode.TriplePress ||
+            _triggerMode == MacroTriggerMode.SinglePress;
 
         private int _triggerHoldMs = 500;
 
@@ -5228,7 +5231,21 @@ namespace PadForge.ViewModels
         /// twice, never four times. The trigger reads active through the
         /// third press's hold, the DoublePress UntilRelease contract. At
         /// the tail per the APPEND-ONLY rule above; ordinal pinned.</summary>
-        TriplePress = 7
+        TriplePress = 7,
+
+        /// <summary>Fire once when a press is NOT followed by a second
+        /// press within <see cref="MacroItem.TriggerDoublePressMs"/>
+        /// (discussion #238, reWASD's "Single Press" as distinct from
+        /// "Start Press"). The DEFERRED counterpart of
+        /// <see cref="OnPress"/>: OnPress fires the instant the button
+        /// goes down (Start Press), SinglePress waits out the press
+        /// window so it can share a button with a DoublePress or
+        /// TriplePress macro without firing on their chains. A chain of
+        /// two or more fast presses fires nothing here. The fire lands
+        /// at window expiry whether the button is still held (hold
+        /// shapes keep working) or already released. At the tail per
+        /// the APPEND-ONLY rule above; ordinal pinned.</summary>
+        SinglePress = 8
     }
 
     public enum MacroTriggerSource

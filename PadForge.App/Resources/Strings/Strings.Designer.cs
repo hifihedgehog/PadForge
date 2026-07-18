@@ -1534,6 +1534,8 @@ public class Strings : INotifyPropertyChanged
     public string Macro_DoublePress_Tooltip => Get("Macro_DoublePress_Tooltip");
     public string Macro_TriplePress => Get("Macro_TriplePress");
     public string Macro_TriplePress_Tooltip => Get("Macro_TriplePress_Tooltip");
+    public string Macro_SinglePress => Get("Macro_SinglePress");
+    public string Macro_SinglePress_Tooltip => Get("Macro_SinglePress_Tooltip");
     public string Macro_TriggerDoublePressMs_Label => Get("Macro_TriggerDoublePressMs_Label");
     public string Macro_TriggerHoldMs_Label => Get("Macro_TriggerHoldMs_Label");
     public string Mapping_AnyDevice => Get("Mapping_AnyDevice");

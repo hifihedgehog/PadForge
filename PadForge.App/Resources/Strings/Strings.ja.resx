@@ -2605,6 +2605,8 @@
   <data name="Macro_HoldForMs_Tooltip" xml:space="preserve"><value>トリガーを保持時間のあいだ押し続けると 1 回だけ発動します。それより短いタップでは何も起こりません。</value></data>
   <data name="Macro_DoublePress" xml:space="preserve"><value>ダブルプレス時</value></data>
   <data name="Macro_DoublePress_Tooltip" xml:space="preserve"><value>連続プレス時間内に2回押すと発動します。2回目を押し続けると、離すまで有効のままです。</value></data>
+  <data name="Macro_SinglePress" xml:space="preserve"><value>シングルプレス時</value></data>
+  <data name="Macro_SinglePress_Tooltip" xml:space="preserve"><value>プレスウィンドウ内に2回目の押下がない場合に発動します。同じボタンでダブルプレスやトリプルプレスと併用できます。「押した時」は即時に発動します。</value></data>
   <data name="Macro_TriplePress" xml:space="preserve"><value>トリプルプレス時</value></data>
   <data name="Macro_TriplePress_Tooltip" xml:space="preserve"><value>連続プレス時間内に3回押すと発動します。3回目を押し続けると、離すまで有効のままです。</value></data>
   <data name="Macro_TriggerDoublePressMs_Label" xml:space="preserve"><value>連続プレス時間</value></data>

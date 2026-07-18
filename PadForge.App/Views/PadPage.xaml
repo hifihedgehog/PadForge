@@ -1274,6 +1274,8 @@
                                 <ComboBox SelectedValue="{Binding TriggerMode, Mode=TwoWay}"
                                           SelectedValuePath="Tag" MinWidth="120">
                                     <ComboBoxItem Content="{Binding Macro_OnPress, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroTriggerMode.OnPress}"/>
+                                    <ComboBoxItem Content="{Binding Macro_SinglePress, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroTriggerMode.SinglePress}"
+                                                  ToolTip="{Binding Macro_SinglePress_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                     <ComboBoxItem Content="{Binding Macro_OnRelease, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroTriggerMode.OnRelease}"/>
                                     <ComboBoxItem Content="{Binding Macro_WhileHeld, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroTriggerMode.WhileHeld}"/>
                                     <ComboBoxItem Content="{Binding Macro_HoldForMs, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroTriggerMode.HoldForMs}"

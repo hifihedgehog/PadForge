@@ -2605,6 +2605,8 @@
   <data name="Macro_HoldForMs_Tooltip" xml:space="preserve"><value>Se dispara una vez cuando el activador se ha mantenido de forma continua durante el tiempo de retención. Un toque más corto no hace nada.</value></data>
   <data name="Macro_DoublePress" xml:space="preserve"><value>Al pulsar dos veces</value></data>
   <data name="Macro_DoublePress_Tooltip" xml:space="preserve"><value>Se activa cuando el disparador se pulsa dos veces dentro de la ventana de pulsación. Si se mantiene la segunda pulsación, permanece activo hasta soltar.</value></data>
+  <data name="Macro_SinglePress" xml:space="preserve"><value>Al pulsar una vez</value></data>
+  <data name="Macro_SinglePress_Tooltip" xml:space="preserve"><value>Se activa cuando no sigue una segunda pulsación dentro de la ventana de pulsación, por lo que puede compartir botón con la pulsación doble o triple. «Al pulsar» se activa al instante.</value></data>
   <data name="Macro_TriplePress" xml:space="preserve"><value>Al pulsar tres veces</value></data>
   <data name="Macro_TriplePress_Tooltip" xml:space="preserve"><value>Se activa cuando el disparador se pulsa tres veces dentro de la ventana de pulsación. Si se mantiene la tercera pulsación, permanece activo hasta soltar.</value></data>
   <data name="Macro_TriggerDoublePressMs_Label" xml:space="preserve"><value>Ventana de pulsación</value></data>

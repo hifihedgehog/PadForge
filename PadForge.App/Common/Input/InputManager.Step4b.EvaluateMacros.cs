@@ -560,6 +560,9 @@ namespace PadForge.Common.Input
                     case MacroTriggerMode.TriplePress:
                         shouldStart = EvaluateTriplePressTrigger(macro, triggerActive, wasTriggerActive);
                         break;
+                    case MacroTriggerMode.SinglePress:
+                        shouldStart = EvaluateSinglePressTrigger(macro, triggerActive, wasTriggerActive);
+                        break;
                 }
 
                 // #237 combo break: a parked sequence must not auto-resume
@@ -718,6 +721,45 @@ namespace PadForge.Common.Input
                 macro.TriggerPressStreak = 0;
                 macro.TriggerLastPressUtc = DateTime.MinValue;
                 return true;
+            }
+            return false;
+        }
+
+        /// <summary>Shared SinglePress trigger evaluation (#238): the
+        /// DEFERRED single. Chains rising edges through the shared press
+        /// window exactly like TriplePress; a chain of exactly ONE press
+        /// fires once when its window expires with no follow-up (held or
+        /// released), and a chain of two or more fires nothing here and
+        /// resets once quiet. Lets one button carry Single + Double +
+        /// Triple macros without the single firing on the chains.</summary>
+        private static bool EvaluateSinglePressTrigger(MacroItem macro, bool triggerActive, bool wasTriggerActive)
+        {
+            var now = DateTime.UtcNow;
+            if (triggerActive && !wasTriggerActive)
+            {
+                bool chained = macro.TriggerLastPressUtc != DateTime.MinValue
+                    && (now - macro.TriggerLastPressUtc).TotalMilliseconds <= macro.TriggerDoublePressMs;
+                macro.TriggerPressStreak = chained ? macro.TriggerPressStreak + 1 : 1;
+                macro.TriggerLastPressUtc = now;
+                return false;
+            }
+            if (macro.TriggerLastPressUtc == DateTime.MinValue) return false;
+            bool windowExpired =
+                (now - macro.TriggerLastPressUtc).TotalMilliseconds > macro.TriggerDoublePressMs;
+            if (!windowExpired) return false;
+            if (macro.TriggerPressStreak == 1)
+            {
+                macro.TriggerPressStreak = 0;
+                macro.TriggerLastPressUtc = DateTime.MinValue;
+                return true;
+            }
+            // Chain of 2+: reset without firing once the chain is quiet
+            // (window expired) and the button is up, so a held third
+            // press keeps its chain accounting intact.
+            if (!triggerActive)
+            {
+                macro.TriggerPressStreak = 0;
+                macro.TriggerLastPressUtc = DateTime.MinValue;
             }
             return false;
         }
@@ -3157,6 +3199,9 @@ namespace PadForge.Common.Input
                         break;
                     case MacroTriggerMode.TriplePress:
                         shouldStart = EvaluateTriplePressTrigger(macro, triggerActive, wasTriggerActive);
+                        break;
+                    case MacroTriggerMode.SinglePress:
+                        shouldStart = EvaluateSinglePressTrigger(macro, triggerActive, wasTriggerActive);
                         break;
                 }
 

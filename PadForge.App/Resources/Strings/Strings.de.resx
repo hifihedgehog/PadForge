@@ -2605,6 +2605,8 @@
   <data name="Macro_HoldForMs_Tooltip" xml:space="preserve"><value>Löst einmal aus, nachdem der Auslöser ununterbrochen für die Haltezeit gehalten wurde. Ein kürzeres Antippen bewirkt nichts.</value></data>
   <data name="Macro_DoublePress" xml:space="preserve"><value>Bei Doppeldruck</value></data>
   <data name="Macro_DoublePress_Tooltip" xml:space="preserve"><value>Wird ausgelöst, wenn der Auslöser zweimal innerhalb des Zeitfensters gedrückt wird. Wird der zweite Druck gehalten, bleibt er bis zum Loslassen aktiv.</value></data>
+  <data name="Macro_SinglePress" xml:space="preserve"><value>Bei Einzeldruck</value></data>
+  <data name="Macro_SinglePress_Tooltip" xml:space="preserve"><value>Löst aus, wenn innerhalb des Druckfensters kein zweiter Druck folgt. Kann sich so eine Taste mit Doppel- oder Dreifachdruck teilen. „Beim Drücken“ löst sofort aus.</value></data>
   <data name="Macro_TriplePress" xml:space="preserve"><value>Bei Dreifachdruck</value></data>
   <data name="Macro_TriplePress_Tooltip" xml:space="preserve"><value>Wird ausgelöst, wenn der Auslöser dreimal innerhalb des Zeitfensters gedrückt wird. Wird der dritte Druck gehalten, bleibt er bis zum Loslassen aktiv.</value></data>
   <data name="Macro_TriggerDoublePressMs_Label" xml:space="preserve"><value>Zeitfenster</value></data>

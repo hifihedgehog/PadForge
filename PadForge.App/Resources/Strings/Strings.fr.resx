@@ -2605,6 +2605,8 @@
   <data name="Macro_HoldForMs_Tooltip" xml:space="preserve"><value>Se déclenche une fois lorsque le déclencheur a été maintenu en continu pendant la durée de maintien. Un appui plus court ne fait rien.</value></data>
   <data name="Macro_DoublePress" xml:space="preserve"><value>Sur double appui</value></data>
   <data name="Macro_DoublePress_Tooltip" xml:space="preserve"><value>Se déclenche quand la commande est appuyée deux fois dans la fenêtre d&apos;appui. Si le second appui est maintenu, elle reste active jusqu&apos;au relâchement.</value></data>
+  <data name="Macro_SinglePress" xml:space="preserve"><value>Sur appui simple</value></data>
+  <data name="Macro_SinglePress_Tooltip" xml:space="preserve"><value>Se déclenche quand aucun second appui ne suit dans la fenêtre d'appui, ce qui permet de partager un bouton avec l'appui double ou triple. « À l'appui » se déclenche immédiatement.</value></data>
   <data name="Macro_TriplePress" xml:space="preserve"><value>Sur triple appui</value></data>
   <data name="Macro_TriplePress_Tooltip" xml:space="preserve"><value>Se déclenche quand la commande est appuyée trois fois dans la fenêtre d&apos;appui. Si le troisième appui est maintenu, elle reste active jusqu&apos;au relâchement.</value></data>
   <data name="Macro_TriggerDoublePressMs_Label" xml:space="preserve"><value>Fenêtre d&apos;appui</value></data>

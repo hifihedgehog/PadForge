@@ -65,7 +65,7 @@ macros: 9
   macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Touchpad 1 Click] strength=33%
   macro RumblePulse OnPress | Haptic pulse (edge) | btns=0x0000 in=[Gamepad RightTrigger] in-half=upper in-dz=15 strength=66%
   macro KeyTap OnRelease | Screenshot key (button_capture) | btns=0x0000 in=[Button 11] vk=0x2C
-report: v22 rows:x0+k23 macros:9 menus:0 layers:0 clean:29 partial:0 skipped:0 errors:0
+report: v23 rows:x0+k23 macros:9 menus:0 layers:0 clean:29 partial:0 skipped:0 errors:0
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_a/Full_Press => KbmKey57 <- Gamepad ButtonA
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_b/Full_Press => KbmKey44 <- Gamepad ButtonB
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_x/Full_Press => KbmKey43 <- Gamepad ButtonX

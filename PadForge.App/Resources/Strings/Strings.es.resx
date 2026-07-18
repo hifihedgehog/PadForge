@@ -2532,7 +2532,7 @@
   <data name="Pad_MouseGestures_CustomInput_Tooltip" xml:space="preserve"><value>La entrada que arma la sesión de gestos Personalizado mientras se mantiene, grabada desde cualquier dispositivo de este slot. Los botones y teclas arman mientras están pulsados. Las entradas analógicas como un pedal arman al pasar de la mitad del recorrido.</value></data>
   <data name="Pad_ResetMouseGestureCustomInput" xml:space="preserve"><value>Restablecer entrada de activación personalizada</value></data>
   <data name="Workshop_Tr_ResponseCurveNotSupported" xml:space="preserve"><value>ajustes de curva de respuesta y rango descartados ({0})</value></data>
-  <data name="Workshop_Tr_GyroButtonMaskDropped" xml:space="preserve"><value>ajuste de activación del giroscopio {0}={1} descartado (la activación del giroscopio se configura por mando)</value></data>
+  <data name="Workshop_Tr_GyroButtonMaskDropped" xml:space="preserve"><value>ajuste de giroscopio {0}={1} descartado (ningún botón legible detrás de este valor)</value></data>
   <data name="Workshop_Tr_PlayerNumberActionNotSupported" xml:space="preserve"><value>el cambio de número de jugador es una acción del cliente Steam, sin equivalente</value></data>
   <data name="Workshop_Tr_LizardModeActionNotSupported" xml:space="preserve"><value>la alternancia del modo lizard es interna de Steam, sin equivalente</value></data>
   <data name="Workshop_Tr_ToggleLatchEmitted" xml:space="preserve"><value>la pulsación de alternancia mantiene {0} hasta la siguiente pulsación</value></data>

@@ -380,8 +380,22 @@ namespace PadForge.SteamWorkshop.Translation
         /// the group's level and the per-config HapticIntensityDropped
         /// aggregate retires (key and locale strings deleted; a
         /// member-less group's continuous surface tick has no channel
-        /// and lowers silently).</summary>
-        public const int CurrentTranslatorVersion = 22;
+        /// and lowers silently).
+        /// v23: the gyro_button engage arm gains the full enum the v22
+        /// ratchet grounding established. gyro_button=N indexes
+        /// k_eGamepadButtonBitMask (the configurator renders the engage
+        /// picker and the ratchet mask through the one GyroButtonPicker
+        /// glyph map), so every grounded index lowers through
+        /// RatchetBitDescriptor onto the slot-level engage stamp; 0
+        /// keeps the v18 pad-touch default sentinel and only genuinely
+        /// out-of-enum indices keep GyroButtonMaskDropped. The lockdown
+        /// re-audit also builds the bare half-touch activator host: a
+        /// single-pad "touch" member (the held-state TouchLeft /
+        /// TouchRight spot) drives layer verbs through the same
+        /// button-like read a chord leg gets, closing the two corpus
+        /// ActivatorInputNotSupported sites (the key survives as the
+        /// safety net for genuinely un-hostable gesture fires).</summary>
+        public const int CurrentTranslatorVersion = 23;
 
         public int TranslatorVersion { get; set; } = CurrentTranslatorVersion;
 
@@ -608,13 +622,15 @@ namespace PadForge.SteamWorkshop.Translation
         /// are named. {0} = the withheld keys.</summary>
         public const string RotationNonlinearWithheld = "Workshop_Tr_RotationNonlinearWithheld"; // {0} setting keys
         // Since v18 the note is the out-of-census net only: gyro_button 0
-        // (pad touch) stamps the slot-level engage overlay and
-        // gyro_button_invert 1 the inverted hold. Since v22 the ratchet
-        // mask builds bit-by-bit against Steam's own
-        // k_eGamepadButtonBitMask enum (the shipped configurator JS), so
-        // the note names only non-zero gyro_button indices (an index
-        // table with no public grounding) and the residual mask of
-        // genuinely ungrounded ratchet bits.
+        // (the none/default sentinel, pad touch) stamps the slot-level
+        // engage overlay and gyro_button_invert 1 the inverted hold.
+        // Since v22 the ratchet mask builds bit-by-bit against Steam's
+        // own k_eGamepadButtonBitMask enum (the shipped configurator
+        // JS), and since v23 gyro_button indices lower through the same
+        // enum onto the engage stamp, so the note names only genuinely
+        // out-of-enum gyro_button indices, non-boolean
+        // gyro_button_invert values, and the residual mask of
+        // ungrounded ratchet bits.
         public const string GyroButtonMaskDropped = "Workshop_Tr_GyroButtonMaskDropped";         // {0} setting key {1} value
         // ActivatorDelayDropped retired in v22: every surviving arm BUILT
         // or was proved unobservable. Layer delay_end rides the Hold-mode

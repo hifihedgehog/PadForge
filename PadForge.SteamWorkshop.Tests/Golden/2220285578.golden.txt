@@ -1,6 +1,7 @@
 name: Gimler's Crusader Kings III
 description: A fairly intuitive mapping of CKIII commands and keyboard shortcuts for Steam controller. I play 100...
 slots: xbox kbm
+gyroEngage: Gamepad ButtonA
 xbox rows: 0
 kbm rows: 38
   Base | KbmKey1B
@@ -117,12 +118,11 @@ menus: 2
     [8] De Jure Empires
     [9] Counties
     [10] Houses
-report: v22 rows:x0+k38 macros:9 menus:2 layers:2 clean:47 partial:2 skipped:0 errors:0
+report: v23 rows:x0+k38 macros:9 menus:2 layers:2 clean:47 partial:1 skipped:0 errors:0
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_a/Full_Press => KbmKey20 <- Gamepad ButtonA
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_b/Full_Press => KbmKey6B <- Gamepad ButtonB
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_x/Full_Press => KbmKey6D <- Gamepad ButtonX
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_y/Full_Press => KbmKey42 <- Gamepad ButtonY
-  Partial GyroButtonMaskDropped(gyro_button, 7) @ Default/gyro/group 9 (absolute_mouse)
   Clean RowEmitted @ Default/gyro/group 9 (absolute_mouse) => KbmMouseX <- Gyro Yaw
   Clean RowEmitted @ Default/gyro/group 9 (absolute_mouse) => KbmMouseY <- Gyro Pitch
   Clean RowEmitted @ Default/joystick/group 3 (dpad)/click/Full_Press => KbmKey24 <- Gamepad LeftStick

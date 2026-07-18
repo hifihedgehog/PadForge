@@ -9,7 +9,7 @@ using PadForge.SteamWorkshop.Vdf;
 
 namespace PadForge.SteamWorkshop.Tests
 {
-    /// <summary>THE LOCKDOWN GUARD (v22). Translates EVERY corpus fixture
+    /// <summary>THE LOCKDOWN GUARD (v23). Translates EVERY corpus fixture
     /// and asserts the complete multiset of report reason keys equals the
     /// approved list below, so no lowering can silently regress into a
     /// note and no new note class can ship unreviewed: the owner reading a
@@ -17,45 +17,89 @@ namespace PadForge.SteamWorkshop.Tests
     /// do is the exact failure this pins out. Any change to the multiset
     /// (a count moving, a key appearing, a key vanishing) fails the build
     /// until the approved list is deliberately re-blessed alongside the
-    /// goldens.</summary>
+    /// goldens.
+    ///
+    /// <para>Admission standard (the v23 re-audit, the standard that
+    /// caught gyro_button and then the touch-hosted layer activators):
+    /// every key is a Clean emission record, or carries one of three
+    /// justifications spelled out on its entry. Steam-session/client
+    /// means only the game's own Steam session can deliver it.
+    /// Config-error means the authored config itself gives the note
+    /// nothing to lower. Impossibility-proof-in-code means the cited
+    /// code names the missing engine primitive or the non-commuting
+    /// math. A drop that is buildable with existing channels may not
+    /// enter this list. It gets built instead.</para></summary>
     public class ReportReasonLockdownTests
     {
         /// <summary>The approved corpus-wide reason-key multiset,
-        /// "key=count" per line, ordinal-sorted. Beside the Clean
-        /// emission keys (RowEmitted / MacroEmitted / MenuEmitted /
-        /// ShiftLayerEmitted / ToggleLatchEmitted), three classes
-        /// survive at v22:
-        /// Steam-session/client class: GameActionsNotSupported (in-game
-        /// Steam Input API actions only Steam can deliver).
-        /// Config-error class: PresetHasNoActivator, ShiftLayerEmpty
-        /// (rowless layers whose bindings' own entries say why), and
-        /// ActivatorInputNotSupported (the double-press layer-verb
-        /// safety net).
-        /// Named-approximation class, each with its impossibility proof
-        /// at the emission site: DeadZoneRadialResidual,
-        /// GyroButtonMaskDropped (ungrounded gyro_button indices only;
-        /// every corpus ratchet mask lowers),
-        /// LayerReleaseEdgeApproximated, MouseModeTuningDropped,
-        /// RemoveLayerApproximated, RotationNonlinearWithheld,
-        /// ScrollWheelApproximated.</summary>
-        private const string ApprovedMultiset = @"
-Workshop_Tr_ActivatorInputNotSupported=2
-Workshop_Tr_DeadZoneRadialResidual=5
-Workshop_Tr_GameActionsNotSupported=8
-Workshop_Tr_GyroButtonMaskDropped=5
-Workshop_Tr_LayerReleaseEdgeApproximated=7
-Workshop_Tr_MacroEmitted=90
-Workshop_Tr_MenuEmitted=21
-Workshop_Tr_MouseModeTuningDropped=3
-Workshop_Tr_PresetHasNoActivator=5
-Workshop_Tr_RemoveLayerApproximated=12
-Workshop_Tr_RotationNonlinearWithheld=1
-Workshop_Tr_RowEmitted=987
-Workshop_Tr_ScrollWheelApproximated=5
-Workshop_Tr_ShiftLayerEmitted=41
-Workshop_Tr_ShiftLayerEmpty=4
-Workshop_Tr_ToggleLatchEmitted=1
-";
+        /// "key=count" per entry, ordinal-sorted, one justification per
+        /// key. Safety-net keys with zero corpus occurrences (for
+        /// example ActivatorInputNotSupported, since v23 only the
+        /// double-press layer-verb net) sit outside the multiset by
+        /// construction.</summary>
+        private static readonly string[] ApprovedMultiset =
+        {
+            // Impossibility proof in code: the analog pair read has no
+            // per-source companion-axis channel and the outer radius
+            // applies per axis, so radial geometry cannot lower yet.
+            // Proof at ConfigTranslator.ReportRadialDeadZoneResidual
+            // (v19 T2). Retires when the pair-read channel lands.
+            "Workshop_Tr_DeadZoneRadialResidual=5",
+            // Steam-session/client: in-game Steam Input API action
+            // blocks are delivered to the game by its own Steam
+            // session. No virtual controller can feed them.
+            "Workshop_Tr_GameActionsNotSupported=8",
+            // Impossibility proof in code: every engine ShiftActivator
+            // mode keys on the press edge (ReadActivatorInput has no
+            // release-edge trigger), so release-hosted layer verbs
+            // lower one edge early under this name (v19 T6).
+            "Workshop_Tr_LayerReleaseEdgeApproximated=7",
+            // Clean emission record, not a residual.
+            "Workshop_Tr_MacroEmitted=90",
+            // Clean emission record, not a residual.
+            "Workshop_Tr_MenuEmitted=21",
+            // Impossibility proof in code: mouse_dampening_trigger is a
+            // live cross-input analog modulation and the row grammar's
+            // only second-input constructs are the boolean AND gate and
+            // the InvertOnHold sign flip. Proof at
+            // ConfigTranslator.MouseModeTuningKeys (v18).
+            "Workshop_Tr_MouseModeTuningDropped=3",
+            // Steam-session/client: all five sites are action sets of
+            // the two IGA fixtures (1129670518, 1172518660), switched
+            // by the GAME through the Steam Input API. The config
+            // authors no controller-side input that could host a
+            // switch, so there is nothing to lower onto.
+            "Workshop_Tr_PresetHasNoActivator=5",
+            // Impossibility proof in code: the engine has no
+            // remove-named-layer primitive, so REMOVE_LAYER lowers as a
+            // press-to-step Cycle beside whatever engaged the layer and
+            // a press can need one extra step before Base. Proof at the
+            // REMOVE_LAYER lowering (v10 G8).
+            "Workshop_Tr_RemoveLayerApproximated=12",
+            // Impossibility proof in code (math): nonlinear per-leg
+            // shaping does not commute with the rotation's two-source
+            // Sum, so rotated legs carry only the linear knobs. Proof
+            // at the withholding site (v19 T5).
+            "Workshop_Tr_RotationNonlinearWithheld=1",
+            // Clean emission record, not a residual.
+            "Workshop_Tr_RowEmitted=987",
+            // Impossibility proof in code: no circular-scratch angle
+            // primitive, so wheel drag rides the detent rows and the
+            // cycle steps forward-only. Proof at the scrollwheel
+            // lowering's geometry note.
+            "Workshop_Tr_ScrollWheelApproximated=5",
+            // Clean emission record. 41 to 43 in v23: the two
+            // touch-hosted hold_layer sites in 2374887917 build as
+            // held touch-spot activators now.
+            "Workshop_Tr_ShiftLayerEmitted=43",
+            // Config-error: the layer produced no rows and each
+            // binding's own entry names why, or a Base-hosted jump to
+            // Base switches nothing. The note replaces silence.
+            "Workshop_Tr_ShiftLayerEmpty=4",
+            // Clean emission record (Partial only when the momentary
+            // identity row rides beside the latch).
+            "Workshop_Tr_ToggleLatchEmitted=1",
+        };
 
         [Fact]
         public void Corpus_ReportReasonMultiset_MatchesTheApprovedList()
@@ -79,11 +123,7 @@ Workshop_Tr_ToggleLatchEmitted=1
             foreach (var kv in counts)
                 actual.Append(kv.Key).Append('=').Append(kv.Value).Append('\n');
 
-            Assert.Equal(Normalize(ApprovedMultiset), actual.ToString().TrimEnd('\n'));
+            Assert.Equal(string.Join('\n', ApprovedMultiset), actual.ToString().TrimEnd('\n'));
         }
-
-        private static string Normalize(string s)
-            => string.Join('\n', s.Replace("\r\n", "\n").Split('\n',
-                StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries));
     }
 }

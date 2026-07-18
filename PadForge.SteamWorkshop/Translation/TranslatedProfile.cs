@@ -68,7 +68,8 @@ namespace PadForge.SteamWorkshop.Translation
         public string RightStickDeadZoneShape { get; set; } = "";
 
         /// <summary>Steam gyro_button as a device-free engage descriptor
-        /// (v18): gyro rows fire only while it is held. Empty = none.</summary>
+        /// (v18, the full k_eGamepadButtonBitMask index space since v23):
+        /// gyro rows fire only while it is held. Empty = none.</summary>
         public string GyroEngageDescriptor { get; set; } = "";
 
         /// <summary>Steam gyro_button_invert: engage while NOT held.</summary>

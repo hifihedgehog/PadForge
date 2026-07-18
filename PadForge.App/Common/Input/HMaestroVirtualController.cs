@@ -428,7 +428,23 @@ namespace PadForge.Common.Input
             var vibs = _fbVibrationStates;
             int idx = FeedbackPadIndex;
             if (_ffbDecoder == null || vibs == null || idx < 0 || idx >= vibs.Length) return;
+            // A null element makes Apply a no-op; returning here keeps the
+            // pack write below from re-publishing a stale computed pair.
+            if (vibs[idx] == null) return;
             _ffbDecoder.Apply(vibs[idx]);
+
+            // Inbound pack (#236, owner directive: EVERY feedback source we
+            // support is an LFE source): the PID / vendor FFB lane feeds
+            // the bass shakers exactly like the Xbox and Sony motor lanes.
+            // The pair comes from the decoder's own game-authored compute
+            // (effect set x gains, durations expiring per tick), never
+            // from the shared Vibration array, so test rumble and macro
+            // rumble stay out by the same provenance rule. A sim-racing
+            // wheel slot is the audience that filed #234; constant-force
+            // steering load and periodic road texture both land here.
+            var (ffbLeft, ffbRight) = _ffbDecoder.LastComputedMotors;
+            System.Threading.Volatile.Write(ref _inboundRumblePack,
+                Engine.Common.LfeOutputState.Pack(ffbLeft, ffbRight, 0, 0));
         }
 
         public void SubmitGamepadState(Gamepad gp)
@@ -1063,7 +1079,7 @@ namespace PadForge.Common.Input
         /// pair alone would suffice; matching three bytes deeper just makes
         /// false positives from coincidental byte sequences impossible.
         /// Returns false when the descriptor hex is empty/null.</summary>
-        private static bool DescriptorHasPidFfbBlock(string descriptorHex)
+        internal static bool DescriptorHasPidFfbBlock(string descriptorHex)
         {
             if (string.IsNullOrEmpty(descriptorHex)) return false;
             // Detect the PID FFB Set Effect Report Collection signature:

@@ -222,6 +222,9 @@ namespace PadForge.ViewModels
                         // Macro / menu button lettering follows the profile
                         // on Extended slots (#215, Switch Pro letters).
                         SyncMacroButtonStyle();
+                        // Bass Shakers gate (#236): an uncustomized slot
+                        // follows the newly-picked profile's descriptor.
+                        RefreshRumbleAudioTabGate();
                     }
                     else if (_outputType == VirtualControllerType.Xbox)
                     {
@@ -371,6 +374,12 @@ namespace PadForge.ViewModels
                     case nameof(ExtendedSlotConfig.ButtonCount):
                         RebuildMappings();
                         SyncMacroButtonStyle();
+                        break;
+                    case nameof(ExtendedSlotConfig.ForceFeedbackEnabled):
+                    case nameof(ExtendedSlotConfig.Customize):
+                        // Bass Shakers rides the PID force feedback lane
+                        // (#236): the tab follows the effective FFB state.
+                        RefreshRumbleAudioTabGate();
                         break;
                 }
             }
@@ -4870,11 +4879,48 @@ namespace PadForge.ViewModels
 
         /// <summary>Slot-type gate for the Bass Shakers tab. The feature
         /// decodes the game feedback the virtual controller RECEIVES,
-        /// which only the Xbox and PlayStation output paths deliver.
-        /// Extended, Keyboard and Mouse, and MIDI slots hide the tab.
-        /// Never a physical-device capability gate.</summary>
-        public bool RumbleAudioTabVisible =>
-            _outputType is VirtualControllerType.Xbox or VirtualControllerType.PlayStation;
+        /// so every output path with a feedback surface shows it: Xbox
+        /// and Sony motor lanes plus the PID force feedback lane on
+        /// Extended slots (the sim-racing wheels that filed #234).
+        /// Extended without force feedback, Keyboard and Mouse, and
+        /// MIDI have no feedback surface and hide the tab. Never a
+        /// physical-device capability gate.</summary>
+        public bool RumbleAudioTabVisible
+        {
+            get
+            {
+                if (_outputType is VirtualControllerType.Xbox
+                    or VirtualControllerType.PlayStation)
+                    return true;
+                if (_outputType != VirtualControllerType.Extended)
+                    return false;
+                // Mirrors the wire truth Step 5 builds: Customize on means
+                // the checkbox decides in both directions (the descriptor
+                // is rebuilt to match). Customize off means the catalog
+                // profile's own descriptor decides, and most catalog
+                // profiles ship without a PID block.
+                var cfg = ExtendedConfig;
+                if (cfg != null && cfg.Customize)
+                    return cfg.ForceFeedbackEnabled;
+                var profile = PadForge.Common.Input.HMaestroProfileCatalog
+                    .GetProfileById(ProfileId);
+                return PadForge.Common.Input.HMaestroVirtualController
+                    .DescriptorHasPidFfbBlock(profile?.DescriptorHex);
+            }
+        }
+
+        /// <summary>Re-evaluates the Bass Shakers tab gate and evicts a
+        /// now-hidden selection back to the first tab. Call from every
+        /// seam that changes the gate's inputs: the force feedback
+        /// checkbox, the Customize toggle, and an uncustomized profile
+        /// switch.</summary>
+        private void RefreshRumbleAudioTabGate()
+        {
+            OnPropertyChanged(nameof(RumbleAudioTabVisible));
+            if (!RumbleAudioTabVisible
+                && SelectedConfigTab == BassShakersTabIndex)
+                SelectedConfigTab = 0;
+        }
 
         /// <summary>The slot's authored config, null until first enable.
         /// Read-only here. Creation happens in the enable setter only.</summary>

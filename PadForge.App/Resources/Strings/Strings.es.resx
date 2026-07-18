@@ -2728,12 +2728,12 @@
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>icono de celda del menú no reconocido ({0}), por lo que la celda conserva su etiqueta de texto</value></data>
   <data name="Pad_Tab_BassShakers" xml:space="preserve"><value>Bass shakers</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Bass shakers</value></data>
-  <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Envía la vibración del juego que recibe este mando virtual a una salida de audio como tonos de baja frecuencia para bass shakers y subwoofers.</value></data>
+  <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Envía la vibración y la retroalimentación de fuerza del juego que recibe este mando virtual a una salida de audio como tonos de baja frecuencia para bass shakers y subwoofers.</value></data>
   <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>Vibración a audio</value></data>
-  <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Funciona con mandos virtuales Xbox y DualShock 4 / DualSense. Solo la respuesta del juego pasa a la salida de audio. La vibración de macros y de prueba se queda en el mando.</value></data>
+  <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Funciona con mandos virtuales Xbox, DualShock 4 / DualSense y mandos virtuales Extendido con retroalimentación de fuerza, como volantes de carreras. Solo la respuesta del juego pasa a la salida de audio. La vibración de macros y de prueba se queda en el mando.</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>Restablecer vibración a audio</value></data>
   <data name="Pad_RumbleAudio_Enable" xml:space="preserve"><value>Enviar la vibración a una salida de audio</value></data>
-  <data name="Pad_RumbleAudio_Enable_Tooltip" xml:space="preserve"><value>Reproduce la vibración del juego de este mando virtual como tonos de baja frecuencia en la salida de audio elegida. Al desactivarlo se conservan todos los ajustes.</value></data>
+  <data name="Pad_RumbleAudio_Enable_Tooltip" xml:space="preserve"><value>Reproduce la vibración y la retroalimentación de fuerza del juego de este mando virtual como tonos de baja frecuencia en la salida de audio elegida. Al desactivarlo se conservan todos los ajustes.</value></data>
   <data name="Pad_RumbleAudio_ResetEnable" xml:space="preserve"><value>Restablecer envío de vibración</value></data>
   <data name="Pad_RumbleAudio_OutputDevice" xml:space="preserve"><value>Dispositivo de salida</value></data>
   <data name="Pad_RumbleAudio_OutputDevice_Tooltip" xml:space="preserve"><value>El dispositivo de reproducción que recibe los tonos de vibración. Predeterminado del sistema sigue al dispositivo de reproducción predeterminado de Windows. Si el dispositivo elegido desaparece, el audio queda en silencio hasta que vuelva.</value></data>

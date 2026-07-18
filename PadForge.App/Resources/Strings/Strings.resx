@@ -2726,4 +2726,45 @@
   <data name="Workshop_Tr_MenuEmpty" xml:space="preserve"><value>menu has no bound cells</value></data>
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>menu host surface not supported ({0})</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>menu cell icon not recognized ({0}), so the cell keeps its text label</value></data>
+  <data name="Pad_Tab_BassShakers" xml:space="preserve"><value>Bass Shakers</value></data>
+  <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Bass Shakers</value></data>
+  <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Routes the game rumble this virtual controller receives to an audio output as low-frequency tones for bass shakers and subwoofers.</value></data>
+  <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>Rumble to Audio</value></data>
+  <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Works with Xbox and DualShock 4 / DualSense virtual controllers. Only game feedback plays through the audio output. Macro and test rumble stay on the controller.</value></data>
+  <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>Reset Rumble to Audio</value></data>
+  <data name="Pad_RumbleAudio_Enable" xml:space="preserve"><value>Route rumble to an audio output</value></data>
+  <data name="Pad_RumbleAudio_Enable_Tooltip" xml:space="preserve"><value>Plays this virtual controller's game rumble as low-frequency tones on the selected audio output. Turning it off keeps every setting.</value></data>
+  <data name="Pad_RumbleAudio_ResetEnable" xml:space="preserve"><value>Reset Rumble Routing</value></data>
+  <data name="Pad_RumbleAudio_OutputDevice" xml:space="preserve"><value>Output Device</value></data>
+  <data name="Pad_RumbleAudio_OutputDevice_Tooltip" xml:space="preserve"><value>The playback device that receives the rumble tones. System default follows the Windows default playback device. If the selected device disappears, audio stays off until it returns.</value></data>
+  <data name="Pad_RumbleAudio_ResetOutputDevice" xml:space="preserve"><value>Reset Output Device</value></data>
+  <data name="Pad_RumbleAudio_Status_Inactive" xml:space="preserve"><value>Audio output is not running.</value></data>
+  <data name="Pad_RumbleAudio_Status_Active_Format" xml:space="preserve"><value>Playing to {0}.</value></data>
+  <data name="Pad_RumbleAudio_Status_Missing" xml:space="preserve"><value>The selected output device is unavailable. Audio stays off until it returns.</value></data>
+  <data name="Pad_RumbleAudio_BluetoothHint" xml:space="preserve"><value>Bluetooth audio devices add noticeable latency.</value></data>
+  <data name="Pad_RumbleAudio_ChannelMode" xml:space="preserve"><value>Channel Mode</value></data>
+  <data name="Pad_RumbleAudio_ChannelMode_Tooltip" xml:space="preserve"><value>Mono plays every voice on all speaker channels. Controller Stereo splits them like the controller: low motor and left trigger on the left channel, high motor and right trigger on the right.</value></data>
+  <data name="Pad_RumbleAudio_Mode_Mono" xml:space="preserve"><value>Mono (All Channels)</value></data>
+  <data name="Pad_RumbleAudio_Mode_Stereo" xml:space="preserve"><value>Controller Stereo</value></data>
+  <data name="Pad_RumbleAudio_ResetChannelMode" xml:space="preserve"><value>Reset Channel Mode</value></data>
+  <data name="Pad_RumbleAudio_MasterGain" xml:space="preserve"><value>Master Gain</value></data>
+  <data name="Pad_RumbleAudio_MasterGain_Tooltip" xml:space="preserve"><value>Overall loudness applied after each voice's own gain. Keep headroom so the four voices do not clip when they play together.</value></data>
+  <data name="Pad_RumbleAudio_ResetMasterGain" xml:space="preserve"><value>Reset Master Gain</value></data>
+  <data name="Pad_RumbleAudio_Voice_Low" xml:space="preserve"><value>Low Motor</value></data>
+  <data name="Pad_RumbleAudio_Voice_High" xml:space="preserve"><value>High Motor</value></data>
+  <data name="Pad_RumbleAudio_Voice_TriggerLeft" xml:space="preserve"><value>Left Trigger</value></data>
+  <data name="Pad_RumbleAudio_Voice_TriggerRight" xml:space="preserve"><value>Right Trigger</value></data>
+  <data name="Pad_RumbleAudio_VoiceEnable_Tooltip" xml:space="preserve"><value>Plays this feedback channel as a tone. Gain and frequency stay set while it is off.</value></data>
+  <data name="Pad_RumbleAudio_Frequency_Tooltip" xml:space="preserve"><value>Tone frequency for this channel, 20 to 120 Hz. Run the frequency sweep to find where your shaker responds strongest.</value></data>
+  <data name="Pad_RumbleAudio_Gain_Tooltip" xml:space="preserve"><value>Loudness of this channel before master gain.</value></data>
+  <data name="Pad_RumbleAudio_Test" xml:space="preserve"><value>Test</value></data>
+  <data name="Pad_RumbleAudio_Test_Tooltip" xml:space="preserve"><value>Plays this channel's tone for 1.5 seconds at its set gain.</value></data>
+  <data name="Pad_RumbleAudio_ResetVoiceLow" xml:space="preserve"><value>Reset Low Motor</value></data>
+  <data name="Pad_RumbleAudio_ResetVoiceHigh" xml:space="preserve"><value>Reset High Motor</value></data>
+  <data name="Pad_RumbleAudio_ResetVoiceTriggerLeft" xml:space="preserve"><value>Reset Left Trigger</value></data>
+  <data name="Pad_RumbleAudio_ResetVoiceTriggerRight" xml:space="preserve"><value>Reset Right Trigger</value></data>
+  <data name="Pad_RumbleAudio_Sweep" xml:space="preserve"><value>Frequency Sweep</value></data>
+  <data name="Pad_RumbleAudio_Sweep_Tooltip" xml:space="preserve"><value>Sweeps a tone from 20 to 120 Hz over eight seconds on the low motor routing. Note where your shaker responds strongest and set the voice frequencies there.</value></data>
+  <data name="Pad_RumbleAudio_StopTest" xml:space="preserve"><value>Stop</value></data>
+  <data name="Pad_RumbleAudio_StopTest_Tooltip" xml:space="preserve"><value>Stops the test tone or sweep.</value></data>
 </root>

@@ -1502,6 +1502,21 @@ namespace PadForge.Services
                 return (v.LeftMotorSpeed > 0, v.RightMotorSpeed > 0);
             };
 
+            // Issue #236: slot-global inbound game-feedback hook for the
+            // Engine's Rumble source family. PROVENANCE: reads the
+            // controller-local pack through the VC array, NEVER
+            // FinalVibrationStates (that projection carries test rumble,
+            // macro rumble, per-device gain/swap, and AudioBassDetector's
+            // audio rumble, which would close the shaker feedback loop).
+            PadForge.Engine.Common.Mapping.SourceCoercion.SlotRumbleProvider = slotIndex =>
+                _inputManager?.GetInboundRumblePack(slotIndex) ?? 0L;
+
+            // The rumble-to-audio renderer reconciles endpoints on its own
+            // worker. Cheap when no slot has a config (one array walk per
+            // 5 s pass), so it starts unconditionally like the haptic
+            // mirror services.
+            PadForge.Common.Input.RumbleAudioService.EnsureStarted();
+
             // A persisted mirror toggle must resume on launch — the service
             // otherwise only starts when poked (toggle change, assignment
             // change, or a macro's sink lookup). One signal is enough: the
@@ -5753,6 +5768,10 @@ namespace PadForge.Services
             // first snapshot and was wiped from the live set on resave.
             src.CopyWorkshopStampsTo(copy);
             CopyShiftActivators(src, copy);
+            // Rumble-audio config (#236) travels with the set: a profile
+            // snapshot / apply without this leg would silently disable the
+            // slot's bass-shaker routing and wipe it on resave.
+            copy.RumbleAudio = src.RumbleAudio?.Clone();
             // Menus (#9 B-17) travel with the set like the shift authoring:
             // without this leg a profile apply would silently drop every
             // imported / authored menu.
@@ -6034,7 +6053,15 @@ namespace PadForge.Services
             // which returns to the normal automap merge. The Workshop stamps
             // stay behind with ownership too (they are only read while
             // Authoritative, so carrying them would be inert data).
-            var copy = new Engine.Data.MappingSet();
+            // The DESTINATION's rumble-audio config (#236) survives a row
+            // paste: the clipboard carries rows, not the slot's shaker
+            // setup, and the fresh-set swap below would otherwise silently
+            // wipe it (the same trap ApplyMenusSnapshotJson re-attaches
+            // menus around).
+            var copy = new Engine.Data.MappingSet
+            {
+                RumbleAudio = SettingsManager.SlotMappingSets[padIndex]?.RumbleAudio,
+            };
             foreach (var r in rows)
             {
                 if (r == null) continue;
@@ -6189,6 +6216,11 @@ namespace PadForge.Services
             // CloneMappingSetDeep rationale: hand-lists dropped them).
             src.CopyWorkshopStampsTo(copy);
             CopyShiftActivators(src, copy, retargetSlot: targetSlot);
+            // Whole-slot copy carries the rumble-audio config (#236): the
+            // EndpointId is machine-local but this copy stays on the same
+            // machine, so the selection remains valid. Row/layer-only paste
+            // deliberately does NOT carry it (destination keeps its own).
+            copy.RumbleAudio = src.RumbleAudio?.Clone();
             // Menus (#9 B-17) travel with the set exactly like the shift
             // authoring above (the same leg CloneMappingSetDeep carries).
             // Without it, Copy From Slot dropped the source's menus and the
@@ -6277,6 +6309,9 @@ namespace PadForge.Services
             // this leg the Copy From dialog never offered such a slot and the
             // menus it holds were uncopyable.
             if (ms.Menus != null && ms.Menus.Count > 0) return true;
+            // A rumble-audio config (#236) counts too: a config-only set is
+            // a meaningful Copy From Slot donor and a "configured" slot.
+            if (ms.RumbleAudio != null) return true;
             return false;
         }
 
@@ -8441,6 +8476,9 @@ namespace PadForge.Services
         {
             try { _inputManager?.QuiesceOutputs(); } catch { }
             try { PadForge.Common.Input.HapticToneService.Shutdown(); } catch { }
+            // #236: quiesce is an explicit silence edge; the shaker tone
+            // must die with the other outputs.
+            try { PadForge.Common.Input.RumbleAudioService.SilenceAll(); } catch { }
         }
 
         /// <summary>Clears every HidHide blacklist entry, exactly like the

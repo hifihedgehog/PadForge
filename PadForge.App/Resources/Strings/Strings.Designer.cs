@@ -2580,4 +2580,47 @@ public class Strings : INotifyPropertyChanged
     public string Workshop_Tr_MenuEmpty => Get("Workshop_Tr_MenuEmpty");
     public string Workshop_Tr_MenuSurfaceNotSupported => Get("Workshop_Tr_MenuSurfaceNotSupported");
     public string Workshop_Tr_MenuIconUnresolved => Get("Workshop_Tr_MenuIconUnresolved");
+
+    // Bass Shakers tab (issue #236, rumble to audio)
+    public string Pad_Tab_BassShakers => Get("Pad_Tab_BassShakers");
+    public string Pad_RumbleAudio_Header => Get("Pad_RumbleAudio_Header");
+    public string Pad_RumbleAudio_Subtitle => Get("Pad_RumbleAudio_Subtitle");
+    public string Pad_RumbleAudio_Card_Header => Get("Pad_RumbleAudio_Card_Header");
+    public string Pad_RumbleAudio_Card_Desc => Get("Pad_RumbleAudio_Card_Desc");
+    public string Pad_RumbleAudio_ResetCard_Tooltip => Get("Pad_RumbleAudio_ResetCard_Tooltip");
+    public string Pad_RumbleAudio_Enable => Get("Pad_RumbleAudio_Enable");
+    public string Pad_RumbleAudio_Enable_Tooltip => Get("Pad_RumbleAudio_Enable_Tooltip");
+    public string Pad_RumbleAudio_ResetEnable => Get("Pad_RumbleAudio_ResetEnable");
+    public string Pad_RumbleAudio_OutputDevice => Get("Pad_RumbleAudio_OutputDevice");
+    public string Pad_RumbleAudio_OutputDevice_Tooltip => Get("Pad_RumbleAudio_OutputDevice_Tooltip");
+    public string Pad_RumbleAudio_ResetOutputDevice => Get("Pad_RumbleAudio_ResetOutputDevice");
+    public string Pad_RumbleAudio_Status_Inactive => Get("Pad_RumbleAudio_Status_Inactive");
+    public string Pad_RumbleAudio_Status_Active_Format => Get("Pad_RumbleAudio_Status_Active_Format");
+    public string Pad_RumbleAudio_Status_Missing => Get("Pad_RumbleAudio_Status_Missing");
+    public string Pad_RumbleAudio_BluetoothHint => Get("Pad_RumbleAudio_BluetoothHint");
+    public string Pad_RumbleAudio_ChannelMode => Get("Pad_RumbleAudio_ChannelMode");
+    public string Pad_RumbleAudio_ChannelMode_Tooltip => Get("Pad_RumbleAudio_ChannelMode_Tooltip");
+    public string Pad_RumbleAudio_Mode_Mono => Get("Pad_RumbleAudio_Mode_Mono");
+    public string Pad_RumbleAudio_Mode_Stereo => Get("Pad_RumbleAudio_Mode_Stereo");
+    public string Pad_RumbleAudio_ResetChannelMode => Get("Pad_RumbleAudio_ResetChannelMode");
+    public string Pad_RumbleAudio_MasterGain => Get("Pad_RumbleAudio_MasterGain");
+    public string Pad_RumbleAudio_MasterGain_Tooltip => Get("Pad_RumbleAudio_MasterGain_Tooltip");
+    public string Pad_RumbleAudio_ResetMasterGain => Get("Pad_RumbleAudio_ResetMasterGain");
+    public string Pad_RumbleAudio_Voice_Low => Get("Pad_RumbleAudio_Voice_Low");
+    public string Pad_RumbleAudio_Voice_High => Get("Pad_RumbleAudio_Voice_High");
+    public string Pad_RumbleAudio_Voice_TriggerLeft => Get("Pad_RumbleAudio_Voice_TriggerLeft");
+    public string Pad_RumbleAudio_Voice_TriggerRight => Get("Pad_RumbleAudio_Voice_TriggerRight");
+    public string Pad_RumbleAudio_VoiceEnable_Tooltip => Get("Pad_RumbleAudio_VoiceEnable_Tooltip");
+    public string Pad_RumbleAudio_Frequency_Tooltip => Get("Pad_RumbleAudio_Frequency_Tooltip");
+    public string Pad_RumbleAudio_Gain_Tooltip => Get("Pad_RumbleAudio_Gain_Tooltip");
+    public string Pad_RumbleAudio_Test => Get("Pad_RumbleAudio_Test");
+    public string Pad_RumbleAudio_Test_Tooltip => Get("Pad_RumbleAudio_Test_Tooltip");
+    public string Pad_RumbleAudio_ResetVoiceLow => Get("Pad_RumbleAudio_ResetVoiceLow");
+    public string Pad_RumbleAudio_ResetVoiceHigh => Get("Pad_RumbleAudio_ResetVoiceHigh");
+    public string Pad_RumbleAudio_ResetVoiceTriggerLeft => Get("Pad_RumbleAudio_ResetVoiceTriggerLeft");
+    public string Pad_RumbleAudio_ResetVoiceTriggerRight => Get("Pad_RumbleAudio_ResetVoiceTriggerRight");
+    public string Pad_RumbleAudio_Sweep => Get("Pad_RumbleAudio_Sweep");
+    public string Pad_RumbleAudio_Sweep_Tooltip => Get("Pad_RumbleAudio_Sweep_Tooltip");
+    public string Pad_RumbleAudio_StopTest => Get("Pad_RumbleAudio_StopTest");
+    public string Pad_RumbleAudio_StopTest_Tooltip => Get("Pad_RumbleAudio_StopTest_Tooltip");
 }

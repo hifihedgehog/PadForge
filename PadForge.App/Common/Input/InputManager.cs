@@ -1019,8 +1019,15 @@ namespace PadForge.Common.Input
 
             _running = false;
 
-            // Macro sounds die with the engine — releases the WASAPI clients.
+            // Macro sounds die with the engine. Releases the WASAPI clients.
             SoundMacroService.StopAll();
+
+            // #236: engine stop is an explicit silence edge. _running is
+            // already false, so no in-flight poll can reassert a pack
+            // after this (and the per-slot generation discards a racing
+            // publish from the final tick). Players stay alive; the
+            // renderer sees zeros and fades within its click ramp.
+            RumbleAudioService.SilenceAll();
 
             if (_pollingThread != null && _pollingThread.IsAlive)
             {
@@ -1153,6 +1160,12 @@ namespace PadForge.Common.Input
                     {
                         try
                         {
+                            // #236: the feedback lane below never runs in
+                            // idle, so idle entry is an explicit silence
+                            // edge. Every idle iteration republishes it
+                            // (16 volatile writes at 20 Hz); without this
+                            // the last nonzero pack would sound forever.
+                            RumbleAudioService.SilenceAll();
                             long tsIdleSdl = Stopwatch.GetTimestamp();
                             SDL_UpdateJoysticks();
                             long idleSdlMs = (Stopwatch.GetTimestamp() - tsIdleSdl) * 1000 / Stopwatch.Frequency;
@@ -1258,6 +1271,11 @@ namespace PadForge.Common.Input
                         UpdateVirtualDevices();
                         RetrieveOutputStates();
                         UpdateDs3PlayerNumber();
+                        // #236: publish the per-slot inbound-feedback packs
+                        // for the rumble-to-audio renderer. Must follow
+                        // UpdateVirtualDevices so a slot destroyed this
+                        // tick publishes zeros the same tick.
+                        UpdateRumbleAudioLane();
 
                         // Stall watchdog report: only outliers write anything.
                         long cycleMs = cycleTimer.ElapsedMilliseconds;

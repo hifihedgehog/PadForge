@@ -2671,4 +2671,45 @@
   <data name="Workshop_Tr_MenuEmpty" xml:space="preserve"><value>メニューに割り当て済みセルがありません</value></data>
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>メニューのホストサーフェスは未対応 ({0})</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>メニューセルのアイコンを認識できません ({0})。このセルはテキストラベルを表示します</value></data>
+  <data name="Pad_Tab_BassShakers" xml:space="preserve"><value>バスシェイカー</value></data>
+  <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>バスシェイカー</value></data>
+  <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>この仮想コントローラーが受け取るゲームの振動を、バスシェイカーやサブウーファー向けの低周波トーンとしてオーディオ出力へ送ります。</value></data>
+  <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>振動をオーディオへ</value></data>
+  <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Xbox および DualShock 4 / DualSense の仮想コントローラーで動作します。オーディオ出力に流れるのはゲームのフィードバックのみです。マクロやテストの振動はコントローラー側に残ります。</value></data>
+  <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>「振動をオーディオへ」をリセット</value></data>
+  <data name="Pad_RumbleAudio_Enable" xml:space="preserve"><value>振動をオーディオ出力へ送る</value></data>
+  <data name="Pad_RumbleAudio_Enable_Tooltip" xml:space="preserve"><value>この仮想コントローラーのゲーム振動を、選んだオーディオ出力で低周波トーンとして再生します。オフにしても設定はすべて保持されます。</value></data>
+  <data name="Pad_RumbleAudio_ResetEnable" xml:space="preserve"><value>振動の送出をリセット</value></data>
+  <data name="Pad_RumbleAudio_OutputDevice" xml:space="preserve"><value>出力デバイス</value></data>
+  <data name="Pad_RumbleAudio_OutputDevice_Tooltip" xml:space="preserve"><value>振動トーンを受け取る再生デバイスです。システム既定は Windows の既定の再生デバイスに従います。選んだデバイスが見つからない場合、戻るまで音は出ません。</value></data>
+  <data name="Pad_RumbleAudio_ResetOutputDevice" xml:space="preserve"><value>出力デバイスをリセット</value></data>
+  <data name="Pad_RumbleAudio_Status_Inactive" xml:space="preserve"><value>オーディオ出力は動作していません。</value></data>
+  <data name="Pad_RumbleAudio_Status_Active_Format" xml:space="preserve"><value>{0} で再生中。</value></data>
+  <data name="Pad_RumbleAudio_Status_Missing" xml:space="preserve"><value>選んだ出力デバイスが利用できません。戻るまで音は出ません。</value></data>
+  <data name="Pad_RumbleAudio_BluetoothHint" xml:space="preserve"><value>Bluetooth オーディオ機器では目立つ遅延が生じます。</value></data>
+  <data name="Pad_RumbleAudio_ChannelMode" xml:space="preserve"><value>チャンネルモード</value></data>
+  <data name="Pad_RumbleAudio_ChannelMode_Tooltip" xml:space="preserve"><value>モノラルは各ボイスを全チャンネルで再生します。コントローラーステレオはコントローラーと同じ配置に分けます。低周波モーターと左トリガーは左、高周波モーターと右トリガーは右です。</value></data>
+  <data name="Pad_RumbleAudio_Mode_Mono" xml:space="preserve"><value>モノラル（全チャンネル）</value></data>
+  <data name="Pad_RumbleAudio_Mode_Stereo" xml:space="preserve"><value>コントローラーステレオ</value></data>
+  <data name="Pad_RumbleAudio_ResetChannelMode" xml:space="preserve"><value>チャンネルモードをリセット</value></data>
+  <data name="Pad_RumbleAudio_MasterGain" xml:space="preserve"><value>マスターゲイン</value></data>
+  <data name="Pad_RumbleAudio_MasterGain_Tooltip" xml:space="preserve"><value>各ボイスのゲインの後に適用される全体音量です。4 つのボイスが重なっても歪まないよう余裕を残してください。</value></data>
+  <data name="Pad_RumbleAudio_ResetMasterGain" xml:space="preserve"><value>マスターゲインをリセット</value></data>
+  <data name="Pad_RumbleAudio_Voice_Low" xml:space="preserve"><value>低周波モーター</value></data>
+  <data name="Pad_RumbleAudio_Voice_High" xml:space="preserve"><value>高周波モーター</value></data>
+  <data name="Pad_RumbleAudio_Voice_TriggerLeft" xml:space="preserve"><value>左トリガー</value></data>
+  <data name="Pad_RumbleAudio_Voice_TriggerRight" xml:space="preserve"><value>右トリガー</value></data>
+  <data name="Pad_RumbleAudio_VoiceEnable_Tooltip" xml:space="preserve"><value>このフィードバックチャンネルをトーンとして再生します。オフの間もゲインと周波数は保持されます。</value></data>
+  <data name="Pad_RumbleAudio_Frequency_Tooltip" xml:space="preserve"><value>このチャンネルのトーン周波数（20〜120 Hz）。周波数スイープでシェイカーが最も強く反応する所を探せます。</value></data>
+  <data name="Pad_RumbleAudio_Gain_Tooltip" xml:space="preserve"><value>マスターゲイン前のこのチャンネルの音量です。</value></data>
+  <data name="Pad_RumbleAudio_Test" xml:space="preserve"><value>テスト</value></data>
+  <data name="Pad_RumbleAudio_Test_Tooltip" xml:space="preserve"><value>このチャンネルのトーンを設定ゲインで 1.5 秒再生します。</value></data>
+  <data name="Pad_RumbleAudio_ResetVoiceLow" xml:space="preserve"><value>低周波モーターをリセット</value></data>
+  <data name="Pad_RumbleAudio_ResetVoiceHigh" xml:space="preserve"><value>高周波モーターをリセット</value></data>
+  <data name="Pad_RumbleAudio_ResetVoiceTriggerLeft" xml:space="preserve"><value>左トリガーをリセット</value></data>
+  <data name="Pad_RumbleAudio_ResetVoiceTriggerRight" xml:space="preserve"><value>右トリガーをリセット</value></data>
+  <data name="Pad_RumbleAudio_Sweep" xml:space="preserve"><value>周波数スイープ</value></data>
+  <data name="Pad_RumbleAudio_Sweep_Tooltip" xml:space="preserve"><value>低周波モーターの経路で 20〜120 Hz のトーンを 8 秒かけて流します。シェイカーが最も強く反応した周波数を各ボイスに設定してください。</value></data>
+  <data name="Pad_RumbleAudio_StopTest" xml:space="preserve"><value>停止</value></data>
+  <data name="Pad_RumbleAudio_StopTest_Tooltip" xml:space="preserve"><value>テストトーンやスイープを停止します。</value></data>
 </root>

@@ -517,14 +517,13 @@ namespace PadForge.Services
                     ? persisted[slot]
                     : null;
 
-                // Content = rows OR menus OR shift activators. Gating on
-                // rows alone discarded a rows-empty set on restart, deleting
-                // any menus / activators it carried (a menus-only slot lost
-                // its menu on every launch, Codex audit 2026-07-16).
-                bool xmlHasContent = fromXml != null
-                    && ((fromXml.Rows != null && fromXml.Rows.Count > 0)
-                        || (fromXml.Menus != null && fromXml.Menus.Count > 0)
-                        || (fromXml.ShiftActivators != null && fromXml.ShiftActivators.Count > 0));
+                // Content gate lives on the set itself (HasAuthoredContent:
+                // rows, shift activators, menus, authoritative ownership,
+                // rumble-audio config) so a new slot-scoped structure cannot
+                // be silently discarded on restart the way the old inline
+                // rows-only check deleted a menus-only slot's menu on every
+                // launch (Codex audit 2026-07-16).
+                bool xmlHasContent = fromXml != null && fromXml.HasAuthoredContent;
                 if (xmlHasContent)
                 {
                     SanitizeMappingSet(fromXml, slot);
@@ -1570,6 +1569,12 @@ namespace PadForge.Services
                 // deadzone shape / gyro engage on every device assign or
                 // unassign (the merge runs on both).
                 current.CopyWorkshopStampsTo(merged);
+                // Rumble-audio config (#236) is part of the same not-Rows
+                // family: the merge runs on every device assign/unassign,
+                // and dropping the config here would kill the slot's
+                // bass-shaker routing whenever a device joined or left.
+                // Reference carry is safe; `current` is discarded.
+                merged.RumbleAudio = current.RumbleAudio;
                 var consumedRebuilt = new HashSet<(string, string)>();
 
                 foreach (var er in current.Rows)

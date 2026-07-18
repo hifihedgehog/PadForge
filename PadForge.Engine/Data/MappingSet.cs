@@ -65,6 +65,37 @@ namespace PadForge.Engine.Data
         [XmlAttribute] public string BaseIcon { get; set; } = "";
 
         /// <summary>
+        /// Rumble-to-audio (bass shaker / LFE) configuration for this slot,
+        /// issue #236. Null = feature disabled, nothing persisted. Rides the
+        /// MappingSet for the same reason <see cref="Menus"/> does: one
+        /// lifetime with the slot's rows across profile capture / apply,
+        /// copy, compaction, reset, and .pfprofile export. NOT PadSetting
+        /// (per-device scope; game feedback reaches the virtual controller
+        /// whether or not any physical device has motors) and NOT
+        /// DeviceSlotConfig (also device-scoped).
+        /// </summary>
+        [XmlElement("RumbleAudio")]
+        public RumbleAudioConfig RumbleAudio { get; set; }
+
+        /// <summary>
+        /// True when this set carries anything worth persisting or loading:
+        /// rows, shift activators (layers), menus, authoritative ownership,
+        /// or a rumble-audio config. The ONE content gate for cold load and
+        /// slot-has-content checks. Gating on a hand-list of collections
+        /// silently discarded a set whose only content was the newest
+        /// structure (a menus-only slot lost its menu on every launch,
+        /// Codex audit 2026-07-16; a config-only rumble-audio set would
+        /// have died the same way).
+        /// </summary>
+        [XmlIgnore]
+        public bool HasAuthoredContent
+            => (Rows != null && Rows.Count > 0)
+            || (ShiftActivators != null && ShiftActivators.Count > 0)
+            || (Menus != null && Menus.Count > 0)
+            || Authoritative
+            || RumbleAudio != null;
+
+        /// <summary>
         /// An authoritative set owns its slot's mappings completely: the
         /// legacy-automap merge must not add rows or inject sources into it.
         /// Stamped true on Steam Workshop imports, whose rows spell out every

@@ -2671,4 +2671,45 @@
   <data name="Workshop_Tr_MenuEmpty" xml:space="preserve"><value>菜单没有已绑定的单元格</value></data>
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>不支持菜单宿主表面（{0}）</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>无法识别菜单单元格图标（{0}），该单元格保留其文本标签</value></data>
+  <data name="Pad_Tab_BassShakers" xml:space="preserve"><value>低音振动器</value></data>
+  <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>低音振动器</value></data>
+  <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>将此虚拟手柄收到的游戏振动转换为低频音，输出到音频设备，用于低音振动器和低音炮。</value></data>
+  <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>振动转音频</value></data>
+  <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>适用于 Xbox 和 DualShock 4 / DualSense 虚拟手柄。仅游戏反馈会进入音频输出。宏振动和测试振动仍留在手柄上。</value></data>
+  <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>重置振动转音频</value></data>
+  <data name="Pad_RumbleAudio_Enable" xml:space="preserve"><value>将振动发送到音频输出</value></data>
+  <data name="Pad_RumbleAudio_Enable_Tooltip" xml:space="preserve"><value>把此虚拟手柄的游戏振动在所选音频输出上以低频音播放。关闭后所有设置保持不变。</value></data>
+  <data name="Pad_RumbleAudio_ResetEnable" xml:space="preserve"><value>重置振动路由</value></data>
+  <data name="Pad_RumbleAudio_OutputDevice" xml:space="preserve"><value>输出设备</value></data>
+  <data name="Pad_RumbleAudio_OutputDevice_Tooltip" xml:space="preserve"><value>接收振动音的播放设备。系统默认跟随 Windows 默认播放设备。所选设备消失时音频保持静音，直到设备恢复。</value></data>
+  <data name="Pad_RumbleAudio_ResetOutputDevice" xml:space="preserve"><value>重置输出设备</value></data>
+  <data name="Pad_RumbleAudio_Status_Inactive" xml:space="preserve"><value>音频输出未运行。</value></data>
+  <data name="Pad_RumbleAudio_Status_Active_Format" xml:space="preserve"><value>正在通过 {0} 播放。</value></data>
+  <data name="Pad_RumbleAudio_Status_Missing" xml:space="preserve"><value>所选输出设备不可用。音频保持静音，直到设备恢复。</value></data>
+  <data name="Pad_RumbleAudio_BluetoothHint" xml:space="preserve"><value>蓝牙音频设备会带来明显延迟。</value></data>
+  <data name="Pad_RumbleAudio_ChannelMode" xml:space="preserve"><value>声道模式</value></data>
+  <data name="Pad_RumbleAudio_ChannelMode_Tooltip" xml:space="preserve"><value>单声道在所有声道播放每个声部。手柄立体声按手柄布局拆分：低频马达和左扳机在左声道，高频马达和右扳机在右声道。</value></data>
+  <data name="Pad_RumbleAudio_Mode_Mono" xml:space="preserve"><value>单声道（所有声道）</value></data>
+  <data name="Pad_RumbleAudio_Mode_Stereo" xml:space="preserve"><value>手柄立体声</value></data>
+  <data name="Pad_RumbleAudio_ResetChannelMode" xml:space="preserve"><value>重置声道模式</value></data>
+  <data name="Pad_RumbleAudio_MasterGain" xml:space="preserve"><value>主增益</value></data>
+  <data name="Pad_RumbleAudio_MasterGain_Tooltip" xml:space="preserve"><value>在各声部增益之后应用的整体音量。请留出余量，避免四个声部叠加时削波。</value></data>
+  <data name="Pad_RumbleAudio_ResetMasterGain" xml:space="preserve"><value>重置主增益</value></data>
+  <data name="Pad_RumbleAudio_Voice_Low" xml:space="preserve"><value>低频马达</value></data>
+  <data name="Pad_RumbleAudio_Voice_High" xml:space="preserve"><value>高频马达</value></data>
+  <data name="Pad_RumbleAudio_Voice_TriggerLeft" xml:space="preserve"><value>左扳机</value></data>
+  <data name="Pad_RumbleAudio_Voice_TriggerRight" xml:space="preserve"><value>右扳机</value></data>
+  <data name="Pad_RumbleAudio_VoiceEnable_Tooltip" xml:space="preserve"><value>将此反馈通道作为音调播放。关闭时增益和频率仍会保留。</value></data>
+  <data name="Pad_RumbleAudio_Frequency_Tooltip" xml:space="preserve"><value>此通道的音调频率，20 到 120 Hz。用频率扫描找出振动器响应最强的位置。</value></data>
+  <data name="Pad_RumbleAudio_Gain_Tooltip" xml:space="preserve"><value>此通道在主增益之前的音量。</value></data>
+  <data name="Pad_RumbleAudio_Test" xml:space="preserve"><value>测试</value></data>
+  <data name="Pad_RumbleAudio_Test_Tooltip" xml:space="preserve"><value>以设定增益播放此通道的音调 1.5 秒。</value></data>
+  <data name="Pad_RumbleAudio_ResetVoiceLow" xml:space="preserve"><value>重置低频马达</value></data>
+  <data name="Pad_RumbleAudio_ResetVoiceHigh" xml:space="preserve"><value>重置高频马达</value></data>
+  <data name="Pad_RumbleAudio_ResetVoiceTriggerLeft" xml:space="preserve"><value>重置左扳机</value></data>
+  <data name="Pad_RumbleAudio_ResetVoiceTriggerRight" xml:space="preserve"><value>重置右扳机</value></data>
+  <data name="Pad_RumbleAudio_Sweep" xml:space="preserve"><value>频率扫描</value></data>
+  <data name="Pad_RumbleAudio_Sweep_Tooltip" xml:space="preserve"><value>沿低频马达通路在八秒内播放 20 到 120 Hz 的扫描音。记下振动器响应最强的位置，并把各声部频率设在那里。</value></data>
+  <data name="Pad_RumbleAudio_StopTest" xml:space="preserve"><value>停止</value></data>
+  <data name="Pad_RumbleAudio_StopTest_Tooltip" xml:space="preserve"><value>停止测试音或扫描。</value></data>
 </root>

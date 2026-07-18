@@ -6693,6 +6693,9 @@ namespace PadForge
                 // Refresh the Menus tab from the restored set so pasted menus
                 // show up immediately instead of staying invisible until relaunch.
                 padVm.ReloadMenus();
+                // Same for the Bass Shakers tab (#236): its config rides the
+                // pasted MappingSet.
+                padVm.ReloadRumbleAudio();
 
                 _settingsService.MarkDirty();
                 _viewModel.StatusText = Strings.Instance.Status_SettingsPasted;
@@ -7060,6 +7063,9 @@ namespace PadForge
                 // Refresh the Menus tab so menus carried by ReplaceSlotMappingSet
                 // show up immediately instead of staying invisible until relaunch.
                 padVm.ReloadMenus();
+                // Same for the Bass Shakers tab (#236): its config rides the
+                // copied MappingSet.
+                padVm.ReloadRumbleAudio();
 
                 _settingsService.MarkDirty();
                 _viewModel.StatusText = Strings.Instance.Status_SettingsCopiedFromDevice;

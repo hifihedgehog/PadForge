@@ -2691,4 +2691,45 @@
   <data name="Workshop_Tr_MenuEmpty" xml:space="preserve"><value>menu heeft geen toegewezen cellen</value></data>
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>menu-hostoppervlak niet ondersteund ({0})</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>menucel-pictogram niet herkend ({0}), de cel behoudt daarom zijn tekstlabel</value></data>
+  <data name="Pad_Tab_BassShakers" xml:space="preserve"><value>Bass shakers</value></data>
+  <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Bass shakers</value></data>
+  <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Stuurt de speltrilling die deze virtuele controller ontvangt als laagfrequente tonen naar een audio-uitgang voor bass shakers en subwoofers.</value></data>
+  <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>Trilling naar audio</value></data>
+  <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Werkt met virtuele Xbox- en DualShock 4- / DualSense-controllers. Alleen spelfeedback gaat naar de audio-uitgang. Macro- en testtrilling blijven op de controller.</value></data>
+  <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>Trilling naar audio resetten</value></data>
+  <data name="Pad_RumbleAudio_Enable" xml:space="preserve"><value>Trilling naar een audio-uitgang sturen</value></data>
+  <data name="Pad_RumbleAudio_Enable_Tooltip" xml:space="preserve"><value>Speelt de speltrilling van deze virtuele controller als laagfrequente tonen af op de gekozen audio-uitgang. Uitschakelen bewaart alle instellingen.</value></data>
+  <data name="Pad_RumbleAudio_ResetEnable" xml:space="preserve"><value>Trillingsroutering resetten</value></data>
+  <data name="Pad_RumbleAudio_OutputDevice" xml:space="preserve"><value>Uitvoerapparaat</value></data>
+  <data name="Pad_RumbleAudio_OutputDevice_Tooltip" xml:space="preserve"><value>Het afspeelapparaat dat de triltonen ontvangt. Systeemstandaard volgt het standaardafspeelapparaat van Windows. Verdwijnt het gekozen apparaat, dan blijft de audio stil tot het terugkeert.</value></data>
+  <data name="Pad_RumbleAudio_ResetOutputDevice" xml:space="preserve"><value>Uitvoerapparaat resetten</value></data>
+  <data name="Pad_RumbleAudio_Status_Inactive" xml:space="preserve"><value>Audio-uitvoer is niet actief.</value></data>
+  <data name="Pad_RumbleAudio_Status_Active_Format" xml:space="preserve"><value>Speelt af op {0}.</value></data>
+  <data name="Pad_RumbleAudio_Status_Missing" xml:space="preserve"><value>Het gekozen uitvoerapparaat is niet beschikbaar. De audio blijft stil tot het terugkeert.</value></data>
+  <data name="Pad_RumbleAudio_BluetoothHint" xml:space="preserve"><value>Bluetooth-audioapparaten geven merkbare vertraging.</value></data>
+  <data name="Pad_RumbleAudio_ChannelMode" xml:space="preserve"><value>Kanaalmodus</value></data>
+  <data name="Pad_RumbleAudio_ChannelMode_Tooltip" xml:space="preserve"><value>Mono speelt elke stem op alle kanalen. Controllerstereo verdeelt ze zoals de controller: laagfrequente motor en linkertrigger links, hoogfrequente motor en rechtertrigger rechts.</value></data>
+  <data name="Pad_RumbleAudio_Mode_Mono" xml:space="preserve"><value>Mono (alle kanalen)</value></data>
+  <data name="Pad_RumbleAudio_Mode_Stereo" xml:space="preserve"><value>Controllerstereo</value></data>
+  <data name="Pad_RumbleAudio_ResetChannelMode" xml:space="preserve"><value>Kanaalmodus resetten</value></data>
+  <data name="Pad_RumbleAudio_MasterGain" xml:space="preserve"><value>Hoofdversterking</value></data>
+  <data name="Pad_RumbleAudio_MasterGain_Tooltip" xml:space="preserve"><value>Totaalvolume toegepast na de versterking van elke stem. Houd marge zodat de vier stemmen samen niet oversturen.</value></data>
+  <data name="Pad_RumbleAudio_ResetMasterGain" xml:space="preserve"><value>Hoofdversterking resetten</value></data>
+  <data name="Pad_RumbleAudio_Voice_Low" xml:space="preserve"><value>Laagfrequente motor</value></data>
+  <data name="Pad_RumbleAudio_Voice_High" xml:space="preserve"><value>Hoogfrequente motor</value></data>
+  <data name="Pad_RumbleAudio_Voice_TriggerLeft" xml:space="preserve"><value>Linkertrigger</value></data>
+  <data name="Pad_RumbleAudio_Voice_TriggerRight" xml:space="preserve"><value>Rechtertrigger</value></data>
+  <data name="Pad_RumbleAudio_VoiceEnable_Tooltip" xml:space="preserve"><value>Speelt dit feedbackkanaal af als toon. Versterking en frequentie blijven bewaard terwijl het uitstaat.</value></data>
+  <data name="Pad_RumbleAudio_Frequency_Tooltip" xml:space="preserve"><value>Toonfrequentie van dit kanaal, 20 tot 120 Hz. Gebruik de frequentiesweep om te vinden waar je shaker het sterkst reageert.</value></data>
+  <data name="Pad_RumbleAudio_Gain_Tooltip" xml:space="preserve"><value>Volume van dit kanaal vóór de hoofdversterking.</value></data>
+  <data name="Pad_RumbleAudio_Test" xml:space="preserve"><value>Testen</value></data>
+  <data name="Pad_RumbleAudio_Test_Tooltip" xml:space="preserve"><value>Speelt de toon van dit kanaal 1,5 seconde af met de ingestelde versterking.</value></data>
+  <data name="Pad_RumbleAudio_ResetVoiceLow" xml:space="preserve"><value>Laagfrequente motor resetten</value></data>
+  <data name="Pad_RumbleAudio_ResetVoiceHigh" xml:space="preserve"><value>Hoogfrequente motor resetten</value></data>
+  <data name="Pad_RumbleAudio_ResetVoiceTriggerLeft" xml:space="preserve"><value>Linkertrigger resetten</value></data>
+  <data name="Pad_RumbleAudio_ResetVoiceTriggerRight" xml:space="preserve"><value>Rechtertrigger resetten</value></data>
+  <data name="Pad_RumbleAudio_Sweep" xml:space="preserve"><value>Frequentiesweep</value></data>
+  <data name="Pad_RumbleAudio_Sweep_Tooltip" xml:space="preserve"><value>Laat over acht seconden een toon van 20 tot 120 Hz lopen via de laagfrequente route. Noteer waar je shaker het sterkst reageert en zet daar de stemfrequenties.</value></data>
+  <data name="Pad_RumbleAudio_StopTest" xml:space="preserve"><value>Stoppen</value></data>
+  <data name="Pad_RumbleAudio_StopTest_Tooltip" xml:space="preserve"><value>Stopt de testtoon of de sweep.</value></data>
 </root>

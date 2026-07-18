@@ -272,6 +272,9 @@ namespace PadForge.Common.Input
             AudioPassthroughService.Shutdown();
             WiiSpeakerService.Shutdown();
             HapticToneService.Shutdown();
+            // #236: the shaker renderer dies with the engine like the
+            // other audio sinks. EnsureStarted re-arms it on engine start.
+            RumbleAudioService.StopAll();
         }
 
         // ─────────────────────────────────────────────

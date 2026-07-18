@@ -128,6 +128,70 @@ namespace PadForge.Common.Input
         /// Null entries are slots without an active VC.</summary>
         public IVirtualController[] GetVirtualControllers() => _virtualControllers;
 
+        /// <summary>The slot's inbound game-feedback pack (issue #236),
+        /// resolved through the CURRENT <c>_virtualControllers</c> position
+        /// so a reorder's array re-point retargets the read atomically
+        /// with the VC move (the pack is controller-local; see
+        /// HMaestroVirtualController.InboundRumblePack). 0 for empty /
+        /// non-HM / freshly-created slots.</summary>
+        public long GetInboundRumblePack(int padIndex)
+        {
+            if (padIndex < 0 || padIndex >= MaxPads) return 0L;
+            return (_virtualControllers[padIndex] as HMaestroVirtualController)
+                ?.InboundRumblePack ?? 0L;
+        }
+
+        /// <summary>
+        /// The dedicated slot-scoped feedback lane (issue #236): once per
+        /// poll tick, per slot, evaluate the four fixed voice bindings
+        /// (inbound pack masked by per-voice enables) and publish the
+        /// result to RumbleAudioService. Runs INSIDE the non-idle poll
+        /// loop only, so idle entry / engine stop must (and do) publish
+        /// their own explicit silence edges. Deliberately NOT part of the
+        /// per-device mapping pipeline: rumble is slot-global, points the
+        /// opposite direction (game → VC, not device → VC), and must keep
+        /// publishing zeros for unconfigured slots so a just-disabled
+        /// config self-heals within one tick. Layer-independent in v1 (a
+        /// shift layer must not silently kill shaker routing). Mapping
+        /// math, four voice masks, one volatile store per slot; no
+        /// allocations, no syscalls.
+        /// </summary>
+        private void UpdateRumbleAudioLane()
+        {
+            var sets = SettingsManager.SlotMappingSets;
+            if (sets == null) return;
+            int n = System.Math.Min(sets.Length, MaxPads);
+            for (int slot = 0; slot < n; slot++)
+            {
+                int gen = RumbleAudioService.GetGeneration(slot);
+                long pack = 0L;
+                var cfg = sets[slot]?.RumbleAudio;
+                if (cfg != null && cfg.Enabled)
+                {
+                    pack = GetInboundRumblePack(slot);
+                    if (pack != 0)
+                    {
+                        // Per-voice enable masks (the four fixed unipolar
+                        // evals). Gain and carrier are render-side DSP.
+                        var voices = cfg.Voices;
+                        if (voices != null && voices.Count > 0)
+                        {
+                            for (int v = 0; v < voices.Count; v++)
+                            {
+                                var voice = voices[v];
+                                if (voice == null || voice.Enabled) continue;
+                                int idx = System.Array.IndexOf(
+                                    Engine.Data.RumbleAudioConfig.SourceOrder, voice.Source);
+                                if (idx >= 0)
+                                    pack &= ~(0xFFFFL << (idx * 16));
+                            }
+                        }
+                    }
+                }
+                RumbleAudioService.PublishIfCurrent(slot, gen, pack);
+            }
+        }
+
         /// <summary>
         /// Configured virtual controller category per slot (Xbox / PlayStation /
         /// Extended / MIDI / KBM). The UI writes this via InputService at 30Hz;
@@ -2077,6 +2141,13 @@ namespace PadForge.Common.Input
         {
             var vc = _virtualControllers[padIndex];
             if (vc == null) return;
+
+            // #236: VC destruction is an explicit silence edge for ALL
+            // FOUR voices (the legacy lifecycle zeroing below touches only
+            // the two body motors of VibrationStates). The vacated route
+            // resolves to zero before the async disposal below can run,
+            // and the generation bump discards any racing lane publish.
+            RumbleAudioService.SilenceSlot(padIndex);
 
             // Non-HM dispatcher (KBM / MIDI) lives outside the VC, so the
             // VC's Disconnect doesn't dispose it. Tear down explicitly here.

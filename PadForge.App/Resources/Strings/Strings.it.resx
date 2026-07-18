@@ -2553,10 +2553,8 @@
   <data name="Pad_MouseGestures_CustomInput" xml:space="preserve"><value>Input di attivazione personalizzato</value></data>
   <data name="Pad_MouseGestures_CustomInput_Tooltip" xml:space="preserve"><value>L'input che tiene attiva la sessione di gesti Personalizzato finché è premuto, registrato da qualsiasi dispositivo di questo slot. Pulsanti e tasti attivano finché premuti. Gli input analogici come un pedale attivano oltre metà corsa.</value></data>
   <data name="Pad_ResetMouseGestureCustomInput" xml:space="preserve"><value>Ripristina input di attivazione personalizzato</value></data>
-  <data name="Workshop_Tr_HapticIntensityDropped" xml:space="preserve"><value>feedback aptico scartato ({0} assegnazioni)</value></data>
   <data name="Workshop_Tr_ResponseCurveNotSupported" xml:space="preserve"><value>impostazioni di curva di risposta e intervallo scartate ({0})</value></data>
   <data name="Workshop_Tr_GyroButtonMaskDropped" xml:space="preserve"><value>impostazione di attivazione del giroscopio {0}={1} scartata (l'attivazione del giroscopio si configura per controller)</value></data>
-  <data name="Workshop_Tr_ActivatorDelayDropped" xml:space="preserve"><value>ritardo di pressione scartato ({0})</value></data>
   <data name="Workshop_Tr_PlayerNumberActionNotSupported" xml:space="preserve"><value>il cambio del numero giocatore è un'azione del client Steam, nessun equivalente</value></data>
   <data name="Workshop_Tr_LizardModeActionNotSupported" xml:space="preserve"><value>l'alternanza della modalità lizard è interna a Steam, nessun equivalente</value></data>
   <data name="Workshop_Tr_ToggleLatchEmitted" xml:space="preserve"><value>la pressione di alternanza mantiene {0} fino alla pressione successiva</value></data>

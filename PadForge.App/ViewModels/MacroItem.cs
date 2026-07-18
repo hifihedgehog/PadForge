@@ -91,6 +91,24 @@ namespace PadForge.ViewModels
         [System.Xml.Serialization.XmlIgnore]
         public int PairId { get; set; }
 
+        /// <summary>Release linger for UntilRelease macros (translator v22,
+        /// Steam's activator <c>delay_end</c> on autofire: "wait for this
+        /// period of time after the button has been released before
+        /// deactivating"). When nonzero, the trigger's release does not stop
+        /// the executing macro immediately; the pulse train keeps running
+        /// this many milliseconds past the release, and a re-press inside
+        /// the window cancels the pending stop (the M6 cancel-on-re-press
+        /// shape applied to the pulse stop leg). 0 = stop at release, every
+        /// macro the editor creates. Persisted via
+        /// <c>MacroData.ReleaseLingerMs</c>, like <see cref="PairId"/>.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public int ReleaseLingerMs { get; set; }
+
+        /// <summary>Runtime deadline of the pending linger stop (UTC).
+        /// MinValue = no pending stop. Owned by the Step4b evaluators.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public System.DateTime ReleaseLingerStartUtc { get; set; } = System.DateTime.MinValue;
+
         private bool _isEnabled = true;
 
         /// <summary>Whether this macro is active. Disabling clears every

@@ -2551,10 +2551,8 @@
   <data name="Pad_MouseGestures_CustomInput" xml:space="preserve"><value>Aangepaste activeringsinvoer</value></data>
   <data name="Pad_MouseGestures_CustomInput_Tooltip" xml:space="preserve"><value>De invoer die de sessie voor aangepaste gebaren activeert zolang die wordt vastgehouden, opgenomen van elk apparaat op deze slot. Knoppen en toetsen activeren zolang ze ingedrukt zijn. Analoge invoer zoals een pedaal activeert voorbij de helft van de slag.</value></data>
   <data name="Pad_ResetMouseGestureCustomInput" xml:space="preserve"><value>Aangepaste activeringsinvoer resetten</value></data>
-  <data name="Workshop_Tr_HapticIntensityDropped" xml:space="preserve"><value>haptische feedback vervallen ({0} toewijzingen)</value></data>
   <data name="Workshop_Tr_ResponseCurveNotSupported" xml:space="preserve"><value>instellingen voor responscurve en bereik vervallen ({0})</value></data>
   <data name="Workshop_Tr_GyroButtonMaskDropped" xml:space="preserve"><value>gyro-activeringsinstelling {0}={1} vervallen (gyro-activering wordt per pad ingesteld)</value></data>
-  <data name="Workshop_Tr_ActivatorDelayDropped" xml:space="preserve"><value>indrukvertraging vervallen ({0})</value></data>
   <data name="Workshop_Tr_PlayerNumberActionNotSupported" xml:space="preserve"><value>wijziging van spelernummer is een Steam-clientactie, geen equivalent</value></data>
   <data name="Workshop_Tr_LizardModeActionNotSupported" xml:space="preserve"><value>lizard-modus-schakeling is Steam-intern, geen equivalent</value></data>
   <data name="Workshop_Tr_ToggleLatchEmitted" xml:space="preserve"><value>schakel-druk houdt {0} vast tot de volgende druk</value></data>

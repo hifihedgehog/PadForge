@@ -2531,10 +2531,8 @@
   <data name="Pad_MouseGestures_CustomInput" xml:space="preserve"><value>自定义激活输入</value></data>
   <data name="Pad_MouseGestures_CustomInput_Tooltip" xml:space="preserve"><value>按住期间使自定义手势会话待命的输入，可从此插槽上的任意设备录制。按钮和按键在按下期间待命。踏板等模拟输入超过一半行程时待命。</value></data>
   <data name="Pad_ResetMouseGestureCustomInput" xml:space="preserve"><value>重置自定义激活输入</value></data>
-  <data name="Workshop_Tr_HapticIntensityDropped" xml:space="preserve"><value>已丢弃触觉反馈（{0} 个绑定）</value></data>
   <data name="Workshop_Tr_ResponseCurveNotSupported" xml:space="preserve"><value>已丢弃响应曲线和范围设置（{0}）</value></data>
   <data name="Workshop_Tr_GyroButtonMaskDropped" xml:space="preserve"><value>已丢弃陀螺仪激活设置 {0}={1}（陀螺仪激活按每个手柄配置）</value></data>
-  <data name="Workshop_Tr_ActivatorDelayDropped" xml:space="preserve"><value>已丢弃按压延迟（{0}）</value></data>
   <data name="Workshop_Tr_PlayerNumberActionNotSupported" xml:space="preserve"><value>更改玩家编号是 Steam 客户端动作，无对应项</value></data>
   <data name="Workshop_Tr_LizardModeActionNotSupported" xml:space="preserve"><value>蜥蜴模式切换是 Steam 内部功能，无对应项</value></data>
   <data name="Workshop_Tr_ToggleLatchEmitted" xml:space="preserve"><value>切换按压将保持 {0} 直到下次按压</value></data>

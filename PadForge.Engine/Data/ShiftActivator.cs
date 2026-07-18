@@ -80,6 +80,19 @@ namespace PadForge.Engine.Data
         /// engaged before the layer change fires. <c>0</c> = instant.</summary>
         [XmlAttribute] public int DelayMs { get; set; } = 0;
 
+        /// <summary>v6 release linger (translator v22, Steam's activator
+        /// <c>delay_end</c> on a layer switch: "wait for this period of
+        /// time after the button has been released before deactivating").
+        /// Hold mode keeps the layer engaged this many milliseconds past
+        /// the input's release; a re-press inside the window continues the
+        /// engagement seamlessly, so the pending disengage is cancelled by
+        /// the press (the audit-#2 M6 cancel-on-re-press shape, applied to
+        /// the layer machinery instead of a macro pair). Other modes
+        /// ignore it: their disengage is press-driven (Toggle / Cycle /
+        /// Custom), never release-driven, so a release delay has no edge
+        /// to move. <c>0</c> = instant disengage.</summary>
+        [XmlAttribute] public int ReleaseDelayMs { get; set; } = 0;
+
         /// <summary>v2 postpone-the-mapping: when true, the activator's
         /// own row (if any) still fires alongside the layer change. When
         /// false (default), the activator input is consumed by the layer

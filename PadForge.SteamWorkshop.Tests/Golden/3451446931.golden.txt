@@ -114,7 +114,7 @@ menus: 2
     [2] D icon=ghost_040_act_0080.png
     [3] F icon=ghost_035_magic_0328.png
     [4] A icon=ghost_100_target_0020.png
-report: v21 rows:x0+k39 macros:14 menus:2 layers:1 clean:47 partial:3 skipped:0 errors:0
+report: v22 rows:x0+k39 macros:14 menus:2 layers:1 clean:47 partial:2 skipped:0 errors:0
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_a/Full_Press => KbmKey20 <- Gamepad ButtonA
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_b/Full_Press => KbmKey43 <- Gamepad ButtonB
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_x/Full_Press => KbmKey4E <- Gamepad ButtonX
@@ -164,4 +164,3 @@ report: v21 rows:x0+k39 macros:14 menus:2 layers:1 clean:47 partial:3 skipped:0 
   Clean RowEmitted @ Secondary/switch/group 27 (switches)/button_back_right/Full_Press => KbmKey38 <- Gamepad Paddle1
   Clean RowEmitted @ Secondary/switch/group 27 (switches)/button_back_right_upper/Full_Press => KbmKey36 <- Gamepad Paddle3
   Clean ShiftLayerEmitted(Secondary) @ Default/joystick/group 15 (joystick_mouse)/click/Full_Press => Hold -> Layer_3451446931_1
-  Partial HapticIntensityDropped(2) @ config

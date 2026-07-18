@@ -130,7 +130,7 @@ menus: 1
     [7] 8
     [8] 9
     [9] 0
-report: v21 rows:x0+k29 macros:29 menus:1 layers:5 clean:56 partial:4 skipped:3 errors:0
+report: v22 rows:x0+k29 macros:29 menus:1 layers:5 clean:56 partial:3 skipped:3 errors:0
   Clean RowEmitted @ Tactical/button_diamond/group 0 (four_buttons)/button_A/Full_Press => KbmMBtn0 <- Gamepad ButtonA
   Clean RowEmitted @ Tactical/joystick/group 51 (joystick_mouse) => KbmMouseX <- Gamepad LeftStickX (inverted)
   Clean RowEmitted @ Tactical/joystick/group 51 (joystick_mouse) => KbmMouseY <- Gamepad LeftStickY (inverted)
@@ -193,4 +193,3 @@ report: v21 rows:x0+k29 macros:29 menus:1 layers:5 clean:56 partial:4 skipped:3 
   Clean ShiftLayerEmitted(right_trackpad shift) @ Geoscape/switch/group 41 (switches)/left_click/Full_Press => Hold -> Layer_1129670518_2_MS_right_trackpad_38
   Partial PresetHasNoActivator(Menus / Base) @ Menus / Base
   Partial PresetHasNoActivator(Geoscape) @ Geoscape
-  Partial HapticIntensityDropped(8) @ config

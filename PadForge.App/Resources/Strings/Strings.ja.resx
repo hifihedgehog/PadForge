@@ -2531,10 +2531,8 @@
   <data name="Pad_MouseGestures_CustomInput" xml:space="preserve"><value>カスタム起動入力</value></data>
   <data name="Pad_MouseGestures_CustomInput_Tooltip" xml:space="preserve"><value>押している間カスタムジェスチャーセッションを待機させる入力で、このスロットの任意のデバイスから記録します。ボタンとキーは押している間待機させます。ペダルなどのアナログ入力はストロークの半分を超えると待機させます。</value></data>
   <data name="Pad_ResetMouseGestureCustomInput" xml:space="preserve"><value>カスタム起動入力をリセット</value></data>
-  <data name="Workshop_Tr_HapticIntensityDropped" xml:space="preserve"><value>触覚フィードバックを破棄 ({0} 件の割り当て)</value></data>
   <data name="Workshop_Tr_ResponseCurveNotSupported" xml:space="preserve"><value>レスポンスカーブと範囲の設定を破棄 ({0})</value></data>
   <data name="Workshop_Tr_GyroButtonMaskDropped" xml:space="preserve"><value>ジャイロ起動設定 {0}={1} を破棄 (ジャイロ起動はパッドごとに設定)</value></data>
-  <data name="Workshop_Tr_ActivatorDelayDropped" xml:space="preserve"><value>押下遅延を破棄 ({0})</value></data>
   <data name="Workshop_Tr_PlayerNumberActionNotSupported" xml:space="preserve"><value>プレイヤー番号の変更は Steam クライアントアクションのため、対応するものがありません</value></data>
   <data name="Workshop_Tr_LizardModeActionNotSupported" xml:space="preserve"><value>リザードモード切替は Steam 内部のため、対応するものがありません</value></data>
   <data name="Workshop_Tr_ToggleLatchEmitted" xml:space="preserve"><value>トグル押下は次の押下まで {0} を保持</value></data>

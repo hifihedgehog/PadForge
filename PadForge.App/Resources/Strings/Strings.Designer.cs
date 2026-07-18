@@ -2477,10 +2477,8 @@ public class Strings : INotifyPropertyChanged
     public string Workshop_Tr_AutomapAlsoActive => Get("Workshop_Tr_AutomapAlsoActive");
     public string Workshop_Tr_ShiftLayerEmpty => Get("Workshop_Tr_ShiftLayerEmpty");
     public string Workshop_Tr_AbsoluteMouseApproximated => Get("Workshop_Tr_AbsoluteMouseApproximated");
-    public string Workshop_Tr_HapticIntensityDropped => Get("Workshop_Tr_HapticIntensityDropped");
     public string Workshop_Tr_ResponseCurveNotSupported => Get("Workshop_Tr_ResponseCurveNotSupported");
     public string Workshop_Tr_GyroButtonMaskDropped => Get("Workshop_Tr_GyroButtonMaskDropped");
-    public string Workshop_Tr_ActivatorDelayDropped => Get("Workshop_Tr_ActivatorDelayDropped");
     public string Workshop_Tr_PlayerNumberActionNotSupported => Get("Workshop_Tr_PlayerNumberActionNotSupported");
     public string Workshop_Tr_LizardModeActionNotSupported => Get("Workshop_Tr_LizardModeActionNotSupported");
     public string Workshop_Tr_ToggleLatchEmitted => Get("Workshop_Tr_ToggleLatchEmitted");

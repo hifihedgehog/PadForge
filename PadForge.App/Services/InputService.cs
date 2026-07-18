@@ -1264,15 +1264,20 @@ namespace PadForge.Services
             // Resolved Aim-Engage state for the slot. OR-combines the
             // per-slot bit settled by UpdateGyroEngageStates (engage
             // button under Hold / Toggle semantics) with the bit written
-            // by the SetGyroEngaged macro action. Returns true (always-on)
+            // by the SetGyroEngaged macro action, then ANDs NOT the
+            // workshop ratchet clutch (translator v22): the ratchet is a
+            // separate lane the engage sources cannot fight, so holding
+            // it always pauses gyro and releasing it always restores
+            // whatever the engage sources say. Returns true (always-on)
             // when the InputManager isn't wired yet, matching the gyro
             // evaluator's null-provider fallback.
             PadForge.Engine.Common.Mapping.SourceCoercion.AimEngageStateProvider = slotIndex =>
             {
                 if (_inputManager == null) return true;
                 if (slotIndex < 0 || slotIndex >= InputManager.MaxPads) return true;
-                return _inputManager.GyroEngagedFromButton[slotIndex]
-                    || _inputManager.GyroEngagedFromMacro[slotIndex];
+                return (_inputManager.GyroEngagedFromButton[slotIndex]
+                        || _inputManager.GyroEngagedFromMacro[slotIndex])
+                    && !_inputManager.GyroRatchetHeld[slotIndex];
             };
 
             // — touchpad-gesture fire lookup. Reads from the per-

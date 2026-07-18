@@ -48,6 +48,13 @@ namespace PadForge.SteamWorkshop.Tests
                 if (p.GyroEngageInvert) sb.Append(" [inverted]");
                 sb.Append('\n');
             }
+            // Ratchet clutch stamp (v22): non-default only, so pre-v22
+            // goldens stay byte-identical on this seam.
+            if (p.GyroRatchetDescriptors.Count > 0)
+            {
+                sb.Append("gyroRatchet: ")
+                  .Append(string.Join("; ", p.GyroRatchetDescriptors)).Append('\n');
+            }
 
             RenderSet(sb, "xbox", p.XboxMappingSet);
             RenderSet(sb, "kbm", p.KbmMappingSet);
@@ -285,6 +292,9 @@ namespace PadForge.SteamWorkshop.Tests
                         sb.Append(" & ").Append(a.ChordSecondDescriptor);
                     if (a.Kind != "Button") sb.Append(" | kind=").Append(a.Kind);
                     if (a.DelayMs > 0) sb.Append(" | delay=").Append(a.DelayMs).Append("ms");
+                    // v22 release linger: non-default only, pre-v22
+                    // goldens byte-identical.
+                    if (a.ReleaseDelayMs > 0) sb.Append(" | releaseDelay=").Append(a.ReleaseDelayMs).Append("ms");
                     if (a.InheritUnmapped) sb.Append(" | inherit");
                     if (!string.IsNullOrEmpty(a.LayerName)) sb.Append(" | name=").Append(a.LayerName);
                     sb.Append('\n');

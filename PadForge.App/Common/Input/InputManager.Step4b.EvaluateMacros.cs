@@ -552,13 +552,22 @@ namespace PadForge.Common.Input
 
                 // For WhileHeld + UntilRelease: stop when trigger is released.
                 // Always mode never stops via trigger release.
+                // Release linger (translator v22, Steam delay_end on
+                // autofire): the pulse train keeps running ReleaseLingerMs
+                // past the release; a re-press inside the window clears the
+                // pending stop (the M6 cancel-on-re-press shape applied to
+                // the stop leg).
+                if (triggerActive)
+                    macro.ReleaseLingerStartUtc = DateTime.MinValue;
                 if (macro.IsExecuting &&
                     macro.TriggerMode != MacroTriggerMode.Always &&
                     macro.RepeatMode == MacroRepeatMode.UntilRelease &&
-                    !triggerActive)
+                    !triggerActive
+                    && !WithinReleaseLinger(macro))
                 {
                     macro.IsExecuting = false;
                     macro.CurrentActionIndex = 0;
+                    macro.ReleaseLingerStartUtc = DateTime.MinValue;
                     // Looping macro sounds are trigger-bound on this path:
                     // release stops them (one-shots play out).
                     SoundMacroService.StopLoopsForMacro(macro.PadIndex, macro);
@@ -1915,6 +1924,21 @@ namespace PadForge.Common.Input
             action.RepeatVcLastToggleUtc = DateTime.MinValue;
         }
 
+        /// <summary>True while an UntilRelease macro's pending stop sits
+        /// inside its release-linger window (translator v22, Steam's
+        /// activator delay_end on autofire). Arms the window on the first
+        /// released tick; the caller clears
+        /// <see cref="MacroItem.ReleaseLingerStartUtc"/> on every
+        /// trigger-active tick, which is the re-press cancel.</summary>
+        private static bool WithinReleaseLinger(MacroItem macro)
+        {
+            if (macro.ReleaseLingerMs <= 0) return false;
+            var now = DateTime.UtcNow;
+            if (macro.ReleaseLingerStartUtc == DateTime.MinValue)
+                macro.ReleaseLingerStartUtc = now;
+            return (now - macro.ReleaseLingerStartUtc).TotalMilliseconds < macro.ReleaseLingerMs;
+        }
+
         /// <summary>Stops any executing macro that shares the starting
         /// leg's nonzero <see cref="MacroItem.PairId"/> (audit #2 M6). The
         /// materializer's hold pairs are the only PairId authors: the
@@ -2870,14 +2894,19 @@ namespace PadForge.Common.Input
                     ResetMouseAccumulators(macro);
                 }
 
-                // Always mode never stops via trigger release.
+                // Always mode never stops via trigger release. Release
+                // linger mirrors the Gamepad-path block (translator v22).
+                if (triggerActive)
+                    macro.ReleaseLingerStartUtc = DateTime.MinValue;
                 if (macro.IsExecuting &&
                     macro.TriggerMode != MacroTriggerMode.Always &&
                     macro.RepeatMode == MacroRepeatMode.UntilRelease &&
-                    !triggerActive)
+                    !triggerActive
+                    && !WithinReleaseLinger(macro))
                 {
                     macro.IsExecuting = false;
                     macro.CurrentActionIndex = 0;
+                    macro.ReleaseLingerStartUtc = DateTime.MinValue;
                     // Looping macro sounds are trigger-bound on this path:
                     // release stops them (one-shots play out).
                     SoundMacroService.StopLoopsForMacro(macro.PadIndex, macro);

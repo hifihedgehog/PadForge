@@ -2187,6 +2187,11 @@ namespace PadForge.Common.Input
             // and the generation bump discards any racing lane publish.
             RumbleAudioService.SilenceSlot(padIndex);
 
+            // #240: forget SOCD winner state with the VC. Without this a
+            // recreate with identical config strings no-ops Configure and
+            // a stale Winner mis-suppresses the first press.
+            _slotButtonSocd[padIndex]?.Reset();
+
             // Non-HM dispatcher (KBM / MIDI) lives outside the VC, so the
             // VC's Disconnect doesn't dispose it. Tear down explicitly here.
             // HM-owned dispatchers are disposed inside HM VC.Disconnect; this

@@ -266,8 +266,10 @@ namespace PadForge.Tests
             Assert.Contains("Touchpad 0 TouchLeft", offered);
             // Continuous shapes stay unconvertible.
             Assert.DoesNotContain("Touchpad 0 Finger 0 X", offered);
-            Assert.DoesNotContain("Touchpad 0 Finger 0 Pressure", offered);
             Assert.DoesNotContain("Touchpad 0 StickX", offered);
+            // Pressure converts since #239: the bool branch reads it
+            // against the per-source threshold (zone windows included).
+            Assert.Contains("Touchpad 0 Finger 0 Pressure", offered);
         }
 
         [Fact]

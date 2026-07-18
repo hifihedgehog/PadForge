@@ -5045,10 +5045,16 @@ namespace PadForge.ViewModels
         /// dirty (without it the change never reaches disk) and reconciles
         /// the renderer on a worker task. Reconcile touches WASAPI, so it
         /// must never run on the UI thread's critical path.</summary>
+        // Debounced reconcile kick (audit: a gain-slider drag fired one
+        // Task.Run + full COM endpoint enumeration per notch). One shared
+        // 300 ms one-shot timer per VM: every change re-arms it, the
+        // trailing edge runs a single reconcile with the final values.
+        private System.Threading.Timer _rumbleAudioReconcileDebounce;
+
         private void NotifyRumbleAudioConfigChanged()
         {
             ConfigItemDirtyCallback?.Invoke();
-            System.Threading.Tasks.Task.Run(() =>
+            var timer = _rumbleAudioReconcileDebounce ??= new System.Threading.Timer(_ =>
             {
                 try
                 {
@@ -5056,7 +5062,8 @@ namespace PadForge.ViewModels
                     RumbleAudioService.Reconcile();
                 }
                 catch { }
-            });
+            }, null, System.Threading.Timeout.Infinite, System.Threading.Timeout.Infinite);
+            timer.Change(300, System.Threading.Timeout.Infinite);
         }
 
         private RelayCommand _resetRumbleAudioEnabledCommand;
@@ -5205,6 +5212,14 @@ namespace PadForge.ViewModels
 
         /// <summary>Reserializes the rows into the pipe grammar. Called by
         /// row setters and the add / remove / reset commands.</summary>
+        // Pair tokens the editor cannot display (the other slot type's
+        // grammar after an output-type switch, or unresolvable names).
+        // Preserved verbatim so an edit never erases them: the stored
+        // field's contract is "malformed entries are dropped at parse,
+        // never at save" (MappingSet.SocdPairs), and the engine already
+        // ignores them harmlessly at runtime.
+        private readonly System.Collections.Generic.List<string> _socdPreservedTokens = new();
+
         internal void OnSocdPairEdited()
         {
             if (_syncingSocdPairs) return;
@@ -5217,6 +5232,11 @@ namespace PadForge.ViewModels
                 if (token == null) continue;
                 if (sb.Length > 0) sb.Append('|');
                 sb.Append(token);
+            }
+            foreach (var kept in _socdPreservedTokens)
+            {
+                if (sb.Length > 0) sb.Append('|');
+                sb.Append(kept);
             }
             string pairs = sb.ToString();
             if (string.Equals(set.SocdPairs, pairs, StringComparison.Ordinal)) return;
@@ -5233,6 +5253,7 @@ namespace PadForge.ViewModels
             try
             {
                 SocdPairItems.Clear();
+                _socdPreservedTokens.Clear();
                 var set = SlotMenuSet;
                 bool extended = SocdUsesExtendedIndices;
                 if (set != null && !string.IsNullOrEmpty(set.SocdPairs))
@@ -5240,21 +5261,27 @@ namespace PadForge.ViewModels
                     foreach (var token in set.SocdPairs.Split('|', StringSplitOptions.RemoveEmptyEntries))
                     {
                         int colon = token.IndexOf(':');
-                        if (colon <= 0 || colon >= token.Length - 1) continue;
+                        if (colon <= 0 || colon >= token.Length - 1) { _socdPreservedTokens.Add(token); continue; }
                         string a = token.Substring(0, colon).Trim();
                         string b = token.Substring(colon + 1).Trim();
                         if (extended)
                         {
-                            if (!int.TryParse(a, out int ia) || !int.TryParse(b, out int ib)) continue;
-                            if (ia is < 0 or > 127 || ib is < 0 or > 127) continue;
+                            if (!int.TryParse(a, out int ia) || !int.TryParse(b, out int ib)
+                                || ia is < 0 or > 127 || ib is < 0 or > 127)
+                            { _socdPreservedTokens.Add(token); continue; }
                             SocdPairItems.Add(new SlotSocdPairItem(this, ia, ib));
                         }
                         else
                         {
-                            // Keep only names the engine resolves, the same
-                            // leniency SlotButtonSocd.ParsePairs applies.
+                            // Display only names the engine resolves, the
+                            // same leniency SlotButtonSocd.ParsePairs
+                            // applies at runtime, but PRESERVE the token:
+                            // it may be the other slot type's grammar and
+                            // must survive a round trip through this
+                            // editor (the stored field's own contract).
                             if (PadForge.Common.Input.SlotButtonSocd.ResolveGamepadMask(a) == 0
-                                || PadForge.Common.Input.SlotButtonSocd.ResolveGamepadMask(b) == 0) continue;
+                                || PadForge.Common.Input.SlotButtonSocd.ResolveGamepadMask(b) == 0)
+                            { _socdPreservedTokens.Add(token); continue; }
                             SocdPairItems.Add(new SlotSocdPairItem(this, a, b));
                         }
                     }

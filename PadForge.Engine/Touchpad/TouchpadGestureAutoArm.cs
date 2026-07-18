@@ -102,7 +102,9 @@ namespace PadForge.Engine.Touchpad
                         // v18: the per-source AND gate reads through the
                         // same gated families (a click gated on a touch
                         // spot), so it arms exactly like a descriptor.
+                        // v26's second AND companion arms identically.
                         any |= Classify(src?.GateDescriptor, ref need);
+                        any |= Classify(src?.Gate2Descriptor, ref need);
                     }
                 }
             }
@@ -113,6 +115,9 @@ namespace PadForge.Engine.Touchpad
                     if (act == null) continue;
                     any |= Classify(act.Descriptor, ref need);
                     any |= Classify(act.ChordSecondDescriptor, ref need);
+                    // An activator's own AND gate reads through the gated
+                    // families too, the row-source rationale above.
+                    any |= Classify(act.GateDescriptor, ref need);
                 }
             }
             if (extraDescriptors != null)

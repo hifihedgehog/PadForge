@@ -1085,10 +1085,22 @@ namespace PadForge.ViewModels
                     // window token (halves #9 B-1, the v18 vertical
                     // halves, or a diamond quadrant), or the v18 7-token
                     // quadrant-in-half compose (quadrant first, then
-                    // Left / Right). Finger position axes (X / Y /
-                    // Pressure, whole or half-windowed) stay
-                    // unconvertible: no bool read exists for them.
+                    // Left / Right). Finger position axes (X / Y, whole
+                    // or half-windowed) stay unconvertible: no bool read
+                    // exists for them. PRESSURE converts since #239: the
+                    // bool branch reads it against the per-source
+                    // threshold, whole-pad or zone-windowed (Center
+                    // included).
                     var ft = tp[2].Split(' ');
+                    if (ft.Length is 3 or 4
+                        && ft[0].Equals("Finger", StringComparison.OrdinalIgnoreCase)
+                        && ft[2].Equals("Pressure", StringComparison.Ordinal)
+                        && (ft.Length == 3 || IsTouchpadWindowToken(ft[3])
+                            || ft[3].Equals("Center", StringComparison.Ordinal)))
+                    {
+                        entry = new TriggerInputEntry { DeviceGuid = g, SourceDescriptor = d };
+                        return true;
+                    }
                     // Finger ring (v26): a bool the engine's ring read
                     // answers (radius on DeadZone, Invert = inner), whole
                     // pad or half-windowed, so it rides a descriptor entry

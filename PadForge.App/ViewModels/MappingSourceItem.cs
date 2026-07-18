@@ -491,6 +491,10 @@ namespace PadForge.ViewModels
                 // exclusion below.
                 if (PadForge.Engine.Common.Mapping.SourceCoercion.IsTouchpadPointerDescriptor(desc))
                     return _parentTargetIsDiscrete;
+                // Pressure (#239): the bool coercion thresholds on the
+                // per-source DeadZone, so it opts in like the pointer.
+                if (PadForge.Engine.Common.Mapping.SourceCoercion.IsTouchpadPressureDescriptor(desc))
+                    return _parentTargetIsDiscrete;
 
                 int start = 0;
                 if (start < desc.Length && (desc[start] == 'I' || desc[start] == 'i')) start++;
@@ -498,7 +502,8 @@ namespace PadForge.ViewModels
                 // Touchpad finger X/Y joined the generic Sensitivity family
                 // (#9 B-13) but have no axis-to-button threshold read
                 // (ReadAsBool's touchpad branch reads Click / "Finger M
-                // Down" only), so every remaining touchpad descriptor keeps
+                // Down" / Ring / Pressure only, and Pressure opted in
+                // above), so every remaining touchpad descriptor keeps
                 // the pre-widening hidden deadzone. The gesture CONTINUOUS
                 // axes above already opted in explicitly. Tested on the
                 // same stripped body the predicate below receives.

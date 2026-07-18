@@ -143,8 +143,14 @@ namespace PadForge.Views
                 // Abstract Gamepad stick/trigger aliases (#9) fold to their
                 // canonical "Axis N" form so they land in the axis class.
                 d = PadForge.Engine.Common.Mapping.SourceCoercion.ResolveGamepadAlias(d) ?? d;
+                // Touchpad pressure (#239) is axis-class: it carries an
+                // analog magnitude, and the Axis-kind activator's
+                // threshold slider is exactly what makes "whole pad
+                // pressed 60% = layer" expressible. Landing it in the
+                // button class evaluated it at the fixed default 50.
                 if (d.StartsWith("Axis ", StringComparison.OrdinalIgnoreCase)
-                    || d.StartsWith("Slider ", StringComparison.OrdinalIgnoreCase))
+                    || d.StartsWith("Slider ", StringComparison.OrdinalIgnoreCase)
+                    || PadForge.Engine.Common.Mapping.SourceCoercion.IsTouchpadPressureDescriptor(d))
                     axes.Add(c);
                 else
                     buttons.Add(c);

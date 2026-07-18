@@ -347,7 +347,13 @@ namespace PadForge.Common.Input
             }
 
             // 3. Diff against live players: retire, retarget, create.
+            // WASAPI activation (BuildPlayer) and the fade-out sleep both
+            // run OUTSIDE _lock (audit: holding the lock across activation
+            // stalled EnsureStarted callers on the UI/startup path). Plan
+            // under the lock, build unlocked, commit under a short re-check
+            // (the AudioPassthroughService committed pattern).
             var toDispose = new List<EndpointPlayer>();
+            var toBuild = new List<(string Id, string Name, bool IsDefaultRoute, RumbleAudioSampleProvider.Voice[] Voices)>();
             lock (_lock)
             {
                 for (int i = _players.Count - 1; i >= 0; i--)
@@ -393,13 +399,31 @@ namespace PadForge.Common.Input
                         continue;
                     }
 
-                    var built = BuildPlayer(kv.Key, kv.Value.Name, kv.Value.IsDefaultRoute,
-                        kv.Value.Voices.ToArray());
-                    if (built != null) _players.Add(built);
+                    toBuild.Add((kv.Key, kv.Value.Name, kv.Value.IsDefaultRoute,
+                        kv.Value.Voices.ToArray()));
                 }
 
                 for (int i = 0; i < MaxSlots; i++)
                     Volatile.Write(ref _slotStatus[i], newStatus[i]);
+            }
+
+            foreach (var b in toBuild)
+            {
+                var built = BuildPlayer(b.Id, b.Name, b.IsDefaultRoute, b.Voices);
+                if (built == null) continue;
+                bool committed = false;
+                lock (_lock)
+                {
+                    // Commit only while the worker is alive and nobody
+                    // else claimed the endpoint in the window.
+                    if (_reconcileTimer != null && !_players.Exists(p =>
+                            string.Equals(p.EndpointId, b.Id, StringComparison.OrdinalIgnoreCase)))
+                    {
+                        _players.Add(built);
+                        committed = true;
+                    }
+                }
+                if (!committed) FadeStopDispose(built);
             }
 
             foreach (var p in toDispose) FadeStopDispose(p);

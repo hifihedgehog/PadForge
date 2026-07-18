@@ -979,6 +979,14 @@
   <data name="Btn_Options" xml:space="preserve"><value>选项</value></data>
   <data name="Btn_PS" xml:space="preserve"><value>PS</value></data>
   <data name="Btn_Touchpad" xml:space="preserve"><value>触控板</value></data>
+  <data name="Btn_L" xml:space="preserve"><value>L</value></data>
+  <data name="Btn_R" xml:space="preserve"><value>R</value></data>
+  <data name="Btn_ZL" xml:space="preserve"><value>ZL</value></data>
+  <data name="Btn_ZR" xml:space="preserve"><value>ZR</value></data>
+  <data name="Btn_Minus" xml:space="preserve"><value>减号</value></data>
+  <data name="Btn_Plus" xml:space="preserve"><value>加号</value></data>
+  <data name="Btn_Home" xml:space="preserve"><value>HOME</value></data>
+  <data name="Btn_Capture" xml:space="preserve"><value>截图</value></data>
   <!-- Mouse VK buttons -->
   <data name="Key_LButton" xml:space="preserve"><value>鼠标左键</value></data>
   <data name="Key_RButton" xml:space="preserve"><value>鼠标右键</value></data>
@@ -2324,6 +2332,25 @@
   <data name="Pad_Kbm_Socd_Mode_Off_Name" xml:space="preserve"><value>关闭</value></data>
   <data name="Pad_Kbm_Socd_RemovePair_Tooltip" xml:space="preserve"><value>移除此键对。</value></data>
   <data name="Pad_Kbm_Socd_Reset" xml:space="preserve"><value>重置同时反向输入</value></data>
+  <data name="Pad_Socd_Card_Header" xml:space="preserve"><value>同时按下 (SOCD)</value></data>
+  <data name="Pad_Socd_Card_Desc" xml:space="preserve"><value>解决此插槽虚拟控制器输出上同时按住的按钮对。当一对按钮同时按下时，所选规则决定游戏看到哪个输入。</value></data>
+  <data name="Pad_Socd_ResetCard_Tooltip" xml:space="preserve"><value>重置同时按下</value></data>
+  <data name="Pad_Socd_Mode_Label" xml:space="preserve"><value>模式</value></data>
+  <data name="Pad_Socd_Mode_Tooltip" xml:space="preserve"><value>按住的按钮对如何解决。应用于插槽的最终合成输出，因此物理、映射和宏输入都会被同样处理。</value></data>
+  <data name="Pad_Socd_ResetMode_Tooltip" xml:space="preserve"><value>重置模式</value></data>
+  <data name="Pad_Socd_Mode_Off_Description" xml:space="preserve"><value>两个按钮均原样通过。</value></data>
+  <data name="Pad_Socd_Mode_LastWins_Description" xml:space="preserve"><value>最近按下的按钮优先。松开它时会重新按下仍被按住的另一个按钮。</value></data>
+  <data name="Pad_Socd_Mode_Neutral_Description" xml:space="preserve"><value>同时按住两个按钮会将两者都释放，直到松开其中一个。</value></data>
+  <data name="Pad_Socd_Mode_FirstWins_Description" xml:space="preserve"><value>先按下的按钮持续优先，直到它被松开。</value></data>
+  <data name="Pad_Socd_Pairs_Label" xml:space="preserve"><value>按钮对</value></data>
+  <data name="Pad_Socd_Pairs_Tooltip" xml:space="preserve"><value>规则处理的按钮对。每对独立跟踪。</value></data>
+  <data name="Pad_Socd_ButtonA_Tooltip" xml:space="preserve"><value>按钮对中的第一个按钮。</value></data>
+  <data name="Pad_Socd_ButtonB_Tooltip" xml:space="preserve"><value>按钮对中的第二个按钮。</value></data>
+  <data name="Pad_Socd_IndexA_Tooltip" xml:space="preserve"><value>按钮对中第一个原始按钮序号，0 到 127。序号 0 对应映射表中的按钮 1。</value></data>
+  <data name="Pad_Socd_IndexB_Tooltip" xml:space="preserve"><value>按钮对中第二个原始按钮序号，0 到 127。序号 0 对应映射表中的按钮 1。</value></data>
+  <data name="Pad_Socd_AddPair" xml:space="preserve"><value>添加按钮对</value></data>
+  <data name="Pad_Socd_AddPair_Tooltip" xml:space="preserve"><value>再添加一个按钮对。</value></data>
+  <data name="Pad_Socd_RemovePair_Tooltip" xml:space="preserve"><value>移除此按钮对。</value></data>
   <data name="Pad_Kbm_Socd_Tooltip" xml:space="preserve"><value>解决反向键对的两个键被同时按住的冲突，类似 Snap Tap。应用于此插槽的虚拟键盘输出。</value></data>
   <data name="Pad_Lighting_GuideLed" xml:space="preserve"><value>指南键 LED</value></data>
   <data name="Pad_Lighting_GuideLed_Battery" xml:space="preserve"><value>电池电量</value></data>
@@ -2561,8 +2588,10 @@
   <data name="Macro_HoldForMs" xml:space="preserve"><value>按住时</value></data>
   <data name="Macro_HoldForMs_Tooltip" xml:space="preserve"><value>在触发器被连续按住达到保持时间后触发一次。更短的点按不起作用。</value></data>
   <data name="Macro_DoublePress" xml:space="preserve"><value>双击时</value></data>
-  <data name="Macro_DoublePress_Tooltip" xml:space="preserve"><value>在双击时间内按下两次时触发。若第二次按住不放，将保持激活直到松开。</value></data>
-  <data name="Macro_TriggerDoublePressMs_Label" xml:space="preserve"><value>双击时间</value></data>
+  <data name="Macro_DoublePress_Tooltip" xml:space="preserve"><value>在连按时间内按下两次时触发。若第二次按住不放，将保持激活直到松开。</value></data>
+  <data name="Macro_TriplePress" xml:space="preserve"><value>三击时</value></data>
+  <data name="Macro_TriplePress_Tooltip" xml:space="preserve"><value>在连按时间内按下三次时触发。若第三次按住不放，将保持激活直到松开。</value></data>
+  <data name="Macro_TriggerDoublePressMs_Label" xml:space="preserve"><value>连按时间</value></data>
   <data name="Macro_TriggerHoldMs_Label" xml:space="preserve"><value>保持时间</value></data>
   <data name="MacroAction_Type_RepeatVcButtonWhileHeld" xml:space="preserve"><value>按住时重复按钮</value></data>
   <data name="MacroAction_RepeatVcButtonWhileHeld_Tooltip" xml:space="preserve"><value>在触发器按住期间以设定间隔反复按下和松开控制器按钮（连发 / 连点）。</value></data>
@@ -2596,6 +2625,14 @@
   <data name="MacroAction_ToggleWheel_Format" xml:space="preserve"><value>切换滚轮(每 {1} 毫秒 {0} 格)</value></data>
   <data name="Macro_PulseWhileLatched" xml:space="preserve"><value>锁定时脉冲</value></data>
   <data name="Macro_PulseWhileLatched_Tooltip" xml:space="preserve"><value>锁定期间按重复间隔开关输出,而不是持续保持。</value></data>
+  <data name="MacroAction_Type_AxisAdd" xml:space="preserve"><value>轴叠加(相对)</value></data>
+  <data name="MacroAction_AxisAdd_Tooltip" xml:space="preserve"><value>在持续时间内,每帧将带符号的值叠加到映射已写入该轴的值上。负值为减。扳机目标按扣动量刻度叠加(32767 = 完全扣下)。</value></data>
+  <data name="MacroAction_AxisAdd_Format" xml:space="preserve"><value>轴叠加:{0} {1}%</value></data>
+  <data name="MacroAction_Type_ComboBreak" xml:space="preserve"><value>连招中断</value></data>
+  <data name="MacroAction_ComboBreak_Tooltip" xml:space="preserve"><value>连招在此暂停。再次按下触发器即可继续。按住不放的触发器需要先松开。</value></data>
+  <data name="Macro_AxisYieldToPhysical" xml:space="preserve"><value>让位于物理输入</value></data>
+  <data name="Macro_AxisYieldToPhysical_Tooltip" xml:space="preserve"><value>当物理移动使目标超过阈值时,宏在本次激活的剩余时间内停止写入该轴。</value></data>
+  <data name="MacroAction_YieldSuffix" xml:space="preserve"><value>(让位于物理输入)</value></data>
   <data name="MacroAction_CycleTapList_Format" xml:space="preserve"><value>循环点击列表({0} 步)</value></data>
   <data name="Macro_CycleSteps_Label" xml:space="preserve"><value>步骤</value></data>
   <data name="Macro_CycleWrap_Label" xml:space="preserve"><value>循环</value></data>

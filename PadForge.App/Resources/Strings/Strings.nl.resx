@@ -984,6 +984,14 @@
   <data name="Btn_Options" xml:space="preserve"><value>Opties</value></data>
   <data name="Btn_PS" xml:space="preserve"><value>PS</value></data>
   <data name="Btn_Touchpad" xml:space="preserve"><value>Touchpad</value></data>
+  <data name="Btn_L" xml:space="preserve"><value>L</value></data>
+  <data name="Btn_R" xml:space="preserve"><value>R</value></data>
+  <data name="Btn_ZL" xml:space="preserve"><value>ZL</value></data>
+  <data name="Btn_ZR" xml:space="preserve"><value>ZR</value></data>
+  <data name="Btn_Minus" xml:space="preserve"><value>Min</value></data>
+  <data name="Btn_Plus" xml:space="preserve"><value>Plus</value></data>
+  <data name="Btn_Home" xml:space="preserve"><value>Home</value></data>
+  <data name="Btn_Capture" xml:space="preserve"><value>Opname</value></data>
 
   <!-- Mouse VK buttons -->
   <data name="Key_LButton" xml:space="preserve"><value>Linkermuisknop</value></data>
@@ -2344,6 +2352,25 @@
   <data name="Pad_Kbm_Socd_Mode_Off_Name" xml:space="preserve"><value>Uit</value></data>
   <data name="Pad_Kbm_Socd_RemovePair_Tooltip" xml:space="preserve"><value>Verwijdert dit toetsenpaar.</value></data>
   <data name="Pad_Kbm_Socd_Reset" xml:space="preserve"><value>Gelijktijdige tegengestelde richtingen resetten</value></data>
+  <data name="Pad_Socd_Card_Header" xml:space="preserve"><value>Gelijktijdig indrukken (SOCD)</value></data>
+  <data name="Pad_Socd_Card_Desc" xml:space="preserve"><value>Lost knoppenparen op die tegelijk worden vastgehouden op de virtuele-controlleruitvoer van dit slot. Wanneer beide knoppen van een paar zijn ingedrukt, bepaalt de gekozen regel welke druk het spel ziet.</value></data>
+  <data name="Pad_Socd_ResetCard_Tooltip" xml:space="preserve"><value>Gelijktijdig indrukken herstellen</value></data>
+  <data name="Pad_Socd_Mode_Label" xml:space="preserve"><value>Modus</value></data>
+  <data name="Pad_Socd_Mode_Tooltip" xml:space="preserve"><value>Hoe een vastgehouden paar wordt opgelost. Geldt voor de uiteindelijke gecombineerde uitvoer van het slot, dus fysieke, toegewezen en macro-drukken worden allemaal opgeschoond.</value></data>
+  <data name="Pad_Socd_ResetMode_Tooltip" xml:space="preserve"><value>Modus herstellen</value></data>
+  <data name="Pad_Socd_Mode_Off_Description" xml:space="preserve"><value>Beide knoppen gaan ongewijzigd door.</value></data>
+  <data name="Pad_Socd_Mode_LastWins_Description" xml:space="preserve"><value>De meest recente druk wint. Bij loslaten wordt de nog ingedrukte partnerknop opnieuw ingedrukt.</value></data>
+  <data name="Pad_Socd_Mode_Neutral_Description" xml:space="preserve"><value>Beide knoppen ingedrukt houden laat beide los totdat er één wordt losgelaten.</value></data>
+  <data name="Pad_Socd_Mode_FirstWins_Description" xml:space="preserve"><value>De eerdere druk blijft winnen totdat die wordt losgelaten.</value></data>
+  <data name="Pad_Socd_Pairs_Label" xml:space="preserve"><value>Knoppenparen</value></data>
+  <data name="Pad_Socd_Pairs_Tooltip" xml:space="preserve"><value>De knoppenparen die de regel opschoont. Elk paar wordt apart gevolgd.</value></data>
+  <data name="Pad_Socd_ButtonA_Tooltip" xml:space="preserve"><value>Eerste knop van het paar.</value></data>
+  <data name="Pad_Socd_ButtonB_Tooltip" xml:space="preserve"><value>Tweede knop van het paar.</value></data>
+  <data name="Pad_Socd_IndexA_Tooltip" xml:space="preserve"><value>Eerste ruwe knopindex van het paar, 0 tot 127. Index 0 is Knop 1 in de toewijzingstabel.</value></data>
+  <data name="Pad_Socd_IndexB_Tooltip" xml:space="preserve"><value>Tweede ruwe knopindex van het paar, 0 tot 127. Index 0 is Knop 1 in de toewijzingstabel.</value></data>
+  <data name="Pad_Socd_AddPair" xml:space="preserve"><value>Paar toevoegen</value></data>
+  <data name="Pad_Socd_AddPair_Tooltip" xml:space="preserve"><value>Voegt nog een knoppenpaar toe.</value></data>
+  <data name="Pad_Socd_RemovePair_Tooltip" xml:space="preserve"><value>Verwijdert dit knoppenpaar.</value></data>
   <data name="Pad_Kbm_Socd_Tooltip" xml:space="preserve"><value>Lost het tegelijk ingedrukt houden van beide toetsen van een tegengesteld paar op, zoals Snap Tap. Geldt voor de virtuele toetsenborduitvoer van deze slot.</value></data>
   <data name="Pad_Lighting_GuideLed" xml:space="preserve"><value>Guide-knop-LED</value></data>
   <data name="Pad_Lighting_GuideLed_Battery" xml:space="preserve"><value>Batterijniveau</value></data>
@@ -2581,8 +2608,10 @@
   <data name="Macro_HoldForMs" xml:space="preserve"><value>Bij vasthouden</value></data>
   <data name="Macro_HoldForMs_Tooltip" xml:space="preserve"><value>Vuurt één keer nadat de trigger onafgebroken de vasthoudtijd ingedrukt is gehouden. Een kortere tik doet niets.</value></data>
   <data name="Macro_DoublePress" xml:space="preserve"><value>Bij dubbel indrukken</value></data>
-  <data name="Macro_DoublePress_Tooltip" xml:space="preserve"><value>Vuurt wanneer de trigger twee keer binnen de dubbel-indruktijd wordt ingedrukt. Blijft actief tot loslaten als de tweede druk wordt vastgehouden.</value></data>
-  <data name="Macro_TriggerDoublePressMs_Label" xml:space="preserve"><value>Dubbel-indruktijd</value></data>
+  <data name="Macro_DoublePress_Tooltip" xml:space="preserve"><value>Vuurt wanneer de trigger twee keer binnen het tijdvenster wordt ingedrukt. Blijft actief tot loslaten als de tweede druk wordt vastgehouden.</value></data>
+  <data name="Macro_TriplePress" xml:space="preserve"><value>Bij drievoudig indrukken</value></data>
+  <data name="Macro_TriplePress_Tooltip" xml:space="preserve"><value>Vuurt wanneer de trigger drie keer binnen het tijdvenster wordt ingedrukt. Blijft actief tot loslaten als de derde druk wordt vastgehouden.</value></data>
+  <data name="Macro_TriggerDoublePressMs_Label" xml:space="preserve"><value>Tijdvenster</value></data>
   <data name="Macro_TriggerHoldMs_Label" xml:space="preserve"><value>Vasthoudtijd</value></data>
   <data name="MacroAction_Type_RepeatVcButtonWhileHeld" xml:space="preserve"><value>Knop herhalen zolang ingedrukt</value></data>
   <data name="MacroAction_RepeatVcButtonWhileHeld_Tooltip" xml:space="preserve"><value>Schakelt de controllerknop met het interval aan en uit zolang de trigger ingedrukt blijft (autofire / turbo).</value></data>
@@ -2616,6 +2645,14 @@
   <data name="MacroAction_ToggleWheel_Format" xml:space="preserve"><value>Wiel omschakelen ({0} klikken elke {1} ms)</value></data>
   <data name="Macro_PulseWhileLatched" xml:space="preserve"><value>Pulseren zolang vergrendeld</value></data>
   <data name="Macro_PulseWhileLatched_Tooltip" xml:space="preserve"><value>Zolang vergrendeld schakelt de uitvoer aan en uit op het herhaalinterval in plaats van vast te houden.</value></data>
+  <data name="MacroAction_Type_AxisAdd" xml:space="preserve"><value>As optellen (relatief)</value></data>
+  <data name="MacroAction_AxisAdd_Tooltip" xml:space="preserve"><value>Telt de waarde met teken elk frame gedurende de duur op bij wat de toewijzing al naar de as schreef. Negatieve waarden trekken af. Triggers tellen op volgens de indrukschaal (32767 = volledig ingedrukt).</value></data>
+  <data name="MacroAction_AxisAdd_Format" xml:space="preserve"><value>As optellen: {0} {1}%</value></data>
+  <data name="MacroAction_Type_ComboBreak" xml:space="preserve"><value>Combo-onderbreking</value></data>
+  <data name="MacroAction_ComboBreak_Tooltip" xml:space="preserve"><value>De combo pauzeert hier. Druk opnieuw op de trigger om verder te gaan. Een ingedrukte trigger moet eerst worden losgelaten.</value></data>
+  <data name="Macro_AxisYieldToPhysical" xml:space="preserve"><value>Wijken voor fysieke invoer</value></data>
+  <data name="Macro_AxisYieldToPhysical_Tooltip" xml:space="preserve"><value>Zodra fysieke beweging het doel voorbij de drempel brengt, schrijft de macro de as niet meer voor de rest van de activering.</value></data>
+  <data name="MacroAction_YieldSuffix" xml:space="preserve"><value>(wijkt voor fysieke invoer)</value></data>
   <data name="MacroAction_CycleTapList_Format" xml:space="preserve"><value>Taplijst doorlopen ({0} stappen)</value></data>
   <data name="Macro_CycleSteps_Label" xml:space="preserve"><value>Stappen</value></data>
   <data name="Macro_CycleWrap_Label" xml:space="preserve"><value>Herhalen</value></data>

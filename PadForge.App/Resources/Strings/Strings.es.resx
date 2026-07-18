@@ -979,6 +979,14 @@
   <data name="Btn_Options" xml:space="preserve"><value>Opciones</value></data>
   <data name="Btn_PS" xml:space="preserve"><value>PS</value></data>
   <data name="Btn_Touchpad" xml:space="preserve"><value>Touchpad</value></data>
+  <data name="Btn_L" xml:space="preserve"><value>L</value></data>
+  <data name="Btn_R" xml:space="preserve"><value>R</value></data>
+  <data name="Btn_ZL" xml:space="preserve"><value>ZL</value></data>
+  <data name="Btn_ZR" xml:space="preserve"><value>ZR</value></data>
+  <data name="Btn_Minus" xml:space="preserve"><value>Menos</value></data>
+  <data name="Btn_Plus" xml:space="preserve"><value>Más</value></data>
+  <data name="Btn_Home" xml:space="preserve"><value>Home</value></data>
+  <data name="Btn_Capture" xml:space="preserve"><value>Captura</value></data>
   <!-- Mouse VK buttons -->
   <data name="Key_LButton" xml:space="preserve"><value>Botón izquierdo del ratón</value></data>
   <data name="Key_RButton" xml:space="preserve"><value>Botón derecho del ratón</value></data>
@@ -2324,6 +2332,25 @@
   <data name="Pad_Kbm_Socd_Mode_Off_Name" xml:space="preserve"><value>Desactivado</value></data>
   <data name="Pad_Kbm_Socd_RemovePair_Tooltip" xml:space="preserve"><value>Quita este par de teclas.</value></data>
   <data name="Pad_Kbm_Socd_Reset" xml:space="preserve"><value>Restablecer direcciones opuestas simultáneas</value></data>
+  <data name="Pad_Socd_Card_Header" xml:space="preserve"><value>Pulsación simultánea (SOCD)</value></data>
+  <data name="Pad_Socd_Card_Desc" xml:space="preserve"><value>Resuelve pares de botones mantenidos a la vez en la salida del mando virtual de esta ranura. Cuando ambos botones de un par están pulsados, la regla elegida decide qué pulsación ve el juego.</value></data>
+  <data name="Pad_Socd_ResetCard_Tooltip" xml:space="preserve"><value>Restablecer pulsación simultánea</value></data>
+  <data name="Pad_Socd_Mode_Label" xml:space="preserve"><value>Modo</value></data>
+  <data name="Pad_Socd_Mode_Tooltip" xml:space="preserve"><value>Cómo se resuelve un par mantenido. Se aplica a la salida final combinada de la ranura, así que las pulsaciones físicas, asignadas y de macro se limpian por igual.</value></data>
+  <data name="Pad_Socd_ResetMode_Tooltip" xml:space="preserve"><value>Restablecer modo</value></data>
+  <data name="Pad_Socd_Mode_Off_Description" xml:space="preserve"><value>Ambos botones pasan sin cambios.</value></data>
+  <data name="Pad_Socd_Mode_LastWins_Description" xml:space="preserve"><value>La pulsación más reciente gana. Al soltarla se vuelve a pulsar el botón compañero que sigue retenido.</value></data>
+  <data name="Pad_Socd_Mode_Neutral_Description" xml:space="preserve"><value>Mantener ambos botones los libera a los dos hasta que se suelte uno.</value></data>
+  <data name="Pad_Socd_Mode_FirstWins_Description" xml:space="preserve"><value>La pulsación más temprana sigue ganando hasta que se suelta.</value></data>
+  <data name="Pad_Socd_Pairs_Label" xml:space="preserve"><value>Pares de botones</value></data>
+  <data name="Pad_Socd_Pairs_Tooltip" xml:space="preserve"><value>Los pares de botones que limpia la regla. Cada par se sigue por separado.</value></data>
+  <data name="Pad_Socd_ButtonA_Tooltip" xml:space="preserve"><value>Primer botón del par.</value></data>
+  <data name="Pad_Socd_ButtonB_Tooltip" xml:space="preserve"><value>Segundo botón del par.</value></data>
+  <data name="Pad_Socd_IndexA_Tooltip" xml:space="preserve"><value>Primer índice bruto de botón del par, de 0 a 127. El índice 0 es el Botón 1 en la tabla de asignaciones.</value></data>
+  <data name="Pad_Socd_IndexB_Tooltip" xml:space="preserve"><value>Segundo índice bruto de botón del par, de 0 a 127. El índice 0 es el Botón 1 en la tabla de asignaciones.</value></data>
+  <data name="Pad_Socd_AddPair" xml:space="preserve"><value>Añadir par</value></data>
+  <data name="Pad_Socd_AddPair_Tooltip" xml:space="preserve"><value>Añade otro par de botones.</value></data>
+  <data name="Pad_Socd_RemovePair_Tooltip" xml:space="preserve"><value>Quita este par de botones.</value></data>
   <data name="Pad_Kbm_Socd_Tooltip" xml:space="preserve"><value>Resuelve cuando ambas teclas de un par opuesto se mantienen a la vez, como Snap Tap. Se aplica a la salida de teclado virtual de este slot.</value></data>
   <data name="Pad_Lighting_GuideLed" xml:space="preserve"><value>LED del botón Guía</value></data>
   <data name="Pad_Lighting_GuideLed_Battery" xml:space="preserve"><value>Nivel de batería</value></data>
@@ -2561,8 +2588,10 @@
   <data name="Macro_HoldForMs" xml:space="preserve"><value>Al mantener</value></data>
   <data name="Macro_HoldForMs_Tooltip" xml:space="preserve"><value>Se dispara una vez cuando el activador se ha mantenido de forma continua durante el tiempo de retención. Un toque más corto no hace nada.</value></data>
   <data name="Macro_DoublePress" xml:space="preserve"><value>Al pulsar dos veces</value></data>
-  <data name="Macro_DoublePress_Tooltip" xml:space="preserve"><value>Se activa cuando el disparador se pulsa dos veces dentro del tiempo de doble pulsación. Si se mantiene la segunda pulsación, permanece activo hasta soltar.</value></data>
-  <data name="Macro_TriggerDoublePressMs_Label" xml:space="preserve"><value>Tiempo de doble pulsación</value></data>
+  <data name="Macro_DoublePress_Tooltip" xml:space="preserve"><value>Se activa cuando el disparador se pulsa dos veces dentro de la ventana de pulsación. Si se mantiene la segunda pulsación, permanece activo hasta soltar.</value></data>
+  <data name="Macro_TriplePress" xml:space="preserve"><value>Al pulsar tres veces</value></data>
+  <data name="Macro_TriplePress_Tooltip" xml:space="preserve"><value>Se activa cuando el disparador se pulsa tres veces dentro de la ventana de pulsación. Si se mantiene la tercera pulsación, permanece activo hasta soltar.</value></data>
+  <data name="Macro_TriggerDoublePressMs_Label" xml:space="preserve"><value>Ventana de pulsación</value></data>
   <data name="Macro_TriggerHoldMs_Label" xml:space="preserve"><value>Tiempo de retención</value></data>
   <data name="MacroAction_Type_RepeatVcButtonWhileHeld" xml:space="preserve"><value>Repetir botón mientras se mantiene</value></data>
   <data name="MacroAction_RepeatVcButtonWhileHeld_Tooltip" xml:space="preserve"><value>Enciende y apaga el botón del mando en el intervalo mientras el activador se mantenga presionado (autofire / turbo).</value></data>
@@ -2596,6 +2625,14 @@
   <data name="MacroAction_ToggleWheel_Format" xml:space="preserve"><value>Alternar rueda ({0} pasos cada {1} ms)</value></data>
   <data name="Macro_PulseWhileLatched" xml:space="preserve"><value>Pulsos mientras esté fijado</value></data>
   <data name="Macro_PulseWhileLatched_Tooltip" xml:space="preserve"><value>Mientras esté fijado, alterna la salida al ritmo del intervalo de repetición en lugar de mantenerla fija.</value></data>
+  <data name="MacroAction_Type_AxisAdd" xml:space="preserve"><value>Sumar al eje (relativo)</value></data>
+  <data name="MacroAction_AxisAdd_Tooltip" xml:space="preserve"><value>Suma el valor con signo a lo que la asignación ya escribió en el eje, en cada fotograma durante la duración. Los valores negativos restan. Los gatillos suman en la escala de recorrido (32767 = recorrido completo).</value></data>
+  <data name="MacroAction_AxisAdd_Format" xml:space="preserve"><value>Sumar al eje: {0} {1}%</value></data>
+  <data name="MacroAction_Type_ComboBreak" xml:space="preserve"><value>Interrupción de combo</value></data>
+  <data name="MacroAction_ComboBreak_Tooltip" xml:space="preserve"><value>El combo se pausa aquí. Pulse el disparador de nuevo para continuar. Un disparador mantenido debe soltarse primero.</value></data>
+  <data name="Macro_AxisYieldToPhysical" xml:space="preserve"><value>Ceder a la entrada física</value></data>
+  <data name="Macro_AxisYieldToPhysical_Tooltip" xml:space="preserve"><value>Cuando el movimiento físico lleva el objetivo más allá del umbral, la macro deja de escribir el eje durante el resto de la activación.</value></data>
+  <data name="MacroAction_YieldSuffix" xml:space="preserve"><value>(cede a la entrada física)</value></data>
   <data name="MacroAction_CycleTapList_Format" xml:space="preserve"><value>Lista de pulsaciones cíclica ({0} pasos)</value></data>
   <data name="Macro_CycleSteps_Label" xml:space="preserve"><value>Pasos</value></data>
   <data name="Macro_CycleWrap_Label" xml:space="preserve"><value>Ciclo</value></data>

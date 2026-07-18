@@ -979,6 +979,14 @@
   <data name="Btn_Options" xml:space="preserve"><value>オプション</value></data>
   <data name="Btn_PS" xml:space="preserve"><value>PS</value></data>
   <data name="Btn_Touchpad" xml:space="preserve"><value>タッチパッド</value></data>
+  <data name="Btn_L" xml:space="preserve"><value>L</value></data>
+  <data name="Btn_R" xml:space="preserve"><value>R</value></data>
+  <data name="Btn_ZL" xml:space="preserve"><value>ZL</value></data>
+  <data name="Btn_ZR" xml:space="preserve"><value>ZR</value></data>
+  <data name="Btn_Minus" xml:space="preserve"><value>マイナス</value></data>
+  <data name="Btn_Plus" xml:space="preserve"><value>プラス</value></data>
+  <data name="Btn_Home" xml:space="preserve"><value>HOME</value></data>
+  <data name="Btn_Capture" xml:space="preserve"><value>キャプチャー</value></data>
   <!-- Mouse VK buttons -->
   <data name="Key_LButton" xml:space="preserve"><value>マウス左ボタン</value></data>
   <data name="Key_RButton" xml:space="preserve"><value>マウス右ボタン</value></data>
@@ -2324,6 +2332,25 @@
   <data name="Pad_Kbm_Socd_Mode_Off_Name" xml:space="preserve"><value>オフ</value></data>
   <data name="Pad_Kbm_Socd_RemovePair_Tooltip" xml:space="preserve"><value>このキーペアを削除します。</value></data>
   <data name="Pad_Kbm_Socd_Reset" xml:space="preserve"><value>同時反対方向入力をリセット</value></data>
+  <data name="Pad_Socd_Card_Header" xml:space="preserve"><value>同時押し (SOCD)</value></data>
+  <data name="Pad_Socd_Card_Desc" xml:space="preserve"><value>このスロットの仮想コントローラー出力で、同時に押されたボタンペアを解決します。ペアの両方が押されているとき、選んだルールがゲームに見せる入力を決めます。</value></data>
+  <data name="Pad_Socd_ResetCard_Tooltip" xml:space="preserve"><value>同時押しをリセット</value></data>
+  <data name="Pad_Socd_Mode_Label" xml:space="preserve"><value>モード</value></data>
+  <data name="Pad_Socd_Mode_Tooltip" xml:space="preserve"><value>押しっぱなしのペアをどう解決するか。スロットの最終的な合成出力に適用されるため、物理・マッピング・マクロの入力がすべて等しく処理されます。</value></data>
+  <data name="Pad_Socd_ResetMode_Tooltip" xml:space="preserve"><value>モードをリセット</value></data>
+  <data name="Pad_Socd_Mode_Off_Description" xml:space="preserve"><value>両方のボタンがそのまま通過します。</value></data>
+  <data name="Pad_Socd_Mode_LastWins_Description" xml:space="preserve"><value>最後に押したボタンが勝ちます。離すと、まだ押されている相方のボタンが再び押されます。</value></data>
+  <data name="Pad_Socd_Mode_Neutral_Description" xml:space="preserve"><value>両方のボタンを押し続けると、どちらかを離すまで両方とも解除されます。</value></data>
+  <data name="Pad_Socd_Mode_FirstWins_Description" xml:space="preserve"><value>先に押したボタンが、離されるまで勝ち続けます。</value></data>
+  <data name="Pad_Socd_Pairs_Label" xml:space="preserve"><value>ボタンペア</value></data>
+  <data name="Pad_Socd_Pairs_Tooltip" xml:space="preserve"><value>ルールが処理するボタンペア。各ペアは個別に追跡されます。</value></data>
+  <data name="Pad_Socd_ButtonA_Tooltip" xml:space="preserve"><value>ペアの 1 つ目のボタン。</value></data>
+  <data name="Pad_Socd_ButtonB_Tooltip" xml:space="preserve"><value>ペアの 2 つ目のボタン。</value></data>
+  <data name="Pad_Socd_IndexA_Tooltip" xml:space="preserve"><value>ペアの 1 つ目の生ボタン番号 (0 から 127)。番号 0 はマッピング表のボタン 1 です。</value></data>
+  <data name="Pad_Socd_IndexB_Tooltip" xml:space="preserve"><value>ペアの 2 つ目の生ボタン番号 (0 から 127)。番号 0 はマッピング表のボタン 1 です。</value></data>
+  <data name="Pad_Socd_AddPair" xml:space="preserve"><value>ペアを追加</value></data>
+  <data name="Pad_Socd_AddPair_Tooltip" xml:space="preserve"><value>ボタンペアをもう一つ追加します。</value></data>
+  <data name="Pad_Socd_RemovePair_Tooltip" xml:space="preserve"><value>このボタンペアを削除します。</value></data>
   <data name="Pad_Kbm_Socd_Tooltip" xml:space="preserve"><value>対向ペアの両方のキーが同時に押されたときの競合を Snap Tap のように解決します。このスロットの仮想キーボード出力に適用されます。</value></data>
   <data name="Pad_Lighting_GuideLed" xml:space="preserve"><value>ガイドボタン LED</value></data>
   <data name="Pad_Lighting_GuideLed_Battery" xml:space="preserve"><value>バッテリー残量</value></data>
@@ -2561,8 +2588,10 @@
   <data name="Macro_HoldForMs" xml:space="preserve"><value>長押し時</value></data>
   <data name="Macro_HoldForMs_Tooltip" xml:space="preserve"><value>トリガーを保持時間のあいだ押し続けると 1 回だけ発動します。それより短いタップでは何も起こりません。</value></data>
   <data name="Macro_DoublePress" xml:space="preserve"><value>ダブルプレス時</value></data>
-  <data name="Macro_DoublePress_Tooltip" xml:space="preserve"><value>ダブルプレス時間内に2回押すと発動します。2回目を押し続けると、離すまで有効のままです。</value></data>
-  <data name="Macro_TriggerDoublePressMs_Label" xml:space="preserve"><value>ダブルプレス時間</value></data>
+  <data name="Macro_DoublePress_Tooltip" xml:space="preserve"><value>連続プレス時間内に2回押すと発動します。2回目を押し続けると、離すまで有効のままです。</value></data>
+  <data name="Macro_TriplePress" xml:space="preserve"><value>トリプルプレス時</value></data>
+  <data name="Macro_TriplePress_Tooltip" xml:space="preserve"><value>連続プレス時間内に3回押すと発動します。3回目を押し続けると、離すまで有効のままです。</value></data>
+  <data name="Macro_TriggerDoublePressMs_Label" xml:space="preserve"><value>連続プレス時間</value></data>
   <data name="Macro_TriggerHoldMs_Label" xml:space="preserve"><value>保持時間</value></data>
   <data name="MacroAction_Type_RepeatVcButtonWhileHeld" xml:space="preserve"><value>押している間ボタンをリピート</value></data>
   <data name="MacroAction_RepeatVcButtonWhileHeld_Tooltip" xml:space="preserve"><value>トリガーを押している間、設定した間隔でコントローラーボタンのオン/オフを繰り返します (連射 / ターボ)。</value></data>
@@ -2596,6 +2625,14 @@
   <data name="MacroAction_ToggleWheel_Format" xml:space="preserve"><value>ホイールをトグル（{1}msごとに{0}ティック）</value></data>
   <data name="Macro_PulseWhileLatched" xml:space="preserve"><value>固定中はパルス</value></data>
   <data name="Macro_PulseWhileLatched_Tooltip" xml:space="preserve"><value>固定中は出力を押しっぱなしにせず、リピート間隔でオンとオフを繰り返します。</value></data>
+  <data name="MacroAction_Type_AxisAdd" xml:space="preserve"><value>軸を加算(相対)</value></data>
+  <data name="MacroAction_AxisAdd_Tooltip" xml:space="preserve"><value>指定時間のあいだ、マッピングが既に軸へ書き込んだ値に符号付きの値を毎フレーム加算します。負の値は減算します。トリガーは引き量のスケール(32767 = 最大)で加算します。</value></data>
+  <data name="MacroAction_AxisAdd_Format" xml:space="preserve"><value>軸を加算: {0} {1}%</value></data>
+  <data name="MacroAction_Type_ComboBreak" xml:space="preserve"><value>コンボブレイク</value></data>
+  <data name="MacroAction_ComboBreak_Tooltip" xml:space="preserve"><value>コンボはここで一時停止します。続けるにはトリガーをもう一度押してください。押しっぱなしのトリガーは一度離す必要があります。</value></data>
+  <data name="Macro_AxisYieldToPhysical" xml:space="preserve"><value>物理入力を優先</value></data>
+  <data name="Macro_AxisYieldToPhysical_Tooltip" xml:space="preserve"><value>物理入力がしきい値を超えて対象を動かすと、その作動が終わるまでマクロは軸への書き込みを停止します。</value></data>
+  <data name="MacroAction_YieldSuffix" xml:space="preserve"><value>(物理入力優先)</value></data>
   <data name="MacroAction_CycleTapList_Format" xml:space="preserve"><value>タップリスト巡回({0} ステップ)</value></data>
   <data name="Macro_CycleSteps_Label" xml:space="preserve"><value>ステップ</value></data>
   <data name="Macro_CycleWrap_Label" xml:space="preserve"><value>折り返し</value></data>

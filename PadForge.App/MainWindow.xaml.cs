@@ -6696,6 +6696,8 @@ namespace PadForge
                 // Same for the Bass Shakers tab (#236): its config rides the
                 // pasted MappingSet.
                 padVm.ReloadRumbleAudio();
+                // And the SOCD card (#240), same lifetime.
+                padVm.ReloadSocd();
 
                 _settingsService.MarkDirty();
                 _viewModel.StatusText = Strings.Instance.Status_SettingsPasted;
@@ -6733,7 +6735,7 @@ namespace PadForge
                 MacroItem last = null;
                 foreach (var md in env.Macros)
                 {
-                    var macro = SettingsService.LoadMacroFromData(md, padVm.OutputType, padVm.ExtendedConfig?.ButtonCount);
+                    var macro = SettingsService.LoadMacroFromData(md, padVm.OutputType, padVm.ExtendedConfig?.ButtonCount, padVm.ProfileId);
                     macro.PadIndex = padVm.PadIndex;
                     padVm.Macros.Add(macro);
                     last = macro;
@@ -6814,7 +6816,7 @@ namespace PadForge
             foreach (var macro in source.Macros.ToList())
             {
                 var data = SettingsService.BuildMacroDataForMacro(macro, padVm.PadIndex);
-                var clone = SettingsService.LoadMacroFromData(data, padVm.OutputType, padVm.ExtendedConfig?.ButtonCount);
+                var clone = SettingsService.LoadMacroFromData(data, padVm.OutputType, padVm.ExtendedConfig?.ButtonCount, padVm.ProfileId);
                 clone.PadIndex = padVm.PadIndex;
                 padVm.Macros.Add(clone);
                 last = clone;
@@ -7066,6 +7068,8 @@ namespace PadForge
                 // Same for the Bass Shakers tab (#236): its config rides the
                 // copied MappingSet.
                 padVm.ReloadRumbleAudio();
+                // And the SOCD card (#240), same lifetime.
+                padVm.ReloadSocd();
 
                 _settingsService.MarkDirty();
                 _viewModel.StatusText = Strings.Instance.Status_SettingsCopiedFromDevice;

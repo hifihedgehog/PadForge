@@ -78,14 +78,32 @@ namespace PadForge.Engine.Data
         public RumbleAudioConfig RumbleAudio { get; set; }
 
         /// <summary>
+        /// Button SOCD mode for this slot's virtual controller output
+        /// (discussion #240, extending #205's keyboard Snap Tap): "" or
+        /// "Off" = disabled, "LastWins" / "Neutral" / "FirstWins" per the
+        /// SocdCleaner state machine. Applied to the FINAL combined output
+        /// at the Step 5 submit.
+        /// </summary>
+        [XmlAttribute] public string SocdMode { get; set; } = "";
+
+        /// <summary>
+        /// Pipe-separated SOCD button pairs, "NameA:NameB" per entry.
+        /// Gamepad slots use mapping TARGET names ("ButtonA:ButtonB",
+        /// "DPadLeft:DPadRight"); Extended custom slots use flat raw
+        /// button indices ("12:13"). Malformed entries are dropped at
+        /// parse, never at save.
+        /// </summary>
+        [XmlAttribute] public string SocdPairs { get; set; } = "";
+
+        /// <summary>
         /// True when this set carries anything worth persisting or loading:
         /// rows, shift activators (layers), menus, authoritative ownership,
-        /// or a rumble-audio config. The ONE content gate for cold load and
-        /// slot-has-content checks. Gating on a hand-list of collections
-        /// silently discarded a set whose only content was the newest
-        /// structure (a menus-only slot lost its menu on every launch,
-        /// Codex audit 2026-07-16; a config-only rumble-audio set would
-        /// have died the same way).
+        /// a rumble-audio config, or SOCD authoring. The ONE content gate
+        /// for cold load and slot-has-content checks. Gating on a hand-list
+        /// of collections silently discarded a set whose only content was
+        /// the newest structure (a menus-only slot lost its menu on every
+        /// launch, Codex audit 2026-07-16; a config-only rumble-audio set
+        /// would have died the same way).
         /// </summary>
         [XmlIgnore]
         public bool HasAuthoredContent
@@ -93,7 +111,9 @@ namespace PadForge.Engine.Data
             || (ShiftActivators != null && ShiftActivators.Count > 0)
             || (Menus != null && Menus.Count > 0)
             || Authoritative
-            || RumbleAudio != null;
+            || RumbleAudio != null
+            || !string.IsNullOrEmpty(SocdMode)
+            || !string.IsNullOrEmpty(SocdPairs);
 
         /// <summary>
         /// An authoritative set owns its slot's mappings completely: the

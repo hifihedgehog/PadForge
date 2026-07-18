@@ -149,6 +149,25 @@ namespace PadForge.ViewModels
             }
         }
 
+        private string _extendedProfileId;
+
+        /// <summary>The Extended slot's HIDMaestro profile slug, stamped by
+        /// the owning PadViewModel beside ButtonStyle (#215). Re-letters
+        /// the numbered picker on Switch Pro profiles; the 1-based value
+        /// space is untouched.</summary>
+        public string ExtendedProfileId
+        {
+            get => _extendedProfileId;
+            set
+            {
+                if (string.Equals(_extendedProfileId, value, StringComparison.Ordinal)) return;
+                _extendedProfileId = value;
+                if (_buttonStyle == MacroButtonStyle.Numbered)
+                    foreach (var cell in Cells)
+                        cell.RefreshButtonStyle();
+            }
+        }
+
         /// <summary>Re-raises every localized computed property after a
         /// language change. The lists themselves were already rebuilt by
         /// the static handler; SelectedHost must re-raise too because the
@@ -1219,12 +1238,13 @@ namespace PadForge.ViewModels
                 if (_owner.ButtonStyle == MacroButtonStyle.Numbered)
                 {
                     // 0 buttons = empty picker (axis-only Extended layout).
+                    // Switch Pro profiles letter each number (#215).
                     int count = Math.Clamp(_owner.ExtendedButtonCount, 0, 128);
                     for (int n = 1; n <= count; n++)
                         list.Add(new MenuIntOption
                         {
                             Value = n,
-                            Label = string.Format(Strings.Instance.Extended_Button_Format, n),
+                            Label = MacroButtonNames.ExtendedButtonLabel(_owner.ExtendedProfileId, n),
                         });
                 }
                 else

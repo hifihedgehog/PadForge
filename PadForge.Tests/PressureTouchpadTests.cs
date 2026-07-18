@@ -30,8 +30,17 @@ namespace PadForge.Tests
             return new CustomInputState { Touchpads = new[] { tp } };
         }
 
+        // Unique device identity for the synthetic-provider tests: the
+        // provider is STATIC GLOBAL state and xUnit runs test classes in
+        // parallel, so an unscoped (true, ...) provider would leak the
+        // synthesis into every other pressure test running concurrently.
+        private const string TestDeviceGuid = "239f0000-0000-0000-0000-000000000239";
+
         private static MappingSource Src(string descriptor, int deadZone = 0)
-            => new() { Descriptor = descriptor, DeadZone = deadZone };
+            => new() { Descriptor = descriptor, DeadZone = deadZone, DeviceGuid = TestDeviceGuid };
+
+        private static Func<string, int, int, (bool, float)> ScopedProvider(float touchLevel)
+            => (guid, _, _) => (string.Equals(guid, TestDeviceGuid, StringComparison.OrdinalIgnoreCase), touchLevel);
 
         // ─── Windowed pressure (mode 2) ───
 
@@ -124,7 +133,7 @@ namespace PadForge.Tests
         [Fact]
         public void SyntheticPressure_ThreeStops()
         {
-            SourceCoercion.TouchpadSyntheticPressureProvider = (_, _, _) => (true, 0.5f);
+            SourceCoercion.TouchpadSyntheticPressureProvider = ScopedProvider(0.5f);
 
             // Hardware reports 1.0 on touch; synthesis remaps to 50%.
             var touching = PadState(0.5f, 0.5f, 1f);
@@ -145,7 +154,7 @@ namespace PadForge.Tests
         [Fact]
         public void SyntheticPressure_DisabledProvider_PassesRawThrough()
         {
-            SourceCoercion.TouchpadSyntheticPressureProvider = (_, _, _) => (false, 0.5f);
+            SourceCoercion.TouchpadSyntheticPressureProvider = (guid, _, _) => (false, 0.5f);
             var state = PadState(0.5f, 0.5f, 0.83f);
             Assert.Equal(0.83f, SourceCoercion.EvaluateForTriggerTarget(
                 state, Src("Touchpad 0 Finger 0 Pressure"), 0), 2);
@@ -154,7 +163,7 @@ namespace PadForge.Tests
         [Fact]
         public void SyntheticPressure_AppliesToTheButtonRead()
         {
-            SourceCoercion.TouchpadSyntheticPressureProvider = (_, _, _) => (true, 0.5f);
+            SourceCoercion.TouchpadSyntheticPressureProvider = ScopedProvider(0.5f);
             var touching = PadState(0.5f, 0.5f, 1f);
             // Touch synthesizes 50%: below a 60% activator threshold.
             Assert.False(SourceCoercion.EvaluateForButtonTarget(

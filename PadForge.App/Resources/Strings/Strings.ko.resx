@@ -2508,6 +2508,13 @@
   <data name="Mapping_TouchpadPointerYRight_Format" xml:space="preserve"><value>터치패드 {0} 포인터 Y (오른쪽 절반)</value></data>
   <data name="Mapping_TouchpadFingerTouchLeft_Format" xml:space="preserve"><value>터치패드 {0} 손가락 {1} 터치 (왼쪽 절반)</value></data>
   <data name="Mapping_TouchpadFingerTouchRight_Format" xml:space="preserve"><value>터치패드 {0} 손가락 {1} 터치 (오른쪽 절반)</value></data>
+  <data name="Mapping_TouchpadWindow_Upper" xml:space="preserve"><value>위쪽 절반</value></data>
+  <data name="Mapping_TouchpadWindow_Lower" xml:space="preserve"><value>아래쪽 절반</value></data>
+  <data name="Mapping_TouchpadWindow_North" xml:space="preserve"><value>북쪽 구역</value></data>
+  <data name="Mapping_TouchpadWindow_South" xml:space="preserve"><value>남쪽 구역</value></data>
+  <data name="Mapping_TouchpadWindow_East" xml:space="preserve"><value>동쪽 구역</value></data>
+  <data name="Mapping_TouchpadWindow_West" xml:space="preserve"><value>서쪽 구역</value></data>
+  <data name="Mapping_TouchpadWindow_Center" xml:space="preserve"><value>중앙</value></data>
   <data name="Pad_Touchpad_Pointer_Header" xml:space="preserve"><value>절대 포인터</value></data>
   <data name="Pad_Touchpad_Pointer_Subtitle" xml:space="preserve"><value>커서를 패드 위 손가락 위치로 이동시키는 터치패드 포인터 X/Y 소스를 조정합니다(키보드 / 마우스 가상 컨트롤러에서 마우스 X/Y에 매핑하세요). 1.0에서는 패드가 화면에 1:1로 대응합니다. 엄지가 패드 가장자리에 닿기 전에 화면 가장자리에 도달하려면 스트레치를 높이세요.</value></data>
   <data name="Pad_Touchpad_PointerStretchX" xml:space="preserve"><value>포인터 스트레치 X</value></data>
@@ -2520,12 +2527,21 @@
   <data name="Pad_Touchpad_SwipeHapticsEnabled_Tooltip" xml:space="preserve"><value>이 패드에서 손가락이 설정한 거리만큼 이동할 때마다 짧은 햅틱 틱을 발생시킵니다. 손가락을 올리거나 패드를 클릭할 때는 틱이 발생하지 않습니다. 기본값은 꺼짐입니다.</value></data>
   <data name="Pad_Touchpad_SwipeHapticsIntensity" xml:space="preserve"><value>펄스 강도</value></data>
   <data name="Pad_Touchpad_SwipeHapticsIntensity_Tooltip" xml:space="preserve"><value>각 틱의 강도입니다. 게임 진동이 더 강하면 항상 게임 진동이 우선합니다.</value></data>
+  <data name="Pad_Touchpad_SyntheticPressure_Header" xml:space="preserve"><value>합성 압력</value></data>
+  <data name="Pad_Touchpad_SyntheticPressure_Subtitle" xml:space="preserve"><value>터치를 최대 압력으로 보고하는 패드(DualShock 4, DualSense, Steam Controller 2015)에서 DualShock 2 / DualShock 3 감압 버튼을 시뮬레이션합니다. 활성화된 동안 이 장치의 압력 매핑 소스는 터치 없음을 0%, 정지된 터치를 터치 압력 레벨, 패드 클릭을 100%로 읽습니다.</value></data>
+  <data name="Pad_Touchpad_SyntheticPressureEnabled" xml:space="preserve"><value>합성 압력 사용</value></data>
+  <data name="Pad_Touchpad_SyntheticPressureEnabled_Tooltip" xml:space="preserve"><value>이 장치의 압력 매핑 소스를 3단계로 만듭니다. 터치 없음은 0%, 정지된 터치는 터치 압력 레벨, 패드 클릭은 100%로 읽힙니다. 기본값은 꺼짐이며 실제 아날로그 압력이 있는 패드는 원시 값을 유지합니다.</value></data>
+  <data name="Pad_Touchpad_SyntheticTouchLevel" xml:space="preserve"><value>터치 압력 레벨</value></data>
+  <data name="Pad_Touchpad_SyntheticTouchLevel_Tooltip" xml:space="preserve"><value>정지된(클릭하지 않은) 터치가 보고하는 압력입니다. 50%로 하면 패드 전체 클릭까지 균등한 단계가 됩니다.</value></data>
   <data name="Pad_ResetTouchpadPointer" xml:space="preserve"><value>절대 포인터 재설정</value></data>
   <data name="Pad_ResetTouchpadSwipeHaptics" xml:space="preserve"><value>스와이프 햅틱 재설정</value></data>
+  <data name="Pad_ResetTouchpadSyntheticPressure" xml:space="preserve"><value>합성 압력 재설정</value></data>
   <data name="Pad_ResetTouchpadPointerStretchX" xml:space="preserve"><value>포인터 스트레치 X 재설정</value></data>
   <data name="Pad_ResetTouchpadPointerStretchY" xml:space="preserve"><value>포인터 스트레치 Y 재설정</value></data>
   <data name="Pad_ResetTouchpadSwipeHapticsEnabled" xml:space="preserve"><value>스와이프 햅틱 사용 재설정</value></data>
   <data name="Pad_ResetTouchpadSwipeHapticsIntensity" xml:space="preserve"><value>펄스 강도 재설정</value></data>
+  <data name="Pad_ResetTouchpadSyntheticPressureEnabled" xml:space="preserve"><value>합성 압력 사용 재설정</value></data>
+  <data name="Pad_ResetTouchpadSyntheticTouchLevel" xml:space="preserve"><value>터치 압력 레벨 재설정</value></data>
   <data name="Mapping_FlickStickRight" xml:space="preserve"><value>Flick Stick (오른쪽 스틱)</value></data>
   <data name="Mapping_FlickStickLeft" xml:space="preserve"><value>Flick Stick (왼쪽 스틱)</value></data>
   <data name="Mapping_FlickStickTouchpad_Format" xml:space="preserve"><value>Flick Stick (터치패드 {0})</value></data>

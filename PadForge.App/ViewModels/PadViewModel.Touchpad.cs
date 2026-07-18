@@ -772,6 +772,37 @@ namespace PadForge.ViewModels
                 TouchpadSwipeHapticsIntensity = 0.5;
             });
 
+        // ─── Synthetic-pressure card reset commands (#239) ────────
+        // The two fields live on the per-device DeviceSlotConfig, so the
+        // resets write through the DeviceConfig anchor and follow the
+        // selected device (the ResetAudioMirrorCommand pattern).
+
+        private RelayCommand _resetTouchpadSyntheticPressureEnabledCommand;
+        public RelayCommand ResetTouchpadSyntheticPressureEnabledCommand =>
+            _resetTouchpadSyntheticPressureEnabledCommand ??= new RelayCommand(() =>
+            {
+                if (DeviceConfig != null) DeviceConfig.TouchpadSyntheticPressure = false;
+            });
+
+        private RelayCommand _resetTouchpadSyntheticTouchPercentCommand;
+        public RelayCommand ResetTouchpadSyntheticTouchPercentCommand =>
+            _resetTouchpadSyntheticTouchPercentCommand ??= new RelayCommand(() =>
+            {
+                if (DeviceConfig != null) DeviceConfig.TouchpadSyntheticTouchPercent = 50;
+            });
+
+        private RelayCommand _resetTouchpadSyntheticPressureCardCommand;
+
+        /// <summary>Reset every Synthetic Pressure card field to defaults.</summary>
+        public RelayCommand ResetTouchpadSyntheticPressureCardCommand =>
+            _resetTouchpadSyntheticPressureCardCommand ??= new RelayCommand(() =>
+            {
+                var cfg = DeviceConfig;
+                if (cfg == null) return;
+                cfg.TouchpadSyntheticPressure = false;
+                cfg.TouchpadSyntheticTouchPercent = 50;
+            });
+
         // ─── Per-pad pivot / topology helpers ─────────
 
         /// <summary>Update <see cref="MaxTouchpadIndex"/> from the

@@ -1196,6 +1196,13 @@
   <data name="Mapping_TouchpadPointerYRight_Format" xml:space="preserve"><value>Touchpad {0} Pointer Y (Right Half)</value></data>
   <data name="Mapping_TouchpadFingerTouchLeft_Format" xml:space="preserve"><value>Touchpad {0} Finger {1} Touch (Left Half)</value></data>
   <data name="Mapping_TouchpadFingerTouchRight_Format" xml:space="preserve"><value>Touchpad {0} Finger {1} Touch (Right Half)</value></data>
+  <data name="Mapping_TouchpadWindow_Upper" xml:space="preserve"><value>Upper Half</value></data>
+  <data name="Mapping_TouchpadWindow_Lower" xml:space="preserve"><value>Lower Half</value></data>
+  <data name="Mapping_TouchpadWindow_North" xml:space="preserve"><value>North Quadrant</value></data>
+  <data name="Mapping_TouchpadWindow_South" xml:space="preserve"><value>South Quadrant</value></data>
+  <data name="Mapping_TouchpadWindow_East" xml:space="preserve"><value>East Quadrant</value></data>
+  <data name="Mapping_TouchpadWindow_West" xml:space="preserve"><value>West Quadrant</value></data>
+  <data name="Mapping_TouchpadWindow_Center" xml:space="preserve"><value>Center</value></data>
 
   <!-- ═══ Touchpad Gesture Mapping Labels ═══ -->
   <data name="Mapping_TouchpadGesture_SwipeUp" xml:space="preserve"><value>Swipe Up</value></data>
@@ -1340,6 +1347,12 @@
   <data name="Pad_Touchpad_SwipeHapticsEnabled_Tooltip" xml:space="preserve"><value>Fires a short haptic tick each time the finger moves a set distance on this pad. Landing a finger or clicking the pad never ticks. Off by default.</value></data>
   <data name="Pad_Touchpad_SwipeHapticsIntensity" xml:space="preserve"><value>Pulse Intensity</value></data>
   <data name="Pad_Touchpad_SwipeHapticsIntensity_Tooltip" xml:space="preserve"><value>Strength of each tick. Game rumble always wins when it is stronger.</value></data>
+  <data name="Pad_Touchpad_SyntheticPressure_Header" xml:space="preserve"><value>Synthetic Pressure</value></data>
+  <data name="Pad_Touchpad_SyntheticPressure_Subtitle" xml:space="preserve"><value>Simulates DualShock 2 / DualShock 3 pressure buttons on pads that report a touch as full pressure (DualShock 4, DualSense, Steam Controller 2015). While enabled, this device&apos;s Pressure mapping sources read no touch as 0%, a resting touch as the Touch Pressure Level, and a pad click as 100%.</value></data>
+  <data name="Pad_Touchpad_SyntheticPressureEnabled" xml:space="preserve"><value>Enable Synthetic Pressure</value></data>
+  <data name="Pad_Touchpad_SyntheticPressureEnabled_Tooltip" xml:space="preserve"><value>Shapes this device&apos;s Pressure mapping sources into three steps: no touch reads 0%, a resting touch reads the Touch Pressure Level, and clicking the pad reads 100%. Off by default, which keeps raw readings on pads with true analog pressure.</value></data>
+  <data name="Pad_Touchpad_SyntheticTouchLevel" xml:space="preserve"><value>Touch Pressure Level</value></data>
+  <data name="Pad_Touchpad_SyntheticTouchLevel_Tooltip" xml:space="preserve"><value>How much pressure a resting (unclicked) touch reports. 50% leaves an even step up to a full pad click.</value></data>
 
   <!-- Reset-All tooltips per card -->
   <data name="Pad_ResetTouchpadDetection" xml:space="preserve"><value>Reset Gesture Detection</value></data>
@@ -1348,6 +1361,7 @@
   <data name="Pad_ResetTouchpadMouse" xml:space="preserve"><value>Reset Mouse Output</value></data>
   <data name="Pad_ResetTouchpadPointer" xml:space="preserve"><value>Reset Absolute Pointer</value></data>
   <data name="Pad_ResetTouchpadSwipeHaptics" xml:space="preserve"><value>Reset Swipe Haptics</value></data>
+  <data name="Pad_ResetTouchpadSyntheticPressure" xml:space="preserve"><value>Reset Synthetic Pressure</value></data>
 
   <!-- Per-row Reset tooltips for stick / D-pad card -->
   <data name="Pad_ResetTouchpadStickEnabled" xml:space="preserve"><value>Reset Enable Stick / D-Pad Output</value></data>
@@ -1369,6 +1383,8 @@
   <!-- Per-row Reset tooltips for swipe-haptics card -->
   <data name="Pad_ResetTouchpadSwipeHapticsEnabled" xml:space="preserve"><value>Reset Enable Swipe Haptics</value></data>
   <data name="Pad_ResetTouchpadSwipeHapticsIntensity" xml:space="preserve"><value>Reset Pulse Intensity</value></data>
+  <data name="Pad_ResetTouchpadSyntheticPressureEnabled" xml:space="preserve"><value>Reset Enable Synthetic Pressure</value></data>
+  <data name="Pad_ResetTouchpadSyntheticTouchLevel" xml:space="preserve"><value>Reset Touch Pressure Level</value></data>
 
   <!-- Per-row Reset tooltips -->
   <data name="Pad_ResetTouchpadGesturesEnabled" xml:space="preserve"><value>Reset Gestures Enabled</value></data>

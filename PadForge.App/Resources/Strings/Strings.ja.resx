@@ -2508,6 +2508,13 @@
   <data name="Mapping_TouchpadPointerYRight_Format" xml:space="preserve"><value>タッチパッド {0} ポインター Y (右半分)</value></data>
   <data name="Mapping_TouchpadFingerTouchLeft_Format" xml:space="preserve"><value>タッチパッド {0} 指 {1} タッチ (左半分)</value></data>
   <data name="Mapping_TouchpadFingerTouchRight_Format" xml:space="preserve"><value>タッチパッド {0} 指 {1} タッチ (右半分)</value></data>
+  <data name="Mapping_TouchpadWindow_Upper" xml:space="preserve"><value>上半分</value></data>
+  <data name="Mapping_TouchpadWindow_Lower" xml:space="preserve"><value>下半分</value></data>
+  <data name="Mapping_TouchpadWindow_North" xml:space="preserve"><value>北ゾーン</value></data>
+  <data name="Mapping_TouchpadWindow_South" xml:space="preserve"><value>南ゾーン</value></data>
+  <data name="Mapping_TouchpadWindow_East" xml:space="preserve"><value>東ゾーン</value></data>
+  <data name="Mapping_TouchpadWindow_West" xml:space="preserve"><value>西ゾーン</value></data>
+  <data name="Mapping_TouchpadWindow_Center" xml:space="preserve"><value>中央</value></data>
   <data name="Pad_Touchpad_Pointer_Header" xml:space="preserve"><value>絶対ポインター</value></data>
   <data name="Pad_Touchpad_Pointer_Subtitle" xml:space="preserve"><value>カーソルをパッド上の指の位置へ移動させるタッチパッド ポインター X/Y ソースを調整します (キーボード / マウスの仮想コントローラーでマウス X/Y に割り当ててください)。1.0 ではパッドが画面に 1:1 で対応します。親指がパッドの端に届く前に画面の端へ届くようにするには、ストレッチを上げてください。</value></data>
   <data name="Pad_Touchpad_PointerStretchX" xml:space="preserve"><value>ポインターストレッチ X</value></data>
@@ -2520,12 +2527,21 @@
   <data name="Pad_Touchpad_SwipeHapticsEnabled_Tooltip" xml:space="preserve"><value>このパッド上で指が設定距離を移動するたびに短いハプティックティックを発生させます。指を置いたりパッドをクリックしたりしてもティックは発生しません。既定ではオフです。</value></data>
   <data name="Pad_Touchpad_SwipeHapticsIntensity" xml:space="preserve"><value>パルス強度</value></data>
   <data name="Pad_Touchpad_SwipeHapticsIntensity_Tooltip" xml:space="preserve"><value>各ティックの強さです。ゲームの振動の方が強い場合は常にそちらが優先されます。</value></data>
+  <data name="Pad_Touchpad_SyntheticPressure_Header" xml:space="preserve"><value>合成圧力</value></data>
+  <data name="Pad_Touchpad_SyntheticPressure_Subtitle" xml:space="preserve"><value>タッチを最大圧力として報告するパッド (DualShock 4、DualSense、Steam Controller 2015) で DualShock 2 / DualShock 3 の感圧ボタンをシミュレートします。有効な間、このデバイスの圧力マッピングソースは、タッチなしを 0%、静止したタッチをタッチ圧力レベル、パッドのクリックを 100% として読み取ります。</value></data>
+  <data name="Pad_Touchpad_SyntheticPressureEnabled" xml:space="preserve"><value>合成圧力を有効化</value></data>
+  <data name="Pad_Touchpad_SyntheticPressureEnabled_Tooltip" xml:space="preserve"><value>このデバイスの圧力マッピングソースを 3 段階に整形します。タッチなしは 0%、静止したタッチはタッチ圧力レベル、パッドのクリックは 100% になります。既定ではオフで、真のアナログ圧力を持つパッドは生の読み取り値を保持します。</value></data>
+  <data name="Pad_Touchpad_SyntheticTouchLevel" xml:space="preserve"><value>タッチ圧力レベル</value></data>
+  <data name="Pad_Touchpad_SyntheticTouchLevel_Tooltip" xml:space="preserve"><value>静止した (クリックしていない) タッチが報告する圧力。50% にするとパッドの完全なクリックまで均等な段差になります。</value></data>
   <data name="Pad_ResetTouchpadPointer" xml:space="preserve"><value>絶対ポインターをリセット</value></data>
   <data name="Pad_ResetTouchpadSwipeHaptics" xml:space="preserve"><value>スワイプハプティクスをリセット</value></data>
+  <data name="Pad_ResetTouchpadSyntheticPressure" xml:space="preserve"><value>合成圧力をリセット</value></data>
   <data name="Pad_ResetTouchpadPointerStretchX" xml:space="preserve"><value>ポインターストレッチ X をリセット</value></data>
   <data name="Pad_ResetTouchpadPointerStretchY" xml:space="preserve"><value>ポインターストレッチ Y をリセット</value></data>
   <data name="Pad_ResetTouchpadSwipeHapticsEnabled" xml:space="preserve"><value>スワイプハプティクスの有効化をリセット</value></data>
   <data name="Pad_ResetTouchpadSwipeHapticsIntensity" xml:space="preserve"><value>パルス強度をリセット</value></data>
+  <data name="Pad_ResetTouchpadSyntheticPressureEnabled" xml:space="preserve"><value>合成圧力の有効化をリセット</value></data>
+  <data name="Pad_ResetTouchpadSyntheticTouchLevel" xml:space="preserve"><value>タッチ圧力レベルをリセット</value></data>
   <data name="Mapping_FlickStickRight" xml:space="preserve"><value>Flick Stick (右スティック)</value></data>
   <data name="Mapping_FlickStickLeft" xml:space="preserve"><value>Flick Stick (左スティック)</value></data>
   <data name="Mapping_FlickStickTouchpad_Format" xml:space="preserve"><value>Flick Stick (タッチパッド {0})</value></data>

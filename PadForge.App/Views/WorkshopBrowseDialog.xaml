@@ -635,6 +635,7 @@
                                          ItemContainerStyle="{StaticResource WsConfigRowContainer}"
                                          ScrollViewer.VerticalScrollBarVisibility="Visible"
                                          ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                         ScrollViewer.ScrollChanged="ConfigList_ScrollChanged"
                                          SelectionChanged="ConfigList_SelectionChanged">
                                     <ListBox.ItemTemplate>
                                         <DataTemplate>
@@ -754,6 +755,17 @@
                                             HorizontalAlignment="Center" Margin="0,12,0,0" MinWidth="90"
                                             Click="ConfigsRetry_Click"/>
                                 </StackPanel>
+                                <!-- Load-more strip: the forge bar at the foot of the
+                                     list while the next page streams in (infinite
+                                     scroll; the loaded rows never blank). -->
+                                <Border x:Name="ConfigsMorePanel" Grid.Row="2" Visibility="Collapsed"
+                                        VerticalAlignment="Bottom" IsHitTestVisible="False"
+                                        CornerRadius="0,0,10,10" Padding="0,9"
+                                        Background="{DynamicResource ControlFillColorDefaultBrush}"
+                                        BorderThickness="0,1,0,0" BorderBrush="{DynamicResource SteelLineSoftBrush}">
+                                    <ContentControl Template="{StaticResource ForgeBarTemplate}"
+                                                    Focusable="False" HorizontalAlignment="Center"/>
+                                </Border>
                             </Grid>
                         </Border>
                     </Grid>

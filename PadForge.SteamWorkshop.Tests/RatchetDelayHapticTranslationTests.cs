@@ -112,8 +112,9 @@ namespace PadForge.SteamWorkshop.Tests
         [Fact]
         public void RatchetMask_UngroundedBits_KeepTheNoteWithResidualMask()
         {
-            // 1<<41 grounds (Paddle4); 1<<44 (CapSenseLeftAux) has no read.
-            ulong mask = (1UL << 41) | (1UL << 44);
+            // 1<<41 grounds (Paddle4); 1<<37 (ButtonMacro5, the Steam Link
+            // on-screen button past SDL's misc space) has no read.
+            ulong mask = (1UL << 41) | (1UL << 37);
             string vdf = Head
                 + Group(1, "gyro_to_mouse", Settings(("gyro_ratchet_button_mask",
                     mask.ToString(System.Globalization.CultureInfo.InvariantCulture))))
@@ -123,7 +124,31 @@ namespace PadForge.SteamWorkshop.Tests
             Assert.Equal(new[] { "Gamepad Paddle4" }, p.GyroRatchetDescriptors);
             var e = Assert.Single(p.Report.Entries, x =>
                 x.ReasonKey == TranslationReasons.GyroButtonMaskDropped);
-            Assert.Equal(new[] { "gyro_ratchet_button_mask", (1UL << 44).ToString() }, e.ReasonArgs);
+            Assert.Equal(new[] { "gyro_ratchet_button_mask", (1UL << 37).ToString() }, e.ReasonArgs);
+        }
+
+        [Fact]
+        public void RatchetMask_CapSenseBits_GroundOnTheCapsenseReads()
+        {
+            // v26: bits 44-47 = CapSenseLeftAux / RightAux / LeftStick /
+            // RightStick in the shipped configurator's
+            // k_eGamepadButtonBitMask, landing on the fork's
+            // SDL_GetGamepadCapSense channels. Wild witnesses 3726651949
+            // (bits 44+45) and 3724212306 (bit 47).
+            ulong mask = (1UL << 44) | (1UL << 45) | (1UL << 46) | (1UL << 47);
+            string vdf = Head
+                + Group(1, "gyro_to_mouse", Settings(("gyro_ratchet_button_mask",
+                    mask.ToString(System.Globalization.CultureInfo.InvariantCulture))))
+                + Preset(0, "Default", (1, "gyro active"))
+                + "}\n";
+            var p = Translate(vdf);
+            Assert.Equal(new[]
+            {
+                "Gamepad LeftGripTouch", "Gamepad LeftStickTouch",
+                "Gamepad RightGripTouch", "Gamepad RightStickTouch",
+            }, p.GyroRatchetDescriptors.OrderBy(d => d, System.StringComparer.Ordinal).ToArray());
+            Assert.DoesNotContain(p.Report.Entries, e =>
+                e.ReasonKey == TranslationReasons.GyroButtonMaskDropped);
         }
 
         [Fact]

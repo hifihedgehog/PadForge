@@ -83,10 +83,12 @@ namespace PadForge.SteamWorkshop.Tests
         }
 
         [Fact]
-        public void ButtonMacro_BeyondSdlMiscSpace_KeepsTheNamedSkip()
+        public void ButtonMacro_BeyondSdlMiscSpace_GetsTheMobileTouchClass()
         {
-            // macro5..7 and the mobile finger taps exceed SDL's misc space
-            // (MISC2..MISC6 hold macro0..4 only).
+            // v26: macro5..7 and the mobile finger taps exceed SDL's misc
+            // space (MISC2..MISC6 hold macro0..4 only) and exist only on
+            // the Steam Link touch overlay, so they get the PRECISE
+            // mobile-only class, never the generic unknown-input net.
             string vdf = Head
                 + Group(1, "switches", Inputs(
                     Inp("button_macro5", "xinput_button A"),
@@ -96,7 +98,9 @@ namespace PadForge.SteamWorkshop.Tests
             var p = Translate(vdf);
             Assert.Empty(p.XboxMappingSet.Rows);
             Assert.Equal(2, p.Report.Entries.Count(e =>
-                e.ReasonKey == TranslationReasons.UnknownPhysicalInput));
+                e.ReasonKey == TranslationReasons.MobileTouchSurfaceOnly));
+            Assert.DoesNotContain(p.Report.Entries, e =>
+                e.ReasonKey == TranslationReasons.UnknownPhysicalInput);
         }
 
         // ─── chord: gated bindings ──────────────────────────────────────
@@ -197,11 +201,13 @@ namespace PadForge.SteamWorkshop.Tests
         }
 
         [Fact]
-        public void Chord_ZeroButton_IsTheUnsetSentinel_KeepsTheNamedSkip()
+        public void Chord_ZeroButton_IsTheUnsetSentinel_GetsTheChordWithoutPartnerClass()
         {
             // 0 in the shared value space is the gyro_button none/default
             // sentinel; no corpus chord authors it and the serializer
             // omits defaults, so 0 = an unset picker, not an RT chord.
+            // v26: that arm is the PRECISE config-error class (not even
+            // Steam can fire a chord with no partner).
             string vdf = Head
                 + Group(1, "switches", Inputs(
                     Inp("left_bumper", "key_press R", "chord",
@@ -211,6 +217,8 @@ namespace PadForge.SteamWorkshop.Tests
             var p = Translate(vdf);
             Assert.Empty(p.KbmMappingSet.Rows);
             Assert.Single(p.Report.Entries, e =>
+                e.ReasonKey == TranslationReasons.ChordWithoutPartner);
+            Assert.DoesNotContain(p.Report.Entries, e =>
                 e.ReasonKey == TranslationReasons.UnknownActivatorType);
         }
 

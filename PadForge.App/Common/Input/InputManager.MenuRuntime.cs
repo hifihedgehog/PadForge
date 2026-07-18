@@ -221,6 +221,19 @@ namespace PadForge.Common.Input
                             newState, ctx.SrcLeft, 50, slot, ud.InstanceGuidString);
                         bool right = SourceCoercion.EvaluateForButtonTarget(
                             newState, ctx.SrcRight, 50, slot, ud.InstanceGuidString);
+                        // Button-pair GRID (hotbar, v26): direction presses
+                        // STEP a persistent selection; a four-bool vector
+                        // could only reach a grid's edge cells. The
+                        // evaluator owns the edge detector and the
+                        // step-commit pulse.
+                        if (def.Kind == MenuKind.Grid)
+                        {
+                            MenuEvaluator.StepButtonPairGrid(ctx.State, def, layerOk,
+                                up, down, left, right, nowMs);
+                            PublishMenuOverlay(slot, ud.InstanceGuid, def, ctx.State,
+                                (up || down || left || right) && layerOk, nowMs);
+                            continue;
+                        }
                         dx = (right ? 1 : 0) - (left ? 1 : 0);
                         dy = (down ? 1 : 0) - (up ? 1 : 0);
                         physical = up || down || left || right;
@@ -238,6 +251,15 @@ namespace PadForge.Common.Input
                             newState, ctx.SrcX, slot, false, ud.InstanceGuidString) : 0;
                         dy = ctx.SrcY != null ? SourceCoercion.EvaluateForBipolarAxisTarget(
                             newState, ctx.SrcY, slot, false, ud.InstanceGuidString) : 0;
+                        // In-Menu Sensitivity (v26): scales the hover
+                        // vector, so engage / ring reach costs less (or
+                        // more) physical deflection. Identity at 100.
+                        if (def.SensitivityPercent > 0 && def.SensitivityPercent != 100)
+                        {
+                            double sens = def.SensitivityPercent / 100.0;
+                            dx = Math.Clamp(dx * sens, -1.0, 1.0);
+                            dy = Math.Clamp(dy * sens, -1.0, 1.0);
+                        }
                         // Engage/release hysteresis (sc-controller's proven
                         // stick-menu shape: engage at 1/3 deflection, cancel
                         // near center at 1/8). Without it the stick surface
@@ -269,6 +291,14 @@ namespace PadForge.Common.Input
                                 newState, ctx.SrcX, slot, false, ud.InstanceGuidString);
                             dy = SourceCoercion.EvaluateForBipolarAxisTarget(
                                 newState, ctx.SrcY, slot, false, ud.InstanceGuidString);
+                            // In-Menu Sensitivity (v26), the stick branch's
+                            // twin on the touch surface.
+                            if (def.SensitivityPercent > 0 && def.SensitivityPercent != 100)
+                            {
+                                double sens = def.SensitivityPercent / 100.0;
+                                dx = Math.Clamp(dx * sens, -1.0, 1.0);
+                                dy = Math.Clamp(dy * sens, -1.0, 1.0);
+                            }
                             clicked = SourceCoercion.EvaluateForButtonTarget(
                                 newState, ctx.SrcClick, 50, slot, ud.InstanceGuidString);
                         }

@@ -118,35 +118,52 @@ namespace PadForge.SteamWorkshop.Tests
         }
 
         [Fact]
-        public void Flickstick_OnTrackpad_SkipsNamed_MembersStillTranslate()
+        public void Flickstick_OnTrackpad_BuildsTheTouchSurfaceFlick()
         {
-            // The gordon-era corpus hosts flickstick on trackpads
-            // (2228940979 binds it to the right pad); PadForge's flick
-            // stick reads a physical stick only.
+            // v26: the gordon-era corpus hosts flickstick on trackpads
+            // (2228940979 binds it to the right pad). The group builds on
+            // the touch-surface flick family (the finger's centered
+            // vector as the stick pair) instead of skipping.
             string vdf = Head
                 + Group(1, "flickstick", Inputs(Inp("click", "key_press E")))
                 + Preset(0, "Default", (1, "right_trackpad active"))
                 + "}\n";
             var p = Translate(vdf);
 
-            Assert.DoesNotContain(p.KbmMappingSet.Rows, r =>
-                r.Sources.Any(s => (s.Descriptor ?? "").StartsWith("Flick Stick")));
-            Assert.Contains(p.Report.Entries, e =>
-                e.ReasonKey == TranslationReasons.FlickStickSurfaceNotSupported
-                && e.Status == TranslationStatus.Skipped);
+            Assert.Contains(p.KbmMappingSet.Rows, r => r.Target == "KbmMouseX"
+                && r.Sources.Any(s => s.Descriptor == "Flick Stick Touchpad 1"));
+            Assert.DoesNotContain(p.Report.Entries, e =>
+                e.ReasonKey == TranslationReasons.FlickStickSurfaceNotSupported);
             // The click member still lands (pad click -> key E).
-            var key = Assert.Single(p.KbmMappingSet.Rows);
-            Assert.Equal("KbmKey45", key.Target); // E
+            var key = Assert.Single(p.KbmMappingSet.Rows, r => r.Target == "KbmKey45"); // E
             Assert.Equal("Touchpad 1 Click", Assert.Single(key.Sources).Descriptor);
         }
 
         [Fact]
-        public void Flickstick_UngroundedTuningKeys_ReportOneNamedPartial()
+        public void Flickstick_OnSinglePadTrackpadHalf_CarriesTheHalfWindow()
         {
-            // The wild tuning vocabulary (2779652507 / 2228940979):
-            // edge_binding_radius, mouse_smoothing, rotation,
-            // transition_time. Mapping them onto the JSM knobs would be a
-            // semantics guess, so they ride one named Partial per group.
+            // Single-pad types (#9 B-1): a right_trackpad flickstick reads
+            // the right HALF of the one physical pad.
+            string vdf = "\"controller_mappings\"\n{\n\t\"version\"\t\"3\"\n\t\"title\"\t\"T\"\n"
+                + "\t\"controller_type\"\t\"controller_ps5\"\n"
+                + Group(1, "flickstick", "")
+                + Preset(0, "Default", (1, "right_trackpad active"))
+                + "}\n";
+            var p = Translate(vdf);
+
+            Assert.Contains(p.KbmMappingSet.Rows, r => r.Target == "KbmMouseX"
+                && r.Sources.Any(s => s.Descriptor == "Flick Stick Touchpad 0 Right"));
+        }
+
+        [Fact]
+        public void Flickstick_TuningKeys_ConsumeIntoTheFlickParams()
+        {
+            // v26: the whole old tuning vocabulary BUILDS. rotation is
+            // degrees onto the flick-angle offset, mouse_smoothing is the
+            // percent strength onto the rad-per-tick threshold (anchor:
+            // JSM's auto band upper 0.04), transition_time stays the
+            // easing time, and edge_binding_radius belongs to the edge
+            // member's ring read.
             string vdf = Head
                 + Group(1, "flickstick", Settings(
                     ("edge_binding_radius", "19566"),
@@ -160,19 +177,25 @@ namespace PadForge.SteamWorkshop.Tests
 
             var src = Assert.Single(Assert.Single(p.KbmMappingSet.Rows).Sources);
             Assert.Equal(2603, src.ParamFlickCountsPer360, 3);
-            // v18: transition_time IS the flick easing time (ms), so it
-            // consumes into ParamFlickTime instead of riding the note.
             Assert.Equal(0.106, src.ParamFlickTime, 6);
+            Assert.Equal(-1, src.ParamFlickRotationOffsetDeg, 6);
+            Assert.Equal(0.06 * 0.04, src.ParamFlickSmooth, 6);
+            Assert.DoesNotContain(p.Report.Entries,
+                e => e.ReasonArgs.Any(a => a.Contains("mouse_smoothing")));
+        }
 
-            var partial = Assert.Single(p.Report.Entries, e =>
-                e.ReasonKey == TranslationReasons.FlickStickTuningDropped);
-            Assert.Equal(TranslationStatus.Partial, partial.Status);
-            string keys = Assert.Single(partial.ReasonArgs);
-            Assert.Contains("edge_binding_radius", keys);
-            Assert.Contains("mouse_smoothing", keys);
-            Assert.Contains("rotation", keys);
-            Assert.DoesNotContain("transition_time", keys);
-            Assert.DoesNotContain("sensitivity", keys);
+        [Fact]
+        public void Flickstick_AuthoredZeroTransitionTime_IsTheNearInstantFlick()
+        {
+            // An authored 0 means "no easing"; the engine reads
+            // ParamFlickTime 0 as unset, so it lands on the clamp floor.
+            string vdf = Head
+                + Group(1, "flickstick", Settings(("transition_time", "0")))
+                + Preset(0, "Default", (1, "right_joystick active"))
+                + "}\n";
+            var p = Translate(vdf);
+            var src = Assert.Single(Assert.Single(p.KbmMappingSet.Rows).Sources);
+            Assert.Equal(0.01, src.ParamFlickTime, 6);
         }
 
         [Fact]

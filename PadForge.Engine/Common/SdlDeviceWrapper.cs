@@ -159,6 +159,14 @@ namespace PadForge.Engine
         /// only the fingers each pad actually supports, even when offline.</summary>
         public int[] TouchpadFingerCounts => _padFingerCounts ?? System.Array.Empty<int>();
 
+        /// <summary>Per-channel capsense capability from SDL_GamepadHasCapSense
+        /// (fork API, SDL_gamepad.h since 3.6.0), indexed by the
+        /// SDL_GAMEPAD_CAPSENSE_* constants (left stick / right stick /
+        /// left grip / right grip). Null when no channel exists, so the
+        /// per-frame fill and the CustomInputState allocation stay free for
+        /// the overwhelmingly common capsense-less device.</summary>
+        private bool[] _capSenseChannels;
+
         /// <summary>Human-readable device name.</summary>
         public string Name { get; private set; } = string.Empty;
 
@@ -332,6 +340,19 @@ namespace PadForge.Engine
                 // pair's left child); PadForge simply never read it.
                 HasAccelAux = SDL_GamepadHasSensor(GameController, SDL_SENSOR_ACCEL_L);
                 if (HasAccelAux) SDL_SetGamepadSensorEnabled(GameController, SDL_SENSOR_ACCEL_L, true);
+
+                // Capacitive touch channels (fork API): stick-top touch on
+                // Steam Controller-family devices, grip capsense on the SC
+                // 2026. Probe once at open; only allocate the per-channel
+                // capability map when at least one channel exists.
+                for (int c = 0; c < SDL_GAMEPAD_CAPSENSE_COUNT; c++)
+                {
+                    if (SDL_GamepadHasCapSense(GameController, c))
+                    {
+                        _capSenseChannels ??= new bool[SDL_GAMEPAD_CAPSENSE_COUNT];
+                        _capSenseChannels[c] = true;
+                    }
+                }
 
                 int numPads = SDL_GetNumGamepadTouchpads(GameController);
                 HasTouchpad = numPads > 0;
@@ -855,6 +876,17 @@ namespace PadForge.Engine
                 SDL_GetGamepadSensorData(GameController, SDL_SENSOR_ACCEL, state.Accel, 3);
             if (HasAccelAux)
                 SDL_GetGamepadSensorData(GameController, SDL_SENSOR_ACCEL_L, state.AccelAux, 3);
+
+            // --- Capsense (stick-top / grip touch, fork API) ---
+            if (_capSenseChannels != null)
+            {
+                state.CapSense = new bool[SDL_GAMEPAD_CAPSENSE_COUNT];
+                for (int c = 0; c < SDL_GAMEPAD_CAPSENSE_COUNT; c++)
+                {
+                    if (_capSenseChannels[c])
+                        state.CapSense[c] = SDL_GetGamepadCapSense(GameController, c);
+                }
+            }
 
             // --- Touchpad (DS4/DualSense/Steam Deck/Steam Controller/Triton) ---
             if (HasTouchpad && _padFingerCounts != null)

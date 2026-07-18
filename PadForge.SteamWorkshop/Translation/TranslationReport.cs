@@ -444,8 +444,45 @@ namespace PadForge.SteamWorkshop.Translation
         /// the enum's Toggle arm onto the slot engage machinery's Toggle
         /// mode; ratchet/engage bits 27/28 ground on single-pad center
         /// reads (controller_ps5_edge joins the single-pad set) and bits
-        /// 32-36 on the v24 macro buttons.</summary>
-        public const int CurrentTranslatorVersion = 25;
+        /// 32-36 on the v24 macro buttons.
+        /// v26: wild-corpus round 3. The gravity-lean channel lands
+        /// ("Gyro Lean X/Y": sustained tilt from the low-passed
+        /// accelerometer, physical-stick signs, resting-grip neutral):
+        /// gyro-hosted dpad members lower onto lean wedges with the
+        /// stick-dpad table, gyro_to_joystick_deflection emits the lean
+        /// pair onto the thumb axes, gyro_to_joystick emits the rate
+        /// pair through the mouse_joystick shape, and gyro-hosted
+        /// touch_menus hover by tilting (the Custom menu opener on the
+        /// lean pair). Capsense lands (the fork's SDL_GetGamepadCapSense
+        /// through CustomInputState.CapSense): stick "touch" members and
+        /// button_left/rightauxcapsense read the four "Gamepad ...Touch"
+        /// descriptors and ratchet/engage/chord bits 44-47 ground on
+        /// them. The Steam Link on-screen controls (button_macro5..7,
+        /// the One / Two Finger Taps) get the precise
+        /// MobileTouchSurfaceOnly class: they exceed SDL's whole gamepad
+        /// surface and exist only on the mobile touch overlay. Physical
+        /// dpad edge / click members read the POV any-direction bool
+        /// (a pressed dpad IS at the edge and IS clicked). Trackpad edge
+        /// members build on the finger-ring read ("Touchpad {p} Finger 0
+        /// Ring", radius on DeadZone / inner on Invert), consuming
+        /// edge_binding_radius / _invert everywhere. Trackpad-hosted
+        /// flickstick builds on the touch-surface flick family, and the
+        /// flick tuning keys consume whole (rotation, mouse_smoothing,
+        /// transition_time incl. 0). Stick mouse_region engages on the
+        /// v17 deflection ring (the clamp macro's WhileHeld trigger).
+        /// hotbar grids host on the dpad / diamond (stepped selection,
+        /// Steam's remember-the-selection contract) and In-Menu
+        /// Sensitivity consumes into MenuDefinitionEntry
+        /// .SensitivityPercent. Gated trackpad D-pad wedges and
+        /// pulse-gesture hosts (double taps, swipes) carry layer verbs
+        /// (ShiftActivator.GateDescriptor on the Axis kind; pulse hosts
+        /// latch, the flick-host rule). The chord activator with no
+        /// chord_button gets the precise ChordWithoutPartner
+        /// config-error class, and the "analog" activator type lowers as
+        /// the live-magnitude press it is (shipped Analog description).
+        /// FlickStickTuningDropped and MenuTuningDropped retired (keys
+        /// and locale strings deleted).</summary>
+        public const int CurrentTranslatorVersion = 26;
 
         public int TranslatorVersion { get; set; } = CurrentTranslatorVersion;
 
@@ -573,6 +610,15 @@ namespace PadForge.SteamWorkshop.Translation
         public const string UnknownMouseButton = "Workshop_Tr_UnknownMouseButton";               // {0} name
         public const string UnknownXInputButton = "Workshop_Tr_UnknownXInputButton";             // {0} name
         public const string UnknownPhysicalInput = "Workshop_Tr_UnknownPhysicalInput";           // {0} slot {1} input
+        /// <summary>A Steam Link on-screen touch control (v26): Macro
+        /// Buttons 6-8 (button_macro5..7, enum bits 37-39) name buttons
+        /// past SDL's whole gamepad surface (SDL_GAMEPAD_BUTTON_MISC6 =
+        /// Steam macro 4 is the last misc slot), and the One / Two Finger
+        /// Tap pair (bits 48/49) are touch-screen tap gestures the shipped
+        /// glyph map files under eIgnore. They exist only on the mobile
+        /// client's touch overlay; no physical controller PadForge can
+        /// drive exposes them. {0} = the slot, {1} = the input token.</summary>
+        public const string MobileTouchSurfaceOnly = "Workshop_Tr_MobileTouchSurfaceOnly";       // {0} slot {1} input
         public const string UnknownGroupMode = "Workshop_Tr_UnknownGroupMode";                   // {0} mode
         // Legacy-render-only since translator v7 (#9 B-17): menus are
         // first-class now, so nothing needs an overlay it doesn't have.
@@ -601,6 +647,12 @@ namespace PadForge.SteamWorkshop.Translation
         // (layer verbs, mode shifts) land on ActivatorInputNotSupported.
         // The key plus its locale strings were deleted.
         public const string UnknownActivatorType = "Workshop_Tr_UnknownActivatorType";           // {0} type
+        /// <summary>A chord activator whose settings carry no chord_button
+        /// (v26): the partner picker was never set (Steam's serializer
+        /// omits defaults, and the shared enum's 0 is the none sentinel),
+        /// so not even Steam can fire the chord. Config-error reporting of
+        /// the config's own unset picker; there is nothing to gate on.</summary>
+        public const string ChordWithoutPartner = "Workshop_Tr_ChordWithoutPartner";
         // RepeatDropped retired in v18: every surviving arm BUILT. Axis
         // targets pulse via the RepeatVcAxisWhileHeld turbo and the
         // toggle + hold_repeats composite rides the pulse-while-latched
@@ -721,13 +773,27 @@ namespace PadForge.SteamWorkshop.Translation
         /// up on release), so nothing taps. Kept, with its resx strings,
         /// for reports serialized by older translator versions.</summary>
         public const string LongPressKeyTap = "Workshop_Tr_LongPressKeyTap";                       // {0} key
-        /// <summary>camera_reset re-levels the camera via calibrated mouse
-        /// motion in Steam; PadForge re-references its gyro aim state.</summary>
+        /// <summary>camera_reset re-levels the camera by unwinding STEAM'S
+        /// OWN ledger of emitted camera motion (the numeric args bound the
+        /// yaw / pitch sweep and speed), a best-effort even there: no
+        /// input remapper knows the game camera's true state. PadForge
+        /// delivers the same user-facing construct by re-referencing its
+        /// gyro aim integration state (the GyroRecenter macro), the
+        /// equivalent state it actually owns; the args' sweep shaping has
+        /// no counterpart on a re-reference and is named by this Partial.
+        /// Re-attacked v26: building Steam's ledger unwind would need a
+        /// per-slot accumulated-counts ledger across every mouse lane
+        /// with an arbitrary reference heading, reproducing the same
+        /// approximation with more state, not more fidelity.</summary>
         public const string CameraResetApproximated = "Workshop_Tr_CameraResetApproximated";
         /// <summary>mouse_region approximated as a centered cursor clamp
         /// engaged while the hosting input is held. Stick/gyro hosts only
         /// since translator v6; trackpad hosts translate to Clean absolute
-        /// pointer rows (#9 B-15).</summary>
+        /// pointer rows (#9 B-15). Stick hosts ENGAGE since v26 (the v17
+        /// deflection-ring bool drives the clamp macro's WhileHeld
+        /// trigger, retiring their NoDeviceFreeTrigger skip); the clamp
+        /// remains an approximation because a stick has no absolute
+        /// position surface for the 1:1 region map.</summary>
         public const string MouseRegionApproximated = "Workshop_Tr_MouseRegionApproximated";       // {0} scale {1} x {2} y
         /// <summary>Trackpad mouse_region keys with no pointer-row channel
         /// (teleport start/stop snap, edge-binding radius/invert): the
@@ -767,21 +833,27 @@ namespace PadForge.SteamWorkshop.Translation
         /// app-provided icon namespace (client-internal), so those cells
         /// degrade silently to their text labels.</summary>
         public const string MenuIconUnresolved = "Workshop_Tr_MenuIconUnresolved";               // {0} icon reference
-        /// <summary>Menu settings with no PadForge channel (In-Menu
-        /// Sensitivity).</summary>
-        public const string MenuTuningDropped = "Workshop_Tr_MenuTuningDropped";                 // {0} setting keys
+        // MenuTuningDropped retired in v26: "sensitivity" (In-Menu
+        // Sensitivity), the only key it ever named, BUILT as
+        // MenuDefinitionEntry.SensitivityPercent (the hover-vector scale
+        // the menu runtime applies before selection). The key plus its
+        // locale strings were deleted.
 
         // ── Translator v5 (Wave 4a) vocabulary ──
-        /// <summary>A flickstick group hosted on a touch surface (the
-        /// gordon-era corpus binds it to trackpads): PadForge's flick
-        /// stick reads a physical stick only, so the mode is skipped and
-        /// the member inputs translate on their own.</summary>
+        /// <summary>A flickstick group hosted on a surface with no analog
+        /// pair at all (hand-edited grammar). Since v26 trackpad hosts
+        /// BUILD on the touch-surface flick family ("Flick Stick
+        /// Touchpad {p}"), so this is the residual net only.</summary>
         public const string FlickStickSurfaceNotSupported = "Workshop_Tr_FlickStickSurfaceNotSupported";
-        /// <summary>Flickstick tuning keys with no grounded PadForge
-        /// channel (rotation offset, mouse smoothing, transition time,
-        /// edge command radius): the flick itself translates, these
-        /// shape it.</summary>
-        public const string FlickStickTuningDropped = "Workshop_Tr_FlickStickTuningDropped";       // {0} setting keys
+        // FlickStickTuningDropped retired in v26: every key it ever
+        // named BUILT. rotation -> ParamFlickRotationOffsetDeg (degrees,
+        // the v18 rotation scale on the same key), mouse_smoothing ->
+        // ParamFlickSmooth (percent strength onto JSM's rad-per-tick
+        // band), transition_time -> ParamFlickTime at any authored value
+        // including 0 (clamp floor = the near-instant flick), and
+        // edge_binding_radius belongs to the edge MEMBER's ring read
+        // (v17 stick / v26 finger). The key plus its locale strings were
+        // deleted.
 
         // ── Translator v8 (finding 1g) vocabulary ──
         /// <summary>Mouse/region-mode feel settings with no PadForge channel:

@@ -98,11 +98,13 @@ namespace PadForge.SteamWorkshop.Tests
         [Fact]
         public void SingleButton_UnresolvableMember_SkipsWithReason()
         {
-            // "touch" has no source on a stick; the member reports instead
-            // of silently vanishing (the old behavior skipped the whole
-            // group as UnknownGroupMode).
+            // A member outside the host's grammar reports instead of
+            // silently vanishing (the old behavior skipped the whole
+            // group as UnknownGroupMode). "touch" resolves on sticks
+            // since v26 (the capsense stick-top read), so the probe uses
+            // a genuinely unknown token.
             string vdf = Head
-                + Group(1, "single_button", Inputs(Inp("touch", "key_press E")))
+                + Group(1, "single_button", Inputs(Inp("no_such_member", "key_press E")))
                 + Preset(0, "Default", (1, "joystick active"))
                 + "}\n";
             var p = Translate(vdf);
@@ -110,6 +112,20 @@ namespace PadForge.SteamWorkshop.Tests
             Assert.Equal(TranslationReasons.UnknownPhysicalInput, entry.ReasonKey);
             Assert.DoesNotContain(p.Report.Entries, e =>
                 e.ReasonKey == TranslationReasons.UnknownGroupMode);
+        }
+
+        [Fact]
+        public void StickTouchMember_ReadsTheStickTopCapsense()
+        {
+            // v26: the stick "touch" member is Steam's CapSenseLeft/
+            // RightStick (enum bits 46/47), the fork's stick-top touch.
+            string vdf = Head
+                + Group(1, "single_button", Inputs(Inp("touch", "key_press E")))
+                + Preset(0, "Default", (1, "right_joystick active"))
+                + "}\n";
+            var p = Translate(vdf);
+            var row = Assert.Single(p.KbmMappingSet.Rows);
+            Assert.Equal("Gamepad RightStickTouch", Assert.Single(row.Sources).Descriptor);
         }
 
         // ─── B-4 gyro_to_mouse ──────────────────────────────────────────
@@ -763,12 +779,12 @@ namespace PadForge.SteamWorkshop.Tests
         // ─── Translator version ─────────────────────────────────────────
 
         [Fact]
-        public void TranslatorVersion_IsTwentyFive_AndRidesTheSummary()
+        public void TranslatorVersion_IsTwentySix_AndRidesTheSummary()
         {
-            Assert.Equal(25, TranslationReport.CurrentTranslatorVersion);
+            Assert.Equal(26, TranslationReport.CurrentTranslatorVersion);
             var p = Translate(Head + "}\n");
-            Assert.Equal(25, p.Report.TranslatorVersion);
-            Assert.StartsWith("v25 ", p.Report.ToSummaryString());
+            Assert.Equal(26, p.Report.TranslatorVersion);
+            Assert.StartsWith("v26 ", p.Report.ToSummaryString());
         }
     }
 }

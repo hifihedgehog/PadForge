@@ -27,6 +27,15 @@ namespace PadForge.Engine.Menus
 
         public long PulseUntilMs;
 
+        /// <summary>Button-pair grid (hotbar) stepped selection, -1 =
+        /// nothing selected yet. Persists across presses so each press
+        /// moves one cell, the hotbar contract.</summary>
+        public int StepIndex = -1;
+
+        /// <summary>Previous frame's direction bools for the stepping
+        /// edge detector (bit 0 = up, 1 = down, 2 = left, 3 = right).</summary>
+        public int PrevStepMask;
+
         public void Reset()
         {
             Engaged = false;
@@ -35,6 +44,8 @@ namespace PadForge.Engine.Menus
             AssertedIndex = -1;
             PulsedIndex = -1;
             PulseUntilMs = 0;
+            StepIndex = -1;
+            PrevStepMask = 0;
         }
     }
 
@@ -136,6 +147,54 @@ namespace PadForge.Engine.Menus
             st.HoveredIndex = hover;
             st.Engaged = surfaceActive;
             st.Clicked = surfaceActive && clicked;
+        }
+
+        /// <summary>Advances a button-pair GRID (hotbar) for this poll
+        /// frame (translator v26): direction presses STEP a persistent
+        /// selection instead of composing a hover vector (a four-bool
+        /// vector could only ever reach a grid's edge cells). Rising
+        /// Right / Down moves +1, rising Left / Up moves -1, clamped to
+        /// the cell range, and entering a cell commits it as a one-shot
+        /// pulse: the hotbar's step-through-the-bar contract, each press
+        /// firing the next cell's bindings. Selection persists while the
+        /// menu stays live so repeated presses walk the bar; the layer
+        /// ending resets nothing (a hotbar remembers its position, and
+        /// <paramref name="layerActive"/> false simply freezes it).</summary>
+        public static void StepButtonPairGrid(MenuRuntimeState st, MenuDefinitionEntry def,
+            bool layerActive, bool up, bool down, bool left, bool right, long nowMs)
+        {
+            if (st == null || def == null) return;
+
+            int mask = (up ? 1 : 0) | (down ? 2 : 0) | (left ? 4 : 0) | (right ? 8 : 0);
+            int rising = mask & ~st.PrevStepMask;
+            st.PrevStepMask = mask;
+
+            int cells = def.CellCount;
+            if (layerActive && cells > 0 && rising != 0)
+            {
+                int step = 0;
+                if ((rising & 8) != 0 || (rising & 2) != 0) step++;
+                if ((rising & 4) != 0 || (rising & 1) != 0) step--;
+                if (step != 0)
+                {
+                    int next = st.StepIndex < 0
+                        ? (step > 0 ? 0 : cells - 1)
+                        : Math.Clamp(st.StepIndex + step, 0, cells - 1);
+                    if (next != st.StepIndex)
+                    {
+                        st.StepIndex = next;
+                        Pulse(st, next, nowMs);
+                    }
+                }
+            }
+
+            if (st.PulsedIndex >= 0 && nowMs >= st.PulseUntilMs)
+                st.PulsedIndex = -1;
+
+            st.HoveredIndex = st.StepIndex;
+            st.Engaged = layerActive && mask != 0;
+            st.Clicked = false;
+            st.AssertedIndex = -1;
         }
 
         /// <summary>True while item <paramref name="index"/> is fired:

@@ -315,6 +315,22 @@ namespace PadForge.Common
                     && tp[2].Equals("Finger", System.StringComparison.OrdinalIgnoreCase)
                     && int.TryParse(tp[3], out int fingerIdx))
                 {
+                    // Finger ring (v26): the edge-ring pair read, whole-pad
+                    // or windowed to a half; windows render as the standard
+                    // parenthetical.
+                    if (tp[4].Equals("Ring", System.StringComparison.OrdinalIgnoreCase))
+                    {
+                        if (tp.Length == 7) return null;
+                        string ringWindow = "";
+                        if (tp.Length == 6)
+                        {
+                            string rw = TouchpadWindowPhrase(tp[5]);
+                            if (rw == null) return null;
+                            ringWindow = " (" + rw + ")";
+                        }
+                        return prefix + string.Format(si.Mapping_TouchpadFingerRing_Format,
+                            padIdx + 1, fingerIdx + 1) + ringWindow;
+                    }
                     string fmt;
                     string windowSuffix = "";
                     if (tp.Length == 7)
@@ -437,7 +453,8 @@ namespace PadForge.Common
                 return null;
             }
 
-            // Gyro descriptors → localized display names.
+            // Gyro descriptors → localized display names. The gravity-lean
+            // pair (v26) shares the prefix but is its own family.
             if (s.StartsWith("Gyro ", System.StringComparison.Ordinal))
             {
                 var si = Strings.Instance;
@@ -446,15 +463,31 @@ namespace PadForge.Common
                 if (axis.Equals("Yaw",        System.StringComparison.OrdinalIgnoreCase)) return prefix + si.Mapping_GyroYaw;
                 if (axis.Equals("Roll",       System.StringComparison.OrdinalIgnoreCase)) return prefix + si.Mapping_GyroRoll;
                 if (axis.Equals("Horizontal", System.StringComparison.OrdinalIgnoreCase)) return prefix + si.Mapping_GyroHorizontal;
+                if (axis.Equals("Lean X",     System.StringComparison.OrdinalIgnoreCase)) return prefix + si.Mapping_GyroLeanX;
+                if (axis.Equals("Lean Y",     System.StringComparison.OrdinalIgnoreCase)) return prefix + si.Mapping_GyroLeanY;
                 return null;
             }
 
             // Flick stick descriptors (#225) → localized display names. The
             // leading 'F' never enters the I/H prefix grammar, so the prefix
-            // here is always empty; kept for shape consistency.
+            // here is always empty; kept for shape consistency. Touch-surface
+            // forms (v26) MUST resolve before the stick-name tail test: their
+            // half suffix also ends with "Left".
             if (PadForge.Engine.Common.Mapping.SourceCoercion.IsFlickStickDescriptor(s))
             {
                 var si = Strings.Instance;
+                if (PadForge.Engine.Common.Mapping.SourceCoercion.TryGetFlickStickTouchpad(
+                        s, out int fsPad, out int fsHalf))
+                {
+                    string label = string.Format(si.Mapping_FlickStickTouchpad_Format, fsPad + 1);
+                    // 1 / 2 = SourceCoercion.TouchpadHalfLeft / Right (the
+                    // MenuDefinitionEntry.HostHalf encoding).
+                    if (fsHalf == 1)
+                        label += " (" + si.Menu_Half_Left + ")";
+                    else if (fsHalf == 2)
+                        label += " (" + si.Menu_Half_Right + ")";
+                    return prefix + label;
+                }
                 bool leftStick = s.Trim().EndsWith("Left", System.StringComparison.OrdinalIgnoreCase);
                 return prefix + (leftStick ? si.Mapping_FlickStickLeft : si.Mapping_FlickStickRight);
             }
@@ -615,6 +648,13 @@ namespace PadForge.Common
                 // the reverse resolver and the pickers name them here.
                 case "LeftStickRing":  return si.Mapping_LeftStickRing;
                 case "RightStickRing": return si.Mapping_RightStickRing;
+                // Capsense touch channels (translator v26): the fork's
+                // SDL_GetGamepadCapSense family, same non-alias namespace
+                // rule as the rings.
+                case "LeftStickTouch":  return si.Mapping_CapSenseLeftStickTouch;
+                case "RightStickTouch": return si.Mapping_CapSenseRightStickTouch;
+                case "LeftGripTouch":   return si.Mapping_CapSenseLeftGripTouch;
+                case "RightGripTouch":  return si.Mapping_CapSenseRightGripTouch;
                 default: return null;
             }
         }
@@ -657,6 +697,13 @@ namespace PadForge.Common
             list.Add(new InputChoice { Descriptor = "Gyro Roll",       DisplayName = si.Mapping_GyroRoll });
             list.Add(new InputChoice { Descriptor = "Gyro Horizontal", DisplayName = si.Mapping_GyroHorizontal });
 
+            // Gravity-lean pair (translator v26): sustained tilt from the
+            // low-passed accelerometer, the gyro-hosted dpad / deflection
+            // channel. Emitted with the empty guid, so the abstract
+            // namespace offers it (the flick-stick rule).
+            list.Add(new InputChoice { Descriptor = PadForge.Engine.Common.Mapping.SourceCoercion.GyroLeanXDescriptor, DisplayName = si.Mapping_GyroLeanX });
+            list.Add(new InputChoice { Descriptor = PadForge.Engine.Common.Mapping.SourceCoercion.GyroLeanYDescriptor, DisplayName = si.Mapping_GyroLeanY });
+
             // Flick stick (#225): the translator emits these with the empty
             // guid, so the abstract namespace must offer them too.
             list.Add(new InputChoice { Descriptor = PadForge.Engine.Common.Mapping.SourceCoercion.FlickStickRightDescriptor, DisplayName = si.Mapping_FlickStickRight });
@@ -667,6 +714,16 @@ namespace PadForge.Common
             // abstract namespace offers them too (the flick-stick rule).
             list.Add(new InputChoice { Descriptor = PadForge.Engine.Common.Mapping.SourceCoercion.LeftStickRingDescriptor,  DisplayName = string.Format(si.Mapping_Gamepad_Format, si.Mapping_LeftStickRing) });
             list.Add(new InputChoice { Descriptor = PadForge.Engine.Common.Mapping.SourceCoercion.RightStickRingDescriptor, DisplayName = string.Format(si.Mapping_Gamepad_Format, si.Mapping_RightStickRing) });
+
+            // Capsense touch channels (translator v26): the fork's
+            // SDL_GetGamepadCapSense family (stick tops, grip handles),
+            // same non-alias "Gamepad " namespace rule as the rings.
+            foreach (var (capDesc, _) in PadForge.Engine.Common.Mapping.SourceCoercion.CapSenseTable)
+            {
+                string capLabel = ResolveGamepadText(capDesc);
+                if (capLabel != null)
+                    list.Add(new InputChoice { Descriptor = capDesc, DisplayName = capLabel });
+            }
 
             // Two touchpad surfaces: the translator's trackpad resolvers
             // emit pad indices 0 (LEFT) and 1 (RIGHT, Steam Controller /
@@ -682,6 +739,17 @@ namespace PadForge.Common
                 list.Add(new InputChoice { Descriptor = $"Touchpad {p} Finger 0 Y",        DisplayName = string.Format(si.Mapping_TouchpadFingerY_Format,        p + 1, 1) });
                 list.Add(new InputChoice { Descriptor = $"Touchpad {p} Finger 0 Down",     DisplayName = string.Format(si.Mapping_TouchpadFingerTouch_Format,    p + 1, 1) });
                 list.Add(new InputChoice { Descriptor = $"Touchpad {p} Finger 0 Pressure", DisplayName = string.Format(si.Mapping_TouchpadFingerPressure_Format, p + 1, 1) });
+                // Finger ring (v26): the edge-ring pair read the translator
+                // emits for Steam's edge_binding_radius / _invert geometry.
+                // Display name matches ResolveDescriptorText exactly (the
+                // mirror-closure test).
+                list.Add(new InputChoice { Descriptor = $"Touchpad {p} Finger 0 Ring",     DisplayName = string.Format(si.Mapping_TouchpadFingerRing_Format,     p + 1, 1) });
+                // Touch-surface flick stick (v26), the flick-stick rule.
+                list.Add(new InputChoice
+                {
+                    Descriptor = PadForge.Engine.Common.Mapping.SourceCoercion.FlickStickTouchpadPrefix + p,
+                    DisplayName = string.Format(si.Mapping_FlickStickTouchpad_Format, p + 1),
+                });
                 // Region-windowed halves (#9 B-1) live on pad 0 only: the
                 // halves model Steam's split of a SINGLE physical pad
                 // (DS4 / DualSense), which is always pad 0. Multi-pad
@@ -715,6 +783,23 @@ namespace PadForge.Common
                             DisplayName = string.Format(si.Mapping_TouchpadGesture_PadPrefix_Format, p + 1,
                                 si.Mapping_TouchpadClick + " (" + TouchpadWindowPhrase(w) + ")"),
                         });
+                    // Half-windowed finger ring + touch-surface flick (v26):
+                    // the single-pad left_/right_trackpad split, pad-0 rule.
+                    foreach (var w in new[] { "Left", "Right" })
+                    {
+                        list.Add(new InputChoice
+                        {
+                            Descriptor = $"Touchpad {p} Finger 0 Ring {w}",
+                            DisplayName = string.Format(si.Mapping_TouchpadFingerRing_Format, p + 1, 1)
+                                + " (" + TouchpadWindowPhrase(w) + ")",
+                        });
+                        list.Add(new InputChoice
+                        {
+                            Descriptor = PadForge.Engine.Common.Mapping.SourceCoercion.FlickStickTouchpadPrefix + p + " " + w,
+                            DisplayName = string.Format(si.Mapping_FlickStickTouchpad_Format, p + 1)
+                                + " (" + TouchpadWindowPhrase(w) + ")",
+                        });
+                    }
                 }
                 // Absolute pointer (#9 B-15): the translator emits these
                 // with the empty guid for trackpad mouse_region groups, so
@@ -1000,6 +1085,8 @@ namespace PadForge.Common
             "DownLeft" => Strings.Instance.POV_DownLeft,
             "Left" => Strings.Instance.POV_Left,
             "UpLeft" => Strings.Instance.POV_UpLeft,
+            // Any direction held (v26): the dpad edge / click read.
+            "Any" => Strings.Instance.POV_Any,
             _ => dir
         };
 

@@ -192,6 +192,20 @@ namespace PadForge.Engine.Data
         /// universal Shift glyph <c>⇧</c>.</summary>
         [XmlAttribute] public string Icon { get; set; } = "";
 
+        // ── v8 fields (translator v26) ──
+
+        /// <summary>Gate companion for the Axis kind: a button-class
+        /// descriptor that must ALSO be held for the axis wedge to engage.
+        /// This is the activator-lane twin of the row side's
+        /// <c>MappingSource.GateDescriptor</c> (v18): a trackpad D-pad
+        /// wedge is an axis half PLUS its contact / windowed-click gate,
+        /// and without the gate leg a layer verb hosted on such a wedge
+        /// had no faithful activator shape. Read against the activator's
+        /// own device. Empty (default) = no gate. Ignored by the Button /
+        /// Chord kinds (Button reads one bool; Chord already has its
+        /// second leg).</summary>
+        [XmlAttribute] public string GateDescriptor { get; set; } = "";
+
         // ── v4 fields (#206) ──
 
         /// <summary>v4 auto-cancel (#206): Toggle mode only. While the

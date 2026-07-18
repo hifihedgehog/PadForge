@@ -453,7 +453,14 @@ namespace PadForge.Engine.Common.Mapping
             MappingSource src, CustomInputState state, double deltaSeconds, long frameSeq)
         {
             if (src == null || state == null) return 0;
-            if (!SourceCoercion.TryGetFlickStickAxes(src.Descriptor, out string xDesc, out string yDesc))
+            // Touch-surface flick (v26): the finger's centered vector plays
+            // the stick pair's role (same frame, +Y down); lifting the
+            // finger reads (0,0), which is the below-threshold release.
+            bool isPadFlick = SourceCoercion.TryGetFlickStickTouchpad(
+                src.Descriptor, out int fsPad, out int fsHalf);
+            string xDesc = null, yDesc = null;
+            if (!isPadFlick
+                && !SourceCoercion.TryGetFlickStickAxes(src.Descriptor, out xDesc, out yDesc))
                 return 0;
 
             var key = (slotIndex, target ?? "", sourceIndex);
@@ -472,8 +479,14 @@ namespace PadForge.Engine.Common.Mapping
             // main.cpp:2334); ParamFlickThreshold folds the remap into the
             // knob. atan2 is scale-invariant, so no deadzone shaping is
             // needed for the angle.
-            double rx = ReadNormAxis(state, xDesc);
-            double ry = ReadNormAxis(state, yDesc);
+            double rx, ry;
+            if (isPadFlick)
+                (rx, ry) = SourceCoercion.ReadTouchpadFlickVector(state, fsPad, fsHalf);
+            else
+            {
+                rx = ReadNormAxis(state, xDesc);
+                ry = ReadNormAxis(state, yDesc);
+            }
             double len = Math.Sqrt(rx * rx + ry * ry);
 
             double threshold = src.ParamFlickThreshold > 0 && src.ParamFlickThreshold <= 1
@@ -524,6 +537,23 @@ namespace PadForge.Engine.Common.Mapping
                 {
                     // "bam! new flick!" (JoyShock.cpp:873-908)
                     st.IsFlicking = true;
+                    // Constant rotation offset (v26, Steam's flickstick
+                    // "rotation" setting): the whole input map rotates, so
+                    // the offset lands on the FLICK angle only. Rim
+                    // rotation deltas are invariant under a constant
+                    // offset, and the tracking branch below compares raw
+                    // angles, so the offset must not leak there or the
+                    // first tracked tick would see a spurious delta.
+                    // Positive = clockwise/right; the JSM angle frame is
+                    // counterclockwise-positive with right = -PI/2, so the
+                    // offset lands negated, then re-wraps to (-PI, PI].
+                    if (src.ParamFlickRotationOffsetDeg != 0)
+                    {
+                        stickAngle -= src.ParamFlickRotationOffsetDeg * (Math.PI / 180.0);
+                        stickAngle = (stickAngle + Math.PI) % (2.0 * Math.PI);
+                        if (stickAngle < 0) stickAngle += 2.0 * Math.PI;
+                        stickAngle -= Math.PI;
+                    }
                     double snapInterval = FlickSnapIntervalRad(src.ParamFlickSnapMode);
                     if (snapInterval > 0)
                     {
@@ -721,7 +751,9 @@ namespace PadForge.Engine.Common.Mapping
         // angle phi away from neutral lands phi away from down, so the downstream math
         // measures lean relative to the grip rather than to absolute level. This is the
         // numerically-exact form of JSM's neutralQuat.Inverse() application (main.cpp:891).
-        private static (double x, double y, double z) RealignToDown(
+        // Internal so SourceCoercion's "Gyro Lean X/Y" pair read shares the
+        // exact realignment math instead of duplicating it.
+        internal static (double x, double y, double z) RealignToDown(
             double vx, double vy, double vz, double nx, double ny, double nz)
         {
             // a = neutral (unit), b = (0,-1,0). axis k = a×b = (nz, 0, -nx); cos = a·b = -ny.

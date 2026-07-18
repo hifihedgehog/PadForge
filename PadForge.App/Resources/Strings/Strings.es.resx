@@ -791,6 +791,7 @@
   <data name="POV_DownLeft" xml:space="preserve"><value>Abajo-Izquierda</value></data>
   <data name="POV_Left" xml:space="preserve"><value>Izquierda</value></data>
   <data name="POV_UpLeft" xml:space="preserve"><value>Arriba-Izquierda</value></data>
+  <data name="POV_Any" xml:space="preserve"><value>Cualquier dirección</value></data>
 
   <!-- ═══ Mapping ═══ -->
   <data name="Mapping_NotMapped" xml:space="preserve"><value>Sin asignar</value></data>
@@ -1137,6 +1138,12 @@
   <data name="Mapping_GyroYaw" xml:space="preserve"><value>Giroscopio guiñada</value></data>
   <data name="Mapping_GyroRoll" xml:space="preserve"><value>Giroscopio alabeo</value></data>
   <data name="Mapping_GyroHorizontal" xml:space="preserve"><value>Giroscopio horizontal (Yaw + Roll)</value></data>
+  <data name="Mapping_GyroLeanX" xml:space="preserve"><value>Inclinación de giroscopio X</value></data>
+  <data name="Mapping_GyroLeanY" xml:space="preserve"><value>Inclinación de giroscopio Y</value></data>
+  <data name="Mapping_CapSenseLeftStickTouch" xml:space="preserve"><value>Toque de la palanca izquierda</value></data>
+  <data name="Mapping_CapSenseRightStickTouch" xml:space="preserve"><value>Toque de la palanca derecha</value></data>
+  <data name="Mapping_CapSenseLeftGripTouch" xml:space="preserve"><value>Toque del agarre izquierdo</value></data>
+  <data name="Mapping_CapSenseRightGripTouch" xml:space="preserve"><value>Toque del agarre derecho</value></data>
   <data name="Settings_GyroCalibrate_Button" xml:space="preserve"><value>Calibrar giroscopio</value></data>
   <data name="Settings_GyroCalibrate_Tooltip" xml:space="preserve"><value>Coloca el mando sobre una superficie plana y haz clic en Calibrar giroscopio para muestrear la lectura en reposo durante ~1,5 segundos. Se resta de las lecturas crudas para que los mapeos del giroscopio no desvíen el ratón / stick cuando el mando está quieto.</value></data>
   <data name="Settings_GyroLastCalibrated_Format" xml:space="preserve"><value>Última calibración: {0:yyyy-MM-dd HH:mm}</value></data>
@@ -2357,6 +2364,7 @@
   <data name="Macro_PickOnScreen_Countdown_Format" xml:space="preserve"><value>Capturando en {0}...</value></data>
   <data name="Macro_PickOnScreen_Tooltip" xml:space="preserve"><value>Haga clic y luego mueva el cursor sobre el objetivo. Su posición se captura tras una breve cuenta atrás.</value></data>
   <data name="Mapping_TouchpadFingerPressure_Format" xml:space="preserve"><value>Touchpad {0} dedo {1} presión</value></data>
+  <data name="Mapping_TouchpadFingerRing_Format" xml:space="preserve"><value>Touchpad {0} dedo {1} anillo</value></data>
   <data name="Mapping_Sensitivity" xml:space="preserve"><value>Sensibilidad</value></data>
   <data name="Mapping_Sensitivity_Tooltip" xml:space="preserve"><value>Sensibilidad por fuente para un eje simple, un deslizador o un stick / gatillo de gamepad. 1.0 deja la entrada sin cambios. Los valores por encima de 1.0 alcanzan la deflexión completa con menos recorrido. Los valores por debajo de 1.0 necesitan más.</value></data>
   <data name="Mapping_Gamepad_Format" xml:space="preserve"><value>Gamepad {0}</value></data>
@@ -2427,6 +2435,7 @@
   <data name="Workshop_Tr_UnknownMouseButton" xml:space="preserve"><value>botón del ratón desconocido {0}</value></data>
   <data name="Workshop_Tr_UnknownXInputButton" xml:space="preserve"><value>botón XInput desconocido {0}</value></data>
   <data name="Workshop_Tr_UnknownPhysicalInput" xml:space="preserve"><value>entrada desconocida {1} en {0}</value></data>
+  <data name="Workshop_Tr_MobileTouchSurfaceOnly" xml:space="preserve"><value>Control en pantalla de Steam Link {1}: sin entrada física en ningún mando compatible</value></data>
   <data name="Workshop_Tr_UnknownGroupMode" xml:space="preserve"><value>modo de grupo desconocido {0}</value></data>
   <data name="Workshop_Tr_TouchMenuNeedsOverlay" xml:space="preserve"><value>superposición de menú táctil descartada ({0} celdas)</value></data>
   <data name="Workshop_Tr_RadialMenuNeedsOverlay" xml:space="preserve"><value>superposición de menú radial descartada ({0} sectores)</value></data>
@@ -2434,6 +2443,7 @@
   <data name="Workshop_Tr_ReleaseActivatorNotSupported" xml:space="preserve"><value>activador de liberación no compatible aquí</value></data>
   <data name="Workshop_Tr_LongPressNotSupported" xml:space="preserve"><value>activador de pulsación larga no compatible aquí</value></data>
   <data name="Workshop_Tr_UnknownActivatorType" xml:space="preserve"><value>activador desconocido {0}</value></data>
+  <data name="Workshop_Tr_ChordWithoutPartner" xml:space="preserve"><value>activador de acorde sin botón de acorde definido (no puede activarse)</value></data>
   <data name="Workshop_Tr_MissingGroup" xml:space="preserve"><value>la configuración hace referencia al grupo faltante {0}</value></data>
   <data name="Workshop_Tr_MissingModeShiftGroup" xml:space="preserve"><value>el cambio de modo en {0} hace referencia al grupo faltante {1}</value></data>
   <data name="Workshop_Tr_MissingPreset" xml:space="preserve"><value>la configuración hace referencia al preajuste faltante {0}</value></data>
@@ -2491,6 +2501,7 @@
   <data name="Pad_ResetTouchpadSwipeHapticsIntensity" xml:space="preserve"><value>Restablecer intensidad del pulso</value></data>
   <data name="Mapping_FlickStickRight" xml:space="preserve"><value>Flick Stick (palanca derecha)</value></data>
   <data name="Mapping_FlickStickLeft" xml:space="preserve"><value>Flick Stick (palanca izquierda)</value></data>
+  <data name="Mapping_FlickStickTouchpad_Format" xml:space="preserve"><value>Flick Stick (touchpad {0})</value></data>
   <data name="Mapping_LeftStickRing" xml:space="preserve"><value>Anillo de palanca izquierda</value></data>
   <data name="Mapping_RightStickRing" xml:space="preserve"><value>Anillo de palanca derecha</value></data>
   <data name="Pad_FlickStick_Header" xml:space="preserve"><value>Flick Stick</value></data>
@@ -2540,8 +2551,7 @@
   <data name="Workshop_Tr_CameraResetApproximated" xml:space="preserve"><value>reinicio de cámara aproximado como recentrado del giroscopio</value></data>
   <data name="Workshop_Tr_MouseRegionApproximated" xml:space="preserve"><value>región del ratón aproximada como una restricción centrada del cursor ({0}% de la pantalla, centro de la región {1}%, {2}%) mientras se mantiene la superficie</value></data>
   <data name="Workshop_Tr_MouseRegionTuningDropped" xml:space="preserve"><value>ajustes de activación/liberación de la región del ratón descartados ({0})</value></data>
-  <data name="Workshop_Tr_FlickStickSurfaceNotSupported" xml:space="preserve"><value>flick stick en una superficie táctil omitido (el flick stick de PadForge lee una palanca física)</value></data>
-  <data name="Workshop_Tr_FlickStickTuningDropped" xml:space="preserve"><value>ajustes del flick stick descartados ({0})</value></data>
+  <data name="Workshop_Tr_FlickStickSurfaceNotSupported" xml:space="preserve"><value>flick stick en una superficie sin par analógico omitido</value></data>
   <data name="Workshop_Tr_DeadZoneRadialResidual" xml:space="preserve"><value>las zonas muertas se aplican por eje, no radialmente ({0})</value></data>
   <data name="Workshop_Tr_RotationNonlinearWithheld" xml:space="preserve"><value>respuesta no lineal retenida en los ejes rotados ({0})</value></data>
   <data name="Workshop_Tr_LayerReleaseEdgeApproximated" xml:space="preserve"><value>{0} alojado en la liberación cambia al pulsar en su lugar</value></data>
@@ -2661,5 +2671,4 @@
   <data name="Workshop_Tr_MenuEmpty" xml:space="preserve"><value>el menú no tiene celdas asignadas</value></data>
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>superficie host del menú no compatible ({0})</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>icono de celda del menú no reconocido ({0}), por lo que la celda conserva su etiqueta de texto</value></data>
-  <data name="Workshop_Tr_MenuTuningDropped" xml:space="preserve"><value>ajustes del menú no compatibles ({0})</value></data>
 </root>

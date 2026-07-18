@@ -28,6 +28,10 @@ namespace PadForge.Common.Input
             for (int i = 0; i < _slotSourceKindRuntime.Length; i++)
                 _slotSourceKindRuntime[i]?.Clear();
             _stickTrimStates.Clear();
+            // The gravity-lean pair's captured resting grip lives beside
+            // the per-slot motion neutrals and follows the same profile
+            // switch / engine-stop hygiene.
+            SourceCoercion.ResetGyroLeanNeutral();
         }
 
         // ─────────────────────────────────────────────
@@ -1136,6 +1140,12 @@ namespace PadForge.Common.Input
                 }
                 case "Axis":
                 {
+                    // v8 gate companion (translator v26): a trackpad D-pad
+                    // wedge is an axis half PLUS its contact / click gate;
+                    // the gate must hold or the wedge never engages.
+                    if (!string.IsNullOrEmpty(act.GateDescriptor)
+                        && !SourceKindRuntimeReadButtonLikeBool(state, act.GateDescriptor, act.DeviceGuid, slotIndex))
+                        return false;
                     // v2: axis past threshold. ReadAxisLike returns [-1..+1].
                     float axisVal = SourceKindRuntimeReadAxisLikeFloat(state, act.Descriptor, act.DeviceGuid, slotIndex);
                     // v5 half stamp (translator v15): one signed direction

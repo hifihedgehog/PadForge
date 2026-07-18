@@ -208,6 +208,14 @@ namespace PadForge.Engine.Menus
         /// carrying deadzone_inner_radius override it.</summary>
         [XmlAttribute] public int EngageDeadzonePercent { get; set; } = 25;
 
+        /// <summary>In-Menu Sensitivity as percent (Steam's touch_menu
+        /// <c>sensitivity</c> key, translator v26): scales the hover
+        /// vector before selection, so a higher value reaches the ring /
+        /// crosses the engage deadzone with less physical deflection and
+        /// a lower value demands more. 100 = the identity. Schema
+        /// append-only: absent in older files = 100.</summary>
+        [XmlAttribute] public int SensitivityPercent { get; set; } = 100;
+
         [XmlAttribute] public bool Enabled { get; set; } = true;
 
         [XmlElement("Item")] public List<MenuItemDefinition> Items { get; set; } = new();

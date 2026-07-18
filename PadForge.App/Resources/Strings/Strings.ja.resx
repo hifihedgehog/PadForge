@@ -791,6 +791,7 @@
   <data name="POV_DownLeft" xml:space="preserve"><value>左下</value></data>
   <data name="POV_Left" xml:space="preserve"><value>左</value></data>
   <data name="POV_UpLeft" xml:space="preserve"><value>左上</value></data>
+  <data name="POV_Any" xml:space="preserve"><value>任意の方向</value></data>
 
   <!-- ═══ Mapping ═══ -->
   <data name="Mapping_NotMapped" xml:space="preserve"><value>未マッピング</value></data>
@@ -1137,6 +1138,12 @@
   <data name="Mapping_GyroYaw" xml:space="preserve"><value>ジャイロ ヨー</value></data>
   <data name="Mapping_GyroRoll" xml:space="preserve"><value>ジャイロ ロール</value></data>
   <data name="Mapping_GyroHorizontal" xml:space="preserve"><value>ジャイロ水平 (Yaw + Roll)</value></data>
+  <data name="Mapping_GyroLeanX" xml:space="preserve"><value>ジャイロ傾き X</value></data>
+  <data name="Mapping_GyroLeanY" xml:space="preserve"><value>ジャイロ傾き Y</value></data>
+  <data name="Mapping_CapSenseLeftStickTouch" xml:space="preserve"><value>左スティック タッチ</value></data>
+  <data name="Mapping_CapSenseRightStickTouch" xml:space="preserve"><value>右スティック タッチ</value></data>
+  <data name="Mapping_CapSenseLeftGripTouch" xml:space="preserve"><value>左グリップ タッチ</value></data>
+  <data name="Mapping_CapSenseRightGripTouch" xml:space="preserve"><value>右グリップ タッチ</value></data>
   <data name="Settings_GyroCalibrate_Button" xml:space="preserve"><value>ジャイロを較正</value></data>
   <data name="Settings_GyroCalibrate_Tooltip" xml:space="preserve"><value>コントローラーを平らな面に置いて「ジャイロを較正」をクリックすると、約 1.5 秒間静止時の値をサンプリングします。生の読み取り値から差し引かれるため、コントローラーが静止しているときにジャイロ マッピングがマウス / スティックを漂流させません。</value></data>
   <data name="Settings_GyroLastCalibrated_Format" xml:space="preserve"><value>最後の較正: {0:yyyy-MM-dd HH:mm}</value></data>
@@ -2357,6 +2364,7 @@
   <data name="Macro_PickOnScreen_Countdown_Format" xml:space="preserve"><value>あと {0} 秒でキャプチャ...</value></data>
   <data name="Macro_PickOnScreen_Tooltip" xml:space="preserve"><value>クリックしてから、カーソルを目標の位置へ移動してください。短いカウントダウンの後に位置が取得されます。</value></data>
   <data name="Mapping_TouchpadFingerPressure_Format" xml:space="preserve"><value>タッチパッド {0} 指 {1} 圧力</value></data>
+  <data name="Mapping_TouchpadFingerRing_Format" xml:space="preserve"><value>タッチパッド {0} 指 {1} リング</value></data>
   <data name="Mapping_Sensitivity" xml:space="preserve"><value>感度</value></data>
   <data name="Mapping_Sensitivity_Tooltip" xml:space="preserve"><value>通常の軸、スライダー、ゲームパッドのスティック / トリガーに対するソースごとの感度です。1.0 は入力をそのまま通します。1.0 より大きい値では少ない操作量で最大に到達します。1.0 より小さい値ではより多くの操作量が必要です。</value></data>
   <data name="Mapping_Gamepad_Format" xml:space="preserve"><value>ゲームパッド {0}</value></data>
@@ -2427,6 +2435,7 @@
   <data name="Workshop_Tr_UnknownMouseButton" xml:space="preserve"><value>不明なマウスボタン {0}</value></data>
   <data name="Workshop_Tr_UnknownXInputButton" xml:space="preserve"><value>不明な XInput ボタン {0}</value></data>
   <data name="Workshop_Tr_UnknownPhysicalInput" xml:space="preserve"><value>{0} 上の不明な入力 {1}</value></data>
+  <data name="Workshop_Tr_MobileTouchSurfaceOnly" xml:space="preserve"><value>Steam Link の画面上コントロール {1}: 対応コントローラーに物理入力はありません</value></data>
   <data name="Workshop_Tr_UnknownGroupMode" xml:space="preserve"><value>不明なグループモード {0}</value></data>
   <data name="Workshop_Tr_TouchMenuNeedsOverlay" xml:space="preserve"><value>タッチメニューオーバーレイを破棄 ({0} セル)</value></data>
   <data name="Workshop_Tr_RadialMenuNeedsOverlay" xml:space="preserve"><value>ラジアルメニューオーバーレイを破棄 ({0} セクター)</value></data>
@@ -2434,6 +2443,7 @@
   <data name="Workshop_Tr_ReleaseActivatorNotSupported" xml:space="preserve"><value>リリースアクティベーターはここでは未対応</value></data>
   <data name="Workshop_Tr_LongPressNotSupported" xml:space="preserve"><value>長押しアクティベーターはここでは未対応</value></data>
   <data name="Workshop_Tr_UnknownActivatorType" xml:space="preserve"><value>不明なアクティベーター {0}</value></data>
+  <data name="Workshop_Tr_ChordWithoutPartner" xml:space="preserve"><value>コードアクティベーターにコードボタンが未設定です (発動できません)</value></data>
   <data name="Workshop_Tr_MissingGroup" xml:space="preserve"><value>コンフィグが存在しないグループ {0} を参照しています</value></data>
   <data name="Workshop_Tr_MissingModeShiftGroup" xml:space="preserve"><value>{0} のモードシフトが存在しないグループ {1} を参照しています</value></data>
   <data name="Workshop_Tr_MissingPreset" xml:space="preserve"><value>コンフィグが存在しないプリセット {0} を参照しています</value></data>
@@ -2491,6 +2501,7 @@
   <data name="Pad_ResetTouchpadSwipeHapticsIntensity" xml:space="preserve"><value>パルス強度をリセット</value></data>
   <data name="Mapping_FlickStickRight" xml:space="preserve"><value>Flick Stick (右スティック)</value></data>
   <data name="Mapping_FlickStickLeft" xml:space="preserve"><value>Flick Stick (左スティック)</value></data>
+  <data name="Mapping_FlickStickTouchpad_Format" xml:space="preserve"><value>Flick Stick (タッチパッド {0})</value></data>
   <data name="Mapping_LeftStickRing" xml:space="preserve"><value>左スティックリング</value></data>
   <data name="Mapping_RightStickRing" xml:space="preserve"><value>右スティックリング</value></data>
   <data name="Pad_FlickStick_Header" xml:space="preserve"><value>Flick Stick</value></data>
@@ -2540,8 +2551,7 @@
   <data name="Workshop_Tr_CameraResetApproximated" xml:space="preserve"><value>カメラリセットはジャイロの再センタリングとして近似</value></data>
   <data name="Workshop_Tr_MouseRegionApproximated" xml:space="preserve"><value>マウス領域は中央基準のカーソル制限として近似 (画面の {0}%、領域中心 {1}%, {2}%)、サーフェスを押している間有効</value></data>
   <data name="Workshop_Tr_MouseRegionTuningDropped" xml:space="preserve"><value>マウス領域の起動/解除設定を破棄 ({0})</value></data>
-  <data name="Workshop_Tr_FlickStickSurfaceNotSupported" xml:space="preserve"><value>タッチサーフェス上の Flick Stick をスキップ (PadForge の Flick Stick は物理スティックを読み取ります)</value></data>
-  <data name="Workshop_Tr_FlickStickTuningDropped" xml:space="preserve"><value>Flick Stick の調整設定を破棄 ({0})</value></data>
+  <data name="Workshop_Tr_FlickStickSurfaceNotSupported" xml:space="preserve"><value>アナログペアのない面のフリックスティックをスキップしました</value></data>
   <data name="Workshop_Tr_DeadZoneRadialResidual" xml:space="preserve"><value>デッドゾーンは半径ではなく軸ごとに適用 ({0})</value></data>
   <data name="Workshop_Tr_RotationNonlinearWithheld" xml:space="preserve"><value>回転した軸では非線形レスポンスを保留 ({0})</value></data>
   <data name="Workshop_Tr_LayerReleaseEdgeApproximated" xml:space="preserve"><value>リリース側の {0} は代わりに押下時に切り替え</value></data>
@@ -2661,5 +2671,4 @@
   <data name="Workshop_Tr_MenuEmpty" xml:space="preserve"><value>メニューに割り当て済みセルがありません</value></data>
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>メニューのホストサーフェスは未対応 ({0})</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>メニューセルのアイコンを認識できません ({0})。このセルはテキストラベルを表示します</value></data>
-  <data name="Workshop_Tr_MenuTuningDropped" xml:space="preserve"><value>メニューの調整設定は未対応 ({0})</value></data>
 </root>

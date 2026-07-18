@@ -606,11 +606,12 @@ namespace PadForge.SteamWorkshop.Tests
         }
 
         [Fact]
-        public void MouseRegion_PartialRingEdge_BuildsOnTheTouchRead_NamingTheGeometry()
+        public void MouseRegion_PartialRingEdge_BuildsOnTheFingerRingRead()
         {
-            // v17: a real ring (radius below the ceiling) approximates onto
-            // the touch read, so the binding fires on any touch. The
-            // dropped ring geometry stays named in the region tuning note.
+            // v26: a real ring (radius below the ceiling) BUILDS on the
+            // engine's finger-ring read: the radius rides DeadZone as a
+            // percent, edge_binding_invert rides Invert (inner ring), and
+            // the geometry keys are consumed, so no note remains.
             string vdf = Head
                 + Group(1, "mouse_region",
                     Inputs(Inp("edge", "key_press E"))
@@ -622,10 +623,12 @@ namespace PadForge.SteamWorkshop.Tests
             var p = Translate(vdf);
 
             var row = Assert.Single(p.KbmMappingSet.Rows, r => r.Target == "KbmKey45");
-            Assert.Equal("Touchpad 1 Finger 0 Down", Assert.Single(row.Sources).Descriptor);
-            Assert.Contains(p.Report.Entries, e =>
-                e.ReasonKey == TranslationReasons.MouseRegionTuningDropped
-                && e.ReasonArgs.Single().Contains("edge_binding_radius"));
+            var src = Assert.Single(row.Sources);
+            Assert.Equal("Touchpad 1 Finger 0 Ring", src.Descriptor);
+            Assert.True(src.Invert);
+            Assert.Equal(61, src.DeadZone); // 20000/32767 = 61%
+            Assert.DoesNotContain(p.Report.Entries, e =>
+                e.ReasonKey == TranslationReasons.MouseRegionTuningDropped);
         }
 
         [Fact]

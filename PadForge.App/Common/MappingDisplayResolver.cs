@@ -276,12 +276,26 @@ namespace PadForge.Common
             {
                 var si = Strings.Instance;
                 var tp = s.Split(' ', System.StringSplitOptions.RemoveEmptyEntries);
+                // "Touchpad {pad} Click {window}" (v18): the windowed click
+                // MUST render its window. This form used to fall into the
+                // plain-click branch below, so a Left-half-only click chip
+                // read as the whole-pad click (audit 2026-07-17 G2).
+                if (tp.Length == 4 && tp[2].Equals("Click", System.StringComparison.OrdinalIgnoreCase))
+                {
+                    string w = TouchpadWindowPhrase(tp[3]);
+                    if (w == null) return null;
+                    string clickLabel = si.Mapping_TouchpadClick + " (" + w + ")";
+                    if (int.TryParse(tp[1], out int cwPad) && (padPrefixAlways || cwPad > 0))
+                        clickLabel = string.Format(si.Mapping_TouchpadGesture_PadPrefix_Format, cwPad + 1, clickLabel);
+                    return prefix + clickLabel;
+                }
                 // "Touchpad {pad} Click" → the pad-0 click is the single SDL
                 // click button and stays unnumbered on a concrete device; a
                 // pad-1+ click (Steam Controller era imports) and any click
                 // in the any-device context carry the 1-based pad prefix so
-                // the chip reads exactly like its picker entry.
-                if (tp.Length >= 3 && tp[2].Equals("Click", System.StringComparison.OrdinalIgnoreCase))
+                // the chip reads exactly like its picker entry. Exactly 3
+                // tokens: the 4-token windowed form resolved above.
+                if (tp.Length == 3 && tp[2].Equals("Click", System.StringComparison.OrdinalIgnoreCase))
                 {
                     string clickLabel = si.Mapping_TouchpadClick;
                     if (int.TryParse(tp[1], out int cPad) && (padPrefixAlways || cPad > 0))
@@ -289,25 +303,56 @@ namespace PadForge.Common
                     return prefix + clickLabel;
                 }
                 // "Touchpad {pad} Finger {finger} {X|Y|Down}" → explicit axis.
-                // Six-part forms are the #9 B-1 region-windowed halves
-                // ("... X Left" / "Down Right"): same finger reads gated to
-                // one half of the pad, rendered through their own half-
-                // marked formats so the window is visible in every chip.
-                if (tp.Length >= 5 && int.TryParse(tp[1], out int padIdx)
+                // Six-part forms are the region-windowed variants: the #9
+                // B-1 Left/Right halves keep their dedicated half-marked
+                // formats, and the v18 tokens (Upper / Lower, the diamond
+                // quadrants) render as the whole-pad label plus a window
+                // parenthetical. Seven-part forms are the v18 composed
+                // "Down {quadrant} {Left|Right}" windows. Both used to
+                // resolve null and fall back to the raw 0-based chip
+                // (audit 2026-07-17 G2).
+                if (tp.Length >= 5 && tp.Length <= 7 && int.TryParse(tp[1], out int padIdx)
                     && tp[2].Equals("Finger", System.StringComparison.OrdinalIgnoreCase)
                     && int.TryParse(tp[3], out int fingerIdx))
                 {
                     string fmt;
-                    if (tp.Length >= 6)
+                    string windowSuffix = "";
+                    if (tp.Length == 7)
+                    {
+                        // Composed quadrant-in-half, "Down North Left":
+                        // valid on Down only, quadrant token then a
+                        // horizontal half (SourceCoercion.ComposeTouchpadWindow).
+                        if (!tp[4].Equals("Down", System.StringComparison.OrdinalIgnoreCase)
+                            || !IsTouchpadQuadrantToken(tp[5])
+                            || (!tp[6].Equals("Left", System.StringComparison.Ordinal)
+                                && !tp[6].Equals("Right", System.StringComparison.Ordinal)))
+                            return null;
+                        fmt = si.Mapping_TouchpadFingerTouch_Format;
+                        windowSuffix = " (" + TouchpadWindowPhrase(tp[5]) + ", " + TouchpadWindowPhrase(tp[6]) + ")";
+                    }
+                    else if (tp.Length == 6)
                     {
                         bool left = tp[5].Equals("Left", System.StringComparison.OrdinalIgnoreCase);
-                        if (!left && !tp[5].Equals("Right", System.StringComparison.OrdinalIgnoreCase))
-                            return null;
-                        fmt =
-                              tp[4].Equals("X",    System.StringComparison.OrdinalIgnoreCase) ? (left ? si.Mapping_TouchpadFingerXLeft_Format : si.Mapping_TouchpadFingerXRight_Format)
-                            : tp[4].Equals("Y",    System.StringComparison.OrdinalIgnoreCase) ? (left ? si.Mapping_TouchpadFingerYLeft_Format : si.Mapping_TouchpadFingerYRight_Format)
-                            : tp[4].Equals("Down", System.StringComparison.OrdinalIgnoreCase) ? (left ? si.Mapping_TouchpadFingerTouchLeft_Format : si.Mapping_TouchpadFingerTouchRight_Format)
-                            : null;
+                        bool right = tp[5].Equals("Right", System.StringComparison.OrdinalIgnoreCase);
+                        if (left || right)
+                        {
+                            fmt =
+                                  tp[4].Equals("X",    System.StringComparison.OrdinalIgnoreCase) ? (left ? si.Mapping_TouchpadFingerXLeft_Format : si.Mapping_TouchpadFingerXRight_Format)
+                                : tp[4].Equals("Y",    System.StringComparison.OrdinalIgnoreCase) ? (left ? si.Mapping_TouchpadFingerYLeft_Format : si.Mapping_TouchpadFingerYRight_Format)
+                                : tp[4].Equals("Down", System.StringComparison.OrdinalIgnoreCase) ? (left ? si.Mapping_TouchpadFingerTouchLeft_Format : si.Mapping_TouchpadFingerTouchRight_Format)
+                                : null;
+                        }
+                        else
+                        {
+                            string w = TouchpadWindowPhrase(tp[5]);
+                            if (w == null) return null;
+                            fmt =
+                                  tp[4].Equals("X",    System.StringComparison.OrdinalIgnoreCase) ? si.Mapping_TouchpadFingerX_Format
+                                : tp[4].Equals("Y",    System.StringComparison.OrdinalIgnoreCase) ? si.Mapping_TouchpadFingerY_Format
+                                : tp[4].Equals("Down", System.StringComparison.OrdinalIgnoreCase) ? si.Mapping_TouchpadFingerTouch_Format
+                                : null;
+                            windowSuffix = " (" + w + ")";
+                        }
                     }
                     else
                     {
@@ -319,26 +364,42 @@ namespace PadForge.Common
                             : null;
                     }
                     if (fmt == null) return null;
-                    return prefix + string.Format(fmt, padIdx + 1, fingerIdx + 1);
+                    return prefix + string.Format(fmt, padIdx + 1, fingerIdx + 1) + windowSuffix;
                 }
                 // "Touchpad {pad} Pointer {X|Y}[ Left|Right]" → the absolute
                 // pointer (#9 B-15). Same 1-based pad numbering and half-
                 // window formats as the Finger family; MUST run before the
                 // gesture fallback below or "Pointer" would parse as a
                 // gesture name and resolve to null.
-                if (tp.Length >= 4 && int.TryParse(tp[1], out int ptrPad)
+                if (tp.Length >= 4 && tp.Length <= 5 && int.TryParse(tp[1], out int ptrPad)
                     && tp[2].Equals("Pointer", System.StringComparison.OrdinalIgnoreCase))
                 {
                     string fmt;
-                    if (tp.Length >= 5)
+                    string ptrWindowSuffix = "";
+                    if (tp.Length == 5)
                     {
                         bool left = tp[4].Equals("Left", System.StringComparison.OrdinalIgnoreCase);
-                        if (!left && !tp[4].Equals("Right", System.StringComparison.OrdinalIgnoreCase))
-                            return null;
-                        fmt =
-                              tp[3].Equals("X", System.StringComparison.OrdinalIgnoreCase) ? (left ? si.Mapping_TouchpadPointerXLeft_Format : si.Mapping_TouchpadPointerXRight_Format)
-                            : tp[3].Equals("Y", System.StringComparison.OrdinalIgnoreCase) ? (left ? si.Mapping_TouchpadPointerYLeft_Format : si.Mapping_TouchpadPointerYRight_Format)
-                            : null;
+                        bool right = tp[4].Equals("Right", System.StringComparison.OrdinalIgnoreCase);
+                        if (left || right)
+                        {
+                            fmt =
+                                  tp[3].Equals("X", System.StringComparison.OrdinalIgnoreCase) ? (left ? si.Mapping_TouchpadPointerXLeft_Format : si.Mapping_TouchpadPointerXRight_Format)
+                                : tp[3].Equals("Y", System.StringComparison.OrdinalIgnoreCase) ? (left ? si.Mapping_TouchpadPointerYLeft_Format : si.Mapping_TouchpadPointerYRight_Format)
+                                : null;
+                        }
+                        else
+                        {
+                            // v18 window tokens on the pointer render as the
+                            // whole-pad label plus the window parenthetical,
+                            // the Finger family's rule.
+                            string w = TouchpadWindowPhrase(tp[4]);
+                            if (w == null) return null;
+                            fmt =
+                                  tp[3].Equals("X", System.StringComparison.OrdinalIgnoreCase) ? si.Mapping_TouchpadPointerX_Format
+                                : tp[3].Equals("Y", System.StringComparison.OrdinalIgnoreCase) ? si.Mapping_TouchpadPointerY_Format
+                                : null;
+                            ptrWindowSuffix = " (" + w + ")";
+                        }
                     }
                     else
                     {
@@ -348,7 +409,7 @@ namespace PadForge.Common
                             : null;
                     }
                     if (fmt == null) return null;
-                    return prefix + string.Format(fmt, ptrPad + 1);
+                    return prefix + string.Format(fmt, ptrPad + 1) + ptrWindowSuffix;
                 }
                 // "Touchpad {pad} {GestureName}" → localized gesture label.
                 // Same naming the picker builds via AddTouchpadGestureChoices.
@@ -490,6 +551,28 @@ namespace PadForge.Common
             return null;
         }
 
+        /// <summary>Localized display phrase for a touchpad window token
+        /// (v18 grammar: SourceCoercion.ParseTouchpadHalf). Left / Right
+        /// reuse the Menus tab's half atoms. The vertical halves and the
+        /// diamond quadrants render the descriptor grammar's own token:
+        /// they enter only via Workshop imports of Steam's four_buttons /
+        /// vertical-split zones, and the strings surface (owned by the
+        /// concurrent import batch) carries no dedicated keys for them
+        /// yet, so the verbatim token beats a raw-descriptor chip while
+        /// staying unambiguous. Returns null outside the grammar.</summary>
+        private static string TouchpadWindowPhrase(string token) => token switch
+        {
+            "Left" => Strings.Instance.Menu_Half_Left,
+            "Right" => Strings.Instance.Menu_Half_Right,
+            "Upper" or "Lower" or "North" or "South" or "East" or "West" => token,
+            _ => null,
+        };
+
+        /// <summary>True for the four diamond-quadrant window tokens (v18),
+        /// the only tokens the 7-token composed form may lead with.</summary>
+        private static bool IsTouchpadQuadrantToken(string token)
+            => token is "North" or "South" or "East" or "West";
+
         /// <summary>Friendly member label for the abstract gamepad family
         /// (the token after <c>"Gamepad "</c>). Reuses the existing DevObj_*
         /// labels so the family reads the same as the raw per-device entries,
@@ -611,6 +694,27 @@ namespace PadForge.Common
                     list.Add(new InputChoice { Descriptor = $"Touchpad {p} Finger 0 Y Right",    DisplayName = string.Format(si.Mapping_TouchpadFingerYRight_Format,     p + 1, 1) });
                     list.Add(new InputChoice { Descriptor = $"Touchpad {p} Finger 0 Down Left",  DisplayName = string.Format(si.Mapping_TouchpadFingerTouchLeft_Format,  p + 1, 1) });
                     list.Add(new InputChoice { Descriptor = $"Touchpad {p} Finger 0 Down Right", DisplayName = string.Format(si.Mapping_TouchpadFingerTouchRight_Format, p + 1, 1) });
+                    // v18 windows (audit 2026-07-17 G2): vertical halves and
+                    // the diamond quadrants join the pad-0 window family so
+                    // the forms the engine reads (and the translator emits)
+                    // are pickable, not import-only. Display names match
+                    // ResolveDescriptorText exactly (the mirror-closure test).
+                    foreach (var w in new[] { "Upper", "Lower", "North", "South", "East", "West" })
+                        list.Add(new InputChoice
+                        {
+                            Descriptor = $"Touchpad {p} Finger 0 Down {w}",
+                            DisplayName = string.Format(si.Mapping_TouchpadFingerTouch_Format, p + 1, 1)
+                                + " (" + TouchpadWindowPhrase(w) + ")",
+                        });
+                    // Windowed clicks (v18): click composed with the finger-0
+                    // window, Steam's requires_click on a half / zone.
+                    foreach (var w in new[] { "Left", "Right", "Upper", "Lower" })
+                        list.Add(new InputChoice
+                        {
+                            Descriptor = $"Touchpad {p} Click {w}",
+                            DisplayName = string.Format(si.Mapping_TouchpadGesture_PadPrefix_Format, p + 1,
+                                si.Mapping_TouchpadClick + " (" + TouchpadWindowPhrase(w) + ")"),
+                        });
                 }
                 // Absolute pointer (#9 B-15): the translator emits these
                 // with the empty guid for trackpad mouse_region groups, so
@@ -1267,6 +1371,16 @@ namespace PadForge.Common
                             list.Add(new InputChoice { Descriptor = $"Touchpad {p} Finger {f} Y Right",    DisplayName = string.Format(si.Mapping_TouchpadFingerYRight_Format,     p + 1, f + 1) });
                             list.Add(new InputChoice { Descriptor = $"Touchpad {p} Finger {f} Down Left",  DisplayName = string.Format(si.Mapping_TouchpadFingerTouchLeft_Format,  p + 1, f + 1) });
                             list.Add(new InputChoice { Descriptor = $"Touchpad {p} Finger {f} Down Right", DisplayName = string.Format(si.Mapping_TouchpadFingerTouchRight_Format, p + 1, f + 1) });
+                            // v18 windows (G2): vertical halves + diamond
+                            // quadrants, same single-pad rule as the halves
+                            // above. Display matches ResolveDescriptorText.
+                            foreach (var w in new[] { "Upper", "Lower", "North", "South", "East", "West" })
+                                list.Add(new InputChoice
+                                {
+                                    Descriptor = $"Touchpad {p} Finger {f} Down {w}",
+                                    DisplayName = string.Format(si.Mapping_TouchpadFingerTouch_Format, p + 1, f + 1)
+                                        + " (" + TouchpadWindowPhrase(w) + ")",
+                                });
                         }
                     }
 
@@ -1292,7 +1406,21 @@ namespace PadForge.Common
                 // second physical click surfaces as its own gamepad button (MISC2).
                 bool isPtpSystemTouchpad = ud.IsTouchpad && ud.Device == null;
                 if (!isPtpSystemTouchpad)
+                {
                     list.Add(new InputChoice { Descriptor = "Touchpad 0 Click", DisplayName = si.Mapping_TouchpadClick });
+                    // Windowed clicks (v18, G2): click AND finger 0 inside
+                    // the window, single-pad devices only (the halves rule).
+                    // Pad 0 in the per-device context stays unnumbered, the
+                    // plain click's convention. ResolveDescriptorText emits
+                    // the same shape.
+                    if (numPads == 1)
+                        foreach (var w in new[] { "Left", "Right", "Upper", "Lower" })
+                            list.Add(new InputChoice
+                            {
+                                Descriptor = $"Touchpad 0 Click {w}",
+                                DisplayName = si.Mapping_TouchpadClick + " (" + TouchpadWindowPhrase(w) + ")",
+                            });
+                }
             }
 
             // Gyro sources (for devices with a gyroscope sensor). SDL3

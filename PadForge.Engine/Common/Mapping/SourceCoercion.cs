@@ -683,21 +683,59 @@ namespace PadForge.Engine.Common.Mapping
             return v < 0f ? -mag : mag;
         }
 
+        /// <summary>Fetches (or creates) the source's mouse-feel state for
+        /// the device being evaluated. Keyed by the caller-resolved
+        /// evaluated device guid (the _touchpadDeltas pattern): a
+        /// device-free source on a multi-device slot is evaluated once per
+        /// device each poll, and one shared scalar handed the second
+        /// device the first device's filter output. The map allocates only
+        /// when a feel knob is actually stamped, so unstamped sources stay
+        /// allocation-free. Poll thread only.</summary>
+        private static MouseFeelState GetMouseFeelState(MappingSource src, string deviceGuid)
+        {
+            var map = src.MouseFeelByDevice
+                ??= new Dictionary<string, MouseFeelState>(StringComparer.OrdinalIgnoreCase);
+            if (!map.TryGetValue(deviceGuid ?? "", out var st))
+            {
+                st = new MouseFeelState();
+                map[deviceGuid ?? ""] = st;
+            }
+            return st;
+        }
+
         /// <summary>Per-source EMA smoothing (v18, Steam mouse_smoothing on
         /// the analog mouse lanes). One filter step per poll frame per
-        /// source, the ApplyGyroSmoothing seq-gate contract; extra reads
-        /// inside the same frame replay the smoothed value. State lives on
-        /// the source itself (runtime-only fields), so the filter follows
-        /// the row through clones and profile switches with no keying.</summary>
-        private static float ApplyPerSourceSmoothing(MappingSource src, float v)
+        /// (source, evaluated device), the ApplyGyroSmoothing seq-gate
+        /// contract, so extra reads inside the same frame replay the
+        /// smoothed value. State lives on the source in a small per-device
+        /// map so the filter follows the row through profile switches while
+        /// two devices on one slot keep independent filters.</summary>
+        private static float ApplyPerSourceSmoothing(MappingSource src, float v, string deviceGuid)
         {
             double a = src.ParamSmoothingAlpha;
             if (a <= 0.0) return v;
             float alpha = (float)Math.Min(a, 0.99);
-            if (src.MouseFeelEmaSeq == _pollFrameSeq) return src.MouseFeelEmaValue;
-            src.MouseFeelEmaSeq = _pollFrameSeq;
-            src.MouseFeelEmaValue = src.MouseFeelEmaValue * alpha + v * (1f - alpha);
-            return src.MouseFeelEmaValue;
+            var st = GetMouseFeelState(src, deviceGuid);
+            if (st.EmaSeq == _pollFrameSeq) return st.EmaValue;
+            st.EmaSeq = _pollFrameSeq;
+            st.EmaValue = st.EmaValue * alpha + v * (1f - alpha);
+            return st.EmaValue;
+        }
+
+        /// <summary>Per-source rate-dependent gain (v18, Steam's
+        /// acceleration): v scales by 1 + accel * |v|, then re-clamps to
+        /// the bipolar range. The touchpad-feel formula, shared by the
+        /// touchpad relative lane and the gyro lanes (translator T4: gyro
+        /// mouse groups stamp ParamAccel too). 0 (default) = off. A
+        /// unipolar caller's value stays in [0, 1] since the clamp is
+        /// symmetric.</summary>
+        private static float ApplyPerSourceAccel(MappingSource src, float v)
+        {
+            double accel = src.ParamAccel;
+            if (accel <= 0.0) return v;
+            v *= 1f + (float)accel * Math.Abs(v);
+            if (v < -1f) v = -1f; else if (v > 1f) v = 1f;
+            return v;
         }
 
         /// <summary>Touchpad relative-lane feel chain (v18): motion
@@ -709,39 +747,35 @@ namespace PadForge.Engine.Common.Mapping
         /// velocity keeps feeding the lane, decayed per poll frame by
         /// ParamTrackballDecay until it falls under the rest epsilon
         /// (Steam's trackball + friction model, exponential decay).</summary>
-        private static float ApplyTouchpadFeel(MappingSource src, float delta, bool fingerDown)
+        private static float ApplyTouchpadFeel(MappingSource src, float delta, bool fingerDown, string deviceGuid)
         {
             if (src == null) return delta;
             double threshold = src.ParamMoveThreshold;
             if (threshold > 0.0 && Math.Abs(delta) < threshold && fingerDown) delta = 0f;
-            double accel = src.ParamAccel;
-            if (accel > 0.0)
-            {
-                delta *= 1f + (float)accel * Math.Abs(delta);
-                if (delta < -1f) delta = -1f; else if (delta > 1f) delta = 1f;
-            }
+            delta = ApplyPerSourceAccel(src, delta);
             double decay = src.ParamTrackballDecay;
             if (decay > 0.0)
             {
                 float d = (float)Math.Min(decay, 0.999);
+                var st = GetMouseFeelState(src, deviceGuid);
                 if (fingerDown)
                 {
-                    src.TrackballVelocity = delta;
-                    src.TrackballSeq = _pollFrameSeq;
+                    st.TrackballVelocity = delta;
+                    st.TrackballSeq = _pollFrameSeq;
                 }
                 else
                 {
-                    if (src.TrackballSeq != _pollFrameSeq)
+                    if (st.TrackballSeq != _pollFrameSeq)
                     {
-                        src.TrackballSeq = _pollFrameSeq;
-                        src.TrackballVelocity *= d;
-                        if (Math.Abs(src.TrackballVelocity) < 0.0005f)
-                            src.TrackballVelocity = 0f;
+                        st.TrackballSeq = _pollFrameSeq;
+                        st.TrackballVelocity *= d;
+                        if (Math.Abs(st.TrackballVelocity) < 0.0005f)
+                            st.TrackballVelocity = 0f;
                     }
-                    delta = src.TrackballVelocity;
+                    delta = st.TrackballVelocity;
                 }
             }
-            delta = ApplyPerSourceSmoothing(src, delta);
+            delta = ApplyPerSourceSmoothing(src, delta, deviceGuid);
             return ApplyCurveRangeShaping(delta, src);
         }
 
@@ -1621,25 +1655,50 @@ namespace PadForge.Engine.Common.Mapping
         /// value.</summary>
         internal const int StickRingInnerFloorPercent = 5;
 
+        // Ring axis pairs resolved ONCE at type init (P2): the alias table
+        // is static (Left = Axis 0/1, Right = Axis 3/4), so the per-tick
+        // read must not re-resolve the alias strings and re-split them
+        // (~6 transient strings per ring read at the poll rate). Parsed
+        // from TryGetStickRingAxes so the constants can never drift from
+        // the public resolver the tests pin.
+        private static readonly (int X, int Y) _leftRingAxisIndices =
+            ParseRingAxisIndices(LeftStickRingDescriptor);
+        private static readonly (int X, int Y) _rightRingAxisIndices =
+            ParseRingAxisIndices(RightStickRingDescriptor);
+
+        private static (int X, int Y) ParseRingAxisIndices(string ringDescriptor)
+        {
+            if (!TryGetStickRingAxes(ringDescriptor, out string xDesc, out string yDesc))
+                return (-1, -1);
+            static int AxisIndex(string d)
+            {
+                var parts = d.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                return parts.Length >= 2
+                    && int.TryParse(parts[1], out int idx)
+                    && idx >= 0 && idx < CustomInputState.MaxAxis
+                    ? idx : -1;
+            }
+            return (AxisIndex(xDesc), AxisIndex(yDesc));
+        }
+
         /// <summary>Deflection magnitude of the ring's stick pair,
         /// [0..1]. Same normalization as the flick-stick pair read
         /// (SourceKindRuntime.ReadNormAxis: center 32768, span 32767).</summary>
         internal static float ReadStickRingMagnitude(CustomInputState state, string canonical)
         {
-            if (state == null || !TryGetStickRingAxes(canonical, out string xDesc, out string yDesc))
-                return 0f;
-            float x = ReadRingNormAxis(state, xDesc);
-            float y = ReadRingNormAxis(state, yDesc);
+            if (state == null || !IsStickRingDescriptor(canonical)) return 0f;
+            var (xi, yi) = canonical.Trim().StartsWith("Gamepad Left", StringComparison.OrdinalIgnoreCase)
+                ? _leftRingAxisIndices
+                : _rightRingAxisIndices;
+            if (xi < 0 || yi < 0) return 0f;
+            float x = ReadRingNormAxis(state, xi);
+            float y = ReadRingNormAxis(state, yi);
             float mag = (float)Math.Sqrt(x * x + y * y);
             return mag > 1f ? 1f : mag;
         }
 
-        private static float ReadRingNormAxis(CustomInputState state, string axisDesc)
+        private static float ReadRingNormAxis(CustomInputState state, int idx)
         {
-            var parts = axisDesc.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-            if (parts.Length < 2 || !int.TryParse(parts[1], out int idx)
-                || idx < 0 || idx >= CustomInputState.MaxAxis)
-                return 0f;
             float v = (state.Axis[idx] - 32768) / 32767f;
             return v < -1f ? -1f : (v > 1f ? 1f : v);
         }
@@ -2439,7 +2498,7 @@ namespace PadForge.Engine.Common.Mapping
                     // v18: the gesture Stick channel (trackpad-as-stick)
                     // carries the per-source smoothing + curve/range
                     // shaping; defaults are pass-through.
-                    gv = ApplyPerSourceSmoothing(src, gv);
+                    gv = ApplyPerSourceSmoothing(src, gv, deviceGuid);
                     return ApplyCurveRangeShaping(gv, src);
                 }
                 bool fired = TouchpadGestureFiredProvider?.Invoke(
@@ -2473,11 +2532,11 @@ namespace PadForge.Engine.Common.Mapping
                 // Caller signals which one it wants via relativeTouchpad.
                 if (relativeTouchpad)
                 {
-                    if (TryReadTouchpadAxis(state, src, s, slotIndex, out float bipolar)) return bipolar;
+                    if (TryReadTouchpadAxis(state, src, s, slotIndex, deviceGuid, out float bipolar)) return bipolar;
                 }
                 else
                 {
-                    if (TryReadTouchpadAxisAbsolute(state, src, s, out float bipolar)) return bipolar;
+                    if (TryReadTouchpadAxisAbsolute(state, src, s, deviceGuid, out float bipolar)) return bipolar;
                 }
                 return ReadTouchpadBool(state, s) ? 1f : 0f;
             }
@@ -2509,10 +2568,13 @@ namespace PadForge.Engine.Common.Mapping
                 v = ApplyGyroAcceleration(v, tuning.Acceleration);
                 if (v < -1f) v = -1f;
                 else if (v > 1f) v = 1f;
-                // v18: per-source smoothing + curve/range channel on the
-                // gyro lane (the Workshop stamp; composes after the
-                // slot-level preset, both default off).
-                v = ApplyPerSourceSmoothing(src, v);
+                // v18: per-source accel + smoothing + curve/range channel
+                // on the gyro lane (the Workshop stamps, each composing
+                // after the slot-level preset, all default off). Accel
+                // uses the touchpad-feel formula and runs before the EMA,
+                // the same order the touchpad chain applies.
+                v = ApplyPerSourceAccel(src, v);
+                v = ApplyPerSourceSmoothing(src, v, deviceGuid);
                 return ApplyCurveRangeShaping(v, src);
             }
 
@@ -2660,7 +2722,7 @@ namespace PadForge.Engine.Common.Mapping
                         slotIndex, deviceGuid ?? "", gPad, gName) ?? 0f;
                     v = Math.Abs(v);
                     // v18: same smoothing + shaping as the bipolar twin.
-                    v = ApplyPerSourceSmoothing(src, v);
+                    v = ApplyPerSourceSmoothing(src, v, deviceGuid);
                     return ApplyCurveRangeShaping(v, src);
                 }
                 bool fired = TouchpadGestureFiredProvider?.Invoke(
@@ -2705,9 +2767,12 @@ namespace PadForge.Engine.Common.Mapping
                 v = ApplyOutputCurve(v, tuning.OutputCurve);
                 v = ApplyGyroAcceleration(v, tuning.Acceleration);
                 if (v > 1f) v = 1f;
-                // v18: per-source smoothing + curve/range channel, the
-                // bipolar lane's twin.
-                v = ApplyPerSourceSmoothing(src, v);
+                // v18: per-source accel + smoothing + curve/range channel,
+                // the bipolar lane's twin (accel before EMA, the
+                // touchpad-feel order, with the unsigned value staying in
+                // [0, 1] through the symmetric clamp).
+                v = ApplyPerSourceAccel(src, v);
+                v = ApplyPerSourceSmoothing(src, v, deviceGuid);
                 return ApplyCurveRangeShaping(v, src);
             }
 
@@ -2890,13 +2955,19 @@ namespace PadForge.Engine.Common.Mapping
 
         // ─── Touchpad bool descriptors ─────────────────────────────────
 
-        // Mirrors the legacy InputManager.MapTouchpadButton helper so the
-        // new pipeline can recognize "Touchpad N Click" / "Touchpad N
-        // Finger M Down" descriptors. Kept here so SourceCoercion is
-        // self-contained (Engine library has no reference back into
-        // PadForge.App's InputManager).
-        private static bool ReadTouchpadBool(CustomInputState state, string descriptor)
+        /// <summary>Resolves every bool-yielding touchpad descriptor form:
+        /// "Touchpad N Click" (per-pad Clicked for N &gt; 0), the windowed
+        /// click "Touchpad N Click Left|Right|Upper|Lower" (v18), and
+        /// "Touchpad N Finger M Down" with the full window grammar
+        /// (Left/Right halves, v18 Upper/Lower, the diamond quadrants,
+        /// and the 7-token quadrant-in-half compose). Public because the
+        /// legacy per-key path (InputManager.MapTouchpadButton) delegates
+        /// here: the two were hand-kept twins and diverged on every v18
+        /// token, so the mapping-set path and the legacy path disagreed
+        /// on the same descriptor (audit 2026-07-17 G1).</summary>
+        public static bool ReadTouchpadBool(CustomInputState state, string descriptor)
         {
+            if (state == null || string.IsNullOrEmpty(descriptor)) return false;
             string[] parts = descriptor.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
             if (parts.Length < 3) return false;
             if (!int.TryParse(parts[1], out int padIdx)) return false;
@@ -3062,7 +3133,7 @@ namespace PadForge.Engine.Common.Mapping
         /// position targets — touchpad-output passthrough, stick axes,
         /// extended axes — go through <c>TryReadTouchpadAxisAbsolute</c>
         /// instead.</para></summary>
-        private static bool TryReadTouchpadAxis(CustomInputState state, MappingSource src, string descriptor, int slotIndex, out float bipolar)
+        private static bool TryReadTouchpadAxis(CustomInputState state, MappingSource src, string descriptor, int slotIndex, string evaluatedDeviceGuid, out float bipolar)
         {
             bipolar = 0f;
             if (!TryParseTouchpadAxis(descriptor, out int padIdx, out int fingerIdx, out int axisOffset, out int half))
@@ -3093,7 +3164,7 @@ namespace PadForge.Engine.Common.Mapping
                 // v18 feel chain: with trackball stamped, the lift keeps
                 // the decaying momentum flowing; otherwise this is the
                 // same 0 the pre-v18 read returned (EMA of 0 included).
-                bipolar = ApplyTouchpadFeel(src, 0f, fingerDown: false);
+                bipolar = ApplyTouchpadFeel(src, 0f, fingerDown: false, evaluatedDeviceGuid);
                 return true;
             }
 
@@ -3121,7 +3192,7 @@ namespace PadForge.Engine.Common.Mapping
                 _touchpadDeltas[key] = new TouchpadAxisDelta { PrevValue = raw, Seeded = true, FrameSeq = _pollFrameSeq };
                 // Seed frame reads 0; the touch also kills any trackball
                 // momentum (catching the ball stops it).
-                bipolar = ApplyTouchpadFeel(src, 0f, fingerDown: true);
+                bipolar = ApplyTouchpadFeel(src, 0f, fingerDown: true, evaluatedDeviceGuid);
                 return true;
             }
             float delta;
@@ -3182,7 +3253,7 @@ namespace PadForge.Engine.Common.Mapping
             else if (bipolar > 1f) bipolar = 1f;
             // v18 feel chain (threshold / accel / trackball / smoothing /
             // curve shaping); every knob defaults off = pass-through.
-            if (src != null) bipolar = ApplyTouchpadFeel(src, bipolar, fingerDown: true);
+            if (src != null) bipolar = ApplyTouchpadFeel(src, bipolar, fingerDown: true, evaluatedDeviceGuid);
             return true;
         }
 
@@ -3211,7 +3282,7 @@ namespace PadForge.Engine.Common.Mapping
         /// predicate reveals is live on stick / passthrough targets
         /// too, not only on the mouse-delta path. Pressure is never
         /// scaled. 1.0 stays bit-identical.</para></summary>
-        private static bool TryReadTouchpadAxisAbsolute(CustomInputState state, MappingSource src, string descriptor, out float bipolar)
+        private static bool TryReadTouchpadAxisAbsolute(CustomInputState state, MappingSource src, string descriptor, string evaluatedDeviceGuid, out float bipolar)
         {
             bipolar = 0f;
             if (!TryParseTouchpadAxis(descriptor, out int padIdx, out int fingerIdx, out int axisOffset, out int half))
@@ -3253,7 +3324,7 @@ namespace PadForge.Engine.Common.Mapping
             // the generic bipolar tail applies. Defaults are pass-through.
             if (src != null)
             {
-                bipolar = ApplyPerSourceSmoothing(src, bipolar);
+                bipolar = ApplyPerSourceSmoothing(src, bipolar, evaluatedDeviceGuid);
                 bipolar = ApplyCurveRangeShaping(bipolar, src);
             }
             return true;

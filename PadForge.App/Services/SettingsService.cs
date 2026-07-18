@@ -540,14 +540,15 @@ namespace PadForge.Services
         /// <summary>
         /// In-place cleanup of a loaded MappingSet:
         /// 1. Deduplicates row Sources by (DeviceGuid, Descriptor, Invert,
-        ///    HalfAxis, InvertOutput, Kind). Heals the per-save
-        ///    accumulation bug from earlier multi-source builds.
+        ///    HalfAxis, InvertOutput, Kind, GateDescriptor). Heals the
+        ///    per-save accumulation bug from earlier multi-source builds.
         /// 2. Drops sources whose owning device is not gamepad-class for
-        ///    gamepad-class targets — heals the "joystick stuck left"
+        ///    gamepad-class targets. Heals the "joystick stuck left"
         ///    symptom caused by stale auto-mapped gamepad descriptors on
         ///    keyboard/mouse/touchpad PadSettings polluting the row.
+        /// Internal for the PadForge.Tests dedup pins.
         /// </summary>
-        private static void SanitizeMappingSet(MappingSet ms, int slot)
+        internal static void SanitizeMappingSet(MappingSet ms, int slot)
         {
             if (ms?.Rows == null) return;
 
@@ -561,18 +562,22 @@ namespace PadForge.Services
             // the key: two sources sharing a descriptor but differing in
             // a modifier are distinct reads (a half-axis scroll pair
             // differs only in Invert), and collapsing them dropped one
-            // direction on reload.
+            // direction on reload. GateDescriptor (v18) joins them for
+            // the same reason: a gated and an ungated read of one
+            // descriptor (Steam's requires_click D-pad beside a plain
+            // touch D-pad) are distinct sources, and the shorter key
+            // deleted one of them on every load.
             foreach (var row in ms.Rows)
             {
                 if (row?.Sources == null) continue;
-                var seen = new HashSet<(string, string, bool, bool, bool, string)>();
+                var seen = new HashSet<(string, string, bool, bool, bool, string, string)>();
                 int writeIdx = 0;
                 for (int i = 0; i < row.Sources.Count; i++)
                 {
                     var s = row.Sources[i];
                     if (s == null) continue;
                     var key = ((s.DeviceGuid ?? "").ToLowerInvariant(), s.Descriptor ?? "",
-                        s.Invert, s.HalfAxis, s.InvertOutput, s.Kind ?? "");
+                        s.Invert, s.HalfAxis, s.InvertOutput, s.Kind ?? "", s.GateDescriptor ?? "");
                     if (!seen.Add(key)) continue;
                     row.Sources[writeIdx++] = s;
                 }
@@ -1559,6 +1564,12 @@ namespace PadForge.Services
                     BaseColor = current.BaseColor ?? "",
                     BaseIcon = current.BaseIcon ?? "",
                 };
+                // Workshop stamps (v18) are part of the "everything that
+                // isn't Rows" family this swap must carry, via the shared
+                // helper. Dropping them here erased an imported profile's
+                // deadzone shape / gyro engage on every device assign or
+                // unassign (the merge runs on both).
+                current.CopyWorkshopStampsTo(merged);
                 var consumedRebuilt = new HashSet<(string, string)>();
 
                 foreach (var er in current.Rows)
@@ -2944,6 +2955,7 @@ namespace PadForge.Services
                 RepeatMode = md.RepeatMode,
                 RepeatCount = md.RepeatCount,
                 RepeatDelayMs = md.RepeatDelayMs,
+                PairId = md.PairId,
                 TriggerAxisTargetList = md.TriggerAxisTargets,
                 TriggerAxisDirectionList = md.TriggerAxisDirections,
                 TriggerAxisThreshold = md.TriggerAxisThreshold > 0 ? md.TriggerAxisThreshold : 50,
@@ -3030,6 +3042,7 @@ namespace PadForge.Services
                 CycleWrap = ad.CycleWrap,
                 IntervalMs = ad.IntervalMs,
                 PulseWhileLatched = ad.PulseWhileLatched,
+                LatchDirection = ad.LatchDirection,
                 CursorClampMode = ad.CursorClampMode,
                 CursorClampInsetX = ad.CursorClampInsetX,
                 CursorClampInsetY = ad.CursorClampInsetY,
@@ -3996,6 +4009,7 @@ namespace PadForge.Services
                 RepeatMode = macro.RepeatMode,
                 RepeatCount = macro.RepeatCount,
                 RepeatDelayMs = macro.RepeatDelayMs,
+                PairId = macro.PairId,
                 TriggerCustomButtons = macro.TriggerCustomButtons,
                 TriggerAxisTargets = macro.TriggerAxisTargetList,
                 TriggerAxisDirections = macro.TriggerAxisDirectionList,
@@ -4068,6 +4082,7 @@ namespace PadForge.Services
                 CycleWrap = a.CycleWrap,
                 IntervalMs = a.IntervalMs,
                 PulseWhileLatched = a.PulseWhileLatched,
+                LatchDirection = a.LatchDirection,
                 CursorClampMode = a.CursorClampMode,
                 CursorClampInsetX = a.CursorClampInsetX,
                 CursorClampInsetY = a.CursorClampInsetY,
@@ -5305,6 +5320,13 @@ namespace PadForge.Services
         [XmlElement]
         public int RepeatDelayMs { get; set; } = 100;
 
+        /// <summary>Nonzero links the two legs of a materialized hold pair
+        /// (audit #2 M4/M6). See <see cref="ViewModels.MacroItem.PairId"/>.
+        /// Default 0 = unpaired, so profiles saved before the field
+        /// existed load unchanged.</summary>
+        [XmlElement]
+        public int PairId { get; set; }
+
         /// <summary>Hex-encoded custom Extended trigger button words (e.g. "00000003,00000000,00000000,00000000").</summary>
         [XmlElement]
         public string TriggerCustomButtons { get; set; }
@@ -5448,6 +5470,12 @@ namespace PadForge.Services
         /// solid, composing Steam's toggle + hold_repeats.</summary>
         [XmlElement]
         public bool PulseWhileLatched { get; set; }
+
+        /// <summary>Latch write mode for ToggleKey / ToggleMouseButton
+        /// (audit #2 M4): Toggle flips, On sets, Off clears. Default
+        /// Toggle preserves the pre-field behavior on old profiles.</summary>
+        [XmlElement]
+        public ViewModels.MacroLatchDirection LatchDirection { get; set; } = ViewModels.MacroLatchDirection.Toggle;
 
         /// <summary>When true, show the Windows volume flyout OSD on volume changes.</summary>
         [XmlElement]

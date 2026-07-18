@@ -403,18 +403,44 @@ namespace PadForge.Engine.Data
 
         // ─── Runtime mouse-feel state (v18, not serialized): per-source
         // EMA value and trackball velocity, advanced once per poll frame
-        // (seq-gated like the gyro EMA). Clones inherit the values,
-        // which is harmless cold state. ───
-        internal float MouseFeelEmaValue;
-        internal ulong MouseFeelEmaSeq;
-        internal float TrackballVelocity;
-        internal ulong TrackballSeq;
+        // (seq-gated like the gyro EMA). Keyed by the EVALUATED device
+        // guid (the _touchpadDeltas pattern): a device-free source on a
+        // multi-device slot is evaluated once per device each poll, and
+        // a single scalar served the second device the first device's
+        // smoothed value. Poll thread is the only reader and writer.
+        // Clone() drops the map so a cloned row starts cold. ───
+        internal System.Collections.Generic.Dictionary<string, MouseFeelState> MouseFeelByDevice;
 
-        /// <summary>Full-field copy. Every field is a string / value type (strings are
-        /// immutable), so a memberwise clone is a complete deep copy. Use this at clone
-        /// sites instead of hand-listing fields, so a new Param* can't silently drop on
-        /// profile switch / slot reassign (the bug that dropped the steering params and,
-        /// before that, GyroSensitivity / NoInherit).</summary>
-        public MappingSource Clone() => (MappingSource)MemberwiseClone();
+        /// <summary>Full-field copy. Every serialized field is a string / value type
+        /// (strings are immutable), so a memberwise clone is a complete deep copy.
+        /// Use this at clone sites instead of hand-listing fields, so a new Param*
+        /// can't silently drop on profile switch / slot reassign (the bug that
+        /// dropped the steering params and, before that, GyroSensitivity /
+        /// NoInherit). Runtime caches do NOT travel: the gate-source cache holds
+        /// a synthetic source built with the ORIGINAL's device guid, so a clone
+        /// that is retargeted to another device would keep evaluating its gate
+        /// against the stale device, and the mouse-feel map is per-evaluated-
+        /// device filter state the clone must rebuild cold. The menu parse cache
+        /// stays: it is keyed by Descriptor reference, which the clone shares.</summary>
+        public MappingSource Clone()
+        {
+            var copy = (MappingSource)MemberwiseClone();
+            copy.GateSourceCache = null;
+            copy.GateSourceCacheKey = null;
+            copy.MouseFeelByDevice = null;
+            return copy;
+        }
+    }
+
+    /// <summary>Per-(source, evaluated device) mouse-feel runtime state
+    /// (v18): the per-source EMA filter value and the trackball momentum,
+    /// each seq-gated to one advance per poll frame. Lives in
+    /// <see cref="MappingSource.MouseFeelByDevice"/>, never serialized.</summary>
+    internal sealed class MouseFeelState
+    {
+        public float EmaValue;
+        public ulong EmaSeq;
+        public float TrackballVelocity;
+        public ulong TrackballSeq;
     }
 }

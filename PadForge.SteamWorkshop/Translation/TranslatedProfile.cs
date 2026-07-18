@@ -277,6 +277,14 @@ namespace PadForge.SteamWorkshop.Translation
         /// <see cref="TranslatedMacro.IntervalMs"/>, reproducing the held
         /// KbmScroll row. Lowers to MacroActionType.ToggleWheel.</summary>
         ToggleWheel = 24,
+
+        /// <summary>Turbo for a mouse wheel (v19, T1: hold_repeats on a
+        /// mouse_wheel binding): one discrete detent per
+        /// <see cref="TranslatedMacro.IntervalMs"/> while the physical
+        /// input is held, Steam's authored repeat_rate cadence. Lowers to
+        /// MacroActionType.MouseWheelTap riding RepeatMode=UntilRelease
+        /// with the interval as the repeat gap.</summary>
+        RepeatWheelWhileHeld = 25,
     }
 
     /// <summary>Which one-shot form a <see cref="TranslatedCycleStep"/>

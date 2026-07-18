@@ -2543,6 +2543,9 @@
   <data name="Workshop_Tr_MouseRegionTuningDropped" xml:space="preserve"><value>réglages d'activation/relâchement de la zone de souris abandonnés ({0})</value></data>
   <data name="Workshop_Tr_FlickStickSurfaceNotSupported" xml:space="preserve"><value>flick stick sur une surface tactile ignoré (le flick stick de PadForge lit un stick physique)</value></data>
   <data name="Workshop_Tr_FlickStickTuningDropped" xml:space="preserve"><value>réglages du flick stick abandonnés ({0})</value></data>
+  <data name="Workshop_Tr_DeadZoneRadialResidual" xml:space="preserve"><value>les zones mortes s'appliquent par axe, pas radialement ({0})</value></data>
+  <data name="Workshop_Tr_RotationNonlinearWithheld" xml:space="preserve"><value>réponse non linéaire retenue sur les axes pivotés ({0})</value></data>
+  <data name="Workshop_Tr_LayerReleaseEdgeApproximated" xml:space="preserve"><value>{0} hébergé au relâchement bascule à l'appui à la place</value></data>
   <data name="Workshop_Tr_MouseModeTuningDropped" xml:space="preserve"><value>réglages de la souris abandonnés ({0})</value></data>
   <data name="Workshop_Tr_AxisInversionNotApplied" xml:space="preserve"><value>inversion des axes non appliquée ({0})</value></data>
   <data name="Workshop_Tr_ScrollWheelApproximated" xml:space="preserve"><value>molette circulaire approximée par un glissement vertical</value></data>
@@ -2570,6 +2573,20 @@
   <data name="MacroAction_MouseNudge_Format" xml:space="preserve"><value>Décaler le curseur de ({0}, {1}) px</value></data>
   <data name="MacroAction_Type_CycleTapList" xml:space="preserve"><value>Liste de frappes cyclique</value></data>
   <data name="MacroAction_CycleTapList_Tooltip" xml:space="preserve"><value>Chaque déclenchement exécute l'étape suivante de la liste puis avance. Avec le bouclage, la liste recommence après la dernière étape. Sans lui, la sortie s'arrête en fin de liste.</value></data>
+  <data name="MacroAction_Type_ToggleMouseButton" xml:space="preserve"><value>Basculer le bouton de souris</value></data>
+  <data name="MacroAction_ToggleMouseButton_Tooltip" xml:space="preserve"><value>Chaque déclenchement verrouille ou libère le bouton de souris. Un bouton verrouillé reste enfoncé jusqu'au prochain déclenchement ou jusqu'à la désactivation de la macro.</value></data>
+  <data name="MacroAction_ToggleMouseButton_Format" xml:space="preserve"><value>Basculer souris {0}</value></data>
+  <data name="MacroAction_Type_ToggleVcAxis" xml:space="preserve"><value>Basculer l'axe</value></data>
+  <data name="MacroAction_ToggleVcAxis_Tooltip" xml:space="preserve"><value>Chaque déclenchement verrouille ou libère la valeur d'axe. Tant qu'elle est verrouillée, l'axe est écrit à chaque trame jusqu'au prochain déclenchement ou jusqu'à la désactivation de la macro.</value></data>
+  <data name="MacroAction_ToggleVcAxis_Format" xml:space="preserve"><value>Basculer {0} = {1}</value></data>
+  <data name="MacroAction_Type_RepeatVcAxisWhileHeld" xml:space="preserve"><value>Répéter l'axe tant que maintenu</value></data>
+  <data name="MacroAction_RepeatVcAxisWhileHeld_Tooltip" xml:space="preserve"><value>Tant que le déclencheur est maintenu, applique la valeur d'axe en créneau à l'intervalle réglé.</value></data>
+  <data name="MacroAction_RepeatVcAxisWhileHeld_Format" xml:space="preserve"><value>Répéter {0} = {1} toutes les {2} ms</value></data>
+  <data name="MacroAction_Type_ToggleWheel" xml:space="preserve"><value>Basculer le défilement molette</value></data>
+  <data name="MacroAction_ToggleWheel_Tooltip" xml:space="preserve"><value>Chaque déclenchement verrouille ou libère un défilement continu. Tant qu'il est verrouillé, envoie les crans une fois par intervalle jusqu'au prochain déclenchement ou jusqu'à la désactivation de la macro.</value></data>
+  <data name="MacroAction_ToggleWheel_Format" xml:space="preserve"><value>Basculer molette ({0} crans toutes les {1} ms)</value></data>
+  <data name="Macro_PulseWhileLatched" xml:space="preserve"><value>Pulser tant que verrouillé</value></data>
+  <data name="Macro_PulseWhileLatched_Tooltip" xml:space="preserve"><value>Tant que c'est verrouillé, alterne la sortie au rythme de l'intervalle de répétition au lieu de la maintenir.</value></data>
   <data name="MacroAction_CycleTapList_Format" xml:space="preserve"><value>Liste de frappes cyclique ({0} étapes)</value></data>
   <data name="Macro_CycleSteps_Label" xml:space="preserve"><value>Étapes</value></data>
   <data name="Macro_CycleWrap_Label" xml:space="preserve"><value>Bouclage</value></data>

@@ -178,5 +178,14 @@ namespace PadForge.Engine.Data
         /// activity. Deliberately not offered for Latch: auto-unlatching
         /// was flagged as surprising by the requester.</summary>
         [XmlAttribute] public int AutoCancelMs { get; set; } = 0;
+
+        /// <summary>Full-field copy. Every field is a string / value type
+        /// (strings are immutable), so a memberwise clone is a complete deep
+        /// copy. Copy sites must use this instead of hand-listing fields:
+        /// the app's CopyShiftActivators hand-list dropped
+        /// <see cref="AxisHalf"/> / <see cref="AxisInvert"/> (the v15 swipe
+        /// direction stamps), making imported flick activators
+        /// direction-blind after a profile switch or Copy From Slot.</summary>
+        public ShiftActivator Clone() => (ShiftActivator)MemberwiseClone();
     }
 }

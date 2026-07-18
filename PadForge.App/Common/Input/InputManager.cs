@@ -451,6 +451,12 @@ namespace PadForge.Common.Input
         /// edge-detection input for Toggle mode.</summary>
         private readonly bool[] _prevAimEngageButtonDown = new bool[MaxPads];
 
+        /// <summary>Reused scratch for the device-free gyro-engage walk
+        /// (P1): filled under the settings lock, read outside it, cleared
+        /// per use so the per-tick per-slot list allocation is gone. Poll
+        /// thread only.</summary>
+        private readonly List<string> _gyroEngageGuidScratch = new();
+
         /// <summary>Per-slot trigger-route engaged bits (issue #102), one each
         /// for the left and right trigger. Settled once per tick by
         /// <see cref="UpdateTriggerRouteEngageStates"/> (Hold tracks the
@@ -1444,26 +1450,27 @@ namespace PadForge.Common.Input
 
                 // First device on the slot with a configured engage button
                 // wins. Empty descriptor everywhere → always-on (Hold-default).
+                // No per-tick guid list here: the slot's device guids are
+                // only needed on the device-free descriptor path below,
+                // which re-walks under the lock into a reused scratch list
+                // instead of allocating one per slot per tick for a state
+                // most slots never enter (audit 2026-07-17 P1).
                 string descriptor = "";
                 string deviceGuid = "";
                 string mode = "Hold";
-                List<string> slotDeviceGuids = null;
                 lock (settings.SyncRoot)
                 {
                     for (int i = 0; i < settings.Items.Count; i++)
                     {
                         var us = settings.Items[i];
                         if (us == null || us.MapTo != slot) continue;
-                        (slotDeviceGuids ??= new List<string>()).Add(us.InstanceGuidString);
                         var ps = us.GetPadSetting();
                         if (ps == null) continue;
                         if (string.IsNullOrEmpty(ps.GyroAimEngageButton)) continue;
-                        if (descriptor.Length == 0)
-                        {
-                            descriptor = ps.GyroAimEngageButton;
-                            deviceGuid = ps.GyroAimEngageDeviceGuid ?? "";
-                            mode = string.IsNullOrEmpty(ps.GyroAimEngageMode) ? "Hold" : ps.GyroAimEngageMode;
-                        }
+                        descriptor = ps.GyroAimEngageButton;
+                        deviceGuid = ps.GyroAimEngageDeviceGuid ?? "";
+                        mode = string.IsNullOrEmpty(ps.GyroAimEngageMode) ? "Hold" : ps.GyroAimEngageMode;
+                        break;
                     }
                 }
 
@@ -1496,13 +1503,27 @@ namespace PadForge.Common.Input
                     {
                         buttonDown = SourceCoercion.ButtonHeldProvider?.Invoke(deviceGuid, descriptor, slot) ?? false;
                     }
-                    else if (slotDeviceGuids != null)
+                    else
                     {
                         // Device-free (workshop) descriptor: any slot device
-                        // holding it engages.
-                        for (int i = 0; i < slotDeviceGuids.Count && !buttonDown; i++)
+                        // holding it engages. Guids are gathered into the
+                        // reused scratch list under the lock, and the
+                        // provider runs OUTSIDE it: the provider reads
+                        // device state and must never nest inside
+                        // UserSettings.SyncRoot (lock-order discipline).
+                        _gyroEngageGuidScratch.Clear();
+                        lock (settings.SyncRoot)
+                        {
+                            for (int i = 0; i < settings.Items.Count; i++)
+                            {
+                                var us = settings.Items[i];
+                                if (us == null || us.MapTo != slot) continue;
+                                _gyroEngageGuidScratch.Add(us.InstanceGuidString);
+                            }
+                        }
+                        for (int i = 0; i < _gyroEngageGuidScratch.Count && !buttonDown; i++)
                             buttonDown = SourceCoercion.ButtonHeldProvider?.Invoke(
-                                slotDeviceGuids[i], descriptor, slot) ?? false;
+                                _gyroEngageGuidScratch[i], descriptor, slot) ?? false;
                     }
                 }
 

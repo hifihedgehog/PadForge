@@ -79,10 +79,19 @@ namespace PadForge.Engine.Data
         // devices, so per-device PadSetting channels (thumb deadzone
         // shape, gyro aim engage) cannot be stamped at import. These
         // attributes carry the authored values on the authoritative set
-        // instead, and the runtime overlays them onto the resolved
-        // per-(slot, device) settings exactly like the touchpad gesture
-        // auto-arm (gate = user value OR workshop stamp). Empty strings
-        // (the deserialized default for old XML) mean "no stamp". ──
+        // instead. Two overlay contracts, both only while
+        // Authoritative:
+        //   1. Deadzone-shape stamps OVERLAY the resolved per-(slot,
+        //      device) PadSetting: a non-empty stamp wins over the
+        //      device value, the touchpad-gesture auto-arm shape
+        //      (Step3.ResolveThumbDeadZoneShape).
+        //   2. The gyro-engage stamp is a USER-FIRST FALLBACK: it is
+        //      consulted only when no device PadSetting on the slot
+        //      configures an engage button, so a user-authored engage
+        //      always wins (InputManager.UpdateGyroEngageStates).
+        // Empty strings (the deserialized default for old XML) mean
+        // "no stamp". Every container-copy helper must carry the whole
+        // stamp family via CopyWorkshopStampsTo. ──
 
         /// <summary>Steam deadzone_shape for the left thumb pair, as a
         /// <see cref="DeadZoneShape"/> ordinal string ("0" = Axial for
@@ -102,5 +111,22 @@ namespace PadForge.Engine.Data
         /// <summary>Steam gyro_button_invert: engage while the button is
         /// NOT held.</summary>
         [XmlAttribute] public bool WorkshopGyroEngageInvert { get; set; } = false;
+
+        /// <summary>Copies the Workshop slot-level stamps (v18) onto
+        /// <paramref name="dst"/>. The ONE seam for every container-copy
+        /// helper (profile snapshot deep clone, Copy From Slot, the legacy
+        /// merge), so a new stamp cannot silently drop from one of them
+        /// the way the hand-lists dropped all four. <see cref="Authoritative"/>
+        /// itself stays a per-caller decision (the clipboard paste
+        /// deliberately does not carry ownership, and stamps are only read
+        /// while Authoritative, so uncarried stamps there are inert).</summary>
+        public void CopyWorkshopStampsTo(MappingSet dst)
+        {
+            if (dst == null) return;
+            dst.WorkshopLeftStickDeadZoneShape = WorkshopLeftStickDeadZoneShape ?? "";
+            dst.WorkshopRightStickDeadZoneShape = WorkshopRightStickDeadZoneShape ?? "";
+            dst.WorkshopGyroEngageDescriptor = WorkshopGyroEngageDescriptor ?? "";
+            dst.WorkshopGyroEngageInvert = WorkshopGyroEngageInvert;
+        }
     }
 }

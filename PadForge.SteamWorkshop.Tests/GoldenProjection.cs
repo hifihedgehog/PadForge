@@ -126,6 +126,9 @@ namespace PadForge.SteamWorkshop.Tests
                             sb.Append(" interval=").Append(m.IntervalMs).Append("ms");
                         break;
                     case TranslatedMacroAction.ToggleWheel:
+                    // v19 (T1): the wheel turbo renders the same tick /
+                    // interval shape as the wheel latch.
+                    case TranslatedMacroAction.RepeatWheelWhileHeld:
                         sb.Append(" ticks=").Append(m.WheelTicks);
                         if (m.WheelHorizontal) sb.Append('H');
                         sb.Append(" interval=").Append(m.IntervalMs).Append("ms");

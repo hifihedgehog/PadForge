@@ -289,6 +289,129 @@ namespace PadForge.Tests
             Assert.Null(p.SlotMappingSets[3]);
         }
 
+        // ── Audit 2026-07-17 S1-S4: Workshop stamps and activator
+        //    direction stamps across the container-copy family ──
+
+        private static MappingSet StampedWorkshopSet()
+        {
+            var ms = new MappingSet
+            {
+                Authoritative = true,
+                WorkshopLeftStickDeadZoneShape = "0",
+                WorkshopRightStickDeadZoneShape = "2",
+                WorkshopGyroEngageDescriptor = "Button 9",
+                WorkshopGyroEngageInvert = true,
+            };
+            var row = new MappingRow { Target = "ButtonA" };
+            // Device-free source: survives the legacy merge's departed-device
+            // sweep on a slot with no assigned devices.
+            row.Sources.Add(new MappingSource { Descriptor = "Button 0" });
+            ms.Rows.Add(row);
+            return ms;
+        }
+
+        private static void AssertWorkshopStamps(MappingSet copy, string site)
+        {
+            Assert.True(copy.Authoritative, site + " dropped Authoritative.");
+            Assert.Equal("0", copy.WorkshopLeftStickDeadZoneShape);
+            Assert.Equal("2", copy.WorkshopRightStickDeadZoneShape);
+            Assert.Equal("Button 9", copy.WorkshopGyroEngageDescriptor);
+            Assert.True(copy.WorkshopGyroEngageInvert, site + " dropped WorkshopGyroEngageInvert.");
+        }
+
+        [Fact]
+        public void CloneMappingSetDeep_CarriesWorkshopStamps()
+        {
+            // S1: profile snapshot AND apply both route here, so a dropped
+            // stamp was dead on arrival and wiped from the live set on resave.
+            AssertWorkshopStamps(
+                InputService.CloneMappingSetDeep(StampedWorkshopSet()),
+                "CloneMappingSetDeep");
+        }
+
+        [Fact]
+        public void LegacyMerge_PreservesWorkshopStamps()
+        {
+            // S2: the merge rebuilds the container on every device assign /
+            // unassign, so a dropped stamp died on the first topology change.
+            ArrangeEmptySlots();
+            SettingsManager.SlotMappingSets[0] = StampedWorkshopSet();
+
+            SettingsService.RefreshMappingSetsFromLegacy();
+
+            AssertWorkshopStamps(SettingsManager.SlotMappingSets[0], "MergeMappingSetsFromLegacy");
+        }
+
+        [Fact]
+        public void ReplaceSlotMappingSet_CarriesWorkshopStamps()
+        {
+            // S3: Copy From Slot reproduces the source set wholesale.
+            ArrangeEmptySlots();
+            SettingsManager.SlotMappingSets[1] = StampedWorkshopSet();
+
+            InputService.ReplaceSlotMappingSet(targetSlot: 2, sourceSlot: 1);
+
+            AssertWorkshopStamps(SettingsManager.SlotMappingSets[2], "ReplaceSlotMappingSet");
+        }
+
+        [Fact]
+        public void CloneMappingSetDeep_CarriesEveryShiftActivatorField()
+        {
+            // S4: CopyShiftActivators hand-listed fields and omitted the v15
+            // AxisHalf / AxisInvert direction stamps. Probe EVERY public
+            // read-write field with a non-default value so the next appended
+            // field cannot silently drop from the copy family either.
+            var probe = new ShiftActivator();
+            var props = typeof(ShiftActivator).GetProperties()
+                .Where(p => p.CanRead && p.CanWrite).ToArray();
+            Assert.NotEmpty(props);
+            int i = 0;
+            foreach (var p in props)
+            {
+                object v =
+                      p.PropertyType == typeof(string) ? "probe-" + p.Name
+                    : p.PropertyType == typeof(bool) ? !(bool)p.GetValue(probe)
+                    : p.PropertyType == typeof(int) ? (object)(1000 + i)
+                    : p.PropertyType == typeof(double) ? (object)(0.125 * (i + 3))
+                    : throw new InvalidOperationException(
+                        "Unhandled ShiftActivator property type: " + p.PropertyType);
+                p.SetValue(probe, v);
+                i++;
+            }
+            // The retarget path is exercised by the ReplaceSlotMappingSet
+            // tests. Here the plain deep clone must round-trip every field.
+            var src = new MappingSet();
+            src.ShiftActivators.Add(probe);
+
+            var copy = Assert.Single(InputService.CloneMappingSetDeep(src).ShiftActivators);
+
+            foreach (var p in props)
+                Assert.True(Equals(p.GetValue(probe), p.GetValue(copy)),
+                    $"CopyShiftActivators dropped ShiftActivator.{p.Name}.");
+        }
+
+        // ── Audit 2026-07-17 G5: sanitize dedup key carries GateDescriptor ──
+
+        [Fact]
+        public void Sanitize_KeepsGatedAndUngatedTwinsApart()
+        {
+            var ms = new MappingSet();
+            var row = new MappingRow { Target = "DPadUp" };
+            row.Sources.Add(new MappingSource { Descriptor = "Touchpad 0 Finger 0 Down Upper" });
+            row.Sources.Add(new MappingSource
+            {
+                Descriptor = "Touchpad 0 Finger 0 Down Upper",
+                GateDescriptor = "Touchpad 0 Click",
+            });
+            // Same-window control: a TRUE duplicate must still collapse.
+            row.Sources.Add(new MappingSource { Descriptor = "Touchpad 0 Finger 0 Down Upper" });
+            ms.Rows.Add(row);
+
+            SettingsService.SanitizeMappingSet(ms, 0);
+
+            Assert.Equal(2, Assert.Single(ms.Rows).Sources.Count);
+        }
+
         // ── M10 sibling: null vs empty Macros ──
 
         [Fact]

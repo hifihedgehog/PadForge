@@ -162,5 +162,149 @@ namespace PadForge.Tests
             // Finger in the half but no click.
             Assert.False(DownReads("Touchpad 0 Click Right", 0.75f, 0.5f, clicked: false));
         }
+
+        // ── Legacy per-key path twin sync (audit 2026-07-17 G1) ──
+
+        [Fact]
+        public void LegacyMapTouchpadButton_MatchesReadTouchpadBool_OnEveryWindowForm()
+        {
+            // MapTouchpadButton was a hand-kept mirror of ReadTouchpadBool
+            // and missed every v18 window token. It now delegates; this pin
+            // holds the two paths identical over the whole grammar,
+            // including forms neither should accept (X as a button).
+            string[] forms =
+            {
+                "Touchpad 0 Click",
+                "Touchpad 0 Click Left",
+                "Touchpad 0 Click Upper",
+                "Touchpad 0 Finger 0 Down",
+                "Touchpad 0 Finger 0 Down Right",
+                "Touchpad 0 Finger 0 Down Lower",
+                "Touchpad 0 Finger 0 Down North",
+                "Touchpad 0 Finger 0 Down North Left",
+                "Touchpad 0 Finger 0 X",
+                "Touchpad 0 Finger 0 X Left",
+            };
+            var probes = new (float X, float Y, bool Clicked)[]
+            {
+                (0.2f, 0.2f, true), (0.8f, 0.8f, false), (0.5f, 0.1f, true), (0.1f, 0.6f, false),
+            };
+            foreach (var d in forms)
+                foreach (var (x, y, clicked) in probes)
+                {
+                    var s = Touch(x, y, down: true, clicked);
+                    Assert.True(
+                        SourceCoercion.ReadTouchpadBool(s, d)
+                            == PadForge.Common.Input.InputManager.MapTouchpadButton(s, d),
+                        $"Twin divergence on '{d}' at ({x}, {y}, clicked={clicked}).");
+                }
+        }
+
+        [Fact]
+        public void LegacyMapTouchpadButton_ReadsV18Windows()
+        {
+            // Positive controls through the LEGACY path itself: before the
+            // delegation these all read permanently false there.
+            Assert.True(PadForge.Common.Input.InputManager.MapTouchpadButton(
+                Touch(0.2f, 0.3f, down: true, clicked: true), "Touchpad 0 Click Left"));
+            Assert.True(PadForge.Common.Input.InputManager.MapTouchpadButton(
+                Touch(0.5f, 0.1f, down: true), "Touchpad 0 Finger 0 Down North"));
+            Assert.True(PadForge.Common.Input.InputManager.MapTouchpadButton(
+                Touch(0.5f, 0.8f, down: true), "Touchpad 0 Finger 0 Down Lower"));
+        }
+
+        // ── Clone hygiene (audit 2026-07-17 G4) ──
+
+        [Fact]
+        public void MappingSourceClone_DropsGateCacheAndFeelState()
+        {
+            var s = new CustomInputState();
+            s.Buttons[0] = true;
+            s.Buttons[1] = true;
+            var src = new MappingSource { Descriptor = "Button 0", GateDescriptor = "Button 1" };
+            // A real evaluation builds the runtime gate cache.
+            Assert.True(SourceEvaluator.EvaluateForButtonTarget(s, src, 50, 0, "ButtonA", 0, null, 0));
+            Assert.NotNull(src.GateSourceCache);
+
+            var clone = src.Clone();
+
+            // The cached synthetic source pins the ORIGINAL's device guid;
+            // a retargeted clone re-reading it would gate against the stale
+            // device. The per-device feel map is likewise not the clone's.
+            Assert.Null(clone.GateSourceCache);
+            Assert.Null(clone.GateSourceCacheKey);
+            Assert.Null(clone.MouseFeelByDevice);
+            // The serialized gate itself still travels.
+            Assert.Equal("Button 1", clone.GateDescriptor);
+        }
+
+        // ── Per-device feel state (audit 2026-07-17 P4) ──
+
+        [Fact]
+        public void PerSourceSmoothing_TwoDevices_KeepIndependentFilters()
+        {
+            // A device-free source on a two-device slot evaluates once per
+            // device each poll. The single per-source scalar handed device B
+            // device A's smoothed value through the seq gate; the per-device
+            // map must keep the filters apart.
+            var saved = SourceCoercion.TouchpadGestureAxisProvider;
+            try
+            {
+                SourceCoercion.TouchpadGestureAxisProvider =
+                    (slot, dev, pad, name) => dev == "p4-dev-a" ? 1f : 0f;
+                var src = new MappingSource
+                {
+                    Descriptor = "Touchpad 0 StickX",
+                    ParamSmoothingAlpha = 0.5,
+                };
+                var s = new CustomInputState();
+
+                SourceCoercion.BeginPollFrame();
+                float a = SourceCoercion.EvaluateForBipolarAxisTarget(s, src, 0, false, "p4-dev-a");
+                float b = SourceCoercion.EvaluateForBipolarAxisTarget(s, src, 0, false, "p4-dev-b");
+
+                Assert.Equal(0.5f, a, 3); // 0 -> 1 through alpha 0.5
+                Assert.Equal(0f, b, 3);   // device B's own filter, not A's replay
+
+                // Same device re-read in the same poll still replays (the
+                // seq-gate contract survives the keying change).
+                float aAgain = SourceCoercion.EvaluateForBipolarAxisTarget(s, src, 0, false, "p4-dev-a");
+                Assert.Equal(a, aAgain, 5);
+            }
+            finally
+            {
+                SourceCoercion.TouchpadGestureAxisProvider = saved;
+            }
+        }
+
+        // ── Gyro lanes consume ParamAccel (audit 2026-07-17 T4) ──
+
+        [Fact]
+        public void GyroLanes_ConsumeParamAccel_WithTheTouchpadFeelFormula()
+        {
+            var saved = SourceCoercion.AimEngageStateProvider;
+            SourceCoercion.AimEngageStateProvider = null;
+            try
+            {
+                var s = new CustomInputState();
+                s.Gyro[1] = 2.0f; // yaw, rad/s
+                var plain = new MappingSource { Descriptor = "Gyro Yaw" };
+                var accel = new MappingSource { Descriptor = "Gyro Yaw", ParamAccel = 2.0 };
+
+                float v0 = SourceCoercion.EvaluateForBipolarAxisTarget(s, plain, 0, false, "t4-dev");
+                Assert.True(v0 > 0f && v0 < 1f, "probe rate must land strictly inside (0, 1)");
+                float v1 = SourceCoercion.EvaluateForBipolarAxisTarget(s, accel, 0, false, "t4-dev");
+                Assert.Equal(System.Math.Min(1f, v0 * (1f + 2f * v0)), v1, 3);
+
+                // Unipolar twin (trigger lane).
+                float u0 = SourceCoercion.EvaluateForTriggerTarget(s, plain, 0, "t4-dev");
+                float u1 = SourceCoercion.EvaluateForTriggerTarget(s, accel, 0, "t4-dev");
+                Assert.Equal(System.Math.Min(1f, u0 * (1f + 2f * u0)), u1, 3);
+            }
+            finally
+            {
+                SourceCoercion.AimEngageStateProvider = saved;
+            }
+        }
     }
 }

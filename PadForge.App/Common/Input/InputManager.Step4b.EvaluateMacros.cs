@@ -325,8 +325,10 @@ namespace PadForge.Common.Input
         /// down and sends the boundary transitions: one KeyUp per key that
         /// left the set, one KeyDown per key that entered it. Steady-state
         /// frames send nothing (the OS keeps an injected key logically down
-        /// until its KeyUp).</summary>
-        private void ReconcileLatchedKeys()
+        /// until its KeyUp). Internal for the PadForge.Tests dispatch pins
+        /// (audit #2 M4: the hold-pair engine-stop test drives the real
+        /// reconcile with an inert VK).</summary>
+        internal void ReconcileLatchedKeys()
         {
             if (_latchedKeysDown.Count > 0)
             {
@@ -369,6 +371,10 @@ namespace PadForge.Common.Input
                     SendMouseButtonInput(b, down: false);
                 _latchedMouseButtonsDown.Clear();
             }
+            // Press fired-latches (M5) re-arm wholesale: the loop is gone,
+            // so every in-flight press leg starts fresh on the next engine
+            // start (and the set can't root dead actions across restarts).
+            _pressDownSent.Clear();
         }
 
         /// <summary>
@@ -525,6 +531,17 @@ namespace PadForge.Common.Input
                 // Start new execution if triggered and not already executing.
                 if (shouldStart && !macro.IsExecuting)
                 {
+                    // A starting hold-pair leg cancels its executing twin
+                    // (audit #2 M6): a re-press during the twin's pending
+                    // delay_end Delay would otherwise let the stale Clear
+                    // fire mid-hold and release the NEW hold. Runs at
+                    // start, not at the raw rising edge, so a HoldForMs
+                    // press leg cancels at its threshold crossing and a
+                    // pending release still legitimately ends the
+                    // PREVIOUS hold while the next press sits under the
+                    // threshold.
+                    if (macro.PairId != 0)
+                        CancelExecutingPairTwin(macros, macro);
                     macro.IsExecuting = true;
                     macro.CurrentActionIndex = 0;
                     macro.ActionStartTime = DateTime.UtcNow;
@@ -655,7 +672,13 @@ namespace PadForge.Common.Input
                 }
                 else if (a.Type == MacroActionType.ToggleMouseButton)
                 {
-                    if (a.MouseToggleLatched && !_currentMacroSlotRestricted)
+                    // LatchPhaseOn: PulseWhileLatched turbos the latched
+                    // mouse button exactly like the key / VC latches. The
+                    // OFF half drops the button from the desired set, so
+                    // the reconcile releases and re-presses it (M3: this
+                    // branch was the one latch that ignored the flag and
+                    // held solid).
+                    if (a.MouseToggleLatched && LatchPhaseOn(a) && !_currentMacroSlotRestricted)
                         _desiredLatchedMouseButtons.Add(a.MouseButton);
                 }
                 else if (a.Type == MacroActionType.ToggleWheel)
@@ -692,6 +715,19 @@ namespace PadForge.Common.Input
         /// <summary>Mouse buttons this engine currently holds down via the
         /// reconcile (v18).</summary>
         internal readonly HashSet<ViewModels.MacroMouseButton> _latchedMouseButtonsDown = new();
+
+        /// <summary>Sequential press legs whose Down has been sent for the
+        /// current pass (M5): the KeyPress / MouseButtonPress one-shot
+        /// latch, the CycleTapList CycleInjectionFired pattern. The old
+        /// actionElapsed &lt; 1 convention swallowed the Down whenever a
+        /// loaded frame arrived later than 1 ms after the action became
+        /// current (a Delay leg in front made that the common case), while
+        /// the Up at DurationMs still fired. Keyed by action reference
+        /// because the latch cannot live on MacroAction itself (that DTO's
+        /// file belongs to the macro editor batch). Entries are removed on
+        /// completion, on macro restart, and on engine stop. Poll thread
+        /// only. Internal for the PadForge.Tests dispatch pins.</summary>
+        internal readonly HashSet<ViewModels.MacroAction> _pressDownSent = new();
 
         private readonly List<ViewModels.MacroMouseButton> _mouseLatchReleaseScratch = new();
 
@@ -1510,7 +1546,12 @@ namespace PadForge.Common.Input
                 {
                     var keyCodes = action.ParsedKeyCodes;
                     if (keyCodes.Length == 0) { AdvanceAction(macro); break; }
-                    if (actionElapsed < 1)
+                    // One-shot latch, not the actionElapsed < 1 convention
+                    // (M5, the CycleTapList fired-latch pattern): a loaded
+                    // frame can arrive later than 1 ms after the action
+                    // became current, especially behind a Delay leg, which
+                    // swallowed the Down while the Up still fired.
+                    if (_pressDownSent.Add(action))
                     {
                         for (int k = 0; k < keyCodes.Length; k++)
                             SendKeyInput((ushort)keyCodes[k], keyUp: false);
@@ -1519,6 +1560,7 @@ namespace PadForge.Common.Input
                     {
                         for (int k = keyCodes.Length - 1; k >= 0; k--)
                             SendKeyInput((ushort)keyCodes[k], keyUp: true);
+                        _pressDownSent.Remove(action); // re-arm for the next pass
                         AdvanceAction(macro);
                     }
                     break;
@@ -1588,11 +1630,13 @@ namespace PadForge.Common.Input
                     break;
 
                 case MacroActionType.MouseButtonPress:
-                    if (actionElapsed < 1)
+                    // One-shot latch, the KeyPress rationale above (M5).
+                    if (_pressDownSent.Add(action))
                         SendMouseButtonInput(action.MouseButton, down: true);
                     if (actionElapsed >= action.DurationMs)
                     {
                         SendMouseButtonInput(action.MouseButton, down: false);
+                        _pressDownSent.Remove(action); // re-arm for the next pass
                         AdvanceAction(macro);
                     }
                     break;
@@ -1824,20 +1868,19 @@ namespace PadForge.Common.Input
                     break;
 
                 case MacroActionType.ToggleKey:
-                    // Flip the volatile key latch (issue #9 wave 1b). The
-                    // per-frame reconcile in EvaluateMacros sends the actual
-                    // KeyDown / KeyUp when the desired set changes.
-                    action.KeyToggleLatched = !action.KeyToggleLatched;
-                    if (action.KeyToggleLatched) ResetLatchPulsePhase(action);
+                    // Write the volatile key latch (issue #9 wave 1b;
+                    // direction audit #2 M4): Toggle flips, the hold-pair
+                    // legs Set / Clear.
+                    ApplyKeyLatchWrite(macro, action);
                     AdvanceAction(macro);
                     break;
 
                 // v18 latch family: mouse buttons, axis-natured VC targets,
-                // and wheel detents flip the same volatile latch shape; the
+                // and wheel detents write the same volatile latch shape; the
                 // per-frame effect lives in ApplyMacroLatches plus the
                 // mouse-button reconcile.
                 case MacroActionType.ToggleMouseButton:
-                    action.MouseToggleLatched = !action.MouseToggleLatched;
+                    ApplyMouseLatchWrite(macro, action);
                     AdvanceAction(macro);
                     break;
 
@@ -1870,6 +1913,118 @@ namespace PadForge.Common.Input
             if (!action.PulseWhileLatched) return;
             action.RepeatVcPulseOn = false;
             action.RepeatVcLastToggleUtc = DateTime.MinValue;
+        }
+
+        /// <summary>Stops any executing macro that shares the starting
+        /// leg's nonzero <see cref="MacroItem.PairId"/> (audit #2 M6). The
+        /// materializer's hold pairs are the only PairId authors: the
+        /// press leg SETs the latch, the OnRelease twin runs Delay + Clear.
+        /// Without the cancel, a re-press during that Delay leaves the
+        /// stale Clear in flight and it releases the NEW hold when the
+        /// delay elapses. Stopping the twin mid-sequence is the
+        /// UntilRelease stop shape: execution state only, latches stay
+        /// where they are.</summary>
+        private static void CancelExecutingPairTwin(MacroItem[] macros, MacroItem self)
+        {
+            for (int i = 0; i < macros.Length; i++)
+            {
+                var twin = macros[i];
+                if (twin == null || ReferenceEquals(twin, self)) continue;
+                if (twin.PairId != self.PairId || !twin.IsExecuting) continue;
+                twin.IsExecuting = false;
+                twin.CurrentActionIndex = 0;
+            }
+        }
+
+        /// <summary>ToggleKey latch write shared by both dispatch twins
+        /// (audit #2 M4): Toggle flips (issue #9 wave 1b behavior), On
+        /// sets, Off clears. The per-frame reconcile in EvaluateMacros
+        /// sends the actual KeyDown / KeyUp when the desired set changes.
+        /// The hold pairs Set on press and Clear on release instead of
+        /// flipping, because a two-macro flip decomposition alternates or
+        /// sticks; Off also clears the twin's latches, since each leg's
+        /// latch state lives on its own action instance and the press
+        /// leg's Set is what holds the key down.</summary>
+        private void ApplyKeyLatchWrite(MacroItem macro, MacroAction action)
+        {
+            switch (action.LatchDirection)
+            {
+                case MacroLatchDirection.On:
+                    // Idempotent: a re-fire (the press leg's UntilRelease
+                    // sequence restart) must not restart the pulse train.
+                    if (!action.KeyToggleLatched)
+                    {
+                        action.KeyToggleLatched = true;
+                        ResetLatchPulsePhase(action);
+                    }
+                    break;
+                case MacroLatchDirection.Off:
+                    action.KeyToggleLatched = false;
+                    ClearPairTwinLatches(macro, MacroActionType.ToggleKey);
+                    break;
+                default:
+                    action.KeyToggleLatched = !action.KeyToggleLatched;
+                    if (action.KeyToggleLatched) ResetLatchPulsePhase(action);
+                    break;
+            }
+        }
+
+        /// <summary>ToggleMouseButton twin of
+        /// <see cref="ApplyKeyLatchWrite"/> (audit #2 M4), shared by both
+        /// dispatch switches. The per-frame mouse-button reconcile sends
+        /// the boundary transitions.</summary>
+        private void ApplyMouseLatchWrite(MacroItem macro, MacroAction action)
+        {
+            switch (action.LatchDirection)
+            {
+                case MacroLatchDirection.On:
+                    if (!action.MouseToggleLatched)
+                    {
+                        action.MouseToggleLatched = true;
+                        ResetLatchPulsePhase(action);
+                    }
+                    break;
+                case MacroLatchDirection.Off:
+                    action.MouseToggleLatched = false;
+                    ClearPairTwinLatches(macro, MacroActionType.ToggleMouseButton);
+                    break;
+                default:
+                    action.MouseToggleLatched = !action.MouseToggleLatched;
+                    // Arm the turbo phase like every other latch (M3): a
+                    // fresh latch must start its pulse train on the ON half.
+                    if (action.MouseToggleLatched) ResetLatchPulsePhase(action);
+                    break;
+            }
+        }
+
+        /// <summary>Clears the given latch type on every macro sharing the
+        /// firing leg's nonzero PairId (audit #2 M4). The next frame's
+        /// desired-set rebuild stops seeing the key / button and the
+        /// reconcile sends the release. Sweeps the slot's own snapshot:
+        /// hold-pair legs always ride one slot.</summary>
+        private void ClearPairTwinLatches(MacroItem self, MacroActionType type)
+        {
+            if (self.PairId == 0) return;
+            int slot = self.PadIndex;
+            if ((uint)slot >= (uint)MaxPads) return;
+            var macros = MacroSnapshots[slot];
+            if (macros == null) return;
+            for (int i = 0; i < macros.Length; i++)
+            {
+                var twin = macros[i];
+                if (twin == null || ReferenceEquals(twin, self) || twin.PairId != self.PairId)
+                    continue;
+                var actions = twin.Actions;
+                for (int a = 0; a < actions.Count; a++)
+                {
+                    var act = actions[a];
+                    if (act == null || act.Type != type) continue;
+                    if (type == MacroActionType.ToggleKey)
+                        act.KeyToggleLatched = false;
+                    else
+                        act.MouseToggleLatched = false;
+                }
+            }
         }
 
         /// <summary>Resolves a Disconnect Controller action's victims (#162)
@@ -2368,12 +2523,18 @@ namespace PadForge.Common.Input
             b = (byte)Math.Round((bp + m) * 255);
         }
 
-        /// <summary>Resets mouse accumulators on all actions when a macro starts/restarts.</summary>
-        private static void ResetMouseAccumulators(MacroItem macro)
+        /// <summary>Resets mouse accumulators on all actions when a macro
+        /// starts/restarts. Instance method because the press fired-latch
+        /// set lives on the manager (see <see cref="_pressDownSent"/>).</summary>
+        private void ResetMouseAccumulators(MacroItem macro)
         {
             foreach (var action in macro.Actions)
             {
                 action.MouseAccumulator = 0f;
+                // Press fired-latch (M5): a run interrupted between a press
+                // leg's Down and its DurationMs must re-arm, or the restart
+                // would skip the Down entirely.
+                _pressDownSent.Remove(action);
                 // TextBlock emission cursor rides the same lifecycle: a run
                 // interrupted mid-string (trigger released on an Until-Release
                 // macro) must start over from the first character, never
@@ -2697,6 +2858,10 @@ namespace PadForge.Common.Input
 
                 if (shouldStart && !macro.IsExecuting)
                 {
+                    // Hold-pair twin cancel (audit #2 M6), mirroring the
+                    // Gamepad-path start branch.
+                    if (macro.PairId != 0)
+                        CancelExecutingPairTwin(macros, macro);
                     macro.IsExecuting = true;
                     macro.CurrentActionIndex = 0;
                     macro.ActionStartTime = DateTime.UtcNow;
@@ -2774,7 +2939,8 @@ namespace PadForge.Common.Input
                 }
                 else if (a.Type == MacroActionType.ToggleMouseButton)
                 {
-                    if (a.MouseToggleLatched && !_currentMacroSlotRestricted)
+                    // LatchPhaseOn: the Gamepad-path twin's rationale (M3).
+                    if (a.MouseToggleLatched && LatchPhaseOn(a) && !_currentMacroSlotRestricted)
                         _desiredLatchedMouseButtons.Add(a.MouseButton);
                 }
                 else if (a.Type == MacroActionType.ToggleWheel)
@@ -2970,7 +3136,8 @@ namespace PadForge.Common.Input
                 {
                     var keyCodes = action.ParsedKeyCodes;
                     if (keyCodes.Length == 0) { AdvanceAction(macro); break; }
-                    if (actionElapsed < 1)
+                    // One-shot latch (M5), the Gamepad-path executor's twin.
+                    if (_pressDownSent.Add(action))
                     {
                         for (int k = 0; k < keyCodes.Length; k++)
                             SendKeyInput((ushort)keyCodes[k], keyUp: false);
@@ -2979,6 +3146,7 @@ namespace PadForge.Common.Input
                     {
                         for (int k = keyCodes.Length - 1; k >= 0; k--)
                             SendKeyInput((ushort)keyCodes[k], keyUp: true);
+                        _pressDownSent.Remove(action); // re-arm for the next pass
                         AdvanceAction(macro);
                     }
                     break;
@@ -3047,11 +3215,13 @@ namespace PadForge.Common.Input
                 }
 
                 case MacroActionType.MouseButtonPress:
-                    if (actionElapsed < 1)
+                    // One-shot latch (M5), the Gamepad-path executor's twin.
+                    if (_pressDownSent.Add(action))
                         SendMouseButtonInput(action.MouseButton, down: true);
                     if (actionElapsed >= action.DurationMs)
                     {
                         SendMouseButtonInput(action.MouseButton, down: false);
+                        _pressDownSent.Remove(action); // re-arm for the next pass
                         AdvanceAction(macro);
                     }
                     break;
@@ -3215,14 +3385,15 @@ namespace PadForge.Common.Input
                     break;
 
                 case MacroActionType.ToggleKey:
-                    action.KeyToggleLatched = !action.KeyToggleLatched;
-                    if (action.KeyToggleLatched) ResetLatchPulsePhase(action);
+                    // Direction-aware latch write (audit #2 M4), the same
+                    // helper the Gamepad path uses.
+                    ApplyKeyLatchWrite(macro, action);
                     AdvanceAction(macro);
                     break;
 
                 // v18 latch family, Extended twins.
                 case MacroActionType.ToggleMouseButton:
-                    action.MouseToggleLatched = !action.MouseToggleLatched;
+                    ApplyMouseLatchWrite(macro, action);
                     AdvanceAction(macro);
                     break;
 

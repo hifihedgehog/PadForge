@@ -2543,6 +2543,9 @@
   <data name="Workshop_Tr_MouseRegionTuningDropped" xml:space="preserve"><value>已丢弃鼠标区域的激活/释放设置（{0}）</value></data>
   <data name="Workshop_Tr_FlickStickSurfaceNotSupported" xml:space="preserve"><value>已跳过触摸表面上的 Flick Stick（PadForge 的 Flick Stick 读取实体摇杆）</value></data>
   <data name="Workshop_Tr_FlickStickTuningDropped" xml:space="preserve"><value>已丢弃 Flick Stick 调整设置（{0}）</value></data>
+  <data name="Workshop_Tr_DeadZoneRadialResidual" xml:space="preserve"><value>死区按轴生效而非径向（{0}）</value></data>
+  <data name="Workshop_Tr_RotationNonlinearWithheld" xml:space="preserve"><value>旋转轴上暂不应用非线性响应（{0}）</value></data>
+  <data name="Workshop_Tr_LayerReleaseEdgeApproximated" xml:space="preserve"><value>释放触发的 {0} 改为在按下时切换</value></data>
   <data name="Workshop_Tr_MouseModeTuningDropped" xml:space="preserve"><value>已丢弃鼠标手感设置（{0}）</value></data>
   <data name="Workshop_Tr_AxisInversionNotApplied" xml:space="preserve"><value>未应用轴反转（{0}）</value></data>
   <data name="Workshop_Tr_ScrollWheelApproximated" xml:space="preserve"><value>环形滚轮近似为纵向拖动</value></data>
@@ -2570,6 +2573,20 @@
   <data name="MacroAction_MouseNudge_Format" xml:space="preserve"><value>光标微移 ({0}, {1}) px</value></data>
   <data name="MacroAction_Type_CycleTapList" xml:space="preserve"><value>循环点击列表</value></data>
   <data name="MacroAction_CycleTapList_Tooltip" xml:space="preserve"><value>每次触发执行列表中的下一步并前进。开启循环时,最后一步之后回到开头。关闭时,到达末尾后不再输出。</value></data>
+  <data name="MacroAction_Type_ToggleMouseButton" xml:space="preserve"><value>切换鼠标按键</value></data>
+  <data name="MacroAction_ToggleMouseButton_Tooltip" xml:space="preserve"><value>每次触发锁定或解锁该鼠标按键。锁定的按键保持按下,直到下次触发或宏被禁用。</value></data>
+  <data name="MacroAction_ToggleMouseButton_Format" xml:space="preserve"><value>切换鼠标{0}</value></data>
+  <data name="MacroAction_Type_ToggleVcAxis" xml:space="preserve"><value>切换轴</value></data>
+  <data name="MacroAction_ToggleVcAxis_Tooltip" xml:space="preserve"><value>每次触发锁定或解锁该轴值。锁定期间每帧写入该轴,直到下次触发或宏被禁用。</value></data>
+  <data name="MacroAction_ToggleVcAxis_Format" xml:space="preserve"><value>切换 {0} = {1}</value></data>
+  <data name="MacroAction_Type_RepeatVcAxisWhileHeld" xml:space="preserve"><value>按住时重复轴</value></data>
+  <data name="MacroAction_RepeatVcAxisWhileHeld_Tooltip" xml:space="preserve"><value>按住触发器时,按设定间隔以方波方式反复施加轴值。</value></data>
+  <data name="MacroAction_RepeatVcAxisWhileHeld_Format" xml:space="preserve"><value>每 {2} 毫秒重复 {0} = {1}</value></data>
+  <data name="MacroAction_Type_ToggleWheel" xml:space="preserve"><value>切换滚轮滚动</value></data>
+  <data name="MacroAction_ToggleWheel_Tooltip" xml:space="preserve"><value>每次触发锁定或解锁连续滚动。锁定期间每个间隔发送一次滚动格数,直到下次触发或宏被禁用。</value></data>
+  <data name="MacroAction_ToggleWheel_Format" xml:space="preserve"><value>切换滚轮(每 {1} 毫秒 {0} 格)</value></data>
+  <data name="Macro_PulseWhileLatched" xml:space="preserve"><value>锁定时脉冲</value></data>
+  <data name="Macro_PulseWhileLatched_Tooltip" xml:space="preserve"><value>锁定期间按重复间隔开关输出,而不是持续保持。</value></data>
   <data name="MacroAction_CycleTapList_Format" xml:space="preserve"><value>循环点击列表({0} 步)</value></data>
   <data name="Macro_CycleSteps_Label" xml:space="preserve"><value>步骤</value></data>
   <data name="Macro_CycleWrap_Label" xml:space="preserve"><value>循环</value></data>

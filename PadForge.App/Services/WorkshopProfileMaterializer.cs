@@ -150,6 +150,7 @@ namespace PadForge.Services
         {
             if (macros == null || macros.Count == 0) return Array.Empty<MacroData>();
             var list = new List<MacroData>(macros.Count);
+            int pairSeq = 0; // nonzero PairId per hold pair, unique in-profile
             foreach (var m in macros)
             {
                 if (m?.Action == TranslatedMacroAction.MouseLimitRegion)
@@ -163,10 +164,11 @@ namespace PadForge.Services
                 if (m?.Action == TranslatedMacroAction.HoldKey
                     || m?.Action == TranslatedMacroAction.HoldMouseButton)
                 {
-                    // Held key / mouse button (v10 G10/G11): a press leg
-                    // that keeps the key down until the trigger releases,
-                    // plus an OnRelease twin that sends the up.
-                    list.AddRange(BuildHoldPair(m, xboxSlot));
+                    // Held key / mouse button (v10 G10/G11, relatched
+                    // audit #2 M4): a press leg that SETs the key /
+                    // button latch, plus an OnRelease twin that CLEARs it
+                    // through the shared PairId.
+                    list.AddRange(BuildHoldPair(m, xboxSlot, ++pairSeq));
                     continue;
                 }
                 var data = BuildMacro(m, xboxSlot, controllerType);
@@ -319,6 +321,16 @@ namespace PadForge.Services
                     WheelHorizontal = m.WheelHorizontal,
                     IntervalMs = m.IntervalMs > 0 ? m.IntervalMs : 100,
                 },
+                // RepeatWheelWhileHeld (v19, T1): one MouseWheelTap detent
+                // per authored repeat_rate while the trigger is held. The
+                // tap is a one-shot, so the cadence rides the macro repeat
+                // machinery below (UntilRelease + RepeatDelayMs).
+                TranslatedMacroAction.RepeatWheelWhileHeld => new ActionData
+                {
+                    Type = MacroActionType.MouseWheelTap,
+                    AxisValue = (short)Math.Clamp(m.WheelTicks, short.MinValue, short.MaxValue),
+                    WheelHorizontal = m.WheelHorizontal,
+                },
                 _ => null,
             };
             if (action == null) return null;
@@ -353,7 +365,12 @@ namespace PadForge.Services
             // !triggerActive; a WhileHeld + Once macro whose actions are all
             // continuous would keep pulsing forever after release).
             if (m.Action == TranslatedMacroAction.RepeatKeyWhileHeld
-                || m.Action == TranslatedMacroAction.RepeatVcButtonWhileHeld)
+                || m.Action == TranslatedMacroAction.RepeatVcButtonWhileHeld
+                // v19 (M2): the axis turbo is a continuous action too
+                // (Step4b pulses it while executing), so it needs the same
+                // release stop or it keeps pulsing forever after the
+                // trigger releases.
+                || m.Action == TranslatedMacroAction.RepeatVcAxisWhileHeld)
             {
                 data.RepeatMode = MacroRepeatMode.UntilRelease;
             }
@@ -365,6 +382,14 @@ namespace PadForge.Services
                 // until the release stops the macro.
                 data.RepeatMode = MacroRepeatMode.UntilRelease;
                 data.RepeatDelayMs = 0;
+            }
+            else if (m.Action == TranslatedMacroAction.RepeatWheelWhileHeld)
+            {
+                // v19 (T1): re-run the one-shot detent every authored
+                // interval until the trigger releases, Steam's
+                // hold_repeats cadence on a wheel binding.
+                data.RepeatMode = MacroRepeatMode.UntilRelease;
+                data.RepeatDelayMs = Math.Clamp(m.IntervalMs > 0 ? m.IntervalMs : 100, 10, 1000);
             }
 
             // Activator fire delays (v10 G5): a Delay step before the
@@ -384,25 +409,22 @@ namespace PadForge.Services
             return data;
         }
 
-        /// <summary>How long the hold-pair press leg keeps its key / mouse
-        /// button down before the executor's built-in up fires (v10
-        /// G10/G11). Release normally stops the leg first (UntilRelease)
-        /// and the OnRelease twin sends the up; this is the ceiling for a
-        /// hold nobody releases.</summary>
-        private const int HoldLegDurationMs = 600000;
-
         /// <summary>Lowers a translated HoldKey / HoldMouseButton to the
-        /// engine pair (v10 G10/G11): the press leg fires on the
-        /// translated trigger (OnPress or HoldForMs) and holds the key /
-        /// button down via a long-duration press action riding
-        /// RepeatMode=UntilRelease, so the trigger's release stops the leg
-        /// with the key still logically down; the OnRelease twin then
-        /// sends the up. Releasing an unpressed key or button is a
-        /// SendInput no-op, so short taps (below a Long_Press threshold)
-        /// stay harmless. Activator fire delays ride the pair naturally:
-        /// delay_start before the press leg, delay_end before the release
-        /// leg (Steam's shifted-window semantics).</summary>
-        private static MacroData[] BuildHoldPair(TranslatedMacro m, int xboxSlot)
+        /// engine pair (v10 G10/G11, relatched audit #2 M4): the press
+        /// leg fires on the translated trigger (OnPress or HoldForMs) and
+        /// SETs the ToggleKey / ToggleMouseButton latch, so the held key
+        /// rides the per-frame reconcile and its engine-stop /
+        /// profile-switch release paths instead of a raw KeyPress Down
+        /// those paths cannot see; the OnRelease twin CLEARs the latch
+        /// through the shared PairId, and its start cancels the twin's
+        /// pending delayed release (M6). RepeatMode=UntilRelease on the
+        /// press leg stops a delay_start leg on early release before the
+        /// Set fires. Clearing an unset latch is a no-op, so short taps
+        /// (below a Long_Press threshold) stay harmless. Activator fire
+        /// delays ride the pair naturally: delay_start before the press
+        /// leg, delay_end before the release leg (Steam's shifted-window
+        /// semantics).</summary>
+        private static MacroData[] BuildHoldPair(TranslatedMacro m, int xboxSlot, int pairId)
         {
             bool key = m.Action == TranslatedMacroAction.HoldKey;
             if (!Enum.TryParse(m.TriggerMode, out MacroTriggerMode pressMode))
@@ -423,6 +445,7 @@ namespace PadForge.Services
                     // Never consume: both legs read the same trigger, and a
                     // consumed bit would release the twin early.
                     ConsumeTriggerButtons = false,
+                    PairId = pairId,
                     TriggerAxisTargets = string.IsNullOrEmpty(m.TriggerAxisTarget) ? null : m.TriggerAxisTarget,
                     TriggerAxisThreshold = Math.Clamp(m.TriggerAxisThresholdPercent, 1, 100),
                     Actions = preDelayMs > 0
@@ -446,21 +469,31 @@ namespace PadForge.Services
                 key
                     ? new ActionData
                     {
-                        Type = MacroActionType.KeyPress,
+                        Type = MacroActionType.ToggleKey,
                         KeyCode = m.VirtualKey,
-                        DurationMs = HoldLegDurationMs,
+                        LatchDirection = ViewModels.MacroLatchDirection.On,
                     }
                     : new ActionData
                     {
-                        Type = MacroActionType.MouseButtonPress,
+                        Type = MacroActionType.ToggleMouseButton,
                         MouseButton = mouseButton,
-                        DurationMs = HoldLegDurationMs,
+                        LatchDirection = ViewModels.MacroLatchDirection.On,
                     },
                 m.DelayStartMs, "(hold)", untilRelease: true);
             var release = Build(MacroTriggerMode.OnRelease,
                 key
-                    ? new ActionData { Type = MacroActionType.KeyRelease, KeyCode = m.VirtualKey }
-                    : new ActionData { Type = MacroActionType.MouseButtonRelease, MouseButton = mouseButton },
+                    ? new ActionData
+                    {
+                        Type = MacroActionType.ToggleKey,
+                        KeyCode = m.VirtualKey,
+                        LatchDirection = ViewModels.MacroLatchDirection.Off,
+                    }
+                    : new ActionData
+                    {
+                        Type = MacroActionType.ToggleMouseButton,
+                        MouseButton = mouseButton,
+                        LatchDirection = ViewModels.MacroLatchDirection.Off,
+                    },
                 m.DelayEndMs, "(release)", untilRelease: false);
             if (press == null || release == null) return Array.Empty<MacroData>();
             return new[] { press, release };

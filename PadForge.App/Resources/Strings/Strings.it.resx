@@ -2565,6 +2565,9 @@
   <data name="Workshop_Tr_MouseRegionTuningDropped" xml:space="preserve"><value>impostazioni di attivazione/rilascio della regione del mouse scartate ({0})</value></data>
   <data name="Workshop_Tr_FlickStickSurfaceNotSupported" xml:space="preserve"><value>flick stick su una superficie touch saltato (il flick stick di PadForge legge una levetta fisica)</value></data>
   <data name="Workshop_Tr_FlickStickTuningDropped" xml:space="preserve"><value>regolazioni del flick stick scartate ({0})</value></data>
+  <data name="Workshop_Tr_DeadZoneRadialResidual" xml:space="preserve"><value>le zone morte si applicano per asse, non radialmente ({0})</value></data>
+  <data name="Workshop_Tr_RotationNonlinearWithheld" xml:space="preserve"><value>risposta non lineare trattenuta sugli assi ruotati ({0})</value></data>
+  <data name="Workshop_Tr_LayerReleaseEdgeApproximated" xml:space="preserve"><value>{0} sul rilascio scatta invece alla pressione</value></data>
   <data name="Workshop_Tr_MouseModeTuningDropped" xml:space="preserve"><value>regolazioni del mouse scartate ({0})</value></data>
   <data name="Workshop_Tr_AxisInversionNotApplied" xml:space="preserve"><value>inversione degli assi non applicata ({0})</value></data>
   <data name="Workshop_Tr_ScrollWheelApproximated" xml:space="preserve"><value>rotella circolare approssimata con un trascinamento verticale</value></data>
@@ -2592,6 +2595,20 @@
   <data name="MacroAction_MouseNudge_Format" xml:space="preserve"><value>Sposta il cursore di ({0}, {1}) px</value></data>
   <data name="MacroAction_Type_CycleTapList" xml:space="preserve"><value>Lista di tocchi ciclica</value></data>
   <data name="MacroAction_CycleTapList_Tooltip" xml:space="preserve"><value>Ogni attivazione esegue il passo successivo della lista e avanza. Con il ciclo attivo la lista ricomincia dopo l'ultimo passo. Senza, l'uscita si ferma a fine lista.</value></data>
+  <data name="MacroAction_Type_ToggleMouseButton" xml:space="preserve"><value>Attiva/disattiva pulsante mouse</value></data>
+  <data name="MacroAction_ToggleMouseButton_Tooltip" xml:space="preserve"><value>Ogni attivazione blocca o sblocca il pulsante del mouse. Un pulsante bloccato resta premuto fino alla successiva attivazione o alla disattivazione della macro.</value></data>
+  <data name="MacroAction_ToggleMouseButton_Format" xml:space="preserve"><value>Attiva/disattiva mouse {0}</value></data>
+  <data name="MacroAction_Type_ToggleVcAxis" xml:space="preserve"><value>Attiva/disattiva asse</value></data>
+  <data name="MacroAction_ToggleVcAxis_Tooltip" xml:space="preserve"><value>Ogni attivazione blocca o sblocca il valore dell'asse. Finché è bloccato, l'asse viene scritto a ogni frame fino alla successiva attivazione o alla disattivazione della macro.</value></data>
+  <data name="MacroAction_ToggleVcAxis_Format" xml:space="preserve"><value>Attiva/disattiva {0} = {1}</value></data>
+  <data name="MacroAction_Type_RepeatVcAxisWhileHeld" xml:space="preserve"><value>Ripeti asse finché premuto</value></data>
+  <data name="MacroAction_RepeatVcAxisWhileHeld_Tooltip" xml:space="preserve"><value>Finché il trigger resta premuto, applica il valore dell'asse con un'onda quadra all'intervallo impostato.</value></data>
+  <data name="MacroAction_RepeatVcAxisWhileHeld_Format" xml:space="preserve"><value>Ripeti {0} = {1} ogni {2} ms</value></data>
+  <data name="MacroAction_Type_ToggleWheel" xml:space="preserve"><value>Attiva/disattiva scorrimento rotellina</value></data>
+  <data name="MacroAction_ToggleWheel_Tooltip" xml:space="preserve"><value>Ogni attivazione blocca o sblocca uno scorrimento continuo. Finché è bloccato, invia gli scatti una volta per intervallo fino alla successiva attivazione o alla disattivazione della macro.</value></data>
+  <data name="MacroAction_ToggleWheel_Format" xml:space="preserve"><value>Attiva/disattiva rotellina ({0} scatti ogni {1} ms)</value></data>
+  <data name="Macro_PulseWhileLatched" xml:space="preserve"><value>Impulsi mentre bloccato</value></data>
+  <data name="Macro_PulseWhileLatched_Tooltip" xml:space="preserve"><value>Mentre è bloccato, alterna l'uscita al ritmo dell'intervallo di ripetizione invece di tenerla fissa.</value></data>
   <data name="MacroAction_CycleTapList_Format" xml:space="preserve"><value>Lista di tocchi ciclica ({0} passi)</value></data>
   <data name="Macro_CycleSteps_Label" xml:space="preserve"><value>Passi</value></data>
   <data name="Macro_CycleWrap_Label" xml:space="preserve"><value>Ciclo</value></data>

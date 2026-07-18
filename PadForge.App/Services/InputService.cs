@@ -5742,6 +5742,11 @@ namespace PadForge.Services
                 // after the first profile switch.
                 Authoritative = src.Authoritative,
             };
+            // Slot-level Workshop stamps (v18) travel with ownership through
+            // the shared helper. The hand-list era dropped all four here, so
+            // an imported profile's deadzone shape / gyro engage died on the
+            // first snapshot and was wiped from the live set on resave.
+            src.CopyWorkshopStampsTo(copy);
             CopyShiftActivators(src, copy);
             // Menus (#9 B-17) travel with the set like the shift authoring:
             // without this leg a profile apply would silently drop every
@@ -5789,7 +5794,12 @@ namespace PadForge.Services
         /// from <paramref name="src"/> into <paramref name="dst"/>'s
         /// <see cref="Engine.Data.MappingSet.ShiftActivators"/> list. Used by
         /// both <see cref="CloneMappingSetDeep"/> and the Copy-From-Slot path
-        /// so shift authoring round-trips alongside row data.</summary>
+        /// so shift authoring round-trips alongside row data. Copies via
+        /// <see cref="Engine.Data.ShiftActivator.Clone"/>, never a field
+        /// hand-list: the hand-list era omitted AxisHalf / AxisInvert (the
+        /// v15 swipe direction stamps), so a direction-selective Axis
+        /// activator went direction-blind after every profile switch or
+        /// Copy From. Only the device-retarget legs mutate the clone.</summary>
         private static void CopyShiftActivators(Engine.Data.MappingSet src, Engine.Data.MappingSet dst,
             int retargetSlot = -1)
         {
@@ -5803,55 +5813,29 @@ namespace PadForge.Services
             foreach (var a in src.ShiftActivators)
             {
                 if (a == null) continue;
-                string deviceGuid = a.DeviceGuid ?? "";
-                string chordSecondGuid = a.ChordSecondDeviceGuid ?? "";
-                string cyclePrevGuid = a.CyclePrevDeviceGuid ?? "";
-                string cyclePrevDesc = a.CyclePrevDescriptor ?? "";
+                var copy = a.Clone();
                 if (retargetSlot >= 0)
                 {
-                    var retargeted = RetargetDeviceGuidForSlot(deviceGuid, retargetSlot);
+                    var retargeted = RetargetDeviceGuidForSlot(copy.DeviceGuid ?? "", retargetSlot);
                     if (retargeted == null) continue;
-                    deviceGuid = retargeted;
-                    if (!string.IsNullOrEmpty(chordSecondGuid))
+                    copy.DeviceGuid = retargeted;
+                    if (!string.IsNullOrEmpty(copy.ChordSecondDeviceGuid))
                     {
-                        var retargetedChord = RetargetDeviceGuidForSlot(chordSecondGuid, retargetSlot);
+                        var retargetedChord = RetargetDeviceGuidForSlot(copy.ChordSecondDeviceGuid, retargetSlot);
                         if (retargetedChord == null) continue;
-                        chordSecondGuid = retargetedChord;
+                        copy.ChordSecondDeviceGuid = retargetedChord;
                     }
                     // Cycle Previous button (#119). Unlike a chord, a prev-button
                     // device that isn't on the target slot drops just that button,
                     // not the whole activator (the Next button still works).
-                    if (!string.IsNullOrEmpty(cyclePrevGuid))
+                    if (!string.IsNullOrEmpty(copy.CyclePrevDeviceGuid))
                     {
-                        var retargetedPrev = RetargetDeviceGuidForSlot(cyclePrevGuid, retargetSlot);
-                        if (retargetedPrev == null) { cyclePrevGuid = ""; cyclePrevDesc = ""; }
-                        else cyclePrevGuid = retargetedPrev;
+                        var retargetedPrev = RetargetDeviceGuidForSlot(copy.CyclePrevDeviceGuid, retargetSlot);
+                        if (retargetedPrev == null) { copy.CyclePrevDeviceGuid = ""; copy.CyclePrevDescriptor = ""; }
+                        else copy.CyclePrevDeviceGuid = retargetedPrev;
                     }
                 }
-                dst.ShiftActivators.Add(new Engine.Data.ShiftActivator
-                {
-                    DeviceGuid = deviceGuid,
-                    Descriptor = a.Descriptor ?? "",
-                    Mode = a.Mode ?? "Hold",
-                    LayerMask = a.LayerMask ?? "Shift",
-                    LayerName = a.LayerName ?? "",
-                    InheritUnmapped = a.InheritUnmapped,
-                    JumpToLayer = a.JumpToLayer ?? "",
-                    DelayMs = a.DelayMs,
-                    PostponeMapping = a.PostponeMapping,
-                    Color = a.Color ?? "",
-                    Kind = a.Kind ?? "Button",
-                    ChordSecondDeviceGuid = chordSecondGuid,
-                    ChordSecondDescriptor = a.ChordSecondDescriptor ?? "",
-                    AxisThreshold = a.AxisThreshold,
-                    CycleLayers = a.CycleLayers ?? "",
-                    CyclePrevDeviceGuid = cyclePrevGuid,
-                    CyclePrevDescriptor = cyclePrevDesc,
-                    CycleWrap = a.CycleWrap,
-                    CycleIncludeBase = a.CycleIncludeBase,
-                    Icon = a.Icon ?? "",
-                    AutoCancelMs = a.AutoCancelMs,
-                });
+                dst.ShiftActivators.Add(copy);
             }
         }
 
@@ -6042,7 +6026,9 @@ namespace PadForge.Services
 
             // Authoritative deliberately NOT carried: the clipboard snapshot
             // holds rows only, and a pasted set is user-recomposed authoring,
-            // which returns to the normal automap merge.
+            // which returns to the normal automap merge. The Workshop stamps
+            // stay behind with ownership too (they are only read while
+            // Authoritative, so carrying them would be inert data).
             var copy = new Engine.Data.MappingSet();
             foreach (var r in rows)
             {
@@ -6194,6 +6180,9 @@ namespace PadForge.Services
                 // Workshop-imported source keeps owning the copy's mappings.
                 Authoritative = src.Authoritative,
             };
+            // Workshop stamps ride ownership through the shared helper (the
+            // CloneMappingSetDeep rationale: hand-lists dropped them).
+            src.CopyWorkshopStampsTo(copy);
             CopyShiftActivators(src, copy, retargetSlot: targetSlot);
             // Menus (#9 B-17) travel with the set exactly like the shift
             // authoring above (the same leg CloneMappingSetDeep carries).

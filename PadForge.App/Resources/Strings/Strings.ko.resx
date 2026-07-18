@@ -2543,6 +2543,9 @@
   <data name="Workshop_Tr_MouseRegionTuningDropped" xml:space="preserve"><value>마우스 영역 활성화/해제 설정 제외됨({0})</value></data>
   <data name="Workshop_Tr_FlickStickSurfaceNotSupported" xml:space="preserve"><value>터치 표면의 Flick Stick 건너뜀(PadForge Flick Stick은 실제 스틱을 읽음)</value></data>
   <data name="Workshop_Tr_FlickStickTuningDropped" xml:space="preserve"><value>Flick Stick 조정 설정 제외됨({0})</value></data>
+  <data name="Workshop_Tr_DeadZoneRadialResidual" xml:space="preserve"><value>데드존이 반경이 아닌 축별로 적용됨({0})</value></data>
+  <data name="Workshop_Tr_RotationNonlinearWithheld" xml:space="preserve"><value>회전된 축에서 비선형 응답 보류됨({0})</value></data>
+  <data name="Workshop_Tr_LayerReleaseEdgeApproximated" xml:space="preserve"><value>놓기에 연결된 {0}이(가) 대신 누를 때 전환됨</value></data>
   <data name="Workshop_Tr_MouseModeTuningDropped" xml:space="preserve"><value>마우스 조정 설정 제외됨({0})</value></data>
   <data name="Workshop_Tr_AxisInversionNotApplied" xml:space="preserve"><value>축 반전이 적용되지 않음({0})</value></data>
   <data name="Workshop_Tr_ScrollWheelApproximated" xml:space="preserve"><value>원형 스크롤 휠을 세로 드래그로 근사</value></data>
@@ -2570,6 +2573,20 @@
   <data name="MacroAction_MouseNudge_Format" xml:space="preserve"><value>커서를 ({0}, {1}) px 이동</value></data>
   <data name="MacroAction_Type_CycleTapList" xml:space="preserve"><value>탭 목록 순환</value></data>
   <data name="MacroAction_CycleTapList_Tooltip" xml:space="preserve"><value>발동할 때마다 목록의 다음 단계를 실행하고 앞으로 이동합니다. 순환을 켜면 마지막 단계 후 처음으로 돌아갑니다. 끄면 목록 끝에서 출력이 멈춥니다.</value></data>
+  <data name="MacroAction_Type_ToggleMouseButton" xml:space="preserve"><value>마우스 버튼 토글</value></data>
+  <data name="MacroAction_ToggleMouseButton_Tooltip" xml:space="preserve"><value>발동할 때마다 마우스 버튼을 고정하거나 해제합니다. 고정된 버튼은 다음 발동 또는 매크로 비활성화까지 눌린 상태를 유지합니다.</value></data>
+  <data name="MacroAction_ToggleMouseButton_Format" xml:space="preserve"><value>마우스 {0} 토글</value></data>
+  <data name="MacroAction_Type_ToggleVcAxis" xml:space="preserve"><value>축 토글</value></data>
+  <data name="MacroAction_ToggleVcAxis_Tooltip" xml:space="preserve"><value>발동할 때마다 축 값을 고정하거나 해제합니다. 고정된 동안 다음 발동 또는 매크로 비활성화까지 매 프레임 축을 기록합니다.</value></data>
+  <data name="MacroAction_ToggleVcAxis_Format" xml:space="preserve"><value>{0} = {1} 토글</value></data>
+  <data name="MacroAction_Type_RepeatVcAxisWhileHeld" xml:space="preserve"><value>누르는 동안 축 반복</value></data>
+  <data name="MacroAction_RepeatVcAxisWhileHeld_Tooltip" xml:space="preserve"><value>트리거를 누르는 동안 설정한 간격의 사각파로 축 값을 반복 적용합니다.</value></data>
+  <data name="MacroAction_RepeatVcAxisWhileHeld_Format" xml:space="preserve"><value>{2}ms마다 {0} = {1} 반복</value></data>
+  <data name="MacroAction_Type_ToggleWheel" xml:space="preserve"><value>휠 스크롤 토글</value></data>
+  <data name="MacroAction_ToggleWheel_Tooltip" xml:space="preserve"><value>발동할 때마다 연속 스크롤을 고정하거나 해제합니다. 고정된 동안 다음 발동 또는 매크로 비활성화까지 간격마다 틱 수를 한 번씩 보냅니다.</value></data>
+  <data name="MacroAction_ToggleWheel_Format" xml:space="preserve"><value>휠 토글({1}ms마다 {0}틱)</value></data>
+  <data name="Macro_PulseWhileLatched" xml:space="preserve"><value>고정 중 펄스</value></data>
+  <data name="Macro_PulseWhileLatched_Tooltip" xml:space="preserve"><value>고정된 동안 출력을 계속 유지하는 대신 반복 간격에 맞춰 켰다 껐다 합니다.</value></data>
   <data name="MacroAction_CycleTapList_Format" xml:space="preserve"><value>탭 목록 순환({0}단계)</value></data>
   <data name="Macro_CycleSteps_Label" xml:space="preserve"><value>단계</value></data>
   <data name="Macro_CycleWrap_Label" xml:space="preserve"><value>순환</value></data>

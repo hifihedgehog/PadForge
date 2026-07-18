@@ -2543,6 +2543,9 @@
   <data name="Workshop_Tr_MouseRegionTuningDropped" xml:space="preserve"><value>マウス領域の起動/解除設定を破棄 ({0})</value></data>
   <data name="Workshop_Tr_FlickStickSurfaceNotSupported" xml:space="preserve"><value>タッチサーフェス上の Flick Stick をスキップ (PadForge の Flick Stick は物理スティックを読み取ります)</value></data>
   <data name="Workshop_Tr_FlickStickTuningDropped" xml:space="preserve"><value>Flick Stick の調整設定を破棄 ({0})</value></data>
+  <data name="Workshop_Tr_DeadZoneRadialResidual" xml:space="preserve"><value>デッドゾーンは半径ではなく軸ごとに適用 ({0})</value></data>
+  <data name="Workshop_Tr_RotationNonlinearWithheld" xml:space="preserve"><value>回転した軸では非線形レスポンスを保留 ({0})</value></data>
+  <data name="Workshop_Tr_LayerReleaseEdgeApproximated" xml:space="preserve"><value>リリース側の {0} は代わりに押下時に切り替え</value></data>
   <data name="Workshop_Tr_MouseModeTuningDropped" xml:space="preserve"><value>マウスの調整設定を破棄 ({0})</value></data>
   <data name="Workshop_Tr_AxisInversionNotApplied" xml:space="preserve"><value>軸の反転は未適用 ({0})</value></data>
   <data name="Workshop_Tr_ScrollWheelApproximated" xml:space="preserve"><value>円形スクロールホイールを縦ドラッグで近似</value></data>
@@ -2570,6 +2573,20 @@
   <data name="MacroAction_MouseNudge_Format" xml:space="preserve"><value>カーソルを ({0}, {1}) px 移動</value></data>
   <data name="MacroAction_Type_CycleTapList" xml:space="preserve"><value>タップリスト巡回</value></data>
   <data name="MacroAction_CycleTapList_Tooltip" xml:space="preserve"><value>発火ごとにリストの次のステップを実行して進みます。折り返しを有効にすると最後のステップの後に先頭へ戻ります。無効の場合は末尾で出力が止まります。</value></data>
+  <data name="MacroAction_Type_ToggleMouseButton" xml:space="preserve"><value>マウスボタンをトグル</value></data>
+  <data name="MacroAction_ToggleMouseButton_Tooltip" xml:space="preserve"><value>発火のたびにマウスボタンを固定または解除します。固定中のボタンは次の発火かマクロの無効化まで押されたままになります。</value></data>
+  <data name="MacroAction_ToggleMouseButton_Format" xml:space="preserve"><value>マウス{0}をトグル</value></data>
+  <data name="MacroAction_Type_ToggleVcAxis" xml:space="preserve"><value>軸をトグル</value></data>
+  <data name="MacroAction_ToggleVcAxis_Tooltip" xml:space="preserve"><value>発火のたびに軸の値を固定または解除します。固定中は次の発火かマクロの無効化まで毎フレーム軸に書き込みます。</value></data>
+  <data name="MacroAction_ToggleVcAxis_Format" xml:space="preserve"><value>{0} = {1} をトグル</value></data>
+  <data name="MacroAction_Type_RepeatVcAxisWhileHeld" xml:space="preserve"><value>押している間軸をリピート</value></data>
+  <data name="MacroAction_RepeatVcAxisWhileHeld_Tooltip" xml:space="preserve"><value>トリガーを押している間、設定した間隔の矩形波で軸の値を繰り返し適用します。</value></data>
+  <data name="MacroAction_RepeatVcAxisWhileHeld_Format" xml:space="preserve"><value>{2}msごとに {0} = {1} をリピート</value></data>
+  <data name="MacroAction_Type_ToggleWheel" xml:space="preserve"><value>ホイールスクロールをトグル</value></data>
+  <data name="MacroAction_ToggleWheel_Tooltip" xml:space="preserve"><value>発火のたびに連続スクロールを固定または解除します。固定中は次の発火かマクロの無効化まで間隔ごとにティック数を送信します。</value></data>
+  <data name="MacroAction_ToggleWheel_Format" xml:space="preserve"><value>ホイールをトグル（{1}msごとに{0}ティック）</value></data>
+  <data name="Macro_PulseWhileLatched" xml:space="preserve"><value>固定中はパルス</value></data>
+  <data name="Macro_PulseWhileLatched_Tooltip" xml:space="preserve"><value>固定中は出力を押しっぱなしにせず、リピート間隔でオンとオフを繰り返します。</value></data>
   <data name="MacroAction_CycleTapList_Format" xml:space="preserve"><value>タップリスト巡回({0} ステップ)</value></data>
   <data name="Macro_CycleSteps_Label" xml:space="preserve"><value>ステップ</value></data>
   <data name="Macro_CycleWrap_Label" xml:space="preserve"><value>折り返し</value></data>

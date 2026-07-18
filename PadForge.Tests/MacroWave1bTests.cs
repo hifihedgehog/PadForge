@@ -800,6 +800,147 @@ namespace PadForge.Tests
             Assert.Equal(5f, SourceCoercion.ApplyGyroSmoothing(dev, slot, 0, 10f, alpha), 3);
             Assert.Equal(8.75f, SourceCoercion.ApplyGyroSmoothing(dev, slotDecoy, 0, 10f, alpha), 3);
         }
+
+        // ── ToggleMouseButton pulse-while-latched (audit 2026-07-17 M3) ──
+
+        [Fact]
+        public void ToggleMouseButton_PulseWhileLatched_ReleasesOnTheOffPhase()
+        {
+            var im = new InputManager();
+            var action = new MacroAction
+            {
+                Type = MacroActionType.ToggleMouseButton,
+                MouseButton = MacroMouseButton.Right,
+                PulseWhileLatched = true,
+                IntervalMs = 100,
+            };
+            var macros = new[] { GamepadTriggerMacro(MacroTriggerMode.OnPress, MacroRepeatMode.Once, action) };
+
+            // Press: latch engages, phase arms ON, button enters the desired set.
+            var gp = new Gamepad { Buttons = Gamepad.A };
+            im.EvaluateSlotMacros(ref gp, macros);
+            Assert.True(action.MouseToggleLatched);
+            Assert.Contains(MacroMouseButton.Right, im._desiredLatchedMouseButtons);
+
+            // Half-interval later (injected clock): the OFF half must drop
+            // the button so the reconcile releases it. This branch used to
+            // ignore PulseWhileLatched and hold solid.
+            action.RepeatVcLastToggleUtc = DateTime.UtcNow.AddMilliseconds(-60);
+            im._desiredLatchedMouseButtons.Clear();
+            gp = new Gamepad();
+            im.EvaluateSlotMacros(ref gp, macros);
+            Assert.DoesNotContain(MacroMouseButton.Right, im._desiredLatchedMouseButtons);
+
+            // Same latch WITHOUT the pulse flag: solid hold, the plain
+            // latch contract (same-window control).
+            action.PulseWhileLatched = false;
+            im._desiredLatchedMouseButtons.Clear();
+            gp = new Gamepad();
+            im.EvaluateSlotMacros(ref gp, macros);
+            Assert.Contains(MacroMouseButton.Right, im._desiredLatchedMouseButtons);
+        }
+
+        [Fact]
+        public void ToggleMouseButton_PulseWhileLatched_ExtendedTwin()
+        {
+            var im = new InputManager();
+            var action = new MacroAction
+            {
+                Type = MacroActionType.ToggleMouseButton,
+                MouseButton = MacroMouseButton.Middle,
+                PulseWhileLatched = true,
+                IntervalMs = 100,
+            };
+            var macros = new[] { ExtendedTriggerMacro(MacroTriggerMode.OnPress, MacroRepeatMode.Once, action) };
+
+            var raw = RawState(0x1);
+            im.EvaluateSlotMacrosExtended(ref raw, macros);
+            Assert.True(action.MouseToggleLatched);
+            Assert.Contains(MacroMouseButton.Middle, im._desiredLatchedMouseButtons);
+
+            action.RepeatVcLastToggleUtc = DateTime.UtcNow.AddMilliseconds(-60);
+            im._desiredLatchedMouseButtons.Clear();
+            raw = RawState(0);
+            im.EvaluateSlotMacrosExtended(ref raw, macros);
+            Assert.DoesNotContain(MacroMouseButton.Middle, im._desiredLatchedMouseButtons);
+        }
+
+        // ── Press legs use the fired-latch, not the sub-1ms window
+        //    (audit 2026-07-17 M5) ──
+
+        [Fact]
+        public void DelayThenKeyPress_LoadedFrame_StillSendsTheDown()
+        {
+            var im = new InputManager();
+            // VK_NONAME (0xFC, "reserved, no effect"): the Down/Up really
+            // route through SendInput but carry an inert key, so the test
+            // never types into the host. Legacy KeyCode path parses it
+            // without the VirtualKey vocabulary.
+            var press = new MacroAction
+            {
+                Type = MacroActionType.KeyPress,
+                KeyCode = 0xFC,
+                DurationMs = 40,
+            };
+            var macro = GamepadTriggerMacro(MacroTriggerMode.WhileHeld, MacroRepeatMode.Once,
+                new MacroAction { Type = MacroActionType.Delay, DurationMs = 1 });
+            macro.Actions.Add(press);
+            var macros = new[] { macro };
+
+            var gp = new Gamepad { Buttons = Gamepad.A };
+            im.EvaluateSlotMacros(ref gp, macros);            // Delay current
+            System.Threading.Thread.Sleep(5);
+            gp = new Gamepad { Buttons = Gamepad.A };
+            im.EvaluateSlotMacros(ref gp, macros);            // Delay elapses, advance
+            System.Threading.Thread.Sleep(5);                 // loaded gap, way past 1 ms
+            gp = new Gamepad { Buttons = Gamepad.A };
+            im.EvaluateSlotMacros(ref gp, macros);            // press leg's first frame
+
+            // The old actionElapsed < 1 window skipped the Down here
+            // while the Up at DurationMs still fired.
+            Assert.Contains(press, im._pressDownSent);
+
+            System.Threading.Thread.Sleep(45);
+            gp = new Gamepad { Buttons = Gamepad.A };
+            im.EvaluateSlotMacros(ref gp, macros);            // Up leg + advance
+            Assert.DoesNotContain(press, im._pressDownSent);  // re-armed
+        }
+
+        [Fact]
+        public void DelayThenMouseButtonPress_LoadedFrame_ExtendedTwin()
+        {
+            var im = new InputManager();
+            // Out-of-range button value: SendMouseButtonInput's switch
+            // default drops it, so no real click reaches the OS while the
+            // press leg's fired-latch bookkeeping (the contract under
+            // test) runs exactly as for a real button.
+            var press = new MacroAction
+            {
+                Type = MacroActionType.MouseButtonPress,
+                MouseButton = (MacroMouseButton)99,
+                DurationMs = 40,
+            };
+            var macro = ExtendedTriggerMacro(MacroTriggerMode.WhileHeld, MacroRepeatMode.Once,
+                new MacroAction { Type = MacroActionType.Delay, DurationMs = 1 });
+            macro.Actions.Add(press);
+            var macros = new[] { macro };
+
+            var raw = RawState(0x1);
+            im.EvaluateSlotMacrosExtended(ref raw, macros);
+            System.Threading.Thread.Sleep(5);
+            raw = RawState(0x1);
+            im.EvaluateSlotMacrosExtended(ref raw, macros);
+            System.Threading.Thread.Sleep(5);
+            raw = RawState(0x1);
+            im.EvaluateSlotMacrosExtended(ref raw, macros);
+
+            Assert.Contains(press, im._pressDownSent);
+
+            System.Threading.Thread.Sleep(45);
+            raw = RawState(0x1);
+            im.EvaluateSlotMacrosExtended(ref raw, macros);
+            Assert.DoesNotContain(press, im._pressDownSent);
+        }
     }
 
     /// <summary>GyroRecenter's MotionLean half: dropping the captured neutral

@@ -62,7 +62,7 @@ macros: 10
   macro RumblePulse OnPress | Haptic pulse (button_escape) | btns=0x0000 in=[Gamepad ButtonStart] strength=33%
   macro HoldKey DoublePress | Hold F9 (button_escape) | btns=0x0010 dbl=442ms vk=0x78
   macro KeyTap OnPress | Screenshot key (button_menu) | btns=0x0000 in=[Gamepad ButtonBack] vk=0x2C
-report: v18 rows:x20+k1 macros:10 menus:0 layers:0 clean:28 partial:1 skipped:0 errors:0
+report: v19 rows:x20+k1 macros:10 menus:0 layers:0 clean:28 partial:1 skipped:0 errors:0
   Partial GyroButtonMaskDropped(gyro_button, 9) @ Default/gyro/group 13 (mouse_joystick)
   Clean RowEmitted @ Default/gyro/group 13 (mouse_joystick) => RightThumbAxisX <- Gyro Yaw
   Clean RowEmitted @ Default/gyro/group 13 (mouse_joystick) => RightThumbAxisY <- Gyro Pitch

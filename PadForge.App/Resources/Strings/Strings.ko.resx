@@ -2671,4 +2671,45 @@
   <data name="Workshop_Tr_MenuEmpty" xml:space="preserve"><value>메뉴에 할당된 셀이 없음</value></data>
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>메뉴 호스트 표면 미지원({0})</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>메뉴 셀 아이콘을 인식할 수 없음({0}), 해당 셀은 텍스트 레이블을 유지합니다</value></data>
+  <data name="Pad_Tab_BassShakers" xml:space="preserve"><value>베이스 셰이커</value></data>
+  <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>베이스 셰이커</value></data>
+  <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>이 가상 컨트롤러가 받는 게임 진동을 저주파 톤으로 바꿔 베이스 셰이커와 서브우퍼용 오디오 출력으로 보냅니다.</value></data>
+  <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>진동을 오디오로</value></data>
+  <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Xbox 및 DualShock 4 / DualSense 가상 컨트롤러에서 동작합니다. 오디오 출력에는 게임 피드백만 전달됩니다. 매크로와 테스트 진동은 컨트롤러에 남습니다.</value></data>
+  <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>진동을 오디오로 재설정</value></data>
+  <data name="Pad_RumbleAudio_Enable" xml:space="preserve"><value>진동을 오디오 출력으로 보내기</value></data>
+  <data name="Pad_RumbleAudio_Enable_Tooltip" xml:space="preserve"><value>이 가상 컨트롤러의 게임 진동을 선택한 오디오 출력에서 저주파 톤으로 재생합니다. 꺼도 모든 설정은 유지됩니다.</value></data>
+  <data name="Pad_RumbleAudio_ResetEnable" xml:space="preserve"><value>진동 라우팅 재설정</value></data>
+  <data name="Pad_RumbleAudio_OutputDevice" xml:space="preserve"><value>출력 장치</value></data>
+  <data name="Pad_RumbleAudio_OutputDevice_Tooltip" xml:space="preserve"><value>진동 톤을 받는 재생 장치입니다. 시스템 기본값은 Windows 기본 재생 장치를 따릅니다. 선택한 장치가 사라지면 다시 나타날 때까지 소리가 나지 않습니다.</value></data>
+  <data name="Pad_RumbleAudio_ResetOutputDevice" xml:space="preserve"><value>출력 장치 재설정</value></data>
+  <data name="Pad_RumbleAudio_Status_Inactive" xml:space="preserve"><value>오디오 출력이 실행 중이 아닙니다.</value></data>
+  <data name="Pad_RumbleAudio_Status_Active_Format" xml:space="preserve"><value>{0}에서 재생 중.</value></data>
+  <data name="Pad_RumbleAudio_Status_Missing" xml:space="preserve"><value>선택한 출력 장치를 사용할 수 없습니다. 다시 나타날 때까지 소리가 나지 않습니다.</value></data>
+  <data name="Pad_RumbleAudio_BluetoothHint" xml:space="preserve"><value>Bluetooth 오디오 장치는 눈에 띄는 지연이 생깁니다.</value></data>
+  <data name="Pad_RumbleAudio_ChannelMode" xml:space="preserve"><value>채널 모드</value></data>
+  <data name="Pad_RumbleAudio_ChannelMode_Tooltip" xml:space="preserve"><value>모노는 모든 채널에서 각 보이스를 재생합니다. 컨트롤러 스테레오는 컨트롤러처럼 나눕니다. 저주파 모터와 왼쪽 트리거는 왼쪽, 고주파 모터와 오른쪽 트리거는 오른쪽입니다.</value></data>
+  <data name="Pad_RumbleAudio_Mode_Mono" xml:space="preserve"><value>모노(모든 채널)</value></data>
+  <data name="Pad_RumbleAudio_Mode_Stereo" xml:space="preserve"><value>컨트롤러 스테레오</value></data>
+  <data name="Pad_RumbleAudio_ResetChannelMode" xml:space="preserve"><value>채널 모드 재설정</value></data>
+  <data name="Pad_RumbleAudio_MasterGain" xml:space="preserve"><value>마스터 게인</value></data>
+  <data name="Pad_RumbleAudio_MasterGain_Tooltip" xml:space="preserve"><value>각 보이스의 게인 뒤에 적용되는 전체 음량입니다. 네 보이스가 겹쳐도 클리핑되지 않도록 여유를 남겨 두세요.</value></data>
+  <data name="Pad_RumbleAudio_ResetMasterGain" xml:space="preserve"><value>마스터 게인 재설정</value></data>
+  <data name="Pad_RumbleAudio_Voice_Low" xml:space="preserve"><value>저주파 모터</value></data>
+  <data name="Pad_RumbleAudio_Voice_High" xml:space="preserve"><value>고주파 모터</value></data>
+  <data name="Pad_RumbleAudio_Voice_TriggerLeft" xml:space="preserve"><value>왼쪽 트리거</value></data>
+  <data name="Pad_RumbleAudio_Voice_TriggerRight" xml:space="preserve"><value>오른쪽 트리거</value></data>
+  <data name="Pad_RumbleAudio_VoiceEnable_Tooltip" xml:space="preserve"><value>이 피드백 채널을 톤으로 재생합니다. 꺼 두어도 게인과 주파수는 유지됩니다.</value></data>
+  <data name="Pad_RumbleAudio_Frequency_Tooltip" xml:space="preserve"><value>이 채널의 톤 주파수(20~120 Hz)입니다. 주파수 스윕으로 셰이커가 가장 강하게 반응하는 지점을 찾으세요.</value></data>
+  <data name="Pad_RumbleAudio_Gain_Tooltip" xml:space="preserve"><value>마스터 게인 이전의 이 채널 음량입니다.</value></data>
+  <data name="Pad_RumbleAudio_Test" xml:space="preserve"><value>테스트</value></data>
+  <data name="Pad_RumbleAudio_Test_Tooltip" xml:space="preserve"><value>이 채널의 톤을 설정된 게인으로 1.5초 재생합니다.</value></data>
+  <data name="Pad_RumbleAudio_ResetVoiceLow" xml:space="preserve"><value>저주파 모터 재설정</value></data>
+  <data name="Pad_RumbleAudio_ResetVoiceHigh" xml:space="preserve"><value>고주파 모터 재설정</value></data>
+  <data name="Pad_RumbleAudio_ResetVoiceTriggerLeft" xml:space="preserve"><value>왼쪽 트리거 재설정</value></data>
+  <data name="Pad_RumbleAudio_ResetVoiceTriggerRight" xml:space="preserve"><value>오른쪽 트리거 재설정</value></data>
+  <data name="Pad_RumbleAudio_Sweep" xml:space="preserve"><value>주파수 스윕</value></data>
+  <data name="Pad_RumbleAudio_Sweep_Tooltip" xml:space="preserve"><value>저주파 모터 경로로 20~120 Hz 톤을 8초에 걸쳐 재생합니다. 셰이커가 가장 강하게 반응한 지점을 확인해 각 보이스의 주파수를 설정하세요.</value></data>
+  <data name="Pad_RumbleAudio_StopTest" xml:space="preserve"><value>정지</value></data>
+  <data name="Pad_RumbleAudio_StopTest_Tooltip" xml:space="preserve"><value>테스트 톤이나 스윕을 멈춥니다.</value></data>
 </root>

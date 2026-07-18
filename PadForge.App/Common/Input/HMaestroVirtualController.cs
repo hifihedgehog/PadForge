@@ -34,6 +34,26 @@ namespace PadForge.Common.Input
         private readonly object _dispatcherLock = new();
         private bool _disposed;
 
+        // ── Inbound game-feedback pack (issue #236) ──
+        // Controller-LOCAL storage for the raw rumble the game sent THIS
+        // virtual controller, packed per LfeOutputState. Keyed by the VC
+        // instance, never by pad index: the slot-reorder reroute re-points
+        // _virtualControllers[] and the pack travels with its VC, so a
+        // swap can never land slot A's rumble on slot B the way the
+        // captured FeedbackPadIndex could. The poll thread's feedback
+        // lane reads it through the CURRENT array position each tick.
+        // Provenance-clean by construction: only the game-write callbacks
+        // below fill it (never test rumble, macro rumble, or any
+        // per-physical-device projection), which is what lets the
+        // rumble-to-audio path read it without feedback loops.
+        private long _inboundRumblePack;
+
+        /// <summary>The packed inbound game-feedback state (see
+        /// <see cref="PadForge.Engine.Common.LfeOutputState"/>). Written
+        /// by the HM output callbacks, read by the poll thread's feedback
+        /// lane. A fresh VC reads 0, so create / recreate starts silent.</summary>
+        public long InboundRumblePack => System.Threading.Volatile.Read(ref _inboundRumblePack);
+
         // DualSense / DualSense Edge VID/PID — used to gate the
         // DS5 effect message pass-through dispatcher.  Both USB and BT
         // variants of each profile share the same VID/PID; the profile
@@ -802,6 +822,40 @@ namespace PadForge.Common.Input
                 {
                     vibrationStates[idx].LeftMotorSpeed  = (ushort)(left  * 257);
                     vibrationStates[idx].RightMotorSpeed = (ushort)(right * 257);
+
+                    // Inbound pack (#236): the Sony motor bytes are only
+                    // TRUSTED behind the full validity gate. The codec
+                    // inserts leftMotor/rightMotor unconditionally (report
+                    // ID alone selects the decode), but per the protocol
+                    // contract (linux-hid hid-playstation.c, dualsense_
+                    // output_worker / ds4_output_worker: motor bytes are
+                    // assigned only inside the block that asserts
+                    // VALID_FLAG0 bit 0 (+bit 1 HAPTICS_SELECT on DS5), and
+                    // an audio/lightbar-only report carries motor=0 meaning
+                    // "ignore", NOT "stop"):
+                    //   1. exact declared report size (Decode silently
+                    //      skips out-of-range bytes, so a truncated BT
+                    //      report can surface partial fields);
+                    //   2. CRC valid (CrcValid alone is insufficient: it
+                    //      initializes true and is skipped when the footer
+                    //      is absent, hence the length check too);
+                    //   3. the motor-valid flag asserted. DS4 bit 0
+                    //      (0x01), DS5 bits 0/1 (0x03).
+                    // Fail any leg → PRESERVE the previous pack. Flag
+                    // asserted with both bytes zero IS a real stop.
+                    // Sony pads have no trigger motors; those voices stay 0.
+                    int expectedSize = _profile.ExtendedOutputReport?.Size ?? -1;
+                    byte motorMask = IsDualSenseVirtual ? (byte)0x03 : (byte)0x01;
+                    if (e.RawBytes.Length == expectedSize
+                        && e.CrcValid
+                        && e.Fields.TryGetValue("validFlag0", out var vfObj)
+                        && vfObj is byte validFlag0
+                        && (validFlag0 & motorMask) != 0)
+                    {
+                        System.Threading.Volatile.Write(ref _inboundRumblePack,
+                            Engine.Common.LfeOutputState.Pack(
+                                (ushort)(left * 257), (ushort)(right * 257), 0, 0));
+                    }
                 }
 
                 if (_ds5Dispatcher != null
@@ -882,6 +936,14 @@ namespace PadForge.Common.Input
                         vibrationStates[idx].LeftTriggerMotorSpeed = 0;
                         vibrationStates[idx].RightTriggerMotorSpeed = 0;
                     }
+                    // Inbound pack (#236): same decode, controller-local.
+                    // Zeros pass through unfiltered (the square-wave duty
+                    // cycle note above applies to the audio path too).
+                    System.Threading.Volatile.Write(ref _inboundRumblePack,
+                        Engine.Common.LfeOutputState.Pack(
+                            (ushort)(data[2] * 257), (ushort)(data[3] * 257),
+                            data.Length >= 7 ? (ushort)(data[4] * 257) : (ushort)0,
+                            data.Length >= 7 ? (ushort)(data[5] * 257) : (ushort)0));
                     return;
                 }
 
@@ -909,6 +971,11 @@ namespace PadForge.Common.Input
                     vibrationStates[idx].RightTriggerMotorSpeed = (ushort)(data[1] * 655);
                     vibrationStates[idx].LeftMotorSpeed = (ushort)(data[2] * 655);
                     vibrationStates[idx].RightMotorSpeed = (ushort)(data[3] * 655);
+                    // Inbound pack (#236): same decode, controller-local.
+                    System.Threading.Volatile.Write(ref _inboundRumblePack,
+                        Engine.Common.LfeOutputState.Pack(
+                            (ushort)(data[2] * 655), (ushort)(data[3] * 655),
+                            (ushort)(data[0] * 655), (ushort)(data[1] * 655)));
                     return;
                 }
 
@@ -920,6 +987,16 @@ namespace PadForge.Common.Input
                 {
                     vibrationStates[idx].LeftMotorSpeed = (ushort)(data[5] * 257);
                     vibrationStates[idx].RightMotorSpeed = (ushort)(data[6] * 257);
+                    // Inbound pack (#236): body motors only, exactly like
+                    // the physical decode above. This packet shape carries
+                    // no trigger bytes, so the trigger voices PRESERVE
+                    // their previous values rather than inventing a stop.
+                    long prevPack = System.Threading.Volatile.Read(ref _inboundRumblePack);
+                    System.Threading.Volatile.Write(ref _inboundRumblePack,
+                        Engine.Common.LfeOutputState.Pack(
+                            (ushort)(data[5] * 257), (ushort)(data[6] * 257),
+                            Engine.Common.LfeOutputState.TriggerLeft(prevPack),
+                            Engine.Common.LfeOutputState.TriggerRight(prevPack)));
                     return;
                 }
 

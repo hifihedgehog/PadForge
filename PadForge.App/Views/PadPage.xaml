@@ -540,6 +540,18 @@
                              AutomationProperties.AutomationId="MenusTab">
                     <TextBlock Text="{Binding Pad_Menus, Source={x:Static strings:Strings.Instance}}" FontSize="15"/>
                 </RadioButton>
+
+                <!-- [Bass Shakers] (#236). Slot tier: the rumble-to-audio
+                     config lives on the slot's MappingSet like menus. Tag
+                     16 = the appended TabItem's index. Visible only for
+                     Xbox / PlayStation slot types (the outputs whose game
+                     feedback the engine decodes). A SLOT-TYPE gate, never
+                     a physical-device capability gate. -->
+                <RadioButton Tag="16" Style="{StaticResource TabStripButton}" Click="TabBtn_Click"
+                             AutomationProperties.AutomationId="BassShakersTab"
+                             Visibility="{Binding RumbleAudioTabVisible, Converter={StaticResource BoolToVisibilityConverter}}">
+                    <TextBlock Text="{Binding Pad_Tab_BassShakers, Source={x:Static strings:Strings.Instance}}" FontSize="15"/>
+                </RadioButton>
                 </StackPanel>
 
             </DockPanel>
@@ -11610,6 +11622,165 @@
                         </StackPanel>
                     </ScrollViewer>
                 </Grid>
+            </TabItem>
+
+            <!-- === TAB 16: Bass Shakers (slot-level, issue #236 rumble to audio) === -->
+            <TabItem>
+                <ScrollViewer Padding="24,0" VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Disabled">
+                    <StackPanel Margin="0,16,0,16">
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                            <TextBlock Text="&#xE7F5;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="16" Foreground="{DynamicResource EmberBrush}"
+                                       VerticalAlignment="Center" Margin="0,0,10,0"/>
+                            <TextBlock Text="{Binding Pad_RumbleAudio_Header, Source={x:Static strings:Strings.Instance}}"
+                                       Style="{StaticResource TitleTextBlockStyle}" FontFamily="{StaticResource DisplayFontFamily}" FontWeight="650" FontSize="26"/>
+                        </StackPanel>
+                        <TextBlock Text="{Binding Pad_RumbleAudio_Subtitle, Source={x:Static strings:Strings.Instance}}"
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                   TextWrapping="Wrap" Margin="0,0,0,16"/>
+
+                        <!-- Rumble to Audio card -->
+                        <Border Style="{StaticResource CardBorder}">
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                    <TextBlock Text="&#xE877;" FontFamily="Segoe MDL2 Assets" FontSize="16" Foreground="{DynamicResource EmberBrush}"
+                                               VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                    <TextBlock Text="{Binding Pad_RumbleAudio_Card_Header, Source={x:Static strings:Strings.Instance}}"
+                                               Style="{StaticResource CardTitle}"/>
+                                    <ui:Button Command="{Binding ResetRumbleAudioAllCommand}" Style="{StaticResource ResetAllButton}"
+                                            Content="{Binding Pad_ResetAll, Source={x:Static strings:Strings.Instance}}" Margin="12,0,0,0"
+                                            ToolTip="{Binding Pad_RumbleAudio_ResetCard_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
+                                <TextBlock Text="{Binding Pad_RumbleAudio_Card_Desc, Source={x:Static strings:Strings.Instance}}"
+                                           Style="{StaticResource CardDescription}"/>
+
+                                <!-- Enable row. First enable authors the config with the
+                                     four default voices; disable keeps every setting. -->
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                    <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}" IsChecked="{Binding RumbleAudioEnabled, Mode=TwoWay}"
+                                              Content="{Binding Pad_RumbleAudio_Enable, Source={x:Static strings:Strings.Instance}}"
+                                              ToolTip="{Binding Pad_RumbleAudio_Enable_Tooltip, Source={x:Static strings:Strings.Instance}}"
+                                              VerticalAlignment="Center"/>
+                                    <ui:Button Command="{Binding ResetRumbleAudioEnabledCommand}" Style="{StaticResource ResetButton}"
+                                            ToolTip="{Binding Pad_RumbleAudio_ResetEnable, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
+
+                                <StackPanel IsEnabled="{Binding RumbleAudioEnabled}">
+                                    <!-- Output Device row. "" = system default; a configured
+                                         endpoint that disappears FAILS CLOSED (status line
+                                         below warns, selection is preserved). -->
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                        <TextBlock Text="{Binding Pad_RumbleAudio_OutputDevice, Source={x:Static strings:Strings.Instance}}"
+                                                   Style="{StaticResource DzLabel}"
+                                                   ToolTip="{Binding Pad_RumbleAudio_OutputDevice_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                        <!-- SelectedValuePath/DisplayMemberPath MUST precede the
+                                             ItemsSource/SelectedValue bindings: XAML applies
+                                             attributes in order, and a SelectedValue that attaches
+                                             before SelectedValuePath is set fails to resolve and
+                                             never retries (the mirror-source picker documents it). -->
+                                        <ComboBox SelectedValuePath="Id" DisplayMemberPath="Name"
+                                                  ItemsSource="{Binding RumbleAudioEndpointOptions}"
+                                                  SelectedValue="{Binding RumbleAudioEndpointId, Mode=TwoWay}"
+                                                  MinWidth="260" MaxWidth="380"
+                                                  DropDownOpened="RumbleAudioEndpoint_DropDownOpened"
+                                                  ToolTip="{Binding Pad_RumbleAudio_OutputDevice_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                        <ui:Button Command="{Binding ResetRumbleAudioEndpointCommand}" Style="{StaticResource ResetButton}"
+                                                ToolTip="{Binding Pad_RumbleAudio_ResetOutputDevice, Source={x:Static strings:Strings.Instance}}"/>
+                                    </StackPanel>
+                                    <!-- Live endpoint status, driven by the code-behind meter
+                                         timer from RumbleAudioService.GetSlotStatus. -->
+                                    <TextBlock x:Name="BassShakerStatusText" FontSize="12" TextWrapping="Wrap"
+                                               Margin="270,0,0,2"
+                                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                                    <TextBlock Text="{Binding Pad_RumbleAudio_BluetoothHint, Source={x:Static strings:Strings.Instance}}"
+                                               FontSize="12" TextWrapping="Wrap" Margin="270,0,0,8"
+                                               Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
+
+                                    <!-- Channel Mode row -->
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                        <TextBlock Text="{Binding Pad_RumbleAudio_ChannelMode, Source={x:Static strings:Strings.Instance}}"
+                                                   Style="{StaticResource DzLabel}"
+                                                   ToolTip="{Binding Pad_RumbleAudio_ChannelMode_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                        <ComboBox SelectedValuePath="Tag"
+                                                  SelectedValue="{Binding RumbleAudioChannelMode, Mode=TwoWay}"
+                                                  MinWidth="260"
+                                                  ToolTip="{Binding Pad_RumbleAudio_ChannelMode_Tooltip, Source={x:Static strings:Strings.Instance}}">
+                                            <ComboBoxItem Content="{Binding Pad_RumbleAudio_Mode_Mono, Source={x:Static strings:Strings.Instance}}" Tag=""/>
+                                            <ComboBoxItem Content="{Binding Pad_RumbleAudio_Mode_Stereo, Source={x:Static strings:Strings.Instance}}" Tag="Stereo"/>
+                                        </ComboBox>
+                                        <ui:Button Command="{Binding ResetRumbleAudioChannelModeCommand}" Style="{StaticResource ResetButton}"
+                                                ToolTip="{Binding Pad_RumbleAudio_ResetChannelMode, Source={x:Static strings:Strings.Instance}}"/>
+                                    </StackPanel>
+
+                                    <!-- Master Gain row -->
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                        <TextBlock Text="{Binding Pad_RumbleAudio_MasterGain, Source={x:Static strings:Strings.Instance}}"
+                                                   Style="{StaticResource DzLabel}"
+                                                   ToolTip="{Binding Pad_RumbleAudio_MasterGain_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                        <Slider Value="{Binding RumbleAudioMasterGain, Mode=TwoWay}" Minimum="0" Maximum="100"
+                                                Style="{StaticResource DzSlider}" TickFrequency="1"/>
+                                        <TextBox Text="{Binding RumbleAudioMasterGain, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                                 Style="{StaticResource DzValueEdit}"/>
+                                        <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
+                                        <ui:Button Command="{Binding ResetRumbleAudioMasterGainCommand}" Style="{StaticResource ResetButton}"
+                                                ToolTip="{Binding Pad_RumbleAudio_ResetMasterGain, Source={x:Static strings:Strings.Instance}}"/>
+                                    </StackPanel>
+
+                                    <!-- The four fixed voice rows (low, high, trigger left,
+                                         trigger right): enable + carrier frequency + gain +
+                                         live meter + per-row Test and Reset. -->
+                                    <ItemsControl ItemsSource="{Binding RumbleAudioVoices}" Margin="0,4,0,0">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <StackPanel Orientation="Horizontal" Margin="0,6,0,0">
+                                                    <CheckBox IsChecked="{Binding Enabled, Mode=TwoWay}"
+                                                              Content="{Binding Label}"
+                                                              Width="270" VerticalAlignment="Center"
+                                                              Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                                              ToolTip="{Binding Pad_RumbleAudio_VoiceEnable_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                                    <Slider Value="{Binding FrequencyHz, Mode=TwoWay}" Minimum="20" Maximum="120"
+                                                            Width="140" VerticalAlignment="Center"
+                                                            IsSnapToTickEnabled="True" TickFrequency="1"
+                                                            ToolTip="{Binding Pad_RumbleAudio_Frequency_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                                    <TextBox Text="{Binding FrequencyHz, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                                             Style="{StaticResource DzValueEdit}"
+                                                             ToolTip="{Binding Pad_RumbleAudio_Frequency_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                                    <TextBlock Text="Hz" Style="{StaticResource DzPercent}"/>
+                                                    <Slider Value="{Binding GainPercent, Mode=TwoWay}" Minimum="0" Maximum="100"
+                                                            Width="140" VerticalAlignment="Center" Margin="12,0,0,0"
+                                                            IsSnapToTickEnabled="True" TickFrequency="1"
+                                                            ToolTip="{Binding Pad_RumbleAudio_Gain_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                                    <TextBox Text="{Binding GainPercent, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                                             Style="{StaticResource DzValueEdit}"
+                                                             ToolTip="{Binding Pad_RumbleAudio_Gain_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                                    <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
+                                                    <ProgressBar Value="{Binding MeterLevel, Mode=OneWay}"
+                                                                 Minimum="0" Maximum="100"
+                                                                 Width="80" Height="8" VerticalAlignment="Center" Margin="12,0,0,0"
+                                                                 Foreground="{DynamicResource EmberHotBrush}"/>
+                                                    <Button Content="{Binding Pad_RumbleAudio_Test, Source={x:Static strings:Strings.Instance}}"
+                                                            Command="{Binding TestCommand}" Padding="8,2" Margin="10,0,0,0" VerticalAlignment="Center"
+                                                            ToolTip="{Binding Pad_RumbleAudio_Test_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                                    <ui:Button Command="{Binding ResetCommand}" Style="{StaticResource ResetButton}"
+                                                            ToolTip="{Binding ResetTooltip}"/>
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+
+                                    <!-- Test buttons row -->
+                                    <StackPanel Orientation="Horizontal" Margin="0,12,0,0">
+                                        <Button Content="{Binding Pad_RumbleAudio_Sweep, Source={x:Static strings:Strings.Instance}}"
+                                                Command="{Binding RumbleAudioSweepCommand}" Padding="10,4" VerticalAlignment="Center"
+                                                ToolTip="{Binding Pad_RumbleAudio_Sweep_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                        <Button Content="{Binding Pad_RumbleAudio_StopTest, Source={x:Static strings:Strings.Instance}}"
+                                                Command="{Binding RumbleAudioStopTestCommand}" Padding="10,4" Margin="6,0,0,0" VerticalAlignment="Center"
+                                                ToolTip="{Binding Pad_RumbleAudio_StopTest_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    </StackPanel>
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </ScrollViewer>
             </TabItem>
         </TabControl>
     </Grid>

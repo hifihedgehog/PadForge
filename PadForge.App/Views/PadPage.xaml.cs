@@ -105,11 +105,13 @@ namespace PadForge.Views
             PadForge.Common.SoundPackageManager.RegistryChanged -= OnSoundPackageRegistryChanged;
             PadForge.Common.SoundPackageManager.RegistryChanged += OnSoundPackageRegistryChanged;
             RefreshSoundPackages();
+            SyncBassShakerMeterTimer();
         }
 
         private void PadPage_Unloaded(object sender, RoutedEventArgs e)
         {
             PadForge.Common.SoundPackageManager.RegistryChanged -= OnSoundPackageRegistryChanged;
+            _bassShakerMeterTimer?.Stop();
         }
 
         private void OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
@@ -162,6 +164,9 @@ namespace PadForge.Views
             SyncLightbarHexBox();
             SyncLightbarPreview();
             SyncAudioHexBoxes();
+            // Slot switch: the meter timer follows the NEW slot's selected
+            // tab (a different slot may sit on a different tab).
+            SyncBassShakerMeterTimer();
 
             // Re-apply the profile dropdowns' SelectedValue after ItemsSource
             // populates. WPF's ComboBox with SelectedValuePath can land on a
@@ -541,13 +546,16 @@ namespace PadForge.Views
 
             // SelectedConfigTab tag values: 0 Controller, 1 Macros, 2 Mappings,
             // 3 Sticks, 4 Triggers, 5 Force Feedback, 6 Adaptive Triggers,
-            // 7 Lighting, 8 Gyro, 9 Impulse Triggers, 10 Touchpad, 11 Wheel.
+            // 7 Lighting, 8 Gyro, 9 Impulse Triggers, 10 Touchpad, 11 Wheel,
+            // 12 Audio, 13 Pointer, 14 Mouse, 15 Menus, 16 Bass Shakers.
             // Macros, Mappings, and
             // Force Feedback are visible for every VC type. MIDI hides
             // Sticks and Triggers; K+M hides Triggers only. Adaptive
             // Triggers, Lighting, Gyro, and Impulse Triggers are gated on
-            // the selected device's capabilities above. Kick the user back
-            // to the Controller tab if they're sitting on a now-hidden one.
+            // the selected device's capabilities above. Bass Shakers is a
+            // SLOT-TYPE gate (Xbox / PlayStation only, #236). Kick the user
+            // back to the Controller tab if they're sitting on a now-hidden
+            // one.
             if (DataContext is PadViewModel vm)
             {
                 if (isMidi && (vm.SelectedConfigTab == 3 || vm.SelectedConfigTab == 4))
@@ -571,6 +579,9 @@ namespace PadForge.Views
                 else if (vm.SelectedConfigTab == 13 && !hasIrPointer) // 13 = Pointer
                     vm.SelectedConfigTab = 0;
                 else if (vm.SelectedConfigTab == 14 && !hasMouse) // 14 = Mouse (#200)
+                    vm.SelectedConfigTab = 0;
+                else if (vm.SelectedConfigTab == PadViewModel.BassShakersTabIndex
+                         && !vm.RumbleAudioTabVisible) // 16 = Bass Shakers (#236)
                     vm.SelectedConfigTab = 0;
             }
         }
@@ -767,15 +778,16 @@ namespace PadForge.Views
             int selected = vm.SelectedConfigTab;
 
             // Two-tier grammar (#175 artifact): tier 1 (slot: Preview/Macros/
-            // Mappings, tags 0-2, plus Menus at tag 15, #9 B-17) and tier 2
-            // (device tabs, tags 3-14). Exactly one tab is checked across
+            // Mappings, tags 0-2, plus Menus at tag 15, #9 B-17, and Bass
+            // Shakers at tag 16, #236) and tier 2 (device tabs, tags 3-14).
+            // Exactly one tab is checked across
             // BOTH tiers (#175 item 18): a checked tier-1 pivot over an
             // active device tab lied about what's on screen. The idle tier
             // drops to hover affordance (both tab styles keep their
             // IsMouseOver triggers when unchecked). Navigation rides Click
             // (not Checked), so re-clicking a still-checked tab still
             // switches back.
-            bool slotTier = selected <= 2 || selected == 15;
+            bool slotTier = selected <= 2 || selected == 15 || selected == 16;
             foreach (var rb in FindVisualChildren<RadioButton>(this))
             {
                 if (!TryGetTagIndex(rb, out int idx)) continue;
@@ -867,6 +879,82 @@ namespace PadForge.Views
         /// source dropdown opens, so hot-plugged devices show up.</summary>
         private void MirrorSource_DropDownOpened(object sender, EventArgs e)
             => _currentPadVm?.RefreshMirrorSources();
+
+        /// <summary>Same hot-plug refresh for the Bass Shakers output
+        /// picker (#236).</summary>
+        private void RumbleAudioEndpoint_DropDownOpened(object sender, EventArgs e)
+            => _currentPadVm?.RefreshRumbleAudioEndpoints();
+
+        // ─────────────────────────────────────────────
+        //  Bass Shakers meters (#236)
+        // ─────────────────────────────────────────────
+
+        /// <summary>Drives the four voice-activity meters and the endpoint
+        /// status line while the Bass Shakers tab is on screen. Runs ONLY
+        /// while the page is loaded AND tab 16 is selected; every other
+        /// state stops the timer so a background page costs nothing.</summary>
+        private System.Windows.Threading.DispatcherTimer _bassShakerMeterTimer;
+
+        private void SyncBassShakerMeterTimer()
+        {
+            bool wanted = IsLoaded && _currentPadVm != null
+                && _currentPadVm.SelectedConfigTab == PadViewModel.BassShakersTabIndex;
+            if (!wanted)
+            {
+                _bassShakerMeterTimer?.Stop();
+                return;
+            }
+            if (_bassShakerMeterTimer == null)
+            {
+                _bassShakerMeterTimer = new System.Windows.Threading.DispatcherTimer
+                {
+                    Interval = TimeSpan.FromMilliseconds(100),
+                };
+                _bassShakerMeterTimer.Tick += (s, e) => UpdateBassShakerMeters();
+            }
+            _bassShakerMeterTimer.Start();
+            // Immediate paint so the status line never shows a 100 ms blank.
+            UpdateBassShakerMeters();
+        }
+
+        private void UpdateBassShakerMeters()
+        {
+            var vm = _currentPadVm;
+            if (vm == null)
+            {
+                _bassShakerMeterTimer?.Stop();
+                return;
+            }
+
+            // Published game-feedback pack only. Test tones live outside the
+            // packs by design (provenance rule in RumbleAudioService), so the
+            // meters show what the game sends, not the Test buttons.
+            long pack = PadForge.Common.Input.RumbleAudioService.ReadPack(vm.PadIndex);
+            var voices = vm.RumbleAudioVoices;
+            for (int i = 0; i < voices.Count && i < 4; i++)
+                voices[i].MeterLevel = PadForge.Engine.Common.LfeOutputState.Voice(pack, i) / 655.35;
+
+            if (BassShakerStatusText == null) return;
+            string status = PadForge.Common.Input.RumbleAudioService.GetSlotStatus(vm.PadIndex);
+            if (string.IsNullOrEmpty(status))
+            {
+                BassShakerStatusText.Text = Strings.Instance.Pad_RumbleAudio_Status_Inactive;
+                BassShakerStatusText.SetResourceReference(TextBlock.ForegroundProperty, "TextFillColorSecondaryBrush");
+            }
+            else if (status == "!missing")
+            {
+                // Fail-closed marker: the configured endpoint is gone. The
+                // selection is preserved, nothing renders until it returns.
+                BassShakerStatusText.Text = Strings.Instance.Pad_RumbleAudio_Status_Missing;
+                BassShakerStatusText.SetResourceReference(TextBlock.ForegroundProperty, "SystemFillColorCautionBrush");
+            }
+            else
+            {
+                BassShakerStatusText.Text = string.Format(
+                    Strings.Instance.Pad_RumbleAudio_Status_Active_Format, status);
+                BassShakerStatusText.SetResourceReference(TextBlock.ForegroundProperty, "TextFillColorSecondaryBrush");
+            }
+        }
 
         /// <summary>Choose a sound for the Play Sound action card. When packages
         /// are added, the sounds inside them are offered directly — a filesystem
@@ -1770,7 +1858,11 @@ namespace PadForge.Views
         private void OnPadVmPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == nameof(PadViewModel.SelectedConfigTab))
+            {
                 SyncTabStripSelection();
+                // Bass Shakers meters (#236) run only while tab 16 shows.
+                SyncBassShakerMeterTimer();
+            }
             else if (e.PropertyName == nameof(PadViewModel.OutputType))
             {
                 SyncExtendedConfigBar();

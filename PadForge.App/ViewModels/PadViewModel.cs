@@ -59,6 +59,11 @@ namespace PadForge.ViewModels
             // with row edits and rebuilds. Hooked before the first
             // RebuildMappings so the initial rows are counted too.
             Mappings.CollectionChanged += OnMappingsChangedForDirectCount;
+            // Bass Shakers rows (#236): the four fixed voice items exist
+            // for the slot's lifetime. Built before RebuildMappings because
+            // its ReloadRumbleAudio leg re-seeds them from the slot set.
+            for (int i = 0; i < RumbleAudioConfig.SourceOrder.Length; i++)
+                RumbleAudioVoices.Add(new RumbleAudioVoiceItem(this, i));
             RebuildMappings();
             RebuildStickConfigs();
             RebuildTriggerConfigs();
@@ -162,6 +167,9 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(AvailableProfiles));
                     OnPropertyChanged(nameof(HasHMaestroProfileBar));
                     OnPropertyChanged(nameof(OutputTypeDisplayName));
+                    // Bass Shakers tab (#236): slot-type gate follows the
+                    // output type, never a physical-device capability.
+                    OnPropertyChanged(nameof(RumbleAudioTabVisible));
 
                     // Category change invalidates the previous HIDMaestro
                     // profile slug. Assign the new category's default so the
@@ -1627,6 +1635,9 @@ namespace PadForge.ViewModels
             // apply, Workshop import, output-type change, Reset to
             // Defaults) refreshes the Menus tab in the same breath.
             ReloadMenus();
+            // The rumble-to-audio config (#236) shares that lifetime, so
+            // the Bass Shakers tab re-seeds from the set on the same paths.
+            ReloadRumbleAudio();
 
             MappingsRebuilt?.Invoke(this, EventArgs.Empty);
         }
@@ -3385,9 +3396,20 @@ namespace PadForge.ViewModels
             {
                 var menuSets = PadForge.Common.Input.SettingsManager.SlotMappingSets;
                 if (menuSets != null && PadIndex >= 0 && PadIndex < menuSets.Length)
+                {
                     menuSets[PadIndex]?.Menus?.Clear();
+                    // Rumble-audio config (#236) is slot-scoped the same
+                    // way: clear it AND publish synchronous silence, so
+                    // the shaker tone dies with the slot instead of
+                    // holding its last value until the poll lane's next
+                    // tick (or forever, if the engine is stopped).
+                    var delSet = menuSets[PadIndex];
+                    if (delSet != null) delSet.RumbleAudio = null;
+                }
             }
+            PadForge.Common.Input.RumbleAudioService.SilenceSlot(PadIndex);
             ReloadMenus();
+            ReloadRumbleAudio();
 
             // Per-device Lighting tab configs live in this PadViewModel's
             // dictionary, keyed by physical device InstanceGuid — not on
@@ -4789,6 +4811,390 @@ namespace PadForge.ViewModels
         }
 
         // ═══════════════════════════════════════════════
+        //  Bass Shakers tab (issue #236, rumble to audio)
+        // ═══════════════════════════════════════════════
+
+        // The config lives on the slot's MappingSet (RumbleAudio), the
+        // same lifetime as the mapping rows, macros, and menus. Every
+        // setter writes the DTO in place, marks the settings dirty (the
+        // Menus tab's OnMenuEdited shape), and nudges the renderer off
+        // the UI thread so edits apply while the tone plays.
+
+        /// <summary>Tab-strip index of the Bass Shakers tab (#236).</summary>
+        public const int BassShakersTabIndex = 16;
+
+        /// <summary>Slot-type gate for the Bass Shakers tab. The feature
+        /// decodes the game feedback the virtual controller RECEIVES,
+        /// which only the Xbox and PlayStation output paths deliver.
+        /// Extended, Keyboard and Mouse, and MIDI slots hide the tab.
+        /// Never a physical-device capability gate.</summary>
+        public bool RumbleAudioTabVisible =>
+            _outputType is VirtualControllerType.Xbox or VirtualControllerType.PlayStation;
+
+        /// <summary>The slot's authored config, null until first enable.
+        /// Read-only here. Creation happens in the enable setter only.</summary>
+        private RumbleAudioConfig RumbleAudioCfg => SlotMenuSet?.RumbleAudio;
+
+        /// <summary>The four fixed voice rows (low, high, trigger left,
+        /// trigger right), built once in the constructor.</summary>
+        public ObservableCollection<RumbleAudioVoiceItem> RumbleAudioVoices { get; } = new();
+
+        /// <summary>Master enable. The first enable authors the config
+        /// with the four default voices. Disable keeps every authored
+        /// setting and only silences the renderer.</summary>
+        public bool RumbleAudioEnabled
+        {
+            get => RumbleAudioCfg?.Enabled ?? false;
+            set
+            {
+                var set = SlotMenuSet;
+                if (set == null) return;
+                var cfg = set.RumbleAudio;
+                if (cfg == null)
+                {
+                    if (!value) return;
+                    cfg = new RumbleAudioConfig();
+                    for (int i = 0; i < RumbleAudioConfig.SourceOrder.Length; i++)
+                        cfg.Voices.Add(new RumbleAudioVoice
+                        {
+                            Source = RumbleAudioConfig.SourceOrder[i],
+                            Enabled = true,
+                            GainPercent = 100,
+                            FrequencyHz = RumbleAudioConfig.DefaultFrequencyHz[i],
+                        });
+                    set.RumbleAudio = cfg;
+                }
+                if (cfg.Enabled == value) return;
+                cfg.Enabled = value;
+                OnPropertyChanged(nameof(RumbleAudioEnabled));
+                NotifyRumbleAudioConfigChanged();
+            }
+        }
+
+        private bool _refreshingRumbleAudioEndpoints;
+
+        /// <summary>ComboBox-facing endpoint id. Empty targets the system
+        /// default render endpoint. Guarded against the transient null
+        /// write-back during ItemsSource rebuilds (the mirror-source
+        /// picker documents the same hazard).</summary>
+        public string RumbleAudioEndpointId
+        {
+            get => RumbleAudioCfg?.EndpointId ?? string.Empty;
+            set
+            {
+                if (_refreshingRumbleAudioEndpoints || value == null) return;
+                var cfg = RumbleAudioCfg;
+                if (cfg == null || cfg.EndpointId == value) return;
+                cfg.EndpointId = value;
+                OnPropertyChanged(nameof(RumbleAudioEndpointId));
+                NotifyRumbleAudioConfigChanged();
+            }
+        }
+
+        /// <summary>Speaker placement. Empty = mono (every voice on all
+        /// channels), "Stereo" = controller stereo (low and left trigger
+        /// left, high and right trigger right).</summary>
+        public string RumbleAudioChannelMode
+        {
+            get => RumbleAudioCfg?.ChannelMode ?? string.Empty;
+            set
+            {
+                if (value == null) return;
+                var cfg = RumbleAudioCfg;
+                if (cfg == null || cfg.ChannelMode == value) return;
+                cfg.ChannelMode = value;
+                OnPropertyChanged(nameof(RumbleAudioChannelMode));
+                NotifyRumbleAudioConfigChanged();
+            }
+        }
+
+        /// <summary>Master gain percent, 0..100, applied after per-voice
+        /// gain. Default 50 keeps headroom for the four-voice sum.</summary>
+        public int RumbleAudioMasterGain
+        {
+            get => RumbleAudioCfg?.MasterGainPercent ?? 50;
+            set
+            {
+                var cfg = RumbleAudioCfg;
+                if (cfg == null) return;
+                int v = Math.Clamp(value, 0, 100);
+                if (cfg.MasterGainPercent == v) return;
+                cfg.MasterGainPercent = v;
+                OnPropertyChanged(nameof(RumbleAudioMasterGain));
+                NotifyRumbleAudioConfigChanged();
+            }
+        }
+
+        /// <summary>Active render endpoints for the output picker. Reuses
+        /// the mirror-source option shape (Id "" = system default).</summary>
+        public System.Collections.ObjectModel.ObservableCollection<MirrorSourceOption> RumbleAudioEndpointOptions { get; } = new();
+
+        /// <summary>Repopulates <see cref="RumbleAudioEndpointOptions"/>
+        /// from the active render endpoints. Diff-syncs in place so the
+        /// ComboBox selection rides through a refresh (never Clear()).
+        /// A configured endpoint that is currently absent stays listed as
+        /// unavailable so the fail-closed selection remains visible.</summary>
+        public void RefreshRumbleAudioEndpoints()
+        {
+            _refreshingRumbleAudioEndpoints = true;
+            try
+            {
+                string current = RumbleAudioEndpointId;
+                var desired = new System.Collections.Generic.List<MirrorSourceOption>
+                {
+                    new MirrorSourceOption { Id = string.Empty, Name = Strings.Instance.Pad_Audio_SystemDefault },
+                };
+                try
+                {
+                    using var en = new NAudio.CoreAudioApi.MMDeviceEnumerator();
+                    foreach (var dev in en.EnumerateAudioEndPoints(
+                        NAudio.CoreAudioApi.DataFlow.Render, NAudio.CoreAudioApi.DeviceState.Active))
+                    {
+                        using (dev)
+                            desired.Add(new MirrorSourceOption { Id = dev.ID, Name = dev.FriendlyName });
+                    }
+                }
+                catch { }
+                if (!string.IsNullOrEmpty(current)
+                    && !desired.Any(o => o.Id == current))
+                    desired.Add(new MirrorSourceOption { Id = current, Name = Strings.Instance.Pad_Audio_SourceUnavailable });
+
+                for (int i = 0; i < desired.Count; i++)
+                {
+                    int j = -1;
+                    for (int k = i; k < RumbleAudioEndpointOptions.Count; k++)
+                        if (RumbleAudioEndpointOptions[k].Id == desired[i].Id) { j = k; break; }
+                    if (j < 0) RumbleAudioEndpointOptions.Insert(i, desired[i]);
+                    else if (j != i) RumbleAudioEndpointOptions.Move(j, i);
+                }
+                while (RumbleAudioEndpointOptions.Count > desired.Count)
+                    RumbleAudioEndpointOptions.RemoveAt(RumbleAudioEndpointOptions.Count - 1);
+
+                OnPropertyChanged(nameof(RumbleAudioEndpointId));
+            }
+            finally { _refreshingRumbleAudioEndpoints = false; }
+        }
+
+        /// <summary>Rebuilds the Bass Shakers tab state from the slot's
+        /// live MappingSet. Called beside <see cref="ReloadMenus"/> from
+        /// every path that swaps or rewrites the slot set (profile apply,
+        /// Workshop import, output-type change, Reset to Defaults, paste,
+        /// Copy From Slot, slot delete).</summary>
+        public void ReloadRumbleAudio()
+        {
+            var cfg = RumbleAudioCfg;
+            for (int i = 0; i < RumbleAudioVoices.Count; i++)
+                RumbleAudioVoices[i].LoadFrom(cfg?.FindVoice(RumbleAudioConfig.SourceOrder[i]));
+            OnPropertyChanged(nameof(RumbleAudioEnabled));
+            OnPropertyChanged(nameof(RumbleAudioEndpointId));
+            OnPropertyChanged(nameof(RumbleAudioChannelMode));
+            OnPropertyChanged(nameof(RumbleAudioMasterGain));
+            OnPropertyChanged(nameof(RumbleAudioTabVisible));
+        }
+
+        /// <summary>Writes one voice row's edits into the DTO voice,
+        /// authoring the voice entry when the config predates it.</summary>
+        internal void WriteRumbleAudioVoice(int index, bool enabled, int gainPercent, int frequencyHz)
+        {
+            var cfg = RumbleAudioCfg;
+            if (cfg == null || (uint)index >= RumbleAudioConfig.SourceOrder.Length) return;
+            string source = RumbleAudioConfig.SourceOrder[index];
+            var voice = cfg.FindVoice(source);
+            if (voice == null)
+            {
+                voice = new RumbleAudioVoice { Source = source };
+                cfg.Voices.Add(voice);
+            }
+            voice.Enabled = enabled;
+            voice.GainPercent = Math.Clamp(gainPercent, 0, 100);
+            voice.FrequencyHz = Math.Clamp(frequencyHz,
+                RumbleAudioConfig.MinFrequencyHz, RumbleAudioConfig.MaxFrequencyHz);
+            NotifyRumbleAudioConfigChanged();
+        }
+
+        /// <summary>Every persisted edit funnels here. Marks the settings
+        /// dirty (without it the change never reaches disk) and reconciles
+        /// the renderer on a worker task. Reconcile touches WASAPI, so it
+        /// must never run on the UI thread's critical path.</summary>
+        private void NotifyRumbleAudioConfigChanged()
+        {
+            ConfigItemDirtyCallback?.Invoke();
+            System.Threading.Tasks.Task.Run(() =>
+            {
+                try
+                {
+                    RumbleAudioService.EnsureStarted();
+                    RumbleAudioService.Reconcile();
+                }
+                catch { }
+            });
+        }
+
+        private RelayCommand _resetRumbleAudioEnabledCommand;
+        /// <summary>Per-row reset for the enable toggle. Default is off.</summary>
+        public RelayCommand ResetRumbleAudioEnabledCommand =>
+            _resetRumbleAudioEnabledCommand ??= new RelayCommand(() => RumbleAudioEnabled = false);
+
+        private RelayCommand _resetRumbleAudioEndpointCommand;
+        public RelayCommand ResetRumbleAudioEndpointCommand =>
+            _resetRumbleAudioEndpointCommand ??= new RelayCommand(() => RumbleAudioEndpointId = string.Empty);
+
+        private RelayCommand _resetRumbleAudioChannelModeCommand;
+        public RelayCommand ResetRumbleAudioChannelModeCommand =>
+            _resetRumbleAudioChannelModeCommand ??= new RelayCommand(() => RumbleAudioChannelMode = string.Empty);
+
+        private RelayCommand _resetRumbleAudioMasterGainCommand;
+        public RelayCommand ResetRumbleAudioMasterGainCommand =>
+            _resetRumbleAudioMasterGainCommand ??= new RelayCommand(() => RumbleAudioMasterGain = 50);
+
+        private RelayCommand _resetRumbleAudioAllCommand;
+        /// <summary>Card-level Reset All: endpoint to system default, mono,
+        /// master gain 50, every voice to enabled / 100 / default carrier.
+        /// Keeps Enabled as it is (the enable row's own reset covers it).</summary>
+        public RelayCommand ResetRumbleAudioAllCommand =>
+            _resetRumbleAudioAllCommand ??= new RelayCommand(() =>
+            {
+                if (RumbleAudioCfg == null) return;
+                RumbleAudioEndpointId = string.Empty;
+                RumbleAudioChannelMode = string.Empty;
+                RumbleAudioMasterGain = 50;
+                foreach (var voice in RumbleAudioVoices)
+                    voice.ResetToDefault();
+            });
+
+        private RelayCommand _rumbleAudioSweepCommand;
+        /// <summary>Resonance finder: sweeps 20..120 Hz over eight seconds
+        /// on the low-voice routing.</summary>
+        public RelayCommand RumbleAudioSweepCommand =>
+            _rumbleAudioSweepCommand ??= new RelayCommand(() =>
+                RumbleAudioService.StartSweep(PadIndex, 8000));
+
+        private RelayCommand _rumbleAudioStopTestCommand;
+        public RelayCommand RumbleAudioStopTestCommand =>
+            _rumbleAudioStopTestCommand ??= new RelayCommand(() =>
+                RumbleAudioService.StopTest(PadIndex));
+
+        /// <summary>One Bass Shakers voice row (#236). Keyed by voice
+        /// index into <see cref="RumbleAudioConfig.SourceOrder"/>. Edits
+        /// route through the owner so the row never holds a reference to
+        /// a DTO the profile-apply path may have replaced.</summary>
+        public sealed class RumbleAudioVoiceItem : ObservableObject
+        {
+            private readonly PadViewModel _owner;
+            private readonly int _index;
+            private bool _loading;
+            private bool _enabled = true;
+            private int _gainPercent = 100;
+            private int _frequencyHz;
+            private double _meterLevel;
+
+            internal RumbleAudioVoiceItem(PadViewModel owner, int index)
+            {
+                _owner = owner;
+                _index = index;
+                _frequencyHz = RumbleAudioConfig.DefaultFrequencyHz[index];
+            }
+
+            /// <summary>Localized row label, live lookup so a language
+            /// switch re-renders without rebuilding the list.</summary>
+            public string Label => _index switch
+            {
+                0 => Strings.Instance.Pad_RumbleAudio_Voice_Low,
+                1 => Strings.Instance.Pad_RumbleAudio_Voice_High,
+                2 => Strings.Instance.Pad_RumbleAudio_Voice_TriggerLeft,
+                _ => Strings.Instance.Pad_RumbleAudio_Voice_TriggerRight,
+            };
+
+            /// <summary>Per-row reset tooltip, "Reset {Row}" per canon.</summary>
+            public string ResetTooltip => _index switch
+            {
+                0 => Strings.Instance.Pad_RumbleAudio_ResetVoiceLow,
+                1 => Strings.Instance.Pad_RumbleAudio_ResetVoiceHigh,
+                2 => Strings.Instance.Pad_RumbleAudio_ResetVoiceTriggerLeft,
+                _ => Strings.Instance.Pad_RumbleAudio_ResetVoiceTriggerRight,
+            };
+
+            /// <summary>Per-voice enable. Gain and frequency stay authored
+            /// while muted.</summary>
+            public bool Enabled
+            {
+                get => _enabled;
+                set { if (SetProperty(ref _enabled, value)) Push(); }
+            }
+
+            /// <summary>Voice gain percent, 0..100, before master gain.</summary>
+            public int GainPercent
+            {
+                get => _gainPercent;
+                set
+                {
+                    int v = Math.Clamp(value, 0, 100);
+                    if (SetProperty(ref _gainPercent, v)) Push();
+                }
+            }
+
+            /// <summary>Sine carrier frequency in Hz, 20..120.</summary>
+            public int FrequencyHz
+            {
+                get => _frequencyHz;
+                set
+                {
+                    int v = Math.Clamp(value,
+                        RumbleAudioConfig.MinFrequencyHz, RumbleAudioConfig.MaxFrequencyHz);
+                    if (SetProperty(ref _frequencyHz, v)) Push();
+                }
+            }
+
+            /// <summary>Live activity 0..100 for the row meter, written by
+            /// the page's meter timer. Never persisted.</summary>
+            public double MeterLevel
+            {
+                get => _meterLevel;
+                set => SetProperty(ref _meterLevel, value);
+            }
+
+            private RelayCommand _testCommand;
+            /// <summary>Plays this voice for 1.5 seconds at authored gain.</summary>
+            public RelayCommand TestCommand =>
+                _testCommand ??= new RelayCommand(() =>
+                    RumbleAudioService.PulseTestVoice(_owner.PadIndex, _index, 1500));
+
+            private RelayCommand _resetCommand;
+            /// <summary>Row reset: enabled, gain 100, default carrier.</summary>
+            public RelayCommand ResetCommand =>
+                _resetCommand ??= new RelayCommand(ResetToDefault);
+
+            internal void ResetToDefault()
+            {
+                Enabled = true;
+                GainPercent = 100;
+                FrequencyHz = RumbleAudioConfig.DefaultFrequencyHz[_index];
+            }
+
+            /// <summary>Re-seeds the row from the DTO voice (null reads as
+            /// the source's default voice) without writing back.</summary>
+            internal void LoadFrom(RumbleAudioVoice voice)
+            {
+                _loading = true;
+                try
+                {
+                    Enabled = voice?.Enabled ?? true;
+                    GainPercent = voice?.GainPercent ?? 100;
+                    FrequencyHz = voice?.FrequencyHz ?? RumbleAudioConfig.DefaultFrequencyHz[_index];
+                }
+                finally { _loading = false; }
+                OnPropertyChanged(nameof(Label));
+                OnPropertyChanged(nameof(ResetTooltip));
+            }
+
+            private void Push()
+            {
+                if (_loading) return;
+                _owner.WriteRumbleAudioVoice(_index, _enabled, _gainPercent, _frequencyHz);
+            }
+        }
+
+        // ═══════════════════════════════════════════════
         //  Active config tab
         // ═══════════════════════════════════════════════
 
@@ -4802,7 +5208,8 @@ namespace PadForge.ViewModels
             get => _selectedConfigTab;
             set
             {
-                if (SetProperty(ref _selectedConfigTab, value) && value == AudioTabIndex)
+                if (!SetProperty(ref _selectedConfigTab, value)) return;
+                if (value == AudioTabIndex)
                 {
                     // Entering the Audio tab: re-derive the sound-macro list,
                     // the selected device's speaker capability, and the
@@ -4814,6 +5221,14 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(SelectedDeviceHasHapticTones));
                     OnPropertyChanged(nameof(MirrorEngageSelectedInput));
                     RefreshMirrorSources();
+                }
+                else if (value == BassShakersTabIndex)
+                {
+                    // Entering the Bass Shakers tab: re-enumerate render
+                    // endpoints so hot-plugged devices show up, and re-seed
+                    // the rows from the slot set.
+                    RefreshRumbleAudioEndpoints();
+                    ReloadRumbleAudio();
                 }
             }
         }

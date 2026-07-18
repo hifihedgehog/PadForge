@@ -142,6 +142,21 @@ namespace PadForge.Engine.Common.Mapping
                              // Lives in the "Gamepad " abstract namespace
                              // like StickRing. Leading 'G' keeps it clear
                              // of the I/H prefix grammar.
+            Rumble,          // "Rumble Low" / "Rumble High" / "Rumble
+                             // Trigger Left" / "Rumble Trigger Right"
+                             // (issue #236). The four inbound game-feedback
+                             // channels the SLOT's virtual controller
+                             // receives, read through SlotRumbleProvider.
+                             // SLOT-GLOBAL: unlike every family above this
+                             // one never resolves per-device (a device-less
+                             // slot still receives game feedback), so it
+                             // must NOT join the "(Any device)" picker
+                             // group, whose contract is per-device
+                             // resolution (MappingDisplayResolver). v1
+                             // consumes it from the dedicated feedback
+                             // lane's four fixed voice bindings, not from
+                             // user-authored rows. Leading 'R' keeps it
+                             // clear of the I/H prefix grammar.
         }
 
         /// <summary>Sensitivity constant for gyro bipolar coercion.
@@ -259,6 +274,22 @@ namespace PadForge.Engine.Common.Mapping
         /// state unavailable. The bool argument selects the stick:
         /// true = left, false = right.</summary>
         public static Func<int, bool, (float x, float y)> SlotStickDeflectionProvider { get; set; }
+
+        /// <summary>Slot-global inbound game-feedback hook (issue #236).
+        /// Returns the packed <c>LfeOutputState</c> long (bits 0-15 low
+        /// motor, 16-31 high motor, 32-47 left trigger, 48-63 right
+        /// trigger, each 0..65535) the slot's virtual controller most
+        /// recently RECEIVED from the game, or 0 for an empty / device-
+        /// less / non-feedback slot. PROVENANCE CONTRACT: the App wires
+        /// this to the controller-local raw pack the VC callbacks fill,
+        /// never to FinalVibrationStates or any per-physical-device
+        /// projection (test rumble, macro rumble, AudioBassDetector, and
+        /// per-device gain/swap all live downstream and must not leak
+        /// into the audio-routing read, or the shaker loop feeds itself).
+        /// Slot-global by design: rumble does not resolve per-device, so
+        /// the readers ignore DeviceGuid entirely and the family never
+        /// joins the "(Any device)" picker group.</summary>
+        public static Func<int, long> SlotRumbleProvider { get; set; }
 
         /// <summary>Reduces a stick's signed (x, y) to the 0..1 deflection
         /// the Easy-Aim threshold compares against, per the direction gate
@@ -927,6 +958,8 @@ namespace PadForge.Engine.Common.Mapping
                 return SourceType.CapSense;
             if (IsMenuItemDescriptor(s))
                 return SourceType.MenuItem;
+            if (IsRumbleDescriptor(s))
+                return SourceType.Rumble;
 
             string[] parts = s.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
             if (parts.Length < 2) return SourceType.Unmapped;
@@ -2008,6 +2041,68 @@ namespace PadForge.Engine.Common.Mapping
             return ch >= 0 && ch < state.CapSense.Length && state.CapSense[ch];
         }
 
+        // ─── Inbound rumble family (issue #236) ────────────────────────
+        //
+        // The four game-feedback channels the slot's virtual controller
+        // receives, in LfeOutputState voice order. Slot-global: the read
+        // ignores DeviceGuid and CustomInputState entirely and pulls the
+        // packed pack through SlotRumbleProvider.
+
+        /// <summary>Voice 0: the low-frequency (left / heavy) body motor.</summary>
+        public const string RumbleLowDescriptor = "Rumble Low";
+        /// <summary>Voice 1: the high-frequency (right / light) body motor.</summary>
+        public const string RumbleHighDescriptor = "Rumble High";
+        /// <summary>Voice 2: the left impulse-trigger motor.</summary>
+        public const string RumbleTriggerLeftDescriptor = "Rumble Trigger Left";
+        /// <summary>Voice 3: the right impulse-trigger motor.</summary>
+        public const string RumbleTriggerRightDescriptor = "Rumble Trigger Right";
+
+        /// <summary>The four rumble descriptors in
+        /// <see cref="LfeOutputState"/> voice order.</summary>
+        public static readonly string[] RumbleDescriptorTable =
+        {
+            RumbleLowDescriptor,
+            RumbleHighDescriptor,
+            RumbleTriggerLeftDescriptor,
+            RumbleTriggerRightDescriptor,
+        };
+
+        /// <summary>True for any member of the inbound rumble family.</summary>
+        public static bool IsRumbleDescriptor(string descriptor)
+            => TryGetRumbleVoice(descriptor, out _);
+
+        /// <summary>Resolves a rumble descriptor to its
+        /// <see cref="LfeOutputState"/> voice index (0 low, 1 high,
+        /// 2 trigger left, 3 trigger right). False for anything else.</summary>
+        public static bool TryGetRumbleVoice(string descriptor, out int voice)
+        {
+            voice = -1;
+            if (string.IsNullOrEmpty(descriptor)) return false;
+            string s = descriptor.Trim();
+            for (int i = 0; i < RumbleDescriptorTable.Length; i++)
+            {
+                if (string.Equals(s, RumbleDescriptorTable[i], StringComparison.OrdinalIgnoreCase))
+                {
+                    voice = i;
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        /// <summary>The rumble scalar read shared by all three reader
+        /// branches: the voice's received magnitude as unipolar 0..1
+        /// (ushort / 65535). Inactive rumble reads 0, never negative,
+        /// so the bipolar branch returns this UNSHIFTED (a value*2-1
+        /// mapping would read idle rumble as a full-negative stick
+        /// deflection).</summary>
+        private static float ReadRumbleUnipolar(int slotIndex, string canonical)
+        {
+            if (!TryGetRumbleVoice(canonical, out int voice)) return 0f;
+            long packed = SlotRumbleProvider?.Invoke(slotIndex) ?? 0L;
+            return LfeOutputState.Voice(packed, voice) / 65535f;
+        }
+
         /// <summary>Returns a gyro reading processed through the full
         /// per-device tuning chain:
         /// <list type="number">
@@ -2438,6 +2533,9 @@ namespace PadForge.Engine.Common.Mapping
             // picks which direction pulls the trigger; 1-v on a velocity would
             // read "full pull while still", which is never wanted.
             if ((src.Descriptor ?? "").StartsWith("Mouse Motion ", StringComparison.Ordinal)) return raw;
+            // Inbound rumble (#236) is an event magnitude with the same
+            // shape: 1-v would read "full pull while the game is quiet".
+            if (IsRumbleDescriptor(src.Descriptor ?? "")) return raw;
             // HalfAxis on a centered Axis source likewise internalizes
             // Invert as the half selector (lower half pulls the trigger).
             // 1-raw on top would read full-pressed at rest.
@@ -2540,6 +2638,15 @@ namespace PadForge.Engine.Common.Mapping
             {
                 return MenuItemFiredProvider?.Invoke(
                     slotIndex, deviceGuid ?? "", menuFireId, menuFireItem) ?? false;
+            }
+
+            // Inbound rumble (#236): amplitude past the normal button
+            // threshold (per-source DeadZone, else the global percent),
+            // the axis-as-button contract.
+            if (IsRumbleDescriptor(s))
+            {
+                int rdz = src.DeadZone > 0 ? src.DeadZone : globalThresholdPercent;
+                return ReadRumbleUnipolar(slotIndex, s) > Math.Max(rdz, 1) / 100f;
             }
 
             if (IsTouchpadGestureDescriptor(s))
@@ -2821,6 +2928,12 @@ namespace PadForge.Engine.Common.Mapping
                 return menuFired ? 1f : 0f;
             }
 
+            // Inbound rumble (#236) as an axis contribution: NONNEGATIVE
+            // 0..1 (never value*2-1, which would read idle rumble as a
+            // full-negative deflection).
+            if (IsRumbleDescriptor(s))
+                return ReadRumbleUnipolar(slotIndex, s);
+
             if (IsTouchpadGestureDescriptor(s))
             {
                 if (!TryParseTouchpadGesture(s, out int gPad, out string gName)) return 0f;
@@ -3087,6 +3200,11 @@ namespace PadForge.Engine.Common.Mapping
                     slotIndex, deviceGuid ?? "", menuUniId, menuUniItem) ?? false;
                 return menuFired ? 1f : 0f;
             }
+
+            // Inbound rumble (#236), unipolar: the voice's received
+            // magnitude, ushort / 65535.
+            if (IsRumbleDescriptor(s))
+                return ReadRumbleUnipolar(slotIndex, s);
 
             if (IsTouchpadGestureDescriptor(s))
             {

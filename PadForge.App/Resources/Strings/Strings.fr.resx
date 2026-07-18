@@ -2671,4 +2671,45 @@
   <data name="Workshop_Tr_MenuEmpty" xml:space="preserve"><value>le menu n'a aucune case affectée</value></data>
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>surface hôte du menu non prise en charge ({0})</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>icône de case du menu non reconnue ({0}), la case conserve donc son libellé texte</value></data>
+  <data name="Pad_Tab_BassShakers" xml:space="preserve"><value>Bass shakers</value></data>
+  <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Bass shakers</value></data>
+  <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Route la vibration de jeu reçue par cette manette virtuelle vers une sortie audio sous forme de sons basse fréquence pour bass shakers et caissons de basses.</value></data>
+  <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>Vibration vers audio</value></data>
+  <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Fonctionne avec les manettes virtuelles Xbox et DualShock 4 / DualSense. Seul le retour du jeu passe par la sortie audio. Les vibrations de macro et de test restent sur la manette.</value></data>
+  <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>Réinitialiser la vibration vers audio</value></data>
+  <data name="Pad_RumbleAudio_Enable" xml:space="preserve"><value>Router la vibration vers une sortie audio</value></data>
+  <data name="Pad_RumbleAudio_Enable_Tooltip" xml:space="preserve"><value>Joue la vibration de jeu de cette manette virtuelle sous forme de sons basse fréquence sur la sortie audio choisie. La désactivation conserve tous les réglages.</value></data>
+  <data name="Pad_RumbleAudio_ResetEnable" xml:space="preserve"><value>Réinitialiser le routage de la vibration</value></data>
+  <data name="Pad_RumbleAudio_OutputDevice" xml:space="preserve"><value>Périphérique de sortie</value></data>
+  <data name="Pad_RumbleAudio_OutputDevice_Tooltip" xml:space="preserve"><value>Le périphérique de lecture qui reçoit les sons de vibration. Par défaut du système suit le périphérique de lecture par défaut de Windows. Si le périphérique choisi disparaît, l'audio reste muet jusqu'à son retour.</value></data>
+  <data name="Pad_RumbleAudio_ResetOutputDevice" xml:space="preserve"><value>Réinitialiser le périphérique de sortie</value></data>
+  <data name="Pad_RumbleAudio_Status_Inactive" xml:space="preserve"><value>La sortie audio est à l'arrêt.</value></data>
+  <data name="Pad_RumbleAudio_Status_Active_Format" xml:space="preserve"><value>Lecture sur {0}.</value></data>
+  <data name="Pad_RumbleAudio_Status_Missing" xml:space="preserve"><value>Le périphérique de sortie choisi est indisponible. L'audio reste muet jusqu'à son retour.</value></data>
+  <data name="Pad_RumbleAudio_BluetoothHint" xml:space="preserve"><value>Les périphériques audio Bluetooth ajoutent une latence sensible.</value></data>
+  <data name="Pad_RumbleAudio_ChannelMode" xml:space="preserve"><value>Mode des canaux</value></data>
+  <data name="Pad_RumbleAudio_ChannelMode_Tooltip" xml:space="preserve"><value>Mono joue chaque voix sur tous les canaux. Stéréo manette les répartit comme sur la manette : moteur basse fréquence et gâchette gauche à gauche, moteur haute fréquence et gâchette droite à droite.</value></data>
+  <data name="Pad_RumbleAudio_Mode_Mono" xml:space="preserve"><value>Mono (tous les canaux)</value></data>
+  <data name="Pad_RumbleAudio_Mode_Stereo" xml:space="preserve"><value>Stéréo manette</value></data>
+  <data name="Pad_RumbleAudio_ResetChannelMode" xml:space="preserve"><value>Réinitialiser le mode des canaux</value></data>
+  <data name="Pad_RumbleAudio_MasterGain" xml:space="preserve"><value>Gain général</value></data>
+  <data name="Pad_RumbleAudio_MasterGain_Tooltip" xml:space="preserve"><value>Volume global appliqué après le gain de chaque voix. Gardez de la marge pour que les quatre voix ne saturent pas ensemble.</value></data>
+  <data name="Pad_RumbleAudio_ResetMasterGain" xml:space="preserve"><value>Réinitialiser le gain général</value></data>
+  <data name="Pad_RumbleAudio_Voice_Low" xml:space="preserve"><value>Moteur basse fréquence</value></data>
+  <data name="Pad_RumbleAudio_Voice_High" xml:space="preserve"><value>Moteur haute fréquence</value></data>
+  <data name="Pad_RumbleAudio_Voice_TriggerLeft" xml:space="preserve"><value>Gâchette gauche</value></data>
+  <data name="Pad_RumbleAudio_Voice_TriggerRight" xml:space="preserve"><value>Gâchette droite</value></data>
+  <data name="Pad_RumbleAudio_VoiceEnable_Tooltip" xml:space="preserve"><value>Joue ce canal de retour sous forme de son. Le gain et la fréquence sont conservés quand il est désactivé.</value></data>
+  <data name="Pad_RumbleAudio_Frequency_Tooltip" xml:space="preserve"><value>Fréquence du son de ce canal, de 20 à 120 Hz. Lancez le balayage de fréquence pour trouver où votre shaker répond le plus fort.</value></data>
+  <data name="Pad_RumbleAudio_Gain_Tooltip" xml:space="preserve"><value>Volume de ce canal avant le gain général.</value></data>
+  <data name="Pad_RumbleAudio_Test" xml:space="preserve"><value>Tester</value></data>
+  <data name="Pad_RumbleAudio_Test_Tooltip" xml:space="preserve"><value>Joue le son de ce canal pendant 1,5 seconde à son gain réglé.</value></data>
+  <data name="Pad_RumbleAudio_ResetVoiceLow" xml:space="preserve"><value>Réinitialiser le moteur basse fréquence</value></data>
+  <data name="Pad_RumbleAudio_ResetVoiceHigh" xml:space="preserve"><value>Réinitialiser le moteur haute fréquence</value></data>
+  <data name="Pad_RumbleAudio_ResetVoiceTriggerLeft" xml:space="preserve"><value>Réinitialiser la gâchette gauche</value></data>
+  <data name="Pad_RumbleAudio_ResetVoiceTriggerRight" xml:space="preserve"><value>Réinitialiser la gâchette droite</value></data>
+  <data name="Pad_RumbleAudio_Sweep" xml:space="preserve"><value>Balayage de fréquence</value></data>
+  <data name="Pad_RumbleAudio_Sweep_Tooltip" xml:space="preserve"><value>Balaye un son de 20 à 120 Hz pendant huit secondes sur la voie du moteur basse fréquence. Notez où votre shaker répond le plus fort et réglez-y les fréquences des voix.</value></data>
+  <data name="Pad_RumbleAudio_StopTest" xml:space="preserve"><value>Arrêter</value></data>
+  <data name="Pad_RumbleAudio_StopTest_Tooltip" xml:space="preserve"><value>Arrête le son de test ou le balayage.</value></data>
 </root>

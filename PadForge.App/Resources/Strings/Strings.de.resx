@@ -2671,4 +2671,45 @@
   <data name="Workshop_Tr_MenuEmpty" xml:space="preserve"><value>Menü hat keine belegten Felder</value></data>
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>Menü-Host-Oberfläche nicht unterstützt ({0})</value></data>
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>Menü-Feld-Symbol nicht erkannt ({0}), das Feld behält daher seine Textbeschriftung</value></data>
+  <data name="Pad_Tab_BassShakers" xml:space="preserve"><value>Bass-Shaker</value></data>
+  <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Bass-Shaker</value></data>
+  <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Leitet die Spiel-Vibration, die dieser virtuelle Controller empfängt, als tieffrequente Töne an einen Audioausgang für Bass-Shaker und Subwoofer.</value></data>
+  <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>Vibration zu Audio</value></data>
+  <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Funktioniert mit virtuellen Xbox- und DualShock-4- / DualSense-Controllern. Nur Spiel-Feedback läuft über den Audioausgang. Makro- und Test-Vibration bleiben auf dem Controller.</value></data>
+  <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>Vibration zu Audio zurücksetzen</value></data>
+  <data name="Pad_RumbleAudio_Enable" xml:space="preserve"><value>Vibration an einen Audioausgang leiten</value></data>
+  <data name="Pad_RumbleAudio_Enable_Tooltip" xml:space="preserve"><value>Spielt die Spiel-Vibration dieses virtuellen Controllers als tieffrequente Töne auf dem gewählten Audioausgang. Beim Ausschalten bleiben alle Einstellungen erhalten.</value></data>
+  <data name="Pad_RumbleAudio_ResetEnable" xml:space="preserve"><value>Vibrationsweiterleitung zurücksetzen</value></data>
+  <data name="Pad_RumbleAudio_OutputDevice" xml:space="preserve"><value>Ausgabegerät</value></data>
+  <data name="Pad_RumbleAudio_OutputDevice_Tooltip" xml:space="preserve"><value>Das Wiedergabegerät, das die Vibrationstöne erhält. Systemstandard folgt dem Windows-Standardwiedergabegerät. Verschwindet das gewählte Gerät, bleibt die Ausgabe stumm, bis es zurückkehrt.</value></data>
+  <data name="Pad_RumbleAudio_ResetOutputDevice" xml:space="preserve"><value>Ausgabegerät zurücksetzen</value></data>
+  <data name="Pad_RumbleAudio_Status_Inactive" xml:space="preserve"><value>Audioausgabe läuft nicht.</value></data>
+  <data name="Pad_RumbleAudio_Status_Active_Format" xml:space="preserve"><value>Wiedergabe auf {0}.</value></data>
+  <data name="Pad_RumbleAudio_Status_Missing" xml:space="preserve"><value>Das gewählte Ausgabegerät ist nicht verfügbar. Die Ausgabe bleibt stumm, bis es zurückkehrt.</value></data>
+  <data name="Pad_RumbleAudio_BluetoothHint" xml:space="preserve"><value>Bluetooth-Audiogeräte verursachen spürbare Latenz.</value></data>
+  <data name="Pad_RumbleAudio_ChannelMode" xml:space="preserve"><value>Kanalmodus</value></data>
+  <data name="Pad_RumbleAudio_ChannelMode_Tooltip" xml:space="preserve"><value>Mono spielt jede Stimme auf allen Lautsprecherkanälen. Controller-Stereo teilt sie wie am Controller auf: Niederfrequenz-Motor und linker Trigger links, Hochfrequenz-Motor und rechter Trigger rechts.</value></data>
+  <data name="Pad_RumbleAudio_Mode_Mono" xml:space="preserve"><value>Mono (alle Kanäle)</value></data>
+  <data name="Pad_RumbleAudio_Mode_Stereo" xml:space="preserve"><value>Controller-Stereo</value></data>
+  <data name="Pad_RumbleAudio_ResetChannelMode" xml:space="preserve"><value>Kanalmodus zurücksetzen</value></data>
+  <data name="Pad_RumbleAudio_MasterGain" xml:space="preserve"><value>Gesamtverstärkung</value></data>
+  <data name="Pad_RumbleAudio_MasterGain_Tooltip" xml:space="preserve"><value>Gesamtlautstärke nach der Verstärkung der einzelnen Stimmen. Etwas Reserve lassen, damit die vier Stimmen zusammen nicht übersteuern.</value></data>
+  <data name="Pad_RumbleAudio_ResetMasterGain" xml:space="preserve"><value>Gesamtverstärkung zurücksetzen</value></data>
+  <data name="Pad_RumbleAudio_Voice_Low" xml:space="preserve"><value>Niederfrequenz-Motor</value></data>
+  <data name="Pad_RumbleAudio_Voice_High" xml:space="preserve"><value>Hochfrequenz-Motor</value></data>
+  <data name="Pad_RumbleAudio_Voice_TriggerLeft" xml:space="preserve"><value>Linker Trigger</value></data>
+  <data name="Pad_RumbleAudio_Voice_TriggerRight" xml:space="preserve"><value>Rechter Trigger</value></data>
+  <data name="Pad_RumbleAudio_VoiceEnable_Tooltip" xml:space="preserve"><value>Spielt diesen Feedback-Kanal als Ton. Verstärkung und Frequenz bleiben beim Ausschalten erhalten.</value></data>
+  <data name="Pad_RumbleAudio_Frequency_Tooltip" xml:space="preserve"><value>Tonfrequenz dieses Kanals, 20 bis 120 Hz. Mit dem Frequenzdurchlauf finden, wo der Shaker am stärksten anspricht.</value></data>
+  <data name="Pad_RumbleAudio_Gain_Tooltip" xml:space="preserve"><value>Lautstärke dieses Kanals vor der Gesamtverstärkung.</value></data>
+  <data name="Pad_RumbleAudio_Test" xml:space="preserve"><value>Test</value></data>
+  <data name="Pad_RumbleAudio_Test_Tooltip" xml:space="preserve"><value>Spielt den Ton dieses Kanals 1,5 Sekunden mit der eingestellten Verstärkung.</value></data>
+  <data name="Pad_RumbleAudio_ResetVoiceLow" xml:space="preserve"><value>Niederfrequenz-Motor zurücksetzen</value></data>
+  <data name="Pad_RumbleAudio_ResetVoiceHigh" xml:space="preserve"><value>Hochfrequenz-Motor zurücksetzen</value></data>
+  <data name="Pad_RumbleAudio_ResetVoiceTriggerLeft" xml:space="preserve"><value>Linken Trigger zurücksetzen</value></data>
+  <data name="Pad_RumbleAudio_ResetVoiceTriggerRight" xml:space="preserve"><value>Rechten Trigger zurücksetzen</value></data>
+  <data name="Pad_RumbleAudio_Sweep" xml:space="preserve"><value>Frequenzdurchlauf</value></data>
+  <data name="Pad_RumbleAudio_Sweep_Tooltip" xml:space="preserve"><value>Durchläuft über acht Sekunden einen Ton von 20 bis 120 Hz auf dem Niederfrequenz-Weg. Merken, wo der Shaker am stärksten anspricht, und die Stimmenfrequenzen dort setzen.</value></data>
+  <data name="Pad_RumbleAudio_StopTest" xml:space="preserve"><value>Stopp</value></data>
+  <data name="Pad_RumbleAudio_StopTest_Tooltip" xml:space="preserve"><value>Stoppt Testton oder Durchlauf.</value></data>
 </root>

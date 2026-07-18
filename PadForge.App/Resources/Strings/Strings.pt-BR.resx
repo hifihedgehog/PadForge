@@ -2508,6 +2508,13 @@
   <data name="Mapping_TouchpadPointerYRight_Format" xml:space="preserve"><value>Touchpad {0} Ponteiro Y (Metade Direita)</value></data>
   <data name="Mapping_TouchpadFingerTouchLeft_Format" xml:space="preserve"><value>Touchpad {0} Dedo {1} Toque (Metade Esquerda)</value></data>
   <data name="Mapping_TouchpadFingerTouchRight_Format" xml:space="preserve"><value>Touchpad {0} Dedo {1} Toque (Metade Direita)</value></data>
+  <data name="Mapping_TouchpadWindow_Upper" xml:space="preserve"><value>Metade Superior</value></data>
+  <data name="Mapping_TouchpadWindow_Lower" xml:space="preserve"><value>Metade Inferior</value></data>
+  <data name="Mapping_TouchpadWindow_North" xml:space="preserve"><value>Quadrante Norte</value></data>
+  <data name="Mapping_TouchpadWindow_South" xml:space="preserve"><value>Quadrante Sul</value></data>
+  <data name="Mapping_TouchpadWindow_East" xml:space="preserve"><value>Quadrante Leste</value></data>
+  <data name="Mapping_TouchpadWindow_West" xml:space="preserve"><value>Quadrante Oeste</value></data>
+  <data name="Mapping_TouchpadWindow_Center" xml:space="preserve"><value>Centro</value></data>
   <data name="Pad_Touchpad_Pointer_Header" xml:space="preserve"><value>Ponteiro Absoluto</value></data>
   <data name="Pad_Touchpad_Pointer_Subtitle" xml:space="preserve"><value>Ajusta as fontes Touchpad Ponteiro X/Y, que levam o cursor à posição do dedo no pad (mapeie-as para Mouse X/Y em um controle virtual de Teclado / Mouse). Em 1.0 o pad corresponde 1:1 à tela. Aumente o alongamento para alcançar as bordas da tela antes que o polegar alcance a borda do pad.</value></data>
   <data name="Pad_Touchpad_PointerStretchX" xml:space="preserve"><value>Alongamento do Ponteiro X</value></data>
@@ -2520,12 +2527,21 @@
   <data name="Pad_Touchpad_SwipeHapticsEnabled_Tooltip" xml:space="preserve"><value>Emite um tick háptico curto sempre que o dedo percorre uma distância definida neste pad. Pousar um dedo ou clicar no pad nunca emite tick. Desligado por padrão.</value></data>
   <data name="Pad_Touchpad_SwipeHapticsIntensity" xml:space="preserve"><value>Intensidade do Pulso</value></data>
   <data name="Pad_Touchpad_SwipeHapticsIntensity_Tooltip" xml:space="preserve"><value>Força de cada tick. A vibração do jogo sempre vence quando é mais forte.</value></data>
+  <data name="Pad_Touchpad_SyntheticPressure_Header" xml:space="preserve"><value>Pressão Sintética</value></data>
+  <data name="Pad_Touchpad_SyntheticPressure_Subtitle" xml:space="preserve"><value>Simula os botões sensíveis à pressão do DualShock 2 / DualShock 3 em pads que relatam um toque como pressão total (DualShock 4, DualSense, Steam Controller 2015). Enquanto ativada, as fontes de mapeamento de pressão deste dispositivo leem nenhum toque como 0%, um toque em repouso como o Nível de Pressão do Toque e um clique do pad como 100%.</value></data>
+  <data name="Pad_Touchpad_SyntheticPressureEnabled" xml:space="preserve"><value>Ativar Pressão Sintética</value></data>
+  <data name="Pad_Touchpad_SyntheticPressureEnabled_Tooltip" xml:space="preserve"><value>Molda as fontes de mapeamento de pressão deste dispositivo em três degraus: nenhum toque lê 0%, um toque em repouso lê o Nível de Pressão do Toque e um clique do pad lê 100%. Desativada por padrão, o que preserva as leituras brutas em pads com pressão analógica real.</value></data>
+  <data name="Pad_Touchpad_SyntheticTouchLevel" xml:space="preserve"><value>Nível de Pressão do Toque</value></data>
+  <data name="Pad_Touchpad_SyntheticTouchLevel_Tooltip" xml:space="preserve"><value>Quanta pressão um toque em repouso (sem clique) relata. 50% deixa um degrau uniforme até o clique completo do pad.</value></data>
   <data name="Pad_ResetTouchpadPointer" xml:space="preserve"><value>Restaurar Ponteiro Absoluto</value></data>
   <data name="Pad_ResetTouchpadSwipeHaptics" xml:space="preserve"><value>Restaurar Háptica de Deslize</value></data>
+  <data name="Pad_ResetTouchpadSyntheticPressure" xml:space="preserve"><value>Restaurar Pressão Sintética</value></data>
   <data name="Pad_ResetTouchpadPointerStretchX" xml:space="preserve"><value>Restaurar Alongamento do Ponteiro X</value></data>
   <data name="Pad_ResetTouchpadPointerStretchY" xml:space="preserve"><value>Restaurar Alongamento do Ponteiro Y</value></data>
   <data name="Pad_ResetTouchpadSwipeHapticsEnabled" xml:space="preserve"><value>Restaurar Ativar Háptica de Deslize</value></data>
   <data name="Pad_ResetTouchpadSwipeHapticsIntensity" xml:space="preserve"><value>Restaurar Intensidade do Pulso</value></data>
+  <data name="Pad_ResetTouchpadSyntheticPressureEnabled" xml:space="preserve"><value>Restaurar Ativar Pressão Sintética</value></data>
+  <data name="Pad_ResetTouchpadSyntheticTouchLevel" xml:space="preserve"><value>Restaurar Nível de Pressão do Toque</value></data>
   <data name="Mapping_FlickStickRight" xml:space="preserve"><value>Flick Stick (Analógico Direito)</value></data>
   <data name="Mapping_FlickStickLeft" xml:space="preserve"><value>Flick Stick (Analógico Esquerdo)</value></data>
   <data name="Mapping_FlickStickTouchpad_Format" xml:space="preserve"><value>Flick Stick (Touchpad {0})</value></data>

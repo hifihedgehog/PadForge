@@ -2528,6 +2528,13 @@
   <data name="Mapping_TouchpadPointerYRight_Format" xml:space="preserve"><value>Touchpad {0} aanwijzer Y (rechterhelft)</value></data>
   <data name="Mapping_TouchpadFingerTouchLeft_Format" xml:space="preserve"><value>Touchpad {0} vinger {1} aanraking (linkerhelft)</value></data>
   <data name="Mapping_TouchpadFingerTouchRight_Format" xml:space="preserve"><value>Touchpad {0} vinger {1} aanraking (rechterhelft)</value></data>
+  <data name="Mapping_TouchpadWindow_Upper" xml:space="preserve"><value>Bovenste helft</value></data>
+  <data name="Mapping_TouchpadWindow_Lower" xml:space="preserve"><value>Onderste helft</value></data>
+  <data name="Mapping_TouchpadWindow_North" xml:space="preserve"><value>Noordkwadrant</value></data>
+  <data name="Mapping_TouchpadWindow_South" xml:space="preserve"><value>Zuidkwadrant</value></data>
+  <data name="Mapping_TouchpadWindow_East" xml:space="preserve"><value>Oostkwadrant</value></data>
+  <data name="Mapping_TouchpadWindow_West" xml:space="preserve"><value>Westkwadrant</value></data>
+  <data name="Mapping_TouchpadWindow_Center" xml:space="preserve"><value>Midden</value></data>
   <data name="Pad_Touchpad_Pointer_Header" xml:space="preserve"><value>Absolute aanwijzer</value></data>
   <data name="Pad_Touchpad_Pointer_Subtitle" xml:space="preserve"><value>Stemt de bronnen Touchpad aanwijzer X/Y af, die de cursor naar de positie van je vinger op het pad verplaatsen (wijs ze toe aan muis X/Y op een virtuele toetsenbord/muis-controller). Bij 1.0 komt het pad 1:1 met het scherm overeen. Verhoog de rek om de schermranden te bereiken voordat je duim de padrand bereikt.</value></data>
   <data name="Pad_Touchpad_PointerStretchX" xml:space="preserve"><value>Aanwijzerrek X</value></data>
@@ -2540,12 +2547,21 @@
   <data name="Pad_Touchpad_SwipeHapticsEnabled_Tooltip" xml:space="preserve"><value>Geeft een korte haptische tik telkens wanneer de vinger een ingestelde afstand op dit pad aflegt. Een vinger neerzetten of op het pad klikken tikt nooit. Standaard uit.</value></data>
   <data name="Pad_Touchpad_SwipeHapticsIntensity" xml:space="preserve"><value>Pulsintensiteit</value></data>
   <data name="Pad_Touchpad_SwipeHapticsIntensity_Tooltip" xml:space="preserve"><value>Sterkte van elke tik. Speltrillingen winnen altijd wanneer ze sterker zijn.</value></data>
+  <data name="Pad_Touchpad_SyntheticPressure_Header" xml:space="preserve"><value>Synthetische druk</value></data>
+  <data name="Pad_Touchpad_SyntheticPressure_Subtitle" xml:space="preserve"><value>Simuleert de drukgevoelige knoppen van DualShock 2 / DualShock 3 op pads die een aanraking als volledige druk melden (DualShock 4, DualSense, Steam Controller 2015). Zolang dit is ingeschakeld, lezen de drukbronnen van dit apparaat geen aanraking als 0%, een rustende aanraking als het aanraakdrukniveau en een padklik als 100%.</value></data>
+  <data name="Pad_Touchpad_SyntheticPressureEnabled" xml:space="preserve"><value>Synthetische druk inschakelen</value></data>
+  <data name="Pad_Touchpad_SyntheticPressureEnabled_Tooltip" xml:space="preserve"><value>Vormt de drukbronnen van dit apparaat om in drie stappen: geen aanraking leest 0%, een rustende aanraking leest het aanraakdrukniveau en een padklik leest 100%. Standaard uit, zodat pads met echte analoge druk hun ruwe waarden behouden.</value></data>
+  <data name="Pad_Touchpad_SyntheticTouchLevel" xml:space="preserve"><value>Aanraakdrukniveau</value></data>
+  <data name="Pad_Touchpad_SyntheticTouchLevel_Tooltip" xml:space="preserve"><value>Hoeveel druk een rustende (niet-geklikte) aanraking meldt. 50% laat een gelijke stap tot een volledige padklik.</value></data>
   <data name="Pad_ResetTouchpadPointer" xml:space="preserve"><value>Absolute aanwijzer resetten</value></data>
   <data name="Pad_ResetTouchpadSwipeHaptics" xml:space="preserve"><value>Veeghaptiek resetten</value></data>
+  <data name="Pad_ResetTouchpadSyntheticPressure" xml:space="preserve"><value>Synthetische druk resetten</value></data>
   <data name="Pad_ResetTouchpadPointerStretchX" xml:space="preserve"><value>Aanwijzerrek X resetten</value></data>
   <data name="Pad_ResetTouchpadPointerStretchY" xml:space="preserve"><value>Aanwijzerrek Y resetten</value></data>
   <data name="Pad_ResetTouchpadSwipeHapticsEnabled" xml:space="preserve"><value>Veeghaptiek inschakelen resetten</value></data>
   <data name="Pad_ResetTouchpadSwipeHapticsIntensity" xml:space="preserve"><value>Pulsintensiteit resetten</value></data>
+  <data name="Pad_ResetTouchpadSyntheticPressureEnabled" xml:space="preserve"><value>Synthetische druk inschakelen resetten</value></data>
+  <data name="Pad_ResetTouchpadSyntheticTouchLevel" xml:space="preserve"><value>Aanraakdrukniveau resetten</value></data>
   <data name="Mapping_FlickStickRight" xml:space="preserve"><value>Flick Stick (rechter stick)</value></data>
   <data name="Mapping_FlickStickLeft" xml:space="preserve"><value>Flick Stick (linker stick)</value></data>
   <data name="Mapping_FlickStickTouchpad_Format" xml:space="preserve"><value>Flick Stick (touchpad {0})</value></data>

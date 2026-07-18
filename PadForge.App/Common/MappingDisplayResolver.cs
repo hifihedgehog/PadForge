@@ -350,7 +350,8 @@ namespace PadForge.Common
                     {
                         bool left = tp[5].Equals("Left", System.StringComparison.OrdinalIgnoreCase);
                         bool right = tp[5].Equals("Right", System.StringComparison.OrdinalIgnoreCase);
-                        if (left || right)
+                        bool pressure = tp[4].Equals("Pressure", System.StringComparison.OrdinalIgnoreCase);
+                        if ((left || right) && !pressure)
                         {
                             fmt =
                                   tp[4].Equals("X",    System.StringComparison.OrdinalIgnoreCase) ? (left ? si.Mapping_TouchpadFingerXLeft_Format : si.Mapping_TouchpadFingerXRight_Format)
@@ -360,12 +361,20 @@ namespace PadForge.Common
                         }
                         else
                         {
-                            string w = TouchpadWindowPhrase(tp[5]);
+                            // Windowed Pressure (#239) renders EVERY zone token
+                            // as the parenthetical, the horizontal halves
+                            // included (no dedicated half-marked Pressure
+                            // formats exist), and additionally accepts the
+                            // pressure-only Center zone of the exclusive
+                            // five-zone DS3-sim layout. X / Y / Down keep the
+                            // v18 window vocabulary.
+                            string w = pressure ? TouchpadPressureZonePhrase(tp[5]) : TouchpadWindowPhrase(tp[5]);
                             if (w == null) return null;
                             fmt =
                                   tp[4].Equals("X",    System.StringComparison.OrdinalIgnoreCase) ? si.Mapping_TouchpadFingerX_Format
                                 : tp[4].Equals("Y",    System.StringComparison.OrdinalIgnoreCase) ? si.Mapping_TouchpadFingerY_Format
                                 : tp[4].Equals("Down", System.StringComparison.OrdinalIgnoreCase) ? si.Mapping_TouchpadFingerTouch_Format
+                                : pressure ? si.Mapping_TouchpadFingerPressure_Format
                                 : null;
                             windowSuffix = " (" + w + ")";
                         }
@@ -587,19 +596,41 @@ namespace PadForge.Common
         /// <summary>Localized display phrase for a touchpad window token
         /// (v18 grammar: SourceCoercion.ParseTouchpadHalf). Left / Right
         /// reuse the Menus tab's half atoms. The vertical halves and the
-        /// diamond quadrants render the descriptor grammar's own token:
-        /// they enter only via Workshop imports of Steam's four_buttons /
-        /// vertical-split zones, and the strings surface (owned by the
-        /// concurrent import batch) carries no dedicated keys for them
-        /// yet, so the verbatim token beats a raw-descriptor chip while
-        /// staying unambiguous. Returns null outside the grammar.</summary>
+        /// diamond quadrants carry their own Mapping_TouchpadWindow_*
+        /// keys (added with #239, replacing the verbatim-token stopgap
+        /// the v18 batch shipped). Returns null outside the grammar.</summary>
         private static string TouchpadWindowPhrase(string token) => token switch
         {
             "Left" => Strings.Instance.Menu_Half_Left,
             "Right" => Strings.Instance.Menu_Half_Right,
-            "Upper" or "Lower" or "North" or "South" or "East" or "West" => token,
+            "Upper" => Strings.Instance.Mapping_TouchpadWindow_Upper,
+            "Lower" => Strings.Instance.Mapping_TouchpadWindow_Lower,
+            "North" => Strings.Instance.Mapping_TouchpadWindow_North,
+            "South" => Strings.Instance.Mapping_TouchpadWindow_South,
+            "East"  => Strings.Instance.Mapping_TouchpadWindow_East,
+            "West"  => Strings.Instance.Mapping_TouchpadWindow_West,
             _ => null,
         };
+
+        /// <summary>Localized display phrase for a PRESSURE window token
+        /// (#239 grammar): the v18 window vocabulary plus the pressure-only
+        /// Center zone of the exclusive five-zone DS3-sim layout. Center
+        /// stays OUT of <see cref="TouchpadWindowPhrase"/> because no other
+        /// family accepts it (SourceCoercion.TryParseTouchpadAxis parses
+        /// Center for the Pressure axis only), so Click / Down / Ring
+        /// windows keep resolving null on it. Returns null outside the
+        /// grammar.</summary>
+        private static string TouchpadPressureZonePhrase(string token)
+            => token == "Center"
+                ? Strings.Instance.Mapping_TouchpadWindow_Center
+                : TouchpadWindowPhrase(token);
+
+        /// <summary>The nine window tokens the Pressure axis accepts
+        /// (#239), picker-iteration order. The four halves and four
+        /// diamond quadrants come from the v18 vocabulary, Center is the
+        /// pressure-only fifth zone.</summary>
+        private static readonly string[] TouchpadPressureZoneTokens =
+            { "Left", "Right", "Upper", "Lower", "North", "South", "East", "West", "Center" };
 
         /// <summary>True for the four diamond-quadrant window tokens (v18),
         /// the only tokens the 7-token composed form may lead with.</summary>
@@ -739,6 +770,20 @@ namespace PadForge.Common
                 list.Add(new InputChoice { Descriptor = $"Touchpad {p} Finger 0 Y",        DisplayName = string.Format(si.Mapping_TouchpadFingerY_Format,        p + 1, 1) });
                 list.Add(new InputChoice { Descriptor = $"Touchpad {p} Finger 0 Down",     DisplayName = string.Format(si.Mapping_TouchpadFingerTouch_Format,    p + 1, 1) });
                 list.Add(new InputChoice { Descriptor = $"Touchpad {p} Finger 0 Pressure", DisplayName = string.Format(si.Mapping_TouchpadFingerPressure_Format, p + 1, 1) });
+                // Windowed Pressure (#239): the nine zone reads, offered on
+                // EVERY pad (unlike the v18 halves below) because the
+                // five-zone DS3-sim lives per physical pad: a Steam
+                // Controller simulates the full DualShock 3 with left-pad
+                // zones as the D-pad and right-pad zones as the face
+                // buttons. Display names match ResolveDescriptorText
+                // exactly (the mirror-closure test).
+                foreach (var w in TouchpadPressureZoneTokens)
+                    list.Add(new InputChoice
+                    {
+                        Descriptor = $"Touchpad {p} Finger 0 Pressure {w}",
+                        DisplayName = string.Format(si.Mapping_TouchpadFingerPressure_Format, p + 1, 1)
+                            + " (" + TouchpadPressureZonePhrase(w) + ")",
+                    });
                 // Finger ring (v26): the edge-ring pair read the translator
                 // emits for Steam's edge_binding_radius / _invert geometry.
                 // Display name matches ResolveDescriptorText exactly (the
@@ -1445,6 +1490,21 @@ namespace PadForge.Common
                         list.Add(new InputChoice { Descriptor = $"Touchpad {p} Finger {f} Y",        DisplayName = string.Format(si.Mapping_TouchpadFingerY_Format,        p + 1, f + 1) });
                         list.Add(new InputChoice { Descriptor = $"Touchpad {p} Finger {f} Down",     DisplayName = string.Format(si.Mapping_TouchpadFingerTouch_Format,    p + 1, f + 1) });
                         list.Add(new InputChoice { Descriptor = $"Touchpad {p} Finger {f} Pressure", DisplayName = string.Format(si.Mapping_TouchpadFingerPressure_Format, p + 1, f + 1) });
+                        // Windowed Pressure (#239): the nine zone reads,
+                        // offered per pad and finger with NO single-pad
+                        // gate (unlike the v18 halves below): the
+                        // five-zone DS3-sim lives per physical pad, so a
+                        // Steam Controller needs the zones on both pads
+                        // (left pad = D-pad, right pad = face buttons).
+                        // Display names match ResolveDescriptorText
+                        // exactly (the mirror-closure convention).
+                        foreach (var w in TouchpadPressureZoneTokens)
+                            list.Add(new InputChoice
+                            {
+                                Descriptor = $"Touchpad {p} Finger {f} Pressure {w}",
+                                DisplayName = string.Format(si.Mapping_TouchpadFingerPressure_Format, p + 1, f + 1)
+                                    + " (" + TouchpadPressureZonePhrase(w) + ")",
+                            });
                         // Region-windowed halves (#9 B-1): only single-pad
                         // devices (DS4 / DualSense) offer them. Their one
                         // physical pad is what Steam splits into left/right

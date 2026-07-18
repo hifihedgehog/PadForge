@@ -2508,6 +2508,13 @@
   <data name="Mapping_TouchpadPointerYRight_Format" xml:space="preserve"><value>Pavé tactile {0} pointeur Y (moitié droite)</value></data>
   <data name="Mapping_TouchpadFingerTouchLeft_Format" xml:space="preserve"><value>Pavé tactile {0} doigt {1} toucher (moitié gauche)</value></data>
   <data name="Mapping_TouchpadFingerTouchRight_Format" xml:space="preserve"><value>Pavé tactile {0} doigt {1} toucher (moitié droite)</value></data>
+  <data name="Mapping_TouchpadWindow_Upper" xml:space="preserve"><value>Moitié supérieure</value></data>
+  <data name="Mapping_TouchpadWindow_Lower" xml:space="preserve"><value>Moitié inférieure</value></data>
+  <data name="Mapping_TouchpadWindow_North" xml:space="preserve"><value>Quadrant nord</value></data>
+  <data name="Mapping_TouchpadWindow_South" xml:space="preserve"><value>Quadrant sud</value></data>
+  <data name="Mapping_TouchpadWindow_East" xml:space="preserve"><value>Quadrant est</value></data>
+  <data name="Mapping_TouchpadWindow_West" xml:space="preserve"><value>Quadrant ouest</value></data>
+  <data name="Mapping_TouchpadWindow_Center" xml:space="preserve"><value>Centre</value></data>
   <data name="Pad_Touchpad_Pointer_Header" xml:space="preserve"><value>Pointeur absolu</value></data>
   <data name="Pad_Touchpad_Pointer_Subtitle" xml:space="preserve"><value>Règle les sources Pavé tactile pointeur X/Y, qui placent le curseur à la position du doigt sur le pavé (affectez-les à Souris X/Y sur une manette virtuelle Clavier / Souris). À 1.0, le pavé correspond 1:1 à l'écran. Augmentez l'étirement pour atteindre les bords de l'écran avant que le pouce n'atteigne le bord du pavé.</value></data>
   <data name="Pad_Touchpad_PointerStretchX" xml:space="preserve"><value>Étirement du pointeur X</value></data>
@@ -2520,12 +2527,21 @@
   <data name="Pad_Touchpad_SwipeHapticsEnabled_Tooltip" xml:space="preserve"><value>Émet un bref tic haptique chaque fois que le doigt parcourt une distance définie sur ce pavé. Poser un doigt ou cliquer sur le pavé ne fait jamais tiquer. Désactivé par défaut.</value></data>
   <data name="Pad_Touchpad_SwipeHapticsIntensity" xml:space="preserve"><value>Intensité des impulsions</value></data>
   <data name="Pad_Touchpad_SwipeHapticsIntensity_Tooltip" xml:space="preserve"><value>Force de chaque tic. La vibration du jeu gagne toujours quand elle est plus forte.</value></data>
+  <data name="Pad_Touchpad_SyntheticPressure_Header" xml:space="preserve"><value>Pression synthétique</value></data>
+  <data name="Pad_Touchpad_SyntheticPressure_Subtitle" xml:space="preserve"><value>Simule les boutons sensibles à la pression des DualShock 2 / DualShock 3 sur les pavés qui signalent un toucher comme une pression complète (DualShock 4, DualSense, Steam Controller 2015). Tant qu&apos;elle est activée, les sources de mappage de pression de cet appareil lisent l&apos;absence de toucher comme 0%, un toucher au repos comme le niveau de pression du toucher et un clic du pavé comme 100%.</value></data>
+  <data name="Pad_Touchpad_SyntheticPressureEnabled" xml:space="preserve"><value>Activer la pression synthétique</value></data>
+  <data name="Pad_Touchpad_SyntheticPressureEnabled_Tooltip" xml:space="preserve"><value>Façonne les sources de mappage de pression de cet appareil en trois paliers : l&apos;absence de toucher lit 0%, un toucher au repos lit le niveau de pression du toucher et un clic du pavé lit 100%. Désactivée par défaut, ce qui conserve les lectures brutes sur les pavés à vraie pression analogique.</value></data>
+  <data name="Pad_Touchpad_SyntheticTouchLevel" xml:space="preserve"><value>Niveau de pression du toucher</value></data>
+  <data name="Pad_Touchpad_SyntheticTouchLevel_Tooltip" xml:space="preserve"><value>Quantité de pression signalée par un toucher au repos (sans clic). 50% laisse un palier égal jusqu&apos;au clic complet du pavé.</value></data>
   <data name="Pad_ResetTouchpadPointer" xml:space="preserve"><value>Réinitialiser le pointeur absolu</value></data>
   <data name="Pad_ResetTouchpadSwipeHaptics" xml:space="preserve"><value>Réinitialiser l'haptique de balayage</value></data>
+  <data name="Pad_ResetTouchpadSyntheticPressure" xml:space="preserve"><value>Réinitialiser la pression synthétique</value></data>
   <data name="Pad_ResetTouchpadPointerStretchX" xml:space="preserve"><value>Réinitialiser l'étirement du pointeur X</value></data>
   <data name="Pad_ResetTouchpadPointerStretchY" xml:space="preserve"><value>Réinitialiser l'étirement du pointeur Y</value></data>
   <data name="Pad_ResetTouchpadSwipeHapticsEnabled" xml:space="preserve"><value>Réinitialiser l'activation de l'haptique de balayage</value></data>
   <data name="Pad_ResetTouchpadSwipeHapticsIntensity" xml:space="preserve"><value>Réinitialiser l'intensité des impulsions</value></data>
+  <data name="Pad_ResetTouchpadSyntheticPressureEnabled" xml:space="preserve"><value>Réinitialiser l&apos;activation de la pression synthétique</value></data>
+  <data name="Pad_ResetTouchpadSyntheticTouchLevel" xml:space="preserve"><value>Réinitialiser le niveau de pression du toucher</value></data>
   <data name="Mapping_FlickStickRight" xml:space="preserve"><value>Flick Stick (stick droit)</value></data>
   <data name="Mapping_FlickStickLeft" xml:space="preserve"><value>Flick Stick (stick gauche)</value></data>
   <data name="Mapping_FlickStickTouchpad_Format" xml:space="preserve"><value>Flick Stick (pavé tactile {0})</value></data>

@@ -2508,6 +2508,13 @@
   <data name="Mapping_TouchpadPointerYRight_Format" xml:space="preserve"><value>触控板 {0} 指针 Y（右半部分）</value></data>
   <data name="Mapping_TouchpadFingerTouchLeft_Format" xml:space="preserve"><value>触控板 {0} 手指 {1} 触摸（左半部分）</value></data>
   <data name="Mapping_TouchpadFingerTouchRight_Format" xml:space="preserve"><value>触控板 {0} 手指 {1} 触摸（右半部分）</value></data>
+  <data name="Mapping_TouchpadWindow_Upper" xml:space="preserve"><value>上半部分</value></data>
+  <data name="Mapping_TouchpadWindow_Lower" xml:space="preserve"><value>下半部分</value></data>
+  <data name="Mapping_TouchpadWindow_North" xml:space="preserve"><value>北区域</value></data>
+  <data name="Mapping_TouchpadWindow_South" xml:space="preserve"><value>南区域</value></data>
+  <data name="Mapping_TouchpadWindow_East" xml:space="preserve"><value>东区域</value></data>
+  <data name="Mapping_TouchpadWindow_West" xml:space="preserve"><value>西区域</value></data>
+  <data name="Mapping_TouchpadWindow_Center" xml:space="preserve"><value>中心</value></data>
   <data name="Pad_Touchpad_Pointer_Header" xml:space="preserve"><value>绝对指针</value></data>
   <data name="Pad_Touchpad_Pointer_Subtitle" xml:space="preserve"><value>调整触控板指针 X/Y 源，它们会把光标直接移动到手指在触控板上的位置（请在键盘 / 鼠标虚拟控制器上将其映射到鼠标 X/Y）。1.0 时触控板与屏幕 1:1 对应。调高拉伸可在拇指到达触控板边缘之前到达屏幕边缘。</value></data>
   <data name="Pad_Touchpad_PointerStretchX" xml:space="preserve"><value>指针拉伸 X</value></data>
@@ -2520,12 +2527,21 @@
   <data name="Pad_Touchpad_SwipeHapticsEnabled_Tooltip" xml:space="preserve"><value>手指在此触控板上每移动设定距离就发出一次短促的触觉咔嗒。手指落下或按下触控板不会产生咔嗒。默认关闭。</value></data>
   <data name="Pad_Touchpad_SwipeHapticsIntensity" xml:space="preserve"><value>脉冲强度</value></data>
   <data name="Pad_Touchpad_SwipeHapticsIntensity_Tooltip" xml:space="preserve"><value>每次咔嗒的强度。当游戏震动更强时始终以游戏震动为准。</value></data>
+  <data name="Pad_Touchpad_SyntheticPressure_Header" xml:space="preserve"><value>合成压力</value></data>
+  <data name="Pad_Touchpad_SyntheticPressure_Subtitle" xml:space="preserve"><value>在将触摸报告为最大压力的触控板（DualShock 4、DualSense、Steam Controller 2015）上模拟 DualShock 2 / DualShock 3 的压敏按键。启用期间，此设备的压力映射源将无触摸读取为 0%，静止触摸读取为触摸压力级别，按下触控板读取为 100%。</value></data>
+  <data name="Pad_Touchpad_SyntheticPressureEnabled" xml:space="preserve"><value>启用合成压力</value></data>
+  <data name="Pad_Touchpad_SyntheticPressureEnabled_Tooltip" xml:space="preserve"><value>将此设备的压力映射源变为三档：无触摸读取 0%，静止触摸读取触摸压力级别，按下触控板读取 100%。默认关闭，具有真实模拟压力的触控板保持原始读数。</value></data>
+  <data name="Pad_Touchpad_SyntheticTouchLevel" xml:space="preserve"><value>触摸压力级别</value></data>
+  <data name="Pad_Touchpad_SyntheticTouchLevel_Tooltip" xml:space="preserve"><value>静止（未按下）触摸报告的压力大小。50% 会在完全按下触控板之前留出均匀的一档。</value></data>
   <data name="Pad_ResetTouchpadPointer" xml:space="preserve"><value>重置绝对指针</value></data>
   <data name="Pad_ResetTouchpadSwipeHaptics" xml:space="preserve"><value>重置滑动触觉反馈</value></data>
+  <data name="Pad_ResetTouchpadSyntheticPressure" xml:space="preserve"><value>重置合成压力</value></data>
   <data name="Pad_ResetTouchpadPointerStretchX" xml:space="preserve"><value>重置指针拉伸 X</value></data>
   <data name="Pad_ResetTouchpadPointerStretchY" xml:space="preserve"><value>重置指针拉伸 Y</value></data>
   <data name="Pad_ResetTouchpadSwipeHapticsEnabled" xml:space="preserve"><value>重置启用滑动触觉反馈</value></data>
   <data name="Pad_ResetTouchpadSwipeHapticsIntensity" xml:space="preserve"><value>重置脉冲强度</value></data>
+  <data name="Pad_ResetTouchpadSyntheticPressureEnabled" xml:space="preserve"><value>重置启用合成压力</value></data>
+  <data name="Pad_ResetTouchpadSyntheticTouchLevel" xml:space="preserve"><value>重置触摸压力级别</value></data>
   <data name="Mapping_FlickStickRight" xml:space="preserve"><value>Flick Stick（右摇杆）</value></data>
   <data name="Mapping_FlickStickLeft" xml:space="preserve"><value>Flick Stick（左摇杆）</value></data>
   <data name="Mapping_FlickStickTouchpad_Format" xml:space="preserve"><value>Flick Stick（触控板 {0}）</value></data>

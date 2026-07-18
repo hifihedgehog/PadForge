@@ -10205,6 +10205,59 @@
                             </StackPanel>
                         </Border>
 
+                        <!-- ─── Synthetic Pressure card (discussion #239) ───
+                             DS2/DS3-style pressure synthesis for pads whose
+                             hardware reports a touch as pressure 1.0
+                             (DualShock 4, DualSense, Steam Controller 2015):
+                             mapping Pressure reads become no touch = 0,
+                             touch = the configured level, pad click = 100%.
+                             The two fields live on the per-device
+                             DeviceSlotConfig (the Audio tab's mirror-row
+                             pattern), so the bindings follow the selected
+                             device through the DeviceConfig anchor. Rows
+                             follow the Swipe Haptics card anatomy. -->
+                        <Border Style="{StaticResource CardBorder}">
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                    <TextBlock Text="&#xEDA4;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="16" Foreground="{DynamicResource EmberBrush}"
+                                               VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                    <TextBlock Text="{Binding Pad_Touchpad_SyntheticPressure_Header, Source={x:Static strings:Strings.Instance}}"
+                                               Style="{StaticResource CardTitle}"/>
+                                    <ui:Button Command="{Binding ResetTouchpadSyntheticPressureCardCommand}" Style="{StaticResource ResetAllButton}"
+                                            Content="{Binding Pad_ResetAll, Source={x:Static strings:Strings.Instance}}" Margin="12,0,0,0"
+                                            ToolTip="{Binding Pad_ResetTouchpadSyntheticPressure, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
+                                <TextBlock Text="{Binding Pad_Touchpad_SyntheticPressure_Subtitle, Source={x:Static strings:Strings.Instance}}"
+                                           Style="{StaticResource CardDescription}"/>
+
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                                    <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}" Content="{Binding Pad_Touchpad_SyntheticPressureEnabled, Source={x:Static strings:Strings.Instance}}"
+                                              ToolTip="{Binding Pad_Touchpad_SyntheticPressureEnabled_Tooltip, Source={x:Static strings:Strings.Instance}}"
+                                              IsChecked="{Binding DeviceConfig.TouchpadSyntheticPressure, Mode=TwoWay}" VerticalAlignment="Center"/>
+                                    <ui:Button Command="{Binding ResetTouchpadSyntheticPressureEnabledCommand}" Style="{StaticResource ResetButton}"
+                                            ToolTip="{Binding Pad_ResetTouchpadSyntheticPressureEnabled, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
+                                <!-- Dependent obeys the master toggle (#175 item 4),
+                                     Constant Force idiom. The level is already an
+                                     int percent, so the row binds directly with no
+                                     converter. -->
+                                <StackPanel IsEnabled="{Binding DeviceConfig.TouchpadSyntheticPressure}">
+                                    <StackPanel Orientation="Horizontal" Margin="20,0,0,6">
+                                        <TextBlock Text="{Binding Pad_Touchpad_SyntheticTouchLevel, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                        <Slider Value="{Binding DeviceConfig.TouchpadSyntheticTouchPercent, Mode=TwoWay}"
+                                                Style="{StaticResource DzSlider}" Maximum="100"
+                                                ToolTip="{Binding Pad_Touchpad_SyntheticTouchLevel_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                        <TextBox Text="{Binding DeviceConfig.TouchpadSyntheticTouchPercent, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                                 Style="{StaticResource DzValueEdit}"
+                                                 ToolTip="{Binding Pad_Touchpad_SyntheticTouchLevel_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                        <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
+                                        <ui:Button Command="{Binding ResetTouchpadSyntheticTouchPercentCommand}" Style="{StaticResource ResetButton}"
+                                                ToolTip="{Binding Pad_ResetTouchpadSyntheticTouchLevel, Source={x:Static strings:Strings.Instance}}"/>
+                                    </StackPanel>
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+
                         <!-- ─── Swipe Haptics card (discussion #219) ───
                              Steam-Input-style pulse ticks as the finger
                              travels the pad. Visible only when the selected

@@ -3441,6 +3441,22 @@ namespace PadForge.ViewModels
             DeviceConfig = new DeviceSlotConfig();
         }
 
+        /// <summary>Audit 2026-07-18 (transition-to-empty): clears the
+        /// per-device config dictionary for a slot that is NOT created
+        /// after a profile apply. Compaction shifts data down and the
+        /// former tail index kept its dictionary, so creating a new slot
+        /// there later and mapping the same device resurrected the old
+        /// lighting / adaptive / synthetic-pressure config via GetOrAdd,
+        /// the exact resurrection the DeleteSlot clear above prevents
+        /// for the deleted index. DeviceConfig replacement is anchor-safe
+        /// through the forwarder pattern.</summary>
+        public void ClearPerDeviceConfigsForUncreatedSlot()
+        {
+            if (_perDeviceSlotConfigs.Count == 0) return;
+            _perDeviceSlotConfigs.Clear();
+            DeviceConfig = new DeviceSlotConfig();
+        }
+
         /// <summary>Resets all deadzone, anti-deadzone, linear, and trigger settings to defaults.</summary>
         private void ResetDeadZoneSettings()
         {
@@ -5054,13 +5070,15 @@ namespace PadForge.ViewModels
         private void NotifyRumbleAudioConfigChanged()
         {
             ConfigItemDirtyCallback?.Invoke();
+            // Reconcile ONLY, never EnsureStarted: a debounce firing after
+            // the engine stopped must not resurrect the reconcile worker.
+            // ReconcileCore's commit gate rejects new players while the
+            // worker timer is null, so a post-stop fire builds nothing
+            // lasting, and the engine-start EnsureStarted re-arms the
+            // worker for the running case.
             var timer = _rumbleAudioReconcileDebounce ??= new System.Threading.Timer(_ =>
             {
-                try
-                {
-                    RumbleAudioService.EnsureStarted();
-                    RumbleAudioService.Reconcile();
-                }
+                try { RumbleAudioService.Reconcile(); }
                 catch { }
             }, null, System.Threading.Timeout.Infinite, System.Threading.Timeout.Infinite);
             timer.Change(300, System.Threading.Timeout.Infinite);

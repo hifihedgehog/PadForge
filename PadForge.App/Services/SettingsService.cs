@@ -2083,8 +2083,11 @@ namespace PadForge.Services
                 // #202: same keep-alive rule. A chosen tone filter is a
                 // deliberate, copy-worthy configuration.
                 || (c.AudioToneFilterMode != null && c.AudioToneFilterMode != "Off")
-                // #239: enabled synthetic pressure is copy-worthy.
-                || c.TouchpadSyntheticPressure);
+                // #239: enabled synthetic pressure is copy-worthy, and a
+                // changed touch level keeps the config alive while the
+                // toggle is momentarily off (the #185/#202 keep-alive rule).
+                || c.TouchpadSyntheticPressure
+                || c.TouchpadSyntheticTouchPercent != 50);
 
         /// <summary>VM-shape twin of <see cref="IsDeviceSlotConfigDataConfigured"/>,
         /// for the in-process Copy From path.</summary>
@@ -2102,7 +2105,8 @@ namespace PadForge.Services
                 || c.AudioMirrorEngageMode != "Always"
                 || !string.IsNullOrEmpty(c.AudioMirrorEngageButton)
                 || c.AudioToneFilterMode != "Off"
-                || c.TouchpadSyntheticPressure);
+                || c.TouchpadSyntheticPressure
+                || c.TouchpadSyntheticTouchPercent != 50);
 
         public void ApplyDeviceSlotConfigsToSlot(int slotIndex,
             ViewModels.DeviceSlotConfigData[] configs)

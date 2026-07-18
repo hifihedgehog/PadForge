@@ -6693,8 +6693,11 @@ namespace PadForge
                 // Refresh the Menus tab from the restored set so pasted menus
                 // show up immediately instead of staying invisible until relaunch.
                 padVm.ReloadMenus();
-                // Same for the Bass Shakers tab (#236): its config rides the
-                // pasted MappingSet.
+                // Same for the Bass Shakers tab (#236). Note the data flow:
+                // the paste deliberately PRESERVES the destination's
+                // rumble-audio config (ApplySlotMappingSetFromRows), so the
+                // reload re-anchors the card onto the fresh set object that
+                // now carries the destination's own config.
                 padVm.ReloadRumbleAudio();
                 // And the SOCD card (#240), same lifetime.
                 padVm.ReloadSocd();

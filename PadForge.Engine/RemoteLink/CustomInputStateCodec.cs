@@ -58,6 +58,11 @@ namespace PadForge.Engine.RemoteLink
             CapSense = 1 << 14,
         }
 
+        /// <summary>Capsense channels carried on the wire (one byte,
+        /// one bit per channel). Encode and decode BOTH size from this.</summary>
+        private const int CapSenseWireSlots = 4;
+
+
         /// <summary>
         /// Which optional sensor blocks the device exposes. Gyro and accel arrays
         /// are always allocated on <see cref="CustomInputState"/> and zeroed when
@@ -264,8 +269,13 @@ namespace PadForge.Engine.RemoteLink
             // SDL_GAMEPAD_CAPSENSE_* channel, low bit = channel 0.
             if (state.CapSense != null)
             {
+                // Width must match the decoder's slot count below: the
+                // byte carries CapSenseWireSlots channels, and a fork that
+                // grows SDL_GAMEPAD_CAPSENSE_COUNT must bump BOTH through
+                // the one constant or the extra channels ship encoded and
+                // get silently dropped on decode.
                 byte touched = 0;
-                int n = Math.Min(state.CapSense.Length, 8);
+                int n = Math.Min(state.CapSense.Length, CapSenseWireSlots);
                 for (int i = 0; i < n; i++) if (state.CapSense[i]) touched |= (byte)(1 << i);
                 if (touched != 0)
                 {
@@ -494,8 +504,8 @@ namespace PadForge.Engine.RemoteLink
                 if ((present & Block.CapSense) != 0)
                 {
                     byte touched = payload[o++];
-                    target.CapSense ??= new bool[4];
-                    int n = Math.Min(target.CapSense.Length, 8);
+                    target.CapSense ??= new bool[CapSenseWireSlots];
+                    int n = Math.Min(target.CapSense.Length, CapSenseWireSlots);
                     for (int i = 0; i < n; i++)
                         target.CapSense[i] = (touched & (1 << i)) != 0;
                 }

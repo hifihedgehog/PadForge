@@ -11751,6 +11751,26 @@ namespace PadForge.Services
                     selected != null && selected.InstanceGuid != Guid.Empty
                         ? FindUserDevice(selected.InstanceGuid)
                         : null);
+
+                // Audit 2026-07-18 (1q): the apply above REPLACED every
+                // slot's MappingSet by deep clone, orphaning the VM
+                // projections that wrap set-owned objects. Without these
+                // reloads the Menus tab edits the OUTGOING profile's
+                // orphaned entries, and one SOCD / Bass Shakers edit
+                // reserializes the STALE rows into the INCOMING profile's
+                // live set (cross-profile corruption). RebuildMappings
+                // runs the trio too, but only on an OutputType change;
+                // the same-type switch is the common case and was bare.
+                padVm.ReloadMenus();
+                padVm.ReloadRumbleAudio();
+                padVm.ReloadSocd();
+
+                // Transition-to-empty: a pad the incoming profile does
+                // not create must drop its per-device config dictionary,
+                // or a later slot created at this index resurrects the
+                // outgoing profile's per-device state via GetOrAdd.
+                if (!(i < SettingsManager.SlotCreated.Length && SettingsManager.SlotCreated[i]))
+                    padVm.ClearPerDeviceConfigsForUncreatedSlot();
             }
 
             // Refresh Devices page slot labels.

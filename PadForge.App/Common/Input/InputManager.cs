@@ -1025,9 +1025,13 @@ namespace PadForge.Common.Input
             // #236: engine stop is an explicit silence edge. _running is
             // already false, so no in-flight poll can reassert a pack
             // after this (and the per-slot generation discards a racing
-            // publish from the final tick). Players stay alive; the
-            // renderer sees zeros and fades within its click ramp.
+            // publish from the final tick). The renderer itself also dies
+            // with the engine HERE, not inside SoundMacroService.StopAll:
+            // that method runs on every profile apply via LoadMacros, and
+            // riding it silenced the shakers on every profile switch.
+            // EnsureStarted re-arms on the next engine start.
             RumbleAudioService.SilenceAll();
+            RumbleAudioService.StopAll();
 
             if (_pollingThread != null && _pollingThread.IsAlive)
             {

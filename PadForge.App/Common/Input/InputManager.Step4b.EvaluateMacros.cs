@@ -389,8 +389,18 @@ namespace PadForge.Common.Input
         /// Instance method to allow raw button lookups via FindOnlineDeviceByInstanceGuid.
         /// Internal for the PadForge.Tests dispatch pins.
         /// </summary>
+        // #237 yield gate baseline (audit 2026-07-18): the "physical
+        // input" a yield-enabled write compares against is the state at
+        // EVALUATOR ENTRY, before ANY macro (not just the current one)
+        // wrote this frame. Captured once per slot per tick; poll-thread
+        // confined. The earlier per-macro snapshot still let macro A's
+        // latch write false-latch macro B's yield on a shared target.
+        private Gamepad _preMacroGp;
+        private readonly short[] _preMacroRawAxes = new short[6];
+
         internal void EvaluateSlotMacros(ref Gamepad gp, MacroItem[] macros)
         {
+            _preMacroGp = gp;
             // Fresh slot-device resolution per evaluator call (#9 B-9):
             // device-free trigger entries resolve against the slot's
             // CURRENT online devices, refilled lazily on first need.
@@ -404,14 +414,23 @@ namespace PadForge.Common.Input
                     // #237: disabling a macro resets its combo park and
                     // yield latches, so a re-enable starts from the top.
                     if (macro != null && (macro.ComboResumeIndex != 0 || macro.AwaitReleaseAfterBreak
-                        || macro.TriggerPressStreak != 0))
+                        || macro.TriggerPressStreak != 0 || macro.TriggerHoldFired
+                        || macro.TriggerHoldStartUtc != DateTime.MinValue
+                        || macro.RunReleasedFireToCompletion))
                     {
                         macro.ComboResumeIndex = 0;
                         macro.AwaitReleaseAfterBreak = false;
                         // #238: a disabled macro's press chain resets too,
-                        // so re-enable inside the window starts fresh.
+                        // so re-enable inside the window starts fresh. The
+                        // HoldForMs transients are the same family: without
+                        // the reset, disable mid-hold and re-enable while
+                        // still held fired instantly, crediting the
+                        // disabled span with no rising edge.
                         macro.TriggerPressStreak = 0;
                         macro.TriggerLastPressUtc = DateTime.MinValue;
+                        macro.TriggerHoldStartUtc = DateTime.MinValue;
+                        macro.TriggerHoldFired = false;
+                        macro.RunReleasedFireToCompletion = false;
                         ClearAxisYields(macro);
                     }
                     continue;
@@ -561,7 +580,21 @@ namespace PadForge.Common.Input
                         shouldStart = EvaluateTriplePressTrigger(macro, triggerActive, wasTriggerActive);
                         break;
                     case MacroTriggerMode.SinglePress:
-                        shouldStart = EvaluateSinglePressTrigger(macro, triggerActive, wasTriggerActive);
+                        // A closed shift layer voids the pending single
+                        // outright: the LayerMask contract says the trigger
+                        // only counts while the layer is engaged, and the
+                        // deferred fire would otherwise land AFTER the
+                        // layer disengaged.
+                        if (!layerOpen)
+                        {
+                            macro.TriggerPressStreak = 0;
+                            macro.TriggerLastPressUtc = DateTime.MinValue;
+                            shouldStart = false;
+                        }
+                        else
+                        {
+                            shouldStart = EvaluateSinglePressTrigger(macro, triggerActive, wasTriggerActive);
+                        }
                         break;
                 }
 
@@ -587,6 +620,14 @@ namespace PadForge.Common.Input
                     if (macro.PairId != 0)
                         CancelExecutingPairTwin(macros, macro);
                     macro.IsExecuting = true;
+                    // A deferred single firing with the button already up
+                    // must run its sequence ONE full pass: the UntilRelease
+                    // stop below would otherwise kill it the same frame
+                    // (the release already happened) and a quick tap ran
+                    // zero actions. The flag suppresses the release-stop
+                    // until the pass completes.
+                    macro.RunReleasedFireToCompletion =
+                        macro.TriggerMode == MacroTriggerMode.SinglePress && !triggerActive;
                     // #237: resume from a combo-break park (0 = the top).
                     macro.CurrentActionIndex = macro.ComboResumeIndex;
                     macro.ActionStartTime = DateTime.UtcNow;
@@ -608,6 +649,7 @@ namespace PadForge.Common.Input
                     macro.TriggerMode != MacroTriggerMode.Always &&
                     macro.RepeatMode == MacroRepeatMode.UntilRelease &&
                     !triggerActive
+                    && !macro.RunReleasedFireToCompletion
                     && !WithinReleaseLinger(macro))
                 {
                     macro.IsExecuting = false;
@@ -732,6 +774,12 @@ namespace PadForge.Common.Input
         /// released), and a chain of two or more fires nothing here and
         /// resets once quiet. Lets one button carry Single + Double +
         /// Triple macros without the single firing on the chains.</summary>
+        /// <summary>How far past the press window a deferred single may
+        /// still fire. Live polling detects expiry within milliseconds
+        /// (idle mode within ~50 ms); beyond this the arm predates an
+        /// engine stop or process suspend and must not ghost-fire.</summary>
+        private const int SinglePressStaleGraceMs = 250;
+
         private static bool EvaluateSinglePressTrigger(MacroItem macro, bool triggerActive, bool wasTriggerActive)
         {
             var now = DateTime.UtcNow;
@@ -744,14 +792,18 @@ namespace PadForge.Common.Input
                 return false;
             }
             if (macro.TriggerLastPressUtc == DateTime.MinValue) return false;
-            bool windowExpired =
-                (now - macro.TriggerLastPressUtc).TotalMilliseconds > macro.TriggerDoublePressMs;
-            if (!windowExpired) return false;
+            double elapsedMs = (now - macro.TriggerLastPressUtc).TotalMilliseconds;
+            if (elapsedMs <= macro.TriggerDoublePressMs) return false;
             if (macro.TriggerPressStreak == 1)
             {
                 macro.TriggerPressStreak = 0;
                 macro.TriggerLastPressUtc = DateTime.MinValue;
-                return true;
+                // Stale-fire guard: a live pipeline detects expiry within
+                // a few ticks (idle mode within ~50 ms). A press whose
+                // window expired long ago means the engine was stopped or
+                // the process suspended mid-window; firing now would be a
+                // ghost action with no input. Reset instead.
+                return elapsedMs <= macro.TriggerDoublePressMs + SinglePressStaleGraceMs;
             }
             // Chain of 2+: reset without firing once the chain is quiet
             // (window expired) and the button is up, so a held third
@@ -795,12 +847,6 @@ namespace PadForge.Common.Input
         /// contribute, the same gate every keystroke emission has).</summary>
         private void ApplyMacroLatches(ref Gamepad gp, MacroItem macro)
         {
-            // #237 yield gate: evaluate against the PRE-LATCH snapshot, so
-            // an earlier latch's write this frame (the 75/85/95 stepping
-            // composition) never reads as "physical input" and false-latches
-            // a later yield-enabled action on the same target. Gamepad is a
-            // struct; the copy is cheap and taken once per macro per frame.
-            var preLatch = gp;
             var actions = macro.Actions;
             for (int i = 0; i < actions.Count; i++)
             {
@@ -826,7 +872,7 @@ namespace PadForge.Common.Input
                     // frame, the AxisHold shape. #237 yield gate applies:
                     // the latch stays latched, only the write yields, and
                     // unlatching re-arms the yield for the next latch.
-                    if (a.VcAxisToggleLatched && LatchPhaseOn(a) && !AxisWriteYields(in preLatch, a))
+                    if (a.VcAxisToggleLatched && LatchPhaseOn(a) && !AxisWriteYields(in _preMacroGp, a))
                         ApplyAxisHoldAction(ref gp, a);
                     if (!a.VcAxisToggleLatched)
                         _axisYielded.Remove(a);
@@ -1556,7 +1602,8 @@ namespace PadForge.Common.Input
 
             macro.RemainingRepeats--;
             if (macro.RemainingRepeats > 0 ||
-                macro.RepeatMode == MacroRepeatMode.UntilRelease)
+                (macro.RepeatMode == MacroRepeatMode.UntilRelease
+                 && !macro.RunReleasedFireToCompletion))
             {
                 double elapsed = (DateTime.UtcNow - macro.ActionStartTime).TotalMilliseconds;
                 if (elapsed >= macro.RepeatDelayMs)
@@ -1573,6 +1620,7 @@ namespace PadForge.Common.Input
                 // #237: normal completion re-arms the combo from the top
                 // and releases any yield latches.
                 macro.ComboResumeIndex = 0;
+                macro.RunReleasedFireToCompletion = false;
                 ClearAxisYields(macro);
             }
         }
@@ -1643,7 +1691,7 @@ namespace PadForge.Common.Input
                     // on the ON half. gp is rebuilt per frame, so the OFF
                     // half reads released. #237 yield gate applies like
                     // the plain hold.
-                    if (TickRepeatVcButtonPhase(action) && !AxisWriteYields(in gp, action))
+                    if (TickRepeatVcButtonPhase(action) && !AxisWriteYields(in _preMacroGp, action))
                         ApplyAxisHoldAction(ref gp, action);
                     break;
             }
@@ -1764,7 +1812,7 @@ namespace PadForge.Common.Input
                     // reads released again like a lifted button. The #237
                     // yield gate runs BEFORE the write so the physical
                     // pipeline's value survives when the user moves.
-                    if (!AxisWriteYields(in gp, action))
+                    if (!AxisWriteYields(in _preMacroGp, action))
                         ApplyAxisHoldAction(ref gp, action);
                     if (actionElapsed >= action.DurationMs)
                         AdvanceAction(macro);
@@ -2142,6 +2190,7 @@ namespace PadForge.Common.Input
                 // #237: a cancelled twin's combo state dies with it.
                 twin.ComboResumeIndex = 0;
                 twin.AwaitReleaseAfterBreak = false;
+                twin.RunReleasedFireToCompletion = false;
                 ClearAxisYields(twin);
             }
         }
@@ -2881,10 +2930,13 @@ namespace PadForge.Common.Input
         /// <summary>Extended twin of <see cref="AxisWriteYields"/>: the
         /// word-array frame is signed short on every index, so one stick
         /// threshold applies to all six canonical axes.</summary>
-        private static bool AxisWriteYieldsRaw(in ExtendedRawState raw, MacroAction action, int axisIndex)
+        /// <summary>Raw yield check against the per-tick entry snapshot
+        /// (see _preMacroRawAxes): earlier macros' writes this frame are
+        /// never mistaken for physical input.</summary>
+        private bool AxisWriteYieldsRawValueAt(int axisIndex, MacroAction action)
         {
-            if (raw.Axes == null || axisIndex < 0 || axisIndex >= raw.Axes.Length) return false;
-            return AxisWriteYieldsRawValue(action, raw.Axes[axisIndex]);
+            if (axisIndex < 0 || axisIndex >= 6) return false;
+            return AxisWriteYieldsRawValue(action, _preMacroRawAxes[axisIndex]);
         }
 
         /// <summary>Value-based core of the raw yield test, shared with the
@@ -2900,8 +2952,12 @@ namespace PadForge.Common.Input
             if (_axisYielded.Contains(action)) return true;
             bool isTrigger = action.AxisTarget == MacroAxisTarget.LeftTrigger
                 || action.AxisTarget == MacroAxisTarget.RightTrigger;
+            // Deflection-from-rest is already on the same 0..65535 span
+            // the Gamepad path compares (audit: the earlier *2 conflated
+            // the AxisAdd pull scale with this normalized span and made
+            // the raw yield trip at 25% instead of 12.5%).
             bool moved = isTrigger
-                ? value + 32768 > YieldTriggerThreshold * 2
+                ? value + 32768 > YieldTriggerThreshold
                 : Math.Abs((int)value) > YieldStickThreshold;
             if (moved) _axisYielded.Add(action);
             return moved;
@@ -3087,6 +3143,8 @@ namespace PadForge.Common.Input
         // Internal for the PadForge.Tests dispatch pins.
         internal void EvaluateSlotMacrosExtended(ref ExtendedRawState raw, MacroItem[] macros)
         {
+            for (int k = 0; k < 6; k++)
+                _preMacroRawAxes[k] = raw.Axes != null && k < raw.Axes.Length ? raw.Axes[k] : (short)0;
             // Fresh slot-device resolution per evaluator call (#9 B-9),
             // mirroring the Gamepad path.
             _slotTriggerDeviceSlot = -1;
@@ -3099,14 +3157,23 @@ namespace PadForge.Common.Input
                     // #237: disabling a macro resets its combo park and
                     // yield latches, so a re-enable starts from the top.
                     if (macro != null && (macro.ComboResumeIndex != 0 || macro.AwaitReleaseAfterBreak
-                        || macro.TriggerPressStreak != 0))
+                        || macro.TriggerPressStreak != 0 || macro.TriggerHoldFired
+                        || macro.TriggerHoldStartUtc != DateTime.MinValue
+                        || macro.RunReleasedFireToCompletion))
                     {
                         macro.ComboResumeIndex = 0;
                         macro.AwaitReleaseAfterBreak = false;
                         // #238: a disabled macro's press chain resets too,
-                        // so re-enable inside the window starts fresh.
+                        // so re-enable inside the window starts fresh. The
+                        // HoldForMs transients are the same family: without
+                        // the reset, disable mid-hold and re-enable while
+                        // still held fired instantly, crediting the
+                        // disabled span with no rising edge.
                         macro.TriggerPressStreak = 0;
                         macro.TriggerLastPressUtc = DateTime.MinValue;
+                        macro.TriggerHoldStartUtc = DateTime.MinValue;
+                        macro.TriggerHoldFired = false;
+                        macro.RunReleasedFireToCompletion = false;
                         ClearAxisYields(macro);
                     }
                     continue;
@@ -3201,7 +3268,21 @@ namespace PadForge.Common.Input
                         shouldStart = EvaluateTriplePressTrigger(macro, triggerActive, wasTriggerActive);
                         break;
                     case MacroTriggerMode.SinglePress:
-                        shouldStart = EvaluateSinglePressTrigger(macro, triggerActive, wasTriggerActive);
+                        // A closed shift layer voids the pending single
+                        // outright: the LayerMask contract says the trigger
+                        // only counts while the layer is engaged, and the
+                        // deferred fire would otherwise land AFTER the
+                        // layer disengaged.
+                        if (!layerOpen)
+                        {
+                            macro.TriggerPressStreak = 0;
+                            macro.TriggerLastPressUtc = DateTime.MinValue;
+                            shouldStart = false;
+                        }
+                        else
+                        {
+                            shouldStart = EvaluateSinglePressTrigger(macro, triggerActive, wasTriggerActive);
+                        }
                         break;
                 }
 
@@ -3216,6 +3297,14 @@ namespace PadForge.Common.Input
                     if (macro.PairId != 0)
                         CancelExecutingPairTwin(macros, macro);
                     macro.IsExecuting = true;
+                    // A deferred single firing with the button already up
+                    // must run its sequence ONE full pass: the UntilRelease
+                    // stop below would otherwise kill it the same frame
+                    // (the release already happened) and a quick tap ran
+                    // zero actions. The flag suppresses the release-stop
+                    // until the pass completes.
+                    macro.RunReleasedFireToCompletion =
+                        macro.TriggerMode == MacroTriggerMode.SinglePress && !triggerActive;
                     // #237: resume from a combo-break park (0 = the top).
                     macro.CurrentActionIndex = macro.ComboResumeIndex;
                     macro.ActionStartTime = DateTime.UtcNow;
@@ -3232,6 +3321,7 @@ namespace PadForge.Common.Input
                     macro.TriggerMode != MacroTriggerMode.Always &&
                     macro.RepeatMode == MacroRepeatMode.UntilRelease &&
                     !triggerActive
+                    && !macro.RunReleasedFireToCompletion
                     && !WithinReleaseLinger(macro))
                 {
                     macro.IsExecuting = false;
@@ -3272,13 +3362,6 @@ namespace PadForge.Common.Input
         /// frame's desired latched-key set.</summary>
         private void ApplyMacroLatchesRaw(ref ExtendedRawState raw, MacroItem macro)
         {
-            // #237 pre-latch snapshot, the Gamepad-path twin's rationale:
-            // yield reads the six canonical axes as they were BEFORE this
-            // macro's latch writes, stack-only (no per-tick allocation).
-            Span<short> preAxes = stackalloc short[6];
-            if (raw.Axes != null)
-                for (int k = 0; k < 6 && k < raw.Axes.Length; k++)
-                    preAxes[k] = raw.Axes[k];
             var actions = macro.Actions;
             for (int i = 0; i < actions.Count; i++)
             {
@@ -3308,8 +3391,8 @@ namespace PadForge.Common.Input
                     if (a.VcAxisToggleLatched && LatchPhaseOn(a) && raw.Axes != null)
                     {
                         int yIdx = MacroAxisTargetToRawIndex(a.AxisTarget);
-                        bool yields = yIdx >= 0 && yIdx < 6 && yIdx < raw.Axes.Length
-                            && AxisWriteYieldsRawValue(a, preAxes[yIdx]);
+                        bool yields = yIdx >= 0 && yIdx < 6
+                            && AxisWriteYieldsRawValue(a, _preMacroRawAxes[yIdx]);
                         if (!yields)
                             ApplyAxisActionRaw(ref raw, a);
                     }
@@ -3395,7 +3478,8 @@ namespace PadForge.Common.Input
 
             macro.RemainingRepeats--;
             if (macro.RemainingRepeats > 0 ||
-                macro.RepeatMode == MacroRepeatMode.UntilRelease)
+                (macro.RepeatMode == MacroRepeatMode.UntilRelease
+                 && !macro.RunReleasedFireToCompletion))
             {
                 double elapsed = (DateTime.UtcNow - macro.ActionStartTime).TotalMilliseconds;
                 if (elapsed >= macro.RepeatDelayMs)
@@ -3412,6 +3496,7 @@ namespace PadForge.Common.Input
                 // #237: normal completion re-arms the combo from the top
                 // and releases any yield latches.
                 macro.ComboResumeIndex = 0;
+                macro.RunReleasedFireToCompletion = false;
                 ClearAxisYields(macro);
             }
         }
@@ -3484,8 +3569,8 @@ namespace PadForge.Common.Input
                     // gate applies like the plain hold.
                     if (TickRepeatVcButtonPhase(action) && raw.Axes != null)
                     {
-                        if (!AxisWriteYieldsRaw(in raw, action,
-                                MacroAxisTargetToRawIndex(action.AxisTarget)))
+                        if (!AxisWriteYieldsRawValueAt(
+                                MacroAxisTargetToRawIndex(action.AxisTarget), action))
                             ApplyAxisActionRaw(ref raw, action);
                     }
                     break;
@@ -3573,8 +3658,8 @@ namespace PadForge.Common.Input
                     // Gamepad path, on the raw word frame.
                     if (raw.Axes != null)
                     {
-                        if (!AxisWriteYieldsRaw(in raw, action,
-                                MacroAxisTargetToRawIndex(action.AxisTarget)))
+                        if (!AxisWriteYieldsRawValueAt(
+                                MacroAxisTargetToRawIndex(action.AxisTarget), action))
                             ApplyAxisActionRaw(ref raw, action);
                     }
                     if (actionElapsed >= action.DurationMs)

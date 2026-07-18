@@ -1,0 +1,175 @@
+# Wild-corpus sweep target list: appid,name
+# Grounded 2026-07-18 from steamcharts.com/top (Steam's live top-100 by
+# concurrent players, pages 1-5), minus non-games (overlay tools, idlers,
+# dedicated servers, Spacewar), plus a curated tail of catalog games known
+# for controller play and Workshop config volume (fixture games included).
+# A wrong or configless appid harvests zero rows and shows in the manifest.
+#
+# --- Live top-100 by current players (steamcharts.com/top, 2026-07-18) ---
+1623730,Palworld
+730,Counter-Strike 2
+570,Dota 2
+578080,PUBG: BATTLEGROUNDS
+2767030,Marvel Rivals
+1172470,Apex Legends
+3405690,EA SPORTS FC 26
+250900,The Binding of Isaac: Rebirth
+252490,Rust
+2868840,Slay the Spire 2
+2507950,Delta Force
+3240220,Grand Theft Auto V Enhanced
+413150,Stardew Valley
+230410,Warframe
+438100,VRChat
+1085660,Destiny 2
+381210,Dead by Daylight
+359550,Tom Clancy's Rainbow Six Siege
+2357570,Overwatch 2
+1973530,Limbus Company
+271590,Grand Theft Auto V Legacy
+1091500,Cyberpunk 2077
+881020,Granblue Fantasy: Relink
+1203220,NARAKA: BLADEPOINT
+440,Team Fortress 2
+236390,War Thunder
+1086940,Baldur's Gate 3
+2694490,Path of Exile 2
+322330,Don't Starve Together
+322170,Geometry Dash
+2807960,Battlefield 6
+550,Left 4 Dead 2
+394360,Hearts of Iron IV
+251570,7 Days to Die
+218620,PAYDAY 2
+1174180,Red Dead Redemption 2
+289070,Sid Meier's Civilization VI
+2483190,Forza Horizon 6
+2399830,ARK: Survival Ascended
+105600,Terraria
+1245620,ELDEN RING
+221100,DayZ
+3472040,NBA 2K26
+1938090,Call of Duty
+553850,HELLDIVERS 2
+294100,RimWorld
+1808500,ARC Raiders
+108600,Project Zomboid
+261550,Mount & Blade II: Bannerlord
+3241660,R.E.P.O.
+489830,The Elder Scrolls V: Skyrim Special Edition
+1142710,Total War: WARHAMMER III
+3551340,Football Manager 26
+3932890,Escape from Tarkov
+2622380,ELDEN RING NIGHTREIGN
+1222670,The Sims 4
+1364780,Street Fighter 6
+346110,ARK: Survival Evolved
+4000,Garry's Mod
+2246340,Monster Hunter Wilds
+813780,Age of Empires II: Definitive Edition
+2344520,Diablo IV
+582010,Monster Hunter: World
+2073620,Arena Breakout: Infinite
+227300,Euro Truck Simulator 2
+1158310,Crusader Kings III
+582660,Black Desert
+39210,FINAL FANTASY XIV Online
+1449850,Yu-Gi-Oh! Master Duel
+526870,Satisfactory
+1974050,Torchlight: Infinite
+252950,Rocket League
+3513350,Wuthering Waves
+892970,Valheim
+2073850,THE FINALS
+1665460,eFootball
+1868140,DAVE THE DIVER
+427520,Factorio
+4025700,Heartopia
+1771300,Kingdom Come: Deliverance II
+2300320,Farming Simulator 25
+284160,BeamNG.drive
+1361210,Warhammer 40000: Darktide
+304930,Unturned
+281990,Stellaris
+3527290,PEAK
+3767850,SpiritVale
+1304930,The Outlast Trials
+594650,Hunt: Showdown 1896
+2139460,Once Human
+457140,Oxygen Not Included
+2183900,Warhammer 40000: Space Marine 2
+292030,The Witcher 3: Wild Hunt
+216150,MapleStory
+2016590,Dark and Darker
+8930,Sid Meier's Civilization V
+2358720,Black Myth: Wukong
+3321460,Crimson Desert
+766570,Russian Fishing 4
+1623660,MIR4
+376210,The Isle
+1671210,DELTARUNE
+3164500,Schedule I
+2050650,Resident Evil 4
+377160,Fallout 4
+3564740,Where Winds Meet
+2584990,Shadowverse: Worlds Beyond
+4069520,Super Battle Golf
+1326470,Sons Of The Forest
+393380,Squad
+#
+# --- Curated catalog tail: controller-played, Workshop-config-rich ---
+72850,The Elder Scrolls V: Skyrim
+374320,DARK SOULS III
+570940,DARK SOULS: REMASTERED
+814380,Sekiro: Shadows Die Twice
+1888160,ARMORED CORE VI FIRES OF RUBICON
+1627720,Lies of P
+2054970,Dragon's Dogma 2
+1446780,MONSTER HUNTER RISE
+883710,Resident Evil 2
+601150,Devil May Cry 5
+1778820,TEKKEN 8
+976730,Halo: The Master Chief Collection
+1237970,Titanfall 2
+782330,DOOM Eternal
+870780,Control Ultimate Edition
+238960,Path of Exile
+49520,Borderlands 2
+264710,Subnautica
+1966720,Lethal Company
+1172620,Sea of Thieves
+244210,Assetto Corsa
+690790,DiRT Rally 2.0
+270880,American Truck Simulator
+22380,Fallout: New Vegas
+220200,Kerbal Space Program
+359320,Elite Dangerous
+297000,Heroes of Might & Magic 3: Complete
+367520,Hollow Knight
+1030300,Hollow Knight: Silksong
+504230,Celeste
+268910,Cuphead
+1145360,Hades
+588650,Dead Cells
+646570,Slay the Spire
+1794680,Vampire Survivors
+391540,Undertale
+1057090,Ori and the Will of the Wisps
+620,Portal 2
+275850,No Man's Sky
+524220,NieR:Automata
+1687950,Persona 5 Royal
+638970,Yakuza 0
+1593500,God of War
+1817070,Marvel's Spider-Man Remastered
+2215430,Ghost of Tsushima DIRECTOR'S CUT
+990080,Hogwarts Legacy
+1172380,STAR WARS Jedi: Fallen Order
+1328670,Mass Effect Legendary Edition
+2379780,Balatro
+1332010,Stray
+1426210,It Takes Two
+2001120,Split Fiction
+1903340,Clair Obscur: Expedition 33
+548430,Deep Rock Galactic
+632360,Risk of Rain 2

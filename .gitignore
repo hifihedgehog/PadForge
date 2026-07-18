@@ -108,3 +108,6 @@ __pycache__/
 /tmpopenvr_driver.h
 /tmpwmr_controller.c
 *openvr_driver_docs.md
+
+# Wild-corpus sweep download cache (manifest.json is committed, VDFs are not)
+tools/SteamWorkshopSweep/cache/

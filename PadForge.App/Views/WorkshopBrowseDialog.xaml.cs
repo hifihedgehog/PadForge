@@ -30,6 +30,7 @@ using PadForge.SteamWorkshop.Vdf;
 using PadForge.ViewModels;
 using EPublishedFileQueryType = SteamKit2.EPublishedFileQueryType;
 using SkPublishedFileDetails = SteamKit2.Internal.PublishedFileDetails;
+using SkQueryFilesResponse = SteamKit2.Internal.CPublishedFile_QueryFiles_Response;
 
 namespace PadForge.Views
 {
@@ -66,6 +67,27 @@ namespace PadForge.Views
         private SteamInputConfig _parsedConfig;
         private WorkshopTranslationOutcome _outcome;
         private int _heroSwapVersion;
+
+        // ── Config-list paging (infinite scroll) ──
+
+        /// <summary>QueryFiles page size for the config list. A big game's
+        /// catalog runs six figures (Skyrim SE: 155k+), so the list streams
+        /// page by page as the user nears the bottom instead of stopping at
+        /// the first response.</summary>
+        private const int ConfigsPageSize = 30;
+
+        /// <summary>Bound on consecutive pages the ban/legacy filters ate
+        /// whole within a single fill. A run this long reads as the end of
+        /// the importable results; without it a mostly-legacy catalog could
+        /// keep a fill fetching indefinitely.</summary>
+        private const int ConfigsMaxSilentPages = 10;
+
+        /// <summary>Next QueryFiles page to request (1-based).</summary>
+        private int _nextConfigsPage = 1;
+        private bool _configsExhausted;
+        private bool _configsFetchBusy;
+        private DateTime _configsRetryAtUtc;
+        private readonly HashSet<ulong> _seenConfigIds = new();
 
         /// <summary>Avatar images live on avatars CDN hosts (not the appid
         /// store CDN the artwork client covers), so they get their own
@@ -531,25 +553,28 @@ namespace PadForge.Views
             var ct = cts.Token;
 
             Configs.Clear();
+            _seenConfigIds.Clear();
+            _nextConfigsPage = 1;
+            _configsExhausted = false;
+            _configsRetryAtUtc = DateTime.MinValue;
+            // Owned for the whole initial fill so a scroll event raised by
+            // rows landing mid-load cannot start a second, overlapping page
+            // fetch. A stale generation's finally skips the reset (its token
+            // is cancelled), so this flag always reflects the live one.
+            _configsFetchBusy = true;
             ConfigsEmptyPanel.Visibility = Visibility.Collapsed;
             ConfigsErrorPanel.Visibility = Visibility.Collapsed;
+            ConfigsMorePanel.Visibility = Visibility.Collapsed;
             ConfigsLoadingPanel.Visibility = Visibility.Visible;
             ConfigsFoundText.Text = string.Empty;
             try
             {
-                var tags = requiredTag == null ? null : new[] { requiredTag };
-                var resp = await _workshop.SearchAsync(g.AppId, EPublishedFileQueryType.RankedByVote, 1, 30, tags, ct);
+                var resp = await FetchConfigsPageAsync(g, requiredTag, _nextConfigsPage, ct);
                 if (ct.IsCancellationRequested) return;
 
                 var details = resp?.publishedfiledetails ?? new List<SkPublishedFileDetails>();
-                bool showLegacy = _settings.ShowLegacyWorkshopConfigs;
-                var rows = details
-                    .Where(d => !d.banned)
-                    .Where(d => showLegacy || !string.IsNullOrEmpty(d.file_url))
-                    .Select(BuildConfigItem)
-                    .ToList();
-                foreach (var row in rows)
-                    Configs.Add(row);
+                var rows = AppendConfigRows(details);
+                AdvanceConfigsPaging(details);
 
                 int total = (int)(resp?.total ?? 0);
                 ConfigsFoundText.Text = string.Format(Strings.Instance.Workshop_Found_Format, total);
@@ -561,7 +586,15 @@ namespace PadForge.Views
                 if (requiredTag == null)
                     BuildTagChips(details);
 
-                if (rows.Count == 0)
+                // The legacy filter can eat most of page 1. Top up to a full
+                // page of visible rows so the list is scrollable (scrolling
+                // is what drives further paging) before calling the room
+                // empty.
+                if (Configs.Count < ConfigsPageSize && !_configsExhausted)
+                    rows.AddRange(await FetchConfigRowsAsync(g, requiredTag, ConfigsPageSize - Configs.Count, ct));
+                if (ct.IsCancellationRequested) return;
+
+                if (Configs.Count == 0)
                 {
                     ConfigsEmptyBody.Text = string.Format(Strings.Instance.Workshop_EmptyBody_Format, g.Name);
                     ConfigsEmptyPanel.Visibility = Visibility.Visible;
@@ -586,7 +619,125 @@ namespace PadForge.Views
             finally
             {
                 if (!ct.IsCancellationRequested)
+                {
+                    _configsFetchBusy = false;
                     ConfigsLoadingPanel.Visibility = Visibility.Collapsed;
+                }
+            }
+        }
+
+        /// <summary>One QueryFiles page for the game room: rating order, the
+        /// requested tag filter, the shared page size.</summary>
+        private Task<SkQueryFilesResponse> FetchConfigsPageAsync(
+            WorkshopGameItem g, string requiredTag, int page, CancellationToken ct)
+        {
+            var tags = requiredTag == null ? null : new[] { requiredTag };
+            return _workshop.SearchAsync(g.AppId, EPublishedFileQueryType.RankedByVote, page, ConfigsPageSize, tags, ct);
+        }
+
+        /// <summary>Appends one page's visible rows: ban and legacy filters,
+        /// plus cross-page dedup (rank order can shift between page fetches,
+        /// and a shifted item must not land twice). Returns what was added.</summary>
+        private List<WorkshopConfigItem> AppendConfigRows(List<SkPublishedFileDetails> details)
+        {
+            bool showLegacy = _settings.ShowLegacyWorkshopConfigs;
+            var rows = new List<WorkshopConfigItem>();
+            foreach (var d in details)
+            {
+                if (d.banned) continue;
+                if (!showLegacy && string.IsNullOrEmpty(d.file_url)) continue;
+                if (!_seenConfigIds.Add(d.publishedfileid)) continue;
+                rows.Add(BuildConfigItem(d));
+            }
+            foreach (var row in rows)
+                Configs.Add(row);
+            return rows;
+        }
+
+        /// <summary>A short page is Steam's end-of-results signal.</summary>
+        private void AdvanceConfigsPaging(List<SkPublishedFileDetails> details)
+        {
+            _nextConfigsPage++;
+            if (details.Count < ConfigsPageSize)
+                _configsExhausted = true;
+        }
+
+        /// <summary>Pages forward until at least <paramref name="minRows"/>
+        /// visible rows land, the results run out, or the silent-page bound
+        /// trips. Filtered-out pages keep the loop going (never the caller's
+        /// problem): without that, a legacy-heavy stretch would strand the
+        /// scroll at a bottom that never grows. Returns every row appended.</summary>
+        private async Task<List<WorkshopConfigItem>> FetchConfigRowsAsync(
+            WorkshopGameItem g, string requiredTag, int minRows, CancellationToken ct)
+        {
+            var added = new List<WorkshopConfigItem>();
+            int silentPages = 0;
+            while (!_configsExhausted && added.Count < minRows && !ct.IsCancellationRequested)
+            {
+                var resp = await FetchConfigsPageAsync(g, requiredTag, _nextConfigsPage, ct);
+                if (ct.IsCancellationRequested) break;
+                var details = resp?.publishedfiledetails ?? new List<SkPublishedFileDetails>();
+                int before = added.Count;
+                added.AddRange(AppendConfigRows(details));
+                AdvanceConfigsPaging(details);
+                silentPages = added.Count > before ? 0 : silentPages + 1;
+                if (silentPages >= ConfigsMaxSilentPages)
+                    _configsExhausted = true;
+            }
+            return added;
+        }
+
+        /// <summary>Infinite scroll: within one viewport of the bottom, the
+        /// next page streams in (the QueryFiles API pages; page 1 alone
+        /// showed 30 of Skyrim's 155k configs). The distance math reads the
+        /// same in both scroll units (items under the ListBox's logical
+        /// scrolling, pixels otherwise). The Configs guard keeps the
+        /// loading/empty/error states inert.</summary>
+        private void ConfigList_ScrollChanged(object sender, ScrollChangedEventArgs e)
+        {
+            if (Configs.Count == 0 || _configsExhausted || _configsFetchBusy) return;
+            if (e.ExtentHeight <= 0 || e.ViewportHeight <= 0) return;
+            if (e.ExtentHeight - e.VerticalOffset - e.ViewportHeight > e.ViewportHeight) return;
+            if (DateTime.UtcNow < _configsRetryAtUtc) return;
+            _ = LoadMoreConfigsAsync();
+        }
+
+        /// <summary>Scroll-driven page fetch: single-flight, cancelled by a
+        /// tag or game switch through _gameCts (the stale task then leaves
+        /// the fresh generation's flags and panels alone).</summary>
+        private async Task LoadMoreConfigsAsync()
+        {
+            if (_configsFetchBusy || _configsExhausted) return;
+            var g = _selectedGame;
+            var cts = _gameCts;
+            if (g == null || cts == null || cts.IsCancellationRequested) return;
+            var ct = cts.Token;
+
+            _configsFetchBusy = true;
+            ConfigsMorePanel.Visibility = Visibility.Visible;
+            try
+            {
+                var rows = await FetchConfigRowsAsync(g, _activeTag, 1, ct);
+                if (!ct.IsCancellationRequested)
+                    _ = FillPersonasAsync(rows, ct);
+            }
+            catch (OperationCanceledException) when (ct.IsCancellationRequested)
+            {
+            }
+            catch (Exception) when (!ct.IsCancellationRequested)
+            {
+                // A mid-scroll failure keeps everything already on screen and
+                // pauses paging briefly; the next gesture near the bottom
+                // retries from the same page instead of blanking the list.
+                _configsRetryAtUtc = DateTime.UtcNow.AddSeconds(5);
+            }
+            finally
+            {
+                if (!ct.IsCancellationRequested)
+                {
+                    _configsFetchBusy = false;
+                    ConfigsMorePanel.Visibility = Visibility.Collapsed;
+                }
             }
         }
 

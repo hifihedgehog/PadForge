@@ -198,7 +198,7 @@ menus: 3
     [6] Flip Combinator icon=ghost_075_utility_040.png
     [7] Move Down
     [8] Back Menu icon=ghost_050_menu_0306.png
-report: v23 rows:x0+k51 macros:42 menus:3 layers:4 clean:78 partial:7 skipped:0 errors:0
+report: v24 rows:x0+k51 macros:42 menus:3 layers:4 clean:78 partial:7 skipped:0 errors:0
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_a/Full_Press => KbmKey0D <- Gamepad ButtonA
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_b/Full_Press => KbmKey1B <- Gamepad ButtonB
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_y/Full_Press => KbmKey46 <- Gamepad ButtonY

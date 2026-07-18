@@ -735,12 +735,12 @@ namespace PadForge.SteamWorkshop.Tests
         // ─── Translator version ─────────────────────────────────────────
 
         [Fact]
-        public void TranslatorVersion_IsTwentyThree_AndRidesTheSummary()
+        public void TranslatorVersion_IsTwentyFour_AndRidesTheSummary()
         {
-            Assert.Equal(23, TranslationReport.CurrentTranslatorVersion);
+            Assert.Equal(24, TranslationReport.CurrentTranslatorVersion);
             var p = Translate(Head + "}\n");
-            Assert.Equal(23, p.Report.TranslatorVersion);
-            Assert.StartsWith("v23 ", p.Report.ToSummaryString());
+            Assert.Equal(24, p.Report.TranslatorVersion);
+            Assert.StartsWith("v24 ", p.Report.ToSummaryString());
         }
     }
 }

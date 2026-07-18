@@ -1221,6 +1221,89 @@ namespace PadForge.SteamWorkshop.Translation
             PartialReasonKey = s.PartialReasonKey,
         };
 
+        /// <summary>The gated host source for a chord activator (v24), or
+        /// null when the chord cannot ground (caller keeps the named
+        /// skip). chord_button INDEXES k_eGamepadButtonBitMask, the same
+        /// value space as gyro_button (v23): the shipped configurator
+        /// declares the setting as {id:"Chord_ChordButton",
+        /// visualizerType:"ActivatorButtonChordMask"} and renders it
+        /// through the same enum glyph map as the gyro pickers, and the
+        /// corpus census agrees (every authored value 1-31 is a grounded
+        /// enum index; an authored MASK would carry BigInt values like
+        /// the ratchet masks do, and none exists). The partner descriptor
+        /// comes from the shared RatchetBitDescriptor enum map and rides
+        /// GateDescriptor, the engine's chord second leg.
+        ///
+        /// <para>The clone deliberately DROPS the combined-output trigger
+        /// identity (XboxButtonBit / MacroAxisTarget: a combined trigger
+        /// fires on the slot's output bit, which the plain Full_Press row
+        /// feeds partner-or-not, so chord macros must ride descriptor
+        /// triggers where FillMacroTrigger adds the gate entry) and the
+        /// AutomapTarget (a gated read is not the automap's plain read,
+        /// so identity folding must not swallow the gate). A host that
+        /// already carries a gate folds where the engine has a composed
+        /// read: the single-pad half click (#9 B-1) becomes the windowed
+        /// click ("Touchpad 0 Click Left", the v18 family), freeing the
+        /// gate slot for the partner. Anything else with a busy gate slot
+        /// (wedge click gates) stays ungroundable.</para></summary>
+        private static ResolvedSource ChordHost(Run run, SteamInputActivator activator,
+            ResolvedSource source)
+        {
+            // 0 stays ungroundable like the absent key: the shared value
+            // space's own 0 is the gyro_button none/default sentinel
+            // (v18/v23), no corpus chord authors it, and Steam's
+            // serializer omits defaults, so a 0 here is an unset picker,
+            // not a RightTriggerFullPull chord.
+            if (!activator.Settings.TryGetValue("chord_button", out var raw)
+                || !int.TryParse((raw ?? "").Trim(), NumberStyles.Integer,
+                    CultureInfo.InvariantCulture, out int idx)
+                || idx <= 0)
+            {
+                return null;
+            }
+            string partner = RatchetBitDescriptor(idx, run.SinglePadTrackpads);
+            if (partner == null) return null;
+
+            string descriptor = source.Descriptor;
+            if (!string.IsNullOrEmpty(source.GateDescriptor))
+            {
+                descriptor = FoldHalfClickGate(source.Descriptor, source.GateDescriptor);
+                if (descriptor == null) return null;
+            }
+            return new ResolvedSource
+            {
+                Descriptor = descriptor,
+                HalfAxis = source.HalfAxis,
+                Invert = source.Invert,
+                DeadZone = source.DeadZone,
+                TrackpadFeature = source.TrackpadFeature,
+                IsAnalogTriggerPull = source.IsAnalogTriggerPull,
+                GateDescriptor = partner,
+                PartialReasonKey = source.PartialReasonKey,
+            };
+        }
+
+        /// <summary>Folds a half-click AND gate into the engine's windowed
+        /// click read: "Touchpad {p} Click" gated on "Touchpad {p}
+        /// TouchLeft|TouchRight" (the B-1 single-pad shape) IS "Touchpad
+        /// {p} Click Left|Right" (SourceCoercion's v18 windowed-click
+        /// family), so the gate slot frees up for a chord partner. Null
+        /// for any other descriptor/gate pairing.</summary>
+        private static string FoldHalfClickGate(string descriptor, string gate)
+        {
+            descriptor = descriptor ?? "";
+            gate = gate ?? "";
+            if (!descriptor.StartsWith("Touchpad ", StringComparison.Ordinal)
+                || !descriptor.EndsWith(" Click", StringComparison.Ordinal))
+            {
+                return null;
+            }
+            string pad = descriptor.Substring(0, descriptor.Length - " Click".Length);
+            if (gate == pad + " TouchLeft") return descriptor + " Left";
+            if (gate == pad + " TouchRight") return descriptor + " Right";
+            return null;
+        }
+
         /// <summary>Walks a group's named inputs and translates each
         /// activator's bindings against the resolved physical source.</summary>
         private void TranslateMemberGroup(Run run, SteamInputPreset preset, SteamInputGroup group,
@@ -1867,6 +1950,7 @@ namespace PadForge.SteamWorkshop.Translation
                         onRelease: false, inputName, oneShotHost: true);
                     break;
 
+                case "game_action_analog": // the analog sibling, same Steam-session surface (v24)
                 case "game_action":
                     run.GameActionsByPreset[preset.Id] =
                         run.GameActionsByPreset.GetValueOrDefault(preset.Id) + 1;
@@ -2099,6 +2183,23 @@ namespace PadForge.SteamWorkshop.Translation
                         }
                         if (string.IsNullOrEmpty(reference)) continue;
                     }
+                    // "@" marks an APP-PROVIDED icon (v24): the shipped
+                    // configurator files every "@"-prefixed name under the
+                    // AppIcons category and validates it against
+                    // SteamClient.Input.GetTouchMenuIconsForApp(appid)
+                    // (steamui/chunk~2dcc5aaf7.js: CategoryForFilename's
+                    // startsWith("@") branch and the m_mapAppIcons check),
+                    // art the GAME ships and the client serves from its
+                    // internal /appcontrollericons route. Corpus witness:
+                    // the seven VRChat configs' @gesture_*.png and CK3's
+                    // @my_realm.png. No local directory to probe (the
+                    // files are not in the client's binding-icon dirs and
+                    // the per-app manifest is client-internal), so the
+                    // cell degrades SILENTLY to its text label, the same
+                    // fallback the overlay uses for any absent file:
+                    // icons are cosmetic and the label carries the cell.
+                    if (reference.StartsWith("@", StringComparison.Ordinal))
+                        return "";
                     if (PadForge.Engine.Menus.MenuItemDefinition.IsValidIconName(reference))
                         return reference;
                     unresolvedRef = reference;
@@ -2747,6 +2848,7 @@ namespace PadForge.SteamWorkshop.Translation
 
                 bool soft = false;
                 bool onRelease = false;
+                var hostSource = source;
                 switch (type.ToLowerInvariant())
                 {
                     case "full_press":
@@ -2764,6 +2866,26 @@ namespace PadForge.SteamWorkshop.Translation
                     case "double_press":
                         TranslateDoublePress(run, preset, activator, input, source, layer, actPath);
                         continue;
+                    case "chord":
+                        // Steam's Button Chord activator (v24): "activates
+                        // when the both the button owning the activator and
+                        // the chorded button are pressed" (shipped string
+                        // ControllerBinding_ActivatorDropDown_Chord_Description).
+                        // The partner rides the host source's AND-gate
+                        // companion, so the whole normal walk below (rows,
+                        // macro triggers, Kind=Chord layer activators)
+                        // inherits the two-leg requirement. Ungroundable
+                        // chords (out-of-enum chord_button, an unfoldable
+                        // second gate) keep the named skip.
+                        hostSource = ChordHost(run, activator, source);
+                        if (hostSource == null)
+                        {
+                            foreach (var b in activator.Bindings)
+                                ReportSkipUnlessSilent(run, TranslationReasons.UnknownActivatorType, actPath, b,
+                                    slotArg: type);
+                            continue;
+                        }
+                        break;
                     default:
                         foreach (var b in activator.Bindings)
                             ReportSkipUnlessSilent(run, TranslationReasons.UnknownActivatorType, actPath, b,
@@ -2802,11 +2924,11 @@ namespace PadForge.SteamWorkshop.Translation
                 int activatorsBefore = run.Activators.Count;
                 foreach (var binding in activator.Bindings)
                 {
-                    TranslateBinding(run, preset, binding, source, clickGate, layer, actPath,
+                    TranslateBinding(run, preset, binding, hostSource, clickGate, layer, actPath,
                         soft, onRelease, holdRepeats, intervalMs, toggle, input.Name,
                         delayStartMs, delayEndMs);
                 }
-                EmitHapticPulse(run, activator, source, input.Name, actPath,
+                EmitHapticPulse(run, activator, hostSource, input.Name, actPath,
                     onRelease ? "OnRelease" : "OnPress", holdMs: 0);
                 ConsumeActivatorDelays(run, activator, actPath, macrosBefore, activatorsBefore);
             }
@@ -3047,6 +3169,7 @@ namespace PadForge.SteamWorkshop.Translation
                             TranslationReasons.ActivatorInputNotSupported, actPath, binding.Raw);
                         break;
 
+                    case "game_action_analog": // the analog sibling, same Steam-session surface (v24)
                     case "game_action":
                         run.GameActionsByPreset[preset.Id] =
                             run.GameActionsByPreset.GetValueOrDefault(preset.Id) + 1;
@@ -3374,6 +3497,19 @@ namespace PadForge.SteamWorkshop.Translation
             _ => true,
         };
 
+        /// <summary>The controller_action verbs whose Long_Press routing
+        /// EMITS something (an activator, a macro, a silent macro), so the
+        /// activator counts as translated for the haptic pulse and the
+        /// delay channels. The named-skip families (SteamClientActions,
+        /// unknown verbs, placeholders) stay outside: haptics must not
+        /// tick for a binding that lowered to nothing.</summary>
+        private static readonly HashSet<string> LongPressEmittingVerbs = new(StringComparer.Ordinal)
+        {
+            "ADD_LAYER", "HOLD_LAYER", "REMOVE_LAYER", "CHANGE_PRESET",
+            "CAMERA_RESET", "SET_LED", "MOUSE_POSITION", "MOUSE_DELTA",
+            "SCREENSHOT", "SYSTEM_KEY_1", "SHOW_KEYBOARD",
+        };
+
         /// <summary>Long_Press activators. Grounded on Valve's shipped
         /// description: "Long Press Activator requires the button to be held
         /// for a period of time to activate. Once the long press time has
@@ -3429,15 +3565,32 @@ namespace PadForge.SteamWorkshop.Translation
                     anyCarry = true;
                     TranslateModeShift(run, preset, binding, source, actPath, delayMs, toggle);
                 }
-                else if (bt == "controller_action"
-                    && (action == "ADD_LAYER" || action == "HOLD_LAYER" || action == "CAMERA_RESET"
-                        // v10 G10: CHANGE_PRESET rides the activator's
-                        // DelayMs debounce, SET_LED the HoldForMs trigger.
-                        || action == "CHANGE_PRESET" || action == "SET_LED"))
+                else if (bt == "controller_action")
                 {
-                    anyCarry = true;
+                    // Every verb routes through the canonical walk (v24):
+                    // layer verbs ride the DelayMs debounce, the macro
+                    // verbs fire at the hold threshold (the SET_LED /
+                    // camera_reset HoldForMs shape, which mouse_position /
+                    // screenshot / show_keyboard adopted in v24), and the
+                    // Steam-client-only families keep their OWN named
+                    // skips (SteamSystemAction and friends) instead of a
+                    // long-press line: the impossibility is the verb's,
+                    // not the activator's. anyCarry only for verbs that
+                    // emit something (haptics must not tick for a binding
+                    // that lowered to a named skip).
+                    anyCarry |= LongPressEmittingVerbs.Contains(action);
                     TranslateControllerAction(run, preset, binding, source, layer, actPath,
                         onRelease: false, input.Name, delayMs, toggle);
+                }
+                else if (bt == "game_action" || bt == "game_action_analog")
+                {
+                    // The binding is impossible (game-side Steam API
+                    // session), not the Long_Press hosting it: count into
+                    // the per-preset GameActionsNotSupported aggregate
+                    // like every other walk (v24), instead of printing a
+                    // long-press line per binding.
+                    run.GameActionsByPreset[preset.Id] =
+                        run.GameActionsByPreset.GetValueOrDefault(preset.Id) + 1;
                 }
                 else if (bt == "key_press")
                 {
@@ -3919,6 +4072,7 @@ namespace PadForge.SteamWorkshop.Translation
                         inputName, toggle: toggle);
                     break;
 
+                case "game_action_analog": // the analog sibling, same Steam-session surface (v24)
                 case "game_action":
                     run.GameActionsByPreset[preset.Id] =
                         run.GameActionsByPreset.GetValueOrDefault(preset.Id) + 1;
@@ -4298,6 +4452,7 @@ namespace PadForge.SteamWorkshop.Translation
                     return null;
                 }
 
+                case "game_action_analog": // the analog sibling, same Steam-session surface (v24)
                 case "game_action":
                     // The per-preset aggregate, same as every other walk.
                     run.GameActionsByPreset[preset.Id] =
@@ -4785,7 +4940,11 @@ namespace PadForge.SteamWorkshop.Translation
                     {
                         Name = $"Warp cursor ({inputName})",
                         Action = TranslatedMacroAction.MoveMouseToScreenPosition,
-                        TriggerMode = triggerModeOverride ?? (onRelease ? "OnRelease" : "OnPress"),
+                        // Long_Press warps fire at the hold threshold, the
+                        // SET_LED / camera_reset shape (v24).
+                        TriggerMode = triggerModeOverride ?? (activatorDelayMs > 0 ? "HoldForMs"
+                            : onRelease ? "OnRelease" : "OnPress"),
+                        TriggerHoldMs = activatorDelayMs,
                         ConsumeTrigger = false,
                         NormalizedX = Math.Clamp(nx, 0, 65535),
                         NormalizedY = Math.Clamp(ny, 0, 65535),
@@ -5129,7 +5288,10 @@ namespace PadForge.SteamWorkshop.Translation
                     {
                         Name = $"Screenshot key ({inputName})",
                         Action = TranslatedMacroAction.KeyTap,
-                        TriggerMode = triggerModeOverride ?? (onRelease ? "OnRelease" : "OnPress"),
+                        // Long_Press taps at the hold threshold (v24).
+                        TriggerMode = triggerModeOverride ?? (activatorDelayMs > 0 ? "HoldForMs"
+                            : onRelease ? "OnRelease" : "OnPress"),
+                        TriggerHoldMs = activatorDelayMs,
                         ConsumeTrigger = false,
                         VirtualKey = 0x2C, // VK_SNAPSHOT
                     };
@@ -5152,7 +5314,10 @@ namespace PadForge.SteamWorkshop.Translation
                     {
                         Name = $"On-screen keyboard ({inputName})",
                         Action = TranslatedMacroAction.ShowOnScreenKeyboard,
-                        TriggerMode = triggerModeOverride ?? (onRelease ? "OnRelease" : "OnPress"),
+                        // Long_Press launches at the hold threshold (v24).
+                        TriggerMode = triggerModeOverride ?? (activatorDelayMs > 0 ? "HoldForMs"
+                            : onRelease ? "OnRelease" : "OnPress"),
+                        TriggerHoldMs = activatorDelayMs,
                         ConsumeTrigger = false,
                     };
                     // Descriptor trigger for the same no-phantom-Xbox-slot
@@ -5369,7 +5534,16 @@ namespace PadForge.SteamWorkshop.Translation
             && (string.IsNullOrEmpty(source.TrackpadFeature)
                 || source.TrackpadFeature == PhysicalSlotResolver.FeatureTouchSpots)
             && (!source.Descriptor.StartsWith("Gyro ", StringComparison.Ordinal)
-                || (allowGyroHalf && source.HalfAxis));
+                || (allowGyroHalf && source.HalfAxis))
+            // A gated half-axis host (a chord on a stick wedge, v24) has
+            // no activator carrier: FillActivatorInput's half stamp takes
+            // the Kind=Axis path and ReadActivatorInput evaluates the
+            // chord second leg for Kind=Chord only, so the gate would
+            // silently drop at runtime. Trigger pulls keep the Button
+            // kind (their deliberate FillActivatorInput carve-out), so a
+            // trigger-hosted chord stays hostable.
+            && (string.IsNullOrEmpty(source.GateDescriptor)
+                || !source.HalfAxis || source.IsAnalogTriggerPull);
 
         /// <summary>The engine's gyro-as-button rate threshold as a
         /// normalized Kind=Axis threshold (v15). Numerator: SourceCoercion.

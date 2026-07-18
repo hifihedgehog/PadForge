@@ -8,7 +8,9 @@ namespace PadForge.SteamWorkshop.Model
     /// <c>"key_press F5, Quicksave, ghost_030_inv_0100.png #000000 #ad0000"</c> or
     /// <c>"xinput_button A"</c>. The wire format is
     /// <c>&lt;type&gt; &lt;param...&gt;, &lt;action label&gt;, &lt;icon&gt; &lt;colors&gt;</c>
-    /// with comma-separated fields; only the first two carry translation-relevant data.
+    /// with comma-separated fields. The corpus carries the icon both with
+    /// the colors inside its own field ("icon.png #232323 #E4E4E4") and
+    /// with the colors in a fourth field ("icon.png, #232323 #E4E4E4").
     /// </summary>
     public sealed class SteamInputBinding
     {
@@ -21,6 +23,13 @@ namespace PadForge.SteamWorkshop.Model
         /// <summary>The human-readable action label (second comma field), or null.</summary>
         public string ActionName { get; }
 
+        /// <summary>The cell icon reference: the first whitespace token of
+        /// the fields past the label that ends in ".png" (e.g.
+        /// <c>ghost_030_inv_0100.png</c>), or null when the binding
+        /// carries none. Colors that share the icon field are not part of
+        /// the reference and are dropped here (they stay in <see cref="Raw"/>).</summary>
+        public string Icon { get; }
+
         /// <summary>The full, unmodified binding string. Preserves icon/color fields not otherwise modeled.</summary>
         public string Raw { get; }
 
@@ -30,12 +39,13 @@ namespace PadForge.SteamWorkshop.Model
         /// </summary>
         public IReadOnlyDictionary<string, string> Flags { get; }
 
-        private SteamInputBinding(string type, string param, string actionName, string raw,
-            IReadOnlyDictionary<string, string> flags)
+        private SteamInputBinding(string type, string param, string actionName, string icon,
+            string raw, IReadOnlyDictionary<string, string> flags)
         {
             Type = type;
             Param = param;
             ActionName = actionName;
+            Icon = icon;
             Raw = raw;
             Flags = flags;
         }
@@ -64,6 +74,23 @@ namespace PadForge.SteamWorkshop.Model
 
             var actionName = fields.Length > 1 ? fields[1].Trim() : null;
 
+            // Icon: first ".png"-suffixed whitespace token past the label
+            // field. Handles both corpus shapes (colors inside the icon
+            // field and colors in a field of their own).
+            string icon = null;
+            for (int f = 2; f < fields.Length && icon == null; f++)
+            {
+                foreach (var token in fields[f].Split(' ', '\t'))
+                {
+                    if (token.Length > 4
+                        && token.EndsWith(".png", StringComparison.OrdinalIgnoreCase))
+                    {
+                        icon = token;
+                        break;
+                    }
+                }
+            }
+
             Dictionary<string, string> flags = null;
             foreach (var field in fields)
             {
@@ -81,6 +108,7 @@ namespace PadForge.SteamWorkshop.Model
                 type,
                 param,
                 actionName,
+                icon,
                 raw,
                 (IReadOnlyDictionary<string, string>)flags ?? EmptyFlags);
         }

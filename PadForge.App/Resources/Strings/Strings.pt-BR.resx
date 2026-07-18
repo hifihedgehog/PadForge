@@ -2382,6 +2382,7 @@
   <data name="Workshop_ReadingConfig" xml:space="preserve"><value>Lendo configuração do Steam…</value></data>
   <data name="Workshop_SortedByRating" xml:space="preserve"><value>ordenadas por avaliação</value></data>
   <data name="Workshop_Found_Format" xml:space="preserve"><value>{0} encontradas</value></data>
+  <data name="Workshop_ShowingOf_Format" xml:space="preserve"><value>Mostrando {0} de {1}</value></data>
   <data name="Workshop_ConfigsCount_Format" xml:space="preserve"><value>{0} configurações</value></data>
   <data name="Workshop_CommunityConfigsSuffix" xml:space="preserve"><value>configurações da comunidade</value></data>
   <data name="Workshop_ControllerSupportFull" xml:space="preserve"><value>suporte total a controle</value></data>
@@ -2661,6 +2662,6 @@
   <data name="Workshop_Tr_MenuEmitted" xml:space="preserve"><value>menu na tela criado ({0} células atribuídas)</value></data>
   <data name="Workshop_Tr_MenuEmpty" xml:space="preserve"><value>o menu não tem células atribuídas</value></data>
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>superfície host do menu não suportada ({0})</value></data>
-  <data name="Workshop_Tr_MenuIconsDropped" xml:space="preserve"><value>ícones das células do menu descartados ({0} células exibem rótulos de texto)</value></data>
+  <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>ícone da célula do menu não reconhecido ({0}), então a célula mantém seu rótulo de texto</value></data>
   <data name="Workshop_Tr_MenuTuningDropped" xml:space="preserve"><value>ajustes do menu não suportados ({0})</value></data>
 </root>

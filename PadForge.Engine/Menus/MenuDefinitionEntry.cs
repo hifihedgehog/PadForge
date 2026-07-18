@@ -79,6 +79,39 @@ namespace PadForge.Engine.Menus
         /// same way macro custom-button actions do. Schema append-only:
         /// absent in older files = 0.</summary>
         [XmlAttribute] public int ExtendedButton { get; set; }
+
+        /// <summary>Steam Input cell icon name (the binding string's third
+        /// comma field, e.g. "ghost_050_menu_0030.png"): a bare PNG file
+        /// name in the local Steam client's binding-icon art
+        /// (tenfoot\resource\images\library\controller\binding_icons).
+        /// The overlay resolves it against the Steam install at display
+        /// time and falls back to the text label when Steam or the file
+        /// is absent. Never a path: only names passing
+        /// <see cref="IsValidIconName"/> are stored. Schema append-only:
+        /// absent in older files = empty.</summary>
+        [XmlAttribute] public string Icon { get; set; } = "";
+
+        /// <summary>Whether <paramref name="name"/> is a plausible Steam
+        /// binding-icon file name: a bare "*.png" with no directory
+        /// separators, drive colons, or characters outside the set the
+        /// client's own art uses, which is letters, digits, '_', '-',
+        /// and '.' (census over the shipped binding_icons directory,
+        /// 2026-07-18). Shared
+        /// by the Workshop translator's carry gate and the display-time
+        /// resolver so both sides agree on what an icon reference is.</summary>
+        public static bool IsValidIconName(string name)
+        {
+            if (string.IsNullOrEmpty(name) || name.Length > 128) return false;
+            if (!name.EndsWith(".png", System.StringComparison.OrdinalIgnoreCase)) return false;
+            if (name.Length <= ".png".Length) return false;
+            foreach (char c in name)
+            {
+                bool ok = (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z')
+                    || (c >= '0' && c <= '9') || c == '_' || c == '-' || c == '.';
+                if (!ok) return false;
+            }
+            return true;
+        }
     }
 
     /// <summary>
@@ -218,6 +251,7 @@ namespace PadForge.Engine.Menus
                         VirtualKey = it.VirtualKey,
                         XboxButtons = it.XboxButtons,
                         ExtendedButton = it.ExtendedButton,
+                        Icon = it.Icon,
                     });
                 }
             }

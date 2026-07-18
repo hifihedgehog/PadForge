@@ -138,24 +138,24 @@ macros: 66
   macro KeyTap OnRelease | Screenshot key (button_capture) | btns=0x0000 in=[Button 11] vk=0x2C
 menus: 2
   menu 1 Radial | Touchpad 0 | Base | fire=Click cells=12 | name=Menu
-    [1] add_layer
-    [2] MOUSE_POSITION
-    [3] MOUSE_POSITION
-    [5] MOUSE_POSITION
-    [8] MOUSE_POSITION
-    [9] MOUSE_POSITION
-    [10] MOUSE_POSITION
-    [12] MOUSE_POSITION
+    [1] add_layer icon=ghost_050_menu_0302.png
+    [2] MOUSE_POSITION icon=ghost_050_menu_0306.png
+    [3] MOUSE_POSITION icon=ghost_040_act_0324.png
+    [5] MOUSE_POSITION icon=ghost_070_setting_0030.png
+    [8] MOUSE_POSITION icon=ghost_040_act_0320.png
+    [9] MOUSE_POSITION icon=ghost_040_act_0327.png
+    [10] MOUSE_POSITION icon=ghost_040_act_0307.png
+    [12] MOUSE_POSITION icon=ghost_050_menu_0306.png
   menu 2 Radial | Touchpad 0 | Layer_3456927474_2 | fire=Click cells=12 | name=Menu
-    [1] add_layer
-    [2] MOUSE_POSITION
-    [3] MOUSE_POSITION
-    [5] MOUSE_POSITION
-    [8] MOUSE_POSITION
-    [9] MOUSE_POSITION
-    [10] MOUSE_POSITION
-    [12] MOUSE_POSITION
-report: v20 rows:x0+k19 macros:66 menus:2 layers:5 clean:82 partial:13 skipped:0 errors:0
+    [1] add_layer icon=ghost_050_menu_0302.png
+    [2] MOUSE_POSITION icon=ghost_050_menu_0306.png
+    [3] MOUSE_POSITION icon=ghost_040_act_0324.png
+    [5] MOUSE_POSITION icon=ghost_070_setting_0030.png
+    [8] MOUSE_POSITION icon=ghost_040_act_0320.png
+    [9] MOUSE_POSITION icon=ghost_040_act_0327.png
+    [10] MOUSE_POSITION icon=ghost_040_act_0307.png
+    [12] MOUSE_POSITION icon=ghost_050_menu_0306.png
+report: v21 rows:x0+k19 macros:66 menus:2 layers:5 clean:82 partial:11 skipped:0 errors:0
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_a/Full_Press => KbmMBtn0 <- Gamepad ButtonA
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_b/Full_Press => KbmMBtn1 <- Gamepad ButtonB
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_x/Full_Press => KbmKey45 <- Gamepad ButtonX
@@ -172,7 +172,6 @@ report: v20 rows:x0+k19 macros:66 menus:2 layers:5 clean:82 partial:13 skipped:0
   Clean RowEmitted @ Default/joystick/group 1 (dpad)/dpad_south/Full_Press => KbmKey53 <- Gamepad LeftStickY (upper half)
   Clean RowEmitted @ Default/joystick/group 1 (dpad)/dpad_west/Full_Press => KbmKey41 <- Gamepad LeftStickX (lower half)
   Clean MenuEmitted(8) @ Default/left_trackpad/group 16 (radial_menu) => Radial menu 1 on Touchpad 0: 8 bound cells
-  Partial MenuIconsDropped(8) @ Default/left_trackpad/group 16 (radial_menu)
   Clean MacroEmitted @ Default/left_trackpad/group 16 (radial_menu)/touch_menu_button_1/Full_Press => Cursor warp macro
   Clean MacroEmitted @ Default/left_trackpad/group 16 (radial_menu)/touch_menu_button_1/Full_Press => Long-press hold macro: mouse button 0
   Partial RemoveLayerApproximated @ Default/left_trackpad/group 16 (radial_menu)/touch_menu_button_1/release :: controller_action remove_layer 2 1 1, , 
@@ -221,7 +220,6 @@ report: v20 rows:x0+k19 macros:66 menus:2 layers:5 clean:82 partial:13 skipped:0
   Partial LayerReleaseEdgeApproximated(REMOVE_LAYER) @ Deactivate trackpad/switch/group 22 (switches)/right_bumper/release :: controller_action remove_layer 2 1 1, , 
   Clean MacroEmitted @ Deactivate trackpad/switch/group 22 (switches)/right_bumper/release => Mouse tap macro (button 1)
   Clean MenuEmitted(8) @ Menu save/left_trackpad/group 30 (radial_menu) => Radial menu 2 on Touchpad 0: 8 bound cells
-  Partial MenuIconsDropped(8) @ Menu save/left_trackpad/group 30 (radial_menu)
   Clean MacroEmitted @ Menu save/left_trackpad/group 30 (radial_menu)/touch_menu_button_1/Full_Press => Cursor warp macro
   Clean MacroEmitted @ Menu save/left_trackpad/group 30 (radial_menu)/touch_menu_button_1/Full_Press => Long-press hold macro: mouse button 0
   Partial RemoveLayerApproximated @ Menu save/left_trackpad/group 30 (radial_menu)/touch_menu_button_1/release :: controller_action remove_layer 2 1 1, , 

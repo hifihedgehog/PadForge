@@ -90,14 +90,14 @@ macros: 6
   macro KeyTap OnPress | Screenshot key (button_capture) | btns=0x0000 in=[Button 11] vk=0x2C
 menus: 2
   menu 1 Grid | Touchpad 0 [left half] | Layer_2948704083_0_MS_left_trackpad_14 | fire=Click cells=2 pos=(2%,78%) | name=Touch Menu 1
-    [0] Quicksave
-    [1] Quickload
+    [0] Quicksave icon=ghost_075_utility_020.png
+    [1] Quickload icon=ghost_075_utility_010.png
   menu 2 Grid | Touchpad 0 [right half] | Layer_2948704083_0_MS_right_trackpad_15 | fire=Click cells=4 pos=(97%,50%) | name=Touch Menu 2
-    [0] Info Views
-    [1] Game Areas
-    [2] Bulldoze
-    [3] Unlocking Panel
-report: v20 rows:x0+k33 macros:6 menus:2 layers:3 clean:46 partial:3 skipped:0 errors:0
+    [0] Info Views icon=ghost_050_menu_0080.png
+    [1] Game Areas icon=ghost_050_menu_0030.png
+    [2] Bulldoze icon=ghost_010_wpn_0320.png
+    [3] Unlocking Panel icon=ghost_110_social_0070.png
+report: v21 rows:x0+k33 macros:6 menus:2 layers:3 clean:46 partial:1 skipped:0 errors:0
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_a/Full_Press => KbmMBtn0 <- Gamepad ButtonA
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_b/Full_Press => KbmMBtn1 <- Gamepad ButtonB
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_x/Full_Press => KbmKey42 <- Gamepad ButtonX
@@ -120,7 +120,6 @@ report: v20 rows:x0+k33 macros:6 menus:2 layers:3 clean:46 partial:3 skipped:0 e
   Clean RowEmitted @ Default/joystick/group 3 (dpad)/dpad_west/Full_Press => KbmKey41 <- Gamepad LeftStickX (lower half)
   Clean RowEmitted @ Default/left_trackpad/group 12 (scrollwheel)/click/Full_Press => KbmMBtn2 <- Touchpad 0 Click
   Clean MenuEmitted(2) @ Default/left_trackpad/group 14 (touch_menu) => Grid menu 1 on Touchpad 0: 2 bound cells
-  Partial MenuIconsDropped(2) @ Default/left_trackpad/group 14 (touch_menu)
   Clean RowEmitted @ Default/left_trackpad/group 14 (touch_menu)/touch_menu_button_0/Full_Press => KbmKey70 <- Menu 1 Item 0
   Clean RowEmitted @ Default/left_trackpad/group 14 (touch_menu)/touch_menu_button_1/Full_Press => KbmKey73 <- Menu 1 Item 1
   Clean RowEmitted @ Default/left_trigger/group 4 (trigger)/click/Full_Press => KbmKey58 <- Gamepad LeftTrigger (upper half)
@@ -133,7 +132,6 @@ report: v20 rows:x0+k33 macros:6 menus:2 layers:3 clean:46 partial:3 skipped:0 e
   Clean RowEmitted @ Default/right_trackpad/group 2 (absolute_mouse) => KbmMouseY <- Touchpad 0 Finger 0 Y Right
   Clean RowEmitted @ Default/right_trackpad/group 2 (absolute_mouse)/click/Full_Press => KbmMBtn2 <- Touchpad 0 Click
   Clean MenuEmitted(4) @ Default/right_trackpad/group 15 (touch_menu) => Grid menu 2 on Touchpad 0: 4 bound cells
-  Partial MenuIconsDropped(4) @ Default/right_trackpad/group 15 (touch_menu)
   Clean RowEmitted @ Default/right_trackpad/group 15 (touch_menu)/touch_menu_button_0/Full_Press => KbmKey49 <- Menu 2 Item 0
   Clean RowEmitted @ Default/right_trackpad/group 15 (touch_menu)/touch_menu_button_1/Full_Press => KbmKey59 <- Menu 2 Item 1
   Clean RowEmitted @ Default/right_trackpad/group 15 (touch_menu)/touch_menu_button_2/Full_Press => KbmKey42 <- Menu 2 Item 2

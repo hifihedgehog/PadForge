@@ -285,10 +285,60 @@ namespace PadForge.SteamWorkshop.Tests
             var m = Assert.Single(p.Menus);
             Assert.Equal("Quicksave", m.Items[0].Label);
             Assert.Equal("F9", m.Items[1].Label);
-            // One icon cell: named Partial with the count.
-            var icons = Assert.Single(p.Report.Entries, e =>
-                e.ReasonKey == TranslationReasons.MenuIconsDropped);
-            Assert.Equal("1", icons.ReasonArgs[0]);
+            // The authored icon carries on the item (v21), the icon-free
+            // cell stays empty, and nothing reports.
+            Assert.Equal("ghost_075_utility_020.png", m.Items[0].Icon);
+            Assert.Equal("", m.Items[1].Icon);
+            Assert.DoesNotContain(p.Report.Entries, e =>
+                e.ReasonKey == TranslationReasons.MenuIconUnresolved);
+        }
+
+        [Fact]
+        public void CellIcons_Carry_AcrossBothCorpusColorShapes()
+        {
+            // The corpus writes the icon field two ways: colors inside the
+            // icon field ("icon.png #232323 #E4E4E4") and colors in a
+            // fourth field ("icon.png, #232323 #E4E4E4"). Both carry the
+            // bare name. The colors are not part of the reference.
+            string vdf = Head
+                + Group(1, "touch_menu", Inputs(
+                    (0, "key_press M, Quick Map, ghost_050_menu_0030.png #000000 #E4E4E4"),
+                    (1, "key_press T, Tech, ghost_070_setting_0040.png, "),
+                    (2, "key_press S, , ghost_040_act_0315.png, #232323 #00AD3D")))
+                + Preset(0, "Default", (1, "left_trackpad active"))
+                + "}\n";
+            var p = Translate(vdf);
+
+            var m = Assert.Single(p.Menus);
+            Assert.Equal("ghost_050_menu_0030.png", m.Items[0].Icon);
+            Assert.Equal("ghost_070_setting_0040.png", m.Items[1].Icon);
+            Assert.Equal("ghost_040_act_0315.png", m.Items[2].Icon);
+            Assert.DoesNotContain(p.Report.Entries, e =>
+                e.ReasonKey == TranslationReasons.MenuIconUnresolved);
+        }
+
+        [Fact]
+        public void CellIcon_OutsideTheClientNameShape_DropsWithThePreciseNote()
+        {
+            // A pathed reference cannot resolve against the Steam
+            // client's flat binding-icon art: the cell keeps its label
+            // and the note names the exact file, per cell.
+            string vdf = Head
+                + Group(1, "touch_menu", Inputs(
+                    (0, "key_press A, Attack, art/custom_attack.png #000000 #E4E4E4"),
+                    (1, "key_press B, Block, ghost_040_act_0050.png #000000 #E4E4E4")))
+                + Preset(0, "Default", (1, "left_trackpad active"))
+                + "}\n";
+            var p = Translate(vdf);
+
+            var m = Assert.Single(p.Menus);
+            Assert.Equal("", m.Items[0].Icon);
+            Assert.Equal("ghost_040_act_0050.png", m.Items[1].Icon);
+            var note = Assert.Single(p.Report.Entries, e =>
+                e.ReasonKey == TranslationReasons.MenuIconUnresolved);
+            Assert.Equal(TranslationStatus.Partial, note.Status);
+            Assert.Equal("art/custom_attack.png", note.ReasonArgs[0]);
+            Assert.EndsWith("/touch_menu_button_0", note.SourcePath);
         }
 
         // ─── Cell binding shapes ─────────────────────────────────────────

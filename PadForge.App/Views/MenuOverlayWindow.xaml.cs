@@ -129,7 +129,9 @@ namespace PadForge.Views
                 for (int i = 0; i < m.Items.Count; i++)
                 {
                     var it = m.Items[i];
-                    if (it != null) sb.Append('|').Append(it.Index).Append('=').Append(it.Label);
+                    if (it != null)
+                        sb.Append('|').Append(it.Index).Append('=').Append(it.Label)
+                          .Append('~').Append(it.Icon);
                 }
             }
             return sb.ToString();
@@ -203,13 +205,13 @@ namespace PadForge.Views
                 MenuCanvas.Children.Add(path);
                 _cellShapes[slot] = path;
 
-                if (menu.ShowLabels && has && !string.IsNullOrEmpty(item.Label))
+                if (has)
                 {
                     double mid = (slot - 1) * 2.0 * Math.PI / slots; // clockwise from top
                     double lr = (inner + outer) / 2.0;
-                    var label = MakeLabel(item.Label, outer * 0.62, 13 * Math.Max(scale, 0.7));
-                    PlaceLabel(label, cx + Math.Sin(mid) * lr, cy - Math.Cos(mid) * lr);
-                    _cellLabels[slot] = label;
+                    PlaceCellContent(item, menu.ShowLabels, slot,
+                        cx + Math.Sin(mid) * lr, cy - Math.Cos(mid) * lr,
+                        outer * 0.62, 13 * Math.Max(scale, 0.7), scale);
                 }
             }
 
@@ -231,11 +233,10 @@ namespace PadForge.Views
                 MenuCanvas.Children.Add(dot);
                 _cellShapes[0] = dot;
 
-                if (menu.ShowLabels && has && !string.IsNullOrEmpty(center.Label))
+                if (has)
                 {
-                    var label = MakeLabel(center.Label, inner * 1.6, 13 * Math.Max(scale, 0.7));
-                    PlaceLabel(label, cx, cy);
-                    _cellLabels[0] = label;
+                    PlaceCellContent(center, menu.ShowLabels, 0, cx, cy,
+                        inner * 1.6, 13 * Math.Max(scale, 0.7), scale);
                 }
             }
         }
@@ -316,11 +317,11 @@ namespace PadForge.Views
                 MenuCanvas.Children.Add(rect);
                 _cellShapes[idx] = rect;
 
-                if (menu.ShowLabels && has && !string.IsNullOrEmpty(item.Label))
+                if (has)
                 {
-                    var label = MakeLabel(item.Label, cw - 12, 13 * Math.Max(scale, 0.7));
-                    PlaceLabel(label, col * (cw + gap) + cw / 2, row * (ch + gap) + ch / 2);
-                    _cellLabels[idx] = label;
+                    PlaceCellContent(item, menu.ShowLabels, idx,
+                        col * (cw + gap) + cw / 2, row * (ch + gap) + ch / 2,
+                        cw - 12, 13 * Math.Max(scale, 0.7), scale);
                 }
             }
         }
@@ -337,6 +338,45 @@ namespace PadForge.Views
                 if (it != null) map[it.Index] = it;
             }
             return map;
+        }
+
+        /// <summary>Renders one bound cell's content centered on (cx, cy):
+        /// the Steam icon glyph when the item carries a name the local
+        /// Steam install resolves (translator v21, never shipped, read at
+        /// display time), the text label per ShowLabels, both stacked when
+        /// both exist. An icon that fails to resolve (no Steam, file
+        /// absent, bad name) degrades to exactly the pre-icon rendering:
+        /// the label alone. Icons never restyle on hover, so only labels
+        /// register in <see cref="_cellLabels"/>.</summary>
+        private void PlaceCellContent(MenuItemDefinition item, bool showLabels, int index,
+            double cx, double cy, double maxLabelWidth, double fontSize, double scale)
+        {
+            ImageSource iconSrc = string.IsNullOrEmpty(item.Icon)
+                ? null : Common.MenuIconResolver.Resolve(item.Icon);
+            bool labelShown = showLabels && !string.IsNullOrEmpty(item.Label);
+            double iconSize = 30 * Math.Max(scale, 0.7);
+
+            if (iconSrc != null)
+            {
+                var icon = new Image
+                {
+                    Source = iconSrc,
+                    Width = iconSize,
+                    Height = iconSize,
+                    IsHitTestVisible = false,
+                };
+                double iconCy = labelShown ? cy - iconSize * 0.45 : cy;
+                Canvas.SetLeft(icon, cx - iconSize / 2);
+                Canvas.SetTop(icon, iconCy - iconSize / 2);
+                MenuCanvas.Children.Add(icon);
+            }
+
+            if (labelShown)
+            {
+                var label = MakeLabel(item.Label, maxLabelWidth, fontSize);
+                PlaceLabel(label, cx, iconSrc != null ? cy + iconSize * 0.55 : cy);
+                _cellLabels[index] = label;
+            }
         }
 
         private TextBlock MakeLabel(string text, double maxWidth, double fontSize)

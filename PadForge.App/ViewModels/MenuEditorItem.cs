@@ -931,7 +931,7 @@ namespace PadForge.ViewModels
             if (Entry.Items != null)
             {
                 Entry.Items.RemoveAll(it => it == null
-                    || ((string.IsNullOrEmpty(it.Label)
+                    || ((string.IsNullOrEmpty(it.Label) && string.IsNullOrEmpty(it.Icon)
                          && it.VirtualKey <= 0 && it.XboxButtons == 0 && it.ExtendedButton <= 0)
                         && (Entry.Kind == MenuKind.Radial
                             ? it.Index > Entry.CellCount || it.Index < 0 || (it.Index == 0 && !Entry.HasCenter)
@@ -955,7 +955,8 @@ namespace PadForge.ViewModels
         internal void DropItemIfEmpty(MenuItemDefinition item)
         {
             if (item == null || Entry.Items == null) return;
-            if (string.IsNullOrEmpty(item.Label) && item.VirtualKey <= 0
+            if (string.IsNullOrEmpty(item.Label) && string.IsNullOrEmpty(item.Icon)
+                && item.VirtualKey <= 0
                 && item.XboxButtons == 0 && item.ExtendedButton <= 0)
                 Entry.Items.Remove(item);
         }
@@ -985,6 +986,29 @@ namespace PadForge.ViewModels
             IsCenter = isCenter;
             _item = item;
         }
+
+        // ── Imported Steam icon (translator v21) ─────────────────
+        // Indicator only, no editing UI: imported cells carry the
+        // authored icon name and the overlay renders the local Steam
+        // client's art at display time. The editor shows the resolved
+        // glyph (or a picture placeholder when Steam / the file is
+        // absent) so an icon-bearing cell is visibly not just its label.
+
+        /// <summary>Whether the cell carries an authored icon name.</summary>
+        public bool HasIcon => !string.IsNullOrEmpty(_item?.Icon);
+
+        /// <summary>The authored icon file name (indicator tooltip).</summary>
+        public string IconName => _item?.Icon ?? "";
+
+        /// <summary>The locally resolved icon, or null (no icon authored,
+        /// Steam absent, or file absent). Cached and frozen by the shared
+        /// resolver, so per-read cost is a dictionary hit.</summary>
+        public System.Windows.Media.ImageSource IconImage
+            => HasIcon ? PadForge.Common.MenuIconResolver.Resolve(_item.Icon) : null;
+
+        /// <summary>True when the cell carries an icon the local machine
+        /// cannot render (the placeholder-glyph case).</summary>
+        public bool ShowIconGlyph => HasIcon && IconImage == null;
 
         public string Label
         {
@@ -1265,8 +1289,26 @@ namespace PadForge.ViewModels
 
         public RelayCommand ResetCellCommand => _resetCell ??= new RelayCommand(() =>
         {
+            // Icon first: with the icon counting as cell data, clearing
+            // label + binding alone would leave an icon-only item alive
+            // and the row un-resettable.
+            if (_item != null && !string.IsNullOrEmpty(_item.Icon))
+            {
+                _item.Icon = "";
+                OnPropertyChanged(nameof(HasIcon));
+                OnPropertyChanged(nameof(IconImage));
+                OnPropertyChanged(nameof(ShowIconGlyph));
+                _owner.RaiseChanged();
+            }
             Label = "";
             BindingKind = 0;
+            // Label / BindingKind setters skip their drop when unchanged,
+            // so an icon-only cell still needs the empty item pruned.
+            if (_item != null)
+            {
+                _owner.DropItemIfEmpty(_item);
+                if (_owner.Entry.Items?.Contains(_item) != true) _item = null;
+            }
         });
         private RelayCommand _resetCell;
     }

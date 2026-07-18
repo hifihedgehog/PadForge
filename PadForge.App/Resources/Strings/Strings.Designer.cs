@@ -2414,6 +2414,7 @@ public class Strings : INotifyPropertyChanged
     public string Workshop_ReadingConfig => Get("Workshop_ReadingConfig");
     public string Workshop_SortedByRating => Get("Workshop_SortedByRating");
     public string Workshop_Found_Format => Get("Workshop_Found_Format");
+    public string Workshop_ShowingOf_Format => Get("Workshop_ShowingOf_Format");
     public string Workshop_ConfigsCount_Format => Get("Workshop_ConfigsCount_Format");
     public string Workshop_CommunityConfigsSuffix => Get("Workshop_CommunityConfigsSuffix");
     public string Workshop_ControllerSupportFull => Get("Workshop_ControllerSupportFull");
@@ -2570,6 +2571,6 @@ public class Strings : INotifyPropertyChanged
     public string Workshop_Tr_MenuEmitted => Get("Workshop_Tr_MenuEmitted");
     public string Workshop_Tr_MenuEmpty => Get("Workshop_Tr_MenuEmpty");
     public string Workshop_Tr_MenuSurfaceNotSupported => Get("Workshop_Tr_MenuSurfaceNotSupported");
-    public string Workshop_Tr_MenuIconsDropped => Get("Workshop_Tr_MenuIconsDropped");
+    public string Workshop_Tr_MenuIconUnresolved => Get("Workshop_Tr_MenuIconUnresolved");
     public string Workshop_Tr_MenuTuningDropped => Get("Workshop_Tr_MenuTuningDropped");
 }

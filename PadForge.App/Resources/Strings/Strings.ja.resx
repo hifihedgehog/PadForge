@@ -2382,6 +2382,7 @@
   <data name="Workshop_ReadingConfig" xml:space="preserve"><value>Steam からコンフィグを読み込んでいます…</value></data>
   <data name="Workshop_SortedByRating" xml:space="preserve"><value>評価順</value></data>
   <data name="Workshop_Found_Format" xml:space="preserve"><value>{0} 件見つかりました</value></data>
+  <data name="Workshop_ShowingOf_Format" xml:space="preserve"><value>{1} 件中 {0} 件を表示</value></data>
   <data name="Workshop_ConfigsCount_Format" xml:space="preserve"><value>{0} 件のコンフィグ</value></data>
   <data name="Workshop_CommunityConfigsSuffix" xml:space="preserve"><value>件のコミュニティコンフィグ</value></data>
   <data name="Workshop_ControllerSupportFull" xml:space="preserve"><value>フルコントローラーサポート</value></data>
@@ -2661,6 +2662,6 @@
   <data name="Workshop_Tr_MenuEmitted" xml:space="preserve"><value>画面上メニューを作成 ({0} 個の割り当て済みセル)</value></data>
   <data name="Workshop_Tr_MenuEmpty" xml:space="preserve"><value>メニューに割り当て済みセルがありません</value></data>
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>メニューのホストサーフェスは未対応 ({0})</value></data>
-  <data name="Workshop_Tr_MenuIconsDropped" xml:space="preserve"><value>メニューセルのアイコンを破棄 ({0} セルはテキストラベルを表示)</value></data>
+  <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>メニューセルのアイコンを認識できません ({0})。このセルはテキストラベルを表示します</value></data>
   <data name="Workshop_Tr_MenuTuningDropped" xml:space="preserve"><value>メニューの調整設定は未対応 ({0})</value></data>
 </root>

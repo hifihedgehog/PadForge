@@ -2404,6 +2404,7 @@
   <data name="Workshop_ReadingConfig" xml:space="preserve"><value>Lettura della configurazione da Steam…</value></data>
   <data name="Workshop_SortedByRating" xml:space="preserve"><value>ordinate per valutazione</value></data>
   <data name="Workshop_Found_Format" xml:space="preserve"><value>{0} trovate</value></data>
+  <data name="Workshop_ShowingOf_Format" xml:space="preserve"><value>{0} di {1} mostrate</value></data>
   <data name="Workshop_ConfigsCount_Format" xml:space="preserve"><value>{0} configurazioni</value></data>
   <data name="Workshop_CommunityConfigsSuffix" xml:space="preserve"><value>configurazioni della community</value></data>
   <data name="Workshop_ControllerSupportFull" xml:space="preserve"><value>supporto controller completo</value></data>
@@ -2683,6 +2684,6 @@
   <data name="Workshop_Tr_MenuEmitted" xml:space="preserve"><value>menu su schermo creato ({0} celle assegnate)</value></data>
   <data name="Workshop_Tr_MenuEmpty" xml:space="preserve"><value>il menu non ha celle assegnate</value></data>
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>superficie host del menu non supportata ({0})</value></data>
-  <data name="Workshop_Tr_MenuIconsDropped" xml:space="preserve"><value>icone delle celle del menu scartate ({0} celle mostrano etichette di testo)</value></data>
+  <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>icona della cella del menu non riconosciuta ({0}), quindi la cella mantiene la sua etichetta di testo</value></data>
   <data name="Workshop_Tr_MenuTuningDropped" xml:space="preserve"><value>regolazioni del menu non supportate ({0})</value></data>
 </root>

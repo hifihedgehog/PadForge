@@ -87,16 +87,17 @@ namespace PadForge.SteamWorkshop.Translation
             // keyboard/mouse config must not sprout an Xbox slot for a
             // stick nobody consumes.
             public readonly List<(string Layer, string Target, string Descriptor, string Path, int DeadZonePct,
-                    double CurveExponent, double RangeOuter, double Sensitivity)>
+                    double CurveExponent, double RangeOuter, double Sensitivity, double Anti)>
                 MatchedAnalogs = new();
             private readonly HashSet<string> _matchedAnalogSeen = new(StringComparer.Ordinal);
 
             public void AddMatchedAnalog(string layer, string target, string descriptor, string path,
-                int deadZonePct = 0, double curveExponent = 0, double rangeOuter = 0, double sensitivity = 1.0)
+                int deadZonePct = 0, double curveExponent = 0, double rangeOuter = 0, double sensitivity = 1.0,
+                double anti = 0)
             {
                 if (_matchedAnalogSeen.Add($"{layer}|{target}|{descriptor}"))
                     MatchedAnalogs.Add((layer, target, descriptor, path, deadZonePct,
-                        curveExponent, rangeOuter, sensitivity));
+                        curveExponent, rangeOuter, sensitivity, anti));
             }
 
             public readonly List<ActivatorRequest> Activators = new();
@@ -125,10 +126,10 @@ namespace PadForge.SteamWorkshop.Translation
 
             /// <summary>Macros emitted with no report line (the v17
             /// SCREENSHOT / SHOW_KEYBOARD arms: the note described exactly
-            /// what a user expects, so it was noise). Counted so the
-            /// report-based CountEmitted proxy still sees them and the
-            /// TrackpadHalfApproximated gate keeps firing for wedges whose
-            /// only output is one of these macros.</summary>
+            /// what a user expects, so it was noise). The v14-v17
+            /// CountEmitted consumer retired with the half-approximation
+            /// note in v18 (wedges window per half now); the counter
+            /// stays as the cheap emissions census.</summary>
             public int SilentMacroEmissions;
 
             /// <summary>Switch-family config: diamond members are named by
@@ -164,10 +165,9 @@ namespace PadForge.SteamWorkshop.Translation
             // the top half of an otherwise clean analog pull.
             public bool HasMatchedPassthrough;
             public readonly List<MappingSource> Sources = new();
-            // Click gate for a single trackpad-dpad feed. Dropped (with a
-            // Partial entry) if any other source joins the same target.
-            public MappingSource ClickGate;
-            public string ClickGatePath;
+            // Click gates ride each source's own GateDescriptor since v18
+            // (the engine's per-source AND companion), so a second feed on
+            // the same target never drops anybody's gate.
         }
 
         private sealed class PendingIdentity
@@ -357,18 +357,8 @@ namespace PadForge.SteamWorkshop.Translation
             // instead of silence, but only on modes that otherwise
             // translate (a wholly-skipped group's own entry covers it).
             if (ProductiveModes.Contains(mode))
-                ReportDroppedGroupSettings(run, settings, path,
-                    // Trackpad mouse_region consumes its per-axis
-                    // sensitivity scales as region extent since v6
-                    // (#9 B-15), so the curve-drop note must not name
-                    // them there; every other host still drops them.
-                    skipRegionScales: mode == "mouse_region"
-                        && PhysicalSlotResolver.IsTrackpad(slot),
-                    reportMouseTuning: MouseTuningModes.Contains(mode),
-                    // Stick-hosted joystick groups consume the curve
-                    // cluster into the per-source channel since v11, so
-                    // the note names only the still-dropped keys there.
-                    skipCurveChannel: CurveChannelApplies(slot, mode));
+                ReportDroppedGroupSettings(run, settings, path, slot, mode,
+                    reportMouseTuning: MouseTuningModes.Contains(mode));
 
             switch (mode)
             {
@@ -418,7 +408,8 @@ namespace PadForge.SteamWorkshop.Translation
                     // and Valve's shipped gyro templates carry no settings
                     // at all, so absent = 1.0x).
                     EmitMouseAxes(run, slot, layer, path, settings, GenericBaseline,
-                        sensitivityKey: "gyro_natural_sensitivity");
+                        sensitivityKey: "gyro_natural_sensitivity",
+                        curveChannel: CurveChannelApplies(slot, mode));
                     TranslateMemberGroup(run, preset, effective, slot, layer, path, settings);
                     break;
 
@@ -456,7 +447,8 @@ namespace PadForge.SteamWorkshop.Translation
                     // construct on trackpads is mouse_region, handled below.
                     // So the relative rows ARE the faithful translation:
                     // Clean.
-                    EmitMouseAxes(run, slot, layer, path, settings, TrackpadMouseBaseline);
+                    EmitMouseAxes(run, slot, layer, path, settings, TrackpadMouseBaseline,
+                        curveChannel: CurveChannelApplies(slot, mode));
                     TranslateMemberGroup(run, preset, effective, slot, layer, path, settings);
                     break;
 
@@ -581,46 +573,52 @@ namespace PadForge.SteamWorkshop.Translation
         /// controller configs, and OpenSteamworks' EControllerSetting enum);
         /// it stays listed defensively so an unknown config carrying it
         /// still gets a named drop instead of silence.</summary>
+        /// <summary>The still-dropped response-cluster keys (v18). The
+        /// exponent / range / sensitivity / anti-deadzone keys are consumed
+        /// on EVERY analog host now (per-source shaping runs on the stick,
+        /// trigger, trackpad, gesture, and gyro lanes since v18), so only
+        /// two names remain: output_curve has NEGATIVE grounding as a real
+        /// Steam key (absent from the corpus, Valve's shipped
+        /// controller_base templates, Valve's CSGO controller configs, and
+        /// OpenSteamworks' EControllerSetting enum) and stays listed
+        /// defensively; deadzone_shape names the arm the pair channel
+        /// cannot reach (mouse-output hosts, whose X / Y rows evaluate
+        /// independently with no pair read; thumb-pair outputs consume it
+        /// via the slot-level DeadZoneShape stamp instead). Member-only
+        /// modes (dpad, four_buttons, switches, single_button) consume the
+        /// cluster silently: Steam's own configurator hides the response
+        /// curve for them, so a stale key left by a mode switch shapes
+        /// nothing there in Steam either.</summary>
         private static readonly string[] CurveSettingKeys =
         {
-            "deadzone_outer_radius", "deadzone_shape",
-            "custom_curve_exponent", "curve_exponent", "output_curve",
-            "sensitivity_horiz_scale", "sensitivity_vert_scale",
-            // Output anti-deadzone (v13 census): a floor added to the
-            // output response (Valve's basicui templates carry it on
-            // joystick groups). No engine channel, so it stays named
-            // beside the rest of the response cluster.
-            "anti_deadzone",
+            "deadzone_shape", "output_curve",
         };
 
-        /// <summary>Modes whose stick-hosted analog pair rides the v11
-        /// per-source curve/range channel: the emitted rows read
-        /// "Gamepad ...Stick" axes, which the engine shapes in the generic
-        /// bipolar tail (SourceCoercion.ApplyCurveRangeShaping, the
-        /// Sensitivity seam). Trackpad and gyro hosts read specialized
-        /// families that return before that seam, and trigger groups
-        /// evaluate through the unipolar path, so their curve keys stay
-        /// honestly dropped and named.</summary>
+        /// <summary>Modes whose analog pair rides the per-source
+        /// curve/range channel: v11 built the stick hosts, v18 widened the
+        /// engine seam to the trackpad finger / gesture lanes, the gyro
+        /// lane, and the unipolar trigger tail, so every analog host
+        /// stamps.</summary>
         private static readonly HashSet<string> CurveChannelModes = new(StringComparer.Ordinal)
         {
             "joystick_move", "joystick_mouse", "joystick_camera", "mouse_joystick",
+            "absolute_mouse", "relative_mouse", "gyro_to_mouse",
         };
 
         /// <summary>True when a group's curve cluster lands on the emitted
-        /// axis rows (v11). MUST stay the same predicate the emitters use to
+        /// analog rows. MUST stay the same predicate the emitters use to
         /// stamp, or the drop note and the stamps drift apart.</summary>
         private static bool CurveChannelApplies(SteamSlot slot, string mode)
-            => PhysicalSlotResolver.IsStick(slot) && CurveChannelModes.Contains(mode);
+            => (PhysicalSlotResolver.IsStick(slot) || PhysicalSlotResolver.IsTrackpad(slot)
+                    || slot == SteamSlot.Gyro)
+                && CurveChannelModes.Contains(mode);
 
-        /// <summary>Curve-cluster keys the v11 channel consumes on groups
-        /// where <see cref="CurveChannelApplies"/>. deadzone_shape (the
-        /// engine's radial read has no square/cross option) and the
-        /// negatively-grounded output_curve stay dropped everywhere.</summary>
-        private static readonly string[] CurveChannelConsumedKeys =
-        {
-            "deadzone_outer_radius", "custom_curve_exponent", "curve_exponent",
-            "sensitivity_horiz_scale", "sensitivity_vert_scale",
-        };
+        /// <summary>True when the group's output is a virtual thumb PAIR,
+        /// so Steam's deadzone_shape lands on the engine's pair-shaped
+        /// deadzone channel (the slot-level DeadZoneShape stamp the
+        /// runtime overlays onto the VC stick processing).</summary>
+        private static bool DeadZoneShapeApplies(string mode)
+            => mode == "joystick_move" || mode == "mouse_joystick";
 
         /// <summary>Per-group curve/range channel values (v11), parsed once
         /// and stamped onto both member rows of the emitted axis pair.
@@ -652,13 +650,16 @@ namespace PadForge.SteamWorkshop.Translation
             public readonly double RangeOuter; // 0 = off (full range)
             public readonly double SensX;      // 1.0 = neutral
             public readonly double SensY;
+            public readonly double Anti;       // 0 = off (v18 anti_deadzone)
 
-            private CurveRangeChannel(double exponent, double rangeOuter, double sensX, double sensY)
+            private CurveRangeChannel(double exponent, double rangeOuter, double sensX, double sensY,
+                double anti)
             {
                 Exponent = exponent;
                 RangeOuter = rangeOuter;
                 SensX = sensX;
                 SensY = sensY;
+                Anti = anti;
             }
 
             public static CurveRangeChannel FromSettings(Dictionary<string, string> settings)
@@ -690,42 +691,124 @@ namespace PadForge.SteamWorkshop.Translation
 
                 double sensX = Math.Clamp(ParseIntSetting(settings, "sensitivity_horiz_scale", 100), 1, 400) / 100.0;
                 double sensY = Math.Clamp(ParseIntSetting(settings, "sensitivity_vert_scale", 100), 1, 400) / 100.0;
-                return new CurveRangeChannel(exponent, outer, sensX, sensY);
+                // anti_deadzone (v18): an output floor on the response,
+                // the deadzone-radius 0..32767 scale (Valve's basicui
+                // templates carry it on joystick groups). Junk past the
+                // ceiling clamps below 1 so the floor stays a floor.
+                double anti = 0.0;
+                int antiRaw = ParseIntSetting(settings, "anti_deadzone", 0);
+                if (antiRaw > 0) anti = Math.Min(antiRaw / 32767.0, 0.95);
+                return new CurveRangeChannel(exponent, outer, sensX, sensY, anti);
             }
 
             /// <summary>Stamps one member row's source. The per-axis
             /// sensitivity scale multiplies INTO the existing Sensitivity so
-            /// a mouse-mode ratio already on the source is preserved.</summary>
+            /// a mouse-mode ratio already on the source is preserved. Gyro
+            /// sources carry their ratio on GyroSensitivity, so the scale
+            /// folds there for them.</summary>
             public void StampAxis(MappingSource src, bool isX)
             {
                 if (Exponent > 0) src.ParamCurveExponent = Exponent;
                 if (RangeOuter > 0) src.ParamRangeOuter = RangeOuter;
+                if (Anti > 0) src.ParamAntiDeadzone = Anti;
                 double s = isX ? SensX : SensY;
-                if (s != 1.0) src.Sensitivity *= s;
+                if (s != 1.0)
+                {
+                    if ((src.Descriptor ?? "").StartsWith("Gyro ", StringComparison.Ordinal))
+                        src.GyroSensitivity *= s;
+                    else
+                        src.Sensitivity *= s;
+                }
             }
         }
 
-        /// <summary>Mouse/region-mode feel settings PadForge has no channel
-        /// for, named per group when present (finding 1g-2). rotation is a
-        /// geometric rotation of the pad-to-cursor map (behavior, not just
-        /// feel); friction / mouse_smoothing / trackball shape the cursor
-        /// response. Corpus values: rotation -18/-21, friction 1,
-        /// mouse_smoothing 22, trackball 0/1. Only named on the mouse/region
-        /// modes (<see cref="MouseTuningModes"/>); flickstick keeps its own
-        /// FlickStickTuningDropped note for the overlapping keys.</summary>
+        /// <summary>The one mouse-feel key still without a channel (v18):
+        /// mouse_dampening_trigger slows the cursor while a NAMED trigger
+        /// is pulled, a cross-input modulation. The row grammar's only
+        /// second-input constructs are the boolean AND gate and the
+        /// InvertOnHold sign flip; a live analog scaling one source by
+        /// another would be a new source kind, so the key stays named.
+        /// Everything else in the family BUILT in v18: rotation is pure
+        /// row math (two-source Sum with trigonometric coefficients),
+        /// mouse_smoothing rides the per-source EMA, acceleration the
+        /// rate gain, mouse_move_threshold the delta gate, and trackball
+        /// + friction (+ friction_vert_scale) the momentum decay, all on
+        /// MappingSource Param* knobs.</summary>
         private static readonly string[] MouseModeTuningKeys =
         {
-            "rotation", "friction", "mouse_smoothing", "trackball",
-            // v13 census additions, same feel family (corpus hosts them on
-            // absolute_mouse groups): acceleration is the cursor accel
-            // curve, friction_vert_scale scales trackball friction per
-            // axis, mouse_dampening_trigger slows the cursor while the
-            // named trigger is pulled, mouse_move_threshold gates small
-            // motions. Zero values mean off for all four, so the existing
-            // non-zero filter keeps defaults silent.
-            "acceleration", "friction_vert_scale",
-            "mouse_dampening_trigger", "mouse_move_threshold",
+            "mouse_dampening_trigger",
         };
+
+        /// <summary>Mouse-feel channel (v18): the built remainder of the
+        /// old MouseModeTuningDropped family, parsed once per group and
+        /// stamped onto the emitted mouse-axis sources.
+        ///
+        /// <para>Grounding and scales. rotation is degrees (corpus -30..14;
+        /// the shipped configurator's Rotation slider), applied as a
+        /// rotation of the input vector: x' = x cos t - y sin t,
+        /// y' = x sin t + y cos t in the pad's y-down frame (positive =
+        /// visually clockwise). mouse_smoothing is a 0..100-ish strength
+        /// (corpus 0..22), mapped to the per-tick EMA alpha / 100, the
+        /// GyroTuning.SmoothingAlpha convention. acceleration is Steam's
+        /// small enum-ish gain (corpus 1 / 3), mapped to a 0.5x-per-step
+        /// rate gain on the engine's 1 + a * |v| curve.
+        /// mouse_move_threshold gates small motions (corpus 2), mapped to
+        /// thousandths of the normalized delta. trackball 1 enables
+        /// momentum; friction (corpus 0 / 1 / 3) sets the per-tick decay
+        /// (0 = spin practically forever, higher = stop faster) and
+        /// friction_vert_scale (percent) scales the vertical decay.</para></summary>
+        private readonly struct MouseFeelChannel
+        {
+            public readonly double RotationDeg;
+            public readonly double SmoothingAlpha;
+            public readonly double Accel;
+            public readonly double MoveThreshold;
+            public readonly double TrackballDecayX;
+            public readonly double TrackballDecayY;
+
+            private MouseFeelChannel(double rot, double alpha, double accel, double threshold,
+                double decayX, double decayY)
+            {
+                RotationDeg = rot;
+                SmoothingAlpha = alpha;
+                Accel = accel;
+                MoveThreshold = threshold;
+                TrackballDecayX = decayX;
+                TrackballDecayY = decayY;
+            }
+
+            public static MouseFeelChannel FromSettings(Dictionary<string, string> settings)
+            {
+                double rot = ParseIntSetting(settings, "rotation", 0);
+                if (rot <= -360 || rot >= 360) rot = 0; // junk guard
+                double alpha = Math.Clamp(ParseIntSetting(settings, "mouse_smoothing", 0), 0, 99) / 100.0;
+                double accel = Math.Clamp(ParseIntSetting(settings, "acceleration", 0), 0, 10) * 0.5;
+                double threshold = Math.Clamp(ParseIntSetting(settings, "mouse_move_threshold", 0), 0, 100) / 1000.0;
+                double decayX = 0, decayY = 0;
+                if (ParseIntSetting(settings, "trackball", 0) != 0)
+                {
+                    int friction = Math.Clamp(ParseIntSetting(settings, "friction", 1), 0, 10);
+                    decayX = friction == 0 ? 0.9995 : 1.0 - 0.0015 * friction;
+                    int vert = ParseIntSetting(settings, "friction_vert_scale", 100);
+                    double frictionY = friction * Math.Clamp(vert, 1, 400) / 100.0;
+                    decayY = friction == 0 ? decayX : Math.Clamp(1.0 - 0.0015 * frictionY, 0.9, 0.9995);
+                }
+                return new MouseFeelChannel(rot, alpha, accel, threshold, decayX, decayY);
+            }
+
+            public bool HasRotation => RotationDeg != 0;
+
+            /// <summary>Stamps the non-rotation knobs onto one axis source
+            /// (rotation is row structure, not a source knob).</summary>
+            public void StampFeel(MappingSource src, bool isX)
+            {
+                if (SmoothingAlpha > 0) src.ParamSmoothingAlpha = SmoothingAlpha;
+                if (Accel > 0) src.ParamAccel = Accel;
+                if (MoveThreshold > 0) src.ParamMoveThreshold = MoveThreshold;
+                double decay = isX ? TrackballDecayX : TrackballDecayY;
+                if (decay > 0) src.ParamTrackballDecay = decay;
+            }
+        }
 
         /// <summary>Modes whose dropped <see cref="MouseModeTuningKeys"/> get
         /// the MouseModeTuningDropped note. flickstick is excluded: it reports
@@ -756,23 +839,41 @@ namespace PadForge.SteamWorkshop.Translation
                 path, args: keys);
         }
 
-        /// <summary>Named notes for group settings that used to drop
-        /// silently: response-curve shaping, gyro engage/ratchet button
-        /// masks, and the group-level haptic override (counted into the
-        /// per-config aggregate).</summary>
+        /// <summary>Named notes for group settings without a channel, plus
+        /// the v18 slot-level stamps: deadzone_shape lands on the pair
+        /// channel where the output IS a thumb pair, gyro_button 0 lands
+        /// on the slot-level engage stamp, and the group-level haptic
+        /// override feeds the per-config aggregate.</summary>
         private void ReportDroppedGroupSettings(Run run,
             Dictionary<string, string> settings, string path,
-            bool skipRegionScales = false, bool reportMouseTuning = false,
-            bool skipCurveChannel = false)
+            SteamSlot slot, string mode, bool reportMouseTuning = false)
         {
+            // deadzone_shape (v18): thumb-pair outputs consume it into the
+            // slot-level DeadZoneShape stamp (Steam 0 = Cross and 2 =
+            // Square are per-axis checks, the engine's Axial; 1 = Circle
+            // is the radial check, the engine's ScaledRadial default).
+            bool shapeConsumed = false;
+            if (DeadZoneShapeApplies(mode)
+                && settings.TryGetValue("deadzone_shape", out var shapeRaw)
+                && int.TryParse((shapeRaw ?? "").Trim(), NumberStyles.Integer,
+                    CultureInfo.InvariantCulture, out int shapeVal))
+            {
+                string stamp = shapeVal == 1 ? "2" : "0";
+                // The pair the group FEEDS: joystick_move redirects via
+                // output_joystick (1 = left, 2 = right, 0 = matched side);
+                // mouse_joystick defaults right, output_joystick 1 = left.
+                int oj = ParseIntSetting(settings, "output_joystick", 0);
+                bool left = mode == "joystick_move"
+                    ? (oj == 1 || (oj != 2 && slot != SteamSlot.RightJoystick))
+                    : oj == 1;
+                if (left) run.Profile.LeftStickDeadZoneShape = stamp;
+                else run.Profile.RightStickDeadZoneShape = stamp;
+                shapeConsumed = true;
+            }
+
             var curves = CurveSettingKeys
                 .Where(k => settings.ContainsKey(k)
-                    && !(skipRegionScales
-                        && (k == "sensitivity_horiz_scale" || k == "sensitivity_vert_scale"))
-                    // v11: stick-hosted joystick groups carry these on the
-                    // emitted axis rows (CurveRangeChannel), so only the
-                    // genuinely dropped keys stay in the note.
-                    && !(skipCurveChannel && CurveChannelConsumedKeys.Contains(k)))
+                    && !(shapeConsumed && k == "deadzone_shape"))
                 .ToList();
             if (curves.Count > 0)
             {
@@ -780,10 +881,9 @@ namespace PadForge.SteamWorkshop.Translation
                     path, args: string.Join(", ", curves));
             }
 
-            // Mouse/region feel settings with no PadForge channel (finding
-            // 1g-2): rotation rotates the pad-to-cursor map, the rest shape
-            // cursor response. Only on the mouse/region modes; flickstick
-            // names its own overlapping keys.
+            // The one mouse-feel key with no channel (v18): cross-input
+            // dampening. Only on the mouse/region modes; flickstick names
+            // its own overlapping keys.
             if (reportMouseTuning)
             {
                 var mouseTuning = MouseModeTuningKeys
@@ -797,17 +897,35 @@ namespace PadForge.SteamWorkshop.Translation
                 }
             }
 
+            // gyro_button (v18): index 0 is the pad-touch engage (the SC
+            // right-pad touch; the single physical pad's right half on
+            // DS4 / DualSense) and stamps the slot-level device-free
+            // engage descriptor, with gyro_button_invert 1 as the
+            // engage-while-NOT-held flip. Non-zero indices keep the named
+            // note: the gyro_button index table beyond 0 has no public
+            // grounding (searched 2026-07-17; sc-controller's importer
+            // does not parse the key), and the token-table tattoo forbids
+            // guessing. The ratchet BITMASK rides the same ungrounded
+            // enum and keeps its note whole.
             foreach (var key in new[] { "gyro_button", "gyro_ratchet_button_mask", "gyro_button_invert" })
             {
                 if (!settings.TryGetValue(key, out var v)) continue;
-                // Ratchet mask 0 = no ratchet button, the default; the
-                // engage button index is meaningful at every value
-                // (0 = right-pad touch on the Steam Controller). The
-                // invert flag (v13 census: engage while NOT held) is
-                // default-off, so only a stored non-zero diverges.
+                string val = (v ?? "").Trim();
                 if ((key == "gyro_ratchet_button_mask" || key == "gyro_button_invert")
-                    && (v ?? "").Trim() == "0")
+                    && val == "0")
                 {
+                    continue;
+                }
+                if (key == "gyro_button" && val == "0")
+                {
+                    run.Profile.GyroEngageDescriptor = run.SinglePadTrackpads
+                        ? "Touchpad 0 Finger 0 Down Right"
+                        : "Touchpad 1 Finger 0 Down";
+                    continue;
+                }
+                if (key == "gyro_button_invert" && val == "1")
+                {
+                    run.Profile.GyroEngageInvert = true;
                     continue;
                 }
                 run.Report.Add(TranslationStatus.Partial, TranslationReasons.GyroButtonMaskDropped,
@@ -913,7 +1031,6 @@ namespace PadForge.SteamWorkshop.Translation
             bool requiresClick = RequiresClick(slot, group, settings);
             int groupDeadZonePct = GroupDeadZonePercent(settings);
             var half = PhysicalSlotResolver.HalfFor(slot, run.SinglePadTrackpads);
-            bool halfNoted = false;
 
             foreach (var inputName in group.Inputs.Keys.OrderBy(k => k, StringComparer.Ordinal))
             {
@@ -1016,12 +1133,24 @@ namespace PadForge.SteamWorkshop.Translation
 
                 // Click-gate the trackpad D-pad wedges when the group
                 // requires a pad click (the classic Steam Controller feel).
+                // Half-hosted groups (#9 B-1, built in v18): the wedge
+                // gesture itself is anchor-relative and whole-pad, so the
+                // half restriction rides the per-source AND gate: the
+                // windowed click ("Touchpad 0 Click Left") when the group
+                // requires a click, else the half's contact window
+                // ("Touchpad 0 Finger 0 Down Left"), so only the hosting
+                // half's finger fires the group.
                 bool isWedge = inputName.StartsWith("dpad_", StringComparison.OrdinalIgnoreCase);
-                string clickGate = requiresClick
-                    && PhysicalSlotResolver.IsTrackpad(slot)
-                    && isWedge
-                        ? $"Touchpad {PhysicalSlotResolver.TrackpadIndex(slot, run.SinglePadTrackpads)} Click"
-                        : null;
+                string clickGate = null;
+                if (isWedge && PhysicalSlotResolver.IsTrackpad(slot))
+                {
+                    int padIdx = PhysicalSlotResolver.TrackpadIndex(slot, run.SinglePadTrackpads);
+                    string windowSfx = PhysicalSlotResolver.HalfSuffix(half);
+                    if (requiresClick)
+                        clickGate = $"Touchpad {padIdx} Click{windowSfx}";
+                    else if (half != TrackpadHalf.Whole)
+                        clickGate = $"Touchpad {padIdx} Finger 0 Down{windowSfx}";
+                }
                 // The gate rides the source too, so macro-shaped
                 // translations of the wedge (set_led, Long_Press keys)
                 // inherit the click requirement in their device-free
@@ -1029,37 +1158,8 @@ namespace PadForge.SteamWorkshop.Translation
                 if (clickGate != null && source.GateDescriptor == null)
                     source = WithGate(source, clickGate);
 
-                // Half-hosted D-pad wedges (#9 B-1): the anchor-relative
-                // wedge gesture has no half window, so the group's wedges
-                // read the whole pad. One honest note per group, and only
-                // when a wedge actually emitted something (a group whose
-                // bindings all skip approximates nothing).
-                bool watchHalf = !halfNoted && isWedge && half != TrackpadHalf.Whole;
-                int emittedBefore = watchHalf ? CountEmitted(run) : 0;
-
                 TranslateInput(run, preset, input, source, clickGate, layer, inputPath);
-
-                if (watchHalf && CountEmitted(run) > emittedBefore)
-                {
-                    run.Report.Add(TranslationStatus.Partial,
-                        TranslationReasons.TrackpadHalfApproximated, path);
-                    halfNoted = true;
-                }
             }
-        }
-
-        /// <summary>Count of report entries that emitted output (rows,
-        /// macros, layer switches), plus the report-silent macro arms.
-        /// Cheap proxy for "did this member produce anything", used by
-        /// the half-approximation notes so all-skipped groups stay
-        /// note-free.</summary>
-        private static int CountEmitted(Run run)
-        {
-            int n = run.SilentMacroEmissions;
-            var entries = run.Report.Entries;
-            for (int i = 0; i < entries.Count; i++)
-                if (!string.IsNullOrEmpty(entries[i].Emitted)) n++;
-            return n;
         }
 
         private static bool RequiresClick(SteamSlot slot, SteamInputGroup group,
@@ -1393,7 +1493,6 @@ namespace PadForge.SteamWorkshop.Translation
                 foreach (var activator in input.Activators)
                 {
                     string actPath = $"{inputPath}/{(activator.Type ?? "").Trim()}";
-                    ReportDroppedActivatorExtras(run, activator, actPath);
                     int macrosBefore = run.Profile.Macros.Count;
                     foreach (var binding in activator.Bindings)
                         TranslateOneShotSwipeBinding(run, preset, binding, source, layer, actPath,
@@ -1457,7 +1556,6 @@ namespace PadForge.SteamWorkshop.Translation
                 foreach (var activator in input.Activators)
                 {
                     string actPath = $"{inputPath}/{(activator.Type ?? "").Trim()}";
-                    ReportDroppedActivatorExtras(run, activator, actPath);
                     int macrosBefore = run.Profile.Macros.Count;
                     foreach (var binding in activator.Bindings)
                         TranslateOneShotSwipeBinding(run, preset, binding, source, layer, actPath,
@@ -1976,11 +2074,17 @@ namespace PadForge.SteamWorkshop.Translation
                         ? o : 0;
                 bool crossed = (output == 1 && !left) || (output == 2 && left);
                 string sourceDesc = left ? "Gamepad LeftTrigger" : "Gamepad RightTrigger";
+                // v18: the trigger group's response cluster rides the pull
+                // row (the engine's unipolar tail shapes it now, the
+                // stick seam's twin). A single pull axis reads the
+                // horizontal sensitivity scale.
+                var curve = CurveRangeChannel.FromSettings(settings);
                 if (crossed)
                 {
                     string target = left ? "RightTrigger" : "LeftTrigger";
                     var src = new MappingSource { Descriptor = sourceDesc };
                     if (dzPct > 0) src.DeadZone = dzPct;
+                    curve.StampAxis(src, isX: true);
                     AddRowSource(run, isKbm: false, layer, target,
                         src, isAxis: true,
                         TranslationStatus.Clean, TranslationReasons.RowEmitted, path,
@@ -1989,7 +2093,8 @@ namespace PadForge.SteamWorkshop.Translation
                 else
                 {
                     run.AddMatchedAnalog(layer, left ? "LeftTrigger" : "RightTrigger",
-                        sourceDesc, path, dzPct);
+                        sourceDesc, path, dzPct,
+                        curve.Exponent, curve.RangeOuter, curve.SensX, curve.Anti);
                 }
             }
 
@@ -2045,9 +2150,9 @@ namespace PadForge.SteamWorkshop.Translation
                 {
                     string dst = left ? "Left" : "Right";
                     run.AddMatchedAnalog(layer, $"{dst}ThumbAxisX", $"Gamepad {src}X", path, dzPct,
-                        curve.Exponent, curve.RangeOuter, curve.SensX);
+                        curve.Exponent, curve.RangeOuter, curve.SensX, curve.Anti);
                     run.AddMatchedAnalog(layer, $"{dst}ThumbAxisY", $"Gamepad {src}Y", path, dzPct,
-                        curve.Exponent, curve.RangeOuter, curve.SensY);
+                        curve.Exponent, curve.RangeOuter, curve.SensY, curve.Anti);
                 }
             }
             else if (PhysicalSlotResolver.IsTrackpad(slot))
@@ -2056,6 +2161,16 @@ namespace PadForge.SteamWorkshop.Translation
                 var half = PhysicalSlotResolver.HalfFor(slot, run.SinglePadTrackpads);
                 // 2 = right stick, anything else lands on the left.
                 string dst = output == 2 ? "Right" : "Left";
+                // v18: the trackpad-as-stick lanes (absolute finger reads
+                // and the gesture Stick channel) ride the same per-source
+                // curve/range shaping as the stick hosts.
+                var padCurve = CurveRangeChannel.FromSettings(settings);
+                MappingSource PadSrc(string descriptor, bool isX)
+                {
+                    var s = Src(descriptor);
+                    padCurve.StampAxis(s, isX);
+                    return s;
+                }
                 if (half != TrackpadHalf.Whole)
                 {
                     // A stick hosted on one half of a single physical pad
@@ -2066,10 +2181,10 @@ namespace PadForge.SteamWorkshop.Translation
                     // no half window, so it can't carry this case.)
                     string sfx = PhysicalSlotResolver.HalfSuffix(half);
                     AddRowSource(run, isKbm: false, layer, $"{dst}ThumbAxisX",
-                        Src($"Touchpad {p} Finger 0 X{sfx}"), isAxis: true,
+                        PadSrc($"Touchpad {p} Finger 0 X{sfx}", isX: true), isAxis: true,
                         TranslationStatus.Clean, TranslationReasons.RowEmitted, path);
                     AddRowSource(run, isKbm: false, layer, $"{dst}ThumbAxisY",
-                        Src($"Touchpad {p} Finger 0 Y{sfx}"), isAxis: true,
+                        PadSrc($"Touchpad {p} Finger 0 Y{sfx}", isX: false), isAxis: true,
                         TranslationStatus.Clean, TranslationReasons.RowEmitted, path);
                 }
                 else
@@ -2078,10 +2193,10 @@ namespace PadForge.SteamWorkshop.Translation
                     // v14 (the imported set references the descriptors),
                     // so the rows are Clean with no user action needed.
                     AddRowSource(run, isKbm: false, layer, $"{dst}ThumbAxisX",
-                        Src($"Touchpad {p} StickX"), isAxis: true,
+                        PadSrc($"Touchpad {p} StickX", isX: true), isAxis: true,
                         TranslationStatus.Clean, TranslationReasons.RowEmitted, path);
                     AddRowSource(run, isKbm: false, layer, $"{dst}ThumbAxisY",
-                        Src($"Touchpad {p} StickY"), isAxis: true,
+                        PadSrc($"Touchpad {p} StickY", isX: false), isAxis: true,
                         TranslationStatus.Clean, TranslationReasons.RowEmitted, path);
                 }
             }
@@ -2115,14 +2230,15 @@ namespace PadForge.SteamWorkshop.Translation
 
             var (x, y, family) = pair.Value;
             int dzPct = GroupDeadZonePercent(settings);
-            // v11: stick-hosted joystick_mouse / joystick_camera groups
-            // carry the response-curve cluster on the emitted pair (Steam's
-            // "Stick Response Curve" is defined for these modes). The caller
-            // gates on CurveChannelApplies, so family is always 0 here when
-            // the flag is set.
+            // v11 (widened to every analog host in v18): the group's
+            // response-curve cluster rides the emitted pair as per-source
+            // params.
             var curve = curveChannel
                 ? CurveRangeChannel.FromSettings(settings)
                 : default;
+            // v18: the built mouse-feel family (rotation / smoothing /
+            // accel / threshold / trackball) rides the same sources.
+            var feel = MouseFeelChannel.FromSettings(settings);
 
             // Steam's per-group axis inversion (finding 1g-1). Every
             // mouse-axis family here reads through the bipolar evaluator's
@@ -2134,21 +2250,47 @@ namespace PadForge.SteamWorkshop.Translation
             bool invertX = SettingIsOn(settings, "invert_x");
             bool invertY = SettingIsOn(settings, "invert_y");
 
-            MappingSource Make(string descriptor, bool invert, bool isX)
+            MappingSource Make(string descriptor, bool invert, bool isX, double coeff = 1.0)
             {
                 var src = new MappingSource { Descriptor = descriptor };
-                if (family == 0 || family == 1) src.Sensitivity = ratio;
-                else if (family == 2) src.GyroSensitivity = ratio;
+                double scale = ratio * Math.Abs(coeff);
+                if (family == 0 || family == 1) src.Sensitivity = scale;
+                else if (family == 2) src.GyroSensitivity = scale;
                 if (dzPct > 0) src.DeadZone = dzPct;
-                if (invert) src.Invert = true;
+                if (invert ^ (coeff < 0)) src.Invert = true;
                 if (curveChannel) curve.StampAxis(src, isX);
+                feel.StampFeel(src, isX);
                 return src;
             }
 
-            AddRowSource(run, isKbm: true, layer, "KbmMouseX", Make(x, invertX, isX: true), isAxis: true,
-                TranslationStatus.Clean, TranslationReasons.RowEmitted, path);
-            AddRowSource(run, isKbm: true, layer, "KbmMouseY", Make(y, invertY, isX: false), isAxis: true,
-                TranslationStatus.Clean, TranslationReasons.RowEmitted, path);
+            if (feel.HasRotation)
+            {
+                // rotation (v18): rotate the input vector by the authored
+                // angle, pure row math: each output row Sums the two pad
+                // axes with the trigonometric coefficients folded into the
+                // per-source sensitivity (sign via Invert). Near-zero legs
+                // are dropped so 90-degree multiples stay two clean rows.
+                double t = feel.RotationDeg * Math.PI / 180.0;
+                double cos = Math.Cos(t), sin = Math.Sin(t);
+                void AddLeg(string target, string desc, bool invert, bool isX, double coeff)
+                {
+                    if (Math.Abs(coeff) < 0.001) return;
+                    AddRowSource(run, isKbm: true, layer, target,
+                        Make(desc, invert, isX, coeff), isAxis: true,
+                        TranslationStatus.Clean, TranslationReasons.RowEmitted, path);
+                }
+                AddLeg("KbmMouseX", x, invertX, isX: true, cos);
+                AddLeg("KbmMouseX", y, invertY, isX: true, -sin);
+                AddLeg("KbmMouseY", x, invertX, isX: false, sin);
+                AddLeg("KbmMouseY", y, invertY, isX: false, cos);
+            }
+            else
+            {
+                AddRowSource(run, isKbm: true, layer, "KbmMouseX", Make(x, invertX, isX: true), isAxis: true,
+                    TranslationStatus.Clean, TranslationReasons.RowEmitted, path);
+                AddRowSource(run, isKbm: true, layer, "KbmMouseY", Make(y, invertY, isX: false), isAxis: true,
+                    TranslationStatus.Clean, TranslationReasons.RowEmitted, path);
+            }
 
             // invert_z addresses a third (roll) axis the X/Y mouse-delta pair
             // does not emit, so name it rather than drop it under Clean rows.
@@ -2183,27 +2325,51 @@ namespace PadForge.SteamWorkshop.Translation
             bool invertX = SettingIsOn(settings, "invert_x");
             bool invertY = SettingIsOn(settings, "invert_y");
             string dst = ParseIntSetting(settings, "output_joystick", 0) == 1 ? "Left" : "Right";
-            // v11: same curve-channel stamps as EmitMouseAxes, gated the
-            // same way by the caller (stick host only).
+            // v11 (every analog host since v18): same curve-channel stamps
+            // as EmitMouseAxes.
             var curve = curveChannel
                 ? CurveRangeChannel.FromSettings(settings)
                 : default;
+            var feel = MouseFeelChannel.FromSettings(settings);
 
-            MappingSource Make(string descriptor, bool invert, bool isX)
+            MappingSource Make(string descriptor, bool invert, bool isX, double coeff = 1.0)
             {
                 var src = new MappingSource { Descriptor = descriptor };
-                if (family == 0 || family == 1) src.Sensitivity = ratio;
-                else if (family == 2) src.GyroSensitivity = ratio;
+                double scale = ratio * Math.Abs(coeff);
+                if (family == 0 || family == 1) src.Sensitivity = scale;
+                else if (family == 2) src.GyroSensitivity = scale;
                 if (dzPct > 0) src.DeadZone = dzPct;
-                if (invert) src.Invert = true;
+                if (invert ^ (coeff < 0)) src.Invert = true;
                 if (curveChannel) curve.StampAxis(src, isX);
+                feel.StampFeel(src, isX);
                 return src;
             }
 
-            AddRowSource(run, isKbm: false, layer, $"{dst}ThumbAxisX", Make(x, invertX, isX: true), isAxis: true,
-                TranslationStatus.Clean, TranslationReasons.RowEmitted, path);
-            AddRowSource(run, isKbm: false, layer, $"{dst}ThumbAxisY", Make(y, invertY, isX: false), isAxis: true,
-                TranslationStatus.Clean, TranslationReasons.RowEmitted, path);
+            if (feel.HasRotation)
+            {
+                // rotation (v18): same two-source Sum lowering as
+                // EmitMouseAxes, on the thumb-axis targets.
+                double t = feel.RotationDeg * Math.PI / 180.0;
+                double cos = Math.Cos(t), sin = Math.Sin(t);
+                void AddLeg(string target, string desc, bool invert, bool isX, double coeff)
+                {
+                    if (Math.Abs(coeff) < 0.001) return;
+                    AddRowSource(run, isKbm: false, layer, target,
+                        Make(desc, invert, isX, coeff), isAxis: true,
+                        TranslationStatus.Clean, TranslationReasons.RowEmitted, path);
+                }
+                AddLeg($"{dst}ThumbAxisX", x, invertX, isX: true, cos);
+                AddLeg($"{dst}ThumbAxisX", y, invertY, isX: true, -sin);
+                AddLeg($"{dst}ThumbAxisY", x, invertX, isX: false, sin);
+                AddLeg($"{dst}ThumbAxisY", y, invertY, isX: false, cos);
+            }
+            else
+            {
+                AddRowSource(run, isKbm: false, layer, $"{dst}ThumbAxisX", Make(x, invertX, isX: true), isAxis: true,
+                    TranslationStatus.Clean, TranslationReasons.RowEmitted, path);
+                AddRowSource(run, isKbm: false, layer, $"{dst}ThumbAxisY", Make(y, invertY, isX: false), isAxis: true,
+                    TranslationStatus.Clean, TranslationReasons.RowEmitted, path);
+            }
 
             // invert_z addresses a third axis the X/Y pair does not emit.
             if (SettingIsOn(settings, "invert_z"))
@@ -2253,11 +2419,20 @@ namespace PadForge.SteamWorkshop.Translation
             {
                 src.ParamFlickCountsPer360 = dots;
             }
+            // transition_time (v18): Steam's flick easing time, stored in
+            // ms (the wild corpus scale), IS ParamFlickTime (seconds for a
+            // full 180-degree flick), so it consumes 1:1.
+            int transitionMs = ParseIntSetting(settings, "transition_time", 0);
+            if (transitionMs > 0)
+                src.ParamFlickTime = Math.Clamp(transitionMs / 1000.0, 0.01, 1.0);
 
             AddRowSource(run, isKbm: true, layer, "KbmMouseX", src, isAxis: true,
                 TranslationStatus.Clean, TranslationReasons.RowEmitted, path);
 
-            var dropped = FlickStickDroppedKeys.Where(settings.ContainsKey).ToList();
+            var dropped = FlickStickDroppedKeys
+                .Where(k => settings.ContainsKey(k)
+                    && !(k == "transition_time" && transitionMs > 0))
+                .ToList();
             if (dropped.Count > 0)
             {
                 run.Report.Add(TranslationStatus.Partial,
@@ -2315,7 +2490,6 @@ namespace PadForge.SteamWorkshop.Translation
                         continue;
                 }
 
-                ReportDroppedActivatorExtras(run, activator, actPath);
 
                 // hold_repeats enables key autofire; repeat_rate alone is
                 // just the stored slider value with the feature off.
@@ -2336,15 +2510,24 @@ namespace PadForge.SteamWorkshop.Translation
                 bool toggle = activator.Settings.TryGetValue("toggle", out var tg)
                     && tg?.Trim() == "1";
 
+                // Activator delays (v18): known before the walk so
+                // row-shaped bindings can reroute onto the delayed hold
+                // macros, and layer switches emitted in the window can
+                // take the engage debounce.
+                int delayStartMs = ParseDelaySetting(activator, "delay_start");
+                int delayEndMs = ParseDelaySetting(activator, "delay_end");
+
                 int macrosBefore = run.Profile.Macros.Count;
+                int activatorsBefore = run.Activators.Count;
                 foreach (var binding in activator.Bindings)
                 {
                     TranslateBinding(run, preset, binding, source, clickGate, layer, actPath,
-                        soft, onRelease, holdRepeats, intervalMs, toggle, input.Name);
+                        soft, onRelease, holdRepeats, intervalMs, toggle, input.Name,
+                        delayStartMs, delayEndMs);
                 }
                 EmitHapticPulse(run, activator, source, input.Name, actPath,
                     onRelease ? "OnRelease" : "OnPress", holdMs: 0);
-                ConsumeActivatorDelays(run, activator, actPath, macrosBefore);
+                ConsumeActivatorDelays(run, activator, actPath, macrosBefore, activatorsBefore);
             }
         }
 
@@ -2387,7 +2570,6 @@ namespace PadForge.SteamWorkshop.Translation
                     Descriptor = $"Touchpad {pad} DoubleTap",
                     TrackpadFeature = PhysicalSlotResolver.FeatureTaps,
                 };
-                ReportDroppedActivatorExtras(run, activator, actPath);
                 int tapMacrosBefore = run.Profile.Macros.Count;
                 foreach (var binding in activator.Bindings)
                 {
@@ -2438,13 +2620,11 @@ namespace PadForge.SteamWorkshop.Translation
                         }
                         if (toggle)
                         {
+                            // toggle + hold_repeats composes the pulsed
+                            // latch (v18).
                             anyCarry |= EmitKeyToggleMacro(run, binding, source, actPath, vk, keyName,
-                                onRelease: false, input.Name, triggerMode: "DoublePress");
-                            if (holdRepeats)
-                            {
-                                run.Report.Add(TranslationStatus.Partial, TranslationReasons.RepeatDropped,
-                                    actPath, binding.Raw);
-                            }
+                                onRelease: false, input.Name, triggerMode: "DoublePress",
+                                pulse: holdRepeats, pulseIntervalMs: intervalMs);
                         }
                         else if (holdRepeats)
                         {
@@ -2513,16 +2693,21 @@ namespace PadForge.SteamWorkshop.Translation
                         if (xt.IsTriggerAxis || xt.IsStickAxis)
                         {
                             // The axis asserts on the double press and stays
-                            // asserted until release (v15 AxisHold shape).
+                            // asserted until release (v15 AxisHold shape),
+                            // with the v18 latch / turbo variants.
                             if (toggle)
                             {
-                                run.Report.Add(TranslationStatus.Partial, TranslationReasons.ToggleDropped,
-                                    actPath, binding.Raw);
+                                anyCarry |= EmitVcAxisToggleMacro(run, binding, source, actPath,
+                                    xt, input.Name, triggerMode: "DoublePress",
+                                    pulse: holdRepeats, pulseIntervalMs: intervalMs);
+                                break;
                             }
                             if (holdRepeats)
                             {
-                                run.Report.Add(TranslationStatus.Partial, TranslationReasons.RepeatDropped,
-                                    actPath, binding.Raw);
+                                anyCarry |= EmitVcAxisTurboMacro(run, binding, source, actPath,
+                                    xt, intervalMs, holdMs: 0, input.Name,
+                                    triggerMode: "DoublePress");
+                                break;
                             }
                             EmitVcAxisHoldMacro(run, binding, source, actPath, xt, holdMs: 0,
                                 input.Name, triggerMode: "DoublePress");
@@ -2531,13 +2716,11 @@ namespace PadForge.SteamWorkshop.Translation
                         }
                         if (toggle)
                         {
+                            // toggle + hold_repeats composes the pulsed
+                            // latch (v18).
                             anyCarry |= EmitVcToggleMacro(run, binding, source, actPath, xt,
-                                rowKept: false, input.Name, triggerMode: "DoublePress");
-                            if (holdRepeats)
-                            {
-                                run.Report.Add(TranslationStatus.Partial, TranslationReasons.RepeatDropped,
-                                    actPath, binding.Raw);
-                            }
+                                rowKept: false, input.Name, triggerMode: "DoublePress",
+                                pulse: holdRepeats, pulseIntervalMs: intervalMs);
                         }
                         else if (holdRepeats)
                         {
@@ -2598,7 +2781,6 @@ namespace PadForge.SteamWorkshop.Translation
 
             if (anyCarry)
             {
-                ReportDroppedActivatorExtras(run, activator, actPath);
                 EmitHapticPulse(run, activator, source, input.Name, actPath,
                     "DoublePress", holdMs: 0);
             }
@@ -2667,18 +2849,31 @@ namespace PadForge.SteamWorkshop.Translation
             // gesture-hosted trigger self-arms at apply since v14.
         }
 
-        /// <summary>Activator delay_start / delay_end (v10 G5): stamped as
-        /// Delay steps onto the one-shot macros the activator just emitted
-        /// (press-leg macros take delay_start, release-leg macros take
-        /// delay_end, the Hold* pairs take both), grounded on Valve's
-        /// shipped strings ("wait for this period of time after the button
-        /// has been pressed before activating" / "... after the button has
-        /// been released before deactivating"). Whatever found no carrier
-        /// keeps the named ActivatorDelayDropped Partial: rows have no
-        /// delay channel, and the continuous shapes (autofire, VC holds,
-        /// region clamps) would re-run a Delay step per repeat cycle.</summary>
+        /// <summary>Activator delay_start / delay_end (v10 G5, widened to
+        /// every carrier in v18), grounded on Valve's shipped strings
+        /// ("wait for this period of time after the button has been
+        /// pressed before activating" / "... after the button has been
+        /// released before deactivating").
+        ///
+        /// <para>Carriers. One-shot macros (taps, latches, the Hold*
+        /// pairs) take Delay steps: press legs delay_start, release legs
+        /// delay_end, pairs both. Continuous autofire takes a Delay step
+        /// too (the continuous action never completes, so the step runs
+        /// once). The VC hold shapes restart their sequence per frame, so
+        /// their delay_start composes into the HoldForMs threshold
+        /// instead, and their delay_end becomes an OnRelease
+        /// assert-extension twin (the target stays asserted delay_end ms
+        /// past the physical release). The region clamp pair takes the
+        /// steps on its engage / release legs. Layer switches take
+        /// delay_start as the activator's engage debounce
+        /// (ShiftActivator.DelayMs, the long-press construct). The only
+        /// arms left named: delay_end on layer switches (the layer
+        /// machinery has no disengage delay), delay_end on autofire (the
+        /// pulse train stops at release), and delays on wheel-scroll rows
+        /// (no wheel-hold primitive; a detent tap or latch would change
+        /// the binding's semantics).</para></summary>
         private static void ConsumeActivatorDelays(Run run, SteamInputActivator activator,
-            string path, int macrosBefore)
+            string path, int macrosBefore, int activatorsBefore = -1)
         {
             int delayStart = ParseDelaySetting(activator, "delay_start");
             int delayEnd = ParseDelaySetting(activator, "delay_end");
@@ -2686,9 +2881,76 @@ namespace PadForge.SteamWorkshop.Translation
 
             bool usedStart = false, usedEnd = false;
             var macros = run.Profile.Macros;
-            for (int i = macrosBefore; i < macros.Count; i++)
+            int macrosEnd = macros.Count;
+            for (int i = macrosBefore; i < macrosEnd; i++)
             {
                 var m = macros[i];
+                switch (m.Action)
+                {
+                    case TranslatedMacroAction.RepeatKeyWhileHeld:
+                    case TranslatedMacroAction.RepeatVcButtonWhileHeld:
+                    case TranslatedMacroAction.RepeatVcAxisWhileHeld:
+                        // A Delay step before a continuous action runs once
+                        // (the action never completes, so the sequence
+                        // never restarts past it).
+                        if (delayStart > 0)
+                        {
+                            m.DelayStartMs = delayStart;
+                            usedStart = true;
+                        }
+                        continue;
+
+                    case TranslatedMacroAction.HoldVcButton:
+                    case TranslatedMacroAction.HoldVcAxis:
+                        // Frame-restarting sequences would re-run a Delay
+                        // step, so the wait composes into the hold
+                        // threshold: an assert delayed past a release
+                        // would have asserted for zero frames anyway.
+                        if (delayStart > 0)
+                        {
+                            m.TriggerMode = "HoldForMs";
+                            m.TriggerHoldMs += delayStart;
+                            usedStart = true;
+                        }
+                        if (delayEnd > 0)
+                        {
+                            // Release-extension twin: re-assert the target
+                            // for delay_end ms on the release edge, so the
+                            // output deactivates late, Steam's semantics.
+                            var ext = new TranslatedMacro
+                            {
+                                Name = $"{m.Name} (release tail)",
+                                Action = m.Action == TranslatedMacroAction.HoldVcButton
+                                    ? TranslatedMacroAction.VcButtonTap
+                                    : TranslatedMacroAction.VcAxisTap,
+                                TriggerMode = "OnRelease",
+                                ConsumeTrigger = false,
+                                TargetXboxButtons = m.TargetXboxButtons,
+                                TargetAxis = m.TargetAxis,
+                                TargetAxisNegative = m.TargetAxisNegative,
+                                TapDurationMs = delayEnd,
+                                TriggerXboxButtons = m.TriggerXboxButtons,
+                                TriggerAxisTarget = m.TriggerAxisTarget,
+                                TriggerAxisThresholdPercent = m.TriggerAxisThresholdPercent,
+                                TriggerFallbackDescriptor = m.TriggerFallbackDescriptor,
+                                TriggerFallbackGateDescriptor = m.TriggerFallbackGateDescriptor,
+                                TriggerDescriptorHalfAxis = m.TriggerDescriptorHalfAxis,
+                                TriggerDescriptorInvert = m.TriggerDescriptorInvert,
+                                TriggerDescriptorDeadZonePercent = m.TriggerDescriptorDeadZonePercent,
+                            };
+                            ext.TriggerInputDescriptors.AddRange(m.TriggerInputDescriptors);
+                            macros.Add(ext);
+                            usedEnd = true;
+                        }
+                        continue;
+
+                    case TranslatedMacroAction.MouseLimitRegion:
+                        // The materializer's engage / release pair takes
+                        // one Delay step per leg.
+                        if (delayStart > 0) { m.DelayStartMs = delayStart; usedStart = true; }
+                        if (delayEnd > 0) { m.DelayEndMs = delayEnd; usedEnd = true; }
+                        continue;
+                }
                 if (!IsOneShotMacro(m.Action)) continue;
                 bool pair = m.Action == TranslatedMacroAction.HoldKey
                     || m.Action == TranslatedMacroAction.HoldMouseButton;
@@ -2702,6 +2964,18 @@ namespace PadForge.SteamWorkshop.Translation
                 {
                     m.DelayEndMs = delayEnd;
                     usedEnd = true;
+                }
+            }
+
+            // Layer switches / mode shifts (v18): delay_start is the
+            // activator's own hold-before-engage debounce. A long-press
+            // activator already carries its threshold; the delay adds on.
+            if (activatorsBefore >= 0 && delayStart > 0)
+            {
+                for (int i = activatorsBefore; i < run.Activators.Count; i++)
+                {
+                    run.Activators[i].DelayMs += delayStart;
+                    usedStart = true;
                 }
             }
 
@@ -2726,6 +3000,7 @@ namespace PadForge.SteamWorkshop.Translation
         {
             TranslatedMacroAction.RepeatKeyWhileHeld => false,
             TranslatedMacroAction.RepeatVcButtonWhileHeld => false,
+            TranslatedMacroAction.RepeatVcAxisWhileHeld => false,
             TranslatedMacroAction.HoldVcButton => false,
             TranslatedMacroAction.HoldVcAxis => false,
             TranslatedMacroAction.MouseLimitRegion => false,
@@ -2824,7 +3099,6 @@ namespace PadForge.SteamWorkshop.Translation
 
             if (anyCarry)
             {
-                ReportDroppedActivatorExtras(run, activator, actPath);
                 EmitHapticPulse(run, activator, source, input.Name, actPath,
                     "OnPress", holdMs: delayMs);
                 ConsumeActivatorDelays(run, activator, actPath, macrosBefore);
@@ -2853,14 +3127,10 @@ namespace PadForge.SteamWorkshop.Translation
 
             if (toggle)
             {
-                bool latched = EmitKeyToggleMacro(run, binding, source, path, vk, keyName,
-                    onRelease: false, inputName, holdMs);
-                if (latched && holdRepeats)
-                {
-                    run.Report.Add(TranslationStatus.Partial, TranslationReasons.RepeatDropped,
-                        path, binding.Raw);
-                }
-                return latched;
+                // toggle + hold_repeats composes the pulsed latch (v18).
+                return EmitKeyToggleMacro(run, binding, source, path, vk, keyName,
+                    onRelease: false, inputName, holdMs,
+                    pulse: holdRepeats, pulseIntervalMs: intervalMs);
             }
 
             if (holdRepeats)
@@ -2879,7 +3149,8 @@ namespace PadForge.SteamWorkshop.Translation
         /// materializer's MouseButtonPress-until-release + OnRelease
         /// MouseButtonRelease twin).</summary>
         private bool TranslateLongPressMouse(Run run, SteamInputBinding binding,
-            ResolvedSource source, string path, int holdMs, string inputName)
+            ResolvedSource source, string path, int holdMs, string inputName,
+            string triggerMode = "HoldForMs")
         {
             if (!SteamInputVkTable.TryResolveMouseButtonIndex(binding.Param, out int btn))
             {
@@ -2891,7 +3162,7 @@ namespace PadForge.SteamWorkshop.Translation
             {
                 Name = $"Hold mouse {FirstToken(binding.Param).ToUpperInvariant()} ({inputName})",
                 Action = TranslatedMacroAction.HoldMouseButton,
-                TriggerMode = "HoldForMs",
+                TriggerMode = triggerMode,
                 TriggerHoldMs = holdMs,
                 // Never consumed: the OnRelease twin reads the same
                 // trigger, and a consumed bit would release it early.
@@ -2923,21 +3194,19 @@ namespace PadForge.SteamWorkshop.Translation
                 return false;
             }
             // Axis-natured targets (trigger pulls, stick directions) ride
-            // the AxisHold channel since v15: the axis asserts at the hold
-            // threshold and stays asserted until release, exact Long_Press
-            // semantics. Latch and pulse still have no axis primitive, so
-            // those variants hold plainly and note the dropped setting.
+            // the AxisHold channel since v15, with the v18 latch and turbo
+            // variants at the same threshold.
             if (xt.IsTriggerAxis || xt.IsStickAxis)
             {
                 if (toggle)
                 {
-                    run.Report.Add(TranslationStatus.Partial, TranslationReasons.ToggleDropped,
-                        path, binding.Raw);
+                    return EmitVcAxisToggleMacro(run, binding, source, path, xt, inputName,
+                        holdMs, pulse: holdRepeats, pulseIntervalMs: intervalMs);
                 }
                 if (holdRepeats)
                 {
-                    run.Report.Add(TranslationStatus.Partial, TranslationReasons.RepeatDropped,
-                        path, binding.Raw);
+                    return EmitVcAxisTurboMacro(run, binding, source, path, xt,
+                        intervalMs, holdMs, inputName);
                 }
                 EmitVcAxisHoldMacro(run, binding, source, path, xt, holdMs, inputName);
                 return true;
@@ -2945,48 +3214,46 @@ namespace PadForge.SteamWorkshop.Translation
 
             if (toggle)
             {
-                bool latched = EmitVcToggleMacro(run, binding, source, path, xt,
-                    rowKept: false, inputName, holdMs);
-                if (latched && holdRepeats)
-                {
-                    run.Report.Add(TranslationStatus.Partial, TranslationReasons.RepeatDropped,
-                        path, binding.Raw);
-                }
-                return latched;
+                // toggle + hold_repeats composes the pulsed latch (v18).
+                return EmitVcToggleMacro(run, binding, source, path, xt,
+                    rowKept: false, inputName, holdMs,
+                    pulse: holdRepeats, pulseIntervalMs: intervalMs);
             }
             if (holdRepeats)
                 return EmitVcTurboMacro(run, binding, source, path, xt, intervalMs, holdMs, inputName);
             return EmitVcHoldMacro(run, binding, source, path, xt, holdMs, inputName);
         }
 
-        /// <summary>Named note for the interruptible-off flag, which still
-        /// has no channel. Called only for activators that translate; a
-        /// skipped activator's own entry covers its settings. The press
-        /// delays moved to <see cref="ConsumeActivatorDelays"/> and the
-        /// activator haptics to <see cref="EmitHapticPulse"/> (v10 G1/G5).</summary>
-        private static void ReportDroppedActivatorExtras(Run run,
-            SteamInputActivator activator, string path)
-        {
-            // Steam's default is interruptible on; only the stored "0"
-            // diverges from PadForge behavior.
-            if (activator.Settings.TryGetValue("interruptable", out var i)
-                && (i ?? "").Trim() == "0")
-            {
-                run.Report.Add(TranslationStatus.Partial, TranslationReasons.InterruptibleDropped, path);
-            }
-        }
+        // InterruptibleDropped retired in v18. The stored "interruptable"
+        // "0" MATCHES PadForge's native evaluation exactly: PadForge never
+        // cancels one activator's output because a sibling on the same
+        // input fired (a Start_Press row keeps firing while a Long_Press
+        // macro engages), which is precisely Steam's interruptable-OFF
+        // behavior. The note reported the matching case as a divergence,
+        // so it was factually wrong, not merely noise. The un-implemented
+        // direction is Steam's DEFAULT (interruptible on, sibling fires
+        // cancel each other), which the report vocabulary has never named
+        // per the defaults-are-silent convention.
 
         private void TranslateBinding(Run run, SteamInputPreset preset, SteamInputBinding binding,
             ResolvedSource source, string clickGate, string layer, string path,
             bool soft, bool onRelease, bool holdRepeats, int intervalMs, bool toggle,
-            string inputName)
+            string inputName, int delayStartMs = 0, int delayEndMs = 0)
         {
+            // Row-shaped bindings have no delay channel, so an activator
+            // carrying delay_start / delay_end reroutes them onto the
+            // delayed hold-macro lowerings (v18): the key / mouse-button /
+            // VC hold pairs, whose Delay steps and HoldForMs composition
+            // ConsumeActivatorDelays stamps after the walk.
+            bool rerouteForDelays = (delayStartMs > 0 || delayEndMs > 0)
+                && !onRelease && !toggle && !holdRepeats;
             string type = (binding.Type ?? "").Trim().ToLowerInvariant();
             switch (type)
             {
                 case "key_press":
                     TranslateKeyPress(run, preset, binding, source, clickGate, layer, path,
-                        soft, onRelease, holdRepeats, intervalMs, toggle, inputName);
+                        soft, onRelease, holdRepeats, intervalMs, toggle, inputName,
+                        rerouteForDelays);
                     break;
 
                 case "mouse_button":
@@ -2997,6 +3264,17 @@ namespace PadForge.SteamWorkshop.Translation
                             path, binding.Raw, args: binding.Param);
                         break;
                     }
+                    if (toggle)
+                    {
+                        // v18: the latch replaces the momentary row
+                        // (Steam's toggle replaces the momentary output),
+                        // flipping on release for release activators, with
+                        // hold_repeats composing the pulsed latch.
+                        SteamInputVkTable.TryResolveMouseButtonIndex(binding.Param, out int toggleBtn);
+                        EmitMouseToggleMacro(run, binding, source, path, toggleBtn, inputName,
+                            onRelease, pulse: holdRepeats, pulseIntervalMs: intervalMs);
+                        break;
+                    }
                     if (onRelease)
                     {
                         // v10 G6: one click when the input releases, via a
@@ -3005,12 +3283,14 @@ namespace PadForge.SteamWorkshop.Translation
                         EmitMouseTapMacro(run, binding, source, path, inputName);
                         break;
                     }
-                    if (toggle)
+                    if (rerouteForDelays)
                     {
-                        // No mouse-button latch primitive; the binding stays
-                        // momentary (named note instead of the old silence).
-                        run.Report.Add(TranslationStatus.Partial, TranslationReasons.ToggleDropped,
-                            path, binding.Raw);
+                        // v18: the delayed press rides the HoldMouseButton
+                        // pair (down after delay_start, up delay_end after
+                        // the release) instead of a row.
+                        TranslateLongPressMouse(run, binding, source, path, holdMs: 0,
+                            inputName, triggerMode: "OnPress");
+                        break;
                     }
                     EmitSourceRow(run, isKbm: true, layer, target, source, clickGate, isAxis: false,
                         soft, path, binding.Raw);
@@ -3026,6 +3306,16 @@ namespace PadForge.SteamWorkshop.Translation
                             path, binding.Raw, args: $"mouse_wheel {binding.Param}");
                         break;
                     }
+                    if (toggle)
+                    {
+                        // v18: a latched wheel DOES scroll until unlatched,
+                        // exactly what Steam's toggle asks of a binding
+                        // whose held state scrolls continuously. The
+                        // ToggleWheel latch replaces the momentary row.
+                        EmitWheelToggleMacro(run, binding, source, path, wheel.Value,
+                            inputName, intervalMs, onRelease);
+                        break;
+                    }
                     if (onRelease)
                     {
                         // One discrete detent on the release edge (v15): a
@@ -3034,13 +3324,6 @@ namespace PadForge.SteamWorkshop.Translation
                         EmitWheelTapMacro(run, binding, source, path, wheel.Value,
                             inputName, triggerMode: "OnRelease");
                         break;
-                    }
-                    if (toggle)
-                    {
-                        // A latched scroll would scroll forever; the binding
-                        // stays momentary (named note).
-                        run.Report.Add(TranslationStatus.Partial, TranslationReasons.ToggleDropped,
-                            path, binding.Raw);
                     }
                     var src = BuildSource(source, soft);
                     // Compose the wheel direction with a member-level
@@ -3052,13 +3335,11 @@ namespace PadForge.SteamWorkshop.Translation
                     bool memberFlip = !src.HalfAxis && src.Invert;
                     if (memberFlip) src.Invert = false;
                     SetOutputInvert(src, wheel.Value.Invert ^ memberFlip);
-                    // Same AND-companion handling as EmitSourceRow: a
-                    // single-pad click member carries its half's touch-spot
-                    // gate (#9 B-1).
+                    // The AND companion rides the source's own
+                    // GateDescriptor (v18): a single-pad click member
+                    // carries its half's touch-spot gate (#9 B-1).
                     AddRowSource(run, isKbm: true, layer, wheel.Value.Target, src, isAxis: true,
-                        StatusFor(source), ReasonFor(source), path, binding.Raw,
-                        clickGate: source.GateDescriptor != null
-                            ? new MappingSource { Descriptor = source.GateDescriptor } : null);
+                        StatusFor(source), ReasonFor(source), path, binding.Raw);
                     break;
                 }
 
@@ -3090,13 +3371,27 @@ namespace PadForge.SteamWorkshop.Translation
                         }
                         if (toggle)
                         {
-                            run.Report.Add(TranslationStatus.Partial, TranslationReasons.ToggleDropped,
-                                path, binding.Raw);
+                            // v18: the axis latch replaces the momentary
+                            // row; hold_repeats composes the pulsed latch.
+                            EmitVcAxisToggleMacro(run, binding, source, path, xt, inputName,
+                                pulse: holdRepeats, pulseIntervalMs: intervalMs);
+                            break;
                         }
                         if (holdRepeats)
                         {
-                            run.Report.Add(TranslationStatus.Partial, TranslationReasons.RepeatDropped,
-                                path, binding.Raw);
+                            // v18: axis turbo replaces the momentary row.
+                            EmitVcAxisTurboMacro(run, binding, source, path, xt,
+                                intervalMs, holdMs: 0, inputName);
+                            break;
+                        }
+                        if (rerouteForDelays)
+                        {
+                            // v18: delayed stick-direction bindings ride
+                            // the axis hold macro (delays stamped after
+                            // the walk).
+                            EmitVcAxisHoldMacro(run, binding, source, path, xt, holdMs: 0,
+                                inputName, triggerMode: "OnPress");
+                            break;
                         }
                         EmitStickDirectionRow(run, binding, source, clickGate, layer, path, soft, xt);
                         break;
@@ -3140,21 +3435,22 @@ namespace PadForge.SteamWorkshop.Translation
                     {
                         if (!xt.IsTriggerAxis)
                         {
+                            // toggle + hold_repeats composes the pulsed
+                            // latch (v18) instead of dropping the turbo.
                             EmitVcToggleMacro(run, binding, source, path, xt,
-                                rowKept: true, inputName);
+                                rowKept: true, inputName,
+                                pulse: holdRepeats, pulseIntervalMs: intervalMs);
                             latchEmitted = true;
-                            if (holdRepeats)
-                            {
-                                run.Report.Add(TranslationStatus.Partial, TranslationReasons.RepeatDropped,
-                                    path, binding.Raw);
-                            }
                             // fall through: the row emits below (identity or
                             // divergent), feeding the latch trigger.
                         }
                         else
                         {
-                            run.Report.Add(TranslationStatus.Partial, TranslationReasons.ToggleDropped,
-                                path, binding.Raw);
+                            // v18: trigger-axis toggles latch the pull via
+                            // the ToggleVcAxis macro, replacing the row.
+                            EmitVcAxisToggleMacro(run, binding, source, path, xt, inputName,
+                                pulse: holdRepeats, pulseIntervalMs: intervalMs);
+                            break;
                         }
                     }
                     // Turbo (wave 2A): hold_repeats pulses the target while
@@ -3166,8 +3462,8 @@ namespace PadForge.SteamWorkshop.Translation
                     // a device-free descriptor trigger on the hosting
                     // input itself: a combined-output trigger fed by the
                     // identity row would hold the pulsed bit solid.
-                    // Trigger-axis targets have no button bit to pulse and
-                    // keep the RepeatDropped note.
+                    // Trigger-axis targets pulse the pull via the v18
+                    // axis-turbo macro.
                     if (!latchEmitted && holdRepeats)
                     {
                         if (!xt.IsTriggerAxis)
@@ -3177,8 +3473,28 @@ namespace PadForge.SteamWorkshop.Translation
                                 path, xt, intervalMs, holdMs: 0, inputName);
                             break;
                         }
-                        run.Report.Add(TranslationStatus.Partial, TranslationReasons.RepeatDropped,
-                            path, binding.Raw);
+                        EmitVcAxisTurboMacro(run, binding,
+                            identity ? WithoutOutputTrigger(source) : source,
+                            path, xt, intervalMs, holdMs: 0, inputName);
+                        break;
+                    }
+                    if (rerouteForDelays)
+                    {
+                        // v18: delayed presses ride the hold macros
+                        // (identity included: a row cannot wait).
+                        if (xt.IsTriggerAxis)
+                        {
+                            EmitVcAxisHoldMacro(run, binding,
+                                identity ? WithoutOutputTrigger(source) : source,
+                                path, xt, holdMs: 0, inputName, triggerMode: "OnPress");
+                        }
+                        else
+                        {
+                            EmitVcHoldMacro(run, binding,
+                                identity ? WithoutOutputTrigger(source) : source,
+                                path, xt, holdMs: 0, inputName, triggerMode: "OnPress");
+                        }
+                        break;
                     }
                     if (identity)
                     {
@@ -3238,11 +3554,11 @@ namespace PadForge.SteamWorkshop.Translation
             bool memberFlip = !src.HalfAxis && src.Invert;
             if (memberFlip) src.Invert = false;
             SetOutputInvert(src, xt.StickAxisNegative ^ memberFlip);
-            string gateDescriptor = clickGate ?? source.GateDescriptor;
+            // The AND companion rides the source (v18): the group click
+            // gate wins where present, else the resolved source's own.
+            if (!string.IsNullOrEmpty(clickGate)) src.GateDescriptor = clickGate;
             AddRowSource(run, isKbm: false, layer, xt.Target, src, isAxis: true,
-                StatusFor(source), ReasonFor(source), path, binding.Raw,
-                clickGate: gateDescriptor != null
-                    ? new MappingSource { Descriptor = gateDescriptor } : null);
+                StatusFor(source), ReasonFor(source), path, binding.Raw);
         }
 
         /// <summary>mouse_wheel param to its KbM target and output flip.
@@ -3263,7 +3579,7 @@ namespace PadForge.SteamWorkshop.Translation
         private void TranslateKeyPress(Run run, SteamInputPreset preset, SteamInputBinding binding,
             ResolvedSource source, string clickGate, string layer, string path,
             bool soft, bool onRelease, bool holdRepeats, int intervalMs, bool toggle,
-            string inputName)
+            string inputName, bool rerouteForDelays = false)
         {
             string keyName = FirstToken(binding.Param);
             if (!SteamInputVkTable.TryResolve(keyName, out byte vk, out bool supported))
@@ -3282,12 +3598,9 @@ namespace PadForge.SteamWorkshop.Translation
             // keep-the-row ToggleDropped fallback.
             if (toggle)
             {
-                EmitKeyToggleMacro(run, binding, source, path, vk, keyName, onRelease, inputName);
-                if (holdRepeats)
-                {
-                    run.Report.Add(TranslationStatus.Partial, TranslationReasons.RepeatDropped,
-                        path, binding.Raw);
-                }
+                // toggle + hold_repeats composes the pulsed latch (v18).
+                EmitKeyToggleMacro(run, binding, source, path, vk, keyName, onRelease, inputName,
+                    pulse: holdRepeats, pulseIntervalMs: intervalMs);
                 return;
             }
 
@@ -3306,8 +3619,9 @@ namespace PadForge.SteamWorkshop.Translation
             // PrintScreen, the lock keys) have no row channel, so the
             // plain press rides the SendInput HoldKey pair instead of the
             // old UnsupportedKey skip (v10 G11): down on press, up on
-            // release, exact Steam semantics.
-            if (!supported)
+            // release, exact Steam semantics. Activator delays reroute
+            // the same way (v18): the HoldKey pair carries Delay steps.
+            if (!supported || rerouteForDelays)
             {
                 EmitKeyHoldMacro(run, binding, source, path, vk, keyName,
                     "OnPress", holdMs: 0, inputName);
@@ -3738,7 +4052,7 @@ namespace PadForge.SteamWorkshop.Translation
         /// the standard device-free gate and reports Clean.</summary>
         private bool EmitVcToggleMacro(Run run, SteamInputBinding binding, ResolvedSource source,
             string path, XInputTargetTable.XInputTarget xt, bool rowKept, string inputName,
-            int holdMs = 0, string triggerMode = null)
+            int holdMs = 0, string triggerMode = null, bool pulse = false, int pulseIntervalMs = 100)
         {
             var macro = new TranslatedMacro
             {
@@ -3748,6 +4062,10 @@ namespace PadForge.SteamWorkshop.Translation
                 TriggerHoldMs = holdMs,
                 TargetXboxButtons = xt.XboxButtonBit,
                 ConsumeTrigger = false,
+                // toggle + hold_repeats (v18): the latch pulses on the
+                // turbo square wave instead of holding solid.
+                PulseWhileLatched = pulse,
+                IntervalMs = pulseIntervalMs,
             };
             if (rowKept)
             {
@@ -3773,7 +4091,7 @@ namespace PadForge.SteamWorkshop.Translation
         /// ToggleKey latch macro replacing the momentary row.</summary>
         private bool EmitKeyToggleMacro(Run run, SteamInputBinding binding, ResolvedSource source,
             string path, byte vk, string keyName, bool onRelease, string inputName, int holdMs = 0,
-            string triggerMode = null)
+            string triggerMode = null, bool pulse = false, int pulseIntervalMs = 100)
         {
             var macro = new TranslatedMacro
             {
@@ -3783,12 +4101,122 @@ namespace PadForge.SteamWorkshop.Translation
                 TriggerHoldMs = holdMs,
                 ConsumeTrigger = false,
                 VirtualKey = vk,
+                PulseWhileLatched = pulse,
+                IntervalMs = pulseIntervalMs,
             };
             FillMacroTrigger(macro, source);
             run.Profile.Macros.Add(macro);
             run.Report.Add(TranslationStatus.Clean,
                 TranslationReasons.ToggleLatchEmitted,
                 path, binding.Raw, emitted: $"Toggle {keyName} latch macro", keyName);
+            return true;
+        }
+
+        /// <summary>The activator toggle on a mouse_button binding (v18): a
+        /// ToggleMouseButton latch macro replacing the momentary row, the
+        /// ToggleKey pattern (the engine's mouse-button reconcile sends
+        /// the down on latch and the up on unlatch / disable / stop).</summary>
+        private bool EmitMouseToggleMacro(Run run, SteamInputBinding binding, ResolvedSource source,
+            string path, int btn, string inputName, bool onRelease = false, int holdMs = 0,
+            string triggerMode = null, bool pulse = false, int pulseIntervalMs = 100)
+        {
+            var macro = new TranslatedMacro
+            {
+                Name = $"Toggle mouse {FirstToken(binding.Param).ToUpperInvariant()} ({inputName})",
+                Action = TranslatedMacroAction.ToggleMouseButton,
+                TriggerMode = triggerMode ?? (holdMs > 0 ? "HoldForMs" : (onRelease ? "OnRelease" : "OnPress")),
+                TriggerHoldMs = holdMs,
+                ConsumeTrigger = false,
+                MouseButtonIndex = btn,
+                PulseWhileLatched = pulse,
+                IntervalMs = pulseIntervalMs,
+            };
+            FillMacroTrigger(macro, source);
+            run.Profile.Macros.Add(macro);
+            run.Report.Add(TranslationStatus.Clean, TranslationReasons.ToggleLatchEmitted,
+                path, binding.Raw, emitted: $"Toggle mouse button {btn} latch macro",
+                $"mouse {btn}");
+            return true;
+        }
+
+        /// <summary>The activator toggle on a mouse_wheel binding (v18): a
+        /// ToggleWheel latch macro replacing the momentary row. A held
+        /// KbmScroll row scrolls continuously, so the latch reproduces
+        /// exactly that: one detent per interval while latched.</summary>
+        private bool EmitWheelToggleMacro(Run run, SteamInputBinding binding, ResolvedSource source,
+            string path, (string Target, bool Invert) wheel, string inputName,
+            int intervalMs, bool onRelease = false, int holdMs = 0, string triggerMode = null)
+        {
+            bool horizontal = wheel.Target == "KbmScrollH";
+            var macro = new TranslatedMacro
+            {
+                Name = $"Toggle wheel ({inputName})",
+                Action = TranslatedMacroAction.ToggleWheel,
+                TriggerMode = triggerMode ?? (holdMs > 0 ? "HoldForMs" : (onRelease ? "OnRelease" : "OnPress")),
+                TriggerHoldMs = holdMs,
+                ConsumeTrigger = false,
+                WheelHorizontal = horizontal,
+                // Same tick signs as EmitWheelTapMacro.
+                WheelTicks = horizontal ? (wheel.Invert ? -1 : 1) : (wheel.Invert ? 1 : -1),
+                IntervalMs = intervalMs,
+            };
+            FillMacroTrigger(macro, source);
+            run.Profile.Macros.Add(macro);
+            run.Report.Add(TranslationStatus.Clean, TranslationReasons.ToggleLatchEmitted,
+                path, binding.Raw, emitted: "Toggle wheel latch macro",
+                FirstToken(binding.Param).ToUpperInvariant());
+            return true;
+        }
+
+        /// <summary>The activator toggle on an axis-natured VC target (v18):
+        /// a ToggleVcAxis latch macro replacing the momentary output, with
+        /// the toggle + hold_repeats composite on the latch pulse.</summary>
+        private bool EmitVcAxisToggleMacro(Run run, SteamInputBinding binding, ResolvedSource source,
+            string path, XInputTargetTable.XInputTarget xt, string inputName,
+            int holdMs = 0, string triggerMode = null, bool pulse = false, int pulseIntervalMs = 100)
+        {
+            var macro = new TranslatedMacro
+            {
+                Name = $"Toggle {xt.Target} ({inputName})",
+                Action = TranslatedMacroAction.ToggleVcAxis,
+                TriggerMode = triggerMode ?? (holdMs > 0 ? "HoldForMs" : "OnPress"),
+                TriggerHoldMs = holdMs,
+                ConsumeTrigger = false,
+                TargetAxis = xt.Target,
+                TargetAxisNegative = xt.StickAxisNegative,
+                PulseWhileLatched = pulse,
+                IntervalMs = pulseIntervalMs,
+            };
+            FillMacroTrigger(macro, source);
+            run.Profile.Macros.Add(macro);
+            run.Report.Add(TranslationStatus.Clean, TranslationReasons.ToggleLatchEmitted,
+                path, binding.Raw, emitted: $"Toggle {xt.Target} axis latch macro", xt.Target);
+            return true;
+        }
+
+        /// <summary>hold_repeats on an axis-natured VC target (v18): a
+        /// RepeatVcAxisWhileHeld turbo macro pulsing the axis assert at
+        /// repeat_rate while the physical input is held (from the
+        /// Long_Press threshold when <paramref name="holdMs"/> is set).</summary>
+        private bool EmitVcAxisTurboMacro(Run run, SteamInputBinding binding, ResolvedSource source,
+            string path, XInputTargetTable.XInputTarget xt, int intervalMs, int holdMs,
+            string inputName, string triggerMode = null)
+        {
+            var macro = new TranslatedMacro
+            {
+                Name = $"Turbo {xt.Target} ({inputName})",
+                Action = TranslatedMacroAction.RepeatVcAxisWhileHeld,
+                TriggerMode = triggerMode ?? (holdMs > 0 ? "HoldForMs" : "WhileHeld"),
+                TriggerHoldMs = holdMs,
+                ConsumeTrigger = holdMs > 0,
+                TargetAxis = xt.Target,
+                TargetAxisNegative = xt.StickAxisNegative,
+                IntervalMs = intervalMs,
+            };
+            FillMacroTrigger(macro, source);
+            run.Profile.Macros.Add(macro);
+            run.Report.Add(TranslationStatus.Clean, TranslationReasons.MacroEmitted,
+                path, binding.Raw, emitted: $"Turbo {xt.Target} axis macro ({intervalMs} ms)");
             return true;
         }
 
@@ -4449,6 +4877,11 @@ namespace PadForge.SteamWorkshop.Translation
             };
             if (source.DeadZone > 0) src.DeadZone = source.DeadZone;
             if (soft && source.IsAnalogTriggerPull) src.DeadZone = 15;
+            // The AND companion rides the source itself since v18
+            // (MappingSource.GateDescriptor, evaluated like the chord
+            // second leg), so multi-source rows keep every gate.
+            if (!string.IsNullOrEmpty(source.GateDescriptor))
+                src.GateDescriptor = source.GateDescriptor;
             return src;
         }
 
@@ -4457,22 +4890,19 @@ namespace PadForge.SteamWorkshop.Translation
             string path, string binding)
         {
             var src = BuildSource(source, soft);
-            // The AND companion: either the group-level requires_click gate
-            // (trackpad D-pad wedges) or the source's own GateDescriptor
-            // (a single-pad click gated on its half's touch spot, #9 B-1).
-            // They never co-occur: wedges carry no GateDescriptor and the
-            // gated clicks are never wedge members.
-            string gateDescriptor = clickGate ?? source.GateDescriptor;
-            MappingSource gate = gateDescriptor != null
-                ? new MappingSource { Descriptor = gateDescriptor } : null;
+            // The group-level requires_click gate (trackpad D-pad wedges)
+            // and the source's own GateDescriptor (a single-pad click gated
+            // on its half's touch spot, #9 B-1) never co-occur: wedges
+            // carry no GateDescriptor and gated clicks are never wedge
+            // members.
+            if (!string.IsNullOrEmpty(clickGate)) src.GateDescriptor = clickGate;
             AddRowSource(run, isKbm, layer, target, src, isAxis,
-                StatusFor(source), ReasonFor(source), path, binding,
-                clickGate: gate);
+                StatusFor(source), ReasonFor(source), path, binding);
         }
 
         private void AddRowSource(Run run, bool isKbm, string layer, string target,
             MappingSource src, bool isAxis, TranslationStatus status, string reason,
-            string path, string binding = "", string args = null, MappingSource clickGate = null)
+            string path, string binding = "", string args = null)
         {
             if (isKbm ? run.KbmRowCapHit : run.XboxRowCapHit) return;
             int slotRows = run.RowOrder.Count(k => k.Kbm == isKbm);
@@ -4489,25 +4919,6 @@ namespace PadForge.SteamWorkshop.Translation
                 row = new PendingRow { IsAxis = isAxis };
                 run.Rows[key] = row;
                 run.RowOrder.Add(key);
-            }
-
-            if (clickGate != null && row.Sources.Count == 0 && row.ClickGate == null)
-            {
-                row.ClickGate = clickGate;
-                row.ClickGatePath = path;
-            }
-            else if (clickGate != null || (row.ClickGate != null && row.Sources.Count > 0))
-            {
-                // A second feed joined a click-gated target (or vice versa):
-                // AND across unrelated sources would break them all, so the
-                // gate is dropped.
-                if (row.ClickGate != null)
-                {
-                    run.Report.Add(TranslationStatus.Partial, TranslationReasons.ClickGateDropped,
-                        row.ClickGatePath ?? path);
-                    row.ClickGate = null;
-                    row.ClickGatePath = null;
-                }
             }
 
             row.Sources.Add(src);
@@ -4650,6 +5061,7 @@ namespace PadForge.SteamWorkshop.Translation
                     if (ma.CurveExponent > 0) src.ParamCurveExponent = ma.CurveExponent;
                     if (ma.RangeOuter > 0) src.ParamRangeOuter = ma.RangeOuter;
                     if (ma.Sensitivity > 0 && ma.Sensitivity != 1.0) src.Sensitivity = ma.Sensitivity;
+                    if (ma.Anti > 0) src.ParamAntiDeadzone = ma.Anti;
                     AddRowSource(run, isKbm: false, ma.Layer, ma.Target,
                         src, isAxis: true,
                         TranslationStatus.Clean, TranslationReasons.RowEmitted, ma.Path);
@@ -4697,28 +5109,15 @@ namespace PadForge.SteamWorkshop.Translation
                 if (pending.Sources.Count == 0) continue;
 
                 var row = new MappingRow { Target = key.Target, LayerMask = key.Layer };
-                if (pending.ClickGate != null && pending.Sources.Count == 1)
-                {
-                    row.Sources.Add(pending.Sources[0]);
-                    row.Sources.Add(pending.ClickGate);
-                    row.CombineMode = "AND";
-                }
-                else
-                {
-                    if (pending.ClickGate != null)
-                    {
-                        run.Report.Add(TranslationStatus.Partial, TranslationReasons.ClickGateDropped,
-                            pending.ClickGatePath ?? "");
-                    }
-                    row.Sources.AddRange(pending.Sources);
-                    if (pending.Sources.Count > 1 && pending.IsAxis && !pending.HasMatchedPassthrough)
-                        row.CombineMode = "Sum"; // mouse deltas and merged axes are additive
-                    // Rows carrying a matched analog passthrough keep the
-                    // axis default (max-abs), so extra legs (a click
-                    // identity, a bumper-as-trigger binding) ride on top of
-                    // a clean analog pull instead of summing into overdrive.
-                    // Multi-source buttons keep the engine's OR default.
-                }
+                row.Sources.AddRange(pending.Sources);
+                if (pending.Sources.Count > 1 && pending.IsAxis && !pending.HasMatchedPassthrough)
+                    row.CombineMode = "Sum"; // mouse deltas and merged axes are additive
+                // Rows carrying a matched analog passthrough keep the
+                // axis default (max-abs), so extra legs (a click
+                // identity, a bumper-as-trigger binding) ride on top of
+                // a clean analog pull instead of summing into overdrive.
+                // Multi-source buttons keep the engine's OR default.
+                // Click gates ride each source's GateDescriptor (v18).
 
                 (key.Kbm ? profile.KbmMappingSet : profile.XboxMappingSet).Rows.Add(row);
             }

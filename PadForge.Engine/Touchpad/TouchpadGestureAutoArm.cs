@@ -97,7 +97,13 @@ namespace PadForge.Engine.Touchpad
                 {
                     if (row?.Sources == null) continue;
                     foreach (var src in row.Sources)
+                    {
                         any |= Classify(src?.Descriptor, ref need);
+                        // v18: the per-source AND gate reads through the
+                        // same gated families (a click gated on a touch
+                        // spot), so it arms exactly like a descriptor.
+                        any |= Classify(src?.GateDescriptor, ref need);
+                    }
                 }
             }
             if (set.ShiftActivators != null)

@@ -239,7 +239,6 @@ namespace PadForge.SteamWorkshop.Tests
             Assert.Equal(Gamepad.A, m.TargetXboxButtons);
             Assert.Equal(99, m.IntervalMs);
             Assert.False(m.ConsumeTrigger);
-            Assert.DoesNotContain(p.Report.Entries, e => e.ReasonKey == TranslationReasons.RepeatDropped);
         }
 
         [Fact]
@@ -352,8 +351,6 @@ namespace PadForge.SteamWorkshop.Tests
             var entry = Assert.Single(p.Report.Entries,
                 e => e.ReasonKey == TranslationReasons.ToggleLatchEmitted);
             Assert.Equal(TranslationStatus.Clean, entry.Status);
-            Assert.DoesNotContain(p.Report.Entries,
-                e => e.ReasonKey == TranslationReasons.ToggleDropped);
             // A key latch on a descriptor trigger needs no Xbox slot; the
             // macro rides the KbM slot instead.
             Assert.False(p.NeedsXboxSlot);
@@ -361,8 +358,10 @@ namespace PadForge.SteamWorkshop.Tests
         }
 
         [Fact]
-        public void Toggle_MouseButton_KeepsRow_WithNamedDrop()
+        public void Toggle_MouseButton_LatchesViaToggleMouseButtonMacro()
         {
+            // v18: the mouse-button latch replaces the momentary row (the
+            // ToggleKey pattern via the engine's mouse-button reconcile).
             string vdf = Head
                 + Group(1, "four_buttons", Inputs(
                     Inp("button_y", "mouse_button LEFT",
@@ -370,9 +369,52 @@ namespace PadForge.SteamWorkshop.Tests
                 + Preset(0, "Default", (1, "button_diamond active"))
                 + "}\n";
             var p = Translate(vdf);
-            Assert.Single(p.KbmMappingSet.Rows);
-            Assert.Empty(p.Macros);
-            Assert.Contains(p.Report.Entries, e => e.ReasonKey == TranslationReasons.ToggleDropped);
+            Assert.Empty(p.KbmMappingSet.Rows);
+            var m = Assert.Single(p.Macros);
+            Assert.Equal(TranslatedMacroAction.ToggleMouseButton, m.Action);
+            Assert.Equal(0, m.MouseButtonIndex); // LEFT
+            Assert.False(m.PulseWhileLatched);
+            var entry = Assert.Single(p.Report.Entries,
+                e => e.ReasonKey == TranslationReasons.ToggleLatchEmitted);
+            Assert.Equal(TranslationStatus.Clean, entry.Status);
+        }
+
+        [Fact]
+        public void Toggle_MouseWheel_LatchesViaToggleWheelMacro()
+        {
+            // v18: a latched wheel keeps scrolling until unlatched, the
+            // held KbmScroll row's continuous behavior.
+            string vdf = Head
+                + Group(1, "four_buttons", Inputs(
+                    Inp("button_y", "mouse_wheel SCROLL_UP",
+                        activatorSettings: ActSettings(("toggle", "1")))))
+                + Preset(0, "Default", (1, "button_diamond active"))
+                + "}\n";
+            var p = Translate(vdf);
+            Assert.Empty(p.KbmMappingSet.Rows);
+            var m = Assert.Single(p.Macros);
+            Assert.Equal(TranslatedMacroAction.ToggleWheel, m.Action);
+            Assert.False(m.WheelHorizontal);
+            Assert.Equal(1, m.WheelTicks); // SCROLL_UP = +ticks
+        }
+
+        [Fact]
+        public void Toggle_HoldRepeats_ComposesPulsedLatch()
+        {
+            // v18: toggle + hold_repeats pulses the latched target on the
+            // turbo square wave instead of dropping the turbo.
+            string vdf = Head
+                + Group(1, "four_buttons", Inputs(
+                    Inp("button_x", "key_press SPACE",
+                        activatorSettings: ActSettings(("toggle", "1"),
+                            ("hold_repeats", "1"), ("repeat_rate", "150")))))
+                + Preset(0, "Default", (1, "button_diamond active"))
+                + "}\n";
+            var p = Translate(vdf);
+            var m = Assert.Single(p.Macros);
+            Assert.Equal(TranslatedMacroAction.ToggleKey, m.Action);
+            Assert.True(m.PulseWhileLatched);
+            Assert.Equal(150, m.IntervalMs);
         }
 
         [Fact]

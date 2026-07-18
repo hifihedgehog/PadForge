@@ -441,22 +441,23 @@ namespace PadForge.SteamWorkshop.Tests
         }
 
         [Fact]
-        public void CurveSettings_NamedPartialListsKeys_WhereNoChannelExists()
+        public void CurveSettings_NameOnlyTheChannelLessKeys()
         {
-            // v11 moved the stick-hosted cluster onto the emitted axis rows
-            // (CurveChannelTranslationTests); hosts without the channel keep
-            // the named drop. A trigger group evaluates through the unipolar
-            // path, so its curve keys still ride the note.
+            // v18 consumes the exponent / range cluster on every analog
+            // host (the trigger pull included), so only deadzone_shape on
+            // a mouse-output host and the defensive output_curve remain
+            // named.
             string vdf = Head
-                + Group(1, "trigger",
+                + Group(1, "joystick_mouse",
                     Inputs(Inp("click", "key_press E"))
-                    + Settings(("deadzone_outer_radius", "28800"), ("curve_exponent", "4")))
-                + Preset(0, "Default", (1, "left_trigger active"))
+                    + Settings(("deadzone_outer_radius", "28800"), ("curve_exponent", "4"),
+                        ("deadzone_shape", "1"), ("output_curve", "2")))
+                + Preset(0, "Default", (1, "joystick active"))
                 + "}\n";
             var p = Translate(vdf);
             var entry = Assert.Single(p.Report.Entries, e =>
                 e.ReasonKey == TranslationReasons.ResponseCurveNotSupported);
-            Assert.Equal("deadzone_outer_radius, curve_exponent", Assert.Single(entry.ReasonArgs));
+            Assert.Equal("deadzone_shape, output_curve", Assert.Single(entry.ReasonArgs));
         }
 
         [Fact]
@@ -471,14 +472,25 @@ namespace PadForge.SteamWorkshop.Tests
                 + Preset(0, "Default", (1, "button_diamond active"))
                 + "}\n";
             var p = Translate(vdf);
-            var entry = Assert.Single(p.Report.Entries, e =>
+            // v18: the delayed key press reroutes onto the HoldKey pair
+            // (down after delay_start, up delay_end after release); the
+            // dormant delay_start 0 sibling keeps its plain row.
+            Assert.DoesNotContain(p.Report.Entries, e =>
                 e.ReasonKey == TranslationReasons.ActivatorDelayDropped);
-            Assert.Equal("delay_start 50, delay_end 200", Assert.Single(entry.ReasonArgs));
+            var hold = Assert.Single(p.Macros, m => m.Action == TranslatedMacroAction.HoldKey);
+            Assert.Equal(50, hold.DelayStartMs);
+            Assert.Equal(200, hold.DelayEndMs);
+            // The undelayed sibling (Q) keeps its plain row.
+            var row = Assert.Single(p.KbmMappingSet.Rows);
+            Assert.Equal("Gamepad ButtonB", Assert.Single(row.Sources).Descriptor);
         }
 
         [Fact]
-        public void Interruptable_ZeroGetsNote_OneStaysSilent()
+        public void Interruptable_ZeroIsNativeBehavior_Silent()
         {
+            // v18: stored interruptable 0 matches PadForge's never-cancel
+            // evaluation exactly (sibling activators on one input all
+            // fire), so nothing is reported for either value.
             string vdf = Head
                 + Group(1, "four_buttons", Inputs(
                     Inp("button_a", "key_press E", activatorSettings: ActSettings(("interruptable", "0"))),
@@ -486,9 +498,8 @@ namespace PadForge.SteamWorkshop.Tests
                 + Preset(0, "Default", (1, "button_diamond active"))
                 + "}\n";
             var p = Translate(vdf);
-            var entry = Assert.Single(p.Report.Entries, e =>
-                e.ReasonKey == TranslationReasons.InterruptibleDropped);
-            Assert.Contains("button_a", entry.SourcePath);
+            Assert.Equal(2, p.KbmMappingSet.Rows.Count);
+            Assert.All(p.Report.Entries, e => Assert.Equal(TranslationStatus.Clean, e.Status));
         }
 
         [Theory]
@@ -724,12 +735,12 @@ namespace PadForge.SteamWorkshop.Tests
         // ─── Translator version ─────────────────────────────────────────
 
         [Fact]
-        public void TranslatorVersion_IsSeventeen_AndRidesTheSummary()
+        public void TranslatorVersion_IsEighteen_AndRidesTheSummary()
         {
-            Assert.Equal(17, TranslationReport.CurrentTranslatorVersion);
+            Assert.Equal(18, TranslationReport.CurrentTranslatorVersion);
             var p = Translate(Head + "}\n");
-            Assert.Equal(17, p.Report.TranslatorVersion);
-            Assert.StartsWith("v17 ", p.Report.ToSummaryString());
+            Assert.Equal(18, p.Report.TranslatorVersion);
+            Assert.StartsWith("v18 ", p.Report.ToSummaryString());
         }
     }
 }

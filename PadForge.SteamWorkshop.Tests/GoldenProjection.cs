@@ -30,6 +30,25 @@ namespace PadForge.SteamWorkshop.Tests
             if (!p.NeedsXboxSlot && !p.NeedsKbmSlot) sb.Append(" none");
             sb.Append('\n');
 
+            // Slot-level workshop stamps (v18): non-default only, so
+            // pre-v18 goldens stay byte-identical on this seam.
+            if (!string.IsNullOrEmpty(p.LeftStickDeadZoneShape)
+                || !string.IsNullOrEmpty(p.RightStickDeadZoneShape))
+            {
+                sb.Append("dzShape:");
+                if (!string.IsNullOrEmpty(p.LeftStickDeadZoneShape))
+                    sb.Append(" left=").Append(p.LeftStickDeadZoneShape);
+                if (!string.IsNullOrEmpty(p.RightStickDeadZoneShape))
+                    sb.Append(" right=").Append(p.RightStickDeadZoneShape);
+                sb.Append('\n');
+            }
+            if (!string.IsNullOrEmpty(p.GyroEngageDescriptor))
+            {
+                sb.Append("gyroEngage: ").Append(p.GyroEngageDescriptor);
+                if (p.GyroEngageInvert) sb.Append(" [inverted]");
+                sb.Append('\n');
+            }
+
             RenderSet(sb, "xbox", p.XboxMappingSet);
             RenderSet(sb, "kbm", p.KbmMappingSet);
 
@@ -95,6 +114,22 @@ namespace PadForge.SteamWorkshop.Tests
                     case TranslatedMacroAction.ToggleKey:
                         sb.Append(" vk=0x").Append(m.VirtualKey.ToString("X2", CultureInfo.InvariantCulture));
                         break;
+                    // v18 latch / turbo family.
+                    case TranslatedMacroAction.ToggleMouseButton:
+                        sb.Append(" mbtn=").Append(m.MouseButtonIndex);
+                        break;
+                    case TranslatedMacroAction.ToggleVcAxis:
+                    case TranslatedMacroAction.RepeatVcAxisWhileHeld:
+                        sb.Append(" targetAxis=").Append(m.TargetAxis);
+                        if (m.TargetAxisNegative) sb.Append('-');
+                        if (m.Action == TranslatedMacroAction.RepeatVcAxisWhileHeld)
+                            sb.Append(" interval=").Append(m.IntervalMs).Append("ms");
+                        break;
+                    case TranslatedMacroAction.ToggleWheel:
+                        sb.Append(" ticks=").Append(m.WheelTicks);
+                        if (m.WheelHorizontal) sb.Append('H');
+                        sb.Append(" interval=").Append(m.IntervalMs).Append("ms");
+                        break;
                     case TranslatedMacroAction.MouseLimitRegion:
                         sb.Append(" region=(").Append(m.RegionXPercent).Append("%,")
                           .Append(m.RegionYPercent).Append("%,scale ")
@@ -152,6 +187,10 @@ namespace PadForge.SteamWorkshop.Tests
                 // pre-v10 goldens stay byte-identical on this seam.
                 if (m.DelayStartMs > 0) sb.Append(" delayStart=").Append(m.DelayStartMs).Append("ms");
                 if (m.DelayEndMs > 0) sb.Append(" delayEnd=").Append(m.DelayEndMs).Append("ms");
+                // v18: the toggle + hold_repeats composite and the
+                // release-extension tap length, non-default only.
+                if (m.PulseWhileLatched) sb.Append(" pulse=").Append(m.IntervalMs).Append("ms");
+                if (m.TapDurationMs > 0) sb.Append(" tap=").Append(m.TapDurationMs).Append("ms");
                 sb.Append('\n');
             }
 
@@ -275,6 +314,23 @@ namespace PadForge.SteamWorkshop.Tests
                 sb.Append(" curve=").Append(s.ParamCurveExponent.ToString("0.###", CultureInfo.InvariantCulture));
             if (s.ParamRangeOuter != 0)
                 sb.Append(" rangeOuter=").Append(s.ParamRangeOuter.ToString("0.###", CultureInfo.InvariantCulture));
+            // v18 channels: the per-source AND gate, the anti-deadzone
+            // floor, the flick easing override, and the mouse-feel knobs.
+            // Non-default only, same byte-stability rule.
+            if (!string.IsNullOrEmpty(s.GateDescriptor))
+                sb.Append(" gate=[").Append(s.GateDescriptor).Append(']');
+            if (s.ParamAntiDeadzone != 0)
+                sb.Append(" anti=").Append(s.ParamAntiDeadzone.ToString("0.###", CultureInfo.InvariantCulture));
+            if (s.ParamFlickTime != 0.1)
+                sb.Append(" flickTime=").Append(s.ParamFlickTime.ToString("0.###", CultureInfo.InvariantCulture));
+            if (s.ParamSmoothingAlpha != 0)
+                sb.Append(" smooth=").Append(s.ParamSmoothingAlpha.ToString("0.###", CultureInfo.InvariantCulture));
+            if (s.ParamAccel != 0)
+                sb.Append(" accel=").Append(s.ParamAccel.ToString("0.###", CultureInfo.InvariantCulture));
+            if (s.ParamMoveThreshold != 0)
+                sb.Append(" moveThresh=").Append(s.ParamMoveThreshold.ToString("0.###", CultureInfo.InvariantCulture));
+            if (s.ParamTrackballDecay != 0)
+                sb.Append(" trackball=").Append(s.ParamTrackballDecay.ToString("0.####", CultureInfo.InvariantCulture));
             if (!string.IsNullOrEmpty(s.DeviceGuid)) sb.Append(" guid=").Append(s.DeviceGuid);
             return sb.ToString();
         }

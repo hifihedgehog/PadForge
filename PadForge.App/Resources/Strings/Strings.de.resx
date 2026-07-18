@@ -2433,14 +2433,12 @@
   <data name="Workshop_Tr_ReleaseActivatorNotSupported" xml:space="preserve"><value>Loslass-Aktivator hier nicht unterstützt</value></data>
   <data name="Workshop_Tr_LongPressNotSupported" xml:space="preserve"><value>Langdruck-Aktivator hier nicht unterstützt</value></data>
   <data name="Workshop_Tr_UnknownActivatorType" xml:space="preserve"><value>unbekannter Aktivator {0}</value></data>
-  <data name="Workshop_Tr_RepeatDropped" xml:space="preserve"><value>Auto-Wiederholung verworfen</value></data>
   <data name="Workshop_Tr_MissingGroup" xml:space="preserve"><value>Konfiguration verweist auf fehlende Gruppe {0}</value></data>
   <data name="Workshop_Tr_MissingModeShiftGroup" xml:space="preserve"><value>Mode-Shift auf {0} verweist auf fehlende Gruppe {1}</value></data>
   <data name="Workshop_Tr_MissingPreset" xml:space="preserve"><value>Konfiguration verweist auf fehlendes Preset {0}</value></data>
   <data name="Workshop_Tr_ReferenceCycle" xml:space="preserve"><value>Referenzzyklus bei Gruppe {0}</value></data>
   <data name="Workshop_Tr_RemoveLayerApproximated" xml:space="preserve"><value>remove_layer als Ausschalten angenähert</value></data>
   <data name="Workshop_Tr_ActivatorInputNotSupported" xml:space="preserve"><value>diese Eingabe kann keinen Ebenen-Aktivator ansteuern</value></data>
-  <data name="Workshop_Tr_ClickGateDropped" xml:space="preserve"><value>requires_click-Bedingung verworfen</value></data>
   <data name="Workshop_Tr_RowCapExceeded" xml:space="preserve"><value>Zeilenlimit für den {0}-Slot überschritten</value></data>
   <data name="Workshop_Tr_PresetHasNoActivator" xml:space="preserve"><value>keine Bindung wechselt zu Preset {0}</value></data>
   <data name="Workshop_Tr_AutomapAlsoActive" xml:space="preserve"><value>die automatische Zuordnung des Geräts leitet {0} weiterhin auf {1}</value></data>
@@ -2536,17 +2534,13 @@
   <data name="Workshop_Tr_ResponseCurveNotSupported" xml:space="preserve"><value>Reaktionskurven- und Bereichseinstellungen verworfen ({0})</value></data>
   <data name="Workshop_Tr_GyroButtonMaskDropped" xml:space="preserve"><value>Gyro-Aktivierungseinstellung {0}={1} verworfen (Gyro-Aktivierung wird pro Pad konfiguriert)</value></data>
   <data name="Workshop_Tr_ActivatorDelayDropped" xml:space="preserve"><value>Druckverzögerung verworfen ({0})</value></data>
-  <data name="Workshop_Tr_InterruptibleDropped" xml:space="preserve"><value>nicht unterbrechbarer Druck verhält sich wie ein normaler Druck</value></data>
   <data name="Workshop_Tr_PlayerNumberActionNotSupported" xml:space="preserve"><value>Spielernummer-Wechsel ist eine Steam-Client-Aktion, keine Entsprechung</value></data>
   <data name="Workshop_Tr_LizardModeActionNotSupported" xml:space="preserve"><value>Lizard-Modus-Umschaltung ist Steam-intern, keine Entsprechung</value></data>
   <data name="Workshop_Tr_ToggleLatchEmitted" xml:space="preserve"><value>Umschalt-Druck hält {0} bis zum nächsten Druck</value></data>
-  <data name="Workshop_Tr_ToggleDropped" xml:space="preserve"><value>Umschalt-Einstellung verworfen (kein Halten für diese Ausgabe)</value></data>
   <data name="Workshop_Tr_LongPressKeyTap" xml:space="preserve"><value>Langdruck tippt {0} an der Schwelle an (Steam hält bis zum Loslassen)</value></data>
   <data name="Workshop_Tr_CameraResetApproximated" xml:space="preserve"><value>Kamera-Reset als Gyro-Zentrierung angenähert</value></data>
   <data name="Workshop_Tr_MouseRegionApproximated" xml:space="preserve"><value>Mausbereich als zentrierte Cursor-Begrenzung angenähert ({0}% des Bildschirms, Bereichsmitte {1}%, {2}%), solange die Oberfläche gehalten wird</value></data>
   <data name="Workshop_Tr_MouseRegionTuningDropped" xml:space="preserve"><value>Aktivierungs-/Loslass-Einstellungen des Mausbereichs verworfen ({0})</value></data>
-  <data name="Workshop_Tr_TouchQuadrantApproximated" xml:space="preserve"><value>Tasten-Felder teilen sich die Host-Touch-Oberfläche (keine Zonen pro Feld)</value></data>
-  <data name="Workshop_Tr_TrackpadHalfApproximated" xml:space="preserve"><value>auf einer Hälfte des Touchpads gehostet; PadForge liest das ganze Pad</value></data>
   <data name="Workshop_Tr_FlickStickSurfaceNotSupported" xml:space="preserve"><value>Flick Stick auf einer Touch-Oberfläche übersprungen (PadForge-Flick-Stick liest einen physischen Stick)</value></data>
   <data name="Workshop_Tr_FlickStickTuningDropped" xml:space="preserve"><value>Flick-Stick-Feinabstimmung verworfen ({0})</value></data>
   <data name="Workshop_Tr_MouseModeTuningDropped" xml:space="preserve"><value>Maus-Feinabstimmung verworfen ({0})</value></data>

@@ -112,7 +112,7 @@ menus: 2
     [2] D
     [3] F
     [4] A
-report: v17 rows:x0+k39 macros:12 menus:2 layers:1 clean:47 partial:3 skipped:2 errors:0
+report: v18 rows:x0+k39 macros:12 menus:2 layers:1 clean:47 partial:3 skipped:2 errors:0
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_a/Full_Press => KbmKey20 <- Gamepad ButtonA
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_b/Full_Press => KbmKey43 <- Gamepad ButtonB
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_x/Full_Press => KbmKey4E <- Gamepad ButtonX

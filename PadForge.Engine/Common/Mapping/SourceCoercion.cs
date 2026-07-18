@@ -668,14 +668,81 @@ namespace PadForge.Engine.Common.Mapping
         {
             double outer = src.ParamRangeOuter;
             double exponent = src.ParamCurveExponent;
+            double anti = src.ParamAntiDeadzone;
             bool hasOuter = outer > 0.0 && outer < 1.0;
             bool hasCurve = exponent > 0.0 && exponent != 1.0;
-            if (!hasOuter && !hasCurve) return v;
+            bool hasAnti = anti > 0.0 && anti < 1.0;
+            if (!hasOuter && !hasCurve && !hasAnti) return v;
             float mag = v < 0f ? -v : v;
             if (mag <= 0f) return 0f;
             if (hasOuter) mag = Math.Min(1f, mag / (float)outer);
             if (hasCurve) mag = (float)Math.Pow(mag, exponent);
+            // Anti-deadzone (v18): a floor added to the output response,
+            // after the exponent so the floor is exact at every curve.
+            if (hasAnti) mag = (float)anti + (1f - (float)anti) * Math.Min(1f, mag);
             return v < 0f ? -mag : mag;
+        }
+
+        /// <summary>Per-source EMA smoothing (v18, Steam mouse_smoothing on
+        /// the analog mouse lanes). One filter step per poll frame per
+        /// source, the ApplyGyroSmoothing seq-gate contract; extra reads
+        /// inside the same frame replay the smoothed value. State lives on
+        /// the source itself (runtime-only fields), so the filter follows
+        /// the row through clones and profile switches with no keying.</summary>
+        private static float ApplyPerSourceSmoothing(MappingSource src, float v)
+        {
+            double a = src.ParamSmoothingAlpha;
+            if (a <= 0.0) return v;
+            float alpha = (float)Math.Min(a, 0.99);
+            if (src.MouseFeelEmaSeq == _pollFrameSeq) return src.MouseFeelEmaValue;
+            src.MouseFeelEmaSeq = _pollFrameSeq;
+            src.MouseFeelEmaValue = src.MouseFeelEmaValue * alpha + v * (1f - alpha);
+            return src.MouseFeelEmaValue;
+        }
+
+        /// <summary>Touchpad relative-lane feel chain (v18): motion
+        /// threshold gate, rate-dependent acceleration, trackball
+        /// momentum, EMA smoothing, then the shared curve/range shaping.
+        /// Every knob defaults off, so unstamped sources keep the exact
+        /// pre-v18 read. Trackball: while the finger is down the live
+        /// delta refreshes the stored velocity; after lift the stored
+        /// velocity keeps feeding the lane, decayed per poll frame by
+        /// ParamTrackballDecay until it falls under the rest epsilon
+        /// (Steam's trackball + friction model, exponential decay).</summary>
+        private static float ApplyTouchpadFeel(MappingSource src, float delta, bool fingerDown)
+        {
+            if (src == null) return delta;
+            double threshold = src.ParamMoveThreshold;
+            if (threshold > 0.0 && Math.Abs(delta) < threshold && fingerDown) delta = 0f;
+            double accel = src.ParamAccel;
+            if (accel > 0.0)
+            {
+                delta *= 1f + (float)accel * Math.Abs(delta);
+                if (delta < -1f) delta = -1f; else if (delta > 1f) delta = 1f;
+            }
+            double decay = src.ParamTrackballDecay;
+            if (decay > 0.0)
+            {
+                float d = (float)Math.Min(decay, 0.999);
+                if (fingerDown)
+                {
+                    src.TrackballVelocity = delta;
+                    src.TrackballSeq = _pollFrameSeq;
+                }
+                else
+                {
+                    if (src.TrackballSeq != _pollFrameSeq)
+                    {
+                        src.TrackballSeq = _pollFrameSeq;
+                        src.TrackballVelocity *= d;
+                        if (Math.Abs(src.TrackballVelocity) < 0.0005f)
+                            src.TrackballVelocity = 0f;
+                    }
+                    delta = src.TrackballVelocity;
+                }
+            }
+            delta = ApplyPerSourceSmoothing(src, delta);
+            return ApplyCurveRangeShaping(delta, src);
         }
 
         private static float ApplyGyroAcceleration(float normalized, float accel)
@@ -2367,8 +2434,13 @@ namespace PadForge.Engine.Common.Mapping
                 if (!TryParseTouchpadGesture(s, out int gPad, out string gName)) return 0f;
                 if (IsTouchpadGestureAxis(gName))
                 {
-                    return TouchpadGestureAxisProvider?.Invoke(
+                    float gv = TouchpadGestureAxisProvider?.Invoke(
                         slotIndex, deviceGuid ?? "", gPad, gName) ?? 0f;
+                    // v18: the gesture Stick channel (trackpad-as-stick)
+                    // carries the per-source smoothing + curve/range
+                    // shaping; defaults are pass-through.
+                    gv = ApplyPerSourceSmoothing(src, gv);
+                    return ApplyCurveRangeShaping(gv, src);
                 }
                 bool fired = TouchpadGestureFiredProvider?.Invoke(
                     slotIndex, deviceGuid ?? "", gPad, gName) ?? false;
@@ -2437,7 +2509,11 @@ namespace PadForge.Engine.Common.Mapping
                 v = ApplyGyroAcceleration(v, tuning.Acceleration);
                 if (v < -1f) v = -1f;
                 else if (v > 1f) v = 1f;
-                return v;
+                // v18: per-source smoothing + curve/range channel on the
+                // gyro lane (the Workshop stamp; composes after the
+                // slot-level preset, both default off).
+                v = ApplyPerSourceSmoothing(src, v);
+                return ApplyCurveRangeShaping(v, src);
             }
 
             if (s.StartsWith("Mouse Position ", StringComparison.Ordinal))
@@ -2582,7 +2658,10 @@ namespace PadForge.Engine.Common.Mapping
                 {
                     float v = TouchpadGestureAxisProvider?.Invoke(
                         slotIndex, deviceGuid ?? "", gPad, gName) ?? 0f;
-                    return Math.Abs(v);
+                    v = Math.Abs(v);
+                    // v18: same smoothing + shaping as the bipolar twin.
+                    v = ApplyPerSourceSmoothing(src, v);
+                    return ApplyCurveRangeShaping(v, src);
                 }
                 bool fired = TouchpadGestureFiredProvider?.Invoke(
                     slotIndex, deviceGuid ?? "", gPad, gName) ?? false;
@@ -2626,7 +2705,10 @@ namespace PadForge.Engine.Common.Mapping
                 v = ApplyOutputCurve(v, tuning.OutputCurve);
                 v = ApplyGyroAcceleration(v, tuning.Acceleration);
                 if (v > 1f) v = 1f;
-                return v;
+                // v18: per-source smoothing + curve/range channel, the
+                // bipolar lane's twin.
+                v = ApplyPerSourceSmoothing(src, v);
+                return ApplyCurveRangeShaping(v, src);
             }
 
             if (s.StartsWith("Mouse Position ", StringComparison.Ordinal))
@@ -2725,7 +2807,12 @@ namespace PadForge.Engine.Common.Mapping
             axisValue *= PerSourceSensitivity(src);
             if (axisValue < 0f) axisValue = 0f;
             else if (axisValue > 1f) axisValue = 1f;
-            return axisValue;
+            // Response curve / outer range channel on the unipolar tail
+            // (v18): the trigger-pull twin of the bipolar seam, so a
+            // trigger-hosted Steam group's curve cluster shapes the pull
+            // exactly like a stick's. Magnitude math, one seam; defaults
+            // are pass-through.
+            return ApplyCurveRangeShaping(axisValue, src);
         }
 
         // ─── Descriptor helpers ────────────────────────────────────────
@@ -2814,6 +2901,20 @@ namespace PadForge.Engine.Common.Mapping
             if (parts.Length < 3) return false;
             if (!int.TryParse(parts[1], out int padIdx)) return false;
 
+            // "Touchpad N Click Left|Right|Upper|Lower" (v18): the pad's
+            // click AND finger 0 inside the window, the composed gate a
+            // half-hosted requires_click D-pad needs.
+            if (parts.Length == 4 && parts[2].Equals("Click", StringComparison.Ordinal))
+            {
+                int clickHalf = ParseTouchpadHalf(parts[3]);
+                if (clickHalf == TouchpadHalfNone) return false;
+                var cpad = GetTouchpad(state, padIdx);
+                if (cpad == null || cpad.MaxFingers <= 0) return false;
+                if (!cpad.FingerDown[0] || !FingerInTouchpadHalf(cpad, 0, clickHalf)) return false;
+                if (padIdx != 0) return cpad.Clicked;
+                return state.Buttons != null && state.Buttons.Length > 16 && state.Buttons[16];
+            }
+
             // "Touchpad N Click"
             if (parts.Length == 3 && parts[2].Equals("Click", StringComparison.Ordinal))
             {
@@ -2839,7 +2940,7 @@ namespace PadForge.Engine.Common.Mapping
             // carry the trackpad-half button groups a Steam config hosts on
             // one half of a single physical pad (B-19) and the mouse_region
             // engage triggers.
-            if ((parts.Length == 5 || parts.Length == 6)
+            if ((parts.Length == 5 || parts.Length == 6 || parts.Length == 7)
                 && parts[2].Equals("Finger", StringComparison.Ordinal)
                 && parts[4].Equals("Down", StringComparison.Ordinal))
             {
@@ -2847,6 +2948,15 @@ namespace PadForge.Engine.Common.Mapping
                 if (parts.Length == 6)
                 {
                     half = ParseTouchpadHalf(parts[5]);
+                    if (half == TouchpadHalfNone) return false;
+                }
+                else if (parts.Length == 7)
+                {
+                    // v18: "Down North Left" composes a diamond quadrant
+                    // with the hosting horizontal half (quadrant token
+                    // first, half token second).
+                    half = ComposeTouchpadWindow(ParseTouchpadHalf(parts[5]),
+                        ParseTouchpadHalf(parts[6]));
                     if (half == TouchpadHalfNone) return false;
                 }
                 if (!int.TryParse(parts[3], out int fingerIdx)) return false;
@@ -2980,7 +3090,11 @@ namespace PadForge.Engine.Common.Mapping
             if (!pad.FingerDown[fingerIdx] || !FingerInTouchpadHalf(pad, fingerIdx, half))
             {
                 _touchpadDeltas.TryRemove(key, out _);
-                return true; // bipolar already 0
+                // v18 feel chain: with trackball stamped, the lift keeps
+                // the decaying momentum flowing; otherwise this is the
+                // same 0 the pre-v18 read returned (EMA of 0 included).
+                bipolar = ApplyTouchpadFeel(src, 0f, fingerDown: false);
+                return true;
             }
 
             float raw = axisOffset switch
@@ -3005,7 +3119,10 @@ namespace PadForge.Engine.Common.Mapping
             if (!prev.Seeded)
             {
                 _touchpadDeltas[key] = new TouchpadAxisDelta { PrevValue = raw, Seeded = true, FrameSeq = _pollFrameSeq };
-                return true; // bipolar 0 on the seed frame
+                // Seed frame reads 0; the touch also kills any trackball
+                // momentum (catching the ball stops it).
+                bipolar = ApplyTouchpadFeel(src, 0f, fingerDown: true);
+                return true;
             }
             float delta;
             if (prev.FrameSeq == _pollFrameSeq)
@@ -3063,6 +3180,9 @@ namespace PadForge.Engine.Common.Mapping
             if (rowSens != 1f) bipolar *= rowSens;
             if (bipolar < -1f) bipolar = -1f;
             else if (bipolar > 1f) bipolar = 1f;
+            // v18 feel chain (threshold / accel / trackball / smoothing /
+            // curve shaping); every knob defaults off = pass-through.
+            if (src != null) bipolar = ApplyTouchpadFeel(src, bipolar, fingerDown: true);
             return true;
         }
 
@@ -3128,6 +3248,14 @@ namespace PadForge.Engine.Common.Mapping
                 if (bipolar < -1f) bipolar = -1f;
                 else if (bipolar > 1f) bipolar = 1f;
             }
+            // v18: the absolute lane (trackpad-as-stick, halves included)
+            // carries the same per-source smoothing + curve/range channel
+            // the generic bipolar tail applies. Defaults are pass-through.
+            if (src != null)
+            {
+                bipolar = ApplyPerSourceSmoothing(src, bipolar);
+                bipolar = ApplyCurveRangeShaping(bipolar, src);
+            }
             return true;
         }
 
@@ -3161,6 +3289,9 @@ namespace PadForge.Engine.Common.Mapping
             unipolar = raw;
             if (axisOffset != 2)
             {
+                // v18: unipolar twin of the absolute lane's shaping (the
+                // rowSens block below ends by clamping; shaping runs at
+                // the method tail on the clamped value).
                 float rowSens = src != null ? PerSourceSensitivity(src) : 1f;
                 if (rowSens != 1f)
                 {
@@ -3168,6 +3299,7 @@ namespace PadForge.Engine.Common.Mapping
                     if (unipolar < 0f) unipolar = 0f;
                     else if (unipolar > 1f) unipolar = 1f;
                 }
+                if (src != null) unipolar = ApplyCurveRangeShaping(unipolar, src);
             }
             return true;
         }
@@ -3226,36 +3358,116 @@ namespace PadForge.Engine.Common.Mapping
         internal const int TouchpadHalfNone = 0;
         internal const int TouchpadHalfLeft = 1;
         internal const int TouchpadHalfRight = 2;
+        // v18: vertical halves (Steam four_buttons N/S cells and any
+        // future vertical split) and the diagonal diamond quadrants
+        // (Steam's four_buttons zones: |dy| vs |dx| around the region
+        // center, exactly the ABXY diamond geometry).
+        internal const int TouchpadHalfUpper = 3;
+        internal const int TouchpadHalfLower = 4;
+        internal const int TouchpadQuadNorth = 5;
+        internal const int TouchpadQuadSouth = 6;
+        internal const int TouchpadQuadEast = 7;
+        internal const int TouchpadQuadWest = 8;
+        // Composed quadrant-in-half codes (v18): the quadrant test runs
+        // against the HALF's own center (0.25 / 0.75), so a four_buttons
+        // group hosted on one half of a single physical pad keeps Steam's
+        // diamond geometry inside that half. Layout: 9 + (quad - North)
+        // + (right ? 4 : 0).
+        internal const int TouchpadQuadComposedBase = 9;
 
         private static int ParseTouchpadHalf(string token) => token switch
         {
             "Left"  => TouchpadHalfLeft,
             "Right" => TouchpadHalfRight,
+            "Upper" => TouchpadHalfUpper,
+            "Lower" => TouchpadHalfLower,
+            "North" => TouchpadQuadNorth,
+            "South" => TouchpadQuadSouth,
+            "East"  => TouchpadQuadEast,
+            "West"  => TouchpadQuadWest,
             _       => TouchpadHalfNone,
         };
 
-        /// <summary>True when the finger sits inside the descriptor's half
+        /// <summary>Composes a quadrant window with a Left/Right half into
+        /// one window code, or returns None for combinations outside the
+        /// grammar (only quadrant + horizontal half composes).</summary>
+        private static int ComposeTouchpadWindow(int quad, int half)
+        {
+            if (quad < TouchpadQuadNorth || quad > TouchpadQuadWest) return TouchpadHalfNone;
+            if (half != TouchpadHalfLeft && half != TouchpadHalfRight) return TouchpadHalfNone;
+            return TouchpadQuadComposedBase + (quad - TouchpadQuadNorth)
+                + (half == TouchpadHalfRight ? 4 : 0);
+        }
+
+        /// <summary>The diamond quadrant test (v18): vertical cells own the
+        /// |dy| &gt;= |dx| region, horizontal cells the |dx| &gt; |dy|
+        /// remainder, so the four quadrants partition the region
+        /// exhaustively with the diagonal boundaries Steam's four_buttons
+        /// zones use.</summary>
+        private static bool InTouchpadQuadrant(float x, float y, float cx, int quad)
+        {
+            float dx = x - cx;
+            float dy = y - 0.5f;
+            float adx = dx < 0f ? -dx : dx;
+            float ady = dy < 0f ? -dy : dy;
+            return quad switch
+            {
+                TouchpadQuadNorth => dy < 0f && ady >= adx,
+                TouchpadQuadSouth => dy >= 0f && ady >= adx,
+                TouchpadQuadEast  => dx >= 0f && adx > ady,
+                TouchpadQuadWest  => dx < 0f && adx > ady,
+                _ => false,
+            };
+        }
+
+        /// <summary>True when the finger sits inside the descriptor's
         /// window (always true for the whole-pad form). The boundary finger
         /// X == 0.5 belongs to the Right half, matching the parse-time
-        /// convention documented on <see cref="TryParseTouchpadAxis"/>.</summary>
+        /// convention documented on <see cref="TryParseTouchpadAxis"/>;
+        /// Y == 0.5 belongs to Lower the same way.</summary>
         private static bool FingerInTouchpadHalf(TouchpadInputState pad, int fingerIdx, int half)
-            => half switch
+        {
+            float x = pad.FingerX[fingerIdx];
+            float y = pad.FingerY[fingerIdx];
+            switch (half)
             {
-                TouchpadHalfLeft  => pad.FingerX[fingerIdx] < 0.5f,
-                TouchpadHalfRight => pad.FingerX[fingerIdx] >= 0.5f,
-                _ => true,
-            };
+                case TouchpadHalfLeft: return x < 0.5f;
+                case TouchpadHalfRight: return x >= 0.5f;
+                case TouchpadHalfUpper: return y < 0.5f;
+                case TouchpadHalfLower: return y >= 0.5f;
+                case TouchpadQuadNorth:
+                case TouchpadQuadSouth:
+                case TouchpadQuadEast:
+                case TouchpadQuadWest:
+                    return InTouchpadQuadrant(x, y, 0.5f, half);
+                default:
+                    if (half >= TouchpadQuadComposedBase && half < TouchpadQuadComposedBase + 8)
+                    {
+                        int rel = half - TouchpadQuadComposedBase;
+                        bool right = rel >= 4;
+                        if (right ? x < 0.5f : x >= 0.5f) return false;
+                        return InTouchpadQuadrant(x, y, right ? 0.75f : 0.25f,
+                            TouchpadQuadNorth + (rel & 3));
+                    }
+                    return true;
+            }
+        }
 
-        /// <summary>Re-normalizes a raw finger X inside a half window to the
-        /// full [0..1] range ("absolute reads clamp to the half
-        /// re-normalized"): Left maps [0..0.5] onto [0..1], Right maps
-        /// [0.5..1]. Y (and whole-pad X) pass through unchanged, because the
-        /// halves split the pad horizontally, so a windowed Y spans the full
-        /// pad height.</summary>
+        /// <summary>Re-normalizes a raw finger coordinate inside a half
+        /// window to the full [0..1] range ("absolute reads clamp to the
+        /// half re-normalized"): Left maps X [0..0.5] onto [0..1], Right
+        /// maps [0.5..1]; Upper / Lower do the same for Y (v18). The
+        /// cross coordinate (and whole-pad reads, and the bool-only
+        /// quadrant windows) pass through unchanged.</summary>
         private static float RenormalizeTouchpadHalf(float raw, int axisOffset, int half)
         {
-            if (half == TouchpadHalfNone || axisOffset != 0) return raw;
-            float v = half == TouchpadHalfLeft ? raw * 2f : (raw - 0.5f) * 2f;
+            float v;
+            if (axisOffset == 0 && (half == TouchpadHalfLeft || half == TouchpadHalfRight))
+                v = half == TouchpadHalfLeft ? raw * 2f : (raw - 0.5f) * 2f;
+            else if (axisOffset == 1 && (half == TouchpadHalfUpper || half == TouchpadHalfLower))
+                v = half == TouchpadHalfUpper ? raw * 2f : (raw - 0.5f) * 2f;
+            else
+                return raw;
             return v < 0f ? 0f : (v > 1f ? 1f : v);
         }
 

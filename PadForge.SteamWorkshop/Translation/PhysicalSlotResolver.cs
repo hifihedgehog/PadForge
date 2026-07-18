@@ -423,21 +423,31 @@ namespace PadForge.SteamWorkshop.Translation
                             return TrackpadDpad(p, "DPadRight");
                         case "dpad_west":
                             return TrackpadDpad(p, "DPadLeft");
-                        // B-19: four_buttons cells hosted on a touch
-                        // surface. The touch-spot grammar has no quadrant
-                        // zones (TouchLeft / TouchRight / TouchTop /
-                        // TouchMulti only), so every cell reads the
-                        // region-windowed contact bool and the row is the
-                        // honest quadrant-collapse Partial.
+                        // B-19 (built in v18): four_buttons cells hosted on
+                        // a touch surface read the diamond-quadrant contact
+                        // windows ("Finger 0 Down North" and friends, the
+                        // engine's |dy| vs |dx| check around the region
+                        // center), exactly Steam's ABXY zone geometry.
+                        // Half-hosted groups compose the quadrant with the
+                        // half ("Down North Left": the quadrant test runs
+                        // against the half's own center).
                         case "button_a":
                         case "button_b":
                         case "button_x":
                         case "button_y":
+                        {
+                            string quad = name switch
+                            {
+                                "button_y" => "North",
+                                "button_a" => "South",
+                                "button_b" => "East",
+                                _ => "West",
+                            };
                             return new ResolvedSource
                             {
-                                Descriptor = $"Touchpad {p} Finger 0 Down{HalfSuffix(half)}",
-                                PartialReasonKey = TranslationReasons.TouchQuadrantApproximated,
+                                Descriptor = $"Touchpad {p} Finger 0 Down {quad}{HalfSuffix(half)}",
                             };
+                        }
                         default:
                             return null; // "edge" and menu cells resolve elsewhere
                     }

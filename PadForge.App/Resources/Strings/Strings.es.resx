@@ -2433,14 +2433,12 @@
   <data name="Workshop_Tr_ReleaseActivatorNotSupported" xml:space="preserve"><value>activador de liberación no compatible aquí</value></data>
   <data name="Workshop_Tr_LongPressNotSupported" xml:space="preserve"><value>activador de pulsación larga no compatible aquí</value></data>
   <data name="Workshop_Tr_UnknownActivatorType" xml:space="preserve"><value>activador desconocido {0}</value></data>
-  <data name="Workshop_Tr_RepeatDropped" xml:space="preserve"><value>repetición automática descartada</value></data>
   <data name="Workshop_Tr_MissingGroup" xml:space="preserve"><value>la configuración hace referencia al grupo faltante {0}</value></data>
   <data name="Workshop_Tr_MissingModeShiftGroup" xml:space="preserve"><value>el cambio de modo en {0} hace referencia al grupo faltante {1}</value></data>
   <data name="Workshop_Tr_MissingPreset" xml:space="preserve"><value>la configuración hace referencia al preajuste faltante {0}</value></data>
   <data name="Workshop_Tr_ReferenceCycle" xml:space="preserve"><value>ciclo de referencias en el grupo {0}</value></data>
   <data name="Workshop_Tr_RemoveLayerApproximated" xml:space="preserve"><value>remove_layer aproximado como desactivación</value></data>
   <data name="Workshop_Tr_ActivatorInputNotSupported" xml:space="preserve"><value>esta entrada no puede accionar un activador de capa</value></data>
-  <data name="Workshop_Tr_ClickGateDropped" xml:space="preserve"><value>condición requires_click descartada</value></data>
   <data name="Workshop_Tr_RowCapExceeded" xml:space="preserve"><value>límite de filas superado para la ranura {0}</value></data>
   <data name="Workshop_Tr_PresetHasNoActivator" xml:space="preserve"><value>ninguna asignación cambia al preajuste {0}</value></data>
   <data name="Workshop_Tr_AutomapAlsoActive" xml:space="preserve"><value>el mapeo automático del dispositivo sigue dirigiendo {0} a {1}</value></data>
@@ -2536,17 +2534,13 @@
   <data name="Workshop_Tr_ResponseCurveNotSupported" xml:space="preserve"><value>ajustes de curva de respuesta y rango descartados ({0})</value></data>
   <data name="Workshop_Tr_GyroButtonMaskDropped" xml:space="preserve"><value>ajuste de activación del giroscopio {0}={1} descartado (la activación del giroscopio se configura por mando)</value></data>
   <data name="Workshop_Tr_ActivatorDelayDropped" xml:space="preserve"><value>retardo de pulsación descartado ({0})</value></data>
-  <data name="Workshop_Tr_InterruptibleDropped" xml:space="preserve"><value>la pulsación no interrumpible se comporta como una pulsación normal</value></data>
   <data name="Workshop_Tr_PlayerNumberActionNotSupported" xml:space="preserve"><value>el cambio de número de jugador es una acción del cliente Steam, sin equivalente</value></data>
   <data name="Workshop_Tr_LizardModeActionNotSupported" xml:space="preserve"><value>la alternancia del modo lizard es interna de Steam, sin equivalente</value></data>
   <data name="Workshop_Tr_ToggleLatchEmitted" xml:space="preserve"><value>la pulsación de alternancia mantiene {0} hasta la siguiente pulsación</value></data>
-  <data name="Workshop_Tr_ToggleDropped" xml:space="preserve"><value>ajuste de alternancia descartado (sin retención para esta salida)</value></data>
   <data name="Workshop_Tr_LongPressKeyTap" xml:space="preserve"><value>la pulsación larga pulsa {0} al llegar al umbral (Steam la mantiene hasta soltar)</value></data>
   <data name="Workshop_Tr_CameraResetApproximated" xml:space="preserve"><value>reinicio de cámara aproximado como recentrado del giroscopio</value></data>
   <data name="Workshop_Tr_MouseRegionApproximated" xml:space="preserve"><value>región del ratón aproximada como una restricción centrada del cursor ({0}% de la pantalla, centro de la región {1}%, {2}%) mientras se mantiene la superficie</value></data>
   <data name="Workshop_Tr_MouseRegionTuningDropped" xml:space="preserve"><value>ajustes de activación/liberación de la región del ratón descartados ({0})</value></data>
-  <data name="Workshop_Tr_TouchQuadrantApproximated" xml:space="preserve"><value>las celdas de botones comparten la superficie táctil anfitriona (sin zonas por celda)</value></data>
-  <data name="Workshop_Tr_TrackpadHalfApproximated" xml:space="preserve"><value>alojado en una mitad del touchpad; PadForge lee todo el pad</value></data>
   <data name="Workshop_Tr_FlickStickSurfaceNotSupported" xml:space="preserve"><value>flick stick en una superficie táctil omitido (el flick stick de PadForge lee una palanca física)</value></data>
   <data name="Workshop_Tr_FlickStickTuningDropped" xml:space="preserve"><value>ajustes del flick stick descartados ({0})</value></data>
   <data name="Workshop_Tr_MouseModeTuningDropped" xml:space="preserve"><value>ajustes de sensación del ratón descartados ({0})</value></data>

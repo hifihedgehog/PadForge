@@ -188,8 +188,13 @@ namespace PadForge.SteamWorkshop.Tests
         // ─── rotation / friction / smoothing / trackball named drop ─────
 
         [Fact]
-        public void MouseModeTuning_OnAbsoluteMouse_IsNamedPartial()
+        public void MouseModeTuning_OnAbsoluteMouse_BuildsTheFeelChannel()
         {
+            // v18: rotation lowers to two-source Sum rows with the
+            // trigonometric coefficients folded into Sensitivity, and
+            // mouse_smoothing rides the per-source EMA. friction without
+            // trackball 1 shapes nothing (it is the trackball decay knob),
+            // so nothing is named.
             string vdf = HeadPs4
                 + Group(1, "absolute_mouse",
                     Settings(("rotation", "-18"), ("friction", "1"), ("mouse_smoothing", "22")))
@@ -197,12 +202,12 @@ namespace PadForge.SteamWorkshop.Tests
                 + "}\n";
             var p = Translate(vdf);
 
-            var e = Assert.Single(p.Report.Entries, x =>
+            Assert.DoesNotContain(p.Report.Entries, x =>
                 x.ReasonKey == TranslationReasons.MouseModeTuningDropped);
-            Assert.Equal(TranslationStatus.Partial, e.Status);
-            Assert.Contains("rotation", e.ReasonArgs[0]);
-            Assert.Contains("friction", e.ReasonArgs[0]);
-            Assert.Contains("mouse_smoothing", e.ReasonArgs[0]);
+            var xRow = Assert.Single(p.KbmMappingSet.Rows, r => r.Target == "KbmMouseX");
+            Assert.Equal(2, xRow.Sources.Count); // cos leg + sin leg
+            Assert.Equal("Sum", xRow.CombineMode);
+            Assert.All(xRow.Sources, s => Assert.Equal(0.22, s.ParamSmoothingAlpha, 6));
         }
 
         [Fact]

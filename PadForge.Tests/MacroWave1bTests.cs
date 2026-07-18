@@ -78,16 +78,16 @@ namespace PadForge.Tests
             // The macro clipboard serializes MacroActionType numerically, so
             // new members MUST append at the tail and their values must
             // never move (wave 1b pinned 35..38; v15 appended 39..40; v16
-            // appended 41..42).
+            // appended 41..42; v18 appended 43..46).
             var values = Enum.GetValues<MacroActionType>();
-            Assert.Equal(MacroActionType.CycleTapList, values[^1]);
-            Assert.Equal(MacroActionType.MouseNudge, values[^2]);
-            Assert.Equal(MacroActionType.MouseWheelTap, values[^3]);
-            Assert.Equal(MacroActionType.AxisHold, values[^4]);
-            Assert.Equal(MacroActionType.GyroRecenter, values[^5]);
-            Assert.Equal(MacroActionType.ToggleKey, values[^6]);
-            Assert.Equal(MacroActionType.ToggleVcButton, values[^7]);
-            Assert.Equal(MacroActionType.RepeatVcButtonWhileHeld, values[^8]);
+            Assert.Equal(MacroActionType.ToggleWheel, values[^1]);
+            Assert.Equal(MacroActionType.RepeatVcAxisWhileHeld, values[^2]);
+            Assert.Equal(MacroActionType.ToggleVcAxis, values[^3]);
+            Assert.Equal(MacroActionType.ToggleMouseButton, values[^4]);
+            Assert.Equal(MacroActionType.CycleTapList, values[^5]);
+            Assert.Equal(MacroActionType.MouseNudge, values[^6]);
+            Assert.Equal(MacroActionType.MouseWheelTap, values[^7]);
+            Assert.Equal(MacroActionType.AxisHold, values[^8]);
 
             Assert.Equal(35, (int)MacroActionType.RepeatVcButtonWhileHeld);
             Assert.Equal(36, (int)MacroActionType.ToggleVcButton);
@@ -97,6 +97,92 @@ namespace PadForge.Tests
             Assert.Equal(40, (int)MacroActionType.MouseWheelTap);
             Assert.Equal(41, (int)MacroActionType.MouseNudge);
             Assert.Equal(42, (int)MacroActionType.CycleTapList);
+            Assert.Equal(43, (int)MacroActionType.ToggleMouseButton);
+            Assert.Equal(44, (int)MacroActionType.ToggleVcAxis);
+            Assert.Equal(45, (int)MacroActionType.RepeatVcAxisWhileHeld);
+            Assert.Equal(46, (int)MacroActionType.ToggleWheel);
+        }
+
+        // ── v18 latch family pins ──
+
+        [Fact]
+        public void ToggleVcAxis_GamepadPath_LatchesTheAxisAcrossRelease()
+        {
+            var im = new InputManager();
+            var action = new MacroAction
+            {
+                Type = MacroActionType.ToggleVcAxis,
+                AxisTarget = MacroAxisTarget.LeftTrigger,
+                AxisValue = 32767,
+            };
+            var m = GamepadTriggerMacro(MacroTriggerMode.OnPress, MacroRepeatMode.Once, action);
+            var macros = new[] { m };
+
+            var gp = new Gamepad { Buttons = Gamepad.A };
+            im.EvaluateSlotMacros(ref gp, macros);          // press: latch on
+            Assert.True(gp.LeftTrigger > 0);
+
+            gp = new Gamepad();                              // release
+            im.EvaluateSlotMacros(ref gp, macros);
+            Assert.True(gp.LeftTrigger > 0);                 // latch persists
+
+            gp = new Gamepad { Buttons = Gamepad.A };        // second press: unlatch
+            im.EvaluateSlotMacros(ref gp, macros);
+            gp = new Gamepad();
+            im.EvaluateSlotMacros(ref gp, macros);
+            Assert.Equal(0, (int)gp.LeftTrigger);
+        }
+
+        [Fact]
+        public void RepeatVcAxisWhileHeld_PulsesTheAxis_AndStopsOnRelease()
+        {
+            var im = new InputManager();
+            var action = new MacroAction
+            {
+                Type = MacroActionType.RepeatVcAxisWhileHeld,
+                AxisTarget = MacroAxisTarget.LeftTrigger,
+                AxisValue = 32767,
+                IntervalMs = 100,
+            };
+            var m = GamepadTriggerMacro(MacroTriggerMode.WhileHeld, MacroRepeatMode.UntilRelease, action);
+            var macros = new[] { m };
+
+            var gp = new Gamepad { Buttons = Gamepad.A };
+            im.EvaluateSlotMacros(ref gp, macros);
+            // First held frame: the turbo phase starts ON.
+            Assert.True(gp.LeftTrigger > 0);
+
+            gp = new Gamepad();
+            im.EvaluateSlotMacros(ref gp, macros);
+            Assert.Equal(0, (int)gp.LeftTrigger);
+        }
+
+        [Fact]
+        public void ToggleMouseButton_And_ToggleWheel_RoundTripPayloads()
+        {
+            var mouse = RoundTrip(new MacroAction
+            {
+                Type = MacroActionType.ToggleMouseButton,
+                MouseButton = MacroMouseButton.Right,
+                PulseWhileLatched = true,
+                IntervalMs = 150,
+            });
+            Assert.Equal(MacroActionType.ToggleMouseButton, mouse.Type);
+            Assert.Equal(MacroMouseButton.Right, mouse.MouseButton);
+            Assert.True(mouse.PulseWhileLatched);
+            Assert.Equal(150, mouse.IntervalMs);
+
+            var wheel = RoundTrip(new MacroAction
+            {
+                Type = MacroActionType.ToggleWheel,
+                AxisValue = -1,
+                WheelHorizontal = true,
+                IntervalMs = 80,
+            });
+            Assert.Equal(MacroActionType.ToggleWheel, wheel.Type);
+            Assert.Equal(-1, wheel.AxisValue);
+            Assert.True(wheel.WheelHorizontal);
+            Assert.Equal(80, wheel.IntervalMs);
         }
 
         [Fact]

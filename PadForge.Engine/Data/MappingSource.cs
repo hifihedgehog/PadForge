@@ -325,6 +325,48 @@ namespace PadForge.Engine.Data
         /// deadzone_outer_radius / 32767). 0 (default) = off.</summary>
         [XmlAttribute] public double ParamRangeOuter { get; set; }
 
+        /// <summary>Output anti-deadzone floor as a 0..1 fraction (v18,
+        /// Steam's anti_deadzone / 32767): a non-zero shaped magnitude is
+        /// remapped to floor + (1 - floor) * mag, so the smallest real
+        /// input starts at the floor. Applied inside the same
+        /// curve/range shaping seam, after the exponent. 0 = off.</summary>
+        [XmlAttribute] public double ParamAntiDeadzone { get; set; }
+
+        /// <summary>Per-source EMA smoothing factor 0..0.99 (v18, Steam's
+        /// mouse_smoothing / 100 clamp). One EMA step per poll frame per
+        /// source, the GyroTuning.SmoothingAlpha per-tick contract.
+        /// Applied on the analog mouse lanes (touchpad delta, stick /
+        /// gesture axes, gyro rate). 0 = off.</summary>
+        [XmlAttribute] public double ParamSmoothingAlpha { get; set; }
+
+        /// <summary>Minimum per-frame delta magnitude 0..1 (v18, Steam's
+        /// mouse_move_threshold): touchpad deltas below it read 0, gating
+        /// idle finger jitter. 0 = off. Touchpad relative lane only.</summary>
+        [XmlAttribute] public double ParamMoveThreshold { get; set; }
+
+        /// <summary>Rate-dependent gain (v18, Steam's acceleration on the
+        /// mouse modes): the touchpad delta scales by 1 + accel * |v|,
+        /// the ApplyGyroAcceleration formula on the cursor lane.
+        /// 0 = off.</summary>
+        [XmlAttribute] public double ParamAccel { get; set; }
+
+        /// <summary>Trackball momentum decay per poll frame (v18, Steam's
+        /// trackball + friction on absolute_mouse): after finger lift the
+        /// touchpad relative lane keeps emitting the last delta, decayed
+        /// by this factor per frame until it falls under the rest
+        /// epsilon. 0 (default) = trackball off; 1 would never decay and
+        /// is clamped to 0.999 (Steam friction 0 = spin forever).</summary>
+        [XmlAttribute] public double ParamTrackballDecay { get; set; }
+
+        /// <summary>Optional per-source AND companion (v18): the source
+        /// contributes only while this second descriptor reads true on
+        /// the same device, evaluated through the chord-second-leg
+        /// button read. Carries Steam's requires_click D-pad gate and
+        /// the single-pad click-on-half gates without spending the
+        /// row-level combine, so multi-source rows keep per-source
+        /// gates. Empty = ungated.</summary>
+        [XmlAttribute] public string GateDescriptor { get; set; } = "";
+
         /// <summary>Arm behavior when evaluation (re)starts with the stick
         /// already past the threshold (the shift-layer engage case, #225).
         /// <c>false</c> (default): arm at the current angle and track
@@ -351,6 +393,22 @@ namespace PadForge.Engine.Data
         internal string MenuParseKey;
         internal int MenuParseMenuId = -1;
         internal int MenuParseItemIndex = -1;
+
+        // ─── Runtime gate-source cache (v18, not serialized): the
+        // synthetic Direct source the evaluators read GateDescriptor
+        // through, rebuilt only when the descriptor reference changes
+        // (same reference-compare contract as the menu parse cache). ───
+        internal MappingSource GateSourceCache;
+        internal string GateSourceCacheKey;
+
+        // ─── Runtime mouse-feel state (v18, not serialized): per-source
+        // EMA value and trackball velocity, advanced once per poll frame
+        // (seq-gated like the gyro EMA). Clones inherit the values,
+        // which is harmless cold state. ───
+        internal float MouseFeelEmaValue;
+        internal ulong MouseFeelEmaSeq;
+        internal float TrackballVelocity;
+        internal ulong TrackballSeq;
 
         /// <summary>Full-field copy. Every field is a string / value type (strings are
         /// immutable), so a memberwise clone is a complete deep copy. Use this at clone

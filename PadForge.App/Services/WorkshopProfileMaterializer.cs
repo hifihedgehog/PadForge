@@ -66,6 +66,14 @@ namespace PadForge.Services
                 // ones included, so the legacy-automap merge must not add to
                 // this set when the user assigns a device.
                 mappingSets[xboxSlot].Authoritative = true;
+                // Slot-level workshop stamps (v18): Steam's deadzone_shape
+                // rides the Xbox set (the thumb pairs it shapes live
+                // there); the runtime overlays it onto the resolved
+                // per-device tuning, the gesture auto-arm contract.
+                mappingSets[xboxSlot].WorkshopLeftStickDeadZoneShape =
+                    translated.LeftStickDeadZoneShape ?? "";
+                mappingSets[xboxSlot].WorkshopRightStickDeadZoneShape =
+                    translated.RightStickDeadZoneShape ?? "";
             }
             if (kbmSlot >= 0)
             {
@@ -75,6 +83,23 @@ namespace PadForge.Services
                 slotProfileIds[kbmSlot] = InputManager.GetDefaultProfileId(VirtualControllerType.KeyboardMouse);
                 mappingSets[kbmSlot] = translated.KbmMappingSet ?? new MappingSet();
                 mappingSets[kbmSlot].Authoritative = true;
+            }
+            // The gyro engage stamp (v18, Steam gyro_button) rides EVERY
+            // claimed slot: split configs host gyro mouse rows on the KbM
+            // slot and gyro stick rows on the Xbox slot, and the engage
+            // gate is per slot.
+            if (!string.IsNullOrEmpty(translated.GyroEngageDescriptor))
+            {
+                if (xboxSlot >= 0)
+                {
+                    mappingSets[xboxSlot].WorkshopGyroEngageDescriptor = translated.GyroEngageDescriptor;
+                    mappingSets[xboxSlot].WorkshopGyroEngageInvert = translated.GyroEngageInvert;
+                }
+                if (kbmSlot >= 0)
+                {
+                    mappingSets[kbmSlot].WorkshopGyroEngageDescriptor = translated.GyroEngageDescriptor;
+                    mappingSets[kbmSlot].WorkshopGyroEngageInvert = translated.GyroEngageInvert;
+                }
             }
             // Unclaimed slots stay non-authoritative on purpose: a slot the
             // user creates later must automap normally.
@@ -185,11 +210,15 @@ namespace PadForge.Services
                 {
                     Type = MacroActionType.ToggleVcButton,
                     ButtonFlags = m.TargetXboxButtons,
+                    PulseWhileLatched = m.PulseWhileLatched,
+                    IntervalMs = m.IntervalMs > 0 ? m.IntervalMs : 100,
                 },
                 TranslatedMacroAction.ToggleKey => new ActionData
                 {
                     Type = MacroActionType.ToggleKey,
                     KeyCode = m.VirtualKey,
+                    PulseWhileLatched = m.PulseWhileLatched,
+                    IntervalMs = m.IntervalMs > 0 ? m.IntervalMs : 100,
                 },
                 TranslatedMacroAction.GyroRecenter => new ActionData
                 {
@@ -214,11 +243,13 @@ namespace PadForge.Services
                     MouseButton = (ViewModels.MacroMouseButton)Math.Clamp(m.MouseButtonIndex, 0, 4),
                 },
                 // VcButtonTap (v10 G6): ButtonPress ORs the target for
-                // DurationMs, one tap.
+                // DurationMs, one tap. TapDurationMs (v18) overrides the
+                // default length for the delay_end release-extension twins.
                 TranslatedMacroAction.VcButtonTap => new ActionData
                 {
                     Type = MacroActionType.ButtonPress,
                     ButtonFlags = m.TargetXboxButtons,
+                    DurationMs = m.TapDurationMs > 0 ? m.TapDurationMs : 50,
                 },
                 // SHOW_KEYBOARD (v10 G7): launch the Windows touch keyboard,
                 // falling back to the classic osk.exe when TabTip is absent.
@@ -267,6 +298,27 @@ namespace PadForge.Services
                 // vocabulary (same-item bindings fold into one '+'-joined
                 // stop so they fire together).
                 TranslatedMacroAction.CycleList => BuildCycleTapListAction(m),
+                // v18 latch family: mouse-button / VC-axis / wheel latches
+                // plus the axis turbo, with the toggle + hold_repeats
+                // composite riding PulseWhileLatched.
+                TranslatedMacroAction.ToggleMouseButton => new ActionData
+                {
+                    Type = MacroActionType.ToggleMouseButton,
+                    MouseButton = (ViewModels.MacroMouseButton)Math.Clamp(m.MouseButtonIndex, 0, 4),
+                    PulseWhileLatched = m.PulseWhileLatched,
+                    IntervalMs = m.IntervalMs > 0 ? m.IntervalMs : 100,
+                },
+                TranslatedMacroAction.ToggleVcAxis => BuildAxisLatchAction(m,
+                    MacroActionType.ToggleVcAxis),
+                TranslatedMacroAction.RepeatVcAxisWhileHeld => BuildAxisLatchAction(m,
+                    MacroActionType.RepeatVcAxisWhileHeld),
+                TranslatedMacroAction.ToggleWheel => new ActionData
+                {
+                    Type = MacroActionType.ToggleWheel,
+                    AxisValue = (short)Math.Clamp(m.WheelTicks, short.MinValue, short.MaxValue),
+                    WheelHorizontal = m.WheelHorizontal,
+                    IntervalMs = m.IntervalMs > 0 ? m.IntervalMs : 100,
+                },
                 _ => null,
             };
             if (action == null) return null;
@@ -426,11 +478,31 @@ namespace PadForge.Services
         {
             var payload = MapAxisTarget(m.TargetAxis, m.TargetAxisNegative);
             if (payload == null) return null;
-            return new ActionData
+            var data = new ActionData
             {
                 Type = MacroActionType.AxisHold,
                 AxisTarget = payload.Value.Target,
                 AxisValue = payload.Value.Value,
+            };
+            // v18: the delay_end release-extension twins carry an explicit
+            // assert duration.
+            if (m.TapDurationMs > 0) data.DurationMs = m.TapDurationMs;
+            return data;
+        }
+
+        /// <summary>Axis latch / turbo lowering (v18): the AxisHold payload
+        /// mapping with the latch pulse composite carried through.</summary>
+        private static ActionData BuildAxisLatchAction(TranslatedMacro m, MacroActionType type)
+        {
+            var payload = MapAxisTarget(m.TargetAxis, m.TargetAxisNegative);
+            if (payload == null) return null;
+            return new ActionData
+            {
+                Type = type,
+                AxisTarget = payload.Value.Target,
+                AxisValue = payload.Value.Value,
+                PulseWhileLatched = m.PulseWhileLatched,
+                IntervalMs = m.IntervalMs > 0 ? m.IntervalMs : 100,
             };
         }
 
@@ -533,6 +605,17 @@ namespace PadForge.Services
 
             MacroData Build(MacroTriggerMode mode, string suffix)
             {
+                var clamp = new ActionData
+                {
+                    Type = MacroActionType.MouseLimitRegion,
+                    CursorClampMode = ViewModels.CursorClampMode.XAndY,
+                    CursorClampInsetX = insetX,
+                    CursorClampInsetY = insetY,
+                };
+                // Activator delays (v18): the engage leg waits
+                // delay_start after the press, the release leg waits
+                // delay_end after the release, Steam's shifted window.
+                int legDelay = mode == MacroTriggerMode.OnRelease ? m.DelayEndMs : m.DelayStartMs;
                 var data = new MacroData
                 {
                     PadIndex = xboxSlot,
@@ -544,16 +627,13 @@ namespace PadForge.Services
                     ConsumeTriggerButtons = false,
                     TriggerAxisTargets = string.IsNullOrEmpty(m.TriggerAxisTarget) ? null : m.TriggerAxisTarget,
                     TriggerAxisThreshold = Math.Clamp(m.TriggerAxisThresholdPercent, 1, 100),
-                    Actions = new[]
-                    {
-                        new ActionData
+                    Actions = legDelay > 0
+                        ? new[]
                         {
-                            Type = MacroActionType.MouseLimitRegion,
-                            CursorClampMode = ViewModels.CursorClampMode.XAndY,
-                            CursorClampInsetX = insetX,
-                            CursorClampInsetY = insetY,
-                        },
-                    },
+                            new ActionData { Type = MacroActionType.Delay, DurationMs = legDelay },
+                            clamp,
+                        }
+                        : new[] { clamp },
                 };
                 return ApplyDeviceFreeTrigger(data, m) ? data : null;
             }

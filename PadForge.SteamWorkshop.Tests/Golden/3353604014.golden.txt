@@ -7,10 +7,10 @@ xbox rows: 20
   Base | ButtonB
     <- Gamepad ButtonB
   Base | ButtonBack
-    <- Touchpad 0 Click
+    <- Touchpad 0 Click gate=[Touchpad 0 TouchLeft]
     <- Gamepad ButtonBack
   Base | ButtonStart
-    <- Touchpad 0 Click
+    <- Touchpad 0 Click gate=[Touchpad 0 TouchRight]
     <- Gamepad ButtonStart
   Base | ButtonX
     <- Gamepad ButtonX
@@ -33,7 +33,7 @@ xbox rows: 20
   Base | LeftThumbButton
     <- Gamepad LeftStick
   Base | LeftTrigger
-    <- Gamepad LeftTrigger
+    <- Gamepad LeftTrigger curve=0.5
     <- Gamepad LeftTrigger [upper-half] dz=75
   Base | RightShoulder
     <- Gamepad RightShoulder
@@ -44,7 +44,7 @@ xbox rows: 20
   Base | RightThumbButton
     <- Gamepad RightStick
   Base | RightTrigger
-    <- Gamepad RightTrigger
+    <- Gamepad RightTrigger curve=0.5
     <- Gamepad RightTrigger [upper-half] dz=75
 kbm rows: 0
 macros: 18
@@ -66,18 +66,16 @@ macros: 18
   macro RumblePulse OnPress | Haptic pulse (left_bumper) | btns=0x0000 in=[Gamepad LeftShoulder] strength=33%
   macro SetLightbarColor OnPress | Set LED (right_bumper) | btns=0x0200 rgb=(255,0,0) bright=43% sat=100% setting=1
   macro RumblePulse OnPress | Haptic pulse (right_bumper) | btns=0x0000 in=[Gamepad RightShoulder] strength=33%
-report: v17 rows:x20+k0 macros:18 menus:0 layers:0 clean:34 partial:5 skipped:0 errors:0
+report: v18 rows:x20+k0 macros:18 menus:0 layers:0 clean:34 partial:1 skipped:0 errors:0
   Clean MacroEmitted @ When Trigger is pressed/button_diamond/group 14 (four_buttons)/button_a/Full_Press => Set LED macro
   Clean MacroEmitted @ When Trigger is pressed/button_diamond/group 14 (four_buttons)/button_b/Full_Press => Set LED macro
   Clean MacroEmitted @ When Trigger is pressed/button_diamond/group 14 (four_buttons)/button_x/Full_Press => Set LED macro
   Clean MacroEmitted @ When Trigger is pressed/button_diamond/group 14 (four_buttons)/button_y/Full_Press => Set LED macro
   Clean MacroEmitted @ When Trigger is pressed/joystick/group 30 (joystick_move)/click/Full_Press => Set LED macro
   Clean RowEmitted @ When Trigger is pressed/left_trackpad/group 27 (single_button)/click/Full_Press => ButtonBack <- Touchpad 0 Click
-  Partial ResponseCurveNotSupported(curve_exponent) @ When Trigger is pressed/left_trigger/group 15 (trigger)
   Clean MacroEmitted @ When Trigger is pressed/left_trigger/group 15 (trigger)/click/Full_Press => Set LED macro
   Clean MacroEmitted @ When Trigger is pressed/right_joystick/group 31 (joystick_move)/click/Full_Press => Set LED macro
   Clean RowEmitted @ When Trigger is pressed/right_trackpad/group 28 (single_button)/click/Full_Press => ButtonStart <- Touchpad 0 Click
-  Partial ResponseCurveNotSupported(curve_exponent) @ When Trigger is pressed/right_trigger/group 16 (trigger)
   Clean MacroEmitted @ When Trigger is pressed/right_trigger/group 16 (trigger)/click/Full_Press => Set LED macro
   Partial MissingPreset(32766) @ When Trigger is pressed/switch/group 17 (switches)/button_capture/Full_Press :: controller_action CHANGE_PRESET 32766 1 1, , 
   Clean MacroEmitted @ When Trigger is pressed/switch/group 17 (switches)/left_bumper/Full_Press => Set LED macro
@@ -104,5 +102,3 @@ report: v17 rows:x20+k0 macros:18 menus:0 layers:0 clean:34 partial:5 skipped:0 
   Clean RowEmitted @ When Trigger is pressed/switch/group 17 (switches)/button_menu/Full_Press => ButtonBack <- Gamepad ButtonBack
   Clean RowEmitted @ When Trigger is pressed/switch/group 17 (switches)/left_bumper/Full_Press => LeftShoulder <- Gamepad LeftShoulder
   Clean RowEmitted @ When Trigger is pressed/switch/group 17 (switches)/right_bumper/Full_Press => RightShoulder <- Gamepad RightShoulder
-  Partial ClickGateDropped @ When Trigger is pressed/left_trackpad/group 27 (single_button)/click/Full_Press
-  Partial ClickGateDropped @ When Trigger is pressed/right_trackpad/group 28 (single_button)/click/Full_Press

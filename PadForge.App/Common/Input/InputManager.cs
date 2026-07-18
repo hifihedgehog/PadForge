@@ -1447,30 +1447,70 @@ namespace PadForge.Common.Input
                 string descriptor = "";
                 string deviceGuid = "";
                 string mode = "Hold";
+                List<string> slotDeviceGuids = null;
                 lock (settings.SyncRoot)
                 {
                     for (int i = 0; i < settings.Items.Count; i++)
                     {
                         var us = settings.Items[i];
                         if (us == null || us.MapTo != slot) continue;
+                        (slotDeviceGuids ??= new List<string>()).Add(us.InstanceGuidString);
                         var ps = us.GetPadSetting();
                         if (ps == null) continue;
                         if (string.IsNullOrEmpty(ps.GyroAimEngageButton)) continue;
-                        descriptor = ps.GyroAimEngageButton;
-                        deviceGuid = ps.GyroAimEngageDeviceGuid ?? "";
-                        mode = string.IsNullOrEmpty(ps.GyroAimEngageMode) ? "Hold" : ps.GyroAimEngageMode;
-                        break;
+                        if (descriptor.Length == 0)
+                        {
+                            descriptor = ps.GyroAimEngageButton;
+                            deviceGuid = ps.GyroAimEngageDeviceGuid ?? "";
+                            mode = string.IsNullOrEmpty(ps.GyroAimEngageMode) ? "Hold" : ps.GyroAimEngageMode;
+                        }
                     }
                 }
 
-                bool buttonDown = !string.IsNullOrEmpty(descriptor)
-                    && (SourceCoercion.ButtonHeldProvider?.Invoke(deviceGuid, descriptor, slot) ?? false);
+                // Workshop overlay (v18): an Authoritative slot with an
+                // authored gyro_button stamp engages on that device-free
+                // descriptor when no user PadSetting configured one. The
+                // stamp resolves against every device on the slot (the
+                // empty-DeviceGuid contract) and the invert flag flips
+                // the held sense (Steam gyro_button_invert: gyro fires
+                // while the button is NOT held).
+                bool workshopInvert = false;
+                if (descriptor.Length == 0)
+                {
+                    var sets = SettingsManager.SlotMappingSets;
+                    var set = sets != null && slot < sets.Length ? sets[slot] : null;
+                    if (set != null && set.Authoritative
+                        && !string.IsNullOrEmpty(set.WorkshopGyroEngageDescriptor))
+                    {
+                        descriptor = set.WorkshopGyroEngageDescriptor;
+                        workshopInvert = set.WorkshopGyroEngageInvert;
+                        deviceGuid = "";
+                        mode = "Hold";
+                    }
+                }
+
+                bool buttonDown = false;
+                if (descriptor.Length > 0)
+                {
+                    if (deviceGuid.Length > 0)
+                    {
+                        buttonDown = SourceCoercion.ButtonHeldProvider?.Invoke(deviceGuid, descriptor, slot) ?? false;
+                    }
+                    else if (slotDeviceGuids != null)
+                    {
+                        // Device-free (workshop) descriptor: any slot device
+                        // holding it engages.
+                        for (int i = 0; i < slotDeviceGuids.Count && !buttonDown; i++)
+                            buttonDown = SourceCoercion.ButtonHeldProvider?.Invoke(
+                                slotDeviceGuids[i], descriptor, slot) ?? false;
+                    }
+                }
 
                 if (mode == "Toggle")
                 {
                     // Rising edge → flip the sticky bit. Falling edge,
                     // empty descriptor, and held state all leave the bit
-                    // alone — Toggle never auto-disengages.
+                    // alone. Toggle never auto-disengages.
                     if (buttonDown && !_prevAimEngageButtonDown[slot])
                         GyroEngagedFromButton[slot] = !GyroEngagedFromButton[slot];
                 }
@@ -1479,7 +1519,9 @@ namespace PadForge.Common.Input
                     // Hold mode (default). Empty descriptor reads as
                     // always-on to preserve the pre-v3.2.4 behavior where
                     // no engage button = no gating from this source.
-                    GyroEngagedFromButton[slot] = string.IsNullOrEmpty(descriptor) ? true : buttonDown;
+                    GyroEngagedFromButton[slot] = string.IsNullOrEmpty(descriptor)
+                        ? true
+                        : (workshopInvert ? !buttonDown : buttonDown);
                 }
                 _prevAimEngageButtonDown[slot] = buttonDown;
             }

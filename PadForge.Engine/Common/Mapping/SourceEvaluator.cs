@@ -20,6 +20,36 @@ namespace PadForge.Engine.Common.Mapping
     /// </summary>
     public static class SourceEvaluator
     {
+        /// <summary>Per-source AND gate (v18): when
+        /// <see cref="MappingSource.GateDescriptor"/> is set, the source
+        /// contributes only while that second descriptor reads true on the
+        /// same device state, evaluated through the exact button-like read
+        /// the chord second leg uses (a synthetic Direct source into
+        /// <see cref="SourceCoercion.EvaluateForButtonTarget"/>). The
+        /// synthetic source is cached on the owning source and rebuilt
+        /// only when the descriptor reference changes (the menu parse
+        /// cache contract), so the hot path is a reference compare.</summary>
+        private static bool GateHeld(CustomInputState state, MappingSource src,
+            int slotIndex, string evaluatedDeviceGuid)
+        {
+            string gate = src.GateDescriptor;
+            if (string.IsNullOrEmpty(gate)) return true;
+            var cached = src.GateSourceCache;
+            if (cached == null || !ReferenceEquals(src.GateSourceCacheKey, gate))
+            {
+                cached = new MappingSource
+                {
+                    Kind = "Direct",
+                    Descriptor = gate,
+                    DeviceGuid = src.DeviceGuid,
+                };
+                src.GateSourceCache = cached;
+                src.GateSourceCacheKey = gate;
+            }
+            return SourceCoercion.EvaluateForButtonTarget(state, cached, 50, slotIndex,
+                evaluatedDeviceGuid);
+        }
+
         public static bool EvaluateForButtonTarget(
             CustomInputState state, MappingSource src,
             int globalThresholdPercent,
@@ -28,6 +58,7 @@ namespace PadForge.Engine.Common.Mapping
             string evaluatedDeviceGuid = null)
         {
             if (src == null) return false;
+            if (!GateHeld(state, src, slotIndex, evaluatedDeviceGuid)) return false;
 
             switch (src.Kind ?? "Direct")
             {
@@ -62,6 +93,7 @@ namespace PadForge.Engine.Common.Mapping
             string evaluatedDeviceGuid = null)
         {
             if (src == null) return 0f;
+            if (!GateHeld(state, src, slotIndex, evaluatedDeviceGuid)) return 0f;
 
             // Touchpad source readings differ between relative-motion
             // targets (KBM mouse / scroll consume per-frame deltas) and
@@ -227,6 +259,7 @@ namespace PadForge.Engine.Common.Mapping
             string evaluatedDeviceGuid = null)
         {
             if (src == null) return 0f;
+            if (!GateHeld(state, src, slotIndex, evaluatedDeviceGuid)) return 0f;
 
             switch (src.Kind ?? "Direct")
             {

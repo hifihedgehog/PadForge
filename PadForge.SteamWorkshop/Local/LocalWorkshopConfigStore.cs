@@ -146,6 +146,13 @@ namespace PadForge.SteamWorkshop.Local
             return paths;
         }
 
+        /// <summary>The local Steam client's install root (registry
+        /// per-user SteamPath first, machine-wide InstallPath fallback),
+        /// or null when Steam is not installed. Public for the menu-icon
+        /// resolver, which reads the client's binding-icon art from
+        /// beneath this root at display time.</summary>
+        public static string GetSteamInstallPath() => ReadSteamInstallPath();
+
         private static string ReadSteamInstallPath()
         {
             try

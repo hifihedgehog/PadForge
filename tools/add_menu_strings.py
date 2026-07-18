@@ -55,7 +55,7 @@ KEYS = {
     "Workshop_Tr_MenuEmitted": "on-screen menu created ({0} bound cells)",
     "Workshop_Tr_MenuEmpty": "menu has no bound cells",
     "Workshop_Tr_MenuSurfaceNotSupported": "menu host surface not supported ({0})",
-    "Workshop_Tr_MenuIconsDropped": "menu cell icons dropped ({0} cells render text labels)",
+    # Workshop_Tr_MenuIconsDropped retired in translator v21 (icons carry).
     "Workshop_Tr_MenuTuningDropped": "menu tuning not supported ({0})",
 }
 

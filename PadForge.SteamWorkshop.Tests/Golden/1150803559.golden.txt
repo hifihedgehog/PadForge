@@ -75,7 +75,7 @@ macros: 10
   macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Touchpad 0 Click; Touchpad 0 TouchRight] strength=100%
   macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Gamepad RightTrigger] in-half=upper in-dz=75 strength=66%
   macro RumblePulse HoldForMs | Haptic pulse (right_bumper) | btns=0x0000 in=[Gamepad RightShoulder] hold=224ms strength=33%
-report: v20 rows:x22+k2 macros:10 menus:0 layers:2 clean:35 partial:3 skipped:0 errors:0
+report: v21 rows:x22+k2 macros:10 menus:0 layers:2 clean:35 partial:3 skipped:0 errors:0
   Clean RowEmitted @ Default/gyro/group 8 (absolute_mouse) => KbmMouseX <- Gyro Yaw
   Clean RowEmitted @ Default/gyro/group 8 (absolute_mouse) => KbmMouseY <- Gyro Pitch
   Clean RowEmitted @ Default/right_joystick/group 12 (joystick_mouse) => KbmMouseX <- Gamepad RightStickX

@@ -1865,18 +1865,27 @@ namespace PadForge.SteamWorkshop.Translation
             int engageDz = GroupDeadZonePercent(settings);
             if (engageDz > 0) entry.EngageDeadzonePercent = Math.Min(engageDz, 95);
 
-            int iconCells = 0;
             foreach (var cell in cells)
             {
+                // Cell icons carry as authored names (v21): the overlay
+                // resolves them against the local Steam client's own
+                // binding-icon art at display time (import users have
+                // Steam installed, the PNGs are on disk beside the config
+                // they subscribed to) and falls back to the text label
+                // when the file is absent. Only a reference outside the
+                // client's bare-filename shape stays behind, named
+                // precisely so nothing is dropped in silence.
+                string icon = CellIcon(cell.Input, out string unresolvedRef);
                 entry.Items.Add(new PadForge.Engine.Menus.MenuItemDefinition
                 {
                     Index = cell.Index,
                     Label = CellLabel(cell.Input),
+                    Icon = icon,
                 });
-                if (cell.Input.Activators.Any(a => a.Bindings.Any(b =>
-                        (b.Raw ?? "").Contains(".png", StringComparison.OrdinalIgnoreCase))))
+                if (unresolvedRef != null)
                 {
-                    iconCells++;
+                    run.Report.Add(TranslationStatus.Partial, TranslationReasons.MenuIconUnresolved,
+                        $"{path}/touch_menu_button_{cell.Index}", args: unresolvedRef);
                 }
             }
             run.Profile.Menus.Add(entry);
@@ -1885,14 +1894,6 @@ namespace PadForge.SteamWorkshop.Translation
                 emitted: $"{(radial ? "Radial" : "Grid")} menu {menuId} on {host}: "
                     + $"{cells.Count} bound cells",
                 args: cells.Count.ToString(CultureInfo.InvariantCulture));
-
-            // Steam renders per-cell icon glyphs (ghost_*.png); PadForge's
-            // overlay renders text labels only. One honest note per menu.
-            if (iconCells > 0)
-            {
-                run.Report.Add(TranslationStatus.Partial, TranslationReasons.MenuIconsDropped,
-                    path, args: iconCells.ToString(CultureInfo.InvariantCulture));
-            }
 
             var droppedKeys = MenuDroppedKeys
                 .Where(k => settings.TryGetValue(k, out var v) && (v ?? "").Trim() != "0")
@@ -1944,6 +1945,59 @@ namespace PadForge.SteamWorkshop.Translation
                 }
             }
             return "";
+        }
+
+        /// <summary>Icon name for a menu cell (v21): the first binding's
+        /// authored icon reference, carried when it is a bare Steam
+        /// binding-icon file name (the client's own art shape, e.g.
+        /// "ghost_050_menu_0030.png"). A reference outside that shape (a
+        /// path, an invalid character set) returns empty and comes back
+        /// through <paramref name="unresolvedRef"/> so the caller can name
+        /// the exact file in a Partial note. Same activator walk order as
+        /// <see cref="CellLabel"/>, first icon-bearing binding wins.</summary>
+        private static string CellIcon(SteamInputInput input, out string unresolvedRef)
+        {
+            unresolvedRef = null;
+            foreach (var act in input.Activators)
+            {
+                foreach (var b in act.Bindings)
+                {
+                    string reference = b.Icon;
+                    if (string.IsNullOrEmpty(reference))
+                    {
+                        // A ".png" the field parse could not shape into a
+                        // token (or one hiding outside the icon fields)
+                        // still names itself rather than vanishing.
+                        if ((b.Raw ?? "").Contains(".png", StringComparison.OrdinalIgnoreCase)
+                            && b.Icon == null)
+                        {
+                            reference = PngReference(b.Raw);
+                        }
+                        if (string.IsNullOrEmpty(reference)) continue;
+                    }
+                    if (PadForge.Engine.Menus.MenuItemDefinition.IsValidIconName(reference))
+                        return reference;
+                    unresolvedRef = reference;
+                    return "";
+                }
+            }
+            return "";
+        }
+
+        /// <summary>The comma / whitespace-delimited token around the first
+        /// ".png" in <paramref name="raw"/>, for naming a reference the
+        /// positional icon parse did not surface.</summary>
+        private static string PngReference(string raw)
+        {
+            int at = raw.IndexOf(".png", StringComparison.OrdinalIgnoreCase);
+            if (at < 0) return "";
+            int start = at;
+            while (start > 0 && raw[start - 1] != ',' && raw[start - 1] != ' '
+                   && raw[start - 1] != '\t')
+            {
+                start--;
+            }
+            return raw.Substring(start, at - start + ".png".Length).Trim();
         }
 
         /// <summary>Mouse-region keys the pointer rows have no channel

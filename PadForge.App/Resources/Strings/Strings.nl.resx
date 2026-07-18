@@ -2402,6 +2402,7 @@
   <data name="Workshop_ReadingConfig" xml:space="preserve"><value>Configuratie lezen van Steam…</value></data>
   <data name="Workshop_SortedByRating" xml:space="preserve"><value>gesorteerd op beoordeling</value></data>
   <data name="Workshop_Found_Format" xml:space="preserve"><value>{0} gevonden</value></data>
+  <data name="Workshop_ShowingOf_Format" xml:space="preserve"><value>{0} van {1} weergegeven</value></data>
   <data name="Workshop_ConfigsCount_Format" xml:space="preserve"><value>{0} configuraties</value></data>
   <data name="Workshop_CommunityConfigsSuffix" xml:space="preserve"><value>communityconfiguraties</value></data>
   <data name="Workshop_ControllerSupportFull" xml:space="preserve"><value>volledige controllerondersteuning</value></data>
@@ -2681,6 +2682,6 @@
   <data name="Workshop_Tr_MenuEmitted" xml:space="preserve"><value>menu op het scherm gemaakt ({0} toegewezen cellen)</value></data>
   <data name="Workshop_Tr_MenuEmpty" xml:space="preserve"><value>menu heeft geen toegewezen cellen</value></data>
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>menu-hostoppervlak niet ondersteund ({0})</value></data>
-  <data name="Workshop_Tr_MenuIconsDropped" xml:space="preserve"><value>menucel-pictogrammen vervallen ({0} cellen tonen tekstlabels)</value></data>
+  <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>menucel-pictogram niet herkend ({0}), de cel behoudt daarom zijn tekstlabel</value></data>
   <data name="Workshop_Tr_MenuTuningDropped" xml:space="preserve"><value>menu-afstelling niet ondersteund ({0})</value></data>
 </root>

@@ -138,6 +138,20 @@ namespace PadForge.SteamWorkshop.Tests
             Assert.Equal(raw, binding.Raw);
         }
 
+        [Theory]
+        [InlineData("key_press F5, Quicksave, ghost_030_inv_0100.png #000000 #ad0000",
+            "ghost_030_inv_0100.png")]  // colors inside the icon field
+        [InlineData("key_press T, Tech, ghost_070_setting_0040.png, ",
+            "ghost_070_setting_0040.png")]  // trailing empty color field
+        [InlineData("key_press S, , ghost_040_act_0315.png, #232323 #00AD3D",
+            "ghost_040_act_0315.png")]  // empty label, colors in field four
+        [InlineData("xinput_button A", null)]
+        [InlineData("key_press F9, Quickload", null)]
+        public void Binding_parse_extracts_the_icon_reference(string raw, string icon)
+        {
+            Assert.Equal(icon, SteamInputBinding.Parse(raw).Icon);
+        }
+
         [Fact]
         public void Every_committed_fixture_parses_to_a_version_three_config()
         {

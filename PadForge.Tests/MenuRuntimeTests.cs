@@ -326,7 +326,11 @@ namespace PadForge.Tests
             Items =
             {
                 new MenuItemDefinition { Index = 0, Label = "Center", VirtualKey = 0x51 },
-                new MenuItemDefinition { Index = 2, Label = "Fire", XboxButtons = Gamepad.A },
+                new MenuItemDefinition
+                {
+                    Index = 2, Label = "Fire", XboxButtons = Gamepad.A,
+                    Icon = "ghost_040_act_0050.png",
+                },
                 new MenuItemDefinition { Index = 3, Label = "Raw", ExtendedButton = 37 },
                 new MenuItemDefinition { Index = 5, Label = "Map" },
             },
@@ -361,6 +365,7 @@ namespace PadForge.Tests
                 Assert.Equal(a.Items[i].VirtualKey, b.Items[i].VirtualKey);
                 Assert.Equal(a.Items[i].XboxButtons, b.Items[i].XboxButtons);
                 Assert.Equal(a.Items[i].ExtendedButton, b.Items[i].ExtendedButton);
+                Assert.Equal(a.Items[i].Icon, b.Items[i].Icon);
             }
         }
 
@@ -536,6 +541,50 @@ namespace PadForge.Tests
         }
 
         [Fact]
+        public void IconOnlyCell_IsData_SurvivesThePrunes_AndShowsTheIndicator()
+        {
+            // An imported cell can carry ONLY an icon (empty label, rows
+            // deliver the binding). The icon counts as cell data (v21):
+            // the shape prune and the label-clear drop must both keep it,
+            // and the cell surfaces it through the indicator properties.
+            var entry = new MenuDefinitionEntry();
+            entry.Items.Add(new MenuItemDefinition { Index = 1, Icon = "ghost_050_menu_0030.png" });
+            var editor = new PadForge.ViewModels.MenuEditorItem(entry);
+
+            Assert.Contains(entry.Items, it => it.Index == 1);
+            var cell = Assert.Single(editor.Cells, c => c.Index == 1);
+            Assert.True(cell.HasIcon);
+            Assert.Equal("ghost_050_menu_0030.png", cell.IconName);
+
+            // Writing then clearing a label routes through DropItemIfEmpty.
+            // The icon keeps the item alive.
+            cell.Label = "x";
+            cell.Label = "";
+            Assert.Contains(entry.Items, it => it.Index == 1);
+            Assert.True(cell.HasIcon);
+        }
+
+        [Fact]
+        public void ResetCell_ClearsTheIcon_AndDropsTheEmptyItem()
+        {
+            var entry = new MenuDefinitionEntry();
+            entry.Items.Add(new MenuItemDefinition
+            {
+                Index = 1,
+                Label = "Fire",
+                Icon = "ghost_040_act_0050.png",
+            });
+            var editor = new PadForge.ViewModels.MenuEditorItem(entry);
+            var cell = Assert.Single(editor.Cells, c => c.Index == 1);
+
+            cell.ResetCellCommand.Execute(null);
+
+            Assert.False(cell.HasIcon);
+            Assert.Equal("", cell.Label);
+            Assert.DoesNotContain(entry.Items, it => it != null && it.Index == 1);
+        }
+
+        [Fact]
         public void CustomOpener_RecordedAxesAndClick_RoundTripThroughTheEditor()
         {
             var editor = new PadForge.ViewModels.MenuEditorItem(new MenuDefinitionEntry());
@@ -693,6 +742,22 @@ namespace PadForge.Tests
             Assert.Contains("__SlotMenus", json);
             var back = PadSetting.FromJson(json);
             Assert.Equal("[{\"MenuId\":4}]", back.SlotMenusJson);
+        }
+
+        [Fact]
+        public void MenusSnapshotJson_WireShape_RoundTripsEveryField()
+        {
+            // The clipboard lane's actual payload: BuildMenusSnapshotJson
+            // serializes the entry list with System.Text.Json and
+            // ApplyMenusSnapshotJson deserializes it back, so every
+            // schema field (the v21 Icon included) must survive that
+            // codec, not just the XML one.
+            var json = System.Text.Json.JsonSerializer.Serialize(
+                new System.Collections.Generic.List<MenuDefinitionEntry> { SampleMenu() },
+                new System.Text.Json.JsonSerializerOptions { WriteIndented = false });
+            var back = System.Text.Json.JsonSerializer.Deserialize<
+                System.Collections.Generic.List<MenuDefinitionEntry>>(json);
+            AssertMenusEqual(SampleMenu(), Assert.Single(back));
         }
 
         [Fact]

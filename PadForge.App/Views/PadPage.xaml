@@ -11556,6 +11556,22 @@
                                                        Margin="0,0,8,0" TextWrapping="Wrap" MaxWidth="160"
                                                        Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
                                             <StackPanel Grid.Column="1" Orientation="Horizontal">
+                                                <!-- Imported Steam icon indicator (translator v21):
+                                                     the resolved local-Steam glyph, or the picture
+                                                     placeholder when the art is not on this
+                                                     machine. Indicator only, the reset button
+                                                     clears it with the rest of the cell. -->
+                                                <Image Width="16" Height="16" Margin="0,0,6,0"
+                                                       VerticalAlignment="Center"
+                                                       Source="{Binding IconImage}"
+                                                       ToolTip="{Binding IconName}"
+                                                       Visibility="{Binding IconImage, Converter={StaticResource NullToCollapsedConverter}}"/>
+                                                <TextBlock Text="&#xE8B9;" FontFamily="Segoe MDL2 Assets"
+                                                           FontSize="14" Margin="0,0,6,0"
+                                                           VerticalAlignment="Center"
+                                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                                           ToolTip="{Binding IconName}"
+                                                           Visibility="{Binding ShowIconGlyph, Converter={StaticResource BoolToVisibilityConverter}}"/>
                                                 <!-- Pickers auto-size to their widest ITEM, one
                                                      width group per column, so rows stay in
                                                      column across selections AND long locales

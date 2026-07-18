@@ -76,18 +76,20 @@ namespace PadForge.Views
         /// the first response.</summary>
         private const int ConfigsPageSize = 30;
 
-        /// <summary>Bound on consecutive pages the ban/legacy filters ate
-        /// whole within a single fill. A run this long reads as the end of
-        /// the importable results; without it a mostly-legacy catalog could
-        /// keep a fill fetching indefinitely.</summary>
+        /// <summary>See <see cref="WorkshopConfigListPager"/>.</summary>
         private const int ConfigsMaxSilentPages = 10;
 
-        /// <summary>Next QueryFiles page to request (1-based).</summary>
-        private int _nextConfigsPage = 1;
-        private bool _configsExhausted;
+        /// <summary>The pure paging decisions (page cursor, cross-page
+        /// dedupe, end-of-results, silent-page bound) live in the pager;
+        /// this class keeps the fetch loop and the panels.</summary>
+        private readonly WorkshopConfigListPager _configsPager = new(ConfigsPageSize, ConfigsMaxSilentPages);
+
+        /// <summary>Steam's total for the active query (QueryFiles reports
+        /// it on every page), shown as "Showing N of M" while the list
+        /// streams. Zero when Steam reported none.</summary>
+        private int _configsTotal;
         private bool _configsFetchBusy;
         private DateTime _configsRetryAtUtc;
-        private readonly HashSet<ulong> _seenConfigIds = new();
 
         /// <summary>Avatar images live on avatars CDN hosts (not the appid
         /// store CDN the artwork client covers), so they get their own
@@ -553,9 +555,8 @@ namespace PadForge.Views
             var ct = cts.Token;
 
             Configs.Clear();
-            _seenConfigIds.Clear();
-            _nextConfigsPage = 1;
-            _configsExhausted = false;
+            _configsPager.Reset();
+            _configsTotal = 0;
             _configsRetryAtUtc = DateTime.MinValue;
             // Owned for the whole initial fill so a scroll event raised by
             // rows landing mid-load cannot start a second, overlapping page
@@ -569,15 +570,15 @@ namespace PadForge.Views
             ConfigsFoundText.Text = string.Empty;
             try
             {
-                var resp = await FetchConfigsPageAsync(g, requiredTag, _nextConfigsPage, ct);
+                var resp = await FetchConfigsPageAsync(g, requiredTag, _configsPager.NextPage, ct);
                 if (ct.IsCancellationRequested) return;
 
                 var details = resp?.publishedfiledetails ?? new List<SkPublishedFileDetails>();
                 var rows = AppendConfigRows(details);
-                AdvanceConfigsPaging(details);
 
                 int total = (int)(resp?.total ?? 0);
-                ConfigsFoundText.Text = string.Format(Strings.Instance.Workshop_Found_Format, total);
+                _configsTotal = total;
+                UpdateConfigsFoundText();
                 g.ConfigCount = total;
                 UpdateGameMeta(total);
 
@@ -590,9 +591,10 @@ namespace PadForge.Views
                 // page of visible rows so the list is scrollable (scrolling
                 // is what drives further paging) before calling the room
                 // empty.
-                if (Configs.Count < ConfigsPageSize && !_configsExhausted)
+                if (Configs.Count < ConfigsPageSize && !_configsPager.Exhausted)
                     rows.AddRange(await FetchConfigRowsAsync(g, requiredTag, ConfigsPageSize - Configs.Count, ct));
                 if (ct.IsCancellationRequested) return;
+                UpdateConfigsFoundText();
 
                 if (Configs.Count == 0)
                 {
@@ -635,31 +637,16 @@ namespace PadForge.Views
             return _workshop.SearchAsync(g.AppId, EPublishedFileQueryType.RankedByVote, page, ConfigsPageSize, tags, ct);
         }
 
-        /// <summary>Appends one page's visible rows: ban and legacy filters,
-        /// plus cross-page dedup (rank order can shift between page fetches,
-        /// and a shifted item must not land twice). Returns what was added.</summary>
+        /// <summary>Appends one page's visible rows (the pager filters and
+        /// dedupes, and advances its cursor). Returns what was added.</summary>
         private List<WorkshopConfigItem> AppendConfigRows(List<SkPublishedFileDetails> details)
         {
-            bool showLegacy = _settings.ShowLegacyWorkshopConfigs;
             var rows = new List<WorkshopConfigItem>();
-            foreach (var d in details)
-            {
-                if (d.banned) continue;
-                if (!showLegacy && string.IsNullOrEmpty(d.file_url)) continue;
-                if (!_seenConfigIds.Add(d.publishedfileid)) continue;
+            foreach (var d in _configsPager.Accept(details, _settings.ShowLegacyWorkshopConfigs))
                 rows.Add(BuildConfigItem(d));
-            }
             foreach (var row in rows)
                 Configs.Add(row);
             return rows;
-        }
-
-        /// <summary>A short page is Steam's end-of-results signal.</summary>
-        private void AdvanceConfigsPaging(List<SkPublishedFileDetails> details)
-        {
-            _nextConfigsPage++;
-            if (details.Count < ConfigsPageSize)
-                _configsExhausted = true;
         }
 
         /// <summary>Pages forward until at least <paramref name="minRows"/>
@@ -671,20 +658,26 @@ namespace PadForge.Views
             WorkshopGameItem g, string requiredTag, int minRows, CancellationToken ct)
         {
             var added = new List<WorkshopConfigItem>();
-            int silentPages = 0;
-            while (!_configsExhausted && added.Count < minRows && !ct.IsCancellationRequested)
+            _configsPager.BeginFill();
+            while (!_configsPager.Exhausted && added.Count < minRows && !ct.IsCancellationRequested)
             {
-                var resp = await FetchConfigsPageAsync(g, requiredTag, _nextConfigsPage, ct);
+                var resp = await FetchConfigsPageAsync(g, requiredTag, _configsPager.NextPage, ct);
                 if (ct.IsCancellationRequested) break;
                 var details = resp?.publishedfiledetails ?? new List<SkPublishedFileDetails>();
-                int before = added.Count;
                 added.AddRange(AppendConfigRows(details));
-                AdvanceConfigsPaging(details);
-                silentPages = added.Count > before ? 0 : silentPages + 1;
-                if (silentPages >= ConfigsMaxSilentPages)
-                    _configsExhausted = true;
             }
             return added;
+        }
+
+        /// <summary>"Showing N of M" while the list streams (M is Steam's
+        /// total for the query, N the rows on screen after the ban/legacy
+        /// filters). Falls back to the plain found-count when Steam
+        /// reported no total.</summary>
+        private void UpdateConfigsFoundText()
+        {
+            ConfigsFoundText.Text = _configsTotal > 0
+                ? string.Format(Strings.Instance.Workshop_ShowingOf_Format, Configs.Count, _configsTotal)
+                : string.Format(Strings.Instance.Workshop_Found_Format, Configs.Count);
         }
 
         /// <summary>Infinite scroll: within one viewport of the bottom, the
@@ -695,7 +688,7 @@ namespace PadForge.Views
         /// loading/empty/error states inert.</summary>
         private void ConfigList_ScrollChanged(object sender, ScrollChangedEventArgs e)
         {
-            if (Configs.Count == 0 || _configsExhausted || _configsFetchBusy) return;
+            if (Configs.Count == 0 || _configsPager.Exhausted || _configsFetchBusy) return;
             if (e.ExtentHeight <= 0 || e.ViewportHeight <= 0) return;
             if (e.ExtentHeight - e.VerticalOffset - e.ViewportHeight > e.ViewportHeight) return;
             if (DateTime.UtcNow < _configsRetryAtUtc) return;
@@ -707,7 +700,7 @@ namespace PadForge.Views
         /// the fresh generation's flags and panels alone).</summary>
         private async Task LoadMoreConfigsAsync()
         {
-            if (_configsFetchBusy || _configsExhausted) return;
+            if (_configsFetchBusy || _configsPager.Exhausted) return;
             var g = _selectedGame;
             var cts = _gameCts;
             if (g == null || cts == null || cts.IsCancellationRequested) return;
@@ -719,7 +712,10 @@ namespace PadForge.Views
             {
                 var rows = await FetchConfigRowsAsync(g, _activeTag, 1, ct);
                 if (!ct.IsCancellationRequested)
+                {
+                    UpdateConfigsFoundText();
                     _ = FillPersonasAsync(rows, ct);
+                }
             }
             catch (OperationCanceledException) when (ct.IsCancellationRequested)
             {

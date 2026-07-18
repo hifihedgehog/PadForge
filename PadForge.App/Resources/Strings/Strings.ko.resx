@@ -2382,6 +2382,7 @@
   <data name="Workshop_ReadingConfig" xml:space="preserve"><value>Steam에서 구성을 읽는 중…</value></data>
   <data name="Workshop_SortedByRating" xml:space="preserve"><value>평점순 정렬</value></data>
   <data name="Workshop_Found_Format" xml:space="preserve"><value>{0}개 발견</value></data>
+  <data name="Workshop_ShowingOf_Format" xml:space="preserve"><value>{1}개 중 {0}개 표시</value></data>
   <data name="Workshop_ConfigsCount_Format" xml:space="preserve"><value>구성 {0}개</value></data>
   <data name="Workshop_CommunityConfigsSuffix" xml:space="preserve"><value>개의 커뮤니티 구성</value></data>
   <data name="Workshop_ControllerSupportFull" xml:space="preserve"><value>완전한 컨트롤러 지원</value></data>
@@ -2661,6 +2662,6 @@
   <data name="Workshop_Tr_MenuEmitted" xml:space="preserve"><value>화면 메뉴 생성됨({0}개 할당된 셀)</value></data>
   <data name="Workshop_Tr_MenuEmpty" xml:space="preserve"><value>메뉴에 할당된 셀이 없음</value></data>
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>메뉴 호스트 표면 미지원({0})</value></data>
-  <data name="Workshop_Tr_MenuIconsDropped" xml:space="preserve"><value>메뉴 셀 아이콘 제외됨({0}개 셀은 텍스트 레이블로 표시)</value></data>
+  <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>메뉴 셀 아이콘을 인식할 수 없음({0}), 해당 셀은 텍스트 레이블을 유지합니다</value></data>
   <data name="Workshop_Tr_MenuTuningDropped" xml:space="preserve"><value>메뉴 조정 설정 미지원({0})</value></data>
 </root>

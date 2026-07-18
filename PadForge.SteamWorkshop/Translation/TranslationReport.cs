@@ -349,8 +349,16 @@ namespace PadForge.SteamWorkshop.Translation
         /// occurrence (corpus and Valve's controller_base configs) rides
         /// button_capture Release to restore the Capture button's native
         /// screenshot, so the SteamSystemAction note no longer fires for
-        /// it. system_key_0 keeps the named note.</summary>
-        public const int CurrentTranslatorVersion = 20;
+        /// it. system_key_0 keeps the named note.
+        /// v21: menu cell icons carry. Each touch_menu_button binding's
+        /// authored icon name (the third comma field, e.g.
+        /// "ghost_050_menu_0030.png") rides MenuItemDefinition.Icon and
+        /// the overlay resolves it against the local Steam client's
+        /// binding-icon art at display time, so MenuIconsDropped retires
+        /// (key and locale strings deleted). Only a reference outside the
+        /// client's bare-filename shape stays behind, named per cell by
+        /// MenuIconUnresolved.</summary>
+        public const int CurrentTranslatorVersion = 21;
 
         public int TranslatorVersion { get; set; } = CurrentTranslatorVersion;
 
@@ -643,9 +651,13 @@ namespace PadForge.SteamWorkshop.Translation
         /// <summary>A menu group hosted on a surface with no direction /
         /// position read (not a stick or trackpad).</summary>
         public const string MenuSurfaceNotSupported = "Workshop_Tr_MenuSurfaceNotSupported";     // {0} slot
-        /// <summary>Cells carrying Steam icon glyphs (ghost_*.png): the
-        /// PadForge overlay renders text labels only.</summary>
-        public const string MenuIconsDropped = "Workshop_Tr_MenuIconsDropped";                   // {0} cell count
+        // MenuIconsDropped retired in v21: authored icon names carry on
+        // the items and resolve against the local Steam client's art at
+        // display time. The key plus its locale strings were deleted.
+        /// <summary>A cell icon reference outside the Steam client's
+        /// bare-filename art shape (v21): the one icon form that cannot
+        /// resolve locally, named per cell with the exact file.</summary>
+        public const string MenuIconUnresolved = "Workshop_Tr_MenuIconUnresolved";               // {0} icon reference
         /// <summary>Menu settings with no PadForge channel (In-Menu
         /// Sensitivity).</summary>
         public const string MenuTuningDropped = "Workshop_Tr_MenuTuningDropped";                 // {0} setting keys

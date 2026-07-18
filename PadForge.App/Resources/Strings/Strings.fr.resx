@@ -2382,6 +2382,7 @@
   <data name="Workshop_ReadingConfig" xml:space="preserve"><value>Lecture de la configuration depuis Steam…</value></data>
   <data name="Workshop_SortedByRating" xml:space="preserve"><value>triées par note</value></data>
   <data name="Workshop_Found_Format" xml:space="preserve"><value>{0} trouvées</value></data>
+  <data name="Workshop_ShowingOf_Format" xml:space="preserve"><value>{0} sur {1} affichées</value></data>
   <data name="Workshop_ConfigsCount_Format" xml:space="preserve"><value>{0} configurations</value></data>
   <data name="Workshop_CommunityConfigsSuffix" xml:space="preserve"><value>configurations de la communauté</value></data>
   <data name="Workshop_ControllerSupportFull" xml:space="preserve"><value>prise en charge complète de la manette</value></data>
@@ -2661,6 +2662,6 @@
   <data name="Workshop_Tr_MenuEmitted" xml:space="preserve"><value>menu à l'écran créé ({0} cases affectées)</value></data>
   <data name="Workshop_Tr_MenuEmpty" xml:space="preserve"><value>le menu n'a aucune case affectée</value></data>
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>surface hôte du menu non prise en charge ({0})</value></data>
-  <data name="Workshop_Tr_MenuIconsDropped" xml:space="preserve"><value>icônes des cases du menu abandonnées ({0} cases affichent des libellés texte)</value></data>
+  <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>icône de case du menu non reconnue ({0}), la case conserve donc son libellé texte</value></data>
   <data name="Workshop_Tr_MenuTuningDropped" xml:space="preserve"><value>réglages du menu non pris en charge ({0})</value></data>
 </root>

@@ -2515,6 +2515,7 @@
   <data name="Workshop_ReadingConfig" xml:space="preserve"><value>Reading config from Steam…</value></data>
   <data name="Workshop_SortedByRating" xml:space="preserve"><value>sorted by rating</value></data>
   <data name="Workshop_Found_Format" xml:space="preserve"><value>{0} found</value></data>
+  <data name="Workshop_ShowingOf_Format" xml:space="preserve"><value>Showing {0} of {1}</value></data>
   <data name="Workshop_ConfigsCount_Format" xml:space="preserve"><value>{0} configs</value></data>
   <data name="Workshop_CommunityConfigsSuffix" xml:space="preserve"><value>community configs</value></data>
   <data name="Workshop_ControllerSupportFull" xml:space="preserve"><value>full controller support</value></data>
@@ -2716,6 +2717,6 @@
   <data name="Workshop_Tr_MenuEmitted" xml:space="preserve"><value>on-screen menu created ({0} bound cells)</value></data>
   <data name="Workshop_Tr_MenuEmpty" xml:space="preserve"><value>menu has no bound cells</value></data>
   <data name="Workshop_Tr_MenuSurfaceNotSupported" xml:space="preserve"><value>menu host surface not supported ({0})</value></data>
-  <data name="Workshop_Tr_MenuIconsDropped" xml:space="preserve"><value>menu cell icons dropped ({0} cells render text labels)</value></data>
+  <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>menu cell icon not recognized ({0}), so the cell keeps its text label</value></data>
   <data name="Workshop_Tr_MenuTuningDropped" xml:space="preserve"><value>menu tuning not supported ({0})</value></data>
 </root>

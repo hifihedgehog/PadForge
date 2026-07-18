@@ -156,17 +156,17 @@ macros: 39
   macro KeyTap OnRelease | Screenshot key (button_capture) | btns=0x0000 in=[Button 11] vk=0x2C
 menus: 3
   menu 1 Grid | Touchpad 0 | Base | fire=Click cells=12 scale=150% | name=Menu Commands
-    [0] Remote View
-    [1] Trains
-    [2] Tech
-    [3] Numpad
-    [4] Logistics
-    [5] Production
-    [7] Picker Dollies Submenu
-    [8] Copy
-    [9] Cut
-    [10] Paste
-    [11] Blueprints
+    [0] Remote View icon=ghost_040_act_0311.png
+    [1] Trains icon=ghost_040_act_0305.png
+    [2] Tech icon=ghost_070_setting_0040.png
+    [3] Numpad icon=ghost_050_menu_0308.png
+    [4] Logistics icon=ghost_050_menu_0080.png
+    [5] Production icon=ghost_050_menu_0060.png
+    [7] Picker Dollies Submenu icon=ghost_080_input_0210.png
+    [8] Copy icon=ghost_070_setting_0303.png
+    [9] Cut icon=ghost_040_act_0331.png
+    [10] Paste icon=ghost_070_setting_0302.png
+    [11] Blueprints icon=ghost_030_inv_0311.png
   menu 2 Grid | Touchpad 0 | Layer_3353173512_1 | fire=Click cells=16 opacity=89% | name=Num Pad Menu
     [0] 7
     [1] 8
@@ -183,18 +183,18 @@ menus: 3
     [12] 0
     [13] PERIOD
     [14] KEYPAD_ENTER
-    [15] Back Menu
+    [15] Back Menu icon=ghost_050_menu_0306.png
   menu 3 Grid | Touchpad 0 | Layer_3353173512_2 | fire=Click cells=9 | name=Dollies
-    [0] Rotate Counterclockwise
+    [0] Rotate Counterclockwise icon=ghost_070_setting_0300.png
     [1] Move Up
-    [2] Rotate Clockwise
+    [2] Rotate Clockwise icon=ghost_070_setting_0301.png
     [3] Move Left
-    [4] Debug Menu
+    [4] Debug Menu icon=ghost_070_setting_0100.png
     [5] Move Right
-    [6] Flip Combinator
+    [6] Flip Combinator icon=ghost_075_utility_040.png
     [7] Move Down
-    [8] Back Menu
-report: v20 rows:x0+k51 macros:39 menus:3 layers:4 clean:78 partial:13 skipped:0 errors:0
+    [8] Back Menu icon=ghost_050_menu_0306.png
+report: v21 rows:x0+k51 macros:39 menus:3 layers:4 clean:78 partial:10 skipped:0 errors:0
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_a/Full_Press => KbmKey0D <- Gamepad ButtonA
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_b/Full_Press => KbmKey1B <- Gamepad ButtonB
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_y/Full_Press => KbmKey46 <- Gamepad ButtonY
@@ -210,7 +210,6 @@ report: v20 rows:x0+k51 macros:39 menus:3 layers:4 clean:78 partial:13 skipped:0
   Clean RowEmitted @ Default/joystick/group 3 (dpad)/dpad_west/Full_Press => KbmKey41 <- Gamepad LeftStickX (lower half)
   Partial GyroButtonMaskDropped(gyro_button, 1) @ Default/left_trackpad/group 12 (touch_menu)
   Clean MenuEmitted(11) @ Default/left_trackpad/group 12 (touch_menu) => Grid menu 1 on Touchpad 0: 11 bound cells
-  Partial MenuIconsDropped(11) @ Default/left_trackpad/group 12 (touch_menu)
   Clean RowEmitted @ Default/left_trackpad/group 12 (touch_menu)/touch_menu_button_0/Full_Press => KbmKey4D <- Menu 1 Item 0
   Clean RowEmitted @ Default/left_trackpad/group 12 (touch_menu)/touch_menu_button_1/Full_Press => KbmKey4F <- Menu 1 Item 1
   Clean RowEmitted @ Default/left_trackpad/group 12 (touch_menu)/touch_menu_button_2/Full_Press => KbmKey54 <- Menu 1 Item 2
@@ -245,7 +244,6 @@ report: v20 rows:x0+k51 macros:39 menus:3 layers:4 clean:78 partial:13 skipped:0
   Clean RowEmitted @ Default/switch/group 6 (switches)/left_bumper/Full_Press => KbmKey52 <- Gamepad LeftShoulder
   Clean RowEmitted @ Default/switch/group 6 (switches)/right_bumper/Full_Press => KbmKey20 <- Gamepad RightShoulder
   Clean MenuEmitted(16) @ Numpad/left_trackpad/group 45 (touch_menu) => Grid menu 2 on Touchpad 0: 16 bound cells
-  Partial MenuIconsDropped(1) @ Numpad/left_trackpad/group 45 (touch_menu)
   Clean RowEmitted @ Numpad/left_trackpad/group 45 (touch_menu)/touch_menu_button_0/Full_Press => KbmKey37 <- Menu 2 Item 0
   Clean RowEmitted @ Numpad/left_trackpad/group 45 (touch_menu)/touch_menu_button_1/Full_Press => KbmKey38 <- Menu 2 Item 1
   Clean RowEmitted @ Numpad/left_trackpad/group 45 (touch_menu)/touch_menu_button_2/Full_Press => KbmKey39 <- Menu 2 Item 2
@@ -265,7 +263,6 @@ report: v20 rows:x0+k51 macros:39 menus:3 layers:4 clean:78 partial:13 skipped:0
   Partial LayerReleaseEdgeApproximated(REMOVE_LAYER) @ Numpad/left_trackpad/group 45 (touch_menu)/touch_menu_button_15/release :: controller_action remove_layer 2 1 1, Back Menu, ghost_050_menu_0306.png, #23232...
   Partial GyroButtonMaskDropped(gyro_button, 1) @ Picker Dollies/left_trackpad/group 43 (touch_menu)
   Clean MenuEmitted(9) @ Picker Dollies/left_trackpad/group 43 (touch_menu) => Grid menu 3 on Touchpad 0: 9 bound cells
-  Partial MenuIconsDropped(5) @ Picker Dollies/left_trackpad/group 43 (touch_menu)
   Clean RowEmitted @ Picker Dollies/left_trackpad/group 43 (touch_menu)/touch_menu_button_0/Full_Press => KbmKey52 <- Menu 3 Item 0
   Clean RowEmitted @ Picker Dollies/left_trackpad/group 43 (touch_menu)/touch_menu_button_0/Full_Press => KbmKeyA0 <- Menu 3 Item 0
   Clean MacroEmitted @ Picker Dollies/left_trackpad/group 43 (touch_menu)/touch_menu_button_1/Full_Press => Hold UP_ARROW macro

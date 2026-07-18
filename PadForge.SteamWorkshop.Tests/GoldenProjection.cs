@@ -225,6 +225,8 @@ namespace PadForge.SteamWorkshop.Tests
                     foreach (var it in m.Items)
                     {
                         sb.Append("    [").Append(it.Index).Append("] ").Append(it.Label);
+                        if (!string.IsNullOrEmpty(it.Icon))
+                            sb.Append(" icon=").Append(it.Icon);
                         sb.Append('\n');
                     }
                 }

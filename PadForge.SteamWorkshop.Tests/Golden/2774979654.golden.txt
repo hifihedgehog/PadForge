@@ -49,7 +49,7 @@ macros: 4
   macro ToggleVcButton OnPress | Toggle ButtonB (click) | btns=0x2000 target=0x2000
   macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Gamepad LeftTrigger] in-half=upper in-dz=75 strength=66%
   macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Gamepad RightTrigger] in-half=upper in-dz=75 strength=66%
-report: v20 rows:x19+k0 macros:4 menus:0 layers:0 clean:23 partial:1 skipped:0 errors:0
+report: v21 rows:x19+k0 macros:4 menus:0 layers:0 clean:23 partial:1 skipped:0 errors:0
   Clean MacroEmitted @ Default/button_diamond/group 3 (four_buttons)/button_y/Double_Press => Double-press hold macro: LeftThumbButton
   Partial ToggleLatchEmitted(ButtonB) @ Default/joystick/group 6 (joystick_move)/click/Full_Press => Toggle ButtonB latch macro
   Clean RowEmitted @ Default/joystick/group 6 (joystick_move)/click/Full_Press => ButtonB <- Gamepad LeftStick

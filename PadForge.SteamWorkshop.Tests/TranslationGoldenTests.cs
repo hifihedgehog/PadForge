@@ -115,6 +115,9 @@ namespace PadForge.SteamWorkshop.Tests
                 "Workshop_Tr_ShowKeyboardApproximated",
                 "Workshop_Tr_SoftPressApproximated",
                 "Workshop_Tr_SetLedDefaultApproximated",
+                // v21: cell icons carry on the items and resolve against
+                // the local Steam client's art at display time.
+                "Workshop_Tr_MenuIconsDropped",
             };
             Assert.DoesNotContain(translated.Report.Entries, e =>
                 System.Array.IndexOf(retired, e.ReasonKey) >= 0);

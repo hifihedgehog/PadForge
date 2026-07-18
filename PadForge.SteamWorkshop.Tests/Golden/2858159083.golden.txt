@@ -11,16 +11,16 @@ kbm rows: 21
     <- Gamepad ButtonA
   Base | KbmKey25
     <- Gamepad DPadLeft
-    <- Touchpad 0 DPadLeft
+    <- Touchpad 0 DPadLeft gate=[Touchpad 0 Click]
   Base | KbmKey26
     <- Gamepad DPadUp
-    <- Touchpad 0 DPadUp
+    <- Touchpad 0 DPadUp gate=[Touchpad 0 Click]
   Base | KbmKey27
     <- Gamepad DPadRight
-    <- Touchpad 0 DPadRight
+    <- Touchpad 0 DPadRight gate=[Touchpad 0 Click]
   Base | KbmKey28
     <- Gamepad DPadDown
-    <- Touchpad 0 DPadDown
+    <- Touchpad 0 DPadDown gate=[Touchpad 0 Click]
   Base | KbmKey41
     <- Gamepad LeftStickX [lower-half]
   Base | KbmKey44
@@ -57,7 +57,7 @@ kbm rows: 21
 macros: 2
   macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Gamepad LeftTrigger] in-half=upper in-dz=75 strength=66%
   macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Gamepad RightTrigger] in-half=upper in-dz=75 strength=66%
-report: v17 rows:x0+k21 macros:2 menus:0 layers:0 clean:30 partial:0 skipped:1 errors:0
+report: v18 rows:x0+k21 macros:2 menus:0 layers:0 clean:30 partial:0 skipped:1 errors:0
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_a/Full_Press => KbmKey20 <- Gamepad ButtonA
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_b/Full_Press => KbmKey45 <- Gamepad ButtonB
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_x/Full_Press => KbmKey52 <- Gamepad ButtonX

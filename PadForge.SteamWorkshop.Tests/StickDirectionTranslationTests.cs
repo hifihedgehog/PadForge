@@ -155,18 +155,19 @@ namespace PadForge.SteamWorkshop.Tests
                 + "}\n";
             var p = Translate(vdf);
 
-            // Toggle and turbo still have no axis latch / pulse primitive.
-            Assert.Contains(p.Report.Entries, e =>
-                e.ReasonKey == TranslationReasons.ToggleDropped);
-            Assert.Contains(p.Report.Entries, e =>
-                e.ReasonKey == TranslationReasons.RepeatDropped);
             // Release and Long_Press ride the AxisHold channel since v15.
             Assert.DoesNotContain(p.Report.Entries, e =>
                 e.ReasonKey == TranslationReasons.ReleaseActivatorNotSupported
                 || e.ReasonKey == TranslationReasons.LongPressNotSupported);
-            // The toggle and turbo variants still emit the momentary row
-            // (button_b / button_x).
-            Assert.Equal(2, p.XboxMappingSet.Rows.Count);
+            // v18: the toggle and turbo variants latch / pulse the axis
+            // via macros instead of keeping momentary rows.
+            Assert.Empty(p.XboxMappingSet.Rows);
+            var latch = Assert.Single(p.Macros, m => m.Action == TranslatedMacroAction.ToggleVcAxis);
+            Assert.Equal("LeftThumbAxisY", latch.TargetAxis);
+            Assert.True(latch.TargetAxisNegative); // LSTICK_UP = SDL-frame negative
+            var turbo = Assert.Single(p.Macros, m => m.Action == TranslatedMacroAction.RepeatVcAxisWhileHeld);
+            Assert.Equal("RightThumbAxisY", turbo.TargetAxis);
+            Assert.True(turbo.TargetAxisNegative); // RSTICK_UP
             var tap = Assert.Single(p.Macros, m => m.Action == TranslatedMacroAction.VcAxisTap);
             Assert.Equal("OnRelease", tap.TriggerMode);
             Assert.Equal("LeftThumbAxisY", tap.TargetAxis);

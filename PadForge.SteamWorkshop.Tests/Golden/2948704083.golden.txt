@@ -43,8 +43,8 @@ kbm rows: 33
     <- Gamepad ButtonB
   Base | KbmMBtn2
     <- Touchpad 0 Click
-    <- Touchpad 0 Click
-    <- Touchpad 0 Click
+    <- Touchpad 0 Click gate=[Touchpad 0 TouchLeft]
+    <- Touchpad 0 Click gate=[Touchpad 0 TouchRight]
   Base | KbmMouseX | Sum
     <- Touchpad 0 Finger 0 X
     <- Gamepad RightStickX sens=1.238
@@ -97,7 +97,7 @@ menus: 2
     [1] Game Areas
     [2] Bulldoze
     [3] Unlocking Panel
-report: v17 rows:x0+k33 macros:6 menus:2 layers:3 clean:46 partial:4 skipped:0 errors:0
+report: v18 rows:x0+k33 macros:6 menus:2 layers:3 clean:46 partial:3 skipped:0 errors:0
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_a/Full_Press => KbmMBtn0 <- Gamepad ButtonA
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_b/Full_Press => KbmMBtn1 <- Gamepad ButtonB
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_x/Full_Press => KbmKey42 <- Gamepad ButtonX
@@ -139,7 +139,6 @@ report: v17 rows:x0+k33 macros:6 menus:2 layers:3 clean:46 partial:4 skipped:0 e
   Clean RowEmitted @ Default/right_trackpad/group 15 (touch_menu)/touch_menu_button_2/Full_Press => KbmKey42 <- Menu 2 Item 2
   Clean RowEmitted @ Default/right_trackpad/group 15 (touch_menu)/touch_menu_button_3/Full_Press => KbmKey55 <- Menu 2 Item 3
   Clean RowEmitted @ Default/right_trigger/group 5 (trigger)/click/Full_Press => KbmKey5A <- Gamepad RightTrigger (upper half)
-  Partial InterruptibleDropped @ Default/switch/group 16 (switches)/button_back_right/Full_Press
   Clean RowEmitted @ Default/switch/group 16 (switches)/button_escape/Full_Press => KbmKey1B <- Gamepad ButtonStart
   Clean RowEmitted @ Default/switch/group 16 (switches)/button_menu/Full_Press => KbmKey7B <- Gamepad ButtonBack
   Clean RowEmitted @ Default/switch/group 16 (switches)/left_bumper/Full_Press => KbmKey21 <- Gamepad LeftShoulder

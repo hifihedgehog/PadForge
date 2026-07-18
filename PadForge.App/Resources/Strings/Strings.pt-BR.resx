@@ -2433,14 +2433,12 @@
   <data name="Workshop_Tr_ReleaseActivatorNotSupported" xml:space="preserve"><value>ativador ao soltar não suportado aqui</value></data>
   <data name="Workshop_Tr_LongPressNotSupported" xml:space="preserve"><value>ativador de pressão longa não suportado aqui</value></data>
   <data name="Workshop_Tr_UnknownActivatorType" xml:space="preserve"><value>ativador desconhecido {0}</value></data>
-  <data name="Workshop_Tr_RepeatDropped" xml:space="preserve"><value>repetição automática descartada</value></data>
   <data name="Workshop_Tr_MissingGroup" xml:space="preserve"><value>a configuração referencia o grupo ausente {0}</value></data>
   <data name="Workshop_Tr_MissingModeShiftGroup" xml:space="preserve"><value>a mudança de modo em {0} referencia o grupo ausente {1}</value></data>
   <data name="Workshop_Tr_MissingPreset" xml:space="preserve"><value>a configuração referencia a predefinição ausente {0}</value></data>
   <data name="Workshop_Tr_ReferenceCycle" xml:space="preserve"><value>ciclo de referências no grupo {0}</value></data>
   <data name="Workshop_Tr_RemoveLayerApproximated" xml:space="preserve"><value>remove_layer aproximado como desativação</value></data>
   <data name="Workshop_Tr_ActivatorInputNotSupported" xml:space="preserve"><value>esta entrada não pode acionar um ativador de camada</value></data>
-  <data name="Workshop_Tr_ClickGateDropped" xml:space="preserve"><value>condição requires_click descartada</value></data>
   <data name="Workshop_Tr_RowCapExceeded" xml:space="preserve"><value>limite de linhas excedido para o slot {0}</value></data>
   <data name="Workshop_Tr_PresetHasNoActivator" xml:space="preserve"><value>nenhuma atribuição muda para a predefinição {0}</value></data>
   <data name="Workshop_Tr_AutomapAlsoActive" xml:space="preserve"><value>o mapeamento automático do dispositivo ainda direciona {0} para {1}</value></data>
@@ -2536,17 +2534,13 @@
   <data name="Workshop_Tr_ResponseCurveNotSupported" xml:space="preserve"><value>configurações de curva de resposta e alcance descartadas ({0})</value></data>
   <data name="Workshop_Tr_GyroButtonMaskDropped" xml:space="preserve"><value>configuração de ativação do giroscópio {0}={1} descartada (a ativação do giroscópio é configurada por controle)</value></data>
   <data name="Workshop_Tr_ActivatorDelayDropped" xml:space="preserve"><value>atraso de pressão descartado ({0})</value></data>
-  <data name="Workshop_Tr_InterruptibleDropped" xml:space="preserve"><value>a pressão não interrompível se comporta como uma pressão normal</value></data>
   <data name="Workshop_Tr_PlayerNumberActionNotSupported" xml:space="preserve"><value>a troca de número do jogador é uma ação do cliente Steam, sem equivalente</value></data>
   <data name="Workshop_Tr_LizardModeActionNotSupported" xml:space="preserve"><value>a alternância do modo lizard é interna do Steam, sem equivalente</value></data>
   <data name="Workshop_Tr_ToggleLatchEmitted" xml:space="preserve"><value>a pressão de alternância mantém {0} até a próxima pressão</value></data>
-  <data name="Workshop_Tr_ToggleDropped" xml:space="preserve"><value>configuração de alternância descartada (sem retenção para esta saída)</value></data>
   <data name="Workshop_Tr_LongPressKeyTap" xml:space="preserve"><value>a pressão longa toca {0} no limiar (o Steam a mantém até soltar)</value></data>
   <data name="Workshop_Tr_CameraResetApproximated" xml:space="preserve"><value>reset de câmera aproximado como recentralização do giroscópio</value></data>
   <data name="Workshop_Tr_MouseRegionApproximated" xml:space="preserve"><value>região do mouse aproximada como uma limitação centralizada do cursor ({0}% da tela, centro da região {1}%, {2}%) enquanto a superfície é mantida</value></data>
   <data name="Workshop_Tr_MouseRegionTuningDropped" xml:space="preserve"><value>configurações de ativação/liberação da região do mouse descartadas ({0})</value></data>
-  <data name="Workshop_Tr_TouchQuadrantApproximated" xml:space="preserve"><value>as células de botões compartilham a superfície de toque hospedeira (sem zonas por célula)</value></data>
-  <data name="Workshop_Tr_TrackpadHalfApproximated" xml:space="preserve"><value>hospedado em uma metade do touchpad; o PadForge lê o pad inteiro</value></data>
   <data name="Workshop_Tr_FlickStickSurfaceNotSupported" xml:space="preserve"><value>flick stick em uma superfície de toque ignorado (o flick stick do PadForge lê um analógico físico)</value></data>
   <data name="Workshop_Tr_FlickStickTuningDropped" xml:space="preserve"><value>ajustes do flick stick descartados ({0})</value></data>
   <data name="Workshop_Tr_MouseModeTuningDropped" xml:space="preserve"><value>ajustes de resposta do mouse descartados ({0})</value></data>

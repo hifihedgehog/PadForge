@@ -117,7 +117,7 @@ menus: 2
     [8] De Jure Empires
     [9] Counties
     [10] Houses
-report: v17 rows:x0+k38 macros:9 menus:2 layers:2 clean:47 partial:4 skipped:0 errors:0
+report: v18 rows:x0+k38 macros:9 menus:2 layers:2 clean:47 partial:3 skipped:0 errors:0
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_a/Full_Press => KbmKey20 <- Gamepad ButtonA
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_b/Full_Press => KbmKey6B <- Gamepad ButtonB
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_x/Full_Press => KbmKey6D <- Gamepad ButtonX
@@ -159,7 +159,6 @@ report: v17 rows:x0+k38 macros:9 menus:2 layers:2 clean:47 partial:4 skipped:0 e
   Clean RowEmitted @ Default/right_trackpad/group 10 (scrollwheel)/scroll_clockwise/Full_Press => KbmScroll <- Touchpad 1 Finger 0 Y
   Partial ScrollWheelApproximated @ Default/right_trackpad/group 10 (scrollwheel)
   Clean RowEmitted @ Default/right_trigger/group 5 (trigger)/edge/Full_Press => KbmMBtn0 <- Gamepad RightTrigger (upper half)
-  Partial InterruptibleDropped @ Default/switch/group 12 (switches)/button_back_left/Full_Press
   Clean RowEmitted @ Default/switch/group 12 (switches)/button_back_right/Full_Press => KbmKey1B <- Gamepad Paddle1
   Clean RowEmitted @ Default/switch/group 12 (switches)/button_escape/Full_Press => KbmKey47 <- Gamepad ButtonStart
   Clean MacroEmitted @ Default/switch/group 12 (switches)/button_escape/Long_Press => Hold SPACE macro

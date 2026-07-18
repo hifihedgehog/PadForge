@@ -273,8 +273,55 @@ namespace PadForge.SteamWorkshop.Translation
         /// trigger-pull lowering kept (SoftPressApproximated retired),
         /// and set_led restore-default reports Clean because clearing the
         /// override IS restoring the default (SetLedDefaultApproximated
-        /// retired).</summary>
-        public const int CurrentTranslatorVersion = 17;
+        /// retired).
+        /// v18: the response-cluster and gate/latch waves. The engine's
+        /// curve/range shaping seam widened from the stick tail to EVERY
+        /// analog lane (unipolar trigger pulls, touchpad finger delta /
+        /// absolute / gesture-stick reads, the gyro rate), so
+        /// curve_exponent / custom_curve_exponent / deadzone_outer_radius
+        /// / the sensitivity scales / the new anti_deadzone floor stamp
+        /// on every analog host and ResponseCurveNotSupported names only
+        /// deadzone_shape (mouse-output hosts) plus the defensive
+        /// output_curve. deadzone_shape on thumb-pair outputs consumes
+        /// into the slot-level DeadZoneShape stamp the runtime overlays
+        /// onto the VC stick processing (Steam Cross / Square = Axial,
+        /// Circle = ScaledRadial). The mouse-feel family builds:
+        /// rotation as two-source Sum rows with trigonometric
+        /// coefficients, mouse_smoothing as the per-source EMA,
+        /// acceleration as the rate gain, mouse_move_threshold as the
+        /// delta gate, and trackball + friction (+ vert scale) as the
+        /// momentum decay, leaving MouseModeTuningDropped only
+        /// mouse_dampening_trigger (cross-input modulation has no
+        /// per-source channel). Click gates ride the per-source AND
+        /// companion (MappingSource.GateDescriptor, evaluated like the
+        /// chord second leg), so multi-source rows keep every gate and
+        /// ClickGateDropped retires whole. four_buttons trackpad cells
+        /// read the diamond-quadrant contact windows (North / South /
+        /// East / West, half-composed on single-pad hosts) and
+        /// half-hosted D-pad wedges gate on their half's contact or
+        /// windowed-click read, retiring TouchQuadrantApproximated and
+        /// TrackpadHalfApproximated. The latch family completes:
+        /// ToggleMouseButton / ToggleWheel / ToggleVcAxis latch macros
+        /// plus the RepeatVcAxisWhileHeld axis turbo and the
+        /// pulse-while-latched composite (toggle + hold_repeats), so
+        /// ToggleDropped and RepeatDropped retire whole (keys and locale
+        /// strings deleted). Activator delays widen to every carrier:
+        /// autofire takes a one-shot Delay step, VC holds compose
+        /// delay_start into HoldForMs and grow a delay_end
+        /// release-extension twin, the region clamp pair takes per-leg
+        /// steps, rows reroute onto the delayed hold pairs, and layer
+        /// switches take delay_start as the engage debounce, leaving
+        /// ActivatorDelayDropped only layer delay_end, autofire
+        /// delay_end, and wheel-row delays. gyro_button 0 (the pad-touch
+        /// engage) stamps the slot-level device-free aim-engage overlay
+        /// with gyro_button_invert 1 as the inverted hold; non-zero
+        /// indices and ratchet masks keep the named note (the index
+        /// table beyond 0 has no public grounding). flickstick
+        /// transition_time consumes into ParamFlickTime.
+        /// InterruptibleDropped retires as factually wrong: stored
+        /// interruptable 0 matches PadForge's native never-cancel
+        /// evaluation exactly (keys and locale strings deleted).</summary>
+        public const int CurrentTranslatorVersion = 18;
 
         public int TranslatorVersion { get; set; } = CurrentTranslatorVersion;
 
@@ -430,7 +477,11 @@ namespace PadForge.SteamWorkshop.Translation
         // (layer verbs, mode shifts) land on ActivatorInputNotSupported.
         // The key plus its locale strings were deleted.
         public const string UnknownActivatorType = "Workshop_Tr_UnknownActivatorType";           // {0} type
-        public const string RepeatDropped = "Workshop_Tr_RepeatDropped";
+        // RepeatDropped retired in v18: every surviving arm BUILT. Axis
+        // targets pulse via the RepeatVcAxisWhileHeld turbo and the
+        // toggle + hold_repeats composite rides the pulse-while-latched
+        // flag on the latch macros. The key plus its locale strings were
+        // deleted.
         // MacroTriggerRetargetedToInput retired in v15: the finalize pass's
         // swap onto the hosting input's own descriptor is normal working
         // plumbing (the macro fires exactly as the config asks), so the
@@ -442,7 +493,11 @@ namespace PadForge.SteamWorkshop.Translation
         public const string ReferenceCycle = "Workshop_Tr_ReferenceCycle";                       // {0} group id
         public const string RemoveLayerApproximated = "Workshop_Tr_RemoveLayerApproximated";
         public const string ActivatorInputNotSupported = "Workshop_Tr_ActivatorInputNotSupported";
-        public const string ClickGateDropped = "Workshop_Tr_ClickGateDropped";
+        // ClickGateDropped retired in v18: the AND companion rides each
+        // source itself (MappingSource.GateDescriptor, evaluated like the
+        // chord second leg), so a second feed on the same target never
+        // drops anybody's gate. The key plus its locale strings were
+        // deleted.
         public const string RowCapExceeded = "Workshop_Tr_RowCapExceeded";                       // {0} slot class
         public const string PresetHasNoActivator = "Workshop_Tr_PresetHasNoActivator";           // {0} preset name
         public const string ShiftLayerEmpty = "Workshop_Tr_ShiftLayerEmpty";                     // {0} layer name
@@ -456,14 +511,25 @@ namespace PadForge.SteamWorkshop.Translation
         // reasons) and the per-arm family itself retired in v15 when every
         // arm was built; the keys plus their locale strings were deleted.
         public const string HapticIntensityDropped = "Workshop_Tr_HapticIntensityDropped";       // {0} count
-        // Since v11 the args carry only genuinely dropped keys: stick-hosted
-        // joystick groups consume the curve cluster into the per-source
-        // ParamCurveExponent / ParamRangeOuter / Sensitivity channel, leaving
-        // deadzone_shape (and trigger / trackpad / gyro hosts) in the note.
+        // Since v18 every analog host consumes the exponent / range /
+        // sensitivity / anti-deadzone cluster into the per-source channel,
+        // so the args name only deadzone_shape (mouse-output hosts, whose
+        // X / Y rows have no pair read) and the defensively-listed
+        // output_curve.
         public const string ResponseCurveNotSupported = "Workshop_Tr_ResponseCurveNotSupported"; // {0} setting keys
+        // Since v18 the note is the out-of-census net only: gyro_button 0
+        // (pad touch) stamps the slot-level engage overlay and
+        // gyro_button_invert 1 the inverted hold; non-zero indices and
+        // ratchet masks ride an enum with no public grounding.
         public const string GyroButtonMaskDropped = "Workshop_Tr_GyroButtonMaskDropped";         // {0} setting key {1} value
+        // Since v18 the args name only the channel-less arms: layer
+        // delay_end, autofire delay_end, and wheel-row delays.
         public const string ActivatorDelayDropped = "Workshop_Tr_ActivatorDelayDropped";         // {0} delays
-        public const string InterruptibleDropped = "Workshop_Tr_InterruptibleDropped";
+        // InterruptibleDropped retired in v18: stored interruptable 0
+        // matches PadForge's native never-cancel evaluation exactly
+        // (sibling activators on one input all fire), so the note
+        // reported the MATCHING case as a divergence. The key plus its
+        // locale strings were deleted.
         public const string PlayerNumberActionNotSupported = "Workshop_Tr_PlayerNumberActionNotSupported";
         public const string LizardModeActionNotSupported = "Workshop_Tr_LizardModeActionNotSupported";
         // SetLedDefaultApproximated retired in v17: "restore-default
@@ -478,10 +544,10 @@ namespace PadForge.SteamWorkshop.Translation
         /// Partial when the momentary identity row is kept alongside the
         /// latch so the macro's trigger stays fed.</summary>
         public const string ToggleLatchEmitted = "Workshop_Tr_ToggleLatchEmitted";                 // {0} target
-        /// <summary>toggle=1 on a binding kind with no latch primitive
-        /// (mouse buttons, wheel, trigger-axis targets): the binding stays
-        /// momentary.</summary>
-        public const string ToggleDropped = "Workshop_Tr_ToggleDropped";
+        // ToggleDropped retired in v18: every binding kind latches now
+        // (ToggleMouseButton / ToggleWheel / ToggleVcAxis beside the
+        // wave-2A key and VC-button latches). The key plus its locale
+        // strings were deleted.
         /// <summary>Legacy-render-only since translator v10 (G10): a
         /// Long_Press key rides the HoldKey pair now (down at threshold,
         /// up on release), so nothing taps. Kept, with its resx strings,
@@ -502,14 +568,16 @@ namespace PadForge.SteamWorkshop.Translation
         public const string MouseRegionTuningDropped = "Workshop_Tr_MouseRegionTuningDropped";     // {0} setting keys
 
         // ── Translator v4 (Wave 3) vocabulary ──
-        /// <summary>four_buttons cells hosted on a touch surface: the
-        /// touch-spot grammar has no quadrant zones, so every cell reads
-        /// the (region-windowed) contact bool and fires together.</summary>
-        public const string TouchQuadrantApproximated = "Workshop_Tr_TouchQuadrantApproximated";
-        /// <summary>A group hosted on one half of a single physical pad
-        /// whose translated surface has no half window (anchor D-pad
-        /// wedges, two-cell touch menus): the rows read the whole pad.</summary>
-        public const string TrackpadHalfApproximated = "Workshop_Tr_TrackpadHalfApproximated";
+        // TouchQuadrantApproximated retired in v18: four_buttons trackpad
+        // cells read the diamond-quadrant contact windows ("Finger 0 Down
+        // North" and friends, the |dy| vs |dx| check around the region
+        // center), exactly Steam's ABXY zone geometry, half-composed on
+        // single-pad hosts. The key plus its locale strings were deleted.
+        // TrackpadHalfApproximated retired in v18: half-hosted D-pad
+        // wedges gate on the half's contact window (or the windowed pad
+        // click when the group requires one) through the per-source AND
+        // companion, so only the hosting half fires the group. The key
+        // plus its locale strings were deleted.
 
         // ── Translator v7 (Wave 4c, #9 B-17) vocabulary ──
         /// <summary>A radial_menu / touch_menu group became an

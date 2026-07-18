@@ -2433,14 +2433,12 @@
   <data name="Workshop_Tr_ReleaseActivatorNotSupported" xml:space="preserve"><value>リリースアクティベーターはここでは未対応</value></data>
   <data name="Workshop_Tr_LongPressNotSupported" xml:space="preserve"><value>長押しアクティベーターはここでは未対応</value></data>
   <data name="Workshop_Tr_UnknownActivatorType" xml:space="preserve"><value>不明なアクティベーター {0}</value></data>
-  <data name="Workshop_Tr_RepeatDropped" xml:space="preserve"><value>自動リピートを破棄</value></data>
   <data name="Workshop_Tr_MissingGroup" xml:space="preserve"><value>コンフィグが存在しないグループ {0} を参照しています</value></data>
   <data name="Workshop_Tr_MissingModeShiftGroup" xml:space="preserve"><value>{0} のモードシフトが存在しないグループ {1} を参照しています</value></data>
   <data name="Workshop_Tr_MissingPreset" xml:space="preserve"><value>コンフィグが存在しないプリセット {0} を参照しています</value></data>
   <data name="Workshop_Tr_ReferenceCycle" xml:space="preserve"><value>グループ {0} で参照の循環</value></data>
   <data name="Workshop_Tr_RemoveLayerApproximated" xml:space="preserve"><value>remove_layer はトグルオフとして近似</value></data>
   <data name="Workshop_Tr_ActivatorInputNotSupported" xml:space="preserve"><value>この入力ではレイヤーアクティベーターを駆動できません</value></data>
-  <data name="Workshop_Tr_ClickGateDropped" xml:space="preserve"><value>requires_click 条件を破棄</value></data>
   <data name="Workshop_Tr_RowCapExceeded" xml:space="preserve"><value>{0} スロットの行数上限を超過</value></data>
   <data name="Workshop_Tr_PresetHasNoActivator" xml:space="preserve"><value>プリセット {0} へ切り替えるバインドがありません</value></data>
   <data name="Workshop_Tr_AutomapAlsoActive" xml:space="preserve"><value>デバイスの自動マッピングは引き続き {0} を {1} に割り当てます</value></data>
@@ -2536,17 +2534,13 @@
   <data name="Workshop_Tr_ResponseCurveNotSupported" xml:space="preserve"><value>レスポンスカーブと範囲の設定を破棄 ({0})</value></data>
   <data name="Workshop_Tr_GyroButtonMaskDropped" xml:space="preserve"><value>ジャイロ起動設定 {0}={1} を破棄 (ジャイロ起動はパッドごとに設定)</value></data>
   <data name="Workshop_Tr_ActivatorDelayDropped" xml:space="preserve"><value>押下遅延を破棄 ({0})</value></data>
-  <data name="Workshop_Tr_InterruptibleDropped" xml:space="preserve"><value>中断不可の押下は通常の押下として動作</value></data>
   <data name="Workshop_Tr_PlayerNumberActionNotSupported" xml:space="preserve"><value>プレイヤー番号の変更は Steam クライアントアクションのため、対応するものがありません</value></data>
   <data name="Workshop_Tr_LizardModeActionNotSupported" xml:space="preserve"><value>リザードモード切替は Steam 内部のため、対応するものがありません</value></data>
   <data name="Workshop_Tr_ToggleLatchEmitted" xml:space="preserve"><value>トグル押下は次の押下まで {0} を保持</value></data>
-  <data name="Workshop_Tr_ToggleDropped" xml:space="preserve"><value>トグル設定を破棄 (この出力には保持機構がありません)</value></data>
   <data name="Workshop_Tr_LongPressKeyTap" xml:space="preserve"><value>長押しはしきい値で {0} をタップ (Steam は離すまで保持)</value></data>
   <data name="Workshop_Tr_CameraResetApproximated" xml:space="preserve"><value>カメラリセットはジャイロの再センタリングとして近似</value></data>
   <data name="Workshop_Tr_MouseRegionApproximated" xml:space="preserve"><value>マウス領域は中央基準のカーソル制限として近似 (画面の {0}%、領域中心 {1}%, {2}%)、サーフェスを押している間有効</value></data>
   <data name="Workshop_Tr_MouseRegionTuningDropped" xml:space="preserve"><value>マウス領域の起動/解除設定を破棄 ({0})</value></data>
-  <data name="Workshop_Tr_TouchQuadrantApproximated" xml:space="preserve"><value>ボタンセルはホストのタッチサーフェスを共有 (セルごとのゾーンなし)</value></data>
-  <data name="Workshop_Tr_TrackpadHalfApproximated" xml:space="preserve"><value>タッチパッドの半分にホストされていますが、PadForge はパッド全体を読み取ります</value></data>
   <data name="Workshop_Tr_FlickStickSurfaceNotSupported" xml:space="preserve"><value>タッチサーフェス上の Flick Stick をスキップ (PadForge の Flick Stick は物理スティックを読み取ります)</value></data>
   <data name="Workshop_Tr_FlickStickTuningDropped" xml:space="preserve"><value>Flick Stick の調整設定を破棄 ({0})</value></data>
   <data name="Workshop_Tr_MouseModeTuningDropped" xml:space="preserve"><value>マウスの調整設定を破棄 ({0})</value></data>

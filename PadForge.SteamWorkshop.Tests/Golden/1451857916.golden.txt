@@ -45,28 +45,25 @@ xbox rows: 19
     <- Gamepad RightTrigger
     <- Gamepad RightTrigger [upper-half] dz=75
 kbm rows: 1
-  Base | KbmKey4E | AND
-    <- Touchpad 0 DPadLeft
-    <- Touchpad 0 Click
+  Base | KbmKey4E
+    <- Touchpad 0 DPadLeft gate=[Touchpad 0 Click Right]
 macros: 10
   macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Gamepad LeftStick] strength=66%
-  macro SetLightbarColor OnPress | Set LED (dpad_east) | btns=0x0000 in=[Touchpad 0 DPadRight; Touchpad 0 Click] rgb=(255,6,0) bright=100% sat=100% setting=1
-  macro SetLightbarColor OnPress | Set LED (dpad_north) | btns=0x0000 in=[Touchpad 0 DPadUp; Touchpad 0 Click] rgb=(51,255,0) bright=100% sat=100% setting=1
-  macro SetLightbarColor OnPress | Set LED (dpad_south) | btns=0x0000 in=[Touchpad 0 DPadDown; Touchpad 0 Click] rgb=(0,255,0) bright=100% sat=100% setting=1
-  macro SetLightbarColor OnPress | Set LED (dpad_west) | btns=0x0000 in=[Touchpad 0 DPadLeft; Touchpad 0 Click] rgb=(0,41,255) bright=100% sat=100% setting=1
+  macro SetLightbarColor OnPress | Set LED (dpad_east) | btns=0x0000 in=[Touchpad 0 DPadRight; Touchpad 0 Click Left] rgb=(255,6,0) bright=100% sat=100% setting=1
+  macro SetLightbarColor OnPress | Set LED (dpad_north) | btns=0x0000 in=[Touchpad 0 DPadUp; Touchpad 0 Click Left] rgb=(51,255,0) bright=100% sat=100% setting=1
+  macro SetLightbarColor OnPress | Set LED (dpad_south) | btns=0x0000 in=[Touchpad 0 DPadDown; Touchpad 0 Click Left] rgb=(0,255,0) bright=100% sat=100% setting=1
+  macro SetLightbarColor OnPress | Set LED (dpad_west) | btns=0x0000 in=[Touchpad 0 DPadLeft; Touchpad 0 Click Left] rgb=(0,41,255) bright=100% sat=100% setting=1
   macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Gamepad LeftTrigger] in-half=upper in-dz=75 strength=66%
-  macro SetLightbarColor OnPress | Set LED (dpad_east) | btns=0x0000 in=[Touchpad 0 DPadRight; Touchpad 0 Click] rgb=(255,0,238) bright=100% sat=100% setting=1
-  macro SetLightbarColor OnPress | Set LED (dpad_north) | btns=0x0000 in=[Touchpad 0 DPadUp; Touchpad 0 Click] rgb=(255,236,0) bright=100% sat=100% setting=1
-  macro SetLightbarColor OnPress | Set LED (dpad_south) | btns=0x0000 in=[Touchpad 0 DPadDown; Touchpad 0 Click] rgb=(0,255,255) bright=100% sat=100% setting=0
+  macro SetLightbarColor OnPress | Set LED (dpad_east) | btns=0x0000 in=[Touchpad 0 DPadRight; Touchpad 0 Click Right] rgb=(255,0,238) bright=100% sat=100% setting=1
+  macro SetLightbarColor OnPress | Set LED (dpad_north) | btns=0x0000 in=[Touchpad 0 DPadUp; Touchpad 0 Click Right] rgb=(255,236,0) bright=100% sat=100% setting=1
+  macro SetLightbarColor OnPress | Set LED (dpad_south) | btns=0x0000 in=[Touchpad 0 DPadDown; Touchpad 0 Click Right] rgb=(0,255,255) bright=100% sat=100% setting=0
   macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Gamepad RightTrigger] in-half=upper in-dz=75 strength=66%
-report: v17 rows:x19+k1 macros:10 menus:0 layers:0 clean:31 partial:2 skipped:0 errors:0
+report: v18 rows:x19+k1 macros:10 menus:0 layers:0 clean:31 partial:0 skipped:0 errors:0
   Clean MacroEmitted @ Default/left_trackpad/group 17 (dpad)/dpad_east/Full_Press => Set LED macro
-  Partial TrackpadHalfApproximated @ Default/left_trackpad/group 17 (dpad)
   Clean MacroEmitted @ Default/left_trackpad/group 17 (dpad)/dpad_north/Full_Press => Set LED macro
   Clean MacroEmitted @ Default/left_trackpad/group 17 (dpad)/dpad_south/Full_Press => Set LED macro
   Clean MacroEmitted @ Default/left_trackpad/group 17 (dpad)/dpad_west/Full_Press => Set LED macro
   Clean MacroEmitted @ Default/right_trackpad/group 19 (dpad)/dpad_east/Full_Press => Set LED macro
-  Partial TrackpadHalfApproximated @ Default/right_trackpad/group 19 (dpad)
   Clean MacroEmitted @ Default/right_trackpad/group 19 (dpad)/dpad_north/Full_Press => Set LED macro
   Clean MacroEmitted @ Default/right_trackpad/group 19 (dpad)/dpad_south/Full_Press => Set LED macro
   Clean RowEmitted @ Default/right_trackpad/group 19 (dpad)/dpad_west/Full_Press => KbmKey4E <- Touchpad 0 DPadLeft

@@ -160,6 +160,9 @@ namespace PadForge.SteamWorkshop.Tests
 
             var src = Assert.Single(Assert.Single(p.KbmMappingSet.Rows).Sources);
             Assert.Equal(2603, src.ParamFlickCountsPer360, 3);
+            // v18: transition_time IS the flick easing time (ms), so it
+            // consumes into ParamFlickTime instead of riding the note.
+            Assert.Equal(0.106, src.ParamFlickTime, 6);
 
             var partial = Assert.Single(p.Report.Entries, e =>
                 e.ReasonKey == TranslationReasons.FlickStickTuningDropped);
@@ -168,7 +171,7 @@ namespace PadForge.SteamWorkshop.Tests
             Assert.Contains("edge_binding_radius", keys);
             Assert.Contains("mouse_smoothing", keys);
             Assert.Contains("rotation", keys);
-            Assert.Contains("transition_time", keys);
+            Assert.DoesNotContain("transition_time", keys);
             Assert.DoesNotContain("sensitivity", keys);
         }
 

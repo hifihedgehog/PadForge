@@ -54,6 +54,26 @@ namespace PadForge.SteamWorkshop.Translation
         /// activators.</summary>
         public bool NeedsKbmSlot { get; set; }
 
+        // ── Slot-level workshop stamps (v18): values with no per-source
+        // channel, carried to the materializer which stamps them onto the
+        // authoritative MappingSet for the runtime overlays. ──
+
+        /// <summary>Steam deadzone_shape for the LEFT output thumb pair as
+        /// a DeadZoneShape ordinal string ("0" Axial, "2" ScaledRadial).
+        /// Empty = no stamp.</summary>
+        public string LeftStickDeadZoneShape { get; set; } = "";
+
+        /// <summary>Right-pair twin of
+        /// <see cref="LeftStickDeadZoneShape"/>.</summary>
+        public string RightStickDeadZoneShape { get; set; } = "";
+
+        /// <summary>Steam gyro_button as a device-free engage descriptor
+        /// (v18): gyro rows fire only while it is held. Empty = none.</summary>
+        public string GyroEngageDescriptor { get; set; } = "";
+
+        /// <summary>Steam gyro_button_invert: engage while NOT held.</summary>
+        public bool GyroEngageInvert { get; set; }
+
         public TranslationReport Report { get; set; } = new();
     }
 
@@ -232,6 +252,31 @@ namespace PadForge.SteamWorkshop.Translation
         /// MacroActionType.CycleTapList, whose per-action index advances
         /// one step per fire.</summary>
         CycleList = 20,
+
+        /// <summary>Latch / unlatch a mouse button (v18: the activator
+        /// toggle on a mouse_button binding). Lowers to
+        /// MacroActionType.ToggleMouseButton via the engine's
+        /// mouse-button reconcile (the ToggleKey pattern).</summary>
+        ToggleMouseButton = 21,
+
+        /// <summary>Latch / unlatch an axis-natured VC target (v18: the
+        /// toggle on a trigger-pull / stick-direction binding).
+        /// <see cref="TranslatedMacro.TargetAxis"/> /
+        /// <see cref="TranslatedMacro.TargetAxisNegative"/> name the
+        /// target. Lowers to MacroActionType.ToggleVcAxis.</summary>
+        ToggleVcAxis = 22,
+
+        /// <summary>Turbo for an axis-natured VC target (v18: hold_repeats
+        /// on a trigger-pull / stick-direction binding). Pulses the axis
+        /// assert on the turbo square wave while held. Lowers to
+        /// MacroActionType.RepeatVcAxisWhileHeld.</summary>
+        RepeatVcAxisWhileHeld = 23,
+
+        /// <summary>Latch / unlatch a continuous wheel scroll (v18: the
+        /// toggle on a mouse_wheel binding): while latched, one detent per
+        /// <see cref="TranslatedMacro.IntervalMs"/>, reproducing the held
+        /// KbmScroll row. Lowers to MacroActionType.ToggleWheel.</summary>
+        ToggleWheel = 24,
     }
 
     /// <summary>Which one-shot form a <see cref="TranslatedCycleStep"/>
@@ -540,5 +585,19 @@ namespace PadForge.SteamWorkshop.Translation
         /// producing output past the end ("scrolling past an end won't
         /// generate any command").</summary>
         public bool CycleWrap { get; set; } = true;
+
+        // ── v18 payloads ──
+
+        /// <summary>Composes Steam's toggle + hold_repeats (v18): the
+        /// latched contribution pulses on the turbo square wave (period
+        /// <see cref="IntervalMs"/>) instead of holding solid. Read by the
+        /// Toggle* latch actions.</summary>
+        public bool PulseWhileLatched { get; set; }
+
+        /// <summary>Explicit assert duration for the tap shapes
+        /// (VcButtonTap / VcAxisTap), in ms. 0 keeps the engine's default
+        /// tap length. Used by the delay_end release-extension twins: the
+        /// target re-asserts for exactly this long on the release edge.</summary>
+        public int TapDurationMs { get; set; }
     }
 }

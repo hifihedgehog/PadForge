@@ -208,9 +208,10 @@ namespace PadForge.SteamWorkshop.Tests
         }
 
         [Fact]
-        public void DelayStart_OnRowBinding_KeepsDroppedNote()
+        public void DelayStart_OnRowBinding_ReroutesOntoTheHoldPair()
         {
-            // Rows have no delay channel; the note stays for them.
+            // v18: rows have no delay channel, so a delayed press reroutes
+            // onto the HoldKey pair carrying the Delay step.
             string vdf = Head
                 + Group(1, "four_buttons", Inputs(
                     Inp("button_a", "key_press E",
@@ -218,10 +219,11 @@ namespace PadForge.SteamWorkshop.Tests
                 + Preset(0, "Default", (1, "button_diamond active"))
                 + "}\n";
             var p = Translate(vdf);
-            Assert.Empty(p.Macros);
-            var entry = Assert.Single(p.Report.Entries, e =>
+            Assert.Empty(p.KbmMappingSet.Rows);
+            var hold = Assert.Single(p.Macros, m => m.Action == TranslatedMacroAction.HoldKey);
+            Assert.Equal(120, hold.DelayStartMs);
+            Assert.DoesNotContain(p.Report.Entries, e =>
                 e.ReasonKey == TranslationReasons.ActivatorDelayDropped);
-            Assert.Equal("delay_start 120", Assert.Single(entry.ReasonArgs));
         }
 
         [Fact]

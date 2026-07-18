@@ -178,11 +178,12 @@ namespace PadForge.SteamWorkshop.Tests
                 + Preset(0, "Default", (1, "right_trackpad active"))
                 + "}\n";
             var p = Translate(vdf);
+            // v18: the half gate rides the source's own GateDescriptor
+            // instead of a second AND source.
             var row = Assert.Single(p.KbmMappingSet.Rows);
-            Assert.Equal("AND", row.CombineMode);
-            Assert.Equal(2, row.Sources.Count);
-            Assert.Equal("Touchpad 0 Click", row.Sources[0].Descriptor);
-            Assert.Equal("Touchpad 0 TouchRight", row.Sources[1].Descriptor);
+            var src = Assert.Single(row.Sources);
+            Assert.Equal("Touchpad 0 Click", src.Descriptor);
+            Assert.Equal("Touchpad 0 TouchRight", src.GateDescriptor);
         }
 
         [Fact]
@@ -196,11 +197,11 @@ namespace PadForge.SteamWorkshop.Tests
                 + "}\n";
             var p = Translate(vdf);
             var q = Assert.Single(p.KbmMappingSet.Rows, r => r.Target == "KbmKey51");
-            Assert.Equal("AND", q.CombineMode);
-            Assert.Equal("Touchpad 0 Click", q.Sources[0].Descriptor);
-            Assert.Equal("Touchpad 0 TouchLeft", q.Sources[1].Descriptor);
+            var qs = Assert.Single(q.Sources);
+            Assert.Equal("Touchpad 0 Click", qs.Descriptor);
+            Assert.Equal("Touchpad 0 TouchLeft", qs.GateDescriptor);
             var e = Assert.Single(p.KbmMappingSet.Rows, r => r.Target == "KbmKey45");
-            Assert.Equal("Touchpad 0 TouchRight", e.Sources[1].Descriptor);
+            Assert.Equal("Touchpad 0 TouchRight", Assert.Single(e.Sources).GateDescriptor);
         }
 
         [Fact]
@@ -252,8 +253,11 @@ namespace PadForge.SteamWorkshop.Tests
         // ─── B-19: four_buttons hosted on a touch surface ───────────────
 
         [Fact]
-        public void Ps4_FourButtonsOnHalf_CollapsesOntoWindowedDown()
+        public void Ps4_FourButtonsOnHalf_ReadsHalfComposedQuadrantWindows()
         {
+            // v18: each cell reads its diamond quadrant composed with the
+            // hosting half (the quadrant test runs against the half's own
+            // center), exactly Steam's ABXY zones. Clean rows.
             string vdf = HeadPs4
                 + Group(1, "four_buttons", Inputs(
                     Inp("button_a", "xinput_button A"),
@@ -262,17 +266,13 @@ namespace PadForge.SteamWorkshop.Tests
                 + "}\n";
             var p = Translate(vdf);
             var a = Assert.Single(p.XboxMappingSet.Rows, r => r.Target == "ButtonA");
-            Assert.Equal("Touchpad 0 Finger 0 Down Right", Assert.Single(a.Sources).Descriptor);
+            Assert.Equal("Touchpad 0 Finger 0 Down South Right", Assert.Single(a.Sources).Descriptor);
             var b = Assert.Single(p.XboxMappingSet.Rows, r => r.Target == "ButtonB");
-            Assert.Equal("Touchpad 0 Finger 0 Down Right", Assert.Single(b.Sources).Descriptor);
-            // The honest quadrant-collapse Partial, once per cell binding.
-            Assert.Equal(2, p.Report.Entries.Count(e =>
-                e.ReasonKey == TranslationReasons.TouchQuadrantApproximated
-                && e.Status == TranslationStatus.Partial));
+            Assert.Equal("Touchpad 0 Finger 0 Down East Right", Assert.Single(b.Sources).Descriptor);
         }
 
         [Fact]
-        public void Deck_FourButtonsOnPad_CollapsesOntoWholePadDown()
+        public void Deck_FourButtonsOnPad_ReadsQuadrantWindows()
         {
             string vdf = HeadDeck
                 + Group(1, "four_buttons", Inputs(Inp("button_x", "xinput_button X")))
@@ -280,15 +280,13 @@ namespace PadForge.SteamWorkshop.Tests
                 + "}\n";
             var p = Translate(vdf);
             var x = Assert.Single(p.XboxMappingSet.Rows, r => r.Target == "ButtonX");
-            Assert.Equal("Touchpad 1 Finger 0 Down", Assert.Single(x.Sources).Descriptor);
-            Assert.Contains(p.Report.Entries, e =>
-                e.ReasonKey == TranslationReasons.TouchQuadrantApproximated);
+            Assert.Equal("Touchpad 1 Finger 0 Down West", Assert.Single(x.Sources).Descriptor);
         }
 
-        // ─── B-1: honest notes where the half window is dropped ─────────
+        // ─── B-1: half-hosted wedges gate on the half window (v18) ──────
 
         [Fact]
-        public void Ps4_HalfDpadWedges_NoteTheWholePadApproximation_Once()
+        public void Ps4_HalfDpadWedges_GateOnTheHalfContactWindow()
         {
             string vdf = HeadPs4
                 + Group(1, "dpad", Inputs(
@@ -299,27 +297,26 @@ namespace PadForge.SteamWorkshop.Tests
                 + "}\n";
             var p = Translate(vdf);
             var w = Assert.Single(p.KbmMappingSet.Rows, r => r.Target == "KbmKey57");
-            Assert.Equal("Touchpad 0 DPadUp", Assert.Single(w.Sources).Descriptor);
-            Assert.Equal(1, p.Report.Entries.Count(e =>
-                e.ReasonKey == TranslationReasons.TrackpadHalfApproximated));
+            var src = Assert.Single(w.Sources);
+            Assert.Equal("Touchpad 0 DPadUp", src.Descriptor);
+            Assert.Equal("Touchpad 0 Finger 0 Down Right", src.GateDescriptor);
         }
 
         [Fact]
-        public void Ps4_HalfDpadWithOnlySkippedBindings_GetsNoHalfNote()
+        public void Ps4_HalfDpadWithRequiresClick_GatesOnTheWindowedClick()
         {
-            // A group whose bindings all skip approximates nothing: the
-            // half note stays out of the report. (SCREENSHOT emits a macro
-            // since v10, so the still-skipped lizard toggle carries this.)
+            // requires_click on a half-hosted D-pad composes the click AND
+            // the half into the windowed click read (v18).
             string vdf = HeadPs4
                 + Group(1, "dpad", Inputs(
-                    Inp("dpad_north", "controller_action TOGGLE_LIZARD_MODE"))
-                    + Settings(("requires_click", "0")))
+                    Inp("dpad_north", "key_press W")))
                 + Preset(0, "Default", (1, "right_trackpad active"))
                 + "}\n";
             var p = Translate(vdf);
-            Assert.Empty(p.KbmMappingSet.Rows);
-            Assert.DoesNotContain(p.Report.Entries, e =>
-                e.ReasonKey == TranslationReasons.TrackpadHalfApproximated);
+            var w = Assert.Single(p.KbmMappingSet.Rows, r => r.Target == "KbmKey57");
+            var src = Assert.Single(w.Sources);
+            Assert.Equal("Touchpad 0 DPadUp", src.Descriptor);
+            Assert.Equal("Touchpad 0 Click Right", src.GateDescriptor);
         }
 
         // ─── Device-free macro triggers (part 1 conversions) ────────────

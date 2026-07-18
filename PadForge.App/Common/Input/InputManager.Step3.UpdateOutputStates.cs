@@ -284,7 +284,7 @@ namespace PadForge.Common.Input
             // for the UI preview so it can apply its own pipeline without double-processing.
             rawMapped = gp;
 
-            ApplyPadSettingTuning(ref gp, ps);
+            ApplyPadSettingTuning(ref gp, ps, slotIndex);
             return gp;
         }
 
@@ -314,7 +314,7 @@ namespace PadForge.Common.Input
             ApplyMappingSetToGamepad(state, mappingSet, thisDeviceGuid, gt, slotIndex, ref gp);
 
             rawMapped = gp;
-            ApplyPadSettingTuning(ref gp, ps);
+            ApplyPadSettingTuning(ref gp, ps, slotIndex);
             return gp;
         }
 
@@ -324,8 +324,10 @@ namespace PadForge.Common.Input
         /// stick deadzones / curves / shape. Today these read from
         /// <see cref="PadSetting"/>; Phase 1c-3 will move them to
         /// <see cref="DeviceTuning"/> while keeping this signature.
+        /// <paramref name="slotIndex"/> keys the Workshop deadzone-shape
+        /// overlay (v18); -1 keeps the plain PadSetting read.
         /// </summary>
-        private static void ApplyPadSettingTuning(ref Gamepad gp, PadSetting ps)
+        private static void ApplyPadSettingTuning(ref Gamepad gp, PadSetting ps, int slotIndex = -1)
         {
             if (ps == null) return;
 
@@ -369,7 +371,7 @@ namespace PadForge.Common.Input
                 TryParseDoubleStatic(ps.LeftThumbMaxRangeYNeg, TryParseDoubleStatic(ps.LeftThumbMaxRangeY, 100)),
                 Common.CurveLut.GetOrBuild(ps.LeftThumbSensitivityCurveX),
                 Common.CurveLut.GetOrBuild(ps.LeftThumbSensitivityCurveY),
-                ParseDeadZoneShape(ps.LeftThumbDeadZoneShape));
+                ResolveThumbDeadZoneShape(slotIndex, left: true, ps));
 
             ApplyDeadZone(ref gp.ThumbRX, ref gp.ThumbRY,
                 TryParseDoubleStatic(ps.RightThumbDeadZoneX, 0),
@@ -383,7 +385,30 @@ namespace PadForge.Common.Input
                 TryParseDoubleStatic(ps.RightThumbMaxRangeYNeg, TryParseDoubleStatic(ps.RightThumbMaxRangeY, 100)),
                 Common.CurveLut.GetOrBuild(ps.RightThumbSensitivityCurveX),
                 Common.CurveLut.GetOrBuild(ps.RightThumbSensitivityCurveY),
-                ParseDeadZoneShape(ps.RightThumbDeadZoneShape));
+                ResolveThumbDeadZoneShape(slotIndex, left: false, ps));
+        }
+
+        /// <summary>Effective per-thumb deadzone shape (v18): the Workshop
+        /// slot-level stamp wins on an Authoritative slot (Steam's
+        /// deadzone_shape, carried on the imported MappingSet because an
+        /// imported profile has no device PadSetting to stamp), else the
+        /// device PadSetting's own shape. Same overlay contract as the
+        /// touchpad gesture auto-arm.</summary>
+        private static DeadZoneShape ResolveThumbDeadZoneShape(int slotIndex, bool left, PadSetting ps)
+        {
+            var sets = SettingsManager.SlotMappingSets;
+            if (slotIndex >= 0 && sets != null && slotIndex < sets.Length)
+            {
+                var set = sets[slotIndex];
+                if (set != null && set.Authoritative)
+                {
+                    string stamp = left
+                        ? set.WorkshopLeftStickDeadZoneShape
+                        : set.WorkshopRightStickDeadZoneShape;
+                    if (!string.IsNullOrEmpty(stamp)) return ParseDeadZoneShape(stamp);
+                }
+            }
+            return ParseDeadZoneShape(left ? ps.LeftThumbDeadZoneShape : ps.RightThumbDeadZoneShape);
         }
 
         /// <summary>

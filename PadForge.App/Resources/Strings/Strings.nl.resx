@@ -2453,14 +2453,12 @@
   <data name="Workshop_Tr_ReleaseActivatorNotSupported" xml:space="preserve"><value>loslaat-activator hier niet ondersteund</value></data>
   <data name="Workshop_Tr_LongPressNotSupported" xml:space="preserve"><value>lang-indrukken-activator hier niet ondersteund</value></data>
   <data name="Workshop_Tr_UnknownActivatorType" xml:space="preserve"><value>onbekende activator {0}</value></data>
-  <data name="Workshop_Tr_RepeatDropped" xml:space="preserve"><value>automatische herhaling vervallen</value></data>
   <data name="Workshop_Tr_MissingGroup" xml:space="preserve"><value>configuratie verwijst naar ontbrekende groep {0}</value></data>
   <data name="Workshop_Tr_MissingModeShiftGroup" xml:space="preserve"><value>modusverschuiving op {0} verwijst naar ontbrekende groep {1}</value></data>
   <data name="Workshop_Tr_MissingPreset" xml:space="preserve"><value>configuratie verwijst naar ontbrekende preset {0}</value></data>
   <data name="Workshop_Tr_ReferenceCycle" xml:space="preserve"><value>verwijzingscyclus bij groep {0}</value></data>
   <data name="Workshop_Tr_RemoveLayerApproximated" xml:space="preserve"><value>remove_layer benaderd als uitschakelen</value></data>
   <data name="Workshop_Tr_ActivatorInputNotSupported" xml:space="preserve"><value>deze invoer kan geen laag-activator aansturen</value></data>
-  <data name="Workshop_Tr_ClickGateDropped" xml:space="preserve"><value>requires_click-voorwaarde vervallen</value></data>
   <data name="Workshop_Tr_RowCapExceeded" xml:space="preserve"><value>rijlimiet overschreden voor het {0}-slot</value></data>
   <data name="Workshop_Tr_PresetHasNoActivator" xml:space="preserve"><value>geen binding schakelt naar preset {0}</value></data>
   <data name="Workshop_Tr_AutomapAlsoActive" xml:space="preserve"><value>de automatische toewijzing van het apparaat stuurt {0} nog steeds naar {1}</value></data>
@@ -2556,17 +2554,13 @@
   <data name="Workshop_Tr_ResponseCurveNotSupported" xml:space="preserve"><value>instellingen voor responscurve en bereik vervallen ({0})</value></data>
   <data name="Workshop_Tr_GyroButtonMaskDropped" xml:space="preserve"><value>gyro-activeringsinstelling {0}={1} vervallen (gyro-activering wordt per pad ingesteld)</value></data>
   <data name="Workshop_Tr_ActivatorDelayDropped" xml:space="preserve"><value>indrukvertraging vervallen ({0})</value></data>
-  <data name="Workshop_Tr_InterruptibleDropped" xml:space="preserve"><value>niet-onderbreekbare druk gedraagt zich als een normale druk</value></data>
   <data name="Workshop_Tr_PlayerNumberActionNotSupported" xml:space="preserve"><value>wijziging van spelernummer is een Steam-clientactie, geen equivalent</value></data>
   <data name="Workshop_Tr_LizardModeActionNotSupported" xml:space="preserve"><value>lizard-modus-schakeling is Steam-intern, geen equivalent</value></data>
   <data name="Workshop_Tr_ToggleLatchEmitted" xml:space="preserve"><value>schakel-druk houdt {0} vast tot de volgende druk</value></data>
-  <data name="Workshop_Tr_ToggleDropped" xml:space="preserve"><value>schakelinstelling vervallen (geen vergrendeling voor deze uitvoer)</value></data>
   <data name="Workshop_Tr_LongPressKeyTap" xml:space="preserve"><value>lang indrukken tikt {0} aan bij de drempel (Steam houdt hem vast tot loslaten)</value></data>
   <data name="Workshop_Tr_CameraResetApproximated" xml:space="preserve"><value>camerareset benaderd als een gyro-hercentrering</value></data>
   <data name="Workshop_Tr_MouseRegionApproximated" xml:space="preserve"><value>muisgebied benaderd als een gecentreerde cursorbegrenzing ({0}% van het scherm, gebiedscentrum {1}%, {2}%) zolang het oppervlak wordt vastgehouden</value></data>
   <data name="Workshop_Tr_MouseRegionTuningDropped" xml:space="preserve"><value>activerings-/loslaatinstellingen van het muisgebied vervallen ({0})</value></data>
-  <data name="Workshop_Tr_TouchQuadrantApproximated" xml:space="preserve"><value>knopcellen delen het host-aanraakoppervlak (geen zones per cel)</value></data>
-  <data name="Workshop_Tr_TrackpadHalfApproximated" xml:space="preserve"><value>gehost op één helft van het touchpad; PadForge leest het hele pad</value></data>
   <data name="Workshop_Tr_FlickStickSurfaceNotSupported" xml:space="preserve"><value>flick stick op een aanraakoppervlak overgeslagen (PadForge-flick-stick leest een fysieke stick)</value></data>
   <data name="Workshop_Tr_FlickStickTuningDropped" xml:space="preserve"><value>flick-stick-afstelling vervallen ({0})</value></data>
   <data name="Workshop_Tr_MouseModeTuningDropped" xml:space="preserve"><value>muisafstelling vervallen ({0})</value></data>

@@ -271,11 +271,11 @@ namespace PadForge.SteamWorkshop.Tests
         // ─── Hosts without the channel ─────────────────────────────────
 
         [Fact]
-        public void TrackpadHost_KeepsTheNamedDrop_AndNoStamp()
+        public void TrackpadHost_StampsTheGestureStickSources()
         {
-            // Trackpad-as-stick reads the gesture Stick channel, which
-            // returns before the engine's curve seam, so stamping would be
-            // an inert lie; the keys stay honestly dropped and named.
+            // v18: the gesture Stick lane applies the per-source shaping
+            // in the engine now, so trackpad-as-stick stamps like a stick
+            // host and nothing is named.
             string vdf = Head
                 + Group(1, "joystick_move",
                     Inputs(Inp("click", "key_press E"))
@@ -284,22 +284,21 @@ namespace PadForge.SteamWorkshop.Tests
                 + "}\n";
             var p = Translate(vdf);
 
-            var entry = Assert.Single(p.Report.Entries, e =>
+            Assert.DoesNotContain(p.Report.Entries, e =>
                 e.ReasonKey == TranslationReasons.ResponseCurveNotSupported);
-            Assert.Equal("deadzone_outer_radius, curve_exponent", Assert.Single(entry.ReasonArgs));
             Assert.All(p.XboxMappingSet.Rows.SelectMany(r => r.Sources), s =>
             {
-                Assert.Equal(0.0, s.ParamCurveExponent);
-                Assert.Equal(0.0, s.ParamRangeOuter);
+                Assert.Equal(2.5, s.ParamCurveExponent); // preset 4 = ExtraWide
+                Assert.Equal(28800 / 32767.0, s.ParamRangeOuter, 6);
             });
         }
 
         [Fact]
-        public void DeadzoneShape_StaysDropped_OnStampedGroups()
+        public void DeadzoneShape_StampsThePairChannel_OnThumbPairGroups()
         {
-            // The engine's read is radial; the shape selector has no
-            // channel, so it stays the note's only arg while the rest of
-            // the cluster rides the rows (2374887917 group 14's shape).
+            // v18: deadzone_shape on a thumb-pair output consumes into the
+            // slot-level DeadZoneShape stamp (Steam Circle = the engine's
+            // ScaledRadial "2"), leaving no named curve keys.
             string vdf = Head
                 + Group(1, "joystick_move",
                     Inputs(Inp("click", "key_press E"))
@@ -309,11 +308,35 @@ namespace PadForge.SteamWorkshop.Tests
                 + "}\n";
             var p = Translate(vdf);
 
-            var entry = Assert.Single(p.Report.Entries, e =>
+            Assert.DoesNotContain(p.Report.Entries, e =>
                 e.ReasonKey == TranslationReasons.ResponseCurveNotSupported);
-            Assert.Equal("deadzone_shape", Assert.Single(entry.ReasonArgs));
+            Assert.Equal("2", p.LeftStickDeadZoneShape); // output_joystick 1 = left pair
+            Assert.Equal("", p.RightStickDeadZoneShape);
             var row = Assert.Single(p.XboxMappingSet.Rows, r => r.Target == "LeftThumbAxisX");
             Assert.Equal(31999 / 32767.0, Assert.Single(row.Sources).ParamRangeOuter, 6);
+        }
+
+        [Fact]
+        public void CurveCluster_OnTriggerGroup_StampsThePullRow()
+        {
+            // v18: the unipolar trigger tail shapes now, so a trigger
+            // group's curve cluster rides the pull (matched analog side).
+            string vdf = Head
+                + Group(1, "trigger",
+                    Inputs(Inp("click", "xinput_button TRIGGER_LEFT"))
+                    + Settings(("deadzone_outer_radius", "28800"), ("curve_exponent", "1"),
+                        ("anti_deadzone", "3277")))
+                + Preset(0, "Default", (1, "left_trigger active"))
+                + "}\n";
+            var p = Translate(vdf);
+
+            Assert.DoesNotContain(p.Report.Entries, e =>
+                e.ReasonKey == TranslationReasons.ResponseCurveNotSupported);
+            var row = Assert.Single(p.XboxMappingSet.Rows, r => r.Target == "LeftTrigger");
+            var src = row.Sources.First(s => !s.HalfAxis); // the analog pull leg
+            Assert.Equal(0.5, src.ParamCurveExponent); // preset 1 = Aggressive
+            Assert.Equal(28800 / 32767.0, src.ParamRangeOuter, 6);
+            Assert.Equal(3277 / 32767.0, src.ParamAntiDeadzone, 6);
         }
     }
 }

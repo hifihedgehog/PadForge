@@ -2433,14 +2433,12 @@
   <data name="Workshop_Tr_ReleaseActivatorNotSupported" xml:space="preserve"><value>此处不支持释放激活方式</value></data>
   <data name="Workshop_Tr_LongPressNotSupported" xml:space="preserve"><value>此处不支持长按激活方式</value></data>
   <data name="Workshop_Tr_UnknownActivatorType" xml:space="preserve"><value>未知激活方式 {0}</value></data>
-  <data name="Workshop_Tr_RepeatDropped" xml:space="preserve"><value>已丢弃自动重复</value></data>
   <data name="Workshop_Tr_MissingGroup" xml:space="preserve"><value>配置引用了缺失的组 {0}</value></data>
   <data name="Workshop_Tr_MissingModeShiftGroup" xml:space="preserve"><value>{0} 上的模式切换引用了缺失的组 {1}</value></data>
   <data name="Workshop_Tr_MissingPreset" xml:space="preserve"><value>配置引用了缺失的预设 {0}</value></data>
   <data name="Workshop_Tr_ReferenceCycle" xml:space="preserve"><value>组 {0} 存在循环引用</value></data>
   <data name="Workshop_Tr_RemoveLayerApproximated" xml:space="preserve"><value>remove_layer 近似为切换关闭</value></data>
   <data name="Workshop_Tr_ActivatorInputNotSupported" xml:space="preserve"><value>此输入无法用于激活层</value></data>
-  <data name="Workshop_Tr_ClickGateDropped" xml:space="preserve"><value>已丢弃 requires_click 条件</value></data>
   <data name="Workshop_Tr_RowCapExceeded" xml:space="preserve"><value>{0} 槽位的行数已超出上限</value></data>
   <data name="Workshop_Tr_PresetHasNoActivator" xml:space="preserve"><value>没有绑定切换到预设 {0}</value></data>
   <data name="Workshop_Tr_AutomapAlsoActive" xml:space="preserve"><value>设备的自动映射仍会将 {0} 路由到 {1}</value></data>
@@ -2536,17 +2534,13 @@
   <data name="Workshop_Tr_ResponseCurveNotSupported" xml:space="preserve"><value>已丢弃响应曲线和范围设置（{0}）</value></data>
   <data name="Workshop_Tr_GyroButtonMaskDropped" xml:space="preserve"><value>已丢弃陀螺仪激活设置 {0}={1}（陀螺仪激活按每个手柄配置）</value></data>
   <data name="Workshop_Tr_ActivatorDelayDropped" xml:space="preserve"><value>已丢弃按压延迟（{0}）</value></data>
-  <data name="Workshop_Tr_InterruptibleDropped" xml:space="preserve"><value>不可中断按压按普通按压处理</value></data>
   <data name="Workshop_Tr_PlayerNumberActionNotSupported" xml:space="preserve"><value>更改玩家编号是 Steam 客户端动作，无对应项</value></data>
   <data name="Workshop_Tr_LizardModeActionNotSupported" xml:space="preserve"><value>蜥蜴模式切换是 Steam 内部功能，无对应项</value></data>
   <data name="Workshop_Tr_ToggleLatchEmitted" xml:space="preserve"><value>切换按压将保持 {0} 直到下次按压</value></data>
-  <data name="Workshop_Tr_ToggleDropped" xml:space="preserve"><value>已丢弃切换设置（此输出无保持机制）</value></data>
   <data name="Workshop_Tr_LongPressKeyTap" xml:space="preserve"><value>长按在达到阈值时点按 {0}（Steam 会按住直到松开）</value></data>
   <data name="Workshop_Tr_CameraResetApproximated" xml:space="preserve"><value>摄像机重置近似为陀螺仪重新居中</value></data>
   <data name="Workshop_Tr_MouseRegionApproximated" xml:space="preserve"><value>鼠标区域近似为居中的光标限制（屏幕的 {0}%，区域中心 {1}%、{2}%），在按住该表面期间生效</value></data>
   <data name="Workshop_Tr_MouseRegionTuningDropped" xml:space="preserve"><value>已丢弃鼠标区域的激活/释放设置（{0}）</value></data>
-  <data name="Workshop_Tr_TouchQuadrantApproximated" xml:space="preserve"><value>按钮单元格共享宿主触摸表面（无按单元格分区）</value></data>
-  <data name="Workshop_Tr_TrackpadHalfApproximated" xml:space="preserve"><value>托管在触控板的半区上；PadForge 读取整个触控板</value></data>
   <data name="Workshop_Tr_FlickStickSurfaceNotSupported" xml:space="preserve"><value>已跳过触摸表面上的 Flick Stick（PadForge 的 Flick Stick 读取实体摇杆）</value></data>
   <data name="Workshop_Tr_FlickStickTuningDropped" xml:space="preserve"><value>已丢弃 Flick Stick 调整设置（{0}）</value></data>
   <data name="Workshop_Tr_MouseModeTuningDropped" xml:space="preserve"><value>已丢弃鼠标手感设置（{0}）</value></data>

@@ -2433,14 +2433,12 @@
   <data name="Workshop_Tr_ReleaseActivatorNotSupported" xml:space="preserve"><value>놓기 활성화 방식은 여기서 지원되지 않음</value></data>
   <data name="Workshop_Tr_LongPressNotSupported" xml:space="preserve"><value>길게 누르기 활성화 방식은 여기서 지원되지 않음</value></data>
   <data name="Workshop_Tr_UnknownActivatorType" xml:space="preserve"><value>알 수 없는 활성화 방식 {0}</value></data>
-  <data name="Workshop_Tr_RepeatDropped" xml:space="preserve"><value>자동 반복 제외됨</value></data>
   <data name="Workshop_Tr_MissingGroup" xml:space="preserve"><value>구성이 없는 그룹 {0}을(를) 참조합니다</value></data>
   <data name="Workshop_Tr_MissingModeShiftGroup" xml:space="preserve"><value>{0}의 모드 시프트가 없는 그룹 {1}을(를) 참조합니다</value></data>
   <data name="Workshop_Tr_MissingPreset" xml:space="preserve"><value>구성이 없는 프리셋 {0}을(를) 참조합니다</value></data>
   <data name="Workshop_Tr_ReferenceCycle" xml:space="preserve"><value>그룹 {0}에서 참조 순환</value></data>
   <data name="Workshop_Tr_RemoveLayerApproximated" xml:space="preserve"><value>remove_layer를 토글 해제로 근사</value></data>
   <data name="Workshop_Tr_ActivatorInputNotSupported" xml:space="preserve"><value>이 입력은 레이어 활성화에 사용할 수 없습니다</value></data>
-  <data name="Workshop_Tr_ClickGateDropped" xml:space="preserve"><value>requires_click 조건 제외됨</value></data>
   <data name="Workshop_Tr_RowCapExceeded" xml:space="preserve"><value>{0} 슬롯의 행 제한 초과</value></data>
   <data name="Workshop_Tr_PresetHasNoActivator" xml:space="preserve"><value>프리셋 {0}(으)로 전환하는 바인딩이 없습니다</value></data>
   <data name="Workshop_Tr_AutomapAlsoActive" xml:space="preserve"><value>장치의 자동 매핑이 여전히 {0}을(를) {1}(으)로 연결합니다</value></data>
@@ -2536,17 +2534,13 @@
   <data name="Workshop_Tr_ResponseCurveNotSupported" xml:space="preserve"><value>응답 곡선 및 범위 설정 제외됨({0})</value></data>
   <data name="Workshop_Tr_GyroButtonMaskDropped" xml:space="preserve"><value>자이로 활성화 설정 {0}={1} 제외됨(자이로 활성화는 패드별로 구성)</value></data>
   <data name="Workshop_Tr_ActivatorDelayDropped" xml:space="preserve"><value>누름 지연 제외됨({0})</value></data>
-  <data name="Workshop_Tr_InterruptibleDropped" xml:space="preserve"><value>중단 불가 누름은 일반 누름으로 동작</value></data>
   <data name="Workshop_Tr_PlayerNumberActionNotSupported" xml:space="preserve"><value>플레이어 번호 변경은 Steam 클라이언트 동작으로, 대응 없음</value></data>
   <data name="Workshop_Tr_LizardModeActionNotSupported" xml:space="preserve"><value>리저드 모드 전환은 Steam 내부 기능으로, 대응 없음</value></data>
   <data name="Workshop_Tr_ToggleLatchEmitted" xml:space="preserve"><value>토글 누름은 다음 누름까지 {0}을(를) 유지</value></data>
-  <data name="Workshop_Tr_ToggleDropped" xml:space="preserve"><value>토글 설정 제외됨(이 출력에는 유지 기능 없음)</value></data>
   <data name="Workshop_Tr_LongPressKeyTap" xml:space="preserve"><value>길게 누르기는 임계값에서 {0}을(를) 탭(Steam은 뗄 때까지 유지)</value></data>
   <data name="Workshop_Tr_CameraResetApproximated" xml:space="preserve"><value>카메라 리셋을 자이로 재중심으로 근사</value></data>
   <data name="Workshop_Tr_MouseRegionApproximated" xml:space="preserve"><value>마우스 영역을 중앙 기준 커서 제한으로 근사(화면의 {0}%, 영역 중심 {1}%, {2}%), 표면을 누르는 동안 적용</value></data>
   <data name="Workshop_Tr_MouseRegionTuningDropped" xml:space="preserve"><value>마우스 영역 활성화/해제 설정 제외됨({0})</value></data>
-  <data name="Workshop_Tr_TouchQuadrantApproximated" xml:space="preserve"><value>버튼 셀이 호스트 터치 표면을 공유(셀별 구역 없음)</value></data>
-  <data name="Workshop_Tr_TrackpadHalfApproximated" xml:space="preserve"><value>터치패드의 절반에 호스트되어 있으나 PadForge는 패드 전체를 읽음</value></data>
   <data name="Workshop_Tr_FlickStickSurfaceNotSupported" xml:space="preserve"><value>터치 표면의 Flick Stick 건너뜀(PadForge Flick Stick은 실제 스틱을 읽음)</value></data>
   <data name="Workshop_Tr_FlickStickTuningDropped" xml:space="preserve"><value>Flick Stick 조정 설정 제외됨({0})</value></data>
   <data name="Workshop_Tr_MouseModeTuningDropped" xml:space="preserve"><value>마우스 조정 설정 제외됨({0})</value></data>

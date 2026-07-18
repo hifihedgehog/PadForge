@@ -261,6 +261,7 @@ namespace PadForge.Common.Input
             // when its macro is disabled, deleted, or replaced by a profile
             // switch: the key simply stops appearing in the desired set.
             _desiredLatchedKeys.Clear();
+            _desiredLatchedMouseButtons.Clear();
 
             // Menu direct bindings (#9 B-17) run BEFORE the macro pass so a
             // macro triggering on a virtual button can see and consume a
@@ -302,6 +303,7 @@ namespace PadForge.Common.Input
             // always be deliverable.
             _currentMacroSlotRestricted = false;
             ReconcileLatchedKeys();
+            ReconcileLatchedMouseButtons();
         }
 
         // ── ToggleKey latch reconciliation (issue #9 wave 1b) ──
@@ -352,11 +354,21 @@ namespace PadForge.Common.Input
         /// the OS.</summary>
         internal void ReleaseAllLatchedMacroKeys()
         {
-            if (_latchedKeysDown.Count == 0) return;
-            _currentMacroSlotRestricted = false; // KeyUp must always deliver
-            foreach (var vk in _latchedKeysDown)
-                SendKeyInput(vk, keyUp: true);
-            _latchedKeysDown.Clear();
+            _currentMacroSlotRestricted = false; // the ups must always deliver
+            if (_latchedKeysDown.Count > 0)
+            {
+                foreach (var vk in _latchedKeysDown)
+                    SendKeyInput(vk, keyUp: true);
+                _latchedKeysDown.Clear();
+            }
+            // v18: mouse-button latches release the same way so an engine
+            // stop never strands an injected button logically down.
+            if (_latchedMouseButtonsDown.Count > 0)
+            {
+                foreach (var b in _latchedMouseButtonsDown)
+                    SendMouseButtonInput(b, down: false);
+                _latchedMouseButtonsDown.Clear();
+            }
         }
 
         /// <summary>
@@ -622,18 +634,88 @@ namespace PadForge.Common.Input
                 if (a == null) continue;
                 if (a.Type == MacroActionType.ToggleVcButton)
                 {
-                    if (a.VcToggleLatched)
+                    if (a.VcToggleLatched && LatchPhaseOn(a))
                         gp.Buttons |= a.ButtonFlags;
                 }
                 else if (a.Type == MacroActionType.ToggleKey)
                 {
-                    if (a.KeyToggleLatched && !_currentMacroSlotRestricted)
+                    if (a.KeyToggleLatched && LatchPhaseOn(a) && !_currentMacroSlotRestricted)
                     {
                         var codes = a.ParsedKeyCodes;
                         for (int k = 0; k < codes.Length; k++)
                             _desiredLatchedKeys.Add((ushort)codes[k]);
                     }
                 }
+                else if (a.Type == MacroActionType.ToggleVcAxis)
+                {
+                    // v18: a latched axis target re-writes its assert each
+                    // frame, the AxisHold shape.
+                    if (a.VcAxisToggleLatched && LatchPhaseOn(a))
+                        ApplyAxisHoldAction(ref gp, a);
+                }
+                else if (a.Type == MacroActionType.ToggleMouseButton)
+                {
+                    if (a.MouseToggleLatched && !_currentMacroSlotRestricted)
+                        _desiredLatchedMouseButtons.Add(a.MouseButton);
+                }
+                else if (a.Type == MacroActionType.ToggleWheel)
+                {
+                    // v18: a latched wheel reproduces the held KbmScroll
+                    // row's continuous scroll as rate-limited detents.
+                    if (a.WheelToggleLatched && !_currentMacroSlotRestricted)
+                    {
+                        var now = DateTime.UtcNow;
+                        int interval = a.IntervalMs > 0 ? a.IntervalMs : 100;
+                        if ((now - a.RepeatKeyLastFireUtc).TotalMilliseconds >= interval)
+                        {
+                            a.RepeatKeyLastFireUtc = now;
+                            ExecuteMouseWheelTap(a);
+                        }
+                    }
+                }
+            }
+        }
+
+        /// <summary>The latch's contribution phase (v18): solid ON for a
+        /// plain latch, the turbo square wave when
+        /// <see cref="MacroAction.PulseWhileLatched"/> composes Steam's
+        /// toggle + hold_repeats.</summary>
+        private static bool LatchPhaseOn(MacroAction a)
+            => !a.PulseWhileLatched || TickRepeatVcButtonPhase(a);
+
+        /// <summary>Mouse buttons the enabled macros' latched
+        /// ToggleMouseButton actions want held down this frame (v18).
+        /// Rebuilt every frame beside <see cref="_desiredLatchedKeys"/>;
+        /// poll thread only.</summary>
+        internal readonly HashSet<ViewModels.MacroMouseButton> _desiredLatchedMouseButtons = new();
+
+        /// <summary>Mouse buttons this engine currently holds down via the
+        /// reconcile (v18).</summary>
+        internal readonly HashSet<ViewModels.MacroMouseButton> _latchedMouseButtonsDown = new();
+
+        private readonly List<ViewModels.MacroMouseButton> _mouseLatchReleaseScratch = new();
+
+        /// <summary>Mouse-button twin of <see cref="ReconcileLatchedKeys"/>
+        /// (v18): one up per button that left the desired set, one down per
+        /// button that entered it.</summary>
+        private void ReconcileLatchedMouseButtons()
+        {
+            if (_latchedMouseButtonsDown.Count > 0)
+            {
+                _mouseLatchReleaseScratch.Clear();
+                foreach (var b in _latchedMouseButtonsDown)
+                    if (!_desiredLatchedMouseButtons.Contains(b))
+                        _mouseLatchReleaseScratch.Add(b);
+                for (int i = 0; i < _mouseLatchReleaseScratch.Count; i++)
+                {
+                    SendMouseButtonInput(_mouseLatchReleaseScratch[i], down: false);
+                    _latchedMouseButtonsDown.Remove(_mouseLatchReleaseScratch[i]);
+                }
+            }
+            foreach (var b in _desiredLatchedMouseButtons)
+            {
+                if (_latchedMouseButtonsDown.Add(b))
+                    SendMouseButtonInput(b, down: true);
             }
         }
 
@@ -1230,7 +1312,8 @@ namespace PadForge.Common.Input
             type is MacroActionType.SystemVolume or MacroActionType.AppVolume
                  or MacroActionType.MouseMove or MacroActionType.MouseScroll
                  or MacroActionType.RepeatKeyWhileHeld
-                 or MacroActionType.RepeatVcButtonWhileHeld;
+                 or MacroActionType.RepeatVcButtonWhileHeld
+                 or MacroActionType.RepeatVcAxisWhileHeld;
 
         /// <summary>
         /// Advances and executes the macro's action sequence.
@@ -1352,6 +1435,14 @@ namespace PadForge.Common.Input
                     // so the button reads released (gp is rebuilt per frame).
                     if (TickRepeatVcButtonPhase(action))
                         gp.Buttons |= action.ButtonFlags;
+                    break;
+                case MacroActionType.RepeatVcAxisWhileHeld:
+                    // Axis turbo (v18): the same square wave asserting an
+                    // axis-natured target (trigger pull, stick direction)
+                    // on the ON half. gp is rebuilt per frame, so the OFF
+                    // half reads released.
+                    if (TickRepeatVcButtonPhase(action))
+                        ApplyAxisHoldAction(ref gp, action);
                     break;
             }
         }
@@ -1728,6 +1819,7 @@ namespace PadForge.Common.Input
                     // the macro's execution state, so the button stays down
                     // across trigger releases until the next fire unlatches.
                     action.VcToggleLatched = !action.VcToggleLatched;
+                    if (action.VcToggleLatched) ResetLatchPulsePhase(action);
                     AdvanceAction(macro);
                     break;
 
@@ -1736,6 +1828,29 @@ namespace PadForge.Common.Input
                     // per-frame reconcile in EvaluateMacros sends the actual
                     // KeyDown / KeyUp when the desired set changes.
                     action.KeyToggleLatched = !action.KeyToggleLatched;
+                    if (action.KeyToggleLatched) ResetLatchPulsePhase(action);
+                    AdvanceAction(macro);
+                    break;
+
+                // v18 latch family: mouse buttons, axis-natured VC targets,
+                // and wheel detents flip the same volatile latch shape; the
+                // per-frame effect lives in ApplyMacroLatches plus the
+                // mouse-button reconcile.
+                case MacroActionType.ToggleMouseButton:
+                    action.MouseToggleLatched = !action.MouseToggleLatched;
+                    AdvanceAction(macro);
+                    break;
+
+                case MacroActionType.ToggleVcAxis:
+                    action.VcAxisToggleLatched = !action.VcAxisToggleLatched;
+                    if (action.VcAxisToggleLatched) ResetLatchPulsePhase(action);
+                    AdvanceAction(macro);
+                    break;
+
+                case MacroActionType.ToggleWheel:
+                    action.WheelToggleLatched = !action.WheelToggleLatched;
+                    if (action.WheelToggleLatched)
+                        action.RepeatKeyLastFireUtc = DateTime.MinValue;
                     AdvanceAction(macro);
                     break;
 
@@ -1744,6 +1859,17 @@ namespace PadForge.Common.Input
                     AdvanceAction(macro);
                     break;
             }
+        }
+
+        /// <summary>Arms a latch's turbo phase so a fresh latch starts its
+        /// pulse train on the ON half immediately (v18 pulse-while-latched:
+        /// MinValue timing plus phase OFF makes the first ApplyMacroLatches
+        /// tick flip it ON).</summary>
+        private static void ResetLatchPulsePhase(MacroAction action)
+        {
+            if (!action.PulseWhileLatched) return;
+            action.RepeatVcPulseOn = false;
+            action.RepeatVcLastToggleUtc = DateTime.MinValue;
         }
 
         /// <summary>Resolves a Disconnect Controller action's victims (#162)
@@ -2625,7 +2751,7 @@ namespace PadForge.Common.Input
                 if (a == null) continue;
                 if (a.Type == MacroActionType.ToggleVcButton)
                 {
-                    if (a.VcToggleLatched && raw.Buttons != null)
+                    if (a.VcToggleLatched && LatchPhaseOn(a) && raw.Buttons != null)
                     {
                         var cw = a.CustomButtonWords;
                         for (int w = 0; w < raw.Buttons.Length && w < cw.Length; w++)
@@ -2634,11 +2760,34 @@ namespace PadForge.Common.Input
                 }
                 else if (a.Type == MacroActionType.ToggleKey)
                 {
-                    if (a.KeyToggleLatched && !_currentMacroSlotRestricted)
+                    if (a.KeyToggleLatched && LatchPhaseOn(a) && !_currentMacroSlotRestricted)
                     {
                         var codes = a.ParsedKeyCodes;
                         for (int k = 0; k < codes.Length; k++)
                             _desiredLatchedKeys.Add((ushort)codes[k]);
+                    }
+                }
+                else if (a.Type == MacroActionType.ToggleVcAxis)
+                {
+                    if (a.VcAxisToggleLatched && LatchPhaseOn(a) && raw.Axes != null)
+                        ApplyAxisActionRaw(ref raw, a);
+                }
+                else if (a.Type == MacroActionType.ToggleMouseButton)
+                {
+                    if (a.MouseToggleLatched && !_currentMacroSlotRestricted)
+                        _desiredLatchedMouseButtons.Add(a.MouseButton);
+                }
+                else if (a.Type == MacroActionType.ToggleWheel)
+                {
+                    if (a.WheelToggleLatched && !_currentMacroSlotRestricted)
+                    {
+                        var now = DateTime.UtcNow;
+                        int interval = a.IntervalMs > 0 ? a.IntervalMs : 100;
+                        if ((now - a.RepeatKeyLastFireUtc).TotalMilliseconds >= interval)
+                        {
+                            a.RepeatKeyLastFireUtc = now;
+                            ExecuteMouseWheelTap(a);
+                        }
                     }
                 }
             }
@@ -2780,6 +2929,11 @@ namespace PadForge.Common.Input
                         for (int w = 0; w < raw.Buttons.Length && w < cw.Length; w++)
                             raw.Buttons[w] |= cw[w];
                     }
+                    break;
+                case MacroActionType.RepeatVcAxisWhileHeld:
+                    // Extended twin of the axis turbo (v18).
+                    if (TickRepeatVcButtonPhase(action) && raw.Axes != null)
+                        ApplyAxisActionRaw(ref raw, action);
                     break;
             }
         }
@@ -3056,11 +3210,32 @@ namespace PadForge.Common.Input
                     // wave 1b). Application happens per frame in
                     // EvaluateSlotMacrosExtended via the wide button words.
                     action.VcToggleLatched = !action.VcToggleLatched;
+                    if (action.VcToggleLatched) ResetLatchPulsePhase(action);
                     AdvanceAction(macro);
                     break;
 
                 case MacroActionType.ToggleKey:
                     action.KeyToggleLatched = !action.KeyToggleLatched;
+                    if (action.KeyToggleLatched) ResetLatchPulsePhase(action);
+                    AdvanceAction(macro);
+                    break;
+
+                // v18 latch family, Extended twins.
+                case MacroActionType.ToggleMouseButton:
+                    action.MouseToggleLatched = !action.MouseToggleLatched;
+                    AdvanceAction(macro);
+                    break;
+
+                case MacroActionType.ToggleVcAxis:
+                    action.VcAxisToggleLatched = !action.VcAxisToggleLatched;
+                    if (action.VcAxisToggleLatched) ResetLatchPulsePhase(action);
+                    AdvanceAction(macro);
+                    break;
+
+                case MacroActionType.ToggleWheel:
+                    action.WheelToggleLatched = !action.WheelToggleLatched;
+                    if (action.WheelToggleLatched)
+                        action.RepeatKeyLastFireUtc = DateTime.MinValue;
                     AdvanceAction(macro);
                     break;
 

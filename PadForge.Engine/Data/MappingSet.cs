@@ -74,5 +74,33 @@ namespace PadForge.Engine.Data
         /// hand-authored set on the normal merge path.
         /// </summary>
         [XmlAttribute] public bool Authoritative { get; set; } = false;
+
+        // ── Workshop slot-level stamps (v18). Imported profiles carry no
+        // devices, so per-device PadSetting channels (thumb deadzone
+        // shape, gyro aim engage) cannot be stamped at import. These
+        // attributes carry the authored values on the authoritative set
+        // instead, and the runtime overlays them onto the resolved
+        // per-(slot, device) settings exactly like the touchpad gesture
+        // auto-arm (gate = user value OR workshop stamp). Empty strings
+        // (the deserialized default for old XML) mean "no stamp". ──
+
+        /// <summary>Steam deadzone_shape for the left thumb pair, as a
+        /// <see cref="DeadZoneShape"/> ordinal string ("0" = Axial for
+        /// Steam's Cross / Square, "2" = ScaledRadial for Circle). Only
+        /// read when <see cref="Authoritative"/>.</summary>
+        [XmlAttribute] public string WorkshopLeftStickDeadZoneShape { get; set; } = "";
+
+        /// <summary>Right-thumb twin of
+        /// <see cref="WorkshopLeftStickDeadZoneShape"/>.</summary>
+        [XmlAttribute] public string WorkshopRightStickDeadZoneShape { get; set; } = "";
+
+        /// <summary>Steam gyro_button as a device-free engage descriptor
+        /// (empty DeviceGuid contract): gyro rows fire only while it is
+        /// held. Only read when <see cref="Authoritative"/>.</summary>
+        [XmlAttribute] public string WorkshopGyroEngageDescriptor { get; set; } = "";
+
+        /// <summary>Steam gyro_button_invert: engage while the button is
+        /// NOT held.</summary>
+        [XmlAttribute] public bool WorkshopGyroEngageInvert { get; set; } = false;
     }
 }

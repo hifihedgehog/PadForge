@@ -4024,6 +4024,40 @@ namespace PadForge.ViewModels
         [System.Xml.Serialization.XmlIgnore]
         internal bool KeyToggleLatched { get; set; }
 
+        /// <summary>Volatile latch bit for
+        /// <see cref="MacroActionType.ToggleMouseButton"/> (v18). While set,
+        /// the engine's per-frame mouse-button reconcile holds
+        /// <see cref="MouseButton"/> logically down. Never serialized.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        internal bool MouseToggleLatched { get; set; }
+
+        /// <summary>Volatile latch bit for
+        /// <see cref="MacroActionType.ToggleVcAxis"/> (v18). While set, the
+        /// engine re-writes the axis assert every frame. Never
+        /// serialized.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        internal bool VcAxisToggleLatched { get; set; }
+
+        /// <summary>Volatile latch bit for
+        /// <see cref="MacroActionType.ToggleWheel"/> (v18). While set, the
+        /// engine sends one wheel detent per interval. Never
+        /// serialized.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        internal bool WheelToggleLatched { get; set; }
+
+        private bool _pulseWhileLatched;
+        /// <summary>Composes Steam's toggle + hold_repeats (v18): while the
+        /// action's latch is engaged, the contribution pulses on the
+        /// <see cref="MacroActionType.RepeatVcButtonWhileHeld"/> square
+        /// wave (period <see cref="IntervalMs"/>) instead of holding
+        /// solid. Serialized; read by ToggleVcButton / ToggleKey /
+        /// ToggleVcAxis latch application.</summary>
+        public bool PulseWhileLatched
+        {
+            get => _pulseWhileLatched;
+            set => SetProperty(ref _pulseWhileLatched, value);
+        }
+
         private RelayCommand _resetIntervalMsCommand;
         /// <summary>Resets the turbo interval to the 100 ms default (issue #9
         /// wave 1b), pairing the shared Interval row with the standard reset
@@ -5105,7 +5139,43 @@ namespace PadForge.ViewModels
         /// dead-ending past the last step otherwise. Step vocabulary in
         /// the CSV doc. At the tail per the APPEND-ONLY rule above;
         /// ordinal pinned.</summary>
-        CycleTapList = 42
+        CycleTapList = 42,
+
+        /// <summary>Latch / unlatch a mouse button (translator v18, Steam's
+        /// activator toggle on a mouse_button binding). Each fire flips the
+        /// action's volatile latch; the engine reconciles a desired
+        /// mouse-button set per frame exactly like <see cref="ToggleKey"/>
+        /// (one down on engage, one up on release / disable / removal /
+        /// engine stop). <see cref="MacroAction.MouseButton"/> picks the
+        /// button. At the tail per the APPEND-ONLY rule above; ordinal
+        /// pinned.</summary>
+        ToggleMouseButton = 43,
+
+        /// <summary>Latch / unlatch an axis-natured VC target (translator
+        /// v18, Steam's toggle on a trigger-pull / stick-direction
+        /// binding). While latched, <see cref="MacroAction.AxisValue"/> is
+        /// re-written to <see cref="MacroAction.AxisTarget"/> every frame,
+        /// the <see cref="AxisHold"/> shape driven by a latch instead of a
+        /// duration. At the tail per the APPEND-ONLY rule above; ordinal
+        /// pinned.</summary>
+        ToggleVcAxis = 44,
+
+        /// <summary>Turbo / autofire for an axis-natured VC target
+        /// (translator v18, Steam's hold_repeats on a trigger-pull /
+        /// stick-direction binding). While the macro trigger is held,
+        /// asserts <see cref="MacroAction.AxisTarget"/> on the ON half of
+        /// the <see cref="RepeatVcButtonWhileHeld"/> square wave. A
+        /// continuous action. At the tail per the APPEND-ONLY rule above;
+        /// ordinal pinned.</summary>
+        RepeatVcAxisWhileHeld = 45,
+
+        /// <summary>Latch / unlatch a continuous wheel scroll (translator
+        /// v18, Steam's toggle on a mouse_wheel binding). While latched,
+        /// sends one <see cref="MouseWheelTap"/>-shaped detent every
+        /// <see cref="MacroAction.IntervalMs"/> ms, reproducing the held
+        /// KbmScroll row's continuous scroll. At the tail per the
+        /// APPEND-ONLY rule above; ordinal pinned.</summary>
+        ToggleWheel = 46
     }
 
     /// <summary>One parsed part of a <see cref="MacroActionType.CycleTapList"/>

@@ -2433,14 +2433,12 @@
   <data name="Workshop_Tr_ReleaseActivatorNotSupported" xml:space="preserve"><value>activateur au relâchement non pris en charge ici</value></data>
   <data name="Workshop_Tr_LongPressNotSupported" xml:space="preserve"><value>activateur d'appui long non pris en charge ici</value></data>
   <data name="Workshop_Tr_UnknownActivatorType" xml:space="preserve"><value>activateur inconnu {0}</value></data>
-  <data name="Workshop_Tr_RepeatDropped" xml:space="preserve"><value>répétition automatique abandonnée</value></data>
   <data name="Workshop_Tr_MissingGroup" xml:space="preserve"><value>la configuration référence le groupe manquant {0}</value></data>
   <data name="Workshop_Tr_MissingModeShiftGroup" xml:space="preserve"><value>le changement de mode sur {0} référence le groupe manquant {1}</value></data>
   <data name="Workshop_Tr_MissingPreset" xml:space="preserve"><value>la configuration référence le préréglage manquant {0}</value></data>
   <data name="Workshop_Tr_ReferenceCycle" xml:space="preserve"><value>cycle de références au groupe {0}</value></data>
   <data name="Workshop_Tr_RemoveLayerApproximated" xml:space="preserve"><value>remove_layer approximé en désactivation</value></data>
   <data name="Workshop_Tr_ActivatorInputNotSupported" xml:space="preserve"><value>cette entrée ne peut pas piloter un activateur de couche</value></data>
-  <data name="Workshop_Tr_ClickGateDropped" xml:space="preserve"><value>condition requires_click abandonnée</value></data>
   <data name="Workshop_Tr_RowCapExceeded" xml:space="preserve"><value>plafond de lignes dépassé pour l'emplacement {0}</value></data>
   <data name="Workshop_Tr_PresetHasNoActivator" xml:space="preserve"><value>aucune assignation ne bascule vers le préréglage {0}</value></data>
   <data name="Workshop_Tr_AutomapAlsoActive" xml:space="preserve"><value>le mappage automatique de l'appareil dirige toujours {0} vers {1}</value></data>
@@ -2536,17 +2534,13 @@
   <data name="Workshop_Tr_ResponseCurveNotSupported" xml:space="preserve"><value>réglages de courbe de réponse et de plage abandonnés ({0})</value></data>
   <data name="Workshop_Tr_GyroButtonMaskDropped" xml:space="preserve"><value>réglage d'activation du gyroscope {0}={1} abandonné (l'activation du gyroscope se règle par manette)</value></data>
   <data name="Workshop_Tr_ActivatorDelayDropped" xml:space="preserve"><value>délai d'appui abandonné ({0})</value></data>
-  <data name="Workshop_Tr_InterruptibleDropped" xml:space="preserve"><value>l'appui non interruptible se comporte comme un appui normal</value></data>
   <data name="Workshop_Tr_PlayerNumberActionNotSupported" xml:space="preserve"><value>le changement de numéro de joueur est une action du client Steam, sans équivalent</value></data>
   <data name="Workshop_Tr_LizardModeActionNotSupported" xml:space="preserve"><value>la bascule du mode lizard est interne à Steam, sans équivalent</value></data>
   <data name="Workshop_Tr_ToggleLatchEmitted" xml:space="preserve"><value>l'appui à bascule maintient {0} jusqu'au prochain appui</value></data>
-  <data name="Workshop_Tr_ToggleDropped" xml:space="preserve"><value>réglage de bascule abandonné (pas de maintien pour cette sortie)</value></data>
   <data name="Workshop_Tr_LongPressKeyTap" xml:space="preserve"><value>l'appui long tape {0} au seuil (Steam le maintient jusqu'au relâchement)</value></data>
   <data name="Workshop_Tr_CameraResetApproximated" xml:space="preserve"><value>réinitialisation de caméra approximée comme un recentrage du gyroscope</value></data>
   <data name="Workshop_Tr_MouseRegionApproximated" xml:space="preserve"><value>zone de souris approximée comme une limitation centrée du curseur ({0}% de l'écran, centre de la zone {1}%, {2}%) tant que la surface est maintenue</value></data>
   <data name="Workshop_Tr_MouseRegionTuningDropped" xml:space="preserve"><value>réglages d'activation/relâchement de la zone de souris abandonnés ({0})</value></data>
-  <data name="Workshop_Tr_TouchQuadrantApproximated" xml:space="preserve"><value>les cases de boutons partagent la surface tactile hôte (pas de zones par case)</value></data>
-  <data name="Workshop_Tr_TrackpadHalfApproximated" xml:space="preserve"><value>hébergé sur une moitié du pavé tactile ; PadForge lit tout le pavé</value></data>
   <data name="Workshop_Tr_FlickStickSurfaceNotSupported" xml:space="preserve"><value>flick stick sur une surface tactile ignoré (le flick stick de PadForge lit un stick physique)</value></data>
   <data name="Workshop_Tr_FlickStickTuningDropped" xml:space="preserve"><value>réglages du flick stick abandonnés ({0})</value></data>
   <data name="Workshop_Tr_MouseModeTuningDropped" xml:space="preserve"><value>réglages de la souris abandonnés ({0})</value></data>

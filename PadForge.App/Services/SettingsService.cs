@@ -1137,15 +1137,28 @@ namespace PadForge.Services
         // from, so the pre-rebuild sources are the only source of truth.
         // Keyed by (device, descriptor); captures only sources carrying a
         // non-default value (the common case returns an empty list).
-        private static System.Collections.Generic.List<(string device, string desc, double exponent, double outer)>
+        private static System.Collections.Generic.List<(string device, string desc, MappingSource stamp)>
             CaptureCurveRangeParams(MappingRow row)
         {
-            var list = new System.Collections.Generic.List<(string, string, double, double)>();
+            var list = new System.Collections.Generic.List<(string, string, MappingSource)>();
             if (row?.Sources == null) return list;
             foreach (var s in row.Sources)
             {
-                if (s == null || (s.ParamCurveExponent <= 0 && s.ParamRangeOuter <= 0)) continue;
-                list.Add((s.DeviceGuid ?? "", s.Descriptor ?? "", s.ParamCurveExponent, s.ParamRangeOuter));
+                // v18 widened the channel: anti-deadzone floor, mouse-feel
+                // knobs (smoothing / threshold / accel / trackball), and
+                // the per-source AND gate all ride the same no-VM-card
+                // capture. The captured source object itself is the stamp
+                // carrier (it is about to be discarded by the rebuild).
+                if (s == null
+                    || (s.ParamCurveExponent <= 0 && s.ParamRangeOuter <= 0
+                        && s.ParamAntiDeadzone <= 0 && s.ParamSmoothingAlpha <= 0
+                        && s.ParamMoveThreshold <= 0 && s.ParamAccel <= 0
+                        && s.ParamTrackballDecay <= 0
+                        && string.IsNullOrEmpty(s.GateDescriptor)))
+                {
+                    continue;
+                }
+                list.Add((s.DeviceGuid ?? "", s.Descriptor ?? "", s));
             }
             return list;
         }
@@ -1157,7 +1170,7 @@ namespace PadForge.Services
         // off default, since the translator stamped the params for the
         // descriptor it emitted.
         private static void ApplyCurveRangeParamsToRow(MappingRow row,
-            System.Collections.Generic.List<(string device, string desc, double exponent, double outer)> preserved)
+            System.Collections.Generic.List<(string device, string desc, MappingSource stamp)> preserved)
         {
             if (row?.Sources == null || preserved == null || preserved.Count == 0) return;
             foreach (var src in row.Sources)
@@ -1168,8 +1181,14 @@ namespace PadForge.Services
                     if (string.Equals(p.desc, src.Descriptor ?? "", StringComparison.Ordinal)
                         && string.Equals(p.device ?? "", src.DeviceGuid ?? "", StringComparison.OrdinalIgnoreCase))
                     {
-                        if (p.exponent > 0) src.ParamCurveExponent = p.exponent;
-                        if (p.outer > 0) src.ParamRangeOuter = p.outer;
+                        if (p.stamp.ParamCurveExponent > 0) src.ParamCurveExponent = p.stamp.ParamCurveExponent;
+                        if (p.stamp.ParamRangeOuter > 0) src.ParamRangeOuter = p.stamp.ParamRangeOuter;
+                        if (p.stamp.ParamAntiDeadzone > 0) src.ParamAntiDeadzone = p.stamp.ParamAntiDeadzone;
+                        if (p.stamp.ParamSmoothingAlpha > 0) src.ParamSmoothingAlpha = p.stamp.ParamSmoothingAlpha;
+                        if (p.stamp.ParamMoveThreshold > 0) src.ParamMoveThreshold = p.stamp.ParamMoveThreshold;
+                        if (p.stamp.ParamAccel > 0) src.ParamAccel = p.stamp.ParamAccel;
+                        if (p.stamp.ParamTrackballDecay > 0) src.ParamTrackballDecay = p.stamp.ParamTrackballDecay;
+                        if (!string.IsNullOrEmpty(p.stamp.GateDescriptor)) src.GateDescriptor = p.stamp.GateDescriptor;
                         break;
                     }
                 }
@@ -3010,6 +3029,7 @@ namespace PadForge.Services
                 CycleStepsCsv = ad.CycleStepsCsv ?? "",
                 CycleWrap = ad.CycleWrap,
                 IntervalMs = ad.IntervalMs,
+                PulseWhileLatched = ad.PulseWhileLatched,
                 CursorClampMode = ad.CursorClampMode,
                 CursorClampInsetX = ad.CursorClampInsetX,
                 CursorClampInsetY = ad.CursorClampInsetY,
@@ -4047,6 +4067,7 @@ namespace PadForge.Services
                 CycleStepsCsv = string.IsNullOrEmpty(a.CycleStepsCsv) ? null : a.CycleStepsCsv,
                 CycleWrap = a.CycleWrap,
                 IntervalMs = a.IntervalMs,
+                PulseWhileLatched = a.PulseWhileLatched,
                 CursorClampMode = a.CursorClampMode,
                 CursorClampInsetX = a.CursorClampInsetX,
                 CursorClampInsetY = a.CursorClampInsetY,
@@ -5421,6 +5442,12 @@ namespace PadForge.Services
         /// the first.</summary>
         [XmlElement]
         public bool CycleWrap { get; set; }
+
+        /// <summary>Toggle latches (v18): pulse the latched contribution
+        /// on the turbo square wave (period IntervalMs) instead of holding
+        /// solid, composing Steam's toggle + hold_repeats.</summary>
+        [XmlElement]
+        public bool PulseWhileLatched { get; set; }
 
         /// <summary>When true, show the Windows volume flyout OSD on volume changes.</summary>
         [XmlElement]

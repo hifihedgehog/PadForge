@@ -357,8 +357,31 @@ namespace PadForge.SteamWorkshop.Translation
         /// binding-icon art at display time, so MenuIconsDropped retires
         /// (key and locale strings deleted). Only a reference outside the
         /// client's bare-filename shape stays behind, named per cell by
-        /// MenuIconUnresolved.</summary>
-        public const int CurrentTranslatorVersion = 21;
+        /// MenuIconUnresolved.
+        /// v22: the three Skyrim notes build. gyro_ratchet_button_mask
+        /// lowers onto a new slot-level clutch lane (grounded per bit
+        /// against Steam's own k_eGamepadButtonBitMask enum in the
+        /// shipped configurator JS): while any stamped descriptor is
+        /// held, the slot's gyro reads disengage, and only genuinely
+        /// ungrounded bits keep GyroButtonMaskDropped (args carry the
+        /// residual mask). The delay family closes whole: layer switches
+        /// take delay_end as the Hold-mode release linger
+        /// (ShiftActivator.ReleaseDelayMs, re-press cancels the pending
+        /// disengage), autofire and the wheel turbo take it as the
+        /// UntilRelease release linger (MacroData.ReleaseLingerMs, the
+        /// pulse train runs past the release), wheel rows with delays
+        /// reroute onto the wheel turbo (delay_start composing into the
+        /// HoldForMs threshold), press-leg taps grow their assert to
+        /// delay_end, and the edge-fired one-shots consume it silently
+        /// (Steam's own deactivation edge emits nothing for them), so
+        /// ActivatorDelayDropped retires (key and locale strings
+        /// deleted). Group-level haptic_intensity / _override becomes the
+        /// EmitHapticPulse fallback, so every member activation ticks at
+        /// the group's level and the per-config HapticIntensityDropped
+        /// aggregate retires (key and locale strings deleted; a
+        /// member-less group's continuous surface tick has no channel
+        /// and lowers silently).</summary>
+        public const int CurrentTranslatorVersion = 22;
 
         public int TranslatorVersion { get; set; } = CurrentTranslatorVersion;
 
@@ -557,7 +580,12 @@ namespace PadForge.SteamWorkshop.Translation
         // ScrollGestureModeNotSupported retired in v14 (split into per-arm
         // reasons) and the per-arm family itself retired in v15 when every
         // arm was built; the keys plus their locale strings were deleted.
-        public const string HapticIntensityDropped = "Workshop_Tr_HapticIntensityDropped";       // {0} count
+        // HapticIntensityDropped retired in v22: activator-level haptics
+        // became RumblePulse macros in v10 (G1) and the group-level
+        // intensity now rides every member activation through the
+        // EmitHapticPulse fallback, so the per-config aggregate had
+        // nothing left to count. The key plus its locale strings were
+        // deleted.
         // Since v18 every analog host consumes the exponent / range /
         // sensitivity / anti-deadzone cluster into the per-source channel,
         // so the args name only deadzone_shape (mouse-output hosts, whose
@@ -581,12 +609,24 @@ namespace PadForge.SteamWorkshop.Translation
         public const string RotationNonlinearWithheld = "Workshop_Tr_RotationNonlinearWithheld"; // {0} setting keys
         // Since v18 the note is the out-of-census net only: gyro_button 0
         // (pad touch) stamps the slot-level engage overlay and
-        // gyro_button_invert 1 the inverted hold; non-zero indices and
-        // ratchet masks ride an enum with no public grounding.
+        // gyro_button_invert 1 the inverted hold. Since v22 the ratchet
+        // mask builds bit-by-bit against Steam's own
+        // k_eGamepadButtonBitMask enum (the shipped configurator JS), so
+        // the note names only non-zero gyro_button indices (an index
+        // table with no public grounding) and the residual mask of
+        // genuinely ungrounded ratchet bits.
         public const string GyroButtonMaskDropped = "Workshop_Tr_GyroButtonMaskDropped";         // {0} setting key {1} value
-        // Since v18 the args name only the channel-less arms: layer
-        // delay_end, autofire delay_end, and wheel-row delays.
-        public const string ActivatorDelayDropped = "Workshop_Tr_ActivatorDelayDropped";         // {0} delays
+        // ActivatorDelayDropped retired in v22: every surviving arm BUILT
+        // or was proved unobservable. Layer delay_end rides the Hold-mode
+        // release linger (ShiftActivator.ReleaseDelayMs), autofire and
+        // wheel-turbo delay_end ride the UntilRelease release linger
+        // (MacroData.ReleaseLingerMs), wheel rows with delays reroute
+        // onto the wheel turbo with delay_start on the HoldForMs
+        // threshold, press-leg taps grow their assert to delay_end, and
+        // the remaining press-leg one-shots (edge-fired commands, latch
+        // flips) emit nothing on Steam's own deactivation edge, so the
+        // shifted edge is unobservable. The key plus its locale strings
+        // were deleted.
         // InterruptibleDropped retired in v18: stored interruptable 0
         // matches PadForge's native never-cancel evaluation exactly
         // (sibling activators on one input all fire), so the note

@@ -116,13 +116,18 @@ namespace PadForge.SteamWorkshop.Translation
             public bool XboxRowCapHit;
             public bool KbmRowCapHit;
 
-            /// <summary>Count of GROUP-level haptic_intensity /
-            /// haptic_intensity_override occurrences (value != 0), which
-            /// still have no channel (a group haptic ticks continuously
-            /// with the surface, not on an activator fire). Reported once
-            /// per config in Finalize. Activator-level haptics became
-            /// RumblePulse macros in v10 (G1) and no longer feed this.</summary>
-            public int HapticDropCount;
+            /// <summary>GROUP-level haptic intensity of the group currently
+            /// being translated (v22): haptic_intensity_override wins over
+            /// the plain haptic_intensity, Steam levels 1..3, 0 = none
+            /// authored. Set by TranslateGroup around the mode dispatch and
+            /// consumed by EmitHapticPulse as the fallback level for member
+            /// activators that author none of their own, so the group's
+            /// haptic ticks ride every member activation (the v13 ruling:
+            /// the rumble pulse IS the haptic tick). An activator's own
+            /// explicit 0 stays off. A group with no member activators has
+            /// no activation to tick on and lowers silently (the
+            /// continuous surface-motion tick has no channel).</summary>
+            public int GroupHapticLevel;
 
             /// <summary>Macros emitted with no report line (the v17
             /// SCREENSHOT / SHOW_KEYBOARD arms: the note described exactly
@@ -211,6 +216,11 @@ namespace PadForge.SteamWorkshop.Translation
             /// Long_Press layer carries set it to the activator's
             /// long_press_time; 0 = instant.</summary>
             public int DelayMs;
+            /// <summary>Release linger, ms (ShiftActivator.ReleaseDelayMs,
+            /// v22): a Hold-mode carrier's delay_end. The layer stays
+            /// engaged this long past the release; a re-press cancels the
+            /// pending disengage. 0 = instant disengage.</summary>
+            public int ReleaseDelayMs;
             // Cycle mode (same-input preset jumps merged by
             // MergeSameInputJumpsIntoCycles).
             public string CycleLayers = "";
@@ -352,6 +362,12 @@ namespace PadForge.SteamWorkshop.Translation
 
             string mode = (effective.Mode ?? "").Trim().ToLowerInvariant();
             path = $"{path} ({mode})";
+
+            // Group-level haptics (v22): stash the group's level so
+            // EmitHapticPulse can apply it to every member activator that
+            // authors none of its own. Assigned per group (walks never
+            // nest), so no reset is needed.
+            run.GroupHapticLevel = ParseGroupHapticLevel(settings);
 
             // Group settings PadForge has no channel for get named notes
             // instead of silence, but only on modes that otherwise
@@ -937,8 +953,12 @@ namespace PadForge.SteamWorkshop.Translation
             // note: the gyro_button index table beyond 0 has no public
             // grounding (searched 2026-07-17; sc-controller's importer
             // does not parse the key), and the token-table tattoo forbids
-            // guessing. The ratchet BITMASK rides the same ungrounded
-            // enum and keeps its note whole.
+            // guessing. The ratchet BITMASK builds since v22: its bit
+            // space is Steam's own k_eGamepadButtonBitMask enum (see
+            // RatchetBitDescriptor), grounded bits lower onto the
+            // slot-level ratchet clutch lane, and only genuinely
+            // ungrounded bits keep the note (args carry the residual
+            // mask).
             foreach (var key in new[] { "gyro_button", "gyro_ratchet_button_mask", "gyro_button_invert" })
             {
                 if (!settings.TryGetValue(key, out var v)) continue;
@@ -960,25 +980,111 @@ namespace PadForge.SteamWorkshop.Translation
                     run.Profile.GyroEngageInvert = true;
                     continue;
                 }
+                if (key == "gyro_ratchet_button_mask"
+                    && ulong.TryParse(val, NumberStyles.Integer, CultureInfo.InvariantCulture, out ulong mask)
+                    && mask != 0)
+                {
+                    // Hold-to-disengage clutch (v22). Lowered onto the
+                    // dedicated slot-level ratchet lane, NOT SetGyroEngaged
+                    // Off/On macros and NOT the engage-invert channel: the
+                    // engage read ORs the button bit with the macro bit
+                    // (and Hold mode's empty descriptor reads always-on),
+                    // so a macro Off could never clutch and would fight a
+                    // configured engage button, and the invert flag owns
+                    // the single engage descriptor, so it composes with
+                    // neither an authored gyro_button nor a multi-bit
+                    // mask. The AND-NOT lane cannot fight the engage gate
+                    // by construction. Multiple gyro groups union their
+                    // masks (a clutch surface too many is the safe
+                    // approximation; the list is sorted for deterministic
+                    // goldens).
+                    ulong ungrounded = 0;
+                    for (int bit = 0; bit < 64; bit++)
+                    {
+                        if ((mask & (1UL << bit)) == 0) continue;
+                        string desc = RatchetBitDescriptor(bit, run.SinglePadTrackpads);
+                        if (desc == null)
+                        {
+                            ungrounded |= 1UL << bit;
+                            continue;
+                        }
+                        if (!run.Profile.GyroRatchetDescriptors.Contains(desc))
+                            run.Profile.GyroRatchetDescriptors.Add(desc);
+                    }
+                    run.Profile.GyroRatchetDescriptors.Sort(StringComparer.Ordinal);
+                    if (ungrounded == 0) continue;
+                    run.Report.Add(TranslationStatus.Partial, TranslationReasons.GyroButtonMaskDropped,
+                        path, args: new[] { key, ungrounded.ToString(CultureInfo.InvariantCulture) });
+                    continue;
+                }
                 run.Report.Add(TranslationStatus.Partial, TranslationReasons.GyroButtonMaskDropped,
                     path, args: new[] { key, v ?? "" });
             }
-
-            // Group haptics have no PadForge channel; both the override twin
-            // and the plain group-level intensity feed the per-config
-            // aggregate (finding 1g-3; the HapticDropCount field comment
-            // already states both group and activator haptics are counted).
-            if (settings.TryGetValue("haptic_intensity_override", out var h)
-                && (h ?? "").Trim() != "0")
-            {
-                run.HapticDropCount++;
-            }
-            if (settings.TryGetValue("haptic_intensity", out var hg)
-                && (hg ?? "").Trim() != "0")
-            {
-                run.HapticDropCount++;
-            }
         }
+
+        /// <summary>Maps one gyro_ratchet_button_mask bit to its device-free
+        /// descriptor, or null when the bit has no grounded PadForge read
+        /// (v22). The bit space is Steam's own k_eGamepadButtonBitMask
+        /// enum, read out of the shipped configurator
+        /// (steamui/chunk~2dcc5aaf7.js, the same client build the v13
+        /// vocabulary census used; the gyro panel renders the mask setting
+        /// as a BigInt through that enum's glyph map): 0/1 trigger full
+        /// pulls, 2/3 bumpers, 4-7 North/East/West/South, 8-11 D-pad
+        /// up/right/left/down, 12/13/14 View/Steam/Options, 15/16 lower
+        /// back grips, 17/18 pad clicks, 19/20 pad touches (CapSense),
+        /// 22/26 stick clicks, 24/25 trigger soft pulls, 27/28 center pad,
+        /// 29 Ancillary1 (the Capture button, the v10 G2 "Button 11"
+        /// grounding), 30/31 stick deflection, 41/42 upper back grips.
+        /// Corpus cross-checks: 3456927474 (Deck) authors 1&lt;&lt;41, the
+        /// L4 upper-left paddle; 3725174032 (triton) authors 1&lt;&lt;20,
+        /// the right pad touch (the classic gyro surface); 3353604014
+        /// (DualSense) authors 71720947, exactly the face + D-pad + Start /
+        /// Select + pad-click + stick-click + trigger-pull set with
+        /// bumpers, Steam, grips, and touches excluded, the "pause gyro
+        /// while pressing buttons" shape. Enum holes (21, 23, 40, 43) and
+        /// surfaces PadForge cannot read (macro buttons 32-39 and 48+,
+        /// CapSense aux / stick touches 44-47, the center pad on multi-pad
+        /// families) return null and keep the named note. Trigger bits read
+        /// through the engage lane's 50 percent bool threshold (soft and
+        /// full pull collapse onto the same read; the clutch fires slightly
+        /// early on a full-pull bit, never late). Single-pad half clicks
+        /// (17/18) approximate onto the one physical click.</summary>
+        private static string RatchetBitDescriptor(int bit, bool singlePad) => bit switch
+        {
+            0 => "Gamepad RightTrigger",
+            1 => "Gamepad LeftTrigger",
+            2 => "Gamepad RightShoulder",
+            3 => "Gamepad LeftShoulder",
+            4 => "Gamepad ButtonY",   // North (positional, SDL's frame)
+            5 => "Gamepad ButtonB",   // East
+            6 => "Gamepad ButtonX",   // West
+            7 => "Gamepad ButtonA",   // South
+            8 => "Gamepad DPadUp",
+            9 => "Gamepad DPadRight",
+            10 => "Gamepad DPadLeft",
+            11 => "Gamepad DPadDown",
+            12 => "Gamepad ButtonBack",
+            13 => "Gamepad ButtonGuide",
+            14 => "Gamepad ButtonStart",
+            15 => "Gamepad Paddle2",  // button_back_left, the resolver's pairing
+            16 => "Gamepad Paddle1",  // button_back_right
+            17 => "Touchpad 0 Click",
+            18 => singlePad ? "Touchpad 0 Click" : "Touchpad 1 Click",
+            19 => singlePad ? "Touchpad 0 Finger 0 Down Left" : "Touchpad 0 Finger 0 Down",
+            20 => singlePad ? "Touchpad 0 Finger 0 Down Right" : "Touchpad 1 Finger 0 Down",
+            22 => "Gamepad LeftStick",
+            24 => "Gamepad RightTrigger", // soft pull: same 50% bool read
+            25 => "Gamepad LeftTrigger",
+            26 => "Gamepad RightStick",
+            27 => singlePad ? "Touchpad 0 Finger 0 Down" : null,
+            28 => singlePad ? "Touchpad 0 Click" : null,
+            29 => "Button 11",
+            30 => "Gamepad LeftStickRing",
+            31 => "Gamepad RightStickRing",
+            41 => "Gamepad Paddle4",  // button_back_left_upper
+            42 => "Gamepad Paddle3",  // button_back_right_upper
+            _ => null,
+        };
 
         /// <summary>Steam's group-level inner deadzone (0..32767 of full
         /// deflection) as a PadForge DeadZone percent. 0 / absent / junk
@@ -2974,16 +3080,23 @@ namespace PadForge.SteamWorkshop.Translation
         /// becomes a reactive rumble pulse fired the same way the
         /// activator fires. Steam levels 1..3 (Low/Medium/High) scale the
         /// pulse to 33/66/100 percent. The trigger never consumes: haptics
-        /// are feedback beside the binding, not a replacement for it.</summary>
+        /// are feedback beside the binding, not a replacement for it.
+        /// Since v22 the GROUP-level intensity (haptic_intensity_override
+        /// winning over the plain key) is the fallback for member
+        /// activators that author none of their own, so a group's haptics
+        /// tick on every member activation; an activator's own explicit 0
+        /// stays off.</summary>
         private void EmitHapticPulse(Run run, SteamInputActivator activator,
             ResolvedSource source, string inputName, string path, string triggerMode, int holdMs)
         {
-            if (!activator.Settings.TryGetValue("haptic_intensity", out var raw)) return;
-            if (!int.TryParse((raw ?? "").Trim(), NumberStyles.Integer,
-                    CultureInfo.InvariantCulture, out int level) || level <= 0)
+            int level = run.GroupHapticLevel;
+            if (activator.Settings.TryGetValue("haptic_intensity", out var raw)
+                && int.TryParse((raw ?? "").Trim(), NumberStyles.Integer,
+                    CultureInfo.InvariantCulture, out int own))
             {
-                return;
+                level = own;
             }
+            if (level <= 0) return;
 
             var macro = new TranslatedMacro
             {
@@ -3006,29 +3119,60 @@ namespace PadForge.SteamWorkshop.Translation
             // gesture-hosted trigger self-arms at apply since v14.
         }
 
+        /// <summary>Group-level haptic intensity (v22): the override twin
+        /// wins when authored (an explicit override 0 silences a plain
+        /// nonzero), else the plain group key, else 0. Steam levels 1..3,
+        /// clamped.</summary>
+        private static int ParseGroupHapticLevel(Dictionary<string, string> settings)
+        {
+            if (settings.TryGetValue("haptic_intensity_override", out var o)
+                && int.TryParse((o ?? "").Trim(), NumberStyles.Integer,
+                    CultureInfo.InvariantCulture, out int ov))
+            {
+                return Math.Clamp(ov, 0, 3);
+            }
+            if (settings.TryGetValue("haptic_intensity", out var p)
+                && int.TryParse((p ?? "").Trim(), NumberStyles.Integer,
+                    CultureInfo.InvariantCulture, out int pv))
+            {
+                return Math.Clamp(pv, 0, 3);
+            }
+            return 0;
+        }
+
         /// <summary>Activator delay_start / delay_end (v10 G5, widened to
-        /// every carrier in v18), grounded on Valve's shipped strings
-        /// ("wait for this period of time after the button has been
-        /// pressed before activating" / "... after the button has been
-        /// released before deactivating").
+        /// every carrier in v18, closed whole in v22), grounded on Valve's
+        /// shipped strings ("wait for this period of time after the button
+        /// has been pressed before activating" / "... after the button has
+        /// been released before deactivating").
         ///
         /// <para>Carriers. One-shot macros (taps, latches, the Hold*
         /// pairs) take Delay steps: press legs delay_start, release legs
         /// delay_end, pairs both. Continuous autofire takes a Delay step
-        /// too (the continuous action never completes, so the step runs
-        /// once). The VC hold shapes restart their sequence per frame, so
-        /// their delay_start composes into the HoldForMs threshold
-        /// instead, and their delay_end becomes an OnRelease
-        /// assert-extension twin (the target stays asserted delay_end ms
-        /// past the physical release). The region clamp pair takes the
-        /// steps on its engage / release legs. Layer switches take
-        /// delay_start as the activator's engage debounce
-        /// (ShiftActivator.DelayMs, the long-press construct). The only
-        /// arms left named: delay_end on layer switches (the layer
-        /// machinery has no disengage delay), delay_end on autofire (the
-        /// pulse train stops at release), and delays on wheel-scroll rows
-        /// (no wheel-hold primitive; a detent tap or latch would change
-        /// the binding's semantics).</para></summary>
+        /// for delay_start (the continuous action never completes, so the
+        /// step runs once) and the release linger for delay_end (the
+        /// pulse train keeps running past the release, a re-press cancels
+        /// the pending stop). The wheel turbo composes delay_start into
+        /// its HoldForMs threshold (a Delay step would re-run inside
+        /// every detent iteration, v19 T1) and takes the same linger. The
+        /// VC hold shapes restart their sequence per frame, so their
+        /// delay_start composes into the HoldForMs threshold and their
+        /// delay_end becomes an OnRelease assert-extension twin. The
+        /// region clamp pair takes the steps on its engage / release
+        /// legs. Layer switches take delay_start as the engage debounce
+        /// (ShiftActivator.DelayMs) and delay_end as the Hold-mode
+        /// release linger (ShiftActivator.ReleaseDelayMs); non-Hold layer
+        /// carriers (Toggle latches, preset Cycles, Custom jumps)
+        /// deactivate on a press, never on the release, so Steam's own
+        /// release+delay_end edge changes nothing for them and the value
+        /// consumes silently. Press-leg one-shots resolve delay_end
+        /// per shape: assert-shaped taps deactivate late (the assert
+        /// grows to delay_end), and edge-fired commands (cursor warp,
+        /// set_led, recenter, nudge, wheel detent, cycle step, rumble
+        /// pulse, latch flips) emit nothing on Steam's own deactivation
+        /// edge either, so the shifted edge is unobservable. Nothing is
+        /// left to name; the ActivatorDelayDropped vocabulary retired
+        /// with this closure.</para></summary>
         private static void ConsumeActivatorDelays(Run run, SteamInputActivator activator,
             string path, int macrosBefore, int activatorsBefore = -1)
         {
@@ -3036,7 +3180,6 @@ namespace PadForge.SteamWorkshop.Translation
             int delayEnd = ParseDelaySetting(activator, "delay_end");
             if (delayStart <= 0 && delayEnd <= 0) return;
 
-            bool usedStart = false, usedEnd = false;
             var macros = run.Profile.Macros;
             int macrosEnd = macros.Count;
             for (int i = macrosBefore; i < macrosEnd; i++)
@@ -3053,7 +3196,31 @@ namespace PadForge.SteamWorkshop.Translation
                         if (delayStart > 0)
                         {
                             m.DelayStartMs = delayStart;
-                            usedStart = true;
+                        }
+                        // v22: delay_end rides the release linger (the
+                        // materializer maps DelayEndMs on the autofire
+                        // shapes to MacroData.ReleaseLingerMs).
+                        if (delayEnd > 0)
+                        {
+                            m.DelayEndMs = delayEnd;
+                        }
+                        continue;
+
+                    case TranslatedMacroAction.RepeatWheelWhileHeld:
+                        // v22: a Delay step would re-run inside every
+                        // detent iteration and stretch the cadence (v19
+                        // T1), so delay_start composes into the HoldForMs
+                        // threshold (the VC-hold shape) and delay_end
+                        // rides the release linger like the other
+                        // autofire shapes.
+                        if (delayStart > 0)
+                        {
+                            m.TriggerMode = "HoldForMs";
+                            m.TriggerHoldMs += delayStart;
+                        }
+                        if (delayEnd > 0)
+                        {
+                            m.DelayEndMs = delayEnd;
                         }
                         continue;
 
@@ -3067,7 +3234,6 @@ namespace PadForge.SteamWorkshop.Translation
                         {
                             m.TriggerMode = "HoldForMs";
                             m.TriggerHoldMs += delayStart;
-                            usedStart = true;
                         }
                         if (delayEnd > 0)
                         {
@@ -3097,15 +3263,14 @@ namespace PadForge.SteamWorkshop.Translation
                             };
                             ext.TriggerInputDescriptors.AddRange(m.TriggerInputDescriptors);
                             macros.Add(ext);
-                            usedEnd = true;
                         }
                         continue;
 
                     case TranslatedMacroAction.MouseLimitRegion:
                         // The materializer's engage / release pair takes
                         // one Delay step per leg.
-                        if (delayStart > 0) { m.DelayStartMs = delayStart; usedStart = true; }
-                        if (delayEnd > 0) { m.DelayEndMs = delayEnd; usedEnd = true; }
+                        if (delayStart > 0) m.DelayStartMs = delayStart;
+                        if (delayEnd > 0) m.DelayEndMs = delayEnd;
                         continue;
                 }
                 if (!IsOneShotMacro(m.Action)) continue;
@@ -3115,34 +3280,55 @@ namespace PadForge.SteamWorkshop.Translation
                 if (delayStart > 0 && (pair || !releaseLeg))
                 {
                     m.DelayStartMs = delayStart;
-                    usedStart = true;
                 }
                 if (delayEnd > 0 && (pair || releaseLeg))
                 {
                     m.DelayEndMs = delayEnd;
-                    usedEnd = true;
+                }
+                else if (delayEnd > 0)
+                {
+                    // Press-leg one-shot (v22). Steam's delay_end shifts
+                    // the binding's DEACTIVATION edge past the release.
+                    // For the assert-shaped taps the output deactivates
+                    // late, so the assert grows to the authored length
+                    // (press at t, instant release, deactivate at
+                    // t + delay_end). For every other press-fired shape
+                    // (cursor warp, set_led, gyro recenter, mouse nudge,
+                    // wheel detent, cycle step, rumble pulse, the
+                    // on-screen keyboard, and the latch flips, whose
+                    // unlatch is the NEXT press, not the release) Steam's
+                    // own deactivation edge emits nothing, so shifting it
+                    // is unobservable and the value consumes silently.
+                    switch (m.Action)
+                    {
+                        case TranslatedMacroAction.VcButtonTap:
+                        case TranslatedMacroAction.VcAxisTap:
+                        case TranslatedMacroAction.KeyTap:
+                        case TranslatedMacroAction.MouseButtonTap:
+                            m.TapDurationMs = Math.Max(m.TapDurationMs, delayEnd);
+                            break;
+                    }
                 }
             }
 
             // Layer switches / mode shifts (v18): delay_start is the
             // activator's own hold-before-engage debounce. A long-press
             // activator already carries its threshold; the delay adds on.
-            if (activatorsBefore >= 0 && delayStart > 0)
+            // delay_end (v22): Hold-mode carriers take the release linger
+            // (the layer stays engaged delay_end past the release, and a
+            // re-press inside the window cancels the pending disengage).
+            // Non-Hold carriers (Toggle latches, preset Cycles, Custom
+            // jumps) deactivate on a press, never on the release, so
+            // Steam's own release+delay_end edge changes nothing for them
+            // and the value consumes silently.
+            if (activatorsBefore >= 0 && (delayStart > 0 || delayEnd > 0))
             {
                 for (int i = activatorsBefore; i < run.Activators.Count; i++)
                 {
-                    run.Activators[i].DelayMs += delayStart;
-                    usedStart = true;
+                    var req = run.Activators[i];
+                    if (delayStart > 0) req.DelayMs += delayStart;
+                    if (delayEnd > 0 && req.Mode == "Hold") req.ReleaseDelayMs += delayEnd;
                 }
-            }
-
-            var drops = new List<string>();
-            if (delayStart > 0 && !usedStart) drops.Add($"delay_start {delayStart}");
-            if (delayEnd > 0 && !usedEnd) drops.Add($"delay_end {delayEnd}");
-            if (drops.Count > 0)
-            {
-                run.Report.Add(TranslationStatus.Partial, TranslationReasons.ActivatorDelayDropped,
-                    path, args: string.Join(", ", drops));
             }
         }
 
@@ -3160,9 +3346,9 @@ namespace PadForge.SteamWorkshop.Translation
             TranslatedMacroAction.RepeatVcAxisWhileHeld => false,
             // v19 (T1): the wheel turbo repeats its one-shot detent on the
             // macro repeat machinery, so a prepended Delay step would
-            // re-run inside EVERY iteration and stretch the cadence.
-            // Activator delays on it stay named (ActivatorDelayDropped),
-            // the autofire-delay policy.
+            // re-run inside EVERY iteration and stretch the cadence. Its
+            // delays ride the HoldForMs threshold + release linger
+            // instead (the explicit case above, v22).
             TranslatedMacroAction.RepeatWheelWhileHeld => false,
             TranslatedMacroAction.HoldVcButton => false,
             TranslatedMacroAction.HoldVcAxis => false,
@@ -3212,6 +3398,10 @@ namespace PadForge.SteamWorkshop.Translation
 
             bool anyCarry = false;
             int macrosBefore = run.Profile.Macros.Count;
+            // v22: layer carries emitted in this window take the delay
+            // channels too (delay_start on top of the long-press debounce,
+            // delay_end as the Hold-mode release linger).
+            int activatorsBefore = run.Activators.Count;
             foreach (var binding in activator.Bindings)
             {
                 string bt = (binding.Type ?? "").Trim().ToLowerInvariant();
@@ -3264,7 +3454,7 @@ namespace PadForge.SteamWorkshop.Translation
             {
                 EmitHapticPulse(run, activator, source, input.Name, actPath,
                     "OnPress", holdMs: delayMs);
-                ConsumeActivatorDelays(run, activator, actPath, macrosBefore);
+                ConsumeActivatorDelays(run, activator, actPath, macrosBefore, activatorsBefore);
             }
         }
 
@@ -3495,6 +3685,20 @@ namespace PadForge.SteamWorkshop.Translation
                         // continuously at the full per-frame rate instead
                         // (thousands of detents per second), ignoring the
                         // authored cadence entirely.
+                        EmitWheelTurboMacro(run, binding, source, path, wheel.Value,
+                            inputName, intervalMs);
+                        break;
+                    }
+                    if (rerouteForDelays)
+                    {
+                        // v22: a wheel ROW has no delay channel, so the
+                        // delayed binding rides the RepeatWheelWhileHeld
+                        // turbo at the latch cadence (one detent per
+                        // default 100 ms interval, the ToggleWheel
+                        // held-row rate). ConsumeActivatorDelays then
+                        // composes delay_start into the HoldForMs
+                        // threshold and delay_end into the release
+                        // linger.
                         EmitWheelTurboMacro(run, binding, source, path, wheel.Value,
                             inputName, intervalMs);
                         break;
@@ -5464,14 +5668,14 @@ namespace PadForge.SteamWorkshop.Translation
             // output can be what decides a macro no longer needs an Xbox slot.
             FinalizeMacroTriggers(run);
 
-            // Haptic feedback has no PadForge channel; one aggregate note
-            // per config (49 per-binding entries in one corpus fixture
-            // would drown the report).
-            if (run.HapticDropCount > 0)
-            {
-                run.Report.Add(TranslationStatus.Partial, TranslationReasons.HapticIntensityDropped,
-                    "config", args: run.HapticDropCount.ToString(CultureInfo.InvariantCulture));
-            }
+            // Haptics carry no note since v22: activator-level intensities
+            // became RumblePulse macros in v10 (G1) and the group-level
+            // intensity now rides every member activation through the
+            // EmitHapticPulse fallback, so the old per-config aggregate
+            // (HapticIntensityDropped) has nothing left to count. A group
+            // with no member activators has no activation to tick on (its
+            // continuous surface-motion tick has no channel) and lowers
+            // silently, the same policy as every other consumed setting.
 
             run.Report.XboxRowCount = profile.XboxMappingSet.Rows.Count;
             run.Report.KbmRowCount = profile.KbmMappingSet.Rows.Count;
@@ -5591,6 +5795,7 @@ namespace PadForge.SteamWorkshop.Translation
                     AxisHalf = req.AxisHalf,
                     AxisInvert = req.AxisInvert,
                     DelayMs = req.DelayMs,
+                    ReleaseDelayMs = req.ReleaseDelayMs,
                     CycleLayers = req.CycleLayers,
                     CycleIncludeBase = req.CycleIncludeBase,
                 };
@@ -5708,23 +5913,11 @@ namespace PadForge.SteamWorkshop.Translation
             }
         }
 
-        private static ShiftActivator Clone(ShiftActivator a) => new()
-        {
-            Descriptor = a.Descriptor,
-            Mode = a.Mode,
-            LayerMask = a.LayerMask,
-            LayerName = a.LayerName,
-            JumpToLayer = a.JumpToLayer,
-            InheritUnmapped = a.InheritUnmapped,
-            Kind = a.Kind,
-            ChordSecondDescriptor = a.ChordSecondDescriptor,
-            AxisThreshold = a.AxisThreshold,
-            AxisHalf = a.AxisHalf,
-            AxisInvert = a.AxisInvert,
-            DelayMs = a.DelayMs,
-            CycleLayers = a.CycleLayers,
-            CycleIncludeBase = a.CycleIncludeBase,
-        };
+        // The DTO's own full-field Clone, never a hand-list: the local
+        // hand-list this replaced dropped ReleaseDelayMs on arrival (v22),
+        // exactly the drift ShiftActivator.Clone's doc comment warns
+        // about.
+        private static ShiftActivator Clone(ShiftActivator a) => a.Clone();
 
         private static bool LayerHasRows(MappingSet set, string layer)
             => !string.IsNullOrEmpty(layer)

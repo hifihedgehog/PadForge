@@ -75,7 +75,7 @@ macros: 10
   macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Touchpad 0 Click; Touchpad 0 TouchRight] strength=100%
   macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Gamepad RightTrigger] in-half=upper in-dz=75 strength=66%
   macro RumblePulse HoldForMs | Haptic pulse (right_bumper) | btns=0x0000 in=[Gamepad RightShoulder] hold=224ms strength=33%
-report: v21 rows:x22+k2 macros:10 menus:0 layers:2 clean:35 partial:3 skipped:0 errors:0
+report: v22 rows:x22+k2 macros:10 menus:0 layers:2 clean:35 partial:2 skipped:0 errors:0
   Clean RowEmitted @ Default/gyro/group 8 (absolute_mouse) => KbmMouseX <- Gyro Yaw
   Clean RowEmitted @ Default/gyro/group 8 (absolute_mouse) => KbmMouseY <- Gyro Pitch
   Clean RowEmitted @ Default/right_joystick/group 12 (joystick_mouse) => KbmMouseX <- Gamepad RightStickX
@@ -113,4 +113,3 @@ report: v21 rows:x22+k2 macros:10 menus:0 layers:2 clean:35 partial:3 skipped:0 
   Clean RowEmitted @ Default/switch/group 10 (switches)/right_bumper/Full_Press => RightShoulder <- Gamepad RightShoulder
   Clean ShiftLayerEmitted(right_joystick shift) @ Default/switch/group 10 (switches)/right_bumper/Full_Press => Hold -> Layer_1150803559_0_MS_right_joystick_14
   Clean ShiftLayerEmitted(right_trackpad shift) @ Default/switch/group 10 (switches)/right_bumper/Long_Press => Hold -> Layer_1150803559_0_MS_right_trackpad_9
-  Partial HapticIntensityDropped(2) @ config

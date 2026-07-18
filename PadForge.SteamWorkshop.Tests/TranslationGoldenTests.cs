@@ -118,6 +118,13 @@ namespace PadForge.SteamWorkshop.Tests
                 // v21: cell icons carry on the items and resolve against
                 // the local Steam client's art at display time.
                 "Workshop_Tr_MenuIconsDropped",
+                // v22: the delay family closed whole (layer / autofire
+                // release lingers, wheel-row reroute, press-leg tap
+                // extension, unobservable-edge proofs) and group-level
+                // haptics ride every member activation, so the per-config
+                // aggregate has nothing left to count.
+                "Workshop_Tr_ActivatorDelayDropped",
+                "Workshop_Tr_HapticIntensityDropped",
             };
             Assert.DoesNotContain(translated.Report.Entries, e =>
                 System.Array.IndexOf(retired, e.ReasonKey) >= 0);

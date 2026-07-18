@@ -1,6 +1,7 @@
 name: RCT3 Weno V0.1
 description: Track pad radial menu don't fully works
 slots: xbox kbm
+gyroRatchet: Gamepad Paddle4
 xbox rows: 0
 kbm rows: 19
   Base | KbmKey08
@@ -69,7 +70,7 @@ kbm activators: 5
   Toggle Layer_3456927474_1 | Menu 1 Item 1 | inherit | name=Deactivate trackpad
   Toggle Layer_3456927474_1 | Menu 2 Item 1 | inherit | name=Deactivate trackpad
   Toggle Layer_3456927474_2 | Gamepad Paddle1 | inherit | name=Menu save
-macros: 66
+macros: 67
   macro MoveMouseToScreenPosition OnPress | Warp cursor (touch_menu_button_1) | btns=0x0000 in=[Menu 1 Item 1] norm=(10667,1473)
   macro HoldMouseButton OnPress | Hold mouse LEFT (touch_menu_button_1) | btns=0x0000 in=[Menu 1 Item 1] mbtn=0 delayStart=1ms
   macro MoveMouseToScreenPosition OnPress | Warp cursor (touch_menu_button_2) | btns=0x0000 in=[Menu 1 Item 2] norm=(32307,31969)
@@ -101,6 +102,7 @@ macros: 66
   macro RumblePulse OnPress | Haptic pulse (edge) | btns=0x0000 in=[Gamepad LeftTrigger] in-half=upper in-dz=15 strength=66%
   macro HoldMouseButton OnPress | Hold mouse LEFT (click) | btns=0x0080 mbtn=0 delayStart=25ms
   macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Gamepad RightStick] strength=33% delayStart=25ms
+  macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Touchpad 1 Click] strength=33%
   macro MouseNudge OnPress | Nudge cursor (edge) | btns=0x0000 in=[Touchpad 1 Finger 0 Down] delta=(100,0)
   macro RumblePulse OnPress | Haptic pulse (edge) | btns=0x0000 in=[Touchpad 1 Finger 0 Down] strength=33%
   macro RepeatWheelWhileHeld WhileHeld | Turbo wheel (click) | btns=0x0000 axis=RightTrigger@75% ticks=1 interval=125ms
@@ -155,7 +157,7 @@ menus: 2
     [9] MOUSE_POSITION icon=ghost_040_act_0327.png
     [10] MOUSE_POSITION icon=ghost_040_act_0307.png
     [12] MOUSE_POSITION icon=ghost_050_menu_0306.png
-report: v21 rows:x0+k19 macros:66 menus:2 layers:5 clean:82 partial:11 skipped:0 errors:0
+report: v22 rows:x0+k19 macros:67 menus:2 layers:5 clean:82 partial:5 skipped:0 errors:0
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_a/Full_Press => KbmMBtn0 <- Gamepad ButtonA
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_b/Full_Press => KbmMBtn1 <- Gamepad ButtonB
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_x/Full_Press => KbmKey45 <- Gamepad ButtonX
@@ -164,7 +166,6 @@ report: v21 rows:x0+k19 macros:66 menus:2 layers:5 clean:82 partial:11 skipped:0
   Clean RowEmitted @ Default/dpad/group 9 (dpad)/dpad_north/Full_Press => KbmKeyA4 <- Gamepad DPadUp
   Clean RowEmitted @ Default/dpad/group 9 (dpad)/dpad_south/Full_Press => KbmKeyA0 <- Gamepad DPadDown
   Clean RowEmitted @ Default/dpad/group 9 (dpad)/dpad_west/Full_Press => KbmKey08 <- Gamepad DPadLeft
-  Partial GyroButtonMaskDropped(gyro_ratchet_button_mask, 2199023255552) @ Default/gyro/group 14 (absolute_mouse)
   Clean RowEmitted @ Default/gyro/group 14 (absolute_mouse) => KbmMouseX <- Gyro Yaw
   Clean RowEmitted @ Default/gyro/group 14 (absolute_mouse) => KbmMouseY <- Gyro Pitch
   Clean RowEmitted @ Default/joystick/group 1 (dpad)/dpad_east/Full_Press => KbmKey44 <- Gamepad LeftStickX (upper half)
@@ -182,10 +183,8 @@ report: v21 rows:x0+k19 macros:66 menus:2 layers:5 clean:82 partial:11 skipped:0
   Clean MacroEmitted @ Default/left_trackpad/group 16 (radial_menu)/touch_menu_button_5/Start_Press => Cursor warp macro
   Clean RowEmitted @ Default/left_trackpad/group 16 (radial_menu)/touch_menu_button_5/Start_Press => KbmMBtn0 <- Menu 1 Item 5
   Clean MacroEmitted @ Default/left_trackpad/group 16 (radial_menu)/touch_menu_button_5/Start_Press => Cursor warp macro
-  Partial ActivatorDelayDropped(delay_end 300) @ Default/left_trackpad/group 16 (radial_menu)/touch_menu_button_5/Start_Press
   Clean MacroEmitted @ Default/left_trackpad/group 16 (radial_menu)/touch_menu_button_5/Start_Press => Long-press hold macro: mouse button 0
   Clean MacroEmitted @ Default/left_trackpad/group 16 (radial_menu)/touch_menu_button_5/Start_Press => Cursor warp macro
-  Partial ActivatorDelayDropped(delay_end 1000) @ Default/left_trackpad/group 16 (radial_menu)/touch_menu_button_5/Start_Press
   Clean MacroEmitted @ Default/left_trackpad/group 16 (radial_menu)/touch_menu_button_5/Start_Press => Long-press hold macro: mouse button 0
   Clean MacroEmitted @ Default/left_trackpad/group 16 (radial_menu)/touch_menu_button_8/Full_Press => Cursor warp macro
   Clean RowEmitted @ Default/left_trackpad/group 16 (radial_menu)/touch_menu_button_8/Full_Press => KbmMBtn0 <- Menu 1 Item 8
@@ -230,10 +229,8 @@ report: v21 rows:x0+k19 macros:66 menus:2 layers:5 clean:82 partial:11 skipped:0
   Clean MacroEmitted @ Menu save/left_trackpad/group 30 (radial_menu)/touch_menu_button_5/Start_Press => Cursor warp macro
   Clean RowEmitted @ Menu save/left_trackpad/group 30 (radial_menu)/touch_menu_button_5/Start_Press => KbmMBtn0 <- Menu 2 Item 5
   Clean MacroEmitted @ Menu save/left_trackpad/group 30 (radial_menu)/touch_menu_button_5/Start_Press => Cursor warp macro
-  Partial ActivatorDelayDropped(delay_end 300) @ Menu save/left_trackpad/group 30 (radial_menu)/touch_menu_button_5/Start_Press
   Clean MacroEmitted @ Menu save/left_trackpad/group 30 (radial_menu)/touch_menu_button_5/Start_Press => Long-press hold macro: mouse button 0
   Clean MacroEmitted @ Menu save/left_trackpad/group 30 (radial_menu)/touch_menu_button_5/Start_Press => Cursor warp macro
-  Partial ActivatorDelayDropped(delay_end 1000) @ Menu save/left_trackpad/group 30 (radial_menu)/touch_menu_button_5/Start_Press
   Clean MacroEmitted @ Menu save/left_trackpad/group 30 (radial_menu)/touch_menu_button_5/Start_Press => Long-press hold macro: mouse button 0
   Clean MacroEmitted @ Menu save/left_trackpad/group 30 (radial_menu)/touch_menu_button_8/Full_Press => Cursor warp macro
   Clean RowEmitted @ Menu save/left_trackpad/group 30 (radial_menu)/touch_menu_button_8/Full_Press => KbmMBtn0 <- Menu 2 Item 8
@@ -248,4 +245,3 @@ report: v21 rows:x0+k19 macros:66 menus:2 layers:5 clean:82 partial:11 skipped:0
   Clean ShiftLayerEmitted(Deactivate trackpad) @ Default/left_trackpad/group 16 (radial_menu)/touch_menu_button_1/Full_Press => Toggle -> Layer_3456927474_1
   Clean ShiftLayerEmitted(Deactivate trackpad) @ Menu save/left_trackpad/group 30 (radial_menu)/touch_menu_button_1/Full_Press => Toggle -> Layer_3456927474_1
   Clean ShiftLayerEmitted(Menu save) @ Default/switch/group 8 (switches)/button_back_right/Full_Press => Toggle -> Layer_3456927474_2
-  Partial HapticIntensityDropped(1) @ config

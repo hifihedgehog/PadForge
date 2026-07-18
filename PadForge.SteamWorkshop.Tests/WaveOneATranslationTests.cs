@@ -437,7 +437,7 @@ namespace PadForge.SteamWorkshop.Tests
             Assert.DoesNotContain(p.Report.Entries, e =>
                 e.Status == TranslationStatus.Partial);
             Assert.DoesNotContain(p.Report.Entries, e =>
-                e.ReasonKey == TranslationReasons.HapticIntensityDropped);
+                e.ReasonKey == "Workshop_Tr_HapticIntensityDropped");
         }
 
         [Fact]
@@ -476,7 +476,7 @@ namespace PadForge.SteamWorkshop.Tests
             // (down after delay_start, up delay_end after release); the
             // dormant delay_start 0 sibling keeps its plain row.
             Assert.DoesNotContain(p.Report.Entries, e =>
-                e.ReasonKey == TranslationReasons.ActivatorDelayDropped);
+                e.ReasonKey == "Workshop_Tr_ActivatorDelayDropped");
             var hold = Assert.Single(p.Macros, m => m.Action == TranslatedMacroAction.HoldKey);
             Assert.Equal(50, hold.DelayStartMs);
             Assert.Equal(200, hold.DelayEndMs);
@@ -735,12 +735,12 @@ namespace PadForge.SteamWorkshop.Tests
         // ─── Translator version ─────────────────────────────────────────
 
         [Fact]
-        public void TranslatorVersion_IsTwentyOne_AndRidesTheSummary()
+        public void TranslatorVersion_IsTwentyTwo_AndRidesTheSummary()
         {
-            Assert.Equal(21, TranslationReport.CurrentTranslatorVersion);
+            Assert.Equal(22, TranslationReport.CurrentTranslatorVersion);
             var p = Translate(Head + "}\n");
-            Assert.Equal(21, p.Report.TranslatorVersion);
-            Assert.StartsWith("v21 ", p.Report.ToSummaryString());
+            Assert.Equal(22, p.Report.TranslatorVersion);
+            Assert.StartsWith("v22 ", p.Report.ToSummaryString());
         }
     }
 }

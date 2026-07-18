@@ -74,6 +74,22 @@ namespace PadForge.SteamWorkshop.Translation
         /// <summary>Steam gyro_button_invert: engage while NOT held.</summary>
         public bool GyroEngageInvert { get; set; }
 
+        /// <summary>Steam gyro_ratchet_button_mask (v22) as device-free
+        /// descriptors, one per grounded mask bit: while ANY is held the
+        /// slot's gyro reads are clutched, Steam's ratchet ("while held,
+        /// gyro input is ignored so the user can re-center, like lifting
+        /// a mouse"). Lowered onto its own AND-NOT lane beside the engage
+        /// gate rather than SetGyroEngaged macros or the engage-invert
+        /// channel, because (a) the engage read ORs the button bit with
+        /// the macro bit and Hold mode's empty descriptor reads
+        /// always-engaged, so a SetGyroEngaged Off could never clutch and
+        /// would fight a configured engage button, and (b) the invert
+        /// flag occupies the single engage-descriptor channel, so it
+        /// cannot compose with an authored gyro_button and cannot carry a
+        /// multi-bit mask. Empty = no ratchet. Ordered and deduped for
+        /// deterministic goldens.</summary>
+        public List<string> GyroRatchetDescriptors { get; set; } = new();
+
         public TranslationReport Report { get; set; } = new();
     }
 

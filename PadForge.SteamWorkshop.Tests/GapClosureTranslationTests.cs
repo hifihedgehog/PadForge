@@ -204,7 +204,7 @@ namespace PadForge.SteamWorkshop.Tests
             Assert.Equal(250, m.DelayEndMs);
             Assert.Equal(0, m.DelayStartMs);
             Assert.DoesNotContain(p.Report.Entries,
-                e => e.ReasonKey == TranslationReasons.ActivatorDelayDropped);
+                e => e.ReasonKey == "Workshop_Tr_ActivatorDelayDropped");
         }
 
         [Fact]
@@ -223,7 +223,7 @@ namespace PadForge.SteamWorkshop.Tests
             var hold = Assert.Single(p.Macros, m => m.Action == TranslatedMacroAction.HoldKey);
             Assert.Equal(120, hold.DelayStartMs);
             Assert.DoesNotContain(p.Report.Entries, e =>
-                e.ReasonKey == TranslationReasons.ActivatorDelayDropped);
+                e.ReasonKey == "Workshop_Tr_ActivatorDelayDropped");
         }
 
         [Fact]
@@ -242,7 +242,7 @@ namespace PadForge.SteamWorkshop.Tests
             Assert.Equal(80, m.DelayStartMs);
             Assert.Equal(160, m.DelayEndMs);
             Assert.DoesNotContain(p.Report.Entries,
-                e => e.ReasonKey == TranslationReasons.ActivatorDelayDropped);
+                e => e.ReasonKey == "Workshop_Tr_ActivatorDelayDropped");
         }
 
         // ─── G6: release taps ───────────────────────────────────────────

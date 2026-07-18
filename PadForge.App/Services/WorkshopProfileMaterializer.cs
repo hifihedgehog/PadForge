@@ -101,6 +101,16 @@ namespace PadForge.Services
                     mappingSets[kbmSlot].WorkshopGyroEngageInvert = translated.GyroEngageInvert;
                 }
             }
+            // The gyro ratchet stamp (v22, Steam gyro_ratchet_button_mask)
+            // rides every claimed slot like the engage stamp above: the
+            // clutch gate is per slot and split configs host gyro rows on
+            // both sides.
+            if (translated.GyroRatchetDescriptors != null && translated.GyroRatchetDescriptors.Count > 0)
+            {
+                string ratchet = string.Join("|", translated.GyroRatchetDescriptors);
+                if (xboxSlot >= 0) mappingSets[xboxSlot].WorkshopGyroRatchetDescriptors = ratchet;
+                if (kbmSlot >= 0) mappingSets[kbmSlot].WorkshopGyroRatchetDescriptors = ratchet;
+            }
             // Unclaimed slots stay non-authoritative on purpose: a slot the
             // user creates later must automap normally.
             for (int i = 0; i < maxPads; i++)
@@ -390,6 +400,35 @@ namespace PadForge.Services
                 // hold_repeats cadence on a wheel binding.
                 data.RepeatMode = MacroRepeatMode.UntilRelease;
                 data.RepeatDelayMs = Math.Clamp(m.IntervalMs > 0 ? m.IntervalMs : 100, 10, 1000);
+            }
+
+            // Autofire delay_end (v22): the translator stamps DelayEndMs
+            // on the UntilRelease pulse shapes as the release linger (the
+            // pulse train keeps running that long past the release, and a
+            // re-press cancels the pending stop). A Delay STEP could not
+            // carry it: the stop leg is the trigger release, not a
+            // sequence position. The VC hold pairs never land here (their
+            // delay_end rides the release-extension twin instead).
+            if (data.RepeatMode == MacroRepeatMode.UntilRelease
+                && m.DelayEndMs > 0
+                && (m.Action == TranslatedMacroAction.RepeatKeyWhileHeld
+                    || m.Action == TranslatedMacroAction.RepeatVcButtonWhileHeld
+                    || m.Action == TranslatedMacroAction.RepeatVcAxisWhileHeld
+                    || m.Action == TranslatedMacroAction.RepeatWheelWhileHeld))
+            {
+                data.ReleaseLingerMs = m.DelayEndMs;
+            }
+
+            // Press-leg tap extension (v22): delay_end on a press-fired
+            // tap deactivates the output late, so the assert grows to the
+            // authored length (KeyPress / MouseButtonPress executors are
+            // down + DurationMs + up; VcButtonTap and the AxisHold taps
+            // wire TapDurationMs in their own builders).
+            if (m.TapDurationMs > 0
+                && (action.Type == MacroActionType.KeyPress
+                    || action.Type == MacroActionType.MouseButtonPress))
+            {
+                action.DurationMs = m.TapDurationMs;
             }
 
             // Activator fire delays (v10 G5): a Delay step before the

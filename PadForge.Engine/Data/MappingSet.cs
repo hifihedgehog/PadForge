@@ -112,6 +112,33 @@ namespace PadForge.Engine.Data
         /// NOT held.</summary>
         [XmlAttribute] public bool WorkshopGyroEngageInvert { get; set; } = false;
 
+        /// <summary>Steam gyro_ratchet_button_mask (translator v22) as
+        /// pipe-joined device-free descriptors: while ANY of them is held
+        /// on any slot device, the slot's gyro reads are clutched
+        /// (disengaged), Steam's ratchet ("lift the mouse" re-centering).
+        /// A separate AND-NOT lane beside the engage stamp, never a
+        /// replacement for it, so it composes with an authored engage
+        /// button, the user's own engage PadSetting, and the
+        /// SetGyroEngaged macro bit alike. Only read while
+        /// <see cref="Authoritative"/>. Empty = no ratchet.</summary>
+        [XmlAttribute]
+        public string WorkshopGyroRatchetDescriptors
+        {
+            get => _workshopGyroRatchetDescriptors;
+            set { _workshopGyroRatchetDescriptors = value ?? ""; _workshopGyroRatchetList = null; }
+        }
+        private string _workshopGyroRatchetDescriptors = "";
+        private string[] _workshopGyroRatchetList;
+
+        /// <summary>Split, cached view of
+        /// <see cref="WorkshopGyroRatchetDescriptors"/> for the per-tick
+        /// engage settle (no per-poll string split).</summary>
+        [XmlIgnore]
+        public string[] WorkshopGyroRatchetList
+            => _workshopGyroRatchetList ??= _workshopGyroRatchetDescriptors.Length == 0
+                ? System.Array.Empty<string>()
+                : _workshopGyroRatchetDescriptors.Split('|', System.StringSplitOptions.RemoveEmptyEntries);
+
         /// <summary>Copies the Workshop slot-level stamps (v18) onto
         /// <paramref name="dst"/>. The ONE seam for every container-copy
         /// helper (profile snapshot deep clone, Copy From Slot, the legacy
@@ -127,6 +154,7 @@ namespace PadForge.Engine.Data
             dst.WorkshopRightStickDeadZoneShape = WorkshopRightStickDeadZoneShape ?? "";
             dst.WorkshopGyroEngageDescriptor = WorkshopGyroEngageDescriptor ?? "";
             dst.WorkshopGyroEngageInvert = WorkshopGyroEngageInvert;
+            dst.WorkshopGyroRatchetDescriptors = WorkshopGyroRatchetDescriptors ?? "";
         }
     }
 }

@@ -222,20 +222,25 @@ namespace PadForge.SteamWorkshop.Tests
                 x.ReasonKey == TranslationReasons.MouseModeTuningDropped);
         }
 
-        // ─── group-level haptic_intensity feeds the aggregate ───────────
+        // ─── group-level haptic_intensity (v22: no aggregate note) ──────
 
         [Fact]
-        public void GroupLevelHapticIntensity_FeedsTheAggregate()
+        public void GroupLevelHapticIntensity_OnMemberlessGroup_LowersSilently()
         {
+            // v22: the per-config HapticIntensityDropped aggregate retired.
+            // A member-less group has no activation to tick on, so nothing
+            // emits and nothing is named (the continuous surface-motion
+            // tick has no channel).
             string vdf = HeadPs4
                 + Group(1, "absolute_mouse", Settings(("haptic_intensity", "2")))
                 + Preset(0, "right_trackpad active")
                 + "}\n";
             var p = Translate(vdf);
 
-            var e = Assert.Single(p.Report.Entries, x =>
-                x.ReasonKey == TranslationReasons.HapticIntensityDropped);
-            Assert.Equal("1", e.ReasonArgs[0]);
+            Assert.DoesNotContain(p.Report.Entries, x =>
+                x.ReasonKey == "Workshop_Tr_HapticIntensityDropped");
+            Assert.DoesNotContain(p.Macros, m =>
+                m.Action == TranslatedMacroAction.RumblePulse);
         }
     }
 }

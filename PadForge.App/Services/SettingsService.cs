@@ -2956,6 +2956,7 @@ namespace PadForge.Services
                 RepeatCount = md.RepeatCount,
                 RepeatDelayMs = md.RepeatDelayMs,
                 PairId = md.PairId,
+                ReleaseLingerMs = md.ReleaseLingerMs,
                 TriggerAxisTargetList = md.TriggerAxisTargets,
                 TriggerAxisDirectionList = md.TriggerAxisDirections,
                 TriggerAxisThreshold = md.TriggerAxisThreshold > 0 ? md.TriggerAxisThreshold : 50,
@@ -4010,6 +4011,7 @@ namespace PadForge.Services
                 RepeatCount = macro.RepeatCount,
                 RepeatDelayMs = macro.RepeatDelayMs,
                 PairId = macro.PairId,
+                ReleaseLingerMs = macro.ReleaseLingerMs,
                 TriggerCustomButtons = macro.TriggerCustomButtons,
                 TriggerAxisTargets = macro.TriggerAxisTargetList,
                 TriggerAxisDirections = macro.TriggerAxisDirectionList,
@@ -5326,6 +5328,14 @@ namespace PadForge.Services
         /// existed load unchanged.</summary>
         [XmlElement]
         public int PairId { get; set; }
+
+        /// <summary>Release linger in ms for UntilRelease macros (translator
+        /// v22, Steam's activator delay_end on autofire). See
+        /// <see cref="ViewModels.MacroItem.ReleaseLingerMs"/>. Default 0 =
+        /// stop at release, so profiles saved before the field existed load
+        /// unchanged.</summary>
+        [XmlElement]
+        public int ReleaseLingerMs { get; set; }
 
         /// <summary>Hex-encoded custom Extended trigger button words (e.g. "00000003,00000000,00000000,00000000").</summary>
         [XmlElement]

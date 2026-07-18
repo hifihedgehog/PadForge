@@ -446,6 +446,18 @@ namespace PadForge.Common.Input
         /// <see cref="GyroEngagedFromButton"/> by the gyro evaluators.</summary>
         public volatile bool[] GyroEngagedFromMacro = new bool[MaxPads];
 
+        /// <summary>Per-slot gyro ratchet clutch (translator v22, Steam's
+        /// gyro_ratchet_button_mask): true while any of the authoritative
+        /// set's stamped ratchet descriptors is held on any slot device.
+        /// Settled once per tick by <see cref="UpdateGyroEngageStates"/>
+        /// and ANDed-NOT into <see cref="SourceCoercion.AimEngageStateProvider"/>,
+        /// a separate lane the engage sources cannot fight: the OR of
+        /// button + macro engage decides "engaged", the ratchet alone
+        /// decides "clutched", so holding the ratchet always pauses gyro
+        /// and releasing it always restores whatever the engage sources
+        /// say.</summary>
+        public volatile bool[] GyroRatchetHeld = new bool[MaxPads];
+
         /// <summary>Previous-tick button state for each slot's engage
         /// button. Owned by <see cref="UpdateGyroEngageStates"/> as the
         /// edge-detection input for Toggle mode.</summary>
@@ -1444,9 +1456,16 @@ namespace PadForge.Common.Input
                 if (!SettingsManager.SlotCreated[slot])
                 {
                     GyroEngagedFromButton[slot] = false;
+                    GyroRatchetHeld[slot] = false;
                     _prevAimEngageButtonDown[slot] = false;
                     continue;
                 }
+
+                // Authoritative workshop set for this slot (v18 engage
+                // stamp, v22 ratchet stamp). Fetched once per slot pass.
+                var wsSets = SettingsManager.SlotMappingSets;
+                var wsSet = wsSets != null && slot < wsSets.Length ? wsSets[slot] : null;
+                if (wsSet != null && !wsSet.Authoritative) wsSet = null;
 
                 // First device on the slot with a configured engage button
                 // wins. Empty descriptor everywhere → always-on (Hold-default).
@@ -1482,18 +1501,14 @@ namespace PadForge.Common.Input
                 // the held sense (Steam gyro_button_invert: gyro fires
                 // while the button is NOT held).
                 bool workshopInvert = false;
-                if (descriptor.Length == 0)
+                if (descriptor.Length == 0
+                    && wsSet != null
+                    && !string.IsNullOrEmpty(wsSet.WorkshopGyroEngageDescriptor))
                 {
-                    var sets = SettingsManager.SlotMappingSets;
-                    var set = sets != null && slot < sets.Length ? sets[slot] : null;
-                    if (set != null && set.Authoritative
-                        && !string.IsNullOrEmpty(set.WorkshopGyroEngageDescriptor))
-                    {
-                        descriptor = set.WorkshopGyroEngageDescriptor;
-                        workshopInvert = set.WorkshopGyroEngageInvert;
-                        deviceGuid = "";
-                        mode = "Hold";
-                    }
+                    descriptor = wsSet.WorkshopGyroEngageDescriptor;
+                    workshopInvert = wsSet.WorkshopGyroEngageInvert;
+                    deviceGuid = "";
+                    mode = "Hold";
                 }
 
                 bool buttonDown = false;
@@ -1545,6 +1560,32 @@ namespace PadForge.Common.Input
                         : (workshopInvert ? !buttonDown : buttonDown);
                 }
                 _prevAimEngageButtonDown[slot] = buttonDown;
+
+                // Workshop ratchet clutch (v22): any stamped descriptor
+                // held on any slot device pauses the slot's gyro. Same
+                // device-free walk as the engage stamp: guids gathered
+                // under the settings lock into the reused scratch, the
+                // provider invoked outside it (lock-order discipline).
+                bool ratchetHeld = false;
+                var ratchets = wsSet?.WorkshopGyroRatchetList;
+                if (ratchets != null && ratchets.Length > 0)
+                {
+                    _gyroEngageGuidScratch.Clear();
+                    lock (settings.SyncRoot)
+                    {
+                        for (int i = 0; i < settings.Items.Count; i++)
+                        {
+                            var us = settings.Items[i];
+                            if (us == null || us.MapTo != slot) continue;
+                            _gyroEngageGuidScratch.Add(us.InstanceGuidString);
+                        }
+                    }
+                    for (int g = 0; g < _gyroEngageGuidScratch.Count && !ratchetHeld; g++)
+                        for (int r = 0; r < ratchets.Length && !ratchetHeld; r++)
+                            ratchetHeld = SourceCoercion.ButtonHeldProvider?.Invoke(
+                                _gyroEngageGuidScratch[g], ratchets[r], slot) ?? false;
+                }
+                GyroRatchetHeld[slot] = ratchetHeld;
             }
         }
 
@@ -1903,6 +1944,7 @@ namespace PadForge.Common.Input
             {
                 GyroEngagedFromButton[i] = false;
                 GyroEngagedFromMacro[i] = false;
+                GyroRatchetHeld[i] = false;
                 _prevAimEngageButtonDown[i] = false;
             }
         }

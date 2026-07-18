@@ -2531,10 +2531,8 @@
   <data name="Pad_MouseGestures_CustomInput" xml:space="preserve"><value>사용자 지정 활성화 입력</value></data>
   <data name="Pad_MouseGestures_CustomInput_Tooltip" xml:space="preserve"><value>누르고 있는 동안 사용자 지정 제스처 세션을 대기시키는 입력으로, 이 슬롯의 아무 장치에서나 기록합니다. 버튼과 키는 누르는 동안 대기시킵니다. 페달 같은 아날로그 입력은 절반 이상 밟으면 대기시킵니다.</value></data>
   <data name="Pad_ResetMouseGestureCustomInput" xml:space="preserve"><value>사용자 지정 활성화 입력 재설정</value></data>
-  <data name="Workshop_Tr_HapticIntensityDropped" xml:space="preserve"><value>햅틱 피드백 제외됨({0}개 할당)</value></data>
   <data name="Workshop_Tr_ResponseCurveNotSupported" xml:space="preserve"><value>응답 곡선 및 범위 설정 제외됨({0})</value></data>
   <data name="Workshop_Tr_GyroButtonMaskDropped" xml:space="preserve"><value>자이로 활성화 설정 {0}={1} 제외됨(자이로 활성화는 패드별로 구성)</value></data>
-  <data name="Workshop_Tr_ActivatorDelayDropped" xml:space="preserve"><value>누름 지연 제외됨({0})</value></data>
   <data name="Workshop_Tr_PlayerNumberActionNotSupported" xml:space="preserve"><value>플레이어 번호 변경은 Steam 클라이언트 동작으로, 대응 없음</value></data>
   <data name="Workshop_Tr_LizardModeActionNotSupported" xml:space="preserve"><value>리저드 모드 전환은 Steam 내부 기능으로, 대응 없음</value></data>
   <data name="Workshop_Tr_ToggleLatchEmitted" xml:space="preserve"><value>토글 누름은 다음 누름까지 {0}을(를) 유지</value></data>

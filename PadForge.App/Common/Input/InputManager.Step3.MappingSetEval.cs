@@ -532,6 +532,13 @@ namespace PadForge.Common.Input
             // LayerOutputTicks). Only meaningful while ToggleOn and
             // AutoCancelMs > 0.
             public long[] AutoCancelLastActivityTicks = System.Array.Empty<long>();
+            // v6 release linger (translator v22): Hold mode's pending
+            // disengage deadline (UTC ticks). While the input is engaged
+            // the deadline is pushed forward; after release the layer
+            // stays engaged until the deadline passes, and a re-press
+            // pushes it forward again (cancel-on-re-press). Only
+            // meaningful when ReleaseDelayMs > 0.
+            public long[] HoldLingerUntilTicks = System.Array.Empty<long>();
             // #206 auto-cancel: per-layer last-output-activity ticks,
             // written by StampLayerActivity from the row write sites on
             // the polling thread and read by the Toggle auto-cancel
@@ -569,6 +576,7 @@ namespace PadForge.Common.Input
                 StickyBaselines = ResizeStickyBaselines(StickyBaselines, newSize);
                 LongPressFired = ResizeBool(LongPressFired, newSize);
                 AutoCancelLastActivityTicks = ResizeLong(AutoCancelLastActivityTicks, newSize);
+                HoldLingerUntilTicks = ResizeLong(HoldLingerUntilTicks, newSize);
             }
 
             public void Clear()
@@ -584,6 +592,7 @@ namespace PadForge.Common.Input
                 System.Array.Clear(StickyBaselines, 0, StickyBaselines.Length);
                 System.Array.Clear(LongPressFired, 0, LongPressFired.Length);
                 System.Array.Clear(AutoCancelLastActivityTicks, 0, AutoCancelLastActivityTicks.Length);
+                System.Array.Clear(HoldLingerUntilTicks, 0, HoldLingerUntilTicks.Length);
                 LayerOutputTicks.Clear();
                 lock (SyncRoot)
                 {
@@ -1014,6 +1023,25 @@ namespace PadForge.Common.Input
                 default:
                 {
                     bool engaged = inputDown && delayMet;
+                    // v6 release linger (translator v22, Steam delay_end on
+                    // a layer switch): an engaged hold keeps pushing its
+                    // disengage deadline forward; after release the layer
+                    // stays engaged until the deadline passes. A re-press
+                    // inside the window re-engages the plain read first, so
+                    // the pending disengage is cancelled by the press (the
+                    // M6 cancel-on-re-press shape on the layer machinery).
+                    if (act.ReleaseDelayMs > 0)
+                    {
+                        if (engaged)
+                        {
+                            rt.HoldLingerUntilTicks[actIdx] = nowTicks
+                                + act.ReleaseDelayMs * System.TimeSpan.TicksPerMillisecond;
+                        }
+                        else if (nowTicks < rt.HoldLingerUntilTicks[actIdx])
+                        {
+                            engaged = true;
+                        }
+                    }
                     UpdateStack(rt, actIdx, engaged);
                     break;
                 }

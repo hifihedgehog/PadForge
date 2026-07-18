@@ -61,7 +61,7 @@ kbm rows: 27
   Base | KbmScroll | Sum
     <- Gamepad LeftShoulder
     <- Gamepad RightShoulder [inverted]
-macros: 19
+macros: 20
   macro RumblePulse OnPress | Haptic pulse (dpad_east) | btns=0x0000 in=[Gamepad DPadRight] strength=33%
   macro RumblePulse OnPress | Haptic pulse (dpad_north) | btns=0x0000 in=[Gamepad DPadUp] strength=33%
   macro RumblePulse OnPress | Haptic pulse (dpad_south) | btns=0x0000 in=[Gamepad DPadDown] strength=33%
@@ -81,6 +81,7 @@ macros: 19
   macro RumblePulse OnPress | Haptic pulse (touch_menu_button_8) | btns=0x0000 in=[Menu 1 Item 8] strength=66%
   macro HoldMouseButton OnPress | Hold mouse LEFT (click) | btns=0x0000 in=[Touchpad 1 Click] mbtn=0 delayEnd=10ms
   macro RumblePulse OnPress | Haptic pulse (edge) | btns=0x0000 in=[Gamepad RightTrigger] in-half=upper in-dz=15 strength=66%
+  macro KeyTap OnRelease | Screenshot key (button_capture) | btns=0x0000 in=[Button 11] vk=0x2C
 menus: 1
   menu 1 Radial | Gamepad RightStick | Base | fire=Click cells=8 pos=(95%,70%) opacity=100% | name=Radial Menu 1
     [1] 1
@@ -91,7 +92,7 @@ menus: 1
     [6] 6
     [7] 7
     [8] 8
-report: v19 rows:x0+k27 macros:19 menus:1 layers:0 clean:33 partial:0 skipped:1 errors:0
+report: v20 rows:x0+k27 macros:20 menus:1 layers:0 clean:33 partial:0 skipped:0 errors:0
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_a/Full_Press => KbmKey72 <- Gamepad ButtonA
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_b/Full_Press => KbmKey1B <- Gamepad ButtonB
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_x/Full_Press => KbmKey76 <- Gamepad ButtonX
@@ -121,7 +122,6 @@ report: v19 rows:x0+k27 macros:19 menus:1 layers:0 clean:33 partial:0 skipped:1 
   Clean RowEmitted @ Default/right_trackpad/group 13 (mouse_region) => KbmMouseY <- Touchpad 1 Pointer Y
   Clean MacroEmitted @ Default/right_trackpad/group 13 (mouse_region)/click/Full_Press => Long-press hold macro: mouse button 0
   Clean RowEmitted @ Default/right_trigger/group 5 (trigger)/edge/Full_Press => KbmMBtn0 <- Gamepad RightTrigger (upper half)
-  Skipped SteamSystemAction(system_key_1) @ Default/switch/group 6 (switches)/button_capture/release :: controller_action system_key_1
   Clean RowEmitted @ Default/switch/group 6 (switches)/button_escape/Full_Press => KbmKey79 <- Gamepad ButtonStart
   Clean RowEmitted @ Default/switch/group 6 (switches)/button_menu/Full_Press => KbmKey75 <- Gamepad ButtonBack
   Clean RowEmitted @ Default/switch/group 6 (switches)/left_bumper/Full_Press => KbmScroll <- Gamepad LeftShoulder

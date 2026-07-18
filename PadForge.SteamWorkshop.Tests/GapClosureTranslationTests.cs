@@ -317,17 +317,27 @@ namespace PadForge.SteamWorkshop.Tests
         }
 
         [Fact]
-        public void SystemKey1_KeepsSteamSystemActionSkip()
+        public void SystemKey1_ReleaseActivator_BecomesPrintScreenTap()
         {
+            // The corpus shape: every system_key_1 occurrence (fixtures and
+            // Valve's shipped controller_base configs alike) rides
+            // button_capture Release, authors restoring the Capture
+            // button's native screenshot behavior. v20 lowers it exactly
+            // like SCREENSHOT, honoring the hosting activator.
             string vdf = Head
-                + Group(1, "four_buttons", Inputs(
-                    Inp("button_a", "controller_action SYSTEM_KEY_1")))
-                + Preset(0, "Default", (1, "button_diamond active"))
+                + Group(1, "switches", Inputs(
+                    Inp("button_capture", "controller_action system_key_1",
+                        activator: "Release")))
+                + Preset(0, "Default", (1, "switch active"))
                 + "}\n";
             var p = Translate(vdf);
-            Assert.Empty(p.Macros);
-            var entry = Assert.Single(p.Report.Entries);
-            Assert.Equal(TranslationReasons.SteamSystemAction, entry.ReasonKey);
+            var m = Assert.Single(p.Macros);
+            Assert.Equal(TranslatedMacroAction.KeyTap, m.Action);
+            Assert.Equal(0x2C, m.VirtualKey); // VK_SNAPSHOT
+            Assert.Equal("OnRelease", m.TriggerMode);
+            // Silent, the SCREENSHOT ruling. The SteamSystemAction note no
+            // longer fires for system_key_1.
+            Assert.Empty(p.Report.Entries);
         }
 
         // ─── G8: REMOVE_LAYER ───────────────────────────────────────────

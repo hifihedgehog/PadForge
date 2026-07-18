@@ -117,7 +117,7 @@ menus: 2
     [8] De Jure Empires
     [9] Counties
     [10] Houses
-report: v19 rows:x0+k38 macros:9 menus:2 layers:2 clean:47 partial:3 skipped:0 errors:0
+report: v20 rows:x0+k38 macros:9 menus:2 layers:2 clean:47 partial:3 skipped:0 errors:0
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_a/Full_Press => KbmKey20 <- Gamepad ButtonA
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_b/Full_Press => KbmKey6B <- Gamepad ButtonB
   Clean RowEmitted @ Default/button_diamond/group 0 (four_buttons)/button_x/Full_Press => KbmKey6D <- Gamepad ButtonX

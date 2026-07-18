@@ -94,15 +94,17 @@ kbm rows: 42
     <- Touchpad 1 Finger 0 Y
 kbm activators: 1
   Cycle Layer_2790927974_1 cycle=Layer_2790927974_1+Base | Gamepad Paddle2 | name=Controls - Landing party / Controls - Enterprise
-macros: 8
+macros: 10
   macro RumblePulse OnPress | Haptic pulse (dpad_north) | btns=0x0000 in=[Gamepad LeftStickY] in-half=lower strength=33%
   macro RumblePulse OnPress | Haptic pulse (dpad_south) | btns=0x0000 in=[Gamepad LeftStickY] in-half=upper strength=33%
   macro RumblePulse OnPress | Haptic pulse (edge) | btns=0x0000 in=[Gamepad LeftTrigger] in-half=upper in-dz=15 strength=66%
   macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Gamepad RightStick] strength=33%
   macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Touchpad 1 Click] strength=33%
   macro RumblePulse OnPress | Haptic pulse (edge) | btns=0x0000 in=[Gamepad RightTrigger] in-half=upper in-dz=15 strength=66%
+  macro KeyTap OnRelease | Screenshot key (button_capture) | btns=0x0000 in=[Button 11] vk=0x2C
   macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Gamepad LeftTrigger] in-half=upper in-dz=75 strength=66%
   macro RumblePulse OnPress | Haptic pulse (click) | btns=0x0000 in=[Gamepad RightTrigger] in-half=upper in-dz=75 strength=66%
+  macro KeyTap OnRelease | Screenshot key (button_capture) | btns=0x0000 in=[Button 11] vk=0x2C
 menus: 2
   menu 1 Radial | Touchpad 0 | Base | fire=Click cells=6 | name=Radial Menu 1
     [1] T
@@ -118,7 +120,7 @@ menus: 2
     [3] U
     [4] G
     [5] L
-report: v19 rows:x0+k42 macros:8 menus:2 layers:1 clean:50 partial:0 skipped:2 errors:0
+report: v20 rows:x0+k42 macros:10 menus:2 layers:1 clean:50 partial:0 skipped:0 errors:0
   Clean RowEmitted @ Controls - Enterprise/button_diamond/group 0 (four_buttons)/button_a/Full_Press => KbmKey53 <- Gamepad ButtonA
   Clean RowEmitted @ Controls - Enterprise/button_diamond/group 0 (four_buttons)/button_b/Full_Press => KbmKey57 <- Gamepad ButtonB
   Clean RowEmitted @ Controls - Enterprise/button_diamond/group 0 (four_buttons)/button_x/Full_Press => KbmKey44 <- Gamepad ButtonX
@@ -147,7 +149,6 @@ report: v19 rows:x0+k42 macros:8 menus:2 layers:1 clean:50 partial:0 skipped:2 e
   Clean RowEmitted @ Controls - Enterprise/switch/group 6 (switches)/button_back_left_upper/Full_Press => KbmKeyBC <- Gamepad Paddle4
   Clean RowEmitted @ Controls - Enterprise/switch/group 6 (switches)/button_back_right/Full_Press => KbmKey42 <- Gamepad Paddle1
   Clean RowEmitted @ Controls - Enterprise/switch/group 6 (switches)/button_back_right_upper/Full_Press => KbmKeyBE <- Gamepad Paddle3
-  Skipped SteamSystemAction(system_key_1) @ Controls - Enterprise/switch/group 6 (switches)/button_capture/release :: controller_action system_key_1
   Clean RowEmitted @ Controls - Enterprise/switch/group 6 (switches)/button_escape/Full_Press => KbmKey09 <- Gamepad ButtonStart
   Clean RowEmitted @ Controls - Enterprise/switch/group 6 (switches)/button_menu/Full_Press => KbmKey50 <- Gamepad ButtonBack
   Clean RowEmitted @ Controls - Enterprise/switch/group 6 (switches)/left_bumper/Full_Press => KbmKey2D <- Gamepad LeftShoulder
@@ -167,7 +168,6 @@ report: v19 rows:x0+k42 macros:8 menus:2 layers:1 clean:50 partial:0 skipped:2 e
   Clean RowEmitted @ Controls - Landing party/right_trackpad/group 16 (absolute_mouse) => KbmMouseY <- Touchpad 1 Finger 0 Y
   Clean RowEmitted @ Controls - Landing party/right_trackpad/group 16 (absolute_mouse)/click/Soft_Press => KbmMBtn0 <- Touchpad 1 Click
   Clean RowEmitted @ Controls - Landing party/right_trigger/group 14 (trigger)/click/Full_Press => KbmMBtn0 <- Gamepad RightTrigger (upper half)
-  Skipped SteamSystemAction(system_key_1) @ Controls - Landing party/switch/group 15 (switches)/button_capture/release :: controller_action system_key_1
   Clean RowEmitted @ Controls - Landing party/switch/group 15 (switches)/button_escape/Full_Press => KbmKey09 <- Gamepad ButtonStart
   Clean RowEmitted @ Controls - Landing party/switch/group 15 (switches)/button_menu/Full_Press => KbmKey50 <- Gamepad ButtonBack
   Clean ShiftLayerEmitted(Controls - Landing party / Controls - Enterprise) @ Controls - Enterprise/switch/group 6 (switches)/button_back_left/Full_Press => Cycle -> Layer_2790927974_1|Base

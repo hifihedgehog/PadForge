@@ -4637,6 +4637,22 @@ namespace PadForge.SteamWorkshop.Translation
                             path, binding.Raw, args: binding.Param);
                         return;
                     }
+                    // Sentinel set-cycle commands, not preset references
+                    // (v20). Steam's own vocabulary binds 32766 as "change
+                    // to next action set" and 32765 as "change to previous
+                    // action set" (community .vdf grammar guide, file
+                    // 932405100). They lower to the engine's Cycle
+                    // activator over every action set in authored order,
+                    // so MissingPreset stays reserved for genuinely
+                    // dangling numeric references.
+                    if (presetIndex == ChangePresetNextSentinel
+                        || presetIndex == ChangePresetPreviousSentinel)
+                    {
+                        TranslateSentinelPresetCycle(run,
+                            previous: presetIndex == ChangePresetPreviousSentinel,
+                            binding, source, layer, path, onRelease, activatorDelayMs, oneShotHost);
+                        return;
+                    }
                     if (!TryResolvePresetIndex(run, presetIndex, out int presetId))
                     {
                         run.Report.Add(TranslationStatus.Partial, TranslationReasons.MissingPreset,
@@ -4819,12 +4835,20 @@ namespace PadForge.SteamWorkshop.Translation
                 }
 
                 case "SCREENSHOT":
+                case "SYSTEM_KEY_1":
                 {
                     // v10 G7: Steam's overlay screenshot has no client here;
                     // the nearest verb is a PrintScreen tap (VK_SNAPSHOT via
                     // SendInput), which most capture tools bind. Silent since
                     // v17: the note described exactly what a user expects
                     // the action to do, so it was noise.
+                    // system_key_1 rides the same lowering (v20). Every
+                    // occurrence in the corpus and in Valve's shipped
+                    // controller_base configs binds it to button_capture
+                    // Release: authors restoring the Capture button's
+                    // native Steam behavior, which is taking a screenshot.
+                    // system_key_0 stays on the SteamSystemAction note via
+                    // the SteamClientActions set below.
                     var shot = new TranslatedMacro
                     {
                         Name = $"Screenshot key ({inputName})",
@@ -4863,20 +4887,16 @@ namespace PadForge.SteamWorkshop.Translation
                     return;
                 }
 
-                case "SYSTEM_KEY_1":
-                    run.Report.Add(TranslationStatus.Skipped, TranslationReasons.SteamSystemAction,
-                        path, binding.Raw, args: action);
-                    return;
-
                 case "EMPTY_SUB_COMMAND":
                 case "EMPTY_BINDING": // same placeholder, later vintage (v10 G15)
                     return; // placeholder, silent
 
                 default:
                     // Steam-client system verbs (v13) get the named
-                    // SteamSystemAction entry the SYSTEM_KEY_1 arm already
-                    // uses. The generic unknown below stays only for verbs
-                    // outside Steam's own serializer vocabulary.
+                    // SteamSystemAction entry (system_key_0 and the
+                    // SteamClientActions families land here). The generic
+                    // unknown below stays only for verbs outside Steam's
+                    // own serializer vocabulary.
                     if (IsSteamClientAction(action))
                     {
                         run.Report.Add(TranslationStatus.Skipped, TranslationReasons.SteamSystemAction,
@@ -4954,12 +4974,88 @@ namespace PadForge.SteamWorkshop.Translation
             return raw;
         }
 
+        /// <summary>Steam's CHANGE_PRESET sentinel ids (v20). These are
+        /// commands, not preset references: 32766 steps to the NEXT action
+        /// set, 32765 to the PREVIOUS one. Grounding: the community .vdf
+        /// grammar guide (Steam file 932405100) documents both forms, and
+        /// corpus fixture 3353604014 carries the next form once. Valve's
+        /// 54 shipped controller_base templates author only ordinary
+        /// indices (1 and 2), so nothing else in the 32000+ range exists
+        /// in any censused source.</summary>
+        private const int ChangePresetNextSentinel = 32766;
+        private const int ChangePresetPreviousSentinel = 32765;
+
+        /// <summary>Lowers a sentinel CHANGE_PRESET to one Cycle activator
+        /// whose ring is every selected action set in authored order (the
+        /// preset walk's ascending-id order). The non-Base sets ride
+        /// CycleLayers and the Base set rides CycleIncludeBase, the same
+        /// ring shape MergeSameInputJumpsIntoCycles builds for same-input
+        /// jump pairs. Previous walks the same ring in reverse: from the
+        /// resting Base stop the first step lands on the LAST set, which
+        /// is exactly Steam's previous-set wrap. A single-set config still
+        /// gets its activator with an empty queue: the ring is Base alone,
+        /// the runtime never steps an empty queue, and that matches a
+        /// next-set press when there is only one set to land on.</summary>
+        private static void TranslateSentinelPresetCycle(Run run, bool previous,
+            SteamInputBinding binding, ResolvedSource source, string layer, string path,
+            bool onRelease, int activatorDelayMs, bool oneShotHost)
+        {
+            if (!IsActivatorCapable(source, allowGyroHalf: oneShotHost))
+            {
+                run.Report.Add(TranslationStatus.Partial, TranslationReasons.ActivatorInputNotSupported,
+                    path, binding.Raw);
+                return;
+            }
+            var stops = new List<string>();
+            var names = new List<string>();
+            foreach (var setPreset in SelectPresets(run.Config, run.Options))
+            {
+                names.Add(PresetLayerName(run, setPreset.Id));
+                bool isBaseSet = run.BasePresetId.HasValue && setPreset.Id == run.BasePresetId.Value;
+                if (!isBaseSet)
+                    stops.Add($"Layer_{run.Options.FileId}_{setPreset.Id}");
+            }
+            if (previous)
+            {
+                stops.Reverse();
+                names.Reverse();
+            }
+            var cycleReq = new ActivatorRequest
+            {
+                LayerMask = stops.Count > 0 ? stops[0] : "",
+                LayerName = string.Join(" / ", names
+                    .Where(n => !string.IsNullOrEmpty(n))
+                    .Distinct(StringComparer.Ordinal)),
+                Mode = "Cycle",
+                CycleLayers = string.Join("|", stops),
+                CycleIncludeBase = true,
+                InheritUnmapped = false, // action sets replace
+                // A Long_Press sentinel rides the activator's
+                // hold-before-fire debounce like the jump path (v10 G10).
+                DelayMs = activatorDelayMs,
+                HostLayer = layer,
+                Path = path,
+            };
+            FillActivatorInput(cycleReq, source);
+            run.Activators.Add(cycleReq);
+            // A release-hosted set cycle steps on the press edge instead
+            // (Cycle activators key on the press edge only), same named
+            // Partial as the jump path (v19 T6).
+            if (onRelease)
+            {
+                run.Report.Add(TranslationStatus.Partial,
+                    TranslationReasons.LayerReleaseEdgeApproximated,
+                    path, binding.Raw, args: "CHANGE_PRESET");
+            }
+        }
+
         /// <summary>CHANGE_PRESET / add_layer / hold_layer reference presets
         /// by 1-BASED INDEX in id order, not by preset id. Corpus ground
         /// truth: 708227783 carries CHANGE_PRESET 1 and 2 over presets
         /// {0, 1}, and 3451446931 carries hold_layer 2 over {0, 1}; the
         /// index reading resolves every in-corpus reference, the id reading
-        /// leaves danglers in three fixtures.</summary>
+        /// leaves danglers in three fixtures. Sentinel set-cycle ids never
+        /// reach this resolver (v20): they are intercepted as commands.</summary>
         private static bool TryResolvePresetIndex(Run run, int oneBasedIndex, out int presetId)
         {
             presetId = -1;
@@ -5399,6 +5495,17 @@ namespace PadForge.SteamWorkshop.Translation
                     var stops = req.CycleLayers.Split('|', StringSplitOptions.RemoveEmptyEntries);
                     xboxHas = stops.Any(l => LayerHasRows(run.Profile.XboxMappingSet, l));
                     kbmHas = stops.Any(l => LayerHasRows(run.Profile.KbmMappingSet, l));
+                    if (stops.Length == 0 && req.CycleIncludeBase)
+                    {
+                        // A sentinel set cycle on a single-set config has
+                        // no queued stops (v20). Its whole ring is Base,
+                        // so Base rows keep the activator live. The
+                        // runtime never steps an empty queue, which is
+                        // exactly what a next-set press does when there
+                        // is only one set to land on.
+                        xboxHas = LayerHasRows(run.Profile.XboxMappingSet, "Base");
+                        kbmHas = LayerHasRows(run.Profile.KbmMappingSet, "Base");
+                    }
                 }
                 else
                 {
@@ -5438,7 +5545,12 @@ namespace PadForge.SteamWorkshop.Translation
 
                 string engagedText = req.Mode switch
                 {
-                    "Cycle" => req.CycleLayers + (req.CycleIncludeBase ? "|Base" : ""),
+                    // An empty queue with Base in the ring is the v20
+                    // single-set sentinel cycle. Render "Base" alone so
+                    // the report never leads with a bare pipe.
+                    "Cycle" => req.CycleLayers.Length == 0 && req.CycleIncludeBase
+                        ? "Base"
+                        : req.CycleLayers + (req.CycleIncludeBase ? "|Base" : ""),
                     _ => req.LayerMask,
                 };
                 run.Report.Add(TranslationStatus.Clean, TranslationReasons.ShiftLayerEmitted,
@@ -5564,6 +5676,18 @@ namespace PadForge.SteamWorkshop.Translation
             => !string.IsNullOrEmpty(layer)
             && set.Rows.Any(r => string.Equals(r.LayerMask ?? "Base", layer, StringComparison.Ordinal));
 
+        /// <summary>True when the activator engages the layer directly or
+        /// holds it as a stop in its Cycle queue. The queue check keeps a
+        /// v20 sentinel set cycle's later stops from a false
+        /// PresetHasNoActivator note: the ring reaches every set even
+        /// though only the first stop is the activator's own mask.</summary>
+        private static bool ActivatorReachesLayer(ShiftActivator a, string layer)
+            => a.LayerMask == layer
+            || a.JumpToLayer == layer
+            || (!string.IsNullOrEmpty(a.CycleLayers)
+                && a.CycleLayers.Split('|', StringSplitOptions.RemoveEmptyEntries)
+                    .Contains(layer, StringComparer.Ordinal));
+
         private void ReportActivatorlessPresets(Run run)
         {
             foreach (var kv in run.LayerByPreset.OrderBy(k => k.Key))
@@ -5573,10 +5697,8 @@ namespace PadForge.SteamWorkshop.Translation
                     || LayerHasRows(run.Profile.KbmMappingSet, kv.Value);
                 if (!hasRows) continue;
                 bool hasActivator =
-                    run.Profile.XboxMappingSet.ShiftActivators.Any(a =>
-                        a.LayerMask == kv.Value || a.JumpToLayer == kv.Value)
-                    || run.Profile.KbmMappingSet.ShiftActivators.Any(a =>
-                        a.LayerMask == kv.Value || a.JumpToLayer == kv.Value);
+                    run.Profile.XboxMappingSet.ShiftActivators.Any(a => ActivatorReachesLayer(a, kv.Value))
+                    || run.Profile.KbmMappingSet.ShiftActivators.Any(a => ActivatorReachesLayer(a, kv.Value));
                 if (hasActivator) continue;
                 run.Report.Add(TranslationStatus.Partial, TranslationReasons.PresetHasNoActivator,
                     run.PresetNames.TryGetValue(kv.Key, out var n) ? n : kv.Value,

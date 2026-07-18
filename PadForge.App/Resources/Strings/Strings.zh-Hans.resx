@@ -2728,12 +2728,12 @@
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>无法识别菜单单元格图标（{0}），该单元格保留其文本标签</value></data>
   <data name="Pad_Tab_BassShakers" xml:space="preserve"><value>低音振动器</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>低音振动器</value></data>
-  <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>将此虚拟手柄收到的游戏振动转换为低频音，输出到音频设备，用于低音振动器和低音炮。</value></data>
+  <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>将此虚拟手柄收到的游戏振动和力反馈转换为低频音，输出到音频设备，用于低音振动器和低音炮。</value></data>
   <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>振动转音频</value></data>
-  <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>适用于 Xbox 和 DualShock 4 / DualSense 虚拟手柄。仅游戏反馈会进入音频输出。宏振动和测试振动仍留在手柄上。</value></data>
+  <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>适用于 Xbox、DualShock 4 / DualSense 以及支持力反馈的扩展虚拟手柄（例如赛车方向盘）。仅游戏反馈会进入音频输出。宏振动和测试振动仍留在手柄上。</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>重置振动转音频</value></data>
   <data name="Pad_RumbleAudio_Enable" xml:space="preserve"><value>将振动发送到音频输出</value></data>
-  <data name="Pad_RumbleAudio_Enable_Tooltip" xml:space="preserve"><value>把此虚拟手柄的游戏振动在所选音频输出上以低频音播放。关闭后所有设置保持不变。</value></data>
+  <data name="Pad_RumbleAudio_Enable_Tooltip" xml:space="preserve"><value>把此虚拟手柄的游戏振动和力反馈在所选音频输出上以低频音播放。关闭后所有设置保持不变。</value></data>
   <data name="Pad_RumbleAudio_ResetEnable" xml:space="preserve"><value>重置振动路由</value></data>
   <data name="Pad_RumbleAudio_OutputDevice" xml:space="preserve"><value>输出设备</value></data>
   <data name="Pad_RumbleAudio_OutputDevice_Tooltip" xml:space="preserve"><value>接收振动音的播放设备。系统默认跟随 Windows 默认播放设备。所选设备消失时音频保持静音，直到设备恢复。</value></data>

@@ -28,6 +28,24 @@ namespace PadForge.Common.Input
         private const ushort RamPoolSize = 0xFFFF;
 
         private readonly Dictionary<byte, EffectState> _effects = new();
+        // (left << 16) | right, written atomically because Apply also
+        // runs on the SDK receive thread while TickFfb reads on the
+        // poll thread.
+        private int _lastComputedPack;
+
+        /// <summary>The last game-authored motor pair Apply computed
+        /// from the PID effect set (#236 LFE parity). Never sourced
+        /// from the shared Vibration object, so the bass-shaker path
+        /// inherits the decoder's provenance.</summary>
+        public (ushort Left, ushort Right) LastComputedMotors
+        {
+            get
+            {
+                int p = System.Threading.Volatile.Read(ref _lastComputedPack);
+                return ((ushort)(p >> 16), (ushort)p);
+            }
+        }
+
         private byte _deviceGain = 255;
         private readonly object _lock = new();
         private readonly HMController _controller;
@@ -315,6 +333,14 @@ namespace PadForge.Common.Input
 
                 vib.LeftMotorSpeed = leftVal;
                 vib.RightMotorSpeed = rightVal;
+
+                // #236 (owner directive: every feedback source we support
+                // is an LFE source): expose the game-authored pair for
+                // the inbound rumble pack. Computed purely from the PID
+                // effect set the GAME uploaded (gains included), so
+                // test-rumble writes to VibrationStates stay out.
+                System.Threading.Volatile.Write(ref _lastComputedPack,
+                    (leftVal << 16) | rightVal);
 
                 vib.HasDirectionalData = dominantMag > 0;
                 if (vib.HasDirectionalData)

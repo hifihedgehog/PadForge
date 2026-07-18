@@ -2748,12 +2748,12 @@
   <data name="Workshop_Tr_MenuIconUnresolved" xml:space="preserve"><value>menucel-pictogram niet herkend ({0}), de cel behoudt daarom zijn tekstlabel</value></data>
   <data name="Pad_Tab_BassShakers" xml:space="preserve"><value>Bass shakers</value></data>
   <data name="Pad_RumbleAudio_Header" xml:space="preserve"><value>Bass shakers</value></data>
-  <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Stuurt de speltrilling die deze virtuele controller ontvangt als laagfrequente tonen naar een audio-uitgang voor bass shakers en subwoofers.</value></data>
+  <data name="Pad_RumbleAudio_Subtitle" xml:space="preserve"><value>Stuurt de speltrilling en force feedback die deze virtuele controller ontvangt als laagfrequente tonen naar een audio-uitgang voor bass shakers en subwoofers.</value></data>
   <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>Trilling naar audio</value></data>
-  <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Werkt met virtuele Xbox- en DualShock 4- / DualSense-controllers. Alleen spelfeedback gaat naar de audio-uitgang. Macro- en testtrilling blijven op de controller.</value></data>
+  <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Werkt met virtuele Xbox- en DualShock 4- / DualSense-controllers en met virtuele Uitgebreid-controllers met force feedback, zoals racesturen. Alleen spelfeedback gaat naar de audio-uitgang. Macro- en testtrilling blijven op de controller.</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>Trilling naar audio resetten</value></data>
   <data name="Pad_RumbleAudio_Enable" xml:space="preserve"><value>Trilling naar een audio-uitgang sturen</value></data>
-  <data name="Pad_RumbleAudio_Enable_Tooltip" xml:space="preserve"><value>Speelt de speltrilling van deze virtuele controller als laagfrequente tonen af op de gekozen audio-uitgang. Uitschakelen bewaart alle instellingen.</value></data>
+  <data name="Pad_RumbleAudio_Enable_Tooltip" xml:space="preserve"><value>Speelt de speltrilling en force feedback van deze virtuele controller als laagfrequente tonen af op de gekozen audio-uitgang. Uitschakelen bewaart alle instellingen.</value></data>
   <data name="Pad_RumbleAudio_ResetEnable" xml:space="preserve"><value>Trillingsroutering resetten</value></data>
   <data name="Pad_RumbleAudio_OutputDevice" xml:space="preserve"><value>Uitvoerapparaat</value></data>
   <data name="Pad_RumbleAudio_OutputDevice_Tooltip" xml:space="preserve"><value>Het afspeelapparaat dat de triltonen ontvangt. Systeemstandaard volgt het standaardafspeelapparaat van Windows. Verdwijnt het gekozen apparaat, dan blijft de audio stil tot het terugkeert.</value></data>

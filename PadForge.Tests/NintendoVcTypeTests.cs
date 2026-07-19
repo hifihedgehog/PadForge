@@ -206,6 +206,36 @@ namespace PadForge.Tests
         }
 
         [Fact]
+        public void BuildFromLegacy_TranslatesRawDictIntoGridRows()
+        {
+            // The Mappings grid reads ONLY MappingSet rows, so raw-surface
+            // automap entries must translate into rows or they render as
+            // nothing (the DualSense-on-Nintendo report).
+            var ps = new PadSetting();
+            ps.SetExtendedMapping("ExtendedBtn0", "Button 0");
+            ps.SetExtendedMapping("ExtendedBtn6", "Axis 2");
+            ps.SetExtendedMapping("ExtendedAxis0", "Axis 0");
+            ps.SetExtendedMapping("ExtendedPov0Up", "POV 0 Up");
+            // Tuning keys share the dictionary and must NOT become rows.
+            ps.SetExtendedMapping("ExtendedStick0DzShape", "Circle");
+            ps.SetExtendedMapping("FlickStickDots", "1.0");
+            ps.FlushExtendedMappings();
+
+            string guid = System.Guid.NewGuid().ToString();
+            var ms = MappingSetMigrator.BuildFromLegacy(0,
+                new (string, PadSetting, bool)[] { (guid, ps, true) });
+
+            MappingRow Row(string t) => ms.Rows.Find(r => r?.Target == t);
+            Assert.Equal("Button 0", Row("ExtendedBtn0")?.Sources?[0]?.Descriptor);
+            Assert.Equal("Axis 2", Row("ExtendedBtn6")?.Sources?[0]?.Descriptor);
+            Assert.Equal("Axis 0", Row("ExtendedAxis0")?.Sources?[0]?.Descriptor);
+            Assert.Equal("POV 0 Up", Row("ExtendedPov0Up")?.Sources?[0]?.Descriptor);
+            Assert.Equal(guid, Row("ExtendedBtn0")?.Sources?[0]?.DeviceGuid);
+            Assert.Null(Row("ExtendedStick0DzShape"));
+            Assert.Null(Row("FlickStickDots"));
+        }
+
+        [Fact]
         public void PadSettingJson_RoundTripsNintendoRawMappings()
         {
             var ps = new PadSetting();

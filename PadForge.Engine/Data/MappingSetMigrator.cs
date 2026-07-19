@@ -198,7 +198,82 @@ namespace PadForge.Engine.Data
             foreach (var target in TouchpadTargets)
                 AppendSimpleRow(ms, target, devicesAndPadSettings, gamepadOnly: false);
 
+            // Raw-surface targets (profile-driven slots: Nintendo, Extended
+            // custom): per-device mappings live in the PadSetting's raw
+            // mapping dictionary under the persisted raw target grammar.
+            // Without this lane those mappings evaluate only through the
+            // engine's per-device fallback and never surface as rows, so
+            // the Mappings grid showed nothing for them (the Nintendo
+            // positional automap was invisible). The dictionary also
+            // carries non-mapping tuning keys (deadzone shapes, steering,
+            // flick stick), so only exact raw-target keys translate.
+            AppendRawSurfaceRows(ms, devicesAndPadSettings);
+
             return ms;
+        }
+
+        private static readonly System.Text.RegularExpressions.Regex RawTargetKey =
+            new(@"^Extended(Axis\d+|Btn\d+|Pov\d+(Up|Down|Left|Right))$",
+                System.Text.RegularExpressions.RegexOptions.Compiled);
+
+        private static void AppendRawSurfaceRows(
+            MappingSet ms,
+            IReadOnlyList<(string DeviceGuid, PadSetting PadSetting, bool IsGamepadEligible)> devices)
+        {
+            // Targets present on any device, in first-seen order. Negative
+            // axis legs ("ExtendedAxis{N}Neg") fold into their positive
+            // target's row below, mirroring AppendBipolarRow.
+            var targets = new List<string>();
+            var seen = new HashSet<string>(StringComparer.Ordinal);
+            foreach (var (_, ps, _) in devices)
+            {
+                var entries = ps?.ExtendedMappingEntries;
+                if (entries == null) continue;
+                foreach (var e in entries)
+                {
+                    if (e == null || string.IsNullOrEmpty(e.Key) || string.IsNullOrEmpty(e.Value)) continue;
+                    string target = e.Key.EndsWith("Neg", StringComparison.Ordinal)
+                        ? e.Key.Substring(0, e.Key.Length - 3)
+                        : e.Key;
+                    if (!RawTargetKey.IsMatch(target)) continue;
+                    if (seen.Add(target)) targets.Add(target);
+                }
+            }
+
+            foreach (var target in targets)
+            {
+                var sources = new List<MappingSource>();
+                foreach (var (guid, ps, _) in devices)
+                {
+                    string raw = ps?.GetExtendedMapping(target);
+                    if (!string.IsNullOrEmpty(raw))
+                    {
+                        var src = BuildSource(guid, raw, ps?.GetMappingDeadZone(target));
+                        if (src != null) sources.Add(src);
+                    }
+
+                    if (!target.StartsWith("ExtendedAxis", StringComparison.Ordinal)) continue;
+                    string rawNeg = ps?.GetExtendedMapping(target + "Neg");
+                    if (string.IsNullOrEmpty(rawNeg)) continue;
+                    var negSrc = BuildSource(guid, rawNeg, ps?.GetMappingDeadZone(target));
+                    if (negSrc == null) continue;
+                    // Same polarity rule as AppendBipolarRow's negative leg.
+                    if (Common.Mapping.SourceCoercion.InvertConsumedByHalfAxisRead(negSrc))
+                        negSrc.InvertOutput = !negSrc.InvertOutput;
+                    else
+                        negSrc.Invert = !negSrc.Invert;
+                    sources.Add(negSrc);
+                }
+                if (sources.Count == 0) continue;
+
+                ms.Rows.Add(new MappingRow
+                {
+                    Target = target,
+                    LayerMask = "Base",
+                    CombineMode = "",
+                    Sources = sources,
+                });
+            }
         }
 
         private static void AppendSimpleRow(

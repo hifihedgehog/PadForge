@@ -2202,7 +2202,7 @@ namespace PadForge.Common.Input
             System.Array.Copy(t, grown, t.Length);
             for (int i = t.Length; i < grown.Length; i++)
             {
-                string p = "ExtendedTrigger" + i.ToString(System.Globalization.CultureInfo.InvariantCulture);
+                string p = "RawTrigger" + i.ToString(System.Globalization.CultureInfo.InvariantCulture);
                 grown[i] = new[] { p + "Dz", p + "Adz", p + "Mr", p + "Curve" };
             }
             _extTriggerKeys = grown;

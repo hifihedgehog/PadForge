@@ -139,6 +139,72 @@ namespace PadForge.Tests
                 MacroButtonNames.NintendoLetteredButtonCount));
         }
 
+        // ── Positional automap (owner direction 2026-07-19): physical
+        //    placement carries over, letters follow the Switch caps ──
+
+        private static DeviceObjectItem Obj(int idx, DeviceObjectTypeFlags kind) => new()
+        {
+            InputIndex = idx,
+            ObjectType = kind,
+        };
+
+        [Fact]
+        public void CreateDefaultPadSetting_Nintendo_MapsPositionally()
+        {
+            var objs = new System.Collections.Generic.List<DeviceObjectItem>();
+            for (int i = 0; i < 6; i++) objs.Add(Obj(i, DeviceObjectTypeFlags.AbsoluteAxis));
+            for (int i = 0; i < 12; i++) objs.Add(Obj(i, DeviceObjectTypeFlags.PushButton));
+            objs.Add(Obj(0, DeviceObjectTypeFlags.PointOfViewController));
+            var ud = new UserDevice
+            {
+                CapType = (int)InputDeviceType.Gamepad,
+                DeviceObjects = objs.ToArray(),
+            };
+
+            var ps = SettingsManager.CreateDefaultPadSetting(ud, VirtualControllerType.Nintendo);
+
+            // Sticks pack at 0-3 (no analog triggers on the wire).
+            Assert.Equal("Axis 0", ps.GetExtendedMapping("ExtendedAxis0"));
+            Assert.Equal("Axis 1", ps.GetExtendedMapping("ExtendedAxis1"));
+            Assert.Equal("Axis 3", ps.GetExtendedMapping("ExtendedAxis2"));
+            Assert.Equal("Axis 4", ps.GetExtendedMapping("ExtendedAxis3"));
+            // Positional face diamond: physical south lands on Switch B.
+            Assert.Equal("Button 0", ps.GetExtendedMapping("ExtendedBtn0"));
+            Assert.Equal("Button 3", ps.GetExtendedMapping("ExtendedBtn3"));
+            // Trigger pulls press the digital ZL/ZR.
+            Assert.Equal("Axis 2", ps.GetExtendedMapping("ExtendedBtn6"));
+            Assert.Equal("Axis 5", ps.GetExtendedMapping("ExtendedBtn7"));
+            // System cluster: Back to Minus, Start to Plus, Guide to Home,
+            // Misc1 to Capture.
+            Assert.Equal("Button 6", ps.GetExtendedMapping("ExtendedBtn8"));
+            Assert.Equal("Button 7", ps.GetExtendedMapping("ExtendedBtn9"));
+            Assert.Equal("Button 10", ps.GetExtendedMapping("ExtendedBtn12"));
+            Assert.Equal("Button 11", ps.GetExtendedMapping("ExtendedBtn13"));
+            Assert.Equal("POV 0 Up", ps.GetExtendedMapping("ExtendedPov0Up"));
+            // The gamepad-shaped fields stay untouched: the raw dict IS
+            // the Nintendo surface.
+            Assert.True(string.IsNullOrEmpty(ps.ButtonA));
+        }
+
+        [Fact]
+        public void CreateDefaultPadSetting_Nintendo_GatesOnCapabilities()
+        {
+            // A pad with no Misc1 and no hat authors neither Capture nor
+            // the D-pad rows (capability-assuming defaults tattoo).
+            var objs = new System.Collections.Generic.List<DeviceObjectItem>();
+            for (int i = 0; i < 6; i++) objs.Add(Obj(i, DeviceObjectTypeFlags.AbsoluteAxis));
+            for (int i = 0; i < 11; i++) objs.Add(Obj(i, DeviceObjectTypeFlags.PushButton));
+            var ud = new UserDevice
+            {
+                CapType = (int)InputDeviceType.Gamepad,
+                DeviceObjects = objs.ToArray(),
+            };
+
+            var ps = SettingsManager.CreateDefaultPadSetting(ud, VirtualControllerType.Nintendo);
+            Assert.True(string.IsNullOrEmpty(ps.GetExtendedMapping("ExtendedBtn13")));
+            Assert.True(string.IsNullOrEmpty(ps.GetExtendedMapping("ExtendedPov0Up")));
+        }
+
         [Fact]
         public void PadSettingJson_RoundTripsNintendoRawMappings()
         {

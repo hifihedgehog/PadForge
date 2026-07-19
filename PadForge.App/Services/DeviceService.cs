@@ -585,6 +585,24 @@ namespace PadForge.Services
             var freshPs = SettingsManager.CreateDefaultPadSetting(ud, outputType);
             if (freshPs == null) return;
 
+            // Raw-surface automap (Nintendo): the positional defaults live
+            // in the Extended mapping dictionary, which the string-property
+            // reflection walk below cannot see. Merge missing keys first,
+            // same fill-empty semantics: user-authored entries win.
+            var freshExt = freshPs.ExtendedMappingEntries;
+            if (freshExt != null)
+            {
+                bool extChanged = false;
+                foreach (var entry in freshExt)
+                {
+                    if (entry == null || string.IsNullOrEmpty(entry.Key)) continue;
+                    if (!string.IsNullOrEmpty(existingPs.GetExtendedMapping(entry.Key))) continue;
+                    existingPs.SetExtendedMapping(entry.Key, entry.Value);
+                    extChanged = true;
+                }
+                if (extChanged) existingPs.FlushExtendedMappings();
+            }
+
             // Walk every copyable string mapping property and fill empty
             // ones on existingPs from freshPs. Reflection here mirrors the
             // pattern PadSetting.CopyFrom uses internally.

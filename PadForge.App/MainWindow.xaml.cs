@@ -2856,11 +2856,12 @@ namespace PadForge
                 Padding = new Thickness(10, 6, 10, 6),
                 BorderThickness = new Thickness(1),
                 // Fixed width, not MinWidth (user 2026-07-06): stacked cards
-                // must read congruent whatever their digit count. 212 =
-                // worst-case row 185.34 (slot 16 + "#16", iteration 107
-                // math) + 20 padding + 2 border + headroom, inside the 215
-                // outer cap the pane budget allows.
-                Width = 212,
+                // must read congruent whatever their digit count. 233 =
+                // worst-case row 204.34 (slot 16 + "#16" + the SIX-tile
+                // type segment, Nintendo added 2026-07-19; iteration 107
+                // math + 19) + 20 padding + 2 border + 6.7 headroom,
+                // inside the 236 outer cap the widened 244 pane allows.
+                Width = 233,
                 Child = row,
                 Tag = navItem.PadIndex,
                 // Glow clearance (#175 clip report): the rail clips at the
@@ -3533,7 +3534,7 @@ namespace PadForge
             {
                 // Exact mini-card pill footprint so the entry stacks congruently
                 // and the dashed outline (plus its hover glow) traces the same
-                // rectangle a solid pill does: radius 10, width 212, 3/2 margin,
+                // rectangle a solid pill does: radius 10, width 233, 3/2 margin,
                 // and MinHeight 36 = the pill's rendered height (the fixed 22 px
                 // delete-button row + 12 px padding + 2 px border in
                 // UpdateControllerNavItemContent). NO Padding here: like the
@@ -3541,7 +3542,7 @@ namespace PadForge
                 // not sit inset. Inset shrinks the box and makes the glow hug a
                 // smaller inner outline.
                 CornerRadius = new CornerRadius(10),
-                Width = 212,
+                Width = 233,
                 MinHeight = 36,
                 Margin = new Thickness(3, 2, 3, 2),
                 Background = System.Windows.Media.Brushes.Transparent,

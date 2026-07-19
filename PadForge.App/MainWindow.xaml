@@ -123,7 +123,7 @@
                            IsPaneToggleVisible="False"
                            AlwaysShowHeader="False"
                            CompactPaneLength="48"
-                           OpenPaneLength="223">
+                           OpenPaneLength="244">
 
             <ui:NavigationView.Resources>
                 <Style TargetType="ui:NavigationViewItem">

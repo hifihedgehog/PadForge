@@ -213,21 +213,55 @@ namespace PadForge.Engine.Data
         }
 
         private static readonly System.Text.RegularExpressions.Regex RawTargetKey =
-            new(@"^Extended(Axis\d+|Btn\d+|Pov\d+(Up|Down|Left|Right))$",
+            new(@"^Raw(Axis\d+|Btn\d+|Pov\d+(Up|Down|Left|Right))$",
                 System.Text.RegularExpressions.RegexOptions.Compiled);
+
+        /// <summary>Rewrites legacy raw-surface tokens (the pre-2026-07-19
+        /// "Extended*" spellings) to the current "Raw*" grammar. Applies to
+        /// one token (a row target or a dictionary key); returns the input
+        /// unchanged when it is not a legacy raw token. The raw surface is
+        /// category-neutral (Nintendo and Extended slots both ride it), so
+        /// its grammar no longer wears the Extended category's name.</summary>
+        public static string NormalizeRawToken(string token)
+        {
+            if (string.IsNullOrEmpty(token)) return token;
+            if (!token.StartsWith("Extended", StringComparison.Ordinal)) return token;
+            string rest = token.Substring("Extended".Length);
+            if (rest.StartsWith("Axis", StringComparison.Ordinal)
+                || rest.StartsWith("Btn", StringComparison.Ordinal)
+                || rest.StartsWith("Pov", StringComparison.Ordinal)
+                || rest.StartsWith("Stick", StringComparison.Ordinal))
+                return "Raw" + rest;
+            return token;
+        }
+
+        /// <summary>Normalizes every row target in <paramref name="ms"/>
+        /// through <see cref="NormalizeRawToken"/>. Idempotent; called at
+        /// every lane persisted MappingSets enter the process (settings
+        /// load, profile apply, legacy merge) so saves written before the
+        /// grammar rename keep working and re-save upgraded.</summary>
+        public static void NormalizeRawSurfaceTargets(MappingSet ms)
+        {
+            if (ms?.Rows == null) return;
+            foreach (var row in ms.Rows)
+            {
+                if (row == null || string.IsNullOrEmpty(row.Target)) continue;
+                row.Target = NormalizeRawToken(row.Target);
+            }
+        }
 
         private static void AppendRawSurfaceRows(
             MappingSet ms,
             IReadOnlyList<(string DeviceGuid, PadSetting PadSetting, bool IsGamepadEligible)> devices)
         {
             // Targets present on any device, in first-seen order. Negative
-            // axis legs ("ExtendedAxis{N}Neg") fold into their positive
+            // axis legs ("RawAxis{N}Neg") fold into their positive
             // target's row below, mirroring AppendBipolarRow.
             var targets = new List<string>();
             var seen = new HashSet<string>(StringComparer.Ordinal);
             foreach (var (_, ps, _) in devices)
             {
-                var entries = ps?.ExtendedMappingEntries;
+                var entries = ps?.RawMappingEntries;
                 if (entries == null) continue;
                 foreach (var e in entries)
                 {
@@ -245,15 +279,15 @@ namespace PadForge.Engine.Data
                 var sources = new List<MappingSource>();
                 foreach (var (guid, ps, _) in devices)
                 {
-                    string raw = ps?.GetExtendedMapping(target);
+                    string raw = ps?.GetRawMapping(target);
                     if (!string.IsNullOrEmpty(raw))
                     {
                         var src = BuildSource(guid, raw, ps?.GetMappingDeadZone(target));
                         if (src != null) sources.Add(src);
                     }
 
-                    if (!target.StartsWith("ExtendedAxis", StringComparison.Ordinal)) continue;
-                    string rawNeg = ps?.GetExtendedMapping(target + "Neg");
+                    if (!target.StartsWith("RawAxis", StringComparison.Ordinal)) continue;
+                    string rawNeg = ps?.GetRawMapping(target + "Neg");
                     if (string.IsNullOrEmpty(rawNeg)) continue;
                     var negSrc = BuildSource(guid, rawNeg, ps?.GetMappingDeadZone(target));
                     if (negSrc == null) continue;

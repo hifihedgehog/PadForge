@@ -518,6 +518,9 @@ namespace PadForge.Services
                 MappingSet fromXml = (persisted != null && slot < persisted.Length)
                     ? persisted[slot]
                     : null;
+                // Legacy raw-surface targets normalize to the current
+                // "Raw*" grammar before any content decision.
+                MappingSetMigrator.NormalizeRawSurfaceTargets(fromXml);
 
                 // Content gate lives on the set itself (HasAuthoredContent:
                 // rows, shift activators, menus, authoritative ownership,
@@ -1003,13 +1006,13 @@ namespace PadForge.Services
                 ? SettingsManager.FindSettingByInstanceGuidAndSlot(g, slot)?.GetPadSetting()
                 : null;
             if (ps == null) return (false, "Direct", 900, 1, 1800, 0, 10, 15, 135, "Forward");
-            string kind = ps.GetExtendedMapping($"Stick{stickIdx}SteerKind");
+            string kind = ps.GetRawMapping($"Stick{stickIdx}SteerKind");
             // MotionLeanX is no longer a per-stick mode — it's driven by Motion Steering
             // (gyro tab) via its own override. Treat a stored per-stick MotionLeanX as
             // Direct so an old profile doesn't ghost-lean while the new card sits idle.
             if (string.IsNullOrEmpty(kind) || kind == "MotionLeanX") kind = "Direct";
             double D(string key, double dflt)
-                => double.TryParse(ps.GetExtendedMapping(key), System.Globalization.NumberStyles.Float,
+                => double.TryParse(ps.GetRawMapping(key), System.Globalization.NumberStyles.Float,
                     System.Globalization.CultureInfo.InvariantCulture, out double v) ? v : dflt;
             return (kind != "Direct", kind,
                 D($"Stick{stickIdx}SteerWindRange", 900),
@@ -1020,7 +1023,7 @@ namespace PadForge.Services
                 15, 135, "Forward");
         }
 
-        // Resolves a stick-axis target (standard Left/Right or Extended ExtendedAxis{n}) to a
+        // Resolves a stick-axis target (standard Left/Right or Extended RawAxis{n}) to a
         // stick index + whether it's the Y axis, plus that stick's X/Y targets. One code path
         // for both layouts, driven by the slot's actual sticks (PadViewModel.GetSteerableSticks).
         private static bool ResolveSteerTarget(PadViewModel padVm, string target,
@@ -1076,9 +1079,9 @@ namespace PadForge.Services
                     : null;
                 if (ps == null) continue; // keep the source's existing params
                 double D(string key, double dflt)
-                    => double.TryParse(ps.GetExtendedMapping(key), System.Globalization.NumberStyles.Float,
+                    => double.TryParse(ps.GetRawMapping(key), System.Globalization.NumberStyles.Float,
                         System.Globalization.CultureInfo.InvariantCulture, out double v) ? v : dflt;
-                string orient = ps.GetExtendedMapping("MotionSteerOrient");
+                string orient = ps.GetRawMapping("MotionSteerOrient");
                 src.ParamMotionInnerDz = D("MotionSteerInner", 15);
                 src.ParamMotionOuterDz = D("MotionSteerOuter", 135);
                 src.ParamControllerOrientation = string.IsNullOrEmpty(orient) ? "Forward" : orient;
@@ -1315,12 +1318,12 @@ namespace PadForge.Services
                     ? SettingsManager.FindSettingByInstanceGuidAndSlot(g, slot)?.GetPadSetting()
                     : null;
                 if (ps == null) continue; // keep the source's existing params
-                if (string.IsNullOrEmpty(ps.GetExtendedMapping("FlickStickDots")))
+                if (string.IsNullOrEmpty(ps.GetRawMapping("FlickStickDots")))
                     continue; // card never stored for this device: keep import values
                 double D(string key, double dflt)
-                    => double.TryParse(ps.GetExtendedMapping(key), System.Globalization.NumberStyles.Float,
+                    => double.TryParse(ps.GetRawMapping(key), System.Globalization.NumberStyles.Float,
                         System.Globalization.CultureInfo.InvariantCulture, out double v) ? v : dflt;
-                string snap = ps.GetExtendedMapping("FlickStickSnapMode");
+                string snap = ps.GetRawMapping("FlickStickSnapMode");
                 src.ParamFlickCountsPer360 = D("FlickStickDots", 14400);
                 src.ParamFlickTime = D("FlickStickTime", 0.1);
                 src.ParamFlickThreshold = D("FlickStickThreshold", 0.9);
@@ -1328,7 +1331,7 @@ namespace PadForge.Services
                 src.ParamFlickSnapStrength = D("FlickStickSnapStrength", 1.0);
                 src.ParamFlickDeadzoneAngle = D("FlickStickForwardDz", 0);
                 src.ParamFlickSmooth = D("FlickStickSmoothing", -1);
-                src.ParamFlickOnEngage = ps.GetExtendedMapping("FlickStickOnEngage") == "1";
+                src.ParamFlickOnEngage = ps.GetRawMapping("FlickStickOnEngage") == "1";
             }
         }
 
@@ -1347,7 +1350,7 @@ namespace PadForge.Services
             // Both legs below fill every card field, so the VM is seeded
             // from here on and the save-side stamp may trust its values.
             _flickStickCardSeeded.AddOrUpdate(padVm, null);
-            string dots = ps.GetExtendedMapping("FlickStickDots");
+            string dots = ps.GetRawMapping("FlickStickDots");
             if (string.IsNullOrEmpty(dots))
             {
                 var seed = FindSlotFlickStickSource(padVm.PadIndex);
@@ -1365,9 +1368,9 @@ namespace PadForge.Services
                 }
             }
             double D(string key, double dflt)
-                => double.TryParse(ps.GetExtendedMapping(key), System.Globalization.NumberStyles.Float,
+                => double.TryParse(ps.GetRawMapping(key), System.Globalization.NumberStyles.Float,
                     System.Globalization.CultureInfo.InvariantCulture, out double v) ? v : dflt;
-            string snap = ps.GetExtendedMapping("FlickStickSnapMode");
+            string snap = ps.GetRawMapping("FlickStickSnapMode");
             padVm.FlickCountsPer360 = D("FlickStickDots", 14400);
             padVm.FlickTime = D("FlickStickTime", 0.1);
             padVm.FlickThreshold = D("FlickStickThreshold", 0.9);
@@ -1375,7 +1378,7 @@ namespace PadForge.Services
             padVm.FlickSnapStrength = D("FlickStickSnapStrength", 1.0);
             padVm.FlickForwardDeadzone = D("FlickStickForwardDz", 0);
             padVm.FlickSmoothing = D("FlickStickSmoothing", -1);
-            padVm.FlickOnEngage = ps.GetExtendedMapping("FlickStickOnEngage") == "1";
+            padVm.FlickOnEngage = ps.GetRawMapping("FlickStickOnEngage") == "1";
         }
 
         /// <summary>Writes the Flick Stick card fields (#225) into a device's
@@ -1387,14 +1390,14 @@ namespace PadForge.Services
         {
             if (padVm == null || ps == null) return;
             var ic = System.Globalization.CultureInfo.InvariantCulture;
-            ps.SetExtendedMapping("FlickStickDots", padVm.FlickCountsPer360.ToString(ic));
-            ps.SetExtendedMapping("FlickStickTime", padVm.FlickTime.ToString(ic));
-            ps.SetExtendedMapping("FlickStickThreshold", padVm.FlickThreshold.ToString(ic));
-            ps.SetExtendedMapping("FlickStickSnapMode", padVm.FlickSnapMode);
-            ps.SetExtendedMapping("FlickStickSnapStrength", padVm.FlickSnapStrength.ToString(ic));
-            ps.SetExtendedMapping("FlickStickForwardDz", padVm.FlickForwardDeadzone.ToString(ic));
-            ps.SetExtendedMapping("FlickStickSmoothing", padVm.FlickSmoothing.ToString(ic));
-            ps.SetExtendedMapping("FlickStickOnEngage", padVm.FlickOnEngage ? "1" : "0");
+            ps.SetRawMapping("FlickStickDots", padVm.FlickCountsPer360.ToString(ic));
+            ps.SetRawMapping("FlickStickTime", padVm.FlickTime.ToString(ic));
+            ps.SetRawMapping("FlickStickThreshold", padVm.FlickThreshold.ToString(ic));
+            ps.SetRawMapping("FlickStickSnapMode", padVm.FlickSnapMode);
+            ps.SetRawMapping("FlickStickSnapStrength", padVm.FlickSnapStrength.ToString(ic));
+            ps.SetRawMapping("FlickStickForwardDz", padVm.FlickForwardDeadzone.ToString(ic));
+            ps.SetRawMapping("FlickStickSmoothing", padVm.FlickSmoothing.ToString(ic));
+            ps.SetRawMapping("FlickStickOnEngage", padVm.FlickOnEngage ? "1" : "0");
         }
 
         /// <summary>First "Flick Stick ..." source in a slot's MappingSet, or
@@ -1537,6 +1540,10 @@ namespace PadForge.Services
             {
                 var rebuilt = BuildOneSlotFromLegacy(slot);
                 var current = sets[slot];
+                // Idempotent legacy-grammar belt: whatever lane a set
+                // arrived through (paste, import, old profile), its
+                // raw-surface targets read as current grammar here.
+                MappingSetMigrator.NormalizeRawSurfaceTargets(current);
 
                 // Devices currently assigned to this slot (lowercase
                 // GUID strings) — used to drop sources for devices
@@ -2783,9 +2790,9 @@ namespace PadForge.Services
                 // "Motion Lean" input descriptor. The old Enabled/Target keys are gone
                 // (the input is mapped from the picker, never stamped onto a target);
                 // stale keys in old profiles are simply never read.
-                padVm.MotionSteerInnerDz = TryParseDouble(ps.GetExtendedMapping("MotionSteerInner"), 15);
-                padVm.MotionSteerOuterDz = TryParseDouble(ps.GetExtendedMapping("MotionSteerOuter"), 135);
-                padVm.SetMotionSteerOrient(ps.GetExtendedMapping("MotionSteerOrient"));
+                padVm.MotionSteerInnerDz = TryParseDouble(ps.GetRawMapping("MotionSteerInner"), 15);
+                padVm.MotionSteerOuterDz = TryParseDouble(ps.GetRawMapping("MotionSteerOuter"), 135);
+                padVm.SetMotionSteerOrient(ps.GetRawMapping("MotionSteerOrient"));
 
                 // Load Flick Stick card tuning (#225), same per-(device, slot)
                 // extended-mapping bag; seeds from a Workshop import's flick
@@ -2891,33 +2898,33 @@ namespace PadForge.Services
                 {
                     if (stick.Index < 2) continue;
                     int g = stick.Index;
-                    stick.DeadZoneShape = InputManager.ParseDeadZoneShape(ps.GetExtendedMapping($"ExtendedStick{g}DzShape"));
-                    stick.DeadZoneX = TryParseDouble(ps.GetExtendedMapping($"ExtendedStick{g}DzX"), 0);
-                    stick.DeadZoneY = TryParseDouble(ps.GetExtendedMapping($"ExtendedStick{g}DzY"), 0);
-                    stick.AntiDeadZoneX = TryParseDouble(ps.GetExtendedMapping($"ExtendedStick{g}AdzX"), 0);
-                    stick.AntiDeadZoneY = TryParseDouble(ps.GetExtendedMapping($"ExtendedStick{g}AdzY"), 0);
-                    stick.Linear = TryParseDouble(ps.GetExtendedMapping($"ExtendedStick{g}Linear"), 0);
-                    // GetExtendedMapping returns "" (never null) for a missing
+                    stick.DeadZoneShape = InputManager.ParseDeadZoneShape(ps.GetRawMapping($"RawStick{g}DzShape"));
+                    stick.DeadZoneX = TryParseDouble(ps.GetRawMapping($"RawStick{g}DzX"), 0);
+                    stick.DeadZoneY = TryParseDouble(ps.GetRawMapping($"RawStick{g}DzY"), 0);
+                    stick.AntiDeadZoneX = TryParseDouble(ps.GetRawMapping($"RawStick{g}AdzX"), 0);
+                    stick.AntiDeadZoneY = TryParseDouble(ps.GetRawMapping($"RawStick{g}AdzY"), 0);
+                    stick.Linear = TryParseDouble(ps.GetRawMapping($"RawStick{g}Linear"), 0);
+                    // GetRawMapping returns "" (never null) for a missing
                     // key, so a bare ?? default never fires (audit G4).
-                    string curveX = ps.GetExtendedMapping($"ExtendedStick{g}CurveX");
-                    string curveY = ps.GetExtendedMapping($"ExtendedStick{g}CurveY");
+                    string curveX = ps.GetRawMapping($"RawStick{g}CurveX");
+                    string curveY = ps.GetRawMapping($"RawStick{g}CurveY");
                     stick.SensitivityCurveX = string.IsNullOrEmpty(curveX) ? "0,0;1,1" : curveX;
                     stick.SensitivityCurveY = string.IsNullOrEmpty(curveY) ? "0,0;1,1" : curveY;
-                    stick.CenterOffsetX = TryParseDouble(ps.GetExtendedMapping($"ExtendedStick{g}CofX"), 0);
-                    stick.CenterOffsetY = TryParseDouble(ps.GetExtendedMapping($"ExtendedStick{g}CofY"), 0);
-                    stick.MaxRangeX = TryParseDouble(ps.GetExtendedMapping($"ExtendedStick{g}MrX"), 100);
-                    stick.MaxRangeY = TryParseDouble(ps.GetExtendedMapping($"ExtendedStick{g}MrY"), 100);
-                    stick.MaxRangeXNeg = TryParseDouble(ps.GetExtendedMapping($"ExtendedStick{g}MrXN"), stick.MaxRangeX);
-                    stick.MaxRangeYNeg = TryParseDouble(ps.GetExtendedMapping($"ExtendedStick{g}MrYN"), stick.MaxRangeY);
+                    stick.CenterOffsetX = TryParseDouble(ps.GetRawMapping($"RawStick{g}CofX"), 0);
+                    stick.CenterOffsetY = TryParseDouble(ps.GetRawMapping($"RawStick{g}CofY"), 0);
+                    stick.MaxRangeX = TryParseDouble(ps.GetRawMapping($"RawStick{g}MrX"), 100);
+                    stick.MaxRangeY = TryParseDouble(ps.GetRawMapping($"RawStick{g}MrY"), 100);
+                    stick.MaxRangeXNeg = TryParseDouble(ps.GetRawMapping($"RawStick{g}MrXN"), stick.MaxRangeX);
+                    stick.MaxRangeYNeg = TryParseDouble(ps.GetRawMapping($"RawStick{g}MrYN"), stick.MaxRangeY);
                 }
                 foreach (var trig in padVm.TriggerConfigs)
                 {
                     if (trig.Index < 2) continue;
                     int g = trig.Index;
-                    trig.DeadZone = TryParseDouble(ps.GetExtendedMapping($"ExtendedTrigger{g}Dz"), 0);
-                    trig.AntiDeadZone = TryParseDouble(ps.GetExtendedMapping($"ExtendedTrigger{g}Adz"), 0);
-                    trig.MaxRange = TryParseDouble(ps.GetExtendedMapping($"ExtendedTrigger{g}Mr"), 100);
-                    string trigCurve = ps.GetExtendedMapping($"ExtendedTrigger{g}Curve");
+                    trig.DeadZone = TryParseDouble(ps.GetRawMapping($"ExtendedTrigger{g}Dz"), 0);
+                    trig.AntiDeadZone = TryParseDouble(ps.GetRawMapping($"ExtendedTrigger{g}Adz"), 0);
+                    trig.MaxRange = TryParseDouble(ps.GetRawMapping($"ExtendedTrigger{g}Mr"), 100);
+                    string trigCurve = ps.GetRawMapping($"ExtendedTrigger{g}Curve");
                     trig.SensitivityCurve = string.IsNullOrEmpty(trigCurve) ? "0,0;1,1" : trigCurve;
                 }
 
@@ -3014,7 +3021,7 @@ namespace PadForge.Services
                 or VirtualControllerType.Nintendo ? extendedButtonCount : null) ?? 11;
             macro.CustomButtonCount = btnCount;
             macro.ButtonStyle = style;
-            macro.ExtendedProfileId =
+            macro.RawProfileId =
                 outputType is VirtualControllerType.Extended
                 or VirtualControllerType.Nintendo ? extendedProfileId : null;
             foreach (var action in macro.Actions)
@@ -3495,7 +3502,7 @@ namespace PadForge.Services
                         var ps = us.GetPadSetting();
                         if (ps != null)
                         {
-                            ps.FlushExtendedMappings();
+                            ps.FlushRawMappings();
                             ps.FlushMidiMappings();
                             ps.FlushKbmMappings();
                             ps.FlushMappingDeadZones();
@@ -4269,9 +4276,9 @@ namespace PadForge.Services
                     // Write Motion Steering tuning (per-(device, slot)) — settings for
                     // the "Motion Lean" input descriptor. No Enabled/Target keys: the
                     // input is mapped from the picker, never stamped onto a target.
-                    ps.SetExtendedMapping("MotionSteerInner", padVm.MotionSteerInnerDz.ToString(ic));
-                    ps.SetExtendedMapping("MotionSteerOuter", padVm.MotionSteerOuterDz.ToString(ic));
-                    ps.SetExtendedMapping("MotionSteerOrient", padVm.MotionSteerOrient);
+                    ps.SetRawMapping("MotionSteerInner", padVm.MotionSteerInnerDz.ToString(ic));
+                    ps.SetRawMapping("MotionSteerOuter", padVm.MotionSteerOuterDz.ToString(ic));
+                    ps.SetRawMapping("MotionSteerOrient", padVm.MotionSteerOrient);
 
                     // Write Flick Stick card tuning (#225), same bag.
                     SaveFlickStickCard(padVm, ps);
@@ -4368,20 +4375,20 @@ namespace PadForge.Services
                     {
                         if (stick.Index < 2) continue;
                         int g = stick.Index;
-                        ps.SetExtendedMapping($"ExtendedStick{g}DzShape", ((int)stick.DeadZoneShape).ToString());
-                        ps.SetExtendedMapping($"ExtendedStick{g}DzX", stick.DeadZoneX.ToString(ic));
-                        ps.SetExtendedMapping($"ExtendedStick{g}DzY", stick.DeadZoneY.ToString(ic));
-                        ps.SetExtendedMapping($"ExtendedStick{g}AdzX", stick.AntiDeadZoneX.ToString(ic));
-                        ps.SetExtendedMapping($"ExtendedStick{g}AdzY", stick.AntiDeadZoneY.ToString(ic));
-                        ps.SetExtendedMapping($"ExtendedStick{g}Linear", stick.Linear.ToString(ic));
-                        ps.SetExtendedMapping($"ExtendedStick{g}CurveX", stick.SensitivityCurveX);
-                        ps.SetExtendedMapping($"ExtendedStick{g}CurveY", stick.SensitivityCurveY);
-                        ps.SetExtendedMapping($"ExtendedStick{g}CofX", stick.CenterOffsetX.ToString(ic));
-                        ps.SetExtendedMapping($"ExtendedStick{g}CofY", stick.CenterOffsetY.ToString(ic));
-                        ps.SetExtendedMapping($"ExtendedStick{g}MrX", stick.MaxRangeX.ToString(ic));
-                        ps.SetExtendedMapping($"ExtendedStick{g}MrY", stick.MaxRangeY.ToString(ic));
-                        ps.SetExtendedMapping($"ExtendedStick{g}MrXN", stick.MaxRangeXNeg.ToString(ic));
-                        ps.SetExtendedMapping($"ExtendedStick{g}MrYN", stick.MaxRangeYNeg.ToString(ic));
+                        ps.SetRawMapping($"RawStick{g}DzShape", ((int)stick.DeadZoneShape).ToString());
+                        ps.SetRawMapping($"RawStick{g}DzX", stick.DeadZoneX.ToString(ic));
+                        ps.SetRawMapping($"RawStick{g}DzY", stick.DeadZoneY.ToString(ic));
+                        ps.SetRawMapping($"RawStick{g}AdzX", stick.AntiDeadZoneX.ToString(ic));
+                        ps.SetRawMapping($"RawStick{g}AdzY", stick.AntiDeadZoneY.ToString(ic));
+                        ps.SetRawMapping($"RawStick{g}Linear", stick.Linear.ToString(ic));
+                        ps.SetRawMapping($"RawStick{g}CurveX", stick.SensitivityCurveX);
+                        ps.SetRawMapping($"RawStick{g}CurveY", stick.SensitivityCurveY);
+                        ps.SetRawMapping($"RawStick{g}CofX", stick.CenterOffsetX.ToString(ic));
+                        ps.SetRawMapping($"RawStick{g}CofY", stick.CenterOffsetY.ToString(ic));
+                        ps.SetRawMapping($"RawStick{g}MrX", stick.MaxRangeX.ToString(ic));
+                        ps.SetRawMapping($"RawStick{g}MrY", stick.MaxRangeY.ToString(ic));
+                        ps.SetRawMapping($"RawStick{g}MrXN", stick.MaxRangeXNeg.ToString(ic));
+                        ps.SetRawMapping($"RawStick{g}MrYN", stick.MaxRangeYNeg.ToString(ic));
                     }
                     // Per-stick steering mode + tunables (#94), every stick index. The
                     // engine reads Kind off the MappingSet rows (stamped in
@@ -4391,22 +4398,22 @@ namespace PadForge.Services
                     {
                         int g = stick.Index;
                         if (g < 0) continue;
-                        ps.SetExtendedMapping($"Stick{g}SteerKind", stick.SteeringKind);
-                        ps.SetExtendedMapping($"Stick{g}SteerWindRange", stick.WindRangeDeg.ToString(ic));
-                        ps.SetExtendedMapping($"Stick{g}SteerWindPower", stick.WindPower.ToString(ic));
-                        ps.SetExtendedMapping($"Stick{g}SteerWindUnwind", stick.WindUnwindRate.ToString(ic));
-                        ps.SetExtendedMapping($"Stick{g}SteerAngleInner", stick.AngleInnerDz.ToString(ic));
-                        ps.SetExtendedMapping($"Stick{g}SteerAngleOuter", stick.AngleOuterDz.ToString(ic));
+                        ps.SetRawMapping($"Stick{g}SteerKind", stick.SteeringKind);
+                        ps.SetRawMapping($"Stick{g}SteerWindRange", stick.WindRangeDeg.ToString(ic));
+                        ps.SetRawMapping($"Stick{g}SteerWindPower", stick.WindPower.ToString(ic));
+                        ps.SetRawMapping($"Stick{g}SteerWindUnwind", stick.WindUnwindRate.ToString(ic));
+                        ps.SetRawMapping($"Stick{g}SteerAngleInner", stick.AngleInnerDz.ToString(ic));
+                        ps.SetRawMapping($"Stick{g}SteerAngleOuter", stick.AngleOuterDz.ToString(ic));
                     }
 
                     foreach (var trig in padVm.TriggerConfigs)
                     {
                         if (trig.Index < 2) continue;
                         int g = trig.Index;
-                        ps.SetExtendedMapping($"ExtendedTrigger{g}Dz", trig.DeadZone.ToString(ic));
-                        ps.SetExtendedMapping($"ExtendedTrigger{g}Adz", trig.AntiDeadZone.ToString(ic));
-                        ps.SetExtendedMapping($"ExtendedTrigger{g}Mr", trig.MaxRange.ToString(ic));
-                        ps.SetExtendedMapping($"ExtendedTrigger{g}Curve", trig.SensitivityCurve);
+                        ps.SetRawMapping($"ExtendedTrigger{g}Dz", trig.DeadZone.ToString(ic));
+                        ps.SetRawMapping($"ExtendedTrigger{g}Adz", trig.AntiDeadZone.ToString(ic));
+                        ps.SetRawMapping($"ExtendedTrigger{g}Mr", trig.MaxRange.ToString(ic));
+                        ps.SetRawMapping($"ExtendedTrigger{g}Curve", trig.SensitivityCurve);
                     }
 
                     // Write mapping descriptors and per-mapping deadzones.
@@ -4785,7 +4792,7 @@ namespace PadForge.Services
             // Extended custom mappings use dictionary-based storage
             if (propertyName.StartsWith("Extended", StringComparison.Ordinal))
             {
-                ps.SetExtendedMapping(propertyName, value ?? string.Empty);
+                ps.SetRawMapping(propertyName, value ?? string.Empty);
                 return;
             }
 

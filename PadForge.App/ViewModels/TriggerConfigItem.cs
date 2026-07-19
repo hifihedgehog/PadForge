@@ -121,7 +121,7 @@ namespace PadForge.ViewModels
         /// axis-unit format as RawDisplay, derived from LiveValue (0..1).</summary>
         public string OutDisplay => $"{(int)System.Math.Round(_liveValue * 65535.0)} ({_liveValue * 100.0:F1}%)";
 
-        /// <summary>Raw axis index in ExtendedRawState.Axes (custom Extended only, -1 for gamepad).</summary>
+        /// <summary>Raw axis index in RawHidState.Axes (custom Extended only, -1 for gamepad).</summary>
         public int AxisIndex { get; }
 
         // ── Reset commands ──

@@ -75,8 +75,8 @@ namespace PadForge.Tests
                 MacroButtonNames.DeriveStyle(VirtualControllerType.Nintendo));
             // The switch-pro profile letters raw button 1 as B, per the
             // descriptor order the lettering table documents.
-            Assert.Equal("B", MacroButtonNames.ExtendedButtonLabel("switch-pro", 1));
-            Assert.Equal("A", MacroButtonNames.ExtendedButtonLabel("switch-pro", 2));
+            Assert.Equal("B", MacroButtonNames.RawButtonLabel("switch-pro", 1));
+            Assert.Equal("A", MacroButtonNames.RawButtonLabel("switch-pro", 2));
         }
 
         // ── Layout translation: Nintendo is Extended-shaped on the wire ──
@@ -86,9 +86,9 @@ namespace PadForge.Tests
         {
             // Same canonical positions as an Extended raw layout, so Copy
             // From / clipboard translation is lossless between the two.
-            var extSlot = MappingTranslation.GetPosition("ExtendedBtn5",
+            var extSlot = MappingTranslation.GetPosition("RawBtn5",
                 VirtualControllerType.Extended, isExtended: true);
-            var ninSlot = MappingTranslation.GetPosition("ExtendedBtn5",
+            var ninSlot = MappingTranslation.GetPosition("RawBtn5",
                 VirtualControllerType.Nintendo, isExtended: true);
             Assert.Equal(extSlot, ninSlot);
 
@@ -164,23 +164,23 @@ namespace PadForge.Tests
             var ps = SettingsManager.CreateDefaultPadSetting(ud, VirtualControllerType.Nintendo);
 
             // Sticks pack at 0-3 (no analog triggers on the wire).
-            Assert.Equal("Axis 0", ps.GetExtendedMapping("ExtendedAxis0"));
-            Assert.Equal("Axis 1", ps.GetExtendedMapping("ExtendedAxis1"));
-            Assert.Equal("Axis 3", ps.GetExtendedMapping("ExtendedAxis2"));
-            Assert.Equal("Axis 4", ps.GetExtendedMapping("ExtendedAxis3"));
+            Assert.Equal("Axis 0", ps.GetRawMapping("RawAxis0"));
+            Assert.Equal("Axis 1", ps.GetRawMapping("RawAxis1"));
+            Assert.Equal("Axis 3", ps.GetRawMapping("RawAxis2"));
+            Assert.Equal("Axis 4", ps.GetRawMapping("RawAxis3"));
             // Positional face diamond: physical south lands on Switch B.
-            Assert.Equal("Button 0", ps.GetExtendedMapping("ExtendedBtn0"));
-            Assert.Equal("Button 3", ps.GetExtendedMapping("ExtendedBtn3"));
+            Assert.Equal("Button 0", ps.GetRawMapping("RawBtn0"));
+            Assert.Equal("Button 3", ps.GetRawMapping("RawBtn3"));
             // Trigger pulls press the digital ZL/ZR.
-            Assert.Equal("Axis 2", ps.GetExtendedMapping("ExtendedBtn6"));
-            Assert.Equal("Axis 5", ps.GetExtendedMapping("ExtendedBtn7"));
+            Assert.Equal("Axis 2", ps.GetRawMapping("RawBtn6"));
+            Assert.Equal("Axis 5", ps.GetRawMapping("RawBtn7"));
             // System cluster: Back to Minus, Start to Plus, Guide to Home,
             // Misc1 to Capture.
-            Assert.Equal("Button 6", ps.GetExtendedMapping("ExtendedBtn8"));
-            Assert.Equal("Button 7", ps.GetExtendedMapping("ExtendedBtn9"));
-            Assert.Equal("Button 10", ps.GetExtendedMapping("ExtendedBtn12"));
-            Assert.Equal("Button 11", ps.GetExtendedMapping("ExtendedBtn13"));
-            Assert.Equal("POV 0 Up", ps.GetExtendedMapping("ExtendedPov0Up"));
+            Assert.Equal("Button 6", ps.GetRawMapping("RawBtn8"));
+            Assert.Equal("Button 7", ps.GetRawMapping("RawBtn9"));
+            Assert.Equal("Button 10", ps.GetRawMapping("RawBtn12"));
+            Assert.Equal("Button 11", ps.GetRawMapping("RawBtn13"));
+            Assert.Equal("POV 0 Up", ps.GetRawMapping("RawPov0Up"));
             // The gamepad-shaped fields stay untouched: the raw dict IS
             // the Nintendo surface.
             Assert.True(string.IsNullOrEmpty(ps.ButtonA));
@@ -201,8 +201,8 @@ namespace PadForge.Tests
             };
 
             var ps = SettingsManager.CreateDefaultPadSetting(ud, VirtualControllerType.Nintendo);
-            Assert.True(string.IsNullOrEmpty(ps.GetExtendedMapping("ExtendedBtn13")));
-            Assert.True(string.IsNullOrEmpty(ps.GetExtendedMapping("ExtendedPov0Up")));
+            Assert.True(string.IsNullOrEmpty(ps.GetRawMapping("RawBtn13")));
+            Assert.True(string.IsNullOrEmpty(ps.GetRawMapping("RawPov0Up")));
         }
 
         [Fact]
@@ -212,42 +212,83 @@ namespace PadForge.Tests
             // automap entries must translate into rows or they render as
             // nothing (the DualSense-on-Nintendo report).
             var ps = new PadSetting();
-            ps.SetExtendedMapping("ExtendedBtn0", "Button 0");
-            ps.SetExtendedMapping("ExtendedBtn6", "Axis 2");
-            ps.SetExtendedMapping("ExtendedAxis0", "Axis 0");
-            ps.SetExtendedMapping("ExtendedPov0Up", "POV 0 Up");
+            ps.SetRawMapping("RawBtn0", "Button 0");
+            ps.SetRawMapping("RawBtn6", "Axis 2");
+            ps.SetRawMapping("RawAxis0", "Axis 0");
+            ps.SetRawMapping("RawPov0Up", "POV 0 Up");
             // Tuning keys share the dictionary and must NOT become rows.
-            ps.SetExtendedMapping("ExtendedStick0DzShape", "Circle");
-            ps.SetExtendedMapping("FlickStickDots", "1.0");
-            ps.FlushExtendedMappings();
+            ps.SetRawMapping("RawStick0DzShape", "Circle");
+            ps.SetRawMapping("FlickStickDots", "1.0");
+            ps.FlushRawMappings();
 
             string guid = System.Guid.NewGuid().ToString();
             var ms = MappingSetMigrator.BuildFromLegacy(0,
                 new (string, PadSetting, bool)[] { (guid, ps, true) });
 
             MappingRow Row(string t) => ms.Rows.Find(r => r?.Target == t);
-            Assert.Equal("Button 0", Row("ExtendedBtn0")?.Sources?[0]?.Descriptor);
-            Assert.Equal("Axis 2", Row("ExtendedBtn6")?.Sources?[0]?.Descriptor);
-            Assert.Equal("Axis 0", Row("ExtendedAxis0")?.Sources?[0]?.Descriptor);
-            Assert.Equal("POV 0 Up", Row("ExtendedPov0Up")?.Sources?[0]?.Descriptor);
-            Assert.Equal(guid, Row("ExtendedBtn0")?.Sources?[0]?.DeviceGuid);
-            Assert.Null(Row("ExtendedStick0DzShape"));
+            Assert.Equal("Button 0", Row("RawBtn0")?.Sources?[0]?.Descriptor);
+            Assert.Equal("Axis 2", Row("RawBtn6")?.Sources?[0]?.Descriptor);
+            Assert.Equal("Axis 0", Row("RawAxis0")?.Sources?[0]?.Descriptor);
+            Assert.Equal("POV 0 Up", Row("RawPov0Up")?.Sources?[0]?.Descriptor);
+            Assert.Equal(guid, Row("RawBtn0")?.Sources?[0]?.DeviceGuid);
+            Assert.Null(Row("RawStick0DzShape"));
             Assert.Null(Row("FlickStickDots"));
+        }
+
+        // ── Raw-grammar migration (2026-07-19): the raw surface is
+        //    category-neutral, its tokens no longer wear the Extended
+        //    category's name; saves from before the rename normalize ──
+
+        [Fact]
+        public void LegacyRawTokens_NormalizeOnLoad()
+        {
+            Assert.Equal("RawBtn6", MappingSetMigrator.NormalizeRawToken("ExtendedBtn6"));
+            Assert.Equal("RawAxis3Neg", MappingSetMigrator.NormalizeRawToken("ExtendedAxis3Neg"));
+            Assert.Equal("RawPov0Up", MappingSetMigrator.NormalizeRawToken("ExtendedPov0Up"));
+            Assert.Equal("RawStick0DzShape", MappingSetMigrator.NormalizeRawToken("ExtendedStick0DzShape"));
+            // Non-raw tokens pass through untouched, including the
+            // Extended CATEGORY's own persisted names.
+            Assert.Equal("ExtendedMappings", MappingSetMigrator.NormalizeRawToken("ExtendedMappings"));
+            Assert.Equal("ButtonA", MappingSetMigrator.NormalizeRawToken("ButtonA"));
+
+            var ms = new MappingSet();
+            ms.Rows.Add(new MappingRow { Target = "ExtendedBtn0", LayerMask = "Base" });
+            ms.Rows.Add(new MappingRow { Target = "MotionGyro", LayerMask = "Base" });
+            MappingSetMigrator.NormalizeRawSurfaceTargets(ms);
+            Assert.Equal("RawBtn0", ms.Rows[0].Target);
+            Assert.Equal("MotionGyro", ms.Rows[1].Target);
+        }
+
+        [Fact]
+        public void LegacyRawDictKeys_NormalizeOnFirstRead()
+        {
+            // Simulate a pre-rename save: the serialized array carries the
+            // old spelling; the first dict read serves the new grammar.
+            var ps = new PadSetting
+            {
+                RawMappingEntries = new[]
+                {
+                    new RawMappingEntry { Key = "ExtendedBtn3", Value = "Button 3" },
+                    new RawMappingEntry { Key = "ExtendedAxis0", Value = "Axis 0" },
+                },
+            };
+            Assert.Equal("Button 3", ps.GetRawMapping("RawBtn3"));
+            Assert.Equal("Axis 0", ps.GetRawMapping("RawAxis0"));
         }
 
         [Fact]
         public void PadSettingJson_RoundTripsNintendoRawMappings()
         {
             var ps = new PadSetting();
-            ps.SetExtendedMapping("ExtendedBtn3", "Gamepad ButtonA");
+            ps.SetRawMapping("RawBtn3", "Gamepad ButtonA");
             string json = ps.ToJson(VirtualControllerType.Nintendo, isExtended: true);
 
             var restored = PadSetting.FromJson(json,
                 out VirtualControllerType srcType, out bool srcIsExtended);
             Assert.Equal(VirtualControllerType.Nintendo, srcType);
             Assert.True(srcIsExtended);
-            Assert.Contains(restored.ExtendedMappingEntries ?? Array.Empty<ExtendedMappingEntry>(),
-                e => e.Key == "ExtendedBtn3");
+            Assert.Contains(restored.RawMappingEntries ?? Array.Empty<RawMappingEntry>(),
+                e => e.Key == "RawBtn3");
         }
     }
 }

@@ -95,7 +95,7 @@ namespace PadForge.Engine
     /// Bypasses the fixed Gamepad struct to support arbitrary axis/button/POV counts.
     /// Axes are signed short range (-32768..32767), matching JoystickPositionV2 expectations.
     /// </summary>
-    public struct ExtendedRawState
+    public struct RawHidState
     {
         /// <summary>Up to 8 axes (short range). Index = axis number.</summary>
         public short[] Axes;
@@ -114,10 +114,10 @@ namespace PadForge.Engine
         /// not populate it, in which case consumers fall back to Axes.</summary>
         public short[] HardwareAxes;
 
-        /// <summary>Creates a zeroed ExtendedRawState with the specified capacities.</summary>
-        public static ExtendedRawState Create(int nAxes, int nButtons, int nPovs)
+        /// <summary>Creates a zeroed RawHidState with the specified capacities.</summary>
+        public static RawHidState Create(int nAxes, int nButtons, int nPovs)
         {
-            return new ExtendedRawState
+            return new RawHidState
             {
                 Axes = new short[Math.Min(nAxes, 8)],
                 Buttons = new uint[(Math.Min(nButtons, 128) + 31) / 32],

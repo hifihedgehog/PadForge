@@ -393,10 +393,10 @@ namespace PadForge.ViewModels
         /// <summary>Unprocessed hardware value for calibration (not affected by offset/deadzone).</summary>
         public short HardwareRawY { get; set; }
 
-        /// <summary>Raw axis index for X in ExtendedRawState.Axes (custom Extended only, -1 for gamepad).</summary>
+        /// <summary>Raw axis index for X in RawHidState.Axes (custom Extended only, -1 for gamepad).</summary>
         public int AxisXIndex { get; }
 
-        /// <summary>Raw axis index for Y in ExtendedRawState.Axes (custom Extended only, -1 for gamepad).</summary>
+        /// <summary>Raw axis index for Y in RawHidState.Axes (custom Extended only, -1 for gamepad).</summary>
         public int AxisYIndex { get; }
 
         // ── Sensitivity curve charts (using CurveEditor UserControl now) ──

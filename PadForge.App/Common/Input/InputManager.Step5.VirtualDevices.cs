@@ -1245,7 +1245,7 @@ namespace PadForge.Common.Input
                     if (vc != null && _slotInactiveCounter[padIndex] == 1)
                     {
                         CombinedOutputStates[padIndex].Clear();
-                        CombinedExtendedRawStates[padIndex].Clear();
+                        CombinedRawHidStates[padIndex].Clear();
                         CombinedMidiRawStates[padIndex].Clear();
                         CombinedKbmRawStates[padIndex].Clear();
                         CombinedTouchpadStates[padIndex] = default;
@@ -1282,8 +1282,8 @@ namespace PadForge.Common.Input
                                  && vc is HMaestroVirtualController hmExt)
                         {
                             // Extended with dynamic profile layout: mappings live
-                            // in ExtendedRawState (ExtendedAxis{N}/ExtendedBtn{N}/
-                            // ExtendedPov{N} target keys populated by Step 3/4)
+                            // in RawHidState (RawAxis{N}/RawBtn{N}/
+                            // RawPov{N} target keys populated by Step 3/4)
                             // not the standard Gamepad. Submit the raw state
                             // directly to HIDMaestro so we cover the full
                             // HMGamepadState surface — 6 axes, 13 buttons, and
@@ -1295,9 +1295,9 @@ namespace PadForge.Common.Input
                             // grammar on the word array.
                             var socdExt = ResolveSlotSocd(padIndex, extendedIndices: true);
                             if (socdExt != null)
-                                socdExt.ApplyExtended(CombinedExtendedRawStates[padIndex].Buttons);
-                            hmExt.SubmitExtendedRawState(
-                                CombinedExtendedRawStates[padIndex],
+                                socdExt.ApplyExtended(CombinedRawHidStates[padIndex].Buttons);
+                            hmExt.SubmitRawHidState(
+                                CombinedRawHidStates[padIndex],
                                 layout.Sticks,
                                 layout.Triggers,
                                 // IMU channel (HM v1.3.18): the slot's
@@ -1547,7 +1547,7 @@ namespace PadForge.Common.Input
         // VID/PID/ProductString/layout from scratch. Previous catalog-
         // inheritance default (logitech-f710) would have new users pick
         // up Logitech VID/PID surprise-unexpectedly.
-        public const string DefaultExtendedProfileId = HMaestroProfileCatalog.CustomProfileId;
+        public const string DefaultRawProfileId = HMaestroProfileCatalog.CustomProfileId;
         /// <summary>The Nintendo category's only profile for now (owner
         /// call 2026-07-18). Matches HMaestroProfileCatalog.IsNintendoProfile.</summary>
         public const string DefaultNintendoProfileId = "switch-pro";
@@ -1564,7 +1564,7 @@ namespace PadForge.Common.Input
         {
             VirtualControllerType.Xbox => DefaultXboxProfileId,
             VirtualControllerType.PlayStation => DefaultPlayStationProfileId,
-            VirtualControllerType.Extended => DefaultExtendedProfileId,
+            VirtualControllerType.Extended => DefaultRawProfileId,
             VirtualControllerType.Nintendo => DefaultNintendoProfileId,
             _ => null
         };

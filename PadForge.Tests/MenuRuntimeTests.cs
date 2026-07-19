@@ -717,7 +717,7 @@ namespace PadForge.Tests
 
             // Extended lettering: the options become the layout's 1..N raw
             // button numbers and the value space swaps to ExtendedButton.
-            editor.ExtendedButtonCount = 24;
+            editor.RawButtonCount = 24;
             editor.ButtonStyle = PadForge.ViewModels.MacroButtonStyle.Numbered;
             Assert.Equal(24, cell.ButtonOptions.Count);
             Assert.Equal(5, cell.ButtonOptions[4].Value);

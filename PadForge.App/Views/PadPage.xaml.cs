@@ -2048,20 +2048,20 @@ namespace PadForge.Views
                 int sticks = System.Math.Min(axes, 4) / 2;
                 int triggers = System.Math.Max(0, axes - sticks * 2);
 
-                ExtendedStickCountBox.Text = sticks.ToString();
+                RawStickCountBox.Text = sticks.ToString();
                 ExtendedTriggerCountBox.Text = triggers.ToString();
-                ExtendedPovCountBox.Text = (profile.HasHat ? 1 : 0).ToString();
-                ExtendedButtonCountBox.Text = profile.ButtonCount.ToString();
+                RawPovCountBox.Text = (profile.HasHat ? 1 : 0).ToString();
+                RawButtonCountBox.Text = profile.ButtonCount.ToString();
             }
             else
             {
                 // No profile resolved (e.g. catalog not loaded yet) — fall
                 // back to the persisted ExtendedConfig so the UI has something
                 // to show rather than blank fields.
-                ExtendedStickCountBox.Text = vm.ExtendedConfig.ThumbstickCount.ToString();
+                RawStickCountBox.Text = vm.ExtendedConfig.ThumbstickCount.ToString();
                 ExtendedTriggerCountBox.Text = vm.ExtendedConfig.TriggerCount.ToString();
-                ExtendedPovCountBox.Text = vm.ExtendedConfig.PovCount.ToString();
-                ExtendedButtonCountBox.Text = vm.ExtendedConfig.ButtonCount.ToString();
+                RawPovCountBox.Text = vm.ExtendedConfig.PovCount.ToString();
+                RawButtonCountBox.Text = vm.ExtendedConfig.ButtonCount.ToString();
             }
         }
 
@@ -2895,20 +2895,20 @@ namespace PadForge.Views
         {
             if (DataContext is not PadViewModel vm) return;
 
-            if (int.TryParse(ExtendedStickCountBox.Text, out int sticks))
+            if (int.TryParse(RawStickCountBox.Text, out int sticks))
                 vm.ExtendedConfig.ThumbstickCount = sticks;
             if (int.TryParse(ExtendedTriggerCountBox.Text, out int triggers))
                 vm.ExtendedConfig.TriggerCount = triggers;
-            if (int.TryParse(ExtendedPovCountBox.Text, out int povs))
+            if (int.TryParse(RawPovCountBox.Text, out int povs))
                 vm.ExtendedConfig.PovCount = povs;
-            if (int.TryParse(ExtendedButtonCountBox.Text, out int buttons))
+            if (int.TryParse(RawButtonCountBox.Text, out int buttons))
                 vm.ExtendedConfig.ButtonCount = buttons;
 
             // Reflect clamped values back into text boxes
-            ExtendedStickCountBox.Text = vm.ExtendedConfig.ThumbstickCount.ToString();
+            RawStickCountBox.Text = vm.ExtendedConfig.ThumbstickCount.ToString();
             ExtendedTriggerCountBox.Text = vm.ExtendedConfig.TriggerCount.ToString();
-            ExtendedPovCountBox.Text = vm.ExtendedConfig.PovCount.ToString();
-            ExtendedButtonCountBox.Text = vm.ExtendedConfig.ButtonCount.ToString();
+            RawPovCountBox.Text = vm.ExtendedConfig.PovCount.ToString();
+            RawButtonCountBox.Text = vm.ExtendedConfig.ButtonCount.ToString();
         }
 
         private void ExtendedImportBtn_Click(object sender, RoutedEventArgs e)
@@ -3052,10 +3052,10 @@ namespace PadForge.Views
             try
             {
                 ExtendedCustomizeChk.IsChecked = true;
-                ExtendedStickCountBox.Text = cfg.ThumbstickCount.ToString();
+                RawStickCountBox.Text = cfg.ThumbstickCount.ToString();
                 ExtendedTriggerCountBox.Text = cfg.TriggerCount.ToString();
-                ExtendedPovCountBox.Text = cfg.PovCount.ToString();
-                ExtendedButtonCountBox.Text = cfg.ButtonCount.ToString();
+                RawPovCountBox.Text = cfg.PovCount.ToString();
+                RawButtonCountBox.Text = cfg.ButtonCount.ToString();
             }
             finally { _syncingExtendedConfig = false; }
 

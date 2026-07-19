@@ -1655,7 +1655,7 @@ namespace PadForge.ViewModels
                 InitializeMidiMappings();
             else if (OutputType is VirtualControllerType.Extended
                      or VirtualControllerType.Nintendo)
-                InitializeExtendedCustomMappings();
+                InitializeRawSurfaceMappings();
             else
                 InitializeGamepadMappings();
 
@@ -1888,7 +1888,7 @@ namespace PadForge.ViewModels
         /// Dynamic Extended Custom mappings — numbered buttons, sticks, triggers, POVs.
         /// Axis layout interleaves sticks and triggers: [Stick0 X,Y | Trig0 | Stick1 X,Y | Trig1 | ...].
         /// </summary>
-        private void InitializeExtendedCustomMappings()
+        private void InitializeRawSurfaceMappings()
         {
             var cfg = ExtendedConfig;
             int stickCount = cfg.ThumbstickCount;
@@ -1900,29 +1900,29 @@ namespace PadForge.ViewModels
             for (int i = 0; i < stickCount; i++)
             {
                 var cat = i == 0 ? MappingCategory.LeftStick : MappingCategory.RightStick;
-                Mappings.Add(new MappingItem(string.Format(Strings.Instance.Extended_Stick_Format, i + 1), $"ExtendedAxis{stickAxisX[i]}", cat, $"ExtendedAxis{stickAxisX[i]}Neg"));
-                Mappings.Add(new MappingItem(string.Format(Strings.Instance.Extended_StickY_Format, i + 1), $"ExtendedAxis{stickAxisY[i]}", cat, $"ExtendedAxis{stickAxisY[i]}Neg"));
+                Mappings.Add(new MappingItem(string.Format(Strings.Instance.Extended_Stick_Format, i + 1), $"RawAxis{stickAxisX[i]}", cat, $"RawAxis{stickAxisX[i]}Neg"));
+                Mappings.Add(new MappingItem(string.Format(Strings.Instance.Extended_StickY_Format, i + 1), $"RawAxis{stickAxisY[i]}", cat, $"RawAxis{stickAxisY[i]}Neg"));
             }
 
             // Trigger axes (unpaired)
             for (int i = 0; i < triggerCount; i++)
-                Mappings.Add(new MappingItem(string.Format(Strings.Instance.Extended_Trigger_Format, i + 1), $"ExtendedAxis{triggerAxis[i]}", MappingCategory.Triggers));
+                Mappings.Add(new MappingItem(string.Format(Strings.Instance.Extended_Trigger_Format, i + 1), $"RawAxis{triggerAxis[i]}", MappingCategory.Triggers));
 
             // Buttons. Switch Pro profiles letter each raw index in the
             // Nintendo convention (#215) through the same MacroButtonNames
             // seam the macro / menu pickers read; other profiles keep the
             // numbered labels.
             for (int i = 0; i < cfg.ButtonCount; i++)
-                Mappings.Add(new MappingItem(MacroButtonNames.ExtendedButtonLabel(ProfileId, i + 1), $"ExtendedBtn{i}", MappingCategory.Buttons));
+                Mappings.Add(new MappingItem(MacroButtonNames.RawButtonLabel(ProfileId, i + 1), $"RawBtn{i}", MappingCategory.Buttons));
 
             // POVs
             for (int i = 0; i < cfg.PovCount; i++)
             {
                 string label = cfg.PovCount == 1 ? Strings.Instance.Extended_DPad : string.Format(Strings.Instance.Extended_POV_Format, i + 1);
-                Mappings.Add(new MappingItem($"{label} Up", $"ExtendedPov{i}Up", MappingCategory.DPad));
-                Mappings.Add(new MappingItem($"{label} Down", $"ExtendedPov{i}Down", MappingCategory.DPad));
-                Mappings.Add(new MappingItem($"{label} Left", $"ExtendedPov{i}Left", MappingCategory.DPad));
-                Mappings.Add(new MappingItem($"{label} Right", $"ExtendedPov{i}Right", MappingCategory.DPad));
+                Mappings.Add(new MappingItem($"{label} Up", $"RawPov{i}Up", MappingCategory.DPad));
+                Mappings.Add(new MappingItem($"{label} Down", $"RawPov{i}Down", MappingCategory.DPad));
+                Mappings.Add(new MappingItem($"{label} Left", $"RawPov{i}Left", MappingCategory.DPad));
+                Mappings.Add(new MappingItem($"{label} Right", $"RawPov{i}Right", MappingCategory.DPad));
             }
 
             // Motion passthrough (HM v1.3.18, HM#33): the virtual Switch
@@ -2086,7 +2086,7 @@ namespace PadForge.ViewModels
                 {
                     string label = (g < StickConfigs.Count ? StickConfigs[g].Title : null)
                         ?? string.Format(Strings.Instance.Extended_Stick_Format, g + 1);
-                    list.Add((label, $"ExtendedAxis{sx[g]}", $"ExtendedAxis{sy[g]}"));
+                    list.Add((label, $"RawAxis{sx[g]}", $"RawAxis{sy[g]}"));
                 }
             }
             else
@@ -4085,7 +4085,7 @@ namespace PadForge.ViewModels
                     PadIndex = PadIndex,
                     Name = $"Macro {Macros.Count + 1}",
                     ButtonStyle = MacroButtonNames.DeriveStyle(_outputType),
-                    ExtendedProfileId = SlotExtendedProfileId
+                    RawProfileId = SlotRawProfileId
                 };
                 Macros.Add(macro);
                 SelectedMacro = macro;
@@ -4770,7 +4770,7 @@ namespace PadForge.ViewModels
                     PadIndex = PadIndex,
                     Name = string.Format(Strings.Instance.Pad_Audio_SoundMacroName_Format, Macros.Count + 1),
                     ButtonStyle = MacroButtonNames.DeriveStyle(_outputType),
-                    ExtendedProfileId = SlotExtendedProfileId
+                    RawProfileId = SlotRawProfileId
                 };
                 macro.Actions.Add(new MacroAction { Type = MacroActionType.PlaySound });
                 Macros.Add(macro);
@@ -4789,7 +4789,7 @@ namespace PadForge.ViewModels
         /// <summary>The slot's profile slug when it letters Extended button
         /// labels (#215): the ProfileId on Extended slots, null elsewhere.
         /// Xbox / PlayStation lettering keys on ButtonStyle alone.</summary>
-        private string SlotExtendedProfileId =>
+        private string SlotRawProfileId =>
             _outputType is VirtualControllerType.Extended
                 or VirtualControllerType.Nintendo
                 ? _profileId : null;
@@ -4804,12 +4804,12 @@ namespace PadForge.ViewModels
             int btnCount = (_outputType is VirtualControllerType.Extended
                 or VirtualControllerType.Nintendo
                 ? _extendedConfig?.ButtonCount : null) ?? 11;
-            string letteredProfile = SlotExtendedProfileId;
+            string letteredProfile = SlotRawProfileId;
             foreach (var macro in Macros)
             {
                 macro.ButtonStyle = style;
                 macro.CustomButtonCount = btnCount;
-                macro.ExtendedProfileId = letteredProfile;
+                macro.RawProfileId = letteredProfile;
                 foreach (var action in macro.Actions)
                     action.CustomButtonCount = btnCount;
             }
@@ -4826,11 +4826,11 @@ namespace PadForge.ViewModels
         private void ApplyMenuButtonStyle(MenuEditorItem vm)
         {
             vm.ButtonStyle = MacroButtonNames.DeriveStyle(_outputType);
-            vm.ExtendedButtonCount =
+            vm.RawButtonCount =
                 (_outputType is VirtualControllerType.Extended
                  or VirtualControllerType.Nintendo
                  ? _extendedConfig?.ButtonCount : null) ?? 11;
-            vm.ExtendedProfileId = SlotExtendedProfileId;
+            vm.RawProfileId = SlotRawProfileId;
             // MIDI / Keyboard-Mouse outputs cannot press controller
             // buttons: their cells' binding-kind list omits the choice
             // entirely instead of offering it plus a warning.
@@ -5249,7 +5249,7 @@ namespace PadForge.ViewModels
         /// (SlotRawHidSurface == OutputType is Extended), so Extended
         /// pairs are indices and Xbox / PlayStation pairs are the
         /// WriteBoolTarget names.</summary>
-        public bool SocdUsesExtendedIndices =>
+        public bool SocdUsesRawIndices =>
             _outputType is VirtualControllerType.Extended
                 or VirtualControllerType.Nintendo;
 
@@ -5371,7 +5371,7 @@ namespace PadForge.ViewModels
                 SocdPairItems.Clear();
                 _socdPreservedTokens.Clear();
                 var set = SlotMenuSet;
-                bool extended = SocdUsesExtendedIndices;
+                bool extended = SocdUsesRawIndices;
                 if (set != null && !string.IsNullOrEmpty(set.SocdPairs))
                 {
                     foreach (var token in set.SocdPairs.Split('|', StringSplitOptions.RemoveEmptyEntries))
@@ -5410,7 +5410,7 @@ namespace PadForge.ViewModels
             OnPropertyChanged(nameof(SocdMode));
             OnPropertyChanged(nameof(SocdCardVisible));
             OnPropertyChanged(nameof(KbmSocdCardVisible));
-            OnPropertyChanged(nameof(SocdUsesExtendedIndices));
+            OnPropertyChanged(nameof(SocdUsesRawIndices));
             OnPropertyChanged(nameof(AvailableSlotSocdModes));
             OnPropertyChanged(nameof(SocdButtonOptions));
         }
@@ -5422,7 +5422,7 @@ namespace PadForge.ViewModels
         public RelayCommand AddSocdPairCommand =>
             _addSocdPairCommand ??= new RelayCommand(() =>
             {
-                SocdPairItems.Add(SocdUsesExtendedIndices
+                SocdPairItems.Add(SocdUsesRawIndices
                     ? new SlotSocdPairItem(this, 0, 1)
                     : new SlotSocdPairItem(this, "DPadLeft", "DPadRight"));
                 OnSocdPairEdited();
@@ -5985,7 +5985,7 @@ namespace PadForge.ViewModels
                 SelectedConfigTab = 0;
 
             // Detect Y axis: standard controllers use "AxisY" in the setting name,
-            // custom Extended uses "Stick N Y" in the label (setting name is "ExtendedAxisN").
+            // custom Extended uses "Stick N Y" in the label (setting name is "RawAxisN").
             bool isYAxis = mapping.TargetSettingName.Contains("AxisY")
                         || mapping.TargetLabel.EndsWith(" Y", StringComparison.Ordinal);
 
@@ -6522,10 +6522,10 @@ namespace PadForge.ViewModels
         // ═══════════════════════════════════════════════
 
         /// <summary>
-        /// Latest ExtendedRawState snapshot for custom Extended display.
+        /// Latest RawHidState snapshot for custom Extended display.
         /// Updated at 30Hz alongside UpdateFromEngineState.
         /// </summary>
-        public ExtendedRawState ExtendedOutputSnapshot { get; private set; }
+        public RawHidState RawHidOutputSnapshot { get; private set; }
 
         /// <summary>
         /// Latest KbmRawState snapshot for KBM preview display.
@@ -6535,10 +6535,10 @@ namespace PadForge.ViewModels
 
         /// <summary>
         /// Stores the combined virtual-controller output for the Extended
-        /// schematic preview. Writes <see cref="ExtendedOutputSnapshot"/>
+        /// schematic preview. Writes <see cref="RawHidOutputSnapshot"/>
         /// only — does not touch <see cref="StickConfigs"/> or
         /// <see cref="TriggerConfigs"/>, since those are driven by the
-        /// per-device <see cref="UpdateFromExtendedDeviceState"/> path so
+        /// per-device <see cref="UpdateFromRawDeviceState"/> path so
         /// the per-stick / per-trigger debug tabs can show device-specific
         /// values without colliding with the schematic's combined view.
         /// Pre-split this method also wrote the StickConfigs/TriggerConfigs
@@ -6548,10 +6548,10 @@ namespace PadForge.ViewModels
         /// <see cref="UpdateFromEngineState"/> (combined, schematic) and
         /// <see cref="UpdateDeviceState"/> (per-device, stick tab).
         /// </summary>
-        public void UpdateFromExtendedRawState(ExtendedRawState raw)
+        public void UpdateFromRawHidState(RawHidState raw)
         {
-            ExtendedOutputSnapshot = raw;
-            OnPropertyChanged(nameof(ExtendedOutputSnapshot));
+            RawHidOutputSnapshot = raw;
+            OnPropertyChanged(nameof(RawHidOutputSnapshot));
 
             // Nintendo preview bridge: the SWITCHPRO 2D view reads the
             // Gamepad-shaped preview properties, but a Nintendo slot's
@@ -6564,7 +6564,7 @@ namespace PadForge.ViewModels
                 UpdateNintendoPreviewFromRaw(raw);
         }
 
-        private void UpdateNintendoPreviewFromRaw(ExtendedRawState raw)
+        private void UpdateNintendoPreviewFromRaw(RawHidState raw)
         {
             ButtonB = raw.IsButtonPressed(0);
             ButtonA = raw.IsButtonPressed(1);
@@ -6605,13 +6605,13 @@ namespace PadForge.ViewModels
         /// <summary>
         /// Updates per-stick and per-trigger live values for the Extended
         /// stick/trigger debug tabs. Caller passes either the selected
-        /// device's <c>ExtendedRawOutputState</c> or, when no device is
+        /// device's <c>RawHidOutputState</c> or, when no device is
         /// selected, the combined slot raw state as a fallback so the tabs
         /// always show something. Does NOT write
-        /// <see cref="ExtendedOutputSnapshot"/> — that field is owned by
+        /// <see cref="RawHidOutputSnapshot"/> — that field is owned by
         /// the schematic preview path.
         /// </summary>
-        public void UpdateFromExtendedDeviceState(ExtendedRawState raw)
+        public void UpdateFromRawDeviceState(RawHidState raw)
         {
             // Sync stick config items from raw axes. Calibration capture and
             // the cold dot must read the PRE-tuning frame: raw.Axes has been

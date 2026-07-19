@@ -767,69 +767,74 @@ namespace PadForge.Engine.Data
         // ─────────────────────────────────────────────
         //  Extended custom mappings (dictionary-based)
         //  Used for custom Extended configurations with arbitrary axis/button/POV counts.
-        //  Keys use target names like "ExtendedAxis0", "ExtendedAxis0Neg", "ExtendedBtn0",
-        //  "ExtendedPov0Up", etc. Values are mapping descriptors (same format as above).
+        //  Keys use target names like "RawAxis0", "RawAxis0Neg", "RawBtn0",
+        //  "RawPov0Up", etc. Values are mapping descriptors (same format as above).
         // ─────────────────────────────────────────────
 
         /// <summary>Serializable array for XML persistence of Extended mappings.</summary>
         [XmlArray("ExtendedMappings")]
         [XmlArrayItem("Map")]
-        public ExtendedMappingEntry[] ExtendedMappingEntries { get; set; }
+        public RawMappingEntry[] RawMappingEntries { get; set; }
 
         [XmlIgnore]
-        private Dictionary<string, string> _extendedMappingDict;
+        private Dictionary<string, string> _rawMappingDict;
 
-        /// <summary>Gets an Extended mapping value by key (e.g., "ExtendedAxis0", "ExtendedBtn5").</summary>
-        public string GetExtendedMapping(string key)
+        /// <summary>Gets an Extended mapping value by key (e.g., "RawAxis0", "RawBtn5").</summary>
+        public string GetRawMapping(string key)
         {
-            EnsureExtendedDict();
-            return _extendedMappingDict.TryGetValue(key, out var val) ? val : "";
+            EnsureRawMappingDict();
+            return _rawMappingDict.TryGetValue(key, out var val) ? val : "";
         }
 
         /// <summary>Sets an Extended mapping value by key.</summary>
-        public void SetExtendedMapping(string key, string value)
+        public void SetRawMapping(string key, string value)
         {
-            EnsureExtendedDict();
+            EnsureRawMappingDict();
             if (string.IsNullOrEmpty(value))
-                _extendedMappingDict.Remove(key);
+                _rawMappingDict.Remove(key);
             else
-                _extendedMappingDict[key] = value;
+                _rawMappingDict[key] = value;
         }
 
         /// <summary>Flushes the Extended mapping dict back to the serializable array.</summary>
-        public void FlushExtendedMappings()
+        public void FlushRawMappings()
         {
-            if (_extendedMappingDict == null) return; // Not initialized — array is canonical.
-            if (_extendedMappingDict.Count == 0)
+            if (_rawMappingDict == null) return; // Not initialized — array is canonical.
+            if (_rawMappingDict.Count == 0)
             {
-                ExtendedMappingEntries = null;
+                RawMappingEntries = null;
                 return;
             }
-            var entries = new ExtendedMappingEntry[_extendedMappingDict.Count];
+            var entries = new RawMappingEntry[_rawMappingDict.Count];
             int i = 0;
-            foreach (var kvp in _extendedMappingDict)
-                entries[i++] = new ExtendedMappingEntry { Key = kvp.Key, Value = kvp.Value };
-            ExtendedMappingEntries = entries;
+            foreach (var kvp in _rawMappingDict)
+                entries[i++] = new RawMappingEntry { Key = kvp.Key, Value = kvp.Value };
+            RawMappingEntries = entries;
         }
 
-        private readonly object _extendedDictLock = new();
+        private readonly object _rawDictLock = new();
 
-        private void EnsureExtendedDict()
+        private void EnsureRawMappingDict()
         {
-            if (_extendedMappingDict != null) return;
-            lock (_extendedDictLock)
+            if (_rawMappingDict != null) return;
+            lock (_rawDictLock)
             {
-                if (_extendedMappingDict != null) return;
+                if (_rawMappingDict != null) return;
                 var dict = new Dictionary<string, string>(StringComparer.Ordinal);
-                if (ExtendedMappingEntries != null)
+                if (RawMappingEntries != null)
                 {
-                    foreach (var e in ExtendedMappingEntries)
+                    foreach (var e in RawMappingEntries)
                     {
                         if (!string.IsNullOrEmpty(e.Key) && !string.IsNullOrEmpty(e.Value))
-                            dict[e.Key] = e.Value;
+                            // Legacy raw-surface keys (pre-rename
+                            // "Extended*" spellings) normalize to the
+                            // current "Raw*" grammar on first read, so
+                            // saves written before the rename load
+                            // unchanged and re-save upgraded.
+                            dict[MappingSetMigrator.NormalizeRawToken(e.Key)] = e.Value;
                     }
                 }
-                _extendedMappingDict = dict;
+                _rawMappingDict = dict;
             }
         }
 
@@ -842,7 +847,7 @@ namespace PadForge.Engine.Data
 
         [XmlArray("MidiMappings")]
         [XmlArrayItem("Map")]
-        public ExtendedMappingEntry[] MidiMappingEntries { get; set; }
+        public RawMappingEntry[] MidiMappingEntries { get; set; }
 
         [XmlIgnore]
         private Dictionary<string, string> _midiMappingDict;
@@ -870,10 +875,10 @@ namespace PadForge.Engine.Data
                 MidiMappingEntries = null;
                 return;
             }
-            var entries = new ExtendedMappingEntry[_midiMappingDict.Count];
+            var entries = new RawMappingEntry[_midiMappingDict.Count];
             int i = 0;
             foreach (var kvp in _midiMappingDict)
-                entries[i++] = new ExtendedMappingEntry { Key = kvp.Key, Value = kvp.Value };
+                entries[i++] = new RawMappingEntry { Key = kvp.Key, Value = kvp.Value };
             MidiMappingEntries = entries;
         }
 
@@ -907,7 +912,7 @@ namespace PadForge.Engine.Data
 
         [XmlArray("KbmMappings")]
         [XmlArrayItem("Map")]
-        public ExtendedMappingEntry[] KbmMappingEntries { get; set; }
+        public RawMappingEntry[] KbmMappingEntries { get; set; }
 
         [XmlIgnore]
         private Dictionary<string, string> _kbmMappingDict;
@@ -935,10 +940,10 @@ namespace PadForge.Engine.Data
                 KbmMappingEntries = null;
                 return;
             }
-            var entries = new ExtendedMappingEntry[_kbmMappingDict.Count];
+            var entries = new RawMappingEntry[_kbmMappingDict.Count];
             int i = 0;
             foreach (var kvp in _kbmMappingDict)
-                entries[i++] = new ExtendedMappingEntry { Key = kvp.Key, Value = kvp.Value };
+                entries[i++] = new RawMappingEntry { Key = kvp.Key, Value = kvp.Value };
             KbmMappingEntries = entries;
         }
 
@@ -969,7 +974,7 @@ namespace PadForge.Engine.Data
 
         [XmlArray("MappingDeadZones")]
         [XmlArrayItem("Map")]
-        public ExtendedMappingEntry[] MappingDeadZoneEntries { get; set; }
+        public RawMappingEntry[] MappingDeadZoneEntries { get; set; }
 
         [XmlIgnore]
         private Dictionary<string, string> _mappingDeadZoneDict;
@@ -998,10 +1003,10 @@ namespace PadForge.Engine.Data
                 MappingDeadZoneEntries = null;
                 return;
             }
-            var entries = new ExtendedMappingEntry[_mappingDeadZoneDict.Count];
+            var entries = new RawMappingEntry[_mappingDeadZoneDict.Count];
             int i = 0;
             foreach (var kvp in _mappingDeadZoneDict)
-                entries[i++] = new ExtendedMappingEntry { Key = kvp.Key, Value = kvp.Value };
+                entries[i++] = new RawMappingEntry { Key = kvp.Key, Value = kvp.Value };
             MappingDeadZoneEntries = entries;
         }
 
@@ -1035,7 +1040,7 @@ namespace PadForge.Engine.Data
 
         [XmlArray("MappingBidirectional")]
         [XmlArrayItem("Map")]
-        public ExtendedMappingEntry[] MappingBidirectionalEntries { get; set; }
+        public RawMappingEntry[] MappingBidirectionalEntries { get; set; }
 
         [XmlIgnore]
         private Dictionary<string, string> _mappingBidirectionalDict;
@@ -1064,10 +1069,10 @@ namespace PadForge.Engine.Data
                 MappingBidirectionalEntries = null;
                 return;
             }
-            var entries = new ExtendedMappingEntry[_mappingBidirectionalDict.Count];
+            var entries = new RawMappingEntry[_mappingBidirectionalDict.Count];
             int i = 0;
             foreach (var kvp in _mappingBidirectionalDict)
-                entries[i++] = new ExtendedMappingEntry { Key = kvp.Key, Value = kvp.Value };
+                entries[i++] = new RawMappingEntry { Key = kvp.Key, Value = kvp.Value };
             MappingBidirectionalEntries = entries;
         }
 
@@ -1339,14 +1344,14 @@ namespace PadForge.Engine.Data
             sb.Append(MotionAccel); sb.Append('|');
 
             // Extended custom mappings (sorted for deterministic checksum)
-            EnsureExtendedDict();
-            if (_extendedMappingDict.Count > 0)
+            EnsureRawMappingDict();
+            if (_rawMappingDict.Count > 0)
             {
-                var keys = new List<string>(_extendedMappingDict.Keys);
+                var keys = new List<string>(_rawMappingDict.Keys);
                 keys.Sort(StringComparer.Ordinal);
                 foreach (var key in keys)
                 {
-                    sb.Append(key); sb.Append('='); sb.Append(_extendedMappingDict[key]); sb.Append('|');
+                    sb.Append(key); sb.Append('='); sb.Append(_rawMappingDict[key]); sb.Append('|');
                 }
             }
 
@@ -1540,8 +1545,8 @@ namespace PadForge.Engine.Data
             !string.IsNullOrEmpty(TouchpadContact1) ||
             !string.IsNullOrEmpty(TouchpadContact2) ||
             !string.IsNullOrEmpty(TouchpadClick) ||
-            (ExtendedMappingEntries != null && ExtendedMappingEntries.Length > 0) ||
-            (_extendedMappingDict != null && _extendedMappingDict.Count > 0) ||
+            (RawMappingEntries != null && RawMappingEntries.Length > 0) ||
+            (_rawMappingDict != null && _rawMappingDict.Count > 0) ||
             (MidiMappingEntries != null && MidiMappingEntries.Length > 0) ||
             (_midiMappingDict != null && _midiMappingDict.Count > 0) ||
             (KbmMappingEntries != null && KbmMappingEntries.Length > 0) ||
@@ -1579,17 +1584,17 @@ namespace PadForge.Engine.Data
             // device-switch flush): the steering keys vanished and read back as Direct on the
             // next load. Stick deadzone/range live in named properties, which is why only
             // steering (and Extended tuning) hit this.
-            if (_extendedMappingDict != null
-                || (ExtendedMappingEntries != null && ExtendedMappingEntries.Length > 0))
+            if (_rawMappingDict != null
+                || (RawMappingEntries != null && RawMappingEntries.Length > 0))
             {
-                EnsureExtendedDict();
+                EnsureRawMappingDict();
                 var preserved = new Dictionary<string, string>(StringComparer.Ordinal);
-                foreach (var kvp in _extendedMappingDict)
+                foreach (var kvp in _rawMappingDict)
                     if (IsPerDeviceTuningKey(kvp.Key))
                         preserved[kvp.Key] = kvp.Value;
-                _extendedMappingDict = preserved;
+                _rawMappingDict = preserved;
             }
-            ExtendedMappingEntries = null; // re-flushed from the dict on save
+            RawMappingEntries = null; // re-flushed from the dict on save
 
             // MIDI/KBM mapping dictionaries and arrays (no tuning shares these).
             MidiMappingEntries = null;
@@ -1630,7 +1635,7 @@ namespace PadForge.Engine.Data
             // Motion Steering keys above.
             if (k.StartsWith("FlickStick", StringComparison.Ordinal))
                 return true;
-            if (k.StartsWith("ExtendedStick", StringComparison.Ordinal))
+            if (k.StartsWith("RawStick", StringComparison.Ordinal))
                 return true;
             if (k.StartsWith("ExtendedTrigger", StringComparison.Ordinal)
                 && (k.EndsWith("Dz", StringComparison.Ordinal) || k.EndsWith("Adz", StringComparison.Ordinal)
@@ -1674,9 +1679,9 @@ namespace PadForge.Engine.Data
             Add(TouchpadClick);
 
             // Extended custom mappings
-            if (ExtendedMappingEntries != null)
+            if (RawMappingEntries != null)
             {
-                foreach (var e in ExtendedMappingEntries)
+                foreach (var e in RawMappingEntries)
                     Add(e.Value);
             }
 
@@ -1923,7 +1928,7 @@ namespace PadForge.Engine.Data
         public string ToJson(VirtualControllerType outputType = VirtualControllerType.Xbox, bool isExtended = false)
         {
             // Flush live dicts to arrays before serializing.
-            FlushExtendedMappings();
+            FlushRawMappings();
             FlushMidiMappings();
             FlushKbmMappings();
             FlushMappingDeadZones();
@@ -1944,10 +1949,10 @@ namespace PadForge.Engine.Data
             }
 
             // Include Extended/MIDI/KBM mapping arrays if present.
-            if (ExtendedMappingEntries != null && ExtendedMappingEntries.Length > 0)
+            if (RawMappingEntries != null && RawMappingEntries.Length > 0)
             {
                 var extendedList = new List<Dictionary<string, string>>();
-                foreach (var e in ExtendedMappingEntries)
+                foreach (var e in RawMappingEntries)
                     extendedList.Add(new Dictionary<string, string> { ["Key"] = e.Key, ["Value"] = e.Value });
                 dict["__ExtendedMappings"] = JsonSerializer.Serialize(extendedList);
             }
@@ -2084,7 +2089,7 @@ namespace PadForge.Engine.Data
                     if (kvp.Key.StartsWith("__"))
                     {
                         if (kvp.Key == "__ExtendedMappings")
-                            ps.ExtendedMappingEntries = DeserializeMappingArray(kvp.Value);
+                            ps.RawMappingEntries = DeserializeMappingArray(kvp.Value);
                         else if (kvp.Key == "__MidiMappings")
                             ps.MidiMappingEntries = DeserializeMappingArray(kvp.Value);
                         else if (kvp.Key == "__KbmMappings")
@@ -2163,16 +2168,16 @@ namespace PadForge.Engine.Data
             }
         }
 
-        private static ExtendedMappingEntry[] DeserializeMappingArray(string json)
+        private static RawMappingEntry[] DeserializeMappingArray(string json)
         {
             try
             {
                 var list = JsonSerializer.Deserialize<List<Dictionary<string, string>>>(json);
                 if (list == null) return null;
-                var arr = new ExtendedMappingEntry[list.Count];
+                var arr = new RawMappingEntry[list.Count];
                 for (int i = 0; i < list.Count; i++)
                 {
-                    arr[i] = new ExtendedMappingEntry
+                    arr[i] = new RawMappingEntry
                     {
                         Key = list[i].TryGetValue("Key", out var k) ? k : "",
                         Value = list[i].TryGetValue("Value", out var v) ? v : ""
@@ -2205,7 +2210,7 @@ namespace PadForge.Engine.Data
         /// <summary>
         /// Copies mappings from another PadSetting with cross-layout translation.
         /// When source and target use the same layout, delegates to <see cref="CopyFrom"/>.
-        /// When layouts differ, translates mapping positions (e.g., ButtonA → ExtendedBtn0)
+        /// When layouts differ, translates mapping positions (e.g., ButtonA → RawBtn0)
         /// and copies non-mapping settings (deadzones, sensitivity, FFB) directly.
         /// </summary>
         public void CopyFromTranslated(PadSetting source,
@@ -2221,7 +2226,7 @@ namespace PadForge.Engine.Data
                 return;
             }
 
-            source.FlushExtendedMappings();
+            source.FlushRawMappings();
             source.FlushMidiMappings();
             source.FlushKbmMappings();
 
@@ -2275,9 +2280,9 @@ namespace PadForge.Engine.Data
             // Read from Extended dictionary (Extended custom source)
             if (sourceType is VirtualControllerType.Extended or VirtualControllerType.Nintendo
                 && sourceIsExtended
-                && source.ExtendedMappingEntries != null)
+                && source.RawMappingEntries != null)
             {
-                foreach (var e in source.ExtendedMappingEntries)
+                foreach (var e in source.RawMappingEntries)
                 {
                     if (string.IsNullOrEmpty(e.Key) || string.IsNullOrEmpty(e.Value)) continue;
                     var slot = MappingTranslation.GetPosition(e.Key, sourceType, true);
@@ -2316,8 +2321,8 @@ namespace PadForge.Engine.Data
             if (targetType is VirtualControllerType.Extended or VirtualControllerType.Nintendo
                 && targetIsExtended)
             {
-                ExtendedMappingEntries = null;
-                _extendedMappingDict = null;
+                RawMappingEntries = null;
+                _rawMappingDict = null;
             }
             else if (targetType == VirtualControllerType.Midi)
             {
@@ -2348,7 +2353,7 @@ namespace PadForge.Engine.Data
 
                 if (targetType is VirtualControllerType.Extended or VirtualControllerType.Nintendo
                     && targetIsExtended)
-                    SetExtendedMapping(targetKey, kvp.Value);
+                    SetRawMapping(targetKey, kvp.Value);
                 else if (targetType == VirtualControllerType.Midi)
                     SetMidiMapping(targetKey, kvp.Value);
                 else if (targetType == VirtualControllerType.KeyboardMouse)
@@ -2363,7 +2368,7 @@ namespace PadForge.Engine.Data
             }
 
             // Flush dictionaries to arrays for persistence.
-            FlushExtendedMappings();
+            FlushRawMappings();
             FlushMidiMappings();
             FlushKbmMappings();
             FlushMappingDeadZones();
@@ -2386,16 +2391,16 @@ namespace PadForge.Engine.Data
             }
 
             // Flush source dicts to arrays so we copy the latest live data
-            // (SetExtendedMapping/SetMidiMapping update the dict, not the array).
-            source.FlushExtendedMappings();
+            // (SetRawMapping/SetMidiMapping update the dict, not the array).
+            source.FlushRawMappings();
             source.FlushMidiMappings();
             source.FlushKbmMappings();
             source.FlushMappingDeadZones();
             source.FlushMappingBidirectional();
 
             // Deep-copy arrays and invalidate our cached dictionaries.
-            ExtendedMappingEntries = DeepCopyMappings(source.ExtendedMappingEntries);
-            _extendedMappingDict = null;
+            RawMappingEntries = DeepCopyMappings(source.RawMappingEntries);
+            _rawMappingDict = null;
             MidiMappingEntries = DeepCopyMappings(source.MidiMappingEntries);
             _midiMappingDict = null;
             KbmMappingEntries = DeepCopyMappings(source.KbmMappingEntries);
@@ -2458,12 +2463,12 @@ namespace PadForge.Engine.Data
             return arr;
         }
 
-        private static ExtendedMappingEntry[] DeepCopyMappings(ExtendedMappingEntry[] src)
+        private static RawMappingEntry[] DeepCopyMappings(RawMappingEntry[] src)
         {
             if (src == null || src.Length == 0) return null;
-            var arr = new ExtendedMappingEntry[src.Length];
+            var arr = new RawMappingEntry[src.Length];
             for (int i = 0; i < src.Length; i++)
-                arr[i] = new ExtendedMappingEntry { Key = src[i].Key, Value = src[i].Value };
+                arr[i] = new RawMappingEntry { Key = src[i].Key, Value = src[i].Value };
             return arr;
         }
 
@@ -2482,7 +2487,7 @@ namespace PadForge.Engine.Data
     /// <summary>
     /// Key-value entry for Extended/MIDI mapping persistence in XML.
     /// </summary>
-    public class ExtendedMappingEntry
+    public class RawMappingEntry
     {
         [XmlAttribute] public string Key { get; set; } = "";
         [XmlAttribute] public string Value { get; set; } = "";

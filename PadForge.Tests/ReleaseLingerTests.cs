@@ -108,7 +108,7 @@ namespace PadForge.Tests
         private static MappingSet HoldLayerSet(int releaseDelayMs)
         {
             var ms = new MappingSet();
-            var row = new MappingRow { Target = "ExtendedBtn60", LayerMask = "View" };
+            var row = new MappingRow { Target = "RawBtn60", LayerMask = "View" };
             row.Sources.Add(new MappingSource { Descriptor = "Button 16" });
             ms.Rows.Add(row);
             ms.ShiftActivators.Add(new ShiftActivator

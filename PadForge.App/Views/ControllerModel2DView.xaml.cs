@@ -182,6 +182,11 @@ namespace PadForge.Views
                     basePath = XboxSeriesXLayout.BasePath; overlays = XboxSeriesXLayout.Overlays;
                     _stickMaxTravel = XboxSeriesXLayout.StickMaxTravel;
                     break;
+                case "SWITCHPRO":
+                    baseW = SwitchProLayout.BaseWidth; baseH = SwitchProLayout.BaseHeight;
+                    basePath = SwitchProLayout.BasePath; overlays = SwitchProLayout.Overlays;
+                    _stickMaxTravel = SwitchProLayout.StickMaxTravel;
+                    break;
                 default:
                     baseW = Xbox360Layout.BaseWidth; baseH = Xbox360Layout.BaseHeight;
                     basePath = Xbox360Layout.BasePath; overlays = Xbox360Layout.Overlays;

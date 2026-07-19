@@ -174,3 +174,35 @@ public static class XboxSeriesXLayout
         new("XBSeries_ShareButton.png", "ButtonShare", OverlayElementType.Button, 722, 479, 87, 49),
     };
 }
+
+public static class SwitchProLayout
+{
+    public const int BaseWidth = 1485;
+    public const int BaseHeight = 1079;
+    public const string BasePath = "2DModels/SWITCHPRO/NSwitchPro_base.png";
+    public const double StickMaxTravel = 25;
+
+    public static readonly OverlayElement[] Overlays =
+    {
+        new("NSwitchPro_FaceButton.png", "ButtonA", OverlayElementType.Button, 1165, 261, 167, 169),
+        new("NSwitchPro_FaceButton.png", "ButtonB", OverlayElementType.Button, 1049, 361, 167, 169),
+        new("NSwitchPro_FaceButton.png", "ButtonX", OverlayElementType.Button, 1049, 158, 167, 169),
+        new("NSwitchPro_FaceButton.png", "ButtonY", OverlayElementType.Button, 934, 261, 167, 169),
+        new("NSwitchPro_D-PAD_Up.png", "DPadUp", OverlayElementType.Button, 450, 404, 132, 179),
+        new("NSwitchPro_D-PAD_Down.png", "DPadDown", OverlayElementType.Button, 450, 516, 132, 179),
+        new("NSwitchPro_D-PAD_Left.png", "DPadLeft", OverlayElementType.Button, 372, 484, 177, 133),
+        new("NSwitchPro_D-PAD_Right.png", "DPadRight", OverlayElementType.Button, 482, 484, 177, 133),
+        new("NSwitchPro_L_Bumper.png", "LeftShoulder", OverlayElementType.Button, 73, -1, 552, 193),
+        new("NSwitchPro_R_Bumper.png", "RightShoulder", OverlayElementType.Button, 858, -1, 552, 193),
+        new("NSwitchPro_ZL.png", "LeftTrigger", OverlayElementType.Trigger, 148, -25, 384, 152),
+        new("NSwitchPro_ZR.png", "RightTrigger", OverlayElementType.Trigger, 952, -25, 384, 152),
+        new("NSwitchPro_Plus-MinusButton.png", "ButtonBack", OverlayElementType.Button, 508, 180, 106, 107),
+        new("NSwitchPro_Plus-MinusButton.png", "ButtonStart", OverlayElementType.Button, 872, 179, 106, 107),
+        new("NSwitchPro_HomeButton.png", "ButtonGuide", OverlayElementType.Button, 794, 290, 105, 106),
+        new("NSwitchPro_CaptureButton.png", "ButtonShare", OverlayElementType.Button, 590, 296, 96, 98),
+        new("NSwitchPro_LeftStick.png", "LeftThumbRing", OverlayElementType.StickRing, 248, 256, 173, 175),
+        new("NSwitchPro_RightStick.png", "RightThumbRing", OverlayElementType.StickRing, 846, 460, 179, 181),
+        new("NSwitchPro_AnalogStickClick.png", "LeftThumbButton", OverlayElementType.StickClick, 184, 196, 299, 297),
+        new("NSwitchPro_AnalogStickClick.png", "RightThumbButton", OverlayElementType.StickClick, 786, 402, 299, 297),
+    };
+}

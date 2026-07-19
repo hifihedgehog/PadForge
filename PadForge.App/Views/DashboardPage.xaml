@@ -898,6 +898,40 @@
                                             <Path Data="M3.262 24.248c-2.374-0.681-2.767-2.084-1.69-2.899 0.776-0.51 1.668-0.954 2.612-1.288l0.087-0.027 7.017-2.516v2.89l-5.030 1.839c-0.881 0.339-1.031 0.79-0.299 1.032 0.365 0.093 0.783 0.147 1.214 0.147 0.615 0 1.204-0.109 1.749-0.308l-0.035 0.011 2.422-0.882v2.592c-0.15 0.037-0.32 0.055-0.487 0.091-0.775 0.136-1.667 0.214-2.577 0.214-1.778 0-3.486-0.298-5.078-0.846l0.110 0.033zM18.049 24.544l7.868-2.843c0.893-0.322 1.032-0.781 0.307-1.022-0.363-0.089-0.779-0.14-1.208-0.14-0.622 0-1.22 0.108-1.774 0.305l0.037-0.011-5.255 1.874v-2.983l0.3-0.106c1.050-0.349 2.284-0.62 3.557-0.761l0.083-0.008c0.468-0.050 1.010-0.078 1.559-0.078 1.877 0 3.677 0.331 5.343 0.939l-0.108-0.035c2.309 0.751 2.549 1.839 1.969 2.589-0.559 0.557-1.235 0.998-1.988 1.282l-0.039 0.013-10.677 3.883v-2.869zM12.231 4.248v21.927l4.892 1.576v-18.39c0-0.862 0.38-1.438 0.992-1.238 0.795 0.225 0.95 1.017 0.95 1.881v7.342c3.050 1.491 5.451-0.003 5.451-3.939 0-4.045-1.407-5.842-5.546-7.282-1.785-0.648-4.040-1.294-6.347-1.805l-0.389-0.072z" Width="13" Height="13" Stretch="Uniform" Margin="2,1" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"/>
                                         </Button>
 
+                                        <!-- Nintendo type button -->
+                                        <Button Margin="1,0,0,0"
+                                                Click="NintendoType_Click" Tag="{Binding PadIndex}">
+                                            <Button.Style>
+                                                <Style TargetType="Button" BasedOn="{StaticResource TypeSwitchButton}">
+                                                    <Setter Property="Padding" Value="7,3"/>
+                                                    <Setter Property="Foreground" Value="{DynamicResource TextFillColorTertiaryBrush}"/>
+                                                    <Setter Property="ToolTip" Value="{Binding ControllerType_Nintendo, Source={x:Static strings:Strings.Instance}}"/>
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding OutputType}" Value="Nintendo">
+                                                            <Setter Property="Foreground" Value="#FFFFF3E8"/>
+                                                            <Setter Property="Background" Value="{DynamicResource EmberSegGradient}"/>
+                                                            <Setter Property="Effect">
+                                                                <Setter.Value>
+                                                                    <DropShadowEffect Color="#FF6B2C" BlurRadius="10" ShadowDepth="0" Opacity="0.4"/>
+                                                                </Setter.Value>
+                                                            </Setter>
+                                                        </DataTrigger>
+                                                        <!-- Cold card (0 mapped): active tile falls back to steel. -->
+                                                        <MultiDataTrigger>
+                                                            <MultiDataTrigger.Conditions>
+                                                                <Condition Binding="{Binding OutputType}" Value="Nintendo"/>
+                                                                <Condition Binding="{Binding HasMappedDevices}" Value="False"/>
+                                                            </MultiDataTrigger.Conditions>
+                                                            <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}"/>
+                                                            <Setter Property="Background" Value="{DynamicResource SteelRaisedBrush}"/>
+                                                            <Setter Property="Effect" Value="{x:Null}"/>
+                                                        </MultiDataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Button.Style>
+                                            <Path Data="M 21.661,0 C 20.071,0 18.746,0.02 18.726,0.046 C 18.699,0.066 18.679,7.248 18.679,16.007 C 18.679,30.458 18.686,31.922 18.785,31.962 C 18.964,32.028 24.106,32.001 24.742,31.935 C 27.432,31.63 29.804,29.994 31.096,27.562 C 31.261,27.251 31.48,26.727 31.592,26.403 C 32.01,25.157 31.997,25.488 31.997,15.968 C 31.997,8.368 31.983,7.235 31.891,6.751 C 31.235,3.3 28.604,0.696 25.146,0.099 C 24.682,0.02 23.966,0 21.661,0 L 21.661,0 M 13.635,0.006 C 13.077,0.004 12.342,0.005 11.371,0.007 C 8.218,0.013 7.27,0.033 6.853,0.106 C 3.666,0.676 1.102,3.035 0.293,6.135 C 0.002,7.255 -0.018,7.911 0.015,16.597 C 0.035,24.574 0.042,24.76 0.174,25.376 C 0.91,28.695 3.268,31.061 6.621,31.842 C 7.058,31.942 7.615,31.962 11.199,31.981 C 14.909,32.008 15.294,32.001 15.393,31.902 C 15.492,31.803 15.499,30.524 15.499,16.027 C 15.499,5.281 15.479,0.219 15.433,0.126 C 15.383,0.036 15.307,0.01 13.635,0.006 L 13.635,0.006 M 12.849,2.584 L 12.849,16.007 L 12.849,29.431 L 10.152,29.397 C 7.668,29.371 7.403,29.358 6.906,29.232 C 4.772,28.682 3.189,27.039 2.745,24.899 C 2.599,24.23 2.599,7.745 2.738,7.089 C 3.136,5.228 4.428,3.684 6.17,2.988 C 7.045,2.637 7.449,2.597 10.285,2.591 L 12.849,2.584 M 7.967,6.575 C 7.787,6.577 7.605,6.596 7.423,6.632 C 7.005,6.712 6.369,7.03 6.031,7.328 C 5.335,7.931 4.991,8.785 5.044,9.793 C 5.071,10.316 5.104,10.455 5.316,10.879 C 5.627,11.522 6.097,11.992 6.74,12.31 C 7.184,12.529 7.297,12.555 7.873,12.575 C 8.396,12.595 8.582,12.575 8.933,12.456 C 10.371,11.972 11.239,10.574 10.994,9.143 C 10.74,7.627 9.43,6.557 7.967,6.575 M 25.025,14.374 C 25.283,14.376 25.543,14.41 25.802,14.477 C 26.835,14.748 27.683,15.537 28.028,16.544 C 28.247,17.167 28.24,18.081 28.021,18.651 C 27.617,19.698 26.822,20.433 25.802,20.705 C 24.145,21.135 22.383,20.135 21.899,18.492 C 21.754,17.988 21.76,17.14 21.926,16.623 C 22.345,15.254 23.637,14.361 25.025,14.374 L 25.025,14.374" Width="13" Height="13" Stretch="Uniform" Margin="2,1" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"/>
+                                        </Button>
+
                                         <!-- Extended (custom DI) type button -->
                                         <Button Margin="1,0,0,0"
                                                 Click="ExtendedType_Click" Tag="{Binding PadIndex}">

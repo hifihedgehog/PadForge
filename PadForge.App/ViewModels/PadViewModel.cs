@@ -206,7 +206,11 @@ namespace PadForge.ViewModels
                     // so the UI reflects the profile's actual axes/buttons.
                     // Xbox / PlayStation slots have fixed layouts that don't
                     // vary per profile, so no rebuild is needed there.
-                    if (_outputType == VirtualControllerType.Extended)
+                    // Nintendo rides the same profile-driven resync (its
+                    // bucket has no synthetic Custom entry, so the
+                    // Customize force below can never fire for it).
+                    if (_outputType is VirtualControllerType.Extended
+                        or VirtualControllerType.Nintendo)
                     {
                         SyncExtendedConfigFromProfile();
                         // Force Customize on whenever the user picks the
@@ -283,6 +287,7 @@ namespace PadForge.ViewModels
             {
                 VirtualControllerType.Xbox => HMaestroProfileCatalog.XboxProfiles,
                 VirtualControllerType.PlayStation => HMaestroProfileCatalog.PlayStationProfiles,
+                VirtualControllerType.Nintendo => HMaestroProfileCatalog.NintendoProfiles,
                 VirtualControllerType.Extended => HMaestroProfileCatalog.ExtendedProfiles,
                 _ => System.Array.Empty<HIDMaestro.HMProfile>()
             };
@@ -295,6 +300,7 @@ namespace PadForge.ViewModels
         public bool HasHMaestroProfileBar =>
             _outputType == VirtualControllerType.Xbox
             || _outputType == VirtualControllerType.PlayStation
+            || _outputType == VirtualControllerType.Nintendo
             || _outputType == VirtualControllerType.Extended;
 
         private string _typeInstanceLabel = "1";
@@ -315,6 +321,7 @@ namespace PadForge.ViewModels
         {
             VirtualControllerType.Xbox => Strings.Instance.ControllerType_Xbox,
             VirtualControllerType.PlayStation => Strings.Instance.ControllerType_PlayStation,
+            VirtualControllerType.Nintendo => Strings.Instance.ControllerType_Nintendo,
             VirtualControllerType.Extended => Strings.Instance.ControllerType_Extended,
             VirtualControllerType.KeyboardMouse => Strings.Instance.ControllerType_KeyboardMouse,
             VirtualControllerType.Midi => Strings.Instance.ControllerType_MIDI,
@@ -1637,7 +1644,8 @@ namespace PadForge.ViewModels
                 InitializeKeyboardMouseMappings();
             else if (OutputType == VirtualControllerType.Midi)
                 InitializeMidiMappings();
-            else if (OutputType == VirtualControllerType.Extended)
+            else if (OutputType is VirtualControllerType.Extended
+                     or VirtualControllerType.Nintendo)
                 InitializeExtendedCustomMappings();
             else
                 InitializeGamepadMappings();
@@ -2049,7 +2057,8 @@ namespace PadForge.ViewModels
         public IReadOnlyList<(string Label, string XTarget, string YTarget)> GetSteerableSticks()
         {
             var list = new List<(string, string, string)>();
-            if (OutputType == VirtualControllerType.Extended)
+            if (OutputType is VirtualControllerType.Extended
+                or VirtualControllerType.Nintendo)
             {
                 ExtendedConfig.ComputeAxisLayout(out var sx, out var sy, out _);
                 for (int g = 0; g < sx.Length && g < sy.Length; g++)
@@ -3666,7 +3675,8 @@ namespace PadForge.ViewModels
             // Extended takes its stick count from the active HIDMaestro
             // profile via ExtendedConfig.
             int count = 2;
-            bool isExtended = OutputType == VirtualControllerType.Extended;
+            bool isExtended = OutputType is VirtualControllerType.Extended
+                or VirtualControllerType.Nintendo;
             if (isExtended)
                 count = ExtendedConfig.ThumbstickCount;
 
@@ -3717,7 +3727,8 @@ namespace PadForge.ViewModels
             // Extended takes its trigger count from the active HIDMaestro
             // profile via ExtendedConfig.
             int count = 2;
-            bool isExtended = OutputType == VirtualControllerType.Extended;
+            bool isExtended = OutputType is VirtualControllerType.Extended
+                or VirtualControllerType.Nintendo;
             if (isExtended)
                 count = ExtendedConfig.TriggerCount;
 
@@ -4758,7 +4769,9 @@ namespace PadForge.ViewModels
         /// labels (#215): the ProfileId on Extended slots, null elsewhere.
         /// Xbox / PlayStation lettering keys on ButtonStyle alone.</summary>
         private string SlotExtendedProfileId =>
-            _outputType == VirtualControllerType.Extended ? _profileId : null;
+            _outputType is VirtualControllerType.Extended
+                or VirtualControllerType.Nintendo
+                ? _profileId : null;
 
         /// <summary>
         /// Syncs macro button display style to all macros when the output
@@ -4767,7 +4780,9 @@ namespace PadForge.ViewModels
         private void SyncMacroButtonStyle()
         {
             var style = MacroButtonNames.DeriveStyle(_outputType);
-            int btnCount = (_outputType == VirtualControllerType.Extended ? _extendedConfig?.ButtonCount : null) ?? 11;
+            int btnCount = (_outputType is VirtualControllerType.Extended
+                or VirtualControllerType.Nintendo
+                ? _extendedConfig?.ButtonCount : null) ?? 11;
             string letteredProfile = SlotExtendedProfileId;
             foreach (var macro in Macros)
             {
@@ -4791,7 +4806,9 @@ namespace PadForge.ViewModels
         {
             vm.ButtonStyle = MacroButtonNames.DeriveStyle(_outputType);
             vm.ExtendedButtonCount =
-                (_outputType == VirtualControllerType.Extended ? _extendedConfig?.ButtonCount : null) ?? 11;
+                (_outputType is VirtualControllerType.Extended
+                 or VirtualControllerType.Nintendo
+                 ? _extendedConfig?.ButtonCount : null) ?? 11;
             vm.ExtendedProfileId = SlotExtendedProfileId;
             // MIDI / Keyboard-Mouse outputs cannot press controller
             // buttons: their cells' binding-kind list omits the choice
@@ -4799,6 +4816,7 @@ namespace PadForge.ViewModels
             vm.SupportsControllerButtons = _outputType
                 is VirtualControllerType.Xbox
                 or VirtualControllerType.PlayStation
+                or VirtualControllerType.Nintendo
                 or VirtualControllerType.Extended;
             vm.DescriptorDisplayProvider = ResolveInputDisplayName;
             vm.InputChoicesProvider = () => SlotAvailableInputs;
@@ -5191,6 +5209,7 @@ namespace PadForge.ViewModels
         public bool SocdCardVisible =>
             _outputType is VirtualControllerType.Xbox
             or VirtualControllerType.PlayStation
+            or VirtualControllerType.Nintendo
             or VirtualControllerType.Extended;
 
         /// <summary>Gate for the KBM twin of the SOCD card: same card
@@ -5202,11 +5221,12 @@ namespace PadForge.ViewModels
         /// <summary>True when the slot's pairs use the flat raw-index
         /// grammar ("12:13"). Mirrors the engine gate exactly: Step 5
         /// treats every Extended slot as raw-surface
-        /// (SlotExtendedIsCustom == OutputType is Extended), so Extended
+        /// (SlotRawHidSurface == OutputType is Extended), so Extended
         /// pairs are indices and Xbox / PlayStation pairs are the
         /// WriteBoolTarget names.</summary>
         public bool SocdUsesExtendedIndices =>
-            _outputType == VirtualControllerType.Extended;
+            _outputType is VirtualControllerType.Extended
+                or VirtualControllerType.Nintendo;
 
         /// <summary>SOCD mode, locale-stable: "" (off), "LastWins",
         /// "Neutral", "FirstWins". Stored on the slot's MappingSet so it
@@ -6507,6 +6527,54 @@ namespace PadForge.ViewModels
         {
             ExtendedOutputSnapshot = raw;
             OnPropertyChanged(nameof(ExtendedOutputSnapshot));
+
+            // Nintendo preview bridge: the SWITCHPRO 2D view reads the
+            // Gamepad-shaped preview properties, but a Nintendo slot's
+            // combined output is this raw state. Project it using the
+            // switch-pro descriptor's fixed button order (the same order
+            // MacroButtonNames.NintendoExtendedLabel documents: face
+            // B A Y X at 0-3, L R 4-5, ZL ZR 6-7, Minus Plus 8-9, stick
+            // clicks 10-11, Home 12, Capture 13; hat 0; axes LX LY RX RY).
+            if (_outputType == VirtualControllerType.Nintendo)
+                UpdateNintendoPreviewFromRaw(raw);
+        }
+
+        private void UpdateNintendoPreviewFromRaw(ExtendedRawState raw)
+        {
+            ButtonB = raw.IsButtonPressed(0);
+            ButtonA = raw.IsButtonPressed(1);
+            ButtonY = raw.IsButtonPressed(2);
+            ButtonX = raw.IsButtonPressed(3);
+            LeftShoulder = raw.IsButtonPressed(4);
+            RightShoulder = raw.IsButtonPressed(5);
+            // ZL / ZR are digital on the hardware; render as a full pull.
+            LeftTrigger = raw.IsButtonPressed(6) ? 1.0 : 0.0;
+            RightTrigger = raw.IsButtonPressed(7) ? 1.0 : 0.0;
+            ButtonBack = raw.IsButtonPressed(8);
+            ButtonStart = raw.IsButtonPressed(9);
+            LeftThumbButton = raw.IsButtonPressed(10);
+            RightThumbButton = raw.IsButtonPressed(11);
+            ButtonGuide = raw.IsButtonPressed(12);
+            ButtonShare = raw.IsButtonPressed(13);
+
+            // Hat 0 in hundredths of degrees, -1 centered. A diagonal
+            // lights both cardinals, matching how the gamepad path
+            // renders D-pad combinations.
+            int pov = raw.Povs is { Length: > 0 } ? raw.Povs[0] : -1;
+            DPadUp = pov >= 0 && (pov > 27000 || pov < 9000);
+            DPadRight = pov > 0 && pov < 18000;
+            DPadDown = pov > 9000 && pov < 27000;
+            DPadLeft = pov > 18000 && pov < 36000;
+
+            // Raw axes are HID convention (positive = down); the preview's
+            // Gamepad convention is positive = up on Y. Negate with the
+            // short.MinValue guard.
+            short Ax(int i) => raw.Axes != null && i < raw.Axes.Length ? raw.Axes[i] : (short)0;
+            static short FlipY(short v) => v == short.MinValue ? short.MaxValue : (short)-v;
+            RawThumbLX = Ax(0);
+            RawThumbLY = FlipY(Ax(1));
+            RawThumbRX = Ax(2);
+            RawThumbRY = FlipY(Ax(3));
         }
 
         /// <summary>

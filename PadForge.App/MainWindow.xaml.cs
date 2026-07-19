@@ -2244,6 +2244,7 @@ namespace PadForge
         // SVG path data for controller type icons — shared via ControllerIcons static class.
         private const string XboxSvgPath = Common.ControllerIcons.XboxSvgPath;
         private const string DS4SvgPath = Common.ControllerIcons.DS4SvgPath;
+        private const string SwitchSvgPath = Common.ControllerIcons.SwitchSvgPath;
         private const string ExtendedSvgPath = Common.ControllerIcons.ExtendedSvgPath;
 
 
@@ -2595,6 +2596,7 @@ namespace PadForge
             string iconKey = navItem.IconKey;
             bool isXbox = iconKey == "XboxControllerIcon";
             bool isPlayStation = iconKey == "DS4ControllerIcon";
+            bool isNintendo = iconKey == "NintendoControllerIcon";
             bool isExtended = iconKey == "ExtendedControllerIcon";
             bool isMidi = iconKey == "MidiControllerIcon";
             bool isKbm = iconKey == "KeyboardMouseControllerIcon";
@@ -2812,6 +2814,7 @@ namespace PadForge
 
             segRow.Children.Add(MakeTypeButton(TypeLogo(XboxSvgPath, isXbox), isXbox, OnSidebarTypeXbox, Strings.Instance.ControllerType_Xbox, true));
             segRow.Children.Add(MakeTypeButton(TypeLogo(DS4SvgPath, isPlayStation), isPlayStation, OnSidebarTypePlayStation, Strings.Instance.ControllerType_PlayStation, true));
+            segRow.Children.Add(MakeTypeButton(TypeLogo(SwitchSvgPath, isNintendo), isNintendo, OnSidebarTypeNintendo, Strings.Instance.ControllerType_Nintendo, true));
             segRow.Children.Add(MakeTypeButton(TypeLogo(ExtendedSvgPath, isExtended), isExtended, OnSidebarTypeExtended, Strings.Instance.ControllerType_Extended, true));
             segRow.Children.Add(MakeTypeButton(TypeGlyph("\uE961", isKbm), isKbm, OnSidebarTypeKeyboardMouse, Strings.Instance.ControllerType_KeyboardMouse, true));
             segRow.Children.Add(MakeTypeButton(TypeGlyph("\uE8D6", isMidi), isMidi, OnSidebarTypeMidi, hasMidi ? Strings.Instance.ControllerType_MIDI : Strings.Instance.Main_MIDI_RequiresMidiServices, hasMidi || isMidi));
@@ -3656,10 +3659,12 @@ namespace PadForge
             var row2 = new System.Windows.Controls.StackPanel { Orientation = System.Windows.Controls.Orientation.Horizontal, HorizontalAlignment = HorizontalAlignment.Center };
 
             string iconKey = navItem.IconKey;
-            if (iconKey == "XboxControllerIcon" || iconKey == "DS4ControllerIcon" || iconKey == "ExtendedControllerIcon")
+            if (iconKey == "XboxControllerIcon" || iconKey == "DS4ControllerIcon"
+                || iconKey == "NintendoControllerIcon" || iconKey == "ExtendedControllerIcon")
             {
                 string svgPath = iconKey == "XboxControllerIcon" ? XboxSvgPath
-                    : iconKey == "DS4ControllerIcon" ? DS4SvgPath : ExtendedSvgPath;
+                    : iconKey == "DS4ControllerIcon" ? DS4SvgPath
+                    : iconKey == "NintendoControllerIcon" ? SwitchSvgPath : ExtendedSvgPath;
                 var path = new System.Windows.Shapes.Path
                 {
                     Data = System.Windows.Media.Geometry.Parse(svgPath),
@@ -3772,6 +3777,22 @@ namespace PadForge
             {
                 SettingsManager.ReAutoMapSlot(padIndex, VirtualControllerType.Extended);
                 _viewModel.Pads[padIndex].OutputType = VirtualControllerType.Extended;
+                _inputService.MoveSlotToGroupTail(padIndex);
+                SettingsService.RefreshMappingSetsFromLegacy();
+                // Stale-guard the Mappings view (see OnSidebarTypeXbox).
+                _viewModel.Pads[padIndex].MappingsViewLoaded = false;
+                _settingsService.MarkDirty();
+            }
+        }
+
+        /// <summary>Handles sidebar Nintendo type button click.</summary>
+        private void OnSidebarTypeNintendo(object sender, RoutedEventArgs e)
+        {
+            e.Handled = true;
+            if (sender is System.Windows.Controls.Button btn && btn.Tag is int padIndex)
+            {
+                SettingsManager.ReAutoMapSlot(padIndex, VirtualControllerType.Nintendo);
+                _viewModel.Pads[padIndex].OutputType = VirtualControllerType.Nintendo;
                 _inputService.MoveSlotToGroupTail(padIndex);
                 SettingsService.RefreshMappingSetsFromLegacy();
                 // Stale-guard the Mappings view (see OnSidebarTypeXbox).
@@ -4545,7 +4566,7 @@ namespace PadForge
             // across all five groups). When the global total is at the cap
             // every "Add" button disables uniformly. Per-type counts are
             // kept for the at-capacity tooltip text.
-            int xboxCount = 0, playstationCount = 0, extendedCount = 0, midiCount = 0, kbmCount = 0;
+            int xboxCount = 0, playstationCount = 0, nintendoCount = 0, extendedCount = 0, midiCount = 0, kbmCount = 0;
             int totalActive = 0;
             for (int i = 0; i < InputManager.MaxPads; i++)
             {
@@ -4555,6 +4576,7 @@ namespace PadForge
                 {
                     case VirtualControllerType.Xbox: xboxCount++; break;
                     case VirtualControllerType.PlayStation: playstationCount++; break;
+                    case VirtualControllerType.Nintendo: nintendoCount++; break;
                     case VirtualControllerType.Extended: extendedCount++; break;
                     case VirtualControllerType.Midi: midiCount++; break;
                     case VirtualControllerType.KeyboardMouse: kbmCount++; break;
@@ -4640,6 +4662,45 @@ namespace PadForge
                 }
             };
             stack.Children.Add(playstationBtn);
+
+            // Nintendo button, theme-aware icon fill. Uses the Switch logo
+            // to represent the Nintendo family in the UI.
+            var nintendoPopupPath = new System.Windows.Shapes.Path
+            {
+                Data = System.Windows.Media.Geometry.Parse(SwitchSvgPath),
+                Width = 28,
+                Height = 28,
+                Stretch = System.Windows.Media.Stretch.Uniform
+            };
+            nintendoPopupPath.SetResourceReference(System.Windows.Shapes.Shape.FillProperty, "TextFillColorPrimaryBrush");
+            bool nintendoAtCapacity = nintendoCount >= SettingsManager.MaxNintendoSlots;
+            bool nintendoDisabled = globalAtCapacity || nintendoAtCapacity;
+            if (nintendoDisabled) nintendoPopupPath.Opacity = 0.35;
+            var nintendoBtn = new System.Windows.Controls.Button
+            {
+                Content = nintendoPopupPath,
+                ToolTip = nintendoAtCapacity
+                        ? string.Format(Strings.Instance.Main_Nintendo_Max_Format, SettingsManager.MaxNintendoSlots)
+                        : Strings.Instance.ControllerType_Nintendo,
+                Background = System.Windows.Media.Brushes.Transparent,
+                BorderThickness = new Thickness(0),
+                Padding = new Thickness(8),
+                MinWidth = 0,
+                Cursor = nintendoDisabled ? System.Windows.Input.Cursors.No : System.Windows.Input.Cursors.Hand
+            };
+            System.Windows.Automation.AutomationProperties.SetAutomationId(nintendoBtn, "AddNintendoBtn");
+            nintendoBtn.Click += (s, e) =>
+            {
+                if (nintendoDisabled) return;
+                popup.IsOpen = false;
+                int newSlot = _deviceService.CreateSlot(VirtualControllerType.Nintendo);
+                if (newSlot >= 0)
+                {
+                    int nav = FindLastSlotOfType(VirtualControllerType.Nintendo);
+                    Dispatcher.BeginInvoke(new Action(() => NavigateToSlot(nav >= 0 ? nav : newSlot)));
+                }
+            };
+            stack.Children.Add(nintendoBtn);
 
             // Extended button — theme-aware icon fill.
             var extendedPopupPath = new System.Windows.Shapes.Path
@@ -6504,8 +6565,9 @@ namespace PadForge
             try
             {
                 var copyOutputType = padVm.OutputType;
-                bool copyIsExtended = copyOutputType == VirtualControllerType.Extended
-                    /* Extended always uses dynamic layout */;
+                bool copyIsExtended = copyOutputType is VirtualControllerType.Extended
+                    or VirtualControllerType.Nintendo
+                    /* raw-surface types always use the dynamic layout */;
 
                 // Snapshot the slot's full MappingSet so Copy → Paste carries
                 // every device's contribution — not just the slot's currently-
@@ -6580,8 +6642,9 @@ namespace PadForge
                 }
 
                 var targetType = padVm.OutputType;
-                bool targetIsExtended = targetType == VirtualControllerType.Extended
-                    /* Extended always uses dynamic layout */;
+                bool targetIsExtended = targetType is VirtualControllerType.Extended
+                    or VirtualControllerType.Nintendo
+                    /* raw-surface types always use the dynamic layout */;
 
                 // Whole-slot snapshot → replace the target's MappingSet
                 // wholesale BEFORE the PadSetting tuning copy. Preserves
@@ -6773,6 +6836,7 @@ namespace PadForge
         {
             VirtualControllerType.Xbox          => Strings.Instance.ControllerType_Xbox,
             VirtualControllerType.PlayStation   => Strings.Instance.ControllerType_PlayStation,
+            VirtualControllerType.Nintendo      => Strings.Instance.ControllerType_Nintendo,
             VirtualControllerType.Extended      => Strings.Instance.ControllerType_Extended,
             VirtualControllerType.KeyboardMouse => Strings.Instance.ControllerType_KeyboardMouse,
             VirtualControllerType.Midi          => Strings.Instance.ControllerType_MIDI,
@@ -6922,7 +6986,8 @@ namespace PadForge
                 {
                     var srcPad = _viewModel.Pads[us.MapTo];
                     outputType = srcPad.OutputType;
-                    isExtended = outputType == VirtualControllerType.Extended;
+                    isExtended = outputType is VirtualControllerType.Extended
+                        or VirtualControllerType.Nintendo;
                 }
 
                 // Primary line identifies the SLOT, not the device. The
@@ -6968,8 +7033,9 @@ namespace PadForge
             {
                 var srcEntry = dialog.SelectedEntry;
                 var targetOutputType = padVm.OutputType;
-                bool targetIsExtended = targetOutputType == VirtualControllerType.Extended
-                    /* Extended always uses dynamic layout */;
+                bool targetIsExtended = targetOutputType is VirtualControllerType.Extended
+                    or VirtualControllerType.Nintendo
+                    /* raw-surface types always use the dynamic layout */;
 
                 // Issue #61 — "Copy From" is a SLOT-level copy. Replace this
                 // slot's per-VC MappingSet with the SOURCE slot's wholesale

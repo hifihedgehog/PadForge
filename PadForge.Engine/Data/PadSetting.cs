@@ -2256,7 +2256,8 @@ namespace PadForge.Engine.Data
             // Read from gamepad properties (Xbox / PlayStation / Extended gamepad preset source)
             if (sourceType != VirtualControllerType.Midi &&
                 sourceType != VirtualControllerType.KeyboardMouse &&
-                !(sourceType == VirtualControllerType.Extended && sourceIsExtended))
+                !(sourceType is VirtualControllerType.Extended or VirtualControllerType.Nintendo
+                  && sourceIsExtended))
             {
                 foreach (string propName in MappingPropertyNames)
                 {
@@ -2272,7 +2273,8 @@ namespace PadForge.Engine.Data
             }
 
             // Read from Extended dictionary (Extended custom source)
-            if (sourceType == VirtualControllerType.Extended && sourceIsExtended
+            if (sourceType is VirtualControllerType.Extended or VirtualControllerType.Nintendo
+                && sourceIsExtended
                 && source.ExtendedMappingEntries != null)
             {
                 foreach (var e in source.ExtendedMappingEntries)
@@ -2311,7 +2313,8 @@ namespace PadForge.Engine.Data
             // Step 3: Write translated positions to target layout.
 
             // Clear existing target mappings first.
-            if (targetType == VirtualControllerType.Extended && targetIsExtended)
+            if (targetType is VirtualControllerType.Extended or VirtualControllerType.Nintendo
+                && targetIsExtended)
             {
                 ExtendedMappingEntries = null;
                 _extendedMappingDict = null;
@@ -2343,7 +2346,8 @@ namespace PadForge.Engine.Data
                 string targetKey = MappingTranslation.GetPropertyName(kvp.Key, targetType, targetIsExtended);
                 if (targetKey == null) continue; // No equivalent in target layout — silently dropped.
 
-                if (targetType == VirtualControllerType.Extended && targetIsExtended)
+                if (targetType is VirtualControllerType.Extended or VirtualControllerType.Nintendo
+                    && targetIsExtended)
                     SetExtendedMapping(targetKey, kvp.Value);
                 else if (targetType == VirtualControllerType.Midi)
                     SetMidiMapping(targetKey, kvp.Value);

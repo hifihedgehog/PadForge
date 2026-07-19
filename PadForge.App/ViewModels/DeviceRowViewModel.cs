@@ -688,6 +688,7 @@ namespace PadForge.ViewModels
     {
         private static readonly System.Windows.Media.Geometry XboxGeometry = ParseFrozen(Common.ControllerIcons.XboxSvgPath);
         private static readonly System.Windows.Media.Geometry PlayStationGeometry = ParseFrozen(Common.ControllerIcons.DS4SvgPath);
+        private static readonly System.Windows.Media.Geometry NintendoGeometry = ParseFrozen(Common.ControllerIcons.SwitchSvgPath);
         private static readonly System.Windows.Media.Geometry ExtendedGeometry = ParseFrozen(Common.ControllerIcons.ExtendedSvgPath);
 
         private static System.Windows.Media.Geometry ParseFrozen(string pathData)
@@ -701,6 +702,7 @@ namespace PadForge.ViewModels
         public static System.Windows.Media.Geometry GeometryFor(Engine.VirtualControllerType type) => type switch
         {
             Engine.VirtualControllerType.PlayStation => PlayStationGeometry,
+            Engine.VirtualControllerType.Nintendo => NintendoGeometry,
             Engine.VirtualControllerType.Extended => ExtendedGeometry,
             Engine.VirtualControllerType.Midi => null,
             Engine.VirtualControllerType.KeyboardMouse => null,

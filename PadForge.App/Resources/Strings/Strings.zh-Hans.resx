@@ -102,6 +102,7 @@
   <!-- ═══ Controller Types ═══ -->
   <data name="ControllerType_Xbox" xml:space="preserve"><value>Xbox</value></data>
   <data name="ControllerType_PlayStation" xml:space="preserve"><value>PlayStation</value></data>
+  <data name="ControllerType_Nintendo" xml:space="preserve"><value>Nintendo</value></data>
   <data name="ControllerType_Extended" xml:space="preserve"><value>扩展</value></data>
   <data name="ControllerType_KeyboardMouse" xml:space="preserve"><value>键盘 + 鼠标</value></data>
   <data name="ControllerType_MIDI" xml:space="preserve"><value>MIDI</value></data>
@@ -125,6 +126,7 @@
   <data name="Main_ControllersOffline" xml:space="preserve"><value>一个或多个控制器离线</value></data>
   <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox（最多 {0} 台）</value></data>
   <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>PlayStation（最多 {0} 台）</value></data>
+  <data name="Main_Nintendo_Max_Format" xml:space="preserve"><value>Nintendo（最多 {0} 台）</value></data>
   <data name="Main_Extended_Max_Format" xml:space="preserve"><value>扩展（最多 {0} 台）</value></data>
   <data name="Main_KBM_Max_Format" xml:space="preserve"><value>键盘 + 鼠标（最多 {0} 台）</value></data>
   <data name="Main_MIDI_RequiresMidiServices" xml:space="preserve"><value>MIDI（需要 Windows MIDI Services）</value></data>

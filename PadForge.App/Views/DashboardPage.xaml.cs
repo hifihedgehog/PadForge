@@ -117,6 +117,12 @@ namespace PadForge.Views
                 SlotTypeChangeRequested?.Invoke(this, (slotIndex, VirtualControllerType.PlayStation));
         }
 
+        private void NintendoType_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button btn && btn.Tag is int slotIndex)
+                SlotTypeChangeRequested?.Invoke(this, (slotIndex, VirtualControllerType.Nintendo));
+        }
+
         private void ExtendedType_Click(object sender, RoutedEventArgs e)
         {
             if (sender is Button btn && btn.Tag is int slotIndex)

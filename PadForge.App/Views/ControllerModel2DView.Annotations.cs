@@ -19,6 +19,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using PadForge.Models2D;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
@@ -170,6 +171,16 @@ namespace PadForge.Views
         /// fallback shape as the 3D ResolveAnnotationAnchor).</summary>
         private Point? ResolveAnnotationAnchor(string targetSettingName)
         {
+            // Nintendo rows are raw grid names (RawBtn0, RawAxis1); anchors
+            // are keyed by the preview element grammar. Translate first.
+            // Raw row names only occur here for Nintendo slots (Extended
+            // uses the schematic view, never this canvas).
+            if (targetSettingName.StartsWith("Raw", System.StringComparison.Ordinal))
+            {
+                targetSettingName = NintendoPreviewMap.ToPreview(targetSettingName);
+                if (targetSettingName == null)
+                    return null;
+            }
             if (_annotationAnchors.TryGetValue(targetSettingName, out var p))
                 return p;
             string ring = targetSettingName switch

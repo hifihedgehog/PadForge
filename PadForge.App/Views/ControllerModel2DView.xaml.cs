@@ -732,6 +732,15 @@ namespace PadForge.Views
             StopFlash();
             if (string.IsNullOrEmpty(target)) return;
 
+            // A Nintendo slot's CurrentRecordingTarget is a raw grid name
+            // (RawBtn1, RawAxis0Neg); the flash machinery below speaks the
+            // preview element grammar. Translate back before resolving.
+            if (target.StartsWith("Raw", StringComparison.Ordinal))
+            {
+                target = NintendoPreviewMap.ToPreview(target);
+                if (string.IsNullOrEmpty(target)) return;
+            }
+
             _flashRawTarget = target;
             _flashTarget = ResolveFlashTarget(target);
 

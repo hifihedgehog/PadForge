@@ -672,6 +672,17 @@ namespace PadForge.Views
 
         private void OnModelRecordRequested(object sender, string targetName)
         {
+            // Nintendo slots ride the raw surface: the preview art speaks
+            // the Xbox-style element grammar ("ButtonA", "LeftThumbAxisXNeg")
+            // but the mapping grid's rows are RawBtn/RawAxis/RawPov, so the
+            // record handler's row lookup would miss every click. Translate
+            // at the funnel; an element with no raw counterpart is ignored.
+            if (DataContext is PadViewModel vm
+                && vm.OutputType == Engine.VirtualControllerType.Nintendo)
+            {
+                targetName = Models2D.NintendoPreviewMap.ToRaw(targetName);
+                if (targetName == null) return;
+            }
             ControllerElementRecordRequested?.Invoke(this, targetName);
         }
 
